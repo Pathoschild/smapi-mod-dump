@@ -1,0 +1,9 @@
+{
+  "EnableDailyLuckOverride": false,
+  "EnableWeatherOverride": false,
+  "SunnyChance": 60,
+  "CloudySnowyChance": 15,
+  "RainyChance": 15,
+  "StormyChance": 5,
+  "HarshSnowyChance": 5
+}

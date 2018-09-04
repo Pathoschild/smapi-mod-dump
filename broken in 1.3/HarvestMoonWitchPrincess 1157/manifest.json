@@ -1,0 +1,14 @@
+{
+   "Name": "WitchPrincess",
+   "Author": "Sasara",
+   "Version": {
+      "MajorVersion": 1,
+      "MinorVersion": 4,
+      "PatchVersion": 0,
+      "Build": ""
+   },
+   "MininumApiVersion": "1.14",
+   "Description": "let your Witch live in your house with her own room",
+   "UniqueID": "Sasara.WitchPrincess",
+   "EntryDll": "WitchPrincess.dll"
+}

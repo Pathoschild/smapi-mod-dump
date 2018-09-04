@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Stack Check Fix",
+  "Author": "punyo",
+  "Version": "1.0.0",
+  "Description": "Improve game's stack checking",
+  "UniqueID": "punyo.StackCheckFix",
+  "EntryDll": "StackCheckFix.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "Nexus:2433" ]
+}

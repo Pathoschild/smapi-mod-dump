@@ -1,0 +1,10 @@
+{
+  "Name": "Skull Cave Saver",
+  "Author": "cantorsdust",
+  "Version": "1.3.0-beta",
+  "Description": "Saves your progress in the Skull Cave every 5th floor (configurable). When you return, warps you to the saved level.",
+  "UniqueID": "cantorsdust.SkullCaveSaver",
+  "EntryDll": "SkullCaveSaver.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "Nexus:175" ]
+}

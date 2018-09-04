@@ -1,0 +1,10 @@
+{
+  "Name": "ParsnipsAbsolutelyEverywhere",
+  "Author": "SolomonsWorkshop",
+  "Version": "1.0.1",
+  "Description": "Each morning the farm is covered in parsnips",
+  "UniqueID": "SolomonsWorkshop.ParsnipsAbsolutelyEverywhere",
+  "EntryDll": "ParsnipsAbsolutelyEverywhere.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": ["Nexus:2166"]
+}

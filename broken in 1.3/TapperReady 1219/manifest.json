@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Tapper Ready",
+  "Author": "skunkkk",
+  "Version": {
+    "MajorVersion": 0,
+    "MinorVersion": 4,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "Description": "Tapper Ready alerts you when your tapper contents are ready to collect.",
+  "UniqueID": "skunkkk.TapperReady",
+  "EntryDll": "TapperReady.dll"
+}

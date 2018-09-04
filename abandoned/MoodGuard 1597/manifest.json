@@ -1,0 +1,10 @@
+﻿{
+   "Name": "Mood Guard",
+   "Author": "YonKuma",
+   "Version": "1.1",
+   "Description": "Fixes bugs associated with animals' moods.",
+   "UniqueID": "YonKuma.MoodGuard",
+   "EntryDll": "MoodGuard.dll",
+   "UpdateKeys": ["Nexus:1597", "GitHub:YonKuma/MoodGuard"],
+   "MinimumApiVersion": "2.1"
+}

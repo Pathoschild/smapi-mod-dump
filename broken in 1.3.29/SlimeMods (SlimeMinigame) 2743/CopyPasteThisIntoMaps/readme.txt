@@ -1,0 +1,1 @@
+Take this SlimeHutch.xnb file and replace Stardew Valley's SlimeHutch.xnb file found in Steam/steamapps/common/Stardew Valley/Maps/

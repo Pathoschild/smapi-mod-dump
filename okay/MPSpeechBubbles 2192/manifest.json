@@ -1,0 +1,10 @@
+﻿{
+  "Name": "MPSpeechBubbles",
+  "Author": "Kalthramis",
+  "Version": "1.0.2",
+  "Description": "Adds speech bubbles for both singleplayer and multiplayer",
+  "UniqueID": "Kalthramis.MPSpeechBubbles",
+  "EntryDll": "MPSpeechBubbles.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:2192" ]
+}

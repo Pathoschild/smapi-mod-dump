@@ -1,0 +1,14 @@
+﻿{
+  "Name": "PrairieKingMadeEasy",
+  "Author": "Mucchan",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 1,
+    "Build": "pathoschild-update"
+  },
+  "MinimumApiVersion": "1.10",
+  "Description": "Adds cheat options for the 'Journey of the Prairie King' minigame.",
+  "UniqueID": "Mucchan.PrairieKingMadeEasy",
+  "EntryDll": "PrairieKingMadeEasy.dll"
+}

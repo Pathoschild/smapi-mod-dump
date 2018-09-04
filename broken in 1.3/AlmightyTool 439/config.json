@@ -1,0 +1,11 @@
+{
+  "AxeLevel": 4,
+  "PickaxeLevel": 4,
+  "HoeLevel": 4,
+  "WaterCanLevel": 4,
+  "KeyBind": "Q",
+  "HoeDirtTool": "Pickaxe",
+  "ShowWaterLeftMessage": true,
+  "LongRange": true,
+  "usePailonOtherAnimals": true
+}

@@ -1,0 +1,9 @@
+{
+  "Name": "Faster Run",
+  "Author": "KathrynHazuka",
+  "Version": "1.2",
+  "Description": "Makes your character run faster",
+  "UniqueID": "KathrynHazuka.FasterRun",
+  "EntryDll": "FasterRun.dll",
+  "UpdateKeys": []
+}

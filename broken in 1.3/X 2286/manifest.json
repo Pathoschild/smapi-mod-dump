@@ -1,0 +1,10 @@
+﻿{
+  "Name": "X",
+  "Author": "skiilaa",
+  "Version": "1.0.0",
+  "Description": "Extreme difficulty for Stardew Valley.",
+  "UniqueID": "skiilaa.X",
+  "EntryDll": "X.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:2286" ] // added locally
+}

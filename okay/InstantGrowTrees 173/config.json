@@ -1,0 +1,13 @@
+{
+  "FruitTrees": {
+    "InstantlyAge": false,
+    "InstantlyGrow": true,
+    "InstantlyGrowInWinter": true,
+    "InstantlyGrowWhenInvalid": false
+  },
+  "NonFruitTrees": {
+    "InstantlyGrow": true,
+    "InstantlyGrowInWinter": true,
+    "InstantlyGrowWhenInvalid": false
+  }
+}

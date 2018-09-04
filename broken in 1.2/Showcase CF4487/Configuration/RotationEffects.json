@@ -1,0 +1,140 @@
+[
+  {
+    ID: 348,
+    N: -1,
+  },
+  {
+    ID: 350,
+    N: -1,
+  },
+  {
+    ID: 459,
+    N: -1,
+  },
+  {
+    Category: "Fish",
+    N: 1,
+  },
+  {
+    ID: 128,
+    N: 0,
+  },
+  {
+    ID: 148,
+    N: 0,
+  },
+  {
+    ID: 149,
+    N: 0,
+  },
+  {
+    ID: 151,
+    N: 0,
+  },
+  {
+    ID: 162,
+    N: 0,
+  },
+  {
+    ID: 160,
+    N: 0,
+  },
+  {
+    ID: 775,
+    N: 0,
+  },
+  {
+    ID: 682,
+    N: 0,
+  },
+  {
+    ID: 154,
+    N: 0,
+  },
+  {
+    ID: 155,
+    N: 0,
+  },
+  {
+    ID: 717,
+    N: 0,
+  },
+  {
+    ID: 718,
+    N: 0,
+  },
+  {
+    ID: 720,
+    N: 0,
+  },
+  {
+    ID: 721,
+    N: 0,
+  },
+  {
+    ID: 722,
+    N: 1,
+  },
+  {
+    ID: 723,
+    N: 0,
+  },
+  {
+    Category: "Tool",
+    N: -1,
+  },
+  {
+    ID: 296,
+    Category: "Tool",
+    N: 0,
+  },
+  {
+    ID: 6,
+    Category: "Tool",
+    N: 0,
+  },
+  {
+    ID: 7,
+    Category: "Tool",
+    N: 1,
+  },
+  {
+    ID: 2,
+    Category: "Tool",
+    N: -1,
+  },
+  {
+    ID: 12,
+    Category: "Tool",
+    N: 0,
+  },
+  {
+    Category: "Weapon",
+    N: 3,
+  },
+  {
+    ID: 32,
+    Category: "Weapon",
+    N: 0,
+  },
+  {
+    ID: 33,
+    Category: "Weapon",
+    N: 0,
+  },
+  {
+    ID: 34,
+    Category: "Weapon",
+    N: 0,
+  },
+  {
+    ID: 47,
+    Category: "Weapon",
+    N: -1,
+  },
+  {
+    Category: "Weapon",
+    SubCategory: "Club",
+    N: -1,
+  },
+]

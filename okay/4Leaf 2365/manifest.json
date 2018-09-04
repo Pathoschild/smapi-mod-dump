@@ -1,0 +1,12 @@
+﻿{
+    "Name": "4Leaf",
+    "Author": "Alex Noddings",
+    "Version": "1.0.1",
+    "Description": "Allows the player to set their daily luck.",
+    "UniqueID": "an.4leaf",
+    "EntryDll": "4leaf.dll",
+    "MinimumApiVersion": "2.0",
+    "UpdateKeys": [
+        "Nexus:2365"
+    ]
+}

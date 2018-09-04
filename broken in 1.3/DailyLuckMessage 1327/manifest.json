@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Daily Luck Message",
+  "Author": "Schematix",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "Description": "Automatic luck message every day.",
+  "UniqueID": "Schematix.DailyLuckMessage",
+  "EntryDll": "DailyLuckMessage.dll"
+}

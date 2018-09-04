@@ -1,0 +1,5 @@
+﻿{
+    "hint.wellfeeded": "Você se sente bem alimentado e recuperará 50% de resistência se for dormir dentro de 2h",
+	"hint.sleeped.unfeeded": "Você dormiu e recuperou {{StaminaRegeneratedProcent}}% stamina",
+	"hint.sleeped.wellfeeded": "Você dormiu bem alimentado e recuperou {{StaminaRegeneratedProcent}}% stamina",
+}

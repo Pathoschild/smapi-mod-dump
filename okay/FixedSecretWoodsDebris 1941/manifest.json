@@ -1,0 +1,10 @@
+{
+    "Name": "WoodsDebrisFix",
+    "Author": "f4iTh & Lita",
+    "Version": "1.1.0-beta.2",
+    "UniqueID": "f4iTh.WoodsDebrisFix",
+    "Description": "Fixes the weather debris in the Secret Woods. It might also contain something special.",
+    "EntryDll": "WoodsDebrisFix.dll",
+    "MinimumApiVersion": "2.6-beta",
+    "UpdateKeys":  ["Nexus:1941"]
+}

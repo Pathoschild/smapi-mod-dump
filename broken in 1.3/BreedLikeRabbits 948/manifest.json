@@ -1,0 +1,15 @@
+﻿{
+	"Name": "BreedRabbits",
+	"Author": "Dycedarger",
+	"Version":
+	{
+		"MajorVersion": 1,
+		"MinorVersion": 0,
+		"PatchVersion": 2,
+		"Build": ""
+	},
+	"UniqueID": "dycedarger.breedlikerabbits",
+	"Description": "Make rabbits breed like rabbits do.",
+	"PerSaveConfigs": false,
+	"EntryDll":  "BreedLikeRabbits.dll"
+}

@@ -1,0 +1,9 @@
+{
+  "RightClickMoveModeDefault": "On",
+  "WeaponsSpecticalInteraction": "Enable",
+  "WeaponsSpecticalInteractionType": "Disable",
+  "HoldingMoveOnly": "Disable",
+  "ExtendedModeDefault": "On",
+  "RightClickMoveModeOpenButton": "G",
+  "ExtendedModeOpenButton": "H"
+}

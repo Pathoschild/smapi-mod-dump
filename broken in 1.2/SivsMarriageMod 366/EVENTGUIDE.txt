@@ -1,0 +1,45 @@
+EVENT TRIGGER GUIDE
+
+CLINT
+8 Blacksmith, 9a-5p
+10 Mountain, Sunny, 4p-11p / Blacksmith, 9a-5p
+
+GUS
+8 Saloon, 12p-4:30p
+10 Saloon, 12p-4p / Farm, Sunny, 6p-10p
+
+LEWIS
+8* See below
+10 Farm, Sunny, 6a-8a, M-F
+
+LINUS
+8 Mountain, Sunny, 2p-9p
+10 Mountain, Sunny, 5p-9p, letter
+
+MARNIE
+8* See below
+10 Forest, 8p-12a
+
+PAM
+8 Trailer, 2p-6p
+10 Trailer, 12p-8p, letter
+
+SANDY
+8 SandyHouse, 3p-8p
+10 SandyHouse, 8p-11:50p, letter
+
+WILLY
+8 FishShop, Rainy, 6a-5p, letter
+10 FishShop, Rainy, 6a-5p, letter
+
+WIZARD
+8 WizardHouse, 10a-8p
+10 Woods, 8a-5p, letter
+
+*Marnie and Lewis' 8 heart events are interchangeable, and if you have seen Marnie's 8 heart event first, it will change Lewis' 8 heart event. So, if you trigger Marnie's event "A", you can only trigger Lewis' event "B" and vice versa.
+
+MARNIE 8 HEART A: AnimalShop, 2p-6p
+LEWIS 8 HEART B: Town, Sunny, 8a-11:59a
+
+LEWIS 8 HEART A: ManorHouse, 2p-6p
+MARNIE 8 HEART B: Forest, Sunny, 8a-12p

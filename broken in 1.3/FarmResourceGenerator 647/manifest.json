@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Farm Resource Generator",
+  "Authour": "jwdred",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 4,
+    "Build": ""
+  },
+  "Description": "Want the perks of the new maps without having to restart your game?",
+  "UniqueID": "",
+  "PerSaveConfigs": false,
+  "EntryDll": "FarmResourceGenerator.dll",
+  "UpdateKeys": [ "Nexus:647" ] // added locally
+}

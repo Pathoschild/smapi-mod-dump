@@ -1,0 +1,7 @@
+{
+  "PlayerRunningSpeed": 5,
+  "HorseSpeed": 5,
+  "SprintKey": "LeftShift",
+  "PlayerSprintingSpeedMultiplier": 2,
+  "SprintingStaminaDrainPerSecond": 15.0
+}

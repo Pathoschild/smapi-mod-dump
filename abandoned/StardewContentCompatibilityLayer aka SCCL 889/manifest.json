@@ -1,0 +1,14 @@
+﻿
+{
+  "Author": "TehPers",
+  "Description": "Allows mods to merge content into the game",
+  "EntryDll": "SCCL.dll",
+  "Name": "Stardew Content Compatibility Layer",
+  "UniqueID": "SCCL",
+  "Version": {
+    "MajorVersion": 0,
+    "MinorVersion": 1,
+    "PatchVersion": 0,
+    "Build": ""
+  }
+}

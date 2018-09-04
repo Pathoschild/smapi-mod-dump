@@ -1,0 +1,14 @@
+﻿{
+  "Name": "Love Bubbles",
+  "Author": "Don Collins",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 2,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "Description": "Show bubbles above animals that need petting.",
+  "UniqueID": "LoveBubbles",
+  "PerSaveConfigs": false,
+  "EntryDll": "LoveBubbles.dll"
+}

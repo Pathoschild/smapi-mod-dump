@@ -1,0 +1,10 @@
+﻿{
+  "Name": "garbage_collector",
+  "Author": "OlegSilkin",
+  "Version": "1.0.1", // fixed locally
+  "Description": "Removes Trash Items from your inventory if they have no sell value",
+  "UniqueID": "OlegSilkin.garbage_collector",
+  "EntryDll": "garbage_collector.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:2463" ]
+}

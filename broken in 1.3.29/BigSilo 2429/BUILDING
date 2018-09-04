@@ -1,0 +1,7 @@
+Compiling BigSilo is only supported on linux, if you're on another platform, good luck
+
+1. Install stardew valley
+2. Install SMAPI
+3. Symlink the stardew valley game folder to ./stardew_valley
+4. Ensure mcs is in your path, stardew valley ships with a copy that may or may not work for you
+5. make

@@ -1,0 +1,11 @@
+{
+  "main.text": "Hello {{player_name}}, you currently have {{qi_amount}} Qi Coins. Please choose how many you want to exchange. The exchange rate is 1 QiCoin = {{exchange_rate}}G",
+  "option.one": "100 QiCoins ",
+  "option.two": "1,000 QiCoins",
+  "option.three": "10,000 QiCoins",
+  "option.four": "100,000 QiCoins",
+  "option.five": "1,000,000 QiCoins",
+  "do.exchange": "You exchanged {{qi_coins}} QiCoins for {{g_coins}}G.",
+  "no.qi.coins": "You don't have any QiCoins.",
+  "not.enough.qicoins": "You don't have enough QiCoins."
+}

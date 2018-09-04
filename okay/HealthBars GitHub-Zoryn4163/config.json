@@ -1,0 +1,14 @@
+{
+  "DisplayHealthWhenNotDamaged": false,
+  "DisplayMaxHealthNumber": true,
+  "DisplayCurrentHealthNumber": true,
+  "DisplayTextBorder": true,
+  "TextColor": "255, 255, 255, 255",
+  "TextBorderColor": "0, 0, 0, 255",
+  "LowHealthColor": "139, 0, 0, 255",
+  "HighHealthColor": "50, 205, 50, 255",
+  "BarWidth": 90,
+  "BarHeight": 15,
+  "BarBorderWidth": 2,
+  "BarBorderHeight": 2
+}

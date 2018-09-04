@@ -1,0 +1,9 @@
+{
+  "ModOptionsBusstopDesertCost": "Minutes the bus takes between Bus Stop and Calico Desert",
+  "ModOptionsBusstopMineCost": "Minutes the mine cart takes between Bus Stop and Mines",
+  "ModOptionsLabel": "Traveling Takes Time Options:",
+  "ModOptionsMineQuarryCost": "Minutes the mine cart takes between Mines and Quarry",
+  "ModOptionsQuarryTownCost": "Minutes the mine cart takes between Quarry and Town",
+  "ModOptionsReset": "Reset all settings back to default values",
+  "ModOptionsVerboseLogging": "Enable verbose logging"
+}

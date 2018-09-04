@@ -1,0 +1,10 @@
+﻿{
+   "Name": "Craft Anything",
+   "Author": "Sabera",
+   "Version": "1.0.3",
+   "Description": "Configurable mod that allows you to craft items that aren't 'craftable'.",
+   "UniqueID": "Sabera.CraftAnything",
+   "EntryDll": "CraftAnything.dll",
+   "MinimumApiVersion": "2.6",
+   "UpdateKeys": [ "Nexus:2524", "GitHub:ebehar/CraftAnything" ]
+}

@@ -1,0 +1,11 @@
+{
+  "Enabled": true,
+  "Events": [
+    {
+      "Location": "FarmHouse",
+      "Condition": "999999/t 600 800",
+      "Data": "continue/64 15/farmer 64 16 2 Wizard 64 18 0/pause 1500/speak Wizard \"I see you have tapped into the dark arts of the sky people. Event injection, no?#$b#Your newfound ability gives you more power than you think.$l#$b#Be careful with it. Even I refuse to venture down that path.\"/pause 500/end",
+      "Repeatable": false
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+﻿{
+  "Display": {
+    "Visiable": {
+      "Id": 1,
+      "Name": "Visiable",
+      "Display": "Visiable",
+      "Value": true
+    },
+    "Hp": {
+      "Id": 2,
+      "Name": "Hp",
+      "Display": "Hp",
+      "Value": true
+    },
+    "Sp": {
+      "Id": 3,
+      "Name": "Sp",
+      "Display": "Sp",
+      "Value": true
+    },
+    "Luck": {
+      "Id": 4,
+      "Name": "Luck",
+      "Display": "Luck",
+      "Value": true
+    },
+    "Speed": {
+      "Id": 5,
+      "Name": "Speed",
+      "Display": "Speed",
+      "Value": true
+    },
+    "Level": {
+      "Id": 6,
+      "Name": "Level",
+      "Display": "Level",
+      "Value": true
+    },
+    "Price": {
+      "Id": 7,
+      "Name": "Price",
+      "Display": "Price",
+      "Value": true
+    },
+    "Skill": {
+      "Id": 8,
+      "Name": "Skill",
+      "Display": "Skill",
+      "Value": true
+    }
+  },
+  "Global": {
+    "Container": {
+      "Id": 41,
+      "Name": "Container",
+      "Display": "Container",
+      "Value": true
+    },
+    "StateDisplayer": {
+      "Id": 42,
+      "Name": "StateDisplayer",
+      "Display": "State Displayer",
+      "Value": true
+    },
+    "Texture": {
+      "Id": -1,
+      "Name": "",
+      "Display": "",
+      "Value": "Content\\Texture\\icon.png"
+    }
+  },
+  "Container": {
+    "Menu": {
+      "Id": 61,
+      "Name": "Menu",
+      "Display": "Menu Display",
+      "Value": true
+    },
+    "LockHotBar": {
+      "Id": 62,
+      "Name": "LockHotBar",
+      "Display": "Lock Hot-Bar",
+      "Value": true
+    },
+    "LockHotBarKey": {
+      "Id": 63,
+      "Name": "LockHotBarKey",
+      "Display": "Lock HotBar",
+      "Value": "OemTilde"
+    },
+    "BackpackSortOut": {
+      "Id": 63,
+      "Name": "BackpackSortOut",
+      "Display": "Backpack Sort-Out",
+      "Value": true
+    },
+    "BackpackSortOutKey": {
+      "Id": 64,
+      "Name": "BackpackSortOutKey",
+      "Display": "Backpack Sort-Out",
+      "Value": "Space"
+    },
+    "ContainerSortOut": {
+      "Id": 65,
+      "Name": "ContainerSortOut",
+      "Display": "Container Sort-Out",
+      "Value": true
+    },
+    "ContainerTakeToPlayerKey": {
+      "Id": 66,
+      "Name": "ContainerTakeToPlayerKey",
+      "Display": "Take-To-Player",
+      "Value": "Tab+LeftShift+LeftControl"
+    },
+    "ContainerTakeToChestKey": {
+      "Id": 67,
+      "Name": "ContainerTakeToChestKey",
+      "Display": "Take-To-Chest",
+      "Value": "Tab+LeftControl"
+    },
+    "ContainerStackToPlayerKey": {
+      "Id": 68,
+      "Name": "ContainerStackToPlayerKey",
+      "Display": "Stack-To-Player",
+      "Value": "Tab+LeftShift"
+    },
+    "ContainerStackToChestKey": {
+      "Id": 69,
+      "Name": "ContainerStackToChestKey",
+      "Display": "Stack-To-Chest",
+      "Value": "Tab"
+    },
+    "ScrollWheelAction": {
+      "Id": 70,
+      "Name": "ScrollWheelAction",
+      "Display": "Scroll-Wheel-Action",
+      "Value": true
+    }
+  }
+}

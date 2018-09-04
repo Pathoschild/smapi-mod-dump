@@ -1,0 +1,12 @@
+{
+  "AlwaysPerfect": false,
+  "AlwaysFindTreasure": false,
+  "InstantCatchFish": false,
+  "InstantCatchTreasure": false,
+  "EasierFishing": false,
+  "FishDifficultyMultiplier": 1.0,
+  "FishDifficultyAdditive": 0.0,
+  "LossAdditive": 0.002,
+  "InfiniteTackle": true,
+  "InfiniteBait": true
+}

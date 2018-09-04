@@ -1,0 +1,20 @@
+{
+  "Name": "More Rings",
+  "Author": "spacechase0, ParadigmNomad (sprites)",
+  "Version": "1.0.1",
+  "Description": "Adds more ring types.",
+  "UniqueID": "spacechase0.MoreRings",
+  "PerSaveConfigs": false,
+  "EntryDll": "MoreRings.dll",
+  "UpdateKeys": [ "Nexus:2054", "Chucklefish:5271", "spacechase0:more-rings" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets",
+      "MinimumVersion": ""
+    },
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "MinimumVersion": ""
+    }
+  ]
+}

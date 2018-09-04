@@ -1,0 +1,10 @@
+{
+  "Name": "Plantable Mushroom Trees",
+  "Author": "f4iTh",
+  "Version": "1.0.1-beta",
+  "UniqueID": "f4iTh.PMT",
+  "Description": "Makes mushroom trees plantable with mushrooms!",
+  "EntryDll": "PMT.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "Nexus:2349" ]
+}

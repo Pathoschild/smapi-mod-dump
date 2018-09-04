@@ -1,0 +1,1 @@
+Place the .wav song files in the Songs folder, modify the MusicPackInformation.json as desired, and then run!

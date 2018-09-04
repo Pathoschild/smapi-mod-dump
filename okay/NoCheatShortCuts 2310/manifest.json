@@ -1,0 +1,10 @@
+{
+   "Name": "NoCheatShortCuts",
+   "Author": "kulcris",
+   "Version": "3.0.3",
+   "Description": "Shortcuts without cheating",
+   "UniqueID": "kulcris.NoCheatShortcuts",
+   "EntryDll": "NoCheatShortCuts.dll",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": ["Nexus:2310"]
+}

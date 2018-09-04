@@ -1,0 +1,10 @@
+{
+  "Name": "Night Owl",
+  "Author": "Alpha_Omegasis",
+  "Version": "1.7.1",
+  "Description": "Lets you stay up all night.",
+  "UniqueID": "Omegasis.NightOwl",
+  "EntryDll": "NightOwl.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:433" ]
+}

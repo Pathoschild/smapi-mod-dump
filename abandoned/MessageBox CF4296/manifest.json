@@ -1,0 +1,9 @@
+{
+  "Name": "ChatMod",
+  "Authour": "Kithio",
+  "Version": "1.0", // fixed locally from 1.0-0
+  "Description": "A small API to display a text message in-game.",
+  "UniqueID": "Kithio:ChatMod",
+  "PerSaveConfigs": false,
+  "EntryDll": "ChatMod.dll"
+}

@@ -1,0 +1,13 @@
+﻿{
+   "Name": "Happy Animals",
+   "Authour": "StarPeanut",
+   "Version": {
+      "MajorVersion": 1,
+      "MinorVersion": 0,
+      "PatchVersion": 3,
+      "Build": 4
+   },
+   "Description": "Keeps animal happiness high to work around bugs.",
+   "UniqueID": "HappyAnimals",
+   "EntryDll": "HappyAnimals.dll"
+}

@@ -1,0 +1,68 @@
+{
+  "lang": "en-us",
+  "rate": 0,
+  "volume": 100,
+  "polly": "off",
+  "voices": [
+    {
+      "name": "default",
+      "voicename": "Microsoft Zira Desktop",
+      "age": 0,
+      "gender": 1
+    },
+    {
+      "name": "Kent",
+      "voicename": "any",
+      "age": 0,
+      "gender": 0
+    },
+    {
+      "name": "Lewis",
+      "voicename": "any",
+      "age": 3,
+      "gender": 0
+    },
+    {
+      "name": "Abigail",
+      "voicename": "any",
+      "age": 1,
+      "gender": 1
+    },
+    {
+      "name": "Demetrius",
+      "voicename": "any",
+      "age": 0,
+      "gender": 0
+    },
+    {
+      "name": "Robin",
+      "voicename": "any",
+      "age": 0,
+      "gender": 1
+    },
+    {
+      "name": "Sebastian",
+      "voicename": "any",
+      "age": 1,
+      "gender": 0
+    },
+    {
+      "name": "Wizard",
+      "voicename": "any",
+      "age": 0,
+      "gender": 0
+    },
+    {
+      "name": "Marnie",
+      "voicename": "any",
+      "age": 0,
+      "gender": 1
+    },
+    {
+      "name": "Sandy",
+      "voicename": "any",
+      "age": 0,
+      "gender": 1
+    }
+  ]
+}

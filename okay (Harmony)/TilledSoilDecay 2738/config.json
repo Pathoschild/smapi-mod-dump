@@ -1,0 +1,6 @@
+{
+  "DryDecayRate": 0.5,
+  "DryDecayRateFirstOfMonth": 1.0,
+  "DecayDelay": 2,
+  "DecayDelayFirstOfMonth": 1
+}

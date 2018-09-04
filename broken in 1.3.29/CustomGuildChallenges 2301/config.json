@@ -1,0 +1,222 @@
+﻿{
+  "CustomChallengesEnabled": true,
+  "CountKillsOnFarm": true,
+  "DebugMonsterKills": false,
+  "GilNoRewardDialogue": "I ain't got nothin' for ya. Now get out there and get to swingin' that sword.",
+  "GilSleepingDialogue": "I'm tryin to sleep, ya hippie! *grumble grumble*",
+  "GilSpecialGiftDialogue": "Thanks for cleanin' up all those monsters. Figured you deserved somethin' extra special.",
+  "Challenges": [
+    {
+      "ChallengeName": "Slimes",
+      "RequiredKillCount": 1000,
+      "RewardType": 7,
+      "RewardItemNumber": 520,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Green Slime",
+        "Frost Jelly",
+        "Sludge"
+      ]
+    },
+    {
+      "ChallengeName": "Bats",
+      "RequiredKillCount": 200,
+      "RewardType": 7,
+      "RewardItemNumber": 522,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Bat",
+        "Frost Bat",
+        "Lava Bat"
+      ]
+    },
+    {
+      "ChallengeName": "Crabs",
+      "RequiredKillCount": 100,
+      "RewardType": 0,
+      "RewardItemNumber": 710,
+      "RewardItemStack": 10,
+      "MonsterNames": [
+        "Rock Crab",
+        "Lava Crab",
+        "Iridium Crab"
+      ]
+    },
+    {
+      "ChallengeName": "Cave Insects",
+      "RequiredKillCount": 125,
+      "RewardType": 2,
+      "RewardItemNumber": 13,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Bug",
+        "Grub",
+        "Fly",
+        "Mutant Grub",
+        "Mutant Fly"
+      ]
+    },
+    {
+      "ChallengeName": "Duggies",
+      "RequiredKillCount": 30,
+      "RewardType": 6,
+      "RewardItemNumber": 27,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Duggy"
+      ]
+    },
+    {
+      "ChallengeName": "Golems",
+      "RequiredKillCount": 30,
+      "RewardType": 2,
+      "RewardItemNumber": 6,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Wilderness Golem",
+        "Stone Golem"
+      ]
+    },
+    {
+      "ChallengeName": "Frost Jellies",
+      "RequiredKillCount": 50,
+      "RewardType": 2,
+      "RewardItemNumber": 52,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Frost Jelly"
+      ]
+    },
+    {
+      "ChallengeName": "Dust Spirits",
+      "RequiredKillCount": 500,
+      "RewardType": 7,
+      "RewardItemNumber": 526,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Dust Spirit"
+      ]
+    },
+    {
+      "ChallengeName": "Skeletons",
+      "RequiredKillCount": 50,
+      "RewardType": 6,
+      "RewardItemNumber": 8,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Skeleton"
+      ]
+    },
+    {
+      "ChallengeName": "Metal Heads",
+      "RequiredKillCount": 30,
+      "RewardType": 2,
+      "RewardItemNumber": 46,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Metal Head"
+      ]
+    },
+    {
+      "ChallengeName": "Void Spirits",
+      "RequiredKillCount": 150,
+      "RewardType": 7,
+      "RewardItemNumber": 523,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Shadow Guy",
+        "Shadow Shaman",
+        "Shadow Brute"
+      ]
+    },
+    {
+      "ChallengeName": "Big Slimes",
+      "RequiredKillCount": 100,
+      "RewardType": 0,
+      "RewardItemNumber": 439,
+      "RewardItemStack": 5,
+      "MonsterNames": [
+        "Big Slime"
+      ]
+    },
+    {
+      "ChallengeName": "Mutant Insects",
+      "RequiredKillCount": 200,
+      "RewardType": 7,
+      "RewardItemNumber": 527,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Mutant Grub",
+        "Mutant Fly"
+      ]
+    },
+    {
+      "ChallengeName": "Mummies",
+      "RequiredKillCount": 200,
+      "RewardType": 1,
+      "RewardItemNumber": 127,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Mummy"
+      ]
+    },
+    {
+      "ChallengeName": "Serpents",
+      "RequiredKillCount": 200,
+      "RewardType": 2,
+      "RewardItemNumber": 29,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Serpent"
+      ]
+    },
+    {
+      "ChallengeName": "Valley Monsters",
+      "RequiredKillCount": 4000,
+      "RewardType": 0,
+      "RewardItemNumber": 434,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Green Slime",
+        "Frost Jelly",
+        "Sludge",
+        "Bat",
+        "Frost Bat",
+        "Lava Bat",
+        "Bug",
+        "Grub",
+        "Fly",
+        "Duggy",
+        "Skeleton",
+        "Skeleton Mage",
+        "Skeleton Warrior",
+        "Metal Head",
+        "Big Slime",
+        "Ghost",
+        "Shadow Guy",
+        "Shadow Shaman",
+        "Shadow Brute",
+        "Stone Golem",
+        "Wilderness Golem",
+        "Rock Crab",
+        "Lava Crab",
+        "Dust Spirit",
+        "Squid Kid"
+      ]
+    },
+    {
+      "ChallengeName": "Desert Monsters",
+      "RequiredKillCount": 1000,
+      "RewardType": 0,
+      "RewardItemNumber": 434,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Serpent",
+        "Mummy",
+        "Carbon Ghost",
+        "Iridium Bat",
+        "Iridium Crab"
+      ]
+    }
+  ]
+}

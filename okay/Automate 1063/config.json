@@ -1,0 +1,8 @@
+{
+  "VerboseLogging": false,
+  "AutomationInterval": 60,
+  "Controls": {
+    "ToggleOverlay": "U"
+  },
+  "Connectors": []
+}

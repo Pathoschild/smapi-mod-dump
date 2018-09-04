@@ -1,0 +1,10 @@
+{
+  "Name": "SlimeMinigame",
+  "Author": "Tofu",
+  "Version": "1.0",
+  "Description": "Adds a little game to the Slime Hutch",
+  "UniqueID": "Tofu.SlimeMinigame",
+  "EntryDll": "SlimeMinigame.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "" ]
+}

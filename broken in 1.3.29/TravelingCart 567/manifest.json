@@ -1,0 +1,14 @@
+﻿{
+  "Name": "Customizable Traveling Cart Days",
+  "Authour": "Yyeahdude",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 2,
+    "Build": ""
+  },
+  "Description": "",
+  "UniqueID": "TravelingCartYyeahdude",
+  "PerSaveConfigs": false,
+  "EntryDll": "TravelingCart.dll"
+}

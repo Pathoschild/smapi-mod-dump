@@ -1,0 +1,15 @@
+{
+  "Price_Balance": true,
+  "Stamina_Balance": true,
+  "Taxes": true,
+  "NPCClothing": true,
+  "MoreCropsMod": true,
+  "MenuHotkey": "Tab",
+  "DNPCD_BETA": true,
+  "Debug": false,
+  "StartTime": 600,
+  "StartSeason": "null",
+  "StartDay": -1,
+  "DialogueOnStart": "null",
+  "DialogueWhenLeavingHouse": "null"
+}

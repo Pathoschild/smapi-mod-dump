@@ -1,0 +1,13 @@
+﻿{
+  "Name": "UiModSuite",
+   "Author": "Demiacle",
+   "Version": {
+      "MajorVersion": 1,
+      "MinorVersion": 0,
+      "PatchVersion": 0,
+      "Build": null
+   },
+   "Description": "Adds a host of improved user interface features",
+   "UniqueID": "Demiacle.UiModSuite",
+   "EntryDll": "UiModSuite.dll"
+}

@@ -1,0 +1,9 @@
+{
+  "ChanceOfQuestPerDay": 65,
+  "CategoryChancePercent": {
+    "ItemDelivery": 62,
+    "Gathering": 11,
+    "Fishing": 15,
+    "SlayMonsters": 12
+  }
+}

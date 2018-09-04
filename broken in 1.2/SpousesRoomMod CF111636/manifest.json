@@ -1,0 +1,14 @@
+﻿{
+  "Name": "Spouse's room Mod",
+  "Authour": "Wata",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 1,
+    "PatchVersion": 0,
+    "Build": ""
+  },
+  "Description": "Custom rooms.",
+  "UniqueID": "Spouseroom",
+  "PerSaveConfigs": false,
+  "EntryDll": "SpousesRoomMod.dll"
+}

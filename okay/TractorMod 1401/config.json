@@ -1,0 +1,67 @@
+{
+  "Distance": 1,
+  "TractorSpeed": -2,
+  "MagneticRadius": 384,
+  "BuildUsesResources": true,
+  "BuildPrice": 150000,
+  "HighlightRadius": false,
+  "StandardAttachments": {
+    "Axe": {
+      "CutFruitTrees": false,
+      "CutTappedTrees": false,
+      "CutTrees": false,
+      "ClearLiveCrops": false,
+      "ClearDeadCrops": true,
+      "ClearDebris": true
+    },
+    "Fertilizer": {
+      "Enable": true
+    },
+    "GrassStarter": {
+      "Enable": true
+    },
+    "Hoe": {
+      "TillDirt": true,
+      "ClearWeeds": true
+    },
+    "MeleeWeapon": {
+      "AttackMonsters": false,
+      "ClearDeadCrops": true,
+      "BreakMineContainers": true
+    },
+    "PickAxe": {
+      "ClearDebris": true,
+      "ClearDeadCrops": true,
+      "ClearDirt": true,
+      "ClearFlooring": false,
+      "ClearBouldersAndMeteorites": true,
+      "ClearWeeds": true
+    },
+    "Scythe": {
+      "HarvestForage": true,
+      "HarvestCrops": true,
+      "HarvestFruitTrees": true,
+      "HarvestGrass": true,
+      "ClearDeadCrops": true,
+      "ClearWeeds": true
+    },
+    "Seeds": {
+      "Enable": true
+    },
+    "Slingshot": {
+      "Enable": false
+    },
+    "WateringCan": {
+      "Enable": true
+    },
+    "SeedBagMod": {
+      "Enable": true
+    }
+  },
+  "Controls": {
+    "SummonTractor": "T",
+    "HoldToActivate": ""
+  },
+  "CustomAttachments": [],
+  "InvincibleOnTractor": true
+}

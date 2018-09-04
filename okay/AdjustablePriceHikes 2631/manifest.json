@@ -1,0 +1,10 @@
+{
+  "Name": "AdjustablePriceHikes",
+  "Author": "Pokeytax",
+  "Version": "1.0.1",
+  "Description": "Eliminates or adjusts Robin and Clint's price hikes from year 2 onward.",
+  "UniqueID": "Pokeytax.AdjustablePriceHikes",
+  "EntryDll": "AdjustablePriceHikes.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:2631" ]
+}

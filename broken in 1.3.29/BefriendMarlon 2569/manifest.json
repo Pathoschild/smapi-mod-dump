@@ -1,0 +1,10 @@
+﻿{
+  "Name": "BefriendMarlon",
+  "Author": "Yoshimax",
+  "Version": "1.0.0",
+  "Description": "A mod that lets you befriend Marlon",
+  "UniqueID": "Yoshimax.BefriendMarlon",
+  "EntryDll": "SMAPIMod3.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "Nexus:2569" ] 
+}

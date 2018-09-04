@@ -1,0 +1,15 @@
+{
+  "Name": "Event Notifications",
+  "Authour": "Ryuuze & Dreamsicl",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 2,
+    "PatchVersion": 1,
+    "Build": "unofficial.3-f4ith"
+  },
+  "Description": "Notifies you of any events on the current day.",
+  "UniqueID": "EventNotifications",
+  "PerSaveConfigs": false,
+  "EntryDll": "EventNotifications.dll",
+    "MinimumApiVersion":  "2.6-beta"
+}

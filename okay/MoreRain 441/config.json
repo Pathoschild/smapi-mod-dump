@@ -1,0 +1,10 @@
+{
+  "SpringRainChance": 15,
+  "SpringThunderChance": 5,
+  "SummerRainChance": 5,
+  "SummerThunderChance": 10,
+  "FallRainChance": 15,
+  "FallThunderChance": 5,
+  "WinterSnowChance": 15,
+  "SuppressLog": true
+}

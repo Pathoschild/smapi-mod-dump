@@ -1,0 +1,11 @@
+{
+  "BoughtNewClothes": "Bought new clothes for {{gold}} gold",
+  "ModOptionsLabel": "New Clothes Every Day Options:",
+  "ModOptionsNewClothesMonthly": "Buy new clothes every month (-500 gold on 20th every month)",
+  "ModOptionsPantsXDays": "Change pants every X days",
+  "ModOptionsRandomPants": "Change pants color randomly in the morning",
+  "ModOptionsRandomShirt": "Change shirt randomly in the morning",
+  "ModOptionsReset": "Reset all settings back to default values",
+  "ModOptionsShirtXDays": "Change shirt every X days",
+  "ModOptionsVerboseLogging": "Enable verbose logging"
+}

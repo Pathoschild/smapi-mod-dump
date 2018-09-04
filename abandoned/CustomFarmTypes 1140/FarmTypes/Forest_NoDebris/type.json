@@ -1,0 +1,7 @@
+{
+  "Name": "Forest w/o Debris",
+  "Description": "Same as Forest, but starts without debris.",
+  "ID": "StardewValley.Farm_Foraging.NoDebris",
+  "BehaviorPreset": 2,
+  "FarmhousePreset": 2
+}

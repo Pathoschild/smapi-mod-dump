@@ -1,0 +1,10 @@
+﻿{
+  "Name": "AutoFish",
+  "Author": "WhiteMind",
+  "Version": "1.2.0",
+  "Description": "Auto play fish minigame and fishing rod auto hit.",
+  "UniqueID": "WhiteMind.AF",
+  "EntryDll": "AutoFish.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:1895" ]
+}

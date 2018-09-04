@@ -1,0 +1,17 @@
+{
+  "Name": "Current Location",
+  "Author": "Vrakyas",
+  "Version": "1.4.3",
+  "Description": "Displays current location name when changing to a new location",
+  "UniqueID": "Vrakyas.CurrentLocation",
+  "EntryDll": "CurrentLocation.dll",
+  "MinimumApiVersion": "2.5",
+  "UpdateKeys": [ "Nexus:2191" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Juice805.StardewConfigMenu",
+      "MinimumVersion": "1.0.4",
+      "IsRequired": false
+    }
+  ]
+}

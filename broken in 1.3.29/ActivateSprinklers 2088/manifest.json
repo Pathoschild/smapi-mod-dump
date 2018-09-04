@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Activate Sprinklers",
+	"Author": "f4iTh",
+	"Version": "1.1.2-beta.1",
+	"UniqueID": "f4iTh.ActivateSprinklers",
+	"Description": "Activate sprinklers by right clicking them.",
+    "EntryDll": "ActivateSprinklers.dll",
+    "MinimumApiVersion": "2.6-beta",
+    "UpdateKeys":  [ "Nexus:2088" ]
+}

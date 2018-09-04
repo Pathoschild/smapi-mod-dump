@@ -1,0 +1,25 @@
+{
+  "Areas": {
+    "Farm": [
+      "- 71,13/72,13",
+      "- 62,10/66,10"
+    ]
+  },
+  "Soil_Types": [
+    "Dirt"
+  ],
+  "Number": 3,
+  "Bonus_PerSkillLevel": 0.05,
+  "Skill_Level_Correlation": true,
+  "Mines_Level_Correlation": false,
+  "Personal_Experience_Correlation": false,
+  "Chance_to_spawn_ore": 0.21,
+  "Chance_to_spawn_iron": 0.13,
+  "Chance_to_spawn_gold": 0.08,
+  "Chance_to_spawn_iridium": 0.02,
+  "Chance_to_spawn_geode": 0.1,
+  "Chance_to_spawn_gem": 0.02,
+  "Chance_to_spawn_Mystic_Stone": 0.005,
+  "DangerousSettings": false,
+  "verbose": false
+}

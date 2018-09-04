@@ -1,0 +1,10 @@
+﻿{
+  "Name": "BJSNightSounds",
+  "Author": "BunnyJumps",
+  "Version": "1.0.0",
+  "Description": "Special mod for DF",
+  "UniqueID": "BunnyJumps.BJSNightSounds",
+  "EntryDll": "BJSNightSounds.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "Nexus:2501"]
+}

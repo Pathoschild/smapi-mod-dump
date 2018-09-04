@@ -1,0 +1,10 @@
+{
+  "Name": "FlorenceMod",
+  "Authour": "randomAnon123",
+  "Version": "1.1", // fixed locally from 1.0.1
+  "Description": "Adds a new NPC named Florence to Stardew Valley. Original code by Travoos, badungu.",
+  "UniqueID": "",
+  "PerSaveConfigs": false,
+  "EntryDll": "FlorenceMod.dll",
+  "UpdateKeys": [ "Nexus:591" ] // added locally
+}

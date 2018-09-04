@@ -1,0 +1,10 @@
+{
+  "Name": "SimpleSprinkler",
+  "Author": "tZed",
+  "Version": "1.6.0",
+  "Description": "Lets you customise your sprinkler coverage radius.",
+  "UniqueID": "tZed.SimpleSprinkler",
+  "EntryDll": "SimpleSprinkler.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:76" ]
+}

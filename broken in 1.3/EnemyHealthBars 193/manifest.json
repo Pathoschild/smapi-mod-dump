@@ -1,0 +1,14 @@
+﻿{
+  "Name": "Health Bars",
+  "Author": "Maurício Gomes (Speeder)",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 7,
+    "PatchVersion": 1,
+    "Build": "pathoschild-update"
+  },
+  "MinimumApiVersion": "1.9",
+  "UniqueID": "Speeder.HealthBars",
+  "Description": "Add health bars to monsters.",
+  "EntryDll": "SMAPIHealthBarMod.dll"
+}

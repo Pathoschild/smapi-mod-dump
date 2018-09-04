@@ -1,0 +1,14 @@
+﻿{
+  "Name": "Adventure Shop Inventory",
+  "Author": "Hammurabi",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 1,
+    "Build": ""
+  },
+  "Description": "Make Marlon sell what you want, when you want, for how much you want.",
+  "UniqueID": "HammurabiAdventureShopInventory",
+  "PerSaveConfigs": false,
+  "EntryDll": "Adventure Shop Inventory.dll"
+}

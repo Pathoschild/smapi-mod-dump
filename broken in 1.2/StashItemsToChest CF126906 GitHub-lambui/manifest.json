@@ -1,0 +1,15 @@
+﻿{
+	"Name": "StashItemsToChest",
+	"Authour": "PhthaloBlue",
+	"Version":
+	{
+		"MajorVersion": 1,
+		"MinorVersion": 0,
+		"PatchVersion": 1,
+		"Build": ""
+	},
+	"UniqueID": "BlueMod_StashItemsToChest",
+	"Description": "Stash all the same items in your inventory into the chest with one button click.",
+	"PerSaveConfigs": false,
+	"EntryDll":  "StashItemsToChest.dll"
+}

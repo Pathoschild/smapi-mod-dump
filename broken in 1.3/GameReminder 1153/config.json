@@ -1,0 +1,10 @@
+{
+  "reminderTime": 600,
+  "elapseDelay": 1,
+  "useLetterNotification": false,
+  "playSound": true,
+  "enableCookingRecipe": true,
+  "enableBirthday": true,
+  "enableEvent": true,
+  "events": "spring,13,Egg Festival|spring,24,Flower Dance|summer,11,Luau|summer,28,Dance of the Moonlight Jellies|fall,16,Stardew Valley Fair|fall,27,Spirit's Eve|winter,8,Festival of Ice|winter,25,Feast of the Winter Star"
+}

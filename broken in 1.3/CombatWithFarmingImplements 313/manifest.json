@@ -1,0 +1,14 @@
+﻿{
+  "Name": "Combat with Farming Implements",
+  "Description": "You can now actually fight using farming implements!",
+  "Author": "Maurício Gomes (Speeder)",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 1,
+    "Build": "pathoschild-update"
+  },
+  "UniqueID": "SPDFarmingImplementsInCombat",
+  "EntryDll": "SPDFarmingImplementsInCombat.dll",
+  "UpdateKeys": [ "Nexus:313" ]
+}

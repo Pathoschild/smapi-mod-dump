@@ -1,0 +1,14 @@
+﻿{
+  "Name": "GetDressed",
+  "Author": "Advize & Jinxiewinxie",
+  "Version": {
+    "MajorVersion": 3,
+    "MinorVersion": 5,
+    "PatchVersion": 2,
+    "Build": null
+  },
+  "MinimumApiVersion": "1.10",
+  "Description": "Adds a dresser in the farmhouse that lets you edit your character's appearance.",
+  "UniqueID": "Advize.GetDressed",
+  "EntryDll": "GetDressed.dll"
+}

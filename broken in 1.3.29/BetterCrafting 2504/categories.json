@@ -1,0 +1,117 @@
+﻿{
+	"categoryNames": {
+		"agriculture": "Agriculture",
+		"bombs": "Bombs",
+		"edibles": "Edibles",
+		"fences&flooring": "Fences & Flooring",
+		"fishing": "Fishing",
+		"furniture": "Furniture",
+		"generating&refining": "Generating & Refining",
+		"lighting": "Lighting"
+	},
+	"categories": {
+		"agriculture": [
+			"Basic Fertilizer",
+			"Quality Fertilizer",
+			"Speed-Gro",
+			"Deluxe Speed-Gro",
+			"Basic Retaining Soil",
+			"Quality Retaining Soil",
+			
+			"Spring Seeds",
+			"Summer Seeds",
+			"Fall Seeds",
+			"Winter Seeds",
+			"Ancient Seeds",
+			
+			"Sprinkler",
+			"Quality Sprinkler",
+			"Iridium Sprinkler",
+			
+			"Scarecrow",
+			"Garden Pot"
+		],
+		"bombs": [
+			"Cherry Bomb",
+			"Bomb",
+			"Mega Bomb"
+		],
+		"edibles": [
+			"Field Snack",
+			"Life Elixir",
+			"Oil of Garlic"
+		],
+		"fences&flooring": [
+			"Gate",
+			"Wood Fence",
+			"Stone Fence",
+			"Iron Fence",
+			"Hardwood Fence",
+			
+			"Wood Path",
+			"Wood Floor",
+			"Weathered Floor",
+			"Straw Floor",
+			"Stone Floor",
+			"Stepping Stone Path",
+			"Gravel Path",
+			"Crystal Path",
+			"Crystal Floor",
+			"Cobblestone Path"
+		],
+		"fishing": [
+			"Spinner",
+			"Trap Bobber",
+			"Cork Bobber",
+			"Treasure Hunter",
+			"Dressed Spinner",
+			"Barbed Hook",
+			"Magnet",
+			"Bait",
+			"Wild Bait",
+			"Crab Pot"
+		],
+		"furniture": [
+			"Tub o' Flowers",
+			"Wicked Statue",
+			"Flute Block",
+			"Drum Block"
+		],
+		"generating&refining": [
+			"Charcoal Kiln",
+			"Crystalarium",
+			"Furnace",
+			"Lightning Rod",
+			"Recycling Machine",
+			"Seed Maker",
+			"Slime Incubator",
+			"Slime Egg-Press",
+			"Tapper",
+			"Worm Bin",
+			
+			"Mayonnaise Machine",
+			"Bee House",
+			"Preserves Jar",
+			"Cheese Press",
+			"Loom",
+			"Keg",
+			"Oil Maker",
+			"Cask"
+		],
+		"lighting": [
+			"Torch",
+			"Campfire",
+			"Wooden Brazier",
+			"Stone Brazier",
+			"Gold Brazier",
+			"Carved Brazier",
+			"Stump Brazier",
+			"Barrel Brazier",
+			"Skull Brazier",
+			"Marble Brazier",
+			"Wood Lamp-post",
+			"Iron Lamp-post",
+			"Jack-O-Lantern"
+		]
+	}
+}

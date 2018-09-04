@@ -1,0 +1,37 @@
+{
+  "Forage_Lists": {
+    "Farm": [
+      "spring:16,18,20,22",
+      "summer:396,398,402",
+      "fall:404,406,408,410",
+      "winter:414,418,283"
+    ],
+	"FarmCave": [
+      "spring:404,420,422",
+      "summer:404,420,422",
+      "fall:404,420,422",
+      "winter:404,420,422"
+    ]
+  },
+  "Areas": {
+    "Farm": [
+      "+ 99999",
+      "- 71,13/72,13",
+      "- 62,10/66,10",
+      "- 63,17/65,17",
+      "- 68,15/68,16"
+    ],
+	"FarmCave": [
+	  "% number:2/ chance:0.5 / bonus: 0.1",
+      "+ 2,5/10,10"
+    ]
+  },
+  "Soil_Types": [
+    "Grass", "All"
+  ],
+  "Number_PerDay": 1.0,
+  "Bonus_PerSkillLevel": 0.05,
+  "Chance": 0.75,
+  "DangerousSettings": true,
+  "verbose": true
+}

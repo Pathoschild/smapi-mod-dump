@@ -1,0 +1,6 @@
+{
+  "PreventFailedHarvesting": true,
+  "PreventHarvestRepeating": true,
+  "DisplayHearts": true,
+  "DisplayProduce": true
+}

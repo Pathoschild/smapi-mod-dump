@@ -1,0 +1,10 @@
+﻿{
+  "Author": "ylsama",
+  "Description": "Allow player move your Farmmer though object by Mouse",
+  "EntryDll": "MoveThoughObject.dll",
+  "MinimumApiVersion": "2.6",
+  "Name": "MoveThoughObject",
+  "UniqueID": "ylsama.MoveThoughObject",
+  "UpdateKeys": [ "Nexus:2680" ],
+  "Version": "1.0.1"
+}

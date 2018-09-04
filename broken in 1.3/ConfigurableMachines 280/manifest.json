@@ -1,0 +1,14 @@
+﻿{
+  "Name": "Configurable Machines",
+  "Authour": "KnockedMallard42",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 2,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "Description": "Add configurability options to the crafting machines",
+  "UniqueID": "21da6619-dc03-4660-9794-8e5b498f5b97",
+  "PerSaveConfigs": false,
+  "EntryDll": "ConfigurableMachines.dll"
+}

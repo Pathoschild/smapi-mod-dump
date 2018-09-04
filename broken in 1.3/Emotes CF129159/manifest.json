@@ -1,0 +1,13 @@
+{
+   "Name": "Emotes",
+   "Author": "Roy Li",
+   "Version": {
+      "MajorVersion": 1,
+      "MinorVersion": 0,
+      "PatchVersion": 0,
+      "Build": ""
+   },
+   "Description": "Emotes: f1 = Angry, f2 = Blush, f3 = Exclamation, f4 = Happy, f5 = Heart, f6 = Music Note, f7 = Question Mark, f8 = Sad, f9 = Sleep, f10 = Video Game, f11 = X, f12 = Pause",
+   "UniqueID": "RuyiLi.Emotes",
+   "EntryDll": "Emotes.dll"
+}

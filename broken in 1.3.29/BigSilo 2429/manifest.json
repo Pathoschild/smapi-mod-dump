@@ -1,0 +1,10 @@
+{
+   "Name": "Big Silo",
+   "Author": "Logan Perkins",
+   "Version": "0.0.2",
+   "Description": "Increases the silo capacity to what you'd get storing hay in chests taking up the same space.",
+   "UniqueID": "lperkins2.BigSilo",
+   "EntryDll": "BigSilo.dll",
+   "MinimumApiVersion": "2.6-beta",
+   "UpdateKeys": [ "Nexus:2429" ]
+}

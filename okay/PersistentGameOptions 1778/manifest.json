@@ -1,0 +1,10 @@
+﻿{
+	"Name": "PersistentGameOptions",
+	"Author": "Xangria",
+	"Version": "1.0.0",
+	"Description": "Saves chosen game options between saves.",
+	"UniqueID": "Xangria.PersistentGameOptions",
+	"EntryDll": "PersistentGameOptions.dll",
+	"MinimumApiVersion": "2.3",
+	"UpdateKeys": []
+}

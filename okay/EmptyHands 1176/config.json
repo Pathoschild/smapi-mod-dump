@@ -1,0 +1,9 @@
+{
+  "Keyboard": {
+    "SetToNothing": "OemTilde"
+  },
+  "Controller": {
+    "SetToNothing": ""
+  },
+  "CheckForUpdates": true
+}

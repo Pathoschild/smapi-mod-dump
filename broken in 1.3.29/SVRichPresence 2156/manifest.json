@@ -1,0 +1,13 @@
+﻿{
+	"Name": "DiscordRP",
+	"Author": "Fayne Aldan",
+	"Version": "2.0.1",
+	"Description": "Shows your in-game state on your Discord profile.",
+	"UniqueID": "FayneAldan.RichPresence",
+	"EntryDll": "SVRichPresence.dll",
+	"MinimumApiVersion": "2.0",
+	"UpdateKeys": [
+		"Nexus:2156",
+		"GitHub:FayneAldan/SVRichPresence"
+	]
+}

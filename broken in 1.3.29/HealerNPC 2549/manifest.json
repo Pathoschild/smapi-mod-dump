@@ -1,0 +1,10 @@
+{
+  "Name": "Kawakami Healer NPC",
+  "Author": "Gorzalt",
+  "Version": "1.1",
+  "Description": "Adds an NPC named Kawakami that will heal you in exchange for money",
+  "UniqueID": "gorzalt.kawakami",
+  "EntryDll": "HealerNPC.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:2549" ]
+}

@@ -1,0 +1,55 @@
+﻿{
+	/****
+	** Translation file for the community bundles
+	*****/
+
+	/// CCBO Command
+	"ccbo.desc": "Ersetzt das Community Center Bundle.\n\nNutzung: ccbo set <id>|get|listAll\n- set <id>: Die ID des neuen Bundles.\n- get: Gibt Informationen zum genutzen Bundle.\n- listAll: Gibt eine Liste zu allen wählbaren Bundles aus, samt ID.",
+
+	/// Bundles
+	"default": "Original CC Bundle",
+	"default.desc": "Das originale Community Center Bundle.",
+	"v02": "CC Overhaul Bundle (v0.2)",
+	"v02.desc": "Dies ist eine signifikant hartere Version des originalen CC Bundles.",
+	"v02a": "CC Overhaul Bundle (v0.2a)",
+	"v02a.desc": "Ersetzt für das legendäre Fischbundle mit einem Qualitätsfischbundle (Alle Expertenfische x5 in Goldqualität).",
+	"v02b": "CC Overhaul Bundle (v0.2b)",
+	"v02b.desc": "An edit that replaces the Legendary Fish bundle with a Quality Fish bundle. 5 Gold Quality of each of the 12 hardest fish to catch (Specialty Fish included).",
+	"v02b.desc": "Ersatz für das legendäre Fischbundel durch ein Qualitätsfischbundel. 5 Gold Qualität von jedem der 12 am schwersten zu fangenden Fische (Spezialfische inbegriffen).",
+	"v02c": "CC Overhaul Bundle (v0.2c)",
+	"v02c.desc": "An edit that replaces the 5 treasure chests reward for the Legendary Fish bundle with 30 Crab pots.",
+	"v02c.desc": "Ersatz, der die 5 Schatztruhen, eine Belohnung aus dem legendären Fischbundle, gegen 30 Krabbenreuse tauscht.",
+	"okButton": "Speichern",
+
+
+	/// Bundle Translations
+
+	"Beginner Crops": "Nutzpflanzen (Beginner)",
+	"Advanced Crops": "Nutzpflanzen (Fortgeschritten)",
+	"Expert Crops": "Nutzpflanzen (Experte)",
+	"Quality Crops": "Nutzpflanzen (Qualität)",
+	"Animal Produce": "Tiererzeugnisse",
+	"Artisan Products": "Handwerker",
+	"Beginner Foraging": "Sammeln (Beginner)",
+	"Reduce, Reuse, Recycle": "Wiederverwertung",
+	"Expert Foraging": "Sammeln (Experte)",
+	"D.I.Y": "D.I.Y",
+	"Construction": "Konstruktionen",
+	"Advanced Foraging": "Sammeln (Fortgeschritten)",
+	"Beginner Fish": "Angeln (Beginner)",
+	"Advanced Fish": "Angeln (Fortgeschritten)",
+	"Expert Fish": "Angeln (Experte)",
+	"Specialty Fish": "Spezialitätsfische",
+	"Legendary Fish": "Legendäre Fische",
+	"Quality Fish": "Qualitätsfische",
+	"Crab Pot": "Krabbenreuse",
+	"Blacksmith": "Schmied",
+	"Geology": "Geologe",
+	"Adventurer": "Abenteurer",
+	"Cooking Class": "Kochen",
+	"Community Garden": "Community Garten",
+	"BYO Night": "BYO Nacht",
+	"Jewellery Craft": "Yuwelen",
+	"Field Research": "Feldforschung",
+
+}

@@ -1,0 +1,9 @@
+﻿{
+    "Name": "Shroom Spotter",
+    "Author": "TehPers",
+    "Version": "1.2.0-beta",
+    "Description": "Tells you which floor the shrooms will be on today.",
+    "UniqueID": "TehPers.ShroomSpotter",
+    "EntryDll": "ShroomSpotter.dll",
+    "UpdateKeys": [ "Nexus:908" ]
+}

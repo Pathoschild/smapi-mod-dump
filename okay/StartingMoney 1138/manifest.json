@@ -1,0 +1,14 @@
+﻿{
+   "Name": "Starting Money",
+   "Author": "mmanlapat",
+   "Version": {
+      "MajorVersion": 1,
+      "MinorVersion": 3,
+      "PatchVersion": 0,
+      "Build": ""
+   },
+  "MinimumApiVersion": "2.0",
+   "Description": "Change the starting money at the start of the new game",
+   "UniqueID": "mmanlapat.StartingMoney",
+   "EntryDll": "StartingMoney.dll"
+}

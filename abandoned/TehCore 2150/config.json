@@ -1,0 +1,9 @@
+{
+    /* Settings for input handing. */
+    "Input": {
+        "KeyRepeatDelay": 1,
+        "KeyRepeatMinFrequency": 15,
+        "KeyRepeatMaxFrequency": 30,
+        "KeyRepeatRampTime": 0.5
+    }
+}

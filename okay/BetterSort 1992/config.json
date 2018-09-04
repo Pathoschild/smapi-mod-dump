@@ -1,0 +1,27 @@
+{
+  "Sorting": [
+    "Axe",
+    "Hoe",
+    "Can",
+    "Pickaxe",
+    "Scythe",
+    "CategoryNum",
+    "-Type",
+    "-Name",
+    "-Quality",
+    "Stack",
+    "ItemID"
+  ],
+  "RightClickSorting": [
+    "Axe",
+    "Hoe",
+    "Can",
+    "Pickaxe",
+    "Scythe",
+    "CategoryNum=-99",
+    "StackValue",
+    "-Name"
+  ],
+  "MiddleClickSorting": [],
+  "AutoStack": true
+}

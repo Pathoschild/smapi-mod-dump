@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Rented Tools",
+  "Author": "JarvieK",
+  "Version": "1.2.1",
+  "Description": "allows renting tools during upgrades",
+  "UniqueID": "JarvieK.RentedTools",
+  "EntryDll": "RentedTools.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "Nexus:1307" ]
+}

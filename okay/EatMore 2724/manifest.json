@@ -1,0 +1,10 @@
+{
+   "Name": "Eat More!",
+   "Author": "crc-fehler",
+   "Version": "0.2.2",
+   "Description": "Reduces stamina gained by sleeping",
+   "UniqueID": "crc.eatmore",
+   "EntryDll": "eatmore.dll",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": [ "Nexus:2724" ]
+}

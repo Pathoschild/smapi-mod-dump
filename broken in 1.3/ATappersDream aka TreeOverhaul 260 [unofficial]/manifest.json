@@ -1,0 +1,14 @@
+{
+  "Name": "A Tappers Dream - A Tree Overhaul",
+  "Author": "Goldenrevolver",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 4,
+    "PatchVersion": 1,
+    "Build": "kn-update"
+  },
+  "Description": "Makes just about everything about trees configurable. Version patched for 2.0 by KoihimeNakamura",
+  "UniqueID": "ddde5195-8f85-4061-90cc-0d4fd5459358",
+  "PerSaveConfigs": false,
+  "EntryDll": "TreeOverhaul.dll"
+}

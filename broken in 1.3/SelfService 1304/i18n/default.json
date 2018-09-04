@@ -1,0 +1,11 @@
+{
+  "SeedShop_Menu": "\"Help yourself if there's anything you need\"",
+  "SeedShopMenu_Shop": "Shop",
+  "SeedShopMenu_Leave": "Leave",
+  "FishShop_Menu": "\"I'm out for fishing. Pick whatever you need\"",
+  "FishShop_Menu_DocVisit": "\"I'm off to see the doc. Pick whatever you need\"",
+  "FishShopMenu_Shop": "Shop",
+  "FishShopMenu_Leave": "Leave",
+  "AnimalShop_Menu": "\"Sorry I got other things to do today, please leave money on the counter and help yourself!\"",
+  "ScienceHouse_CarpenterMenu": "\"I'm not at the shop right now, leave a message if you need anything.\""
+}

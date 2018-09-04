@@ -1,0 +1,10 @@
+{
+  "BaseChanceToGetSeed": 5.0,
+  "ExtraChancePerFarmSkill": 2.0,
+  "ExtraChancePerFarmPerk": 4.0,
+  "ExtraChancePerDayToGrow": 0.5,
+  "ExtraChancePerPlayer": 2.0,
+  "ReharvestablePenalty": 0.33,
+  "CheatAlwaysGetSeed": false,
+  "SecondSeedChance": true
+}

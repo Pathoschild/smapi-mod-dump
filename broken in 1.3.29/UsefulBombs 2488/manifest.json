@@ -1,0 +1,10 @@
+﻿{
+  "Name": "UsefulBombs",
+  "Author": "punyo",
+  "Version": "1.0.2",
+  "Description": "Makes bombs more useful",
+  "UniqueID": "punyo.UsefulBombs",
+  "EntryDll": "UsefulBombs.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "Nexus:2488" ]
+}

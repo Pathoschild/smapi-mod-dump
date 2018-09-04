@@ -1,0 +1,13 @@
+{
+  "Name": "Part of the Community",
+  "Author": "Brandon Marquis Markail Green (Space Baby)",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 1,
+    "PatchVersion": 5,
+    "Build": "unofficial.5.Mizzion"
+  },
+  "Description": "Lets you increase friendship by supporting the community.",
+  "UniqueID": "SB_PotC",
+  "EntryDll": "PartOfTheCommunity.dll"
+}

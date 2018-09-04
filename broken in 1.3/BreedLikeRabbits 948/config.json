@@ -1,0 +1,10 @@
+{
+  "ignoreGender": false,
+  "accountForHappiness": true,
+  "accountForFriendship": true,
+  "accountForSeason": true,
+  "accountForAge": true,
+  "multiples": true,
+  "logger": true,
+  "baseRate": 42.0
+}

@@ -1,0 +1,8 @@
+﻿{
+  "Name": "Sprinting Mod",
+  "Authour": "Patrick",
+  "Version": "3.0.0", // fixed locally from 2.0.0
+  "Description": "Allows player to sprint with (or without) stamina drain on key press and hold with the option of key toggle.",
+  "EntryDll": "SprintingMod.dll",
+  "UpdateKeys": ["GitHub:oliverpl/SprintingMod"] // added locally
+}

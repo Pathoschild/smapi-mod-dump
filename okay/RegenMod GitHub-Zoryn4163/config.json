@@ -1,0 +1,12 @@
+{
+  "RegenStaminaConstant": false,
+  "RegenStaminaConstantAmountPerSecond": 0.0,
+  "RegenStaminaStill": false,
+  "RegenStaminaStillAmountPerSecond": 0.0,
+  "RegenStaminaStillTimeRequiredMS": 1000,
+  "RegenHealthConstant": false,
+  "RegenHealthConstantAmountPerSecond": 0.0,
+  "RegenHealthStill": false,
+  "RegenHealthStillAmountPerSecond": 0.0,
+  "RegenHealthStillTimeRequiredMS": 1000
+}

@@ -1,0 +1,10 @@
+{
+  "activeProfile": "Platonymous.Original",
+  "saturation": 100.0,
+  "next": "PageDown",
+  "previous": "PageUp",
+  "satHigher": "NumPad9",
+  "satLower": "NumPad6",
+  "reset": "NumPad0",
+  "passes": 10
+}

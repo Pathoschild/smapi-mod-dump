@@ -1,0 +1,7 @@
+{
+  "Name": "Wilderness w/o Debris",
+  "Description": "Same as Wilderness, but starts without debris.",
+  "ID": "StardewValley.Farm_Combat.NoDebris",
+  "BehaviorPreset": 4,
+  "FarmhousePreset": 4
+}

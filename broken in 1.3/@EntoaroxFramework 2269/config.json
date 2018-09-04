@@ -1,0 +1,8 @@
+{
+  "GamePatcher": true,
+  "SkipCredits": false,
+  "IngameUpdateNotices": true,
+  "TrainerCommands": true,
+  "GreenhouseEverywhere": false,
+  "DecorateEverywhere": false
+}

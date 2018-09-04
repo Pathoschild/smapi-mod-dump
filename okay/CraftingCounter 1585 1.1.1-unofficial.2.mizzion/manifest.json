@@ -1,0 +1,9 @@
+{
+   "Name": "CraftingCounter",
+   "Author": "lolpcgaming",
+   "Version": "1.1.1-unofficial.2.mizzion",
+   "Description": "Displays a tooltip showing the number of an item crafted",
+   "UniqueID": "lolpcgaming.CraftingCounter",
+   "EntryDll": "CraftingCounter.dll",
+   "UpdateKeys": []
+}

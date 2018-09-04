@@ -1,0 +1,13 @@
+{
+   "Name": "SkullCavernElevator",
+   "Author": "lestoph",
+   "Version": {
+      "MajorVersion": 1,
+      "MinorVersion": 2,
+      "PatchVersion": 2,
+      "Build": ""
+   },
+   "Description": "Elevator for the Skull Cavern",
+   "UniqueID": "SkullCavernElevator",
+   "EntryDll": "SkullCavernElevator.dll"
+}

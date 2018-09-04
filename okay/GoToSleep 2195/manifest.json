@@ -1,0 +1,10 @@
+﻿{
+   "Name": "Go To Sleep",
+   "Author": "yy376",
+   "Version": "1.0.0",
+   "Description": "Makes the player oversleep if they stay up too late at night",
+   "UniqueID": "yy376.GoToSleep",
+   "EntryDll": "GoToSleep.dll",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": [ "Nexus:2195" ] // added locally
+}

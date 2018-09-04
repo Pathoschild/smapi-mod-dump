@@ -1,0 +1,9 @@
+{
+  "ModOptionsBusstopDesertCost": "Min., die der Bus zw. Bushaltestelle und Calico-Wüste braucht",
+  "ModOptionsBusstopMineCost": "Min., die die Lore zw. Bushaltestelle und Minen braucht",
+  "ModOptionsLabel": "Traveling Takes Time Optionen:",
+  "ModOptionsMineQuarryCost": "Min., die die Lore zw. Minen und Steinbruch braucht",
+  "ModOptionsQuarryTownCost": "Min., die die Lore zw. Steinbruch und Stadt braucht",
+  "ModOptionsReset": "Setze alle Einstellungen auf Standard zurück",
+  "ModOptionsVerboseLogging": "Aktiviere detailliertes Logging"
+}

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Prices",
+  "Author": "skiilaa",
+  "Version": "1.0.0",
+  "Description": "Shows selling price of items.",
+  "UniqueID": "skiilaa.Prices",
+  "EntryDll": "Prices.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:2255" ]
+}

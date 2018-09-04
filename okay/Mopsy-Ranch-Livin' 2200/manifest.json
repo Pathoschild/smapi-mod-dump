@@ -1,0 +1,10 @@
+{
+  "Name": "Mopsy's Ranch Livin'",
+  "Author": "Mopquill",
+  "Version": "1.0.1",
+  "Description": "Lets your change your Farm's suffix to \"Ranch\", or something else!",
+  "UniqueID": "Mopquill.Ranch-Livin",
+  "EntryDll": "Mopsy-Ranch-Livin.dll",
+  "MinimumApiVersion": "2.6-beta.14",
+  "UpdateKeys": [ "Nexus:2200" ]
+}

@@ -1,0 +1,15 @@
+{
+  "Name": "Custom Shop Redux GUI",
+  "Author": "Alpha_Omegasis",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 4,
+    "PatchVersion": 1,
+    "Build": null
+  },
+  "MinimumApiVersion": "1.15",
+  "Description": "A nice way to make custom shops.",
+  "UniqueID": "Omegasis.CustomShopReduxGui",
+  "EntryDll": "CustomShopsRedux.dll",
+  "UpdateKeys": [ "Nexus:1378" ]
+}

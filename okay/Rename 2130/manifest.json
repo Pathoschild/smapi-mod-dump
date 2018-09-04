@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Rename",
+  "Author": "Remmie",
+  "Version": "1.1.0",
+  "Description": "This is my first mod. It lets you rename yourself during game. If you name yourself something new and save then expect a new save file. If you name yourself back then save, expect over writing the old save file. I reccomend backing up your saves just in case before using this mod. Thanks.",
+  "UniqueID": "Remmie.Rename",
+  "EntryDll": "Rename.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:2130" ] // added locally
+}

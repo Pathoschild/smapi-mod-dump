@@ -1,0 +1,13 @@
+{
+  "AdjustRatio": 0.8,
+  "OverrideGetSpringFishKing": false,
+  "SpringFishKingThreshold": 0.3,
+  "OverrideGetSummerFishKing": false,
+  "SummerFishKingThreshold": 0.3,
+  "OverrideGetFallFishKing": false,
+  "FallFishKingThreshold": 0.3,
+  "OverrideGetWinterFishKing": false,
+  "WinterFishKingThreshold": 0.3,
+  "OverrideGetSewerFishKing": false,
+  "SewerFishKingThreshold": 0.3
+}

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Custom Adventure Guild Challenges",
+  "Author": "DefenTheNation",
+  "Version": "1.6",
+  "Description": "Customize the adventure guild challenges and rewards!",
+  "UniqueID": "DefenTheNation.CustomGuildChallenges",
+  "EntryDll": "CustomGuildChallenges.dll",
+  "MinimumApiVersion": "2.7",
+  "UpdateKeys": [ "Nexus:2301" ]
+}

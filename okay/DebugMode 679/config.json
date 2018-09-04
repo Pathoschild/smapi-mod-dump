@@ -1,0 +1,6 @@
+{
+  "AllowDangerousCommands": false,
+  "Controls": {
+    "ToggleDebug": "OemTilde"
+  }
+}

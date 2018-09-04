@@ -1,0 +1,16 @@
+{
+  "Name": "Customize Exterior",
+  "Author": "spacechase0",
+  "Version": "1.0.4",
+  "Description": "Change the exterior of your buildings.",
+  "UniqueID": "spacechase0.CustomizeExterior",
+  "PerSaveConfigs": false,
+  "EntryDll": "CustomizeExterior.dll",
+  "UpdateKeys": [ "Nexus:1099", "Chucklefish:4675", "spacechase0-customize-exterior" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Entoarox.SeasonalImmersion",
+      "IsRequired": false
+    }
+  ]
+}

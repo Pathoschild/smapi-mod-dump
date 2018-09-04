@@ -1,0 +1,50 @@
+{
+  "CombineOverlappingBorders": true,
+  "Controls": {
+    "ToggleLayer": "F2",
+    "PrevLayer": "LeftControl, LeftShoulder",
+    "NextLayer": "RightControl, RightShoulder"
+  },
+  "Layers": {
+    "Accessibility": {
+      "Enabled": true,
+      "UpdatesPerSecond": 2.0,
+      "UpdateWhenViewChange": true
+    },
+    "CoverageForBeeHouses": {
+      "Enabled": true,
+      "UpdatesPerSecond": 60.0,
+      "UpdateWhenViewChange": true
+    },
+    "CoverageForJunimoHuts": {
+      "Enabled": true,
+      "UpdatesPerSecond": 60.0,
+      "UpdateWhenViewChange": true
+    },
+    "CoverageForScarecrows": {
+      "Enabled": true,
+      "UpdatesPerSecond": 60.0,
+      "UpdateWhenViewChange": true
+    },
+    "CoverageForSprinklers": {
+      "Enabled": true,
+      "UpdatesPerSecond": 60.0,
+      "UpdateWhenViewChange": true
+    },
+    "CropFertilizer": {
+      "Enabled": true,
+      "UpdatesPerSecond": 30.0,
+      "UpdateWhenViewChange": true
+    },
+    "CropHarvest": {
+      "Enabled": true,
+      "UpdatesPerSecond": 2.0,
+      "UpdateWhenViewChange": true
+    },
+    "CropWater": {
+      "Enabled": true,
+      "UpdatesPerSecond": 30.0,
+      "UpdateWhenViewChange": true
+    }
+  }
+}

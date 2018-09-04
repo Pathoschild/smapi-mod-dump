@@ -1,0 +1,10 @@
+{
+	"Name": "Stardew Config Menu",
+	"Author": "Juice805",
+	"Version": "1.2.0-beta",
+	"UpdateKeys": [ "Nexus:1312" ],
+	"MinimumApiVersion": "2.6-beta",
+	"Description": "Allows modders easy access to a unified configuration menu.",
+	"UniqueID": "Juice805.StardewConfigMenu",
+	"EntryDll": "StardewConfigMenu.dll"
+}

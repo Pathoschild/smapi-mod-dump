@@ -1,0 +1,10 @@
+﻿{
+  "Name": "AutoStackItemsToChest",
+  "Author": "Chosimba",
+  "Version": "1.0.0",
+  "Description": "If items already exist in a chest, go ahead and stack them to the chest",
+  "UniqueID": "Chosimba.AutoStackItemsToChest",
+  "EntryDll": "AutoStackItemsToChest.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": ["Nexus:2307"]
+}

@@ -1,0 +1,7 @@
+{
+  "ShowInventory": true,
+  "ShowReadyInfoInChatBox": true,
+  "ShowLastPlayerReadyInfoInChatBox": true,
+  "HideInSinglePlayer": true,
+  "ShowCutsceneInfoInChatBox": true
+}

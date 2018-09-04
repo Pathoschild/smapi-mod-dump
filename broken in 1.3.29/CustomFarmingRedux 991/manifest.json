@@ -1,0 +1,14 @@
+{
+  "Name": "Custom Farming Redux",
+  "Author": "Platonymous",
+  "Version": "2.9.6",
+  "Description": "Mod for Custom Machine creation.",
+  "UniqueID": "Platonymous.CustomFarming",
+  "EntryDll": "CustomFarmingRedux.dll",
+  "UpdateKeys": [ "Nexus:991" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.Toolkit"
+    }
+  ]
+}

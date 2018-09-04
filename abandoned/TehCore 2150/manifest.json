@@ -1,0 +1,9 @@
+﻿{
+    "Name": "Teh's Core Mod",
+    "Author": "TehPers",
+    "Version": "1.0.1-dev",
+    "Description": "Helper utilities for mods",
+    "UniqueID": "TehPers.Core",
+    "EntryDll": "TehPers.Core.dll",
+    "UpdateKeys": [ "Nexus:2150" ]
+}

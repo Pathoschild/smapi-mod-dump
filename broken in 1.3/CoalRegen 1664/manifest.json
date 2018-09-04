@@ -1,0 +1,9 @@
+﻿{
+	"Name": "Coal Regen",
+	"Author": "Blucifer",
+	"Version": "1.1.0",
+	"Description": "Regenerates coal spawns in the mines.",
+	"UniqueID": "Blucifer.CoalRegen",
+	"EntryDll": "CoalRegen.dll",
+	"UpdateKeys": []
+}

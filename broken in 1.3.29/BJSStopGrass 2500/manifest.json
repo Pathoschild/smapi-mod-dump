@@ -1,0 +1,10 @@
+﻿{
+  "Name": "BJSStopGrass",
+  "Author": "BunnyJumps",
+  "Version": "1.0.0",
+  "Description": "Stops grass from growing and removes it from your farm",
+  "UniqueID": "BunnyJumps.BJSStopGrass",
+  "EntryDll": "BJSStopGrass.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "Nexus:2500" ]
+}

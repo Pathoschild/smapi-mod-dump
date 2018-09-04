@@ -1,0 +1,14 @@
+﻿{
+  "Name": "MoreArtifactSpot",
+  "Authour": "momoaau",
+  "Version": {
+    "MajorVersion": 2,
+    "MinorVersion": 0,
+    "PatchVersion": 0,
+    "Build": ""
+  },
+  "Description": "Just more artifact spots.",
+  "UniqueID": "451",
+  "PerSaveConfigs": false,
+  "EntryDll": "MoreArtifactSpot.dll"
+}

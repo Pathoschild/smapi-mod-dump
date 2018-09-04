@@ -1,0 +1,14 @@
+{
+  "Name": "New Machines Mod",
+  "Authour": "Igorious",
+  "Version": {
+    "MajorVersion": 4,
+    "MinorVersion": 2,
+    "PatchVersion": 1343,
+    "Build": "1"
+  },
+  "Description": "Adds new machines to create flour, sugar and vinegar.",
+  "UniqueID": "F70D4FAB-0AB2-4B78-9F1B-AF2CA2236A59",
+  "PerSaveConfigs": false,
+  "EntryDll": "Igorious.StardewValley.NewMachinesMod.dll"
+}

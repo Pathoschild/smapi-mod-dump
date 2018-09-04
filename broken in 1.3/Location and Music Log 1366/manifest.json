@@ -1,0 +1,13 @@
+{
+    "Name": "Location & Music logging",
+    "Author": "Brandy Lover",
+    "Version": {
+        "MajorVersion": 1,
+        "MinorVersion": 0,
+        "PatchVersion": 0,
+        "Build": null
+    },
+    "Description": "Logs the Location of the player and the music that is playing",
+    "UniqueID": "Brandy Lover.LMlog",
+    "EntryDll": "LMlog.dll"
+}

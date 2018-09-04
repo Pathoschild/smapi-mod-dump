@@ -1,0 +1,9 @@
+﻿{
+   "Name": "GreenHut",
+   "Author": "CroiDorcha",
+   "Version": "1.0.0",
+   "Description": "Adds a way to obtain junimos harvesting your crops in the Greenhouse",
+   "UniqueID": "CroiDorcha.GreenHut",
+   "EntryDll": "GreenHut.dll",
+   "UpdateKeys": ["nexus:1735"]
+}

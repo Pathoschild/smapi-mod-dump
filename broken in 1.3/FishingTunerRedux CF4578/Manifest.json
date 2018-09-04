@@ -1,0 +1,14 @@
+﻿{
+  "Name": "Fishing Tuner Redux",
+  "Author": "Hammurabi",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 3,
+    "PatchVersion": 1,
+    "Build": ""
+  },
+  "Description": "Fine-tune your fishing experience.",
+  "UniqueID": "HammurabiFishingTunerRedux",
+  "PerSaveConfigs": false,
+  "EntryDll": "FishingTunerRedux.dll"
+}

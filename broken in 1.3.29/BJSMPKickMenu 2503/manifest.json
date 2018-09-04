@@ -1,0 +1,10 @@
+﻿{
+  "Name": "BJSMPKickMenu",
+  "Author": "BunnyJumps",
+  "Version": "1.2.0",
+  "Description": "Multiplayer kick and ban menu",
+  "UniqueID": "BunnyJumps.BJSMPKickMenu",
+  "EntryDll": "BJSMPKickMenu.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "Nexus:2503"]
+}

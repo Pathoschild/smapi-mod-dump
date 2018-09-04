@@ -1,0 +1,6 @@
+﻿{
+  "ShowTapperStatesKey": "K", // key names: https://msdn.microsoft.com/en-us/library/microsoft.xna.framework.input.keys.aspx
+  "ShowTapperStatesButtonGamepad": "DPadLeft", // button names: https://msdn.microsoft.com/en-us/library/microsoft.xna.framework.input.buttons.aspx
+  "ShowDaily": false,
+  "MinutesUntilNextReminder": 300 // set this 0 to deactivate reminders
+}

@@ -1,0 +1,13 @@
+{
+  "Name": "MoreWeapons",
+  "Author": "Joco80 and Sasara",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 1,
+    "Build": ""
+  },
+  "Description": "adds more weapons to SDV",
+  "UniqueID": "Joco80.MoreWeapons",
+  "EntryDll": "MoreWeapons.dll"
+}

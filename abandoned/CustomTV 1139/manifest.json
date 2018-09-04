@@ -1,0 +1,19 @@
+{
+  "Name": "Custom TV",
+  "Author": "Platonymous",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 2,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "Description": "Custom TV Channels.",
+  "UniqueID": "Platonymous.CustomTV",
+  "EntryDll": "CustomTV.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.CustomElementHandler"
+    }
+  ],
+  "UpdateKeys": [ "Nexus:1139" ]
+}

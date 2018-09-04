@@ -1,0 +1,10 @@
+﻿{
+	"Name": "DailyTasksReport",
+	"Author": "GuiNoya",
+	"Version": "1.3.6",
+	"Description": "Shows information about some daily tasks in your farm",
+	"UniqueID": "GuiNoya.DailyTasksReport",
+	"EntryDll": "DailyTasksReport.dll",
+	"MinimumApiLevel": "2.3",
+	"UpdateKeys": [ "Nexus:1624" ]
+}

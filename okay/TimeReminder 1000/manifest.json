@@ -1,0 +1,8 @@
+﻿{
+  "Name": "Time Reminder",
+  "Author": "KoihimeNakamura",
+  "Version": "1.1",
+  "Description": "Reminds you of the time a few times.",
+  "UniqueID": "KoihimeNakamura.TimeReminder",
+  "EntryDll": "TimeReminder.dll"
+}

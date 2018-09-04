@@ -1,0 +1,7 @@
+{
+  "UseMaxAdoptionLimit": false,
+  "MaxAdoptionLimit": 10,
+  "AnimalsOnly": false,
+  "AdoptionPrice": 500,
+  "RepeatedAdoptionPenality": 0.1
+}

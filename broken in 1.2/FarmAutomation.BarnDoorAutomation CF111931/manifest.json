@@ -1,0 +1,12 @@
+﻿{
+  "Name": "FarmAutomation Mod: Barn Door Automation",
+  "Authour": "Oranisagu",
+  "Version": {
+    "Build": "1",
+    "MajorVersion": "1",
+    "MinorVersion": "0",
+    "VersionString":  "1.0"
+  },
+  "Description": "Automatically opens and closes animal doors at set times",
+  "EntryDll":  "FarmAutomation.BarnDoorAutomation.dll"
+}

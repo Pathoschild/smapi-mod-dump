@@ -1,0 +1,6 @@
+{
+  "KeyIn": "OemPlus",
+  "KeyOut": "OemMinus",
+  "ButtonIn": "DPadDown",
+  "ButtonOut": "DPadUp"
+}

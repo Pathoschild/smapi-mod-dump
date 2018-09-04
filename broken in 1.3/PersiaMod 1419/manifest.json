@@ -1,0 +1,14 @@
+{
+  "Name": "PersiaMod",
+  "Authour": "Avalon",
+  "Version": {
+    "MajorVersion": 0,
+    "MinorVersion": 3,
+    "PatchVersion": 3,
+    "Build": ""
+  },
+  "Description": "Persia/Pia from Rune Factory 3",
+  "UniqueID": "63b9f419-7449-42db-ab2e-440b4d05c073",
+  "PerSaveConfigs": false,
+  "EntryDll": "PersiaMod.dll"
+}

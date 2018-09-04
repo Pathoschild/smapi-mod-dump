@@ -1,0 +1,15 @@
+{
+  "Name": "Custom Asset Editor",
+  "Author": "Alpha_Omegasis",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "MinimumApiVersion": "2.3",
+  "Description": "Allows players to edit basic vanilla assets using text files.",
+  "UniqueID": "Omegasis.CustomAssetModifier",
+  "EntryDll": "CustomAssetModifier.dll",
+  "UpdateKeys": [ "" ]
+}

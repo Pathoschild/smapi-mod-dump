@@ -1,0 +1,19 @@
+﻿/**
+ * This file contains the professions to assign for each skill level. You generally shouldn't edit
+ * it unless you specifically want to change the mod logic. Note that changes will be reset when you
+ * update, so you'll need to reapply them.
+ */
+{
+  "ProfessionsToGain": [
+    { "Skill": "Combat",   "Level": 5,  "Professions": [ "Fighter", "Scout" ] },
+    { "Skill": "Combat",   "Level": 10, "Professions": [ "Brute", "Defender", "Acrobat", "Desperado" ] },
+    { "Skill": "Farming",  "Level": 5,  "Professions": [ "Rancher", "Tiller" ] },
+    { "Skill": "Farming",  "Level": 10, "Professions": [ "CoopMaster", "Shepherd", "Artisan", "Agriculturist" ] },
+    { "Skill": "Fishing",  "Level": 5,  "Professions": [ "Fisher", "Trapper" ] },
+    { "Skill": "Fishing",  "Level": 10, "Professions": [ "Angler", "Pirate", "Mariner", "Luremaster" ] },
+    { "Skill": "Foraging", "Level": 5,  "Professions": [ "Forester", "Gatherer" ] },
+    { "Skill": "Foraging", "Level": 10, "Professions": [ "Lumberjack", "Tapper", "Botanist", "Tracker" ] },
+    { "Skill": "Mining",   "Level": 5,  "Professions": [ "Miner", "Geologist" ] },
+    { "Skill": "Mining",   "Level": 10, "Professions": [ "Blacksmith", "Prospector", "Excavator", "Gemologist" ] }
+  ]
+}

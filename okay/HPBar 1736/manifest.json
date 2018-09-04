@@ -1,0 +1,9 @@
+﻿{
+   "Name": "HPBar",
+   "Author": "Ilyaki",
+   "Version": "1.3",
+   "Description": "Adds HP bars to enemies",
+   "UniqueID": "Ilyaki.HPBar",
+   "EntryDll": "HPBar.dll",
+   "UpdateKeys": [ "Nexus:1736" ]
+}

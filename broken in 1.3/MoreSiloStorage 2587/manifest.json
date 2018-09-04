@@ -1,0 +1,10 @@
+﻿{
+  "Name": "MoreSiloStorage",
+  "Author": "OrneryWalrus",
+  "Version": "1.0.1",
+  "Description": "Expands the capacity of the Silo",
+  "UniqueID": "OrneryWalrus.MoreSiloStorage",
+  "EntryDll": "MoreSiloStorage.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:2587" ]
+}

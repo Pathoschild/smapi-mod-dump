@@ -1,0 +1,10 @@
+{
+  "Name": "AutomatedDoors",
+  "Author": "Phate, SMAPI 2.0+ patch by Disiesel, azah",
+  "Version": "1.4.2",
+  "Description": "Automate opening & closing of farm building doors.",
+  "UniqueID": "azah.automated-doors",
+  "EntryDll": "AutomatedDoors.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "GitHub:azah/AutomatedDoors" ]
+}

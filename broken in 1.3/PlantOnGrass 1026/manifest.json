@@ -1,0 +1,13 @@
+﻿{
+  "Name": "PlantOnGrass",
+   "Author": "Demiacle",
+   "Version": {
+      "MajorVersion": 0,
+      "MinorVersion": 1,
+      "PatchVersion": 1,
+      "Build": 1
+   },
+   "Description": "Allows crops to be planted on green grass",
+   "UniqueID": "Demiacle.PlantOnGrass",
+   "EntryDll": "PlantOnGrass.dll"
+}

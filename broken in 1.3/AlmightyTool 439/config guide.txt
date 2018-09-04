@@ -1,0 +1,40 @@
+"AxeLevel": 4,
+"PickaxeLevel": 4,
+"HoeLevel": 4,
+"WaterCanLevel": 4
+
+The level of tools.
+options: 0 / 1 / 2 / 3 / 4
+0 = normal, 1 = copper, 2 = steel, 3 = gold, 4 = iridium
+
+
+
+"KeyBind": "Q"
+A keyboard key for using tools.
+options: check out the list of keys at:
+https://msdn.microsoft.com/en-us/library/microsoft.xna.framework.input.keys.aspx
+
+
+
+"HoeDirtTool": "Pickaxe"
+options: "Hoe" / "Pickaxe" / "WateringCan"
+Decide which tool use on tilled soil WITHOUT crop / fertilizer
+
+
+
+"ShowWaterLeftMessage": true
+options: true / false
+true = show the message of water left when using watering can
+
+
+
+"LongRange": true
+options: true / false
+true = use tools at the mouse position
+false = use tools in front of the player
+
+
+
+"usePailonOtherAnimals": true
+options: true / false
+true =  you can get truffles from pigs before they found them
