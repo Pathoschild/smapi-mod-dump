@@ -1,0 +1,10 @@
+{
+  "Pierre": true,
+  "Ranch": true,
+  "Carpenter": true,
+  "FishShop": true,
+  "Blacksmith": true,
+  "IceCreamStand": true,
+  "IceCreamInAllSeasons": false,
+  "ShopsAlwaysOpen": false
+}

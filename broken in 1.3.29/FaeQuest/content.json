@@ -1,0 +1,22 @@
+{
+  "Format": "1.3",
+  "Changes": [
+
+	  {
+          "Action": "Load",
+          "Target": "Maps/FaeTiles",
+          "FromFile": "maps/FaeTiles.xnb"
+      },
+	  {
+          "Action": "Load",
+          "Target": "FaeTiles",
+          "FromFile": "maps/FaeTiles.xnb"
+      },
+	  {
+          "Action": "Load",
+          "Target": "Maps/AdventureGuild",
+          "FromFile": "maps/AdventureGuild.xnb"
+      }
+	   
+    ]
+}

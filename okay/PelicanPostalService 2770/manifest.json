@@ -1,0 +1,10 @@
+{
+  "Name": "Pelican Postal Service",
+  "Author": "ElectroCrumpet",
+  "Version": "1.0.2-beta",
+  "Description": "Mail gifts to residents without meeting them in person.",
+  "UniqueID": "ElectroCrumpet.PelicanPostalService",
+  "EntryDll": "PelicanPostalService.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:2770" ]
+}

@@ -1,0 +1,22 @@
+
+xnbData: 
+    target: "w"
+    compressed: true
+    hiDef: true
+    readerData: 
+        - 
+            type: "xTile.Pipeline.TideReader, xTile"
+            version: 0
+
+
+    numSharedResources: 0
+
+content: {} #!TBin
+extractedMaps: 
+    - 
+        path: ""
+        tilesheets: 
+            - "townInterior.png"
+
+
+

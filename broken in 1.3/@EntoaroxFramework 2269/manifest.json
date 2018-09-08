@@ -1,9 +1,0 @@
-{
-  "Name": "Entoarox Framework",
-  "Author": "Entoarox",
-  "Version": "2.4.0",
-  "MinimumApiVersion": "2.5.3",
-  "Description": "A collection of API's to make modding easier",
-  "UniqueID": "Entoarox.EntoaroxFramework",
-  "EntryDll": "EntoaroxFramework.dll"
-}

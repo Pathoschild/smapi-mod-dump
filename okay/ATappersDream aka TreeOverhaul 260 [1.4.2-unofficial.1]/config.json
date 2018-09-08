@@ -1,0 +1,8 @@
+{
+  "StopShadeSaplingGrowth": true,
+  "NormalTreesGrowInWinter": true,
+  "MushroomTreesGrowInWinter": false,
+  "FruitTreesDontGrowInWinter": false,
+  "FasterNormalTreeGrowth": false,
+  "FruitTreeGrowth": 0
+}

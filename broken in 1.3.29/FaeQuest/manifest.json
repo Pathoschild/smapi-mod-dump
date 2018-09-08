@@ -1,0 +1,10 @@
+{
+   "Name": "FaeQuest",
+   "Author": "Navi-chan",
+   "Version": "1.0.0",
+   "Description": "Adds few areas, NPCs and quests",
+   "UniqueID": "NaviChan.FaeQuest",
+   "MinimumApiVersion": "2.5.2",
+   "UpdateKeys": [ ],
+   "EntryDll": "FaeQuest.dll"
+}
