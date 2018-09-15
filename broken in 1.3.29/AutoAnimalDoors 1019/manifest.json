@@ -1,7 +1,7 @@
 ﻿{
    "Name": "AutoAnimalDoors",
    "Author": "Aaron Taggart",
-   "Version": "1.4.1-beta", // fixed locally
+   "Version": "2.0.0",
    "Description": "Open and close the doors automatically for your animals.",
    "UniqueID": "AaronTaggart.AutoAnimalDoors",
    "EntryDll": "AutoAnimalDoors.dll",

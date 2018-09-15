@@ -1,0 +1,10 @@
+﻿{
+  "Name": "BJSNoClip",
+  "Author": "BunnyJumps",
+  "Version": "1.0.0",
+  "Description": "Press X to walk through walls",
+  "UniqueID": "BunnyJumps.BJSNoClip",
+  "EntryDll": "BJSNoClip.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "2820" ]
+}

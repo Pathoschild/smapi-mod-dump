@@ -1,0 +1,10 @@
+{
+   "Name": "Prairie King Prizes",
+   "Author": "Renny",
+   "Version": "0.9-beta",
+   "Description": "Lets you earn prizes by playing Prairie King.",
+   "UniqueID": "renny.prairiekingprizes",
+   "EntryDll": "PrairieKingPrizes.dll",
+   "MinimumApiVersion": "2.7",
+   "UpdateKeys": [ "Nexus:2811" ]
+}

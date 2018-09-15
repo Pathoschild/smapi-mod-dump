@@ -1,0 +1,11 @@
+{
+  "ShowOnCalendar": true,
+  "ShowOnSocialPage": true,
+  "ShowOnlyKnownGifts": false,
+  "ShareKnownGiftsWithAllSaves": true,
+  "HideTooltipWhenNoGiftsKnown": false,
+  "MaxGiftsToDisplay": 0,
+  "ShowUniversalGifts": true,
+  "ColorizeUniversalGiftNames": false,
+  "ShowGiftsForUnmetNPCs": false
+}

@@ -1,0 +1,10 @@
+{
+  "Name": "Archaeology House Content Management Helper",
+  "Author": "Felix-Dev",
+  "Version": "1.1.0",
+  "Description": "Improves management of the Library/Museum.",
+  "UniqueID": "Felix-Dev.ArchaeologyHouseContentManagementHelper",
+  "EntryDll": "ArchaeologyHouseContentManagementHelper.dll",
+  "MinimumApiVersion": "2.6",
+  "UpdateKeys": [ "Nexus:2804" ]
+}

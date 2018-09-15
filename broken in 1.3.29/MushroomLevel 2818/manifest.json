@@ -1,0 +1,10 @@
+{
+  "Name": "Mushroom Levels",
+  "Author": "Ben Patterson",
+  "Version": "1.0.0",
+  "Description": "Dislays Mushroom levels in Mine",
+  "UniqueID": "BenPattherson.MushroomLevels",
+  "EntryDll": "MushroomLevel.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:2818" ]
+}
