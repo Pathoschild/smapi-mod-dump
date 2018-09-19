@@ -1,0 +1,10 @@
+﻿{
+  "Name": "AudioDevices",
+  "Author": "Max Vollmer",
+  "Version": "1.0.1",
+  "Description": "Adds options to change the audio device used by the game.",
+  "UniqueID": "maxvollmer.audiodevices",
+  "EntryDll": "audiodevices.dll",
+  "MinimumApiVersion": "2.7",
+  "UpdateKeys": [ "Nexus:2838" ]
+}

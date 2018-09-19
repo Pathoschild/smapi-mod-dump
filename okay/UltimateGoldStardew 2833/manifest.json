@@ -1,0 +1,10 @@
+﻿{
+   "Name": "UltimateGoldStardew",
+   "Author": "Shadowfoxss",
+   "Version": "1.0.1",
+   "Description": "Gives gold everytime you press L.",
+   "UniqueID": "Shadowfoxss.UltimateGoldStardew",
+   "EntryDll": "UltimateGoldStardew.dll",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": [ "Nexus:2833" ]
+}

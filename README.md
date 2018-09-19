@@ -1,5 +1,5 @@
-This repository has the latest releases for all known SMAPI mods (as of SMAPI 2.8-beta.3 and
-Stardew Valley 1.3.29 beta), used to update the [SMAPI compatibility list](https://stardewvalleywiki.com/Modding:SMAPI_compatibility).
+This repository has the latest releases for all known SMAPI mods (as of SMAPI 2.8-beta.4 and
+Stardew Valley 1.3.30 beta), used to update the [SMAPI compatibility list](https://stardewvalleywiki.com/Modding:SMAPI_compatibility).
 The mods are grouped into these categories:
 
 category       | description
