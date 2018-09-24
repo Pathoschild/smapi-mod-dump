@@ -1,9 +1,9 @@
 {
   "Name": "Mushroom Levels",
-  "Author": "Ben Patterson",
-  "Version": "1.0.0",
+  "Author": "Eireon",
+  "Version": "1.0.1",
   "Description": "Dislays Mushroom levels in Mine",
-  "UniqueID": "BenPattherson.MushroomLevels",
+  "UniqueID": "Eireon.MushroomLevels",
   "EntryDll": "MushroomLevel.dll",
   "MinimumApiVersion": "2.0",
   "UpdateKeys": [ "Nexus:2818" ]

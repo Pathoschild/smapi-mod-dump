@@ -1,7 +1,7 @@
 {
   "Name": "Infested Levels",
   "Author": "Eireon",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Dislays Infested levels in Mine",
   "UniqueID": "Eireon.InfestedLevels",
   "EntryDll": "InfestedLevel.dll",

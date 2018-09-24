@@ -1,0 +1,346 @@
+{
+  "Objects": [
+    {
+      "Owner": "Robin",
+      "Item": 388,
+      "Amount": 111,
+      "Conditions": "year=1"
+    },
+    {
+      "Owner": "Robin",
+      "Item": 390,
+      "Amount": 111,
+      "Conditions": "year=1"
+    },
+    {
+      "Owner": "Robin",
+      "Item": 388,
+      "Amount": 333,
+      "Conditions": "earthquake"
+    },
+    {
+      "Owner": "Robin",
+      "Item": 390,
+      "Amount": 333,
+      "Conditions": "earthquake"
+    },
+    {
+      "Owner": "Robin",
+      "Item": 388,
+      "Amount": 999,
+      "Conditions": "year>1"
+    },
+    {
+      "Owner": "Robin",
+      "Item": 390,
+      "Amount": 999,
+      "Conditions": "year>1"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 472,
+      "Amount": 10,
+      "Conditions": "year=1,spring"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 473,
+      "Amount": 10,
+      "Conditions": "year=1,spring"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 474,
+      "Amount": 10,
+      "Conditions": "year=1,spring"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 475,
+      "Amount": 10,
+      "Conditions": "year=1,spring"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 427,
+      "Amount": 10,
+      "Conditions": "year=1,spring"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 429,
+      "Amount": 10,
+      "Conditions": "year=1,spring"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 477,
+      "Amount": 10,
+      "Conditions": "year=1,spring"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 480,
+      "Amount": 10,
+      "Conditions": "year=1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 482,
+      "Amount": 10,
+      "Conditions": "year=1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 483,
+      "Amount": 10,
+      "Conditions": "year=1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 484,
+      "Amount": 10,
+      "Conditions": "year=1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 479,
+      "Amount": 10,
+      "Conditions": "year=1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 302,
+      "Amount": 10,
+      "Conditions": "year=1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 456,
+      "Amount": 10,
+      "Conditions": "year=1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 455,
+      "Amount": 10,
+      "Conditions": "year=1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 487,
+      "Amount": 10,
+      "Conditions": "year=1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 488,
+      "Amount": 10,
+      "Conditions": "year=1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 490,
+      "Amount": 10,
+      "Conditions": "year=1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 299,
+      "Amount": 10,
+      "Conditions": "year=1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 301,
+      "Amount": 10,
+      "Conditions": "year=1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 492,
+      "Amount": 10,
+      "Conditions": "year=1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 491,
+      "Amount": 10,
+      "Conditions": "year=1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 493,
+      "Amount": 10,
+      "Conditions": "year=1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 425,
+      "Amount": 10,
+      "Conditions": "year=1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 472,
+      "Amount": 50,
+      "Conditions": "year>1,spring"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 473,
+      "Amount": 50,
+      "Conditions": "year>1,spring"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 474,
+      "Amount": 50,
+      "Conditions": "year>1,spring"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 475,
+      "Amount": 50,
+      "Conditions": "year>1,spring"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 427,
+      "Amount": 50,
+      "Conditions": "year>1,spring"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 429,
+      "Amount": 50,
+      "Conditions": "year>1,spring"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 477,
+      "Amount": 50,
+      "Conditions": "year>1,spring"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 476,
+      "Amount": 50,
+      "Conditions": "year>1,spring"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 480,
+      "Amount": 50,
+      "Conditions": "year>1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 482,
+      "Amount": 50,
+      "Conditions": "year>1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 483,
+      "Amount": 50,
+      "Conditions": "year>1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 484,
+      "Amount": 50,
+      "Conditions": "year>1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 479,
+      "Amount": 50,
+      "Conditions": "year>1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 302,
+      "Amount": 50,
+      "Conditions": "year>1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 456,
+      "Amount": 50,
+      "Conditions": "year>1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 455,
+      "Amount": 50,
+      "Conditions": "year>1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 485,
+      "Amount": 50,
+      "Conditions": "year>1,summer"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 487,
+      "Amount": 50,
+      "Conditions": "year>1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 488,
+      "Amount": 50,
+      "Conditions": "year>1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 490,
+      "Amount": 50,
+      "Conditions": "year>1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 299,
+      "Amount": 50,
+      "Conditions": "year>1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 301,
+      "Amount": 50,
+      "Conditions": "year>1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 492,
+      "Amount": 50,
+      "Conditions": "year>1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 491,
+      "Amount": 50,
+      "Conditions": "year>1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 493,
+      "Amount": 50,
+      "Conditions": "year>1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 425,
+      "Amount": 50,
+      "Conditions": "year>1,fall"
+    },
+    {
+      "Owner": "Pierre",
+      "Item": 489,
+      "Amount": 50,
+      "Conditions": "year>1,fall"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "activateKey": "R",
+  "offsetX": 2,
+  "offsetY": 112,
+  "datableType": "Bachelorette",
+  "showPortrait": true,
+  "drawBackground": true,
+  "backgroundOpacity": 1.0,
+  "showGifts": false
+}
