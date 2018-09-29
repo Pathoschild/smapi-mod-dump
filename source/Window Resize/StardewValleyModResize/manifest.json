@@ -1,0 +1,10 @@
+﻿{
+	"Name": "WindowResize",
+	"Author": "thatnzguy",
+	"Version": "1.0.0",
+	"Description": "Removes the minimum windowed size making it easy to have multiple SDV instances visible at one time.",
+	"UniqueID": "thatnzguy.WindowResize",
+	"EntryDll": "WindowResize.dll",
+	"MinimumApiVersion": "2.0",
+	"UpdateKeys": ["GitHub:thatnzguy/WindowResize"]
+}

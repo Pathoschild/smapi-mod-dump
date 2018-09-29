@@ -1,0 +1,13 @@
+url:
+   https://github.com/gunnargolf/DynamicChecklist.git
+
+mods:
+   Dynamic Checklist
+
+latest commit:
+   commit a4b32313b251684a91e091df3b97e63a3a337ef7
+   Author: Gunnar Gunnarsson <gunnargolf@gmail.com>
+   Date:   Tue Mar 6 21:15:48 2018 +0000
+   
+       add support for greenhouse crops
+   

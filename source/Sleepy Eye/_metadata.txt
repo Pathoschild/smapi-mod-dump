@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/SleepyEye.git
+
+mods:
+   Sleepy Eye
+
+latest commit:
+   commit 102ab5aff83505c20e85ca6675aae199533aaebf
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Tue Aug 1 14:55:32 2017 -0400
+   
+       Veresion 1.0.1.
+   

@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/ExperienceBars.git
+
+mods:
+   Experience Bars
+
+latest commit:
+   commit 1db6caf63ded8e3ad7031367acc54ef595ed36f4
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Sun Aug 5 15:41:56 2018 -0400
+   
+       Fix API skills rendering too low
+   

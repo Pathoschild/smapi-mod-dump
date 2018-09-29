@@ -1,10 +1,15 @@
-This repository contains all known SMAPI mods as of SMAPI 2.8-beta.4 and Stardew Valley 1.3.31 beta.
-This is used to update the [SMAPI compatibility list](https://stardewvalleywiki.com/Modding:SMAPI_compatibility),
-find mods using deprecated APIs, etc.
+This repository contains all SMAPI mods listed in the [SMAPI compatibility list](https://stardewvalleywiki.com/Modding:SMAPI_compatibility).
+It's used to update that page, find mods using specific APIs, etc.
 
-Specifically:
+## Mod stats
+stat         | info
+------------ | ----
+last update  | SMAPI 2.8-beta.4 and Stardew Valley 1.3.31 beta
+known mods   | 541 on the compatibility list
+repositories | 359 mods (66%) have a standard Git repository. 153 of those (43%) contain multiple mods.
 
-* `compiled` contains the latest available download for each mod, grouped into these categories:
+## What's in this repository
+* `compiled` has the latest download for each mod, grouped into these categories:
 
   category       | description
   -------------- | -----------
@@ -14,3 +19,9 @@ Specifically:
   okay (Harmony) | Mods which work fine in the latest versions, and use Harmony to patch the game code. Using many Harmony mods together often causes conflicts, so these are separate for testing.
   okay (Pong)    | The [Pong mod](https://www.nexusmods.com/stardewvalley/mods/1994). This overrides the entire game, so it's separate for testing.
 
+* `source` has the latest source code for each open-source SMAPI mod. This only has the _code_, it
+  doesn't mirror the Git history. Since many repositories contain multiple mods, mods in `compiled`
+  don't necessarily map directly to repositories in `source`. Although `compiled` may contain
+  unofficial updates, `source` only has the official repositories.
+
+* `utilities` contains scripts used to update this repository.

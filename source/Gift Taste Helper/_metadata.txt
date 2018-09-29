@@ -1,0 +1,14 @@
+url:
+   https://github.com/tstaples/GiftTasteHelper.git
+
+mods:
+   Gift Taste Helper
+
+latest commit:
+   commit 34626d6cd476377867c4aac0ac5bdf4160a8bccc
+   Merge: 437cd75 4ed513e
+   Author: tyler staples <tyler.a.staples@gmail.com>
+   Date:   Thu Sep 13 18:30:37 2018 -0700
+   
+       Merge branch 'Lord-Helmchen-sdv_1.3_beta_compat' into sdv_1.3_beta_compat
+   

@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/Magic.git
+
+mods:
+   Magic
+
+latest commit:
+   commit 7095dbf01fe126a54cb7d15554ef41efa061a5d8
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Sun Aug 5 18:22:21 2018 -0400
+   
+       1.3 and MP support
+   

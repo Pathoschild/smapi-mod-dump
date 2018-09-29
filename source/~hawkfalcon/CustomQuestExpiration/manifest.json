@@ -1,0 +1,10 @@
+﻿{
+  "Name": "CustomQuestExpiration",
+  "Author": "hawkfalcon",
+  "Version": "1.1.0",
+  "Description": "Change the Daily Quest expiration (make it never expire, expire after 5 days, etc)",
+  "UniqueID": "hawkfalcon.CustomQuestExpiration",
+  "EntryDll": "CustomQuestExpiration.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "Nexus:2148" ]
+}

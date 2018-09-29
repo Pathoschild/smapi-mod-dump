@@ -1,0 +1,10 @@
+{
+  "Name": "A Very Special Blue Chicken",
+  "Author": "jackkimball",
+  "Version": "1.0.1",
+  "Description": "A mod that makes blue chickens a little more interesting.",
+  "UniqueID": "jackkimball.averyspecialbluechicken",
+  "EntryDll": "AVerySpecialBlueChicken.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": ["Nexus:2465"]
+}

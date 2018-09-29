@@ -1,0 +1,9 @@
+{
+  "Name": "Immersive 2 SMAPI",
+  "Author": "Lajna",
+  "Version": "0.0.1",
+  "Description": "A fix for the immersive map to be able to use MP",
+  "UniqueID": "Lajna.Immersive2SMAPI",
+  "EntryDll": "Immersive 2 SMAPI version.dll",
+  "UpdateKeys": []
+}

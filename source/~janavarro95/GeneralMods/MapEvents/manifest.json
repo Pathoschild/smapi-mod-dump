@@ -1,0 +1,10 @@
+{
+  "Name": "EventSystem",
+  "Author": "Alpha_Omegasis",
+  "Version": "0.1.0",
+  "Description": "A system to manage different events that can happen on the map.",
+  "UniqueID": "Omegasis.EventSystem",
+  "EntryDll": "EventSystem.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ ]
+}

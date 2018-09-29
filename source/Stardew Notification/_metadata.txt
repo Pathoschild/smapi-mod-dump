@@ -1,0 +1,13 @@
+url:
+   https://github.com/monopandora/StardewNotification.git
+
+mods:
+   Stardew Notification
+
+latest commit:
+   commit 0efabed5570a48d4e6fa20abcfdc832da2c21436
+   Author: monopandora <fobbo123@gmail.com>
+   Date:   Thu Mar 16 15:23:04 2017 -0700
+   
+       Adds Greenhouse crop notification
+   

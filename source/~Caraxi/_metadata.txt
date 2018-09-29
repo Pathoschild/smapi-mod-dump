@@ -1,0 +1,17 @@
+url:
+   https://github.com/Caraxi/StardewValleyMods.git
+
+mods:
+   Auto Load Game
+   Longer Lasting Lures
+   Scroll To Blank
+
+latest commit:
+   commit 8dbad8bf59fdbc8c55af552c63122de8a56f15ee
+   Author: Cara <caraxian040@gmail.com>
+   Date:   Tue Jul 17 15:19:03 2018 +0930
+   
+       Add NotReallyHostedMultiplayer
+       
+       Unreleased Mod
+   

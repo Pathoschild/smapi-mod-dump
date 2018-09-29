@@ -1,0 +1,13 @@
+url:
+   https://github.com/bmarquismarkail/SV_BetterQualityMoreSeeds.git
+
+mods:
+   Better Quality More Seeds
+
+latest commit:
+   commit 09bfcbee858ed8936a6c9abb7ed56bcba52d5d5f
+   Author: U-MarquisSeven\Brandon <bmmgreen@gmail.com>
+   Date:   Sun May 14 12:50:13 2017 -0500
+   
+       fixing Exit to Title and choosing separate PC issue
+   

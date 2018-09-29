@@ -1,0 +1,15 @@
+url:
+   https://github.com/hawkfalcon/Stardew-Mods.git
+
+mods:
+   Better Junimos
+   Custom Quest Expiration
+   Tillable Ground
+
+latest commit:
+   commit e2d608eeefca7f7d38a27a3385a379ec24a6a4f7
+   Author: hawkfalcon <contact@hawkfalcon.com>
+   Date:   Sun Aug 26 23:47:41 2018 -0700
+   
+       Work in Winter and Evenings, fix nre
+   

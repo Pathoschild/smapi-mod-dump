@@ -1,0 +1,17 @@
+url:
+   https://github.com/bitwisejon/StardewValleyMods.git
+
+mods:
+   Instant Buildings From Farm
+   One Click Shed Reloader
+
+latest commit:
+   commit ea4455e7060da680792cfde9a9f4f9c6e24da669
+   Merge: 1fd8276 e8c3240
+   Author: bitwisejon <38377407+bitwisejon@users.noreply.github.com>
+   Date:   Sat Aug 4 09:32:27 2018 -0400
+   
+       Merge pull request #9 from bitwisejon/AddCoopSupport
+       
+       Fixed problem with instant buildings mod not building tractor garage â€¦
+   

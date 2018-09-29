@@ -1,0 +1,13 @@
+url:
+   https://github.com/Armitxes/StardewValley_UnlimitedPlayers.git
+
+mods:
+   Unlimited Players
+
+latest commit:
+   commit b0ab60893689889b1eb93e9d2bfcc06959dad303
+   Author: Armitxes <4rmitxes@gmail.com>
+   Date:   Tue May 22 20:20:44 2018 +0200
+   
+       Removed Lidgren, overwrite player limit earlier
+   

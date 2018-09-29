@@ -1,0 +1,13 @@
+{
+  "Name": "Gate Opener",
+  "Authour": "mralbobo",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 1,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "Description": "Opens and closes gates based on their proximity to you.",
+  "UniqueID": "mralbobo.GateOpener",
+  "EntryDll": "GateOpener.dll"
+}

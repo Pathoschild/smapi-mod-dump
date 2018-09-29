@@ -1,0 +1,10 @@
+﻿{
+   "Name": "Infertile Soil",
+   "Author": "Sabera",
+   "Version": "0.0.1-alpha1",
+   "Description": "The soil grows no crops. You must rely on garden pots to grow your living.",
+   "UniqueID": "Sabera.InfertileSoil",
+   "EntryDll": "InfertileSoil.dll",
+   "MinimumApiVersion": "2.5",
+   "UpdateKeys": []
+}

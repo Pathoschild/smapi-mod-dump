@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/CookingSkill.git
+
+mods:
+   Cooking Skill
+
+latest commit:
+   commit 3930a7d732abf8e71664dc875a1f303858091836
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Tue Aug 21 19:35:37 2018 -0400
+   
+       Update for SpaceCore and fix consumption thing being wrong. 1.1.2
+   

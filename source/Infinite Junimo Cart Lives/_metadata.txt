@@ -1,0 +1,13 @@
+url:
+   https://github.com/OfficialRenny/InfiniteJunimoCartLives.git
+
+mods:
+   Infinite Junimo Cart Lives
+
+latest commit:
+   commit a80eaf94625a1d98280934a6112fd55c6aa8a14f
+   Author: Renny <renaldas.sorys@gmail.com>
+   Date:   Mon Aug 20 18:01:57 2018 +0100
+   
+       Commented out a line used for debug, so it doesn't spam your SMAPI monitor
+   

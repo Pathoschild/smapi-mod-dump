@@ -1,0 +1,16 @@
+url:
+   https://github.com/dantheman999301/StardewMods.git
+
+mods:
+   Variable Grass
+
+latest commit:
+   commit ef1c34d53203276f053eb64cf9e2cc3b8546bf90
+   Merge: c236c1f ff1dab2
+   Author: Daniel Edwards <d.edwards.15.de@gmail.com>
+   Date:   Fri May 5 14:17:03 2017 +0100
+   
+       Merge pull request #1 from Pathoschild/master
+       
+       Update for Stardew Valley 1.2 & SMAPI 1.12, streamline build process
+   

@@ -1,0 +1,14 @@
+{
+  "Name": "Sun Drop Village:Multiple Bed Locations",
+  "Authour": "Alpha_Omegasis",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 0,
+    "Build": ""
+  },
+  "Description": "Allows the player to sleep in multiple bed locations. Inteded for Sun Drop Village mod.",
+  "UniqueID": "4be88c18-b6f3-49b0-ba96-f94b1a5be890",
+  "PerSaveConfigs": false,
+  "EntryDll": "MultipleBedLocations.dll"
+}

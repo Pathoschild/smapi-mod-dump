@@ -1,0 +1,13 @@
+url:
+   https://github.com/LeonBlade/CasksAnywhere.git
+
+mods:
+   Casks Anywhere
+
+latest commit:
+   commit 1c2af69dc2eb572da21d73f249d42f7533780aa2
+   Author: James Stine <leon.blade@gmail.com>
+   Date:   Mon Aug 6 21:59:38 2018 -0400
+   
+       Update to new SDV 1.3
+   

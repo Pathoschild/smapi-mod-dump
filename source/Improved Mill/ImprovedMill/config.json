@@ -1,0 +1,14 @@
+{
+  "ProcessCorn": true,
+  "SugarForCorn": 0.5,
+  "FlourForCorn": 0.5,
+  "ProcessWheat": true,
+  "SugarForWheat": 0.0,
+  "FlourForWheat": 1.0,
+  "ProcessAmaranth": true,
+  "SugarForAmaranth": 0.0,
+  "FlourForAmaranth": 1.0,
+  "ProcessBeet": true,
+  "SugarForBeet": 0.0,
+  "FlourForBeet": 1.0
+}

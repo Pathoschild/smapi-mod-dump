@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{99954D47-F761-48FF-A624-D9849E3C5068}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MapPings</RootNamespace>
+    <AssemblyName>MapPings</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Stardew Valley\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Framework\Constants\ChatMessageKind.cs" />
+    <Compile Include="Framework\Constants\Message.cs" />
+    <Compile Include="Framework\Constants\ModPaths.cs" />
+    <Compile Include="Framework\Constants\Sprites.cs" />
+    <Compile Include="Framework\Events\ChatMessageEventArgs.cs" />
+    <Compile Include="Framework\Events\PlayerConnectedEventArgs.cs" />
+    <Compile Include="Framework\Events\PlayerDisconnectedEventArgs.cs" />
+    <Compile Include="Framework\Events\ReceivedMapPingEventArgs.cs" />
+    <Compile Include="Framework\Extensions\MultiplayerExtension.cs" />
+    <Compile Include="Framework\Logger.cs" />
+    <Compile Include="Framework\Menu\MapOverlay.cs" />
+    <Compile Include="Framework\Network\DataSerialization.cs" />
+    <Compile Include="Framework\Patches\ClassPatch.cs" />
+    <Compile Include="Framework\Patches\IClassPatch.cs" />
+    <Compile Include="Framework\Patches\ModPatchControl.cs" />
+    <Compile Include="Framework\Patches\MultiplayerPatch.cs" />
+    <Compile Include="Framework\Ping.cs" />
+    <Compile Include="Framework\PlayerMapPings.cs" />
+    <Compile Include="Framework\Types\FixedQueue.cs" />
+    <Compile Include="Framework\Utilities\ImageUtilities.cs" />
+    <Compile Include="Framework\Utilities\ModUtilities.cs" />
+    <Compile Include="ModConfig.cs" />
+    <Compile Include="ModEntry.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="manifest.json" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\ping.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+  </Target>
+</Project>

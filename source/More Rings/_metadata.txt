@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/MoreRings.git
+
+mods:
+   More Rings
+
+latest commit:
+   commit bfd24cc71f8d6b0ce58ed00983691a70a51436fc
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Sun Apr 15 14:45:00 2018 -0400
+   
+       Added readme
+   

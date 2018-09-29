@@ -1,0 +1,13 @@
+url:
+   https://github.com/Bpendragon/DynamicHorses.git
+
+mods:
+   Dynamic Horses
+
+latest commit:
+   commit 4d200f041727f7c2bb24cd7822f990f485299363
+   Author: David Camp <Bpendragon@users.noreply.github.com>
+   Date:   Mon Apr 30 12:14:35 2018 -0700
+   
+       Create README.md
+   

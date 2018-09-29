@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/MapImageExporter.git
+
+mods:
+   Map Image Export
+
+latest commit:
+   commit 1b01663437abf8ca05b37713f55258ae094dad6b
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Sun Jul 29 18:17:13 2018 -0400
+   
+       1.3 update
+   

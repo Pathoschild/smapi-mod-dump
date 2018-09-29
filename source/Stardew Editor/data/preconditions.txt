@@ -1,0 +1,31 @@
+e=1iEvent ID;=Player has seen event
+h=1bCat person;=Don't have pet, and Cat Person == _
+m=1iAmount;=Total money earned
+M=1iAmount;=Current money
+c=1iSlots;=Free inventory space
+C=0=Seen 191393, seen 502261, or completed CC
+D=1sNPC;=Dating NPC
+j=1iAmount;=Played more than _ days
+J=0=Completed all CC areas, at least one using Joja?
+f=2sNPC;iFriendship Points;*=Villager _ is over _ friendship
+F=0=Not a festival day
+r=1dChance;=% chance
+s=2iItem;iAmount;*=Has shipped _ more than _ times
+q=1iAnswer ID;*=Player has chosen dialogue answer
+n=1sMail ID;=Mail received
+l=1sMail ID;=Mail not received
+t=2iEarliest;iLatest;=In time range
+w=1erainy,sunny;=Weather check
+d=1ESun,Mon,Tue,Wed,Thu,Fri,Sat;=Not one of these week days
+o=1sNPC;=Not spouse
+v=1sNPC;=Not invisible
+p=1sNPC;=NPC is here
+z=1espring,summer,fall,winter;=Not this season
+b=1iAmount;=player.timesReachedMineBottom (always 0 in vanilla)
+y=1iIf 1, must be first year;=Year
+g=1emale,female;=Gender
+i=1iItem ID;=Player has item
+k=1iEvent ID;=Player hasn't seen event
+a=2pPosition;=Player is at tile (x,y)
+x=1sMail ID;=Queue mail + mark seen, no trigger.
+u=1E0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27;=Day of the month

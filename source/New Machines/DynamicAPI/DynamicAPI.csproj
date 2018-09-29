@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0EE5BDB6-B291-44DB-B869-AE048C4E5883}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Igorious.StardewValley.DynamicAPI</RootNamespace>
+    <AssemblyName>Igorious.StardewValley.DynamicAPI.4_2_1</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EnsureThat, Version=4.0.0.26, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ensure.That.4.0.0\lib\net45\EnsureThat.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Stardew Valley">
+      <HintPath>D:\Games\Steam\steamapps\common\Stardew Valley\Stardew Valley.exe</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="StardewModdingAPI">
+      <HintPath>D:\Games\Steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="xTile">
+      <HintPath>D:\Games\Steam\steamapps\common\Stardew Valley\xTile.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\ExpressionAttribute.cs" />
+    <Compile Include="Constants\Animation.cs" />
+    <Compile Include="Constants\CharacterName.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Helpers\InventoryHelper.cs" />
+    <Compile Include="Interfaces\IRecipeInformation.cs" />
+    <Compile Include="Data\OverridedBundleInformation.cs" />
+    <Compile Include="Data\Supporting\DynamicID.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Interfaces\ISmartObject.cs" />
+    <Compile Include="Json\JsonDictionaryKeyConverter.cs" />
+    <Compile Include="Json\JsonDynamicIdConverter2.cs" />
+    <Compile Include="Json\JsonDynamicIdConverter.cs" />
+    <Compile Include="Constants\MachineState.cs" />
+    <Compile Include="Constants\ObjectType.cs" />
+    <Compile Include="Constants\DayTime.cs" />
+    <Compile Include="Constants\CategoryID.cs" />
+    <Compile Include="Constants\Season.cs" />
+    <Compile Include="Data\Supporting\ArchChance.cs" />
+    <Compile Include="Constants\MealCategory.cs" />
+    <Compile Include="Data\Supporting\RawColor.cs" />
+    <Compile Include="Data\CookingRecipeInformation.cs" />
+    <Compile Include="Data\Supporting\DynamicTypeInfo.cs" />
+    <Compile Include="Data\Supporting\WayToGetCraftingRecipe.cs" />
+    <Compile Include="Data\Supporting\WayToGetCookingRecipe.cs" />
+    <Compile Include="Data\Supporting\SkillUpInformation.cs" />
+    <Compile Include="DynamicConfiguration.cs" />
+    <Compile Include="Constants\CraftableID.cs" />
+    <Compile Include="Constants\ItemID.cs" />
+    <Compile Include="Constants\LocationName.cs" />
+    <Compile Include="Constants\Skill.cs" />
+    <Compile Include="Constants\Sound.cs" />
+    <Compile Include="Data\CropInformation.cs" />
+    <Compile Include="Data\TreeInformation.cs" />
+    <Compile Include="Extensions\BoolExtensions.cs" />
+    <Compile Include="Extensions\JsonExtensions.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Interfaces\IDrawable.cs" />
+    <Compile Include="Interfaces\IDynamic.cs" />
+    <Compile Include="Data\ItemInformation.cs" />
+    <Compile Include="Interfaces\IItem.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.cs" />
+    <Compile Include="Data\CraftableInformation.cs" />
+    <Compile Include="Data\CraftingRecipeInformation.cs" />
+    <Compile Include="Interfaces\IInformation.cs" />
+    <Compile Include="Json\JsonPlainArrayConverter.cs" />
+    <Compile Include="Data\Supporting\CharacterGiftPreferences.cs" />
+    <Compile Include="Data\Supporting\GiftPreferences.cs" />
+    <Compile Include="Interfaces\ISmartLocation.cs" />
+    <Compile Include="Locations\SmartLocationProxy.cs" />
+    <Compile Include="Menu\Aligment.cs" />
+    <Compile Include="Menu\GridToolTip.cs" />
+    <Compile Include="Menu\IconMenuCell.cs" />
+    <Compile Include="Menu\ItemMenuCell.cs" />
+    <Compile Include="Menu\MenuCell.cs" />
+    <Compile Include="Menu\TextMenuCell.cs" />
+    <Compile Include="Menu\ToolTipManager.cs" />
+    <Compile Include="Objects\SmartBigCrafrable.cs" />
+    <Compile Include="Data\BundleInformation.cs" />
+    <Compile Include="Data\Supporting\BundleItemInformation.cs" />
+    <Compile Include="Data\Supporting\TextureInfo.cs" />
+    <Compile Include="Objects\SmartBigCrafrable.Validation.cs" />
+    <Compile Include="Services\BundlesService.cs" />
+    <Compile Include="Data\Supporting\EventInfo.cs" />
+    <Compile Include="Services\Internal\Cloner.cs" />
+    <Compile Include="Services\GiftPreferencesService.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Events\InventoryEvents.cs" />
+    <Compile Include="Events\ObjectEventArgs.cs" />
+    <Compile Include="Services\LevelUpService.cs" />
+    <Compile Include="Services\RecipesService.cs" />
+    <Compile Include="Services\InformationService.cs" />
+    <Compile Include="Data\Supporting\IngredientInfo.cs" />
+    <Compile Include="Services\ClassMapperService.cs" />
+    <Compile Include="Constants\TextureType.cs" />
+    <Compile Include="Data\ShopInfo.cs" />
+    <Compile Include="Events\SavingEvents.cs" />
+    <Compile Include="Services\ShopService.cs" />
+    <Compile Include="Data\Supporting\TextureRect.cs" />
+    <Compile Include="Services\TexturesService.cs" />
+    <Compile Include="Objects\SmartObject.cs" />
+    <Compile Include="Services\Internal\Traverser.cs" />
+    <Compile Include="Utils\Constructor.cs" />
+    <Compile Include="Utils\DominantColorFinder.cs" />
+    <Compile Include="Utils\ExceptionHandler.cs" />
+    <Compile Include="Utils\ExpressionCompiler.cs" />
+    <Compile Include="Utils\Log.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

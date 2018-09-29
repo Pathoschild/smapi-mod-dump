@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Time Reminder",
+  "Author": "KoihimeNakamura",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 0,
+    "Build": "20170314"
+  },
+  "Description": "Reminds you of the time every so many minutes.",
+  "UniqueID": "KoihimeNakamura.TimeReminder",
+  "EntryDll": "TimeReminder.dll"
+}

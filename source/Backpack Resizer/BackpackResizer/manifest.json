@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Backpack Resizer",
+  "Author": "DefenTheNation",
+  "Version": "1.1",
+  "UniqueID": "DefenTheNation.BackpackResizer",
+  "Description": "Adds command to resize the player's inventory",
+  "EntryDll": "BackpackResizer.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "Nexus:2263" ]
+}

@@ -1,0 +1,14 @@
+url:
+   https://github.com/hcoona/StardewValleyMods.git
+
+mods:
+   Fishing Adjust
+   Move Faster
+
+latest commit:
+   commit 8e993a56d32082bf24d6b3db965379fad6dfb5b4
+   Author: Shuai Zhang <zhangshuai.ustc@gmail.com>
+   Date:   Tue Aug 1 14:28:57 2017 +0800
+   
+       [MSBuildExtensions] Create folder before generate files.
+   

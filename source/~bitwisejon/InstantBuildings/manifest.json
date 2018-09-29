@@ -1,0 +1,10 @@
+﻿{
+   "Name": "Instant Buildings from Farm",
+   "Author": "Bitwise Jon",
+   "Version": "1.0.4",
+   "Description": "Build buildings instantly from the farm.",
+   "UniqueID": "BitwiseJonMods.InstantBuildings",
+   "EntryDll": "BitwiseJonMods.InstantBuildings.dll",
+   "MinimumApiVersion": "2.6",
+   "UpdateKeys": ["Nexus:2070"]
+}

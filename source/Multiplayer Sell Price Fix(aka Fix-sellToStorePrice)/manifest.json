@@ -1,0 +1,10 @@
+﻿{
+   "Name": "Fix_sellToStorePrice",
+   "Author": "Unremarkable",
+   "Version": "1.0.0",
+   "Description": "Causes the game to use everyone's professions when calculating sell price",
+   "UniqueID": "unremarkable.fix-sellToStorePrice",
+   "EntryDll": "Fix_sellToStorePrice.dll",
+   "MinimumApiVersion": "2.6-beta.5",
+   "UpdateKeys": []
+}

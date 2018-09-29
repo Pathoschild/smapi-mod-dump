@@ -1,0 +1,13 @@
+url:
+   https://gitlab.com/speeder1/SMAPISprinklerMod.git
+
+mods:
+   Better Sprinklers
+
+latest commit:
+   commit c1955ef5c144d7ed26fe39ee701ab9f48c591ac4
+   Author: MaurÃ­cio Gomes <mauricio.gomes@coderofworlds.com>
+   Date:   Sat Mar 4 19:22:35 2017 -0300
+   
+       minor ver fix
+   

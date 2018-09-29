@@ -1,0 +1,10 @@
+{
+    "Name": "Infinite Inventory",
+    "Author": "Devin Lematty",
+    "Version": "2.0",
+    "Description": "Allows for an Infinite backpack.",
+    "UniqueID": "DevinLematty.InfiniteInventory",
+    "EntryDll": "InfiniteInventory.dll",
+    "MinimumApiVersion": "2.0",
+	"UpdateKeys": [ "Nexus:2247" ]
+}

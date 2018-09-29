@@ -1,0 +1,20 @@
+{
+  "Name": "Stardew Brewery",
+  "Author": "Cylon",
+  "Version": "1.0.1",
+  "Description": "Adds a new Brewery building to Robin.",
+  "UniqueID": "cylon.stardewbrewery",
+  "EntryDll": "StardewBrewery.dll",
+  "MinimumApiVersion": "2.5",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "Entoarox.EntoaroxFramework",
+      "MinimumVersion":  "2.4.0"
+    },
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "MinimumVersion":  "1.1.1"
+    }
+  ]
+}

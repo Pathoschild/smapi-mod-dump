@@ -1,0 +1,9 @@
+﻿{
+  "Name": "LongerLastingLures",
+  "Author": "Caraxian",
+  "Version": "1.0.0",
+  "Description": "",
+  "UniqueID": "caraxian.LongerLastingLures",
+  "EntryDll": "LongerLastingLures.dll",
+  "UpdateKeys": [ "Nexus:2510" ]
+}

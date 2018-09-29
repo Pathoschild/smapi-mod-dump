@@ -1,0 +1,37 @@
+{
+  "gender": 1,
+  "seasons": [
+    0,
+    1,
+	2,
+	3
+  ],
+  "type": 0,
+  "assetName": "VanillaFemaleBodyBase",
+  "standingAssetPaths": {
+    "leftString": "FBodyBaseLeft",
+    "rightString": "FBodyBaseRight",
+    "upString": "FBodyBaseUp",
+    "downString": "FBodyBaseDown"
+  },
+  "swimmingAssetPaths": {
+    "leftString": "FBodyBaseLeft",
+    "rightString": "FBodyBaseRight",
+    "upString": "FBodyBaseUp",
+    "downString": "FBodyBaseDown"
+  },
+  "movingAssetPaths": {
+    "leftString": "FBodyBaseMovingLeft",
+    "rightString": "FBodyBaseMovingRight",
+    "upString": "FBodyBaseMovingUp",
+    "downString": "FBodyBaseMovingDown"
+  },
+  "sittingAssetPaths": {
+    "leftString": "FBodyBaseLeft",
+    "rightString": "FBodyBaseRight",
+    "upString": "FBodyBaseUp",
+    "downString": "FBodyBaseDown"
+  },
+  "assetSize": "16, 32",
+  "randomizeUponLoad": false
+}

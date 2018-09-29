@@ -1,0 +1,14 @@
+url:
+   https://github.com/StardewConfigFramework/StardewConfigMenu.git
+
+mods:
+   Stardew Config Menu
+
+latest commit:
+   commit 645bb6f53e62b40e6495f674f8aaf583ab8d6748
+   Merge: f80e50b 98042be
+   Author: Justin Oroz <justinoroz@me.com>
+   Date:   Sun Jul 1 11:31:25 2018 -0700
+   
+       Merge branch 'develop'
+   

@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="manifest.props" />
+  <Import Project="$(SolutionDir)\develop.props" Condition="Exists('$(SolutionDir)\develop.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{B81B1F0A-2BF7-481F-91AF-C91708693072}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>SaveAnywhereV3</RootNamespace>
+    <AssemblyName>SaveAnywhereV3</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Config.cs" />
+    <Compile Include="DataContract\AggregatedModel.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="DataContract\GlobalInfo.cs" />
+    <Compile Include="SaveLoadManager.cs" />
+    <Compile Include="Service\GlobalService.cs" />
+    <Compile Include="DataContract\PlayerPostion.cs" />
+    <Compile Include="DataContract\NpcPosition.cs" />
+    <Compile Include="Service\SaveLoadServiceBase.cs" />
+    <Compile Include="DataContract\ShippingBinItemRecord.cs" />
+    <Compile Include="Service\UniqueNpcPositionService.cs" />
+    <Compile Include="Service\ISaveLoadService.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="Service\PlayerPositionService.cs" />
+    <Compile Include="Service\ShippingBinService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="manifest.props" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

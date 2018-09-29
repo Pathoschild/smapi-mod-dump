@@ -1,0 +1,15 @@
+url:
+   https://github.com/unidarkshin/Stardew-Mods.git
+
+mods:
+   Extreme Fishing Overhaul
+   Infinite Inventory
+   Level Extender
+
+latest commit:
+   commit 7fcbb023ce87054ed2cfbd7f89e65e86ae1056a3
+   Author: Unidarkshin <devinlematty@gmail.com>
+   Date:   Mon Sep 17 13:36:23 2018 -0400
+   
+       a
+   

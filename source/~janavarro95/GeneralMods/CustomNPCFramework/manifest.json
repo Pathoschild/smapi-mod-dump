@@ -1,0 +1,10 @@
+{
+  "Name": "CustomNPCFramework",
+  "Author": "Alpha_Omegasis",
+  "Version": "0.1.0",
+  "Description": "A system to add custom npcs to Stardew.",
+  "UniqueID": "Omegasis.CustomNPCFramework",
+  "EntryDll": "CustomNPCFramework.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ ]
+}

@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/ColorfulChests.git
+
+mods:
+   Colorful Chests
+
+latest commit:
+   commit 33a3b3be818272392ae22fba382fd07de08d833f
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Nov 10 12:12:06 2017 -0500
+   
+       Fix README
+   

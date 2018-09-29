@@ -1,0 +1,18 @@
+{
+  "Name": "Settings Tester",
+  "Authour": "Juice805",
+  "Version": {
+    "MajorVersion": 0,
+    "MinorVersion": 9,
+    "PatchVersion": 0,
+    "Build": ""
+  },
+  "Description": "Tests unified configuration menu.",
+  "UniqueID": "Juice805.SCFTester",
+  "EntryDll": "SCFTester.dll",
+  "Dependencies": [
+      {
+      "UniqueID": "Juice805.StardewConfigMenu"
+      }
+  ]
+}

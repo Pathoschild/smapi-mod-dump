@@ -1,0 +1,14 @@
+url:
+   https://github.com/thakyZ/zDailyIncrease.git
+
+mods:
+   zDailyIncrease
+
+latest commit:
+   commit 79c9faa66eda12beaef1ccaa3704780685b5b65a
+   Merge: a485ce2 99a286c
+   Author: Nick Mullally <thakyZ@voidinc.net>
+   Date:   Mon Jan 1 15:42:10 2018 -0800
+   
+       Merge remote-tracking branch 'origin/master'
+   

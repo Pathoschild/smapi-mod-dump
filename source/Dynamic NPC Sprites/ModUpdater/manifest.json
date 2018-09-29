@@ -1,0 +1,13 @@
+{
+  "Name": "ModUpdater",
+  "Author": "BashNinja",
+  "Version": {
+    "MajorVersion": 0,
+    "MinorVersion": 1,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "Description": "Update Mods",
+  "UniqueID": "BashNinja.ModUpdater",
+  "EntryDll": "ModUpdater.dll"
+}

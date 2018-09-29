@@ -1,0 +1,14 @@
+{
+  "Name": "Serialization",
+  "Author": "Alpha_Omegasis",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "MinimumApiVersion": "1.15",
+  "Description": "A simple serializer that allows easily adding custom items into the game.",
+  "UniqueID": "Omegasis.Serialization",
+  "EntryDll": "Serialization.dll"
+}

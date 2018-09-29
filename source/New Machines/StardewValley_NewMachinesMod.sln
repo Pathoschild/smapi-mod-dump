@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewMachinesMod", "NewMachinesMod\NewMachinesMod.csproj", "{9387EF8B-4539-435D-AE5A-1AC595ED3C2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicAPI", "DynamicAPI\DynamicAPI.csproj", "{0EE5BDB6-B291-44DB-B869-AE048C4E5883}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreCropsLoader", "MoreCropsLoader\MoreCropsLoader.csproj", "{3D6B12A1-9BF4-4BC7-9DB2-70DB70602178}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicAPI.Tests", "DynamicAPI.Tests\DynamicAPI.Tests.csproj", "{89DFD9EB-4D03-44F8-86BD-A51139099E4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColoredChestsMod", "ColoredChestsMod\ColoredChestsMod.csproj", "{4BEFDE5C-731C-4853-8E4B-C5CDF946805F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildTools", "BuildTools\BuildTools.csproj", "{B4BABC77-4799-4CF8-9AD8-78613286EF75}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9387EF8B-4539-435D-AE5A-1AC595ED3C2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9387EF8B-4539-435D-AE5A-1AC595ED3C2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9387EF8B-4539-435D-AE5A-1AC595ED3C2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9387EF8B-4539-435D-AE5A-1AC595ED3C2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EE5BDB6-B291-44DB-B869-AE048C4E5883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EE5BDB6-B291-44DB-B869-AE048C4E5883}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EE5BDB6-B291-44DB-B869-AE048C4E5883}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EE5BDB6-B291-44DB-B869-AE048C4E5883}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D6B12A1-9BF4-4BC7-9DB2-70DB70602178}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D6B12A1-9BF4-4BC7-9DB2-70DB70602178}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D6B12A1-9BF4-4BC7-9DB2-70DB70602178}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D6B12A1-9BF4-4BC7-9DB2-70DB70602178}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89DFD9EB-4D03-44F8-86BD-A51139099E4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89DFD9EB-4D03-44F8-86BD-A51139099E4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89DFD9EB-4D03-44F8-86BD-A51139099E4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89DFD9EB-4D03-44F8-86BD-A51139099E4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BEFDE5C-731C-4853-8E4B-C5CDF946805F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BEFDE5C-731C-4853-8E4B-C5CDF946805F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BEFDE5C-731C-4853-8E4B-C5CDF946805F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BEFDE5C-731C-4853-8E4B-C5CDF946805F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4BABC77-4799-4CF8-9AD8-78613286EF75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4BABC77-4799-4CF8-9AD8-78613286EF75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4BABC77-4799-4CF8-9AD8-78613286EF75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4BABC77-4799-4CF8-9AD8-78613286EF75}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

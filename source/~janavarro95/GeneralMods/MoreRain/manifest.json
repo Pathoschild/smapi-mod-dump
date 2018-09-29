@@ -1,0 +1,10 @@
+{
+  "Name": "More Rain",
+  "Author": "Alpha_Omegasis",
+  "Version": "1.6.0",
+  "Description": "Change how much it rains in the game.",
+  "UniqueID": "Omegasis.MoreRain",
+  "EntryDll": "MoreRain.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:441" ]
+}

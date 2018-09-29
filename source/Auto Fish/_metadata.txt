@@ -1,0 +1,13 @@
+url:
+   https://github.com/WhiteMinds/mod-sv-autofish.git
+
+mods:
+   Auto Fish
+
+latest commit:
+   commit 7ebcf36efdc518e7756c5f34090fc054a5cbd7f7
+   Author: WhiteMind <WhiteMind@qq.com>
+   Date:   Tue May 1 13:11:30 2018 +0800
+   
+       Update README.md
+   

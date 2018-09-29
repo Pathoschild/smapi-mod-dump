@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Cooking Organizer",
+  "Author": "Musbah Sinno",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 6,
+    "Build": null
+  },
+  "Description": "Adds sort functionality to the cooking menu.",
+  "UniqueID": "musbah.CookingOrganizer",
+  "EntryDll": "CookingOrganizer.dll"
+}

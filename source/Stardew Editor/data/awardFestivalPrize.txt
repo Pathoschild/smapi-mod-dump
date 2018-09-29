@@ -1,0 +1,7 @@
+pan=
+sculpture=
+rod=
+sword=
+hero=
+joja=
+slimeegg=

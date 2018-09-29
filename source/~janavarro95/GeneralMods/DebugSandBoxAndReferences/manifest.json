@@ -1,0 +1,10 @@
+{
+  "Name": "Debug Sandbox",
+  "Author": "Alpha_Omegasis",
+  "Version": "1.0.0",
+  "Description": "Just some nice code references to help me remember how to do things.",
+  "UniqueID": "Omegasis.DebugSandbox",
+  "EntryDll": "DebugSandbox.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "" ]
+}

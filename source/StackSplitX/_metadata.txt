@@ -1,0 +1,14 @@
+url:
+   https://github.com/tstaples/StackSplitX.git
+
+mods:
+   StackSplitX
+
+latest commit:
+   commit c7642179e4caba06e73f6d7dfda43b08ea660056
+   Author: tyler staples <tyler.a.staples@gmail.com>
+   Date:   Sun May 6 21:34:32 2018 -0700
+   
+       + Added release notes.
+       + Updated readme.
+   

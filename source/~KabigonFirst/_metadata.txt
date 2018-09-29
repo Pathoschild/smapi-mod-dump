@@ -1,0 +1,15 @@
+url:
+   https://github.com/KabigonFirst/StardewValleyMods.git
+
+mods:
+   Campfire Cooking
+   Kisekae
+   Mine Assist
+
+latest commit:
+   commit 5c2a93ba1e222f4eb79a26eaee4b29c86499ebdf
+   Author: KabigonFirst <kabigonfirst@gmail.com>
+   Date:   Fri Jul 6 10:58:14 2018 -0400
+   
+       support multiplayer mode; add ways to access menu; modify whole structure of menu
+   

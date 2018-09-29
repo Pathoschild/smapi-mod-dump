@@ -1,0 +1,13 @@
+url:
+   https://github.com/pathoschild/StardewMods.git
+
+mods:
+   The Long Night
+
+latest commit:
+   commit b39a043afa92f3ea310c14e3ec103625e3f1fb70
+   Author: Jesse Plamondon-Willard <github@jplamondonw.com>
+   Date:   Sun Sep 23 13:31:16 2018 -0400
+   
+       update for release
+   

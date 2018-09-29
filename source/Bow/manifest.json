@@ -1,0 +1,18 @@
+{
+  "Name": "Bow",
+  "Author": "spacechase0",
+  "Version": "1.0.0",
+  "Description": "...",
+  "UniqueID": "spacechase0.Bow",
+  "PerSaveConfigs": false,
+  "EntryDll": "Bow.dll",
+  "UpdateKeys": [ "Nexus:2756", "Chucklefish:5523", "spacechase0:bow" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.Toolkit"
+    },
+    {
+      "UniqueID": "spacechase0.SpaceCore"
+    }
+  ]
+}

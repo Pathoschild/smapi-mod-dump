@@ -1,0 +1,15 @@
+{
+  "Name": "Colorful Chests",
+  "Author": "spacechase0",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 2,
+    "PatchVersion": 1,
+    "Build": ""
+  },
+  "Description": "More diverse color choices for chests.",
+  "UniqueID": "spacechase0.ColorfulChests",
+  "PerSaveConfigs": false,
+  "EntryDll": "ColorfulChests.dll",
+  "UpdateKeys": [ "Nexus:" ]
+}

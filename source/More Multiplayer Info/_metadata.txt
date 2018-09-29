@@ -1,0 +1,13 @@
+url:
+   https://github.com/cheesysteak/stardew-steak.git
+
+mods:
+   More Multiplayer Info
+
+latest commit:
+   commit 7273e73a72ef1095f89f48b68f424c9acd525998
+   Author: cheesysteak <andmichaelis1@gmail.com>
+   Date:   Tue May 22 22:30:08 2018 -0500
+   
+       Fix possible NREs
+   

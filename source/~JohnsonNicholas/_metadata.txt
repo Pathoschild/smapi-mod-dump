@@ -1,0 +1,20 @@
+url:
+   https://github.com/JohnsonNicholas/SDVMods.git
+
+mods:
+   Climates of Ferngill
+   Customizable Cart Redux
+   Dynamic Night Time
+   Lunar Disturbances
+   Solar Eclipse Event
+   Summit Reborn
+   Time Reminder
+   Weather Illnesses
+
+latest commit:
+   commit 1302c2fbc26abf06c1031e6eb37f52af71e2117c
+   Author: Nicholas Johnson <koihimenakamura@gmail.com>
+   Date:   Wed Apr 25 22:49:37 2018 -0700
+   
+       Adding these mods to the stable repo.
+   

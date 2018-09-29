@@ -1,0 +1,13 @@
+url:
+   https://github.com/Paradox355/SDVMods.git
+
+mods:
+   Relationship Tracker
+
+latest commit:
+   commit d6a3c5d058e60909cf418ededf1f3843370bf838
+   Author: Wayne Christopher <wchristopher001@gmail.com>
+   Date:   Fri Sep 21 21:54:20 2018 -0400
+   
+       Fixed UI not toggling properly.
+   

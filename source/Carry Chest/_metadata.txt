@@ -1,0 +1,14 @@
+url:
+   https://github.com/spacechase0/CarryChest.git
+
+mods:
+   Carry Chest
+
+latest commit:
+   commit f9e4b0c579bb9302cbf4f8af5932bc678243564a
+   Merge: 6bf9b38 b0de4b4
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Aug 3 23:02:17 2018 -0400
+   
+       Merge remote-tracking branch 'origin/master'
+   

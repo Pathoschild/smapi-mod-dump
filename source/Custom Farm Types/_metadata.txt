@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/CustomFarmTypes.git
+
+mods:
+   Custom Farm Types
+
+latest commit:
+   commit 7a390aa6ed261bc0c6e06a5374410d20cb6bb1b7
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Thu Feb 1 20:01:15 2018 -0500
+   
+       Version 1.1.7.
+   

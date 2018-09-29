@@ -1,0 +1,10 @@
+﻿{
+  "Name": "PondWithBridge",
+  "Author": "Advize & Jinxiewinxie",
+  "Version": "1.0.2",
+  "MinimumApiVersion": "2.0",
+  "Description": "Adds a bridge over the lower pond on the farm",
+  "UniqueID": "jinxiewinxie.StoneBridgeOverPond",
+  "EntryDll": "PondWithBridge.dll",
+  "UpdateKeys": [ "Nexus:316" ]
+}

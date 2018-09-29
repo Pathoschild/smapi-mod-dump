@@ -1,0 +1,13 @@
+url:
+   https://github.com/LajnaLegenden/Stardew_Valley_Mods.git
+
+mods:
+   24h Clock
+
+latest commit:
+   commit 90ea334b5d5ca88117e99ab15119eeb7d03c1cbd
+   Author: Linus <LajnaLegenden@users.noreply.github.com>
+   Date:   Thu Jan 4 16:27:49 2018 +0100
+   
+       Uploaded new mod thing something
+   

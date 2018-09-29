@@ -1,0 +1,257 @@
+{
+    "Format": "1.3",
+    "Changes": [
+
+        // Portraits
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Abigail",
+            "FromFile": "assets/Portraits/Abigail.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Alex",
+            "FromFile": "assets/Portraits/Alex.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Bouncer",
+            "FromFile": "assets/Portraits/Bouncer.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Caroline",
+            "FromFile": "assets/Portraits/Caroline.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Clint",
+            "FromFile": "assets/Portraits/Clint.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Demetrius",
+            "FromFile": "assets/Portraits/Demetrius.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/Dobson",
+            "FromFile": "assets/Portraits/Dobson.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/Dwarf",
+            "FromFile": "assets/Portraits/Dwarf.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Elliott",
+            "FromFile": "assets/Portraits/Elliott.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Emily",
+            "FromFile": "assets/Portraits/Emily.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Evelyn",
+            "FromFile": "assets/Portraits/Evelyn.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/George",
+            "FromFile": "assets/Portraits/George.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/Gil",
+            "FromFile": "assets/Portraits/Gil.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/Governor",
+            "FromFile": "assets/Portraits/Governor.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/Grandpa",
+            "FromFile": "assets/Portraits/Grandpa.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Gunther",
+            "FromFile": "assets/Portraits/Gunther.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/Gus",
+            "FromFile": "assets/Portraits/Gus.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Haley",
+            "FromFile": "assets/Portraits/Haley.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Harvey",
+            "FromFile": "assets/Portraits/Harvey.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Henchman",
+            "FromFile": "assets/Portraits/Henchman.png"
+        },
+
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Jas",
+            "FromFile": "assets/Portraits/Jas.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Jodi",
+            "FromFile": "assets/Portraits/Jodi.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Kent",
+            "FromFile": "assets/Portraits/Kent.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Krobus",
+            "FromFile": "assets/Portraits/Krobus.png"
+        },
+
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Leah",
+            "FromFile": "assets/Portraits/Leah.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Lewis",
+            "FromFile": "assets/Portraits/Lewis.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/Linus",
+            "FromFile": "assets/Portraits/Linus.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/Marlon",
+            "FromFile": "assets/Portraits/Marlon.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/Marnie",
+            "FromFile": "assets/Portraits/Marnie.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Maru",
+            "FromFile": "assets/Portraits/Maru.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Maru_Hospital",
+            "FromFile": "assets/Portraits/Maru_Hospital.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/Morris",
+            "FromFile": "assets/Portraits/Morris.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/MrQi",
+            "FromFile": "assets/Portraits/MrQi.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Pam",
+            "FromFile": "assets/Portraits/Pam.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Penny",
+            "FromFile": "assets/Portraits/Penny.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Pierre",
+            "FromFile": "assets/Portraits/Pierre.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Robin",
+            "FromFile": "assets/Portraits/Robin.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/Sam",
+            "FromFile": "assets/Portraits/Sam.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Sandy",
+            "FromFile": "assets/Portraits/Sandy.png"
+        },
+
+        {
+            "Action": "Load",
+            "Target": "Portraits/Sebastian",
+            "FromFile": "assets/Portraits/Sebastian.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/Shane",
+            "FromFile": "assets/Portraits/Shane.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/Vincent",
+            "FromFile": "assets/Portraits/Vincent.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/Willy",
+            "FromFile": "assets/Portraits/Willy.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Portraits/Wizard",
+            "FromFile": "assets/Portraits/Wizard.png"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+﻿{
+  "Name": "AutoFish",
+  "Author": "WhiteMind",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 1,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "MinimumApiVersion": "1.9",
+  "Description": "Auto play fish minigame and fishing rod auto hit.",
+  "UniqueID": "WhiteMind.AF",
+  "EntryDll": "AutoFish.dll"
+}

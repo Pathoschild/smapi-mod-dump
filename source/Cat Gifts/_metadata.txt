@@ -1,0 +1,13 @@
+url:
+   https://github.com/skuldomg/catGifts.git
+
+mods:
+   Cat Gifts
+
+latest commit:
+   commit f61a2162c1ea9154d3a7d3e91f145bf90c2dc30d
+   Author: skuldomg <scdehne@googlemail.com>
+   Date:   Thu Jun 7 21:53:10 2018 +0200
+   
+       Updated manifest
+   

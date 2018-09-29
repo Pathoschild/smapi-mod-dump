@@ -1,0 +1,13 @@
+url:
+   https://github.com/cdaragorn/Ui-Info-Suite.git
+
+mods:
+   Ui Info Suite
+
+latest commit:
+   commit fd9c4f28efa8f40bad2be43a3a13191877587615
+   Author: cdaragorn <cdaragorn1@gmail.com>
+   Date:   Sun Aug 19 15:57:45 2018 -0600
+   
+       Fixed a lot of bugs. Updated for official multiplayer release. Started adding integration with level extender mod.
+   

@@ -1,0 +1,14 @@
+{
+  "Name": "CustomShopMod",
+  "Authour": "Alpha_Omegasis",
+  "Version": {
+    "MajorVersion": 0,
+    "MinorVersion": 0,
+    "PatchVersion": 1,
+    "Build": ""
+  },
+  "Description": "A shoddy attempt at adding in custom shops. Not a good long-term solution.",
+  "UniqueID": "4be88c18-b6f3-49b0-ba96-f94b1a5be890",
+  "PerSaveConfigs": false,
+  "EntryDll": "CustomShopMod.dll"
+}

@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/Spenny.git
+
+mods:
+   Spenny
+
+latest commit:
+   commit 538669f98186c608f8dcef9747a3f384eebf02f1
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Aug 31 15:42:27 2018 -0400
+   
+       Initial commit
+   

@@ -1,0 +1,13 @@
+url:
+   https://github.com/TobinWilson/PelicanPostalService.git
+
+mods:
+   Pelican Postal Service
+
+latest commit:
+   commit 63f65c195e09801152d59adb81c4c615f856de38
+   Author: Tobin Wilson <tobinwilson@gmail.com>
+   Date:   Mon Sep 24 00:00:18 2018 -0700
+   
+       Additional testing and Clint-Emily quest functionality
+   

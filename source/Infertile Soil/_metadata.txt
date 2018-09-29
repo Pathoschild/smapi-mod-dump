@@ -1,0 +1,13 @@
+url:
+   https://github.com/ebehar/StardewValley-InfertileSoil.git
+
+mods:
+   Infertile Soil
+
+latest commit:
+   commit bd660bc248ed98cded3045ab64c363a2c5eddc5e
+   Author: Evan Behar <behare@gmail.com>
+   Date:   Mon Jul 9 18:52:14 2018 -0700
+   
+       Commiting to switch computers, lawl
+   

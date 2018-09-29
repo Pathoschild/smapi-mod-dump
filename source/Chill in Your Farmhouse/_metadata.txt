@@ -1,0 +1,16 @@
+url:
+   https://github.com/Husky110/ChillInYourFarmHouse.git
+
+mods:
+   Chill in Your Farmhouse
+
+latest commit:
+   commit f95f4263ca09d04a1d916d647acdd2c27f0a7169
+   Merge: 641306e 7ab3488
+   Author: Lothar "Husky110" Hoffmann <Husky110@users.noreply.github.com>
+   Date:   Sun May 13 15:56:18 2018 +0200
+   
+       Merge pull request #1 from tyrleifsen/master
+       
+       Fixed the ChillInYourFarmHouse mod.
+   

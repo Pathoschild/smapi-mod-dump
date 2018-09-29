@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Animal Sitter",
+  "Author": "jwdred",
+  "Version": "1.1.0",
+  "Description": "Let someone else pet all those pesky animals!",
+  "UniqueID": "jwdred.AnimalSitter",
+  "EntryDll": "AnimalSitter.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "Nexus:581" ]
+}

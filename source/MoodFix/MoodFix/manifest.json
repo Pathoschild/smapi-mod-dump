@@ -1,0 +1,12 @@
+﻿{
+  "Name": "MoodFix",
+  "Author": "vaindil",
+  "Version": "1.0.1",
+  "Description": "Fixes several bugs related to animal happiness/mood",
+  "UniqueID": "vaindil.MoodFix",
+  "EntryDll": "MoodFix.dll",
+  "MinimumApiVersion": "2.1",
+  "UpdateKeys": [
+    "Nexus:1809"
+  ]
+}

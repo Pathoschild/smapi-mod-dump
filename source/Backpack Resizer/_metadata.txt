@@ -1,0 +1,13 @@
+url:
+   https://github.com/DefenTheNation/StardewMod-BackpackResizer.git
+
+mods:
+   Backpack Resizer
+
+latest commit:
+   commit 7739c6707368458bb3c2450ccde67764cdbb99a8
+   Author: DefenTheNation <violaking89@gmail.com>
+   Date:   Sun Jun 3 21:57:18 2018 -0700
+   
+       Create README.md
+   

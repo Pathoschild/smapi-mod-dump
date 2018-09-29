@@ -1,0 +1,13 @@
+url:
+   https://github.com/IrregularPorygon/SMAPIGenericShopMod.git
+
+mods:
+   Generic Shop Extender
+
+latest commit:
+   commit 9174bdf67dcf9c47ae9ec2e96d4f06557022b226
+   Author: IrregularPorygon <IrregularPorygon@gmail.com>
+   Date:   Wed May 23 18:00:43 2018 -0400
+   
+       Adding a new test mod
+   

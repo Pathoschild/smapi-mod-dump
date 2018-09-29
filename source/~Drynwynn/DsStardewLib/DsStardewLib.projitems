@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>f02b86a4-9981-40c6-b51c-e71b2d51d55d</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>DsStardewLib</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Config\HarmonyConfig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SMAPI\DsModEntry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\HarmonyHack.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\HarmonyWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Log.cs" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,8 @@
+{
+  "name": "Omegas's Music Data Example",
+  "author": "Omegasis",
+  "description": "Just a simple example of how metadata is formated for music packs. Feel free to copy and edit this one!",
+  "versionInfo": "1.0.0 CoolExample",
+  "pathToMusicPackIcon": "Icon.png",
+  "Icon": null
+}

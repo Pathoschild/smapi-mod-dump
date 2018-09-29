@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/Bow.git
+
+mods:
+   Bow
+
+latest commit:
+   commit 6721f41ed2b0e74f254c953486bd7457eee86756
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Aug 31 16:25:27 2018 -0400
+   
+       Initial commit
+   

@@ -1,0 +1,1 @@
+When cloning this repository, don't forget to grab the Pathoschild.Stardew.ModBuildConfig package through NuGet!

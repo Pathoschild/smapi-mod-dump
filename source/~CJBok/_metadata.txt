@@ -1,0 +1,17 @@
+url:
+   https://github.com/CJBok/SDV-Mods.git
+
+mods:
+   CJB Automation
+   CJB Cheats Menu
+   CJB Item Spawner
+   CJB Show Item Sell Price
+
+latest commit:
+   commit 85900223d69a794d6852796d92e7430812896a6c
+   Merge: 70f037f 96b9158
+   Author: Jesse Plamondon-Willard <github@jplamondonw.com>
+   Date:   Tue Aug 28 00:03:40 2018 -0400
+   
+       Merge branch 'develop'
+   

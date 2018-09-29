@@ -1,0 +1,37 @@
+{
+  "gender": 1,
+  "seasons": [
+    0,
+    1,
+	2,
+	3
+  ],
+  "type": 5,
+  "assetName": "VanillaBrownShoes",
+  "standingAssetPaths": {
+    "leftString": "LeftStanding",
+    "rightString": "RightStanding",
+    "upString": "UpStanding",
+    "downString": "DownStanding"
+  },
+  "swimmingAssetPaths": {
+    "leftString": "LeftStanding",
+    "rightString": "RightStanding",
+    "upString": "UpStanding",
+    "downString": "DownStanding"
+  },
+  "movingAssetPaths": {
+    "leftString": "LeftMoving",
+    "rightString": "RightMoving",
+    "upString": "UpMoving",
+    "downString": "DownMoving"
+  },
+  "sittingAssetPaths": {
+    "leftString": "LeftStanding",
+    "rightString": "RightStanding",
+    "upString": "UpStanding",
+    "downString": "DownStanding"
+  },
+  "assetSize": "16, 32",
+  "randomizeUponLoad": false
+}

@@ -1,0 +1,24 @@
+﻿-Quality of life mods
+
+	Complete -auto open gate
+	Complete -ability to choose how fast a 10 minute increment is
+	Complete -Summon horse anywhere
+    COMPLETE -See fish type before cought
+	
+	COMPLETE -instant fishing
+	COMPLETE - wait an hour on keypress - ask dialogue
+
+	PARTIAL -Stamina is not used if action doesnt yield results...
+		-if hoe doesn't dig any dirt dont use stamina
+		-if axe doesnt hit a tree dont use stamina
+		-if pickaxe doesnt hit rock dont use stamina
+
+	COMPLETE -horse will pass through 1 tile passages
+	
+	ABANDONED -Allows the player to adjust the amount of debris that respawns
+	
+    Complete -Allow grass to drop hay so you can collect and store it without a silo 
+	Complete -roads increase speed
+
+	COMPLETE - Add a tool inventory window to hold all tools
+	- Allow time interval for 10 minute ticks to 0 and also allow barrels to progres at a different time interval

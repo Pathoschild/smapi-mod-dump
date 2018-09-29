@@ -1,0 +1,16 @@
+url:
+   https://github.com/gr3ger/Stardew_JJB.git
+
+mods:
+   Jiggly Junimo Bundles
+
+latest commit:
+   commit c365135145c9219d7918ffb7f375fd160e3a617d
+   Merge: 655ad94 bf3a723
+   Author: Jonas Henriksson <gr3ger@gmail.com>
+   Date:   Thu Oct 12 22:41:30 2017 +0200
+   
+       Merge pull request #1 from Pathoschild/update-code
+       
+       Update code for Stardew Valley 1.2 and SMAPI 2.0
+   

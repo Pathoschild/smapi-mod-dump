@@ -1,0 +1,21 @@
+url:
+   https://github.com/jdusbabek/stardewvalley.git
+
+mods:
+   Animal Sitter
+   Crab Net
+   Mail Order Pigs
+   Pelican Fiber
+   Point-And-Plant
+   Replanter
+
+latest commit:
+   commit 1df83fd02676b9bffdc8d58e462d0348d3685ccd
+   Merge: 348edad 4faf11a
+   Author: John Dusbabek <jdusbabek@gmail.com>
+   Date:   Sun Apr 29 11:52:55 2018 -0600
+   
+       Merge pull request #4 from Pathoschild/update-code
+       
+       Update for Stardew Valley 1.3
+   

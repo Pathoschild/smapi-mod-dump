@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Dynamic Horses",
+  "Author": "Bpendragon",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 1,
+    "PatchVersion": 0,
+    "Build": "release"
+  },
+  "Description": "Horse Texture Replacer. Allows the user to change the appearence of their horse based on name.",
+  "UniqueID": "Bpendragon-DynamicHorses",
+  "EntryDll": "DynamicHorses.dll"
+}

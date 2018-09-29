@@ -1,0 +1,12 @@
+{
+  /* when to open the doors */
+  "OpenDoorsAfter": 600,
+  /* when to close the doors */
+  "CloseDoorsAfter": 1930,
+  /* set this to a number higher than 1 if you don't want the doors to automatically open for the first few days in spring. 
+  this might be useful if you want to give your grass starters time to spread a bit */
+  "FirstDayInSpringToOpen": 1,
+
+  /* enable or disable the mod */
+  "EnableMod": true
+}

@@ -1,0 +1,2 @@
+Hairstyles seem to allow for a maximum of three pixels from the adverage top of the hairstyle to the starting of a hairstyle.
+This allows for things like volume and depth of view for ponytales that rise above the typical height of a head.

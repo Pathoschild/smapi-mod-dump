@@ -1,0 +1,11 @@
+﻿{
+   "Name": "EquivalentExchange",
+   "Author": "MercuriusXeno",
+   "Version": "1.5.0",
+   "MinimumApiVersion": "2.6",
+   "Description": "Transmute things into other things.",
+   "UniqueID": "MercuriusXeno.EquivalentExchange",
+   "EntryDll": "EquivalentExchange.dll",
+   "UpdateKeys": [ "Nexus:1656" ],
+   "Dependencies": [ { "UniqueID": "spacechase0.SpaceCore" } ]
+}

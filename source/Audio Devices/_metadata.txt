@@ -1,0 +1,14 @@
+url:
+   https://github.com/maxvollmer/AudioDevices.git
+
+mods:
+   Audio Devices
+
+latest commit:
+   commit ef0899fe91f1d2b4946771a401874be8e37a3dbc
+   Author: maxvollmer <maxvollmer@users.noreply.github.com>
+   Date:   Tue Sep 18 10:17:45 2018 +0200
+   
+       * Added customizable interval for checking audio devices
+       * Added call to Dispose() on temporary AudioEngine created for checking audio devices
+   

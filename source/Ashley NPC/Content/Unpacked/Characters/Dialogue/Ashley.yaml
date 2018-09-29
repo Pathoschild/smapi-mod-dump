@@ -1,0 +1,38 @@
+
+xnbData: 
+    target: "w"
+    compressed: true
+    hiDef: true
+    readerData: 
+        - 
+            type: "Microsoft.Xna.Framework.Content.DictionaryReader`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"
+            version: 0
+
+        - 
+            type: "Microsoft.Xna.Framework.Content.StringReader"
+            version: 0
+
+
+    numSharedResources: 0
+
+content:  #!Dictionary<String,String>
+    Introduction: "...Hello.$u#$e#I'm busy right now." #!String
+    Mon: "Hey... do you want to see my demon?#$e#His name is Red.$h#$e#He's not here right now.$u" #!String
+    Tue: "I'm working on a brew right now.$u#$e#It should turn you into a Venusaur." #!String
+    Tue2: "I'm working on a brew right now.$u#$e#It should allow you to bark like a dog." #!String
+    Tue4: "I'm working on a brew right now.$u#$e#It should show you the locations of rare ingredients." #!String
+    Tue6: "I'm working on a brew right now.$u#$e#It should give you bat wings." #!String
+    Tue8: "I'm working on a brew right now.$u#$e#It should increase your stamina immensely." #!String
+    Tue10: "I'm working on a brew right now.$u#$e#It should enable you to cast spells." #!String
+    Wed: "Have you ever made a deal with someone you don't know?#$e#Yeah, neither have I.$u#$e#Wanna make a deal?$h" #!String
+    Wed4: "Life would be a lot easier if Red was around.$u#$e#Without his assistance, all I can do is make faulty potions.$s" #!String
+    Wed8: "Think you could help me out with this brew?#$e#You'd make a great ingredient.$h#$e#Just kidding.$h" #!String
+    Thu: "That wizard I live with makes me study his strange magic with him.$s#$e#He treats me like I'm his assistant.$a" #!String
+    Thu4: "Even though the wizard treats me like a little kid, I'm fine with living here.$h#$e#I really want to go back, though.$s" #!String
+    Thu8: "It's nice to have someone else visit me often.$h#$e#The wizard doesn't make great company.$u" #!String
+    Fri: "I wonder where Red disappeared to.$s#$e#He's probably dead.$u#$e#If he's not, then he will be when I'm through with him.$a" #!String
+    Fri6: "I've just accepted that I'm probably never going back.$u#$e#Your visits are making this place a bit more bearable, though.$h" #!String
+    Sat: "You know, I could speed up your crop growth for you.#$e#I just need 2 eye of newt, 3 feet of troll, spit of dog, a horned goats tongue...$h#$b#What? You don't have any of those?$u" #!String
+    Sat4: "One of these days, I'll get the right ingredients for my brew.$u#$e#When I do, I'll let you test it." #!String
+    Sun: "Why do you insist on talking to me?$u#$e#I'm a little busy here.$u" #!String
+    Sun4: "That brew I was working on turned out to be a failure, as usual.$s#$e#I'll just have to try again.$h" #!String

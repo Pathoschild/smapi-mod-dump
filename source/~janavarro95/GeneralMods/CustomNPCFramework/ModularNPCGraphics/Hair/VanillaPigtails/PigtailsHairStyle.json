@@ -1,0 +1,37 @@
+{
+  "gender": 1,
+  "seasons": [
+    0,
+    1,
+	2,
+	3
+  ],
+  "type": 2,
+  "assetName": "VanillaPigTails",
+  "standingAssetPaths": {
+    "leftString": "LeftHairStyle",
+    "rightString": "RightHairStyle",
+    "upString": "UpHairStyle",
+    "downString": "DownHairStyle"
+  },
+  "swimmingAssetPaths": {
+    "leftString": "LeftHairStyle",
+    "rightString": "RightHairStyle",
+    "upString": "UpHairStyle",
+    "downString": "DownHairStyle"
+  },
+  "movingAssetPaths": {
+    "leftString": "LeftHairStyle",
+    "rightString": "RightHairStyle",
+    "upString": "UpHairStyle",
+    "downString": "DownHairStyle"
+  },
+  "sittingAssetPaths": {
+    "leftString": "LeftHairStyle",
+    "rightString": "RightHairStyle",
+    "upString": "UpHairStyle",
+    "downString": "DownHairStyle"
+  },
+  "assetSize": "16, 32",
+  "randomizeUponLoad": false
+}

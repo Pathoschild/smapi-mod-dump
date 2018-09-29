@@ -1,0 +1,13 @@
+url:
+   https://github.com/pomepome/AdjustableStaminaHealing.git
+
+mods:
+   Adjustable Stamina Healing
+
+latest commit:
+   commit eac9a5a2ea449eb8c7f0c41976ebd8fc9efd09b4
+   Author: pomepome <punyoon03@gmail.com>
+   Date:   Fri Jun 8 02:23:16 2018 +0900
+   
+       1.0.4
+   

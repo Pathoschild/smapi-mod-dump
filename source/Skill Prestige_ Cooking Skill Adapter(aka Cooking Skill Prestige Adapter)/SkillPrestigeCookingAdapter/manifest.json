@@ -1,0 +1,22 @@
+{
+  "Name": "Cooking Skill Prestige Adapter",
+  "Author": "Alphablackwolf",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 1,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "Description": "",
+  "MinimumApiVersion": "1.14",
+  "UniqueID": "Alphablackwolf.CookingSkillPrestigeAdapter",
+  "EntryDll": "SkillPrestigeCookingAdapter.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.CookingSkill"
+    },
+    {
+      "UniqueID": "alphablackwolf.skillPrestige"
+    }
+  ]
+}

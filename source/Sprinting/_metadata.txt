@@ -1,0 +1,16 @@
+url:
+   https://github.com/oliverpl/SprintingMod.git
+
+mods:
+   Sprinting
+
+latest commit:
+   commit 9814a6fd3f1713e0db2f924ebc1a6818d331bb37
+   Author: oliverpl <patrick.l.oliver@gmail.com>
+   Date:   Mon Sep 25 07:12:46 2017 -0700
+   
+       Started using TheTonttu's csproj file
+       
+       My CSProj file wasn't very good so I started using TheTonttu's csproj
+       file.
+   

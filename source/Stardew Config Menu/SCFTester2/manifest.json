@@ -1,0 +1,18 @@
+{
+  "Name": "Framework Test Mod",
+  "Authour": "Juice805",
+  "Version": {
+    "MajorVersion": 0,
+    "MinorVersion": 9,
+    "PatchVersion": 0,
+    "Build": ""
+  },
+  "Description": "Tests more of the unified configuration menu. Also has a pretty long description for more feature testing.\nPretty Neat huh? Even has a second paragraph for pretty info",
+  "UniqueID": "Juice805.SCFTester2",
+  "EntryDll": "SCFTester2.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "Juice805.StardewConfigMenu"
+    }
+  ]
+}

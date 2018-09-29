@@ -1,0 +1,13 @@
+url:
+   https://github.com/OfficialRenny/PrairieKingPrizes.git
+
+mods:
+   Prairie King Prizes (Lootboxes)
+
+latest commit:
+   commit d3aed66b50226a6c41099a648ed642597cb238bd
+   Author: Renny <renaldas.sorys@gmail.com>
+   Date:   Sat Sep 22 01:27:20 2018 +0100
+   
+       Think this is a small update, idk
+   

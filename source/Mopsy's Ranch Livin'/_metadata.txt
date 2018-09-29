@@ -1,0 +1,13 @@
+url:
+   https://github.com/mopquill/Mopsys-Ranch-Livin.git
+
+mods:
+   Mopsy's Ranch Livin'
+
+latest commit:
+   commit 5397cd398a5232bb5fdda1cfd01fa501b16877ce
+   Author: mopquill <1709954+mopquill@users.noreply.github.com>
+   Date:   Sun May 20 19:09:32 2018 -0600
+   
+       Fixed a bug when entering the command with no arguments, revert to default suffix when exiting save file.
+   

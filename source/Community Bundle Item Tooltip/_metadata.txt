@@ -1,0 +1,13 @@
+url:
+   https://github.com/musbah/StardewValleyMod.git
+
+mods:
+   Community Bundle Item Tooltip
+
+latest commit:
+   commit e6d03f3149951a9d8a72826f52f5568698b2bb21
+   Author: Musbah Sinno <musbahsinno@hotmail.com>
+   Date:   Sat Jun 2 02:15:15 2018 +0300
+   
+       bundle tooltips won't show up if the player is a joja member
+   

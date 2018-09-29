@@ -1,0 +1,13 @@
+url:
+   https://gitlab.com/speeder1/SMAPIHealthbarMod.git
+
+mods:
+   Enemy Health Bars(aka Health Bars)
+
+latest commit:
+   commit 87fe4d1a6fd881e88647f2522a378c762716db31
+   Author: MaurÃ­cio Gomes <mauricio.gomes@coderofworlds.com>
+   Date:   Sat Mar 26 04:18:11 2016 -0300
+   
+       update to build system
+   

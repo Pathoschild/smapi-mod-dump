@@ -1,0 +1,13 @@
+﻿{
+  "Name": "NotReallyHostedMultiplayer",
+  "Author": "Caraxian",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 0,
+    "Build": ""
+  },
+  "Description": "",
+  "UniqueID": "caraxian.NotReallyHostedMultiplayer",
+  "EntryDll": "NotReallyHostedMultiplayer.dll"
+}

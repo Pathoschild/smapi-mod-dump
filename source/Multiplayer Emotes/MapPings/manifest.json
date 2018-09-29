@@ -1,0 +1,9 @@
+﻿{
+	"Name": "Map Pings",
+	"Author": "FerMod",
+	"Version": "1.0.0-beta",
+	"Description": "Allows to ping in the map, and to other players see it.",
+	"UniqueID": "FerMod.MapPings",
+	"EntryDll": "MapPings.dll",
+	"UpdateKeys": [ "Nexus:" ]
+}

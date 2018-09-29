@@ -1,0 +1,13 @@
+url:
+   https://github.com/stokastic/AnimalChooser.git
+
+mods:
+   Animal Chooser
+
+latest commit:
+   commit d7b9f6bdeb7b141847634f93dbe22b9c7c3d6c57
+   Author: Aaron Hill <aaron_hill2@carleton.ca>
+   Date:   Sun Jul 29 18:31:27 2018 -0400
+   
+       Initial Commmit
+   

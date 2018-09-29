@@ -1,0 +1,13 @@
+url:
+   https://github.com/bmarquismarkail/SV_VerticalToolMenu.git
+
+mods:
+   Vertical Toolbar
+
+latest commit:
+   commit 38caef7bf3da7274c63c281275dd3e9336bf054f
+   Author: U-MarquisSeven\Brandon <bmmgreen@gmail.com>
+   Date:   Sun Jun 4 18:26:20 2017 -0500
+   
+       1.3.4: updated positioning code
+   

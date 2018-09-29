@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/SpaceCore_SDV.git
+
+mods:
+   SpaceCore
+
+latest commit:
+   commit f4e78e2accce1d086482542479a748b6598620c6
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Thu Aug 30 15:21:10 2018 -0400
+   
+       Version 1.2.2.
+   

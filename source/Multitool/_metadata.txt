@@ -1,0 +1,13 @@
+url:
+   https://github.com/miome/MultitoolMod.git
+
+mods:
+   Multitool
+
+latest commit:
+   commit ce59a1f75e7f49fe68833b9cad56aeca19355eb5
+   Author: miome <miome.geo@yahoo.com>
+   Date:   Wed Aug 8 11:24:27 2018 -0400
+   
+       Add additional logging to debug random tile issue
+   

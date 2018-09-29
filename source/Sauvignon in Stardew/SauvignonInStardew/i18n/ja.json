@@ -1,0 +1,18 @@
+{
+	"professionTitle_Distiller" : "蒸留酒",
+	"professionTitle_Artisan" : "職人",
+	"professionTitle_Agriculturist" : "農業主義者",
+	"professionMenuDescription_Distiller" : "40％以上のアルコール（ビール、ワインなど）。",
+	"professionMenuDescription_Artisan" : "アーティザングッズ（チーズ、トリュフ油、布など）は、40％多く価値があります。",
+	"professionMenuDescription_Agriculturist" : "すべての作物は10％速く成長します。",
+	"menuExtraInfo_Can" : "+1 水遣り能力",
+	"menuExtraInfo_Hoe" : "+1 鍬技能",
+	"menuTitle" : "レベル10農業",
+	"menuText" : "職業を選ぶ:",
+	"professionHoverDescription" : "アルコールは40％多く価値がある。",
+	"wineryName" : "ワイナリー",
+	"wineryDescription" : "樽やキャスクは30％速く、残り時間は残ります。"
+	"minutes" : " 残りの分。",
+	"days" : " 残存日数。",
+	"categoryName" : "蒸留工芸"
+}

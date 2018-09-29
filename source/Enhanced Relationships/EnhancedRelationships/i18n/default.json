@@ -1,0 +1,11 @@
+{
+  "npc_dialogue1": "How dare you miss my Birthday, {{player_name}}. ",
+  "npc_dialogue2": "I know you're busy {{player_name}}, but I can't believe you missed my Birthday.",
+  "npc_dialogue3": "You missed my birthday, and I'm not very happy right now.",
+  "npc_dialogue4": "All you had to do was give me a Birthday gift, but you couldn't even do that.",
+  "npc_dialogue5": "All I wanted was a gift from you, {{player_name}}, on my Birthday.",
+  "npc_dialogue6": "You were so pre-occupied, you missed my Birthday.",
+  "npc_dialogue7": "You went out fishing didn't you? You missed my Birthday.",
+  "npc_dialogue8": "It was my Birthday and you went out caving didn't you {{player_name}}?.......",
+  "npc_mail": "Dear @,^ Tomorrow is {{npc_name}}'s birthday. You should give them a gift. They would love one of the following:^^{{npc_gift}}."
+}

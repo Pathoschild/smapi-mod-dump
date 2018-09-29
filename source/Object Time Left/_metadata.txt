@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/ObjectTimeLeft.git
+
+mods:
+   Object Time Left
+
+latest commit:
+   commit 6bc781d19f0d36fb6c15ec0af082ce3a96d3c308
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jul 7 12:31:58 2017 -0400
+   
+       Initial commit
+   

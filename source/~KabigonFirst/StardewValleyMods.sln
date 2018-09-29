@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2018
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MineAssist", "MineAssist\MineAssist.csproj", "{E67B806F-9D90-4DB0-9637-416EB1226628}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampfireCooking", "CampfireCooking\CampfireCooking.csproj", "{32509588-155D-4417-805C-E9C4569FB289}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kisekae", "Kisekae\Kisekae.csproj", "{3ADB1F26-266F-430A-8C97-DCAF8BC53C23}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E67B806F-9D90-4DB0-9637-416EB1226628}.Debug|x86.ActiveCfg = Debug|x86
+		{E67B806F-9D90-4DB0-9637-416EB1226628}.Debug|x86.Build.0 = Debug|x86
+		{E67B806F-9D90-4DB0-9637-416EB1226628}.Release|x86.ActiveCfg = Release|x86
+		{E67B806F-9D90-4DB0-9637-416EB1226628}.Release|x86.Build.0 = Release|x86
+		{32509588-155D-4417-805C-E9C4569FB289}.Debug|x86.ActiveCfg = Debug|x86
+		{32509588-155D-4417-805C-E9C4569FB289}.Debug|x86.Build.0 = Debug|x86
+		{32509588-155D-4417-805C-E9C4569FB289}.Release|x86.ActiveCfg = Release|x86
+		{32509588-155D-4417-805C-E9C4569FB289}.Release|x86.Build.0 = Release|x86
+		{3ADB1F26-266F-430A-8C97-DCAF8BC53C23}.Debug|x86.ActiveCfg = Debug|x86
+		{3ADB1F26-266F-430A-8C97-DCAF8BC53C23}.Debug|x86.Build.0 = Debug|x86
+		{3ADB1F26-266F-430A-8C97-DCAF8BC53C23}.Release|x86.ActiveCfg = Release|x86
+		{3ADB1F26-266F-430A-8C97-DCAF8BC53C23}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EA9F40C2-39E0-4C10-8C01-56A274A06137}
+	EndGlobalSection
+EndGlobal

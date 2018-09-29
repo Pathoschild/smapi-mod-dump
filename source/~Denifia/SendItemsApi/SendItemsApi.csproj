@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
+    <AssemblyName>Denifia.Stardew.SendItemsApi</AssemblyName>
+    <RootNamespace>Denifia.Stardew.SendItemsApi</RootNamespace>
+    <Version>1.0.1</Version>
+    <Description>Web Api for the Send Items mod for Stardew Valley</Description>
+    <Authors>Denifia</Authors>
+    <Company>Denifia</Company>
+    <Product>Send Items Web Api</Product>
+    <ApplicationInsightsResourceId>/subscriptions/cbacbae4-49c5-47d0-b01e-fc7b99c57d79/resourcegroups/denifia-aue-rg/providers/microsoft.insights/components/denifia-use-appins</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/cbacbae4-49c5-47d0-b01e-fc7b99c57d79/resourcegroups/denifia-aue-rg/providers/microsoft.insights/components/denifia-use-appins</ApplicationInsightsAnnotationResourceId>
+    <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Screenshots\**" />
+    <Content Remove="Screenshots\**" />
+    <EmbeddedResource Remove="Screenshots\**" />
+    <None Remove="Screenshots\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="data.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="LiteDB" Version="3.1.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.0" />
+    <PackageReference Include="WindowsAzure.Storage" Version="8.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot/favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+</Project>

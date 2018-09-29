@@ -1,0 +1,15 @@
+﻿{
+	"Name": "Slower Fence Decay Mod",
+	"Authour": "Maurício Gomes (Speeder)",
+	"Version":
+	{
+		"MajorVersion": 0,
+		"MinorVersion": 5,
+		"PatchVersion": 1,
+		"Build": ""
+	},
+	"UniqueID": "SPDSlowFenceDecay",
+	"Description": "Make the game fences last longer.",
+	"PerSaveConfigs": false,
+	"EntryDll":  "SlowerFenceDecayMod.dll"
+}

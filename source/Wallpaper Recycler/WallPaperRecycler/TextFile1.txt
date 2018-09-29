@@ -1,0 +1,141 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewValley;
+using StardewValley.Buildings;
+using StardewValley.Locations;
+using StardewValley.Menus;
+using StardewValley.Objects;
+using SFarmer = StardewValley.Farmer;
+using SObject = StardewValley.Object;
+
+namespace WallPaperRecycler
+{
+    public class ModEntry : Mod
+    {
+        private static int DoNothing = -333000;
+        private List<int> wallPaper;
+        private List<int> floor;
+     
+
+        //Set up ModConfig
+        private ModConfig Config;
+
+        public override void Entry(IModHelper helper)
+        {
+            //Read Config.
+            this.Config = helper.ReadConfig<ModConfig>();
+
+            GameEvents.OneSecondTick += this.GameEvents_OneSecondTick;
+            PlayerEvents.InventoryChanged += this.PlayerEvents_InventoryChanged;
+        }
+        //One Second Tick Void. Controls saving wallpaper and flooring.
+        public void GameEvents_OneSecondTick(object sender, EventArgs e)
+        {
+
+        }
+        //Inventory Changed Void. Handles Saving floors and wallpaper if its changed.
+        public void PlayerEvents_InventoryChanged(object sender, EventArgs e)
+        {
+            if (!Game1.hasLoadedGame || Game1.player.currentLocation == null || (Game1.player.currentLocation.GetType() != typeof(FarmHouse) || Game1.activeClickableMenu != null))
+                return;
+            FarmHouse location = Game1.player.currentLocation as FarmHouse;
+            Wallpaper removed = this.RemovePaper(((EventArgsInventoryChanged) e).Removed);
+            if (removed == null)
+                return;
+            int whatChanged;
+            if (removed.isFloor)
+            {
+                whatChanged = this.FloorChanged(location);
+                this.doFloorSave(location);
+            }
+            else
+            {
+                whatChanged = this.WallpaperChanged(location);
+                this.doWallpaperSave(location);
+            }
+            if (whatChanged != DoNothing)
+                this.changeWallFloor(whatChanged, removed.isFloor);
+            else
+                Game1.player.addItemToInventory((Item)removed);
+        }
+
+        //Custom Voids
+        private void doWallpaperSave(FarmHouse house)
+        {
+            List<int> curWallpaper = house.wallPaper;
+            this.wallPaper = new List<int>();
+            for(int i = 0; i < curWallpaper.Count; i++)
+            {
+                this.wallPaper.Add(curWallpaper[i]);
+            }
+        }
+        private void doFloorSave(FarmHouse house)
+        {
+            List<int> curFloor = house.floor;
+            this.floor = new List<int>();
+            for (int i = 0; i < curFloor.Count; i++)
+            {
+                this.floor.Add(curFloor[i]);
+            }
+        }
+        private int WallpaperChanged(FarmHouse house)
+        {
+            List<int> wallPaper = house.wallPaper;
+            if (wallPaper == null || wallPaper.Count == 0 || (this.wallPaper == null || this.wallPaper.Count == 0))
+                return 0;
+            for(int i = 0; i < wallPaper.Count; i++)
+            {
+                if (!this.wallPaper[i].Equals(wallPaper[i]))
+                    return this.wallPaper[i];
+            }
+
+            return DoNothing;
+        }
+        private int FloorChanged(FarmHouse house)
+        {
+            List<int> floor = house.floor;
+            if (floor == null || floor.Count == 0 || (this.floor == null || this.floor.Count == 0))
+                return 0;
+            for(int i = 0; i < floor.Count; i++)
+            {
+                if (!this.floor[i].Equals(floor[i]))
+                    return this.floor[i];
+            }
+            return DoNothing;
+        }
+        private Wallpaper RemovePaper(List<ItemStackChange> changedWalls)
+        {
+            using(List<ItemStackChange>.Enumerator wenumerator = changedWalls.GetEnumerator())
+            {
+                while (wenumerator.MoveNext())
+                {
+                    ItemStackChange curr = wenumerator.Current;
+                    if (curr.Item.GetType() == typeof(Wallpaper) && curr.ChangeType == 0)
+                    {
+                       return (Wallpaper)curr.Item;
+                    }
+                        
+                }
+            }
+            return (Wallpaper)null;
+        }
+        private void changeWallFloor(int i, bool isFlooring)
+        {
+            Wallpaper wallPaper = new Wallpaper(i, isFlooring);
+            Game1.player.addItemToInventory((Item)wallPaper);
+            string wallfloor = "Wallpaper";
+            if (isFlooring)
+                wallfloor = "Floor";
+            if (this.Config.showMessages)
+            {
+                HUDMessage hmsg = new HUDMessage("Added: " + wallfloor);
+                Game1.addHUDMessage(hmsg);
+            }            
+        }
+    }
+}

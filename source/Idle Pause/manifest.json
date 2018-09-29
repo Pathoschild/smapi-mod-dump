@@ -1,0 +1,9 @@
+﻿{
+  "Name": "IdlePause",
+  "Author": "Veleek",
+  "Version": "1.2.1",
+  "MinimumApiVersion": "2.7",
+  "Description": "Pauses the game time if you have been idle for more that a certain period of time to prevent accidentally missing a day by forgetting to open a menu.",
+  "UniqueID": "Veleek.IdlePause",
+  "EntryDll": "IdlePause.dll"
+}

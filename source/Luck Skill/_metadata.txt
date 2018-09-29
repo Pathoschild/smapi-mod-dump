@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/LuckSkill.git
+
+mods:
+   Luck Skill
+
+latest commit:
+   commit b9886ec093e65685719979ef7510f36cad4d7601
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Thu Aug 30 15:13:54 2018 -0400
+   
+       Did I never commit these things?
+   

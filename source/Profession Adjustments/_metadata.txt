@@ -1,0 +1,13 @@
+url:
+   https://github.com/kevinforrestconnors/ProfessionAdjustments.git
+
+mods:
+   Profession Adjustments
+
+latest commit:
+   commit 8fd56184293ecd2be7a7e99885cad8204e0e16df
+   Author: kevinforrestconnors <kevinforrestconnors@gmail.com>
+   Date:   Tue Aug 21 14:42:41 2018 -0500
+   
+       add harmony
+   

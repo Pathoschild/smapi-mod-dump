@@ -1,0 +1,15 @@
+url:
+   https://github.com/L3thal1ty/No-Kids-Ever.git
+
+mods:
+   No Kids Ever
+
+latest commit:
+   commit 98ddb23150b35b3d8737bb6844bc45ad76cf633a
+   Author: L3thal1ty <24803109+L3thal1ty@users.noreply.github.com>
+   Date:   Thu Jun 7 20:08:40 2018 -0400
+   
+       Create LICENSE
+       
+       Added a license because Pathos bugged me about it. :D
+   

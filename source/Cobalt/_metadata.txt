@@ -1,0 +1,16 @@
+url:
+   https://github.com/spacechase0/Cobalt.git
+
+mods:
+   Cobalt
+
+latest commit:
+   commit 9b6eaa69b4f621ed94cd07833e22ed541945933a
+   Merge: 3256568 7e9637b
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Fri Apr 27 10:24:37 2018 -0400
+   
+       Merge pull request #3 from Kevin-Mok/master
+       
+       Fixed title and link in README
+   

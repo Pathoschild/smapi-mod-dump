@@ -1,0 +1,13 @@
+url:
+   https://github.com/pomepome/JoysOfEfficiency.git
+
+mods:
+   Joys of Efficiency
+
+latest commit:
+   commit f1f7ff45a7d0ebcac2cbe335be8eb13dfb2d3037
+   Author: pomepome <punyoon03@gmail.com>
+   Date:   Thu Sep 13 14:27:32 2018 +0900
+   
+       1.2.6
+   

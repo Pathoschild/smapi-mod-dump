@@ -1,0 +1,9 @@
+{
+    "Name": "Sanity",
+    "Author": "Devin Lematty",
+    "Version": "1.3",
+    "Description": "Adds the sanity feature inspired by Dont Starve.",
+    "UniqueID": "DevinLematty.Sanity",
+    "EntryDll": "Sanity.dll",
+    "MinimumApiVersion": "2.0"
+}

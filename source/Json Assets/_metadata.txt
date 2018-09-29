@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/JsonAssets.git
+
+mods:
+   Json Assets
+
+latest commit:
+   commit 93e515cc2e32fb9922060b289bc6743578860e19
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Aug 17 13:33:44 2018 -0400
+   
+       Potential ID fix stuff, and some stuff I forgot to commit
+   

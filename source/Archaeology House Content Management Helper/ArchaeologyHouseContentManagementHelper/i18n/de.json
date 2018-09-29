@@ -1,0 +1,13 @@
+{
+  "Gunther_MuseumInteractionMenu_Donate": "Dem Museum spenden",
+  "Gunther_MuseumInteractionMenu_Rearrange": "Das Museum umordnen",
+  "Gunther_MuseumInteractionMenu_Collect": "Belohnung abholen",
+  "Gunther_MuseumInteractionMenu_Status": "Wie schlage Ich mich?",
+  "Gunther_MuseumInteractionMenu_Leave": "Verlassen",
+  "Gunther_ArchaeologyHouse_StatusIntro": "Bislang hast Du abgegeben: ",
+  "Gunther_ArchaeologyHouse_StatusIntroLinePadding": "",
+  "Gunther_ArchaeologyHouse_LibraryStatus": "Bücher: ",
+  "Gunther_ArchaeologyHouse_LibraryStatusLinePadding": "             ",
+  "Gunther_ArchaeologyHouse_MuseumStatus": "Museumsstücke: ",
+  "Gunther_ArchaeologyHouseStatus_Completed": "Die Bibliothek ist komplett und das Museum sieht toll aus! Vielen Dank für Deine Hilfe!"
+}

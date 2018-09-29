@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D946D562-99EA-4728-B67A-4EC4333D5A77}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Revitalize</RootNamespace>
+    <AssemblyName>Revitalize</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework.Xact, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Desktop\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Aesthetics\Paint\Objects\Canvas.cs" />
+    <Compile Include="Aesthetics\Paint\PaintMenu.cs" />
+    <Compile Include="Aesthetics\WeatherDebris\WeatherDebrisPlus.cs" />
+    <Compile Include="Aesthetics\WeatherDebris\WeatherDebrisSystem.cs" />
+    <Compile Include="Menus\CarpenterMenu.cs" />
+    <Compile Include="Menus\Machines\MachineInventory.cs" />
+    <Compile Include="Menus\MenuComponents\ClickableComponentsExtended.cs" />
+    <Compile Include="Menus\MenuComponents\ClickableTextureComponentExpanded.cs" />
+    <Compile Include="Objects\Machines\TestMachine.cs" />
+    <Compile Include="Settings\MachineSettings.cs" />
+    <Compile Include="Settings\MagicSettings.cs" />
+    <Compile Include="Settings\PaintSettings.cs" />
+    <Compile Include="Settings\SettingsInterface.cs" />
+    <Compile Include="Settings\SettingsManager.cs" />
+    <Compile Include="SetUp.cs" />
+    <Compile Include="Utilities\MapUtilities.cs" />
+    <Compile Include="Magic\Alchemy\Menus\ExpandableItemGrabMenu.cs" />
+    <Compile Include="Magic\Alchemy\Objects\BagofHolding.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="Objects\Generic\CoreObject.cs" />
+    <Compile Include="Aesthetics\Draw\ThingsToDraw.cs" />
+    <Compile Include="Locations\GameLoc.cs" />
+    <Compile Include="Locations\ModTown.cs" />
+    <Compile Include="Magic\MagicFunctions.cs" />
+    <Compile Include="Magic\MagicMonitor.cs" />
+    <Compile Include="Magic\Spell.cs" />
+    <Compile Include="Menus\Billboard.cs" />
+    <Compile Include="Menus\FarmOptionsMenu.cs" />
+    <Compile Include="Menus\GameMenu.cs" />
+    <Compile Include="Menus\InventoryPage.cs" />
+    <Compile Include="Menus\ItemGrabMenu.cs" />
+    <Compile Include="Menus\StorageContainer.cs" />
+    <Compile Include="Objects\Decoration.cs" />
+    <Compile Include="Objects\ExtraSeeds.cs" />
+    <Compile Include="Objects\Generic\ExpandableInventoryObject.cs" />
+    <Compile Include="Objects\GiftPackage.cs" />
+    <Compile Include="Objects\Light.cs" />
+    <Compile Include="Objects\Machines\Machine.cs" />
+    <Compile Include="Objects\Machines\Quarry.cs" />
+    <Compile Include="Objects\Machines\Spawner.cs" />
+    <Compile Include="Menus\LightCustomizer.cs" />
+    <Compile Include="Objects\shopObject.cs" />
+    <Compile Include="Objects\SpriteFontObject.cs" />
+    <Compile Include="Persistence\MapSwapData.cs" />
+    <Compile Include="Persistence\PlayerVariables.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\DataNodes\FarmOptionsDataNode.cs" />
+    <Compile Include="Resources\DataNodes\SeedDataNode.cs" />
+    <Compile Include="Resources\DataNodes\SerializerDataNode.cs" />
+    <Compile Include="Resources\DataNodes\SpellFunctionDataNode.cs" />
+    <Compile Include="Resources\DataNodes\TextureDataNode.cs" />
+    <Compile Include="Resources\DataNodes\TrackedTerrainDataNode.cs" />
+    <Compile Include="Resources\DataNodes\TrackedTerrainDummyDataNode.cs" />
+    <Compile Include="Resources\Dictionaries.cs" />
+    <Compile Include="Resources\LightColors.cs" />
+    <Compile Include="Resources\DataNodes\QuarryDataNode.cs" />
+    <Compile Include="Resources\Lists.cs" />
+    <Compile Include="Serialize.cs" />
+    <Compile Include="Utilities\Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Aesthetics\Paint\Utilities\" />
+    <Folder Include="Locations\MapUtilities\" />
+    <Folder Include="TerrainFeatures\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.1.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.1.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.1.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.1.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <Target Name="AfterBuild">
+    <PropertyGroup>
+      <ModPath>$(GamePath)\Mods\$(TargetName)</ModPath>
+    </PropertyGroup>
+    <Copy SourceFiles="$(TargetDir)\$(TargetName).dll" DestinationFolder="$(ModPath)" />
+    <Copy SourceFiles="$(TargetDir)\$(TargetName).pdb" DestinationFolder="$(ModPath)" Condition="Exists('$(TargetDir)\$(TargetName).pdb')" />
+    <Copy SourceFiles="$(TargetDir)\$(TargetName).dll.mdb" DestinationFolder="$(ModPath)" Condition="Exists('$(TargetDir)\$(TargetName).dll.mdb')" />
+    <Copy SourceFiles="$(ProjectDir)manifest.json" DestinationFolder="$(ModPath)" />
+	<Copy SourceFiles="$(ProjectDir)ModInfo.txt" DestinationFolder="$(ModPath)" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+</Project>

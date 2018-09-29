@@ -1,0 +1,13 @@
+url:
+   https://github.com/skuldomg/freeDusty.git
+
+mods:
+   Free Dusty
+
+latest commit:
+   commit 7b79d932390d90cb901cc70a587eb7d8b1e3c2c4
+   Author: skuldomg <scdehne@googlemail.com>
+   Date:   Sat May 26 01:35:25 2018 +0200
+   
+       Updated manifest
+   

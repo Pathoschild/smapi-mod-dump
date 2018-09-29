@@ -1,0 +1,14 @@
+﻿{
+  "Name": "Close Confirmation",
+  "Description": "Asks you if you really want to close when you push the X button.",
+  "Author": "TehPers",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "UniqueID": "TehPers.CloseConfirmation",
+  "EntryDll": "CloseConfirmation.dll",
+  "UpdateKeys": [ ]
+}

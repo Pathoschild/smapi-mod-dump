@@ -1,0 +1,13 @@
+url:
+   https://github.com/lambui/StardewValleyMod_OmniFarm.git
+
+mods:
+   OmniFarm
+
+latest commit:
+   commit 3c72decef3249207509e9581065a907fd22f5a59
+   Author: PhthaloBlue <buiphuonglamvn@gmail.com>
+   Date:   Mon May 14 20:24:50 2018 -0700
+   
+       typo
+   

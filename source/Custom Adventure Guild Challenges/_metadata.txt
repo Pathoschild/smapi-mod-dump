@@ -1,0 +1,13 @@
+url:
+   https://github.com/defenthenation/StardewMod-CustomSlayerChallenges.git
+
+mods:
+   Custom Adventure Guild Challenges
+
+latest commit:
+   commit 5ce437a30d11aa308e88edb33ffa93d581fe3e79
+   Author: DefenTheNation <defenthenation@github>
+   Date:   Mon Aug 20 14:00:23 2018 -0700
+   
+       Update to latest SMAPI version
+   

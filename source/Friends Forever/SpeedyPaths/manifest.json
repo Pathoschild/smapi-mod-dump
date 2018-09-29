@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Speedy Paths",
+    "Author": "Isaac S.",
+    "Version": "1.0.0",
+    "Description": "Makes it so you walk faster, but only on paths!",
+    "UniqueID": "IsaacS.SpeedyPaths",
+    "EntryDll": "SpeedyPaths.dll",
+    "UpdateKeys": [],
+    "MinimumApiVersion": "2.6-beta"
+}

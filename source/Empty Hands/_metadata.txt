@@ -1,0 +1,14 @@
+url:
+   https://github.com/quicksilverfox/StardewMods.git
+
+mods:
+   Empty Hands
+
+latest commit:
+   commit 56ef899155baef947137604a8ececf9a761e0ff1
+   Merge: 08728f5 4449b7a
+   Author: Quicksilver Fox <QuicksilverFox@ignis.name>
+   Date:   Sat May 12 08:34:36 2018 +0300
+   
+       Merge branch 'master' of https://github.com/quicksilverfox/StardewMods
+   

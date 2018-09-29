@@ -1,0 +1,10 @@
+﻿{
+  "Name": "LogDebugStuff2",
+  "Author": "cheesysteak",
+  "Version": "0.0.1",
+  "Description": "hi there.",
+  "UniqueID": "cheesysteak.LogDebugStuff2",
+  "EntryDll": "LogDebugStuff2.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "nope" ]
+}

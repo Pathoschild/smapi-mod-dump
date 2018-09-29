@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <GamePath>D:\Games\Steam\steamapps\common\Stardew Valley</GamePath>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3BEF20E5-1DE1-47E4-A912-B86A4BD37F2A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Igorious.StardewValley.ShowcaseMod</RootNamespace>
+    <AssemblyName>Igorious.StardewValley.ShowcaseMod</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>D:\Games\Steam\steamapps\common\Stardew Valley\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConfigDataConverter.cs" />
+    <Compile Include="Constants\TextureKind.cs" />
+    <Compile Include="Core\DepthProvider.cs" />
+    <Compile Include="Core\Layouts\IShowcaseLayout.cs" />
+    <Compile Include="Core\ItemFilter.cs" />
+    <Compile Include="Core\Layouts\ShowcaseManualLayout.cs" />
+    <Compile Include="Core\Showcase.Draw.cs" />
+    <Compile Include="Core\ItemGridProvider.cs" />
+    <Compile Include="Core\Layouts\ShowcaseAutoLayout.cs" />
+    <Compile Include="Core\Layouts\ShowcaseFixedLayout.cs" />
+    <Compile Include="Core\Layouts\ShowcaseGridLayoutBase.cs" />
+    <Compile Include="Core\ShowcaseColorPicker.cs" />
+    <Compile Include="Data\Bounds.cs" />
+    <Compile Include="Core\Showcase.cs" />
+    <Compile Include="Commands\ListFurnitureCommand.cs" />
+    <Compile Include="Data\RotationEffect.cs" />
+    <Compile Include="Data\SpriteInfo.cs" />
+    <Compile Include="ModConfig\GlowConfig.cs" />
+    <Compile Include="Data\GlowEffect.cs" />
+    <Compile Include="Data\ItemPosition.cs" />
+    <Compile Include="ModConfig\LayoutConfig.cs" />
+    <Compile Include="ModConfig\ShowcaseConfig.cs" />
+    <Compile Include="Core\ShowcaseContainer.cs" />
+    <Compile Include="Constants\ShowcaseLayoutKind.cs" />
+    <Compile Include="Commands\PlayerAddFurnitureCommand.cs" />
+    <Compile Include="Commands\PlayerUpgradeToolCommand.cs" />
+    <Compile Include="Commands\PlayerWhatInHandsCommand.cs" />
+    <Compile Include="ShowcaseMod.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ModConfig\ShowcaseModConfig.cs" />
+    <Compile Include="Constants\TextureNames.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StardewValley.DynamicApi2\StardewValley.DynamicApi2.csproj">
+      <Project>{14c2839d-6a60-4af5-8901-a80fb03890c7}</Project>
+      <Name>StardewValley.DynamicApi2</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Furniture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.1.4.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.1.4.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.1.4.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.1.4.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+  </Target>
+  <Target Name="CreateManifest" BeforeTargets="AfterBuild">
+    <PropertyGroup>
+      <ToolPath>$(SolutionDir)BuildTools\bin\Debug\Igorious.BuildManifest.exe</ToolPath>
+    </PropertyGroup>
+    <Exec Command="$(ToolPath) $(TargetPath)" />
+  </Target>
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <OutputFiles Include="$(TargetDir)**\*.*" />
+    </ItemGroup>
+    <PropertyGroup>
+      <ModPath>$(GamePath)\Mods\$(TargetName)</ModPath>
+    </PropertyGroup>
+    <Copy SourceFiles="@(OutputFiles)" DestinationFolder="$(ModPath)\%(RecursiveDir)" />
+  </Target>
+</Project>

@@ -1,0 +1,13 @@
+url:
+   https://github.com/Gorzalt/StardewValleyMods.git
+
+mods:
+   Kawakami - Healer NPC
+
+latest commit:
+   commit f6b95044140dc95b483be5e3ecc97f848b7512d6
+   Author: Gorzalt <milten5@gmail.com>
+   Date:   Tue Jul 24 17:08:51 2018 +0000
+   
+       Add files via upload
+   

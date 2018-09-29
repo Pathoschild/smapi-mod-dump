@@ -1,0 +1,14 @@
+url:
+   https://github.com/bmarquismarkail/SV_PotC.git
+
+mods:
+   Part of the Community
+
+latest commit:
+   commit 2c7d7726def95f96572ab54168b50c5217cfbc2c
+   Author: U-MarquisSeven\Brandon <bmmgreen@gmail.com>
+   Date:   Sun May 28 14:18:21 2017 -0500
+   
+       Fixed issue whereAlex was gttting bonus for Vincent Gift instead of Sam
+       updated to version 1.1.3
+   

@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/MoreBuildings.git
+
+mods:
+   More Buildings
+
+latest commit:
+   commit 2b66d81a567bb45cdd115bd82e2b7b6dfa5c0abd
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Aug 31 16:23:27 2018 -0400
+   
+       MORE STUFF
+   

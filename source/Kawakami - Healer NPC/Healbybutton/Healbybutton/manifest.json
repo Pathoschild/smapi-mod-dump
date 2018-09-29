@@ -1,0 +1,10 @@
+{
+  "Name": "Heal by Button",
+  "Author": "Gorzalt",
+  "Version": "1.0.0",
+  "Description": "Heal to full Health by pushing a single button",
+  "UniqueID": "gorzalt.healbybutton",
+  "EntryDll": "healbybutton.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": []
+}

@@ -1,0 +1,15 @@
+url:
+   https://github.com/GuiNoya/SVMods.git
+
+mods:
+   Daily Tasks Report
+   Self Service Shops
+   Zoom Level Keybinding
+
+latest commit:
+   commit 60b6e652f96ff6c1f802e993d8a925a5491e2403
+   Author: Guilherme Noya <gui.noya@gmail.com>
+   Date:   Fri Sep 7 21:19:31 2018 -0300
+   
+       [DailyTasksReport] Fix label in options for fruit trees
+   

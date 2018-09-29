@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4467451C-8BB0-45A0-BF7D-440FA46332ED}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>StardewHack.TilledSoilDecay</RootNamespace>
+    <AssemblyName>TilledSoilDecay</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="StardewValley">
+      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewValley.exe</HintPath>
+    </Reference>
+    <Reference Include="xTile">
+      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\xTile.dll</HintPath>
+    </Reference>
+    <Reference Include="StardewModdingAPI">
+      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe</HintPath>
+    </Reference>
+    <Reference Include="StardewValley">
+      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewValley.exe</HintPath>
+    </Reference>
+    <Reference Include="xTile">
+      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\xTile.dll</HintPath>
+    </Reference>
+    <Reference Include="StardewModdingAPI">
+      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe</HintPath>
+    </Reference>
+    <Reference Include="StardewModdingAPI.Toolkit.CoreInterfaces">
+      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewModdingAPI.Toolkit.CoreInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>..\packages\Lib.Harmony.1.2.0.1\lib\net45\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="StardewModdingAPI">
+      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe</HintPath>
+    </Reference>
+    <Reference Include="StardewValley">
+      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewValley.exe</HintPath>
+    </Reference>
+    <Reference Include="xTile">
+      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\xTile.dll</HintPath>
+    </Reference>
+    <Reference Include="StardewValley">
+      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewValley.exe</HintPath>
+    </Reference>
+    <Reference Include="xTile">
+      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\xTile.dll</HintPath>
+    </Reference>
+    <Reference Include="StardewModdingAPI">
+      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe</HintPath>
+    </Reference>
+    <Reference Include="StardewModdingAPI.Toolkit.CoreInterfaces">
+      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewModdingAPI.Toolkit.CoreInterfaces.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ModEntry.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\StardewHack\StardewHack.csproj">
+      <Project>{57D4316C-C97C-41ED-A1E8-4737AE1D66AA}</Project>
+      <Name>StardewHack</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="manifest.json" />
+    <None Include="README.md" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+</Project>

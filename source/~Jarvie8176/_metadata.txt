@@ -1,0 +1,14 @@
+url:
+   https://github.com/Jarvie8176/StardewMods.git
+
+mods:
+   Rented Tools
+   Self Service
+
+latest commit:
+   commit f4028b9290062445d9a6d775010a8e16a63c457b
+   Author: JarvieK <kongjw1993@gmail.com>
+   Date:   Wed Jun 20 13:58:33 2018 -0400
+   
+       0.3.2
+   

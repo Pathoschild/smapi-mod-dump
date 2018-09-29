@@ -1,0 +1,14 @@
+{
+  "Name": "MenuControllerCompatailityFrameWork",
+  "Authour": "Alpha_Omegasis",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 0,
+    "Build": ""
+  },
+  "Description": "A framework to allow for better controller compatability with Stardew Valley Menus.",
+  "UniqueID": "MenuController",
+  "PerSaveConfigs": false,
+  "EntryDll": "MenuControllerCompatability.dll"
+}

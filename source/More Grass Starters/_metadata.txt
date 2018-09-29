@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/MoreGrassStarters.git
+
+mods:
+   More Grass Starters
+
+latest commit:
+   commit ca8c8d4a8ddfdc2fe70e8734d67d4fb6d825b8a2
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Thu Feb 1 19:20:37 2018 -0500
+   
+       Change from CEH to PyTK. Version 1.0.1
+   

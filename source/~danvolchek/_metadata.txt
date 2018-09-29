@@ -1,0 +1,36 @@
+url:
+   https://github.com/danvolchek/StardewMods.git
+
+mods:
+   Auto Stacker(aka Item Auto Stacker)
+   Better Artisan Good Icons
+   Better Fruit Trees
+   Better Garden Pots
+   Better Hay
+   Better Slingshots
+   Chat Commands
+   Copy Invite Code
+   Custom Transparency
+   Custom Warp Locations
+   Customizable Death Penalty
+   Desert Obelisk
+   Geode Info Menu
+   Giant Crop Ring
+   Hold to Break Geodes
+   Mod Update Menu
+   No Crows
+   No Fence Decay
+   Pong
+   Range Display(aka Sprinkler Range)
+   Removable Horse Hats
+   Safe Lightning
+   Stack Everything
+   Winter Grass
+
+latest commit:
+   commit ef6ff30ac9c7147019fd20b44f9bdcbb9e53dca4
+   Author: Dan Volchek <volchek2@illinois.edu>
+   Date:   Tue Jul 24 19:39:37 2018 -0700
+   
+       [Better Artisan Good Icons] update to SDV 1.3.26
+   

@@ -1,0 +1,37 @@
+{
+  "gender": 1,
+  "seasons": [
+    0,
+    1,
+	2,
+	3
+  ],
+  "type": 1,
+  "assetName": "VanillaBrownEyes",
+  "standingAssetPaths": {
+    "leftString": "EyesLeft",
+    "rightString": "EyesRight",
+    "upString": "EyesUp",
+    "downString": "EyesDown"
+  },
+  "swimmingAssetPaths": {
+    "leftString": "EyesLeft",
+    "rightString": "EyesRight",
+    "upString": "EyesUp",
+    "downString": "EyesDown"
+  },
+  "movingAssetPaths": {
+    "leftString": "EyesLeft",
+    "rightString": "EyesRight",
+    "upString": "EyesUp",
+    "downString": "EyesDown"
+  },
+  "sittingAssetPaths": {
+    "leftString": "EyesLeft",
+    "rightString": "EyesRight",
+    "upString": "EyesUp",
+    "downString": "EyesDown"
+  },
+  "assetSize": "16, 32",
+  "randomizeUponLoad": false
+}

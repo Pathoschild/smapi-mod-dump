@@ -1,0 +1,16 @@
+url:
+   https://github.com/DeathGameDev/SDV-FastTravel.git
+
+mods:
+   Fast Travel
+
+latest commit:
+   commit 79c893a8cc948e6f1186bcae33b57f5c59b2ead9
+   Merge: 7e0d560 43b281f
+   Author: Mckenon <DeathGameDev@gmail.com>
+   Date:   Sun Jun 3 23:24:23 2018 -0500
+   
+       Merge pull request #8 from Pathoschild/patch-1
+       
+       Standardise update key format
+   

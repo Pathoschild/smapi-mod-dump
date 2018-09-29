@@ -1,0 +1,14 @@
+url:
+   https://github.com/DefenTheNation/StardewMod-TimeMultiplier.git
+
+mods:
+   Time Multiplier
+
+latest commit:
+   commit 53fc42f43a5db78ca1e23745b337432974d04b86
+   Merge: 75ca54e 56afa63
+   Author: DefenTheNation <defenthenation@github>
+   Date:   Sun Jun 3 21:51:53 2018 -0700
+   
+       Merge branch 'develop'
+   

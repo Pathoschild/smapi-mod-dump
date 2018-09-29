@@ -1,0 +1,18 @@
+{
+	"professionTitle_Distiller" : "蒸馏器",
+	"professionTitle_Artisan" : "工匠",
+	"professionTitle_Agriculturist" : "农学家",
+	"professionMenuDescription_Distiller" : "酒精（啤酒，葡萄酒等）价值40％以上。",
+	"professionMenuDescription_Artisan" : "工匠品（奶酪，松露油，布等）价值40％以上。",
+	"professionMenuDescription_Agriculturist" : "所有作物的生长速度提高10％。",
+	"menuExtraInfo_Can" : "+1 浇水可以熟练",
+	"menuExtraInfo_Hoe" : "+1 锄头熟练程度",
+	"menuTitle" : "10级农业",
+	"menuText" : "选择一个职业:",
+	"professionHoverDescription" : "酒精价值高出40％。",
+	"wineryName" : "酒厂",
+	"wineryDescription" : "内部小桶和桶工作速度提高30％，并显示剩余时间。"
+	"minutes" : " 剩余时间。",
+	"days" : " 剩余天数。",
+	"categoryName" : "蒸馏工艺"
+}

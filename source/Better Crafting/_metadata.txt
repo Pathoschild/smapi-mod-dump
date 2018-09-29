@@ -1,0 +1,13 @@
+url:
+   https://github.com/RedstoneBoy/BetterCrafting.git
+
+mods:
+   Better Crafting
+
+latest commit:
+   commit c471d7b7ea417803083107c8cefe5b6a45a902d0
+   Author: RedstoneBoy <redwireboy@gmail.com>
+   Date:   Mon Jul 16 21:11:47 2018 -0400
+   
+       Removed logging
+   

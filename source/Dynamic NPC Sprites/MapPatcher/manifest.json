@@ -1,0 +1,13 @@
+﻿{
+   "Name": "MapPatcher",
+   "Author": "bashninja",
+   "Version": {
+      "MajorVersion": 0,
+      "MinorVersion": 1,
+      "PatchVersion": 0,
+      "Build": ""
+   },
+   "Description": "Framework to Patch Maps",
+   "UniqueID": "bashNinja.MapPatcher",
+   "EntryDll": "MapPatcher.dll"
+}

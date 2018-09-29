@@ -1,0 +1,10 @@
+{
+  "Name": "Durable Fences",
+  "Author": "Zoryn",
+  "Version": "2.6.0",
+  "Description": "Makes fences more durable.",
+  "UniqueID": "Zoryn.DurableFences",
+  "EntryDll": "DurableFences.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "GitHub:Zoryn4163/SMAPI-Mods" ]
+}

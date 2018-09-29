@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Sort My Stuff",
+  "Author": "jwdred",
+  "Version": "1.0.1",
+  "Description": "Sorts your items into chests at the press of a button.",
+  "UniqueID": "jwdred.SortMyStuff",
+  "EntryDll": "SortMyStuff.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": []
+}

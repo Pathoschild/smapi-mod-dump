@@ -1,0 +1,13 @@
+url:
+   https://github.com/Ilyaki/ArtifactSystemFixed.git
+
+mods:
+   Artifact System Fixed
+
+latest commit:
+   commit 691dd6950fdfef6e5815a9cb3c1e308b6ed746d4
+   Author: Ilyaki <35632254+Ilyaki@users.noreply.github.com>
+   Date:   Fri Sep 21 05:49:01 2018 +0100
+   
+       Create LICENSE
+   

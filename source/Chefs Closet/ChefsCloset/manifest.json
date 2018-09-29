@@ -1,0 +1,13 @@
+﻿{
+   "Name": "ChefsCloset",
+   "Author": "Duder",
+   "Version": {
+      "MajorVersion": 1,
+      "MinorVersion": 3,
+      "PatchVersion": 0,
+      "Build": "1"
+   },
+   "Description": "Make more items available during cooking by placing chests in the kitchen.",
+   "UniqueID": "Duder.ChefsCloset",
+   "EntryDll": "ChefsCloset.dll"
+}

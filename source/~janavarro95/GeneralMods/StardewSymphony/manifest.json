@@ -1,0 +1,10 @@
+{
+  "Name": "Stardew Symphony",
+  "Author": "Alpha_Omegasis",
+  "Version": "1.4.1",
+  "Description": "Adding more music to the game one beep at a time.",
+  "UniqueID": "Omegasis.StardewSymphony",
+  "EntryDll": "StardewSymphony.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:425" ]
+}

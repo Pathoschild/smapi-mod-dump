@@ -1,0 +1,13 @@
+url:
+   https://github.com/JDvickery/Sauvignon-in-Stardew.git
+
+mods:
+   Sauvignon in Stardew
+
+latest commit:
+   commit 144061719c4caf3a7b5c3a1e85826d9788402a9f
+   Author: Jesse <jesse_vickery@outlook.com>
+   Date:   Fri Sep 14 07:09:02 2018 -0400
+   
+       testing....
+   

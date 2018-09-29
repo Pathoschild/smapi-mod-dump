@@ -1,0 +1,10 @@
+﻿{
+  "Name": "CJB Endless Inventory",
+  "Author": "CJ Bok",
+  "Version": "1.0.0",
+  "Description": "Carry all the items you'll need!",
+  "UniqueID": "CJBok.EndlessInventory",
+  "EntryDll": "CJBEndlessInventory.dll",
+  "MinimumApiVersion": "2.4",
+  "UpdateKeys": []
+}

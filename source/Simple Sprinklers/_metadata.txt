@@ -1,0 +1,16 @@
+url:
+   https://github.com/ADoby/SimpleSprinkler.git
+
+mods:
+   Simple Sprinklers
+
+latest commit:
+   commit 13905178c2986c6375a55b6994251286235e1c89
+   Merge: 828cdf0 c44e65b
+   Author: ADoby <zimmerlint@gmail.com>
+   Date:   Tue Jan 9 08:12:11 2018 +0100
+   
+       Merge pull request #3 from Pathoschild/update-code
+       
+       Add mod-provided API and enable update checks
+   

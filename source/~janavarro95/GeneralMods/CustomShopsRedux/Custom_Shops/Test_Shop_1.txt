@@ -1,0 +1,62 @@
+Custom Shop Name:Test_Shop_1
+Items for sale
+========================NEW ITEM======================
+Object_Type
+Boots
+Object ID
+515
+Price
+500
+========================NEW ITEM======================
+Object_Type
+Carpet
+Object ID
+0
+Price
+500
+========================NEW ITEM======================
+Object_Type
+Wallpaper
+Object ID
+0
+Price
+250
+========================NEW ITEM======================
+Object_Type
+Hats
+Object ID
+3
+Price
+2000
+========================NEW ITEM======================
+Object_Type
+Sword
+Object ID
+0
+Price
+150
+========================NEW ITEM======================
+Object_Type
+Craftable
+Object ID
+8
+Price
+350
+========================NEW ITEM======================
+Object_Type
+Furniture
+Object ID
+0
+Price
+290
+========================NEW ITEM======================
+Object_Type
+Item
+Object ID
+388
+Is this a recipe?
+False
+Price
+23
+Quality
+0

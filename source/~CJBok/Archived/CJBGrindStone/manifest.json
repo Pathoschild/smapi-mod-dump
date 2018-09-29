@@ -1,0 +1,10 @@
+﻿{
+  "Name": "CJB GrindStone",
+  "Author": "CJ Bok",
+  "Version": "1.0.0",
+  "Description": "Added grind stone.",
+  "UniqueID": "CJBok.GrindStone",
+  "EntryDll": "CJBGrindStone.dll",
+  "MinimumApiVersion": "2.4",
+  "UpdateKeys": []
+}

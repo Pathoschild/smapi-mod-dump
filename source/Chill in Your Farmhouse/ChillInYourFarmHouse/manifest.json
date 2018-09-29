@@ -1,0 +1,12 @@
+{
+  "Name": "ChillInYourFarmHouse",
+  "Author": "Husky110 updates by TyrLeifsen",
+  "Version": "1.0.1",
+  "Description": "Lets you regen stamina in your farmhouse or multiplayer cabin.",
+  "UniqueID": "Husky110.ChillInYourFarmHouse",
+  "EntryDll": "ChillInYourFarmHouse.dll",
+  "MinimumApiVersion": "2.1",
+  "UpdateKeys": [
+    "Github:tyrleifsen/ChillInYourFarmHouse"
+  ]
+}

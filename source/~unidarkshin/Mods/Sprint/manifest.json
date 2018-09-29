@@ -1,0 +1,9 @@
+{
+    "Name": "Sprint",
+    "Author": "Devin Lematty",
+    "Version": "2.0",
+    "Description": "Allows your character to sprint!",
+    "UniqueID": "DevinLematty.Sprint",
+    "EntryDll": "Sprint.dll",
+    "MinimumApiVersion": "2.0"
+}

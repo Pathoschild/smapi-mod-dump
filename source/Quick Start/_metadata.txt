@@ -1,0 +1,13 @@
+url:
+   https://github.com/Brian-Wuest/Quick_Start.git
+
+mods:
+   Quick Start
+
+latest commit:
+   commit fe6660e1be46f6bb43eba0b988fb2d841c4ee16b
+   Author: Brian-Wuest <Brian.Wuest@outlook.com>
+   Date:   Thu Aug 23 05:33:12 2018 -0500
+   
+       Update to 1.3 of Stardew Valley
+   

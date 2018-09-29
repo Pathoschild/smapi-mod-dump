@@ -1,0 +1,13 @@
+url:
+   https://github.com/jacksonkimball/AVerySpecialBlueChicken.git
+
+mods:
+   A Very Special Blue Chicken
+
+latest commit:
+   commit 7581289da77a60bce511b3dcd0938707b57d7773
+   Author: jacksonkimball <40708114+jacksonkimball@users.noreply.github.com>
+   Date:   Sat Jul 21 23:55:56 2018 -0600
+   
+       Update manifest.json
+   

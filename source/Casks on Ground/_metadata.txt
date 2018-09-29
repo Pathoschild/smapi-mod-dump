@@ -1,0 +1,13 @@
+url:
+   https://github.com/pomepome/CasksOnGround.git
+
+mods:
+   Casks on Ground
+
+latest commit:
+   commit 458f6a5af655e3f1cdaeb164cd4ce8c9a6925d27
+   Author: pomepome <punyoon03@gmail.com>
+   Date:   Wed Jul 11 16:30:54 2018 +0900
+   
+       1.0.2
+   

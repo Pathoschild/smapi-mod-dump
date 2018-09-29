@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/FlowerColorPicker.git
+
+mods:
+   Flower Color Picker
+
+latest commit:
+   commit 765bcad8b47d57c51e6ce11a2fa7b26bf57d45dd
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Sun Jul 29 18:31:03 2018 -0400
+   
+       1.3 update
+   

@@ -1,0 +1,5 @@
+﻿{
+  "template.start": "Started {{mod}} from folder: {{folder}}",
+  "template.debugkey": "Debug Key pressed",
+  "template.key":  "Relationship Key pressed"
+}

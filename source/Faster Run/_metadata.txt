@@ -1,0 +1,13 @@
+url:
+   https://github.com/KathrynHazuka/StardewValley_FasterRun.git
+
+mods:
+   Faster Run
+
+latest commit:
+   commit a2ae9ed73b40583c7e32e3b04e8c4098c5bb1c20
+   Author: Kathryn Hazuka <KathrynHazuka@hotmail.com>
+   Date:   Mon Apr 16 15:32:19 2018 -0600
+   
+       Upadte to SMAPI 2.5+
+   

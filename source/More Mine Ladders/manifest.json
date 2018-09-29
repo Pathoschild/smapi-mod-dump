@@ -1,0 +1,12 @@
+﻿{
+  "Name": "More Mine Ladders",
+  "Author": "Theavas",
+  "Version": "1.1.0",
+  "Description": "Adjust the chances for ladders to spawn in the mineshaft, or just be a cheater and make them spawn on the first stone!",
+  "UniqueID": "JadeTheavas.MoreMineLadders",
+  "EntryDll": "MoreMineLadders.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [
+    "Nexus:2105"
+  ]
+}

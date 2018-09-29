@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <GamePath>Y:\Program Files\GOG Galaxy\Games\Stardew Valley</GamePath>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5798FFA3-A9E1-424F-A0C0-D90B6FB0B3F0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>TreeTransplant</RootNamespace>
+    <AssemblyName>TreeTransplant</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command>
+          <type>AfterBuild</type>
+          <command>cp ${TargetFile} "/Applications/Stardew Valley.app/Contents/MacOS/mods/TreeTransplant/"</command>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <Optimize>true</Optimize>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="TreeTransplant.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TreeTransplantMenu.cs" />
+    <Compile Include="Trees\ITree.cs" />
+    <Compile Include="Trees\TreeWrapper.cs" />
+    <Compile Include="Trees\FruitTreeWrapper.cs" />
+    <Compile Include="Trees\TreeRenderer.cs" />
+    <Compile Include="Helpers\Notifier.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="manifest.json" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ContentFolder Include="$(ProjectDir)\Content\*.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0-beta-20180428\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Target Name="AfterBuild" Condition="$(Configuration) == 'Debug'">
+    <Copy SourceFiles="$(TargetDir)\$(TargetName).dll" DestinationFolder="$(GamePath)\Mods\$(TargetName)" />
+    <Copy SourceFiles="$(TargetDir)\$(TargetName).dll.mdb" DestinationFolder="$(GamePath)\Mods\$(TargetName)" Condition="$(OS) != 'Windows_NT'" />
+    <Copy SourceFiles="$(TargetDir)\$(TargetName).pdb" DestinationFolder="$(GamePath)\Mods\$(TargetName)" Condition="$(OS) == 'Windows_NT'" />
+    <Copy SourceFiles="$(ProjectDir)\manifest.json" DestinationFolder="$(GamePath)\Mods\$(TargetName)" />
+    <Copy SourceFiles="@(ContentFolder)" DestinationFolder="$(GamePath)\Mods\$(TargetName)\Content" />
+  </Target>
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0-beta-20180428\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0-beta-20180428\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0-beta-20180428\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0-beta-20180428\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+  </Target>
+</Project>

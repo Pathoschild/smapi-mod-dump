@@ -1,0 +1,13 @@
+url:
+   https://github.com/yoshimax2/Befriend-Marlon-and-Gunther.git
+
+mods:
+   Befriend Marlon and Gunther
+
+latest commit:
+   commit eb2f16ab0148c3b428a112cb2154982e01c10b6c
+   Author: yoshimax2 <42158892+yoshimax2@users.noreply.github.com>
+   Date:   Mon Aug 6 20:55:04 2018 -0400
+   
+       Add files via upload
+   

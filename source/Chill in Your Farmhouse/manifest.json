@@ -1,0 +1,10 @@
+{
+  "Name": "ChillInYourFarmHouse",
+  "Author": "Husky110",
+  "Version": "1.0.0",
+  "Description": "Lets you regen stamina in your farmhouse.",
+  "UniqueID": "Husky110.ChillInYourFarmHouse",
+  "EntryDll": "ChillInYourFarmHouse.dll",
+  "MinimumApiVersion": "2.3",
+  "UpdateKeys": []
+}

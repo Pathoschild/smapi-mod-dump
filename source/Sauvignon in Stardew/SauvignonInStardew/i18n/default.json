@@ -1,0 +1,20 @@
+{
+	"professionTitle_Distiller" : "Distiller",
+	"professionTitle_Artisan" : "Artisan",
+	"professionTitle_Agriculturist" : "Agriculturist",
+	"professionMenuDescription_Distiller" : "Alcohol (beer, wine, etc.) worth 40% more.",
+	"professionMenuDescription_Artisan" : "Artisan goods (cheese, truffle oil, cloth, etc.) worth 40% more.",
+	"professionMenuDescription_Agriculturist" : "All crops grow 10% faster.",
+	"menuExtraInfo_Can" : "+1 Watering Can Proficiency",
+	"menuExtraInfo_Hoe" : "+1 Hoe Proficiency",
+	"menuTitle" : "Level 10 Farming",
+	"menuText" : "Choose a profession:",
+	"professionHoverDescription" : "Alcohol worth 40% more.",
+	"wineryName" : "Winery",
+	"wineryDescription" : "Kegs and Casks inside work 30% faster and display time remaining."
+	"minutes" : " minutes remaining.",
+	"days" : " days remaining.",
+	"categoryName" : "Distilled Craft",
+	"kegRoomDislplayName" : "Keg Room",
+	"kegRoomDescription" : "Adds a room to your Winery that houses huge kegs able to process large quantities of products."	
+}

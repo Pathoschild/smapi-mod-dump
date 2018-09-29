@@ -1,0 +1,29 @@
+= Stardew Valley Mods =
+
+This project holds mods for game link:http://stardewvalley.net/[Stardew Valley] with the help of link:https://github.com/Pathoschild/SMAPI[SMAPI].
+
+== FishingAdjustMod ==
+
+This mod helps to adjust fishing difficulty, override the appearance probability of king fishes.
+
+=== Features ===
+
+. Adjust fishing difficulties (either enhance or reduce it) by multiplying a ratio to the fishes difficulty level data
+. Override king fishes appearance chance, allow to fish king fishes more than one. (By default turn-off)
+
+=== TODO ===
+
+. Adjust the fishing green bar size
+. Do not reduce the XP gained by fishing when reduced the difficulty level
+
+== MoveFasterMod ==
+
+This mod helps player move faster, including walk, run, riding, etc.
+
+=== TODO ===
+
+. Add in-game menu to alter the settings
+
+== TODO ==
+
+. MSBuild generate both manifest & assembly info

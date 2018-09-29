@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <GamePath>I:\Program Files (x86)\Steam\steamapps\common\Stardew Valley</GamePath>
+    <DeployModFolderName>$(MSBuildProjectName)</DeployModFolderName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FA6A5BA1-8983-4982-B746-ADF42EC01795}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AnimalHusbandryMod</RootNamespace>
+    <AssemblyName>AnimalHusbandryMod</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony, Version=1.1.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>G:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Mods\PyTK\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>G:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PyTK">
+      <HintPath>H:\Projetos\Stardew-Valley-Mods-Platonymous\PyTK\bin\Release\PyTK.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="animals\Animal.cs" />
+    <Compile Include="animals\AnimalContestController.cs" />
+    <Compile Include="animals\AnimalContestEventBuilder.cs" />
+    <Compile Include="animals\AnimalStatus.cs" />
+    <Compile Include="animals\AnimalStatusController.cs" />
+    <Compile Include="animals\data\AnimalBuildingData.cs" />
+    <Compile Include="animals\data\AnimalData.cs" />
+    <Compile Include="animals\data\AnimalItem.cs" />
+    <Compile Include="animals\AnimalExtension.cs" />
+    <Compile Include="animals\AnimalQueryMenuExtended.cs" />
+    <Compile Include="animals\data\ChickenItem.cs" />
+    <Compile Include="animals\data\CowItem.cs" />
+    <Compile Include="animals\data\DuckItem.cs" />
+    <Compile Include="animals\data\FeatherAnimalItem.cs" />
+    <Compile Include="animals\data\FeetAnimalItem.cs" />
+    <Compile Include="animals\data\GoatItem.cs" />
+    <Compile Include="animals\data\ImpregnatableAnimalItem.cs" />
+    <Compile Include="animals\data\PetItem.cs" />
+    <Compile Include="animals\data\PigItem.cs" />
+    <Compile Include="animals\data\TreatItem.cs" />
+    <Compile Include="common\CustomEvent.cs" />
+    <Compile Include="common\EventsLoader.cs" />
+    <Compile Include="animals\LivingWithTheAnimalsChannel.cs" />
+    <Compile Include="animals\MeatController.cs" />
+    <Compile Include="animals\PetOverrides.cs" />
+    <Compile Include="animals\PregnancyController.cs" />
+    <Compile Include="animals\data\PregnancyItem.cs" />
+    <Compile Include="animals\data\SheepItem.cs" />
+    <Compile Include="animals\data\WoolAnimalItem.cs" />
+    <Compile Include="animals\TreatsController.cs" />
+    <Compile Include="common\EventOverrides.cs" />
+    <Compile Include="meats\MeatOverrides.cs" />
+    <Compile Include="ModConfig.cs" />
+    <Compile Include="animals\data\RabbitItem.cs" />
+    <Compile Include="recipes\RecipeAttribute.cs" />
+    <Compile Include="meats\MeatAttribute.cs" />
+    <Compile Include="cooking\Cooking.cs" />
+    <Compile Include="cooking\CookingData.cs" />
+    <Compile Include="cooking\CookingExtension.cs" />
+    <Compile Include="cooking\CookingItem.cs" />
+    <Compile Include="common\DataLoader.cs" />
+    <Compile Include="meats\Meat.cs" />
+    <Compile Include="meats\MeatData.cs" />
+    <Compile Include="meats\MeatItem.cs" />
+    <Compile Include="meats\MeatExtension.cs" />
+    <Compile Include="recipes\RecipesLoader.cs" />
+    <Compile Include="farmer\FarmerLoader.cs" />
+    <Compile Include="farmer\FarmerData.cs" />
+    <Compile Include="tools\ParticipantRibbon.cs" />
+    <Compile Include="tools\FeedingBasket.cs" />
+    <Compile Include="tools\InseminationSyringe.cs" />
+    <Compile Include="tools\MeatCleaver.cs" />
+    <Compile Include="AnimalHusbandryModEntery.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="recipes\MeatFridayChannel.cs" />
+    <Compile Include="tools\ToolsLoader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="i18n\pt.json" />
+    <None Include="i18n\default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MailFrameworkMod\MailFrameworkMod.csproj">
+      <Project>{9ab101dd-fb56-4441-8180-783405d2d2f0}</Project>
+      <Name>MailFrameworkMod</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="common\CustomLetterBG.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="common\LooseSprites.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tools\MenuTiles.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tools\Tools.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+  </Target>
+</Project>

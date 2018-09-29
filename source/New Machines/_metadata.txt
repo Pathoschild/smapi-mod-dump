@@ -1,0 +1,18 @@
+url:
+   https://github.com/Igorious/StardevValleyNewMachinesMod.git
+
+mods:
+   New Machines
+
+latest commit:
+   commit f62a9fd5c7298e561cb784e6299ab9ac1f215303
+   Author: Igorious <igorious92@gmail.com>
+   Date:   Mon Aug 15 16:08:38 2016 +0300
+   
+       ALL compatibility.
+       Fix for Level-UP menu.
+       Fix for Mixer.
+       Fix for cooking recipes.
+       Added chance mechanic (Recycling-like).
+       Fixed configuration defaults.
+   

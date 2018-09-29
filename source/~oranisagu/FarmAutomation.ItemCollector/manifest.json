@@ -1,0 +1,12 @@
+﻿{
+  "Name": "FarmAutomation Mod: Item Collector",
+  "Authour": "Oranisagu",
+  "Version": {
+    "Build": "1",
+    "MajorVersion": "1",
+    "MinorVersion": "0",
+    "VersionString":  "1.0"
+  },
+  "Description": "Collects items from animals and machines and refills machines if a nearby chest has the necessary raw materials.",
+  "EntryDll":  "FarmAutomation.ItemCollector.dll"
+}

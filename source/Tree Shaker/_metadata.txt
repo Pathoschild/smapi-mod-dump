@@ -1,0 +1,16 @@
+url:
+   https://github.com/TyoAtrosa/TreeShaker.git
+
+mods:
+   Tree Shaker
+
+latest commit:
+   commit 42027b2250bbec5506a47744d791744d419f1785
+   Merge: 39adcd2 80f7020
+   Author: TyoAtrosa <TyoAtrosa@gmail.com>
+   Date:   Sun May 20 13:29:56 2018 -0500
+   
+       Merge pull request #1 from TyoAtrosa/add-license-1
+       
+       Create LICENSE
+   

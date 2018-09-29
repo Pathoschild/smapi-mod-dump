@@ -1,0 +1,24 @@
+{
+  "Name": "Rune Factory Crops Mod",
+  "Author": "Alpha_Omegasis",
+  "Version": {
+    "MajorVersion": 0,
+    "MinorVersion": 1,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "MinimumApiVersion": "1.15",
+  "Description": "Adds in crops from the Rune Factory Series",
+  "UniqueID": "Omegasis.RuneFactoryCropsMod",
+  "EntryDll": "RuneFactoryCropsMod.dll",
+  "Dependencies": [
+   {
+      "UniqueID": "Omegasis.StardustCore",
+      "IsRequired": true
+   },
+   {
+      "UniqueID": "Omegasis.AdditionalCropsFramework",
+      "IsRequired": true
+   }
+]
+}

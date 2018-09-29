@@ -1,0 +1,1 @@
+Images should be 800x480px

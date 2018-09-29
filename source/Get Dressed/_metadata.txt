@@ -1,0 +1,13 @@
+url:
+   https://github.com/AdvizeGH/GetDressed.git
+
+mods:
+   Get Dressed
+
+latest commit:
+   commit 4f74b7e2b0bb95e293c9d2424ba8c9a0782de120
+   Author: AdvizeGH <sinister-thoughts@hotmail.com>
+   Date:   Sun Oct 8 19:54:09 2017 -0500
+   
+       Standardize version number for compatibility with future SMAPI 2.0 features
+   

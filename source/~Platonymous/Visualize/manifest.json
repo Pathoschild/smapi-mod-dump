@@ -1,0 +1,10 @@
+{
+  "Name": "Visualize",
+  "Author": "Platonymous",
+  "Version": "1.5.0",
+  "Description": "Mod for Visual Effects",
+  "UniqueID": "Platonymous.Visualize",
+  "EntryDll": "Visualize.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "Nexus:1704" ]
+}

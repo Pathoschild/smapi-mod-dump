@@ -1,0 +1,13 @@
+url:
+   https://github.com/pomepome/UsefulBombs.git
+
+mods:
+   Useful Bombs
+
+latest commit:
+   commit 00abb4777f1cfa1cf38b9bf44b48351ba356cf2f
+   Author: pomepome <punyoon03@gmail.com>
+   Date:   Wed Jul 11 16:17:20 2018 +0900
+   
+       1.0.1
+   

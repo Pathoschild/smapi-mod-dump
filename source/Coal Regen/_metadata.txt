@@ -1,0 +1,13 @@
+url:
+   https://github.com/AbbyNode/StardewValley-CoalRegen.git
+
+mods:
+   Coal Regen
+
+latest commit:
+   commit 6ddaecbccd73dd506147f4e1077c2c45454e8997
+   Author: Abby <AbbyNode@users.noreply.github.com>
+   Date:   Sun Nov 26 15:27:56 2017 -0500
+   
+       Update README.md
+   

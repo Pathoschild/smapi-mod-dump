@@ -1,0 +1,16 @@
+url:
+   https://github.com/Alhifar/WaitAroundSMAPI.git
+
+mods:
+   Wait Around
+
+latest commit:
+   commit 29af5d6b8964427af1fb6a02832930690a7b892d
+   Merge: 351704a d6f215e
+   Author: Alhifar <alhifar@gmail.com>
+   Date:   Thu Jan 11 20:39:57 2018 -0500
+   
+       Merge pull request #2 from Pathoschild/add-update-check
+       
+       Enable update checks
+   

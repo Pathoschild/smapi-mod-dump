@@ -1,0 +1,10 @@
+﻿{
+  "Name": "PassableObjects",
+  "Author": "punyo",
+  "Version": "1.0.0",
+  "Description": "Simple mod that makes objects can be passable",
+  "UniqueID": "punyo.PassableObjects",
+  "EntryDll": "PassableObjects.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:2329" ]
+}

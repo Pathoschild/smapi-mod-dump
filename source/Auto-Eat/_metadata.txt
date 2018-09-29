@@ -1,0 +1,13 @@
+url:
+   https://github.com/Permamiss/Auto-Eat.git
+
+mods:
+   Auto-Eat
+
+latest commit:
+   commit f03bc1ea581d1a236ce7b8f4df7496aed40412b4
+   Author: Permamiss <39325797+Permamiss@users.noreply.github.com>
+   Date:   Tue May 15 22:37:00 2018 -0700
+   
+       Initial commit
+   

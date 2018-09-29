@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Health Bars Mod",
+  "Authour": "Maurício Gomes (Speeder)",
+  "Version":
+	{
+		"MajorVersion": 1,
+		"MinorVersion": 7,
+		"PatchVersion": 0,
+		"Build": ""
+	},
+	"UniqueID": "SPDHealthBar",
+	"PerSaveConfigs": false,
+  "Description": "Add health bars to monsters.",
+  "EntryDll":  "SMAPIHealthBarMod.dll"
+}

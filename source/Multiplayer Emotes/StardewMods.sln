@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2018
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiplayerEmotes", "MultiplayerEmotes\MultiplayerEmotes.csproj", "{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomEmojis", "CustomEmojis\CustomEmojis.csproj", "{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomEmojis.Tests", "CustomEmojis.Tests\CustomEmojis.Tests.csproj", "{B2AEB792-62F6-421D-B64D-5065A2F8250B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dummy", "Dummy\Dummy.csproj", "{DB944FF1-1AC4-4131-A8D0-A3F3E85CC249}"
+	ProjectSection(ProjectDependencies) = postProject
+		{99954D47-F761-48FF-A624-D9849E3C5068} = {99954D47-F761-48FF-A624-D9849E3C5068}
+		{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF} = {DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}
+		{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D} = {23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapPings", "MapPings\MapPings.csproj", "{99954D47-F761-48FF-A624-D9849E3C5068}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}.Debug|x86.ActiveCfg = Debug|x86
+		{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}.Debug|x86.Build.0 = Debug|x86
+		{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}.Release|x86.ActiveCfg = Release|x86
+		{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}.Release|x86.Build.0 = Release|x86
+		{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}.Debug|x86.ActiveCfg = Debug|x86
+		{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}.Debug|x86.Build.0 = Debug|x86
+		{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}.Release|x86.ActiveCfg = Release|x86
+		{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}.Release|x86.Build.0 = Release|x86
+		{B2AEB792-62F6-421D-B64D-5065A2F8250B}.Debug|x86.ActiveCfg = Debug|x86
+		{B2AEB792-62F6-421D-B64D-5065A2F8250B}.Debug|x86.Build.0 = Debug|x86
+		{B2AEB792-62F6-421D-B64D-5065A2F8250B}.Release|x86.ActiveCfg = Release|x86
+		{B2AEB792-62F6-421D-B64D-5065A2F8250B}.Release|x86.Build.0 = Release|x86
+		{DB944FF1-1AC4-4131-A8D0-A3F3E85CC249}.Debug|x86.ActiveCfg = Debug|x86
+		{DB944FF1-1AC4-4131-A8D0-A3F3E85CC249}.Release|x86.ActiveCfg = Release|x86
+		{99954D47-F761-48FF-A624-D9849E3C5068}.Debug|x86.ActiveCfg = Debug|x86
+		{99954D47-F761-48FF-A624-D9849E3C5068}.Debug|x86.Build.0 = Debug|x86
+		{99954D47-F761-48FF-A624-D9849E3C5068}.Release|x86.ActiveCfg = Release|x86
+		{99954D47-F761-48FF-A624-D9849E3C5068}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {57BA2868-B155-4959-A352-347AB081E16A}
+	EndGlobalSection
+EndGlobal

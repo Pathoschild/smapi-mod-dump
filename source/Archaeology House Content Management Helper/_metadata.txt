@@ -1,0 +1,13 @@
+url:
+   https://github.com/Felix-Dev/StardewMods.git
+
+mods:
+   Archaeology House Content Management Helper
+
+latest commit:
+   commit 15ec5b5a231be460a4b80070ab790698fad042dc
+   Author: Felix-Dev <FelixDev91@gmail.com>
+   Date:   Wed Sep 19 14:33:57 2018 +0200
+   
+       ArchaeologyHouse Mod: Updated manifest.json for update 1.1.1.
+   

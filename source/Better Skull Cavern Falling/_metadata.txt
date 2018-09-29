@@ -1,0 +1,13 @@
+url:
+   https://github.com/maxvollmer/BetterSkullCavernFalling.git
+
+mods:
+   Better Skull Cavern Falling
+
+latest commit:
+   commit f0167a4c077f70d3ff301d3f5555b65488add841
+   Author: maxvollmer <maxvollmer@users.noreply.github.com>
+   Date:   Wed Jul 25 20:39:09 2018 +0200
+   
+       Added update key
+   

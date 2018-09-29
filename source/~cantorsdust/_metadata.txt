@@ -1,0 +1,19 @@
+url:
+   https://github.com/cantorsdust/StardewMods.git
+
+mods:
+   All Crops All Seasons
+   All Professions
+   Instant Grow Trees
+   Recatch Legendary Fish
+   Skull Cave Saver
+   TimeSpeed
+
+latest commit:
+   commit 651b8e1264278d72ff280cd51b104278d3267bfa
+   Merge: 81b23cc 777939f
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Thu Aug 9 13:59:27 2018 -0400
+   
+       Merge branch 'develop'
+   

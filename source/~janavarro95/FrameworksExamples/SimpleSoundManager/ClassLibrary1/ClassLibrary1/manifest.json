@@ -1,0 +1,14 @@
+{
+  "Name": "ExampleSound",
+  "Author": "Alpha_Omegasis",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "MinimumApiVersion": "1.15",
+  "Description": "An example mod that uses my SimpleSoundManager",
+  "UniqueID": "Omegasis.SimpleSoundManager.ExampleSound",
+  "EntryDll": "SoundExample.dll"
+}

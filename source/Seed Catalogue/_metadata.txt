@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/SeedCatalogue.git
+
+mods:
+   Seed Catalogue
+
+latest commit:
+   commit 0f0150bbb9a426952850ddfb3b2ed2173a16983b
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Tue Aug 21 19:37:44 2018 -0400
+   
+       Forgot to commit 1.3
+   

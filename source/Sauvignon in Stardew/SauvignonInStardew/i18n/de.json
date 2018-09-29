@@ -1,0 +1,18 @@
+{
+	"professionTitle_Distiller" : "Brenner",
+	"professionTitle_Artisan" : "Handwerker",
+	"professionTitle_Agriculturist" : "Landwirt",
+	"professionMenuDescription_Distiller" : "Alkohol (Bier, Wein etc.) 40% mehr wert.",
+	"professionMenuDescription_Artisan" : "Handwerkliche Güter (Käse, Trüffelöl, Stoff usw.) sind 40% mehr wert.",
+	"professionMenuDescription_Agriculturist" : "Alle Pflanzen wachsen 10% schneller.",
+	"menuExtraInfo_Can" : "+1 Gießkannenkompetenz",
+	"menuExtraInfo_Hoe" : "+1 Hoe Kompetenz",
+	"menuTitle" : "Ebene 10 Landwirtschaft",
+	"menuText" : "Wähle einen Beruf:",
+	"professionHoverDescription" : "Alkohol im Wert von 40% mehr.",
+	"wineryName" : "Weingut",
+	"wineryDescription" : "Kegs und Fässer drinnen arbeiten 30% schneller und die verbleibende Zeit bleibt erhalten."
+	"minutes" : " Minuten verbleibend.",
+	"days" : " verbleibende Tage.",
+	"categoryName" : "Destilliertes Handwerk"
+}

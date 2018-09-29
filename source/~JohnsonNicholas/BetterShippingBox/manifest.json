@@ -1,0 +1,14 @@
+{
+  "Name": "Better Shipping Box",
+  "Authour": "Kithio, updated by KNakamura",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 3,
+    "Build": "0"
+  },
+  "Description": "Enhances the Shipping Box to let you take items back out",
+  "UniqueID": "Kithio.BetterShippingBox",
+  "PerSaveConfigs": false,
+  "EntryDll": "BetterShippingBox.dll"
+}

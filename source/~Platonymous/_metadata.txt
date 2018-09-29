@@ -1,0 +1,39 @@
+url:
+   https://github.com/Platonymous/Stardew-Valley-Mods.git
+
+mods:
+   Arcade 2048
+   Arcade Pong
+   Arcade Snake(aka Snake)
+   Custom Element Handler
+   Custom Farming Redux(aka Custom Farming)
+   Custom Furniture
+   Custom NPC
+   Custom Shirts
+   Custom TV
+   Farm Hub
+   Harp of Yoba Redux
+   Junimo Farm
+   More Map Layers
+   No Soil Decay Redux
+   Pelican TTS
+   Plan Importer
+   Portraiture
+   PyTK(aka Platonymous Toolkit)
+   Ring of Fire
+   Seed Bag
+   Sleep Worker
+   Speedster
+   Split Money
+   Swim (Almost) Anywhere(aka Swim Suit)
+   TMX Loader
+   Ultiplayer
+   Visualize
+
+latest commit:
+   commit 0124b74435c033a34fb1710c5bacff3a685ddf26
+   Author: Platonymous <david@millionideas.de>
+   Date:   Fri Aug 24 04:19:41 2018 +0200
+   
+       Minor change
+   

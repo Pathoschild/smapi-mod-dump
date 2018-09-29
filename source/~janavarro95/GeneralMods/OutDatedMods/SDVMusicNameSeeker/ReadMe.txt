@@ -1,0 +1,1 @@
+Get's name of all cues used in Stardew's music files.

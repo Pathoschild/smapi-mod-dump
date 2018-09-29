@@ -1,0 +1,23 @@
+url:
+   https://github.com/Entoarox/StardewMods.git
+
+mods:
+   Advanced Location Loader
+   Custom Paths
+   Entoarox Framework
+   Extended Minecart
+   Faster Paths
+   Furniture Anywhere
+   More Animals(aka More Pets)
+   Seasonal Immersion
+   Shop Expander
+   XNB Loader
+
+latest commit:
+   commit ad82156ebcab6e068ebf8fe9f9edc275cff1fa37
+   Merge: 4f61dbe e447214
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Wed Sep 26 10:21:46 2018 -0400
+   
+       Merge branch 'develop'
+   

@@ -1,0 +1,37 @@
+{
+  "gender": 1,
+  "seasons": [
+    0,
+    1,
+	2,
+	3
+  ],
+  "type": 3,
+  "assetName": "VanillaPinkShirt",
+  "standingAssetPaths": {
+    "leftString": "LeftFacing",
+    "rightString": "RightFacing",
+    "upString": "UpFacing",
+    "downString": "DownFacing"
+  },
+  "swimmingAssetPaths": {
+    "leftString": "LeftFacing",
+    "rightString": "RightFacing",
+    "upString": "UpFacing",
+    "downString": "DownFacing"
+  },
+  "movingAssetPaths": {
+    "leftString": "LeftFacing",
+    "rightString": "RightFacing",
+    "upString": "UpFacing",
+    "downString": "DownFacing"
+  },
+  "sittingAssetPaths": {
+    "leftString": "LeftFacing",
+    "rightString": "RightFacing",
+    "upString": "UpFacing",
+    "downString": "DownFacing"
+  },
+  "assetSize": "16, 32",
+  "randomizeUponLoad": false
+}

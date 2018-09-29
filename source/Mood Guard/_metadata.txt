@@ -1,0 +1,13 @@
+url:
+   https://github.com/YonKuma/MoodGuard.git
+
+mods:
+   Mood Guard
+
+latest commit:
+   commit d696f66da65b8bc273b86708afd70237c7be21d8
+   Author: YonKuma <kumarei@gmail.com>
+   Date:   Wed Nov 8 22:05:07 2017 -0500
+   
+       v1.1
+   

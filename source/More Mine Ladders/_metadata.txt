@@ -1,0 +1,15 @@
+url:
+   https://github.com/JadeTheavas/MoreMineLadders.git
+
+mods:
+   More Mine Ladders
+
+latest commit:
+   commit eae797cc2e748d51bd1b0a544e0998e72add9448
+   Author: JadeTheavas <xariusgamingx@gmail.com>
+   Date:   Sun May 27 12:15:22 2018 -0400
+   
+       1.1
+       
+       Updated harmony stuff & improved compatability.
+   

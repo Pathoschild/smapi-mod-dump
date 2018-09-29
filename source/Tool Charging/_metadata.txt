@@ -1,0 +1,13 @@
+url:
+   https://github.com/mralbobo/stardew-tool-charging.git
+
+mods:
+   Tool Charging
+
+latest commit:
+   commit 1b943a888a92be6d4da927eebd9aa4d915d4927c
+   Author: mralbobo <mralbobo@gmail.com>
+   Date:   Tue Feb 27 20:42:19 2018 -0700
+   
+       manifest change
+   

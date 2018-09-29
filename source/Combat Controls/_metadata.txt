@@ -1,0 +1,16 @@
+url:
+   https://github.com/DJ-STLN/CombatControls.git
+
+mods:
+   Combat Controls
+
+latest commit:
+   commit 0d5d90c316acd9084aef784aa2562d2c28009449
+   Merge: f3e3542 7a1a902
+   Author: DJ-STLN <39085128+DJ-STLN@users.noreply.github.com>
+   Date:   Tue Aug 14 14:25:09 2018 +0200
+   
+       Merge pull request #9 from DJ-STLN/1.1.1
+       
+       1.1.1
+   

@@ -1,0 +1,12 @@
+{
+  "Name": "Einari Portraits With 1.1 Fixes for Content Patcher",
+  "Author": "Einari, DasChui, Aner-Dyfan (portraits) & Drynwynn (Content Patcher)",
+  "Version": "0.5.2",
+  "Description": "An amalgamation of Einari's portraits with 1.1 fixes from DasChui and a new Robin by Aner-Dyfan.",
+  "UniqueID": "einari.daschui.aner-dyfan.drynwynn.portraits",
+  "MinimumApiVersion": "2.5",
+  "UpdateKeys": [ "GitHub:Drynwynn/StardewValleyMods" ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  }
+}

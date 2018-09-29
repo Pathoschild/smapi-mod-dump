@@ -1,0 +1,16 @@
+url:
+   https://github.com/AdvizeGH/FarmExpansion.git
+
+mods:
+   Farm Expansion
+
+latest commit:
+   commit 6f99024fe23fa0dbc0f60086e0921ef7a322a493
+   Merge: afe3744 dea7bd6
+   Author: AdvizeGH <sinister-thoughts@hotmail.com>
+   Date:   Fri Mar 2 16:09:32 2018 -0600
+   
+       Merge pull request #4 from Pathoschild/update-code-and-add-api
+       
+       Update code and add mod-provided API
+   

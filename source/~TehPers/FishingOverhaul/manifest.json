@@ -1,0 +1,14 @@
+﻿{
+  "Name": "Teh's Fishing Overhaul",
+  "Description": "A complete overhaul of vanilla fishing, with a huge amount of customization.",
+  "Author": "TehPers",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 3,
+    "PatchVersion": 2,
+    "Build": "beta"
+  },
+  "UniqueID": "TehPers.FishingOverhaul",
+  "EntryDll": "FishingOverhaul.dll",
+  "UpdateKeys": [ "Nexus:866" ]
+}

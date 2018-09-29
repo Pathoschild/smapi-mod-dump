@@ -1,0 +1,9 @@
+﻿{
+  "Name": "zDailyIncrease",
+  "Author": "Nick \"thakyZ\" Mullally",
+  "Version": "1.3.6",
+  "Description": "A rendition to the original daily increase mod",
+  "UniqueID": "zdailyincrease",
+  "EntryDll": "zDailyIncrease.dll",
+  "UpdateKeys": []
+}

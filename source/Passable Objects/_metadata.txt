@@ -1,0 +1,13 @@
+url:
+   https://github.com/pomepome/PassableObjects.git
+
+mods:
+   Passable Objects
+
+latest commit:
+   commit 29d481047a1978c1612d4ce953c6dde29e60c08d
+   Author: pomepome <punyoon03@gmail.com>
+   Date:   Tue Jun 5 16:34:41 2018 +0900
+   
+       1.0.0
+   

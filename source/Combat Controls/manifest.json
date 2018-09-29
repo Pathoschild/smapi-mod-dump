@@ -1,0 +1,10 @@
+{
+  "Author": "DJ-STLN",
+  "Description": "A simple fix to the game controls that properly turns the character in the direction of your MouseClick.",
+  "EntryDll": "CombatControls.dll",
+  "MinimumApiVersion": "2.0",
+  "Name": "Combat Controls",
+  "UniqueID": "DJ-STLN.CombatControls",
+  "UpdateKeys": [ "Nexus:2590", "Github:DJ-STLN/CombatControls" ],
+  "Version": "1.1.1"
+}

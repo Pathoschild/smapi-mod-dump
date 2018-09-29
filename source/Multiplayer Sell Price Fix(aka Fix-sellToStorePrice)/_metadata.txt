@@ -1,0 +1,13 @@
+url:
+   https://github.com/Unremarkable/Stardew-Valley-Multiplayer-Sell-Price-Fix.git
+
+mods:
+   Multiplayer Sell Price Fix(aka Fix-sellToStorePrice)
+
+latest commit:
+   commit 43e992bb2f8e0615051a119f5391ad39adfcce46
+   Author: Unremarkable <animavoro@gmail.com>
+   Date:   Thu May 31 20:49:35 2018 -0700
+   
+       corrected repo directory
+   

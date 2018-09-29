@@ -1,0 +1,13 @@
+url:
+   https://github.com/kevinforrestconnors/RealisticFishing.git
+
+mods:
+   Realistic Fishing
+
+latest commit:
+   commit 95d1f275cad01636ab14c710462d8f0c8fed34fb
+   Author: kevinforrestconnors <kevinforrestconnors@gmail.com>
+   Date:   Thu Aug 23 15:58:01 2018 -0500
+   
+       updates versioning
+   

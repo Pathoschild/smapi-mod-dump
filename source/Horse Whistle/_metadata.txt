@@ -1,0 +1,16 @@
+url:
+   https://github.com/icepuente/StardewValleyMods.git
+
+mods:
+   Horse Whistle
+
+latest commit:
+   commit fd0a54ea50a351e4684e918508b90c3dcf6f8654
+   Merge: 0ff2ca8 0f98296
+   Author: icepuente <icepuente@gmail.com>
+   Date:   Tue Oct 17 14:06:57 2017 -0700
+   
+       Merge pull request #1 from Pathoschild/fix-linux-mac-compatibility
+       
+       Fix Linux/Mac compatibility
+   

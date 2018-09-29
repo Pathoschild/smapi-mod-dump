@@ -1,0 +1,16 @@
+url:
+   https://github.com/mralbobo/stardew-gate-opener.git
+
+mods:
+   Gate Opener
+
+latest commit:
+   commit e895f09c5470720fcc7f63ab4715f00a3762ee78
+   Merge: acf1132 634a95f
+   Author: mralbobo <mralbobo@gmail.com>
+   Date:   Fri Apr 28 17:18:22 2017 -0600
+   
+       Merge pull request #2 from Pathoschild/update-code
+       
+       Update for Stardew Valley 1.2, streamline build process, and simplify code
+   

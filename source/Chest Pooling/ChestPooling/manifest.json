@@ -1,0 +1,13 @@
+{
+  "Name": "Chest Pooling",
+  "Author": "mralbobo",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 4,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "Description": "Lets you deposit into all chests in one operation.",
+  "UniqueID": "mralbobo.ChestPooling",
+  "EntryDll": "ChestPooling.dll"
+}

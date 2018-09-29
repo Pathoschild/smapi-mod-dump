@@ -1,0 +1,20 @@
+url:
+   https://github.com/Digus/StardewValleyMods.git
+
+mods:
+   Animal Husbandry Mod(aka Butcher Mod)
+   Crop Transplant
+   Custom Cask Mod
+   Custom Crystalarium Mod
+   Everlasting Baits and Unbreakable Tackles
+   Mail Framework
+   Water Retaining Field
+
+latest commit:
+   commit cfba2670251dc9b28101c14749971d9e15ae5b1b
+   Author: Digus-PC\Digus <diguss@gmail.com>
+   Date:   Tue Aug 28 00:21:45 2018 -0300
+   
+       Everlasting Baits and Unbreakable Tackles 1.2.2
+       - No code changes, just the manifest. It was recompiled to work with the new game version.
+   

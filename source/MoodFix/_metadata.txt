@@ -1,0 +1,13 @@
+url:
+   https://github.com/vaindil/sdv-moodfix.git
+
+mods:
+   MoodFix
+
+latest commit:
+   commit 4832f88dfcec613fc9e113f064b8bc4b43aaadc9
+   Author: Steven Hall <vaindil@gmail.com>
+   Date:   Thu Feb 1 23:12:41 2018 -0500
+   
+       kill the animal check when exiting to title
+   

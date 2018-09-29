@@ -1,0 +1,13 @@
+url:
+   https://github.com/stokastic/PrismaticTools.git
+
+mods:
+   Prismatic Tools
+
+latest commit:
+   commit 1300d2d0ba58c365674b75a0c338b8d62d70ef54
+   Author: Aaron Hill <aaron_hill2@carleton.ca>
+   Date:   Sat Aug 4 00:33:30 2018 -0400
+   
+       fixed axes with stumps/added sprinkler range config option
+   

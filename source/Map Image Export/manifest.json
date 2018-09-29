@@ -1,0 +1,15 @@
+{
+  "Name": "Map Image Exporter",
+  "Author": "spacechase0",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 3,
+    "Build": ""
+  },
+  "Description": "Export a map to an image.",
+  "UniqueID": "spacechase0.MapImageExporter",
+  "PerSaveConfigs": false,
+  "EntryDll": "MapImageExporter.dll",
+  "UpdateKeys": [ "Nexus:1073" ]
+}

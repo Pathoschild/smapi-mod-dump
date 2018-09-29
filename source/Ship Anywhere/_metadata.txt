@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/ShipAnywhere.git
+
+mods:
+   Ship Anywhere
+
+latest commit:
+   commit d2040b33bec25ff85ddda6c09e374231a496b877
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Sat Aug 12 09:22:54 2017 -0400
+   
+       Fix opening menu when you shouldn't be able to.
+   

@@ -1,0 +1,16 @@
+url:
+   https://github.com/spacechase0/StardewValleyMP.git
+
+mods:
+   Makeshift Multiplayer
+
+latest commit:
+   commit f2be56e5fc1359e3da669377909c6eb60c9ffa6c
+   Merge: 69d543f 452edce
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Fri Apr 27 18:24:24 2018 -0400
+   
+       Merge pull request #73 from Pathoschild/expand-readme
+       
+       Expand readme
+   

@@ -1,0 +1,33 @@
+url:
+   https://github.com/janavarro95/Stardew_Valley_Mods.git
+
+mods:
+   Advanced Save Backup(aka Stardew Auto Backup, Stardew_Save_Backup)
+   Auto Speed
+   Billboard Anywhere
+   Build Endurance
+   Build Health
+   Buy Back Collectables
+   Current Location
+   Custom Asset Modifier
+   Custom Shops Redux
+   Daily Quest Anywhere
+   Fall 28 Snow Day
+   Happy Birthday
+   More Rain
+   Museum Rearranger
+   Night Owl
+   No More Pets
+   Save Anywhere
+   Simple Sound Manager
+   Stardew Symphony Remastered(aka Stardew Symphony)
+   Stardust Core
+   Time Freeze
+
+latest commit:
+   commit 18ad59258c2a97d6262b383f0aa62b74fcdaacc5
+   Author: Joshua Navarro <janavarro95@users.noreply.github.com>
+   Date:   Mon Jun 25 20:33:50 2018 -0700
+   
+       Delete StardewValleyCues RAW.txt
+   

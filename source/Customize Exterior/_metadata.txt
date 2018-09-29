@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/CustomizeExterior.git
+
+mods:
+   Customize Exterior
+
+latest commit:
+   commit c23abf0da4e2d91202cd10693a5f1c253a7abe80
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Sun Aug 5 15:04:38 2018 -0400
+   
+       MP support
+   

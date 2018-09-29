@@ -1,0 +1,13 @@
+url:
+   https://gitlab.com/speeder1/farming-implements-combat.git
+
+mods:
+   Combat with Farming Implements
+
+latest commit:
+   commit 7e578d56449033ed26320167e09ebeff2a5abc1d
+   Author: MaurÃ­cio Gomes <mauricio.gomes@coderofworlds.com>
+   Date:   Fri Apr 15 17:04:13 2016 -0300
+   
+       readme actually fixed
+   

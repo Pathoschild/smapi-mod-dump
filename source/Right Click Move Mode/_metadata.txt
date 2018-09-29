@@ -1,0 +1,13 @@
+url:
+   https://github.com/ylsama/RightClickMoveMode.git
+
+mods:
+   Right Click Move Mode
+
+latest commit:
+   commit e896a86af62b6b0ea571220700ac9203d43e84a3
+   Author: DucNghia <ducnghia.tin47@gmail.com>
+   Date:   Thu Aug 16 10:37:09 2018 +0700
+   
+       1.1.5 updated
+   

@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{7AD206DC-A3A3-4DFF-9C8A-FF7F8F849DF7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Entoarox.SeasonalImmersion</RootNamespace>
+    <AssemblyName>SeasonalImmersion</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="2.2.0-beta-20180819" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.Zip">
+      <HintPath>.\Ionic.Zip.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ContentMode.cs" />
+    <Compile Include="ContentPackManifest.cs" />
+    <Compile Include="ModConfig.cs" />
+    <Compile Include="ModEntry.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SeasonalTextureLoader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ContentPack\manifest.json" />
+    <None Include="manifest.json" />
+    <None Include="README.md" />
+    <None Include="RELEASE-NOTES.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ContentPack\fall\Barn.png" />
+    <EmbeddedResource Include="ContentPack\fall\Big Barn.png" />
+    <EmbeddedResource Include="ContentPack\fall\Big Coop.png" />
+    <EmbeddedResource Include="ContentPack\fall\Coop.png" />
+    <EmbeddedResource Include="ContentPack\fall\Deluxe Barn.png" />
+    <EmbeddedResource Include="ContentPack\fall\Deluxe Coop.png" />
+    <EmbeddedResource Include="ContentPack\fall\Earth Obelisk.png" />
+    <EmbeddedResource Include="ContentPack\fall\Gold Clock.png" />
+    <EmbeddedResource Include="ContentPack\fall\houses.png" />
+    <EmbeddedResource Include="ContentPack\fall\Mill.png" />
+    <EmbeddedResource Include="ContentPack\fall\Shed.png" />
+    <EmbeddedResource Include="ContentPack\fall\Silo.png" />
+    <EmbeddedResource Include="ContentPack\fall\Slime Hutch.png" />
+    <EmbeddedResource Include="ContentPack\fall\Stable.png" />
+    <EmbeddedResource Include="ContentPack\fall\Water Obelisk.png" />
+    <EmbeddedResource Include="ContentPack\fall\Well.png" />
+    <EmbeddedResource Include="ContentPack\spring\Barn.png" />
+    <EmbeddedResource Include="ContentPack\spring\Big Barn.png" />
+    <EmbeddedResource Include="ContentPack\spring\Big Coop.png" />
+    <EmbeddedResource Include="ContentPack\spring\Coop.png" />
+    <EmbeddedResource Include="ContentPack\spring\Deluxe Barn.png" />
+    <EmbeddedResource Include="ContentPack\spring\Deluxe Coop.png" />
+    <EmbeddedResource Include="ContentPack\spring\Earth Obelisk.png" />
+    <EmbeddedResource Include="ContentPack\spring\Gold Clock.png" />
+    <EmbeddedResource Include="ContentPack\spring\houses.png" />
+    <EmbeddedResource Include="ContentPack\spring\Mill.png" />
+    <EmbeddedResource Include="ContentPack\spring\Shed.png" />
+    <EmbeddedResource Include="ContentPack\spring\Silo.png" />
+    <EmbeddedResource Include="ContentPack\spring\Slime Hutch.png" />
+    <EmbeddedResource Include="ContentPack\spring\Stable.png" />
+    <EmbeddedResource Include="ContentPack\spring\Water Obelisk.png" />
+    <EmbeddedResource Include="ContentPack\spring\Well.png" />
+    <EmbeddedResource Include="ContentPack\summer\Barn.png" />
+    <EmbeddedResource Include="ContentPack\summer\Big Barn.png" />
+    <EmbeddedResource Include="ContentPack\summer\Big Coop.png" />
+    <EmbeddedResource Include="ContentPack\summer\Coop.png" />
+    <EmbeddedResource Include="ContentPack\summer\Deluxe Barn.png" />
+    <EmbeddedResource Include="ContentPack\summer\Deluxe Coop.png" />
+    <EmbeddedResource Include="ContentPack\summer\Earth Obelisk.png" />
+    <EmbeddedResource Include="ContentPack\summer\Gold Clock.png" />
+    <EmbeddedResource Include="ContentPack\summer\houses.png" />
+    <EmbeddedResource Include="ContentPack\summer\Mill.png" />
+    <EmbeddedResource Include="ContentPack\summer\Shed.png" />
+    <EmbeddedResource Include="ContentPack\summer\Silo.png" />
+    <EmbeddedResource Include="ContentPack\summer\Slime Hutch.png" />
+    <EmbeddedResource Include="ContentPack\summer\Stable.png" />
+    <EmbeddedResource Include="ContentPack\summer\Water Obelisk.png" />
+    <EmbeddedResource Include="ContentPack\summer\Well.png" />
+    <EmbeddedResource Include="ContentPack\winter\Barn.png" />
+    <EmbeddedResource Include="ContentPack\winter\Big Barn.png" />
+    <EmbeddedResource Include="ContentPack\winter\Big Coop.png" />
+    <EmbeddedResource Include="ContentPack\winter\Coop.png" />
+    <EmbeddedResource Include="ContentPack\winter\Deluxe Barn.png" />
+    <EmbeddedResource Include="ContentPack\winter\Deluxe Coop.png" />
+    <EmbeddedResource Include="ContentPack\winter\Earth Obelisk.png" />
+    <EmbeddedResource Include="ContentPack\winter\Gold Clock.png" />
+    <EmbeddedResource Include="ContentPack\winter\houses.png" />
+    <EmbeddedResource Include="ContentPack\winter\Mill.png" />
+    <EmbeddedResource Include="ContentPack\winter\Shed.png" />
+    <EmbeddedResource Include="ContentPack\winter\Silo.png" />
+    <EmbeddedResource Include="ContentPack\winter\Slime Hutch.png" />
+    <EmbeddedResource Include="ContentPack\winter\Stable.png" />
+    <EmbeddedResource Include="ContentPack\winter\Water Obelisk.png" />
+    <EmbeddedResource Include="ContentPack\winter\Well.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,13 @@
+url:
+   https://github.com/Ilyaki/NeatAdditions.git
+
+mods:
+   Neat Additions
+
+latest commit:
+   commit 0a949d1eb4f1ef09e75a8f410700216bdee372c7
+   Author: Ilyaki <35632254+Ilyaki@users.noreply.github.com>
+   Date:   Fri Sep 21 05:50:05 2018 +0100
+   
+       Create LICENSE
+   

@@ -1,0 +1,19 @@
+url:
+   https://github.com/isaacs-dev/Minidew-Mods.git
+
+mods:
+   Friends Forever
+
+latest commit:
+   commit 400cf97b4d2325d04f9e6ca35ab7bd98815806ec
+   Author: isaacs-dev <isaacs-dev@users.noreply.github.com>
+   Date:   Sat May 26 15:17:03 2018 -0600
+   
+       SDV 1.3 Support
+       
+       Updated the two mods for support with Stardew Valley 1.3
+       (SMAPI 2.6-beta+).
+       
+       FriendsForever now works as a host-side mod while
+       SpeedyPaths works as a client-side mod.
+   

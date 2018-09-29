@@ -1,0 +1,13 @@
+url:
+   https://github.com/eleanoot/stardew-to-do-mod.git
+
+mods:
+   To Do List
+
+latest commit:
+   commit f2597549b39d3c80f8af883cff18f3ca35c59c48
+   Author: Eleanor <gregoryeleanor@yahoo.co.uk>
+   Date:   Sat Nov 11 21:13:10 2017 +0000
+   
+       Added small and large font screenshots
+   

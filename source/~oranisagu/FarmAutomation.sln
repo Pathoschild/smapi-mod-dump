@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmAutomation.BarnDoorAutomation", "FarmAutomation.BarnDoorAutomation\FarmAutomation.BarnDoorAutomation.csproj", "{AAE2DA6F-F2AD-448F-8093-85D8BD0E587D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmAutomation.Common", "FarmAutomation.Common\FarmAutomation.Common.csproj", "{8A052C45-0A0B-4CB2-ACB5-FCE08A9E3904}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmAutomation.ItemCollector", "FarmAutomation.ItemCollector\FarmAutomation.ItemCollector.csproj", "{8325D89E-D329-413D-BFA7-AE6091584601}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3EF7DE83-50C5-4E86-8888-7BDDD3FF0C27}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildScripts", "BuildScripts", "{860FCDE7-884A-4401-AE7A-41E1444447C5}"
+	ProjectSection(SolutionItems) = preProject
+		copyModsToGameDir.ps1 = copyModsToGameDir.ps1
+		createReleaseZip.ps1 = createReleaseZip.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Help", "Help", "{D470AD3E-F345-4361-9C4B-746D908FCAFC}"
+	ProjectSection(SolutionItems) = preProject
+		Help\Basic Connection.gif = Help\Basic Connection.gif
+		Help\Floor Connection.gif = Help\Floor Connection.gif
+		Help\Simple connection setup.png = Help\Simple connection setup.png
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AAE2DA6F-F2AD-448F-8093-85D8BD0E587D}.Debug|x86.ActiveCfg = Debug|x86
+		{AAE2DA6F-F2AD-448F-8093-85D8BD0E587D}.Debug|x86.Build.0 = Debug|x86
+		{AAE2DA6F-F2AD-448F-8093-85D8BD0E587D}.Release|x86.ActiveCfg = Release|x86
+		{AAE2DA6F-F2AD-448F-8093-85D8BD0E587D}.Release|x86.Build.0 = Release|x86
+		{8A052C45-0A0B-4CB2-ACB5-FCE08A9E3904}.Debug|x86.ActiveCfg = Debug|x86
+		{8A052C45-0A0B-4CB2-ACB5-FCE08A9E3904}.Debug|x86.Build.0 = Debug|x86
+		{8A052C45-0A0B-4CB2-ACB5-FCE08A9E3904}.Release|x86.ActiveCfg = Release|x86
+		{8A052C45-0A0B-4CB2-ACB5-FCE08A9E3904}.Release|x86.Build.0 = Release|x86
+		{8325D89E-D329-413D-BFA7-AE6091584601}.Debug|x86.ActiveCfg = Debug|x86
+		{8325D89E-D329-413D-BFA7-AE6091584601}.Debug|x86.Build.0 = Debug|x86
+		{8325D89E-D329-413D-BFA7-AE6091584601}.Release|x86.ActiveCfg = Release|x86
+		{8325D89E-D329-413D-BFA7-AE6091584601}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{860FCDE7-884A-4401-AE7A-41E1444447C5} = {3EF7DE83-50C5-4E86-8888-7BDDD3FF0C27}
+		{D470AD3E-F345-4361-9C4B-746D908FCAFC} = {3EF7DE83-50C5-4E86-8888-7BDDD3FF0C27}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,220 @@
+
+xnbData: 
+    target: "w"
+    compressed: true
+    hiDef: true
+    readerData: 
+        - 
+            type: "Microsoft.Xna.Framework.Content.DictionaryReader`2[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"
+            version: 0
+
+        - 
+            type: "Microsoft.Xna.Framework.Content.Int32Reader"
+            version: 0
+
+        - 
+            type: "Microsoft.Xna.Framework.Content.StringReader"
+            version: 0
+
+
+    numSharedResources: 0
+
+content:  #!Dictionary<Int32,String>
+    0: "Oak Chair/chair/-1/-1/4/350" #!String
+    1: "Pink Turnip Seeds/chair/1 1/1 1/4/120/Seeds for pink turnips./Said to be raised with love." #!String
+    2: "Blue Charm Seeds/chair/1 1/1 1/4/145" #!String
+    3: "Walnut Chair/chair/-1/-1/4/350" #!String
+    6: "Birch Chair/chair/-1/-1/4/350" #!String
+    9: "Mahogany Chair/chair/-1/-1/4/1000" #!String
+    12: "Red Diner Chair/chair/-1/-1/4/750" #!String
+    15: "Blue Diner Chair/chair/-1/-1/4/750" #!String
+    18: "Country Chair/chair/-1/-1/4/750" #!String
+    21: "Breakfast Chair/chair/-1/-1/4/750" #!String
+    24: "Pink Office Chair/chair/-1/-1/4/500" #!String
+    27: "Purple Office Chair/chair/-1/-1/4/500" #!String
+    30: "Green Office Stool/chair/-1/-1/4/350" #!String
+    31: "Orange Office Stool/chair/-1/-1/4/350" #!String
+    64: "Dark Throne/chair/-1/-1/4/2000" #!String
+    67: "Dining Chair/chair/-1/-1/4/1200" #!String
+    70: "Dining Chair/chair/-1/-1/4/1200" #!String
+    73: "Green Plush Seat/chair/-1/-1/4/750" #!String
+    76: "Pink Plush Seat/chair/-1/-1/4/750" #!String
+    79: "Winter Chair/chair/-1/-1/4/750" #!String
+    82: "Groovy Chair/chair/-1/-1/4/750" #!String
+    85: "Cute Chair/chair/-1/-1/4/1200" #!String
+    88: "Stump Seat/chair/-1/-1/4/2000" #!String
+    91: "Metal Chair/chair/-1/-1/4/800" #!String
+    94: "Green Stool/chair/-1/-1/4/350" #!String
+    95: "Blue Stool/chair/-1/-1/4/350" #!String
+    128: "King Chair/chair/-1/-1/4/3000" #!String
+    131: "Crystal Chair/chair/-1/-1/4/3000" #!String
+    192: "Oak Bench/bench/-1/-1/4/750" #!String
+    197: "Walnut Bench/bench/-1/-1/4/750" #!String
+    202: "Birch Bench/bench/-1/-1/4/750" #!String
+    207: "Mahogany Bench/bench/-1/-1/4/2000" #!String
+    212: "Modern Bench/bench/-1/-1/4/2000" #!String
+    288: "Blue Armchair/armchair/-1/-1/4/1000" #!String
+    294: "Red Armchair/armchair/-1/-1/4/1000" #!String
+    300: "Green Armchair/armchair/-1/-1/4/1000" #!String
+    306: "Yellow Armchair/armchair/-1/-1/4/1000" #!String
+    312: "Brown Armchair/armchair/-1/-1/4/1000" #!String
+    416: "Blue Couch/couch/-1/-1/4/1750" #!String
+    424: "Red Couch/couch/-1/-1/4/1750" #!String
+    432: "Green Couch/couch/-1/-1/4/1750" #!String
+    440: "Yellow Couch/couch/-1/-1/4/1750" #!String
+    512: "Brown Couch/couch/-1/-1/4/1750" #!String
+    520: "Dark Couch/couch/-1/-1/4/2500" #!String
+    528: "Wizard Couch/couch/-1/-1/4/4000" #!String
+    536: "Woodsy Couch/couch/-1/-1/4/3000" #!String
+    704: "Oak Dresser/dresser/-1/-1/4/1000" #!String
+    709: "Walnut Dresser/dresser/-1/-1/4/1000" #!String
+    714: "Birch Dresser/dresser/-1/-1/4/1000" #!String
+    719: "Mahogany Dresser/dresser/-1/-1/4/2000" #!String
+    724: "Coffee Table/table/2 2/2 1/2/1250" #!String
+    727: "Stone Slab/table/2 2/2 1/2/1000" #!String
+    800: "Winter Dining Table/long table/-1/-1/2/3500" #!String
+    807: "Festive Dining Table/long table/-1/-1/2/3500" #!String
+    814: "Mahogany Dining Table/long table/-1/-1/2/3000" #!String
+    821: "Modern Dining Table/long table/-1/-1/2/2700" #!String
+    1120: "Oak Table/table/-1/-1/1/750" #!String
+    1122: "Walnut Table/table/-1/-1/1/750" #!String
+    1124: "Birch Table/table/-1/-1/1/750" #!String
+    1126: "Mahogany Table/table/-1/-1/1/1500" #!String
+    1128: "Sun Table/table/-1/-1/1/2500" #!String
+    1130: "Moon Table/table/-1/-1/1/2500" #!String
+    1132: "Modern Table/table/-1/-1/1/1250" #!String
+    1134: "Pub Table/table/-1/-1/1/800" #!String
+    1136: "Luxury Table/table/-1/-1/1/2000" #!String
+    1138: "Diviner Table/table/-1/-1/1/2250" #!String
+    1140: "Neolithic Table/table/-1/-1/1/1800" #!String
+    1142: "Puzzle Table/table/-1/-1/1/1500" #!String
+    1144: "Winter Table/table/-1/-1/1/1250" #!String
+    1146: "Candy Table/table/-1/-1/1/1000" #!String
+    1148: "Luau Table/table/-1/-1/1/1000" #!String
+    1150: "Dark Table/table/-1/-1/1/2000" #!String
+    1216: "Oak Tea-Table/table/2 2/-1/1/750" #!String
+    1218: "Walnut Tea-Table/table/2 2/-1/1/750" #!String
+    1220: "Birch Tea-Table/table/2 2/-1/1/750" #!String
+    1222: "Mahogany Tea-Table/table/2 2/-1/1/1500" #!String
+    1224: "Modern Tea-Table/table/2 2/-1/1/1000" #!String
+    1226: "Furniture Catalogue/table/2 2/-1/1/200000" #!String
+    1280: "China Cabinet/other/3 3/3 1/1/6000" #!String
+    1283: "Artist Bookcase/bookcase/-1/-1/1/1200" #!String
+    1285: "Luxury Bookcase/bookcase/-1/-1/1/2000" #!String
+    1287: "Modern Bookcase/bookcase/-1/-1/1/1600" #!String
+    1289: "Dark Bookcase/bookcase/-1/-1/1/2000" #!String
+    1291: "Ceramic Pillar/decor/1 3/1 1/1/250" #!String
+    1292: "Gold Pillar/decor/1 3/1 1/1/450" #!String
+    1293: "Industrial Pipe/decor/1 3/1 1/1/300" #!String
+    1294: "Indoor Palm/decor/1 3/1 1/1/600" #!String
+    1295: "Totem Pole/decor/1 3/1 1/1/750" #!String
+    1296: "Manicured Pine/decor/1 3/1 1/1/500" #!String
+    1297: "Topiary Tree/decor/1 3/1 1/1/500" #!String
+    1298: "Standing Geode/decor/1 2/1 1/1/500" #!String
+    1299: "Obsidian Vase/decor/1 2/1 1/1/500" #!String
+    1300: "Singing Stone/decor/1 2/1 1/1/500" #!String
+    1301: "Sloth Skeleton L/decor/1 2/1 1/1/500" #!String
+    1302: "Sloth Skeleton M/decor/1 2/1 1/1/500" #!String
+    1303: "Sloth Skeleton R/decor/1 2/1 1/1/500" #!String
+    1304: "Skeleton/decor/1 2/1 1/1/500" #!String
+    1305: "Chicken Statue/decor/1 2/1 1/1/500" #!String
+    1306: "Leah's Sculpture/decor/1 2/1 1/1/500" #!String
+    1307: "Dried Sunflowers/decor/1 2/1 1/1/500" #!String
+    1308: "Catalogue/decor/1 2/1 1/1/30000" #!String
+    1362: "Small Plant/decor/1 1/1 1/1/250" #!String
+    1363: "Table Plant/decor/1 1/1 1/1/250" #!String
+    1364: "Decorative Bowl/decor/1 1/1 1/1/250" #!String
+    1365: "Futan Bear/decor/1 1/1 1/1/1500" #!String
+    1366: "Globe/decor/1 1/1 1/1/750" #!String
+    1367: "Model Ship/decor/1 1/1 1/1/750" #!String
+    1368: "Small Crystal/decor/1 1/1 1/1/750" #!String
+    1369: "Decorative Lantern/decor/1 1/1 1/1/500" #!String
+    1376: "House Plant/decor/1 2/1 1/1/250" #!String
+    1377: "House Plant/decor/1 2/1 1/1/250" #!String
+    1378: "House Plant/decor/1 2/1 1/1/250" #!String
+    1379: "House Plant/decor/1 2/1 1/1/250" #!String
+    1380: "House Plant/decor/1 2/1 1/1/250" #!String
+    1381: "House Plant/decor/1 2/1 1/1/250" #!String
+    1382: "House Plant/decor/1 2/1 1/1/250" #!String
+    1383: "House Plant/decor/1 2/1 1/1/250" #!String
+    1384: "House Plant/decor/1 2/1 1/1/250" #!String
+    1385: "House Plant/decor/1 2/1 1/1/250" #!String
+    1386: "House Plant/decor/1 2/1 1/1/250" #!String
+    1387: "House Plant/decor/1 2/1 1/1/250" #!String
+    1388: "House Plant/decor/1 2/1 1/1/250" #!String
+    1389: "House Plant/decor/1 2/1 1/1/250" #!String
+    1390: "House Plant/decor/1 2/1 1/1/250" #!String
+    1391: "Oak End Table/table/1 2/1 1/2/500" #!String
+    1393: "Walnut End Table/table/1 2/1 1/2/500" #!String
+    1395: "Birch End Table/table/1 2/1 1/2/500" #!String
+    1397: "Mahogany End Table/table/1 2/1 1/2/1000" #!String
+    1399: "Modern End Table/table/1 2/1 1/1/800" #!String
+    1400: "Grandmother End Table/table/1 2/1 1/1/1000" #!String
+    1401: "Winter End Table/table/1 2/1 1/1/800" #!String
+    1402: "Calendar/painting/1 2/1 2/1/2000" #!String
+    1440: "Tree of the Winter Star/decor/3 5/3 2/1/5000" #!String
+    1443: "Country Lamp/lamp/-1/-1/1/500" #!String
+    1445: "Box Lamp/lamp/-1/-1/1/750" #!String
+    1447: "Modern Lamp/lamp/-1/-1/1/750" #!String
+    1449: "Classic Lamp/lamp/-1/-1/1/1000" #!String
+    1451: "Red Rug/rug/-1/-1/2/1000" #!String
+    1456: "Patchwork Rug/rug/-1/-1/2/800" #!String
+    1461: "Dark Rug/rug/-1/-1/2/2000" #!String
+    1466: "Budget TV/decor/2 3/2 2/1/750" #!String
+    1468: "Plasma TV/decor/3 3/3 1/1/4500" #!String
+    1539: "'The Muzzamaroo'/painting/-1/-1/1/1000" #!String
+    1541: "'A Night On Eco-Hill'/painting/-1/-1/1/1000" #!String
+    1543: "'Pathways'/painting/-1/-1/1/750" #!String
+    1545: "'Burnt Offering'/painting/-1/-1/1/1000" #!String
+    1547: "'Queen of the Gem Sea'/painting/3 2/3 2/1/1200" #!String
+    1550: "'Vanilla Villa'/painting/-1/-1/1/500" #!String
+    1552: "'Primal Motion'/painting/-1/-1/1/1500" #!String
+    1554: "'Jade Hills'/painting/3 2/3 2/1/1750" #!String
+    1557: "'Sun #44'/painting/-1/-1/1/800" #!String
+    1559: "Wallflower Pal/painting/-1/-1/1/500" #!String
+    1561: "'Spires'/painting/-1/-1/1/800" #!String
+    1563: "'Highway 89'/painting/-1/-1/1/800" #!String
+    1565: "Calico Falls/painting/-1/-1/1/750" #!String
+    1567: "Needlepoint Flower/painting/1 2/1 2/1/500" #!String
+    1600: "Skull Poster/painting/1 2/1 2/1/500" #!String
+    1601: "'Sun #45'/painting/1 2/1 2/1/350" #!String
+    1602: "'Little Tree'/painting/1 2/1 2/1/350" #!String
+    1603: "'Blueberries'/painting/1 2/1 2/1/250" #!String
+    1604: "'Blue City'/painting/1 2/1 2/1/250" #!String
+    1605: "Little Photos/painting/1 2/1 2/1/250" #!String
+    1606: "'Dancing Grass'/painting/1 2/1 2/1/400" #!String
+    1607: "'VGA Paradise'/painting/2 2/2 2/1/1200" #!String
+    1609: "J. Cola Light/painting/3 2/3 2/1/1000" #!String
+    1612: "'Kitemaster '95'/painting/-1/-1/1/600" #!String
+    1614: "Basic Window/window/-1/-1/1/300" #!String
+    1616: "Small Window/window/-1/-1/1/300" #!String
+    1618: "Red Cottage Rug/rug/-1/-1/2/750" #!String
+    1623: "Green Cottage Rug/rug/-1/-1/2/750" #!String
+    1628: "Monster Rug/rug/2 2/2 2/1/1250" #!String
+    1630: "Boarded Window/painting/1 2/1 2/1/400" #!String
+    1664: "Mystic Rug/rug/-1/-1/2/1250" #!String
+    1669: "Lg. Futan Bear/decor/2 2/2 1/1/4000" #!String
+    1671: "Bear Statue/decor/2 4/2 1/1/4000" #!String
+    1673: "Porthole/window/-1/-1/1/700" #!String
+    1675: "Anchor/painting/1 2/1 2/1/750" #!String
+    1676: "World Map/painting/-1/-1/1/500" #!String
+    1678: "Ornate Window/window/-1/-1/1/900" #!String
+    1680: "Floor TV/decor/2 2/2 1/1/700" #!String
+    1682: "Carved Window/window/-1/-1/1/900" #!String
+    1733: "Junimo Plush/decor/2 2/2 1/1/4000" #!String
+    1737: "Nautical Rug/rug/-1/-1/2/1250" #!String
+    1742: "Burlap Rug/rug/2 2/2 2/1/350" #!String
+    1744: "Tree Column/decor/1 3/1 1/1/1000" #!String
+    1745: "L. Light String/painting/2 1/2 1/1/400" #!String
+    1747: "S. Pine/decor/1 2/1 1/1/500" #!String
+    1748: "Bonsai Tree/decor/1 2/1 1/1/800" #!String
+    1749: "Metal Window/window/-1/-1/1/800" #!String
+    1751: "Candle Lamp/lamp/-1/-1/1/1000" #!String
+    1753: "Miner's Crest/painting/2 2/2 2/1/1000" #!String
+    1755: "Bamboo Mat/rug/2 1/2 1/2/250" #!String
+    1758: "Ornate Lamp/lamp/-1/-1/1/1050" #!String
+    1777: "Woodcut Rug/rug/2 2/2 2/1/800" #!String
+    1811: "Hanging Shield/painting/1 1/1 1/1/500" #!String
+    1812: "Monster Danglers/painting/2 1/2 1/1/1000" #!String
+    1814: "Ceiling Flags/painting/1 1/1 1/1/50" #!String
+

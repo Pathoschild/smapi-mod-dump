@@ -1,0 +1,13 @@
+url:
+   https://github.com/FayneAldan/SVRichPresence.git
+
+mods:
+   Discord Rich Presence
+
+latest commit:
+   commit 274f4539695f2bf985fcadcdc087b451b3362c2b
+   Author: Fayne Aldan <faynealdan@gmail.com>
+   Date:   Fri Aug 24 02:09:54 2018 -0600
+   
+       Update name and version
+   

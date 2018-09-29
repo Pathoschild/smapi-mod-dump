@@ -1,0 +1,13 @@
+url:
+   https://github.com/deLaDude/ChefsCloset.git
+
+mods:
+   Chefs Closet
+
+latest commit:
+   commit 8667d6ae4c48fe8c378613737805c0575b4fd5d2
+   Author: Patrick Mulcahy <pmulc07@gmail.com>
+   Date:   Thu Apr 6 19:47:37 2017 -0400
+   
+       added defensive checks against null refs
+   

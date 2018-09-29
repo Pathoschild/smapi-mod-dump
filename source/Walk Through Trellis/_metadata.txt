@@ -1,0 +1,15 @@
+url:
+   https://github.com/OfficialTab/walk-through-trellis.git
+
+mods:
+   Walk Through Trellis
+
+latest commit:
+   commit 6e77f4bd66d5cc578c146baf1e1420e996003ab8
+   Author: TheOfficialTab <OfficialTabArtist@gmail.com>
+   Date:   Sat May 12 00:26:06 2018 -0400
+   
+       Assembly addition for 1.3
+       
+       Finally getting around to adding some SMAPI changes and version number fixes to the mod.
+   

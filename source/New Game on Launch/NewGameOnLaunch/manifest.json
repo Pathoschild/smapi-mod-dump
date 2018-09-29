@@ -1,0 +1,10 @@
+{
+   "Name": "New Game on Launch",
+   "Author": "Nobbele",
+   "Version": "1.0.0",
+   "Description": "Loads a new game instantly when the game launches",
+   "UniqueID": "Nobbele.NewGameOnLaunch",
+   "EntryDll": "NewGameOnLaunch.dll",
+   "MinimumApiVersion": "2.6",
+   "UpdateKeys": []
+}

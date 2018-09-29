@@ -1,0 +1,19 @@
+url:
+   https://github.com/TehPers/StardewValleyMods.git
+
+mods:
+   Shroom Spotter
+   Stardew Content Compatibility Layer (SCCL)
+   Teh Core(aka Teh's Core Mod)
+   Teh's Fishing Overhaul
+
+latest commit:
+   commit 132b808095fc0005babc7ea6e42c7b84661c0b23
+   Merge: 86bc19e 41e9208
+   Author: TehPers <flamingpers@ymail.com>
+   Date:   Thu Jan 4 23:51:31 2018 -0800
+   
+       Merge pull request #1 from Pathoschild/update-code
+       
+       Update & streamline build
+   

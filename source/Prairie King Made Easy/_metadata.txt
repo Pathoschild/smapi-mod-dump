@@ -1,0 +1,13 @@
+url:
+   https://github.com/mucchan/sv-mod-prairie-king.git
+
+mods:
+   Prairie King Made Easy
+
+latest commit:
+   commit f01bc104a93e586d45b5f24b9af8325e761a367b
+   Author: Kris <kristianto.iskandar@outlook.com>
+   Date:   Mon Apr 18 23:42:49 2016 +1000
+   
+       Added license file.
+   

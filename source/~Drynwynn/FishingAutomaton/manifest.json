@@ -1,0 +1,11 @@
+﻿{
+  "Name": "FishingAutomaton",
+  "Author": "Drynwynn",
+  "Version": "1.1.0",
+  "Description": "Provides a automaton to automate the fishing game in Stardew Valley",
+  "UniqueID": "Drynwynn.FishingAutomaton",
+  "EntryDll": "FishingAutomaton.dll",
+  "MinimumApiVersion": "2.6",
+  "UpdateKeys": [ "Nexus:2527" ],
+  "DsUnifiedVersion": "1.1.0"
+}

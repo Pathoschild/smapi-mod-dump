@@ -1,0 +1,94 @@
+Custom Shop Name:My_Streaming_Shop
+Items for sale
+========================NEW ITEM======================
+Object_Type
+Boots
+Object ID
+506
+Price
+125
+========================NEW ITEM======================
+Object_Type
+Carpet
+Object ID
+8
+Price
+50
+========================NEW ITEM======================
+Object_Type
+Wallpaper
+Object ID
+2
+Price
+190
+========================NEW ITEM======================
+Object_Type
+Ring
+Object ID
+20
+Price
+1998
+========================NEW ITEM======================
+Object_Type
+Hats
+Object ID
+3
+Price
+678
+========================NEW ITEM======================
+Object_Type
+Sword
+Object ID
+0
+Price
+25
+========================NEW ITEM======================
+Object_Type
+Craftable
+Object ID
+8
+Price
+400
+========================NEW ITEM======================
+Object_Type
+Craftable
+Object ID
+13
+Price
+100
+========================NEW ITEM======================
+Object_Type
+Craftable
+Object ID
+143
+Price
+590
+========================NEW ITEM======================
+Object_Type
+Furniture
+Object ID
+82
+Price
+1000
+========================NEW ITEM======================
+Object_Type
+Item
+Object ID
+417
+Is this a recipe?
+False
+Price
+269
+Quality
+0
+========================NEW ITEM======================
+Object_Type
+Item
+Object ID
+298
+Is this a recipe?
+True
+Price
+9999
+Quality
+0

@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/CustomCrops.git
+
+mods:
+   Custom Crops
+
+latest commit:
+   commit 17db31c18fba63a14462ba58a400c514a6ff9592
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Tue Nov 7 20:16:16 2017 -0500
+   
+       Version 1.1.0
+   

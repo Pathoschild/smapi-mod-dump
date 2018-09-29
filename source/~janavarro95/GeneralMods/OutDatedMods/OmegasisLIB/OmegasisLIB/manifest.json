@@ -1,0 +1,14 @@
+{
+  "Name": "StarDustCore",
+  "Authour": "Alpha_Omegasis",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 0,
+    "Build": ""
+  },
+  "Description": "Core mod for many other mods.",
+  "UniqueID": "StarDustCore",
+  "PerSaveConfigs": false,
+  "EntryDll": "StarDustCore.dll"
+}

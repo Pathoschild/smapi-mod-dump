@@ -1,0 +1,10 @@
+﻿{
+	"Name": "QuickStart",
+	"Author": "WuestMan",
+	"Version": "1.1.0",
+	"Description": "Adds a few items to your inventory when starting a new farm",
+	"UniqueID": "WuestMan.QuickStart",
+	"EntryDll": "QuickStart.dll",
+	"MinimumApiVersion": "2.7",
+	"UpdateKeys": [ "Nexus:2375" ]
+}

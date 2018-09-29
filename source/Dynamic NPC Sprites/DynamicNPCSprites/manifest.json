@@ -1,0 +1,13 @@
+﻿﻿{
+  "Name": "DynamicNPCSprites",
+  "Author": "bashninja",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 0,
+    "Build": ""
+  },
+  "Description": "Enable the additions of dynamic sprites for NPC characters",
+  "UniqueID": "bashNinja.DynamicNPCSprites",
+  "EntryDll": "DynamicNPCSprites.dll"
+}

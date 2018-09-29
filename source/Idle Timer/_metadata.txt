@@ -1,0 +1,13 @@
+url:
+   https://github.com/emperorzuul/SMAPI_MODS.git
+
+mods:
+   Idle Timer
+
+latest commit:
+   commit 03aeb54879297712b7eed1979779fad6a8ec34e8
+   Author: Lord Andreios <achap891@gmail.com>
+   Date:   Sat Sep 22 03:20:47 2018 -0500
+   
+       Delete PauseTimer.pdb
+   

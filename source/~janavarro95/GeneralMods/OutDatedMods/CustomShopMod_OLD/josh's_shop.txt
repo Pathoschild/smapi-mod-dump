@@ -1,0 +1,35 @@
+Welcome to ShopMod! This is Josh's_Shop! //command example shop_mod Josh's_Shop (Shop_List_ID/Name) Quantity
+These are the items for sale:
+=============================================================================================================================
+Shop_List_ID:
+1
+Stock Name: This is the user made name of whatever is being bought. Can also be a search field.
+Stack_of_Wood
+Item_ID: This is the Object_Id reference to Objects.Yaml.
+388
+count: The number of things being bought at once. Good for bulk buying quantities.
+10
+price: The base cost of each purchase.
+50
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Shop_List_ID:
+2
+Stock Name: This is the user made name of whatever is being bought. Can also be a search field.
+Stack_of_Wood
+Item_ID: This is the Object_Id reference to Objects.Yaml.
+388
+count: The number of things being bought at once. Good for bulk buying quantities.
+20
+price: The base cost of each purchase.
+50
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Shop_List_ID:
+3
+Stock Name: This is the user made name of whatever is being bought. Can also be a search field.
+Stack_of_Wood
+Item_ID: This is the Object_Id reference to Objects.Yaml.
+388
+count: The number of things being bought at once. Good for bulk buying quantities.
+50
+price: The base cost of each purchase.
+50

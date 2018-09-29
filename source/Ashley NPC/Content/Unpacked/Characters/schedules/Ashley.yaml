@@ -1,0 +1,25 @@
+
+xnbData: 
+    target: "w"
+    compressed: true
+    hiDef: true
+    readerData: 
+        - 
+            type: "Microsoft.Xna.Framework.Content.DictionaryReader`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"
+            version: 0
+
+        - 
+            type: "Microsoft.Xna.Framework.Content.StringReader"
+            version: 0
+
+
+    numSharedResources: 0
+
+content:  #!Dictionary<String,String>
+    Mon: "1000 WizardHouse 4 13 0/1400 WizardHouse 4 19 2/1800 WizardHouse 2 6 3" #!String
+    Tue: "1000 WizardHouse 11 6 1/1400 WizardHouse 4 19 2/1800 WizardHouse 2 6 3" #!String
+    Wed: "1000 WizardHouse 8 5 0/1400 WizardHouse 4 19 2/1800 WizardHouse 2 6 3" #!String
+    Thu: "1000 WizardHouse 10 15 2/1400 WizardHouse 4 19 2/1800 WizardHouse 2 6 3" #!String
+    Fri: "1000 WizardHouse 5 5 0/1400 WizardHouse 4 19 2/1800 WizardHouse 2 6 3" #!String
+    Sat: "1000 WizardHouse 1 20 1/1400 WizardHouse 4 19 2/1800 WizardHouse 2 6 3" #!String
+    Sun: "1000 WizardHouse 9 20 2/1400 WizardHouse 4 19 2/1800 WizardHouse 2 6 3" #!String

@@ -1,0 +1,5 @@
+﻿Translations:
+de-DE: Nova900
+
+Thanks to all who have contributed!
+If you'd like to submit a translation, send me your translation file either through the nexus or forums, or in Discord (TehPers on #modding: https://discord.gg/Cqk4R)

@@ -1,0 +1,16 @@
+url:
+   https://github.com/FerMod/StardewMods.git
+
+mods:
+   Multiplayer Emotes
+
+latest commit:
+   commit 747ee56c11c2aefd9c3a94bfbf3efe49091797a5
+   Merge: a365cb2 e98a59d
+   Author: Ferran <tudelaigarcia@gmail.com>
+   Date:   Sat Aug 4 13:22:40 2018 +0200
+   
+       Merge pull request #4 from FerMod/FerMod
+       
+       Add fixes and WIP mods
+   

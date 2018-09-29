@@ -1,0 +1,18 @@
+{
+	"professionTitle_Distiller" : "Дистиллятор",
+	"professionTitle_Artisan" : "ремесленник",
+	"professionTitle_Agriculturist" : "агроном",
+	"professionMenuDescription_Distiller" : "Алкоголь (пиво, вино и т. Д.) Стоит на 40% больше.",
+	"professionMenuDescription_Artisan" : "Изделия ремесленника (сыр, масло трюфелей, ткань и т. Д.) На 40% больше.",
+	"professionMenuDescription_Agriculturist" : "Все культуры растут на 10% быстрее.",
+	"menuExtraInfo_Can" : "+1 Полив может быть",
+	"menuExtraInfo_Hoe" : "+1 Профессия как",
+	"menuTitle" : "Уровень 10 Сельское хозяйство",
+	"menuText" : "Выберите профессию:",
+	"professionHoverDescription" : "Алкоголь стоит на 40% больше.",
+	"wineryName" : "винный завод",
+	"wineryDescription" : "Kegs и Casks внутри работают на 30% быстрее и время отображения осталось."
+	"minutes" : " минут осталось.",
+	"days" : " дней.",
+	"categoryName" : "Дистиллированное ремесло"
+}

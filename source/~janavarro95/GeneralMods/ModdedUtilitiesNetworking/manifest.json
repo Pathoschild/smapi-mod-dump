@@ -1,0 +1,10 @@
+{
+  "Name": "ModdedUtilitiesNetworking",
+  "Author": "Alpha_Omegasis",
+  "Version": "0.0.1",
+  "Description": "A dumb attempt at networking",
+  "UniqueID": "Omegasis.ModdedUtilitiesNetworking",
+  "EntryDll": "ModdedUtilitiesNetworking.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "" ]
+}

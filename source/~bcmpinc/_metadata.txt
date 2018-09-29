@@ -1,0 +1,20 @@
+url:
+   https://github.com/bcmpinc/StardewHack.git
+
+mods:
+   Always Scroll Map
+   Craft Counter
+   Fix Animal Tools
+   Fix Scythe Exp
+   Grass Growth
+   Movement Speed
+   Tilled Soil Decay
+   Yet Another Harvest With Scythe Mod(aka Harvest With Scythe)
+
+latest commit:
+   commit d398c6e770fb409d6116c8022ceab19f64e1709b
+   Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
+   Date:   Sun Aug 26 14:40:18 2018 +0200
+   
+       Even more automatic changes to csproj
+   

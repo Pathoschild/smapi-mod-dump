@@ -1,0 +1,10 @@
+﻿{
+  "Name": "CJB Tweaks",
+  "Author": "CJ Bok",
+  "Version": "1.0.0",
+  "Description": "Small tweaks.",
+  "UniqueID": "CJBok.Tweaks",
+  "EntryDll": "CJBTweaks.dll",
+  "MinimumApiVersion": "2.4",
+  "UpdateKeys": []
+}

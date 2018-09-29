@@ -1,0 +1,13 @@
+url:
+   https://github.com/Club559/AshleyMod.git
+
+mods:
+   Ashley NPC
+
+latest commit:
+   commit 7d1f5c86c42c6cb268bf7082660db0ec84197f4d
+   Author: Travoos <club559.minecraft@gmail.com>
+   Date:   Sat Apr 2 11:23:45 2016 -0600
+   
+       Removed debug mode, moved to separate project
+   

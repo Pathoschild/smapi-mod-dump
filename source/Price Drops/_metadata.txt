@@ -1,0 +1,13 @@
+url:
+   https://github.com/skuldomg/priceDrops.git
+
+mods:
+   Price Drops
+
+latest commit:
+   commit 8d84278e3dbb1daf6d2f1b56278e7ad6ab88a8d1
+   Author: skuldomg <scdehne@googlemail.com>
+   Date:   Tue May 22 12:42:50 2018 +0200
+   
+       Updated manifest
+   

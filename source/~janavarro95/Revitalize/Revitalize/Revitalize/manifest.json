@@ -1,0 +1,14 @@
+{
+  "Name": "Revitalize",
+  "Authour": "Alpha_Omegasis",
+  "Version": {
+    "MajorVersion": 0,
+    "MinorVersion": 0,
+    "PatchVersion": 1,
+    "Build": ""
+  },
+  "Description": "Probably will work?",
+  "UniqueID": "4be88c18-b6f3-49b0-ba96-f94b1a5be890",
+  "PerSaveConfigs": false,
+  "EntryDll": "Revitalize.dll"
+}

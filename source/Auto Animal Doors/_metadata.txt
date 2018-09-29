@@ -1,0 +1,14 @@
+url:
+   https://github.com/taggartaa/AutoAnimalDoors.git
+
+mods:
+   Auto Animal Doors
+
+latest commit:
+   commit 49b7d103257d2d8af258b4ab781ee791cbe23738
+   Merge: 8ee0966 21a50d5
+   Author: Aaron Taggart <ajtaggs@gmail.com>
+   Date:   Sat Sep 8 11:55:27 2018 -0700
+   
+       Merge branch '1.3.0-beta'
+   

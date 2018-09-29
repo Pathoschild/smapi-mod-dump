@@ -1,0 +1,17 @@
+url:
+   https://github.com/Denifia/StardewMods.git
+
+mods:
+   Buy Cooking Recipes(aka Buy Recipes)
+   Send Items to Other Farmers(aka Send Letters)
+
+latest commit:
+   commit 923ef68107e7d04ad4323c83149f5b42b72c513a
+   Merge: 06921b0 c81a5f7
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Wed Oct 4 12:26:04 2017 -0400
+   
+       Merge pull request #41 from Pathoschild/update-code
+       
+       Update for SMAPI 2.0
+   

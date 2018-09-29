@@ -1,0 +1,13 @@
+url:
+   https://github.com/stokastic/SmartCursor.git
+
+mods:
+   Smart Cursor
+
+latest commit:
+   commit 3de5f25d6583205c9572e70d4ca3da578c53bcfe
+   Author: Aaron Hill <aaron_hill2@carleton.ca>
+   Date:   Sun Jul 29 18:34:19 2018 -0400
+   
+       Fixed character rotation at some incorrect times
+   

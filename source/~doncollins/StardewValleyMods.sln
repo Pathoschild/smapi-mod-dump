@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CategorizeChests", "CategorizeChests\CategorizeChests.csproj", "{3A8DE77A-96B3-465A-80A0-BAD965626213}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoveBubbles", "LoveBubbles\LoveBubbles.csproj", "{3D926C36-B2AB-4EA1-AC4A-53688A310598}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Common", "Common\Common.shproj", "{1816309E-2100-409B-8B7E-227ED56D3F9B}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Common\Common.projitems*{1816309e-2100-409b-8b7e-227ed56d3f9b}*SharedItemsImports = 13
+		Common\Common.projitems*{3a8de77a-96b3-465a-80a0-bad965626213}*SharedItemsImports = 4
+		Common\Common.projitems*{3d926c36-b2ab-4ea1-ac4a-53688a310598}*SharedItemsImports = 4
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3A8DE77A-96B3-465A-80A0-BAD965626213}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A8DE77A-96B3-465A-80A0-BAD965626213}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A8DE77A-96B3-465A-80A0-BAD965626213}.Debug|x86.ActiveCfg = Debug|x86
+		{3A8DE77A-96B3-465A-80A0-BAD965626213}.Debug|x86.Build.0 = Debug|x86
+		{3A8DE77A-96B3-465A-80A0-BAD965626213}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A8DE77A-96B3-465A-80A0-BAD965626213}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A8DE77A-96B3-465A-80A0-BAD965626213}.Release|x86.ActiveCfg = Release|x86
+		{3A8DE77A-96B3-465A-80A0-BAD965626213}.Release|x86.Build.0 = Release|x86
+		{3D926C36-B2AB-4EA1-AC4A-53688A310598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D926C36-B2AB-4EA1-AC4A-53688A310598}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D926C36-B2AB-4EA1-AC4A-53688A310598}.Debug|x86.ActiveCfg = Debug|x86
+		{3D926C36-B2AB-4EA1-AC4A-53688A310598}.Debug|x86.Build.0 = Debug|x86
+		{3D926C36-B2AB-4EA1-AC4A-53688A310598}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D926C36-B2AB-4EA1-AC4A-53688A310598}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D926C36-B2AB-4EA1-AC4A-53688A310598}.Release|x86.ActiveCfg = Release|x86
+		{3D926C36-B2AB-4EA1-AC4A-53688A310598}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

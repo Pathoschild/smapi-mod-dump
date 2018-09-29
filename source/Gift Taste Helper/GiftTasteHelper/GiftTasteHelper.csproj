@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CA415B12-5C37-487A-92BE-0AED14440F36}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GiftTasteHelper</RootNamespace>
+    <AssemblyName>GiftTasteHelper</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WITH_LOGGING</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Framework\Controllers\Calendar.cs" />
+    <Compile Include="Framework\Controllers\GiftDatabase.cs" />
+    <Compile Include="Framework\Controllers\GiftDataProvider.cs" />
+    <Compile Include="Framework\Controllers\GiftDrawDataProvider.cs" />
+    <Compile Include="Framework\Controllers\GiftMonitor.cs" />
+    <Compile Include="Framework\Controllers\IGiftDataProvider.cs" />
+    <Compile Include="Framework\Controllers\IGiftDatabase.cs" />
+    <Compile Include="Framework\Controllers\IGiftDrawDataProvider.cs" />
+    <Compile Include="Framework\Controllers\IGiftMonitor.cs" />
+    <Compile Include="Framework\Models\GiftDatabaseModel.cs" />
+    <Compile Include="Framework\GiftHelperTypes.cs" />
+    <Compile Include="GiftTasteHelper.cs" />
+    <Compile Include="Framework\Views\CalendarGiftHelper.cs" />
+    <Compile Include="Framework\Views\GiftHelper.cs" />
+    <Compile Include="Framework\Views\IGiftHelper.cs" />
+    <Compile Include="Framework\Models\ItemData.cs" />
+    <Compile Include="Framework\Models\ModConfig.cs" />
+    <Compile Include="Framework\Models\NPCGiftInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Framework\Controllers\SocialPage.cs" />
+    <Compile Include="Framework\Views\SocialPageGiftHelper.cs" />
+    <Compile Include="Framework\SVector2.cs" />
+    <Compile Include="Framework\Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="i18n\de.json" />
+    <None Include="i18n\default.json" />
+    <None Include="i18n\es.json" />
+    <None Include="i18n\ja.json" />
+    <None Include="i18n\pt.json" />
+    <None Include="i18n\ru.json" />
+    <None Include="i18n\th.json" />
+    <None Include="i18n\zh.json" />
+    <None Include="manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <_TranslationFiles Include="$(ProjectDir)\i18n\*.json">
+      <InProject>false</InProject>
+    </_TranslationFiles>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
+  </ItemGroup>
+  <Target Name="AfterBuild">
+    <PropertyGroup>
+      <ModPath>$(GamePath)\Mods\$(TargetName)</ModPath>
+    </PropertyGroup>
+    <Copy SourceFiles="$(TargetDir)\$(TargetName).dll" DestinationFolder="$(ModPath)" />
+    <Copy SourceFiles="$(TargetDir)\$(TargetName).pdb" DestinationFolder="$(ModPath)" Condition="Exists('$(TargetDir)\$(TargetName).pdb')" />
+    <Copy SourceFiles="$(TargetDir)\$(TargetName).dll.mdb" DestinationFolder="$(ModPath)" Condition="Exists('$(TargetDir)\$(TargetName).dll.mdb')" />
+    <Copy SourceFiles="$(ProjectDir)manifest.json" DestinationFolder="$(ModPath)" />
+    <Copy SourceFiles="@(_TranslationFiles)" DestinationFolder="$(ModPath)\i18n" Condition="Exists('$(ProjectDir)\i18n')" />
+  </Target>
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+  </Target>
+</Project>

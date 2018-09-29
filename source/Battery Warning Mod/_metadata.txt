@@ -1,0 +1,15 @@
+url:
+   https://github.com/Husky110/BatteryWarningMod.git
+
+mods:
+   Battery Warning Mod
+
+latest commit:
+   commit 2927d1178122da4591789aae6e43b005baa5322a
+   Author: Lothar "Husky110" Hoffmann <Husky110@users.noreply.github.com>
+   Date:   Tue Mar 6 06:09:32 2018 +0100
+   
+       Update manifest.json
+       
+       Updated Version
+   

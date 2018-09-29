@@ -1,0 +1,13 @@
+url:
+   https://github.com/thatnzguy/WindowResize.git
+
+mods:
+   Window Resize
+
+latest commit:
+   commit 9d37d74d818cf26f7fdf001ad3fbd4168bdb8119
+   Author: thatnzguy <thatnzguy@gmail.com>
+   Date:   Tue May 29 20:09:26 2018 +1200
+   
+       Create README.md
+   

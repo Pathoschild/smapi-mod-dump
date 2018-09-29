@@ -1,0 +1,16 @@
+url:
+   https://github.com/Bouhm/stardew-valley-mods.git
+
+mods:
+   NPC Map Locations
+
+latest commit:
+   commit 5c6db2ec9c9c3fb9a8e521e26f437f1bf5a7cdb8
+   Merge: 6170664 c003805
+   Author: Brian Pak <bbouhm@gmail.com>
+   Date:   Mon Sep 10 17:23:47 2018 -0700
+   
+       Merge pull request #39 from Bouhm/development
+       
+       Development
+   

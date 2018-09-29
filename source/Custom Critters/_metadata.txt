@@ -1,0 +1,16 @@
+url:
+   https://github.com/spacechase0/CustomCritters.git
+
+mods:
+   Custom Critters
+
+latest commit:
+   commit 1ba21d74edd4fc44fa5d48274ae4e1fd7a2d8afd
+   Merge: 2f29b85 9e6cd35
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Sun Aug 5 18:59:52 2018 -0400
+   
+       Merge pull request #4 from Mizzion/master
+       
+       Updated for 1.3.17
+   
