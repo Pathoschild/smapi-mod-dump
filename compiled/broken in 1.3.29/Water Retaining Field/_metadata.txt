@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2374
+IDs: DIGUS.WaterRetainingFieldMod
+update keys: Nexus:2374, GitHub:Digus/StardewValleyMods

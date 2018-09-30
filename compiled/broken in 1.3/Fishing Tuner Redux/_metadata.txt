@@ -1,0 +1,3 @@
+page URL: https://community.playstarbound.com/resources/4578
+IDs: HammurabiFishingTunerRedux
+update keys: Chucklefish:4578

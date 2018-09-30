@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2594
+IDs: DIGUS.CropTransplantMod
+update keys: Nexus:2594, GitHub:Digus/StardewValleyMods

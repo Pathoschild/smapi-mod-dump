@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2021
+IDs: cat.desertobelisk
+update keys: Nexus:2021, GitHub:danvolchek/StardewMods

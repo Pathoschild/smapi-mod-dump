@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2811
+IDs: renny.prairiekingprizes
+update keys: Nexus:2811, GitHub:OfficialRenny/PrairieKingPrizes

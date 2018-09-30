@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1133
+IDs: Platonymous.SeedBag
+update keys: Nexus:1133, GitHub:Platonymous/Stardew-Valley-Mods

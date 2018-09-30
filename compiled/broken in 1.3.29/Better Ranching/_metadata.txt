@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/859
+IDs: BetterRanching
+update keys: Nexus:859, GitHub:urbanyeti/stardew-better-ranching

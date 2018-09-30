@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1063
+IDs: Pathoschild.Automate
+update keys: Nexus:1063, GitHub:Pathoschild/StardewMods

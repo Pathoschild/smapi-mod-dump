@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/914
+IDs: Platonymous.HarpOfYobaRedux
+update keys: Nexus:914, GitHub:Platonymous/Stardew-Valley-Mods

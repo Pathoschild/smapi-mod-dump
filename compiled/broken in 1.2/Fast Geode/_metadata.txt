@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/750
+IDs: InstantGeode
+update keys: Nexus:750

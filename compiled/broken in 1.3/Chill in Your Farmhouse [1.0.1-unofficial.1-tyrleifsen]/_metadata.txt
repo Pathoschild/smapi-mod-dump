@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1768
+IDs: Husky110.ChillInYourFarmHouse
+update keys: GitHub:Husky110/ChillInYourFarmHouse, GitHub:tyrleifsen/ChillInYourFarmHouse, Nexus:1768

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/445
+IDs: Omegasis.BuildEndurance
+update keys: Nexus:445, GitHub:janavarro95/Stardew_Valley_Mods

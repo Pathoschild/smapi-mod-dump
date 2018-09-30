@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2677
+IDs: funny-snek.Always_On_Server
+update keys: Nexus:2677

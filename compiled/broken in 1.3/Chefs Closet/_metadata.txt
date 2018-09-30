@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1030
+IDs: Duder.ChefsCloset
+update keys: Nexus:1030, GitHub:deLaDude/ChefsCloset

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1027
+IDs: Mevima.CustomLinens
+update keys: Nexus:1027

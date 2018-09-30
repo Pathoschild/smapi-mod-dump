@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2073
+IDs: KoihimeNakamura.summitreborn, emissaryofinfinity.summitreborn
+update keys: Nexus:2073, GitHub:JohnsonNicholas/SDVMods

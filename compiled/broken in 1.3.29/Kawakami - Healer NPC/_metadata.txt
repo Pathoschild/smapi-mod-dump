@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2549
+IDs: gorzalt.kawakami
+update keys: Nexus:2549, GitHub:Gorzalt/StardewValleyMods

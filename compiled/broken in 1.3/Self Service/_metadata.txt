@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1304
+IDs: JarvieK.SelfService
+update keys: Nexus:1304, GitHub:Jarvie8176/StardewMods

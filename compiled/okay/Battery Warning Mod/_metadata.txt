@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1886
+IDs: Husky110.BatteryWarningMod
+update keys: Nexus:1886, GitHub:Husky110/BatteryWarningMod

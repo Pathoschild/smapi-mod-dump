@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1809
+IDs: vaindil.MoodFix
+update keys: Nexus:1809, GitHub:vaindil/sdv-moodfix

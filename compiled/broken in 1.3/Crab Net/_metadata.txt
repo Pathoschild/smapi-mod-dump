@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/584
+IDs: jwdred.CrabNet
+update keys: Nexus:584, GitHub:jdusbabek/stardewvalley

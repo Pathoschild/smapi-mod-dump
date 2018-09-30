@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1736
+IDs: Ilyaki.HPBar
+update keys: Nexus:1736

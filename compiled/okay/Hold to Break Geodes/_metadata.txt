@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1689
+IDs: cat.holdtobreakgeodes
+update keys: Nexus:1689, GitHub:danvolchek/StardewMods

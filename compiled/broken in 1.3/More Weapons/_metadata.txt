@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1168
+IDs: Joco80.MoreWeapons
+update keys: Nexus:1168, GitHub:MrOxity/MoreWeapons-Source-Code

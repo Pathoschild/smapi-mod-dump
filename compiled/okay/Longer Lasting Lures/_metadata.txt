@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2510
+IDs: caraxian.LongerLastingLures
+update keys: Nexus:2510, GitHub:Caraxi/StardewValleyMods

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1140
+IDs: spacechase0.CustomFarmTypes
+update keys: Chucklefish:4705, Nexus:1140, GitHub:spacechase0/CustomFarmTypes

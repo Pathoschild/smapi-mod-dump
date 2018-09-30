@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1779
+IDs: Xangria.NoRumbleHorse
+update keys: Nexus:1779

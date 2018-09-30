@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2071
+IDs: Platonymous.PlanImporter
+update keys: Nexus:2071, GitHub:Platonymous/Stardew-Valley-Mods

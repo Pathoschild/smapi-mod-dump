@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1787
+IDs: Ilyaki.StackToNearbyChests
+update keys: Nexus:1787, GitHub:Ilyaki/StackToNearbyChests

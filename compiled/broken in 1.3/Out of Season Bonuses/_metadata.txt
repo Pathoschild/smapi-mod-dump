@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1452
+IDs: midoriarmstrong.seasonalitems
+update keys: Nexus:1452

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2053
+IDs: cat.stackeverything
+update keys: Nexus:2053, GitHub:danvolchek/StardewMods

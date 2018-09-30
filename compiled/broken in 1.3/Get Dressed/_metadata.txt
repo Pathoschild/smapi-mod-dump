@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/331
+IDs: Advize.GetDressed
+update keys: Nexus:331, GitHub:AdvizeGH/GetDressed

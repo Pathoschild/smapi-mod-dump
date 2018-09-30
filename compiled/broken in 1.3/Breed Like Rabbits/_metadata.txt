@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/948
+IDs: dycedarger.breedlikerabbits
+update keys: Nexus:948

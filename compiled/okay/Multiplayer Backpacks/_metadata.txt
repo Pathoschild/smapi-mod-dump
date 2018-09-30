@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2282
+IDs: skiilaa.MultiplayerBackpacks
+update keys: Nexus:2282

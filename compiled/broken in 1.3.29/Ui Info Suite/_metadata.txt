@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1150
+IDs: Cdaragorn.UiInfoSuite
+update keys: Nexus:1150, GitHub:cdaragorn/Ui-Info-Suite

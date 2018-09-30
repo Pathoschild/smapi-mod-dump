@@ -1,0 +1,3 @@
+page URL: https://community.playstarbound.com/resources/4584
+IDs: HammurabiRegeneration
+update keys: Chucklefish:4584

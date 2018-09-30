@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/211
+IDs: CJBAutomation
+update keys: Nexus:211, GitHub:CJBok/SDV-Mods

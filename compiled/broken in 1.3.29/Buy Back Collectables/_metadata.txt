@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/507
+IDs: Omegasis.BuyBackCollectables, BuyBackCollectables
+update keys: Nexus:507, GitHub:janavarro95/Stardew_Valley_Mods

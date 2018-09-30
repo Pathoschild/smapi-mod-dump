@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/855
+IDs: kd8lvt.LevelUpNotifications, Level Up Notifications
+update keys: Nexus:855

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/239
+IDs: Bouhm.NPCMapLocations, NPCMapLocationsMod
+update keys: Nexus:239, GitHub:Bouhm/stardew-valley-mods

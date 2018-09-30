@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2642
+IDs: DIGUS.CustomCaskMod
+update keys: Nexus:2642, GitHub:Digus/StardewValleyMods

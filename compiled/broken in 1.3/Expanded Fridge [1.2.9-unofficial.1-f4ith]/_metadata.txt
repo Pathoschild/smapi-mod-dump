@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1191
+IDs: Uwazouri.ExpandedFridge
+update keys: Nexus:1191

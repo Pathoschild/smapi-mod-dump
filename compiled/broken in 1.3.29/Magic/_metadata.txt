@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2007
+IDs: spacechase0.Magic
+update keys: Nexus:2007, Chucklefish:5242, GitHub:spacechase0/Magic

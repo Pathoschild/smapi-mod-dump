@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2703
+IDs: renny.stardewvoideffects
+update keys: Nexus:2703, GitHub:OfficialRenny/StardewVoidEffects

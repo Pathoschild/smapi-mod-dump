@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2162
+IDs: punyo.JoysOfEfficiency
+update keys: Nexus:2162, GitHub:pomepome/JoysOfEfficiency

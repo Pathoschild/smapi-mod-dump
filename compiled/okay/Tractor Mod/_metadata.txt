@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1401
+IDs: Pathoschild.TractorMod, BlueMod_TractorMod, PhthaloBlue.TractorMod, community.TractorMod
+update keys: Nexus:1401, GitHub:Pathoschild/StardewMods

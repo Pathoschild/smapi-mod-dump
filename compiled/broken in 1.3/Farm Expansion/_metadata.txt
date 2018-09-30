@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/130
+IDs: Advize.FarmExpansion, 3888bdfd-73f6-4776-8bb7-8ad45aea1915, AdvizeFarmExpansionMod-2-0, AdvizeFarmExpansionMod-2-0-5
+update keys: Nexus:130, GitHub:AdvizeGH/FarmExpansion

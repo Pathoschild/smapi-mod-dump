@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1100
+IDs: Pathoschild.RotateToolbar
+update keys: Nexus:1100, GitHub:Pathoschild/StardewMods

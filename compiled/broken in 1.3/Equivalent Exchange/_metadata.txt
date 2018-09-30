@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1656
+IDs: MercuriusXeno.EquivalentExchange
+update keys: Nexus:1656, GitHub:MercuriusXeno/EquivalentExchange

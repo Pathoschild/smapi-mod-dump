@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2062
+IDs: Platonymous.SleepWorker
+update keys: Nexus:2062, GitHub:Platonymous/Stardew-Valley-Mods

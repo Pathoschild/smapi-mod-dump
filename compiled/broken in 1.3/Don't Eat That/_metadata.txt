@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1951
+IDs: Pyrohead37.DontEatThat
+update keys: Nexus:1951

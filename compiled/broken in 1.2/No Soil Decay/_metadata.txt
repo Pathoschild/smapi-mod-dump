@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/237
+IDs: 289dee03-5f38-4d8e-8ffc-e440198e8610
+update keys: Nexus:237, GitHub:ThatNorthernMonkey/NoSoilDecay

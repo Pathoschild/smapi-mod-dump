@@ -1,0 +1,13 @@
+﻿{
+  "Name": "WeatherController",
+  "Authour": "EvilPdor",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 2,
+    "Build": ""
+  },
+  "Description": "command for controlling weather",
+  "EntryDll": "WeatherController.dll",
+  "UniqueID": "FAKE.EvilPdor.WeatherController"
+}

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2515
+IDs: Sabera.InfertileSoil
+update keys: Nexus:2515, GitHub:ebehar/StardewValley-InfertileSoil

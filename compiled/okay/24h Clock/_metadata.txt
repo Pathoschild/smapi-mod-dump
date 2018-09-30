@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1695
+IDs: Lajna.24hClock
+update keys: Nexus:1695, GitHub:LajnaLegenden/Stardew_Valley_Mods

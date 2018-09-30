@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1089
+IDs: Pathoschild.FastAnimations
+update keys: Nexus:1089, GitHub:Pathoschild/StardewMods

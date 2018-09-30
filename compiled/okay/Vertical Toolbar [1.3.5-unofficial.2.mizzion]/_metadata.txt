@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/943
+IDs: SB_VerticalToolMenu
+update keys: Nexus:943, GitHub:bmarquismarkail/SV_VerticalToolMenu

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2012
+IDs: spacechase0.BetterShopMenu
+update keys: Nexus:2012, Chucklefish:5245, GitHub:spacechase0/BetterShopMenu

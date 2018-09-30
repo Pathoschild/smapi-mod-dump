@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1419
+IDs: 63b9f419-7449-42db-ab2e-440b4d05c073
+update keys: Nexus:1419

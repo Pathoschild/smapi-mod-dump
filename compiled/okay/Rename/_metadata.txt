@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2130
+IDs: Remmie.Rename
+update keys: Nexus:2130

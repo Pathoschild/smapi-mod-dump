@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1760
+IDs: MTD.SDVTwitch
+update keys: Nexus:1760, GitHub:dawgeth/SDVTwitch

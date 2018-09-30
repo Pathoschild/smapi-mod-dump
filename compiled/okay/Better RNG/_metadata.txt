@@ -1,0 +1,3 @@
+page URL: https://github.com/Zoryn4163/SMAPI-Mods
+IDs: Zoryn.BetterRNG
+update keys: GitHub:Zoryn4163/SMAPI-Mods

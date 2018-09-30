@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/433
+IDs: Omegasis.NightOwl
+update keys: Nexus:433, GitHub:janavarro95/Stardew_Valley_Mods

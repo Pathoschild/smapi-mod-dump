@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2272
+IDs: Entoarox.CustomPaths
+update keys: Nexus:2272, Chucklefish:5234, GitHub:Entoarox/StardewMods

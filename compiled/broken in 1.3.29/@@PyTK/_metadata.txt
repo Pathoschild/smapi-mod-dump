@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1726
+IDs: Platonymous.Toolkit
+update keys: Nexus:1726, GitHub:Platonymous/Stardew-Valley-Mods

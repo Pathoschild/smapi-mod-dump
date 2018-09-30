@@ -1,0 +1,3 @@
+page URL: https://community.playstarbound.com/resources/4296
+IDs: Kithio:ChatMod
+update keys: Chucklefish:4296

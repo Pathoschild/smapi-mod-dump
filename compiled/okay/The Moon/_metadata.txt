@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2482
+IDs: shannon.MoonMod
+update keys: Nexus:2482

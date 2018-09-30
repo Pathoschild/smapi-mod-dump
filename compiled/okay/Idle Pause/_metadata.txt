@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1092
+IDs: Veleek.IdlePause
+update keys: Nexus:1092, GitHub:veleek/IdlePause

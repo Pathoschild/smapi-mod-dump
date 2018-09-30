@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2458
+IDs: stokastic.SmartCursor
+update keys: Nexus:2458, GitHub:stokastic/SmartCursor

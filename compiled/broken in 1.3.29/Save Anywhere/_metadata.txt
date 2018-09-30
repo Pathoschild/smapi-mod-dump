@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/444
+IDs: Omegasis.SaveAnywhere
+update keys: Nexus:444, GitHub:janavarro95/Stardew_Valley_Mods

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1624
+IDs: GuiNoya.DailyTasksReport
+update keys: Nexus:1624, GitHub:GuiNoya/SVMods

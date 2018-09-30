@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/236
+IDs: 965169fd-e1ed-47d0-9f12-b104535fb4bc
+update keys: Nexus:236, GitHub:ThatNorthernMonkey/HarvestWithScythe

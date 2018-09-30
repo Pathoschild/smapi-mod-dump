@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/513
+IDs: Omegasis.DailyQuestAnywhere, DailyQuest
+update keys: Nexus:513, GitHub:janavarro95/Stardew_Valley_Mods

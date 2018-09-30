@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1448
+IDs: cat.geodeinfomenu
+update keys: Nexus:1448, GitHub:danvolchek/StardewMods

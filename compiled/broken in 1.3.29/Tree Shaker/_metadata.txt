@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2159
+IDs: TyoAtrosa.Treeshaker
+update keys: GitHub:TyoAtrosa/TreeShaker, Nexus:2159

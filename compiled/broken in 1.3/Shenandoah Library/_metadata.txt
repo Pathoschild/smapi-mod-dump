@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/756
+IDs: Nishtra.ShenandoahProject, Shenandoah Project
+update keys: Nexus:756

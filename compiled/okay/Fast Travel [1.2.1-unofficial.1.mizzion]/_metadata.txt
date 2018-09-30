@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1529
+IDs: DeathGameDev.FastTravel
+update keys: Nexus:1529, GitHub:DeathGameDev/SDV-FastTravel

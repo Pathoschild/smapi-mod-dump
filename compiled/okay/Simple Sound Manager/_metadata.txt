@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1410
+IDs: Omegasis.SimpleSoundManager
+update keys: Nexus:1410, GitHub:janavarro95/Stardew_Valley_Mods

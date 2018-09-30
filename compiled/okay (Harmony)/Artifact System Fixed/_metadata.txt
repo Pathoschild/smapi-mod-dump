@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2761
+IDs: Ilyaki.ArtifactSystemFixed
+update keys: Nexus:2761, GitHub:Ilyaki/ArtifactSystemFixed

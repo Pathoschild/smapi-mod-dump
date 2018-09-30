@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/824
+IDs: RopeBridge
+update keys: Nexus:824, GitHub:StephenKairos/Teban100-StardewMods

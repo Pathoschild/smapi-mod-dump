@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2697
+IDs: DewMods.StardewValleyMods.SkipFishingMinigame
+update keys: Nexus:2697

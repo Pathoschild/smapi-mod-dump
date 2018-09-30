@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2421
+IDs: Roc.Reseed
+update keys: Nexus:2421

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2297
+IDs: Kabigon.CampfireCooking
+update keys: Nexus:2297, GitHub:KabigonFirst/StardewValleyMods

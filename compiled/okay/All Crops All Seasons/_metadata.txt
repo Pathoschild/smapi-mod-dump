@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/170
+IDs: cantorsdust.AllCropsAllSeasons, 29ee8246-d67b-4242-a340-35a9ae0d5dd7, community.AllCropsAllSeasons
+update keys: Nexus:170, GitHub:cantorsdust/StardewMods

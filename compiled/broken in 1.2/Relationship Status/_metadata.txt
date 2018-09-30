@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/751
+IDs: relationshipstatus
+update keys: Nexus:751

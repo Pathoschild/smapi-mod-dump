@@ -1,0 +1,3 @@
+page URL: https://community.playstarbound.com/resources/4247
+IDs: zdailyincrease
+update keys: Chucklefish:4247, GitHub:thakyZ/zDailyIncrease

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2387
+IDs: BenjaminWilcox.AutoCoffee
+update keys: Nexus:2387

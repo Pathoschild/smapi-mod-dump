@@ -1,0 +1,3 @@
+page URL: https://community.playstarbound.com/resources/4302
+IDs: Kithio.BetterShippingBox, Kithio:BetterShippingBox
+update keys: Chucklefish:4302

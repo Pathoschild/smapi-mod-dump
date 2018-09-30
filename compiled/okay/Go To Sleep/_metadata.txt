@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2195
+IDs: yy376.GoToSleep
+update keys: Nexus:2195

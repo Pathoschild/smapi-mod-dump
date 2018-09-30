@@ -1,0 +1,3 @@
+page URL: https://community.playstarbound.com/resources/3621
+IDs: EventNotifications
+update keys: Chucklefish:3621

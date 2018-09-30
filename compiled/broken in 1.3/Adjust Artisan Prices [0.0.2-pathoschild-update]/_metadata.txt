@@ -1,0 +1,3 @@
+page URL: https://community.playstarbound.com/resources/3532
+IDs: ThatNorthernMonkey.AdjustArtisanPrices, 1e36d4ca-c7ef-4dfb-9927-d27a6c3c8bdc
+update keys: Chucklefish:3532, GitHub:ThatNorthernMonkey/AdjustArtisanPrices

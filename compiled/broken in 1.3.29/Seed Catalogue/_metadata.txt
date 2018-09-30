@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1640
+IDs: spacechase0.SeedCatalogue
+update keys: Nexus:1640, Chucklefish:5090, GitHub:spacechase0/SeedCatalogue

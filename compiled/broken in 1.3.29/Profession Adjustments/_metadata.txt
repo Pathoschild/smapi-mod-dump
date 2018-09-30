@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2424
+IDs: KevinConnors.ProfessionAdjustments
+update keys: GitHub:kevinforrestconnors/ProfessionAdjustments, Nexus:2424

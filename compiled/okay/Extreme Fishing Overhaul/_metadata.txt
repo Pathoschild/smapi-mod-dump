@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2212
+IDs: DevinLematty.ExtremeFishingOverhaul
+update keys: Nexus:2212, GitHub:unidarkshin/Stardew-Mods

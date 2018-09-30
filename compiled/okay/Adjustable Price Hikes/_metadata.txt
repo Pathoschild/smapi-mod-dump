@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2631
+IDs: Pokeytax.AdjustablePriceHikes
+update keys: Nexus:2631

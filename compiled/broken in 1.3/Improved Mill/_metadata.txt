@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1748
+IDs: AustinYQM.ImprovedMill
+update keys: Nexus:1748, GitHub:AustinYQM/ImprovedMill

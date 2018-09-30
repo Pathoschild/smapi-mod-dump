@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1232
+IDs: BadNetCode.PonyWeightLossProgram
+update keys: Nexus:1232

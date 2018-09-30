@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1366
+IDs: Brandy Lover.LMlog
+update keys: Nexus:1366

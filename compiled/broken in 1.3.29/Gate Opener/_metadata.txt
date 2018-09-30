@@ -1,0 +1,3 @@
+page URL: https://github.com/mralbobo/stardew-gate-opener
+IDs: mralbobo.GateOpener
+update keys: GitHub:mralbobo/stardew-gate-opener

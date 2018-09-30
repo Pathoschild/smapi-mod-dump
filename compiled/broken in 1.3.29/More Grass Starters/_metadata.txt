@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1702
+IDs: spacechase0.MoreGrassStarters
+update keys: Nexus:1702, Chucklefish:5129, GitHub:spacechase0/MoreGrassStarters

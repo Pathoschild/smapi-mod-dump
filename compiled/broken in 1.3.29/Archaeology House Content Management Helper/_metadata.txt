@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2804
+IDs: Felix-Dev.ArchaeologyHouseContentManagementHelper
+update keys: Nexus:2804, GitHub:Felix-Dev/StardewMods

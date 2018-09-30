@@ -1,0 +1,3 @@
+page URL: https://community.playstarbound.com/resources/4374
+IDs: Teleporter
+update keys: Chucklefish:4374

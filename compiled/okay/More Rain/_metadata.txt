@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/441
+IDs: Omegasis.MoreRain
+update keys: Nexus:441, GitHub:janavarro95/Stardew_Valley_Mods

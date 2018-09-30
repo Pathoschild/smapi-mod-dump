@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2481
+IDs: Surkasu.Reminders
+update keys: Nexus:2481

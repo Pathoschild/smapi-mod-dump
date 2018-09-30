@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/761
+IDs: GPeters-AnimalMoodFix
+update keys: Nexus:761

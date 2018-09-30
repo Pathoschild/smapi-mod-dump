@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2269
+IDs: Entoarox.EntoaroxFramework
+update keys: Nexus:2269, Chucklefish:4228, GitHub:Entoarox/StardewMods

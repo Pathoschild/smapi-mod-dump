@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/632
+IDs: jwdred.MailOrderPigs
+update keys: Nexus:632, GitHub:jdusbabek/stardewvalley

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2743
+IDs: Tofu.SlimeMinigame, Tofu.SlimeQOL
+update keys: Nexus:2743

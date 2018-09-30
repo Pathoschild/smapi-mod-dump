@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1621
+IDs: GuiNoya.ZoomLevelKeybind
+update keys: Nexus:1621, GitHub:GuiNoya/SVMods

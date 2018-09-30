@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1704
+IDs: Platonymous.Visualize
+update keys: Nexus:1704, GitHub:Platonymous/Stardew-Valley-Mods

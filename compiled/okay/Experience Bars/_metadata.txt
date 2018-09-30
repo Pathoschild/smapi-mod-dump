@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/509
+IDs: spacechase0.ExperienceBars, ExperienceBars
+update keys: Nexus:509, Chucklefish:3905, GitHub:spacechase0/ExperienceBars

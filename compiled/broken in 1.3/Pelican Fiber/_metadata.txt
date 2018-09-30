@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/631
+IDs: jwdred.PelicanFiber
+update keys: Nexus:631, GitHub:jdusbabek/stardewvalley

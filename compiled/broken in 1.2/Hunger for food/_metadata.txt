@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/810
+IDs: HungerForFoodByTigerle
+update keys: Nexus:810

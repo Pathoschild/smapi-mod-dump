@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1844
+IDs: spacechase0.JumpOver
+update keys: Nexus:1844, Chucklefish:5190, GitHub:spacechase0/JumpOver

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2597
+IDs: Jesse.SauvignonInStardew
+update keys: Nexus:2597, GitHub:JDvickery/Sauvignon-in-Stardew

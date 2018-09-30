@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1674
+IDs: kibbe.hardcore_mines
+update keys: Nexus:1674, GitHub:chaos234/StardewValleyMods

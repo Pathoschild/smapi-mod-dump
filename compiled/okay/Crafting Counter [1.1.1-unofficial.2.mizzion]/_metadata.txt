@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1585
+IDs: lolpcgaming.CraftingCounter
+update keys: Nexus:1585

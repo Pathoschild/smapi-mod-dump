@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1180
+IDs: cat.nofencedecay
+update keys: Nexus:1180, GitHub:danvolchek/StardewMods

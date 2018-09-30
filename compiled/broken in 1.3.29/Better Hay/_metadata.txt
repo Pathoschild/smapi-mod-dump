@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1430
+IDs: cat.betterhay
+update keys: Nexus:1430, GitHub:danvolchek/StardewMods

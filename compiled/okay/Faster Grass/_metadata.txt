@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1772
+IDs: IceGladiador.FasterGrass
+update keys: Nexus:1772

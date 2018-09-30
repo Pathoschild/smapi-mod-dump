@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/897
+IDs: KoihimeNakamura.SolarEclipseEvent
+update keys: Nexus:897, GitHub:JohnsonNicholas/SDVMods

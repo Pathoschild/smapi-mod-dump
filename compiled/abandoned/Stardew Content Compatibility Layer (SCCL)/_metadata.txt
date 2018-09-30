@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/889
+IDs: SCCL
+update keys: Nexus:889, GitHub:TehPers/StardewValleyMods

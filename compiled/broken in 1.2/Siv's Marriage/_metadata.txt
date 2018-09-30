@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/366
+IDs: 6266959802, Siv.MarriageMod, medoli900.Siv's Marriage Mod
+update keys: Nexus:366, GitHub:tlcasebeer/SivsMarriageMod

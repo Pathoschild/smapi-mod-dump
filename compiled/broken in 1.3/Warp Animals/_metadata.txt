@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1400
+IDs: Symen.WarpAnimals
+update keys: Nexus:1400, GitHub:simonbru/WarpAnimals

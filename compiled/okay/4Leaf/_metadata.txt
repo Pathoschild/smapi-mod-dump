@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2365
+IDs: an.4leaf
+update keys: Nexus:2365, GitHub:alexnoddings/StardewMods

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2516
+IDs: DIGUS.CustomCrystalariumMod
+update keys: Nexus:2516, GitHub:Digus/StardewValleyMods

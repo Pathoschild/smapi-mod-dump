@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1254
+IDs: Platonymous.CustomFurniture
+update keys: Nexus:1254, GitHub:Platonymous/Stardew-Valley-Mods

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1131
+IDs: icepuente.HorseWhistle
+update keys: Nexus:1131, GitHub:icepuente/StardewValleyMods

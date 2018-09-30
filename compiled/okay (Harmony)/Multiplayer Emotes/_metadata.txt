@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2347
+IDs: FerMod.MultiplayerEmotes
+update keys: Nexus:2347, GitHub:FerMod/StardewMods

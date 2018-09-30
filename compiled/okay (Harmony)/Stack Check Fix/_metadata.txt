@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2433
+IDs: punyo.StackCheckFix
+update keys: Nexus:2433, GitHub:pomepome/StackCheckFix

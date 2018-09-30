@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2274
+IDs: Entoarox.MoreAnimals, 821ce8f6-e629-41ad-9fde-03b54f68b0b6MOREPETS, Entoarox.MorePets
+update keys: Nexus:2274, Chucklefish:4288, GitHub:Entoarox/StardewMods

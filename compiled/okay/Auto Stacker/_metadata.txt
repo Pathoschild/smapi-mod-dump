@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1184
+IDs: cat.autostacker
+update keys: Nexus:1184, GitHub:danvolchek/StardewMods

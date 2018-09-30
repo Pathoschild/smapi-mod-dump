@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1009
+IDs: RelationshipBar
+update keys: Nexus:1009
