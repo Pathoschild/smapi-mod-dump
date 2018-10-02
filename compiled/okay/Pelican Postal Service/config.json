@@ -1,3 +1,5 @@
 {
-  "MenuAccessKey": "Y"
+  "MenuAccessKey": "Y",
+  "AllowQuestSubmissions": true,
+  "LazyItemChecking": false
 }

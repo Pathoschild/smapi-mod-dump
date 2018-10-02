@@ -8,7 +8,7 @@ mods:
    Fishing Mod
    Health Bars
    Junimo Deposit Anywhere
-   Movement Mod(aka Movement Modifier)
+   Movement Mod
    Regen Mod
 
 latest commit:

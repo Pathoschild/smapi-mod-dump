@@ -1,0 +1,14 @@
+url:
+   https://github.com/spacechase0/ThreeHeartDancePartner.git
+
+mods:
+   Three Heart Flower Festival Dance Partners
+
+latest commit:
+   commit 89973b59dbdb8f9190fd336f2fa759fcfd86495c
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Thu Oct 12 09:10:44 2017 -0400
+   
+       Change to mod class to just Mod like my other mods
+       Also restore packages.config that I accidentally removed
+   

@@ -5,9 +5,9 @@ mods:
    Auto-Grabber Mod
 
 latest commit:
-   commit 7c4d54b8b020b017d0a8df2f4c25ac58c09d798d
+   commit 83903376e61a0b232ba6ab2ac3fee39cd13a389c
    Author: Roberto R <robertodrinkscoffee@gmail.com>
-   Date:   Sun Sep 16 21:14:18 2018 -0700
+   Date:   Sat Sep 29 11:14:53 2018 -0700
    
-       Attempts to fix issue where certain crops that drop multiple items only drop 1
+       version bump
    

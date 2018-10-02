@@ -2,7 +2,7 @@ url:
    https://github.com/janavarro95/Stardew_Valley_Mods.git
 
 mods:
-   Advanced Save Backup(aka Stardew Auto Backup, Stardew_Save_Backup)
+   Advanced Save Backup
    Auto Speed
    Billboard Anywhere
    Build Endurance
@@ -20,7 +20,7 @@ mods:
    No More Pets
    Save Anywhere
    Simple Sound Manager
-   Stardew Symphony Remastered(aka Stardew Symphony)
+   Stardew Symphony Remastered
    Stardust Core
    Time Freeze
 

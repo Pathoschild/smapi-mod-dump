@@ -6,7 +6,7 @@ mods:
    Crab Net
    Mail Order Pigs
    Pelican Fiber
-   Point-And-Plant
+   Point and Plant
    Replanter
 
 latest commit:

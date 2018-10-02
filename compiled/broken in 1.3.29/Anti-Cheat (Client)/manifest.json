@@ -1,0 +1,10 @@
+{
+   "Name": "anticheatviachat",
+   "Author": "funnysnek",
+   "Version": "1.0.0",
+   "Description": "anticheatviachat",
+   "UniqueID": "anticheatviachat.anticheatviachat",
+   "EntryDll": "anticheatviachat.dll",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": []
+}

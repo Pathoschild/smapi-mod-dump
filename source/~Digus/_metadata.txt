@@ -2,7 +2,7 @@ url:
    https://github.com/Digus/StardewValleyMods.git
 
 mods:
-   Animal Husbandry Mod(aka Butcher Mod)
+   Animal Husbandry Mod
    Crop Transplant
    Custom Cask Mod
    Custom Crystalarium Mod

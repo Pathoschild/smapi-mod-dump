@@ -1,7 +1,7 @@
 ﻿{
    "Name": "AutoGrabberMod",
    "Author": "Jotser",
-   "Version": "1.0.10",
+   "Version": "1.0.11",
    "Description": "Adds additional functionality to the Auto-Grabbers",
    "UniqueID": "Jotser.AutoGrabberMod",
     "EntryDll": "AutoGrabberMod.dll",

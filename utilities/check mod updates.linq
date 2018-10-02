@@ -147,7 +147,11 @@ public IDictionary<string, string> OverrideFolderNames = new Dictionary<string, 
 	["icepuente.HorseWhistle"] = "Horse Whistle (Icepuente)",
 	
 	["HungerYyeadude"] = "Hunger (Yyeahdude)",
-	["skn.HungerMod"] = "Hunger Mod (skn)"
+	["skn.HungerMod"] = "Hunger Mod (skn)",
+	
+	// link paired mods
+	["anticheatviachat.anticheatviachat"] = "Anti-Cheat (Client)",
+	["funnysnek.servercode"] = "Anti-Cheat (Server)"
 };
 
 /// <summary>The mod versions to consider equivalent in update checks (indexed by mod ID to local/server versions).</summmary>

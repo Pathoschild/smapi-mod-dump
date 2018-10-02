@@ -39,7 +39,7 @@ namespace AutoGrabberMod.Features
             {
                 if (Grabber.IsChestFull) break;
 
-                if (Grabber.Location.objects[tile].Name.Contains("Slime Ball"))
+                if (tile != null && Grabber.Location.objects.ContainsKey(tile) && Grabber.Location.objects[tile].Name.Contains("Slime Ball"))
                 {
                     System.Random rr = new System.Random((int)Game1.stats.daysPlayed + (int)Game1.uniqueIDForThisGame + (int)tile.X * 77 + (int)tile.Y * 777 + 2);
                     Grabber.GrabberChest.addItem(new SVObject(766, random.Next(10, 21), false, -1, 0));
@@ -57,6 +57,7 @@ namespace AutoGrabberMod.Features
             foreach (Vector2 tile in nearbyTiles.Where((tile) => Grabber.Location.terrainFeatures.ContainsKey(tile) && Grabber.Location.terrainFeatures[tile] is HoeDirt dirt && dirt.crop != null && dirt.crop.forageCrop.Value && dirt.crop.whichForageCrop.Value == 1))
             {
                 if (Grabber.IsChestFull) break;
+                if (tile == null || !Grabber.Location.terrainFeatures.ContainsKey(tile)) continue;
                 SVObject onion = new SVObject(399, 1, false, -1, 0);
 
                 if (Game1.player.professions.Contains(16)) onion.Quality = 4;
@@ -77,7 +78,7 @@ namespace AutoGrabberMod.Features
             foreach (Vector2 tile in nearbyTiles.Where(tile => Grabber.Location.Objects.ContainsKey(tile) && (Utilities.IsGrabbableWorld(Grabber.Location.Objects[tile]) || Grabber.Location.Objects[tile].isForage(null))).ToArray())
             {
                 if (Grabber.IsChestFull) break;
-                if (!Grabber.Location.Objects.ContainsKey(tile)) continue;
+                if (tile == null || !Grabber.Location.Objects.ContainsKey(tile)) continue;
                 SVObject obj = Grabber.Location.Objects[tile];
                 if (Game1.player.professions.Contains(16)) obj.Quality = 4;
                 else if (random.NextDouble() < Game1.player.ForagingLevel / 30.0) obj.Quality = 2;

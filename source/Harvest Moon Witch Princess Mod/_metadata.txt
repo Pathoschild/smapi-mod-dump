@@ -1,0 +1,13 @@
+url:
+   https://github.com/Sasara2201/WitchPrincess.git
+
+mods:
+   Harvest Moon Witch Princess Mod
+
+latest commit:
+   commit 248f959415d3fb8c14c65d6283fde33e6a5a661a
+   Author: Sasara <Sasara2201@users.noreply.github.com>
+   Date:   Tue Jun 20 17:20:54 2017 +0200
+   
+       1.4 update
+   

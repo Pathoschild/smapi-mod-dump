@@ -5,12 +5,9 @@ mods:
    Horse Whistle
 
 latest commit:
-   commit fd0a54ea50a351e4684e918508b90c3dcf6f8654
-   Merge: 0ff2ca8 0f98296
-   Author: icepuente <icepuente@gmail.com>
-   Date:   Tue Oct 17 14:06:57 2017 -0700
+   commit 6058ebf07212931b9fbf45461f5c0a2bf9c590ea
+   Author: Alec Puente <icepuente@gmail.com>
+   Date:   Sat Sep 29 19:03:02 2018 -0700
    
-       Merge pull request #1 from Pathoschild/fix-linux-mac-compatibility
-       
-       Fix Linux/Mac compatibility
+       Add ability to toggle custom whistle audio in config file
    

@@ -1,16 +1,12 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using StardewModdingAPI;
 
 namespace HorseWhistle.Models
 {
-    class ModConfigModel
+    internal class ModConfigModel
     {
-        public string EnableGridKey { get; set; }
-        public string TeleportHorseKey { get; set; }
-
-        public ModConfigModel()
-        {
-            EnableGridKey = Keys.G.ToString();
-            TeleportHorseKey = Keys.V.ToString();
-        }
+        public bool EnableGrid { get; set; } = false;
+        public bool EnableWhistleAudio { get; set; } = true;
+        public SButton EnableGridKey { get; set; } = SButton.G;
+        public SButton TeleportHorseKey { get; set; } = SButton.V;
     }
 }

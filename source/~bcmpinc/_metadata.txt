@@ -9,7 +9,7 @@ mods:
    Grass Growth
    Movement Speed
    Tilled Soil Decay
-   Yet Another Harvest With Scythe Mod(aka Harvest With Scythe)
+   Yet Another Harvest With Scythe Mod
 
 latest commit:
    commit d398c6e770fb409d6116c8022ceab19f64e1709b

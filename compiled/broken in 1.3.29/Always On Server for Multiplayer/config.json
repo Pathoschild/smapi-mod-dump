@@ -1,0 +1,13 @@
+{
+  "serverHotKey": "F9",
+  "timeOfDayToSleep": 2200,
+  "festivalsOn": true,
+  "clientsCanPause": false,
+  "copyInviteCodeToClipboard": true,
+  "eggHuntCountDownConfig": 60,
+  "flowerDanceCountDownConfig": 60,
+  "luauSoupCountDownConfig": 60,
+  "jellyDanceCountDownConfig": 60,
+  "grangeDisplayCountDownConfig": 60,
+  "iceFishingCountDownConfig": 60
+}

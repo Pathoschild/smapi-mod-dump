@@ -5,19 +5,20 @@ mods:
    Automate
    Chests Anywhere
    Content Patcher
-   Data Layers(aka Data Maps)
+   Data Layers
    Debug Mode
    Fast Animations
    Lookup Anything
    No Debug Mode
    Rotate Toolbar
    Skip Intro
+   The Long Night
    Tractor Mod
 
 latest commit:
-   commit b39a043afa92f3ea310c14e3ec103625e3f1fb70
+   commit c7704fa075206895609e862230d70de3073ef3b8
    Author: Jesse Plamondon-Willard <github@jplamondonw.com>
-   Date:   Sun Sep 23 13:31:16 2018 -0400
+   Date:   Sat Sep 29 17:37:48 2018 -0400
    
-       update for release
+       fix Automate error if input contains an unrecognised item
    

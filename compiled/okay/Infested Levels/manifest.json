@@ -1,0 +1,11 @@
+{
+  "Name": "Infested Levels",
+  "Debug": "true",
+  "Author": "Eireon",
+  "Version": "1.0.4",
+  "Description": "Dislays Infested levels in Mine",
+  "UniqueID": "Eireon.InfestedLevels",
+  "EntryDll": "InfestedLevel.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:2823" ]
+}

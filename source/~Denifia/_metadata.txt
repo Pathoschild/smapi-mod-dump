@@ -2,8 +2,8 @@ url:
    https://github.com/Denifia/StardewMods.git
 
 mods:
-   Buy Cooking Recipes(aka Buy Recipes)
-   Send Items to Other Farmers(aka Send Letters)
+   Buy Cooking Recipes
+   Send Items to Other Farmers
 
 latest commit:
    commit 923ef68107e7d04ad4323c83149f5b42b72c513a

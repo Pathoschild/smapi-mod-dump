@@ -1,0 +1,10 @@
+{
+  "Name": "ServerCode",
+  "Author": "funnysnek",
+  "Version": "4.2.0",
+  "Description": "code for the server",
+  "UniqueID": "funnysnek.servercode",
+  "EntryDll": "ServerCode.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": []
+}

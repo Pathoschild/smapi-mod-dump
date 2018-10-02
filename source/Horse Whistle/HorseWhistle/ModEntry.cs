@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using HorseWhistle.Common;
 using HorseWhistle.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -10,56 +9,63 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Buildings;
+using StardewValley.Characters;
+using StardewValley.Locations;
 
 namespace HorseWhistle
 {
+    /// <inheritdoc />
     /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
         /*********
         ** Properties
         *********/
-        private TileData[] Tiles;
-        private bool GridActive = false;
-        private SoundBank OriginalSoundBank;
-        private WaveBank OriginalWaveBank;
-        private SoundBank CustomSoundBank;
-        private WaveBank CustomWaveBank;
-        private bool HasAudio;
-        private ModConfigModel Config;
+        private TileData[] _tiles;
+        private bool _gridActive;
+        private ISoundBank _customSoundBank;
+        private WaveBank _customWaveBank;
+        private bool _hasAudio;
+        private ModConfigModel _config;
 
 
         /*********
         ** Public methods
         *********/
+        /// <inheritdoc />
         /// <summary>Initialise the mod.</summary>
         /// <param name="helper">Provides methods for interacting with the mod directory, such as read/writing a config file or custom JSON files.</param>
         public override void Entry(IModHelper helper)
         {
-            Config = helper.ReadConfig<ModConfigModel>();
+            _config = helper.ReadConfig<ModConfigModel>();
 
-            try
+            if (Constants.TargetPlatform == GamePlatform.Windows && _config.EnableWhistleAudio)
             {
-                CustomSoundBank = new SoundBank(Game1.audioEngine, Path.Combine(helper.DirectoryPath, "assets", "CustomSoundBank.xsb"));
-                CustomWaveBank = new WaveBank(Game1.audioEngine, Path.Combine(helper.DirectoryPath, "assets", "CustomWaveBank.xwb"));
-                HasAudio = true;
-            }
-            catch (ArgumentException ex)
-            {
-                this.Monitor.Log("Couldn't load audio (this is normal on Linux/Mac). The mod will work fine without audio.");
-                this.Monitor.Log(ex.ToString(), LogLevel.Trace);
+                try
+                {
+                    _customSoundBank = new SoundBankWrapper(new SoundBank(Game1.audioEngine,
+                        Path.Combine(helper.DirectoryPath, "assets", "CustomSoundBank.xsb")));
+                    _customWaveBank = new WaveBank(Game1.audioEngine,
+                        Path.Combine(helper.DirectoryPath, "assets", "CustomWaveBank.xwb"));
+                    _hasAudio = true;
+                }
+                catch (ArgumentException ex)
+                {
+                    _customSoundBank = null;
+                    _customWaveBank = null;
+                    _hasAudio = false;
+
+                    Monitor.Log("Couldn't load audio, so the whistle sound won't play.");
+                    Monitor.Log(ex.ToString(), LogLevel.Trace);
+                }
             }
 
             // add all event listener methods
-            ControlEvents.KeyPressed += ReceiveKeyPress;
-            GameEvents.SecondUpdateTick += ReceiveUpdateTick;
-            GraphicsEvents.OnPostRenderEvent += OnPostRenderEvent;
-        }
-
-        /// <summary>Update the mod's config.json file from the current <see cref="Config"/>.</summary>
-        internal void SaveConfig()
-        {
-            Helper.WriteConfig(Config);
+            InputEvents.ButtonPressed += InputEvents_ButtonPressed;
+            if (!_config.EnableGrid) return;
+            GameEvents.SecondUpdateTick += (sender, e) => UpdateGrid();
+            GraphicsEvents.OnPostRenderEvent += (sender, e) => DrawGrid(Game1.spriteBatch);
         }
 
 
@@ -69,89 +75,90 @@ namespace HorseWhistle
         /// <summary>The method invoked when the player presses a keyboard button.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void ReceiveKeyPress(object sender, EventArgsKeyPressed e)
+        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
         {
             if (!Context.IsPlayerFree)
                 return;
 
-            if (e.KeyPressed.ToString() == Config.EnableGridKey)
+            if (e.Button == _config.TeleportHorseKey)
             {
-                GridActive = !GridActive;
+                var horse = FindHorse();
+                if (horse == null) return;
+                PlayHorseWhistle();
+                Game1.warpCharacter(horse, Game1.currentLocation, Game1.player.getTileLocation());
             }
-            if (e.KeyPressed.ToString() == Config.TeleportHorseKey)
-            {
-                NPC horse = Utility.findHorse();
-                if (horse != null)
-                {
-                    if (OriginalSoundBank != null && OriginalWaveBank != null)
-                    {
-                        PlayHorseWhistle();
-                    }
-                    Game1.warpCharacter(horse, Game1.currentLocation.Name, Game1.player.getLeftMostTileX(), true, true);
-                }
-            }
+            else if (_config.EnableGrid && e.Button == _config.EnableGridKey)
+                _gridActive = !_gridActive;
         }
 
+        /// <summary>Play the horse whistle sound.</summary>
         private void PlayHorseWhistle()
         {
-            if (!HasAudio)
-                return;
+            if (!_hasAudio || !_config.EnableWhistleAudio) return;
 
-            Game1.soundBank = CustomSoundBank;
-            Game1.waveBank = CustomWaveBank;
-            Game1.audioEngine.Update();
-            Game1.playSound("horseWhistle");
-            Game1.soundBank = OriginalSoundBank;
-            Game1.waveBank = OriginalWaveBank;
-            Game1.audioEngine.Update();
-        }
-
-        // <summary>The method called when the game finishes drawing components to the screen.</summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The event arguments.</param>
-        private void OnPostRenderEvent(object sender, EventArgs e)
-        {
-            Draw(Game1.spriteBatch);
-        }
-
-        private void ReceiveUpdateTick(object sender, EventArgs e)
-        {
-            if (Game1.currentLocation == null)
+            var originalSoundBank = Game1.soundBank;
+            var originalWaveBank = Game1.waveBank;
+            try
             {
-                Tiles = new TileData[0];
+                Game1.soundBank = _customSoundBank;
+                Game1.waveBank = _customWaveBank;
+                Game1.audioEngine.Update();
+                Game1.playSound("horseWhistle");
+            }
+            finally
+            {
+                Game1.soundBank = originalSoundBank;
+                Game1.waveBank = originalWaveBank;
+                Game1.audioEngine.Update();
+            }
+        }
+
+        /// <summary>Find the current player's horse.</summary>
+        private Horse FindHorse()
+        {
+            return (from stable in GetStables()
+                where !Context.IsMultiplayer || stable.owner.Value == Game1.player.UniqueMultiplayerID
+                select Utility.findHorse(stable.HorseId)).FirstOrDefault(horse => horse != null && horse.rider == null);
+        }
+
+        /// <summary>Get all stables in the game.</summary>
+        private IEnumerable<Stable> GetStables()
+        {
+            return from location in Game1.locations.OfType<BuildableGameLocation>()
+                from stable in location.buildings.OfType<Stable>()
+                where stable.GetType().FullName?.Contains("TractorMod") != true
+                select stable;
+        }
+
+        private void UpdateGrid()
+        {
+            if (!_gridActive || !Context.IsPlayerFree || Game1.currentLocation == null)
+            {
+                _tiles = null;
                 return;
             }
 
-            if (OriginalSoundBank == null && Game1.soundBank != null)
-                OriginalSoundBank = Game1.soundBank;
-            if (OriginalWaveBank == null && Game1.waveBank != null)
-                OriginalWaveBank = Game1.waveBank;
-
             // get updated tiles
-            GameLocation location = Game1.currentLocation;
-            Tiles = Update(location, CommonMethods.GetVisibleTiles(location, Game1.viewport)).ToArray();
+            var location = Game1.currentLocation;
+            _tiles = CommonMethods
+                .GetVisibleTiles(location, Game1.viewport)
+                .Where(tile => location.isTileLocationTotallyClearAndPlaceableIgnoreFloors(tile))
+                .Select(tile => new TileData(tile, Color.Red))
+                .ToArray();
         }
 
-        private void Draw(SpriteBatch spriteBatch)
+        private void DrawGrid(SpriteBatch spriteBatch)
         {
-            if (Tiles == null || Tiles.Length == 0 || !GridActive)
+            if (!_gridActive || !Context.IsPlayerFree || _tiles == null || _tiles.Length == 0)
                 return;
 
             // draw tile overlay
-            int tileSize = Game1.tileSize;
-            foreach (TileData tile in Tiles.ToArray())
+            const int tileSize = Game1.tileSize;
+            foreach (var tile in _tiles.ToArray())
             {
-                Vector2 position = tile.TilePosition * tileSize - new Vector2(Game1.viewport.X, Game1.viewport.Y);
-                RectangleSprite.DrawRectangle(spriteBatch, new Microsoft.Xna.Framework.Rectangle((int)position.X, (int)position.Y, tileSize, tileSize), tile.Color * .3f, 6);
-            }
-        }
-
-        private IEnumerable<TileData> Update(GameLocation location, IEnumerable<Vector2> visibleTiles)
-        {
-            foreach (Vector2 tile in visibleTiles)
-            {
-                if (location.isTileLocationTotallyClearAndPlaceableIgnoreFloors(tile))
-                    yield return new TileData(tile, Color.Red);
+                var position = tile.TilePosition * tileSize - new Vector2(Game1.viewport.X, Game1.viewport.Y);
+                RectangleSprite.DrawRectangle(spriteBatch,
+                    new Rectangle((int) position.X, (int) position.Y, tileSize, tileSize), tile.Color * .3f, 6);
             }
         }
     }

@@ -2,8 +2,8 @@ url:
    https://github.com/Jinxiewinxie/StardewValleyMods.git
 
 mods:
-   Stone Bridge Over Pond(aka PondWithBridge)
-   Tainted Cellar(aka Underground House Cellar)
+   Stone Bridge Over Pond
+   Tainted Cellar
    Wonderful Farm Life
 
 latest commit:

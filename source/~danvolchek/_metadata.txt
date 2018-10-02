@@ -2,7 +2,7 @@ url:
    https://github.com/danvolchek/StardewMods.git
 
 mods:
-   Auto Stacker(aka Item Auto Stacker)
+   Auto Stacker
    Better Artisan Good Icons
    Better Fruit Trees
    Better Garden Pots
@@ -21,7 +21,7 @@ mods:
    No Crows
    No Fence Decay
    Pong
-   Range Display(aka Sprinkler Range)
+   Range Display
    Removable Horse Hats
    Safe Lightning
    Stack Everything

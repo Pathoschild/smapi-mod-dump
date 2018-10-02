@@ -8,7 +8,7 @@ mods:
    Extended Minecart
    Faster Paths
    Furniture Anywhere
-   More Animals(aka More Pets)
+   More Animals
    Seasonal Immersion
    Shop Expander
    XNB Loader

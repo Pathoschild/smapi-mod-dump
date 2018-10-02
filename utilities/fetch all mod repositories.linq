@@ -100,11 +100,11 @@ async Task Main()
 		
 		// fetch repositories
 		repos.AddRange(
-			from mod in mods
-			let gitUrl = ModRepository.GetGitUrl(mod)
-			where gitUrl != null
-			group mod by gitUrl into modGroup
-			select new ModRepository(modGroup.Key, modGroup)
+			mods
+				.Select(mod => new { mod, gitUrl = ModRepository.GetGitUrl(mod) })
+				.Where(p => p.gitUrl != null)
+				.GroupBy(p => p.gitUrl, p => p.mod, StringComparer.InvariantCultureIgnoreCase)
+				.Select(group => new ModRepository(group.Key, group))
 		);
 
 		// find invalid custom source URLs

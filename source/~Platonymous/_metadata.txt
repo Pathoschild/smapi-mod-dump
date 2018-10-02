@@ -4,9 +4,9 @@ url:
 mods:
    Arcade 2048
    Arcade Pong
-   Arcade Snake(aka Snake)
+   Arcade Snake
    Custom Element Handler
-   Custom Farming Redux(aka Custom Farming)
+   Custom Farming Redux
    Custom Furniture
    Custom NPC
    Custom Shirts
@@ -19,13 +19,13 @@ mods:
    Pelican TTS
    Plan Importer
    Portraiture
-   PyTK(aka Platonymous Toolkit)
+   PyTK
    Ring of Fire
    Seed Bag
    Sleep Worker
    Speedster
    Split Money
-   Swim (Almost) Anywhere(aka Swim Suit)
+   Swim (Almost) Anywhere
    TMX Loader
    Ultiplayer
    Visualize
