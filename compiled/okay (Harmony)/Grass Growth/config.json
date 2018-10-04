@@ -1,0 +1,8 @@
+{
+  "DisableGrowth": false,
+  "GrowEverywhere": true,
+  "GrowthChance": 0.65,
+  "SpreadChance": 0.25,
+  "DailyGrowth": 1,
+  "MonthlyGrowth": 40
+}

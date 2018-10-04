@@ -1,0 +1,10 @@
+{
+  "Name": "Sauvignon in Stardew",
+  "Author": "Jesse",
+  "Version": "1.9.1-unofficial.1-pathoschild",
+  "Description": "Adds a new building to the Carpenter Menu. Adds an optional Distiller Profession.",
+  "UniqueID": "Jesse.SauvignonInStardew",
+  "EntryDll": "SauvignoninStardew.dll",
+  "MinimumApiVersion": "2.8-beta",
+  "UpdateKeys": ["Nexus:2597"]
+}

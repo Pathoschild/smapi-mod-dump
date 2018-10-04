@@ -35,11 +35,15 @@ namespace StardewHack
             int count = insts.Count - contains.Length + 1;
             if (step<0) start -= contains.Length;
             int best_match = 0;
+            string best_text = "(none)";
             for (int i=start; 0<=i && i<count; i+=step) {
                 for (int j=0; j<contains.Length; j++) {
-                    if (best_match<j) best_match=j;
                     var query = contains[j];
                     var inst = insts[i+j];
+                    if (best_match < j) {
+                        best_match = j;
+                        best_text = inst.ToString();
+                    }
                     if (query == null) {
                         // No query
                     } else if (query == inst) {
@@ -53,7 +57,18 @@ namespace StardewHack
                     } else if (query is CodeInstruction) {
                         CodeInstruction qin = query as CodeInstruction;
                         if (!inst.opcode.Equals(qin.opcode)) goto NO_MATCH;
-                        if (!inst.operand.Equals(qin.operand)) goto NO_MATCH;
+                        if (!inst.operand.Equals(qin.operand)) {
+                            if (inst.operand is LocalBuilder) {
+                                var lb = (LocalBuilder)inst.operand;
+                                try {
+                                    if (Convert.ToInt32(qin.operand) != lb.LocalIndex) goto NO_MATCH;
+                                } catch {
+                                    goto NO_MATCH;
+                                }
+                            } else {
+                                goto NO_MATCH;
+                            }
+                        }
                     } else {
                         throw new ArgumentException("Unsupported type "+query.GetType()+" for argument "+(j+1)+": " + query);
                     }
@@ -71,7 +86,7 @@ namespace StardewHack
             if (contains.Length == 1) {
                 throw new System.IndexOutOfRangeException("Could not find instruction: '"+contains[0]+"'");
             } else {
-                System.Text.StringBuilder msg = new System.Text.StringBuilder("Could not find instruction sequence (failed to match line "+best_match+"):");
+                System.Text.StringBuilder msg = new System.Text.StringBuilder($"Could not find instruction sequence (failed to match line {best_match}: \"{best_text}\"):");
                 foreach (Object obj in contains) {
                     msg.Append("\n  " + obj);
                 }

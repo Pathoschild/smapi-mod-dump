@@ -1,4 +1,5 @@
 {
-  "Enabled": true,
+  "EnabledIndoors": true,
+  "EnabledOutdoors": false,
   "ToggleScroll": "OemSemicolon"
 }

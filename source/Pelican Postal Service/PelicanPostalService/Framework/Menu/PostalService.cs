@@ -1,90 +1,72 @@
-﻿using PelicanPostalService.Framework.Player;
+﻿using Project.Config;
+using Project.Framework.Player.Friendship;
+using Project.Framework.Player.Items;
+using Project.Framework.Player.Quests;
 using StardewValley;
 using StardewValley.Menus;
 using System.Collections.Generic;
 
-namespace PelicanPostalService.Framework.Menu
+namespace Project.Framework.Menus
 {
     public class PostalService
     {
-        private readonly ActiveItem activeItem;
+        private readonly ItemHandler itemInfo;
         private readonly bool allowQuestSubmissions;
-        private QuestData questData;
+        private readonly bool lazyItemChecking;
 
-        public PostalService(ActiveItem item, bool questSubmissions)
+        public PostalService(ItemHandler itemHandler, ModConfig settings)
         {
-            allowQuestSubmissions = questSubmissions;
-            activeItem = item;
+            itemInfo = itemHandler;
+            allowQuestSubmissions = settings.AllowQuestSubmissions;
+            lazyItemChecking = settings.LazyItemChecking;
         }
 
         public void Open(IClickableMenu currentMenu, Tool currentTool)
         {
-            if (ValidateActiveItem() && currentMenu == null && currentTool == null)
+            bool isValidItem = IsValidItem(itemInfo.Item);
+            if (isValidItem && currentMenu == null && currentTool == null)
             {
-                List<string> options = FriendshipData.Find();
+                List<string> options = FriendshipHandler.Find();
                 Game1.activeClickableMenu = options != null ? new ChooseFromListMenu(options, OnSelectOption, false) : null;
             }
         }
 
-        private bool FindQuestByCriteria(FriendshipData friendshipData)
+        private bool IsValidItem(Object item)
         {
-            questData = new QuestData(activeItem.Data, friendshipData.Who);
-            return questData.CurrentQuest != null ? true : false;
-        }
-
-        private void OnSelectOption(string name)
-        {
-            FriendshipData friendshipData = new FriendshipData(name);
-
-            if (friendshipData.Who != null)
-            {
-                bool isStrictQuestItem = activeItem.Data.DisplayName.Equals("Lost Axe") || activeItem.Data.DisplayName.Equals("Lucky Purple Shorts") || activeItem.Data.DisplayName.Equals("Berry Basket");
-                if (isStrictQuestItem && !allowQuestSubmissions)
-                {
-                    return;
-                }
-                
-                bool foundMatchingQuest = FindQuestByCriteria(friendshipData);
-                if (foundMatchingQuest && allowQuestSubmissions)
-                {
-                    if (questData.ClintEmilyQuestReady)
-                    {
-                        UpdateAndExit(friendshipData, questData.FriendshipPoints, true, "Clint");
-                    }
-                    else
-                    {
-                        UpdateAndExit(friendshipData, questData.FriendshipPoints, true);                    
-                    }
-                }
-                else if (friendshipData.CanReceiveGiftToday())
-                {
-                    int points = activeItem.GiftTasteRating(friendshipData);
-                    UpdateAndExit(friendshipData, points);
-                }
-            }
-        }
-
-        private void UpdateAndExit(FriendshipData friendshipData, int points, bool quest = false, string name = null)
-        {
-            if (quest)
-            {
-                questData.Update();
-            }
-
-            friendshipData.Update(points, quest, name);
-            Game1.player.reduceActiveItemByOne();
-            Game1.activeClickableMenu.exitThisMenu();
-        }
-
-        private bool ValidateActiveItem()
-        {
-            if (activeItem.Data == null)
+            if (item == null)
             {
                 return false;
             }
 
-            bool strictMarriageItem = activeItem.Data.DisplayName.Equals("Bouquet") || activeItem.Data.DisplayName.Equals("Mermaid's Pendant") || activeItem.Data.DisplayName.Equals("Wedding Ring");
-            return activeItem.Data.canBeGivenAsGift() && !strictMarriageItem ? true : false;
+            bool isStrictQuestItem = item.DisplayName.Equals("Lost Axe") || item.DisplayName.Equals("Lucky Purple Shorts") || item.DisplayName.Equals("Berry Basket");
+            bool strictMarriageItem = item.DisplayName.Equals("Bouquet") || item.DisplayName.Equals("Mermaid's Pendant") || item.DisplayName.Equals("Wedding Ring");
+            return item.canBeGivenAsGift() && !strictMarriageItem && !(isStrictQuestItem && !allowQuestSubmissions) ? true : false;
+        }
+
+        private void OnSelectOption(string recipient)
+        {
+            FriendshipHandler friendshipInfo = new FriendshipHandler(recipient);
+            if (friendshipInfo.Who != null)
+            {
+                QuestHandler questInfo = null;
+                bool isValidQuest = false;
+
+                if (allowQuestSubmissions)
+                {
+                    questInfo = new QuestHandler(lazyItemChecking);
+                    isValidQuest = questInfo.FindOneAndUpdate(friendshipInfo, itemInfo);
+                    itemInfo.RemoveFromInventory(itemInfo.Item.ParentSheetIndex);
+                }
+
+                if (!isValidQuest && friendshipInfo.CanReceiveGiftToday() && !questInfo.PreventNextGift)
+                {
+                    int rating = itemInfo.GiftTasteRating(friendshipInfo);
+                    friendshipInfo.Update(rating, false, null);
+                    itemInfo.RemoveFromInventory(itemInfo.Item.ParentSheetIndex);
+                }
+
+                Game1.activeClickableMenu.exitThisMenu();
+            }
         }
     }
 }

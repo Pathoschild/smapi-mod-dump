@@ -7,6 +7,9 @@ namespace StardewHack
 {
     public static class Instructions
     {
+        // A
+        public static CodeInstruction Add() => new CodeInstruction(OpCodes.Add);
+
         // B
         // Use Instructions.Br(AttachLabel(CodeInstruction)) to create branch to the given code instruction.
         public static CodeInstruction Bge    (Label target) => new CodeInstruction(OpCodes.Bge,     target);

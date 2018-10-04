@@ -5,29 +5,39 @@ using StardewModdingAPI.Events;
 
 namespace StardewHack.AlwaysScrollMap
 {
-    static class State {
-        public static bool Enabled = true;
-    }
-
     public class ModConfig {
         /** Whether the mod is enabled upon load. */
-        public bool Enabled = true;
+        public bool EnabledIndoors = true;
+        public bool EnabledOutdoors = false;
         /** Which key should be used to toggle always scroll map. */
         public SButton ToggleScroll = SButton.OemSemicolon;
     }
     
+    static class State {
+        public static ModConfig config;
+        public static bool Enabled() {
+            if (StardewValley.Game1.currentLocation.IsOutdoors)
+                return config.EnabledOutdoors;
+            else
+                return config.EnabledIndoors;
+        }
+    }
+
     public class ModEntry : HackWithConfig<ModEntry, ModConfig>
     {
         public override void Entry(IModHelper helper) {
             base.Entry(helper);
             InputEvents.ButtonPressed += ToggleScroll;
-            State.Enabled = config.Enabled;
+            State.config = config;
         }
 
         private void ToggleScroll(object sender, EventArgs e) {
             var ev = (EventArgsInput)e;
             if (ev.Button.Equals(config.ToggleScroll)) {
-                State.Enabled ^= true;
+                if (StardewValley.Game1.currentLocation.IsOutdoors)
+                    config.EnabledOutdoors ^= true;
+                else
+                    config.EnabledIndoors ^= true;
             }
         }
 
@@ -46,7 +56,7 @@ namespace StardewHack.AlwaysScrollMap
             );
             // Encapsulate with if (!State.Enabled) {
             range.Prepend(
-                Instructions.Ldsfld(typeof(StardewHack.AlwaysScrollMap.State), "Enabled"),
+                Instructions.Call(typeof(StardewHack.AlwaysScrollMap.State), "Enabled"),
                 Instructions.Brtrue(AttachLabel(range.End[0]))
             );
         }

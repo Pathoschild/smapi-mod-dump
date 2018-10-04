@@ -5,9 +5,12 @@ mods:
    Sauvignon in Stardew
 
 latest commit:
-   commit 144061719c4caf3a7b5c3a1e85826d9788402a9f
-   Author: Jesse <jesse_vickery@outlook.com>
-   Date:   Fri Sep 14 07:09:02 2018 -0400
+   commit ec8466a9de566c15ecbefe28dec27e106c56a9ef
+   Merge: 1440617 b5d29bf
+   Author: Jesse Vickery <jesse_vickery@outlook.com>
+   Date:   Tue Oct 2 10:03:39 2018 -0400
    
-       testing....
+       Merge pull request #5 from Pathoschild/update-code
+       
+       Migrate data to save file, update for Stardew Valley 1.3.31, and refactor
    

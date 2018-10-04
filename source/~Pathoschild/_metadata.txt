@@ -16,9 +16,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit c7704fa075206895609e862230d70de3073ef3b8
+   commit 3dbd41c620b47b881829acfdcf5a4305f28c4a82
    Author: Jesse Plamondon-Willard <github@jplamondonw.com>
-   Date:   Sat Sep 29 17:37:48 2018 -0400
+   Date:   Tue Oct 2 22:19:56 2018 -0400
    
-       fix Automate error if input contains an unrecognised item
+       fix error setting entries to null since Content Patcher 1.5
    

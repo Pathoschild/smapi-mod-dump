@@ -1,147 +1,107 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using Harmony;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.Menus;
-using StardewValley;
-
-using xTile;
-
-using SObject = StardewValley.Object;
-using StardewModdingAPI.Events;
-using System.Reflection;
-
-using Harmony;
-using Microsoft.Xna.Framework.Input;
 using StardewValley.Objects;
-using System.Linq;
+using xTile;
 using xTile.Layers;
 using xTile.Tiles;
-using SauvignonInStardew;
+using SObject = StardewValley.Object;
 
-namespace Sauvignon_in_Stardew
+namespace SauvignonInStardew
 {
-    class ModEntry : Mod, IAssetLoader
+    internal class ModEntry : Mod, IAssetLoader
     {
-        //Config
+        /*********
+        ** Fields
+        *********/
         private ModConfig Config;
-        public bool DistillerProfessionActive;
-        /*
-         * FIELDS
-         * 
-         */
-        public static IModHelper helper;
-        public static IMonitor monitor;
+        private SaveData SaveData;
 
-        public Texture2D Winery_outdoors;
-        public Map Winery_indoors;
+        private Texture2D WineryOutdoorTexture;
+        private Map WineryIndoorMap;
+        private Map KegRoomMap;
 
-        public TileSheet tileSheet;
-        public Layer layer;
-        public const int tileID = 131;
+        private const int TileID = 131;
 
-        public List<KeyValuePair<int, int>> wineryCoords;
+        private string CurrentSeason;
 
-        public readonly Dictionary<string, string> dataForBlueprint = new Dictionary<string, string>() { ["Winery"] = "709 200 330 100 390 100/11/6/5/5/-1/-1/Winery/Winery/Kegs and Casks inside work 30% faster and display time remaining./Buildings/none/96/96/20/null/Farm/20000/false" };
+        private int BedTime;
+        private int HoursSlept;
 
-        public readonly Vector2 TooltipOffset = new Vector2(Game1.tileSize / 2);
-        public readonly Rectangle TooltipSourceRect = new Rectangle(0, 256, 60, 60);
+        private Texture2D DistillerIcon;
 
-        public string CurrentSeason;
+        private string SleepBox;
+        private bool RanOnce;
 
-        public int bedTime;
-        public int hoursSlept;
-
-        public Texture2D distillerIcon;
-
-        public string sleepBox;
-        public bool ranOnce = false;
-
-        public bool spaceCore;
-
-        public Map kegRoom_indoors;
-
-        public readonly Vector2[] bigKegsInput = new Vector2[] { new Vector2(20, 3), new Vector2(23, 3), new Vector2(26, 3), new Vector2(29, 3), new Vector2(32, 3) };
-        public readonly Vector2[] bigKegsOutput = new Vector2[] { new Vector2(20, 6), new Vector2(23, 6), new Vector2(26, 6), new Vector2(29, 6), new Vector2(32, 6) };
-        /*
-         * END FIELDS
-         * 
-         */
+        private readonly Vector2[] BigKegsInput = new[] { new Vector2(20, 3), new Vector2(23, 3), new Vector2(26, 3), new Vector2(29, 3), new Vector2(32, 3) };
+        private readonly Vector2[] BigKegsOutput = new[] { new Vector2(20, 6), new Vector2(23, 6), new Vector2(26, 6), new Vector2(29, 6), new Vector2(32, 6) };
 
 
-
-        /*
-         * ENTRY
-         * 
-         */
+        /*********
+        ** Public methods
+        *********/
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            ModEntry.monitor = this.Monitor;
-            ModEntry.helper = helper;
-
             this.Config = helper.ReadConfig<ModConfig>();
-            this.DistillerProfessionActive = this.Config.DistillerProfessionBool;
 
             //Loaded Textures for outside and indside the Winery
-            Winery_outdoors = helper.Content.Load<Texture2D>($"assets/Winery_outside_{Game1.currentSeason}.png", ContentSource.ModFolder);
-            Winery_indoors = helper.Content.Load<Map>("assets/Winery.tbin", ContentSource.ModFolder);
+            this.WineryOutdoorTexture = helper.Content.Load<Texture2D>($"assets/Winery_outside_{Game1.currentSeason}.png");
+            this.WineryIndoorMap = helper.Content.Load<Map>("assets/Winery.tbin");
 
-            kegRoom_indoors = helper.Content.Load<Map>("assets/Winery2.tbin", ContentSource.ModFolder);
+            this.KegRoomMap = helper.Content.Load<Map>("assets/Winery2.tbin");
 
             //Loaded texture for Distiller Icon
-            distillerIcon = helper.Content.Load<Texture2D>("assets/Distiller_icon.png", ContentSource.ModFolder);
+            this.DistillerIcon = helper.Content.Load<Texture2D>("assets/Distiller_icon.png");
 
             //Load string for sleeping dialogue
-            sleepBox = Game1.content.LoadString("Strings\\Locations:FarmHouse_Bed_GoToSleep");
+            this.SleepBox = Game1.content.LoadString("Strings\\Locations:FarmHouse_Bed_GoToSleep");
 
             //Event for using big kegs
-            InputEvents.ButtonPressed += InputEvents_ButtonPressed;
+            InputEvents.ButtonPressed += this.InputEvents_ButtonPressed;
 
             //Event for adding blueprint to carpenter menu
-            MenuEvents.MenuChanged += MenuEvents_MenuChanged;
+            MenuEvents.MenuChanged += this.MenuEvents_MenuChanged;
 
             //Event for Keg Speed
-            TimeEvents.TimeOfDayChanged += TimeEvents_TimeOfDayChanged;
+            TimeEvents.TimeOfDayChanged += this.TimeEvents_TimeOfDayChanged;
 
             //Event for Cask Speed
-            TimeEvents.AfterDayStarted += TimeEvents_AfterDayStarted;
+            TimeEvents.AfterDayStarted += this.TimeEvents_AfterDayStarted;
 
             //Event for showing time remaining on hover
-            GraphicsEvents.OnPostRenderEvent += GraphicsEvents_OnPostRenderEvent;
+            GraphicsEvents.OnPostRenderEvent += this.GraphicsEvents_OnPostRenderEvent;
             //GraphicsEvents.OnPreRenderEvent += GraphicsEvents_OnPreRenderEvent;
 
             //Events for editing Winery width
-            LocationEvents.BuildingsChanged += LocationEvents_BuildingsChanged;
+            LocationEvents.BuildingsChanged += this.LocationEvents_BuildingsChanged;
 
             //Event for proventing buidling overlays
-            MenuEvents.MenuClosed += MenuEvents_MenuClosed;
+            MenuEvents.MenuClosed += this.MenuEvents_MenuClosed;
 
             //Event for fixing skills menu
-            GraphicsEvents.OnPostRenderGuiEvent += GraphicsEvents_OnPostRenderGuiEvent;
+            GraphicsEvents.OnPostRenderGuiEvent += this.GraphicsEvents_OnPostRenderGuiEvent;
 
             //Event for Bonus Price and Bed Time if dead or faint
-            GameEvents.UpdateTick += GameEvents_UpdateTick;
+            GameEvents.UpdateTick += this.GameEvents_UpdateTick;
 
-            /*
-             * Events for save and loading
-             * 
-             */
-            SaveEvents.BeforeSave += SaveEvents_BeforeSave;
-
-            SaveEvents.AfterSave += SaveEvents_AfterSaveLoad;
-            SaveEvents.AfterLoad += SaveEvents_AfterSaveLoad;
-            SaveEvents.AfterLoad += DisplayDistillerInfo;
-            /*
-             * End of Events for save and loading
-             * 
-             */
-
-            spaceCore = helper.ModRegistry.IsLoaded("spacechase0.SpaceCore");
-
+            //Events for save and loading
+            SaveEvents.BeforeSave += this.SaveEvents_BeforeSave;
+            SaveEvents.AfterSave += this.SaveEvents_AfterSave;
+            SaveEvents.AfterLoad += this.SaveEvents_AfterLoad;
+            SaveEvents.AfterLoad += this.DisplayDistillerInfo;
 
             /*
              * HARMONY PATCHING
@@ -153,7 +113,7 @@ namespace Sauvignon_in_Stardew
             HarmonyMethod patchMethod = new HarmonyMethod(typeof(ModEntry).GetMethod(nameof(Patch_performObjectDropInAction)));
             harmony.Patch(method, patchMethod, null);
 
-            if (this.DistillerProfessionActive)
+            if (this.Config.DistillerProfessionBool)
             {
                 Type type2 = typeof(SObject);
                 MethodInfo method2 = type2.GetMethod("getCategoryColor");
@@ -164,22 +124,41 @@ namespace Sauvignon_in_Stardew
                 HarmonyMethod patchMethod3 = new HarmonyMethod(typeof(ModEntry).GetMethod(nameof(Patch_getCategoryName)));
                 harmony.Patch(method3, patchMethod3, null);
             }
-            /*
-             * END OF HARMONY PATCHING
-             * 
-             */
         }
-        /*
-        * END ENTRY
-        * 
-        */
+
+        /// <summary>Get whether this instance can load the initial version of the given asset.</summary>
+        /// <param name="asset">Basic metadata about the asset being loaded.</param>
+        public bool CanLoad<T>(IAssetInfo asset)
+        {
+            return
+                asset.AssetNameEquals("Buildings\\Winery")
+                || asset.AssetNameEquals("Buildings\\Winery2")
+                || asset.AssetNameEquals("Maps/Winery");
+        }
+
+        /// <summary>Load a matched asset.</summary>
+        /// <param name="asset">Basic metadata about the asset being loaded.</param>
+        public T Load<T>(IAssetInfo asset)
+        {
+            if (asset.AssetNameEquals("Buildings\\Winery") || asset.AssetNameEquals("Buildings\\Winery2"))
+                return (T)(object)this.WineryOutdoorTexture;
+
+            if (asset.AssetNameEquals("Maps/Winery"))
+                return (T)(object)this.WineryIndoorMap;
+
+            if (asset.AssetNameEquals("Maps/Winery2"))
+                return (T)(object)this.KegRoomMap;
+
+            return (T)(object)null;
+        }
 
 
-        /*
-         * GET ALL GAME LOCATIONS INCLUDING CUSTOM ONES
-         * From PathosChild
-         */
-        public static IEnumerable<GameLocation> GetLocations()
+        /*********
+        ** Private methods
+        *********/
+        /// <summary>Get all game locations, including any custom locations.</summary>
+        /// <remarks>From Pathoschild.</remarks>
+        private static IEnumerable<GameLocation> GetLocations()
         {
             return Game1.locations
                 .Concat(
@@ -189,201 +168,192 @@ namespace Sauvignon_in_Stardew
                     select building.indoors.Value
                 );
         }
-        /*
-         * END GET GAME LOCATIONS
-         * 
-         */
 
         /*
          * BIG KEG USAGE
-         * 
+         *
          */
-        public bool IsWineJuiceOrCoffee(Item _item)
+        private bool IsWineJuiceOrCoffee(Item item)
         {
-            return (_item.ParentSheetIndex == 395 || _item.ParentSheetIndex == 348 || _item.ParentSheetIndex == 350);
+            return (item.ParentSheetIndex == 395 || item.ParentSheetIndex == 348 || item.ParentSheetIndex == 350);
         }
 
-        public bool IsBeerBeerOrBeer(Item _item)
+        private bool IsKegable(Item item)
         {
-            return (_item.ParentSheetIndex == 346 || _item.ParentSheetIndex == 303 || _item.ParentSheetIndex == 459);
+            int index = item.ParentSheetIndex;
+            int category = item.Category;
+            return (index == 262 || index == 304 || index == 340 || index == 433 || category == -79 || category == -75);
         }
 
-        public bool IsKegable(Item _item)
+        private bool IsBigKegInput(Vector2 position)
         {
-            int _index = _item.ParentSheetIndex;
-            int _category = _item.Category;
-            return (_index == 262 || _index == 304 || _index == 340 || _index == 433 || _category == -79 || _category == -75);
+            return this.BigKegsInput.Contains(position);
         }
 
-        public bool IsBigKegInput(Vector2 _position)
+        private bool IsBigKegOutput(Vector2 position)
         {
-            return this.bigKegsInput.Contains(_position);
+            return this.BigKegsOutput.Contains(position);
         }
 
-        public bool IsBigKegOutput(Vector2 _position)
+        private void SetKegAnimation(Layer layer, Vector2 tileLocation, TileSheet tilesheet, int[] tileIDs, long interval)
         {
-            return this.bigKegsOutput.Contains(_position);
+            layer.Tiles[(int)tileLocation.X, (int)tileLocation.Y] = new AnimatedTile(layer, this.MakeAnimatedTile(layer, tilesheet, tileIDs), interval);
         }
 
-        public void SetKegAnimation(Layer _layer, Vector2 _tileLocation, TileSheet _tilesheet, int[] _tileIDs, long _interval)
+        private StaticTile[] MakeAnimatedTile(Layer layer, TileSheet tilesheet, int[] tileIDs)
         {
-            _layer.Tiles[(int)_tileLocation.X, (int)_tileLocation.Y] = new AnimatedTile(_layer, MakeAnimatedTile(_layer, _tilesheet, _tileIDs), _interval);
-        }
-
-        public StaticTile[] MakeAnimatedTile(Layer _layer, TileSheet _tilesheet, int[] _tileIDs)
-        {
-            StaticTile[] _output = new StaticTile[_tileIDs.Count()];
-            for (int i = 0; i < _tileIDs.Count(); i++)
+            StaticTile[] output = new StaticTile[tileIDs.Length];
+            for (int i = 0; i < tileIDs.Length; i++)
             {
-                _output[i] = new StaticTile(_layer, _tilesheet, BlendMode.Alpha, _tileIDs[i]);
+                output[i] = new StaticTile(layer, tilesheet, BlendMode.Alpha, tileIDs[i]);
             }
-            return _output;
+            return output;
         }
 
         private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
         {
-            if (Game1.currentLocation != null && Game1.currentLocation.mapPath.Value == "Maps\\Winery" && IsBigKegInput(e.Cursor.GrabTile))
+            if (Game1.currentLocation != null && Game1.currentLocation.mapPath.Value == "Maps\\Winery" && this.IsBigKegInput(e.Cursor.GrabTile))
             {
                 if (e.IsActionButton)
                 {
-                    GameLocation _winery = Game1.currentLocation;
-                    Vector2 _chestLocation = new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y - 34);
-                    Vector2 _outputChestLocation = new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y - 24);
+                    GameLocation winery = Game1.currentLocation;
+                    Vector2 chestLocation = new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y - 34);
+                    Vector2 outputChestLocation = new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y - 24);
 
-                    Layer _layerBuildings = _winery.map.GetLayer("Buildings");
-                    Layer _layerFront = _winery.map.GetLayer("Front");
-                    TileSheet _tilesheet = _winery.map.GetTileSheet("bucket_anim");
+                    Layer layerBuildings = winery.map.GetLayer("Buildings");
+                    Layer layerFront = winery.map.GetLayer("Front");
+                    TileSheet tilesheet = winery.map.GetTileSheet("bucket_anim");
 
 
-                    if (!_winery.Objects.ContainsKey(_chestLocation))
+                    if (!winery.Objects.ContainsKey(chestLocation))
                     {
-                        Chest _newChest = new Chest(true) { TileLocation = _chestLocation, Name = "|ignore| input chest for big ol kego" };
-                        _winery.Objects.Add(_chestLocation, _newChest);
+                        Chest newChest = new Chest(true) { TileLocation = chestLocation, Name = "|ignore| input chest for big ol kego" };
+                        winery.Objects.Add(chestLocation, newChest);
                     }
-                    if (!_winery.Objects.ContainsKey(_outputChestLocation))
+                    if (!winery.Objects.ContainsKey(outputChestLocation))
                     {
-                        Chest _newChest = new Chest(true) { TileLocation = _outputChestLocation, Name = "|ignore| output chest for big ol kego" };
-                        _winery.Objects.Add(_outputChestLocation, _newChest);
+                        Chest newChest = new Chest(true) { TileLocation = outputChestLocation, Name = "|ignore| output chest for big ol kego" };
+                        winery.Objects.Add(outputChestLocation, newChest);
                     }
-                    if (Game1.player.CurrentItem != null && IsKegable(Game1.player.CurrentItem) )
+                    if (Game1.player.CurrentItem != null && this.IsKegable(Game1.player.CurrentItem))
                     {
-                        Chest _inputChest = (Chest)_winery.Objects[_chestLocation];
-                        Chest _outputChest = (Chest)_winery.Objects[_outputChestLocation];
-                        Item _item = Game1.player.CurrentItem;
-                        Item _remainder = null;
-                        switch (_item.ParentSheetIndex)
+                        Chest inputChest = (Chest)winery.Objects[chestLocation];
+                        Chest outputChest = (Chest)winery.Objects[outputChestLocation];
+                        Item item = Game1.player.CurrentItem;
+                        Item remainder = null;
+                        switch (item.ParentSheetIndex)
                         {
                             case 262:
-                                _item = new SObject(Vector2.Zero, 346, "Beer", false, true, false, false) { Name = "Beer" };
-                                ((SObject)_item).setHealth(1750);
-                                _remainder = _inputChest.addItem(_item);
-                                SetKegAnimation(_layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), _tilesheet, new int[] { 4, 5, 6 }, 250);
-                                SetKegAnimation(_layerFront, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), _tilesheet, new int[] { 18, 19, 20 }, 250);
-                                if (_outputChest.items.Count <= 0)
+                                item = new SObject(Vector2.Zero, 346, "Beer", false, true, false, false) { Name = "Beer" };
+                                ((SObject)item).setHealth(1750);
+                                remainder = inputChest.addItem(item);
+                                this.SetKegAnimation(layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), tilesheet, new[] { 4, 5, 6 }, 250);
+                                this.SetKegAnimation(layerFront, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), tilesheet, new[] { 18, 19, 20 }, 250);
+                                if (outputChest.items.Count <= 0)
                                 {
-                                    SetKegAnimation(_layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 3), _tilesheet, new int[] { 11, 12, 13 }, 250);
+                                    this.SetKegAnimation(layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 3), tilesheet, new[] { 11, 12, 13 }, 250);
                                 }
                                 break;
                             case 304:
-                                _item = new SObject(Vector2.Zero, 303, "Pale Ale", false, true, false, false) { Name = "Pale Ale" };
-                                ((SObject)_item).setHealth(2250);
-                                _remainder = _inputChest.addItem(_item);
-                                SetKegAnimation(_layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), _tilesheet, new int[] { 4, 5, 6 }, 250);
-                                SetKegAnimation(_layerFront, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), _tilesheet, new int[] { 18, 19, 20 }, 250);
-                                if (_outputChest.items.Count <= 0)
+                                item = new SObject(Vector2.Zero, 303, "Pale Ale", false, true, false, false) { Name = "Pale Ale" };
+                                ((SObject)item).setHealth(2250);
+                                remainder = inputChest.addItem(item);
+                                this.SetKegAnimation(layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), tilesheet, new[] { 4, 5, 6 }, 250);
+                                this.SetKegAnimation(layerFront, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), tilesheet, new[] { 18, 19, 20 }, 250);
+                                if (outputChest.items.Count <= 0)
                                 {
-                                    SetKegAnimation(_layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 3), _tilesheet, new int[] { 11, 12, 13 }, 250);
+                                    this.SetKegAnimation(layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 3), tilesheet, new[] { 11, 12, 13 }, 250);
                                 }
                                 break;
                             case 340:
-                                _item = new SObject(Vector2.Zero, 459, "Mead", false, true, false, false) { Name = "Mead" };
-                                ((SObject)_item).setHealth(600);
-                                _remainder = _inputChest.addItem(_item);
-                                SetKegAnimation(_layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), _tilesheet, new int[] { 4, 5, 6 }, 250);
-                                SetKegAnimation(_layerFront, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), _tilesheet, new int[] { 18, 19, 20 }, 250);
-                                if (_outputChest.items.Count <= 0)
+                                item = new SObject(Vector2.Zero, 459, "Mead", false, true, false, false) { Name = "Mead" };
+                                ((SObject)item).setHealth(600);
+                                remainder = inputChest.addItem(item);
+                                this.SetKegAnimation(layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), tilesheet, new[] { 4, 5, 6 }, 250);
+                                this.SetKegAnimation(layerFront, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), tilesheet, new[] { 18, 19, 20 }, 250);
+                                if (outputChest.items.Count <= 0)
                                 {
-                                    SetKegAnimation(_layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 3), _tilesheet, new int[] { 11, 12, 13 }, 250);
+                                    this.SetKegAnimation(layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 3), tilesheet, new[] { 11, 12, 13 }, 250);
                                 }
                                 break;
                             case 433:
-                                _item = new SObject(Vector2.Zero, 395, "Coffee", false, true, false, false) { Name = "Coffee" };
-                                _item.Stack = (_item.Stack / 5) - (_item.Stack % 5);
-                                ((SObject)_item).setHealth(120);
-                                _remainder = _inputChest.addItem(_item);
-                                SetKegAnimation(_layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), _tilesheet, new int[] { 1, 2, 3 }, 250);
-                                SetKegAnimation(_layerFront, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), _tilesheet, new int[] { 15, 16, 17 }, 250);
-                                if (_outputChest.items.Count <= 0)
+                                item = new SObject(Vector2.Zero, 395, "Coffee", false, true, false, false) { Name = "Coffee" };
+                                item.Stack = (item.Stack / 5) - (item.Stack % 5);
+                                ((SObject)item).setHealth(120);
+                                remainder = inputChest.addItem(item);
+                                this.SetKegAnimation(layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), tilesheet, new[] { 1, 2, 3 }, 250);
+                                this.SetKegAnimation(layerFront, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), tilesheet, new[] { 15, 16, 17 }, 250);
+                                if (outputChest.items.Count <= 0)
                                 {
-                                    SetKegAnimation(_layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 3), _tilesheet, new int[] { 8, 9, 10 }, 250);
+                                    this.SetKegAnimation(layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 3), tilesheet, new[] { 8, 9, 10 }, 250);
                                 }
                                 break;
                             default:
-                                switch (_item.Category)
+                                switch (item.Category)
                                 {
                                     case -79:
-                                        _item = new SObject(Vector2.Zero, 348, _item.Name + " Wine", false, true, false, false) { Name = _item.Name + " Wine" };
-                                        ((SObject)_item).Price = ((SObject)_item).Price * 3;
-                                        helper.Reflection.GetField<SObject.PreserveType>(_item, "preserve").SetValue(SObject.PreserveType.Wine);
-                                        helper.Reflection.GetField<int>(_item, "preservedParentSheetIndex").SetValue(_item.ParentSheetIndex);
-                                        ((SObject)_item).setHealth(10000);
-                                        _remainder = _inputChest.addItem(_item);
-                                        SetKegAnimation(_layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), _tilesheet, new int[] { 1, 2, 3 }, 250);
-                                        SetKegAnimation(_layerFront, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), _tilesheet, new int[] { 15, 16, 17 }, 250);
-                                        if (_outputChest.items.Count <= 0)
+                                        item = new SObject(Vector2.Zero, 348, item.Name + " Wine", false, true, false, false) { Name = item.Name + " Wine" };
+                                        ((SObject)item).Price = ((SObject)item).Price * 3;
+                                        this.Helper.Reflection.GetField<SObject.PreserveType>(item, "preserve").SetValue(SObject.PreserveType.Wine);
+                                        this.Helper.Reflection.GetField<int>(item, "preservedParentSheetIndex").SetValue(item.ParentSheetIndex);
+                                        ((SObject)item).setHealth(10000);
+                                        remainder = inputChest.addItem(item);
+                                        this.SetKegAnimation(layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), tilesheet, new[] { 1, 2, 3 }, 250);
+                                        this.SetKegAnimation(layerFront, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), tilesheet, new[] { 15, 16, 17 }, 250);
+                                        if (outputChest.items.Count <= 0)
                                         {
-                                            SetKegAnimation(_layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 3), _tilesheet, new int[] { 8, 9, 10 }, 250);
+                                            this.SetKegAnimation(layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 3), tilesheet, new[] { 8, 9, 10 }, 250);
                                         }
                                         break;
                                     case -75:
-                                        _item = new SObject(Vector2.Zero, 350, _item.Name + " Juice", false, true, false, false) { Name = _item.Name + " Juice" };
-                                        ((SObject)_item).Price = (int)((double)((SObject)_item).Price * 2.5);
-                                        helper.Reflection.GetField<SObject.PreserveType>(_item, "preserve").SetValue(SObject.PreserveType.Juice);
-                                        helper.Reflection.GetField<int>(_item, "preservedParentSheetIndex").SetValue(_item.ParentSheetIndex);
-                                        ((SObject)_item).setHealth(6000);
-                                        _remainder = _inputChest.addItem(_item);
-                                        SetKegAnimation(_layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), _tilesheet, new int[] { 1, 2, 3 }, 250);
-                                        SetKegAnimation(_layerFront, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), _tilesheet, new int[] { 15, 16, 17 }, 250);
-                                        if (_outputChest.items.Count <= 0)
+                                        item = new SObject(Vector2.Zero, 350, item.Name + " Juice", false, true, false, false) { Name = item.Name + " Juice" };
+                                        ((SObject)item).Price = (int)(((SObject)item).Price * 2.5);
+                                        this.Helper.Reflection.GetField<SObject.PreserveType>(item, "preserve").SetValue(SObject.PreserveType.Juice);
+                                        this.Helper.Reflection.GetField<int>(item, "preservedParentSheetIndex").SetValue(item.ParentSheetIndex);
+                                        ((SObject)item).setHealth(6000);
+                                        remainder = inputChest.addItem(item);
+                                        this.SetKegAnimation(layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), tilesheet, new[] { 1, 2, 3 }, 250);
+                                        this.SetKegAnimation(layerFront, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 2), tilesheet, new[] { 15, 16, 17 }, 250);
+                                        if (outputChest.items.Count <= 0)
                                         {
-                                            SetKegAnimation(_layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 3), _tilesheet, new int[] { 8, 9, 10 }, 250);
+                                            this.SetKegAnimation(layerBuildings, new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y + 3), tilesheet, new[] { 8, 9, 10 }, 250);
                                         }
                                         break;
                                 }
                                 break;
                         }
-                        if (_remainder == null)
+                        if (remainder == null)
                         {
-                            Game1.player.removeItemFromInventory(_item);
+                            Game1.player.removeItemFromInventory(item);
                         }
                     }
                 }
             }
-            else if (Game1.currentLocation != null && Game1.currentLocation.mapPath.Value == "Maps\\Winery" && IsBigKegOutput(e.Cursor.GrabTile))
+            else if (Game1.currentLocation != null && Game1.currentLocation.mapPath.Value == "Maps\\Winery" && this.IsBigKegOutput(e.Cursor.GrabTile))
             {
                 if (e.IsActionButton)
                 {
-                    GameLocation _winery = Game1.currentLocation;
-                    Vector2 _chestLocation = new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y - 27);
-                    Chest _chest = (Chest)_winery.Objects[_chestLocation];
+                    GameLocation winery = Game1.currentLocation;
+                    Vector2 chestLocation = new Vector2(e.Cursor.GrabTile.X, e.Cursor.GrabTile.Y - 27);
+                    Chest chest = (Chest)winery.Objects[chestLocation];
                     Game1.activeClickableMenu = new ItemGrabMenu(
-                       inventory: _chest.items,
+                       inventory: chest.items,
                        reverseGrab: false,
                        showReceivingMenu: true,
                        highlightFunction: InventoryMenu.highlightAllItems,
-                       behaviorOnItemSelectFunction: _chest.grabItemFromInventory,
+                       behaviorOnItemSelectFunction: chest.grabItemFromInventory,
                        message: null,
-                       behaviorOnItemGrab: _chest.grabItemFromChest,
+                       behaviorOnItemGrab: chest.grabItemFromChest,
                        canBeExitedWithKey: true, showOrganizeButton: true,
                        source: ItemGrabMenu.source_chest,
-                       context: _chest
+                       context: chest
                    );
                 }
             }
         }
         /*
          * END BIG KEG USAGE
-         * 
+         *
          */
 
 
@@ -394,79 +364,79 @@ namespace Sauvignon_in_Stardew
          */
         private void GameEvents_UpdateTick(object sender, EventArgs e)
         {
-            if ((Game1.player.health <= 0 || Game1.player.stamina <= 0) && !ranOnce)
+            if ((Game1.player.health <= 0 || Game1.player.stamina <= 0) && !this.RanOnce)
             {
-                bedTime = Game1.timeOfDay;
-                SetBonusPrice();
+                this.BedTime = Game1.timeOfDay;
+                this.SetBonusPrice();
             }
 
-            if (this.DistillerProfessionActive && Game1.player.professions.Contains(77) && Game1.player.FarmingLevel > 9 && !(Game1.player.professions.Contains(1)))
+            if (this.Config.DistillerProfessionBool && Game1.player.professions.Contains(77) && Game1.player.FarmingLevel > 9 && !(Game1.player.professions.Contains(1)))
             {
                 Game1.player.professions.Remove(77);
             }
         }
         /*
          * End Sleep and Faint
-         * 
+         *
          */
 
 
         /*
         * Log Distiller info
         */
-        public void DisplayDistillerInfo(object sender, EventArgs e)
+        private void DisplayDistillerInfo(object sender, EventArgs e)
         {
-            if (DistillerProfessionActive)
+            if (this.Config.DistillerProfessionBool)
             {
-                monitor.Log("Distiller Profession is Active", LogLevel.Info);
+                this.Monitor.Log("Distiller Profession is Active", LogLevel.Info);
                 if (Game1.player.professions.Contains(77))
                 {
-                    monitor.Log("You are a Distiller", LogLevel.Info);
+                    this.Monitor.Log("You are a Distiller", LogLevel.Info);
                 }
                 else
                 {
-                    monitor.Log("You are not a Distiller. Reach Level 10 Farming or go to the Statue in the Sewers to reset your Farming Professions.", LogLevel.Info);
+                    this.Monitor.Log("You are not a Distiller. Reach Level 10 Farming or go to the Statue in the Sewers to reset your Farming Professions.", LogLevel.Info);
                 }
             }
             else
             {
-                monitor.Log("Distiller Profession is Inactive", LogLevel.Info);
+                this.Monitor.Log("Distiller Profession is Inactive", LogLevel.Info);
             }
         }
 
 
         /*
-        * DRAW TO SKILLS PAGE 
+        * DRAW TO SKILLS PAGE
         * draw icon and Distiller profession info in Skills Page
         */
         private void GraphicsEvents_OnPostRenderGuiEvent(object sender, EventArgs e)
         {
             if (Game1.activeClickableMenu is GameMenu menu && menu.currentTab == 1 && Game1.player.professions.Contains(77) && !Game1.player.professions.Contains(4))
             {
-                List<IClickableMenu> pages = helper.Reflection.GetField<List<IClickableMenu>>(menu, "pages").GetValue();
+                List<IClickableMenu> pages = this.Helper.Reflection.GetField<List<IClickableMenu>>(menu, "pages").GetValue();
                 foreach (IClickableMenu page in pages)
                 {
-                    if ( page is SkillsPage || page.GetType().FullName == "SpaceCore.Interface.NewSkillsPage" )
+                    if (page is SkillsPage || page.GetType().FullName == "SpaceCore.Interface.NewSkillsPage")
                     {
-                        List<ClickableTextureComponent> skillBars = helper.Reflection.GetField<List<ClickableTextureComponent>>(page, "skillBars").GetValue();
+                        List<ClickableTextureComponent> skillBars = this.Helper.Reflection.GetField<List<ClickableTextureComponent>>(page, "skillBars").GetValue();
                         foreach (ClickableTextureComponent skillBar in skillBars)
                         {
-                            if (this.DistillerProfessionActive && skillBar.containsPoint(Game1.getMouseX(), Game1.getMouseY()) && skillBar.myID == 200)
+                            if (this.Config.DistillerProfessionBool && skillBar.containsPoint(Game1.getMouseX(), Game1.getMouseY()) && skillBar.myID == 200)
                             {
-                                //local variables                                
+                                //local variables
                                 string textTitle = "Distiller";
                                 string textDescription = "Alcohol worth 40% more.";
 
-                                //draw    
+                                //draw
                                 //icon
                                 IClickableMenu.drawTextureBox(Game1.spriteBatch, skillBar.bounds.X - 16 - 8, skillBar.bounds.Y - 16 - 16, 96, 96, Color.White);
-                                Game1.spriteBatch.Draw(distillerIcon, new Vector2((float)(skillBar.bounds.X - 8), (float)(skillBar.bounds.Y - 32 + 16)), new Rectangle(0, 0, 16, 16), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+                                Game1.spriteBatch.Draw(this.DistillerIcon, new Vector2(skillBar.bounds.X - 8, skillBar.bounds.Y - 32 + 16), new Rectangle(0, 0, 16, 16), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
                                 //box
-                                IClickableMenu.drawHoverText(Game1.spriteBatch, textDescription, Game1.smallFont, 0, 0, -1, textTitle.Length > 0 ? textTitle : (string)null, -1, (string[])null, (Item)null, 0, -1, -1, -1, -1, 1f, (CraftingRecipe)null);
+                                IClickableMenu.drawHoverText(Game1.spriteBatch, textDescription, Game1.smallFont, 0, 0, -1, textTitle.Length > 0 ? textTitle : null);
 
                                 if (!Game1.options.hardwareCursor)
                                 {
-                                    Game1.spriteBatch.Draw(Game1.mouseCursors, new Vector2(Game1.getMouseX(), Game1.getMouseY()), Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, Game1.options.SnappyMenus ? 44 : 0 , 16, 16), Color.White * Game1.mouseCursorTransparency, 0.0f, Vector2.Zero, Game1.pixelZoom + Game1.dialogueButtonScale / 150f, SpriteEffects.None, 1f);
+                                    Game1.spriteBatch.Draw(Game1.mouseCursors, new Vector2(Game1.getMouseX(), Game1.getMouseY()), Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, Game1.options.SnappyMenus ? 44 : 0, 16, 16), Color.White * Game1.mouseCursorTransparency, 0.0f, Vector2.Zero, Game1.pixelZoom + Game1.dialogueButtonScale / 150f, SpriteEffects.None, 1f);
                                 }
                             }
                         }
@@ -475,8 +445,8 @@ namespace Sauvignon_in_Stardew
             }
         }
         /*
-        * END DRAW TO SKILLS PAGE 
-        * 
+        * END DRAW TO SKILLS PAGE
+        *
         */
 
 
@@ -488,23 +458,27 @@ namespace Sauvignon_in_Stardew
          * 
          * SAVE BED TIME FOR KEG BONUS OVERNIGHT
          */
-        public void MenuEvents_MenuChanged(object sender, EventArgsClickableMenuChanged e)
+        private void MenuEvents_MenuChanged(object sender, EventArgsClickableMenuChanged e)
         {
-            if(e.NewMenu is DialogueBox box && box.getCurrentString() == sleepBox)
+            if (e.NewMenu is DialogueBox box && box.getCurrentString() == this.SleepBox)
             {
-                bedTime = Game1.timeOfDay;
-                SetBonusPrice();
+                this.BedTime = Game1.timeOfDay;
+                this.SetBonusPrice();
             }
 
-            //monitor.Log($"Current menu type is " + e.NewMenu);            
-            if (this.DistillerProfessionActive)
+            //monitor.Log($"Current menu type is " + e.NewMenu);
+            if (this.Config.DistillerProfessionBool)
             {
-                if (!(Game1.activeClickableMenu is DistillerMenu) && Game1.activeClickableMenu is LevelUpMenu lvlMenu && lvlMenu.isProfessionChooser == true && typeof(LevelUpMenu).GetField("currentSkill", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(lvlMenu).Equals(0) && typeof(LevelUpMenu).GetField("currentLevel", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(lvlMenu).Equals(10))
+                if (!(Game1.activeClickableMenu is DistillerMenu) && Game1.activeClickableMenu is LevelUpMenu lvlMenu && lvlMenu.isProfessionChooser)
                 {
-                    Game1.activeClickableMenu = new DistillerMenu(0, 10, distillerIcon);
-                    //monitor.Log($"Player professions are "+Game1.player.professions.ToString());
+                    int skill = this.Helper.Reflection.GetField<int>(lvlMenu, "currentSkill").GetValue();
+                    int level = this.Helper.Reflection.GetField<int>(lvlMenu, "currentLevel").GetValue();
+                    if (skill == 0 && level == 0)
+                    {
+                        Game1.activeClickableMenu = new DistillerMenu(this.DistillerIcon, this.Helper.Input);
+                    }
                 }
-            }           
+            }
 
             if (e.NewMenu.GetType().FullName.Contains("CarpenterMenu"))
             {
@@ -512,11 +486,9 @@ namespace Sauvignon_in_Stardew
                 foreach (Building building in Game1.getFarm().buildings)
                 {
                     if (building.indoors.Value != null && building.buildingType.Value.Equals("Winery"))
-                    {
-                        RemoveArch(building);
-                    }
+                        this.SetArch(building, false);
                 }
-                if (!IsMagical(e.NewMenu) && !HasBluePrint(e.NewMenu, "Winery"))
+                if (!this.IsMagical(e.NewMenu) && !this.HasBluePrint(e.NewMenu, "Winery"))
                 {
                     BluePrint wineryBluePrint = new BluePrint("Slime Hutch")
                     {
@@ -531,13 +503,13 @@ namespace Sauvignon_in_Stardew
                     wineryBluePrint.itemsRequired.Add(330, 100);//100
                     wineryBluePrint.itemsRequired.Add(390, 100);//100
 
-                    SetBluePrintField(wineryBluePrint, "textureName", "Buildings\\Winery");
-                    SetBluePrintField(wineryBluePrint, "texture", Game1.content.Load<Texture2D>(wineryBluePrint.textureName));
+                    this.SetBluePrintField(wineryBluePrint, "textureName", "Buildings\\Winery");
+                    this.SetBluePrintField(wineryBluePrint, "texture", Game1.content.Load<Texture2D>(wineryBluePrint.textureName));
 
-                    GetBluePrints(e.NewMenu).Add(wineryBluePrint);
+                    this.GetBluePrints(e.NewMenu).Add(wineryBluePrint);
                 }
 
-                if (Game1.getFarm().isBuildingConstructed("Winery") && !IsMagical(e.NewMenu) && !HasBluePrint(e.NewMenu, "Winery2"))
+                if (Game1.getFarm().isBuildingConstructed("Winery") && !this.IsMagical(e.NewMenu) && !this.HasBluePrint(e.NewMenu, "Winery2"))
                 {
                     BluePrint kegRoomBluePrint = new BluePrint("Slime Hutch")
                     {
@@ -554,59 +526,57 @@ namespace Sauvignon_in_Stardew
                     kegRoomBluePrint.itemsRequired.Add(335, 0);//150
                     kegRoomBluePrint.itemsRequired.Add(388, 0);//500
 
-                    SetBluePrintField(kegRoomBluePrint, "textureName", "Buildings\\Winery2");
-                    SetBluePrintField(kegRoomBluePrint, "texture", Game1.content.Load<Texture2D>(kegRoomBluePrint.textureName));
+                    this.SetBluePrintField(kegRoomBluePrint, "textureName", "Buildings\\Winery2");
+                    this.SetBluePrintField(kegRoomBluePrint, "texture", Game1.content.Load<Texture2D>(kegRoomBluePrint.textureName));
                 }
             }
         }
 
-        public static bool IsMagical(IClickableMenu menu)
+        private bool IsMagical(IClickableMenu menu)
         {
-            return helper.Reflection.GetField<bool>(menu, "magicalConstruction").GetValue();
+            return this.Helper.Reflection.GetField<bool>(menu, "magicalConstruction").GetValue();
             //return (bool)typeof(CarpenterMenu).GetField("magicalConstruction", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).GetValue(carpenterMenu);
         }
 
-        public static bool HasBluePrint(IClickableMenu menu, string _blueprintName)
+        private bool HasBluePrint(IClickableMenu menu, string blueprintName)
         {
-            return GetBluePrints(menu).Exists(bluePrint => bluePrint.name == _blueprintName);
+            return this.GetBluePrints(menu).Exists(bluePrint => bluePrint.name == blueprintName);
         }
 
-        public static List<BluePrint> GetBluePrints(IClickableMenu menu)
+        private List<BluePrint> GetBluePrints(IClickableMenu menu)
         {
-            return helper.Reflection.GetField<List<BluePrint>>(menu, "blueprints").GetValue();
+            return this.Helper.Reflection.GetField<List<BluePrint>>(menu, "blueprints").GetValue();
             //return (List<BluePrint>)typeof(CarpenterMenu).GetField("blueprints", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).GetValue(carpenterMenu);
         }
 
-        public static void SetBluePrintField(BluePrint bluePrint, string field, object value)
+        private void SetBluePrintField(BluePrint bluePrint, string field, object value)
         {
-            helper.Reflection.GetField<object>(bluePrint, field).SetValue(value);
+            this.Helper.Reflection.GetField<object>(bluePrint, field).SetValue(value);
             //typeof(BluePrint).GetField(field, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).SetValue(bluePrint, value);
         }
 
         //sets back Winery widths to 8 for Archway walkthrough and add back invisible tiles
         private void MenuEvents_MenuClosed(object sender, EventArgsClickableMenuClosed e)
-        {           
+        {
             if (e.PriorMenu is CarpenterMenu)
             {
-                foreach(Building building in Game1.getFarm().buildings)
+                foreach (Building building in Game1.getFarm().buildings)
                 {
-                    if(building.indoors.Value != null && building.buildingType.Value.Equals("Winery"))
-                    {
-                        AddArch(building);
-                    }
+                    if (building.indoors.Value != null && building.buildingType.Value.Equals("Winery"))
+                        this.SetArch(building, true);
                 }
             }
 
             if (e.PriorMenu is ItemGrabMenu && Game1.currentLocation != null && Game1.currentLocation.mapPath.Value == "Maps\\Winery2")
             {
-                GameLocation _winery = Game1.currentLocation;
-                Layer _layerBuildings = _winery.map.GetLayer("Buildings");
-                TileSheet _tilesheet = _winery.map.GetTileSheet("bucket_anim");
-                foreach (SObject o in _winery.Objects.Values)
+                GameLocation winery = Game1.currentLocation;
+                Layer layerBuildings = winery.map.GetLayer("Buildings");
+                TileSheet tilesheet = winery.map.GetTileSheet("bucket_anim");
+                foreach (SObject o in winery.Objects.Values)
                 {
-                    if (o is Chest _chest && _chest.Name.Equals("|ignore| output chest for big ol kego") && _chest.items.Count <= 0)
+                    if (o is Chest chest && chest.Name.Equals("|ignore| output chest for big ol kego") && chest.items.Count <= 0)
                     {
-                        _layerBuildings.Tiles[(int)_chest.TileLocation.X, (int)_chest.TileLocation.Y + 27] = new StaticTile(_layerBuildings, _tilesheet, BlendMode.Alpha, 21);
+                        layerBuildings.Tiles[(int)chest.TileLocation.X, (int)chest.TileLocation.Y + 27] = new StaticTile(layerBuildings, tilesheet, BlendMode.Alpha, 21);
                     }
                 }
             }
@@ -622,42 +592,37 @@ namespace Sauvignon_in_Stardew
         * ADD AND REMOVE ARCHWAY
         * Change width of building and add/remove invisible tiles
         */
-        public void AddArch(Building building)
+        private void SetArch(Building building, bool enable)
         {
-            building.tilesWide.Value = 8;
-            layer = Game1.getFarm().map.GetLayer("Buildings");
-            foreach(TileSheet sheet in Game1.getFarm().map.TileSheets)
-            {
-                if (sheet.ImageSource != null && ( sheet.ImageSource.Contains("outdoor") || sheet.ImageSource.Contains("Outdoor")))
-                {
-                    tileSheet = sheet;
-                }
-            }            
-            //tilesheet = Game1.getFarm().map.GetTileSheet("untitled tile sheet");
-            //tileID = 131;
-            for (int x = building.tileX.Value + 9; x < building.tileX.Value + 11; x++)
-            {
-                for (int y = building.tileY.Value; y < building.tileY.Value + 6; y++)
-                {
-                    layer.Tiles[x, y] = new StaticTile(layer, tileSheet, BlendMode.Alpha, tileID);
-                }
-            }
-            if (building.daysOfConstructionLeft.Value > 0)
-            {
-                building.tilesWide.Value = 11;
-            }
-        }
+            // collect info
+            Farm farm = Game1.getFarm();
+            Point minOffset = new Point(9, 0);
+            Point maxOffset = new Point(11, 6);
+            var layer = farm.map.GetLayer("Buildings");
+            var tilesheet = farm.map.TileSheets.FirstOrDefault(sheet => sheet.ImageSource != null && (sheet.ImageSource.Contains("outdoor") || sheet.ImageSource.Contains("Outdoor")));
 
-        public void RemoveArch(Building building)
-        {
-            building.tilesWide.Value = 11;
-            for (int x = building.tileX.Value + 9; x < building.tileX.Value + 11; x++)
+            // validate
+            if ((building.tileX.Value + maxOffset.X) >= layer.LayerHeight || (building.tileY.Value + maxOffset.Y) >= layer.LayerHeight)
             {
-                for (int y = building.tileY.Value; y < building.tileY.Value + 6; y++)
+                this.Monitor.Log($"Didn't apply map changes for winery at ({building.tileX.Value}, {building.tileY.Value}) because it's outside the map bounds.", LogLevel.Warn);
+                return;
+            }
+
+            // apply changes
+            if (enable)
+                building.tilesWide.Value = 8;
+            for (int x = building.tileX.Value + minOffset.X; x < building.tileX.Value + maxOffset.X; x++)
+            {
+                for (int y = building.tileY.Value + maxOffset.Y; y < building.tileY.Value + maxOffset.Y; y++)
                 {
-                    Game1.getFarm().removeTile(x, y, "Buildings");
+                    if (enable)
+                        layer.Tiles[x, y] = new StaticTile(layer, tilesheet, BlendMode.Alpha, TileID);
+                    else
+                        farm.removeTile(x, y, "Buildings");
                 }
             }
+            if (!enable || building.daysOfConstructionLeft.Value > 0)
+                building.tilesWide.Value = 11;
         }
         /*
         * END ADD AND REMOVE ARCHWAY
@@ -666,25 +631,24 @@ namespace Sauvignon_in_Stardew
 
 
 
-
         /*
          * EDIT WINERY WIDTH
          * calls AddArch or RemoveArch depending on what the player did.
          */
-        public void LocationEvents_BuildingsChanged(object sender, EventArgsLocationBuildingsChanged e)
+        private void LocationEvents_BuildingsChanged(object sender, EventArgsLocationBuildingsChanged e)
         {
-            foreach(Building building in e.Added)
+            foreach (Building building in e.Added)
             {
-                if(building.indoors.Value != null && building.buildingType.Value == "Winery")
+                if (building.indoors.Value != null && building.buildingType.Value == "Winery")
                 {
-                    AddArch(building);
-                }                
+                    this.SetArch(building, true);
+                }
             }
             foreach (Building building in e.Removed)
             {
                 if (building.indoors.Value != null && building.buildingType.Value == "Winery")
                 {
-                    RemoveArch(building);
+                    this.SetArch(building, false);
                 }
             }
         }
@@ -702,43 +666,37 @@ namespace Sauvignon_in_Stardew
          * and reloading the wineries, changing back the category, and removing the Artisan profession
          * if they have the Distiller profession.
          */
-        public void SaveEvents_AfterSaveLoad(object sender, EventArgs e)
-        {            
-            //Remove Artisan Profession if the have selected Distiller Profession
-            if (this.DistillerProfessionActive && Game1.player.professions.Contains(77) && !Game1.player.professions.Contains(5))
-            {
-                Game1.player.professions.Remove(4);
-            }            
+        private void SaveEvents_AfterSave(object sender, EventArgs e)
+        {
+            // delete legacy data file (migrated into save file at this point)
+            FileInfo legacyFile = new FileInfo(Path.Combine($"{Constants.CurrentSavePath}", "Winery_Coords.json"));
+            if (legacyFile.Exists)
+                legacyFile.Delete();
 
-            wineryCoords = this.Helper.ReadJsonFile<List<KeyValuePair<int, int>>>($"{Constants.CurrentSavePath}/Winery_Coords.json") ?? new List<KeyValuePair<int, int>>();
-            foreach (Building b in Game1.getFarm().buildings)
-            {
-                foreach (var pair in wineryCoords)
-                {
-                    if (b.tileX.Value == pair.Key && b.tileY.Value == pair.Value && b.buildingType.Value.Equals("Slime Hutch"))
-                    {
-                        b.buildingType.Value = "Winery";
-                        b.indoors.Value.mapPath.Value = "Maps\\Winery";                        
-                        b.indoors.Value.updateMap();
-                        AddArch(b);                        
-                    }
-                }
-            }
+            // restore data
+            this.RestoreStashedData(this.SaveData);
         }
 
-        public void SaveEvents_BeforeSave(object sender, EventArgs e)
+        private void SaveEvents_AfterLoad(object sender, EventArgs e)
+        {
+            // restore data
+            this.SaveData = this.ReadSaveData();
+            this.RestoreStashedData(this.SaveData);
+        }
+
+        private void SaveEvents_BeforeSave(object sender, EventArgs e)
         {
             //Add Artisan Profession
-            if (this.DistillerProfessionActive && Game1.player.professions.Contains(77) && !Game1.player.professions.Contains(5))
+            if (this.Config.DistillerProfessionBool && Game1.player.professions.Contains(77) && !Game1.player.professions.Contains(5))
             {
-                Game1.player.professions.Add(4);               
-            }            
-            SetItemCategory(-26);
+                Game1.player.professions.Add(4);
+            }
+            this.SetItemCategory(-26);
 
-            //calculate time slept            
-            if (bedTime > 0)
+            //calculate time slept
+            if (this.BedTime > 0)
             {
-                hoursSlept = ((2400 - bedTime) + Game1.timeOfDay);
+                this.HoursSlept = ((2400 - this.BedTime) + Game1.timeOfDay);
             }
 
             //reduce time for kegs overnight
@@ -750,26 +708,77 @@ namespace Sauvignon_in_Stardew
                     {
                         if (o.Name.Equals("Keg"))
                         {
-                            o.MinutesUntilReady -= (int)Math.Round(hoursSlept * 0.3, 0);
+                            o.MinutesUntilReady -= (int)Math.Round(this.HoursSlept * 0.3, 0);
                         }
                     }
                 }
             }
 
             //save coordinates to json file and replace with slime hutch
-            wineryCoords.Clear();
+            this.SaveData.WineryCoords.Clear();
             foreach (Building b in Game1.getFarm().buildings)
             {
                 if (b.indoors.Value != null && b.buildingType.Value.Equals("Winery"))
                 {
-                    wineryCoords.Add(new KeyValuePair<int, int>(b.tileX.Value, b.tileY.Value));
+                    this.SaveData.WineryCoords.Add(new Point(b.tileX.Value, b.tileY.Value));
                     b.buildingType.Value = "Slime Hutch";
-                    b.indoors.Value.mapPath.Value = "Maps\\SlimeHutch";                    
+                    b.indoors.Value.mapPath.Value = "Maps\\SlimeHutch";
                     b.indoors.Value.updateMap();
-                    RemoveArch(b);
+                    this.SetArch(b, false);
                 }
             }
-            this.Helper.WriteJsonFile($"{Constants.CurrentSavePath}/Winery_Coords.json", wineryCoords);
+            this.Helper.Data.WriteSaveData("data", this.SaveData);
+        }
+
+        /// <summary>Read mod data stored in the save file.</summary>
+        private SaveData ReadSaveData()
+        {
+            // from save file
+            {
+                SaveData data = this.Helper.Data.ReadSaveData<SaveData>("data");
+                if (data != null)
+                    return data;
+            }
+
+            // from legacy JSON file
+            // Note: don't change to `this.Helper.Data.ReadJsonFile`, which doesn't allow absolute paths.
+            {
+                var data = this.Helper.ReadJsonFile<List<KeyValuePair<int, int>>>($"{Constants.CurrentSavePath}/Winery_Coords.json");
+                if (data != null)
+                {
+                    return new SaveData
+                    {
+                        WineryCoords = data.Select(p => new Point(p.Key, p.Value)).ToList()
+                    };
+                }
+            }
+
+            // new data
+            return new SaveData();
+        }
+
+        /// <summary>Restore game data based on the given save data.</summary>
+        /// <param name="data">The save data to restore.</param>
+        private void RestoreStashedData(SaveData data)
+        {
+            // remove Artisan Profession if they have selected Distiller Profession
+            if (this.Config.DistillerProfessionBool && Game1.player.professions.Contains(77) && !Game1.player.professions.Contains(5))
+                Game1.player.professions.Remove(4);
+
+            // load save data
+            foreach (Building b in Game1.getFarm().buildings)
+            {
+                foreach (var pair in data.WineryCoords)
+                {
+                    if (b.tileX.Value == pair.X && b.tileY.Value == pair.Y && b.buildingType.Value.Equals("Slime Hutch"))
+                    {
+                        b.buildingType.Value = "Winery";
+                        b.indoors.Value.mapPath.Value = "Maps\\Winery";
+                        b.indoors.Value.updateMap();
+                        this.SetArch(b, true);
+                    }
+                }
+            }
         }
         /*
          * END SAVE AND LOADING
@@ -783,21 +792,21 @@ namespace Sauvignon_in_Stardew
          * SPEED UP KEG INSIDE WINERY
          * 
          */
-        public void TimeEvents_TimeOfDayChanged(object sender, EventArgsIntChanged e)
+        private void TimeEvents_TimeOfDayChanged(object sender, EventArgsIntChanged e)
         {
-            if (this.DistillerProfessionActive)
+            if (this.Config.DistillerProfessionBool)
             {
-                SetItemCategory(-77);
+                this.SetItemCategory(-77);
             }
             //monitor.Log($"Time is " + Game1.timeOfDay + " and it is " + Game1.dayOrNight());
             foreach (Building b in Game1.getFarm().buildings)
             {
                 if (b.indoors.Value != null && b.buildingType.Value.Equals("Winery"))
                 {
-                    GameLocation _winery = b.indoors.Value;
-                    Layer _layerBuildings = _winery.map.GetLayer("Buildings");
-                    Layer _layerFront = _winery.map.GetLayer("Front");
-                    TileSheet _tilesheet = _winery.map.GetTileSheet("bucket_anim");
+                    GameLocation winery = b.indoors.Value;
+                    Layer layerBuildings = winery.map.GetLayer("Buildings");
+                    Layer layerFront = winery.map.GetLayer("Front");
+                    TileSheet tilesheet = winery.map.GetTileSheet("bucket_anim");
                     foreach (SObject o in b.indoors.Value.Objects.Values)
                     {
                         if (o.Name.Equals("Keg"))
@@ -805,36 +814,30 @@ namespace Sauvignon_in_Stardew
                             o.MinutesUntilReady -= 3;
                         }
 
-                        if (o is Chest _chest && _chest.Name.Equals("|ignore| input chest for big ol kego"))
+                        if (o is Chest chest && chest.Name.Equals("|ignore| input chest for big ol kego"))
                         {
-                            foreach (SObject _item in _chest.items)
+                            foreach (SObject item in chest.items.OfType<SObject>())
                             {
-                                if (_item.getHealth() > 0)
+                                if (item.getHealth() > 0)
                                 {
-                                    _item.setHealth(_item.getHealth() - 10);
+                                    item.setHealth(item.getHealth() - 10);
                                 }
-                                else if (_item.getHealth() <= 0)
+                                else if (item.getHealth() <= 0)
                                 {
-                                    Chest _outputChest = ((Chest)b.indoors.Value.Objects[new Vector2(_chest.TileLocation.X, _chest.TileLocation.Y + 10)]);
-                                    Item _remainder = _outputChest.addItem(_item);
-                                    if (_remainder == null)
+                                    Chest outputChest = ((Chest)b.indoors.Value.Objects[new Vector2(chest.TileLocation.X, chest.TileLocation.Y + 10)]);
+                                    Item remainder = outputChest.addItem(item);
+                                    if (remainder == null)
                                     {
-                                        _chest.items.Remove(_item);
+                                        chest.items.Remove(item);
                                     }
-                                    if (IsWineJuiceOrCoffee(_item))
-                                    {
-                                        SetKegAnimation(_layerBuildings, new Vector2(_chest.TileLocation.X, _chest.TileLocation.Y + 37), _tilesheet, new int[] { 22, 23, 24 }, 250);
-                                    }
-                                    else
-                                    {
-                                        SetKegAnimation(_layerBuildings, new Vector2(_chest.TileLocation.X, _chest.TileLocation.Y + 37), _tilesheet, new int[] { 25, 26, 27 }, 250);
-                                    }
+
+                                    this.SetKegAnimation(layerBuildings, new Vector2(chest.TileLocation.X, chest.TileLocation.Y + 37), tilesheet, this.IsWineJuiceOrCoffee(item) ? new[] { 22, 23, 24 } : new[] { 25, 26, 27 }, 250);
                                 }
                             }
-                            if (_chest.items.Count <= 0)
+                            if (chest.items.Count <= 0)
                             {
-                                _layerBuildings.Tiles[(int)_chest.TileLocation.X, (int)_chest.TileLocation.Y + 36] = new StaticTile(_layerBuildings, _tilesheet, BlendMode.Alpha, 0);
-                                _layerFront.Tiles[(int)_chest.TileLocation.X, (int)_chest.TileLocation.Y + 36] = new StaticTile(_layerFront, _tilesheet, BlendMode.Alpha, 14);
+                                layerBuildings.Tiles[(int)chest.TileLocation.X, (int)chest.TileLocation.Y + 36] = new StaticTile(layerBuildings, tilesheet, BlendMode.Alpha, 0);
+                                layerFront.Tiles[(int)chest.TileLocation.X, (int)chest.TileLocation.Y + 36] = new StaticTile(layerFront, tilesheet, BlendMode.Alpha, 14);
                             }
                         }
                     }
@@ -852,32 +855,32 @@ namespace Sauvignon_in_Stardew
          * SPEED UP CASK INSIDE WINERY
          * Also set the item category to Distilled Craft & change seasonal texture
          */
-        public void TimeEvents_AfterDayStarted(object sender, EventArgs e)
+        private void TimeEvents_AfterDayStarted(object sender, EventArgs e)
         {
-            if( this.DistillerProfessionActive && !Game1.player.professions.Contains(77) && ( Game1.player.professions.Contains(4) && Game1.player.professions.Contains(5) ))
+            if (this.Config.DistillerProfessionBool && !Game1.player.professions.Contains(77) && (Game1.player.professions.Contains(4) && Game1.player.professions.Contains(5)))
             {
                 Game1.player.professions.Add(77);
             }
 
-            ranOnce = false;
+            this.RanOnce = false;
 
-            if (this.DistillerProfessionActive)
+            if (this.Config.DistillerProfessionBool)
             {
-                SetItemCategory(-77);
+                this.SetItemCategory(-77);
             }
             //Game1.activeClickableMenu = new LevelUpMenu(0, 10);
 
             //set seasonal building and reload texture
-            if (CurrentSeason != Game1.currentSeason)
+            if (this.CurrentSeason != Game1.currentSeason)
             {
                 //monitor.Log($"Current season is " + CurrentSeason);
-                CurrentSeason = Game1.currentSeason;
+                this.CurrentSeason = Game1.currentSeason;
                 //monitor.Log($"Current season is now " + CurrentSeason);
-                Winery_outdoors = helper.Content.Load<Texture2D>($"assets/Winery_outside_{Game1.currentSeason}.png", ContentSource.ModFolder);
-                helper.Content.InvalidateCache("Buildings/Winery");
+                this.WineryOutdoorTexture = this.Helper.Content.Load<Texture2D>($"assets/Winery_outside_{Game1.currentSeason}.png");
+                this.Helper.Content.InvalidateCache("Buildings/Winery");
             }
 
-            helper.Content.InvalidateCache("Maps/Winery");
+            this.Helper.Content.InvalidateCache("Maps/Winery");
 
             //reduce time for casks
             foreach (Building b in Game1.getFarm().buildings)
@@ -897,46 +900,46 @@ namespace Sauvignon_in_Stardew
 
 
         /*
-		* SET BONUS PRICE
-		*
-		*/
-        public bool IsAlcohol(Item item)
+         * SET BONUS PRICE
+         *
+         */
+        private bool IsAlcohol(Item item)
         {
             return (item.ParentSheetIndex == 348 || item.ParentSheetIndex == 303 || item.ParentSheetIndex == 346 || item.ParentSheetIndex == 459);
         }
 
-        public bool IsDistiller()
+        private bool IsDistiller()
         {
-            return (this.DistillerProfessionActive && Game1.player.professions.Contains(77));
+            return (this.Config.DistillerProfessionBool && Game1.player.professions.Contains(77));
         }
 
-        public void SetBonusPrice()
+        private void SetBonusPrice()
         {
             foreach (Item item in Game1.getFarm().shippingBin)
             {
-                if ( IsDistiller() && item != null && item is SObject booze && IsAlcohol(item) && booze.getHealth() != booze.Price )
+                if (this.IsDistiller() && item != null && item is SObject booze && this.IsAlcohol(item) && booze.getHealth() != booze.Price)
                 {
-                    booze.Price = (int)(Math.Ceiling((float)booze.Price * 1.4));                    
+                    booze.Price = (int)(Math.Ceiling(booze.Price * 1.4));
                     booze.setHealth(booze.Price);
                     //monitor.Log(booze.Name + " price is " + booze.Price+" and health is "+booze.getHealth());
                 }
             }
         }
         /*
-		* END SET BONUS PRICE
-		*
-		*/
+         * END SET BONUS PRICE
+         *
+         */
 
         /*
-        * SET ITEM CATEGORY
-        * 
-        */
-        public void SetItemCategory(int catID)
+         * SET ITEM CATEGORY
+         *
+         */
+        private void SetItemCategory(int catID)
         {
             //check for old alcohol in player inventory
             foreach (Item item in Game1.player.Items)
             {
-                if (item != null && item is SObject booze && IsAlcohol(item) && item.Category != catID)
+                if (item != null && item is SObject booze && this.IsAlcohol(item) && item.Category != catID)
                 {
                     booze.Category = catID;
                 }
@@ -951,7 +954,7 @@ namespace Sauvignon_in_Stardew
                     {
                         foreach (Item item in c.items)
                         {
-                            if (item != null && item is SObject booze && IsAlcohol(item) && item.Category != catID)
+                            if (item is SObject booze && this.IsAlcohol(item) && item.Category != catID)
                             {
                                 booze.Category = catID;
                             }
@@ -961,7 +964,7 @@ namespace Sauvignon_in_Stardew
                     {
                         foreach (Item item in autoGrabberStorage.items)
                         {
-                            if (item != null && item is SObject booze && IsAlcohol(item) && item.Category != catID)
+                            if (item is SObject booze && this.IsAlcohol(item) && item.Category != catID)
                             {
                                 booze.Category = catID;
                             }
@@ -969,14 +972,14 @@ namespace Sauvignon_in_Stardew
                     }
                     else if (obj is Cask cask)
                     {
-                        if (cask.heldObject.Value != null && cask.heldObject.Value is SObject booze && IsAlcohol(cask.heldObject.Value) && cask.heldObject.Value.Category != catID)
+                        if (cask.heldObject.Value != null && this.IsAlcohol(cask.heldObject.Value) && cask.heldObject.Value.Category != catID)
                         {
                             cask.heldObject.Value.Category = catID;
                         }
                     }
                     else if (obj.Name.Equals("keg"))
                     {
-                        if (obj.heldObject.Value != null && obj.heldObject.Value is SObject booze && IsAlcohol(obj.heldObject.Value) && obj.heldObject.Value.Category != catID)
+                        if (obj.heldObject.Value != null && this.IsAlcohol(obj.heldObject.Value) && obj.heldObject.Value.Category != catID)
                         {
                             obj.heldObject.Value.Category = catID;
                         }
@@ -986,7 +989,7 @@ namespace Sauvignon_in_Stardew
                 {
                     foreach (Item item in house.fridge.Value.items)
                     {
-                        if (item != null && item is SObject booze && IsAlcohol(item) && item.Category != catID)
+                        if (item is SObject booze && this.IsAlcohol(item) && item.Category != catID)
                         {
                             booze.Category = catID;
                         }
@@ -1000,7 +1003,7 @@ namespace Sauvignon_in_Stardew
                         {
                             foreach (Item item in mill.output.Value.items)
                             {
-                                if (item != null && item is SObject booze && IsAlcohol(item) && item.Category != catID)
+                                if (item is SObject booze && this.IsAlcohol(item) && item.Category != catID)
                                 {
                                     booze.Category = catID;
                                 }
@@ -1010,7 +1013,7 @@ namespace Sauvignon_in_Stardew
                         {
                             foreach (Item item in hut.output.Value.items)
                             {
-                                if (item != null && item is SObject booze && IsAlcohol(item) && item.Category != catID)
+                                if (item is SObject booze && this.IsAlcohol(item) && item.Category != catID)
                                 {
                                     booze.Category = catID;
                                 }
@@ -1023,7 +1026,7 @@ namespace Sauvignon_in_Stardew
         }
         /*
          * END SET ITEM CATEGORY
-         * 
+         *
          */
 
 
@@ -1033,19 +1036,13 @@ namespace Sauvignon_in_Stardew
          * TIME REMAINING ON HOVER INSIDE WINERY
          * 
          */
-        public static float ToFloat(double value)
-        {
-            return (float)value;
-        }
-
-        public void GraphicsEvents_OnPostRenderEvent(object sender, EventArgs e)
+        private void GraphicsEvents_OnPostRenderEvent(object sender, EventArgs e)
         {
             if (Game1.hasLoadedGame)
             {
                 //monitor.Log($"" + Game1.currentLocation.Name);
                 if (Game1.currentLocation.mapPath.Value == "Maps\\Winery" && Game1.currentLocation != null)
                 {
-                    var timeRemaining = Game1.spriteBatch;
                     ICursorPosition cursorPos = this.Helper.Input.GetCursorPosition();
                     foreach (var entry in Game1.currentLocation.objects)
                     {
@@ -1057,16 +1054,16 @@ namespace Sauvignon_in_Stardew
 
                                 if (obj.Name.Equals("Keg") && obj.MinutesUntilReady > 0)
                                 {
-                                    textTimeRemaining = Math.Round((obj.MinutesUntilReady * 0.6) / 84, 1).ToString() + " minutes";
+                                    textTimeRemaining = $"{Math.Round((obj.MinutesUntilReady * 0.6) / 84, 1)} minutes";
 
-                                    IClickableMenu.drawHoverText(Game1.spriteBatch, textTimeRemaining, Game1.smallFont, 0, 0, -1, obj.heldObject.Value.Name.Length > 0 ? obj.heldObject.Value.Name : (string)null, -1, (string[])null, (Item)null, 0, -1, -1, -1, -1, 1f, (CraftingRecipe)null);
+                                    IClickableMenu.drawHoverText(Game1.spriteBatch, textTimeRemaining, Game1.smallFont, 0, 0, -1, obj.heldObject.Value.Name.Length > 0 ? obj.heldObject.Value.Name : null);
                                 }
 
                                 if (obj is Cask c && c.daysToMature.Value > 0)
                                 {
-                                    textTimeRemaining = Math.Round(c.daysToMature.Value * 0.6, 1).ToString() + " days";
+                                    textTimeRemaining = $"{Math.Round(c.daysToMature.Value * 0.6, 1)} days";
 
-                                    IClickableMenu.drawHoverText(Game1.spriteBatch, textTimeRemaining, Game1.smallFont, 0, 0, -1, obj.heldObject.Value.Name.Length > 0 ? obj.heldObject.Value.Name : (string)null, -1, (string[])null, (Item)null, 0, -1, -1, -1, -1, 1f, (CraftingRecipe)null);
+                                    IClickableMenu.drawHoverText(Game1.spriteBatch, textTimeRemaining, Game1.smallFont, 0, 0, -1, obj.heldObject.Value.Name.Length > 0 ? obj.heldObject.Value.Name : null);
                                 }
                             }
                         }
@@ -1082,52 +1079,12 @@ namespace Sauvignon_in_Stardew
 
 
         /*
-         * ASSET LOADER
-         * 
-         */
-        public bool CanLoad<T>(IAssetInfo asset)
-        {
-            if (asset.AssetNameEquals("Buildings\\Winery") || asset.AssetNameEquals("Buildings\\Winery2"))
-            {
-                return true;
-            }
-            else if (asset.AssetNameEquals("Maps/Winery"))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public T Load<T>(IAssetInfo asset)
-        {
-            if (asset.AssetNameEquals("Buildings\\Winery") || asset.AssetNameEquals("Buildings\\Winery2"))
-            {
-                return (T)(object)Winery_outdoors;
-            }
-            else if (asset.AssetNameEquals("Maps/Winery"))
-            {
-                return (T)(object)Winery_indoors;
-            }
-            else if (asset.AssetNameEquals("Maps/Winery2"))
-            {
-                return (T)(object)kegRoom_indoors;
-            }
-            return (T)(object)null;
-        }
-        /*
-         * END ASSET LOADER
-         * 
-         */
-
-
-
-        /*
          * PATCH METHOD FOR HARMONY
          * Has instance of Cask and reference result manipulation. Always returns false to suppress original method.
          */
         public static bool Patch_performObjectDropInAction(Cask __instance, ref bool __result, Item dropIn, bool probe, Farmer who)
         {
-            if (dropIn != null && dropIn is SObject && (dropIn as SObject).bigCraftable.Value || __instance.heldObject.Value != null)
+            if (dropIn is SObject obj && obj.bigCraftable.Value || __instance.heldObject.Value != null)
             {
                 __result = false;
                 //monitor.Log($"1, returning " + __result);
@@ -1222,7 +1179,7 @@ namespace Sauvignon_in_Stardew
 
                 who.currentLocation.playSound("Ship");
                 who.currentLocation.playSound("bubbles");
-                who.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite("TileSheets\\animations", new Rectangle(256, 1856, 64, 128), 80f, 6, 999999, __instance.TileLocation * 64f + new Vector2(0.0f, (float)sbyte.MinValue), false, false, (float)(((double)__instance.TileLocation.Y + 1.0) * 64.0 / 10000.0 + 9.99999974737875E-05), 0.0f, Color.Yellow * 0.75f, 1f, 0.0f, 0.0f, 0.0f, false)
+                who.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite("TileSheets\\animations", new Rectangle(256, 1856, 64, 128), 80f, 6, 999999, __instance.TileLocation * 64f + new Vector2(0.0f, sbyte.MinValue), false, false, (float)((__instance.TileLocation.Y + 1.0) * 64.0 / 10000.0 + 9.99999974737875E-05), 0.0f, Color.Yellow * 0.75f, 1f, 0.0f, 0.0f, 0.0f)
                 {
                     alphaFade = 0.005f
                 });
@@ -1291,7 +1248,7 @@ namespace Sauvignon_in_Stardew
                     case -14:
                     case -6:
                     case -5:
-                        __result = new Color((int)byte.MaxValue, 0, 100);
+                        __result = new Color(byte.MaxValue, 0, 100);
                         return false;
                     case -16:
                     case -15:

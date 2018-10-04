@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PelicanPostalService", "PelicanPostalService\PelicanPostalService.csproj", "{03540AAE-E734-478D-B53E-31BCCDF96D4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PelicanPostalServiceBeta", "PelicanPostalServiceBeta\PelicanPostalServiceBeta.csproj", "{9D78DD88-AAF5-4AB1-BC2F-F7D7333A1FC2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{03540AAE-E734-478D-B53E-31BCCDF96D4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03540AAE-E734-478D-B53E-31BCCDF96D4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03540AAE-E734-478D-B53E-31BCCDF96D4F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9D78DD88-AAF5-4AB1-BC2F-F7D7333A1FC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9D78DD88-AAF5-4AB1-BC2F-F7D7333A1FC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9D78DD88-AAF5-4AB1-BC2F-F7D7333A1FC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9D78DD88-AAF5-4AB1-BC2F-F7D7333A1FC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,8 +7,8 @@ namespace StardewHack.HarvestWithScythe
     public class ModConfig {
         /** Should the game be patched to allow harvesting forage with the scythe? */
         public bool HarvestForage = true;
-        /** Should the game be patched to drop seeds when harvesting sunflowers with the scythe? */
-        public bool HarvestSeeds = true;
+        /** Should quality be applied to additional harvest? */
+        public bool AllHaveQuality = false;
     }
 
     public class ModEntry : HackWithConfig<ModEntry, ModConfig>
@@ -61,51 +61,77 @@ namespace StardewHack.HarvestWithScythe
             );
 
             // >>> Patch code to drop sunflower seeds when harvesting with scythe.
-            // Patch is configurable, so it can be disabled in case it breaks in the future.
-            if (config.HarvestSeeds) {
-                // Find tail of harvestMethod==1 branch
-                var ScytheBranchTail = FindCode(
-                    OpCodes.Ldarg_0,
-                    Instructions.Ldfld(typeof(StardewValley.Crop), "harvestMethod"),
-                    OpCodes.Call, // Netcode
+            // >>> Patch code to let harvesting with scythe drop only 1 item.
+            // >>> The other item drops are handled by the plucking code.
+            
+            // Remove start of loop
+            var StartLoop = FindCode(
+                OpCodes.Ldc_I4_0,
+                Instructions.Stloc_S(12),
+                OpCodes.Br
+            );
+            StartLoop.ReplaceJump(0, StartLoop[3]);
+            StartLoop.Remove();
+
+            // Find the start of the 'drop sunflower seeds' part.
+            var DropSunflowerSeeds = FindCode(
+                OpCodes.Ldarg_0,
+                Instructions.Ldfld(typeof(StardewValley.Crop), "indexOfHarvest"),
+                OpCodes.Call, // Netcode
+                Instructions.Ldc_I4(421), // 421 = Item ID of Sunflower.
+                OpCodes.Bne_Un
+            );
+            // Set quality for seeds to 0.
+            DropSunflowerSeeds.Append(
+                Instructions.Ldc_I4_0(),
+                Instructions.Stloc_S(5)
+            );
+
+            // Remove end of loop and everything after that until the end of the harvest==1 branch.
+            var ScytheBranchTail = FindCode(
+                OpCodes.Ldarg_0,
+                Instructions.Ldfld(typeof(StardewValley.Crop), "harvestMethod"),
+                OpCodes.Call, // Netcode
+                OpCodes.Ldc_I4_1,
+                OpCodes.Bne_Un
+            ).Follow(4);
+            ScytheBranchTail.ExtendBackwards(
+                Instructions.Ldloc_S(12),
+                OpCodes.Ldc_I4_1,
+                OpCodes.Add,
+                Instructions.Stloc_S(12),
+                Instructions.Ldloc_S(12),
+                Instructions.Ldloc_S(4),
+                OpCodes.Blt
+            );
+            
+            // Change jump to end of loop into jump to drop sunflower seeds.
+            ScytheBranchTail.ReplaceJump(0, DropSunflowerSeeds[0]);
+
+            // Rewrite the tail of the Scythe harvest branch. 
+            ScytheBranchTail.Replace(
+                // Jump to the 'drop subflower seeds' part.
+                Instructions.Br(AttachLabel(DropSunflowerSeeds[0]))
+            );
+            
+            if (config.AllHaveQuality) {
+                // Patch function calls for additional harvest to pass on the harvest quality.
+                FindCode(
+                    OpCodes.Ldc_I4_M1,
+                    OpCodes.Ldc_I4_0,
+                    Instructions.Ldc_R4(1.0f),
+                    OpCodes.Ldnull,
+                    Instructions.Call(typeof(StardewValley.Game1), "createObjectDebris", typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(float), typeof(StardewValley.GameLocation))
+                )[1] = Instructions.Ldloc_S(5);
+
+                FindCode(
                     OpCodes.Ldc_I4_1,
-                    OpCodes.Bne_Un
-                ).Follow(4);
-                // Select starting from the exp code.
-                ScytheBranchTail.ExtendBackwards(
-                    Instructions.Ldsfld(typeof(StardewValley.Game1), "objectInformation"),
-                    OpCodes.Ldarg_0,
-                    Instructions.Ldfld(typeof(StardewValley.Crop), "indexOfHarvest"),
-                    OpCodes.Call, // Netcode
-                    OpCodes.Callvirt,
-                    OpCodes.Ldc_I4_1
-                );
-
-                // Monitor.Log(ScytheBranchTail.ToString());
-                if (ScytheBranchTail.length > 60) throw new Exception("Too many operations in tail of harvestMethod branch");
-
-                // Find the start of the 'drop sunflower seeds' part.
-                var DropSunflowerSeeds = FindCode(
-                    OpCodes.Ldarg_0,
-                    Instructions.Ldfld(typeof(StardewValley.Crop), "indexOfHarvest"),
-                    OpCodes.Call, // Netcode
-                    Instructions.Ldc_I4(421), // 421 = Item ID of Sunflower.
-                    OpCodes.Bne_Un
-                );
-
-                // Find the local variable that stores the amount being dropped.
-                var DropAmount = DropSunflowerSeeds.FindNext(
-                    Instructions.Callvirt(typeof(System.Random), "Next", typeof(int), typeof(int)),
-                    OpCodes.Stloc_S
-                );
-                // Rewrite the tail of the Scythe harvest branch. 
-                ScytheBranchTail.Replace(
-                    // Set num2 = 0.
-                    Instructions.Ldc_I4_0(),
-                    Instructions.Stloc_S((LocalBuilder)DropAmount[1].operand),
-                    // Jump to the 'drop subflower seeds' part.
-                    Instructions.Br(AttachLabel(DropSunflowerSeeds[0]))
-                );
+                    OpCodes.Ldc_I4_0,
+                    OpCodes.Ldc_I4_M1,
+                    OpCodes.Ldc_I4_0,
+                    OpCodes.Newobj,
+                    Instructions.Callvirt(typeof(StardewValley.Characters.JunimoHarvester), "tryToAddItemToHut", typeof(StardewValley.Item))
+                )[3] = Instructions.Ldloc_S(5);
             }
         }
 

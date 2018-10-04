@@ -16,12 +16,12 @@ namespace StardewHack.MovementSpeed
     
     public class ModEntry : HackWithConfig<ModEntry, ModConfig>
     {
-		public bool ChangesMovementSpeed () {
-			return Math.Abs(config.MovementSpeedMultiplier - 1) > 1e-3;
+        public bool ChangesMovementSpeed () {
+            return Math.Abs(config.MovementSpeedMultiplier - 1) > 1e-3;
         }
 
-		// Add a multiplier to the movement speed.
-		[BytecodePatch("StardewValley.Farmer::getMovementSpeed", "ChangesMovementSpeed")]
+        // Add a multiplier to the movement speed.
+        [BytecodePatch("StardewValley.Farmer::getMovementSpeed", "ChangesMovementSpeed")]
         void Farmer_getMovementSpeed() {
             FindCodeLast(
                 OpCodes.Ret
@@ -31,12 +31,12 @@ namespace StardewHack.MovementSpeed
             );
         }
 
-		public bool ChangesToolChargeDelay() {
+        public bool ChangesToolChargeDelay() {
             return config.ToolChargeDelay != 600;
         }
 
         // Change (reduce) the time it takses to charge tools (hoe & water can).
-		[BytecodePatch("StardewValley.Game1::UpdateControlInput", "ChangesToolChargeDelay")]
+        [BytecodePatch("StardewValley.Game1::UpdateControlInput", "ChangesToolChargeDelay")]
         void Game1_UpdateControlInput() {
             // StardewModdingAPI changed this method and moved its original code into a delegate, hence the chain patching.
             MethodInfo method = (MethodInfo)FindCode(

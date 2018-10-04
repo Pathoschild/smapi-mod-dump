@@ -5,6 +5,6 @@
   "Description": "Adds a new building to the Carpenter Menu. Adds an optional Distiller Profession.",
   "UniqueID": "Jesse.SauvignonInStardew",
   "EntryDll": "SauvignoninStardew.dll",
-  "MinimumApiVersion": "2.0",
+  "MinimumApiVersion": "2.8-beta",
   "UpdateKeys": ["Nexus:2597"]
 }

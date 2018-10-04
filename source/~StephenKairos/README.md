@@ -13,3 +13,7 @@ https://www.nexusmods.com/stardewvalley/mods/820
 ## RopeBridge
 
 https://www.nexusmods.com/stardewvalley/mods/824
+
+## InventoryCycle
+
+This wasn't published, but the main idea was that you could cycle the 3 inventory bars while walking around, without having to open your inventory menu.

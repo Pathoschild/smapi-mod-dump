@@ -1,0 +1,19 @@
+{
+	"minimap.label": "Minimap",
+	"minimap.option1": "Enabled",
+	"minimap.plusMinus1": "Minimap width",
+	"minimap.plusMinus2": "Minimap height",
+	"immersion.label": "Einstellungen:",
+	"immersion.option1": "Zeige einwohner immer an",
+	"immersion.option2": "Zeige einwohner an mit denen gesprochen wurde",
+	"immersion.option3": "Verstecke einwohner mit denen der spieler gesprochen hat",
+	"immersion.option4": "Zeige nur einwohner im selben standort an",
+	"immersion.option5": "Zeige nur einwohner mit bestimmtem herzstand An",
+	"immersion.slider1": "Minimaler herzstand",
+	"immersion.slider2": "Maximaler herzstand",
+	"extra.label": "Zusätzliche Einstellungen:",
+	"extra.option1": "Zeige quests oder geburtstage",
+	"extra.option2": "Zeige versteckt einwohnern",
+	"extra.option3": "Zeige fahrenden händler an",
+	"villagers.label": "Ein-/Ausschließen von einwohnern:"
+}

@@ -26,7 +26,7 @@ namespace StardewHack
             this.enabled = enabled;
         }
 
-        public MethodInfo GetMethod() 
+        public MethodBase GetMethod() 
         {
             string[] a = sig.Split(':','(',',',')');
             // Hack.Log("Signature: " + String.Join(";", a));
@@ -53,9 +53,14 @@ namespace StardewHack
                     }
                 }
             }
-            var method = AccessTools.Method(type, name, parameters);
+            MethodBase method;
+            if (name == ".ctor") {
+                method = AccessTools.Constructor(type, parameters);
+            } else {
+                method = AccessTools.Method(type, name, parameters);
+            }
             if (method == null) {
-                throw new Exception("Failed to find method {sig}.");
+                throw new Exception($"Failed to find method \"{sig}\".");
             }
             return method;
         }

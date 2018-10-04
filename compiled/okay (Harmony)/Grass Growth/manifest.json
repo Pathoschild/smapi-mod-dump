@@ -1,10 +1,10 @@
 ﻿{
    "Name": "Grass Growth",
    "Author": "bcmpinc",
-   "Version": "0.4",
+   "Version": "0.5",
    "Description": "Allows long grass to spread everywhere on your farm.",
    "UniqueID": "bcmpinc.GrassGrowth",
    "EntryDll": "GrassGrowth.dll",
    "MinimumApiVersion": "2.7",
-   "UpdateKeys": ["GitHub:bcmpinc/StardewHack"]
+   "UpdateKeys": ["GitHub:bcmpinc/StardewHack","Nexus:2732"]
 }

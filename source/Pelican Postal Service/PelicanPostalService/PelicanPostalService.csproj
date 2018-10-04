@@ -49,11 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Debug\Debug.cs" />
     <Compile Include="Config\ModConfig.cs" />
     <Compile Include="Framework\Menu\PostalService.cs" />
-    <Compile Include="Framework\Player\ActiveItem.cs" />
-    <Compile Include="Framework\Player\FriendshipData.cs" />
-    <Compile Include="Framework\Player\QuestData.cs" />
+    <Compile Include="Framework\Player\ItemHandler.cs" />
+    <Compile Include="Framework\Player\FriendshipHandler.cs" />
+    <Compile Include="Framework\Player\QuestHandler.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

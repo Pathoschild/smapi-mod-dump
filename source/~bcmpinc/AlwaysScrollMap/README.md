@@ -4,8 +4,12 @@ Makes the map scroll past the edge of the map. Useful for:
 * doing out-of-bounds glitches;
 * checking for out of bounds objects.
 
+It can be toggled on/off using the ';' button (or any other button you specify in config.json).
+
 ## Config
-* Enabled: Should the mod be enabled upon loading the game? Default = true.
+Note: run Stardew Valley once with this mod enabled to generate the `config.json` file.
+* EnabledIndoors: Should the mod be enabled in indoor areas upon loading the game? Default = true.
+* EnabledOutdoors: Should the mod be enabled in outdoor areas upon loading the game? Default = false.
 * ToggleScroll: The key used to toggle always scroll map. Default = OemSemicolon.
 
 ## Known bugs
@@ -15,4 +19,5 @@ Makes the map scroll past the edge of the map. Useful for:
 ## Changes
 #### 0.3:
 * Added a configurable toggle button to enable/disable this mod during the game.
-
+#### 0.5:
+* Toggles for indoor and outdoor areas separately.
