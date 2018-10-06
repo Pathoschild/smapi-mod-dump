@@ -11,13 +11,13 @@ namespace Project.Framework.Player.Friendship
         private readonly int giftsThisWeek;
         private readonly bool isSpouse;
 
-        public FriendshipHandler(string recipient)
+        public FriendshipHandler(string target)
         {
-            Who = Game1.getCharacterFromName(recipient, true);
+            Who = Game1.getCharacterFromName(target, true);
             IsBirthday = Game1.currentSeason.Equals(Who.Birthday_Season) && Game1.dayOfMonth == Who.Birthday_Day;
-            giftsThisDay = Game1.player.friendshipData[recipient].GiftsToday;
-            giftsThisWeek = Game1.player.friendshipData[recipient].GiftsThisWeek;
-            isSpouse = Game1.player.friendshipData[recipient].IsMarried();
+            giftsThisDay = Game1.player.friendshipData[target].GiftsToday;
+            giftsThisWeek = Game1.player.friendshipData[target].GiftsThisWeek;
+            isSpouse = Game1.player.friendshipData[target].IsMarried();
         }
 
         public bool CanReceiveGiftToday()
@@ -29,7 +29,7 @@ namespace Project.Framework.Player.Friendship
             return normalScenario || birthdayScenario || marriageScenario ? true : false;
         }
 
-        public static List<string> Find()
+        public static List<string> FindKnownNPCs()
         {
             HashSet<string> table = new HashSet<string>();
             foreach (string key in Game1.player.friendshipData.Keys)
@@ -48,7 +48,7 @@ namespace Project.Framework.Player.Friendship
             string who = otherRecipient ?? Who.displayName;
             Game1.player.friendshipData[who].Points += points;
 
-            if (quest == false)
+            if (!quest)
             {
                 ++Game1.player.friendshipData[who].GiftsToday;
                 ++Game1.player.friendshipData[who].GiftsThisWeek;

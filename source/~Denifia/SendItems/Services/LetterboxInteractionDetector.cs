@@ -30,7 +30,7 @@ namespace Denifia.Stardew.SendItems.Services
             try
             {
                 ControlEvents.MouseChanged -= MouseChanged;
-                LocationEvents.CurrentLocationChanged -= CurrentLocationChanged;
+                PlayerEvents.Warped -= PlayerWarped;
             }
             catch (Exception)
             {
@@ -39,12 +39,12 @@ namespace Denifia.Stardew.SendItems.Services
 
         private void AfterSavedGameLoad(object sender, EventArgs e)
         {
-            LocationEvents.CurrentLocationChanged += CurrentLocationChanged;
+            PlayerEvents.Warped += PlayerWarped;
         }
 
-        private void CurrentLocationChanged(object sender, EventArgsCurrentLocationChanged e)
+        private void PlayerWarped(object sender, EventArgsPlayerWarped e)
         {
-            if (e.NewLocation.name == _locationOfLetterbox)
+            if (e.NewLocation.Name == _locationOfLetterbox)
             {
                 // Only watch for mouse events while at the location of the letterbox, for performance
                 ControlEvents.MouseChanged += MouseChanged;
@@ -74,7 +74,7 @@ namespace Denifia.Stardew.SendItems.Services
 
         private bool CanUseLetterbox()
         {
-            return Game1.mailbox != null && Game1.mailbox.Any() && Game1.mailbox.Peek() == ModConstants.PlayerMailKey;
+            return Game1.mailbox != null && Game1.mailbox.Any() && Game1.mailbox.First() == ModConstants.PlayerMailKey;
         }
     }
 }

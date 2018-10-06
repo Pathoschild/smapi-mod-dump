@@ -1,5 +1,6 @@
 ﻿using Netcode;
 using StardewMods.ArchaeologyHouseContentManagementHelper.Framework;
+using StardewMods.Common.StardewValley;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Patches
             for (int index1 = 0; index1 < farmer.maxItems.Value; ++index1)
             {
                 // Patch: If the object to check for is a [Lost Book], we pretend the inventory can always accept it.
-                if (index == Constants.GAME_OBJECT_LOST_BOOK_ID)
+                if (index == Constants.ID_GAME_OBJECT_LOST_BOOK)
                 {
                     return true;
                 }

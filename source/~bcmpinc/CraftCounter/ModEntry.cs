@@ -40,37 +40,30 @@ namespace StardewHack.CraftCounter
             );
         }
         
-        public static int GetCookedCounter(int item_key) {
-            return StardewValley.Game1.player.recipesCooked.ContainsKey(item_key) ? StardewValley.Game1.player.recipesCooked[item_key] : 0;
+        public static void GetCookedCounter(StardewValley.CraftingRecipe recipe, StardewValley.Item item) {
+            if (recipe.isCookingRecipe) {
+                var item_key = item.ParentSheetIndex;
+                recipe.timesCrafted = StardewValley.Game1.player.recipesCooked.ContainsKey(item_key) ? StardewValley.Game1.player.recipesCooked[item_key] : 0;
+            }
         }
         
         // Initialize timesCrafted also for recipies.
-        [BytecodePatch("StardewValley.CraftingRecipe::.ctor(System.String,System.Boolean)")]
-        void SetCookedCounter() {
+        // We do this in the performHoverAction method, because I had some issues with Harmony patching constructors.
+        [BytecodePatch("StardewValley.Menus.CraftingPage::performHoverAction(System.Int32,System.Int32)")]
+        void CraftingPage_performHoverAction() {
             // Obtain the Item key of the recipe product
             FindCode(
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(StardewValley.CraftingRecipe), "itemToProduce"),
-                OpCodes.Ldloc_3,
-                OpCodes.Ldloc_S,
-                OpCodes.Ldelem_Ref,
-                Instructions.Call(typeof(Convert), "ToInt32", typeof(string))
+                OpCodes.Ldarg_0,
+                Instructions.Ldfld(typeof(StardewValley.Menus.CraftingPage), "hoverRecipe"),
+                Instructions.Callvirt(typeof(StardewValley.CraftingRecipe), "createItem"),
+                Instructions.Stfld(typeof(StardewValley.Menus.CraftingPage), "lastCookingHover")
             ).Append(
-                Instructions.Stloc_S(4),
-                Instructions.Ldloc_S(4)
-            );
-            // If this is a cooking recipe, obtain how often it has been crafted.
-            var range = FindCode(
-                Instructions.Stfld(typeof(StardewValley.CraftingRecipe),"timesCrafted")
-            ).End;
-            range.Append(
                 Instructions.Ldarg_0(),
-                Instructions.Ldfld(typeof(StardewValley.CraftingRecipe), "isCookingRecipe"),
-                Instructions.Brfalse(AttachLabel(range[1])),
+                Instructions.Ldfld(typeof(StardewValley.Menus.CraftingPage), "hoverRecipe"),
                 Instructions.Ldarg_0(),
-                Instructions.Ldloc_S(4),
-                Instructions.Call(typeof(ModEntry), "GetCookedCounter", typeof(int)),
-                Instructions.Stfld(typeof(StardewValley.CraftingRecipe),"timesCrafted")
+                Instructions.Ldfld(typeof(StardewValley.Menus.CraftingPage), "lastCookingHover"),
+                Instructions.Call(typeof(ModEntry), "GetCookedCounter", typeof(StardewValley.CraftingRecipe), typeof(StardewValley.Item))
             );
         }
     }

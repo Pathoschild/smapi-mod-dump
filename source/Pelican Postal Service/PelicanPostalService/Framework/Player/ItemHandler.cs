@@ -1,60 +1,68 @@
 ﻿using Project.Framework.Player.Friendship;
+using Project.Logging;
 using StardewValley;
 
 namespace Project.Framework.Player.Items
 {
-    public class ItemHandler
+    public class ItemHandler : Debug
     {
         public Object Item { get; private set; }
-        public int DeductItems { get; set; }
         
         public ItemHandler(Object item)
         {
-            Item = item ?? null;
-            DeductItems = 1;
+            Item = item;
         }
 
-        public int GiftTasteRating(FriendshipHandler friendshipInfo)
+        public int GiftTasteRating(FriendshipHandler friendshipDetails)
         {
             if (Item == null)
             {
                 return 0;
             }
 
-            GiftTaste giftTaste = new GiftTaste(Item, friendshipInfo);
+            GiftTaste giftTaste = new GiftTaste(Item, friendshipDetails);
             return giftTaste.Rating;
         }
 
-        public void RemoveFromInventory(int id)
+        public void RemoveFromInventory(int amount)
         {
-            Game1.player.removeItemsFromInventory(id, DeductItems);
+            if (amount > 1)
+            {
+                // Removes first matching item in inventory, ignoring quality
+                Game1.player.removeItemsFromInventory(Item.ParentSheetIndex, amount);
+            }
+            else
+            {
+                Game1.player.reduceActiveItemByOne();
+            }
         }
         
         private class GiftTaste
         {
             public int Rating { get; private set; }
 
-            public GiftTaste(Object item, FriendshipHandler friendshipInfo)
+            public GiftTaste(Object item, FriendshipHandler friendshipDetails)
             {
-                Rating = (int) (RateByRecipient(item, friendshipInfo) * RateByCurrentDate(friendshipInfo) * RateByQuality(item));
+                Rating = (int) (RateByRecipient(friendshipDetails.Who, item) * RateByCurrentDate(friendshipDetails.IsBirthday) * RateByQuality(item.Quality));
             }
 
-            private int RateByCurrentDate(FriendshipHandler friendshipInfo)
+            private int RateByCurrentDate(bool isBirthday)
             {
                 if (Game1.currentSeason.Equals("winter") && Game1.dayOfMonth == 25)
                 {
                     return 5;
                 }
-                else if (friendshipInfo.IsBirthday)
+                else if (isBirthday)
                 {
                     return 8;
                 }
                 return 1;
             }
 
-            private float RateByQuality(Object item)
+            private float RateByQuality(int quality)
             {
-                switch (item.Quality)
+                // Normal: 0, Silver: 1, Gold: 2, Iridium: 4
+                switch (quality)
                 {
                     case 1:
                         return 1.1f;
@@ -67,9 +75,9 @@ namespace Project.Framework.Player.Items
                 }
             }
 
-            private int RateByRecipient(Object item, FriendshipHandler friendshipInfo)
+            private int RateByRecipient(NPC who, Object item)
             {
-                int flag = friendshipInfo.Who.getGiftTasteForThisItem(item);
+                int flag = who.getGiftTasteForThisItem(item);
                 switch (flag)
                 {
                     case 0:

@@ -16,9 +16,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 3dbd41c620b47b881829acfdcf5a4305f28c4a82
+   commit 77bd06e159390546598170bc8ad7aac8979adfef
    Author: Jesse Plamondon-Willard <github@jplamondonw.com>
-   Date:   Tue Oct 2 22:19:56 2018 -0400
+   Date:   Sat Oct 6 15:52:19 2018 -0400
    
-       fix error setting entries to null since Content Patcher 1.5
+       fix existing crops not updated for configurable seasons
    

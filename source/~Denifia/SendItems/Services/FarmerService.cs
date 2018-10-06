@@ -46,7 +46,7 @@ namespace Denifia.Stardew.SendItems.Services
         public void LoadCurrentFarmer()
         {
             var saves = _configService.GetSavedGames();
-            var save = saves.FirstOrDefault(x => x.Name == Game1.player.Name && x.FarmName == Game1.player.farmName);
+            var save = saves.FirstOrDefault(x => x.Name == Game1.player.Name && x.FarmName == Game1.player.farmName?.Value);
             if (save == null)
             {
                 // Happens during a new game creation
@@ -121,7 +121,7 @@ namespace Denifia.Stardew.SendItems.Services
 
         private void DetermineCurrentFarmer()
         {
-            var name = Game1.player.name;
+            var name = Game1.player.Name;
             var farmName = Game1.player.farmName;
             _currentFarmer = Repository.Instance.FirstOrDefault<Domain.Farmer>(x => x.Name == name && x.FarmName == farmName);
 		}

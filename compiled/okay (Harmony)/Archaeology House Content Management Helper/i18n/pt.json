@@ -1,0 +1,15 @@
+{
+  "Gunther_MuseumInteractionMenu_Donate": "Doe Para o Museu",
+  "Gunther_MuseumInteractionMenu_Rearrange": "Organizar o Museu",
+  "Gunther_MuseumInteractionMenu_Collect": "Coletar Recompensas",
+  "Gunther_MuseumInteractionMenu_Status": "Como estou fazendo?",
+  "Gunther_MuseumInteractionMenu_Leave": "Sair",
+  "Gunther_ArchaeologyHouse_StatusIntro": "Até agora, Você contribuiu: ",
+  "Gunther_ArchaeologyHouse_StatusIntroLinePadding": "",
+  "Gunther_ArchaeologyHouse_LibraryStatus": "Livros: ",
+  "Gunther_ArchaeologyHouse_LibraryStatusLinePadding": "                ",
+  "Gunther_ArchaeologyHouse_MuseumStatus": "Peças do Museu: ",
+  "Gunther_ArchaeologyHouseStatus_Completed": "A biblioteca está completa e o museu parece incrível! Obrigado novamente por toda sua ajuda!",
+  "Message_Library_Books_Collected": "Felicidades! Você encontrou todos os \"Livros Perdidos\"!",
+  "GameMenu_CollectionsPage_LostBookTabLabel": "Livros Perdidos"
+}

@@ -52,7 +52,7 @@ namespace Denifia.Stardew.BuyRecipes.Domain
 
                     i++; // Skip in pairs
                 }
-                catch (Exception ex)
+                catch
                 {
                 }
             }

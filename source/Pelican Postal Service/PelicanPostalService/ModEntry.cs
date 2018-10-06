@@ -25,9 +25,10 @@ namespace Project
                 if (e.KeyPressed.ToString() == settings.MenuAccessKey)
                 {
                     Debug.Console = Monitor;
+
                     ItemHandler itemDetails = new ItemHandler(Game1.player.ActiveObject);
                     PostalService menu = new PostalService(itemDetails, settings);
-                    menu.Open(Game1.activeClickableMenu, Game1.player.CurrentTool);
+                    menu.Open();
                 }
             }
         }

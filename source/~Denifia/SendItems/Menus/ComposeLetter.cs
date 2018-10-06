@@ -24,8 +24,6 @@ namespace Denifia.Stardew.SendItems.Menus
             this.toFarmerId = toPlayerId;
             this.itemChangeBehavior = itemChangeBehavior;
             int num1 = Game1.tileSize * (capacity / rows);
-            int tileSize = Game1.tileSize;
-            int num2 = Game1.tileSize / 4;
             this.ItemsToGrabMenu = new InventoryMenu(Game1.viewport.Width / 2 - num1 / 2, this.yPositionOnScreen + Game1.tileSize, false, inventory, (InventoryMenu.highlightThisItem)null, capacity, rows, 0, 0, true);
         }
 
@@ -64,19 +62,19 @@ namespace Denifia.Stardew.SendItems.Menus
                     if (flag)
                         Game1.playSound("Ship");
                 }
-                if (this.heldItem is StardewValley.Object && (this.heldItem as StardewValley.Object).isRecipe)
+                if (this.heldItem is StardewValley.Object && (this.heldItem as StardewValley.Object).IsRecipe)
                 {
                     string key = this.heldItem.Name.Substring(0, this.heldItem.Name.IndexOf("Recipe") - 1);
                     try
                     {
-                        if ((this.heldItem as StardewValley.Object).category == -7)
+                        if ((this.heldItem as StardewValley.Object).Category == -7)
                             Game1.player.cookingRecipes.Add(key, 0);
                         else
                             Game1.player.craftingRecipes.Add(key, 0);
-                        this.poof = new TemporaryAnimatedSprite(Game1.animations, new Rectangle(0, 320, 64, 64), 50f, 8, 0, new Vector2((float)(x - x % Game1.tileSize + Game1.tileSize / 4), (float)(y - y % Game1.tileSize + Game1.tileSize / 4)), false, false);
+                        this.poof = new TemporaryAnimatedSprite(Game1.animationsName, new Rectangle(0, 320, 64, 64), 50f, 8, 0, new Vector2((float)(x - x % Game1.tileSize + Game1.tileSize / 4), (float)(y - y % Game1.tileSize + Game1.tileSize / 4)), false, false);
                         Game1.playSound("newRecipe");
                     }
-                    catch (Exception ex)
+                    catch
                     {
                     }
                     this.heldItem = (Item)null;
@@ -143,19 +141,19 @@ namespace Denifia.Stardew.SendItems.Menus
                 }
                 Game1.playSound("Ship");
             }
-            if (this.heldItem is StardewValley.Object && (this.heldItem as StardewValley.Object).isRecipe)
+            if (this.heldItem is StardewValley.Object && (this.heldItem as StardewValley.Object).IsRecipe)
             {
                 string key = this.heldItem.Name.Substring(0, this.heldItem.Name.IndexOf("Recipe") - 1);
                 try
                 {
-                    if ((this.heldItem as StardewValley.Object).category == -7)
+                    if ((this.heldItem as StardewValley.Object).Category == -7)
                         Game1.player.cookingRecipes.Add(key, 0);
                     else
                         Game1.player.craftingRecipes.Add(key, 0);
-                    this.poof = new TemporaryAnimatedSprite(Game1.animations, new Rectangle(0, 320, 64, 64), 50f, 8, 0, new Vector2((float)(x - x % Game1.tileSize + Game1.tileSize / 4), (float)(y - y % Game1.tileSize + Game1.tileSize / 4)), false, false);
+                    this.poof = new TemporaryAnimatedSprite(Game1.animationsName, new Rectangle(0, 320, 64, 64), 50f, 8, 0, new Vector2((float)(x - x % Game1.tileSize + Game1.tileSize / 4), (float)(y - y % Game1.tileSize + Game1.tileSize / 4)), false, false);
                     Game1.playSound("newRecipe");
                 }
-                catch (Exception ex)
+                catch
                 {
                 }
                 this.heldItem = (Item)null;

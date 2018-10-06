@@ -1,8 +1,11 @@
 ﻿[← back to readme](readme.md)
 
 # Release notes
+## 2.0.0
+* Updated for StardewValley 1.3
+
 ## 1.0.3
-* Updated for SMAPI 2.0.
+* Updated for SMAPI 2.0
 
 ## 1.0.2
 * Fixed quoting issue on smapi parameters

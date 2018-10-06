@@ -8,11 +8,6 @@ namespace Denifia.Stardew.SendItems
     public class SendItems : Mod
     {
         private IContainer _container;
-        private IFarmerService _farmerService;
-        private IPostboxInteractionDetector _postboxInteractionDetector;
-        private ILetterboxInteractionDetector _letterboxInteractionDetector;
-        private IMailDeliveryService _mailDeliveryService;
-        private IMailCleanupService _mailCleanupService;
 
         public override void Entry(IModHelper helper)
         {

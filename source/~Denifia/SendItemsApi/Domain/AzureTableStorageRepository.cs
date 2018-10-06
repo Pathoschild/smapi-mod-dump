@@ -40,7 +40,7 @@ namespace Denifia.Stardew.SendItemsApi.Domain
                     return true;
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 
             }
@@ -58,7 +58,7 @@ namespace Denifia.Stardew.SendItemsApi.Domain
                     return (TEntity)result.Result;
                 }
             }
-            catch (Exception ex)
+            catch
             {
 
             }
@@ -80,7 +80,7 @@ namespace Denifia.Stardew.SendItemsApi.Domain
                     return true;
                 }
             }
-            catch (Exception ex)
+            catch
             {
 
             }

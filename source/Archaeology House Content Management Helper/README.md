@@ -7,7 +7,8 @@ documentation and release notes.
   Allows item rearrangement even if nothing to donate. Shows specific information of the selected item. 
   Items can be swapped to make rearrangement less tedious. Adds extended gamepad cursor support. 
   Largely fixes the in-game item-placement bug.
-  Lost Books can be "grabbed & sent" to the library even if the player's inventory has no space._
+  Lost Books can be "grabbed & sent" to the library even if the player's inventory has no space.
+  Lost Books can be read without having to go the library._
   
 ## Translating the mods
 The mods can be translated into any language supported by the game, and SMAPI will automatically
@@ -20,7 +21,7 @@ use the right translations.
 Chinese    | [✓](ArchaeologyHouseContentManagementHelper/i18n/zh.json)
 German     | [✓](ArchaeologyHouseContentManagementHelper/i18n/de.json)
 Japanese   | ❑ untranslated        
-Portuguese | ❑ untranslated      
+Portuguese | [✓](ArchaeologyHouseContentManagementHelper/i18n/pt.json)      
 Russian    | ❑ untranslated  
 Spanish    | [✓](ArchaeologyHouseContentManagementHelper/i18n/es.json)     
 
@@ -62,3 +63,4 @@ To compile a mod and add it to your game's `Mods` directory:
    <small>This will compile the code and package it into the mod directory.</small>
 2. Launch the project with debugging.  
    <small>This will start the game through SMAPI and attach the Visual Studio debugger.</small>
+

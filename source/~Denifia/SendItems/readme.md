@@ -1,13 +1,13 @@
 ﻿**Send Items** is a [Stardew Valley](http://stardewvalley.net/) mod which lets you 
 send items to your other farmers (saved games) or other farmers from around the world (online friends).
 
+Compatible with Stardew Valley 1.3.
+
 Sending 5 stone to myself...
 ![](Screenshots/animation-send.gif)
 
 Receiving the 5 stone in the mail...
 ![](Screenshots/animation-receive.gif)
-
-Compatible with Stardew Valley 1.2+ on Windows and Mac. I've not tested on Linux.
 
 ## Contents
 * [Installation](#installation)

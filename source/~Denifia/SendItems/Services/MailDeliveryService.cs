@@ -71,14 +71,14 @@ namespace Denifia.Stardew.SendItems.Services
             var count = Repository.Instance.Fetch<Mail>(x => x.Status == MailStatus.Delivered && x.ToFarmerId == currentFarmerId).Count;
             if (count > 0)
             {
-                while (Game1.mailbox.Any() && Game1.mailbox.Peek() == ModConstants.PlayerMailKey)
+                while (Game1.mailbox.Any() && Game1.mailbox.First() == ModConstants.PlayerMailKey)
                 {
-                    Game1.mailbox.Dequeue();
+                    Game1.mailbox.RemoveAt(0);
                 }
 
                 for (int i = 0; i < count; i++)
                 {
-                    Game1.mailbox.Enqueue(ModConstants.PlayerMailKey);
+                    Game1.mailbox.Add(ModConstants.PlayerMailKey);
                 }
             }
         }

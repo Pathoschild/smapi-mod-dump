@@ -11,10 +11,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Menus
 {
-    public class MuseumMenuEx : MuseumMenu
+    internal class MuseumMenuEx : MuseumMenu
     {
         private bool showInventory;
         private readonly IReflectedField<bool> holdingMuseumPieceRef;
@@ -32,27 +33,77 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Menus
 
         private bool selectedInventoryItem;
 
-        private static readonly int INFO_DISPLAY_TIME = 150;
+        private double granularity;
 
-        private int infoFadeTimer = INFO_DISPLAY_TIME;
+        private double infoFadeTimerStartValue = 100;
+        private double infoFadeTimerCurrentValue = 100;
 
-        public MuseumMenuEx(IReflectionHelper reflection, bool showInventory)
+        private static Timer infoFadeTimer;
+
+        private readonly System.Object lockInfoFadeTimer = new System.Object();
+
+        public MuseumMenuEx()
         {
-            holdingMuseumPieceRef = reflection.GetField<bool>(this, "holdingMuseumPiece");
-            multiplayer = reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
+            holdingMuseumPieceRef = ModEntry.CommonServices.ReflectionHelper.GetField<bool>(this, "holdingMuseumPiece");
+            multiplayer = ModEntry.CommonServices.ReflectionHelper.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
 
-            this.showInventory = showInventory;
-
-            if (!showInventory)
+            int duration = ModEntry.ModConfig.MuseumItemDisplayTime;
+            if (duration > 0)
             {
-                menuMovingDown = true;
+                infoFadeTimer = new System.Timers.Timer
+                {
+                    Interval = 200
+                };
+
+                if (duration < 200)
+                    duration = 200;
+
+                granularity = infoFadeTimerStartValue / (duration / infoFadeTimer.Interval);
+
+                // Hook up the Elapsed event for the timer. 
+                infoFadeTimer.Elapsed += InfoFadeTimer_OnTimedEvent;
+
+                // Have the timer fire repeated events (true is the default)
+                infoFadeTimer.AutoReset = true;
             }
+
+            /* Don't display item tooltip */
+            else if (duration == 0)
+            {
+                infoFadeTimerCurrentValue = 0;
+            }
+
+            /* Display item tooltip without time limits */
+            else
+            {
+                // We only need to set it to a value > 0, specific value doesn't matter
+                infoFadeTimerCurrentValue = 1;
+            }
+           
+
+            showInventory = true;
+        }
+
+        private void InfoFadeTimer_OnTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            infoFadeTimerCurrentValue -= granularity;
         }
 
         // Enable free cursor movement when inventory is not shown
         public override bool overrideSnappyMenuCursorMovementBan()
         {
             return !showInventory || this.heldItem != null;
+        }
+
+        private void PrepareHideItemInfoTooltip()
+        {
+            // Stop the info fade timer
+            infoFadeTimer?.Stop();
+
+            // Clear hover information
+            selectedItemDescription = null;
+            selectedItemTitle = null;
+            selectedItem = null;
         }
 
         // Added [item swap] support
@@ -75,8 +126,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Menus
             // Place item at a museum slot
             if (heldItem != null && this.heldItem != null 
                 && (y < Game1.viewport.Height - (height - (IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + 192)) 
-                    || this.menuMovingDown || !showInventory || !inventory.isWithinBounds(x, y)
-                    && (okButton == null || !okButton.containsPoint(x, y))))
+                    || this.menuMovingDown || !selectedInventoryItem || !inventory.isWithinBounds(x, y)))
             {
                 int x1 = (x + Game1.viewport.X) / 64;
                 int y1 = (y + Game1.viewport.Y) / 64;
@@ -95,10 +145,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Menus
                     Game1.playSound("stoneStep");
                     holdingMuseumPieceRef.SetValue(false);
 
-                    // Clear hover information
-                    selectedItemDescription = null;
-                    selectedItemTitle = null;
-                    selectedItem = null;
+                    PrepareHideItemInfoTooltip();
 
                     // Rewards
                     if (museum.getRewardsForPlayer(Game1.player).Count > count)
@@ -171,10 +218,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Menus
                     Game1.playSound("stoneStep");
                     holdingMuseumPieceRef.SetValue(false);
 
-                    // Clear hover information
-                    selectedItemDescription = null;
-                    selectedItemTitle = null;
-                    selectedItem = null;
+                    PrepareHideItemInfoTooltip();
 
                     Game1.playSound("newArtifact");
 
@@ -205,7 +249,15 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Menus
 
                     selectedItem = this.heldItem;
 
-                    infoFadeTimer = INFO_DISPLAY_TIME;
+                    // Restart the info fade timer
+                    lock (lockInfoFadeTimer)
+                    {
+                        if (infoFadeTimer != null)
+                        {
+                            infoFadeTimerCurrentValue = infoFadeTimerStartValue;
+                            infoFadeTimer.Start();
+                        }
+                    }
 
                     currentLocation.museumPieces.Remove(key);
                     holdingMuseumPieceRef.SetValue(!currentLocation.museumAlreadyHasArtifact(this.heldItem.ParentSheetIndex));
@@ -238,11 +290,20 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Menus
                     {
                         for (int x = Game1.viewport.X / 64 - 1; x < (Game1.viewport.X + Game1.viewport.Width) / 64 + 1; ++x)
                         {
-                            if ((Game1.currentLocation as LibraryMuseum).isTileSuitableForMuseumPiece(x, y))
+                            var tileClassification = LibraryMuseumHelper.GetTileMuseumClassification(
+                                x, y, (!selectedInventoryItem && ModEntry.ModConfig.ShowVisualSwapIndicator));
+                            if (tileClassification != MuseumTileClassification.Invalid)
                             {
-                                b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)x, (float)y) * 64f), 
-                                    new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 29, -1, -1)), 
-                                    Color.LightGreen);
+                                Color tileBorderColor = Color.LightGreen;
+
+                                if (tileClassification == MuseumTileClassification.Limited)
+                                {
+                                    tileBorderColor = Color.Black;
+                                }
+
+                                b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)x, (float)y) * 64f),
+                                    new Microsoft.Xna.Framework.Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 29, -1, -1)),
+                                    tileBorderColor);
                             }
                         }
                     }
@@ -263,13 +324,19 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Menus
                 drawMouse(b);
                 sparkleText?.draw(b, Game1.GlobalToLocal(Game1.viewport, globalLocationOfSparklingArtifact));
 
-                //draw clicked item information
-                if (selectedItemDescription != null && !selectedItemDescription.Equals("") && infoFadeTimer > 0)
+                if (selectedItemDescription != null && !selectedItemDescription.Equals(""))
                 {
-                    drawToolTip(b, this.selectedItemDescription, this.selectedItemTitle, selectedItem,
+                        if (infoFadeTimerCurrentValue > 0)
+                        {
+                            // Show selected item information
+                            drawToolTip(b, this.selectedItemDescription, this.selectedItemTitle, selectedItem,
                                 selectedItem != null, -1, 0, -1, -1, (CraftingRecipe)null, -1);
-                    infoFadeTimer--;
-                }
+                        }
+                        else
+                        {
+                            infoFadeTimer?.Stop();
+                        }
+                }                
             }
 
             b.Draw(Game1.fadeToBlackRect, new Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height), Color.Black * blackFadeAlpha);

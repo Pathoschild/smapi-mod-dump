@@ -157,9 +157,6 @@ public IDictionary<string, string> OverrideFolderNames = new Dictionary<string, 
 /// <summary>The mod versions to consider equivalent in update checks (indexed by mod ID to local/server versions).</summmary>
 public IDictionary<string, Tuple<string, string>> EquivalentModVersions = new Dictionary<string, Tuple<string, string>>(StringComparer.InvariantCultureIgnoreCase)
 {
-	// abandoned
-	["bcmpinc.FixScytheExp"] = Tuple.Create("0.3", "0.4"), // Fix Scythe Exp
-	
 	// broke in 1.2
 	["439"] = Tuple.Create("1.2.1", "1.21"), // Almighty Tool
 	["FileLoading"] = Tuple.Create("1.1", "1.12"), // File Loading

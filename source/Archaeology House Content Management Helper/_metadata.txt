@@ -5,9 +5,9 @@ mods:
    Archaeology House Content Management Helper
 
 latest commit:
-   commit 15ec5b5a231be460a4b80070ab790698fad042dc
+   commit f2549c4028c71eb881083994a606eb10d7b88d27
    Author: Felix-Dev <FelixDev91@gmail.com>
-   Date:   Wed Sep 19 14:33:57 2018 +0200
+   Date:   Fri Oct 5 17:18:24 2018 +0200
    
-       ArchaeologyHouse Mod: Updated manifest.json for update 1.1.1.
+       ArchaeologyHouse mod: Minor Readme changes.
    

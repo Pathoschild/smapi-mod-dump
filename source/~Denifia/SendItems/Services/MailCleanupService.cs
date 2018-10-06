@@ -66,7 +66,7 @@ namespace Denifia.Stardew.SendItems.Services
                         {
                             var i = Repository.Instance.Delete<Mail>(x => x.Id == mail.Id);
                         }
-                        catch (Exception ex)
+                        catch
                         {
                         }
                     }
@@ -138,7 +138,7 @@ namespace Denifia.Stardew.SendItems.Services
                 {
                     var i = Repository.Instance.Delete<Mail>(x => x.Id == mail.Id);
                 }
-                catch (Exception ex)
+                catch
                 {
                 }
             }

@@ -5,9 +5,9 @@ mods:
    Pelican Postal Service
 
 latest commit:
-   commit d5060da60a545f01c3b89d632814b68c1ce24508
+   commit 78b778cd8785cd7890795b456582ab80512ddb5a
    Author: Tobin Wilson <tobinwilson@gmail.com>
-   Date:   Tue Oct 2 11:33:37 2018 -0700
+   Date:   Fri Oct 5 14:46:31 2018 -0700
    
-       1.0.4 release - quest functionality, bugfixes, testing, cleanup
+       Refactored default behavior, quality checking
    

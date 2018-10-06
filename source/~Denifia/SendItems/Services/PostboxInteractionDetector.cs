@@ -30,7 +30,7 @@ namespace Denifia.Stardew.SendItems.Services
             try
             {
                 ControlEvents.MouseChanged -= MouseChanged;
-                LocationEvents.CurrentLocationChanged -= CurrentLocationChanged;
+                PlayerEvents.Warped -= PlayerWarped;
             }
             catch (Exception)
             {
@@ -39,12 +39,12 @@ namespace Denifia.Stardew.SendItems.Services
 
         private void AfterSavedGameLoad(object sender, EventArgs e)
         {
-            LocationEvents.CurrentLocationChanged += CurrentLocationChanged;
+            PlayerEvents.Warped += PlayerWarped;
         }
 
-        private void CurrentLocationChanged(object sender, EventArgsCurrentLocationChanged e)
+        private void PlayerWarped(object sender, EventArgsPlayerWarped e)
         {
-            if (e.NewLocation.name == locationOfPostbox)
+            if (e.NewLocation.Name == locationOfPostbox)
             {
                 // Only watch for mouse events while at the location of the postbox, for performance
                 ControlEvents.MouseChanged += MouseChanged;
@@ -54,7 +54,7 @@ namespace Denifia.Stardew.SendItems.Services
                 ControlEvents.MouseChanged -= MouseChanged;
             }
         }
-
+        
         private void MouseChanged(object sender, EventArgsMouseStateChanged e)
         {
             if (e.NewState.RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)

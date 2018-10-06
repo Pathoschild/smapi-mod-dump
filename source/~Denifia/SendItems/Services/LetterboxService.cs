@@ -49,12 +49,12 @@ namespace Denifia.Stardew.SendItems.Services
         {
             if (Game1.mailbox == null || !Game1.mailbox.Any()) return;
 
-            if (Game1.mailbox.Peek() == ModConstants.PlayerMailKey)
+            if (Game1.mailbox.First() == ModConstants.PlayerMailKey)
             {
                 Game1.activeClickableMenu = new LetterViewerMenu(mail.Text, ModConstants.PlayerMailTitle);
                 if (Game1.mailbox.Any())
                 {
-                    Game1.mailbox.Dequeue();
+                    Game1.mailbox.RemoveAt(0);
                 }
                 ModEvents.RaiseMailRead(this, new MailReadEventArgs { Id = mail.Id });
             }

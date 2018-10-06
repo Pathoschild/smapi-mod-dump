@@ -1,6 +1,8 @@
 ﻿**Buy Recipes** is a [Stardew Valley](http://stardewvalley.net/) mod which lets you 
 buy cooking recipes from the SMAPI console.
 
+Compatible with Stardew Valley 1.3.
+
 Each week on Sunday a new set of up to five recipes will be available to buy. These 
 will be recipes that you **do not** already own. Prices are listed next to each item.
 
