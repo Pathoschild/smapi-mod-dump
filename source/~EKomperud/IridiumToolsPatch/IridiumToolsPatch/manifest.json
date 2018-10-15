@@ -1,0 +1,10 @@
+{
+  "Name": "IridiumToolsPatch",
+  "Author": "Redwood",
+  "Version": "1.0.0",
+  "Description": "Iridium farm tools affect a 5x5 area to match Iridium sprinklers.",
+  "UniqueID": "Redwood.IridiumToolsPatch",
+  "EntryDll": "IridiumToolsPatch.dll",
+  "MinimumApiVersion": "2.6",
+  "UpdateKeys": [ "Nexus:2897" ]
+}

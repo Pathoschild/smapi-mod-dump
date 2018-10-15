@@ -1,0 +1,16 @@
+{
+  "Name": "Iridium Line Sprinkler (D)",
+  "Description": "Waters 24 tiles in a straight line down.",
+  "Price": 1000,
+  "ProvidesLight": false, 
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients" : [
+      {
+        "Object": 645,
+        "Count": 1,
+      }
+    ],
+    "IsDefault": true,
+  }
+}

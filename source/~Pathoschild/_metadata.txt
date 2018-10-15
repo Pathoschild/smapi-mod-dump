@@ -16,9 +16,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 77bd06e159390546598170bc8ad7aac8979adfef
+   commit 2530d76145c54feeb5b71f8e58ab3dcd8bb9662e
    Author: Jesse Plamondon-Willard <github@jplamondonw.com>
-   Date:   Sat Oct 6 15:52:19 2018 -0400
+   Date:   Fri Oct 5 01:05:45 2018 -0400
    
-       fix existing crops not updated for configurable seasons
+       add `patch summary` hint if target asset name has file extension
    

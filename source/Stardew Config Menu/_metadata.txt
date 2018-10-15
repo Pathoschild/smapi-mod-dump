@@ -5,10 +5,9 @@ mods:
    Stardew Config Menu
 
 latest commit:
-   commit 645bb6f53e62b40e6495f674f8aaf583ab8d6748
-   Merge: f80e50b 98042be
-   Author: Justin Oroz <justinoroz@me.com>
-   Date:   Sun Jul 1 11:31:25 2018 -0700
+   commit 2db8a3e07ebd8221f79b262ea6db3b9c190e0de8
+   Author: Justin Oroz <Juice805@users.noreply.github.com>
+   Date:   Sun Oct 7 12:58:35 2018 -0700
    
-       Merge branch 'develop'
+       Create LICENSE
    

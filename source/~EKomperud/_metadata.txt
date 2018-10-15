@@ -1,0 +1,14 @@
+url:
+   https://github.com/EKomperud/StardewMods.git
+
+mods:
+   Iridium Tools Patch
+   Multiple Gifts for Spouses
+
+latest commit:
+   commit 278fe5ba72f7af8aa8d467061f6f059a49828007
+   Author: EKomperud <ericmkomperud@gmail.com>
+   Date:   Sun Oct 7 21:55:01 2018 -0600
+   
+       First commit
+   

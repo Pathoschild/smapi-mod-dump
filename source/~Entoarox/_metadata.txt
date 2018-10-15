@@ -14,10 +14,9 @@ mods:
    XNB Loader
 
 latest commit:
-   commit ad82156ebcab6e068ebf8fe9f9edc275cff1fa37
-   Merge: 4f61dbe e447214
+   commit 076cf7361b7c327532c2e34608ffd50ebb6408d2
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Sep 26 10:21:46 2018 -0400
+   Date:   Sun Oct 7 20:05:36 2018 -0400
    
-       Merge branch 'develop'
+       standardise doc page filenames (part two of two)
    

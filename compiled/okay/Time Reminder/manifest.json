@@ -1,8 +1,9 @@
 ﻿{
   "Name": "Time Reminder",
   "Author": "KoihimeNakamura",
-  "Version": "1.1",
-  "Description": "Reminds you of the time a few times.",
+  "Version": "1.2.1",
+  "Description": "Reminds you of the time a few times. Also contains features to set in-game reminders",
+  "UpdateKeys": [ "Nexus:1000" ],
   "UniqueID": "KoihimeNakamura.TimeReminder",
   "EntryDll": "TimeReminder.dll"
 }

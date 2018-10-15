@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2897
-IDs: Redwood.IridiumToolsPatch
-update keys: Nexus:2897

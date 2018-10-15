@@ -1,0 +1,14 @@
+url:
+   https://github.com/Prince-Leto/StardewValleyMods.git
+
+mods:
+   24 Hour Format
+   Multiplayer Shaft Fix
+
+latest commit:
+   commit 80a0a0dafeff7bb52971ac314860dd0e3e0a97ec
+   Author: GrÃ©goire Chauvet <gchauvet.home@gmail.com>
+   Date:   Wed Oct 10 00:17:04 2018 +0200
+   
+       Added an update key in manifest.json - Version 1.1.1 of TwentyFourHours
+   

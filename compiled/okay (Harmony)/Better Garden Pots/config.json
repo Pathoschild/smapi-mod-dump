@@ -1,0 +1,7 @@
+{
+  "MakeBeeHousesNoticeFlowersInGardenPots": true,
+  "MakeSprinklersWaterGardenPots": true,
+  "HarvestMatureCropsWhenGardenPotBreaks": true,
+  "AllowPlantingAncientSeedsInGardenPots": false,
+  "AllowCropsToGrowInAnySeasonOutsideWhenInGardenPot": false
+}

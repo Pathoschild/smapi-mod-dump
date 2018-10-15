@@ -1,0 +1,6 @@
+{
+  "EnableTakingHayFromHoppersAnytime": true,
+  "EnableGettingHayFromGrassAnytime": true,
+  "DropHayOnGroundIfNoRoomInInventory": true,
+  "ChanceToDropGrassStarterInsteadOfHay": 0.0
+}

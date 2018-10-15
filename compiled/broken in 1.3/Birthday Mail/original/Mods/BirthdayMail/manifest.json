@@ -1,9 +1,0 @@
-{
-  "Name": "BirthdayMail",
-  "Author": "KathrynHazuka",
-  "Version": "1.3.0",
-  "Description": "Places mail from Lewis in the mailbox to remind the player birthdays of all viligers the player knows",
-  "UniqueID": "KathrynHazuka.BirthdayMail",
-  "EntryDll": "BirthdayMail.dll",
-  "UpdateKeys": []
-}

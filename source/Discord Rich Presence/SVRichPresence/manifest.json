@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "Rich Presence",
 	"Author": "Fayne Aldan",
-	"Version": "2.1.0",
+	"Version": "2.2.0",
 	"Description": "Shows your in-game state on your Discord profile.",
 	"UniqueID": "FayneAldan.RichPresence",
 	"EntryDll": "SVRichPresence.dll",

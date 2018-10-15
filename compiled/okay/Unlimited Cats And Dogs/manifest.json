@@ -1,0 +1,10 @@
+{
+	"Name": "UnlimitedCatsandDogs",
+	"Author": "funny-snek",
+	"Version": "1.0.0",
+	"Description": "lots of cats and dogs",
+	"UniqueID": "funnysnek.UnlimitedCatsandDogs",
+	"EntryDll": "UnlimitedCatsandDogs.dll",
+	"MinimumApiVersion": "2.0",
+	"UpdateKeys": [ "Nexus:2942" ]
+}

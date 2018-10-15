@@ -1,0 +1,10 @@
+﻿{
+   "Name": "24-hour clock",
+   "Author": "Prince-Leto",
+   "Version": "1.1.1",
+   "Description": "Use 24-hour clock in UI, dialogs & map",
+   "UniqueID": "princeleto.twentyfourhours",
+   "EntryDll": "twentyfourhours.dll",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": [ "Nexus:2908" ]
+}

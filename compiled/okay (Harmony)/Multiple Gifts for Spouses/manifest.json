@@ -1,0 +1,10 @@
+{
+  "Name": "MultipleGiftsForSpouses",
+  "Author": "Redwood",
+  "Version": "1.0.0",
+  "Description": "Spouses can be gifted multiple times per day!",
+  "UniqueID": "Redwood.MultipleGiftsForSpouse",
+  "EntryDll": "MultipleGiftsForSpouse.dll",
+  "MinimumApiVersion": "2.7",
+  "UpdateKeys": [ "2910" ]
+}

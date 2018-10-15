@@ -5,9 +5,12 @@ mods:
    Auto-Eat
 
 latest commit:
-   commit f03bc1ea581d1a236ce7b8f4df7496aed40412b4
+   commit 74c4b1339dbb2d414edcef0d6b7200ad1905b32b
+   Merge: 3f8beeb e5f716a
    Author: Permamiss <39325797+Permamiss@users.noreply.github.com>
-   Date:   Tue May 15 22:37:00 2018 -0700
+   Date:   Fri Oct 12 18:22:09 2018 -0700
    
-       Initial commit
+       Merge pull request #1 from RobertLSnead/newFeatures-edit
+       
+       Update ModEntry.cs
    

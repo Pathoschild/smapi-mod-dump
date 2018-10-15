@@ -1,0 +1,12 @@
+{
+   "Name": "[BL] Desert",
+   "Author": "Hootless",
+   "Version": "1.0.5",
+   "Description": "Example content pack for BusLocations, which adds the Desert as a destination.",
+   "UniqueID": "hootless.BLDesert",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": [ "Nexus:2905"],
+   "ContentPackFor": {
+      "UniqueID": "hootless.BusLocations", // the ID of required mod
+   }
+}
