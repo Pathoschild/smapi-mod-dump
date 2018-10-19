@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Constants\Translation.cs" />
     <Compile Include="Framework\Helpers\LibraryMuseumHelper.cs" />
     <Compile Include="Framework\Helpers\MuseumTileClassification.cs" />
     <Compile Include="Framework\Menus\CollectionsPage\CollectionsPageEx.cs" />
@@ -77,12 +78,10 @@
     <Compile Include="Framework\Services\DialogServices\MuseumInteractionDialogType.cs" />
     <Compile Include="Framework\Menus\MuseumMenu\MuseumMenuEx.cs" />
     <Compile Include="Framework\Menus\MuseumMenu\MuseumMenuNoInventory.cs" />
-    <Compile Include="Common\Constants.cs" />
+    <Compile Include="Common\Constants\Constants.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Patches\AddItemToInventoryBoolPatch.cs" />
-    <Compile Include="Patches\Common\Patch.cs" />
     <Compile Include="Patches\CouldInventoryAcceptThisObjectPatch.cs" />
-    <Compile Include="Patches\ShowReceiveNewItemMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +92,8 @@
     <None Include="i18n\zh.json" />
     <None Include="manifest.json" />
     <None Include="packages.config" />
+    <None Include="README.md" />
+    <None Include="release-notes.md" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />

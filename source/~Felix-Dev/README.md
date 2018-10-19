@@ -20,7 +20,7 @@ use the right translations.
 
 &nbsp;     | Archaeology House Content Management Helper    | Tool-Upgrade Delivery Service    |
 ---------- | :--------------------------------------------- | :------------------------------- |
-Chinese    | [✓](ArchaeologyHouseContentManagementHelper/i18n/zh.json) | ❑ untranslated 
+Chinese    | [✓](ArchaeologyHouseContentManagementHelper/i18n/zh.json) | [✓](ToolUpgradeDeliveryService/i18n/zh.json) 
 German     | [✓](ArchaeologyHouseContentManagementHelper/i18n/de.json) | [✓](ToolUpgradeDeliveryService/i18n/de.json)
 Japanese   | ❑ untranslated                                            | ❑ untranslated 
 Portuguese | [✓](ArchaeologyHouseContentManagementHelper/i18n/pt.json) | ❑ untranslated      

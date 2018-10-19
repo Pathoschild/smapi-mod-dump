@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Constants = StardewMods.ArchaeologyHouseContentManagementHelper.Common.Constants;
+using Translation = StardewMods.ArchaeologyHouseContentManagementHelper.Common.Translation;
 
 namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
 {
@@ -79,7 +79,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
         {
             if (e.PriorMenu is DialogueBox box && showMessage)
             {
-                Game1.drawObjectDialogue(ModEntry.CommonServices.TranslationHelper.Get(Constants.TRANSLATION_KEY_MESSAGE_LIBRARY_BOOKS_COMPLETED));
+                Game1.drawObjectDialogue(ModEntry.CommonServices.TranslationHelper.Get(Translation.MESSAGE_LIBRARY_BOOKS_COMPLETED));
                 showMessage = false;
             }
         }

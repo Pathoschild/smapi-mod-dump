@@ -48,11 +48,13 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework.Menus
         {          
             foreach (ClickableComponent clickableComponent in this.itemsToGrab)
             {
+                // Adds compatibility for mod [Rented Tools]. Tools of the same tool class (Axe, Hoe,...)
+                // will be removed from the player's inventory (i.e. rented tools will be removed).
                 if (clickableComponent.containsPoint(x, y) && clickableComponent.item != null)
                 {
                     string itemToDelete = null;
                     if (clickableComponent.item is Axe || clickableComponent.item is Pickaxe 
-                        || clickableComponent.item is Hoe || clickableComponent.item is Shears || clickableComponent.item is WateringCan)
+                        || clickableComponent.item is Hoe || clickableComponent.item is WateringCan)
                     {
                         itemToDelete = (clickableComponent.item as Tool).BaseName;
                     }

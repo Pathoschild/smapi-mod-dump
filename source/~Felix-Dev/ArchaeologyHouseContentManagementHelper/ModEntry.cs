@@ -10,6 +10,9 @@ using StardewModdingAPI.Events;
 using Harmony;
 using StardewMods.Common;
 using StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services;
+using StardewMods.ArchaeologyHouseContentManagementHelper.Patches;
+
+using Constants = StardewMods.ArchaeologyHouseContentManagementHelper.Common.Constants;
 
 namespace StardewMods.ArchaeologyHouseContentManagementHelper
 {
@@ -39,9 +42,13 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper
             CommonServices = new CommonServices(Monitor, helper.Translation, helper.Reflection, helper.Content);
             ModConfig = Helper.ReadConfig<ModConfig>();
 
-            // Patch the game
-            var harmony = HarmonyInstance.Create("StardewMods.ArchaeologyHouseContentManagementHelper");
-            Patches.Patch.PatchAll(harmony);
+            // Apply game patches
+            var harmony = HarmonyInstance.Create(Constants.MOD_ID);
+            var addItemToInventoryBoolPatch = new AddItemToInventoryBoolPatch();
+            var couldInventoryAcceptThisObjectPatch = new CouldInventoryAcceptThisObjectPatch();
+
+            addItemToInventoryBoolPatch.Apply(harmony);
+            couldInventoryAcceptThisObjectPatch.Apply(harmony);
 
             collectionPageExMenuService = new CollectionPageExMenuService();
             collectionPageExMenuService.Start();
@@ -51,6 +58,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper
 
         private void Bootstrap(object sender, EventArgs e)
         {
+            // Start remaining services
             menuInteractDialogService = new MuseumInteractionDialogService();
             lostBookFoundDialogService = new LostBookFoundDialogService();
 

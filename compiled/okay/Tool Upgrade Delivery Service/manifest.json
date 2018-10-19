@@ -1,7 +1,7 @@
 {
   "Name": "Tool-Upgrade Delivery Service",
   "Author": "Felix-Dev",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Clint sends you an e-mail when he finished upgrading your tool. Tool included.",
   "UniqueID": "Felix-Dev.ToolUpgradeDeliveryService",
   "EntryDll": "ToolUpgradeDeliveryService.dll",

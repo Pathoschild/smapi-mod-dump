@@ -17,7 +17,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework
     {
         private static readonly Vector2[] LibraryCounterTiles = new Vector2[] { new Vector2(3f, 10f) };
 
-        private static readonly Lazy<LibraryMuseum> lazy = new Lazy<LibraryMuseum>(() => Game1.getLocationFromName("ArchaeologyHouse") as LibraryMuseum);
+        private static readonly Lazy<LibraryMuseum> lazy = new Lazy<LibraryMuseum>(() => Game1.getLocationFromName(Constants.GAME_LOCATION_LIBRARY_MUSEUM_NAME) as LibraryMuseum);
 
         private static LibraryMuseum Museum => lazy.Value;
 

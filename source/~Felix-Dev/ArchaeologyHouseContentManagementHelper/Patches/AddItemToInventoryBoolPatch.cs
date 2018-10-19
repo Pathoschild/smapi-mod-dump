@@ -1,6 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Netcode;
-using StardewMods.ArchaeologyHouseContentManagementHelper.Framework;
+﻿using Harmony;
+using Microsoft.Xna.Framework;
 using StardewMods.Common.StardewValley;
 using StardewValley;
 using StardewValley.Menus;
@@ -8,19 +7,27 @@ using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Object = StardewValley.Object;
 
 namespace StardewMods.ArchaeologyHouseContentManagementHelper.Patches
 {
-    public class AddItemToInventoryBoolPatch : Patch
+    public class AddItemToInventoryBoolPatch
     {
         private static Farmer farmer;
 
-        protected override PatchDescriptor GetPatchDescriptor()
+        /// <summary>Apply the Harmony patch.</summary>
+        /// <param name="harmony">The Harmony instance.</param>
+        public void Apply(HarmonyInstance harmony)
         {
-            return new PatchDescriptor(Game1.player.GetType(), "addItemToInventoryBool");
+            MethodBase method = AccessTools.Method(typeof(Farmer), "addItemToInventoryBool");
+
+            MethodInfo prefix = AccessTools.Method(this.GetType(), nameof(AddItemToInventoryBoolPatch.Prefix));
+            MethodInfo postfix = AccessTools.Method(this.GetType(), nameof(AddItemToInventoryBoolPatch.Postfix));
+
+            harmony.Patch(method, new HarmonyMethod(prefix), new HarmonyMethod(postfix));
         }
 
         public static bool Prefix(Farmer __instance)

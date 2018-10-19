@@ -1,23 +1,30 @@
-﻿using Netcode;
-using StardewMods.ArchaeologyHouseContentManagementHelper.Framework;
+﻿using Harmony;
 using StardewMods.Common.StardewValley;
 using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Object = StardewValley.Object;
 
 namespace StardewMods.ArchaeologyHouseContentManagementHelper.Patches
 {
-    public class CouldInventoryAcceptThisObjectPatch : Patch
+    public class CouldInventoryAcceptThisObjectPatch
     {
         private static Farmer farmer;
 
-        protected override PatchDescriptor GetPatchDescriptor()
+        /// <summary>Apply the Harmony patch.</summary>
+        /// <param name="harmony">The Harmony instance.</param>
+        public void Apply(HarmonyInstance harmony)
         {
-            return new PatchDescriptor(Game1.player.GetType(), "couldInventoryAcceptThisObject", new Type[] { typeof(int), typeof(int), typeof(int) });
+            MethodBase method = AccessTools.Method(typeof(Farmer), "couldInventoryAcceptThisObject", new Type[] { typeof(int), typeof(int), typeof(int) });
+
+            MethodInfo prefix = AccessTools.Method(this.GetType(), nameof(AddItemToInventoryBoolPatch.Prefix));
+            MethodInfo postfix = AccessTools.Method(this.GetType(), nameof(AddItemToInventoryBoolPatch.Postfix));
+
+            harmony.Patch(method, new HarmonyMethod(prefix), new HarmonyMethod(postfix));
         }
 
         public static bool Prefix(Farmer __instance)

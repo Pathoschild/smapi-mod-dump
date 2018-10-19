@@ -6,9 +6,11 @@ mods:
    Tool Upgrade Delivery Service
 
 latest commit:
-   commit 3e3fdff5fe6665a1355907370f45a278a9b2692c
+   commit a449507c758da46c3d7b7f437e2c3017a18f9293
    Author: Felix-Dev <FelixDev91@gmail.com>
-   Date:   Sun Oct 14 18:48:13 2018 +0200
+   Date:   Thu Oct 18 07:36:55 2018 +0200
    
-       Fixed links in global Readme.
+       ToolUpgradeDeliveryService: Updated Readme
+       
+       Moved 'Remarks' section into 'Compatibility' section.
    

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/60073756
+IDs: EasyGifting.60073756
+update keys: Nexus:60073756

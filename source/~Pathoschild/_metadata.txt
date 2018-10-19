@@ -16,9 +16,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 2530d76145c54feeb5b71f8e58ab3dcd8bb9662e
+   commit eb9df3ddbcaeb5abbb7e37f83ac4b0d3db921db1
    Author: Jesse Plamondon-Willard <github@jplamondonw.com>
-   Date:   Fri Oct 5 01:05:45 2018 -0400
+   Date:   Thu Oct 18 01:24:14 2018 -0400
    
-       add `patch summary` hint if target asset name has file extension
+       update CP readme for JSON load support in SMAPI
    

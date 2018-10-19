@@ -225,18 +225,14 @@ void Main()
 	** Read local mod data
 	****/
 	Console.WriteLine("Reading local data...");
+	foreach (ModFolder folder in toolkit.GetModFolders(this.ModFolderPath))
 	{
-		ModDatabase db = toolkit.GetModDatabase(this.MetadataFilePath);
-		
-		foreach (ModFolder folder in toolkit.GetModFolders(this.ModFolderPath))
+		if (folder.Manifest == null)
 		{
-			if (folder.Manifest == null)
-			{
-				Console.WriteLine($"   Ignored invalid mod: {folder.DisplayName} (manifest error: {folder.ManifestParseError})");
-				continue;
-			}
-			mods.Add(new ModData(folder));
+			Console.WriteLine($"   Ignored invalid mod: {folder.DisplayName} (manifest error: {folder.ManifestParseError})");
+			continue;
 		}
+		mods.Add(new ModData(folder));
 	}
 
 	/****

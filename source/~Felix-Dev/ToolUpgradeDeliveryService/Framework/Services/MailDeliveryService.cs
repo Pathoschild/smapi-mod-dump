@@ -11,8 +11,6 @@ using System.Text;
 using System.Threading.Tasks;
 using StardewMods.ToolUpgradeDeliveryService.Common;
 
-using Constants = StardewMods.ToolUpgradeDeliveryService.Common.Constants;
-
 namespace StardewMods.ToolUpgradeDeliveryService.Framework
 {
     /// <summary>
@@ -25,12 +23,15 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework
         private IMonitor monitor;
         private IReflectionHelper reflectionHelper;
         private ITranslationHelper translationHelper;
+        private MailGenerator mailGenerator;
 
-        public MailDeliveryService()
+        public MailDeliveryService(MailGenerator generator)
         {
             reflectionHelper = ModEntry.CommonServices.ReflectionHelper;
             translationHelper = ModEntry.CommonServices.TranslationHelper;
             monitor = ModEntry.CommonServices.Monitor;
+
+            mailGenerator = generator ?? throw new ArgumentNullException(nameof(generator));
 
             running = false;
         }
@@ -65,26 +66,11 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework
         {
             if (Game1.player.daysLeftForToolUpgrade.Value == 1)
             {
-                string mail;
-                switch (Game1.player.toolBeingUpgraded.Value)
+                string mail = mailGenerator.GenerateMail(Game1.player.toolBeingUpgraded.Value);
+                if (mail == null)
                 {
-                    case Axe t:
-                        mail = Constants.TOOL_UPGRADE + $":{Constants.TOOL_AXE}:{t.UpgradeLevel}";
-                        break;
-                    case Pickaxe t:
-                        mail = Constants.TOOL_UPGRADE + $":{Constants.TOOL_PICKAXE}:{t.UpgradeLevel}";
-                        break;
-                    case Hoe t:
-                        mail = Constants.TOOL_UPGRADE + $":{Constants.TOOL_HOE}:{t.UpgradeLevel}";
-                        break;
-                    case Shears t:
-                        mail = Constants.TOOL_UPGRADE + $":{Constants.TOOL_SHEARS}:{t.UpgradeLevel}";
-                        break;
-                    case WateringCan t:
-                        mail = Constants.TOOL_UPGRADE + $":{Constants.TOOL_WATERING_CAN}:{t.UpgradeLevel}";
-                        break;
-                    default:
-                        return;
+                    monitor.Log("Failed to generate mail for upgraded tool!", LogLevel.Error);
+                    return;
                 }
 
                 Game1.addMailForTomorrow(mail);
@@ -98,12 +84,12 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework
             if (!(e.PriorMenu is LetterViewerMenu) && e.NewMenu is LetterViewerMenu letterViewerMenu)
             {
                 var mailTitle = reflectionHelper.GetField<string>(letterViewerMenu, "mailTitle").GetValue();
-                if (mailTitle == null || !mailTitle.StartsWith(Constants.TOOL_UPGRADE))
+                if (mailTitle == null || !mailGenerator.IsToolMail(mailTitle))
                 {
                     return;
                 }
 
-                var pToolData = GetMailAssignedTool(mailTitle);
+                var pToolData = mailGenerator.GetMailAssignedTool(mailTitle);
                 if (!pToolData.HasValue)
                 {
                     monitor.Log("Failed to retrive tool data from mail!", LogLevel.Error);
@@ -132,22 +118,6 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework
                 var mailMessage = reflectionHelper.GetField<List<string>>(letterViewerMenu, "mailMessage").GetValue();
                 Game1.activeClickableMenu = new LetterViewerMenuForToolUpgrade(mailMessage[0], toolForMail);
             }
-        }
-
-        private (Type toolType, int level)? GetMailAssignedTool(string mailKey)
-        {
-            var keyParts = mailKey.Split(':');
-            if (keyParts.Count() != 3)
-            {
-                return null;
-            }
-
-            if (ToolHelper.TryParse(keyParts[1], out Type tool) && int.TryParse(keyParts[2], out int level))
-            {
-                return (tool, level);
-            }
-
-            return null;
         }
     }
 }

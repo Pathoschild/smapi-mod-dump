@@ -1,0 +1,13 @@
+url:
+   https://github.com/Ilyaki/Elevator.git
+
+mods:
+   Elevator
+
+latest commit:
+   commit 85332c46813bc748e933b24fd2a80a29513cc460
+   Author: Ilyaki <ilyaki.ilyaki@gmail.com>
+   Date:   Sun Oct 7 06:36:27 2018 +0100
+   
+       Updated versioning to 1.0.3
+   

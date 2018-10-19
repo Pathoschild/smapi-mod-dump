@@ -1,0 +1,13 @@
+url:
+   https://github.com/KirbyLink/NoSeedsFromTreesFix.git
+
+mods:
+   No Seeds From Trees Fix
+
+latest commit:
+   commit 6391d1294998e796e7d36405b287c1dd25bb4409
+   Author: KirbyLink <kjryan.reeves@gmail.com>
+   Date:   Wed Oct 17 20:13:40 2018 -0700
+   
+       Updated version in manifest
+   

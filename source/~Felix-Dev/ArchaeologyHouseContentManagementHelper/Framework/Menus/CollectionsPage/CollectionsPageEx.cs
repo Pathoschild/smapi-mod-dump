@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Constants = StardewMods.ArchaeologyHouseContentManagementHelper.Common.Constants;
+using Translation = StardewMods.ArchaeologyHouseContentManagementHelper.Common.Translation;
 
 namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework
 {
@@ -65,7 +65,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework
                 name: "", 
                 bounds: new Rectangle(this.xPositionOnScreen - 48, this.yPositionOnScreen + (showSecretNotesTab ? 576 : 512), 64, 64), 
                 label: "", 
-                hoverText: ModEntry.CommonServices.TranslationHelper.Get(Constants.TRANSLATION_KEY_GAMEMENU_COLLECTIONSPAGE_TAB_LABEL_LOST_BOOKS), 
+                hoverText: ModEntry.CommonServices.TranslationHelper.Get(Translation.GAMEMENU_COLLECTIONSPAGE_TAB_LABEL_LOST_BOOKS), 
                 texture: bookTabTexture, 
                 sourceRect: new Rectangle(0, 0, 16, 16),
                 scale: 4f, 

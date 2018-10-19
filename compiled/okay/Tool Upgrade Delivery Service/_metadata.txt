@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/2938
 IDs: Felix-Dev.ToolUpgradeDeliveryService
-update keys: Nexus:2938
+update keys: Nexus:2938, GitHub:Felix-Dev/StardewMods

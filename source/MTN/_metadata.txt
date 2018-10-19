@@ -5,9 +5,12 @@ mods:
    MTN
 
 latest commit:
-   commit 1bb1217447e6a33d987dfd7fedd3ffb189e5fe75
-   Author: David Weil <gamemx25@gmail.com>
-   Date:   Wed Aug 8 12:30:19 2018 -0500
+   commit 9496ed032bbd583629ff8c36f70cd1c4dbe16b84
+   Merge: 1bb1217 c9e6d16
+   Author: SgtPickles <daweil@crimson.ua.edu>
+   Date:   Wed Oct 17 12:16:21 2018 -0500
    
-       Initalize. Now Open Source
+       Merge pull request #1 from Dawilly/add-license-1
+       
+       Create LICENSE
    
