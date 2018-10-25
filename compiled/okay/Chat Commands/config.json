@@ -1,0 +1,5 @@
+{
+  "ListenToConsoleOnStartup": false,
+  "MaximumNumberOfHistoryMessages": 70,
+  "UseMonospacedFontForCommandOutput": true
+}

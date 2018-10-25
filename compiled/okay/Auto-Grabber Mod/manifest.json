@@ -1,0 +1,10 @@
+﻿{
+   "Name": "AutoGrabberMod",
+   "Author": "Jotser",
+   "Version": "1.0.12-beta.1",
+   "Description": "Adds additional functionality to the Auto-Grabbers",
+   "UniqueID": "Jotser.AutoGrabberMod",
+    "EntryDll": "AutoGrabberMod.dll",
+   "MinimumApiVersion": "2.8-beta.5",
+   "UpdateKeys": ["Nexus:2783"]
+}

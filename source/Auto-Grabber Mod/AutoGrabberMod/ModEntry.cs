@@ -86,8 +86,11 @@ namespace AutoGrabberMod
                     if (pair.Value.parentSheetIndex == AutoGrabber.ParentIndex)
                     {
                         var g = new AutoGrabber(e.Location, pair.Value, pair.Key);
-                        Monitor.Log($"  - Adding Instance {g.Id}");
-                        AutoGrabbers.Add(g.Id, g);
+                        if (!AutoGrabbers.ContainsKey(g.Id))
+                        {
+                            Monitor.Log($"  - Adding Instance {g.Id}");
+                            AutoGrabbers.Add(g.Id, g);
+                        }                        
                     }
                 }
 

@@ -1,6 +1,6 @@
 ﻿{
-  "button.awaiting": "Press the key to assign...",
-  "button.conflict": "The key you pressed is conflicting",
+  "button.awaiting": "Press the key or button to assign...",
+  "button.conflict": "The key or button you pressed is conflicting",
   "button.esc": "Press Esc key to Cancel",
   "estimatedprice.title": "Estimated Shipping Price",
   "fishinfo.quality": "Quality: ",
@@ -62,6 +62,9 @@
   "options.ScavengingRadius": "How far tiles to search trash can",
   "options.StaminaToEatRatio": "Stamina Threshold to auto-eat",
   "options.UnifyFlowerColors": "Unify colors of flowers",
+  "options.AutoShearingAndMilking": "Auto-shear/milk mature sheep/cows",
+  "options.AnimalHarvestRadius": "Tile radius for searching animals",
+  "options.CollectLetterAttachmentsAndQuests": "Auto-accept quests or item attached to mail",
   "quality.gold": "Gold",
   "quality.iridium": "Iridium",
   "quality.normal": "Normal",

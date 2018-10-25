@@ -1,7 +1,7 @@
 {
   "Name": "Elevator",
   "Author": "Ilyaki",
-  "Version": "1.0.3",
+  "Version": "1.0.4",
   "Description": "Adds an elevator building to hold an unlimited number of cabins",
   "UniqueID": "Ilyaki.Elevator",
   "EntryDll": "Elevator.dll",

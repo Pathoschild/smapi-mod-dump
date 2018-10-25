@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using JoysOfEfficiency.OptionsElements;
 using JoysOfEfficiency.Utils;
 using Microsoft.Xna.Framework;
@@ -157,7 +158,16 @@ namespace JoysOfEfficiency
                 tab.AddOptionsElement(new EmptyLabel());
                 tab.AddOptionsElement(new LabelComponent("Auto Pick Up Trash"));
                 tab.AddOptionsElement(new ModifiedCheckBox("AutoPickUpTrash", 34, ModEntry.Conf.AutoPickUpTrash, OnCheckboxValueChanged));
-                tab.AddOptionsElement(new ModifiedSlider("ScavengingRadius", 13, ModEntry.Conf.ScavengingRadius, 1, 3, OnSliderValueChanged, () => !ModEntry.Conf.AutoHarvest || ModEntry.Conf.BalancedMode));
+                tab.AddOptionsElement(new ModifiedSlider("ScavengingRadius", 13, ModEntry.Conf.ScavengingRadius, 1, 3, OnSliderValueChanged, () => !ModEntry.Conf.AutoPickUpTrash || ModEntry.Conf.BalancedMode));
+
+                tab.AddOptionsElement(new EmptyLabel());
+                tab.AddOptionsElement(new LabelComponent("Auto Shearing and Milking"));
+                tab.AddOptionsElement(new ModifiedCheckBox("AutoShearingAndMilking", 35, ModEntry.Conf.AutoShearingAndMilking, OnCheckboxValueChanged));
+                tab.AddOptionsElement(new ModifiedSlider("AnimalHarvestRadius", 14, ModEntry.Conf.AnimalHarvestRadius, 1, 3, OnSliderValueChanged, () => !ModEntry.Conf.AutoShearingAndMilking || ModEntry.Conf.BalancedMode));
+                
+                tab.AddOptionsElement(new EmptyLabel());
+                tab.AddOptionsElement(new LabelComponent("Collect Letter Attachments And Quests"));
+                tab.AddOptionsElement(new ModifiedCheckBox("CollectLetterAttachmentsAndQuests", 36, ModEntry.Conf.CollectLetterAttachmentsAndQuests, OnCheckboxValueChanged));
 
                 tab.AddOptionsElement(new EmptyLabel());
                 _tabs.Add(tab);
@@ -209,9 +219,7 @@ namespace JoysOfEfficiency
                 tab.AddOptionsElement(new EmptyLabel());
                 tab.AddOptionsElement(new LabelComponent("Pause When Idle"));
                 tab.AddOptionsElement(new ModifiedCheckBox("PauseWhenIdle", 33, ModEntry.Conf.PauseWhenIdle, OnCheckboxValueChanged));
-                tab.AddOptionsElement(new ModifiedSlider("IdleTimeout", 12, ModEntry.Conf.IdleTimeout, 1, 300, OnSliderValueChanged, ()=>!ModEntry.Conf.PauseWhenIdle, (which, value) => value + "s"));
-
-
+                tab.AddOptionsElement(new ModifiedSlider("IdleTimeout", 12, ModEntry.Conf.IdleTimeout, 1, 300, OnSliderValueChanged, () => !ModEntry.Conf.PauseWhenIdle, (which, value) => value + "s"));
 
                 tab.AddOptionsElement(new EmptyLabel());
                 _tabs.Add(tab);
@@ -222,11 +230,11 @@ namespace JoysOfEfficiency
 
                 tab.AddOptionsElement(new EmptyLabel());
                 tab.AddOptionsElement(new LabelComponent("Config Menu"));
-                tab.AddOptionsElement(new ModifiedInputListener(this, "KeyShowMenu", 0, ModEntry.Conf.KeyShowMenu, translation, OnInputListnerChanged, OnStartListening));
+                tab.AddOptionsElement(new ModifiedInputListener(this, "keyboard", 0, ModEntry.Conf.ButtonShowMenu, translation, OnInputListnerChanged, OnStartListening));
 
                 tab.AddOptionsElement(new EmptyLabel());
                 tab.AddOptionsElement(new LabelComponent("Auto Harvest"));
-                tab.AddOptionsElement(new ModifiedInputListener(this, "KeyToggleBlackList", 1, ModEntry.Conf.KeyToggleBlackList, translation, OnInputListnerChanged, OnStartListening));
+                tab.AddOptionsElement(new ModifiedInputListener(this, "keyboard", 1, ModEntry.Conf.ButtonToggleBlackList, translation, OnInputListnerChanged, OnStartListening));
 
                 tab.AddOptionsElement(new EmptyLabel());
                 _tabs.Add(tab);
@@ -237,15 +245,15 @@ namespace JoysOfEfficiency
             _isListening = true;
             _listener = option;
         }
-        private void OnInputListnerChanged(int index, Keys value)
+        private void OnInputListnerChanged(int index, SButton value)
         {
             if (index == 0)
             {
-                ModEntry.Conf.KeyShowMenu = value;
+                ModEntry.Conf.ButtonShowMenu = value;
             }
             else if (index == 1)
             {
-                ModEntry.Conf.KeyToggleBlackList = value;
+                ModEntry.Conf.ButtonToggleBlackList = value;
             }
             _mod.WriteConfig();
             _isListening = false;
@@ -287,6 +295,8 @@ namespace JoysOfEfficiency
                 case 32: ModEntry.Conf.FilterBackgroundInMenu = value; break;
                 case 33: ModEntry.Conf.PauseWhenIdle = value; break;
                 case 34: ModEntry.Conf.AutoPickUpTrash = value; break;
+                case 35: ModEntry.Conf.AutoShearingAndMilking = value; break;
+                case 36: ModEntry.Conf.CollectLetterAttachmentsAndQuests = value; break;
                 default: return;
             }
             _mod.WriteConfig();
@@ -334,6 +344,9 @@ namespace JoysOfEfficiency
                 case 13:
                     ModEntry.Conf.ScavengingRadius = value;
                     break;
+                case 14:
+                    ModEntry.Conf.AnimalHarvestRadius = value;
+                    break;
                 default:
                     return;
             }
@@ -371,6 +384,14 @@ namespace JoysOfEfficiency
 
         public override void receiveGamePadButton(Buttons b)
         {
+            if (_isListening)
+            {
+                foreach (ModifiedInputListener element in _tabs[_tabIndex].GetElements().OfType<ModifiedInputListener>())
+                {
+                    element.receiveButtonPress(b);
+                }
+                return;
+            }
             if (b.HasFlag(Buttons.DPadUp) && _upCursor.visible)
             {
                 UpCursor();
@@ -487,7 +508,7 @@ namespace JoysOfEfficiency
                 int x2 = (Game1.viewport.Width - 400) / 2;
                 drawTextureBox(b, x2, yPositionOnScreen - 108, 400, 100, Color.White);
 
-                const string str = "JOE Settings";
+                const string str = "JoE Settings";
                 Vector2 size = Game1.dialogueFont.MeasureString(str) * 1.1f;
 
                 Utility.drawTextWithShadow(b, str, Game1.dialogueFont, new Vector2((Game1.viewport.Width - size.X) / 2, yPositionOnScreen - 50 - (int)size.Y / 2), Color.Black, 1.1f);
@@ -531,15 +552,13 @@ namespace JoysOfEfficiency
 
         public override void leftClickHeld(int x, int y)
         {
-            IMonitor monitor = Util.Monitor;
             if (_isScrolling && _scrollBar.visible && _scrollBarRunner.Contains(x, y))
             {
                 int maxIndex = GetLastViewableIndex();
-                int index = (int)((y - _scrollBarRunner.Top - _scrollBar.bounds.Height / 2) / ((double)(_scrollBarRunner.Height - _scrollBar.bounds.Height) / maxIndex) * 1.02);
+                int index = (int)((y - _scrollBarRunner.Top - _scrollBar.bounds.Height / 2) / ((double)(_scrollBarRunner.Height - _scrollBar.bounds.Height) / maxIndex) * 1.025);
                 index = (int)Util.Cap(index, 0, maxIndex);
                 if (_firstIndex != index)
                 {
-                    monitor.Log($"currentIndex:{_firstIndex} maxIndex:{maxIndex}");
                     Game1.playSound("shwip");
                     ChengeIndexOfScrollBar(index);
                 }
@@ -561,6 +580,7 @@ namespace JoysOfEfficiency
 
         public override void receiveKeyPress(Keys key)
         {
+            base.receiveKeyPress(key);
             if (_isListening)
             {
                 foreach (OptionsElement element in _tabs[_tabIndex].GetElements())
@@ -572,7 +592,7 @@ namespace JoysOfEfficiency
             {
                 CloseMenu();
             }
-            else if (key == ModEntry.Conf.KeyShowMenu)
+            else if (key.ToSButton() == ModEntry.Conf.ButtonShowMenu)
             {
                 if (!_isFirstTime)
                 {

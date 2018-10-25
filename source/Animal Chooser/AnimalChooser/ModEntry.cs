@@ -15,6 +15,15 @@ namespace AnimalChooser
         private ModConfig Config;
         private const int CHICKEN = 0;
         private const int COW = 1;
+        private const int PIG = 2;
+        private const int GOAT = 3;
+        private const int SHEEP = 4;
+        private const int RABBIT = 5;
+        private const int DUCK = 6;
+        
+
+
+
 
         private bool choosingAnimal = false;
         private bool drawAnimal = false;
@@ -25,6 +34,11 @@ namespace AnimalChooser
         
         private List<Texture2D> chickenTextures;
         private List<Texture2D> cowTextures;
+        private List<Texture2D> pigTextures;
+        private List<Texture2D> goatTextures;
+        private List<Texture2D> sheepTextures;
+        private List<Texture2D> rabbitTextures;
+        private List<Texture2D> duckTextures;
         private Dictionary<string, string> animalData;
         private Texture2D heartFullTexture;
         private Texture2D heartEmptyTexture;
@@ -40,7 +54,13 @@ namespace AnimalChooser
             "White Cow",
             "Brown Cow",
         };
-        
+
+        private readonly List<string> pigs = new List<string>() { "Pig" };
+        private readonly List<string> goats = new List<string>() { "Goat" };
+        private readonly List<string> sheeps = new List<string>() { "Sheep" };
+        private readonly List<string> rabbits = new List<string>() { "Rabbit" };
+        private readonly List<string> ducks = new List<string>() { "Duck" };
+
         public override void Entry(IModHelper helper) {
 
             Config = Helper.ReadConfig<ModConfig>();
@@ -56,6 +76,12 @@ namespace AnimalChooser
                 helper.Content.Load<Texture2D>("Assets/White Cow.png"),
                 helper.Content.Load<Texture2D>("Assets/Brown Cow.png"),
             };
+
+            pigTextures = new List<Texture2D>() { helper.Content.Load<Texture2D>("Assets/Pig.png"), };
+            goatTextures = new List<Texture2D>() { helper.Content.Load<Texture2D>("Assets/Goat.png"), };
+            sheepTextures = new List<Texture2D>() { helper.Content.Load<Texture2D>("Assets/Sheep.png"), };
+            rabbitTextures = new List<Texture2D>() { helper.Content.Load<Texture2D>("Assets/Rabbit.png"), };
+            duckTextures = new List<Texture2D>() { helper.Content.Load<Texture2D>("Assets/Duck.png"), };
 
             heartFullTexture = helper.Content.Load<Texture2D>("Assets/heartFull.png");
             heartEmptyTexture = helper.Content.Load<Texture2D>("Assets/heartEmpty.png");
@@ -124,10 +150,15 @@ namespace AnimalChooser
             int h = 64;
             switch (currentAnimalType) {
                 case CHICKEN:
+                case DUCK:
+                case RABBIT:
                     dx = 24;
                     dy += 24;
                     break;
                 case COW:
+                case GOAT:
+                case PIG:
+                case SHEEP:
                     dx = 64;
                     dy += 88;
                     w = 128;
@@ -139,7 +170,17 @@ namespace AnimalChooser
             dy += heartLevel > 0 ? 24 : 0;
             int mx = Game1.getMouseX();
             int my = Game1.getMouseY();
-            Texture2D texture = currentAnimalType == CHICKEN ? chickenTextures[chickenIndex] : cowTextures[cowIndex];
+            Texture2D texture = chickenTextures[0];
+            switch (currentAnimalType) {
+                case CHICKEN: texture = chickenTextures[chickenIndex]; break;
+                case COW: texture = cowTextures[cowIndex]; break;
+                case DUCK: texture = duckTextures[0]; break;
+                case RABBIT: texture = rabbitTextures[0]; break;
+                case GOAT: texture = goatTextures[0]; break;
+                case PIG: texture = pigTextures[0]; break;
+                case SHEEP: texture = sheepTextures[0]; break;
+            }
+
             Game1.spriteBatch.Draw(texture, new Rectangle(mx - dx, my - 64 - dy, w, h), Color.White);
             
             if (heartLevel > 0) {
@@ -179,12 +220,21 @@ namespace AnimalChooser
                             if (Game1.player.money >= component.item.salePrice()) {
                                 string type = component.item.Name;
                                 if (type != null) {
+                                    choosingAnimal = true;
                                     if (type.Contains("Chicken")) {
                                         currentAnimalType = CHICKEN;
-                                        choosingAnimal = true;
                                     } else if (type.Contains("Cow")) {
                                         currentAnimalType = COW;
-                                        choosingAnimal = true;
+                                    } else if (type.Contains("Pig")) {
+                                        currentAnimalType = PIG;
+                                    } else if (type.Contains("Goat")) {
+                                        currentAnimalType = GOAT;
+                                    } else if (type.Contains("Sheep")) {
+                                        currentAnimalType = SHEEP;
+                                    } else if (type.Contains("Rabbit")) {
+                                        currentAnimalType = RABBIT;
+                                    } else if (type.Contains("Duck")) {
+                                        currentAnimalType = DUCK;
                                     } else {
                                         currentAnimalType = -1;
                                         choosingAnimal = false;
@@ -196,7 +246,7 @@ namespace AnimalChooser
                     }
                 }
 
-                if (currentAnimalType != CHICKEN && currentAnimalType != COW) {
+                if (currentAnimalType < 0) {
                     return;
                 }
 
@@ -223,7 +273,9 @@ namespace AnimalChooser
                             break;
                     }
 
-                    animal.displayType = (currentAnimalType == CHICKEN) ? chickens[chickenIndex] : cows[cowIndex];
+                    if (currentAnimalType == CHICKEN || currentAnimalType == COW) {
+                        animal.displayType = (currentAnimalType == CHICKEN) ? chickens[chickenIndex] : cows[cowIndex];
+                    }
                 }
             }
         }
@@ -252,22 +304,35 @@ namespace AnimalChooser
 
                     if (animal.type.Value.Contains("Chicken")) {
                         key = chickens[chickenIndex];
-                        animalData.TryGetValue(key, out data);
                     } else if (animal.type.Value.Contains("Cow")) {
                         key = cows[cowIndex];
-                        animalData.TryGetValue(key, out data);
+                    } else if (animal.type.Value.Contains("Duck")) {
+                        key = "Duck";
+                    } else if (animal.type.Value.Contains("Goat")) {
+                        key = "Goat";
+                    } else if (animal.type.Value.Contains("Pig")) {
+                        key = "Pig";
+                    } else if (animal.type.Value.Contains("Rabbit")) {
+                        key = "Rabbit";
+                    } else if (animal.type.Value.Contains("Sheep")) {
+                        key = "Sheep";
                     } else {
                         Monitor.Log($"Invalid animal type: {animal.type.Value}", LogLevel.Warn);
                         return;
                     }
 
+                    animalData.TryGetValue(key, out data);
+
                     if (data != null) {
                         string[] strArray = data.Split('/');
-                        animal.type.Value = currentAnimalType == CHICKEN ? chickens[chickenIndex] : cows[cowIndex];
+                        animal.type.Value = key;
                         animal.sound.Value = strArray[4].Equals("none") ? null : strArray[4];
                         animal.defaultProduceIndex.Value = Convert.ToInt32(strArray[2]);
                         animal.deluxeProduceIndex.Value = Convert.ToInt32(strArray[3]);
-                        animal.Sprite = new AnimatedSprite("Animals\\" + (animal.age.Value < animal.ageWhenMature.Value ? "Baby" : "") + (currentAnimalType == CHICKEN ? chickens[chickenIndex] : cows[cowIndex]), 0, Convert.ToInt32(strArray[16]), Convert.ToInt32(strArray[17]));
+                        if (Config.AnimalStartsAsAdult) {
+                            animal.age.Value = animal.ageWhenMature.Value;
+                        }
+                        animal.Sprite = new AnimatedSprite("Animals\\" + (animal.age.Value < animal.ageWhenMature.Value ? "Baby" : "") + ((key.Equals("Duck") && animal.age.Value < animal.ageWhenMature.Value) ? "White Chicken" : key), 0, Convert.ToInt32(strArray[16]), Convert.ToInt32(strArray[17]));
                         animal.price.Value = Convert.ToInt32(strArray[24]);
                         animal.friendshipTowardFarmer.Value = heartLevel * 200;
                         animal.fullnessDrain.Value = Convert.ToByte(strArray[20]);
@@ -277,9 +342,7 @@ namespace AnimalChooser
                         Monitor.Log($"data is null - key: {key}", LogLevel.Info);
                     }
 
-                    if (Config.AnimalStartsAsAdult) {
-                        animal.age.Value = animal.ageWhenMature.Value;
-                    }
+                    
 
                 }
             }

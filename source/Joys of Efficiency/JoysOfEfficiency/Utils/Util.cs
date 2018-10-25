@@ -40,6 +40,60 @@ namespace JoysOfEfficiency.Utils
 
         private static int LastItemIndex;
 
+        public static void ShearingAndMilking(Player player)
+        {
+            int radius = ModEntry.Conf.AnimalHarvestRadius * tileSize;
+            Rectangle bb = Expand(player.GetBoundingBox(), radius);
+            foreach (FarmAnimal animal in GetAnimalsList(player))
+            {
+                string lowerType = animal.type.Value.ToLower();
+                if (animal.currentProduce.Value < 0 || animal.age.Value < animal.ageWhenMature.Value || player.CurrentTool == null || !animal.GetBoundingBox().Intersects(bb))
+                {
+                    continue;
+                }
+                if (lowerType.Contains("sheep") && player.CurrentTool is Shears && player.Stamina >= 4f ||
+                    lowerType.Contains("cow") && player.CurrentTool is MilkPail && player.Stamina >= 4f ||
+                    lowerType.Contains("goat") && player.CurrentTool is MilkPail && player.Stamina >= 4f
+                    )
+                {
+                }
+                else
+                    continue;
+
+                if (!player.addItemToInventoryBool(new Object(Vector2.Zero, animal.currentProduce.Value, null, false, true, false, false)
+                    {
+                        Quality = animal.produceQuality.Value
+                    }))
+                {
+                    continue;
+                }
+
+                switch (player.CurrentTool)
+                {
+                    case Shears _: Shears.playSnip(player); break;
+                    case MilkPail _:
+                        player.currentLocation.localSound("Milking");
+                        DelayedAction.playSoundAfterDelay("fishingRodBend", 300);
+                        DelayedAction.playSoundAfterDelay("fishingRodBend", 1200);
+                        break;
+                    default: continue;
+                }
+                animal.doEmote(20);
+                playSound("coin");
+                animal.currentProduce.Value = -1;
+                if (animal.showDifferentTextureWhenReadyForHarvest.Value)
+                {
+                    animal.Sprite.LoadTexture("Animals\\Sheared" + animal.type.Value);
+                }
+                player.gainExperience(0, 5);
+            }
+        }
+
+        private static bool GetEssential(ItemGrabMenu menu)
+        {
+            return Helper.Reflection.GetField<bool>(menu, "essential").GetValue();
+        }
+
         public static void TryCloseItemGrabMenu(ItemGrabMenu menu)
         {
             if (!menu.areAllItemsTaken() || menu.heldItem != null)
@@ -47,6 +101,11 @@ namespace JoysOfEfficiency.Utils
                 return;
             }
 
+            if (menu.context is Event && GetEssential(menu))
+            {
+                // You should not emergency close in events (it may stop the dialogue).
+                return;
+            }
             switch (menu.source)
             {
                 case ItemGrabMenu.source_chest:
@@ -192,7 +251,7 @@ namespace JoysOfEfficiency.Utils
 
             if (player.isMoving() || player.UsingTool)
             {
-                //When player is moving or is using tools, it's not idle ofcause.
+                //When player is moving or is using tools, it's not idle of cause.
                 return false;
             }
 

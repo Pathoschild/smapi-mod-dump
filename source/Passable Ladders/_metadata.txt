@@ -1,0 +1,13 @@
+url:
+   https://github.com/joelra/SDV-PassableLadders.git
+
+mods:
+   Passable Ladders
+
+latest commit:
+   commit b00d2afe8766b02ffc404fe505d02bb6bcd8937f
+   Author: Joel Anderson <joelr.anders@gmail.com>
+   Date:   Tue Oct 23 20:35:04 2018 -0500
+   
+       Updating manfiest file to have correct version number
+   

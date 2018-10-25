@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2981
+IDs: funnysnek.socialtabpatch
+update keys: Nexus:2981

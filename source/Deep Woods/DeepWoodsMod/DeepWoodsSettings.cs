@@ -11,6 +11,14 @@ using System;
 
 namespace DeepWoodsMod
 {
+    class NetworkSettings
+    {
+        // SMAPI will handle custom network messages in a future version,
+        // until then let's hope no other mod uses this value for custom messages :S
+        // (and in case there is incompatibility, users can change the id in their config.json)
+        public byte DeepWoodsMessageId { get; set; } = 220;
+    }
+
     class MapSettings
     {
         public int MaxMapWidth { get; set; } = 64;
@@ -441,7 +449,7 @@ namespace DeepWoodsMod
                     {
                         if (who != Game1.player)
                         {
-                            who.queueMessage(NETWORK_MESSAGE_DEEPWOODS, Game1.MasterPlayer, new object[] { NETWORK_MESSAGE_DEEPWOODS_LEVEL, value });
+                            who.queueMessage(DeepWoodsSettings.Settings.Network.DeepWoodsMessageId, Game1.MasterPlayer, new object[] { NETWORK_MESSAGE_DEEPWOODS_LEVEL, value });
                         }
                     }
                 }
@@ -462,6 +470,7 @@ namespace DeepWoodsMod
         public static DeepWoodsSettings Settings { get; set; } = new DeepWoodsSettings();
 
         // Settings subcategories
+        public NetworkSettings Network { get; set; } = new NetworkSettings();
         public LevelSettings Level { get; set; } = new LevelSettings();
         public MapSettings Map { get; set; } = new MapSettings();
         public ObjectsSettings Objects { get; set; } = new ObjectsSettings();

@@ -1,7 +1,7 @@
 {
    "Name": "anticheatviachat",
    "Author": "funnysnek",
-   "Version": "6.2.0",
+   "Version": "7.0.0",
    "Description": "anticheatviachat",
    "UniqueID": "anticheatviachat.anticheatviachat",
    "EntryDll": "anticheatviachat.dll",

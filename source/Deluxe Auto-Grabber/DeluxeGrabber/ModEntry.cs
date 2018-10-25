@@ -3,6 +3,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Buildings;
+using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using System.Collections.Generic;
@@ -25,6 +26,31 @@ namespace DeluxeGrabber
 
             TimeEvents.AfterDayStarted += TimeEvents_AfterDayStarted;
             LocationEvents.ObjectsChanged += LocationEvents_ObjectsChanged;
+            InputEvents.ButtonPressed += InputEvents_ButtonPressed;
+        }
+
+        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
+        {
+            if (!Context.IsWorldReady)
+            {
+                return;
+            }
+
+            if (e.Button == SButton.B)
+            {
+                foreach (TerrainFeature feature in Game1.currentLocation.terrainFeatures.Values)
+                {
+                    if (feature is FruitTree fruitTree)
+                    {
+                        fruitTree.daysUntilMature.Value -= 30;
+                        Monitor.Log($"Tree age: {fruitTree.daysUntilMature}");
+                    }
+                }
+            } else if (e.Button == SButton.V)
+            {
+                Game1.MasterPlayer.caveChoice.Value = (Game1.MasterPlayer.caveChoice.Value % 2) + 1;
+                Monitor.Log($"FarmCave choice set to {Game1.MasterPlayer.caveChoice.Value}");
+            }
         }
 
         private void SetForagerLocation(string arg1, string[] arg2) {
@@ -46,7 +72,7 @@ namespace DeluxeGrabber
         }
 
         private void LocationEvents_ObjectsChanged(object sender, EventArgsLocationObjectsChanged e) {
-            if (!Config.DoGlobalForage) {
+            if (!Config.DoHarvestTruffles) {
                 return;
             }
 
@@ -219,26 +245,45 @@ namespace DeluxeGrabber
                 foreach (KeyValuePair<Vector2, Object> pair in location.Objects.Pairs) {
                     if (pair.Value.Name.Contains("Grabber")) {
                         Object grabber = pair.Value;
-                        if ((grabber.heldObject.Value as Chest).items.Count >= 36) {
+                        if ((grabber.heldObject.Value == null) || (grabber.heldObject.Value as Chest).items.Count >= 36) {
                             continue;
                         }
                         bool full = (grabber.heldObject.Value as Chest).items.Count >= 36;
                         for (int x = (int)pair.Key.X - range; x < pair.Key.X + range + 1; x ++) {
                             for (int y = (int)pair.Key.Y - range; y < pair.Key.Y + range + 1 && !full; y++) {
                                 Vector2 tile = new Vector2(x, y);
-                                if (location.terrainFeatures.ContainsKey(tile) && location.terrainFeatures[tile] is HoeDirt dirt) {
+                                if (location.terrainFeatures.ContainsKey(tile) && location.terrainFeatures[tile] is HoeDirt dirt)
+                                {
                                     Object harvest = GetHarvest(dirt, tile, location);
-                                    if (harvest != null) {
+                                    if (harvest != null)
+                                    {
                                         (grabber.heldObject.Value as Chest).addItem(harvest);
-                                        if (Config.DoGainExperience) {
+                                        if (Config.DoGainExperience)
+                                        {
                                             gainExperience(FORAGING, 3);
                                         }
                                     }
-                                } else if (location.Objects.ContainsKey(tile) && location.Objects[tile] is IndoorPot pot) {
+                                }
+                                else if (location.Objects.ContainsKey(tile) && location.Objects[tile] is IndoorPot pot)
+                                {
                                     Object harvest = GetHarvest(pot.hoeDirt.Value, tile, location);
-                                    if (harvest != null) {
+                                    if (harvest != null)
+                                    {
                                         (grabber.heldObject.Value as Chest).addItem(harvest);
-                                        if (Config.DoGainExperience) {
+                                        if (Config.DoGainExperience)
+                                        {
+                                            gainExperience(FORAGING, 3);
+                                        }
+                                    }
+                                }
+                                else if (location.terrainFeatures.ContainsKey(tile) && location.terrainFeatures[tile] is FruitTree fruitTree)
+                                {
+                                    Object fruit = GetFruit(fruitTree, tile, location);
+                                    if (fruit != null)
+                                    {
+                                        (grabber.heldObject.Value as Chest).addItem(fruit);
+                                        if (Config.DoGainExperience)
+                                        {
                                             gainExperience(FORAGING, 3);
                                         }
                                     }
@@ -328,6 +373,40 @@ namespace DeluxeGrabber
                     return harvest;
                 }
             }
+            return null;
+        }
+
+        private Object GetFruit(FruitTree fruitTree, Vector2 tile, GameLocation location)
+        {
+
+            Object fruit = null;
+            int quality = 0;
+
+            if (fruitTree is null)
+            {
+                return null;
+            }
+
+            if (!Config.DoHarvestFruitTrees)
+            {
+                return null;
+            }
+
+            if (fruitTree.growthStage.Value >= 4)
+            {
+                if (fruitTree.fruitsOnTree.Value > 0)
+                {
+                    if (fruitTree.daysUntilMature.Value <= -112) { quality = 1; }
+                    if (fruitTree.daysUntilMature.Value <= -224) { quality = 2; }
+                    if (fruitTree.daysUntilMature.Value <= -336) { quality = 4; }
+                    if (fruitTree.struckByLightningCountdown.Value > 0) { quality = 0; }
+
+                    fruit = new Object(fruitTree.indexOfFruit.Value, fruitTree.fruitsOnTree.Value, false, -1, quality);
+                    fruitTree.fruitsOnTree.Value = 0;
+                    return fruit;
+                }
+            }
+
             return null;
         }
 
@@ -491,6 +570,41 @@ namespace DeluxeGrabber
 
                     if (Config.DoGainExperience) {
                         gainExperience(FORAGING, 7);
+                    }
+                }
+
+                // check farm cave for mushrooms
+                if (Config.DoHarvestFarmCave)
+                {
+                    if (location is FarmCave)
+                    {
+                        foreach (Object obj in location.Objects.Values)
+                        {
+
+                            if ((grabber.heldObject.Value as Chest).items.Count >= 36)
+                            {
+                                Monitor.Log("Global grabber full", LogLevel.Info);
+                                return;
+                            }
+
+                            if (obj.bigCraftable.Value && obj.ParentSheetIndex == 128)
+                            {
+                                if (obj.heldObject.Value != null)
+                                {
+                                    (grabber.heldObject.Value as Chest).addItem(obj.heldObject.Value);
+                                    string name = grabber.heldObject.Value.Name;
+                                    if (!itemsAdded.ContainsKey(name))
+                                    {
+                                        itemsAdded.Add(name, 1);
+                                    }
+                                    else
+                                    {
+                                        itemsAdded[name] += 1;
+                                    }
+                                    obj.heldObject.Value = null;
+                                }
+                            }
+                        }
                     }
                 }
 

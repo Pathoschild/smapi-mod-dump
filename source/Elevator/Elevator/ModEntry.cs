@@ -28,7 +28,7 @@ namespace Elevator
 			helper.ConsoleCommands.Add("elevator_relocateCabin", "Move cabin off the map and mark it for use by the elevator/hotel. first arg is name of player", this.MoveCabinFarAway);
 			helper.ConsoleCommands.Add("elevator_addCabin", "Builds a cabin outside the map for elevator/hotel", this.AddNewCabin);
 			helper.ConsoleCommands.Add("elevator_bringBackCabin", "Moves a cabin to your location, so it will not be used by the elevator. First arg is name of player", this.BringBackCabin);
-			helper.ConsoleCommands.Add("elevator_makeBuildingHere", "Spawn an elevator building on top of you", (o, e) => CabinHelper.SpawnElevatorBuilding());
+			helper.ConsoleCommands.Add("elevator_makeBuildingHere", "Spawn an elevator building on top of you", (o, e) => { if (Context.IsMainPlayer) CabinHelper.SpawnElevatorBuilding(); });
 			helper.ConsoleCommands.Add("elevator_removeUnusedElevatorCabins", "Remove any empty cabins inside the elevator system.", this.RemoveEmptyElevatorCabins);
 
 
@@ -76,7 +76,7 @@ namespace Elevator
 
 		private void Goto(string command, string[] args)
 		{
-			if (!Game1.IsServer)
+			if (!Context.IsMainPlayer)
 			{
 				Monitor.Log("You must be the server to do that");
 				return;
@@ -104,7 +104,7 @@ namespace Elevator
 
 		private void MoveCabinFarAway(string command, string[] args)
 		{
-			if (!Game1.IsServer)
+			if (!Context.IsMainPlayer)
 			{
 				Monitor.Log("You must be the server to do that");
 				return;
@@ -150,7 +150,7 @@ namespace Elevator
 
 		private void BringBackCabin(string command, string[] args)
 		{
-			if (!Game1.IsServer)
+			if (!Context.IsMainPlayer)
 			{
 				Monitor.Log("You must be the server to do that");
 				return;
@@ -208,7 +208,7 @@ namespace Elevator
 		
 		private void AddNewCabin(string command, string[] args)
 		{
-			if (!Game1.IsServer)
+			if (!Context.IsMainPlayer)
 			{
 				Monitor.Log("You must be the server to do that");
 				return;
@@ -220,7 +220,7 @@ namespace Elevator
 
 		private void RemoveEmptyElevatorCabins(string command, string[] args)
 		{
-			if (!Game1.IsServer)
+			if (!Context.IsMainPlayer)
 			{
 				Monitor.Log("You must be the server to do that");
 				return;

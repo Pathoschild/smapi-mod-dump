@@ -5,9 +5,9 @@ mods:
    Joys of Efficiency
 
 latest commit:
-   commit f1f7ff45a7d0ebcac2cbe335be8eb13dfb2d3037
+   commit 4d56a8c3b88234cfd3bb6fb71fc1c80ad45d5bfa
    Author: pomepome <punyoon03@gmail.com>
-   Date:   Thu Sep 13 14:27:32 2018 +0900
+   Date:   Mon Oct 22 13:36:17 2018 +0900
    
-       1.2.6
+       1.2.8
    

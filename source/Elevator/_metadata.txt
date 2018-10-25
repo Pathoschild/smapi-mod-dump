@@ -5,9 +5,9 @@ mods:
    Elevator
 
 latest commit:
-   commit 85332c46813bc748e933b24fd2a80a29513cc460
+   commit e6b6c3f0d69969fa27a48913cbe07562e811ff7f
    Author: Ilyaki <ilyaki.ilyaki@gmail.com>
-   Date:   Sun Oct 7 06:36:27 2018 +0100
+   Date:   Sun Oct 21 19:50:55 2018 +0100
    
-       Updated versioning to 1.0.3
+       Fixed clients being able to place elevator buildings
    

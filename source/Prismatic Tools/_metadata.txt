@@ -5,9 +5,9 @@ mods:
    Prismatic Tools
 
 latest commit:
-   commit 1300d2d0ba58c365674b75a0c338b8d62d70ef54
+   commit da3e2bfac9691fedaeff0faa121148bfd452f273
    Author: Aaron Hill <aaron_hill2@carleton.ca>
-   Date:   Sat Aug 4 00:33:30 2018 -0400
+   Date:   Wed Oct 24 00:36:44 2018 -0400
    
-       fixed axes with stumps/added sprinkler range config option
+       Added chinese translation, updated for latest SMAPI version
    

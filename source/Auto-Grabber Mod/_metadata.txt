@@ -5,9 +5,9 @@ mods:
    Auto-Grabber Mod
 
 latest commit:
-   commit 83903376e61a0b232ba6ab2ac3fee39cd13a389c
+   commit 1c9de04bddf82653876c5c7f7515f6505cfb181f
    Author: Roberto R <robertodrinkscoffee@gmail.com>
-   Date:   Sat Sep 29 11:14:53 2018 -0700
+   Date:   Sat Oct 20 11:58:41 2018 -0700
    
-       version bump
+       Version bump, adjusts min smapi version
    

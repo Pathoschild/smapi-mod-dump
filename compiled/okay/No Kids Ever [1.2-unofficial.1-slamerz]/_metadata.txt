@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1464
+IDs: Hangy.NoKidsEver
+update keys: GitHub:Slamerz/SVMods, Nexus:1464, GitHub:L3thal1ty/No-Kids-Ever

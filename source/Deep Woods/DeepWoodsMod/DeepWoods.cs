@@ -135,7 +135,7 @@ namespace DeepWoodsMod
 
             if (parent != null)
             {
-                ModEntry.Log("Child spawned, time: " + Game1.timeOfDay + " this: " + this.Name + ", level: " + this.level + ", parent: " + this.parentName + ", enterDir: " + this.EnterDir, LogLevel.Debug);
+                ModEntry.Log("Child spawned, time: " + Game1.timeOfDay + ", name: " + this.Name + ", level: " + this.level + ", parent: " + this.parentName + ", enterDir: " + this.EnterDir + ", enterLocation: " + this.EnterLocation.X + ", " + this.EnterLocation.Y, LogLevel.Debug);
             }
         }
 
@@ -205,9 +205,54 @@ namespace DeepWoodsMod
 
         public void RemovePlayer(Farmer who)
         {
+            if (DeepWoodsManager.currentDeepWoods == this)
+                DeepWoodsManager.currentDeepWoods = null;
+
             if (!Game1.IsMasterGame)
                 return;
+
             this.playerCount.Value = this.playerCount.Value - 1;
+        }
+
+        public void FixPlayerPosAfterWarp(Farmer who)
+        {
+            if (who != Game1.player)
+                return;
+
+            // First check for current warp request (stored globally for local player):
+            if (DeepWoodsManager.currentWarpRequestName == this.Name
+                && DeepWoodsManager.currentWarpRequestLocation.HasValue)
+            {
+                who.Position = DeepWoodsManager.currentWarpRequestLocation.Value;
+                DeepWoodsManager.currentWarpRequestName = null;
+                DeepWoodsManager.currentWarpRequestLocation = null;
+            }
+            else
+            {
+                // If no current warp request is known, we will heuristically determine the nearest valid location:
+                Vector2 nearestEnterLocation = new Vector2(EnterLocation.X * 64, EnterLocation.Y * 64);
+                float nearestEnterLocationDistance = (nearestEnterLocation - who.Position).Length();
+                int faceDirection = EnterDirToFacingDirection(this.EnterDir);
+                foreach (var exit in this.exits)
+                {
+                    Vector2 exitLocation = new Vector2(exit.Location.X * 64, exit.Location.Y * 64);
+                    float exitDistance = (exitLocation - who.Position).Length();
+                    if (exitDistance < nearestEnterLocationDistance)
+                    {
+                        nearestEnterLocation = exitLocation;
+                        nearestEnterLocationDistance = exitDistance;
+                        faceDirection = EnterDirToFacingDirection(CastExitDirToEnterDir(exit.ExitDir));
+                    }
+                }
+                who.Position = nearestEnterLocation;
+                // who.faceDirection(faceDirection); // Keep original face direction
+            }
+
+            // Finally fix any errors on the border (this still happens according to some bug reports)
+            who.Position = new Vector2(
+                Math.Max(0, Math.Min((mapWidth - 1) * 64, who.Position.X)),
+                Math.Max(0, Math.Min((mapHeight - 1) * 64, who.Position.Y))
+                );
         }
 
         public void AddPlayer(Farmer who)
@@ -215,35 +260,8 @@ namespace DeepWoodsMod
             if (who == Game1.player)
             {
                 // Fix enter position (some bug I haven't figured out yet spawns network clients outside the map delimiter...)
-
-                // First check for current warp request (stored globally for local player):
-                if (DeepWoodsManager.currentWarpRequestName == this.Name
-                    && DeepWoodsManager.currentWarpRequestLocation.HasValue)
-                {
-                    who.Position = DeepWoodsManager.currentWarpRequestLocation.Value;
-                    DeepWoodsManager.currentWarpRequestName = null;
-                    DeepWoodsManager.currentWarpRequestLocation = null;
-                }
-                else
-                {
-                    // If no current warp request is known, we will heuristically determine the nearest valid location:
-                    Vector2 nearestEnterLocation = new Vector2(EnterLocation.X * 64, EnterLocation.Y * 64);
-                    float nearestEnterLocationDistance = (nearestEnterLocation - who.Position).Length();
-                    int faceDirection = EnterDirToFacingDirection(this.EnterDir);
-                    foreach (var exit in this.exits)
-                    {
-                        Vector2 exitLocation = new Vector2(exit.Location.X * 64, exit.Location.Y * 64);
-                        float exitDistance = (exitLocation - who.Position).Length();
-                        if (exitDistance < nearestEnterLocationDistance)
-                        {
-                            nearestEnterLocation = exitLocation;
-                            nearestEnterLocationDistance = exitDistance;
-                            faceDirection = EnterDirToFacingDirection(CastExitDirToEnterDir(exit.ExitDir));
-                        }
-                    }
-                    who.Position = nearestEnterLocation;
-                    // who.faceDirection(faceDirection); // Keep original face direction
-                }
+                FixPlayerPosAfterWarp(who);
+                DeepWoodsManager.currentDeepWoods = this;
             }
             if (!Game1.IsMasterGame)
                 return;
@@ -270,13 +288,14 @@ namespace DeepWoodsMod
             {
                 if (exit.TargetDeepWoodsName == null)
                     exit.TargetDeepWoodsName = "DeepWoods_" + DeepWoodsRandom.CalculateSeed(level + 1, ExitDirToEnterDir(exit.ExitDir), Seed);
-                if (Game1.getLocationFromName(exit.TargetDeepWoodsName) == null)
+                DeepWoods exitDeepWoods = Game1.getLocationFromName(exit.TargetDeepWoodsName) as DeepWoods;
+                if (exitDeepWoods == null)
                 {
-                    DeepWoods exitDeepWoods = new DeepWoods(this, this.level + 1, ExitDirToEnterDir(exit.ExitDir));
-                    exit.TargetDeepWoodsName = exitDeepWoods.Name;
-                    exit.TargetLocation = exitDeepWoods.EnterLocation;
+                    exitDeepWoods = new DeepWoods(this, this.level + 1, ExitDirToEnterDir(exit.ExitDir));
                     DeepWoodsManager.AddDeepWoodsToGameLocations(exitDeepWoods);
                 }
+                exit.TargetDeepWoodsName = exitDeepWoods.Name;
+                exit.TargetLocation = exitDeepWoods.EnterLocation;
             }
         }
 
@@ -465,15 +484,27 @@ namespace DeepWoodsMod
                 else if (GetExit(exitDir) is DeepWoodsExit exit)
                 {
                     targetDeepWoodsName = exit.TargetDeepWoodsName;
+                    if (exit.TargetLocation.X == 0 && exit.TargetLocation.Y == 0)
+                    {
+                        DeepWoods exitDeepWoods = Game1.getLocationFromName(targetDeepWoodsName) as DeepWoods;
+                        if (exitDeepWoods != null)
+                            exit.TargetLocation = new Location(exitDeepWoods.enterLocation.X, exitDeepWoods.enterLocation.Y);
+                    }
                     targetLocationWrapper = exit.TargetLocation;
                 }
                 else if (CastEnterDirToExitDir(EnterDir) == exitDir)
                 {
                     targetDeepWoodsName = parentName.Value;
+                    if (ParentExitLocation.X == 0 && ParentExitLocation.Y == 0)
+                    {
+                        DeepWoods parentDeepWoods = Game1.getLocationFromName(targetDeepWoodsName) as DeepWoods;
+                        if (parentDeepWoods != null)
+                            ParentExitLocation = parentDeepWoods.GetExit(EnterDirToExitDir(EnterDir)).Location;
+                    }
                     targetLocationWrapper = ParentExitLocation;
                 }
 
-                ModEntry.Log("Trying to warp from " + this.Name + ": (ExitDir: " + exitDir + ", Position: " + Game1.player.Position.X + "," + Game1.player.Position.Y + ", targetDeepWoodsName: " + targetDeepWoodsName + ", targetLocation: " + (targetLocationWrapper?.X ?? -1) + ", " + (targetLocationWrapper?.Y ?? -1) + ")", LogLevel.Debug);
+                ModEntry.Log("Trying to warp from " + this.Name + ": (ExitDir: " + exitDir + ", Position: " + Game1.player.Position.X + ", " + Game1.player.Position.Y + ", targetDeepWoodsName: " + targetDeepWoodsName + ", targetLocation: " + (targetLocationWrapper?.X ?? -1) + ", " + (targetLocationWrapper?.Y ?? -1) + ")", LogLevel.Debug);
 
                 if (targetLocationWrapper.HasValue && targetDeepWoodsName != null)
                 {
@@ -710,7 +741,22 @@ namespace DeepWoodsMod
 
         public override void updateEvenIfFarmerIsntHere(GameTime time, bool skipWasUpdatedFlush = false)
         {
+            // Intercept exploding bombs
+            base.temporarySprites
+                .FindAll(t => t.bombRadius > 0)
+                .ForEach(t => t.endFunction = new TemporaryAnimatedSprite.endBehavior(delegate (int extraInfo) {
+                    HandleExplosion(t.position / 64, t.bombRadius);
+                })
+            );
             base.updateEvenIfFarmerIsntHere(time, skipWasUpdatedFlush);
+        }
+
+        private void HandleExplosion(Vector2 tile, int radius)
+        {
+            if (radius <= 0)
+                return;
+
+            // TODO: Make custom stuff in DeepWoods react to explosions from bombs
         }
 
         public override void UpdateWhenCurrentLocation(GameTime time)

@@ -6,6 +6,7 @@ namespace PrismaticTools.Framework {
         public int SprinklerRange { get; set; }
         public int PrismaticToolLength { get; set; }
         public int PrismaticToolWidth { get; set; }
+        public int PrismaticToolCost { get; set; }
 
         public ModConfig() {
             UseSprinklersAsScarecrows = true;
@@ -13,6 +14,7 @@ namespace PrismaticTools.Framework {
             SprinklerRange = 3;
             PrismaticToolLength = 7;
             PrismaticToolWidth = 2;
+            PrismaticToolCost = 100000;
         }
     }
 }

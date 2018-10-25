@@ -5,9 +5,9 @@ mods:
    Smart Cursor
 
 latest commit:
-   commit 3de5f25d6583205c9572e70d4ca3da578c53bcfe
+   commit efcb841ca5d0daf4a8a1dd74c856d10da1da7213
    Author: Aaron Hill <aaron_hill2@carleton.ca>
-   Date:   Sun Jul 29 18:34:19 2018 -0400
+   Date:   Tue Oct 23 22:55:37 2018 -0400
    
-       Fixed character rotation at some incorrect times
+       - Updated for latest SDV version
    

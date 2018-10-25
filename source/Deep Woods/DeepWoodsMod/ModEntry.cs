@@ -25,9 +25,13 @@ namespace DeepWoodsMod
         private static ModEntry mod;
 
         private bool isDeepWoodsGameRunning = false;
+        private bool hasRequestedInitMessageFromServer = false;
         private Dictionary<long, GameLocation> playerLocations = new Dictionary<long, GameLocation>();
 
         private static ConcurrentQueue<string> queuedErrorMessages = new ConcurrentQueue<string>();
+
+        public static bool IsDeepWoodsGameRunning { get { return mod.isDeepWoodsGameRunning; } }
+        public static bool HasRequestedInitMessageFromServer { get { return mod.hasRequestedInitMessageFromServer; } }
 
         private static void WorkErrorMessageQueue()
         {
@@ -61,7 +65,7 @@ namespace DeepWoodsMod
         public override void Entry(IModHelper helper)
         {
             ModEntry.mod = this;
-            Game1MultiplayerAccessProvider.InterceptMultiplayer();
+            Game1MultiplayerAccessProvider.InterceptMultiplayerIfNecessary();
             Textures.LoadAll();
             RegisterEvents();
         }
@@ -76,6 +80,7 @@ namespace DeepWoodsMod
             SaveEvents.BeforeSave += this.SaveEvents_BeforeSave;
             SaveEvents.AfterSave += this.SaveEvents_AfterSave;
             SaveEvents.AfterLoad += this.SaveEvents_AfterLoad;
+            SaveEvents.AfterReturnToTitle += this.SaveEvents_AfterReturnToTitle;
             TimeEvents.AfterDayStarted += this.TimeEvents_AfterDayStarted;
             TimeEvents.TimeOfDayChanged += this.TimeEvents_TimeOfDayChanged;
             GameEvents.UpdateTick += this.GameEvents_UpdateTick;
@@ -84,6 +89,8 @@ namespace DeepWoodsMod
 
         private void SaveEvents_BeforeSave(object sender, EventArgs args)
         {
+            ModEntry.Log("SaveEvents_BeforeSave", StardewModdingAPI.LogLevel.Trace);
+
             DeepWoodsManager.Remove();
             EasterEggFunctions.RemoveAllEasterEggsFromGame();
             WoodsObelisk.RemoveAllFromGame();
@@ -92,14 +99,32 @@ namespace DeepWoodsMod
 
         private void SaveEvents_AfterSave(object sender, EventArgs args)
         {
+            ModEntry.Log("SaveEvents_AfterSave", StardewModdingAPI.LogLevel.Trace);
+
             DeepWoodsManager.Restore();
             EasterEggFunctions.RestoreAllEasterEggsInGame();
             WoodsObelisk.RestoreAllInGame();
         }
 
-        private void SaveEvents_AfterLoad(object sender, EventArgs args)
+        private void SaveEvents_AfterReturnToTitle(object sender, EventArgs args)
         {
-            mod.isDeepWoodsGameRunning = false;
+            ModEntry.Log("GameEvents_AfterReturnToTitle", StardewModdingAPI.LogLevel.Trace);
+
+            isDeepWoodsGameRunning = false;
+            hasRequestedInitMessageFromServer = false;
+        }
+
+        private void InitGameIfNecessary()
+        {
+            ModEntry.Log("InitGameIfNecessary(" + isDeepWoodsGameRunning + ")", StardewModdingAPI.LogLevel.Trace);
+
+            // Make sure our interceptor is set.
+            // E.g. MTN overrides Game1.multiplayer instead of wrapping.
+            Game1MultiplayerAccessProvider.InterceptMultiplayerIfNecessary();
+
+            if (isDeepWoodsGameRunning)
+                return;
+
             if (Game1.IsMasterGame)
             {
                 DeepWoodsSettings.DoLoad();
@@ -110,10 +135,19 @@ namespace DeepWoodsMod
             }
             else
             {
-                mod.isDeepWoodsGameRunning = false;
                 DeepWoodsManager.Remove();
-                Game1.MasterPlayer.queueMessage(NETWORK_MESSAGE_DEEPWOODS, Game1.player, new object[] { NETWORK_MESSAGE_DEEPWOODS_INIT });
+                hasRequestedInitMessageFromServer = true;
+                Game1.MasterPlayer.queueMessage(Settings.Network.DeepWoodsMessageId, Game1.player, new object[] { NETWORK_MESSAGE_DEEPWOODS_INIT });
             }
+        }
+
+        private void SaveEvents_AfterLoad(object sender, EventArgs args)
+        {
+            ModEntry.Log("SaveEvents_AfterLoad", StardewModdingAPI.LogLevel.Trace);
+
+            isDeepWoodsGameRunning = false;
+            hasRequestedInitMessageFromServer = false;
+            InitGameIfNecessary();
         }
 
         public static void DeepWoodsInitServerAnswerReceived(List<string> deepWoodsLevelNames)
@@ -131,6 +165,10 @@ namespace DeepWoodsMod
 
         private void TimeEvents_AfterDayStarted(object sender, EventArgs args)
         {
+            ModEntry.Log("TimeEvents_AfterDayStarted", StardewModdingAPI.LogLevel.Trace);
+
+            InitGameIfNecessary();
+
             if (!isDeepWoodsGameRunning)
                 return;
 

@@ -1,10 +1,10 @@
 ﻿{
    "Name": "EasyGifting",
    "Author": "CeruleanSpirit",
-   "Version": "1.2.0",
-   "Description": "Villagers glow when they haven't received their 2 gifts this week.",
-   "UniqueID": "EasyGifting.60073756",
+   "Version": "2.0.0",
+   "Description": "Villagers are no longer glowing. A bubble appears over their heads instead.",
+   "UniqueID": "EasyGifting.2957",
    "EntryDll": "EasyGifting.dll",
    "MinimumApiVersion": "2.0",
-   "UpdateKeys": ["Nexus:60073756"]
+   "UpdateKeys": ["Nexus:2957"]
 }

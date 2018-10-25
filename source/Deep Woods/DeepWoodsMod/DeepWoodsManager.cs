@@ -23,6 +23,7 @@ namespace DeepWoodsMod
 {
     class DeepWoodsManager
     {
+        public static DeepWoods currentDeepWoods = null;
         public static string currentWarpRequestName = null;
         public static Vector2? currentWarpRequestLocation = null;
 
@@ -40,7 +41,7 @@ namespace DeepWoodsMod
             }
             else if (!Game1.IsMasterGame)
             {
-                Game1.MasterPlayer.queueMessage(NETWORK_MESSAGE_DEEPWOODS, Game1.player, new object[] { NETWORK_MESSAGE_DEEPWOODS_WARP, level, "", new Vector2() });
+                Game1.MasterPlayer.queueMessage(Settings.Network.DeepWoodsMessageId, Game1.player, new object[] { NETWORK_MESSAGE_DEEPWOODS_WARP, level, "", new Vector2() });
             }
             else
             {
@@ -102,7 +103,7 @@ namespace DeepWoodsMod
             {
                 foreach (Farmer who in Game1.otherFarmers.Values)
                     if (who != Game1.player)
-                        who.queueMessage(NETWORK_MESSAGE_DEEPWOODS, Game1.MasterPlayer, new object[] { NETWORK_MESSAGE_DEEPWOODS_ADDREMOVE, (byte)1, deepWoods.Name });
+                        who.queueMessage(Settings.Network.DeepWoodsMessageId, Game1.MasterPlayer, new object[] { NETWORK_MESSAGE_DEEPWOODS_ADDREMOVE, (byte)1, deepWoods.Name });
             }
         }
 
@@ -114,7 +115,7 @@ namespace DeepWoodsMod
             {
                 foreach (Farmer who in Game1.otherFarmers.Values)
                     if (who != Game1.player)
-                        who.queueMessage(NETWORK_MESSAGE_DEEPWOODS, Game1.MasterPlayer, new object[] { NETWORK_MESSAGE_DEEPWOODS_ADDREMOVE, (byte)0, deepWoods.Name });
+                        who.queueMessage(Settings.Network.DeepWoodsMessageId, Game1.MasterPlayer, new object[] { NETWORK_MESSAGE_DEEPWOODS_ADDREMOVE, (byte)0, deepWoods.Name });
             }
         }
 
@@ -195,6 +196,7 @@ namespace DeepWoodsMod
         // This is called by every client at the start of a new day
         public static void LocalDayUpdate(int dayOfMonth)
         {
+            DeepWoodsManager.currentDeepWoods = null;
             DeepWoodsManager.currentWarpRequestName = null;
             DeepWoodsManager.currentWarpRequestLocation = null;
 
@@ -257,7 +259,14 @@ namespace DeepWoodsMod
         public static void LocalTick()
         {
             if (Game1.player.currentLocation is DeepWoods deepWoods)
+            {
+                if (deepWoods != DeepWoodsManager.currentDeepWoods)
+                {
+                    deepWoods.FixPlayerPosAfterWarp(Game1.player);
+                    DeepWoodsManager.currentDeepWoods = deepWoods;
+                }
                 deepWoods.CheckWarp();
+            }
         }
 
         public static void FixLighting()
@@ -314,6 +323,10 @@ namespace DeepWoodsMod
             {
                 // We left the deepwoods, fix lighting
                 DeepWoodsManager.FixLighting();
+
+                // Stop music
+                Game1.changeMusicTrack("none");
+                Game1.updateMusic();
 
                 // Workaround for bug where players are warped to [0,0] for some reason
                 if (rawTo is Woods && who == Game1.player)

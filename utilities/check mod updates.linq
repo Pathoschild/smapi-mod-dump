@@ -163,8 +163,9 @@ public IDictionary<string, Tuple<string, string>> EquivalentModVersions = new Di
 	["stephansstardewcrops"] = Tuple.Create("1.4.1", "1.41"), // Stephen's Stardew Crops
 	
 	// okay
+	["Jotser.AutoGrabberMod"] = Tuple.Create("1.0.12-beta.1", "1.0.12"),
 	["skuldomg.freeDusty"] = Tuple.Create("1.0-beta.7", "1.0.4"), // Free Dusty
-	["ElectroCrumpet.PelicanPostalService"] = Tuple.Create("1.0.2-beta", "1.0.2"), // Pelican Postal Service
+	["ElectroCrumpet.PelicanPostalService"] = Tuple.Create("1.0.4", "1.0.5"), // Pelican Postal Service
 };
 
 /****
@@ -181,10 +182,10 @@ private readonly HashSet<WikiCompatibilityStatus> HighlightStatuses = new HashSe
 	}
 
 	// if OK
-	.Except(new[] { WikiCompatibilityStatus.Ok, WikiCompatibilityStatus.Optional, WikiCompatibilityStatus.Unofficial })
+	//.Except(new[] { WikiCompatibilityStatus.Ok, WikiCompatibilityStatus.Optional, WikiCompatibilityStatus.Unofficial })
 
 	// if broken
-	//.Except(new[] { WikiCompatibilityStatus.Broken, WikiCompatibilityStatus.Workaround })
+	.Except(new[] { WikiCompatibilityStatus.Broken, WikiCompatibilityStatus.Workaround })
 	
 	// if abandoned
 	//.Except(new[] { WikiCompatibilityStatus.Abandoned, WikiCompatibilityStatus.Obsolete })

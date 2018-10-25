@@ -1,0 +1,13 @@
+url:
+   https://github.com/KirbyLink/FestivalEndTimeTweak.git
+
+mods:
+   Festival End Time Tweak
+
+latest commit:
+   commit c58882a7da23ec2e953a20b1457878720f45b6a5
+   Author: KirbyLink <kjryan.reeves@gmail.com>
+   Date:   Sun Oct 21 13:50:59 2018 -0700
+   
+       Fixed bug prenting non-festival events to exit correctly
+   

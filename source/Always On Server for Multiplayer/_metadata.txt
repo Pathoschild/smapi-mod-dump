@@ -5,12 +5,10 @@ mods:
    Always On Server for Multiplayer
 
 latest commit:
-   commit f38e2707116caa8e5c2cf885d77c54d6e6c54f89
-   Merge: adc8f2b 2462f97
-   Author: funny-snek <42410961+funny-snek@users.noreply.github.com>
-   Date:   Tue Oct 16 16:04:48 2018 -0500
+   commit 9a860c883ed4cb0366d3b953a937d64272121648
+   Merge: b2ad2f3 f38e270
+   Author: DESKTOP-S07204M\Curtis <curtis368@gmail.com>
+   Date:   Sat Oct 20 15:39:19 2018 -0500
    
-       Merge pull request #1 from funny-snek/add-license-1
-       
-       Create LICENSE
+       Merge branch 'master' of https://github.com/funny-snek/Always-On-Server-for-Multiplayer
    

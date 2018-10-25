@@ -12,10 +12,11 @@ namespace JoysOfEfficiency.OptionsElements
     {
         private bool _isListening;
         private bool _conflicting;
-        private Keys _button;
+        private readonly SButton _defaultButton;
+        private SButton _button;
 
         private readonly Action<int, ModifiedInputListener> _onStartListening;
-        private readonly Action<int, Keys> _onButtonPressed;
+        private readonly Action<int, SButton> _onButtonPressed;
         private Func<int, bool> _isDisabled;
         private Rectangle _buttonRect;
 
@@ -24,10 +25,11 @@ namespace JoysOfEfficiency.OptionsElements
         private readonly ITranslationHelper _translation;
         private readonly IClickableMenu _menu;
 
-        public ModifiedInputListener(IClickableMenu parent ,string label, int which, Keys initial, ITranslationHelper translationHelper, Action<int, Keys> onButtonPressed, Action<int, ModifiedInputListener> onStartListening = null, Func<int, bool> isDisabled = null) : base(label, -1, -1, 9 * Game1.pixelZoom, 9 * Game1.pixelZoom, 0)
+        public ModifiedInputListener(IClickableMenu parent ,string label, int which, SButton initial, ITranslationHelper translationHelper, Action<int, SButton> onButtonPressed, Action<int, ModifiedInputListener> onStartListening = null, Func<int, bool> isDisabled = null) : base(label, -1, -1, 9 * Game1.pixelZoom, 9 * Game1.pixelZoom, 0)
         {
             this.label = ModEntry.ModHelper.Translation.Get($"options.{label}");
             _button = initial;
+            _defaultButton = initial;
             _onButtonPressed = onButtonPressed;
             _isDisabled = isDisabled ?? (i => false);
             _translation = translationHelper;
@@ -36,9 +38,29 @@ namespace JoysOfEfficiency.OptionsElements
             _menu = parent;
         }
 
+        public void receiveButtonPress(Buttons button)
+        {
+            if (button.ToSButton() == _button)
+            {
+                return;
+            }
+            if (button.ToSButton() == ModEntry.Conf.ButtonShowMenu)
+            {
+                _conflicting = true;
+                return;
+            }
+            if (_isListening)
+            {
+                _button = button.ToSButton();
+                _conflicting = false;
+                _isListening = false;
+                _onButtonPressed(whichOption, button.ToSButton());
+            }
+        }
+
         public override void receiveKeyPress(Keys key)
         {
-            if(key == _button)
+            if(key.ToSButton() == _button)
             {
                 return;
             }
@@ -46,22 +68,21 @@ namespace JoysOfEfficiency.OptionsElements
             {
                 _conflicting = false;
                 _isListening = false;
-                _onButtonPressed(whichOption, _button);
+                _onButtonPressed(whichOption, _defaultButton);
                 return;
             }
             base.receiveKeyPress(key);
-            Config config = ModEntry.Conf;
-            if(Game1.options.isKeyInUse(key) || key == ModEntry.Conf.KeyShowMenu)
+            if(Game1.options.isKeyInUse(key) || key.ToSButton() == ModEntry.Conf.ButtonShowMenu)
             {
                 _conflicting = true;
                 return;
             }
             if(_isListening)
             {
-                _button = key;
+                _button = key.ToSButton();
                 _conflicting = false;
                 _isListening = false;
-                _onButtonPressed(whichOption, key);
+                _onButtonPressed(whichOption, key.ToSButton());
             }
         }
 

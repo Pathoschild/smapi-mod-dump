@@ -51,7 +51,7 @@ namespace JoysOfEfficiency
             
             Conf = helper.ReadConfig<Config>();
 
-            ControlEvents.KeyPressed += OnKeyPressed;
+            InputEvents.ButtonPressed += OnButtonPressed;
 
             GameEvents.UpdateTick += OnGameTick;
             GameEvents.EighthUpdateTick += OnGameEighthUpdate;
@@ -78,6 +78,7 @@ namespace JoysOfEfficiency
             Conf.RadiusCraftingFromChests = (int) Util.Cap(Conf.RadiusCraftingFromChests, 1, 5);
             Conf.IdleTimeout = (int) Util.Cap(Conf.IdleTimeout, 1, 300);
             Conf.ScavengingRadius = (int) Util.Cap(Conf.ScavengingRadius, 1, 3);
+            Conf.AnimalHarvestRadius = (int) Util.Cap(Conf.AnimalHarvestRadius, 1, 3);
 
             if(ModChecker.IsCoGLoaded(helper))
             {
@@ -326,6 +327,11 @@ namespace JoysOfEfficiency
                         }
                     }
                 }
+
+                if (Conf.AutoShearingAndMilking)
+                {
+                    Util.ShearingAndMilking(player);
+                }
                 if(Conf.AutoPullMachineResult)
                 {
                     Util.PullMachineResult();
@@ -386,7 +392,7 @@ namespace JoysOfEfficiency
             }
         }
 
-        private void OnKeyPressed(object sender, EventArgsKeyPressed args)
+        private void OnButtonPressed(object sender, EventArgsInput args)
         {
             if (!Context.IsWorldReady)
             {
@@ -396,13 +402,13 @@ namespace JoysOfEfficiency
             {
                 return;
             }
-            if (args.KeyPressed == Conf.KeyShowMenu)
+            if (args.Button == Conf.ButtonShowMenu)
             {
                 //Open Up Menu
                 Game1.playSound("bigSelect");
                 Game1.activeClickableMenu = new JoeMenu(1100, 548, this);
             }
-            else if (args.KeyPressed == Conf.KeyToggleBlackList)
+            else if (args.Button == Conf.ButtonToggleBlackList)
             {
                 Util.ToggleBlacklistUnderCursor();
             }

@@ -89,10 +89,10 @@ async Task Main()
 	** Fetch Git URLs
 	****/
 	List<ModRepository> repos = new List<ModRepository>();
-	Console.WriteLine("Fetching Git repository URLs...");
+	Helper.Print("Fetching Git repository URLs...");
 	{
 		// fetch mods
-		WikiCompatibilityEntry[] mods = await toolkit.GetWikiCompatibilityListAsync();
+		WikiModEntry[] mods = (await toolkit.GetWikiCompatibilityListAsync()).Mods;
 		int totalMods = mods.Length;
 		mods = mods
 			.Where(mod => !this.IgnoreSourceUrls.Contains(mod.GitHubRepo) && !this.IgnoreSourceUrls.Contains(mod.CustomSourceUrl))
@@ -120,12 +120,12 @@ async Task Main()
 		int haveCode = repos.SelectMany(repo => repo.Mods).Count();
 		int haveSharedRepo = haveCode - uniqueRepos;
 
-		Console.WriteLine($"   Found {totalMods} mods with {uniqueRepos} Git repos. {haveCode} mods ({this.GetPercentage(haveCode, totalMods)}) have a Git repo; {haveSharedRepo} repos ({this.GetPercentage(haveSharedRepo, haveCode)}) contain multiple mods.");
+		Helper.Print($"   Found {totalMods} mods with {uniqueRepos} Git repos. {haveCode} mods ({this.GetPercentage(haveCode, totalMods)}) have a Git repo; {haveSharedRepo} repos ({this.GetPercentage(haveSharedRepo, haveCode)}) contain multiple mods.");
 		if (invalidUrls.Any())
 		{
-			Console.WriteLine($"   Found {invalidUrls.Length} unsupported source URLs on the wiki:");
+			Helper.Print($"   Found {invalidUrls.Length} unsupported source URLs on the wiki:", Severity.Trace);
 			foreach (string url in invalidUrls.OrderBy(p => p))
-				Console.WriteLine($"      {url}");
+				Helper.Print($"      {url}", Severity.Trace);
 		}
 	}
 	Console.WriteLine();
@@ -147,7 +147,7 @@ async Task Main()
 	****/
 	if (rootDir.EnumerateFileSystemInfos().Any())
 	{
-		Console.WriteLine($"Deleting old Git repositories...");
+		Helper.Print($"Deleting old Git repositories...");
 		foreach (FileSystemInfo entry in rootDir.EnumerateFileSystemInfos())
 			this.Delete(entry);
 		Console.WriteLine();
@@ -156,18 +156,18 @@ async Task Main()
 	/****
 	** Clone repos
 	****/
-	Console.WriteLine("Fetching Git repositories...");
+	Helper.Print("Fetching Git repositories...");
 	foreach (var entry in repoFolders.OrderBy(p => p.Key))
 	{
 		// collect info
 		DirectoryInfo dir = new DirectoryInfo(Path.Combine(this.RootPath, entry.Key));
 		ModRepository repo = entry.Value;
-		Console.WriteLine($"   {dir.Name} → {repo.GitUrl}...");
+		Helper.Print($"   {dir.Name} → {repo.GitUrl}...");
 
 		// validate
 		if (dir.Exists)
 		{
-			Console.WriteLine($"   ERROR: directory already exists.");
+			Helper.Print($"   ERROR: directory already exists.", Severity.Error);
 			continue;
 		}
 
@@ -189,11 +189,11 @@ async Task Main()
 			.Where(deleted => !this.IgnoreLegitNames.Any(pattern => pattern.IsMatch(deleted.Name)))
 			.ToArray();
 		if (logDeletedEntries.Any())
-			Console.WriteLine($"      deleted: {string.Join(", ", logDeletedEntries.Select(p => p.FullName.Substring(dir.FullName.Length + 1)))}.");
+			Helper.Print($"      deleted: {string.Join(", ", logDeletedEntries.Select(p => p.FullName.Substring(dir.FullName.Length + 1)))}.", Severity.Warning);
 	}
 	Console.WriteLine();
 
-	Console.WriteLine("Done!");
+	Helper.Print("Done!");
 }
 
 /*********
@@ -300,7 +300,7 @@ class ModRepository
 	public string GitUrl { get; }
 
 	/// <summary>The mod's wiki metadata.</summary>
-	public WikiCompatibilityEntry[] Mods { get; }
+	public WikiModEntry[] Mods { get; }
 
 	/// <summary>The mods' custom source URLs, if specified.</summary>
 	public string[] CustomSourceUrls { get; }
@@ -318,7 +318,7 @@ class ModRepository
 	/// <summary>Construct an instance.</summary>
 	/// <param name="gitUrl">The git URL.</param>
 	/// <param name="mods">The mods in the repository.</param>
-	public ModRepository(string gitUrl, IEnumerable<WikiCompatibilityEntry> mods)
+	public ModRepository(string gitUrl, IEnumerable<WikiModEntry> mods)
 	{
 		this.GitUrl = gitUrl;
 		this.Mods = mods.ToArray();
@@ -350,7 +350,7 @@ class ModRepository
 	*********/
 	/// <summary>Get the Git URL for a mod entry, if any.</summary>
 	/// <param name="mod">The mod's wiki metadata.</param>
-	public static string GetGitUrl(WikiCompatibilityEntry mod)
+	public static string GetGitUrl(WikiModEntry mod)
 	{
 		if (!string.IsNullOrWhiteSpace(mod.GitHubRepo))
 			return $"https://github.com/{mod.GitHubRepo.Trim('/')}.git";

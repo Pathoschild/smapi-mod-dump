@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace PrismaticTools.Framework {
     class BlacksmithInitializer {
 
-        private static int UpgradeCost = 100000;
+        private static int UpgradeCost = ModEntry.Config.PrismaticToolCost;
         private static int NumBars = 3;
 
         public static void Init() {
@@ -38,22 +38,22 @@ namespace PrismaticTools.Framework {
             if (toolFromName1 != null && toolFromName1.UpgradeLevel == 4) {
                 tool = new Axe { UpgradeLevel = 5 };
                 forSale.Add(tool);
-                stock.Add(tool, new int[3] { UpgradeCost, NumBars, PrismaticBarItem.INDEX });
+                stock.Add(tool, new int[3] { UpgradeCost, 1, PrismaticBarItem.INDEX });
             }
             if (toolFromName2 != null && toolFromName2.UpgradeLevel == 4) {
                 tool = new WateringCan { UpgradeLevel = 5 };
                 forSale.Add(tool);
-                stock.Add(tool, new int[3] { UpgradeCost, NumBars, PrismaticBarItem.INDEX });
+                stock.Add(tool, new int[3] { UpgradeCost, 1, PrismaticBarItem.INDEX });
             }
             if (toolFromName3 != null && toolFromName3.UpgradeLevel == 4) {
                 tool = new Pickaxe { UpgradeLevel = 5 };
                 forSale.Add(tool);
-                stock.Add(tool, new int[3] { UpgradeCost, NumBars, PrismaticBarItem.INDEX });
+                stock.Add(tool, new int[3] { UpgradeCost, 1, PrismaticBarItem.INDEX });
             }
             if (toolFromName4 != null && toolFromName4.UpgradeLevel == 4) {
                 tool = new Hoe { UpgradeLevel = 5 };
                 forSale.Add(tool);
-                stock.Add(tool, new int[3] { UpgradeCost, NumBars, PrismaticBarItem.INDEX });
+                stock.Add(tool, new int[3] { UpgradeCost, 1, PrismaticBarItem.INDEX });
             }
         }
     }

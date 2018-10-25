@@ -48,7 +48,7 @@ namespace DeepWoodsMod
                     DeepWoodsState.PlayersWhoGotStardropFromUnicorn.Add(who.UniqueMultiplayerID);
                     if (!Game1.IsMasterGame)
                     {
-                        Game1.MasterPlayer.queueMessage(NETWORK_MESSAGE_DEEPWOODS, who, new object[] { NETWORK_MESSAGE_RCVD_STARDROP_FROM_UNICORN });
+                        Game1.MasterPlayer.queueMessage(Settings.Network.DeepWoodsMessageId, who, new object[] { NETWORK_MESSAGE_RCVD_STARDROP_FROM_UNICORN });
                     }
                 }
                 else

@@ -5,9 +5,10 @@ mods:
    Deep Woods
 
 latest commit:
-   commit 3f3f5421de1644c92e046ee7b3604a78c4cc1261
+   commit 325098fc451b73dfab17490214e903367fc2c1d3
    Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Fri Oct 19 22:27:11 2018 +0200
+   Date:   Mon Oct 22 19:50:21 2018 +0200
    
-       Removed an obsolete comment
+       * Increased compatibility with other mods that have a custom Multiplayer class and override Game1.multiplayer
+       * Increased version number
    

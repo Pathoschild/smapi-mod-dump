@@ -5,9 +5,9 @@ mods:
    Animal Chooser
 
 latest commit:
-   commit d7b9f6bdeb7b141847634f93dbe22b9c7c3d6c57
+   commit 256bea1bd17f8fb0a82ef215446220053f3c6fec
    Author: Aaron Hill <aaron_hill2@carleton.ca>
-   Date:   Sun Jul 29 18:31:27 2018 -0400
+   Date:   Mon Oct 22 01:32:04 2018 -0400
    
-       Initial Commmit
+       Updated for SDV 1.3.28, added previews for all animals.
    
