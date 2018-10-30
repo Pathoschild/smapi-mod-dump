@@ -35,41 +35,41 @@ namespace DeepWoodsMod
 
             if (DeepWoodsState.LowestLevelReached >= Settings.Level.MinLevelForWoodsObelisk
                 && Game1.player.mailReceived.Contains(WOODS_OBELISK_WIZARD_MAIL_ID)
-                && Game1.activeClickableMenu is CarpenterMenu carpenterMenu)
+                && Game1.activeClickableMenu is CarpenterMenu carpenterMenu
+                && IsMagical(carpenterMenu)
+                && !HasBluePrint(carpenterMenu))
             {
-                if (IsMagical(carpenterMenu) && !HasBluePrint(carpenterMenu))
+                // Create a new BluePrint based on "Earth Obelisk", override name, texture and resources.
+                BluePrint woodsObeliskBluePrint = new BluePrint("Earth Obelisk")
                 {
-                    // Create a new BluePrint based on "Earth Obelisk", override name, texture and resources.
-                    BluePrint woodsObeliskBluePrint = new BluePrint("Earth Obelisk")
-                    {
-                        name = WOODS_OBELISK_BUILDING_NAME,
-                        displayName = I18N.WoodsObeliskDisplayName,
-                        description = I18N.WoodsObeliskDescription,
-                        moneyRequired = Settings.Objects.WoodsObelisk.MoneyRequired
-                    };
-                    woodsObeliskBluePrint.itemsRequired.Clear();
-                    foreach (var item in Settings.Objects.WoodsObelisk.ItemsRequired)
-                    {
-                        woodsObeliskBluePrint.itemsRequired.Add(item.Key, item.Value);
-                    }
-                    SetBluePrintField(woodsObeliskBluePrint, "textureName", "Buildings\\" + WOODS_OBELISK_BUILDING_NAME);
-                    SetBluePrintField(woodsObeliskBluePrint, "texture", Game1.content.Load<Texture2D>(woodsObeliskBluePrint.textureName));
-
-                    // Add Woods Obelisk directly after the other obelisks
-                    int lastObeliskIndex = GetBluePrints(carpenterMenu).FindLastIndex(bluePrint => bluePrint.name.Contains("Obelisk"));
-                    GetBluePrints(carpenterMenu).Insert(lastObeliskIndex + 1, woodsObeliskBluePrint);
+                    name = WOODS_OBELISK_BUILDING_NAME,
+                    displayName = I18N.WoodsObeliskDisplayName,
+                    description = I18N.WoodsObeliskDescription,
+                    moneyRequired = Settings.Objects.WoodsObelisk.MoneyRequired
+                };
+                woodsObeliskBluePrint.itemsRequired.Clear();
+                foreach (var item in Settings.Objects.WoodsObelisk.ItemsRequired)
+                {
+                    woodsObeliskBluePrint.itemsRequired.Add(item.Key, item.Value);
                 }
+                SetBluePrintField(woodsObeliskBluePrint, "textureName", "Buildings\\" + WOODS_OBELISK_BUILDING_NAME);
+                SetBluePrintField(woodsObeliskBluePrint, "texture", Game1.content.Load<Texture2D>(woodsObeliskBluePrint.textureName));
+
+                // Add Woods Obelisk directly after the other obelisks
+                int lastObeliskIndex = GetBluePrints(carpenterMenu).FindLastIndex(bluePrint => bluePrint.name.Contains("Obelisk"));
+                GetBluePrints(carpenterMenu).Insert(lastObeliskIndex + 1, woodsObeliskBluePrint);
             }
         }
 
         private static bool IsMagical(CarpenterMenu carpenterMenu)
         {
-            return (bool)typeof(CarpenterMenu).GetField("magicalConstruction", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).GetValue(carpenterMenu);
+            return (bool)carpenterMenu.GetType().GetField("magicalConstruction", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).GetValue(carpenterMenu)
+                || GetBluePrints(carpenterMenu).Exists(bluePrint => bluePrint.magical);
         }
 
         private static List<BluePrint> GetBluePrints(CarpenterMenu carpenterMenu)
         {
-            return (List<BluePrint>)typeof(CarpenterMenu).GetField("blueprints", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).GetValue(carpenterMenu);
+            return (List<BluePrint>)carpenterMenu.GetType().GetField("blueprints", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).GetValue(carpenterMenu);
         }
 
         private static void SetBluePrintField(BluePrint bluePrint, string fieldName, object value)

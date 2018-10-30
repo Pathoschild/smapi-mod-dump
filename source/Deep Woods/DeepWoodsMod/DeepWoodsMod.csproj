@@ -65,6 +65,7 @@
     <Compile Include="EasterEggItem.cs" />
     <Compile Include="Excalibur.cs" />
     <Compile Include="ExcaliburStone.cs" />
+    <Compile Include="ExplodableResourceClump.cs" />
     <Compile Include="FarmerSprite.cs" />
     <Compile Include="Flower.cs" />
     <Compile Include="Game1MultiplayerAccessProvider.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="HealingFountain.cs" />
     <Compile Include="IDeepWoodsAPI.cs" />
     <Compile Include="IridiumTree.cs" />
+    <Compile Include="ISaveAnywhereAPI.cs" />
     <Compile Include="LichtungStuff.cs" />
     <Compile Include="LootFreeGrass.cs" />
     <Compile Include="ModEntry.cs" />

@@ -179,7 +179,7 @@ async Task Main()
 		File.WriteAllText(
 			Path.Combine(dir.FullName, "_metadata.txt"),
 			$"url:\n   {repo.GitUrl}\n\n"
-			+ $"mods:\n   {string.Join("\n   ", repo.Mods.Select(p => p.Name).OrderBy(p => p))}\n\n"
+			+ $"mods:\n   {string.Join("\n   ", repo.Mods.Select(p => p.Name.FirstOrDefault()).OrderBy(p => p))}\n\n"
 			+ $"latest commit:\n   {string.Join("\n   ", lastCommit.Replace("\r", "").Split('\n'))}"
 		);
 		
@@ -335,7 +335,7 @@ class ModRepository
 	public string GetRecommendedFolderName()
 	{
 		string name = this.Mods.Length == 1
-			? this.Mods.Single().Name
+			? this.Mods.Single().Name.FirstOrDefault()
 			: $"~{this.RepositoryOwner}";
 		
 		foreach (char invalidCh in Path.GetInvalidFileNameChars())

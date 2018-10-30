@@ -109,6 +109,20 @@ namespace DeepWoodsMod
 
         public static void RemoveDeepWoodsFromGameLocations(DeepWoods deepWoods)
         {
+            // Player might be in this level, teleport them out
+            if (Game1.player.currentLocation == deepWoods)
+            {
+                Game1.warpFarmer(Game1.getLocationRequest("Woods", false), WOODS_WARP_LOCATION.X, WOODS_WARP_LOCATION.Y, 0);
+                // Take away all health and energy to avoid cheaters using Save Anywhere to escape getting lost
+                if (deepWoods.level > 1 && deepWoods.IsLost())
+                {
+                    Game1.player.health = 1;
+                    Game1.player.Stamina = 0;
+                }
+                Game1.player.currentLocation = Game1.getLocationFromName("Woods");
+                Game1.player.Position = new Vector2(WOODS_WARP_LOCATION.X * 64, WOODS_WARP_LOCATION.Y * 64);
+            }
+
             Game1.locations.Remove(deepWoods);
 
             if (Game1.IsMasterGame)
@@ -258,15 +272,7 @@ namespace DeepWoodsMod
         // This is called by every client every frame
         public static void LocalTick()
         {
-            if (Game1.player.currentLocation is DeepWoods deepWoods)
-            {
-                if (deepWoods != DeepWoodsManager.currentDeepWoods)
-                {
-                    deepWoods.FixPlayerPosAfterWarp(Game1.player);
-                    DeepWoodsManager.currentDeepWoods = deepWoods;
-                }
-                deepWoods.CheckWarp();
-            }
+            DeepWoodsManager.currentDeepWoods?.CheckWarp();
         }
 
         public static void FixLighting()
@@ -316,6 +322,11 @@ namespace DeepWoodsMod
         // Called whenever a player warps, both from and to may be null
         public static void PlayerWarped(Farmer who, DeepWoods from, DeepWoods to, GameLocation rawTo)
         {
+            if (from is DeepWoods dw1 && to is DeepWoods dw2 && dw1.Name == dw2.Name)
+                return;
+
+            ModEntry.Log("PlayerWarped from: " + from?.Name + ", to: " + to?.Name, LogLevel.Trace);
+
             from?.RemovePlayer(who);
             to?.AddPlayer(who);
 

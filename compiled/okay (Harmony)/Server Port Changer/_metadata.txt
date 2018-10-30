@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2993
+IDs: PhantomGamers.ServerPortChanger
+update keys: Nexus:2993, GitHub:PhantomGamers/StardewPortChanger

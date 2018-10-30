@@ -1,0 +1,10 @@
+﻿{
+  "Name": "PumpkinChickens",
+  "Author": "EpicBellyFlop45",
+  "Version": "1.0.0",
+  "Description": "Changes all chickens into pumpkins",
+  "UniqueID": "EpicBellyFlop45.PumpkinChickens",
+  "EntryDll": "PumpkinChickens.dll",
+  "MinimumApiVersion": "2.8-beta.5",
+  "UpdateKeys": [ "Nexus:3004" ]
+}

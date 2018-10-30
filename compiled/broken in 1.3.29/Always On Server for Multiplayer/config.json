@@ -1,5 +1,6 @@
 {
   "serverHotKey": "F9",
+  "profitmargin": 100,
   "petname": "Funnysnek",
   "farmcavechoicemushrooms": true,
   "communitycenterrun": true,
@@ -13,7 +14,7 @@
   "jellyDanceCountDownConfig": 60,
   "grangeDisplayCountDownConfig": 60,
   "iceFishingCountDownConfig": 60,
-  "endofdayTimeOut": 120,
+  "endofdayTimeOut": 300,
   "fairTimeOut": 1200,
   "spiritsEveTimeOut": 900,
   "winterStarTimeOut": 900,

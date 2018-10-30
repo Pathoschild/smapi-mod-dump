@@ -16,7 +16,7 @@ namespace DeepWoodsMod
     {
         private Game1MultiplayerAccessProvider() { }
 
-        private class InterceptingMultiplayer : Multiplayer
+        public class InterceptingMultiplayer : Multiplayer
         {
             private Multiplayer intercepted;
 
@@ -78,8 +78,10 @@ namespace DeepWoodsMod
             public override void sendFarmhand() { intercepted.sendFarmhand(); }
             public override void sendServerToClientsMessage(string message) { intercepted.sendServerToClientsMessage(message); }
             public override void StartServer() { intercepted.StartServer(); }
+#if !SDVBETA
             public override void tickFarmerRoots() { intercepted.tickFarmerRoots(); }
             public override void tickLocationRoots() { intercepted.tickLocationRoots(); }
+#endif
             public override void UpdateEarly() { intercepted.UpdateEarly(); }
             public override void UpdateLate(bool forceSync = false) { intercepted.UpdateLate(forceSync); }
             public override void writeObjectDelta<T>(BinaryWriter writer, NetRoot<T> root) { intercepted.writeObjectDelta<T>(writer, root); }
@@ -118,7 +120,7 @@ namespace DeepWoodsMod
                 public Vector2 EnterLocation { get; set; }
             }
 
-            private DeepWoodsWarpMessageData ReadDeepWoodsWarpMessage(BinaryReader reader)
+            private static DeepWoodsWarpMessageData ReadDeepWoodsWarpMessage(BinaryReader reader)
             {
                 return new DeepWoodsWarpMessageData()
                 {
@@ -130,18 +132,27 @@ namespace DeepWoodsMod
 
             private void InterceptProcessIncomingMessage(IncomingMessage msg)
             {
+                bool executeOriginal = InternalProcessIncomingMessage(msg);
+                if (executeOriginal)
+                    intercepted.processIncomingMessage(msg);
+            }
+
+            // This method is also called by the patch in DeepWoodsMTNCompatibilityMod.
+            // We return false when we handled this message, so Harmony will cancel the original MTN handler.
+            private static bool InternalProcessIncomingMessage(IncomingMessage msg)
+            {
                 if (msg.MessageType == Settings.Network.DeepWoodsMessageId)
                 {
                     int deepwoodsMessageType = msg.Reader.ReadInt32();
                     int randId = Game1.random.Next();
 
-                    ModEntry.Log("InterceptProcessIncomingMessage["+randId+ "], master id: " + Game1.MasterPlayer.UniqueMultiplayerID + ", local id: " + Game1.player.UniqueMultiplayerID + ", msg.FarmerID: " + msg.FarmerID + ", deepwoodsMessageType: " + deepwoodsMessageType, StardewModdingAPI.LogLevel.Debug);
+                    ModEntry.Log("InterceptProcessIncomingMessage[" + randId + "], master id: " + Game1.MasterPlayer.UniqueMultiplayerID + ", local id: " + Game1.player.UniqueMultiplayerID + ", msg.FarmerID: " + msg.FarmerID + ", deepwoodsMessageType: " + deepwoodsMessageType, StardewModdingAPI.LogLevel.Debug);
 
                     Farmer who = Game1.getFarmer(msg.FarmerID);
                     if (who == null || who == Game1.player)
                     {
                         ModEntry.Log(" who is null or local!", StardewModdingAPI.LogLevel.Warn);
-                        return;
+                        return true; // execute original
                     }
 
                     if (deepwoodsMessageType == NETWORK_MESSAGE_DEEPWOODS_INIT)
@@ -254,13 +265,14 @@ namespace DeepWoodsMod
                         else
                         {
                             ModEntry.Log(" [" + randId + "] unknown deepwoodsMessageType: " + deepwoodsMessageType + "!", StardewModdingAPI.LogLevel.Warn);
+                            return true; // execute original
                         }
                     }
+
+                    return false; // don't execute original
                 }
-                else
-                {
-                    intercepted.processIncomingMessage(msg);
-                }
+
+                return true; // execute original
             }
         }
 
@@ -272,6 +284,7 @@ namespace DeepWoodsMod
 
         public static void InterceptMultiplayerIfNecessary()
         {
+            ModEntry.Log("InterceptMultiplayerIfNecessary", StardewModdingAPI.LogLevel.Trace);
             if (!IsInterceptedMultiplayer(Game1.multiplayer))
             {
                 InterceptMultiplayer();
@@ -280,32 +293,51 @@ namespace DeepWoodsMod
 
         private static bool IsInterceptedMultiplayer(Multiplayer multiplayer)
         {
-            if (multiplayer is InterceptingMultiplayer)
-                return true;
-
             if (multiplayer == null)
+            {
+                ModEntry.Log("IsInterceptedMultiplayer: null", StardewModdingAPI.LogLevel.Trace);
                 return false;
+            }
+
+            ModEntry.Log("IsInterceptedMultiplayer called on: " + multiplayer.GetType().Name, StardewModdingAPI.LogLevel.Trace);
+
+            if (multiplayer is InterceptingMultiplayer)
+            {
+                ModEntry.Log("IsInterceptedMultiplayer: true", StardewModdingAPI.LogLevel.Trace);
+                return true;
+            }
 
             // Since other mods can also write a multiplayer wrapper,
             // we recursively check fields for an instance of our class.
             // (Otherwise we might create an infinite loop.)
             foreach (var field in multiplayer.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static))
             {
-                if (IsMultiplayerType(field.GetType())
-                    && IsInterceptedMultiplayer(field.GetValue(multiplayer) as Multiplayer))
+                if (IsMultiplayerType(field.GetType()))
+                {
+                    ModEntry.Log("IsInterceptedMultiplayer, nested field: " + field.Name, StardewModdingAPI.LogLevel.Trace);
+                    if (IsInterceptedMultiplayer(field.GetValue(multiplayer) as Multiplayer))
                         return true;
+                }
             }
 
+            ModEntry.Log("IsInterceptedMultiplayer: false", StardewModdingAPI.LogLevel.Trace);
             return false;
         }
 
         private static bool IsMultiplayerType(Type t)
         {
-            return t.IsSubclassOf(typeof(Multiplayer)) || t == typeof(Multiplayer);
+            bool result = t.IsSubclassOf(typeof(Multiplayer)) || t == typeof(Multiplayer);
+            ModEntry.Log("IsMultiplayerType: " + t.Name + " (" + result + ")", StardewModdingAPI.LogLevel.Trace);
+            return result;
         }
 
         private static void InterceptMultiplayer()
         {
+            if (Game1.multiplayer == null)
+                ModEntry.Log("InterceptMultiplayer: null", StardewModdingAPI.LogLevel.Debug);
+            else
+                ModEntry.Log("InterceptMultiplayer: " + Game1.multiplayer.GetType().Name, StardewModdingAPI.LogLevel.Debug);
+
             Game1.multiplayer = new InterceptingMultiplayer(Game1.multiplayer);
         }
     }

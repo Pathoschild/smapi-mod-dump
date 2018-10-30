@@ -1,0 +1,10 @@
+{
+  "Name": "FollowerNPC",
+  "Author": "Redwood",
+  "Version": "1.0.0",
+  "Description": "Get a follower",
+  "UniqueID": "Redwood.FollowerNPC",
+  "EntryDll": "FollowerNPC.dll",
+  "MinimumApiVersion": "2.6",
+  "UpdateKeys": []
+}

@@ -13,6 +13,8 @@ using PyTK.Types;
 using StardewValley.Tools;
 using PyTK;
 using System.Reflection;
+using StardewValley.Menus;
+using Netcode;
 
 namespace CustomFarmingRedux
 {
@@ -51,6 +53,8 @@ namespace CustomFarmingRedux
         private bool meetsConditions = true;
         private bool checkedToday = false;
         private bool skipDrop = false;
+        private int identifier => (int)((double)tileLocation.X * 2000.0 + (double)tileLocation.Y);
+
         private int frame {
             get
             {
@@ -95,6 +99,12 @@ namespace CustomFarmingRedux
                 syncObject.init();
             }
 
+            if (blueprint.worklight)
+                this.IsOn = false;
+
+            if (blueprint.category == "Chest" && !(heldObject.Value is Chest))
+                heldObject.Value = new Chest(true);
+
             if (data == null)
                 data = CustomObjectData.collection.ContainsKey(blueprint.fullid) ? CustomObjectData.collection[blueprint.fullid] : new CustomObjectData(blueprint.fullid, $"{blueprint.name}/{blueprint.price}/-300/Crafting -9/{blueprint.description}/true/true/0/{blueprint.name}", blueprint.getTexture(), Color.White, blueprint.tileindex, true, typeof(CustomMachine), (blueprint.crafting == null || blueprint.crafting == "") ? null : new CraftingData(blueprint.name, blueprint.crafting));
 
@@ -102,6 +112,9 @@ namespace CustomFarmingRedux
             if (blueprint.readyindex < 0)
                 blueprint.readyindex = blueprint.tileindex;
             this.blueprint = blueprint;
+
+            removeLightSource();
+
             texture = blueprint.getTexture();
             id = blueprint.fullid;
             conditions = blueprint.workconditions;
@@ -139,6 +152,14 @@ namespace CustomFarmingRedux
             SObject o = (SObject) obj.getOne();
             o.Stack = int.MaxValue;
             return o;
+        }
+
+        public override void initializeLightSource(Vector2 tileLocation, bool mineShaft = false)
+        {
+            if (blueprint.lightsource)
+                this.lightSource = new LightSource(4, new Vector2((float)((double)tileLocation.X * 64.0 + 32.0), tileLocation.Y * 64f), blueprint.lightradius, new Color(blueprint.lightcolor[0], blueprint.lightcolor[1], blueprint.lightcolor[2], blueprint.lightcolor[3]), identifier);
+            else
+                this.lightSource = null;
         }
 
         private RecipeBlueprint findRecipe(List<IList<Item>> items)
@@ -227,6 +248,9 @@ namespace CustomFarmingRedux
 
         private void getReadyForHarvest()
         {
+            if (blueprint.worklight)
+                removeLightSource();
+
             if (blueprint.production == null || activeRecipe == null)
                 return;
 
@@ -313,6 +337,20 @@ namespace CustomFarmingRedux
                     if(new List<SObject>(Game1.currentLocation.objects.Values).Contains(this))
                         tileLocation.Value = new List<Vector2>(Game1.currentLocation.objects.Keys).Find(k => Game1.currentLocation.objects[k] == this);
 
+            if (blueprint.worklight)
+                this.IsOn = isWorking;
+            else
+                this.IsOn = true;
+
+            if (!IsOn && lightSource != null)
+            {
+                removeLightSource();
+                this.IsOn = false;
+            }
+
+            if (IsOn && lightSource == null)
+                addLightSource();
+
             if (!wasBuild || blueprint.asdisplay)
             {
                 shakeTimer = 0;
@@ -340,7 +378,7 @@ namespace CustomFarmingRedux
 
         public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1)
         {
-            if (blueprint.category == "Dresser")
+            if (blueprint.category == "Dresser" || blueprint.category == "Chest")
                 active = false;
 
             if (blueprint.category == "Mailbox" && Game1.mailbox is IList<string> mb && mb.Count == 0)
@@ -538,6 +576,13 @@ namespace CustomFarmingRedux
                 return false;
             }
 
+            if (blueprint.category == "Chest")
+            {
+                if (justCheckingForActivity)
+                    return true;
+                Game1.activeClickableMenu = (IClickableMenu)new ItemGrabMenu((IList<Item>)(heldObject.Value as Chest).items, false, true, new InventoryMenu.highlightThisItem(InventoryMenu.highlightAllItems), new ItemGrabMenu.behaviorOnItemSelect((heldObject.Value as Chest).grabItemFromInventory), (string)null, new ItemGrabMenu.behaviorOnItemSelect((heldObject.Value as Chest).grabItemFromChest), false, true, true, true, true, 1, null, -1, (object)null);
+            }
+
             if (blueprint.category == "Dresser")
             {
                 if (justCheckingForActivity)
@@ -547,9 +592,9 @@ namespace CustomFarmingRedux
 
 
                 if (CustomFarmingReduxMod.hasKisekae && CustomFarmingReduxMod.kisekae is Mod ks)
-                    ks.GetType().GetMethod("OpenMenu",BindingFlags.NonPublic | BindingFlags.Instance).Invoke(ks,null);
+                    ks.GetType().GetMethod("OpenMenu", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(ks, null);
                 else
-                    Game1.showRedMessage($"Kisekae must be installed to use this dresser.");
+                    Game1.activeClickableMenu = new CharacterCustomization(CharacterCustomization.Source.Wizard);
 
                 return false;
             }
@@ -620,6 +665,27 @@ namespace CustomFarmingRedux
             readyForHarvest.Value = false;
             activeRecipe = null;
             completionTime = null;
+        }
+
+        public void removeLightSource()
+        {
+            if (location != null)
+            {
+                location.sharedLights.Filter((Func<LightSource, bool>)(l => l.Identifier != identifier));
+                lightSource = null;
+            }
+        }
+
+        public void addLightSource()
+        {
+            if (location != null)
+            {
+                initializeLightSource(tileLocation, false);
+                location.sharedLights.Filter((Func<LightSource, bool>)(l => l.Identifier != identifier));
+
+                if (lightSource != null)
+                    location.sharedLights.Add(lightSource.Clone());
+            }
         }
 
         public override bool performDropDownAction(SFarmer who)
@@ -716,6 +782,9 @@ namespace CustomFarmingRedux
 
         public override bool performToolAction(Tool t, GameLocation location)
         {
+            if (blueprint.category == "Chest" && (heldObject.Value as Chest).items.Count != 0)
+                return false;
+
             Farmer farmer = t.getLastFarmerToUse();
 
             if (heldObject.Value != null && !blueprint.asdisplay && readyForHarvest)
@@ -741,6 +810,8 @@ namespace CustomFarmingRedux
             if (!Game1.currentLocation.objects.ContainsKey(tileLocation) || Game1.currentLocation.objects[tileLocation] != this)
                 tileLocation.Value = new List<Vector2>(Game1.currentLocation.objects.Keys).Find(k => Game1.currentLocation.objects[k] == this);
 
+
+            removeLightSource();
             Game1.createItemDebris(getOne(), tileLocation.Value * Game1.tileSize, -1, null);
             Game1.currentLocation.objects.Remove(tileLocation);
 

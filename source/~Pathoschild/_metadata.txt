@@ -16,9 +16,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit eb9df3ddbcaeb5abbb7e37f83ac4b0d3db921db1
+   commit 064253d2e11c37458441e007e406a110f5740aad
    Author: Jesse Plamondon-Willard <github@jplamondonw.com>
-   Date:   Thu Oct 18 01:24:14 2018 -0400
+   Date:   Sun Oct 28 17:35:05 2018 -0400
    
-       update CP readme for JSON load support in SMAPI
+       update mod build config package
    

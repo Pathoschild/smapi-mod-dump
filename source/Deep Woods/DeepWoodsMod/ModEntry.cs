@@ -17,6 +17,7 @@ using StardewValley.Objects;
 using StardewValley.Tools;
 using Microsoft.Xna.Framework.Audio;
 using System.IO;
+using Omegasis.SaveAnywhere.API;
 
 namespace DeepWoodsMod
 {
@@ -70,10 +71,12 @@ namespace DeepWoodsMod
             RegisterEvents();
         }
 
+        /*
         public override object GetApi()
         {
             return new DeepWoodsAPI();
         }
+        */
 
         private void RegisterEvents()
         {
@@ -85,6 +88,17 @@ namespace DeepWoodsMod
             TimeEvents.TimeOfDayChanged += this.TimeEvents_TimeOfDayChanged;
             GameEvents.UpdateTick += this.GameEvents_UpdateTick;
             GraphicsEvents.OnPostRenderEvent += this.GraphicsEvents_OnPostRenderEvent;
+
+            if (Helper.ModRegistry.IsLoaded("Omegasis.SaveAnywhere"))
+            {
+                ISaveAnywhereAPI api = Helper.ModRegistry.GetApi<ISaveAnywhereAPI>("Omegasis.SaveAnywhere");
+                if (api != null)
+                {
+                    api.BeforeSave += this.SaveEvents_BeforeSave;
+                    api.AfterSave += this.SaveEvents_AfterSave;
+                    api.AfterLoad += this.SaveEvents_AfterLoad;
+                }
+            }
         }
 
         private void SaveEvents_BeforeSave(object sender, EventArgs args)
@@ -95,6 +109,15 @@ namespace DeepWoodsMod
             EasterEggFunctions.RemoveAllEasterEggsFromGame();
             WoodsObelisk.RemoveAllFromGame();
             DeepWoodsSettings.DoSave();
+
+            foreach (var who in Game1.getAllFarmers())
+            {
+                if (who.currentLocation is DeepWoods)
+                {
+                    who.currentLocation = Game1.getLocationFromName("Woods");
+                    who.Position = new Vector2(WOODS_WARP_LOCATION.X * 64, WOODS_WARP_LOCATION.Y * 64);
+                }
+            }
         }
 
         private void SaveEvents_AfterSave(object sender, EventArgs args)
@@ -205,7 +228,7 @@ namespace DeepWoodsMod
                     // player left
                     PlayerWarped(Game1.getFarmer(playerLocation.Key), playerLocation.Value, null);
                 }
-                else if (playerLocation.Value != newPlayerLocations[playerLocation.Key])
+                else if (playerLocation.Value?.Name != newPlayerLocations[playerLocation.Key]?.Name)
                 {
                     // player warped
                     PlayerWarped(Game1.getFarmer(playerLocation.Key), playerLocation.Value, newPlayerLocations[playerLocation.Key]);
@@ -244,6 +267,9 @@ namespace DeepWoodsMod
         private void PlayerWarped(Farmer who, GameLocation prevLocation, GameLocation newLocation)
         {
             if (!isDeepWoodsGameRunning)
+                return;
+
+            if (prevLocation is DeepWoods dw1 && newLocation is DeepWoods dw2 && dw1.Name == dw2.Name)
                 return;
 
             if (newLocation is Woods woods)

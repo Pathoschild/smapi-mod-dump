@@ -1,0 +1,13 @@
+url:
+   https://github.com/KirbyLink/PumpkinKing.git
+
+mods:
+   The Pumpkin King
+
+latest commit:
+   commit 7370a2fd17137c96afbbf5e828367d46181a7916
+   Author: KirbyLink <kjryan.reeves@gmail.com>
+   Date:   Sun Oct 28 17:58:46 2018 -0700
+   
+       Updated nexus update key
+   

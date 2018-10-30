@@ -43,7 +43,7 @@ namespace priceDrops
                                 percentage = ModEntry.DISC_1;
 
                             // Bonus discount for marriage to Maru/Sebastian
-                            if (Game1.getCharacterFromName("Maru", true).isMarried() || Game1.getCharacterFromName("Sebastian", true).isMarried())
+                            if ((Game1.getCharacterFromName("Maru", true) != null && Game1.getCharacterFromName("Maru", true).isMarried()) || (Game1.getCharacterFromName("Sebastian", true) != null && Game1.getCharacterFromName("Sebastian", true).isMarried()))
                             {
                                 percentage +=  ModEntry.BONUS_DISC;
                             }

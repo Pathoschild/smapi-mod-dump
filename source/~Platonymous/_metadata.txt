@@ -31,9 +31,9 @@ mods:
    Visualize
 
 latest commit:
-   commit b733b64567782636576741a45295be4367e88d29
+   commit c5185812dd01dfe98c4a3dd9d4eaa4a85c08ec6a
    Author: Platonymous <david@millionideas.de>
-   Date:   Mon Oct 22 04:45:29 2018 +0200
+   Date:   Tue Oct 30 04:57:42 2018 +0100
    
-       Added GhostTown
+       update
    

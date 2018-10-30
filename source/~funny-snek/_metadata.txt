@@ -6,9 +6,9 @@ mods:
    Anti-Cheat (Server)
 
 latest commit:
-   commit 327f93ee637058f25e97857f1fd845a1353dcbd3
+   commit 9979d71b469a01ccfc2054d28c173ccf866978ff
    Author: funny-snek <42410961+funny-snek@users.noreply.github.com>
-   Date:   Thu Oct 11 11:03:40 2018 -0500
+   Date:   Fri Oct 26 19:09:02 2018 -0500
    
-       Update servercode.cs
+       Create LICENSE
    

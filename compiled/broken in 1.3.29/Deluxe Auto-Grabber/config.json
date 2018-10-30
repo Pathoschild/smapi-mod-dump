@@ -1,0 +1,13 @@
+{
+  "GrabberRange": 10,
+  "DoGlobalForage": true,
+  "DoHarvestTruffles": true,
+  "DoHarvestCrops": true,
+  "DoHarvestFlowers": true,
+  "DoHarvestFruitTrees": true,
+  "DoHarvestFarmCave": true,
+  "DoGainExperience": false,
+  "GlobalForageTileX": 6,
+  "GlobalForageTileY": 35,
+  "GlobalForageMap": "Desert"
+}

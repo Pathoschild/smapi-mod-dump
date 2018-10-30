@@ -5,9 +5,9 @@ mods:
    Price Drops
 
 latest commit:
-   commit 8d84278e3dbb1daf6d2f1b56278e7ad6ab88a8d1
+   commit 5295701b2c1744f9ab7ea713b74d1af0137c344d
    Author: skuldomg <scdehne@googlemail.com>
-   Date:   Tue May 22 12:42:50 2018 +0200
+   Date:   Mon Oct 29 07:08:56 2018 +0100
    
-       Updated manifest
+       Letters are not sent out when config file gives a discount at 0 hearts
    

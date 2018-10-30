@@ -205,8 +205,13 @@ namespace DeepWoodsMod
 
         public void RemovePlayer(Farmer who)
         {
-            if (DeepWoodsManager.currentDeepWoods == this)
-                DeepWoodsManager.currentDeepWoods = null;
+            ModEntry.Log("RemovePlayer(" + who.UniqueMultiplayerID + "): " + this.Name, LogLevel.Debug);
+
+            if (who == Game1.player)
+            {
+                if (DeepWoodsManager.currentDeepWoods == this)
+                    DeepWoodsManager.currentDeepWoods = null;
+            }
 
             if (!Game1.IsMasterGame)
                 return;
@@ -216,8 +221,20 @@ namespace DeepWoodsMod
 
         public void FixPlayerPosAfterWarp(Farmer who)
         {
+            // Only fix position for local player
             if (who != Game1.player)
                 return;
+
+            // Check if level is properly initialized
+            if (this.map == null
+                || this.map.Id != this.Name
+                || this.Seed == 0
+                || !this.HasReceivedNetworkData
+                || mapWidth.Value == 0
+                || mapHeight.Value == 0)
+                return;
+
+            ModEntry.Log("FixPlayerPosAfterWarp: " + this.Name + ", mapWidth: " + mapWidth, LogLevel.Debug);
 
             // First check for current warp request (stored globally for local player):
             if (DeepWoodsManager.currentWarpRequestName == this.Name
@@ -257,14 +274,18 @@ namespace DeepWoodsMod
 
         public void AddPlayer(Farmer who)
         {
+            ModEntry.Log("AddPlayer(" + who.UniqueMultiplayerID + "): " + this.Name, LogLevel.Debug);
+
             if (who == Game1.player)
             {
                 // Fix enter position (some bug I haven't figured out yet spawns network clients outside the map delimiter...)
                 FixPlayerPosAfterWarp(who);
                 DeepWoodsManager.currentDeepWoods = this;
             }
+
             if (!Game1.IsMasterGame)
                 return;
+
             this.hasEverBeenVisited.Value = true;
             this.playerCount.Value = this.playerCount.Value + 1;
             ValidateAndIfNecessaryCreateExitChildren();
@@ -454,7 +475,7 @@ namespace DeepWoodsMod
 
         public void CheckWarp()
         {
-            if (Game1.player.currentLocation == this && Game1.locationRequest == null)
+            if (Game1.player.currentLocation == this && Game1.currentLocation == this && Game1.locationRequest == null)
             {
                 if (Game1.player.Position.X + 48 < 0)
                     Warp(ExitDirection.LEFT);
@@ -756,7 +777,54 @@ namespace DeepWoodsMod
             if (radius <= 0)
                 return;
 
-            // TODO: Make custom stuff in DeepWoods react to explosions from bombs
+            List<ResourceClump> resourceClumpsCopy = new List<ResourceClump>(resourceClumps);
+            List<LargeTerrainFeature> largeTerrainFeaturesCopy = new List<LargeTerrainFeature>(largeTerrainFeatures);
+
+            bool[,] circleOutlineGrid = Game1.getCircleOutlineGrid(radius);
+            for (int x = 0; x < radius * 2 + 1; x++)
+            {
+                bool isInBombRadius = false;
+                for (int y = 0; y < radius * 2 + 1; y++)
+                {
+                    if (circleOutlineGrid[x, y])
+                        isInBombRadius = !isInBombRadius;
+
+                    if (isInBombRadius)
+                    {
+                        Vector2 location = new Vector2(tile.X + x - radius, tile.Y + y - radius);
+                        resourceClumpsCopy.RemoveAll(r =>
+                        {
+                            if (r.getBoundingBox(r.tile).Contains((int)location.X * 64, (int)location.Y * 64))
+                            {
+                                if (r.performToolAction(null, radius, location, this))
+                                {
+                                    resourceClumps.Remove(r);
+                                }
+                                return true;
+                            }
+                            return false;
+                        });
+                        largeTerrainFeaturesCopy.RemoveAll(lt =>
+                        {
+                            if (lt.getBoundingBox(lt.tilePosition).Contains((int)location.X * 64, (int)location.Y * 64))
+                            {
+                                if (lt.performToolAction(null, radius, location, this))
+                                {
+                                    largeTerrainFeatures.Remove(lt);
+                                }
+                                return true;
+                            }
+                            return false;
+                        });
+                        if (this.terrainFeatures.ContainsKey(location) &&
+                            (this.terrainFeatures[location] is Flower
+                            || this.terrainFeatures[location] is EasterEgg))
+                        {
+                            this.terrainFeatures.Remove(location);
+                        }
+                    }
+                }
+            }
         }
 
         public override void UpdateWhenCurrentLocation(GameTime time)
@@ -873,6 +941,14 @@ namespace DeepWoodsMod
             {
                 return 0;
             }
+        }
+
+        public bool IsLost()
+        {
+            if (level == 1)
+                return false;
+
+            return Parent?.IsLost() ?? true;
         }
     }
 }

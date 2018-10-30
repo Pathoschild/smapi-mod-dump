@@ -128,6 +128,7 @@ namespace DeepWoodsMod
         public int MinLevelForMeteorite { get; set; } = 25;
         public int MinLevelForClearing { get; set; } = 30;
         public int MinLevelForGingerbreadHouse { get; set; } = 50;
+        public Chance ChanceForThornyBushesOnExit { get; set; } = new Chance(new LuckValue(50, 5));
     }
 
     public class ExcaliburSettings

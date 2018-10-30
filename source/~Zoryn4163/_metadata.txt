@@ -12,9 +12,10 @@ mods:
    Regen Mod
 
 latest commit:
-   commit 17eadaa6713f0b7f7dd3ce300ed4a511e7fa2109
-   Author: Zoryn <zoryn4163@gmail.com>
-   Date:   Sat Oct 6 02:01:00 2018 -0400
+   commit 7db80a3596cbcadc0665927337778f6fe76eb959
+   Merge: 6c42cf9 64e42d8
+   Author: Jesse Plamondon-Willard <github@jplamondonw.com>
+   Date:   Mon Oct 29 01:50:17 2018 -0400
    
-       revert csproj edit that shouldn't have been committed
+       Merge branch 'develop'
    

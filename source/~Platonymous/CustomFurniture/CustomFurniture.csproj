@@ -4,6 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ModZipPath>$(SolutionDir)\_releases</ModZipPath>
     <ProjectGuid>{B60CC08A-ABD5-4B7B-81BF-C0295C11A025}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -31,7 +32,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <GamePath>C:\BigSteam\steamapps\common\Stardew Valley</GamePath>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\GOG Galaxy\Games\Stardew Valley\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PyTK, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Platonymous.PyTK.1.4.4\lib\net45\PyTK.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -52,12 +64,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Harmony\Harmony\Harmony.csproj">
-      <Project>{69aee16a-b6e7-4642-8081-3928b32455df}</Project>
-      <Name>Harmony</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Assets\nuget-icon.png" />
     <Content Include="Furniture\Example\example.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

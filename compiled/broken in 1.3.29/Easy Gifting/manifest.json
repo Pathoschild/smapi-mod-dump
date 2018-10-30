@@ -1,8 +1,8 @@
 ﻿{
    "Name": "EasyGifting",
    "Author": "CeruleanSpirit",
-   "Version": "2.0.0",
-   "Description": "Villagers are no longer glowing. A bubble appears over their heads instead.",
+   "Version": "2.1.0",
+   "Description": "Now complies with the spouse gifting rule.",
    "UniqueID": "EasyGifting.2957",
    "EntryDll": "EasyGifting.dll",
    "MinimumApiVersion": "2.0",

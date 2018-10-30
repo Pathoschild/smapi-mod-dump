@@ -56,8 +56,8 @@ namespace freeDusty
 
         public void Second(object sender, EventArgs e)
         {
-            if(spawnMap != null && spawnMap.characters.Contains(doggie))
-                this.Monitor.Log("Dusty is at " + doggie.Position.X/64 + "/" + doggie.Position.Y/64);
+            //if(spawnMap != null && spawnMap.characters.Contains(doggie))
+                //this.Monitor.Log("Dusty is at " + doggie.Position.X/64 + "/" + doggie.Position.Y/64);
         }
 
         public void AfterDayStarted(object sender, EventArgs e)
@@ -87,21 +87,39 @@ namespace freeDusty
             // Find spawn point and spawn Dusty
             if(Game1.player.IsMainPlayer && spawnMap != null)
             {
-                    doggie = new Dusty(new AnimatedSprite("Dusty.xnb", 0, 29, 25), this.GetDustySpawn(), 0, "Dusty");                
-                    spawnMap.addCharacter(doggie);
-                    Helper.Content.AssetEditors.Add(new BoxEditor(this.Helper, prefix, false));
+                doggie = new Dusty(new AnimatedSprite("Dusty.xnb", 0, 29, 25), this.GetDustySpawn(), 0, "Dusty");                
+                spawnMap.addCharacter(doggie);
+                Helper.Content.AssetEditors.Add(new BoxEditor(this.Helper, prefix, false));
+
+                //this.Monitor.Log("Added Dusty to the spawn map.");
             }
             // If no spawn map could be determined, Dusty should be in his box
             else if(spawnMap == null)
                 Helper.Content.AssetEditors.Add(new BoxEditor(this.Helper, prefix, true));
-/*
-            if (spawnMap == null)
-                this.Monitor.Log("Did not spawn Dusty today.");
-            else
-                this.Monitor.Log("Spawned Dusty at " + spawnMap.Name + " (" + doggie.Position.X/64 + "/" + doggie.Position.Y/64 + ")");
-                */
 
-            //this.Monitor.Log("Is Dusty at "+spawnMap + "? -> " + spawnMap.characters.Contains(doggie));
+            if (spawnMap == null)
+            {
+                //this.Monitor.Log("Did not spawn Dusty today... or did I?");
+
+                foreach(NPC n in Game1.getLocationFromName("Farm").getCharacters()) {
+                    //this.Monitor.Log(n.getName());
+
+                    // If for some arcane reason Dusty ends up spawning EVEN THOUGH THERE IS NO WAY HE SHOULD, remove him again
+                    if (n.getName().Equals("Dusty"))
+                    {
+                        Game1.getLocationFromName("Farm").characters.Remove(n);
+                        //this.Monitor.Log("Found a stray Dusty and removed him.");
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                //this.Monitor.Log("Spawned Dusty at " + spawnMap.Name + " (" + doggie.Position.X / 64 + "/" + doggie.Position.Y / 64 + ")");
+                //this.Monitor.Log("Is Dusty at " + spawnMap + "? -> " + spawnMap.characters.Contains(doggie));
+            }
+
+
 
             /* // TODO: Figure this out
                 /* 
@@ -128,11 +146,10 @@ namespace freeDusty
 
         // Remove Dusty NPC at the end of the day to avoid serialization issues
         public void BeforeSave(object sender, EventArgs e)
-        {
-            //this.Monitor.Log("Removing Dusty from " + doggie.currentLocation.Name + " ... is he on that map? " + doggie.currentLocation.characters.Contains(doggie)+" ... he is at "+ doggie.currentLocation.ToString());
-            
+        {    
             if (spawnMap != null && doggie != null && doggie.currentLocation.characters.Contains(doggie))
             {
+                //this.Monitor.Log("Removing Dusty from " + doggie.currentLocation.Name + " ... is he on that map? " + doggie.currentLocation.characters.Contains(doggie) + " ... he is at " + doggie.currentLocation.ToString());
                 //this.Monitor.Log("Removing Dusty to escape evil serialization");
                 doggie.currentLocation.characters.Remove(doggie);
             }
@@ -164,7 +181,7 @@ namespace freeDusty
                 else if(spawnMap.Name.Equals("Farm"))
                 {
                     // Acceptable area around the farm
-                    if ((spawn.X >= 42 && spawn.X <= 73) && (spawn.Y >= 8 && spawn.Y <= 30))
+                    if ((spawn.X >= 42 && spawn.X <= 73) && (spawn.Y >= 10 && spawn.Y <= 30))
                         posFound = true;                    
                 }
                 else if(spawnMap.Name.Equals("FarmHouse"))

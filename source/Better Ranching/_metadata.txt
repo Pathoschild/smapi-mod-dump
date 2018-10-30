@@ -5,10 +5,9 @@ mods:
    Better Ranching
 
 latest commit:
-   commit d8b1b9496202c0131c7fae7ce6b71f0920b3c4e6
-   Merge: f1fba75 fcbe762
-   Author: urbanyeti <urbanski@gmail.com>
-   Date:   Sun May 27 21:08:48 2018 -0700
+   commit 25da9097fdcd6bfff68b415ecce9a0ca886836bf
+   Author: Urbanyeti <urbanski@gmail.com>
+   Date:   Mon Oct 29 13:32:22 2018 -0700
    
-       Merge branch 'master' of https://github.com/urbanyeti/stardew-better-ranching
+       Fix markdown
    

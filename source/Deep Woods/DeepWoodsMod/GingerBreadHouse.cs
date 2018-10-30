@@ -66,6 +66,13 @@ namespace DeepWoodsMod
 
         public override bool performToolAction(Tool t, int damage, Vector2 tileLocation, GameLocation location)
         {
+            if (t == null && damage > 0)
+            {
+                // explosion
+                this.shakeTimer = 100f;
+                return false;
+            }
+
             if (!(t is Axe))
                 return false;
 

@@ -14,6 +14,9 @@ namespace DeepWoodsMod
         private bool wasPickedUp;
 
         public EasterEgg()
+#if SDVBETA
+           : base(false)
+#endif
         {
             this.eggTileIndex = Game1.random.Next(67, 71);
             this.wasPickedUp = false;
@@ -55,6 +58,8 @@ namespace DeepWoodsMod
 
         public override bool performToolAction(Tool t, int explosion, Vector2 tileLocation, GameLocation location)
         {
+            if (t == null && explosion > 0)
+                return true;
             return false;
         }
 

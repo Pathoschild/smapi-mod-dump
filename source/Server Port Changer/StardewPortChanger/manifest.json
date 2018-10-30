@@ -1,0 +1,11 @@
+﻿{
+  "Name": "Server Port Changer",
+  "Author": "PhantomGamers",
+  "Version": "1.0",
+  "Description": "Change the port your server is hosted on.",
+  "PerSaveConfigs": false,
+  "MinimumApiVersion": "2.7",
+  "UniqueID": "PhantomGamers.ServerPortChanger",
+  "EntryDll": "ServerPortChanger.dll",
+  "UpdateKeys": [ "Nexus:2993", "Github:PhantomGamers/StardewPortChanger" ]
+}

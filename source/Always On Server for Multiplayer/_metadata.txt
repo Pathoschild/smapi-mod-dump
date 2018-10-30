@@ -5,10 +5,9 @@ mods:
    Always On Server for Multiplayer
 
 latest commit:
-   commit 9a860c883ed4cb0366d3b953a937d64272121648
-   Merge: b2ad2f3 f38e270
+   commit 64f275e6ce1cd16b62e7004852469bb4a90c947c
    Author: DESKTOP-S07204M\Curtis <curtis368@gmail.com>
-   Date:   Sat Oct 20 15:39:19 2018 -0500
+   Date:   Mon Oct 29 03:08:03 2018 -0500
    
-       Merge branch 'master' of https://github.com/funny-snek/Always-On-Server-for-Multiplayer
+       added profit margin and invite code to scren
    

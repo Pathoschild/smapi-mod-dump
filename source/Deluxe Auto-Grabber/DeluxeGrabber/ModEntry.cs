@@ -26,31 +26,6 @@ namespace DeluxeGrabber
 
             TimeEvents.AfterDayStarted += TimeEvents_AfterDayStarted;
             LocationEvents.ObjectsChanged += LocationEvents_ObjectsChanged;
-            InputEvents.ButtonPressed += InputEvents_ButtonPressed;
-        }
-
-        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
-        {
-            if (!Context.IsWorldReady)
-            {
-                return;
-            }
-
-            if (e.Button == SButton.B)
-            {
-                foreach (TerrainFeature feature in Game1.currentLocation.terrainFeatures.Values)
-                {
-                    if (feature is FruitTree fruitTree)
-                    {
-                        fruitTree.daysUntilMature.Value -= 30;
-                        Monitor.Log($"Tree age: {fruitTree.daysUntilMature}");
-                    }
-                }
-            } else if (e.Button == SButton.V)
-            {
-                Game1.MasterPlayer.caveChoice.Value = (Game1.MasterPlayer.caveChoice.Value % 2) + 1;
-                Monitor.Log($"FarmCave choice set to {Game1.MasterPlayer.caveChoice.Value}");
-            }
         }
 
         private void SetForagerLocation(string arg1, string[] arg2) {

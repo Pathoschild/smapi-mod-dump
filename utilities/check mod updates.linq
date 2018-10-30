@@ -164,7 +164,7 @@ public IDictionary<string, Tuple<string, string>> EquivalentModVersions = new Di
 	
 	// okay
 	["Jotser.AutoGrabberMod"] = Tuple.Create("1.0.12-beta.1", "1.0.12"),
-	["skuldomg.freeDusty"] = Tuple.Create("1.0-beta.7", "1.0.4"), // Free Dusty
+	["skuldomg.freeDusty"] = Tuple.Create("1.0-beta.7", "1.0.5"), // Free Dusty
 	["ElectroCrumpet.PelicanPostalService"] = Tuple.Create("1.0.4", "1.0.5"), // Pelican Postal Service
 };
 

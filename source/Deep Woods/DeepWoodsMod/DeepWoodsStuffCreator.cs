@@ -54,15 +54,61 @@ namespace DeepWoodsMod
             deepWoods.overlayObjects.Clear();
         }
 
+        private void AddThornyBushesToExit(DeepWoodsEnterExit.DeepWoodsExit exit)
+        {
+            Vector2 exitLocation = new Vector2(exit.Location.X, exit.Location.Y);
+            Vector2 xDir = new Vector2();
+            Vector2 yDir = new Vector2();
+            switch (exit.ExitDir)
+            {
+                case DeepWoodsEnterExit.ExitDirection.BOTTOM:
+                    xDir = new Vector2(1, 0);
+                    yDir = new Vector2(0, -1);
+                    break;
+                case DeepWoodsEnterExit.ExitDirection.TOP:
+                    xDir = new Vector2(1, 0);
+                    yDir = new Vector2(0, 1);
+                    break;
+                case DeepWoodsEnterExit.ExitDirection.LEFT:
+                    xDir = new Vector2(0, 1);
+                    yDir = new Vector2(1, 0);
+                    break;
+                case DeepWoodsEnterExit.ExitDirection.RIGHT:
+                    xDir = new Vector2(0, 1);
+                    yDir = new Vector2(-1, 0);
+                    break;
+            }
+
+            for (int x = -Settings.Map.ExitRadius; x <= Settings.Map.ExitRadius; x++)
+            {
+                for (int y = 0; y < Settings.Map.ExitLength-1; y++)
+                {
+                    if (y == 0 ||
+                        (this.random.CheckChance(new Chance(Settings.Map.ExitLength - y, Settings.Map.ExitLength))
+                        && this.random.CheckChance(new Chance(1 + Settings.Map.ExitRadius - Math.Abs(x), Settings.Map.ExitRadius))))
+                    {
+                        Vector2 thornyBushLocation = exitLocation + (xDir * x) + (yDir * y);
+                        deepWoods.terrainFeatures[thornyBushLocation] = new ThornyBush(thornyBushLocation, deepWoods);
+                    }
+                }
+            }
+        }
+
         private void AddStuff()
         {
             int mapWidth = this.spaceManager.GetMapWidth();
             int mapHeight = this.spaceManager.GetMapHeight();
 
-            if (deepWoods.level.Value > Settings.Level.MinLevelForThornyBushes)
+            // Add thorny bushes around exit areas.
+            if (!deepWoods.isLichtung && deepWoods.level.Value > Settings.Level.MinLevelForThornyBushes)
             {
-                // TODO: Add thorny bushes around entrance area.
-                // deepWoods.terrainFeatures[new Vector2(10, 10), new ThornyBush(new Vector2(10, 10), deepWoods));
+                foreach (var exit in deepWoods.exits)
+                {
+                    if (this.random.CheckChance(Settings.Level.ChanceForThornyBushesOnExit))
+                    {
+                        AddThornyBushesToExit(exit);
+                    }
+                }
             }
 
             if (deepWoods.isLichtung)
@@ -141,19 +187,19 @@ namespace DeepWoodsMod
                 {
                     if (deepWoods.level.Value >= Settings.Level.MinLevelForMeteorite && this.random.CheckChance(Settings.Luck.Terrain.ResourceClump.ChanceForMeteorite) && IsSpaceFree(location, new Size(2, 2)))
                     {
-                        deepWoods.resourceClumps.Add(new ResourceClump(ResourceClump.meteoriteIndex, 2, 2, location));
+                        deepWoods.resourceClumps.Add(new ExplodableResourceClump(ResourceClump.meteoriteIndex, 2, 2, location));
                     }
                     else if (this.random.CheckChance(Settings.Luck.Terrain.ResourceClump.ChanceForBoulder) && IsSpaceFree(location, new Size(2, 2)))
                     {
-                        deepWoods.resourceClumps.Add(new ResourceClump(this.random.CheckChance(Chance.FIFTY_FIFTY) ? ResourceClump.mineRock1Index : ResourceClump.mineRock2Index, 2, 2, location));
+                        deepWoods.resourceClumps.Add(new ExplodableResourceClump(this.random.CheckChance(Chance.FIFTY_FIFTY) ? ResourceClump.mineRock1Index : ResourceClump.mineRock2Index, 2, 2, location));
                     }
                     else if (this.random.CheckChance(Settings.Luck.Terrain.ResourceClump.ChanceForHollowLog) && IsSpaceFree(location, new Size(2, 2)))
                     {
-                        deepWoods.resourceClumps.Add(new ResourceClump(ResourceClump.hollowLogIndex, 2, 2, location));
+                        deepWoods.resourceClumps.Add(new ExplodableResourceClump(ResourceClump.hollowLogIndex, 2, 2, location));
                     }
                     else if (this.random.CheckChance(Settings.Luck.Terrain.ResourceClump.ChanceForStump) && IsSpaceFree(location, new Size(2, 2)))
                     {
-                        deepWoods.resourceClumps.Add(new ResourceClump(ResourceClump.stumpIndex, 2, 2, location));
+                        deepWoods.resourceClumps.Add(new ExplodableResourceClump(ResourceClump.stumpIndex, 2, 2, location));
                     }
                     else if (this.random.CheckChance(Settings.Luck.Terrain.ChanceForLargeBush) && IsSpaceFree(location, new Size(3, 1)))
                     {
@@ -257,11 +303,13 @@ namespace DeepWoodsMod
 
             switch (this.random.GetRandomValue(Settings.Luck.Clearings.Perks))
             {
-                /*case LichtungStuff.Lake:
-                    this.deepWoodsBuilder.AddLakeToLichtung();
-                    break;*/
+                case LichtungStuff.Lake:
+                    // Try again, lake is handled in Builder!
+                    AddSomethingAwesomeForLichtung(location);
+                    break;
                 case LichtungStuff.MushroomTrees:
-                    // TODO!
+                    AddMushroomTrees(location);
+                    AddMushrooms();
                     break;
                 case LichtungStuff.Treasure:
                     if (this.random.CheckChance(Settings.Luck.Clearings.ChanceForTrashOrTreasure))
@@ -467,7 +515,7 @@ namespace DeepWoodsMod
             int maxX = x + 9;
             int minY = y - 6;
             int maxY = y + 9;
-            int numWinterFruits = this.random.GetRandomValue(9, 16);
+            int numWinterFruits = this.random.GetRandomValue(6, 14);
             for (int i = 0; i < numWinterFruits; i++)
             {
                 int fruitX = this.random.GetRandomValue(minX, maxX);
@@ -480,7 +528,59 @@ namespace DeepWoodsMod
                 if (deepWoods.objects.ContainsKey(fruitLocation))
                     continue;
 
-                deepWoods.objects[fruitLocation] = new StardewValley.Object(fruitLocation, 414, 1);
+                deepWoods.objects[fruitLocation] = new StardewValley.Object(414, 1, false, -1, GetRandomItemQuality()) { IsSpawnedObject = true };
+            }
+        }
+
+        private void AddMushroomTrees(Vector2 location)
+        {
+            int minX = Settings.Map.ForestPatchMinGapToMapBorder;
+            int maxX = deepWoods.mapWidth - Settings.Map.ForestPatchMinGapToMapBorder;
+            int minY = Settings.Map.ForestPatchMinGapToMapBorder;
+            int maxY = deepWoods.mapHeight - Settings.Map.ForestPatchMinGapToMapBorder;
+
+            int numMushroomTrees = this.random.GetRandomValue(3, 9);
+
+            for (int i = 0; i < numMushroomTrees; i++)
+            {
+                int mushroomTreeX = this.random.GetRandomValue(minX, maxX);
+                int mushroomTreeY = this.random.GetRandomValue(minX, maxX);
+
+                Vector2 mushroomTreeLocation = new Vector2(mushroomTreeX, mushroomTreeY);
+
+                if (!deepWoods.isTileLocationTotallyClearAndPlaceable(mushroomTreeLocation))
+                    continue;
+
+                Tree mushroomTree = new Tree(Tree.mushroomTree, Tree.treeStage);
+                if (Game1.currentSeason == "winter")
+                    mushroomTree.stump.Value = true;
+                deepWoods.terrainFeatures[mushroomTreeLocation] = mushroomTree;
+            }
+        }
+
+        private void AddMushrooms()
+        {
+            int minX = Settings.Map.MaxBumpSizeForForestBorder;
+            int maxX = deepWoods.mapWidth - Settings.Map.MaxBumpSizeForForestBorder;
+            int minY = Settings.Map.MaxBumpSizeForForestBorder;
+            int maxY = deepWoods.mapHeight - Settings.Map.MaxBumpSizeForForestBorder;
+
+            int numMushrooms = (Game1.currentSeason == "winter") ? this.random.GetRandomValue(12, 24) : this.random.GetRandomValue(9, 14);
+
+            for (int i = 0; i < numMushrooms; i++)
+            {
+                int mushroomX = this.random.GetRandomValue(minX, maxX);
+                int mushroomY = this.random.GetRandomValue(minX, maxX);
+
+                Vector2 mushroomLocation = new Vector2(mushroomX, mushroomY);
+
+                if (!deepWoods.isTileLocationTotallyClearAndPlaceable(mushroomLocation))
+                    continue;
+
+                // only purple mushrooms in winter
+                int mushroomType = (Game1.currentSeason == "winter") ? 422 : GetRandomMushroomType();
+
+                deepWoods.objects[mushroomLocation] = new StardewValley.Object(mushroomType, 1, false, -1, GetRandomItemQuality()) { IsSpawnedObject = true };
             }
         }
 
@@ -667,6 +767,16 @@ namespace DeepWoodsMod
                 new WeightedInt(257, 10), // Morel
                 new WeightedInt(281, 20), // Big brown one
                 new WeightedInt(404, 50), // Normal one
+            });
+        }
+
+        private int GetRandomItemQuality()
+        {
+            return this.random.GetRandomValue(new WeightedInt[] {
+                new WeightedInt(StardewValley.Object.lowQuality, 100),
+                new WeightedInt(StardewValley.Object.medQuality, 50),
+                new WeightedInt(StardewValley.Object.highQuality, 10),
+                new WeightedInt(StardewValley.Object.bestQuality, 1),
             });
         }
 
