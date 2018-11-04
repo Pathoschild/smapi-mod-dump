@@ -16,9 +16,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 064253d2e11c37458441e007e406a110f5740aad
+   commit 02b4f0553784dfb6e9b30ea4d5ce8c9a9d9b1961
    Author: Jesse Plamondon-Willard <github@jplamondonw.com>
-   Date:   Sun Oct 28 17:35:05 2018 -0400
+   Date:   Sat Nov 3 20:42:19 2018 -0400
    
-       update mod build config package
+       add common.targets for convenience
    

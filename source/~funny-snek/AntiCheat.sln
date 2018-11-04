@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2048
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntiCheatClient", "Client\AntiCheatClient.csproj", "{E9FB569C-5B16-4146-BD9D-46568548C6BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntiCheatServer", "Server\AntiCheatServer.csproj", "{00F22AE1-8E7B-4627-B04E-14C75BF03CF2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{33BEBB34-7EF4-43F6-BFF7-3FD09A63291C}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E9FB569C-5B16-4146-BD9D-46568548C6BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9FB569C-5B16-4146-BD9D-46568548C6BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9FB569C-5B16-4146-BD9D-46568548C6BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9FB569C-5B16-4146-BD9D-46568548C6BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00F22AE1-8E7B-4627-B04E-14C75BF03CF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00F22AE1-8E7B-4627-B04E-14C75BF03CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00F22AE1-8E7B-4627-B04E-14C75BF03CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00F22AE1-8E7B-4627-B04E-14C75BF03CF2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {22EE76A5-E3A8-4488-BC57-2A48C5093BD4}
+	EndGlobalSection
+EndGlobal

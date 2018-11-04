@@ -1,0 +1,13 @@
+url:
+   https://github.com/KirbyLink/BeeHouseFix.git
+
+mods:
+   Bee House Flower Range Fix
+
+latest commit:
+   commit 735112273799da1a19dfd727778f70ea82537b0e
+   Author: KirbyLink <kjryan.reeves@gmail.com>
+   Date:   Thu Nov 1 11:07:55 2018 -0700
+   
+       Removed a comment not related to this mod
+   

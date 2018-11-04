@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Netcode;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.BellsAndWhistles;
 using StardewValley.Locations;
-using StardewValley.Monsters;
-using StardewValley.TerrainFeatures;
-using xTile;
 using xTile.Dimensions;
-using xTile.Layers;
-using xTile.Tiles;
 using static DeepWoodsMod.DeepWoodsEnterExit;
 using static DeepWoodsMod.DeepWoodsGlobals;
 using static DeepWoodsMod.DeepWoodsSettings;
@@ -31,6 +21,31 @@ namespace DeepWoodsMod
         private static DeepWoods rootDeepWoodsBackup = null;
         private static bool lostMessageDisplayedToday = false;
         private static int nextRandomizeTime = 0;
+
+
+        public static void AddExitLocation(DeepWoods deepWoods, Location tile, DeepWoodsExit exit)
+        {
+            if (!Game1.IsMasterGame)
+                return;
+
+            if (deepWoods == null)
+                return;
+
+            deepWoods.AddExitLocation(tile, exit);
+        }
+
+        public static void RemoveExitLocation(DeepWoods deepWoods, Location tile)
+        {
+            if (!Game1.IsMasterGame)
+                return;
+
+            if (deepWoods == null)
+                return;
+
+            deepWoods.RemoveExitLocation(tile);
+        }
+
+
 
         public static void WarpFarmerIntoDeepWoods(int level)
         {
@@ -97,6 +112,9 @@ namespace DeepWoodsMod
 
         public static void AddDeepWoodsToGameLocations(DeepWoods deepWoods)
         {
+            if (deepWoods == null)
+                return;
+
             Game1.locations.Add(deepWoods);
 
             if (Game1.IsMasterGame)
@@ -114,7 +132,7 @@ namespace DeepWoodsMod
             {
                 Game1.warpFarmer(Game1.getLocationRequest("Woods", false), WOODS_WARP_LOCATION.X, WOODS_WARP_LOCATION.Y, 0);
                 // Take away all health and energy to avoid cheaters using Save Anywhere to escape getting lost
-                if (deepWoods.level > 1 && deepWoods.IsLost())
+                if (deepWoods.level > 1 && deepWoods.IsLost)
                 {
                     Game1.player.health = 1;
                     Game1.player.Stamina = 0;
@@ -153,13 +171,14 @@ namespace DeepWoodsMod
             if (!Game1.IsMasterGame)
                 return;
 
-            DeepWoodsManager.rootDeepWoodsBackup = Game1.getLocationFromName("DeepWoods") as DeepWoods;
+            if (Game1.getLocationFromName("DeepWoods") is DeepWoods rootDeepWoods)
+                DeepWoodsManager.rootDeepWoodsBackup = rootDeepWoods;
+
             List<DeepWoods> toBeRemoved = new List<DeepWoods>();
             foreach (var location in Game1.locations)
-            {
                 if (location is DeepWoods deepWoods)
                     toBeRemoved.Add(deepWoods);
-            }
+
             foreach (var deepWoods in toBeRemoved)
                 DeepWoodsManager.RemoveDeepWoodsFromGameLocations(deepWoods);
         }
@@ -181,9 +200,11 @@ namespace DeepWoodsMod
             if (!Game1.IsMasterGame)
                 return;
 
-            DeepWoodsManager.AddDeepWoodsToGameLocations(DeepWoodsManager.rootDeepWoodsBackup);
-            CheckValid();
+            if (DeepWoodsManager.rootDeepWoodsBackup != null)
+                DeepWoodsManager.AddDeepWoodsToGameLocations(DeepWoodsManager.rootDeepWoodsBackup);
             DeepWoodsManager.rootDeepWoodsBackup = null;
+
+            CheckValid();
         }
 
         public static void Add()

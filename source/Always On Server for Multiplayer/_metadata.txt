@@ -5,9 +5,9 @@ mods:
    Always On Server for Multiplayer
 
 latest commit:
-   commit 64f275e6ce1cd16b62e7004852469bb4a90c947c
+   commit 7adb090b99e8b6ae323aa4e8bcfe6fbe269f6f49
    Author: DESKTOP-S07204M\Curtis <curtis368@gmail.com>
-   Date:   Mon Oct 29 03:08:03 2018 -0500
+   Date:   Wed Oct 31 01:31:13 2018 -0500
    
-       added profit margin and invite code to scren
+       1.12 added players online txt, added server toggle reloads config
    

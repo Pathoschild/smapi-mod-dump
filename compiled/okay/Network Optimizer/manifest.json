@@ -1,0 +1,10 @@
+﻿{
+   "Name": "NetworkOptimizer",
+   "Author": "Ilyaki",
+   "Version": "1.0.0",
+   "Description": "Edit network settings to smoothen multiplayer.",
+   "UniqueID": "Ilyaki.NetworkOptimizer",
+   "EntryDll": "NetworkOptimizer.dll",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": [ "Nexus:3021" ]
+}

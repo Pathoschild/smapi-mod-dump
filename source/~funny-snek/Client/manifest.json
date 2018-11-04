@@ -1,0 +1,10 @@
+{
+  "Name": "Anti-Cheat Client",
+  "Author": "funnysnek",
+  "Version": "7.3.0",
+  "Description": "A mod needed by mods joining a server with Anti-Cheat enabled.",
+  "UniqueID": "FunnySnek.AntiCheatClient",
+  "EntryDll": "AntiCheatClient.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": []
+}

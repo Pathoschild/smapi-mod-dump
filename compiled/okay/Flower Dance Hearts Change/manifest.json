@@ -1,0 +1,10 @@
+﻿{
+   "Name": "FlowerDanceHeartsChange",
+   "Author": "ron075sh",
+   "Version": "1.0.1", // fixed locally
+   "Description": "This mod allows you to change the number of heart you need to have with the other characters in order to dance with them.",
+   "UniqueID": "ron075sh.FlowerDanceHeartsChange",
+   "EntryDll": "FlowerDanceHeartsChange.dll",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": []
+}

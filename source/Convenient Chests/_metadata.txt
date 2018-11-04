@@ -1,0 +1,13 @@
+url:
+   https://github.com/aEnigmatic/StardewValley.git
+
+mods:
+   Convenient Chests
+
+latest commit:
+   commit 11cf3def27c268a29a74d1c1defe1653ca3c5308
+   Author: Guido Kubach <guido.kubach@media-it-support.de>
+   Date:   Mon Aug 6 14:23:25 2018 +0200
+   
+       Updated for SDV 1.3 / SMAPI 2.6
+   

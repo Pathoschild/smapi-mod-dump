@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
 using StardewValley;
 using StardewValley.TerrainFeatures;
+using System;
 
 namespace DeepWoodsMod
 {
@@ -10,16 +12,22 @@ namespace DeepWoodsMod
     /// </summary>
     class EasterEgg : TerrainFeature
     {
-        private int eggTileIndex;
-        private bool wasPickedUp;
+        public readonly NetInt eggTileIndex = new NetInt(0);
+        public readonly NetBool wasPickedUp = new NetBool(false);
 
         public EasterEgg()
 #if SDVBETA
            : base(false)
 #endif
         {
-            this.eggTileIndex = Game1.random.Next(67, 71);
-            this.wasPickedUp = false;
+            InitNetFields();
+            this.eggTileIndex.Value = Game1.random.Next(67, 71);
+            this.wasPickedUp.Value = false;
+        }
+
+        private void InitNetFields()
+        {
+            this.NetFields.AddFields(this.wasPickedUp, this.eggTileIndex);
         }
 
         public override Microsoft.Xna.Framework.Rectangle getBoundingBox(Vector2 tileLocation)
@@ -39,14 +47,21 @@ namespace DeepWoodsMod
 
             if (Game1.player.addItemToInventoryBool(new EasterEggItem(), false))
             {
-                if (!(Game1.player.FarmerSprite is DeepWoodsMod.FarmerSprite))
+                this.wasPickedUp.Value = true;
+                try
                 {
-                    Game1.player.FarmerSprite = new DeepWoodsMod.FarmerSprite(Game1.player.FarmerSprite);
+                    Game1.player.currentLocation.playSound("coin");
+                    if (!(Game1.player.FarmerSprite is DeepWoodsMod.FarmerSprite))
+                    {
+                        Game1.player.FarmerSprite = new DeepWoodsMod.FarmerSprite(Game1.player.FarmerSprite);
+                    }
+                    Game1.player.animateOnce(StardewValley.FarmerSprite.harvestItemUp + Game1.player.FacingDirection);
+                    Game1.player.canMove = false;
                 }
-                Game1.player.animateOnce(StardewValley.FarmerSprite.harvestItemUp + Game1.player.FacingDirection);
-                Game1.player.canMove = false;
-                Game1.player.currentLocation.playSound("coin");
-                this.wasPickedUp = true;
+                catch (Exception e)
+                {
+                    ModEntry.Log("Failed to play pickup animation: " + e, StardewModdingAPI.LogLevel.Warn);
+                }
                 return true;
             }
             else

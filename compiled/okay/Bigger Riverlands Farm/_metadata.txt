@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3025
+IDs: jessebot.biggerriverlands
+update keys: Nexus:3025

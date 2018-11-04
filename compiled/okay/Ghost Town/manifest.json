@@ -1,0 +1,15 @@
+﻿{
+  "Name": "GhostTown",
+  "Author": "Platonyous",
+  "Version": "1.0.0",
+  "Description": "Ghostify Stardew Valley",
+  "UniqueID": "Platonymous.GhostTown",
+  "EntryDll": "GhostTown.dll",
+  "MinimumApiVersion": "2.7",
+  "UpdateKeys": [ "Nexus:2992" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.Toolkit"
+    }
+  ]
+}

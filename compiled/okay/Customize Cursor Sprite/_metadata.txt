@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3014
+IDs: EpicBellyFlop45.CustomizeCursorSprite
+update keys: Nexus:3014

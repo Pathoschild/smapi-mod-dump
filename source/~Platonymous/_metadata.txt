@@ -11,7 +11,9 @@ mods:
    Custom NPC
    Custom Shirts
    Custom TV
+   Custom Walls and Floors
    Farm Hub
+   Ghost Town
    Harp of Yoba Redux
    Junimo Farm
    More Map Layers
@@ -31,9 +33,9 @@ mods:
    Visualize
 
 latest commit:
-   commit c5185812dd01dfe98c4a3dd9d4eaa4a85c08ec6a
+   commit b0550afe74ea63b28794d3eea1851dc3687cd44e
    Author: Platonymous <david@millionideas.de>
-   Date:   Tue Oct 30 04:57:42 2018 +0100
+   Date:   Fri Nov 2 07:58:15 2018 +0100
    
-       update
+       Prep for animation
    

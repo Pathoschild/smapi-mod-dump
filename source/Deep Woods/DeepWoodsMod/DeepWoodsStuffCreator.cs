@@ -9,6 +9,7 @@ using static DeepWoodsMod.DeepWoodsRandom;
 using static DeepWoodsMod.DeepWoodsSettings;
 using static DeepWoodsMod.DeepWoodsGlobals;
 using System.Reflection;
+using DeepWoodsMod.API.Impl;
 
 namespace DeepWoodsMod
 {
@@ -180,7 +181,7 @@ namespace DeepWoodsMod
                     }
                     else
                     {
-                        deepWoods.terrainFeatures[location] = new LootFreeGrass(GetSeasonGrassType(), this.random.GetRandomValue(1, 3));
+                        AddModOrGrass(location);
                     }
                 }
                 else
@@ -256,7 +257,7 @@ namespace DeepWoodsMod
                     }
                     else if (deepWoods.level.Value >= Settings.Level.MinLevelForFlowers && this.random.CheckChance(Game1.currentSeason == "winter" ? Settings.Luck.Terrain.ChanceForFlowerInWinter : Settings.Luck.Terrain.ChanceForFlower))
                     {
-                        deepWoods.terrainFeatures[location] =new Flower(GetRandomFlowerType(), location);
+                        deepWoods.terrainFeatures[location] = new Flower(GetRandomFlowerType(), location);
                     }
                     else if (IsEasterEggDay() && numEasterEggs < maxEasterEggs && this.random.CheckChance(Settings.Luck.Terrain.ChanceForEasterEgg))
                     {
@@ -265,7 +266,7 @@ namespace DeepWoodsMod
                     }
                     else
                     {
-                        deepWoods.terrainFeatures[location] = new LootFreeGrass(GetSeasonGrassType(), this.random.GetRandomValue(1, 3));
+                        AddModOrGrass(location);
                     }
                 }
             }
@@ -294,6 +295,71 @@ namespace DeepWoodsMod
                     deepWoods.terrainFeatures[location] = new LootFreeGrass(GetSeasonGrassType(), this.random.GetRandomValue(1, 3));
                 }
             }
+        }
+
+        private void AddModOrGrass(Vector2 location)
+        {
+            // We have 4 kinds of things that a mod can add:
+            // largeterrainfeatures, terrainfeatures, resourceclumps and objects.
+            // To create a truly random order, we shuffle the kind of things (using lambdas in a list),
+            // and then we shuffle the callbacks provided by mods.
+            foreach (var action in DeepWoodsAPI.ToShuffledList(new List<Func<bool>>()
+            {
+                () => {
+                    foreach (var modLargeTerrainFeature in DeepWoodsAPI.ToShuffledList(ModEntry.GetAPI().LargeTerrainFeatures))
+                    {
+                        if (modLargeTerrainFeature.Item1(deepWoods, location))
+                        {
+                            deepWoods.largeTerrainFeatures.Add(modLargeTerrainFeature.Item2());
+                            return true;
+                        }
+                    }
+                    return false;
+                },
+                () => {
+                    foreach (var modResourceClump in DeepWoodsAPI.ToShuffledList(ModEntry.GetAPI().ResourceClumps))
+                    {
+                        if (modResourceClump.Item1(deepWoods, location))
+                        {
+                            deepWoods.resourceClumps.Add(modResourceClump.Item2());
+                            return true;
+                        }
+                    }
+                    return false;
+                },
+                () => {
+                    foreach (var modTerrainFeature in DeepWoodsAPI.ToShuffledList(ModEntry.GetAPI().TerrainFeatures))
+                    {
+                        if (modTerrainFeature.Item1(deepWoods, location))
+                        {
+                            deepWoods.terrainFeatures[location] = modTerrainFeature.Item2();
+                            return true;
+                        }
+                    }
+                    return false;
+                },
+                () => {
+                    foreach (var modObject in DeepWoodsAPI.ToShuffledList(ModEntry.GetAPI().Objects))
+                    {
+                        if (modObject.Item1(deepWoods, location))
+                        {
+                            deepWoods.objects[location] = modObject.Item2();
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            }))
+            {
+                if (action())
+                {
+                    // A mod added something, return
+                    return;
+                }
+            }
+
+            // Mods didn't add anything, add grass
+            deepWoods.terrainFeatures[location] = new LootFreeGrass(GetSeasonGrassType(), this.random.GetRandomValue(1, 3));
         }
 
         private void AddSomethingAwesomeForLichtung(Vector2 location)

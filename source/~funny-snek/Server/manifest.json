@@ -1,0 +1,10 @@
+{
+  "Name": "Anti-Cheat Server",
+  "Author": "funnysnek",
+  "Version": "7.2.0",
+  "Description": "A mod for the host player of a multiplayer server to block players who have cheat mods installed.",
+  "UniqueID": "FunnySnek.AntiCheatServer",
+  "EntryDll": "AntiCheatServer.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": []
+}

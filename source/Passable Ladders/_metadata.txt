@@ -5,9 +5,9 @@ mods:
    Passable Ladders
 
 latest commit:
-   commit b00d2afe8766b02ffc404fe505d02bb6bcd8937f
+   commit b4b48c1bf51bd9286a7e951dd6f66ab6ad7b6b56
    Author: Joel Anderson <joelr.anders@gmail.com>
-   Date:   Tue Oct 23 20:35:04 2018 -0500
+   Date:   Thu Nov 1 19:12:52 2018 -0500
    
-       Updating manfiest file to have correct version number
+       Added Nexus update tag
    

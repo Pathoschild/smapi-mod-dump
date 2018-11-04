@@ -18,11 +18,14 @@ using StardewValley.Tools;
 using Microsoft.Xna.Framework.Audio;
 using System.IO;
 using Omegasis.SaveAnywhere.API;
+using DeepWoodsMod.API;
+using DeepWoodsMod.API.Impl;
 
 namespace DeepWoodsMod
 {
     public class ModEntry : Mod, IAssetEditor, IAssetLoader
     {
+        private static DeepWoodsAPI api = new DeepWoodsAPI();
         private static ModEntry mod;
 
         private bool isDeepWoodsGameRunning = false;
@@ -71,12 +74,15 @@ namespace DeepWoodsMod
             RegisterEvents();
         }
 
-        /*
         public override object GetApi()
         {
-            return new DeepWoodsAPI();
+            return ModEntry.GetAPI();
         }
-        */
+
+        public static DeepWoodsAPI GetAPI()
+        {
+            return api;
+        }
 
         private void RegisterEvents()
         {
@@ -87,8 +93,12 @@ namespace DeepWoodsMod
             TimeEvents.AfterDayStarted += this.TimeEvents_AfterDayStarted;
             TimeEvents.TimeOfDayChanged += this.TimeEvents_TimeOfDayChanged;
             GameEvents.UpdateTick += this.GameEvents_UpdateTick;
+            GameEvents.FirstUpdateTick += this.GameEvents_FirstUpdateTick;
             GraphicsEvents.OnPostRenderEvent += this.GraphicsEvents_OnPostRenderEvent;
+        }
 
+        private void GameEvents_FirstUpdateTick(object sender, EventArgs args)
+        {
             if (Helper.ModRegistry.IsLoaded("Omegasis.SaveAnywhere"))
             {
                 ISaveAnywhereAPI api = Helper.ModRegistry.GetApi<ISaveAnywhereAPI>("Omegasis.SaveAnywhere");
@@ -287,25 +297,68 @@ namespace DeepWoodsMod
 
         public bool CanEdit<T>(IAssetInfo asset)
         {
-            return asset.AssetNameEquals("Maps/Woods") || asset.AssetNameEquals("Data/mail");
+            return asset.AssetNameEquals("Data/mail");
         }
 
         private void OpenPassageInSecretWoods(Woods woods)
         {
-            if (!isDeepWoodsGameRunning)
-                return;
+            // TODO: Configurable (and moddable!) locations to modify Woods
 
-            woods.map.GetLayer("Buildings").Tiles[29, 25] = null;
-            woods.map.GetLayer("Buildings").Tiles[29, 26] = null;
+            // Game isn't running
+            if (!isDeepWoodsGameRunning)
+            {
+                ModEntry.Log("OpenPassageInSecretWoods: Cancelled, mod not initialized.", LogLevel.Trace);
+                return;
+            }
+
+            Layer buildingsLayer = woods.map.GetLayer("Buildings");
+
+            // Just to be sure
+            if (buildingsLayer == null)
+            {
+                ModEntry.Log("OpenPassageInSecretWoods: Cancelled, invalid map (buildingsLayer is null).", LogLevel.Trace);
+                return;
+            }
+
+            // Already patched
+            if (buildingsLayer.Tiles[29, 25] == null)
+            {
+                ModEntry.Log("OpenPassageInSecretWoods: Cancelled, map incompatible or already patched.", LogLevel.Trace);
+                return;
+            }
+
+            ModEntry.Log("OpenPassageInSecretWoods", LogLevel.Trace);
+
+            TileSheet borderTileSheet = buildingsLayer.Tiles[29, 25].TileSheet;
+            int borderTileIndex = buildingsLayer.Tiles[29, 25].TileIndex;
+
+            buildingsLayer.Tiles[29, 25] = null;
+            buildingsLayer.Tiles[29, 26] = null;
+
+            for (int x = 24; x < 29; x++)
+            {
+                buildingsLayer.Tiles[x, 24] = new StaticTile(buildingsLayer, borderTileSheet, BlendMode.Alpha, borderTileIndex);
+                woods.warps.Add(new Warp(x, 32, "DeepWoods", Settings.Map.RootLevelEnterLocation.X, Settings.Map.RootLevelEnterLocation.Y + 1, false));
+            }
+
+            /*
+            foreach (var location in DeleteBuildingTiles)
+            {
+            }
+
+            foreach (var location in AddBuildingTiles)
+            {
+            }
+
+            foreach (var location in WarpLocations)
+            {
+            }
+            */
         }
 
         public void Edit<T>(IAssetData asset)
         {
-            if (asset.AssetNameEquals("Maps/Woods"))
-            {
-                EditWoodsMap(asset.GetData<Map>());
-            }
-            else if (asset.AssetNameEquals("Data/mail"))
+            if (asset.AssetNameEquals("Data/mail"))
             {
                 EditMail(asset.GetData<Dictionary<string, string>>());
                 Game1.content.Load<Dictionary<string, string>>("Data\\mail");
@@ -319,53 +372,6 @@ namespace DeepWoodsMod
         private void EditMail(Dictionary<string, string> mailData)
         {
             mailData.Add(WOODS_OBELISK_WIZARD_MAIL_ID, I18N.WoodsObeliskWizardMailMessage);
-        }
-
-        private void EditWoodsMap(Map map)
-        {
-            // Get "Buildings" layer (used for map border and forest border):
-            Layer buildingsLayer = map.GetLayer("Buildings");
-
-            // Get tileSheet and tileIndex from a forest border tile
-            TileSheet borderTileSheet = buildingsLayer.Tiles[29, 26].TileSheet;
-            int borderTileIndex = buildingsLayer.Tiles[29, 26].TileIndex;
-
-            // Delete some hidden forest border tiles to allow player walking into deep woods:
-            // Commented out, because we do that in OpenPassageInSecretWoods(Woods woods) now, because we don't want this open in multiplayer clients connected to a server without the DeepWoodsMod.
-            // buildingsLayer.Tiles[29, 25] = null;
-            // buildingsLayer.Tiles[29, 26] = null;
-
-            // Add some new border tiles to prevent player from getting confused/lost/stuck inside the hole we created.
-            // (Basically setup a new border so player can only go left/down into DeepWoods or right/up back.)
-            for (int x = 24; x < 29; x++)
-            {
-                buildingsLayer.Tiles[x, 24] = new StaticTile(buildingsLayer, borderTileSheet, BlendMode.Alpha, borderTileIndex);
-            }
-
-            // Add warps to DeepWoods reachable through deleted border:
-            map.Properties.TryGetValue("Warp", out PropertyValue warpPropertyValue);
-            string warpPropertyString;
-            if (warpPropertyValue != null)
-            {
-                warpPropertyString = warpPropertyValue.ToString() + " " + GetWoodsToDeepWoodsWarps();
-            }
-            else
-            {
-                warpPropertyString = GetWoodsToDeepWoodsWarps();
-            }
-            map.Properties["Warp"] = new PropertyValue(warpPropertyString);
-        }
-
-        private string GetWoodsToDeepWoodsWarps()
-        {
-            string warps = "";
-
-            for (int i = -Settings.Map.ExitRadius; i <= Settings.Map.ExitRadius; i++)
-            {
-                warps += " " + (26 + i) + " 32 DeepWoods " + (Settings.Map.RootLevelEnterLocation.X + i) + " 1";
-            }
-
-            return warps.Trim();
         }
 
         public bool CanLoad<T>(IAssetInfo asset)

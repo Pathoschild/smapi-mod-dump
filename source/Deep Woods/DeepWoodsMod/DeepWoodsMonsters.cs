@@ -7,6 +7,7 @@ using static DeepWoodsMod.DeepWoodsSettings;
 using static DeepWoodsMod.DeepWoodsGlobals;
 using System.Collections.Generic;
 using System.Linq;
+using DeepWoodsMod.API.Impl;
 
 namespace DeepWoodsMod
 {
@@ -87,7 +88,7 @@ namespace DeepWoodsMod
                 int x = tileIndex % mapWidth;
                 int y = tileIndex / mapWidth;
 
-                if (monster == null) monster = CreateRandomMonster();
+                if (monster == null) monster = CreateRandomMonster(new Vector2(x, y));
                 if (deepWoods.CanPlaceMonsterHere(x, y, monster))
                 {
                     monster.Position = new Vector2(x * 64f, y * 64f) - new Vector2(0, monster.Sprite.SpriteHeight - 64);
@@ -101,7 +102,7 @@ namespace DeepWoodsMod
             // random.LeaveMasterMode();
         }
 
-        Monster CreateRandomMonster()
+        Monster CreateRandomMonster(Vector2 location)
         {
             Monster monster = null;
 
@@ -139,7 +140,16 @@ namespace DeepWoodsMod
             }
             else
             {
-                monster = new GreenSlime(new Vector2(), GetSlimeLevel());
+                foreach (var modMonster in DeepWoodsAPI.ToShuffledList(ModEntry.GetAPI().Monsters))
+                {
+                    if (modMonster.Item1(deepWoods, location))
+                    {
+                        monster = modMonster.Item2();
+                        break;
+                    }
+                }
+                if (monster == null)
+                    monster = new GreenSlime(new Vector2(), GetSlimeLevel());
             }
 
             if (deepWoods.level.Value >= Settings.Level.MinLevelForBuffedMonsters && !this.random.CheckChance(Settings.Monsters.ChanceForUnbuffedMonster))
