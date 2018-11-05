@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3032
+IDs: EasyPetting.3032
+update keys: Nexus:3032

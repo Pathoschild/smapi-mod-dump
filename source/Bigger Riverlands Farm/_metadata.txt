@@ -1,0 +1,13 @@
+url:
+   https://github.com/JessebotX/StardewMods.git
+
+mods:
+   Bigger Riverlands Farm
+
+latest commit:
+   commit 4578198ad85b8f9d55880cccc10fa2eb7fedee60
+   Author: JessebotX <43657800+JessebotX@users.noreply.github.com>
+   Date:   Sun Nov 4 12:53:43 2018 -0800
+   
+       your mom
+   

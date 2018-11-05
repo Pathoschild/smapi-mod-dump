@@ -1,0 +1,8 @@
+/* Instructions:
+
+[ "MapType": 0 //loads default (Swimming Area/Minecart transport blocked off)[it's only blocked off if you start a new save]
+[ "MapType": 1 //loads map that has Swimming Area/Minecart transport available right off the bat (is automatically unblocked if you are on an old save unless something was there earlier)[it wont be blocked off if you start a new save]
+[ "MapType": 2 //same thing as MapType 1 except the mountain at the center right of the map is gone. (works for new and old saves)
+[ "MapType": 3 //same thing as MapType 0 except the mountain at the center right of the map is gone. (progression part only works for new saves. Mountain removal works for both new and old saves)
+
+*/
