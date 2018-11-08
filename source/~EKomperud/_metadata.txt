@@ -6,9 +6,9 @@ mods:
    Multiple Gifts for Spouses
 
 latest commit:
-   commit 4f0af4c3f36ba2bf34f5fcc97be4bd34fac0c51b
+   commit f5012de7fd8ff7754e06de767cb523de585943b4
    Author: EKomperud <ericmkomperud@gmail.com>
-   Date:   Mon Oct 29 22:10:56 2018 -0600
+   Date:   Mon Nov 5 21:05:19 2018 -0700
    
-       A* rounds corners properly!
+       Pathfinding all good. Character scripts added
    

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Harmony;
 using StardewModdingAPI;
 using StardewValley;
@@ -37,6 +38,8 @@ namespace FollowerNPC
         public bool whiteBoxFollow;
         private Vector2 negativeOne = new Vector2(-1, -1);
 
+        public SortedList<string, string> npcCompanionDays;
+
         public Farmer farmer;
         public Vector2 farmerLastTile;
 
@@ -55,6 +58,11 @@ namespace FollowerNPC
             halfTile = (int) (Game1.tileSize * 0.5f);
 
             HarmonyInstance harmony = HarmonyInstance.Create("Redwood.FollowerNPC");
+            Type[] types = new Type[] { typeof(Rectangle), typeof(xTile.Dimensions.Rectangle), typeof(bool), typeof(int), typeof(bool), typeof(Character), typeof(bool), typeof(bool), typeof(bool) };
+            MethodInfo originalMethod = typeof(GameLocation).GetMethod("isCollidingPosition", types);
+            MethodInfo prefixMethod = typeof(Patches).GetMethod("Prefix");
+            MethodInfo postfixMethod = typeof(Patches).GetMethod("Postfix");
+            harmony.Patch(originalMethod, new HarmonyMethod(prefixMethod), new HarmonyMethod(postfixMethod));
 
             ControlEvents.KeyReleased += ControlEvents_KeyReleased;
             GameEvents.UpdateTick += GameEvents_UpdateTick;
@@ -81,6 +89,7 @@ namespace FollowerNPC
                 //whiteBox = new NPC(sprite, Game1.player.Position, "ScienceHouse", 2, "Maru", true, null, Game1.content.Load<Texture2D>("Portraits\\Maru"));
                 Game1.player.currentLocation.addCharacter(whiteBox);
                 whiteBoxAStar = new aStar(farmer.currentLocation, whiteBox.Name);
+                Patches.companion = whiteBox;
                 whiteBox.showTextAboveHead("Hey " + farmer.Name + "!", -1, 2, 3000, 0);
                 whiteBoxSpeed = 5f;
                 whiteBoxAnimationSpeed = 10f;
@@ -89,10 +98,18 @@ namespace FollowerNPC
 
             else if (e.KeyPressed == Keys.P && spawned)
             {
-                spawned = false;
-                Game1.removeCharacterFromItsLocation("Abigail");
-                //Game1.removeCharacterFromItsLocation("Maru");
-                whiteBox = null;
+                Netcode.NetCollection<NPC> c = farmer.currentLocation.characters;
+                for (int j = 0; j < c.Count; j++)
+                {
+                    if (c[j].Name.Equals("Abigail") && c.Equals(whiteBox))
+                    {
+                        c.RemoveAt(j);
+                        spawned = false;
+                        Patches.companion = null;
+                        whiteBox = null;
+
+                    }
+                }
             }
 
             else if (e.KeyPressed == Keys.U && spawned)
@@ -113,10 +130,8 @@ namespace FollowerNPC
             else if (e.KeyPressed == Keys.J && spawned)
             {
                 whiteBoxPath = whiteBoxAStar.Pathfind(whiteBox.getTileLocation(), farmer.getTileLocation());
-                foreach (Vector2 node in whiteBoxAStar.consolidatedPath)
-                    monitor.Log("consolidated path: " + node.ToString());
                 foreach (Vector2 n in whiteBoxPath)
-                    monitor.Log("returned path: " + n.ToString());
+                    monitor.Log("Path: " + n.ToString());
             }
 
             else if (e.KeyPressed == Keys.K && spawned)
@@ -142,47 +157,56 @@ namespace FollowerNPC
 
             else if (e.KeyPressed == Keys.M)
             {
-                foreach (StardewValley.TerrainFeatures.LargeTerrainFeature ltf in farmer.currentLocation
-                    .largeTerrainFeatures)
+                monitor.Log("input x: ");
+                if (int.TryParse(Console.ReadLine(), out int x))
                 {
-                    monitor.Log(ltf.ToString());
+                    monitor.Log("input y: ");
+                    if (int.TryParse(Console.ReadLine(), out int y))
+                    {
+                        //monitor.Log("Is passable tile override print result: " + whiteBoxAStar.isTilePassableOverridePrint(new xTile.Dimensions.Location(x, y), Game1.viewport).ToString());
+                        //xTile.Tiles.Tile tile = whiteBoxAStar.gameLocation.map.GetLayer("Buildings").PickTile(new xTile.Dimensions.Location(x * Game1.tileSize, y * Game1.tileSize), Game1.viewport.Size);
+                        //xTile.ObjectModel.IPropertyCollection properties = tile.Properties;
+                        //ICollection<string> properties2 = properties.Keys;
+                        //foreach (string pv in properties2)
+                        //    monitor.Log(pv + ": " + properties[pv]);
+                    }
                 }
             }
 
             else if (e.KeyPressed == Keys.H)
             {
-                int x = 10;//Int32.Parse(Console.ReadLine());
-                int y = 13;//Int32.Parse(Console.ReadLine());
-                string walkable = whiteBoxAStar.IsWalkableTile(new Vector2(x, y)) ? "true" : "false";
-                //string walkable = whiteBoxAStar.gameLocation.isObjectAtTile(x, y) ? "true" : "false";
-                //string walkable = whiteBoxAStar.gameLocation.getObjectAtTile(x, y)?.name;// ? "true" : "false";
-
-                monitor.Log(walkable);
-
-                string walkableBack = whiteBoxAStar.gameLocation.doesTileHavePropertyNoNull(x, y, "NoFurniture", "Back");
-                string walkableBuildings = whiteBoxAStar.gameLocation.doesTileHavePropertyNoNull(x, y, "NoFurniture", "Buildings");
-                string walkablePaths = whiteBoxAStar.gameLocation.doesTileHavePropertyNoNull(x, y, "NoFurniture", "Paths");
-                string walkableFront = whiteBoxAStar.gameLocation.doesTileHavePropertyNoNull(x, y, "NoFurniture", "Front");
-                string walkableAlwaysFront = whiteBoxAStar.gameLocation.doesTileHavePropertyNoNull(x, y, "NoFurniture", "AlwaysFront");
-                xTile.Tiles.Tile t = whiteBoxAStar.gameLocation.map.GetLayer("Back").PickTile(new xTile.Dimensions.Location(x * Game1.tileSize, y * Game1.tileSize), Game1.viewport.Size);
-
-                //for (int X = 0; X < whiteBoxAStar.gameLocation.map.Layers[0].LayerWidth; X++)
+                // Get properties of item at tile (18,15)
+                //foreach (KeyValuePair<string, xTile.ObjectModel.PropertyValue> kvp in farmer.currentLocation.map
+                //    .Layers[0].PickTile(new xTile.Dimensions.Location(18, 15),
+                //        Game1.viewport.Size).Properties)
                 //{
-                //    for (int Y = 0; Y < whiteBoxAStar.gameLocation.map.Layers[0].LayerHeight; Y++)
+                //    monitor.Log(kvp.Key + ": " + kvp.Value);
+                //}
+
+                // Get walkable tile status of (18,15)
+                //monitor.Log(whiteBoxAStar.IsWalkableTile(new Vector2(18, 15)).ToString());
+
+                monitor.Log("input x: ");
+                if (int.TryParse(Console.ReadLine(), out int x))
+                {
+                    monitor.Log("input y: ");
+                    if (int.TryParse(Console.ReadLine(), out int y))
+                    {
+
+                    }
+                    //monitor.Log("["+x+","+y+"]"+whiteBoxAStar.IsWalkableTilePrint(new Vector2(x, y)).ToString());
+                }
+
+                // Get all objects in location
+                //for (int x = 0; x < whiteBoxAStar.gameLocation.map.Layers[0].LayerWidth; x++)
+                //{
+                //    for (int y = 0; y < whiteBoxAStar.gameLocation.map.Layers[0].LayerHeight; y++)
                 //    {
-                //        xTile.ObjectModel.IPropertyCollection props = ta[X,Y]?.Properties;
-                //        if (props != null)
-                //            foreach (KeyValuePair<string, xTile.ObjectModel.PropertyValue> kvp in props)
-                //                monitor.Log(X+","+Y+": "+kvp.Key);
+                //        StardewValley.Object o = whiteBoxAStar.gameLocation.getObjectAtTile(x, y);
+                //        if (o != null)
+                //            monitor.Log(new Vector2(x, y).ToString() + ": " + o.name);
                 //    }
                 //}
-                //xTile.ObjectModel.IPropertyCollection p = t.Properties;
-                //foreach (KeyValuePair<string, xTile.ObjectModel.PropertyValue> kvp in p)
-                //{
-                //    monitor.Log(kvp.Key);
-                //}
-
-                //monitor.Log(walkable);
             }
         }
 
@@ -320,7 +344,7 @@ namespace FollowerNPC
         /// </summary>
         private void PathfindingNodeUpdateCheck()
         {
-            if (whiteBoxPathNode != negativeOne)
+            if (whiteBoxPathNode != negativeOne && whiteBoxPath != null)
             {
                 Point w = whiteBox.GetBoundingBox().Center;
                 Point n = new Point(((int)whiteBoxPathNode.X * fullTile) + halfTile, ((int)whiteBoxPathNode.Y * Game1.tileSize) + halfTile);
@@ -364,8 +388,8 @@ namespace FollowerNPC
                     return;
                 nodeDiff /= nodeDiffLen;
 
-                whiteBox.xVelocity = nodeDiff.X * whiteBoxSpeed;
-                whiteBox.yVelocity = -nodeDiff.Y * whiteBoxSpeed;
+                whiteBox.xVelocity = nodeDiff.X * farmer.getMovementSpeed();
+                whiteBox.yVelocity = -nodeDiff.Y * farmer.getMovementSpeed();
                 HandleWallSliding();
                 whiteBoxLastFrameVelocity = new Vector2(whiteBox.xVelocity, whiteBox.yVelocity);
                 whiteBoxLastFramePosition = new Vector2(whiteBox.GetBoundingBox().Center.X, whiteBox.GetBoundingBox().Center.Y);
@@ -452,7 +476,7 @@ namespace FollowerNPC
                 {
                     int velocitySign = Math.Sign(whiteBox.xVelocity) * 5;
                     int leftOrRight = ((whiteBox.xVelocity > 0 ? wbBB.Right : wbBB.Left) + velocitySign) / ts;
-                    monitor.Log(whiteBox.xVelocity + " > 0 ? " + wbBB.Right + " : " + wbBB.Left + ") + " + velocitySign + ") / " + ts);
+                    //monitor.Log(whiteBox.xVelocity + " > 0 ? " + wbBB.Right + " : " + wbBB.Left + ") + " + velocitySign + ") / " + ts);
                     bool[] xTiles = new bool[3];
                     xTiles[0] = whiteBoxAStar.IsWalkableTile(new Vector2(leftOrRight, wbBB.Top / ts));
                     xTiles[1] = whiteBoxAStar.IsWalkableTile(new Vector2(leftOrRight, wbBB.Center.Y / ts));
@@ -468,7 +492,7 @@ namespace FollowerNPC
                 {
                     int velocitySign = Math.Sign(whiteBox.yVelocity) * 5;
                     int topOrBottom = ((whiteBox.yVelocity < 0 ? wbBB.Bottom : wbBB.Top) - velocitySign) / ts;
-                    monitor.Log(whiteBox.yVelocity + " < 0 ? " + wbBB.Bottom + " : " + wbBB.Top + ") - " + velocitySign + ") / " + ts);
+                    //monitor.Log(whiteBox.yVelocity + " < 0 ? " + wbBB.Bottom + " : " + wbBB.Top + ") - " + velocitySign + ") / " + ts);
                     bool[] yTiles = new bool[3];
                     yTiles[0] = whiteBoxAStar.IsWalkableTile(new Vector2(wbBB.Left / ts, topOrBottom));
                     yTiles[1] = whiteBoxAStar.IsWalkableTile(new Vector2(wbBB.Center.X / ts, topOrBottom));
@@ -511,7 +535,46 @@ namespace FollowerNPC
         {
             return Math.Abs(a - b) < threshold;
         }
+
+        private void SetNPCCompanionDays()
+        {
+            npcCompanionDays = new SortedList<string, string>();
+            npcCompanionDays.Add("Abigail", "M"); // Goes around town M/F when married. Plays flute on Tu/Sat. Doc or Seb on Thu.       Wed || Sun
+            npcCompanionDays.Add("Alex", "M"); // Hangs with Haley on Wed. Doc on Tu. Visits parents on Mo when married.                Thu || Fri || Sat || Sun
+            npcCompanionDays.Add("Elliott", "M"); // Goes to beach M when married. Doc on Tue. Shops on Thu. Beach on Fri/Sun.          Wed || Sat
+            npcCompanionDays.Add("Emily", "M"); // Works Mon/Wed/Fri/Sat. Works out Tue. Doc on Thu.                                    Sun
+            npcCompanionDays.Add("Haley", "M"); // Photography on Mon. Doc on Tue.                                                      Wed || Thu || Fri || Sat || Sun
+            npcCompanionDays.Add("Harvey", "M"); // Working Mon/Tue/Wed/Thu/Fri/Sun                                                     Sat
+            npcCompanionDays.Add("Leah", "M"); // Groceries on Mon. Doc on Tue. Saloon on Fri/Sat.                                      Wed || Thu || Sun
+            npcCompanionDays.Add("Maru", "M"); // Visits parents on Mon when married. Work on Tue/Thu. Personal work on Sat.            Wed || Fri || Sun
+            npcCompanionDays.Add("Penny", "M"); // Out in town Mon when married. Teaches Tue/Wed/Fri. Babysits Sat. Doc on Thu.         Mon || Thu || Sun
+            npcCompanionDays.Add("Sam", "M"); // Works Mon/Wed. Saloon on Friday. Hangs with Seb on Sat.                                Tue || Thu || Sun
+            npcCompanionDays.Add("Sebastian", "M"); // Visits parents Mon. Hangs with Abi on Thu. Saloon on Fri. Hangs with Sam on Sat. Tue || Wed || Sun
+            npcCompanionDays.Add("Shane", "M"); // Works Mon/Tue/Wed/Thu/Fri. Groceries on Sat.                                         Sun
+        }
         #endregion
+    }
+
+    class Patches
+    {
+        static public bool flag;
+        static public NPC companion;
+
+        static public void Prefix(GameLocation __instance, Rectangle position, xTile.Dimensions.Rectangle viewport, bool isFarmer, int damagesFarmer, bool glider, Character character, bool pathfinding, bool projectile = false, bool ignoreCharacterRequirement = false)
+        {
+            if (companion != null
+                && character != null 
+                && character.Name != null
+                && character.Name.Equals(companion.Name)
+                && !character.eventActor)
+                    character.eventActor = flag = true;
+        }
+
+        static public void Postfix(GameLocation __instance, Rectangle position, xTile.Dimensions.Rectangle viewport, bool isFarmer, int damagesFarmer, bool glider, Character character, bool pathfinding, bool projectile = false, bool ignoreCharacterRequirement = false)
+        {
+            if (flag)
+                character.eventActor = flag = false;
+        }
     }
 }
 

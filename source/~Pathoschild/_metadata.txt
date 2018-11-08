@@ -16,9 +16,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 02b4f0553784dfb6e9b30ea4d5ce8c9a9d9b1961
-   Author: Jesse Plamondon-Willard <github@jplamondonw.com>
-   Date:   Sat Nov 3 20:42:19 2018 -0400
+   commit f02906a330d29705be2ac17d5d0e5ed6dc24092f
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Wed Nov 7 22:29:41 2018 -0500
    
-       add common.targets for convenience
+       migrate to SMAPI's verbose logging feature
    

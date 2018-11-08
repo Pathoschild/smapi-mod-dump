@@ -1,0 +1,13 @@
+url:
+   https://github.com/remybach/stardew-valley-forecaster.git
+
+mods:
+   Forecaster
+
+latest commit:
+   commit 81ddec7ae40e6eac156aee01879eb689e4385a86
+   Author: Remy Bach <remy@bach.me.uk>
+   Date:   Thu Nov 8 00:00:40 2018 +0000
+   
+       Update readme, add UpdateKeys, and bump version #
+   

@@ -23,9 +23,9 @@ use the right translations.
 Chinese    | [✓](ArchaeologyHouseContentManagementHelper/i18n/zh.json) | [✓](ToolUpgradeDeliveryService/i18n/zh.json) 
 German     | [✓](ArchaeologyHouseContentManagementHelper/i18n/de.json) | [✓](ToolUpgradeDeliveryService/i18n/de.json)
 Japanese   | ❑ untranslated                                            | ❑ untranslated 
-Portuguese | [✓](ArchaeologyHouseContentManagementHelper/i18n/pt.json) | ❑ untranslated      
+Portuguese | [✓](ArchaeologyHouseContentManagementHelper/i18n/pt.json) | [✓](ToolUpgradeDeliveryService/i18n/pt.json)      
 Russian    | ❑ untranslated                                            | ❑ untranslated 
-Spanish    | [✓](ArchaeologyHouseContentManagementHelper/i18n/es.json) | ❑ untranslated 
+Spanish    | [✓](ArchaeologyHouseContentManagementHelper/i18n/es.json) | [✓](ToolUpgradeDeliveryService/i18n/es.json) 
 
 Here's how to translate one of my mods:
 

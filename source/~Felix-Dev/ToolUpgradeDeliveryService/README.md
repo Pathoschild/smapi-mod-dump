@@ -23,7 +23,7 @@ If you want, you can still receive the tool by visiting the blacksmith. In this 
   ![](screenshots/tool-email.png)
 
 ## Compatibility
-* Compatible with Stardew Valley 1.3 on Windows (Linux/Mac not tested).
+* Compatible with Stardew Valley 1.3 on Windows/Linux (Mac likely, but not tested).
 * Works in both single-player and multiplayer.
 * This mod is compatible with the mod [Rented Tools](https://www.nexusmods.com/stardewvalley/mods/1307). When you add the upgraded tool to your inventory, Clint's rented tool will be sent back to him.
 * This mod is compatible with the mod [Prismatic Tools](https://www.nexusmods.com/stardewvalley/mods/2428).

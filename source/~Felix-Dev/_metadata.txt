@@ -6,11 +6,9 @@ mods:
    Tool Upgrade Delivery Service
 
 latest commit:
-   commit a449507c758da46c3d7b7f437e2c3017a18f9293
+   commit 7fd1d4de5351e9c22fd054e5cbe8fadb494a4068
    Author: Felix-Dev <FelixDev91@gmail.com>
-   Date:   Thu Oct 18 07:36:55 2018 +0200
+   Date:   Wed Nov 7 16:36:34 2018 +0100
    
-       ToolUpgradeDeliveryService: Updated Readme
-       
-       Moved 'Remarks' section into 'Compatibility' section.
+       Migrated to new Nuget reference format (PackageReference).
    

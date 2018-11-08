@@ -33,9 +33,12 @@ mods:
    Visualize
 
 latest commit:
-   commit b0550afe74ea63b28794d3eea1851dc3687cd44e
-   Author: Platonymous <david@millionideas.de>
-   Date:   Fri Nov 2 07:58:15 2018 +0100
+   commit 95ee22df4d144947628059d56c9559116921728e
+   Merge: 3a820f2 e1e9c84
+   Author: David <david@millionideas.de>
+   Date:   Tue Nov 6 13:10:52 2018 +0100
    
-       Prep for animation
+       Merge pull request #35 from Pathoschild/update-code
+       
+       Update for Stardew Valley 1.3.31 + minor changes
    

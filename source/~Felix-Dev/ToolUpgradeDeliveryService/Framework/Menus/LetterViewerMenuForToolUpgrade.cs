@@ -13,8 +13,8 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework.Menus
 {
     /// <summary>
     /// This class extends the in-game LetterViewerMenu page so you can pass the item to be added to the mail.
-    /// It also adds fucntionaility to remove any instance of the tool included in the palyer's inventory 
-    /// when the player adds a tool included in Clint's e-mail (Support for mod [Rented Tools])
+    /// It also adds functionality to remove any instance of the tool included in the player's inventory 
+    /// when the player adds a tool included in Clint's mail (support for mod [Rented Tools]).
     /// </summary>
     internal class LetterViewerMenuForToolUpgrade : LetterViewerMenu
     {
@@ -27,18 +27,19 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework.Menus
                 return;
             }
 
-            // Add item to email
-            this.itemsToGrab.Add(new ClickableComponent(
+            // Add item to mail
+            this.itemsToGrab.Add(
+                new ClickableComponent(
                     new Rectangle(this.xPositionOnScreen + this.width / 2 - 48, this.yPositionOnScreen + this.height - 32 - 96, 96, 96),
                     item)
             {
-                myID = 104,
-                leftNeighborID = 101,
-                rightNeighborID = 102
+                myID = region_itemGrabButton,
+                leftNeighborID = region_backButton,
+                rightNeighborID = region_forwardButton
             });
 
-            this.backButton.rightNeighborID = 104;
-            this.forwardButton.leftNeighborID = 104;
+            this.backButton.rightNeighborID = region_itemGrabButton;
+            this.forwardButton.leftNeighborID = region_itemGrabButton;
 
             this.populateClickableComponentList();
             this.snapToDefaultClickableComponent();
@@ -71,8 +72,8 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework.Menus
 
                     Game1.playSound("coin");
                     Game1.player.addItemByMenuIfNecessary(clickableComponent.item);
-                    clickableComponent.item = (Item)null;
 
+                    clickableComponent.item = (Item)null;
                     Game1.player.toolBeingUpgraded.Value = null;
 
                     return;

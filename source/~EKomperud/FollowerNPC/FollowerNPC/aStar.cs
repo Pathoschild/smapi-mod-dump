@@ -51,8 +51,9 @@ namespace FollowerNPC
             while (open.Count != 0)
             {
                 Node q = open.Dequeue();
+                closed[q.position] = q.f;
+                //ModEntry.monitor.Log(q.position.ToString());
                 Node[] successors = GetSuccessors(q);
-                //ModEntry.monitor.Log("Q: " + q.position + ", (f,g,h): (" + q.f + "," + q.g + "," + q.h + ")");
                 foreach (Node successor in successors)
                 {
                     if (!(successor != null))
@@ -65,36 +66,22 @@ namespace FollowerNPC
                         goto NodeConsolidation;
                     }
 
-                    //if (!gl.isTileLocationTotallyClearAndPlaceable((int) successor.position.X,
-                    //    (int) successor.position.Y))
-                    //    continue;
-
-                    //if (!IsWalkableTile(successor.position))
-                    //    continue;
-
                     successor.g = q.g + EuclideanDistance(q.position, successor.position);
-                    //bool locationOpen = gl.isTileLocationTotallyClearAndPlaceable(new Location((int)successor.position.X, (int)successor.position.Y));
-                    //bool locationOpen = IsWalkableTile(successor.position);
-                    //ModEntry.monitor.Log("null check & goal check & g set & locationOpen set");
-                    successor.h = EuclideanDistance(successor.position, goal);// + (locationOpen ? 0f : maxH);
+                    successor.h = EuclideanDistance(successor.position, goal);
                     successor.f = successor.g + successor.h;
 
-                    if (open.CheckValue(successor.position) < successor.f)
+                    if (open.CheckValue(successor.position) <= successor.f)
                         continue;
 
-                    if (closed.TryGetValue(successor.position, out float closedNodeCost) && closedNodeCost < successor.f)
+                    if (closed.TryGetValue(successor.position, out float closedNodeCost) && closedNodeCost <= successor.f)
                         continue;
 
-                    //ModEntry.monitor.Log("Successor: " + successor.position + ", (f,g,h): (" + successor.f + "," + successor.g + "," + successor.h + ")");
                     open.Enqueue(successor);
                 }
-
-                //Console.ReadLine();
             }
             return null;
             NodeConsolidation:
             Queue<Vector2> consolidatedPath = new Queue<Vector2>();
-            //consolidatedPath.Enqueue(start);
             for (int i = path.Count-2; i >=0; i--)
             {
                 if (IsCorner(path[i].position))
@@ -124,14 +111,6 @@ namespace FollowerNPC
             successors[5] = IsWalkableTile(new Vector2(ppx - 1, ppy + 1)) ? new Vector2(ppx - 1, ppy + 1) : negativeOne;
             successors[6] = IsWalkableTile(new Vector2(ppx - 1, ppy)) ? new Vector2(ppx - 1, ppy) : negativeOne;
             successors[7] = IsWalkableTile(new Vector2(ppx - 1, ppy - 1)) ? new Vector2(ppx - 1, ppy - 1) : negativeOne;
-            //successors[0] = new Vector2(ppx, ppy - 1);
-            //successors[1] = new Vector2(ppx + 1, ppy - 1);
-            //successors[2] = new Vector2(ppx + 1, ppy);
-            //successors[3] = new Vector2(ppx + 1, ppy + 1);
-            //successors[4] = new Vector2(ppx, ppy + 1);
-            //successors[5] = new Vector2(ppx - 1, ppy + 1);
-            //successors[6] = new Vector2(ppx - 1, ppy);
-            //successors[7] = new Vector2(ppx - 1, ppy - 1);
             return successors;
         }
 
@@ -142,14 +121,6 @@ namespace FollowerNPC
             float mdx = dimensions.X;
             float mdy = dimensions.Y;
             Node[] successors = new Node[4];
-            //successors[0] = IsWalkableTile(new Vector2(ppx, ppy - 1)) ? new Node(parent, new Vector2(ppx, ppy - 1)) : null;
-            //successors[1] = IsWalkableTile(new Vector2(ppx + 1, ppy - 1)) ? new Node(parent, new Vector2(ppx + 1, ppy - 1)) : null;
-            //successors[2] = IsWalkableTile(new Vector2(ppx + 1, ppy)) ? new Node(parent, new Vector2(ppx + 1, ppy)) : null;
-            //successors[3] = IsWalkableTile(new Vector2(ppx + 1, ppy + 1)) ? new Node(parent, new Vector2(ppx + 1, ppy + 1)) : null;
-            //successors[4] = IsWalkableTile(new Vector2(ppx, ppy + 1)) ? new Node(parent, new Vector2(ppx, ppy + 1)) : null;
-            //successors[5] = IsWalkableTile(new Vector2(ppx - 1, ppy + 1)) ? new Node(parent, new Vector2(ppx - 1, ppy + 1)) : null;
-            //successors[6] = IsWalkableTile(new Vector2(ppx - 1, ppy)) ? new Node(parent, new Vector2(ppx - 1, ppy)) : null;
-            //successors[7] = IsWalkableTile(new Vector2(ppx - 1, ppy - 1)) ? new Node(parent, new Vector2(ppx - 1, ppy - 1)) : null;
             successors[0] = IsWalkableTile(new Vector2(ppx, ppy - 1)) ? new Node(parent, new Vector2(ppx, ppy - 1)) : null;
             successors[1] = IsWalkableTile(new Vector2(ppx + 1, ppy)) ? new Node(parent, new Vector2(ppx + 1, ppy)) : null;
             successors[2] = IsWalkableTile(new Vector2(ppx, ppy + 1)) ? new Node(parent, new Vector2(ppx, ppy + 1)) : null;
@@ -159,37 +130,75 @@ namespace FollowerNPC
 
         public bool IsWalkableTile(Vector2 tile)
         {
-            //Location l = new Location((int) (tile.X * fullTile) - halfTile, (int) (tile.Y * fullTile) + halfTile);
-            //gl.map.GetLayer("Buildings").PickTile(l, Game1.viewport.Size);
-            //gl.isObjectAtTile(l.X, l.Y);
-            //gl.isTerrainFeatureAt(l.X, l.Y);
-            //bool x = tile.X > 0 && tile.X <= dimensions.X;
-            //bool y = tile.Y > 0 && tile.Y <= dimensions.Y;
-            //IsTileOccupied?
-
-            //IsTilePassable?
-            //bool passable = gl.isTilePassable(new Location((int) tile.X, (int) tile.Y), Game1.viewport);
-
-            //IsTilePlaceable?
-            //bool placeable = gl.isTileLocationTotallyClearAndPlaceable(tile);
-
-            //Objects seems to be placeable objects that aren't "furniture"
-            // Layers: Back, Buildings, Paths, Front, AlwaysFront
-
-            return gl.isTileOnMap(tile) && !gl.isTileOccupied(tile, character) &&
-                       gl.isTilePassable(new Location((int) tile.X, (int) tile.Y), Game1.viewport) &&
-                       gl.isTilePlaceable(tile, null) && !(gl.getObjectAtTile((int)tile.X,(int)tile.Y) != null);
-
-            // If:
-            // It isn't a terrain feature
-            // It isn't water
-            // It isn't out of the map
-            // It isn't occupied by an object (that isn't passable)
-            // It isn't occupied by a building
-            // It isn't occupied by a terrain feature or large terrain feature
-
-            //return passable && placeable;
+            StardewValley.Object o = gl.getObjectAtTile((int) tile.X, (int) tile.Y);
+            return gl.isTileOnMap(tile) && !gl.isTileOccupiedIgnoreFloors(tile, character) &&
+                   isTilePassableOverride(new Location((int) tile.X, (int) tile.Y), Game1.viewport) &&
+                   (!(gameLocation is Farm)  || !((gameLocation as Farm).getBuildingAt(tile) != null)) &&
+                   (!(o != null) || (o != null &&
+                                     (o as StardewValley.Objects.Furniture)
+                                     .furniture_type.Value == 12));
         }
+
+        //public bool IsWalkableTilePrint(Vector2 tile)
+        //{
+        //    StardewValley.Object o = gl.getObjectAtTile((int)tile.X, (int)tile.Y);
+        //    bool isTileOnMap = gl.isTileOnMap(tile);
+        //    ModEntry.monitor.Log("is tile on map?: " + isTileOnMap.ToString());
+        //    bool isTileUnoccupied = !gl.isTileOccupiedIgnoreFloors(tile, character);
+        //    ModEntry.monitor.Log("is unnocupied?: " + isTileUnoccupied.ToString());
+        //    bool isTilePassable = isTilePassableOverride(new Location((int)tile.X, (int)tile.Y), Game1.viewport);
+        //    ModEntry.monitor.Log("is passable?: " + isTilePassable.ToString());
+        //    bool isNotFarmBuilding = !gameLocation.IsFarm && !((gameLocation as Farm).getBuildingAt(tile) != null);
+        //    //bool isTilePlaceable = gl.isTilePlaceable(tile, null);
+        //    //ModEntry.monitor.Log("is placeable?: " + isTilePlaceable.ToString());
+        //    bool noUnpassableObjects = (!(o != null) || (o != null &&
+        //                                                 (o as StardewValley.Objects.Furniture)
+        //                                                 .furniture_type.Value == 12));
+        //    ModEntry.monitor.Log("is clear of unpassable objects?: " + noUnpassableObjects.ToString());
+
+        //    return isTileOnMap && isTileUnoccupied && isTilePassable && noUnpassableObjects;
+        //}
+
+        public bool isTilePassableOverride(Location tileLocation, xTile.Dimensions.Rectangle viewport)
+        {
+            xTile.ObjectModel.PropertyValue passable = null;
+            xTile.Tiles.Tile tmp = gameLocation.map.GetLayer("Back").PickTile(new Location(tileLocation.X * Game1.tileSize, tileLocation.Y * Game1.tileSize), viewport.Size);
+            if (tmp != null)
+            {
+                tmp.TileIndexProperties.TryGetValue("Passable", out passable);
+            }
+            xTile.ObjectModel.PropertyValue passableBuilding = null;
+            xTile.Tiles.Tile tile = gameLocation.map.GetLayer("Buildings").PickTile(new Location(tileLocation.X * Game1.tileSize, tileLocation.Y * Game1.tileSize), viewport.Size);
+            if (tile != null)
+            {
+                passableBuilding = tile.TileIndexProperties.TryGetValue("Passable", out passableBuilding);
+            }
+            return passable == null && (tile == null || (passableBuilding != null && passableBuilding)) && tmp != null;
+        }
+
+        //public bool isTilePassableOverridePrint(Location tileLocation, xTile.Dimensions.Rectangle viewport)
+        //{
+        //    xTile.ObjectModel.PropertyValue passable = null;
+        //    xTile.Tiles.Tile tmp = gameLocation.map.GetLayer("Back").PickTile(new Location(tileLocation.X * Game1.tileSize, tileLocation.Y * Game1.tileSize), viewport.Size);
+        //    if (tmp != null)
+        //    {
+        //        tmp.TileIndexProperties.TryGetValue("Passable", out passable);
+        //    }
+        //    xTile.ObjectModel.PropertyValue passableBuilding = null;
+        //    xTile.Tiles.Tile tile = gameLocation.map.GetLayer("Buildings").PickTile(new Location(tileLocation.X * Game1.tileSize, tileLocation.Y * Game1.tileSize), viewport.Size);
+        //    if (tile != null)
+        //    {
+        //        passableBuilding = tile.TileIndexProperties.TryGetValue("Passable", out passableBuilding);
+        //        ModEntry.monitor.Log("Passable Building property value: " + passableBuilding);
+        //    }
+        //    ModEntry.monitor.Log("Is Tile Passable Override:");
+        //    ModEntry.monitor.Log("Tile Exists on Back Layer: " + (tmp != null).ToString());
+        //    ModEntry.monitor.Log("Back Tile Passable Property: " + (passable == null).ToString());
+        //    ModEntry.monitor.Log("Tile Doesn't Exist on Building Layer: " + (tile == null).ToString());
+        //    ModEntry.monitor.Log("Building Tile is Passable " + (passableBuilding != null).ToString());
+        //    //ModEntry.monitor.Log("Building Tile has 'T' property for 'Passable': " + (passableBuilding == "T").ToString());
+        //    return passable == null && (tile == null || (passableBuilding != null && passableBuilding)) && tmp != null;
+        //}
 
         private int NodeArrayCount(Node[] a)
         {
@@ -220,12 +229,8 @@ namespace FollowerNPC
             Vector2[] neighbors = GetNeighbors(tile);
             for (int i = 1; i < 8; i+=2)
             {
-                //Location loc = new Location((int) (neighbors[i].X * Game1.tileSize), (int) (neighbors[i].Y * Game1.tileSize));
                 if (neighbors[i] == negativeOne)
                 {
-                    //Location n1 = new Location((int)(neighbors[i-1].X * Game1.tileSize), (int)(neighbors[i-1].Y * Game1.tileSize));
-                    //Location n2 = new Location((int) (neighbors[i + 1 > 7 ? 0 : i + 1].X * Game1.tileSize),
-                        //(int) (neighbors[i + 1 > 7 ? 0 : i + 1].Y * Game1.tileSize));
                     if ((neighbors[i - 1] != negativeOne) &&
                         (neighbors[i + 1 > 7 ? 0 : i + 1] != negativeOne))
                     {

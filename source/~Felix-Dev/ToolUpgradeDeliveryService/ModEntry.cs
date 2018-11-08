@@ -22,11 +22,13 @@ namespace StardewMods.ToolUpgradeDeliveryService
             // Add services
             CommonServices = new CommonServices(Monitor, helper.Translation, helper.Reflection, helper.Content);
 
-            // Start services
+            // Setup services
             var mailGenerator = new MailGenerator();
             helper.Content.AssetEditors.Add(mailGenerator);
 
             mailDeliveryService = new MailDeliveryService(mailGenerator);
+
+            // Start services
             mailDeliveryService.Start();
         }
     }

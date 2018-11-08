@@ -14,7 +14,7 @@ using StardewMods.ToolUpgradeDeliveryService.Common;
 namespace StardewMods.ToolUpgradeDeliveryService.Framework
 {
     /// <summary>
-    /// This class is responsible for sending Clint's [upgraded-tool] e-mail to the player.
+    /// This class is responsible for sending Clint's [upgraded-tool] mail to the player.
     /// </summary>
     internal class MailDeliveryService
     {
@@ -22,13 +22,11 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework
 
         private IMonitor monitor;
         private IReflectionHelper reflectionHelper;
-        private ITranslationHelper translationHelper;
         private MailGenerator mailGenerator;
 
         public MailDeliveryService(MailGenerator generator)
         {
             reflectionHelper = ModEntry.CommonServices.ReflectionHelper;
-            translationHelper = ModEntry.CommonServices.TranslationHelper;
             monitor = ModEntry.CommonServices.Monitor;
 
             mailGenerator = generator ?? throw new ArgumentNullException(nameof(generator));
@@ -66,21 +64,20 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework
         {
             if (Game1.player.daysLeftForToolUpgrade.Value == 1)
             {
-                string mail = mailGenerator.GenerateMail(Game1.player.toolBeingUpgraded.Value);
-                if (mail == null)
+                string mailKey = mailGenerator.GenerateMailKey(Game1.player.toolBeingUpgraded.Value);
+                if (mailKey == null)
                 {
                     monitor.Log("Failed to generate mail for upgraded tool!", LogLevel.Error);
                     return;
                 }
 
-                Game1.addMailForTomorrow(mail);
+                Game1.addMailForTomorrow(mailKey);
                 monitor.Log("Added [tool upgrade] mail to tomorrow's mailbox.", LogLevel.Info);
             }
         }
 
         private void MenuEvents_OnMenuChanged(object sender, EventArgsClickableMenuChanged e)
         {
-            //Game1.player.toolBeingUpgraded.Value = null;
             if (!(e.PriorMenu is LetterViewerMenu) && e.NewMenu is LetterViewerMenu letterViewerMenu)
             {
                 var mailTitle = reflectionHelper.GetField<string>(letterViewerMenu, "mailTitle").GetValue();
@@ -89,22 +86,21 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework
                     return;
                 }
 
-                var pToolData = mailGenerator.GetMailAssignedTool(mailTitle);
-                if (!pToolData.HasValue)
+                ToolUpgradeInfo upgradeInfo = mailGenerator.GetMailAssignedToolUpgrade(mailTitle);
+                if (upgradeInfo == null)
                 {
                     monitor.Log("Failed to retrive tool data from mail!", LogLevel.Error);
                 }
 
                 Tool toolForMail = Game1.player.toolBeingUpgraded.Value;
-                var (toolType, level) = pToolData.Value;  
                 
                 /*
                  * Check if the current upgrade tool matches with the tool which was assigned to this mail.
                  * 
-                 * Since the upgrade mail content is generated when the mail is opened, the current upgrade tool 
+                 * Since the upgrade-mail content is generated when the mail is opened, the current upgrade tool 
                  * could have changed in the meantime. In this case, no tool will be included in this mail.
                  */
-                if (toolForMail != null && (toolForMail.GetType() != toolType || toolForMail.UpgradeLevel != level))
+                if (toolForMail != null && (toolForMail.GetType() != upgradeInfo.ToolType || toolForMail.UpgradeLevel != upgradeInfo.Level))
                 {
                     toolForMail = null;
                 }

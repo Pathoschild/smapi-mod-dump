@@ -24,7 +24,7 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework
          * [CONTENT_TYPE]:[TOOL_TYPE]:[UPGRADE_LEVEL]
          * 
          * There are 4 blacksmith-upgradable tools: Axe, Pickaxe, Hoe, Watering Can
-         * There are 5 (4) upgrade levels per tool: Cooper, Steel, Gold, Iridium, Prismatic
+         * There are 5 (4) upgrade levels per tool: Copper, Steel, Gold, Iridium, Prismatic
          * (Level 5 represents the tool upgrade introduced by the mod [Prismatic Tools]).
          * 
          * With this format, we can map each mail to a specific tool upgrade.
@@ -83,7 +83,7 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework
             translationHelper = ModEntry.CommonServices.TranslationHelper;
         }
 
-        public string GenerateMail(Tool tool)
+        public string GenerateMailKey(Tool tool)
         {
             switch (Game1.player.toolBeingUpgraded.Value)
             {
@@ -100,7 +100,7 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework
             }
         }
 
-        public (Type toolType, int level)? GetMailAssignedTool(string mailKey)
+        public ToolUpgradeInfo GetMailAssignedToolUpgrade(string mailKey)
         {
             if (mailKey == null)
             {
@@ -116,20 +116,20 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework
 
             if (ToolHelper.TryParse(keyParts[1], out Type tool) && int.TryParse(keyParts[2], out int level))
             {
-                return (tool, level);
+                return new ToolUpgradeInfo(tool, level);
             }
 
             return null;
         }
 
-        public bool IsToolMail(string mail)
+        public bool IsToolMail(string mailKey)
         {        
-            if (mail == null)
+            if (mailKey == null)
             {
                 return false;
             }
 
-            return mail.StartsWith(TOOL_UPGRADE);
+            return mailKey.StartsWith(TOOL_UPGRADE);
         }
 
         /// <summary>Get whether this instance can edit the given asset.</summary>

@@ -5,12 +5,12 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit 7589cf065dfb336167f2aaba11fd7c75e3f0116d
-   Merge: 685e540 60a02cd
+   commit 4fdc107fdd107209fd6d252f7f1b3acbd5306de4
+   Merge: 7589cf0 74b66b8
    Author: Brian Pak <bbouhm@gmail.com>
-   Date:   Thu Oct 18 15:46:10 2018 -0700
+   Date:   Wed Nov 7 11:55:04 2018 -0800
    
-       Merge pull request #41 from Bouhm/development
+       Merge pull request #42 from Bouhm/development
        
        Development
    

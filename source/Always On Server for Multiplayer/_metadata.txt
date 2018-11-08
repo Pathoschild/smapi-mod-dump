@@ -5,9 +5,10 @@ mods:
    Always On Server for Multiplayer
 
 latest commit:
-   commit 7adb090b99e8b6ae323aa4e8bcfe6fbe269f6f49
+   commit 81ce533f9e64342ee55fe2d911a9513eb30dbff4
    Author: DESKTOP-S07204M\Curtis <curtis368@gmail.com>
-   Date:   Wed Oct 31 01:31:13 2018 -0500
+   Date:   Wed Nov 7 21:45:39 2018 -0600
    
-       1.12 added players online txt, added server toggle reloads config
+       fixed bug with holidays maybe?
+       added house upgrade option
    

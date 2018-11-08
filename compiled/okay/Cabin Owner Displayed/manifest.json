@@ -1,0 +1,10 @@
+{
+	"Name": "CabinOwnderDisplayed",
+	"Author": "funnysnek",
+	"Version": "1.0.0",
+	"Description": "displays cabin owner",
+	"UniqueID": "funnysnek.displaycabinowner",
+	"EntryDll": "CabinOwnerDisplayed.dll",
+	"MinimumApiVersion": "2.0",
+	"UpdateKeys": [ "Nexus:3036" ]
+}
