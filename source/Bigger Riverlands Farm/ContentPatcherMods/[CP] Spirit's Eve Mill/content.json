@@ -1,0 +1,12 @@
+{
+  "Format": "1.4", 
+  "Changes": [
+       
+	   {
+          "Action": "Load", 
+          "Target": "Buildings/Mill", 
+          "FromFile": "assets/Mill.png" 
+       },
+	   
+    ]
+}

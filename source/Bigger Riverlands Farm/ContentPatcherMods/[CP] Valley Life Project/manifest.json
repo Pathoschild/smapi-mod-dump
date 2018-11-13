@@ -1,0 +1,12 @@
+{
+   "Name": "Project Valley Life",
+   "Author": "Jessebot",
+   "Version": "1.1.1",
+   "Description": "Content Pack containing a new map, redesigned greenhouse/farmhouse and more.",
+   "UniqueID": "Jessebot.ValleyLife",
+   "MinimumApiVersion": "2.5",
+   "UpdateKeys": [ "Nexus:2909" ],
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher",
+   }
+}

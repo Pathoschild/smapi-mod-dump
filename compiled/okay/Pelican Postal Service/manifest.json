@@ -1,10 +1,10 @@
 {
   "Name": "Pelican Postal Service",
   "Author": "ElectroCrumpet",
-  "Version": "1.0.4",
+  "Version": "1.0.5-beta",
   "Description": "Mail gifts and quest items to residents without meeting them in person.",
   "UniqueID": "ElectroCrumpet.PelicanPostalService",
   "EntryDll": "PelicanPostalService.dll",
-  "MinimumApiVersion": "2.8-beta",
+  "MinimumApiVersion": "1.0",
   "UpdateKeys": [ "Nexus:2770" ]
 }

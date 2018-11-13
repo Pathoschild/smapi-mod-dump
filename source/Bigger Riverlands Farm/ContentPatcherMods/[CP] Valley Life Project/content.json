@@ -1,0 +1,122 @@
+{
+    "Format": "1.4",
+    "ConfigSchema": {
+        "Valley Life Standard Farm": {
+            "AllowValues": "enabled, disabled"	
+        },
+		"Valley Life Starting Farmhouse with Kitchen": {
+            "AllowValues": "enabled, disabled"
+        },
+		"Valley Life Large Farmhouse with Attic": {
+            "AllowValues": "enabled, disabled"
+        },
+		"Valley Life Starting Cabin with Kitchen": {
+			"AllowValues": "enabled, disabled"
+		},
+		"Valley Life Large Cabin with Attic": {
+			"AllowValues": "enabled, disabled"
+		},
+		"Valley Life Greenhouse": {
+            "AllowValues": "enabled, disabled"
+        },
+		"Valley Life Cellar": {
+            "AllowValues": "enabled, disabled"
+        }
+    },
+    "Changes": [
+	
+		//Valley Life Farm Map
+		{
+		"Action": "Load",
+            "Target": "Maps/Farm",
+            "FromFile": "assets/Farm.tbin",
+            "When": {
+                "Valley Life Standard Farm": "enabled",
+            }
+        },
+        {
+		    "Action": "Load",
+            "Target": "Maps/Forest",
+            "FromFile": "assets/Forest.tbin",
+            "When": {
+                "Valley Life Standard Farm": "enabled",
+            }
+        },
+		
+		//Starter Farmhouse with Kitchen
+		{
+            "Action": "Load",
+            "Target": "Maps/FarmHouse",
+            "FromFile": "assets/FarmHouse.tbin",
+            "When": {
+                "Valley Life Starting Farmhouse with Kitchen": "enabled"
+            }
+        },
+		
+		//Large Farmhouse with Attic
+		{
+            "Action": "Load",
+            "Target": "Maps/FarmHouse2",
+            "FromFile": "assets/FarmHouse2.tbin",
+            "When": {
+                "Valley Life Large Farmhouse with Attic": "enabled"
+            }
+        },
+		{
+            "Action": "Load",
+            "Target": "Maps/FarmHouse2_marriage",
+            "FromFile": "assets/FarmHouse2_marriage.tbin",
+            "When": {
+                "Valley Life Large Farmhouse with Attic": "enabled"
+            }
+        },
+		
+		//Starting Cabin with Kitchen
+		{
+            "Action": "Load",
+            "Target": "Maps/Cabin",
+            "FromFile": "assets/Cabin.tbin",
+            "When": {
+                "Valley Life Starting Cabin with Kitchen": "enabled"
+            }
+        },
+		
+		//Large Cabin with Attic
+		{
+            "Action": "Load",
+            "Target": "Maps/Cabin2",
+            "FromFile": "assets/Cabin2.tbin",
+            "When": {
+                "Valley Life Large Cabin with Attic": "enabled"
+            }
+        },
+		{
+            "Action": "Load",
+            "Target": "Maps/Cabin2_marriage",
+            "FromFile": "assets/Cabin2_marriage.tbin",
+            "When": {
+                "Valley Life Large Cabin with Attic": "enabled"
+            }
+        },
+		
+		//Greenhouse
+        {
+            "Action": "Load",
+            "Target": "Maps/Greenhouse",
+            "FromFile": "assets/Greenhouse.xnb",
+            "When": {
+                "Valley Life Greenhouse": "enabled"
+            }
+        },
+		
+		//Cellar
+        {
+		    "Action": "Load",
+            "Target": "Maps/Cellar",
+            "FromFile": "assets/Cellar.tbin",
+            "When": {
+                "Valley Life Cellar": "enabled"
+            }
+        },		
+    ]
+}

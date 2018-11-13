@@ -1,0 +1,12 @@
+{
+  "Name": "Spouse Cooks TQoS Dishes",
+  "Author": "Jessebot",
+  "Version": "1.0.0",
+  "Description": "Content Pack that makes it so that Spouse will cook The Queen of Sauce dishes when it airs",
+  "UniqueID": "jessebot.spousecookstqos",
+  "MinimumApiVersion": "2.8",
+  "UpdateKeys": ["Nexus:2911"],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  }
+}

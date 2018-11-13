@@ -1,0 +1,10 @@
+{
+  "Name": "HelpWantedQuestFixes",
+  "Author": "Pokeytax",
+  "Version": "1.0.0",
+  "Description": "Fixes bugs limiting variety in Help Wanted quests offered & controls how frequently each type of quest appears.",
+  "UniqueID": "Pokeytax.HelpWantedQuestFixes",
+  "EntryDll": "HelpWantedQuestFixes.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": []
+}

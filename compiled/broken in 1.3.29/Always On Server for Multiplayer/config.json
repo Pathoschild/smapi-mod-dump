@@ -6,6 +6,7 @@
   "farmcavechoicemushrooms": true,
   "communitycenterrun": true,
   "timeOfDayToSleep": 2200,
+  "lockPlayerChests": true,
   "clientsCanPause": false,
   "copyInviteCodeToClipboard": true,
   "festivalsOn": true,

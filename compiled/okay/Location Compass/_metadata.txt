@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3045
+IDs: Bouhm.LocationCompass
+update keys: Nexus:3045, GitHub:Bouhm/stardew-valley-mods

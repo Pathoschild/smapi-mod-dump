@@ -62,7 +62,7 @@
   "weat-evening.2": "{{condString}}{{eveningFog}}Tomorrow, anticipate {{tomorrowWeather}} with high: {{tomorrowHigh}} and low: {{tomorrowLow}}",
 
   //Weather - Night
-  "weat-night.0": "{{condString}}{{eveningFog}Tomorrow, expect {{tomorrowWeather}} with a high of {{tomorrowHigh}} and low of {{tomorrowLow}}.",
+  "weat-night.0": "{{condString}}{{eveningFog}}Tomorrow, expect {{tomorrowWeather}} with a high of {{tomorrowHigh}} and low of {{tomorrowLow}}.",
   "weat-night.1": "{{condString}}{{eveningFog}}Tomorrow, it should be {{tomorrowWeather}} with high: {{tomorrowHigh}} and low: {{tomorrowLow}}",
   "weat-night.2": "{{condString}}{{eveningFog}}For tomorrow, expect {{tomorrowWeather}} with high: {{tomorrowHigh}} and low: {{tomorrowLow}}",
 
@@ -110,6 +110,7 @@
   //this is the night string
   "weather-condition.frost.night": "Forecasters are already seeing the temperatures dip dangerously low, and you should expect frosts outside tonight. ",
   "weather-condition.evenFog": "Fog is predicted this evening from {{startTime}} to {{endTime}}. ",
+  "weather-condition.eveningFogNoTime": "Fog is predicted this evening.",
 
   //Weather Descriptions - Spring
   "weat-spring.sunny_daytime.0": "a beautiful sunny day",
@@ -177,7 +178,7 @@
   "weat-summer.drythunder.1": "due to the lack of moisture, the lightning today will not include rain. Areas are expected to watch for wildfires.",
   "weat-summer.drythunder.2": "expect lightning and thunder but no rain",
   
-    "weat-summer.drylightning.0": "there will be thunder and lightning today, but no rain",
+      "weat-summer.drylightning.0": "there will be thunder and lightning today, but no rain",
   "weat-summer.drylightning.1": "due to the lack of moisture, the lightning today will not include rain. Areas are expected to watch for wildfires.",
   "weat-summer.drylightning.2": "expect lightning and thunder but no rain",
 
@@ -293,7 +294,8 @@
   "nightTime" :  "Sunrise will be at {{sunrise}} with sunset at {{sunset}}. It is expected to be fully dark at {{nighttime}}",
 
   //basic conditions
-  "weat-bloodmoon": "Blood Moon",
+  "weather_bloodmoon": "Blood Moon",
+  "weather_hurricanerain" :  "Torrential Downpours",
   "weather_sunny_daytime": "Sunny",
   "weather_sunny_nighttime": "Clear",
   "weather_sunny": "Sunny",

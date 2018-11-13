@@ -42,30 +42,56 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Framework\Common\AssetManager.cs" />
+    <Compile Include="Framework\Menus\Elements\IBoundable.cs" />
+    <Compile Include="Framework\Menus\Elements\IClickable.cs" />
+    <Compile Include="Framework\Menus\Elements\IHighlightable.cs" />
+    <Compile Include="Framework\Menus\IMenu.cs" />
+    <Compile Include="Framework\Menus\Elements\ConditionalElement.cs" />
+    <Compile Include="Framework\Menus\Elements\DynamicTextElement.cs" />
+    <Compile Include="Framework\Menus\Elements\StaticTextElement.cs" />
+    <Compile Include="Framework\Menus\Menu.cs" />
+    <Compile Include="Menus\ServerMenu.cs" />
+    <Compile Include="Menus\StartMenu.cs" />
+    <Compile Include="Framework\Menus\SwitchMenuEventArgs.cs" />
     <Compile Include="Game\Ball.cs" />
     <Compile Include="Game\CollideInfo.cs" />
     <Compile Include="Game\Collider.cs" />
-    <Compile Include="Game\Interfaces\ICollideable.cs" />
-    <Compile Include="Game\Interfaces\IReactiveCollideable.cs" />
-    <Compile Include="Game\Interfaces\INonReactiveCollideable.cs" />
-    <Compile Include="Game\Interfaces\IResetable.cs" />
-    <Compile Include="Game\Interfaces\IUpdateable.cs" />
+    <Compile Include="Game\Controllers\ComputerController.cs" />
+    <Compile Include="Game\Controllers\LocalPlayerController.cs" />
+    <Compile Include="Framework\Game\IDrawableCollideable.cs" />
+    <Compile Include="Framework\Common\IDrawable.cs" />
+    <Compile Include="Framework\Game\IReactiveDrawableCollideable.cs" />
+    <Compile Include="Framework\Game\INonReactiveDrawableCollideable.cs" />
+    <Compile Include="Framework\Game\IResetable.cs" />
+    <Compile Include="Framework\Common\IUpdateable.cs" />
+    <Compile Include="Framework\Enums\Orientation.cs" />
     <Compile Include="Game\Paddle.cs" />
+    <Compile Include="Game\Controllers\PaddleController.cs" />
     <Compile Include="Game\ScoreDisplay.cs" />
+    <Compile Include="Framework\Enums\Side.cs" />
     <Compile Include="Game\Wall.cs" />
     <Compile Include="ModEntry.cs" />
-    <Compile Include="Game\PongGame.cs" />
+    <Compile Include="Menus\GameMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SoundManager.cs" />
+    <Compile Include="Framework\Common\SoundManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="assets\circle.png" />
-    <Content Include="assets\square.png" />
+    <Content Include="assets\circle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\square.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
     <PropertyGroup>
@@ -76,11 +102,11 @@
     <Copy SourceFiles="$(TargetDir)\$(TargetName).dll.mdb" DestinationFolder="$(ModPath)" Condition="Exists('$(TargetDir)\$(TargetName).dll.mdb')" />
     <Copy SourceFiles="$(ProjectDir)manifest.json" DestinationFolder="$(ModPath)" />
   </Target>
-  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.0.2\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.0.2\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.0.2\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.2.0.2\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
   </Target>
 </Project>

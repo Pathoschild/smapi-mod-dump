@@ -1,0 +1,12 @@
+{
+	"Name": "Summit Farm",
+	"Author": "Jessebot",
+	"Version": "1.1",
+	"Description": "A slightly larger hilltop farm (with vanilla coloured dirt).",
+	"UniqueID": "jessebot.summitfarm",
+	"MinimumApiVersion": "2.7",
+	"UpdateKeys": [ "Nexus:3053" ],
+	"ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher",
+	}
+}

@@ -296,47 +296,56 @@ namespace DeepWoodsMod
             DeepWoodsManager.currentDeepWoods?.CheckWarp();
         }
 
+        private static bool isModifiedLighting = false;
         public static void FixLighting()
         {
-            if (!(Game1.currentLocation is DeepWoods || Game1.currentLocation is Woods))
+            if (Game1.currentLocation is DeepWoods || Game1.currentLocation is Woods)
             {
-                if (Game1.timeOfDay < Game1.getStartingToGetDarkTime() && !Game1.isRaining)
-                    Game1.outdoorLight = Color.White;
-                return;
-            }
-
-            int darkOutDelta = Game1.timeOfDay - Game1.getTrulyDarkTime();
-            if (darkOutDelta > 0)
-            {
-                double delta = darkOutDelta / 100 + (darkOutDelta % 100 / 60.0) + ((Game1.gameTimeInterval / (double)Game1.realMilliSecondsPerGameTenMinutes) / 6.0);
-                double maxDelta = (2400 - Game1.getTrulyDarkTime()) / 100.0;
-
-                double ratio = Math.Min(1.0, delta / maxDelta);
-
-                if (ratio <= 0.0)
+                int darkOutDelta = Game1.timeOfDay - Game1.getTrulyDarkTime();
+                if (darkOutDelta > 0)
                 {
-                    Game1.ambientLight = DAY_LIGHT;
-                }
-                else if (ratio >= 1.0)
-                {
-                    Game1.ambientLight = NIGHT_LIGHT;
+                    double delta = darkOutDelta / 100 + (darkOutDelta % 100 / 60.0) + ((Game1.gameTimeInterval / (double)Game1.realMilliSecondsPerGameTenMinutes) / 6.0);
+                    double maxDelta = (2400 - Game1.getTrulyDarkTime()) / 100.0;
+
+                    double ratio = Math.Min(1.0, delta / maxDelta);
+
+                    if (ratio <= 0.0)
+                    {
+                        Game1.ambientLight = DAY_LIGHT;
+                    }
+                    else if (ratio >= 1.0)
+                    {
+                        Game1.ambientLight = NIGHT_LIGHT;
+                    }
+                    else
+                    {
+                        Color dayLightFactorized = DAY_LIGHT * (float)(1.0 - ratio);
+                        Color nightLightFactorized = NIGHT_LIGHT * (float)ratio;
+                        Game1.ambientLight.R = (byte)Math.Min(255, dayLightFactorized.R + nightLightFactorized.R);
+                        Game1.ambientLight.G = (byte)Math.Min(255, dayLightFactorized.G + nightLightFactorized.G);
+                        Game1.ambientLight.B = (byte)Math.Min(255, dayLightFactorized.B + nightLightFactorized.B);
+                        Game1.ambientLight.A = 255;
+                    }
                 }
                 else
                 {
-                    Color dayLightFactorized = DAY_LIGHT * (float)(1.0 - ratio);
-                    Color nightLightFactorized = NIGHT_LIGHT * (float)ratio;
-                    Game1.ambientLight.R = (byte)Math.Min(255, dayLightFactorized.R + nightLightFactorized.R);
-                    Game1.ambientLight.G = (byte)Math.Min(255, dayLightFactorized.G + nightLightFactorized.G);
-                    Game1.ambientLight.B = (byte)Math.Min(255, dayLightFactorized.B + nightLightFactorized.B);
-                    Game1.ambientLight.A = 255;
+                    Game1.ambientLight = DAY_LIGHT;
                 }
+
+                Game1.outdoorLight = Game1.ambientLight;
+                DeepWoodsManager.isModifiedLighting = true;
             }
             else
             {
-                Game1.ambientLight = DAY_LIGHT;
+                if (DeepWoodsManager.isModifiedLighting
+                    && Game1.timeOfDay < Game1.getStartingToGetDarkTime()
+                    && !Game1.isRaining
+                    && !ModEntry.GetHelper().ModRegistry.IsLoaded("knakamura.dynamicnighttime"))
+                {
+                    Game1.outdoorLight = Color.White;
+                }
+                DeepWoodsManager.isModifiedLighting = false;
             }
-
-            Game1.outdoorLight = Game1.ambientLight;
         }
 
 

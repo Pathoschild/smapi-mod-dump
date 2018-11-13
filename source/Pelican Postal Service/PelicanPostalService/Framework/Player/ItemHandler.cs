@@ -1,26 +1,25 @@
-﻿using Project.Framework.Player.Friendship;
-using Project.Logging;
+﻿using Pelican.Friendship;
 using StardewValley;
 
-namespace Project.Framework.Player.Items
+namespace Pelican.Items
 {
-    public class ItemHandler : Debug
+    public class ItemHandler
     {
         public Object Item { get; private set; }
         
-        public ItemHandler(Object item)
+        public ItemHandler()
         {
-            Item = item;
+            Item = Game1.player.ActiveObject;
         }
 
-        public int GiftTasteRating(FriendshipHandler friendshipDetails)
+        public int GiftTasteRating(NpcHandler npcHandler)
         {
             if (Item == null)
             {
                 return 0;
             }
 
-            GiftTaste giftTaste = new GiftTaste(Item, friendshipDetails);
+            GiftTaste giftTaste = new GiftTaste(Item, npcHandler);
             return giftTaste.Rating;
         }
 
@@ -41,9 +40,10 @@ namespace Project.Framework.Player.Items
         {
             public int Rating { get; private set; }
 
-            public GiftTaste(Object item, FriendshipHandler friendshipDetails)
+            public GiftTaste(Object item, NpcHandler npcHandler)
             {
-                Rating = (int) (RateByRecipient(friendshipDetails.Who, item) * RateByCurrentDate(friendshipDetails.IsBirthday) * RateByQuality(item.Quality));
+                string who = npcHandler.Target.Name;
+                Rating = (int) (RateByRecipient(npcHandler.Target, item) * RateByCurrentDate(NpcHandler.IsBirthday(who)) * RateByQuality(item.Quality));
             }
 
             private int RateByCurrentDate(bool isBirthday)

@@ -5,10 +5,9 @@ mods:
    Deep Woods
 
 latest commit:
-   commit b72ebb441d447af9587bcfe1937f7ff99645e0e6
+   commit c69ed25d7a032b7aacafbb030b5cbd7baf6c213e
    Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Thu Nov 1 18:09:07 2018 +0100
+   Date:   Sat Nov 10 11:25:11 2018 +0100
    
-       * Added checks to make sure Save events don't add a null value to Game1.location
-       * Increment version number
+       Added new obelisk texture by mostlyreal
    

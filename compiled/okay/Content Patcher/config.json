@@ -1,5 +1,4 @@
 {
-  "VerboseLog": false,
   "EnableDebugFeatures": false,
   "Controls": {
     "ToggleDebug": "F3",

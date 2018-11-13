@@ -1,52 +1,52 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Pong.Game.Interfaces;
+﻿using Pong.Framework.Enums;
+using Pong.Framework.Game;
+using Pong.Framework.Menus;
 using StardewValley;
 using System;
 
 namespace Pong.Game
 {
-    class Ball : Collider, IReactiveCollideable, IResetable
+    internal class Ball : Collider, IReactiveDrawableCollideable, IResetable
     {
+        private readonly Random rand;
         private int xVelocity;
         private int yVelocity;
 
-        private Random rand;
         public Ball() : base(false)
         {
-            width = height = Game1.tileSize;
-            rand = new Random();
-            Reset();
+            this.Width = this.Height = Game1.tileSize;
+            this.rand = new Random();
+            this.Reset();
+        }
+
+        public void CollideWith(INonReactiveDrawableCollideable other)
+        {
+            CollideInfo info = other.GetCollideInfo(this);
+
+            if (info.Orientation == Orientation.Horizontal)
+            {
+                this.yVelocity *= -1;
+
+                if (info.CollidePercentage >= 0) this.xVelocity = (int)(30 * info.CollidePercentage - 15);
+            }
+            else
+            {
+                this.xVelocity *= -1;
+            }
         }
 
         public void Reset()
         {
-            xPos = (PongGame.GetScreenWidth() - this.width) / 2;
-            yPos = (PongGame.GetScreenHeight() - this.height) / 2;
-            xVelocity = (rand.NextDouble() < 0.5 ? 1 : -1) * 4;
-            yVelocity = (rand.NextDouble() < 0.5 ? 1 : -1) * 8;
-        }
-
-        public void CollideWith(INonReactiveCollideable other)
-        {
-            CollideInfo info = other.GetCollideInfo(this);
-
-            if (info.orientation == PongGame.Orientation.HORIZONTAL)
-            {
-                yVelocity *= -1;
-
-                if (info.collidePercentage >= 0)
-                {
-                    xVelocity = (int)(30 * info.collidePercentage - 15);
-                }
-            }
-            else
-                xVelocity *= -1;
+            this.XPos = (Menu.ScreenWidth- this.Width) / 2;
+            this.YPos = (Menu.ScreenHeight- this.Height) / 2;
+            this.xVelocity = (this.rand.NextDouble() < 0.5 ? 1 : -1) * 4;
+            this.yVelocity = (this.rand.NextDouble() < 0.5 ? 1 : -1) * 8;
         }
 
         public override void Update()
         {
-            xPos += xVelocity;
-            yPos += yVelocity;
+            this.XPos += this.xVelocity;
+            this.YPos += this.yVelocity;
         }
     }
 }

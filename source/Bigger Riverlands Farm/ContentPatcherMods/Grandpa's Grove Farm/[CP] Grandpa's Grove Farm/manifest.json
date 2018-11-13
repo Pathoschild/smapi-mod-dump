@@ -1,0 +1,12 @@
+{
+   "Name": "Grandpa's Grove Farm (Foraging)",
+   "Author": "Jessebot",
+   "Version": "1.0.5",
+   "Description": "Content Pack mainly patching the Foraging Farm with a cooler one.",
+   "UniqueID": "Jessebot.grandpagrovefarm",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": [ "Nexus:2937" ],
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher",
+   }
+}

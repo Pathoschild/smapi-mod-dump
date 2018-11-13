@@ -16,9 +16,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit f02906a330d29705be2ac17d5d0e5ed6dc24092f
+   commit b071ebf23971170de34d74d88690ae493f30a014
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Nov 7 22:29:41 2018 -0500
+   Date:   Sat Nov 10 12:51:36 2018 -0500
    
-       migrate to SMAPI's verbose logging feature
+       fix error when farmhand transitions to a new location (#249)
    

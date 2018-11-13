@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <GamePath>E:\Games\GOG\Games\Stardew Valley</GamePath>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -33,12 +36,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Stardew Valley">
-      <HintPath>E:\Distractions\GOG\Games\Stardew Valley\Stardew Valley.exe</HintPath>
-    </Reference>
-    <Reference Include="StardewModdingAPI">
-      <HintPath>E:\Distractions\GOG\Games\Stardew Valley\StardewModdingAPI.exe</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,11 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Debug\Debug.cs" />
     <Compile Include="Config\ModConfig.cs" />
+    <Compile Include="Meta.cs" />
     <Compile Include="Framework\Menu\PostalService.cs" />
     <Compile Include="Framework\Player\ItemHandler.cs" />
-    <Compile Include="Framework\Player\FriendshipHandler.cs" />
+    <Compile Include="Framework\Player\NpcHandler.cs" />
     <Compile Include="Framework\Player\QuestHandler.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,6 +58,9 @@
   <ItemGroup>
     <None Include="manifest.json" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="i18n\default.json" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />

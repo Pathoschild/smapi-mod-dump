@@ -5,10 +5,9 @@ mods:
    Always On Server for Multiplayer
 
 latest commit:
-   commit 81ce533f9e64342ee55fe2d911a9513eb30dbff4
+   commit de054c8ba26e1fe848ce36f65b854ff992908660
    Author: DESKTOP-S07204M\Curtis <curtis368@gmail.com>
-   Date:   Wed Nov 7 21:45:39 2018 -0600
+   Date:   Mon Nov 12 15:47:50 2018 -0600
    
-       fixed bug with holidays maybe?
-       added house upgrade option
+       1.17.3
    

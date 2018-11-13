@@ -1,20 +1,18 @@
-﻿using StardewModdingAPI;
+﻿using Pelican.Config;
+using Pelican.Menus;
+using Pelican.Items;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using Project.Config;
-using Project.Framework.Menus;
-using Project.Framework.Player.Items;
-using Project.Logging;
-using StardewValley;
 
-namespace Project
+namespace Pelican
 {
     public class ModEntry : Mod
     {
-        private ModConfig settings;
+        private IModHelper helper;
 
-        public override void Entry(IModHelper modHelper)
+        public override void Entry(IModHelper helper)
         {
-            settings = modHelper.ReadConfig<ModConfig>();
+            this.helper = helper;
             ControlEvents.KeyPressed += ControlEvents_KeyPressed;
         }
 
@@ -22,12 +20,14 @@ namespace Project
         {
             if (Context.IsWorldReady)
             {
-                if (e.KeyPressed.ToString() == settings.MenuAccessKey)
+                Meta.Config = helper.ReadConfig<ModConfig>();
+                if (e.KeyPressed.ToString().Equals(Meta.Config.MenuAccessKey))
                 {
-                    Debug.Console = Monitor;
+                    Meta.Console = Monitor;
+                    Meta.Lang = helper.Translation;
 
-                    ItemHandler itemDetails = new ItemHandler(Game1.player.ActiveObject);
-                    PostalService menu = new PostalService(itemDetails, settings);
+                    ItemHandler itemHandler = new ItemHandler();
+                    PostalService menu = new PostalService(itemHandler);
                     menu.Open();
                 }
             }

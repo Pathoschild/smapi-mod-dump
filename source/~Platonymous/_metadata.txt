@@ -8,6 +8,7 @@ mods:
    Custom Element Handler
    Custom Farming Redux
    Custom Furniture
+   Custom Music
    Custom NPC
    Custom Shirts
    Custom TV
@@ -33,12 +34,9 @@ mods:
    Visualize
 
 latest commit:
-   commit 95ee22df4d144947628059d56c9559116921728e
-   Merge: 3a820f2 e1e9c84
-   Author: David <david@millionideas.de>
-   Date:   Tue Nov 6 13:10:52 2018 +0100
+   commit 9d9ef146c5416abb1186a420300a62c09e3e7df2
+   Author: Platonymous <david@millionideas.de>
+   Date:   Mon Nov 12 21:31:25 2018 +0100
    
-       Merge pull request #35 from Pathoschild/update-code
-       
-       Update for Stardew Valley 1.3.31 + minor changes
+       Minor fix
    

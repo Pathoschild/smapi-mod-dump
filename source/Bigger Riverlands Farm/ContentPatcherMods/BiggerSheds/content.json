@@ -1,0 +1,75 @@
+{
+  "Format": "1.3",
+  "ConfigSchema": {
+        "Shed": {
+            "AllowValues": "default, stone, wood, beach, bluewood, joja, ocean, space"	
+        },
+    },
+  "Changes": [
+       {
+          "Action": "Load",
+          "Target": "Maps/Shed",
+          "FromFile": "Assets/Default_BiggerSheds.tbin",
+		  "When": {
+                "Shed": "default"
+            }
+       },
+	   {
+          "Action": "Load",
+          "Target": "Maps/Shed",
+          "FromFile": "Assets/StoneShed_BiggerSheds.tbin",
+		  "When": {
+                "Shed": "stone"
+            }
+       },
+	   {
+          "Action": "Load",
+          "Target": "Maps/Shed",
+          "FromFile": "Assets/Wood_BiggerSheds.tbin",
+		  "When": {
+                "Shed": "wood"
+            }
+       },
+	   {
+          "Action": "Load",
+          "Target": "Maps/Shed",
+          "FromFile": "Assets/BeachShed_BiggerSheds.tbin",
+		  "When": {
+                "Shed": "beach"
+            }
+       },
+	   {
+          "Action": "Load",
+          "Target": "Maps/Shed",
+          "FromFile": "Assets/BlueWood_BiggerSheds.tbin",
+		  "When": {
+                "Shed": "bluewood"
+            }
+       },
+	   {
+          "Action": "Load",
+          "Target": "Maps/Shed",
+          "FromFile": "Assets/Joja_BiggerSheds.tbin",
+		  "When": {
+                "Shed": "joja"
+            }
+       },
+	   {
+          "Action": "Load",
+          "Target": "Maps/Shed",
+          "FromFile": "Assets/Ocean_BiggerSheds.tbin",
+		  "When": {
+                "Shed": "ocean"
+            }
+       },
+	   {
+          "Action": "Load",
+          "Target": "Maps/Shed",
+          "FromFile": "Assets/Space_BiggerSheds.tbin",
+		  "When": {
+                "Shed": "space"
+            }
+       },
+
+    ]
+}

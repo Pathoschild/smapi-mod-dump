@@ -1,63 +1,81 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using StardewModdingAPI.Events;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Pong.Framework.Menus;
+using Pong.Menus;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
+using System;
+using Pong.Framework.Common;
 
 namespace Pong
 {
     public class ModEntry : Mod
     {
-        private PongGame game;
+        //TODO: Highlightable drawables, then multiplayer connection menu (both join and host)
+        //TODO: then player menu, then remoteBall, maybe remoteGame?
+        private IMenu currentMenu;
+
+        internal static ModEntry Instance;
 
         public override void Entry(IModHelper helper)
         {
+            Instance = this;
 
-            game = new PongGame(helper);
+            if (!AssetManager.Init(helper))
+            {
+                this.Monitor.Log("Failed to load textures, exiting.", LogLevel.Error);
+                return;
+            }
+            this.SwitchToNewMenu(new StartMenu());
 
-            InputEvents.ButtonPressed += this.ButtonPressed;
             GraphicsEvents.OnPostRenderEvent += this.OnPostRender;
             GraphicsEvents.Resize += this.Resize;
-            ControlEvents.MouseChanged += this.MouseChanged;
+            InputEvents.ButtonPressed += this.InputEvents_ButtonPressed;
+            ControlEvents.MouseChanged += this.ControlEvents_MouseChanged;
         }
 
-        private void ButtonPressed(object sender, EventArgsInput e)
+        private void ControlEvents_MouseChanged(object sender, EventArgsMouseStateChanged e)
         {
+            this.currentMenu?.MouseStateChanged(e);
+        }
+
+        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
+        {
+            if (this.currentMenu == null)
+                return;
+
             e.SuppressButton();
-            if (e.Button == SButton.Space)
-                game.Start();
-            else if (e.Button == SButton.Escape)
+            if(this.currentMenu.ButtonPressed(e))
+                SoundManager.PlayKeyPressSound();
+        }
+
+        private void SwitchToNewMenuEvent(object sender, SwitchMenuEventArgs e)
+        {
+            this.SwitchToNewMenu(e.NewMenu);
+        }
+
+        private void SwitchToNewMenu(IMenu newMenu)
+        {
+            if (newMenu == null)
             {
-                if (game.HasStarted())
-                    game.Reset();
-                else
-                {
-                    Game1.quit = true;
-                    Game1.exitActiveMenu();
-                }
+                Game1.quit = true;
+                Game1.exitActiveMenu();
+                return;
             }
-            else if (e.Button == SButton.P)
-                game.TogglePaused();
+
+            this.currentMenu = newMenu;
+            this.currentMenu.SwitchToNewMenu += this.SwitchToNewMenuEvent;
         }
 
         private void OnPostRender(object sender, EventArgs e)
         {
-            game.Update();
-            game.Draw(Game1.spriteBatch);
+            this.currentMenu?.Update();
+            this.currentMenu?.Draw(Game1.spriteBatch);
         }
 
         private void Resize(object sender, EventArgs e)
         {
-            game.Resize();
-        }
-
-        private void MouseChanged(object sender, EventArgsMouseStateChanged e)
-        {
-            game.MouseChanged(e.NewPosition);
+            this.currentMenu?.Resize();
         }
     }
 }

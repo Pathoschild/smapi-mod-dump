@@ -1,0 +1,13 @@
+url:
+   https://github.com/gembree/HelpWantedQuestFixes.git
+
+mods:
+   Help Wanted Quest Fixes
+
+latest commit:
+   commit ea3a15965bb36d944d3481a69022de4d401e8fa5
+   Author: Geoff Embree <gembree@gmail.com>
+   Date:   Sun Aug 12 20:49:14 2018 -0400
+   
+       Add project files.
+   

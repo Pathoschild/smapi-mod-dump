@@ -1,12 +1,10 @@
 # StardewMods
 
-I put my SMAPI mod's source code here cuz i am better than u
+This is the source code for the best mods around!
 
-[Nexus: Jessebot](https://www.nexusmods.com/users/55529772) < **is where the good stuff is stored**
+[My Nexus Mods Profile](https://www.nexusmods.com/users/55529772) **is where the good stuff is stored**
 
-##Current SMAPI mods
 
-[Bigger Riverlands Farm](https://www.nexusmods.com/stardewvalley/mods/3025)
 
 			
 		

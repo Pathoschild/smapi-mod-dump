@@ -1,7 +1,7 @@
 {
    "Name": "Eat More!",
    "Author": "crc-fehler",
-   "Version": "0.2.2",
+   "Version": "0.2.3",
    "Description": "Reduces stamina gained by sleeping",
    "UniqueID": "crc.eatmore",
    "EntryDll": "eatmore.dll",

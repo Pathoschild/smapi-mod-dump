@@ -5,9 +5,9 @@ mods:
    Pelican Postal Service
 
 latest commit:
-   commit 78b778cd8785cd7890795b456582ab80512ddb5a
+   commit 3a2c81afbb0a4dadfb37c29ecae28bbe416e46b5
    Author: Tobin Wilson <tobinwilson@gmail.com>
-   Date:   Fri Oct 5 14:46:31 2018 -0700
+   Date:   Thu Nov 8 14:48:36 2018 -0800
    
-       Refactored default behavior, quality checking
+       Optimization. NPC name compatibility. Selection options for ineligible candidates.
    

@@ -1,0 +1,12 @@
+{
+   "Name": "Spirit's Eve Mill",
+   "Author": "Jessebot",
+   "Version": "1.0.0",
+   "Description": "A spooky, creepy mill",
+   "UniqueID": "Jessebot.halloweenmill",
+   "MinimumApiVersion": "2.5",
+   "UpdateKeys": [ "Nexus:" ],
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher",
+   }
+}

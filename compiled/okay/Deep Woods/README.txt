@@ -1,9 +1,8 @@
 DeepWoodsMod for Stardew Valley
 Author: Max Vollmer
-Version: 1.3-beta.14
+Version: 1.3-beta.15
 
-For Stardew Valley 1.3.29 beta
-Needs SMAPI v2.8-beta.5+: https://smapi.io/
+Needs SMAPI v2.8 beta: https://smapi.io/
 
 Web: https://www.nexusmods.com/stardewvalley/mods/2571
 Sourcecode: https://github.com/maxvollmer/DeepWoodsMod
@@ -16,4 +15,17 @@ If not otherwise stated, textures are based of original game assets and may only
 Texture: sinceriouslyyy_fountain.png
 By: https://www.reddit.com/user/sinceriouslyyy
 Found at: https://www.reddit.com/r/PixelArt/comments/6h8wld/oc_pixel_art_fountain/
+License: Exclusive/Custom, please ask author directly for permission if you want to use this asset.
+
+Texture: gingerbread_house_mostlyreal.png
+By: https://forums.nexusmods.com/index.php?/user/21105194-mostlyreal/
+License: Exclusive/Custom, please ask author directly for permission if you want to use this asset.
+
+Texture: woods_obelisk_mostlyreal.png
+By: https://forums.nexusmods.com/index.php?/user/21105194-mostlyreal/
+License: Exclusive/Custom, please ask author directly for permission if you want to use this asset.
+
+Texture: unicorn_zhuria.png
+Found at: https://www.nexusmods.com/stardewvalley/mods/8
+By: https://forums.nexusmods.com/index.php?/user/5497250-zhuria/
 License: Exclusive/Custom, please ask author directly for permission if you want to use this asset.

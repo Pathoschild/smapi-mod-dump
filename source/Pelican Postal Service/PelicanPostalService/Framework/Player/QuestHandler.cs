@@ -1,23 +1,21 @@
-﻿using Project.Framework.Player.Friendship;
-using Project.Framework.Player.Items;
-using Project.Logging;
+﻿using Pelican.Friendship;
+using Pelican.Items;
+using Pelican.Menus;
 using StardewValley;
 using StardewValley.Quests;
 
-namespace Project.Framework.Player.Quests
+namespace Pelican.Quests
 {
-    public class QuestHandler : Debug
+    public class QuestHandler : Meta
     {
-        public bool OnSearchSuccess { get; private set; }
-        public bool PreventNextGift { get; private set; }
-        private readonly bool lazyItemChecking;
+        private PostalService menuHandler;
 
-        public QuestHandler(bool lazyItemChecking)
+        public QuestHandler(PostalService menuHandler)
         {
-            this.lazyItemChecking = lazyItemChecking;
+            this.menuHandler = menuHandler;
         }
 
-        public void FindOneAndUpdate(FriendshipHandler friendshipDetails, ItemHandler itemDetails)
+        public void FindOneAndUpdate(NpcHandler npcHandler, ItemHandler itemHandler)
         {
             foreach (Quest quest in Game1.player.questLog)
             {
@@ -29,16 +27,16 @@ namespace Project.Framework.Player.Quests
                         switch (quest.questType.Value)
                         {
                             case 3:
-                                UpdateDeliveryQuest(friendshipDetails, itemDetails, quest);
+                                UpdateDeliveryQuest(npcHandler, itemHandler, quest);
                                 break;
                             case 7:
-                                UpdateFishingQuest(friendshipDetails, itemDetails, quest);
+                                UpdateFishingQuest(npcHandler, itemHandler, quest);
                                 break;
                             case 9:
-                                UpdateLostItemQuest(friendshipDetails, itemDetails, quest);
+                                UpdateLostItemQuest(npcHandler, itemHandler, quest);
                                 break;
                             case 10:
-                                UpdateCollectionQuest(friendshipDetails, itemDetails, quest);
+                                UpdateCollectionQuest(npcHandler, itemHandler, quest);
                                 break;
                         }
                     }
@@ -68,7 +66,7 @@ namespace Project.Framework.Player.Quests
 
         private void Update(Quest quest, int gold)
         {
-            PreventNextGift = true;
+            menuHandler.UseDefaultAction = false;
 
             if (gold > 0)
             {
@@ -78,30 +76,31 @@ namespace Project.Framework.Player.Quests
 
             quest.questComplete();
             ++Game1.stats.QuestsCompleted;
-            Game1.addHUDMessage(new HUDMessage("Journal Updated", 2));
+
+            string i18n = Lang.Get("questComplete");
+            Game1.addHUDMessage(new HUDMessage(i18n, 2));
         }
 
-        private void UpdateCollectionQuest(FriendshipHandler friendshipDetails, ItemHandler itemDetails, Quest quest)
+        private void UpdateCollectionQuest(NpcHandler npcHandler, ItemHandler itemHandler, Quest quest)
         {
-            ResourceCollectionQuest request = (ResourceCollectionQuest) quest;
-            bool isValidObjective = ParseOneByObjective(itemDetails.Item.ParentSheetIndex, request.deliveryItem.Value.ParentSheetIndex);
-            bool isValidRecipient = ParseOneByRecipient(friendshipDetails.Who.displayName, request.target.Value);
+            ResourceCollectionQuest request = (ResourceCollectionQuest)quest;
+            bool isValidObjective = ParseOneByObjective(itemHandler.Item.ParentSheetIndex, request.deliveryItem.Value.ParentSheetIndex);
+            bool isValidRecipient = ParseOneByRecipient(npcHandler.Target.Name, request.target.Value);
 
             if (isValidObjective && isValidRecipient)
             {
-                OnSearchSuccess = true;
-                int numberItemsOwed = lazyItemChecking ? request.number.Value : request.number.Value - request.numberCollected.Value;
-                bool isValidAmount = Game1.player.hasItemInInventory(itemDetails.Item.ParentSheetIndex, numberItemsOwed);
+                int numberItemsOwed = Config.LazyItemChecking ? request.number.Value : request.number.Value - request.numberCollected.Value;
+                bool isValidAmount = Game1.player.hasItemInInventory(itemHandler.Item.ParentSheetIndex, numberItemsOwed);
 
                 if (isValidAmount)
                 {
                     // Remove only when quest giver is Robin
                     if (request.target.Value.Equals("Robin"))
                     {
-                        itemDetails.RemoveFromInventory(request.number.Value);
+                        itemHandler.RemoveFromInventory(request.number.Value);
                     }
 
-                    friendshipDetails.Update(0, true, null);
+                    npcHandler.Update(0, true, null);
                     Update(quest, request.reward.Value);
                 }
                 else
@@ -112,32 +111,29 @@ namespace Project.Framework.Player.Quests
             }
         }
 
-        private void UpdateDeliveryQuest(FriendshipHandler friendshipDetails, ItemHandler itemDetails, Quest quest)
+        private void UpdateDeliveryQuest(NpcHandler npcHandler, ItemHandler itemHandler, Quest quest)
         {
             ItemDeliveryQuest request = (ItemDeliveryQuest)quest;
-            bool isValidObjective = ParseOneByObjective(itemDetails.Item.ParentSheetIndex, request.item.Value);
-            bool isValidRecipient = ParseOneByRecipient(friendshipDetails.Who.displayName, request.target.Value);
+            bool isValidObjective = ParseOneByObjective(itemHandler.Item.ParentSheetIndex, request.item.Value);
+            bool isValidRecipient = ParseOneByRecipient(npcHandler.Target.Name, request.target.Value);
 
             // Clint's Attempt
-            if (request.id.Value == 110 && isValidObjective && friendshipDetails.Who.displayName.Equals("Emily"))
+            if (request.id.Value == 110 && isValidObjective && npcHandler.Target.Name.Equals("Emily"))
             {
-                OnSearchSuccess = true;
-                itemDetails.RemoveFromInventory(1);
-                friendshipDetails.Update(250, true, "Clint");
+                itemHandler.RemoveFromInventory(1);
+                npcHandler.Update(250, true, "Clint");
                 Update(quest, 0);
             }
             else if (isValidRecipient && isValidObjective)
             {
-                OnSearchSuccess = true;
-
                 // Robin's Request
                 if (request.id.Value == 113)
                 {
-                    bool isValidAmount = Game1.player.hasItemInInventory(itemDetails.Item.ParentSheetIndex, 10);
+                    bool isValidAmount = Game1.player.hasItemInInventory(itemHandler.Item.ParentSheetIndex, 10);
                     if (isValidAmount)
                     {
-                        itemDetails.RemoveFromInventory(10);
-                        friendshipDetails.Update(250, true, null);
+                        itemHandler.RemoveFromInventory(10);
+                        npcHandler.Update(250, true, null);
                         Update(quest, request.moneyReward.Value);
                     }
                     else
@@ -148,36 +144,34 @@ namespace Project.Framework.Player.Quests
                 }
                 else if (quest.dailyQuest.Value)
                 {
-                    itemDetails.RemoveFromInventory(1);
-                    friendshipDetails.Update(150, true, null);
-                    Update(quest, itemDetails.Item.Price * 3);
+                    itemHandler.RemoveFromInventory(1);
+                    npcHandler.Update(150, true, null);
+                    Update(quest, itemHandler.Item.Price * 3);
                 }
                 else
                 {
-                    itemDetails.RemoveFromInventory(1);
-                    friendshipDetails.Update(250, true, null);
+                    itemHandler.RemoveFromInventory(1);
+                    npcHandler.Update(250, true, null);
                     Update(quest, request.moneyReward.Value);
                 }
             }
         }
 
-        private void UpdateFishingQuest(FriendshipHandler friendshipDetails, ItemHandler itemDetails, Quest quest)
+        private void UpdateFishingQuest(NpcHandler npcHandler, ItemHandler itemHandler, Quest quest)
         {
             FishingQuest request = (FishingQuest)quest;
-            bool isValidObjective = ParseOneByObjective(itemDetails.Item.ParentSheetIndex, request.whichFish.Value);
-            bool isValidRecipient = ParseOneByRecipient(friendshipDetails.Who.displayName, request.target.Value);
+            bool isValidObjective = ParseOneByObjective(itemHandler.Item.ParentSheetIndex, request.whichFish.Value);
+            bool isValidRecipient = ParseOneByRecipient(npcHandler.Target.Name, request.target.Value);
 
             if (isValidObjective && isValidRecipient)
             {
-                OnSearchSuccess = true;
-
-                int numberItemsOwed = lazyItemChecking ? request.numberToFish.Value : request.numberToFish.Value - request.numberFished.Value;
-                bool isValidAmount = Game1.player.hasItemInInventory(itemDetails.Item.ParentSheetIndex, numberItemsOwed);
+                int numberItemsOwed = Config.LazyItemChecking ? request.numberToFish.Value : request.numberToFish.Value - request.numberFished.Value;
+                bool isValidAmount = Game1.player.hasItemInInventory(itemHandler.Item.ParentSheetIndex, numberItemsOwed);
 
                 if (isValidAmount)
                 {
                     // Remove none
-                    friendshipDetails.Update(0, true, null);
+                    npcHandler.Update(0, true, null);
                     Update(quest, request.reward.Value);
                 }
                 else
@@ -188,42 +182,36 @@ namespace Project.Framework.Player.Quests
             }
         }
 
-        private void UpdateLostItemQuest(FriendshipHandler friendshipDetails, ItemHandler itemDetails, Quest quest)
+        private void UpdateLostItemQuest(NpcHandler npcHandler, ItemHandler itemHandler, Quest quest)
         {
-            if (quest.id.Value == 100 && friendshipDetails.Who.displayName.Equals("Robin") && itemDetails.Item.DisplayName.Equals("Lost Axe"))
+            if (quest.id.Value == 100 && npcHandler.Target.Name.Equals("Robin") && itemHandler.Item.Name.Equals("Lost Axe"))
             {
-                OnSearchSuccess = true;
-
                 // Robin's Lost Axe
-                itemDetails.RemoveFromInventory(1);
-                friendshipDetails.Update(250, true, null);
+                itemHandler.RemoveFromInventory(1);
+                npcHandler.Update(250, true, null);
                 Update(quest, 250);
             }
-            else if (quest.id.Value == 102 && friendshipDetails.Who.displayName.Equals("Lewis") && itemDetails.Item.DisplayName.Equals("Lucky Purple Shorts"))
+            else if (quest.id.Value == 102 && npcHandler.Target.Name.Equals("Lewis") && itemHandler.Item.Name.Equals("Lucky Purple Shorts"))
             {
-                OnSearchSuccess = true;
-
                 // Mayor's "Shorts"
-                itemDetails.RemoveFromInventory(1);
-                friendshipDetails.Update(250, true, null);
+                itemHandler.RemoveFromInventory(1);
+                npcHandler.Update(250, true, null);
                 Update(quest, 750);
             }
-            else if (quest.id.Value == 107 && friendshipDetails.Who.displayName.Equals("Linus") && itemDetails.Item.DisplayName.Equals("Berry Basket"))
+            else if (quest.id.Value == 107 && npcHandler.Target.Name.Equals("Linus") && itemHandler.Item.Name.Equals("Berry Basket"))
             {
-                OnSearchSuccess = true;
-
                 // Blackberry Basket
-                itemDetails.RemoveFromInventory(1);
-                friendshipDetails.Update(250, true, null);
+                itemHandler.RemoveFromInventory(1);
+                npcHandler.Update(250, true, null);
                 Update(quest, 0);
             }
         }
 
-        private void WarnAmountLow(string recipient, int denominator)
+        private void WarnAmountLow(string target, int amount)
         {
-            PreventNextGift = true;
-            string s = string.Format("Not enough material for {0} ({1} needed)", recipient, denominator);
-            Game1.addHUDMessage(new HUDMessage(s, 3));
+            menuHandler.UseDefaultAction = false;
+            string i18n = Lang.Get("questAmountLow", new { name = target, amt = amount });
+            Game1.addHUDMessage(new HUDMessage(i18n, 3));
         }
     }
 }

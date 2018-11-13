@@ -1,5 +1,4 @@
 {
-  "VerboseLogging": false,
   "AutomateShippingBin": true,
   "AutomationInterval": 60,
   "Controls": {

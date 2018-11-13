@@ -1,0 +1,14 @@
+url:
+   https://github.com/Bouhm/stardew-valley-mods.git
+
+mods:
+   Location Compass
+   NPC Map Locations
+
+latest commit:
+   commit 7f4ac12adc23428111065147d3c3321a0225facd
+   Author: Brian Pak <bbouhm@gmail.com>
+   Date:   Fri Nov 9 15:17:32 2018 -0800
+   
+       Update README.md
+   

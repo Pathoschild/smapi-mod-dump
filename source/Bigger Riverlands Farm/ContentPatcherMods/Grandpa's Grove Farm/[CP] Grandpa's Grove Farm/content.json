@@ -1,0 +1,20 @@
+{
+    "Format": "1.4",
+    "Changes": [
+		{
+			"Action": "Load",
+            "Target": "Maps/Farm_Foraging",
+            "FromFile": "assets/Farm_Foraging.tbin", 
+        },
+		{
+			"Action": "Load",
+            "Target": "Maps/Forest",
+            "FromFile": "assets/Forest.tbin", 
+        },
+		{
+			"Action": "Load",
+            "Target": "Maps/Woods",
+            "FromFile": "assets/Woods.tbin", 
+        },
+    ]
+}

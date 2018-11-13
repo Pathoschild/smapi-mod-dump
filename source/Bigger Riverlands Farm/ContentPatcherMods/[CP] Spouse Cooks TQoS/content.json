@@ -1,0 +1,92 @@
+{
+  "Format": "1.5",
+  "Changes": [
+		//Year 1
+       {
+		  "LogName": "Year 1 TQoS Dialogue",
+          "Action": "EditData",
+          "Target": "Characters/Dialogue/MarriageDialogue",
+          "Entries": {
+            "spring_7": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [606] $h",
+            "spring_14": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [648] $h",		
+			"spring_21": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [609] $h",
+			"spring_28": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [195] $h",
+			"summer_7": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [198] $h",
+			"summer_14": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [211] $h",
+			"summer_21": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [228] $h",
+			"summer_28": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [216] $h",
+			"fall_7": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [229] $h",
+			"fall_14": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [219] $h",
+			"fall_21": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [208] $h",
+			"fall_28": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [605] $h",
+			"winter_7": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [604] $h#$e#By the way, are you going to enter the fishing contest tomorrow?",
+			"winter_14": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [220] $h",
+			"winter_21": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [608] $h",
+			"winter_28": "Thanks for a great year, @. I'm excited to tackle next year together.#$e#Almost forgot, The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [612] $h",
+		  },
+		  "When": {
+			"Year": "1"
+		  },
+       },
+	   
+	   //Year 2
+	   {
+		  "LogName": "Year 2 TQoS Dialogue",
+          "Action": "EditData",
+          "Target": "Characters/Dialogue/MarriageDialogue",
+          "Entries": {
+            "spring_7": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [206] $h",
+            "spring_14": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [210] $h",		
+			"spring_21": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [201] $h",
+			"spring_28": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [204] $h",
+			"summer_7": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [209] $h",
+			"summer_14": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [731] $h",
+			"summer_21": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [221] $h",
+			"summer_28": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [607] $h",
+			"fall_7": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [610] $h",
+			"fall_14": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [611] $h",
+			"fall_21": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [732] $h",
+			"fall_28": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [649] $h",
+			"winter_7": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [651] $h#$e#By the way, are you going to enter the fishing contest tomorrow?",
+			"winter_14": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [730] $h",
+			"winter_21": "Hi, honey! The Queen of Sauce was on television today, so I tried cooking their recipe. Enjoy! [618] $h",
+			"winter_28": "Thanks for a great year, @. I'm excited to tackle next year together.#$e#I've also cooked you something that I've learned last year from the Queen of Sauce! Enjoy! [612] $h",
+		  },
+		  "When": {
+			"Year": "2",
+			"Year:1": "false"
+		  },
+       },
+	   
+	   //After Year 2
+	   {
+		  "LogName": "After Year 2 TQoS Dialogue",
+          "Action": "EditData",
+          "Target": "Characters/Dialogue/MarriageDialogue",
+          "Entries": {
+            "spring_7": "Hi, honey! I was thinking of something to cook for you, so I decided to cook something the Queen of Sauce taught me some time ago. Enjoy! [206 606] $h",
+            "spring_14": "Hi, honey! I was thinking of something to cook for you, so I decided to cook something the Queen of Sauce taught me some time ago. Enjoy! [210 648] $h",		
+			"spring_21": "Hi, honey! I was thinking of something to cook for you, so I decided to cook something the Queen of Sauce taught me some time ago. Enjoy! [201 609] $h",
+			"spring_28": "Hi, honey! I was thinking of something to cook for you, so I decided to cook something the Queen of Sauce taught me some time ago. Enjoy! [204 195] $h",
+			"summer_7": "Hi, honey! I was thinking of something to cook for you, so I decided to cook something the Queen of Sauce taught me some time ago. Enjoy! [209 198] $h",
+			"summer_14": "Hi, honey! I was thinking of something to cook for you, so I decided to cook something the Queen of Sauce taught me some time ago. Enjoy! [731 211] $h",
+			"summer_21": "Hi, honey! I was thinking of something to cook for you, so I decided to cook something the Queen of Sauce taught me some time ago. Enjoy! [221 228] $h",
+			"summer_28": "Hi, honey! I was thinking of something to cook for you, so I decided to cook something the Queen of Sauce taught me some time ago. Enjoy! [607 216] $h",
+			"fall_7": "Hi, honey! I was thinking of something to cook for you, so I decided to cook something the Queen of Sauce taught me some time ago. Enjoy! [610 229] $h",
+			"fall_14": "Hi, honey! I was thinking of something to cook for you, so I decided to cook something the Queen of Sauce taught me some time ago. Enjoy! [611 219] $h",
+			"fall_21": "Hi, honey! I was thinking of something to cook for you, so I decided to cook something the Queen of Sauce taught me some time ago. Enjoy! [732 208] $h",
+			"fall_28": "Hi, honey! I was thinking of something to cook for you, so I decided to cook something the Queen of Sauce taught me some time ago. Enjoy! [649 605] $h",
+			"winter_7": "Hi, honey! I was thinking of something to cook for you, so I decided to cook something the Queen of Sauce taught me some time ago. Enjoy! [651 604] $h#$e# By the way, are you going to enter the fishing contest tomorrow?",
+			"winter_14": "Hi, honey! I was thinking of something to cook for you, so I decided to cook something the Queen of Sauce taught me some time ago. Enjoy! [730 220] $h",
+			"winter_21": "Hi, honey! I was thinking of something to cook for you, so I decided to cook something the Queen of Sauce taught me some time ago. Enjoy! [618 608] $h",
+			"winter_28": "Thanks for a great year, @. I'm excited to tackle next year together.#$e#I've also cooked you something that I've learned from the Queen of Sauce a while back. Enjoy! [612] $h",
+		  },
+		  "When": {
+			"Year:1": "false",
+			"Year:2": "false"
+		  },
+       },
+	   
+	   
+    ]
+}
