@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Buildings;
@@ -59,6 +60,7 @@ namespace PelicanFiber.Framework
             this.ShowMainMenu = showMainMenu;
 
             this.WhereToGo = Game1.player.currentLocation.Name;
+            
 
             Game1.player.forceCanMove();
             this.ResetBounds();
@@ -78,6 +80,13 @@ namespace PelicanFiber.Framework
                 this.Blueprints.Add(new BluePrint("Silo"));
                 this.Blueprints.Add(new BluePrint("Mill"));
                 this.Blueprints.Add(new BluePrint("Shed"));
+                int buildingsConstructed = Game1.getFarm().getNumberBuildingsConstructed("Cabin");
+                if (Game1.IsMasterGame)
+                {
+                    this.Blueprints.Add(new BluePrint("Stone Cabin"));
+                    this.Blueprints.Add(new BluePrint("Plank Cabin"));
+                    this.Blueprints.Add(new BluePrint("Log Cabin"));
+                }
                 if (!Game1.getFarm().isBuildingConstructed("Stable"))
                     this.Blueprints.Add(new BluePrint("Stable"));
                 this.Blueprints.Add(new BluePrint("Slime Hutch"));

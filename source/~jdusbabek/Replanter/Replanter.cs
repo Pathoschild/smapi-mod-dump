@@ -884,9 +884,7 @@ namespace Replanter
 
             int rand = this.Random.Next(1, messageStore.Count + 1);
 
-            string value = "...$h#$e#";
-
-            messageStore.TryGetValue(rand, out value);
+            messageStore.TryGetValue(rand, out string value);
 
             return value;
         }

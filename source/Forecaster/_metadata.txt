@@ -5,9 +5,9 @@ mods:
    Forecaster
 
 latest commit:
-   commit 81ddec7ae40e6eac156aee01879eb689e4385a86
+   commit 9d5e4cb09eeb1efb221a05f2f7e8acd969bb9bb4
    Author: Remy Bach <remy@bach.me.uk>
-   Date:   Thu Nov 8 00:00:40 2018 +0000
+   Date:   Mon Nov 12 23:19:06 2018 +0000
    
-       Update readme, add UpdateKeys, and bump version #
+       Add shortcut key functionality
    

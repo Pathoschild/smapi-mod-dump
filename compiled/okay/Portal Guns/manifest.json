@@ -1,11 +1,13 @@
 {
   "Name": "Portal Guns",
   "Author": "TrollTheBotman",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Adds a functional portal gun",
+  "Dependencies": [
+    { "UniqueID": "Platonymous.Toolkit" }
+  ],
   "UniqueID": "JoshJKe.PortalGun",
   "EntryDll": "PortalGun.dll",
   "MinimumApiVersion": "2.7",
-  "UpdateKeys": [ "Nexus", 3049 ],
-  "Dependencies": [ { "UniqueID": "Platonymous.Toolkit" } ] // added locally
+  "UpdateKeys": [ "Nexus:3049" ]
 }

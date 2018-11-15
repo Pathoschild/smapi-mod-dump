@@ -1,7 +1,7 @@
 {
 	"Name": "Summit Farm",
 	"Author": "Jessebot",
-	"Version": "1.1",
+	"Version": "1.1.1",
 	"Description": "A slightly larger hilltop farm.",
 	"UniqueID": "jessebot.summitfarm",
 	"MinimumApiVersion": "2.7",

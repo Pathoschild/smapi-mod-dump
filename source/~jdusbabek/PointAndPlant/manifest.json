@@ -1,10 +1,10 @@
 ﻿{
   "Name": "Point-and-Plant",
   "Author": "jwdred",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Plant and harvest from the comfort of your front porch!",
   "UniqueID": "jwdred.PointAndPlant",
   "EntryDll": "PointAndPlant.dll",
-  "MinimumApiVersion": "2.6-beta",
+  "MinimumApiVersion": "2.8-beta",
   "UpdateKeys": [ "Nexus:572" ]
 }

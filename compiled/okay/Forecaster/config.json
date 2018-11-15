@@ -1,4 +1,7 @@
 {
   "initialDelay": 1,
-  "offsetDelay": 2
+  "offsetDelay": 2,
+  "enableShortcutKeys": false,
+  "tipKey": "OemOpenBrackets",
+  "weatherKey": "OemCloseBrackets"
 }

@@ -9,6 +9,14 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Common", "Common\Common.shp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolUpgradeDeliveryService", "ToolUpgradeDeliveryService\ToolUpgradeDeliveryService.csproj", "{B60C7009-A672-490B-AD9B-DE3C2BEC0171}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{7CEE1D43-CB5B-4E7C-93EE-FEC01AC45274}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Common\Common.projitems*{b60c7009-a672-490b-ad9b-de3c2bec0171}*SharedItemsImports = 4

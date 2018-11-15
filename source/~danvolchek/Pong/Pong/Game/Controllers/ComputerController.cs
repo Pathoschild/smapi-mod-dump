@@ -2,7 +2,7 @@
 
 namespace Pong.Game.Controllers
 {
-    internal class ComputerController : PaddleController
+    internal class ComputerController : IntentionalPaddleController
     {
         private readonly Ball ball;
 
@@ -13,7 +13,7 @@ namespace Pong.Game.Controllers
 
         public override void Update()
         {
-            Rectangle boundingBox = this.ball.GetBoundingBox();
+            Rectangle boundingBox = this.ball.Bounds;
             this.IntendedPosition = boundingBox.X + boundingBox.Width / 2;
         }
     }

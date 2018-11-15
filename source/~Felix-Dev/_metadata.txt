@@ -6,9 +6,9 @@ mods:
    Tool Upgrade Delivery Service
 
 latest commit:
-   commit 7fd1d4de5351e9c22fd054e5cbe8fadb494a4068
+   commit d32294750a7fe9c3e87af59104791d41068e3a18
    Author: Felix-Dev <FelixDev91@gmail.com>
-   Date:   Wed Nov 7 16:36:34 2018 +0100
+   Date:   Tue Nov 13 16:46:31 2018 +0100
    
-       Migrated to new Nuget reference format (PackageReference).
+       DialogueBoxEx: Added exceptions for reflection cases.
    

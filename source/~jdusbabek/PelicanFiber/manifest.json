@@ -1,10 +1,10 @@
 ﻿{
   "Name": "PelicanFiber",
   "Author": "jwdred",
-  "Version": "3.1.0",
+  "Version": "3.1.1",
   "Description": "Order stuff over the internet, and save all kinds of money!",
   "UniqueID": "jwdred.PelicanFiber",
   "EntryDll": "PelicanFiber.dll",
-  "MinimumApiVersion": "2.6-beta",
+  "MinimumApiVersion": "2.8-beta",
   "UpdateKeys": [ "Nexus:631" ]
 }

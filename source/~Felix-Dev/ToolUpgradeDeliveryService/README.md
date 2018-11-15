@@ -1,5 +1,5 @@
 ﻿**Tool-Upgrade Delivery Service** is a [Stardew Valley](http://stardewvalley.net/) mod which makes retrieving upgraded farm tools 
-less tedious. With this mod, Clint (the blacksmith) will simply send you an e-mail with the upgraded tool included as soon as 
+less tedious. With this mod, Clint (the blacksmith) will simply send you a mail with the upgraded tool included as soon as 
 the upgrade is finished. No more visiting the blacksmith simply to get your improved farm tool!
 
 ## Contents
@@ -15,11 +15,11 @@ the upgrade is finished. No more visiting the blacksmith simply to get your impr
 3. Run the game using SMAPI.
 
 ## Use
-Order a tool upgrade as usual. Check your mailbox the following days for an e-mail sent by Clint with the tool included. 
-If you want, you can still receive the tool by visiting the blacksmith. In this case, the tool won't be included in the e-mail.
+Order a tool upgrade as usual. Check your mailbox the following days for a mail sent by Clint with the tool included. 
+If you want, you can still receive the tool by visiting the blacksmith. In this case, the tool won't be included in the mail.
 
 ## Showcase
-* An example e-mail sent by Clint:
+* An example mail sent by Clint:
   ![](screenshots/tool-email.png)
 
 ## Compatibility

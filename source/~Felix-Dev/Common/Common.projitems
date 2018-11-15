@@ -12,6 +12,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)CommonServices.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ListExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StardewValley\Constants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StardewValley\Dialog\DialogHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StardewValley\Dialog\DialogueBoxEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StardewValley\Input\CursorDirection.cs" />
   </ItemGroup>
 </Project>

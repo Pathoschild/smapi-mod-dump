@@ -10,7 +10,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Object = StardewValley.Object;
+
+using SObject = StardewValley.Object;
 
 namespace StardewMods.ArchaeologyHouseContentManagementHelper.Patches
 {
@@ -47,11 +48,11 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Patches
             int stack = item.Stack;
             Item obj1 = farmer.IsLocalPlayer ? farmer.addItemToInventory(item) : (Item)null;
 
-            // Patch: Added [... || obj1.ParentSheetIndex == Constants.GAME_OBJECT_LOST_BOOK_ID]
+            // Patch: Added [... || obj1.ParentSheetIndex == Constants.ID_GAME_OBJECT_LOST_BOOK]
             bool flag = obj1 == null || obj1.Stack != item.Stack || item is SpecialItem || obj1.ParentSheetIndex == Constants.ID_GAME_OBJECT_LOST_BOOK;
-            if (item is Object)
+            if (item is SObject)
             {
-                (item as Object).reloadSprite();
+                (item as SObject).reloadSprite();
             }
 
             if (!flag || !farmer.IsLocalPlayer)
@@ -68,33 +69,33 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Patches
                         (item as SpecialItem).actionWhenReceived(farmer);
                         return true;
                     }
-                    if (item is Object && (item as Object).specialItem)
+                    if (item is SObject && (item as SObject).specialItem)
                     {
-                        if ((item as Object).bigCraftable.Value || item is Furniture)
+                        if ((item as SObject).bigCraftable.Value || item is Furniture)
                         {
-                            if (!farmer.specialBigCraftables.Contains((item as Object).ParentSheetIndex))
+                            if (!farmer.specialBigCraftables.Contains((item as SObject).ParentSheetIndex))
                             {
-                                farmer.specialBigCraftables.Add((item as Object).ParentSheetIndex);
+                                farmer.specialBigCraftables.Add((item as SObject).ParentSheetIndex);
                             }
                         }
-                        else if (!farmer.specialItems.Contains((item as Object).ParentSheetIndex))
+                        else if (!farmer.specialItems.Contains((item as SObject).ParentSheetIndex))
                         {
-                            farmer.specialItems.Add((item as Object).ParentSheetIndex);
+                            farmer.specialItems.Add((item as SObject).ParentSheetIndex);
                         };
                     }
 
-                    if (item is Object && (item as Object).Category == -2 && !(item as Object).HasBeenPickedUpByFarmer)
+                    if (item is SObject && (item as SObject).Category == -2 && !(item as SObject).HasBeenPickedUpByFarmer)
                     {
-                        farmer.foundMineral((item as Object).ParentSheetIndex);
+                        farmer.foundMineral((item as SObject).ParentSheetIndex);
                     }
-                    else if (!(item is Furniture) && item is Object && ((item as Object).Type != (string)null && (item as Object).Type.Contains("Arch")) && !(item as Object).HasBeenPickedUpByFarmer)
+                    else if (!(item is Furniture) && item is SObject && ((item as SObject).Type != (string)null && (item as SObject).Type.Contains("Arch")) && !(item as SObject).HasBeenPickedUpByFarmer)
                     {
-                        farmer.foundArtifact((item as Object).ParentSheetIndex, 1);
+                        farmer.foundArtifact((item as SObject).ParentSheetIndex, 1);
                     }
 
                     if (item.ParentSheetIndex == Constants.ID_GAME_OBJECT_LOST_BOOK)
                     {
-                        farmer.foundArtifact((item as Object).ParentSheetIndex, 1);
+                        farmer.foundArtifact((item as SObject).ParentSheetIndex, 1);
                         farmer.removeItemFromInventory(item);
                     }
                     else
@@ -117,23 +118,23 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Patches
                     }
                 }
 
-                if (item is Object && !item.hasBeenInInventory)
+                if (item is SObject && !item.hasBeenInInventory)
                 {
-                    if (!(item is Furniture) && !(item as Object).bigCraftable.Value && !(item as Object).HasBeenPickedUpByFarmer)
+                    if (!(item is Furniture) && !(item as SObject).bigCraftable.Value && !(item as SObject).HasBeenPickedUpByFarmer)
                     {
-                        farmer.checkForQuestComplete((NPC)null, (item as Object).ParentSheetIndex, (item as Object).Stack, item, (string)null, 9, -1);
+                        farmer.checkForQuestComplete((NPC)null, (item as SObject).ParentSheetIndex, (item as SObject).Stack, item, (string)null, 9, -1);
                     }
 
-                    (item as Object).HasBeenPickedUpByFarmer = true;
+                    (item as SObject).HasBeenPickedUpByFarmer = true;
 
-                    if ((item as Object).questItem.Value)
+                    if ((item as SObject).questItem.Value)
                     {
                         return true;
                     }
 
                     if (Game1.activeClickableMenu == null)
                     {
-                        switch ((item as Object).ParentSheetIndex)
+                        switch ((item as SObject).ParentSheetIndex)
                         {
                             case Constants.ID_GAME_OBJECT_LOST_BOOK:
                                 ++Game1.stats.NotesFound;
@@ -170,9 +171,9 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Patches
 
                 Color color = Color.WhiteSmoke;
                 string displayName = item.DisplayName;
-                if (item is Object)
+                if (item is SObject)
                 {
-                    string type = (item as Object).Type;
+                    string type = (item as SObject).Type;
                     if (!(type == "Arch"))
                     {
                         if (!(type == "Fish"))
@@ -217,7 +218,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Patches
                     farmer.Items[indexOfInventoryItem] = obj2;
                 }
             }
-            if (item is Object && !item.hasBeenInInventory)
+            if (item is SObject && !item.hasBeenInInventory)
             {
                 farmer.checkForQuestComplete((NPC)null, item.ParentSheetIndex, item.Stack, item, "", 10, -1);
             }

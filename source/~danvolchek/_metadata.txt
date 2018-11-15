@@ -29,9 +29,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 500048d3806f36c29bd8055fbd3fe6c768cd42f7
-   Author: Dan Volchek <volchek2@illinois.edu>
-   Date:   Sat Nov 10 17:27:36 2018 -0600
+   commit a11e0fd435f8f28cbdbc328950a98b1366a85847
+   Author: danvolchek <volchek2@illinois.edu>
+   Date:   Wed Nov 14 21:48:19 2018 -0600
    
-       [Pong] remove unused texture, add asset loading check
+       [Pong] finish game data sync
    

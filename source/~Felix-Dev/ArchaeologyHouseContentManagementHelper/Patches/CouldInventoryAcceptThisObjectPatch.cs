@@ -7,7 +7,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Object = StardewValley.Object;
+
+using SObject = StardewValley.Object;
 
 namespace StardewMods.ArchaeologyHouseContentManagementHelper.Patches
 {
@@ -45,7 +46,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Patches
                 }
 
                 if (farmer.Items.Count > index1 && 
-                    (farmer.Items[index1] == null || farmer.Items[index1] is Object && farmer.Items[index1].Stack + stack <= farmer.Items[index1].maximumStackSize() && (farmer.Items[index1] as Object).ParentSheetIndex == index && (farmer.Items[index1] as Object).Quality == quality))
+                    (farmer.Items[index1] == null || farmer.Items[index1] is SObject && farmer.Items[index1].Stack + stack <= farmer.Items[index1].maximumStackSize() && (farmer.Items[index1] as SObject).ParentSheetIndex == index && (farmer.Items[index1] as SObject).Quality == quality))
                 {
                     return true;
                 }

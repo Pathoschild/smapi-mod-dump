@@ -5,9 +5,9 @@ mods:
    Bigger Riverlands Farm
 
 latest commit:
-   commit 675aa312043fa84b1d272b4d6dcb8943ea33488a
+   commit 9420be09613253d6f6509f43df3ff7439762adcf
    Author: JessebotX <43657800+JessebotX@users.noreply.github.com>
-   Date:   Mon Nov 12 13:10:54 2018 -0800
+   Date:   Tue Nov 13 17:49:15 2018 -0800
    
-       i like bacon
+       v1.1.1
    

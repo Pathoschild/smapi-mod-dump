@@ -16,9 +16,10 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit b071ebf23971170de34d74d88690ae493f30a014
+   commit 235d640a4367c8410102c2905b1596babc0399fb
+   Merge: 9da543a f1950d7
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Nov 10 12:51:36 2018 -0500
+   Date:   Wed Nov 14 22:22:15 2018 -0500
    
-       fix error when farmhand transitions to a new location (#249)
+       Merge branch 'develop' into stable
    

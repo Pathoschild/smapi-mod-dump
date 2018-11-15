@@ -22,6 +22,7 @@ namespace StardewMods.Common
         public ITranslationHelper TranslationHelper { get; }
 
         public IReflectionHelper ReflectionHelper { get; }
+
         public IContentHelper ContentHelper { get; }
     }
 }

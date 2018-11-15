@@ -1,7 +1,7 @@
-﻿using Common.StardewValley.Input;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewMods.Common.StardewValley.Input;
 using StardewValley;
 using StardewValley.Menus;
 using System;
@@ -189,10 +189,10 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework
             if (this.allClickableComponents == null)
                 this.populateClickableComponentList();
 
-            this.moveCursorInDirectionNew((CursorDirection)direction);
+            this.MoveCursorInDirectionNew((CursorDirection)direction);
         }
 
-        private void moveCursorInDirectionNew(CursorDirection direction)
+        private void MoveCursorInDirectionNew(CursorDirection direction)
         {
             if (this.currentlySnappedComponent == null && this.allClickableComponents != null && this.allClickableComponents.Count<ClickableComponent>() > 0)
             {

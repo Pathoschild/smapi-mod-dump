@@ -371,32 +371,32 @@ namespace PelicanFiber.Framework
                 [new Object(219, 1)] = new[] { 250, int.MaxValue }
             };
 
-            if (Game1.player.fishingLevel >= 2 || unfiltered)
+            if (Game1.player.fishingLevel.Value >= 2 || unfiltered)
                 stock.Add(new Object(685, 1), new[] { 5, int.MaxValue });
-            if (Game1.player.fishingLevel >= 3 || unfiltered)
+            if (Game1.player.fishingLevel.Value >= 3 || unfiltered)
                 stock.Add(new Object(710, 1), new[] { 1500, int.MaxValue });
-            if (Game1.player.fishingLevel >= 6 || unfiltered)
+            if (Game1.player.fishingLevel.Value >= 6 || unfiltered)
             {
                 stock.Add(new Object(686, 1), new[] { 500, int.MaxValue });
                 stock.Add(new Object(694, 1), new[] { 500, int.MaxValue });
                 stock.Add(new Object(692, 1), new[] { 200, int.MaxValue });
             }
-            if (Game1.player.fishingLevel >= 7 || unfiltered)
+            if (Game1.player.fishingLevel.Value >= 7 || unfiltered)
             {
                 stock.Add(new Object(693, 1), new[] { 750, int.MaxValue });
                 stock.Add(new Object(695, 1), new[] { 750, int.MaxValue });
             }
-            if (Game1.player.fishingLevel >= 8 || unfiltered)
+            if (Game1.player.fishingLevel.Value >= 8 || unfiltered)
             {
                 stock.Add(new Object(691, 1), new[] { 1000, int.MaxValue });
                 stock.Add(new Object(687, 1), new[] { 1000, int.MaxValue });
             }
-            if (Game1.player.fishingLevel >= 9 || unfiltered)
+            if (Game1.player.fishingLevel.Value >= 9 || unfiltered)
                 stock.Add(new Object(703, 1), new[] { 1000, int.MaxValue });
             stock.Add(new FishingRod(0), new[] { 500, int.MaxValue });
-            if (Game1.player.fishingLevel >= 2 || unfiltered)
+            if (Game1.player.fishingLevel.Value >= 2 || unfiltered)
                 stock.Add(new FishingRod(2), new[] { 1800, int.MaxValue });
-            if (Game1.player.fishingLevel >= 6 || unfiltered)
+            if (Game1.player.fishingLevel.Value >= 6 || unfiltered)
                 stock.Add(new FishingRod(3), new[] { 7500, int.MaxValue });
 
             if (unfiltered)

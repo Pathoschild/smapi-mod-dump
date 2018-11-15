@@ -51,10 +51,7 @@ namespace StardewLib
 
         public string GetRandomMessage(string messageStoreName)
         {
-            string value = "";
-
-            Dictionary<int, string> messagePool = null;
-            this.DialogueLookups.TryGetValue(messageStoreName, out messagePool);
+            this.DialogueLookups.TryGetValue(messageStoreName, out Dictionary<int, string> messagePool);
 
             if (messagePool == null)
             {
@@ -66,7 +63,7 @@ namespace StardewLib
             }
 
             int rand = this.Random.Next(1, messagePool.Count + 1);
-            messagePool.TryGetValue(rand, out value);
+            messagePool.TryGetValue(rand, out string value);
 
             if (value == null)
             {
@@ -80,8 +77,7 @@ namespace StardewLib
 
         public string GetMessageAt(int index, string messageStoreName)
         {
-            Dictionary<int, string> messagePool = null;
-            this.DialogueLookups.TryGetValue(messageStoreName, out messagePool);
+            this.DialogueLookups.TryGetValue(messageStoreName, out Dictionary<int, string> messagePool);
 
             if (messagePool == null)
             {

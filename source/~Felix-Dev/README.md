@@ -10,7 +10,7 @@ documentation and release notes.
   Lost Books can be "grabbed & sent" to the library even if the player's inventory has no space.
   Lost Books can be read without having to go the library._
 * **[ToolUpgradeDeliveryService](http://www.nexusmods.com/stardewvalley/mods/2938)** <small>([source](ToolUpgradeDeliveryService))</small> 
- _This mod makes retrieving upgraded farm tools less tedious. With this mod, Clint (the blacksmith) will simply send you an e-mail with the upgraded tool included as soon as the upgrade is finished. No more going to the blacksmith simply to get your improved farm tool!_
+ _This mod makes retrieving upgraded farm tools less tedious. With this mod, Clint (the blacksmith) will simply send you a mail with the upgraded tool included as soon as the upgrade is finished. No more visiting the blacksmith simply to get your improved farm tool!_
   
 ## Translating the mods
 The mods can be translated into any language supported by the game, and SMAPI will automatically

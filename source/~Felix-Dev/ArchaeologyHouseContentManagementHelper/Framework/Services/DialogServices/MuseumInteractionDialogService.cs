@@ -1,10 +1,10 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewMods.ArchaeologyHouseContentManagementHelper.Common;
 using StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Menus;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using StardewMods.Common.StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
     /// </summary>
     internal class MuseumInteractionDialogService
     {
-        private NPC gunther;
+        private readonly NPC gunther;
 
         private const string DialogOption_Donate = "Donate";
         private const string DialogOption_Rearrange = "Rearrange";
@@ -236,10 +236,10 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
                     Game1.activeClickableMenu = new MuseumMenuNoInventory();
                     break;
                 case DialogOption_Collect:
-                    Game1.activeClickableMenu = (IClickableMenu)new ItemGrabMenu((IList<Item>)LibraryMuseumHelper.GetRewardsForPlayer(Game1.player), 
-                        false, true, (InventoryMenu.highlightThisItem)null, (ItemGrabMenu.behaviorOnItemSelect)null, 
+                    Game1.activeClickableMenu = new ItemGrabMenu(LibraryMuseumHelper.GetRewardsForPlayer(Game1.player), 
+                        false, true, null, null, 
                         "Rewards", new ItemGrabMenu.behaviorOnItemSelect(LibraryMuseumHelper.CollectedReward), 
-                        false, false, false, false, false, 0, (Item)null, -1, (object)this);
+                        false, false, false, false, false, 0, null, -1, this);
                     break;
                 case DialogOption_Status:
                     if (LibraryMuseumHelper.HasCollectedAllBooks && LibraryMuseumHelper.HasDonatedAllMuseumPieces)
@@ -248,23 +248,12 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
                     }
                     else
                     {
-                        // Work-around to create newlines
-                        string statusIntroLinePadding = translationHelper.Get(Translation.GUNTHER_ARCHAEOLOGY_HOUSE_STATUS_INTRO_LINE_PADDING);
-                        if (statusIntroLinePadding.StartsWith("(no translation:"))
-                        {
-                            statusIntroLinePadding = "";
-                        }
-
-                        string libraryStatusLinePadding = translationHelper.Get(Translation.GUNTHER_ARCHAEOLOGY_HOUSE_LIBRARY_STATUS_LINE_PADDING);
-                        if (libraryStatusLinePadding.StartsWith("(no translation:"))
-                        {
-                            libraryStatusLinePadding = "";
-                        }
-
-                        Game1.drawDialogue(gunther, translationHelper.Get(Translation.GUNTHER_ARCHAEOLOGY_HOUSE_STATUS_INTRO) + statusIntroLinePadding +
-                            translationHelper.Get(Translation.GUNTHER_ARCHAEOLOGY_HOUSE_LIBRARY_STATUS) + $"{ LibraryMuseumHelper.LibraryBooks}/{LibraryMuseumHelper.TotalLibraryBooks}" + libraryStatusLinePadding +
-                            translationHelper.Get(Translation.GUNTHER_ARCHAEOLOGY_HOUSE_MUSEUM_STATUS) + $"{LibraryMuseumHelper.MuseumPieces}/{LibraryMuseumHelper.TotalMuseumPieces} ");
-                    }                  
+                        DialogHelper.DrawDialog(translationHelper.Get(Translation.GUNTHER_ARCHAEOLOGY_HOUSE_STATUS_INTRO) + DialogHelper.DIALOG_NEWLINE +
+                            translationHelper.Get(Translation.GUNTHER_ARCHAEOLOGY_HOUSE_LIBRARY_STATUS) + LibraryMuseumHelper.LibraryBooks + "/" + LibraryMuseumHelper.TotalLibraryBooks + DialogHelper.DIALOG_NEWLINE +
+                            translationHelper.Get(Translation.GUNTHER_ARCHAEOLOGY_HOUSE_MUSEUM_STATUS) + LibraryMuseumHelper.MuseumPieces + "/" + LibraryMuseumHelper.TotalMuseumPieces,
+                            gunther);
+                    }                
+                    
                     break;
                 case DialogOption_Leave:
                     break;

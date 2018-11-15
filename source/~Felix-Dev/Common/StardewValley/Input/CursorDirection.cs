@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.StardewValley.Input
+namespace StardewMods.Common.StardewValley.Input
 {
     public enum CursorDirection
     {

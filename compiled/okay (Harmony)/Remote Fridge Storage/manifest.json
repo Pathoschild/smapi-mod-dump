@@ -1,7 +1,7 @@
 ﻿{
   "Name": "RemoteFridgeStorage",
   "Author": "EternalSoap",
-  "Version": "1.4.3", // fixed locally
+  "Version": "1.4.5", // fixed locally
   "Description": "Allows you to use ingredients inside chests while cooking",
   "UniqueID": "EternalSoap.RemoteFridgeStorage",
   "EntryDll": "RemoteFridgeStorage.dll",

@@ -459,9 +459,7 @@ namespace CrabNet
         {
             int rand = this.Random.Next(1, messageStore.Count + 1);
 
-            string value = "...$h#$e#";
-
-            messageStore.TryGetValue(rand, out value);
+            messageStore.TryGetValue(rand, out string value);
 
             if (this.LoggingEnabled)
                 this.Monitor.Log($"condition met to return random unfinished message, returning:{value}", LogLevel.Trace);
