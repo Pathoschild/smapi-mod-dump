@@ -19,6 +19,7 @@ mods:
    Junimo Farm
    More Map Layers
    No Soil Decay Redux
+   Notes
    Pelican TTS
    Plan Importer
    Portraiture
@@ -34,9 +35,9 @@ mods:
    Visualize
 
 latest commit:
-   commit 9d9ef146c5416abb1186a420300a62c09e3e7df2
+   commit bd5024186bb918cffbc3becc13fa6e8f0094a263
    Author: Platonymous <david@millionideas.de>
-   Date:   Mon Nov 12 21:31:25 2018 +0100
+   Date:   Mon Nov 19 01:47:50 2018 +0100
    
-       Minor fix
+       Added support for Content Packs
    

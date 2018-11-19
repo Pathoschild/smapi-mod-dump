@@ -3,12 +3,7 @@ Mod has been tested with Stardew 1.3.28, SMAPI 2.7 & Content Patcher 1.4
 
 
 ----------------CHANGELOG------------------
->>v1.1 (2018 Oct 10)
----added a kitchen for starting cabin and an attic for the large cabin(same size as farmhouse attic)
---fixed small farmhouse wall bug which looked weird because it had no shadow 
-
->v1.0 (2018 Oct 7)
----initial release day
+view the Changelog.md file (open using Notepad or Notepad++)
 -------------------------------------------------------
 INSTALLATION
 

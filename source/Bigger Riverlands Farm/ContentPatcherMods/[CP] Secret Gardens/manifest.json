@@ -1,0 +1,11 @@
+{
+	"Name": "Secret Gardens Greenhouse",
+	"Author": "Jessebot",
+	"Version": "1.0",
+	"Description": "Replaces your greenhouse interior with a secret garden.",
+	"UniqueID": "jessebot.secretgardens",
+	"UpdateKeys": [ "Nexus:3067" ],
+	"ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher",
+	}
+}

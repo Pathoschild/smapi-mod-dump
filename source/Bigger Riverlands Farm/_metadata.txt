@@ -5,9 +5,9 @@ mods:
    Bigger Riverlands Farm
 
 latest commit:
-   commit 9420be09613253d6f6509f43df3ff7439762adcf
+   commit 73627e812b827d7369b9460c5e3bd2197bda4b9c
    Author: JessebotX <43657800+JessebotX@users.noreply.github.com>
-   Date:   Tue Nov 13 17:49:15 2018 -0800
+   Date:   Sun Nov 18 15:11:34 2018 -0800
    
-       v1.1.1
+       added wildernessfarmnolake by hazel214
    

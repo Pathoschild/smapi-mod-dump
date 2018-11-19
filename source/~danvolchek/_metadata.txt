@@ -29,9 +29,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit a11e0fd435f8f28cbdbc328950a98b1366a85847
+   commit f24c144ad4abe055ae35e2c05d6559e272e1b720
    Author: danvolchek <volchek2@illinois.edu>
-   Date:   Wed Nov 14 21:48:19 2018 -0600
+   Date:   Fri Nov 16 12:59:32 2018 -0600
    
-       [Pong] finish game data sync
+       [Pong] improve multiplaer experience
    
