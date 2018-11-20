@@ -1,5 +1,13 @@
 {
-  "HoldKeyCode": "LeftAlt",
-  "ShowFarmersOnly": true,
+  "HoldToToggle": true,
+  "ToggleKeyCode": "LeftAlt",
+  "SameLocationOnly": true,
+  "SameLocationToggleKey": "H",
+  "ShowQuestsAndBirthdaysOnly": false,
+  "QuestsOnlyToggleKey": "J",
+  "ShowFarmersOnly": false,
+  "FarmersOnlyToggleKey": "K",
+  "ShowHorses": false,
+  "HorsesToggleKey": "L",
   "NPCBlacklist": []
 }

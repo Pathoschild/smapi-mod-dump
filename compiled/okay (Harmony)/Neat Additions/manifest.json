@@ -1,10 +1,10 @@
 ﻿{
   "Name": "NeatAdditions",
   "Author": "Ilyaki",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "Adds some neat quality-of-life changes and bug fix(es) to the game",
   "UniqueID": "ilyaki.neatadditions",
   "EntryDll": "NeatAdditions.dll",
-  "MinimumApiVersion": "2.7",
+  "MinimumApiVersion": "2.8",
   "UpdateKeys": [ "Nexus:2648", "GitHub:Ilyaki/NeatAdditions" ]
 }

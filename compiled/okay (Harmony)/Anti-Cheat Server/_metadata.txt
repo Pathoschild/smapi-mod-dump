@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2887
+IDs: FunnySnek.AntiCheatServer, funnysnek.servercode
+update keys: Nexus:2887, GitHub:funny-snek/anticheat-and-servercode
