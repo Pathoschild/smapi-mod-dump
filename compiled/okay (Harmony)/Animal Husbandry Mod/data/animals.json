@@ -1,0 +1,97 @@
+{
+  "Cow": {
+    "MinimalNumberOfMeat": 5,
+    "MaximumNumberOfMeat": 20,
+    "MinimumDaysBetweenTreats": 5,
+    "LikedTreats": [
+      78,
+      264,
+      300,
+      184
+    ],
+    "MinimumDaysUtillBirth": 12
+  },
+  "Pig": {
+    "MinimalNumberOfMeat": 4,
+    "MaximumNumberOfMeat": 16,
+    "MinimumDaysBetweenTreats": 3,
+    "LikedTreats": [
+      78,
+      254,
+      276
+    ],
+    "MinimumDaysUtillBirth": 18
+  },
+  "Chicken": {
+    "MinimalNumberOfMeat": 1,
+    "MaximumNumberOfMeat": 4,
+    "MinimumDaysBetweenTreats": 4,
+    "LikedTreats": [
+      78,
+      262,
+      270
+    ]
+  },
+  "Duck": {
+    "MinimalNumberOfMeat": 2,
+    "MaximumNumberOfMeat": 6,
+    "MinimumDaysBetweenTreats": 3,
+    "LikedTreats": [
+      78,
+      278,
+      207
+    ],
+    "MinimumNumberOfFeatherChances": 0,
+    "MaximumNumberOfFeatherChances": 2
+  },
+  "Rabbit": {
+    "MinimalNumberOfMeat": 1,
+    "MaximumNumberOfMeat": 4,
+    "MinimumDaysBetweenTreats": 4,
+    "LikedTreats": [
+      78,
+      190,
+      414,
+      266
+    ],
+    "MinimumNumberOfExtraWool": 0,
+    "MaximumNumberOfExtraWool": 1,
+    "MinimumNumberOfFeetChances": 0,
+    "MaximumNumberOfFeetChances": 4,
+    "MinimumDaysUtillBirth": 9
+  },
+  "Sheep": {
+    "MinimalNumberOfMeat": 4,
+    "MaximumNumberOfMeat": 16,
+    "MinimumDaysBetweenTreats": 3,
+    "LikedTreats": [
+      78,
+      250,
+      280
+    ],
+    "MinimumNumberOfExtraWool": 0,
+    "MaximumNumberOfExtraWool": 2,
+    "MinimumDaysUtillBirth": 8
+  },
+  "Goat": {
+    "MinimalNumberOfMeat": 3,
+    "MaximumNumberOfMeat": 8,
+    "MinimumDaysBetweenTreats": 4,
+    "LikedTreats": [
+      78,
+      398,
+      613,
+      274,
+      436
+    ],
+    "MinimumDaysUtillBirth": 10
+  },
+  "Pet": {
+    "MinimumDaysBetweenTreats": 1,
+    "LikedTreats": [
+      130,
+      639,
+      136
+    ]
+  }
+}

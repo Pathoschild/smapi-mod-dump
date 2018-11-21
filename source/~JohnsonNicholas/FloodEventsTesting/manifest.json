@@ -1,0 +1,8 @@
+﻿{
+  "Name": "Flood Testing",
+  "Author": "knakamura",
+  "Version": "0.1-alpha98",
+  "Description": ":|",
+  "UniqueID": "knakamura.floodtesting",
+  "EntryDll": "FloodEventsTesting.dll"
+}

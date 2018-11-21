@@ -39,9 +39,11 @@ namespace AutoGrabberMod.Features
             {
                 if (Grabber.IsChestFull) break;
 
-                if (tile != null && Grabber.Location.objects.ContainsKey(tile) && Grabber.Location.objects[tile].Name.Contains("Slime Ball"))
+                if (tile != null && Grabber.Location.objects.ContainsKey(tile) 
+                    && Grabber.Location.objects[tile].Name != null
+                    && Grabber.Location.objects[tile].Name.Contains("Slime Ball"))
                 {
-                    System.Random rr = new System.Random((int)Game1.stats.daysPlayed + (int)Game1.uniqueIDForThisGame + (int)tile.X * 77 + (int)tile.Y * 777 + 2);
+                    Random rr = new Random((int)Game1.stats.daysPlayed + (int)Game1.uniqueIDForThisGame + (int)tile.X * 77 + (int)tile.Y * 777 + 2);
                     Grabber.GrabberChest.addItem(new SVObject(766, random.Next(10, 21), false, -1, 0));
                     int i = 0;
                     while (random.NextDouble() < 0.33) i++;

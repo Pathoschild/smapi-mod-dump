@@ -1,0 +1,6 @@
+{
+  "DisableIridiumQualityFish": false,
+  "IridiumQualityFishOnlyWithWildBait": true,
+  "IridiumQualityFishOnlyWithIridiumQualityBait": false,
+  "IridiumQualityFishMinimumSize": 0.95
+}

@@ -35,9 +35,9 @@ mods:
    Visualize
 
 latest commit:
-   commit bd5024186bb918cffbc3becc13fa6e8f0094a263
+   commit da67ef2755d16a5d61752a10272dc5e4ccfb17c2
    Author: Platonymous <david@millionideas.de>
-   Date:   Mon Nov 19 01:47:50 2018 +0100
+   Date:   Wed Nov 21 02:41:07 2018 +0100
    
-       Added support for Content Packs
+       added asset
    

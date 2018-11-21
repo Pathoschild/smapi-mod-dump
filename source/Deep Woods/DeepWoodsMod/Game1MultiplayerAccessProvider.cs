@@ -78,10 +78,6 @@ namespace DeepWoodsMod
             public override void sendFarmhand() { intercepted.sendFarmhand(); }
             public override void sendServerToClientsMessage(string message) { intercepted.sendServerToClientsMessage(message); }
             public override void StartServer() { intercepted.StartServer(); }
-#if !SDVBETA
-            public override void tickFarmerRoots() { intercepted.tickFarmerRoots(); }
-            public override void tickLocationRoots() { intercepted.tickLocationRoots(); }
-#endif
             public override void UpdateEarly() { intercepted.UpdateEarly(); }
             public override void UpdateLate(bool forceSync = false) { intercepted.UpdateLate(forceSync); }
             public override void writeObjectDelta<T>(BinaryWriter writer, NetRoot<T> root) { intercepted.writeObjectDelta<T>(writer, root); }

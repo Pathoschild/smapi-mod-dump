@@ -11,10 +11,10 @@ mods:
    Water Retaining Field
 
 latest commit:
-   commit cfba2670251dc9b28101c14749971d9e15ae5b1b
+   commit 86d01e397566087002bd9389df6310e24d5f9970
    Author: Digus-PC\Digus <diguss@gmail.com>
-   Date:   Tue Aug 28 00:21:45 2018 -0300
+   Date:   Wed Nov 21 01:08:51 2018 -0200
    
-       Everlasting Baits and Unbreakable Tackles 1.2.2
-       - No code changes, just the manifest. It was recompiled to work with the new game version.
+       Custom Crystalarium Mod 1.1.1
+       - Spanish Translation
    

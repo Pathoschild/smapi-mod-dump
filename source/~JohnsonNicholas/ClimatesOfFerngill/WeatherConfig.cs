@@ -1,85 +1,39 @@
 ﻿using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
 
 namespace ClimatesOfFerngillRebuild
 {
     public class WeatherConfig
     {
         //required options
-        public Keys Keyboard { get; set; }
-        public Buttons Controller { get; set; }
-        public string ClimateType { get; set; }
-        public double ThundersnowOdds { get; set; }
-        public double BlizzardOdds { get; set; }
-        public double DryLightning { get; set; }
-        public double DryLightningMinTemp { get; set; }
-        public bool SnowOnFall28 { get; set; }
-        public bool StormTotemChange { get; set; }
-        public bool HazardousWeather { get; set; }
-        public bool AllowCropDeath { get; set; }
-        public bool AllowStormsSpringYear1 { get; set; }
-        public bool ShowBothScales { get; set; }
-        public double TooColdOutside { get; set; }
-        public double TooHotOutside { get; set; }
-        public double AffectedOutside { get; set; }
-        public int StaminaDrain { get; set; }
-        public bool SickMoreThanOnce { get; set; }
-        public double DeadCropPercentage { get; set; }
-        public double CropResistance { get; set; }
-        public double DarkFogChance { get; set; }
-        public double ChanceOfGettingSick { get; set; }
-        public bool Use12HourTime { get; set; }
-        public double BadMoonRising { get; set; }
-        public bool EclipseOn { get; set; }
-        public double EclipseChance { get; set; }
-        public bool SpawnMonsters { get; set; }
-        public bool SpawnMonstersAllFarms { get; set; }
+        public SButton WeatherMenuToggle { get; set; } = SButton.Z;
+        public string ClimateType { get; set; } = "normal";
+        public double ThundersnowOdds { get; set; } = .001; //.1%
+        public double BlizzardOdds { get; set; } = .08; // 8%
+        public double DryLightning { get; set; } = .1; // 10%
+        public double DryLightningMinTemp { get; set; } = 34; //34 C
+        public bool SnowOnFall28 { get; set; } = false; //default setting - since if true, it will force
+        public bool StormTotemChange { get; set; } = true; //rain totems may spawn storms instead of rain totems.
+        public bool HazardousWeather { get; set; } = false; //by default hazaradous weather is turned off
+        public bool AllowCropDeath { get; set; } = false; //even if you turn hazardous weather on, it won't enable crop death.
+        public bool AllowStormsSpringYear1 { get; set; } = false; //default setting - maintains the fact that starting players may not be ready.
+        public bool ShowBothScales { get; set; } = true; //default setting.
+        public double TooColdOutside { get; set; } = 1; //At this temp, it's too cold outside, and you have a hard frost. 1 C or 33.8 F default
+        public double TooHotOutside { get; set; } = 39; //At this temp, it's too hot outside, and you can have a heatwave. 39 C or 102.2 F default
+        public double DeadCropPercentage { get; set; } = .1; //default setting
+        public double CropResistance { get; set; } = .75; //default settting
+        public double DarkFogChance { get; set; } = .0875; //default setting
+        public bool Use12HourTime { get; set; } = false; //default setting
+        public bool EnableCustomWeatherIcon { get; set; } = true;
+        public double ThunderFrenzyOdds { get; set; } = .01; //default setting
+        public bool DarkenLightInFog { get; set; } = true; //default setting
+        public bool DisableHighRainWind { get; set; } = false; //default setting
+        public bool ShowLighterFog { get; set; } = false; //default setting
 
-        public bool Verbose { get; set; }
+        public bool Verbose { get; set; } = true; 
         
         public WeatherConfig()
         {
-            //set climate type
-            ClimateType = "normal";
-
-            //set keyboard key
-            Keyboard = Keys.Z;
-
-            //normal climate odds
-            ThundersnowOdds = .001; //.1%
-            BlizzardOdds = .08; // 8%
-            DryLightning = .10; //10%
-            DryLightningMinTemp = 34; //34 C, or 93.2 F
-            HazardousWeather = false; //normally, hazardous weather is turned off
-            TooHotOutside = 39; //At this temp, it's too hot outside, and you can have a heatwave. 39 C or 102.2 F default
-            TooColdOutside = 1; //At this temp, it's too cold outside, and you have a hard frost. 1 C or 33.8 F default\
-
-            AllowCropDeath = false; //even if you turn hazardous weather on, it won't enable crop death.
-            SnowOnFall28 = false; //default setting - since if true, it will force
-            StormTotemChange = true; //rain totems may spawn storms instead of rain totems.
-            AllowStormsSpringYear1 = false; //default setting - maintains the fact that starting players may not 
-            ShowBothScales = true; //default setting.
-            DeadCropPercentage = .1; //default setting
-            CropResistance = .75; //default settting
-            DarkFogChance = .0875; //default setting
-            Use12HourTime = false; //default setting
-            BadMoonRising = .004; //default setting
-
-            // be able to deal with lightning strikes
-
-            //stamina options
-            AffectedOutside = .65;
-            StaminaDrain = 2;
-            SickMoreThanOnce = false;
-            ChanceOfGettingSick = .7;
-
-            //general mod options
-            Verbose = true;
-
-            //eclipse stuff
-            EclipseOn = true;
-            EclipseChance = .015;
-            SpawnMonsters = true;
-            SpawnMonstersAllFarms = false;
         }
     }
 }

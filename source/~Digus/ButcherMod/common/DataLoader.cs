@@ -45,7 +45,7 @@ namespace AnimalHusbandryMod.common
 
             var editors = Helper.Content.AssetEditors;
 
-            editors.Add(new EventsLoader());
+            //editors.Add(new EventsLoader());
 
             if (!ModConfig.DisableMeat)
             {               
@@ -64,18 +64,18 @@ namespace AnimalHusbandryMod.common
                 RecipeLoader.LoadMails();
             }
 
-            AnimalBuildingData = DataLoader.Helper.ReadJsonFile<AnimalBuildingData>("data\\animalBuilding.json") ?? new AnimalBuildingData();
-            DataLoader.Helper.WriteJsonFile("data\\animalBuilding.json", AnimalBuildingData);
+            AnimalBuildingData = DataLoader.Helper.Data.ReadJsonFile<AnimalBuildingData>("data\\animalBuilding.json") ?? new AnimalBuildingData();
+            DataLoader.Helper.Data.WriteJsonFile("data\\animalBuilding.json", AnimalBuildingData);
 
-            AnimalData = DataLoader.Helper.ReadJsonFile<AnimalData>("data\\animals.json") ?? new AnimalData();
-            DataLoader.Helper.WriteJsonFile("data\\animals.json", AnimalData);
+            AnimalData = DataLoader.Helper.Data.ReadJsonFile<AnimalData>("data\\animals.json") ?? new AnimalData();
+            DataLoader.Helper.Data.WriteJsonFile("data\\animals.json", AnimalData);
 
-            CookingData = Helper.ReadJsonFile<CookingData>("data\\cooking.json") ?? new CookingData();
+            CookingData = Helper.Data.ReadJsonFile<CookingData>("data\\cooking.json") ?? new CookingData();
             if (CookingData.Meatloaf.Recipe == null)
             {
                 CookingData.CloneRecipeAndAmount(new CookingData());
             }
-            Helper.WriteJsonFile("data\\cooking.json", CookingData);
+            Helper.Data.WriteJsonFile("data\\cooking.json", CookingData);
 
             LivingWithTheAnimalsChannel = new LivingWithTheAnimalsChannel();
         }
@@ -91,8 +91,8 @@ namespace AnimalHusbandryMod.common
             {
                 var data = asset.AsDictionary<int, string>().Data;
                 //MEAT
-                MeatData = DataLoader.Helper.ReadJsonFile<MeatData>("data\\meats.json") ?? new MeatData();
-                DataLoader.Helper.WriteJsonFile("data\\meats.json", MeatData);
+                MeatData = DataLoader.Helper.Data.ReadJsonFile<MeatData>("data\\meats.json") ?? new MeatData();
+                DataLoader.Helper.Data.WriteJsonFile("data\\meats.json", MeatData);
 
                 data[(int)Meat.Beef] = Meat.Beef.GetObjectString();
                 data[(int)Meat.Pork] = Meat.Pork.GetObjectString();

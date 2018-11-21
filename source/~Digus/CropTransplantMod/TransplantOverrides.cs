@@ -88,7 +88,7 @@ namespace CropTransplantMod
         /// <returns></returns>
         public static bool PlayerCanPlaceItemHere(ref GameLocation location, Item item, ref int x, ref int y, ref Farmer f, ref bool __result)
         {
-            if (item != null && item is Object object1 && IsGardenPot(object1) && object1.stack.Value == 1)
+            if (item != null && item is Object object1 && IsGardenPot(object1) && object1.Stack == 1)
             {
                 if ((Game1.eventUp || f.bathingClothes.Value) || !Utility.withinRadiusOfPlayer(x, y, 1, f) && (!Utility.withinRadiusOfPlayer(x, y, 2, f) || !Game1.isAnyGamePadButtonBeingPressed() || (double)Game1.mouseCursorTransparency != 0.0))
                     return true;
@@ -272,7 +272,7 @@ namespace CropTransplantMod
                             if (!(Game1.player.ActiveObject is HeldIndoorPot heldPot) ||
                                 !heldPot.IsHoldingSomething())
                             {
-                                if (Game1.player.ActiveObject.stack.Value == 1)
+                                if (Game1.player.ActiveObject.Stack == 1)
                                 {
                                     CurrentHeldIndoorPot = new HeldIndoorPot(tileLocation);
                                     RegularPotObject = Game1.player.ActiveObject;
@@ -539,7 +539,7 @@ namespace CropTransplantMod
         private static void showAnimation()
         {
             Game1.player.canMove = false;
-            switch (Game1.player.facingDirection)
+            switch (Game1.player.facingDirection.Value)
             {
                 case 0:
                     Game1.player.FarmerSprite.animateOnce(

@@ -1,0 +1,13 @@
+--IF YOU ARE WONDERING WHERE IS THE CONFIG.JSON FILE, YOU HAVE TO RUN THIS GAME WITH THE MOD INSTALLED ONCE, THEN IT WILL APPEAR IN THIS FOLDER--
+
+By default, everything is set to true
+
+"Dynamic Pufferfish Changes" (set to false so your pufferfish will always be SDVPuffercool, it does not dynamically change)
+"Puffercool" (set to false if you don't want your Pufferfish to be edgy and SDVPuffercool with dem dank shades (you still need to disable "Dynamic Pufferfish Changes" if you don't want it to change at all. like you might as well uninstall this mod if you are going to set it so that the pufferfish doesn't change at all))
+"Puffercry" (set to false if you don't want your SDVPuffercool to change into SDVPuffercry when it is raining)
+"Pufferfear" (set to false if you don't want your SDVPuffercool to change into SDVPufferfear when its snowing)
+"Pufferping" (set to false if you don't want your SDVPuffercool to change into SDVPufferping when there is a storm)
+"Pufferblush" (set to false if you don't want your SDVPuffercool to change into SDVPufferblush when it is a wedding day)
+"Pufferthink" (set to false if you don't want your SDVPuffercool to change into SDVPufferthink when there is an Event today)
+
+i would say the pufferfish is very useful to tell what is happening today (like if it is a storm, not rain etc.)

@@ -1,13 +1,9 @@
 ﻿{
   "Name": "Time Reminder",
   "Author": "KoihimeNakamura",
-  "Version": {
-    "MajorVersion": 1,
-    "MinorVersion": 0,
-    "PatchVersion": 0,
-    "Build": "20170314"
-  },
-  "Description": "Reminds you of the time every so many minutes.",
+  "Version": "1.2.2",
+  "Description": "Reminds you of the time a few times. Also contains features to set in-game reminders",
+  "UpdateKeys": [ "Nexus:1000" ],
   "UniqueID": "KoihimeNakamura.TimeReminder",
   "EntryDll": "TimeReminder.dll"
 }

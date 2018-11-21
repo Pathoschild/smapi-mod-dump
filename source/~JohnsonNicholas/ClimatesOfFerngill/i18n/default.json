@@ -17,15 +17,10 @@
 
   //HUD Messages
   "hud-text.desc_stormtotem": "You hear a roll of thunder...",
-  "hud-text.desc_sick": "You have caught a cold...!",
-  "hud-text.desc_exhaust": "The hotter temperatures outside are wearing you out more than normal.",
-  "hud-text.desc_freeze": "The freezing temperatures outside are making you sleepy, wearing you out.",
-  "hud-text.desc_flu": "You have caught the flu and better take some medicine soon!",
   "hud-text.desc_frost_killed": "{{deadCrops}} crops died in the night due to the cold..!",
   "hud-text.desc_heatwave_dry": "The extreme heat has caused some of your crops to become dry....!",
   "hud-text.desc_heatwave_kill": "The extreme heat has caused some of your crops to dry out. If you don't water them, they'll die!",
   "hud-text.desc_heatwave_cropdeath": "Some of the crops have died due to lack of water!",
-  "hud-text.desc_cold_removed": "You feel the medicine clearing your sickness and soothing your exhaustion",
 
   //Ferngill Locations
   "fern-loc.0": "Castle Village",
@@ -49,6 +44,7 @@
   "weat-loc.fog.0": ".. concludes the weather in {{location}}.#Now for Pelican Town, the valley will be blanked in fog until about {{fogTime}}, then expect {{descWeather}}, with a high of {{todayHigh}} and low {{todayLow}}. {{condWarning}}{{eveningFog}}#Tomorrow, expect {{tomorrowWeather}} with a high of {{tomorrowHigh}} and low of {{tomorrowLow}}",
   "weat-loc.fog.1": "Now for Pelican Town, fog will continue to blanket the region until roughly {{fogTime}}, then expect {{descWeather}}, with a high of {{todayHigh}} and low {{todayLow}}. {{condWarning}}{{eveningFog}}#Tomorrow, expect {{tomorrowWeather}} with a high of {{tomorrowHigh}} and low of {{tomorrowLow}}.",
   "weat-loc.fog.2": "Fog will be blanketing Stardew Valley until an anticipated {{fogTime}}, giving way to {{descWeather}} with a high of {{todayHigh}} and low {{todayLow}}.{{condWarning}}{{eveningFog}}#Tomorrow, expect {{tomorrowWeather}} with a high of {{tomorrowHigh}} and low of {{tomorrowLow}}",
+  "weat-gen.bloodmoon.0": "Today, PANIC! PANIC! THE BLOOD MOON HAS DESCENDED!!!!#I mean...Now for Pelican Town, expect {{descWeather}}, with a high of {{todayHigh}} and low {{todayLow}}. {{condWarning}}{{eveningFog}} #Tomorrow, expect {{tomorrowWeather}} with a high of {{tomorrowHigh}} and low of {{tomorrowLow}}",
 
   //Weather - Morning Strings
   "weat-morn.0": "Good morning to all our viewers. Today, expect {{descWeather}} with a high of {{todayHigh}} and low {{todayLow}}.{{condWarning}}{{eveningFog}}#Tomorrow, expect {{tomorrowWeather}} with a high of {{tomorrowHigh}} and low of {{tomorrowLow}}",
@@ -66,7 +62,7 @@
   "weat-evening.2": "{{condString}}{{eveningFog}}Tomorrow, anticipate {{tomorrowWeather}} with high: {{tomorrowHigh}} and low: {{tomorrowLow}}",
 
   //Weather - Night
-  "weat-night.0": "{{condString}}{{eveningFog}Tomorrow, expect {{tomorrowWeather}} with a high of {{tomorrowHigh}} and low of {{tomorrowLow}}.",
+  "weat-night.0": "{{condString}}{{eveningFog}}Tomorrow, expect {{tomorrowWeather}} with a high of {{tomorrowHigh}} and low of {{tomorrowLow}}.",
   "weat-night.1": "{{condString}}{{eveningFog}}Tomorrow, it should be {{tomorrowWeather}} with high: {{tomorrowHigh}} and low: {{tomorrowLow}}",
   "weat-night.2": "{{condString}}{{eveningFog}}For tomorrow, expect {{tomorrowWeather}} with high: {{tomorrowHigh}} and low: {{tomorrowLow}}",
 
@@ -85,12 +81,14 @@
 
   //And Tomorrow
   "weat-fesTomorrow.0": "Today, expect {{descWeather}} with high:{{todayHigh}} and low:{{todayLow}}#Tommorow, for the {{festivalTomorrow}}, expect {{tomorrowWeather}}",
+  "weat-fesTomorrow.BM.0": "Today, PANIC! PANIC! THE BLOOD MOON HAS DESCENDED!!!!#I mean, expect {{descWeather}} with high:{{todayHigh}} and low:{{todayLow}}#Tommorow, for the {{festivalTomorrow}}, expect {{tomorrowWeather}}",
 
   //Weather - Wedding Today
   "weat-wedToday.0": "Today, in Stardew Valley, for the wedding, expect {{weather}}.#Tomorrow, expect {{tomorrowWeather}} with a high of {{tomorrowHigh}} and low {{tomorrowLow}}",
 
   //And Tomorrow
   "weat-wedTomorrow.0": "Today, expect {{weather}} with high:{{high}} and low:{{low}}#Tommorow, for the wedding, expect {{tomorrowWeather}}",
+  "weat-wedTomorrow.BM.0": "Today, PANIC! PANIC! THE BLOOD MOON HAS DESCENDED!!!!#I mean, expect {{descWeather}} with high:{{todayHigh}} and low:{{todayLow}}#Tommorow, for the wedding, expect {{tomorrowWeather}}",
 
   //Weather - Condition Strings
   "weather-condition.heatwave.0": "RWS: A heatwave is expected for the Stardew Valley area out to Zuzu City. Please keep hydrated! ",
@@ -105,9 +103,14 @@
   "weather-condition.whiteout.1": "RWS: A howling blizzard is expected throughout the valley. Do not travel if at all possible. ",
   "weather-condition.whiteout.2": "RWS: Expect near zero visiblity outside as a blizzard passes through. ",
 
+  "weather-condition.thunderfrenzy.0": "RWS: SEVERE THUNDERSTORM WARNING. Seek shelter immediately.",
+  "weather-condition.thunderfrenzy.1": "RWS: SEVERE THUNDERSTORM WARNING. Supercells are moving through the area. ",
+  "weather-condition.thunderfrenzy.2": "RWS: SEVERE THUNDERSTORM WARNING. Be advised of the possiblity of downdrafts along with an immense number of thunder strikes. ",
+
   //this is the night string
   "weather-condition.frost.night": "Forecasters are already seeing the temperatures dip dangerously low, and you should expect frosts outside tonight. ",
   "weather-condition.evenFog": "Fog is predicted this evening from {{startTime}} to {{endTime}}. ",
+  "weather-condition.eveningFogNoTime": "Fog is predicted this evening.",
 
   //Weather Descriptions - Spring
   "weat-spring.sunny_daytime.0": "a beautiful sunny day",
@@ -127,7 +130,7 @@
   "weat-spring.stormy.2": "expect lightning and thunder all day",
 
   "weat-spring.debris.0": "the pollen to be blowing, so be careful if you're allergic",
-  "weat-spring.debris.1": "a front blowing through is blowing fircely",
+  "weat-spring.debris.1": "heavy wind due to the front blowing through",
   "weat-spring.debris.2": "a stiff wind will be blowing pollen all day",
 
   "weat-spring.snow.0": "a late snow will be running through the valley",
@@ -174,6 +177,10 @@
   "weat-summer.drythunder.0": "there will be thunder and lightning today, but no rain",
   "weat-summer.drythunder.1": "due to the lack of moisture, the lightning today will not include rain. Areas are expected to watch for wildfires.",
   "weat-summer.drythunder.2": "expect lightning and thunder but no rain",
+  
+      "weat-summer.drylightning.0": "there will be thunder and lightning today, but no rain",
+  "weat-summer.drylightning.1": "due to the lack of moisture, the lightning today will not include rain. Areas are expected to watch for wildfires.",
+  "weat-summer.drylightning.2": "expect lightning and thunder but no rain",
 
   "weat-summer.thundersnow.0": "a rare and out of season thunder snow will be in the valley",
   "weat-summer.thundersnow.1": "a rare and out of season thunder snow will be in the valley",
@@ -276,13 +283,19 @@
   "weather-menu.openingS4D28": "This is Kylie from KZAM Radio, broadcasting on 92.5 out of Point Drake. It is the end of the year, the {{descDay}}, and here is the weather report for Stardew Valley:",
   "weather-menu.condition.frost": "RWS Warning: Frost tonight.",
   "weather-menu.condition.heatwave": "RWS Warning: Heatwave expected through the day.",
-  "weather-menu.current": "Current Conditions: {{todayCondition}}. High: {{todayHigh}} with Low: {{todayLow}}.{{fogString}}",
-  "weather-menu.fog": "Fog present until {{fogTime}}.",
+  "weather-menu.condition.whiteOut": "RWS Warning: Extreme blizzards are moving through the valley:",
+  "weather-menu.condition.thunderFrenzy": "RWS Warning: Mesocyclones are moving through the valley:",
+  "weather-menu.condition.bloodmoon": "Beware, for the blood moon rises.....",
+  "weather-menu.current": "Current Conditions: {{todayCondition}}. Today, the high: {{todayHigh}} with Low: {{todayLow}}.{{fogString}}",
+  "weather-menu.fog": "Fog present until {{fogTime}} giving way to {{condition}}.",
   "weather-menu.expectedFog": " Evening fog is expected as well.",
   "weather-menu.fogFuture": " Expected fog later at about {{fogTime}} to {{endFog}}.",
   "weather-menu.tomorrow": "Tomorrow's Forecast: {{tomorrowCondition}}. High: {{tomorrowHigh}} with Low: {{tomorrowLow}}.",
+  "nightTime" :  "Sunrise will be at {{sunrise}} with sunset at {{sunset}}. It is expected to be fully dark at {{nighttime}}",
 
   //basic conditions
+  "weather_bloodmoon": "Blood Moon",
+  "weather_hurricanerain" :  "Torrential Downpours",
   "weather_sunny_daytime": "Sunny",
   "weather_sunny_nighttime": "Clear",
   "weather_sunny": "Sunny",
@@ -292,16 +305,23 @@
   "weather_snow": "Snowy",
   "weather_rainy": "Rainy",
   "weather_festival": "Festival",
+  "weather_frenzy": "Lightning Frenzy",
   "weather_wedding": "Wedding",
   "weather_drylightning": "Dry Lightning",
   "weather_blizzard": "Blizzard",
   "weather_frost": "Frost with {{condition}}",
+  "weather_frostTwo": "Frost with {{condition}} and {{conditionB}}",
+  "weather_heatwaveCond": "Heatwave with {{condition}}",
+  "weather_heatwaveTwo": "Heatwave with {{condition}} and {{conditionB}}",
+  "weather_frost_night": "Clear and Frosty",
   "weather_heatwave": "Heatwave",
   "weather_drylightningheatwave": "Dry Lightning with Heatwave",
   "weather_drylightningheatwavesunny": "Dry Lightning with Heatwave and sun",
   "weather_drylightningheatwavewindy": "Dry Lightning with Heatwave and wind",
+  "weather_drylightningwindy": "Dry Lightning with High Wind",
   "weather_thundersnow": "Thundersnow",
   "weather_fog": "Fog with {{condition}} expected",
+  "weather_fog_basic": "Fog",
   "weather_unset": "Unset",
 
   //ordinal strings

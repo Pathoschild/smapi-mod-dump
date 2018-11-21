@@ -1,0 +1,8 @@
+{
+  "StaminaDrain": 2,
+  "SickMoreThanOnce": false,
+  "ChanceOfGettingSick": 0.7,
+  "PercentageOutside": 0.65,
+  "TooColdInside": 8.4,
+  "Verbose": false
+}

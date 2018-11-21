@@ -1,4 +1,6 @@
-﻿namespace CustomizableCartRedux
+﻿using System.Collections.Generic;
+
+namespace CustomizableCartRedux
 {
     public class CartConfig
     {
@@ -15,7 +17,12 @@
         public bool AppearOnlyAtStartAndEndOfSeason { get; set; }
         public bool AppearOnlyEveryOtherWeek { get; set; }
 
+        public bool UseVanillaMax { get; set; }
         public int AmountOfItems { get; set; }
+        public bool DisableDuplicates { get; set; }
+        public bool UseCheaperPricing { get; set; }
+        public List<int> AllowedItems { get; set; }
+        public List<int> BlacklistedItems { get; set; }
 
         public CartConfig()
         {
@@ -23,7 +30,11 @@
             AppearOnlyAtStartAndEndOfSeason = false;
             AppearOnlyAtStartOfSeason = false;
             AppearOnlyEveryOtherWeek = false;
-
+            DisableDuplicates = false;
+            BlacklistedItems = new List<int>();
+            AllowedItems = new List<int>();
+            UseCheaperPricing = false;
+            UseVanillaMax = true;
             AmountOfItems = 12;
 
             MondayChance = .2;

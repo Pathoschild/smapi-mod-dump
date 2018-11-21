@@ -113,7 +113,7 @@ namespace CropTransplantMod
                 }
                 else
                 {
-                    sourceRect = GetSourceRect(crop, (int)base.tileLocation.X * 7 + (int)base.tileLocation.Y * 11);
+                    sourceRect = GetSourceRect(crop, (int)base.TileLocation.X * 7 + (int)base.TileLocation.Y * 11);
                 }
                 b.Draw(Game1.cropSpriteSheet,  offset + tileLocation, sourceRect, toTint, rotation, new Vector2(8f, 24f), 4f, crop.flip.Value ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0.0f, (float)(f.getStandingY() + 2) / 10000f) + 0.0002f);
                 if (crop.tintColor.Value.Equals((object)Color.White) || crop.currentPhase.Value != crop.phaseDays.Count - 1 || crop.dead.Value)

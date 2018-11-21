@@ -105,7 +105,7 @@ namespace AnimalHusbandryMod.tools
 
         internal void ReplaceOldTools(object sender, EventArgs e)
         {
-            NetObjectList<Item> inventory = Game1.player.items;
+            IList<Item> inventory = Game1.player.Items;
             for (int i = 0; i < inventory.Count; i++)
             {
                 ReplaceIfOldItem(inventory, i);
@@ -147,7 +147,7 @@ namespace AnimalHusbandryMod.tools
             }
         }
 
-        private static void ReplaceIfOldItem(NetObjectList<Item> items, int i)
+        private static void ReplaceIfOldItem(IList<Item> items, int i)
         {
             Item item = items[i];
             if (item != null)

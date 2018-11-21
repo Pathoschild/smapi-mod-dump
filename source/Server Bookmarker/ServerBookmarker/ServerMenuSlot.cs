@@ -18,7 +18,7 @@ namespace ServerBookmarker
         public string ServerName { get; private set; }
         public string IP { get; private set; }
 
-        private readonly CoopMenu menu; 
+        private new readonly CoopMenu menu; 
         readonly IReflectionHelper reflection;
 
         readonly ClickableTextureComponent deleteButton;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ClimatesOfFerngillRebuild
+﻿namespace ClimatesOfFerngillRebuild
 {
     public enum WeatherIcon
     {
@@ -26,6 +24,7 @@ namespace ClimatesOfFerngillRebuild
         IconDryLightningWind = 19,
         IconWhiteOut = 20,
         IconWhiteOutFog = 21,
+        IconThunderFrenzy = 22,
         IconBloodMoon = 99
     }
 }

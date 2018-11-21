@@ -2,12 +2,14 @@
   "AllowRainInWinter": true,
   "AllowThunderSnow": true,
   "AllowSnowInFall": true,
+  "LocationsAffected": [],
   "ClimateSequences": [
     {
       "BeginSeason": "spring",
       "EndSeason": "spring",
       "BeginDay": 1,
       "EndDay": 9,
+      "EveningFogChance": 2.0,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -46,7 +48,7 @@
         },
         {
           "WeatherType": "fog",
-          "BaseValue": 0.55,
+          "BaseValue": 0.39,
           "ChangeRate": 0.0,
           "VariableLowerBound": -0.04,
           "VariableHigherBound": 0.04
@@ -58,6 +60,7 @@
       "EndSeason": "spring",
       "BeginDay": 10,
       "EndDay": 19,
+      "EveningFogChance": 2.0,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -96,7 +99,7 @@
         },
         {
           "WeatherType": "fog",
-          "BaseValue": 0.35,
+          "BaseValue": 0.29,
           "ChangeRate": 0.0,
           "VariableLowerBound": -0.04,
           "VariableHigherBound": 0.04
@@ -108,6 +111,7 @@
       "EndSeason": "spring",
       "BeginDay": 20,
       "EndDay": 28,
+      "EveningFogChance": 2.0,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -146,7 +150,7 @@
         },
         {
           "WeatherType": "fog",
-          "BaseValue": 0.35,
+          "BaseValue": 0.22,
           "ChangeRate": 0.0,
           "VariableLowerBound": -0.04,
           "VariableHigherBound": 0.04
@@ -158,6 +162,7 @@
       "EndSeason": "summer",
       "BeginDay": 1,
       "EndDay": 9,
+      "EveningFogChance": 2.0,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -201,6 +206,7 @@
       "EndSeason": "summer",
       "BeginDay": 10,
       "EndDay": 18,
+      "EveningFogChance": 2.0,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -244,6 +250,7 @@
       "EndSeason": "summer",
       "BeginDay": 19,
       "EndDay": 28,
+      "EveningFogChance": 2.0,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -287,6 +294,7 @@
       "EndSeason": "fall",
       "BeginDay": 1,
       "EndDay": 9,
+      "EveningFogChance": 2.0,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -337,6 +345,7 @@
       "EndSeason": "fall",
       "BeginDay": 10,
       "EndDay": 19,
+      "EveningFogChance": 2.0,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -387,6 +396,7 @@
       "EndSeason": "fall",
       "BeginDay": 20,
       "EndDay": 28,
+      "EveningFogChance": 2.0,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -437,6 +447,7 @@
       "EndSeason": "winter",
       "BeginDay": 1,
       "EndDay": 9,
+      "EveningFogChance": 2.0,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -487,6 +498,7 @@
       "EndSeason": "winter",
       "BeginDay": 10,
       "EndDay": 18,
+      "EveningFogChance": 2.0,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -537,6 +549,7 @@
       "EndSeason": "winter",
       "BeginDay": 19,
       "EndDay": 28,
+      "EveningFogChance": 2.0,
       "WeatherChances": [
         {
           "WeatherType": "rain",

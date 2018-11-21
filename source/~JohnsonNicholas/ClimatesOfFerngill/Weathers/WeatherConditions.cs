@@ -7,6 +7,7 @@ using System.Linq;
 using TwilightShards.Common;
 using static ClimatesOfFerngillRebuild.Sprites;
 using System;
+using ClimatesOfFerngillRebuild.Weathers;
 using TwilightShards.Stardew.Common;
 
 namespace ClimatesOfFerngillRebuild
@@ -16,6 +17,9 @@ namespace ClimatesOfFerngillRebuild
     /// </summary>
     public class WeatherConditions
     {
+        /// <summary>This Dictionary tracks elements associated with weathers </summary>
+        public Dictionary<int, WeatherData> Weathers;
+
         ///<summary>Game configuration options</summary>
         private WeatherConfig ModConfig;
 
@@ -37,15 +41,201 @@ namespace ClimatesOfFerngillRebuild
         /// <summary>Track current conditions</summary>
         private CurrentWeather CurrentConditionsN { get; set; }
 
+        /// <summary>The list of custom weathers </summary>
         internal List<ISDVWeather> CurrentWeathers { get; set; }
 
+        //evening fog details
         private bool HasSetEveningFog {get; set;}
-
         public bool GenerateEveningFog { get; set; }
 
-        private bool FogCreationProhibited { get; set; }
+        /// ******************************************************************************
+        /// CONSTRUCTORS
+        /// ******************************************************************************
 
-        private SDVTime MorningFogExpir { get; set; }
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        /// <param name="Dice">pRNG</param>
+        /// <param name="monitor">SMAPI log object</param>
+        /// <param name="Config">Game configuration</param>
+        public WeatherConditions(Icons Sheets, MersenneTwister Dice, ITranslationHelper Translation, IMonitor monitor, WeatherConfig Config)
+        {
+            Monitor = monitor;
+            ModConfig = Config;
+            this.Dice = Dice;
+            this.Translation = Translation;
+            Weathers = PopulateWeathers();
+
+            CurrentConditionsN = CurrentWeather.Unset;
+            CurrentWeathers = new List<ISDVWeather>
+            {
+                new FerngillFog(Sheets, Config.Verbose, monitor, Dice, Config, SDVTimePeriods.Morning),
+                new FerngillWhiteOut(Dice, Config),
+                new FerngillBlizzard(Dice, Config),
+                new FerngillThunderFrenzy(monitor, Dice, Config),
+                //new FerngillCustomRain(monitor, Dice, Config, 300)
+            };
+
+            foreach (ISDVWeather weather in CurrentWeathers)
+                weather.OnUpdateStatus += ProcessWeatherChanges;
+        }
+
+        public WeatherIcon CurrentWeatherIcon 
+        {
+            get
+            {
+                if (ClimatesOfFerngill.MoonAPI != null)
+                {
+                    if (ClimatesOfFerngill.MoonAPI.GetCurrentMoonPhase() == "Blood Moon")
+                        return WeatherIcon.IconBloodMoon;
+                }
+
+                if (Weathers.ContainsKey((int)CurrentConditionsN))
+                    return Weathers[(int)CurrentConditionsN].Icon;
+                else
+                    return WeatherIcon.IconError;
+            }
+        }
+
+        public WeatherIcon CurrentWeatherIconBasic
+        {
+            get
+            {
+                if (ClimatesOfFerngill.MoonAPI != null)
+                {
+                    if (ClimatesOfFerngill.MoonAPI.GetCurrentMoonPhase() == "Blood Moon")
+                        return WeatherIcon.IconBloodMoon;
+                }
+
+                if (Weathers.ContainsKey((int)CurrentConditionsN))
+                    return Weathers[(int)CurrentConditionsN].IconBasic;
+                else
+                    return WeatherIcon.IconError;
+            }
+        }
+
+        private Dictionary<int, WeatherData> PopulateWeathers()
+        {
+            return new Dictionary<int, WeatherData>{ 
+                { (int)CurrentWeather.Sunny, new WeatherData(WeatherIcon.IconSunny, WeatherIcon.IconSunny, "sunny", Translation.Get("weather_sunny_daytime"), CondDescNight: Translation.Get("weather_sunny_nighttime"))},
+
+                { (int)(CurrentWeather.Sunny | CurrentWeather.Lightning), new WeatherData(WeatherIcon.IconDryLightning, WeatherIcon.IconDryLightning, "drylightning", Translation.Get("weather_drylightning"))},
+
+                { (int)(CurrentWeather.Sunny | CurrentWeather.Frost), new WeatherData(WeatherIcon.IconSunny, WeatherIcon.IconSunny, CondName: "sunnyfrost", CondDesc: Translation.Get("weather_frost", new { condition = Translation.Get("weather_sunny") }), CondDescNight: Translation.Get("weather_frost_night")) },
+
+                { (int)(CurrentWeather.Sunny | CurrentWeather.Heatwave), new WeatherData(WeatherIcon.IconSunny, WeatherIcon.IconSunny, CondName: "sunnyheatwave", CondDesc: Translation.Get("weather_heatwave")) },
+
+                { (int)(CurrentWeather.Sunny | CurrentWeather.Fog), new WeatherData(WeatherIcon.IconSunnyFog, WeatherIcon.IconSunny, CondName: "fog", CondDesc: Translation.Get("weather_fog", new { condition = Translation.Get("weather_sunny") }), CondDescNight: Translation.Get("weather_frost_night")) },
+
+                { (int)(CurrentWeather.Sunny | CurrentWeather.Fog | CurrentWeather.Frost), new WeatherData(WeatherIcon.IconSunnyFog, WeatherIcon.IconSunny, CondName: "sunnyfrostfog", CondDesc: Translation.Get("weather_frost", new { condition = Translation.Get("weather_fog_basic") }))},
+
+                { (int)(CurrentWeather.Sunny | CurrentWeather.Frost | CurrentWeather.Lightning), new WeatherData(WeatherIcon.IconDryLightning, WeatherIcon.IconDryLightning, "drylightningfrost", Translation.Get("weather_frost", new { condition = Translation.Get("weather_drylightning") }))},
+
+                { (int)(CurrentWeather.Sunny | CurrentWeather.Fog | CurrentWeather.Lightning), new WeatherData(WeatherIcon.IconDryLightningFog, WeatherIcon.IconSunny, CondName: "drylightningfog", CondDesc: Translation.Get("weather_fog", new { condition = Translation.Get("weather_drylightning") }))},
+
+                { (int)(CurrentWeather.Sunny | CurrentWeather.Heatwave | CurrentWeather.Lightning), new WeatherData(WeatherIcon.IconDryLightning, WeatherIcon.IconDryLightning, "drylightningheatwave", Translation.Get("weather_drylightningheatwave"))},
+
+                { (int)(CurrentWeather.Frost | CurrentWeather.Lightning), new WeatherData(WeatherIcon.IconDryLightning, WeatherIcon.IconDryLightning, "drylightningfrost", Translation.Get("weather_frost", new { condition = Translation.Get("weather_drylightning") }))},
+
+                { (int)(CurrentWeather.Heatwave | CurrentWeather.Lightning), new WeatherData(WeatherIcon.IconDryLightning, WeatherIcon.IconDryLightning, "drylightningheatwave", Translation.Get("weather_drylightningheatwave"))},
+
+                { (int)(CurrentWeather.Lightning), new WeatherData(WeatherIcon.IconDryLightning, WeatherIcon.IconDryLightning, "drylightning", Translation.Get("weather_drylightning"))},
+
+                { (int)(CurrentWeather.Unset), new WeatherData(WeatherIcon.IconError, WeatherIcon.IconError, "unset", Translation.Get("weather_unset"))},
+
+                { (int)(CurrentWeather.Rain), new WeatherData(WeatherIcon.IconRain, WeatherIcon.IconRain, "rainy", Translation.Get("weather_rainy")) },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Lightning), new WeatherData(WeatherIcon.IconStorm, WeatherIcon.IconStorm, "stormy", Translation.Get("weather_stormy")) },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Lightning | CurrentWeather.Frost), new WeatherData(WeatherIcon.IconStorm, WeatherIcon.IconStorm, "stormyfrost", Translation.Get("weather_frost", new { conditions = Translation.Get("weather_stormy") })) },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Lightning | CurrentWeather.Heatwave), new WeatherData(WeatherIcon.IconStorm, WeatherIcon.IconStorm, "stormyheatwave", Translation.Get("weather_heatwaveCond", new { conditions = Translation.Get("weather_stormy") })) },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Fog), new WeatherData(WeatherIcon.IconRainFog, WeatherIcon.IconRain, "rainyfog", Translation.Get("weather_fog", new { condition = Translation.Get("weather_rainy") })) },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Lightning | CurrentWeather.Fog), new WeatherData(WeatherIcon.IconStorm, WeatherIcon.IconStorm, "stormyfog", Translation.Get("weather_fog", new { condition = Translation.Get("weather_stormy") })) },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Lightning | CurrentWeather.ThunderFrenzy), new WeatherData(WeatherIcon.IconThunderFrenzy, WeatherIcon.IconStorm, "lightfrenzyfog", Translation.Get("weather_frenzy")) },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Lightning | CurrentWeather.Frost | CurrentWeather.ThunderFrenzy), new WeatherData(WeatherIcon.IconThunderFrenzy, WeatherIcon.IconStorm, "lightfrenzyfrost", Translation.Get("weather_frost", new { condition = Translation.Get("weather_frenzy")})) },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Lightning | CurrentWeather.Heatwave | CurrentWeather.ThunderFrenzy), new WeatherData(WeatherIcon.IconThunderFrenzy, WeatherIcon.IconStorm, "lightfrenzyheatwave", Translation.Get("weather_heatwave", new { condition = Translation.Get("weather_frenzy") })) },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Lightning | CurrentWeather.Fog | CurrentWeather.ThunderFrenzy), new WeatherData(WeatherIcon.IconThunderFrenzy, WeatherIcon.IconStorm, "lightfrenzyfog", Translation.Get("weather_fog", new { condition = Translation.Get("weather_frenzy") })) },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Lightning | CurrentWeather.Fog | CurrentWeather.Frost | CurrentWeather.ThunderFrenzy), new WeatherData(WeatherIcon.IconThunderFrenzy, WeatherIcon.IconStorm, "lightfrenzyfogfrost", Translation.Get("weather_frostTwo", new { condition = Translation.Get("weather_frenzy"), condtitionB = Translation.Get("weather_fog_basic") })) },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Lightning | CurrentWeather.Fog | CurrentWeather.Heatwave | CurrentWeather.ThunderFrenzy), new WeatherData(WeatherIcon.IconThunderFrenzy, WeatherIcon.IconStorm, "lightfrenzyfogheatwave", Translation.Get("weather_heatwaveTwo", new { condition = Translation.Get("weather_frenzy"), condtitionB = Translation.Get("weather_fog_basic") })) },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Fog | CurrentWeather.Frost), new WeatherData(WeatherIcon.IconRainFog, WeatherIcon.IconRain, "rainyfrostfog", Translation.Get("weather_frostTwo", new { condition = Translation.Get("weather_rainy"), condtitionB = Translation.Get("weather_fog_basic") })) },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Lightning | CurrentWeather.Fog | CurrentWeather.Frost), new WeatherData(WeatherIcon.IconStorm, WeatherIcon.IconStorm, "stormyfrostfog", Translation.Get("weather_frost", new { condition = Translation.Get("weather_stormy"), conditionB = Translation.Get("weather_fog_basic") })) },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Fog | CurrentWeather.Heatwave), new WeatherData(WeatherIcon.IconRainFog, WeatherIcon.IconRain, "rainyheatwavefog", Translation.Get("weather_heatwaveTwo", new { condition = Translation.Get("weather_rainy"), conditionB = Translation.Get("weather_fog_basic") })) },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Lightning | CurrentWeather.Fog | CurrentWeather.Heatwave), new WeatherData(WeatherIcon.IconStormFog, WeatherIcon.IconStorm, "stormyheatwavefog", Translation.Get("weather_heatwaveTwo", new { condition = Translation.Get("weather_stormy"), conditionB = Translation.Get("weather_fog_basic") })) },
+
+                { (int)(CurrentWeather.Fog | CurrentWeather.Heatwave), new WeatherData(WeatherIcon.IconSunnyFog, WeatherIcon.IconSunny, CondName: "fogheatwave", CondDesc: Translation.Get("weather_fog", new { condition = Translation.Get("weather_heatwave") })) },
+
+                { (int)(CurrentWeather.Fog | CurrentWeather.Frost),  new WeatherData(WeatherIcon.IconSunnyFog, WeatherIcon.IconSunny, CondName: "fogfrost", CondDesc: Translation.Get("weather_frost", new { condition = Translation.Get("weather_fog_basic") }))  },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Heatwave), new WeatherData(WeatherIcon.IconRain, WeatherIcon.IconRain, "rainHeatwave", Translation.Get("weather_heatwaveCond", new { condition = Translation.Get("weather_rainy") })) },
+
+                { (int)(CurrentWeather.Rain | CurrentWeather.Frost), new WeatherData(WeatherIcon.IconRain, WeatherIcon.IconRain, "rainFrost", Translation.Get("weather_frost", new { condition = Translation.Get("weather_rainy") })) },
+
+                { (int)(CurrentWeather.Snow), new WeatherData(WeatherIcon.IconSnow, WeatherIcon.IconSnow, "snowy", Translation.Get("weather_snow")) },
+
+                { (int)(CurrentWeather.Snow | CurrentWeather.Frost), new WeatherData(WeatherIcon.IconSnow, WeatherIcon.IconSnow, "snowyFrost", Translation.Get("weather_frost", new { condition = Translation.Get("weather_snow") })) },
+
+                { (int)(CurrentWeather.Snow | CurrentWeather.Fog), new WeatherData(WeatherIcon.IconSnowFog, WeatherIcon.IconSnow, "snowyFog", Translation.Get("weather_fog", new { condition = Translation.Get("weather_snow") })) },
+
+                { (int)(CurrentWeather.Snow | CurrentWeather.Fog | CurrentWeather.Frost), new WeatherData(WeatherIcon.IconSnowFog, WeatherIcon.IconSnow, "snowyFrostFog", Translation.Get("weather_frostTwo", new { condition = Translation.Get("weather_snow"), conditionB = Translation.Get("weather_fog_basic") })) },
+
+                { (int)(CurrentWeather.Snow | CurrentWeather.Lightning | CurrentWeather.Fog), new WeatherData(WeatherIcon.IconThunderSnowFog, WeatherIcon.IconSnow, "thunderSnowFog", Translation.Get("weather_fog", new { condition = Translation.Get("weather_thundersnow") })) },
+
+                { (int)(CurrentWeather.Snow | CurrentWeather.Lightning | CurrentWeather.Fog | CurrentWeather.Frost), new WeatherData(WeatherIcon.IconThunderSnowFog, WeatherIcon.IconSnow, "thunderSnowFrostFog", Translation.Get("weather_frostTwo", new { condition = Translation.Get("weather_thundersnow"), conditionB = Translation.Get("weather_fog_basic") })) },
+
+                { (int)(CurrentWeather.Snow | CurrentWeather.Lightning | CurrentWeather.Frost), new WeatherData(WeatherIcon.IconThunderSnowFog, WeatherIcon.IconSnow, "thunderSnowFrost", Translation.Get("weather_frost", new { condition = Translation.Get("weather_thundersnow") })) },
+
+                { (int)(CurrentWeather.Festival), new WeatherData(WeatherIcon.IconFestival, WeatherIcon.IconFestival, "festival", Translation.Get("weather_festival")) },
+
+                { (int)(CurrentWeather.Wedding), new WeatherData(WeatherIcon.IconWedding, WeatherIcon.IconWedding, "wedding", Translation.Get("weather_wedding")) }, 
+
+                { (int)(CurrentWeather.Wind), new WeatherData(WeatherIcon.IconSpringDebris, WeatherIcon.IconSpringDebris, "debris", Translation.Get("weather_wind")) },
+
+                { (int)(CurrentWeather.Wind | CurrentWeather.Frost), new WeatherData(WeatherIcon.IconSpringDebris, WeatherIcon.IconSpringDebris, "debrisfrost", Translation.Get("weather_frost", new { condition = Translation.Get("weather_wind") })) },
+
+                { (int)(CurrentWeather.Wind | CurrentWeather.Heatwave), new WeatherData(WeatherIcon.IconSpringDebris, WeatherIcon.IconSpringDebris, "debrisheatwave", Translation.Get("weather_heatwaveCond", new { condition = Translation.Get("weather_wind") })) },
+
+                { (int)(CurrentWeather.Wind | CurrentWeather.Lightning), new WeatherData(WeatherIcon.IconDryLightningWind, WeatherIcon.IconSpringDebris, "drylightningwindy", Translation.Get("weather_drylightningwindy")) },
+
+                { (int)(CurrentWeather.Wind | CurrentWeather.Heatwave | CurrentWeather.Lightning), new WeatherData(WeatherIcon.IconDryLightningWind, WeatherIcon.IconSpringDebris, "drylightningheatwave", Translation.Get("weather_drylightningheatwavewindy")) },
+
+                { (int)(CurrentWeather.Snow | CurrentWeather.Blizzard), new WeatherData(WeatherIcon.IconBlizzard, WeatherIcon.IconBlizzard, "blizzard", Translation.Get("weather_blizzard")) },
+
+                { (int)(CurrentWeather.Snow | CurrentWeather.Blizzard | CurrentWeather.WhiteOut), new WeatherData(WeatherIcon.IconWhiteOut, WeatherIcon.IconWhiteOut, "whiteout", Translation.Get("weather_whiteOut")) },
+
+                { (int)(CurrentWeather.Snow | CurrentWeather.Blizzard | CurrentWeather.Fog), new WeatherData(WeatherIcon.IconBlizzardFog, WeatherIcon.IconBlizzard, "blizzardFog", Translation.Get("weather_fog", new { condition = Translation.Get("weather_blizzard") })) },
+
+                { (int)(CurrentWeather.Snow | CurrentWeather.Blizzard | CurrentWeather.WhiteOut | CurrentWeather.Fog), new WeatherData(WeatherIcon.IconWhiteOutFog, WeatherIcon.IconWhiteOut, "whiteoutFog", Translation.Get("weather_fog", new { condition = Translation.Get("weather_whiteOut") })) },
+
+                { (int)(CurrentWeather.Snow | CurrentWeather.Blizzard | CurrentWeather.Frost), new WeatherData(WeatherIcon.IconBlizzard, WeatherIcon.IconBlizzard, "blizzardFog", Translation.Get("weather_frost", new { condition = Translation.Get("weather_blizzard") })) },
+
+                { (int)(CurrentWeather.Snow | CurrentWeather.Blizzard | CurrentWeather.WhiteOut | CurrentWeather.Frost), new WeatherData(WeatherIcon.IconWhiteOut, WeatherIcon.IconWhiteOut, "whiteoutFog", Translation.Get("weather_frost", new { condition = Translation.Get("weather_whiteOut") })) },
+
+                { (int)(CurrentWeather.BloodMoon | CurrentWeather.Frost | CurrentWeather.Fog), new WeatherData(WeatherIcon.IconBloodMoon, WeatherIcon.IconBloodMoon, "bloodMoonFrostFog", Translation.Get("weather_fog", new {condition = Translation.Get("weather_bloodmoon")}) )},
+
+                { (int)(CurrentWeather.BloodMoon |CurrentWeather.Heatwave | CurrentWeather.Fog), new WeatherData(WeatherIcon.IconBloodMoon, WeatherIcon.IconBloodMoon, "bloodMoonHWFog", Translation.Get("weather_fog", new {condition = Translation.Get("weather_bloodmoon")}) )},
+
+                { (int)(CurrentWeather.BloodMoon | CurrentWeather.Fog), new WeatherData(WeatherIcon.IconBloodMoon, WeatherIcon.IconBloodMoon, "bloodMoonFog", Translation.Get("weather_fog", new {condition = Translation.Get("weather_bloodmoon")}) )},
+                { (int)(CurrentWeather.BloodMoon), new WeatherData(WeatherIcon.IconBloodMoon, WeatherIcon.IconBloodMoon, "bloodMoon", Translation.Get("weather_bloodmoon"))},
+
+                { (int)(CurrentWeather.BloodMoon| CurrentWeather.Heatwave), new WeatherData(WeatherIcon.IconBloodMoon, WeatherIcon.IconBloodMoon, "bloodMoonHeatwave", Translation.Get("weather_bloodmoon"))},
+
+                { (int)(CurrentWeather.BloodMoon| CurrentWeather.Frost), new WeatherData(WeatherIcon.IconBloodMoon, WeatherIcon.IconBloodMoon, "bloodMoonFrost", Translation.Get("weather_bloodmoon"))}
+
+            };
+        }
 
         /// *************************************************************************
         /// ACCESS METHODS
@@ -55,10 +245,34 @@ namespace ClimatesOfFerngillRebuild
             return CurrentConditionsN;
         }
 
+        public void ClearAllSpecialWeather()
+        {
+            foreach (ISDVWeather weather in CurrentWeathers)
+                weather.EndWeather();
+        }
+
         public void DrawWeathers()
         {
             foreach (ISDVWeather weather in CurrentWeathers)
                 weather.DrawWeather();
+
+            //if it's a blood moon out..
+            if (ClimatesOfFerngill.MoonAPI != null && ClimatesOfFerngill.MoonAPI.GetCurrentMoonPhase() == "Blood Moon")
+            {
+                if (this.GetWeatherMatchingType("Fog").First().IsWeatherVisible)
+                {
+                    //Get fog instance
+                    FerngillFog ourFog = (FerngillFog)this.GetWeatherMatchingType("Fog").First();
+                    ourFog.BloodMoon = true;
+                }
+
+                if (this.GetWeatherMatchingType("Blizzard").First().IsWeatherVisible)
+                {
+                    //Get Blizzard instance
+                    FerngillBlizzard blizzard = (FerngillBlizzard)this.GetWeatherMatchingType("Blizzard").First();
+                    blizzard.IsBloodMoon = true;
+                }
+            }
         }
 
         public void MoveWeathers()
@@ -72,7 +286,7 @@ namespace ClimatesOfFerngillRebuild
             string desc = "";
             foreach (ISDVWeather weather in CurrentWeathers)
             {
-               if (weather.WeatherType == "Fog")
+                if (weather.WeatherType == "Fog")
                 {
                     FerngillFog fog = (FerngillFog)weather;
                     desc += fog.FogDescription(fogRoll, fogChance);
@@ -82,17 +296,12 @@ namespace ClimatesOfFerngillRebuild
             return desc;
         }
 
-        public void CreateWeather(string Type, bool IsMorningFog = false)
+        public void CreateWeather(string Type)
         {
             foreach (ISDVWeather weather in CurrentWeathers)
             {
                 if (weather.WeatherType == Type)
                     weather.CreateWeather();
-
-                if (Type == "Fog" && IsMorningFog)
-                {
-                    MorningFogExpir = weather.WeatherExpirationTime;
-                }
             }
         }
 
@@ -103,6 +312,7 @@ namespace ClimatesOfFerngillRebuild
                 weather.UpdateWeather();
             }
 
+            //update fog for the evening
             if (SDVTime.CurrentTimePeriod == SDVTimePeriods.Afternoon && GenerateEveningFog && !HasSetEveningFog && (!IsFestivalToday && !IsWeddingToday))
             {
                 //Get fog instance
@@ -112,6 +322,14 @@ namespace ClimatesOfFerngillRebuild
                     ourFog.SetEveningFog();
                     HasSetEveningFog = true;
                 }
+            }
+        }
+
+        public void SecondUpdate()
+        {
+            foreach (ISDVWeather weather in CurrentWeathers)
+            {
+                weather.SecondUpdate();
             }
         }
 
@@ -152,7 +370,7 @@ namespace ClimatesOfFerngillRebuild
             //sanity remove these once weather is set.
             CurrentConditionsN = CurrentConditionsN.RemoveFlags(CurrentWeather.Unset);
 
-            //Some flags are contradictoary. Fix that here.
+            //Some flags are contradictory. Fix that here.
             if (newWeather == CurrentWeather.Rain)
             {
                 //unset debris, sunny, snow and blizzard, if it's raining.
@@ -246,318 +464,13 @@ namespace ClimatesOfFerngillRebuild
             return CurrentConditionsN.HasFlag(checkWeather);
         }
 
-        public void ClearFog() => CurrentConditionsN = CurrentConditionsN.RemoveFlags(CurrentWeather.Fog);
-
         public bool HasPrecip()
         {
             if (CurrentConditionsN.HasAnyFlags(CurrentWeather.Snow | CurrentWeather.Rain | CurrentWeather.Blizzard))
                 return true;
 
             return false;
-        }
-
-        public WeatherIcon CurrentWeatherIcon
-        {
-            get
-            {
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)CurrentWeather.Rain))
-                    return WeatherIcon.IconRain;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Rain | CurrentWeather.Lightning)))
-                    return WeatherIcon.IconStorm;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Sunny)))
-                    return WeatherIcon.IconDryLightning;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Wind)))
-                    return WeatherIcon.IconDryLightningWind;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Snow)))
-                    return WeatherIcon.IconThunderSnow;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)CurrentWeather.Snow))
-                    return WeatherIcon.IconSnow;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Snow | CurrentWeather.Blizzard)))
-                    return WeatherIcon.IconBlizzard;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Snow | CurrentWeather.Blizzard | CurrentWeather.WhiteOut)))
-                    return WeatherIcon.IconWhiteOut;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)CurrentWeather.Festival))
-                    return WeatherIcon.IconFestival;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)CurrentWeather.Wedding))
-                    return WeatherIcon.IconWedding;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)CurrentWeather.Sunny))
-                    return WeatherIcon.IconSunny;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)CurrentWeather.Unset))
-                    return WeatherIcon.IconSunny;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)CurrentWeather.Lightning))
-                    return WeatherIcon.IconDryLightning;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)CurrentWeather.Wind)) {
-                    if (SDate.Now().Season == "spring") return WeatherIcon.IconSpringDebris;
-                    else return WeatherIcon.IconDebris;
-                }
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Snow | CurrentWeather.Lightning)))
-                    return WeatherIcon.IconThunderSnow;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Sunny | CurrentWeather.Lightning)))
-                    return WeatherIcon.IconDryLightning;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Heatwave | CurrentWeather.Sunny)))
-                    return WeatherIcon.IconDryLightning;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Rain | CurrentWeather.Heatwave)))
-                    return WeatherIcon.IconRain;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Rain | CurrentWeather.Heatwave | CurrentWeather.Fog)))
-                    return WeatherIcon.IconRainFog;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Rain | CurrentWeather.Lightning | CurrentWeather.Heatwave)))
-                    return WeatherIcon.IconStorm;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Rain | CurrentWeather.Lightning | CurrentWeather.Heatwave | CurrentWeather.Fog)))
-                    return WeatherIcon.IconStormFog;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Heatwave | CurrentWeather.Sunny)))
-                    return WeatherIcon.IconSunny;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Heatwave)))
-                    return WeatherIcon.IconDryLightning;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Heatwave | CurrentWeather.Wind)))
-                {
-                    if (SDate.Now().Season == "spring") return WeatherIcon.IconSpringDebris;
-                    else return WeatherIcon.IconDebris;
-                }
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Heatwave | CurrentWeather.Wind)))
-                {
-                    if (SDate.Now().Season == "spring") return WeatherIcon.IconSpringDebris;
-                    else return WeatherIcon.IconDebris;
-                }
-
-                //The more complex ones.
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Sunny | CurrentWeather.Frost)))
-                    return WeatherIcon.IconSunny;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Rain | CurrentWeather.Frost)))
-                    return WeatherIcon.IconStorm;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Snow | CurrentWeather.Blizzard | CurrentWeather.WhiteOut)))
-                    return WeatherIcon.IconWhiteOut;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Sunny | CurrentWeather.Frost)))
-                    return WeatherIcon.IconSunny;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Wind | CurrentWeather.Frost)))
-                {
-                    if (SDate.Now().Season == "spring") return WeatherIcon.IconSpringDebris;
-                    else return WeatherIcon.IconDebris;
-                }
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Rain | CurrentWeather.Frost)))
-                    return WeatherIcon.IconRain;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Snow | CurrentWeather.Frost)))
-                    return WeatherIcon.IconSnow;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Blizzard | CurrentWeather.Snow | CurrentWeather.Frost)))
-                    return WeatherIcon.IconBlizzard;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Blizzard | CurrentWeather.Snow | CurrentWeather.Frost | CurrentWeather.WhiteOut)))
-                    return WeatherIcon.IconBlizzard;
-
-                //And now for fog.
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Fog | CurrentWeather.Sunny)))
-                    return WeatherIcon.IconSunnyFog;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Rain | CurrentWeather.Fog)))
-                    return WeatherIcon.IconStormFog;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Sunny | CurrentWeather.Fog)))
-                    return WeatherIcon.IconSunnyFog;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Rain | CurrentWeather.Fog)))
-                    return WeatherIcon.IconRainFog;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Snow | CurrentWeather.Fog)))
-                    return WeatherIcon.IconSnowFog;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Blizzard | CurrentWeather.Snow | CurrentWeather.Fog)))
-                    return WeatherIcon.IconBlizzardFog;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Sunny | CurrentWeather.Frost | CurrentWeather.Fog)))
-                    return WeatherIcon.IconSunnyFog;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Rain | CurrentWeather.Frost | CurrentWeather.Fog)))
-                    return WeatherIcon.IconRainFog;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Snow | CurrentWeather.Blizzard | CurrentWeather.WhiteOut | CurrentWeather.Fog)))
-                    return WeatherIcon.IconWhiteOutFog;
-
-                Console.WriteLine($"Error. Current conditions are: {CurrentConditionsN}");
-
-                return WeatherIcon.IconError;
-            }
-        }
-
-        public bool BlockFog { get; set; }
-
-        public WeatherIcon CurrentWeatherIconBasic
-        {
-            get
-            {
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)CurrentWeather.Rain))
-                    return WeatherIcon.IconRain;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Rain | CurrentWeather.Lightning)))
-                    return WeatherIcon.IconStorm;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Sunny)))
-                    return WeatherIcon.IconDryLightning;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Wind)))
-                    return WeatherIcon.IconDryLightningWind;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Snow)))
-                    return WeatherIcon.IconThunderSnow;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)CurrentWeather.Snow))
-                    return WeatherIcon.IconSnow;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Snow | CurrentWeather.Blizzard)))
-                    return WeatherIcon.IconBlizzard;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Blizzard | CurrentWeather.Snow | CurrentWeather.WhiteOut)))
-                    return WeatherIcon.IconWhiteOut;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)CurrentWeather.Festival))
-                    return WeatherIcon.IconFestival;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)CurrentWeather.Wedding))
-                    return WeatherIcon.IconWedding;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)CurrentWeather.Sunny))
-                    return WeatherIcon.IconSunny;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)CurrentWeather.Unset))
-                    return WeatherIcon.IconSunny;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)CurrentWeather.Lightning))
-                    return WeatherIcon.IconDryLightning;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)CurrentWeather.Wind))
-                {
-                    if (SDate.Now().Season == "spring") return WeatherIcon.IconSpringDebris;
-                    else return WeatherIcon.IconDebris;
-                }
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Snow | CurrentWeather.Lightning)))
-                    return WeatherIcon.IconThunderSnow;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Sunny | CurrentWeather.Lightning)))
-                    return WeatherIcon.IconDryLightning;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Heatwave | CurrentWeather.Sunny)))
-                    return WeatherIcon.IconDryLightning;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Rain | CurrentWeather.Heatwave)))
-                    return WeatherIcon.IconRain;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Rain | CurrentWeather.Heatwave | CurrentWeather.Fog)))
-                    return WeatherIcon.IconRain;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Rain | CurrentWeather.Lightning | CurrentWeather.Heatwave)))
-                    return WeatherIcon.IconStorm;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Rain | CurrentWeather.Lightning | CurrentWeather.Heatwave | CurrentWeather.Fog)))
-                    return WeatherIcon.IconStorm;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Heatwave | CurrentWeather.Sunny)))
-                    return WeatherIcon.IconSunny;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Heatwave)))
-                    return WeatherIcon.IconDryLightning;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Heatwave | CurrentWeather.Wind)))
-                {
-                    if (SDate.Now().Season == "spring") return WeatherIcon.IconSpringDebris;
-                    else return WeatherIcon.IconDebris;
-                }
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Heatwave | CurrentWeather.Wind)))
-                {
-                    if (SDate.Now().Season == "spring") return WeatherIcon.IconSpringDebris;
-                    else return WeatherIcon.IconDebris;
-                }
-
-                //The more complex ones.
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Sunny | CurrentWeather.Frost)))
-                    return WeatherIcon.IconSunny;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Rain | CurrentWeather.Frost)))
-                    return WeatherIcon.IconStorm;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Sunny | CurrentWeather.Frost)))
-                    return WeatherIcon.IconSunny;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Wind | CurrentWeather.Frost)))
-                {
-                    if (SDate.Now().Season == "spring") return WeatherIcon.IconSpringDebris;
-                    else return WeatherIcon.IconDebris;
-                }
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Rain | CurrentWeather.Frost)))
-                    return WeatherIcon.IconRain;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Snow | CurrentWeather.Frost)))
-                    return WeatherIcon.IconSnow;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Blizzard | CurrentWeather.Snow | CurrentWeather.Frost)))
-                    return WeatherIcon.IconBlizzard;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Blizzard | CurrentWeather.Snow | CurrentWeather.Frost | CurrentWeather.WhiteOut)))
-                    return WeatherIcon.IconWhiteOut;
-
-                //And now for fog.
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Fog | CurrentWeather.Sunny)))
-                    return WeatherIcon.IconSunny;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Lightning | CurrentWeather.Rain | CurrentWeather.Fog)))
-                    return WeatherIcon.IconStorm;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Sunny | CurrentWeather.Fog)))
-                    return WeatherIcon.IconSunny;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Rain | CurrentWeather.Fog)))
-                    return WeatherIcon.IconRain;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Snow | CurrentWeather.Fog)))
-                    return WeatherIcon.IconSnow;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Blizzard | CurrentWeather.Snow | CurrentWeather.Fog)))
-                    return WeatherIcon.IconBlizzard;
-
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Sunny | CurrentWeather.Frost | CurrentWeather.Fog)))
-                    return WeatherIcon.IconSunny;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Rain | CurrentWeather.Frost | CurrentWeather.Fog)))
-                    return WeatherIcon.IconRain;
-                if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditionsN, (int)(CurrentWeather.Blizzard | CurrentWeather.Snow | CurrentWeather.Fog | CurrentWeather.WhiteOut)))
-                    return WeatherIcon.IconWhiteOut;
-
-                Console.WriteLine($"Error. Current conditions are: {CurrentConditionsN}");
-
-                return WeatherIcon.IconError;
-            }
-        }
-
-        /// ******************************************************************************
-        /// CONSTRUCTORS
-        /// ******************************************************************************
-
-        /// <summary>
-        /// Default Constructor
-        /// </summary>
-        /// <param name="Dice">pRNG</param>
-        /// <param name="monitor">SMAPI log object</param>
-        /// <param name="Config">Game configuration</param>
-        public WeatherConditions(Icons Sheets, MersenneTwister Dice, ITranslationHelper Translation, IMonitor monitor, WeatherConfig Config)
-        {
-            this.Monitor = monitor;
-            this.ModConfig = Config;
-            this.Dice = Dice;
-            this.Translation = Translation;
-            CurrentConditionsN = CurrentWeather.Unset;
-            CurrentWeathers = new List<ISDVWeather>
-            {
-                new FerngillFog(Sheets, Config.Verbose, monitor, Dice, Config, SDVTimePeriods.Morning),
-                new FerngillWhiteOut(Dice, Config),
-                new FerngillBlizzard(Dice, Config)
-            };
-
-            foreach (ISDVWeather weather in CurrentWeathers)
-                weather.OnUpdateStatus += ProcessWeatherChanges;
-        }
+        }       
   
         private void ProcessWeatherChanges(object sender, WeatherNotificationArgs e)
         {
@@ -570,6 +483,18 @@ namespace ClimatesOfFerngillRebuild
                 else
                 {
                     CurrentConditionsN = CurrentConditionsN.RemoveFlags(CurrentWeather.WhiteOut);
+                }
+            }
+
+            if (e.Weather == "ThunderFrenzy")
+            {
+                if (e.Present)
+                {
+                    CurrentConditionsN = CurrentConditionsN | CurrentWeather.ThunderFrenzy;
+                }
+                else
+                {
+                    CurrentConditionsN = CurrentConditionsN.RemoveFlags(CurrentWeather.ThunderFrenzy);
                 }
             }
 
@@ -623,11 +548,27 @@ namespace ClimatesOfFerngillRebuild
             foreach (ISDVWeather weather in CurrentWeathers)
                 weather.OnNewDay();
 
-            FogCreationProhibited = false;
             CurrentConditionsN = CurrentWeather.Unset;
             TodayTemps = TomorrowTemps; //If Tomorrow is null, should just allow it to be null.
             TomorrowTemps = null;
-            MorningFogExpir = new SDVTime(600);
+
+            if (Game1.currentSeason == "fall")
+            {
+                Weathers[(int)CurrentWeather.Wind] = new WeatherData(WeatherIcon.IconDebris, WeatherIcon.IconDebris, "debris", Translation.Get("weather_wind"));
+                Weathers[(int)(CurrentWeather.Wind | CurrentWeather.Frost)] = new WeatherData(WeatherIcon.IconDebris, WeatherIcon.IconDebris, "debrisfrost", Translation.Get("weather_frost", new { condition = Translation.Get("weather_wind") }));
+                Weathers[(int)(CurrentWeather.Wind | CurrentWeather.Heatwave)] = new WeatherData(WeatherIcon.IconDebris, WeatherIcon.IconDebris, "debrisheatwave", Translation.Get("weather_heatwaveCond", new { condition = Translation.Get("weather_wind") }));
+                Weathers[(int)(CurrentWeather.Wind | CurrentWeather.Lightning)] = new WeatherData(WeatherIcon.IconDebris, WeatherIcon.IconDebris, "drylightningwindy", Translation.Get("weather_drylightningwindy"));
+                Weathers[(int)(CurrentWeather.Wind | CurrentWeather.Heatwave | CurrentWeather.Lightning)] = new WeatherData(WeatherIcon.IconDebris, WeatherIcon.IconDebris, "drylightningheatwave", Translation.Get("weather_drylightningheatwavewindy"));
+            }
+            else
+            {
+                //reset back to spring. 
+                Weathers[(int)CurrentWeather.Wind] = new WeatherData(WeatherIcon.IconSpringDebris, WeatherIcon.IconSpringDebris, "debris", Translation.Get("weather_wind"));
+                Weathers[(int)(CurrentWeather.Wind | CurrentWeather.Frost)] = new WeatherData(WeatherIcon.IconSpringDebris, WeatherIcon.IconSpringDebris, "debrisfrost", Translation.Get("weather_frost", new { condition = Translation.Get("weather_wind") }));
+                Weathers[(int)(CurrentWeather.Wind | CurrentWeather.Heatwave)] = new WeatherData(WeatherIcon.IconSpringDebris, WeatherIcon.IconSpringDebris, "debrisheatwave", Translation.Get("weather_heatwaveCond", new { condition = Translation.Get("weather_wind") }));
+                Weathers[(int)(CurrentWeather.Wind | CurrentWeather.Lightning)] = new WeatherData(WeatherIcon.IconSpringDebris, WeatherIcon.IconSpringDebris, "drylightningwindy", Translation.Get("weather_drylightningwindy"));
+                Weathers[(int)(CurrentWeather.Wind | CurrentWeather.Heatwave | CurrentWeather.Lightning)] = new WeatherData(WeatherIcon.IconSpringDebris, WeatherIcon.IconSpringDebris, "drylightningheatwave", Translation.Get("weather_drylightningheatwavewindy"));
+            }
         }
 
         /// <summary> This function resets the weather object to basic. </summary>
@@ -636,11 +577,9 @@ namespace ClimatesOfFerngillRebuild
             foreach (ISDVWeather weather in CurrentWeathers)
                 weather.Reset();
 
-            FogCreationProhibited = false;
             TodayTemps = null;
             TomorrowTemps = null;
             CurrentConditionsN = CurrentWeather.Unset;
-            MorningFogExpir = new SDVTime(600);
         }
 
         public SDVTime GetFogTime()
@@ -696,7 +635,9 @@ namespace ClimatesOfFerngillRebuild
             CurrentConditionsN = CurrentWeather.Unset; //reset the flag.
 
             if (!Game1.isDebrisWeather && !Game1.isRaining && !Game1.isSnowing)
+            {
                 AddWeather(CurrentWeather.Sunny);
+            }
 
             if (Game1.isRaining)
                 AddWeather(CurrentWeather.Rain);
@@ -725,151 +666,6 @@ namespace ClimatesOfFerngillRebuild
             }
         }
 
-        /// <summary> Force for wedding only to match vanilla behavior. </summary>
-        internal void ForceWeddingOnly() => CurrentConditionsN = CurrentWeather.Wedding;
-
-        /// <summary> Force for festival only to match vanilla behavior. </summary>
-        internal void ForceFestivalOnly() => CurrentConditionsN = CurrentWeather.Festival;
-
-        /// <summary>Gets a quick string describing the current weather.</summary>
-        /// <returns>A quick ID of the weather</returns>
-        private string GetWeatherType()
-        {
-            return WeatherConditions.GetWeatherType(CurrentConditionsN);
-        }
-
-        /// <summary>Gets a quick string describing the weather. Meant primarily for use within the class. </summary>
-        /// <returns>A quick ID of the weather</returns>
-        private static string GetWeatherType(CurrentWeather CurrentConditions)
-        {
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)CurrentWeather.Rain))
-                return "rainy";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Rain | CurrentWeather.Lightning)))
-                return "stormy";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)CurrentWeather.Lightning))
-                return "drylightning";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)CurrentWeather.Snow))
-                return "snowy";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Snow | CurrentWeather.Blizzard)))
-                return "blizzard";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)CurrentWeather.Festival))
-                return "festival";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)CurrentWeather.Wedding))
-                return "wedding";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)CurrentWeather.Sunny))
-                return "sunny";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)CurrentWeather.Unset))
-                return "unset";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)CurrentWeather.Wind))
-                return "windy";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Lightning | CurrentWeather.Snow)))
-                return "thundersnow";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Lightning | CurrentWeather.Heatwave | CurrentWeather.Sunny)))
-                return "drylightningheatwavesunny";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Lightning | CurrentWeather.Heatwave | CurrentWeather.Wind)))
-                return "drylightningheatwavewindy";
-
-            //The more complex ones.
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Lightning | CurrentWeather.Frost | CurrentWeather.Sunny)))
-                return "drylightningwithfrost";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Lightning | CurrentWeather.Rain | CurrentWeather.Frost)))
-                return "stormswithfrost";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Sunny | CurrentWeather.Frost)))
-                return "sunnyfrost";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Sunny | CurrentWeather.Frost | CurrentWeather.Fog)))
-                return "sunnyfrostfog";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Rain | CurrentWeather.Frost | CurrentWeather.Fog)))
-                return "rainyfrostfog";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Wind | CurrentWeather.Frost)))
-                return "windyfrost";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Rain | CurrentWeather.Frost)))
-                return "rainyfrost";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Snow | CurrentWeather.Frost)))
-                return "snowyfrost";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Blizzard | CurrentWeather.Snow | CurrentWeather.Frost)))
-                return "blizzardfrost";
-
-            //And now for fog.
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Lightning | CurrentWeather.Fog | CurrentWeather.Sunny)))
-                return "drylightningwithfog";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Lightning | CurrentWeather.Rain | CurrentWeather.Fog)))
-                return "stormswithfog";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Sunny | CurrentWeather.Fog)))
-                return "sunnyfog";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Rain | CurrentWeather.Fog)))
-                return "rainyfog";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Snow | CurrentWeather.Fog)))
-                return "snowyfog";
-            if (GeneralFunctions.ContainsOnlyMatchingFlags(CurrentConditions, (int)(CurrentWeather.Blizzard | CurrentWeather.Snow | CurrentWeather.Fog)))
-                return "blizzardfog";
-
-            return $"ERROR. Dumping raw data: {CurrentConditions}";
-        }
-
-        ///<summary>This function returns the current condition (pulled from the translation helper.)</summary>
-        internal string DescribeConditions()
-        {
-            switch (GetWeatherType())
-            {
-                case "rainy":
-                    return Translation.Get("weather_rainy");
-                case "stormy":
-                    return Translation.Get("weather_lightning");
-                case "drylightning":
-                    return Translation.Get("weather_drylightning");
-                case "snowy":
-                    return Translation.Get("weather_snow");
-                case "blizzard":
-                    return Translation.Get("weather_blizzard");
-                case "wedding":
-                    return Translation.Get("weather_wedding");
-                case "festival":
-                    return Translation.Get("weather_festival");
-                case "unset":
-                    return Translation.Get("weather_unset");
-                case "windy":
-                    return Translation.Get("weather_wind");
-                case "thundersnow":
-                    return Translation.Get("weather_thundersnow");
-                case "heatwave":
-                    return Translation.Get("weather_heatwave");
-                case "drylightningheatwave":
-                    return Translation.Get("weather_drylightningheatwave");
-                case "drylightningheatwavesunny":
-                    return Translation.Get("weather_drylightningheatwavesunny");
-                case "drylightningheatwavewindy":
-                    return Translation.Get("weather_drylightningheatwavewindy");
-                case "drylightningwithfrost":
-                    return Translation.Get("weather_frost", new { condition = Translation.Get("weather_drylightning") });
-                case "stormswithfrost":
-                    return Translation.Get("weather_frost", new { condition = Translation.Get("weather_lightning") });
-                case "sunnyfrost":
-                    return Translation.Get("weather_frost", new { condition = Translation.Get("weather_sunny") });
-                case "windyfrost":
-                    return Translation.Get("weather_frost", new { condition = Translation.Get("weather_wind") });
-                case "rainyfrost":
-                    return Translation.Get("weather_frost", new { condition = Translation.Get("weather_rainy") });
-                case "snowyfrost":
-                    return Translation.Get("weather_frost", new { condition = Translation.Get("weather_snow") });
-                case "blizzardfrost":
-                    return Translation.Get("weather_frost", new { condition = Translation.Get("weather_blizzard") });
-                case "drylightningwithfog":
-                    return Translation.Get("weather_fog", new { condition = Translation.Get("weather_drylightning") + " " + Translation.Get("weather_sunny") });
-                case "stormswithfog":
-                    return Translation.Get("weather_fog", new { condition = Translation.Get("weather_lightning") });
-                case "sunnyfog":
-                    return Translation.Get("weather_fog", new { condition = Translation.Get("weather_sunny") });
-                case "rainyfog":
-                    return Translation.Get("weather_fog", new { condition = Translation.Get("weather_rainy") });
-                case "snowyfog":
-                    return Translation.Get("weather_fog", new { condition = Translation.Get("weather_snow") });
-                case "blizzardfog":
-                    return Translation.Get("weather_fog", new { condition = Translation.Get("weather_blizzard") });
-                default:
-                    return "ERROR";
-            }
-        }
-
         /// <summary>
         /// This function returns a description of the object. A very important note that this is meant for debugging, and as such does not do localization.
         /// </summary>
@@ -877,17 +673,17 @@ namespace ClimatesOfFerngillRebuild
         public override string ToString()
         {
             string ret = "";
-            ret += $"Low for today is {TodayTemps?.LowerBound.ToString("N3")} with the high being {TodayTemps?.HigherBound.ToString("N3")}. The current conditions are {GetWeatherType()}.";
+            ret += $"Low for today is {TodayTemps?.LowerBound:N3} with the high being {TodayTemps?.HigherBound:N3}. The current conditions are {Weathers[(int)CurrentConditionsN].ConditionName}.";
 
             foreach (ISDVWeather weather in CurrentWeathers)
                 ret += weather.ToString() + Environment.NewLine;
             
-            ret += $"Weather set for tommorow is {WeatherConditions.GetWeatherType(WeatherConditions.ConvertToCurrentWeather(Game1.weatherForTomorrow))} with high {TomorrowTemps?.HigherBound.ToString("N3")} and low {TomorrowTemps?.LowerBound.ToString("N3")}. Evening fog generated {GenerateEveningFog} ";
+            ret += $"Weather set for tommorow is {Weathers[(int)(WeatherConditions.ConvertToCurrentWeather(Game1.weatherForTomorrow))].ConditionName} with high {TomorrowTemps?.HigherBound:N3} and low {TomorrowTemps?.LowerBound:N3}. Evening fog generated {GenerateEveningFog} ";
 
             return ret;
         }
         
-        internal bool TestForSpecialWeather(double fogChance)
+        internal bool TestForSpecialWeather(FerngillClimateTimeSpan ClimateForDay)
         {
             bool specialWeatherTriggered = false;
             // Conditions: Blizzard - occurs in weather_snow in "winter"
@@ -895,21 +691,21 @@ namespace ClimatesOfFerngillRebuild
             //             Frost and Heatwave check against the configuration.
             //             Thundersnow  - as Blizzard, but really rare.
             //             Fog - per climate, although night fog in winter is double normal chance
+            GenerateEveningFog = (Dice.NextDouble() < ClimateForDay.EveningFogChance * ClimateForDay.RetrieveOdds(Dice,"fog",Game1.dayOfMonth)) && !this.GetCurrentConditions().HasFlag(CurrentWeather.Wind);
 
-            //GenerateEveningFog = (Dice.NextDouble() < (Game1.currentSeason == "winter" ? fogChance * 2 : fogChance)) && !this.GetCurrentConditions().HasFlag(CurrentWeather.Wind);
-            GenerateEveningFog = true;
+            bool blockFog = ClimatesOfFerngill.MoonAPI != null && ClimatesOfFerngill.MoonAPI.IsSolarEclipse();
 
-            if (BlockFog)
+            if (blockFog)
                 GenerateEveningFog = false;
             
             double fogRoll = Dice.NextDoublePositive();
-
-            if (fogRoll < fogChance && !this.GetCurrentConditions().HasFlag(CurrentWeather.Wind) && !BlockFog)
+           
+            if (fogRoll < ClimateForDay.RetrieveOdds(Dice, "fog", Game1.dayOfMonth) && !this.GetCurrentConditions().HasFlag(CurrentWeather.Wind) && !blockFog)
             {
-                this.CreateWeather("Fog", true);
+                this.CreateWeather("Fog");
 
                 if (ModConfig.Verbose)
-                    Monitor.Log($"{FogDescription(fogRoll, fogChance)}");
+                    Monitor.Log($"{FogDescription(fogRoll, ClimateForDay.RetrieveOdds(Dice, "fog", Game1.dayOfMonth))}");
 
                 specialWeatherTriggered = true;
             }
@@ -921,8 +717,8 @@ namespace ClimatesOfFerngillRebuild
                 {
                     this.CreateWeather("Blizzard");
                     if (ModConfig.Verbose)
-                        Monitor.Log($"With roll {blizRoll.ToString("N3")} against {ModConfig.BlizzardOdds}, there will be blizzards today");
-                    if (Dice.NextDoublePositive() < .05)
+                        Monitor.Log($"With roll {blizRoll:N3} against {ModConfig.BlizzardOdds}, there will be blizzards today");
+                    if (Dice.NextDoublePositive() < .05 && ModConfig.HazardousWeather)
                     {
                         this.CreateWeather("WhiteOut");
                     }
@@ -941,7 +737,7 @@ namespace ClimatesOfFerngillRebuild
                 {
                     this.AddWeather(CurrentWeather.Lightning);
                     if (ModConfig.Verbose)
-                        Monitor.Log($"With roll {oddsRoll.ToString("N3")} against {ModConfig.ThundersnowOdds}, there will be thundersnow today");
+                        Monitor.Log($"With roll {oddsRoll:N3} against {ModConfig.ThundersnowOdds}, there will be thundersnow today");
 
                     specialWeatherTriggered = true;
                 }
@@ -951,11 +747,12 @@ namespace ClimatesOfFerngillRebuild
             {
                 double oddsRoll = Dice.NextDoublePositive();
 
-                if (oddsRoll <= ModConfig.DryLightning && this.TodayHigh >= ModConfig.DryLightningMinTemp)
+                if (oddsRoll <= ModConfig.DryLightning && this.TodayHigh >= ModConfig.DryLightningMinTemp &&
+                    !this.CurrentConditionsN.HasFlag(CurrentWeather.Frost))
                 {
                     this.AddWeather(CurrentWeather.Lightning);
                     if (ModConfig.Verbose)
-                        Monitor.Log($"With roll {oddsRoll.ToString("N3")} against {ModConfig.DryLightning}, there will be dry lightning today.");
+                        Monitor.Log($"With roll {oddsRoll:N3} against {ModConfig.DryLightning}, there will be dry lightning today.");
 
                     specialWeatherTriggered = true;
                 }
@@ -986,6 +783,19 @@ namespace ClimatesOfFerngillRebuild
                 specialWeatherTriggered = true;
             }
 
+            //and finally, test for thunder frenzy
+            if (this.HasWeather(CurrentWeather.Lightning) && this.HasWeather(CurrentWeather.Rain) && ModConfig.HazardousWeather)
+            {
+                double oddsRoll = Dice.NextDouble();
+                if (oddsRoll < ModConfig.ThunderFrenzyOdds)
+                {
+                    this.AddWeather(CurrentWeather.ThunderFrenzy);
+                    specialWeatherTriggered = true;
+                    if (ModConfig.Verbose)
+                        Monitor.Log($"With roll {oddsRoll:N3} against {ModConfig.ThunderFrenzyOdds}, there will be a thunder frenzy today");
+                    this.CreateWeather("ThunderFrenzy");
+                }
+            }
 
             return specialWeatherTriggered;
         }

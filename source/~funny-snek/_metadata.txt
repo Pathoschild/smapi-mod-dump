@@ -6,12 +6,12 @@ mods:
    Anti-Cheat Server
 
 latest commit:
-   commit d7fef9198fce9f48ab44eb71df3346bda0d327d4
-   Merge: ff57612 6b88c25
+   commit 58752c16c147dc1b9637d9f1cf956a0dcc67deb2
+   Merge: d7fef91 f1ec4c0
    Author: funny-snek <42410961+funny-snek@users.noreply.github.com>
-   Date:   Tue Oct 30 14:37:43 2018 -0500
+   Date:   Mon Nov 19 13:42:16 2018 -0600
    
-       Merge pull request #2 from Pathoschild/refactor
+       Merge pull request #3 from Pathoschild/master
        
-       General refactoring
+       Remove clients, make blacklist configurable
    

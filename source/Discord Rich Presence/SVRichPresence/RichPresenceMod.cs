@@ -4,6 +4,7 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace SVRichPresence {
@@ -35,6 +36,7 @@ namespace SVRichPresence {
 				Monitor.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", LogLevel.Alert);
 			}
 #endif
+			SetupLibs();
 			api = new RichPresenceAPI(this);
 			DiscordRpc.EventHandlers handlers = new DiscordRpc.EventHandlers();
 			DiscordRpc.Initialize(applicationId, ref handlers, false, "413150");
@@ -83,7 +85,7 @@ namespace SVRichPresence {
 						string head = group.Value.Count + " tag";
 						if (group.Value.Count != 1)
 							head += "s";
-						head += " from " + (Helper.ModRegistry.Get(group.Key)?.Name ?? "an unknown mod");
+						head += " from " + (Helper.ModRegistry.Get(group.Key)?.Manifest.Name ?? "an unknown mod");
 						output.Add(head);
 						longest = 0;
 						foreach (KeyValuePair<string, string> tag in group.Value)
@@ -169,6 +171,39 @@ namespace SVRichPresence {
 		}
 
 		public override object GetApi() => api;
+
+		private void SetupLibs() {
+			if (Constants.TargetPlatform == GamePlatform.Windows)
+				return;
+			const string macLib = "libdiscord-rpc.dylib";
+			const string nixLib = "libdiscord-rpc.so";
+			string libPath = Constants.TargetPlatform == GamePlatform.Mac ? macLib : nixLib;
+			string modPath = Path.Combine(Helper.DirectoryPath, libPath);
+			string sdvPath = Path.Combine(Constants.ExecutionPath, libPath);
+			try {
+				Boolean attempt = false;
+				if (!File.Exists(sdvPath)) {
+					Monitor.Log("Attempting RPC library install");
+					attempt = true;
+				} else if (File.GetLastWriteTime(modPath) > File.GetLastWriteTime(sdvPath)) {
+					Monitor.Log("Attempting RPC library update");
+					attempt = true;
+				}
+				if (attempt) {
+					File.Copy(modPath, sdvPath, true);
+					File.SetLastWriteTime(sdvPath, File.GetLastWriteTime(modPath)); // just making sure
+					Monitor.Log("DiscordRP library updated. Please restart game.", LogLevel.Alert);
+					SaveEvents.AfterLoad += (object sender, EventArgs e) => {
+						Game1.addHUDMessage(new HUDMessage("DiscordRP library updated. Please restart game.", HUDMessage.newQuest_type));
+					};
+				}
+			} catch (IOException e) {
+				Monitor.Log("Failed to update Discord RPC library.", LogLevel.Warn);
+				Monitor.Log(e.ToString(), LogLevel.Trace);
+				if (!File.Exists(sdvPath))
+					Monitor.Log("I shall crash now. x_x", LogLevel.Error);
+			}
+		}
 
 		private void HandleButton(object sender, EventArgsInput e) {
 			if (e.Button != config.ReloadConfigButton)

@@ -31,7 +31,7 @@ namespace Elevator
 				foreach (Farmer player in Game1.getAllFarmhands())
 					if (player.Name.Length == 0)
 						emptyPlaces++;
-
+              
 				Console.WriteLine($"Generating {10 - emptyPlaces} new cabins");
 
 				if (emptyPlaces < 10)

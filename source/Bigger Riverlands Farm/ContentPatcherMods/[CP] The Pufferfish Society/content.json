@@ -1,0 +1,110 @@
+{
+	"Format": "1.4",
+	"ConfigSchema": {
+        "Dynamic Pufferfish Changes": {
+            "AllowValues": "true, false"
+        },
+		"Puffercool": {
+			"AllowValues": "true, false"
+		},
+		"Puffercry": {
+			"AllowValues": "true, false"
+		},
+		"Pufferfear": {
+			"AllowValues": "true, false"
+		},
+		"Pufferping": {
+			"AllowValues": "true, false"
+		},
+		"Pufferblush": {
+			"AllowValues": "true, false",
+		},
+		"Pufferthink": {
+			"AllowValues": "true, false"
+		},
+    },
+	"Changes": [
+		
+		//sdvpuffercool
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/sdvpuffercool.png",
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+			"ToArea": { "X": 128, "Y": 80, "Width": 16, "Height": 16 },
+			"When": {
+				"Puffercool": "true",
+			}
+		},
+		
+		//sdvpuffercry
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/sdvpuffercry.png",
+			"FromArea": {"X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"ToArea": {"X": 128, "Y": 80, "Width": 16, "Height": 16},
+			"When": {
+				"Dynamic Pufferfish Changes": "true",
+				"Puffercry": "true",
+				"Weather": "rain",
+			},
+		},
+		
+		//sdvpufferfear
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/sdvpufferfear.png",
+			"FromArea": {"X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"ToArea": {"X": 128, "Y": 80, "Width": 16, "Height": 16},
+			"When": {
+				"Dynamic Pufferfish Changes": "true",
+				"Pufferfear": "true",
+				"Weather": "snow",
+			},
+		},
+		
+		//sdvpufferping
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/sdvpufferping.png",
+			"FromArea": {"X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"ToArea": {"X": 128, "Y": 80, "Width": 16, "Height": 16},
+			"When": {
+				"Dynamic Pufferfish Changes": "true",
+				"Pufferping": "true",
+				"Weather": "storm",
+			},
+		},
+		
+		//sdvpufferblush
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/sdvpufferblush.png",
+			"FromArea": {"X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"ToArea": {"X": 128, "Y": 80, "Width": 16, "Height": 16},
+			"When": {
+				"Dynamic Pufferfish Changes": "true",
+				"Pufferblush": "true",
+				"DayEvent": "wedding",
+			},
+		},
+		
+		//sdvpufferthink
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/sdvpufferthink.png",
+			"FromArea": {"X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"ToArea": {"X": 128, "Y": 80, "Width": 16, "Height": 16},
+			"When": {
+				"Dynamic Pufferfish Changes": "true",
+				"Pufferthink": "true",
+				"DayEvent": "dance of the moonlight jellies, egg festival, feast of the winter star, festival of ice, flower dance, luau, stardew valley fair, spirit's eve",
+			},
+		},
+	]
+}

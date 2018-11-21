@@ -8,7 +8,7 @@ namespace ServerBookmarker
 
         public override void Entry(IModHelper helper)
         {
-            manager = new Manager(helper.Reflection, (path) => helper.ReadJsonFile<BookmarksDataModel>(path), (data, path) => helper.WriteJsonFile(path, data));
+            manager = new Manager(helper.Reflection, (path) => helper.Data.ReadJsonFile<BookmarksDataModel>(path), (data, path) => helper.Data.WriteJsonFile(path, data));
             Patch.PatchAll("me.ilyaki.serverbookmarker");
         }
     }

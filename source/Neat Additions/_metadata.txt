@@ -5,9 +5,10 @@ mods:
    Neat Additions
 
 latest commit:
-   commit 0a949d1eb4f1ef09e75a8f410700216bdee372c7
-   Author: Ilyaki <35632254+Ilyaki@users.noreply.github.com>
-   Date:   Fri Sep 21 05:50:05 2018 +0100
+   commit c92c1c692de8630ec8e4b3616666bbc8453aa2d1
+   Merge: efd3ed0 0a949d1
+   Author: Ilyaki <ilyaki.ilyaki@gmail.com>
+   Date:   Mon Nov 19 19:30:16 2018 +0000
    
-       Create LICENSE
+       Merge branch 'master' of https://github.com/Ilyaki/NeatAdditions
    

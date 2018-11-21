@@ -9,27 +9,61 @@ using StardewModdingAPI.Utilities;
 using Microsoft.Xna.Framework;
 using SObject = StardewValley.Object;
 using StardewValley.Objects;
+using TwilightShards.Common;
 
 namespace CustomizableCartRedux
 {
     public class CustomizableCartRedux : Mod
     {
+        public static Mod instance;
         public CartConfig OurConfig;
+        public MersenneTwister Dice;
+        private Dictionary<Item, int[]> generatedStock;
+
+        private ICustomizableCart API;
+
+        public override object GetApi()
+        {
+            if (API == null)
+                API = new CustomizableCartAPI(Helper.Reflection);
+
+            return API;
+        }
 
         public override void Entry(IModHelper helper)
         {
+            instance = this;
+            Dice = new MersenneTwister();
             OurConfig = helper.ReadConfig<CartConfig>();
             TimeEvents.AfterDayStarted += SetCartSpawn;
+            PlayerEvents.Warped += PlayerEvents_Warped;
         }
 
-         private void SetCartSpawn(object Sender, EventArgs e)
+        private void PlayerEvents_Warped(object sender, EventArgsPlayerWarped e)
         {
+            if (!Context.IsMainPlayer)
+                return;
+
+            if (e.NewLocation is Forest)
+            {
+                Forest f = e.NewLocation as Forest;
+                Helper.Reflection.GetField<Dictionary<Item, int[]>>(f, "travelerStock").SetValue(generatedStock);
+            }
+        }
+
+        private void SetCartSpawn(object Sender, EventArgs e)
+        {
+            if (!Context.IsMainPlayer)
+                return;
+
             Random r = new Random();
             double randChance = r.NextDouble(), dayChance = 0;
-            Forest f = Game1.getLocationFromName("Forest") as Forest;
 
-            if (f is null)
+            if (!(Game1.getLocationFromName("Forest") is Forest f))
                 throw new Exception("The Forest is not loaded. Please verify your game is properly installed.");
+            
+            //generate the stock
+            generatedStock = GetTravelingMerchantStock(OurConfig.AmountOfItems);
 
             //get the day
             DayOfWeek day = GetDayOfWeek(SDate.Now());
@@ -64,29 +98,29 @@ namespace CustomizableCartRedux
             /* Start of the Season - Day 1. End of the Season - Day 28. Both is obviously day 1 and 28 
                Every other week is only on days 8-14 and 22-28) */
 
-            bool SetCartToOn = false;
+            bool setCartToOn = false;
             if (OurConfig.AppearOnlyAtEndOfSeason)
             {
                 if (Game1.dayOfMonth == 28)
-                    SetCartToOn = true;
+                    setCartToOn = true;
             }
 
             else if (OurConfig.AppearOnlyAtStartAndEndOfSeason)
             {
                 if (Game1.dayOfMonth == 28 || Game1.dayOfMonth == 1)
-                    SetCartToOn = true;
+                    setCartToOn = true;
             }
 
             else if (OurConfig.AppearOnlyAtStartAndEndOfSeason)
             {
                 if (Game1.dayOfMonth == 28 || Game1.dayOfMonth == 1)
-                    SetCartToOn = true;
+                    setCartToOn = true;
             }
 
             else if (OurConfig.AppearOnlyAtStartOfSeason)
             {
                 if (Game1.dayOfMonth == 1)
-                    SetCartToOn = true;
+                    setCartToOn = true;
             }
 
             else if (OurConfig.AppearOnlyEveryOtherWeek)
@@ -95,7 +129,7 @@ namespace CustomizableCartRedux
                 {
                     if (dayChance > randChance)
                     {
-                        SetCartToOn = true;
+                        setCartToOn = true;
                     }
                 }
             }
@@ -104,99 +138,180 @@ namespace CustomizableCartRedux
             {
                 if (dayChance > randChance)
                 {
-                    SetCartToOn = true;
+                    setCartToOn = true;
                 }
             }
 
-            if (SetCartToOn)
+            if (setCartToOn)
             {
                 f.travelingMerchantDay = true;
-                f.travelingMerchantBounds = new List<Rectangle>
-                {
-                    new Rectangle(23 * Game1.tileSize, 10 * Game1.tileSize, 123 * Game1.pixelZoom, 28 * Game1.pixelZoom),
-                    new Rectangle(23 * Game1.tileSize + 45 * Game1.pixelZoom, 10 * Game1.tileSize + 26 * Game1.pixelZoom, 19 * Game1.pixelZoom, 12 * Game1.pixelZoom),
-                    new Rectangle(23 * Game1.tileSize + 85 * Game1.pixelZoom, 10 * Game1.tileSize + 26 * Game1.pixelZoom, 26 * Game1.pixelZoom, 12 * Game1.pixelZoom)
-                };
+                f.travelingMerchantBounds.Add(new Rectangle(1472, 640, 492, 112));
+                f.travelingMerchantBounds.Add(new Rectangle(1652, 744, 76, 48));
+                f.travelingMerchantBounds.Add(new Rectangle(1812, 744, 104, 48));            
 
-                f.travelingMerchantStock = GetTravelingMerchantStock(OurConfig.AmountOfItems);
+                Helper.Reflection.GetField<Dictionary<Item, int[]>>(f, "travelerStock").SetValue(generatedStock);
                 foreach (Rectangle travelingMerchantBound in f.travelingMerchantBounds)
                 {
                     Utility.clearObjectsInArea(travelingMerchantBound, f);                 
                 }
+
+                ((CustomizableCartAPI)API).InvokeCartProcessingComplete();
             }
             else
             {
                 //clear other values
-                f.travelingMerchantBounds = null;
+                f.travelingMerchantBounds.Clear();
                 f.travelingMerchantDay = false;
-                f.travelingMerchantStock = null;
+                Helper.Reflection.GetField<Dictionary<Item, int[]>>(f, "travelerStock").SetValue(null);                
             }
         }
 
         private Dictionary<Item, int[]> GetTravelingMerchantStock(int numStock)
         {
             Dictionary<Item, int[]> dictionary = new Dictionary<Item, int[]>();
-            Random r = new Random((int)((long)Game1.uniqueIDForThisGame + (long)Game1.stats.DaysPlayed));
-            for (int index1 = 0; index1 < (numStock - 2); ++index1)
+            int maxItemID = 0;
+
+            maxItemID = OurConfig.UseVanillaMax ? 803 : Game1.objectInformation.Keys.Max();
+
+            numStock = (numStock <= 3 ? 4 : numStock); //Ensure the stock isn't too low.
+            var itemsToBeAdded = new List<int>();
+
+            //get items
+            for (int i = 0; i < (numStock - 3); i++)
             {
-                int index2 = r.Next(2, 790);
-                string[] strArray;
-                do
+                int index2 = GetItem(maxItemID);
+
+                while (!CanSellItem(index2))
+                    index2 = GetItem(maxItemID);
+
+                if (OurConfig.DisableDuplicates)
                 {
-                    do
+                    while (itemsToBeAdded.Contains(index2) || !CanSellItem(index2))
                     {
-                        index2 = (index2 + 1) % 790;
+                        index2 = GetItem(maxItemID);
                     }
-                    while (!Game1.objectInformation.ContainsKey(index2) || Utility.isObjectOffLimitsForSale(index2));
-                    strArray = Game1.objectInformation[index2].Split('/');
                 }
-                while (!strArray[3].Contains<char>('-') || Convert.ToInt32(strArray[1]) <= 0 || (strArray[3].Contains("-13") || strArray[3].Equals("Quest")) || (strArray[0].Equals("Weeds") || strArray[3].Contains("Minerals") || strArray[3].Contains("Arch")));
 
+                itemsToBeAdded.Add(index2);
+            }
 
-                dictionary.Add((Item)new SObject(index2, 1, false, -1, 0), new int[2]
+            //assign price
+            foreach(int i in itemsToBeAdded)
+            {
+                string[] strArray = Game1.objectInformation[i].Split('/');
+                dictionary.Add(new SObject(i, 1), new int[2]
                 {
-          Math.Max(r.Next(1, 11) * 100, Convert.ToInt32(strArray[1]) * r.Next(3, 6)),
-          r.NextDouble() < 0.1 ? 5 : 1
+                    (OurConfig.UseCheaperPricing ? (int)Math.Max(Dice.Next(1,6) * 81, Math.Round(Dice.RollInRange(1.87,5.95) * Convert.ToInt32(strArray[1])))
+                        : Math.Max(Dice.Next(1, 11) * 100, Convert.ToInt32(strArray[1]) * Dice.Next(3, 6))),
+                    Dice.NextDouble() < 0.1 ? 5 : 1
                 });
             }
-            dictionary.Add((Item)GetRandomFurniture(r, (List<Item>)null, 0, 1613), new int[2]
+
+            //hardcoded item add.
+            dictionary.Add(GetRandomFurniture(null, 0, 1613), new int[2]
             {
-        r.Next(1, 11) * 250,
-        1
+                Dice.Next(1, 11) * 250,
+                1
             });
+
+            // if it's less than fall, add a rare seed
             if (Utility.getSeasonNumber(Game1.currentSeason) < 2)
-                dictionary.Add((Item)new SObject(347, 1, false, -1, 0), new int[2]
+            {
+                dictionary.Add(new SObject(347, 1), new int[2]
                 {
-          1000,
-          r.NextDouble() < 0.1 ? 5 : 1
+                    1000, Dice.NextDouble() < 0.1 ? 5 : 1
                 });
-            else if (r.NextDouble() < 0.4)
-                dictionary.Add((Item)new SObject(Vector2.Zero, 136, false), new int[2]
+
+            }
+            else if (Dice.NextDouble() < 0.4)
+            {
+                dictionary.Add(new SObject(Vector2.Zero, 136), new int[2]
                 {
-          4000,
-          1
+                    4000, 1
                 });
-            if (r.NextDouble() < 0.25)
-                dictionary.Add((Item)new SObject(433, 1, false, -1, 0), new int[2]
-                {
-          2500,
-          1
-                });
+            }
+
+            dictionary.Add(key: Dice.NextDouble() < 0.25 ? new SObject(433, 1) : new SObject(578, 1), value: new int[2]
+            {
+                1000, 1
+            });
+
+            if (Context.IsMultiplayer && !Game1.player.craftingRecipes.ContainsKey("Wedding Ring"))
+            {
+                if (!dictionary.ContainsKey(new SObject(801, 1, true)))
+                    dictionary.Add(key: new SObject(801, 1, true), value: new[] 
+                    {
+                        500,
+                        1
+                    });
+            }
+
             return dictionary;
         }
 
-        private Furniture GetRandomFurniture(Random r, List<Item> stock, int lowerIndexBound = 0, int upperIndexBound = 1462)
+        private int GetItem(int maxItemID)
+        {
+            string[] strArray;
+            int index2 = Dice.Next(2, maxItemID);
+            do
+            {
+                do //find the nearest one if it doesn't exist
+                {
+                    index2 = (index2 + 1) % maxItemID;
+                }
+                while (!Game1.objectInformation.ContainsKey(index2) || Utility.isObjectOffLimitsForSale(index2));
+
+                strArray = Game1.objectInformation[index2].Split('/');
+            }
+            while (BannedItemsByCondition(index2, strArray));
+
+            return index2;
+        }
+
+        private bool CanSellItem(int item)
+        {
+            bool Allowed = true;
+
+            List<int> RestrictedItems = new List<int>() { 680, 681, 682, 688, 689, 690, 774, 775, 454, 460, 645, 413, 437, 439, 158, 159, 160, 161, 162, 163, 326, 341, 795, 796 };
+
+            if (RestrictedItems.Contains(item))
+                Allowed = false;
+
+            if (OurConfig.AllowedItems.Contains(item))
+                Allowed = true;
+
+            if (OurConfig.BlacklistedItems.Contains(item))
+                Allowed = false;
+
+            return Allowed;
+        }
+
+        private bool BannedItemsByCondition(int item, string[] strArray)
+        {
+            bool categoryBanned =
+                (!strArray[3].Contains('-') || 
+                 Convert.ToInt32(strArray[1]) <= 0 || 
+                 (strArray[3].Contains("-13") || strArray[3].Equals("Quest")) || 
+                 (strArray[0].Equals("Weeds") || strArray[3].Contains("Minerals") || strArray[3].Contains("Arch")));
+
+            if (OurConfig.AllowedItems.Contains(item))
+                categoryBanned = false;
+
+            return categoryBanned;
+        }
+
+        private Furniture GetRandomFurniture(List<Item> stock, int lowerIndexBound = 0, int upperIndexBound = 1462)
         {
             Dictionary<int, string> dictionary = Game1.content.Load<Dictionary<int, string>>("Data\\Furniture");
             int num;
             do
             {
-                num = r.Next(lowerIndexBound, upperIndexBound);
+                num = Dice.Next(lowerIndexBound, upperIndexBound);
                 if (stock != null)
                 {
                     foreach (Item obj in stock)
                     {
-                        if (obj is Furniture && obj.parentSheetIndex == num)
+                        if (obj is Furniture && obj.ParentSheetIndex == num)
                             num = -1;
                     }
                 }
@@ -204,7 +319,7 @@ namespace CustomizableCartRedux
             while (IsFurnitureOffLimitsForSale(num) || !dictionary.ContainsKey(num));
             Furniture furniture = new Furniture(num, Vector2.Zero);
             int maxValue = int.MaxValue;
-            furniture.stack = maxValue;
+            furniture.Stack = maxValue;
             return furniture;
         }
 
@@ -264,4 +379,4 @@ namespace CustomizableCartRedux
             }
         }
     }
-}
+}   

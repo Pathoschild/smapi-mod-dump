@@ -25,7 +25,7 @@ namespace Elevator
 					Game1.showRedMessage(Game1.content.LoadString("Strings\\Buildings:DismountBeforeEntering"));
 					return false;
 				}
-				if (who.team.buildingLock.IsLocked())
+				if (who.team.buildLock.IsLocked())
 				{
 					Game1.showRedMessage(Game1.content.LoadString("Strings\\Buildings:CantEnter"));
 					return false;

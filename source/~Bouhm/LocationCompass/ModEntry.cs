@@ -8,6 +8,8 @@ using StardewModdingAPI.Events;
 using Netcode;
 using NPCMapLocations;
 using StardewValley;
+using StardewValley.Characters;
+using StardewValley.Quests;
 
 namespace LocationCompass
 {
@@ -52,10 +54,12 @@ namespace LocationCompass
     private void TimeEvents_AfterDayStarted(object sender, EventArgs e)
     {
       characters = new List<Character>();
+
       foreach (var NPC in GetVillagers())
       {
         characters.Add(NPC);
       }
+
       UpdateLocators();
     }
 
@@ -63,8 +67,28 @@ namespace LocationCompass
     {
       locationContexts = new Dictionary<string, LocationContext>();
       foreach (var location in Game1.locations)
-        if (!location.IsOutdoors)
+      {
+        // Get outdoor neighbors
+        if (location.IsOutdoors)
+        {
+          if (!locationContexts.ContainsKey(location.Name))
+            locationContexts.Add(location.Name, new LocationContext());
+
+          foreach (var warp in location.warps)
+          {
+            var warpLocation = Game1.getLocationFromName(warp.TargetName);
+
+            if (warpLocation.IsOutdoors)
+            {
+              if (!locationContexts[location.Name].Neighbors.ContainsKey(warp.TargetName))
+                locationContexts[location.Name].Neighbors.Add(warp.TargetName, new Vector2(warp.X, warp.Y));
+            }
+          }
+        }
+        // Get root locations from indoor locations
+        else
           MapRootLocations(location, null, null, false, new Vector2(-1000, -1000));
+      }
 
       foreach (var location in Game1.getFarm().buildings)
         MapRootLocations(location.indoors.Value, null, null, false, new Vector2(-1000, -1000));
@@ -79,6 +103,20 @@ namespace LocationCompass
           if (doorLocator.Value.Characters.Count > 1)
             doorLocator.Value.ReceiveLeftClick();
         }
+
+      if (showLocators)
+      {
+        if (e.Button.ToString() == config.SameLocationToggleKey)
+          config.SameLocationOnly = !config.SameLocationOnly;
+        else if (e.Button.ToString() == config.FarmersOnlyToggleKey)
+          config.ShowFarmersOnly = !config.ShowFarmersOnly;
+        else if (e.Button.ToString() == config.QuestsOnlyToggleKey)
+          config.ShowQuestsAndBirthdaysOnly = !config.ShowQuestsAndBirthdaysOnly;
+        else if (e.Button.ToString() == config.HorsesToggleKey)
+          config.ShowHorses = !config.ShowHorses;
+
+        helper.Data.WriteJsonFile("config.json", config);
+      }
     }
 
     
@@ -108,9 +146,9 @@ namespace LocationCompass
         }
       }
 
-      if (Context.IsMainPlayer)
+      if (Context.IsMainPlayer && Context.IsMultiplayer && syncedLocationData != null)
       {
-        Helper.Multiplayer.SendMessage(syncedLocationData, "SyncedLocationData", new[] { ModManifest.UniqueID });
+        Helper.Multiplayer.SendMessage(syncedLocationData, "SyncedLocationData", modIDs: new[] { ModManifest.UniqueID });
       }
     }
 
@@ -174,7 +212,10 @@ namespace LocationCompass
 
         // If one of the warps is a root location, current location is an indoor building 
         if (warpLocation.IsOutdoors)
+        {
+
           hasOutdoorWarp = true;
+        }
 
         // If all warps are indoors, then the current location is a room
         locationContexts[currLocationName].Type = hasOutdoorWarp ? "indoors" : "room";
@@ -235,11 +276,10 @@ namespace LocationCompass
         foreach (var npc in location.characters)
         {
           if (npc == null) continue;
-          if (!villagers.Contains(npc) && !excludedNpcs.Contains(npc.Name) && npc.isVillager())
+          if (!villagers.Contains(npc) && !excludedNpcs.Contains(npc.Name) && (npc is Horse || npc.isVillager()))
             villagers.Add(npc);
         }
       }
-
       return villagers;
     }
 
@@ -247,26 +287,35 @@ namespace LocationCompass
     {
       if (!Context.IsWorldReady) return;
 
-      if (e.KeyPressed.ToString().Equals(config.HoldKeyCode) && !Game1.paused && Game1.currentMinigame == null && !Game1.eventUp)
+      if (e.KeyPressed.ToString().Equals(config.ToggleKeyCode) && !Game1.paused && Game1.currentMinigame == null && !Game1.eventUp)
       {
-        showLocators = false;
-        Game1.displayHUD = true;
-      }
+        if (config.HoldToToggle)
+        {
+          showLocators = false;
+          Game1.displayHUD = true;
+        }
+      }    
     }
 
     private void ControlEvents_KeyPressed(object sender, EventArgsKeyPressed e)
     {
       if (!Context.IsWorldReady) return;
-      
-      if (e.KeyPressed.ToString().Equals(config.HoldKeyCode) && !Game1.paused && Game1.currentMinigame == null && !Game1.eventUp)
-      {
-        // Hide HUD to show locators
-        if (Game1.displayHUD)
+
+
+        if (e.KeyPressed.ToString().Equals(config.ToggleKeyCode) && !Game1.paused && Game1.currentMinigame == null &&
+            !Game1.eventUp)
         {
-          showLocators = true;
-          Game1.displayHUD = false;
+          if (config.HoldToToggle)
+          {
+            // Hide HUD to show locators
+            if (Game1.displayHUD)
+              showLocators = true;
+          }
+          else
+            showLocators = !showLocators;
+
+          Game1.displayHUD = !showLocators;
         }
-      }
     }
 
     private void GameEvents_UpdateTick(object sender, EventArgs e)
@@ -322,13 +371,48 @@ namespace LocationCompass
       foreach (var character in characters)
       {
         if (character.currentLocation == null) continue;
+        if (!config.ShowHorses && character is Horse || config.ShowFarmersOnly && (character is NPC && !(character is Horse))) continue;
         if (!syncedLocationData.SyncedLocations.TryGetValue(character.Name, out var npcLoc) && character is NPC) continue;
+        if (character is NPC npc && config.ShowQuestsAndBirthdaysOnly) {
+          var isBirthday = false;
+          var hasQuest = false;
+          // Check if gifted for birthday
+          if (npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth))
+          {
+            isBirthday = Game1.player.friendshipData.ContainsKey(npc.Name) && Game1.player.friendshipData[npc.Name].GiftsToday == 0;
+          }
+
+          // Check for daily quests
+          foreach (var quest in Game1.player.questLog)
+          {
+            if (quest.accepted.Value && quest.dailyQuest.Value && !quest.completed.Value)
+              switch (quest.questType.Value)
+              {
+                case 3:
+                  hasQuest = ((ItemDeliveryQuest)quest).target.Value == npc.Name;
+                  break;
+                case 4:
+                  hasQuest = ((SlayMonsterQuest)quest).target.Value == npc.Name;
+                  break;
+                case 7:
+                  hasQuest = ((FishingQuest)quest).target.Value == npc.Name;
+                  break;
+                case 10:
+                  hasQuest = ((ResourceCollectionQuest)quest).target.Value == npc.Name;
+                  break;
+              }
+          }
+
+          if (!isBirthday && !hasQuest)
+            continue;
+        }
 
         var playerLocName = Game1.player.currentLocation.uniqueName.Value ?? Game1.player.currentLocation.Name;
         var charLocName = character is Farmer
           ? character.currentLocation.uniqueName.Value ?? character.currentLocation.Name
           : npcLoc.LocationName;
         var isPlayerLocOutdoors = Game1.player.currentLocation.IsOutdoors;
+
         LocationContext playerLocCtx;
         LocationContext characterLocCtx;
 
@@ -339,7 +423,7 @@ namespace LocationCompass
         }
         if (playerLocName.Contains("UndergroundMine") && charLocName.Contains("UndergroundMine"))
         {
-          // Leave mine levels distinguishred in name if player inside mine
+          // Leave mine levels distinguished in name if player inside mine
           locationContexts.TryGetValue(getMineName(playerLocName), out playerLocCtx);
           locationContexts.TryGetValue(getMineName(charLocName), out characterLocCtx);
         }
@@ -349,15 +433,17 @@ namespace LocationCompass
           if (!locationContexts.TryGetValue(charLocName, out characterLocCtx)) continue;
         }
 
-        if (characterLocCtx.Root != playerLocCtx.Root)
+        if (config.SameLocationOnly && characterLocCtx.Root != playerLocCtx.Root)
           continue;
 
         var characterPos = new Vector2(-1000, 1000);
         var playerPos =
           new Vector2(Game1.player.position.X + Game1.player.FarmerSprite.SpriteWidth / 2 * Game1.pixelZoom,
             Game1.player.position.Y);
-        var IsWarp = false;
+        var isWarp = false;
         var isOnScreen = false;
+        var isOutdoors = false;
+        var isHourse = character is Horse;
 
         Vector2 charPosition;
         int charSpriteHeight;
@@ -384,67 +470,93 @@ namespace LocationCompass
 
           characterPos = new Vector2(charPosition.X + charSpriteHeight / 2 * Game1.pixelZoom, charPosition.Y);
         }
-        // Indoor locations
-        // Intended behavior is for all characters in a building, including rooms within the building
-        // to show up when the player is outside. So even if an character is not in the same location
-        // ex. Maru in ScienceHouse, Sebastian in SebastianRoom, Sebastian will be placed in
-        // ScienceHouse such that the player will know Sebastian is in that building.
-        // Once the player is actually inside, Sebastian will be correctly placed in SebastianRoom.
         else
         {
-          // Finds the upper-most indoor location that the player is in
-          var indoor = GetTargetIndoor(playerLocName, charLocName);
-          if (indoor == null) continue;
-          if (playerLocName != characterLocCtx.Root && playerLocName != indoor) continue;
-          IsWarp = true;
-          charLocName = (isPlayerLocOutdoors || characterLocCtx.Type != "room") ? indoor : charLocName;
-          
+          // Indoor locations
+          // Intended behavior is for all characters in a building, including rooms within the building
+          // to show up when the player is outside. So even if an character is not in the same location
+          // ex. Maru in ScienceHouse, Sebastian in SebastianRoom, Sebastian will be placed in
+          // ScienceHouse such that the player will know Sebastian is in that building.
+          // Once the player is actually inside, Sebastian will be correctly placed in SebastianRoom.
 
-            // Point locators to the warps
-            if (!isPlayerLocOutdoors)
+          // Finds the upper-most indoor location that the player is in
+          isWarp = true;
+          var indoor = GetTargetIndoor(playerLocName, charLocName);
+          if (config.SameLocationOnly)
+          {
+            if (indoor == null) continue;
+            if (playerLocName != characterLocCtx.Root && playerLocName != indoor) continue;
+          }
+          charLocName = (isPlayerLocOutdoors || characterLocCtx.Type != "room") ? indoor : charLocName;
+
+
+          // Neighboring outdoor warps
+          if (!isPlayerLocOutdoors)
+          {
+            if (characterLocCtx.Root != playerLocCtx.Root || characterLocCtx.Parent == null)
+              continue;
+
+            // Doors that lead to connected rooms to character
+            if (characterLocCtx.Parent == playerLocName)
             {
-              // Doors that lead to connected rooms to character
-              if (characterLocCtx.Parent == playerLocName)
-              {
-                characterPos = new Vector2(
-                  characterLocCtx.Warp.X * Game1.tileSize + Game1.tileSize / 2,
-                  characterLocCtx.Warp.Y * Game1.tileSize - Game1.tileSize * 3 / 2
-                );
-              }
-              else
-              {
-                characterPos = new Vector2(
-                  locationContexts[characterLocCtx.Parent].Warp.X * Game1.tileSize + Game1.tileSize / 2,
-                  locationContexts[characterLocCtx.Parent].Warp.Y * Game1.tileSize - Game1.tileSize * 3 / 2
-                );
-              }
+              characterPos = new Vector2(
+                characterLocCtx.Warp.X * Game1.tileSize + Game1.tileSize / 2,
+                characterLocCtx.Warp.Y * Game1.tileSize - Game1.tileSize * 3 / 2
+              );
             }
             else
-              // Point locators to the doors of the building regardless of the character
-              // Being inside a room inside the building
             {
+              characterPos = new Vector2(
+                locationContexts[characterLocCtx.Parent].Warp.X * Game1.tileSize + Game1.tileSize / 2,
+                locationContexts[characterLocCtx.Parent].Warp.Y * Game1.tileSize - Game1.tileSize * 3 / 2
+              );
+            }
+          }
+          else
+          {
+            if (characterLocCtx.Root == playerLocCtx.Root)
+            {
+              // Point locators to the neighboring outdoor warps and
+              // doors of buildings including nested rooms
               characterPos = new Vector2(
                 locationContexts[indoor].Warp.X * Game1.tileSize + Game1.tileSize / 2,
                 locationContexts[indoor].Warp.Y * Game1.tileSize - Game1.tileSize * 3 / 2
               );
             }
-
-            // Add character to the list of locators inside a building
-            if (!activeWarpLocators.ContainsKey(charLocName))
+            else if (!config.SameLocationOnly)
             {
-              activeWarpLocators.Add(charLocName, new LocatorScroller()
+              // Warps to other outdoor locations
+              Vector2 warpPos;
+              isOutdoors = true;
+              if ((characterLocCtx.Root != null && playerLocCtx.Neighbors.TryGetValue(characterLocCtx.Root, out warpPos)) || charLocName != null && playerLocCtx.Neighbors.TryGetValue(charLocName, out warpPos))
               {
-                Location = charLocName,
-                Characters = new HashSet<string>() {character.Name},
-                LocatorRect = new Rectangle((int) (characterPos.X - 32), (int) (characterPos.Y - 32),
-                  64, 64)
-              });
-            }
-            else
-              activeWarpLocators[charLocName].Characters.Add(character.Name);
-          }
-        
+                charLocName = characterLocCtx.Root;
 
+                characterPos = new Vector2(
+                  warpPos.X * Game1.tileSize + Game1.tileSize / 2,
+                  warpPos.Y * Game1.tileSize - Game1.tileSize * 3 / 2
+                );
+              }
+              else
+                continue;
+            }
+          }
+
+          // Add character to the list of locators inside a building
+          if (!activeWarpLocators.ContainsKey(charLocName))
+          {
+            activeWarpLocators.Add(charLocName, new LocatorScroller()
+            {
+              Location = charLocName,
+              Characters = new HashSet<string>() { character.Name },
+              LocatorRect = new Rectangle((int)(characterPos.X - 32), (int)(characterPos.Y - 32),
+                64, 64)
+            });
+          }
+          else
+            activeWarpLocators[charLocName].Characters.Add(character.Name);
+        }
+        
         isOnScreen = Utility.isOnScreen(characterPos, Game1.tileSize / 4);
 
         var locator = new Locator
@@ -453,13 +565,15 @@ namespace LocationCompass
           Farmer = character is Farmer ? (Farmer)character : null,
           Marker = character is NPC ? character.Sprite.Texture : null,
           Proximity = GetDistance(playerPos, characterPos),
-          IsWarp = IsWarp,
-          IsOnScreen = isOnScreen
+          IsWarp = isWarp,
+          IsOutdoors = isOutdoors,
+          IsOnScreen = isOnScreen,
+          IsHorse = isHourse
         };
 
         var angle = GetPlayerToTargetAngle(playerPos, characterPos);
         var quadrant = GetViewportQuadrant(angle, playerPos);
-        var locatorPos = GetLocatorPosition(angle, quadrant, playerPos, characterPos, isOnScreen, IsWarp);
+        var locatorPos = GetLocatorPosition(angle, quadrant, playerPos, characterPos, isOnScreen, isWarp);
 
         locator.X = locatorPos.X;
         locator.Y = locatorPos.Y;
@@ -597,9 +711,10 @@ namespace LocationCompass
 
     private void DrawLocators()
     {
+      var sortedLocators = locators.OrderBy(x => !x.Value.FirstOrDefault().IsOutdoors);
 
       // Individual locators, onscreen or offscreen
-      foreach (var locPair in locators)
+      foreach (var locPair in sortedLocators)
       {
         int offsetX;
         int offsetY;
@@ -618,11 +733,13 @@ namespace LocationCompass
 
             // Change opacity based on distance from player
             var alphaLevel = isHovering ? 1f : locator.Proximity > MAX_PROXIMITY
-              ? 0.3
-              : 0.3 + (MAX_PROXIMITY - locator.Proximity) / MAX_PROXIMITY * 0.7;
+              ? 0.35
+              : 0.35 + (MAX_PROXIMITY - locator.Proximity) / MAX_PROXIMITY * 0.65;
 
             if (!constants.MarkerCrop.TryGetValue(locator.Name, out var cropY))
               cropY = 0;
+
+            var npcSrcRect = locator.IsHorse ? new Rectangle(17, 104, 16, 14) : new Rectangle(0, cropY, 16, 15);
 
             // Pointer texture
             Game1.spriteBatch.Draw(
@@ -643,7 +760,7 @@ namespace LocationCompass
               Game1.spriteBatch.Draw(
                 locator.Marker,
                 new Vector2(locator.X + offsetX, locator.Y + offsetY),
-                new Rectangle(0, cropY, 16, 15),
+                npcSrcRect,
                 Color.White * (float) alphaLevel,
                 0f,
                 new Vector2(16, 16),
@@ -676,7 +793,7 @@ namespace LocationCompass
 
           if (activeWarpLocators != null && activeWarpLocators.TryGetValue(locPair.Key, out activeLocator))
           {
-            locator = locPair.Value.ElementAt(activeLocator.Index);
+            locator = locPair.Value.ElementAtOrDefault(activeLocator.Index) ?? locPair.Value.FirstOrDefault();
             activeLocator.LocatorRect = new Rectangle((int)(locator.X - 32), (int)(locator.Y - 32), 64, 64);
           }
           else
@@ -708,9 +825,11 @@ namespace LocationCompass
             }
 
           // Change opacity based on distance from player
-          var alphaLevel = isHovering ? 1f : locator.Proximity > MAX_PROXIMITY
+          var alphaLevel = isHovering ? 1f : (locator.IsOutdoors ? locator.Proximity > MAX_PROXIMITY
             ? 0.3
-            : 0.3 + (MAX_PROXIMITY - locator.Proximity) / MAX_PROXIMITY * 0.7;
+            : 0.3 + (MAX_PROXIMITY - locator.Proximity) / MAX_PROXIMITY * 0.7 : locator.Proximity > MAX_PROXIMITY
+              ? 0.35
+              : 0.35 + (MAX_PROXIMITY - locator.Proximity) / MAX_PROXIMITY * 0.65);
 
           // Make locators point down at the door
           if (locator.IsOnScreen)
@@ -722,11 +841,14 @@ namespace LocationCompass
           if (!constants.MarkerCrop.TryGetValue(locator.Name, out var cropY))
             cropY = 0;
 
+          var compassSrcRect = locator.IsOutdoors ? new Rectangle(64, 0, 64, 64) : new Rectangle(0, 0, 64, 64); // Different locator color for neighboring outdoor locations
+          var npcSrcRect = locator.IsHorse ? new Rectangle(17, 104, 16, 14) : new Rectangle(0, cropY, 16, 15);
+
           // Pointer texture
           Game1.spriteBatch.Draw(
             pointer,
             new Vector2(locator.X, locator.Y),
-            new Rectangle(0, 0, 64, 64),
+            compassSrcRect,
             Color.White * (float) alphaLevel,
             (float) (locator.Angle - 3 * MathHelper.PiOver4),
             new Vector2(32, 32),
@@ -741,7 +863,7 @@ namespace LocationCompass
             Game1.spriteBatch.Draw(
               locator.Marker,
               new Vector2(locator.X + offsetX, locator.Y + offsetY),
-              new Rectangle(0, cropY, 16, 15),
+              npcSrcRect,
               Color.White * (float) alphaLevel,
               0f,
               new Vector2(16, 16),
@@ -761,12 +883,13 @@ namespace LocationCompass
             {
               // Draw NPC count
               var countString = $"{locPair.Value.Count}";
+              var headOffset = locPair.Value.Count > 9 ? 37 : 31;
 
               // head icon
               Game1.spriteBatch.Draw(
                 pointer,
-                new Vector2(locator.X + offsetX - 31, locator.Y + offsetY),
-                new Rectangle(64, 0, 7, 9),
+                new Vector2(locator.X + offsetX - headOffset, locator.Y + offsetY),
+                new Rectangle(128, 0, 7, 9),
                 Color.White * (float)alphaLevel, 0f, Vector2.Zero,
                 1f,
                 SpriteEffects.None,
@@ -875,7 +998,9 @@ namespace LocationCompass
     public float X { get; set; }
     public float Y { get; set; }
     public double Angle { get; set; }
+    public bool IsHorse { get; set; }
     public bool IsWarp { get; set; }
+    public bool IsOutdoors { get; set; }
     public bool IsOnScreen { get; set; }
   }
 
@@ -908,6 +1033,7 @@ namespace LocationCompass
     public string Type { get; set; } // outdoors, indoors, or room
     public string Root { get; set; } // Top-most outdoor location
     public string Parent { get; set; } // Level above
+    public Dictionary<string, Vector2> Neighbors { get; set; } = new Dictionary<string, Vector2>(); // Connected outdoor locations
     public List<string> Children { get; set; } // Levels below
     public Vector2 Warp { get; set; } // Position of warp
   }

@@ -16,9 +16,7 @@ namespace DeepWoodsMod
         public readonly NetBool wasPickedUp = new NetBool(false);
 
         public EasterEgg()
-#if SDVBETA
            : base(false)
-#endif
         {
             InitNetFields();
             this.eggTileIndex.Value = Game1.random.Next(67, 71);

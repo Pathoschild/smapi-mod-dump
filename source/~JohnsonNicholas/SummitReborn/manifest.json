@@ -1,8 +1,8 @@
 ﻿{
-  "Name": "Summit Reborn",
-  "Author": "EmissaryOfInfinity, with SMAPI bits by KoihimeNakamura",
-  "Version": "1.0.1",
-  "Description": "Restores the cut summit map, and edits the railway to allow access. Also pretties the whole area up while we're at it!",
+  "Name": "Summit Reborn [Combined]",
+  "Author": "KoihimeNakamura and Emissary of Infinity",
+  "Version": "1.0.4",
+  "Description": "Enbales the summit, fixes rain on the summit map, and adds a neat cloud visual",
   "UniqueID": "KoihimeNakamura.summitreborn",
   "EntryDll": "SummitReborn.dll",
   "UpdateKeys": [ "Nexus:2073" ]

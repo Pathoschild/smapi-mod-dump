@@ -31,8 +31,19 @@ namespace AutoGrabberMod
             GameEvents.FourthUpdateTick += GetTileUnderCursor;
             SaveEvents.AfterReturnToTitle += ReturnToTitle;
 
-            var featureType = typeof(Feature);
-            Utilities.FeatureTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes()).Where(p => featureType.IsAssignableFrom(p) && !p.Equals(featureType)).ToArray();
+            //var featureType = typeof(Feature);
+            //Utilities.FeatureTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes()).Where(p => featureType.IsAssignableFrom(p) && !p.Equals(featureType)).ToArray();
+            Utilities.FeatureTypes = new Type[]
+            {
+                typeof(DigArtifacts),
+                typeof(Fertilize),
+                typeof(Forage),
+                typeof(Harvest),
+                typeof(HoeTiles),
+                typeof(PetAnimals),
+                typeof(PlantSeeds),
+                typeof(WaterFields)
+            };
         }
 
         private void ReturnToTitle(object sender, EventArgs e)
@@ -60,18 +71,25 @@ namespace AutoGrabberMod
                 }
             }
 
-            foreach (var grabber in AutoGrabbers)
+            try
             {
-                if (grabber.Value.Location.Objects.ContainsKey(grabber.Value.Tile))
+                foreach (var grabber in AutoGrabbers)
                 {
-                    grabber.Value.Action();
-                }
-                else
-                {
-                    AutoGrabbers.Remove(grabber.Key);
+                    if (grabber.Value.Location.Objects.ContainsKey(grabber.Value.Tile))
+                    {
+                        grabber.Value.Action();
+                    }
+                    else
+                    {
+                        AutoGrabbers.Remove(grabber.Key);
+                    }
                 }
             }
-
+            catch(Exception error)
+            {
+                Monitor.Log($"An error occurred while running Actions", LogLevel.Info);
+                Monitor.Log($"{error.TargetSite} {error.Message}: {error.StackTrace}", LogLevel.Error);
+            }            
         }
 
         private void LocationEvents_ObjectsChanged(object sender, EventArgsLocationObjectsChanged e)

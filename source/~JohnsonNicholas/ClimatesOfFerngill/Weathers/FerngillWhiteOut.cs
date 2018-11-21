@@ -66,7 +66,7 @@ namespace ClimatesOfFerngillRebuild
         public void CreateWeather()
         {
             BeginTime = new SDVTime(0600);
-            ExpirTime = new SDVTime(2800);
+            ExpirTime = new SDVTime(2600);
             if (Dice.NextDouble() >= .5 && Dice.NextDouble() < .8)
             {
                 ExpirTime = new SDVTime(Game1.getModeratelyDarkTime());
@@ -95,6 +95,10 @@ namespace ClimatesOfFerngillRebuild
                 ExpirTime = new SDVTime(SDVTime.CurrentIntTime - 10);
                 UpdateStatus(WeatherType, false);
             }
+        }
+
+        public void SecondUpdate()
+        {
         }
 
         public void UpdateWeather()
@@ -126,7 +130,7 @@ namespace ClimatesOfFerngillRebuild
             if (IsWeatherVisible && !(Game1.currentLocation is Desert))
             {
                 snowPos = Game1.updateFloatingObjectPositionForMovement(snowPos, new Vector2(Game1.viewport.X, Game1.viewport.Y),
-                            Game1.previousViewportPosition, -1f);
+                    Game1.previousViewportPosition, -1f);
                 snowPos.X = snowPos.X % (16 * Game1.pixelZoom);
                 Vector2 position = new Vector2();
                 float num1 = -16 * Game1.pixelZoom + snowPos.X % (16 * Game1.pixelZoom);
@@ -139,7 +143,7 @@ namespace ClimatesOfFerngillRebuild
                         position.Y = (int)num2;
                         Game1.spriteBatch.Draw(Game1.mouseCursors, position, new Microsoft.Xna.Framework.Rectangle?
                             (new Microsoft.Xna.Framework.Rectangle
-                            (368 + (int)((Game1.currentGameTime.TotalGameTime.TotalMilliseconds + 225) % 1200.0) / 75 * 16, 192, 16, 16)),
+                                (368 + (int)((Game1.currentGameTime.TotalGameTime.TotalMilliseconds + 225) % 1200.0) / 75 * 16, 192, 16, 16)),
                             Color.White * Game1.options.snowTransparency, 0.0f, Vector2.Zero,
                             Game1.pixelZoom + 1f / 1000f, SpriteEffects.None, 1f);
                         num2 += 16 * Game1.pixelZoom;

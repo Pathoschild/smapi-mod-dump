@@ -665,7 +665,7 @@ namespace DeepWoodsMod
 
         private void AddFruitTree(Vector2 location, int growthStage, int fruitsOnTree = 0)
         {
-            FruitTree fruitTree = new FruitTree(GetRandomFruitTreeType(), FruitTree.treeStage);
+            FruitTree fruitTree = new FruitTree(GetRandomFruitTreeType(), growthStage);
             fruitTree.fruitsOnTree.Value = Game1.currentSeason == "winter" ? 0 : fruitsOnTree;
             fruitTree.daysUntilMature.Value = 28 - (growthStage * 7);
             deepWoods.terrainFeatures[location] = fruitTree;

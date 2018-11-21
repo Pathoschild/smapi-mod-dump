@@ -1,0 +1,3943 @@
+{
+    /* All the fish that can be caught */
+    "PossibleFish": {
+        "Farm": {
+        },
+        "UndergroundMine": {
+            "156": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.3,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "158": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.15,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": 20
+            },
+            "161": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.1,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": 60
+            },
+            "162": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.1,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": 100
+            }
+        },
+        "Desert": {
+            "164": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.65,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2000
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2000
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2000
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2000
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "165": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.15,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2000
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2000
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2000
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2000
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 4,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            }
+        },
+        "BusStop": {
+        },
+        "Forest": {
+            "145": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "River",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring, Summer",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "143": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "River",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring, Fall, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "137": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Lake",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring, Fall",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "132": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "River",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "706": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.35,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "River",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring, Summer, Fall",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "702": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "River",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "144": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "138": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.35,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "River",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "704": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.15,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "River",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "140": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1200,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1200,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Fall, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "139": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "River",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Fall",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "699": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.2,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "River",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Fall, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "141": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "707": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.3,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "River",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "775": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.02,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2000
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "River",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 6,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            }
+        },
+        "Town": {
+            "137": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring, Fall",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "132": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "143": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring, Fall, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "145": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring, Summer",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "706": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.35,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring, Summer, Fall",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "138": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.35,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "144": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "139": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Fall",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "140": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1200,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1200,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Fall, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "699": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.2,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Fall, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "141": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "707": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.3,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "160": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.02,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Fall",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 3,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            }
+        },
+        "Mountain": {
+            "136": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "142": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring, Summer, Fall",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "702": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "700": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.35,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "163": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.02,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2300
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Lake",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 10,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "138": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.35,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "698": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.35,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "140": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1200,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1200,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Fall, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "141": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "707": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.3,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            }
+        },
+        "Backwoods": {
+            "136": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "142": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring, Summer, Fall",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "702": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "700": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.35,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "163": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2000
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 10,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "138": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.35,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "698": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.35,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "140": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1200,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1200,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Fall, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "141": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "707": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.3,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            }
+        },
+        "Railroad": {
+        },
+        "Beach": {
+            "129": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.25,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring, Fall",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "131": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.65,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring, Fall, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "147": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "148": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.55,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring, Fall",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "708": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1100
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1100
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1100
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Spring, Summer, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "128": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.3,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1200,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "130": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.15,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "146": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "149": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.1,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1300
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "150": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer, Fall, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "155": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.1,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer, Fall",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "701": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1400
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer, Fall",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "154": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.25,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Fall, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "705": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.3,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1100
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1100
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Fall, Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "151": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.35,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "159": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.02,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2000
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Summer",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 5,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            }
+        },
+        "Woods": {
+            "734": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.2,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "142": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "143": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            }
+        },
+        "Sewer": {
+            "142": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "682": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.02,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            }
+        },
+        "BugLand": {
+            "796": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "142": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            }
+        },
+        "WitchSwamp": {
+            "795": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.33,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "143": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            }
+        },
+        "fishingGame": {
+            "145": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "143": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "137": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "132": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "706": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.35,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "702": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            }
+        },
+        "Temp": {
+            "145": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 1900
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "143": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.4,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2400
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "137": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "132": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 1800,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "706": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.35,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 900,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "702": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.45,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    },
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "All",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            }
+        },
+        "Submarine": {
+            "800": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.1,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "799": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.162,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "798": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.23464,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "154": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.076536,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "155": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.07387712,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            },
+            "149": {
+                /* The weighted chance of this fish appearing */
+                "Chance": 0.046306144,
+                
+                /* The times this fish can appear */
+                "Times": [
+                    {
+                        /* The earliest time in this interval */
+                        "Start": 600,
+                        
+                        /* The latest time in this interval */
+                        "Finish": 2600
+                    }
+                ],
+                
+                /* The types of water this fish can appear in. Lake = 1, river = 2. For both, add the numbers together. */
+                "WaterType": "Both",
+                
+                /* The seasons this fish can appear in. Spring = 1, summer = 2, fall = 4, winter = 8. For multiple seasons, add the numbers together. */
+                "Season": "Winter",
+                
+                /* The weather this fish can appear in. Sunny = 1, rainy = 2. For both, add the numbers together. */
+                "Weather": "Sunny, Rainy",
+                
+                /* The minimum fishing level required to find this fish. */
+                "MinLevel": 0,
+                
+                /* The mine level this fish can be found on, or null if it can be found on any floor. */
+                "MineLevel": null
+            }
+        }
+    }
+}

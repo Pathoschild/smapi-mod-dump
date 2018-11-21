@@ -18,8 +18,8 @@ namespace CustomCaskMod
             I18N = helper.Translation;
             ModConfig = helper.ReadConfig<ModConfig>();
 
-            CaskData = DataLoader.Helper.ReadJsonFile<Dictionary<int, float>>("data\\CaskData.json") ?? new Dictionary<int, float>() { { 342, 2.66f }, { 724, 2f } };
-            DataLoader.Helper.WriteJsonFile("data\\CaskData.json", CaskData);
+            CaskData = DataLoader.Helper.Data.ReadJsonFile<Dictionary<int, float>>("data\\CaskData.json") ?? new Dictionary<int, float>() { { 342, 2.66f }, { 724, 2f } };
+            DataLoader.Helper.Data.WriteJsonFile("data\\CaskData.json", CaskData);
 
             if (!ModConfig.DisableLetter)
             {

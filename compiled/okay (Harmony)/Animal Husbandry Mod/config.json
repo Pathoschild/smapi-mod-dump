@@ -1,0 +1,17 @@
+{
+  "Softmode": false,
+  "AddMeatCleaverToInventoryKey": null,
+  "AddInseminationSyringeToInventoryKey": null,
+  "AddFeedingBasketToInventoryKey": null,
+  "DisableFullBuildingForBirthNotification": false,
+  "DisableTomorrowBirthNotification": false,
+  "DisablePregnancy": false,
+  "DisableMeat": false,
+  "DisableTreats": false,
+  "DisableRancherMeatPriceAjust": false,
+  "DisableMoodInscreseWithTreats": false,
+  "DisableFriendshipInscreseWithTreats": false,
+  "EnableTreatsCountAsAnimalFeed": false,
+  "DisableMeatFromDinosaur": false,
+  "PercentualAjustOnFriendshipInscreaseFromProfessions": 0.25
+}

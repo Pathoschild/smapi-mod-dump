@@ -5,10 +5,9 @@ mods:
    Server Bookmarker
 
 latest commit:
-   commit 4fbc7d08849d7e9d7befbe0b620866d4278893c0
-   Merge: a9196d5 56c43f7
+   commit b4f3ba8d97b92e5b13d75f5a523932b826d1db9a
    Author: Ilyaki <ilyaki.ilyaki@gmail.com>
-   Date:   Wed Oct 24 16:52:50 2018 +0100
+   Date:   Mon Nov 19 19:47:51 2018 +0000
    
-       Merge branch 'master' of https://github.com/Ilyaki/ServerBookmarker
+       Update to SMAPI 2.8
    

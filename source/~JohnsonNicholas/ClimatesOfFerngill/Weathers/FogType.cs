@@ -10,7 +10,6 @@
     {
         None = 0,
         Normal = 1,
-        Dark = 2,
-        Blinding = 3
+        Blinding = 2
     }
 }

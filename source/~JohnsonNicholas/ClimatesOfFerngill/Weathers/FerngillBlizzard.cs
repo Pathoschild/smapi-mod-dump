@@ -17,6 +17,7 @@ namespace ClimatesOfFerngillRebuild
         private bool IsBlizzard { get; set; }
         public bool IsWeatherVisible => IsBlizzard;
         private SDVTime ExpirTime;
+        public bool IsBloodMoon;
         private SDVTime BeginTime;
 
         private MersenneTwister Dice;
@@ -63,6 +64,10 @@ namespace ClimatesOfFerngillRebuild
             ExpirTime = new SDVTime(end);
         }
 
+        public void SecondUpdate()
+        {
+        }
+
         public void CreateWeather()
         {
             //Blizzards opt to mostly being all day. 
@@ -70,6 +75,7 @@ namespace ClimatesOfFerngillRebuild
             ExpirTime = new SDVTime(2800);
             if (Dice.NextDouble() >= .5 && Dice.NextDouble() < .8)
             {
+                Console.WriteLine($"Truly Dark: {Game1.getTrulyDarkTime()} Moderately: {Game1.getModeratelyDarkTime()} Starting: {Game1.getStartingToGetDarkTime()}");
                 ExpirTime = new SDVTime(Game1.getModeratelyDarkTime());
             }
             if (Dice.NextDouble() >= .8 && Dice.NextDouble() < .95)
@@ -127,10 +133,11 @@ namespace ClimatesOfFerngillRebuild
             if (IsWeatherVisible && !(Game1.currentLocation is Desert))
             {
                 snowPos = Game1.updateFloatingObjectPositionForMovement(snowPos, new Vector2(Game1.viewport.X, Game1.viewport.Y),
-                            Game1.previousViewportPosition, -1f);
+                    Game1.previousViewportPosition, -1f);
                 snowPos.X = snowPos.X % (16 * Game1.pixelZoom);
                 Vector2 position = new Vector2();
                 float num1 = -16 * Game1.pixelZoom + snowPos.X % (16 * Game1.pixelZoom);
+                Color snowColor = IsBloodMoon ? Color.Red * Game1.options.snowTransparency : Color.White * Game1.options.snowTransparency;
                 while ((double)num1 < Game1.viewport.Width)
                 {
                     float num2 = -16 * Game1.pixelZoom + snowPos.Y % (16 * Game1.pixelZoom);
@@ -140,8 +147,8 @@ namespace ClimatesOfFerngillRebuild
                         position.Y = (int)num2;
                         Game1.spriteBatch.Draw(Game1.mouseCursors, position, new Microsoft.Xna.Framework.Rectangle?
                             (new Microsoft.Xna.Framework.Rectangle
-                            (368 + (int)((Game1.currentGameTime.TotalGameTime.TotalMilliseconds + 150) % 1200.0) / 75 * 16, 192, 16, 16)),
-                            Color.White * Game1.options.snowTransparency, 0.0f, Vector2.Zero,
+                                (368 + (int)((Game1.currentGameTime.TotalGameTime.TotalMilliseconds + 150) % 1200.0) / 75 * 16, 192, 16, 16)),
+                            snowColor, 0.0f, Vector2.Zero,
                             Game1.pixelZoom + 1f / 1000f, SpriteEffects.None, 1f);
                         num2 += 16 * Game1.pixelZoom;
                     }

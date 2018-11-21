@@ -24,10 +24,20 @@ namespace SolarEclipseEvent
             if (this.Helper.ModRegistry.IsLoaded("KoihimeNakamura.ClimatesOfFerngill"))
             {
                 IManifest manifest = this.Helper.ModRegistry.Get("KoihimeNakamura.ClimatesOfFerngill");
-                if (manifest.Version.IsNewerThan("1.3.0-beta1")) {
+                if (manifest.Version.IsNewerThan("1.3.0-beta1") && manifest.Version.IsOlderThan("1.4.0")) {
                     Disabled = true;
-                    Monitor.Log("Disabled due to version 1.3.0+ of Climates of Ferngill loaded", LogLevel.Alert);
+                    Monitor.Log("Disabled due to version 1.3.0 - 1.4.0 of Climates of Ferngill loaded", LogLevel.Alert);
                 }                        
+            }
+
+            if (this.Helper.ModRegistry.IsLoaded("KoihimeNakamura.LunarDisturbances"))
+            {
+                IManifest manifest = this.Helper.ModRegistry.Get("KoihimeNakamura.LunarDisturbances");
+                if (manifest.Version.IsNewerThan("0.9"))
+                {
+                    Disabled = true;
+                    Monitor.Log("Disabled due to version .9+ of Lunar Disturbances loaded", LogLevel.Alert);
+                }
             }
 
             Config = Helper.ReadConfig<EclipseConfig>();

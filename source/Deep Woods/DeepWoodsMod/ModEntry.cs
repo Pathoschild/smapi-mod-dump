@@ -111,9 +111,17 @@ namespace DeepWoodsMod
             }
         }
 
+        private int isBeforeSaveCount = 0;
         private void SaveEvents_BeforeSave(object sender, EventArgs args)
         {
             ModEntry.Log("SaveEvents_BeforeSave", StardewModdingAPI.LogLevel.Trace);
+
+            isBeforeSaveCount++;
+            if (isBeforeSaveCount > 1)
+            {
+                ModEntry.Log("BeforeSave event was called twice in a row. Ignoring second call.", StardewModdingAPI.LogLevel.Warn);
+                return;
+            }
 
             DeepWoodsManager.Remove();
             EasterEggFunctions.RemoveAllEasterEggsFromGame();
@@ -133,6 +141,20 @@ namespace DeepWoodsMod
         private void SaveEvents_AfterSave(object sender, EventArgs args)
         {
             ModEntry.Log("SaveEvents_AfterSave", StardewModdingAPI.LogLevel.Trace);
+
+            isBeforeSaveCount--;
+
+            if (isBeforeSaveCount > 0)
+            {
+                ModEntry.Log("AfterSave event was called before save has finished. Ignoring.", StardewModdingAPI.LogLevel.Warn);
+                return;
+            }
+
+            if (isBeforeSaveCount < 0)
+            {
+                ModEntry.Log("AfterSave event was called without previous BeforeSave call. Mod is now in unknown state, all hell might break lose.", StardewModdingAPI.LogLevel.Error);
+                return;
+            }
 
             DeepWoodsManager.Restore();
             EasterEggFunctions.RestoreAllEasterEggsInGame();

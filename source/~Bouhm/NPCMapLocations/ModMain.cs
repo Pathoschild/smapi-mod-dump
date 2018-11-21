@@ -21,7 +21,6 @@ namespace NPCMapLocations
   {
     private const int DRAW_DELAY = 3;
     public static SButton HeldKey;
-    public static bool LOCATION_SYNC = true; // Experimental features
 
     // Debugging
     private static bool DEBUG_MODE;
@@ -86,11 +85,8 @@ namespace NPCMapLocations
         Helper.Content.Load<Texture2D>(@"assets/customLocations.png"); // Load custom location markers
 
       SaveEvents.AfterLoad += SaveEvents_AfterLoad;
-      if (LOCATION_SYNC)
-      {
-        GameEvents.OneSecondTick += GameEvents_OneSecondTick;
-        Helper.Events.Multiplayer.ModMessageReceived += Multiplayer_ModMessageReceived;
-      }
+      GameEvents.OneSecondTick += GameEvents_OneSecondTick;
+      Helper.Events.Multiplayer.ModMessageReceived += Multiplayer_ModMessageReceived;
       TimeEvents.AfterDayStarted += TimeEvents_AfterDayStarted;
       LocationEvents.LocationsChanged += LocationEvents_LocationsChanged;
       LocationEvents.BuildingsChanged += LocationEvents_BuildingsChanged;
@@ -349,25 +345,23 @@ namespace NPCMapLocations
 
     private void ResetMarkers(List<NPC> villagers)
     {
-      if (Context.IsMainPlayer || LOCATION_SYNC)
+      NpcMarkers = new HashSet<CharacterMarker>();
+      foreach (var npc in villagers)
       {
-        NpcMarkers = new HashSet<CharacterMarker>();
-        foreach (var npc in villagers)
-        {
-          // Handle case where Kent appears even though he shouldn't
-          if (npc.Name.Equals("Kent") && !SecondaryNpcs["Kent"]) continue;
+        // Handle case where Kent appears even though he shouldn't
+        if (npc.Name.Equals("Kent") && !SecondaryNpcs["Kent"]) continue;
 
-          var npcMarker = new CharacterMarker
-          {
-            Npc = npc,
-            Name = CustomNames[npc.Name],
-            Marker = npc.Sprite.Texture,
-            IsBirthday = npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth)
-          };
-          NpcMarkers.Add(npcMarker);
-        }
+        var npcMarker = new CharacterMarker
+        {
+          Npc = npc,
+          Name = CustomNames[npc.Name],
+          Marker = npc.Sprite.Texture,
+          IsBirthday = npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth)
+        };
+        NpcMarkers.Add(npcMarker);
       }
 
+      
       if (Context.IsMultiplayer)
         FarmerMarkers = new Dictionary<long, CharacterMarker>();
     }
@@ -406,7 +400,8 @@ namespace NPCMapLocations
 
     private void GameEvents_OneSecondTick(object sender, EventArgs e)
     {
-      if (Context.IsMainPlayer && Context.IsWorldReady)
+      if (!Context.IsWorldReady) return;
+      if (Context.IsMainPlayer && Context.IsMultiplayer)
       {
         var message = new SyncedLocationData();
         foreach (var npc in GetVillagers())
@@ -417,7 +412,7 @@ namespace NPCMapLocations
               npc.getTileY()));
         }
 
-        Helper.Multiplayer.SendMessage(message, "SyncedLocationData", new[] {ModManifest.UniqueID});
+       Helper.Multiplayer.SendMessage(message, "SyncedLocationData", modIDs: new[] {ModManifest.UniqueID});
       }
     }
 
@@ -509,8 +504,7 @@ namespace NPCMapLocations
     {
       if (isModMapOpen || forceUpdate)
       {
-        if (Context.IsMainPlayer || LOCATION_SYNC)
-          UpdateNpcs(forceUpdate);
+        UpdateNpcs(forceUpdate);
 
         if (Context.IsMultiplayer)
           UpdateFarmers();
@@ -544,7 +538,7 @@ namespace NPCMapLocations
         if (locationName.StartsWith("UndergroundMine"))
           locationName = getMinesLocationName(locationName);
 
-        if (locationName == null || (!locationName.Contains("Cabin") || !locationName.Contains("UndergroundMine")) && !MapVectors.TryGetValue(locationName, out var loc))
+        if (locationName == null || (!locationName.Equals("Cabin") || !locationName.Contains("UndergroundMine")) && !MapVectors.TryGetValue(locationName, out var loc))
         {
           if (!alertFlags.Contains("UnknownLocation:" + locationName))
           {
@@ -652,10 +646,10 @@ namespace NPCMapLocations
         if (farmer?.currentLocation == null) continue;
         var locationName = farmer.currentLocation.uniqueName.Value ?? farmer.currentLocation.Name;
 
-        if (locationName.StartsWith("UndergroundMine"))
+        if (locationName.Contains("UndergroundMine"))
           locationName = getMinesLocationName(locationName);
 
-        if ((!locationName.Contains("Cabin") || !locationName.Contains("UndergroundMine")) &&
+        if ((!locationName.Equals("Cabin") || !locationName.Contains("UndergroundMine")) &&
             !MapVectors.TryGetValue(farmer.currentLocation.Name, out var loc))
         {
           if (!alertFlags.Contains("UnknownLocation:" + farmer.currentLocation.Name))
@@ -766,8 +760,6 @@ namespace NPCMapLocations
 
           if ((upper == null || hasEqualTile) && tileX <= vector.TileX && tileY <= vector.TileY) upper = vector;
         }
-
-        var a = locVectors;
 
         // Handle null cases - not enough vectors to calculate using lower/upper bound strategy
         // Uses fallback strategy - get closest points such that lower != upper

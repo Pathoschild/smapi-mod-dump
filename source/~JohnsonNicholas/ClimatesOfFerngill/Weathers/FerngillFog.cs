@@ -25,6 +25,7 @@ namespace ClimatesOfFerngillRebuild
         internal FogType CurrentFogType { get; set; }
 
         private bool VerboseDebug { get; set; }
+        public bool BloodMoon { get; set; }
         private IMonitor Monitor { get; set; }
 
         /// <summary>  The alpha attribute of the fog. </summary>
@@ -50,10 +51,6 @@ namespace ClimatesOfFerngillRebuild
             {
                 if (BeginTime is null || ExpirTime is null)
                     return false;
-                if (BeginTime is null)
-                    Console.WriteLine("BeginTime is null");
-                if (ExpirTime is null)
-                    Console.WriteLine("ExpirTime is null");
                 if (SDVTime.CurrentTime is null)
                     Console.WriteLine("CURRENT TIME IS NULL.");
                 if (WeatherBeginTime is null)
@@ -84,6 +81,7 @@ namespace ClimatesOfFerngillRebuild
             ExpirTime = null;
             VerboseDebug = Verbose;
             this.Monitor = Monitor;
+            this.BloodMoon = false;
             this.Dice = Dice;
             this.ModConfig = config;
             this.FogTimeSpan = FogPeriod;
@@ -102,6 +100,7 @@ namespace ClimatesOfFerngillRebuild
             CurrentFogType = FogType.None;
             BeginTime = null;
             ExpirTime = null;
+            BloodMoon = false;
             FogAlpha = 0f;
             FadeOutFog = false;
             FadeInFog = false;
@@ -119,13 +118,15 @@ namespace ClimatesOfFerngillRebuild
                     return "None";
                 case FogType.Blinding:
                     return "Blinding";
-                case FogType.Dark:
-                    return "Dark";
                 case FogType.Normal:
                     return "Normal";
                 default:
                     return "ERROR";
             }
+        }
+
+        public void SecondUpdate()
+        {
         }
 
         /// <summary>This function creates the fog </summary>
@@ -134,12 +135,15 @@ namespace ClimatesOfFerngillRebuild
             this.FogAlpha = 1f;
             //First, let's determine the type.
             //... I am a dumb foxgirl. A really dumb one. 
-            if (Dice.NextDoublePositive() < ModConfig.DarkFogChance && SDate.Now().Day != 1 && SDate.Now().Year != 1 && SDate.Now().Season != "spring")
-                CurrentFogType = FogType.Dark;
-            else if (Dice.NextDoublePositive() <= .001)
+            if (Dice.NextDoublePositive() <= .001)
                 CurrentFogType = FogType.Blinding;
             else
                 CurrentFogType = FogType.Normal;
+
+            if (ModConfig.ShowLighterFog)
+            {
+                this.FogAlpha = .6f;
+            }
 
             //now determine the fog expiration time
             double FogChance = Dice.NextDoublePositive();
@@ -178,7 +182,7 @@ namespace ClimatesOfFerngillRebuild
             }
             else
             {
-                BeginTime = new SDVTime(Game1.getStartingToGetDarkTime());
+                BeginTime = new SDVTime(Game1.getModeratelyDarkTime());
                 BeginTime.AddTime(Dice.Next(-15, 90));
 
                 ExpirTime = new SDVTime(BeginTime);
@@ -271,6 +275,10 @@ namespace ClimatesOfFerngillRebuild
                             if (Game1.isStartingToGetDarkOut())
                             {
                                 FogColor = Color.LightBlue;
+                            }
+                            if (BloodMoon)
+                            {
+                                FogColor = Color.DarkRed;
                             }
 
                             Game1.spriteBatch.Draw(fogTexture, position, new Microsoft.Xna.Framework.Rectangle?

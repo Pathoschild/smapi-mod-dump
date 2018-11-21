@@ -33,8 +33,8 @@ namespace NeatAdditions.PreviewWallpaperAndFloors
 						InvokeMethod(decLocation, "doSetVisibleFloor", i, decLocation.floor[i]);
 
 					//Set what is visisble. This doesn't change the location.floor variable, so it won't affect saving/etc.
-					if (isHoveringFloor && Game1.player.ActiveObject is Wallpaper floorOrWallpaperObject && floorOrWallpaperObject.isFloor)
-						InvokeMethod(decLocation, "doSetVisibleFloor", floor, floorOrWallpaperObject.parentSheetIndex.Get());
+					if (isHoveringFloor && Game1.player.ActiveObject is Wallpaper floorOrWallpaperObject && floorOrWallpaperObject.isFloor.Value)
+						InvokeMethod(decLocation, "doSetVisibleFloor", floor, floorOrWallpaperObject.ParentSheetIndex);
 				}
 			}
 
@@ -46,8 +46,8 @@ namespace NeatAdditions.PreviewWallpaperAndFloors
 					for (int i = 0; i < decLocation.wallPaper.Count; i++)
 						InvokeMethod(decLocation, "doSetVisibleWallpaper", i, decLocation.wallPaper[i]);
 
-					if (isHoveringWall && Game1.player.ActiveObject is Wallpaper floorOrWallpaperObject && !floorOrWallpaperObject.isFloor)
-						InvokeMethod(decLocation, "doSetVisibleWallpaper", wall, floorOrWallpaperObject.parentSheetIndex.Get());
+					if (isHoveringWall && Game1.player.ActiveObject is Wallpaper floorOrWallpaperObject && !floorOrWallpaperObject.isFloor.Value)
+						InvokeMethod(decLocation, "doSetVisibleWallpaper", wall, floorOrWallpaperObject.ParentSheetIndex);
 				}
 			}
 

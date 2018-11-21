@@ -5,9 +5,9 @@ mods:
    Elevator
 
 latest commit:
-   commit e6b6c3f0d69969fa27a48913cbe07562e811ff7f
+   commit c43a996b75bddfa26dc9e5f8d4d5c43716d7b5f2
    Author: Ilyaki <ilyaki.ilyaki@gmail.com>
-   Date:   Sun Oct 21 19:50:55 2018 +0100
+   Date:   Mon Nov 19 19:00:09 2018 +0000
    
-       Fixed clients being able to place elevator buildings
+       Update SMAPI version requirement
    

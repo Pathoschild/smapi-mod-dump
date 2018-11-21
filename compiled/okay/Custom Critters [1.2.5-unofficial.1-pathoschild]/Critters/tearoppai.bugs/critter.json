@@ -1,0 +1,103 @@
+{
+  "Id": "tearoppai.bugs",
+  "SpriteData": {
+    "Variations": 6,
+    "FrameWidth": 10,
+    "FrameHeight": 8,
+    "Scale": 2
+  },
+  "Animations": {
+    "default": {
+      "Frames": [
+        {
+          "Frame": 0,
+          "Duration": 25
+        },
+        {
+          "Frame": 1,
+          "Duration": 25
+        },
+        {
+          "Frame": 2,
+          "Duration": 25
+        },
+        {
+          "Frame": 3,
+          "Duration": 25
+        },
+        {
+          "Frame": 2,
+          "Duration": 25
+        },
+        {
+          "Frame": 1,
+          "Duration": 25
+        }
+      ]
+    }
+  },
+  "SpawnConditions": [
+    {
+      "Not": false,
+      "Seasons": [ "spring", "summer", "fall" ],
+      "Locations": [ "Farm" ],
+      "MinTimeOfDay": 600,
+      "MaxTimeOfDay": 1850,
+      "ChancePerTile": 1,
+      "RequireDarkOut": false,
+      "AllowRain": false,
+      "ChildrenCombine": "and",
+      "Children": []
+    }  
+  ],
+  "SpawnLocations": [
+    {
+      "LocationType": "random",
+      "Conditions": [
+        {
+          "Not": false,
+          "Chance": 10,
+          "Variable": "ParentSheetIndex",
+          "RequireNotNull": false,
+          "Is": null,
+          "ValueEquals": "0",
+          "ChildrenCombine": "and",
+          "Children": []
+        }
+      ]
+    }
+  ],
+  "SpawnAttempts": 25,
+  "Behavior": {
+     "Type": "random",
+    "Speed": 3,
+	"SpeedAddRandom": 3,
+     "PatrolPoints": [
+      {
+        "Type": "random"
+      },
+      {
+        "Type": "startoffset",
+        "X": 10,
+        "Y": 10
+      },
+      {
+        "Type": "startoffset",
+        "X": -8,
+        "Y": 6
+      },
+      {
+        "Type": "startoffset",
+        "X": 3,
+        "Y": -1
+      },
+      {
+        "Type": "startoffset",
+        "X": -3,
+        "Y": -2
+      }
+    ],
+    "PatrolPointDelay": 0,
+    "PatrolPointDelayAddRandom": 0
+  }
+}

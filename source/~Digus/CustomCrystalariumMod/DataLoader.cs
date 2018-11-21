@@ -23,8 +23,8 @@ namespace CustomCrystalariumMod
             I18N = helper.Translation;
             ModConfig = helper.ReadConfig<ModConfig>();
 
-            CrystalariumData = DataLoader.Helper.ReadJsonFile<Dictionary<int, int>>("data\\CrystalariumData.json") ?? new Dictionary<int, int>(){{74, 20160}};
-            DataLoader.Helper.WriteJsonFile("data\\CrystalariumData.json", CrystalariumData);
+            CrystalariumData = DataLoader.Helper.Data.ReadJsonFile<Dictionary<int, int>>("data\\CrystalariumData.json") ?? new Dictionary<int, int>(){{74, 20160}};
+            DataLoader.Helper.Data.WriteJsonFile("data\\CrystalariumData.json", CrystalariumData);
 
             if (!ModConfig.DisableLetter)
             {

@@ -16,7 +16,7 @@ namespace ClimatesOfFerngillRebuild
         private ITranslationHelper Helper;
         private MersenneTwister OurDice;
         private WeatherConfig ModConfig;
-        private IMonitor Output;
+        private readonly IMonitor Output;
 
         public Descriptions(ITranslationHelper Translaton, MersenneTwister mDice, WeatherConfig wc, IMonitor log)
         {
@@ -51,16 +51,32 @@ namespace ClimatesOfFerngillRebuild
             return "ERROR";
         }
 
+        private string GetNextSeason(string season)
+        {
+            switch (season)
+            {
+                case "spring":
+                    return "summer";
+                case "summer":
+                    return "fall";
+                case "fall":
+                    return "winter";
+                case "winter":
+                    return "spring";
+                default:
+                    return "error";
+            }
+        }
+
         private string GetTemperatureString(double temp)
         {
             if (ModConfig.ShowBothScales)
             {
-                //Temp =  "34 C (100 F)"
-                return $"{temp.ToString("N1")} C ({GeneralFunctions.ConvCtF(temp).ToString("N1")} F)";
+                return $"{temp.ToString("N1")} Kraggs ({GeneralFunctions.ConvCtF(temp).ToString("N1")} F)";
             }
             else
             {
-                return $"{temp.ToString("N1")} C";
+                return $"{temp.ToString("N1")} Kraggs";
             }
         }
 
@@ -74,7 +90,7 @@ namespace ClimatesOfFerngillRebuild
             return "error";
         }
 
-        internal string GenerateMenuPopup(WeatherConditions Current, SDVMoon Moon)
+        internal string GenerateMenuPopup(WeatherConditions Current, string MoonPhase = "", string NightTime = "")
         {
             string text = "";
 
@@ -93,6 +109,21 @@ namespace ClimatesOfFerngillRebuild
             if (Current.ContainsCondition(CurrentWeather.Frost))
             { 
                 text += Helper.Get("weather-menu.condition.frost") + Environment.NewLine;
+            }
+
+            if (Current.ContainsCondition(CurrentWeather.WhiteOut))
+            {
+                text += Helper.Get("weather-menu.condition.whiteOut") + Environment.NewLine;
+            }
+
+            if (Current.ContainsCondition(CurrentWeather.ThunderFrenzy))
+            {
+                text += Helper.Get("weather-menu.condition.thunderFrenzy") + Environment.NewLine;
+            }
+
+            if (MoonPhase == "Blood Moon")
+            {
+                text += Helper.Get("weather-menu.condition.bloodmoon") + Environment.NewLine;
             }
 
             ISDVWeather CurrentFog = Current.GetWeatherMatchingType("Fog").First();
@@ -119,33 +150,40 @@ namespace ClimatesOfFerngillRebuild
 
                 todayHigh = GetTemperatureString(Current.TodayHigh),
                 todayLow = GetTemperatureString(Current.TodayLow),
-                fogString = fogString               
+                fogString               
             }) + Environment.NewLine;
 
             //Tomorrow weather
             text += Helper.Get("weather-menu.tomorrow", 
-                new {
-                    tomorrowCondition = GetBasicWeather(Game1.weatherForTomorrow, Game1.currentSeason),
-                    tomorrowLow = GetTemperatureString(Current.TomorrowLow),
-                    tomorrowHigh = GetTemperatureString(Current.TomorrowHigh)
-                }) + Environment.NewLine;
+                        new {
+                            tomorrowCondition = GetBasicWeather(Game1.weatherForTomorrow, Game1.currentSeason),
+                            tomorrowLow = GetTemperatureString(Current.TomorrowLow),
+                            tomorrowHigh = GetTemperatureString(Current.TomorrowHigh)
+                        }) + Environment.NewLine;
+
+            //now, night time
+            if (NightTime != "")
+            {
+                text += Environment.NewLine;
+                text += NightTime + Environment.NewLine;
+            }
 
             return text;
         }
 
-        internal string GenerateTVForecast(WeatherConditions Current, SDVMoon Moon)
+        internal string GenerateTVForecast(WeatherConditions Current, string MoonPhase = "")
         {            
             //assemble params
             var talkParams = new Dictionary<string, string>
             {
                 { "location", GetRandomLocation() },
-                { "descWeather", GetWeather(Current, Game1.currentSeason) },
+                { "descWeather", GetWeather(Current, Game1.dayOfMonth, Game1.currentSeason) },
                 { "festival", SDVUtilities.GetFestivalName(SDate.Now()) },
                 { "festivalTomorrow", SDVUtilities.GetFestivalName(SDate.Now().AddDays(1)) },
                 { "fogTime", Current.GetFogTime().ToString() },
                 { "todayHigh", GetTemperatureString(Current.TodayHigh) },
                 { "todayLow", GetTemperatureString(Current.TodayLow) },
-                { "tomorrowWeather", GetWeather(Game1.weatherForTomorrow, Game1.currentSeason, true) },
+                { "tomorrowWeather", GetWeather(Game1.weatherForTomorrow, Game1.dayOfMonth, Game1.currentSeason, true) },
                 { "tomorrowHigh", GetTemperatureString(Current.TomorrowHigh) },
                 { "tomorrowLow", GetTemperatureString(Current.TomorrowLow) },
                 { "condWarning", GetCondWarning(Current) },
@@ -157,8 +195,26 @@ namespace ClimatesOfFerngillRebuild
             SDVTimePeriods CurrentPeriod = SDVTime.CurrentTimePeriod; //get the current time period
             int nRandom = OurDice.Next(2);
 
+            //blood moon checks
+            if ((Game1.player.spouse != null && Game1.player.isEngaged() && Game1.player.friendshipData[Game1.player.spouse].CountdownToWedding == 1) && MoonPhase == "Blood Moon")
+            {
+                talkParams["tomrrowWeather"] = Helper.Get($"weat-{Game1.currentSeason}.sunny.{nRandom}");
+                return Helper.Get("weat-wedTomorrow.BM.0", talkParams);
+            }
+
+            //festival tomorrow
+            else if (SDVUtilities.GetFestivalName(SDate.Now().AddDays(1)) != "" && MoonPhase == "Blood Moon")
+            {
+                return Helper.Get("weat-fesTomorrow.BM.0", talkParams);
+            }
+
+            else if (MoonPhase == "Blood Moon")
+            {
+                return Helper.Get("weat-gen.bloodmoon.0", talkParams);
+            }
+
             //first, check for special conditions -fog, festival, wedding
-            if (Current.HasWeather(CurrentWeather.Fog))
+            else if (Current.HasWeather(CurrentWeather.Fog))
             {
                 return Helper.Get($"weat-loc.fog.{nRandom}", talkParams);
             }
@@ -182,7 +238,7 @@ namespace ClimatesOfFerngillRebuild
             }
 
             //wedding tomrrow
-            else if (Game1.countdownToWedding == 1)
+            else if (Game1.player.spouse != null && Game1.player.isEngaged() && Game1.player.friendshipData[Game1.player.spouse].CountdownToWedding == 1)
             {
                 talkParams["tomrrowWeather"] = Helper.Get($"weat-{Game1.currentSeason}.sunny.{nRandom}");
                 return Helper.Get("weat-wedTomorrow.0", talkParams);
@@ -223,10 +279,12 @@ namespace ClimatesOfFerngillRebuild
                     {
                         if (Current.GetWeatherMatchingType("Fog").First().IsWeatherVisible && (SDVTime.CurrentTime > new SDVTime(1200)))
                             return Helper.Get("weather-condition.fog", new { fogTime = fWeat.WeatherExpirationTime.ToString() });
-                        else
+                        else 
                         {
-                            if (fWeat.WeatherBeginTime != fWeat.WeatherExpirationTime)
+                            if (fWeat.WeatherBeginTime != fWeat.WeatherExpirationTime && fWeat.WeatherBeginTime > new SDVTime(1500))
                                 return Helper.Get("weather-condition.evenFog", new { startTime = fWeat.WeatherBeginTime.ToString(), endTime = fWeat.WeatherExpirationTime.ToString() });
+                            else if (fWeat.WeatherBeginTime != fWeat.WeatherExpirationTime)
+                                return Helper.Get("weather-condition.eveningFogNoTime");
                             else
                                 return "";
                         }
@@ -250,12 +308,18 @@ namespace ClimatesOfFerngillRebuild
             if (Current.ContainsCondition(CurrentWeather.WhiteOut))
                 return Helper.Get($"weather-condition.whiteout.{rNumber}");
 
+            if (Current.ContainsCondition(CurrentWeather.ThunderFrenzy))
+                return Helper.Get($"weather-condition.thunderfrenzy.{rNumber}");
+
             return "";            
         }
 
-        private string GetWeather(int weather, string season, bool TomorrowWeather = false)
+        private string GetWeather(int weather, int day, string season, bool TomorrowWeather = false)
         {
             int rNumber = OurDice.Next(2);
+
+            if (day == 28)
+                season = GetNextSeason(season);
 
             if (weather == Game1.weather_debris)
                 return Helper.Get($"weat-{season}.debris.{rNumber}");
@@ -322,8 +386,11 @@ namespace ClimatesOfFerngillRebuild
             return "ERROR";
         }
 
-        private string GetWeather(WeatherConditions Weather, string season)
+        private string GetWeather(WeatherConditions Weather, int day, string season)
         {
+            if (day == 28)
+                season = GetNextSeason(season);
+
             int rNumber = OurDice.Next(2);
 
             if (Weather.CurrentWeatherIconBasic == WeatherIcon.IconBlizzard || Weather.CurrentWeatherIconBasic == WeatherIcon.IconWhiteOut)
@@ -332,7 +399,7 @@ namespace ClimatesOfFerngillRebuild
                 return Helper.Get($"weat-{season}.debris.{rNumber}");
             else if (Weather.CurrentWeatherIconBasic == WeatherIcon.IconDryLightning)
                 return Helper.Get($"weat-{season}.drylightning.{rNumber}");
-            else if (Weather.CurrentWeatherIconBasic == WeatherIcon.IconWedding || Weather.CurrentWeatherIconBasic == WeatherIcon.IconFestival || Weather.CurrentWeatherIconBasic == WeatherIcon.IconSunny && SDVTime.CurrentIntTime <  Game1.getModeratelyDarkTime())
+            else if (Weather.CurrentWeatherIconBasic == WeatherIcon.IconWedding || Weather.CurrentWeatherIconBasic == WeatherIcon.IconFestival || Weather.CurrentWeatherIconBasic == WeatherIcon.IconSunny && SDVTime.CurrentIntTime < Game1.getModeratelyDarkTime())
                 return Helper.Get($"weat-{season}.sunny_daytime.{rNumber}");
             else if (Weather.CurrentWeatherIconBasic == WeatherIcon.IconSunny || Weather.CurrentWeatherIconBasic == WeatherIcon.IconWedding || Weather.CurrentWeatherIconBasic == WeatherIcon.IconFestival && SDVTime.CurrentIntTime >= Game1.getModeratelyDarkTime())
                 return Helper.Get($"weat-{season}.sunny_nighttime.{rNumber}");
@@ -344,7 +411,8 @@ namespace ClimatesOfFerngillRebuild
                 return Helper.Get($"weat-{season}.rainy.{rNumber}");
             else if (Weather.CurrentWeatherIconBasic == WeatherIcon.IconThunderSnow)
                 return Helper.Get($"weat-{season}.thundersnow.{rNumber}");
-
+            else if (Weather.CurrentWeatherIconBasic == WeatherIcon.IconBloodMoon)
+                return Helper.Get($"weat-bloodmoon");
             return "ERROR";
         }
 
@@ -386,7 +454,7 @@ namespace ClimatesOfFerngillRebuild
                     break;
             }
 
-            return new TemporaryAnimatedSprite(Game1.mouseCursors, placement, 100f, 4, 999999, tv.getScreenPosition() + new Vector2(3f, 3f) * tv.getScreenSizeModifier(), false, false, (float)((double)(tv.boundingBox.Bottom - 1) / 10000.0 + 1.99999994947575E-05), 0.0f, Color.White, tv.getScreenSizeModifier(), 0.0f, 0.0f, 0.0f, false);
+            return new TemporaryAnimatedSprite("LooseSprites\\Cursors", placement, 100f, 4, 999999, tv.getScreenPosition() + new Vector2(3f, 3f) * tv.getScreenSizeModifier(), false, false, (float)((double)(tv.boundingBox.Bottom - 1) / 10000.0 + 1.99999994947575E-05), 0.0f, Color.White, tv.getScreenSizeModifier(), 0.0f, 0.0f, 0.0f, false);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿# Climates of Ferngill (Rebuild) You Can (Not) Have Weather
 
-Current Version (4 Feburary 2018): 1.3
+Current Version (19 November 2018): 1.4.1
 
 ## What's New
 
@@ -8,70 +8,113 @@ Current Version (4 Feburary 2018): 1.3
 - Blizzards, Thundersnow
 - A more customizable weather system
 - More descriptive and varied weather reports
+- Thundersnow!
+
+## Multiplayer
+
+Currently doesn't do any custom weathers in MP. Works only for the host player in MP. Will be changing shortly with the new MP API.
 
 ## Requirements
 
-- SMAPI 2.3+
-- Stardew Valley 1.2.33+
-- PyTK 0.7.0+
+- SMAPI 2.8+
+- Stardew Valley 1.3.32+
+- PyTK: latest
  
 ## Overview
 
 This mod does the following:
 
 - Alters the weather via a custom method that can read custom files
-- Adds in several custom weathers - Thundersnow! Blizzards! Dry Lightning!
-- Changes the rain totem to occasionally spawm storms as well.
-- Adds a moon overhead, which will act on the world
+- Adds in several custom weathers - Thundersnow! Blizzards! Dry Lightning! Fog! Thunder Freeenzy!!!
+- Changes the rain totem to occasionally spawn storms as well.
 - Adds a weather menu option, which will display information about the weather
-- Changes the text for the TV weather channel
-- Going out in storms, blizzards, frosts and heatwaves is now more perilous, as it drains your stamina. Thankfully, 
-    a 'Muscle Remedy' has been found to cure even the hardiest flu
+- Changes the text for the TV weather channel 
 
-## Stamina System
+## Notices
 
-__Very Important: Read this before you alter StaminaDrain in the config!__
+This mod uses harmony to patch functions to allow it to draw custom rain and snow colors.
 
-Rather than a fixed penalty for certain conditions, this now calculates a multiplier based on the conditions prevailing.
+## Upcoming Features
 
-Every ten minutes, the mod checks to see if you've been outside for a certain percentage of the last 10 minutes. By default, it's set to 65%. (This percentage is calculated by counting the ticks you've been outside and the total number in the span to account for time change mods). Then, it generates a random number and tests it against a chance to get sick. By default, this is 70%. In addition, this must be during certain weather conditions:
-*Temperature: Frost or Heatwave (as defined in the config file, see the readme for more information)
-*Weathers: Lightning
-*Special Weathers: Thundersnow, Blizzard
-(NB: While you incur a stamina penalty for being sick in fog, it deliberately does not trigger this.)
-
-The penalties are **cumulative** - that is, they add up to the final multiplier.
-*Lightning : +100% ( 1)
-*Thundersnow: +100% (1)
-*Thundersnow (nighttime): +50% (.5)
-*Foggy: +50% (.5)
-*Foggy (nightime) +25% (.25)
-*Blizzard: +125% (1.25)
-*Blizzard: **White Out**+225% (2.25)
-*Blizzard (nighttime) +50% (.5)
-*Frost (nightime): +125% (1.25) - this is not during the winter. During winter, the frost penalty is untriggered.
-*Heatwave (daytime): +125% (1.25)
-
-The calculated number is then rounded __down__
-
-For example, therefore, if you're outduring a storm, with the base of 2, you only take a stamina penalty of 2. But if it's also a heatwave, your penatly is now (+1+1.25)=*2.25 or 4.5. So a penalty of 4.
-If you're out in a blizzard during the day, it's *1.25 or 2.5 rounded down to 2. If you're out in that blizzard at night, another .5 (1.25+.5) is added making it 1.75 or 3.5 rounded down to 3.
-
-(This does mean a foggy blizzard at night is (+.5+.25+1.25+.5 or *2.25), and if you somehow get this in fall, would be *3.5. And somehow, if you get a whiteout, it would be *3.25 and *4.5!)
-
-## Known Issues
-
-## To Do
-
-## Wishlist
+- Sandstorms
+- Variable rain
 
 ## Acknowledgements
-- eemie for the moon sprites
 - Prismuth for the fog sprite
 - Pathoschild for ideas
 - ChefRude for testing and the night icon sprites (as well as better fog textures)
+- FoggyWizard for the sandstorm sprite
+- The SDV discord #modding channel for discussions and encouragement.
+
 
 ## Changelog
+v1.4.1
+ - Updated for SDV 1.3.32
+ - Updated for newest LunarDisturbances API
+
+v1.4
+ - lighter fog implemented
+ - option to disable the weather icon
+ - red snow!
+ - Now uses harmony for some various features
+
+v1.4.0-beta13
+ - blood weather during a blood moon
+ - fixed a bug blocking many icons from being properly seen. Fixed now
+
+v1.4.0-beta12
+ - API expansion
+ - Fix for thundersnow + fog with no frost
+ - updated to be coompatible with SDV 1.3.20+
+
+v1.4.0-beta11
+ - updated to be compatible with SDV 1.3.16
+
+v1.4.0-beta10
+ - enabled dynamic night time integration
+
+v1.4.0-beta9
+- some fixes for MP. Well, a lot of fixes for MP
+- readjusted fog. If you want the old foggy amounts in spring, add "foggy" to enhanced and normal.
+- readjusted night fog calculations.
+
+v1.4.0-beta4
+- fixed console command issues
+
+v1.4.0-beta3
+- fixed some API integrations
+
+v1.4.0-beta2
+- Removed unneeded options, cleaned up the readme
+- Added Thunder Frenzy weather
+- Whiteouts will respect hazardous weather flags
+- some refactoring
+
+v1.4.0-beta1
+- Mod split into three - moon is now Lunar Disturbances, stamina is now WeatherIllnesses.
+- fix for the weather icon in Climates.
+
+v1.3.4
+- Blood Moon implementation (see README notes)
+- Refactored the weather object to be easier to debug and extend
+- Fixed issue with stamina clearer not requiring drinking the item.
+- Updated and expanded some of the dialogue
+- Dry lightning will no longer happen period when it's frost conditions
+- After consideration, wind will still restrict fog from spawning.
+- Flag to stop the light from changing (if the stutter bothers you)
+
+v1.3.3
+- Harvey's 8-heart scene gives the temp scale. C now is Kraggs, the in-game scale.
+- Dual lightning strikes removed (was erroneously triggering additional lightning on stormy daysaw)
+- Apparently I never actually wrote in the code to spawn ghosts. :| Due to engine limitations, occurs only on wilderness farms.
+
+v1.3.2
+- the moon also disappears now when the rest of the shipping menu fades
+- hazardous moon events can be turned off.
+
+v1.3.1
+- fixed the evening fog. Forgot to remove the debug line.
+
 v1.3
 - custom popup text on first and last day of the year
 
@@ -214,6 +257,10 @@ v1.1.12 beta
 
 ## Config Options
 
+- `ShowLighterFog` - Changes the fog opacity to be lower. Default is `false`. Valid values: `false, true`
+
+- 'EnableCustomWeatherIcon' - This enables the custom weather icons. Default is `true`. Valid values are `false` and `true`
+
 - `ClimateType` - set to weather that has a corresponding file in `data\weather\`. Packaged with the mod is
 `normal`, `extended`, `arid`, `dry`, `wet`, `monsoon`. Default: `normal`.
 
@@ -229,13 +276,15 @@ over a certain value.). Valid 0-1, but it's recommended that this is kept low. D
 - `DryLightningMinTemp` - This controls the minimum temperature to trigger the DryLightning event. 
   Defaults to `34`. Values are in Celsius. (34 C is 93.2 F)
 
-- 'TooColdOutside' - This controls the temperature required (the *low* temperature required) to trigger the Frost event. Note this is a Spring and Fall event, and will potentially kill crops
+- `TooColdOutside` - This controls the temperature required (the *low* temperature required) to trigger the Frost event. Note this is a Spring and Fall event, and will potentially kill crops
   Defaults to '-3'. Values are in Celsius (1 C is 33.8 F). 
   NOTE: Frosts trigger at dark
 
-- 'TooHotOutside' - This controls the temperature required (the *high* temperature required) to trigger the Heatwave event.
+- `TooHotOutside` - This controls the temperature required (the *high* temperature required) to trigger the Heatwave event.
   Defaults to '39'. Values are in Celsius (39 C is 102.2 F)
   NOTE : Heatwaves taper off at night.
+
+- `DarkenLightInFog` - If set to true, will darken the window when foggy. Set it to false if you want to disable this behavior if the flashes are a problem.
 
 - `SnowOnFall28` - If set to true, this will force snow fall and appropriate temperatures on Fall 28. Default: `false`,
   Valid: `true` or `false`
@@ -251,34 +300,21 @@ over a certain value.). Valid 0-1, but it's recommended that this is kept low. D
 - `DisplayBothScales` - Default: `false`. This will display both known scales. Set to `true`, if you want to see Farenheit as well.
 
 - `HazardousWeather` - Default: `false`. This turns on hazardous weather. It's normally turned off. Right now, it only turns on the heatwave and frost events
-	IMPORTANT NOTE: This only enables the stamina drain on them, and the dewatering of the heatwave. Frost's crop death will remain disabled, 
+	IMPORTANT NOTE: This only enables dewatering of the heatwave AND the thunder frenzy event. Frost's crop death will remain disabled, 
 	as well not watering the plants in time for a heatwave.
 
 - `AllowCropDeath` - Default: `false`. Normally, hazardous weather won't kill crops, just stop them growing. This reenables crop death.'
 
-- 'AffectedOutside' - The percentage outside you need to be within a 10 minute span to be affected by stamina events.
- Defaults to '.65', valid values are between 0 and 1. To turn stamina drains off entirely, set it to 0. 
+ - `DeadCropPercentage` - The amount of crops that a heatwave and frost can kill. (Note: Frost will kill more than heatwaves). Default: '.1' Valid range is 0 to 1.
 
- - 'SickMoreThanOnce' - By default, the false means you can only get sick once a day. Set it to true to be affected by multiple colds.
+ - `CropResistance` - This represents the resistance an average crop has to heatwaves and frosts. Default: '.4' Valid Range is 0 to 1.
 
- - 'StaminaDrain' - This is an int containing the default stamina drain for hazardous events. See the writeup (soon) for more information. Default is '2'. Valid range is any number between foo and bar.'
+ - `DarkFogChance` - This controls the chance of the darker fog appearing. Default is set to '.0875' (or a 1/8th chance if it's foggy it'll be dark fog.) Valid Range is 0 to 1.
 
- - 'DeadCropPercentage' - The amount of crops that a heatwave and frost can kill. (Note: Frost will kill more than heatwaves). Default: '.1' Valid range is 0 to 1.
+ - 'ThunderFrenzyOdds' - This controls the chance of the special weather Thunder Frenzy appearing. It's a double, valid range is 0 to 1
 
- - 'CropResistance' - This represents the resistance an average crop has to heatwaves and frosts. Default: '.4' Valid Range is 0 to 1.
+ - `Use12HourTime` - Tells it whether or not to use 12hour time or not in displays. Defaults to false. Valid: true, false
 
- - 'DarkFogChance' - This controls the chance of the darker fog appearing. Default is set to '.0875' (or a 1/8th chance if it's foggy it'll be dark fog.) Valid Range is 0 to 1.
+ - `DynamicRain` - Allows for the mod to dynamically control rain during the day. Defaults to true. Valid: true, false
 
- - 'ChanceOfGettingSick' - Controls the chance you'll get sick when conditions are matched. Default is set to '.7' for (70% chance). Valid Range is 0 to 1.
-
- - 'Use12HourTime' - Tells it whether or not to use 12hour time or not in displays. Defaults to false. Valid: true, false
-
- - 'BadMoonRising' - Chance of a blood moon on a full moon. Default: .004 (.4%). Valid Range is 0 to 1.
-
- - 'EclipseOn' - Whether or not the eclipse is enabled. Defaults to true. (NOTE: Will not trigger until at least Spring 2, and must be a full moon.) (valid: true, false)
-
- - 'EclipseChance' - The chance of an eclipse every full moon. Defaults to .015 (1.5%) Valid Range is 0 to 1.
-
- - 'SpawnMonsters' - Controls if monsters spawn on your wilderness farm. Default: true. Valid: true, false
-
- - 'SpawnMonstersAllFarms' - Controls if monsters spawn on all farms. Default: false. Valid: true, false
+ - `DisableHighRainWind` - If your computer has issues with high rain or wind, set this to true. Defaults to false.

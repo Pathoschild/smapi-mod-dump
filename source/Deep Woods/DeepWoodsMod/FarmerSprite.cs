@@ -31,21 +31,13 @@ namespace DeepWoodsMod
             this.oldFrame = copyFrom.oldFrame;
             if (copyFrom.currentAnimation == null)
             {
-#if SDVBETA
                 this.CurrentAnimation = null;
-#else
-                this.currentAnimation = null;
-#endif
             }
             else
             {
                 if (this.currentAnimation == null)
                 {
-#if SDVBETA
                     this.CurrentAnimation = new List<AnimationFrame>();
-#else
-                    this.currentAnimation = new List<AnimationFrame>();
-#endif
                 }
                 this.currentAnimation.Clear();
                 this.currentAnimation.AddRange(copyFrom.currentAnimation);

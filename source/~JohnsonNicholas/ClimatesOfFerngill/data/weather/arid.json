@@ -2,12 +2,14 @@
   "AllowRainInWinter": true,
   "AllowThunderSnow": true,
   "AllowSnowInFall": true,
+  "LocationsAffected": [],
   "ClimateSequences": [
     {
       "BeginSeason": "spring",
       "EndSeason": "spring",
       "BeginDay": 1,
       "EndDay": 28,
+      "EveningFogChance": 0.9,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -58,6 +60,7 @@
       "EndSeason": "summer",
       "BeginDay": 1,
       "EndDay": 10,
+      "EveningFogChance": 0.9,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -101,6 +104,7 @@
       "EndSeason": "summer",
       "BeginDay": 11,
       "EndDay": 13,
+      "EveningFogChance": 0.9,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -144,6 +148,7 @@
       "EndSeason": "summer",
       "BeginDay": 14,
       "EndDay": 18,
+      "EveningFogChance": 0.9,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -187,6 +192,7 @@
       "EndSeason": "summer",
       "BeginDay": 19,
       "EndDay": 28,
+      "EveningFogChance": 0.9,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -230,6 +236,7 @@
       "EndSeason": "fall",
       "BeginDay": 1,
       "EndDay": 28,
+      "EveningFogChance": 0.9,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -280,6 +287,7 @@
       "EndSeason": "winter",
       "BeginDay": 1,
       "EndDay": 10,
+      "EveningFogChance": 0.9,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -323,6 +331,7 @@
       "EndSeason": "winter",
       "BeginDay": 11,
       "EndDay": 13,
+      "EveningFogChance": 0.9,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -366,6 +375,7 @@
       "EndSeason": "winter",
       "BeginDay": 14,
       "EndDay": 18,
+      "EveningFogChance": 0.9,
       "WeatherChances": [
         {
           "WeatherType": "rain",
@@ -409,6 +419,7 @@
       "EndSeason": "winter",
       "BeginDay": 19,
       "EndDay": 28,
+      "EveningFogChance": 0.9,
       "WeatherChances": [
         {
           "WeatherType": "rain",

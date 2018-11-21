@@ -25,7 +25,7 @@ namespace AutoGrabberMod.Features
         {
             if (!IsAllowed || !(bool)Value) return;
 
-            Utilities.Monitor.Log($"  {Grabber.InstanceName} Attempting to pet animals", StardewModdingAPI.LogLevel.Trace);
+            //Utilities.Monitor.Log($"  {Grabber.InstanceName} Attempting to pet animals", StardewModdingAPI.LogLevel.Trace);
 
             var boundingBox = new Rectangle(Grabber.Grabber.getBoundingBox(Grabber.Tile).Left - Grabber.Range, Grabber.Grabber.getBoundingBox(Grabber.Tile).Top - Grabber.Range, 2 * Grabber.Range, 2 * Grabber.Range);
             var pets = Grabber.RangeEntireMap

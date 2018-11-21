@@ -1,0 +1,12 @@
+{
+  "EverlastingBait": "684 10 74 1",
+  "EverlastingWildBait": "771 100 684 50 766 20 74 1",
+  "EverlastingMagnet": "335 10 74 1",
+  "UnbreakableSpinner": "335 4 337 2",
+  "UnbreakableLeadBobber": "117 1 337 3",
+  "UnbreakableTrapBobber": "334 2 92 20 369 5 309 1 337 3",
+  "UnbreakableCorkBobber": "388 20 709 10 766 20 557 1 337 4",
+  "UnbreakableTreasureHunter": "336 8 337 4",
+  "UnbreakableBarbedHook": "334 2 335 2 336 2 337 5",
+  "UnbreakableDressedSpinner": "335 4 428 2 66 1 62 1 60 1 70 1 68 1 64 1 337 5"
+}

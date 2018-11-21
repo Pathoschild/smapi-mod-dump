@@ -9,9 +9,7 @@ namespace DeepWoodsMod
     class HealingFountain : LargeTerrainFeature
     {
         public HealingFountain()
-#if SDVBETA
            : base(false)
-#endif
         {
         }
 

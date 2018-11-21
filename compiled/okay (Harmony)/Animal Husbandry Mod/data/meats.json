@@ -1,0 +1,26 @@
+{
+  "Beef": {
+    "Price": 100,
+    "Edibility": 15
+  },
+  "Pork": {
+    "Price": 1250,
+    "Edibility": 30
+  },
+  "Chicken": {
+    "Price": 250,
+    "Edibility": 15
+  },
+  "Duck": {
+    "Price": 800,
+    "Edibility": 20
+  },
+  "Rabbit": {
+    "Price": 2500,
+    "Edibility": 20
+  },
+  "Mutton": {
+    "Price": 650,
+    "Edibility": 20
+  }
+}

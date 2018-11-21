@@ -1,0 +1,14 @@
+﻿{
+  "hud-text.desc_sick": "You have caught a cold...!",
+  "hud-text.desc_hot": "The hotter temperatures outside are wearing you out more than normal.",
+  "hud-text.desc_cold": "The colder temperatures outside are wearing you out more than normal.",
+  "hud-text.desc_turntheheaton": "The cold has seeped through the walls of your house, and is wearing you out...",
+  "hud-text.desc_inclement": "The inclement weather has caused you to feel sick...",
+  "hud-text.desc_blizzard": "The winds and snow have chilled you to the bone...",
+  "hud-text.desc_wampa": "The extreme winds and snow outside are sapping your strength...", 
+  "hud-text.desc_freeze": "The freezing temperatures outside are making you sleepy, wearing you out.",
+  "hud-text.desc_flu": "You have caught the flu from the severe weather and better take some medicine soon!",
+  "hud-text.desc_cold_removed": "You feel the medicine clearing your sickness and soothing your exhaustion.",
+  "hud-text.desc_bathHouse":  "The warm bathhouse is a soothing balm, and you feel much better.",
+  "hud-text.desc_HeatOn":  "The cold is seeping through the walls of your house, and you should turn on the heat.."
+}

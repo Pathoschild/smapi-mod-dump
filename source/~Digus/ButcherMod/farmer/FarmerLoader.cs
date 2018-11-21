@@ -15,14 +15,14 @@ namespace AnimalHusbandryMod.farmer
 
         public static void LoadData()
         {
-            FarmerData = DataLoader.Helper.ReadJsonFile<FarmerData>($"data/farmers/{Constants.SaveFolderName}.json") ?? new FarmerData();
+            FarmerData = DataLoader.Helper.Data.ReadJsonFile<FarmerData>($"data/farmers/{Constants.SaveFolderName}.json") ?? new FarmerData();
         }
 
         public static void SaveData()
         {
             if (Context.IsMainPlayer)
             {
-                DataLoader.Helper.WriteJsonFile<FarmerData>($"data/farmers/{Constants.SaveFolderName}.json", FarmerData);
+                DataLoader.Helper.Data.WriteJsonFile<FarmerData>($"data/farmers/{Constants.SaveFolderName}.json", FarmerData);
             }
         }
     }

@@ -21,8 +21,8 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
             I18N = helper.Translation;
             ModConfig = helper.ReadConfig<ModConfig>();
 
-            CraftingData = DataLoader.Helper.ReadJsonFile<CraftingData>("data\\CraftingRecipes.json") ?? new CraftingData();
-            DataLoader.Helper.WriteJsonFile("data\\CraftingRecipes.json", CraftingData);
+            CraftingData = DataLoader.Helper.Data.ReadJsonFile<CraftingData>("data\\CraftingRecipes.json") ?? new CraftingData();
+            DataLoader.Helper.Data.WriteJsonFile("data\\CraftingRecipes.json", CraftingData);
 
             var editors = Helper.Content.AssetEditors;
             editors.Add(this);

@@ -65,6 +65,8 @@ namespace AnimalHusbandryMod.tools
             x = (int)who.GetToolLocation(false).X;
             y = (int)who.GetToolLocation(false).Y;
             Rectangle rectangle = new Rectangle(x - Game1.tileSize / 2, y - Game1.tileSize / 2, Game1.tileSize, Game1.tileSize);
+            // Added this because for some wierd reason the current value appears subtracted by 5 the first time the tool is used.
+            this.CurrentParentTileIndex = InitialParentTileIndex;
 
             if (Context.IsMainPlayer && !DataLoader.ModConfig.DisableTreats)
             {

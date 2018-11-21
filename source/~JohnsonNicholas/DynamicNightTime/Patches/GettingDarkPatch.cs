@@ -1,7 +1,4 @@
-﻿using StardewModdingAPI.Utilities;
-using System;
-using TwilightShards.Common;
-using TwilightShards.Stardew.Common;
+﻿using TwilightShards.Stardew.Common;
 
 namespace DynamicNightTime.Patches
 {

@@ -1,50 +1,39 @@
 ﻿namespace ClimatesOfFerngillRebuild
 {
-    internal class ClimatesOfFerngillApi
+    public interface IClimatesOfFerngillAPI
     {
-        private SDVMoon Termina;
+        string GetCurrentWeatherName();
+    }
+    
+    public class ClimatesOfFerngillAPI : IClimatesOfFerngillAPI
+    {
         private WeatherConditions CurrentConditions;
-        private WeatherConfig ModConfig;
-        private StaminaDrain StaminaManager;
 
-        //Constructor
-        internal ClimatesOfFerngillApi(SDVMoon moon, WeatherConditions cond, StaminaDrain manager, WeatherConfig config)
+        public void LoadData(WeatherConditions Cond) => CurrentConditions = Cond;
+
+        public ClimatesOfFerngillAPI(WeatherConditions cond)
         {
-            Termina = moon;
-            CurrentConditions = cond;
-            StaminaManager = manager;
-            ModConfig = config;
+            LoadData(cond);
         }
 
-        MoonPhase GetCurrentMoonPhase()
+        public string GetCurrentWeatherName()
         {
-            return Termina.CurrentPhase;
+            return CurrentConditions.Weathers[(int)CurrentConditions.GetCurrentConditions()].ConditionName;
         }
 
-        bool IsFarmerSick()
+        public void SetWeather(string weather)
         {
-            return StaminaManager.IsSick();
+            //TODO: Handle processing.
         }
 
-        CurrentWeather GetWeatherConditions()
+        public double GetTodaysHigh()
         {
-            return CurrentConditions.GetCurrentConditions();
+            return CurrentConditions.TodayHigh;
         }
 
-        bool IsFoggyOutside()
+        public double GetTodaysLow()
         {
-            foreach (ISDVWeather w in CurrentConditions.GetWeatherMatchingType("Fog"))
-            {
-                if (w.IsWeatherVisible)
-                    return true;
-            }
-
-            return false;            
-        }
-
-        bool HasPrecip()
-        {
-            return CurrentConditions.HasPrecip();
+            return CurrentConditions.TodayLow;
         }
 
     }

@@ -1,0 +1,21 @@
+﻿{
+  //Lunar Messages
+  "moon-text.phase-full": "Full Moon",
+  "moon-text.phase-firstqrt": "First Quarter",
+  "moon-text.phase-thirdqrt": "Third Quarter",
+  "moon-text.phase-waningcres": "Waning Crescent",
+  "moon-text.phase-waxingcres": "Waxing Crescent",
+  "moon-text.phase-waninggibb": "Waning Gibbeous",
+  "moon-text.phase-waxinggibb": "Waxing Gibbeous",
+  "moon-text.phase-new": "New Moon",
+  "moon-text.error": "Error",
+
+  "moon-text.moonrise": "The moon rises! Today's phase is {{moonPhase}}.",
+  "moon-text.moonriseBefore6": "The moon rises! Today's phase is {{moonPhase}}. The moon rose at {{riseTime}}",
+  "moon-text.moonset": "The moon sets! Today's phase is {{moonPhase}}",
+  "moon-text.hud_message_full": "It's a full moon! The beaches may have more items, but the ghosts may be about.",
+  "moon-text.hud_message_new": "It's a new moon! The beaches may have less items than normal...",
+  "moon-text.fullmoon_eff": "The powers of the full moon have helped {{cropsAffected}} crops grow..",
+  "moon-text.newmoon_eff": "The powers of the new moon have caused {{cropsAffected}} crops to grow more slower...",
+  "moon-desc.desc_moonphase": "Current Moon Phase: {{moonPhase}}"
+}

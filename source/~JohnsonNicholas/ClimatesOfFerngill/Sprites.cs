@@ -1,5 +1,4 @@
-﻿using EnumsNET;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewModdingAPI;
@@ -24,65 +23,16 @@ namespace ClimatesOfFerngillRebuild
         public class Icons
         {
             public Texture2D WeatherSource;
-            public Texture2D MoonSource;
             public Texture2D FogTexture;
+            public Texture2D DarudeTexture;
             public static Texture2D source2;
 
             public Icons(IContentHelper helper)
             {
-                WeatherSource = helper.Load<Texture2D>(Path.Combine("Assets","WeatherIcons2.png"));
-                MoonSource = helper.Load<Texture2D>(Path.Combine("Assets", "MoonPhases.png"));
+                WeatherSource = helper.Load<Texture2D>(Path.Combine("Assets","WeatherIcons.png"));
                 FogTexture = helper.Load<Texture2D>(Path.Combine("Assets", "ThickerFog.png"));
+                DarudeTexture = helper.Load<Texture2D>(Path.Combine("Assets", "Sandstorm.png"));
                 source2 = Game1.mouseCursors;
-            }
-
-            public Rectangle GetNightMoonSprite(MoonPhase currPhase)
-            {
-                switch (currPhase)
-                {
-                    case MoonPhase.BloodMoon:
-                        return Icons.BloodMoon;
-                    case MoonPhase.NewMoon:
-                        return Icons.NewMoon;
-                    case MoonPhase.WaxingCrescent:
-                        return Icons.WaxingCrescent2;
-                    case MoonPhase.FirstQuarter:
-                        return Icons.FirstQuarter;
-                    case MoonPhase.WaxingGibbeous:
-                        return Icons.WaxingGibbeous;
-                    case MoonPhase.FullMoon:
-                        return Icons.FullMoon;
-                    case MoonPhase.WaningGibbeous:
-                        return Icons.WaningGibbeous;
-                    case MoonPhase.ThirdQuarter:
-                        return Icons.ThirdQuarter;
-                    case MoonPhase.WaningCrescent:
-                        return Icons.WaningCrescent2;
-                }
-
-                return Icons.NewMoon;
-            }
-
-            public Rectangle GetMoonSprite(MoonPhase moon)
-            {
-                if (moon == MoonPhase.FirstQuarter)
-                    return Icons.FirstQuarter;
-                if (moon == MoonPhase.FullMoon)
-                    return Icons.FullMoon;
-                if (moon == MoonPhase.NewMoon)
-                    return Icons.NewMoon;
-                if (moon == MoonPhase.ThirdQuarter)
-                    return Icons.ThirdQuarter;
-                if (moon == MoonPhase.WaningCrescent)
-                    return Icons.WaningCrescent1;
-                if (moon == MoonPhase.WaxingCrescent)
-                    return Icons.WaxingCrescent1;
-                if (moon == MoonPhase.WaningGibbeous)
-                    return Icons.WaningGibbeous;                    
-                if (moon == MoonPhase.WaxingGibbeous)
-                    return Icons.WaxingGibbeous;
-
-                return Icons.NewMoon;
             }
 
             public Rectangle GetWeatherSprite(CurrentWeather condition)
@@ -117,23 +67,7 @@ namespace ClimatesOfFerngillRebuild
                 return Icons.WeatherSunny;
             }
 
-            // These are the positions of each sprite on their sheet.
-            public static readonly Rectangle NewMoon = new Rectangle(7, 23, 34, 36);
-            public static readonly Rectangle WaxingCrescent1 = new Rectangle(53, 22, 38, 38);
-            public static readonly Rectangle WaxingCrescent2 = new Rectangle(101, 20, 38, 40);
-            public static readonly Rectangle WaxingCrescent3 = new Rectangle(151, 23, 35, 38);
-            public static readonly Rectangle FirstQuarter = new Rectangle(198, 21, 38, 41);
-            public static readonly Rectangle FullMoon = new Rectangle(5, 86, 37, 38);
-            public static readonly Rectangle ThirdQuarter = new Rectangle(54, 86, 36, 38);
-            public static readonly Rectangle WaningCrescent1 = new Rectangle(104, 89, 32, 34);
-            public static readonly Rectangle WaningCrescent2 = new Rectangle(149, 87, 38, 37);
-            public static readonly Rectangle WaningCrescent3 = new Rectangle(208, 89, 33, 35);
-            public static readonly Rectangle WaxingGibbeous = new Rectangle(262, 91, 34, 33);
-            public static readonly Rectangle WaningGibbeous = new Rectangle(257, 22, 36, 39);
-            public static readonly Rectangle BloodMoonIntensifies = new Rectangle(312, 30, 41, 39);
-            public static readonly Rectangle BloodMoon = new Rectangle(317, 90, 37, 37);
-
-            //Weather
+           //Weather
             public static readonly Rectangle WeatherSunny = new Rectangle(1, 32, 39, 38);
             public static readonly Rectangle WeatherRainy = new Rectangle(40, 32, 35, 40);
             public static readonly Rectangle WeatherStormy = new Rectangle(77, 32, 39, 40);

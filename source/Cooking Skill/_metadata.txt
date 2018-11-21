@@ -5,9 +5,9 @@ mods:
    Cooking Skill
 
 latest commit:
-   commit 3930a7d732abf8e71664dc875a1f303858091836
+   commit b965f8081adccce99f581c36bc617fe46d44427f
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Tue Aug 21 19:35:37 2018 -0400
+   Date:   Tue Nov 20 11:58:47 2018 -0500
    
-       Update for SpaceCore and fix consumption thing being wrong. 1.1.2
+       Make it actually compile
    

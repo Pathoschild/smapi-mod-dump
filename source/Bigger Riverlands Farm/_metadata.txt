@@ -5,9 +5,9 @@ mods:
    Bigger Riverlands Farm
 
 latest commit:
-   commit 73627e812b827d7369b9460c5e3bd2197bda4b9c
+   commit 565d9d6c1c778462e36a70de8af322ca98e4e109
    Author: JessebotX <43657800+JessebotX@users.noreply.github.com>
-   Date:   Sun Nov 18 15:11:34 2018 -0800
+   Date:   Mon Nov 19 20:49:14 2018 -0800
    
-       added wildernessfarmnolake by hazel214
+       greatness awaits (literally). Added pufferfish mod, edit some html code and did some grandpa's grove updating
    

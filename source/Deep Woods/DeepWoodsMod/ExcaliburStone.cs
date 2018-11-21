@@ -16,9 +16,7 @@ namespace DeepWoodsMod
         private NetBool swordPulledOut = new NetBool(false);
 
         public ExcaliburStone()
-#if SDVBETA
            : base(false)
-#endif
         {
             InitNetFields();
         }

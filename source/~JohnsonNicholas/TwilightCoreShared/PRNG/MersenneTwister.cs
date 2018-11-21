@@ -584,6 +584,11 @@ namespace TwilightShards.Common
             return (uint)(x * NextDoublePositive() + 1);
         }
 
+        public double RollInRange(double min, double max)
+        {
+            return this.NextDouble() * (max - min) + min;
+        }
+
     }
 #pragma warning restore IDE1006 // Naming Styles
 }

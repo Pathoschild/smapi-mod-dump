@@ -9,10 +9,10 @@ namespace DynamicNightTime.Patches
     {
         public static void Postfix(ref int __result)
         {
-            SDVTime calcTime = DynamicNightTime.GetAstroTwilight();
+            SDVTime calcTime = DynamicNightTime.GetNavalTwilight();
             calcTime.ClampToTenMinutes();
 
-             __result = calcTime.ReturnIntTime();
+            __result = calcTime.ReturnIntTime();
         }
     }
 }
