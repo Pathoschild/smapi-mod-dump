@@ -1,7 +1,7 @@
 {
   "serverHotKey": "F9",
-  "profitmargin": 100,
-  "upgradeHouse": 0,
+  "profitmargin": 50,
+  "upgradeHouse": 3,
   "petname": "Funnysnek",
   "farmcavechoicemushrooms": true,
   "communitycenterrun": true,

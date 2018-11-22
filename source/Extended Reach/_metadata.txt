@@ -5,9 +5,9 @@ mods:
    Extended Reach
 
 latest commit:
-   commit dfc98d1b63b7f08079238c2947643bf32e07508b
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Sun Jul 29 19:57:36 2018 -0400
+   commit 57f966b3a578ebcff453f065893e886e637a679b
+   Author: spacechase0 <spacechase0@users.noreply.github.com>
+   Date:   Wed Nov 21 12:46:14 2018 -0500
    
-       No attribute + 1.3 update
+       Fix manifest and stuff
    

@@ -17,6 +17,7 @@ using Rectangle = xTile.Dimensions.Rectangle;
 using StardewValley.Objects;
 using SFarmer = StardewValley.Farmer;
 using Netcode;
+using StardewValley.Network;
 
 namespace MapImageExporter
 {
@@ -279,7 +280,8 @@ namespace MapImageExporter
                 dev.SetRenderTarget(output);
                 dev.Clear(Color.Black);
                 {
-                    loc.map.LoadTileSheets(display);
+                    if ( loc != Game1.currentLocation )
+                        loc.map.LoadTileSheets(display);
                     
                     b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, transform);
                     begun = true;
@@ -360,15 +362,15 @@ namespace MapImageExporter
                         }
 
                         var charsField = Helper.Reflection.GetField<NetCollection<NPC>>(loc, "characters");
-                        var farmersField = Helper.Reflection.GetField<IEnumerable<Farmer>>(loc, "farmers");
+                        var farmersField = Helper.Reflection.GetField<FarmerCollection>(loc, "farmers");
                         var chars = loc.characters;
                         var farmers = loc.farmers;
                         try
                         {
                             if ( !render.Player )
                             {
-                                var type = typeof(Game1).Assembly.GetType("StardewValley.Locations.LocationFarmers");
-                                var val = (IEnumerable<Farmer>)type.GetConstructor(new Type[] { typeof(GameLocation) }).Invoke(new object[] { loc });
+                                var type = typeof(Game1).Assembly.GetType("StardewValley.Network.FarmerCollection");
+                                var val = (FarmerCollection)type.GetConstructor(new Type[] { typeof(GameLocation) }).Invoke(new object[] { loc });
                                 farmersField.SetValue(val);
                             }
                             if ( !render.Characters )
@@ -608,7 +610,7 @@ namespace MapImageExporter
 
                 string dirPath = Helper.DirectoryPath + "/../../MapExport";
                 string imagePath = dirPath + "/" + name + ".png";
-                Log.info("Saving " + name + " to " + imagePath + "...");
+                Log.info("Saving " + name + " to " + Path.GetFullPath(imagePath) + "...");
 
                 if (!Directory.Exists(dirPath))
                     Directory.CreateDirectory(dirPath);

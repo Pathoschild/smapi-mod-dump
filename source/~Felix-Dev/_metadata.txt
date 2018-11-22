@@ -6,9 +6,9 @@ mods:
    Tool Upgrade Delivery Service
 
 latest commit:
-   commit d32294750a7fe9c3e87af59104791d41068e3a18
+   commit 899a020b7611444185ea04ac37c7d716d8be5aa2
    Author: Felix-Dev <FelixDev91@gmail.com>
-   Date:   Tue Nov 13 16:46:31 2018 +0100
+   Date:   Wed Nov 21 20:06:04 2018 +0100
    
-       DialogueBoxEx: Added exceptions for reflection cases.
+       ArchaeologyHouse Mod: Extended release notes for version 1.2.1.
    

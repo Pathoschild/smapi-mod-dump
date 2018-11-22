@@ -5,9 +5,9 @@ mods:
    Seed Catalogue
 
 latest commit:
-   commit 0f0150bbb9a426952850ddfb3b2ed2173a16983b
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Tue Aug 21 19:37:44 2018 -0400
+   commit 4fb945308f62636927d7b699e4ea8f5843e4965a
+   Author: spacechase0 <spacechase0@users.noreply.github.com>
+   Date:   Wed Nov 21 12:54:04 2018 -0500
    
-       Forgot to commit 1.3
+       Fix manifest and stuff
    

@@ -6,5 +6,6 @@
   "UniqueID": "spacechase0.BiggerBackpack",
   "PerSaveConfigs": false,
   "EntryDll": "BiggerBackpack.dll",
-  "UpdateKeys": [ "Nexus:1845", "Chucklefish:5191", "spacechase0:bigger-backpack" ]
+  "UpdateKeys": [ "Nexus:1845", "Chucklefish:5191" ],
+  "spacechase0": "bigger-backpack"
 }

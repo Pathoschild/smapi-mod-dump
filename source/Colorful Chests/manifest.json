@@ -1,15 +1,11 @@
 {
   "Name": "Colorful Chests",
   "Author": "spacechase0",
-  "Version": {
-    "MajorVersion": 1,
-    "MinorVersion": 2,
-    "PatchVersion": 1,
-    "Build": ""
-  },
+  "Version": "1.2.2",
   "Description": "More diverse color choices for chests.",
   "UniqueID": "spacechase0.ColorfulChests",
   "PerSaveConfigs": false,
   "EntryDll": "ColorfulChests.dll",
-  "UpdateKeys": [ "Nexus:" ]
+  "UpdateKeys": [ "Nexus:1623", "Chucklefish:5085" ],
+  "spacechase0": "colorful-chests"
 }

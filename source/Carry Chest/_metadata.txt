@@ -5,10 +5,9 @@ mods:
    Carry Chest
 
 latest commit:
-   commit f9e4b0c579bb9302cbf4f8af5932bc678243564a
-   Merge: 6bf9b38 b0de4b4
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Aug 3 23:02:17 2018 -0400
+   commit 80f6fc815b095228ca3b7d8785f7ac4d9ea2602f
+   Author: spacechase0 <spacechase0@users.noreply.github.com>
+   Date:   Wed Nov 21 12:39:40 2018 -0500
    
-       Merge remote-tracking branch 'origin/master'
+       Fix manifest and stuff
    

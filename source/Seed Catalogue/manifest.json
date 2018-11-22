@@ -6,10 +6,11 @@
   "UniqueID": "spacechase0.SeedCatalogue",
   "PerSaveConfigs": false,
   "EntryDll": "SeedCatalogue.dll",
-  "UpdateKeys": [ "Nexus:1640", "Chucklefish:5090", "spacechase0:seed-catalogue" ],
+  "UpdateKeys": [ "Nexus:1640", "Chucklefish:5090" ],
   "Dependencies": [
     {
       "UniqueID": "spacechase0.SpaceCore"
     }
-  ]
+  ],
+  "spacechase0": "seed-catalogue"
 }

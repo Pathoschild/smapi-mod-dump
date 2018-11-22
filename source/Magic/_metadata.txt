@@ -5,9 +5,9 @@ mods:
    Magic
 
 latest commit:
-   commit 7095dbf01fe126a54cb7d15554ef41efa061a5d8
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Sun Aug 5 18:22:21 2018 -0400
+   commit db6a3dfaf1a2ef1417ca10ec16c834588eef1c59
+   Author: spacechase0 <spacechase0@users.noreply.github.com>
+   Date:   Wed Nov 21 12:49:00 2018 -0500
    
-       1.3 and MP support
+       Fix manifest
    

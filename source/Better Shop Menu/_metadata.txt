@@ -5,12 +5,9 @@ mods:
    Better Shop Menu
 
 latest commit:
-   commit fca79aa1e5a3562bb0e6280caf8b34575cdc4c18
-   Merge: 24e11b1 bd4542d
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sun Apr 15 10:27:24 2018 -0400
+   commit 682dcfdf3498c2df5684cb17604c6aaf6d63cf13
+   Author: spacechase0 <spacechase0@users.noreply.github.com>
+   Date:   Wed Nov 21 12:34:35 2018 -0500
    
-       Merge pull request #1 from Pathoschild/patch-1
-       
-       Standardise manifest.json & enable update checks
+       Fixes and stuff
    

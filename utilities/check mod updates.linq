@@ -521,7 +521,7 @@ IEnumerable<ReportEntry> GetReport(IEnumerable<ModData> mods, bool forBeta)
 			{
 				new { Version = mod.ApiRecord?.Main?.Version, Url = mod.ApiRecord?.Main?.Url },
 				new { Version = mod.ApiRecord?.Optional?.Version, Url = mod.ApiRecord?.Optional?.Url },
-				new { Version = mod.GetUnofficialVersion(forBeta), Url = "https://stardewvalleywiki.com/Modding:SMAPI_compatibility" }
+				new { Version = mod.GetUnofficialVersion(forBeta), Url = $"https://stardewvalleywiki.com/Modding:SMAPI_compatibility#{this.GetAnchor(mod.ApiRecord?.Metadata?.Name ?? mod.Folder.DisplayName)}" }
 			};
 			ISemanticVersion latestVersion = mod.InstalledVersion;
 			string downloadUrl = null;
@@ -840,4 +840,16 @@ class ReportEntry
 		}
 
 	}
+}
+
+/// <summary>Get the unique anchor for the mod on the compatibility list, excluding the '#' symbol.</summary>
+/// <param name="name">The standardised mod name.</param>
+private string GetAnchor(string name)
+{
+	name = name.Replace(' ', '_');
+	return WebUtility
+		.UrlEncode(name)
+		?.Replace('%', '.')
+		.Replace("(", ".28")
+		.Replace(")", ".29");
 }

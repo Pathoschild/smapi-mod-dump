@@ -5,9 +5,9 @@ mods:
    Object Time Left
 
 latest commit:
-   commit 6bc781d19f0d36fb6c15ec0af082ce3a96d3c308
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jul 7 12:31:58 2017 -0400
+   commit b3809fe435fc9c5e8f6291efa12afee4affabd18
+   Author: spacechase0 <spacechase0@users.noreply.github.com>
+   Date:   Wed Nov 21 12:51:08 2018 -0500
    
-       Initial commit
+       1.3 and stuff
    

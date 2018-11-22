@@ -5,9 +5,9 @@ mods:
    Customize Exterior
 
 latest commit:
-   commit c23abf0da4e2d91202cd10693a5f1c253a7abe80
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Sun Aug 5 15:04:38 2018 -0400
+   commit fec5933d5166c6086639d5cf787ac60355880cfe
+   Author: spacechase0 <spacechase0@users.noreply.github.com>
+   Date:   Wed Nov 21 12:45:16 2018 -0500
    
-       MP support
+       Fixes and stuff
    

@@ -58,6 +58,7 @@
     <ProjectReference Include="..\SpaceCore\SpaceCore.csproj">
       <Project>{BA657CB4-93ED-4C3A-A66E-86954BEB4CE6}</Project>
       <Name>SpaceCore</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

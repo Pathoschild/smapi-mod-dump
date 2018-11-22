@@ -5,9 +5,9 @@ mods:
    More Grass Starters
 
 latest commit:
-   commit ca8c8d4a8ddfdc2fe70e8734d67d4fb6d825b8a2
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Thu Feb 1 19:20:37 2018 -0500
+   commit 51b52f3ce20a86a87257c8e47a6fb6197aa21ee4
+   Author: spacechase0 <spacechase0@users.noreply.github.com>
+   Date:   Wed Nov 21 12:44:30 2018 -0500
    
-       Change from CEH to PyTK. Version 1.0.1
+       Fixes and stuff
    

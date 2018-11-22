@@ -197,12 +197,12 @@ namespace Magic
             return spell.canCast(player, level);
         }
 
-        public static void castSpell(this SFarmer player, string spellId, int level)
+        public static void castSpell(this SFarmer player, string spellId, int level, int x = int.MinValue, int y = int.MinValue)
         {
-            castSpell(player, SpellBook.get(spellId), level);
+            castSpell(player, SpellBook.get(spellId), level, x, y);
         }
 
-        public static void castSpell(this SFarmer player, Spell spell, int level)
+        public static void castSpell(this SFarmer player, Spell spell, int level, int x = int.MinValue, int y = int.MinValue)
         {
             if (player == Game1.player)
             {
@@ -211,10 +211,14 @@ namespace Magic
                 {
                     writer.Write(spell.FullId);
                     writer.Write(level);
-                    SpaceCore.SpaceCore.BroadcastMessage(Magic.MSG_CAST, stream.ToArray());
+                    writer.Write((int)(Game1.getMouseX() + Game1.viewport.X));
+                    writer.Write((int)(Game1.getMouseY() + Game1.viewport.Y));
+                    SpaceCore.Networking.BroadcastMessage(Magic.MSG_CAST, stream.ToArray());
                 }
             }
-            Point pos = new Point(Game1.getMouseX() + Game1.viewport.X, Game1.getMouseY() + Game1.viewport.Y);
+            Point pos = new Point(x, y);
+            if (x == int.MinValue && y == int.MinValue)
+                pos = new Point(Game1.getMouseX() + Game1.viewport.X, Game1.getMouseY() + Game1.viewport.Y);
             spell.onCast(player, level, pos.X, pos.Y);
         }
     }

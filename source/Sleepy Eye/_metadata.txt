@@ -5,9 +5,9 @@ mods:
    Sleepy Eye
 
 latest commit:
-   commit 102ab5aff83505c20e85ca6675aae199533aaebf
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Tue Aug 1 14:55:32 2017 -0400
+   commit 57e9765a357ceedd6e00316540f5dcb62839b428
+   Author: spacechase0 <spacechase0@users.noreply.github.com>
+   Date:   Wed Nov 21 12:55:33 2018 -0500
    
-       Veresion 1.0.1.
+       EntoaroxFramework > PyTK and stuff
    

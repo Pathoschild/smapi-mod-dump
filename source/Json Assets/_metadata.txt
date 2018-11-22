@@ -5,9 +5,9 @@ mods:
    Json Assets
 
 latest commit:
-   commit 93e515cc2e32fb9922060b289bc6743578860e19
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Aug 17 13:33:44 2018 -0400
+   commit ae6172173fa983d0f840ce2f68b74f372d7dabe2
+   Author: spacechase0 <spacechase0@users.noreply.github.com>
+   Date:   Wed Nov 21 16:43:41 2018 -0500
    
-       Potential ID fix stuff, and some stuff I forgot to commit
+       Forgot to remove the debug statements
    

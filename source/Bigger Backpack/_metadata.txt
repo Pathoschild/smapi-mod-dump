@@ -5,9 +5,9 @@ mods:
    Bigger Backpack
 
 latest commit:
-   commit 4b42c8f275ffc909fbfa610504662501af14c828
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Tue Aug 21 19:36:52 2018 -0400
+   commit 03fc48026941055528b38a14521b3675bd9707f0
+   Author: spacechase0 <spacechase0@users.noreply.github.com>
+   Date:   Wed Nov 21 12:35:13 2018 -0500
    
-       Apparently I never commited 1.3? Also bugfixes
+       Fix manifest and stuff
    

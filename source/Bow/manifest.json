@@ -6,7 +6,7 @@
   "UniqueID": "spacechase0.Bow",
   "PerSaveConfigs": false,
   "EntryDll": "Bow.dll",
-  "UpdateKeys": [ "Nexus:2756", "Chucklefish:5523", "spacechase0:bow" ],
+  "UpdateKeys": [ "Nexus:2756", "Chucklefish:5523" ],
   "Dependencies": [
     {
       "UniqueID": "Platonymous.Toolkit"
@@ -14,5 +14,6 @@
     {
       "UniqueID": "spacechase0.SpaceCore"
     }
-  ]
+  ],
+  "spacechase0": "bow"
 }

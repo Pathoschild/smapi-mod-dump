@@ -1,0 +1,13 @@
+url:
+   https://github.com/Ilyaki/CapitalistSplitMoney.git
+
+mods:
+   Capitalist Split Money
+
+latest commit:
+   commit fbec08a4a462bba2266ad3fa986558c2006e42d3
+   Author: Ilyaki <35632254+Ilyaki@users.noreply.github.com>
+   Date:   Wed Nov 21 16:18:33 2018 +0000
+   
+       Update README.md
+   

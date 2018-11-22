@@ -5,10 +5,9 @@ mods:
    Three Heart Flower Festival Dance Partners
 
 latest commit:
-   commit 89973b59dbdb8f9190fd336f2fa759fcfd86495c
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Thu Oct 12 09:10:44 2017 -0400
+   commit c762ed952c1c8eb47815633d83597f2cc2077838
+   Author: spacechase0 <spacechase0@users.noreply.github.com>
+   Date:   Wed Nov 21 12:57:03 2018 -0500
    
-       Change to mod class to just Mod like my other mods
-       Also restore packages.config that I accidentally removed
+       1,3 and stuff
    

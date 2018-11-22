@@ -6,9 +6,9 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit 7d716063bebb9a17ebe62df1e1e7e945dd606574
+   commit 742bcf0c19cb37a70188feb6f21fde455cc6d75c
    Author: Bouhm <bbouhm@gmail.com>
-   Date:   Mon Nov 19 13:24:32 2018 -0800
+   Date:   Wed Nov 21 01:02:13 2018 -0800
    
-       Update for SDV 1.3.32
+       fix project references
    

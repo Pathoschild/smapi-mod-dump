@@ -5,9 +5,9 @@ mods:
    SpaceCore
 
 latest commit:
-   commit f4e78e2accce1d086482542479a748b6598620c6
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Thu Aug 30 15:21:10 2018 -0400
+   commit c01d26a99d47c976030f5ffbe0177080b3b75bd4
+   Author: spacechase0 <spacechase0@users.noreply.github.com>
+   Date:   Wed Nov 21 12:56:25 2018 -0500
    
-       Version 1.2.2.
+       Added BeforeWarp event
    

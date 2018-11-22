@@ -29,15 +29,12 @@ namespace ColorfulChests
 
         private void onMenuChanged(object sender, EventArgsClickableMenuChanged args)
         {
-            if ( activeMenu != null && args.PriorMenu == activeMenu )
-            {
-                activeMenu = null;
-                activeChest = null;
-                GraphicsEvents.OnPostRenderGuiEvent -= onPostRenderGui;
-                ControlEvents.MouseChanged -= onMouseChanged;
-                return;
-            }
-            if ( args.NewMenu is ItemGrabMenu menu && Helper.Reflection.GetPrivateField<Item>(menu, "sourceItem").GetValue() is Chest chest )
+            activeMenu = null;
+            activeChest = null;
+            GraphicsEvents.OnPostRenderGuiEvent -= onPostRenderGui;
+            ControlEvents.MouseChanged -= onMouseChanged;
+            
+            if ( args.NewMenu is ItemGrabMenu menu && Helper.Reflection.GetField<Item>(menu, "sourceItem").GetValue() is Chest chest )
             {
                 activeMenu = menu;
                 activeChest = chest;
@@ -50,6 +47,9 @@ namespace ColorfulChests
 
         private void onPostRenderGui(object sender, EventArgs args)
         {
+            if (activeMenu == null)
+                return;
+
             SpriteBatch sb = Game1.spriteBatch;
             //sb.Begin();
             sb.Draw(hsl, new Microsoft.Xna.Framework.Vector2((Game1.viewport.Width - hsl.Width) / 2, 32), Color.White);
@@ -69,7 +69,7 @@ namespace ColorfulChests
 
                     var cols = new Color[hsl.Width * hsl.Height];
                     hsl.GetData<Color>(cols);
-                    activeChest.playerChoiceColor = cols[ pos.X + pos.Y * hsl.Width ];
+                    activeChest.playerChoiceColor.Value = cols[ pos.X + pos.Y * hsl.Width ];
                 }
             }
         }
