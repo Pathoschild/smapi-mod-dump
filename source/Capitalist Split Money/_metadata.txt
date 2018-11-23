@@ -5,9 +5,9 @@ mods:
    Capitalist Split Money
 
 latest commit:
-   commit fbec08a4a462bba2266ad3fa986558c2006e42d3
+   commit fc04b3c40a33b2884610f203f2141d48652caab4
    Author: Ilyaki <35632254+Ilyaki@users.noreply.github.com>
-   Date:   Wed Nov 21 16:18:33 2018 +0000
+   Date:   Thu Nov 22 11:36:10 2018 +0000
    
-       Update README.md
+       Create LICENSE
    

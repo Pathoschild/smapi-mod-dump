@@ -1,0 +1,8 @@
+﻿{
+  "Name": "AutoGate",
+  "Author": "Teban100 or Eroticremix (pick your poison)",
+  "Version": "1.1.1-unofficial.1-esca",
+  "Description": "Makes passing through gates automatic",
+  "UniqueID": "AutoGate",
+  "EntryDll": "AutoGate.dll"
+}

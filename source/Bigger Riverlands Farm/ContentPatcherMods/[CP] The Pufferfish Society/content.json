@@ -1,9 +1,15 @@
 {
-	"Format": "1.4",
+	"Format": "1.5",
 	"ConfigSchema": {
         "Dynamic Pufferfish Changes": {
             "AllowValues": "true, false"
         },
+		"Loved Gift": {
+			"AllowValues": "true, false"
+		},
+		"Spouse Rooms Change": {
+			"AllowValues": "true, false",
+		},
 		"Puffercool": {
 			"AllowValues": "true, false"
 		},
@@ -24,9 +30,671 @@
 		},
     },
 	"Changes": [
+		//Main Spouse Room Map File Change 
+		{
+			//spouse room tbin change
+			
+			"LogName": "Spouse Rooms Change",
+			"Action": "Load",
+			"Target": "Maps/spouseRooms",
+			"FromFile": "assets/spouseRooms.tbin",
+			"When": {
+				"Spouse Rooms Change": "true",
+			},
+		},
+		
+		//Spouse Room change using tilesheet; patching content/maps/towninterior, you would also need to patch the content/towninterior tilesheet as well (see below)
+		{
+			//pufferfish
+			"LogName": "Spouse Rooms with Pufferfish",
+			"Action": "EditImage",
+			"Target": "Maps/towninterior",
+			"FromFile": "assets/sdvpufferfish.png",
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+			"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+			"When": {
+				"Spouse Rooms Change": "true",
+				"Puffercool": "false",
+			},
+		},
+		{
+			//puffercool
+			"LogName": "Spouse Rooms with Puffercool", 
+			"Action": "EditImage",
+			"Target": "Maps/towninterior",
+			"FromFile": "assets/sdvpuffercool.png",
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+			"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+			"When": {
+				"Spouse Rooms Change": "true",
+				"Puffercool": "true",
+			},
+		},
+		{
+			//puffercry
+			"LogName": "Spouse Rooms with Puffercry",
+			"Action": "EditImage",
+			"Target": "Maps/towninterior",
+			"FromFile": "assets/sdvpuffercry.png",
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+			"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+			"When": {
+				"Spouse Rooms Change": "true",
+				"Dynamic Pufferfish Changes": "true",
+				"Puffercry": "true",
+				"Weather": "rain",
+			},
+		},
+		{
+			//pufferfear
+			"LogName": "Spouse Rooms with Pufferfear",
+			"Action": "EditImage",
+			"Target": "Maps/towninterior",
+			"FromFile": "assets/sdvpufferfear.png",
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+			"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+			"When": {
+				"Spouse Rooms Change": "true",
+				"Dynamic Pufferfish Changes": "true",
+				"Pufferfear": "true",
+				"Weather": "snow",
+			},
+		},
+		{
+			//pufferping
+			"LogName": "Spouse Rooms with Pufferping",
+			"Action": "EditImage",
+			"Target": "Maps/towninterior",
+			"FromFile": "assets/sdvpufferping.png",
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+			"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+			"When": {
+				"Spouse Rooms Change": "true",
+				"Dynamic Pufferfish Changes": "true",
+				"Pufferping": "true",
+				"Weather": "storm",
+			},
+		},
+		//pufferblush triggers
+			{
+				//pufferblush - abigail
+				"LogName": "Abigail's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "Maps/towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Abigail": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - emily
+				"LogName": "Emily's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "Maps/towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Emily": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - haley
+				"LogName": "Haley's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "Maps/towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Haley": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - leah
+				"LogName": "Leah's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "Maps/towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Leah": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - maru
+				"LogName": "Maru's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "Maps/towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Maru": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - penny
+				"LogName": "Penny's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "Maps/towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Penny": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - alex
+				"LogName": "Alex's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "Maps/towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Alex": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - elliott
+				"LogName": "Elliott's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "Maps/towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Elliott": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - harvey
+				"LogName": "Harvey's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "Maps/towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Harvey": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - sam
+				"LogName": "Sam's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "Maps/towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Sam": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - sebastian
+				"LogName": "Sebastian's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "Maps/towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Sebastian": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - shane
+				"LogName": "Shane's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "Maps/towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Shane": "Engaged",
+				},	
+			},
+		{
+			//pufferthink
+			"LogName": "Spouse Rooms with Pufferthink",
+			"Action": "EditImage",
+			"Target": "Maps/towninterior",
+			"FromFile": "assets/sdvpufferthink.png",
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+			"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+			"When": {
+				"Spouse Rooms Change": "true",
+				"Dynamic Pufferfish Changes": "true",
+				"Pufferthink": "true",
+				"DayEvent": "dance of the moonlight jellies, egg festival, feast of the winter star, festival of ice, flower dance, luau, stardew valley fair, spirit's eve",
+			},
+		},
+		
+		//another patch required to replace the tilesheet in the Content folder this time
+		{
+			//pufferfish
+			"LogName": "Spouse Rooms with Pufferfish",
+			"Action": "EditImage",
+			"Target": "towninterior",
+			"FromFile": "assets/sdvpufferfish.png",
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+			"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+			"When": {
+				"Spouse Rooms Change": "true",
+				"Puffercool": "false",
+			},
+		},
+		{
+			//puffercool
+			"LogName": "Spouse Rooms with Puffercool", 
+			"Action": "EditImage",
+			"Target": "towninterior",
+			"FromFile": "assets/sdvpuffercool.png",
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+			"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+			"When": {
+				"Spouse Rooms Change": "true",
+				"Puffercool": "true",
+			},
+		},
+		{
+			//puffercry
+			"LogName": "Spouse Rooms with Puffercry",
+			"Action": "EditImage",
+			"Target": "towninterior",
+			"FromFile": "assets/sdvpuffercry.png",
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+			"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+			"When": {
+				"Spouse Rooms Change": "true",
+				"Dynamic Pufferfish Changes": "true",
+				"Puffercry": "true",
+				"Weather": "rain",
+			},
+		},
+		{
+			//pufferfear
+			"LogName": "Spouse Rooms with Pufferfear",
+			"Action": "EditImage",
+			"Target": "towninterior",
+			"FromFile": "assets/sdvpufferfear.png",
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+			"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+			"When": {
+				"Spouse Rooms Change": "true",
+				"Dynamic Pufferfish Changes": "true",
+				"Pufferfear": "true",
+				"Weather": "snow",
+			},
+		},
+		{
+			//pufferping
+			"LogName": "Spouse Rooms with Pufferping",
+			"Action": "EditImage",
+			"Target": "towninterior",
+			"FromFile": "assets/sdvpufferping.png",
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+			"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+			"When": {
+				"Spouse Rooms Change": "true",
+				"Dynamic Pufferfish Changes": "true",
+				"Pufferping": "true",
+				"Weather": "storm",
+			},
+		},
+		//pufferblush triggers
+			{
+				//pufferblush - abigail
+				"LogName": "Abigail's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Abigail": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - emily
+				"LogName": "Emily's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Emily": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - haley
+				"LogName": "Haley's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Haley": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - leah
+				"LogName": "Leah's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Leah": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - maru
+				"LogName": "Maru's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Maru": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - penny
+				"LogName": "Penny's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Penny": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - alex
+				"LogName": "Alex's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Alex": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - elliott
+				"LogName": "Elliott's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Elliott": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - harvey
+				"LogName": "Harvey's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Harvey": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - sam
+				"LogName": "Sam's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Sam": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - sebastian
+				"LogName": "Sebastian's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Sebastian": "Engaged",
+				},	
+			},
+			{
+				//pufferblush - shane
+				"LogName": "Shane's Spouse Room with Pufferblush",
+				"Action": "EditImage",
+				"Target": "towninterior",
+				"FromFile": "assets/sdvpufferblush.png",
+				"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+				"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+				"When": {
+					"Spouse Rooms Change": "true",
+					"Dynamic Pufferfish Changes": "true",
+					"Pufferblush": "true",
+					"Relationship:Shane": "Engaged",
+				},	
+			},
+		{
+			//pufferthink
+			"LogName": "Spouse Rooms with Pufferthink",
+			"Action": "EditImage",
+			"Target": "towninterior",
+			"FromFile": "assets/sdvpufferthink.png",
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+			"ToArea": { "X": 0, "Y": 512, "Width": 16, "Height": 16 },
+			"When": {
+				"Spouse Rooms Change": "true",
+				"Dynamic Pufferfish Changes": "true",
+				"Pufferthink": "true",
+				"DayEvent": "dance of the moonlight jellies, egg festival, feast of the winter star, festival of ice, flower dance, luau, stardew valley fair, spirit's eve",
+			},
+		},
+	
+		//loved gift
+		{
+			"LogName": "Loved Gift",
+			"Action": "EditData",
+			"Target": "Data/NPCGiftTastes",
+			"Fields": {
+				"Universal_Love": {
+					0: "128 74 446 797 373",
+				},
+				"Robin": {
+					1: "128 224 426 636",
+				},
+				"Demetrius": {
+					1: "128 207 232 233 400",
+				},
+				"Maru": {
+					1: "128 72 197 190 215 222 243 336 337 400 787",
+				},
+				"Sebastian": {
+					1: "128 84 227 236 575 305",
+				},
+				"Linus": {
+					1: "128 88 90 234 242 280",
+				},
+				"Pierre": {
+					1: "128 202",
+				},
+				"Caroline": {
+					1: "128 213 593",
+				},
+				"Alex": {
+					1: "128 201 212 662 664",
+				},
+				"George": {
+					1: "128 20 205",
+				},
+				"Evelyn": {
+					1: "128 72 220 239 284 591 595",
+				},
+				"Lewis": {
+					1: "128 200 208 235 260",
+				},
+				"Clint": {
+					1: "128 60 62 64 66 68 70 336 337 605 649 749",
+				},
+				"Penny": {
+					1: "128 60 376 651 72 164 218 230 244 254",
+				},
+				"Pam": {
+					1: "128 24 90 199 208 303 346 459",
+				},
+				"Emily": {
+					1: "128 60 62 64 66 68 70 241 428 440",
+				},
+				"Haley": {
+					1: "128 221 421 610 88",
+				},
+				"Jas": {
+					1: "128 221 595 604",
+				},
+				"Vincent": {
+					1: "128 221 398 612",
+				},
+				"Jodi": {
+					1: "128 72 200 211 214 220 222 225 231",
+				},
+				"Kent": {
+					1: "128 607 649",
+				},
+				"Sam": {
+					1: "128 90 206 655 658 562 731",
+				},
+				"Leah": {
+					1: "128 196 200 348 606 651 650 426 430",
+				},
+				"Shane": {
+					1: "128 206 215 260 346",
+				},
+				"Marnie": {
+					1: "128 72 221 240 608",
+				},
+				"Elliott": {
+					1: "128 715 732 218 444 637",
+				},
+				"Gus": {
+					1: "128 72 213 635 729",
+				},
+				"Dwarf": {
+					1: "128 60 62 64 66 68 70 749",
+				},
+				"Wizard": {
+					1: "128 155 422 769 768",
+				},
+				"Harvey": {
+					1: "128 348 237 432 395 342",
+				},
+				"Sandy": {
+					1: "128 18 402 418",
+				},
+				"Willy": {
+					1: "128 72 143 149 154 276 337 698 459",
+				},
+				"Krobus": {
+					1: "128 72 16 276 337 305 308",
+				},
+			},
+			"When": {
+				"Loved Gift": "true",
+			},
+		},
 		
 		//sdvpuffercool
 		{
+			"LogName": "Default to Puffercool",
 			"Action": "EditImage",
 			"Target": "Maps/springobjects",
 			"FromFile": "assets/sdvpuffercool.png",
@@ -39,6 +707,7 @@
 		
 		//sdvpuffercry
 		{
+			"LogName": "Puffercry Trigger When Raining",
 			"Action": "EditImage",
 			"Target": "Maps/springobjects",
 			"FromFile": "assets/sdvpuffercry.png",
@@ -53,6 +722,7 @@
 		
 		//sdvpufferfear
 		{
+			"LogName": "Pufferfear Trigger When Snowing",
 			"Action": "EditImage",
 			"Target": "Maps/springobjects",
 			"FromFile": "assets/sdvpufferfear.png",
@@ -67,6 +737,7 @@
 		
 		//sdvpufferping
 		{
+			"LogName": "Pufferping Trigger When Storm",
 			"Action": "EditImage",
 			"Target": "Maps/springobjects",
 			"FromFile": "assets/sdvpufferping.png",
@@ -81,6 +752,7 @@
 		
 		//sdvpufferblush
 		{
+			"LogName": "Pufferblush Trigger When Wedding",
 			"Action": "EditImage",
 			"Target": "Maps/springobjects",
 			"FromFile": "assets/sdvpufferblush.png",
@@ -95,6 +767,7 @@
 		
 		//sdvpufferthink
 		{
+			"LogName": "Pufferthink Trigger When DayEvent",
 			"Action": "EditImage",
 			"Target": "Maps/springobjects",
 			"FromFile": "assets/sdvpufferthink.png",

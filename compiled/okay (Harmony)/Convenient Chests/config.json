@@ -1,0 +1,10 @@
+{
+  "CategorizeChests": true,
+  "StashToExistingStacks": true,
+  "StashToNearbyChests": true,
+  "StashRadius": 5,
+  "StashKey": "Q",
+  "StashButton": "RightStick",
+  "CraftFromChests": true,
+  "CraftRadius": 5
+}

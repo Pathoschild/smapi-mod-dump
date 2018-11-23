@@ -5,9 +5,9 @@ mods:
    Convenient Chests
 
 latest commit:
-   commit 11cf3def27c268a29a74d1c1defe1653ca3c5308
-   Author: Guido Kubach <guido.kubach@media-it-support.de>
-   Date:   Mon Aug 6 14:23:25 2018 +0200
+   commit 9ee6b4d816045f9d1ba5706eabc0597e3e88ee5e
+   Author: Guido Kubach <guido.kubach@campus.lmu.de>
+   Date:   Thu Nov 22 13:09:43 2018 +0100
    
-       Updated for SDV 1.3 / SMAPI 2.6
+       2.8.2 version bump
    
