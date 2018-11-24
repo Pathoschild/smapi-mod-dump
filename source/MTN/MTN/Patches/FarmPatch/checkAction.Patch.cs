@@ -21,7 +21,7 @@ namespace MTN.Patches.FarmPatch
             int i;
             var codes = new List<CodeInstruction>(instructions);
 
-            for (i = 135; i < 196; i++)
+            for (i = 136; i < 197; i++)
             {
                 codes[i].opcode = OpCodes.Nop;
             }

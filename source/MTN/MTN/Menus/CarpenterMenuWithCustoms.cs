@@ -154,8 +154,8 @@ namespace MTN.Menus
 
             farmSelectBackButton = new ClickableTextureComponent(new XNARectangle(xPositionOnScreen - 64 - 24, yPositionOnScreen - 64, 48, 44), Game1.mouseCursors, new XNARectangle(352, 495, 12, 11), 4f, false);
 
-            this.demolishButton.visible = (int)Game1.multiplayerMode == 0;
-            this.moveButton.visible = (int)Game1.multiplayerMode == 0;
+            this.demolishButton.visible = Game1.IsMasterGame;
+            this.moveButton.visible = Game1.IsMasterGame;
             if (!this.demolishButton.visible) {
                 this.upgradeIcon.rightNeighborID = this.demolishButton.rightNeighborID;
                 this.okButton.rightNeighborID = this.demolishButton.rightNeighborID;

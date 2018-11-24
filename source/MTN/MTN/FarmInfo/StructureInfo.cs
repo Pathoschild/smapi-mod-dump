@@ -56,9 +56,19 @@ namespace MTN.FarmInfo
         public Placement coordinates = null;
         //For Buildings, this is the point of the door. For anything else, the point to interact said object with.
         public WarpPoint pointOfInteraction = null;
+        // For Buildings, uses custom point to interact instead of default
+        public bool useCustomMapPoints = false;
+
         private bool isBuilding = false;
 
         public StructureInfo() { }
+
+        public StructureInfo(Placement coordinates, WarpPoint pointOfInteraction, bool useCustomMapPoints)
+        {
+            this.coordinates = coordinates;
+            this.pointOfInteraction = pointOfInteraction;
+            this.useCustomMapPoints = useCustomMapPoints;
+        }
 
         public StructureInfo(Placement coordinates, WarpPoint pointOfInteraction)
         {

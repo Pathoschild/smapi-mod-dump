@@ -8,12 +8,6 @@ using StardewValley.Network;
 using StardewValley.SDKs;
 using System;
 using System.Collections.Generic;
-using StardewModdingAPI;
-using System.IO;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MTN {
 
@@ -33,51 +27,8 @@ namespace MTN {
         private ulong uploadByteAvg = 0;
         private ulong uploadByteTotal = 0;
 
-        public bool massSync { get; set; } = false;
-        public bool trackSize = true;
-
-        private Dictionary<long, List<PlayerMod>> playerMods;
-        public Blacklist blacklist;
-
         public MTNMultiplayer() {
             Memory.multiplayer = this;
-            blacklist = Memory.instance.Helper.ReadJsonFile<Blacklist>("blacklist.json") ?? new Blacklist();
-            playerMods = new Dictionary<long, List<PlayerMod>>();
-        }
-
-        public void addToBlackList(string uniqueID) {
-            blacklist.bannedID.Add(uniqueID);
-            Memory.instance.Helper.WriteJsonFile<Blacklist>("blacklist.json", blacklist);
-        }
-
-        public void removeFromBlackList(string uniqueID) {
-            if (blacklist.bannedID.Remove(uniqueID)) {
-                Memory.instance.Helper.WriteJsonFile<Blacklist>("blacklist.json", blacklist);
-            } else {
-                Memory.instance.Monitor.Log($"Error: Mod with UniqueID { uniqueID } not found.");
-            }
-        }
-
-        public void printBlackList() {
-            Memory.instance.Monitor.Log("Blacklisted Mods:");
-            if (blacklist.bannedID.Count == 0) {
-                Memory.instance.Monitor.Log(" - None");
-            } else {
-                foreach (string s in blacklist.bannedID) {
-                    Memory.instance.Monitor.Log($" - {s}");
-                }
-            }
-        }
-
-        public void resetCounts() {
-            tickCount = 0;
-            minutesPassed = 0;
-            downloadByteCount = 0;
-            downloadByteAvg = 0;
-            downloadByteTotal = 0;
-            uploadByteCount = 0;
-            uploadByteAvg = 0;
-            uploadByteTotal = 0;
         }
 
         public void countTick() {
@@ -147,10 +98,6 @@ namespace MTN {
                     }
                 }
             }
-
-            //This appeared in the decompilation. Idk why lol.
-            //IEnumerator<Building> enumerator = null;
-            yield break;
         }
 
         /// <summary>
@@ -195,83 +142,11 @@ namespace MTN {
             }
         }
 
-        /// <summary>
-        /// Unused. Was meant for testing purposes.
-        /// </summary>
-        /// <param name="msg"></param>
-        protected void processModList(IncomingMessage msg) {
-            List<PlayerMod> newplayersMods = new List<PlayerMod>();
-
-            string modList = msg.Reader.ReadString();
-            string[] subList = modList.Split(new string[] { "&&" }, StringSplitOptions.None);
-
-            for (int i = 0; i < subList.Length - 1; i++) {
-                //0 - Name, 1 - Version, 2 - UniqueID, 3 - Author, 4 - ContentPackUniqueID, 5 - UpdateKeys
-                string[] modEntry = subList[i].Split(new string[] { "%%" }, StringSplitOptions.None);
-                Dictionary<string, int> updatekeys = new Dictionary<string, int>();
-                //Nexus:2256_Chucklefish:5343
-                if (modEntry[5] != "null") {
-                    string[] keys = modEntry[5].Split('_');
-                    for (int j = 0; j < keys.Length; j++) {
-                        string[] updateEntry = keys[j].Split(':');
-                        updatekeys.Add(updateEntry[0], int.Parse(updateEntry[1]));
-                    }
-                }
-                newplayersMods.Add(new PlayerMod(modEntry[0], modEntry[1], modEntry[2], modEntry[3], (modEntry[4] == "null") ? false : true, modEntry[4], updatekeys));
-            }
-
-            playerMods.Add(msg.FarmerID, newplayersMods);
-
-            displayFarmhandsMods(msg.FarmerID);
-            checkForBannedMods(msg.FarmerID);
-
-            return;
-        }
-
-        protected void displayFarmhandsMods(long farmerid) {
-            if (Game1.otherFarmers[farmerid] == null) {
-                Memory.instance.Monitor.Log($"Unable to find player with uniqueid: { farmerid }", LogLevel.Error);
-                return;
-            }
-
-            List<PlayerMod> farmhandsMods = playerMods[farmerid];
-
-            Memory.instance.Monitor.Log($"Player: { Game1.otherFarmers[farmerid].Name } has the following mods installed: ", LogLevel.Warn);
-            for (int i = 0; i < farmhandsMods.Count; i++) {
-                Memory.instance.Monitor.Log("  - " + farmhandsMods[i].getDetails());
-            }
-            return;
-        }
-
-        protected void checkForBannedMods(long farmerid) {
-            if (Game1.otherFarmers[farmerid] == null) {
-                Memory.instance.Monitor.Log($"Unable to find player with uniqueid: { farmerid }", LogLevel.Error);
-                return;
-            }
-
-            List<PlayerMod> farmhandsMods = playerMods[farmerid];
-
-            for (int i = 0; i < farmhandsMods.Count; i++) {
-                if (blacklist.searchForBannedMod(farmhandsMods[i].uniqueId)) {
-                    Memory.instance.Monitor.Log($"Farmhand ({Game1.otherFarmers[farmerid].Name}) has a blacklisted mod installed.", LogLevel.Error);
-                    Memory.instance.Monitor.Log($"Mod: {farmhandsMods[i].getDetails()}", LogLevel.Error);
-                    Memory.instance.Monitor.Log($"Disconnecting user.", LogLevel.Error);
-                    Game1.server.playerDisconnected(farmerid);
-                }
-            }
-            return;
-        }
-
         protected void setMTNCustom(IncomingMessage msg) {
-            Memory.loadCustomFarmType(msg.Data[0]);
-            Utilities.additionalMapLoad();
-        }
+            // convert byte to int
+            Memory.loadCustomFarmType(BitConverter.ToInt32(msg.Data, 0));
 
-        private void sendLocationCustom(long peer, GameLocation location) {
-            Game1.server.sendMessage(peer, 3, Game1.serverHost.Value, new object[]
-            {
-                Memory.multiplayer.writeObjectFullBytes<GameLocation>(Memory.multiplayer.locationRoot(location), new long?(peer))
-            });
+            Utilities.additionalMapLoad();
         }
 
         public override NetRoot<GameLocation> locationRoot(GameLocation location) {

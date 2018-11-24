@@ -1,0 +1,8 @@
+{
+  "UseSprinklersAsScarecrows": true,
+  "UseSprinklersAsLamps": true,
+  "SprinklerRange": 3,
+  "PrismaticToolLength": 7,
+  "PrismaticToolWidth": 2,
+  "PrismaticToolCost": 100000
+}

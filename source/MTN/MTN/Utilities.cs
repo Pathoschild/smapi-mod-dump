@@ -1,19 +1,10 @@
 ﻿using MTN.FarmInfo;
-using MTN.MapTypes;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SObject = StardewValley.Object;
 using xTile;
-using StardewValley.Buildings;
-using Netcode;
-using Microsoft.Xna.Framework;
 
 namespace MTN
 {
@@ -120,46 +111,6 @@ namespace MTN
             };
             list.Add(o);
             return list;
-        }
-
-        public static Building getBuildingFromFarmsByName(string name) {
-            int i;
-            for (i = 0; i < Memory.farmMaps.Count; i++) {
-                foreach (Building building in Memory.farmMaps[i].Map.buildings) {
-                    if (building.nameOfIndoors == name) {
-                        return building;
-                    }
-                }
-            }
-            return null;
-        }
-
-        public static string composeModList() {
-            string results = "";
-            foreach (IManifest manifest in Memory.instance.Helper.ModRegistry.GetAll()) {
-                results += manifest.Name + "%%" + manifest.Version.ToString() + "%%" + manifest.UniqueID + "%%" + manifest.Author + "%%";
-                if (manifest.ContentPackFor != null) {
-                    results += "CPF:" + manifest.ContentPackFor.UniqueID + "%%";
-                } else {
-                    results += "null%%";
-                }
-                if (manifest.UpdateKeys != null) {
-                    if (manifest.UpdateKeys.Length == 0) {
-                        results += "null";
-                    }
-                    for (int i = 0; i < manifest.UpdateKeys.Length; i++) {
-                        results += manifest.UpdateKeys[i];
-                        if (i + 1 != manifest.UpdateKeys.Length) {
-                            results += "_";
-                        }
-                    }
-                } else {
-                    results += "null";
-                }
-                results += "&&";
-            }
-            results += "END";
-            return results;
         }
     }
 

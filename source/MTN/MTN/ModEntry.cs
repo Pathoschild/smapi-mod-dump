@@ -1,21 +1,14 @@
 ﻿using System;
 using System.IO;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using Harmony;
-using System.Reflection;
 using System.Collections.Generic;
-using System.Xml;
-using StardewValley.Objects;
 using Newtonsoft.Json;
 using MTN.FarmInfo;
 using StardewValley.Menus;
 using Microsoft.Xna.Framework.Graphics;
-using StardewValley.Locations;
-using xTile.Dimensions;
-using xTile;
 using StardewValley.Buildings;
 using Netcode;
 using MTN.Menus;
@@ -94,41 +87,6 @@ namespace MTN {
                     Monitor.Log($"NetRef: {Game1.locations[i].Root} (This map is always active)");
                 }
             }
-        }
-
-        //Unused. To be implemented elsewhere.
-        private void listBannedMods(string command, string[] args) {
-            Memory.multiplayer.printBlackList();
-        }
-
-        //Unused. To be implemented elsewhere.
-        private void manageBlacklist(string command, string[] args) {
-            if (Game1.multiplayerMode != 2) {
-                Monitor.Log("Access Denied.", LogLevel.Error);
-                return;
-            }
-            if (command == "banmod") {
-                if (args.Length < 1) {
-                    Monitor.Log("Invalid input. Syntax: banmod <uniqueId>", LogLevel.Error);
-                    Monitor.Log(" - uniqueId: The mod's uniqueId");
-                    return;
-                } else { 
-                    Monitor.Log($"Adding mod with UniqueId {args[0]} to blacklist");
-                    Memory.multiplayer.addToBlackList(args[0]);
-                }
-            } else if (command == "unbanmod") {
-                if (args.Length < 1) {
-                    Monitor.Log("Invalid input. Syntax: unbanmod <uniqueId>", LogLevel.Error);
-                    Monitor.Log(" - uniqueId: The mod's uniqueId");
-                    return;
-                } else {
-                    Monitor.Log($"Removing mod with UniqueId {args[0]} to blacklist");
-                    Memory.multiplayer.removeFromBlackList(args[0]);
-                }
-            } else {
-                return;
-            }
-            return;
         }
 
         private void swapScienceLab_afterSave(object sender, EventArgs e) {
@@ -211,7 +169,7 @@ namespace MTN {
                 new Patch("Game1", "loadForNewGame", false, true, false, typeof(Patches.Game1Patch.loadForNewGamePatch)),
                 new Patch("GameLocation", "loadObjects", true, true, false, typeof(Patches.GameLocationPatch.LoadObjectPatch)),
                 new Patch("GameLocation", "startEvent", true, false, false, typeof(Patches.GameLocationPatch.startEventPatch)),
-                new Patch("Network.NetBuildingRef", "get_Value", false, false, true, typeof(Patches.NetBuildingRefPatch.ValueGetter)),
+                // new Patch("Network.NetBuildingRef", "get_Value", false, false, true, typeof(Patches.NetBuildingRefPatch.ValueGetter)),
                 new Patch("NPC", "updateConstructionAnimation", false, true, true, typeof(Patches.NPCPatch.updateConstructionAnimationPatch)),
                 new Patch("Object", "totemWarpForReal", true, true, false, typeof(Patches.ObjectsPatch.totemWarpForRealPatch)),
                 new Patch("Characters.Pet", "setAtFarmPosition", true, true, false, typeof(Patches.PetPatch.setAtFarmPositionPatch)),
@@ -409,14 +367,16 @@ namespace MTN {
                 }
 
                 //Cave (Skipped if it was not specified in farmType.Json. It will be assumed it did not move from canon position).
-                if (Memory.loadedFarm.farmCave != null) {
+                if (Memory.loadedFarm.farmCave != null && Memory.loadedFarm.farmCave.useCustomMapPoints == false)
+                {
                     Game1.locations[2].warps.Clear();
                     Game1.locations[2].warps.Add(new Warp(8, 12, "Farm", Memory.loadedFarm.farmCavePointX(), Memory.loadedFarm.farmCavePointY(), false));
                 }
 
                 //Greenhouse (Skipped if it was not specified in farmType.Json. It will be assumed it did not move from canon position).
                 GameLocation greenhouse = Game1.getLocationFromName("Greenhouse");
-                if (greenhouse != null && Memory.loadedFarm.greenHouse != null) {
+                if (greenhouse != null && Memory.loadedFarm.greenHouse != null && Memory.loadedFarm.greenHouse.useCustomMapPoints == false)
+                {
                     greenhouse.warps.Clear();
                     greenhouse.warps.Add(new Warp(10, 24, "Farm", Memory.loadedFarm.greenHousePorchX(), Memory.loadedFarm.greenHousePorchY(), false));
                 }

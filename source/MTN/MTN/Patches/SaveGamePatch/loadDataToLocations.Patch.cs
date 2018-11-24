@@ -14,10 +14,10 @@ namespace MTN.Patches.SaveGamePatch
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
+            codes[89].opcode = OpCodes.Nop;
             codes[90].opcode = OpCodes.Nop;
-            codes[91].opcode = OpCodes.Nop;
-            codes[92].opcode = OpCodes.Isinst;
-            codes[92].operand = typeof(StardewValley.Farm);
+            codes[91].opcode = OpCodes.Isinst;
+            codes[91].operand = typeof(StardewValley.Farm);
 
             //388 = Nop
             //389 = Nop

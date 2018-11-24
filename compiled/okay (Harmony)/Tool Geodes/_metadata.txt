@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3090
+IDs: spacechase0.ToolGeodes
+update keys: Nexus:3090, Chucklefish:5606

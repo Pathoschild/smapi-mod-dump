@@ -1,0 +1,15 @@
+url:
+   https://github.com/Noomklaw/SV_BetterQualityMoreSeeds.git
+
+mods:
+   Seed Maker Crop Quality
+
+latest commit:
+   commit bcd97634ec658e5623b31a18a04009ca284fc2c3
+   Author: Noomklaw <tevernira@gmail.com>
+   Date:   Fri Nov 23 23:41:20 2018 +0100
+   
+       Add files via upload
+       
+       Update 1.1
+   
