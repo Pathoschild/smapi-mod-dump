@@ -1,0 +1,76 @@
+{
+	"Format": "1.5",
+	"Changes": [
+		
+		//vv FARMHOUSE vv
+		
+		/* starter farmhouse */
+		{
+			"Action": "Load",
+			"Target": "Maps/FarmHouse",
+			"FromFile": "assets/Cabin.tbin",
+		},
+		
+		/* 1stcabinupgrade */
+		{
+			"Action": "Load",
+			"Target": "Maps/FarmHouse1",
+			"FromFile": "assets/Cabin1.tbin",
+		},
+		/* 1stcabinspouseroom */
+		{
+			"Action": "Load",
+			"Target": "Maps/FarmHouse1_marriage",
+			"FromFile": "assets/Cabin1_marriage.tbin",
+		},
+		
+		/* lastcabinupgrade */
+		{
+			"Action": "Load",
+			"Target": "Maps/FarmHouse2",
+			"FromFile": "assets/Cabin2.tbin",
+		},
+		/* lastcabinspouseroom */
+		{
+			"Action": "Load",
+			"Target": "Maps/FarmHouse2_marriage",
+			"FromFile": "assets/Cabin2_marriage.tbin",
+		},
+		
+	
+		//vv CABINS vv
+		
+		/* starter cabin */
+		{
+			"Action": "Load",
+			"Target": "Maps/Cabin",
+			"FromFile": "assets/Cabin.tbin",
+		},
+		
+		/* 1stcabinupgrade */
+		{
+			"Action": "Load",
+			"Target": "Maps/Cabin1",
+			"FromFile": "assets/Cabin1.tbin",
+		},
+		//1stcabinspouseroom
+		{
+			"Action": "Load",
+			"Target": "Maps/Cabin1_marriage",
+			"FromFile": "assets/Cabin1_marriage.tbin",
+		},
+		
+		/* lastcabinupgrade */
+		{
+			"Action": "Load",
+			"Target": "Maps/Cabin2",
+			"FromFile": "assets/Cabin2.tbin",
+		},
+		/* lastcabinspouseroom */
+		{
+			"Action": "Load",
+			"Target": "Maps/Cabin2_marriage",
+			"FromFile": "assets/Cabin2_marriage.tbin",
+		},
+	]
+}

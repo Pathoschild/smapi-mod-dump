@@ -28,6 +28,7 @@ namespace ToolGeodes
         //public int GEODE_MOB_FREEZE = 561; // Ghost crystal
         public int GEODE_MORE_DAMAGE = 558; // Thunder egg
         public int GEODE_MORE_KNOCKBACK = 548; // Jamborite
+        public int GEODE_MORE_CRITCHANCE = 547; // Helvite
         public int GEODE_SWIPE_SPEED = 551; // Lunarite
         public int GEODE_PIERCE_ARMOR = 553; // Neptunite
     }

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "SVBDP",
+  "Version": "0.0.1",
+  "Author": "GitStonic <kingstonicthe1@gmail.com>",
+  "Description": "It's basically a better version of the presence...",
+  "UniqueID": "gitstonic.svbdp",
+  "EntryDll": "Source.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": []
+}

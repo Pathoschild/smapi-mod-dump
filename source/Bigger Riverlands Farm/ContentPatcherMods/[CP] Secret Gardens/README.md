@@ -18,7 +18,9 @@ A new greenhouse that makes it look like a garden. Still functions the same way 
 **KNOWN ISSUES**
 - Will conflict with other mods that replace the greenhouse interior unless it is an XNB mod (my mod will override it)
 - For old saves with stuff in the greenhouse, you would need to destroy/move things around but it shouldn't be too bad
-
+**OPTIONAL FILES FOR COMPATIBILITY**
+See [Optional Files Download](https://www.nexusmods.com/stardewvalley/mods/3067?tab=files)
+See [Installation Guide for Optional Files](https://www.nexusmods.com/stardewvalley/articles/106)
 ## Install
 - **Installation**
   - Install [SMAPI (2.7 or later)﻿](https://www.nexusmods.com/stardewvalley/mods/2400)

@@ -1,0 +1,13 @@
+url:
+   https://github.com/yuri-moens/BetterActivateSprinklers.git
+
+mods:
+   Better Activate Sprinklers
+
+latest commit:
+   commit 64682184f7521c2d5118330aa9d0a54a5f7ac075
+   Author: Yuri Moens <yuri.moens@gmail.com>
+   Date:   Sun Nov 25 01:07:54 2018 +0100
+   
+       Version 1.0.0
+   

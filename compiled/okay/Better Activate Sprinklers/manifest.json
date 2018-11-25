@@ -1,0 +1,10 @@
+{
+    "Name": "BetterActivateSprinklers",
+    "Author": "ChaosEnergy",
+    "Version": "1.0.0",
+    "Description": "Allow manual activation of sprinklers.",
+    "UniqueID": "ChaosEnergy.BetterActivateSprinklers",
+    "EntryDll": "BetterActivateSprinklers.dll",
+    "MinimumApiVersion": "2.8",
+    "UpdateKeys": [ "Nexus:3097" ]
+}

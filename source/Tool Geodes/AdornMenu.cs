@@ -170,8 +170,10 @@ namespace ToolGeodes
             //    str = "Adorning provides a freezing strike.";
             else if (obj.ParentSheetIndex == Mod.Config.GEODE_MORE_DAMAGE)
                 str = "Adorning provides a more ferocious strike.";
-            else if (obj.ParentSheetIndex == Mod.Config.GEODE_MORE_DAMAGE)
+            else if (obj.ParentSheetIndex == Mod.Config.GEODE_MORE_KNOCKBACK)
                 str = "Adorning provides a \"bouncier\" strike.";
+            else if (obj.ParentSheetIndex == Mod.Config.GEODE_MORE_CRITCHANCE)
+                str = "Adorning provides a better chance of critically striking.";
             else if (obj.ParentSheetIndex == Mod.Config.GEODE_SWIPE_SPEED)
                 str = "Adorning provides a faster strike.\n(One time use.)";
             else if (obj.ParentSheetIndex == Mod.Config.GEODE_PIERCE_ARMOR)
@@ -190,8 +192,6 @@ namespace ToolGeodes
             indices.Add(Mod.Config.GEODE_MORE_SLOTS);
             if ( tool != ToolType.Weapon )
             {
-                indices.Add(Mod.Config.GEODE_LENGTH);
-                indices.Add(Mod.Config.GEODE_WIDTH);
                 indices.Add(Mod.Config.GEODE_LESS_STAMINA);
                 indices.Add(Mod.Config.GEODE_INSTANT_CHARGE);
                 indices.Add(Mod.Config.GEODE_REMOTE_USE);
@@ -199,7 +199,11 @@ namespace ToolGeodes
                 if ( tool == ToolType.Pickaxe || tool == ToolType.Hoe )
                     indices.Add(Mod.Config.GEODE_OBJ_TRUESIGHT);
                 if (tool == ToolType.WateringCan || tool == ToolType.Hoe)
+                {
+                    indices.Add(Mod.Config.GEODE_LENGTH);
+                    indices.Add(Mod.Config.GEODE_WIDTH);
                     indices.Add(Mod.Config.GEODE_INSTANT_CHARGE);
+                }
                 if (tool == ToolType.WateringCan)
                     indices.Add(Mod.Config.GEODE_INFINITE_WATER);
             }
@@ -208,6 +212,7 @@ namespace ToolGeodes
                 //indices.Add(Mod.Config.GEODE_MOB_FREEZE);
                 indices.Add(Mod.Config.GEODE_MORE_DAMAGE);
                 indices.Add(Mod.Config.GEODE_MORE_KNOCKBACK);
+                indices.Add(Mod.Config.GEODE_MORE_CRITCHANCE);
                 indices.Add(Mod.Config.GEODE_SWIPE_SPEED);
                 indices.Add(Mod.Config.GEODE_PIERCE_ARMOR);
             }

@@ -1,0 +1,13 @@
+url:
+   https://github.com/yuri-moens/LadderLocator.git
+
+mods:
+   Ladder Locator
+
+latest commit:
+   commit 9c2019eaa58c541f4a77b9d39232e6f3e116d0ca
+   Author: Yuri Moens <yuri.moens@gmail.com>
+   Date:   Sun Nov 25 01:14:51 2018 +0100
+   
+       Add NexusMods update key
+   

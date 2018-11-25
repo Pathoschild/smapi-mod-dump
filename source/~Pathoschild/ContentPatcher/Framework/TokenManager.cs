@@ -136,6 +136,8 @@ namespace ContentPatcher.Framework
             yield return new ConditionTypeToken(ConditionType.Spouse, () => Game1.player?.spouse, needsLoadedSave: true);
             yield return new ConditionTypeToken(ConditionType.Weather, () => this.GetCurrentWeather(), needsLoadedSave: true, allowedValues: Enum.GetNames(typeof(Weather)));
             yield return new HasProfessionToken();
+            yield return new HasWalletItemToken();
+            yield return new SkillLevelToken();
             yield return new VillagerRelationshipToken();
             yield return new VillagerHeartsToken();
         }
@@ -168,6 +170,9 @@ namespace ContentPatcher.Framework
                 return Weather.Snow.ToString();
             if (Game1.isRaining)
                 return (Game1.isLightning ? Weather.Storm : Weather.Rain).ToString();
+
+            if (Game1.isDebrisWeather)
+                return Weather.Wind.ToString();
 
             return Weather.Sun.ToString();
         }

@@ -1,6 +1,21 @@
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Added new tokens:
+  * `HasWalletItem`: the [special items in the player wallet](https://stardewvalleywiki.com/Wallet).
+  * `SkillLevel`: the player's level for a given skill.
+* Added support for conditional map edits in SMAPI 2.9.
+* Added `Wind` value for `Weather` token.
+* Added support for matching subkey/value pairs for tokens which previously required subkeys.
+* Fixed language token always marked 'not valid in this context'.
+* Fixed token strings not validated for format version compatibility.
+* Fixed some 1.5 tokens not validated for format version compatibility.
+* Fixed `patch summary` order for token subkeys and values.
+
+**Breaking changes:**
+* The `Weather` token will now return `Wind` on windy days instead of `Sun`. See the readme for more info.
+
 ## 1.5.3
 * Added `patch summary` hint if `Target` value incorrectly includes a file extension.
 * Migrated verbose logs to SMAPI's verbose logging feature.
