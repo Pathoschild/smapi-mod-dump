@@ -6,9 +6,17 @@ mods:
    Self Service
 
 latest commit:
-   commit f4028b9290062445d9a6d775010a8e16a63c457b
-   Author: JarvieK <kongjw1993@gmail.com>
-   Date:   Wed Jun 20 13:58:33 2018 -0400
+   commit e0c7a7aeea3b5e38c6e9e75307cfd0f7d9e2393e
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Sun Nov 25 15:44:30 2018 -0500
    
-       0.3.2
+       Update for Stardew Valley 1.3.31 and SMAPI 2.8 (#6)
+       
+       * migrate to newer NuGet reference format
+       
+       * update mod build config package
+       
+       * simplify assembly info
+       
+       * bump version for release
    

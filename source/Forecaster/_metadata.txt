@@ -5,9 +5,9 @@ mods:
    Forecaster
 
 latest commit:
-   commit 9d5e4cb09eeb1efb221a05f2f7e8acd969bb9bb4
+   commit 1f969e8785b3b544b9ce85e61d4c5c4f854300ca
    Author: Remy Bach <remy@bach.me.uk>
-   Date:   Mon Nov 12 23:19:06 2018 +0000
+   Date:   Sun Nov 25 23:39:23 2018 +0000
    
-       Add shortcut key functionality
+       Add ability to disable forecast or weather on waking up
    

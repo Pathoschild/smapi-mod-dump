@@ -13,7 +13,7 @@ namespace ToolGeodes
         {
             var data = Mod.Data;
             if (player != Game1.player)
-                data = Mod.instance.Helper.Data.ReadSaveData<SaveData>("spacechase0.ToolGeodes." + player.UniqueMultiplayerID);
+                data = Mod.instance.Helper.Data.ReadSaveData<SaveData>("spacechase0.ToolGeodes." + player.UniqueMultiplayerID) ?? new SaveData();
 
             int[] ids = null;
             if (tool == ToolType.Weapon) ids = Mod.Data.WeaponGeodes;

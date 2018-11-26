@@ -1,6 +1,6 @@
 ﻿{
   "Name": "SVBDP",
-  "Version": "0.0.1",
+  "Version": "0.1.1", // fixed locally
   "Author": "GitStonic <kingstonicthe1@gmail.com>",
   "Description": "It's basically a better version of the presence...",
   "UniqueID": "gitstonic.svbdp",

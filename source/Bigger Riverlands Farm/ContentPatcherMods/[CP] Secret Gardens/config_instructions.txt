@@ -1,0 +1,8 @@
+https://www.nexusmods.com/stardewvalley/articles/108 - same documentation thing
+
+IF YOU ARE WONDERING WHERE IS THE CONFIG.JSON, YOU HAVE TO RUN SMAPI WITH THIS MOD FIRST.
+THIS CURRENTLY DOES NOT SUPPORT THE OPTIONAL COMPATIBILITY FILES(THIS IS THE MAIN FOLDER)
+
+"PlainGreenhouse"
+	- "enabled" to remove the table, the fountain and the benches
+	- "disabled" is default

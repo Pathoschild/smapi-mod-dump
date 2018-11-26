@@ -1,7 +1,7 @@
 {
   "Name": "Tool Geodes",
   "Author": "spacechase0",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Apply geodes to tools for special effects.",
   "UniqueID": "spacechase0.ToolGeodes",
   "PerSaveConfigs": false,

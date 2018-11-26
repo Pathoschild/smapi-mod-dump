@@ -5,9 +5,9 @@ mods:
    Bigger Riverlands Farm
 
 latest commit:
-   commit f775490e0a532617fcdd0152816f959187a3e394
+   commit 025521ca3643ef91bf14ab8845c4a658a3507b42
    Author: JessebotX <43657800+JessebotX@users.noreply.github.com>
-   Date:   Sat Nov 24 19:06:58 2018 -0800
+   Date:   Sun Nov 25 17:39:35 2018 -0800
    
-       updated readme.md for farmhouse plots again
+       Secret Gardens 2.0 update
    

@@ -14,6 +14,7 @@ namespace Forecaster
         private ModConfig Config;
         private string luckForecast;
         private string weatherForecast;
+        private TV television;
 
         /*********
         ** Public methods
@@ -38,19 +39,20 @@ namespace Forecaster
             // ignore if player hasn't loaded a save yet
             if (!Context.IsWorldReady)
                 return;
+            
+            television = new TV();
+            luckForecast = null;
+            weatherForecast = null;
 
-            luckForecast = this.Helper.Reflection
-                            .GetMethod(new TV(), "getFortuneForecast")
-                            .Invoke<string>();
-            weatherForecast = this.Helper.Reflection
-                               .GetMethod(new TV(), "getWeatherForecast")
-                               .Invoke<string>();
+            if (this.Config.showWeatherOnWakeUp) {
+                await Task.Delay(this.Config.initialDelay * 1000);
+                this.showWeather();
+            }
 
-            await Task.Delay(this.Config.initialDelay * 1000);
-            this.showWeather();
-
-            await Task.Delay(this.Config.offsetDelay * 1000);
-            this.showTip();
+            if (this.Config.showLuckForecastOnWakeUp) {
+                await Task.Delay(this.Config.offsetDelay * 1000);
+                this.showLuckForecast();
+            }
         }
 
         /*********
@@ -65,17 +67,29 @@ namespace Forecaster
                 return;
 
             if (this.Config.tipKey == e.Button) {
-                showTip();
+                showLuckForecast();
             } else if (this.Config.weatherKey == e.Button) {
                 showWeather();
             }
         }
 
-        private void showTip() {
+        private void showLuckForecast() {
+            if (luckForecast == null) {
+                luckForecast = this.Helper.Reflection
+                                .GetMethod(television, "getFortuneForecast")
+                                .Invoke<string>();
+            }
+
             Game1.addHUDMessage(new HUDMessage(luckForecast, 2));
         }
 
         private void showWeather() {
+            if (weatherForecast == null) {
+                weatherForecast = this.Helper.Reflection
+                                .GetMethod(television, "getWeatherForecast")
+                                .Invoke<string>();
+            }
+
             Game1.addHUDMessage(new HUDMessage(weatherForecast, 2));
         }
   

@@ -1,7 +1,7 @@
 ﻿{
    "Name": "Forecaster",
    "Author": "Remy Bach",
-   "Version": "1.0.1",
+   "Version": "1.1.0",
    "Description": "Displays the daily luck message when you wake up so you don't have to check the TV every day.",
    "UniqueID": "remybach.forecaster",
    "EntryDll": "forecaster.dll",
