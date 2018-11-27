@@ -16,9 +16,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 85cf0efee2ad5b103a96a8abbe5dbf72cac3a7a3
+   commit be0bc7568c8e63882e73083c9b1a8d1f2ebeab33
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Nov 25 00:09:07 2018 -0500
+   Date:   Mon Nov 26 21:06:50 2018 -0500
    
-        update for map asset propagation in SMAPI 2.9 (#324)
+       add backwards compatibility for wind weather type (#330)
    

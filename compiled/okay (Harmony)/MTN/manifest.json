@@ -1,7 +1,7 @@
 {
   "Name": "MTN",
   "Author": "SgtPickles aka GameMX",
-  "Version": "1.2.6-hotfix",
+  "Version": "1.2.6", // fixed locally
   "Description": "Greatly Customizes farms, along with managing multitude amount of custom farm types.",
   "UniqueID": "SgtPickles.MTN",
   "EntryDll": "MTN.dll",

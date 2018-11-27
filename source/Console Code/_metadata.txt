@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/ConsoleCode.git
+
+mods:
+   Console Code
+
+latest commit:
+   commit d3d07e488e35aa08e506c1cd7d1f6d895ddffb67
+   Author: spacechase0 <spacechase0@users.noreply.github.com>
+   Date:   Wed Nov 21 17:52:27 2018 -0500
+   
+       Initial commit
+   

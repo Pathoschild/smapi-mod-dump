@@ -1,7 +1,7 @@
 {
   "Name": "SeparateMoney",
   "Author": "funnysnek",
-  "Version": "1.2",
+  "Version": "1.3",
   "Description": "Separate Money for multiplayer",
   "UniqueID": "funnysnek.SeparateMoney",
   "EntryDll": "SeparateMoney.dll",
