@@ -1,0 +1,11 @@
+{
+  "Name": "Carry Chest",
+  "Author": "spacechase0",
+  "Version": "1.2.3-unofficial.1-pathoschild",
+  "Description": "...",
+  "UniqueID": "spacechase0.CarryChest",
+  "PerSaveConfigs": false,
+  "EntryDll": "CarryChest.dll",
+  "UpdateKeys": [ "Nexus:1333", "Chucklefish:4851" ],
+  "spacechase0": "carry-chest"
+}

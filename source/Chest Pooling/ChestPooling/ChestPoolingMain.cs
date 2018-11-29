@@ -7,6 +7,7 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
+using Netcode;
 
 
 //bugs while playing:
@@ -27,6 +28,7 @@ namespace ChestPooling
     /// <summary>The mod entry point.</summary>
     public class ChestPoolingMainClass : Mod
     {
+
         /*********
         ** Public methods
         *********/
@@ -35,6 +37,8 @@ namespace ChestPooling
         public override void Entry(IModHelper helper)
         {
             StardewModdingAPI.Events.PlayerEvents.InventoryChanged += this.Event_InventoryChanged;
+            //this.helper = helper;
+            //long uniqueID = this.Helper.Multiplayer.GetNewID();
         }
 
 
@@ -62,16 +66,25 @@ namespace ChestPooling
 
             List<Chest> chestList = new List<Chest>();
 
+            //this.Helper.Multiplayer.GetActiveLocations();
             //get chests from normal buildings
             foreach (GameLocation location in Game1.locations)
             {
+                if(location == null) { break; }
                 //get chests
                 chestList.AddRange(location.Objects.Values.OfType<Chest>());
 
                 //get fridge
                 FarmHouse house = location as FarmHouse;
-                if (house?.fridge != null)
-                    chestList.Add(house.fridge);
+                
+                if (house != null)
+                {
+                    Chest fridge = house.fridge.Value;
+                    if (fridge != null)
+                    {
+                        chestList.Add(fridge);
+                    }
+                }  
             }
 
             //get stuff inside build buildings
@@ -80,8 +93,9 @@ namespace ChestPooling
             {
                 foreach (StardewValley.Buildings.Building building in farm.buildings)
                 {
-                    if (building.indoors != null)
-                        chestList.AddRange(building.indoors.Objects.Values.OfType<Chest>());
+                    GameLocation indoors = building.indoors.Value;
+                    if (indoors != null)
+                        chestList.AddRange(indoors.Objects.Values.OfType<Chest>());
                 }
             }
 
@@ -110,33 +124,15 @@ namespace ChestPooling
                 if (chest != null)
                     return chest;
             }
-            /*
-             * Remove experimental acamenu support, not worth
-            else
-            {
-                this.DebugLog("something else" + Game1.activeClickableMenu.GetType().Name);
-                if (Game1.activeClickableMenu.GetType().Name == "ACAMenu")
-                {
-                    dynamic thing = Game1.activeClickableMenu;
-                    if (thing != null && thing.chestItems != null)
-                    {
-                        this.DebugLog("woo, survived");
-                        return new Chest(true) { items = thing.chestItems };
-                    }
-                }
-
-                //DebugThing(StardewValley.Game1.activeClickableMenu);
-            }
-            */
             return null;
         }
 
-        private bool isExactItemInChest(Item sourceItem, List<Item> items)
+        private bool isExactItemInChest(Item sourceItem, NetObjectList<Item> items)
         {
             return items.Any(item => item == sourceItem);
         }
 
-        private Item matchingItemInChest(Item sourceItem, List<Item> items)
+        private Item matchingItemInChest(Item sourceItem, NetObjectList<Item> items)
         {
             foreach (Item item in items)
             {
@@ -160,6 +156,12 @@ namespace ChestPooling
             //likely in some other menu
             if (openChest == null)
                 return null;
+
+            //foreach(StardewValley.Item item in openChest.items)
+            //{
+
+            //}
+
             //Log.Info("openChest isn't null");
             //the place where it went is fine
             if (!isExactItemInChest(itemRemoved, openChest.items))
@@ -171,7 +173,7 @@ namespace ChestPooling
 
             foreach (Chest chest in chestList)
             {
-                if (chest.items == openChest.items)
+                if (chest.items.Equals(openChest.items))
                 {
                     hasFoundCurrentChest = true;
                     continue;
@@ -238,6 +240,7 @@ namespace ChestPooling
 
             //the real event, might be necessary to determine what item was placed where
             StardewModdingAPI.Events.EventArgsInventoryChanged inventoryEvent = (StardewModdingAPI.Events.EventArgsInventoryChanged)e;
+            
             if (inventoryEvent.Removed.Count == 0)
                 return;
 

@@ -1,0 +1,6 @@
+{
+  "cropChancePercentWithRing": 0.05,
+  "shouldWearingBothRingsDoublePercentage": true,
+  "percentOfDayNeededToWearRingToTriggerEffect": 0.5,
+  "cropRingPrice": 5000
+}

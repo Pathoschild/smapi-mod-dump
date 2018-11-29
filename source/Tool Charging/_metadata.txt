@@ -5,9 +5,9 @@ mods:
    Tool Charging
 
 latest commit:
-   commit 1b943a888a92be6d4da927eebd9aa4d915d4927c
+   commit 75df0c6d90421756e9f5711afedb3d8a0def561b
    Author: mralbobo <mralbobo@gmail.com>
-   Date:   Tue Feb 27 20:42:19 2018 -0700
+   Date:   Wed Nov 28 16:46:36 2018 -0700
    
-       manifest change
+       smapi update
    

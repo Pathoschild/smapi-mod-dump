@@ -1,8 +1,8 @@
 {
   "serverHotKey": "F9",
   "profitmargin": 50,
-  "upgradeHouse": 3,
-  "petname": "Funnysnek",
+  "upgradeHouse": 0,
+  "petname": "funnysnek",
   "farmcavechoicemushrooms": true,
   "communitycenterrun": true,
   "timeOfDayToSleep": 2200,

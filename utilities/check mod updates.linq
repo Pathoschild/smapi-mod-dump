@@ -161,7 +161,10 @@ public IDictionary<string, Tuple<string, string>> EquivalentModVersions = new Di
 	// okay
 	["Jotser.AutoGrabberMod"] = Tuple.Create("1.0.12-beta.1", "1.0.12"),
 	["skuldomg.freeDusty"] = Tuple.Create("1.0-beta.7", "1.0.5"), // Free Dusty
-	["ElectroCrumpet.PelicanPostalService"] = Tuple.Create("1.0.4", "1.0.5"), // Pelican Postal Service
+	["ElectroCrumpet.PelicanPostalService"] = Tuple.Create("1.0.5-beta", "1.0.6"), // Pelican Postal Service
+	
+	// okay (Harmony)
+	["bcmpinc.HarvestWithScythe"] = Tuple.Create("0.4.1-beta", "0.5")
 };
 
 /****
@@ -226,7 +229,7 @@ void Main()
 	{
 		if (folder.Manifest == null)
 		{
-			Console.WriteLine($"   Ignored invalid mod: {folder.DisplayName} (manifest error: {folder.ManifestParseError})");
+			Util.WithStyle($"   Ignored invalid mod: {folder.DisplayName} (manifest error: {folder.ManifestParseError})", "color: red;").Dump();
 			continue;
 		}
 		mods.Add(new ModData(folder));

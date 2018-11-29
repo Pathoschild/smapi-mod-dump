@@ -5,9 +5,9 @@ mods:
    Chest Pooling
 
 latest commit:
-   commit 93ca163f624488d5994843fc0a768e057badabb2
+   commit d388eeedae796310fd536533e40db6687e0da80f
    Author: mralbobo <mralbobo@gmail.com>
-   Date:   Mon Oct 2 17:46:24 2017 -0600
+   Date:   Wed Nov 28 16:37:54 2018 -0700
    
-       remove the old experimental support for aca, it seems to have moved on anyways...
+       update for newer smapi
    

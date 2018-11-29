@@ -5,9 +5,9 @@ mods:
    More Buildings
 
 latest commit:
-   commit 2b66d81a567bb45cdd115bd82e2b7b6dfa5c0abd
+   commit 4fee6078c3ba65ebe9a808fe192b1747b4b30efc
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Aug 31 16:23:27 2018 -0400
+   Date:   Wed Nov 28 13:11:12 2018 -0500
    
-       MORE STUFF
+       Change version to 1.0.1
    

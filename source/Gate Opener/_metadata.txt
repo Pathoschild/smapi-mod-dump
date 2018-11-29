@@ -5,12 +5,9 @@ mods:
    Gate Opener
 
 latest commit:
-   commit e895f09c5470720fcc7f63ab4715f00a3762ee78
-   Merge: acf1132 634a95f
+   commit 4ec271ce4f3ab17f7cfe26bdcc39b2fab97f9ed0
    Author: mralbobo <mralbobo@gmail.com>
-   Date:   Fri Apr 28 17:18:22 2017 -0600
+   Date:   Wed Nov 28 16:40:59 2018 -0700
    
-       Merge pull request #2 from Pathoschild/update-code
-       
-       Update for Stardew Valley 1.2, streamline build process, and simplify code
+       smapi version update
    

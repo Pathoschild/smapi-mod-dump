@@ -89,9 +89,9 @@ namespace DeepWoodsMod
                 ProcessItemList(farmHouse.fridge.Value.items, method);
             }
 
-            foreach (var pair in location.objects.Pairs)
+            foreach (var key in new List<Vector2>(location.objects.Keys))
             {
-                location.objects[pair.Key] = (StardewValley.Object)ProcessSingleItem(pair.Value, method);
+                location.objects[key] = (StardewValley.Object)ProcessSingleItem(location.objects[key], method);
             }
         }
 

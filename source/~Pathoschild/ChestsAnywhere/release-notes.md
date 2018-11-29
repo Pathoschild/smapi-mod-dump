@@ -2,6 +2,10 @@
 
 # Release notes
 ## Upcoming release
+* Added button to reset chest options to their default.
+* Fixed issues saving chest options:
+  * fixed form not saved if you only set the _(Automate) Put items in this chest first_ option;
+  * fixed category defaulting to chest name in some cases.
 * Improved translations. Thanks to Nanogamer7 (German)!
 
 ## 1.14.1

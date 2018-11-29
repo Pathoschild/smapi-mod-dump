@@ -50,7 +50,7 @@ namespace GateOpener
             if (!location.objects.TryGetValue(pos, out StardewValley.Object obj))
                 return null;
 
-            if (obj is Fence fence && fence.isGate && !this.OpenGates.ContainsKey(pos))
+            if (obj is Fence fence && fence.isGate.Value && !this.OpenGates.ContainsKey(pos))
             {
                 this.OpenGates[pos] = fence;
                 return fence;
@@ -78,7 +78,7 @@ namespace GateOpener
                 if (gate != null)
                 {
                     //MyLog(gate.ToString());
-                    gate.gatePosition = 88;
+                    gate.gatePosition.Set(88);
                     Game1.playSound("doorClose");
                 }
 
@@ -87,7 +87,7 @@ namespace GateOpener
                 {
                     if (Game1.player.getTileLocation() != gateObj.Key && !adj.Contains(gateObj.Key))
                     {
-                        gateObj.Value.gatePosition = 0;
+                        gateObj.Value.gatePosition.Set(0);
                         Game1.playSound("doorClose");
                         OpenGates.Remove(gateObj.Key);
                         break;

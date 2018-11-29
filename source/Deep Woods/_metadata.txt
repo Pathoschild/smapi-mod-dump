@@ -5,9 +5,10 @@ mods:
    Deep Woods
 
 latest commit:
-   commit e101be06353851d37abded2e234f4a226f18fc3b
+   commit 8c2c759ead3f727a9bc205304def21aeaec0a7ea
    Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Mon Nov 19 19:58:20 2018 +0100
+   Date:   Wed Nov 28 14:24:01 2018 +0100
    
-       New woods obelisk texture by mostlyreal
+       * Fix crash bug due to dictionary being modified inside foreach loop
+       * Increment version number
    

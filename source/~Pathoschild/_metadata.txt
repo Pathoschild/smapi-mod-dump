@@ -16,9 +16,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit be0bc7568c8e63882e73083c9b1a8d1f2ebeab33
+   commit b8ea7d6aaca6c0ae52dfe52b23f1f7893c8b883b
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Mon Nov 26 21:06:50 2018 -0500
+   Date:   Tue Nov 27 22:51:56 2018 -0500
    
-       add backwards compatibility for wind weather type (#330)
+       add button to reset chest data
    
