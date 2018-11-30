@@ -5,9 +5,9 @@ mods:
    Always On Server for Multiplayer
 
 latest commit:
-   commit 5229c7659bc8dc3c43777fd5546db44ae4a0dca5
+   commit 7af7263067c99e18ee2c3ab1c08fba877c828b1f
    Author: DESKTOP-S07204M\Curtis <curtis368@gmail.com>
-   Date:   Mon Nov 26 17:01:16 2018 -0600
+   Date:   Thu Nov 29 14:30:21 2018 -0600
    
-       fixed pet bug
+       added client chat commands !sleep !festival !event
    

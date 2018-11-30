@@ -9,14 +9,8 @@ using System.Reflection.Emit;
 
 namespace FestivalEndTimeTweak
 {
-    /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
-        /*********
-        ** Public methods
-        *********/
-        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
-        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             //Harmony patcher
@@ -25,8 +19,8 @@ namespace FestivalEndTimeTweak
             var original = typeof(Event).GetMethod("exitEvent");
             var prefix = helper.Reflection.GetMethod(typeof(FestivalEndTimeTweak.ChangeFestivalEndTime), "Prefix").MethodInfo;
             var postfix = helper.Reflection.GetMethod(typeof(FestivalEndTimeTweak.ChangeFestivalEndTime), "Postfix").MethodInfo;
-            var transpiler = helper.Reflection.GetMethod(typeof(FestivalEndTimeTweak.ChangeFestivalEndTime), "Transpiler").MethodInfo;
-            harmony.Patch(original, new HarmonyMethod(prefix), new HarmonyMethod(postfix), new HarmonyMethod(transpiler));
+            //var transpiler = helper.Reflection.GetMethod(typeof(FestivalEndTimeTweak.ChangeFestivalEndTime), "Transpiler").MethodInfo;
+            harmony.Patch(original, new HarmonyMethod(prefix), new HarmonyMethod(postfix));
             
         }
     }
@@ -65,36 +59,47 @@ namespace FestivalEndTimeTweak
                 int startTime = Convert.ToInt32(festivalData["conditions"].Split('/')[1].Split(' ')[0]);
                 int endTime = Convert.ToInt32(festivalData["conditions"].Split('/')[1].Split(' ')[1]);
                 int minutes = 60 * (endTime - startTime) / 100 ;
+
+                int oldMinutes = 780;
+                if (festivalData != null && (festivalData["file"].Equals("summer28") || festivalData["file"].Equals("fall27")))
+                {
+                    oldMinutes = 240;
+                }
+
                 Game1.timeOfDayAfterFade = endTime;
                 
                 foreach (GameLocation location in (IEnumerable<GameLocation>)Game1.locations)
                 {
                     foreach (StardewValley.Object @object in location.objects.Values)
-                        @object.minutesElapsed(minutes, location);
+                        // Add back the previously subtracted minutes
+                        @object.minutesElapsed(minutes - oldMinutes, location);
                 }
             }
         }
 
         /* Stop StardewValley.Object updates. Completed in Postfix */
+        /*
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var codes = instructions.ToList();
             MethodInfo minutesElapsedMI = typeof(StardewValley.Object).GetMethod("minutesElapsed", new Type[] { typeof(Int32), typeof(StardewValley.GameLocation) });
+            string minutesElapsed = minutesElapsedMI.ToString();
             for (var i = 2; i < codes.Count; i++)
             {
-                if (codes[i].operand != null && codes[i].operand.GetType().IsInstanceOfType(typeof(MethodInfo)) && minutesElapsedMI.Equals((MethodInfo) codes[i].operand))
+                if (codes[i].opcode.Equals(OpCodes.Callvirt) && codes[i].operand.ToString().Equals(minutesElapsed))
                 {
                     codes[i - 2].opcode = OpCodes.Nop; //Nop minutesElapsed() param1 load
                     codes[i - 1].opcode = OpCodes.Nop; //Nop minutesElapsed() param2 load
                     codes[i].opcode = OpCodes.Nop;     //Nop minutesElapsed() method call
+                    codes[i].operand = null;
                     codes[i + 1].opcode = (codes[i + 1].opcode == OpCodes.Pop ? OpCodes.Nop : codes[i].opcode);
                     
-                 
                     break;
                 }
             }
 
             return codes.AsEnumerable();
         }
+        */
     }
 }

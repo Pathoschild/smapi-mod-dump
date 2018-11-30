@@ -16,9 +16,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit b8ea7d6aaca6c0ae52dfe52b23f1f7893c8b883b
+   commit 793020174d75d0bda9974a72e83a45dcd9f799a9
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Tue Nov 27 22:51:56 2018 -0500
+   Date:   Fri Nov 30 00:56:41 2018 -0500
    
-       add button to reset chest data
+       update translation info
    

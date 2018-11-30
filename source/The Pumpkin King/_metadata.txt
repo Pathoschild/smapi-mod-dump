@@ -5,9 +5,9 @@ mods:
    The Pumpkin King
 
 latest commit:
-   commit 7370a2fd17137c96afbbf5e828367d46181a7916
+   commit 932e5140789aa1d429b56cf067624ff2a014cfd2
    Author: KirbyLink <kjryan.reeves@gmail.com>
-   Date:   Sun Oct 28 17:58:46 2018 -0700
+   Date:   Thu Nov 29 13:18:59 2018 -0800
    
-       Updated nexus update key
+       Recompilied for compatibility with v 1.3.32
    

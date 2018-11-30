@@ -5,9 +5,9 @@ mods:
    Bee House Flower Range Fix
 
 latest commit:
-   commit 735112273799da1a19dfd727778f70ea82537b0e
+   commit 87a4b3ee4c20d003735e43edffa3df9ac860524d
    Author: KirbyLink <kjryan.reeves@gmail.com>
-   Date:   Thu Nov 1 11:07:55 2018 -0700
+   Date:   Thu Nov 29 11:25:40 2018 -0800
    
-       Removed a comment not related to this mod
+       Recompile for compatibility
    

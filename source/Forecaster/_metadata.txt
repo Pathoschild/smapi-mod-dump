@@ -5,9 +5,9 @@ mods:
    Forecaster
 
 latest commit:
-   commit 1f969e8785b3b544b9ce85e61d4c5c4f854300ca
+   commit 0e5aeaa40b1cc93c9ce0429e2a06bc070df3f6b5
    Author: Remy Bach <remy@bach.me.uk>
-   Date:   Sun Nov 25 23:39:23 2018 +0000
+   Date:   Thu Nov 29 19:58:01 2018 +0000
    
-       Add ability to disable forecast or weather on waking up
+       Bump version in manifest to 1.2.1
    
