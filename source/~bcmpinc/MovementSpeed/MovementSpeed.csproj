@@ -29,51 +29,8 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="StardewValley">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewValley.exe</HintPath>
-    </Reference>
-    <Reference Include="xTile">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\xTile.dll</HintPath>
-    </Reference>
-    <Reference Include="StardewModdingAPI">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe</HintPath>
-    </Reference>
-    <Reference Include="StardewValley">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewValley.exe</HintPath>
-    </Reference>
-    <Reference Include="xTile">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\xTile.dll</HintPath>
-    </Reference>
-    <Reference Include="StardewModdingAPI">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe</HintPath>
-    </Reference>
-    <Reference Include="StardewModdingAPI.Toolkit.CoreInterfaces">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewModdingAPI.Toolkit.CoreInterfaces.dll</HintPath>
-    </Reference>
     <Reference Include="0Harmony">
       <HintPath>..\packages\Lib.Harmony.1.2.0.1\lib\net45\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="StardewModdingAPI">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe</HintPath>
-    </Reference>
-    <Reference Include="StardewValley">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewValley.exe</HintPath>
-    </Reference>
-    <Reference Include="xTile">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\xTile.dll</HintPath>
-    </Reference>
-    <Reference Include="StardewValley">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewValley.exe</HintPath>
-    </Reference>
-    <Reference Include="xTile">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\xTile.dll</HintPath>
-    </Reference>
-    <Reference Include="StardewModdingAPI">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe</HintPath>
-    </Reference>
-    <Reference Include="StardewModdingAPI.Toolkit.CoreInterfaces">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewModdingAPI.Toolkit.CoreInterfaces.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -92,5 +49,5 @@
     <None Include="README.md" />
     <None Include="packages.config" />
   </ItemGroup>
-  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
 </Project>

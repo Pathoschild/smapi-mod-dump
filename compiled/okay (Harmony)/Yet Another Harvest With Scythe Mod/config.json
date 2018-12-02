@@ -1,4 +1,4 @@
 {
   "HarvestForage": true,
-  "HarvestSeeds": true
+  "AllHaveQuality": false
 }

@@ -12,9 +12,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit d8588e54d70d4be82c31a7a4c5f2b0b6e2883dc1
+   commit 068373bbbd75a46afa8e8fe8dff261e5612759f2
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Sat Oct 6 01:04:57 2018 +0200
+   Date:   Sat Dec 1 18:44:25 2018 +0100
    
-       Fixed exception in craft counter for ms windows
+       Cleanup references, version bump & re-compile for harvest with scythe
    

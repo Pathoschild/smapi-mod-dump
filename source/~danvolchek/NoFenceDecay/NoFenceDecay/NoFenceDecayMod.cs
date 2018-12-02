@@ -21,7 +21,13 @@ namespace NoFenceDecay
         {
             foreach (Fence fence in this.finder.GetFences())
             {
-                fence.health.Set((fence.isGate.Value ? 2 : 1) * fence.maxHealth.Value);
+                fence.repair();
+                fence.health.Value *= 2.0f;
+
+                fence.maxHealth.Value = fence.health.Value;
+
+                if (fence.isGate.Value)
+                    fence.health.Value *= 2.0f;
             }
         }
     }

@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/2545
 IDs: EternalSoap.RemoteFridgeStorage
-update keys: Nexus:2545
+update keys: Nexus:2545, GitHub:SoapStuff/Remote-Fridge-Storage

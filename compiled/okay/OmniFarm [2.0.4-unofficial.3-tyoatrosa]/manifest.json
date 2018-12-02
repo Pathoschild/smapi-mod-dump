@@ -1,7 +1,7 @@
 ﻿{
    "Name": "Omnifarm",
    "Author": "PhthaloBlue",
-   "Version": "2.0.4-unofficial.2-tyoatrosa",
+   "Version": "2.0.4-unofficial.3-tyoatrosa",
    "Description": "Combat Map Replacement",
    "UniqueID": "PhthaloBlue.Omnifarm",
    "EntryDll": "Omnifarm.dll",

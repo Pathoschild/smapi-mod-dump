@@ -1,0 +1,13 @@
+url:
+   https://github.com/SoapStuff/Remote-Fridge-Storage.git
+
+mods:
+   Remote Fridge Storage
+
+latest commit:
+   commit c512443a24e67d97c0b843e06ffc2c6728df38b0
+   Author: Arjan Seijs <A.M.Seijs@student.tudelft.nl>
+   Date:   Sat Dec 1 16:59:24 2018 +0100
+   
+       Updated to latest smapi / stardewvalley version
+   

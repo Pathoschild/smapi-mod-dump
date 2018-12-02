@@ -16,6 +16,7 @@ mods:
    Farm Hub
    Ghost Town
    Harp of Yoba Redux
+   JoJaBan - Arcade Sokoban
    Junimo Farm
    More Map Layers
    No Soil Decay Redux

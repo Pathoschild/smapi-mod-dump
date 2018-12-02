@@ -29,9 +29,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 0846fb92e3d61e3477cee84e40e5b472d09597e5
+   commit 9219687cc96ee555cad07cb87f8c01dc473a0dfb
    Author: danvolchek <volchek2@illinois.edu>
-   Date:   Wed Nov 28 02:51:42 2018 -0600
+   Date:   Fri Nov 30 02:06:04 2018 -0600
    
-       [Giant Crop Ring] style fixes
+       [No Fence Decay] remove typo from comment
    
