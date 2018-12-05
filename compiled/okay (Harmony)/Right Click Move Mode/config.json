@@ -1,9 +1,10 @@
 {
-  "RightClickMoveModeDefault": "On",
-  "WeaponsSpecticalInteraction": "Enable",
-  "WeaponsSpecticalInteractionType": "Disable",
-  "HoldingMoveOnly": "Disable",
-  "ExtendedModeDefault": "On",
-  "RightClickMoveModeOpenButton": "G",
-  "ExtendedModeOpenButton": "H"
+  "ExtendedModeDefault": true,
+  "RightClickMoveModeDefault": true,
+  "RightClickMoveModeToggleButton": "G",
+  "HoldingMoveOnly": false,
+  "HoldTickCount": 10,
+  "StopAfterHold": true,
+  "WeaponsSpecticalInteraction": true,
+  "WeaponsSpecticalInteractionType": 1
 }

@@ -6,9 +6,9 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit 742bcf0c19cb37a70188feb6f21fde455cc6d75c
+   commit de54386f98a8e9d14a27c30db658e1fae8407f77
    Author: Bouhm <bbouhm@gmail.com>
-   Date:   Wed Nov 21 01:02:13 2018 -0800
+   Date:   Mon Dec 3 21:15:10 2018 -0800
    
-       fix project references
+       handle missing image files
    

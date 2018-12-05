@@ -569,16 +569,44 @@ namespace JoysOfEfficiency.Utils
             return truePrice;
         }
 
+        private static List<Vector2> GetAreaOfCollectingNector(Vector2 homePoint)
+        {
+            List<Vector2> cropLocations = new List<Vector2>();
+            Queue<Vector2> vector2Queue = new Queue<Vector2>();
+            HashSet<Vector2> vector2Set = new HashSet<Vector2>();
+            vector2Queue.Enqueue(homePoint);
+            for (int index1 = 0; index1 <= 150 && vector2Queue.Count > 0; ++index1)
+            {
+                Vector2 index2 = vector2Queue.Dequeue();
+                if (currentLocation.terrainFeatures.ContainsKey(index2) &&
+                    currentLocation.terrainFeatures[index2] is HoeDirt dirt && dirt.crop != null &&
+                    dirt.crop.programColored.Value && !dirt.crop.dead.Value && dirt.crop.currentPhase.Value >= dirt.crop.phaseDays.Count - 1)
+                {
+                    cropLocations.Add(index2);
+                }
+                foreach (Vector2 adjacentTileLocation in Utility.getAdjacentTileLocations(index2))
+                {
+                    if (!vector2Set.Contains(adjacentTileLocation))
+                        vector2Queue.Enqueue(adjacentTileLocation);
+                }
+                vector2Set.Add(index2);
+            }
+
+            return cropLocations;
+        }
+
         public static void UpdateNectarInfo()
         {
             FlowerLocationProducingNectar.Clear();
             foreach(KeyValuePair<Vector2, SVObject> kv in currentLocation.Objects.Pairs.Where(pair=>pair.Value.Name == "Bee House"))
             {
                 Vector2 houseLoc = kv.Key;
-                Vector2 flowerLoc = GetCropLocation(Utility.findCloseFlower(currentLocation, houseLoc));
-                if((int)flowerLoc.X != -1 && (int)flowerLoc.Y != -1 && !FlowerLocationProducingNectar.Contains(flowerLoc))
+                foreach (Vector2 flowerLoc in GetAreaOfCollectingNector(houseLoc))
                 {
-                    FlowerLocationProducingNectar.Add(flowerLoc);
+                    if ((int)flowerLoc.X < 0 && (int)flowerLoc.Y < 0 && !FlowerLocationProducingNectar.Contains(flowerLoc))
+                    {
+                        FlowerLocationProducingNectar.Add(flowerLoc);
+                    }
                 }
             }
         }
@@ -843,9 +871,8 @@ namespace JoysOfEfficiency.Utils
 
                 if (dirt.readyForHarvest())
                 {
-                    if (IsBlackListed(dirt.crop) || ModEntry.Conf.ProtectNectarProducingFlower && IsProducingNectar(loc))
+                    if (IsBlackListed(dirt.crop) || (ModEntry.Conf.ProtectNectarProducingFlower && IsProducingNectar(loc)))
                         continue;
-
                     if (Harvest((int)loc.X, (int)loc.Y, dirt))
                     {
                         if (dirt.crop.regrowAfterHarvest.Value == -1 || dirt.crop.forageCrop.Value)
@@ -1108,7 +1135,6 @@ namespace JoysOfEfficiency.Utils
 
             IClickableMenu.drawTextureBox(batch, menuTexture, new Rectangle(0, 256, 60, 60), x, y, width, height, Color.White);
             fish.drawInMenu(batch, new Vector2(x + width / 2 - 32, y + 16), 1.0f, 1.0f, 0.9f, false);
-
             
             Vector2 vec2 = new Vector2(x + 32, y + 96);
             DrawString(batch, font, ref vec2, speciesText, Color.Black, scale);
@@ -1357,12 +1383,9 @@ namespace JoysOfEfficiency.Utils
         {
             GameLocation location = currentLocation;
             bool flag = false;
-            if (location.fishSplashPoint.Value != null)
-            {
-                Rectangle rectangle = new Rectangle(location.fishSplashPoint.X * 64, location.fishSplashPoint.Y * 64, 64, 64);
-                Rectangle value = new Rectangle((int)rod.bobber.X - 80, (int)rod.bobber.Y - 80, 64, 64);
-                flag = rectangle.Intersects(value);
-            }
+            Rectangle rectangle = new Rectangle(location.fishSplashPoint.X * 64, location.fishSplashPoint.Y * 64, 64, 64);
+            Rectangle value = new Rectangle((int)rod.bobber.X - 80, (int)rod.bobber.Y - 80, 64, 64);
+            flag = rectangle.Intersects(value);
             int clearWaterDistance = Helper.Reflection.GetField<int>(rod, "clearWaterDistance").GetValue();
             Dictionary<int, double> dict = GetFishes(currentLocation, rod.attachments[0]?.ParentSheetIndex ?? -1, clearWaterDistance + (flag ? 1 : 0), player);
             DrawProbBox(dict);
@@ -1500,73 +1523,85 @@ namespace JoysOfEfficiency.Utils
                     {308,0.25}
                 };
             }
-            if (dictionary.ContainsKey(key))
+
+            try
             {
-                string[] array = dictionary[key].Split('/')[4 + Utility.getSeasonNumber(currentSeason)].Split(' ');
-                Dictionary<string, string> dictionary2 = new Dictionary<string, string>();
-                if (array.Length > 1)
+                if (dictionary.ContainsKey(key))
                 {
-                    for (int i = 0; i < array.Length; i += 2)
+                    string[] array = dictionary[key].Split('/')[4 + Utility.getSeasonNumber(currentSeason)].Split(' ');
+                    Dictionary<string, string> dictionary2 = new Dictionary<string, string>();
+                    if (array.Length > 1)
                     {
-                        dictionary2.Add(array[i], array[i + 1]);
-                    }
-                }
-                string[] array2 = dictionary2.Keys.ToArray();
-                Dictionary<int, string> dictionary3 = content.Load<Dictionary<int, string>>("Data\\Fish");
-                Utility.Shuffle(random, array2);
-                foreach (string t in array2)
-                {
-                    bool flag2 = true;
-                    string[] array3 = dictionary3[Convert.ToInt32(t)].Split('/');
-                    string[] array4 = array3[5].Split(' ');
-                    int num2 = Convert.ToInt32(dictionary2[t]);
-                    if (num2 == -1 || currentLocation.getFishingLocation(who.getTileLocation()) == num2)
-                    {
-                        int num3 = 0;
-                        while (num3 < array4.Length)
+                        for (int i = 0; i < array.Length; i += 2)
                         {
-                            if (timeOfDay < Convert.ToInt32(array4[num3]) || timeOfDay >= Convert.ToInt32(array4[num3 + 1]))
+                            dictionary2.Add(array[i], array[i + 1]);
+                        }
+                    }
+
+                    string[] array2 = dictionary2.Keys.ToArray();
+                    Dictionary<int, string> dictionary3 = content.Load<Dictionary<int, string>>("Data\\Fish");
+                    //Utility.Shuffle(random, array2);
+                    foreach (string t in array2)
+                    {
+                        bool flag2 = true;
+                        string[] array3 = dictionary3[Convert.ToInt32(t)].Split('/');
+                        string[] array4 = array3[5].Split(' ');
+                        int num2 = Convert.ToInt32(dictionary2[t]);
+                        if (num2 == -1 || currentLocation.getFishingLocation(who.getTileLocation()) == num2)
+                        {
+                            int num3 = 0;
+                            while (num3 < array4.Length)
                             {
-                                num3 += 2;
-                                continue;
+                                if (timeOfDay < Convert.ToInt32(array4[num3]) ||
+                                    timeOfDay >= Convert.ToInt32(array4[num3 + 1]))
+                                {
+                                    num3 += 2;
+                                    continue;
+                                }
+
+                                flag2 = false;
+                                break;
                             }
-                            flag2 = false;
-                            break;
                         }
-                    }
-                    if (!array3[7].Equals("both"))
-                    {
-                        if (array3[7].Equals("rainy") && !isRaining)
+
+                        if (!array3[7].Equals("both"))
+                        {
+                            if (array3[7].Equals("rainy") && !isRaining)
+                            {
+                                flag2 = true;
+                            }
+                            else if (array3[7].Equals("sunny") && isRaining)
+                            {
+                                flag2 = true;
+                            }
+                        }
+
+                        if (who.FishingLevel < Convert.ToInt32(array3[12]))
                         {
                             flag2 = true;
                         }
-                        else if (array3[7].Equals("sunny") && isRaining)
-                        {
-                            flag2 = true;
-                        }
+
+                        if (flag2)
+                            continue;
+
+                        double num4 = Convert.ToDouble(array3[10]);
+                        double num5 = Convert.ToDouble(array3[11]) * num4;
+                        num4 -= Math.Max(0, Convert.ToInt32(array3[9]) - waterDepth) * num5;
+                        num4 += who.FishingLevel / 50f;
+                        num4 = Math.Min(num4, 0.89999997615814209);
+                        int num = Convert.ToInt32(t);
+
+                        dict.Add(num, num4);
                     }
-                    if (who.FishingLevel < Convert.ToInt32(array3[12]))
-                    {
-                        flag2 = true;
-                    }
-
-                    if (flag2)
-                        continue;
-
-                    double num4 = Convert.ToDouble(array3[10]);
-                    double num5 = Convert.ToDouble(array3[11]) * num4;
-                    num4 -= Math.Max(0, Convert.ToInt32(array3[9]) - waterDepth) * num5;
-                    num4 += who.FishingLevel / 50f;
-                    num4 = Math.Min(num4, 0.89999997615814209);
-                    int num = Convert.ToInt32(t);
-
-                    dict.Add(num, num4);
                 }
             }
-
-            KeyValuePair<int, double>[] array1 = dict.ToArray();
-            Array.Sort(array1, new CustomSorter());
-            return array1.ToDictionary(x => x.Key, x => x.Value);
+            catch (KeyNotFoundException knf)
+            {
+                Monitor.Log("KeyNotFound Exception occured. Ignoring...");
+                Monitor.Log(knf.ToString());
+            }
+            
+            return dict;
         }
 
         private static Dictionary<int, double> GetFishesSubmarine()

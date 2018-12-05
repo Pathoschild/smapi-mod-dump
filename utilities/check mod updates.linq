@@ -159,6 +159,7 @@ public IDictionary<string, Tuple<string, string>> EquivalentModVersions = new Di
 	["stephansstardewcrops"] = Tuple.Create("1.4.1", "1.41"), // Stephen's Stardew Crops
 	
 	// okay
+	["alphablackwolf.skillPrestige"] = Tuple.Create("1.0.9-unofficial.1-huancz", "1.2.3"), // Skill Prestige (unofficial update is for an older version)
 	["Jotser.AutoGrabberMod"] = Tuple.Create("1.0.12-beta.1", "1.0.12"),
 	["skuldomg.freeDusty"] = Tuple.Create("1.0-beta.7", "1.0.5"), // Free Dusty
 	["ElectroCrumpet.PelicanPostalService"] = Tuple.Create("1.0.5-beta", "1.0.6") // Pelican Postal Service
@@ -360,7 +361,7 @@ void Main()
 				}
 				
 				// mark unofficial versions
-				if (mod.InstalledVersion.IsPrerelease() && (mod.InstalledVersion.Build.Contains("unofficial") || mod.InstalledVersion.Build.Contains("update")))
+				if (mod.InstalledVersion.IsPrerelease() && (mod.InstalledVersion.PrereleaseTag.Contains("unofficial") || mod.InstalledVersion.PrereleaseTag.Contains("update")))
 					newName += $" [{mod.InstalledVersion}]";
 				
 				// sanitise name
@@ -453,6 +454,7 @@ void Main()
 					&& !this.IgnoreMissingMods.Contains(mod.Folder.Manifest.EntryDll)
 				select mod
 			)
+			.Where(p => p.IDs.Count() > 1 || !p.IDs.FirstOrDefault()?.Contains("FAKE.") == true)
 			.ToArray();
 		if (missing.Any())
 		{

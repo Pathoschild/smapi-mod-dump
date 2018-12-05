@@ -12,9 +12,8 @@ namespace HarpOfYobaRedux
 {
     internal class Instrument : Tool, ISaveElement
     {
-        private static Dictionary<string,Instrument> allInstruments;
+        internal static Dictionary<string,Instrument> allInstruments;
         public string instrumentID;
-        public bool owned;
         private Texture2D texture;
         private bool readyToPlay;
         private int timeWhenReady;
@@ -27,19 +26,6 @@ namespace HarpOfYobaRedux
         public Instrument()
         {
             
-        }
-
-        public static bool hasInstument(string id)
-        {
-            return allInstruments[id].owned;
-        }
-
-        public static void beforeRebuilding()
-        {
-            foreach(Instrument instrument in allInstruments.Values)
-            {
-                instrument.owned = false;
-            }
         }
 
         public override bool canBeDropped()
@@ -72,8 +58,6 @@ namespace HarpOfYobaRedux
             if (allInstruments.ContainsKey(id))
                 allInstruments.Remove(id);
 
-            owned = false;
-
             allInstruments.Add(id,this);
         }
 
@@ -92,8 +76,6 @@ namespace HarpOfYobaRedux
             cooldownTime = 60;
             numAttachmentSlots.Value = 1;
             attachments.SetCount(numAttachmentSlots);
-            owned = true;
-            allInstruments[id].owned = true;
             InstantUse = true;
             instrumentID = id;
 
@@ -116,7 +98,12 @@ namespace HarpOfYobaRedux
             SObject priorAttachement = null;
 
             if (attachments.Length > 0 && attachments[0] != null)
-                priorAttachement = (SheetMusic)attachments[0].getOne();
+            {
+                if (!(attachments[0] is SheetMusic))
+                    SaveHandler.RebuildAll(attachments[0], attachments);
+
+                    priorAttachement = (SObject) attachments[0].getOne();
+            }
 
             if (o is SheetMusic)
             {
@@ -168,8 +155,12 @@ namespace HarpOfYobaRedux
         {
             build(additionalSaveData["id"]);
             if (replacement is Tool t && t.attachments.Count > 0)
+            {
+                if (!(t.attachments[0] is SheetMusic))
+                    SaveHandler.RebuildAll(t.attachments[0], t.attachments);
+
                 attachments[0] = t.attachments[0];
-            allInstruments[instrumentID].owned = true;
+            }
 
             foreach (string key in additionalSaveData.Keys)
                 if (key != "id" && !allAdditionalSaveData.ContainsKey(key))

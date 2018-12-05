@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
@@ -12,20 +15,25 @@ namespace LadderLocator
 {
     class ModEntry : Mod
     {
+        private static ModConfig Config;
         private static Texture2D pixelTexture;
         private static List<StardewValley.Object> ladderStones;
+        private static bool nextIsShaft;
 
         public override void Entry(IModHelper helper)
         {
+            Config = Helper.ReadConfig<ModConfig>();
+
             pixelTexture = new Texture2D(Game1.graphics.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             Color[] colorArray = Enumerable.Range(0, 1).Select<int, Color>((Func<int, Color>)(i => Color.White)).ToArray<Color>();
             pixelTexture.SetData<Color>(colorArray);
 
             ladderStones = new List<StardewValley.Object>();
 
-            PlayerEvents.Warped += this.PlayerEvents_Warped;
             GameEvents.OneSecondTick += this.GameEvents_OneSecondTick;
             GraphicsEvents.OnPostRenderEvent += this.GraphicsEvents_OnPostRenderEvent;
+            InputEvents.ButtonPressed += this.InputEvents_ButtonPressed;
+            PlayerEvents.Warped += this.PlayerEvents_Warped;
         }
 
         private void GameEvents_OneSecondTick(object sender, EventArgs e)
@@ -41,6 +49,23 @@ namespace LadderLocator
                 else if (ladderStones.Count == 0)
                 {
                     findLadders();
+                }
+
+                if (Config.ForceShafts && Game1.mine.getMineArea(-1) == 121 && !nextIsShaft && ladderStones.Count > 0)
+                {
+                    Random mineRandom = Helper.Reflection.GetField<Random>(Game1.mine, "mineRandom").GetValue();
+
+                    Random r = Clone(mineRandom);
+
+                    double next = r.NextDouble();
+
+                    while (next >= 0.2)
+                    {
+                        next = r.NextDouble();
+                        mineRandom.NextDouble();
+                    }
+
+                    nextIsShaft = true;
                 }
             }
         }
@@ -98,9 +123,41 @@ namespace LadderLocator
             Game1.spriteBatch.Draw(pixelTexture, new Rectangle(rect.Right, rect.Top, 3, rect.Height), color);
         }
 
+        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
+        {
+            if (e.Button == Config.ToggleShaftsKey)
+            {
+                Config.ForceShafts = !Config.ForceShafts;
+
+                if (Config.ForceShafts)
+                {
+                    Game1.addHUDMessage(new HUDMessage("Force shafts toggled on", 2));
+                }
+                else
+                {
+                    Game1.addHUDMessage(new HUDMessage("Force shafts toggled off", 2));
+                }
+
+                Helper.WriteConfig<ModConfig>(Config);
+            }
+        }
+
         private void PlayerEvents_Warped(object sender, EventArgsPlayerWarped e)
         {
             ladderStones.Clear();
+            nextIsShaft = false;
+        }
+
+        private T Clone<T>(T source)
+        {
+            IFormatter fmt = new BinaryFormatter();
+            Stream stream = new MemoryStream();
+            using (stream)
+            {
+                fmt.Serialize(stream, source);
+                stream.Seek(0, SeekOrigin.Begin);
+                return (T)fmt.Deserialize(stream);
+            }
         }
 
     }

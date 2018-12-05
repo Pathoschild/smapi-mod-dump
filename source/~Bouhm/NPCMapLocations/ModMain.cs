@@ -5,7 +5,9 @@ Shows NPC locations on a modified map.
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Drawing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -79,10 +81,9 @@ namespace NPCMapLocations
     public override void Entry(IModHelper helper)
     {
       MarkerCropOffsets = ModConstants.MarkerCropOffsets;
-      BuildingMarkers =
-        Helper.Content.Load<Texture2D>(@"assets/buildings.png"); // Load farm buildings
-      CustomMarkerTex =
-        Helper.Content.Load<Texture2D>(@"assets/customLocations.png"); // Load custom location markers
+      BuildingMarkers = File.Exists(@"assets/customLocations.png") ? Helper.Content.Load<Texture2D>(@"assets/buildings.png") : null; // Load farm buildings
+      CustomMarkerTex = File.Exists(@"assets/customLocations.png") ? Helper.Content.Load<Texture2D>(@"assets/customLocations.png") : null;
+      CustomHandler = new ModCustomHandler(Helper, Monitor);
 
       SaveEvents.AfterLoad += SaveEvents_AfterLoad;
       GameEvents.OneSecondTick += GameEvents_OneSecondTick;
@@ -178,7 +179,7 @@ namespace NPCMapLocations
     private void SaveEvents_AfterLoad(object sender, EventArgs e)
     {
       Config = Helper.Data.ReadJsonFile<ModConfig>($"config/{Constants.SaveFolderName}.json") ?? new ModConfig();
-      CustomHandler = new ModCustomHandler(Helper, Config, Monitor);
+      CustomHandler.LoadConfig(Config);
       CustomMapLocations = CustomHandler.GetCustomMapLocations();
       DEBUG_MODE = Config.DEBUG_MODE;
       locationContexts = new Dictionary<string, LocationContext>();
@@ -350,11 +351,12 @@ namespace NPCMapLocations
       {
         // Handle case where Kent appears even though he shouldn't
         if (npc.Name.Equals("Kent") && !SecondaryNpcs["Kent"]) continue;
+        if (!CustomNames.TryGetValue(npc.Name, out var npcName)) continue;
 
         var npcMarker = new CharacterMarker
         {
           Npc = npc,
-          Name = CustomNames[npc.Name],
+          Name = npcName,
           Marker = npc.Sprite.Texture,
           IsBirthday = npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth)
         };
@@ -538,7 +540,7 @@ namespace NPCMapLocations
         if (locationName.StartsWith("UndergroundMine"))
           locationName = getMinesLocationName(locationName);
 
-        if (locationName == null || (!locationName.Equals("Cabin") || !locationName.Contains("UndergroundMine")) && !MapVectors.TryGetValue(locationName, out var loc))
+        if (locationName == null || (!locationName.Contains("Cabin") || !locationName.Contains("UndergroundMine")) && !MapVectors.TryGetValue(locationName, out var loc))
         {
           if (!alertFlags.Contains("UnknownLocation:" + locationName))
           {
@@ -649,7 +651,7 @@ namespace NPCMapLocations
         if (locationName.Contains("UndergroundMine"))
           locationName = getMinesLocationName(locationName);
 
-        if ((!locationName.Equals("Cabin") || !locationName.Contains("UndergroundMine")) &&
+        if ((!locationName.Contains("Cabin") || !locationName.Contains("UndergroundMine")) &&
             !MapVectors.TryGetValue(farmer.currentLocation.Name, out var loc))
         {
           if (!alertFlags.Contains("UnknownLocation:" + farmer.currentLocation.Name))

@@ -230,11 +230,11 @@ namespace JoysOfEfficiency
 
                 tab.AddOptionsElement(new EmptyLabel());
                 tab.AddOptionsElement(new LabelComponent("Config Menu"));
-                tab.AddOptionsElement(new ModifiedInputListener(this, "keyboard", 0, ModEntry.Conf.ButtonShowMenu, translation, OnInputListnerChanged, OnStartListening));
+                tab.AddOptionsElement(new ModifiedInputListener(this, "KeyShowMenu", 0, ModEntry.Conf.ButtonShowMenu, translation, OnInputListnerChanged, OnStartListening));
 
                 tab.AddOptionsElement(new EmptyLabel());
                 tab.AddOptionsElement(new LabelComponent("Auto Harvest"));
-                tab.AddOptionsElement(new ModifiedInputListener(this, "keyboard", 1, ModEntry.Conf.ButtonToggleBlackList, translation, OnInputListnerChanged, OnStartListening));
+                tab.AddOptionsElement(new ModifiedInputListener(this, "KeyToggleBlackList", 1, ModEntry.Conf.ButtonToggleBlackList, translation, OnInputListnerChanged, OnStartListening));
 
                 tab.AddOptionsElement(new EmptyLabel());
                 _tabs.Add(tab);

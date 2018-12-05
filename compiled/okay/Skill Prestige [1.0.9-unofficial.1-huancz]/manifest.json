@@ -1,0 +1,9 @@
+{
+  "Name": "Skill Prestige",
+  "Author": "Alphablackwolf",
+  "Version": "1.0.9-unofficial.1-huancz",
+  "Description": "",
+  "UniqueID": "6b843e60-c8fc-4a25-a67b-4a38ac8dcf9b",
+  "EntryDll": "SkillPrestige.dll",
+  "UpdateKeys": [ "GitHub:huancz/SkillPrestige", "Nexus:569" ]
+}

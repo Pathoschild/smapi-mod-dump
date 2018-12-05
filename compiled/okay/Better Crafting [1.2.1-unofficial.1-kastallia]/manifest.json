@@ -1,0 +1,10 @@
+﻿{
+  "Name": "BetterCrafting",
+  "Author": "RedstoneBoy",
+  "Version": "1.2.1-unofficial.1-kastallia",
+  "Description": "Better crafting gui.",
+  "UniqueID": "RedstoneBoy.BetterCrafting",
+  "EntryDll": "BetterCrafting.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:2504", "GitHub:RedstoneBoy/BetterCrafting" ]
+}

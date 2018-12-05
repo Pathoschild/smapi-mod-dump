@@ -5,9 +5,9 @@ mods:
    Ladder Locator
 
 latest commit:
-   commit 9c2019eaa58c541f4a77b9d39232e6f3e116d0ca
+   commit f4339a43a395599b51ca40aefb83568a1e8a8eca
    Author: Yuri Moens <yuri.moens@gmail.com>
-   Date:   Sun Nov 25 01:14:51 2018 +0100
+   Date:   Tue Dec 4 18:20:31 2018 +0100
    
-       Add NexusMods update key
+       Add option to force shafts
    

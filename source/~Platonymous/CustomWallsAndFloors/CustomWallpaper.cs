@@ -231,14 +231,14 @@ namespace CustomWallsAndFloors
                 Rectangle rectangle = walls[whichRoom];
                 for (int x = rectangle.X; x < rectangle.Right; ++x)
                 {
-                    setMapTilesheet(dec.map, tilesheet, x, rectangle.Y, "Back", 0);
-                    setMapTilesheet(dec.map, tilesheet, x, rectangle.Y + 1, "Back", 0);
+                    setMapTilesheet(dec.map, tilesheet, x, rectangle.Y, "Back", 0, 0, animations);
+                    setMapTilesheet(dec.map, tilesheet, x, rectangle.Y + 1, "Back", 0, 0, animations);
                     if (rectangle.Height >= 3)
                     {
                         if (dec.map.GetLayer("Buildings").Tiles[x, rectangle.Y + 2].TileSheet.Equals(dec.map.TileSheets[2]) || dec.map.GetLayer("Buildings").Tiles[x, rectangle.Y + 2].TileSheet.Id.StartsWith("zCWF"))
-                            setMapTilesheet(dec.map, tilesheet, x, rectangle.Y + 2, "Buildings", 0);
+                            setMapTilesheet(dec.map, tilesheet, x, rectangle.Y + 2, "Buildings", 0, 0, animations);
                         else
-                            setMapTilesheet(dec.map, tilesheet, x, rectangle.Y + 2, "Back", 0);
+                            setMapTilesheet(dec.map, tilesheet, x, rectangle.Y + 2, "Back", 0, 0, animations);
                     }
                 }
             }
@@ -332,17 +332,26 @@ namespace CustomWallsAndFloors
                 if (!tilesheet.Id.Contains("zCWF"))
                     index = 0;
                 Tile tile = map.GetLayer(layer).Tiles[tileX, tileY];
-
+                Tile newTile = null;
                 if (animations != null)
                 {
                     List<StaticTile> statics = new List<StaticTile>();
                     for (int i = 0; i < animations.Frames; i++)
                         statics.Add(new StaticTile(map.GetLayer(layer), tilesheet, BlendMode.Alpha, (i * (animations.Floor ? 2 : 1)) + (tile.TileIndex - index)));
+                    newTile = new xTile.Tiles.AnimatedTile(map.GetLayer(layer), statics.ToArray(), animations.Length);
+                    foreach (var p in tile.Properties)
+                        newTile.Properties.Add(p);
 
-                    PyTK.PyUtils.setDelayedAction(200, () => map.GetLayer(layer).Tiles[tileX, tileY] = new xTile.Tiles.AnimatedTile(map.GetLayer(layer), statics.ToArray(), animations.Length));
+                    PyTK.PyUtils.setDelayedAction(200, () => map.GetLayer(layer).Tiles[tileX, tileY] = newTile);
                 }
                 else
-                    PyTK.PyUtils.setDelayedAction(200, () => map.GetLayer(layer).Tiles[tileX, tileY] = new StaticTile(map.GetLayer(layer), tilesheet, BlendMode.Alpha, tile.TileIndex - index));
+                {
+                    newTile = new StaticTile(map.GetLayer(layer), tilesheet, BlendMode.Alpha, tile.TileIndex - index);
+                    foreach (var p in tile.Properties)
+                        newTile.Properties.Add(p);
+
+                    PyTK.PyUtils.setDelayedAction(200, () => map.GetLayer(layer).Tiles[tileX, tileY] = newTile);
+                }
             }
             catch
             {

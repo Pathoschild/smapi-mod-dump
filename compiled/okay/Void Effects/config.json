@@ -1,0 +1,5 @@
+{
+  "modEnabledOnStartup": true,
+  "VoidItemPriceIncrease": 2.0,
+  "VoidDecay": 10
+}

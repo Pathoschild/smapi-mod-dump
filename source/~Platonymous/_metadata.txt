@@ -36,9 +36,9 @@ mods:
    Visualize
 
 latest commit:
-   commit da67ef2755d16a5d61752a10272dc5e4ccfb17c2
+   commit a069de22811e9037adc0389130f3b3ab58dfd9b4
    Author: Platonymous <david@millionideas.de>
-   Date:   Wed Nov 21 02:41:07 2018 +0100
+   Date:   Sun Dec 2 11:31:53 2018 +0100
    
-       added asset
+       Minor change
    

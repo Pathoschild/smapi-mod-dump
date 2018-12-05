@@ -16,9 +16,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 793020174d75d0bda9974a72e83a45dcd9f799a9
+   commit 4cd48e8bea3c0782e5e27bbaca7d532720b931ec
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Fri Nov 30 00:56:41 2018 -0500
+   Date:   Mon Dec 3 20:38:27 2018 -0500
    
-       update translation info
+       update mods for SMAPI 3.0 compatibility
    

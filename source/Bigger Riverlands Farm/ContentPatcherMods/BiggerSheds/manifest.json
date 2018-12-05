@@ -1,7 +1,7 @@
 {
    "Name": "Bigger Sheds",
    "Author": "Jessebot",
-   "Version": "2.0.0",
+   "Version": "2.0.1",
    "Description": "Sheds quadruple in size. Also comes with 8 different versions which you can set in the config.json file",
    "UniqueID": "jessebot.biggersheds",
    "MinimumApiVersion": "2.0",
