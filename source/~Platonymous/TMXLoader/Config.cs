@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SplitMoney
+namespace TMXLoader
 {
     public class Config
     {
-        public bool Shipping { get; set; } = true;
+        public bool converter { get; set; } = false;
     }
 }

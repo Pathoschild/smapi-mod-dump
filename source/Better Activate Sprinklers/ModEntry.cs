@@ -29,7 +29,8 @@ namespace BetterActivateSprinklers
             foreach (var pair in e.Added)
             {
                 var obj = pair.Value;
-                if (obj.DisplayName.Contains("Sprinkler"))
+
+                if (obj.Name.Contains("Sprinkler"))
                 {
                     obj.DayUpdate(Game1.currentLocation);
                 }
@@ -46,7 +47,7 @@ namespace BetterActivateSprinklers
                 var obj = Game1.currentLocation.getObjectAtTile((int) tile.X, (int) tile.Y);
                 if (obj == null) return;
                 
-                if (obj.DisplayName.Contains("Sprinkler"))
+                if (obj.Name.Contains("Sprinkler"))
                 {
                     obj.DayUpdate(Game1.currentLocation);
                 }

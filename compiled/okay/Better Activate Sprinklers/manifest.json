@@ -1,7 +1,7 @@
 {
     "Name": "BetterActivateSprinklers",
     "Author": "ChaosEnergy",
-    "Version": "1.0.0",
+    "Version": "1.0.1",
     "Description": "Allow manual activation of sprinklers.",
     "UniqueID": "ChaosEnergy.BetterActivateSprinklers",
     "EntryDll": "BetterActivateSprinklers.dll",

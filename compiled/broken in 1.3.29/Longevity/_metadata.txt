@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/649
-IDs: RTGOAT.Longevity
-update keys: Nexus:649

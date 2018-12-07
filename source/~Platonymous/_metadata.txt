@@ -26,6 +26,7 @@ mods:
    Portraiture
    PyTK
    Ring of Fire
+   Scale Up
    Seed Bag
    Sleep Worker
    Speedster
@@ -36,9 +37,9 @@ mods:
    Visualize
 
 latest commit:
-   commit a069de22811e9037adc0389130f3b3ab58dfd9b4
+   commit 30f696b52348a4cf85250eafd865fbaf84bb70f4
    Author: Platonymous <david@millionideas.de>
-   Date:   Sun Dec 2 11:31:53 2018 +0100
+   Date:   Thu Dec 6 23:16:45 2018 +0100
    
-       Minor change
+       Update releases
    
