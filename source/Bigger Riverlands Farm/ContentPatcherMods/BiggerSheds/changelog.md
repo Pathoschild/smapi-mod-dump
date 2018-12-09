@@ -1,5 +1,9 @@
 # RELEASE NOTES
-### [(Bigger Sheds Nexus download)]
+### [(Bigger Sheds Nexus download)](https://www.nexusmods.com/stardewvalley/mods/2816/)
+
+## v2.0.3 (Dec 8, 2018)
+- Updated ```manifest.json``` file
+- ModDrop Update Keys
 
 ## v2.0.2 (Dec 2, 2018)
 - Fixed typo in the "ConfigSchema" field

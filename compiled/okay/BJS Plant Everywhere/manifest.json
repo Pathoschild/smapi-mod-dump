@@ -1,0 +1,10 @@
+{
+  "Name": "BJSPlantEverywhere",
+  "Author": "BunnyJumps",
+  "Version": "1.0.0",
+  "Description": "Mod for DF",
+  "UniqueID": "BunnyJumps.BJSPlantEverywhere",
+  "EntryDll": "BJSPlantEverywhere.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "Nexus:3143" ]
+}

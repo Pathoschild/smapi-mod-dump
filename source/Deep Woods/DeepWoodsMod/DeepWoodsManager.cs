@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DeepWoodsMod.Framework.Messages;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
@@ -56,7 +57,7 @@ namespace DeepWoodsMod
             }
             else if (!Game1.IsMasterGame)
             {
-                Game1.MasterPlayer.queueMessage(Settings.Network.DeepWoodsMessageId, Game1.player, new object[] { NETWORK_MESSAGE_DEEPWOODS_WARP, level, "", new Vector2() });
+                ModEntry.SendMessage(level, MessageId.RequestWarp, Game1.MasterPlayer.UniqueMultiplayerID);
             }
             else
             {
@@ -121,7 +122,7 @@ namespace DeepWoodsMod
             {
                 foreach (Farmer who in Game1.otherFarmers.Values)
                     if (who != Game1.player)
-                        who.queueMessage(Settings.Network.DeepWoodsMessageId, Game1.MasterPlayer, new object[] { NETWORK_MESSAGE_DEEPWOODS_ADDREMOVE, (byte)1, deepWoods.Name });
+                        ModEntry.SendMessage(deepWoods.Name, MessageId.AddLocation, who.UniqueMultiplayerID);
             }
         }
 
@@ -147,7 +148,7 @@ namespace DeepWoodsMod
             {
                 foreach (Farmer who in Game1.otherFarmers.Values)
                     if (who != Game1.player)
-                        who.queueMessage(Settings.Network.DeepWoodsMessageId, Game1.MasterPlayer, new object[] { NETWORK_MESSAGE_DEEPWOODS_ADDREMOVE, (byte)0, deepWoods.Name });
+                        ModEntry.SendMessage(deepWoods.Name, MessageId.RemoveLocation, who.UniqueMultiplayerID);
             }
         }
 
@@ -215,7 +216,7 @@ namespace DeepWoodsMod
             CheckValid();
         }
 
-        public static void AddAll(List<string> deepWoodsLevelNames)
+        public static void AddAll(string[] deepWoodsLevelNames)
         {
             DeepWoodsManager.Remove();
             foreach (string name in deepWoodsLevelNames)

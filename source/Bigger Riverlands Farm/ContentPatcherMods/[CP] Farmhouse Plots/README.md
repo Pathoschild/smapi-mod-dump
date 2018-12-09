@@ -20,12 +20,12 @@ Adds new farming plots in farmhouse/cabins
 
 **First Upgrade:**
 
-- 15x15 farming plot
+- 30x15 farming plot
 - Water source
 
 **Final Upgrade:**
 
-- 30x15 plot
+- 30x30 plot
 - Very small storage place for anything
 - Water source
 
@@ -45,6 +45,9 @@ You can use this, edit it for personal or public use, redistribute it, sell it a
 _Also plz don't ask for permission to do all this_ ^
 
 ## Changelog
+#####v1.2 (Farmhouse Expansions)
+- Farmhouse Upgrade 1 now has a 30x15 plot
+- Farmhouse Upgrade 2 now has a 30x30 plot
 ##### v1.1 (Spouse Room Update)
 - Added Spouse Rooms
 - Main Farmhouse now has farmland

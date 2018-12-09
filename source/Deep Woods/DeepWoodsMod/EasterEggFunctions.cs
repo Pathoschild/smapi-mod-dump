@@ -143,7 +143,7 @@ namespace DeepWoodsMod
                                 animalHouse.incubatingEgg.X = 0;
                                 animalHouse.incubatingEgg.Y = -1;
                                 animalHouse.map.GetLayer("Front").Tiles[1, 2].TileIndex = 45;
-                                long newId = Game1MultiplayerAccessProvider.GetMultiplayer().getNewID();
+                                long newId = ModEntry.GetMultiplayer().getNewID();
                                 animalHouse.animals.Add(newId, new FarmAnimal("Rabbit", newId, coop.owner));
                             }
                         }
@@ -183,7 +183,7 @@ namespace DeepWoodsMod
 
         private static void AddNewHatchedRabbit(Farmer who, AnimalHouse animalHouse, string animalName)
         {
-            long animalId = Game1MultiplayerAccessProvider.GetMultiplayer().getNewID();
+            long animalId = ModEntry.GetMultiplayer().getNewID();
 
             FarmAnimal farmAnimal = new FarmAnimal("Rabbit", animalId, who.uniqueMultiplayerID);
             farmAnimal.Name = animalName;

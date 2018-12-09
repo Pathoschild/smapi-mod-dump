@@ -1,0 +1,11 @@
+{
+  "Map": "Town",
+  "Position": [
+    32,
+    55
+  ],
+  "Credit": true,
+  "CreditLine": "value / 2",
+  "CreditInterest": 0.05,
+  "GainInterest": 0.01
+}

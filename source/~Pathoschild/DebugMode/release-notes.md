@@ -3,6 +3,7 @@
 # Release notes
 ## 1.9.2
 * Updated for the upcoming SMAPI 3.0.
+* Improved translations. Thanks to Nanogamer7 (German)!
 
 ## 1.9.1
 * Updated for Stardew Valley 1.3.32.

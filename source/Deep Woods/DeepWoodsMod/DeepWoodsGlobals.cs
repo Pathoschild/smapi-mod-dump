@@ -33,10 +33,16 @@ namespace DeepWoodsMod
 
         public readonly static int EASTER_EGG_REPLACEMENT_ITEM = 305;   // Void Egg
 
-        public readonly static int NETWORK_MESSAGE_DEEPWOODS_INIT = 0;
-        public readonly static int NETWORK_MESSAGE_DEEPWOODS_WARP = 1;
-        public readonly static int NETWORK_MESSAGE_DEEPWOODS_LEVEL = 2;
-        public readonly static int NETWORK_MESSAGE_RCVD_STARDROP_FROM_UNICORN = 3;
-        public readonly static int NETWORK_MESSAGE_DEEPWOODS_ADDREMOVE = 4;
+        public static class MessageId
+        {
+            public const string RequestMetadata = nameof(MessageId.RequestMetadata);
+            public const string Metadata = nameof(MessageId.Metadata);
+            public const string RequestWarp = nameof(MessageId.RequestWarp);
+            public const string Warp = nameof(MessageId.Warp);
+            public const string SetLowestLevelReached = nameof(MessageId.SetLowestLevelReached);
+            public const string SetUnicornStardropReceived = nameof(MessageId.SetUnicornStardropReceived);
+            public const string AddLocation = nameof(MessageId.AddLocation);
+            public const string RemoveLocation = nameof(MessageId.RemoveLocation);
+        }
     }
 }

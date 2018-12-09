@@ -5,10 +5,12 @@ mods:
    Deep Woods
 
 latest commit:
-   commit 8c2c759ead3f727a9bc205304def21aeaec0a7ea
-   Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Wed Nov 28 14:24:01 2018 +0100
+   commit 199cc81ba9c4e1ee6565c3fffe279dbb1f3a97b4
+   Merge: 8c2c759 a301ee6
+   Author: Max Vollmer <maxvollmer@users.noreply.github.com>
+   Date:   Sat Dec 8 10:55:55 2018 +0100
    
-       * Fix crash bug due to dictionary being modified inside foreach loop
-       * Increment version number
+       Merge pull request #1 from Pathoschild/update-code
+       
+       Migrate to SMAPI APIs, fix multiplayer error, and prepare for SMAPI 3.0
    

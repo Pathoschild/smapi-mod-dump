@@ -36,4 +36,4 @@ doesn't need to be installed by farmhands, but it won't cause any issues if they
 ## See also
 * [Release notes](release-notes.md)
 * [Nexus mod](https://www.nexusmods.com/stardewvalley/mods/3000)
-* ~~Discussion thread~~
+* [Discussion thread](https://community.playstarbound.com/threads/crops-anytime-anywhere.150585/)

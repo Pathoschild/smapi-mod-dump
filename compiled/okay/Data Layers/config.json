@@ -45,6 +45,11 @@
       "Enabled": true,
       "UpdatesPerSecond": 30.0,
       "UpdateWhenViewChange": true
+    },
+    "Machines": {
+      "Enabled": true,
+      "UpdatesPerSecond": 2.0,
+      "UpdateWhenViewChange": true
     }
   }
 }

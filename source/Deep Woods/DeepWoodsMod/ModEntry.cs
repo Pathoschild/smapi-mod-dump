@@ -4,22 +4,16 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
-using xTile;
 using xTile.Layers;
-using xTile.ObjectModel;
 using xTile.Tiles;
 using static DeepWoodsMod.DeepWoodsSettings;
 using static DeepWoodsMod.DeepWoodsGlobals;
 using System.Collections.Concurrent;
-using StardewValley.Buildings;
 using Microsoft.Xna.Framework;
-using StardewValley.Objects;
-using StardewValley.Tools;
-using Microsoft.Xna.Framework.Audio;
-using System.IO;
+using System.Linq;
 using Omegasis.SaveAnywhere.API;
-using DeepWoodsMod.API;
 using DeepWoodsMod.API.Impl;
+using DeepWoodsMod.Framework.Messages;
 
 namespace DeepWoodsMod
 {
@@ -27,15 +21,13 @@ namespace DeepWoodsMod
     {
         private static DeepWoodsAPI api = new DeepWoodsAPI();
         private static ModEntry mod;
+        private static Multiplayer multiplayer;
 
         private bool isDeepWoodsGameRunning = false;
         private bool hasRequestedInitMessageFromServer = false;
         private Dictionary<long, GameLocation> playerLocations = new Dictionary<long, GameLocation>();
 
         private static ConcurrentQueue<string> queuedErrorMessages = new ConcurrentQueue<string>();
-
-        public static bool IsDeepWoodsGameRunning { get { return mod.isDeepWoodsGameRunning; } }
-        public static bool HasRequestedInitMessageFromServer { get { return mod.hasRequestedInitMessageFromServer; } }
 
         private static void WorkErrorMessageQueue()
         {
@@ -51,9 +43,14 @@ namespace DeepWoodsMod
             ModEntry.mod?.Monitor?.Log(message, level);
         }
 
-        public static void QueueErrorMessage(string message)
+        public static void SendMessage<T>(T message, string messageType, long playerID)
         {
-            queuedErrorMessages.Enqueue(message);
+            ModEntry.mod.Helper.Multiplayer.SendMessage(message, messageType, modIDs: new [] { ModEntry.mod.ModManifest.UniqueID }, playerIDs: new [] { playerID });
+        }
+
+        public static void SendMessage(string messageType, long playerID)
+        {
+            ModEntry.SendMessage(true, messageType, playerID);
         }
 
         public static IReflectionHelper GetReflection()
@@ -66,12 +63,18 @@ namespace DeepWoodsMod
             return ModEntry.mod?.Helper;
         }
 
+        public static Multiplayer GetMultiplayer()
+        {
+            return ModEntry.multiplayer;
+        }
+
         public override void Entry(IModHelper helper)
         {
             ModEntry.mod = this;
-            Game1MultiplayerAccessProvider.InterceptMultiplayerIfNecessary();
+            ModEntry.multiplayer = helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
+            DeepWoodsSettings.Init(helper.Translation);
             Textures.LoadAll();
-            RegisterEvents();
+            RegisterEvents(helper.Events);
         }
 
         public override object GetApi()
@@ -84,35 +87,41 @@ namespace DeepWoodsMod
             return api;
         }
 
-        private void RegisterEvents()
+        private void RegisterEvents(IModEvents events)
         {
-            SaveEvents.BeforeSave += this.SaveEvents_BeforeSave;
-            SaveEvents.AfterSave += this.SaveEvents_AfterSave;
-            SaveEvents.AfterLoad += this.SaveEvents_AfterLoad;
-            SaveEvents.AfterReturnToTitle += this.SaveEvents_AfterReturnToTitle;
-            TimeEvents.AfterDayStarted += this.TimeEvents_AfterDayStarted;
-            TimeEvents.TimeOfDayChanged += this.TimeEvents_TimeOfDayChanged;
-            GameEvents.UpdateTick += this.GameEvents_UpdateTick;
-            GameEvents.FirstUpdateTick += this.GameEvents_FirstUpdateTick;
-            GraphicsEvents.OnPostRenderEvent += this.GraphicsEvents_OnPostRenderEvent;
+            events.GameLoop.Saving += this.OnSaving;
+            events.GameLoop.Saved += this.OnSaved;
+            events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            events.GameLoop.ReturnedToTitle += this.OnReturnedToTitle;
+            events.GameLoop.DayStarted += this.OnDayStarted;
+            events.GameLoop.TimeChanged += this.OnTimeChanged;
+            events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            events.GameLoop.GameLaunched += this.OnGameLaunched;
+            events.Display.Rendered += this.OnRendered;
+            events.Multiplayer.ModMessageReceived += this.OnModMessageReceived;
         }
 
-        private void GameEvents_FirstUpdateTick(object sender, EventArgs args)
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs args)
         {
             if (Helper.ModRegistry.IsLoaded("Omegasis.SaveAnywhere"))
             {
                 ISaveAnywhereAPI api = Helper.ModRegistry.GetApi<ISaveAnywhereAPI>("Omegasis.SaveAnywhere");
                 if (api != null)
                 {
-                    api.BeforeSave += this.SaveEvents_BeforeSave;
-                    api.AfterSave += this.SaveEvents_AfterSave;
-                    api.AfterLoad += this.SaveEvents_AfterLoad;
+                    api.BeforeSave += (s, e) => this.CleanupBeforeSave();
+                    api.AfterSave += (s, e) => this.RestoreAfterSave();
+                    api.AfterLoad += (s, e) => this.InitAfterLoad();
                 }
             }
         }
 
         private int isBeforeSaveCount = 0;
-        private void SaveEvents_BeforeSave(object sender, EventArgs args)
+        private void OnSaving(object sender, SavingEventArgs args)
+        {
+            this.CleanupBeforeSave();
+        }
+
+        private void CleanupBeforeSave()
         {
             ModEntry.Log("SaveEvents_BeforeSave", StardewModdingAPI.LogLevel.Trace);
 
@@ -138,7 +147,12 @@ namespace DeepWoodsMod
             }
         }
 
-        private void SaveEvents_AfterSave(object sender, EventArgs args)
+        private void OnSaved(object sender, SavedEventArgs args)
+        {
+            this.RestoreAfterSave();
+        }
+
+        private void RestoreAfterSave()
         {
             ModEntry.Log("SaveEvents_AfterSave", StardewModdingAPI.LogLevel.Trace);
 
@@ -161,7 +175,7 @@ namespace DeepWoodsMod
             WoodsObelisk.RestoreAllInGame();
         }
 
-        private void SaveEvents_AfterReturnToTitle(object sender, EventArgs args)
+        private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs args)
         {
             ModEntry.Log("GameEvents_AfterReturnToTitle", StardewModdingAPI.LogLevel.Trace);
 
@@ -172,10 +186,6 @@ namespace DeepWoodsMod
         private void InitGameIfNecessary()
         {
             ModEntry.Log("InitGameIfNecessary(" + isDeepWoodsGameRunning + ")", StardewModdingAPI.LogLevel.Trace);
-
-            // Make sure our interceptor is set.
-            // E.g. MTN overrides Game1.multiplayer instead of wrapping.
-            Game1MultiplayerAccessProvider.InterceptMultiplayerIfNecessary();
 
             if (isDeepWoodsGameRunning)
                 return;
@@ -192,11 +202,16 @@ namespace DeepWoodsMod
             {
                 DeepWoodsManager.Remove();
                 hasRequestedInitMessageFromServer = true;
-                Game1.MasterPlayer.queueMessage(Settings.Network.DeepWoodsMessageId, Game1.player, new object[] { NETWORK_MESSAGE_DEEPWOODS_INIT });
+                ModEntry.SendMessage(MessageId.RequestMetadata, Game1.MasterPlayer.UniqueMultiplayerID);
             }
         }
 
-        private void SaveEvents_AfterLoad(object sender, EventArgs args)
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs args)
+        {
+            this.InitAfterLoad();
+        }
+
+        private void InitAfterLoad()
         {
             ModEntry.Log("SaveEvents_AfterLoad", StardewModdingAPI.LogLevel.Trace);
 
@@ -205,7 +220,7 @@ namespace DeepWoodsMod
             InitGameIfNecessary();
         }
 
-        public static void DeepWoodsInitServerAnswerReceived(List<string> deepWoodsLevelNames)
+        public static void DeepWoodsInitServerAnswerReceived(string[] deepWoodsLevelNames)
         {
             if (Game1.IsMasterGame)
                 return;
@@ -218,7 +233,7 @@ namespace DeepWoodsMod
             mod.isDeepWoodsGameRunning = true;
         }
 
-        private void TimeEvents_AfterDayStarted(object sender, EventArgs args)
+        private void OnDayStarted(object sender, DayStartedEventArgs args)
         {
             ModEntry.Log("TimeEvents_AfterDayStarted", StardewModdingAPI.LogLevel.Trace);
 
@@ -231,7 +246,7 @@ namespace DeepWoodsMod
             EasterEggFunctions.InterceptIncubatorEggs();
         }
 
-        private void TimeEvents_TimeOfDayChanged(object sender, EventArgs args)
+        private void OnTimeChanged(object sender, TimeChangedEventArgs args)
         {
             if (!isDeepWoodsGameRunning)
                 return;
@@ -239,7 +254,7 @@ namespace DeepWoodsMod
             DeepWoodsManager.LocalTimeUpdate(Game1.timeOfDay);
         }
 
-        private void GameEvents_UpdateTick(object sender, EventArgs args)
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs args)
         {
             if (!isDeepWoodsGameRunning)
                 return;
@@ -290,7 +305,7 @@ namespace DeepWoodsMod
             WoodsObelisk.InjectWoodsObeliskIntoGame();
         }
 
-        private void GraphicsEvents_OnPostRenderEvent(object sender, EventArgs e)
+        private void OnRendered(object sender, RenderedEventArgs e)
         {
             if (Game1.player.currentLocation is DeepWoods deepWoods)
                 deepWoods.DrawLevelDisplay();
@@ -314,6 +329,105 @@ namespace DeepWoodsMod
             if (newLocation is AnimalHouse animalHouse)
             {
                 EasterEggFunctions.CheckEggHatched(who, animalHouse);
+            }
+        }
+
+        private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
+        {
+            if (e.FromModID != this.ModManifest.UniqueID)
+                return;
+
+            ModEntry.Log($"[{(Context.IsMainPlayer ? "host" : "farmhand")}] Received {e.Type} from {e.FromPlayerID}.", LogLevel.Trace);
+
+            switch (e.Type)
+            {
+                // farmhand requested metadata
+                case MessageId.RequestMetadata:
+                    if (Context.IsMainPlayer)
+                    {
+                        // client requests settings and state, send it:
+                        InitResponseMessage response = new InitResponseMessage
+                        {
+                            Settings = DeepWoodsSettings.Settings,
+                            State = DeepWoodsSettings.DeepWoodsState,
+                            LevelNames = Game1.locations.OfType<DeepWoods>().Select(p => p.Name).ToArray()
+                        };
+                        ModEntry.SendMessage(response, MessageId.Metadata, e.FromPlayerID);
+                    }
+                    break;
+
+                // host sent metadata
+                case MessageId.Metadata:
+                    if (!Context.IsMainPlayer)
+                    {
+                        InitResponseMessage response = e.ReadAs<InitResponseMessage>();
+                        DeepWoodsSettings.Settings = response.Settings;
+                        DeepWoodsSettings.DeepWoodsState = response.State;
+                        ModEntry.DeepWoodsInitServerAnswerReceived(response.LevelNames);
+                    }
+                    break;
+
+                // farmhand requested that we load and activate a DeepWoods level
+                case MessageId.RequestWarp:
+                    if (Context.IsMainPlayer)
+                    {
+                        // load level
+                        int level = e.ReadAs<int>();
+                        DeepWoods deepWoods = DeepWoodsManager.AddDeepWoodsFromObelisk(level);
+
+                        // send response
+                        WarpMessage response = new WarpMessage
+                        {
+                            Level = deepWoods.Level,
+                            Name = deepWoods.Name,
+                            EnterLocation = new Vector2(deepWoods.enterLocation.Value.X, deepWoods.enterLocation.Value.Y)
+                        };
+                        ModEntry.SendMessage(response, MessageId.Warp, e.FromPlayerID);
+                    }
+                    break;
+
+                // host loaded area for warp
+                case MessageId.Warp:
+                    if (!Context.IsMainPlayer)
+                    {
+                        WarpMessage data = e.ReadAs<WarpMessage>();
+
+                        DeepWoodsManager.AddBlankDeepWoodsToGameLocations(data.Name);
+                        DeepWoodsManager.WarpFarmerIntoDeepWoodsFromServerObelisk(data.Name, data.EnterLocation);
+                    }
+                    break;
+
+                // host sent 'lowest level reached' update
+                case MessageId.SetLowestLevelReached:
+                    if (!Context.IsMainPlayer)
+                        DeepWoodsState.LowestLevelReached = e.ReadAs<int>();
+                    break;
+
+                // host sent 'received stardrop from unicorn' update
+                case MessageId.SetUnicornStardropReceived:
+                    if (Context.IsMainPlayer)
+                        DeepWoodsState.PlayersWhoGotStardropFromUnicorn.Add(e.FromPlayerID);
+                    break;
+
+                // host added/removed location
+                case MessageId.AddLocation:
+                    if (!Context.IsMainPlayer)
+                    {
+                        string name = e.ReadAs<string>();
+                        DeepWoodsManager.AddBlankDeepWoodsToGameLocations(name);
+                    }
+                    break;
+                case MessageId.RemoveLocation:
+                    if (!Context.IsMainPlayer)
+                    {
+                        string name = e.ReadAs<string>();
+                        DeepWoodsManager.RemoveDeepWoodsFromGameLocations(name);
+                    }
+                    break;
+
+                default:
+                    ModEntry.Log("   ignored unknown type.", LogLevel.Trace);
+                    break;
             }
         }
 

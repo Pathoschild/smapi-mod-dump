@@ -5,9 +5,9 @@ mods:
    Bigger Riverlands Farm
 
 latest commit:
-   commit d6279ade77e3082aa589c19523b0ff3182d64e8c
+   commit 7e26ff09884411f49b4c81177972f7566fe8b179
    Author: JessebotX <43657800+JessebotX@users.noreply.github.com>
-   Date:   Mon Dec 3 17:48:06 2018 -0800
+   Date:   Sat Dec 8 15:56:27 2018 -0800
    
-       Bigger Sheds v2.0.2
+       no message
    

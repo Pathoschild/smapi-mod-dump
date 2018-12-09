@@ -5,6 +5,7 @@ mods:
    Automate
    Chests Anywhere
    Content Patcher
+   Crops Anytime Anywhere
    Data Layers
    Debug Mode
    Fast Animations
@@ -16,9 +17,10 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit f631d6ee5833cd975fd55527cc37db14047d07f9
+   commit 38f2ff0df06183a59556f590fa5d97a67b2a88c2
+   Merge: 49a64eb 7a1dca4
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Fri Dec 7 01:11:24 2018 -0500
+   Date:   Sat Dec 8 23:54:47 2018 -0500
    
-       update for release
+       Merge branch 'develop' into stable
    

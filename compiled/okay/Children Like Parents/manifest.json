@@ -1,7 +1,7 @@
 ﻿{
    "Name": "Children Like Parent",
    "Author": "CroiDorcha",
-   "Version": "1.1.1",
+   "Version": "1.2.0",
    "Description": "Makes your children look similar to your spouse",
    "UniqueID": "CroiDorcha.ChildrenLikeParent",
    "EntryDll": "ChildrenLikeParent.dll",

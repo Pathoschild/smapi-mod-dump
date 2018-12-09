@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using StardewValley.Tools;
 using StardewValley;
 using System;
+using System.IO;
 
 namespace DeepWoodsMod
 {
@@ -418,14 +419,21 @@ namespace DeepWoodsMod
 
     public class I18NData
     {
-        public string ExcaliburDisplayName { get; set; } = "Excalibur";
-        public string ExcaliburDescription { get; set; } = "It feels hopeful to wield.";
-        public string WoodsObeliskDisplayName { get; set; } = "Woods Obelisk";
-        public string WoodsObeliskDescription { get; set; } = "Woods Obelisk Description";
-        public string EasterEggDisplayName { get; set; } = "Easter Egg";
-        public string EasterEggHatchedMessage { get; set; } = "A new... wait a minute, a rabbit hatched?!";
-        public string LostMessage { get; set; } = "Uh-oh, it seems you got lost in the deep woods...";
-        public string WoodsObeliskWizardMailMessage { get; set; } = "I could sense your presence in the depths of the forest.^There is a strong and old magic burried within the tree roots and earth.^It is difficult, but with the right ingredients I should be able to manifest an obelisk that uses this magic to allow you access much deeper into the forest.^Come to my tower when you are ready.^   -M. Rasmodius, Wizard";
+        private readonly ITranslationHelper I18n;
+
+        public string ExcaliburDisplayName => this.I18n.Get("excalibur.name");
+        public string ExcaliburDescription => this.I18n.Get("excalibur.description");
+        public string WoodsObeliskDisplayName => this.I18n.Get("woods-obelisk.name");
+        public string WoodsObeliskDescription => this.I18n.Get("woods-obelisk.description");
+        public string EasterEggDisplayName => this.I18n.Get("easter-egg.name");
+        public string EasterEggHatchedMessage => this.I18n.Get("easter-egg.hatched-message");
+        public string LostMessage => this.I18n.Get("lost-message");
+        public string WoodsObeliskWizardMailMessage => this.I18n.Get("woods-obelisk.wizard-mail");
+
+        public I18NData(ITranslationHelper i18n)
+        {
+            this.I18n = i18n;
+        }
     }
 
     class DeepWoodsStateData
@@ -450,7 +458,7 @@ namespace DeepWoodsMod
                     {
                         if (who != Game1.player)
                         {
-                            who.queueMessage(DeepWoodsSettings.Settings.Network.DeepWoodsMessageId, Game1.MasterPlayer, new object[] { NETWORK_MESSAGE_DEEPWOODS_LEVEL, value });
+                            ModEntry.SendMessage(value, MessageId.SetLowestLevelReached, who.UniqueMultiplayerID);
                         }
                     }
                 }
@@ -462,7 +470,7 @@ namespace DeepWoodsMod
     class DeepWoodsSettings
     {
         // I18N
-        public static I18NData I18N { get; set; } = ModEntry.GetHelper().ReadJsonFile<I18NData>("i18n.json") ?? new I18NData();
+        public static I18NData I18N { get; private set; }
 
         // Save stuff
         public static DeepWoodsStateData DeepWoodsState { get; set; } = new DeepWoodsStateData();
@@ -478,12 +486,23 @@ namespace DeepWoodsMod
         public LuckSettings Luck { get; set; } = new LuckSettings();
         public MonstersSettings Monsters { get; set; } = new MonstersSettings();
 
+        public static void Init(ITranslationHelper i18n)
+        {
+            DeepWoodsSettings.I18N = new I18NData(i18n);
+        }
+
         public static void DoSave()
         {
             if (!Game1.IsMasterGame)
                 return;
 
-            ModEntry.GetHelper().WriteJsonFile($"{Constants.CurrentSavePath}/{SAVE_FILE_NAME}.json", DeepWoodsState);
+            // save data
+            ModEntry.GetHelper().Data.WriteSaveData("data", DeepWoodsState);
+
+            // remove legacy file
+            FileInfo legacyFile = new FileInfo($"{Constants.CurrentSavePath}/{SAVE_FILE_NAME}.json");
+            if (legacyFile.Exists)
+                legacyFile.Delete();
         }
 
         public static void DoLoad()
@@ -491,7 +510,19 @@ namespace DeepWoodsMod
             if (!Game1.IsMasterGame)
                 return;
 
-            DeepWoodsState = ModEntry.GetHelper().ReadJsonFile<DeepWoodsStateData>($"{Constants.CurrentSavePath}/{SAVE_FILE_NAME}.json") ?? new DeepWoodsStateData();
+            // load data
+            DeepWoodsState = ModEntry.GetHelper().Data.ReadSaveData<DeepWoodsStateData>("data");
+            if (DeepWoodsState == null)
+            {
+                // legacy file
+                FileInfo legacyFile = new FileInfo($"{Constants.CurrentSavePath}/{SAVE_FILE_NAME}.json");
+                if (legacyFile.Exists)
+                    DeepWoodsState = JsonConvert.DeserializeObject<DeepWoodsStateData>(File.ReadAllText(legacyFile.FullName));
+            }
+            if (DeepWoodsState == null)
+                DeepWoodsState = new DeepWoodsStateData();
+
+            // init settings
             Settings = ModEntry.GetHelper().ReadConfig<DeepWoodsSettings>() ?? new DeepWoodsSettings();
         }
     }

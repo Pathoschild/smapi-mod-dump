@@ -12,16 +12,19 @@ namespace AVerySpecialBlueChicken
     {
         public override void Entry(IModHelper helper)
         {
-            this.Config = this.Helper.ReadConfig<Config>();
-            TimeEvents.AfterDayStarted += TimeEvents_AfterDayStarted;
+            Config = Helper.ReadConfig<Config>();
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
         }
         Random random = new Random();
 
         public double PercentageChance { get; set; }
+        public int HeartLevel { get; set; }
         internal Config Config { get; set; }
 
-        private void TimeEvents_AfterDayStarted(object sender, EventArgs e)
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
+            int[] playerWantedLevel = new[] { 0, 200, 400, 600, 800, 1000 };
+            var heartLevel = playerWantedLevel[Config.HeartLevel];
             foreach (Building building in Game1.getFarm().buildings)
             {
                 if (building is Coop coop)
@@ -29,7 +32,7 @@ namespace AVerySpecialBlueChicken
                     foreach (FarmAnimal animal in (building.indoors.Value as AnimalHouse).animals.Values)
                     {
                         if (animal.type.Value == "Blue Chicken" &&
-                           animal.friendshipTowardFarmer.Value >= 800 &&
+                           animal.friendshipTowardFarmer.Value >= heartLevel &&
                            random.NextDouble() <= Config.PercentageChance)
                         {
                             foreach (KeyValuePair<Vector2, StardewValley.Object> objectAndLocation in building.indoors.Value.Objects.Pairs)

@@ -29,9 +29,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 9219687cc96ee555cad07cb87f8c01dc473a0dfb
+   commit 3de8bb18bb2366dd104719e90b04fbc243ab8d32
    Author: danvolchek <volchek2@illinois.edu>
-   Date:   Fri Nov 30 02:06:04 2018 -0600
+   Date:   Sat Dec 8 23:59:24 2018 -0600
    
-       [No Fence Decay] remove typo from comment
+       [Range Display] add support for prismatic tools
    

@@ -1,5 +1,6 @@
 {
   "Disable_Fruit_Tree_Junimo_Harvesting": false,
   "Wait_To_Harvest_Fruit_Trees_Until_They_Have_Three_Fruits__Then_Harvest_All_Three_At_Once": false,
-  "Allow_Placing_Fruit_Trees_Outside_Farm": false
+  "Allow_Placing_Fruit_Trees_Outside_Farm": false,
+  "Allow_Dangerous_Planting": false
 }

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/569
+IDs: alphablackwolf.skillPrestige, 6b843e60-c8fc-4a25-a67b-4a38ac8dcf9b
+update keys: Nexus:569, GitHub:Alphablackwolf/SkillPrestige

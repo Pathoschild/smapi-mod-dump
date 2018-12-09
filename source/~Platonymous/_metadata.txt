@@ -5,6 +5,7 @@ mods:
    Arcade 2048
    Arcade Pong
    Arcade Snake
+   ATM
    Custom Element Handler
    Custom Farming Redux
    Custom Furniture
@@ -37,9 +38,9 @@ mods:
    Visualize
 
 latest commit:
-   commit 30f696b52348a4cf85250eafd865fbaf84bb70f4
+   commit 03ca8134dcbfdd9629b978d0dc450eb9c3d66cc0
    Author: Platonymous <david@millionideas.de>
-   Date:   Thu Dec 6 23:16:45 2018 +0100
+   Date:   Fri Dec 7 17:14:01 2018 +0100
    
-       Update releases
+       Minor fix
    

@@ -1,10 +1,10 @@
 {
-  "Name": "DeepWoodsMod",
+  "Name": "Deep Woods",
   "Author": "Max Vollmer",
   "Version": "1.3-beta.17",
   "Description": "Adds an explorable forest to the secret woods. How deep does it go?",
   "UniqueID": "maxvollmer.deepwoodsmod",
   "EntryDll": "DeepWoodsMod.dll",
-  "MinimumApiVersion": "2.8",
+  "MinimumApiVersion": "2.9.0",
   "UpdateKeys": [ "Nexus:2571" ]
 }

@@ -5,16 +5,25 @@
 			"Action": "Load",
             "Target": "Maps/Farm_Foraging",
             "FromFile": "assets/Farm_Foraging.tbin", 
+			"When": {
+				"FarmType": "Forest",
+			},
         },
 		{
 			"Action": "Load",
             "Target": "Maps/Forest",
-            "FromFile": "assets/Forest.tbin", 
+            "FromFile": "assets/Forest.tbin",
+			"When": {
+				"FarmType": "Forest",
+			},
         },
 		{
 			"Action": "Load",
             "Target": "Maps/Woods",
-            "FromFile": "assets/Woods.tbin", 
+            "FromFile": "assets/Woods.tbin",
+			"When": {
+				"FarmType": "Forest",
+			},
         },
     ]
 }

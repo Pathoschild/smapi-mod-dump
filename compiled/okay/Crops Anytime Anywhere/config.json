@@ -1,0 +1,9 @@
+{
+  "Seasons": {
+    "Spring": true,
+    "Summer": true,
+    "Fall": true,
+    "Winter": true
+  },
+  "AllowCropsAnywhere": true
+}
