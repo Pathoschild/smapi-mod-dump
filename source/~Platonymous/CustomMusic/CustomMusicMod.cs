@@ -11,6 +11,7 @@ using System;
 using System.Reflection;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using OggSharp;
 
 namespace CustomMusic
 {
@@ -22,14 +23,15 @@ namespace CustomMusic
         internal static IModHelper SHelper;
         internal static MethodInfo checkEventConditions = null;
         internal static Dictionary<string, string> locations = new Dictionary<string, string>();
+        internal static Config config;
 
         public override void Entry(IModHelper helper)
         {
+            config = helper.ReadConfig<Config>();
             SMonitor = Monitor;
             SHelper = Helper;
             loadContentPacks();
             var harmony = HarmonyInstance.Create("Platonymous.CustomMusic");
-            harmony.Patch(typeof(AudioCategory).GetMethod("SetVolume"), new HarmonyMethod(typeof(Overrides), "SetVolume"));
             harmony.Patch(typeof(Cue).GetMethod("Stop"), new HarmonyMethod(typeof(Overrides), "Stop"));
             harmony.Patch(typeof(Cue).GetMethod("Play"), new HarmonyMethod(typeof(Overrides), "Play"));
             harmony.Patch(typeof(Cue).GetMethod("Dispose"), new HarmonyMethod(typeof(Overrides), "Dispose"));
@@ -46,10 +48,10 @@ namespace CustomMusic
 
         private void TimeEvents_AfterDayStarted(object sender, EventArgs e)
         {
-            if (Game1.currentLocation == null)
+            if (Game1.currentLocation == null || !locations.ContainsKey(Game1.currentLocation.Name))
                 return;
 
-            var name = Game1.currentLocation.Name;
+            var name = locations[Game1.currentLocation.Name];
 
             if (name.StartsWith("cm:"))
             {
@@ -58,7 +60,7 @@ namespace CustomMusic
                     name += ":" + s;
             }
 
-            DelayedAction d = new DelayedAction(500, () => Game1.nextMusicTrack = locations[name]);
+            DelayedAction d = new DelayedAction(500, () => Game1.nextMusicTrack = name);
             Game1.delayedActions.Add(d);
         }
 
@@ -102,7 +104,7 @@ namespace CustomMusic
                 foreach (MusicItem music in content.Music)
                 {
                     string path = Path.Combine(pack.DirectoryPath, music.File);   
-                    if (!music.Preload)
+                    if (!music.Preload && !config.Convert)
                         Task.Run(() =>
                         {
                             addMusic(path, music);
@@ -124,11 +126,61 @@ namespace CustomMusic
         private void addMusic(string path, MusicItem music)
         {
             Monitor.Log("Loading " + music.File + " ...", LogLevel.Info);
-            SoundEffect soundEffect = OggLoader.Load(path);
+
+            SoundEffect soundEffect = null;
+
+            string orgPath = path;
+            path = config.Convert ? path.Replace(".ogg", ".wav") : path;
+
+            if (config.Convert && !File.Exists(path))
+                Convert(orgPath);
+
+            if (path.EndsWith(".wav"))
+                soundEffect = SoundEffect.FromStream(new FileStream(path, FileMode.Open));
+            else
+                soundEffect = OggLoader.Load(path);
+
             Monitor.Log(music.File + " Loaded", LogLevel.Trace);
             string[] ids = music.Id.Split(',').Select(p => p.Trim()).ToArray();
             foreach(string id in ids)
                 Music.Add(new StoredMusic(id, soundEffect, music.Ambient, music.Loop, music.Conditions));
+        }
+
+        public static SoundEffect Convert(string path)
+        {
+            string wavPath = path.Replace(".ogg", ".wav");
+            SoundEffect soundEffect = null;
+            using (FileStream stream = new FileStream(wavPath,FileMode.Create))
+            using (BinaryWriter writer = new BinaryWriter(stream))
+            {
+                OggDecoder decoder = new OggDecoder();
+                decoder.Initialize(File.OpenRead(path));
+                byte[] data = decoder.SelectMany(chunk => chunk.Bytes.Take(chunk.Length)).ToArray();
+                WriteWave(writer, decoder.Stereo ? 2 : 1, decoder.SampleRate, data);
+            }
+
+            using (FileStream stream = new FileStream(wavPath, FileMode.Open))
+                soundEffect = SoundEffect.FromStream(stream);
+
+            return soundEffect;
+        }
+
+        private static void WriteWave(BinaryWriter writer, int channels, int rate, byte[] data)
+        {
+            writer.Write(new char[4] { 'R', 'I', 'F', 'F' });
+            writer.Write((36 + data.Length));
+            writer.Write(new char[4] { 'W', 'A', 'V', 'E' });
+            writer.Write(new char[4] { 'f', 'm', 't', ' ' });
+            writer.Write(16);
+            writer.Write((short)1);
+            writer.Write((short)channels);
+            writer.Write(rate);
+            writer.Write((rate * ((16 * channels) / 8)));
+            writer.Write((short)((16 * channels) / 8));
+            writer.Write((short)16);
+            writer.Write(new char[4] { 'd', 'a', 't', 'a' });
+            writer.Write(data.Length);
+            writer.Write(data);
         }
 
         public static bool checkConditions(string condition)

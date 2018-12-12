@@ -15,16 +15,16 @@ namespace BetterActivateSprinklers
 
             if (Config.ActivateOnAction)
             {
-                InputEvents.ButtonPressed += this.InputEvents_ButtonPressed;
+                Helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             }
 
             if (Config.ActivateOnPlacement)
             {
-                LocationEvents.ObjectsChanged += this.LocationEvents_ObjectsChanged;
+                Helper.Events.World.ObjectListChanged += this.OnWorld_ObjectListChanged;
             }
         }
 
-        private void LocationEvents_ObjectsChanged(object sender, EventArgsLocationObjectsChanged e)
+        private void OnWorld_ObjectListChanged(object sender, ObjectListChangedEventArgs e)
         {
             foreach (var pair in e.Added)
             {
@@ -37,9 +37,9 @@ namespace BetterActivateSprinklers
             }
         }
 
-        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (e.IsActionButton)
+            if (e.Button.IsActionButton())
             {
                 var tile = e.Cursor.GrabTile;
                 if (tile == null) return;

@@ -14,6 +14,11 @@
 		public IModHelper modHelper;
 		public ModOptions options;
 		public List<Item> startingItems;
+		public const int FarmSkill = 0;
+		public const int FishSkill = 1;
+		public const int ForagingSkill = 2;
+		public const int MiningSkill = 3;
+		public const int CombatSkill = 4;
 
 		/// <summary>
 		/// This is the entry method for this mod.
@@ -37,11 +42,14 @@
 				Game1.player.addItemToInventory(item);
 			}
 
-			if (this.options.IncludeBonusMoney)
-			{
-				this.Monitor.Log("Adding 250 gold to starting money", LogLevel.Info);
-				Game1.player.Money = Game1.player.Money + 250;
-			}
+			// Sets the character's health and energy.
+			this.SetStats();
+
+			// Sets the characters inventory size, money and other misc things.
+			this.SetMisc();
+
+			// Set's the character's skill levels
+			this.SetCharacterLevels();
 		}
 
 		private void SetupStartingItems()
@@ -85,6 +93,88 @@
 			if (this.options.IncludeClay)
 			{
 				this.startingItems.Add(new StardewValley.Object(330, this.options.ClayCount));
+			}
+		}
+
+		private void SetStats()
+		{
+			if (this.options.SetMaxEnergy)
+			{
+				this.Monitor.Log("Updating Maximum energy to 400");
+				Game1.player.MaxStamina = 400;
+				Game1.player.Stamina = 400;
+			}
+
+			if (this.options.SetMaxHealth)
+			{
+				this.Monitor.Log("Updating Maximum health to 125");
+				Game1.player.maxHealth = 125;
+				Game1.player.health = 125;
+			}
+		}
+
+		private void SetMisc()
+		{
+			if (this.options.IncludeFirstBackpackUpgrade)
+			{
+				this.Monitor.Log("Updating maximum items to match first backpack upgrade");
+				Game1.player.increaseBackpackSize(12);
+			}
+
+			if (this.options.IncludeBonusMoney)
+			{
+				this.Monitor.Log("Adding 250 gold to starting money", LogLevel.Info);
+				Game1.player.Money = Game1.player.Money + 250;
+			}
+
+			if (this.options.GiveCopperWateringCan)
+			{
+				var wateringCan = Game1.player.getToolFromName("Watering Can") as StardewValley.Tools.WateringCan;
+
+				if (wateringCan != null)
+				{
+					wateringCan.UpgradeLevel = 1;
+					wateringCan.waterCanMax = 55;
+					wateringCan.WaterLeft = 55;
+				}
+			}
+		}
+
+		private void SetCharacterLevels()
+		{
+			if (this.options.SetLevel1FishingLevel)
+			{
+				this.Monitor.Log("Setting player fishing level to 1");
+				Game1.player.FishingLevel = 1;
+				Game1.player.experiencePoints[ModEntry.FishSkill] = 101;
+			}
+
+			if (this.options.SetLevel1CombatLevel)
+			{
+				this.Monitor.Log("Setting player combat level to 1");
+				Game1.player.CombatLevel = 1;
+				Game1.player.experiencePoints[ModEntry.CombatSkill] = 101;
+			}
+
+			if (this.options.SetLevel1ForagingLevel)
+			{
+				this.Monitor.Log("Setting player foraging level to 1");
+				Game1.player.ForagingLevel = 1;
+				Game1.player.experiencePoints[ModEntry.ForagingSkill] = 101;
+			}
+
+			if (this.options.SetLevel1HarvestingLevel)
+			{
+				this.Monitor.Log("Setting player harvesting level to 1");
+				Game1.player.FarmingLevel = 1;
+				Game1.player.experiencePoints[ModEntry.FarmSkill] = 101;
+			}
+
+			if (this.options.SetLevel1Mininglevel)
+			{
+				this.Monitor.Log("Setting player mining level to 1");
+				Game1.player.MiningLevel = 1;
+				Game1.player.experiencePoints[ModEntry.MiningSkill] = 101;
 			}
 		}
 

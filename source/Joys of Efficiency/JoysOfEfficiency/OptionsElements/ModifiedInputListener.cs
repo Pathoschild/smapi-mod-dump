@@ -104,6 +104,10 @@ namespace JoysOfEfficiency.OptionsElements
         public override void receiveLeftClick(int x, int y)
         {
             base.receiveLeftClick(x, y);
+            if (_isListening)
+            {
+                return;
+            }
             x += _menu.xPositionOnScreen;
             y += _buttonRect.Height / 2;
             if(_buttonRect != null && x >= _buttonRect.Left && x <= _buttonRect.Right)

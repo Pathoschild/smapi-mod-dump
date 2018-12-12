@@ -413,11 +413,6 @@ namespace JoysOfEfficiency
                 {
                     _tabIndex = _tabs.Count - 1;
                 }
-                if (_tabIndex == 2 && ModEntry.Conf.BalancedMode)
-                {
-                    //Skip Cheats tab.
-                    _tabIndex--;
-                }
             }
             else if (b.HasFlag(Buttons.RightShoulder))
             {
@@ -427,12 +422,6 @@ namespace JoysOfEfficiency
                 if (_tabIndex >= _tabs.Count)
                 {
                     _tabIndex = 0;
-                }
-
-                if (_tabIndex == 2 && ModEntry.Conf.BalancedMode)
-                {
-                    //Skip Cheats tab.
-                    _tabIndex++;
                 }
             }
         }

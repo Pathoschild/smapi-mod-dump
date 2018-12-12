@@ -1,5 +1,5 @@
 {
-	"Format": "1.4",
+	"Format": "1.6",
 	"ConfigSchema": {
 		"PlainGreenhouse": {
 			"AllowValues": "disabled, enabled",
@@ -14,6 +14,7 @@
 			"FromFile": "assets/Greenhouse.tbin",
 			"When": {
 				"PlainGreenhouse": "disabled",
+				"HasMod:Nanogamer7.TunnelSystem": "false",
 			},
 		},
 		
@@ -24,6 +25,7 @@
 			"FromFile": "assets/Greenhouse_plain.tbin",
 			"When": {
 				"PlainGreenhouse": "enabled",
+				"HasMod:Nanogamer7.TunnelSystem": "false",
 			},
 		},
 	]

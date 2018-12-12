@@ -6,7 +6,6 @@ using StardewValley.Objects;
 
 namespace JoysOfEfficiency.Patches
 {
-    using Player = Farmer;
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
     internal class FarmerPatcher
     {
@@ -16,12 +15,12 @@ namespace JoysOfEfficiency.Patches
             return false;
         }
 
-        private static int CountOfItem(int itemIndex)
+        private static int CountOfItem(int index)
         {
             return Util.GetNearbyItems(Game1.player)
                 .Where(item => item is Object obj &&
-                               !(obj is Furniture) && 
-                               (item.ParentSheetIndex == itemIndex || item.Category == itemIndex))
+                                !(obj is Furniture) && 
+                                (item.ParentSheetIndex == index || item.Category == index))
                 .Sum(item => item.Stack);
         }
     }

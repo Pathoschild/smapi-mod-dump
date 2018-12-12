@@ -1,10 +1,10 @@
 ﻿{
   "Name": "AutomaticGates",
   "Author": "Rakiin aKa ScheKaa",
-  "Version": "2.2.1",
+  "Version": "2.3.1", // fixed locally
   "Description": "Opens and closes gates automatically",
   "UniqueID": "Rakiin.AutomaticGates",
   "EntryDll": "AutomaticGates.dll",
-  "MinimumApiVersion": "2.8",
+  "MinimumApiVersion": "2.9",
   "UpdateKeys": ["Nexus:3109"]
 }

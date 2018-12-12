@@ -5,9 +5,9 @@ mods:
    Bigger Riverlands Farm
 
 latest commit:
-   commit 7e26ff09884411f49b4c81177972f7566fe8b179
+   commit dbc840891de598d84d7ca17fcafb2150248ede4e
    Author: JessebotX <43657800+JessebotX@users.noreply.github.com>
-   Date:   Sat Dec 8 15:56:27 2018 -0800
+   Date:   Sun Dec 9 08:54:42 2018 -0800
    
-       no message
+       Secret Gardens v2.0.3
    

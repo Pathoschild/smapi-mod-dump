@@ -11,7 +11,7 @@ namespace JoysOfEfficiency.OptionsElements
 
         public override void draw(SpriteBatch b, int slotX, int slotY)
         {
-            Utility.drawTextWithShadow(b, label, Game1.dialogueFont, new Vector2(slotX, slotY), Color.Black);
+            Utility.drawTextWithShadow(b, $" {label}", Game1.dialogueFont, new Vector2(slotX, slotY), Color.Black);
         }
     }
 }

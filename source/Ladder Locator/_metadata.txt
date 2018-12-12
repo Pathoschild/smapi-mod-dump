@@ -5,9 +5,9 @@ mods:
    Ladder Locator
 
 latest commit:
-   commit f4339a43a395599b51ca40aefb83568a1e8a8eca
+   commit c00b94659e8bb2925a9d4af25480361857385df1
    Author: Yuri Moens <yuri.moens@gmail.com>
-   Date:   Tue Dec 4 18:20:31 2018 +0100
+   Date:   Sun Dec 9 15:25:28 2018 +0100
    
-       Add option to force shafts
+       Update for SMAPI 3.0 compatibility
    

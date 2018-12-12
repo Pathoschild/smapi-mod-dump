@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+
 using JoysOfEfficiency.ModCheckers;
 using JoysOfEfficiency.Patches;
 using JoysOfEfficiency.Utils;
+
 using Microsoft.Xna.Framework;
+
 using Netcode;
+
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
@@ -19,12 +24,12 @@ using StardewValley.Tools;
 namespace JoysOfEfficiency
 {
     using Player = Farmer;
-    using SVObject = StardewValley.Object;
     [SuppressMessage("ReSharper", "MemberCanBeMadeStatic.Local")]
     internal class ModEntry : Mod
     {
         public static bool IsCoGOn { get; private set; }
         public static bool IsCCOn { get; private set; }
+        public static bool IsCAOn { get; private set; }
 
         public static Config Conf { get; private set; }
 
@@ -50,20 +55,20 @@ namespace JoysOfEfficiency
             Util.ModInstance = this;
             
             Conf = helper.ReadConfig<Config>();
+            IModEvents Events = Helper.Events;
 
-            InputEvents.ButtonPressed += OnButtonPressed;
+            Events.Input.ButtonPressed += OnButtonPressed;
 
-            GameEvents.UpdateTick += OnGameTick;
-            GameEvents.EighthUpdateTick += OnGameEighthUpdate;
+            Events.GameLoop.UpdateTicked += OnGameUpdateEvent;
             
-            GraphicsEvents.OnPostRenderHudEvent += OnPostRenderHud;
-            GraphicsEvents.OnPostRenderGuiEvent += OnPostRenderGui;
+            Events.Display.RenderedHud += OnPostRenderHud;
+            Events.Display.RenderedActiveMenu += OnPostRenderGui;
 
-            MenuEvents.MenuChanged += OnMenuChanged;
+            Events.Display.MenuChanged += OnMenuChanged;
             
-            SaveEvents.BeforeSave += OnBeforeSave;
+            Events.GameLoop.Saving += OnBeforeSave;
 
-            TimeEvents.AfterDayStarted += OnDayStarted;
+            Events.GameLoop.DayStarted += OnDayStarted;
 
             Conf.CpuThresholdFishing = Util.Cap(Conf.CpuThresholdFishing, 0, 0.5f);
             Conf.HealthToEatRatio = Util.Cap(Conf.HealthToEatRatio, 0.1f, 0.8f);
@@ -85,6 +90,13 @@ namespace JoysOfEfficiency
                 Monitor.Log("CasksOnGround detected.");
                 IsCoGOn = true;
             }
+
+            if (ModChecker.IsCALoaded(helper))
+            {
+                Monitor.Log("CasksAnywhere detected.");
+                IsCAOn = true;
+            }
+
             if (ModChecker.IsCCLoaded(helper))
             {
                 Monitor.Log("Convenient Chests detected. JOE's CraftingFromChests feature will be disabled and won't patch the game.");
@@ -100,7 +112,7 @@ namespace JoysOfEfficiency
             MineIcons.Init(helper);
         }
 
-        private void OnMenuChanged(object sender, EventArgsClickableMenuChanged args)
+        private void OnMenuChanged(object sender, MenuChangedEventArgs args)
         {
             if (Conf.AutoLootTreasures && args.NewMenu is ItemGrabMenu menu)
             {
@@ -113,7 +125,17 @@ namespace JoysOfEfficiency
                 Util.CollectMailAttachmentsAndQuests(letter);
             }
         }
-        private void OnGameTick(object sender, EventArgs args)
+
+        private void OnGameUpdateEvent(object sender, UpdateTickedEventArgs args)
+        {
+            OnEveryUpdate();
+            if(args.IsMultipleOf(8))
+            {
+                OnGameEighthUpdate();
+            }
+        }
+
+        private void OnEveryUpdate()
         {
             if (!Context.IsWorldReady)
             {
@@ -171,11 +193,14 @@ namespace JoysOfEfficiency
                 List<NPC> npcList = player.currentLocation.characters.Where(a => a != null && a.isVillager()).ToList();
                 foreach (NPC npc in npcList)
                 {
-                    RectangleE npcRect = new RectangleE(npc.position.X,
+                    RectangleE npcRect = new RectangleE(
+                        npc.position.X,
                         npc.position.Y - npc.Sprite.getHeight() - Game1.tileSize / 1.5f,
-                        npc.Sprite.getWidth() * 3 + npc.Sprite.getWidth() / 1.5f, npc.Sprite.getHeight() * 3.5f);
+                        npc.Sprite.getWidth() * 3 + npc.Sprite.getWidth() / 1.5f,
+                        npc.Sprite.getHeight() * 3.5f);
 
-                    if (!npcRect.IsInternalPoint(Game1.getMouseX() + Game1.viewport.X,
+                    if (!npcRect.IsInternalPoint(
+                        Game1.getMouseX() + Game1.viewport.X,
                         Game1.getMouseY() + Game1.viewport.Y))
                     {
                         continue;
@@ -188,49 +213,45 @@ namespace JoysOfEfficiency
                         Friendship friendship = player.friendshipData[npc.Name];
                         if (friendship.GiftsThisWeek > 1)
                         {
-                            if (npc.isMarried() && npc.getSpouse().UniqueMultiplayerID == player.UniqueMultiplayerID)
-                            {
-                                //This character got married with the player, so ignore weekly restriction
-                            }
-                            else
+                            //Week restriction
+                            if (!npc.isMarried() || npc.getSpouse().UniqueMultiplayerID != player.UniqueMultiplayerID)
                             {
                                 key.Append("gavetwogifts.");
                                 _unableToGift = true;
                             }
                         }
-                        if (!_unableToGift)
+                        if (!_unableToGift && friendship.GiftsToday > 0)
                         {
-                            if (friendship.GiftsToday > 0)
+                            //Day restriction
+                            key.Append("gavetoday.");
+                            _unableToGift = true;
+                        }
+                        else if (npc.canReceiveThisItemAsGift(player.CurrentItem))
+                        {
+                            switch (npc.getGiftTasteForThisItem(player.CurrentItem))
                             {
-                                key.Append("gavetoday.");
-                                _unableToGift = true;
-                            }
-                            else if (npc.canReceiveThisItemAsGift(player.CurrentItem))
-                            {
-                                switch (npc.getGiftTasteForThisItem(player.CurrentItem))
-                                {
-                                    case 0:
-                                        key.Append("love.");
-                                        break;
-                                    case 2:
-                                        key.Append("like.");
-                                        break;
-                                    case 4:
-                                        key.Append("dislike.");
-                                        break;
-                                    case 6:
-                                        key.Append("hate.");
-                                        break;
-                                    default:
-                                        key.Append("neutral.");
-                                        break;
-                                }
-                            }
-                            else
-                            {
-                                return;
+                                case 0:
+                                    key.Append("love.");
+                                    break;
+                                case 2:
+                                    key.Append("like.");
+                                    break;
+                                case 4:
+                                    key.Append("dislike.");
+                                    break;
+                                case 6:
+                                    key.Append("hate.");
+                                    break;
+                                default:
+                                    key.Append("neutral.");
+                                    break;
                             }
                         }
+                        else
+                        {
+                            return;
+                        }
+
                         switch (npc.Gender)
                         {
                             case NPC.female:
@@ -246,7 +267,7 @@ namespace JoysOfEfficiency
             }
         }
 
-        private void OnGameEighthUpdate(object sender, EventArgs args)
+        private void OnGameEighthUpdate()
         {
             if(Game1.currentGameTime == null)
             {
@@ -392,7 +413,7 @@ namespace JoysOfEfficiency
             }
         }
 
-        private void OnButtonPressed(object sender, EventArgsInput args)
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs args)
         {
             if (!Context.IsWorldReady)
             {
@@ -447,7 +468,7 @@ namespace JoysOfEfficiency
                     Util.AutoFishing(bar);
                 }
             }
-            if (Conf.EstimateShippingPrice && Game1.activeClickableMenu is ItemGrabMenu menu && (menu.shippingBin || Util.IsCAShippingBinMenu(menu)))
+            if (Conf.EstimateShippingPrice && Game1.activeClickableMenu is ItemGrabMenu menu)
             {
                 Util.DrawShippingPrice(menu, Game1.smallFont);
             }
@@ -500,6 +521,7 @@ namespace JoysOfEfficiency
         {
             //Reset LastTimeOfDay
             LastTimeOfDay = Game1.timeOfDay;
+
             if (!Context.IsWorldReady || !Conf.AutoAnimalDoor)
             {
                 return;

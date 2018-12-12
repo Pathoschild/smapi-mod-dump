@@ -23,13 +23,20 @@ namespace JoysOfEfficiency
         {
             SpriteBatch batch = Game1.spriteBatch;
 
+            bool redrawCursor = false;
+
+            Point mousePos = new Point(Game1.getMouseX(), Game1.getMouseY());
+
             int y = Game1.options.zoomButtons ? 350 : 320;
             int x = GetWidthInPlayArea() - 84;
             {
                 batch.Draw(_iconPickaxe, new Vector2(x, y), null, Color.White, 0.0f, Vector2.Zero, 2.5f, SpriteEffects.None, 0.9f);
                 Rectangle rect = new Rectangle(x, y, 40, 40);
-                if (rect.Contains(Game1.getMouseX(), Game1.getMouseY()))
+                if (rect.Contains(mousePos))
+                {
                     Util.DrawSimpleTextbox(batch, stoneStr, Game1.dialogueFont, true);
+                    redrawCursor = true;
+                }
 
                 x -= 48;
             }
@@ -37,8 +44,11 @@ namespace JoysOfEfficiency
             {
                 batch.Draw(_iconMonster, new Vector2(x, y), null, Color.White, 0.0f, Vector2.Zero, 2.5f, SpriteEffects.None, 0.9f);
                 Rectangle rect = new Rectangle(x, y, 40, 40);
-                if (rect.Contains(Game1.getMouseX(), Game1.getMouseY()))
+                if (rect.Contains(mousePos))
+                {
                     Util.DrawSimpleTextbox(batch, monsterStr, Game1.dialogueFont, true);
+                    redrawCursor = true;
+                }
 
                 x -= 48;
             }
@@ -46,12 +56,15 @@ namespace JoysOfEfficiency
             {
                 batch.Draw(_iconLadder, new Vector2(x, y), null, Color.White, 0.0f, Vector2.Zero, 2.5f, SpriteEffects.None, 0.9f);
                 Rectangle rect = new Rectangle(x, y, 40, 40);
-                if (rect.Contains(Game1.getMouseX(), Game1.getMouseY()))
+                if (rect.Contains(mousePos))
                 {
-                    Util.DrawSimpleTextbox(batch, ladderStr, Game1.dialogueFont,true);
+                    Util.DrawSimpleTextbox(batch, ladderStr, Game1.dialogueFont, true);
+                    redrawCursor = true;
                 }
             }
-            DrawCursor(batch);
+
+            if(redrawCursor)
+                DrawCursor(batch);
         }
 
         public static void DrawCursor(SpriteBatch batch)

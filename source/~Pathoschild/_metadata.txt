@@ -17,10 +17,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 38f2ff0df06183a59556f590fa5d97a67b2a88c2
-   Merge: 49a64eb 7a1dca4
+   commit d859e79be3cc6036f9efad8f0612c2df3ba3a556
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Dec 8 23:54:47 2018 -0500
+   Date:   Tue Dec 11 00:00:50 2018 -0500
    
-       Merge branch 'develop' into stable
+       fix gates not working as connectors
    

@@ -29,43 +29,46 @@ namespace LadderLocator
             pixelTexture.SetData<Color>(colorArray);
 
             ladderStones = new List<StardewValley.Object>();
-
-            GameEvents.OneSecondTick += this.GameEvents_OneSecondTick;
-            GraphicsEvents.OnPostRenderEvent += this.GraphicsEvents_OnPostRenderEvent;
-            InputEvents.ButtonPressed += this.InputEvents_ButtonPressed;
-            PlayerEvents.Warped += this.PlayerEvents_Warped;
+            
+            Helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            Helper.Events.Display.Rendered += this.OnRendered;
+            Helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            Helper.Events.Player.Warped += this.OnWarped;
         }
 
-        private void GameEvents_OneSecondTick(object sender, EventArgs e)
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (Game1.mine != null)
+            if (e.IsOneSecond)
             {
-                bool ladderHasSpawned = Helper.Reflection.GetField<bool>(Game1.mine, "ladderHasSpawned").GetValue();
-
-                if (ladderHasSpawned)
+                if (Game1.mine != null)
                 {
-                    ladderStones.Clear();
-                }
-                else if (ladderStones.Count == 0)
-                {
-                    findLadders();
-                }
+                    bool ladderHasSpawned = Helper.Reflection.GetField<bool>(Game1.mine, "ladderHasSpawned").GetValue();
 
-                if (Config.ForceShafts && Game1.mine.getMineArea(-1) == 121 && !nextIsShaft && ladderStones.Count > 0)
-                {
-                    Random mineRandom = Helper.Reflection.GetField<Random>(Game1.mine, "mineRandom").GetValue();
-
-                    Random r = Clone(mineRandom);
-
-                    double next = r.NextDouble();
-
-                    while (next >= 0.2)
+                    if (ladderHasSpawned)
                     {
-                        next = r.NextDouble();
-                        mineRandom.NextDouble();
+                        ladderStones.Clear();
+                    }
+                    else if (ladderStones.Count == 0)
+                    {
+                        findLadders();
                     }
 
-                    nextIsShaft = true;
+                    if (Config.ForceShafts && Game1.mine.getMineArea(-1) == 121 && !nextIsShaft && ladderStones.Count > 0)
+                    {
+                        Random mineRandom = Helper.Reflection.GetField<Random>(Game1.mine, "mineRandom").GetValue();
+
+                        Random r = Clone(mineRandom);
+
+                        double next = r.NextDouble();
+
+                        while (next >= 0.2)
+                        {
+                            next = r.NextDouble();
+                            mineRandom.NextDouble();
+                        }
+
+                        nextIsShaft = true;
+                    }
                 }
             }
         }
@@ -104,7 +107,7 @@ namespace LadderLocator
             }
         }
 
-        private void GraphicsEvents_OnPostRenderEvent(object sender, EventArgs e)
+        private void OnRendered(object sender, RenderedEventArgs e)
         {
             if (!Context.IsWorldReady) return;
 
@@ -123,7 +126,7 @@ namespace LadderLocator
             Game1.spriteBatch.Draw(pixelTexture, new Rectangle(rect.Right, rect.Top, 3, rect.Height), color);
         }
 
-        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (e.Button == Config.ToggleShaftsKey)
             {
@@ -142,7 +145,7 @@ namespace LadderLocator
             }
         }
 
-        private void PlayerEvents_Warped(object sender, EventArgsPlayerWarped e)
+        private void OnWarped(object sender, WarpedEventArgs e)
         {
             ladderStones.Clear();
             nextIsShaft = false;

@@ -12,5 +12,14 @@
 	"IncludeBonusChest": true,
 	"IncludeBonusMoney": true,
 	"IncludeClay": true,
-	"ClayCount": 10
+	"ClayCount": 10,
+	"SetMaxEnergy": true,
+	"SetMaxHealth": true,
+	"IncludeFirstBackpackUpgrade": true,
+	"SetLevel1FishingLevel": true,
+	"SetLevel1CombatLevel": true,
+	"SetLevel1ForagingLevel": true,
+	"SetLevel1HarvestingLevel": true,
+	"SetLevel1Mininglevel": true,
+	"GiveCopperWateringCan":  true
 }

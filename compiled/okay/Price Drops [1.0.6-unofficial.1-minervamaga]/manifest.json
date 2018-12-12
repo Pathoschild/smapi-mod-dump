@@ -1,0 +1,10 @@
+﻿{
+   "Name": "priceDrops",
+   "Author": "skuldomg",
+   "Version": "1.0.6-unofficial.1-minervamaga",
+   "Description": "Introduces discounts at shops when the player has a good relationship with the shop owner.",
+   "UniqueID": "skuldomg.priceDrops",
+   "EntryDll": "priceDrops.dll",
+   "MinimumApiVersion": "2.7",
+   "UpdateKeys": ["Nexus:2047"]      
+}
