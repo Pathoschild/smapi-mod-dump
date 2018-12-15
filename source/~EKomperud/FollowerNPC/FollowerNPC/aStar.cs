@@ -52,7 +52,6 @@ namespace FollowerNPC
             {
                 Node q = open.Dequeue();
                 closed[q.position] = q.f;
-                //ModEntry.monitor.Log(q.position.ToString());
                 Node[] successors = GetSuccessors(q);
                 foreach (Node successor in successors)
                 {
@@ -139,26 +138,6 @@ namespace FollowerNPC
                                      .furniture_type.Value == 12));
         }
 
-        //public bool IsWalkableTilePrint(Vector2 tile)
-        //{
-        //    StardewValley.Object o = gl.getObjectAtTile((int)tile.X, (int)tile.Y);
-        //    bool isTileOnMap = gl.isTileOnMap(tile);
-        //    ModEntry.monitor.Log("is tile on map?: " + isTileOnMap.ToString());
-        //    bool isTileUnoccupied = !gl.isTileOccupiedIgnoreFloors(tile, character);
-        //    ModEntry.monitor.Log("is unnocupied?: " + isTileUnoccupied.ToString());
-        //    bool isTilePassable = isTilePassableOverride(new Location((int)tile.X, (int)tile.Y), Game1.viewport);
-        //    ModEntry.monitor.Log("is passable?: " + isTilePassable.ToString());
-        //    bool isNotFarmBuilding = !gameLocation.IsFarm && !((gameLocation as Farm).getBuildingAt(tile) != null);
-        //    //bool isTilePlaceable = gl.isTilePlaceable(tile, null);
-        //    //ModEntry.monitor.Log("is placeable?: " + isTilePlaceable.ToString());
-        //    bool noUnpassableObjects = (!(o != null) || (o != null &&
-        //                                                 (o as StardewValley.Objects.Furniture)
-        //                                                 .furniture_type.Value == 12));
-        //    ModEntry.monitor.Log("is clear of unpassable objects?: " + noUnpassableObjects.ToString());
-
-        //    return isTileOnMap && isTileUnoccupied && isTilePassable && noUnpassableObjects;
-        //}
-
         public bool isTilePassableOverride(Location tileLocation, xTile.Dimensions.Rectangle viewport)
         {
             xTile.ObjectModel.PropertyValue passable = null;
@@ -175,30 +154,6 @@ namespace FollowerNPC
             }
             return passable == null && (tile == null || (passableBuilding != null && passableBuilding)) && tmp != null;
         }
-
-        //public bool isTilePassableOverridePrint(Location tileLocation, xTile.Dimensions.Rectangle viewport)
-        //{
-        //    xTile.ObjectModel.PropertyValue passable = null;
-        //    xTile.Tiles.Tile tmp = gameLocation.map.GetLayer("Back").PickTile(new Location(tileLocation.X * Game1.tileSize, tileLocation.Y * Game1.tileSize), viewport.Size);
-        //    if (tmp != null)
-        //    {
-        //        tmp.TileIndexProperties.TryGetValue("Passable", out passable);
-        //    }
-        //    xTile.ObjectModel.PropertyValue passableBuilding = null;
-        //    xTile.Tiles.Tile tile = gameLocation.map.GetLayer("Buildings").PickTile(new Location(tileLocation.X * Game1.tileSize, tileLocation.Y * Game1.tileSize), viewport.Size);
-        //    if (tile != null)
-        //    {
-        //        passableBuilding = tile.TileIndexProperties.TryGetValue("Passable", out passableBuilding);
-        //        ModEntry.monitor.Log("Passable Building property value: " + passableBuilding);
-        //    }
-        //    ModEntry.monitor.Log("Is Tile Passable Override:");
-        //    ModEntry.monitor.Log("Tile Exists on Back Layer: " + (tmp != null).ToString());
-        //    ModEntry.monitor.Log("Back Tile Passable Property: " + (passable == null).ToString());
-        //    ModEntry.monitor.Log("Tile Doesn't Exist on Building Layer: " + (tile == null).ToString());
-        //    ModEntry.monitor.Log("Building Tile is Passable " + (passableBuilding != null).ToString());
-        //    //ModEntry.monitor.Log("Building Tile has 'T' property for 'Passable': " + (passableBuilding == "T").ToString());
-        //    return passable == null && (tile == null || (passableBuilding != null && passableBuilding)) && tmp != null;
-        //}
 
         private int NodeArrayCount(Node[] a)
         {

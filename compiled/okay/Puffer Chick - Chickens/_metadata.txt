@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2997
+IDs: EpicBellyFlop45.PufferChickChickens
+update keys: Nexus:2997

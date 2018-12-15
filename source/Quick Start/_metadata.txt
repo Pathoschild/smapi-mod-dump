@@ -5,9 +5,9 @@ mods:
    Quick Start
 
 latest commit:
-   commit d87e7aa00e72e0e3f6ecc7e30a8cc4a35490fc2f
+   commit c57e3fd6473a612f0339a791f61f68b2cca23159
    Author: Brian Wuest <brian.wuest@outlook.com>
-   Date:   Sun Dec 9 20:15:30 2018 -0600
+   Date:   Thu Dec 13 22:17:35 2018 -0600
    
-       Adding copper watering can to default inventory.
+       Fixing issue where certain recipes weren't awarded.
    

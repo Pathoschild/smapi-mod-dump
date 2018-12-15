@@ -5,9 +5,9 @@ mods:
    Discord Rich Presence
 
 latest commit:
-   commit 379434cc688280afe945864c9e3bd55e95fe417b
+   commit 290c108e01b9a2b5eb41c73dd2a727c238b3b80a
    Author: Fayne Aldan <faynealdan@gmail.com>
-   Date:   Tue Nov 20 21:14:25 2018 -0700
+   Date:   Fri Dec 14 04:58:31 2018 -0700
    
-       Release 2.2.1
+       Update to 2.2.2
    

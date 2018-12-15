@@ -5,9 +5,9 @@ mods:
    Json Assets
 
 latest commit:
-   commit e045b19c163b1cd9fcd941966e24174458c7633e
-   Author: spacechase0 <spacechase0@users.noreply.github.com>
-   Date:   Sun Nov 25 14:00:01 2018 -0500
+   commit f66286d9ac561155761ead0ea6764c34ca33321c
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Dec 14 15:43:28 2018 -0500
    
-       Bugfix for some things like 'Chair's (see corresponding function in SDV for why)
+       Version 1.1.2
    

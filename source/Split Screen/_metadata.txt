@@ -5,12 +5,10 @@ mods:
    Split Screen
 
 latest commit:
-   commit 30522309def154417580f6ada76d7754e74c4951
-   Merge: c0d6785 b0b3566
-   Author: Ilyaki <35632254+Ilyaki@users.noreply.github.com>
-   Date:   Sun Sep 9 07:21:38 2018 +0100
+   commit 04d39d233b82792cbd92fc26a7ebca7a63a923bf
+   Merge: 4bdfc73 3052230
+   Author: Ilyaki <ilyaki.ilyaki@gmail.com>
+   Date:   Thu Dec 13 09:30:17 2018 +0000
    
-       Merge pull request #5 from Ilyaki/add-license-1
-       
-       Create LICENSE
+       Merge branch 'master' of https://github.com/Ilyaki/SplitScreen
    

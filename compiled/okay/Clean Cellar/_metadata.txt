@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2975
+IDs: EpicBellyFlop45.CleanCellar
+update keys: Nexus:2975

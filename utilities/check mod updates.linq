@@ -67,6 +67,9 @@ public bool ShowMissingCompatMods = true;
 /// <summary>Whether to show potential errors in the compatibility list.</summary>
 public bool ShowCompatListErrors = true;
 
+/// <summary>Whether to group mods into folders based on their SMAPI 3.0 status on the wiki, for testing SMAPI 3.0 readiness.</summary>
+public bool GroupBySmapi3Status = false;
+
 /****
 ** Mod exception lists
 ****/
@@ -368,8 +371,13 @@ void Main()
 				foreach (char ch in Path.GetInvalidFileNameChars())
 					newName = newName.Replace(ch, '_');
 
+				// group by SMAPI 3.0 status
+				if (this.GroupBySmapi3Status)
+					newName = Path.Combine($"SMAPI 3.0 {mod.ApiRecord?.Metadata?.Smapi3Status.ToString() ?? "none"}", newName);
+
 				// move to new name
 				DirectoryInfo newDir = new DirectoryInfo(Path.Combine(this.ModFolderPath, newName));
+				newDir.Parent.Create();
 				if (actualDir.FullName != newDir.FullName)
 				{
 					Console.WriteLine($"   Moving {PathUtilities.GetRelativePath(this.ModFolderPath, actualDir.FullName)} to {PathUtilities.GetRelativePath(this.ModFolderPath, newDir.FullName)}...");
@@ -496,7 +504,8 @@ void Main()
 				UpdateKeys = Util.WithStyle(mod.UpdateKeys, "font-size: 0.8em;"),
 				UpdateCheckErrors = mod.UpdateCheckErrors.Length > 0 ? Util.WithStyle(string.Join("\n", mod.UpdateCheckErrors), "font-size> 0.8em") : null,
 				NormalisedFolder = new Lazy<string>(() => mod.NormalisedFolder),
-				Manifest = new Lazy<Manifest>(() => mod.Manifest)
+				Manifest = new Lazy<Manifest>(() => mod.Manifest),
+				Smapi3Status = mod.ModData?.ApiRecord?.Metadata?.Smapi3Status
 			};
 		})
 		.Dump("mods");

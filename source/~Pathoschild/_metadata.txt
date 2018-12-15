@@ -17,9 +17,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit d859e79be3cc6036f9efad8f0612c2df3ba3a556
+   commit 1a5851f41d93956d361b02a0c7cff4ba53812c42
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Tue Dec 11 00:00:50 2018 -0500
+   Date:   Fri Dec 14 21:26:21 2018 -0500
    
-       fix gates not working as connectors
+       fix fruit trees not producing fruit out of season
    

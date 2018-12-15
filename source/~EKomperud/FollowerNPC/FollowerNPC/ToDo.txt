@@ -1,0 +1,8 @@
+﻿Perks || Buffs
+Events
+Prevent some NPC's from entering certain areas
+
+Optimize A*
+Optimize helper functions
+
+Organize Event functions into helpers

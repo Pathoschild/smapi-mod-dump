@@ -48,18 +48,22 @@ namespace SplitScreen
 			var harmony = HarmonyInstance.Create("me.ilyaki.splitscreen");
 			harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-			StardewModdingAPI.Events.InputEvents.ButtonPressed += InputEvents_ButtonPressed;
 
-			StardewModdingAPI.Events.GameEvents.UpdateTick += delegate { Game1.game1.SetPrivateFieldValue("isActive", true); };//only do when in-game?
+			Helper.Events.Input.ButtonPressed += InputEvents_ButtonPressed;
+
+
+			Helper.Events.GameLoop.UpdateTicked += delegate { Game1.game1.SetPrivateFieldValue("isActive", true); };//only do when in-game?
 
 			//Keyboards/Mice Managers
 			kbManager = new Keyboards.MultipleKeyboardManager(harmony);
-			StardewModdingAPI.Events.GameEvents.UpdateTick += kbManager.OnUpdate;
-			StardewModdingAPI.Events.SaveEvents.AfterReturnToTitle += kbManager.OnAfterReturnToTitle;
+			Helper.Events.GameLoop.UpdateTicked += kbManager.OnUpdate;
+
+			Helper.Events.GameLoop.ReturnedToTitle += kbManager.OnAfterReturnToTitle;
 			
 			miceManager = new Mice.MultipleMiceManager();
-			StardewModdingAPI.Events.SpecialisedEvents.UnvalidatedUpdateTick += miceManager.OnUpdateTick;
-			StardewModdingAPI.Events.SaveEvents.AfterReturnToTitle += miceManager.OnAfterReturnToTitle;
+
+			Helper.Events.Specialised.UnvalidatedUpdateTicked += miceManager.OnUpdateTick;
+			Helper.Events.GameLoop.ReturnedToTitle += miceManager.OnAfterReturnToTitle;
 
 			//Set the affinity for all SMAPI processes. Adjustments are handled by AffinityButtonMenu
 			var processes = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
@@ -77,7 +81,7 @@ namespace SplitScreen
 			if (!Enum.TryParse(this.config.MenuKey, out menuKey)) menuKey = Keys.N;
 		}
 
-		private void InputEvents_ButtonPressed(object sender, StardewModdingAPI.Events.EventArgsInput e)
+		private void InputEvents_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
 		{
 			if ((Keys)e.Button == menuKey && Game1.activeClickableMenu == null)
 				Game1.activeClickableMenu = new Menu.InputDeviceMenu(kbManager, miceManager);

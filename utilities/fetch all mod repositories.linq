@@ -172,7 +172,25 @@ async Task Main()
 		}
 
 		// clone repo
-		await this.ExecuteShellAsync("git", $"clone -q {repo.GitUrl} \"{dir.Name}\"", workingDir: rootDir.FullName);
+		bool cloned = false;
+		while (true)
+		{
+			try
+			{
+				await this.ExecuteShellAsync("git", $"clone -q {repo.GitUrl} \"{dir.Name}\"", workingDir: rootDir.FullName);
+				cloned = true;
+				break;
+			}
+			catch (Exception ex)
+			{
+				ex.Dump();
+				string choice = Helper.GetChoice("Cloning the Git repository failed! [r]etry [s]kip?", "r", "s");
+				if (choice == "s")
+					break;
+			}
+		}
+		if (!cloned)
+			continue;
 
 		// write latest commit
 		string lastCommit = await this.ExecuteShellAsync("git", "log -1", workingDir: dir.FullName);

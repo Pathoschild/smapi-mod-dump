@@ -6,9 +6,9 @@ mods:
    Multiple Gifts for Spouses
 
 latest commit:
-   commit f5012de7fd8ff7754e06de767cb523de585943b4
+   commit 14eb71d7d7f77874cafb1fb23d7c79b027aa1f53
    Author: EKomperud <ericmkomperud@gmail.com>
-   Date:   Mon Nov 5 21:05:19 2018 -0700
+   Date:   Fri Dec 14 13:39:25 2018 -0700
    
-       Pathfinding all good. Character scripts added
+       ACTUALLY added dialogue
    

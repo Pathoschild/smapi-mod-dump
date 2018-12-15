@@ -1,7 +1,7 @@
 ﻿{
    "Name": "KeyboardModMenu",
    "Author": "Shadowfoxss",
-   "Version": "1.0.4",
+   "Version": "1.0.5",
    "Description": "Its a Keyboard Mod Menu!",
    "UniqueID": "Shadowfoxss.KeyboardModMenu",
    "EntryDll": "KeyboardModMenuSDV.dll",

@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Text;
 	using StardewModdingAPI;
 	using StardewModdingAPI.Events;
 	using StardewValley;
@@ -145,37 +146,34 @@
 			if (this.options.SetLevel1FishingLevel)
 			{
 				this.Monitor.Log("Setting player fishing level to 1");
-				Game1.player.FishingLevel = 1;
-				Game1.player.experiencePoints[ModEntry.FishSkill] = 101;
+				Game1.player.gainExperience(ModEntry.FishSkill, 100);
 			}
 
 			if (this.options.SetLevel1CombatLevel)
 			{
 				this.Monitor.Log("Setting player combat level to 1");
-				Game1.player.CombatLevel = 1;
-				Game1.player.experiencePoints[ModEntry.CombatSkill] = 101;
+				Game1.player.gainExperience(ModEntry.CombatSkill, 100);
 			}
 
 			if (this.options.SetLevel1ForagingLevel)
 			{
 				this.Monitor.Log("Setting player foraging level to 1");
-				Game1.player.ForagingLevel = 1;
-				Game1.player.experiencePoints[ModEntry.ForagingSkill] = 101;
+				Game1.player.gainExperience(ModEntry.ForagingSkill, 100);
 			}
 
 			if (this.options.SetLevel1HarvestingLevel)
 			{
 				this.Monitor.Log("Setting player harvesting level to 1");
-				Game1.player.FarmingLevel = 1;
-				Game1.player.experiencePoints[ModEntry.FarmSkill] = 101;
+				Game1.player.gainExperience(ModEntry.FarmSkill, 100);
 			}
 
 			if (this.options.SetLevel1Mininglevel)
 			{
 				this.Monitor.Log("Setting player mining level to 1");
-				Game1.player.MiningLevel = 1;
-				Game1.player.experiencePoints[ModEntry.MiningSkill] = 101;
+				Game1.player.gainExperience(ModEntry.MiningSkill, 100);
 			}
+
+			this.checkForNewLevelPerks();
 		}
 
 		private void ValidateOptions()
@@ -222,6 +220,164 @@
 			{
 				// The configuration file has invalid option data. Re-write it so we don't do this next time.
 				this.modHelper.WriteConfig(this.options);
+			}
+		}
+
+		public void checkForNewLevelPerks()
+		{
+			Dictionary<string, string> dictionary1 = Game1.content.Load<Dictionary<string, string>>("Data\\CookingRecipes");
+			int level = Game1.player.Level;
+
+			foreach (string key in dictionary1.Keys)
+			{
+				string[] strArray = dictionary1[key].Split('/')[3].Split(' ');
+
+				if (strArray[0].Equals("l") && Convert.ToInt32(strArray[1]) <= level && !Game1.player.cookingRecipes.ContainsKey(key))
+				{
+					this.Monitor.Log("Adding Cooking Recipe: " + key);
+					Game1.player.cookingRecipes.Add(key, 0);
+				}
+				else if (strArray[0].Equals("s"))
+				{
+					int int32 = Convert.ToInt32(strArray[2]);
+					bool flag = false;
+					string str = strArray[1];
+
+					if (!(str == "Farming"))
+					{
+						if (!(str == "Fishing"))
+						{
+							if (!(str == "Mining"))
+							{
+								if (!(str == "Combat"))
+								{
+									if (!(str == "Foraging"))
+									{
+										if (str == "Luck" && Game1.player.LuckLevel >= int32)
+										{
+											flag = true;
+										}
+									}
+									else if (Game1.player.ForagingLevel >= int32)
+									{
+										flag = true;
+									}
+								}
+								else if (Game1.player.CombatLevel >= int32)
+								{
+									flag = true;
+								}
+							}
+							else if (Game1.player.MiningLevel >= int32)
+							{
+								flag = true;
+							}
+						}
+						else if (Game1.player.FishingLevel >= int32)
+						{
+							flag = true;
+						}
+					}
+					else if (Game1.player.FarmingLevel >= int32)
+					{
+						flag = true;
+					}
+
+					if (flag && !Game1.player.cookingRecipes.ContainsKey(key))
+					{
+						this.Monitor.Log("Adding Cooking Recipe: " + key);
+						Game1.player.cookingRecipes.Add(key, 0);
+					}
+				}
+			}
+
+			Dictionary<string, string> dictionary2 = Game1.content.Load<Dictionary<string, string>>("Data\\CraftingRecipes");
+
+			foreach (string key in dictionary2.Keys)
+			{
+				string[] strArray = dictionary2[key].Split('/')[4].Split(' ');
+
+				if ((key.ToLower() == "scarecrow" && this.options.SetLevel1HarvestingLevel)
+					|| (key.ToLower() == "cherry bomb" && this.options.SetLevel1Mininglevel)
+					|| (key.ToLower() == "field snack" && this.options.SetLevel1ForagingLevel)
+					|| (key.ToLower() == "wild seeds (sp)" && this.options.SetLevel1ForagingLevel)
+					|| (key.ToLower() == "sturdy ring") && this.options.SetLevel1CombatLevel)
+				{
+					this.Monitor.Log("Adding Crafting Recipe: " + key);
+					Game1.player.craftingRecipes.Add(key, 0);
+				}
+
+				if (strArray[0].Equals("l") && Convert.ToInt32(strArray[1]) <= level && !Game1.player.craftingRecipes.ContainsKey(key))
+				{
+					this.Monitor.Log("Adding Crafting Recipe: " + key);
+					Game1.player.craftingRecipes.Add(key, 0);
+				}
+				else if (strArray[0].Equals("s"))
+				{
+					int int32 = Convert.ToInt32(strArray[2]);
+					bool flag = false;
+					string str = strArray[1];
+
+					if (key.ToLower() == "scarecrow")
+					{
+						this.Monitor.Log("Found Scarecrow, it's skill is: " + str);
+					}
+
+					if (!(str == "Farming"))
+					{
+						if (!(str == "Fishing"))
+						{
+							if (!(str == "Mining"))
+							{
+								if (!(str == "Combat"))
+								{
+									if (!(str == "Foraging"))
+									{
+										if (str == "Luck" && Game1.player.LuckLevel >= int32)
+										{
+											flag = true;
+										}
+									}
+									else if (Game1.player.ForagingLevel >= int32)
+									{
+										flag = true;
+									}
+								}
+								else if (Game1.player.CombatLevel >= int32)
+								{
+									flag = true;
+								}
+							}
+							else if (Game1.player.MiningLevel >= int32)
+							{
+								flag = true;
+							}
+						}
+						else if (Game1.player.FishingLevel >= int32)
+						{
+							flag = true;
+						}
+					}
+					else if (Game1.player.FarmingLevel >= int32)
+					{
+						flag = true;
+					}
+
+					if (key.ToLower() == "scarecrow" && !flag)
+					{
+						this.Monitor.Log("Found Scarecrow but cannot award....why? Level Number is: " + int32.ToString());
+					}
+					else if (key.ToLower() == "scarecrow" && flag && !Game1.player.craftingRecipes.ContainsKey(key))
+					{
+						this.Monitor.Log("Found Scarecrow but cannot award because they already have it?");
+					}
+
+					if (flag && !Game1.player.craftingRecipes.ContainsKey(key))
+					{
+						this.Monitor.Log("Adding Crafting Recipe: " + key);
+						Game1.player.craftingRecipes.Add(key, 0);
+					}
+				}
 			}
 		}
 	}
