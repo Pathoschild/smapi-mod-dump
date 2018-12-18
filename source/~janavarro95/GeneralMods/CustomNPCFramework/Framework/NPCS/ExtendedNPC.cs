@@ -190,7 +190,7 @@ namespace CustomNPCFramework.Framework.NPCS
             this.Sprite.standAndFaceDirection(this.defaultFacingDirection);
             
             if (this.isMarried())
-                this.marriageDuties(true);
+                this.marriageDuties();
             bool flag = Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason);
             try
             {
@@ -597,7 +597,7 @@ namespace CustomNPCFramework.Framework.NPCS
             bool flag = Utility.isFestivalDay(dayOfMonth, Game1.currentSeason);
             if (!this.isMarried())
                 return;
-            this.marriageDuties(true);
+            this.marriageDuties();
             //Friendship f=Game1.player.GetSpouseFriendship();
             //this.daysMarried = this.daysMarried + 1;
         }

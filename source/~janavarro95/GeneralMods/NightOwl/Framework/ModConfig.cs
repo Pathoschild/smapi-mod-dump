@@ -23,5 +23,11 @@
 
         /// <summary>Whether to keep stamina as-is after the player collapses.</summary>
         public bool KeepStaminaAfterCollapse { get; set; } = true;
+
+
+        /// <summary>
+        /// Whether or not to use the internal NightFish asset editor. When false, it will just use the Fish.xnb file.
+        /// </summary>
+        public bool UseInternalNightFishAssetEditor { get; set; } = true;
     }
 }

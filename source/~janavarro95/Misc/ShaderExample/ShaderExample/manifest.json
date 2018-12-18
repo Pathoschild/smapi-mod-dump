@@ -1,0 +1,10 @@
+{
+  "Name": "ShaderExample",
+  "Author": "Alpha_Omegasis",
+  "Version": "0.0.1",
+  "Description": "A mod that attempts to add shaders to stardew.",
+  "UniqueID": "Omegasis.ShaderExample",
+  "EntryDll": "ShaderExample.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": []
+}

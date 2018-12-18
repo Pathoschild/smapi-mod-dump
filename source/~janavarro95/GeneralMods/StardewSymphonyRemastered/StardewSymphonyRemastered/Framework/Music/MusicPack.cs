@@ -15,7 +15,6 @@ namespace StardewSymphonyRemastered.Framework
     {
         
         public string directory;
-        public string shortenedDirectory;
         public StardewSymphonyRemastered.Framework.SongSpecifics songInformation;
         public MusicPackMetaData musicPackInformation;
 
@@ -84,7 +83,10 @@ namespace StardewSymphonyRemastered.Framework
             }
             foreach (var list in this.songInformation.listOfSongsWithTriggers)
             {
-                if (list.Value.Count == 0) continue;
+                if (StardewSymphony.Config.writeAllConfigMusicOptions == false)
+                {
+                    if (list.Value.Count == 0) continue;
+                }
                 if (StardewSymphony.Config.EnableDebugLog)
                     StardewSymphony.ModMonitor.Log("Saving music: " + list.Key + ". Please wait.");
                 SongListNode node = new SongListNode(list.Key, list.Value);

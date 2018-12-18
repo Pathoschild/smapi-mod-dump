@@ -25,9 +25,12 @@ mods:
    Time Freeze
 
 latest commit:
-   commit 18ad59258c2a97d6262b383f0aa62b74fcdaacc5
+   commit 79c2965ae6dd67e88d4a463f9481b8a775471777
+   Merge: 18ad592 124fc52
    Author: Joshua Navarro <janavarro95@users.noreply.github.com>
-   Date:   Mon Jun 25 20:33:50 2018 -0700
+   Date:   Mon Dec 17 10:38:19 2018 -0800
    
-       Delete StardewValleyCues RAW.txt
+       Merge pull request #47 from janavarro95/Development
+       
+       Merge branches.
    

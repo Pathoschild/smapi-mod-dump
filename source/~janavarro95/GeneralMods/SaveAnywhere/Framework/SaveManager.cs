@@ -12,7 +12,7 @@ using StardewValley.Monsters;
 namespace Omegasis.SaveAnywhere.Framework
 {
     /// <summary>Provides methods for saving and loading game data.</summary>
-    internal class SaveManager
+    public class SaveManager
     {
         /*********
         ** Properties
@@ -32,6 +32,10 @@ namespace Omegasis.SaveAnywhere.Framework
         /// <summary>Whether we should save at the next opportunity.</summary>
         private bool WaitingToSave;
 
+        /// <summary> Currently displayed save menu (null if no menu is displayed) </summary>
+        private NewSaveGameMenu currentSaveMenu;
+
+
 
         /*********
         ** Public methods
@@ -45,6 +49,12 @@ namespace Omegasis.SaveAnywhere.Framework
             this.Helper = helper;
             this.Reflection = reflection;
             this.OnLoaded = onLoaded;
+
+        }
+
+        private void empty(object o, EventArgs args)
+        {
+
         }
 
         /// <summary>Perform any required update logic.</summary>
@@ -53,9 +63,23 @@ namespace Omegasis.SaveAnywhere.Framework
             // perform passive save
             if (this.WaitingToSave && Game1.activeClickableMenu == null)
             {
-                Game1.activeClickableMenu = new NewSaveGameMenu();
+                currentSaveMenu = new NewSaveGameMenu();
+                currentSaveMenu.SaveComplete += CurrentSaveMenu_SaveComplete;
+                Game1.activeClickableMenu = currentSaveMenu;
                 this.WaitingToSave = false;
             }
+        }
+
+        /// <summary>
+        ///     Event function for NewSaveGameMenu event SaveComplete
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CurrentSaveMenu_SaveComplete(object sender, EventArgs e)
+        {
+            currentSaveMenu.SaveComplete -= CurrentSaveMenu_SaveComplete;
+            currentSaveMenu = null;
+            //AfterSave.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>Clear saved data.</summary>
@@ -68,6 +92,7 @@ namespace Omegasis.SaveAnywhere.Framework
         /// <summary>Initiate a game save.</summary>
         public void BeginSaveData()
         {
+            
             // save game data
             Farm farm = Game1.getFarm();
             if (farm.shippingBin.Any())
@@ -79,7 +104,12 @@ namespace Omegasis.SaveAnywhere.Framework
                 this.WaitingToSave = true;
             }
             else
-                Game1.activeClickableMenu = new NewSaveGameMenu();
+            {
+                currentSaveMenu = new NewSaveGameMenu();
+                currentSaveMenu.SaveComplete += CurrentSaveMenu_SaveComplete;
+                Game1.activeClickableMenu = currentSaveMenu;
+            }
+                
 
             // get data
             PlayerData data = new PlayerData
@@ -112,6 +142,8 @@ namespace Omegasis.SaveAnywhere.Framework
             this.SetPositions(data.Characters);
             this.OnLoaded?.Invoke();
 
+            // Notify other mods that load is complete
+            //AfterLoad.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>

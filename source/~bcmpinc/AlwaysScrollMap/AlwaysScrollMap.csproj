@@ -39,7 +39,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="manifest.json" />
-    <None Include="README.md" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +46,11 @@
       <Project>{57D4316C-C97C-41ED-A1E8-4737AE1D66AA}</Project>
       <Name>StardewHack</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="README.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
 </Project>

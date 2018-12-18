@@ -1,0 +1,21 @@
+{
+  "spawnBatLevel": "5:10",
+  "spawnDuggyLevel": "15:100",
+  "spawnDustSpiritLevel": "25",
+  "spawnSkeletonLevel": "35",
+  "spawnGreenSlimeLevel": "45",
+  "spawnShadowBruteLevel": "55",
+  "spawnBigSlimeLevel": "1:2;11:1;21:1;31:1;41:1;51:1;61:1;71:1;81:1",
+  "spawnBugLevel": "9;19;29;39;49;59;69;79;89;",
+  "spawnFlyLevel": "6;8;11;",
+  "spawnGhostLevel": "6;8;11;",
+  "spawnRockGolemLevel": "6",
+  "spawnGrubLevel": "7",
+  "spawnLavaCrabLevel": "8",
+  "spawnMetalHeadLevel": "15",
+  "spawnMummyLevel": "11",
+  "spawnRockCrabLevel": "17;29;34;",
+  "spawnSerpentLevel": "13",
+  "spawnShadowShamanLevel": "14",
+  "spawnSquidKidLevel": "16"
+}

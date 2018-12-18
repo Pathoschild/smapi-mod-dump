@@ -3,7 +3,7 @@
 namespace Omegasis.SaveAnywhere.Framework.Models
 {
     /// <summary>Represents saved data for an NPC.</summary>
-    internal class CharacterData
+    public class CharacterData
     {
         /*********
         ** Accessors

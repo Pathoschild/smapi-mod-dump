@@ -6,6 +6,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Characters;
+using StardewValley.Monsters;
 
 namespace Omegasis.SaveAnywhere
 {
@@ -40,6 +41,10 @@ namespace Omegasis.SaveAnywhere
         /// </summary>
         public static IMonitor ModMonitor;
 
+        private List<Monster> monsters;
+
+        private bool customMenuOpen;
+
         /*********
         ** Public methods
         *********/
@@ -47,20 +52,27 @@ namespace Omegasis.SaveAnywhere
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-
             this.Config = helper.ReadConfig<ModConfig>();
+
+            this.SaveManager = new SaveManager(this.Helper, this.Helper.Reflection, onLoaded: () => this.ShouldResetSchedules = true);
 
             SaveEvents.AfterLoad += this.SaveEvents_AfterLoad;
             SaveEvents.AfterSave += this.SaveEvents_AfterSave;
-            MenuEvents.MenuChanged += this.MenuEvents_MenuChanged;
             ControlEvents.KeyPressed += this.ControlEvents_KeyPressed;
             GameEvents.UpdateTick += this.GameEvents_UpdateTick;
             TimeEvents.AfterDayStarted += this.TimeEvents_AfterDayStarted;
+
             ModHelper = helper;
             ModMonitor = Monitor;
+            customMenuOpen = false;
         }
 
+        /*Notes. Mods that want to support save anywhere will get the api for Save anywhere and then add their clean up code to the events that happen for Before/After Save and Loading. 
+        Example with pseudo code.
+        SaveAnywhere.api.BeforeSave+=StardustCore.Objects.CleanUpBeforeSave;
+        We then can use function wrapping (is that what it's called?) to just handle calling the actual function that deals with clean-up code.
 
+        */
         /*********
         ** Private methods
         *********/
@@ -74,7 +86,6 @@ namespace Omegasis.SaveAnywhere
             this.ShouldResetSchedules = false;
 
             // load positions
-            this.SaveManager = new SaveManager(this.Helper, this.Helper.Reflection, onLoaded: () => this.ShouldResetSchedules = true);
             this.SaveManager.LoadData();
         }
 
@@ -84,17 +95,14 @@ namespace Omegasis.SaveAnywhere
         private void SaveEvents_AfterSave(object sender, EventArgs e)
         {
             // clear custom data after a normal save (to avoid restoring old state)
-            if (!this.IsCustomSaving)
+            if (!this.IsCustomSaving) 
                 this.SaveManager.ClearData();
+            else
+            {
+                IsCustomSaving = false;
+            }
         }
 
-        /// <summary>The method invoked after a menu is opened or changed.</summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void MenuEvents_MenuChanged(object sender, EventArgsClickableMenuChanged e)
-        {
-            this.IsCustomSaving = e.NewMenu != null && (e.NewMenu is NewSaveGameMenu || e.NewMenu is NewShippingMenu);
-        }
 
         /// <summary>The method invoked when the game updates (roughly 60 times per second).</summary>
         /// <param name="sender">The event sender.</param>
@@ -115,6 +123,60 @@ namespace Omegasis.SaveAnywhere
             {
                 this.ShouldResetSchedules = false;
                 this.ApplySchedules();
+            }
+
+            if (Game1.activeClickableMenu == null && this.customMenuOpen == false) return;
+            if(Game1.activeClickableMenu==null && this.customMenuOpen == true)
+            {
+                restoreMonsters();
+                this.customMenuOpen = false;
+                return;
+            }
+            if (Game1.activeClickableMenu != null)
+            {
+                if (Game1.activeClickableMenu.GetType() == typeof(NewSaveGameMenu))
+                {
+                    this.customMenuOpen = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Saves all monsters from the game world.
+        /// </summary>
+        private void cleanMonsters()
+        {
+            monsters = new List<Monster>();
+
+            foreach (var monster in Game1.player.currentLocation.characters)
+            {
+                try
+                {
+                    if (monster is Monster)
+                    {
+                        monsters.Add(monster as Monster);
+                    }
+                }
+                catch (Exception err)
+                {
+
+                }
+            }
+
+            foreach (var monster in this.monsters)
+            {
+                Game1.player.currentLocation.characters.Remove(monster);
+            }
+        }
+
+        /// <summary>
+        /// Adds all saved monster back into the game world.
+        /// </summary>
+        private void restoreMonsters()
+        {
+            foreach (var monster in this.monsters)
+            {
+                Game1.player.currentLocation.characters.Add(monster);
             }
         }
 
@@ -150,6 +212,7 @@ namespace Omegasis.SaveAnywhere
             {
                 if (Game1.client==null)
                 {
+                    cleanMonsters();
                     // validate: community center Junimos can't be saved
 
                     if (Game1.player.currentLocation.getCharacters().OfType<Junimo>().Any())
@@ -158,7 +221,9 @@ namespace Omegasis.SaveAnywhere
                         return;
                     }
 
+
                     // save
+                    this.IsCustomSaving = true;
                     this.SaveManager.BeginSaveData();
                 }
                 else
@@ -189,7 +254,7 @@ namespace Omegasis.SaveAnywhere
                 string scheduleData;
                 if (!this.NpcSchedules.TryGetValue(npc.Name, out scheduleData) || string.IsNullOrEmpty(scheduleData))
                 {
-                    this.Monitor.Log("THIS IS AWKWARD");
+                    //this.Monitor.Log("THIS IS AWKWARD");
                     continue;
                 }
 

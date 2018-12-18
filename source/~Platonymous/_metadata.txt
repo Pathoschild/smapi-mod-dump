@@ -38,12 +38,12 @@ mods:
    Visualize
 
 latest commit:
-   commit 807841b9a7e9fc8bf4a81a65bb47c90e3597c6d0
-   Merge: 996743b 92a0e46
+   commit c44dd47bf77926df61e6698e1547fb46b4c8207f
+   Merge: 807841b 06b4026
    Author: David <david@millionideas.de>
-   Date:   Wed Dec 12 12:27:49 2018 +0100
+   Date:   Sun Dec 16 04:35:44 2018 +0100
    
-       Merge pull request #36 from Pathoschild/update-code
+       Merge pull request #37 from Pathoschild/update-code
        
-       Update input events for the upcoming SMAPI 3.0
+       Update for the upcoming SMAPI 3.0
    

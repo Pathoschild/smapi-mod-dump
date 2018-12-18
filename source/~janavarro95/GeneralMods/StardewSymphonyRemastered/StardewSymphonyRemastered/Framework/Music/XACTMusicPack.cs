@@ -198,7 +198,6 @@ namespace StardewSymphonyRemastered.Framework
                     directoryLocation += Path.DirectorySeparatorChar;
                 }
             }
-            this.shortenedDirectory = directoryLocation;
         }
 
         public override bool isPlaying()

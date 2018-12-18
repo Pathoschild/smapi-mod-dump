@@ -1,7 +1,7 @@
 # Farmhouse and Cabin Plots
 See [download source (click view raw)](https://github.com/JessebotX/StardewMods/blob/master/ContentPatcherMods/%5BCP%5D%20Farmhouse%20Plots/%5BCP%5D%20Farmhouse%20Plots.zip)
 
-## Table of Contents
+## Contents
 - [Info](https://github.com/JessebotX/StardewMods/tree/master/ContentPatcherMods/%5BCP%5D%20Farmhouse%20Plots#info)
 - [Install](https://github.com/JessebotX/StardewMods/tree/master/ContentPatcherMods/%5BCP%5D%20Farmhouse%20Plots#install)
   - [For this stardew valley server](https://github.com/JessebotX/StardewMods/tree/master/ContentPatcherMods/%5BCP%5D%20Farmhouse%20Plots#for-this-stardew-valley-server---infinity-farms)
@@ -25,7 +25,7 @@ Adds new farming plots in farmhouse/cabins
 
 **Final Upgrade:**
 
-- 30x30 plot
+- 35x30 plot
 - Very small storage place for anything
 - Water source
 
@@ -45,6 +45,8 @@ You can use this, edit it for personal or public use, redistribute it, sell it a
 _Also plz don't ask for permission to do all this_ ^
 
 ## Changelog
+#####v1.2.1 (Farmhouse Upgrade 2)
+- Farmhouse Upgrade #2 now has a 35x30 plot
 #####v1.2 (Farmhouse Expansions)
 - Farmhouse Upgrade 1 now has a 30x15 plot
 - Farmhouse Upgrade 2 now has a 30x30 plot

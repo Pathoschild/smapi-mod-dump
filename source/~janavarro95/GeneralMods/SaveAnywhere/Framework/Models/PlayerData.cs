@@ -1,7 +1,7 @@
 namespace Omegasis.SaveAnywhere.Framework.Models
 {
     /// <summary>The data for the current player.</summary>
-    internal class PlayerData
+    public class PlayerData
     {
         /// <summary>The current time.</summary>
         public int Time { get; set; }

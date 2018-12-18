@@ -1,0 +1,10 @@
+﻿{
+  "Name": "PHDEUnlockedRecipes",
+  "Author": "zesman",
+  "Version": "1.0.0",
+  "Description": "All recipes are unlocked by default",
+  "UniqueID": "UnlockedRecipes.pseudohub.de",
+  "EntryDll": "PHDEUnlockedRecipes.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:2798" ]
+}

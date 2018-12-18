@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGame2", "WindowsGame2\WindowsGame2\WindowsGame2.csproj", "{48A8E271-B5CF-4290-8C04-37C352A3F15C}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "WindowsGame2Content", "WindowsGame2\WindowsGame2Content\WindowsGame2Content.contentproj", "{58C274AC-3DD6-4FC1-9E6B-9E2D8D885F08}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{48A8E271-B5CF-4290-8C04-37C352A3F15C}.Debug|x86.ActiveCfg = Debug|x86
+		{48A8E271-B5CF-4290-8C04-37C352A3F15C}.Debug|x86.Build.0 = Debug|x86
+		{48A8E271-B5CF-4290-8C04-37C352A3F15C}.Release|x86.ActiveCfg = Release|x86
+		{48A8E271-B5CF-4290-8C04-37C352A3F15C}.Release|x86.Build.0 = Release|x86
+		{58C274AC-3DD6-4FC1-9E6B-9E2D8D885F08}.Debug|x86.ActiveCfg = Debug|x86
+		{58C274AC-3DD6-4FC1-9E6B-9E2D8D885F08}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BF1FC8C0-B716-4D85-BD2B-658B67A6E0A5}
+	EndGlobalSection
+EndGlobal

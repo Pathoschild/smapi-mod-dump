@@ -27,13 +27,12 @@ namespace StardewHack.AlwaysScrollMap
     {
         public override void Entry(IModHelper helper) {
             base.Entry(helper);
-            InputEvents.ButtonPressed += ToggleScroll;
+            Helper.Events.Input.ButtonPressed += ToggleScroll;
             State.config = config;
         }
 
-        private void ToggleScroll(object sender, EventArgs e) {
-            var ev = (EventArgsInput)e;
-            if (ev.Button.Equals(config.ToggleScroll)) {
+        private void ToggleScroll(object sender, ButtonPressedEventArgs e) {
+            if (e.Button.Equals(config.ToggleScroll)) {
                 if (StardewValley.Game1.currentLocation.IsOutdoors)
                     config.EnabledOutdoors ^= true;
                 else

@@ -387,7 +387,7 @@ void Main()
 						FileUtilities.ForceDelete(newDir);
 					}
 					actualDir.MoveTo(newDir.FullName);
-					if (Directory.Exists(searchDir.FullName) && searchDir.FullName.TrimEnd(Path.DirectorySeparatorChar) != actualDir.FullName.TrimEnd(Path.DirectorySeparatorChar))
+					if (Directory.Exists(searchDir.FullName) && !searchDir.EnumerateFileSystemInfos().Any())
 						FileUtilities.ForceDelete(searchDir);
 				}
 			}

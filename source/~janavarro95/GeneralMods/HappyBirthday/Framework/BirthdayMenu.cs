@@ -154,6 +154,7 @@ namespace Omegasis.HappyBirthday.Framework
                 // OK button
                 case "OK":
                     if (this.BirthdayDay >= 1 || this.BirthdayDay <= 28)
+                        MultiplayerSupport.SendBirthdayInfoToOtherPlayers(); //Send updated info to others.
                         Game1.exitActiveMenu();
                     break;
 

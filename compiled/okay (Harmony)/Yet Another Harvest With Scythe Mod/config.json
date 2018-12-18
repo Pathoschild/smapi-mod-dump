@@ -1,4 +1,6 @@
 {
   "HarvestForage": true,
-  "AllHaveQuality": false
+  "AllHaveQuality": false,
+  "ScytheHarvestFlowers": true,
+  "AllowManualHarvest": true
 }

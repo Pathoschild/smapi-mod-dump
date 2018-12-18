@@ -79,27 +79,16 @@ namespace Omegasis.MoreRain
                     {
                         Game1.weatherForTomorrow = Game1.weather_rain;
                         this.VerboseLog("It will rain tomorrow.");
-                    }
-                    else
-                    {
-                        Game1.weatherForTomorrow = Game1.weather_sunny;
-                        this.VerboseLog("It will not rain tomorrow.");
+                        return;
                     }
 
-                    // set storm
-                    if (Game1.weatherForTomorrow == Game1.weather_rain)
+                    if (chance <= this.Config.SpringThunderChance)
                     {
-                        if (chance <= this.Config.SpringThunderChance)
-                        {
-                            Game1.weatherForTomorrow = Game1.weather_lightning;
-                            this.VerboseLog("It will be stormy tomorrow.");
-                        }
-                        else
-                        {
-                            Game1.weatherForTomorrow = Game1.weather_rain;
-                            this.VerboseLog("There will be no lightning tomorrow.");
-                        }
+                        Game1.weatherForTomorrow = Game1.weather_lightning;
+                        this.VerboseLog("It will be stormy tomorrow.");
+                        return;
                     }
+                    
                     break;
 
                 case "summer":
@@ -108,26 +97,15 @@ namespace Omegasis.MoreRain
                     {
                         Game1.weatherForTomorrow = Game1.weather_rain;
                         this.VerboseLog("It will rain tomorrow.");
-                    }
-                    else
-                    {
-                        Game1.weatherForTomorrow = Game1.weather_sunny;
-                        this.VerboseLog("It will not rain tomorrow.");
+                        return;
                     }
 
-                    // set storm
-                    if (Game1.weatherForTomorrow == Game1.weather_rain)
+
+                    if (chance <= this.Config.SummerThunderChance)
                     {
-                        if (chance <= this.Config.SummerThunderChance)
-                        {
-                            Game1.weatherForTomorrow = Game1.weather_lightning;
-                            this.VerboseLog("It will be stormy tomorrow.");
-                        }
-                        else
-                        {
-                            Game1.weatherForTomorrow = Game1.weather_rain;
-                            this.VerboseLog("There will be no lightning tomorrow.");
-                        }
+                        Game1.weatherForTomorrow = Game1.weather_lightning;
+                        this.VerboseLog("It will be stormy tomorrow.");
+                        return;
                     }
                     break;
 
@@ -138,26 +116,14 @@ namespace Omegasis.MoreRain
                     {
                         Game1.weatherForTomorrow = Game1.weather_rain;
                         this.VerboseLog("It will rain tomorrow.");
-                    }
-                    else
-                    {
-                        Game1.weatherForTomorrow = Game1.weather_sunny;
-                        this.VerboseLog("It will not rain tomorrow.");
+                        return;
                     }
 
-                    // set storm
-                    if (Game1.weatherForTomorrow == Game1.weather_rain)
+                    if (chance <= this.Config.FallThunderChance)
                     {
-                        if (chance <= this.Config.FallThunderChance)
-                        {
-                            Game1.weatherForTomorrow = Game1.weather_lightning;
-                            this.VerboseLog("It will be stormy tomorrow.");
-                        }
-                        else
-                        {
-                            Game1.weatherForTomorrow = Game1.weather_rain;
-                            this.VerboseLog("There will be no lightning tomorrow.");
-                        }
+                        Game1.weatherForTomorrow = Game1.weather_lightning;
+                        this.VerboseLog("It will be stormy tomorrow.");
+                        return;
                     }
                     break;
 

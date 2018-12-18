@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/2739
 IDs: bcmpinc.CraftCounter
-update keys: GitHub:bcmpinc/StardewHack, Nexus:2739
+update keys: Nexus:2739, GitHub:bcmpinc/StardewHack

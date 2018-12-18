@@ -27,8 +27,7 @@ namespace StardustCore.UIUtilities.SpriteFonts.Components
         {
             this.character = Character;
             this.pathToTexture = PathToTexture;
-            string text = this.pathToTexture.Remove(0, 1);
-            this.texture = StardustCore.ModCore.ModHelper.Content.Load<Texture2D>(text+".png");
+            this.texture = StardustCore.ModCore.ModHelper.Content.Load<Texture2D>(PathToTexture+".png");
             this.spacing = new CharacterSpacing();
             this.drawColor = color;
             this.position = new Vector2();

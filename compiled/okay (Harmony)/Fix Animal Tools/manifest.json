@@ -1,7 +1,7 @@
 ﻿{
    "Name": "Fix Animal Tools",
    "Author": "bcmpinc",
-   "Version": "0.5",
+   "Version": "0.6",
    "Description": "When using the shears or milk pail, the animation no longer plays when no animal is nearby.",
    "UniqueID": "bcmpinc.FixAnimalTools",
    "EntryDll": "FixAnimalTools.dll",

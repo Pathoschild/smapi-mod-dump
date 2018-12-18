@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2798
+IDs: UnlockedRecipes.pseudohub.de
+update keys: Nexus:2798

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2794
+IDs: MobSpawner.pseudohub.de
+update keys: Nexus:2794

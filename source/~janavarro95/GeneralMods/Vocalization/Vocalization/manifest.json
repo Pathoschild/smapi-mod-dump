@@ -1,0 +1,14 @@
+{
+  "Name": "Vocalization",
+  "Author": "Alpha_Omegasis, DonDemitri, Various Voice Actors/Actresses",
+  "Version": "0.0.1",
+  "Description": "A mod that brings voice acting to Stardew Valley.",
+  "UniqueID": "Omegasis.Vocalization",
+  "EntryDll": "Vocalization.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+	"Omegasis.SimpleSoundManager",
+	"Omegasis.StardustCore"
+	]
+}

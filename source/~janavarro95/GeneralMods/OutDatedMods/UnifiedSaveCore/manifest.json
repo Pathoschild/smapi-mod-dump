@@ -1,0 +1,10 @@
+{
+  "Name": "Unified Save core",
+  "Author": "Alpha_Omegasis",
+  "Version": "0.0.1",
+  "Description": "Allows for a core api for mod authors to handle saving/loading.",
+  "UniqueID": "Omegasis.UnifiedSaveCore",
+  "EntryDll": "UnifiedSaveCore.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "" ]
+}

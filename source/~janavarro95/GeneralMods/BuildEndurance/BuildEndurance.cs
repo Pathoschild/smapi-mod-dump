@@ -99,7 +99,7 @@ namespace Omegasis.BuildEndurance
             }
 
             // give XP when exhausted
-            if (!this.WasExhausted && Game1.player.exhausted)
+            if (!this.WasExhausted && Game1.player.exhausted.Value)
             {
                 this.PlayerData.CurrentExp += this.Config.ExpForExhaustion;
                 this.WasExhausted = true;
@@ -107,8 +107,9 @@ namespace Omegasis.BuildEndurance
             }
 
             // give XP when player stays up too late or collapses
-            if (!this.WasCollapsed && Game1.farmerShouldPassOut)
+            if (!this.WasCollapsed && shouldFarmerPassout())
             {
+                
                 this.PlayerData.CurrentExp += this.Config.ExpForCollapsing;
                 this.WasCollapsed = true;
                 //this.Monitor.Log("The player has collapsed!");
@@ -180,7 +181,7 @@ namespace Omegasis.BuildEndurance
                 }
             }
             this.PlayerData.ClearModEffects = false;
-            this.PlayerData.NightlyStamina = Game1.player.maxStamina;
+            this.PlayerData.NightlyStamina = Game1.player.MaxStamina;
 
             // save data
             this.Helper.WriteJsonFile(this.DataFilePath, this.PlayerData);
@@ -218,6 +219,16 @@ namespace Omegasis.BuildEndurance
             {
                 this.Monitor.Log($"Error migrating data from the legacy 'PlayerData' folder for the current player. Technical details:\n {ex}", LogLevel.Error);
             }
+        }
+
+        /// <summary>
+        /// Try and emulate the old Game1.shouldFarmerPassout logic.
+        /// </summary>
+        /// <returns></returns>
+        public bool shouldFarmerPassout()
+        {
+            if (Game1.player.stamina <= 0 || Game1.player.health <= 0 || Game1.timeOfDay >= 2600) return true;
+            else return false;
         }
     }
 }

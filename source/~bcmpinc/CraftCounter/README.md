@@ -5,9 +5,12 @@ Adds a counter to the description of crafting & cooking recipes telling how ofte
 none
 
 ## Known bugs
-none
+Please report bugs on: https://github.com/bcmpinc/StardewHack/issues
 
 ## Changes
 #### 0.5:
 * The counter is updated when an object is crafted.
-* For cooking recipies it shows how often it has been cooked.
+* For cooking recipes it shows how often it has been cooked.
+
+#### 0.5.1:
+* Fixed exception on windows

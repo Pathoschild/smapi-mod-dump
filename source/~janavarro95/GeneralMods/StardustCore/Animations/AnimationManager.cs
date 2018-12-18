@@ -16,14 +16,26 @@ namespace StardustCore.Animations
     /// </summary>
    public class AnimationManager
     {
-       public Dictionary<string, List<Animation>> animations = new Dictionary<string, List<Animation>>();
+       public Dictionary<string, List<Animation>> animations = new SerializableDictionary<string, List<Animation>>();
        public string currentAnimationName;
        public int currentAnimationListIndex;
        public List<Animation> currentAnimationList = new List<Animation>();
-       public Texture2DExtended objectTexture; ///Might not be necessary if I use the CoreObject texture sheet.
+       private Texture2DExtended objectTexture; ///Might not be necessary if I use the CoreObject texture sheet.
        public Animation defaultDrawFrame;
        public Animation currentAnimation;
-       bool enabled;
+       public bool enabled;
+
+
+        public string animationDataString;
+
+        /// <summary>
+        /// Empty constructor.
+        /// </summary>
+        public AnimationManager()
+        {
+
+        }
+
 
         /// <summary>
         /// Constructor for Animation Manager class.
@@ -38,21 +50,49 @@ namespace StardustCore.Animations
             this.defaultDrawFrame = DefaultFrame;
             this.enabled = EnabledByDefault;
             currentAnimation = this.defaultDrawFrame;
+            this.currentAnimationName = "";
+            this.animationDataString = "";
         }
     
-        public AnimationManager(Texture2DExtended ObjectTexture,Animation DefaultFrame ,Dictionary<string, List<Animation>> animationsToPlay, string startingAnimationKey, int startingAnimationFrame=0,bool EnabledByDefault=true)
+        public AnimationManager(Texture2DExtended ObjectTexture,Animation DefaultFrame ,string animationString, string startingAnimationKey, int startingAnimationFrame=0,bool EnabledByDefault=true)
         {
             currentAnimationListIndex = 0;
             this.objectTexture = ObjectTexture;
             this.defaultDrawFrame = DefaultFrame;
             this.enabled = EnabledByDefault;
 
-            this.animations = animationsToPlay;
+            this.animationDataString = animationString;
+            this.animations = parseAnimationsFromXNB(animationString);
             bool f = animations.TryGetValue(startingAnimationKey, out currentAnimationList);
-            if (f == true) {
+            if (f == true)
+            {
                 setAnimation(startingAnimationKey, startingAnimationFrame);
             }
-            else currentAnimation = this.defaultDrawFrame;
+            else
+            {
+                currentAnimation = this.defaultDrawFrame;
+                this.currentAnimationName = "";
+            }
+        }
+
+        public AnimationManager(Texture2DExtended ObjectTexture, Animation DefaultFrame, Dictionary<string,List<Animations.Animation>> animationString, string startingAnimationKey, int startingAnimationFrame = 0, bool EnabledByDefault = true)
+        {
+            currentAnimationListIndex = 0;
+            this.objectTexture = ObjectTexture;
+            this.defaultDrawFrame = DefaultFrame;
+            this.enabled = EnabledByDefault;
+
+            this.animations = animationString;
+            bool f = animations.TryGetValue(startingAnimationKey, out currentAnimationList);
+            if (f == true)
+            {
+                setAnimation(startingAnimationKey, startingAnimationFrame);
+            }
+            else
+            {
+                currentAnimation = this.defaultDrawFrame;
+                this.currentAnimationName = "";
+            }
         }
 
         /// <summary>
@@ -216,6 +256,26 @@ namespace StardustCore.Animations
             {
                 ModCore.ModMonitor.Log(err.ToString());
             }
+        }
+
+        public Texture2DExtended getExtendedTexture()
+        {
+            return this.objectTexture;
+        }
+
+        public void setExtendedTexture(Texture2DExtended texture)
+        {
+            this.objectTexture = texture;
+        }
+
+        public void setEnabled(bool enabled)
+        {
+            this.enabled = enabled;
+        }
+
+        public Texture2D getTexture()
+        {
+            return this.objectTexture.getTexture();
         }
 
     }

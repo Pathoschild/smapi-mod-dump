@@ -29,8 +29,9 @@ namespace StardustCore.UIUtilities
         {
             foreach(var v in textures)
             {
-                if (v.Key == name) return v.Value;
+                if (v.Key == name) return v.Value.Copy();
             }
+            throw new Exception("Error, texture name not found!!!");
             return null;
         }
 

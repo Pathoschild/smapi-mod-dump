@@ -1,5 +1,6 @@
 Changelog
-
+- v1.2.1 (Farmhouse Upgrade 2 Expansion)
+	- Farmhouse Upgrade 2 now has a 35x30 plot
 - v1.2 (Farmhouse Expansions)
 	- Farmhouse Upgrade 1 now has a 30x15 plot
 	- Farmhouse Upgrade 2 now has a 30x30 plot

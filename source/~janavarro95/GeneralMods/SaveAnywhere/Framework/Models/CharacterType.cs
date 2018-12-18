@@ -1,7 +1,7 @@
 ﻿namespace Omegasis.SaveAnywhere.Framework.Models
 {
     /// <summary>The character type for an NPC.</summary>
-    internal enum CharacterType
+    public enum CharacterType
     {
         /// <summary>The player.</summary>
         Player = 1,

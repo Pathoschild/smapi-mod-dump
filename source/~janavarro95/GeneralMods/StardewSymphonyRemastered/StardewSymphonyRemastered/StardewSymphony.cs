@@ -10,14 +10,17 @@ using StardewValley;
 using StardewSymphonyRemastered.Framework;
 using System.IO;
 using StardustCore.UIUtilities;
+using NAudio.Wave;
 
 namespace StardewSymphonyRemastered
 {
-
-    /// <summary>
     /// TODO:
-    /// 5.Release
-    /// 
+    ///
+    /// Fixed Farm building glitch,
+    /// Added underground mine support
+    /// Added seasonal selection support
+    /// added just location support
+    /// added in write all config option
     /// 
     /// Add mod config to have silent rain option.
     /// Add in shuffle song button that just selects music but probably plays a different song. same as musicManager.selectmusic(getConditionalString);
@@ -25,7 +28,6 @@ namespace StardewSymphonyRemastered
     /// 
     /// Notes:
     /// All mods must add events/locations/festivals/menu information to this mod during the Entry function of their mod because once the player is loaded that's when all of the packs are initialized with all of their music.
-    /// </summary>
     public class StardewSymphony : Mod
     {
         public static WaveBank DefaultWaveBank;
@@ -34,6 +36,7 @@ namespace StardewSymphonyRemastered
 
         public static IModHelper ModHelper;
         public static IMonitor ModMonitor;
+        public static IManifest Manifest;
 
         public static MusicManager musicManager;
 
@@ -53,21 +56,24 @@ namespace StardewSymphonyRemastered
 
         public static Config Config;
 
+        
 
 
         public static TextureManager textureManager;
+        
         /// <summary>
         /// Entry point for the mod.
         /// </summary>
         /// <param name="helper"></param>
         public override void Entry(IModHelper helper)
         {
-            Config = helper.ReadConfig<Config>();
+            
             DefaultSoundBank = Game1.soundBank;
             DefaultWaveBank = Game1.waveBank;
             ModHelper = helper;
             ModMonitor = Monitor;
-
+            Manifest = ModManifest;
+            Config = helper.ReadConfig<Config>();
             StardewModdingAPI.Events.SaveEvents.AfterLoad += SaveEvents_AfterLoad;
             // StardewModdingAPI.Events.EventArgsLocationsChanged += LocationEvents_CurrentLocationChanged;
 
@@ -140,9 +146,7 @@ namespace StardewSymphonyRemastered
                 musicManager.initializeMenuMusic(); //Initialize menu music that has been added to SongSpecifics.menus from all other mods during their Entry function.
                 musicManager.initializeFestivalMusic();//Initialize festival music that has been added to SongSpecifics.menus from all other mods during their Entry function.
                 musicManager.initializeEventMusic();//Initialize event music that has been added to SongSpecifics.menus from all other mods during their Entry function.
-                //Note that locations should also be added to SongSpecifics.locations during the mod's respective Entry function.
                 musicPacksInitialized = true;
-                //musicManager.selectMusic(SongSpecifics.getCurrentConditionalString());
             }
         }
 
@@ -196,7 +200,8 @@ namespace StardewSymphonyRemastered
         /// <param name="e"></param>
         private void MenuEvents_MenuChanged(object sender, StardewModdingAPI.Events.EventArgsClickableMenuChanged e)
         {
-            musicManager.selectMusic(SongSpecifics.getCurrentConditionalString());
+            //var ok = musicManager.currentMusicPack.getNameOfCurrentSong();
+            musicManager.selectMenuMusic(SongSpecifics.getCurrentConditionalString());
         }
 
         private void SaveEvents_BeforeSave(object sender, EventArgs e)
@@ -216,7 +221,7 @@ namespace StardewSymphonyRemastered
         /// <param name="e"></param>
         private void ControlEvents_KeyPressed(object sender, StardewModdingAPI.Events.EventArgsKeyPressed e)
         {
-            if (e.KeyPressed.ToString() == Config.KeyBinding)
+            if (e.KeyPressed.ToString() == Config.KeyBinding && Game1.activeClickableMenu==null)
             {
                 Game1.activeClickableMenu = new Framework.Menus.MusicManagerMenu(Game1.viewport.Width,Game1.viewport.Height);
             }
@@ -230,12 +235,27 @@ namespace StardewSymphonyRemastered
         /// <param name="e"></param>
         private void GameEvents_UpdateTick(object sender, EventArgs e)
         {
-            if (Game1.currentSong != null)
+            if (musicManager == null) return;
+            
+            if (Config.disableStardewMusic==true)
             {
-                //ModMonitor.Log("STOP THE MUSIC!!!");
-                Game1.currentSong.Stop(AudioStopOptions.Immediate); //stop the normal songs from playing over the new songs
-                Game1.currentSong.Stop(AudioStopOptions.AsAuthored);
-                Game1.nextMusicTrack = "";  //same as above line
+                if (Game1.currentSong != null)
+                {
+                    Game1.currentSong.Stop(AudioStopOptions.Immediate); //stop the normal songs from playing over the new songs
+                    Game1.currentSong.Stop(AudioStopOptions.AsAuthored);
+                    Game1.nextMusicTrack = "";  //same as above line
+                }
+            }
+            else
+            {
+                if (musicManager.currentMusicPack == null) return;
+                if (Game1.currentSong != null && musicManager.currentMusicPack.isPlaying())
+                {
+                    //ModMonitor.Log("STOP THE MUSIC!!!");
+                    Game1.currentSong.Stop(AudioStopOptions.Immediate); //stop the normal songs from playing over the new songs
+                    Game1.currentSong.Stop(AudioStopOptions.AsAuthored);
+                    //Game1.nextMusicTrack = "";  //same as above line
+                }
             }
       
         }
@@ -257,7 +277,7 @@ namespace StardewSymphonyRemastered
         {
             string path = Path.Combine(ModHelper.DirectoryPath, "Content", "Graphics", "MusicMenu");
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-
+            path = Path.Combine("Content", "Graphics", "MusicMenu");
             //Generic Icons
             string musicNote = Path.Combine(path, "MusicNote.png");
             string musicCD = Path.Combine(path, "MusicDisk.png");
@@ -311,46 +331,46 @@ namespace StardewSymphonyRemastered
             string stopButton = Path.Combine(path, "StopButton.png");
             string backButton = Path.Combine(path, "BackButton.png");
 
-            textureManager.addTexture("MusicNote",new Texture2DExtended(ModHelper,StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", musicNote)));
-            textureManager.addTexture("MusicDisk", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", musicCD)));
-            textureManager.addTexture("MusicCD", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", musicCD)));
-            textureManager.addTexture("OutlineBox", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", outlineBox)));
-            textureManager.addTexture("AddIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", addIcon)));
-            textureManager.addTexture("DeleteIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", deleteButton)));
-            textureManager.addTexture("GreenBallon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", greenBallon)));
-            textureManager.addTexture("RedBallon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", redBallon)));
-            textureManager.addTexture("StarIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", starIcon)));
-            textureManager.addTexture("MenuIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", menuIcon)));
-            textureManager.addTexture("DayIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", dayIcon)));
-            textureManager.addTexture("NightIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", nightIcon)));
-            textureManager.addTexture("EventIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", eventIcon)));
-            textureManager.addTexture("FestivalIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", festivalIcon)));
-            textureManager.addTexture("SunnyIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", sunnyIcon)));
-            textureManager.addTexture("RainyIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", rainyIcon)));
-            textureManager.addTexture("DebrisSpringIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", debrisIconSpring)));
-            textureManager.addTexture("DebrisSummerIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", debrisIconSummer)));
-            textureManager.addTexture("DebrisFallIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", debrisIconFall)));
-            textureManager.addTexture("WeatherFestivalIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", weatherFestivalIcon)));
-            textureManager.addTexture("SnowIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", snowIcon)));
-            textureManager.addTexture("StormIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", stormIcon)));
-            textureManager.addTexture("WeddingIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", weddingIcon)));
-            textureManager.addTexture("SpringIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", springIcon)));
-            textureManager.addTexture("SummerIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", summerIcon)));
-            textureManager.addTexture("FallIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", fallIcon)));
-            textureManager.addTexture("WinterIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", winterIcon)));
-            textureManager.addTexture("MondayIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", mondayIcon)));
-            textureManager.addTexture("TuesdayIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", tuesdayIcon)));
-            textureManager.addTexture("WednesdayIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", wednesdayIcon)));
-            textureManager.addTexture("ThursdayIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", thursdayIcon)));
-            textureManager.addTexture("FridayIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", fridayIcon)));
-            textureManager.addTexture("SaturdayIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", saturdayIcon)));
-            textureManager.addTexture("SundayIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", sundayIcon)));
+            textureManager.addTexture("MusicNote",new Texture2DExtended(ModHelper,Manifest.UniqueID,musicNote));
+            textureManager.addTexture("MusicDisk", new Texture2DExtended(ModHelper, Manifest.UniqueID, musicCD));
+            textureManager.addTexture("MusicCD", new Texture2DExtended(ModHelper, Manifest.UniqueID, musicCD));
+            textureManager.addTexture("OutlineBox", new Texture2DExtended(ModHelper, Manifest.UniqueID, outlineBox));
+            textureManager.addTexture("AddIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID, addIcon));
+            textureManager.addTexture("DeleteIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID, deleteButton));
+            textureManager.addTexture("GreenBallon", new Texture2DExtended(ModHelper, Manifest.UniqueID, greenBallon));
+            textureManager.addTexture("RedBallon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  redBallon));
+            textureManager.addTexture("StarIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  starIcon));
+            textureManager.addTexture("MenuIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  menuIcon));
+            textureManager.addTexture("DayIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  dayIcon));
+            textureManager.addTexture("NightIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  nightIcon));
+            textureManager.addTexture("EventIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  eventIcon));
+            textureManager.addTexture("FestivalIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  festivalIcon));
+            textureManager.addTexture("SunnyIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  sunnyIcon));
+            textureManager.addTexture("RainyIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  rainyIcon));
+            textureManager.addTexture("DebrisSpringIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  debrisIconSpring));
+            textureManager.addTexture("DebrisSummerIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  debrisIconSummer));
+            textureManager.addTexture("DebrisFallIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  debrisIconFall));
+            textureManager.addTexture("WeatherFestivalIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  weatherFestivalIcon));
+            textureManager.addTexture("SnowIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  snowIcon));
+            textureManager.addTexture("StormIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  stormIcon));
+            textureManager.addTexture("WeddingIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  weddingIcon));
+            textureManager.addTexture("SpringIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  springIcon));
+            textureManager.addTexture("SummerIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  summerIcon));
+            textureManager.addTexture("FallIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  fallIcon));
+            textureManager.addTexture("WinterIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  winterIcon));
+            textureManager.addTexture("MondayIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  mondayIcon));
+            textureManager.addTexture("TuesdayIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  tuesdayIcon));
+            textureManager.addTexture("WednesdayIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  wednesdayIcon));
+            textureManager.addTexture("ThursdayIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  thursdayIcon));
+            textureManager.addTexture("FridayIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  fridayIcon));
+            textureManager.addTexture("SaturdayIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  saturdayIcon));
+            textureManager.addTexture("SundayIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  sundayIcon));
 
-            textureManager.addTexture("HouseIcon", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", houseIcon)));
+            textureManager.addTexture("HouseIcon", new Texture2DExtended(ModHelper, Manifest.UniqueID,  houseIcon));
 
-            textureManager.addTexture("PlayButton", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", playButton)));
-            textureManager.addTexture("StopButton", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", stopButton)));
-            textureManager.addTexture("BackButton", new Texture2DExtended(ModHelper, StardustCore.Utilities.getRelativeDirectory("StardewSymphonyRemastered", backButton)));
+            textureManager.addTexture("PlayButton", new Texture2DExtended(ModHelper, Manifest.UniqueID,  playButton));
+            textureManager.addTexture("StopButton", new Texture2DExtended(ModHelper, Manifest.UniqueID,  stopButton));
+            textureManager.addTexture("BackButton", new Texture2DExtended(ModHelper, Manifest.UniqueID,  backButton));
 
 
             if (!Directory.Exists(MusicPath)) Directory.CreateDirectory(MusicPath);
@@ -386,6 +406,8 @@ namespace StardewSymphonyRemastered
         /// </summary>
         public void createBlankWAVTemplate()
         {
+            
+
             string path = Path.Combine(TemplateMusicDirectory, "WAV");
             string pathSongs = Path.Combine(path, "Songs");
             if (!Directory.Exists(path))
@@ -505,35 +527,13 @@ namespace StardewSymphonyRemastered
             Game1.soundBank = DefaultSoundBank;
         }
 
-        /// <summary>
-        /// Used to splice the mod directory to get relative paths.
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static string getShortenedDirectory(string path)
-        {
-            string lol = (string)path.Clone();
-            string[] spliter = lol.Split(new string[] { ModHelper.DirectoryPath }, StringSplitOptions.None);
-            try
-            {
-                return spliter[1];
-            }
-            catch (Exception err)
-            {
-                err.ToString();
-                return spliter[0];
-            }
-        }
 
-        /// <summary>
-        /// Used to finish cleaning up absolute asset paths into a shortened relative path.
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static string getRelativeDirectory(string path)
+        public static void DebugLog(string s)
         {
-            string s = getShortenedDirectory(path);
-            return s.Remove(0, 1);
+            if (Config.EnableDebugLog)
+            {
+                ModMonitor.Log(s);
+            }
         }
 
     }

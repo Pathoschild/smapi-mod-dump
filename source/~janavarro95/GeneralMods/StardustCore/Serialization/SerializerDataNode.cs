@@ -1,4 +1,5 @@
 ﻿using StardewValley;
+using StardustCore.Objects.Tools.SerializationInformation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,9 @@ namespace StardustCore.Serialization
         /// <summary>
         /// A function that handles loading an object back into it's Item form.
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="path">The path to the file.</param>
         /// <returns></returns>
-        public delegate Item ParsingFunction(string data);
+        public delegate Item ParsingFunction(string path);
         /// <summary>
         /// A function that handles saving an item.
         /// </summary>

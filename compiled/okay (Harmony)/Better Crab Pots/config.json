@@ -1,0 +1,33 @@
+{
+  "EnableTrash": true,
+  "RequiresBait": true,
+  "PercentChanceForTrash": 20,
+  "WhatCanBeFoundInFreshWater": {
+    "716": 33,
+    "721": 33,
+    "722": 33
+  },
+  "WhatCanBeFoundInOcean": {
+    "715": 14,
+    "372": 14,
+    "717": 14,
+    "718": 14,
+    "719": 14,
+    "720": 14,
+    "723": 14
+  },
+  "WhatCanBeFoundAsTrashInFreshWater": {
+    "168": 20,
+    "169": 20,
+    "170": 20,
+    "171": 20,
+    "172": 20
+  },
+  "WhatCanBeFoundAsTrashInOcean": {
+    "168": 20,
+    "169": 20,
+    "170": 20,
+    "171": 20,
+    "172": 20
+  }
+}

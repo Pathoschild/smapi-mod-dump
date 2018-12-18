@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/2732
 IDs: bcmpinc.GrassGrowth
-update keys: GitHub:bcmpinc/StardewHack, Nexus:2732
+update keys: Nexus:2732, GitHub:bcmpinc/StardewHack
