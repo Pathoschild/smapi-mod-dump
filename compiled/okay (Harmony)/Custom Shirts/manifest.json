@@ -1,11 +1,11 @@
 ﻿{
   "Name": "CustomShirts",
   "Author": "Platonymous",
-  "Version": "1.2.4",
+  "Version": "1.2.6",
   "Description": "Add custom shirts to the game",
   "UniqueID": "Platonymous.CustomShirts",
   "EntryDll": "CustomShirts.dll",
-  "MinimumApiVersion": "2.6-beta",
+  "MinimumApiVersion": "2.9.0",
   "UpdateKeys": [ "Nexus:2416" ],
   "Dependencies": [
     {

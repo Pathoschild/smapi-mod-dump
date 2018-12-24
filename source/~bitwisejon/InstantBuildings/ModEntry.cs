@@ -26,13 +26,10 @@ namespace BitwiseJonMods
             BitwiseJonMods.Common.Utility.Log(string.Format("Config ToggleInstantBuildMenuButton={0}", _config.ToggleInstantBuildMenuButton));
             BitwiseJonMods.Common.Utility.Log(string.Format("Tractor Mod Found={0}", _tractorModFound));
 
-            InputEvents.ButtonPressed += this.InputEvents_ButtonPressed;
+            Helper.Events.Input.ButtonPressed += Input_ButtonPressed; 
         }
 
-        /// <summary>The event called when the player presses a keyboard button.</summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
+        private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (e.Button == _config.ToggleInstantBuildMenuButton && Game1.currentLocation is Farm)
             {

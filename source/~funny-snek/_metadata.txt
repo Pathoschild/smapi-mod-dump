@@ -6,12 +6,12 @@ mods:
    Anti-Cheat Server
 
 latest commit:
-   commit 58752c16c147dc1b9637d9f1cf956a0dcc67deb2
-   Merge: d7fef91 f1ec4c0
+   commit 9f0d48c38f70a2f1765244f28b95d06fab42573c
+   Merge: 58752c1 8c64f5c
    Author: funny-snek <42410961+funny-snek@users.noreply.github.com>
-   Date:   Mon Nov 19 13:42:16 2018 -0600
+   Date:   Wed Dec 19 20:52:32 2018 -0600
    
-       Merge pull request #3 from Pathoschild/master
+       Merge pull request #4 from Pathoschild/remove-smapi-requirement
        
-       Remove clients, make blacklist configurable
+       No longer require that farmhands have SMAPI
    

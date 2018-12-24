@@ -1,12 +1,12 @@
 {
   "Name": "Custom Farming Automate Bridge",
   "Author": "Platonymous",
-  "Version": "1.0.1",
+  "Version": "2.10.5",
   "Description": "Allows Custom Farming to work with Automate",
   "UniqueID": "Platonymous.CFAutomate",
   "EntryDll": "CFAutomate.dll",
-  "MinimumApiVersion": "2.6-beta",
-  "UpdateKeys": [],
+  "MinimumApiVersion": "2.9",
+  "UpdateKeys": [ "Nexus:991" ],
   "Dependencies": [
     {
       "UniqueID": "Pathoschild.Automate"

@@ -1,10 +1,10 @@
 ﻿{
   "Name": "Better Crab Pots",
   "Author": "EpicBellyFlop45",
-  "Version": "1.0.2",
+  "Version": "1.0.3",
   "Description": "Allows you to configure crab pots",
   "UniqueID": "EpicBellyFlop45.BetterCrabPots",
   "EntryDll": "BetterCrabPots.dll",
-  "MinimumApiVersion": "2.7",
+  "MinimumApiVersion": "2.9",
   "UpdateKeys": [ "Nexus: 3159" ]
 }

@@ -1,9 +1,0 @@
-{
-  "PassTimeWhileSwimming": true,
-  "PassTimeWhileSwimmingInBathhouse": true,
-  "PassTimeWhileInsideMine": false,
-  "PassTimeWhileInsideSkullCave": true,
-  "freezeIfEvenOnePlayerMeetsTimeFreezeConditions": true,
-  "freezeIfMajorityPlayersMeetsTimeFreezeConditions": false,
-  "freezeIfAllPlayersMeetTimeFreezeConditions": false
-}

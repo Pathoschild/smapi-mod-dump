@@ -6,9 +6,9 @@ mods:
    Multiple Gifts for Spouses
 
 latest commit:
-   commit 14eb71d7d7f77874cafb1fb23d7c79b027aa1f53
+   commit 1763a8d286a81ef23d3486f69cd409fa8439e0d3
    Author: EKomperud <ericmkomperud@gmail.com>
-   Date:   Fri Dec 14 13:39:25 2018 -0700
+   Date:   Fri Dec 21 16:08:59 2018 -0700
    
-       ACTUALLY added dialogue
+       Final Alpha build (I think. Fingers crossed!)
    

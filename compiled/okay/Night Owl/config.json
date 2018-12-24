@@ -1,0 +1,10 @@
+{
+  "MorningLightTransition": true,
+  "StayUp": true,
+  "SkipCollapseMail": true,
+  "KeepPositionAfterCollapse": true,
+  "KeepMoneyAfterCollapse": true,
+  "KeepHealthAfterCollapse": true,
+  "KeepStaminaAfterCollapse": true,
+  "UseInternalNightFishAssetEditor": true
+}

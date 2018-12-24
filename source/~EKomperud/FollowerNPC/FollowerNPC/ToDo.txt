@@ -1,8 +1,27 @@
-﻿Perks || Buffs
-Events
+﻿Events?
+Quests?
+More Perks?
 Prevent some NPC's from entering certain areas
+Add action/reaction dialogue
+Add more location dialogue
+Bathhouse Gender stuff								- Dependent on "Prevent some NPC's from entering..."
+Fix diagonal walking animation glitches				- Will need to work work on AI behavior for this
+Spouse dismissal bug-fixing							- Kinda fixed, but still needs more testing.
 
 Optimize A*
 Optimize helper functions
 
-Organize Event functions into helpers
+Balance Companion Perks & Buffs
+Companion Buffs:
+	Abigail:	Speed +1. Attack +10% (farmer.attackIncreaseModifier). Luck +1		Assists you in combat?
+	Alex:		Attack +20%. 100% Warrior Ring										Assists you in combat?
+	Elliott:	Fishing +3															Fishes with you, catches Iridium fish occasionally?
+	Emily:		Mining +2. 100% Yoba Ring after damage. High healing when < 40%.	Replicates "Gemologist" perk, but 100%?
+	Haley:		Luck +3																
+	Harvey:		Defense +10. Gradual healing when below 80%							Buffed healing + 1 lifeline?
+	Leah:		Foraging +3															Forages Iridium quality items occasionally?
+	Maru:		Increase any 1 skill by 1, interchangeable							Buffed to +2?
+	Penny:		Farming +3															Unique dialogue with children. Makes them friendlier quicker?
+	Sam:		Speed +2															+3 speed? Jukebox function?
+	Sebastian:	Copies Abigail.														Ride his motorcycle?
+	Shane:		Farming +3.															Chickens follow you? Alcohol buffs instead of debuffs?

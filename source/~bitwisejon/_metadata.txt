@@ -6,12 +6,12 @@ mods:
    One Click Shed Reloader
 
 latest commit:
-   commit ea4455e7060da680792cfde9a9f4f9c6e24da669
-   Merge: 1fd8276 e8c3240
+   commit 03520c0ff1d6d9fcadb4a129e1dc4c12ce088d89
+   Merge: ddd9333 1f79f71
    Author: bitwisejon <38377407+bitwisejon@users.noreply.github.com>
-   Date:   Sat Aug 4 09:32:27 2018 -0400
+   Date:   Thu Dec 20 21:24:08 2018 -0500
    
-       Merge pull request #9 from bitwisejon/AddCoopSupport
+       Merge pull request #11 from bitwisejon/UpdateSMAPI3
        
-       Fixed problem with instant buildings mod not building tractor garage â€¦
+       Updated manifests to 1.0.5.
    

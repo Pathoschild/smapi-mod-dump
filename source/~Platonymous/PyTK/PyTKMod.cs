@@ -22,15 +22,11 @@ using System.Linq;
 using PyTK.Tiled;
 using PyTK.Lua;
 using static PyTK.Overrides.OvSpritebatch;
+using xTile;
+using xTile.Dimensions;
 
 namespace PyTK
 {
-
-    internal class Config
-    {
-        public bool multiplayerSafety { get; set; } = true;
-        public bool rebuildInBackground { get; set; } = true;
-    }
 
     public class PyTKMod : Mod
     {
@@ -40,16 +36,11 @@ namespace PyTK
         internal static bool _activeSpriteBatchFix = true;
         internal static string sdvContentFolder => PyUtils.getContentFolder();
         internal static List<IPyResponder> responders;
-        internal static Config config;
 
         public override void Entry(IModHelper helper)
         {
             _helper = helper;
             _monitor = Monitor;
-            config = Helper.ReadConfig<Config>();
-           
-            //testing();
-            //messageTest()
 
             harmonyFix();
             FormatManager.Instance.RegisterMapFormat(new NewTiledTmxFormat());
@@ -60,9 +51,40 @@ namespace PyTK
             registerConsoleCommands();
             CustomTVMod.load();
             PyLua.init();
+            registerTileActions();
             SaveHandler.setUpEventHandlers();
+            CustomObjectData.CODSyncer.start();
             ContentSync.ContentSyncHandler.initialize();
-            this.Helper.Events.Player.Warped += (s, e) => e.NewLocation?.Map.enableMoreMapLayers();
+            this.Helper.Events.Player.Warped += Player_Warped;
+            this.Helper.Events.GameLoop.DayStarted += OnDayStarted;
+            this.Helper.Events.Multiplayer.PeerContextReceived += (s, e) =>
+            {
+                if (Game1.IsMasterGame && Game1.IsServer && CustomObjectData.collection.Values.Count > 0)
+                {
+                    List<CODSync> list = new List<CODSync>();
+                    foreach (CustomObjectData data in CustomObjectData.collection.Values)
+                        list.Add(new CODSync(data.id, data.sdvId));
+
+                    PyNet.sendDataToFarmer(CustomObjectData.CODSyncerName, new CODSyncMessage(list), e.Peer.PlayerID, SerializationType.JSON);
+                }
+               
+            };
+
+            Helper.Events.Multiplayer.ModMessageReceived += PyNet.Multiplayer_ModMessageReceived;
+
+        }
+
+        private void Player_Warped(object sender, WarpedEventArgs e)
+        {
+            e.NewLocation?.Map.enableMoreMapLayers();
+            if (e.NewLocation is GameLocation g && g.map is Map m && m.Properties.ContainsKey("EntryAction"))
+                TileAction.invokeCustomTileActions("EntryAction", g, Vector2.Zero, "Map");
+        }
+
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
+        {
+            if (Game1.currentLocation is GameLocation g && g.map is Map m && m.Properties.ContainsKey("EntryAction"))
+                TileAction.invokeCustomTileActions("EntryAction", g, Vector2.Zero, "Map");
         }
 
         private void harmonyFix()
@@ -119,6 +141,55 @@ namespace PyTK
                      return false;
                  }
              },16,SerializationType.PLAIN,SerializationType.JSON));
+        }
+
+        private void registerTileActions()
+        {
+            TileAction Game = new TileAction("Game", (action, location, tile, layer) =>
+            {
+                List<string> text = action.Split(' ').ToList();
+                text.RemoveAt(0);
+                action = String.Join(" ", text);
+                return location.performAction(action, Game1.player, new Location((int)tile.X, (int)tile.Y));
+            }).register();
+
+            TileAction Lua = new TileAction("Lua", (action, location, tile, layer) =>
+            {
+                string[] a = action.Split(' ');
+                if (a.Length > 2)
+                    if (a[1] == "this")
+                    {
+                        string id = location.Name + "." + layer + "." + tile.Y + tile.Y;
+                        if (!PyLua.hasScript(id))
+                        {
+                            if (layer == "Map")
+                            {
+                                if (location.map.Properties.ContainsKey("Lua"))
+                                    PyLua.loadScriptFromString(@"
+                                function callthis(location,tile,layer)
+                                " + location.map.Properties["Lua"].ToString() + @"
+                                end", id);
+                                else
+                                    PyLua.loadScriptFromString("Luau.log(\"Error: Could not find Lua property on Map.\")", id);
+                            }
+                            else
+                            {
+                                if (location.doesTileHaveProperty((int)tile.X, (int)tile.Y, "Lua", layer) is string lua)
+                                    PyLua.loadScriptFromString(@"
+                                function callthis(location,tile,layer)
+                                " + lua + @"
+                                end", id);
+                                else
+                                    PyLua.loadScriptFromString("Luau.log(\"Error: Could not find Lua property on Tile.\")", id);
+                            }
+                        }
+                        PyLua.callFunction(id, "callthis", new object[] { location, tile, layer });
+                    }
+                    else
+                        PyLua.callFunction(a[1], a[2], new object[] { location, tile, layer });
+                return true;
+            }).register();
+
         }
 
         private void registerConsoleCommands()
@@ -178,11 +249,7 @@ namespace PyTK
             {
                 Monitor.Log(Game1.player.Name + ": " + Game1.player.Stamina, LogLevel.Info);
                 foreach (Farmer farmer in Game1.otherFarmers.Values)
-                {
-                    var getStamina = PyNet.sendRequestToFarmer<int>("PytK.StaminaRequest", -1, farmer);
-                    getStamina.Wait();
-                    Monitor.Log(farmer.Name + ": " + getStamina.Result, LogLevel.Info);
-                }
+                    PyNet.sendRequestToFarmer<int>("PytK.StaminaRequest", -1, farmer, (getStamina) => Monitor.Log(farmer.Name + ": " + getStamina, LogLevel.Info));
             }).register();
 
             new ConsoleCommand("setstamina", "changes the stamina of all or a specific player. use: setstamina [playername or all] [stamina]", (s, p) =>
@@ -192,14 +259,9 @@ namespace PyTK
 
                 Monitor.Log(Game1.player.Name + ": " + Game1.player.Stamina, LogLevel.Info);
                 Farmer farmer = null;
-                try
-                {
+
                     farmer = Game1.otherFarmers.Find(k => k.Value.Name.Equals(p[0])).Value;
-                }
-                catch
-                {
-                    
-                }
+
 
                 if(farmer == null)
                 {
@@ -210,9 +272,8 @@ namespace PyTK
                 int i = -1;
                 int.TryParse(p[1], out i);
 
-                var setStamina = PyNet.sendRequestToFarmer<int>("PytK.StaminaRequest", i, farmer);
-                setStamina.Wait();
-                Monitor.Log(farmer.Name + ": " + setStamina.Result, LogLevel.Info);
+                PyNet.sendRequestToFarmer<int>("PytK.StaminaRequest", i, farmer, (setStamina) => Monitor.Log(farmer.Name + ": " + setStamina, LogLevel.Info));
+                
             }).register();
 
 
@@ -221,14 +282,14 @@ namespace PyTK
                 foreach (Farmer farmer in Game1.otherFarmers.Values)
                 {
                     long t = Game1.currentGameTime.TotalGameTime.Milliseconds;
-                    var ping = PyNet.sendRequestToFarmer<bool>("PytK.Ping", t, farmer);
-                    ping.Wait();
-
-                    long r = Game1.currentGameTime.TotalGameTime.Milliseconds;
-                    if (ping.Result)
-                        Monitor.Log(farmer.Name + ": " + (r - t) + "ms", LogLevel.Info);
-                    else
-                        Monitor.Log(farmer.Name + ": No Answer", LogLevel.Error);
+                    PyNet.sendRequestToFarmer<bool>("PytK.Ping", t, farmer, (ping) =>
+                    {
+                        long r = Game1.currentGameTime.TotalGameTime.Milliseconds;
+                        if (ping)
+                            Monitor.Log(farmer.Name + ": " + (r - t) + "ms", LogLevel.Info);
+                        else
+                            Monitor.Log(farmer.Name + ": No Answer", LogLevel.Error);
+                    });
                 }
             }).register();
 
@@ -239,54 +300,6 @@ namespace PyTK
 
                 PyNet.syncLocationMapToAll(p[0]);
             }).register();
-
-            
-        }
-
-        private void messageTest()
-        {
-            PyNet.sendMessage("Platonymous.PyTK.Test", "TestMessage");
-            Helper.Events.GameLoop.TimeChanged += (s, e) => 
-            {
-                foreach(MPMessage msg in PyNet.getNewMessages("Platonymous.PyTK.Test"))
-                {
-                    string message = (string) msg.message;
-                    string sender = msg.sender.Name;
-                    //Do Something;
-                } 
-            };
-        }
-
-        private void testing()
-        {
-            CustomObjectData.newBigObject("Platonymous.BigTest", Game1.bigCraftableSpriteSheet.clone().setSaturation(0), Color.Aquamarine, "Test Machine", "Test Description", 24, craftingData: new CraftingData("Test Machine"));
-            CustomObjectData.newObject("Platonymous.Rubici", Game1.objectSpriteSheet.clone().setSaturation(0), Color.Yellow, "Rubici", "Rubici Test", 16, "Rubici", "Minerals -2", 50, -300);
-            new CustomObjectData("Platonymous.Rubico" + Color.Red.ToString(), "Rubico/250/-300/Minerals -2/Rubico/A precious stone that is sought after for its rich color and beautiful fluster.", Game1.objectSpriteSheet.clone().setSaturation(0), Color.Red, 16);
-
-            SButton.K.onPressed(() => Monitor.Log($"Played: {Game1.currentGameTime.TotalGameTime.Minutes} min"));
-            ButtonClick.UseToolButton.onTerrainClick<Grass>(o => Monitor.Log($"Number of Weeds: {o.numberOfWeeds}", LogLevel.Info));
-            new InventoryItem(new Chest(true), 100).addToNPCShop("Pierre");
-            new ItemSelector<SObject>(p => p.name == "Chest").whenAddedToInventory(l => l.useAll(i => i.name = "Test"));
-            Helper.Content.Load<Texture2D>($"Maps/MenuTiles", ContentSource.GameContent).setSaturation(0).injectAs($"Maps/MenuTiles");
-            Game1.objectSpriteSheet.clone().setSaturation(0).injectTileInto($"Maps/springobjects", 74);
-            Game1.objectSpriteSheet.clone().setSaturation(0).injectTileInto($"Maps/springobjects", new Range(129, 166), new Range(129, 166));
-
-            Func<string, GameLocation, Vector2, string, bool> tileActionTest = (s, l, t, ly) =>
-             {
-                 List<string> strings = s.Split(' ').ToList();
-                 strings.Remove(strings[0]);
-                 Game1.activeClickableMenu = new DialogueBox(String.Join(" ", s));
-                 return true;
-             };
-
-            Action mapMergeTest = delegate ()
-            {
-                "Beach".toLocation().Map.mergeInto("Town".toLocation().Map, new Vector2(60, 30), new Rectangle(15, 15, 20, 20)).injectAs(@"Maps/Town");
-                "Town".toLocation().clearArea(new Rectangle(60, 30, 20, 20));
-                "Town".toLocation().Map.addAction(new Vector2(18, 60), new TileAction("testaction", tileActionTest).register(),"Smells interesting");
-            };
-
-            Helper.Events.GameLoop.SaveLoaded += (s, e) => mapMergeTest();
         }
     }
 }

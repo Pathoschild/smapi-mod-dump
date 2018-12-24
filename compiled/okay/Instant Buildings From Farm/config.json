@@ -1,0 +1,5 @@
+{
+  "BuildUsesResources": true,
+  "ToggleInstantBuildMenuButton": "B",
+  "AllowMagicalBuildingsWithoutMagicInk": false
+}

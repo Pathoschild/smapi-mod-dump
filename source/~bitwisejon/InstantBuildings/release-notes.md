@@ -1,4 +1,7 @@
 ﻿# Release notes
+## 1.0.5
+* Updated to support SMAPI 2.9 and 3.0
+
 ## 1.0.4
 * Fixed bug where Tractor Garage was not building instantly.
 * Attempted bug fix for player disappearing after exiting build menu. I am having trouble reproducing this one, so please provide detailed steps and info about game if you get this problem (e.g., single player, multiplayer, new game, pre-existing game from before 1.3, etc.).

@@ -130,12 +130,81 @@ namespace FollowerNPC
         public bool IsWalkableTile(Vector2 tile)
         {
             StardewValley.Object o = gl.getObjectAtTile((int) tile.X, (int) tile.Y);
-            return gl.isTileOnMap(tile) && !gl.isTileOccupiedIgnoreFloors(tile, character) &&
+            StardewValley.Objects.Furniture furn = o as StardewValley.Objects.Furniture;
+            Fence fence = o as Fence;
+
+            //bool a = gl.isTileOnMap(tile);
+            //bool b = !gl.isTileOccupiedIgnoreFloors(tile, character);
+            //bool c = isTilePassableOverride(new Location((int)tile.X, (int)tile.Y), Game1.viewport);
+            //bool d = (!(gameLocation is Farm) || !((gameLocation as Farm).getBuildingAt(tile) != null));
+            //bool ea = !(o != null);
+            //bool eba = (o != null);
+            //bool ebba = (o as StardewValley.Objects.Furniture).furniture_type.Value == 12;
+            //bool ebbba = ((o as Fence).isGate.Value);
+            //bool ebbbb = (o as Fence).gatePosition.Value == 88;
+            //bool ebbb = ebbba && ebbbb;
+            //bool ebb = ebba || ebbb;
+            //bool eb = eba && ebb;
+            //bool full = (!(o != null) || (o != null && ((o as StardewValley.Objects.Furniture).furniture_type.Value == 12 || (((o as Fence).isGate.Value) && (o as Fence).gatePosition.Value == 88))));
+
+            //bool one = gl.isTileOnMap(tile);
+            //bool two = !isTileOccupiedIgnoreFloorsOverride(tile, character);
+            //bool three = isTilePassableOverride(new Location((int) tile.X, (int) tile.Y), Game1.viewport);
+            //bool four = (!(gameLocation is Farm) || !((gameLocation as Farm).getBuildingAt(tile) != null));
+            //bool five = (!(o != null) || (furn != null && furn.furniture_type.Value == 12) ||
+            //             (fence != null && fence.isGate.Value && (o as Fence).gatePosition.Value == 88));
+
+            return gl.isTileOnMap(tile) && 
+                   !isTileOccupiedIgnoreFloorsOverride(tile, character) &&
                    isTilePassableOverride(new Location((int) tile.X, (int) tile.Y), Game1.viewport) &&
                    (!(gameLocation is Farm)  || !((gameLocation as Farm).getBuildingAt(tile) != null)) &&
-                   (!(o != null) || (o != null &&
-                                     (o as StardewValley.Objects.Furniture)
-                                     .furniture_type.Value == 12));
+                   (!(o != null) || (furn != null && furn.furniture_type.Value == 12) || (fence != null && fence.isGate.Value && (o as Fence).gatePosition.Value == 88));
+        }
+
+        public bool isTileOccupiedIgnoreFloorsOverride(Vector2 tileLocation, string characterToIgnore = "")
+        {
+            Microsoft.Xna.Framework.Rectangle tileLocationRect = new Microsoft.Xna.Framework.Rectangle((int)tileLocation.X * 64 + 1, (int)tileLocation.Y * 64 + 1, 62, 62);
+            for (int i = 0; i < gameLocation.characters.Count; i++)
+            {
+                if (gameLocation.characters[i] != null && !gameLocation.characters[i].Name.Equals(characterToIgnore) && gameLocation.characters[i].GetBoundingBox().Intersects(tileLocationRect))
+                {
+                    return true;
+                }
+            }
+
+            AnimalHouse ah = gameLocation as AnimalHouse;
+            if (ah != null)
+            {
+                foreach (FarmAnimal animal in ah.animals.Values)
+                {
+                    if (animal.GetBoundingBox().Intersects(tileLocationRect))
+                        return true;
+                }
+            }
+
+            Farm f = gameLocation as Farm;
+            if (f != null)
+            {
+                foreach (FarmAnimal animal in f.animals.Values)
+                {
+                    if (animal.GetBoundingBox().Intersects(tileLocationRect))
+                        return true;
+                }
+            }
+
+            if (gameLocation.terrainFeatures.ContainsKey(tileLocation) && tileLocationRect.Intersects(gameLocation.terrainFeatures[tileLocation].getBoundingBox(tileLocation)) && !gameLocation.terrainFeatures[tileLocation].isPassable(null))
+            {
+                return true;
+            }
+            if (gameLocation.largeTerrainFeatures != null)
+            {
+                foreach (StardewValley.TerrainFeatures.LargeTerrainFeature tf in gameLocation.largeTerrainFeatures)
+                {
+                    if (tf.getBoundingBox().Intersects(tileLocationRect))
+                        return true;
+                }
+            }
+            return false;
         }
 
         public bool isTilePassableOverride(Location tileLocation, xTile.Dimensions.Rectangle viewport)

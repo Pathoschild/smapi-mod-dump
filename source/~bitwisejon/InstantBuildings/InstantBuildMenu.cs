@@ -11,7 +11,6 @@ using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using xTile;
 using xTile.Dimensions;
 
 
@@ -462,7 +461,7 @@ namespace BitwiseJonMods
                             if (answer == "Yes")
                             {
                                 Game1.activeClickableMenu = (IClickableMenu)this;
-                                Game1.player.team.buildingLock.RequestLock(continueDemolish, buildingLockFailed);
+                                Game1.player.team.demolishLock.RequestLock(continueDemolish, buildingLockFailed);
                             }
                             else
                                 Game1.delayedActions.Add(new DelayedAction(MENU_DELAY, new DelayedAction.delayedBehavior(this.returnToFarm)));
@@ -472,7 +471,7 @@ namespace BitwiseJonMods
                 }
                 if (destroyed == null)
                     return;
-                Game1.player.team.buildingLock.RequestLock(continueDemolish, buildingLockFailed);
+                Game1.player.team.demolishLock.RequestLock(continueDemolish, buildingLockFailed);
             }
             else if (this.upgrading)
             {

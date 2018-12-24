@@ -43,7 +43,6 @@ namespace TMXLoader
             loadContentPacks();
             setTileActions();
             helper.Events.Player.Warped += OnWarped;
-            helper.Events.GameLoop.DayStarted += OnDayStarted;
             PyLua.registerType(typeof(Map), false, true);
             PyLua.registerType(typeof(TMXActions), false, false);
             PyLua.addGlobal("TMX", new TMXActions());
@@ -56,18 +55,9 @@ namespace TMXLoader
 
             helper.Events.GameLoop.UpdateTicked += (s, e) =>
             {
-                if (e.IsOneSecond && Context.IsWorldReady && Game1.IsMasterGame && Game1.IsMultiplayer)
-                {
-                    if (Game1.otherFarmers.Values.Where(f => f.isActive() && !syncedFarmers.Contains(f)) is IEnumerable<SFarmer> ef && ef.Count() is int i && i > 0)
+                    if (e.IsOneSecond && Context.IsWorldReady && Game1.IsMasterGame && Game1.IsMultiplayer && Game1.otherFarmers.Values.Where(f => f.isActive() && f != Game1.player && !syncedFarmers.Contains(f)) is IEnumerable<SFarmer> ef && ef.Count() is int i && i > 0)
                         syncMaps(ef);
-                }
             };
-        }
-
-        private void OnDayStarted(object sender, DayStartedEventArgs e)
-        {
-            if (Game1.currentLocation is GameLocation g && g.map is Map m && m.Properties.ContainsKey("EntryAction"))
-                TileAction.invokeCustomTileActions("EntryAction", g, Vector2.Zero, "Map");
         }
 
         private void syncMaps(IEnumerable<SFarmer> farmers)
@@ -104,14 +94,12 @@ namespace TMXLoader
             TileAction Lock = new TileAction("Lock", TMXActions.lockAction).register();
             TileAction Say = new TileAction("Say", TMXActions.sayAction).register();
             TileAction SwitchLayers = new TileAction("SwitchLayers", TMXActions.switchLayersAction).register();
-            TileAction Lua = new TileAction("Lua", TMXActions.luaAction).register();
             TileAction Confirm = new TileAction("Confirm", TMXActions.confirmAction).register();
-            TileAction Game = new TileAction("Game", TMXActions.gameAction).register();
         }
 
         private void loadContentPacks()
         {
-            foreach (StardewModdingAPI.IContentPack pack in Helper.ContentPacks.GetOwned())
+            foreach (StardewModdingAPI.IContentPack pack in Helper.GetContentPacks())
             {
                 TMXContentPack tmxPack = pack.ReadJsonFile<TMXContentPack>("content.json");
 

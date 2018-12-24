@@ -1,15 +1,8 @@
-﻿using System.Speech.Synthesis;
-using System.Globalization;
-using System.Collections.Generic;
-using System.Threading;
-
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
 using StardewValley;
 using StardewValley.Menus;
-
-
 
 using Amazon.Polly;
 using Amazon.Polly.Model;
@@ -17,23 +10,31 @@ using Amazon.Polly.Model;
 using Microsoft.Xna.Framework.Media;
 using System.IO;
 
+using System.Globalization;
+using System.Collections.Generic;
+using System.Threading;
 using System;
+using System.Text;
+using Microsoft.Xna.Framework.Audio;
+using System.Linq;
+
+using OggSharp;
+using System.Threading.Tasks;
 
 namespace PelicanTTS
 {
     internal class SpeechHandlerPolly
     {
         private static string lastText;
+        internal static string lastSay;
         private static string lastDialog;
+        private static string lastLetter;
         private static string lastHud;
         public static string currentText;
         private static Thread speechThread;
         private static Thread gThread;
         private static bool runSpeech;
         private static IModHelper Helper;
-        private static CultureInfo currentCulture;
-        public static string culturelang;
-        private static List<string> installedVoices;
 
 
         private static AmazonPollyClient pc;
@@ -41,6 +42,7 @@ namespace PelicanTTS
         private static string tmppath;
         public static bool speak;
         private static string speakerName;
+        private static SoundEffectInstance currentSpeech;
 
         public static IMonitor Monitor;
 
@@ -51,44 +53,27 @@ namespace PelicanTTS
 
         public static void start(IModHelper h)
         {
-           
             Helper = h;
             currentText = "";
-            tmppath = Path.Combine(Path.Combine(Environment.CurrentDirectory, "Content"), "TTS");
+            tmppath = Path.Combine(Helper.DirectoryPath,"TTS");
 
-            ensureFolderStructureExists(Path.Combine(tmppath, "speech.mp3"));
+            if (!Directory.Exists(tmppath))
+                Directory.CreateDirectory(tmppath);
+
             pc = AWSHandler.getPollyClient();
-            currentVoice = VoiceId.Amy;
+            currentVoice = VoiceId.Salli;
             lastText = "";
             lastDialog = "";
             lastHud = "";
             speak = false;
             runSpeech = true;
-            currentCulture = CultureInfo.CreateSpecificCulture("en-us");
-            culturelang = "en";
-            installedVoices = new List<string>();
 
-
-            setupVoices();
             setVoice("default");
 
             speechThread = new Thread(t2sOut);
             speechThread.Start();
             h.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             h.Events.Display.MenuChanged += OnMenuChanged;
-
-            //h.Events.Input.ButtonPressed += OnButtonPressed;
-        }
-
-        private static void OnButtonPressed(object sender, ButtonPressedEventArgs e)
-        {
-            if (e.Button == SButton.K)
-            {
-                gThread = new Thread(generateAllDialogs);
-                gThread.Start();
-            }
-            
-
         }
 
         private static void OnMenuChanged(object sender, MenuChangedEventArgs e)
@@ -97,8 +82,9 @@ namespace PelicanTTS
             {
                 lastText = "";
                 lastDialog = "";
+                lastLetter = "";
                 currentText = "";
-                MediaPlayer.Stop();
+                currentSpeech?.Stop();
                 setVoice("default");
             }
         }
@@ -110,126 +96,63 @@ namespace PelicanTTS
             runSpeech = false;
         }
 
-
-
-
         public static void setVoice(string name)
         {
             speakerName = name;
-            NPC speaker = Game1.getCharacterFromName(name);
 
-            if (speaker != null && speaker.Gender == 0)
+            string t = PelicanTTSMod.i18n.Get(name);
+            if (t.ToString() == "")
+                t = PelicanTTSMod.i18n.Get("default");
+
+            if (VoiceId.FindValue(t) is VoiceId vId1)
+                currentVoice = vId1;
+            else if (VoiceId.FindValue(PelicanTTSMod.i18n.Get("default")) is VoiceId vId2)
+                currentVoice = vId2;
+            else
             {
-                if (speaker.Age == 0)
-                {
-                    currentVoice = VoiceId.Joey;
-                }
-                else
-                {
-                    currentVoice = VoiceId.Joey;
-                }
-
+                speakerName = "default";
+                currentVoice = VoiceId.Salli;
             }
-
-
-            if (speaker != null && speaker.Gender == 1)
-            {
-                if (speaker.Age == 0)
-                {
-                    currentVoice = VoiceId.Kendra;
-                }
-                else
-                {
-                    currentVoice = VoiceId.Salli;
-                }
-
-            }
-
-
-            switch (name)
-            {
-                case "Elliot": currentVoice = VoiceId.Geraint; break;
-                case "Sam": currentVoice = VoiceId.Russell; break;
-                case "Emily": currentVoice = VoiceId.Emma; break;
-                case "Haley": currentVoice = VoiceId.Emma; break;
-                case "Harvey": currentVoice = VoiceId.Matthew; break;
-                case "George": currentVoice = VoiceId.Brian; break;
-                case "Linus": currentVoice = VoiceId.Brian; break;
-                case "Lewis": currentVoice = VoiceId.Brian; break;
-                case "Governor": currentVoice = VoiceId.Brian; break;
-                case "Grandpa": currentVoice = VoiceId.Brian; break;
-                case "Clint": currentVoice = VoiceId.Brian; break;
-                case "Willy": currentVoice = VoiceId.Brian; break;
-                case "Wizard": currentVoice = VoiceId.Geraint; break;
-                case "Pierre": currentVoice = VoiceId.Matthew; break;
-                case "Gunther": currentVoice = VoiceId.Brian; break;
-                case "Govenor": currentVoice = VoiceId.Brian; break;
-                case "Marlon": currentVoice = VoiceId.Brian; break;
-                case "Morris": currentVoice = VoiceId.Geraint; break;
-                case "Mister Qi": currentVoice = VoiceId.Geraint; break;
-                case "Gil": currentVoice = VoiceId.Brian; break;
-                case "Penny": currentVoice = VoiceId.Amy; break;
-                case "Evelyn": currentVoice = VoiceId.Amy; break;
-                case "Jas": currentVoice = VoiceId.Ivy; break;
-                case "Jodi": currentVoice = VoiceId.Nicole; break;
-                case "Marnie": currentVoice = VoiceId.Kimberly; break;
-                case "Pam": currentVoice = VoiceId.Kimberly; break;
-                case "Sandy": currentVoice = VoiceId.Raveena; break;
-                case "Vincent": currentVoice = VoiceId.Justin; break;
-                case "default": currentVoice = VoiceId.Salli; break;
-
-
-                default: break;
-            }
-
-
         }
 
-
-        public static void setupVoices()
-        {
-            ModConfig config = Helper.ReadConfig<ModConfig>();
-            
-            currentCulture = CultureInfo.CreateSpecificCulture(config.lang);
-            culturelang = config.lang.Split('-')[0];
-
-
-        }
-
-        public static bool HasMethod(object objectToCheck, string methodName)
+          public static bool HasMethod(object objectToCheck, string methodName)
         {
             var type = objectToCheck.GetType();
             return type.GetMethod(methodName) != null;
         }
 
-
         private static void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (e.IsMultipleOf(15)) // quarter second
+            if (e.IsMultipleOf(30))
             {
                 if (Game1.activeClickableMenu is DialogueBox)
                 {
-
                     DialogueBox dialogueBox = (DialogueBox)Game1.activeClickableMenu;
 
                     if (dialogueBox.isPortraitBox() && Game1.currentSpeaker != null)
-                    {
                         setVoice(Game1.currentSpeaker.Name);
-                    }
                     else
-                    {
                         setVoice("default");
-                    }
 
                     if (dialogueBox.getCurrentString() != lastDialog)
                     {
                         currentText = dialogueBox.getCurrentString();
                         lastDialog = dialogueBox.getCurrentString();
-
                     }
 
                 }
-                else if (Game1.hudMessages.Count > 0)
+                else if (Game1.activeClickableMenu is LetterViewerMenu lvm && !PelicanTTSMod.config.MumbleDialogues)
+                {
+                    setVoice("default");
+                    List<string> mailMessage = Helper.Reflection.GetField<List<string>>(lvm, "mailMessage").GetValue();
+                    string letter = mailMessage[Helper.Reflection.GetField<int>(lvm, "page").GetValue()];
+                    if (letter != lastLetter)
+                    {
+                        currentText = letter;
+                        lastLetter = letter;
+                    }
+                }
+                else if (Game1.hudMessages.Count > 0 && !PelicanTTSMod.config.MumbleDialogues)
                 {
                     if (Game1.hudMessages[Game1.hudMessages.Count - 1].Message != lastHud)
                     {
@@ -241,245 +164,109 @@ namespace PelicanTTS
             }
         }
 
-
-        private static FileInfo ensureFolderStructureExists(string path)
-        {
-
-            FileInfo fileInfo1 = new FileInfo(path);
-
-            if (!fileInfo1.Directory.Exists)
-                fileInfo1.Directory.Create();
-
-            return fileInfo1;
-        }
-
-
         private static void t2sOut()
         {
-            while (runSpeech )
+            while (runSpeech)
             {
-                if (currentText == lastText) { continue; }
-
-
-                if (currentText.StartsWith("+"))
-                    continue;
-
-              
-                currentText = currentText.Replace('^', ' ').Replace(Environment.NewLine, " ").Replace("$s", "").Replace("$h", "").Replace("$g", "").Replace("$e", "").Replace("$u", "").Replace("$b", "").Replace("$8", "").Replace("$l", "").Replace("$q", "").Replace("$9", "").Replace("$a", "").Replace("$7", "").Replace("<", "").Replace("$r", "");
-
-                /*
-                if (Game1.player.isMarried())
-                    currentText = currentText.Replace(" " + Game1.player.spouse + " ", " your spouse ").Replace(" " + Game1.player.spouse, " your spouse").Replace(Game1.player.spouse + " ", "Your spouse ");
-
-                currentText.Replace(" " + Game1.player.Name + " ", " Farmer ").Replace(" " + Game1.player.Name, " Farmer").Replace(Game1.player.Name + " ", "Farmer ");
-                */
-
-                int hash = currentText.GetHashCode();
-                ensureFolderStructureExists(Path.Combine(Path.Combine(tmppath, speakerName), "speech.mp3"));
-                string file = Path.Combine(Path.Combine(tmppath, speakerName), "speech" + hash + ".mp3");
-                FileInfo fileInfo = new FileInfo(file);
-
-                if (!fileInfo.Exists)
+                try
                 {
+                    if (currentText == lastText) { continue; }
 
-                    SynthesizeSpeechRequest sreq = new SynthesizeSpeechRequest();
-                    sreq.Text = currentText;
-                    sreq.OutputFormat = OutputFormat.Mp3;
-                    sreq.VoiceId = currentVoice;
-                    SynthesizeSpeechResponse sres = pc.SynthesizeSpeech(sreq);
+                    bool mumbling = PelicanTTSMod.config.MumbleDialogues && (currentText != lastSay);
 
-                    using (var fileStream = File.Create(file))
-                    {
-                        sres.AudioStream.CopyTo(fileStream);
-                        fileStream.Flush();
-                        fileStream.Close();
-                    }
-                }
-                MediaPlayer.Stop();
-                if (Game1.activeClickableMenu is DialogueBox || Game1.hudMessages.Count > 0 || speak)
-                {
-                    speak = false;
-                    MediaPlayer.Play(Song.FromUri("speech" + hash, new System.Uri(Path.Combine(Path.Combine(Path.Combine("Content", "TTS"), speakerName), "speech" + hash + ".mp3"), System.UriKind.Relative)));
-                }
-                lastText = currentText;
-            }
-        }
-
-        public static void demoVoices()
-        {
-        }
-
-        public static void showInstalledVoices()
-        {
-
-        }
-
-        
-        public static void generateAllDialogs()
-        {
-            Monitor.Log("Generating Dialog");
-
-                Dictionary<string, string> data = new Dictionary<string, string>();
-                data = Game1.content.Load<Dictionary<string, string>>("Data\\TV\\TipChannel");
-                
-                List<string> dialogs = new List<string>(data.Values);
-                Monitor.Log(dialogs.Count + " Entries found. ");
-                setVoice("default");
-
-                foreach (string text in dialogs)
-                {
-                Monitor.Log("next:"+text);
-                string nextText = text;
-            
-                            nextText = nextText.Replace('^', ' ').Replace(Environment.NewLine, " ").Replace("$s", "").Replace("$h", "").Replace("$g", "").Replace("$e", "").Replace("$u", "").Replace("$b", "").Replace("$8", "").Replace("$l", "").Replace("$q", "").Replace("$9", "").Replace("$a", "").Replace("$7", "").Replace("<", "").Replace("$r", "");
-
-                           
-                            int hash = nextText.GetHashCode();
-                    
-                            string file = Path.Combine(Path.Combine(tmppath, speakerName), "speech" + hash + ".mp3");
-                            FileInfo fileInfo = new FileInfo(file);
-
-
-                            if (!fileInfo.Exists)
-                            {
-
-                                SynthesizeSpeechRequest sreq = new SynthesizeSpeechRequest();
-                                sreq.Text = nextText;
-                                sreq.OutputFormat = OutputFormat.Mp3;
-                                sreq.VoiceId = currentVoice;
-                                SynthesizeSpeechResponse sres = pc.SynthesizeSpeech(sreq);
-
-                                using (var fileStream = File.Create(file))
-                                {
-                                    sres.AudioStream.CopyTo(fileStream);
-                                    fileStream.Flush();
-                                    fileStream.Close();
-                                }
-                            }
-                            Monitor.Log(nextText);
-                           
-                        
-                    
-                }
-
-            foreach (NPC npc in Utility.getAllCharacters())
-            {
-
-                /*for (int sp = 0; sp < 2; sp++) {
-                    string name = npc.name;
-                    string plus = "";
-                    Dictionary<string, string> data = new Dictionary<string, string>();
-                    if (sp == 1)
-                    {
-                        plus = "MarriageDialogue";
-                    }
-                    try
-                    {
-                        data = Game1.content.Load<Dictionary<string, string>>("Characters\\Dialogue\\"+ plus + name);
-                    }
-                    catch
-                    {
+                    if (currentText.StartsWith("+"))
                         continue;
-                    }
-                    List<string> dialogs = new List<string>(data.Values);
-                    Monitor.Log(dialogs.Count + " Entries found for " + name);
-                    setVoice(name);
-                    Game1.player.name = "Farmer";
 
-                    for (int s = 0; s < 4; s++)
+                    currentText = currentText.Replace('^', ' ').Replace(Environment.NewLine, " ").Replace("$s", "").Replace("$h", "").Replace("$g", "").Replace("$e", "").Replace("$u", "").Replace("$b", "").Replace("$8", "").Replace("$l", "").Replace("$q", "").Replace("$9", "").Replace("$a", "").Replace("$7", "").Replace("<", "").Replace("$r", "").Replace("[", "<").Replace("]", ">");
+
+                    if(mumbling)
+                        currentText = @"<speak><amazon:effect phonation='soft'><amazon:effect vocal-tract-length='-20%'>" + Dialogue.convertToDwarvish(currentText) + @"</amazon:effect></amazon:effect></speak>";
+                    else
+                        currentText = @"<speak><amazon:auto-breaths><amazon:effect phonation='soft'>" + currentText + @"</amazon:effect></amazon:auto-breaths></speak>";
+
+
+                    int hash = currentText.GetHashCode();
+                    if (!Directory.Exists(Path.Combine(tmppath, speakerName)))
+                        Directory.CreateDirectory(Path.Combine(tmppath, speakerName));
+
+                    string file = Path.Combine(Path.Combine(tmppath, speakerName), "speech_" + PelicanTTSMod.config.Pitch + "_" + PelicanTTSMod.config.Volume + "_" + currentVoice.Value + (mumbling ? "_mumble_" : "_") + hash + ".wav");
+                    SoundEffect nextSpeech = null;
+
+                    if (!File.Exists(file))
                     {
-                        if (s == 0)
+                        SynthesizeSpeechRequest sreq = new SynthesizeSpeechRequest();
+                        sreq.Text = currentText;
+                        sreq.TextType = TextType.Ssml;
+                        sreq.OutputFormat = OutputFormat.Ogg_vorbis;
+                        sreq.VoiceId = currentVoice;
+                        SynthesizeSpeechResponse sres = pc.SynthesizeSpeech(sreq);
+                        using (var memStream = new MemoryStream())
                         {
-                            Game1.currentSeason = "spring";
-                        }
-
-                        if (s == 1)
-                        {
-                            Game1.currentSeason = "summer";
-                        }
-
-                        if (s == 2)
-                        {
-                            Game1.currentSeason = "fall";
-                        }
-
-                        if (s == 3)
-                        {
-                            Game1.currentSeason = "winter";
-                        }
-
-                        for (int day = 1; day < 1; day++)
-                        {
-                            Game1.dayOfMonth = day;
-                            try
-                            {
-
-                                foreach (string text in dialogs)
-                                {
-                                    try { 
-                                    Dialogue d = new Dialogue(text, Game1.getCharacterFromName(name));
-                                    DialogueBox db = new DialogueBox(d);
-                                    List<string> dl = Helper.Reflection.GetField<List<string>>(d, "dialogues").GetValue();
-                                    Monitor.Log("Dialog Length:" + dl.Count);
-
-                                    while (dl.Count > 0)
-                                    {
-                                        db = new DialogueBox(d);
-                                        string nextText = db.getCurrentString();
-                                        nextText = nextText.Replace('^', ' ').Replace(Environment.NewLine, " ").Replace("$s", "").Replace("$h", "").Replace("$g", "").Replace("$e", "").Replace("$u", "").Replace("$b", "").Replace("$8", "").Replace("$l", "").Replace("$q", "").Replace("$9", "").Replace("$a", "").Replace("$7", "").Replace("<", "").Replace("$r", "");
-
-                                        if (Game1.player.isMarried())
-                                        {
-                                            nextText = nextText.Replace(" " + Game1.player.spouse + " ", " your spouse ").Replace(" " + Game1.player.spouse, " your spouse").Replace(Game1.player.spouse + " ", "Your spouse ");
-                                        }
-                                        nextText.Replace(" " + Game1.player.name + " ", " Farmer ").Replace(" " + Game1.player.name, " Farmer").Replace(Game1.player.name + " ", "Farmer ");
-
-                                        int hash = nextText.GetHashCode();
-                                        ensureFolderStructureExists(Path.Combine(Path.Combine(tmppath, speakerName), "speech.mp3"));
-                                        string file = Path.Combine(Path.Combine(tmppath, speakerName), "speech" + hash + ".mp3");
-                                        FileInfo fileInfo = new FileInfo(file);
-
-
-                                        if (!fileInfo.Exists)
-                                        {
-
-                                            SynthesizeSpeechRequest sreq = new SynthesizeSpeechRequest();
-                                            sreq.Text = nextText;
-                                            sreq.OutputFormat = OutputFormat.Mp3;
-                                            sreq.VoiceId = currentVoice;
-                                            SynthesizeSpeechResponse sres = pc.SynthesizeSpeech(sreq);
-
-                                            using (var fileStream = File.Create(file))
-                                            {
-                                                sres.AudioStream.CopyTo(fileStream);
-                                                fileStream.Flush();
-                                                fileStream.Close();
-                                            }
-                                        }
-                                        Monitor.Log(nextText);
-                                        dl.RemoveAt(0);
-                                        Helper.Reflection.GetField<List<string>>(d, "dialogues").SetValue(dl);
-                                    }
-                                    }catch
-                                    {
-                                        continue;
-                                    }
-                                    }
-                            }
-                            catch
-                            {
-                                continue;
-                            }
+                            sres.AudioStream.CopyTo(memStream);
+                            nextSpeech = Convert(memStream, file);
                         }
                     }
-                }*/
+                    using (FileStream stream = new FileStream(file, FileMode.Open))
+                        nextSpeech = SoundEffect.FromStream(stream);
+
+                    if (currentSpeech != null)
+                        currentSpeech.Stop();
+
+                    currentSpeech = nextSpeech.CreateInstance();
+
+                    if (Game1.activeClickableMenu is LetterViewerMenu || Game1.activeClickableMenu is DialogueBox || Game1.hudMessages.Count > 0 || speak)
+                    {
+                        speak = false;
+                        currentSpeech.Pitch = mumbling ? 0.5f : PelicanTTSMod.config.Pitch;
+                        currentSpeech.Volume = PelicanTTSMod.config.Volume;
+                        currentSpeech.Play();
+                    }
+                    lastText = currentText;
+                }
+                catch
+                {
+                    lastText = currentText;
+                }
+
+                Thread.Sleep(500);
             }
-        } 
-    
+        }
 
+        public static SoundEffect Convert(Stream inputStream, string wavPath)
+        {
+            SoundEffect soundEffect = null;
 
+            using (FileStream stream = new FileStream(wavPath, FileMode.Create))
+            using (BinaryWriter writer = new BinaryWriter(stream))
+            {
+                OggDecoder decoder = new OggDecoder();
+                decoder.Initialize(inputStream);
+                byte[] data = decoder.SelectMany(chunk => chunk.Bytes.Take(chunk.Length)).ToArray();
+                WriteWave(writer, decoder.Stereo ? 2 : 1, decoder.SampleRate, data);
+            }
 
+            using (FileStream stream = new FileStream(wavPath, FileMode.Open))
+                soundEffect = SoundEffect.FromStream(stream);
 
+            return soundEffect;
+        }
 
+        private static void WriteWave(BinaryWriter writer, int channels, int rate, byte[] data)
+        {
+            writer.Write(new char[4] { 'R', 'I', 'F', 'F' });
+            writer.Write((36 + data.Length));
+            writer.Write(new char[4] { 'W', 'A', 'V', 'E' });
+            writer.Write(new char[4] { 'f', 'm', 't', ' ' });
+            writer.Write(16);
+            writer.Write((short)1);
+            writer.Write((short)channels);
+            writer.Write(rate);
+            writer.Write((rate * ((16 * channels) / 8)));
+            writer.Write((short)((16 * channels) / 8));
+            writer.Write((short)16);
+            writer.Write(new char[4] { 'd', 'a', 't', 'a' });
+            writer.Write(data.Length);
+            writer.Write(data);
+        }
     }
 }

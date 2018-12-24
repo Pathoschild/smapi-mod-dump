@@ -17,7 +17,18 @@ namespace PyTK.CustomElementHandler
     {
         internal static IModHelper Helper { get; } = PyTKMod._helper;
         internal static IMonitor Monitor { get; } = PyTKMod._monitor;
-        internal static int minIndex = 1000;
+        internal static int minIndex = 3000;
+        internal static int minIndexBig = 4000;
+        internal static string CODSyncerName = "Platonymous.PyTK.CODSync";
+        internal static PyReceiver<CODSyncMessage> CODSyncer = new PyReceiver<CODSyncMessage>(CODSyncerName, (cm) =>
+          {
+                  foreach (CODSync c in cm.Syncs)
+                      if (collection.ContainsKey(c.Id))
+                          collection[c.Id].forceNewSDVId(c.Index);
+
+                  foreach (var c in collection.Values)
+                      c.getNewSDVId();
+          }, 60, SerializationType.JSON);
 
         public static Dictionary<string,CustomObjectData> collection = new Dictionary<string, CustomObjectData>();
         internal static EventHandler<InventoryChangedEventArgs> inventoryCheck;
@@ -37,21 +48,31 @@ namespace PyTK.CustomElementHandler
         }
 
         private Item _obj;
-        
+
+        private Rectangle? _sourceRectangle = null;
         public Rectangle sourceRectangle
         {
             get
             {
-                return bigCraftable ? Game1.getSourceRectForStandardTileSheet(texture, tileIndex, 16, 32) : Game1.getSourceRectForStandardTileSheet(texture, tileIndex, 16, 16);
+                if (!_sourceRectangle.HasValue)
+                    _sourceRectangle = bigCraftable ? Game1.getSourceRectForStandardTileSheet(texture, tileIndex, 16, 32) : Game1.getSourceRectForStandardTileSheet(texture, tileIndex, 16, 16);
+
+                return _sourceRectangle.Value;
             }
         }
+
+        private Rectangle? _sdvSourceRectangle = null;
         public Rectangle sdvSourceRectangle
         {
             get
             {
-                return bigCraftable ? Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, sdvId, 16, 32) : Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, sdvId, 16, 16);
+                if (!_sdvSourceRectangle.HasValue)
+                    _sdvSourceRectangle = bigCraftable ? Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, sdvId, 16, 32) : Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, sdvId, 16, 16);
+
+                return _sdvSourceRectangle.Value;
             }
         }
+
         public bool bigCraftable { get; set; }
         public CraftingData craftingData;
         private int _sdvId = -1;
@@ -117,7 +138,7 @@ namespace PyTK.CustomElementHandler
                 OvSpritebatch.recCache.Remove(sdvSourceRectangle);
 
             if(inventoryCheck == null)
-                inventoryCheck = new ItemSelector<Item>(i => collection.Exists(c => c.Value.sdvId == i.ParentSheetIndex && (!(i is SObject sobj) || sobj.bigCraftable.Value == c.Value.bigCraftable))).whenAddedToInventory(l => l.useAll(x => Game1.player.Items[new List<Item>(Game1.player.Items).FindIndex(o => o == x)] = collection.Find(c => c.Value.sdvId == x.ParentSheetIndex && (!(x is SObject sobj) || sobj.bigCraftable.Value == c.Value.bigCraftable)).Value.getObject(x)));
+                inventoryCheck = new ItemSelector<Item>(i => !(i is ISaveElement) && collection.Exists(c => c.Value.sdvId == i.ParentSheetIndex && (!(i is SObject sobj) || sobj.bigCraftable.Value == c.Value.bigCraftable))).whenAddedToInventory(l => l.useAll(x => Game1.player.Items[new List<Item>(Game1.player.Items).FindIndex(o => o == x)] = collection.Find(c => c.Value.sdvId == x.ParentSheetIndex && (!(x is SObject sobj) || sobj.bigCraftable.Value == c.Value.bigCraftable)).Value.getObject(x)));
         }
 
         public static int getIndexForId(string id)
@@ -138,17 +159,27 @@ namespace PyTK.CustomElementHandler
             int newIndex = -1;
 
             if (bigCraftable)
-            {
-                newIndex = (Game1.bigCraftablesInformation.ContainsKey(_sdvId) && Game1.bigCraftablesInformation[_sdvId] == data) ? _sdvId : Math.Max(Math.Max(Game1.bigCraftablesInformation.Keys.Max() + 1, Game1.objectInformation.Keys.Max() + 1), minIndex);
-                Game1.bigCraftablesInformation.AddOrReplace(newIndex, data);
-            }
+                newIndex = (Game1.bigCraftablesInformation.ContainsKey(_sdvId) && _sdvId > Game1.objectInformation.Keys.Max() && _sdvId >= minIndexBig && Game1.bigCraftablesInformation[_sdvId] == data) ? _sdvId : Math.Max(Math.Max(Game1.bigCraftablesInformation.Keys.Max() + 1, Game1.objectInformation.Keys.Max() + 1), minIndexBig);
             else
-            {
-                newIndex = (Game1.objectInformation.ContainsKey(_sdvId) && Game1.objectInformation[_sdvId] == data) ? _sdvId : Math.Max(Math.Max(Game1.bigCraftablesInformation.Keys.Max() + 1, Game1.objectInformation.Keys.Max() + 1), minIndex);
-                Game1.objectInformation.AddOrReplace(newIndex, data);
-            }
+                newIndex = (Game1.objectInformation.ContainsKey(_sdvId) && Game1.objectInformation[_sdvId] == data) && _sdvId >= minIndex ? _sdvId : Math.Max(Game1.objectInformation.Keys.Max() + 1, minIndex);
+
+            forceNewSDVId(newIndex);
 
             return newIndex;
+        }
+
+        public void forceNewSDVId(int newIndex)
+        {
+            if (bigCraftable)
+                Game1.bigCraftablesInformation.AddOrReplace(newIndex, data);
+            else
+                Game1.objectInformation.AddOrReplace(newIndex, data);
+
+            if (_sdvSourceRectangle.HasValue && OvSpritebatch.recCache.ContainsKey(_sdvSourceRectangle.Value))
+                OvSpritebatch.recCache.Remove(_sdvSourceRectangle.Value);
+
+            _sdvSourceRectangle = null;
+            _sourceRectangle = null;
         }
 
         public Item getObject(Item item = null)

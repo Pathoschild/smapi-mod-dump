@@ -5,9 +5,9 @@ mods:
    Better Activate Sprinklers
 
 latest commit:
-   commit 3bd2ac6d28ad43a22b5b88b9c505fdaf45c5e203
+   commit bd6448114c572eb1a8e33d2d7a78a332fe68dfc3
    Author: Yuri Moens <yuri.moens@gmail.com>
-   Date:   Sun Dec 9 15:25:04 2018 +0100
+   Date:   Sun Dec 23 01:27:55 2018 +0100
    
-       Update for SMAPI 3.0 compatibility
+       Add support for prismatic sprinklers
    

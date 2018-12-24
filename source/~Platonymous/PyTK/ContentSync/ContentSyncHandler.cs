@@ -11,9 +11,6 @@ using System.Threading.Tasks;
 using System.Xml;
 using xTile;
 using PyTK.Extensions;
-using System.Text;
-using System.Linq;
-using StardewModdingAPI.Events;
 
 namespace PyTK.ContentSync
 {
@@ -367,7 +364,7 @@ namespace PyTK.ContentSync
 
                 result = serialize(asset, (ContentType)contentRequest.type);
             }
-            catch(Exception e)
+            catch
             {
                 result = "na";
             }

@@ -1,0 +1,6 @@
+{
+  "basicBoxCost": 10,
+  "premiumBoxCost": 50,
+  "requireGameCompletion": false,
+  "alternateCoinMethod": false
+}

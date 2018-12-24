@@ -1,4 +1,6 @@
-﻿using System.Speech.Synthesis;
+﻿/*
+
+using System.Speech.Synthesis;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Threading;
@@ -8,7 +10,6 @@ using StardewModdingAPI.Events;
 
 using StardewValley;
 using StardewValley.Menus;
-
 
 
 namespace PelicanTTS
@@ -235,3 +236,4 @@ namespace PelicanTTS
 
     }
 }
+*/

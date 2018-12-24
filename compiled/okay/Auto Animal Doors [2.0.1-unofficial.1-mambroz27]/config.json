@@ -1,7 +1,0 @@
-{
-  "AutoOpenEnabled": true,
-  "AnimalDoorOpenTime": 730,
-  "AnimalDoorCloseTime": 1800,
-  "OpenDoorsWhenRaining": false,
-  "OpenDoorsDuringWinter": false
-}

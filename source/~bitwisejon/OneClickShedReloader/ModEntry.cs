@@ -36,25 +36,29 @@ namespace BitwiseJonMods
         {
             Common.Utility.InitLogging(this.Monitor);
 
-            InputEvents.ButtonPressed += this.InputEvents_ButtonPressed;
-            GraphicsEvents.OnPreRenderHudEvent += DrawHoverTooltip;
-            GameEvents.FourthUpdateTick += GetTileUnderCursor;
+            Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+            Helper.Events.Display.RenderingHud += DrawHoverTooltip;
+            Helper.Events.GameLoop.UpdateTicked += GetTileUnderCursor;
         }
 
-        private void GetTileUnderCursor(object sender, EventArgs e)
+        private void GetTileUnderCursor(object sender, UpdateTickedEventArgs e)
         {
-            //See if we have a building under the cursor
-            if (Game1.currentLocation is BuildableGameLocation buildableLocation)
+            //Simulate previous SMAPI event GameEvents.FourthUpdateTick
+            if (e.IsMultipleOf(4))
             {
-                _currentTileBuilding = buildableLocation.getBuildingAt(Game1.currentCursorTile);
-            }
-            else
-            {
-                _currentTileBuilding = null;
+                //See if we have a building under the cursor
+                if (Game1.currentLocation is BuildableGameLocation buildableLocation)
+                {
+                    _currentTileBuilding = buildableLocation.getBuildingAt(Game1.currentCursorTile);
+                }
+                else
+                {
+                    _currentTileBuilding = null;
+                }
             }
         }
 
-        private void DrawHoverTooltip(object sender, EventArgs e)
+        private void DrawHoverTooltip(object sender, RenderingHudEventArgs e)
         {
             //If the building is a shed or barn, show a tooltip with info about the containers inside. Make sure no menu is showing.
             if (_currentTileBuilding != null && Game1.activeClickableMenu == null)
@@ -109,7 +113,7 @@ namespace BitwiseJonMods
             return instructions;
         }
 
-        private void InputEvents_ButtonPressed(object sender, EventArgsInput e) 
+        private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             try
             {
@@ -120,7 +124,7 @@ namespace BitwiseJonMods
 
                     if (DidPlayerClickOnASupportedBuilding())
                     {
-                        e.SuppressButton();
+                        Helper.Input.Suppress(e.Button);
                         Common.Utility.Log($"{DateTime.Now} - {Game1.player.Name} clicked on a supported building to harvest all supported containers within it.");
                         HarvestAllItemsInBuilding(_currentTileBuilding);
                     }

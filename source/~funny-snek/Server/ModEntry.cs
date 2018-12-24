@@ -37,7 +37,7 @@ namespace FunnySnek.AntiCheat.Server
         public override void Entry(IModHelper helper)
         {
             // apply patches
-            Patch.PatchAll("anticheatviachat.anticheatviachat");
+            Patch.PatchAll(this.ModManifest.UniqueID);
 
             // hook events
             helper.Events.Multiplayer.PeerContextReceived += this.OnPeerContextReceived;
@@ -63,7 +63,7 @@ namespace FunnySnek.AntiCheat.Server
         /*********
         ** Private methods
         *********/
-        /// <summary>An event handler called when a save file is loaded.</summary>
+        /// <summary>Raised after the player loads a save slot.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void SaveLoaded(object sender, SaveLoadedEventArgs e)
@@ -78,7 +78,7 @@ namespace FunnySnek.AntiCheat.Server
             }
         }
 
-        /// <summary>An event handler called when metadata about an incoming player connection is received.</summary>
+        /// <summary>Raised after the mod context for a peer is received. This happens before the game approves the connection, so the player doesn't yet exist in the game.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void OnPeerContextReceived(object sender, PeerContextReceivedEventArgs e)
@@ -89,43 +89,32 @@ namespace FunnySnek.AntiCheat.Server
             // log join
             this.Monitor.Log($"Player joined: {e.Peer.PlayerID}");
 
-            // kick: can't validate mods if they don't have a recent version of SMAPI
-            if (!e.Peer.HasSmapi)
-            {
-                this.Monitor.Log($"   Will kick in {this.SecondsUntilKick} seconds: doesn't have SMAPI installed.");
-                this.PlayersToKick.Add(new PlayerSlot
-                {
-                    Peer = e.Peer,
-                    Reason = KickReason.NeedsSmapi,
-                    CountDownSeconds = this.SecondsUntilKick
-                });
-                return;
-            }
-
             // kick: blocked mods found
-            string[] blockedModNames = this
-                .GetBlockedMods(e.Peer)
-                .Distinct(StringComparer.InvariantCultureIgnoreCase)
-                .OrderBy(p => p)
-                .ToArray();
-            if (blockedModNames.Any())
+            if (e.Peer.HasSmapi)
             {
-                this.Monitor.Log($"   Will kick in {this.SecondsUntilKick} seconds: found prohibited mods {string.Join(", ", blockedModNames)}.");
-                this.PlayersToKick.Add(new PlayerSlot
+                string[] blockedModNames = this
+                    .GetBlockedMods(e.Peer)
+                    .Distinct(StringComparer.InvariantCultureIgnoreCase)
+                    .OrderBy(p => p)
+                    .ToArray();
+                if (blockedModNames.Any())
                 {
-                    Peer = e.Peer,
-                    Reason = KickReason.BlockedMods,
-                    CountDownSeconds = this.SecondsUntilKick,
-                    BlockedModNames = blockedModNames
-                });
-                return;
+                    this.Monitor.Log($"   Will kick in {this.SecondsUntilKick} seconds: found prohibited mods {string.Join(", ", blockedModNames)}.");
+                    this.PlayersToKick.Add(new PlayerSlot
+                    {
+                        Peer = e.Peer,
+                        CountDownSeconds = this.SecondsUntilKick,
+                        BlockedModNames = blockedModNames
+                    });
+                    return;
+                }
             }
 
             // no issues found
             this.Monitor.Log("   No issues found.");
         }
 
-        /// <summary>An event handler called when the connection to a player is dropped.</summary>
+        /// <summary>Raised after the connection with a peer is severed.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void OnPeerDisconnected(object sender, PeerDisconnectedEventArgs e)
@@ -136,7 +125,7 @@ namespace FunnySnek.AntiCheat.Server
             this.Monitor.Log($"Player quit: {e.Peer.PlayerID}");
         }
 
-        /// <summary>An event handler called once per second.</summary>
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -155,24 +144,9 @@ namespace FunnySnek.AntiCheat.Server
                     string name = Game1.getOnlineFarmers().FirstOrDefault(p => p.UniqueMultiplayerID == slot.Peer.PlayerID)?.Name ?? slot.Peer.PlayerID.ToString();
 
                     // send chat messages
-                    switch (slot.Reason)
-                    {
-                        case KickReason.NeedsSmapi:
-                            this.SendPublicChat($"{name}: you're being kicked by Anti-Cheat. Please install the latest version of SMAPI.", error: true);
-                            break;
-
-                        case KickReason.BlockedMods:
-                            {
-                                int count = slot.BlockedModNames.Length;
-                                this.SendPublicChat($"{name}: you're being kicked by Anti-Cheat. You have {(count == 1 ? "a blocked mod" : $"{count} blocked mods")} installed.", error: true);
-                                this.SendDirectMessage(playerID, $"Please remove these mods: {string.Join(", ", slot.BlockedModNames)}.");
-                            }
-                            break;
-
-                        default:
-                            this.SendPublicChat($"{name}: you're being kicked by Anti-Cheat.", error: true);
-                            break;
-                    }
+                    int count = slot.BlockedModNames.Length;
+                    this.SendPublicChat($"{name}: you're being kicked by Anti-Cheat. You have {(count == 1 ? "a blocked mod" : $"{count} blocked mods")} installed.", error: true);
+                    this.SendDirectMessage(playerID, $"Please remove these mods: {string.Join(", ", slot.BlockedModNames)}.");
 
                     // kick player
                     this.KickPlayer(playerID);

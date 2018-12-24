@@ -46,6 +46,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="aStar.cs" />
+    <Compile Include="Buffs\AbigailBuff.cs" />
+    <Compile Include="Buffs\AlexBuff.cs" />
+    <Compile Include="Buffs\CompanionBuff.cs" />
+    <Compile Include="CompanionsManager.cs" />
+    <Compile Include="Buffs\ElliottBuff.cs" />
+    <Compile Include="Buffs\EmilyBuff.cs" />
+    <Compile Include="Buffs\HaleyBuff.cs" />
+    <Compile Include="Buffs\HarveyBuff.cs" />
+    <Compile Include="Buffs\LeahBuff.cs" />
+    <Compile Include="Buffs\MaruBuff.cs" />
+    <Compile Include="Buffs\PennyBuff.cs" />
+    <Compile Include="Buffs\SamBuff.cs" />
+    <Compile Include="Buffs\SebastianBuff.cs" />
+    <Compile Include="Buffs\ShaneBuff.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -38,12 +38,9 @@ mods:
    Visualize
 
 latest commit:
-   commit c44dd47bf77926df61e6698e1547fb46b4c8207f
-   Merge: 807841b 06b4026
-   Author: David <david@millionideas.de>
-   Date:   Sun Dec 16 04:35:44 2018 +0100
+   commit ee49590e1b834e5cfcc43b169881250fdb3ba168
+   Author: Platonymous <david@millionideas.de>
+   Date:   Sun Dec 23 22:18:23 2018 +0100
    
-       Merge pull request #37 from Pathoschild/update-code
-       
-       Update for the upcoming SMAPI 3.0
+       Update releases
    

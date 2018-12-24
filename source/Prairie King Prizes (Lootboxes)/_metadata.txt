@@ -5,9 +5,9 @@ mods:
    Prairie King Prizes (Lootboxes)
 
 latest commit:
-   commit d3aed66b50226a6c41099a648ed642597cb238bd
+   commit b73f9eb18bda33f44fe79aadddbb0143250b3c8f
    Author: Renny <renaldas.sorys@gmail.com>
-   Date:   Sat Sep 22 01:27:20 2018 +0100
+   Date:   Mon Dec 24 03:21:11 2018 +0000
    
-       Think this is a small update, idk
+       Added config support
    

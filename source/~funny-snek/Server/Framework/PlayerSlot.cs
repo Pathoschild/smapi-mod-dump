@@ -11,10 +11,7 @@ namespace FunnySnek.AntiCheat.Server.Framework
         /// <summary>The number of seconds until the player should be kicked.</summary>
         public int CountDownSeconds { get; set; }
 
-        /// <summary>The reason the player is being kicked.</summary>
-        public KickReason Reason { get; set; }
-
-        /// <summary>The names of the blocked the mod has installed, if any.</summary>
+        /// <summary>The names of the blocked mods the player has installed.</summary>
         public string[] BlockedModNames { get; set; }
     }
 }

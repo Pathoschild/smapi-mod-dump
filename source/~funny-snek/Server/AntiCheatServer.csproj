@@ -60,7 +60,6 @@
     <Compile Include="Framework\Patches\Multiplayer_ProcessIncomingMessage_Patcher.cs" />
     <Compile Include="Framework\Patches\Server_SendMessage_Patcher.cs" />
     <Compile Include="Framework\PlayerSlot.cs" />
-    <Compile Include="Framework\KickReason.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

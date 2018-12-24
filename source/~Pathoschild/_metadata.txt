@@ -17,9 +17,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 1a5851f41d93956d361b02a0c7cff4ba53812c42
+   commit 11eb42e6e265ecfba450df8a9a1c6f2ac1119b95
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Fri Dec 14 21:26:21 2018 -0500
+   Date:   Wed Dec 19 19:58:38 2018 -0500
    
-       fix fruit trees not producing fruit out of season
+       fix stable no longer in carpenter menu after building a tractor garage (#354)
    

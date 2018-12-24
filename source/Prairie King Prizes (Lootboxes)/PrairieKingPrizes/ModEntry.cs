@@ -15,6 +15,7 @@ namespace PrairieKingPrizes
         private int coinsCollected;
         private int totalTokens;
         private object LastMinigame;
+        private ModConfig Config;
         private int[] common = { 495, 496, 497, 498, 390, 388, 441, 463, 464, 465, 535, 709 };
         private int[] uncommon = { 88, 301, 302, 431, 453, 472, 473, 475, 477, 478, 479, 480, 481, 482, 483, 484, 485, 487, 488, 489, 490, 491, 492, 493, 494, 466, 340, 724, 725, 726, 536, 537, 335 };
         private int[] rare = { 72, 337, 417, 305, 308, 336, 787, 710, 413, 430, 433, 437, 444, 446, 439, 680, 749, 797, 486, 681, 690, 688, 689 };
@@ -25,6 +26,7 @@ namespace PrairieKingPrizes
 
         public override void Entry(IModHelper helper)
         {
+            Config = this.Helper.ReadConfig<ModConfig>();
             GameEvents.UpdateTick += GameEvents_UpdateTick;
             SaveEvents.AfterLoad += AfterSaveLoaded;
             helper.ConsoleCommands.Add("gettokens", "Retrieves the value of your current amount of tokens.", this.GetCoins);
@@ -107,28 +109,28 @@ namespace PrairieKingPrizes
                             this.Monitor.Log($"ID {index} is a {name}. Drops {Math.Round((0.2 / rare.Count()) * 100, 2)}% of the time in a basic box and a {Math.Round((0.3 / rare.Count()) * 100, 2)}% in the premium box.");
                         }
                     }
-                    Monitor.Log("--- Coveted Items - 9% Basic/20% Premium ---");
+                    Monitor.Log("--- Coveted Items - 9.9% Basic/24% Premium ---");
                     foreach (int index in coveted)
                     {
                         if (objectData.TryGetValue(index, out string entry))
                         {
                             string[] fields = entry.Split('/');
                             string name = fields[0];
-                            totalPercentageBasic += Math.Round((0.09 / coveted.Count()) * 100, 2);
-                            totalPercentagePremium += Math.Round((0.2 / coveted.Count()) * 100, 2);
-                            this.Monitor.Log($"ID {index} is a {name}. Drops {Math.Round((0.09 / coveted.Count()) * 100, 2)}% of the time in a basic box and a {Math.Round((0.2 / coveted.Count()) * 100),2}% in the premium box.");
+                            totalPercentageBasic += Math.Round((0.099 / coveted.Count()) * 100, 2);
+                            totalPercentagePremium += Math.Round((0.24 / coveted.Count()) * 100, 2);
+                            this.Monitor.Log($"ID {index} is a {name}. Drops {Math.Round((0.099 / coveted.Count()) * 100, 2)}% of the time in a basic box and a {Math.Round((0.24 / coveted.Count()) * 100),2}% in the premium box.");
                         }
                     }
-                    Monitor.Log("--- Legendary Items - 1% Basic/5% Premium ---");
+                    Monitor.Log("--- Legendary Items - 0.1% Basic/1% Premium ---");
                     foreach (int index in legendary)
                     {
                         if (objectData.TryGetValue(index, out string entry))
                         {
                             string[] fields = entry.Split('/');
                             string name = fields[0];
-                            totalPercentageBasic += Math.Round((0.01 / legendary.Count()) * 100, 2);
-                            totalPercentagePremium += Math.Round((0.05 / legendary.Count()) * 100, 2);
-                            this.Monitor.Log($"ID {index} is a {name}. Drops {Math.Round((0.01 / legendary.Count()) * 100, 2)}% of the time in a basic box and a {Math.Round((0.05 / legendary.Count()) * 100, 2)}% in the premium box.");
+                            totalPercentageBasic += Math.Round((0.001 / legendary.Count()) * 100, 2);
+                            totalPercentagePremium += Math.Round((0.01 / legendary.Count()) * 100, 2);
+                            this.Monitor.Log($"ID {index} is a {name}. Drops {Math.Round((0.001 / legendary.Count()) * 100, 2)}% of the time in a basic box and a {Math.Round((0.01 / legendary.Count()) * 100, 2)}% in the premium box.");
                         }
                     }
                     Monitor.Log($"--- Basic: {Math.Round(totalPercentageBasic, 2)}% | Premium: {Math.Round(totalPercentagePremium, 2)}% | Both should be 100% (Or close to it)");
@@ -197,13 +199,12 @@ namespace PrairieKingPrizes
                 {
                     if (propertyValue == "TokenMachine")
                     {
-                        Response basic = new Response("Basic", "Basic Tier (10 Tokens)");
-                        Response premium = new Response("Premium", "Premium Tier (50 Tokens)");
+                        Response basic = new Response("Basic", $"Basic Tier ({Config.basicBoxCost} Tokens)");
+                        Response premium = new Response("Premium", $"Premium Tier ({Config.premiumBoxCost} Tokens)");
                         Response cancel = new Response("Cancel", "Cancel");
-                        Response checkTokens = new Response("Tokens", "Check Tokens");
-                        Response[] answers = { basic, premium, checkTokens, cancel, };
+                        Response[] answers = { basic, premium, cancel, };
 
-                        Game1.player.currentLocation.createQuestionDialogue("Would you like to spend your tokens to receive a random item?", answers, AfterQuestion, null);
+                        Game1.player.currentLocation.createQuestionDialogue($"Would you like to spend your tokens to receive a random item? You currently have {totalTokens} tokens.", answers, AfterQuestion, null);
                     }
                 }
             }
@@ -220,37 +221,34 @@ namespace PrairieKingPrizes
             {
                 givePlayerPremiumItem();
             }
-            else if (whichAnswer == "Tokens")
-            {
-                checkPlayersTokens();
-            }
             else
             {
                 return;
             }
         }
 
+        int coinStorage = 0;
         private void GameEvents_UpdateTick(object sender, EventArgs e)
         {
+            if (Config.requireGameCompletion && !Game1.player.mailReceived.Contains("Beat_PK")) return;
             if (Game1.currentMinigame != null && "AbigailGame".Equals(Game1.currentMinigame.GetType().Name))
             {
                 Type minigameType = Game1.currentMinigame.GetType();
                 coinsCollected = Convert.ToInt32(minigameType.GetField("coins").GetValue(Game1.currentMinigame));
+                if (Config.alternateCoinMethod) {
+                    if (coinsCollected > coinStorage) coinStorage = coinsCollected;
+                } else {
+                    coinStorage = coinsCollected;
+                }
                 LastMinigame = Game1.currentMinigame.GetType().Name;
             }
 
             if (Game1.currentMinigame == null && "AbigailGame".Equals(LastMinigame))
             {
-                totalTokens += coinsCollected;
+                totalTokens += coinStorage;
                 coinsCollected = 0;
+                coinStorage = 0;
             }
-        }
-
-        private void checkPlayersTokens()
-        {
-            Game1.playSound("purchase");
-            Game1.drawDialogueBox($"You currently have {totalTokens} tokens.");
-            return;
         }
 
         private void givePlayerBasicItem()
@@ -258,19 +256,19 @@ namespace PrairieKingPrizes
             Random random = new Random();
             double diceRoll = random.NextDouble();
 
-            if (totalTokens >= 10)
+            if (totalTokens >= Config.basicBoxCost)
             {
-                totalTokens -= 10;
+                totalTokens -= Config.basicBoxCost;
                 Game1.addHUDMessage(new HUDMessage($"Your current Token balance is now {totalTokens}.", 2));
                 Game1.playSound("purchase");
-
-                if (diceRoll <= 0.01)
+                
+                if (diceRoll <= 0.001)
                 {
                     //give legendary item
                     //this.Monitor.Log($"Attempting to give player an item with the ID of 74.");
                     Game1.player.addItemByMenuIfNecessary((Item)new StardewValley.Object(74, 1, false, -1, 0));
                 }
-                if (diceRoll > 0.01 && diceRoll <= 0.1)
+                if (diceRoll > 0.001 && diceRoll <= 0.1)
                 {
                     //give coveted item
                     Random rnd = new Random();
@@ -328,19 +326,19 @@ namespace PrairieKingPrizes
             Random random = new Random();
             double diceRoll = random.NextDouble();
 
-            if (totalTokens >= 50)
+            if (totalTokens >= Config.premiumBoxCost)
             {
-                totalTokens -= 50;
+                totalTokens -= Config.premiumBoxCost;
                 Game1.addHUDMessage(new HUDMessage($"Your current Token balance is now {totalTokens}.", 2));
                 Game1.playSound("purchase");
 
-                if (diceRoll <= 0.05)
+                if (diceRoll <= 0.01)
                 {
                     //give legendary premium item
                     //this.Monitor.Log($"Attempting to give player an item with the ID of 74.");
                     Game1.player.addItemByMenuIfNecessary((Item)new StardewValley.Object(74, 2, false, -1, 0));
                 }
-                if (diceRoll > 0.05 && diceRoll <= 0.25)
+                if (diceRoll > 0.01 && diceRoll <= 0.20)
                 {
                     //give coveted premium item
                     Random rnd = new Random();
@@ -348,7 +346,7 @@ namespace PrairieKingPrizes
                     //this.Monitor.Log($"Attempting to give player an item with the ID of {coveted[r]}.");
                     Game1.player.addItemByMenuIfNecessary((Item)new StardewValley.Object(coveted[r], 5, false, -1, 0));
                 }
-                if (diceRoll > 0.25 && diceRoll <= 0.45)
+                if (diceRoll > 0.20 && diceRoll <= 0.45)
                 {
                     //give rare premium item
                     Random rnd = new Random();
@@ -397,18 +395,26 @@ namespace PrairieKingPrizes
         //    Common - 40% | Quantity: 5
         //    Uncommon - 30% | Quantity: 3
         //    Rare - 20% | Quantity: 2
-        //    Coveted - 9% | Quantity: 1
-        //    Legendary - 1% | Quantity: 1
+        //    Coveted - 9.9% | Quantity: 1
+        //    Legendary - 0.1% | Quantity: 1
         //Secrets - Premium Item
         //    Common - 20% | Quantity: 25
         //    Uncommon - 25% | Quantity: 15
         //    Rare - 30% | Quantity: 10
-        //    Coveted - 20% | Quantity: 5
-        //    Legendary - 5% | Quantity: 2
+        //    Coveted - 24% | Quantity: 5
+        //    Legendary - 1% | Quantity: 2
 
         internal class SavedData
         {
             public int TotalTokens { get; set; }
+        }
+
+        internal class ModConfig
+        {
+            public int basicBoxCost { get; set; } = 10;
+            public int premiumBoxCost { get; set; } = 50;
+            public bool requireGameCompletion { get; set; } = false;
+            public bool alternateCoinMethod { get; set; } = false;
         }
     }
 }
