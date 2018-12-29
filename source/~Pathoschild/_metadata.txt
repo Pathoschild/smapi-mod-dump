@@ -17,9 +17,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 11eb42e6e265ecfba450df8a9a1c6f2ac1119b95
+   commit 596b5b763f73be2b91ab99c562ad9e09b7d3a65f
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Dec 19 19:58:38 2018 -0500
+   Date:   Mon Dec 24 23:54:32 2018 -0500
    
-       fix stable no longer in carpenter menu after building a tractor garage (#354)
+       fix typo in readme
    

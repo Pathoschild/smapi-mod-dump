@@ -1,0 +1,13 @@
+{
+	"Format": "1.6",
+	"Changes": [
+		
+		/* Secret Woods tbin */
+		{
+			"LogName": "New Secret Woods Map",
+			"Action": "Load",
+			"Target": "Maps/Woods",
+			"FromFile": "assets/Woods.tbin",
+		},
+	],
+}

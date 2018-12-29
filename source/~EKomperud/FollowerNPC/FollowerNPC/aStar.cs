@@ -25,12 +25,14 @@ namespace FollowerNPC
                 dimensions = new Vector2(gameLocation.map.Layers[0].LayerWidth, gameLocation.map.Layers[0].LayerHeight);
             }
         }
+
         private GameLocation gl;
         private string character;
         private Vector2 dimensions;
         private Vector2 negativeOne = new Vector2(-1, -1);
         private int fullTile = Game1.tileSize;
         private int halfTile = (int) (Game1.tileSize * 0.5f);
+        private int attempts;
 
         public Queue<Vector2> consolidatedPath;
         public List<Node> fullPath;
@@ -44,11 +46,12 @@ namespace FollowerNPC
             Dictionary<Vector2, float> closed = new Dictionary<Vector2, float>();
             Vector2 mapDimensions = new Vector2(100, 100);
             List<Node> path = new List<Node>();
+            attempts = 0;
 
             // Cache
             float maxH = mapDimensions.Length();
 
-            while (open.Count != 0)
+            while (open.Count != 0 && ++attempts <= 150)
             {
                 Node q = open.Dequeue();
                 closed[q.position] = q.f;

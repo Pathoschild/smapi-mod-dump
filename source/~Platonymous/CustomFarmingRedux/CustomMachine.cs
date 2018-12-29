@@ -299,11 +299,17 @@ namespace CustomFarmingRedux
 
         public override bool minutesElapsed(int minutes, GameLocation environment)
         {
+            if (isWorking && completionTime != null && STime.CURRENT >= completionTime && activeRecipe != null)
+                getReadyForHarvest();
+
             return false;
         }
 
         public override void updateWhenCurrentLocation(GameTime time, GameLocation environment)
         {
+            location = environment;
+            bool isWorking = this.isWorking;
+
             if (tileLocation == Vector2.Zero)
                 if (!Game1.currentLocation.objects.ContainsKey(tileLocation) || Game1.currentLocation.objects[tileLocation] != this)
                     if (new List<SObject>(Game1.currentLocation.objects.Values).Contains(this))
@@ -376,7 +382,11 @@ namespace CustomFarmingRedux
             Vector2 vector2 = (blueprint.pulsate) ? getScale() * Game1.pixelZoom  : new Vector2(0, 4) * Game1.pixelZoom;
             Vector2 local = Game1.GlobalToLocal(Game1.viewport, new Vector2((x * Game1.tileSize), (y * Game1.tileSize - Game1.tileSize)));
             Rectangle destinationRectangle = new Rectangle((int)(local.X - vector2.X / 2.0) + (shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0), (int)(local.Y - vector2.Y / 2.0) + (shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0), (int)((tilesize.Width * 4) + (double)vector2.X), (int)((tilesize.Height * 4) + vector2.Y / 2.0));
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White * alpha, 0.0f, Vector2.Zero, SpriteEffects.None, (float)(Math.Max(0.0f, ((y + 1) * Game1.tileSize - Game1.pixelZoom * 6) / 10000f) + x * 9.99999974737875E-06));
+
+            if (texture is ScaledTexture2D s)
+                spriteBatch.Draw(s.STexture, destinationRectangle, new Rectangle?(new Rectangle((int)(sourceRectangle.X * s.Scale), (int)(sourceRectangle.Y * s.Scale), (int)(sourceRectangle.Width * s.Scale), (int)(sourceRectangle.Height * s.Scale))), Color.White * alpha, 0.0f, Vector2.Zero, SpriteEffects.None, (float)(Math.Max(0.0f, ((y + 1) * Game1.tileSize - Game1.pixelZoom * 6) / 10000f) + x * 9.99999974737875E-06));
+            else
+                spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White * alpha, 0.0f, Vector2.Zero, SpriteEffects.None, (float)(Math.Max(0.0f, ((y + 1) * Game1.tileSize - Game1.pixelZoom * 6) / 10000f) + x * 9.99999974737875E-06));
 
             if (readyForHarvest && heldObject.Value != null)
             {

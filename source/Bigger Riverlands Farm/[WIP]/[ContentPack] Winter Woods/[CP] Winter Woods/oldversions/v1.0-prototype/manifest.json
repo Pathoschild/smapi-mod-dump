@@ -1,0 +1,12 @@
+{
+	"Name": "Winter Woods",
+	"Version": "1.0-alpha",
+	"Author": "Jessebot",
+	"Description": "A secret woods expansion mod.",
+	"MinimumApiVersion": "2.9",
+	"UpdateKeys": [],
+	"UniqueID": "Jessebot.WinterWoods",
+	"ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher",
+	},
+}

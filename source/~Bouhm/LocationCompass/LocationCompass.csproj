@@ -51,16 +51,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="StardewValley">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewValley.exe</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="StardewValley">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewValley.exe</HintPath>
-    </Reference>
-    <Reference Include="xTile">
-      <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\xTile.dll</HintPath>
-    </Reference>
     <Reference Include="StardewModdingAPI">
       <HintPath>..\..\..\.steam\steam\steamapps\common\Stardew Valley\StardewModdingAPI.exe</HintPath>
     </Reference>
@@ -77,7 +68,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="constants.json" />
-    <None Include="Location Compass.zip" />
     <None Include="manifest.json" />
     <None Include="packages.config" />
   </ItemGroup>

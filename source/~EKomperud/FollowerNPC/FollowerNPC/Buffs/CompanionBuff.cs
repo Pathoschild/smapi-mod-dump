@@ -66,13 +66,16 @@ namespace FollowerNPC
             Game1.buffsDisplay.addOtherBuff(companionBuff.buff);
             companionBuff.buff.which = -420;
 
-            foreach (Buff b in companionBuff.statBuffs)
+            if (companionBuff.statBuffs != null)
             {
-                if (b != null)
+                foreach (Buff b in companionBuff.statBuffs)
                 {
-                    b.millisecondsDuration = 1200000;
-                    Game1.buffsDisplay.addOtherBuff(b);
-                    b.which = -420;
+                    if (b != null)
+                    {
+                        b.millisecondsDuration = 1200000;
+                        Game1.buffsDisplay.addOtherBuff(b);
+                        b.which = -420;
+                    }
                 }
             }
 

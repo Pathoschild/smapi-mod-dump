@@ -54,8 +54,6 @@ namespace FollowerNPC.Buffs
                                Environment.NewLine+
                                "You gain +1 to any stat. Use the 'G' key to cycle your current prosthetic.";
 
-            statBuffs = new Buff[1];
-
             ControlEvents.KeyReleased += ControlEvents_KeyReleased;
         }
 

@@ -1,8 +1,8 @@
 DeepWoodsMod for Stardew Valley
 Author: Max Vollmer
-Version: 1.3-beta.18
+Version: 1.4-beta.1
 
-Needs SMAPI v2.9 or higher: https://smapi.io/
+Needs SMAPI v2.9.2 or higher: https://smapi.io/
 
 Web: https://www.nexusmods.com/stardewvalley/mods/2571
 Sourcecode: https://github.com/maxvollmer/DeepWoodsMod

@@ -5,10 +5,9 @@ mods:
    Neat Additions
 
 latest commit:
-   commit c92c1c692de8630ec8e4b3616666bbc8453aa2d1
-   Merge: efd3ed0 0a949d1
+   commit b4a7cf120fe3314ca02c6767f71740b83416eb01
    Author: Ilyaki <ilyaki.ilyaki@gmail.com>
-   Date:   Mon Nov 19 19:30:16 2018 +0000
+   Date:   Fri Dec 28 15:36:09 2018 +0000
    
-       Merge branch 'master' of https://github.com/Ilyaki/NeatAdditions
+       Compatibility for SMAPI 3.0
    

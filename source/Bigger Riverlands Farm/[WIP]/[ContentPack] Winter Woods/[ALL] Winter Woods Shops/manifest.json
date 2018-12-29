@@ -1,0 +1,12 @@
+{
+	"Name": "Winter Woods Shops",
+	"Author": "Jessebot",
+	"Version": "1.0-beta",
+	"Description": "Adds shops in the Winter Woods",
+	"UniqueID": "Jessebot.WinterWoodsShops",
+	"MinimumApiVersion": "2.9",
+	"UpdateKeys": [],
+	"ContentPackFor": {
+		"UniqueID": "Entoarox.AdvancedLocationLoader",
+	},
+}

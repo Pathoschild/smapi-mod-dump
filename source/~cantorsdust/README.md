@@ -1,11 +1,13 @@
 ﻿This repository contains my mods for [Stardew Valley](http://stardewvalley.net/):
 
-* [All Crops All Seasons](AllCropsAllSeasons) ([Nexus](http://www.nexusmods.com/stardewvalley/mods/170))
 * [All Professions](AllProfessions) ([Nexus](http://www.nexusmods.com/stardewvalley/mods/174))
 * [Instant Grow Trees](InstantGrowTrees) ([Nexus](http://www.nexusmods.com/stardewvalley/mods/173))
 * [Recatch Legendary Fish](RecatchLegendaryFish) ([Nexus](http://www.nexusmods.com/stardewvalley/mods/172))
-* ~~[Skull Cave Saver](_archived/SkullCaveSaver)~~ (archived)
 * [TimeSpeed](TimeSpeed) ([Nexus](http://www.nexusmods.com/stardewvalley/mods/169))
+
+And these archived mods which are no longer actively maintained:
+* ~~[All Crops All Seasons](archived/AllCropsAllSeasons) ([Nexus](http://www.nexusmods.com/stardewvalley/mods/170))~~ (see [alternatives](https://mods.smapi.io/#All_Crops_All_Seasons))
+* ~~[Skull Cave Saver](_archived/SkullCaveSaver) ([Nexus](https://www.nexusmods.com/stardewvalley/mods/175))~~ (see [alternatives](https://mods.smapi.io/#Skull_Cave_Saver))
 
 ## Compiling the mods
 Installing stable releases from Nexus Mods is recommended for most users. If you really want to

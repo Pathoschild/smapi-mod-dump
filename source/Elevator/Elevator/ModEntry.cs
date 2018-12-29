@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
@@ -33,15 +34,16 @@ namespace Elevator
 
 
 			//Events
-			StardewModdingAPI.Events.TimeEvents.AfterDayStarted += (o, e) => UpdateWarpsAndReloadTextures();
+			Helper.Events.GameLoop.DayStarted += (o, e) => UpdateWarpsAndReloadTextures();
 
-			StardewModdingAPI.Events.ControlEvents.KeyPressed += (o,e) =>
+
+			Helper.Events.Input.ButtonPressed += (o,e) =>
 			{
-				if (Game1.IsServer && e.KeyPressed == Microsoft.Xna.Framework.Input.Keys.F7)
+				if (Game1.IsServer && e.Button.TryGetKeyboard(out Keys key) && key == Keys.F7)
 					UpdateWarpsAndReloadTextures();
 			};
-
-			StardewModdingAPI.Events.PlayerEvents.Warped += (o, e) =>
+			
+			Helper.Events.Player.Warped += (o, e) =>
 			{
 				if (Game1.player.getTileX() <= -9000)//The door position is a bit to the right of -10000
 				{

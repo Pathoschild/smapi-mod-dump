@@ -25,6 +25,13 @@ Thankfully, they don't appear to spawn on wedding and festival days..
 -- monsters spawn every 10 real-world seconds if you are outside.
 
 ## Changelog
+1.0.8
+- Feature to turn off moon display added
+- Updates for SMAPI 3.0 started.
+- Moon no longer watches you break down your financial report.
+- Some debug lines removed
+- Updated the integration logger text
+
 1.0.7
 - Updated for SDV 1.3.32
 - API updated for moon rise and set times

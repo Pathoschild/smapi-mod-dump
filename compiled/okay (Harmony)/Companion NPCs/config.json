@@ -1,0 +1,39 @@
+{
+  "Abigail": [
+    "Wed"
+  ],
+  "Alex": [
+    "Fri"
+  ],
+  "Elliott": [
+    "Sat"
+  ],
+  "Emily": [
+    "Sun"
+  ],
+  "Haley": [
+    "Fri"
+  ],
+  "Harvey": [
+    "Sat"
+  ],
+  "Leah": [
+    "Thu"
+  ],
+  "Maru": [
+    "Wed"
+  ],
+  "Penny": [
+    "Mon"
+  ],
+  "Sam": [
+    "Tue"
+  ],
+  "Sebastian": [
+    "Tue"
+  ],
+  "Shane": [
+    "Sun"
+  ],
+  "heartThreshold": 2
+}

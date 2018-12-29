@@ -31,7 +31,7 @@ namespace AllProfessions
         public override void Entry(IModHelper helper)
         {
             // read data
-            this.ProfessionsToGain = this.GetProfessionsToGain(this.Helper.ReadJsonFile<ModData>("data.json")).ToArray();
+            this.ProfessionsToGain = this.GetProfessionsToGain(this.Helper.Data.ReadJsonFile<ModData>("data.json")).ToArray();
             if (!this.ProfessionsToGain.Any())
             {
                 this.Monitor.Log("The data.json file is missing or invalid; try reinstalling the mod.", LogLevel.Error);
@@ -48,7 +48,7 @@ namespace AllProfessions
             }
 
             // hook event
-            TimeEvents.AfterDayStarted += this.ReceiveAfterDayStarted;
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
         }
 
 
@@ -58,10 +58,10 @@ namespace AllProfessions
         /****
         ** Event handlers
         ****/
-        /// <summary>The method called after a new day starts.</summary>
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void ReceiveAfterDayStarted(object sender, EventArgs e)
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             // When the player loads a saved game, or after the overnight level screen,
             // add any professions the player should have but doesn't.

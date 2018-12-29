@@ -6,9 +6,9 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit de54386f98a8e9d14a27c30db658e1fae8407f77
+   commit 99b997e1041e2c735e25e2f8df0c9e13dafc3046
    Author: Bouhm <bbouhm@gmail.com>
-   Date:   Mon Dec 3 21:15:10 2018 -0800
+   Date:   Tue Dec 25 14:13:59 2018 -0800
    
-       handle missing image files
+       fix issue with custom NPC name mod settings
    

@@ -1,10 +1,10 @@
 {
   "Name": "Elevator",
   "Author": "Ilyaki",
-  "Version": "1.0.5",
+  "Version": "1.0.6",
   "Description": "Adds an elevator building to hold an unlimited number of cabins",
   "UniqueID": "Ilyaki.Elevator",
   "EntryDll": "Elevator.dll",
-  "MinimumApiVersion": "2.8.1",
+  "MinimumApiVersion": "2.9",
   "UpdateKeys": [ "GitHub:Ilyaki/Elevator" ]
 }

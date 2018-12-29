@@ -5,7 +5,13 @@
     55
   ],
   "Credit": true,
-  "CreditLine": "value / 2",
+  "CreditLine": "250 + (value / 2)",
   "CreditInterest": 0.05,
-  "GainInterest": 0.01
+  "GainInterest": 0.01,
+  "CreditAdjustment": [
+    "spring",
+    "summer",
+    "fall",
+    "winter"
+  ]
 }

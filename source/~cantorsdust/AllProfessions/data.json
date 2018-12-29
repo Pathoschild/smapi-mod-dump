@@ -13,7 +13,7 @@
     { "Skill": "Fishing",  "Level": 10, "Professions": [ "Angler", "Pirate", "Mariner", "Luremaster" ] },
     { "Skill": "Foraging", "Level": 5,  "Professions": [ "Forester", "Gatherer" ] },
     { "Skill": "Foraging", "Level": 10, "Professions": [ "Lumberjack", "Tapper", "Botanist", "Tracker" ] },
-    { "Skill": "Mining",   "Level": 5,  "Profession": [ "Miner", "Geologist" ] },
+    { "Skill": "Mining",   "Level": 5,  "Professions": [ "Miner", "Geologist" ] },
     { "Skill": "Mining",   "Level": 10, "Professions": [ "Blacksmith", "Prospector", "Excavator", "Gemologist" ] }
   ]
 }

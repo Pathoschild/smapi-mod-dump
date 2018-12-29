@@ -3,7 +3,6 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
-using System;
 
 namespace BetterShippingBox
 {
@@ -11,10 +10,10 @@ namespace BetterShippingBox
     {
         public override void Entry(IModHelper helper)
         {
-            MenuEvents.MenuChanged += MenuEvents_OnMenuChanged;
+            helper.Events.Display.MenuChanged += Display_MenuChanged; ;
         }
 
-        private void MenuEvents_OnMenuChanged(object sender, EventArgsClickableMenuChanged e)
+        private void Display_MenuChanged(object sender, MenuChangedEventArgs e)
         {
             if ((e.NewMenu is ItemGrabMenu menu) && (menu.shippingBin))
             {

@@ -14,10 +14,10 @@ mods:
    XNB Loader
 
 latest commit:
-   commit 7db2af117238d68d82d8880096a0a26e1657e31d
-   Merge: ad82156 e9329c9
+   commit 613dbb74bce29f4a951e2e5a91229e51ddcd046a
+   Merge: 7db2af1 19d19b7
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Nov 3 21:07:49 2018 -0400
+   Date:   Fri Dec 28 14:49:59 2018 -0500
    
        Merge branch 'develop'
    

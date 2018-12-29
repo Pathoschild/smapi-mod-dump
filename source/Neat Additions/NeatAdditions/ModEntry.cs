@@ -1,6 +1,7 @@
 ﻿using Harmony;
 using NeatAdditions.PreviewWallpaperAndFloors;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using System;
 using System.Collections.Generic;
 
@@ -8,8 +9,12 @@ namespace NeatAdditions
 {
 	public class ModEntry : Mod
 	{
+		public static IModEvents Events { get; private set; }
+
 		public override void Entry(IModHelper helper)
 		{
+			Events = Helper.Events;
+
 			var config = helper.ReadConfig<ModConfig>();
 			
 			//Non-harmony patches
@@ -18,7 +23,6 @@ namespace NeatAdditions
 				new FloorAndWallpaperPreview();
 				Monitor.Log("Enabled floor and wallpaper preview", LogLevel.Info);
 			}
-
 
 			//Harmony patches
 			var patches = new List<IPatch>();

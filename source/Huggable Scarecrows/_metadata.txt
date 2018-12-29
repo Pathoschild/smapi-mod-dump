@@ -1,0 +1,16 @@
+url:
+   https://github.com/bogie5464/HuggableScarecrows.git
+
+mods:
+   Huggable Scarecrows
+
+latest commit:
+   commit a446ce8c73aebd8bd244e8d2627d444dd75aa9e0
+   Merge: 81f20df 920741c
+   Author: Marshal Bogard <bogard5150@gmail.com>
+   Date:   Thu Dec 27 07:39:17 2018 -0500
+   
+       Merge pull request #1 from Pathoschild/minor-cleanup
+       
+       Minor cleanup
+   

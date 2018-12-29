@@ -1,0 +1,10 @@
+﻿{
+   "Name": "Tree Spread",
+   "Author": "bcmpinc",
+   "Version": "0.6",
+   "Description": "Prevents trees from spreading on your farm",
+   "UniqueID": "bcmpinc.TreeSpread",
+   "EntryDll": "TreeSpread.dll",
+   "MinimumApiVersion": "2.7",
+   "UpdateKeys": ["Nexus:3183"]
+}

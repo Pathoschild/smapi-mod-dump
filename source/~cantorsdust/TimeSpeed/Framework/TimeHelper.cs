@@ -1,5 +1,4 @@
 ﻿using System;
-using StardewModdingAPI.Events;
 using StardewValley;
 
 namespace TimeSpeed.Framework
@@ -7,6 +6,16 @@ namespace TimeSpeed.Framework
     /// <summary>Provides helper methods for tracking time flow.</summary>
     internal class TimeHelper
     {
+        /*********
+        ** Fields
+        *********/
+        /// <summary>The previous tick progress.</summary>
+        private double PreviousProgress;
+
+        /// <summary>The handlers to notify when the tick progress changes.</summary>
+        private event EventHandler<TickProgressChangedEventArgs> Handlers;
+
+
         /*********
         ** Accessors
         *********/
@@ -24,23 +33,21 @@ namespace TimeSpeed.Framework
         /*********
         ** Public methods
         *********/
+        /// <summary>Update the time tracking.</summary>
+        public void Update()
+        {
+            // ReSharper disable once CompareOfFloatsByEqualityOperator - intended
+            if (this.PreviousProgress != this.TickProgress)
+                this.Handlers?.Invoke(null, new TickProgressChangedEventArgs(this.PreviousProgress, this.TickProgress));
+
+            this.PreviousProgress = this.TickProgress;
+        }
+
         /// <summary>Register an event handler to notify when the <see cref="TickProgress"/> changes.</summary>
         /// <param name="handler">The event handler to notify.</param>
-        /// <returns>Returns an action which unregisters the handler.</returns>
-        public Action WhenTickProgressChanged(Action<TickProgressChangedEventArgs> handler)
+        public void WhenTickProgressChanged(EventHandler<TickProgressChangedEventArgs> handler)
         {
-            double previousProgress = 0;
-
-            void Wrapper(object sender, EventArgs args)
-            {
-                // ReSharper disable once CompareOfFloatsByEqualityOperator - intended
-                if (previousProgress != this.TickProgress)
-                    handler(new TickProgressChangedEventArgs(previousProgress, this.TickProgress));
-                previousProgress = this.TickProgress;
-            }
-
-            GameEvents.UpdateTick += Wrapper;
-            return () => GameEvents.UpdateTick -= Wrapper;
+            this.Handlers += handler;
         }
     }
 }

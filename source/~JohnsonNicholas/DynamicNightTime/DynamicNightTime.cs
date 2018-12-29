@@ -88,40 +88,47 @@ namespace DynamicNightTime
             Monitor.Log($"Postfixing {UpdateGameClock} with {postfixClock}", LogLevel.Trace);
             harmony.Patch(UpdateGameClock, null, new HarmonyMethod(postfixClock));
 
-            GameEvents.FirstUpdateTick += GameEvents_FirstUpdateTick;
-            TimeEvents.AfterDayStarted += HandleNewDay;
-            SaveEvents.AfterReturnToTitle += HandleReturn;
-            TimeEvents.TimeOfDayChanged += HandleTimeChanges;
-            
+            helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
+            helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
+            helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
+            helper.Events.GameLoop.TimeChanged += GameLoop_TimeChanged;
+           
             Helper.ConsoleCommands.Add("debug_cycleinfo", "Outputs the cycle information", OutputInformation);
             Helper.ConsoleCommands.Add("debug_outdoorlight", "Outputs the outdoor light information", OutputLight);
             Helper.ConsoleCommands.Add("debug_setlatitude", "Sets Latitude", SetLatitude);
             
         }
 
-        private void GameEvents_FirstUpdateTick(object sender, EventArgs e)
+        private void GameLoop_TimeChanged(object sender, TimeChangedEventArgs e)
         {
-            //testing for ZA MOON, YOUR HIGHNESS.
-            MoonAPI = SDVUtilities.GetModApi<ILunarDisturbancesAPI>(Monitor, Helper, "KoihimeNakamura.LunarDisturbances", "1.0.7");
-
-            if (MoonAPI != null)
-                LunarDisturbancesLoaded = true;
-        }
-
-        private void SetLatitude(string arg1, string[] arg2)
-        {
-           if (arg2.Length > 0)
+            /*
+            //handle ambient light changes.
+            if (!Game1.currentLocation.IsOutdoors && Game1.currentLocation is DecoratableLocation locB)
             {
-                NightConfig.Latitude = Convert.ToDouble(arg2[0]);
+                Game1.ambientLight = Game1.isDarkOut() || locB.LightLevel > 0.0 ? new Color(180, 180, 0) : Color.White;
+            }
+            */
+
+            //handle the game being bad at night->day :|
+            if (Game1.timeOfDay < GetSunriseTime())
+            {
+                Game1.currentLocation.switchOutNightTiles();
+                isNightOut = true;
+            }
+
+            if (Game1.timeOfDay >= GetSunriseTime() && isNightOut)
+            {
+                Game1.currentLocation.addLightGlows();
+                isNightOut = false;
             }
         }
 
-        private void HandleReturn(object sender, EventArgs e)
+        private void GameLoop_ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
             resetOnWakeup = false;
         }
 
-        private void HandleNewDay(object sender, EventArgs e)
+        private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
         {
             if (Game1.isDarkOut() && !Game1.currentLocation.IsOutdoors && Game1.currentLocation is DecoratableLocation loc && !resetOnWakeup)
             {
@@ -135,25 +142,20 @@ namespace DynamicNightTime
             resetOnWakeup = false;
         }
 
-        private void HandleTimeChanges(object sender, EventArgsIntChanged e)
+        private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            //handle ambient light changes.
-            if (!Game1.currentLocation.IsOutdoors && Game1.currentLocation is DecoratableLocation locB)
-            {
-                Game1.ambientLight = Game1.isDarkOut() || locB.LightLevel > 0.0 ? new Color(180, 180, 0) : Color.White;
-            }
-            
-            //handle the game being bad at night->day :|
-            if (Game1.timeOfDay < GetSunriseTime())
-            {
-                Game1.currentLocation.switchOutNightTiles();
-                isNightOut = true;
-            }
+            //testing for ZA MOON, YOUR HIGHNESS.
+            MoonAPI = SDVUtilities.GetModApi<ILunarDisturbancesAPI>(Monitor, Helper, "KoihimeNakamura.LunarDisturbances", "1.0.7");
 
-            if (Game1.timeOfDay >= GetSunriseTime() && isNightOut)
+            if (MoonAPI != null)
+                LunarDisturbancesLoaded = true;
+        }
+
+        private void SetLatitude(string arg1, string[] arg2)
+        {
+           if (arg2.Length > 0)
             {
-                Game1.currentLocation.addLightGlows();
-                isNightOut = false;
+                NightConfig.Latitude = Convert.ToDouble(arg2[0]);
             }
         }
 
@@ -177,22 +179,72 @@ namespace DynamicNightTime
           //gibbeous + 17
           //crescent +5
 
+          //light added is only going to be visible in certain times, determined by the code.
+          //Full light is when it's angle is between.. 30 and 150 degrees. For us, that should be the middle of 70% of the time.
+
+          int timeRise = MoonAPI.GetMoonRise();
+          int timeSet = MoonAPI.GetMoonSet();
+          int timeElapsed = SDVTime.MinutesBetweenTwoIntTimes(Game1.timeOfDay, timeRise);
+          int totalMinutes = SDVTime.MinutesBetweenTwoIntTimes(timeRise, timeSet);
+
+          if (timeRise > Game1.timeOfDay)
+                return new Color(0,0,0);
+          if (Game1.timeOfDay > timeSet)
+                return new Color(0,0,0);
+
+          float multiply = (float)timeElapsed/totalMinutes;
+          if (multiply >= .15 && multiply <= .85)
+                multiply = 1;
+          else
+          {
+
+          }
+
+
+          byte colorValR, colorValG, colorValB, val;
+
           switch (MoonAPI.GetCurrentMoonPhase())
           {
                 case "Third Quarter":
                 case "First Quarter":
-                    return new Color(11,11,0);
+                    val = (byte)(Math.Floor(11 * multiply));
+                    colorValB = colorValG = colorValR = val;
+                    break;
                 case "Full Moon":
-                    return new Color(22,22,0);
+                    val = (byte)(Math.Floor(22 * multiply));
+                    colorValB = colorValG = colorValR = val;
+                    break;
                 case "Waning Gibbeous":
                 case "Waxing Gibbeous":
-                    return new Color(17,17,0);
+                    val = (byte)(Math.Floor(17 * multiply));
+                    colorValB = colorValG = colorValR = val;
+                    break;
                 case "Waning Crescent":
                 case "Waxing Crescent":
-                    return new Color(5,5,0);
+                    val = (byte)(Math.Floor(5 * multiply));
+                    colorValB = colorValG = colorValR = val;
+                    break;
                 default:
-                    return new Color(0,0,0);
+                    colorValR = colorValG = colorValB = 0;
+                    break;
           }
+
+            return new Color(colorValR, colorValG, colorValB);
+        }
+        
+        public static byte ClampByteValue(int raw)
+        {
+
+            byte R = 0;
+            
+            if (raw >= 0 && raw <= 255)
+                R = (byte)raw;
+            else if (raw < 0)
+                R = (byte)0;
+            else if (raw > 255)
+                R = (byte)255;
+
+            return R;
         }
 
         public static int GetSunriseTime() => GetSunrise().ReturnIntTime();

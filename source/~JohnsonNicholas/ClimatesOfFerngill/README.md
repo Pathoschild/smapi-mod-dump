@@ -48,9 +48,17 @@ This mod uses harmony to patch functions to allow it to draw custom rain and sno
 
 
 ## Changelog
+v1.5
+ - is coming
+
+v1.4.2
+ - removed extra Harmony debug line
+ - Corrected issue with checking the TV before the wedding tomorrow (badly formatted line)
+
 v1.4.1
  - Updated for SDV 1.3.32
  - Updated for newest LunarDisturbances API
+ - Updated TV lines.
 
 v1.4
  - lighter fog implemented

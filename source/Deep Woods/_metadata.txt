@@ -5,12 +5,10 @@ mods:
    Deep Woods
 
 latest commit:
-   commit 199cc81ba9c4e1ee6565c3fffe279dbb1f3a97b4
-   Merge: 8c2c759 a301ee6
-   Author: Max Vollmer <maxvollmer@users.noreply.github.com>
-   Date:   Sat Dec 8 10:55:55 2018 +0100
+   commit 9abc4f01a91f87c9325721de87848d33eb920386
+   Author: maxvollmer <maxvollmer@users.noreply.github.com>
+   Date:   Thu Dec 27 13:10:16 2018 +0100
    
-       Merge pull request #1 from Pathoschild/update-code
-       
-       Migrate to SMAPI APIs, fix multiplayer error, and prepare for SMAPI 3.0
+       * Increment version number
+       * Changed dependency to SMAPI 2.9.2
    

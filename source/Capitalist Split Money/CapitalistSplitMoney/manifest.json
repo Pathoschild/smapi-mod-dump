@@ -1,10 +1,10 @@
 ﻿{
    "Name": "CapitalistSplitMoney",
    "Author": "Ilyaki",
-   "Version": "1.0.0",
+   "Version": "1.0.1",
    "Description": "Makes each player have their own separate money, while the mod only needs to be installed on the server.",
    "UniqueID": "Ilyaki.CapitalistSplitMoney",
    "EntryDll": "CapitalistSplitMoney.dll",
-   "MinimumApiVersion": "2.7",
+   "MinimumApiVersion": "2.9",
    "UpdateKeys": [ "GitHub:Ilyaki/CapitalistSplitMoney", "Nexus:3083" ]
 }

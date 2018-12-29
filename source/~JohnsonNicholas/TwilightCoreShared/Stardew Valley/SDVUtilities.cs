@@ -124,7 +124,7 @@ namespace TwilightShards.Stardew.Common
 
                     if (api != null)
                     {
-                        Monitor.Log($"{name} {modManifest.Manifest.Version} Integration enabled", LogLevel.Info);
+                        Monitor.Log($"{name} {modManifest.Manifest.Version} integration feature enabled", LogLevel.Info);
                     }
                     return api;
 
@@ -133,7 +133,7 @@ namespace TwilightShards.Stardew.Common
                     Monitor.Log($"{name} detected, but not of a sufficient version. Req:{minVersion} Detected:{modManifest.Manifest.Version}. Skipping..", LogLevel.Debug);
             }
             else
-                Monitor.Log($"{name} not present. Skipping Integration.", LogLevel.Debug);
+                Monitor.Log($"{name} not present. Skipping integration feature.", LogLevel.Debug);
             return null;
         }
 

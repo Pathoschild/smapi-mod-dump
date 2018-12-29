@@ -34,7 +34,7 @@ namespace CapitalistSplitMoney
 				helper.Data.WriteJsonFile("config.json", Config);
 			}
 
-			StardewModdingAPI.Events.SaveEvents.AfterSave += delegate
+			helper.Events.GameLoop.Saved += delegate
             {
                 if (Game1.IsMasterGame)
                 {
@@ -43,7 +43,7 @@ namespace CapitalistSplitMoney
                 }
             };
 
-			StardewModdingAPI.Events.SaveEvents.BeforeSave += delegate
+			helper.Events.GameLoop.DayEnding += delegate
 			{
 				if (Game1.IsMasterGame)
 				{

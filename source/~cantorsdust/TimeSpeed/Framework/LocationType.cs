@@ -7,6 +7,9 @@ namespace TimeSpeed.Framework
         Indoors,
 
         /// <summary>The location is outside.</summary>
-        Outdoors
+        Outdoors,
+
+        /// <summary>The mines or skull cavern.</summary>
+        Mine
     }
 }

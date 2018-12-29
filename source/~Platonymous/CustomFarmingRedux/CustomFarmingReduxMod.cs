@@ -63,7 +63,10 @@ namespace CustomFarmingRedux
                         Game1.player.craftingRecipes[c.Key] = c.Value;
                     else
                         Game1.player.craftingRecipes.Add(c.Key, c.Value);
-            };
+
+                CustomObject.betterArtisanGoods = System.Type.GetType("BetterArtisanGoodIcons.ArtisanGoodsManager, BetterArtisanGoodIcons");
+                CustomObject.hasBetterArtisanGoods = CustomObject.betterArtisanGoods != null;
+    };
 
             harmonyFix();
             helper.ConsoleCommands.Add("replace_custom_farming", "Triggers Custom Farming Replacement", replaceCustomFarming);
@@ -203,7 +206,7 @@ namespace CustomFarmingRedux
         {
             List<CustomFarmingPack> packs = new List<CustomFarmingPack>();
 
-            foreach (StardewModdingAPI.IContentPack pack in Helper.GetContentPacks())
+            foreach (StardewModdingAPI.IContentPack pack in Helper.ContentPacks.GetOwned())
             {
                 List<CustomFarmingPack> cpPacks = loadCP(pack);
                 packs.AddRange(cpPacks);

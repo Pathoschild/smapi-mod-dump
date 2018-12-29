@@ -5,9 +5,12 @@ mods:
    Mopsy's Ranch Livin'
 
 latest commit:
-   commit 5397cd398a5232bb5fdda1cfd01fa501b16877ce
+   commit bf942075cda86475a9cf06870a5a587c2d6b9dea
+   Merge: 5397cd3 1df8a84
    Author: mopquill <1709954+mopquill@users.noreply.github.com>
-   Date:   Sun May 20 19:09:32 2018 -0600
+   Date:   Thu Dec 27 16:24:07 2018 -0700
    
-       Fixed a bug when entering the command with no arguments, revert to default suffix when exiting save file.
+       Merge pull request #1 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0, use data API, improve multiplayer handling, etc
    

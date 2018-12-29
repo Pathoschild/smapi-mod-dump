@@ -16,7 +16,7 @@ namespace NeatAdditions.PreviewWallpaperAndFloors
 
 		public FloorAndWallpaperPreview()
 		{
-			StardewModdingAPI.Events.GameEvents.UpdateTick += GameEvents_UpdateTick;
+			ModEntry.Events.GameLoop.UpdateTicked += GameEvents_UpdateTick;
 		}
 
 		private void GameEvents_UpdateTick(object sender, EventArgs e)

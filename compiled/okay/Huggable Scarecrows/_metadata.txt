@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3190
+IDs: Bogie5464.HuggableScarecrows
+update keys: Nexus:3190

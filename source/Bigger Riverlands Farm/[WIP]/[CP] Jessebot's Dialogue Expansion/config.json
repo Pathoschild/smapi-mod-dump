@@ -1,0 +1,15 @@
+{
+  "Normal Dialogue": "enabled",
+  "NormalDialogueDisabledFor": "",
+  "Dialogue Trees": "enabled",
+  "DialogueTreesDisabledFor": "",
+  "Festival Dialogue": "enabled",
+  "FestivalDialogueDisabledFor": "",
+  "Heart Events": "enabled",
+  "HeartEventsDisabledFor": "",
+  "Spouse Cooks the Queen of Sauce Dishes": "enabled",
+  "SpouseCooksTheQueenOfSauceDisabledFor": "",
+  "Chance of Failure(Spouse Cooks the Queen of Sauce Dishes)": "enabled",
+  "Give Coal on Failure (Spouse Cooks the Queen of Sauce Dishes/Chance of Failure)": "disabled",
+  "MajorModIntegrations": ""
+}

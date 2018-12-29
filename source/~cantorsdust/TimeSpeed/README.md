@@ -31,7 +31,7 @@ editor to configure the mod:
 setting | effect
 :------ | :-----
 `DefaultTickLength` | The default number of seconds per 10-game-minutes, or `null` to freeze time globally. The game uses 7 seconds by default.
-`TickLengthsByLocation` | The number of seconds per 10-game-minutes (or `null` to freeze time) for each location. You can use location names or these values: `Mines`, `Indoors`, or `Outdoors`.
+`TickLengthsByLocation` | The number of seconds per 10-game-minutes (or `null` to freeze time) for each location. You can use location names or these values: `Mine`, `Indoors`, or `Outdoors`.
 `EnableOnFestivalDays` | Whether to change tick length on festival days.
 `FreezeTimeAt` | The time at which to freeze time everywhere (or `null` to disable this). This should be 24-hour military time (e.g. 800 for 8am, 1600 for 8pm, etc). (Be careful the number doesn't start with a zero, due to a bug in the underlying parser.)
 `LocationNotify` | Whether to show a message about the time settings when you enter a location.

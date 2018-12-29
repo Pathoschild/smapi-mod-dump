@@ -4,9 +4,16 @@ More Perks?
 Prevent some NPC's from entering certain areas
 Add action/reaction dialogue
 Add more location dialogue
+Add spouse dialogue
 Bathhouse Gender stuff								- Dependent on "Prevent some NPC's from entering..."
-Fix diagonal walking animation glitches				- Will need to work work on AI behavior for this
+Fix diagonal walking animation glitches				- Mostly fixed. Still get weird backwards sprites every now and then. Less jittery now though.
 Spouse dismissal bug-fixing							- Kinda fixed, but still needs more testing.
+Pet companions? Junimos?
+Dismiss NPC's when going to bed.					- Done!
+No talking when monsters in room in mines			- Done! Might modify this later, but works for now.
+Gates?
+Swarm rooms	not spawning ladders					- Fixed!
+Companions can get stuck on big rocks
 
 Optimize A*
 Optimize helper functions
@@ -25,3 +32,4 @@ Companion Buffs:
 	Sam:		Speed +2															+3 speed? Jukebox function?
 	Sebastian:	Copies Abigail.														Ride his motorcycle?
 	Shane:		Farming +3.															Chickens follow you? Alcohol buffs instead of debuffs?
+

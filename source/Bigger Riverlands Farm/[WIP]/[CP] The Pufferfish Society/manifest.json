@@ -1,0 +1,11 @@
+{
+	"Name": "The Pufferfish Society",
+	"Author": "Jessebot",
+	"Version": "1.2-alpha",
+	"Description": "Get to experience the life and emotions of the pufferfish in the Pufferfish Society",
+	"UniqueID": "Jessebot.PufferfishSociety",
+	"UpdateKeys": [ "Nexus:3079", "Github:JessebotX/StardewMods" ],
+	"ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher",
+	}
+}

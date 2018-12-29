@@ -1,4 +1,11 @@
 # Release notes
+## 1.4.2
+* Updated for the upcoming SMAPI 3.0.
+
+## 1.4.1
+* Updated for Stardew Valley 1.3.29.
+* Fixed mining level 5 professions not getting added.
+
 ## 1.4
 * Updated for Stardew Valley 1.3 (including multiplayer).
 * Added `data.json` to let players override which professions are assigned.

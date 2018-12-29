@@ -4,6 +4,7 @@ all possible professions when you level up, instead of just the one chosen.
 ## Contents
 * [Install](#install)
 * [Use](#use)
+* [Configure](#configure)
 * [Compatibility](#compatibility)
 * [See also](#see-also)
 
@@ -16,6 +17,12 @@ all possible professions when you level up, instead of just the one chosen.
 Just install the mod and play the game. When you level up, all professions will be added to your
 farmer instead of just your chosen one (e.g. both Rancher and Tiller instead of just Rancher). If
 your farmer already leveled up, any profession they're eligible for will be added automatically.
+
+## Configure
+The mod will work fine by default, but you can customise which professions get assigned for each
+skill level by editing the `data.json` file. You generally shouldn't edit it unless you really want
+to change the mod logic though. Your changes will be reset when you update the mod, so you'll need
+to reapply them.
 
 ## Compatibility
 * Works with Stardew Valley 1.3 on Linux/Mac/Windows.

@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using InstantGrowTrees.Framework;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 
 namespace InstantGrowTrees
@@ -31,7 +32,7 @@ namespace InstantGrowTrees
         public override void Entry(IModHelper helper)
         {
             this.Config = helper.ReadConfig<ModConfig>();
-            TimeEvents.AfterDayStarted += this.ReceiveAfterDayStarted;
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
         }
 
 
@@ -41,10 +42,10 @@ namespace InstantGrowTrees
         /****
         ** Event handlers
         ****/
-        /// <summary>The method called when the current day changes.</summary>
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void ReceiveAfterDayStarted(object sender, EventArgs e)
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             // When the player loads a saved game, or after the overnight save,
             // check for any trees that should be grown.
@@ -57,19 +58,48 @@ namespace InstantGrowTrees
         /// <summary>Grow all trees eligible for growth.</summary>
         private void GrowTrees()
         {
-            foreach (GameLocation location in Game1.locations)
+            // collect config
+            bool ageFruitTrees = this.Config.FruitTrees.InstantlyAge;
+            bool growFruitTrees = this.Config.FruitTrees.InstantlyGrow;
+            bool growOtherTrees = this.Config.NonFruitTrees.InstantlyGrow;
+            if (!ageFruitTrees && !growFruitTrees && !growOtherTrees)
+                return;
+
+            // apply
+            foreach (GameLocation location in this.GetLocations())
             {
                 foreach (KeyValuePair<Vector2, TerrainFeature> entry in location.terrainFeatures.Pairs)
                 {
                     Vector2 tile = entry.Key;
                     TerrainFeature feature = entry.Value;
+                    switch (feature)
+                    {
+                        case FruitTree fruitTree:
+                            if (growFruitTrees)
+                                this.GrowFruitTree(fruitTree, location, tile);
+                            if (ageFruitTrees)
+                                this.AgeFruitTree(fruitTree);
+                            break;
 
-                    if (this.Config.RegularTreesInstantGrow && feature is Tree)
-                        this.GrowTree((Tree)feature, location, tile);
-                    if (this.Config.FruitTreesInstantGrow && feature is FruitTree)
-                        GrowFruitTree((FruitTree)feature, location, tile);
+                        case Tree tree:
+                            if (growOtherTrees)
+                                this.GrowTree(tree, location, tile);
+                            break;
+                    }
                 }
             }
+        }
+
+        /// <summary>Get all game locations.</summary>
+        private IEnumerable<GameLocation> GetLocations()
+        {
+            return Game1.locations
+                .Concat(
+                    from location in Game1.locations.OfType<BuildableGameLocation>()
+                    from building in location.buildings
+                    where building.indoors.Value != null
+                    select building.indoors.Value
+                );
         }
 
         /// <summary>Grow a tree if it's eligible for growth.</summary>
@@ -78,12 +108,16 @@ namespace InstantGrowTrees
         /// <param name="tile">The tree's tile position.</param>
         private void GrowTree(Tree tree, GameLocation location, Vector2 tile)
         {
-            if (this.Config.RegularTreesGrowInWinter || !Game1.currentSeason.Equals("winter") || tree.treeType.Value == Tree.palmTree)
-            {
-                // ignore fully-grown trees
-                if (tree.growthStage.Value >= Tree.treeStage)
-                    return;
+            RegularTreeConfig config = this.Config.NonFruitTrees;
 
+            // check if growable
+            if (tree.growthStage.Value >= Tree.treeStage || !this.CanGrowNow(location, config.InstantlyGrowInWinter))
+                return;
+
+            // check growth rules
+            int maxStage = Tree.treeStage;
+            if (!config.InstantlyGrowWhenInvalid)
+            {
                 // ignore trees on nospawn tiles
                 string isNoSpawn = location.doesTileHaveProperty((int)tile.X, (int)tile.Y, "NoSpawn", "Back");
                 if (isNoSpawn != null && (isNoSpawn == "All" || isNoSpawn == "Tree"))
@@ -93,8 +127,7 @@ namespace InstantGrowTrees
                 if (tree.growthStage.Value == Tree.seedStage && location.objects.ContainsKey(tile))
                     return;
 
-                // get max growth stage
-                int maxStage = Tree.treeStage;
+                // stunt tree if blocked
                 foreach (Vector2 surroundingTile in Utility.getSurroundingTileLocationsArray(tile))
                 {
                     // get tree on this tile
@@ -108,10 +141,10 @@ namespace InstantGrowTrees
                         break;
                     }
                 }
-
-                // grow tree to max allowed
-                tree.growthStage.Value = maxStage;
             }
+
+            // grow tree to max allowed
+            tree.growthStage.Value = maxStage;
         }
 
         /// <summary>Grow a fruit tree if it's eligible for growth.</summary>
@@ -120,22 +153,63 @@ namespace InstantGrowTrees
         /// <param name="tile">The tree's tile position.</param>
         private void GrowFruitTree(FruitTree tree, GameLocation location, Vector2 tile)
         {
-            // ignore fully-grown trees
-            if (tree.growthStage.Value >= FruitTree.treeStage)
+            FruitTreeConfig config = this.Config.FruitTrees;
+
+            // check if growable
+            bool isGrown = tree.growthStage.Value >= FruitTree.treeStage;
+            bool isMature = tree.daysUntilMature.Value <= 0;
+            if ((isGrown && isMature) || !this.CanGrowNow(location, config.InstantlyGrowInWinter))
                 return;
 
             // ignore if tree blocked
-            foreach (Vector2 adjacentTile in Utility.getSurroundingTileLocationsArray(tile))
+            if (!config.InstantlyGrowWhenInvalid)
             {
-                if (location.isTileOccupied(adjacentTile) && (!location.terrainFeatures.ContainsKey(tile) || !(location.terrainFeatures[tile] is HoeDirt) || ((HoeDirt)location.terrainFeatures[tile]).crop == null))
-                    return;
+                foreach (Vector2 adjacentTile in Utility.getSurroundingTileLocationsArray(tile))
+                {
+                    bool occupied =
+                        location.isTileOccupied(adjacentTile)
+                        && (
+                            !location.terrainFeatures.ContainsKey(tile)
+                            || !(location.terrainFeatures[tile] is HoeDirt)
+                            || ((HoeDirt)location.terrainFeatures[tile]).crop == null
+                        );
+                    if (occupied)
+                        return;
+                }
             }
 
             // grow tree
-            tree.daysUntilMature.Value = this.Config.FruitTreesInstantAge
-                ? -ModEntry.FruitTreeIridiumDays
-                : 0;
-            tree.growthStage.Value = FruitTree.treeStage;
+            if (!isGrown)
+                tree.growthStage.Value = FruitTree.treeStage;
+            if (!isMature)
+                tree.daysUntilMature.Value = 0;
+        }
+
+        /// <summary>Age a fruit tree if it's eligible for aging.</summary>
+        /// <param name="tree">The tree to grow.</param>
+        private void AgeFruitTree(FruitTree tree)
+        {
+            FruitTreeConfig config = this.Config.FruitTrees;
+
+            // check if ageable
+            if (!config.InstantlyAge || tree.growthStage.Value < FruitTree.treeStage || tree.daysUntilMature.Value <= -ModEntry.FruitTreeIridiumDays)
+                return;
+
+            // age tree
+            tree.daysUntilMature.Value = -ModEntry.FruitTreeIridiumDays;
+        }
+
+        /// <summary>Get whether a tree can grow now for the location.</summary>
+        /// <param name="location">The tree's location.</param>
+        /// <param name="growInWinter">Whether the tree should grow in winter.</param>
+        private bool CanGrowNow(GameLocation location, bool growInWinter)
+        {
+            return
+                growInWinter
+                || Game1.currentSeason != "winter"
+                || location.IsGreenhouse
+                || !location.IsOutdoors
+                || location is Desert;
         }
     }
 }

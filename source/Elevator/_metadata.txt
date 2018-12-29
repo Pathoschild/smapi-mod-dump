@@ -5,9 +5,9 @@ mods:
    Elevator
 
 latest commit:
-   commit c43a996b75bddfa26dc9e5f8d4d5c43716d7b5f2
+   commit 84e07d258660cc598b1d284f9286189bf8a6227f
    Author: Ilyaki <ilyaki.ilyaki@gmail.com>
-   Date:   Mon Nov 19 19:00:09 2018 +0000
+   Date:   Fri Dec 28 15:11:10 2018 +0000
    
-       Update SMAPI version requirement
+       Added SMAPI 3.0 compatibility
    

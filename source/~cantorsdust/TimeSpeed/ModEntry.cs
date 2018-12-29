@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -23,7 +23,7 @@ namespace TimeSpeed
         private readonly TimeHelper TimeHelper = new TimeHelper();
 
         /// <summary>The mod configuration.</summary>
-        private TimeSpeedConfig Config;
+        private ModConfig Config;
 
         /// <summary>Whether time should be frozen everywhere.</summary>
         private bool FrozenGlobally;
@@ -60,26 +60,27 @@ namespace TimeSpeed
         public override void Entry(IModHelper helper)
         {
             // read config
-            this.Config = helper.ReadConfig<TimeSpeedConfig>();
+            this.Config = helper.ReadConfig<ModConfig>();
 
             // add time events
-            this.TimeHelper.WhenTickProgressChanged(this.ReceiveTickProgress);
-            InputEvents.ButtonPressed += this.InputEvents_ButtonPressed;
-            PlayerEvents.Warped += this.PlayerEvents_Warped;
-            SaveEvents.AfterLoad += SaveEvents_AfterLoad;
-            TimeEvents.TimeOfDayChanged += this.TimeEvents_TimeOfDayChanged;
-            TimeEvents.AfterDayStarted += this.TimeEvents_AfterDayStarted;
+            this.TimeHelper.WhenTickProgressChanged(this.OnTickProgressed);
+            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            helper.Events.GameLoop.TimeChanged += this.OnTimeChanged;
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            helper.Events.Player.Warped += this.OnWarped;
 
             // add time freeze/unfreeze notification
             {
                 bool wasPaused = false;
-                GraphicsEvents.OnPreRenderHudEvent += (sender, args) =>
+                helper.Events.Display.RenderingHud += (sender, args) =>
                 {
                     wasPaused = Game1.paused;
                     if (this.Frozen) Game1.paused = true;
                 };
 
-                GraphicsEvents.OnPostRenderHudEvent += (sender, args) =>
+                helper.Events.Display.RenderedHud += (sender, args) =>
                 {
                     Game1.paused = wasPaused;
                 };
@@ -93,28 +94,28 @@ namespace TimeSpeed
         /****
         ** Event handlers
         ****/
-        /// <summary>The method called when the player loads a save.</summary>
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void SaveEvents_AfterLoad(object sender, EventArgs e)
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             if (!Context.IsMainPlayer)
                 this.Monitor.Log("Disabled mod; only works for the main player in multiplayer.", LogLevel.Warn);
         }
 
-        /// <summary>The method called when the day changes.</summary>
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void TimeEvents_AfterDayStarted(object sender, EventArgs e)
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             this.UpdateScaleForDay(Game1.currentSeason, Game1.dayOfMonth);
             this.UpdateSettingsForLocation(Game1.currentLocation);
         }
 
-        /// <summary>The method called when the player presses a button.</summary>
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!this.ShouldEnable || !Context.IsPlayerFree)
                 return;
@@ -128,21 +129,21 @@ namespace TimeSpeed
                 this.ReloadConfig();
         }
 
-        /// <summary>The method called when the player moves to a new location.</summary>
+        /// <summary>Raised after a player warps to a new location.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void PlayerEvents_Warped(object sender, EventArgsPlayerWarped e)
+        private void OnWarped(object sender, WarpedEventArgs e)
         {
-            if (!this.ShouldEnable)
+            if (!this.ShouldEnable || !e.IsLocalPlayer)
                 return;
 
             this.UpdateSettingsForLocation(e.NewLocation);
         }
 
-        /// <summary>The method called when the time of day changes.</summary>
+        /// <summary>Raised after the in-game clock time changes.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void TimeEvents_TimeOfDayChanged(object sender, EventArgsIntChanged e)
+        private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
             if (!this.ShouldEnable)
                 return;
@@ -150,9 +151,18 @@ namespace TimeSpeed
             this.UpdateFreezeForTime(Game1.timeOfDay);
         }
 
-        /// <summary>The method called when the <see cref="Framework.TimeHelper.TickProgress"/> value changes.</summary>
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void ReceiveTickProgress(TickProgressChangedEventArgs e)
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            this.TimeHelper.Update();
+        }
+
+        /// <summary>Raised after the <see cref="Framework.TimeHelper.TickProgress"/> value changes.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnTickProgressed(object sender, TickProgressChangedEventArgs e)
         {
             if (!this.ShouldEnable)
                 return;
@@ -179,7 +189,7 @@ namespace TimeSpeed
         /// <summary>Reload <see cref="Config"/> from the config file.</summary>
         private void ReloadConfig()
         {
-            this.Config = this.Helper.ReadConfig<TimeSpeedConfig>();
+            this.Config = this.Helper.ReadConfig<ModConfig>();
             this.UpdateScaleForDay(Game1.currentSeason, Game1.dayOfMonth);
             this.UpdateSettingsForLocation(Game1.currentLocation);
             this.Notifier.ShortNotify("Time feels differently now...");

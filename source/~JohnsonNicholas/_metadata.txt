@@ -12,9 +12,11 @@ mods:
    Weather Illnesses
 
 latest commit:
-   commit 3c9e04cd3a6223837d7a0341ae74816585ee3386
+   commit 43ebf4fcabf0e8e7d493687f27639f5e7a89c38f
    Author: Nicholas Johnson <johnson.nicholas.h@gmail.com>
-   Date:   Mon Nov 19 23:39:00 2018 -0800
+   Date:   Sat Dec 29 00:35:55 2018 -0800
    
-       We call this, fixing a bad merge..
+       DNT final fix, pending reports. Lunar Disturbances updated to 2.9.3 and work done to get a workaround for the moon. i18n work still pending
+       
+       Updated some text on the API handler to be more clear.
    

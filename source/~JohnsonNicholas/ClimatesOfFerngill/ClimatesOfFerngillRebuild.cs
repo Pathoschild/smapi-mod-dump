@@ -18,7 +18,7 @@ using EnumsNET;
 using PyTK.CustomTV;
 using Harmony;
 using System.Reflection;
-using ClimatesOfFerngillRebuild.Patches;
+using ClimatesOfFerngillRebuild.Patches; 
 
 namespace ClimatesOfFerngillRebuild
 {
@@ -95,8 +95,6 @@ namespace ClimatesOfFerngillRebuild
 
             if (Disabled) return;
 
-            //Harmony patcher
-            HarmonyInstance.DEBUG = true;
             var harmony = HarmonyInstance.Create("koihimenakamura.climatesofferngill");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 

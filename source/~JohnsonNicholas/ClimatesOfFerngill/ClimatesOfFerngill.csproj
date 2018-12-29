@@ -58,6 +58,7 @@
     <Compile Include="Integrations\ISafeLightningAPI.cs" />
     <Compile Include="Patches\GameLocationPatches.cs" />
     <Compile Include="Patches\SGamePatches.cs" />
+    <Compile Include="TestClimate.cs" />
     <Compile Include="WeatherData\WeatherData.cs" />
     <Compile Include="Weathers\FerngillCustomRain.cs" />
     <Compile Include="Weathers\FerngillThunderFrenzy.cs" />

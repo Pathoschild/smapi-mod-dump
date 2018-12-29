@@ -19,12 +19,15 @@ will grow instantly overnight.
 The mod creates a `config.json` file the first time you run it. You can open the file in a text
 editor to configure the mod:
 
-setting                    | effect
-:------------------------- | :-----
-`FruitTreesInstantGrowth`  | Whether fruit trees grow instantly overnight. Default `true`.
-`FruitTreesInstantAge`     | Whether fruit trees age instantly to iridium quality overnight. Default `false`.
-`RegularTreesInstantGrow`  | Whether non-fruit trees grow instantly overnight. Default `true`.
-`RegularTreesGrowInWinter` | Whether non-fruit trees grow instantly in winter. Default `false`.
+group           | setting                    | effect
+:-------------- | :------------------------- | :-----
+`FruitTrees`    | `InstantlyAge`             | Whether fruit trees age instantly to iridium quality overnight. Default `false`.
+&nbsp;          | `InstantlyGrow`            | Whether fruit trees grow instantly overnight. Default `true`.
+&nbsp;          | `InstantlyGrowInWinter`    | Whether fruit trees also grow instantly in winter. Default `true`.
+&nbsp;          | `InstantlyGrowWhenInvalid` | Whether fruit trees also grow instantly even if they normally wouldn't grow (e.g. too close to another tree). Default `false`.
+`NonFruitTrees` | `InstantlyGrow`            | Whether non-fruit trees grow instantly overnight. Default `true`.
+&nbsp;          | `InstantlyGrowInWinter`    | Whether non-fruit trees also grow instantly in winter. Default `true`.
+&nbsp;          | `InstantlyGrowWhenInvalid` | Whether non-fruit trees also grow instantly even if they normally wouldn't grow (e.g. too close to another tree). Default `false`.
 
 ## Compatibility
 * Works with Stardew Valley 1.3 on Linux/Mac/Windows.

@@ -1,5 +1,4 @@
-﻿using System;
-using RecatchLegendaryFish.Framework;
+﻿using RecatchLegendaryFish.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -24,9 +23,9 @@ namespace RecatchLegendaryFish
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            SaveEvents.AfterLoad += this.SaveEvents_AfterLoad;
-            SaveEvents.BeforeSave += this.SaveEvents_BeforeSave;
-            GameEvents.UpdateTick += this.ReceiveUpdateTick;
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            helper.Events.GameLoop.Saving += this.OnSaving;
+            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
         }
 
 
@@ -36,26 +35,26 @@ namespace RecatchLegendaryFish
         /****
         ** Event handlers
         ****/
-        /// <summary>The method called after the player loads the game.</summary>
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void SaveEvents_AfterLoad(object sender, EventArgs e)
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             this.Stash.Clear();
         }
 
-        /// <summary>The method called before the player saves the game.</summary>
+        /// <summary>Raised before the game begins writes data to the save file (except the initial save creation).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void SaveEvents_BeforeSave(object sender, EventArgs e)
+        private void OnSaving(object sender, SavingEventArgs e)
         {
             this.Stash.Restore(); // just in case something weird happens
         }
 
-        /// <summary>The method called when the game updates state.</summary>
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        void ReceiveUpdateTick(object sender, EventArgs e)
+        void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;

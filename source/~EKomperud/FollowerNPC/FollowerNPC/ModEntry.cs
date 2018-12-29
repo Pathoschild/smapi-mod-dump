@@ -49,32 +49,43 @@ namespace FollowerNPC
             //**********************//
 
             // Subscribe to events //
-            ControlEvents.KeyReleased += ControlEvents_KeyReleased;
+            Helper.Events.Input.ButtonReleased += Input_ButtonReleased;
             //**********************//
         }
+
+
         #endregion
 
         #region Event Functions
 
         // Just used for debug commands
-        private void ControlEvents_KeyReleased(object sender, EventArgsKeyPressed e)
+        private void Input_ButtonReleased(object sender, ButtonReleasedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
 
-            if (e.KeyPressed == Microsoft.Xna.Framework.Input.Keys.L)
+            if (e.Button == Microsoft.Xna.Framework.Input.Keys.P.ToSButton())
             {
-                Game1.getCharacterFromName("Penny");
-            }
-
-            else if (e.KeyPressed == Microsoft.Xna.Framework.Input.Keys.K)
-            {
-                GameLocation gl = companionsManager.farmer.currentLocation;
-                foreach (Character c in gl.characters)
+                Netcode.NetCollection<NPC> c = companionsManager.companionAStar.gameLocation.characters;
+                foreach (NPC n in c)
                 {
-                    monitor.Log(c.Name);
+                    monitor.Log(n.Name);
                 }
             }
+
+            //if (e.Button == Microsoft.Xna.Framework.Input.Keys.L.ToSButton())
+            //{
+            //    Game1.getCharacterFromName("Penny");
+            //}
+
+            //else if (e.Button == Microsoft.Xna.Framework.Input.Keys.K.ToSButton())
+            //{
+            //    GameLocation gl = companionsManager.farmer.currentLocation;
+            //    foreach (Character c in gl.characters)
+            //    {
+            //        monitor.Log(c.Name);
+            //    }
+            //}
 
             //else if (e.KeyPressed == Keys.U && spawned)
             //{
@@ -85,9 +96,7 @@ namespace FollowerNPC
             //{
             //    monitor.Log(farmer?.currentLocation.Name + " : " + farmer?.getTileLocation());
             //}
-
         }
-
 
         //private void MenuEvents_MenuClosed(object sender, EventArgsClickableMenuClosed e)
         //{

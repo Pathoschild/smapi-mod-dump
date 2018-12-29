@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/174
-IDs: cantorsdust.AllProfessions, 8c37b1a7-4bfb-4916-9d8a-9533e6363ea3, community.AllProfessions
+IDs: cantorsdust.AllProfessions, community.AllProfessions, 8c37b1a7-4bfb-4916-9d8a-9533e6363ea3
 update keys: Nexus:174, GitHub:cantorsdust/StardewMods

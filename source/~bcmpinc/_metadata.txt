@@ -9,12 +9,13 @@ mods:
    Grass Growth
    Movement Speed
    Tilled Soil Decay
+   Tree Spread
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 083d70ce5fe26e27e3eaf199aa4ccaf8d70481cd
+   commit dfc97d2dae9e3863fa5b9560988fa719091c5218
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Mon Dec 17 16:47:43 2018 +0100
+   Date:   Thu Dec 27 16:23:45 2018 +0100
    
-       Amsll changes to Readme files
+       Added TreeSpread mod
    
