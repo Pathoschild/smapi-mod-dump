@@ -26,18 +26,19 @@ namespace TimeReminder
             Config = helper.ReadConfig<TimeConfig>();
             PrevDate = DateTime.Now;
 
-            GameEvents.OneSecondTick += GameEvents_OneSecondTick;
-            TimeEvents.TimeOfDayChanged += TimeEvents_TimeOfDayChanged;
+            helper.Events.GameLoop.OneSecondUpdateTicked += GameEvents_OneSecondTick;
+            helper.Events.GameLoop.TimeChanged += GameLoop_TimeChanged;
 
             Helper.ConsoleCommands.Add("SetReminder","This sets a one time reminder", SetReminder);
             Helper.ConsoleCommands.Add("ClearAllReminders", "This clears all reminders", ClearAllReminder);
             Helper.ConsoleCommands.Add("SetRReminder", "This sets a recurring reminder", SetRecurringReminder);
         }
 
-        private void TimeEvents_TimeOfDayChanged(object sender, EventArgsIntChanged e)
+        private void GameLoop_TimeChanged(object sender, TimeChangedEventArgs e)
         {
-            if (e.NewInt == OneTimeReminder || e.NewInt == RecurringReminder) { 
-                Game1.addHUDMessage(new HUDMessage($"Reminder: it is {e.NewInt}",Color.OrangeRed,8450f));
+            if (e.NewTime == OneTimeReminder || e.NewTime == RecurringReminder)
+            {
+                Game1.addHUDMessage(new HUDMessage($"Reminder: it is {e.NewTime}", Color.OrangeRed, 8450f));
                 OneTimeReminder = 0;
             }
         }

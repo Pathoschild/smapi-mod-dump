@@ -23,7 +23,6 @@ namespace TwilightShards.LunarDisturbances
         //internal trackers
         private static readonly int cycleLength = 14;
 
-
         //chances for various things
 #pragma warning disable IDE0044 // Add readonly modifier
         private double CropGrowthChance;
@@ -117,8 +116,14 @@ namespace TwilightShards.LunarDisturbances
             if (CurrentPhase == MoonPhase.FullMoon && Dice.NextDoublePositive() <= ModConfig.BadMoonRising && !Game1.isFestival() && !Game1.weddingToday && ModConfig.HazardousMoonEvents)
             {
                 IsBloodMoon = true;
+                DoBloodMoonAlert();
                 Game1.currentLocation.waterColor.Value = BloodMoonWater;
             }
+        }
+
+        internal void DoBloodMoonAlert()
+        {
+            Game1.addHUDMessage(new HUDMessage(LunarDisturbances.Translation.Get("moon-text.hud_message_bloodMoon")));
         }
 
         private static MoonPhase GetLunarPhase(int day)
@@ -209,6 +214,7 @@ namespace TwilightShards.LunarDisturbances
         internal void ForceBloodMoon()
         {
             IsBloodMoon = true;
+            DoBloodMoonAlert();
             Game1.currentLocation.waterColor.Value = Color.PaleVioletRed;
         }
 
@@ -352,31 +358,7 @@ namespace TwilightShards.LunarDisturbances
 
         public string DescribeMoonPhase()
         {
-            switch (this.CurrentPhase)
-            {
-                case MoonPhase.ErrorPhase:
-                    return "Phase Error";
-                case MoonPhase.FirstQuarter:
-                    return "First Quarter";
-                case MoonPhase.FullMoon:
-                    return "Full Moon";
-                case MoonPhase.NewMoon:
-                    return "New Moon";
-                case MoonPhase.ThirdQuarter:
-                    return "Third Quarter";
-                case MoonPhase.WaningCrescent:
-                    return "Waning Crescent";
-                case MoonPhase.WaningGibbeous:
-                    return "Waning Gibbeous";
-                case MoonPhase.WaxingCrescent:
-                    return "Waxing Crescent";
-                case MoonPhase.WaxingGibbeous:
-                    return "Waxing Gibbeous";
-                case MoonPhase.BloodMoon:
-                    return "Blood Moon";
-                default:
-                    return "Text Error";
-            }
+            return DescribeMoonPhase(this.CurrentPhase, LunarDisturbances.Translation);
         }
 
         public int GetMoonRiseTime()

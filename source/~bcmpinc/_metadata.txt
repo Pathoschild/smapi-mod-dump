@@ -13,9 +13,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit dfc97d2dae9e3863fa5b9560988fa719091c5218
+   commit be42a902f5c5b168cb5698f9658255ea4550370b
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Thu Dec 27 16:23:45 2018 +0100
+   Date:   Mon Dec 31 17:40:15 2018 +0100
    
-       Added TreeSpread mod
+       Moved StardewHack library into its own mod.
    

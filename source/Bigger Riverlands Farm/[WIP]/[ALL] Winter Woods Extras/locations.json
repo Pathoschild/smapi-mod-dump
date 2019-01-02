@@ -1,0 +1,25 @@
+{
+	"LoaderVersion": "1.2",
+	"Teleporters": [
+		{
+			"Name": "WinterWoodsService",
+			"Destinations": [
+				{
+					"MapName": "Woods",
+					"TileX": 23,
+					"TileY": 10,
+					"ItemText": "Secret Woods Hot Spring"
+				},
+				{
+					"MapName": "Woods",
+					"TileX": 8,
+					"TileY": 8,
+					"ItemText": "Old Master Cannoli"
+				},
+			],
+		},
+	],
+	"Shops": [
+		"winterwoods.snowdwarf",
+	],
+}

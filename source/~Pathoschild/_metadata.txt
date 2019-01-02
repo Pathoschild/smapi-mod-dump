@@ -17,9 +17,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 596b5b763f73be2b91ab99c562ad9e09b7d3a65f
+   commit 22e272e771e735671c357277f2373f09d94b95ec
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Mon Dec 24 23:54:32 2018 -0500
+   Date:   Tue Jan 1 22:26:06 2019 -0500
    
-       fix typo in readme
+       add silo hay field (#257)
    

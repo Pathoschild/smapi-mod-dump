@@ -1,0 +1,18 @@
+{
+	"Name": "Winter Woods Extras",
+	"Author": "Jessebot",
+	"Version": "1.0",
+	"Description": "Winter Woods Extras adds the shops and teleporter menu",
+	"UniqueID": "Jessebot.WinterWoodsExtras",
+	"MinimumApiVersion": "2.9",
+	"UpdateKeys": [],
+	"ContentPackFor": {
+		"UniqueID": "Entoarox.AdvancedLocationLoader",
+	},
+	"Dependencies": [
+		{
+			"UniqueID": "Jessebot.WinterWoods",
+			"MinimumVersion": "1.0",
+		}
+	],
+}

@@ -1,0 +1,299 @@
+{
+  "ChestsSpawns": [
+    {
+      "tileX": 26,
+      "tileY": 13,
+      "locationName": "BusStop"
+    },
+    {
+      "tileX": 18,
+      "tileY": 52,
+      "locationName": "Town"
+    },
+    {
+      "tileX": 29,
+      "tileY": 67,
+      "locationName": "Town"
+    },
+    {
+      "tileX": 33,
+      "tileY": 6,
+      "locationName": "Saloon"
+    },
+    {
+      "tileX": 11,
+      "tileY": 23,
+      "locationName": "SamHouse"
+    },
+    {
+      "tileX": 5,
+      "tileY": 4,
+      "locationName": "HaleyHouse"
+    },
+    {
+      "tileX": 13,
+      "tileY": 4,
+      "locationName": "HaleyHouse"
+    },
+    {
+      "tileX": 59,
+      "tileY": 99,
+      "locationName": "Town"
+    },
+    {
+      "tileX": 19,
+      "tileY": 4,
+      "locationName": "ManorHouse"
+    },
+    {
+      "tileX": 72,
+      "tileY": 90,
+      "locationName": "Town"
+    },
+    {
+      "tileX": 42,
+      "tileY": 4,
+      "locationName": "ArchaeologyHouse"
+    },
+    {
+      "tileX": 102,
+      "tileY": 69,
+      "locationName": "Town"
+    },
+    {
+      "tileX": 10,
+      "tileY": 27,
+      "locationName": "JojaMart"
+    },
+    {
+      "tileX": 6,
+      "tileY": 27,
+      "locationName": "JojaMart"
+    },
+    {
+      "tileX": 98,
+      "tileY": 4,
+      "locationName": "Town"
+    },
+    {
+      "tileX": 39,
+      "tileY": 13,
+      "locationName": "Town"
+    },
+    {
+      "tileX": 69,
+      "tileY": 11,
+      "locationName": "Town"
+    },
+    {
+      "tileX": 9,
+      "tileY": 11,
+      "locationName": "SebastianRoom"
+    },
+    {
+      "tileX": 9,
+      "tileY": 7,
+      "locationName": "ScienceHouse"
+    },
+    {
+      "tileX": 31,
+      "tileY": 5,
+      "locationName": "Mountain"
+    },
+    {
+      "tileX": 6,
+      "tileY": 24,
+      "locationName": "BathHouse_MensLocker"
+    },
+    {
+      "tileX": 11,
+      "tileY": 22,
+      "locationName": "BathHouse_WomensLocker"
+    },
+    {
+      "tileX": 32,
+      "tileY": 40,
+      "locationName": "Railroad"
+    },
+    {
+      "tileX": 22,
+      "tileY": 6,
+      "locationName": "Mine"
+    },
+    {
+      "tileX": 17,
+      "tileY": 11,
+      "locationName": "Backwoods"
+    },
+    {
+      "tileX": 5,
+      "tileY": 9,
+      "locationName": "FarmCave"
+    },
+    {
+      "tileX": 10,
+      "tileY": 39,
+      "locationName": "Beach"
+    },
+    {
+      "tileX": 13,
+      "tileY": 5,
+      "locationName": "LeahHouse"
+    },
+    {
+      "tileX": 71,
+      "tileY": 48,
+      "locationName": "Forest"
+    },
+    {
+      "tileX": 69,
+      "tileY": 84,
+      "locationName": "Forest"
+    },
+    {
+      "tileX": 36,
+      "tileY": 82,
+      "locationName": "Forest"
+    },
+    {
+      "tileX": 16,
+      "tileY": 76,
+      "locationName": "Forest"
+    },
+    {
+      "tileX": 2,
+      "tileY": 7,
+      "locationName": "WizardHouse"
+    },
+    {
+      "tileX": 3,
+      "tileY": 4,
+      "locationName": "Forest"
+    },
+    {
+      "tileX": 12,
+      "tileY": 7,
+      "locationName": "Woods"
+    },
+    {
+      "tileX": 71,
+      "tileY": 15,
+      "locationName": "Farm"
+    },
+    {
+      "tileX": 45,
+      "tileY": 16,
+      "locationName": "Backwoods"
+    },
+    {
+      "tileX": 60,
+      "tileY": 7,
+      "locationName": "Mountain"
+    },
+    {
+      "tileX": 89,
+      "tileY": 33,
+      "locationName": "Mountain"
+    },
+    {
+      "tileX": 30,
+      "tileY": 12,
+      "locationName": "ScienceHouse"
+    },
+    {
+      "tileX": 88,
+      "tileY": 3,
+      "locationName": "Town"
+    },
+    {
+      "tileX": 12,
+      "tileY": 14,
+      "locationName": "Blacksmith"
+    },
+    {
+      "tileX": 91,
+      "tileY": 104,
+      "locationName": "Town"
+    },
+    {
+      "tileX": 3,
+      "tileY": 5,
+      "locationName": "JoshHouse"
+    },
+    {
+      "tileX": 3,
+      "tileY": 65,
+      "locationName": "Town"
+    },
+    {
+      "tileX": 8,
+      "tileY": 8,
+      "locationName": "Farm"
+    },
+    {
+      "tileX": 35,
+      "tileY": 25,
+      "locationName": "Forest"
+    },
+    {
+      "tileX": 8,
+      "tileY": 6,
+      "locationName": "AnimalShop"
+    },
+    {
+      "tileX": 16,
+      "tileY": 28,
+      "locationName": "Sewer"
+    },
+    {
+      "tileX": 48,
+      "tileY": 46,
+      "locationName": "BugLand"
+    },
+    {
+      "tileX": 17,
+      "tileY": 29,
+      "locationName": "BugLand"
+    },
+    {
+      "tileX": 31,
+      "tileY": 5,
+      "locationName": "BugLand"
+    },
+    {
+      "tileX": 83,
+      "tileY": 38,
+      "locationName": "Beach"
+    },
+    {
+      "tileX": 4,
+      "tileY": 4,
+      "locationName": "SandyHouse"
+    },
+    {
+      "tileX": 3,
+      "tileY": 5,
+      "locationName": "SkullCave"
+    },
+    {
+      "tileX": 6,
+      "tileY": 35,
+      "locationName": "Desert"
+    },
+    {
+      "tileX": 27,
+      "tileY": 27,
+      "locationName": "Backwoods"
+    },
+    {
+      "tileX": 37,
+      "tileY": 18,
+      "locationName": "SeedShop"
+    },
+    {
+      "tileX": 40,
+      "tileY": 6,
+      "locationName": "Forest"
+    }
+  ]
+}

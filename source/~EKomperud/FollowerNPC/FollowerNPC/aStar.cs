@@ -10,10 +10,12 @@ namespace FollowerNPC
     {
 
         #region Constructor & Members
-        public aStar(GameLocation location, string character)
+        public aStar(GameLocation location, Character thisCharacter, Character goalCharacter)
         {
             gameLocation = location;
-            this.character = character;
+            this.thisCharacter = thisCharacter;
+            this.goalCharacter = goalCharacter;
+            relevantCharacters = new List<Character>(2) {thisCharacter, goalCharacter};
         }
 
         public GameLocation gameLocation
@@ -26,8 +28,20 @@ namespace FollowerNPC
             }
         }
 
+        public Character GoalCharacter
+        {
+            get { return goalCharacter; }
+            set
+            {
+                goalCharacter = value;
+                relevantCharacters[1] = value;
+            }
+        }
+
         private GameLocation gl;
-        private string character;
+        private Character thisCharacter;
+        private Character goalCharacter;
+        private List<Character> relevantCharacters;
         private Vector2 dimensions;
         private Vector2 negativeOne = new Vector2(-1, -1);
         private int fullTile = Game1.tileSize;
@@ -41,6 +55,9 @@ namespace FollowerNPC
         #region Public Methods
         public Queue<Vector2> Pathfind(Vector2 start, Vector2 goal)
         {
+            if (GoalCharacter == null)
+                return null;
+
             // Setup
             PriorityQueue open = new PriorityQueue(new Node(null, start));
             Dictionary<Vector2, float> closed = new Dictionary<Vector2, float>();
@@ -158,18 +175,18 @@ namespace FollowerNPC
             //             (fence != null && fence.isGate.Value && (o as Fence).gatePosition.Value == 88));
 
             return gl.isTileOnMap(tile) && 
-                   !isTileOccupiedIgnoreFloorsOverride(tile, character) &&
+                   !isTileOccupiedIgnoreFloorsOverride(tile) &&
                    isTilePassableOverride(new Location((int) tile.X, (int) tile.Y), Game1.viewport) &&
                    (!(gameLocation is Farm)  || !((gameLocation as Farm).getBuildingAt(tile) != null)) &&
                    (!(o != null) || (furn != null && furn.furniture_type.Value == 12) || (fence != null && fence.isGate.Value && (o as Fence).gatePosition.Value == 88));
         }
 
-        public bool isTileOccupiedIgnoreFloorsOverride(Vector2 tileLocation, string characterToIgnore = "")
+        public bool isTileOccupiedIgnoreFloorsOverride(Vector2 tileLocation)
         {
             Microsoft.Xna.Framework.Rectangle tileLocationRect = new Microsoft.Xna.Framework.Rectangle((int)tileLocation.X * 64 + 1, (int)tileLocation.Y * 64 + 1, 62, 62);
             for (int i = 0; i < gameLocation.characters.Count; i++)
             {
-                if (gameLocation.characters[i] != null && !gameLocation.characters[i].Name.Equals(characterToIgnore) && gameLocation.characters[i].GetBoundingBox().Intersects(tileLocationRect))
+                if (gameLocation.characters[i] != null && !thisCharacter.Equals(gameLocation.characters[i]) && !goalCharacter.Equals(gameLocation.characters[i]) && gameLocation.characters[i].GetBoundingBox().Intersects(tileLocationRect))
                 {
                     return true;
                 }

@@ -35,11 +35,12 @@ namespace CustomizableCartRedux
             instance = this;
             Dice = new MersenneTwister();
             OurConfig = helper.ReadConfig<CartConfig>();
-            TimeEvents.AfterDayStarted += SetCartSpawn;
-            PlayerEvents.Warped += PlayerEvents_Warped;
+
+            helper.Events.GameLoop.DayStarted += SetCartSpawn;
+            helper.Events.Player.Warped += LocationMoved;
         }
 
-        private void PlayerEvents_Warped(object sender, EventArgsPlayerWarped e)
+        private void LocationMoved(object sender, WarpedEventArgs e)
         {
             if (!Context.IsMainPlayer)
                 return;

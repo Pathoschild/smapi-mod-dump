@@ -1,10 +1,14 @@
 ﻿{
    "Name": "Craft Counter",
    "Author": "bcmpinc",
-   "Version": "0.6",
+   "Version": "1.0",
    "Description": "Adds a counter to the description of crafting recipes telling how often it has been crafted.",
    "UniqueID": "bcmpinc.CraftCounter",
    "EntryDll": "CraftCounter.dll",
    "MinimumApiVersion": "2.7",
-   "UpdateKeys": ["Nexus:2739"]
+   "UpdateKeys": ["Nexus:2739"],
+   "Dependencies": [{
+      "UniqueID": "bcmpinc.StardewHack",
+      "MinimumVersion": "1.0"
+   }]
 }

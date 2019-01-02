@@ -25,6 +25,7 @@
   <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>..\packages\Lib.Harmony.1.2.0.1\lib\net45\0Harmony.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +44,7 @@
     <ProjectReference Include="..\StardewHack\StardewHack.csproj">
       <Project>{57D4316C-C97C-41ED-A1E8-4737AE1D66AA}</Project>
       <Name>StardewHack</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

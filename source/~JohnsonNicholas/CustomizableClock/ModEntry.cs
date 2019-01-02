@@ -28,7 +28,7 @@ namespace KN.CustomizableClock
         public override void Entry(IModHelper helper)
         {
             ModConfig = helper.ReadConfig<ClockConfig>();
-            TimeEvents.AfterDayStarted += this.TimeEvents_AfterDayStarted;
+            helper.Events.GameLoop.DayStarted += TimeEvents_AfterDayStarted;
         }
 
         /*********

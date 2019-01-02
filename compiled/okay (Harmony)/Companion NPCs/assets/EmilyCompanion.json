@@ -1,9 +1,9 @@
 {
-  "Companion": "Hey @, I've got free time today!#$q 575/576 emilyCompanion_followup#Want to go find something fun to do?#$r 575 10 emilyCompanion_yes#Absolutely! I have some cool things to show you too!#$r 576 0 emilyCompanion_no#I'm sorry, but today's actually bad for me.",
+  "Companion": "Hey @, I've got free time today!#$q 4563725/4563726 emilyCompanion_followup#Want to go find something fun to do?#$r 4563725 10 emilyCompanion_yes#Absolutely! I have some cool things to show you too!#$r 4563726 0 emilyCompanion_no#I'm sorry, but today's actually bad for me.",
   "emilyCompanion_yes": "I knew I could count on you for a good time! Lead the way.$h",
   "emilyCompanion_no": "No worries. I'm off on Sundays so let me know if you're free next week!",
-  "emilyCompanion_followup": "#$p 575 #So thanks for coming with me! There's so many beautiful things to see around here.|I'm working nearly every night so I know it's hard to find time to take a break.",
-  "CompanionActions": "Hey @, what's up? #$q 500/501 CompanionFollowup#What's up?#$r 500 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 501 0 CompanionActionContinue#Nothing, just taking a breather.",
+  "emilyCompanion_followup": "#$p 4563725 #So thanks for coming with me! There's so many beautiful things to see around here.|I'm working nearly every night so I know it's hard to find time to take a break.",
+  "CompanionActions": "Hey @, what's up.#$q 50000000/50000001 CompanionFollowup#What's up?#$r 50000000 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 50000001 0 CompanionActionContinue#Nothing, just taking a breather.",
   "CompanionFollowup": ":)",
   "CompanionActionEnd": "Alright, well thanks for hanging out with me today!$h",
   "CompanionActionContinue": "Cool.",

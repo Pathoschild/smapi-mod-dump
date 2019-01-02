@@ -59,6 +59,9 @@ private readonly Regex[] IgnoreIncorrectNames =
 	new Regex(@"^SMAPIHealthBarMod.+\.zip$", RegexOptions.Compiled), // Enemy Health Bars
 	new Regex(@"^SMAPISprinklerMod.+\.zip$", RegexOptions.Compiled), // Better Sprinklers
 	new Regex(@"^(?:SMAPIChestLabelSystem.+\.zip|zip\.exe)$", RegexOptions.Compiled), // Chest Label System
+	
+	// old code
+	new Regex(@"^oldversions$", RegexOptions.Compiled)
 };
 
 /// <summary>The source URLs to skip when cloning repositories. This should match the GitHub repository name or custom URL specified on the wiki.</summary>

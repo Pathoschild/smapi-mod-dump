@@ -1,10 +1,10 @@
 {
-  "Companion": "Hey @! I was just thinking about going for a walk around the valley.#$q 650/651 leahCompanion_followup#Where are you headed?#$r 650 15 leahCompanion_yes#Walking around a bit too. You feel like coming with?#$r 651 0 leahCompanion_errands#I have a few errands I need to get done today.#$r 651 0 leahCompanion_boring#Eh, nowhere too interesting I think.",
+  "Companion": "Hey @! I was just thinking about going for a walk around the valley.#$q 6949975/6949976 leahCompanion_followup#Where are you headed?#$r 6949975 15 leahCompanion_yes#Walking around a bit too. You feel like coming with?#$r 6949976 0 leahCompanion_errands#I have a few errands I need to get done today.#$r 6949976 0 leahCompanion_boring#Eh, nowhere too interesting I think.",
   "leahCompanion_yes": "Sounds like we both want the same things in life! Let's go.",
   "leahCompanion_errands": "Oh well. Let me know when you've got some free time and we'll hang out!",
   "leahCompanion_boring": "I doubt that. You should try to find interesting things wherever you are!",
-  "leahCompanion_followup": "#$p 650 #All we need is a bottle of wine to top this day off!$h|I find good forage year-round so there's always a reason to take a walk!",
-  "CompanionActions": "Hey @, what's up? #$q 500/501 CompanionFollowup#What's up?#$r 500 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 501 0 CompanionActionContinue#Nothing, just taking a breather.",
+  "leahCompanion_followup": "#$p 6949975 #All we need is a bottle of wine to top this day off!$h|I find good forage year-round so there's always a reason to take a walk!",
+  "CompanionActions": "Hey @, what's up.#$q 50000000/50000001 CompanionFollowup#What's up?#$r 50000000 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 50000001 0 CompanionActionContinue#Nothing, just taking a breather.",
   "CompanionFollowup": ":)",
   "CompanionActionEnd": "Alright, well thanks for hanging out with me today!$h",
   "CompanionActionContinue": "Cool.",

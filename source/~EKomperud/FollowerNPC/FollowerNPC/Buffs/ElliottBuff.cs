@@ -7,7 +7,7 @@ namespace FollowerNPC.Buffs
     {
         public ElliottBuff(Farmer farmer) : base(farmer)
         {
-            buff = new Buff(0, 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 30, "", "");
+            buff = new Buff(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 30, "", "");
             buff.description =
                 "Truly a descendant of Thoreau himself, there's nobody quite"+
                 Environment.NewLine+

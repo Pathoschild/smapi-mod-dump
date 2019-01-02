@@ -25,6 +25,7 @@
   "generic.price-for-stack": "{{price}}ouros por um acúmulo de {{count}}",
 
   // types
+  "type.building": "Building", // TODO
   "type.fruit-tree": "Arvore Frutífera",
   "type.map-tile": "Azulejo de mapa",
   "type.monster": "Monstro",
@@ -169,6 +170,17 @@
   "animal.complaints.not-petted": "Não recebeu carinho hoje",
   "animal.complaints.wild-animal-attack": "Foi atacado por animais selvagens durante a noite",
 
+  // building lookup labels
+  "building.construction": "Construction", // TODO
+  "building.owner": "Owner", // TODO
+  "building.stored-hay": "Stored hay", // TODO
+
+  // building lookup values
+  "building.construction.summary": "ready on {{date}}", // TODO
+  "building.owner.none": "no owner", // TODO
+  "building.stored-hay.summary-one-silo": "{{hayCount}} hay (max capacity: {{maxHay}})", // TODO
+  "building.stored-hay.summary-multiple-silos": "{{hayCount}} hay in {{siloCount}} silos (max capacity: {{maxHay}})", // TODO
+
   // fruit tree lookup labels
   "fruit-tree.complaints": "Reclamações",
   "fruit-tree.name": "árvore de {{fruitName}}",
@@ -219,6 +231,8 @@
   "item.loves-this": "Ama isso",
   "item.needed-for": "Preciso para",
   "item.number-owned": "Possui",
+  "item.number-cooked": "Cooked", // TODO
+  "item.number-crafted": "Crafted", // TODO
   "item.recipes": "Receitas",
   "item.see-also": "Veja também",
   "item.sells-for": "vende por",
@@ -236,11 +250,14 @@
   "item.needed-for.full-shipment": "conquista da embarcação cheia (embarque um)",
   "item.needed-for.polyculture": "conquista da policultura (embarque  mais {{count}} )",
   "item.needed-for.full-collection": "conquista do envio completo (doe um para o museu)",
+  "item.needed-for.gourmet-chef": "gourmet chef achievement (cook {{recipes}})", // TODO
+  "item.needed-for.craft-master": "craft master achievement (make {{recipes}})", // TODO
   "item.sells-to.shipping-box": "caixa de embarcação",
   "item.fence-health.gold-clock": "Não decai com o Relógio de Ouro",
   "item.fence-health.summary": "{{percent}}% (aproximadamente{{count}} dias restantes)",
   "item.recipes.entry": "{{name}} (precisa {{count}})",
   "item.number-owned.summary": "seu próprio {{count}} desses",
+  "item.number-crafted.summary": "you made {{count}} of these", // TODO
 
   // monster lookup labels
   "monster.invincible": "Invencível",

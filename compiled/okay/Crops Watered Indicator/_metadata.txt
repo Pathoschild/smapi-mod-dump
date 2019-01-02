@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3200
+IDs: tylerthrailkill.cropswateredindicator
+update keys: Nexus:3200, GitHub:snowe2010/starbound-mods

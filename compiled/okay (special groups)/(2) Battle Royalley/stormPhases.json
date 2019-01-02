@@ -1,0 +1,1028 @@
+{
+  "Phases": [
+    [
+      {
+        "Locations": [
+          {
+            "LocationName": "Railroad",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "ScienceHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "SebastianRoom",
+            "Direction": "DownToUp"
+          },
+          {
+            "LocationName": "Mine",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "AdventureGuild",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "FishShop",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "ElliottHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "BugLand",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "HarveyRoom",
+            "Direction": "UpToDown"
+          }
+        ],
+        "Delay": "00:00:15",
+        "Duration": "00:00:15"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "AnimalShop",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "LeahHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "Woods",
+            "Direction": "LeftToRight"
+          },
+          {
+            "LocationName": "WizardHouse",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "HaleyHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "JoshHouse",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "ManorHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "Saloon",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "SeedShop",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 384,
+              "Y1": 1900,
+              "X2": 384,
+              "Y2": 1900
+            }
+          },
+          {
+            "LocationName": "SamHouse",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "JojaMart",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Blacksmith",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "ArchaeologyHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "Trailer",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Trailer_Big",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "CommunityCenter",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 2048,
+              "Y1": 1600,
+              "X2": 2176,
+              "Y2": 1600
+            }
+          },
+          {
+            "LocationName": "Beach",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 2368,
+              "Y1": -100,
+              "X2": 2560,
+              "Y2": -100
+            }
+          },
+          {
+            "LocationName": "Sewer",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 1056,
+              "Y1": 704,
+              "X2": 1056,
+              "Y2": 704
+            }
+          },
+          {
+            "LocationName": "Mountain",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 896,
+              "Y1": 2750,
+              "X2": 1088,
+              "Y2": 2750
+            }
+          },
+          {
+            "LocationName": "Hospital",
+            "Direction": "UpToDown"
+          }
+        ],
+        "Delay": "00:00:25",
+        "Duration": "00:00:25"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "FarmCave",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Forest",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 4288,
+              "Y1": -100,
+              "X2": 4608,
+              "Y2": -100
+            }
+          },
+          {
+            "LocationName": "Town",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": -100,
+              "Y1": 3392,
+              "X2": -100,
+              "Y2": 3520
+            }
+          }
+        ],
+        "Delay": "00:00:10",
+        "Duration": "00:00:30"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "Farm",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 5150,
+              "Y1": -100,
+              "X2": 5150,
+              "Y2": 1250
+            }
+          }
+        ],
+        "Delay": "00:00:05",
+        "Duration": "00:00:25"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "BusStop",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": -100,
+              "Y1": 384,
+              "X2": -100,
+              "Y2": 576
+            }
+          }
+        ],
+        "Delay": "00:00:07",
+        "Duration": "00:00:15"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "SkullCave",
+            "Direction": "LeftToRight"
+          },
+          {
+            "LocationName": "Club",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "SandyHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "Backwoods",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 1472,
+              "Y1": 1792,
+              "X2": 1472,
+              "Y2": 2048
+            }
+          }
+        ],
+        "Delay": "00:00:10",
+        "Duration": "00:00:15"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "Desert",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 2176,
+              "Y1": 512,
+              "X2": 2624,
+              "Y2": 896
+            }
+          }
+        ],
+        "Delay": "00:00:15",
+        "Duration": "00:00:25"
+      }
+    ],
+    [
+      {
+        "Locations": [
+          {
+            "LocationName": "Railroad",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "SandyHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "SkullCave",
+            "Direction": "LeftToRight"
+          },
+          {
+            "LocationName": "Club",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "FarmCave",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Desert",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 3100,
+              "Y1": 1540,
+              "X2": 3100,
+              "Y2": 1850
+            }
+          },
+          {
+            "LocationName": "Tunnel",
+            "Direction": "LeftToRight"
+          }
+        ],
+        "Delay": "00:00:15",
+        "Duration": "00:00:15"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "Mine",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "AdventureGuild",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "ScienceHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "SebastianRoom",
+            "Direction": "DownToUp"
+          },
+          {
+            "LocationName": "WizardHouse",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Woods",
+            "Direction": "LeftToRight"
+          },
+          {
+            "LocationName": "AnimalShop",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "LeahHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "FishShop",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "ElliottHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "Backwoods",
+            "Direction": "LeftToRight"
+          },
+          {
+            "LocationName": "Farm",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 5150,
+              "Y1": -100,
+              "X2": 5150,
+              "Y2": 1250
+            }
+          }
+        ],
+        "Delay": "00:00:10",
+        "Duration": "00:00:35"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "BusStop",
+            "Direction": "LeftToRight"
+          },
+          {
+            "LocationName": "Mountain",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 896,
+              "Y1": 2750,
+              "X2": 1088,
+              "Y2": 2750
+            }
+          },
+          {
+            "LocationName": "Beach",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 2368,
+              "Y1": -100,
+              "X2": 2560,
+              "Y2": -100
+            }
+          },
+          {
+            "LocationName": "Forest",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 7700,
+              "Y1": 1450,
+              "X2": 7700,
+              "Y2": 1820
+            }
+          },
+          {
+            "LocationName": "BugLand",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "JojaMart",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Blacksmith",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "ArchaeologyHouse",
+            "Direction": "RightToLeft"
+          }
+        ],
+        "Delay": "00:00:07",
+        "Duration": "00:00:40"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "Sewer",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 1056,
+              "Y1": 704,
+              "X2": 1056,
+              "Y2": 704
+            }
+          },
+          {
+            "LocationName": "Trailer",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Trailer_Big",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "CommunityCenter",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 2048,
+              "Y1": 1600,
+              "X2": 2176,
+              "Y2": 1600
+            }
+          },
+          {
+            "LocationName": "HaleyHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "JoshHouse",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "SamHouse",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "ManorHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "HarveyRoom",
+            "Direction": "UpToDown"
+          }
+        ],
+        "Delay": "00:00:10",
+        "Duration": "00:00:25"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "Town",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 1400,
+              "Y1": 3990,
+              "X2": 2380,
+              "Y2": 4754
+            }
+          },
+          {
+            "LocationName": "Saloon",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "SeedShop",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 384,
+              "Y1": 1900,
+              "X2": 384,
+              "Y2": 1900
+            }
+          },
+          {
+            "LocationName": "Hospital",
+            "Direction": "UpToDown"
+          }
+        ],
+        "Delay": "00:00:10",
+        "Duration": "00:00:35"
+      }
+    ],
+    [
+      {
+        "Locations": [
+          {
+            "LocationName": "SandyHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "SkullCave",
+            "Direction": "LeftToRight"
+          },
+          {
+            "LocationName": "Club",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Desert",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 3100,
+              "Y1": 1540,
+              "X2": 3100,
+              "Y2": 1850
+            }
+          },
+          {
+            "LocationName": "SebastianRoom",
+            "Direction": "DownToUp"
+          }
+        ],
+        "Delay": "00:00:15",
+        "Duration": "00:00:15"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "Railroad",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Mine",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "AdventureGuild",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "ScienceHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "Tent",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "FishShop",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "ElliottHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "Backwoods",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Tunnel",
+            "Direction": "LeftToRight"
+          },
+          {
+            "LocationName": "HarveyRoom",
+            "Direction": "UpToDown"
+          }
+        ],
+        "Delay": "00:00:20",
+        "Duration": "00:00:15"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "BugLand",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "FarmCave",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "BusStop",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "Hospital",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "SeedShop",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 384,
+              "Y1": 1900,
+              "X2": 384,
+              "Y2": 1900
+            }
+          },
+          {
+            "LocationName": "Saloon",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "ManorHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "JoshHouse",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Trailer",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Trailer_Big",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "CommunityCenter",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 2048,
+              "Y1": 1600,
+              "X2": 2176,
+              "Y2": 1600
+            }
+          },
+          {
+            "LocationName": "JojaMart",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Blacksmith",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "ArchaeologyHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "Beach",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 2368,
+              "Y1": -100,
+              "X2": 2560,
+              "Y2": -100
+            }
+          },
+          {
+            "LocationName": "Mountain",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 896,
+              "Y1": 2750,
+              "X2": 1088,
+              "Y2": 2750
+            }
+          }
+        ],
+        "Delay": "00:00:30",
+        "Duration": "00:00:35"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "AnimalShop",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Town",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": -100,
+              "Y1": 5700,
+              "X2": -100,
+              "Y2": 5950
+            }
+          },
+          {
+            "LocationName": "SamHouse",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "HaleyHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "Sewer",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 120,
+              "Y1": 3200,
+              "X2": 312,
+              "Y2": 3200
+            }
+          },
+          {
+            "LocationName": "Farm",
+            "Direction": "UpToDown"
+          }
+        ],
+        "Delay": "00:00:10",
+        "Duration": "00:00:30"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "WizardHouse",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "LeahHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "Forest",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": -100,
+              "Y1": 320,
+              "X2": -100,
+              "Y2": 520
+            }
+          }
+        ],
+        "Delay": "00:00:10",
+        "Duration": "00:00:35"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "Woods",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 288,
+              "Y1": 384,
+              "X2": 934,
+              "Y2": 864
+            }
+          }
+        ],
+        "Delay": "00:00:10",
+        "Duration": "00:00:25"
+      }
+    ],
+    [
+      {
+        "Locations": [
+          {
+            "LocationName": "SandyHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "SkullCave",
+            "Direction": "LeftToRight"
+          },
+          {
+            "LocationName": "Club",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Desert",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 3100,
+              "Y1": 1540,
+              "X2": 3100,
+              "Y2": 1850
+            }
+          },
+          {
+            "LocationName": "SebastianRoom",
+            "Direction": "DownToUp"
+          },
+          {
+            "LocationName": "Tunnel",
+            "Direction": "LeftToRight"
+          }
+        ],
+        "Delay": "00:00:10",
+        "Duration": "00:00:15"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "Railroad",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Mine",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "AdventureGuild",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "ScienceHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "Tent",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "FishShop",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "ElliottHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "FarmCave",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "BusStop",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "HarveyRoom",
+            "Direction": "UpToDown"
+          }
+        ],
+        "Delay": "00:00:15",
+        "Duration": "00:00:18"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "AnimalShop",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Farm",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "WizardHouse",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "LeahHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "Woods",
+            "Direction": "LeftToRight"
+          },
+          {
+            "LocationName": "Blacksmith",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "ArchaeologyHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "JojaMart",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Hospital",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "SeedShop",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 384,
+              "Y1": 1900,
+              "X2": 384,
+              "Y2": 1900
+            }
+          },
+          {
+            "LocationName": "Saloon",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "JoshHouse",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Trailer",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "Trailer_Big",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "CommunityCenter",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 2048,
+              "Y1": 1600,
+              "X2": 2176,
+              "Y2": 1600
+            }
+          },
+          {
+            "LocationName": "Beach",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 2368,
+              "Y1": -100,
+              "X2": 2560,
+              "Y2": -100
+            }
+          },
+          {
+            "LocationName": "Mountain",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 896,
+              "Y1": 2750,
+              "X2": 1088,
+              "Y2": 2750
+            }
+          },
+          {
+            "LocationName": "Backwoods",
+            "Direction": "UpToDown"
+          }
+        ],
+        "Delay": "00:00:15",
+        "Duration": "00:00:30"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "Forest",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 6047,
+              "Y1": 6244,
+              "X2": 6047,
+              "Y2": 6800
+            }
+          },
+          {
+            "LocationName": "Town",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 2212,
+              "Y1": 6144,
+              "X2": 2212,
+              "Y2": 6144
+            }
+          },
+          {
+            "LocationName": "SamHouse",
+            "Direction": "UpToDown"
+          },
+          {
+            "LocationName": "HaleyHouse",
+            "Direction": "RightToLeft"
+          },
+          {
+            "LocationName": "ManorHouse",
+            "Direction": "RightToLeft"
+          }
+        ],
+        "Delay": "00:00:10",
+        "Duration": "00:00:45"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "Sewer",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 225,
+              "Y1": 1044,
+              "X2": 225,
+              "Y2": 1300
+            }
+          }
+        ],
+        "Delay": "00:00:10",
+        "Duration": "00:00:20"
+      },
+      {
+        "Locations": [
+          {
+            "LocationName": "BugLand",
+            "Direction": "CloseIn",
+            "CloseInRectangle": {
+              "X1": 1536,
+              "Y1": 200,
+              "X2": 2464,
+              "Y2": 712
+            }
+          }
+        ],
+        "Delay": "00:00:10",
+        "Duration": "00:00:30"
+      }
+    ]
+  ]
+}

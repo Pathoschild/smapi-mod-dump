@@ -1,0 +1,10 @@
+{
+   "Name": "StarDewValleyWeatherMachine",
+   "Author": "SixthTitan",
+   "Version": "0.0.2",
+   "Description": "The scientists at Stardew Valley Laboratory made a break through in climate engineering and have discovered a way to bring the weather conditions from the real world into Stardew Valley, now you really can experience the real world from the comfort of your couch.",
+   "UniqueID": "SixthTitan.StarDewValleyWeatherMachine",
+   "EntryDll": "StarDewValleyWeatherMachine.dll",
+   "MinimumApiVersion": "2.9",
+   "UpdateKeys": [ "Nexus:3203" ]
+}

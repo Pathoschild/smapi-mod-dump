@@ -5,9 +5,9 @@ mods:
    Bigger Riverlands Farm
 
 latest commit:
-   commit 89c5d9001140f71e1178470962088a848d02ae2c
+   commit f9ce31e559a09a840a5b34044c064ec50cceb688
    Author: JessebotX <43657800+JessebotX@users.noreply.github.com>
-   Date:   Fri Dec 28 11:28:56 2018 -0800
+   Date:   Tue Jan 1 19:15:13 2019 -0800
    
-       ...
+       manifest added
    

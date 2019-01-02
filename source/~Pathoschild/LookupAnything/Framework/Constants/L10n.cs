@@ -72,6 +72,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Constants
         /// <summary>Lookup subject types.</summary>
         public static class Types
         {
+            /// <summary>A value like <c>Building</c>.</summary>
+            public const string Building = "type.building";
+
             /// <summary>A value like <c>{{fruitName}} Tree</c>.</summary>
             public const string FruitTree = "type.fruit-tree";
 
@@ -173,6 +176,37 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Constants
 
             /// <summary>A value like <c>hasn't been petted today</c>.</summary>
             public const string ComplaintsNotPetted = "animal.complaints.not-petted";
+        }
+
+        /// <summary>building lookup translations.</summary>
+        public static class Building
+        {
+            /****
+            ** Labels
+            ****/
+            /// <summary>A value like <c>Construction</c>.</summary>
+            public const string Construction = "building.construction";
+
+            /// <summary>A value like <c>Owner</c>.</summary>
+            public const string Owner = "building.owner";
+
+            /// <summary>A value like <c>Stored hay</c>.</summary>
+            public const string StoredHay = "building.stored-hay";
+
+            /****
+            ** Values
+            ****/
+            /// <summary>A value like <c>ready on {{date}}</c>.</summary>
+            public const string ConstructionSummary = "building.construction.summary";
+
+            /// <summary>A value like <c>no owner</c>.</summary>
+            public const string OwnerNone = "building.owner.none";
+
+            /// <summary>A value like <c>{{hayCount}} hay (max capacity: {{maxHay}})</c>.</summary>
+            public const string StoredHaySummaryOneSilo = "building.stored-hay.summary-one-silo";
+
+            /// <summary>A value like <c>{{hayCount}} hay in {{siloCount}} silos (max capacity: {{maxHay}})</c>.</summary>
+            public const string StoredHaySummaryMultipleSilos = "building.stored-hay.summary-multiple-silos";
         }
 
         /// <summary>Fruit tree lookup translations.</summary>
@@ -318,6 +352,12 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Constants
             /// <summary>A value like <c>Owned</c>.</summary>
             public const string Owned = "item.number-owned";
 
+            /// <summary>A value like <c>Cooked</c>.</summary>
+            public const string Cooked = "item.number-cooked";
+
+            /// <summary>A value like <c>Crafted</c>.</summary>
+            public const string Crafted = "item.number-crafted";
+
             /// <summary>A value like <c>See also</c>.</summary>
             public const string SeeAlso = "item.see-also";
 
@@ -357,6 +397,12 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Constants
             /// <summary>A value like <c>full collection achievement (donate one to museum)</c>.</summary>
             public const string NeededForFullCollection = "item.needed-for.full-collection";
 
+            /// <summary>A value like <c>gourmet chef achievement (cook {{recipes}})</c>.</summary>
+            public const string NeededForGourmetChef = "item.needed-for.gourmet-chef";
+
+            /// <summary>A value like <c>craft master achievement (make {{recipes}})</c>.</summary>
+            public const string NeededForCraftMaster = "item.needed-for.craft-master";
+
             /// <summary>A value like <c>shipping box</c>.</summary>
             public const string SellsToShippingBox = "item.sells-to.shipping-box";
 
@@ -371,6 +417,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Constants
 
             /// <summary>A value like <c>you own {{count}} of these</c>.</summary>
             public const string OwnedSummary = "item.number-owned.summary";
+
+            /// <summary>A value like <c>you made {{count}} of these</c>.</summary>
+            public const string CraftedSummary = "item.number-crafted.summary";
         }
 
         /// <summary>Monster lookup translations.</summary>

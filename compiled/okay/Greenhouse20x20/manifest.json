@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Greenhouse20x20",
+  "Author": "sirloinmeatt",
+  "Version": "1.0.0",
+  "Description": "Increases Greenhouse size to 20x20",
+  "UniqueID": "sirloinmeatt.Greenhouse20x20",
+  "EntryDll": "Greenhouse20x20.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": []
+}

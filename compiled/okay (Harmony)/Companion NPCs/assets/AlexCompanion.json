@@ -1,9 +1,9 @@
 {
-  "Companion": "I've been spending most of my free time working out recently.#$q 525/526 alexCompanion_followup#Maybe I should do something else...?#$r 525 10 alexCompanion_yes#How about you hang out with me today?#$r 526 5 alexCompanion_no#How about you read that book for a change?",
+  "Companion": "I've been spending most of my free time working out recently.#$q 3016650/3016651 alexCompanion_followup#Maybe I should do something else...?#$r 3016650 10 alexCompanion_yes#How about you hang out with me today?#$r 3016651 5 alexCompanion_no#How about you read that book for a change?",
   "alexCompanion_yes": "Good idea. We'll be the ultimate team here in Pelican town!$h",
   "alexCompanion_no": "I suppose I really should stop procrastinating.",
-  "alexCompanion_followup": "#$p 525 #Which means I'll have no problem running around or fighting monsters!||But I did pick up a book on workout physiology the other day!",
-  "CompanionActions": "Hey @, what's up? #$q 500/501 CompanionFollowup#What's up?#$r 500 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 501 0 CompanionActionContinue#Nothing, just taking a breather.",
+  "alexCompanion_followup": "#$p 3016650 #Which means I'll have no problem running around or fighting monsters!||But I did pick up a book on workout physiology the other day!",
+  "CompanionActions": "Hey @, what's up.#$q 50000000/50000001 CompanionFollowup#What's up?#$r 50000000 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 50000001 0 CompanionActionContinue#Nothing, just taking a breather.",
   "CompanionFollowup": ":)",
   "CompanionActionEnd": "Alright, well thanks for hanging out with me today!$h",
   "CompanionActionContinue": "Cool.",

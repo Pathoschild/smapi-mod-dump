@@ -1,0 +1,10 @@
+﻿{
+  	"Name": "Health & Stamina Regeneration",
+  	"Author": "Jessebot",
+  	"Version": "1.0",
+  	"Description": "Health and Stamina will regenerate overtime",
+  	"UniqueID": "Jessebot.HealthStaminaRegen",
+  	"MinimumApiVersion": "2.10",
+  	"EntryDLL": "HealthStaminaRegen.DLL",
+  	"UpdateKeys": [],
+}

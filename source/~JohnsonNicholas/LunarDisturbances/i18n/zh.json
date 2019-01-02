@@ -1,0 +1,26 @@
+﻿{
+  //Lunar Messages
+  "moon-text.phase-full": "满月",
+  "moon-text.phase-firstqrt": "上弦月",
+  "moon-text.phase-thirdqrt": "下弦月",
+  "moon-text.phase-waningcres": "渐衰残月",
+  "moon-text.phase-waxingcres": "蛾眉月",
+  "moon-text.phase-waninggibb": "亏凸月",
+  "moon-text.phase-waxinggibb": "盈凸月",
+  "moon-text.phase-new": "新月",
+  "moon-text.error": "错误",
+  "moon-text.phase-blood": "血月",
+
+
+  "moon-text.solareclipse": "看起来一场罕见的日食会让天空一整天都处于黑暗之中！",
+
+  "moon-text.moonrise": "月亮升起来了！今天的月相是{{moonPhase}}。",
+  "moon-text.moonriseBefore6": "月亮升起来了！今天的月相是{{moonPhase}}。月亮是在{{riseTime}}升起的。",
+  "moon-text.moonset": "月亮落下了！今天的月相是{{moonPhase}}。",
+  "moon-text.hud_message_full": "今天是满月！沙滩上可能有更多的物品，但鬼魂可能在附近...",
+  "moon-text.hud_message_bloodMoon": "是血月！！ 小心，因为每个人都会变得暴躁，而且怪物到处都是！",
+  "moon-text.hud_message_new": "今天是新月！沙滩上的物品可能比平常更少...",
+  "moon-text.fullmoon_eff": "满月的力量正帮助{{cropsAffected}}生长...",
+  "moon-text.newmoon_eff": "新月的力量使{{cropsAffected}}生长得更慢了...",
+  "moon-desc.desc_moonphase": "目前的月相：{{moonPhase}}"
+}

@@ -25,6 +25,7 @@
   "generic.price-for-stack": "{{price}}з. за пачку из {{count}} шт.",
 
   // types
+  "type.building": "Building", // TODO
   "type.fruit-tree": "Фруктовое дерево",
   "type.map-tile": "Тайл",
   "type.monster": "Монстр",
@@ -169,6 +170,17 @@
   "animal.complaints.not-petted": "не проявлена забота сегодня",
   "animal.complaints.wild-animal-attack": "атакован диким животным этой ночью",
 
+  // building lookup labels
+  "building.construction": "Construction", // TODO
+  "building.owner": "Owner", // TODO
+  "building.stored-hay": "Stored hay", // TODO
+
+  // building lookup values
+  "building.construction.summary": "ready on {{date}}", // TODO
+  "building.owner.none": "no owner", // TODO
+  "building.stored-hay.summary-one-silo": "{{hayCount}} hay (max capacity: {{maxHay}})", // TODO
+  "building.stored-hay.summary-multiple-silos": "{{hayCount}} hay in {{siloCount}} silos (max capacity: {{maxHay}})", // TODO
+
   // fruit tree lookup labels
   "fruit-tree.complaints": "Жалобы",
   "fruit-tree.name": "{{fruitName}}",
@@ -219,6 +231,8 @@
   "item.loves-this": "Это любят",
   "item.needed-for": "Нужно для",
   "item.number-owned": "Принадлежит",
+  "item.number-cooked": "Cooked", // TODO
+  "item.number-crafted": "Crafted", // TODO
   "item.recipes": "Рецепты",
   "item.see-also": "Также смотрите",
   "item.sells-for": "Продать за",
@@ -236,11 +250,14 @@
   "item.needed-for.full-shipment": "достижения Мастер-груз (1 шт.)",
   "item.needed-for.polyculture": "достижения Севооборот ({{count}} шт. или больше)",
   "item.needed-for.full-collection": "достижения Полная коллекция (пожертвовать музею)",
+  "item.needed-for.gourmet-chef": "gourmet chef achievement (cook {{recipes}})", // TODO
+  "item.needed-for.craft-master": "craft master achievement (make {{recipes}})", // TODO
   "item.sells-to.shipping-box": "Ящик отгрузки",
   "item.fence-health.gold-clock": "не разрушается (Золотые часы)",
   "item.fence-health.summary": "{{percent}}% (сломается через {{count}} дн.)",
   "item.recipes.entry": "{{name}} ({{count}} шт.)",
   "item.number-owned.summary": "вам принадлежит {{count}} шт.",
+  "item.number-crafted.summary": "you made {{count}} of these", // TODO
 
   // monster lookup labels
   "monster.invincible": "Неузявимый",

@@ -61,22 +61,60 @@ namespace FollowerNPC
         // Just used for debug commands
         private void Input_ButtonReleased(object sender, ButtonReleasedEventArgs e)
         {
-            if (!Context.IsWorldReady)
+            if (!Context.IsWorldReady || companionsManager == null)
                 return;
 
-            if (e.Button == Microsoft.Xna.Framework.Input.Keys.P.ToSButton())
+            if (e.Button == Microsoft.Xna.Framework.Input.Keys.B.ToSButton())
             {
-                Netcode.NetCollection<NPC> c = companionsManager.companionAStar.gameLocation.characters;
-                foreach (NPC n in c)
+                if (companionsManager.companion != null || Game1.dialogueUp)
                 {
-                    monitor.Log(n.Name);
+                    monitor.Log("Dismiss your companion and close the dialogue before attempting a cleanup!");
+                    return;
                 }
-            }
+                Farmer f = companionsManager.farmer;
+                f.DialogueQuestionsAnswered.Remove(592800);
+                f.DialogueQuestionsAnswered.Remove(592801);
 
-            //if (e.Button == Microsoft.Xna.Framework.Input.Keys.L.ToSButton())
-            //{
-            //    Game1.getCharacterFromName("Penny");
-            //}
+                f.DialogueQuestionsAnswered.Remove(3016650);
+                f.DialogueQuestionsAnswered.Remove(3016651);
+
+                f.DialogueQuestionsAnswered.Remove(5964000);
+                f.DialogueQuestionsAnswered.Remove(5964001);
+
+                f.DialogueQuestionsAnswered.Remove(4563725);
+                f.DialogueQuestionsAnswered.Remove(4563726);
+
+                f.DialogueQuestionsAnswered.Remove(4736775);
+                f.DialogueQuestionsAnswered.Remove(4736776);
+
+                f.DialogueQuestionsAnswered.Remove(7298075);
+                f.DialogueQuestionsAnswered.Remove(7298076);
+
+                f.DialogueQuestionsAnswered.Remove(6949975);
+                f.DialogueQuestionsAnswered.Remove(6949976);
+
+                f.DialogueQuestionsAnswered.Remove(9249200);
+                f.DialogueQuestionsAnswered.Remove(9249201);
+
+                f.DialogueQuestionsAnswered.Remove(7385000);
+                f.DialogueQuestionsAnswered.Remove(7385001);
+
+                f.DialogueQuestionsAnswered.Remove(7443575);
+                f.DialogueQuestionsAnswered.Remove(7443576);
+
+                f.DialogueQuestionsAnswered.Remove(241000);
+                f.DialogueQuestionsAnswered.Remove(241001);
+
+                f.DialogueQuestionsAnswered.Remove(1630425);
+                f.DialogueQuestionsAnswered.Remove(1630426);
+
+                f.DialogueQuestionsAnswered.Remove(500);
+                f.DialogueQuestionsAnswered.Remove(501);
+
+                f.DialogueQuestionsAnswered.Remove(50000000);
+                f.DialogueQuestionsAnswered.Remove(50000001);
+                monitor.Log("Cleanup finished!");
+            }
 
             //else if (e.Button == Microsoft.Xna.Framework.Input.Keys.K.ToSButton())
             //{
@@ -214,6 +252,8 @@ namespace FollowerNPC
         /// </summary>
         #region isCollidingPosition
         static public bool flag;
+        static public string bypass = "NPC";
+        static public string name;
 
         static public void Prefix(GameLocation __instance, Rectangle position, xTile.Dimensions.Rectangle viewport, bool isFarmer, int damagesFarmer, bool glider, Character character, bool pathfinding, bool projectile = false, bool ignoreCharacterRequirement = false)
         {
@@ -222,13 +262,20 @@ namespace FollowerNPC
                 && character.Name != null
                 && character.Name.Equals(companion.Name)
                 && !character.eventActor)
-                character.eventActor = flag = true;
+            {
+                flag = true;
+                name = character.Name;
+                character.Name = bypass;
+            }
         }
 
         static public void Postfix(GameLocation __instance, Rectangle position, xTile.Dimensions.Rectangle viewport, bool isFarmer, int damagesFarmer, bool glider, Character character, bool pathfinding, bool projectile = false, bool ignoreCharacterRequirement = false)
         {
             if (flag)
-                character.eventActor = flag = false;
+            {
+                flag = false;
+                character.Name = name;
+            }
         }
         #endregion
 
@@ -273,105 +320,12 @@ namespace FollowerNPC
     /// </summary>
     class DebugPatches
     {
-        static public NPC testPC;
-        static public bool debugging = false;
+        private static int count;
 
-        static public bool Prefix(NPC __instance, int timeOfDay)
+        static public void Postfix()
         {
-            if (debugging && __instance.Name.Equals("Penny"))
-            {
-                debugCheckSchedule(Game1.timeOfDay);
-                return false;
-            }
-            return true;
-        }
-
-        public static void debug(NPC n)
-        {
-            if (n != null)
-            {
-                testPC = n;
-                debugging = true;
-            }
-            else
-            {
-                testPC = null;
-                debugging = false;
-            }
-        }
-
-        public static void debugCheckSchedule(int timeOfDay)
-        {
-            testPC.updatedDialogueYet = false;
-            typeof(NPC).GetField("extraDialogueMessageToAddThisMorning", BindingFlags.NonPublic | BindingFlags.Instance)
-                .SetValue(testPC, null);
-            //testPC.extraDialogueMessageToAddThisMorning = null;
-            if (testPC.ignoreScheduleToday)
-            {
-                return;
-            }
-            if (testPC.Schedule != null)
-            {
-                SchedulePathDescription possibleNewDirections;
-                int time2Try = (int)typeof(NPC).GetField("scheduleTimeToTry", BindingFlags.NonPublic | BindingFlags.Instance)
-                    .GetValue(testPC);
-                testPC.Schedule.TryGetValue((time2Try == 9999999) ? timeOfDay : time2Try, out possibleNewDirections);
-                if (possibleNewDirections != null)
-                {
-                    bool walkingInSquare = (bool)typeof(NPC).GetField("isWalkingInSquare", BindingFlags.NonPublic | BindingFlags.Instance)
-                        .GetValue(testPC);
-                    Rectangle lastCrossroad = (Rectangle)typeof(NPC).GetField("lastCrossroad", BindingFlags.NonPublic | BindingFlags.Instance)
-                        .GetValue(testPC);
-                    Point prevEndPoint = (Point)typeof(NPC).GetField("previousEndPoint", BindingFlags.NonPublic | BindingFlags.Instance)
-                        .GetValue(testPC);
-                    if (!testPC.isMarried() && (!walkingInSquare || (lastCrossroad.Center.X / 64 != prevEndPoint.X && lastCrossroad.Y / 64 != prevEndPoint.Y)))
-                    {
-                        Point arg_A0_0 = prevEndPoint;
-                        if (!prevEndPoint.Equals(Point.Zero) && !prevEndPoint.Equals(testPC.getTileLocationPoint()))
-                        {
-                            if (time2Try == 9999999)
-                            {
-                                typeof(NPC).GetField("scheduleTimeToTry", BindingFlags.NonPublic | BindingFlags.Instance)
-                                    .SetValue(testPC, timeOfDay);
-                                return;
-                            }
-                            return;
-                        }
-                    }
-
-                    FieldInfo d2nL =
-                        typeof(NPC).GetField("directionsToNewLocation",
-                            BindingFlags.NonPublic | BindingFlags.Instance);
-                    d2nL.SetValue(testPC, possibleNewDirections);
-                    typeof(NPC).GetMethod("prepareToDisembarkOnNewSchedulePath",
-                        BindingFlags.NonPublic | BindingFlags.Instance).Invoke(testPC, null);
-                    if (testPC.Schedule == null)
-                    {
-                        return;
-                    }
-
-                    SchedulePathDescription d2nLValue = (SchedulePathDescription)d2nL.GetValue(testPC);
-                    if (d2nLValue != null && d2nLValue.route != null && d2nLValue.route.Count > 0 && (Math.Abs(testPC.getTileLocationPoint().X - d2nLValue.route.Peek().X) > 1 || Math.Abs(testPC.getTileLocationPoint().Y - d2nLValue.route.Peek().Y) > 1) && testPC.temporaryController == null)
-                    {
-                        typeof(NPC).GetField("scheduleTimeToTry", BindingFlags.NonPublic | BindingFlags.Instance)
-                            .SetValue(testPC, 9999999);
-                        return;
-                    }
-                    object[] parameters = new object[] { d2nLValue.endOfRouteBehavior, d2nLValue.endOfRouteMessage };
-                    testPC.controller = new PathFindController(d2nLValue.route, testPC, Utility.getGameLocationOfCharacter(testPC))
-                    {
-                        finalFacingDirection = d2nLValue.facingDirection,
-                        endBehaviorFunction = (PathFindController.endBehavior)typeof(NPC).GetMethod("getRouteEndBehaviorFunction", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(testPC, parameters)
-                    };
-                    typeof(NPC).GetField("scheduleTimeToTry", BindingFlags.NonPublic | BindingFlags.Instance)
-                        .SetValue(testPC, 9999999);
-                    if (d2nLValue != null && d2nLValue.route != null)
-                    {
-                        typeof(NPC).GetField("previousEndPoint", BindingFlags.NonPublic | BindingFlags.Instance)
-                            .SetValue(testPC, ((d2nLValue.route.Count > 0) ? d2nLValue.route.Last() : Point.Zero));
-                    }
-                }
-            }
+            count++;
+            ModEntry.monitor.Log(count.ToString());
         }
     }
 

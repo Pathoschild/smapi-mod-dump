@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI_States\AI_StateAggroEnemy.cs" />
+    <Compile Include="AI_States\AI_StateFollowCharacter.cs" />
+    <Compile Include="AI_States\AI_StateMachine.cs" />
     <Compile Include="aStar.cs" />
     <Compile Include="Buffs\AbigailBuff.cs" />
     <Compile Include="Buffs\AlexBuff.cs" />

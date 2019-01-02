@@ -10,6 +10,7 @@ using StardewValley.Menus;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using Microsoft.Xna.Framework;
+using FollowerNPC.AI_States;
 
 namespace FollowerNPC
 {
@@ -37,36 +38,16 @@ namespace FollowerNPC
         // Companion Objects //
         public NPC companion;
         public CompanionBuff companionBuff;
+        public AI_StateMachine companionAI;
         // ***************** //
 
         // Companion Parameters //
-        public int companionSwitchDirectionSpeed;
-        public int companionFacingDirection;
         public int companionHeartThreshold;
-        public float companionFollowThreshold;
-        public float companionDecelerateThreshold;
-        public float companionCurrentMovespeed;
         // ******************** //
-
-        // Companion Movement Memory //
-        public Vector2 companionLastMovementDirection;
-        public Vector2 companionLastFrameVelocity;
-        public Vector2 companionLastFramePosition;
-        public Vector2 companionLastFrameMovement;
-        public Vector2 animationUpdateSum;
-        public bool companionMovedLastFrame;
-        // ************************* //
 
         // Other //
         public int companionWarpTimer;
         // ***** //
-
-        // Companion A* //
-        public aStar companionAStar;
-        public Queue<Vector2> companionPath;
-        public Vector2 companionPathCurrentNode;
-        public float companionPathingNodeGoalTolerance;
-        // ************ //
 
         // Companion Rescheduling //
         public Point companionRescheduleDestinationPoint;
@@ -91,11 +72,7 @@ namespace FollowerNPC
         public Vector2 farmerLastTile;
         // ************** //
 
-        // Constants //
-        public Vector2 negativeOne = new Vector2(-1, -1);
-        public int fullTile = Game1.tileSize;
-        public int halfTile = Game1.tileSize / 2;
-        // ********* //
+        private float f;
 
         public CompanionsManager()
         {
@@ -107,9 +84,7 @@ namespace FollowerNPC
             // ************************* //
 
             // Define Companion Parameters //
-            companionFollowThreshold = 2.25f * Game1.tileSize;
-            companionDecelerateThreshold = 1.75f * Game1.tileSize;
-            companionPathingNodeGoalTolerance = 5f;
+            
             companionHeartThreshold = ModEntry.config.heartThreshold;
             // *************************** //
 
@@ -121,9 +96,6 @@ namespace FollowerNPC
             ModEntry.modHelper.Events.GameLoop.TimeChanged += GameLoop_TimeChanged;
             ModEntry.modHelper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
             ModEntry.modHelper.Events.GameLoop.DayEnding += GameLoop_DayEnding;
-            ModEntry.modHelper.Events.World.DebrisListChanged += World_DebrisListChanged;
-            ModEntry.modHelper.Events.World.ObjectListChanged += World_ObjectListChanged;
-            ModEntry.modHelper.Events.World.TerrainFeatureListChanged += World_TerrainFeatureListChanged;
             ModEntry.modHelper.Events.World.NpcListChanged += World_NpcListChanged;
         }
 
@@ -136,18 +108,12 @@ namespace FollowerNPC
             if (!Context.IsWorldReady || !(companion != null) || !(farmer != null))
                 return;
 
-            if (companion != null)
+
+            if (companion != null && companionAI != null && companionAI.currentState != null)
             {
-                companion.farmerPassesThrough = true;
-                PathfindingNodeUpdateCheck();
-                MovementAndAnimationUpdate();
+                companionAI.currentState.Update(e);
                 if (companionBuff != null)
                     companionBuff.Update();
-            }
-
-            if (e.IsMultipleOf(15))
-            {
-                PathfindingRemakeCheck();
             }
         }
 
@@ -161,18 +127,19 @@ namespace FollowerNPC
 
         private void Player_Warped(object sender, WarpedEventArgs e)
         {
-            if (!Context.IsWorldReady || !(companion != null) || !(farmer != null))
+            if (!Context.IsWorldReady || !(companion != null) || !(farmer != null) || companion.currentLocation == null)
                 return;
 
-            companionAStar.gameLocation = farmer.currentLocation;
-            if (!farmer.isRidingHorse())
+            if (!farmer.isRidingHorse() && farmer.currentLocation.Equals(e.NewLocation))
             {
                 Game1.warpCharacter(companion, farmer.currentLocation, farmer.getTileLocation());
                 handleCompanionLocationSpecificDialogue();
             }
             else
             {
-                DelayedWarp(null, Point.Zero, 100, new Action(handleCompanionLocationSpecificDialogue));
+                WarpButWaitForFarmer(e.NewLocation.Name, Point.Zero,
+                    new Action(handleCompanionLocationSpecificDialogue));
+                //DelayedWarp(null, Point.Zero, 100, new Action(handleCompanionLocationSpecificDialogue));
             }
         }
 
@@ -265,30 +232,6 @@ namespace FollowerNPC
             EndOfDayDismissCompanion();
         }
 
-        private void World_DebrisListChanged(object sender, DebrisListChangedEventArgs e)
-        {
-            if (!Context.IsWorldReady || !(companion != null) || !(farmer != null))
-                return;
-
-            PathfindingRemakeCheck();
-        }
-
-        private void World_ObjectListChanged(object sender, ObjectListChangedEventArgs e)
-        {
-            if (!Context.IsWorldReady || !(companion != null) || !(farmer != null))
-                return;
-
-            PathfindingRemakeCheck();
-        }
-
-        private void World_TerrainFeatureListChanged(object sender, TerrainFeatureListChangedEventArgs e)
-        {
-            if (!Context.IsWorldReady || !(companion != null) || !(farmer != null))
-                return;
-
-            PathfindingRemakeCheck();
-        }
-
         private void World_NpcListChanged(object sender, NpcListChangedEventArgs e)
         {
             if (!Context.IsWorldReady || !(companion != null) || !(farmer != null))
@@ -296,219 +239,6 @@ namespace FollowerNPC
 
             CheckForSwarmRoomLadderSpawn(e);
             CheckForCombatWithheldDialogue(e);
-        }
-
-        #endregion
-
-        #region Movement & Animation
-
-        /// <summary>
-        /// Remakes the white box's path if the farmer has changed tiles since the last time
-        /// this function was called. (Every quarter second as of right now)
-        /// </summary>
-        private void PathfindingRemakeCheck()
-        {
-            Vector2 farmerCurrentTile = farmer.getTileLocation();
-
-            if (farmerLastTile != farmerCurrentTile)
-            {
-                companionPath = companionAStar.Pathfind(companion.getTileLocation(), farmerCurrentTile);
-                if (companion.getTileLocation() != companionPathCurrentNode)
-                    companionPathCurrentNode = companionPath != null && companionPath.Count != 0 ? companionPath.Dequeue() : negativeOne;
-            }
-
-            farmerLastTile = farmerCurrentTile;
-        }
-
-        /// <summary>
-        /// Iterates to the next goal node in the white box's current path if the current
-        /// goal node has been reached since the last time this function was called.
-        /// (Every 1/60 of a second as of right now)
-        /// </summary>
-        private void PathfindingNodeUpdateCheck()
-        {
-            if (companionPathCurrentNode != negativeOne && companionPath != null)
-            {
-                Point w = companion.GetBoundingBox().Center;
-                Point n = new Point(((int)companionPathCurrentNode.X * fullTile) + halfTile, ((int)companionPathCurrentNode.Y * Game1.tileSize) + halfTile);
-                Vector2 nodeDiff = new Vector2(n.X, n.Y) - new Vector2(w.X, w.Y);
-                float nodeDiffLen = nodeDiff.Length();
-                if (nodeDiffLen <= companionPathingNodeGoalTolerance)
-                {
-                    if (companionPath.Count == 0)
-                    {
-                        companionPath = null;
-                        companionPathCurrentNode = negativeOne;
-                        return;
-                    }
-                    companionPathCurrentNode = companionPath.Dequeue();
-                    n = new Point(((int)companionPathCurrentNode.X * fullTile) + halfTile, ((int)companionPathCurrentNode.Y * Game1.tileSize) + halfTile);
-                    nodeDiff = new Vector2(n.X, n.Y) - new Vector2(w.X, w.Y);
-                    nodeDiffLen = nodeDiff.Length();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Provides updates to the companion's movement.
-        /// </summary>
-        private void MovementAndAnimationUpdate()
-        {
-            Point f = farmer.GetBoundingBox().Center;
-            Point c = companion.GetBoundingBox().Center;
-            Vector2 companionBoundingBox = new Vector2(c.X, c.Y);
-            companionLastFrameMovement = companionBoundingBox - companionLastFramePosition;
-            
-            Vector2 diff = new Vector2(f.X, f.Y) - new Vector2(c.X, c.Y);
-            float diffLen = diff.Length();
-            companionCurrentMovespeed = GetMovementSpeedBasedOnDistance(diffLen);
-            if (companionCurrentMovespeed > 0 && companionPathCurrentNode != negativeOne)
-            {
-                Point n = new Point(((int)companionPathCurrentNode.X * fullTile) + halfTile, ((int)companionPathCurrentNode.Y * fullTile) + halfTile);
-                Vector2 nodeDiff = new Vector2(n.X, n.Y) - new Vector2(c.X, c.Y);
-                float nodeDiffLen = nodeDiff.Length();
-                if (nodeDiffLen <= companionPathingNodeGoalTolerance)
-                    return;
-                nodeDiff /= nodeDiffLen;
-
-                companion.xVelocity = nodeDiff.X * companionCurrentMovespeed;
-                companion.yVelocity = -nodeDiff.Y * companionCurrentMovespeed;
-                if (companion.xVelocity != 0 && companion.yVelocity != 0)
-                {
-                    companion.xVelocity *= 1.2645f;
-                    companion.yVelocity *= 1.2645f;
-                }
-                HandleWallSliding();
-                companionLastFrameVelocity = new Vector2(companion.xVelocity, companion.yVelocity);
-                companionLastFramePosition = new Vector2(companion.GetBoundingBox().Center.X, companion.GetBoundingBox().Center.Y);
-
-                animationUpdateSum += new Vector2(companion.xVelocity, -companion.yVelocity);
-                AnimationSubUpdate();
-                companion.MovePosition(Game1.currentGameTime, Game1.viewport, companion.currentLocation);
-                companionLastMovementDirection = companionLastFrameVelocity / companionLastFrameVelocity.Length();
-
-                companionMovedLastFrame = true;
-            }
-            else if (companionMovedLastFrame)
-            {
-                companion.Halt();
-                companion.Sprite.faceDirectionStandard(GetFacingDirectionFromMovement(new Vector2(companionLastMovementDirection.X, -companionLastMovementDirection.Y)));
-                companionMovedLastFrame = false;
-            }
-        }
-
-        private float GetMovementSpeedBasedOnDistance(float distanceFromFarmer)
-        {
-            if (distanceFromFarmer > companionFollowThreshold)
-            {
-                return farmer.getMovementSpeed();
-            }
-            else if (distanceFromFarmer > companionDecelerateThreshold)
-            {
-                return companionCurrentMovespeed - 0.075f;
-            }
-            return 0;
-        }
-
-        /// <summary>
-        /// Provides updates to the companion's animation;
-        /// </summary>
-        private void AnimationSubUpdate()
-        {
-            if (++companionSwitchDirectionSpeed == 5)
-            {
-                companionFacingDirection = GetFacingDirectionFromMovement(animationUpdateSum);
-                animationUpdateSum = Vector2.Zero;
-                companionSwitchDirectionSpeed = 0;
-            }
-
-            if (companionFacingDirection >= 0)
-            {
-                companion.faceDirection(companionFacingDirection);
-                SetMovementDirectionAnimation(companionFacingDirection);
-            }
-            
-        }
-
-        /// <summary>
-        /// Allows the Companion to "slide" along walls instead of getting stuck on them
-        /// </summary>
-        private void HandleWallSliding()
-        {
-            if (companionLastFrameVelocity != Vector2.Zero && companionLastFrameMovement == Vector2.Zero &&
-                (companion.xVelocity != 0 || companion.yVelocity != 0))
-            {
-                Rectangle wbBB = companion.GetBoundingBox();
-                int ts = Game1.tileSize;
-
-                if (companion.xVelocity != 0)
-                {
-                    int velocitySign = Math.Sign(companion.xVelocity) * 5;
-                    int leftOrRight = ((companion.xVelocity > 0 ? wbBB.Right : wbBB.Left) + velocitySign) / ts;
-                    bool[] xTiles = new bool[3];
-                    xTiles[0] = companionAStar.IsWalkableTile(new Vector2(leftOrRight, wbBB.Top / ts));
-                    xTiles[1] = companionAStar.IsWalkableTile(new Vector2(leftOrRight, wbBB.Center.Y / ts));
-                    xTiles[2] = companionAStar.IsWalkableTile(new Vector2(leftOrRight, wbBB.Bottom / ts));
-                    foreach (bool b in xTiles)
-                    {
-                        if (!b)
-                            companion.xVelocity = 0;
-                    }
-                }
-
-                if (companion.yVelocity != 0)
-                {
-                    int velocitySign = Math.Sign(companion.yVelocity) * 5;
-                    int topOrBottom = ((companion.yVelocity < 0 ? wbBB.Bottom : wbBB.Top) - velocitySign) / ts;
-                    bool[] yTiles = new bool[3];
-                    yTiles[0] = companionAStar.IsWalkableTile(new Vector2(wbBB.Left / ts, topOrBottom));
-                    yTiles[1] = companionAStar.IsWalkableTile(new Vector2(wbBB.Center.X / ts, topOrBottom));
-                    yTiles[2] = companionAStar.IsWalkableTile(new Vector2(wbBB.Right / ts, topOrBottom));
-                    foreach (bool b in yTiles)
-                    {
-                        if (!b)
-                            companion.yVelocity = 0;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Sets the proper animation for the Companion based on their direction.
-        /// </summary>
-        private void SetMovementDirectionAnimation(int dir)
-        {
-            switch (dir)
-            {
-                case 0:
-                    companion.SetMovingOnlyUp();
-                    companion.Sprite.AnimateUp(Game1.currentGameTime, 0, ""); break;
-                case 1:
-                    companion.SetMovingOnlyRight();
-                    companion.Sprite.AnimateRight(Game1.currentGameTime, 0, ""); break;
-                case 2:
-                    companion.SetMovingOnlyDown();
-                    companion.Sprite.AnimateDown(Game1.currentGameTime, 0, ""); break;
-                case 3:
-                    companion.SetMovingOnlyLeft();
-                    companion.Sprite.AnimateLeft(Game1.currentGameTime, 0, ""); break;
-            }
-        }
-
-        /// <summary>
-        /// Returns an int 0, 1, 2, or 3, representing the direction the Companion should face 
-        /// based on their current velocity. North is 0, and the rest follow clockwise.
-        /// </summary>
-        private int GetFacingDirectionFromMovement(Vector2 movement)
-        {
-            if (movement == Vector2.Zero)
-                return -1;
-            int dir = 2;
-            if (Math.Abs(movement.X) > Math.Abs(movement.Y))
-                dir = movement.X > 0 ? 1 : 3;
-            else if (Math.Abs(movement.X) < Math.Abs(movement.Y))
-                dir = movement.Y > 0 ? 2 : 0;
-            return dir;
         }
 
         #endregion
@@ -668,21 +398,24 @@ namespace FollowerNPC
             if (farmer.DialogueQuestionsAnswered.Contains(cdi.recruitYesID))
             {
                 companion = potentialCompanion;
-                companionAStar = new aStar(farmer.currentLocation, name);
+
+                companionAI = new AI_StateMachine(this);
+
                 companionBuff = CompanionBuff.InitializeBuffFromCompanionName(name, farmer);
                 currentCompanionVisitedLocations = new Dictionary<string, bool>();
                 Patches.companion = potentialCompanion;
                 companion.faceTowardFarmerTimer = 0;
+                cdi.recruitDialogue = new Dialogue(npcDialogueScripts[name]["Companion"], potentialCompanion);
+                potentialCompanion.CurrentDialogue.Push(cdi.recruitDialogue);
+                companionStates[name] = CompanionionshipState.recruitFollowupDialoguePushed;
             }
             // Don't recruit if the farmer didn't say 'yes' in the Recruit Dialogue
             else if (farmer.dialogueQuestionsAnswered.Contains(cdi.recruitYesID + 1))
             {
+                // Do remove the answer, but DON'T repush the dialogue
                 farmer.dialogueQuestionsAnswered.Remove(cdi.recruitYesID + 1);
             }
 
-            cdi.recruitDialogue = new Dialogue(npcDialogueScripts[name]["Companion"], potentialCompanion);
-            potentialCompanion.CurrentDialogue.Push(cdi.recruitDialogue);
-            companionStates[name] = CompanionionshipState.recruitFollowupDialoguePushed;
         }
 
         /// <summary>
@@ -695,7 +428,8 @@ namespace FollowerNPC
             if (companion != null && companion.CurrentDialogue.Count == 0 && combatWithheldDialogue.Count == 0)
             {
                 bool hbk = (bool)typeof(NPC).GetField("hasBeenKissedToday", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(companion);
-                if (farmer.spouse.Equals(companion.Name) && farmer.getFriendshipHeartLevelForNPC(companion.Name) > 9 && !hbk)
+                // check spouse for null
+                if (farmer.spouse != null && farmer.spouse.Equals(companion.Name) && farmer.getFriendshipHeartLevelForNPC(companion.Name) > 9 && !hbk)
                     return;
                 if (!companionDialogueInfos.TryGetValue(companion.Name, out CompanionDialogueInfo cdi))
                 {
@@ -741,6 +475,12 @@ namespace FollowerNPC
                 string dialogueValue;
                 if (companion.Dialogue.TryGetValue(dialogueKey, out dialogueValue))
                 {
+                    CompanionDialogueInfo cdi = companionDialogueInfos[companion.Name];
+                    farmer.dialogueQuestionsAnswered.Remove(cdi.recruitYesID);
+                    farmer.dialogueQuestionsAnswered.Remove(cdi.recruitYesID + 1);
+                    farmer.dialogueQuestionsAnswered.Remove(cdi.actionDismissID);
+                    farmer.dialogueQuestionsAnswered.Remove(cdi.actionDismissID + 1);
+
                     while (companion.CurrentDialogue.Count != 0)
                         companion.CurrentDialogue.Pop();
                     companion.CurrentDialogue.Push(companionDialogueInfos[companion.Name].automaticDismissDialogue);
@@ -754,7 +494,8 @@ namespace FollowerNPC
         /// </summary>
         private void DismissCompanion(string name)
         {
-            companionAStar = null;
+            companionAI.Dispose();
+            companionAI = null;
             companionBuff.RemoveAndDisposeCompanionBuff();
             companionBuff = null;
             companion.Schedule = GetCompanionSchedule(Game1.dayOfMonth);
@@ -782,7 +523,13 @@ namespace FollowerNPC
         /// </summary>
         private void EndOfDayDismissCompanion()
         {
-            companionAStar = null;
+            CompanionDialogueInfo cdi = companionDialogueInfos[companion.Name];
+            farmer.dialogueQuestionsAnswered.Remove(cdi.recruitYesID);
+            farmer.dialogueQuestionsAnswered.Remove(cdi.recruitYesID + 1);
+            farmer.dialogueQuestionsAnswered.Remove(cdi.actionDismissID);
+            farmer.dialogueQuestionsAnswered.Remove(cdi.actionDismissID + 1);
+            companionAI.Dispose();
+            companionAI = null;
             companionBuff.RemoveAndDisposeCompanionBuff();
             companionBuff = null;
             companion.faceTowardFarmerTimer = 0;
@@ -871,17 +618,26 @@ namespace FollowerNPC
         private CompanionDialogueInfo GenerateCompanionDialogueInfo(string name)
         {
             NPC n = Game1.getCharacterFromName(name);
-            Dialogue rd = new Dialogue(npcDialogueScripts[name]["Companion"], n);
-            Dialogue ad = new Dialogue(npcDialogueScripts[name]["CompanionActions"], n);
+            string companionRecruitScript = npcDialogueScripts[name]["Companion"];
+            string companionActionScript = npcDialogueScripts[name]["CompanionActions"];
+            Dialogue rd = new Dialogue(companionRecruitScript, n);
+            Dialogue ad = new Dialogue(companionActionScript, n);
             Dialogue autoDismiss = new Dialogue(npcDialogueScripts[name]["CompanionAutomaticDismissal"], n);
-            return new CompanionDialogueInfo()
-            {
-                recruitDialogue = rd,
-                recruitYesID = GetYesResponseID(rd),
-                actionDialogue = ad,
-                actionDismissID = GetYesResponseID(ad),
-                automaticDismissDialogue = autoDismiss
-            };
+            CompanionDialogueInfo cdi = new CompanionDialogueInfo();
+            cdi.recruitDialogue = rd;
+            cdi.recruitYesID = GetYesResponseID(rd);
+            cdi.actionDialogue = ad;
+            cdi.actionDismissID = GetYesResponseID(ad);
+            cdi.automaticDismissDialogue = autoDismiss;
+            return cdi;
+            //return new CompanionDialogueInfo()
+            //{
+            //    recruitDialogue = rd,
+            //    recruitYesID = GetYesResponseID(rd),
+            //    actionDialogue = ad,
+            //    actionDismissID = GetYesResponseID(ad),
+            //    automaticDismissDialogue = autoDismiss
+            //};
         }
 
         /// <summary>
@@ -895,7 +651,20 @@ namespace FollowerNPC
             await Task.Run(() => Timer(milliseconds));
             location = location != null ? location : farmer.currentLocation.Name;
             tileLocation = tileLocation != Point.Zero ? tileLocation : farmer.getTileLocationPoint();
-            Game1.warpCharacter(companion, location, tileLocation);
+            if (companion.currentLocation !=  null)
+                Game1.warpCharacter(companion, location, tileLocation);
+            afterWarpAction.Invoke();
+        }
+
+        private async void WarpButWaitForFarmer(String location, Point tileLocation, Action afterWarpAction)
+        {
+            await Task.Run(() => Timer(50));
+            while (farmer.currentLocation.Name != location)
+                await Task.Run(() => Timer(15));
+            location = location != null ? location : farmer.currentLocation.Name;
+            tileLocation = tileLocation != Point.Zero ? tileLocation : farmer.getTileLocationPoint();
+            //if (companion.currentLocation != null)
+                Game1.warpCharacter(companion, location, tileLocation);
             afterWarpAction.Invoke();
         }
 

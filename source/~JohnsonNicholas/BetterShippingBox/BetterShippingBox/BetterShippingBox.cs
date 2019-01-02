@@ -10,7 +10,7 @@ namespace BetterShippingBox
     {
         public override void Entry(IModHelper helper)
         {
-            helper.Events.Display.MenuChanged += Display_MenuChanged; ;
+            helper.Events.Display.MenuChanged += Display_MenuChanged;
         }
 
         private void Display_MenuChanged(object sender, MenuChangedEventArgs e)

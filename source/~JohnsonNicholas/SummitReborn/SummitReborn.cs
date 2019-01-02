@@ -36,16 +36,16 @@ namespace SummitReborn
         public override void Entry(IModHelper helper)
         {
             ModConfig = Helper.ReadConfig<SummitConfig>();
-            GameEvents.UpdateTick += GameEvents_UpdateTick;
-            GraphicsEvents.OnPreRenderHudEvent += GraphicsEvents_OnPreRenderHudEvent;
+            helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
+            helper.Events.Display.RenderingHud += GraphicsEvents_OnPreRenderHudEvent;
         }
 
-        private void GameEvents_UpdateTick(object sender, EventArgs e)
+        private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (Game1.currentGameTime != null)
             {
                 this.weatherX = this.weatherX + (float)Game1.currentGameTime.ElapsedGameTime.Milliseconds * 0.03f;
-            }            
+            }
         }
 
         private static int GetPixelZoom()

@@ -1,0 +1,10 @@
+﻿{
+   "Name": "StardewHack",
+   "Author": "bcmpinc",
+   "Version": "1.0",
+   "Description": "Library mod used by my other mods. Doesn't do much on its own.",
+   "UniqueID": "bcmpinc.StardewHack",
+   "EntryDll": "StardewHack.dll",
+   "MinimumApiVersion": "2.7",
+   "UpdateKeys": ["Nexus:-1"]
+}

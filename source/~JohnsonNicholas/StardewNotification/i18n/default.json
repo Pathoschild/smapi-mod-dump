@@ -33,5 +33,7 @@
 
   "readyHarvest": "{{cropName}} ready for harvest",
   "greenhouse_crops": "Greenhouse crops ready for harvest",
-  "autoGrabber" :  "The auto grabber has items for harvest" 
+  "autoGrabber" :  "The auto grabber has items for harvest",
+  "hayMessage" : "Silos report {{hayAmt}} pieces of hay",
+  "noHayMessage": "No hay in the silos."
 }

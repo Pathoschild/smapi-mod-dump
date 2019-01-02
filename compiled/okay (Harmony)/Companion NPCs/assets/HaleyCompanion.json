@@ -1,9 +1,9 @@
 {
-  "Companion": "I'm really enjoying my photography lately.#$q 600/601 haleyCompanion_followup#Hey @! Wanna help me with some photography around town today?#$r 600 10 haleyCompanion_yes#Sure! Make sure to take some good ones of me.#$r 601 -5 haleyCompanion_no#Not today. Sorry Haley.",
+  "Companion": "I'm really enjoying my photography lately.#$q 4736775/4736776 haleyCompanion_followup#Hey @! Wanna help me with some photography around town today?#$r 4736775 10 haleyCompanion_yes#Sure! Make sure to take some good ones of me.#$r 4736776 -5 haleyCompanion_no#Not today. Sorry Haley.",
   "haleyCompanion_yes": "I didn't know it was possible to get a bad one of you.",
   "haleyCompanion_no": "*Sigh* Alright... Promise me next time then.",
-  "haleyCompanion_followup": "#$p 600 #Hey hold that pose! And that cute smile too!$h|I'll have some really nice locations picked out next time so promise you'll say 'yes'.",
-  "CompanionActions": "Hey @, what's up? #$q 500/501 CompanionFollowup#What's up?#$r 500 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 501 0 CompanionActionContinue#Nothing, just taking a breather.",
+  "haleyCompanion_followup": "#$p 4736775 #Hey hold that pose! And that cute smile too!$h|I'll have some really nice locations picked out next time so promise you'll say 'yes'.",
+  "CompanionActions": "Hey @, what's up.#$q 50000000/50000001 CompanionFollowup#What's up?#$r 50000000 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 50000001 0 CompanionActionContinue#Nothing, just taking a breather.",
   "CompanionFollowup": ":)",
   "CompanionActionEnd": "Alright, well thanks for hanging out with me today!$h",
   "CompanionActionContinue": "Cool.",

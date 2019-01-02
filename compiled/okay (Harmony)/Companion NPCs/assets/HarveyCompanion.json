@@ -1,9 +1,9 @@
 {
-  "Companion": "Hmmmm.#$q 625/626 harveyCompanion_followup#I'm wondering if I should do anything special with my day off today#$r 625 10 harveyCompanion_yes#How about we check out the valley together?#$r 626 5 harveyCompanion_no#Why don't you go check out some of the valley?",
+  "Companion": "Hmmmm.#$q 7298075/7298076 harveyCompanion_followup#I'm wondering if I should do anything special with my day off today#$r 7298075 10 harveyCompanion_yes#How about we check out the valley together?#$r 7298076 5 harveyCompanion_no#Why don't you go check out some of the valley?",
   "harveyCompanion_yes": "That sounds fun! Just don't run too fast.$h",
   "harveyCompanion_no": "That's not a bad idea.#I'm terrible at following good advice though!",
-  "harveyCompanion_followup": "#$p 625 #It's nice to set a good example of personal fitness for the town!$h|I should probably be setting a better example of personal fitness for the town...",
-  "CompanionActions": "Hey @, what's up? #$q 500/501 CompanionFollowup#What's up?#$r 500 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 501 0 CompanionActionContinue#Nothing, just taking a breather.",
+  "harveyCompanion_followup": "#$p 7298075 #It's nice to set a good example of personal fitness for the town!$h|I should probably be setting a better example of personal fitness for the town...",
+  "CompanionActions": "Hey @, what's up.#$q 50000000/50000001 CompanionFollowup#What's up?#$r 50000000 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 50000001 0 CompanionActionContinue#Nothing, just taking a breather.",
   "CompanionFollowup": ":)",
   "CompanionActionEnd": "Alright, well thanks for helping me out with the exercise!$h",
   "CompanionActionContinue": "Cool.",

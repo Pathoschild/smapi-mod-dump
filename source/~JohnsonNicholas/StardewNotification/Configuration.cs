@@ -13,6 +13,8 @@
         public bool NotifyMaxLuck { get; set; } = true;
         public bool NotifyMinLuck { get; set; } = true;
         public bool NotifySeasonalForage { get; set; } = true;
+        public bool ShowEmptyhay { get; set;} = true;
+        public bool NotifyHay { get ; set; } = true;
 
         // Harvest Notifications
         public bool NotifyFarmCave { get; set; } = true;

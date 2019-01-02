@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using StardewValley;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
 namespace FollowerNPC.Buffs
@@ -54,13 +55,13 @@ namespace FollowerNPC.Buffs
                                Environment.NewLine+
                                "You gain +1 to any stat. Use the 'G' key to cycle your current prosthetic.";
 
-            ControlEvents.KeyReleased += ControlEvents_KeyReleased;
+            ModEntry.modHelper.Events.Input.ButtonReleased += Input_ButtonReleased;
         }
 
         public override void RemoveAndDisposeCompanionBuff()
         {
             base.RemoveAndDisposeCompanionBuff();
-            ControlEvents.KeyReleased -= ControlEvents_KeyReleased;
+            ModEntry.modHelper.Events.Input.ButtonReleased += Input_ButtonReleased;
 
             for (int i = 0; i < otherBuffs.Count; i++)
             {
@@ -74,9 +75,9 @@ namespace FollowerNPC.Buffs
             Game1.buffsDisplay.syncIcons();
         }
 
-        private void ControlEvents_KeyReleased(object sender, EventArgsKeyPressed e)
+        private void Input_ButtonReleased(object sender, ButtonReleasedEventArgs e)
         {
-            if (e.KeyPressed == Microsoft.Xna.Framework.Input.Keys.G)
+            if (e.Button == Microsoft.Xna.Framework.Input.Keys.G.ToSButton())
             {
                 for (int i = 0; i < otherBuffs.Count; i++)
                 {

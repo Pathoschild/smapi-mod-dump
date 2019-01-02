@@ -19,6 +19,7 @@ namespace TwilightShards.LunarDisturbances
     {
         internal static SDVMoon OurMoon;
         private MersenneTwister Dice;
+        internal static ITranslationHelper Translation;
         private MoonConfig ModConfig;
         public static Sprites.Icons OurIcons { get; set; }
         internal static bool IsEclipse { get; set; }
@@ -39,12 +40,13 @@ namespace TwilightShards.LunarDisturbances
         public override void Entry(IModHelper helper)
         {
             Dice = new MersenneTwister();
+            Translation = Helper.Translation;
             ModConfig = Helper.ReadConfig<MoonConfig>();
             OurMoon = new SDVMoon(ModConfig, Dice, Helper.Translation);
             OurIcons = new Sprites.Icons(Helper.Content);
 
             helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
-            helper.Events.GameLoop.UpdateTicked  += GameLoop_UpdateTicked;
+            helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
             helper.Events.GameLoop.TimeChanged += GameLoop_TimeChanged;
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
             helper.Events.GameLoop.Saving += GameLoop_Saving;
@@ -53,6 +55,25 @@ namespace TwilightShards.LunarDisturbances
             helper.Events.Display.MenuChanged += Display_MenuChanged;
             helper.Events.Player.Warped += Player_Warped;
             helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
+        }
+
+        private void GameLoop_OneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
+        {
+            if (Context.IsPlayerFree)
+            {
+                if (Game1.game1.IsActive)
+                    SecondCount++;
+
+                if (SecondCount == 10)
+                {
+                    SecondCount = 0;
+                    if (Game1.currentLocation.IsOutdoors && OurMoon.CurrentPhase == MoonPhase.BloodMoon)
+                    {
+                        Monitor.Log("Spawning monster....");
+                        SDVUtilities.SpawnMonster(Game1.currentLocation);
+                    }
+                }
+            }
         }
 
         private void GameLoop_ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
@@ -146,7 +167,7 @@ namespace TwilightShards.LunarDisturbances
         private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
         {
             if (OurMoon.GetMoonRiseTime() <= 0600 || OurMoon.GetMoonRiseTime() >= 2600 && ModConfig.ShowMoonPhase)
-                Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("moon-text.moonriseBefore6", new { moonPhase = OurMoon.GetLunarPhase().ToString(), riseTime = OurMoon.GetMoonRiseTime() })));
+                Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("moon-text.moonriseBefore6", new { moonPhase = OurMoon.DescribeMoonPhase(), riseTime = OurMoon.GetMoonRiseTime() })));
 
             if (OurMoon == null)
             {
@@ -158,7 +179,7 @@ namespace TwilightShards.LunarDisturbances
                 SDate.Now().DaysSinceStart > 2)
             {
                 IsEclipse = true;
-                var n = new HUDMessage("It looks like a rare solar eclipse will darken the sky all day!")
+                var n = new HUDMessage(Helper.Translation.Get("moon-text.solareclipse"))
                 {
                     color = Color.SeaGreen,
                     fadeIn = true,
@@ -177,10 +198,10 @@ namespace TwilightShards.LunarDisturbances
         private void GameLoop_TimeChanged(object sender, TimeChangedEventArgs e)
         {
             if (Game1.timeOfDay == OurMoon.GetMoonRiseTime() && ModConfig.ShowMoonPhase)
-                Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("moon-text.moonrise", new { moonPhase = OurMoon.GetLunarPhase().ToString() })));
+                Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("moon-text.moonrise", new { moonPhase = OurMoon.DescribeMoonPhase() })));
 
             if (Game1.timeOfDay == OurMoon.GetMoonSetTime() && ModConfig.ShowMoonPhase)
-                Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("moon-text.moonset", new { moonPhase = OurMoon.GetLunarPhase().ToString() })));
+                Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("moon-text.moonset", new { moonPhase = OurMoon.DescribeMoonPhase() })));
 
 
             if (IsEclipse)
@@ -231,7 +252,6 @@ namespace TwilightShards.LunarDisturbances
                 return;
             }
 
-
             if (IsEclipse)
             {
                 Game1.globalOutdoorLighting = .5f;
@@ -264,8 +284,9 @@ namespace TwilightShards.LunarDisturbances
                 outro = Helper.Reflection.GetField<bool>(ourMenu, "outro").GetValue();
             }
 
-            if (Game1.showingEndOfNightStuff && !Game1.wasRainingYesterday && !outro && Game1.activeClickableMenu is ShippingMenu currMenu && ModConfig.ShowMoonInEndOfNight)
-            {
+            if (Game1.showingEndOfNightStuff && !Game1.wasRainingYesterday && !outro && Game1.activeClickableMenu is ShippingMenu currMenu && 
+                ModConfig.ShowMoonInEndOfNight && currMenu.currentPage == -1)
+            {          
                 float scale = Game1.pixelZoom * 1.25f;
 
                 if (Game1.viewport.Width < 1024)
@@ -276,25 +297,6 @@ namespace TwilightShards.LunarDisturbances
                     scale = Game1.pixelZoom * .35f;
 
                 Game1.spriteBatch.Draw(OurIcons.MoonSource, new Vector2(Game1.viewport.Width - 65 * Game1.pixelZoom, Game1.pixelZoom), OurIcons.GetNightMoonSprite(SDVMoon.GetLunarPhaseForDay(SDate.Now().AddDays(-1))), Color.LightBlue, 0.0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
-            }
-        }
-
-        private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
-        {
-            if (Context.IsPlayerFree)
-            {
-                if (Game1.game1.IsActive)
-                    SecondCount++;
-
-                if (SecondCount == 10)
-                {
-                    SecondCount = 0;
-                    if (Game1.currentLocation.IsOutdoors && OurMoon.CurrentPhase == MoonPhase.BloodMoon)
-                    {
-                        Monitor.Log("Spawning monster....");
-                        SDVUtilities.SpawnMonster(Game1.currentLocation);
-                    }
-                }
             }
         }
 

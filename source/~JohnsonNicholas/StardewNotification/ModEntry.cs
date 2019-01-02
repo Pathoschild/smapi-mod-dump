@@ -22,10 +22,26 @@ namespace StardewNotification
 			generalNotification = new GeneralNotification();
 			productionNotification = new ProductionNotification();
 
-            SaveEvents.AfterLoad += ReceiveLoadedGame;
-            TimeEvents.AfterDayStarted += DailyNotifications;
-            TimeEvents.TimeOfDayChanged += ReceiveTimeOfDayChanged;
-            PlayerEvents.Warped += ReceiveCurrentLocationChanged;
+
+            helper.Events.GameLoop.SaveLoaded += ReceiveLoadedGame;
+            helper.Events.GameLoop.DayStarted += DailyNotifications;
+            helper.Events.Player.Warped += Player_Warped;
+            helper.Events.GameLoop.TimeChanged += GameLoop_TimeChanged;
+        }
+
+        private void GameLoop_TimeChanged(object sender, TimeChangedEventArgs e)
+        {
+            if (Config.NotifyBirthdayReminder && e.NewTime == Config.BirthdayReminderTime)
+                generalNotification.DoBirthdayReminder(Helper.Translation);
+        }
+
+        private void Player_Warped(object sender, WarpedEventArgs e)
+        {
+            if (e.NewLocation is Farm && Game1.timeOfDay < 2400 && Context.IsWorldReady)
+            {
+                harvestableNotification.CheckHarvestsOnFarm();
+                productionNotification.CheckProductionAroundFarm(Helper.Translation);
+            }
         }
 
         private void ReceiveLoadedGame(object sender, EventArgs e)
@@ -41,21 +57,6 @@ namespace StardewNotification
         {
 			generalNotification.DoNewDayNotifications(Helper.Translation);
 			harvestableNotification.CheckHarvestsAroundFarm();
-        }
-
-        private void ReceiveTimeOfDayChanged(object sender, EventArgsIntChanged e)
-        {
-            if (Config.NotifyBirthdayReminder && e.NewInt == Config.BirthdayReminderTime)
-				generalNotification.DoBirthdayReminder(Helper.Translation);
-        }
-
-        private void ReceiveCurrentLocationChanged(object sender, EventArgsPlayerWarped e)
-        {
-            if (e.NewLocation is Farm && Game1.timeOfDay < 2400 && Context.IsWorldReady)
-            {
-                harvestableNotification.CheckHarvestsOnFarm();
-                productionNotification.CheckProductionAroundFarm(Helper.Translation);
-            }
         }
     }
 }

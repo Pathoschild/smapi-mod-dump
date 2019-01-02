@@ -1,9 +1,9 @@
 {
-  "Companion": "I've been meaning to explore some new areas for inspiration.#$q 550/551 elliottCompanion_followup#Could I accompany you today?#$r 550 10 elliottCompanion_yes#Sure, but watch your hair. We might be getting dirty!#$r 551 0 elliottCompanion_no#Sorry Elliott, I think I'd prefer some time alone today.",
+  "Companion": "I've been meaning to explore some new areas for inspiration.#$q 5964000/5964001 elliottCompanion_followup#Could I accompany you today?#$r 5964000 10 elliottCompanion_yes#Sure, but watch your hair. We might be getting dirty!#$r 5964001 0 elliottCompanion_no#Sorry Elliott, I think I'd prefer some time alone today.",
   "elliottCompanion_yes": "I think I might like that for a change! Shall we?",
   "elliottCompanion_no": "I understand. A little peace and quiet has always done me wonders as well.",
-  "elliottCompanion_followup": "#$p 550 #I'm glad I have some good company too!$h||Say, have you been to the desert before?",
-  "CompanionActions": "Hey @, what's up? #$q 500/501 CompanionFollowup#What's up?#$r 500 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 501 0 CompanionActionContinue#Nothing, just taking a breather.",
+  "elliottCompanion_followup": "#$p 5964000 #I'm glad I have some good company too!$h||Say, have you been to the desert before?",
+  "CompanionActions": "Hey @, what's up.#$q 50000000/50000001 CompanionFollowup#What's up?#$r 50000000 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 50000001 0 CompanionActionContinue#Nothing, just taking a breather.",
   "CompanionFollowup": ":)",
   "CompanionActionEnd": "Alright, well thanks for hanging out with me today!$h",
   "CompanionActionContinue": "Cool.",

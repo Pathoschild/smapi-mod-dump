@@ -5,6 +5,6 @@
   "Description": "Adds a moon to more than just one day, and adds events based on it, including eclipses",
   "UniqueID": "KoihimeNakamura.LunarDisturbances",
   "EntryDll": "LunarDisturbances.dll",
-  "MinimumApiVersion": "2.9.3",
+  "MinimumApiVersion": "2.10",
   "UpdateKeys": ["Nexus:2208"]
 } 

@@ -2,6 +2,7 @@
 using StardewValley;
 using StardewValley.Locations;
 using StardewModdingAPI;
+using System.Linq;
 
 namespace StardewNotification
 {
@@ -15,14 +16,27 @@ namespace StardewNotification
             CheckForQueenOfSauce(Trans);
             CheckForToolUpgrade(Trans);
             CheckForTravelingMerchant(Trans);
+            CheckForHayLevel(Trans);
         }
 
+        public void CheckForHayLevel(ITranslationHelper Trans)
+        {
+            if (!StardewNotification.Config.NotifyHay || Game1.getFarm().buildings.Count(b => b.buildingType.Value == "Silo") == 0)
+                return;
+
+            int hayAmt = Game1.getFarm().piecesOfHay.Value;
+            if (hayAmt > 0)
+                Util.ShowMessage(Trans.Get("hayMessage", new { hayAmt = Game1.getFarm().piecesOfHay.Value}));
+            else if (StardewNotification.Config.ShowEmptyhay)
+                Util.ShowMessage(Trans.Get("noHayMessage"));
+        }
+        
         public void DoBirthdayReminder(ITranslationHelper Trans)
         {
             var character = Utility.getTodaysBirthdayNPC(Game1.currentSeason, Game1.dayOfMonth);
             if (!(character is null) && Game1.player.friendshipData[character.Name].GiftsToday != 1)
             {
-                Util.ShowMessage(Trans.Get("birthdayReminder", new { charName = character.Name }));
+                Util.ShowMessage(Trans.Get("birthdayReminder", new { charName = character.displayName }));
             }
         }
 
@@ -32,7 +46,7 @@ namespace StardewNotification
             {
                 var character = Utility.getTodaysBirthdayNPC(Game1.currentSeason, Game1.dayOfMonth);
                 if (character is null) return;
-                Util.ShowMessage(Trans.Get("birthday", new { charName = character.Name }));
+                Util.ShowMessage(Trans.Get("birthday", new { charName = character.displayName }));
             }
         }
 

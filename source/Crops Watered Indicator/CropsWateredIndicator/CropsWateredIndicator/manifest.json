@@ -1,0 +1,10 @@
+﻿{
+   "Name": "CropsWateredIndicator",
+   "Author": "Tyler Thrailkill",
+   "Version": "1.0.0",
+   "Description": "Shows an indication if the crops have been watered",
+   "UniqueID": "tylerthrailkill.cropswateredindicator",
+   "EntryDll": "CropsWateredIndicator.dll",
+   "MinimumApiVersion": "2.9",
+   "UpdateKeys": [ "Nexus:3200" ]
+}

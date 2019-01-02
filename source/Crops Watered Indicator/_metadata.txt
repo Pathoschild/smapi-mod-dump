@@ -1,0 +1,13 @@
+url:
+   https://github.com/snowe2010/starbound-mods.git
+
+mods:
+   Crops Watered Indicator
+
+latest commit:
+   commit ea9c10dac14ca403c6cafd7cebdc029664c4cdcd
+   Author: Tyler Thrailkill <tylerbthrailkill@gmail.com>
+   Date:   Sun Dec 30 14:39:08 2018 -0700
+   
+       Add mod id
+   

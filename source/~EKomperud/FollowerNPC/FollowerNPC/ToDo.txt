@@ -14,6 +14,9 @@ No talking when monsters in room in mines			- Done! Might modify this later, but
 Gates?
 Swarm rooms	not spawning ladders					- Fixed!
 Companions can get stuck on big rocks
+Companions can get stuck in treasure rooms
+Test what happens when companion is in event.		- Done
+Test what happens when companion is at a festival.  - Done
 
 Optimize A*
 Optimize helper functions
@@ -33,3 +36,11 @@ Companion Buffs:
 	Sebastian:	Copies Abigail.														Ride his motorcycle?
 	Shane:		Farming +3.															Chickens follow you? Alcohol buffs instead of debuffs?
 
+
+Companions get stuck on aStar nodes when moving too fast	- Fixed!
+Dialogue's don't appear after skipped event
+
+Combat Behavior:
+	Don't target duggies when they're buried.
+	Don't target invincible bugs at all
+	Don't target mummies when they're downed

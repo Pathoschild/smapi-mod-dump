@@ -1,0 +1,8 @@
+{
+  "ShouldHostParticipate": true,
+  "KillAllNPCs": true,
+  "TimeInSecondsBetweenRounds": 15,
+  "TimeInMillisecondsBetweenPlayerJoiningAndServerExpectingTheirVersionNumber": 60000,
+  "PlayerLimit": 125,
+  "StormDamagePerSecond": 10
+}

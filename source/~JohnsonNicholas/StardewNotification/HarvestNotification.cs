@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.Xna.Framework;
-
 using StardewValley;
 using StardewModdingAPI;
-using Object = System.Object;
 
 namespace StardewNotification
 {
@@ -60,9 +56,11 @@ namespace StardewNotification
 
                 if (iCount > 1)
                 {
-                    StardewValley.Object sObj = new StardewValley.Object(objList[1].ParentSheetIndex, objList[1].Stack, false, objList[1].Price, objList[1].Quality);
-                    sObj.Type = objList[1].Type;
-                    sObj.name = Game1.player.caveChoice.Value == MUSHROOM_CAVE ? Trans.Get("CaveMushroom") : Trans.Get("CaveFruit");
+                    StardewValley.Object sObj = new StardewValley.Object(objList[1].ParentSheetIndex, objList[1].Stack, false, objList[1].Price, objList[1].Quality)
+                    {
+                        Type = objList[1].Type,
+                        name = Game1.player.caveChoice.Value == MUSHROOM_CAVE ? Trans.Get("CaveMushroom") : Trans.Get("CaveFruit")
+                    };
                     Game1.addHUDMessage(new HUDMessage(sObj.Type, iCount, true, Color.OrangeRed, sObj));
 
                 }            
