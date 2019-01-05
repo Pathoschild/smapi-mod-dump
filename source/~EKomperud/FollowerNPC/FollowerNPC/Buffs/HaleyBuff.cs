@@ -5,7 +5,7 @@ namespace FollowerNPC.Buffs
 {
     class HaleyBuff: CompanionBuff
     {
-        public HaleyBuff(Farmer farmer) : base(farmer)
+        public HaleyBuff(Farmer farmer, NPC npc) : base(farmer, npc)
         {
             buff = new Buff(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 30, "", "");
             buff.description = "When Haley's around, good things just seem to happen more often." + 

@@ -1,0 +1,24 @@
+{
+  "DontEat": [
+    "Sap",
+    "Red Mushroom",
+    "Holly",
+    "Crocus",
+    "Sweet Pea",
+    "Daffodil",
+    "Egg",
+    "Large Egg",
+    "Brown Egg",
+    "Large Brown Egg",
+    "Duck Egg",
+    "Void Egg",
+    "Dinosaur Egg",
+    "Milk",
+    "Large Milk",
+    "Goat Milk",
+    "Large Goat Milk",
+    "Truffle",
+    "Hops"
+  ],
+  "Eat": []
+}

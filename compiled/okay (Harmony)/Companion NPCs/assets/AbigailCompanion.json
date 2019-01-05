@@ -1,9 +1,9 @@
 {
-  "Companion": "I'm getting the itch for an adventure.#$q 592800/592801 abigailCompanion_followup#Hey @, wanna tag team for a little bit?#$r 592800 20 abigailCompanion_yes#Sure, lets find some trouble!#$r 592801 0 abigailCompanion_no#Hmmmm, probably not today. Don't count me out next time though.",
+  "Companion": "I'm getting the itch for an adventure.#$q 592800/9249200 abigailCompanion_followup#Hey @, wanna tag team for a little bit?#$r 592800 20 abigailCompanion_yes#Sure, lets find some trouble!#$r 9249200 0 abigailCompanion_no#Hmmmm, probably not today. Don't count me out next time though.",
   "abigailCompanion_yes": "I knew you'd be down! Where should we go first?$h",
   "abigailCompanion_no": "Boo. Guess I'll need to find some fun with someone else today.",
   "abigailCompanion_followup": "#$p 592800 #It's a good thing I have you with me!$h|Maybe I should check out the mines today?",
-  "CompanionActions": "Hey @, what's up.#$q 50000000/50000001 CompanionFollowup#What's up?#$r 50000000 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 50000001 0 CompanionActionContinue#Nothing, just taking a breather.",
+  "CompanionActions": "Hey @, what's up.#$q 4736775/7298075 CompanionFollowup#What's up?#$r 4736775 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 7298075 0 CompanionActionContinue#Nothing, just taking a breather.",
   "CompanionFollowup": ":)",
   "CompanionActionEnd": "Alright, well thanks for hanging out with me today!$h",
   "CompanionActionContinue": "Cool.",

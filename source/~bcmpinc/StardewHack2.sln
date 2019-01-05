@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeSpread", "TreeSpread\TreeSpread.csproj", "{C9513945-D968-4051-8247-54630454437C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WearMoreRings", "WearMoreRings\WearMoreRings.csproj", "{EA217BBF-7300-4783-9B3A-676AA96E6ECE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{C9513945-D968-4051-8247-54630454437C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9513945-D968-4051-8247-54630454437C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9513945-D968-4051-8247-54630454437C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA217BBF-7300-4783-9B3A-676AA96E6ECE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA217BBF-7300-4783-9B3A-676AA96E6ECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA217BBF-7300-4783-9B3A-676AA96E6ECE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA217BBF-7300-4783-9B3A-676AA96E6ECE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

@@ -3,7 +3,8 @@ Fast Travel is a mod which allows the player to fast travel to any location on t
 This allows the player to quickly go from say, the mines, to the blacksmith.
 
 # Download
-The latest version of the mod can be found on [Nexus](https://www.nexusmods.com/stardewvalley/mods/1529/?).
+The latest version of the mod can be found on **Nexus**:  
+[![Download from Nexus](https://i.imgur.com/dJobTR2.png)](https://www.nexusmods.com/stardewvalley/mods/1529/?)  
 
 # Mod Support
 As this is my first mod, I decided not to add full support for others' mods. I knew that would simply be biting off more than I could chew, so instead I opted to use a configurable system for each warp. These can be edited / added in the config.json file.

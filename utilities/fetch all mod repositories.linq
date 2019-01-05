@@ -48,20 +48,14 @@ private readonly Regex[] IgnoreIncorrectNames =
 	new Regex(@"\.csproj\.user$", RegexOptions.Compiled),
 	new Regex(@"\.DotSettings\.user$", RegexOptions.Compiled),
 	new Regex(@"\.userprefs$", RegexOptions.Compiled),
+	new Regex(@"\.zip$", RegexOptions.Compiled),
 	new Regex(@"_(?:BACKUP|BASE|LOCAL)_\d+\.[a-z]+", RegexOptions.Compiled), // merge backups
 
 	// mod release files
-	new Regex(@"^AutoGate\.zip$", RegexOptions.Compiled), // AutoGate
 	new Regex(@"^Demo\.gif$", RegexOptions.Compiled), // StackSplitX (10MB file)
-	new Regex(@"^(?:OmegasisCore|StarDustCore|MusicNameSeeker)\.zip", RegexOptions.Compiled), // ~janavarro95
-	new Regex(@"^Portraits_Einari_wFixes_ContentPatcher\.zip$", RegexOptions.Compiled), // ~Drynwynn
 	new Regex(@"^Release$", RegexOptions.Compiled), // Birthday Mail, Faster Run
-	new Regex(@"^SMAPIHealthBarMod.+\.zip$", RegexOptions.Compiled), // Enemy Health Bars
-	new Regex(@"^SMAPISprinklerMod.+\.zip$", RegexOptions.Compiled), // Better Sprinklers
-	new Regex(@"^(?:SMAPIChestLabelSystem.+\.zip|zip\.exe)$", RegexOptions.Compiled), // Chest Label System
-	
-	// old code
-	new Regex(@"^oldversions$", RegexOptions.Compiled)
+	new Regex(@"^zip\.exe$", RegexOptions.Compiled), // Chest Label System
+	new Regex(@"^oldversions$", RegexOptions.Compiled) // ~JessebotX
 };
 
 /// <summary>The source URLs to skip when cloning repositories. This should match the GitHub repository name or custom URL specified on the wiki.</summary>

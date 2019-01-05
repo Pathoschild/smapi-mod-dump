@@ -6,5 +6,5 @@
    "UniqueID": "bcmpinc.StardewHack",
    "EntryDll": "StardewHack.dll",
    "MinimumApiVersion": "2.7",
-   "UpdateKeys": ["Nexus:-1"]
+   "UpdateKeys": ["Nexus:3213"]
 }

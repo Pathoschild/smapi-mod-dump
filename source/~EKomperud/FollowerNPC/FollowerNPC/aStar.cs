@@ -24,7 +24,7 @@ namespace FollowerNPC
             set
             {
                 gl = value;
-                dimensions = new Vector2(gameLocation.map.Layers[0].LayerWidth, gameLocation.map.Layers[0].LayerHeight);
+                dimensions = new Vector2(value.map.Layers[0].LayerWidth, value.map.Layers[0].LayerHeight);
             }
         }
 

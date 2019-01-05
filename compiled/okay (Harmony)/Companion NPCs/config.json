@@ -107,5 +107,6 @@
     "Sat",
     "Sun"
   ],
-  "heartThreshold": 2
+  "heartThreshold": 2,
+  "festivalHangouts": false
 }

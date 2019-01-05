@@ -7,28 +7,37 @@ using System.Reflection.Emit;
 
 namespace StardewHack
 {
-    /** Common Hack code */
+    /// <summary>
+    /// Common Hack code 
+    /// </summary>
     public abstract class HackBase : Mod
     {
-        /** Provides simplified API's for writing mods. */
+        /// <summary>
+        /// Provides simplified API's for writing mods. 
+        /// </summary>
         public IModHelper helper { get; private set; }
 
-        /** The harmony instance used for patching. */
+        /// <summary>
+        /// The harmony instance used for patching. 
+        /// </summary>
         public HarmonyInstance harmony { get; private set; }
 
-        /** The method being patched. 
-         * Use only within methods annotated with BytecodePatch. 
-         */
+        /// <summary>
+        /// The method being patched. 
+        /// Use only within methods annotated with BytecodePatch. 
+        /// </summary>
         public MethodBase original { get; internal set; }
 
-        /** The code that is being patched. 
-         * Use only within methods annotated with BytecodePatch. 
-         */
+        /// <summary>
+        /// The code that is being patched. 
+        /// Use only within methods annotated with BytecodePatch. 
+        /// </summary>
         public List<CodeInstruction> instructions { get; internal set; }
 
-        /** The generator used for patching. 
-         * Use only within methods annotated with BytecodePatch. 
-         */
+        /// <summary>
+        /// The generator used for patching. 
+        /// Use only within methods annotated with BytecodePatch. 
+        /// </summary>
         public ILGenerator generator { get; internal set; }
 
         public override void Entry(IModHelper helper) {
@@ -40,21 +49,23 @@ namespace StardewHack
             harmony = HarmonyInstance.Create(UniqueID);
         }
 
-        /** Find the first occurance of the given sequence of instructions that follows this range.
-         * The performed matching depends on the type:
-         *  - String: is it contained in the string representation of the instruction
-         *  - MemberReference (including MethodDefinition): is the instruction's operand equal to this reference.
-         *  - OpCode: is this the instruction's OpCode.
-         *  - CodeInstruction: are the instruction's OpCode and Operand equal.
-         *  - null: always matches.
-         */
+        /// <summary>
+        /// Find the first occurance of the given sequence of instructions that follows this range.
+        /// The performed matching depends on the type:
+        ///  - String: is it contained in the string representation of the instruction
+        ///  - MemberReference (including MethodDefinition): is the instruction's operand equal to this reference.
+        ///  - OpCode: is this the instruction's OpCode.
+        ///  - CodeInstruction: are the instruction's OpCode and Operand equal.
+        ///  - null: always matches.
+        /// </summary>
         public InstructionRange FindCode(params Object[] contains) {
             return new InstructionRange(instructions, contains);
         }
 
-        /** Find the last occurance of the given sequence of instructions that follows this range.
-         * See FindCode() for how the matching is performed.
-         */
+        /// <summary>
+        /// Find the last occurance of the given sequence of instructions that follows this range.
+        /// See FindCode() for how the matching is performed.
+        /// </summary>
         public InstructionRange FindCodeLast(params Object[] contains) {
             return new InstructionRange(instructions, contains, instructions.Count, -1);
         }
@@ -82,17 +93,25 @@ namespace StardewHack
     // Used to have a separate static instance variable per type T.
     public abstract class Hack<T> : HackBase where T : Hack<T>
     {
-        /** A reference to this class's instance. */
+        /// <summary>
+        /// A reference to this class's instance. 
+        /// </summary>
         static T instance;
 
-        /** Maps the method being patched to the method doing said patching. */
+        /// <summary>
+        /// Maps the method being patched to the method doing said patching. 
+        /// </summary>
         static Dictionary<MethodBase, MethodInfo> patchmap = new Dictionary<MethodBase, MethodInfo>();
 
-        /** A stack to allow patches to trigger additional patches. 
-         * This is necessary when dealing with delegates. */
+        /// <summary>
+        /// A stack to allow patches to trigger additional patches. 
+        /// This is necessary when dealing with delegates. 
+        /// </summary>
         static Stack<MethodBase> to_be_patched = new Stack<MethodBase>();
 
-        /** Applies the methods annotated with BytecodePatch defined in this class. */
+        /// <summary>
+        /// Applies the methods annotated with BytecodePatch defined in this class. 
+        /// </summary>
         public override void Entry(IModHelper helper) {
             if (typeof(T) != this.GetType()) throw new Exception($"The type of this ({this.GetType()}) must be the same as the generic argument T ({typeof(T)}).");
             base.Entry(helper);
@@ -117,8 +136,10 @@ namespace StardewHack
             }
         }
 
-        /** Applies the given patch to the given method. 
-         * This method can be called from within a patch method, for example to patch delegate functions. */
+        /// <summary>
+        /// Applies the given patch to the given method. 
+        /// This method can be called from within a patch method, for example to patch delegate functions. 
+        /// </summary>
         public void ChainPatch(MethodBase method, MethodInfo patch) {
             if (patchmap.ContainsKey(method)) {
                 // We allow chain patch to be called multiple times with the same arguments, which will be silently ignored,
@@ -133,7 +154,9 @@ namespace StardewHack
             }
         }
 
-        /** Called by harmony to apply a patch. */ 
+        /// <summary>
+        /// Called by harmony to apply a patch. 
+        /// </summary> 
         private static IEnumerable<CodeInstruction> ApplyPatch(MethodBase original, ILGenerator generator, IEnumerable<CodeInstruction> instructions) {
             // Set the patch's references to this method's arguments.
             instance.original = original;

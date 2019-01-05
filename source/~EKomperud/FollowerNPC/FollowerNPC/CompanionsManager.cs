@@ -19,20 +19,21 @@ namespace FollowerNPC
         public class CompanionDialogueInfo
         {
             public Dialogue recruitDialogue;
-            public int recruitYesID;
             public Dialogue actionDialogue;
-            public int actionDismissID;
             public Dialogue automaticDismissDialogue;
+            public Dialogue locationUniqueDialogue;
         }
 
         public enum CompanionionshipState
         {
+            unavailable = -1,
             available = 0,
             recruitDialoguePushed = 1,
-            recruitFollowupDialoguePushed = 2,
+            locationDialoguePushed = 2,
             actionDialoguePushed = 3,
             actionDialogueNeedsRePushed = 4,
-            dismissed = 5
+            dismissed = 5,
+            rejected = 6
         }
 
         // Companion Objects //
@@ -72,7 +73,12 @@ namespace FollowerNPC
         public Vector2 farmerLastTile;
         // ************** //
 
-        private float f;
+        // Constants //
+        public const int recruitYesID = 592800;
+        public const int recruitNoID = 9249200;
+        public const int actionDismissID = 4736775;
+        public const int actionContinueID = 7298075;
+        // ********* //
 
         public CompanionsManager()
         {
@@ -84,7 +90,6 @@ namespace FollowerNPC
             // ************************* //
 
             // Define Companion Parameters //
-            
             companionHeartThreshold = ModEntry.config.heartThreshold;
             // *************************** //
 
@@ -105,7 +110,9 @@ namespace FollowerNPC
 
         private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (!Context.IsWorldReady || !(companion != null) || !(farmer != null))
+            if (!Context.IsWorldReady || !(companion != null) || 
+                !(farmer != null) ||
+                (Game1.activeClickableMenu != null && !Game1.IsMultiplayer))
                 return;
 
 
@@ -133,13 +140,13 @@ namespace FollowerNPC
             if (!farmer.isRidingHorse() && farmer.currentLocation.Equals(e.NewLocation))
             {
                 Game1.warpCharacter(companion, farmer.currentLocation, farmer.getTileLocation());
-                handleCompanionLocationSpecificDialogue();
+                HandleCompanionLocationSpecificDialogue();
             }
             else
             {
                 WarpButWaitForFarmer(e.NewLocation.Name, Point.Zero,
-                    new Action(handleCompanionLocationSpecificDialogue));
-                //DelayedWarp(null, Point.Zero, 100, new Action(handleCompanionLocationSpecificDialogue));
+                    new Action(HandleCompanionLocationSpecificDialogue));
+                //DelayedWarp(null, Point.Zero, 100, new Action(HandleCompanionLocationSpecificDialogue));
             }
         }
 
@@ -157,7 +164,8 @@ namespace FollowerNPC
                         d.speaker != null &&
                         companionStates.TryGetValue(d.speaker.Name, out CompanionionshipState cs) &&
                         d.speaker.CurrentDialogue.Count == 0 &&
-                        farmer.getFriendshipHeartLevelForNPC(d.speaker.Name) >= companionHeartThreshold)
+                        farmer.getFriendshipHeartLevelForNPC(d.speaker.Name) >= companionHeartThreshold &&
+                        Game1.timeOfDay < 2200)
                     {
                         NPC n = d.speaker;
 
@@ -176,15 +184,6 @@ namespace FollowerNPC
                             HandleCompanionRecruiting(n.Name, cdi);
                         }
 
-                        // Check to see if this was a Companion Recruit Followup Dialogue
-                        else if (cs == CompanionionshipState.recruitFollowupDialoguePushed &&
-                                 companionDialogueInfos.TryGetValue(n.Name, out cdi) &&
-                                 d.Equals(cdi.recruitDialogue))
-                        {
-                            farmer.DialogueQuestionsAnswered.Remove(cdi.recruitYesID);
-                            TryPushCompanionActionDialogue();
-                        }
-
                         // Check to see if this was a response to a Companion Action Dialgoue
                         else if (companionDialogueInfos.TryGetValue(n.Name, out cdi) &&
                                  d.Equals(cdi.actionDialogue))
@@ -196,7 +195,13 @@ namespace FollowerNPC
                         else if (companionDialogueInfos.TryGetValue(n.Name, out cdi) &&
                                  d.Equals(cdi.automaticDismissDialogue))
                         {
-                            DismissCompanion(n.Name);
+                            ActionDismissCompanion(n.Name);
+                        }
+
+                        if (companionDialogueInfos.TryGetValue(n.Name, out CompanionDialogueInfo cdi2) &&
+                                 d.Equals(cdi2.locationUniqueDialogue))
+                        {
+                            currentCompanionVisitedLocations["companion"+n.currentLocation.Name] = true;
                         }
 
                         // Deplete the FaceTowardFarmerTimer
@@ -216,7 +221,7 @@ namespace FollowerNPC
                 return;
 
             TryPushCompanionActionDialogue();
-            HandleAutomaticCompanionDismissal();
+            CheckForAutomaticCompanionDismissal();
         }
 
         private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
@@ -229,7 +234,7 @@ namespace FollowerNPC
             if (!(companion != null) || !(farmer != null))
                 return;
 
-            EndOfDayDismissCompanion();
+            FarmerSleepingDismissCompanion();
         }
 
         private void World_NpcListChanged(object sender, NpcListChangedEventArgs e)
@@ -328,21 +333,28 @@ namespace FollowerNPC
         /// </summary>
         private void ResetNPCsThatCanHangOut()
         {
+            farmer.DialogueQuestionsAnswered.Remove(592800);
+            farmer.DialogueQuestionsAnswered.Remove(9249200);
+            farmer.DialogueQuestionsAnswered.Remove(4736775);
+            farmer.DialogueQuestionsAnswered.Remove(7298075);
+            companionDialogueInfos.Clear();
             string dayOfWeek = Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth);
             foreach (KeyValuePair<string, string[]> kvp in npcCompanionAvailabilityDays)
             {
                 foreach (string day in kvp.Value)
                 {
-                    if (day.Equals(dayOfWeek))
+                    if (day.Equals(dayOfWeek) && 
+                        (!Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason) || ModEntry.config.festivalHangouts))
                     {
                         npcsThatCanBeRecruitedToday[kvp.Key] = true;
                         companionStates[kvp.Key] = CompanionionshipState.available;
+                        companionDialogueInfos.Add(kvp.Key, GenerateCompanionDialogueInfo(kvp.Key));
                         break;
                     }
                     else
                     {
                         npcsThatCanBeRecruitedToday[kvp.Key] = false;
-                        companionStates[kvp.Key] = CompanionionshipState.dismissed;
+                        companionStates[kvp.Key] = CompanionionshipState.unavailable;
                     }
                 }
             }
@@ -372,15 +384,6 @@ namespace FollowerNPC
             if (!(companion != null))
             {
                 NPC n = Game1.getCharacterFromName(name);
-                if (!companionDialogueInfos.TryGetValue(name, out CompanionDialogueInfo cdi))
-                {
-                    companionDialogueInfos[name] = GenerateCompanionDialogueInfo(name);
-                }
-                else
-                {
-                    cdi.recruitDialogue = new Dialogue(npcDialogueScripts[name]["Companion"], n);
-                }
-                
                 npcsThatCanBeRecruitedToday[name] = false;
                 n.CurrentDialogue.Push(companionDialogueInfos[name].recruitDialogue);
                 companionStates[name] = CompanionionshipState.recruitDialoguePushed;
@@ -395,25 +398,26 @@ namespace FollowerNPC
         {
             NPC potentialCompanion = Game1.getCharacterFromName(name);
             // Recruit if the farmer said 'yes' in the Recruit Dialogue
-            if (farmer.DialogueQuestionsAnswered.Contains(cdi.recruitYesID))
+            if (farmer.DialogueQuestionsAnswered.Contains(recruitYesID))
             {
+                farmer.dialogueQuestionsAnswered.Remove(recruitYesID);
                 companion = potentialCompanion;
 
                 companionAI = new AI_StateMachine(this);
 
-                companionBuff = CompanionBuff.InitializeBuffFromCompanionName(name, farmer);
+                companionBuff = CompanionBuff.InitializeBuffFromCompanionName(name, farmer, this);
                 currentCompanionVisitedLocations = new Dictionary<string, bool>();
                 Patches.companion = potentialCompanion;
                 companion.faceTowardFarmerTimer = 0;
-                cdi.recruitDialogue = new Dialogue(npcDialogueScripts[name]["Companion"], potentialCompanion);
-                potentialCompanion.CurrentDialogue.Push(cdi.recruitDialogue);
-                companionStates[name] = CompanionionshipState.recruitFollowupDialoguePushed;
+                HandleCompanionLocationSpecificDialogue();
+                TryPushCompanionActionDialogue();
             }
             // Don't recruit if the farmer didn't say 'yes' in the Recruit Dialogue
-            else if (farmer.dialogueQuestionsAnswered.Contains(cdi.recruitYesID + 1))
+            else if (farmer.dialogueQuestionsAnswered.Contains(recruitNoID))
             {
                 // Do remove the answer, but DON'T repush the dialogue
-                farmer.dialogueQuestionsAnswered.Remove(cdi.recruitYesID + 1);
+                farmer.dialogueQuestionsAnswered.Remove(recruitNoID);
+                companionStates[name] = CompanionionshipState.rejected;
             }
 
         }
@@ -431,14 +435,9 @@ namespace FollowerNPC
                 // check spouse for null
                 if (farmer.spouse != null && farmer.spouse.Equals(companion.Name) && farmer.getFriendshipHeartLevelForNPC(companion.Name) > 9 && !hbk)
                     return;
-                if (!companionDialogueInfos.TryGetValue(companion.Name, out CompanionDialogueInfo cdi))
-                {
-                    companionDialogueInfos[companion.Name] = GenerateCompanionDialogueInfo(companion.Name);
-                }
-                else
-                {
-                    cdi.actionDialogue = new Dialogue(npcDialogueScripts[companion.Name]["CompanionActions"], companion);
-                }
+                if (companionStates[companion.Name] == CompanionionshipState.actionDialogueNeedsRePushed)
+                    companionDialogueInfos[companion.Name].actionDialogue =
+                        new Dialogue(npcDialogueScripts[companion.Name]["CompanionActions"], companion);
                 companion.CurrentDialogue.Push(companionDialogueInfos[companion.Name].actionDialogue);
                 companionStates[companion.Name] = CompanionionshipState.actionDialoguePushed;
             }
@@ -450,15 +449,15 @@ namespace FollowerNPC
         /// </summary>
         private void HandleCompanionAction(string name, CompanionDialogueInfo cdi)
         {
-            if (farmer.DialogueQuestionsAnswered.Contains(cdi.actionDismissID))
+            if (farmer.DialogueQuestionsAnswered.Contains(actionDismissID))
             {
-                farmer.DialogueQuestionsAnswered.Remove(cdi.actionDismissID);
-                DismissCompanion(name);
+                farmer.DialogueQuestionsAnswered.Remove(actionDismissID);
+                ActionDismissCompanion(name);
             }
-            else if (farmer.dialogueQuestionsAnswered.Contains(cdi.actionDismissID + 1))
+            else if (farmer.dialogueQuestionsAnswered.Contains(actionContinueID))
             {
+                farmer.dialogueQuestionsAnswered.Remove(actionContinueID);
                 companionStates[name] = CompanionionshipState.actionDialogueNeedsRePushed;
-                farmer.dialogueQuestionsAnswered.Remove(cdi.actionDismissID + 1);
                 companion.faceTowardFarmerTimer = 0;
             }
         }
@@ -467,7 +466,7 @@ namespace FollowerNPC
         /// Checks to see if a companion needs to be dismissed, and draws an Automatic
         /// Dismissal Dialogue if so.
         /// </summary>
-        private void HandleAutomaticCompanionDismissal()
+        private void CheckForAutomaticCompanionDismissal()
         {
             if (Game1.timeOfDay >= 2200)
             {
@@ -476,10 +475,10 @@ namespace FollowerNPC
                 if (companion.Dialogue.TryGetValue(dialogueKey, out dialogueValue))
                 {
                     CompanionDialogueInfo cdi = companionDialogueInfos[companion.Name];
-                    farmer.dialogueQuestionsAnswered.Remove(cdi.recruitYesID);
-                    farmer.dialogueQuestionsAnswered.Remove(cdi.recruitYesID + 1);
-                    farmer.dialogueQuestionsAnswered.Remove(cdi.actionDismissID);
-                    farmer.dialogueQuestionsAnswered.Remove(cdi.actionDismissID + 1);
+                    farmer.dialogueQuestionsAnswered.Remove(recruitYesID);
+                    farmer.dialogueQuestionsAnswered.Remove(recruitNoID);
+                    farmer.dialogueQuestionsAnswered.Remove(actionDismissID);
+                    farmer.dialogueQuestionsAnswered.Remove(actionContinueID);
 
                     while (companion.CurrentDialogue.Count != 0)
                         companion.CurrentDialogue.Pop();
@@ -492,8 +491,12 @@ namespace FollowerNPC
         /// <summary>
         /// Handles all the cleanup for a Companion Dismissal
         /// </summary>
-        private void DismissCompanion(string name)
+        private void ActionDismissCompanion(string name)
         {
+            farmer.dialogueQuestionsAnswered.Remove(recruitYesID);
+            farmer.dialogueQuestionsAnswered.Remove(recruitNoID);
+            farmer.dialogueQuestionsAnswered.Remove(actionContinueID);
+            farmer.dialogueQuestionsAnswered.Remove(actionDismissID);
             companionAI.Dispose();
             companionAI = null;
             companionBuff.RemoveAndDisposeCompanionBuff();
@@ -511,23 +514,17 @@ namespace FollowerNPC
             companionStates[name] = CompanionionshipState.dismissed;
             DelayedWarp(companionRescheduleDestinationLocation,
                 companionRescheduleDestinationPoint, 500, new Action(CompanionEndCleanup));
-            foreach (KeyValuePair<string, bool> npcKvP in npcsThatCanBeRecruitedToday)
-            {
-                if (npcKvP.Value)
-                    TryPushCompanionRecruitDialogue(npcKvP.Key);
-            }
         }
 
         /// <summary>
         /// Dismisses a companion without resetting their schedule.
         /// </summary>
-        private void EndOfDayDismissCompanion()
+        private void FarmerSleepingDismissCompanion()
         {
-            CompanionDialogueInfo cdi = companionDialogueInfos[companion.Name];
-            farmer.dialogueQuestionsAnswered.Remove(cdi.recruitYesID);
-            farmer.dialogueQuestionsAnswered.Remove(cdi.recruitYesID + 1);
-            farmer.dialogueQuestionsAnswered.Remove(cdi.actionDismissID);
-            farmer.dialogueQuestionsAnswered.Remove(cdi.actionDismissID + 1);
+            farmer.dialogueQuestionsAnswered.Remove(recruitYesID);
+            farmer.dialogueQuestionsAnswered.Remove(recruitNoID);
+            farmer.dialogueQuestionsAnswered.Remove(actionContinueID);
+            farmer.dialogueQuestionsAnswered.Remove(actionDismissID);
             companionAI.Dispose();
             companionAI = null;
             companionBuff.RemoveAndDisposeCompanionBuff();
@@ -541,7 +538,7 @@ namespace FollowerNPC
         /// <summary>
         /// Sets the companion dialogue for the current location.
         /// </summary>
-        private void handleCompanionLocationSpecificDialogue()
+        private void HandleCompanionLocationSpecificDialogue()
         {
             MineShaft ms = companion.currentLocation as MineShaft;
             // If this is a mineshaft and there are enemies, remove current dialogue
@@ -562,17 +559,34 @@ namespace FollowerNPC
                     while (combatWithheldDialogue.Count > 0)
                         companion.CurrentDialogue.Push(combatWithheldDialogue.Pop());
                 }
-                // or push this location's unique dialogue
                 else
                 {
                     string dialogueKey = "companion" + farmer.currentLocation.Name;
                     string dialogueValue;
-                    if (companion.Dialogue.TryGetValue(dialogueKey, out dialogueValue) && !currentCompanionVisitedLocations.TryGetValue(dialogueKey, out bool v))
+                    // push this location's unique dialogue if there is some...
+                    if (companion.Dialogue.TryGetValue(dialogueKey, out dialogueValue))
                     {
-                        while (companion.CurrentDialogue.Count != 0)
-                            companion.CurrentDialogue.Pop();
-                        companion.CurrentDialogue.Push(new Dialogue(dialogueValue, companion));
-                        currentCompanionVisitedLocations[dialogueKey] = true;
+                        if (!currentCompanionVisitedLocations.TryGetValue(dialogueKey, out bool v) || !v)
+                        {
+                            while (companion.CurrentDialogue.Count != 0)
+                                companion.CurrentDialogue.Pop();
+                            Dialogue d = new Dialogue(dialogueValue, companion);
+                            companionDialogueInfos[companion.Name].locationUniqueDialogue = d;
+                            companion.CurrentDialogue.Push(d);
+                            currentCompanionVisitedLocations[dialogueKey] = false;
+                        }
+                    }
+                    // or if there isn't location-unique dialogue, remove the current lcation-unique dialogue.
+                    else
+                    {
+                        // if we're not in a mineshaft, and the companion's current dialogue is a location-unique dialogue
+                        if (ms == null &&
+                        companion.CurrentDialogue.Count != 0 &&
+                        companion.CurrentDialogue.Peek().Equals(companionDialogueInfos[companion.Name].locationUniqueDialogue))
+                        {
+                            while (companion.CurrentDialogue.Count != 0)
+                                companion.CurrentDialogue.Pop();
+                        }
                     }
                 }
             }
@@ -618,26 +632,12 @@ namespace FollowerNPC
         private CompanionDialogueInfo GenerateCompanionDialogueInfo(string name)
         {
             NPC n = Game1.getCharacterFromName(name);
-            string companionRecruitScript = npcDialogueScripts[name]["Companion"];
-            string companionActionScript = npcDialogueScripts[name]["CompanionActions"];
-            Dialogue rd = new Dialogue(companionRecruitScript, n);
-            Dialogue ad = new Dialogue(companionActionScript, n);
-            Dialogue autoDismiss = new Dialogue(npcDialogueScripts[name]["CompanionAutomaticDismissal"], n);
-            CompanionDialogueInfo cdi = new CompanionDialogueInfo();
-            cdi.recruitDialogue = rd;
-            cdi.recruitYesID = GetYesResponseID(rd);
-            cdi.actionDialogue = ad;
-            cdi.actionDismissID = GetYesResponseID(ad);
-            cdi.automaticDismissDialogue = autoDismiss;
-            return cdi;
-            //return new CompanionDialogueInfo()
-            //{
-            //    recruitDialogue = rd,
-            //    recruitYesID = GetYesResponseID(rd),
-            //    actionDialogue = ad,
-            //    actionDismissID = GetYesResponseID(ad),
-            //    automaticDismissDialogue = autoDismiss
-            //};
+            return new CompanionDialogueInfo()
+            {
+                recruitDialogue = new Dialogue(npcDialogueScripts[name]["Companion"], n),
+                actionDialogue = new Dialogue(npcDialogueScripts[name]["CompanionActions"], n),
+                automaticDismissDialogue = new Dialogue(npcDialogueScripts[name]["CompanionAutomaticDismissal"], n)
+            };
         }
 
         /// <summary>
@@ -691,6 +691,26 @@ namespace FollowerNPC
 
             companion = null;
             Patches.companion = null;
+
+            List<string> changes = new List<string>(12);
+            foreach (KeyValuePair<string, bool> npcKvP in npcsThatCanBeRecruitedToday)
+            {
+                NPC n = Game1.getCharacterFromName(npcKvP.Key);
+                if (npcKvP.Value && n.CurrentDialogue.Count == 0)
+                {
+                    if (!(companion != null))
+                    {
+                        changes.Add(npcKvP.Key);
+                        n.CurrentDialogue.Push(companionDialogueInfos[npcKvP.Key].recruitDialogue);
+                        companionStates[npcKvP.Key] = CompanionionshipState.recruitDialoguePushed;
+                    }
+                }
+            }
+
+            foreach (string change in changes)
+            {
+                npcsThatCanBeRecruitedToday[change] = false;
+            }
         }
         #endregion
 

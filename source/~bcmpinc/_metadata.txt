@@ -13,9 +13,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit be42a902f5c5b168cb5698f9658255ea4550370b
+   commit 291550820f89fa926c64ceee6f05c32e5c647f74
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Mon Dec 31 17:40:15 2018 +0100
+   Date:   Sat Jan 5 01:37:52 2019 +0100
    
-       Moved StardewHack library into its own mod.
+       Updated & Added Readme files.
    

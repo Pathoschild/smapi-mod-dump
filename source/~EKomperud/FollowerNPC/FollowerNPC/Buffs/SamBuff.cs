@@ -4,7 +4,7 @@ namespace FollowerNPC.Buffs
 {
     class SamBuff : CompanionBuff
     {
-        public SamBuff(Farmer farmer) : base(farmer)
+        public SamBuff(Farmer farmer, NPC npc) : base(farmer, npc)
         {
             buff = new Buff(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 30, "", "");
             buff.description = "Sam likes to live fast (but hopefully he won't die TOO young)."+

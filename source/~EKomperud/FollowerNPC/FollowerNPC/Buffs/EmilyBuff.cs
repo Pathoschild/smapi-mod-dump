@@ -11,7 +11,7 @@ namespace FollowerNPC.Buffs
         protected int healthThreshold;
         protected int frameTimer;
 
-        public EmilyBuff(Farmer farmer) : base(farmer)
+        public EmilyBuff(Farmer farmer, NPC npc) : base(farmer, npc)
         {
             buff = new Buff(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 30, "", "");
             buff.description = "Emily and her powerful spirit will aid you while mining." +

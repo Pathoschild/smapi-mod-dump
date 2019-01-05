@@ -13,8 +13,8 @@ Dismiss NPC's when going to bed.					- Done!
 No talking when monsters in room in mines			- Done! Might modify this later, but works for now.
 Gates?
 Swarm rooms	not spawning ladders					- Fixed!
-Companions can get stuck on big rocks
-Companions can get stuck in treasure rooms
+Companions can get stuck on big rocks and Stumps
+Companions can get stuck in treasure rooms			- Fixed!
 Test what happens when companion is in event.		- Done
 Test what happens when companion is at a festival.  - Done
 
@@ -29,7 +29,7 @@ Companion Buffs:
 	Emily:		Mining +2. 100% Yoba Ring after damage. High healing when < 40%.	Replicates "Gemologist" perk, but 100%?
 	Haley:		Luck +3																
 	Harvey:		Defense +10. Gradual healing when below 80%							Buffed healing + 1 lifeline?
-	Leah:		Foraging +3															Forages Iridium quality items occasionally?
+	Leah:		Foraging +2															Forages Iridium quality items occasionally.
 	Maru:		Increase any 1 skill by 1, interchangeable							Buffed to +2?
 	Penny:		Farming +3															Unique dialogue with children. Makes them friendlier quicker?
 	Sam:		Speed +2															+3 speed? Jukebox function?
@@ -39,8 +39,17 @@ Companion Buffs:
 
 Companions get stuck on aStar nodes when moving too fast	- Fixed!
 Dialogue's don't appear after skipped event
+Check to add recruit dialogue when heart value goes up
+Remove location dialogue when leaving a specific area		- Done!
+Reset animation upon change ai state						- Done!
+Don't recruit companions past 10							- Done!
+Stop companions from acting when paused						- Done!
+Idle animations
 
 Combat Behavior:
 	Don't target duggies when they're buried.
 	Don't target invincible bugs at all
+	Don't target rock crabs unless they're moving
 	Don't target mummies when they're downed
+	Change targets if another monster gets close
+	Back off a little if monster is too close				- Done!

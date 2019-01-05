@@ -1,11 +1,16 @@
 # Craft Counter
-Adds a counter to the description of crafting & cooking recipes telling how often it has been crafted/cooked. Useful for obtaining the craft/cook everything achievement.
 
-## Config
-none
+## Description
+Adds a counter to the description of crafting & cooking recipes telling how often it has been crafted/cooked. Useful for obtaining the craft/cook everything achievements.
+
+## Dependencies
+This mod requires the following mods to be installed:
+
+* [SMAPI](https://www.nexusmods.com/stardewvalley/mods/2400)
+* [StardewHack](https://www.nexusmods.com/stardewvalley/mods/3213)
 
 ## Known bugs
-Please report bugs on: https://github.com/bcmpinc/StardewHack/issues
+Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 ## Changes
 #### 0.5:

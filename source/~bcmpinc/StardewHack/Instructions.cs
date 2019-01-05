@@ -113,7 +113,9 @@ namespace StardewHack
         public static CodeInstruction Sub() => new CodeInstruction(OpCodes.Sub);
 
 
-        /** Retrieves the field definition with the specified name. */
+        /// <summary>
+        /// Retrieves the field definition with the specified name.
+        /// </summary>
         internal static FieldInfo GetField(Type type, string field) {
             var res = AccessTools.Field(type, field);
             if (res == null) {
@@ -122,7 +124,9 @@ namespace StardewHack
             return res;
         }
 
-        /** Retrieves the property definition with the specified name. */
+        /// <summary>
+        /// Retrieves the property definition with the specified name. 
+        /// </summary>
         internal static PropertyInfo GetProperty(Type type, string property) {
             var res = AccessTools.Property(type, property);
             if (res == null) {
@@ -131,7 +135,9 @@ namespace StardewHack
             return res;
         }
 
-        /** Retrieves the type definition with the specified name. */
+        /// <summary>
+        /// Retrieves the type definition with the specified name.
+        /// </summary>
         internal static MethodInfo GetMethod(Type type, string method, Type[] parameters) {
             var res = AccessTools.Method(type, method, parameters);
             if (res == null) {

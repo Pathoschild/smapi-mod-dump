@@ -62,7 +62,7 @@ namespace FollowerNPC.AI_States
 
         private void Player_Warped(object sender, WarpedEventArgs e)
         {
-            if (owner.companion.currentLocation == null)
+            if (owner == null || owner.companion == null || owner.companion.currentLocation == null)
                 return;
 
             ChangeState(eAI_State.followFarmer);

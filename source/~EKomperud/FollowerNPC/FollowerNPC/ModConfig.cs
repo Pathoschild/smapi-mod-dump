@@ -25,6 +25,8 @@ namespace FollowerNPC
 
         public int heartThreshold;
 
+        public bool festivalHangouts;
+
         public ModConfig()
         {
             Abigail = new string[] {"Wed" };
@@ -43,6 +45,8 @@ namespace FollowerNPC
             Shane = new string[] {  "Sun" };
 
             heartThreshold = 2;
+
+            festivalHangouts = false;
         }
     }
 }

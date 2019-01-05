@@ -7,9 +7,9 @@ mods:
    Multiple Gifts for Spouses
 
 latest commit:
-   commit cc7b25f0dd8ed42d02e27ab1d7f0ab1474132a5b
+   commit a94916df241fa28c38184939eb23e5231837010b
    Author: EKomperud <ericmkomperud@gmail.com>
-   Date:   Mon Dec 31 21:34:11 2018 -0700
+   Date:   Thu Jan 3 20:45:14 2019 -0700
    
-       Version 0.0.5
+       Version 0.0.6
    

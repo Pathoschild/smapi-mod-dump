@@ -5,12 +5,9 @@ mods:
    Fast Travel
 
 latest commit:
-   commit 79c893a8cc948e6f1186bcae33b57f5c59b2ead9
-   Merge: 7e0d560 43b281f
+   commit 9bec73e426db75103d9d709dd743ddb54f0abc1f
    Author: Mckenon <DeathGameDev@gmail.com>
-   Date:   Sun Jun 3 23:24:23 2018 -0500
+   Date:   Wed Jan 2 00:00:45 2019 -0600
    
-       Merge pull request #8 from Pathoschild/patch-1
-       
-       Standardise update key format
+       Update readme.md
    

@@ -5,7 +5,7 @@ namespace FollowerNPC.Buffs
 {
     class ElliottBuff : CompanionBuff
     {
-        public ElliottBuff(Farmer farmer) : base(farmer)
+        public ElliottBuff(Farmer farmer, NPC npc) : base(farmer, npc)
         {
             buff = new Buff(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 30, "", "");
             buff.description =

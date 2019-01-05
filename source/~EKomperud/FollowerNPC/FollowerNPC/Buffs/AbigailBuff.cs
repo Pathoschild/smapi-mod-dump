@@ -5,7 +5,7 @@ namespace FollowerNPC.Buffs
 {
     class AbigailBuff: CompanionBuff
     {
-        public AbigailBuff(Farmer farmer) : base(farmer)
+        public AbigailBuff(Farmer farmer, NPC npc) : base(farmer, npc)
         {
             buff = new Buff(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 30, "", "");
             buff.description = "Hanging out with Abigail get's your adventurer's blood pumping!"+

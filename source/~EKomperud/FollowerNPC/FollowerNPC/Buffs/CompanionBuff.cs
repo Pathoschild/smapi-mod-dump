@@ -7,58 +7,68 @@ namespace FollowerNPC
     public class CompanionBuff
     {
         public Farmer buffOwner;
+        public NPC buffGranter;
+        public CompanionsManager manager;
 
         public Buff buff;
         public Buff[] statBuffs;
 
-        public CompanionBuff(Farmer farmer)
+        public CompanionBuff(Farmer farmer, NPC npc)
         {
             buffOwner = farmer;
+            buffGranter = npc;
         }
 
-        public static CompanionBuff InitializeBuffFromCompanionName(string companionName, Farmer farmer)
+        public static CompanionBuff InitializeBuffFromCompanionName(string companionName, Farmer farmer, CompanionsManager cm)
         {
+            NPC n = Game1.getCharacterFromName(companionName);
             CompanionBuff companionBuff;
             switch (companionName)
             {
                 case "Abigail":
-                    companionBuff = new Buffs.AbigailBuff(farmer);
+                    companionBuff = new Buffs.AbigailBuff(farmer, n);
                     break;
                 case "Alex":
-                    companionBuff = new Buffs.AlexBuff(farmer);
+                    companionBuff = new Buffs.AlexBuff(farmer, n);
                     break;
                 case "Elliott":
-                    companionBuff = new Buffs.ElliottBuff(farmer);
+                    companionBuff = new Buffs.ElliottBuff(farmer, n);
                     break;
                 case "Emily":
-                    companionBuff = new Buffs.EmilyBuff(farmer);
+                    companionBuff = new Buffs.EmilyBuff(farmer, n);
                     break;
                 case "Haley":
-                    companionBuff = new Buffs.HaleyBuff(farmer);
+                    companionBuff = new Buffs.HaleyBuff(farmer, n);
                     break;
                 case "Harvey":
-                    companionBuff = new Buffs.HarveyBuff(farmer);
+                    companionBuff = new Buffs.HarveyBuff(farmer, n);
                     break;
                 case "Leah":
-                    companionBuff = new Buffs.LeahBuff(farmer);
+                    companionBuff = new Buffs.LeahBuff(farmer, n);
+                    (companionBuff as Buffs.LeahBuff).SetForageFoundDialogue(new string[]
+                    {
+                        cm.npcDialogueScripts["Leah"]["companionPerk1"],
+                        cm.npcDialogueScripts["Leah"]["companionPerk2a"],
+                        cm.npcDialogueScripts["Leah"]["companionPerk2b"],
+                    });
                     break;
                 case "Maru":
-                    companionBuff = new Buffs.MaruBuff(farmer);
+                    companionBuff = new Buffs.MaruBuff(farmer, n);
                     break;
                 case "Penny":
-                    companionBuff = new Buffs.PennyBuff(farmer);
+                    companionBuff = new Buffs.PennyBuff(farmer, n);
                     break;
                 case "Sam":
-                    companionBuff = new Buffs.SamBuff(farmer);
+                    companionBuff = new Buffs.SamBuff(farmer, n);
                     break;
                 case "Sebastian":
-                    companionBuff = new Buffs.SebastianBuff(farmer);
+                    companionBuff = new Buffs.SebastianBuff(farmer, n);
                     break;
                 case "Shane":
-                    companionBuff = new Buffs.ShaneBuff(farmer);
+                    companionBuff = new Buffs.ShaneBuff(farmer, n);
                     break;
                 default:
-                    companionBuff = new Buffs.AbigailBuff(farmer);
+                    companionBuff = new Buffs.AbigailBuff(farmer, n);
                     break;
             }
 
@@ -78,6 +88,8 @@ namespace FollowerNPC
                     }
                 }
             }
+
+            companionBuff.manager = cm;
 
             return companionBuff;
         }

@@ -1,0 +1,14 @@
+url:
+   https://github.com/Ilyaki/BattleRoyalley.git
+
+mods:
+   Battle Royalley
+
+latest commit:
+   commit 72cdfd980d0bc6c73980cfba8544937c18898828
+   Merge: ef7bf63 5945a8b
+   Author: Ilyaki <ilyaki.ilyaki@gmail.com>
+   Date:   Wed Jan 2 18:57:50 2019 +0000
+   
+       Merge branch 'master' of https://github.com/Ilyaki/BattleRoyalley
+   

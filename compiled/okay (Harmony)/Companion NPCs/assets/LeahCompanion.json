@@ -1,10 +1,10 @@
 {
-  "Companion": "Hey @! I was just thinking about going for a walk around the valley.#$q 6949975/6949976 leahCompanion_followup#Where are you headed?#$r 6949975 15 leahCompanion_yes#Walking around a bit too. You feel like coming with?#$r 6949976 0 leahCompanion_errands#I have a few errands I need to get done today.#$r 6949976 0 leahCompanion_boring#Eh, nowhere too interesting I think.",
+  "Companion": "Hey @! I was just thinking about going for a walk around the valley.#$q 592800/9249200 leahCompanion_followup#Where are you headed?#$r 592800 15 leahCompanion_yes#Walking around a bit too. You feel like coming with?#$r 9249200 0 leahCompanion_errands#I have a few errands I need to get done today.#$r 9249200 0 leahCompanion_boring#Eh, nowhere too interesting I think.",
   "leahCompanion_yes": "Sounds like we both want the same things in life! Let's go.",
   "leahCompanion_errands": "Oh well. Let me know when you've got some free time and we'll hang out!",
   "leahCompanion_boring": "I doubt that. You should try to find interesting things wherever you are!",
-  "leahCompanion_followup": "#$p 6949975 #All we need is a bottle of wine to top this day off!$h|I find good forage year-round so there's always a reason to take a walk!",
-  "CompanionActions": "Hey @, what's up.#$q 50000000/50000001 CompanionFollowup#What's up?#$r 50000000 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 50000001 0 CompanionActionContinue#Nothing, just taking a breather.",
+  "leahCompanion_followup": "#$p 592800 #All we need is a bottle of wine to top this day off!$h|I find good forage year-round so there's always a reason to take a walk!",
+  "CompanionActions": "Hey @, what's up.#$q 4736775/7298075 CompanionFollowup#What's up?#$r 4736775 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 7298075 0 CompanionActionContinue#Nothing, just taking a breather.",
   "CompanionFollowup": ":)",
   "CompanionActionEnd": "Alright, well thanks for hanging out with me today!$h",
   "CompanionActionContinue": "Cool.",
@@ -24,5 +24,8 @@
   "companionMine": "This isn't exactly the kind of nature walk I had in mind, but I think there's beauty in the natural minerals of the world too.",
   "companionRailroad": "These roads lead a long way either way.#$b#Would you ever think about packing it all up and moving somewhere far away again, @?#$b#The thought's definitely crossed my mind before.",
   "companionBathHouse_Pool": "Hey @, have I ever told you how good you look in a bathing suit?$h#$e#I know we all crave positive feedback from other sometimes, but it's good to be confident in yourself as well.#$b#Try complimenting yourself on something you're proud of sometime!",
-  "companionWoods": "Now this is where you'll find all the best forage. Pretty good spot for a picnic, don't you think?$h"
+  "companionWoods": "Now this is where you'll find all the best forage. Pretty good spot for a picnic, don't you think?$h",
+  "companionPerk1": "Hey, I just found a bunch of these a mintue ago. Go ahead and take one @, it's a ",
+  "companionPerk2a": "Here, have a ",
+  "companionPerk2b": ", @. I found a whole bunch of them just a minute ago!$h"
 }

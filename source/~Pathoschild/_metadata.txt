@@ -17,9 +17,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 22e272e771e735671c357277f2373f09d94b95ec
+   commit 94d052e91adb769df99b33faacb74b3b84a56364
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Tue Jan 1 22:26:06 2019 -0500
+   Date:   Thu Jan 3 23:04:34 2019 -0500
    
-       add silo hay field (#257)
+       fix tractor applying fertiliser to existing crops (#357)
    

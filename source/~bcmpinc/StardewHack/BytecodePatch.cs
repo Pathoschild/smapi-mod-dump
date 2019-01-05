@@ -4,14 +4,15 @@ using System.Reflection;
 
 namespace StardewHack
 {
-    /** Indicates that this is a transpiler for the given method.
-     * Can be used multiple times to patch multiple methods.
-     */
+    /// <summary>
+    /// Indicates that this is a transpiler for the given method.
+    /// Can be used multiple times to patch multiple methods.
+    /// </summary>
     [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = true)]  
     public class BytecodePatch : System.Attribute  
     {
-        string sig;
-        string enabled;
+        readonly string sig;
+        readonly string enabled;
 
         public bool IsEnabled(HackBase hack)
         {
@@ -65,7 +66,9 @@ namespace StardewHack
             return method;
         }
 
-        /** Retrieves the type definition with the specified name. */
+        /// <summary>
+        /// Retrieves the type definition with the specified name.
+        /// </summary>
         internal static Type GetType(string type) {
             var res = AccessTools.TypeByName(type.Trim());
             if (res == null) {

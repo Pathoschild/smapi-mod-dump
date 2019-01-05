@@ -1,8 +1,13 @@
-# Fix Animal Tools
+# Fix Animal Tool Animations
+
+## Description
 When using the shears or milk pail, you're locked in place until the animation finishes. With this mod the animation no longer plays when no animal is nearby.
 
-## Config
-none
+## Dependencies
+This mod requires the following mods to be installed:
+
+* [SMAPI](https://www.nexusmods.com/stardewvalley/mods/2400)
+* [StardewHack](https://www.nexusmods.com/stardewvalley/mods/3213)
 
 ## Known bugs
-Please report bugs on: https://github.com/bcmpinc/StardewHack/issues
+Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).

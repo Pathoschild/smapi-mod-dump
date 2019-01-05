@@ -6,7 +6,7 @@
    "UniqueID": "bcmpinc.FixAnimalTools",
    "EntryDll": "FixAnimalTools.dll",
    "MinimumApiVersion": "2.7",
-   "UpdateKeys": ["GitHub:bcmpinc/StardewHack"],
+   "UpdateKeys": ["Nexus:"],
    "Dependencies": [{
       "UniqueID": "bcmpinc.StardewHack",
       "MinimumVersion": "1.0"

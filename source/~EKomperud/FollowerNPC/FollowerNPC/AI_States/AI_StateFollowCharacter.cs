@@ -152,8 +152,12 @@ namespace FollowerNPC.AI_States
             if (targetLastTile != leaderCurrentTile)
             {
                 path = aStar.Pathfind(me.getTileLocation(), leaderCurrentTile);
-                if (me.getTileLocation() != currentPathNode)
-                    currentPathNode = path != null && path.Count != 0 ? path.Dequeue() : negativeOne;
+                //if (me.getTileLocation() != currentPathNode)
+                //    currentPathNode = path != null && path.Count != 0 ? path.Dequeue() : negativeOne;
+                if (path != null && path.Count != 0 && me.getTileLocation() != path.Peek())
+                    currentPathNode = path.Dequeue();
+                else
+                    currentPathNode = negativeOne;
             }
 
             targetLastTile = leaderCurrentTile;
@@ -211,13 +215,14 @@ namespace FollowerNPC.AI_States
                     return;
                 nodeDiff /= nodeDiffLen;
 
+                
                 me.xVelocity = nodeDiff.X * currentMovespeed;
                 me.yVelocity = -nodeDiff.Y * currentMovespeed;
-                if (me.xVelocity != 0 && me.yVelocity != 0)
-                {
-                    me.xVelocity *= 1.05f;
-                    me.yVelocity *= 1.05f;
-                }
+                //if (me.xVelocity != 0 && me.yVelocity != 0)
+                //{
+                //    me.xVelocity *= 1.05f;
+                //    me.yVelocity *= 1.05f;
+                //}
                 HandleWallSliding();
                 lastFrameVelocity = new Vector2(me.xVelocity, me.yVelocity);
                 lastFramePosition = new Vector2(me.GetBoundingBox().Center.X, me.GetBoundingBox().Center.Y);
@@ -398,7 +403,7 @@ namespace FollowerNPC.AI_States
             foreach (Character c in aStar.gameLocation.characters)
             {
                 Monster asMonster = c as Monster;
-                if (asMonster != null)
+                if (asMonster != null && asMonster.currentLocation != null)
                 {
                     Vector2 m = new Vector2(asMonster.GetBoundingBox().Center.X, asMonster.GetBoundingBox().Center.Y);
                     float distance = (m - i).Length();

@@ -1,9 +1,9 @@
 {
-  "Companion": "What a beautiful day it is!#$q 7385000/7385001 pennyCompanion_followup#Hey @, do you think you could use come company?#$r 7385000 20 pennyCompanion_yes#Yeah, that sounds nice. Want to walk with me?#$r 7385001 -5 pennyCompanion_no#Sorry Penny. Not right now.",
+  "Companion": "What a beautiful day it is!#$q 592800/9249200 pennyCompanion_followup#Hey @, do you think you could use come company?#$r 592800 20 pennyCompanion_yes#Yeah, that sounds nice. Want to walk with me?#$r 9249200 -5 pennyCompanion_no#Sorry Penny. Not right now.",
   "pennyCompanion_yes": "Yes! That sounds lovely. Where are we headed today?$h",
   "pennyCompanion_no": "Oh. Well ok then. See you another time.$s",
-  "pennyCompanion_followup": "#$p 7385000 #You smell very nice too. I love the smell of a farmer at work.$h|The museum is a nice place to relax if you ever want to stop by and talk.",
-  "CompanionActions": "Hey @, what's up.#$q 50000000/50000001 CompanionFollowup#What's up?#$r 50000000 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 50000001 0 CompanionActionContinue#Nothing, just taking a breather.",
+  "pennyCompanion_followup": "#$p 592800 #You smell very nice too. I love the smell of a farmer at work.$h|The museum is a nice place to relax if you ever want to stop by and talk.",
+  "CompanionActions": "Hey @, what's up.#$q 4736775/7298075 CompanionFollowup#What's up?#$r 4736775 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 7298075 0 CompanionActionContinue#Nothing, just taking a breather.",
   "CompanionFollowup": ":)",
   "CompanionActionEnd": "Alright, well thanks for hanging out with me today!$h",
   "CompanionActionContinue": "Cool.",

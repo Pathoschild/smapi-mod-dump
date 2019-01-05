@@ -52,6 +52,21 @@ private readonly TimeSpan CacheTime = TimeSpan.FromMinutes(30);
 /****
 ** Common settings
 ****/
+/// <summary>The wiki compatibility statuses to highlight as errors. Mainly useful when you have a set of mods you know work or don't work, and want to find errors in the compatibility list.</summary>
+private readonly HashSet<WikiCompatibilityStatus> HighlightStatuses = new HashSet<WikiCompatibilityStatus>(
+	// all statuses
+	new[]
+	{
+		WikiCompatibilityStatus.Ok, WikiCompatibilityStatus.Optional, WikiCompatibilityStatus.Unofficial, // OK
+		WikiCompatibilityStatus.Broken, WikiCompatibilityStatus.Workaround, // broken
+		WikiCompatibilityStatus.Abandoned, WikiCompatibilityStatus.Obsolete // abandoned
+	}
+
+	//.Except(new[] { WikiCompatibilityStatus.Abandoned, WikiCompatibilityStatus.Obsolete }) // if abandoned
+	//.Except(new[] { WikiCompatibilityStatus.Broken, WikiCompatibilityStatus.Workaround }) // if broken
+	.Except(new[] { WikiCompatibilityStatus.Ok, WikiCompatibilityStatus.Optional, WikiCompatibilityStatus.Unofficial }) // if OK
+);
+
 /// <summary>Whether to show data for the latest version of the game, even if it's a beta.</summary>
 public bool ForBeta = true;
 
@@ -167,30 +182,6 @@ public IDictionary<string, Tuple<string, string>> EquivalentModVersions = new Di
 	["skuldomg.freeDusty"] = Tuple.Create("1.0-beta.7", "1.0.5"), // Free Dusty
 	["ElectroCrumpet.PelicanPostalService"] = Tuple.Create("1.0.5-beta", "1.0.6") // Pelican Postal Service
 };
-
-/****
-** Validation
-****/
-/// <summary>The wiki compatibility statuses to highlight as errors. Mainly useful when you have a set of mods you know work or don't work, and want to find errors in the compatibility list.</summary>
-private readonly HashSet<WikiCompatibilityStatus> HighlightStatuses = new HashSet<WikiCompatibilityStatus>(
-	// all statuses
-	new[]
-	{
-		WikiCompatibilityStatus.Ok, WikiCompatibilityStatus.Optional, WikiCompatibilityStatus.Unofficial, // OK
-		WikiCompatibilityStatus.Broken, WikiCompatibilityStatus.Workaround, // broken
-		WikiCompatibilityStatus.Abandoned, WikiCompatibilityStatus.Obsolete // abandoned
-	}
-
-	// if OK
-	//.Except(new[] { WikiCompatibilityStatus.Ok, WikiCompatibilityStatus.Optional, WikiCompatibilityStatus.Unofficial })
-
-	// if broken
-	.Except(new[] { WikiCompatibilityStatus.Broken, WikiCompatibilityStatus.Workaround })
-	
-	// if abandoned
-	//.Except(new[] { WikiCompatibilityStatus.Abandoned, WikiCompatibilityStatus.Obsolete })
-);
-
 
 /*********
 ** Script

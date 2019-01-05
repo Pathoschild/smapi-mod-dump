@@ -22,6 +22,8 @@ namespace FollowerNPC
 
         public CompanionsManager companionsManager;
 
+        public static MethodInfo applyVelocity;
+
         public override void Entry(IModHelper helper)
         {
             // Initialize variables //
@@ -41,11 +43,20 @@ namespace FollowerNPC
             MethodInfo isCollidingPositionpostfix = typeof(Patches).GetMethod("Postfix", isCollidingPositionTypes1);
             harmony.Patch(isCollidingPositionOriginal, new HarmonyMethod(isCollidingPositionprefix), new HarmonyMethod(isCollidingPositionpostfix));
 
-            Type[] updateMovementTypes0 = new Type[] {typeof(GameLocation), typeof(GameTime)};
-            Type[] updateMovementTypes1 = new Type[] {typeof(NPC), typeof(GameLocation), typeof(GameTime)};
-            MethodInfo updateMovementOriginal = typeof(NPC).GetMethod("updateMovement", updateMovementTypes0);
+            //Type[] movePositionTypes0 = new Type[] { typeof(GameTime), typeof(Rectangle), typeof(GameLocation) };
+            //Type[] movePositionTypes1 = new Type[] { typeof(NPC), typeof(GameTime), typeof(Rectangle), typeof(GameLocation) };
+            //MethodInfo movePositionOriginal = typeof(NPC).GetMethod("MovePosition");
+            //MethodInfo movePositionPrefix = typeof(Patches).GetMethod("Prefix", movePositionTypes1);
+            //harmony.Patch(movePositionOriginal, new HarmonyMethod(movePositionPrefix), null);
+
+            Type[] updateMovementTypes0 = new Type[] { typeof(GameLocation), typeof(GameTime) };
+            Type[] updateMovementTypes1 = new Type[] { typeof(NPC), typeof(GameLocation), typeof(GameTime) };
+            MethodInfo updateMovementOriginal = typeof(NPC).GetMethod("updateMovement");
             MethodInfo updateMovementPrefix = typeof(Patches).GetMethod("Prefix", updateMovementTypes1);
             harmony.Patch(updateMovementOriginal, new HarmonyMethod(updateMovementPrefix), null);
+
+            applyVelocity =
+                typeof(Character).GetMethod("applyVelocity", BindingFlags.NonPublic | BindingFlags.Instance);
             //**********************//
 
             // Subscribe to events //
@@ -306,11 +317,28 @@ namespace FollowerNPC
         /// Prevents the Companion from updating their movement via CA's movementUpdate function
         /// while they are the farmer's companion.
         /// </summary>
+        #region movePosition
+        
+        static public bool Prefix(NPC __instance, GameTime time, Rectangle viewport, GameLocation currentLocation)
+        {
+            bool dontSkip = (companion == null) || !__instance.Name.Equals(companion.Name);
+            if (!dontSkip)
+            {
+                object[] parameters = new object[] {__instance.currentLocation};
+                ModEntry.applyVelocity.Invoke(__instance, parameters);
+            }
+            return dontSkip;
+        }
+        #endregion
+
         #region updateMovement
+
         static public bool Prefix(NPC __instance, GameLocation location, GameTime time)
         {
-            return !(companion != null) && __instance.Equals(companion);
+            bool dontSkip = (companion == null) || !__instance.Name.Equals(companion.Name);
+            return dontSkip;
         }
+
         #endregion
     }
 

@@ -1,0 +1,10 @@
+{
+  "Name": "DontEatThat",
+  "Author": "Pyrohead37",
+  "Version": "2.0",
+  "Description": "Allows you to specify items you don't want to eat.",
+  "UniqueID": "Pyrohead37.DontEatThat",
+  "EntryDll": "DontEatThat.dll",
+  "MinimumApiVersion": "2.9",
+  "UpdateKeys": [ "Nexus:1951" ]
+}

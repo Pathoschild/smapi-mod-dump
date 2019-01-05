@@ -1,10 +1,10 @@
 {
-  "Companion": "Hey @. I was reading that going for nature walks is good for mental health.#$q 1630425/1630426 shaneCompanion_followup#What do you say we take a stroll#$r 1630425 15 shaneCompanion_yes#Yeah, I've heard that bit about walks too. Where do you want to go?#$r 1630426 5 shaneCompanion_tired#Sorry Shane, I'm a bit too tired to entertain company right now.#$r 1630426 0 shaneCompanion_no#Not today Shane. Sorry.",
+  "Companion": "Hey @. I was reading that going for nature walks is good for mental health.#$q 592800/9249200 shaneCompanion_followup#What do you say we take a stroll#$r 592800 15 shaneCompanion_yes#Yeah, I've heard that bit about walks too. Where do you want to go?#$r 9249200 5 shaneCompanion_tired#Sorry Shane, I'm a bit too tired to entertain company right now.#$r 9249200 0 shaneCompanion_no#Not today Shane. Sorry.",
   "shaneCompanion_yes": "I don't know. I was kind of hoping you had some ideas haha! Let's head out.$h",
   "shaneCompanion_tired": "I understand completely. Come say 'hi' if you ever want someone to chat with.",
   "shaneCompanion_no": "Hey, no worrries @. Don't ever feel like you've gotta be a stranger around here.",
-  "shaneCompanion_followup": "#$p 1630425#Thanks for dragging me along with you, @.|I think I might head out on my own still...",
-  "CompanionActions": "Hey @, what's up.#$q 50000000/50000001 CompanionFollowup#What's up?#$r 50000000 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 50000001 0 CompanionActionContinue#Nothing, just taking a breather.",
+  "shaneCompanion_followup": "#$p 592800#Thanks for dragging me along with you, @.|I think I might head out on my own still...",
+  "CompanionActions": "Hey @, what's up.#$q 4736775/7298075 CompanionFollowup#What's up?#$r 4736775 0 CompanionActionEnd#That's all the time I have to hang out today.#$r 7298075 0 CompanionActionContinue#Nothing, just taking a breather.",
   "CompanionFollowup": ":)",
   "CompanionActionEnd": "Alright, well thanks for hanging out with me today!$h",
   "CompanionActionContinue": "Cool.",

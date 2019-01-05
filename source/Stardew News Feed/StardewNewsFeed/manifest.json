@@ -1,0 +1,10 @@
+﻿{
+  "Name": "StardewNewsFeed",
+  "Author": "Other Buckets",
+  "Version": "1.5",
+  "Description": "Provides useful notifications to the player every morning.",
+  "UniqueID": "OtherBuckets.StardewNewsFeed",
+  "EntryDll": "StardewNewsFeed.dll",
+  "MinimumApiVersion": "2.9",
+  "UpdateKeys": [ "GitHub:MikeSNorth/StardewNewsFeed" ]
+}

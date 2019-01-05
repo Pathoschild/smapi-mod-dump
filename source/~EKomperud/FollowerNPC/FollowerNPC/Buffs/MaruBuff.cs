@@ -14,7 +14,7 @@ namespace FollowerNPC.Buffs
 
         List<Buff> otherBuffs;
 
-        public MaruBuff(Farmer farmer) : base(farmer)
+        public MaruBuff(Farmer farmer, NPC npc) : base(farmer, npc)
         {
             prosthetics = new Buff[6];
             prosthetics[0] = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 30, "", "");

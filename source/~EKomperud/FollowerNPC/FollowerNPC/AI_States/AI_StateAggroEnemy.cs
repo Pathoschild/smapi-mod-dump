@@ -30,6 +30,7 @@ namespace FollowerNPC.AI_States
         // *************** //
 
         // Aggro radii //
+        private float backupRadius;
         private float attackRadius;
         private float stayAggroRadius;
         private float defendRadius;
@@ -50,6 +51,7 @@ namespace FollowerNPC.AI_States
 
             returnRadius = 7f * fullTile;
 
+            backupRadius = 0.75f * fullTile;
             attackRadius = 1.25f * fullTile;
             stayAggroRadius = 6f * fullTile;
             defendRadius = 6.5f * fullTile;
@@ -135,7 +137,11 @@ namespace FollowerNPC.AI_States
 
         private eAI_State TransitionsCheck()
         {
-            if (aggroMonsterDefeated)
+            if (weaponSwingCooldown > 36)
+            {
+                return eAI_State.nil;
+            }
+            else if (aggroMonsterDefeated)
             {
                 aggroMonsterDefeated = false;
                 aggroMonster = SearchForNewTarget();
@@ -200,7 +206,7 @@ namespace FollowerNPC.AI_States
             float diffLen = diff.Length();
             weaponSwingCooldown = weaponSwingCooldown > 0 ? weaponSwingCooldown - 1 : weaponSwingCooldown;
             currentMovespeed = GetMovementSpeedBasedOnTarget(diffLen);
-            if (currentMovespeed > 0 && currentPathNode != negativeOne)
+            if (currentMovespeed != 0 && currentPathNode != negativeOne)
             {
                 Point n = new Point(((int) currentPathNode.X * fullTile) + halfTile,
                     ((int) currentPathNode.Y * fullTile) + halfTile);
@@ -248,7 +254,15 @@ namespace FollowerNPC.AI_States
 
             if (pathfindingTarget.Equals(aggroMonster))
             {
-                if (distance <= attackRadius)
+                if (distance <= backupRadius)
+                {
+                    if (weaponSwingCooldown == 0)
+                    {
+                        SetMeAnimating();
+                    }
+                    return -0.55f;
+                }
+                else if (distance <= attackRadius)
                 {
                     if (weaponSwingCooldown == 0)
                     {
@@ -258,7 +272,7 @@ namespace FollowerNPC.AI_States
                 }
                 else if (distance <= stayAggroRadius)
                 {
-                    return 4f;
+                    return 5.28f;
                 }
                 else if (distance <= defendRadius)
                 {

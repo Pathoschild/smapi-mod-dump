@@ -184,29 +184,104 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Constants
             /****
             ** Labels
             ****/
+            /// <summary>A value like <c>Animals</c>.</summary>
+            public const string Animals = "building.animals";
+
             /// <summary>A value like <c>Construction</c>.</summary>
             public const string Construction = "building.construction";
+
+            /// <summary>A value like <c>Feed trough</c>.</summary>
+            public const string FeedTrough = "building.feed-trough";
+
+            /// <summary>A value like <c>Horse</c>.</summary>
+            public const string Horse = "building.horse";
+
+            /// <summary>A value like <c>Horse</c>.</summary>
+            public const string HorseLocation = "building.horse-location";
+
+            /// <summary>A value like <c>Harvesting enabled</c>.</summary>
+            public const string JunimoHarvestingEnabled = "building.junimo-harvesting-enabled";
 
             /// <summary>A value like <c>Owner</c>.</summary>
             public const string Owner = "building.owner";
 
+            /// <summary>A value like <c>Produce ready</c>.</summary>
+            public const string OutputProcessing = "building.output-processing";
+
+            /// <summary>A value like <c>Produce ready</c>.</summary>
+            public const string OutputReady = "building.output-ready";
+
+            /// <summary>A value like <c>Slimes</c>.</summary>
+            public const string Slimes = "building.slimes";
+
             /// <summary>A value like <c>Stored hay</c>.</summary>
             public const string StoredHay = "building.stored-hay";
+
+            /// <summary>A value like <c>Upgrades</c>.</summary>
+            public const string Upgrades = "building.upgrades";
+
+            /// <summary>A value like <c>Water trough</c>.</summary>
+            public const string WaterTrough = "building.water-trough";
 
             /****
             ** Values
             ****/
+            /// <summary>A value like <c>{{count}} of max {{max}} animals</c>.</summary>
+            public const string AnimalsSummary = "building.animals.summary";
+
             /// <summary>A value like <c>ready on {{date}}</c>.</summary>
             public const string ConstructionSummary = "building.construction.summary";
 
+            /// <summary>A value like <c>automated</c>.</summary>
+            public const string FeedTroughAutomated = "building.feed-trough.automated";
+
+            /// <summary>A value like <c>{{filled}} of {{max}} feed slots filled</c>.</summary>
+            public const string FeedTroughSummary = "building.feed-trough.summary";
+
+            /// <summary>A value like <c>{{location}} ({{x}}, {{y}})</c>.</summary>
+            public const string HorseLocationSummary = "building.horse-location.summary";
+
             /// <summary>A value like <c>no owner</c>.</summary>
             public const string OwnerNone = "building.owner.none";
+
+            /// <summary>A value like <c>{{count}} of max {{max}} slimes</c>.</summary>
+            public const string SlimesSummary = "building.slimes.summary";
 
             /// <summary>A value like <c>{{hayCount}} hay (max capacity: {{maxHay}})</c>.</summary>
             public const string StoredHaySummaryOneSilo = "building.stored-hay.summary-one-silo";
 
             /// <summary>A value like <c>{{hayCount}} hay in {{siloCount}} silos (max capacity: {{maxHay}})</c>.</summary>
             public const string StoredHaySummaryMultipleSilos = "building.stored-hay.summary-multiple-silos";
+
+            /// <summary>A value like <c>up to 4 animals, add cows</c>.</summary>
+            public const string UpgradesBarn0 = "building.upgrades.barn.0";
+
+            /// <summary>A value like <c>up to 8 animals, add pregnancy and goats</c>.</summary>
+            public const string UpgradesBarn1 = "building.upgrades.barn.1";
+
+            /// <summary>A value like <c>up to 12 animals, add autofeed, pigs, and sheep"</c>.</summary>
+            public const string UpgradesBarn2 = "building.upgrades.barn.2";
+
+            /// <summary>A value like <c>initial cabin</c>.</summary>
+            public const string UpgradesCabin0 = "building.upgrades.cabin.0";
+
+            /// <summary>A value like <c>add kitchen, enable marriage</c>.</summary>
+            public const string UpgradesCabin1 = "building.upgrades.cabin.1";
+
+            /// <summary>A value like <c>enable children</c>.</summary>
+            public const string UpgradesCabin2 = "building.upgrades.cabin.2";
+
+            /// <summary>A value like <c>up to 4 animals; add chickens</c>.</summary>
+            public const string UpgradesCoop0 = "building.upgrades.coop.0";
+
+            /// <summary>A value like <c>up to 8 animals; add incubator, dinosaurs, and ducks</c>.</summary>
+            public const string UpgradesCoop1 = "building.upgrades.coop.1";
+
+            /// <summary>A value like <c>up to 12 animals; add autofeed and rabbits</c>.</summary>
+            public const string UpgradesCoop2 = "building.upgrades.coop.2";
+
+            /// <summary>A value like <c>{{filled}} of {{max}} water troughs filled</c>.</summary>
+            public const string WaterTroughSummary = "building.water-trough.summary";
         }
 
         /// <summary>Fruit tree lookup translations.</summary>

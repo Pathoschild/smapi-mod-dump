@@ -1,0 +1,20 @@
+url:
+   https://github.com/Mikesnorth/StardewNewsFeed.git
+
+mods:
+   Stardew News Feed
+
+latest commit:
+   commit 4945f4b6f2f85eb8ed18231030971cb7a9767bcb
+   Author: Aaron Ingram <aaron.ingram@pm.me>
+   Date:   Fri Jan 4 19:12:20 2019 -0500
+   
+       Allow for translation files and default to english
+       
+       Prior to this change, messages were hardcoded in english. This change
+       adds an i18n directory, with a default language file in english, and
+       uses the SMAPI translation helper to populate message content.
+       
+       The documentation for internationalization can be found here:
+       https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Translation
+   
