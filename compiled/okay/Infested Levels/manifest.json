@@ -2,7 +2,7 @@
   "Name": "Infested Levels",
   "Debug": "true",
   "Author": "Eireon",
-  "Version": "1.0.4",
+  "Version": "1.0.5",
   "Description": "Dislays Infested levels in Mine",
   "UniqueID": "Eireon.InfestedLevels",
   "EntryDll": "InfestedLevel.dll",

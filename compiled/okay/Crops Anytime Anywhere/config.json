@@ -1,9 +1,15 @@
 {
-  "Seasons": {
+  "EnableInSeasons": {
     "Spring": true,
     "Summer": true,
     "Fall": true,
     "Winter": true
   },
-  "AllowCropsAnywhere": true
+  "FarmAnyLocation": true,
+  "ForceTillable": {
+    "Dirt": true,
+    "Grass": true,
+    "Stone": false,
+    "Other": false
+  }
 }

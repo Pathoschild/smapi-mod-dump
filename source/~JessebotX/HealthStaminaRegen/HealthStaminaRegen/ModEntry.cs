@@ -19,7 +19,7 @@ namespace HealthStaminaRegen
         private int secondsUntilStaminaRegen = 0;
 
         private int lastHealth;
-        private int lastStamina;
+        private float lastStamina;
 
         public override void Entry(IModHelper helper)
         {
@@ -33,60 +33,60 @@ namespace HealthStaminaRegen
         {
             /* Variables */
             var player = Game1.player;
-            var secondsUntilHealthRegen = this.secondsUntilHealthRegen;
-            var secondsUntilStaminaRegen = this.secondsUntilStaminaRegen;
 
-            if (!Context.IsPlayerFree || !Game1.paused)
+            if (!Context.IsPlayerFree || Game1.paused)
             {
-                 return;
+                return;
             }
 
-            /****************
-             **Health Regen**
-             ****************/
-            // if player took damage
-            if (player.health < this.lastHealth)
-            {
-                secondsUntilHealthRegen = this.Config.SecondsUntilHealthRegen;
-            }
-            //timer
-            else if (secondsUntilHealthRegen > 0)
-            {
-                secondsUntilHealthRegen--;
-            }
-            //regen
-            else if (secondsUntilHealthRegen <= 0)
-            {
-                if (player.health < player.maxHealth)
+            else
+            {   /****************
+                **Health Regen**
+                ****************/
+                // if player took damage
+                if (player.health < this.lastHealth)
                 {
-                    player.health = Math.Min(player.maxHealth, player.health + this.Config.HealthRegenRate);
+                    this.secondsUntilHealthRegen = this.Config.SecondsUntilHealthRegen;
                 }
-            }
-
-            /***************
-             *Stamina Regen*
-             ***************/
-            // if player used stamina
-            if (player.Stamina < this.lastStamina)
-            {
-                secondsUntilStaminaRegen = this.Config.SecondsUntilStaminaRegen;
-            }
-            //timer
-            else if (secondsUntilStaminaRegen > 0)
-            {
-                secondsUntilStaminaRegen--;
-            }
-            // regen
-            else if (secondsUntilStaminaRegen <= 0)
-            {
-                if (player.Stamina < player.MaxStamina)
+                //timer
+                else if (this.secondsUntilHealthRegen > 0)
                 {
-                    player.Stamina = Math.Min(player.MaxStamina, player.Stamina + this.Config.StaminaRegenRate);
+                    this.secondsUntilHealthRegen--;
                 }
-            }
+                //regen
+                else if (this.secondsUntilHealthRegen <= 0)
+                {
+                    if (player.health < player.maxHealth)
+                    {
+                        player.health = Math.Min(player.maxHealth, player.health + this.Config.HealthRegenRate);
+                    }
+                }
 
-            player.health = this.lastHealth;
-            player.Stamina = this.lastStamina;
-        } 
+                /***************
+                 *Stamina Regen*
+                 ***************/
+                // if player used stamina
+                if (player.Stamina < this.lastStamina)
+                {
+                    this.secondsUntilStaminaRegen = this.Config.SecondsUntilStaminaRegen;
+                }
+                //timer
+                else if (this.secondsUntilStaminaRegen > 0)
+                {
+                    this.secondsUntilStaminaRegen--;
+                }
+                // regen
+                else if (this.secondsUntilStaminaRegen <= 0)
+                {
+                    if (player.Stamina < player.MaxStamina)
+                    {
+                        player.Stamina = Math.Min(player.MaxStamina, player.Stamina + this.Config.StaminaRegenRate);
+                    }
+                }
+
+                this.lastHealth = player.health;
+                this.lastStamina = player.Stamina;
+            }
+        }
     }
 }

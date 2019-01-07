@@ -13,7 +13,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
     internal class PickaxeAttachment : BaseAttachment
     {
         /*********
-        ** Properties
+        ** Fields
         *********/
         /// <summary>The attachment settings.</summary>
         private readonly PickAxeConfig Config;
@@ -63,6 +63,10 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
 
             // break flooring & paths
             if (this.Config.ClearFlooring && tileFeature is Flooring)
+                return this.UseToolOnTile(tool, tile);
+
+            // break objects
+            if (this.Config.ClearObjects && tileObj != null)
                 return this.UseToolOnTile(tool, tile);
 
             // clear twigs & weeds

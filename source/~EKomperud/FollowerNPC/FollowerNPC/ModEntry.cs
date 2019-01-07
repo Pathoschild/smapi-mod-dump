@@ -77,54 +77,11 @@ namespace FollowerNPC
 
             if (e.Button == Microsoft.Xna.Framework.Input.Keys.B.ToSButton())
             {
-                if (companionsManager.companion != null || Game1.dialogueUp)
+                GameLocation l = companionsManager.farmer.currentLocation;
+                foreach (StardewValley.Object o in l.Objects.Values)
                 {
-                    monitor.Log("Dismiss your companion and close the dialogue before attempting a cleanup!");
-                    return;
+                    monitor.Log(o.Name);
                 }
-                Farmer f = companionsManager.farmer;
-                f.DialogueQuestionsAnswered.Remove(592800);
-                f.DialogueQuestionsAnswered.Remove(592801);
-
-                f.DialogueQuestionsAnswered.Remove(3016650);
-                f.DialogueQuestionsAnswered.Remove(3016651);
-
-                f.DialogueQuestionsAnswered.Remove(5964000);
-                f.DialogueQuestionsAnswered.Remove(5964001);
-
-                f.DialogueQuestionsAnswered.Remove(4563725);
-                f.DialogueQuestionsAnswered.Remove(4563726);
-
-                f.DialogueQuestionsAnswered.Remove(4736775);
-                f.DialogueQuestionsAnswered.Remove(4736776);
-
-                f.DialogueQuestionsAnswered.Remove(7298075);
-                f.DialogueQuestionsAnswered.Remove(7298076);
-
-                f.DialogueQuestionsAnswered.Remove(6949975);
-                f.DialogueQuestionsAnswered.Remove(6949976);
-
-                f.DialogueQuestionsAnswered.Remove(9249200);
-                f.DialogueQuestionsAnswered.Remove(9249201);
-
-                f.DialogueQuestionsAnswered.Remove(7385000);
-                f.DialogueQuestionsAnswered.Remove(7385001);
-
-                f.DialogueQuestionsAnswered.Remove(7443575);
-                f.DialogueQuestionsAnswered.Remove(7443576);
-
-                f.DialogueQuestionsAnswered.Remove(241000);
-                f.DialogueQuestionsAnswered.Remove(241001);
-
-                f.DialogueQuestionsAnswered.Remove(1630425);
-                f.DialogueQuestionsAnswered.Remove(1630426);
-
-                f.DialogueQuestionsAnswered.Remove(500);
-                f.DialogueQuestionsAnswered.Remove(501);
-
-                f.DialogueQuestionsAnswered.Remove(50000000);
-                f.DialogueQuestionsAnswered.Remove(50000001);
-                monitor.Log("Cleanup finished!");
             }
 
             //else if (e.Button == Microsoft.Xna.Framework.Input.Keys.K.ToSButton())

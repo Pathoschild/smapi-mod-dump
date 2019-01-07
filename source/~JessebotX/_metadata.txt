@@ -6,9 +6,9 @@ mods:
    Health and Stamina Regeneration
 
 latest commit:
-   commit 33e17c021fb1d05b69ca9ccf4078e96bbc1d3839
+   commit be55e9f7c39f69655bf4a7fd38b7ce0c84e88b80
    Author: JessebotX <43657800+JessebotX@users.noreply.github.com>
-   Date:   Fri Jan 4 09:50:31 2019 -0800
+   Date:   Sun Jan 6 15:45:25 2019 -0800
    
-       more READMEs updated
+       AllFishAllSeasons WIP
    

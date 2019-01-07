@@ -17,7 +17,14 @@ namespace Spawn_Monsters
 
 		private List<List<ClickableMonsterComponent>> Pages { get; set; } = new List<List<ClickableMonsterComponent>>();
 		private List<ClickableMonsterComponent> CurrentPage { get; set; } = new List<ClickableMonsterComponent>();
-		private int CPage { get; set; }
+		private int CurrentPageI { get; set; }
+		private int SlimeColor { get; set; }
+		private int BatColor { get; set; }
+		private int GhostColor { get; set; }
+		private int CrabColor { get; set; }
+		private int FlyColor { get; set; }
+		private int GrubColor { get; set; }
+		private int GolemColor { get; set; }
 
 		public MonsterMenu()
 			: base(0, 0, 0, 0, true) {
@@ -153,7 +160,7 @@ namespace Spawn_Monsters
 			Pages.Add(page4);
 
 			CurrentPage = page0;
-			CPage = 0;
+			CurrentPageI = 0;
 
 			this.initializeUpperRightCloseButton();
 			if (!Game1.options.snappyMenus || !Game1.options.gamepadControls)
@@ -178,7 +185,7 @@ namespace Spawn_Monsters
 			leftArrow.draw(b);
 			rightArrow.draw(b);
 
-			b.DrawString(Game1.dialogueFont, $"{CPage+1}/{Pages.Count}", new Vector2(this.xPositionOnScreen + (float)((this.width / 3) * 1.5), this.yPositionOnScreen + this.height), Color.White);
+			b.DrawString(Game1.dialogueFont, $"{CurrentPageI+1}/{Pages.Count}", new Vector2(this.xPositionOnScreen + (float)((this.width / 3) * 1.5), this.yPositionOnScreen + this.height), Color.White);
 
 			this.drawMouse(b);
 			base.draw(b);
@@ -197,22 +204,22 @@ namespace Spawn_Monsters
 
 			} else if (leftArrow.containsPoint(x, y)) {
 
-				CPage--;
-				if (CPage < 0) {
+				CurrentPageI--;
+				if (CurrentPageI < 0) {
 					CurrentPage = Pages.ElementAt(Pages.Count - 1);
-					CPage = Pages.Count - 1;
+					CurrentPageI = Pages.Count - 1;
 				} else {
-					CurrentPage = Pages.ElementAt(CPage);
+					CurrentPage = Pages.ElementAt(CurrentPageI);
 				}
 				Game1.playSound("smallSelect");
 			} else if (rightArrow.containsPoint(x, y)) {
 
-				CPage++;
-				if (CPage == Pages.Count) {
+				CurrentPageI++;
+				if (CurrentPageI == Pages.Count) {
 					CurrentPage = Pages.ElementAt(0);
-					CPage = 0;
+					CurrentPageI = 0;
 				} else {
-					CurrentPage = Pages.ElementAt(CPage);
+					CurrentPage = Pages.ElementAt(CurrentPageI);
 				}
 				Game1.playSound("smallSelect");
 			} else {

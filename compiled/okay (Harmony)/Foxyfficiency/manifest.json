@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Foxyfficiency",
+  "Author": "Fokson",
+  "Version": "1.0.11",
+  "Description": "Less Clicking, More Information, Quality of Life.",
+  "UniqueID": "Fokson.Foxyfficiency",
+  "EntryDll": "Foxyfficiency.dll",
+  "MinimumApiVersion": "2.6-beta",
+  "UpdateKeys": [ "Nexus:2520" ]
+}

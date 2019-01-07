@@ -17,9 +17,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 94d052e91adb769df99b33faacb74b3b84a56364
+   commit caef8daeb89b6f173033beca8330f1f897ea0535
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Thu Jan 3 23:04:34 2019 -0500
+   Date:   Sat Jan 5 16:31:38 2019 -0500
    
-       fix tractor applying fertiliser to existing crops (#357)
+       fix translation file
    

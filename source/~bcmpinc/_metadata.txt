@@ -8,14 +8,16 @@ mods:
    Fix Scythe Exp
    Grass Growth
    Movement Speed
+   Stardew Hack
    Tilled Soil Decay
    Tree Spread
+   Wear More Rings
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 291550820f89fa926c64ceee6f05c32e5c647f74
+   commit 7678e45ca53db4d6801222b260e1d6b5afbba678
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Sat Jan 5 01:37:52 2019 +0100
+   Date:   Sun Jan 6 15:22:59 2019 +0100
    
-       Updated & Added Readme files.
+       Exception due to difference between Windows & Linux build.
    

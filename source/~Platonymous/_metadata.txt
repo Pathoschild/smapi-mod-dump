@@ -6,6 +6,7 @@ mods:
    Arcade Pong
    Arcade Snake
    ATM
+   Crop Extension
    Custom Element Handler
    Custom Farming Redux
    Custom Furniture
@@ -29,6 +30,7 @@ mods:
    Ring of Fire
    Scale Up
    Seed Bag
+   Ship From Inventory
    Sleep Worker
    Speedster
    Split Money
@@ -38,9 +40,9 @@ mods:
    Visualize
 
 latest commit:
-   commit f46a95c8f4bc3d5d7b9550eb9673b2d549495aed
+   commit 32ab21f2e71820877ca28d8f4bcf3be974248fce
    Author: Platonymous <david@millionideas.de>
-   Date:   Sun Dec 30 21:41:16 2018 +0100
+   Date:   Sun Jan 6 16:55:14 2019 +0100
    
-       minor change
+       Fix compatibility with Bigger Backpack
    

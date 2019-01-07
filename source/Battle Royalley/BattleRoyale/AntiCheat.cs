@@ -29,7 +29,7 @@ namespace BattleRoyale
             try
             {
                 string name = assembly.GetName().Name;
-                if (name == "SplitScreen" || name == "Elevator" || name == "WindowResize" || name == "ServerBookmarker" || name == "Social Tab Patch")
+                if (name == "SplitScreen" || name == "Elevator" || name == "WindowResize" || name == "ServerBookmarker" || name == "Social Tab Patch" || name == "ServerBrowser")
                     return true;
             }
             catch (Exception) { }
@@ -44,7 +44,7 @@ namespace BattleRoyale
 
 		internal static bool IsLegal(IMultiplayerPeerMod mod)
 		{
-			return new string[] { "Ilyaki.BattleRoyale", "Ilyaki.Elevator", "Ilyaki.SplitScreen", "thatnzguy.WindowResize", "Ilyaki.ServerBookmarker", "funnysnek.socialtabpatch" }.Contains(mod.ID);
+			return new string[] { "Ilyaki.BattleRoyale", "Ilyaki.Elevator", "Ilyaki.SplitScreen", "thatnzguy.WindowResize", "Ilyaki.ServerBookmarker", "funnysnek.socialtabpatch", "Ilyaki.ServerBrowser" }.Contains(mod.ID);
 		}
     }
 }

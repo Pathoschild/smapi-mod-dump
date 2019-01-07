@@ -1,4 +1,8 @@
-﻿using StardewValley;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework.Graphics;
+using StardewValley;
+using StardewValley.Menus;
 
 namespace FollowerNPC.Buffs
 {
@@ -16,6 +20,12 @@ namespace FollowerNPC.Buffs
             statBuffs[0].description = "+2 Speed" +
                                        System.Environment.NewLine +
                                        "Source: Sam";
+        }
+
+        public override void SpecialAction()
+        {
+            base.SpecialAction();
+            Game1.activeClickableMenu = new ChooseFromListMenu(Game1.player.songsHeard.Distinct<string>().ToList<string>(), new ChooseFromListMenu.actionOnChoosingListOption(ChooseFromListMenu.playSongAction), true);
         }
     }
 }

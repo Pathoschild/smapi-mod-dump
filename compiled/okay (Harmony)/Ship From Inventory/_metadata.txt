@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3219
+IDs: Platonymous.ShipFromInventory
+update keys: Nexus:3219

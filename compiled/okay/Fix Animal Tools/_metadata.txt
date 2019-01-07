@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3215
+IDs: bcmpinc.FixAnimalTools
+update keys: Nexus:3215, GitHub:bcmpinc/StardewHack

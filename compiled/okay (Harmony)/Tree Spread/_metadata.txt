@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3183
-IDs: bcmpinc.TreeSpread
-update keys: Nexus:3183

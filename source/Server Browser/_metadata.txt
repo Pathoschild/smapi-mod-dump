@@ -1,0 +1,13 @@
+url:
+   https://github.com/Ilyaki/Server-Browser.git
+
+mods:
+   Server Browser
+
+latest commit:
+   commit bafd07a292b97f7dc8762e61e5049e977d1a21bc
+   Author: Ilyaki <35632254+Ilyaki@users.noreply.github.com>
+   Date:   Sun Jan 6 18:13:50 2019 +0000
+   
+       Create LICENSE
+   

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Monsters;
 using StardewModdingAPI.Events;
 using Microsoft.Xna.Framework;
@@ -17,7 +18,6 @@ namespace FollowerNPC.AI_States
         protected Character leader;
         protected bool leaderIsFarmer;
         protected aStar aStar;
-        protected Character originalLeader;
         protected Monster aggroMonster;
         protected AI_StateMachine machine;
 
@@ -77,7 +77,7 @@ namespace FollowerNPC.AI_States
             decelerateThreshold = 1.75f * fullTile;
             deceleration = 0.075f;
             pathNodeTolerance = 5f;
-            monsterAggroRadius = 6f * fullTile;
+            monsterAggroRadius = 8f * fullTile;
 
             characterMoveUp = typeof(Character).GetField("moveUp", BindingFlags.NonPublic | BindingFlags.Instance);
             characterMoveDown = typeof(Character).GetField("moveDown", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -88,6 +88,17 @@ namespace FollowerNPC.AI_States
         public override void EnterState()
         {
             aStar.gameLocation = leader.currentLocation;
+            if ((leader.currentLocation as MineShaft) != null)
+            {
+                followThreshold = 3.75f * fullTile;
+                decelerateThreshold = 3.25f * fullTile;
+            }
+            else
+            {
+                followThreshold = 2.25f * fullTile;
+                decelerateThreshold = 1.75f * fullTile; 
+            }
+
             ModEntry.modHelper.Events.World.DebrisListChanged += World_DebrisListChanged;
             ModEntry.modHelper.Events.World.ObjectListChanged += World_ObjectListChanged;
             ModEntry.modHelper.Events.World.TerrainFeatureListChanged += World_TerrainFeatureListChanged;
@@ -294,7 +305,7 @@ namespace FollowerNPC.AI_States
 
                 if (me.xVelocity != 0)
                 {
-                    int velocitySign = Math.Sign(me.xVelocity) * 5;
+                    int velocitySign = Math.Sign(me.xVelocity) * 15;
                     int leftOrRight = ((me.xVelocity > 0 ? wbBB.Right : wbBB.Left) + velocitySign) / ts;
                     bool[] xTiles = new bool[3];
                     xTiles[0] = aStar.IsWalkableTile(new Vector2(leftOrRight, wbBB.Top / ts));
@@ -309,7 +320,7 @@ namespace FollowerNPC.AI_States
 
                 if (me.yVelocity != 0)
                 {
-                    int velocitySign = Math.Sign(me.yVelocity) * 5;
+                    int velocitySign = Math.Sign(me.yVelocity) * 15;
                     int topOrBottom = ((me.yVelocity < 0 ? wbBB.Bottom : wbBB.Top) - velocitySign) / ts;
                     bool[] yTiles = new bool[3];
                     yTiles[0] = aStar.IsWalkableTile(new Vector2(wbBB.Left / ts, topOrBottom));
@@ -403,7 +414,7 @@ namespace FollowerNPC.AI_States
             foreach (Character c in aStar.gameLocation.characters)
             {
                 Monster asMonster = c as Monster;
-                if (asMonster != null && asMonster.currentLocation != null)
+                if (asMonster != null && asMonster.currentLocation != null && IsValidMonster(asMonster))
                 {
                     Vector2 m = new Vector2(asMonster.GetBoundingBox().Center.X, asMonster.GetBoundingBox().Center.Y);
                     float distance = (m - i).Length();
@@ -416,6 +427,30 @@ namespace FollowerNPC.AI_States
                 }
             }
             return aggroMonster;
+        }
+
+        private bool IsValidMonster(Monster m)
+        {
+            Bug b = m as Bug;
+            if (b != null)
+                return !b.isArmoredBug.Value;
+
+            Mummy mum = m as Mummy;
+            if (mum != null)
+            {
+                FieldInfo reviveTimer =
+                    typeof(Mummy).GetField("reviveTimer", BindingFlags.NonPublic | BindingFlags.Instance);
+                int t = (int)reviveTimer.GetValue(mum);
+                return t <= 0;
+            }
+
+            RockCrab crab = m as RockCrab;
+            if (crab != null)
+            {
+                return crab.isMoving();
+            }
+
+            return true;
         }
 
         #region Events

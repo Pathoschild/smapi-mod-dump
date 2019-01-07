@@ -1,8 +1,13 @@
 # Release notes
 ## Upcoming release
+* Added attachment features:
+  * pickaxe: break placed objects (disabled by default).
+  * scythe: collect machine output (disabled by default).
+
+## 4.7.3
 * Fixed stable no longer in Robin's carpenter menu after building a tractor garage.
-* Fixed compatibility with Tool Geodes mod.
 * Fixed fertiliser applied to existing crops.
+* Fixed compatibility with Tool Geodes mod.
 
 ## 4.7.2
 * Fixed horses becoming tractors in some cases. (If you saved after that happened, [see this forum comment](https://community.playstarbound.com/threads/tractor-mod.136649/page-14#post-3319770)).

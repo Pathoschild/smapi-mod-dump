@@ -48,6 +48,7 @@ namespace FollowerNPC
 
         // Other //
         public int companionWarpTimer;
+        private Random r;
         // ***** //
 
         // Companion Rescheduling //
@@ -78,6 +79,7 @@ namespace FollowerNPC
         public const int recruitNoID = 9249200;
         public const int actionDismissID = 4736775;
         public const int actionContinueID = 7298075;
+        public const int actionSpecialID = 2191988;
         // ********* //
 
         public CompanionsManager()
@@ -102,6 +104,8 @@ namespace FollowerNPC
             ModEntry.modHelper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
             ModEntry.modHelper.Events.GameLoop.DayEnding += GameLoop_DayEnding;
             ModEntry.modHelper.Events.World.NpcListChanged += World_NpcListChanged;
+
+            r = new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed + Game1.timeOfDay);
         }
 
         #region Helpers
@@ -163,15 +167,15 @@ namespace FollowerNPC
                     if (d != null && 
                         d.speaker != null &&
                         companionStates.TryGetValue(d.speaker.Name, out CompanionionshipState cs) &&
-                        d.speaker.CurrentDialogue.Count == 0 &&
-                        farmer.getFriendshipHeartLevelForNPC(d.speaker.Name) >= companionHeartThreshold &&
-                        Game1.timeOfDay < 2200)
+                        d.speaker.CurrentDialogue.Count == 0 )
                     {
                         NPC n = d.speaker;
 
                         // Check to see if we should push a Companion Recruit Dialogue
                         if (cs == CompanionionshipState.available &&
-                            npcsThatCanBeRecruitedToday.TryGetValue(n.Name, out bool available) && available)
+                            npcsThatCanBeRecruitedToday.TryGetValue(n.Name, out bool available) && available &&
+                            Game1.timeOfDay < 2200 &&
+                            farmer.getFriendshipHeartLevelForNPC(d.speaker.Name) >= companionHeartThreshold)
                         {
                             TryPushCompanionRecruitDialogue(n.Name);
                         }
@@ -201,7 +205,7 @@ namespace FollowerNPC
                         if (companionDialogueInfos.TryGetValue(n.Name, out CompanionDialogueInfo cdi2) &&
                                  d.Equals(cdi2.locationUniqueDialogue))
                         {
-                            currentCompanionVisitedLocations["companion"+n.currentLocation.Name] = true;
+                            currentCompanionVisitedLocations[n.currentLocation.Name] = true;
                         }
 
                         // Deplete the FaceTowardFarmerTimer
@@ -333,6 +337,7 @@ namespace FollowerNPC
         /// </summary>
         private void ResetNPCsThatCanHangOut()
         {
+            companion = null;
             farmer.DialogueQuestionsAnswered.Remove(592800);
             farmer.DialogueQuestionsAnswered.Remove(9249200);
             farmer.DialogueQuestionsAnswered.Remove(4736775);
@@ -460,6 +465,13 @@ namespace FollowerNPC
                 companionStates[name] = CompanionionshipState.actionDialogueNeedsRePushed;
                 companion.faceTowardFarmerTimer = 0;
             }
+            else if (farmer.dialogueQuestionsAnswered.Contains(actionSpecialID))
+            {
+                farmer.dialogueQuestionsAnswered.Remove(actionSpecialID);
+                companionStates[name] = CompanionionshipState.actionDialogueNeedsRePushed;
+                companion.faceTowardFarmerTimer = 0;
+                companionBuff.SpecialAction();
+            }
         }
 
         /// <summary>
@@ -472,9 +484,8 @@ namespace FollowerNPC
             {
                 string dialogueKey = "CompanionAutomaticDismissal";
                 string dialogueValue;
-                if (companion.Dialogue.TryGetValue(dialogueKey, out dialogueValue))
+                if (npcDialogueScripts[companion.Name].TryGetValue(dialogueKey, out dialogueValue))
                 {
-                    CompanionDialogueInfo cdi = companionDialogueInfos[companion.Name];
                     farmer.dialogueQuestionsAnswered.Remove(recruitYesID);
                     farmer.dialogueQuestionsAnswered.Remove(recruitNoID);
                     farmer.dialogueQuestionsAnswered.Remove(actionDismissID);
@@ -502,12 +513,21 @@ namespace FollowerNPC
             companionBuff.RemoveAndDisposeCompanionBuff();
             companionBuff = null;
             companion.Schedule = GetCompanionSchedule(Game1.dayOfMonth);
-            if (!(companion.Schedule != null) && farmer.spouse != null && farmer.spouse.Equals(companion.Name))
+            if (companion.Schedule == null)
             {
                 companionRescheduleDestinationLocation = companion.DefaultMap;
-                companionRescheduleDestinationPoint =
-                    (Game1.getLocationFromName(companion.DefaultMap) as StardewValley.Locations.FarmHouse)
-                    .getKitchenStandingSpot();
+                if (farmer.spouse != null && farmer.spouse.Equals(companion.Name))
+                {
+                    companionRescheduleDestinationPoint =
+                        (Game1.getLocationFromName(companion.DefaultMap) as FarmHouse)
+                        .getKitchenStandingSpot();
+                }
+                else
+                {
+                    companionRescheduleDestinationPoint =
+                        new Point((int)companion.DefaultPosition.X, (int)companion.DefaultPosition.Y);
+                }
+                
             }
             Game1.fadeScreenToBlack();
             companion.faceTowardFarmerTimer = 0;
@@ -561,21 +581,22 @@ namespace FollowerNPC
                 }
                 else
                 {
-                    string dialogueKey = "companion" + farmer.currentLocation.Name;
-                    string dialogueValue;
                     // push this location's unique dialogue if there is some...
-                    if (companion.Dialogue.TryGetValue(dialogueKey, out dialogueValue))
+                    List<string> dialogueStrings = GetLocationDialogueStrings();
+                    if (dialogueStrings.Count != 0)
                     {
-                        if (!currentCompanionVisitedLocations.TryGetValue(dialogueKey, out bool v) || !v)
+                        if (!currentCompanionVisitedLocations.TryGetValue(companion.currentLocation.Name, out bool v) ||
+                            !v)
                         {
                             while (companion.CurrentDialogue.Count != 0)
                                 companion.CurrentDialogue.Pop();
-                            Dialogue d = new Dialogue(dialogueValue, companion);
+                            Dialogue d = new Dialogue(dialogueStrings[r.Next(dialogueStrings.Count)], companion);
                             companionDialogueInfos[companion.Name].locationUniqueDialogue = d;
                             companion.CurrentDialogue.Push(d);
-                            currentCompanionVisitedLocations[dialogueKey] = false;
+                            currentCompanionVisitedLocations[companion.currentLocation.Name] = false;
                         }
                     }
+
                     // or if there isn't location-unique dialogue, remove the current lcation-unique dialogue.
                     else
                     {
@@ -589,6 +610,135 @@ namespace FollowerNPC
                         }
                     }
                 }
+            }
+        }
+
+        private List<string> GetLocationDialogueStrings()
+        {
+            string locationName = companion.currentLocation.Name;
+            List<string> ret = new List<string>();
+            bool isSpouse = farmer.spouse != null && farmer.spouse.Equals(companion.Name);
+            Dictionary<string, string> companionScript = npcDialogueScripts[companion.Name];
+
+            if (isSpouse)
+            {
+                string friendKey = "companion-" + locationName + "-Friend";
+                string spouseKey = "companion-" + locationName + "-Spouse";
+                string spouseOverrideKey = "companion-" + locationName + "-SpouseOverride";
+                string spouseOverrideMultiValue = null;
+                string spouseOverrideSingleValue = null;
+
+                // If there is a, or mulitple, spouse-override strings
+                if (companionScript.TryGetValue(spouseOverrideKey + "1", out spouseOverrideMultiValue) ||
+                    companionScript.TryGetValue(spouseOverrideKey, out spouseOverrideSingleValue))
+                {
+                    // If there are multiple spouse-override strings
+                    if (spouseOverrideMultiValue != null)
+                    {
+                        ret.Add(spouseOverrideMultiValue);
+                        int i = 2;
+                        while (companionScript.TryGetValue(spouseOverrideKey + i.ToString(),
+                            out spouseOverrideMultiValue))
+                        {
+                            i++;
+                            ret.Add(spouseOverrideMultiValue);
+                        }
+                    }
+                    // If there is only one spouse-override string
+                    else if (spouseOverrideSingleValue != null)
+                    {
+                        ret.Add(spouseOverrideSingleValue);
+                    }
+
+                    return ret;
+                }
+
+                // Else, add any spouse and friend strings
+                else
+                {
+                    // Add any spouse strings
+                    string spouseMultiValue = null;
+                    string spouseSingleValue = null;
+                    if (companionScript.TryGetValue(spouseKey + "1", out spouseMultiValue) ||
+                        companionScript.TryGetValue(spouseKey, out spouseSingleValue))
+                    {
+                        // If there are multiple spouse strings
+                        if (spouseMultiValue != null)
+                        {
+                            ret.Add(spouseMultiValue);
+                            int i = 2;
+                            while (companionScript.TryGetValue(spouseKey + i.ToString(),
+                                out spouseMultiValue))
+                            {
+                                i++;
+                                ret.Add(spouseMultiValue);
+                            }
+                        }
+                        // If there is a single spouse string
+                        else if (spouseSingleValue != null)
+                        {
+                            ret.Add(spouseSingleValue);
+                        }
+                    }
+
+                    // Add any friend strings
+                    string friendMultiValue = null;
+                    string friendSingleValue = null;
+                    if (companionScript.TryGetValue(friendKey + "1", out friendMultiValue) ||
+                        companionScript.TryGetValue(friendKey, out friendSingleValue))
+                    {
+                        // If there are multiple friend strings
+                        if (friendMultiValue != null)
+                        {
+                            ret.Add(friendMultiValue);
+                            int i = 2;
+                            while (companionScript.TryGetValue(friendKey + i.ToString(),
+                                out friendMultiValue))
+                            {
+                                i++;
+                                ret.Add(friendMultiValue);
+                            }
+                        }
+                        // If there is a single friend string
+                        else if (friendSingleValue != null)
+                        {
+                            ret.Add(friendSingleValue);
+                        }
+                    }
+
+                    return ret;
+                }
+            }
+            else
+            {
+                string friendKey = "companion-" + locationName + "-Friend";
+
+                // Add any friend strings
+                string friendMultiValue = null;
+                string friendSingleValue = null;
+                if (companionScript.TryGetValue(friendKey + "1", out friendMultiValue) ||
+                    companionScript.TryGetValue(friendKey, out friendSingleValue))
+                {
+                    // If there are multiple friend strings
+                    if (friendMultiValue != null)
+                    {
+                        ret.Add(friendMultiValue);
+                        int i = 2;
+                        while (companionScript.TryGetValue(friendKey + i.ToString(),
+                            out friendMultiValue))
+                        {
+                            i++;
+                            ret.Add(friendMultiValue);
+                        }
+                    }
+                    // If there is a single friend string
+                    else if (friendSingleValue != null)
+                    {
+                        ret.Add(friendSingleValue);
+                    }
+                }
+
+                return ret;
             }
         }
 
@@ -673,24 +823,26 @@ namespace FollowerNPC
         /// </summary>
         private void CompanionEndCleanup()
         {
+            NPC returner = companion;
+            companion = null;
+            Patches.companion = null;
+
             typeof(NPC).GetField("previousEndPoint", BindingFlags.NonPublic | BindingFlags.Instance)
-                .SetValue(companion, companion.getTileLocationPoint());
-            companion.checkSchedule(Game1.timeOfDay);
+                .SetValue(returner, returner.getTileLocationPoint());
+            returner.checkSchedule(Game1.timeOfDay);
+
             // Set end of route behavior, message, and facingDirection
             MethodInfo getRouteEndBehaviorFunction = typeof(NPC).GetMethod("getRouteEndBehaviorFunction",
                 BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(string) }, null);
             if (companionRescheduleEndRouteBehavior != null && companionRescheduleEndRouteBehavior != "")
             {
-                PathFindController.endBehavior eB = (PathFindController.endBehavior)getRouteEndBehaviorFunction.Invoke(companion,
+                PathFindController.endBehavior eB = (PathFindController.endBehavior)getRouteEndBehaviorFunction.Invoke(returner,
                     new object[] { companionRescheduleEndRouteBehavior, companionRescheduleEndRouteDialogue });
-                eB(companion, companion.currentLocation);
+                eB(returner, returner.currentLocation);
             }
             if (companionRescheduleEndRouteDialogue != null && companionRescheduleEndRouteDialogue != "")
-                companion.CurrentDialogue.Push(new Dialogue(Game1.content.LoadString(companionRescheduleEndRouteDialogue), companion));
-            companion.faceDirection(companionRescheduleFacingDirection);
-
-            companion = null;
-            Patches.companion = null;
+                returner.CurrentDialogue.Push(new Dialogue(Game1.content.LoadString(companionRescheduleEndRouteDialogue), returner));
+            returner.faceDirection(companionRescheduleFacingDirection);
 
             List<string> changes = new List<string>(12);
             foreach (KeyValuePair<string, bool> npcKvP in npcsThatCanBeRecruitedToday)
@@ -698,12 +850,9 @@ namespace FollowerNPC
                 NPC n = Game1.getCharacterFromName(npcKvP.Key);
                 if (npcKvP.Value && n.CurrentDialogue.Count == 0)
                 {
-                    if (!(companion != null))
-                    {
-                        changes.Add(npcKvP.Key);
-                        n.CurrentDialogue.Push(companionDialogueInfos[npcKvP.Key].recruitDialogue);
-                        companionStates[npcKvP.Key] = CompanionionshipState.recruitDialoguePushed;
-                    }
+                    changes.Add(npcKvP.Key);
+                    n.CurrentDialogue.Push(companionDialogueInfos[npcKvP.Key].recruitDialogue);
+                    companionStates[npcKvP.Key] = CompanionionshipState.recruitDialoguePushed;
                 }
             }
 

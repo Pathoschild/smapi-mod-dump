@@ -113,5 +113,10 @@ namespace FollowerNPC
         {
 
         }
+
+        public virtual void SpecialAction()
+        {
+
+        }
     }
 }

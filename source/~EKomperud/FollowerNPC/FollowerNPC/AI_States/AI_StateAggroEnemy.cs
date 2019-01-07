@@ -16,10 +16,25 @@ namespace FollowerNPC.AI_States
 {
     class AI_StateAggroEnemy : AI_StateFollowCharacter
     {
+        public class MonsterIgnoreTimer
+        {
+            public MonsterIgnoreTimer(Monster m, int ignoreTimer)
+            {
+                this.m = m;
+                this.ignoreTimer = ignoreTimer;
+            }
+            public Monster m;
+            public int ignoreTimer;
+        }
+
         Character pathfindingTarget;
         private MeleeWeapon weapon;
         private int weaponSwingCooldown;
         private List<FarmerSprite.AnimationFrame>[] attackAnimations;
+        private List<MonsterIgnoreTimer> ignoreList;
+        private Vector2 aggroMonsterLastTileLocation;
+
+        private Rectangle aoe;
 
         private bool aggroMonsterDefeated;
         private bool aggroMonsterLeftAggroRadius;
@@ -27,6 +42,7 @@ namespace FollowerNPC.AI_States
         // Leader radii //
         private float hesitationRadius;
         private float returnRadius;
+        private float pathNullReturnRadius;
         // *************** //
 
         // Aggro radii //
@@ -49,12 +65,13 @@ namespace FollowerNPC.AI_States
             decelerateThreshold = 1.25f * fullTile;
             deceleration = 0.125f;
 
-            returnRadius = 7f * fullTile;
+            returnRadius = 11f * fullTile;
+            pathNullReturnRadius = 4f * fullTile;
 
-            backupRadius = 0.75f * fullTile;
+            backupRadius = 0.9f * fullTile;
             attackRadius = 1.25f * fullTile;
-            stayAggroRadius = 6f * fullTile;
-            defendRadius = 6.5f * fullTile;
+            stayAggroRadius = 8.5f * fullTile;
+            defendRadius = 9f * fullTile;
 
             multiplayer = typeof(Game1).GetField("multiplayer",
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
@@ -89,6 +106,7 @@ namespace FollowerNPC.AI_States
         public override void EnterState()
         {
             base.EnterState();
+            ignoreList = new List<MonsterIgnoreTimer>();
             ModEntry.modHelper.Events.World.NpcListChanged += World_NpcListChanged;
             ModEntry.modHelper.Events.Display.RenderedWorld += Display_RenderedWorld;
         }
@@ -98,6 +116,7 @@ namespace FollowerNPC.AI_States
         public override void ExitState()
         {
             base.ExitState();
+            ignoreList.Clear();
             ModEntry.modHelper.Events.World.NpcListChanged -= World_NpcListChanged;
             ModEntry.modHelper.Events.Display.RenderedWorld -= Display_RenderedWorld;
         }
@@ -124,10 +143,17 @@ namespace FollowerNPC.AI_States
 
             PathfindingNodeUpdateCheck();
             MovementAndAnimationUpdate();
+            UpdateIgnoreList();
+
+            if (e.IsMultipleOf(30))
+            {
+                aggroMonster = ReassessTargets();
+            }
             if (e.IsMultipleOf(15))
             {
                 PathfindingRemakeCheck();
             }
+
             if (weaponSwingCooldown > 36)
             {
                 DoDamage();
@@ -179,7 +205,10 @@ namespace FollowerNPC.AI_States
             {
                 DrawDuringUse(Math.Abs(weaponSwingCooldown - 50) / 2, me.facingDirection, e.SpriteBatch,
                     me.getLocalPosition(Game1.viewport), me, MeleeWeapon.getSourceRect(weapon.InitialParentTileIndex), weapon.type.Value, weapon.isOnSpecial);
-                //Game1.spriteBatch.End();
+                //Vector2 o1 = new Vector2(aoe.X, aoe.Y);
+                //Vector2 o2 = Game1.GlobalToLocal(o1);
+                //e.SpriteBatch.Draw(Game1.mouseCursors,
+                //    o2, new Rectangle?(new Rectangle(194, 388, 64, 64)), Color.Red);
             }
         }
 
@@ -194,14 +223,23 @@ namespace FollowerNPC.AI_States
         {
             if (pathfindingTarget == null)
                 return;
-            Point t = pathfindingTarget.GetBoundingBox().Center;
-            Point m = aggroMonster.GetBoundingBox().Center;
+
             Point c = me.GetBoundingBox().Center;
             Vector2 myBoundingBox = new Vector2(c.X, c.Y);
+            Point t = pathfindingTarget.GetBoundingBox().Center;
             lastFrameMovement = myBoundingBox - lastFramePosition;
+            Vector2 targetFacingDiff;
+            if (aggroMonster != null)
+            {
+                Point m = aggroMonster.GetBoundingBox().Center;
+                targetFacingDiff = (new Vector2(m.X, m.Y) - myBoundingBox);
+            }
+            else
+            {
+                targetFacingDiff = new Vector2(t.X, t.Y) - myBoundingBox;
+            }
 
-            Vector2 monsterDiff = (new Vector2(m.X, m.Y) - myBoundingBox);
-            monsterDiff.Normalize();
+            targetFacingDiff.Normalize();
             Vector2 diff = new Vector2(t.X, t.Y) - myBoundingBox;
             float diffLen = diff.Length();
             weaponSwingCooldown = weaponSwingCooldown > 0 ? weaponSwingCooldown - 1 : weaponSwingCooldown;
@@ -228,10 +266,10 @@ namespace FollowerNPC.AI_States
                 lastFrameVelocity = new Vector2(me.xVelocity, me.yVelocity);
                 lastFramePosition = new Vector2(me.GetBoundingBox().Center.X, me.GetBoundingBox().Center.Y);
 
-                animationUpdateSum += new Vector2(monsterDiff.X, monsterDiff.Y);
+                animationUpdateSum += new Vector2(targetFacingDiff.X, targetFacingDiff.Y);
                 AnimationSubUpdate();
                 me.MovePosition(Game1.currentGameTime, Game1.viewport, me.currentLocation);
-                lastMovementDirection = lastFrameVelocity / lastFrameVelocity.Length();
+                lastMovementDirection = targetFacingDiff;
 
                 movedLastFrame = true;
             }
@@ -239,7 +277,7 @@ namespace FollowerNPC.AI_States
             {
                 me.Halt();
                 me.Sprite.faceDirectionStandard(
-                    GetFacingDirectionFromMovement(new Vector2(lastMovementDirection.X, -lastMovementDirection.Y)));
+                    GetFacingDirectionFromMovement(new Vector2(lastMovementDirection.X, lastMovementDirection.Y)));
                 movedLastFrame = false;
             }
         }
@@ -260,7 +298,7 @@ namespace FollowerNPC.AI_States
                     {
                         SetMeAnimating();
                     }
-                    return -0.55f;
+                    return -0.65f;
                 }
                 else if (distance <= attackRadius)
                 {
@@ -324,8 +362,10 @@ namespace FollowerNPC.AI_States
             if (targetLastTile != targetCurrentTile)
             {
                 path = aStar.Pathfind(me.getTileLocation(), targetCurrentTile);
-                if (me.getTileLocation() != currentPathNode)
-                    currentPathNode = path != null && path.Count != 0 ? path.Dequeue() : negativeOne;
+                if (path != null && path.Count != 0 && me.getTileLocation() != path.Peek())
+                    currentPathNode = path.Dequeue();
+                else
+                    currentPathNode = negativeOne;
             }
 
             targetLastTile = targetCurrentTile;
@@ -339,7 +379,8 @@ namespace FollowerNPC.AI_States
             Vector2 i = new Vector2(me.GetBoundingBox().Center.X, me.GetBoundingBox().Center.Y);
             Vector2 l = new Vector2(leader.GetBoundingBox().Center.X, leader.GetBoundingBox().Center.Y);
             float distance = (l - i).Length();
-            if (distance >= returnRadius && pathfindingTarget.Equals(aggroMonster))
+            float retRadius = path != null ? returnRadius : pathNullReturnRadius;
+            if (distance >= retRadius && pathfindingTarget.Equals(aggroMonster))
             {
                 // move back towards leader
                 pathfindingTarget = leader;
@@ -347,8 +388,16 @@ namespace FollowerNPC.AI_States
             }
             else if (distance < returnRadius && pathfindingTarget.Equals(leader))
             {
-                pathfindingTarget = aggroMonster;
-                aStar.GoalCharacter = aggroMonster;
+                aggroMonster = SearchForNewTarget();
+                if (aggroMonster != null)
+                {
+                    pathfindingTarget = aggroMonster;
+                    aStar.GoalCharacter = aggroMonster;
+                }
+                else
+                {
+                    aggroMonsterLeftAggroRadius = true;
+                }
             }
         }
 
@@ -363,7 +412,7 @@ namespace FollowerNPC.AI_States
             foreach (Character c in aStar.gameLocation.characters)
             {
                 Monster asMonster = c as Monster;
-                if (asMonster != null)
+                if (asMonster != null && IsValidMonster(asMonster))
                 {
                     Vector2 m = new Vector2(asMonster.GetBoundingBox().Center.X, asMonster.GetBoundingBox().Center.Y);
                     float distance = (m - i).Length();
@@ -374,8 +423,105 @@ namespace FollowerNPC.AI_States
                     }
                 }
             }
+            if (aggroMonster == null)
+                aggroMonsterLeftAggroRadius = true;
 
             return aggroMonster;
+        }
+
+        /// <summary>
+        /// Reasses the existing monsters, changing targets if there is another close-by monster.
+        /// Extra creedence is given to the current aggro monster if the AI is currently pathing to them,
+        /// while creedence is taken away if the AI has no current path to them.
+        /// </summary>
+        private Monster ReassessTargets()
+        {
+            Vector2 i = new Vector2(me.GetBoundingBox().Center.X, me.GetBoundingBox().Center.Y);
+
+            Monster aggroMonster = this.aggroMonster;
+            Vector2 m;
+            float aggroMonsterDistance = float.PositiveInfinity;
+            bool pathToMonsterExists = path != null;
+            if (aggroMonster != null && IsValidMonster(aggroMonster))
+            {
+                m = new Vector2(this.aggroMonster.GetBoundingBox().Center.X,
+                    this.aggroMonster.GetBoundingBox().Center.Y);
+                aggroMonsterDistance = (m - i).LengthSquared() + (pathToMonsterExists ? -(fullTile * fullTile) : (fullTile * fullTile));
+            }
+            else
+            {
+                aggroMonster = null;
+            }
+
+            foreach (Character c in aStar.gameLocation.characters)
+            {
+                Monster asMonster = c as Monster;
+                if (asMonster != null && IsValidMonster(asMonster) && !asMonster.Equals(aggroMonster) && !IsOnIgnoreList(asMonster))
+                {
+                    Vector2 m2 = new Vector2(asMonster.GetBoundingBox().Center.X, asMonster.GetBoundingBox().Center.Y);
+                    float distance = (m2 - i).LengthSquared();
+                    if (distance <= stayAggroRadius && distance < aggroMonsterDistance)
+                    {
+                        aggroMonster = asMonster;
+                        aggroMonsterDistance = distance;
+                    }
+                }
+            }
+
+            if (this.aggroMonster != aggroMonster && !pathToMonsterExists)
+            {
+                ignoreList.Add(new MonsterIgnoreTimer(this.aggroMonster, 90));
+            }
+            if (aggroMonster == null)
+                aggroMonsterLeftAggroRadius = true;
+
+            return aggroMonster;
+        }
+
+        private void UpdateIgnoreList()
+        {
+            for (int i = 0; i < ignoreList.Count; i++)
+            {
+                if (--ignoreList[i].ignoreTimer == 0)
+                {
+                    ignoreList.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
+        private bool IsOnIgnoreList(Monster m)
+        {
+            foreach (MonsterIgnoreTimer mon in ignoreList)
+            {
+                if (mon.m.Equals(m))
+                    return true;
+            }
+            return false;
+        }
+
+        private bool IsValidMonster(Monster m)
+        {
+            Bug b = m as Bug;
+            if (b != null)
+                return !b.isArmoredBug.Value;
+
+            Mummy mum = m as Mummy;
+            if (mum != null)
+            {
+                FieldInfo reviveTimer =
+                    typeof(Mummy).GetField("reviveTimer", BindingFlags.NonPublic | BindingFlags.Instance);
+                int t = (int) reviveTimer.GetValue(mum);
+                return t <= 0;
+            }
+
+            RockCrab crab = m as RockCrab;
+            if (crab != null)
+            {
+                return crab.isMoving();
+            }
+
+            return true;
         }
 
         public void SetMeAnimating()
@@ -401,7 +547,7 @@ namespace FollowerNPC.AI_States
         public void DoSwipe(int type, int facingDirection, float swipeSpeed, Character c)
         {
             swipeSpeed *= 1.3f;
-            c.Sprite.setCurrentAnimation(attackAnimations[c.FacingDirection]);
+            //c.Sprite.setCurrentAnimation(attackAnimations[c.FacingDirection]);
             WeaponUpdate(c.FacingDirection, 0, c);
             if (type == 3)
             {
@@ -449,15 +595,17 @@ namespace FollowerNPC.AI_States
             Vector2 tileLocation2 = Vector2.Zero;
 
             // Need to look at this! //
-            Rectangle areaOfEffect = weapon.getAreaOfEffect((int) actionTile.X, (int) actionTile.Y, facingDirection,
+            Rectangle areaOfEffect = weapon.getAreaOfEffect((int) actionTile.X, (int) actionTile.Y, me.facingDirection,
                 ref tileLocation, ref tileLocation2, me.GetBoundingBox(), Math.Abs(weaponSwingCooldown - 50) / 2);
+            aoe = areaOfEffect;
             ///////////////////////////
             
             weapon.mostRecentArea = areaOfEffect;
             if (aStar.gameLocation.damageMonster(areaOfEffect, weapon.minDamage.Value, weapon.maxDamage.Value, false,
                     weapon.knockback.Value, weapon.addedPrecision.Value, weapon.critChance.Value,
                     weapon.critMultiplier.Value,
-                    weapon.type.Value != 1 || weapon.isOnSpecial, (leader as Farmer)) && weapon.type.Value == 2)
+                    weapon.type.Value != 1 || weapon.isOnSpecial, (leader as Farmer)) && 
+                weapon.type.Value == 2)
             {
                 aStar.gameLocation.playSound("clubhit");
             }
@@ -654,47 +802,47 @@ namespace FollowerNPC.AI_States
 
         private bool IsMonsterDamageApplicable(Character who, Monster monster, bool horizontalBias = true)
         {
-            if (!monster.isGlider.Value)
-            {
-                Point farmerStandingPoint = who.getTileLocationPoint();
-                Point monsterStandingPoint = monster.getTileLocationPoint();
-                if (Math.Abs(farmerStandingPoint.X - monsterStandingPoint.X) + Math.Abs(farmerStandingPoint.Y - monsterStandingPoint.Y) > 1)
-                {
-                    int xDif = monsterStandingPoint.X - farmerStandingPoint.X;
-                    int yDif = monsterStandingPoint.Y - farmerStandingPoint.Y;
-                    Vector2 pointInQuestion = new Vector2((float)farmerStandingPoint.X, (float)farmerStandingPoint.Y);
-                    while (xDif != 0 || yDif != 0)
-                    {
-                        if (horizontalBias)
-                        {
-                            if (Math.Abs(xDif) >= Math.Abs(yDif))
-                            {
-                                pointInQuestion.X += (float)Math.Sign(xDif);
-                                xDif -= Math.Sign(xDif);
-                            }
-                            else
-                            {
-                                pointInQuestion.Y += (float)Math.Sign(yDif);
-                                yDif -= Math.Sign(yDif);
-                            }
-                        }
-                        else if (Math.Abs(yDif) >= Math.Abs(xDif))
-                        {
-                            pointInQuestion.Y += (float)Math.Sign(yDif);
-                            yDif -= Math.Sign(yDif);
-                        }
-                        else
-                        {
-                            pointInQuestion.X += (float)Math.Sign(xDif);
-                            xDif -= Math.Sign(xDif);
-                        }
-                        if (aStar.gameLocation.objects.ContainsKey(pointInQuestion) || aStar.gameLocation.getTileIndexAt((int)pointInQuestion.X, (int)pointInQuestion.Y, "Buildings") != -1)
-                        {
-                            return false;
-                        }
-                    }
-                }
-            }
+            //if (!monster.isGlider.Value)
+            //{
+            //    Point farmerStandingPoint = who.getTileLocationPoint();
+            //    Point monsterStandingPoint = monster.getTileLocationPoint();
+            //    if (Math.Abs(farmerStandingPoint.X - monsterStandingPoint.X) + Math.Abs(farmerStandingPoint.Y - monsterStandingPoint.Y) > 1)
+            //    {
+            //        int xDif = monsterStandingPoint.X - farmerStandingPoint.X;
+            //        int yDif = monsterStandingPoint.Y - farmerStandingPoint.Y;
+            //        Vector2 pointInQuestion = new Vector2((float)farmerStandingPoint.X, (float)farmerStandingPoint.Y);
+            //        while (xDif != 0 || yDif != 0)
+            //        {
+            //            if (horizontalBias)
+            //            {
+            //                if (Math.Abs(xDif) >= Math.Abs(yDif))
+            //                {
+            //                    pointInQuestion.X += (float)Math.Sign(xDif);
+            //                    xDif -= Math.Sign(xDif);
+            //                }
+            //                else
+            //                {
+            //                    pointInQuestion.Y += (float)Math.Sign(yDif);
+            //                    yDif -= Math.Sign(yDif);
+            //                }
+            //            }
+            //            else if (Math.Abs(yDif) >= Math.Abs(xDif))
+            //            {
+            //                pointInQuestion.Y += (float)Math.Sign(yDif);
+            //                yDif -= Math.Sign(yDif);
+            //            }
+            //            else
+            //            {
+            //                pointInQuestion.X += (float)Math.Sign(xDif);
+            //                xDif -= Math.Sign(xDif);
+            //            }
+            //            if (aStar.gameLocation.objects.ContainsKey(pointInQuestion) || aStar.gameLocation.getTileIndexAt((int)pointInQuestion.X, (int)pointInQuestion.Y, "Buildings") != -1)
+            //            {
+            //                return false;
+            //            }
+            //        }
+            //    }
+            //}
             return true;
         }
 
@@ -1055,7 +1203,16 @@ namespace FollowerNPC.AI_States
 
         public Vector2 GetToolLocation(bool ignoreClick = false)
         {
-            Vector2 lastClick = aggroMonster.getTileLocation();
+            Vector2 lastClick;
+            if (aggroMonster != null)
+            {
+                lastClick = aggroMonster.getTileLocation();
+                aggroMonsterLastTileLocation = lastClick;
+            }
+            else
+            {
+                lastClick = aggroMonsterLastTileLocation;
+            }
             if ((int)(lastClick.X) == me.getTileX() && (int)(lastClick.Y) == me.getTileY())
             {
                 Rectangle bb = me.GetBoundingBox();
@@ -1079,38 +1236,16 @@ namespace FollowerNPC.AI_States
             switch (me.FacingDirection)
             {
                 case 0:
-                    return new Vector2((float)(boundingBox.X + boundingBox.Width / 2), (float)(boundingBox.Y - 48));
+                    return new Vector2((float)(boundingBox.X + boundingBox.Width / 2), (float)(boundingBox.Y - 32));
                 case 1:
-                    return new Vector2((float)(boundingBox.X + boundingBox.Width + 48), (float)(boundingBox.Y + boundingBox.Height / 2));
+                    return new Vector2((float)(boundingBox.X + boundingBox.Width + 32), (float)(boundingBox.Y + boundingBox.Height / 2));
                 case 2:
-                    return new Vector2((float)(boundingBox.X + boundingBox.Width / 2), (float)(boundingBox.Y + boundingBox.Height + 48));
+                    return new Vector2((float)(boundingBox.X + boundingBox.Width / 2), (float)(boundingBox.Y + boundingBox.Height + 32));
                 case 3:
-                    return new Vector2((float)(boundingBox.X - 48), (float)(boundingBox.Y + boundingBox.Height / 2));
+                    return new Vector2((float)(boundingBox.X - 32), (float)(boundingBox.Y + boundingBox.Height / 2));
             }
             return new Vector2((float)me.getStandingX(), (float)me.getStandingY());
         }
-
-        //public int MonsterTakeDamage(Monster m, int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, string hitSound)
-        //{
-        //    int actualDamage = Math.Max(1, damage - m.resilience.Value);
-        //    FieldInfo slideAnimationTimer = typeof(Monster).GetField("slideAnimationTimer", BindingFlags.NonPublic | BindingFlags.Instance);
-        //    slideAnimationTimer.SetValue(m, 0);
-        //    if (Game1.random.NextDouble() < m.missChance.Value - m.missChance.Value * addedPrecision)
-        //    {
-        //        actualDamage = -1;
-        //    }
-        //    else
-        //    {
-        //        m.Health -= actualDamage;
-        //        m.currentLocation.playSound(hitSound);
-        //        m.setTrajectory(xTrajectory / 3, yTrajectory / 3);
-        //        if (m.Health <= 0)
-        //        {
-        //            m.deathAnimation();
-        //        }
-        //    }
-        //    return actualDamage;
-        //}
 
         #endregion
     }

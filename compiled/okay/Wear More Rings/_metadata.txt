@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3214
+IDs: bcmpinc.WearMoreRings
+update keys: Nexus:3214, GitHub:bcmpinc/StardewHack

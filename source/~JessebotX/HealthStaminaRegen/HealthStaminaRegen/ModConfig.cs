@@ -10,7 +10,7 @@ namespace HealthStaminaRegen
     {
         public int HealthRegenRate { get; set; } = 2;
         public int StaminaRegenRate { get; set; } = 2;
-        public int SecondsUntilHealthRegen { get; set; } = 3;
-        public int SecondsUntilStaminaRegen { get; set; } = 2;
+        public int SecondsUntilHealthRegen { get; set; } = 2;
+        public int SecondsUntilStaminaRegen { get; set; } = 1;
     }
 }

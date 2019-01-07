@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.Locations;
+using StardewValley.TerrainFeatures;
 using xTile.Dimensions;
 
 namespace FollowerNPC
@@ -25,6 +27,10 @@ namespace FollowerNPC
             {
                 gl = value;
                 dimensions = new Vector2(value.map.Layers[0].LayerWidth, value.map.Layers[0].LayerHeight);
+                f = value as Farm;
+                w = value as Woods;
+                ah = value as AnimalHouse;
+                ms = value as MineShaft;
             }
         }
 
@@ -39,6 +45,10 @@ namespace FollowerNPC
         }
 
         private GameLocation gl;
+        private Farm f;
+        private Woods w;
+        private AnimalHouse ah;
+        private MineShaft ms;
         private Character thisCharacter;
         private Character goalCharacter;
         private List<Character> relevantCharacters;
@@ -186,14 +196,35 @@ namespace FollowerNPC
             Microsoft.Xna.Framework.Rectangle tileLocationRect = new Microsoft.Xna.Framework.Rectangle((int)tileLocation.X * 64 + 1, (int)tileLocation.Y * 64 + 1, 62, 62);
             for (int i = 0; i < gameLocation.characters.Count; i++)
             {
-                if (gameLocation.characters[i] != null && !thisCharacter.Equals(gameLocation.characters[i]) && !goalCharacter.Equals(gameLocation.characters[i]) && gameLocation.characters[i].GetBoundingBox().Intersects(tileLocationRect))
+                if (gameLocation.characters[i] != null && !gameLocation.characters[i].IsMonster && !thisCharacter.Equals(gameLocation.characters[i]) && !goalCharacter.Equals(gameLocation.characters[i]) && gameLocation.characters[i].GetBoundingBox().Intersects(tileLocationRect))
                 {
                     return true;
                 }
             }
 
-            AnimalHouse ah = gameLocation as AnimalHouse;
-            if (ah != null)
+            if (this.f != null)
+            {
+                foreach (FarmAnimal animal in f.animals.Values)
+                {
+                    if (animal.GetBoundingBox().Intersects(tileLocationRect))
+                        return true;
+                }
+
+                foreach (ResourceClump clump in f.resourceClumps)
+                {
+                    if (clump.occupiesTile((int)tileLocation.X, (int)tileLocation.Y))
+                        return true;
+                }
+            }
+            else if (this.w != null)
+            {
+                foreach (ResourceClump stump in w.stumps)
+                {
+                    if (stump.occupiesTile((int)tileLocation.X, (int)tileLocation.Y))
+                        return true;
+                }
+            }
+            else if (this.ah != null)
             {
                 foreach (FarmAnimal animal in ah.animals.Values)
                 {
@@ -201,16 +232,15 @@ namespace FollowerNPC
                         return true;
                 }
             }
-
-            Farm f = gameLocation as Farm;
-            if (f != null)
+            else if (this.ms != null)
             {
-                foreach (FarmAnimal animal in f.animals.Values)
+                foreach (ResourceClump clump in ms.resourceClumps)
                 {
-                    if (animal.GetBoundingBox().Intersects(tileLocationRect))
+                    if (clump.occupiesTile((int)tileLocation.X, (int)tileLocation.Y))
                         return true;
                 }
             }
+
 
             if (gameLocation.terrainFeatures.ContainsKey(tileLocation) && tileLocationRect.Intersects(gameLocation.terrainFeatures[tileLocation].getBoundingBox(tileLocation)) && !gameLocation.terrainFeatures[tileLocation].isPassable(null))
             {

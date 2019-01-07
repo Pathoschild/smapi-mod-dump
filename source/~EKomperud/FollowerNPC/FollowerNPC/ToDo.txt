@@ -23,8 +23,8 @@ Optimize helper functions
 
 Balance Companion Perks & Buffs
 Companion Buffs:
-	Abigail:	Speed +1. Attack +10% (farmer.attackIncreaseModifier). Luck +1		Assists you in combat?
-	Alex:		Attack +20%. 100% Warrior Ring										Assists you in combat?
+	Abigail:	Speed +1. Attack +10% (farmer.attackIncreaseModifier). Luck +1		Highly combat effective.
+	Alex:		Attack +20%. 100% Warrior Ring										Highly combat effective.
 	Elliott:	Fishing +3															Fishes with you, catches Iridium fish occasionally?
 	Emily:		Mining +2. 100% Yoba Ring after damage. High healing when < 40%.	Replicates "Gemologist" perk, but 100%?
 	Haley:		Luck +3																
@@ -32,7 +32,7 @@ Companion Buffs:
 	Leah:		Foraging +2															Forages Iridium quality items occasionally.
 	Maru:		Increase any 1 skill by 1, interchangeable							Buffed to +2?
 	Penny:		Farming +3															Unique dialogue with children. Makes them friendlier quicker?
-	Sam:		Speed +2															+3 speed? Jukebox function?
+	Sam:		Speed +2															+3 speed? Jukebox function.
 	Sebastian:	Copies Abigail.														Ride his motorcycle?
 	Shane:		Farming +3.															Chickens follow you? Alcohol buffs instead of debuffs?
 
@@ -45,11 +45,15 @@ Reset animation upon change ai state						- Done!
 Don't recruit companions past 10							- Done!
 Stop companions from acting when paused						- Done!
 Idle animations
+Seasonal and Time-based dialogue?
+Abigail warped to my house and had weird scheduling errors.
+Un-recruitable after divorce?
 
 Combat Behavior:
+	Companions stay a little further back in mine shafts	- Done!
 	Don't target duggies when they're buried.
-	Don't target invincible bugs at all
-	Don't target rock crabs unless they're moving
-	Don't target mummies when they're downed
-	Change targets if another monster gets close
+	Don't target invincible bugs at all						- Testing...
+	Don't target rock crabs unless they're moving			- Testing...
+	Don't target mummies when they're downed				- Testing...
+	Change targets if another monster gets close			- Testing...
 	Back off a little if monster is too close				- Done!

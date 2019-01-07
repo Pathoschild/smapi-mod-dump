@@ -59,10 +59,24 @@ namespace StardewHack.WearMoreRings
     }
     #endregion Data Classes
 
+    public class RingsImplementation : IWearMoreRingsAPI
+    {
+        public int CountEquippedRings(Farmer f, int which) {
+            if (f == null) throw new System.ArgumentNullException(nameof(f));
+            return ModEntry.CountWearingRing(f, which);
+        }
+
+        public IEnumerable<Ring> GetAllRings(Farmer f) {
+            if (f == null) throw new System.ArgumentNullException(nameof(f));
+            return ModEntry.ListRings(f);
+        }
+    }
+
     public class ModEntry : Hack<ModEntry>
     {
         static readonly ConditionalWeakTable<Farmer, ActualRings> actualdata = new ConditionalWeakTable<Farmer, ActualRings>();
         static IMonitor mon;
+        public static readonly System.Random random = new System.Random();
         
         public override void Entry(IModHelper helper) {
             base.Entry(helper);
@@ -71,6 +85,10 @@ namespace StardewHack.WearMoreRings
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
             
             mon = Monitor;
+        }
+
+        public override object GetApi() {
+            return new RingsImplementation();
         }
         
         static ActualRings FarmerNotFound(Farmer f) {
@@ -82,6 +100,7 @@ namespace StardewHack.WearMoreRings
         /// Serializes the worn extra rings to disk.
         /// </summary>
         void GameLoop_Saving(object sender, StardewModdingAPI.Events.SavingEventArgs e) {
+            if (!Game1.IsMasterGame) return;
             var savedata = new SaveRingsDict();
             foreach(Farmer f in Game1.getAllFarmers()) {
                 savedata[f.UniqueMultiplayerID] = new SaveRings(actualdata.GetValue(f, FarmerNotFound));
@@ -94,6 +113,7 @@ namespace StardewHack.WearMoreRings
         /// Reads the saved extra rings and creates them.
         /// </summary>
         void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e) {
+            if (!Game1.IsMasterGame) return;
             // Load data from mod's save file, if available.
             var savedata = Helper.Data.ReadSaveData<SaveRingsDict>("extra-rings");
             if (savedata == null) {
@@ -135,6 +155,21 @@ namespace StardewHack.WearMoreRings
                 Instructions.Ldarg_0(),
                 Instructions.Call(typeof(ModEntry), "InitFarmer", typeof(Farmer))
             );
+        }
+        
+        public static IEnumerable<Ring> ListRings(Farmer f) {
+            var r = new List<Ring>();
+            void Add(Ring ring) {
+                if (ring!=null) r.Add(ring);
+            }
+            ActualRings ar = ModEntry.actualdata.GetValue(f, ModEntry.FarmerNotFound);
+            Add(f.leftRing);
+            Add(f.rightRing);
+            Add(ar.ring1);
+            Add(ar.ring2);
+            Add(ar.ring3);
+            Add(ar.ring4);
+            return r;
         }
         
         public static int CountWearingRing(Farmer f, int id) {
@@ -209,8 +244,7 @@ namespace StardewHack.WearMoreRings
                 Instructions.Ldarg_1(),
                 Instructions.Ldarg_2(),
                 Instructions.Ldarg_0(),
-                Instructions.Call(typeof(ModEntry), "UpdateRings", typeof (GameTime), typeof(GameLocation), typeof(Farmer)),
-                Instructions.Ret()
+                Instructions.Call(typeof(ModEntry), "UpdateRings", typeof (GameTime), typeof(GameLocation), typeof(Farmer))
             );
         }
         #endregion Patch Farmer
@@ -329,16 +363,6 @@ namespace StardewHack.WearMoreRings
                 monster[5],
                 Instructions.Call(typeof(ModEntry), "ring_onMonsterSlay", typeof(Farmer), typeof(StardewValley.Monsters.Monster))
             );
-            
-            /*
-            IL_05d9: ldarg.s who
-        IL_05db: brfalse.s IL_0612
-
-        IL_05dd: ldarg.s who
-        IL_05df: ldfld class Netcode.NetRef`1<class StardewValley.Objects.Ring> StardewValley.Farmer::leftRing
-        IL_05e4: callvirt instance !0 class Netcode.NetFieldBase`2<class StardewValley.Objects.Ring, class Netcode.NetRef`1<class StardewValley.Objects.Ring>>::get_Value()
-        IL_05e9: brfalse.s IL_0612
-            */
         }
         #endregion Patch GameLocation
         
@@ -573,8 +597,20 @@ namespace StardewHack.WearMoreRings
             if (icon.name == "Extra Ring 4") ar.ring4.Set(helditem as Ring);
         }
         
+        static public void AutoEquipment(StardewValley.Menus.InventoryPage page) {
+            var helditem = Game1.player.CursorSlotItem;
+            foreach (StardewValley.Menus.ClickableComponent icon in page.equipmentIcons) {
+                if (icon.item != null) continue;
+                if (icon.name == "Hat") continue;
+                if (icon.name == "Boots") continue;
+                EquipmentClick(icon);
+                break;
+            }
+        }
+        
         [BytecodePatch("StardewValley.Menus.InventoryPage::receiveLeftClick")]
         void InventoryPage_receiveLeftClick() {
+            // Handle a ring-inventory slot being clicked.
             var code = FindCode(
                 OpCodes.Ldloc_1,
                 Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "name"),
@@ -594,9 +630,49 @@ namespace StardewHack.WearMoreRings
                 Instructions.Ldloc_1(),
                 Instructions.Call(typeof(ModEntry), "EquipmentClick", typeof(StardewValley.Menus.ClickableComponent))
             );
+            
+            // Handle a ring in inventory being shift+clicked.
+            code = code.FindNext(
+                Instructions.Callvirt(typeof(StardewValley.Menus.InventoryPage), "checkHeldItem", typeof(System.Func<Item, bool>)),
+                OpCodes.Brfalse,
+                Instructions.Call_get(typeof(Game1), "player"),
+                Instructions.Ldfld(typeof(Farmer), "leftRing"),
+                OpCodes.Callvirt,
+                OpCodes.Brtrue
+            );
+            code.Extend(code.Follow(1));
+            code = code.SubRange(2, code.length-2);
+            code.Replace(
+                Instructions.Ldarg_0(),
+                Instructions.Call(typeof(ModEntry), "AutoEquipment", typeof(StardewValley.Menus.InventoryPage))
+            );
         }
         #endregion Patch InventoryPage
         
+        #region Patch Ring
+        [BytecodePatch("StardewValley.Objects.Ring::.ctor(System.Int32)")]
+        void Ring_ctor() {
+            var code = FindCode(
+                OpCodes.Ldarg_0,
+                Instructions.Ldfld(typeof(Ring), "uniqueID"),
+                Instructions.Ldsfld(typeof(Game1), "year"),
+                Instructions.Ldsfld(typeof(Game1), "dayOfMonth"),
+                OpCodes.Add
+            );
+            code.Extend(
+                Instructions.Call_get(typeof(Game1), "stats"),
+                Instructions.Ldfld(typeof(Stats), "itemsCrafted"),
+                OpCodes.Add,
+                OpCodes.Callvirt
+            );
+            code = code.SubRange(2,code.length-3);
+            code.Replace(
+                // ModEntry.random.Next()
+                Instructions.Ldsfld(typeof(ModEntry), "random"),
+                Instructions.Call(typeof(System.Random), "Next")
+            );
+        }
+        #endregion Patch Ring
     }
 }
 

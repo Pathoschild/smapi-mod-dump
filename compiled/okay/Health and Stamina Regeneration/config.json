@@ -1,0 +1,6 @@
+{
+  "HealthRegenRate": 2,
+  "StaminaRegenRate": 2,
+  "SecondsUntilHealthRegen": 2,
+  "SecondsUntilStaminaRegen": 1
+}

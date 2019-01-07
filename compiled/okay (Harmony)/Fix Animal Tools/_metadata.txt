@@ -1,3 +1,0 @@
-page URL: https://github.com/bcmpinc/StardewHack
-IDs: bcmpinc.FixAnimalTools
-update keys: GitHub:bcmpinc/StardewHack

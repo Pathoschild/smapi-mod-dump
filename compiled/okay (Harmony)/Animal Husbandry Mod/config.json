@@ -1,8 +1,8 @@
 {
   "Softmode": false,
-  "AddMeatCleaverToInventoryKey": null,
-  "AddInseminationSyringeToInventoryKey": null,
-  "AddFeedingBasketToInventoryKey": null,
+  "AddMeatCleaverToInventoryKey": "l",
+  "AddInseminationSyringeToInventoryKey": "l",
+  "AddFeedingBasketToInventoryKey": "l",
   "DisableFullBuildingForBirthNotification": false,
   "DisableTomorrowBirthNotification": false,
   "DisablePregnancy": false,

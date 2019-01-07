@@ -2,7 +2,7 @@
   "DebugMode": false,
   "GreenhouseNotificationsEnabled": true,
   "CaveNotificationsEnabled": true,
-  "CellarNotificationsEnabled": false,
-  "ShedNotificationsEnabled": false,
-  "BirthdayCheckEnabled": false
+  "CellarNotificationsEnabled": true,
+  "ShedNotificationsEnabled": true,
+  "BirthdayCheckEnabled": true
 }
