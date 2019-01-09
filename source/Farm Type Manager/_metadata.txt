@@ -1,0 +1,13 @@
+url:
+   https://github.com/Esca-MMC/FarmTypeManager.git
+
+mods:
+   Farm Type Manager
+
+latest commit:
+   commit 7514fc267b668c0d9df98383b1564001b14801bd
+   Author: Esca-MMC <41843952+Esca-MMC@users.noreply.github.com>
+   Date:   Mon Jan 7 22:09:06 2019 -0600
+   
+       Remove typo from readme.md
+   

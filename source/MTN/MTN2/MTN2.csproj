@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A32A6A7E-CF36-461D-BD31-49DF66045619}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MTN2</RootNamespace>
+    <AssemblyName>MTN</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>.\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="StardewModdingAPI.Toolkit">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Stardew Valley\smapi-internal\StardewModdingAPI.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="StardewModdingAPI.Toolkit.CoreInterfaces">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Stardew Valley\smapi-internal\StardewModdingAPI.Toolkit.CoreInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Compatibility\Version1\additionalMap.cs" />
+    <Compile Include="Compatibility\Version1\additionalTileSheet.cs" />
+    <Compile Include="Compatibility\Version1\CustomFarmVer1.cs" />
+    <Compile Include="Compatibility\Version1\forageSpawns.cs" />
+    <Compile Include="Compatibility\Version1\overrideMap.cs" />
+    <Compile Include="Compatibility\Version1\resourceSpawns.cs" />
+    <Compile Include="Compatibility\Version1\spawn.cs" />
+    <Compile Include="Compatibility\Version1\StructureInfo.cs" />
+    <Compile Include="CustomFarm.cs" />
+    <Compile Include="CustomFarmManager.cs" />
+    <Compile Include="Locations\AdvancedScienceHouse.cs" />
+    <Compile Include="MapData\FileType.cs" />
+    <Compile Include="MapData\Spawn\Forage.cs" />
+    <Compile Include="MapData\Spawn\Ore.cs" />
+    <Compile Include="MapData\Spawn\LargeDebris.cs" />
+    <Compile Include="MapData\Spawn\Resource.cs" />
+    <Compile Include="MapData\Structs\Modifier.cs" />
+    <Compile Include="MapData\Spawn\SpawnEnums.cs" />
+    <Compile Include="MapData\Structs\Area.cs" />
+    <Compile Include="MapData\MapFile.cs" />
+    <Compile Include="MapData\Neighbor.cs" />
+    <Compile Include="MapData\Spawn\Spawn.cs" />
+    <Compile Include="MapData\Structs\Placement.cs" />
+    <Compile Include="MapData\Structure.cs" />
+    <Compile Include="MapData\Structs\Interaction.cs" />
+    <Compile Include="MapData\Structs\Warp.cs" />
+    <Compile Include="Menus\CharacterCustomizationMTN.cs" />
+    <Compile Include="MTN.cs" />
+    <Compile Include="Messages\ServerIntro.cs" />
+    <Compile Include="Patch.cs" />
+    <Compile Include="PatchConfig.cs" />
+    <Compile Include="Patches\Event\SetExitLocation.cs" />
+    <Compile Include="Patches\FarmHouse\Constructor.cs" />
+    <Compile Include="Patches\FarmHouse\GetPorchStandingSpot.cs" />
+    <Compile Include="Patches\FarmHouse\UpdateMap.cs" />
+    <Compile Include="Patches\Farm\CheckAction.cs" />
+    <Compile Include="Patches\Farm\Constructor.cs" />
+    <Compile Include="Patches\Farm\Draw.cs" />
+    <Compile Include="Patches\Farm\GetFrontDoorPositionForFarmer.cs" />
+    <Compile Include="Patches\Farm\LeftClick.cs" />
+    <Compile Include="Patches\Farm\ResetLocalState.cs" />
+    <Compile Include="Patches\Farm\UpdateWhenCurrentLocation.cs" />
+    <Compile Include="Patches\Game1\loadForNewGame.cs" />
+    <Compile Include="Patches\GameLocation\loadObjects.cs" />
+    <Compile Include="Patches\GameLocation\startEvent.cs" />
+    <Compile Include="Patches\NetBuildingRef\ValueGetter.cs" />
+    <Compile Include="Patches\NPC\updateConstructionAnimation.cs" />
+    <Compile Include="Patches\Objects\totemWarpForReal.cs" />
+    <Compile Include="Patches\Pet\dayUpdate.cs" />
+    <Compile Include="Patches\Pet\setAtFarmPosition.cs" />
+    <Compile Include="Patches\SaveGame\loadDataToLocations.cs" />
+    <Compile Include="Patches\TitleMenu\setUpIcons.cs" />
+    <Compile Include="Patches\Wand\wandWarpForReal.cs" />
+    <Compile Include="Patches\WorldChangeEvent\setUp.cs" />
+    <Compile Include="PatchManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpawnManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="manifest.json" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="res\missingIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+  </Target>
+</Project>

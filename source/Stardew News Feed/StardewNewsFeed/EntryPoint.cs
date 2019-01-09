@@ -1,131 +1,45 @@
-using System.Linq;
-using Netcode;
+using StardewValley.Buildings;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewValley;
-using StardewValley.TerrainFeatures;
+using StardewNewsFeed.Services;
+using StardewNewsFeed.Wrappers;
 
 namespace StardewNewsFeed {
     public class EntryPoint : Mod {
-
-        #region Private Properties
+    
         private ModConfig _modConfig;
-        #endregion
+        private IGameService _gameService;
 
-        #region StardewModdingApi.Mod Overrides
         public override void Entry(IModHelper helper) {
             _modConfig = Helper.ReadConfig<ModConfig>();
+            _gameService = new GameService(Helper.Translation, Monitor);
 
-            if(_modConfig.CaveNotificationsEnabled) {
-                helper.Events.GameLoop.DayStarted += CheckFarmCave;
+            if (_modConfig.CaveNotificationsEnabled) {
+                helper.Events.GameLoop.DayStarted += (s, e) => _gameService.CheckFarmCave();
             }
 
-            if(_modConfig.GreenhouseNotificationsEnabled) {
-                helper.Events.GameLoop.DayStarted += CheckGreenhouse;
+            if (_modConfig.GreenhouseNotificationsEnabled) {
+                helper.Events.GameLoop.DayStarted += (s, e) => _gameService.CheckGreenhouse();
             }
 
-            if(_modConfig.CellarNotificationsEnabled) {
-                helper.Events.GameLoop.DayStarted += CheckCellar;
+            if (_modConfig.CellarNotificationsEnabled) {
+                helper.Events.GameLoop.DayStarted += (s, e) => _gameService.CheckCellar();
             }
 
-            if(_modConfig.ShedNotificationsEnabled) {
-                helper.Events.GameLoop.DayStarted += CheckSheds;
+            if (_modConfig.ShedNotificationsEnabled) {
+                helper.Events.GameLoop.DayStarted += (s, e) => _gameService.CheckShed();
+            }
+
+            if (_modConfig.CoopCheckEnabled) {
+                helper.Events.GameLoop.DayStarted += (s, e) => _gameService.CheckFarmBuildings<Coop>();
+            }
+
+            if (_modConfig.BarnCheckEnabled) {
+                helper.Events.GameLoop.DayStarted += (s, e) => _gameService.CheckFarmBuildings<Barn>();
             }
 
             if (_modConfig.BirthdayCheckEnabled) {
-                helper.Events.Player.Warped += CheckBirthdays;
+                helper.Events.Player.Warped += (s, e) => _gameService.CheckLocationForBirthdays(new Location(e.NewLocation, Helper.Translation));
             }
         }
-        #endregion
-
-        #region Private Methods
-        private void CheckFarmCave(object sender, DayStartedEventArgs e) {
-            var farmCave = Game1.getLocationFromName(Constants.FARM_CAVE_LOCATION_NAME);
-            Monitor.VerboseLog($"Player Cave Choice: {Game1.player.caveChoice}");
-            if(Game1.player.caveChoice == new NetInt(2)) {
-                CheckLocationForHarvestableObjects(farmCave);
-            } else {
-                //ScanLocationForFruit(farmCave);
-                CheckLocationForHarvestableObjects(farmCave);
-            }
-
-        }
-
-        private void CheckGreenhouse(object sender, DayStartedEventArgs e) {
-            var greenhouse = Game1.locations.SingleOrDefault(l => l.isGreenhouse == new NetBool(true));
-            CheckLocationForHarvestableTerrain(greenhouse);
-        }
-
-        private void CheckCellar(object sender, DayStartedEventArgs e) {
-            var cellar = Game1.getLocationFromName(Constants.CELLAR_LOCATION_NAME);
-            CheckLocationForHarvestableObjects(cellar);
-        }
-
-        private void CheckSheds(object sender, DayStartedEventArgs e) {
-            var sheds = Game1.getFarm()
-                .buildings
-                .Select(b => b.indoors.Value)
-                .Where(i => i is Shed);
-
-            foreach(var shed in sheds) {
-                CheckLocationForHarvestableObjects(shed);
-            }
-        }
-
-        private void CheckBirthdays(object sender, WarpedEventArgs e) {
-            foreach(var npc in e.NewLocation.getCharacters()) {
-                Monitor.VerboseLog($"Checking {npc.displayName} for a birthday today");
-                if (npc.isBirthday(Game1.Date.Season, Game1.Date.DayOfMonth)) {
-                    var message = Helper.Translation.Get("news-feed.birthday-notice", new { npcName = npc.getName() });
-                    Game1.addHUDMessage(new HUDMessage(message, 2));
-                }
-            }
-        }
-
-        private void CheckLocationForHarvestableObjects(GameLocation location) {
-            var numberOfItemsReadyForHarvest = location.Objects.Values.Count(o => o.readyForHarvest == new NetBool(true));
-
-            if (numberOfItemsReadyForHarvest > 0) {
-                var message = Helper.Translation.Get("news-feed.harvest-items-found-in-location-notice", new {
-                    numberOfItems = numberOfItemsReadyForHarvest,
-                    locationName = location.GetDisplayName(Helper.Translation),
-                });
-                Game1.addHUDMessage(new HUDMessage(message, 2));
-                Monitor.VerboseLog($"{numberOfItemsReadyForHarvest} items found in the {location.GetDisplayName(Helper.Translation)}");
-            } else {
-                Monitor.VerboseLog($"No items found in the {location.GetDisplayName(Helper.Translation)}");
-            }
-        }
-
-        private void CheckLocationForHarvestableTerrain(GameLocation location) {
-            var numberOfDirtTilesReadyForHarvest = location.terrainFeatures.Pairs
-                .Where(p => p.Value is HoeDirt)
-                .Select(p => p.Value as HoeDirt)
-                .Count(hd => hd.readyForHarvest());
-
-            if(numberOfDirtTilesReadyForHarvest > 0) {
-                var message = Helper.Translation.Get("news-feed.harvest-items-found-in-location-notice", new {
-                    numberOfItems = numberOfDirtTilesReadyForHarvest,
-                    locationName = location.GetDisplayName(Helper.Translation),
-                });
-                Game1.addHUDMessage(new HUDMessage(message, 2));
-            } else {
-                Monitor.VerboseLog($"No items found in the {location.GetDisplayName(Helper.Translation)}");
-            }
-        }
-
-        private void ScanLocationForFruit(GameLocation location) {
-            for (int height = 4; height < 9; height++) {
-                for (int width = 2; width < 11; width++) {
-                    if (location.TileIsReadyForHarvest(height, width)) {
-                        var message = Helper.Translation.Get("news-feed.bats-dropped-fruit-notice");
-                        Game1.addHUDMessage(new HUDMessage(message, 2));
-                        return;
-                    }
-                }
-            }
-        }
-        #endregion
-
     }
 }

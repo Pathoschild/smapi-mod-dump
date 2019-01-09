@@ -3,10 +3,158 @@
   "RequiresBait": true,
   "PercentChanceForTrash": 20,
   "EnableBetterQuality": false,
-  "WhatCanBeFoundInFreshWater": {
+  "EnablePassiveTrash": false,
+  "PercentChanceForPassiveTrash": 20,
+  "WhatCanBeFoundAsPassiveTrash": {
+    "168": 1,
+    "169": 1,
+    "170": 1,
+    "171": 1,
+    "172": 1
+  },
+  "WhatCanBeFoundInFarmLand": {
     "716": 1,
     "721": 1,
     "722": 1
+  },
+  "WhatCanBeFoundInFarmLand_AsTrash": {
+    "168": 1,
+    "169": 1,
+    "170": 1,
+    "171": 1,
+    "172": 1
+  },
+  "WhatCanBeFoundInCindersapForest": {
+    "716": 1,
+    "721": 1,
+    "722": 1
+  },
+  "WhatCanBeFoundInCindersapForest_AsTrash": {
+    "168": 1,
+    "169": 1,
+    "170": 1,
+    "171": 1,
+    "172": 1
+  },
+  "WhatCanBeFoundInMountainsLake": {
+    "716": 1,
+    "721": 1,
+    "722": 1
+  },
+  "WhatCanBeFoundInMountainsLake_AsTrash": {
+    "168": 1,
+    "169": 1,
+    "170": 1,
+    "171": 1,
+    "172": 1
+  },
+  "WhatCanBeFoundInTown": {
+    "716": 1,
+    "721": 1,
+    "722": 1
+  },
+  "WhatCanBeFoundInTown_AsTrash": {
+    "168": 1,
+    "169": 1,
+    "170": 1,
+    "171": 1,
+    "172": 1
+  },
+  "WhatCanBeFoundInMines_Layer20": {
+    "716": 1,
+    "721": 1,
+    "722": 1
+  },
+  "WhatCanBeFoundInMines_Layer20_AsTrash": {
+    "168": 1,
+    "169": 1,
+    "170": 1,
+    "171": 1,
+    "172": 1
+  },
+  "WhatCanBeFoundInMines_Layer60": {
+    "716": 1,
+    "721": 1,
+    "722": 1
+  },
+  "WhatCanBeFoundInMines_Layer60_AsTrash": {
+    "168": 1,
+    "169": 1,
+    "170": 1,
+    "171": 1,
+    "172": 1
+  },
+  "WhatCanBeFoundInMines_Layer100": {
+    "716": 1,
+    "721": 1,
+    "722": 1
+  },
+  "WhatCanBeFoundInMines_Layer100_AsTrash": {
+    "168": 1,
+    "169": 1,
+    "170": 1,
+    "171": 1,
+    "172": 1
+  },
+  "WhatCanBeFoundInMutantBugLair": {
+    "716": 1,
+    "721": 1,
+    "722": 1
+  },
+  "WhatCanBeFoundInMutantBugLair_AsTrash": {
+    "168": 1,
+    "169": 1,
+    "170": 1,
+    "171": 1,
+    "172": 1
+  },
+  "WhatCanBeFoundInWitchsSwamp": {
+    "716": 1,
+    "721": 1,
+    "722": 1
+  },
+  "WhatCanBeFoundInWitchsSwamp_AsTrash": {
+    "168": 1,
+    "169": 1,
+    "170": 1,
+    "171": 1,
+    "172": 1
+  },
+  "WhatCanBeFoundInSecretWoods": {
+    "716": 1,
+    "721": 1,
+    "722": 1
+  },
+  "WhatCanBeFoundInSecretWoods_AsTrash": {
+    "168": 1,
+    "169": 1,
+    "170": 1,
+    "171": 1,
+    "172": 1
+  },
+  "WhatCanBeFoundInDesert": {
+    "716": 1,
+    "721": 1,
+    "722": 1
+  },
+  "WhatCanBeFoundInDesert_AsTrash": {
+    "168": 1,
+    "169": 1,
+    "170": 1,
+    "171": 1,
+    "172": 1
+  },
+  "WhatCanBeFoundInSewers": {
+    "716": 1,
+    "721": 1,
+    "722": 1
+  },
+  "WhatCanBeFoundInSewers_AsTrash": {
+    "168": 1,
+    "169": 1,
+    "170": 1,
+    "171": 1,
+    "172": 1
   },
   "WhatCanBeFoundInOcean": {
     "715": 1,
@@ -17,14 +165,7 @@
     "720": 1,
     "723": 1
   },
-  "WhatCanBeFoundAsTrashInFreshWater": {
-    "168": 1,
-    "169": 1,
-    "170": 1,
-    "171": 1,
-    "172": 1
-  },
-  "WhatCanBeFoundAsTrashInOcean": {
+  "WhatCanBeFoundInOcean_AsTrash": {
     "168": 1,
     "169": 1,
     "170": 1,

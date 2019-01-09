@@ -9,7 +9,7 @@ namespace HealthStaminaRegen
     class ModConfig
     {
         public int HealthRegenRate { get; set; } = 2;
-        public int StaminaRegenRate { get; set; } = 2;
+        public float StaminaRegenRate { get; set; } = 2;
         public int SecondsUntilHealthRegen { get; set; } = 2;
         public int SecondsUntilStaminaRegen { get; set; } = 1;
     }

@@ -1,7 +1,7 @@
 ﻿{
    "Name": "Tree Spread",
    "Author": "bcmpinc",
-   "Version": "1.0",
+   "Version": "1.1",
    "Description": "Prevents trees from spreading on your farm.",
    "UniqueID": "bcmpinc.TreeSpread",
    "EntryDll": "TreeSpread.dll",

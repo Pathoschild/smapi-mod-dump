@@ -23,3 +23,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 #### 1.0:
 * Added dependency on the StardewHack library mod.
 * Added option to limit this mod tapped trees only.
+
+#### 1.1:
+* Fix: the option for tapped trees wasn't preventing seeds from being dropped at all.

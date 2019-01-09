@@ -22,23 +22,23 @@ namespace ServerBrowser
 			}
 		}
 
-		public static void CreateTab(CoopMenu coopMenu)
+		public static void CreateTab(CoopMenu coopMenu, bool ___smallScreenFormat)
 		{
 			var label2 = "Online";
-			var smallScreenFormat = true;
 			var joinTab = coopMenu.joinTab;
 			var hostTab = coopMenu.hostTab;
 			var width2 = (int)Game1.dialogueFont.MeasureString(label2).X + 64;
-			var pos2 = (smallScreenFormat ? new Vector2((float)(hostTab.bounds.Right), (float)coopMenu.yPositionOnScreen) : new Vector2((float)(joinTab.bounds.Right + 4), (float)(coopMenu.yPositionOnScreen - 64)));
-
-			//height : smallScreenFormat ? 72 : 128
-			OnlineTab = new ClickableComponent(new Rectangle((int)pos2.X, (int)pos2.Y, width2, joinTab.bounds.Height ), "", label2);
+			var pos2 = new Vector2(hostTab.bounds.Right, coopMenu.yPositionOnScreen);
+			
+			int h = 72;
+			OnlineTab = new ClickableComponent(new Rectangle((int)pos2.X, (int)pos2.Y - (!___smallScreenFormat ? h : 0), width2, h ), "", label2);
+			Console.WriteLine($"OnlineTab bounds = {OnlineTab.bounds}");
 		}
 	}
 
 	class CoopMenuDrawTabs : Patch
 	{
-		protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(CoopMenu), "drawTabs");
+		protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(CoopMenu), "drawExtra");
 
 		
 		public static void Postfix(SpriteBatch b, CoopMenu __instance)
@@ -95,9 +95,9 @@ namespace ServerBrowser
 	{
 		protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(CoopMenu), "connectionFinished");
 		
-		public static void Postfix(CoopMenu __instance)
+		public static void Postfix(CoopMenu __instance, bool ___smallScreenFormat)
 		{
-			CoopMenuHolder.CreateTab(__instance);
+			CoopMenuHolder.CreateTab(__instance, ___smallScreenFormat);
 		}
 	}
 
@@ -105,9 +105,9 @@ namespace ServerBrowser
 	{
 		protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(CoopMenu), "gameWindowSizeChanged");
 
-		public static void Postfix(CoopMenu __instance)
+		public static void Postfix(CoopMenu __instance, bool ___smallScreenFormat)
 		{
-			CoopMenuHolder.CreateTab(__instance);
+			CoopMenuHolder.CreateTab(__instance, ___smallScreenFormat);
 		}
 	}
 }

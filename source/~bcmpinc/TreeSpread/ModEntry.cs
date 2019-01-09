@@ -14,7 +14,7 @@ namespace StardewHack.TreeSpread
     {
         [BytecodePatch("StardewValley.TerrainFeatures.Tree::dayUpdate")]
         void Tree_DayUpdate() {
-            // Erase code related to trea spreading.
+            // Erase code related to tree spreading.
             var spread = FindCode(
                 // if ((int)growthStage >= 5 
                 OpCodes.Ldarg_0,
@@ -43,6 +43,7 @@ namespace StardewHack.TreeSpread
                     Instructions.Call_get(typeof(Netcode.NetBool), "Value"),
                     Instructions.Brtrue(AttachLabel(spread.End[0]))
                 );
+                spread.ReplaceJump(4, spread[0]);
                 spread = spread.End;
             } else {
                 spread.Remove();

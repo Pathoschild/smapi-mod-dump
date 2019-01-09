@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 7678e45ca53db4d6801222b260e1d6b5afbba678
+   commit 84a2a66c1cc60acbaeec7cfc9a23faae20655743
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Sun Jan 6 15:22:59 2019 +0100
+   Date:   Mon Jan 7 13:27:16 2019 +0100
    
-       Exception due to difference between Windows & Linux build.
+       Fix treespread for tappers only
    

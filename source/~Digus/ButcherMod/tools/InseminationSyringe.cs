@@ -292,7 +292,7 @@ namespace AnimalHusbandryMod.tools
         public object getReplacement()
         {
             var replacement = new Chest(true);
-            if (attachments.Count() > 0)
+            if (attachments.Any() && attachments[0] != null)
             {
                 replacement.addItem(attachments[0]);
             }

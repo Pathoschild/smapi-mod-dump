@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Crop Transplant Mod",
   "Author": "Digus",
-  "Version": "1.1.1",
+  "Version": "1.1.2",
   "Description": "Adds a way to transplant crops.",
   "UniqueID": "DIGUS.CropTransplantMod",
   "EntryDll": "CropTransplantMod.dll",

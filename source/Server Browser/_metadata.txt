@@ -5,9 +5,10 @@ mods:
    Server Browser
 
 latest commit:
-   commit bafd07a292b97f7dc8762e61e5049e977d1a21bc
-   Author: Ilyaki <35632254+Ilyaki@users.noreply.github.com>
-   Date:   Sun Jan 6 18:13:50 2019 +0000
+   commit afa981eed4f257b93fd850fcab58a4fb5668755a
+   Merge: 343508b bafd07a
+   Author: Ilyaki <ilyaki.ilyaki@gmail.com>
+   Date:   Mon Jan 7 16:20:17 2019 +0000
    
-       Create LICENSE
+       Merge branch 'master' of https://github.com/Ilyaki/Server-Browser
    

@@ -11,10 +11,10 @@ mods:
    Water Retaining Field
 
 latest commit:
-   commit 86d01e397566087002bd9389df6310e24d5f9970
+   commit a1dd2baf82b6414c0c2a82eb02fb9107e7107bb6
    Author: Digus-PC\Digus <diguss@gmail.com>
-   Date:   Wed Nov 21 01:08:51 2018 -0200
+   Date:   Wed Jan 9 01:20:09 2019 -0200
    
-       Custom Crystalarium Mod 1.1.1
-       - Spanish Translation
+       Crop Transplant Mod 1.1.2
+       - Update to Stardew Valley 1.3.33
    

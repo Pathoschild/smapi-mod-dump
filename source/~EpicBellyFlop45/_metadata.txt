@@ -1,0 +1,17 @@
+url:
+   https://github.com/EpicBellyFlop45/StardewMods.git
+
+mods:
+   Better Crab Pots
+   Better Mixed Seeds
+   Better Rarecrows
+   Clean Cellar
+   Customize Cursor Sprite
+
+latest commit:
+   commit cd5df1789ee5fa959630430c527d3e7f75e0dd73
+   Author: Andy Crocker <atmcrocker@gmail.com>
+   Date:   Tue Jan 8 19:07:02 2019 -0500
+   
+       Added: Passive trash to crab pots with config
+   

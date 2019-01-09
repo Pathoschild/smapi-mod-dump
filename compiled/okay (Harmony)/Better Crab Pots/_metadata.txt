@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/3159
 IDs: EpicBellyFlop45.BetterCrabPots
-update keys: Nexus:3159
+update keys: Nexus:3159, GitHub:EpicBellyFlop45/StardewMods

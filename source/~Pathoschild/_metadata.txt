@@ -17,9 +17,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit caef8daeb89b6f173033beca8330f1f897ea0535
+   commit 3ce3ac596a2d4cfc38a79c4293ab0a9c77de64e4
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Jan 5 16:31:38 2019 -0500
+   Date:   Tue Jan 8 20:12:36 2019 -0500
    
-       fix translation file
+       add option to disable Chests Anywhere's player inventory organise button
    

@@ -5,9 +5,14 @@ mods:
    Stardew News Feed
 
 latest commit:
-   commit 9145632921aec487e8664d7b5928d27f10480493
-   Author: Mike North <mikesnorth@gmail.com>
-   Date:   Sat Jan 5 15:19:19 2019 -0500
+   commit 864b8111e816dc4169496de99adc03f4f5d8ad04
+   Author: Aaron Ingram <aaron.ingram@pm.me>
+   Date:   Tue Jan 8 00:22:09 2019 -0500
    
-       removes debug mode setting
+       Check coops for items and notify user if any are found
+       
+       Prior to this change, users were unable to receive notifications for
+       items available in coop. This change adds monitoring for all coops found
+       on the farm and will notify the user about items available at each one,
+       individually.
    

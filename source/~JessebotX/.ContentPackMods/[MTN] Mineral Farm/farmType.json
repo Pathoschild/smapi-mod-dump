@@ -1,0 +1,166 @@
+{
+	"Description": "Mineral Farm_Mineral Farm from Harvest Moon Friends of Mineral Town.",
+	"Folder": "[MTN] Mineral Farm",
+	"ID": 30,
+	"Name": "Mineral",
+	"farmMapType": 0,
+	"allowClose": true,
+	"allowSeperate": true,
+	"cabinCapacity": 3,	
+	"farmCave": {
+		"pointOfInteraction": {
+			"x": 11,
+			"y": 7
+		}
+	},
+	"farmHouse": {
+		"coordinates": {
+			"x": 13.0,
+			"y": 1.0
+		},
+		"pointOfInteraction": {
+			"x": 19,
+			"y": 8
+		}
+	},
+	"farmMapFile": "Farm_Mineralfarm",
+	"furnitureLayoutFromCanon": 0,
+	"grandpaShrine": {
+		"pointOfInteraction": {
+			"x": 11,
+			"y": 6
+		}
+	},
+	"greenHouse": {
+		"coordinates": {
+			"x": 6.0,
+			"y": 16.0
+		},
+		"pointOfInteraction": {
+			"x": 9,
+			"y": 26
+		}
+	},
+	"Icon": "icon.png",
+	"mailBox": {
+		"pointOfInteraction": {
+			"x": 24,
+			"y": 4
+		}
+	},
+  "neighboringMaps": [
+	{
+      "MapName": "Backwoods",
+      "warpPoints": [
+        {
+          "fromX": 13,
+          "fromY": 40,
+          "toX": 27,
+          "toY": 0
+        },
+        {
+          "fromX": 14,
+          "fromY": 40,
+          "toX": 28,
+          "toY": 0
+        },
+        {
+          "fromX": 15,
+          "fromY": 40,
+          "toX": 29,
+          "toY": 0
+        }
+      ]
+    },
+    {
+      "MapName": "BusStop",
+      "warpPoints": [
+        {
+          "fromX": -1,
+          "fromY": 22,
+          "toX": 87,
+          "toY": 4
+        },
+        {
+          "fromX": -1,
+          "fromY": 23,
+          "toX": 87,
+          "toY": 5
+        },
+        {
+          "fromX": -1,
+          "fromY": 24,
+          "toX": 87,
+          "toY": 6
+        },
+        {
+          "fromX": -1,
+          "fromY": 25,
+          "toX": 87,
+          "toY": 7
+        }
+      ]
+    },
+    {
+      "MapName": "Forest",
+      "warpPoints": [
+        {
+          "fromX": 67,
+          "fromY": -1,
+          "toX": 22,
+          "toY": 63
+        },
+        {
+          "fromX": 68,
+          "fromY": -1,
+          "toX": 22,
+          "toY": 63
+        },
+        {
+          "fromX": 69,
+          "fromY": -1,
+          "toX": 22,
+          "toY": 63
+        },
+        {
+          "fromX": 70,
+          "fromY": -1,
+          "toX": 22,
+          "toY": 63
+        },
+        {
+          "fromX": 71,
+          "fromY": -1,
+          "toX": 22,
+          "toY": 63
+        },
+        {
+          "fromX": 72,
+          "fromY": -1,
+          "toX": 22,
+          "toY": 63
+        }
+      ]
+    }
+  ],
+  "petWaterBowl": {
+    "pointOfInteraction": {
+      "x": 32,
+      "y": 4
+    }
+  },
+  "rabbitStatue": {
+    "pointOfInteraction": {
+      "x": 19,
+      "y": 8
+    }
+  },
+	"shippingBin": {
+		"pointOfInteraction": {
+			"x": 21,
+			"y": 15
+		}
+	},
+  "spawnMonstersAtNight": false,
+  "version": 1.0
+}

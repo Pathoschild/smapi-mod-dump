@@ -1,16 +1,13 @@
 url:
-   https://github.com/Dawilly/MTN.git
+   https://github.com/Dawilly/MTN2.git
 
 mods:
    MTN
 
 latest commit:
-   commit 5af669b102da5f3919d2cbb0bf6298958d1092d8
-   Merge: 9496ed0 214647c
-   Author: SgtPickles <daweil@crimson.ua.edu>
-   Date:   Fri Nov 23 16:34:36 2018 -0600
+   commit 7364cf216a6cd9fccacdeae54b39ca260a567068
+   Author: David Weil <gamemx25@gmail.com>
+   Date:   Thu Jan 3 21:34:43 2019 -0800
    
-       Merge pull request #3 from Pathoschild/update-code
-       
-       Update for Stardew Valley 1.3.31 + minor cleanup
+       Fixed Down Arrow bug
    

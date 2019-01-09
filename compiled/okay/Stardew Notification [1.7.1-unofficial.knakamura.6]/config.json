@@ -1,0 +1,21 @@
+{
+  "NotifyBirthdays": true,
+  "NotifyBirthdayReminder": true,
+  "BirthdayReminderTime": 1700,
+  "NotifyFestivals": true,
+  "NotifyTravelingMerchant": true,
+  "NotifyToolUpgrade": true,
+  "NotifyQueenOfSauce": true,
+  "NotifyMaxLuck": true,
+  "NotifyMinLuck": true,
+  "NotifySeasonalForage": true,
+  "ShowEmptyhay": true,
+  "NotifyHay": true,
+  "NotifyFarmCave": true,
+  "NotifyGreenhouseCrops": true,
+  "NotifyShed": true,
+  "NotifyFarm": true,
+  "NotifyGreenhouse": true,
+  "NotifyCellar": true,
+  "NotifyBarn": true
+}

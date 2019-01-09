@@ -1,0 +1,39 @@
+﻿{
+  // Notification messages
+  "travelingMerchant": "Traveling Merchant has arrived",
+  "queenSauce": "Queen of Sauce airs today",
+  "luckyDay": "Lucky Day!",
+  "unluckyDay":  "Unlucky Day!", 
+
+  // Festivals
+  "fMsg": "{{fest}} Today!",
+  "festival": "Festival",
+  "EggFestival": "Egg Festival",
+  "FlowerDance": "Flower Dance",
+  "Luau": "Luau",
+  "MoonlightJellies": "Dance of the Moonlight Jellies",
+  "ValleyFair": "Stardew Valley Fair",
+  "SpiritsEve": "Spirit's Eve",
+  "IceFestival": "Festival of Ice",
+  "WinterStar": "Feast of the Winter Star",
+  "NightMarket":  "Night Market",
+  "SecretSantaReminder": "{{charName}} is your secret santa",
+
+  "Salmonberry": "Salmonberry season",
+  "Seashells": "Seashells on the seashore",
+  "Blackberry": "Blackberry season",
+
+  // Locations
+  "CaveMushroom": "Cave Mushrooms ready for harvest",
+  "CaveFruit": "Cave Fruits ready for harvest",
+
+  "birthday": "{{charName}}'s birthday!",
+  "birthdayReminder": "Don't forget to give {{charName}} a birthday gift today!",
+  "toolPickup": "{{toolName}} is ready for pickup",
+
+  "readyHarvest": "{{cropName}} ready for harvest",
+  "greenhouse_crops": "Greenhouse crops ready for harvest",
+  "autoGrabber" :  "The auto grabber has items for harvest",
+  "hayMessage" : "Silos report {{hayAmt}} pieces of hay",
+  "noHayMessage": "No hay in the silos."
+}

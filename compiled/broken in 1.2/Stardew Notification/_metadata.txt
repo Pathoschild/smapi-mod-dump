@@ -1,3 +1,0 @@
-page URL: https://github.com/monopandora/StardewNotification
-IDs: stardewnotification, mondopandora.stardewnotification
-update keys: GitHub:monopandora/StardewNotification
