@@ -1,8 +1,8 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Target Name="AfterBuild">
-    <ItemGroup>
-      <ModFiles Include="$(TargetDir)\*.*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(ModFiles)" DestinationFolder="$(GamePath)\Mods\$(TargetName)" SkipUnchangedFiles="false" />
-  </Target>
+  <PropertyGroup>
+    <DeployModZipTo>$(SolutionDir)\_releases</DeployModZipTo>
+
+    <!-- don't deploy old/unreleased mods -->
+    <EnableModDeploy Condition="'$(MSBuildProjectName)' == 'BetterShippingBox' OR '$(MSBuildProjectName)' == 'CustomizableClock' OR '$(MSBuildProjectName)' == 'FloodEventsTesting' OR '$(MSBuildProjectName)' == 'SummitReborn'">False</EnableModDeploy>
+  </PropertyGroup>
 </Project>

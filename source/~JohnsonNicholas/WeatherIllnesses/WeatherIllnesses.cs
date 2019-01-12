@@ -1,10 +1,7 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using System;
-using StardewValley.Buildings;
 using StardewValley.Locations;
-using StardewValley.Objects;
 using TwilightShards.Common;
 using TwilightShards.Stardew.Common;
 
@@ -26,8 +23,8 @@ namespace TwilightShards.WeatherIllnesses
         private bool UseClimates = false;
         private Integrations.IClimatesOfFerngillAPI climatesAPI;
 
-        /// <summary> Main mod function. </summary>
-        /// <param name="helper">The helper. </param>
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             IllnessConfig = helper.ReadConfig<IllnessConfig>();
@@ -35,14 +32,17 @@ namespace TwilightShards.WeatherIllnesses
             StaminaMngr = new StaminaDrain(IllnessConfig, Helper.Translation, Monitor);
             TicksOutside = TicksTotal = 0;
 
-            SaveEvents.AfterReturnToTitle += HandleResetToMenu;
-            TimeEvents.AfterDayStarted += HandleNewDay;
-            GameEvents.UpdateTick += HandleChangesPerTick;
-            TimeEvents.TimeOfDayChanged += TenMinuteUpdate;
-            GameEvents.FirstUpdateTick += HandleIntegrations;
+            helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+            helper.Events.GameLoop.TimeChanged += OnTimeChanged;
+            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         }
 
-        private void HandleIntegrations(object sender, EventArgs e)
+        /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialised at this point, so this is a good time to set up mod integrations.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             climatesAPI = SDVUtilities.GetModApi<Integrations.IClimatesOfFerngillAPI>(Monitor, Helper, "KoihimeNakamura.ClimatesOfFerngill", "1.4-beta.12");
 
@@ -52,7 +52,10 @@ namespace TwilightShards.WeatherIllnesses
             }
         }
 
-        private void TenMinuteUpdate(object sender, EventArgsIntChanged e)
+        /// <summary>Raised after the in-game clock time changes.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
             if (!Game1.hasLoadedGame)
                 return;
@@ -92,7 +95,10 @@ namespace TwilightShards.WeatherIllnesses
             TicksInLocation = 0;
         }
 
-        private void HandleChangesPerTick(object sender, EventArgs e)
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (!Game1.hasLoadedGame)
                 return;
@@ -126,14 +132,20 @@ namespace TwilightShards.WeatherIllnesses
             TicksTotal++;
         }
 
-        private void HandleNewDay(object sender, EventArgs e)
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             TicksOutside = TicksTotal = TicksInLocation = 0;
             StaminaMngr.OnNewDay();
             TimeInBathHouse = 0;
         }
 
-        private void HandleResetToMenu(object sender, EventArgs e)
+        /// <summary>Raised after the game returns to the title screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
             TicksTotal = TicksOutside = TicksInLocation = 0;
             StaminaMngr.Reset();

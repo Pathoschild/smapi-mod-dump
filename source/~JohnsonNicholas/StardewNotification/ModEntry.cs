@@ -10,53 +10,67 @@ namespace StardewNotification
     /// </summary>
     class StardewNotification : Mod
     {
-		private HarvestNotification harvestableNotification;
-		private GeneralNotification generalNotification;
-		private ProductionNotification productionNotification;
+        private HarvestNotification harvestableNotification;
+        private GeneralNotification generalNotification;
+        private ProductionNotification productionNotification;
         public static SNConfiguration Config { get; set; }
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             Config = helper.ReadConfig<SNConfiguration>();
-			harvestableNotification = new HarvestNotification(Helper.Translation);
-			generalNotification = new GeneralNotification();
-			productionNotification = new ProductionNotification();
+            harvestableNotification = new HarvestNotification(Helper.Translation);
+            generalNotification = new GeneralNotification();
+            productionNotification = new ProductionNotification();
 
-
-            helper.Events.GameLoop.SaveLoaded += ReceiveLoadedGame;
-            helper.Events.GameLoop.DayStarted += DailyNotifications;
-            helper.Events.Player.Warped += Player_Warped;
-            helper.Events.GameLoop.TimeChanged += GameLoop_TimeChanged;
+            helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.Player.Warped += OnWarped;
+            helper.Events.GameLoop.TimeChanged += OnTimeChanged;
         }
 
-        private void GameLoop_TimeChanged(object sender, TimeChangedEventArgs e)
+        /// <summary>Raised after the in-game clock time changes.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
             if (Config.NotifyBirthdayReminder && e.NewTime == Config.BirthdayReminderTime)
                 generalNotification.DoBirthdayReminder(Helper.Translation);
         }
 
-        private void Player_Warped(object sender, WarpedEventArgs e)
+        /// <summary>Raised after a player warps to a new location.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnWarped(object sender, WarpedEventArgs e)
         {
-            if (e.NewLocation is Farm && Game1.timeOfDay < 2400 && Context.IsWorldReady)
+            if (e.IsLocalPlayer && e.NewLocation is Farm && Game1.timeOfDay < 2400 && Context.IsWorldReady)
             {
                 harvestableNotification.CheckHarvestsOnFarm();
                 productionNotification.CheckProductionAroundFarm(Helper.Translation);
             }
         }
 
-        private void ReceiveLoadedGame(object sender, EventArgs e)
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             // Check for new save
             if (Game1.currentSeason.Equals("Spring") && Game1.dayOfMonth == 0 && Game1.year == 1)
                 return;
-			generalNotification.DoNewDayNotifications(Helper.Translation);
-			harvestableNotification.CheckHarvestsAroundFarm();
+            generalNotification.DoNewDayNotifications(Helper.Translation);
+            harvestableNotification.CheckHarvestsAroundFarm();
         }
 
-        private void DailyNotifications(object sender, EventArgs e)
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-			generalNotification.DoNewDayNotifications(Helper.Translation);
-			harvestableNotification.CheckHarvestsAroundFarm();
+            // send daily notifications
+            generalNotification.DoNewDayNotifications(Helper.Translation);
+            harvestableNotification.CheckHarvestsAroundFarm();
         }
     }
 }

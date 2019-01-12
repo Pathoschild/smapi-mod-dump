@@ -67,8 +67,8 @@ namespace ClimatesOfFerngillRebuild
             return API;
         }
 
-        /// <summary> Main mod function. </summary>
-        /// <param name="helper">The helper. </param>
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             RWeatherIcon = new Rectangle();
@@ -112,20 +112,20 @@ namespace ClimatesOfFerngillRebuild
             harmony.Patch(SGameDrawImpl,transpiler: DrawTrans);
 
             //subscribe to events
-            TimeEvents.AfterDayStarted += HandleNewDay;
-            SaveEvents.BeforeSave += OnEndOfDay;
-            TimeEvents.TimeOfDayChanged += TenMinuteUpdate;
-            MenuEvents.MenuChanged += MenuEvents_MenuChanged;
-            GameEvents.UpdateTick += CheckForChanges;
-            GameEvents.FirstUpdateTick += GameEvents_FirstUpdateTick;
-            GameEvents.OneSecondTick += GameEvents_OneSecondTick;
-            SaveEvents.AfterReturnToTitle += ResetMod;
-            SaveEvents.AfterLoad += SaveEvents_AfterLoad;
-            GraphicsEvents.OnPreRenderHudEvent += DrawPreHudObjects;
-            GraphicsEvents.OnPostRenderHudEvent += DrawObjects;
-            PlayerEvents.Warped += LocationEvents_CurrentLocationChanged;
-            InputEvents.ButtonPressed += InputEvents_ButtonPressed;
-            MenuEvents.MenuClosed += (sender, e) => this.ReceiveMenuClosed(e.PriorMenu);
+            var events = helper.Events;
+            events.GameLoop.DayStarted += OnDayStarted;
+            events.GameLoop.Saving += OnSaving;
+            events.GameLoop.TimeChanged += OnTimeChanged;
+            events.Display.MenuChanged += OnMenuChanged;
+            events.GameLoop.UpdateTicked += OnUpdateTicked;
+            events.GameLoop.GameLaunched += OnGameLaunched;
+            events.GameLoop.OneSecondUpdateTicked += OnOneSecondUpdateTicked;
+            events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
+            events.GameLoop.SaveLoaded += OnSaveLoaded;
+            events.Display.RenderingHud += OnRenderingHud;
+            events.Display.RenderedHud += OnRenderedHud;
+            events.Player.Warped += OnWarped;
+            events.Input.ButtonPressed += OnButtonPressed;
 
             //console commands
             helper.ConsoleCommands
@@ -135,7 +135,10 @@ namespace ClimatesOfFerngillRebuild
                 .Add("debug_weatherstatus","!", OutputWeather);
         }
 
-        private void GameEvents_OneSecondTick(object sender, EventArgs e)
+        /// <summary>Raised once per second after the game state is updated.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnOneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
         {
             Conditions.SecondUpdate();
         }
@@ -151,7 +154,10 @@ namespace ClimatesOfFerngillRebuild
             Monitor.Log(retString);
         }
 
-        private void GameEvents_FirstUpdateTick(object sender, EventArgs e)
+        /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialised at this point, so this is a good time to set up mod integrations.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             //testing for ZA MOON, YOUR HIGHNESS.
             MoonAPI = SDVUtilities.GetModApi<Integrations.ILunarDisturbancesAPI>(Monitor, Helper, "KoihimeNakamura.LunarDisturbances", "1.0");
@@ -168,7 +174,10 @@ namespace ClimatesOfFerngillRebuild
                 UseDynamicNightApi = true;
         }
         
-        private void SaveEvents_AfterLoad(object sender, EventArgs e)
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             CustomTVMod.changeAction("weather", DisplayWeather);
         } 
@@ -194,7 +203,10 @@ namespace ClimatesOfFerngillRebuild
             CustomTVMod.showProgram(BackgroundSprite, OnScreenText, CustomTVMod.endProgram, WeatherSprite);
         }
 
-        private void DrawPreHudObjects(object sender, EventArgs e)
+        /// <summary>Raised before drawing the HUD (item toolbar, clock, etc) to the screen. The vanilla HUD may be hidden at this point (e.g. because a menu is open).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnRenderingHud(object sender, RenderingHudEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
@@ -203,40 +215,44 @@ namespace ClimatesOfFerngillRebuild
                 Conditions.DrawWeathers();       
         }
 
-        /// <summary>
-        /// This handles location changes
-        /// </summary>
-        /// <param name="sender">The sender</param>
-        /// <param name="e">Parameters</param>
-        private void LocationEvents_CurrentLocationChanged(object sender, EventArgsPlayerWarped e)
+        /// <summary>Raised after a player warps to a new location.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnWarped(object sender, WarpedEventArgs e)
         {
-            if (Conditions.HasWeather(CurrentWeather.Fog))
+            if (e.IsLocalPlayer && Conditions.HasWeather(CurrentWeather.Fog))
             {
-                if (!Game1.currentLocation.IsOutdoors && Game1.currentLocation is DecoratableLocation loc && WeatherOpt.DarkenLightInFog)
+                if (Game1.currentLocation is DecoratableLocation loc && !loc.IsOutdoors && WeatherOpt.DarkenLightInFog)
                 {
                     foreach (var f in loc.furniture)
                     {
                         if (f.furniture_type.Value == Furniture.window)
                         {
                             //if (WeatherOpt.Verbose) Monitor.Log($"Attempting to remove the light for {f.name}");
-                            Helper.Reflection.GetMethod(f, "addLights").Invoke(new object[] { Game1.currentLocation });
+                            Helper.Reflection.GetMethod(f, "addLights").Invoke(Game1.currentLocation);
                         }
                     }
                 }
             }
         }
 
-        /// <summary>
-        /// This function grabs events when the menu changes to handle dialogue replace
-        /// </summary>
-        /// <param name="sender">Sender object</param>
-        /// <param name="e">paramaters</param>
-        private void MenuEvents_MenuChanged(object sender, EventArgsClickableMenuChanged e)
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
             if (!Context.IsMainPlayer)
                 return;
 
-            if (e.NewMenu is DialogueBox box)
+            // restore previous menu on close
+            if (e.OldMenu is WeatherMenu && this.PreviousMenu != null)
+            {
+                Game1.activeClickableMenu = this.PreviousMenu;
+                this.PreviousMenu = null;
+            }
+
+            // bandle new dialogue box
+            else if (e.NewMenu is DialogueBox box)
             {
                 bool stormDialogue = false;
                 double odds = Dice.NextDoublePositive(), stormOdds = GameClimate.GetStormOdds(SDate.Now().AddDays(1), Dice);
@@ -268,12 +284,10 @@ namespace ClimatesOfFerngillRebuild
             }
         }
 
-        /// <summary>
-        /// This function handles the end of the day.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnEndOfDay(object sender, EventArgs e)
+        /// <summary>Raised before the game begins writes data to the save file (except the initial save creation).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaving(object sender, SavingEventArgs e)
         {
             if (!Context.IsMainPlayer) return;
             if (Conditions.HasWeather(CurrentWeather.Frost) && WeatherOpt.AllowCropDeath)
@@ -315,16 +329,15 @@ namespace ClimatesOfFerngillRebuild
             }
         }
 
-        /// <summary>
-        /// This checks for things every tick.
-        /// </summary>
-        /// <param name="sender">Object sending</param>
-        /// <param name="e">event params</param>
-        private void CheckForChanges(object sender, EventArgs e)
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
 
+            // check for changes
             Conditions.MoveWeathers();  
             
             if (UseLunarDisturbancesApi)
@@ -338,12 +351,10 @@ namespace ClimatesOfFerngillRebuild
             
         }
 
-        /// <summary>
-        /// Handles the ten minute update tick
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">Parameters</param>
-        private void TenMinuteUpdate(object sender, EventArgsIntChanged e)
+        /// <summary>Raised after the in-game clock time changes.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
             if (!Game1.hasLoadedGame)
                 return;
@@ -365,7 +376,7 @@ namespace ClimatesOfFerngillRebuild
                         if (f.furniture_type.Value == Furniture.window)
                         {
                             //if (WeatherOpt.Verbose) Monitor.Log($"Attempting to remove the light for {f.name}");
-                            Helper.Reflection.GetMethod(f, "addLights").Invoke(new object[] { Game1.currentLocation });
+                            Helper.Reflection.GetMethod(f, "addLights").Invoke(Game1.currentLocation);
                         }
                     }
                 }
@@ -437,12 +448,10 @@ namespace ClimatesOfFerngillRebuild
             }
         }
 
-        /// <summary>
-        /// This event handles drawing to the screen.
-        /// </summary>
-        /// <param name="sender">Object sending</param>
-        /// <param name="e">event params</param>
-        private void DrawObjects(object sender, EventArgs e)
+        /// <summary>Raised after drawing the HUD (item toolbar, clock, etc) to the sprite batch, but before it's rendered to the screen. The vanilla HUD may be hidden at this point (e.g. because a menu is open).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnRenderedHud(object sender, RenderedHudEventArgs e)
         {
             //float shadowMult = 0f;
             if (!Context.IsWorldReady)
@@ -480,9 +489,12 @@ namespace ClimatesOfFerngillRebuild
                 //redraw mouse cursor
                 SDVUtilities.RedrawMouseCursor();
             }
-        }    
+        }
 
-        private void ResetMod(object sender, EventArgs e)
+        /// <summary>Raised after the game returns to the title screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
             Conditions.Reset();
             IsBloodMoon = false;
@@ -490,7 +502,10 @@ namespace ClimatesOfFerngillRebuild
             CropList.Clear(); 
         }
 
-        private void HandleNewDay(object sender, EventArgs e)
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             Conditions.OnNewDay();
             IsBloodMoon = false;
@@ -823,12 +838,10 @@ namespace ClimatesOfFerngillRebuild
         }
 
         #region Menu
-        /// <summary>
-        /// This event handles incoming button presses
-        /// </summary>
-        /// <param name="sender">Sending object</param>
-        /// <param name="e">event params</param>
-        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (WeatherOpt.WeatherMenuToggle != e.Button)  //sanity force this to exit!
                 return;
@@ -840,20 +853,6 @@ namespace ClimatesOfFerngillRebuild
             if (Game1.activeClickableMenu == null || Game1.activeClickableMenu is WeatherMenu)
             {
                 this.ToggleMenu();
-            }
-        }
-
-        /// <summary>
-        /// This function closes the menu. Will reopen the previous menu if it exists
-        /// </summary>
-        /// <param name="closedMenu">The menu being closed.</param>
-        private void ReceiveMenuClosed(IClickableMenu closedMenu)
-        {
-            // restore the previous menu if it was hidden to show the lookup UI
-            if (closedMenu is WeatherMenu && this.PreviousMenu != null)
-            {
-                Game1.activeClickableMenu = this.PreviousMenu;
-                this.PreviousMenu = null;
             }
         }
 

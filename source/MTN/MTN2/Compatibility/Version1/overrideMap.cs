@@ -7,6 +7,7 @@ namespace MTN2.Compatibility {
         public string FileName { get; set; }
 
         public static void Convert(CustomFarm farm, CustomFarmVer1 oldFarm) {
+            if (oldFarm.overrideMaps == null) return;
             foreach(overrideMap om in oldFarm.overrideMaps) {
                 farm.Overrides.Add(new MapFile(om.FileName, om.Location, om.type));
             }

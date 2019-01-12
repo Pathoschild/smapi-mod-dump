@@ -29,7 +29,7 @@
 		{
 			this.Monitor.Log("Loading Quick Start", LogLevel.Info);
 			this.modHelper = helper;
-			SaveEvents.BeforeCreate += this.SaveEvents_BeforeCreate;
+			helper.Events.GameLoop.SaveCreating += this.SaveEvents_BeforeCreate;
 			this.options = this.modHelper.ReadConfig<ModOptions>();
 			this.SetupStartingItems();
 		}

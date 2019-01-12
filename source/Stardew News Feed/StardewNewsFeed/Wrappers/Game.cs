@@ -24,7 +24,7 @@ namespace StardewNewsFeed.Wrappers {
                 case 2:
                     return FarmCaveChoice.Mushrooms;
                 default:
-                    throw new Exception("I broke");
+                    return FarmCaveChoice.None;
             }
         }
 

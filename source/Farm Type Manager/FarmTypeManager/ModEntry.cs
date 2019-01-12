@@ -58,18 +58,13 @@ namespace FarmTypeManager
                 Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", Utility.Config); //create a config file for the current save
             }
 
-            //run the various main processes
+            //run the methods providing the mod's main features
             ObjectSpawner.ForageGeneration();
             ObjectSpawner.LargeObjectGeneration();
             ObjectSpawner.OreGeneration();
 
-            if (Utility.HasConfigChanged) //if any changes have been made to the player's config settings, save them to the config file
-            {
-                //NOTE: This will reformat any changes the player has made with the default SMAPI formatting,
-                //      so be sure to note this in the readme to minimize user confusion.
-                Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", Utility.Config);
-                Utility.HasConfigChanged = false;
-            }
+            //NOTE: This will reformat any changes the player has made with the default SMAPI formatting
+            Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", Utility.Config);
         }
 
         ///<summary>Console command. Outputs the player's current location name, tile x/y coordinates, tile "Type" property (e.g. "Grass" or "Dirt"), tile "Diggable" status, and tile index.</summary>

@@ -1,0 +1,10 @@
+{
+   "Name": "Swizzy Meads",
+   "Author": "Swizzy Studios",
+   "Version": "1.0.0",
+   "Description": "This Mod will add in more variety of Meads. Tulip Mead, Blue Jazz Mead, Summer Spangle Mead, Poppy Mead, Fairy Rose Mead.  The process is the same as existing and the mead value will be 2x of the base sell price.",
+   "UniqueID": "SwizzyStudios.SwizzyMeads",
+   "EntryDll": "SwizzyMeads.dll",
+   "MinimumApiVersion": "2.9",
+   "UpdateKeys": ["Nexus:3241", "GitHub:SwizzyStudios/SV-SwizzyMeads"]
+}

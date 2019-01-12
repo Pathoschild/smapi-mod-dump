@@ -5,9 +5,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 7514fc267b668c0d9df98383b1564001b14801bd
+   commit 871d14a22c3ee514c7692bc2c3f2db9e8ed77a2d
    Author: Esca-MMC <41843952+Esca-MMC@users.noreply.github.com>
-   Date:   Mon Jan 7 22:09:06 2019 -0600
+   Date:   Thu Jan 10 22:42:34 2019 -0600
    
-       Remove typo from readme.md
+       Add StrictTileChecking to readme.md
    

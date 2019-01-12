@@ -1,16 +1,12 @@
 ﻿using Harmony;
-using Microsoft.Xna.Framework;
 using System;
 using StardewModdingAPI;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using Color = Microsoft.Xna.Framework.Color;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 
 namespace HarmonyTester
@@ -31,21 +27,8 @@ namespace HarmonyTester
 
         public static IMonitor Logger;
 
-        public static Color GetRainColor()
-        {
-            return OurColors[RainColor];
-        }
-
-        public static Color GetBackRainColor()
-        {
-            return OurColors[BackingColor];
-        }
-
-        public static Color GetSnowColor()
-        {
-            return OurColors[SnowColor];
-        }
-
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             Logger = Monitor;
@@ -71,11 +54,29 @@ namespace HarmonyTester
             HarmonyMethod MenuTranspiler = new HarmonyMethod(AccessTools.Method(typeof(ShippingMenuPatches),"Transpiler"));
             harmony.Patch(ShippingMenuDraw, null, null, MenuTranspiler);
 
-            TimeEvents.AfterDayStarted += TimeEvents_AfterDayStarted;
-            helper.Events.GameLoop.Updated += GameLoop_Updated;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
         }
 
-        private void GameLoop_Updated(object sender, GameLoopUpdatedEventArgs e)
+        public static Color GetRainColor()
+        {
+            return OurColors[RainColor];
+        }
+
+        public static Color GetBackRainColor()
+        {
+            return OurColors[BackingColor];
+        }
+
+        public static Color GetSnowColor()
+        {
+            return OurColors[SnowColor];
+        }
+
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
@@ -119,7 +120,10 @@ namespace HarmonyTester
             }
         }
 
-        private void TimeEvents_AfterDayStarted(object sender, EventArgs e)
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             Game1.isRaining = false;
             Game1.isSnowing = false;

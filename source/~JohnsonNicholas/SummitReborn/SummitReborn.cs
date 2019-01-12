@@ -19,28 +19,37 @@ namespace SummitReborn
         private float weatherX;
         private SummitConfig ModConfig;
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
+        public override void Entry(IModHelper helper)
+        {
+            ModConfig = Helper.ReadConfig<SummitConfig>();
+            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+            helper.Events.Display.RenderingHud += OnRenderingHudEvent;
+        }
+
+        /// <summary>Get whether this instance can load the initial version of the given asset.</summary>
+        /// <param name="asset">Basic metadata about the asset being loaded.</param>
         public bool CanLoad<T>(IAssetInfo asset)
         {
             return asset.AssetNameEquals(@"Maps\Railroad") || asset.AssetNameEquals(@"Maps\Summit");
         }
 
+        /// <summary>Load a matched asset.</summary>
+        /// <param name="asset">Basic metadata about the asset being loaded.</param>
         public T Load<T>(IAssetInfo asset)
         {
             if (asset.AssetNameEquals(@"Maps\Railroad"))
-                return (T)(object)this.Helper.Content.Load<xTile.Map>(@"Assets\Railroad_alt.tbin");
+                return this.Helper.Content.Load<T>(@"Assets\Railroad_alt.tbin");
             if (asset.AssetNameEquals(@"Maps\Summit"))
-                return (T)(object)this.Helper.Content.Load<xTile.Map>(@"Assets\Summit_alt.tbin");
+                return this.Helper.Content.Load<T>(@"Assets\Summit_alt.tbin");
             throw new NotSupportedException($"Unexpected asset name: {asset.AssetName}");
         }
 
-        public override void Entry(IModHelper helper)
-        {
-            ModConfig = Helper.ReadConfig<SummitConfig>();
-            helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
-            helper.Events.Display.RenderingHud += GraphicsEvents_OnPreRenderHudEvent;
-        }
-
-        private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (Game1.currentGameTime != null)
             {
@@ -56,7 +65,10 @@ namespace SummitReborn
             return (int)field.GetValue(null);
         }
 
-        private void GraphicsEvents_OnPreRenderHudEvent(object sender, EventArgs e)
+        /// <summary>Raised before drawing the HUD (item toolbar, clock, etc) to the screen. The vanilla HUD may be hidden at this point (e.g. because a menu is open).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnRenderingHudEvent(object sender, RenderingHudEventArgs e)
         {
             //draw weather in the summit map
             if (Game1.isRaining && Game1.currentLocation.IsOutdoors && (Game1.currentLocation is Summit) && (!Game1.eventUp || Game1.currentLocation.isTileOnMap(new Vector2((float)(Game1.viewport.X / Game1.tileSize), (float)(Game1.viewport.Y / Game1.tileSize)))))

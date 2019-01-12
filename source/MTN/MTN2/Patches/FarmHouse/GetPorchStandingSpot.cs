@@ -9,20 +9,22 @@ using System.Threading.Tasks;
 namespace MTN2.Patches.FarmHousePatches
 {
     /// <summary>
+    /// REASON FOR PATCHING: Adjust point of reference if Farm house was moved.
+    /// 
     /// Patches the method FarmHouse.getPorchStandingSpot to adjust for the 
     /// movement of the Farm House.
     /// </summary>
     public class getPorchStandingSpotPatch
     {
-        private static CustomFarmManager farmManager;
+        private static CustomManager customManager;
 
         /// <summary>
         /// Constructor. Awkward method of setting references needed. However, Harmony patches
         /// are required to be static. Thus we must break good Object Orientated practices.
         /// </summary>
-        /// <param name="farmManager">The class controlling information pertaining to the custom farms (and the loaded farm).</param>
-        public getPorchStandingSpotPatch(CustomFarmManager farmManager) {
-            getPorchStandingSpotPatch.farmManager = farmManager;
+        /// <param name="customManager">The class controlling information pertaining to the custom farms (and the loaded farm).</param>
+        public getPorchStandingSpotPatch(CustomManager customManager) {
+            getPorchStandingSpotPatch.customManager = customManager;
         }
 
         /// <summary>
@@ -33,7 +35,7 @@ namespace MTN2.Patches.FarmHousePatches
         /// </summary>
         /// <returns></returns>
         public static bool Prefix() {
-            if (!farmManager.Canon) return false;
+            if (!customManager.Canon) return false;
             return true;
         }
 
@@ -46,11 +48,11 @@ namespace MTN2.Patches.FarmHousePatches
         /// <param name="__instance">The instance of the FarmHouse class</param>
         /// <param name="__result">The returning point instance</param>
         public static void Postfix(FarmHouse __instance, ref Point __result) {
-            if (farmManager.Canon) return;
+            if (customManager.Canon) return;
             int num = __instance.farmerNumberOfOwner;
             
             if (num == 0 || num == 1) {
-                __result = farmManager.FarmHousePorch;
+                __result = customManager.FarmHousePorch;
                 return;
             }
         }

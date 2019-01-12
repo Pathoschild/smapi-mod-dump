@@ -9,20 +9,25 @@ using System.Threading.Tasks;
 namespace MTN2.Patches.FarmPatches
 {
     /// <summary>
+    /// REASON FOR PATCHING: A custom farm map with a farm house that is relocated
+    /// from its canon position requires this method to readjusts, as it uses hardcoded
+    /// values to point to the porch of the farmhouse.
+    /// 
+    /// 
     /// Patches the method Farm.getFrontDoorPositionForFarmer 
     /// to adjust for the movement of the Farm House.
     /// </summary>
     public class getFrontDoorPositionForFarmerPatch
     {
-        private static CustomFarmManager farmManager;
+        private static CustomManager customManager;
 
         /// <summary>
         /// Constructor. Awkward method of setting references needed. However, Harmony patches
         /// are required to be static. Thus we must break good Object Orientated practices.
         /// </summary>
-        /// <param name="farmManager">The class controlling information pertaining to the custom farms (and the loaded farm).</param>
-        public getFrontDoorPositionForFarmerPatch(CustomFarmManager farmManager) {
-            getFrontDoorPositionForFarmerPatch.farmManager = farmManager;
+        /// <param name="customManager">The class controlling information pertaining to the customs (and the loaded customs).</param>
+        public getFrontDoorPositionForFarmerPatch(CustomManager customManager) {
+            getFrontDoorPositionForFarmerPatch.customManager = customManager;
         }
 
         /// <summary>
@@ -34,8 +39,8 @@ namespace MTN2.Patches.FarmPatches
         /// <param name="__instance">The instance of the Farm class.</param>
         /// <param name="__result">The returning Point value.</param>
         public static void Postfix(Farm __instance, ref Point __result) {
-            if (!farmManager.Canon) {
-                __result = farmManager.FarmHousePorch;
+            if (!customManager.Canon) {
+                __result = customManager.FarmHousePorch;
             }
         }
     }

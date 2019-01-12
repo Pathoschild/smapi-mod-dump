@@ -22,38 +22,45 @@ namespace CustomizableCartRedux
 
         private ICustomizableCart API;
 
-        public override object GetApi()
-        {
-            if (API == null)
-                API = new CustomizableCartAPI(Helper.Reflection);
-
-            return API;
-        }
-
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             instance = this;
             Dice = new MersenneTwister();
             OurConfig = helper.ReadConfig<CartConfig>();
 
-            helper.Events.GameLoop.DayStarted += SetCartSpawn;
-            helper.Events.Player.Warped += LocationMoved;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.Player.Warped += OnWarped;
         }
 
-        private void LocationMoved(object sender, WarpedEventArgs e)
+        /// <summary>Get an API that other mods can access. This is always called after <see cref="M:StardewModdingAPI.Mod.Entry(StardewModdingAPI.IModHelper)" />.</summary>
+        public override object GetApi()
         {
-            if (!Context.IsMainPlayer)
+            return API ?? (API = new CustomizableCartAPI(Helper.Reflection));
+        }
+
+        /// <summary>Raised after a player warps to a new location.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnWarped(object sender, WarpedEventArgs e)
+        {
+            if (!Context.IsMainPlayer || !e.IsLocalPlayer)
                 return;
 
-            if (e.NewLocation is Forest)
+            if (e.NewLocation is Forest f)
             {
-                Forest f = e.NewLocation as Forest;
                 Helper.Reflection.GetField<Dictionary<Item, int[]>>(f, "travelerStock").SetValue(generatedStock);
             }
         }
 
-        private void SetCartSpawn(object Sender, EventArgs e)
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
+            // set cart spawn
+
             if (!Context.IsMainPlayer)
                 return;
 

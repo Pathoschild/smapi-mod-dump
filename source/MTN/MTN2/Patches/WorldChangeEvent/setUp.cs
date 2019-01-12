@@ -11,17 +11,37 @@ using System.Threading.Tasks;
 
 namespace MTN2.Patches.WorldChangeEventPatches
 {
+    /// <summary>
+    /// REASON FOR PATCHING: Relocation of the greenhouse
+    /// 
+    /// Patches WorldChangeEvent.setUp to accomidate for the greenhouse rebuilding
+    /// event. Specifically for the community center path.
+    /// </summary>
     public class setUpPatch
     {
-        private static CustomFarmManager farmManager;
+        private static CustomManager customManager;
 
-        public setUpPatch(CustomFarmManager farmManager) {
-            setUpPatch.farmManager = farmManager;
+        /// <summary>
+        /// Constructor. Awkward method of setting references needed. However, Harmony patches
+        /// are required to be static. Thus we must break good Object Orientated practices.
+        /// </summary>
+        /// <param name="CustomManager">The class controlling information pertaining to the customs (and the loaded customs).</param>
+        public setUpPatch(CustomManager customManager) {
+            setUpPatch.customManager = customManager;
         }
 
+        /// <summary>
+        /// Prefix Method. Occurs before the original method is executed.
+        /// 
+        /// Reimplements the original method with adjusted coordinates if a custom farm map is loaded.
+        /// Skips the original method if a custom farm map is loaded.
+        /// </summary>
+        /// <param name="__instance">The instance of <see cref="WorldChangeEvent"/> that called setUp.</param>
+        /// <param name="__result">The results WorldChangeEvent.setUp returns.</param>
+        /// <returns></returns>
         public static bool Prefix(WorldChangeEvent __instance, ref bool __result) {
             NetInt evt = (NetInt)Traverse.Create(__instance).Field("whichEvent").GetValue();
-            if (!farmManager.Canon && evt.Value == 1) {
+            if (!customManager.Canon && evt.Value == 1) {
                 Game1.currentLightSources.Clear();
                 Traverse.Create(__instance).Field("location").SetValue(null);
                 int targetXTile = 64;

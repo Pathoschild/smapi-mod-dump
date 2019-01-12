@@ -1,0 +1,13 @@
+url:
+   https://github.com/ddgroves/AutoWater.git
+
+mods:
+   AutoWater
+
+latest commit:
+   commit 0dd163732fe3f7991c6c3d9a18e69f4c545589f7
+   Author: Dakota Groves <whiskersalt@gmail.com>
+   Date:   Fri Jan 11 07:55:55 2019 -0500
+   
+       Add files via upload
+   

@@ -31,12 +31,8 @@ namespace TwilightShards.LunarDisturbances
 
         private ILunarDisturbancesAPI API;
 
-        public override object GetApi()
-        {
-            return API ?? (API = new LunarDisturbancesAPI(OurMoon));
-        }
-        /// <summary> Main mod function. </summary>
-        /// <param name="helper">The helper. </param>
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             Dice = new MersenneTwister();
@@ -45,19 +41,28 @@ namespace TwilightShards.LunarDisturbances
             OurMoon = new SDVMoon(ModConfig, Dice, Helper.Translation);
             OurIcons = new Sprites.Icons(Helper.Content);
 
-            helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
-            helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
-            helper.Events.GameLoop.TimeChanged += GameLoop_TimeChanged;
-            helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
-            helper.Events.GameLoop.Saving += GameLoop_Saving;
-            helper.Events.GameLoop.UpdateTicked += ChangesPerTick;
-            helper.Events.Display.RenderedActiveMenu += Display_RenderedActiveMenu;
-            helper.Events.Display.MenuChanged += Display_MenuChanged;
-            helper.Events.Player.Warped += Player_Warped;
-            helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
+            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.GameLoop.OneSecondUpdateTicked += OnOneSecondUpdateTicked;
+            helper.Events.GameLoop.TimeChanged += OnTimeChanged;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.GameLoop.Saving += OnSaving;
+            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+            helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
+            helper.Events.Display.MenuChanged += OnMenuChanged;
+            helper.Events.Player.Warped += OnWarped;
+            helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
         }
 
-        private void GameLoop_OneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
+        /// <summary>Get an API that other mods can access. This is always called after <see cref="M:StardewModdingAPI.Mod.Entry(StardewModdingAPI.IModHelper)" />.</summary>
+        public override object GetApi()
+        {
+            return API ?? (API = new LunarDisturbancesAPI(OurMoon));
+        }
+
+        /// <summary>Raised once per second after the game state is updated.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnOneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
         {
             if (Context.IsPlayerFree)
             {
@@ -76,12 +81,18 @@ namespace TwilightShards.LunarDisturbances
             }
         }
 
-        private void GameLoop_ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
+        /// <summary>Raised after the game returns to the title screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
             OurMoon.Reset();
         }
 
-        private void ChangesPerTick(object sender, UpdateTickedEventArgs e)
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (IsEclipse && ResetTicker > 0)
             {
@@ -93,7 +104,10 @@ namespace TwilightShards.LunarDisturbances
             }
         }
 
-        private void GameLoop_Saving(object sender, SavingEventArgs e)
+        /// <summary>Raised before the game begins writes data to the save file (except the initial save creation).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaving(object sender, SavingEventArgs e)
         {
             if (!Context.IsMainPlayer)
                 return;
@@ -138,7 +152,10 @@ namespace TwilightShards.LunarDisturbances
         }
 
 
-        private void Display_MenuChanged(object sender, MenuChangedEventArgs e)
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
             if (!UseJsonAssetsApi)
             {
@@ -164,7 +181,10 @@ namespace TwilightShards.LunarDisturbances
             }
         }
 
-        private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             if (OurMoon.GetMoonRiseTime() <= 0600 || OurMoon.GetMoonRiseTime() >= 2600 && ModConfig.ShowMoonPhase)
                 Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("moon-text.moonriseBefore6", new { moonPhase = OurMoon.DescribeMoonPhase(), riseTime = OurMoon.GetMoonRiseTime() })));
@@ -195,7 +215,10 @@ namespace TwilightShards.LunarDisturbances
             OurMoon.HandleMoonAfterWake();
         }
 
-        private void GameLoop_TimeChanged(object sender, TimeChangedEventArgs e)
+        /// <summary>Raised after the in-game clock time changes.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
             if (Game1.timeOfDay == OurMoon.GetMoonRiseTime() && ModConfig.ShowMoonPhase)
                 Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("moon-text.moonrise", new { moonPhase = OurMoon.DescribeMoonPhase() })));
@@ -217,7 +240,7 @@ namespace TwilightShards.LunarDisturbances
                     foreach (Furniture f in loc.furniture)
                     {
                         if (f.furniture_type.Value == Furniture.window)
-                            Helper.Reflection.GetMethod(f, "addLights").Invoke(new object[] { Game1.currentLocation });
+                            Helper.Reflection.GetMethod(f, "addLights").Invoke(Game1.currentLocation);
                     }
                 }
 
@@ -245,7 +268,10 @@ namespace TwilightShards.LunarDisturbances
             OurMoon.TenMinuteUpdate();
         }
 
-        private void Player_Warped(object sender, WarpedEventArgs e)
+        /// <summary>Raised after a player warps to a new location.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnWarped(object sender, WarpedEventArgs e)
         {
             if (!(e.IsLocalPlayer))
             {
@@ -264,7 +290,7 @@ namespace TwilightShards.LunarDisturbances
                     foreach (Furniture f in loc.furniture)
                     {
                         if (f.furniture_type.Value == Furniture.window)
-                            Helper.Reflection.GetMethod(f, "addLights").Invoke(new object[] { Game1.currentLocation });
+                            Helper.Reflection.GetMethod(f, "addLights").Invoke(Game1.currentLocation);
                     }
                 }
             }
@@ -275,7 +301,10 @@ namespace TwilightShards.LunarDisturbances
             }
         }
 
-        private void Display_RenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
+        /// <summary>When a menu is open (<see cref="Game1.activeClickableMenu"/> isn't null), raised after that menu is drawn to the sprite batch but before it's rendered to the screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
         {
             bool outro = false;
             //revised this so it properly draws over the canon moon. :v
@@ -300,7 +329,10 @@ namespace TwilightShards.LunarDisturbances
             }
         }
 
-        private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
+        /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialised at this point, so this is a good time to set up mod integrations.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             JAAPi = SDVUtilities.GetModApi<Integrations.IJsonAssetsApi>(Monitor, Helper, "spacechase0.JsonAssets", "1.1");
 

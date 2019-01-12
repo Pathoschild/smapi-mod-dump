@@ -12,7 +12,7 @@ namespace MTN2.MapData {
     public abstract class Resource {
         protected GameLocation Map;
         public List<Spawn> ResourceList { get; set; }
-        public string MapName { get; set; }
+        public string MapName { get; set; } = "Farm";
         
         public Resource(string MapName) {
             this.MapName = MapName;

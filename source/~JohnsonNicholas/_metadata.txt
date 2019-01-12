@@ -12,9 +12,19 @@ mods:
    Weather Illnesses
 
 latest commit:
-   commit 14d5f58da46be907648088b36ef6726d3ee429c4
-   Author: Nicholas Johnson <johnson.nicholas.h@gmail.com>
-   Date:   Tue Jan 1 14:02:30 2019 -0800
+   commit 2011a4b43631e430b42918365135f2d9ce045157
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Thu Jan 10 20:46:01 2019 -0500
    
-       Update to use displayName instead of base name for custom NPC support
+       Update for SMAPI 3.0 (#66)
+       
+       * migrate to new package reference format
+       
+       * simplify build settings for files that are copied automatically
+       
+       * centralise custom build properties
+       
+       * update for SMAPI 3.0 and standardise manifests
+       
+       * add missing update key
    

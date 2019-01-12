@@ -1,4 +1,7 @@
 {
   "MouseFix": true,
-  "SlickMoves": true
+  "WeaponsOnly": false,
+  "AutoSwing": false,
+  "SlickMoves": true,
+  "ClickToMove": false
 }

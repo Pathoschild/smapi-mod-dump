@@ -5,5 +5,6 @@
   "Description": "Enbales the summit, fixes rain on the summit map, and adds a neat cloud visual",
   "UniqueID": "KoihimeNakamura.summitreborn",
   "EntryDll": "SummitReborn.dll",
+  "MinimumApiVersion": "2.10.1",
   "UpdateKeys": [ "Nexus:2073" ]
 }

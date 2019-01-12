@@ -16,19 +16,48 @@ using xTile.Tiles;
 
 namespace MTN2.Patches.GameLocationPatches
 {
+    /// <summary>
+    /// REASON FOR PATCHING: To enable "No Debris" option, and for more than
+    /// three cabins at the start of a game.
+    /// 
+    /// Patches the method GameLocation.loadObjects to enable to use of the
+    /// no debris option when creating a new game. In addition to readjusting
+    /// the maximum amount of starting cabins for multipler on a custom farm map.
+    /// </summary>
     public class loadObjectsPatch
     {
-        private static CustomFarmManager farmManager;
+        private static CustomManager customManager;
 
-        public loadObjectsPatch(CustomFarmManager farmManager) {
-            loadObjectsPatch.farmManager = farmManager;
+        /// <summary>
+        /// Constructor. Awkward method of setting references needed. However, Harmony patches
+        /// are required to be static. Thus we must break good Object Orientated practices.
+        /// </summary>
+        /// <param name="CustomManager">The class controlling information pertaining to the customs (and the loaded customs).</param>
+        public loadObjectsPatch(CustomManager customManager) {
+            loadObjectsPatch.customManager = customManager;
         }
 
+        /// <summary>
+        /// Prefix Method. Occurs before the original method is executed.
+        /// 
+        /// Checks to see if the <see cref="GameLocation"/> is a <see cref="Farm"/>. Skips the original
+        /// method if so.
+        /// </summary>
+        /// <param name="__instance">The instance of <see cref="GameLocation"/> that called loadObjects.</param>
+        /// <returns></returns>
         public static bool Prefix(GameLocation __instance) {
             if (__instance is Farm) return false;
             return true;
         }
 
+        /// <summary>
+        /// Postfix Method. Occurs after the original method has executed.
+        /// 
+        /// Checks to see if the <see cref="GameLocation"/> is a <see cref="Farm"/>. Populates the map
+        /// with objects. Excludes certain objects if no debris was selected by user. Populates the map
+        /// with an adjusted amount of cabins if allowed and requested.
+        /// </summary>
+        /// <param name="__instance">The instance of <see cref="GameLocation"/> that called loadObjects.</param>
         public static void Postfix(GameLocation __instance) {
             int cabinCount = 0;
 
@@ -75,7 +104,7 @@ namespace MTN2.Patches.GameLocationPatches
                                 switch (t.TileIndex) {
                                     case 9:
                                         //Tree 1
-                                        if (__instance is Farm && farmManager.NoDebris) break;
+                                        if (__instance is Farm && customManager.NoDebris) break;
                                         treeType2 = 1;
                                         if (Game1.currentSeason.Equals("winter")) {
                                             treeType2 += 3;
@@ -83,7 +112,7 @@ namespace MTN2.Patches.GameLocationPatches
                                         break;
                                     case 10:
                                         //Tree 2
-                                        if (__instance is Farm && farmManager.NoDebris) break;
+                                        if (__instance is Farm && customManager.NoDebris) break;
                                         treeType2 = 2;
                                         if (Game1.currentSeason.Equals("winter")) {
                                             treeType2 += 3;
@@ -91,12 +120,12 @@ namespace MTN2.Patches.GameLocationPatches
                                         break;
                                     case 11:
                                         //Tree 3
-                                        if (__instance is Farm && farmManager.NoDebris) break;
+                                        if (__instance is Farm && customManager.NoDebris) break;
                                         treeType2 = 3;
                                         break;
                                     case 12:
                                         //Palm Tree
-                                        if (__instance is Farm && farmManager.NoDebris) break;
+                                        if (__instance is Farm && customManager.NoDebris) break;
                                         treeType2 = 6;
                                         break;
                                 }
@@ -110,63 +139,63 @@ namespace MTN2.Patches.GameLocationPatches
                                         case 14:
                                         case 15:
                                             //Grass
-                                            if (__instance is Farm && farmManager.NoDebris) break;
+                                            if (__instance is Farm && customManager.NoDebris) break;
                                             if (!__instance.objects.ContainsKey(tile)) {
                                                 __instance.objects.Add(tile, new StardewValley.Object(tile, GameLocation.getWeedForSeason(Game1.random, Game1.currentSeason), 1));
                                             }
                                             break;
                                         case 16:
                                             //Rock
-                                            if (__instance is Farm && farmManager.NoDebris) break;
+                                            if (__instance is Farm && customManager.NoDebris) break;
                                             if (!__instance.objects.ContainsKey(tile)) {
                                                 __instance.objects.Add(tile, new StardewValley.Object(tile, (Game1.random.NextDouble() < 0.5) ? 343 : 450, 1));
                                             }
                                             break;
                                         case 17:
                                             //Rock
-                                            if (__instance is Farm && farmManager.NoDebris) break;
+                                            if (__instance is Farm && customManager.NoDebris) break;
                                             if (!__instance.objects.ContainsKey(tile)) {
                                                 __instance.objects.Add(tile, new StardewValley.Object(tile, (Game1.random.NextDouble() < 0.5) ? 343 : 450, 1));
                                             }
                                             break;
                                         case 18:
                                             //Twig
-                                            if (__instance is Farm && farmManager.NoDebris) break;
+                                            if (__instance is Farm && customManager.NoDebris) break;
                                             if (!__instance.objects.ContainsKey(tile)) {
                                                 __instance.objects.Add(tile, new StardewValley.Object(tile, (Game1.random.NextDouble() < 0.5) ? 294 : 295, 1));
                                             }
                                             break;
                                         case 19:
                                             //Big Log
-                                            if (__instance is Farm && farmManager.NoDebris) break;
+                                            if (__instance is Farm && customManager.NoDebris) break;
                                             if (__instance is Farm) {
                                                 (__instance as Farm).addResourceClumpAndRemoveUnderlyingTerrain(602, 2, 2, tile);
                                             }
                                             break;
                                         case 20:
                                             //Rock
-                                            if (__instance is Farm && farmManager.NoDebris) break;
+                                            if (__instance is Farm && customManager.NoDebris) break;
                                             if (__instance is Farm) {
                                                 (__instance as Farm).addResourceClumpAndRemoveUnderlyingTerrain(672, 2, 2, tile);
                                             }
                                             break;
                                         case 21:
                                             //Stump
-                                            if (__instance is Farm && farmManager.NoDebris) break;
+                                            if (__instance is Farm && customManager.NoDebris) break;
                                             if (__instance is Farm) {
                                                 (__instance as Farm).addResourceClumpAndRemoveUnderlyingTerrain(600, 2, 2, tile);
                                             }
                                             break;
                                         case 22:
                                             //Grass
-                                            if (__instance is Farm && farmManager.NoDebris) break;
+                                            if (__instance is Farm && customManager.NoDebris) break;
                                             if (!__instance.terrainFeatures.ContainsKey(tile)) {
                                                 __instance.terrainFeatures.Add(tile, new Grass(1, 3));
                                             }
                                             break;
                                         case 23:
                                             //Small Tree
-                                            if (__instance is Farm && farmManager.NoDebris) break;
+                                            if (__instance is Farm && customManager.NoDebris) break;
                                             if (!__instance.terrainFeatures.ContainsKey(tile)) {
                                                 __instance.terrainFeatures.Add(tile, new Tree(Game1.random.Next(1, 4), Game1.random.Next(2, 4)));
                                             }

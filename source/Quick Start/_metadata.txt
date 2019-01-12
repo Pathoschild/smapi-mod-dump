@@ -5,9 +5,9 @@ mods:
    Quick Start
 
 latest commit:
-   commit c57e3fd6473a612f0339a791f61f68b2cca23159
+   commit c41c41507a25873df3ce025eb80054dbba182d9e
    Author: Brian Wuest <brian.wuest@outlook.com>
-   Date:   Thu Dec 13 22:17:35 2018 -0600
+   Date:   Wed Jan 9 20:22:54 2019 -0600
    
-       Fixing issue where certain recipes weren't awarded.
+       Switching to non-deprecated events.
    

@@ -29,25 +29,10 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 32046f848ea1a1aade495b9adad612f8b94928d1
-   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Tue Dec 11 00:29:25 2018 -0500
+   commit 5fef5c63758fe588f53c98a432a7cc293abb5670
+   Merge: 2d3a35f 32046f8
+   Author: Dan Volchek <volchek2@illinois.edu>
+   Date:   Wed Jan 9 18:32:48 2019 -0600
    
-       Unify solution & minor cleanup (#5)
-       
-       * unify projects into one solution
-       
-       * migrate to new package reference format
-       
-       * remove manual deploy tasks
-       
-       Deploying to the mod folder is automated by the mod build package now.
-       
-       * migrate to Harmony NuGet package
-       
-       * fix hardcoded assembly path
-       
-       * migrate to PyTK NuGet package
-       
-       * update mod build config package
+       Merge branch 'master' of https://github.com/danvolchek/StardewMods
    

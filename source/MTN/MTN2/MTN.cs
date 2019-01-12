@@ -20,7 +20,7 @@ namespace MTN2
     /// <summary>The mod entry point.</summary>
     public class MTN : Mod {
         protected HarmonyInstance Harmony;
-        protected CustomFarmManager FarmManager;
+        protected CustomManager CustomManager;
         protected PatchManager PatchManager;
         protected SpawnManager SpawnManager;
 
@@ -28,9 +28,9 @@ namespace MTN2
         /// Constructor
         /// </summary>
         public MTN() {
-            FarmManager = new CustomFarmManager();
-            PatchManager = new PatchManager(FarmManager);
-            SpawnManager = new SpawnManager(FarmManager);
+            CustomManager = new CustomManager();
+            PatchManager = new PatchManager(CustomManager);
+            SpawnManager = new SpawnManager(CustomManager);
         }
 
         /// <summary>
@@ -54,7 +54,17 @@ namespace MTN2
             Helper.Events.Multiplayer.PeerContextReceived += BeforeServerIntroduction;
             Helper.Events.Multiplayer.ModMessageReceived += MessageRecieved;
 
-            Helper.ConsoleCommands.Add("LocationEntry", "Lists (all) the location loaded in the game.\nUsage: LocationEntry <number\n- number: An integer value.\nIf omitted, all locations will be listed.", ListLocation);
+            Helper.ConsoleCommands.Add("LocationEntry", "Lists (all) the location loaded in the game.\n" +
+                                                        "Usage: LocationEntry <number>\n" +
+                                                        "- number: An integer value.\n" +
+                                                        "  If omitted, all locations will be listed.", 
+                                                        ListLocation);
+            Helper.ConsoleCommands.Add("CreateTemplate", "Generates a JSON template in the MTN2 folder.\n" +
+                                                         "Useful for map makers and content creators.\n" +
+                                                         "Usage: CreateTemplate <string>\n" +
+                                                         "- string: Can be the following:\n" +
+                                                         "  + Farm: Creates a farmType.json Template",
+                                                         CreateTemplate);
             return;
         }
 
@@ -64,7 +74,7 @@ namespace MTN2
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ClearData(object sender, EventArgs e) {
-            FarmManager.Reset();
+            CustomManager.Reset();
         }
 
         /// <summary>
@@ -73,7 +83,7 @@ namespace MTN2
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Populate(object sender, EventArgs e) {
-            FarmManager.Populate(Helper, Monitor);
+            CustomManager.Populate(Helper, Monitor);
         }
 
         /// <summary>
@@ -86,7 +96,7 @@ namespace MTN2
             if (Game1.activeClickableMenu is TitleMenu) {
                 if (TitleMenu.subMenu is CharacterCustomization) {
                     CharacterCustomization oldMenu = (CharacterCustomization)TitleMenu.subMenu;
-                    CharacterCustomizationMTN menu = new CharacterCustomizationMTN(FarmManager, oldMenu.source);
+                    CharacterCustomizationMTN menu = new CharacterCustomizationMTN(CustomManager, oldMenu.source);
                     TitleMenu.subMenu = menu;
                 }
             }
@@ -103,7 +113,7 @@ namespace MTN2
             int index = Game1.locations.IndexOf(scienceHouse);
 
             Game1.locations[index] = new AdvancedScienceHouse(Path.Combine("Maps", "ScienceHouse"), "ScienceHouse", scienceHouse);
-            FarmManager.SetScienceIndex(index);
+            CustomManager.SetScienceIndex(index);
         }
 
         /// <summary>
@@ -113,8 +123,8 @@ namespace MTN2
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void BeforeSaveScienceLab(object sender, EventArgs e) {
-            AdvancedScienceHouse scienceHouse = (AdvancedScienceHouse)Game1.locations[FarmManager.ScienceHouseIndex];
-            Game1.locations[FarmManager.ScienceHouseIndex] = scienceHouse.Export();
+            AdvancedScienceHouse scienceHouse = (AdvancedScienceHouse)Game1.locations[CustomManager.ScienceHouseIndex];
+            Game1.locations[CustomManager.ScienceHouseIndex] = scienceHouse.Export();
         }
 
         /// <summary>
@@ -124,8 +134,8 @@ namespace MTN2
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void AfterSaveScienceLab(object sender, EventArgs e) {
-            AdvancedScienceHouse reloadedHouse = new AdvancedScienceHouse(Path.Combine("Maps", "ScienceHouse"), "ScienceHouse", Game1.locations[FarmManager.ScienceHouseIndex]);
-            Game1.locations[FarmManager.ScienceHouseIndex] = reloadedHouse;
+            AdvancedScienceHouse reloadedHouse = new AdvancedScienceHouse(Path.Combine("Maps", "ScienceHouse"), "ScienceHouse", Game1.locations[CustomManager.ScienceHouseIndex]);
+            Game1.locations[CustomManager.ScienceHouseIndex] = reloadedHouse;
         }
 
         /// <summary>
@@ -154,7 +164,16 @@ namespace MTN2
                 }
             }
         }
-        
+
+        public void CreateTemplate(string command, string[] args) {
+            if (args.Length < 1) {
+                Monitor.Log($"Invalid command.");
+                return;
+            }
+            
+            CustomManager.CreateTemplate(args[0], Helper, Monitor);
+        }
+
         /// <summary>
         /// Prints out all the locations loaded in memory.
         /// </summary>
@@ -187,33 +206,33 @@ namespace MTN2
                 if (e.Type == "MTNBeforeServerIntro") {
                     ServerIntro newMsg = e.ReadAs<ServerIntro>();
                     Game1.whichFarm = newMsg.Mode;
-                    FarmManager.LoadCustomFarm(newMsg.Mode);
+                    CustomManager.LoadCustomFarm(newMsg.Mode);
                 }
             }
         }
 
         private void OverrideWarps(object sender, EventArgs e) {
-            if (FarmManager.Canon) return;
-            if (FarmManager.LoadedFarm == null) return;
+            if (CustomManager.Canon) return;
+            if (CustomManager.LoadedFarm == null) return;
 
-            if (FarmManager.LoadedFarm.Neighbors != null) {
-                foreach (Neighbor neighbor in FarmManager.LoadedFarm.Neighbors) {
+            if (CustomManager.LoadedFarm.Neighbors != null) {
+                foreach (Neighbor neighbor in CustomManager.LoadedFarm.Neighbors) {
                     UpdateMapsWarps(neighbor);
                 }
             }
 
-            if (FarmManager.LoadedFarm.FarmCave != null) {
+            if (CustomManager.LoadedFarm.FarmCave != null) {
                 GameLocation farmCave = Game1.getLocationFromName("FarmCave");
-                Point farmCaveOpening = FarmManager.FarmCaveOpening;
+                Point farmCaveOpening = CustomManager.FarmCaveOpening;
                 farmCave.warps.Clear();
-                farmCave.warps.Add(new StardewValley.Warp(8, 12, "Farm", farmCaveOpening.X, farmCaveOpening.Y, false));
+                farmCave.warps.Add(new StardewValley.Warp(8, 12, "Farm", farmCaveOpening.X, farmCaveOpening.Y + 1, false));
             }
 
-            if (FarmManager.LoadedFarm.GreenHouse != null) {
+            if (CustomManager.LoadedFarm.GreenHouse != null) {
                 GameLocation greenHouse = Game1.getLocationFromName("Greenhouse");
-                Point greenHouseDoor = FarmManager.GreenHouseDoor;
+                Point greenHouseDoor = CustomManager.GreenHouseDoor;
                 greenHouse.warps.Clear();
-                greenHouse.warps.Add(new StardewValley.Warp(10, 24, "Farm", greenHouseDoor.X, greenHouseDoor.Y, false));
+                greenHouse.warps.Add(new StardewValley.Warp(10, 24, "Farm", greenHouseDoor.X, greenHouseDoor.Y + 1, false));
             }
         }
 

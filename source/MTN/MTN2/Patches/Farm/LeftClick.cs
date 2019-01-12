@@ -9,20 +9,24 @@ using System.Threading.Tasks;
 namespace MTN2.Patches.FarmPatches
 {
     /// <summary>
+    /// REASON FOR PATCHING: To adjust the logic pertaining to the shipping bin,
+    /// as the original method uses hardcoded coordinates.
+    /// 
+    /// 
     /// Patches the method Farm.leftClick to adjust for the movement of the
     /// starting shipping bin (the bin that is not classified as a building).
     /// </summary>
     public class leftClickPatch
     {
-        private static CustomFarmManager farmManager;
+        private static CustomManager customManager;
 
         /// <summary>
         /// Constructor. Awkward method of setting references needed. However, Harmony patches
         /// are required to be static. Thus we must break good Object Orientated practices.
         /// </summary>
         /// <param name="farmManager">The class controlling information pertaining to the custom farms (and the loaded farm).</param>
-        public leftClickPatch(CustomFarmManager farmManager) {
-            leftClickPatch.farmManager = farmManager;
+        public leftClickPatch(CustomManager customManager) {
+            leftClickPatch.customManager = customManager;
         }
 
         /// <summary>
@@ -32,7 +36,7 @@ namespace MTN2.Patches.FarmPatches
         /// </summary>
         /// <returns></returns>
         public static bool Prefix() {
-            if (!farmManager.Canon) return false;
+            if (!customManager.Canon) return false;
             return true;
         }
 
@@ -45,10 +49,10 @@ namespace MTN2.Patches.FarmPatches
         /// <param name="y"></param>
         /// <param name="who"></param>
         public static void Postfix(Farm __instance, ref bool __result, int x, int y, Farmer who) {
-            if (farmManager.Canon || __instance.Name != "Farm") return;
+            if (customManager.Canon || __instance.Name != "Farm") return;
 
-            int binX = farmManager.ShippingBinPoints.X;
-            int binY = farmManager.ShippingBinPoints.Y;
+            int binX = customManager.ShippingBinPoints.X;
+            int binY = customManager.ShippingBinPoints.Y;
 
             if ((who.ActiveObject != null) &&
                 (x / 64 >= binX) && (x / 64 <= binX + 1) &&

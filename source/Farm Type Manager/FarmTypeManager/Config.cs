@@ -26,7 +26,7 @@ namespace FarmTypeManager
 
         public int[] QuarryTileIndex { get; set; }
 
-    public FarmConfig()
+        public FarmConfig()
         {
             //basic on/off toggles
             ForageSpawnEnabled = false;
@@ -43,9 +43,8 @@ namespace FarmTypeManager
             QuarryTileIndex = new int[] { 556, 558, 583, 606, 607, 608, 630, 635, 636, 680, 681, 685 };
             //NOTE: swap in the following code to cover more tiles, e.g. the grassy edges of the "quarry" dirt; this tends to cover too much ground and weird spots, though, such as the farm's cave entrance
             //{ 556, 558, 583, 606, 607, 608, 630, 631, 632, 633, 634, 635, 636, 654, 655, 656, 657, 658, 659, 679, 680, 681, 682, 683, 684, 685, 704, 705, 706, 707 };
+        }
     }
-
-}
 
     //contains configuration settings for forage item generation behavior
     public class ForageSettings
@@ -61,7 +60,7 @@ namespace FarmTypeManager
         //default constructor: configure default forage generation settings
         public ForageSettings()
         {
-            Areas = new SpawnArea[] { new SpawnArea("Farm", 0, 3, new string[] { "Grass", "Diggable" }, new string[0], new string[0]) }; //a set of "SpawnArea" objects, describing where forage items can spawn on each map
+            Areas = new SpawnArea[] { new SpawnArea("Farm", 0, 3, new string[] { "Grass", "Diggable" }, new string[0], new string[0], "High") }; //a set of "SpawnArea" objects, describing where forage items can spawn on each map
             PercentExtraSpawnsPerForagingLevel = 0; //multiplier to give extra forage per level of foraging skill; default is +0%, since the native game lacks this mechanic
 
             //the "parentSheetIndex" values for each type of forage item allowed to spawn in each season (the numbers found in ObjectInformation.xnb)
@@ -82,7 +81,7 @@ namespace FarmTypeManager
 
         public LargeObjectSettings()
         {
-            Areas = new LargeObjectSpawnArea[] { new LargeObjectSpawnArea("Farm", 999, 999, new string[0], new string[0], new string[0], new string[] { "Stump" }, true, 0, "Foraging") }; //a set of "LargeObjectSpawnArea", describing where large objects can spawn on each map
+            Areas = new LargeObjectSpawnArea[] { new LargeObjectSpawnArea("Farm", 999, 999, new string[0], new string[0], new string[0], "High", new string[] { "Stump" }, true, 0, "Foraging") }; //a set of "LargeObjectSpawnArea", describing where large objects can spawn on each map
             CustomTileIndex = new int[0]; //an extra list of tilesheet indices, for use by players who want to make some custom tile detection
         }
     }
@@ -102,7 +101,7 @@ namespace FarmTypeManager
         public OreSettings()
         {
             
-            Areas = new OreSpawnArea[] { new OreSpawnArea("Farm", 1, 5, new string[] { "Quarry" }, new string[0], new string[0], null, null, null) }; //a set of "OreSpawnArea" objects, describing where ore can spawn on each map
+            Areas = new OreSpawnArea[] { new OreSpawnArea("Farm", 1, 5, new string[] { "Quarry" }, new string[0], new string[0], "High", null, null, null) }; //a set of "OreSpawnArea" objects, describing where ore can spawn on each map
             PercentExtraSpawnsPerMiningLevel = 0; //multiplier to give extra ore per level of mining skill; default is +0%, since the native game lacks this mechanic
 
             //mining skill level required to spawn each ore type; defaults are based on the vanilla "hilltop" map settings, though some types didn't spawn at all
@@ -157,13 +156,14 @@ namespace FarmTypeManager
         public string[] AutoSpawnTerrainTypes { get; set; } //Valid properties include "Quarry", "Custom", "Diggable", "All", and any tile Type properties ("Grass", "Dirt", "Stone", "Wood")
         public string[] IncludeAreas { get; set; }
         public string[] ExcludeAreas { get; set; }
+        public string StrictTileChecking { get; set; } = "High"; //added in version 1.1; default used here to automatically fill it in with SMAPI's json reader
 
         public SpawnArea()
         {
 
         }
 
-        public SpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude)
+        public SpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude, string safety)
         {
             MapName = name;
             MinimumSpawnsPerDay = min;
@@ -171,6 +171,7 @@ namespace FarmTypeManager
             AutoSpawnTerrainTypes = types;
             IncludeAreas = include;
             ExcludeAreas = exclude;
+            StrictTileChecking = safety;
         }
     }
 
@@ -188,8 +189,8 @@ namespace FarmTypeManager
 
         }
 
-        public LargeObjectSpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude, string[] objTypes, bool find, int extra, string skill)
-            : base(name, min, max, types, include, exclude) //uses the original "SpawnArea" constructor to fill in the shared fields as usual
+        public LargeObjectSpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude, string safety, string[] objTypes, bool find, int extra, string skill)
+            : base(name, min, max, types, include, exclude, safety) //uses the original "SpawnArea" constructor to fill in the shared fields as usual
         {
             ObjectTypes = objTypes;
             FindExistingObjectLocations = find;
@@ -211,8 +212,8 @@ namespace FarmTypeManager
 
         }
 
-        public OreSpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude, Dictionary<string, int> skill, Dictionary<string, int> starting, Dictionary<string, int> levelTen)
-            : base (name, min, max, types, include, exclude) //uses the original "SpawnArea" constructor to fill in the shared fields as usual
+        public OreSpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude, string safety, Dictionary<string, int> skill, Dictionary<string, int> starting, Dictionary<string, int> levelTen)
+            : base (name, min, max, types, include, exclude, safety) //uses the original "SpawnArea" constructor to fill in the shared fields as usual
         {
             MiningLevelRequired = skill;
             StartingSpawnChance = starting;

@@ -1,9 +1,10 @@
 {
   "Name": "Better Shipping Box",
-  "Authour": "Kithio, updated by KNakamura",
+  "Author": "Kithio, updated by KNakamura",
   "Version": "1.0.3-unofficial.2-koihimeNakamura",
   "Description": "Enhances the Shipping Box to let you take items back out",
   "UniqueID": "Kithio.BetterShippingBox",
-  "PerSaveConfigs": false,
-  "EntryDll": "BetterShippingBox.dll"
+  "EntryDll": "BetterShippingBox.dll",
+  "MinimumApiVersion": "2.10.1",
+  "UpdateKeys": [ "Chucklefish:4302" ]
 }

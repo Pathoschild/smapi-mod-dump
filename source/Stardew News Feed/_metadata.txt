@@ -5,14 +5,9 @@ mods:
    Stardew News Feed
 
 latest commit:
-   commit 864b8111e816dc4169496de99adc03f4f5d8ad04
-   Author: Aaron Ingram <aaron.ingram@pm.me>
-   Date:   Tue Jan 8 00:22:09 2019 -0500
+   commit 4354480cb5ac68560eb27f5a19d2d5fb5b819914
+   Author: MikeNorth <mikesnorth@gmail.com>
+   Date:   Wed Jan 9 21:40:43 2019 -0500
    
-       Check coops for items and notify user if any are found
-       
-       Prior to this change, users were unable to receive notifications for
-       items available in coop. This change adds monitoring for all coops found
-       on the farm and will notify the user about items available at each one,
-       individually.
+       adds None to cave options (#22)
    

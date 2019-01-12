@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace MTN2 {
     public class SpawnManager {
-        private readonly CustomFarmManager farmManager;
+        private readonly CustomManager customManager;
         private int Attempts = 10;
 
-        public SpawnManager(CustomFarmManager farmManager) {
-            this.farmManager = farmManager;
+        public SpawnManager(CustomManager customManager) {
+            this.customManager = customManager;
         }
 
         public void ManageAll() {
@@ -27,21 +27,21 @@ namespace MTN2 {
         }
 
         public void ManageForage() {
-            if (farmManager.Canon) return;
-            if (farmManager.LoadedFarm.Foraging == null) return;
-            farmManager.LoadedFarm.Foraging.SpawnAll(Attempts);
+            if (customManager.Canon) return;
+            if (customManager.LoadedFarm.Foraging == null) return;
+            customManager.LoadedFarm.Foraging.SpawnAll(Attempts);
         }
 
         public void ManageOre() {
-            if (farmManager.Canon) return;
-            if (farmManager.LoadedFarm.Ores == null) return;
-            farmManager.LoadedFarm.Ores.SpawnAll(Attempts);
+            if (customManager.Canon) return;
+            if (customManager.LoadedFarm.Ores == null) return;
+            customManager.LoadedFarm.Ores.SpawnAll(Attempts);
         }
 
         public void ManageLargeDebris() {
-            if (farmManager.Canon) return;
-            if (farmManager.LoadedFarm.ResourceClumps == null) return;
-            farmManager.LoadedFarm.ResourceClumps.SpawnAll(Attempts);
+            if (customManager.Canon) return;
+            if (customManager.LoadedFarm.ResourceClumps == null) return;
+            customManager.LoadedFarm.ResourceClumps.SpawnAll(Attempts);
         }
     }
 }

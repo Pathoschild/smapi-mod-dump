@@ -12,22 +12,47 @@ using System.Threading.Tasks;
 
 namespace MTN2.Patches.PetPatches
 {
+    /// <summary>
+    /// REASON FOR PATCHING: The relocation of the pet water bowl.
+    /// 
+    /// Patches the Pet.dayUpdate method to accomidate for the relocation
+    /// of the pet water bowl.
+    /// </summary>
     public class dayUpdatePatch
     {
-        private static CustomFarmManager farmManager;
+        private static CustomManager customManager;
 
-        public dayUpdatePatch(CustomFarmManager farmManager) {
-            dayUpdatePatch.farmManager = farmManager;
+        /// <summary>
+        /// Constructor. Awkward method of setting references needed. However, Harmony patches
+        /// are required to be static. Thus we must break good Object Orientated practices.
+        /// </summary>
+        /// <param name="CustomManager">The class controlling information pertaining to the customs (and the loaded customs).</param>
+        public dayUpdatePatch(CustomManager customManager) {
+            dayUpdatePatch.customManager = customManager;
         }
 
+        /// <summary>
+        /// Prefix Method. Occurs before the original method is executed.
+        /// 
+        /// Checks to see if a custom farm map is loaded. Skips original method if so.
+        /// </summary>
+        /// <param name="__instance">The instance of <see cref="Pet"/> that called dayUpdate.</param>
+        /// <returns></returns>
         public static bool Prefix(Pet __instance) {
-            return (farmManager.Canon) ? true : false;
+            return (customManager.Canon) ? true : false;
         }
 
+        /// <summary>
+        /// Postfix Method. Occurs after the original method is executed.
+        /// 
+        /// Checks to see if a custom farm map is loaded. If so, reimplements
+        /// the logic of dayUpdate with new coordinates.
+        /// </summary>
+        /// <param name="__instance">The instance of <see cref="Pet"/> that called dayUpdate.</param>
         public static void Postfix(Pet __instance) {
-            if (farmManager.Canon) return;
+            if (customManager.Canon) return;
 
-            Interaction PetBowl = farmManager.PetWaterBowl;
+            Interaction PetBowl = customManager.PetWaterBowl;
 
             __instance.DefaultPosition = new Vector2(PetBowl.X, PetBowl.Y) * 64f;
             __instance.Sprite.loop = false;
@@ -55,6 +80,11 @@ namespace MTN2.Patches.PetPatches
             Traverse.Create(__instance).Field("wasPetToday").SetValue(false);
         }
 
+        /// <summary>
+        /// Internal Method calling.
+        /// </summary>
+        /// <param name="pet"></param>
+        /// <param name="PetBowl"></param>
         public static void setAtFarmPosition(Pet pet, Interaction PetBowl) {
             if (!Game1.isRaining) {
                 pet.faceDirection(2);

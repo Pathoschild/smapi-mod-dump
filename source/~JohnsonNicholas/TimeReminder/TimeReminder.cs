@@ -21,20 +21,25 @@ namespace TimeReminder
 
         private bool NotTriggered = true;
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             Config = helper.ReadConfig<TimeConfig>();
             PrevDate = DateTime.Now;
 
-            helper.Events.GameLoop.OneSecondUpdateTicked += GameEvents_OneSecondTick;
-            helper.Events.GameLoop.TimeChanged += GameLoop_TimeChanged;
+            helper.Events.GameLoop.OneSecondUpdateTicked += OnOneSecondTicked;
+            helper.Events.GameLoop.TimeChanged += OnTimeChanged;
 
             Helper.ConsoleCommands.Add("SetReminder","This sets a one time reminder", SetReminder);
             Helper.ConsoleCommands.Add("ClearAllReminders", "This clears all reminders", ClearAllReminder);
             Helper.ConsoleCommands.Add("SetRReminder", "This sets a recurring reminder", SetRecurringReminder);
         }
 
-        private void GameLoop_TimeChanged(object sender, TimeChangedEventArgs e)
+        /// <summary>Raised after the in-game clock time changes.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
             if (e.NewTime == OneTimeReminder || e.NewTime == RecurringReminder)
             {
@@ -78,7 +83,10 @@ namespace TimeReminder
             Game1.addHUDMessage(new HUDMessage("Invalid input detected! You need to use 0600-2600 to set the time. Please remember that only 10 minute intervals are checked"));
         }
 
-        private void GameEvents_OneSecondTick(object sender, EventArgs e)
+        /// <summary>Raised once per second after the game state is updated.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnOneSecondTicked(object sender, OneSecondUpdateTickedEventArgs e)
         {
             if (PrevDate.Add(new TimeSpan(0,Config.NumOfMinutes,0)) < DateTime.Now){
                 Game1.hudMessages.Add(new HUDMessage("The current system time is " + DateTime.Now.ToString("h:mm tt"),Color.OrangeRed, 8450f));

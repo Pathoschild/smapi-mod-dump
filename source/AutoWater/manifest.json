@@ -1,0 +1,10 @@
+﻿{
+   "Name": "AutoWater",
+   "Author": "WhiskerSalt",
+   "Version": "1.0.0",
+   "Description": "Save you the trouble of having to water your crops by hands.",
+   "UniqueID": "whiskersalt.AutoWater",
+   "EntryDll": "AutoWater.dll",
+   "MinimumApiVersion": "3.0",
+   "UpdateKeys": []
+}

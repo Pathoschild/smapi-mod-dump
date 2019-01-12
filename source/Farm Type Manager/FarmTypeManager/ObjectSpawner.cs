@@ -124,9 +124,9 @@ namespace FarmTypeManager
                                     break;
                                 }
                             }
-                            if (validObjectType == false)
+                            if (validObjectType == false) //if this clump isn't listed in the config
                             {
-                                break; //if this clump isn't listed in the config, skip it
+                                continue; //skip to the next clump
                             }
 
                             string newInclude = $"{clump.tile.X},{clump.tile.Y};{clump.tile.X},{clump.tile.Y}"; //generate an include string for this tile
@@ -153,8 +153,6 @@ namespace FarmTypeManager
                         }
 
                         area.FindExistingObjectLocations = false; //disable this process so it doesn't happen every day (using it repeatedly while spawning new objects would fill the whole map over time...)
-
-                        Utility.HasConfigChanged = true; //indicate that the player's config settings have changed, so their config file should be updated
                     }
 
                     List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Large_Object_Spawn_Settings.CustomTileIndex, true); //calculate a list of valid tiles for large objects in this area
@@ -177,7 +175,7 @@ namespace FarmTypeManager
                             randomIndex = rng.Next(validTiles.Count); //get the array index for a random valid tile
                             randomTile = validTiles[randomIndex]; //get the random tile's x,y coordinates
                             validTiles.RemoveAt(randomIndex); //remove the tile from the list, since it will be invalidated now
-                            tileConfirmed = Utility.IsValidLargeSpawnLocation(area.MapName, randomTile); //is the tile valid for large objects?
+                            tileConfirmed = Utility.IsTileValid(area, randomTile, true); //is the tile still valid for large objects?
                         } while (validTiles.Count > 0 && !tileConfirmed);
 
                         if (!tileConfirmed) { break; } //if no more valid tiles could be found, stop trying to spawn things in this area

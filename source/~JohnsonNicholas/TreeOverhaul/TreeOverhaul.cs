@@ -3,8 +3,6 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 //tree types (default names)
@@ -23,13 +21,18 @@ namespace TreeOverhaul
     {
         public TreeOverhaulConfig treeOverhaulConfig;
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            TimeEvents.AfterDayStarted += Events_NewDay;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
             treeOverhaulConfig = helper.ReadConfig<TreeOverhaulConfig>();
         }
 
-        public void Events_NewDay(object sender, EventArgs e)
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        public void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             if (!Context.IsMainPlayer)
             {

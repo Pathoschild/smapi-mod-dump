@@ -14,6 +14,7 @@ namespace MTN2.Compatibility {
 
 
         public static void Convert(CustomFarm farm, CustomFarmVer1 oldFarm) {
+            if (oldFarm.additionalMaps == null) return;
             foreach (additionalMap am in oldFarm.additionalMaps) {
                 farm.AdditionalMaps.Add(new MapFile(am.FileName, am.mapType, am.Location));
             }

@@ -5,6 +5,6 @@
   "Description": "Dynamic Night Time",
   "UniqueID": "knakamura.dynamicnighttime",
   "EntryDll": "DynamicNightTime.dll",
-  "MinimumApiVersion": "2.9.3",
+  "MinimumApiVersion": "2.10.1",
   "UpdateKeys": [ "Nexus:2072" ]
 }

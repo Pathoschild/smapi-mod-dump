@@ -12,21 +12,46 @@ using XNARectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace MTN2.Patches.FarmPatches
 {
+    /// <summary>
+    /// REASON FOR PATCHING: Chimney Smoke for FarmHouse (external)
+    /// 
+    /// Patches the method Farm.UpdateWhenCurrentLocation to adjust for the movement
+    /// of the farm house, so that chimney smoke particles may render in the correct
+    /// area.
+    /// </summary>
     public class UpdateWhenCurrentLocationPatch
     {
-        private static CustomFarmManager farmManager;
+        private static CustomManager customManager;
 
-        public UpdateWhenCurrentLocationPatch(CustomFarmManager farmManager) {
-            UpdateWhenCurrentLocationPatch.farmManager = farmManager;
+        /// <summary>
+        /// Constructor. Awkward method of setting references needed. However, Harmony patches
+        /// are required to be static. Thus we must break good Object Orientated practices.
+        /// </summary>
+        /// <param name="customManager">The class controlling information pertaining to the customs (and the loaded customs).</param>
+        public UpdateWhenCurrentLocationPatch(CustomManager customManager) {
+            UpdateWhenCurrentLocationPatch.customManager = customManager;
         }
 
+        /// <summary>
+        /// Transpiles the CLI to remove operations pertaining to the rendering of smoke particles.
+        /// </summary>
+        /// <param name="instructions">Code Instructions (in CLI)</param>
+        /// <returns></returns>
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
             var codes = new List<CodeInstruction>(instructions);
+            // TO-DO: Refactor. Remove the code instead of replacing it with Nops.
             for (int i = 23; i < 107; i++) codes[i].opcode = OpCodes.Nop;
             codes[213].operand = -1;
             return codes.AsEnumerable();
         }
 
+        /// <summary>
+        /// Postfix Method. Occurs after the original method has been executed.
+        /// 
+        /// Calculates and sets up the <see cref="TemporaryAnimatedSprite"/> for smoke
+        /// particles. Sets the chimneyTimer as needed.
+        /// </summary>
+        /// <param name="__instance">The instance of the Farm that called UpdateWhenCurrentLocation</param>
         public static void Postfix(Farm __instance) {
             if (__instance.Name != "Farm") return;
 

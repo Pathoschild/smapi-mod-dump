@@ -40,9 +40,9 @@ mods:
    Visualize
 
 latest commit:
-   commit 32ab21f2e71820877ca28d8f4bcf3be974248fce
+   commit 018186e01f3332fd4e49740fff940cf9471de107
    Author: Platonymous <david@millionideas.de>
-   Date:   Sun Jan 6 16:55:14 2019 +0100
+   Date:   Wed Jan 9 08:59:32 2019 +0100
    
-       Fix compatibility with Bigger Backpack
+       Update releases
    

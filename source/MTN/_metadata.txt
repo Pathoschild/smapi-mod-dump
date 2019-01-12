@@ -5,9 +5,12 @@ mods:
    MTN
 
 latest commit:
-   commit 7364cf216a6cd9fccacdeae54b39ca260a567068
-   Author: David Weil <gamemx25@gmail.com>
-   Date:   Thu Jan 3 21:34:43 2019 -0800
+   commit 739e0de180c5f785d17c016865c71cd719a53313
+   Merge: e003fc1 869b0c1
+   Author: SgtPickles <gamemx25@gmail.com>
+   Date:   Thu Jan 10 18:10:06 2019 -0600
    
-       Fixed Down Arrow bug
+       Merge pull request #2 from Dawilly/master
+       
+       Merge pull request #1 from Dawilly/develop
    

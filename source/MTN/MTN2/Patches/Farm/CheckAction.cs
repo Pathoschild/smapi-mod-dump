@@ -12,21 +12,25 @@ using xTile.Dimensions;
 namespace MTN2.Patches.FarmPatches
 {
     /// <summary>
+    /// REASON FOR PATCHING: To adjust for the X, Y locational checks of the starting
+    /// shipping bin, for custom farm maps may have moved it.
+    /// 
+    /// 
     /// Patches the method Farm.checkAction to adjust for the movement
     /// of the starting shipping bin (the bin that is not classified as a building).
     /// </summary>
     public class checkActionPatch
     {
-        private static CustomFarmManager farmManager;
+        private static CustomManager customManager;
         private static Farm currentFarm;
 
         /// <summary>
         /// Constructor. Awkward method of setting references needed. However, Harmony patches
         /// are required to be static. Thus we must break good Object Orientated practices.
         /// </summary>
-        /// <param name="farmManager">The class controlling information pertaining to the custom farms (and the loaded farm).</param>
-        public checkActionPatch(CustomFarmManager farmManager) {
-            checkActionPatch.farmManager = farmManager;
+        /// <param name="customManager">The class controlling information pertaining to the customs (and the loaded customs).</param>
+        public checkActionPatch(CustomManager customManager) {
+            checkActionPatch.customManager = customManager;
         }
 
         /// <summary>
@@ -59,8 +63,8 @@ namespace MTN2.Patches.FarmPatches
         /// <param name="who">From original method. The farmer (player) who clicked</param>
         public static void Postfix(Farm __instance, ref bool __result, Location tileLocation, Rectangle viewport, Farmer who) {
             if (currentFarm != __instance) currentFarm = __instance;
-            int binX = (farmManager.Canon) ? 71 : farmManager.ShippingBinPoints.X;
-            int binY = (farmManager.Canon) ? 13 : farmManager.ShippingBinPoints.Y;
+            int binX = (customManager.Canon) ? 71 : customManager.ShippingBinPoints.X;
+            int binY = (customManager.Canon) ? 13 : customManager.ShippingBinPoints.Y;
             if (tileLocation.X >= binX && tileLocation.X <= binX + 1 && tileLocation.Y >= binY && tileLocation.Y <= binY + 1) {
                 ItemGrabMenu itemGrabMenu = new ItemGrabMenu(null, true, false, new InventoryMenu.highlightThisItem(Utility.highlightShippableObjects), new ItemGrabMenu.behaviorOnItemSelect(shipItem), "", null, true, true, false, true, false, 0, null, -1, null);
                 itemGrabMenu.initializeUpperRightCloseButton();

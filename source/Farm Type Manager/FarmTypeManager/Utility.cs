@@ -12,29 +12,72 @@ namespace FarmTypeManager
     /// <summary>Methods used repeatedly by other sections of this mod, e.g. to locate tiles.</summary>
     static class Utility
     {
-        /// <summary>Produces a list of x/y coordinates for valid, open tiles for object spawning at a location (based on tile index, e.g. tiles using a specific dirt texture).</summary>
-        /// <param name="locationName">The name of the GameLocation to check.</param>
-        /// <param name="tileIndices">A list of integers representing spritesheet tile indices. Tiles with any matching index will be checked for object spawning.</param>
-        /// <returns>A list of Vector2, each representing a valid, open tile for object spawning at the given location.</returns>
-        public static List<Vector2> GetTilesByIndex(string locationName, int[] tileIndices)
+        /// <summary>Generates a list of all valid tiles for object spawning in the provided SpawnArea.</summary>
+        /// <param name="area">A SpawnArea listing an in-game map name and the valid regions/terrain within it that may be valid spawn points.</param>
+        /// <param name="customTileIndex">The list of custom tile indices for this spawn process (e.g. forage or ore generation). Found in the relevant section of Utility.Config.</param>
+        /// <param name="isLarge">True if the objects to be spawned are 2x2 tiles in size, otherwise false (1 tile).</param>
+        /// <returns>A completed list of all valid tile coordinates for this spawn process in this SpawnArea.</returns>
+        public static List<Vector2> GenerateTileList(SpawnArea area, int[] customTileIndex, bool isLarge)
         {
-            GameLocation loc = Game1.getLocationFromName(locationName); //variable for the current location being worked on
+            List<Vector2> validTiles = new List<Vector2>(); //list of all open, valid tiles for new spawns on the current map
+
+            foreach (string type in area.AutoSpawnTerrainTypes) //loop to auto-detect valid tiles based on various types of terrain
+            {
+                if (type.Equals("quarry", StringComparison.OrdinalIgnoreCase)) //add tiles matching the "quarry" tile index list
+                {
+                    validTiles.AddRange(Utility.GetTilesByIndex(area, Utility.Config.QuarryTileIndex, isLarge));
+                }
+                else if (type.Equals("custom", StringComparison.OrdinalIgnoreCase)) //add tiles matching the "custom" tile index list
+                {
+                    validTiles.AddRange(Utility.GetTilesByIndex(area, customTileIndex, isLarge));
+                }
+                else  //add any tiles with properties matching "type" (e.g. tiles with the "Diggable" property, "Grass" type, etc; if the "type" is "All", this will just add every valid tile)
+                {
+                    validTiles.AddRange(Utility.GetTilesByProperty(area, type, isLarge));
+                }
+            }
+            foreach (string include in area.IncludeAreas) //check for valid tiles in each "include" zone for the area
+            {
+                validTiles.AddRange(Utility.GetTilesByVectorString(area, include, isLarge));
+            }
+
+            validTiles = validTiles.Distinct().ToList(); //remove any duplicate tiles from the list
+
+            foreach (string exclude in area.ExcludeAreas) //check for valid tiles in each "exclude" zone for the area (validity isn't technically relevant here, but simpler to code, and tiles' validity cannot currently change during this process)
+            {
+                List<Vector2> excludedTiles = Utility.GetTilesByVectorString(area, exclude, isLarge); //get list of valid tiles in the excluded area
+                validTiles.RemoveAll(excludedTiles.Contains); //remove any previously valid tiles that match the excluded area
+            }
+
+            return validTiles;
+        }
+
+        /// <summary>Produces a list of x/y coordinates for valid, open tiles for object spawning at a location (based on tile index, e.g. tiles using a specific dirt texture).</summary>
+        /// <param name="area">The SpawnArea describing the current area and its settings.</param>
+        /// <param name="tileIndices">A list of integers representing spritesheet tile indices. Tiles with any matching index will be checked for object spawning.</param>
+        /// <param name="isLarge">True if the objects to be spawned are 2x2 tiles in size, otherwise false (1 tile).</param>
+        /// <returns>A list of Vector2, each representing a valid, open tile for object spawning at the given location.</returns>
+        public static List<Vector2> GetTilesByIndex(SpawnArea area, int[] tileIndices, bool isLarge)
+        {
+            GameLocation loc = Game1.getLocationFromName(area.MapName); //variable for the current location being worked on
             List<Vector2> validTiles = new List<Vector2>(); //will contain x,y coordinates for tiles that are open & valid for new object placement
 
             //the following loops should populate a list of valid, open tiles for spawning
-            int currentTile;
+            int currentTileIndex;
             for (int y = 0; y < (loc.Map.DisplayHeight / Game1.tileSize); y++)
             {
                 for (int x = 0; x < (loc.Map.DisplayWidth / Game1.tileSize); x++) //loops for each tile on the map, from the top left (x,y == 0,0) to bottom right, moving horizontally first
                 {
-                    currentTile = loc.getTileIndexAt(x, y, "Back"); //get the tile index of the current tile
+                    Vector2 tile = new Vector2(x, y);
+                    currentTileIndex = loc.getTileIndexAt(x, y, "Back"); //get the tile index of the current tile
                     foreach (int index in tileIndices)
                     {
-                        if (currentTile == index) //if the current tile matches one of the tile indices
+                        if (currentTileIndex == index) //if the current tile matches one of the tile indices
                         {
-                            if (loc.isTileLocationTotallyClearAndPlaceable(x, y) == true) //if the tile is clear of any obstructions
+                            if (IsTileValid(area, tile, isLarge)) //if the tile is clear of any obstructions
                             {
-                                validTiles.Add(new Vector2(x, y)); //add to list of valid spawn tiles
+                                validTiles.Add(tile); //add to list of valid spawn tiles
+                                break; //skip the rest of the indices to avoid adding this tile multiple times
                             }
                         }
                     }
@@ -44,12 +87,13 @@ namespace FarmTypeManager
         }
 
         /// <summary>Produces a list of x/y coordinates for valid, open tiles for object spawning at a location (based on tile properties, e.g. the "grass" type).</summary>
-        /// <param name="locationName">The name of the GameLocation to check.</param>
+        /// <param name="area">The SpawnArea describing the current area and its settings.</param>
         /// <param name="type">A string representing the tile property to match, or a special term used for some additional checks.</param>
+        /// <param name="isLarge">True if the objects to be spawned are 2x2 tiles in size, otherwise false (1 tile).</param>
         /// <returns>A list of Vector2, each representing a valid, open tile for object spawning at the given location.</returns>
-        public static List<Vector2> GetTilesByProperty(string locationName, string type)
+        public static List<Vector2> GetTilesByProperty(SpawnArea area, string type, bool isLarge)
         {
-            GameLocation loc = Game1.getLocationFromName(locationName); //variable for the current location being worked on
+            GameLocation loc = Game1.getLocationFromName(area.MapName); //variable for the current location being worked on
             List<Vector2> validTiles = new List<Vector2>(); //will contain x,y coordinates for tiles that are open & valid for new object placement
 
             //the following loops should populate a list of valid, open tiles for spawning
@@ -57,21 +101,23 @@ namespace FarmTypeManager
             {
                 for (int x = 0; x < (loc.Map.DisplayWidth / Game1.tileSize); x++) //loops for each tile on the map, from the top left (x,y == 0,0) to bottom right, moving horizontally first
                 {
+                    Vector2 tile = new Vector2(x, y);
                     if (type.Equals("all", StringComparison.OrdinalIgnoreCase)) //if the "property" to be matched is "All" (a special exception)
                     {
+                        
                         //add any clear tiles, regardless of properties
-                        if (loc.isTileLocationTotallyClearAndPlaceable(x, y) == true) //if the tile is clear of any obstructions
+                        if (IsTileValid(area, tile, isLarge)) //if the tile is clear of any obstructions
                         {
-                            validTiles.Add(new Vector2(x, y)); //add to list of valid spawn tiles
+                            validTiles.Add(tile); //add to list of valid spawn tiles
                         }
                     }
                     if (type.Equals("diggable", StringComparison.OrdinalIgnoreCase)) //if the tile's "Diggable" property matches (case-insensitive)
                     {
                         if (loc.doesTileHaveProperty(x, y, "Diggable", "Back") == "T") //NOTE: the string "T" means "true" for several tile property checks
                         {
-                            if (loc.isTileLocationTotallyClearAndPlaceable(x, y) == true) //if the tile is clear of any obstructions
+                            if (IsTileValid(area, tile, isLarge)) //if the tile is clear of any obstructions
                             {
-                                validTiles.Add(new Vector2(x, y)); //add to list of valid spawn tiles
+                                validTiles.Add(tile); //add to list of valid spawn tiles
                             }
                         }
                     }
@@ -81,9 +127,9 @@ namespace FarmTypeManager
 
                         if (currentType.Equals(type, StringComparison.OrdinalIgnoreCase)) //if the tile's "Type" property matches (case-insensitive)
                         {
-                            if (loc.isTileLocationTotallyClearAndPlaceable(x, y) == true) //if the tile is clear of any obstructions
+                            if (IsTileValid(area, tile, isLarge)) //if the tile is clear of any obstructions
                             {
-                                validTiles.Add(new Vector2(x, y)); //add to list of valid spawn tiles
+                                validTiles.Add(tile); //add to list of valid spawn tiles
                             }
                         }
                     }
@@ -93,12 +139,13 @@ namespace FarmTypeManager
         }
 
         /// <summary>Produces a list of x/y coordinates for valid, open tiles for object spawning at a location (based on a string describing two vectors).</summary>
-        /// <param name="locationName">The name of the GameLocation to check.</param>
+        /// <param name="area">The SpawnArea describing the current area and its settings.</param>
         /// <param name="vectorString">A string describing two vectors. Parsed into vectors and used to find a rectangular area.</param>
+        /// <param name="isLarge">True if the objects to be spawned are 2x2 tiles in size, otherwise false (1 tile).</param>
         /// <returns>A list of Vector2, each representing a valid, open tile for object spawning at the given location.</returns>
-        public static List<Vector2> GetTilesByVectorString(string locationName, string vectorString)
+        public static List<Vector2> GetTilesByVectorString(SpawnArea area, string vectorString, bool isLarge)
         {
-            GameLocation loc = Game1.getLocationFromName(locationName); //variable for the current location being worked on
+            GameLocation loc = Game1.getLocationFromName(area.MapName); //variable for the current location being worked on
             List<Vector2> validTiles = new List<Vector2>(); //x,y coordinates for tiles that are open & valid for new object placement
             List<Tuple<Vector2, Vector2>> vectorPairs = new List<Tuple<Vector2, Vector2>>(); //pairs of x,y coordinates representing areas on the map (to be scanned for valid tiles)
 
@@ -106,7 +153,7 @@ namespace FarmTypeManager
             string[] xyxy = vectorString.Split(new char[] { ',', '/', ';' }); //split the string into separate strings based on various delimiter symbols
             if (xyxy.Length != 4) //if "xyxy" didn't split into the right number of strings, it's probably formatted poorly
             {
-                Monitor.Log($"Issue: This include/exclude area for the {locationName} map isn't formatted correctly: \"{vectorString}\"", LogLevel.Info);
+                Monitor.Log($"Issue: This include/exclude area for the {area.MapName} map isn't formatted correctly: \"{vectorString}\"", LogLevel.Info);
             }
             else
             {
@@ -127,20 +174,21 @@ namespace FarmTypeManager
                 }
                 else
                 {
-                    Monitor.Log($"Issue: This include/exclude area for the {locationName} map isn't formatted correctly: \"{vectorString}\"", LogLevel.Info);
+                    Monitor.Log($"Issue: This include/exclude area for the {area.MapName} map isn't formatted correctly: \"{vectorString}\"", LogLevel.Info);
                 }
             }
 
             //check the area marked by "vectorPairs" for valid, open tiles and populate "validTiles" with them
-            foreach (Tuple<Vector2, Vector2> area in vectorPairs)
+            foreach (Tuple<Vector2, Vector2> pair in vectorPairs)
             {
-                for (int y = (int)Math.Min(area.Item1.Y, area.Item2.Y); y <= (int)Math.Max(area.Item1.Y, area.Item2.Y); y++) //use the lower Y first, then the higher Y; should define the area regardless of which corners/order the user wrote down
+                for (int y = (int)Math.Min(pair.Item1.Y, pair.Item2.Y); y <= (int)Math.Max(pair.Item1.Y, pair.Item2.Y); y++) //use the lower Y first, then the higher Y; should define the area regardless of which corners/order the user wrote down
                 {
-                    for (int x = (int)Math.Min(area.Item1.X, area.Item2.X); x <= (int)Math.Max(area.Item1.X, area.Item2.X); x++) //loops for each tile on the map, from the top left (x,y == 0,0) to bottom right, moving horizontally first
+                    for (int x = (int)Math.Min(pair.Item1.X, pair.Item2.X); x <= (int)Math.Max(pair.Item1.X, pair.Item2.X); x++) //loops for each tile on the map, from the top left (x,y == 0,0) to bottom right, moving horizontally first
                     {
-                        if (loc.isTileLocationTotallyClearAndPlaceable(x, y) == true) //if the tile is clear of any obstructions
+                        Vector2 tile = new Vector2(x, y);
+                        if (IsTileValid(area, new Vector2(x, y), isLarge)) //if the tile is clear of any obstructions
                         {
-                            validTiles.Add(new Vector2(x, y)); //add to list of valid spawn tiles
+                            validTiles.Add(tile); //add to list of valid spawn tiles
                         }
                     }
                 }
@@ -149,60 +197,77 @@ namespace FarmTypeManager
             return validTiles;
         }
 
-        /// <summary>Generates a list of all valid tiles for object spawning in the provided SpawnArea.</summary>
-        /// <param name="area">A SpawnArea listing an in-game map name and the valid regions/terrain within it that may be valid spawn points.</param>
-        /// <param name="customTileIndex">The list of custom tile indices for this spawn process (e.g. forage or ore generation). Found in the relevant section of Utility.Config.</param>
+        /// <summary>Determines whether a specific tile on a map is valid for object placement, using any necessary checks from Stardew's native methods.</summary>
+        /// <param name="area">The SpawnArea describing the current area and its settings.</param>
+        /// <param name="tile">The tile to be validated for object placement (for a large object, this is effectively its upper left corner).</param>
         /// <param name="isLarge">True if the objects to be spawned are 2x2 tiles in size, otherwise false (1 tile).</param>
-        /// <returns>A completed list of all valid tile coordinates for this spawn process in this SpawnArea.</returns>
-        public static List<Vector2> GenerateTileList(SpawnArea area, int[] customTileIndex, bool isLarge)
+        /// <returns>Whether the provided tile is valid for the given area and object size, based on the area's StrictTileChecking setting.</returns>
+        public static bool IsTileValid(SpawnArea area, Vector2 tile, bool isLarge)
         {
-            List<Vector2> validTiles = new List<Vector2>(); //list of all open, valid tiles for new spawns on the current map
+            GameLocation loc = Game1.getLocationFromName(area.MapName); //variable for the current location being worked on 
+            bool valid = false;
 
-            foreach (string type in area.AutoSpawnTerrainTypes) //loop to auto-detect valid tiles based on various types of terrain
+            
+            if (area.StrictTileChecking.Equals("off", StringComparison.OrdinalIgnoreCase) || area.StrictTileChecking.Equals("none", StringComparison.OrdinalIgnoreCase)) //no validation at all
             {
-                if (type.Equals("quarry", StringComparison.OrdinalIgnoreCase)) //add tiles matching the "quarry" tile index list
-                {
-                    validTiles.AddRange(Utility.GetTilesByIndex(area.MapName, Utility.Config.QuarryTileIndex));
-                }
-                else if (type.Equals("custom", StringComparison.OrdinalIgnoreCase)) //add tiles matching the "custom" tile index list
-                {
-                    validTiles.AddRange(Utility.GetTilesByIndex(area.MapName, customTileIndex));
-                }
-                else  //add any tiles with properties matching "type" (e.g. tiles with the "Diggable" property, "Grass" type, etc; if the "type" is "All", this will just add every valid tile)
-                {
-                    validTiles.AddRange(Utility.GetTilesByProperty(area.MapName, type));
-                }
+                valid = true;
             }
-            foreach (string include in area.IncludeAreas) //check for valid tiles in each "include" zone for the area
+            else if (area.StrictTileChecking.Equals("low", StringComparison.OrdinalIgnoreCase)) //low-strictness validation
             {
-                validTiles.AddRange(Utility.GetTilesByVectorString(area.MapName, include));
-            }
-
-            validTiles = validTiles.Distinct().ToList(); //remove any duplicate tiles from the list
-
-            foreach (string exclude in area.ExcludeAreas) //check for valid tiles in each "exclude" zone for the area (validity isn't technically relevant here, but simpler to code, and tiles' validity cannot currently change during this process)
-            {
-                List<Vector2> excludedTiles = Utility.GetTilesByVectorString(area.MapName, exclude); //get list of valid tiles in the excluded area
-                validTiles.RemoveAll(excludedTiles.Contains); //remove any previously valid tiles that match the excluded area
-            }
-
-            if (isLarge) //if working with 2x2 sized objects, e.g. stumps and logs
-            {
-                int x = 0;
-                while (x < validTiles.Count) //loop until every remaining tile is valid for large objects
+                if (isLarge) //2x2 tile validation
                 {
-                    if (!IsValidLargeSpawnLocation(area.MapName, validTiles[x])) //if the current tile is invalid for large objects
+                    //if all the necessary tiles for a 2x2 object are *not* blocked by other objects
+                    if (!loc.isObjectAtTile((int)tile.X, (int)tile.Y) && !loc.isObjectAtTile((int)tile.X + 1, (int)tile.Y) && !loc.isObjectAtTile((int)tile.X, (int)tile.Y + 1) && !loc.isObjectAtTile((int)tile.X + 1, (int)tile.Y + 1))
                     {
-                        validTiles.Remove(validTiles[x]); //remove the tile from the list (NOTE: this affects the list's index and item count, so don't increment x here)
+                        valid = true;
                     }
-                    else //if the tile is valid
+                }
+                else //single tile validation
+                {
+                    if (!loc.isObjectAtTile((int)tile.X, (int)tile.Y)) //if the tile is *not* blocked by another object
                     {
-                        x++; //move on to the next tile in the list
+                        valid = true;
                     }
                 }
             }
+            else if (area.StrictTileChecking.Equals("medium", StringComparison.OrdinalIgnoreCase)) //medium-strictness validation
+            {
+                if (isLarge) //2x2 tile validation
+                {
+                    //if all the necessary tiles for a 2x2 object are *not* occupied
+                    if (!loc.isTileOccupiedForPlacement(tile) && !loc.isTileOccupiedForPlacement(new Vector2(tile.X + 1, tile.Y)) && !loc.isTileOccupiedForPlacement(new Vector2(tile.X, tile.Y + 1)) && !loc.isTileOccupiedForPlacement(new Vector2(tile.X + 1, tile.Y + 1)))
+                    {
+                        valid = true;
+                    }
+                }
+                else //single tile validation
+                {
+                    if (!loc.isTileOccupiedForPlacement(tile)) //if the tile is *not* occupied
+                    {
+                        valid = true;
+                    }
+                }
+            }
+            else //default to "high"-strictness validation
+            {
+                if (isLarge) //2x2 tile validation
+                {
+                    //if all the necessary tiles for a 2x2 object are *not* occupied
+                    if (loc.isTileLocationTotallyClearAndPlaceable(tile) && loc.isTileLocationTotallyClearAndPlaceable(new Vector2(tile.X + 1, tile.Y)) && loc.isTileLocationTotallyClearAndPlaceable(new Vector2(tile.X, tile.Y + 1)) && loc.isTileLocationTotallyClearAndPlaceable(new Vector2(tile.X + 1, tile.Y + 1)))
+                    {
+                        valid = true;
+                    }
+                }
+                else //single tile validation
+                {
+                    if (loc.isTileLocationTotallyClearAndPlaceable(tile)) //if the tile is *not* occupied
+                    {
+                        valid = true;
+                    }
+                }
+            }
 
-            return validTiles;
+            return valid;
         }
 
         /// <summary>Generates ore and places it on the specified map and tile.</summary>
@@ -365,25 +430,6 @@ namespace FarmTypeManager
             return spawnCount;
         }
 
-        /// <summary>Determines whether a given tile is a valid spawn location for large objects (2x2 size).</summary>
-        /// <param name="mapName">The map on which the object should be spawned.</param>
-        /// <param name="tile">The tile at which the object is located (which is effectively its upper left corner).</param>
-        /// <returns>A boolean indicating whether the tile is a valid spawn location for large objects.</returns>
-        public static bool IsValidLargeSpawnLocation(string mapName, Vector2 tile)
-        {
-            bool valid = false;
-
-            GameLocation loc = Game1.getLocationFromName(mapName); //variable for the current location being worked on 
-
-            //if any of the necessary tiles for a 2x2 object are invalid, remove this tile from the list (note: the tile in the list is treated as the top left corner of the object)
-            if (loc.isTileLocationTotallyClearAndPlaceable((int)tile.X, (int)tile.Y) && loc.isTileLocationTotallyClearAndPlaceable((int)tile.X + 1, (int)tile.Y) && loc.isTileLocationTotallyClearAndPlaceable((int)tile.X, (int)tile.Y + 1) && loc.isTileLocationTotallyClearAndPlaceable((int)tile.X + 1, (int)tile.Y + 1))
-            {
-                valid = true;
-            }
-
-            return valid;
-        }
-
         /// <summary>Generate an array of index numbers for large objects (a.k.a. resource clumps) based on an array of names. Duplicates are allowed; invalid entries are discarded.</summary>
         /// <param name="names">A list of names representing large objects (e.g. "Stump", "boulders").</param>
         /// <returns>An array of index numbers for large object spawning purposes.</returns>
@@ -473,9 +519,5 @@ namespace FarmTypeManager
 
         /// <summary>Data contained in the per-character configuration file, including various mod settings.</summary>
         public static FarmConfig Config { get; set; } = null;
-
-        /// <summary>Whether the mod has made any changes to the config settings for the current player (which requires the player's config file to the updated).</summary>
-        public static bool HasConfigChanged { get; set; } = false;
-
     }
 }

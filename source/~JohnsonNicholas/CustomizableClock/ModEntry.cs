@@ -28,16 +28,16 @@ namespace KN.CustomizableClock
         public override void Entry(IModHelper helper)
         {
             ModConfig = helper.ReadConfig<ClockConfig>();
-            helper.Events.GameLoop.DayStarted += TimeEvents_AfterDayStarted;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
         }
 
         /*********
         ** Private methods
         *********/
-        /// <summary>The method invoked after a new day starts.</summary>
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void TimeEvents_AfterDayStarted(object sender, EventArgs e)
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             if (!Game1.onScreenMenus.OfType<Clock>().Any())
             {

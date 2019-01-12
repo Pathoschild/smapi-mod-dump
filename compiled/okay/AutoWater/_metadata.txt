@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/1666
+IDs: whiskersalt.AutoWater
+update keys: Nexus:1666

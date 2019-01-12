@@ -5,6 +5,6 @@
   "Description": "Allows you to alter the chances of the traveling cart appearing. Credit to Yyeahdude for the original idea.",
   "UniqueID": "KoihimeNakamura.CCR",
   "EntryDll": "CustomizableCartRedux.dll",
-  "UpdateKeys": [ "Nexus:1402" ],
-  "MinimumApiVersion": "2.10"
+  "MinimumApiVersion": "2.10.1",
+  "UpdateKeys": [ "Nexus:1402" ]
 }

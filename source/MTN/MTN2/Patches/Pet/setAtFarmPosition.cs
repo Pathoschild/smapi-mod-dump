@@ -11,22 +11,22 @@ namespace MTN2.Patches.PetPatches
 {
     public class setAtFarmPositionPatch
     {
-        private static CustomFarmManager farmManager;
+        private static CustomManager customManager;
 
-        public setAtFarmPositionPatch(CustomFarmManager farmManager) {
-            setAtFarmPositionPatch.farmManager = farmManager;
+        public setAtFarmPositionPatch(CustomManager customManager) {
+            setAtFarmPositionPatch.customManager = customManager;
         }
 
         public static bool Prefix(Pet __instance) {
-            return (farmManager.Canon) ? true : false;
+            return (customManager.Canon) ? true : false;
         }
 
         public static void Postfix(Pet __instance) {
-            if (farmManager.Canon) return;
+            if (customManager.Canon) return;
 
             if (!Game1.isRaining) {
                 __instance.faceDirection(2);
-                Game1.warpCharacter(__instance, "Farm", new Vector2(farmManager.PetWaterBowl.X, farmManager.PetWaterBowl.Y - 1));
+                Game1.warpCharacter(__instance, "Farm", new Vector2(customManager.PetWaterBowl.X, customManager.PetWaterBowl.Y - 1));
                 __instance.position.X -= 64f;
             }
             return;

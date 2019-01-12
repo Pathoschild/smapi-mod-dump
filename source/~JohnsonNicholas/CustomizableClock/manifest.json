@@ -1,9 +1,10 @@
 {
-   "Name": "Customizable Clock",
-   "Author": "KoihimeNakamura, based on Lajna's mod",
-   "Version": "0.2",
-   "Description": "Lets users select their own clock type. Based off the 24h clock code.",
-   "UniqueID": "KN.CustomizableClock",
-   "EntryDll": "CustomizableClock.dll",
-   "UpdateKeys": ["Nexus:Fake"]
+  "Name": "Customizable Clock",
+  "Author": "KoihimeNakamura, based on Lajna's mod",
+  "Version": "0.2",
+  "Description": "Lets users select their own clock type. Based off the 24h clock code.",
+  "UniqueID": "KN.CustomizableClock",
+  "EntryDll": "CustomizableClock.dll",
+  "MinimumApiVersion": "2.10.1",
+  "UpdateKeys": [ "Nexus:Fake" ]
 }

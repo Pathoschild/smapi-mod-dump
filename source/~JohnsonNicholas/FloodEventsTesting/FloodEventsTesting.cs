@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -16,6 +14,18 @@ namespace FloodEventsTesting
         protected Dictionary<GameLocation,Dictionary<int,List<Point>>> FloodedTiles;
         protected int CurrentFloodDepth;
         protected int TotalFloodDepth = 4;
+
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
+        public override void Entry(IModHelper helper)
+        {
+            FloodedTiles = new Dictionary<GameLocation, Dictionary<int, List<Point>>>();
+            CurrentFloodDepth = TotalFloodDepth;
+            //do something here, I suppose.
+            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+            helper.Events.GameLoop.TimeChanged += OnTimeChanged;
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
+        }
 
         public static List<Point> GenerateFloodMap(GameLocation location, int depth, Func<GameLocation, int, int, bool> IsBlockedTile=null)
         {
@@ -71,27 +81,18 @@ namespace FloodEventsTesting
             return false;
         }
 
-        /// <summary> Main mod function. </summary>
-        /// <param name="helper">The helper. </param>
-        public override void Entry(IModHelper helper)
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            FloodedTiles = new Dictionary<GameLocation, Dictionary<int, List<Point>>>();
-            CurrentFloodDepth = TotalFloodDepth;
-            //do something here, I suppose.
-            GameEvents.FourthUpdateTick += GameEvents_FourthUpdateTick;
-            TimeEvents.TimeOfDayChanged += TimeEvents_TimeOfDayChanged;
-            InputEvents.ButtonPressed += InputEvents_ButtonPressed;
-        }
-
-        private void GameEvents_FourthUpdateTick(object sender, EventArgs e)
-        {
-            if (!Context.IsWorldReady)
+            if (!Context.IsWorldReady || !e.IsMultipleOf(4))
                 return;
 
             CreateFlood();
         }
 
-        private void InputEvents_ButtonPressed(object sender, EventArgsInput e) {
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e) {
 
             if (e.Button == SButton.MouseMiddle) {
                 Game1.getFarm().waterTiles[Game1.player.getTileX(), Game1.player.getTileY()] = true;
@@ -182,7 +183,10 @@ namespace FloodEventsTesting
             }
         }
 
-        private void TimeEvents_TimeOfDayChanged(object sender, EventArgsIntChanged e)
+        /// <summary>Raised after the in-game clock time changes.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
             Console.WriteLine($"Current Flood Depth is {CurrentFloodDepth}");
             if (CurrentFloodDepth <= 0)

@@ -8,7 +8,7 @@ namespace MTN2.MapData
 {
     public class Structure
     {
-        public Placement Coordinates { get; set; }
+        public Placement? Coordinates { get; set; }
         public Interaction PointOfInteraction { get; set; }
 
         public Structure() {

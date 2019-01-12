@@ -34,10 +34,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>.\0Harmony.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -66,8 +66,11 @@
     <Compile Include="Compatibility\Version1\spawn.cs" />
     <Compile Include="Compatibility\Version1\StructureInfo.cs" />
     <Compile Include="CustomFarm.cs" />
-    <Compile Include="CustomFarmManager.cs" />
+    <Compile Include="CustomManager.cs" />
+    <Compile Include="CustomGreenHouse.cs" />
+    <Compile Include="ICustomManager.cs" />
     <Compile Include="Locations\AdvancedScienceHouse.cs" />
+    <Compile Include="Locations\ModHouse.cs" />
     <Compile Include="MapData\FileType.cs" />
     <Compile Include="MapData\Spawn\Forage.cs" />
     <Compile Include="MapData\Spawn\Ore.cs" />
@@ -99,8 +102,9 @@
     <Compile Include="Patches\Farm\LeftClick.cs" />
     <Compile Include="Patches\Farm\ResetLocalState.cs" />
     <Compile Include="Patches\Farm\UpdateWhenCurrentLocation.cs" />
-    <Compile Include="Patches\Game1\loadForNewGame.cs" />
+    <Compile Include="Patches\Game1\LoadForNewGame.cs" />
     <Compile Include="Patches\GameLocation\loadObjects.cs" />
+    <Compile Include="Patches\GameLocation\performAction.cs" />
     <Compile Include="Patches\GameLocation\startEvent.cs" />
     <Compile Include="Patches\NetBuildingRef\ValueGetter.cs" />
     <Compile Include="Patches\NPC\updateConstructionAnimation.cs" />
@@ -126,6 +130,12 @@
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Harmony\Harmony.csproj">
+      <Project>{12638e05-c0d9-415f-b8b2-6767d8b721dc}</Project>
+      <Name>Harmony</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />

@@ -18,7 +18,7 @@ namespace MTN2.Menus {
     /// </summary>
     public class CharacterCustomizationMTN : IClickableMenu {
         //MTN Stuff//
-        private readonly CustomFarmManager farmManager;
+        private readonly CustomManager customManager;
         protected List<ClickableTextureComponent> allFarmButtons = new List<ClickableTextureComponent>();
 
         public ClickableTextureComponent noDebrisButton;
@@ -133,8 +133,8 @@ namespace MTN2.Menus {
         private ColorPicker lastHeldColorPicker;
         private int timesRandom;
 
-        public CharacterCustomizationMTN(CustomFarmManager farmManager, CharacterCustomization.Source source) : base(Game1.viewport.Width / 2 - (632 + IClickableMenu.borderWidth * 2) / 2, Game1.viewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2 - 64, 632 + IClickableMenu.borderWidth * 2, 600 + IClickableMenu.borderWidth * 2 + 64, false) {
-            this.farmManager = farmManager;
+        public CharacterCustomizationMTN(CustomManager customManager, CharacterCustomization.Source source) : base(Game1.viewport.Width / 2 - (632 + IClickableMenu.borderWidth * 2) / 2, Game1.viewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2 - 64, 632 + IClickableMenu.borderWidth * 2, 600 + IClickableMenu.borderWidth * 2 + 64, false) {
+            this.customManager = customManager;
 
             this.shirtOptions = new List<int>
             {
@@ -352,7 +352,7 @@ namespace MTN2.Menus {
                 foreach (ClickableTextureComponent farmButton in farmTypeButtons) {
                     allFarmButtons.Add(farmButton);
                 }
-                foreach (CustomFarm customFarm in farmManager.FarmList) {
+                foreach (CustomFarm customFarm in customManager.FarmList) {
                     allFarmButtons.Add(new ClickableTextureComponent("MTN_" + customFarm.Name, new Rectangle(baseFarmButton.X, baseFarmButton.Y + 440, 88, 80), null, customFarm.Description, customFarm.IconSource, new Rectangle(0, 0, 22, 20), 4f, false));
                 }
 
@@ -776,7 +776,7 @@ namespace MTN2.Menus {
                 Game1.player.favoriteThing.Value = this.favThingBox.Text.Trim();
                 Game1.player.isCustomized.Value = true;
                 
-                farmManager.LoadCustomFarm();
+                customManager.LoadCustomFarm();
                 
                 if (this.source == CharacterCustomization.Source.HostNewFarm) {
                     Game1.multiplayerMode = 2;
@@ -808,28 +808,28 @@ namespace MTN2.Menus {
         //More support. ZA WURLDO
         private void adjustWhichFarmType(string name) {
             lastClickedFarmTypeBtn = name;
-            farmManager.UpdateSelectedFarm(name);
-            if (!farmManager.Canon) Game1.whichFarm = farmManager.SelectedFarm.ID;
+            customManager.UpdateSelectedFarm(name);
+            if (!customManager.Canon) Game1.whichFarm = customManager.SelectedFarm.ID;
             adjustCabinSettings();
         }
 
         //Added for support. REEEEE
         private void adjustCabinSettings() {
-            if (farmManager.Canon) {
+            if (customManager.Canon) {
                 Game1.startingCabins = 0;
                 allowCabinsClose = true;
                 allowCabinsSeperate = true;
                 return;
             }
-            if (farmManager.SelectedFarm.CabinCapacity == 0) {
+            if (customManager.SelectedFarm.CabinCapacity == 0) {
                 Game1.startingCabins = 0;
                 return;
-            } else if (farmManager.SelectedFarm.CabinCapacity < Game1.startingCabins) {
-                Game1.startingCabins = farmManager.SelectedFarm.CabinCapacity;
+            } else if (customManager.SelectedFarm.CabinCapacity < Game1.startingCabins) {
+                Game1.startingCabins = customManager.SelectedFarm.CabinCapacity;
             }
 
-            allowCabinsClose = farmManager.SelectedFarm.AllowClose;
-            allowCabinsSeperate = farmManager.SelectedFarm.AllowSeperate;
+            allowCabinsClose = customManager.SelectedFarm.AllowClose;
+            allowCabinsSeperate = customManager.SelectedFarm.AllowSeperate;
         }
 
         ////////////////
@@ -838,10 +838,10 @@ namespace MTN2.Menus {
         private void selectionClick(string name, int change) {
             switch (name) {
                 case "Cabins":
-                    if ((Game1.startingCabins != 0 || change >= 0) && (Game1.startingCabins != farmManager.SelectedFarm.CabinCapacity || change <= 0))
+                    if ((Game1.startingCabins != 0 || change >= 0) && (Game1.startingCabins != customManager.SelectedFarm.CabinCapacity || change <= 0))
                         Game1.playSound("axchop");
                     Game1.startingCabins += change;
-                    Game1.startingCabins = Math.Max(0, Math.Min(farmManager.SelectedFarm.CabinCapacity, Game1.startingCabins));
+                    Game1.startingCabins = Math.Max(0, Math.Min(customManager.SelectedFarm.CabinCapacity, Game1.startingCabins));
                     break;
                 case "Hair":
                     Game1.player.changeHairStyle((int)((NetFieldBase<int, NetInt>)Game1.player.hair) + change);
@@ -951,7 +951,7 @@ namespace MTN2.Menus {
             } else if (noDebrisButton.containsPoint(x, y)) {
                 Game1.playSound("drumkit6");
                 noDebrisButton.sourceRect.X = (noDebrisButton.sourceRect.X == 227) ? 236 : 227;
-                farmManager.NoDebris = !farmManager.NoDebris;
+                customManager.NoDebris = !customManager.NoDebris;
             }
             //Holding the scroll bar
             if (scrollBar.containsPoint(x, y)) {

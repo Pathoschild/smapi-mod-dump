@@ -10,20 +10,22 @@ using System.Threading.Tasks;
 namespace MTN2.Patches.FarmPatches
 {
     /// <summary>
+    /// REASON FOR PATCHING: Starting Shipping Bin
+    /// 
     /// Patches the method Farm.resetLocalState to adjust for the movement
     /// of the starting shipping bin (the bin that is not classified as a building)
     /// </summary>
     public class resetLocalStatePatch
     {
-        private static CustomFarmManager farmManager;
+        private static CustomManager customManager;
 
         /// <summary>
         /// Constructor. Awkward method of setting references needed. However, Harmony patches
         /// are required to be static. Thus we must break good Object Orientated practices.
         /// </summary>
-        /// <param name="farmManager">The class controlling information pertaining to the custom farms (and the loaded farm).</param>
-        public resetLocalStatePatch(CustomFarmManager farmManager) {
-            resetLocalStatePatch.farmManager = farmManager;
+        /// <param name="customManager">The class controlling information pertaining to the customs (and the loaded customs).</param>
+        public resetLocalStatePatch(CustomManager customManager) {
+            resetLocalStatePatch.customManager = customManager;
         }
 
         /// <summary>
@@ -33,10 +35,10 @@ namespace MTN2.Patches.FarmPatches
         /// </summary>
         /// <param name="__instance">The instance of the Farm class.</param>
         public static void Postfix(Farm __instance) {
-            if (farmManager.Canon || __instance == null || __instance.Name != "Farm") return;
+            if (customManager.Canon || __instance == null || __instance.Name != "Farm") return;
 
-            int binX = farmManager.ShippingBinPoints.X;
-            int binY = farmManager.ShippingBinPoints.Y;
+            int binX = customManager.ShippingBinPoints.X;
+            int binY = customManager.ShippingBinPoints.Y;
 
             TemporaryAnimatedSprite actualBinLid = new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(134, 226, 30, 25), new Vector2(binX, binY) * 64f + new Vector2(2f, -7f) * 4f, false, 0f, Color.White) {
                 holdLastFrame = true,

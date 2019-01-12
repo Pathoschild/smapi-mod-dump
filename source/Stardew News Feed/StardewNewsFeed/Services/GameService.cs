@@ -23,10 +23,12 @@ namespace StardewNewsFeed.Services {
         public void CheckFarmCave() {
             var farmCave = _locationService.GetLocationByName(Constants.FARM_CAVE_LOCATION_NAME);
 
-            if (PlayerChoseMushrooms()) {
-                CheckLocationForHarvestableObjects(farmCave);
-            } else {
-                CheckLocationForHarvestableTerrain<HoeDirt>(farmCave);
+            switch(_game.GetFarmCaveChoice()) {
+                case FarmCaveChoice.None:
+                    break;
+                default:
+                    CheckLocationForHarvestableObjects(farmCave);
+                    break;
             }
         }
 
@@ -70,10 +72,6 @@ namespace StardewNewsFeed.Services {
         #region Private Methods
         private void DisplayMessage(IHudMessage hudMessage) {
             _game.DisplayMessage(hudMessage);
-        }
-
-        private bool PlayerChoseMushrooms() {
-            return _game.GetFarmCaveChoice() == FarmCaveChoice.Mushrooms;
         }
 
         private IFarm GetFarm() {

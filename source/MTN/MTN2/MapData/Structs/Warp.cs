@@ -14,6 +14,13 @@ namespace MTN2.MapData {
 
         public Warp() { }
 
+        public Warp(int FromX, int FromY, int ToX, int ToY) {
+            this.FromX = FromX;
+            this.FromY = FromY;
+            this.ToX = ToX;
+            this.ToY = ToY;
+        }
+
         public Warp(string TargetMap, int FromX, int FromY, int ToX, int ToY) {
             this.TargetMap = TargetMap;
             this.FromX = FromX;

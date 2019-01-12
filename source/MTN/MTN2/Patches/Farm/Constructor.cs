@@ -10,21 +10,26 @@ using System.Threading.Tasks;
 namespace MTN2.Patches.FarmPatches
 {
     /// <summary>
+    /// REASON FOR PATCHING: To adjust the field containing the location
+    /// of the lid for the starting ship bin, for a custom farm map may
+    /// have relocated the shipping bin.
+    /// 
+    /// 
     /// Patches the constructor for the Farm class to adjust the starting
     /// shipping bin's location. The patch handles the shipping bin's lid
     /// location.
     /// </summary>
     public class ConstructorFarmPatch
     {
-        private static CustomFarmManager farmManager;
+        private static CustomManager customManager;
 
         /// <summary>
         /// Constructor. Awkward method of setting references needed. However, Harmony patches
         /// are required to be static. Thus we must break good Object Orientated practices.
         /// </summary>
-        /// <param name="farmManager">The class controlling information pertaining to the custom farms (and the loaded farm).</param>
-        public ConstructorFarmPatch(CustomFarmManager farmManager) {
-            ConstructorFarmPatch.farmManager = farmManager;
+        /// <param name="customManager">The class controlling information pertaining to the customs (and the loaded customs).</param>
+        public ConstructorFarmPatch(CustomManager customManager) {
+            ConstructorFarmPatch.customManager = customManager;
         }
 
         /// <summary>
@@ -35,11 +40,11 @@ namespace MTN2.Patches.FarmPatches
         /// </summary>
         /// <param name="__instance">The instance of Farm that was created.</param>
         public static void Postfix(Farm __instance) {
-            if (!farmManager.Canon) {
-                if (farmManager.LoadedFarm == null) {
-                    farmManager.LoadCustomFarm(Game1.whichFarm);
+            if (!customManager.Canon) {
+                if (customManager.LoadedFarm == null) {
+                    customManager.LoadCustomFarm(Game1.whichFarm);
                 }
-                Rectangle newOpenArea = new Rectangle((farmManager.ShippingBinPoints.X - 1) * 64, farmManager.ShippingBinPoints.Y * 64, 256, 192);
+                Rectangle newOpenArea = new Rectangle((customManager.ShippingBinPoints.X - 1) * 64, customManager.ShippingBinPoints.Y * 64, 256, 192);
                 Traverse.Create(__instance).Field("shippingBinLidOpenArea").SetValue(newOpenArea);
             }
         }

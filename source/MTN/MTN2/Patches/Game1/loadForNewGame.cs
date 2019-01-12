@@ -11,23 +11,26 @@ using MTN2.MapData;
 
 namespace MTN2.Patches.Game1Patches {
     /// <summary>
+    /// REASON FOR PATCHING: Load the correct farm map when the user wants to play
+    /// on a custom farm.
+    /// 
     /// Patches the method Game1.loadForNewGame to allow the implementation
     /// of custom farms, overriding existing maps, and additional maps pertaining to
     /// the content pack of said custom farm.
     /// </summary>
     public class loadForNewGamePatch {
 
-        private static CustomFarmManager farmManager;
+        private static CustomManager customManager;
         private static IMonitor Monitor;
 
         /// <summary>
         /// Constructor. Awkward method of setting references needed. However, Harmony patches
         /// are required to be static. Thus we must break good Object Orientated practices.
         /// </summary>
-        /// <param name="farmManager">The class controlling information pertaining to the custom farms (and the loaded farm).</param>
+        /// <param name="farmManager">The class controlling information pertaining to the customs (and the loaded customs).</param>
         /// <param name="Monitor">SMAPI's IMonitor, to print out useful information to user.</param>
-        public loadForNewGamePatch(CustomFarmManager farmManager, IMonitor Monitor) {
-            loadForNewGamePatch.farmManager = farmManager;
+        public loadForNewGamePatch(CustomManager customManager, IMonitor Monitor) {
+            loadForNewGamePatch.customManager = customManager;
             loadForNewGamePatch.Monitor = Monitor;
         }
 
@@ -44,31 +47,31 @@ namespace MTN2.Patches.Game1Patches {
             Map map;
             string mapAssetKey;
 
-            if (farmManager.LoadedFarm == null) {
-                farmManager.LoadCustomFarm(Game1.whichFarm);
+            if (customManager.LoadedFarm == null) {
+                customManager.LoadCustomFarm(Game1.whichFarm);
             }
 
-            if (!farmManager.Canon) {
+            if (!customManager.Canon) {
                 for (farmIndex = 0; farmIndex < Game1.locations.Count; farmIndex++) {
                     if (Game1.locations[farmIndex].Name == "Farm") break;
                 }
 
-                mapAssetKey = farmManager.GetAssetKey(out map);
+                mapAssetKey = customManager.GetAssetKey(out map);
                 Game1.locations[farmIndex] = new Farm(mapAssetKey, "Farm");
             }
 
             //Loaded Farm Maps
             //Memory.farmMaps.Add(new additionalMap<Farm>("BaseFarm", "Farm", (Game1.whichFarm > 4) ? Memory.loadedFarm.farmMapType : fileType.xnb, "Farm", "Base Farm", Game1.getFarm()));
 
-            if (!farmManager.Canon && farmManager.LoadedFarm.AdditionalMaps != null) {
-                foreach (MapFile mf in farmManager.LoadedFarm.AdditionalMaps) {
+            if (!customManager.Canon && customManager.LoadedFarm.AdditionalMaps != null) {
+                foreach (MapFile mf in customManager.LoadedFarm.AdditionalMaps) {
                     object newMap;
 
                     if (mf.FileType == FileType.raw) {
-                        map = farmManager.LoadMap(mf.FileName + ".tbin");
+                        map = customManager.LoadMap(mf.FileName + ".tbin");
                     }
 
-                    mapAssetKey = farmManager.GetAssetKey(mf.FileName, mf.FileType);
+                    mapAssetKey = customManager.GetAssetKey(mf.FileName, mf.FileType);
 
                     switch (mf.MapType) {
                         case "Farm":
@@ -100,13 +103,13 @@ namespace MTN2.Patches.Game1Patches {
                 }
             }
 
-            if (!farmManager.Canon && farmManager.LoadedFarm.Overrides != null) {
+            if (!customManager.Canon && customManager.LoadedFarm.Overrides != null) {
                 int i;
-                foreach (MapFile mf in farmManager.LoadedFarm.Overrides) {
+                foreach (MapFile mf in customManager.LoadedFarm.Overrides) {
                     if (mf.FileType == FileType.raw) {
-                        map = farmManager.LoadMap(mf.FileName + ".tbin");
+                        map = customManager.LoadMap(mf.FileName + ".tbin");
                     }
-                    mapAssetKey = farmManager.GetAssetKey(mf.FileName, mf.FileType);
+                    mapAssetKey = customManager.GetAssetKey(mf.FileName, mf.FileType);
 
                     for (i = 0; i < Game1.locations.Count; i++) {
                         if (Game1.locations[i].Name == mf.Name) break;

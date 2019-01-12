@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTN2", "MTN2\MTN2.csproj", "{A32A6A7E-CF36-461D-BD31-49DF66045619}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Harmony", "Harmony\Harmony.csproj", "{12638E05-C0D9-415F-B8B2-6767D8B721DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A32A6A7E-CF36-461D-BD31-49DF66045619}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A32A6A7E-CF36-461D-BD31-49DF66045619}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A32A6A7E-CF36-461D-BD31-49DF66045619}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12638E05-C0D9-415F-B8B2-6767D8B721DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12638E05-C0D9-415F-B8B2-6767D8B721DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12638E05-C0D9-415F-B8B2-6767D8B721DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12638E05-C0D9-415F-B8B2-6767D8B721DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

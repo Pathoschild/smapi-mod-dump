@@ -33,21 +33,10 @@ namespace DynamicNightTime
         public static ILunarDisturbancesAPI MoonAPI;
         private bool resetOnWakeup;
         private bool isNightOut;
-
-        private static Type GetSDVType(string type)
-        {
-            const string prefix = "StardewValley.";
-
-            return Type.GetType(prefix + type + ", Stardew Valley") ?? Type.GetType(prefix + type + ", StardewValley");
-        }
-
-        /// <summary> Provide an API interface </summary>
         private IDynamicNightAPI API;
-        public override object GetApi()
-        {
-            return API ?? (API = new DynamicNightAPI());
-        }
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             isNightOut = false;
@@ -88,18 +77,33 @@ namespace DynamicNightTime
             Monitor.Log($"Postfixing {UpdateGameClock} with {postfixClock}", LogLevel.Trace);
             harmony.Patch(UpdateGameClock, null, new HarmonyMethod(postfixClock));
 
-            helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
-            helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
-            helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
-            helper.Events.GameLoop.TimeChanged += GameLoop_TimeChanged;
+            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
+            helper.Events.GameLoop.TimeChanged += OnTimeChanged;
            
             Helper.ConsoleCommands.Add("debug_cycleinfo", "Outputs the cycle information", OutputInformation);
             Helper.ConsoleCommands.Add("debug_outdoorlight", "Outputs the outdoor light information", OutputLight);
             Helper.ConsoleCommands.Add("debug_setlatitude", "Sets Latitude", SetLatitude);
-            
         }
 
-        private void GameLoop_TimeChanged(object sender, TimeChangedEventArgs e)
+        /// <summary>Get an API that other mods can access. This is always called after <see cref="M:StardewModdingAPI.Mod.Entry(StardewModdingAPI.IModHelper)" />.</summary>
+        public override object GetApi()
+        {
+            return API ?? (API = new DynamicNightAPI());
+        }
+
+        private static Type GetSDVType(string type)
+        {
+            const string prefix = "StardewValley.";
+
+            return Type.GetType(prefix + type + ", Stardew Valley") ?? Type.GetType(prefix + type + ", StardewValley");
+        }
+
+        /// <summary>Raised after the in-game clock time changes.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
             /*
             //handle ambient light changes.
@@ -123,12 +127,18 @@ namespace DynamicNightTime
             }
         }
 
-        private void GameLoop_ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
+        /// <summary>Raised after the game returns to the title screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
             resetOnWakeup = false;
         }
 
-        private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             if (Game1.isDarkOut() && !Game1.currentLocation.IsOutdoors && Game1.currentLocation is DecoratableLocation loc && !resetOnWakeup)
             {
@@ -142,7 +152,10 @@ namespace DynamicNightTime
             resetOnWakeup = false;
         }
 
-        private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
+        /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialised at this point, so this is a good time to set up mod integrations.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             //testing for ZA MOON, YOUR HIGHNESS.
             MoonAPI = SDVUtilities.GetModApi<ILunarDisturbancesAPI>(Monitor, Helper, "KoihimeNakamura.LunarDisturbances", "1.0.7");

@@ -5,9 +5,9 @@ mods:
    Ui Info Suite
 
 latest commit:
-   commit b785ecae044d503d103d5df59b0fb0157a8fb079
+   commit 07bc66a2e63c02b52c9bc296dcc762ae1a6fbf97
    Author: cdaragorn <cdaragorn1@gmail.com>
-   Date:   Sun Jan 6 22:25:05 2019 -0700
+   Date:   Wed Jan 9 13:26:53 2019 -0700
    
-       Fixed mouse disappearing in one case. Updated version info.
+       Fixed missing travelling merchant icon. Fixed possible race condition in birthday icon.
    
