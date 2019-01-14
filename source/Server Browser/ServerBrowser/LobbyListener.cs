@@ -2,6 +2,7 @@
 using StardewValley;
 using StardewValley.SDKs;
 using System;
+using System.Threading.Tasks;
 
 namespace ServerBrowser
 {
@@ -9,7 +10,7 @@ namespace ServerBrowser
 	{
 		protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(GalaxySocket), "tryCreateLobby");
 		
-		public static void Prefix(ref ServerPrivacy ___privacy)
+		public static void Prefix(ref ServerPrivacy ___privacy, GalaxySocket __instance)
 		{
 			if (CoopMenuHolder.PublicCheckBox.IsChecked)
 			{
@@ -17,6 +18,22 @@ namespace ServerBrowser
 			}
 
 			Console.WriteLine($"TRY CREATE LOBBY GALAXY, PRIVACY = {___privacy.ToString()}");
+			RepeatPrintPrivacy(__instance);
+		}
+
+		static async void RepeatPrintPrivacy (GalaxySocket socket)
+		{
+			while (true)
+			{
+				if (socket != null)
+				{
+					await Task.Delay(1000);
+					var p = ModEntry.ModHelper.Reflection.GetField<ServerPrivacy>(socket, "privacy").GetValue();
+					Console.WriteLine($"LOBBY PRIVACY = {p}");
+				}
+				else
+					return;
+			}
 		}
 	}
 

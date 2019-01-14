@@ -151,6 +151,7 @@ public IDictionary<string, string> OverrideFolderNames = new Dictionary<string, 
 	["Platonymous.Toolkit"] = "@@PyTK",
 	["spacechase0.JsonAssets"] = "@@Json Assets",
 	["spacechase0.SpaceCore"] = "@@SpaceCore",
+	["TehPers.CoreMod"] = "@@Teh's Core Mod",
 	
 	// fix duplicate IDs (Slime Minigame)
 	["Tofu.SlimeMinigame"] = "Slime Mods - Slime Minigame",
@@ -569,17 +570,17 @@ IEnumerable<ReportEntry> GetReport(IEnumerable<ModData> mods, bool forBeta)
 /// <param name="fetch">The method which fetches fresh data.</param>
 T CacheOrFetch<T>(string key, Func<T> fetch)
 {
-	JsonSerializerSettings jsonSettings = new JsonHelper().JsonSettings;
+	var jsonHelper = new JsonHelper();
 	
 	if (this.Cache.Exists(key))
 	{
 		string json = this.Cache.Get<string>(key);
-		return JsonConvert.DeserializeObject<T>(json, jsonSettings);
+		return jsonHelper.Deserialise<T>(json);
 	}
 	else
 	{
 		T data = fetch();
-		string json = JsonConvert.SerializeObject(JsonConvert.SerializeObject(data)); // MonkeyCache handles string values weirdly, and will try to deserialise as JSON when we read it
+		string json = jsonHelper.Serialise(data); // MonkeyCache handles string values weirdly, and will try to deserialise as JSON when we read it
 		this.Cache.Add(key, json, this.CacheTime);
 		return data;
 	}

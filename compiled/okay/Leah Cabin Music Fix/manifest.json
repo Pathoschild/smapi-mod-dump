@@ -1,7 +1,7 @@
 ﻿{
    "Name": "LeahCabinMusicFix",
    "Author": "Huanir",
-   "Version": "1.0.1",
+   "Version": "1.0.2",
    "Description": "A mod to stop Leah's cabin music from playing when you leave her cabin.",
    "UniqueID": "Huanir.LeahCabinMusicFix",
    "EntryDll": "LeahCabinMusicFix.dll",

@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlwaysOnlineModPatch.cs" />
     <Compile Include="BrowserMenu.cs" />
     <Compile Include="BrowserSlot.cs" />
     <Compile Include="Checkbox.cs" />

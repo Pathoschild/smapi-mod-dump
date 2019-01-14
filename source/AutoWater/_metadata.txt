@@ -5,9 +5,9 @@ mods:
    AutoWater
 
 latest commit:
-   commit 0dd163732fe3f7991c6c3d9a18e69f4c545589f7
+   commit b11103e1c08bddf42f5d0385c082c6a023b387f3
    Author: Dakota Groves <whiskersalt@gmail.com>
-   Date:   Fri Jan 11 07:55:55 2019 -0500
+   Date:   Sat Jan 12 04:06:07 2019 -0500
    
-       Add files via upload
+       Updating source to latest files
    

@@ -5,10 +5,9 @@ mods:
    Server Browser
 
 latest commit:
-   commit afa981eed4f257b93fd850fcab58a4fb5668755a
-   Merge: 343508b bafd07a
+   commit de8f8ac2a4d5cae943f7cd2c1ee607d762cbad8e
    Author: Ilyaki <ilyaki.ilyaki@gmail.com>
-   Date:   Mon Jan 7 16:20:17 2019 +0000
+   Date:   Sun Jan 13 07:03:58 2019 +0000
    
-       Merge branch 'master' of https://github.com/Ilyaki/Server-Browser
+       Compatibility patch for Always Online Server
    

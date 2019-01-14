@@ -1,9 +1,0 @@
-{
-  "Name": "Pet Enhancement Mod",
-  "Author": "Jfulmer (updated by Lajna)",
-  "Version": "0.0.1-lajna-update.2",
-  "Description": "This mod makes your pet follow you when you right-click it...",
-  "UniqueID": "JfulmerPetEnhancementMod",
-  "EntryDll": "PetEnhancments.dll",
-  "UpdateKeys": []
-}

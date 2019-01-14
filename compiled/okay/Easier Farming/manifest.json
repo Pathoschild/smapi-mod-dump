@@ -1,0 +1,11 @@
+﻿{
+  "Name": "Easier Farming",
+  "Author": "Cautious Waffle",
+  "Version": "1.0.1",
+  "Description": "Gain farming experience every time you water a crop",
+  "UniqueID": "cautiouswaffle.EasierFarming",
+  "EntryDll": "EasierFarming.dll",
+  "MinimumApiVersion": "2.9",
+  "Dependencies": [],
+  "UpdateKeys": [ "Nexus:1426" ]
+}

@@ -5,9 +5,9 @@ mods:
    Crops Watered Indicator
 
 latest commit:
-   commit ea9c10dac14ca403c6cafd7cebdc029664c4cdcd
-   Author: Tyler Thrailkill <tylerbthrailkill@gmail.com>
-   Date:   Sun Dec 30 14:39:08 2018 -0700
+   commit abb2cf93df232e163d265f7c2cb633aa528f4e83
+   Author: DRAGONBORN\Tyler <tylerbthrailkill@gmail.com>
+   Date:   Sat Jan 12 22:36:57 2019 -0700
    
-       Add mod id
+       Update version for nexus, adding update keys
    

@@ -8,7 +8,7 @@ namespace ServerBrowser
 	{
 		const int pixelsWide = 9;
 		const int scale = 4;
-		public bool IsChecked { get; private set; }
+		public bool IsChecked { get; set; }
 
 		static Rectangle sourceRectUnchecked = new Rectangle(227, 425, 9, 9);
 		static Rectangle sourceRectChecked = new Rectangle(236, 425, 9, 9);

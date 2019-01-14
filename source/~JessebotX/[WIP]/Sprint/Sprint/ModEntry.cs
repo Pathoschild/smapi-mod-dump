@@ -14,18 +14,28 @@ namespace Sprint
 {
     class ModEntry : Mod
     {
+        /************
+         ***Fields***
+         ************/
         private ModConfig Config;
+        /* sprint activated bool */
+        private bool sprintActivated = false;
+        /* Realistic Sprint Speed */
+        private float secondsUntilIncreaseSpeed = 0;
 
-        public override void Entry (IModHelper helper)
+        private float secondsUntilSprintBuffIncrementStops = 0;
+
+        public override void Entry(IModHelper helper)
         {
-            /* Event Handler */
-            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            /* Event Handlers */
+            this.Helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            this.Helper.Events.GameLoop.UpdateTicked += this.UpdateTicked;
 
             /* Read Config */
             this.Config = helper.ReadConfig<ModConfig>();
         }
 
-        private void OnButtonPressed (object sender, ButtonPressedEventArgs e)
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             // if player isn't free to act in the world, do nothing
             if (!Context.IsPlayerFree)
@@ -48,8 +58,17 @@ namespace Sprint
 
                 if (isPrimarySprintKeyPressed || isSecondarySprintKeyPressed || isControllerSprintButtonPressed)
                 {
-                    Game1.player.addedSpeed = 3;
+                    sprintActivated = true;
                 }
+            }
+        }
+        private void UpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            if (sprintActivated == true)
+            {
+                Buff buff = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, null, null, null);
+                buff.millisecondsDuration = 
+                    //todo
             }
         }
     }

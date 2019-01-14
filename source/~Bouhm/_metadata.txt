@@ -6,9 +6,9 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit 99b997e1041e2c735e25e2f8df0c9e13dafc3046
+   commit 9e3f253efe40e016796a9fe6b7d6af97c861b5fd
    Author: Bouhm <bbouhm@gmail.com>
-   Date:   Tue Dec 25 14:13:59 2018 -0800
+   Date:   Sun Jan 13 14:32:59 2019 -0800
    
-       fix issue with custom NPC name mod settings
+       fix quest/birthday icon showing without config
    

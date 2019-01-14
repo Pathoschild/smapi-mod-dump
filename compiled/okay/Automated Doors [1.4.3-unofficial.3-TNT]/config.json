@@ -1,0 +1,7 @@
+{
+  "TimeDoorsOpen": 620,
+  "TimeDoorsClose": 1810,
+  "OpenOnRainyDays": false,
+  "OpenInWinter": false,
+  "Buildings": {}
+}

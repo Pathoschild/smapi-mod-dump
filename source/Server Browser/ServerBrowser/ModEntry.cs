@@ -34,6 +34,7 @@ namespace ServerBrowser
 			ModHelper = helper;
 
 			LoadConfig();
+			CoopMenuHolder.PublicCheckBox.IsChecked = Config.PublicCheckedByDefault;
 
 			RefreshTexture = helper.Content.Load<Texture2D>("refresh.png");
 

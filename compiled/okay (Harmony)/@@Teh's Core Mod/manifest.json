@@ -1,0 +1,11 @@
+﻿{
+  "Name": "Teh's Core Mod",
+  "Author": "TehPers",
+  "Version": "0.1.0",
+  "Description": "A collection of helpers and frameworks for creating mods.",
+  "UniqueID": "TehPers.CoreMod",
+  "EntryDll": "TehPers.CoreMod.dll",
+  "MinimumApiVersion": "2.7",
+  "UpdateKeys": [],
+  "Dependencies": []
+}
