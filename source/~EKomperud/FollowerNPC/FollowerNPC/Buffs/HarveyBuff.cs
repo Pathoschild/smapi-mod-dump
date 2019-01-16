@@ -9,7 +9,7 @@ namespace FollowerNPC.Buffs
         protected int healthThreshold;
         protected int frameTimer;
 
-        public HarveyBuff(Farmer farmer, NPC npc) : base(farmer, npc)
+        public HarveyBuff(Farmer farmer, NPC npc, CompanionsManager manager) : base(farmer, npc, manager)
         {
             buff = new Buff(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 30, "", "");
             buff.description = "Dr. Harvey is the master of both preventative and reactive medicine."+

@@ -1,7 +1,7 @@
 ﻿{
    "Name": "priceDrops",
    "Author": "skuldomg",
-   "Version": "1.0.5",
+   "Version": "1.0.7",
    "Description": "Introduces discounts at shops when the player has a good relationship with the shop owner.",
    "UniqueID": "skuldomg.priceDrops",
    "EntryDll": "priceDrops.dll",

@@ -8,7 +8,7 @@ namespace FollowerNPC.Buffs
     {
         protected uint buffOwnerLastMonstersSlain;
 
-        public AlexBuff(Farmer farmer, NPC npc) : base(farmer, npc)
+        public AlexBuff(Farmer farmer, NPC npc, CompanionsManager manager) : base(farmer, npc, manager)
         {
             buff = new Buff(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 30, "", "");
             buff.description = "Alex's fighting spirit seems to awaken yours as well." + 

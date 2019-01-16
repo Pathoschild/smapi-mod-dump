@@ -1,20 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
 using StardustCore.UIUtilities.MenuComponents.Delegates.Functionality;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StardustCore.UIUtilities.MenuComponents
 {
-
-    /// <summary>
-    /// An enum describing the types of slider bars that can exist.
-    /// </summary>
+    /// <summary>An enum describing the types of slider bars that can exist.</summary>
     public enum SliderStyle
     {
         Horizontal,
@@ -22,72 +15,51 @@ namespace StardustCore.UIUtilities.MenuComponents
         Square
     }
 
-    /// <summary>
-    /// Deals with all of the information pertaining to the limitations and movement of the slider bar button.
-    /// </summary>
+    /// <summary>Deals with all of the information pertaining to the limitations and movement of the slider bar button.</summary>
     public class SliderInformation
     {
-        /// <summary>
-        /// The yPosition offset of the slider bar button.
-        /// </summary>
+        /// <summary>The yPosition offset of the slider bar button.</summary>
         public int xPos;
 
-        /// <summary>
-        /// The xPosition offset of the slider bar button.
-        /// </summary>
+        /// <summary>The xPosition offset of the slider bar button.</summary>
         public int yPos;
 
-        /// <summary>
-        /// Sensitivity of the slider bar. Probably should be called sluggishness since a higher number makes it move slower.
-        /// </summary>
+        /// <summary>Sensitivity of the slider bar. Probably should be called sluggishness since a higher number makes it move slower.</summary>
         public int sensitivity;
 
-        /// <summary>
-        /// Min possible x position.
-        /// </summary>
+        /// <summary>Min possible x position.</summary>
         public int minX;
 
-        /// <summary>
-        /// Min possible y position.
-        /// </summary>
+        /// <summary>Min possible y position.</summary>
         public int minY;
 
-        /// <summary>
-        /// Max possible x position.
-        /// </summary>
+        /// <summary>Max possible x position.</summary>
         public int maxX;
-        /// <summary>
-        /// Max possible y positon;
-        /// </summary>
+        /// <summary>Max possible y positon;</summary>
         public int maxY;
 
 
-        /// <summary>
-        /// Enum dealing with what kind of slider this is.
-        /// </summary>
+        /// <summary>Enum dealing with what kind of slider this is.</summary>
         public SliderStyle sliderStyle;
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="style"></param>
-        /// <param name="startingPosition"></param>
-        /// <param name="sensitivity"></param>
-        public SliderInformation(SliderStyle style, int startingPosition,int sensitivity=1)
+        /// <summary>Construct an instance.</summary>
+        public SliderInformation(SliderStyle style, int startingPosition, int sensitivity = 1)
         {
             this.sliderStyle = style;
-            if (style == SliderStyle.Horizontal)
+            switch (style)
             {
-                this.xPos = startingPosition;
-            }
-            else if (style == SliderStyle.Vertical)
-            {
-                this.yPos = startingPosition;
-            }
-            else if (style == SliderStyle.Square)
-            {
-                this.xPos = startingPosition;
-                this.yPos = startingPosition;
+                case SliderStyle.Horizontal:
+                    this.xPos = startingPosition;
+                    break;
+
+                case SliderStyle.Vertical:
+                    this.yPos = startingPosition;
+                    break;
+
+                case SliderStyle.Square:
+                    this.xPos = startingPosition;
+                    this.yPos = startingPosition;
+                    break;
             }
             this.minX = 0;
             this.minY = 0;
@@ -99,18 +71,20 @@ namespace StardustCore.UIUtilities.MenuComponents
         public SliderInformation(SliderStyle style, int startingPositionX, int startingPositionY, int sensitivity = 1)
         {
             this.sliderStyle = style;
-            if (style == SliderStyle.Horizontal)
+            switch (style)
             {
-                this.xPos = startingPositionX;
-            }
-            else if (style == SliderStyle.Vertical)
-            {
-                this.yPos = startingPositionY;
-            }
-            else if (style == SliderStyle.Square)
-            {
-                this.xPos = startingPositionX;
-                this.yPos = startingPositionY;
+                case SliderStyle.Horizontal:
+                    this.xPos = startingPositionX;
+                    break;
+
+                case SliderStyle.Vertical:
+                    this.yPos = startingPositionY;
+                    break;
+
+                case SliderStyle.Square:
+                    this.xPos = startingPositionX;
+                    this.yPos = startingPositionY;
+                    break;
             }
             this.minX = 0;
             this.minY = 0;
@@ -119,21 +93,23 @@ namespace StardustCore.UIUtilities.MenuComponents
             this.sensitivity = sensitivity;
         }
 
-        public SliderInformation(SliderStyle style, int startingPositionX, int startingPositionY, int minX, int maxX, int minY,int maxY, int sensitivity = 1)
+        public SliderInformation(SliderStyle style, int startingPositionX, int startingPositionY, int minX, int maxX, int minY, int maxY, int sensitivity = 1)
         {
             this.sliderStyle = style;
-            if (style == SliderStyle.Horizontal)
+            switch (style)
             {
-                this.xPos = startingPositionX;
-            }
-            else if (style == SliderStyle.Vertical)
-            {
-                this.yPos = startingPositionY;
-            }
-            else if (style == SliderStyle.Square)
-            {
-                this.xPos = startingPositionX;
-                this.yPos = startingPositionY;
+                case SliderStyle.Horizontal:
+                    this.xPos = startingPositionX;
+                    break;
+
+                case SliderStyle.Vertical:
+                    this.yPos = startingPositionY;
+                    break;
+
+                case SliderStyle.Square:
+                    this.xPos = startingPositionX;
+                    this.yPos = startingPositionY;
+                    break;
             }
             this.minX = minX;
             this.minY = minY;
@@ -142,199 +118,121 @@ namespace StardustCore.UIUtilities.MenuComponents
             this.sensitivity = sensitivity;
         }
 
-        /// <summary>
-        /// Offset that occurs when the slider button should be clicked and dragged.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <summary>Offset that occurs when the slider button should be clicked and dragged.</summary>
         public void movementOffset(int x, int y)
         {
-            if (this.sliderStyle == SliderStyle.Horizontal|| this.sliderStyle==SliderStyle.Square)
+            if (this.sliderStyle == SliderStyle.Horizontal || this.sliderStyle == SliderStyle.Square)
             {
-                if(x-this.xPos>=sensitivity)
-                this.xPos += (x-this.xPos)/sensitivity;
+                if (x - this.xPos >= this.sensitivity)
+                    this.xPos += (x - this.xPos) / this.sensitivity;
             }
-            else if (this.sliderStyle == SliderStyle.Vertical || this.sliderStyle==SliderStyle.Square)
+            else if (this.sliderStyle == SliderStyle.Vertical || this.sliderStyle == SliderStyle.Square)
             {
-                if (y - this.yPos >= sensitivity)
-                {
-                    this.yPos += (y - this.yPos) / sensitivity;
-                }
+                if (y - this.yPos >= this.sensitivity)
+                    this.yPos += (y - this.yPos) / this.sensitivity;
             }
         }
 
-        /// <summary>
-        /// Offset that occurs when a button is pushed to modify the slider button position.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <summary>Offset that occurs when a button is pushed to modify the slider button position.</summary>
         public void offset(int x, int y)
         {
             this.xPos += x;
             this.yPos += y;
         }
 
-        /// <summary>
-        /// Gets the slider information for a label.
-        /// </summary>
-        /// <returns></returns>
-        public string getLabelInformation(bool getExtraInformation=true)
+        /// <summary>Gets the slider information for a label.</summary>
+        public string getLabelInformation(bool getExtraInformation = true)
         {
-            if (getExtraInformation == false) return "";
-            if (this.sliderStyle == SliderStyle.Horizontal)
+            if (!getExtraInformation) return "";
+            switch (this.sliderStyle)
             {
-                return this.xPos.ToString();
+                case SliderStyle.Horizontal:
+                    return this.xPos.ToString();
+
+                case SliderStyle.Vertical:
+                    return this.yPos.ToString();
+
+                case SliderStyle.Square:
+                    return this.xPos + "," + this.yPos;
+
+                default:
+                    return "";
             }
-            else if (this.sliderStyle == SliderStyle.Vertical)
-            {
-                return this.yPos.ToString();
-            }
-            else if (this.sliderStyle == SliderStyle.Square)
-            {
-                return this.xPos.ToString() + "," + this.yPos.ToString();
-            }
-            return "";
         }
     }
 
-    /// <summary>
-    /// A menu component that is a sider bar so that you can adjust for different settings.
-    /// </summary>
-    public class SliderButton: Button
+    /// <summary>A menu component that is a sider bar so that you can adjust for different settings.</summary>
+    public class SliderButton : Button
     {
-
-        /// <summary>
-        /// Holds all of the information for a slider.
-        /// </summary>
+        /// <summary>Holds all of the information for a slider.</summary>
         public SliderInformation sliderInformation;
-        /// <summary>
-        /// Determines whether or not to get extra information for the slider bar.
-        /// </summary>
+
+        /// <summary>Determines whether or not to get extra information for the slider bar.</summary>
         public bool getLabelXYPos;
 
-        /// <summary>
-        /// The texture for the actual slider bar.
-        /// </summary>
+        /// <summary>The texture for the actual slider bar.</summary>
         public Button sliderBar;
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="bounds"></param>
-        /// <param name="buttonTexture"></param>
-        /// <param name="barTexture"></param>
-        /// <param name="SourceRect"></param>
-        /// <param name="scale"></param>
-        /// <param name="sliderInformation"></param>
-        /// <param name="getLabelXYPos"></param>
-        public SliderButton(Rectangle bounds, Texture2DExtended buttonTexture,Button barTexture, Rectangle SourceRect, float scale,SliderInformation sliderInformation, bool getLabelXYPos=true): base(bounds, buttonTexture, SourceRect, scale)
+        /// <summary>Construct an instance.</summary>
+        public SliderButton(Rectangle bounds, Texture2DExtended buttonTexture, Button barTexture, Rectangle sourceRect, float scale, SliderInformation sliderInformation, bool getLabelXYPos = true)
+            : base(bounds, buttonTexture, sourceRect, scale)
         {
             this.sliderInformation = sliderInformation;
             this.getLabelXYPos = getLabelXYPos;
             this.sliderBar = barTexture;
-            initializeBounds();
+            this.initializeBounds();
         }
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="Name"></param>
-        /// <param name="displayText"></param>
-        /// <param name="bounds"></param>
-        /// <param name="buttonTexture"></param>
-        /// <param name="barTexture"></param>
-        /// <param name="SourceRect"></param>
-        /// <param name="scale"></param>
-        /// <param name="sliderInformation"></param>
-        /// <param name="defaultAnimation"></param>
-        /// <param name="DrawColor"></param>
-        /// <param name="TextColor"></param>
-        /// <param name="buttonFunctionality"></param>
-        /// <param name="AnimationEnabled"></param>
-        /// <param name="extraTexture"></param>
-        /// <param name="getLabelXYPos"></param>
-        public SliderButton(string Name,string displayText, Rectangle bounds, Texture2DExtended buttonTexture, Button barTexture, Rectangle SourceRect, float scale, SliderInformation sliderInformation, Animations.Animation defaultAnimation, Color DrawColor, Color TextColor, ButtonFunctionality buttonFunctionality, bool AnimationEnabled, List<KeyValuePair<ClickableTextureComponent,ExtraTextureDrawOrder>> extraTexture, bool getLabelXYPos = true) : base(Name,bounds, buttonTexture,displayText, SourceRect, scale,defaultAnimation,DrawColor,TextColor,buttonFunctionality,AnimationEnabled,extraTexture)
+        /// <summary>Construct an instance.</summary>
+        public SliderButton(string name, string displayText, Rectangle bounds, Texture2DExtended buttonTexture, Button barTexture, Rectangle sourceRect, float scale, SliderInformation sliderInformation, Animations.Animation defaultAnimation, Color drawColor, Color textColor, ButtonFunctionality buttonFunctionality, bool animationEnabled, List<KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>> extraTexture, bool getLabelXYPos = true)
+            : base(name, bounds, buttonTexture, displayText, sourceRect, scale, defaultAnimation, drawColor, textColor, buttonFunctionality, animationEnabled, extraTexture)
         {
             this.sliderInformation = sliderInformation;
             this.getLabelXYPos = getLabelXYPos;
             this.sliderBar = barTexture;
-            initializeBounds();
+            this.initializeBounds();
         }
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="Name"></param>
-        /// <param name="displayText"></param>
-        /// <param name="bounds"></param>
-        /// <param name="buttonTexture"></param>
-        /// <param name="barTexture"></param>
-        /// <param name="SourceRect"></param>
-        /// <param name="scale"></param>
-        /// <param name="sliderInformation"></param>
-        /// <param name="defaultAnimation"></param>
-        /// <param name="DrawColor"></param>
-        /// <param name="TextColor"></param>
-        /// <param name="buttonFunctionality"></param>
-        /// <param name="AnimationEnabled"></param>
-        /// <param name="animationsToPlay"></param>
-        /// <param name="startingKey"></param>
-        /// <param name="startingAnimationFrame"></param>
-        /// <param name="extraTexture"></param>
-        /// <param name="getLabelXYPos"></param>
-        public SliderButton(string Name, string displayText, Rectangle bounds, Texture2DExtended buttonTexture, Button barTexture, Rectangle SourceRect, float scale, SliderInformation sliderInformation, Animations.Animation defaultAnimation, Color DrawColor, Color TextColor, ButtonFunctionality buttonFunctionality, bool AnimationEnabled,Dictionary<string,List<Animations.Animation>> animationsToPlay,string startingKey,int startingAnimationFrame ,List<KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>> extraTexture, bool getLabelXYPos = true) : base(Name, bounds, buttonTexture, displayText, SourceRect, scale, defaultAnimation,animationsToPlay,startingKey, DrawColor, TextColor, buttonFunctionality,startingAnimationFrame ,AnimationEnabled, extraTexture)
+        /// <summary>Construct an instance.</summary>
+        public SliderButton(string name, string displayText, Rectangle bounds, Texture2DExtended buttonTexture, Button barTexture, Rectangle sourceRect, float scale, SliderInformation sliderInformation, Animations.Animation defaultAnimation, Color drawColor, Color textColor, ButtonFunctionality buttonFunctionality, bool animationEnabled, Dictionary<string, List<Animations.Animation>> animationsToPlay, string startingKey, int startingAnimationFrame, List<KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>> extraTexture, bool getLabelXYPos = true)
+            : base(name, bounds, buttonTexture, displayText, sourceRect, scale, defaultAnimation, animationsToPlay, startingKey, drawColor, textColor, buttonFunctionality, startingAnimationFrame, animationEnabled, extraTexture)
         {
             this.sliderInformation = sliderInformation;
             this.getLabelXYPos = getLabelXYPos;
             this.sliderBar = barTexture;
-            initializeBounds();
+            this.initializeBounds();
         }
 
-        /// <summary>
-        /// Interfaces the offset function for sliderInformation.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <summary>Interfaces the offset function for sliderInformation.</summary>
         public void offset(int x, int y)
         {
-
-            if (x < sliderBar.bounds.X)
-            {
-                x = sliderBar.bounds.X;
-            }
-            if (y < sliderBar.bounds.Y)
-            {
-                y = sliderBar.bounds.Y;
-            }
-            if (x > (sliderBar.bounds.X) + (sliderBar.bounds.Width))
-            {
-                x = (sliderBar.bounds.X) + (sliderBar.bounds.Width);
-            }
-            if (y > (sliderBar.bounds.Y) + (sliderBar.bounds.Height))
-            {
-                y = (sliderBar.bounds.Y) + (sliderBar.bounds.Height);
-            }
+            if (x < this.sliderBar.bounds.X)
+                x = this.sliderBar.bounds.X;
+            if (y < this.sliderBar.bounds.Y)
+                y = this.sliderBar.bounds.Y;
+            if (x > (this.sliderBar.bounds.X) + (this.sliderBar.bounds.Width))
+                x = (this.sliderBar.bounds.X) + (this.sliderBar.bounds.Width);
+            if (y > (this.sliderBar.bounds.Y) + (this.sliderBar.bounds.Height))
+                y = (this.sliderBar.bounds.Y) + (this.sliderBar.bounds.Height);
 
             //Get offset from button.
-            int xOffset = (bounds.X - x); //267-300
-            int yOffset = (bounds.Y - y);
+            int xOffset = (this.bounds.X - x); //267-300
+            int yOffset = (this.bounds.Y - y);
 
-
-            if (sliderInformation.sliderStyle == SliderStyle.Horizontal || sliderInformation.sliderStyle== SliderStyle.Square)
+            if (this.sliderInformation.sliderStyle == SliderStyle.Horizontal || this.sliderInformation.sliderStyle == SliderStyle.Square)
             {
-
-                this.sliderInformation.xPos = (x - sliderBar.bounds.X) / (int)scale;
-                this.bounds.X = this.sliderBar.bounds.X + this.sliderInformation.xPos*(int)scale;
+                this.sliderInformation.xPos = (x - this.sliderBar.bounds.X) / (int)this.scale;
+                this.bounds.X = this.sliderBar.bounds.X + this.sliderInformation.xPos * (int)this.scale;
                 if (this.bounds.X > this.sliderBar.bounds.X + this.sliderBar.bounds.Width)
                 {
                     this.bounds.X = this.sliderBar.bounds.X + this.sliderBar.bounds.Width;
                 }
             }
 
-            if (sliderInformation.sliderStyle == SliderStyle.Vertical || sliderInformation.sliderStyle == SliderStyle.Square)
+            if (this.sliderInformation.sliderStyle == SliderStyle.Vertical || this.sliderInformation.sliderStyle == SliderStyle.Square)
             {
-                this.sliderInformation.yPos = (y - sliderBar.bounds.Y) / (int)scale;
-                this.bounds.Y = this.sliderBar.bounds.Y + this.sliderInformation.yPos*(int)scale;
+                this.sliderInformation.yPos = (y - this.sliderBar.bounds.Y) / (int)this.scale;
+                this.bounds.Y = this.sliderBar.bounds.Y + this.sliderInformation.yPos * (int)this.scale;
 
                 if (this.bounds.Y > this.sliderBar.bounds.Y + this.sliderBar.bounds.Height)
                 {
@@ -342,62 +240,36 @@ namespace StardustCore.UIUtilities.MenuComponents
                 }
             }
 
-            
-            
-
-          
             //this.sliderInformation.offset(xOffset, yOffset);
         }
 
-
-        /// <summary>
-        /// Sets the initial position for the button at sliderPosition.x=0;
-        /// </summary>
+        /// <summary>Sets the initial position for the button at sliderPosition.x=0;</summary>
         public void initializeBounds()
         {
-            this.bounds.X +=this.sliderInformation.xPos*(int)scale;
-            this.bounds.Y +=this.sliderInformation.yPos*(int)scale;
+            this.bounds.X += this.sliderInformation.xPos * (int)this.scale;
+            this.bounds.Y += this.sliderInformation.yPos * (int)this.scale;
         }
 
-        /// <summary>
-        /// Interfaces the movementOffset function for sliderInformation.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <summary>Interfaces the movementOffset function for sliderInformation.</summary>
         public void movementOffset(int x, int y)
         {
-            offset(x, y);
+            this.offset(x, y);
         }
 
-        /// <summary>
-        /// Draws the slider.
-        /// </summary>
-        /// <param name="b"></param>
-        /// <param name="color"></param>
+        /// <summary>Draws the slider.</summary>
         public override void draw(SpriteBatch b, Color color)
         {
-            draw(b, color, Vector2.Zero, 0.0f);
+            this.draw(b, color, Vector2.Zero, 0.0f);
         }
 
-        /// <summary>
-        /// Checks if the button or the slider bar has been clicked.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
+        /// <summary>Checks if the button or the slider bar has been clicked.</summary>
         public override bool containsPoint(int x, int y)
         {
             //Got to check to see if I am also dealing with my sliderBar
-            if (this.sliderBar.containsPoint(x, y)) return true;
-
-            return base.containsPoint(x, y);
+            return this.sliderBar.containsPoint(x, y) || base.containsPoint(x, y);
         }
 
-        /// <summary>
-        /// Triggers when the slider itself is clicked.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <summary>Triggers when the slider itself is clicked.</summary>
         public override void onLeftClick(int x, int y)
         {
             if (this.sliderBar.containsPoint(x, y))
@@ -408,64 +280,42 @@ namespace StardustCore.UIUtilities.MenuComponents
             }
         }
 
-        /// <summary>
-        /// Triggers when the button component of the slider bar is held.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <summary>Triggers when the button component of the slider bar is held.</summary>
         public override void onLeftClickHeld(int x, int y)
         {
             if (this.containsPoint(x, y))
-            {
                 this.movementOffset(x, y);
-            }
         }
 
-
-
-        /// <summary>
-        /// D   raws the slider.
-        /// </summary>
-        /// <param name="b"></param>
-        /// <param name="color"></param>
-        /// <param name="offset"></param>
-        /// <param name="layerDepth"></param>
+        /// <summary>Draws the slider.</summary>
         public override void draw(SpriteBatch b, Color color, Vector2 offset, float layerDepth)
         {
-
             if (this.extraTextures != null)
             {
                 foreach (var v in this.extraTextures)
                 {
                     if (v.Value == ExtraTextureDrawOrder.before)
-                    {
                         v.Key.draw(b, color, layerDepth);
-                    }
                 }
             }
+
             //Draw the slider bar.
-            sliderBar.draw(b, color, offset, layerDepth);
+            this.sliderBar.draw(b, color, offset, layerDepth);
             //b.Draw(this..getTexture(), new Vector2(this.bounds.X + (int)offset.X, this.bounds.Y + (int)offset.Y), this.sourceRect, color, 0f, Vector2.Zero, this.scale, SpriteEffects.None, layerDepth);
-            b.Draw(this.animationManager.getTexture(), new Vector2(this.bounds.X + (int)offset.X, this.bounds.Y), this.sourceRect, color, 0f, Vector2.Zero, this.scale, SpriteEffects.None, layerDepth+0.01f);
+            b.Draw(this.animationManager.getTexture(), new Vector2(this.bounds.X + (int)offset.X, this.bounds.Y), this.sourceRect, color, 0f, Vector2.Zero, this.scale, SpriteEffects.None, layerDepth + 0.01f);
 
             if (this.extraTextures != null)
             {
                 foreach (var v in this.extraTextures)
                 {
                     if (v.Value == ExtraTextureDrawOrder.after)
-                    {
                         v.Key.draw(b, color, layerDepth);
-                    }
                 }
             }
 
-            
             if (string.IsNullOrEmpty(this.label))
                 return;
-            b.DrawString(Game1.smallFont, this.label+this.sliderInformation.getLabelInformation(this.getLabelXYPos), new Vector2((float)((sliderBar.bounds.X + sliderBar.bounds.Width+offset.X+this.bounds.Width)), (float)sliderBar.bounds.Y + ((float)(sliderBar.bounds.Height / 2) - Game1.smallFont.MeasureString(this.label).Y / 2f)+offset.X), textColor,0f,Vector2.Zero,1f,SpriteEffects.None,layerDepth+0.02f);
-            
+            b.DrawString(Game1.smallFont, this.label + this.sliderInformation.getLabelInformation(this.getLabelXYPos), new Vector2((float)((this.sliderBar.bounds.X + this.sliderBar.bounds.Width + offset.X + this.bounds.Width)), (float)this.sliderBar.bounds.Y + ((float)(this.sliderBar.bounds.Height / 2) - Game1.smallFont.MeasureString(this.label).Y / 2f) + offset.X), this.textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, layerDepth + 0.02f);
         }
-
-
     }
 }

@@ -48,6 +48,7 @@ namespace MTN2
             Helper.Events.GameLoop.ReturnedToTitle += ClearData;
             Helper.Events.GameLoop.SaveLoaded += OverrideWarps;
             Helper.Events.GameLoop.SaveLoaded += InitialScienceLab;
+            Helper.Events.GameLoop.SaveLoaded += SpawnManager.InitalizeResources;
             Helper.Events.GameLoop.Saving += BeforeSaveScienceLab;
             Helper.Events.GameLoop.Saving += SpawnManager.ManageAll;
             Helper.Events.GameLoop.Saved += AfterSaveScienceLab;

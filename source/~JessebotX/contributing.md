@@ -9,8 +9,7 @@
 - you can explain it well or it is understandable
 
 ## Pull Requests
-Before creating a pull request, Make sure:
-- kept the old version stuff and has been placed in the ```oldversions``` folder
+**Before creating a pull request, Make sure:**
 - it is not just going to be a duplicate
 - no malicious stuff please
   

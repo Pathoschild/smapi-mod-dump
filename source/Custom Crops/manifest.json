@@ -1,14 +1,10 @@
 {
   "Name": "Custom Crops",
   "Author": "spacechase0",
-  "Version": {
-    "MajorVersion": 1,
-    "MinorVersion": 1,
-    "PatchVersion": 0,
-    "Build": ""
-  },
+  "Version": "1.1.0",
   "Description": "Allow custom crops.",
   "UniqueID": "spacechase0.CustomCrops",
-  "PerSaveConfigs": false,
-  "EntryDll": "CustomCrops.dll"
+  "MinimumApiVersion": "2.9.0",
+  "EntryDll": "CustomCrops.dll",
+  "UpdateKeys": [ "Nexus:1592" ]
 }

@@ -1,0 +1,13 @@
+url:
+   https://github.com/joaniedavis/RandomHairMod.git
+
+mods:
+   Random Hair Color
+
+latest commit:
+   commit 617d57d72265b23b87de0a5d7a35f09e426602e0
+   Author: Joanie Davis <joanie.davis@atomicobject.com>
+   Date:   Tue Jan 15 19:38:31 2019 -0500
+   
+       Make randomization more random and update README
+   

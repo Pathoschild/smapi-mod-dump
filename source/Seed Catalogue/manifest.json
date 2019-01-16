@@ -4,13 +4,11 @@
   "Version": "1.0.2",
   "Description": "A shopping catalogue for out-of-season seeds.",
   "UniqueID": "spacechase0.SeedCatalogue",
-  "PerSaveConfigs": false,
   "EntryDll": "SeedCatalogue.dll",
+  "MinimumApiVersion": "2.9.0",
   "UpdateKeys": [ "Nexus:1640", "Chucklefish:5090" ],
   "Dependencies": [
-    {
-      "UniqueID": "spacechase0.SpaceCore"
-    }
+    { "UniqueID": "spacechase0.SpaceCore" }
   ],
   "spacechase0": "seed-catalogue"
 }

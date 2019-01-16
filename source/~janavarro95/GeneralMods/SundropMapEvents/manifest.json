@@ -1,16 +1,13 @@
 {
-  "Name": "SunDropMapEvents",
+  "Name": "SunDrop Map Events",
   "Author": "Alpha_Omegasis",
   "Version": "0.1.0",
   "Description": "A system to add events to the SunDropMod",
   "UniqueID": "SunDrop.MapEvents",
   "EntryDll": "SunDropMapEvents.dll",
-  "MinimumApiVersion": "2.0",
-  "UpdateKeys": [ ],
+  "MinimumApiVersion": "2.10.1",
+  "UpdateKeys": [],
   "Dependencies": [
-   {
-      "UniqueID": "Omegasis.EventSystem",
-      "IsRequired": true
-   }
-]
+    { "UniqueID": "Omegasis.EventSystem" }
+  ]
 }

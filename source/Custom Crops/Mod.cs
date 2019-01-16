@@ -1,33 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StardewModdingAPI;
 using System.IO;
-using System.Reflection;
-using StardewModdingAPI.Events;
-using StardewValley.Menus;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Menus;
 
 namespace CustomCrops
 {
     public class Mod : StardewModdingAPI.Mod
     {
         public static Mod instance;
-        
+
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             instance = this;
 
-            MenuEvents.MenuChanged += menuChanged;
+            helper.Events.Display.MenuChanged += OnMenuChanged;
 
-            var savedIds = helper.ReadJsonFile<Dictionary<string, CropData.Ids>>(Path.Combine(Helper.DirectoryPath, "saved-ids.json"));
+            var savedIds = helper.Data.ReadJsonFile<Dictionary<string, CropData.Ids>>("saved-ids.json");
             if (savedIds != null)
             {
                 CropData.savedIds = savedIds;
-                foreach ( var ids in savedIds )
+                foreach (var ids in savedIds)
                 {
                     CropData.Ids.MostRecentObject = Math.Max(CropData.Ids.MostRecentObject, Math.Max(ids.Value.Product, ids.Value.Seeds));
                     CropData.Ids.MostRecentCrop = Math.Max(CropData.Ids.MostRecentCrop, ids.Value.Crop);
@@ -36,67 +34,71 @@ namespace CustomCrops
 
             CropData.crops.Clear();
             Log.info("Registering custom crops...");
-            foreach (var file in Directory.EnumerateDirectories(Path.Combine(helper.DirectoryPath, "Crops")))
+            DirectoryInfo cropsFolder = new DirectoryInfo(Path.Combine(helper.DirectoryPath, "Crops"));
+            if (!cropsFolder.Exists)
+                cropsFolder.Create();
+            foreach (var folderPath in Directory.EnumerateDirectories(cropsFolder.FullName))
             {
+                IContentPack contentPack = this.Helper.ContentPacks.CreateFake(folderPath);
                 try
                 {
-                    var data = helper.ReadJsonFile<CropData>(Path.Combine(file, "crop.json"));
+                    var data = contentPack.ReadJsonFile<CropData>("crop.json");
                     if (data == null)
                     {
-                        Log.warn("\tFailed to load crop data for " + file);
+                        Log.warn($"\tFailed to load crop data for {folderPath}");
                         continue;
                     }
-                    else if (!File.Exists(Path.Combine(file, "crop.png")))
+                    else if (!File.Exists(Path.Combine(folderPath, "crop.png")))
                     {
-                        Log.warn("\tCrop " + file + " has no crop image, skipping");
+                        Log.warn($"\tCrop {folderPath} has no crop image, skipping");
                         continue;
                     }
-                    else if (!File.Exists(Path.Combine(file, "product.png")))
+                    else if (!File.Exists(Path.Combine(folderPath, "product.png")))
                     {
-                        Log.warn("\tCrop " + file + " has no product image, skipping");
+                        Log.warn($"\tCrop {folderPath} has no product image, skipping");
                         continue;
                     }
-                    else if (!File.Exists(Path.Combine(file, "seeds.png")))
+                    else if (!File.Exists(Path.Combine(folderPath, "seeds.png")))
                     {
-                        Log.warn("\tCrop " + file + " has no seeds image, skipping");
+                        Log.warn($"\tCrop {folderPath} has no seeds image, skipping");
                         continue;
                     }
 
-                    Log.info("\tCrop: " + data.Id);
+                    Log.info($"\tCrop: {data.Id}");
                     CropData.Register(data);
                 }
-                catch ( Exception e )
+                catch (Exception e)
                 {
-                    Log.warn("\tFailed to load crop data for " + file + ": " + e );
+                    Log.warn($"\tFailed to load crop data for {folderPath}: {e}");
                     continue;
                 }
             }
-            helper.WriteJsonFile(Path.Combine(Helper.DirectoryPath, "saved-ids.json"), CropData.savedIds);
-
-            var editors = ((IList<IAssetEditor>)helper.Content.GetType().GetProperty("AssetEditors", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance).GetValue(Helper.Content));
-            editors.Add(new ContentInjector());
+            helper.Data.WriteJsonFile("saved-ids.json", CropData.savedIds);
+            helper.Content.AssetEditors.Add(new ContentInjector());
         }
 
-        private void menuChanged(object sender, EventArgsClickableMenuChanged args)
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
-            var menu = args.NewMenu as ShopMenu;
-            if (menu == null || menu.portraitPerson == null)
+            var menu = e.NewMenu as ShopMenu;
+            if (menu?.portraitPerson == null)
                 return;
 
-            if (menu.portraitPerson.name == "Pierre")
+            if (menu.portraitPerson.Name == "Pierre")
             {
                 Log.trace("Adding crops to shop");
 
-                var forSale = Helper.Reflection.GetPrivateValue<List<Item>>(menu, "forSale");
-                var itemPriceAndStock = Helper.Reflection.GetPrivateValue<Dictionary<Item, int[]>>(menu, "itemPriceAndStock");
+                List<Item> forSale = Helper.Reflection.GetField<List<Item>>(menu, "forSale").GetValue();
+                Dictionary<Item, int[]> itemPriceAndStock = Helper.Reflection.GetField<Dictionary<Item, int[]>>(menu, "itemPriceAndStock").GetValue();
 
-                var precondMeth = Helper.Reflection.GetPrivateMethod(Game1.currentLocation, "checkEventPrecondition");
-                foreach (var crop in CropData.crops)
+                IReflectedMethod precondMeth = Helper.Reflection.GetMethod(Game1.currentLocation, "checkEventPrecondition");
+                foreach (KeyValuePair<string, CropData> crop in CropData.crops)
                 {
                     if (!crop.Value.Seasons.Contains(Game1.currentSeason))
                         continue;
-                    if (crop.Value.SeedPurchaseRequirements.Count > 0 &&
-                        precondMeth.Invoke<int>(new object[] { crop.Value.GetSeedPurchaseRequirementString() }) == -1)
+                    if (crop.Value.SeedPurchaseRequirements.Count > 0 && precondMeth.Invoke<int>(new object[] { crop.Value.GetSeedPurchaseRequirementString() }) == -1)
                         continue;
                     Item item = new StardewValley.Object(Vector2.Zero, crop.Value.GetSeedId(), int.MaxValue);
                     forSale.Add(item);

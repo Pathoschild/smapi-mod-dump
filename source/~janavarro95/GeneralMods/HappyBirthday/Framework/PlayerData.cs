@@ -1,4 +1,4 @@
-﻿namespace Omegasis.HappyBirthday.Framework
+namespace Omegasis.HappyBirthday.Framework
 {
     /// <summary>The data for the current player.</summary>
     public class PlayerData

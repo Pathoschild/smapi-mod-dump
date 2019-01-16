@@ -1,16 +1,9 @@
-﻿using StardewValley;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StardewValley;
 
 namespace Omegasis.HappyBirthday
 {
-    /// <summary>
-    /// TODO:Make all the events
-    /// Resources:https://stardewvalleywiki.com/Modding:Event_data
-    /// </summary>
+    // TODO: Make all the events
+    // Resources:https://stardewvalleywiki.com/Modding:Event_data
     public class BirthdayEvents
     {
         public Event communityCenterJunimoEvent;
@@ -21,7 +14,7 @@ namespace Omegasis.HappyBirthday
 
         public BirthdayEvents()
         {
-            initializeEvents();
+            this.initializeEvents();
         }
 
         public void initializeEvents()
@@ -29,7 +22,5 @@ namespace Omegasis.HappyBirthday
             Event e = new Event("", -1, Game1.player);
             Game1.player.currentLocation.currentEvent = new Event();
         }
-
-
     }
 }

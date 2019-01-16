@@ -1,16 +1,10 @@
 {
   "Name": "Happy Birthday",
   "Author": "Alpha_Omegasis",
-  "Version": {
-    "MajorVersion": 1,
-    "MinorVersion": 8,
-    "PatchVersion": 0,
-    "Build": null
-  },
-  "MinimumApiVersion": "1.15",
+  "Version": "1.8.3",
   "Description": "Adds the farmer's birthday to the game.",
   "UniqueID": "Omegasis.HappyBirthday",
   "EntryDll": "HappyBirthday.dll",
-  "MinimumApiVersion": "2.0",
+  "MinimumApiVersion": "2.10.1",
   "UpdateKeys": [ "Nexus:520" ]
 }

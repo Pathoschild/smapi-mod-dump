@@ -1,10 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace StardustCore.UIUtilities.SpriteFonts.Components
 {
@@ -19,33 +15,22 @@ namespace StardustCore.UIUtilities.SpriteFonts.Components
             this.label = Label;
             this.characters = Characters;
             this.position = Position;
-            setCharacterPositions(useRightPadding);
+            this.setCharacterPositions(useRightPadding);
         }
 
-        /// <summary>
-        /// Sets the character positions relative to the string's position on screen.
-        /// </summary>
-        public void setCharacterPositions(bool useRightPadding=true)
+        /// <summary>Sets the character positions relative to the string's position on screen.</summary>
+        public void setCharacterPositions(bool useRightPadding = true)
         {
             int index = 0;
-            TexturedCharacter lastSeenChar=new TexturedCharacter();
-            foreach(var c in characters)
+            TexturedCharacter lastSeenChar = new TexturedCharacter();
+            foreach (var c in this.characters)
             {
                 if (index == 0)
-                {
-                    c.position = new Vector2(this.position.X + c.spacing.LeftPadding,this.position.Y);
-                }
+                    c.position = new Vector2(this.position.X + c.spacing.LeftPadding, this.position.Y);
+                else if (useRightPadding)
+                    c.position = new Vector2(this.position.X + c.spacing.LeftPadding + lastSeenChar.spacing.RightPadding + lastSeenChar.texture.Width * index, this.position.Y);
                 else
-                {
-                    if (useRightPadding)
-                    {
-                        c.position = new Vector2(this.position.X + c.spacing.LeftPadding + lastSeenChar.spacing.RightPadding + lastSeenChar.texture.Width * index, this.position.Y);
-                    }
-                    else
-                    {
-                        c.position = new Vector2(this.position.X + c.spacing.LeftPadding + lastSeenChar.texture.Width * index, this.position.Y);
-                    }
-                }
+                    c.position = new Vector2(this.position.X + c.spacing.LeftPadding + lastSeenChar.texture.Width * index, this.position.Y);
                 //StardustCore.ModCore.ModMonitor.Log(c.character.ToString());
                 //StardustCore.ModCore.ModMonitor.Log(c.position.ToString());
                 lastSeenChar = c;
@@ -53,36 +38,22 @@ namespace StardustCore.UIUtilities.SpriteFonts.Components
             }
         }
 
-        /// <summary>
-        /// Adds a textured character to a textured string.
-        /// </summary>
-        /// <param name="ch"></param>
+        /// <summary>Adds a textured character to a textured string.</summary>
         public void addCharacterToEnd(TexturedCharacter ch, bool useRightPadding = true)
         {
             this.characters.Add(ch);
             this.setCharacterPositions(useRightPadding);
         }
 
-        /// <summary>
-        /// Adds a list of textured characters to a textured string.
-        /// </summary>
-        /// <param name="chList"></param>
-        public void addCharactersToEnd(List<TexturedCharacter> chList, bool useRightPadding=true)
+        /// <summary>Adds a list of textured characters to a textured string.</summary>
+        public void addCharactersToEnd(List<TexturedCharacter> chList, bool useRightPadding = true)
         {
-            foreach(var ch in chList)
-            {
+            foreach (var ch in chList)
                 this.characters.Add(ch);
-            }
             this.setCharacterPositions(useRightPadding);
         }
 
-        /// <summary>
-        /// Adds the strings together and allows the position to be set.
-        /// </summary>
-        /// <param name="first"></param>
-        /// <param name="second"></param>
-        /// <param name="NewPosition"></param>
-        /// <returns></returns>
+        /// <summary>Adds the strings together and allows the position to be set.</summary>
         public TexturedString addStrings(TexturedString first, TexturedString second, Vector2 NewPosition, bool useRightPadding = true)
         {
             var newString = first + second;
@@ -91,77 +62,44 @@ namespace StardustCore.UIUtilities.SpriteFonts.Components
             return newString;
         }
 
-        /// <summary>
-        /// Operator overload of +. Adds the two strings together and sets a new 0,0 position.
-        /// </summary>
-        /// <param name="first"></param>
-        /// <param name="second"></param>
-        /// <returns></returns>
-        public static TexturedString operator+(TexturedString first, TexturedString second)
+        /// <summary>Operator overload of +. Adds the two strings together and sets a new 0,0 position.</summary>
+        public static TexturedString operator +(TexturedString first, TexturedString second)
         {
             List<TexturedCharacter> characterList = new List<TexturedCharacter>();
-            foreach(var v in first.characters)
-            {
+            foreach (var v in first.characters)
                 characterList.Add(v);
-            }
             foreach (var v in second.characters)
-            {
                 characterList.Add(v);
-            }
-            TexturedString newString = new TexturedString("",new Vector2(0, 0), characterList);
+            TexturedString newString = new TexturedString("", new Vector2(0, 0), characterList);
             return newString;
         }
 
-
-
-
-        /// <summary>
-        /// Removes the characters from the textured word.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="howMany"></param>
-        public void removeCharactersFromEnd(int index,int howMany)
+        /// <summary>Removes the characters from the textured word.</summary>
+        public void removeCharactersFromEnd(int index, int howMany)
         {
             this.characters.RemoveRange(index, howMany);
         }
 
-        /// <summary>
-        /// Draw the textured string.
-        /// </summary>
-        /// <param name="b"></param>
+        /// <summary>Draw the textured string.</summary>
         public void draw(SpriteBatch b)
         {
-            foreach(var v in this.characters)
-            {
+            foreach (var v in this.characters)
                 v.draw(b);
-            }
         }
 
-        /// <summary>
-        /// Returns a copy of this object.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Returns a copy of this object.</summary>
         public TexturedString copy()
         {
-            return new TexturedString(this.label,this.position, this.characters);
+            return new TexturedString(this.label, this.position, this.characters);
         }
 
-        /// <summary>
-        /// Returns a copy of this object at the specified position.
-        /// </summary>
-        /// <param name="newPosition"></param>
-        /// <returns></returns>
+        /// <summary>Returns a copy of this object at the specified position.</summary>
         public TexturedString copy(Vector2 newPosition)
         {
-            return new TexturedString(this.label,newPosition, this.characters);
+            return new TexturedString(this.label, newPosition, this.characters);
         }
 
-        /// <summary>
-        /// Returns a new textured strings with a different label and position.
-        /// </summary>
-        /// <param name="label"></param>
-        /// <param name="newPosition"></param>
-        /// <returns></returns>
+        /// <summary>Returns a new textured strings with a different label and position.</summary>
         public TexturedString copy(string label, Vector2 newPosition)
         {
             return new TexturedString(label, newPosition, this.characters);

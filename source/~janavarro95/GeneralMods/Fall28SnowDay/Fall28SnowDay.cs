@@ -1,4 +1,3 @@
-﻿using System;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -15,17 +14,17 @@ namespace Omegasis.Fall28SnowDay
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            SaveEvents.BeforeSave += this.SaveEvents_BeforeSave;
+            helper.Events.GameLoop.Saving += this.OnSaving;
         }
 
 
         /*********
         ** Private methods
         *********/
-        /// <summary>The method invoked just before the game saves.</summary>
+        /// <summary>Raised before the game begins writes data to the save file (except the initial save creation).</summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        public void SaveEvents_BeforeSave(object sender, EventArgs e)
+        /// <param name="e">The event arguments.</param>
+        public void OnSaving(object sender, SavingEventArgs e)
         {
             if (Game1.IsFall && Game1.dayOfMonth == 27)
                 Game1.weatherForTomorrow = Game1.weather_snow;

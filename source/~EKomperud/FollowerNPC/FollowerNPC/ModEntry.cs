@@ -75,14 +75,11 @@ namespace FollowerNPC
             if (!Context.IsWorldReady || companionsManager == null)
                 return;
 
-            if (e.Button == Microsoft.Xna.Framework.Input.Keys.B.ToSButton())
-            {
-                GameLocation l = companionsManager.farmer.currentLocation;
-                foreach (StardewValley.Object o in l.Objects.Values)
-                {
-                    monitor.Log(o.Name);
-                }
-            }
+            //if (e.Button == Microsoft.Xna.Framework.Input.Keys.B.ToSButton())
+            //{
+            //    foreach (GameLocation l in Game1.locations)
+            //        monitor.Log(l.Name);
+            //}
 
             //else if (e.Button == Microsoft.Xna.Framework.Input.Keys.K.ToSButton())
             //{
@@ -211,7 +208,7 @@ namespace FollowerNPC
     /// </summary>
     class Patches
     {
-        static public NPC companion;
+        static public string companion;
 
         /// <summary>
         /// A weird, roundabout way of allowing Companions to pass through invisible
@@ -228,7 +225,7 @@ namespace FollowerNPC
             if (companion != null
                 && character != null
                 && character.Name != null
-                && character.Name.Equals(companion.Name)
+                && character.Name.Equals(companion)
                 && !character.eventActor)
             {
                 flag = true;
@@ -258,7 +255,7 @@ namespace FollowerNPC
 
         static public void Postfix(NPC __instance, int timeOfDay)
         {
-            if (companion != null && companion == __instance)
+            if (companion != null && companion == __instance.Name)
             {
                 SchedulePathDescription spd;
                 if (__instance.Schedule.TryGetValue(timeOfDay, out spd) && spd != null)
@@ -278,7 +275,7 @@ namespace FollowerNPC
         
         static public bool Prefix(NPC __instance, GameTime time, Rectangle viewport, GameLocation currentLocation)
         {
-            bool dontSkip = (companion == null) || !__instance.Name.Equals(companion.Name);
+            bool dontSkip = (companion == null) || !__instance.Name.Equals(companion);
             if (!dontSkip)
             {
                 object[] parameters = new object[] {__instance.currentLocation};
@@ -292,7 +289,7 @@ namespace FollowerNPC
 
         static public bool Prefix(NPC __instance, GameLocation location, GameTime time)
         {
-            bool dontSkip = (companion == null) || !__instance.Name.Equals(companion.Name);
+            bool dontSkip = (companion == null) || !__instance.Name.Equals(companion);
             return dontSkip;
         }
 

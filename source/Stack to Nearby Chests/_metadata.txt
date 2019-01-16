@@ -5,12 +5,9 @@ mods:
    Stack to Nearby Chests
 
 latest commit:
-   commit 5160e374dac97b93a23d850f05bf042ccc638ad3
-   Merge: fa901c8 a5a1e9f
-   Author: Ilyaki <35632254+Ilyaki@users.noreply.github.com>
-   Date:   Mon Nov 19 19:14:41 2018 +0000
+   commit 701ff9ec026164ade8936f240c69bb0b5537e510
+   Author: Ilyaki <ilyaki.ilyaki@gmail.com>
+   Date:   Mon Jan 14 17:14:36 2019 +0000
    
-       Merge pull request #7 from Ilyaki/update_for_1.3.29
-       
-       Update for SMAPI 2.8 / SDV 1.3.32
+       Fixed crash
    

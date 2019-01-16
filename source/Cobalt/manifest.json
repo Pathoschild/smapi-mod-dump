@@ -5,7 +5,7 @@
   "Description": "Adds cobalt ingots, tools, and sprinklers",
   "UniqueID": "spacechase0.Cobalt",
   "EntryDll": "Cobalt.dll",
-  "MinimumApiVersion": "2.3",
+  "MinimumApiVersion": "2.9.0",
   "UpdateKeys": [ "Nexus:1723" ],
   "Dependencies": [
     {

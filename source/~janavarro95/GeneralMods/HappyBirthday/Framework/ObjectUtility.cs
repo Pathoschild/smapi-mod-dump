@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using StardewValley;
 using Object = StardewValley.Object;
@@ -9,7 +9,7 @@ namespace Omegasis.HappyBirthday.Framework
     internal class ObjectUtility
     {
         /*********
-        ** Properties
+        ** Fields
         *********/
         /// <summary>The cached object data.</summary>
         private static readonly Object[] ObjectList = ObjectUtility.GetAllObjects().ToArray();

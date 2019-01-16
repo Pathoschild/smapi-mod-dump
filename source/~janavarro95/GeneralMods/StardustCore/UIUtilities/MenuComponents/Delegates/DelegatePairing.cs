@@ -1,8 +1,4 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StardustCore.UIUtilities.MenuComponents.Delegates
 {
@@ -11,26 +7,15 @@ namespace StardustCore.UIUtilities.MenuComponents.Delegates
         public Delegates.paramaterDelegate click;
         public List<object> paramaters;
 
-        public DelegatePairing(Delegates.paramaterDelegate buttonDelegate,List<object> Paramaters)
+        public DelegatePairing(Delegates.paramaterDelegate buttonDelegate, List<object> Paramaters)
         {
             this.click = buttonDelegate;
-            if (Paramaters == null)
-            {
-                this.paramaters = new List<object>();
-            }
-            else
-            {
-                this.paramaters = Paramaters;
-            }
+            this.paramaters = Paramaters ?? new List<object>();
         }
 
         public void run()
         {
-            if (this.click != null)
-            {
-                this.click.Invoke(this.paramaters);
-            }
-            else return;
+            this.click?.Invoke(this.paramaters);
         }
     }
 }

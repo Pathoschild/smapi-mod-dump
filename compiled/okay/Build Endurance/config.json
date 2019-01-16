@@ -1,0 +1,15 @@
+{
+  "ExpToNextLevel": 20.0,
+  "CurrentExp": 0.0,
+  "CurrentLevel": 0,
+  "BaseStaminaBonus": 0,
+  "CurrentLevelStaminaBonus": 0,
+  "ExpCurve": 1.15,
+  "MaxLevel": 100,
+  "StaminaIncreasePerLevel": 1,
+  "ExpForToolUse": 1,
+  "ExpForEating": 2,
+  "ExpForSleeping": 10,
+  "ExpForExhaustion": 25,
+  "ExpForCollapsing": 50
+}

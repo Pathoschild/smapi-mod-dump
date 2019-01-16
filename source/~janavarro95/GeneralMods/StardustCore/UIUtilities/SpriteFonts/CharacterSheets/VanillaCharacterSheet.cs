@@ -1,16 +1,11 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using StardustCore.UIUtilities.SpriteFonts.Components;
 
 namespace StardustCore.UIUtilities.SpriteFonts.CharacterSheets
 {
-    public class VanillaCharacterSheet :GenericCharacterSheets
+    public class VanillaCharacterSheet : GenericCharacterSheets
     {
 
         public VanillaCharacterSheet(string directoryToFonts)
@@ -137,8 +132,8 @@ namespace StardustCore.UIUtilities.SpriteFonts.CharacterSheets
             this.CharacterAtlus.Add('8', new TexturedCharacter('8', Path.Combine(directoryToFonts, "8"), fontColor));
             this.CharacterAtlus.Add('9', new TexturedCharacter('9', Path.Combine(directoryToFonts, "9"), fontColor));
 
-            this.CharacterAtlus.Add('&', new TexturedCharacter('&', Path.Combine(directoryToFonts,  "ampersand"), fontColor));
-            this.CharacterAtlus.Add('*', new TexturedCharacter('*', Path.Combine(directoryToFonts,  "asterisk"), fontColor));
+            this.CharacterAtlus.Add('&', new TexturedCharacter('&', Path.Combine(directoryToFonts, "ampersand"), fontColor));
+            this.CharacterAtlus.Add('*', new TexturedCharacter('*', Path.Combine(directoryToFonts, "asterisk"), fontColor));
             this.CharacterAtlus.Add('\\', new TexturedCharacter('\\', Path.Combine(directoryToFonts, "backSlash"), fontColor));
 
             this.CharacterAtlus.Add('A', new TexturedCharacter('A', Path.Combine(directoryToFonts, "capitalA"), fontColor));

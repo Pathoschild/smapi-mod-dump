@@ -1,7 +1,7 @@
 {
   "Name": "Companion NPCs",
   "Author": "Redwood",
-  "Version": "0.0.7",
+  "Version": "0.0.8",
   "Description": "Recruit Companions to travel alongside you.",
   "UniqueID": "Redwood.CompanionNPCs",
   "EntryDll": "FollowerNPC.dll",

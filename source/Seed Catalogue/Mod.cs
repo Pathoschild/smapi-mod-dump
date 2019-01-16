@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -16,19 +13,24 @@ namespace SeedCatalogue
     {
         public static Mod instance;
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             instance = this;
 
-            PlayerEvents.Warped += locChanged;
+            helper.Events.Player.Warped += onWarped;
             SpaceEvents.ActionActivated += actionTriggered;
 
             Helper.ConsoleCommands.Add("seedcatalogue", "Open the seed catalogue. Do `seedcatalogue cheat` to show all seeds, even for crops you haven't shipped yet.", command);
         }
 
-        private void locChanged( object sender, EventArgsPlayerWarped args )
+        /// <summary>Raised after a player warps to a new location.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void onWarped( object sender, WarpedEventArgs e )
         {
-            if ( args.NewLocation is SeedShop ss )
+            if ( e.IsLocalPlayer && e.NewLocation is SeedShop ss )
             {
                 ss.setTileProperty(1, 25, "Buildings", "Action", "SeedCatalogue");
             }
@@ -42,9 +44,7 @@ namespace SeedCatalogue
 
         private void command( string cmd, string[] args )
         {
-            bool cheat = false;
-            if (args.Length >= 1 && args[0] == "cheat")
-                cheat = true;
+            bool cheat = args.Length >= 1 && args[0] == "cheat";
 
             openSeedCatalogue(cheat);
         }

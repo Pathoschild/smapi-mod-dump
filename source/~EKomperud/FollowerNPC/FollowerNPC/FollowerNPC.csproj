@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AI_States\AI_StateAggroEnemy.cs" />
     <Compile Include="AI_States\AI_StateFollowCharacter.cs" />
+    <Compile Include="AI_States\AI_StateIdle.cs" />
     <Compile Include="AI_States\AI_StateMachine.cs" />
     <Compile Include="aStar.cs" />
     <Compile Include="Buffs\AbigailBuff.cs" />
@@ -63,6 +64,12 @@
     <Compile Include="Buffs\SamBuff.cs" />
     <Compile Include="Buffs\SebastianBuff.cs" />
     <Compile Include="Buffs\ShaneBuff.cs" />
+    <Compile Include="CompanionStates\AvailableState.cs" />
+    <Compile Include="CompanionStates\CompanionStateMachine.cs" />
+    <Compile Include="CompanionStates\RecruitableState.cs" />
+    <Compile Include="CompanionStates\RecruitedState.cs" />
+    <Compile Include="CompanionStates\ResetState.cs" />
+    <Compile Include="CompanionStates\UnavailableState.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

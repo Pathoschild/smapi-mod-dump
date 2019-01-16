@@ -162,6 +162,7 @@ namespace FollowerNPC
             StardewValley.Object o = gl.getObjectAtTile((int) tile.X, (int) tile.Y);
             StardewValley.Objects.Furniture furn = o as StardewValley.Objects.Furniture;
             Fence fence = o as Fence;
+            Torch torch = o as Torch;
 
             //bool a = gl.isTileOnMap(tile);
             //bool b = !gl.isTileOccupiedIgnoreFloors(tile, character);
@@ -188,7 +189,11 @@ namespace FollowerNPC
                    !isTileOccupiedIgnoreFloorsOverride(tile) &&
                    isTilePassableOverride(new Location((int) tile.X, (int) tile.Y), Game1.viewport) &&
                    (!(gameLocation is Farm)  || !((gameLocation as Farm).getBuildingAt(tile) != null)) &&
-                   (!(o != null) || (furn != null && furn.furniture_type.Value == 12) || (fence != null && fence.isGate.Value && (o as Fence).gatePosition.Value == 88));
+                   ((o == null) || 
+                    (furn != null && furn.furniture_type.Value == 12) || 
+                    (fence != null && fence.isGate.Value) ||
+                    (torch != null) ||
+                    (o.ParentSheetIndex == 590));
         }
 
         public bool isTileOccupiedIgnoreFloorsOverride(Vector2 tileLocation)

@@ -1,4 +1,4 @@
-﻿using Omegasis.BuyBackCollectables.Framework;
+using Omegasis.BuyBackCollectables.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -9,7 +9,7 @@ namespace Omegasis.BuyBackCollectables
     public class BuyBackCollectables : Mod
     {
         /*********
-        ** Properties
+        ** Fields
         *********/
         /// <summary>The mod configuration.</summary>
         private ModConfig Config;
@@ -24,19 +24,19 @@ namespace Omegasis.BuyBackCollectables
         {
             this.Config = helper.ReadConfig<ModConfig>();
 
-            ControlEvents.KeyPressed += this.ControlEvents_KeyPressed;
+            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
         }
 
 
         /*********
         ** Private methods
         *********/
-        /// <summary>The method invoked when the presses a keyboard button.</summary>
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        public void ControlEvents_KeyPressed(object sender, EventArgsKeyPressed e)
+        /// <param name="e">The event arguments.</param>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (Context.IsPlayerFree && e.KeyPressed.ToString() == this.Config.KeyBinding)
+            if (Context.IsPlayerFree && e.Button == this.Config.KeyBinding)
                 Game1.activeClickableMenu = new BuyBackMenu(this.Config.CostMultiplier);
         }
     }

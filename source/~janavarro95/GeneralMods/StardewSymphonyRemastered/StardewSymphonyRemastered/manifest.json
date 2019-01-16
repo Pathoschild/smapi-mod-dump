@@ -1,16 +1,13 @@
 {
   "Name": "Stardew Symphony Remastered",
   "Author": "Alpha_Omegasis",
-  "Version": "2.1.7",
+  "Version": "2.3.0",
   "Description": "Adding more music to the game one beep at a time. Now with streaming!",
   "UniqueID": "Omegasis.StardewSymphonyRemastered",
   "EntryDll": "StardewSymphonyRemastered.dll",
-  "MinimumApiVersion": "2.0",
+  "MinimumApiVersion": "2.10.1",
   "UpdateKeys": [ "Nexus:425" ],
   "Dependencies": [
-   {
-      "UniqueID": "Omegasis.StardustCore",
-      "IsRequired": true
-   }
-]
+    { "UniqueID": "Omegasis.StardustCore" }
+  ]
 }

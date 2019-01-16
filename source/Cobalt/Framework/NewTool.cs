@@ -6,6 +6,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
+using SObject = StardewValley.Object;
 
 namespace Cobalt.Framework
 {
@@ -39,7 +40,7 @@ namespace Cobalt.Framework
         public static void Postfix( StardewValley.Farmer who, Dictionary<Item, int[]> __result )
         {
             Tool tool = who.getToolFromName("Axe");
-            if (tool != null && tool.upgradeLevel == 4 )
+            if (tool != null && tool.UpgradeLevel == 4 )
             {
                 var newTool = new Axe();
                 newTool.UpgradeLevel = 5;
@@ -47,7 +48,7 @@ namespace Cobalt.Framework
             }
 
             tool = who.getToolFromName("Watering Can");
-            if (tool != null && tool.upgradeLevel == 4)
+            if (tool != null && tool.UpgradeLevel == 4)
             {
                 var newTool = new WateringCan();
                 newTool.UpgradeLevel = 5;
@@ -55,7 +56,7 @@ namespace Cobalt.Framework
             }
 
             tool = who.getToolFromName("Pickaxe");
-            if (tool != null && tool.upgradeLevel == 4)
+            if (tool != null && tool.UpgradeLevel == 4)
             {
                 var newTool = new Pickaxe();
                 newTool.UpgradeLevel = 5;
@@ -63,7 +64,7 @@ namespace Cobalt.Framework
             }
 
             tool = who.getToolFromName("Hoe");
-            if (tool != null && tool.upgradeLevel == 4)
+            if (tool != null && tool.UpgradeLevel == 4)
             {
                 var newTool = new Hoe();
                 newTool.UpgradeLevel = 5;
@@ -77,14 +78,14 @@ namespace Cobalt.Framework
     {
         public static bool Prefix( Tree __instance, Tool t, int explosion )
         {
-            if (t is Axe && t.upgradeLevel == 5)
+            if (t is Axe && t.UpgradeLevel == 5)
             {
-                if (__instance.tapped && explosion <= 0)
+                if (__instance.tapped.Value && explosion <= 0)
                     return true;
-                if (__instance.growthStage >= 5)
-                    __instance.health -= 10;
-                else if (__instance.growthStage >= 3)
-                    __instance.health -= 15;
+                if (__instance.growthStage.Value >= 5)
+                    __instance.health.Value -= 10;
+                else if (__instance.growthStage.Value >= 3)
+                    __instance.health.Value -= 15;
             }
             return true;
         }
@@ -95,79 +96,78 @@ namespace Cobalt.Framework
     {
         public static bool Prefix(Tree __instance, Tool t, int explosion)
         {
-            if (t is Axe && t.upgradeLevel == 5)
+            if (t is Axe && t.UpgradeLevel == 5)
             {
-                if (__instance.tapped && explosion <= 0)
+                if (__instance.tapped.Value && explosion <= 0)
                     return true;
-                if (__instance.growthStage >= 4)
-                    __instance.health -= 10f;
-                else if (__instance.growthStage >= 3)
-                    __instance.health -= 15f;
+                if (__instance.growthStage.Value >= 4)
+                    __instance.health.Value -= 10f;
+                else if (__instance.growthStage.Value >= 3)
+                    __instance.health.Value -= 15f;
             }
             return true;
         }
     }
     
-    [HarmonyPatch(typeof(StardewValley.Object), "performToolAction")]
+    [HarmonyPatch(typeof(SObject), "performToolAction")]
     internal static class CobaltObjectFix
     {
-        public static bool Prefix(StardewValley.Object __instance, Tool t)
+        public static bool Prefix(SObject __instance, Tool t)
         {
-            if (t is Pickaxe && t.upgradeLevel == 5)
+            if (t is Pickaxe && t.UpgradeLevel == 5)
             {
                 if (__instance.name.Equals("Stone") && t.GetType() == typeof(Pickaxe))
-                    if (__instance.parentSheetIndex == 12 && t.upgradeLevel == 1 || (__instance.parentSheetIndex == 12 || __instance.parentSheetIndex == 14) && t.upgradeLevel == 0)
+                    if (__instance.ParentSheetIndex == 12 && t.UpgradeLevel == 1 || (__instance.ParentSheetIndex == 12 || __instance.ParentSheetIndex == 14) && t.UpgradeLevel == 0)
                     { }
                     else
-                        __instance.minutesUntilReady -= __instance.minutesUntilReady;
+                        __instance.MinutesUntilReady -= __instance.MinutesUntilReady;
             }
             return true;
         }
     }
 
-    [HarmonyPatch(typeof(StardewValley.Tools.Pickaxe), "DoFunction")]
+    [HarmonyPatch(typeof(Pickaxe), "DoFunction")]
     internal static class CobaltPickaxeFix
     {
-        public static bool Prefix(StardewValley.Tools.Pickaxe __instance, GameLocation location, int x, int y, int power, StardewValley.Farmer who)
+        public static bool Prefix(Pickaxe __instance, GameLocation location, int x, int y, int power, Farmer who)
         {
-            if (__instance.upgradeLevel == 5)
+            if (__instance.UpgradeLevel == 5)
             {
                 int num1 = x / Game1.tileSize;
                 int num2 = y / Game1.tileSize;
                 Vector2 index = new Vector2((float)num1, (float)num2);
-                StardewValley.Object @object = (StardewValley.Object)null;
-                location.Objects.TryGetValue(index, out @object);
-                if (@object == null)
+                location.Objects.TryGetValue(index, out SObject obj);
+                if (obj == null)
                 {
                     if (who.FacingDirection == 0 || who.FacingDirection == 2)
                     {
                         num1 = (x - 8) / Game1.tileSize;
-                        location.Objects.TryGetValue(new Vector2((float)num1, (float)num2), out @object);
-                        if (@object == null)
+                        location.Objects.TryGetValue(new Vector2((float)num1, (float)num2), out obj);
+                        if (obj == null)
                         {
                             num1 = (x + 8) / Game1.tileSize;
-                            location.Objects.TryGetValue(new Vector2((float)num1, (float)num2), out @object);
+                            location.Objects.TryGetValue(new Vector2((float)num1, (float)num2), out obj);
                         }
                     }
                     else
                     {
                         num2 = (y + 8) / Game1.tileSize;
-                        location.Objects.TryGetValue(new Vector2((float)num1, (float)num2), out @object);
-                        if (@object == null)
+                        location.Objects.TryGetValue(new Vector2((float)num1, (float)num2), out obj);
+                        if (obj == null)
                         {
                             num2 = (y - 8) / Game1.tileSize;
-                            location.Objects.TryGetValue(new Vector2((float)num1, (float)num2), out @object);
+                            location.Objects.TryGetValue(new Vector2((float)num1, (float)num2), out obj);
                         }
                     }
                     x = num1 * Game1.tileSize;
                     y = num2 * Game1.tileSize;
                 }
                 index = new Vector2((float)num1, (float)num2);
-                if (@object != null)
+                if (obj != null)
                 {
-                    if (@object.Name.Equals("Stone"))
+                    if (obj.Name.Equals("Stone"))
                     {
-                        @object.minutesUntilReady -= @object.minutesUntilReady;
+                        obj.MinutesUntilReady -= obj.MinutesUntilReady;
                     }
                 }
             }
@@ -182,10 +182,10 @@ namespace Cobalt.Framework
 
         public static bool Prefix(Quartz __instance, Tool t)
         {
-            if (t is Pickaxe && t.upgradeLevel == 5)
+            if (t is Pickaxe && t.UpgradeLevel == 5)
             {
                 wasCobalt = true;
-                t.upgradeLevel = 4;
+                t.UpgradeLevel = 4;
             }
             return true;
         }
@@ -193,7 +193,7 @@ namespace Cobalt.Framework
         {
             if ( wasCobalt )
             {
-                t.upgradeLevel = 5;
+                t.UpgradeLevel = 5;
                 wasCobalt = false;
             }
         }
@@ -205,7 +205,7 @@ namespace Cobalt.Framework
     {
         public static void Postfix(WateringCan __instance)
         {
-            if ( __instance.waterCanMax == __instance.WaterLeft && __instance.upgradeLevel == 5 )
+            if ( __instance.waterCanMax == __instance.WaterLeft && __instance.UpgradeLevel == 5 )
             {
                 __instance.waterCanMax = __instance.WaterLeft = 1;
             }
@@ -217,7 +217,7 @@ namespace Cobalt.Framework
     {
         public static bool Prefix( Tool __instance, ref string __result )
         {
-            if ( __instance.upgradeLevel == 5 )
+            if ( __instance.UpgradeLevel == 5 )
             {
                 __result = __instance.Name;
                 return false;
@@ -231,9 +231,9 @@ namespace Cobalt.Framework
     {
         public static bool Prefix(Tool __instance, ref string __result)
         {
-            if (__instance.upgradeLevel == 5)
+            if (__instance.UpgradeLevel == 5)
             {
-                __result = "Cobalt " + __instance.name;
+                __result = "Cobalt " + __instance.Name;
                 return false;
             }
             return true;
@@ -248,7 +248,7 @@ namespace Cobalt.Framework
             if ( power >= 6)
             {
                 __result.Clear();
-                switch ( who.facingDirection )
+                switch ( who.FacingDirection )
                 {
                     case 0:
                         for (int i = 0; i < 7 * 7; ++i)

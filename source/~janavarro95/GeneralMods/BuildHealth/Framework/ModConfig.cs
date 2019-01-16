@@ -1,4 +1,4 @@
-﻿namespace Omegasis.BuildHealth.Framework
+namespace Omegasis.BuildHealth.Framework
 {
     /// <summary>The mod settings and player data.</summary>
     internal class ModConfig

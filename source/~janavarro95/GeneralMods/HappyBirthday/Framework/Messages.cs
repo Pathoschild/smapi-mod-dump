@@ -1,6 +1,5 @@
-﻿
+
 using StardewValley;
-using System.Collections.Generic;
 
 namespace Omegasis.HappyBirthday.Framework
 {
@@ -28,8 +27,6 @@ namespace Omegasis.HappyBirthday.Framework
                 Game1.player.mailReceived.Add("BackpackTip");
                 Game1.addMailForTomorrow("pierreBackpack", false, false);
             }
-
-
         }
 
     }

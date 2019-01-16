@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
-using PyTK.CustomElementHandler;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using PyTK.CustomElementHandler;
 using StardewValley;
 using StardewValley.TerrainFeatures;
+using SObject = StardewValley.Object;
 
 namespace Cobalt.Framework
 {
-    internal class CobaltSprinklerObject : StardewValley.Object, ISaveElement
+    internal class CobaltSprinklerObject : SObject, ISaveElement
     {
         internal const int INDEX = 901;
         public const string NAME = "Cobalt Sprinkler";
@@ -21,19 +22,19 @@ namespace Cobalt.Framework
 
         public CobaltSprinklerObject()
         {
-            parentSheetIndex = INDEX;
-            name = NAME;
-            price = PRICE;
-            type = TYPE;
-            category = CATEGORY;
-            edibility = EDIBILITY;
-            canBeSetDown = true;
-            canBeGrabbed = true; // ?
+            this.ParentSheetIndex = INDEX;
+            this.Name = NAME;
+            this.Price = PRICE;
+            this.Type = TYPE;
+            this.Category = CATEGORY;
+            this.Edibility = EDIBILITY;
+            this.CanBeSetDown = true;
+            this.CanBeGrabbed = true; // ?
         }
 
         public object getReplacement()
         {
-            return new StardewValley.Object(tileLocation, 645);
+            return new SObject(tileLocation, 645);
         }
 
         public Dictionary<string, string> getAdditionalSaveData()
@@ -44,15 +45,15 @@ namespace Cobalt.Framework
 
         public void rebuild(Dictionary<string, string> saveData, object replacement)
         {
-            parentSheetIndex = INDEX;
-            name = NAME;
-            price = PRICE;
-            type = TYPE;
-            category = CATEGORY;
-            edibility = EDIBILITY;
-            canBeSetDown = true;
-            canBeGrabbed = true; // ?
-            tileLocation = ( ( StardewValley.Object ) replacement ).tileLocation;
+            this.ParentSheetIndex = INDEX;
+            this.Name = NAME;
+            this.Price = PRICE;
+            this.Type = TYPE;
+            this.Category = CATEGORY;
+            this.Edibility = EDIBILITY;
+            this.CanBeSetDown = true;
+            this.CanBeGrabbed = true; // ?
+            this.TileLocation = ((SObject)replacement).TileLocation;
         }
 
         public override Rectangle getBoundingBox(Vector2 tileLocation)
@@ -68,16 +69,16 @@ namespace Cobalt.Framework
             this.health = 10;
             //if (!Game1.isRaining || !location.isOutdoors)
             {
-                foreach (Vector2 tile in GetCoverage(this.tileLocation))
+                foreach (Vector2 tile in GetCoverage(this.TileLocation))
                 {
-                    if (location.terrainFeatures.ContainsKey(tile) && location.terrainFeatures[tile] is HoeDirt)
-                        (location.terrainFeatures[tile] as HoeDirt).state = 1;
+                    if (location.terrainFeatures.ContainsKey(tile) && location.terrainFeatures[tile] is HoeDirt dirt)
+                        dirt.state.Value = 1;
                 }
-                location.temporarySprites.Add(new TemporaryAnimatedSprite(Game1.animations, new Rectangle(0, 2176, Game1.tileSize * 5, Game1.tileSize * 5), 60f, 4, 100, this.tileLocation * (float)Game1.tileSize + new Vector2((float)(-Game1.tileSize * 3 + Game1.tileSize), (float)(-Game1.tileSize * 2)), false, false)
+                location.temporarySprites.Add(new TemporaryAnimatedSprite("TileSheets\\animations", new Rectangle(0, 2176, Game1.tileSize * 5, Game1.tileSize * 5), 60f, 4, 100, this.TileLocation * Game1.tileSize + new Vector2((float)(-Game1.tileSize * 3 + Game1.tileSize), (float)(-Game1.tileSize * 2)), false, false)
                 {
                     color = Color.White * 0.4f,
                     delayBeforeAnimationStart = Game1.random.Next(1000),
-                    id = (float)((double)this.tileLocation.X * 4000.0 + (double)this.tileLocation.Y)
+                    id = this.TileLocation.X * 4000f + this.TileLocation.Y
                 });
             }
         }

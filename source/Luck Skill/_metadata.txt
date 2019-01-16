@@ -5,9 +5,12 @@ mods:
    Luck Skill
 
 latest commit:
-   commit 8f42bd94bc6b425855dde052ff319d300bd4757e
-   Author: spacechase0 <spacechase0@users.noreply.github.com>
-   Date:   Wed Nov 21 12:48:41 2018 -0500
+   commit c3d7c34ecebe263b70782e122e685a2fdd6891a5
+   Merge: 8f42bd9 ef7972d
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Tue Jan 15 18:22:38 2019 -0500
    
-       Remove special charm (obtainable in vanilla and nerfed) and stuff
+       Merge pull request #1 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0
    

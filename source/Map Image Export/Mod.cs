@@ -15,7 +15,6 @@ using xTile.Dimensions;
 using RectangleX = Microsoft.Xna.Framework.Rectangle;
 using Rectangle = xTile.Dimensions.Rectangle;
 using StardewValley.Objects;
-using SFarmer = StardewValley.Farmer;
 using Netcode;
 using StardewValley.Network;
 
@@ -24,14 +23,17 @@ namespace MapImageExporter
     public class Mod : StardewModdingAPI.Mod
     {
         public static Mod instance;
-        private ConcurrentQueue<RenderQueueEntry> renderQueue = new ConcurrentQueue<RenderQueueEntry>();
+        private readonly ConcurrentQueue<RenderQueueEntry> renderQueue = new ConcurrentQueue<RenderQueueEntry>();
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             instance = this;
 
-            Helper.ConsoleCommands.Add("export", "See 'export help'", exportCommand);
-            GameEvents.UpdateTick += checkRenderQueue;
+            helper.ConsoleCommands.Add("export", "See 'export help'", exportCommand);
+
+            helper.Events.GameLoop.UpdateTicked += checkRenderQueue;
         }
 
         private void exportCommand( string str, string[] args )
@@ -70,9 +72,9 @@ namespace MapImageExporter
                 foreach ( GameLocation loc in Game1.locations )
                 {
                     renderQueue.Enqueue(new RenderQueueEntry(loc, flags));
-                    if ( loc is BuildableGameLocation )
+                    if ( loc is BuildableGameLocation location )
                     {
-                        foreach ( Building building in ( loc as BuildableGameLocation ).buildings )
+                        foreach ( Building building in location.buildings )
                         {
                             if ( building.indoors.Value != null )
                             {
@@ -192,20 +194,14 @@ namespace MapImageExporter
             }
         }
 
-        private void checkRenderQueue( object sender, EventArgs args )
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void checkRenderQueue( object sender, UpdateTickedEventArgs e )
         {
-            // Simply doing the export when the command is called can cause issues (not
-            // actually rendering, making the game skip a frame, crashing, ...) since
-            // the console runs on another thread. Rendering might happen at the same 
-            // time as the main game. So instead we're going to render one per frame
-            // in the update stage, so things definitely don't interfere.
-
-            RenderQueueEntry toRender = null;
-            if (!renderQueue.TryDequeue(out toRender))
-            {
-                return;
-            }
-            export(toRender);
+            // render one location per frame to reduce performance impact.
+            if (renderQueue.TryDequeue(out RenderQueueEntry toRender))
+                export(toRender);
         }
 
         private void export(RenderQueueEntry render)
@@ -608,9 +604,9 @@ namespace MapImageExporter
                 if ( loc.uniqueName.Value != null )
                     name = loc.uniqueName.Value;
 
-                string dirPath = Helper.DirectoryPath + "/../../MapExport";
-                string imagePath = dirPath + "/" + name + ".png";
-                Log.info("Saving " + name + " to " + Path.GetFullPath(imagePath) + "...");
+                string dirPath = Path.Combine(Constants.ExecutionPath, "MapExport");
+                string imagePath = Path.Combine(dirPath, $"{name}.png");
+                Log.info($"Saving {name} to {Path.GetFullPath(imagePath)}...");
 
                 if (!Directory.Exists(dirPath))
                     Directory.CreateDirectory(dirPath);
@@ -629,22 +625,18 @@ namespace MapImageExporter
                 if ( begun )
                     b.End();
                 dev.SetRenderTarget(null);
-                if ( stream != null )
-                    stream.Dispose();
-                if (oldOutput != null)
-                    oldOutput.Dispose();
-                if (output != null)
-                    output.Dispose();
-                if (myLighting != null)
-                    myLighting.Dispose();
+                stream?.Dispose();
+                oldOutput?.Dispose();
+                output?.Dispose();
+                myLighting?.Dispose();
                 //Game1.pixelZoom = oldZoom;
                 Game1.viewport = oldView;
                 Game1.options.zoomLevel = oldZoomL;
             }
 
-            if (loc is DecoratableLocation)
+            if (loc is DecoratableLocation location)
             {
-                foreach (Furniture f in (loc as DecoratableLocation).furniture)
+                foreach (Furniture f in location.furniture)
                 {
                     f.updateDrawPosition();
                 }

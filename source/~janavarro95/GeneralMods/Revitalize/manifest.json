@@ -1,0 +1,10 @@
+{
+  "Name": "Revitalize",
+  "Author": "Alpha_Omegasis",
+  "Version": "0.0.1",
+  "Description": "A mod that attempts to add in a variety of new things to Stardew.",
+  "UniqueID": "Omegasis.Revitalize",
+  "EntryDll": "Revitalize.dll",
+  "MinimumApiVersion": "2.10.1",
+  "UpdateKeys": []
+}

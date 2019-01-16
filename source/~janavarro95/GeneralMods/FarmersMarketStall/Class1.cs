@@ -1,17 +1,13 @@
-﻿using EventSystem.Framework.FunctionEvents;
+using System;
+using EventSystem.Framework.FunctionEvents;
 using FarmersMarketStall.Framework.MapEvents;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FarmersMarketStall
 {
-
     /// <summary>
     /// TODO:
     /// Make a farmers market menu
@@ -21,32 +17,39 @@ namespace FarmersMarketStall
     /// Make a selling menu
     /// Make a minigame event for bonus money to earn.
     /// </summary>
-    /// <param name="helper"></param>
-
-    public class Class1 :Mod
+    public class Class1 : Mod
     {
-
         public static IModHelper ModHelper;
         public static IMonitor ModMonitor;
-        public static FarmersMarketStall.Framework.MarketStall marketStall;
+        public static Framework.MarketStall marketStall;
+
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            ModHelper = Helper;
-            ModMonitor = Monitor;
+            ModHelper = this.Helper;
+            ModMonitor = this.Monitor;
 
-            StardewModdingAPI.Events.SaveEvents.BeforeSave += SaveEvents_BeforeSave;
-            StardewModdingAPI.Events.SaveEvents.AfterLoad += SaveEvents_AfterLoad;
+            helper.Events.GameLoop.Saving += this.OnSaving;
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             marketStall = new Framework.MarketStall();
         }
 
-        private void SaveEvents_AfterLoad(object sender, EventArgs e)
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaveLoaded(object sender, EventArgs e)
         {
             EventSystem.EventSystem.eventManager.addEvent(Game1.getLocationFromName("BusStop"), new ShopInteractionEvent("FarmersMarketStall", Game1.getLocationFromName("BusStop"), new Vector2(6, 11), new MouseButtonEvents(null, true), new MouseEntryLeaveEvent(null, null)));
         }
 
-        private void SaveEvents_BeforeSave(object sender, EventArgs e)
+        /// <summary>Raised before the game begins writes data to the save file (except the initial save creation).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaving(object sender, SavingEventArgs e)
         {
-            if (marketStall.stock.Count > 0) {
+            if (marketStall.stock.Count > 0)
+            {
                 // Game1.endOfNightMenus.Push(new StardewValley.Menus.ShippingMenu(marketStall.stock));
                 marketStall.sellAllItems();
             }

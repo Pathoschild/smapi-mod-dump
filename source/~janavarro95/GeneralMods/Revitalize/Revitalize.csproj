@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{44EF6CEC-FBF1-4B45-8135-81D4EBE84DDD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Revitalize</RootNamespace>
+    <AssemblyName>Revitalize</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="2.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PyTK">
+      <HintPath>$(GamePath)\Mods\PyTK\PyTK.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Framework\Crafting\Recipe.cs" />
+    <Compile Include="Framework\Crafting\StatCost.cs" />
+    <Compile Include="Framework\Enums\Enums.cs" />
+    <Compile Include="Framework\Environment\DarkerNight.cs" />
+    <Compile Include="Framework\Environment\DarkerNightConfig.cs" />
+    <Compile Include="Framework\Graphics\Animations\Animation.cs" />
+    <Compile Include="Framework\Graphics\Animations\AnimationManager.cs" />
+    <Compile Include="Framework\Graphics\Texture2DExtended.cs" />
+    <Compile Include="Framework\Graphics\TextureManager.cs" />
+    <Compile Include="Framework\Illuminate\ColorExtensions.cs" />
+    <Compile Include="Framework\Illuminate\LightManager.cs" />
+    <Compile Include="Framework\Objects\BasicItemInformation.cs" />
+    <Compile Include="Framework\Objects\CustomObject.cs" />
+    <Compile Include="Framework\Objects\Furniture\Bench.cs" />
+    <Compile Include="Framework\Objects\Furniture\ChairMultiTiledObject.cs" />
+    <Compile Include="Framework\Objects\Furniture\ChairTileComponent.cs" />
+    <Compile Include="Framework\Objects\Furniture\CustomFurniture.cs" />
+    <Compile Include="Framework\Objects\Furniture\FurnitureTileComponent.cs" />
+    <Compile Include="Framework\Objects\InformationFiles\Furniture\ChairInformation.cs" />
+    <Compile Include="Framework\Objects\InformationFiles\Furniture\FurnitureInformation.cs" />
+    <Compile Include="Framework\Objects\MultiTiledComponent.cs" />
+    <Compile Include="Framework\Objects\MultiTiledObject.cs" />
+    <Compile Include="Framework\Player\Managers\MagicManager.cs" />
+    <Compile Include="Framework\Player\Managers\SittingInfo.cs" />
+    <Compile Include="Framework\Player\PlayerInfo.cs" />
+    <Compile Include="Framework\Utilities\BoundingBoxInfo.cs" />
+    <Compile Include="Framework\Utilities\InventoryManager.cs" />
+    <Compile Include="Framework\Utilities\Serialization\ContractResolvers\NetFieldContract.cs" />
+    <Compile Include="Framework\Utilities\Serialization\Converters\ItemCoverter.cs" />
+    <Compile Include="Framework\Utilities\Serialization\Converters\NetFieldConverter.cs" />
+    <Compile Include="Framework\Utilities\Serialization\Converters\RectangleConverter.cs" />
+    <Compile Include="Framework\Utilities\Serialization\Converters\Texture2DConverter.cs" />
+    <Compile Include="Framework\Utilities\Serialization\Converters\Vector2Converter.cs" />
+    <Compile Include="Framework\Utilities\Serialization\Serialization.cs" />
+    <Compile Include="ModCore.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="manifest.json" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,4 +1,4 @@
-﻿namespace Omegasis.NightOwl.Framework
+namespace Omegasis.NightOwl.Framework
 {
     /// <summary>The mod configuration.</summary>
     internal class ModConfig
@@ -25,9 +25,7 @@
         public bool KeepStaminaAfterCollapse { get; set; } = true;
 
 
-        /// <summary>
-        /// Whether or not to use the internal NightFish asset editor. When false, it will just use the Fish.xnb file.
-        /// </summary>
+        /// <summary>Whether or not to use the internal NightFish asset editor. When false, it will just use the Fish.xnb file.</summary>
         public bool UseInternalNightFishAssetEditor { get; set; } = true;
     }
 }

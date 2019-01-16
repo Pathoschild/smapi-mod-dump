@@ -1,9 +1,5 @@
-﻿using StardewValley;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StardewValley;
 
 namespace EventSystem.Framework
 {
@@ -11,111 +7,80 @@ namespace EventSystem.Framework
     {
         public Dictionary<GameLocation, List<MapEvent>> mapEvents;
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
+        /// <summary>Construct an instance.</summary>
         public EventManager()
         {
             this.mapEvents = new Dictionary<GameLocation, List<MapEvent>>();
-            foreach(var v in Game1.locations)
-            {
-                addLocation(v.Name, false);
-            }
+            foreach (var v in Game1.locations)
+                this.addLocation(v.Name, false);
         }
 
-        /// <summary>
-        /// Adds an event to the map given the name of the map.
-        /// </summary>
-        /// <param name="mapName"></param>
-        /// <param name="mapEvent"></param>
-        public virtual void addEvent(string mapName,MapEvent mapEvent)
-        {
-            foreach(var pair in this.mapEvents)
-            {
-                if (pair.Key.Name == mapName)
-                {
-                    pair.Value.Add(mapEvent);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Adds an event to a map.
-        /// </summary>
-        /// <param name="Location"></param>
-        /// <param name="mapEvent"></param>
-        public virtual void addEvent(GameLocation Location, MapEvent mapEvent)
+        /// <summary>Adds an event to the map given the name of the map.</summary>
+        public virtual void addEvent(string mapName, MapEvent mapEvent)
         {
             foreach (var pair in this.mapEvents)
             {
-                if (pair.Key == Location)
-                {
-
+                if (pair.Key.Name == mapName)
                     pair.Value.Add(mapEvent);
-                }
             }
         }
 
-        /// <summary>
-        /// Adds a location to have events handled.
-        /// </summary>
-        /// <param name="Location">The location to handle events.</param>
-        public virtual void addLocation(GameLocation Location)
+        /// <summary>Adds an event to a map.</summary>
+        public virtual void addEvent(GameLocation location, MapEvent mapEvent)
         {
-            EventSystem.ModMonitor.Log("Adding event processing for location: " + Location.Name);
-            this.mapEvents.Add(Location, new List<MapEvent>());
+            foreach (var pair in this.mapEvents)
+            {
+                if (pair.Key == location)
+                    pair.Value.Add(mapEvent);
+            }
         }
 
-        /// <summary>
-        /// Adds a location to have events handled.
-        /// </summary>
-        /// <param name="Location"></param>
-        /// <param name="Events"></param>
-        public virtual void addLocation(GameLocation Location,List<MapEvent> Events)
+        /// <summary>Adds a location to have events handled.</summary>
+        /// <param name="location">The location to handle events.</param>
+        public virtual void addLocation(GameLocation location)
         {
-            EventSystem.ModMonitor.Log("Adding event processing for location: " + Location.Name);
-            this.mapEvents.Add(Location, Events);
+            EventSystem.ModMonitor.Log($"Adding event processing for location: {location.Name}");
+            this.mapEvents.Add(location, new List<MapEvent>());
         }
 
-        /// <summary>
-        /// Adds a location to handle events.
-        /// </summary>
-        /// <param name="Location">The name of the location. Can include farm buildings.</param>
+        /// <summary>Adds a location to have events handled.</summary>
+        public virtual void addLocation(GameLocation location, List<MapEvent> events)
+        {
+            EventSystem.ModMonitor.Log($"Adding event processing for location: {location.Name}");
+            this.mapEvents.Add(location, events);
+        }
+
+        /// <summary>Adds a location to handle events.</summary>
+        /// <param name="location">The name of the location. Can include farm buildings.</param>
         /// <param name="isStructure">Used if the building is a stucture. True=building.</param>
-        public virtual void addLocation(string Location,bool isStructure)
+        public virtual void addLocation(string location, bool isStructure)
         {
-            EventSystem.ModMonitor.Log("Adding event processing for location: " + Location);
-            this.mapEvents.Add(Game1.getLocationFromName(Location,isStructure), new List<MapEvent>());
+            EventSystem.ModMonitor.Log($"Adding event processing for location: {location}");
+            this.mapEvents.Add(Game1.getLocationFromName(location, isStructure), new List<MapEvent>());
         }
 
-        /// <summary>
-        /// Adds a location to have events handled.
-        /// </summary>
-        /// <param name="Location">The name of the location. Can include farm buildings.</param>
+        /// <summary>Adds a location to have events handled.</summary>
+        /// <param name="location">The name of the location. Can include farm buildings.</param>
         /// <param name="isStructure">Used if the building is a stucture. True=building.</param>
-        /// <param name="Events">A list of pre-initialized events.</param>
-        public virtual void addLocation(string Location, bool isStructure, List<MapEvent> Events)
+        /// <param name="events">A list of pre-initialized events.</param>
+        public virtual void addLocation(string location, bool isStructure, List<MapEvent> events)
         {
-            EventSystem.ModMonitor.Log("Adding event processing for location: " + Location);
-            this.mapEvents.Add(Game1.getLocationFromName(Location,isStructure), Events);
+            EventSystem.ModMonitor.Log($"Adding event processing for location: {location}");
+            this.mapEvents.Add(Game1.getLocationFromName(location, isStructure), events);
         }
 
-        /// <summary>
-        /// Updates all events associated with the event manager.
-        /// </summary>
+        /// <summary>Updates all events associated with the event manager.</summary>
         public virtual void update()
         {
-            List<MapEvent> events = new List<MapEvent>();
-            if (Game1.player == null) return;
-            if (Game1.hasLoadedGame == false) return;
-            bool ok=this.mapEvents.TryGetValue(Game1.player.currentLocation, out events);
-            if (ok == false) return;
-            else
+            if (Game1.player == null)
+                return;
+            if (!Game1.hasLoadedGame)
+                return;
+
+            if (this.mapEvents.TryGetValue(Game1.player.currentLocation, out List<MapEvent> events))
             {
-                foreach(var v in events)
-                {
+                foreach (var v in events)
                     v.update();
-                }
             }
         }
     }

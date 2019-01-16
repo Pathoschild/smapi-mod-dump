@@ -1,10 +1,10 @@
 {
   "Name": "Simple Sound Manager",
   "Author": "Alpha_Omegasis",
-  "Version": "2.0.1",
+  "Version": "2.1.0",
   "Description": "A simple framework to play sounds from wave banks and wav files.",
   "UniqueID": "Omegasis.SimpleSoundManager",
   "EntryDll": "SimpleSoundManager.dll",
-  "MinimumApiVersion": "2.0",
+  "MinimumApiVersion": "2.10.1",
   "UpdateKeys": [ "Nexus:1410" ]
 }

@@ -1,4 +1,4 @@
-﻿namespace Omegasis.AutoSpeed.Framework
+namespace Omegasis.AutoSpeed.Framework
 {
     /// <summary>The mod configuration.</summary>
     internal class ModConfig

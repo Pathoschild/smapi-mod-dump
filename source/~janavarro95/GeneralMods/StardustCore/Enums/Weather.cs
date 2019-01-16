@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace StardustCore.Enums
 {
-    /// <summary>
-    /// A custom class used to wrap Stardew Valley's weather conventions.
-    /// </summary>
+    /// <summary>A custom class used to wrap Stardew Valley's weather conventions.</summary>
     public class Weather
     {
-        /// <summary>
-        /// An enum used as the same position as Stardew Valley's weather index.
-        /// </summary>
+        /// <summary>An enum used as the same position as Stardew Valley's weather index.</summary>
         public enum weather
         {
             sunny,
@@ -23,7 +13,6 @@ namespace StardustCore.Enums
             festival,
             snow,
             wedding
-            
         }
     }
 }

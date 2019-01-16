@@ -1,4 +1,4 @@
-﻿namespace Omegasis.SaveBackup.Framework
+namespace Omegasis.SaveBackup.Framework
 {
     /// <summary>The mod configuration.</summary>
     internal class ModConfig

@@ -165,10 +165,7 @@ public IDictionary<string, string> OverrideFolderNames = new Dictionary<string, 
 	["Omegasis.HappyBirthday"] = "Happy Birthday (Omegasis)",
 	
 	["HorseWhistle_SMAPI"] = "Horse Whistle (Nabuma)",
-	["icepuente.HorseWhistle"] = "Horse Whistle (Icepuente)",
-	
-	["HungerYyeadude"] = "Hunger (Yyeahdude)",
-	["skn.HungerMod"] = "Hunger Mod (skn)"
+	["icepuente.HorseWhistle"] = "Horse Whistle (Icepuente)"
 };
 
 /// <summary>The mod versions to consider equivalent in update checks (indexed by mod ID to local/server versions).</summmary>

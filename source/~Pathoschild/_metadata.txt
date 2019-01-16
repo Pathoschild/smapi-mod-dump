@@ -17,9 +17,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 954113be80c0a02b3b6d6a5bb548a6571c7b3de4
+   commit 7603fee98897c591333218dd46b53367c9b83bf2
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Thu Jan 10 18:39:10 2019 -0500
+   Date:   Mon Jan 14 19:56:26 2019 -0500
    
-       fix some conditions not available for multiplayer farmhands
+       add support for breaking mine containers with tractor pickaxe
    

@@ -5,12 +5,12 @@ mods:
    Makeshift Multiplayer
 
 latest commit:
-   commit f2be56e5fc1359e3da669377909c6eb60c9ffa6c
-   Merge: 69d543f 452edce
+   commit f820e45496009e2184c847eb3bf26f65f54ac446
+   Merge: f2be56e 0552de6
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Fri Apr 27 18:24:24 2018 -0400
+   Date:   Tue Jan 15 18:40:25 2019 -0500
    
-       Merge pull request #73 from Pathoschild/expand-readme
+       Merge pull request #74 from Pathoschild/update-code
        
-       Expand readme
+       Update for SMAPI 3.0
    

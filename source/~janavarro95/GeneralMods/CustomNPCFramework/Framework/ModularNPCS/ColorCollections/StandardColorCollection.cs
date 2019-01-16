@@ -1,93 +1,72 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
-namespace CustomNPCFramework.Framework.ModularNPCS.ColorCollections
+namespace CustomNPCFramework.Framework.ModularNpcs.ColorCollections
 {
-    /// <summary>
-    /// Collection of colors to be used for the StandardCharacterAnimation object.
-    /// </summary>
+    /// <summary>Collection of colors to be used for the StandardCharacterAnimation object.</summary>
     public class StandardColorCollection
     {
-        /// <summary>
-        /// The draw color to be used for the body sprite for the npc.
-        /// </summary>
+        /// <summary>The draw color to be used for the body sprite for the npc.</summary>
         public Color bodyColor;
-        /// <summary>
-        /// The draw color to be used for the eye sprite for the npc.
-        /// </summary>
+
+        /// <summary>The draw color to be used for the eye sprite for the npc.</summary>
         public Color eyeColor;
-        /// <summary>
-        /// The draw color to be used for the hair sprite for the npc.
-        /// </summary>
+
+        /// <summary>The draw color to be used for the hair sprite for the npc.</summary>
         public Color hairColor;
-        /// <summary>
-        /// The draw color to be used for the shirt sprite for the npc.
-        /// </summary>
+
+        /// <summary>The draw color to be used for the shirt sprite for the npc.</summary>
         public Color shirtColor;
-        /// <summary>
-        /// The draw color to be used for the bottoms/pants sprite for the npc.
-        /// </summary>
+
+        /// <summary>The draw color to be used for the bottoms/pants sprite for the npc.</summary>
         public Color bottomsColor;
-        /// <summary>
-        /// The draw color to be used for the shoes sprite for the npc.
-        /// </summary>
+
+        /// <summary>The draw color to be used for the shoes sprite for the npc.</summary>
         public Color shoesColor;
 
-        /// <summary>
-        /// Default constrctor that sets all of the draw colors to white.
-        /// </summary>
+        /// <summary>Construct an instance.</summary>
         public StandardColorCollection()
         {
-            defaultColor(this.bodyColor);
-            defaultColor(this.eyeColor);
-            defaultColor(this.hairColor);
-            defaultColor(this.shirtColor);
-            defaultColor(this.bottomsColor);
-            defaultColor(this.shoesColor);
+            this.defaultColor(this.bodyColor);
+            this.defaultColor(this.eyeColor);
+            this.defaultColor(this.hairColor);
+            this.defaultColor(this.shirtColor);
+            this.defaultColor(this.bottomsColor);
+            this.defaultColor(this.shoesColor);
         }
 
-        /// <summary>
-        /// Constructor that takes different colors as parameters.
-        /// </summary>
-        /// <param name="BodyColor">Color for the body texture.</param>
-        /// <param name="EyeColor">Color for the eyes texture.</param>
-        /// <param name="HairColor">Color for the hair texture.</param>
-        /// <param name="ShirtColor">Color for the shirt texture.</param>
-        /// <param name="BottomsColor">Color for the bottoms texture.</param>
-        /// <param name="ShoesColor">Color for the shoes texture.</param>
-        public StandardColorCollection(Color? BodyColor, Color? EyeColor, Color? HairColor, Color? ShirtColor, Color? BottomsColor, Color? ShoesColor)
+        /// <summary>Construct an instance.</summary>
+        /// <param name="bodyColor">Color for the body texture.</param>
+        /// <param name="eyeColor">Color for the eyes texture.</param>
+        /// <param name="hairColor">Color for the hair texture.</param>
+        /// <param name="shirtColor">Color for the shirt texture.</param>
+        /// <param name="bottomsColor">Color for the bottoms texture.</param>
+        /// <param name="shoesColor">Color for the shoes texture.</param>
+        public StandardColorCollection(Color? bodyColor, Color? eyeColor, Color? hairColor, Color? shirtColor, Color? bottomsColor, Color? shoesColor)
         {
-            this.bodyColor = (Color)BodyColor.GetValueOrDefault(Color.White);
-            this.eyeColor = (Color)EyeColor.GetValueOrDefault(Color.White);
-            this.hairColor = (Color)HairColor.GetValueOrDefault(Color.White);
-            this.shirtColor = (Color)ShirtColor.GetValueOrDefault(Color.White);
-            this.bottomsColor = (Color)BottomsColor.GetValueOrDefault(Color.White);
-            this.shoesColor = (Color)ShoesColor.GetValueOrDefault(Color.White);
+            this.bodyColor = bodyColor.GetValueOrDefault(Color.White);
+            this.eyeColor = eyeColor.GetValueOrDefault(Color.White);
+            this.hairColor = hairColor.GetValueOrDefault(Color.White);
+            this.shirtColor = shirtColor.GetValueOrDefault(Color.White);
+            this.bottomsColor = bottomsColor.GetValueOrDefault(Color.White);
+            this.shoesColor = shoesColor.GetValueOrDefault(Color.White);
 
-            defaultColor(this.bodyColor);
-            defaultColor(this.eyeColor);
-            defaultColor(this.hairColor);
-            defaultColor(this.shirtColor);
-            defaultColor(this.bottomsColor);
-            defaultColor(this.shoesColor);
+            this.defaultColor(this.bodyColor);
+            this.defaultColor(this.eyeColor);
+            this.defaultColor(this.hairColor);
+            this.defaultColor(this.shirtColor);
+            this.defaultColor(this.bottomsColor);
+            this.defaultColor(this.shoesColor);
         }
 
-        /// <summary>
-        /// If a color is null, make it white.
-        /// </summary>
-        /// <param name="color"></param>
+        /// <summary>If a color is null, make it white.</summary>
+        /// <param name="color">The color to check.</param>
         public void defaultColor(Color color)
         {
-            if (color == null) color = Color.White;
+            if (color == null)
+                color = Color.White;
         }
 
-        /// <summary>
-        /// Used to mix colors together. 
-        /// </summary>
+        /// <summary>Used to mix colors together.</summary>
         /// <param name="cBase">The base color to mix.</param>
         /// <param name="cMult">The modifier color to mix.</param>
         /// <returns>A color that is a mix between the two colors passed in.</returns>

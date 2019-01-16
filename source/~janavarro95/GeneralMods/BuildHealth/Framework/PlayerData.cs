@@ -1,4 +1,4 @@
-﻿namespace Omegasis.BuildHealth.Framework
+namespace Omegasis.BuildHealth.Framework
 {
     /// <summary>The data for the current player.</summary>
     internal class PlayerData

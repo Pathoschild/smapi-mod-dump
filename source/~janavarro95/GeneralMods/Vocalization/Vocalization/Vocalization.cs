@@ -1,14 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Netcode;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
@@ -155,55 +153,76 @@ namespace Vocalization
     /// </summary>
     public class Vocalization : Mod
     {
+        /*********
+        ** Fields
+        *********/
+        /// <summary>The subfolders to create for each language, in addition to a subfolder for each detected NPC.</summary>
+        private readonly string[] DefaultSubfolders = new[]
+        {
+            "Characters",
+            "Events",
+            "ExtraDialogue", // folder for ExtraDialogue.yaml
+            "Gil",
+            "Governor",
+            "Grandpa",
+            "Kent",
+            "LocationDialogue",
+            "Mail",
+            "Morris",
+            "Notes",
+            "NPCGiftTastes",
+            "Quests",
+            "Shops", // NPC shops
+            "SpeechBubbles",
+            "Temp",
+            "TV", // TV Shows
+            "Utility"
+        };
+
+
+        /*********
+        ** Accessors
+        *********/
         public static IModHelper ModHelper;
         public static IMonitor ModMonitor;
         public static IManifest Manifest;
 
-        /// <summary>
-        /// A string that keeps track of the previous dialogue said to ensure that dialogue isn't constantly repeated while the text box is open.
-        /// </summary>
+        /// <summary>A string that keeps track of the previous dialogue said to ensure that dialogue isn't constantly repeated while the text box is open.</summary>
         public static string previousDialogue;
 
-        List<string> characterDialoguePaths = new List<string>();
-
-        /// <summary>
-        /// Simple Sound Manager class that handles playing and stoping dialogue.
-        /// </summary>
+        /// <summary>Simple Sound Manager class that handles playing and stoping dialogue.</summary>
         public static SimpleSoundManager.Framework.SoundManager soundManager;
 
-
-
-
-        /// <summary>
-        /// The path to the folder where all of the NPC folders for dialogue .wav files are kept.
-        /// </summary>
-        public static string VoicePath = "";
+        /// <summary>The path to the folder where all of the NPC folders for dialogue .wav files are kept, relative to the mod folder.</summary>
+        private static readonly string RelativeVoicePath = Path.Combine("Content", "Audio", "VoiceFiles");
 
         public static ReplacementStrings replacementStrings;
 
         public static ModConfig config;
 
-
         public List<string> onScreenSpeechBubbleDialogues;
 
-        /// <summary>
-        /// A dictionary that keeps track of all of the npcs whom have voice acting for their dialogue.
-        /// </summary>
+        /// <summary>A dictionary that keeps track of all of the npcs whom have voice acting for their dialogue.</summary>
         public static Dictionary<string, CharacterVoiceCue> DialogueCues;
 
+
+        /*********
+        ** Public methods
+        *********/
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            StardewModdingAPI.Events.SaveEvents.AfterLoad += SaveEvents_AfterLoad;
-            StardewModdingAPI.Events.GameEvents.UpdateTick += GameEvents_UpdateTick;
-            StardewModdingAPI.Events.MenuEvents.MenuClosed += MenuEvents_MenuClosed;
-            StardewModdingAPI.Events.MenuEvents.MenuChanged += MenuEvents_MenuChanged;
-            ModMonitor = Monitor;
-            ModHelper = Helper;
-            Manifest = ModManifest;
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            helper.Events.Display.MenuChanged += this.MenuEvents_MenuChanged;
+            ModMonitor = this.Monitor;
+            ModHelper = this.Helper;
+            Manifest = this.ModManifest;
             DialogueCues = new Dictionary<string, CharacterVoiceCue>();
             replacementStrings = new ReplacementStrings();
 
-            onScreenSpeechBubbleDialogues = new List<string>();
+            this.onScreenSpeechBubbleDialogues = new List<string>();
 
             previousDialogue = "";
 
@@ -218,52 +237,39 @@ namespace Vocalization
 
         }
 
-        private void MenuEvents_MenuChanged(object sender, StardewModdingAPI.Events.EventArgsClickableMenuChanged e)
-        {
-            if (Game1.activeClickableMenu.GetType() == typeof(ModularGameMenu))
-            {
-                npcPortraitHack();
-            }
-        }
-
-        /// <summary>
-        /// Runs whenever any onscreen menu is closed.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MenuEvents_MenuClosed(object sender, StardewModdingAPI.Events.EventArgsClickableMenuClosed e)
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void MenuEvents_MenuChanged(object sender, MenuChangedEventArgs e)
         {
             //Clean out my previous dialogue when I close any sort of menu.
-            try
+            if (e.NewMenu == null)
             {
-                soundManager.stopAllSounds();
+                try
+                {
+                    soundManager.stopAllSounds();
+                }
+                catch { }
                 previousDialogue = "";
             }
-            catch (Exception err)
-            {
-                previousDialogue = "";
-            }
+
+            else if (Game1.activeClickableMenu is ModularGameMenu)
+                this.npcPortraitHack();
         }
 
-        /// <summary>
-        /// Runs after the game is loaded to initialize all of the mod's files.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SaveEvents_AfterLoad(object sender, EventArgs e)
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-
-
-            initialzeModualGameMenuHack();
-            initialzeDirectories();
+            this.initialzeModualGameMenuHack();
+            this.initialzeDirectories();
             loadAllVoiceFiles();
 
             AudioCues.saveAudioCues();
         }
 
-        /// <summary>
-        /// Initializes the menu tab for Vocalization for the modular menu.
-        /// </summary>
+        /// <summary>Initializes the menu tab for Vocalization for the modular menu.</summary>
         public void initialzeModualGameMenuHack()
         {
             List<Texture2D> textures = new List<Texture2D>();
@@ -271,9 +277,13 @@ namespace Vocalization
             {
                 foreach (NPC npc in loc.characters)
                 {
-                    if (npc.isVillager() == false) continue;
+                    if (!npc.isVillager())
+                        continue;
+
                     Texture2D text = npc.Sprite.Texture;
-                    if (text == null) continue;
+                    if (text == null)
+                        continue;
+
                     textures.Add(text);
                 }
             }
@@ -282,24 +292,25 @@ namespace Vocalization
             ClickableTextureComponent c = new ClickableTextureComponent(new Rectangle(0, 16, 16, 24), myText, new Rectangle(0, 0, 16, 24), 2f, false);
 
             ClickableTextureComponent speech = new ClickableTextureComponent(new Rectangle(0, 0, 32, 32), ModHelper.Content.Load<Texture2D>(Path.Combine("Content", "Graphics", "SpeechBubble.png")), new Rectangle(0, 0, 32, 32), 2f, false);
-            List<KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>> components = new List<KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>>();
+            var components = new List<KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>>
+            {
+                new KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>(c, ExtraTextureDrawOrder.after),
+                new KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>(speech, ExtraTextureDrawOrder.after)
+            };
 
-            components.Add(new KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>(c, ExtraTextureDrawOrder.after));
-            components.Add(new KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>(speech, ExtraTextureDrawOrder.after));
-
-            Button menuTab = new Button("", new Rectangle(0, 0, 32, 32), new Texture2DExtended(ModHelper, ModManifest, Path.Combine("Content", "Graphics", "MenuTab.png")), "", new Rectangle(0, 0, 32, 32), 2f, new StardustCore.Animations.Animation(new Rectangle(0, 0, 32, 32)), Color.White, Color.White, new StardustCore.UIUtilities.MenuComponents.Delegates.Functionality.ButtonFunctionality(new StardustCore.UIUtilities.MenuComponents.Delegates.DelegatePairing(null, null), new StardustCore.UIUtilities.MenuComponents.Delegates.DelegatePairing(null, null), new StardustCore.UIUtilities.MenuComponents.Delegates.DelegatePairing(null, null)), false, components);
+            Button menuTab = new Button("", new Rectangle(0, 0, 32, 32), new Texture2DExtended(ModHelper, Path.Combine("Content", "Graphics", "MenuTab.png")), "", new Rectangle(0, 0, 32, 32), 2f, new StardustCore.Animations.Animation(new Rectangle(0, 0, 32, 32)), Color.White, Color.White, new StardustCore.UIUtilities.MenuComponents.Delegates.Functionality.ButtonFunctionality(new StardustCore.UIUtilities.MenuComponents.Delegates.DelegatePairing(null, null), new StardustCore.UIUtilities.MenuComponents.Delegates.DelegatePairing(null, null), new StardustCore.UIUtilities.MenuComponents.Delegates.DelegatePairing(null, null)), false, components);
 
             //Change this to take the vocalization menu instead
-            List<KeyValuePair<Button, IClickableMenuExtended>> modTabs = new List<KeyValuePair<Button, IClickableMenuExtended>>();
-            modTabs.Add(new KeyValuePair<Button, IClickableMenuExtended>(menuTab, new VocalizationMenu(100, 64, 600, 300, true)));
-            StardustCore.Menus.ModularGameMenu.AddTabsForMod(ModManifest, modTabs);
+            var modTabs = new List<KeyValuePair<Button, IClickableMenuExtended>>
+            {
+                new KeyValuePair<Button, IClickableMenuExtended>(menuTab, new VocalizationMenu(100, 64, 600, 300, true))
+            };
+            ModularGameMenu.AddTabsForMod(this.ModManifest, modTabs);
 
             ModMonitor.Log("VOCALIZATION MENU HACK COMPLETE!", LogLevel.Alert);
         }
 
-        /// <summary>
-        /// Randomize the npc below the speech bubble every time the modular game menu is drawn.
-        /// </summary>
+        /// <summary>Randomize the npc below the speech bubble every time the modular game menu is drawn.</summary>
         public void npcPortraitHack()
         {
             List<KeyValuePair<Button, IClickableMenuExtended>> menuHacks = new List<KeyValuePair<Button, IClickableMenuExtended>>();
@@ -309,7 +320,8 @@ namespace Vocalization
             {
                 foreach (NPC npc in loc.characters)
                 {
-                    if (npc.isVillager() == false) continue;
+                    if (!npc.isVillager())
+                        continue;
                     Texture2D text = npc.Sprite.Texture;
                     textures.Add(text);
                 }
@@ -319,19 +331,18 @@ namespace Vocalization
             ClickableTextureComponent c = new ClickableTextureComponent(new Rectangle(0, 16, 16, 24), myText, new Rectangle(0, 0, 16, 24), 2f, false);
             List<KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>> components = new List<KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>>();
 
-
             ClickableTextureComponent speech = new ClickableTextureComponent(new Rectangle(0, 0, 32, 32), ModHelper.Content.Load<Texture2D>(Path.Combine("Content", "Graphics", "SpeechBubble.png")), new Rectangle(0, 0, 32, 32), 2f, false);
 
             components.Add(new KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>(c, ExtraTextureDrawOrder.after));
             components.Add(new KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>(speech, ExtraTextureDrawOrder.after));
 
-            Button menuTab = new Button("", new Rectangle(0, 0, 32, 32), new Texture2DExtended(ModHelper, ModManifest, Path.Combine("Content", "Graphics", "MenuTab.png")), "", new Rectangle(0, 0, 32, 32), 2f, new StardustCore.Animations.Animation(new Rectangle(0, 0, 32, 32)), Color.White, Color.White, new StardustCore.UIUtilities.MenuComponents.Delegates.Functionality.ButtonFunctionality(null, null, null), false, components);
+            Button menuTab = new Button("", new Rectangle(0, 0, 32, 32), new Texture2DExtended(ModHelper, Path.Combine("Content", "Graphics", "MenuTab.png")), "", new Rectangle(0, 0, 32, 32), 2f, new StardustCore.Animations.Animation(new Rectangle(0, 0, 32, 32)), Color.White, Color.White, new StardustCore.UIUtilities.MenuComponents.Delegates.Functionality.ButtonFunctionality(null, null, null), false, components);
 
             //Change this to take the vocalization menu instead
             List<KeyValuePair<Button, IClickableMenuExtended>> modTabs = new List<KeyValuePair<Button, IClickableMenuExtended>>();
             modTabs.Add(new KeyValuePair<Button, IClickableMenuExtended>(menuTab, new VocalizationMenu(100, 64, 600, 300, true)));
 
-            StardustCore.Menus.ModularGameMenu.StaticMenuTabsAndPages[ModManifest.UniqueID] = modTabs;
+            ModularGameMenu.StaticMenuTabsAndPages[this.ModManifest.UniqueID] = modTabs;
         }
 
         public static object GetInstanceField(Type type, object instance, string fieldName)
@@ -351,12 +362,11 @@ namespace Vocalization
             */
             return field.GetValue(instance);
         }
-        /// <summary>
-        /// Runs every game tick to check if the player is talking to an npc.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void GameEvents_UpdateTick(object sender, EventArgs e)
+
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             soundManager.update();
             if (Game1.player != null)
@@ -370,43 +380,41 @@ namespace Vocalization
                         if (text == null) continue;
                         string currentDialogue = text;
 
-                        if (onScreenSpeechBubbleDialogues.Contains(currentDialogue) && timer > 0) continue; //If I have already added this dialogue and the timer has not run out, do nothing.
+                        if (this.onScreenSpeechBubbleDialogues.Contains(currentDialogue) && timer > 0) continue; //If I have already added this dialogue and the timer has not run out, do nothing.
 
-                        if (!onScreenSpeechBubbleDialogues.Contains(currentDialogue) && timer > 0) //If I have not added this dialogue and the timer has not run out, add it.
+                        if (!this.onScreenSpeechBubbleDialogues.Contains(currentDialogue) && timer > 0) //If I have not added this dialogue and the timer has not run out, add it.
                         {
                             List<string> tries = new List<string>();
                             tries.Add("SpeechBubbles");
                             tries.Add(v.Name);
-                            foreach (var speech in tries)
+                            foreach (string speech in tries)
                             {
-                                CharacterVoiceCue voice;
-                                DialogueCues.TryGetValue(speech, out voice);
+                                DialogueCues.TryGetValue(speech, out CharacterVoiceCue voice);
                                 currentDialogue = sanitizeDialogueInGame(currentDialogue); //If contains the stuff in the else statement, change things up.
                                 if (voice.dialogueCues.ContainsKey(currentDialogue))
                                 {
                                     //Not variable messages. Aka messages that don't contain words the user can change such as farm name, farmer name etc. 
                                     voice.speak(currentDialogue);
-                                    onScreenSpeechBubbleDialogues.Add(currentDialogue);
+                                    this.onScreenSpeechBubbleDialogues.Add(currentDialogue);
                                     return;
                                 }
                                 else
                                 {
                                     ModMonitor.Log("New unregistered dialogue detected for NPC: " + speech + " saying: " + currentDialogue, LogLevel.Alert);
                                     ModMonitor.Log("Make sure to add this to their respective VoiceCue.json file if you wish for this dialogue to have voice acting associated with it!", LogLevel.Alert);
-
                                 }
                             }
                         }
                         else
                         {
-                            if (timer <= 0 && onScreenSpeechBubbleDialogues.Contains(currentDialogue)) //If the timer has run out and I still contain the dialogue, remove it.
+                            if (timer <= 0 && this.onScreenSpeechBubbleDialogues.Contains(currentDialogue)) //If the timer has run out and I still contain the dialogue, remove it.
                             {
-                                onScreenSpeechBubbleDialogues.Remove(currentDialogue);
+                                this.onScreenSpeechBubbleDialogues.Remove(currentDialogue);
                             }
-                            if (timer <= 0 && !onScreenSpeechBubbleDialogues.Contains(currentDialogue)) //If the timer has run out and I no longer contain the dialogue, continue on.
-                            {
-                                continue;
-                            }
+                            //if (timer <= 0 && !this.onScreenSpeechBubbleDialogues.Contains(currentDialogue)) //If the timer has run out and I no longer contain the dialogue, continue on.
+                            //{
+                            //    continue;
+                            //}
                         }
                     }
                 }
@@ -415,9 +423,8 @@ namespace Vocalization
             if (Game1.currentSpeaker != null)
             {
                 string speakerName = Game1.currentSpeaker.Name;
-                if (Game1.activeClickableMenu.GetType() == typeof(StardewValley.Menus.DialogueBox))
+                if (Game1.activeClickableMenu is DialogueBox dialogueBox)
                 {
-                    StardewValley.Menus.DialogueBox dialogueBox = (DialogueBox)Game1.activeClickableMenu;
                     string currentDialogue = dialogueBox.getCurrentString();
                     if (previousDialogue != currentDialogue)
                     {
@@ -429,20 +436,21 @@ namespace Vocalization
                         //Sanitize input here!
                         //Load all game dialogue files and then sanitize input.
 
-                        List<string> tries = new List<string>();
-                        tries.Add(speakerName);
-                        tries.Add("ExtraDialogue");
-                        tries.Add("Events");
-                        tries.Add("CharactersStrings");
-                        tries.Add("LocationDialogue");
-                        tries.Add("Utility");
-                        tries.Add("Quests");
-                        tries.Add("NPCGiftTastes");
-                        tries.Add("Temp");
-                        foreach (var v in tries)
+                        List<string> tries = new List<string>
                         {
-                            CharacterVoiceCue voice;
-                            DialogueCues.TryGetValue(v, out voice);
+                            speakerName,
+                            "ExtraDialogue",
+                            "Events",
+                            "CharactersStrings",
+                            "LocationDialogue",
+                            "Utility",
+                            "Quests",
+                            "NPCGiftTastes",
+                            "Temp"
+                        };
+                        foreach (string v in tries)
+                        {
+                            DialogueCues.TryGetValue(v, out CharacterVoiceCue voice);
                             currentDialogue = sanitizeDialogueInGame(currentDialogue); //If contains the stuff in the else statement, change things up.
 
                             if (voice.dialogueCues.ContainsKey(currentDialogue))
@@ -463,31 +471,33 @@ namespace Vocalization
             }
             else
             {
-                if (Game1.activeClickableMenu == null) return;
+                if (Game1.activeClickableMenu == null)
+                    return;
+
                 //Support for TV
-                if (Game1.activeClickableMenu.GetType() == typeof(StardewValley.Menus.DialogueBox))
+                if (Game1.activeClickableMenu is DialogueBox dialogueBox)
                 {
-                    StardewValley.Menus.DialogueBox dialogueBox = (DialogueBox)Game1.activeClickableMenu;
                     string currentDialogue = dialogueBox.getCurrentString();
                     if (previousDialogue != currentDialogue)
                     {
                         previousDialogue = currentDialogue; //Update my previously read dialogue so that I only read the new string once when it appears.
                         ModMonitor.Log(currentDialogue); //Print out my dialogue.
 
-                        List<string> tries = new List<string>();
-                        tries.Add("TV");
-                        tries.Add("Events");
-                        tries.Add("Characters");
-                        tries.Add("LocationDialogue");
-                        tries.Add("Notes");
-                        tries.Add("Utility");
-                        tries.Add("Quests");
-                        tries.Add("NPCGiftTastes");
-                        foreach (var v in tries)
+                        List<string> tries = new List<string>
+                        {
+                            "TV",
+                            "Events",
+                            "Characters",
+                            "LocationDialogue",
+                            "Notes",
+                            "Utility",
+                            "Quests",
+                            "NPCGiftTastes"
+                        };
+                        foreach (string v in tries)
                         {
                             //Add in support for TV Shows
-                            CharacterVoiceCue voice;
-                            bool f = DialogueCues.TryGetValue(v, out voice);
+                            bool f = DialogueCues.TryGetValue(v, out CharacterVoiceCue voice);
                             currentDialogue = sanitizeDialogueInGame(currentDialogue); //If contains the stuff in the else statement, change things up.
                             if (voice.dialogueCues.ContainsKey(currentDialogue))
                             {
@@ -501,31 +511,26 @@ namespace Vocalization
                             {
                                 ModMonitor.Log("New unregistered dialogue detected saying: " + currentDialogue, LogLevel.Alert);
                                 ModMonitor.Log("Make sure to add this to their respective VoiceCue.json file if you wish for this dialogue to have voice acting associated with it!", LogLevel.Alert);
-
                             }
                         }
                     }
                 }
 
                 //Support for Letters
-                if (Game1.activeClickableMenu.GetType() == typeof(StardewValley.Menus.LetterViewerMenu))
+                if (Game1.activeClickableMenu is LetterViewerMenu letterMenu)
                 {
                     //Use reflection to get original text back.
-                    var menu = (StardewValley.Menus.LetterViewerMenu)Game1.activeClickableMenu;
                     //mail dialogue text will probably need to be sanitized as well....
-                    List<string> mailText = (List<string>)ModHelper.Reflection.GetField<List<string>>(menu, "mailMessage", true);
+                    List<string> mailText = (List<string>)ModHelper.Reflection.GetField<List<string>>(letterMenu, "mailMessage");
                     string currentDialogue = "";
-                    foreach (var v in mailText)
-                    {
+                    foreach (string v in mailText)
                         currentDialogue += mailText;
-                    }
 
                     previousDialogue = currentDialogue; //Update my previously read dialogue so that I only read the new string once when it appears.
 
 
                     //Add in support for TV Shows
-                    CharacterVoiceCue voice;
-                    DialogueCues.TryGetValue("Mail", out voice);
+                    DialogueCues.TryGetValue("Mail", out CharacterVoiceCue voice);
                     currentDialogue = sanitizeDialogueInGame(currentDialogue); //If contains the stuff in the else statement, change things up.
                     if (voice.dialogueCues.ContainsKey(currentDialogue))
                     {
@@ -537,41 +542,29 @@ namespace Vocalization
                         ModMonitor.Log("New unregistered Mail dialogue detected saying: " + currentDialogue, LogLevel.Alert);
                         ModMonitor.Log("Make sure to add this to their respective VoiceCue.json file if you wish for this dialogue to have voice acting associated with it!", LogLevel.Alert);
                     }
-
                 }
 
                 //Support for shops
-                if (Game1.activeClickableMenu.GetType() == typeof(StardewValley.Menus.ShopMenu))
+                if (Game1.activeClickableMenu is ShopMenu shopMenu)
                 {
-
-                    var menu = (StardewValley.Menus.ShopMenu)Game1.activeClickableMenu;
-                    string shopDialogue = menu.potraitPersonDialogue; //Check this string to the dict of voice cues
+                    string shopDialogue = shopMenu.potraitPersonDialogue; //Check this string to the dict of voice cues
 
                     shopDialogue = shopDialogue.Replace(Environment.NewLine, "");
 
-                    NPC npc = menu.portraitPerson;
+                    NPC npc = shopMenu.portraitPerson;
 
                     if (previousDialogue == shopDialogue) return;
                     previousDialogue = shopDialogue; //Update my previously read dialogue so that I only read the new string once when it appears.
 
-
                     //Add in support for Shops
-                    CharacterVoiceCue voice;
                     //character shops
-                    bool f = DialogueCues.TryGetValue("Shops", out voice);
-                    if (f == false)
-                    {
+                    if (!DialogueCues.TryGetValue("Shops", out CharacterVoiceCue voice))
                         ModMonitor.Log("Can't find the dialogue for the shop: " + npc.Name);
-                    }
                     shopDialogue = sanitizeDialogueInGame(shopDialogue); //If contains the stuff in the else statement, change things up.
-
 
                     //I have no clue why the parsing adds in an extra character sometimes but I guess I have to do this in some cases....
                     if (!voice.dialogueCues.ContainsKey(shopDialogue))
-                    {
                         shopDialogue = shopDialogue.Substring(0, shopDialogue.Length - 1);
-                    }
-
 
                     if (voice.dialogueCues.ContainsKey(shopDialogue))
                     {
@@ -580,233 +573,83 @@ namespace Vocalization
                     }
                     else
                     {
-
-
                         ModMonitor.Log("New unregistered dialogue detected saying: " + shopDialogue, LogLevel.Alert);
                         ModMonitor.Log("Make sure to add this to their respective VoiceCue.json file if you wish for this dialogue to have voice acting associated with it!", LogLevel.Alert);
                     }
-
                 }
-
             }
         }
 
-        /// <summary>
-        /// Runs after loading and creates necessary mod directories.
-        /// </summary>
+        /// <summary>Runs after loading and creates necessary mod directories.</summary>
         private void initialzeDirectories()
         {
-            string basePath = ModHelper.DirectoryPath;
-            string contentPath = Path.Combine(basePath, "Content");
-            string graphicsPath = Path.Combine(contentPath, "Graphics");
-            string audioPath = Path.Combine(contentPath, "Audio");
-            string voicePath = Path.Combine(audioPath, "VoiceFiles");
+            Directory.CreateDirectory(Path.Combine(this.Helper.DirectoryPath, "Content", "Graphics"));
+            Directory.CreateDirectory(Path.Combine(this.Helper.DirectoryPath, RelativeVoicePath));
 
-            if (!Directory.Exists(graphicsPath)) Directory.CreateDirectory(graphicsPath);
+            // get list of subfolders to create
+            List<string> subfolderNames = new List<string>(this.DefaultSubfolders);
+            foreach (NPC npc in Game1.locations.SelectMany(loc => loc.characters))
+                subfolderNames.Add(npc.Name);
 
-            VoicePath = voicePath; //Set a static reference to my voice files directory.
-
-
-
-            //Get a list of all characters in the game and make voice directories for them in each supported translation of the mod.
-            foreach (var loc in Game1.locations)
+            // create subfolders for each translation
+            // Note: a modder could also manually add their own character directory for voice lines instead of having to add it via code.
+            foreach (LanguageName language in config.translationInfo.LanguageNames)
             {
-                foreach (var NPC in loc.characters)
-                {
-                    foreach (var translation in config.translationInfo.translations)
-                    {
-                        string characterPath = Path.Combine(translation, NPC.Name);
-                        characterDialoguePaths.Add(characterPath);
-                    }
-                }
-            }
-
-            //Create all of the necessary folders for different translations.
-            foreach (var dir in config.translationInfo.translations)
-            {
-                if (!Directory.Exists(Path.Combine(voicePath, dir))) Directory.CreateDirectory(Path.Combine(voicePath, dir));
-            }
-
-            //Add in folder for TV Shows
-            foreach (var translation in config.translationInfo.translations)
-            {
-                string TVPath = Path.Combine(translation, "TV");
-                characterDialoguePaths.Add(TVPath);
-            }
-
-            //Add in folder for shop support
-            foreach (var translation in config.translationInfo.translations)
-            {
-                string shop = Path.Combine(translation, "Shops"); //Used to hold NPC Shops
-                characterDialoguePaths.Add(shop);
-            }
-
-            //Add in folder for Mail support.
-            foreach (var translation in config.translationInfo.translations)
-            {
-                string mail = Path.Combine(translation, "Mail");
-                characterDialoguePaths.Add(mail);
-            }
-
-            //Add in folder for ExtraDiaogue.yaml
-            foreach (var translation in config.translationInfo.translations)
-            {
-                string extra = Path.Combine(translation, "ExtraDialogue");
-                characterDialoguePaths.Add(extra);
-            }
-
-            foreach (var translation in config.translationInfo.translations)
-            {
-                string extra = Path.Combine(translation, "Events");
-                characterDialoguePaths.Add(extra);
-            }
-
-            foreach (var translation in config.translationInfo.translations)
-            {
-                string extra = Path.Combine(translation, "Characters");
-                characterDialoguePaths.Add(extra);
-            }
-
-            foreach (var translation in config.translationInfo.translations)
-            {
-                string extra = Path.Combine(translation, "LocationDialogue");
-                characterDialoguePaths.Add(extra);
-            }
-
-            foreach (var translation in config.translationInfo.translations)
-            {
-                string extra = Path.Combine(translation, "Notes");
-                characterDialoguePaths.Add(extra);
-            }
-
-            foreach (var translation in config.translationInfo.translations)
-            {
-                string extra = Path.Combine(translation, "Utility");
-                characterDialoguePaths.Add(extra);
-            }
-
-            foreach (var translation in config.translationInfo.translations)
-            {
-                string extra = Path.Combine(translation, "NPCGiftTastes");
-                characterDialoguePaths.Add(extra);
-            }
-
-            foreach (var translation in config.translationInfo.translations)
-            {
-                string extra = Path.Combine(translation, "SpeechBubbles");
-                characterDialoguePaths.Add(extra);
-            }
-
-            foreach (var translation in config.translationInfo.translations)
-            {
-                string kent = Path.Combine(translation, "Kent");
-                characterDialoguePaths.Add(kent);
-
-
-                string gil = Path.Combine(translation, "Gil");
-                characterDialoguePaths.Add(gil);
-
-
-                string governor = Path.Combine(translation, "Governor");
-                characterDialoguePaths.Add(governor);
-
-
-                string grandpa = Path.Combine(translation, "Grandpa");
-                characterDialoguePaths.Add(grandpa);
-
-
-                string morris = Path.Combine(translation, "Morris");
-                characterDialoguePaths.Add(morris);
-            }
-
-
-
-            foreach (var translation in config.translationInfo.translations)
-            {
-                string extra = Path.Combine(translation, "Quests");
-                characterDialoguePaths.Add(extra);
-            }
-
-
-            foreach (var translation in config.translationInfo.translations)
-            {
-                string extra = Path.Combine(translation, "Temp");
-                characterDialoguePaths.Add(extra);
-            }
-
-            if (!Directory.Exists(contentPath)) Directory.CreateDirectory(contentPath);
-            if (!Directory.Exists(audioPath)) Directory.CreateDirectory(audioPath);
-            if (!Directory.Exists(voicePath)) Directory.CreateDirectory(voicePath);
-
-
-
-            //Create a list of new directories if the corresponding character directory doesn't exist.
-            //Note: A modder could also manually add in their own character directory for voice lines instead of having to add it via code.
-            foreach (var dir in characterDialoguePaths)
-            {
-                if (!Directory.Exists(Path.Combine(voicePath, dir))) Directory.CreateDirectory(Path.Combine(voicePath, dir));
+                DirectoryInfo translationPath = new DirectoryInfo(Path.Combine(this.Helper.DirectoryPath, RelativeVoicePath, language.ToString()));
+                foreach (string subfolderName in subfolderNames)
+                    Directory.CreateDirectory(Path.Combine(translationPath.FullName, subfolderName));
             }
         }
 
-
-        /// <summary>
-        /// Loads in all of the .wav files associated with voice acting clips.
-        /// </summary>
+        /// <summary>Loads in all of the .wav files associated with voice acting clips.</summary>
         public static void loadAllVoiceFiles()
         {
-            //get a list of all translations supported by this mod.
-            List<string> translations = Directory.GetDirectories(VoicePath).ToList();
-            foreach (var translation in translations)
+            foreach (LanguageName language in config.translationInfo.LanguageNames)
             {
-                string[] characterVoiceLines = Directory.GetDirectories(translation);
-                //get a list of all characters supported in this translation and load their voice cue file.
-                foreach (var dir in characterVoiceLines)
-                {
-                    ModMonitor.Log(dir);
+                string relativeLanguagePath = Path.Combine(RelativeVoicePath, language.ToString());
 
-                    string[] clips = Directory.GetFiles(dir, "*.wav");
+                // check if mod supports language
+                DirectoryInfo languageDir = new DirectoryInfo(Path.Combine(ModHelper.DirectoryPath, relativeLanguagePath));
+                if (!languageDir.Exists)
+                    return;
+
+                // get characters supported in this translation and load their voice cue file
+                foreach (DirectoryInfo subdir in languageDir.GetDirectories())
+                {
+                    string characterName = subdir.Name;
+                    string relativeCuePath = Path.Combine(relativeLanguagePath, subdir.Name, "VoiceCues.json"); // dialogue cues (aka when the character should "speak")
 
                     //For every .wav file in every character voice clip directory load in the voice clip.
-                    foreach (var file in clips)
+                    foreach (FileInfo file in subdir.GetFiles("*.wav"))
                     {
-                        string fileName = Path.GetFileNameWithoutExtension(file);
-                        soundManager.loadWavFile(ModHelper, fileName, file);
-                        ModMonitor.Log("Loaded sound file: " + fileName + " from: " + file);
+                        string fileName = Path.GetFileNameWithoutExtension(file.Name);
+                        soundManager.loadWavFile(ModHelper, fileName, file.FullName);
+                        ModMonitor.Log($"Loaded sound file: {fileName} from: {file.FullName}");
                     }
-
-                    //Get the character dialogue cues (aka when the character should "speak") from the .json file.
-                    string voiceCueFile = Path.Combine(dir, "VoiceCues.json");
-                    string characterName = Path.GetFileName(dir);
 
                     //If a file was not found, create one and add it to the list of character voice cues.
                     //I have to scrape all files if they don't exist so that way all options are available for release.
-                    if (!File.Exists(voiceCueFile))
+                    if (!File.Exists(Path.Combine(ModHelper.DirectoryPath, relativeCuePath)))
                     {
-
                         CharacterVoiceCue cue = new CharacterVoiceCue(characterName);
                         cue.initializeEnglishScrape();
-                        cue.initializeForTranslation(translation);
-                        scrapeDictionaries(voiceCueFile, cue, translation);
+                        cue.initializeForTranslation(language);
+                        scrapeDictionaries(relativeCuePath, cue, language, languageDir);
                         try
                         {
-                            if (Path.GetFileName(translation) == config.translationInfo.currentTranslation)
-                            {
+                            if (language == config.translationInfo.CurrentTranslation)
                                 DialogueCues.Add(characterName, cue);
-                            }
                         }
-                        catch (Exception err)
-                        {
-
-                        }
+                        catch { }
                     }
                     else
                     {
                         try
                         {
                             //Only load in the cues for the current translation.
-                            if (Path.GetFileName(translation) == config.translationInfo.currentTranslation)
+                            if (language == config.translationInfo.CurrentTranslation)
                             {
-                                CharacterVoiceCue cue = ModHelper.ReadJsonFile<CharacterVoiceCue>(voiceCueFile);
+                                CharacterVoiceCue cue = ModHelper.Data.ReadJsonFile<CharacterVoiceCue>(relativeCuePath);
                                 //scrapeDictionaries(voiceCueFile,cue);
                                 DialogueCues.Add(characterName, cue);
                             }
@@ -820,32 +663,27 @@ namespace Vocalization
             }
         }
 
-        /// <summary>
-        /// Used to obtain all strings for almost all possible dialogue in the game.
-        /// </summary>
-        /// <param name="cue"></param>
-        public static void scrapeDictionaries(string path, CharacterVoiceCue cue, string translation)
+        /// <summary>Used to obtain all strings for almost all possible dialogue in the game.</summary>
+        public static void scrapeDictionaries(string relativeCuePath, CharacterVoiceCue cue, LanguageName language, DirectoryInfo languageDir)
         {
-
-            var dialoguePath = Path.Combine("Characters", "Dialogue");
-            var stringsPath = Path.Combine("Strings"); //Used for all sorts of extra strings and stuff for like StringsFromCS
-            var dataPath = Path.Combine("Data"); //Used for engagement dialogue strings, and ExtraDialogue, Notes, Secret Notes, Mail
-            var festivalPath = Path.Combine(dataPath, "Festivals");
-            var eventPath = Path.Combine(dataPath, "Events");
+            string dialoguePath = Path.Combine("Characters", "Dialogue");
+            string stringsPath = Path.Combine("Strings"); //Used for all sorts of extra strings and stuff for like StringsFromCS
+            string dataPath = Path.Combine("Data"); //Used for engagement dialogue strings, and ExtraDialogue, Notes, Secret Notes, Mail
+            string festivalPath = Path.Combine(dataPath, "Festivals");
+            string eventPath = Path.Combine(dataPath, "Events");
 
             ModMonitor.Log("Scraping dialogue for character: " + cue.name, LogLevel.Info);
             //If the "character"'s name is TV which means I'm watching tv, scrape the data from the TV shows.
             if (cue.name == "TV")
             {
-
-                foreach (var fileName in cue.dataFileNames)
+                foreach (string fileName in cue.dataFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
                     //basically this will never run but can be used below to also add in dialogue.
-                    if (!String.IsNullOrEmpty(fileName))
+                    if (!string.IsNullOrEmpty(fileName))
                     {
                         string dialoguePath2 = Path.Combine(dataPath, "TV", fileName);
-                        var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                        Dictionary<string, string> DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
 
                         //Scraping the CookingChannel dialogue
                         if (fileName.Contains("CookingChannel"))
@@ -863,21 +701,20 @@ namespace Vocalization
                                 //If the key contains the character's name.
                                 List<string> cleanDialogues = new List<string>();
                                 cleanDialogues = sanitizeDialogueFromDictionaries(cookingDialogue, cue);
-                                foreach (var str in cleanDialogues)
+                                foreach (string str in cleanDialogues)
                                 {
-                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                     {
-                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
 
                                         cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
                                     }
                                     else
                                     {
                                         cue.addDialogue(str, new VoiceAudioOptions()); //Make a new dialogue line based off of the text, but have the .wav value as empty.
-                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                     }
                                 }
-
                             }
                             continue;
                         }
@@ -891,26 +728,26 @@ namespace Vocalization
                                 //Get the key in the dictionary
                                 string key = pair.Key;
                                 string rawDialogue = pair.Value;
-                                if (key != "intro") continue;
+                                if (key != "intro")
+                                    continue;
+
                                 //If the key contains the character's name.
                                 List<string> cleanDialogues = new List<string>();
                                 cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                                foreach (var str in cleanDialogues)
+                                foreach (string str in cleanDialogues)
                                 {
-
-                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                     {
-                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
 
                                         cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
                                     }
                                     else
                                     {
                                         cue.addDialogue(str, new VoiceAudioOptions()); //Make a new dialogue line based off of the text, but have the .wav value as empty.
-                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                     }
                                 }
-
                             }
                             continue;
                         }
@@ -927,35 +764,34 @@ namespace Vocalization
 
                                 List<string> cleanDialogues = new List<string>();
                                 cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                                foreach (var str in cleanDialogues)
+                                foreach (string str in cleanDialogues)
                                 {
-                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                     {
-                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
 
                                         cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
                                     }
                                     else
                                     {
                                         cue.addDialogue(str, new VoiceAudioOptions()); //Make a new dialogue line based off of the text, but have the .wav value as empty.
-                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                     }
                                 }
-
                             }
                             continue;
                         }
                     }
                 }
 
-                foreach (var fileName in cue.stringsFileNames)
+                foreach (string fileName in cue.stringsFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
                     //basically this will never run but can be used below to also add in dialogue.
-                    if (!String.IsNullOrEmpty(fileName))
+                    if (!string.IsNullOrEmpty(fileName))
                     {
                         string dialoguePath2 = Path.Combine(stringsPath, fileName);
-                        var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                        Dictionary<string, string> DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
                         if (fileName.Contains("StringsFromCSFiles"))
                         {
                             //Scrape the whole dictionary looking for the character's name.
@@ -968,146 +804,135 @@ namespace Vocalization
                                 //If the key contains the character's name.
                                 List<string> cleanDialogues = new List<string>();
 
-
-                                if (key == "TV.cs.13151")
+                                switch (key)
                                 {
-                                    foreach (string recipe in Vocabulary.getAllCookingRecipes(translation))
-                                    {
-                                        rawDialogue = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:TV.cs.13151"), translation, (object)recipe);
-                                        List<string> cleanDialogues2 = new List<string>();
-                                        cleanDialogues2 = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                                        foreach (var str in cleanDialogues2)
+                                    case "TV.cs.13151":
+                                        foreach (string recipe in Vocabulary.getAllCookingRecipes(language))
                                         {
-                                            if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                            rawDialogue = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:TV.cs.13151"), language, (object)recipe);
+                                            List<string> cleanDialogues2 = new List<string>();
+                                            cleanDialogues2 = sanitizeDialogueFromDictionaries(rawDialogue, cue);
+                                            foreach (string str in cleanDialogues2)
                                             {
-                                                AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
-
-                                                cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-                                            }
-                                            else
-                                            {
-                                                cue.addDialogue(str, new VoiceAudioOptions()); //Make a new dialogue line based off of the text, but have the .wav value as empty.
-                                                AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
-                                            }
-                                        }
-                                    }
-                                    continue;
-                                }
-
-
-                                if (key == "TV.cs.13153")
-                                {
-                                    foreach (string recipe in Vocabulary.getAllCookingRecipes(translation))
-                                    {
-                                        rawDialogue = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:TV.cs.13153"), translation, (object)recipe);
-                                        List<string> cleanDialogues2 = new List<string>();
-                                        cleanDialogues2 = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                                        foreach (var str in cleanDialogues2)
-                                        {
-                                            if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
-                                            {
-                                                AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
-
-                                                cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-                                            }
-                                            else
-                                            {
-                                                cue.addDialogue(str, new VoiceAudioOptions()); //Make a new dialogue line based off of the text, but have the .wav value as empty.
-                                                AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
-                                            }
-                                        }
-                                    }
-                                    continue;
-                                }
-
-                                if (key == "TV.cs.13175")
-                                {
-                                    Dictionary<string, string> dictionary;
-                                    foreach (string season in Vocabulary.getSeasons())
-                                    {
-                                        for (int i = 1; i <= 28; i++)
-                                        {
-                                            try
-                                            {
-                                                dictionary = Game1.content.Load<Dictionary<string, string>>(Path.Combine("Data", "Festivals", config.translationInfo.getXNBForTranslation(season + (object)(i.ToString()), translation)));
-                                                ModMonitor.Log("Scraping TV Festival File: " + season + i.ToString());
-                                                dictionary.TryGetValue("name", out string name);
-                                                dictionary.TryGetValue("conditions", out string condition);
-                                                string location = condition.Split('/').ElementAt(0);
-                                                string times = condition.Split('/').ElementAt(1);
-                                                string startTime = times.Split(' ').ElementAt(0);
-                                                string finishTime = times.Split(' ').ElementAt(1);
-                                                config.translationInfo.changeLocalizedContentManagerFromTranslation(translation);
-                                                string dialogueString = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:TV.cs.13175"), translation, (object)name, (object)location, (object)Game1.getTimeOfDayString(Convert.ToInt32(startTime)), (object)Game1.getTimeOfDayString(Convert.ToInt32(finishTime)));
-                                                config.translationInfo.resetLocalizationCode();
-
-                                                cleanDialogues = sanitizeDialogueFromDictionaries(dialogueString, cue);
-
-                                                foreach (var str in cleanDialogues)
+                                                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                                 {
-                                                    string ahh = sanitizeDialogueFromMailDictionary(str);
-                                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
-                                                    {
-                                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
 
-                                                        cue.addDialogue(ahh, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-                                                    }
-                                                    else
+                                                    cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
+                                                }
+                                                else
+                                                {
+                                                    cue.addDialogue(str, new VoiceAudioOptions()); //Make a new dialogue line based off of the text, but have the .wav value as empty.
+                                                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
+                                                }
+                                            }
+                                        }
+                                        continue;
+
+                                    case "TV.cs.13153":
+                                        foreach (string recipe in Vocabulary.getAllCookingRecipes(language))
+                                        {
+                                            rawDialogue = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:TV.cs.13153"), language, (object)recipe);
+                                            List<string> cleanDialogues2 = new List<string>();
+                                            cleanDialogues2 = sanitizeDialogueFromDictionaries(rawDialogue, cue);
+                                            foreach (string str in cleanDialogues2)
+                                            {
+                                                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
+                                                {
+                                                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
+
+                                                    cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
+                                                }
+                                                else
+                                                {
+                                                    cue.addDialogue(str, new VoiceAudioOptions()); //Make a new dialogue line based off of the text, but have the .wav value as empty.
+                                                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
+                                                }
+                                            }
+                                        }
+                                        continue;
+
+                                    case "TV.cs.13175":
+                                        foreach (string season in Vocabulary.getSeasons())
+                                        {
+                                            for (int i = 1; i <= 28; i++)
+                                            {
+                                                try
+                                                {
+                                                    Dictionary<string, string> dictionary = Game1.content.Load<Dictionary<string, string>>(Path.Combine("Data", "Festivals", config.translationInfo.getXNBForTranslation(season + (object)(i.ToString()), language)));
+                                                    ModMonitor.Log("Scraping TV Festival File: " + season + i.ToString());
+                                                    dictionary.TryGetValue("name", out string name);
+                                                    dictionary.TryGetValue("conditions", out string condition);
+                                                    string location = condition.Split('/').ElementAt(0);
+                                                    string times = condition.Split('/').ElementAt(1);
+                                                    string startTime = times.Split(' ').ElementAt(0);
+                                                    string finishTime = times.Split(' ').ElementAt(1);
+                                                    config.translationInfo.changeLocalizedContentManagerFromTranslation(language);
+                                                    string dialogueString = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:TV.cs.13175"), language, (object)name, (object)location, (object)Game1.getTimeOfDayString(Convert.ToInt32(startTime)), (object)Game1.getTimeOfDayString(Convert.ToInt32(finishTime)));
+                                                    config.translationInfo.resetLocalizationCode();
+
+                                                    cleanDialogues = sanitizeDialogueFromDictionaries(dialogueString, cue);
+
+                                                    foreach (string str in cleanDialogues)
                                                     {
-                                                        cue.addDialogue(ahh, new VoiceAudioOptions()); //Make a new dialogue line based off of the text, but have the .wav value as empty.
-                                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                                        string ahh = sanitizeDialogueFromMailDictionary(str);
+                                                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
+                                                        {
+                                                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
+
+                                                            cue.addDialogue(ahh, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
+                                                        }
+                                                        else
+                                                        {
+                                                            cue.addDialogue(ahh, new VoiceAudioOptions()); //Make a new dialogue line based off of the text, but have the .wav value as empty.
+                                                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
+                                                        }
                                                     }
                                                 }
-
-
-                                            }
-                                            catch (Exception err)
-                                            {
-                                                //ModMonitor.Log(err.ToString());
+                                                catch (Exception err)
+                                                {
+                                                    //ModMonitor.Log(err.ToString());
+                                                }
                                             }
                                         }
-                                    }
-                                    continue;
+                                        continue;
                                 }
 
-                                cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
 
-                                foreach (var str in cleanDialogues)
+                                cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
+                                foreach (string str in cleanDialogues)
                                 {
                                     string ahh = sanitizeDialogueFromMailDictionary(str);
-                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                     {
-                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
 
                                         cue.addDialogue(ahh, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
                                     }
                                     else
                                     {
                                         cue.addDialogue(ahh, new VoiceAudioOptions()); //Make a new dialogue line based off of the text, but have the .wav value as empty.
-                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                     }
                                 }
-
                             }
                             continue;
                         }
                     }
                 }
-
-
             }
 
             //If the "character"'s name is Shops which means I'm talking to a shopkeeper.
             else if (cue.name == "Shops")
             {
-                foreach (var fileName in cue.stringsFileNames)
+                foreach (string fileName in cue.stringsFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
                     //basically this will never run but can be used below to also add in dialogue.
-                    if (!String.IsNullOrEmpty(fileName))
+                    if (!string.IsNullOrEmpty(fileName))
                     {
                         string dialoguePath2 = Path.Combine(stringsPath, fileName);
-                        var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                        Dictionary<string, string> DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
 
                         //Scraping the CookingChannel dialogue
 
@@ -1122,104 +947,98 @@ namespace Vocalization
                                 if (!key.Contains("ShopMenu")) continue;
                                 //If the key contains the character's name.
 
-
-                                if (key == "ShopMenu.cs.11464")
+                                switch (key)
                                 {
-                                    foreach (var obj in Vocabulary.getCarpenterStock(translation))
-                                    {
-                                        foreach (string word1 in Vocabulary.getRandomPositiveAdjectivesForEventOrPerson(translation, null))
+                                    case "ShopMenu.cs.11464":
+                                        foreach (string obj in Vocabulary.getCarpenterStock(language))
                                         {
+                                            foreach (string word1 in Vocabulary.getRandomPositiveAdjectivesForEventOrPerson(language, null))
+                                            {
 
-                                            rawDialogue = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:ShopMenu.cs.11464"), translation, (object)obj, (object)word1, (object)Vocabulary.getProperArticleForWord(obj, translation));
+                                                rawDialogue = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:ShopMenu.cs.11464"), language, (object)obj, (object)word1, (object)Vocabulary.getProperArticleForWord(obj, language));
+                                                List<string> cleanDialogues2 = new List<string>();
+                                                cleanDialogues2 = sanitizeDialogueFromDictionaries(rawDialogue, cue);
+                                                foreach (string str in cleanDialogues2)
+                                                {
+                                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
+                                                    {
+                                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
+
+                                                        cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
+                                                    }
+                                                    else
+                                                    {
+                                                        cue.addDialogue(str, new VoiceAudioOptions()); //Make a new dialogue line based off of the text, but have the .wav value as empty.
+                                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        continue;
+
+                                    case "ShopMenu.cs.11502":
+                                        foreach (string obj in Vocabulary.getMerchantStock(language))
+                                        {
+                                            rawDialogue = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:ShopMenu.cs.11502"), language, (object)obj);
                                             List<string> cleanDialogues2 = new List<string>();
                                             cleanDialogues2 = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                                            foreach (var str in cleanDialogues2)
+                                            foreach (string str in cleanDialogues2)
                                             {
-                                                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                                 {
-                                                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
 
                                                     cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
                                                 }
                                                 else
                                                 {
                                                     cue.addDialogue(str, new VoiceAudioOptions()); //Make a new dialogue line based off of the text, but have the .wav value as empty.
-                                                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                                 }
                                             }
                                         }
-                                    }
-                                    continue;
-                                }
-                                if (key == "ShopMenu.cs.11502")
-                                {
-                                    foreach (var obj in Vocabulary.getMerchantStock(translation))
-                                    {
-                                        rawDialogue = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:ShopMenu.cs.11502"), translation, (object)obj);
-                                        List<string> cleanDialogues2 = new List<string>();
-                                        cleanDialogues2 = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                                        foreach (var str in cleanDialogues2)
-                                        {
-                                            if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
-                                            {
-                                                AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                        continue;
 
-                                                cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-                                            }
-                                            else
+                                    case "ShopMenu.cs.11512":
+                                        foreach (string obj in Vocabulary.getMerchantStock(language))
+                                        {
+                                            rawDialogue = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:ShopMenu.cs.11512"), language, (object)obj);
+                                            List<string> cleanDialogues2 = new List<string>();
+                                            cleanDialogues2 = sanitizeDialogueFromDictionaries(rawDialogue, cue);
+                                            foreach (string str in cleanDialogues2)
                                             {
-                                                cue.addDialogue(str, new VoiceAudioOptions()); //Make a new dialogue line based off of the text, but have the .wav value as empty.
-                                                AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
+                                                {
+                                                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
+
+                                                    cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
+                                                }
+                                                else
+                                                {
+                                                    cue.addDialogue(str, new VoiceAudioOptions()); //Make a new dialogue line based off of the text, but have the .wav value as empty.
+                                                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
+                                                }
                                             }
                                         }
-
-                                    }
-                                    continue;
-                                }
-
-                                if (key == "ShopMenu.cs.11512")
-                                {
-                                    foreach (var obj in Vocabulary.getMerchantStock(translation))
-                                    {
-                                        rawDialogue = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:ShopMenu.cs.11512"), translation, (object)obj);
-                                        List<string> cleanDialogues2 = new List<string>();
-                                        cleanDialogues2 = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                                        foreach (var str in cleanDialogues2)
-                                        {
-                                            if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
-                                            {
-                                                AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
-
-                                                cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-                                            }
-                                            else
-                                            {
-                                                cue.addDialogue(str, new VoiceAudioOptions()); //Make a new dialogue line based off of the text, but have the .wav value as empty.
-                                                AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
-                                            }
-                                        }
-
-                                    }
-                                    continue;
+                                        continue;
                                 }
 
                                 List<string> cleanDialogues = new List<string>();
                                 cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                                foreach (var str in cleanDialogues)
+                                foreach (string str in cleanDialogues)
                                 {
-                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                     {
-                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
 
                                         cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
                                     }
                                     else
                                     {
                                         cue.addDialogue(str, new VoiceAudioOptions()); //Make a new dialogue line based off of the text, but have the .wav value as empty.
-                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                     }
                                 }
-
                             }
 
                             continue;
@@ -1227,21 +1046,20 @@ namespace Vocalization
                         //For moddablity add a generic scrape here!
                     }
                 }
-
             }
 
             //Scrape Content/Data/ExtraDialogue.yaml
             else if (cue.name == "ExtraDialogue")
             {
-                foreach (var fileName in cue.dataFileNames)
+                foreach (string fileName in cue.dataFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
                     //basically this will never run but can be used below to also add in dialogue.
-                    if (!String.IsNullOrEmpty(fileName))
+                    if (!string.IsNullOrEmpty(fileName))
                     {
                         string dialoguePath2 = Path.Combine(dataPath, fileName);
-                        var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
-                        foreach (KeyValuePair<string, string> pair in DialogueDict)
+                        Dictionary<string, string> dialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                        foreach (KeyValuePair<string, string> pair in dialogueDict)
                         {
                             //Get the key in the dictionary
                             string key = pair.Key;
@@ -1249,205 +1067,190 @@ namespace Vocalization
 
                             List<string> cleanDialogues = new List<string>();
                             cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                            foreach (var str in cleanDialogues)
+                            foreach (string str in cleanDialogues)
                             {
-
-                                if (key == "NewChild_Adoption")
+                                switch (key)
                                 {
-                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
-                                    {
-                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
-
-                                        cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), translation, replacementStrings.kid1Name), new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-                                        cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), translation, replacementStrings.kid2Name), new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-                                    }
-                                    else
-                                    {
-                                        cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), translation, replacementStrings.kid1Name), new VoiceAudioOptions());
-                                        cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), translation, replacementStrings.kid2Name), new VoiceAudioOptions());
-                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
-                                    }
-                                    continue;
-                                }
-                                if (key == "NewChild_FirstChild")
-                                {
-                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
-                                    {
-                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
-                                        cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), translation, replacementStrings.kid1Name), new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
-                                    }
-                                    else
-                                    {
-                                        cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), translation, replacementStrings.kid1Name), new VoiceAudioOptions());
-                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
-                                    }
-                                    continue;
-                                }
-
-                                if (key == "Farm_RobinWorking_ReadyTomorrow" || key == "Robin_NewConstruction_Festival" || key == "Robin_NewConstruction" || key == "Robin_Instant")
-                                {
-                                    string buildingsPath = Path.Combine(dataPath, config.translationInfo.getBuildingXNBForTranslation(translation));
-                                    var BuildingDict = ModHelper.Content.Load<Dictionary<string, string>>(buildingsPath, ContentSource.GameContent);
-
-                                    foreach (KeyValuePair<string, string> pair2 in BuildingDict)
-                                    {
-                                        List<string> cleanedDialogues = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), translation, pair2.Key), cue);
-                                        foreach (var clean_str in cleanedDialogues)
+                                    case "NewChild_Adoption":
+                                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                         {
-                                            if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
-                                            {
-                                                AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
-                                                cue.addDialogue(clean_str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
+                                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
 
-                                            }
-                                            else
-                                            {
-                                                cue.addDialogue(clean_str, new VoiceAudioOptions());
-                                                AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
-                                            }
+                                            cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), language, replacementStrings.kid1Name), new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
+                                            cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), language, replacementStrings.kid2Name), new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
                                         }
-                                    }
-                                    continue;
-                                }
-
-                                if (key == "Farm_RobinWorking1" || key == "Farm_RobinWorking2")
-                                {
-                                    string buildingsPath = Path.Combine(dataPath, config.translationInfo.getBuildingXNBForTranslation(translation));
-                                    var BuildingDict = ModHelper.Content.Load<Dictionary<string, string>>(buildingsPath, ContentSource.GameContent);
-
-                                    foreach (KeyValuePair<string, string> pair2 in BuildingDict)
-                                    {
-                                        for (int i = 1; i <= 3; i++)
+                                        else
                                         {
-
-                                            if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
-                                            {
-                                                AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
-                                                cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), translation, pair2.Key, i.ToString()), new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
-                                            }
-                                            else
-                                            {
-                                                cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), translation, pair2.Key, i.ToString()), new VoiceAudioOptions());
-                                                AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
-                                            }
-
-
+                                            cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), language, replacementStrings.kid1Name), new VoiceAudioOptions());
+                                            cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), language, replacementStrings.kid2Name), new VoiceAudioOptions());
+                                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                         }
-                                    }
-                                    continue;
-                                }
+                                        continue;
 
-                                //Generate all possible tool combinations for clint.
-                                if (key == "Clint_StillWorking")
-                                {
-                                    List<string> tools = new List<string>();
-                                    tools.Add("Hoe");
-                                    tools.Add("Pickaxe");
-                                    tools.Add("Axe");
-                                    tools.Add("Watering Can");
-
-                                    List<string> levels = new List<string>();
-                                    levels.Add("Copper ");
-                                    levels.Add("Steel ");
-                                    levels.Add("Gold ");
-                                    levels.Add("Iridium ");
-
-                                    foreach (var tool in tools)
-                                    {
-                                        foreach (var lvl in levels)
+                                    case "NewChild_FirstChild":
+                                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                         {
-                                            if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
-                                            {
-                                                AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
-                                                cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), translation, lvl + tool), new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
-                                            }
-                                            else
-                                            {
-                                                cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), translation, lvl + tool), new VoiceAudioOptions());
-                                                AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
-                                            }
-
-                                        }
-                                    }
-                                    continue;
-                                }
-
-                                if (key == "Morris_WeekendGreeting_MembershipAvailable" || key == "Morris_FirstGreeting_MembershipAvailable")
-                                {
-                                    List<string> cleanedDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                                    foreach (var dia in cleanedDialogues)
-                                    {
-                                        if (dia.Contains("{0}"))
-                                        {
-                                            string actual = dia.Replace("{0}", "5000");
-
-                                            if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
-                                            {
-                                                AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
-                                                cue.addDialogue(actual, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
-                                            }
-                                            else
-                                            {
-                                                cue.addDialogue(actual, new VoiceAudioOptions());
-                                                AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
-                                            }
+                                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
+                                            cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), language, replacementStrings.kid1Name), new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
 
                                         }
                                         else
                                         {
-                                            if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
-                                            {
-                                                AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
-                                                cue.addDialogue(dia, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
+                                            cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), language, replacementStrings.kid1Name), new VoiceAudioOptions());
+                                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
+                                        }
+                                        continue;
 
-                                            }
-                                            else
+                                    case "Farm_RobinWorking_ReadyTomorrow":
+                                    case "Robin_NewConstruction_Festival":
+                                    case "Robin_NewConstruction":
+                                    case "Robin_Instant":
+                                        {
+                                            string buildingsPath = Path.Combine(dataPath, config.translationInfo.getBuildingXNBForTranslation(language));
+                                            Dictionary<string, string> buildingDict = ModHelper.Content.Load<Dictionary<string, string>>(buildingsPath, ContentSource.GameContent);
+
+                                            foreach (KeyValuePair<string, string> pair2 in buildingDict)
                                             {
-                                                cue.addDialogue(dia, new VoiceAudioOptions());
-                                                AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                                List<string> cleanedDialogues = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), language, pair2.Key), cue);
+                                                foreach (string clean_str in cleanedDialogues)
+                                                {
+                                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
+                                                    {
+                                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
+                                                        cue.addDialogue(clean_str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
+
+                                                    }
+                                                    else
+                                                    {
+                                                        cue.addDialogue(clean_str, new VoiceAudioOptions());
+                                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
+                                                    }
+                                                }
                                             }
                                         }
                                         continue;
-                                    }
-                                    continue;
+
+                                    case "Farm_RobinWorking1":
+                                    case "Farm_RobinWorking2":
+                                        {
+                                            string buildingsPath = Path.Combine(dataPath, config.translationInfo.getBuildingXNBForTranslation(language));
+                                            Dictionary<string, string> buildingDict = ModHelper.Content.Load<Dictionary<string, string>>(buildingsPath, ContentSource.GameContent);
+
+                                            foreach (KeyValuePair<string, string> pair2 in buildingDict)
+                                            {
+                                                for (int i = 1; i <= 3; i++)
+                                                {
+
+                                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
+                                                    {
+                                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
+                                                        cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), language, pair2.Key, i.ToString()), new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
+                                                    }
+                                                    else
+                                                    {
+                                                        cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), language, pair2.Key, i.ToString()), new VoiceAudioOptions());
+                                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        continue;
+
+                                    //Generate all possible tool combinations for clint.
+                                    case "Clint_StillWorking":
+                                        {
+                                            List<string> tools = new List<string> { "Hoe", "Pickaxe", "Axe", "Watering Can" };
+                                            List<string> levels = new List<string> { "Copper ", "Steel ", "Gold ", "Iridium " };
+
+                                            foreach (string tool in tools)
+                                            {
+                                                foreach (string lvl in levels)
+                                                {
+                                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
+                                                    {
+                                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
+                                                        cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), language, lvl + tool), new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
+
+                                                    }
+                                                    else
+                                                    {
+                                                        cue.addDialogue(config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:" + key), language, lvl + tool), new VoiceAudioOptions());
+                                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        continue;
+
+                                    case "Morris_WeekendGreeting_MembershipAvailable":
+                                    case "Morris_FirstGreeting_MembershipAvailable":
+                                        {
+                                            List<string> cleanedDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
+                                            foreach (string dia in cleanedDialogues)
+                                            {
+                                                if (dia.Contains("{0}"))
+                                                {
+                                                    string actual = dia.Replace("{0}", "5000");
+
+                                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
+                                                    {
+                                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
+                                                        cue.addDialogue(actual, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
+
+                                                    }
+                                                    else
+                                                    {
+                                                        cue.addDialogue(actual, new VoiceAudioOptions());
+                                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
+                                                    {
+                                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
+                                                        cue.addDialogue(dia, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
+
+                                                    }
+                                                    else
+                                                    {
+                                                        cue.addDialogue(dia, new VoiceAudioOptions());
+                                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
+                                                    }
+                                                }
+                                                continue;
+                                            }
+                                        }
+                                        continue;
                                 }
 
-                                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                 {
-                                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                     cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                 }
                                 else
                                 {
                                     cue.addDialogue(str, new VoiceAudioOptions());
-                                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                 }
-
-
                             }
                         }
-
                     }
                 }
-
             }
 
             //Used to scrape Strings/Locations.yaml and Strings/StringsFromMaps.yaml
             else if (cue.name == "LocationDialogue")
             {
-                foreach (var fileName in cue.stringsFileNames)
+                foreach (string fileName in cue.stringsFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
                     //basically this will never run but can be used below to also add in dialogue.
-                    if (!String.IsNullOrEmpty(fileName))
+                    if (!string.IsNullOrEmpty(fileName))
                     {
                         string dialoguePath2 = Path.Combine(stringsPath, fileName);
-                        var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                        Dictionary<string, string> DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
 
                         //Scraping the CookingChannel dialogue
                         //Scrape the whole dictionary looking for the character's name.
@@ -1460,43 +1263,40 @@ namespace Vocalization
 
                             List<string> cleanDialogues = new List<string>();
                             cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                            foreach (var str in cleanDialogues)
+                            foreach (string str in cleanDialogues)
                             {
-                                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                 {
-                                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                     cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                 }
                                 else
                                 {
                                     cue.addDialogue(str, new VoiceAudioOptions());
-                                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                 }
                             }
-
                         }
                     }
                 }
-
             }
 
             //Scrape for event dialogue.
             else if (cue.name == "Events")
             {
-                foreach (var fileName in cue.stringsFileNames)
+                foreach (string fileName in cue.stringsFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
-                    if (!String.IsNullOrEmpty(fileName))
+                    if (!string.IsNullOrEmpty(fileName))
                     {
                         string dialoguePath2 = Path.Combine(stringsPath, fileName);
-                        var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                        Dictionary<string, string> dialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
 
                         //Scrape Strings/Events.yaml for dialogue strings
                         if (fileName.Contains("StringsFromCSFiles"))
                         {
                             //Scrape Strings/StringsFromCSFiles.yaml
-                            foreach (KeyValuePair<string, string> pair in DialogueDict)
+                            foreach (KeyValuePair<string, string> pair in dialogueDict)
                             {
                                 //Get the key in the dictionary
                                 string key = pair.Key;
@@ -1505,26 +1305,27 @@ namespace Vocalization
                                 if (!key.Contains("Event")) continue;
                                 List<string> cleanDialogues = new List<string>();
                                 cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                                foreach (var str in cleanDialogues)
+                                foreach (string str in cleanDialogues)
                                 {
-                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                     {
-                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                         cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
 
                                     }
                                     else
                                     {
                                         cue.addDialogue(str, new VoiceAudioOptions());
-                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                     }
                                 }
                             }
                         }
+
                         //Scrape Strings/Events.yaml
                         if (fileName.Contains("Events"))
                         {
-                            foreach (KeyValuePair<string, string> pair in DialogueDict)
+                            foreach (KeyValuePair<string, string> pair in dialogueDict)
                             {
                                 //Get the key in the dictionary
                                 string key = pair.Key;
@@ -1532,18 +1333,17 @@ namespace Vocalization
                                 //If the key contains the character's name.
                                 List<string> cleanDialogues = new List<string>();
                                 cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                                foreach (var str in cleanDialogues)
+                                foreach (string str in cleanDialogues)
                                 {
-                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                     {
-                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                         cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                     }
                                     else
                                     {
                                         cue.addDialogue(str, new VoiceAudioOptions());
-                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                     }
                                 }
                             }
@@ -1555,17 +1355,17 @@ namespace Vocalization
             //Scrape for mail dialogue.
             else if (cue.name == "Mail")
             {
-                foreach (var fileName in cue.dataFileNames)
+                foreach (string fileName in cue.dataFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
                     //basically this will never run but can be used below to also add in dialogue.
-                    if (!String.IsNullOrEmpty(fileName))
+                    if (!string.IsNullOrEmpty(fileName))
                     {
                         string dialoguePath2 = Path.Combine(dataPath, fileName);
-                        var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                        Dictionary<string, string> dialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
 
                         //Scrape the whole dictionary looking for the character's name.
-                        foreach (KeyValuePair<string, string> pair in DialogueDict)
+                        foreach (KeyValuePair<string, string> pair in dialogueDict)
                         {
                             //Get the key in the dictionary
                             string key = pair.Key;
@@ -1574,38 +1374,36 @@ namespace Vocalization
 
                             string str = "";
                             str = sanitizeDialogueFromMailDictionary(rawDialogue);
-                            if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                            if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                             {
-                                AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                 cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                             }
                             else
                             {
                                 cue.addDialogue(str, new VoiceAudioOptions());
-                                AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                             }
                         }
                     }
                 }
-
             }
 
             //Used to scrape Content/strings/Characters.yaml.
             else if (cue.name == "Characters")
             {
-                foreach (var fileName in cue.stringsFileNames)
+                foreach (string fileName in cue.stringsFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
-                    if (!String.IsNullOrEmpty(fileName))
+                    if (!string.IsNullOrEmpty(fileName))
                     {
                         string dialoguePath2 = Path.Combine(stringsPath, fileName);
-                        var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                        Dictionary<string, string> dialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
 
                         if (fileName.Contains("Characters"))
                         {
                             //Scrape the whole dictionary looking for the character's name.
-                            foreach (KeyValuePair<string, string> pair in DialogueDict)
+                            foreach (KeyValuePair<string, string> pair in dialogueDict)
                             {
                                 //Get the key in the dictionary
                                 string key = pair.Key;
@@ -1614,21 +1412,19 @@ namespace Vocalization
 
                                 List<string> cleanDialogues = new List<string>();
                                 cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                                foreach (var str in cleanDialogues)
+                                foreach (string str in cleanDialogues)
                                 {
-                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                     {
-                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                         cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                     }
                                     else
                                     {
                                         cue.addDialogue(str, new VoiceAudioOptions());
-                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                     }
                                 }
-
                             }
                             continue;
                         }
@@ -1640,23 +1436,22 @@ namespace Vocalization
                         }
                     }
                 }
-
             }
 
             else if (cue.name == "Notes")
             {
                 //Used mainly to scrape Content/Strings/Notes.yaml
-                foreach (var fileName in cue.stringsFileNames)
+                foreach (string fileName in cue.stringsFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
                     //basically this will never run but can be used below to also add in dialogue.
-                    if (!String.IsNullOrEmpty(fileName))
+                    if (!string.IsNullOrEmpty(fileName))
                     {
                         string dialoguePath2 = Path.Combine(stringsPath, fileName);
-                        var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                        Dictionary<string, string> dialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
 
                         //Scrape the whole dictionary looking for the character's name.
-                        foreach (KeyValuePair<string, string> pair in DialogueDict)
+                        foreach (KeyValuePair<string, string> pair in dialogueDict)
                         {
                             //Get the key in the dictionary
                             string key = pair.Key;
@@ -1665,38 +1460,35 @@ namespace Vocalization
 
                             List<string> cleanDialogues = new List<string>();
                             cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                            foreach (var str in cleanDialogues)
+                            foreach (string str in cleanDialogues)
                             {
-                                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                 {
-                                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                     cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                 }
                                 else
                                 {
                                     cue.addDialogue(str, new VoiceAudioOptions());
-                                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                 }
                             }
-
                         }
                         continue;
                     }
                 }
 
-
                 //Used mainly to scrape Content/Data/SecretNotes.yaml
-                foreach (var fileName in cue.dataFileNames)
+                foreach (string fileName in cue.dataFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
-                    if (!String.IsNullOrEmpty(fileName))
+                    if (!string.IsNullOrEmpty(fileName))
                     {
                         string dialoguePath2 = Path.Combine(dataPath, fileName);
-                        var DialogueDict = ModHelper.Content.Load<Dictionary<int, string>>(dialoguePath2, ContentSource.GameContent);
+                        Dictionary<int, string> dialogueDict = ModHelper.Content.Load<Dictionary<int, string>>(dialoguePath2, ContentSource.GameContent);
 
                         //Scrape the whole dictionary looking for the character's name.
-                        foreach (KeyValuePair<int, string> pair in DialogueDict)
+                        foreach (KeyValuePair<int, string> pair in dialogueDict)
                         {
                             //Get the key in the dictionary
                             int key = pair.Key;
@@ -1705,43 +1497,40 @@ namespace Vocalization
 
                             List<string> cleanDialogues = new List<string>();
                             cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                            foreach (var str in cleanDialogues)
+                            foreach (string str in cleanDialogues)
                             {
-                                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key.ToString())))
+                                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key.ToString())))
                                 {
-                                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key.ToString()), out VoiceAudioOptions value);
+                                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key.ToString()), out VoiceAudioOptions value);
                                     cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
 
                                 }
                                 else
                                 {
                                     cue.addDialogue(str, new VoiceAudioOptions());
-                                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key.ToString()), new VoiceAudioOptions());
+                                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key.ToString()), new VoiceAudioOptions());
                                 }
                             }
-
                         }
                         continue;
-
                     }
                 }
-
             }
 
             //used to scrape Content/Strings/Utility.yaml
             else if (cue.name == "Utility")
             {
-                foreach (var fileName in cue.stringsFileNames)
+                foreach (string fileName in cue.stringsFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
                     //basically this will never run but can be used below to also add in dialogue.
-                    if (!String.IsNullOrEmpty(fileName))
+                    if (!string.IsNullOrEmpty(fileName))
                     {
                         string dialoguePath2 = Path.Combine(stringsPath, fileName);
-                        var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                        Dictionary<string, string> dialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
 
                         //Scrape the whole dictionary looking for the character's name.
-                        foreach (KeyValuePair<string, string> pair in DialogueDict)
+                        foreach (KeyValuePair<string, string> pair in dialogueDict)
                         {
                             //Get the key in the dictionary
                             string key = pair.Key;
@@ -1751,29 +1540,27 @@ namespace Vocalization
                             List<string> cleanDialogue = new List<string>();
                             cleanDialogue = sanitizeDialogueFromDictionaries(rawDialogue, cue);
 
-                            foreach (var str in cleanDialogue)
+                            foreach (string str in cleanDialogue)
                             {
-                                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                 {
-                                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                     cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                 }
                                 else
                                 {
                                     cue.addDialogue(str, new VoiceAudioOptions());
-                                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                 }
                             }
                         }
                     }
                 }
-
             }
 
             else if (cue.name == "Quests")
             {
-                foreach (var fileName in cue.dataFileNames)
+                foreach (string fileName in cue.dataFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
                     string dialoguePath2 = Path.Combine(dataPath, fileName);
@@ -1783,9 +1570,9 @@ namespace Vocalization
                         ModMonitor.Log("Dialogue file not found for:" + fileName + ". This might not necessarily be a mistake just a safety check.");
                         continue; //If the file is not found for some reason...
                     }
-                    var DialogueDict = ModHelper.Content.Load<Dictionary<int, string>>(dialoguePath2, ContentSource.GameContent);
+                    Dictionary<int, string> dialogueDict = ModHelper.Content.Load<Dictionary<int, string>>(dialoguePath2, ContentSource.GameContent);
                     //Scrape the whole dictionary looking for the character's name.
-                    foreach (KeyValuePair<int, string> pair in DialogueDict)
+                    foreach (KeyValuePair<int, string> pair in dialogueDict)
                     {
                         //Get the key in the dictionary
                         string key = pair.Key.ToString();
@@ -1806,35 +1593,32 @@ namespace Vocalization
                         }
 
                         List<string> cleanDialogues = new List<string>();
-                        foreach (var dia in strippedFreshQuestDialogue)
+                        foreach (string dia in strippedFreshQuestDialogue)
                         {
                             cleanDialogues = sanitizeDialogueFromDictionaries(dia, cue);
-                            foreach (var str in cleanDialogues)
+                            foreach (string str in cleanDialogues)
                             {
-                                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                 {
-                                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                     cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                 }
                                 else
                                 {
                                     cue.addDialogue(str, new VoiceAudioOptions());
-                                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                 }
                             }
                         }
                     }
                     continue;
-
-
                 }
             }
 
             //ADD THIS TO THE ACTUAL NPC????
             else if (cue.name == "NPCGiftTastes")
             {
-                foreach (var fileName in cue.dataFileNames)
+                foreach (string fileName in cue.dataFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
                     string dialoguePath2 = Path.Combine(dataPath, fileName);
@@ -1844,17 +1628,19 @@ namespace Vocalization
                         ModMonitor.Log("Dialogue file not found for:" + fileName + ". This might not necessarily be a mistake just a safety check.");
                         continue; //If the file is not found for some reason...
                     }
-                    var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                    Dictionary<string, string> dialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
                     //Scrape the whole dictionary looking for the character's name.
 
-                    List<string> ignoreKeys = new List<string>();
-                    ignoreKeys.Add("Universal_Love");
-                    ignoreKeys.Add("Universal_Like");
-                    ignoreKeys.Add("Universal_Neutral");
-                    ignoreKeys.Add("Universal_Dislike");
-                    ignoreKeys.Add("Universal_Hate");
+                    List<string> ignoreKeys = new List<string>
+                    {
+                        "Universal_Love",
+                        "Universal_Like",
+                        "Universal_Neutral",
+                        "Universal_Dislike",
+                        "Universal_Hate"
+                    };
 
-                    foreach (KeyValuePair<string, string> pair in DialogueDict)
+                    foreach (KeyValuePair<string, string> pair in dialogueDict)
                     {
                         //Get the key in the dictionary
                         string key = pair.Key;
@@ -1862,7 +1648,7 @@ namespace Vocalization
 
                         //Check to see if I need to ignore this key in my dictionary I am scaping.
                         bool ignore = false;
-                        foreach (var value in ignoreKeys)
+                        foreach (string value in ignoreKeys)
                         {
                             if (key == value)
                             {
@@ -1891,21 +1677,20 @@ namespace Vocalization
                         strippedFreshQuestDialogue.Add(prompt5);
 
                         List<string> cleanDialogues = new List<string>();
-                        foreach (var dia in strippedFreshQuestDialogue)
+                        foreach (string dia in strippedFreshQuestDialogue)
                         {
                             cleanDialogues = sanitizeDialogueFromDictionaries(dia, cue);
-                            foreach (var str in cleanDialogues)
+                            foreach (string str in cleanDialogues)
                             {
-                                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                 {
-                                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                     cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                 }
                                 else
                                 {
                                     cue.addDialogue(str, new VoiceAudioOptions());
-                                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                 }
                             }
                         }
@@ -1916,7 +1701,7 @@ namespace Vocalization
 
             else if (cue.name == "SpeechBubbles")
             {
-                foreach (var fileName in cue.stringsFileNames)
+                foreach (string fileName in cue.stringsFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
                     string dialoguePath2 = Path.Combine(stringsPath, fileName);
@@ -1926,231 +1711,204 @@ namespace Vocalization
                         ModMonitor.Log("Dialogue file not found for:" + fileName + ". This might not necessarily be a mistake just a safety check.");
                         continue; //If the file is not found for some reason...
                     }
-                    var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                    Dictionary<string, string> dialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
                     //Scrape the whole dictionary looking for the character's name.
 
-                    foreach (KeyValuePair<string, string> pair in DialogueDict)
+                    foreach (KeyValuePair<string, string> pair in dialogueDict)
                     {
                         //Get the key in the dictionary
                         string key = pair.Key;
                         string rawDialogue = pair.Value;
                         string str = sanitizeDialogueFromSpeechBubblesDictionary(rawDialogue);
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                             cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                         }
                     }
                     continue;
                 }
 
-                string basePath = ModHelper.DirectoryPath;
-                string contentPath = Path.Combine(basePath, "Content");
-                string audioPath = Path.Combine(contentPath, "Audio");
-                string voicePath = Path.Combine(audioPath, "VoiceFiles");
-
-
-                string[] dirs = Directory.GetDirectories(translation);
+                string[] dirs = Directory.GetDirectories(languageDir.FullName);
                 //Some additional scraping to put together better options for speech bubbles.
-                foreach (var v in dirs)
+                foreach (string v in dirs)
                 {
                     string name = Path.GetFileName(v);
 
                     string fileName = "StringsFromCSFiles";
                     string key = "NPC.cs.4068";
-                    string str = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4068"), translation, (object)name);
-                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                    string str = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4068"), language, (object)name);
+                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                     {
-                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                         cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                     }
                     else
                     {
                         cue.addDialogue(str, new VoiceAudioOptions());
-                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                     }
 
                     key = "NPC.cs.4065";
-                    str = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4065"), translation) + ", " + config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4066"), translation, (object)name);
-                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
-
+                    str = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4065"), language) + ", " + config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4066"), language, (object)name);
+                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                     {
-                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                         cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                     }
                     else
                     {
                         cue.addDialogue(str, new VoiceAudioOptions());
-                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                     }
 
                     key = "NPC.cs.4071";
-                    str = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4071"), translation, (object)name);
+                    str = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4071"), language, (object)name);
 
-                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
-
+                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                     {
-                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                         cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                     }
                     else
                     {
                         cue.addDialogue(str, new VoiceAudioOptions());
-                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                     }
                 }
 
                 string fileName1 = "StringsFromCSFiles";
-                string str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4060"), translation);
+                string str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4060"), language);
                 string key1 = "NPC.cs.4060";
 
-                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
-
+                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                 {
-                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                     cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                 }
                 else
                 {
                     cue.addDialogue(str1, new VoiceAudioOptions());
-                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                 }
 
-                str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4072"), translation);
+                str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4072"), language);
                 key1 = "NPC.cs.4072";
 
-                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
-
+                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                 {
-                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                     cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                 }
                 else
                 {
                     cue.addDialogue(str1, new VoiceAudioOptions());
-                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                 }
 
                 key1 = "NPC.cs.4063";
-                str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4063"), translation);
-                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
-
+                str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4063"), language);
+                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                 {
-                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                     cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                 }
                 else
                 {
                     cue.addDialogue(str1, new VoiceAudioOptions());
-                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                 }
 
                 key1 = "NPC.cs.4064";
-                str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4064"), translation);
+                str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4064"), language);
 
-                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
-
+                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                 {
-                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                     cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                 }
                 else
                 {
                     cue.addDialogue(str1, new VoiceAudioOptions());
-                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                 }
 
                 //cue.addDialogue("Hey, it's farmer, " + replacementStrings.farmerName,new VoiceAudioOptions());
 
                 key1 = "NPC.cs.4062";
-                str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4062"), translation);
+                str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4062"), language);
 
-
-                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                 {
-                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                     cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                 }
                 else
                 {
                     cue.addDialogue(str1, new VoiceAudioOptions());
-                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                 }
 
                 key1 = "NPC.cs.4061";
-                str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4061"), translation);
+                str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4061"), language);
 
-                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                 {
-                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                     cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                 }
                 else
                 {
                     cue.addDialogue(str1, new VoiceAudioOptions());
-                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                 }
 
                 key1 = "NPC.cs.4060";
-                str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4060"), translation);
+                str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4060"), language);
 
-                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                 {
-                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                     cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                 }
                 else
                 {
                     cue.addDialogue(str1, new VoiceAudioOptions());
-                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                 }
 
                 key1 = "NPC.cs.4059";
-                str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4059"), translation);
+                str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4059"), language);
 
-                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                 {
-                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                     cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                 }
                 else
                 {
                     cue.addDialogue(str1, new VoiceAudioOptions());
-                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                 }
 
                 key1 = "NPC.cs.4058";
-                str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4058"), translation);
+                str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4058"), language);
 
-                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                 {
-                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                     cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                 }
                 else
                 {
                     cue.addDialogue(str1, new VoiceAudioOptions());
-                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                 }
-
             }
 
             else if (cue.name == "Temp")
@@ -2158,7 +1916,7 @@ namespace Vocalization
                 Vocalization.ModMonitor.Log("Scraping dialogue file: Temp.xnb", StardewModdingAPI.LogLevel.Debug);
                 //dataFileNames.Add(Path.Combine("Events", "Temp.xnb"));
 
-                Dictionary<string, string> meh = Game1.content.Load<Dictionary<string, string>>(Path.Combine("Data", "Events", config.translationInfo.getXNBForTranslation("Temp", translation)));
+                Dictionary<string, string> meh = Game1.content.Load<Dictionary<string, string>>(Path.Combine("Data", "Events", config.translationInfo.getXNBForTranslation("Temp", language)));
 
 
                 foreach (KeyValuePair<string, string> pair in meh)
@@ -2169,113 +1927,104 @@ namespace Vocalization
                         Vocalization.ModMonitor.Log(dia);
                         string[] values = dia.Split('\"');
 
-                        foreach (var v in values)
+                        foreach (string v in values)
                         {
                             Vocalization.ModMonitor.Log(v);
                             Vocalization.ModMonitor.Log("HELLO?");
                         }
 
-                        List<string> goodValues = new List<string>();
-                        goodValues.Add(values.ElementAt(1));
-                        goodValues.Add(values.ElementAt(3));
-                        goodValues.Add(values.ElementAt(5));
+                        List<string> goodValues = new List<string>
+                        {
+                            values.ElementAt(1),
+                            values.ElementAt(3),
+                            values.ElementAt(5)
+                        };
 
-                        foreach (var sentence in goodValues)
+                        foreach (string sentence in goodValues)
                         {
                             List<string> clean = Vocalization.sanitizeDialogueFromDictionaries(sentence, cue);
-                            foreach (var cleanSentence in clean)
+                            foreach (string cleanSentence in clean)
                             {
                                 try
                                 {
-                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, config.translationInfo.getXNBForTranslation("Temp", translation), pair.Key)))
+                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, config.translationInfo.getXNBForTranslation("Temp", language), pair.Key)))
                                     {
-                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, config.translationInfo.getXNBForTranslation("Temp", translation), pair.Key), out VoiceAudioOptions value);
+                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, config.translationInfo.getXNBForTranslation("Temp", language), pair.Key), out VoiceAudioOptions value);
                                         cue.addDialogue(cleanSentence, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                     }
                                     else
                                     {
                                         cue.addDialogue(cleanSentence, new VoiceAudioOptions());
-                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, config.translationInfo.getXNBForTranslation("Temp", translation), pair.Key), new VoiceAudioOptions());
+                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, config.translationInfo.getXNBForTranslation("Temp", language), pair.Key), new VoiceAudioOptions());
                                     }
                                 }
-                                catch (Exception err)
-                                {
-
-                                }
+                                catch { }
                             }
                         }
-
                     }
 
                     if (pair.Key == "leave")
                     {
                         string dia = pair.Value;
                         string[] values = dia.Split('\"');
-                        List<string> goodValues = new List<string>();
-                        goodValues.Add(values.ElementAt(1));
-                        goodValues.Add(values.ElementAt(3));
-                        goodValues.Add(values.ElementAt(5));
+                        List<string> goodValues = new List<string>
+                        {
+                            values.ElementAt(1),
+                            values.ElementAt(3),
+                            values.ElementAt(5)
+                        };
 
-                        foreach (var sentence in goodValues)
+                        foreach (string sentence in goodValues)
                         {
                             List<string> clean = Vocalization.sanitizeDialogueFromDictionaries(sentence, cue);
-                            foreach (var cleanSentence in clean)
+                            foreach (string cleanSentence in clean)
                             {
                                 try
                                 {
-                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, config.translationInfo.getXNBForTranslation("Temp", translation), pair.Key)))
+                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, config.translationInfo.getXNBForTranslation("Temp", language), pair.Key)))
                                     {
-                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, config.translationInfo.getXNBForTranslation("Temp", translation), pair.Key), out VoiceAudioOptions value);
+                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, config.translationInfo.getXNBForTranslation("Temp", language), pair.Key), out VoiceAudioOptions value);
                                         cue.addDialogue(cleanSentence, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                     }
                                     else
                                     {
                                         cue.addDialogue(cleanSentence, new VoiceAudioOptions());
-                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, config.translationInfo.getXNBForTranslation("Temp", translation), pair.Key), new VoiceAudioOptions());
+                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, config.translationInfo.getXNBForTranslation("Temp", language), pair.Key), new VoiceAudioOptions());
                                     }
                                 }
-                                catch (Exception err)
-                                {
-
-                                }
-
+                                catch { }
                             }
                         }
-
                     }
 
                     if (pair.Key == "tooBold")
                     {
                         string dia = pair.Value;
                         string[] values = dia.Split('\"');
-                        List<string> goodValues = new List<string>();
-                        goodValues.Add(values.ElementAt(1));
+                        List<string> goodValues = new List<string>
+                        {
+                            values.ElementAt(1)
+                        };
 
-                        foreach (var sentence in goodValues)
+                        foreach (string sentence in goodValues)
                         {
                             List<string> clean = Vocalization.sanitizeDialogueFromDictionaries(sentence, cue);
-                            foreach (var cleanSentence in clean)
+                            foreach (string cleanSentence in clean)
                             {
                                 try
                                 {
-                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, config.translationInfo.getXNBForTranslation("Temp", translation), pair.Key)))
+                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, config.translationInfo.getXNBForTranslation("Temp", language), pair.Key)))
                                     {
-                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, config.translationInfo.getXNBForTranslation("Temp", translation), pair.Key), out VoiceAudioOptions value);
+                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, config.translationInfo.getXNBForTranslation("Temp", language), pair.Key), out VoiceAudioOptions value);
                                         cue.addDialogue(cleanSentence, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                     }
                                     else
                                     {
                                         cue.addDialogue(cleanSentence, new VoiceAudioOptions());
-                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, config.translationInfo.getXNBForTranslation("Temp", translation), pair.Key), new VoiceAudioOptions());
+                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, config.translationInfo.getXNBForTranslation("Temp", language), pair.Key), new VoiceAudioOptions());
                                     }
                                 }
-                                catch (Exception err)
-                                {
-
-                                }
+                                catch { }
                             }
                         }
                     }
@@ -2284,57 +2033,53 @@ namespace Vocalization
                     {
                         string dia = pair.Value;
                         string[] values = dia.Split('\"');
-                        List<string> goodValues = new List<string>();
-                        goodValues.Add(values.ElementAt(1));
-                        goodValues.Add(values.ElementAt(3));
-                        goodValues.Add(values.ElementAt(5));
-                        goodValues.Add(values.ElementAt(7));
-                        goodValues.Add(values.ElementAt(9));
-                        goodValues.Add(values.ElementAt(11));
-                        goodValues.Add(values.ElementAt(13));
-                        goodValues.Add(values.ElementAt(15));
-                        goodValues.Add(values.ElementAt(17));
-                        goodValues.Add(values.ElementAt(19));
+                        List<string> goodValues = new List<string>
+                        {
+                            values.ElementAt(1),
+                            values.ElementAt(3),
+                            values.ElementAt(5),
+                            values.ElementAt(7),
+                            values.ElementAt(9),
+                            values.ElementAt(11),
+                            values.ElementAt(13),
+                            values.ElementAt(15),
+                            values.ElementAt(17),
+                            values.ElementAt(19)
+                        };
 
-                        foreach (var sentence in goodValues)
+                        foreach (string sentence in goodValues)
                         {
                             List<string> clean = Vocalization.sanitizeDialogueFromDictionaries(sentence, cue);
-                            foreach (var cleanSentence in clean)
+                            foreach (string cleanSentence in clean)
                             {
                                 try
                                 {
-                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, config.translationInfo.getXNBForTranslation("Temp", translation), pair.Key)))
+                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, config.translationInfo.getXNBForTranslation("Temp", language), pair.Key)))
                                     {
-                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, config.translationInfo.getXNBForTranslation("Temp", translation), pair.Key), out VoiceAudioOptions value);
+                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, config.translationInfo.getXNBForTranslation("Temp", language), pair.Key), out VoiceAudioOptions value);
                                         cue.addDialogue(cleanSentence, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                     }
                                     else
                                     {
                                         cue.addDialogue(cleanSentence, new VoiceAudioOptions());
-                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, config.translationInfo.getXNBForTranslation("Temp", translation), pair.Key), new VoiceAudioOptions());
+                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, config.translationInfo.getXNBForTranslation("Temp", language), pair.Key), new VoiceAudioOptions());
                                     }
                                 }
-                                catch (Exception err)
-                                {
-
-                                }
+                                catch { }
                             }
                         }
                     }
                 }
             }
 
-
-
             //Dialogue scrape for npc specific text.
             else
             {
-                foreach (var fileName in cue.dialogueFileNames)
+                foreach (string fileName in cue.dialogueFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
                     //basically this will never run but can be used below to also add in dialogue.
-                    if (!String.IsNullOrEmpty(fileName))
+                    if (!string.IsNullOrEmpty(fileName))
                     {
                         string dialoguePath2 = Path.Combine(dialoguePath, fileName);
                         string root = Game1.content.RootDirectory;///////USE THIS TO CHECK FOR EXISTENCE!!!!!
@@ -2343,13 +2088,13 @@ namespace Vocalization
                             ModMonitor.Log("Dialogue file not found for:" + fileName + ". This might not necessarily be a mistake just a safety check.");
                             continue; //If the file is not found for some reason...
                         }
-                        var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                        Dictionary<string, string> dialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
 
                         //Scraping the rainy dialogue file.
                         if (fileName.Contains("rainy"))
                         {
                             //Scrape the whole dictionary looking for the character's name.
-                            foreach (KeyValuePair<string, string> pair in DialogueDict)
+                            foreach (KeyValuePair<string, string> pair in dialogueDict)
                             {
                                 //Get the key in the dictionary
                                 string key = pair.Key;
@@ -2359,18 +2104,17 @@ namespace Vocalization
                                 {
                                     List<string> cleanDialogues = new List<string>();
                                     cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                                    foreach (var str in cleanDialogues)
+                                    foreach (string str in cleanDialogues)
                                     {
-                                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                         {
-                                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                             cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                         }
                                         else
                                         {
                                             cue.addDialogue(str, new VoiceAudioOptions());
-                                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                         }
                                     }
                                 }
@@ -2383,7 +2127,7 @@ namespace Vocalization
                         {
                             //Scrape the whole dictionary looking for other character's names to ignore.
                             if (!replacementStrings.spouseNames.Contains(cue.name)) continue;
-                            foreach (KeyValuePair<string, string> pair in DialogueDict)
+                            foreach (KeyValuePair<string, string> pair in dialogueDict)
                             {
                                 //Get the key in the dictionary
                                 string key = pair.Key;
@@ -2393,7 +2137,7 @@ namespace Vocalization
                                 //check the current key
                                 //if my key contains a different spouse's name continue the loop
                                 //else sanitize it and add it to my list
-                                foreach (var spouse in replacementStrings.spouseNames)
+                                foreach (string spouse in replacementStrings.spouseNames)
                                 {
                                     if (key.Contains(spouse) && spouse != cue.name)
                                     {
@@ -2405,32 +2149,32 @@ namespace Vocalization
                                     {
                                         List<string> cleanDialogues = new List<string>();
                                         cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                                        foreach (var str in cleanDialogues)
+                                        foreach (string str in cleanDialogues)
                                         {
-                                            if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                            if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                             {
-                                                AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                                AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                                 cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                             }
                                             else
                                             {
                                                 cue.addDialogue(str, new VoiceAudioOptions());
-                                                AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                                AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                             }
                                         }
                                     }
                                 }
                             }
-
                         }
 
                         //Check for character specific marriage dialogue
                         if (fileName.Contains("MarriageDialogue" + cue.name))
                         {
                             //Scrape the whole dictionary looking for other character's names to ignore.
-                            if (!replacementStrings.spouseNames.Contains(cue.name)) continue;
-                            foreach (KeyValuePair<string, string> pair in DialogueDict)
+                            if (!replacementStrings.spouseNames.Contains(cue.name))
+                                continue;
+
+                            foreach (KeyValuePair<string, string> pair in dialogueDict)
                             {
                                 //Get the key in the dictionary
                                 string key = pair.Key;
@@ -2440,51 +2184,49 @@ namespace Vocalization
                                 {
                                     List<string> cleanDialogues = new List<string>();
                                     cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                                    foreach (var str in cleanDialogues)
+                                    foreach (string str in cleanDialogues)
                                     {
-                                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                         {
-                                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                             cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                         }
                                         else
                                         {
                                             cue.addDialogue(str, new VoiceAudioOptions());
-                                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                         }
                                     }
                                 }
                             }
                         }
-                        foreach (KeyValuePair<string, string> pair in DialogueDict)
+                        foreach (KeyValuePair<string, string> pair in dialogueDict)
                         {
                             string key = pair.Key;
                             string rawDialogue = pair.Value;
                             List<string> cleanDialogues = new List<string>();
                             cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                            foreach (var str in cleanDialogues)
+                            foreach (string str in cleanDialogues)
                             {
-                                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                 {
-                                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                     cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                 }
                                 else
                                 {
                                     cue.addDialogue(str, new VoiceAudioOptions());
-                                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                 }
                             }
                         }
                     }
                 }
-                foreach (var fileName in cue.festivalFileNames)
+                foreach (string fileName in cue.festivalFileNames)
                 {
                     ModMonitor.Log("    Scraping festival file: " + fileName, LogLevel.Info);
                     //basically this will never run but can be used below to also add in dialogue.
-                    if (!String.IsNullOrEmpty(fileName))
+                    if (!string.IsNullOrEmpty(fileName))
                     {
                         string dialoguePath2 = Path.Combine(festivalPath, fileName);
                         string root = Game1.content.RootDirectory;///////USE THIS TO CHECK FOR EXISTENCE!!!!!
@@ -2493,27 +2235,26 @@ namespace Vocalization
                             ModMonitor.Log("Dialogue file not found for:" + fileName + ". This might not necessarily be a mistake just a safety check.");
                             continue; //If the file is not found for some reason...
                         }
-                        var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                        Dictionary<string, string> dialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
 
-                        foreach (KeyValuePair<string, string> pair in DialogueDict)
+                        foreach (KeyValuePair<string, string> pair in dialogueDict)
                         {
                             string key = pair.Key;
                             if (key != cue.name && key != cue.name + "_spouse") continue;
                             string rawDialogue = pair.Value;
                             List<string> cleanDialogues = new List<string>();
                             cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                            foreach (var str in cleanDialogues)
+                            foreach (string str in cleanDialogues)
                             {
-                                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                 {
-                                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                     cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                 }
                                 else
                                 {
                                     cue.addDialogue(str, new VoiceAudioOptions());
-                                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                 }
                             }
                         }
@@ -2521,11 +2262,11 @@ namespace Vocalization
                 }
 
 
-                foreach (var fileName in cue.eventFileNames)
+                foreach (string fileName in cue.eventFileNames)
                 {
                     ModMonitor.Log("    Scraping event file: " + fileName, LogLevel.Info);
                     //basically this will never run but can be used below to also add in dialogue.
-                    if (!String.IsNullOrEmpty(fileName))
+                    if (!string.IsNullOrEmpty(fileName))
                     {
                         string dialoguePath2 = Path.Combine(eventPath, fileName);
                         string root = Game1.content.RootDirectory;///////USE THIS TO CHECK FOR EXISTENCE!!!!!
@@ -2534,9 +2275,9 @@ namespace Vocalization
                             ModMonitor.Log("Dialogue file not found for:" + fileName + ". This might not necessarily be a mistake just a safety check.");
                             continue; //If the file is not found for some reason...
                         }
-                        var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                        Dictionary<string, string> dialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
 
-                        foreach (KeyValuePair<string, string> pair in DialogueDict)
+                        foreach (KeyValuePair<string, string> pair in dialogueDict)
                         {
                             string key = pair.Key;
                             string rawDialogue = pair.Value;
@@ -2544,22 +2285,21 @@ namespace Vocalization
                             List<string> speakingLines = getEventSpeakerLines(rawDialogue, cue.name);
                             //Sanitize Event info here!
 
-                            foreach (var line in speakingLines)
+                            foreach (string line in speakingLines)
                             {
                                 List<string> cleanDialogues = new List<string>();
                                 cleanDialogues = sanitizeDialogueFromDictionaries(line, cue);
-                                foreach (var str in cleanDialogues)
+                                foreach (string str in cleanDialogues)
                                 {
-                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                     {
-                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                         cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                     }
                                     else
                                     {
                                         cue.addDialogue(str, new VoiceAudioOptions());
-                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                     }
                                 }
                             }
@@ -2568,9 +2308,7 @@ namespace Vocalization
                 }
 
 
-
-
-                foreach (var fileName in cue.dataFileNames)
+                foreach (string fileName in cue.dataFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
                     string dialoguePath2 = Path.Combine(dataPath, fileName);
@@ -2581,13 +2319,13 @@ namespace Vocalization
                         continue; //If the file is not found for some reason...
                     }
 
-                    var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                    Dictionary<string, string> dialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
 
                     //Load in engagement dialogue for this npc.
                     if (fileName.Contains("EngagementDialogue"))
                     {
                         //Scrape the whole dictionary looking for the character's name.
-                        foreach (KeyValuePair<string, string> pair in DialogueDict)
+                        foreach (KeyValuePair<string, string> pair in dialogueDict)
                         {
                             //Get the key in the dictionary
                             string key = pair.Key;
@@ -2597,18 +2335,17 @@ namespace Vocalization
                             {
                                 List<string> cleanDialogues = new List<string>();
                                 cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                                foreach (var str in cleanDialogues)
+                                foreach (string str in cleanDialogues)
                                 {
-                                    if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                    if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                     {
-                                        AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                        AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                         cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                     }
                                     else
                                     {
                                         cue.addDialogue(str, new VoiceAudioOptions());
-                                        AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                        AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                     }
                                 }
                             }
@@ -2616,7 +2353,7 @@ namespace Vocalization
                         continue;
                     }
                 }
-                foreach (var fileName in cue.stringsFileNames)
+                foreach (string fileName in cue.stringsFileNames)
                 {
                     ModMonitor.Log("    Scraping dialogue file: " + fileName, LogLevel.Info);
                     string dialoguePath2 = Path.Combine(stringsPath, fileName);
@@ -2626,33 +2363,35 @@ namespace Vocalization
                         ModMonitor.Log("Dialogue file not found for:" + fileName + ". This might not necessarily be a mistake just a safety check.");
                         continue; //If the file is not found for some reason...
                     }
-                    var DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                    Dictionary<string, string> dialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
 
                     //Load in super generic dialogue for this npc. This may or may not be a good idea....
                     if (fileName.Contains("StringsFromCSFiles"))
                     {
                         //Have a list of generic dialogue that I won't scrape since I do a more specific scrape after the main scrape.
-                        List<string> ignoreKeys = new List<string>();
-                        ignoreKeys.Add("NPC.cs.3955");
-                        ignoreKeys.Add("NPC.cs.3969");
-                        ignoreKeys.Add("NPC.cs.3981");
-                        ignoreKeys.Add("NPC.cs.3985");
-                        ignoreKeys.Add("NPC.cs.3987");
-                        ignoreKeys.Add("NPC.cs.4066");
-                        ignoreKeys.Add("NPC.cs.4068");
-                        ignoreKeys.Add("NPC.cs.4071");
-                        ignoreKeys.Add("NPC.cs.4440");
-                        ignoreKeys.Add("NPC.cs.4441");
-                        ignoreKeys.Add("NPC.cs.4444");
-                        ignoreKeys.Add("NPC.cs.4445");
-                        ignoreKeys.Add("NPC.cs.4447");
-                        ignoreKeys.Add("NPC.cs.4448");
-                        ignoreKeys.Add("NPC.cs.4463");
-                        ignoreKeys.Add("NPC.cs.4465");
-                        ignoreKeys.Add("NPC.cs.4466");
-                        ignoreKeys.Add("NPC.cs.4486");
+                        List<string> ignoreKeys = new List<string>
+                        {
+                            "NPC.cs.3955",
+                            "NPC.cs.3969",
+                            "NPC.cs.3981",
+                            "NPC.cs.3985",
+                            "NPC.cs.3987",
+                            "NPC.cs.4066",
+                            "NPC.cs.4068",
+                            "NPC.cs.4071",
+                            "NPC.cs.4440",
+                            "NPC.cs.4441",
+                            "NPC.cs.4444",
+                            "NPC.cs.4445",
+                            "NPC.cs.4447",
+                            "NPC.cs.4448",
+                            "NPC.cs.4463",
+                            "NPC.cs.4465",
+                            "NPC.cs.4466",
+                            "NPC.cs.4486"
+                        };
                         //Scrape the whole dictionary looking for the character's name.
-                        foreach (KeyValuePair<string, string> pair in DialogueDict)
+                        foreach (KeyValuePair<string, string> pair in dialogueDict)
                         {
                             //Get the key in the dictionary
                             string key = pair.Key;
@@ -2671,22 +2410,21 @@ namespace Vocalization
                                 List<string> cleanDialogues = new List<string>();
                                 cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
 
-                                foreach(var clean in cleanDialogues)
+                                foreach (string clean in cleanDialogues)
                                 {
                                     string[] bday = clean.Split('/');
 
-                                    foreach (var str in bday)
+                                    foreach (string str in bday)
                                     {
-                                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                         {
-                                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                             cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                         }
                                         else
                                         {
                                             cue.addDialogue(str, new VoiceAudioOptions());
-                                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                         }
                                     }
                                 }
@@ -2698,318 +2436,297 @@ namespace Vocalization
                         string fileName1 = "StringsFromCSFiles";
 
                         string key1 = "NPC.cs.3955";
-                        string str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.3955"), translation, (object)cue.name);
+                        string str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.3955"), language, (object)cue.name);
 
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
 
                         key1 = "NPC.cs.3955";
-                        str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.3969"), translation, (object)cue.name);
+                        str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.3969"), language, (object)cue.name);
 
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
 
                         key1 = "NPC.cs.3981";
-                        str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.3981"), translation, (object)cue.name);
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.3981"), language, (object)cue.name);
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
 
                         key1 = "NPC.cs.3987";
-                        str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.3987"), translation, (object)cue.name, "2");
+                        str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.3987"), language, (object)cue.name, "2");
 
 
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
 
                         key1 = "NPC.cs.4066";
-                        str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4066"), translation, (object)replacementStrings.farmerName);
+                        str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4066"), language, (object)replacementStrings.farmerName);
 
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
 
 
                         key1 = "NPC.cs.4068";
-                        str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4068"), translation, (object)replacementStrings.farmerName);
+                        str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4068"), language, (object)replacementStrings.farmerName);
 
 
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
 
 
                         key1 = "NPC.cs.4071";
-                        str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4071"), translation, (object)replacementStrings.farmerName);
+                        str1 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4071"), language, (object)replacementStrings.farmerName);
 
 
 
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
 
                         key1 = "NPC.cs.4440";
-                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4440"), translation, (object)replacementStrings.farmerName), cue).ElementAt(0);
+                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4440"), language, (object)replacementStrings.farmerName), cue).ElementAt(0);
 
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
 
                         key1 = "NPC.cs.4441";
-                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4441"), translation, (object)replacementStrings.farmerName), cue).ElementAt(0);
+                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4441"), language, (object)replacementStrings.farmerName), cue).ElementAt(0);
 
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
 
                         key1 = "NPC.cs.4444";
-                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4444"), translation, (object)replacementStrings.farmerName), cue).ElementAt(0);
+                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4444"), language, (object)replacementStrings.farmerName), cue).ElementAt(0);
 
 
                         //cue.addDialogue(sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings","StringsFromCSFiles:NPC.cs.4444"), translation, (object)replacementStrings.farmerName), cue).ElementAt(0), new VoiceAudioOptions());
 
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
                         key1 = "NPC.cs.4445";
-                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4445"), translation, (object)replacementStrings.farmerName), cue).ElementAt(0);
+                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4445"), language, (object)replacementStrings.farmerName), cue).ElementAt(0);
 
 
                         // cue.addDialogue(sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings","StringsFromCSFiles:NPC.cs.4445"), translation, (object)replacementStrings.farmerName), cue).ElementAt(0), new VoiceAudioOptions());
 
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
 
                         key1 = "NPC.cs.4447";
-                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4447"), translation, (object)replacementStrings.farmerName), cue).ElementAt(0);
+                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4447"), language, (object)replacementStrings.farmerName), cue).ElementAt(0);
 
 
                         //cue.addDialogue(sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings","StringsFromCSFiles:NPC.cs.4447"), translation, (object)replacementStrings.farmerName), cue).ElementAt(0), new VoiceAudioOptions());
 
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
 
                         key1 = "NPC.cs.4448";
-                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4448"), translation, (object)replacementStrings.farmerName), cue).ElementAt(0);
+                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4448"), language, (object)replacementStrings.farmerName), cue).ElementAt(0);
 
 
                         //cue.addDialogue(sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings","StringsFromCSFiles:NPC.cs.4448"), translation, (object)replacementStrings.farmerName), cue).ElementAt(0), new VoiceAudioOptions());
 
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
 
                         key1 = "NPC.cs.4463";
-                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4463"), translation, (object)replacementStrings.petName), cue).ElementAt(0);
+                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4463"), language, (object)replacementStrings.petName), cue).ElementAt(0);
 
 
                         //cue.addDialogue(sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings","StringsFromCSFiles:NPC.cs.4463"), translation, (object)replacementStrings.petName), cue).ElementAt(0), new VoiceAudioOptions());
 
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
 
                         key1 = "NPC.cs.4465";
-                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4465"), translation, (object)replacementStrings.farmerName), cue).ElementAt(0);
+                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4465"), language, (object)replacementStrings.farmerName), cue).ElementAt(0);
 
                         //cue.addDialogue(sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings","StringsFromCSFiles:NPC.cs.4465"), translation, (object)replacementStrings.farmerName), cue).ElementAt(0), new VoiceAudioOptions());
 
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
 
                         key1 = "NPC.cs.4466";
-                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4466"), translation, (object)replacementStrings.farmerName), cue).ElementAt(0);
+                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4466"), language, (object)replacementStrings.farmerName), cue).ElementAt(0);
 
                         //cue.addDialogue(sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings","StringsFromCSFiles:NPC.cs.4466"), translation, (object)replacementStrings.farmerName), cue).ElementAt(0), new VoiceAudioOptions());
 
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
 
                         key1 = "NPC.cs.4486";
-                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4486"), translation, (object)replacementStrings.farmerName), cue).ElementAt(0);
+                        str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4486"), language, (object)replacementStrings.farmerName), cue).ElementAt(0);
 
                         //cue.addDialogue(sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4486"), translation, (object)replacementStrings.farmerName), cue).ElementAt(0), new VoiceAudioOptions());
 
-                        if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                        if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                         {
-                            AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                            AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                             cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                         }
                         else
                         {
                             cue.addDialogue(str1, new VoiceAudioOptions());
-                            AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                            AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                         }
                         for (int i = 4507; i <= 4523; i++)
                         {
                             if (i == 20 || i == 21)
-                            {
                                 continue;
-                            }
 
                             key1 = "NPC.cs.4465";
-                            str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4465"), translation, (object)config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.") + i.ToString(), translation)), cue).ElementAt(0);
+                            str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4465"), language, (object)config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.") + i.ToString(), language)), cue).ElementAt(0);
 
-                            if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                            if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                             {
-                                AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                                AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                                 cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                             }
                             else
                             {
                                 cue.addDialogue(str1, new VoiceAudioOptions());
-                                AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                                AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                             }
                             key1 = "NPC.cs.4466";
-                            str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4466"), translation, (object)config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.") + i.ToString(), translation)), cue).ElementAt(0);
+                            str1 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.4466"), language, (object)config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.") + i.ToString(), language)), cue).ElementAt(0);
 
-                            if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName1, key1)))
+                            if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName1, key1)))
                             {
-                                AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName1, key1), out VoiceAudioOptions value);
+                                AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName1, key1), out VoiceAudioOptions value);
                                 cue.addDialogue(str1, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                             }
                             else
                             {
                                 cue.addDialogue(str1, new VoiceAudioOptions());
-                                AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName1, key1), new VoiceAudioOptions());
+                                AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName1, key1), new VoiceAudioOptions());
                             }
                         }
 
@@ -3017,36 +2734,26 @@ namespace Vocalization
                         //DO PARSE LOGIC HERE   
                         //cue.addDialogue(config.translationInfo.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3985", (object)cue.name), new VoiceAudioOptions());
 
-                        string basePath = ModHelper.DirectoryPath;
-                        string contentPath = Path.Combine(basePath, "Content");
-                        string audioPath = Path.Combine(contentPath, "Audio");
-                        string voicePath = Path.Combine(audioPath, "VoiceFiles");
-
-                        string[] dirs = Directory.GetDirectories(translation);
+                        string[] dirs = Directory.GetDirectories(languageDir.FullName);
                         //Some additional scraping to put together better options for speech bubbles.
-                        foreach (var v in dirs)
+                        foreach (string v in dirs)
                         {
 
                             string name = Path.GetFileName(v);
                             string key = "NPC.cs.3985";
 
-                            string str2 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.3985"), translation, (object)name), cue).ElementAt(0);
-                            if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                            string str2 = sanitizeDialogueFromDictionaries(config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:NPC.cs.3985"), language, (object)name), cue).ElementAt(0);
+                            if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                             {
-                                AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                 cue.addDialogue(str2, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                             }
                             else
                             {
                                 cue.addDialogue(str2, new VoiceAudioOptions());
-                                AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                             }
                         }
-
-                        
-
-
                         continue;
                     }
 
@@ -3059,9 +2766,9 @@ namespace Vocalization
                             ModMonitor.Log("Dialogue file not found for:" + fileName + ". This might not necessarily be a mistake just a safety check.");
                             continue; //If the file is not found for some reason...
                         }
-                        DialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
+                        dialogueDict = ModHelper.Content.Load<Dictionary<string, string>>(dialoguePath2, ContentSource.GameContent);
                         //Scrape the whole dictionary looking for the character's name.
-                        foreach (KeyValuePair<string, string> pair in DialogueDict)
+                        foreach (KeyValuePair<string, string> pair in dialogueDict)
                         {
                             //Get the key in the dictionary
                             string key = pair.Key;
@@ -3069,21 +2776,19 @@ namespace Vocalization
                             //If the key contains the character's name.
                             List<string> cleanDialogues = new List<string>();
                             cleanDialogues = sanitizeDialogueFromDictionaries(rawDialogue, cue);
-                            foreach (var str in cleanDialogues)
+                            foreach (string str in cleanDialogues)
                             {
-                                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, key)))
+                                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, key)))
                                 {
-                                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, key), out VoiceAudioOptions value);
+                                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, key), out VoiceAudioOptions value);
                                     cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                 }
                                 else
                                 {
                                     cue.addDialogue(str, new VoiceAudioOptions());
-                                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, key), new VoiceAudioOptions());
+                                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, key), new VoiceAudioOptions());
                                 }
                             }
-
                         }
                         continue;
                     }
@@ -3091,7 +2796,7 @@ namespace Vocalization
 
 
                 //LOad item dictionary, pass in item and npc, sanitize the output string using the sanitizationDictionary function, and add in the cue!
-                Dictionary<int, string> objDict = Game1.content.Load<Dictionary<int, string>>(Path.Combine("Data", config.translationInfo.getXNBForTranslation("ObjectInformation", translation)));
+                Dictionary<int, string> objDict = Game1.content.Load<Dictionary<int, string>>(Path.Combine("Data", config.translationInfo.getXNBForTranslation("ObjectInformation", language)));
                 //ModMonitor.Log("LOAD THE OBJECT INFO: ", LogLevel.Alert);
                 foreach (KeyValuePair<int, string> pair in objDict)
                 {
@@ -3099,51 +2804,49 @@ namespace Vocalization
                     {
                         StardewValley.Object obj = new StardewValley.Object(pair.Key, 1, false, -1, i);
 
-                        string[] strArray = config.translationInfo.LoadString(Path.Combine("Strings", "Lexicon:GenericPlayerTerm"), translation).Split('^');
+                        string[] strArray = config.translationInfo.LoadString(Path.Combine("Strings", "Lexicon:GenericPlayerTerm"), language).Split('^');
                         string str2 = strArray[0];
-                        if (strArray.Length > 1 && !(bool)((NetFieldBase<bool, NetBool>)Game1.player.isMale))
+                        if (strArray.Length > 1 && !Game1.player.isMale.Value)
                             str2 = strArray[1];
                         string str3 = Game1.player.Name;
 
-                        List<string> rawScrape = getPurchasedItemDialogueForNPC(obj, cue.name, str3, translation);
+                        List<string> rawScrape = getPurchasedItemDialogueForNPC(obj, cue.name, str3, language);
 
                         foreach (string raw in rawScrape)
                         {
                             List<string> cleanDialogues = sanitizeDialogueFromDictionaries(raw, cue);
-                            foreach (var str in cleanDialogues)
+                            foreach (string str in cleanDialogues)
                             {
-                                string fileName = config.translationInfo.getXNBForTranslation("ObjectInformation", translation);
-                                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, fileName, pair.Key.ToString())))
+                                string fileName = config.translationInfo.getXNBForTranslation("ObjectInformation", language);
+                                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, fileName, pair.Key.ToString())))
                                 {
-                                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, fileName, pair.Key.ToString()), out VoiceAudioOptions value);
+                                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, fileName, pair.Key.ToString()), out VoiceAudioOptions value);
                                     cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                 }
                                 else
                                 {
                                     cue.addDialogue(str, new VoiceAudioOptions());
-                                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, fileName, pair.Key.ToString()), new VoiceAudioOptions());
+                                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, fileName, pair.Key.ToString()), new VoiceAudioOptions());
                                 }
                             }
                         }
 
                         str3 = str2;
-                        List<string> rawScrape2 = getPurchasedItemDialogueForNPC(obj, cue.name, str3, translation);
+                        List<string> rawScrape2 = getPurchasedItemDialogueForNPC(obj, cue.name, str3, language);
                         foreach (string raw in rawScrape2)
                         {
                             List<string> cleanDialogues2 = sanitizeDialogueFromDictionaries(raw, cue);
-                            foreach (var str in cleanDialogues2)
+                            foreach (string str in cleanDialogues2)
                             {
-                                if (AudioCues.getWavFileReferences(translation).ContainsKey(AudioCues.generateKey(translation, cue.name, "StringsFromCSFiles", pair.Key.ToString())))
+                                if (AudioCues.getWavFileReferences(language).ContainsKey(AudioCues.generateKey(language, cue.name, "StringsFromCSFiles", pair.Key.ToString())))
                                 {
-                                    AudioCues.getWavFileReferences(translation).TryGetValue(AudioCues.generateKey(translation, cue.name, "StringsFromCSFiles", pair.Key.ToString()), out VoiceAudioOptions value);
+                                    AudioCues.getWavFileReferences(language).TryGetValue(AudioCues.generateKey(language, cue.name, "StringsFromCSFiles", pair.Key.ToString()), out VoiceAudioOptions value);
                                     cue.addDialogue(str, new VoiceAudioOptions(value.simple, value.full, value.heartEvents, value.simpleAndHeartEvents));
-
                                 }
                                 else
                                 {
                                     cue.addDialogue(str, new VoiceAudioOptions());
-                                    AudioCues.addWavReference(AudioCues.generateKey(translation, cue.name, "StringsFromCSFiles", pair.Key.ToString()), new VoiceAudioOptions());
+                                    AudioCues.addWavReference(AudioCues.generateKey(language, cue.name, "StringsFromCSFiles", pair.Key.ToString()), new VoiceAudioOptions());
                                 }
                             }
                         }
@@ -3151,7 +2854,7 @@ namespace Vocalization
                 }
             }
 
-            ModHelper.WriteJsonFile<CharacterVoiceCue>(path, cue);
+            ModHelper.Data.WriteJsonFile(relativeCuePath, cue);
             //DialogueCues.Add(cue.name, cue);
         }
 
@@ -3159,40 +2862,39 @@ namespace Vocalization
         {
             string[] dialogueSplit = rawDialogue.Split('/');
             List<string> speakingData = new List<string>();
-            foreach (var dia in dialogueSplit)
+            foreach (string dia in dialogueSplit)
             {
                 //ModMonitor.Log(dia);
-                if (!dia.Contains("speak") && !dia.Contains("textAboveHead")) continue;
+                if (!dia.Contains("speak") && !dia.Contains("textAboveHead"))
+                    continue;
+
                 string[] actualDialogue = dia.Split(new string[] { "\"" }, StringSplitOptions.None);
                 //Check to make sure this is the speaker's line.
-                if (!actualDialogue[0].Contains(speakerName)) continue;
+                if (!actualDialogue[0].Contains(speakerName))
+                    continue;
+
                 //ModMonitor.Log(actualDialogue[1],LogLevel.Alert);
                 //Get the actual dialogue line from this npc.
                 speakingData.Add(actualDialogue[1]);
             }
 
-
             return speakingData;
         }
 
 
-        /// <summary>
-        /// Function taken from game code to satisfy all dialogue options.
-        /// </summary>
-        /// <param name="i"></param>
-        /// <param name="npcName"></param>
-        /// <returns></returns>
-        public static List<string> getPurchasedItemDialogueForNPC(StardewValley.Object i, string npcName, string str3, string translation)
+        /// <summary>Function taken from game code to satisfy all dialogue options.</summary>
+        public static List<string> getPurchasedItemDialogueForNPC(StardewValley.Object i, string npcName, string str3, LanguageName language)
         {
             NPC n = Game1.getCharacterFromName(npcName);
-            if (n == null) return new List<string>();
+            if (n == null)
+                return new List<string>();
             List<string> dialogueReturn = new List<string>();
 
             if (n.Age != 0)
                 str3 = Game1.player.Name;
             string str4 = LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.en ? Lexicon.getProperArticleForWord(i.name) : "";
             if ((i.Category == -4 || i.Category == -75 || i.Category == -79) && Game1.random.NextDouble() < 0.5)
-                str4 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:SeedShop.cs.9701"), translation);
+                str4 = config.translationInfo.LoadString(Path.Combine("Strings", "StringsFromCSFiles:SeedShop.cs.9701"), language);
 
             for (int v = 0; v <= 5; v++)
             {
@@ -3203,24 +2905,24 @@ namespace Vocalization
                     case 0:
                         if (i.quality.Value == 1)
                         {
-                            foreach (string str in Vocabulary.getRandomDeliciousAdjectives(translation, n))
+                            foreach (string str in Vocabulary.getRandomDeliciousAdjectives(language, n))
                             {
-                                string str19 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_1_QualityHigh"), translation, (object)str3, (object)str4, (object)i.DisplayName, (object)str);
+                                string str19 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_1_QualityHigh"), language, (object)str3, (object)str4, (object)i.DisplayName, (object)str);
                                 dialogueReturn.Add(str19);
                             }
                             //break;
                         }
                         if (i.quality.Value == 0)
                         {
-                            foreach (string str in Vocabulary.getRandomNegativeFoodAdjectives(translation, n))
+                            foreach (string str in Vocabulary.getRandomNegativeFoodAdjectives(language, n))
                             {
-                                string str18 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_1_QualityLow"), translation, (object)str3, (object)str4, (object)i.DisplayName, (object)str);
+                                string str18 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_1_QualityLow"), language, (object)str3, (object)str4, (object)i.DisplayName, (object)str);
                                 dialogueReturn.Add(str18);
                             }
                         }
                         break;
                     case 1:
-                        string str2 = (i.quality.Value) != 0 ? (!n.Name.Equals("Jodi") ? config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_2_QualityHigh"), translation, (object)str3, (object)str4, (object)i.DisplayName) : config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_2_QualityHigh_Jodi"), translation, (object)str3, (object)str4, (object)i.DisplayName)) : config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_2_QualityLow"), translation, (object)str3, (object)str4, (object)i.DisplayName);
+                        string str2 = (i.quality.Value) != 0 ? (!n.Name.Equals("Jodi") ? config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_2_QualityHigh"), language, (object)str3, (object)str4, (object)i.DisplayName) : config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_2_QualityHigh_Jodi"), language, (object)str3, (object)str4, (object)i.DisplayName)) : config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_2_QualityLow"), language, (object)str3, (object)str4, (object)i.DisplayName);
                         dialogueReturn.Add(str2);
                         break;
                     case 2:
@@ -3228,110 +2930,110 @@ namespace Vocalization
                         {
                             if (i.quality.Value != 2)
                             {
-                                foreach (var word1 in Vocabulary.getRandomNegativeFoodAdjectives(translation, n))
+                                foreach (string word1 in Vocabulary.getRandomNegativeFoodAdjectives(language, n))
                                 {
-                                    foreach (string word2 in Vocabulary.getRandomNegativeItemSlanderNouns(translation))
+                                    foreach (string word2 in Vocabulary.getRandomNegativeItemSlanderNouns(language))
                                     {
-                                        string str17 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_3_QualityLow_Rude"), translation, (object)str3, (object)str4, (object)i.DisplayName, (object)(i.salePrice() / 2), (object)word1, (object)word2);
+                                        string str17 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_3_QualityLow_Rude"), language, (object)str3, (object)str4, (object)i.DisplayName, (object)(i.salePrice() / 2), (object)word1, (object)word2);
                                         dialogueReturn.Add(str17);
                                     }
                                 }
                                 break;
                             }
-                            foreach (string word1 in Vocabulary.getRandomSlightlyPositiveAdjectivesForEdibleNoun(translation))
+                            foreach (string word1 in Vocabulary.getRandomSlightlyPositiveAdjectivesForEdibleNoun(language))
                             {
-                                string str10 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_3_QualityHigh_Rude"), translation, (object)str3, (object)str4, (object)i.DisplayName, (object)(i.salePrice() / 2), (object)word1);
+                                string str10 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_3_QualityHigh_Rude"), language, (object)str3, (object)str4, (object)i.DisplayName, (object)(i.salePrice() / 2), (object)word1);
                                 dialogueReturn.Add(str10);
                             }
                             break;
                         }
-                        string str11 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_3_NonRude"), translation, (object)str3, (object)str4, (object)i.DisplayName, (object)(i.salePrice() / 2));
+                        string str11 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_3_NonRude"), language, (object)str3, (object)str4, (object)i.DisplayName, (object)(i.salePrice() / 2));
                         dialogueReturn.Add(str11);
                         break;
                     case 3:
-                        string str12 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_4"), translation, (object)str3, (object)str4, (object)i.DisplayName);
+                        string str12 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_4"), language, (object)str3, (object)str4, (object)i.DisplayName);
                         dialogueReturn.Add(str12);
                         break;
                     case 4:
                         if (i.Category == -75 || i.Category == -79)
                         {
-                            string str13 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_5_VegetableOrFruit"), translation, (object)str3, (object)str4, (object)i.DisplayName);
+                            string str13 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_5_VegetableOrFruit"), language, (object)str3, (object)str4, (object)i.DisplayName);
                             dialogueReturn.Add(str13);
                             break;
                         }
                         if (i.Category == -7)
                         {
-                            foreach (string forEventOrPerson in Vocabulary.getRandomPositiveAdjectivesForEventOrPerson(translation))
+                            foreach (string forEventOrPerson in Vocabulary.getRandomPositiveAdjectivesForEventOrPerson(language))
                             {
-                                string str14 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_5_Cooking"), translation, (object)str3, (object)str4, (object)i.DisplayName, (object)Lexicon.getProperArticleForWord(forEventOrPerson), (object)forEventOrPerson);
+                                string str14 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_5_Cooking"), language, (object)str3, (object)str4, (object)i.DisplayName, (object)Lexicon.getProperArticleForWord(forEventOrPerson), (object)forEventOrPerson);
                                 dialogueReturn.Add(str14);
                             }
                             break;
                         }
-                        string str15 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_5_Foraged"), translation, (object)str3, (object)str4, (object)i.DisplayName);
+                        string str15 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_5_Foraged"), language, (object)str3, (object)str4, (object)i.DisplayName);
                         dialogueReturn.Add(str15);
                         break;
                 }
             }
             if (n.Age == 1)
             {
-                string str16 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Teen"), translation, (object)str3, (object)str4, (object)i.DisplayName);
+                string str16 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Teen"), language, (object)str3, (object)str4, (object)i.DisplayName);
                 dialogueReturn.Add(str16);
             }
 
             string name = n.Name;
             string str1 = "";
-            if (name == "Alex")
+            switch (name)
             {
-                str1 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Alex"), translation, (object)str3, (object)str4, (object)i.DisplayName);
-            }
-            if (name == "Caroline")
-            {
-                str1 = (int)((NetFieldBase<int, NetInt>)i.quality) != 0 ? config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Caroline_QualityHigh"), translation, (object)str3, (object)str4, (object)i.DisplayName) : config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Caroline_QualityLow"), translation, (object)str3, (object)str4, (object)i.DisplayName);
-            }
-            if (name == "Pierre")
-            {
-                str1 = (int)((NetFieldBase<int, NetInt>)i.quality) != 0 ? config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Pierre_QualityHigh"), translation, (object)str3, (object)str4, (object)i.DisplayName) : config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Pierre_QualityLow"), translation, (object)str3, (object)str4, (object)i.DisplayName);
-            }
+                case "Alex":
+                    str1 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Alex"), language, (object)str3, (object)str4, (object)i.DisplayName);
+                    break;
 
+                case "Caroline":
+                    str1 = i.Quality != 0
+                        ? config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Caroline_QualityHigh"), language, (object)str3, (object)str4, (object)i.DisplayName)
+                        : config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Caroline_QualityLow"), language, (object)str3, (object)str4, (object)i.DisplayName);
+                    break;
 
-            if (name == "Abigail")
-            {
-                if (i.quality.Value == 0)
-                {
-                    foreach (string word1 in Vocabulary.getRandomNegativeItemSlanderNouns(translation))
+                case "Pierre":
+                    str1 = i.Quality != 0
+                        ? config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Pierre_QualityHigh"), language, (object)str3, (object)str4, (object)i.DisplayName)
+                        : config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Pierre_QualityLow"), language, (object)str3, (object)str4, (object)i.DisplayName);
+                    break;
+
+                case "Abigail":
+                    if (i.Quality == 0)
                     {
-                        string str12 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Abigail_QualityLow"), translation, (object)str3, (object)str4, (object)i.DisplayName, (object)word1);
-                        dialogueReturn.Add(str12);
+                        foreach (string word1 in Vocabulary.getRandomNegativeItemSlanderNouns(language))
+                        {
+                            string str12 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Abigail_QualityLow"), language, (object)str3, (object)str4, (object)i.DisplayName, (object)word1);
+                            dialogueReturn.Add(str12);
+                        }
                     }
-                }
-                else
-                {
-                    str1 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Abigail_QualityHigh"), translation, (object)str3, (object)str4, (object)i.DisplayName);
-                }
+                    else
+                        str1 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Abigail_QualityHigh"), language, (object)str3, (object)str4, (object)i.DisplayName);
+                    break;
 
+                case "Haley":
+                    str1 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Haley"), language, (object)str3, (object)str4, (object)i.DisplayName);
+                    break;
+
+                case "Elliott":
+                    str1 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Elliott"), language, (object)str3, (object)str4, (object)i.DisplayName);
+                    break;
+
+                case "Leah":
+                    str1 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Leah"), language, (object)str3, (object)str4, (object)i.DisplayName);
+                    break;
             }
 
-
-            if (name == "Haley")
-                str1 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Haley"), translation, (object)str3, (object)str4, (object)i.DisplayName);
-            if (name == "Elliott")
-                str1 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Elliott"), translation, (object)str3, (object)str4, (object)i.DisplayName);
-            if (name == "Leah")
-                str1 = config.translationInfo.LoadString(Path.Combine("Data", "ExtraDialogue:PurchasedItem_Leah"), translation, (object)str3, (object)str4, (object)i.DisplayName);
             if (str1 != "")
-            {
                 dialogueReturn.Add(str1);
-            }
             return dialogueReturn;
         }
 
 
-        /// <summary>
-        /// Removes a lot of variables that would be hard to voice act from dkialogue strings such as player's name, pet names, farm names, etc.
-        /// </summary>
-        /// <param name="dialogue"></param>
-        /// <returns></returns>
+        /// <summary>Removes a lot of variables that would be hard to voice act from dkialogue strings such as player's name, pet names, farm names, etc.</summary>
         public static string sanitizeDialogueInGame(string dialogue)
         {
             if (dialogue.Contains(Game1.player.Name))
@@ -3342,30 +3044,20 @@ namespace Vocalization
             if (Game1.player.hasPet())
             {
                 if (dialogue.Contains(Game1.player.getPetName()))
-                {
                     dialogue = dialogue.Replace(Game1.player.getPetName(), replacementStrings.petName);
-                }
             }
 
             if (dialogue.Contains(Game1.player.farmName.Value))
-            {
                 dialogue = dialogue.Replace(Game1.player.farmName.Value, replacementStrings.farmName);
-            }
 
             if (dialogue.Contains(Game1.player.favoriteThing.Value))
-            {
                 dialogue = dialogue.Replace(Game1.player.favoriteThing.Value, replacementStrings.favoriteThing);
-            }
 
             if (dialogue.Contains(Game1.samBandName))
-            {
                 dialogue = dialogue.Replace(Game1.samBandName, replacementStrings.bandName);
-            }
 
             if (dialogue.Contains(Game1.elliottBookName))
-            {
                 dialogue = dialogue.Replace(Game1.elliottBookName, replacementStrings.bookName);
-            }
 
             //Sanitize children names from the dialogue.
             if (Game1.player.getChildren().Count > 0)
@@ -3376,13 +3068,9 @@ namespace Vocalization
                     if (dialogue.Contains(child.Name))
                     {
                         if (count == 1)
-                        {
                             dialogue = dialogue.Replace(child.Name, replacementStrings.kid1Name);
-                        }
                         if (count == 2)
-                        {
                             dialogue = dialogue.Replace(child.Name, replacementStrings.kid2Name);
-                        }
                     }
                     count++;
                 }
@@ -3391,11 +3079,7 @@ namespace Vocalization
             return dialogue;
         }
 
-        /// <summary>
-        /// Load in all dialogue.xnb files and attempt to sanitize all of the dialogue from it to help making adding dialogue easier.
-        /// </summary>
-        /// <param name="dialogue"></param>
-        /// <returns></returns>
+        /// <summary>Load in all dialogue.xnb files and attempt to sanitize all of the dialogue from it to help making adding dialogue easier.</summary>
         public static List<string> sanitizeDialogueFromDictionaries(string dialogue, CharacterVoiceCue cue)
         {
             List<string> possibleDialogues = new List<string>();
@@ -3473,26 +3157,18 @@ namespace Vocalization
 
             //split across % symbol
             //Just remove the %symbol for generic text boxes. Not for forks.
-            if (dialogue.Contains("%") && dialogue.Contains("%fork") == false)
-            {
+            if (dialogue.Contains("%") && !dialogue.Contains("%fork"))
                 dialogue = dialogue.Replace("%", "");
-            }
 
             if (dialogue.Contains("$fork"))
-            {
                 dialogue = dialogue.Replace("%fork", "");
-            }
 
 
             string[] split = dialogue.Split('#');
             List<string> dialogueSplits1 = new List<string>(); //Returns an element size of 1 if # isn't found.
 
-            foreach (var s in split)
-            {
+            foreach (string s in split)
                 dialogueSplits1.Add(s);
-            }
-
-
 
             //Split across choices
             List<string> orSplit = new List<string>();
@@ -3503,48 +3179,38 @@ namespace Vocalization
             List<string> finalSplit = new List<string>();
 
             //split across | symbol
-            foreach (var dia in dialogueSplits1)
+            foreach (string dia in dialogueSplits1)
             {
                 if (dia.Contains("|")) //If I can split my string do so and add all the split strings into my orSplit list.
                 {
                     List<string> tempSplits = dia.Split('|').ToList();
-                    foreach (var v in tempSplits)
-                    {
+                    foreach (string v in tempSplits)
                         orSplit.Add(v);
-                    }
                 }
                 else
-                {
                     orSplit.Add(dia); //If I can't split the list just add the dialogue and keep processing.
-                }
             }
 
-            foreach (var dia in orSplit)
+            foreach (string dia in orSplit)
             {
                 if (dia.Contains("\"") && cue.name.StartsWith("Temp")) //If I can split my string do so and add all the split strings into my orSplit list.
                 {
                     List<string> tempSplits = dia.Split('\"').ToList();
-                    foreach (var v in tempSplits)
-                    {
+                    foreach (string v in tempSplits)
                         quoteSplit.Add(v);
-                    }
                 }
                 else
-                {
                     quoteSplit.Add(dia); //If I can't split the list just add the dialogue and keep processing.
-                }
             }
 
             //split across ^ symbol   
-            foreach (var dia in quoteSplit)
+            foreach (string dia in quoteSplit)
             {
                 if (dia.Contains("^")) //If I can split my string do so and add all the split strings into my orSplit list.
                 {
                     List<string> tempSplits = dia.Split('^').ToList();
-                    foreach (var v in tempSplits)
-                    {
+                    foreach (string v in tempSplits)
                         finalSplit.Add(v);
-                    }
                 }
                 else
                 {
@@ -3559,7 +3225,7 @@ namespace Vocalization
                 string dia = finalSplit.ElementAt(i);
                 if (dia.Contains("%adj"))
                 {
-                    foreach (var adj in replacementStrings.adjStrings)
+                    foreach (string adj in replacementStrings.adjStrings)
                     {
                         dia = dia.Replace("%adj", adj);
                         finalSplit.Add(dia);
@@ -3573,7 +3239,7 @@ namespace Vocalization
                 string dia = finalSplit.ElementAt(i);
                 if (dia.Contains("%noun"))
                 {
-                    foreach (var noun in replacementStrings.nounStrings)
+                    foreach (string noun in replacementStrings.nounStrings)
                     {
                         dia = dia.Replace("%noun", noun);
                         finalSplit.Add(dia);
@@ -3587,7 +3253,7 @@ namespace Vocalization
                 string dia = finalSplit.ElementAt(i);
                 if (dia.Contains("%place"))
                 {
-                    foreach (var place in replacementStrings.placeStrings)
+                    foreach (string place in replacementStrings.placeStrings)
                     {
                         dia = dia.Replace("%place", place);
                         finalSplit.Add(dia);
@@ -3601,7 +3267,7 @@ namespace Vocalization
                 string dia = finalSplit.ElementAt(i);
                 if (dia.Contains("%spouse"))
                 {
-                    foreach (var spouse in replacementStrings.spouseNames)
+                    foreach (string spouse in replacementStrings.spouseNames)
                     {
                         dia = dia.Replace("%spouse", spouse);
                         finalSplit.Add(dia);
@@ -3682,50 +3348,34 @@ namespace Vocalization
                 {
                     possibleDialogues.Add(dia);
                 }
-
             }
 
             List<string> removalList = new List<string>();
             //Clean out all dialogue commands.
-            foreach (var dia in possibleDialogues)
+            foreach (string dia in possibleDialogues)
             {
                 if (dia.Contains("$r"))
-                {
                     removalList.Add(dia);
-                }
 
                 if (dia.Contains("$p"))
-                {
                     removalList.Add(dia);
-                }
 
                 if (dia.Contains("$b"))
-                {
                     removalList.Add(dia);
-                }
 
                 if (dia.Contains("$e"))
-                {
                     removalList.Add(dia);
-                }
 
                 if (dia.Contains("$d"))
-                {
                     removalList.Add(dia);
-                }
 
                 if (dia.Contains("$k"))
-                {
                     removalList.Add(dia);
-                }
             }
 
             //Delete all garbage dialogues left over.
-            foreach (var v in removalList)
-            {
+            foreach (string v in removalList)
                 possibleDialogues.Remove(v);
-            }
-
 
             return possibleDialogues;
         }
@@ -3733,55 +3383,35 @@ namespace Vocalization
         public static string sanitizeDialogueFromSpeechBubblesDictionary(string text)
         {
             if (text.Contains("{0}"))
-            {
                 text = text.Replace("{0}", replacementStrings.farmerName);
-            }
             if (text.Contains("{1}"))
-            {
                 text = text.Replace("{1}", replacementStrings.farmName);
-            }
             return text;
         }
 
-        /// <summary>
-        /// Used to remove all garbage strings from Content/Data/mail.yaml
-        /// </summary>
-        /// <param name="mailText"></param>
-        /// <returns></returns>
+        /// <summary>Used to remove all garbage strings from Content/Data/mail.yaml</summary>
         public static string sanitizeDialogueFromMailDictionary(string mailText)
         {
-
             List<string> texts = mailText.Split('%').ToList();
 
             string splicedText = texts.ElementAt(0); //The actual message of the mail minus the items stored at the end.
 
             if (splicedText.Contains("@"))
-            {
                 splicedText = splicedText.Replace("@", replacementStrings.farmerName);
-            }
 
             if (splicedText.Contains("^"))
-            {
                 splicedText = splicedText.Replace("^", "");
-            }
 
             if (splicedText.Contains("\""))
-            {
                 splicedText = splicedText.Replace("\"", "");
-            }
 
             if (splicedText.Contains("+"))
-            {
                 splicedText = splicedText.Replace("+", "");
-            }
 
             if (splicedText.Contains("\n"))
-            {
                 splicedText = splicedText.Replace("\n", "");
-            }
 
             return splicedText;
-
         }
     }
 }

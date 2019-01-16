@@ -1,95 +1,70 @@
-﻿using Microsoft.Xna.Framework.Audio;
-using SimpleSoundManager.Framework;
-using StardewModdingAPI;
-using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Audio;
+using SimpleSoundManager.Framework;
+using StardewModdingAPI;
 
 namespace SimpleSoundManager
 {
     class WavSound : Sound
     {
 
-        /// <summary>
-        /// Used to actually play the song.
-        /// </summary>
+        /// <summary>Used to actually play the song.</summary>
         DynamicSoundEffectInstance dynamicSound;
-        /// <summary>
-        /// Used to keep track of where in the song we are.
-        /// </summary>
-        int position;
-        /// <summary>
-        /// ???
-        /// </summary>
-        int count;
-        /// <summary>
-        /// Used to store the info for the song.
-        /// </summary>
-        byte[] byteArray;
 
+        /// <summary>Used to keep track of where in the song we are.</summary>
+        int position;
+
+        int count;
+
+        /// <summary>Used to store the info for the song.</summary>
+        byte[] byteArray;
 
         public string path;
 
         public string soundName;
 
-
         public bool loop;
 
-        /// <summary>
-        /// Get a raw disk path to the wav file.
-        /// </summary>
-        /// <param name="pathToWavFile"></param>
-        public WavSound(string name,string pathToWavFile,bool Loop=false)
+        /// <summary>Get a raw disk path to the wav file.</summary>
+        public WavSound(string name, string pathToWavFile, bool loop = false)
         {
             this.path = pathToWavFile;
-            LoadWavFromFileToStream();
+            this.LoadWavFromFileToStream();
             this.soundName = name;
-            this.loop = Loop;
+            this.loop = loop;
         }
 
-        /// <summary>
-        /// A constructor that takes a mod helper and a relative path to a wav file.
-        /// </summary>
-        /// <param name="modHelper"></param>
-        /// <param name="pathInModDirectory"></param>
-        public WavSound(IModHelper modHelper,string name, string pathInModDirectory,bool Loop=false)
+        /// <summary>A constructor that takes a mod helper and a relative path to a wav file.</summary>
+        public WavSound(IModHelper modHelper, string name, string relativePath, bool loop = false)
         {
-            string path = Path.Combine(modHelper.DirectoryPath, pathInModDirectory);
+            string path = Path.Combine(modHelper.DirectoryPath, relativePath);
             this.path = path;
             this.soundName = name;
-            this.loop = Loop;
+            this.loop = loop;
         }
 
-        /// <summary>
-        /// Constructor that is more flexible than typing an absolute path.
-        /// </summary>
+        /// <summary>Constructor that is more flexible than typing an absolute path.</summary>
         /// <param name="modHelper">The mod helper for the mod you wish to use to load the music files from.</param>
         /// <param name="pathPieces">The list of folders and files that make up a complete path.</param>
-        public WavSound(IModHelper modHelper,string soundName, List<string> pathPieces,bool Loop=false)
+        public WavSound(IModHelper modHelper, string soundName, List<string> pathPieces, bool loop = false)
         {
-            string s = modHelper.DirectoryPath;
-            foreach(var str in pathPieces)
-            {
-                s = Path.Combine(s, str);
-            }
-            this.path = s;
+            string dirPath = modHelper.DirectoryPath;
+            foreach (string str in pathPieces)
+                dirPath = Path.Combine(dirPath, str);
+            this.path = dirPath;
             this.soundName = soundName;
-            this.loop = Loop;
+            this.loop = loop;
         }
 
-        /// <summary>
-        /// Loads the .wav file from disk and plays it.
-        /// </summary>
+        /// <summary>Loads the .wav file from disk and plays it.</summary>
         public void LoadWavFromFileToStream()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
 
             string file = this.path;
-            System.IO.Stream waveFileStream = File.OpenRead(file); //TitleContainer.OpenStream(file);
+            Stream waveFileStream = File.OpenRead(file); //TitleContainer.OpenStream(file);
 
             BinaryReader reader = new BinaryReader(waveFileStream);
 
@@ -115,104 +90,83 @@ namespace SimpleSoundManager
             int dataID = reader.ReadInt32();
             int dataSize = reader.ReadInt32();
 
-            byteArray = reader.ReadBytes(dataSize);
+            this.byteArray = reader.ReadBytes(dataSize);
 
 
-            dynamicSound = new DynamicSoundEffectInstance(sampleRate, (AudioChannels)channels);
-            count = byteArray.Length;//dynamicSound.GetSampleSizeInBytes(TimeSpan.FromMilliseconds(1000));
+            this.dynamicSound = new DynamicSoundEffectInstance(sampleRate, (AudioChannels)channels);
+            this.count = this.byteArray.Length;//dynamicSound.GetSampleSizeInBytes(TimeSpan.FromMilliseconds(1000));
 
-            dynamicSound.BufferNeeded += new EventHandler<EventArgs>(DynamicSound_BufferNeeded);
-            
+            this.dynamicSound.BufferNeeded += this.DynamicSound_BufferNeeded;
         }
 
         void DynamicSound_BufferNeeded(object sender, EventArgs e)
         {
             try
             {
-                dynamicSound.SubmitBuffer(byteArray, position, count);
+                this.dynamicSound.SubmitBuffer(this.byteArray, this.position, this.count);
             }
-            catch (Exception err)
-            {
-                //SimpleSoundManagerMod.ModMonitor.Log(err.ToString());
-            }
+            catch { }
 
-            position += count;
-            if (position + count > byteArray.Length)
+            this.position += this.count;
+            if (this.position + this.count > this.byteArray.Length)
             {
 
-                if (loop)
-                {
-                    position = 0;
-                }
-                else
-                {
-                    //this.stop();
-                }
+                if (this.loop)
+                    this.position = 0;
+                //else
+                //    this.stop();
             }
         }
 
-        /// <summary>
-        /// Used to pause the current song.
-        /// </summary>
+        /// <summary>Used to pause the current song.</summary>
         public void pause()
         {
-            if (dynamicSound != null) dynamicSound.Pause();
+            this.dynamicSound?.Pause();
         }
 
-        /// <summary>
-        /// Used to play a song.
-        /// </summary>
-        /// <param name="name"></param>
+        /// <summary>Used to play a song.</summary>
         public void play()
         {
-            if (this.isPlaying() == true) return;
-            LoadWavFromFileToStream();
-            dynamicSound.Play();
+            if (this.isPlaying())
+                return;
+
+            this.LoadWavFromFileToStream();
+            this.dynamicSound.Play();
         }
 
-        /// <summary>
-        /// Used to play a song.
-        /// </summary>
-        /// <param name="name"></param>
+        /// <summary>Used to play a song.</summary>
         /// <param name="volume">How lound the sound is when playing. 0~1.0f</param>
         public void play(float volume)
         {
-            if (this.isPlaying() == true) return;
-            LoadWavFromFileToStream();
-            dynamicSound.Volume = volume;
-            dynamicSound.Play();
+            if (this.isPlaying())
+                return;
+
+            this.LoadWavFromFileToStream();
+            this.dynamicSound.Volume = volume;
+            this.dynamicSound.Play();
         }
 
 
-        /// <summary>
-        /// Used to resume the currently playing song.
-        /// </summary>
+        /// <summary>Used to resume the currently playing song.</summary>
         public void resume()
         {
-            if (dynamicSound == null) return;
-            dynamicSound.Resume();
+            dynamicSound?.Resume();
         }
 
-        /// <summary>
-        /// Used to stop the currently playing song.
-        /// </summary>
+        /// <summary>Used to stop the currently playing song.</summary>
         public void stop()
         {
-
-            if (dynamicSound != null)
+            if (this.dynamicSound != null)
             {
-                dynamicSound.Stop(true);
-                dynamicSound.BufferNeeded -= new EventHandler<EventArgs>(DynamicSound_BufferNeeded);
-                position = 0;
-                count = 0;
-                byteArray = new byte[0];
+                this.dynamicSound.Stop(true);
+                this.dynamicSound.BufferNeeded -= this.DynamicSound_BufferNeeded;
+                this.position = 0;
+                this.count = 0;
+                this.byteArray = new byte[0];
             }
         }
 
-        /// <summary>
-        /// Used to change from one playing song to another;
-        /// </summary>
-        /// <param name="songName"></param>
+        /// <summary>Used to change from one playing song to another;</summary>
         public void swap(string pathToNewWavFile)
         {
             this.stop();
@@ -220,42 +174,27 @@ namespace SimpleSoundManager
             this.play();
         }
 
-        /// <summary>
-        /// Checks if the song is currently playing.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Checks if the song is currently playing.</summary>
         public bool isPlaying()
         {
-            if (this.dynamicSound == null) return false;
-            if (this.dynamicSound.State == SoundState.Playing) return true;
-            else return false;
+            return this.dynamicSound?.State == SoundState.Playing;
         }
 
-        /// <summary>
-        /// Checks if the song is currently paused.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Checks if the song is currently paused.</summary>
         public bool isPaused()
         {
-            if (this.dynamicSound == null) return false;
-            if (this.dynamicSound.State == SoundState.Paused) return true;
-            else return false;
+            return this.dynamicSound?.State == SoundState.Paused;
         }
 
-        /// <summary>
-        /// Checks if the song is currently stopped.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Checks if the song is currently stopped.</summary>
         public bool isStopped()
         {
-            if (this.dynamicSound == null) return false;
-            if (this.dynamicSound.State == SoundState.Stopped) return true;
-            else return false;
+            return this.dynamicSound?.State == SoundState.Stopped;
         }
 
         public Sound clone()
         {
-            return new WavSound(this.getSoundName(),this.path);
+            return new WavSound(this.getSoundName(), this.path);
         }
 
         public string getSoundName()
@@ -268,6 +207,5 @@ namespace SimpleSoundManager
             this.stop();
             this.play();
         }
-
     }
 }

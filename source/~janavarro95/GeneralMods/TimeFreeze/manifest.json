@@ -1,10 +1,10 @@
 {
   "Name": "Time Freeze",
   "Author": "Alpha_Omegasis",
-  "Version": "1.5.1",
+  "Version": "1.6.0",
   "Description": "Emulates old Harvest Moon-style games where time is frozen inside.",
   "UniqueID": "Omegasis.TimeFreeze",
   "EntryDll": "TimeFreeze.dll",
-  "MinimumApiVersion": "2.0",
+  "MinimumApiVersion": "2.10.1",
   "UpdateKeys": [ "Nexus:973" ]
 }

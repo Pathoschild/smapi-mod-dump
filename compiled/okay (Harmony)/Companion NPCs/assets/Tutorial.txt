@@ -1,0 +1,71 @@
+Adding Dialogue: A Tutorial
+
+So you want to add some dialogue? I can help you with that.
+Before you continue reading though, I'd recommend opening up "AbigailCompanion.json"
+and just reading through it, trying to find patterns. This will help you understand
+it all much better once you're reading through the guide. Then the guide will serve
+to clear anything up.
+
+Seriously, go open up "AbigailCompanion.json" and look at it if you haven't already.
+
+Last chance before hitting a wall of boring text!
+
+Ok,
+First things first, look at one of the .json assets titled "NameCompanion.json"
+(where 'Name' is an NPC's name: "AbigailCompanion.json"). Each file will be used
+with its respective NPC.
+
+Every line within can be broken down into 2 distinct pieces, a Key, and a Value:
+"Key1": "Value1",
+"Key2": "Value2",
+where the Key falls before the colon, and the Value after.
+
+The Keys all follow the same rules that I've set up in my code. Following these rules
+will make it so they are automatically used in the proper scenarios while running
+Companion NPCs. Each Key is broken up by dash symbols '-' into three parts:
+
+1. The word "companion" (or "Companion" if followed by an action scenario. Read up to 2b. and then you'll understand).
+
+2. A scenario word, which dictates when this line will be used. These scenarios can be:
+	2a. The name of a location like "Railroad",
+	2b. Some action the line is associated with like "Recruit" or "ActionContinue",
+	2c. Or the word "Idle" (often followed by a number "Idle#").
+		The number dictates which Idle Animation this line is associated with if there are multiple Idle Animations.
+	
+3. A relationship word followed by an optional number:
+	3a. "Friend" dictates that this line will be used when you are either a friend or the spouse of this NPC.
+	3b. "Spouse" dictates that this line will only be used when you are a spouse of this NPC.
+	3c. "SpouseOverride" dictates that only this line (or other SpouseOverride lines) will be used if you are a spouse of this NPC.
+	3d. If there is no optional number, then there is only one line for that scenario. If there is an optional number, it must be part of a sequential order.
+		It will dictate that there are multiple lines for this scenario, one of which will be picked at random.
+		
+That's it for the Keys.
+
+The Values all follow the rules Concerned Ape set up for dialogues. You can do some pretty nifty stuff,
+but I'd recommend not trying anything fancy until you understand the basics. The two basic things I would
+recommennd you start with are:
+
+1. Literally just typing in a simple line of dialogue like, "Hey, pretty neat shoes you got there dude."
+2. Adding an "emotion portrait" to the dialogue by appending a line of dialogue with
+	$h for Happy
+	$a for Angry
+	$s for Sad
+	$u for Unique
+	$l for Love
+	Like so: "I heard a dark wind howling last night...$s"
+	
+So for a real example, adding these lines to AbigailCompanion.json:
+
+"companion-Town-Friend1": "Hey, pretty neat shoes you got there dude.",
+"companion-Town-Friend2": "I heard a dark wind howling last night...$s"
+
+will make Abigail's next dialogue randomly say either of these two lines when she enters the town,
+the second of which will make her look sad in her portrait.
+
+If you're comfortable with how this works, then read this article: https://stardewvalleywiki.com/Modding:Dialogue
+to delve deeper into the cool things you can do with dialogue.
+
+And that's all! Thanks for reading this far if you have.
+
+Love,
+Redwood

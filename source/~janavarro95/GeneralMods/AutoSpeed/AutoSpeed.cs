@@ -1,4 +1,3 @@
-﻿using System;
 using Omegasis.AutoSpeed.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -10,7 +9,7 @@ namespace Omegasis.AutoSpeed
     public class AutoSpeed : Mod
     {
         /*********
-        ** Properties
+        ** Fields
         *********/
         /// <summary>The mod configuration.</summary>
         private ModConfig Config;
@@ -23,7 +22,7 @@ namespace Omegasis.AutoSpeed
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            GameEvents.UpdateTick += this.GameEvents_UpdateTick;
+            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
             this.Config = helper.ReadConfig<ModConfig>();
         }
 
@@ -31,10 +30,10 @@ namespace Omegasis.AutoSpeed
         /*********
         ** Private methods
         *********/
-        /// <summary>The method invoked when the game updates (roughly 60 times per second).</summary>
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void GameEvents_UpdateTick(object sender, EventArgs e)
+        /// <param name="e">The event arguments.</param>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (Context.IsPlayerFree)
                 Game1.player.addedSpeed = this.Config.Speed;

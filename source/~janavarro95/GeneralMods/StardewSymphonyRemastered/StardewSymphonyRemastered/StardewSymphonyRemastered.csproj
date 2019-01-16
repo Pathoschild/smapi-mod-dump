@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,8 +11,6 @@
     <AssemblyName>StardewSymphonyRemastered</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -68,12 +66,11 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NAudio">
-      <HintPath>..\..\..\..\..\..\..\..\Desktop\NAudio.dll</HintPath>
-    </Reference>
-    <Reference Include="StardustCore">
-      <HintPath>..\..\StardustCore\bin\Release\StardustCore.dll</HintPath>
-    </Reference>
+    <PackageReference Include="NAudio" Version="1.8.5" />
+    <PackageReference Include="NAudio.Vorbis" Version="1.0.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="2.2.0" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -86,177 +83,139 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="Framework\Menus\MusicManagerMenu.cs" />
-    <Compile Include="Framework\Music\MusicPackMetaData.cs" />
-    <Compile Include="Framework\Music\Song.cs" />
     <Compile Include="Framework\Music\SongListNode.cs" />
-    <Compile Include="StaticExtentions.cs" />
     <Compile Include="StardewSymphony.cs" />
-    <Compile Include="Framework\Music\MusicHexProcessor.cs" />
     <Compile Include="Framework\Music\MusicManager.cs" />
-    <Compile Include="Framework\Music\MusicPack.cs" />
     <Compile Include="Framework\Music\SongSpecifics.cs" />
-    <Compile Include="Framework\Music\WavMusicPack.cs" />
-    <Compile Include="Framework\Music\XACTMusicPack.cs" />
+    <Compile Include="Framework\Music\MusicPack.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Graphics\MusicMenu\AddButton.png">
+    <Content Include="assets\AddButton.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\BackButton.png">
+    <Content Include="assets\BackButton.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\DayIcons_Friday.png">
+    <Content Include="assets\DayIcons_Friday.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\DayIcons_Monday.png">
+    <Content Include="assets\DayIcons_Monday.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\DayIcons_Saturday.png">
+    <Content Include="assets\DayIcons_Saturday.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\DayIcons_Sunday.png">
+    <Content Include="assets\DayIcons_Sunday.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\DayIcons_Thursday.png">
+    <Content Include="assets\DayIcons_Thursday.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\DayIcons_Tuesday.png">
+    <Content Include="assets\DayIcons_Tuesday.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\DayIcons_Wednesday.png">
+    <Content Include="assets\DayIcons_Wednesday.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\DeleteButton.png">
+    <Content Include="assets\DeleteButton.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\EventIcon.png">
+    <Content Include="assets\EventIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\FestivalIcon.png">
+    <Content Include="assets\FestivalIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\GreenBallon.png">
+    <Content Include="assets\GreenBallon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\HouseIcon.png">
+    <Content Include="assets\HouseIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\MenuIcon.png">
+    <Content Include="assets\MenuIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\OutlineBox.png">
+    <Content Include="assets\OutlineBox.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\PlayButton.png">
+    <Content Include="assets\PlayButton.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\RedBallon.png">
+    <Content Include="assets\RedBallon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\SeasonIcon_Fall.png">
+    <Content Include="assets\SeasonIcon_Fall.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\SeasonIcon_Spring.png">
+    <Content Include="assets\SeasonIcon_Spring.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\SeasonIcon_Summer.png">
+    <Content Include="assets\SeasonIcon_Summer.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\SeasonIcon_Winter.png">
+    <Content Include="assets\SeasonIcon_Winter.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\StarIcon.png">
+    <Content Include="assets\StarIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\StopButton.png">
+    <Content Include="assets\StopButton.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\TimeIcon_Day.png">
+    <Content Include="assets\TimeIcon_Day.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\TimeIcon_Night.png">
+    <Content Include="assets\TimeIcon_Night.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\WeatherIcon_DebrisFall.png">
+    <Content Include="assets\WeatherIcon_DebrisFall.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\WeatherIcon_DebrisSpring.png">
+    <Content Include="assets\WeatherIcon_DebrisSpring.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\WeatherIcon_DebrisSummer.png">
+    <Content Include="assets\WeatherIcon_DebrisSummer.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\WeatherIcon_Festival.png">
+    <Content Include="assets\WeatherIcon_Festival.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\WeatherIcon_Rainy.png">
+    <Content Include="assets\WeatherIcon_Rainy.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\WeatherIcon_Snowing.png">
+    <Content Include="assets\WeatherIcon_Snowing.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\WeatherIcon_Stormy.png">
+    <Content Include="assets\WeatherIcon_Stormy.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\WeatherIcon_Sunny.png">
+    <Content Include="assets\WeatherIcon_Sunny.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\WeatherIcon_WeddingHeart.png">
+    <Content Include="assets\WeatherIcon_WeddingHeart.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\WeatherIcon_WeddingLetter.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Music\Templates\WAV\MusicPackInformation.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Music\Templates\WAV\Songs\SongsGoHere.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Music\Templates\XACT\MusicPackInformation.json">
+    <Content Include="assets\WeatherIcon_WeddingLetter.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="manifest.json" />
-    <None Include="packages.config" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Graphics\MusicMenu\MusicDisk.png">
+    <Content Include="assets\MusicDisk.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\MusicMenu\MusicNote.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Music\Templates\WAV\readme.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Music\Templates\XACT\readme.txt">
+    <Content Include="assets\MusicNote.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\Music\Wav\" />
-    <Folder Include="Content\Music\XACT\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
+    <ProjectReference Include="..\..\StardustCore\StardustCore.csproj">
+      <Project>{0756d36a-95c8-480d-8ea6-4584c03010c6}</Project>
+      <Name>StardustCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\deploy.targets" />
-  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.0.2\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.0.2\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.0.2\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.2.0.2\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
-  </Target>
-  <Import Project="..\..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -1,16 +1,13 @@
 {
-  "Name": "FarmersMarketStall",
+  "Name": "Farmers Market Stall",
   "Author": "Alpha_Omegasis",
   "Version": "0.1.0",
   "Description": "A system to add a farmers market stall to Sundrop.",
   "UniqueID": "SunDrop.SunDropMapEvents.FarmersMarketStall",
   "EntryDll": "FarmersMarketStall.dll",
-  "MinimumApiVersion": "2.0",
-  "UpdateKeys": [ ],
+  "MinimumApiVersion": "2.10.1",
+  "UpdateKeys": [],
   "Dependencies": [
-   {
-      "UniqueID": "Omegasis.EventSystem",
-      "IsRequired": true
-   }
-]
+    { "UniqueID": "Omegasis.EventSystem" }
+  ]
 }

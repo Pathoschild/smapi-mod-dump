@@ -1,9 +1,5 @@
-﻿using StardewValley;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StardewValley;
 
 namespace FarmersMarketStall.Framework
 {
@@ -11,10 +7,7 @@ namespace FarmersMarketStall.Framework
     {
         public List<Item> stock;
 
-        public MarketStall()
-        {
-
-        }
+        public MarketStall() { }
 
         public void addItemToSell(Item item)
         {
@@ -28,12 +21,10 @@ namespace FarmersMarketStall.Framework
 
         public void sellAllItems()
         {
-            foreach(var item in stock)
-            {
-                Game1.player.money+=(int)(item.salePrice() * 1.10f); //Replace the multiplier with some sort of level.
-            }
+            foreach (var item in this.stock)
+                Game1.player.money += (int)(item.salePrice() * 1.10f); //Replace the multiplier with some sort of level.
+
             this.stock.Clear();
         }
-
     }
 }

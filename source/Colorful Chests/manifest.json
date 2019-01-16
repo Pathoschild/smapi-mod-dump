@@ -4,8 +4,8 @@
   "Version": "1.2.2",
   "Description": "More diverse color choices for chests.",
   "UniqueID": "spacechase0.ColorfulChests",
-  "PerSaveConfigs": false,
   "EntryDll": "ColorfulChests.dll",
+  "MinimumApiVersion": "2.9.0",
   "UpdateKeys": [ "Nexus:1623", "Chucklefish:5085" ],
   "spacechase0": "colorful-chests"
 }

@@ -21,9 +21,18 @@ namespace MTN2 {
         }
 
         public void ManageAll(object sender, EventArgs e) {
-            ManageForage();
-            ManageOre();
-            ManageLargeDebris();
+            ManageAll();
+        }
+
+        public void InitalizeResources() {
+
+        }
+
+        public void InitalizeResources(object sender, EventArgs e) {
+            if (customManager.Canon) return;
+            if (customManager.LoadedFarm.Foraging != null) customManager.LoadedFarm.Foraging.Initalize();
+            if (customManager.LoadedFarm.Ores != null) customManager.LoadedFarm.Ores.Initalize();
+            if (customManager.LoadedFarm.ResourceClumps != null) customManager.LoadedFarm.ResourceClumps.Initalize();
         }
 
         public void ManageForage() {

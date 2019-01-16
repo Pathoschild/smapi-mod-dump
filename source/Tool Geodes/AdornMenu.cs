@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
 using System.Collections.Generic;
+using StardewModdingAPI;
+using SObject = StardewValley.Object;
 
 namespace ToolGeodes
 {
@@ -32,7 +34,7 @@ namespace ToolGeodes
                     if (id == 0)
                         continue;
 
-                    items[i++] = new StardewValley.Object(new Vector2(0, 0), id, 1);
+                    items[i++] = new SObject(new Vector2(0, 0), id, 1);
                 }
             }
         }
@@ -70,7 +72,7 @@ namespace ToolGeodes
                 if (items[i] != null)
                 {
                     items[i].drawInMenu(b, vec, 1);
-                    if ( items[i] is StardewValley.Object obj && obj.ParentSheetIndex == StardewValley.Object.prismaticShardIndex )
+                    if ( items[i] is SObject obj && obj.ParentSheetIndex == SObject.prismaticShardIndex )
                     {
                         foundPrismatic = true;
                     }
@@ -101,14 +103,13 @@ namespace ToolGeodes
                 }
             }
 
-            if (this.hoverText != null && (this.hoveredItem == null || this.hoveredItem == null || true))
-                IClickableMenu.drawHoverText(b, this.hoverText, Game1.smallFont, 0, 0, -1, (string)null, -1, (string[])null, (Item)null, 0, -1, -1, -1, -1, 1f, (CraftingRecipe)null);
+            if (this.hoverText != null)
+                IClickableMenu.drawHoverText(b, this.hoverText, Game1.smallFont);
             if (this.hoveredItem != null)
-                IClickableMenu.drawToolTip(b, getDescription(hoveredItem), this.hoveredItem.DisplayName, this.hoveredItem, this.heldItem != null, -1, 0, -1, -1, (CraftingRecipe)null, -1);
+                IClickableMenu.drawToolTip(b, getDescription(hoveredItem), this.hoveredItem.DisplayName, this.hoveredItem, this.heldItem != null);
 
 
-            if (this.heldItem != null)
-                this.heldItem.drawInMenu(b, new Vector2((float)(Game1.getOldMouseX() + 8), (float)(Game1.getOldMouseY() + 8)), 1f);
+            this.heldItem?.drawInMenu(b, new Vector2((float)(Game1.getOldMouseX() + 8), (float)(Game1.getOldMouseY() + 8)), 1f);
             base.drawMouse(b);
 
             justClicked = false;
@@ -133,8 +134,8 @@ namespace ToolGeodes
                 }
             }
 
-            if (Game1.IsMasterGame)
-                Mod.instance.Helper.Data.WriteSaveData("spacechase0.ToolGeodes." + Game1.player.UniqueMultiplayerID, Mod.Data);
+            if (Context.IsMainPlayer)
+                Mod.instance.Helper.Data.WriteSaveData($"spacechase0.ToolGeodes.{Game1.player.UniqueMultiplayerID}", Mod.Data);
             else
             {
                 Log.debug("Sending tool geode data to host");
@@ -144,7 +145,7 @@ namespace ToolGeodes
 
         public string getDescription(Item i)
         {
-            if ( !(i is StardewValley.Object obj) || obj.bigCraftable.Value )
+            if ( !(i is SObject obj) || obj.bigCraftable.Value )
             {
                 return i.getDescription();
             }
@@ -184,7 +185,7 @@ namespace ToolGeodes
 
         public bool highlight(Item i)
         {
-            var obj = i as StardewValley.Object;
+            var obj = i as SObject;
             if (obj == null || obj.bigCraftable.Value)
                 return false;
             

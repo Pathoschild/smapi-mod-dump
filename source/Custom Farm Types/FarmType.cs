@@ -65,26 +65,28 @@ namespace CustomFarmTypes
                         return SubEntries.Last().getObject();
                     }
 
-                    return new SObject(new Vector2(), ObjectID, InitialStack) { minutesUntilReady = OreHealth };
+                    return new SObject(new Vector2(), ObjectID, InitialStack) { MinutesUntilReady = OreHealth };
                 }
 
                 public static SpawnBehaviorEntry Forageable(double chance, int obj)
                 {
-                    SpawnBehaviorEntry s = new SpawnBehaviorEntry();
-                    s.Chance = chance;
-                    s.ObjectID = obj;
-                    return s;
+                    return new SpawnBehaviorEntry
+                    {
+                        Chance = chance,
+                        ObjectID = obj
+                    };
                 }
 
                 public static SpawnBehaviorEntry Ore(double chance, int levelReq, int obj, int health)
                 {
-                    SpawnBehaviorEntry s = new SpawnBehaviorEntry();
-                    s.Chance = chance;
-                    s.MiningLevelRequirement = levelReq;
-                    s.ObjectID = obj;
-                    s.InitialStack = 10;
-                    s.OreHealth = health;
-                    return s;
+                    return new SpawnBehaviorEntry
+                    {
+                        Chance = chance,
+                        MiningLevelRequirement = levelReq,
+                        ObjectID = obj,
+                        InitialStack = 10,
+                        OreHealth = health
+                    };
                 }
 
                 public static SpawnBehaviorEntry chooseEntry(List<SpawnBehaviorEntry> entries)
@@ -101,7 +103,7 @@ namespace CustomFarmTypes
                         if (Game1.random.NextDouble() <= entry.Chance)
                             ret = entry;
                     }
-                    return ret == null ? entries.Last() : ret;
+                    return ret ?? entries.Last();
                 }
             }
 
@@ -136,38 +138,42 @@ namespace CustomFarmTypes
 
                 public static FishPoolEntry FinalPreset(string loc)
                 {
-                    FishPoolEntry fish = new FishPoolEntry();
-                    fish.Chance = 1.0;
-                    fish.OnlyTryIfNoneSelectedYet = true;
-                    fish.LocationPreset = loc;
-                    return fish;
+                    return new FishPoolEntry
+                    {
+                        Chance = 1.0,
+                        OnlyTryIfNoneSelectedYet = true,
+                        LocationPreset = loc
+                    };
                 }
 
                 public static FishPoolEntry Preset(double chance, string loc, double luck = 0)
                 {
-                    FishPoolEntry fish = new FishPoolEntry();
-                    fish.Chance = chance;
-                    fish.LuckFactor = luck;
-                    fish.LocationPreset = loc;
-                    return fish;
+                    return new FishPoolEntry
+                    {
+                        Chance = chance,
+                        LuckFactor = luck,
+                        LocationPreset = loc
+                    };
                 }
 
                 public static FishPoolEntry FinalObject(int obj)
                 {
-                    FishPoolEntry fish = new FishPoolEntry();
-                    fish.Chance = 1.0;
-                    fish.OnlyTryIfNoneSelectedYet = true;
-                    fish.ObjectID = obj;
-                    return fish;
+                    return new FishPoolEntry
+                    {
+                        Chance = 1.0,
+                        OnlyTryIfNoneSelectedYet = true,
+                        ObjectID = obj
+                    };
                 }
 
                 public static FishPoolEntry Object(double chance, int obj, double luck = 0)
                 {
-                    FishPoolEntry fish = new FishPoolEntry();
-                    fish.Chance = chance;
-                    fish.LuckFactor = luck;
-                    fish.ObjectID = obj;
-                    return fish;
+                    return new FishPoolEntry
+                    {
+                        Chance = chance,
+                        LuckFactor = luck,
+                        ObjectID = obj
+                    };
                 }
 
                 public SObject getObject()

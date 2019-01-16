@@ -5,9 +5,12 @@ mods:
    SpaceCore
 
 latest commit:
-   commit c122090e0eab8af4170ea4b088dd4362c131f995
-   Author: spacechase0 <spacechase0@users.noreply.github.com>
-   Date:   Fri Nov 23 18:43:54 2018 -0500
+   commit b49d689e333831ca3fdd819bc3b081cd963a3113
+   Merge: c122090 1cef453
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Tue Jan 15 18:38:00 2019 -0500
    
-       Clean up manifest
+       Merge pull request #7 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0 & migrate to data API
    

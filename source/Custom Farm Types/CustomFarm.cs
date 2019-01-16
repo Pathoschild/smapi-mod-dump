@@ -5,11 +5,7 @@ using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using xTile;
-using SFarmer = StardewValley.Farmer;
 using SObject = StardewValley.Object;
-using StardewModdingAPI;
-using System.Xml.Serialization;
 
 namespace CustomFarmTypes
 {
@@ -17,8 +13,7 @@ namespace CustomFarmTypes
     {
         private static void swap<T>(ref T lhs, ref T rhs)
         {
-            T temp;
-            temp = lhs;
+            T temp = lhs;
             lhs = rhs;
             rhs = temp;
         }
@@ -86,12 +81,12 @@ namespace CustomFarmTypes
                         if (entry != null)
                         {
                             var obj = entry.getObject();
-                            obj.canBeSetDown = false;
-                            if (obj.parentSheetIndex < 75 || obj.parentSheetIndex > 77)
-                                obj.isSpawnedObject = true;
-                            obj.tileLocation = new Vector2(area.Area.x + Game1.random.Next(area.Area.w), area.Area.y + Game1.random.Next(area.Area.h));
+                            obj.CanBeSetDown = false;
+                            if (obj.ParentSheetIndex < 75 || obj.ParentSheetIndex > 77)
+                                obj.IsSpawnedObject = true;
+                            obj.TileLocation = new Vector2(area.Area.x + Game1.random.Next(area.Area.w), area.Area.y + Game1.random.Next(area.Area.h));
                             obj.getBoundingBox(obj.TileLocation);
-                            dropObject(obj, new Vector2(obj.tileLocation.X * Game1.tileSize, obj.tileLocation.Y * Game1.tileSize), Game1.viewport, true, null);
+                            dropObject(obj, new Vector2(obj.TileLocation.X * Game1.tileSize, obj.TileLocation.Y * Game1.tileSize), Game1.viewport, true, null);
                             if ( !entry.SkipChanceDecrease)
                                 d *= type.Behavior.ForageableSpawnChanceMultiplier;
                             continue;
@@ -103,13 +98,13 @@ namespace CustomFarmTypes
 
             if (type.Behavior.SpecialWeedCount > 0 && !Game1.IsWinter)
             {
-                if (this.objects.Count > 0)
+                if (this.Objects.Any())
                 {
                     for (int index = 0; index < type.Behavior.SpecialWeedCount; ++index)
                     {
                         SObject @object = this.objects.ElementAt(Game1.random.Next(this.objects.Count)).Value;
                         if (@object.name.Equals("Weeds"))
-                            @object.parentSheetIndex = 792 + Utility.getSeasonNumber(Game1.currentSeason);
+                            @object.ParentSheetIndex = 792 + Utility.getSeasonNumber(Game1.currentSeason);
                     }
                 }
             }
@@ -128,7 +123,7 @@ namespace CustomFarmTypes
             return -1;
         }
 
-        public override SObject getFish(float millisecondsAfterNibble, int bait, int waterDepth, SFarmer who, double baitPotency, string locationName = null)
+        public override SObject getFish(float millisecondsAfterNibble, int bait, int waterDepth, Farmer who, double baitPotency, string locationName = null)
         {
             var fishingRod = who.CurrentTool as FishingRod;
             var bobber = Mod.instance.Helper.Reflection.GetField<Vector2>(fishingRod, "bobber").GetValue();
@@ -151,8 +146,8 @@ namespace CustomFarmTypes
             int parentSheetIndex = -1;
             Dictionary<string, string> dictionary1 = Game1.content.Load<Dictionary<string, string>>("Data\\Locations");
             bool flag1 = false;
-            string key = locationName == null ? this.name : locationName;
-            if (this.name.Equals("WitchSwamp") && !Game1.player.mailReceived.Contains("henchmanGone") && (Game1.random.NextDouble() < 0.25 && !Game1.player.hasItemInInventory(308, 1, 0)))
+            string key = locationName ?? this.Name;
+            if (this.Name.Equals("WitchSwamp") && !Game1.player.mailReceived.Contains("henchmanGone") && (Game1.random.NextDouble() < 0.25 && !Game1.player.hasItemInInventory(308, 1, 0)))
                 return new SObject(308, 1, false, -1, 0);
             if (dictionary1.ContainsKey(key))
             {
@@ -228,7 +223,7 @@ namespace CustomFarmTypes
             Random random = new Random(timeOfDay + (int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed);
 
             // Fishing
-            if (this.fishSplashPoint.Equals(Point.Zero) && random.NextDouble() < type.Behavior.FishingSplashChance)
+            if (this.fishSplashPoint.Value.Equals(Point.Zero) && random.NextDouble() < type.Behavior.FishingSplashChance)
             {
                 for (int index = 0; index < 2; ++index)
                 {
@@ -240,7 +235,7 @@ namespace CustomFarmTypes
                         {
                             if (Game1.player.currentLocation.Equals((object)this))
                                 Game1.playSound("waterSlosh");
-                            this.fishSplashPoint = point;
+                            this.fishSplashPoint.Value = point;
                             this.fishSplashAnimation = new TemporaryAnimatedSprite(51, new Vector2((float)(point.X * Game1.tileSize), (float)(point.Y * Game1.tileSize)), Color.White, 10, false, 80f, 999999, -1, -1f, -1, 0);
                             break;
                         }
@@ -267,7 +262,7 @@ namespace CustomFarmTypes
                         if (doesTileHavePropertyNoNull((int)pos.X, (int)pos.Y, "Type", "Back").Equals("Dirt") && this.isTileLocationTotallyClearAndPlaceable(pos))
                         {
                             var obj = entry.getObject();
-                            obj.tileLocation = pos;
+                            obj.TileLocation = pos;
                             obj.getBoundingBox(obj.TileLocation);
                             objects.Add(pos, obj);
                         }

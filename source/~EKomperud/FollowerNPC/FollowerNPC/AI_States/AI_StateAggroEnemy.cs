@@ -76,7 +76,7 @@ namespace FollowerNPC.AI_States
             multiplayer = typeof(Game1).GetField("multiplayer",
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
-            weapon = new MeleeWeapon(14);
+            weapon = new MeleeWeapon(GetMeleeWeapon());
             typeof(MeleeWeapon).GetField("lastUser",
                 BindingFlags.NonPublic | BindingFlags.Instance).SetValue(weapon, leader);
             weaponSwingCooldown = 0;
@@ -216,6 +216,75 @@ namespace FollowerNPC.AI_States
 
         #region Helpers
 
+        protected int GetMeleeWeapon()
+        {
+            string n = machine.owner.stateMachine.companion.Name;
+            if (n.Equals("Abigail") || n.Equals("Alex") || n.Equals("Emily") || n.Equals("Sebastian"))
+            {
+                switch (machine.owner.stateMachine.manager.farmer.CombatLevel)
+                {
+                    case 0:
+                        return GetUniqueWeapon(n);
+                    case 1:
+                        return 11; // Steel Smallsword
+                    case 2:
+                        return 44; // Cutlass
+                    case 3:
+                        return 13; // Insect Head
+                    case 4:
+                        return 6; // Iron Edge
+                    case 5:
+                        return 3; // Holy Blade
+                    case 6:
+                        return 7; // Templar's Blade
+                    case 7:
+                        return 14; // Neptune's Glaive
+                    case 8:
+                        return 50; // Steel Falchion
+                    case 9:
+                        return 8; // Obsidian Edge
+                    case 10:
+                        return 9; // Lava Katana
+                    default:
+                        return 4; // Galaxy Sword
+                }
+            }
+            return GetUniqueWeapon(n);
+        }
+
+        protected int GetUniqueWeapon(string name)
+        {
+            switch (name)
+            {
+                case "Abigail":
+                    return 40;
+                case "Alex":
+                    return 25;
+                case "Elliott":
+                    return 35;
+                case "Emily":
+                    return 0;
+                case "Haley":
+                    return 42;
+                case "Harvey":
+                    return 37;
+                case "Leah":
+                    return 39;
+                case "Maru":
+                    return 36;
+                case "Penny":
+                    return 38;
+                case "Sam":
+                    return 30;
+                case "Sebastian":
+                    return 41;
+                case "Shane":
+                    return 0;
+                default:
+                    return 0;
+            }
+        }
+
         /// <summary>
         /// Provides updates to the companion's movement.
         /// </summary>
@@ -263,6 +332,7 @@ namespace FollowerNPC.AI_States
                 }
 
                 HandleWallSliding();
+                HandleGates();
                 lastFrameVelocity = new Vector2(me.xVelocity, me.yVelocity);
                 lastFramePosition = new Vector2(me.GetBoundingBox().Center.X, me.GetBoundingBox().Center.Y);
 
@@ -279,6 +349,11 @@ namespace FollowerNPC.AI_States
                 me.Sprite.faceDirectionStandard(
                     GetFacingDirectionFromMovement(new Vector2(lastMovementDirection.X, lastMovementDirection.Y)));
                 movedLastFrame = false;
+            }
+            else
+            {
+                me.xVelocity = 0f;
+                me.yVelocity = 0f;
             }
         }
 

@@ -1,39 +1,33 @@
-﻿using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Omegasis.SaveAnywhere.Framework
 {
-
     /// <summary>A marker subclass to detect when a custom save is in progress.</summary>
-    internal class NewSaveGameMenu : SaveGameMenu {
-
+    internal class NewSaveGameMenu : SaveGameMenu
+    {
         public event EventHandler SaveComplete;
 
         private int completePause = -1;
         private int margin = 500;
-        private StringBuilder _stringBuilder = new StringBuilder();
+        private readonly StringBuilder _stringBuilder = new StringBuilder();
         private float _ellipsisDelay = 0.5f;
         private IEnumerator<int> loader;
         public bool quit;
         public bool hasDrawn;
-        private SparklingText saveText;
+        private readonly SparklingText saveText;
         private int _ellipsisCount;
-        
+
         public NewSaveGameMenu()
         {
-            this.saveText = new SparklingText(Game1.dialogueFont, Game1.content.LoadString("Strings\\StringsFromCSFiles:SaveGameMenu.cs.11378"), Color.LimeGreen, new Color((int)(Color.Black.R * (1.0 / 1000.0)),(int)( Color.Black.G * (1.0 / 1000.0)),(int)( Color.Black.B * (1.0 / 1000.0)),255), false, 0.1, 1500, 32, 500);
+            this.saveText = new SparklingText(Game1.dialogueFont, Game1.content.LoadString("Strings\\StringsFromCSFiles:SaveGameMenu.cs.11378"), Color.LimeGreen, new Color((int)(Color.Black.R * (1.0 / 1000.0)), (int)(Color.Black.G * (1.0 / 1000.0)), (int)(Color.Black.B * (1.0 / 1000.0)), 255), false, 0.1, 1500, 32, 500);
         }
-
-        public override void receiveRightClick(int x, int y, bool playSound = true)
-        {
-        }
-
 
         public new void complete()
         {
@@ -91,9 +85,7 @@ namespace Omegasis.SaveAnywhere.Framework
                     if (Game1.IsMasterGame)
                     {
                         if (Game1.saveOnNewDay)
-                        {
                             this.loader = SaveGame.Save();
-                        }
                         else
                         {
                             this.margin = -1;
@@ -105,7 +97,6 @@ namespace Omegasis.SaveAnywhere.Framework
                         NewSaveGameMenu.saveClientOptions();
                         this.complete();
                     }
-                    
                 }
                 if (this.completePause < 0)
                     return;
@@ -171,8 +162,4 @@ namespace Omegasis.SaveAnywhere.Framework
             Game1.game1.IsSaving = false;
         }
     }
-
-
 }
-
-   

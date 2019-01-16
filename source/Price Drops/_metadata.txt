@@ -5,9 +5,9 @@ mods:
    Price Drops
 
 latest commit:
-   commit 5295701b2c1744f9ab7ea713b74d1af0137c344d
+   commit d9d4dc05031a1d91aa0372d197cdce04c0d49907
    Author: skuldomg <scdehne@googlemail.com>
-   Date:   Mon Oct 29 07:08:56 2018 +0100
+   Date:   Tue Jan 15 18:41:21 2019 +0100
    
-       Letters are not sent out when config file gives a discount at 0 hearts
+       Staged first changes for SMAPI 3.0 compatibility
    

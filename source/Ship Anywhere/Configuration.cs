@@ -1,15 +1,9 @@
-﻿using Microsoft.Xna.Framework.Input;
-using StardewValley;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using StardewModdingAPI;
 
 namespace ShipAnywhere
 {
     public class Configuration
     {
-        public InputButton OpenShippingBox { get; set; } = new InputButton(Keys.P);
+        public SButton OpenShippingBox { get; set; } = SButton.P;
     }
 }

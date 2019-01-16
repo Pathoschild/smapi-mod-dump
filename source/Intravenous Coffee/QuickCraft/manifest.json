@@ -1,0 +1,10 @@
+{
+  "Name": "Quick Craft",
+  "Author": "mpcomplete",
+  "Version": "1.0",
+  "MinimumApiVersion": "2.1",
+  "Description": "Craft with ctrl+click.",
+  "UniqueID": "mpcomplete.QuickCraft",
+  "EntryDll": "QuickCraft.dll",
+  "UpdateKeys": [ "Nexus:1100" ]
+}

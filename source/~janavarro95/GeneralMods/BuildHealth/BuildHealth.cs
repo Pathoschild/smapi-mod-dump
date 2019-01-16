@@ -1,6 +1,4 @@
-﻿using System;
 using System.IO;
-using System.Linq;
 using Omegasis.BuildHealth.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -12,13 +10,10 @@ namespace Omegasis.BuildHealth
     public class BuildHealth : Mod
     {
         /*********
-        ** Properties
+        ** Fields
         *********/
         /// <summary>The relative path for the current player's data file.</summary>
-        private string DataFilePath => Path.Combine("data", $"{Constants.SaveFolderName}.json");
-
-        /// <summary>The absolute path for the current player's legacy data file.</summary>
-        private string LegacyDataFilePath => Path.Combine(this.Helper.DirectoryPath, "PlayerData", $"BuildHealth_data_{Game1.player.Name}.txt");
+        private string RelativeDataPath => Path.Combine("data", $"{Constants.SaveFolderName}.json");
 
         /// <summary>The mod settings and player data.</summary>
         private ModConfig Config;
@@ -46,10 +41,9 @@ namespace Omegasis.BuildHealth
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            GameEvents.UpdateTick += this.GameEvents_UpdateTick;
-            GameEvents.OneSecondTick += this.GameEvents_OneSecondTick;
-            TimeEvents.AfterDayStarted += this.SaveEvents_BeforeSave;
-            SaveEvents.AfterLoad += this.SaveEvents_AfterLoaded;
+            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
 
             this.Config = helper.ReadConfig<ModConfig>();
         }
@@ -58,23 +52,17 @@ namespace Omegasis.BuildHealth
         /*********
         ** Private methods
         *********/
-        /// <summary>The method invoked once per second during a game update.</summary>
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void GameEvents_OneSecondTick(object sender, EventArgs e)
-        {
-            // nerf how quickly tool xp is gained (I hope)
-            if (this.HasRecentToolExp)
-                this.HasRecentToolExp = false;
-        }
-
-        /// <summary>The method invoked when the game updates (roughly 60 times per second).</summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void GameEvents_UpdateTick(object sender, EventArgs e)
+        /// <param name="e">The event arguments.</param>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
+
+            // nerf how quickly tool xp is gained (I hope)
+            if (e.IsOneSecond && this.HasRecentToolExp)
+                this.HasRecentToolExp = false;
 
             // give XP when player finishes eating
             if (Game1.player.isEating)
@@ -103,17 +91,17 @@ namespace Omegasis.BuildHealth
                 this.LastHealth = player.health;
 
             // give XP when player stays up too late or collapses
-            if (!this.WasCollapsed && shouldFarmerPassout())
+            if (!this.WasCollapsed && this.shouldFarmerPassout())
             {
                 this.PlayerData.CurrentExp += this.Config.ExpForCollapsing;
                 this.WasCollapsed = true;
             }
         }
 
-        /// <summary>The method invoked after the player loads a save.</summary>
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void SaveEvents_AfterLoaded(object sender, EventArgs e)
+        /// <param name="e">The event arguments.</param>
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             // reset state
             this.HasRecentToolExp = false;
@@ -122,8 +110,7 @@ namespace Omegasis.BuildHealth
             this.WasCollapsed = false;
 
             // load player data
-            this.MigrateLegacyData();
-            this.PlayerData = this.Helper.ReadJsonFile<PlayerData>(this.DataFilePath) ?? new PlayerData();
+            this.PlayerData = this.Helper.Data.ReadJsonFile<PlayerData>(this.RelativeDataPath) ?? new PlayerData();
             if (this.PlayerData.OriginalMaxHealth == 0)
                 this.PlayerData.OriginalMaxHealth = Game1.player.maxHealth;
 
@@ -145,10 +132,10 @@ namespace Omegasis.BuildHealth
                 Game1.player.maxHealth = this.PlayerData.BaseHealthBonus + this.PlayerData.CurrentLevelHealthBonus + this.PlayerData.OriginalMaxHealth;
         }
 
-        /// <summary>The method invoked just before the game saves.</summary>
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void SaveEvents_BeforeSave(object sender, EventArgs e)
+        /// <param name="e">The event arguments.</param>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             // reset data
             this.LastHealth = Game1.player.maxHealth;
@@ -174,40 +161,7 @@ namespace Omegasis.BuildHealth
             }
 
             // save data
-            this.Helper.WriteJsonFile(this.DataFilePath, this.PlayerData);
-        }
-
-        /// <summary>Migrate the legacy settings for the current player.</summary>
-        private void MigrateLegacyData()
-        {
-            // skip if no legacy data or new data already exists
-            if (!File.Exists(this.LegacyDataFilePath) || File.Exists(this.DataFilePath))
-                return;
-
-            // migrate to new file
-            try
-            {
-                string[] text = File.ReadAllLines(this.LegacyDataFilePath);
-                this.Helper.WriteJsonFile(this.DataFilePath, new PlayerData
-                {
-                    CurrentLevel = Convert.ToInt32(text[3]),
-                    CurrentExp = Convert.ToDouble(text[5]),
-                    ExpToNextLevel = Convert.ToDouble(text[7]),
-                    BaseHealthBonus = Convert.ToInt32(text[9]),
-                    CurrentLevelHealthBonus = Convert.ToInt32(text[11]),
-                    ClearModEffects = Convert.ToBoolean(text[14]),
-                    OriginalMaxHealth = Convert.ToInt32(text[16])
-                });
-
-                FileInfo file = new FileInfo(this.LegacyDataFilePath);
-                file.Delete();
-                if (!file.Directory.EnumerateFiles().Any())
-                    file.Directory.Delete();
-            }
-            catch (Exception ex)
-            {
-                this.Monitor.Log($"Error migrating data from the legacy 'PlayerData' folder for the current player. Technical details:\n {ex}", LogLevel.Error);
-            }
+            this.Helper.Data.WriteJsonFile(this.RelativeDataPath, this.PlayerData);
         }
 
         public bool shouldFarmerPassout()

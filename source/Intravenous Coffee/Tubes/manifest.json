@@ -1,0 +1,10 @@
+{
+  "Name": "Pneumatic Tubes",
+  "Author": "mpcomplete",
+  "Version": "1.0",
+  "MinimumApiVersion": "2.1",
+  "Description": "Tubes.",
+  "UniqueID": "mpcomplete.Tubes",
+  "EntryDll": "Tubes.dll",
+  "UpdateKeys": [ "Nexus:1100" ]
+}

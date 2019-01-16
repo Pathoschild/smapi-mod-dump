@@ -1,17 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using StardewValley;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using StardewValley;
 
 namespace StardustCore.IlluminateFramework
 {
-
-    /// <summary>
-    /// Make sure all colors are inverted.
-    /// </summary>
+    /// <summary>Make sure all colors are inverted.</summary>
     public class LightColorsList
     {
         public static Color AliceBlue = new Color(15, 7, 0, 255);
@@ -22,9 +16,7 @@ namespace StardustCore.IlluminateFramework
 
         public static Color Aquamarine = new Color(128, 0, 43, 255);
 
-        /// <summary>
-        /// A whiteish sort of color witha  hint of blue
-        /// </summary>
+        /// <summary>A whiteish sort of color witha  hint of blue</summary>
         public static Color Azure = new Color(15, 0, 0, 255);
 
         public static Color Beige = new Color(10, 10, 35, 255);
@@ -53,9 +45,7 @@ namespace StardustCore.IlluminateFramework
 
         public static Color CornflowerBlue = new Color(155, 106, 18, 255);
 
-        /// <summary>
-        /// A yellowish color.
-        /// </summary>
+        /// <summary>A yellowish color.</summary>
         public static Color Cornsilk = new Color(0, 7, 35, 255);
 
         public static Color Crimson = new Color(35, 235, 195, 255);
@@ -112,9 +102,7 @@ namespace StardustCore.IlluminateFramework
 
         public static Color Fuchsia = new Color(0, 255, 0, 255);
 
-        /// <summary>
-        /// More of a white-ish color
-        /// </summary>
+        /// <summary>More of a white-ish color</summary>
         public static Color Gainsboro = new Color(35, 35, 35, 255);
 
         public static Color GhostWhite = new Color(7, 7, 0);
@@ -306,38 +294,28 @@ namespace StardustCore.IlluminateFramework
         public static Color YellowGreen = new Color(101, 50, 205, 255);
     }
 
-    /// <summary>
-    /// Make sure all colors are inverted.
-    /// </summary>
+    /// <summary>Make sure all colors are inverted.</summary>
     public class Colors
     {
-        /// <summary>
-        /// Used to hold all of the colors.
-        /// </summary>
+        /// <summary>Used to hold all of the colors.</summary>
         public static Dictionary<string, Color> ColorDictionary;
 
-        /// <summary>
-        /// A random variable used to generate random colors.
-        /// </summary>
+        /// <summary>A random variable used to generate random colors.</summary>
         public static Random colorRandomizer;
 
-        /// <summary>
-        /// Initialize a big list of colors.
-        /// </summary>
+        /// <summary>Initialize a big list of colors.</summary>
         public static void initializeColors()
         {
             ColorDictionary = new Dictionary<string, Color>();
-            ColorDictionary.Add("AliceBlue",new Color(15, 7, 0, 255));
+            ColorDictionary.Add("AliceBlue", new Color(15, 7, 0, 255));
 
-            ColorDictionary.Add("AntiqueWhite",new Color(5, 20, 40, 255));
+            ColorDictionary.Add("AntiqueWhite", new Color(5, 20, 40, 255));
 
-            ColorDictionary.Add("Aqua",new Color(255, 0, 0, 255));
+            ColorDictionary.Add("Aqua", new Color(255, 0, 0, 255));
 
-            ColorDictionary.Add("Aquamarine",new Color(128, 0, 43, 255));
+            ColorDictionary.Add("Aquamarine", new Color(128, 0, 43, 255));
 
-            /// <summary>
-            /// A whiteish sort of color witha  hint of blue
-            /// </summary>
+            /// <summary>A whiteish sort of color witha  hint of blue</summary>
             ColorDictionary.Add("Azure", new Color(15, 0, 0, 255));
 
             ColorDictionary.Add("Beige", new Color(10, 10, 35, 255));
@@ -366,9 +344,7 @@ namespace StardustCore.IlluminateFramework
 
             ColorDictionary.Add("CornflowerBlue", new Color(155, 106, 18, 255));
 
-            /// <summary>
-            /// A yellowish color.
-            /// </summary>
+            /// <summary>A yellowish color.</summary>
             ColorDictionary.Add("Cornsilk", new Color(0, 7, 35, 255));
 
             ColorDictionary.Add("Crimson", new Color(35, 235, 195, 255));
@@ -425,9 +401,7 @@ namespace StardustCore.IlluminateFramework
 
             ColorDictionary.Add("Fuchsia", new Color(0, 255, 0, 255));
 
-            /// <summary>
-            /// More of a white-ish color
-            /// </summary>
+            /// <summary>More of a white-ish color</summary>
             ColorDictionary.Add("Gainsboro", new Color(35, 35, 35, 255));
 
             ColorDictionary.Add("GhostWhite", new Color(7, 7, 0));
@@ -618,66 +592,41 @@ namespace StardustCore.IlluminateFramework
 
             ColorDictionary.Add("YellowGreen", new Color(101, 50, 205, 255));
 
-    }
+        }
 
-        /// <summary>
-        /// Generate a random color! Does not need to be inverted to be properly used.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Generate a random color! Does not need to be inverted to be properly used.</summary>
         public static Color randomColor()
         {
             if (colorRandomizer == null)
             {
                 colorRandomizer = new Random(Game1.player.money + Game1.tileSize + Game1.dayOfMonth + (int)Game1.stats.stepsTaken);
             }
-            int R = colorRandomizer.Next(0, 255);
-            int G = colorRandomizer.Next(0, 255);
-            int B = colorRandomizer.Next(0, 255);
-            int A = 255;
-            return new Color(R, G, B, A);
+            int r = colorRandomizer.Next(0, 255);
+            int g = colorRandomizer.Next(0, 255);
+            int b = colorRandomizer.Next(0, 255);
+            int a = 255;
+            return new Color(r, g, b, a);
         }
 
-        /// <summary>
-        /// Invert the color passed in.
-        /// </summary>
-        /// <param name="c"></param>
-        /// <param name="Alpha"></param>
-        /// <returns></returns>
-        public static Color invertColor(Color c, int Alpha = 255)
+        /// <summary>Invert the color passed in.</summary>
+        public static Color invertColor(Color c, int alpha = 255)
         {
 
-            int r;
-            int g;
-            int b;
-            int a = Alpha;
-
-            r = 255 - c.R;
-            g = 255 - c.G;
-            b = 255 - c.B;
-            // a = 255 - c.A;
-            if (a == 0)
-            {
-                return new Color(0, 0, 0, 0);
-            }
-            return new Color(r, g, b, a);
-
+            int r = 255 - c.R;
+            int g = 255 - c.G;
+            int b = 255 - c.B;
+            int a = alpha; // a = 255 - c.A;
+            return a == 0
+                ? new Color(0, 0, 0, 0)
+                : new Color(r, g, b, a);
         }
-        
-        /// <summary>
-        /// Get the color from the color list by the name passed in.
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
+
+        /// <summary>Get the color from the color list by the name passed in.</summary>
         public static Color getColorFromList(string s)
         {
-            Color color;
-            bool f = ColorDictionary.TryGetValue(s, out color);
-            if (f == false)
-            {
+            if (!ColorDictionary.TryGetValue(s, out Color color))
                 color = ColorDictionary["White"];
-            }
             return color;
         }
-
     }
 }

@@ -18,13 +18,13 @@ namespace CustomFarmTypes
     {
         internal static void fix()
         {
-            Hijack.hijack(typeof(   Game1).GetMethod("performTenMinuteClockUpdate", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance),
-                          typeof(NewGame1).GetMethod("performTenMinuteClockUpdate", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance));
-            Hijack.hijack(typeof(   FarmAnimal).GetMethod("updateWhenCurrentLocation", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance),
-                          typeof(NewFarmAnimal).GetMethod("updateWhenCurrentLocation", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance));
+            Hijack.hijack(typeof(   Game1).GetMethod(nameof(Game1.performTenMinuteClockUpdate), BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance),
+                          typeof(NewGame1).GetMethod(nameof(NewGame1.performTenMinuteClockUpdate), BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance));
+            Hijack.hijack(typeof(   FarmAnimal).GetMethod(nameof(FarmAnimal.updateWhenCurrentLocation), BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance),
+                          typeof(NewFarmAnimal).GetMethod(nameof(NewFarmAnimal.updateWhenCurrentLocation), BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance));
             
-            Hijack.hijack(typeof(   BlueprintsMenu).GetMethod("receiveLeftClick", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance),
-                          typeof(NewBlueprintsMenu).GetMethod("receiveLeftClick", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance));
+            Hijack.hijack(typeof(   BlueprintsMenu).GetMethod(nameof(BlueprintsMenu.receiveLeftClick), BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance),
+                          typeof(NewBlueprintsMenu).GetMethod(nameof(NewBlueprintsMenu.receiveLeftClick), BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance));
             // This is causing problems, and doesn't appear to be used?
             /*Hijack.hijack(typeof(   CataloguePage).GetMethod("receiveLeftClick", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance),
                           typeof(NewCataloguePage).GetMethod("receiveLeftClick", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance));

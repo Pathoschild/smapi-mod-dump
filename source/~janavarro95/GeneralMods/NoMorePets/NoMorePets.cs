@@ -1,4 +1,3 @@
-﻿using System;
 using System.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -17,18 +16,18 @@ namespace Omegasis.NoMorePets
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            SaveEvents.AfterLoad += this.SaveEvents_AfterLoad;
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
         }
 
 
         /*********
         ** Private methods
         *********/
-        /// <summary>The method invoked after the player loads a save.</summary>
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        public void SaveEvents_AfterLoad(object sender, EventArgs e)
-        {   
+        /// <param name="e">The event arguments.</param>
+        public void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+        {
             foreach (Pet pet in Game1.player.currentLocation.getCharacters().OfType<Pet>().ToArray())
                 pet.currentLocation.characters.Remove(pet);
         }

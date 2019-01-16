@@ -1,387 +1,203 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StardewSymphonyRemastered;
-using StardewValley;
-using System.IO;
 using System.Timers;
+using StardewValley;
 
 namespace StardewSymphonyRemastered.Framework
 {
-    /// <summary>
-    /// Manages all music for the mod.
-    /// </summary>
+    /// <summary>Manages all music for the mod.</summary>
     public class MusicManager
     {
-        /// <summary>
-        /// A dictionary containing all of the music packs loaded in.
-        /// </summary>
-        public Dictionary<string,MusicPack> musicPacks;
+        /*********
+        ** Fields
+        *********/
+        /// <summary>The RNG used to select music packs and songs.</summary>
+        private readonly Random Random = new Random();
 
-        public MusicPack currentMusicPack;
+        /// <summary>The delay timer between songs.</summary>
+        private readonly Timer Timer = new Timer();
 
-        Random packSelector;
-        Random songSelector;
+        private bool lastSongWasLocationSpecific;
 
-        Timer timer;
 
-        bool lastSongWasLocationSpecific;
-        /// <summary>
-        /// Constructor.
-        /// </summary>
+        /*********
+        ** Accessors
+        *********/
+        /// <summary>The loaded music packs.</summary>
+        public IDictionary<string, MusicPack> MusicPacks { get; } = new Dictionary<string, MusicPack>();
+
+        /// <summary>The current music pack playing music, if any.</summary>
+        public MusicPack CurrentMusicPack { get; private set; }
+
+
+        /*********
+        ** Public methods
+        *********/
+        /// <summary>Construct an instance.</summary>
         public MusicManager()
         {
-            this.musicPacks = new Dictionary<string, MusicPack>();
-            this.currentMusicPack = null;
-            packSelector = new Random(Game1.random.Next(1,1000000));
-            songSelector = new Random(Game1.player.deepestMineLevel + Game1.player.facingDirection + packSelector.Next(0,10000));
-            lastSongWasLocationSpecific = false;
+            this.Timer.Elapsed += this.OnTimerFinished;
         }
 
-        /// <summary>
-        /// Swaps between referenced music packs and stops the last playing song.
-        /// </summary>
-        /// <param name="nameOfNewMusicPack"></param>
-        public void swapMusicPacks(string nameOfNewMusicPack)
+        /// <summary>Swap between referenced music packs and stop the current song.</summary>
+        /// <param name="nameOfNewMusicPack">The name of the new music pack to select.</param>
+        public void SwapMusicPacks(string nameOfNewMusicPack)
         {
-            if (isMusicPackValid(nameOfNewMusicPack) == true)
-            {
-                if (this.currentMusicPack.isNull()==false)
-                {
-                    this.currentMusicPack.stopSong();
-                }
-                this.currentMusicPack = getMusicPack(nameOfNewMusicPack);
-            }
-            else
+            if (!this.MusicPacks.TryGetValue(nameOfNewMusicPack, out MusicPack musicPack))
             {
                 if (StardewSymphony.Config.EnableDebugLog)
-                    StardewSymphony.ModMonitor.Log("ERROR: Music Pack " + nameOfNewMusicPack + " isn't valid for some reason.", StardewModdingAPI.LogLevel.Alert);
-            }
-        }
-
-        /// <summary>
-        /// Updtes the timer every second to check if a song is playing or not.
-        /// </summary>
-        public void updateTimer()
-        {
-            
-            if (this.currentMusicPack == null) return;
-            if (StardewSymphonyRemastered.StardewSymphony.Config.disableStardewMusic==true)
-            {
-                if (this.currentMusicPack.isPlaying())
-                {
-                    return;
-                }
-            }
-            else
-            {
-                try
-                {
-                    string songName = Game1.currentSong.Name.ToLower();
-
-                    if (this.currentMusicPack.isPlaying() || (Game1.currentSong.IsPlaying && !songName.Contains("ambient")) )
-                    {
-                        return;
-                    }
-                }
-                catch (Exception err)
-                {
-                    if (this.currentMusicPack.isPlaying())
-                    {
-                        return;
-                    }
-                }
-            }
-                if (timer == null)
-                {
-                    Random r = new Random(Game1.random.Next());
-                    int val = r.Next(StardewSymphony.Config.MinimumDelayBetweenSongsInMilliseconds, StardewSymphony.Config.MaximumDelayBetweenSongsInMilliseconds + 1);
-                    //StardewSymphony.ModMonitor.Log("Music Pack is not playing! Generate a new timer! Delay: "+val.ToString());
-                    timer = new Timer(val);
-                    timer.Elapsed += onTimerFinished;
-                    timer.Enabled = true;
-                }
-                else
-                {
-                    timer.Enabled = true;
-                    timer.Elapsed += onTimerFinished;
-                }
-            
-
-        }
-
-        /// <summary>
-        /// Selects a new song when the timer delay runs out.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="e"></param>
-        public void onTimerFinished(System.Object source, ElapsedEventArgs e)
-        {
-            if (this.currentMusicPack.isPlaying())
-            {
-                timer.Enabled = false;
-                timer = null;
+                    StardewSymphony.ModMonitor.Log($"ERROR: Music Pack '{nameOfNewMusicPack}' isn't valid for some reason.", StardewModdingAPI.LogLevel.Alert);
                 return;
             }
-            //StardewSymphony.ModMonitor.Log("AHH THE TIMER FINISHED!");
-            timer.Enabled = false;
-            timer.Elapsed -= onTimerFinished;
 
-            
-
-            selectMusic(SongSpecifics.getCurrentConditionalString());
-            timer = null;
+            this.CurrentMusicPack?.StopSong();
+            this.CurrentMusicPack = musicPack;
         }
 
-        /// <summary>
-        /// Plays the song from the currently loaded music pack.
-        /// </summary>
-        /// <param name="songName"></param>
-        public void playSongFromCurrentPack(string songName)
+        /// <summary>Updates the timer every second to check whether a song is playing.</summary>
+        public void UpdateTimer()
         {
-            if (this.currentMusicPack.isNull() == false)
+            if (this.CurrentMusicPack == null)
+                return;
+
+            if (StardewSymphony.Config.DisableStardewMusic)
             {
-                this.currentMusicPack.playSong(songName);
+                if (this.CurrentMusicPack.IsPlaying())
+                    return;
+            }
+            else if (this.CurrentMusicPack.IsPlaying() || (Game1.currentSong?.IsPlaying == true && !Game1.currentSong.Name.ToLower().Contains("ambient")))
+                return;
+
+            if (!this.Timer.Enabled)
+            {
+                this.Timer.Interval = this.Random.Next(StardewSymphony.Config.MinimumDelayBetweenSongsInMilliseconds, StardewSymphony.Config.MaximumDelayBetweenSongsInMilliseconds + 1);
+                this.Timer.Enabled = true;
             }
         }
 
-        /// <summary>
-        /// Resumes the paused song from the current music pack.
-        /// </summary>
-        public void pauseSongFromCurrentPack() {
-            if (this.currentMusicPack.isNull() == false)
-            {
-                this.currentMusicPack.pauseSong();
-            }
+        /// <summary>Choose a new song when a delay runs out.</summary>
+        private void OnTimerFinished(object source, ElapsedEventArgs e)
+        {
+            this.Timer.Enabled = false;
+            if (!this.CurrentMusicPack.IsPlaying())
+                this.selectMusic(SongSpecifics.getCurrentConditionalString());
         }
 
-        /// <summary>
-        /// Stops the song from the current music pack.
-        /// </summary>
+        /// <summary>Play a song from the current music pack.</summary>
+        /// <param name="songName">The song to play.</param>
+        public void PlaySongFromCurrentPack(string songName)
+        {
+            this.CurrentMusicPack?.PlaySong(songName);
+        }
+
+        /// <summary>Stop the current song being played.</summary>
         public void stopSongFromCurrentMusicPack()
         {
-            if (this.currentMusicPack.isNull() == false)
-            {
-                this.currentMusicPack.stopSong();
-            }
+            this.CurrentMusicPack?.StopSong();
         }
 
-        /// <summary>
-        /// Resumes the song from the current music pack.
-        /// </summary>
-        public void resumeSongFromCurrentMusicPack()
+        /// <summary>Get all music packs which contain songs that can be played right now.</summary>
+        public Dictionary<MusicPack, List<string>> GetApplicableMusicPacks(string songListKey)
         {
-            if (this.currentMusicPack.isNull() == false)
-            {
-                this.currentMusicPack.resumeSong();
-            }
-        }
-
-        /// <summary>
-        /// Returns the name of the currently playing song.
-        /// </summary>
-        /// <returns></returns>
-        public string getNameOfCurrentlyPlayingSong()
-        {
-            if (this.currentMusicPack.isNull() == false)
-            {
-                return this.currentMusicPack.getNameOfCurrentSong();
-            }
-            else
-            {
-                return "";
-            }
-        }
-
-        /// <summary>
-        /// Get the information associated with the current music pack.
-        /// </summary>
-        /// <returns></returns>
-        public MusicPackMetaData getMusicPackInformation()
-        {
-            if (this.currentMusicPack.isNull() == false)
-            {
-                return this.currentMusicPack.musicPackInformation;
-            }
-            else return null;
-        }
-
-        /// <summary>
-        /// Checks to see if the music pack has been loaded into the Music Manager.
-        /// </summary>
-        /// <param name="nameOfMusicPack"></param>
-        /// <returns></returns>
-        public bool isMusicPackValid(string nameOfMusicPack)
-        {
-                return musicPacks.ContainsKey(nameOfMusicPack);
-        }
-
-        /// <summary>
-        /// Gets the music pack from the
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public MusicPack getMusicPack(string name)
-        {
-            if (isMusicPackValid(name) == false)
-            {
-                if (StardewSymphony.Config.EnableDebugLog)
-                    StardewSymphony.ModMonitor.Log("Error, the music pack: " + name + " is not found. Please make sure it is loaded in and try again.");
-                return null;
-            }
-            else
-            {
-
-                foreach (var pair in this.musicPacks)
-                {
-                    if (name == pair.Key) return pair.Value;
-                }
-                return null; //Needed I suppose to ensure this function compiles.
-            }
-        }
-
-        /// <summary>
-        /// Iterates across all music packs and determines which music packs contain songs that can be played right now.
-        /// </summary>
-        /// <param name="songListKey"></param>
-        /// <returns></returns>
-        public Dictionary<MusicPack,List<Song>> getListOfApplicableMusicPacks(string songListKey)
-        {
-            Dictionary<MusicPack, List<Song>> listOfValidDictionaries = new Dictionary<MusicPack, List<Song>>();
-            foreach(var v in this.musicPacks)
+            Dictionary<MusicPack, List<string>> listOfValidDictionaries = new Dictionary<MusicPack, List<string>>();
+            foreach (var v in this.MusicPacks)
             {
                 try
                 {
-                    var songList = v.Value.songInformation.getSongList(songListKey).Value;
+                    var songList = v.Value.SongInformation.getSongList(songListKey).Value;
                     if (songList.Count > 0)
-                    {
                         listOfValidDictionaries.Add(v.Value, songList);
-                    }
                 }
-                catch(Exception err)
-                {
-                    err.ToString();
-                }
+                catch { }
             }
             return listOfValidDictionaries;
         }
 
-        public Dictionary<MusicPack, List<Song>> getListOfApplicableMusicPacksForFestivals()
+        public Dictionary<MusicPack, List<string>> GetListOfApplicableMusicPacksForFestivals()
         {
-            Dictionary<MusicPack, List<Song>> listOfValidDictionaries = new Dictionary<MusicPack, List<Song>>();
-            foreach (var v in this.musicPacks)
+            Dictionary<MusicPack, List<string>> listOfValidDictionaries = new Dictionary<MusicPack, List<string>>();
+            foreach (var v in this.MusicPacks)
             {
                 try
                 {
-                    var songList = v.Value.songInformation.getFestivalMusic();
+                    var songList = v.Value.SongInformation.getFestivalMusic();
                     if (songList.Count > 0)
-                    {
                         listOfValidDictionaries.Add(v.Value, songList);
-                    }
                 }
-                catch (Exception err)
-                {
-                    err.ToString();
-                }
+                catch { }
             }
             return listOfValidDictionaries;
         }
 
-
-        public Dictionary<MusicPack, List<Song>> getListOfApplicableMusicPacksForEvents()
+        public Dictionary<MusicPack, List<string>> GetListOfApplicableMusicPacksForEvents()
         {
-            Dictionary<MusicPack, List<Song>> listOfValidDictionaries = new Dictionary<MusicPack, List<Song>>();
-            foreach (var v in this.musicPacks)
+            Dictionary<MusicPack, List<string>> listOfValidDictionaries = new Dictionary<MusicPack, List<string>>();
+            foreach (var v in this.MusicPacks)
             {
                 try
                 {
-                    var songList = v.Value.songInformation.getEventMusic();
+                    var songList = v.Value.SongInformation.getEventMusic();
                     if (songList.Count > 0)
-                    {
                         listOfValidDictionaries.Add(v.Value, songList);
-                    }
                 }
-                catch (Exception err)
-                {
-                    err.ToString();
-                }
+                catch { }
             }
             return listOfValidDictionaries;
         }
 
-
-
-        public void selectMenuMusic(string songListKey)
+        public void SelectMenuMusic(string songListKey)
         {
-            //Nullify the timer when new music is selected.
-            if (this.timer != null)
-            {
-                this.timer = null;
-            }
+            // stop timer when new music is selected
+            this.Timer.Enabled = false;
 
-            var listOfValidMusicPacks = getListOfApplicableMusicPacks(songListKey);
+            // get applicable music packs
+            var listOfValidMusicPacks = this.GetApplicableMusicPacks(songListKey);
+            if (listOfValidMusicPacks.Count == 0)
+                return;
 
-            if (listOfValidMusicPacks.Count == 0) return;
-
-
-            int randInt = packSelector.Next(0, listOfValidMusicPacks.Count - 1);
-
-            var musicPackPair = listOfValidMusicPacks.ElementAt(randInt);
-
-
-            //used to swap the music packs and stop the last playing song.
-            this.swapMusicPacks(musicPackPair.Key.musicPackInformation.name);
-
-            int randInt2 = songSelector.Next(0, musicPackPair.Value.Count);
-
-
-            var songName = musicPackPair.Value.ElementAt(randInt2);
-
-            this.currentMusicPack.playSong(songName.name);
+            // swap to new music pack
+            var pair = listOfValidMusicPacks.ElementAt(this.Random.Next(0, listOfValidMusicPacks.Count - 1));
+            this.SwapMusicPacks(pair.Key.Name);
+            string songName = pair.Value.ElementAt(this.Random.Next(0, pair.Value.Count));
+            this.CurrentMusicPack.PlaySong(songName);
 
             StardewSymphony.menuChangedMusic = true;
 
         }
-        /// <summary>
-        /// Selects the actual song to be played right now based off of the selector key. The selector key should be called when the player's location changes.
-        /// </summary>
-        /// <param name="songListKey"></param>
+        /// <summary>Select the actual song to be played right now based on the selector key. The selector key should be called when the player's location changes.</summary>
         public void selectMusic(string songListKey)
         {
-            //Nullify the timer when new music is selected.
-            if (this.timer != null)
-            {
-                this.timer = null;
-            }
-           
-            var listOfValidMusicPacks = getListOfApplicableMusicPacks(songListKey);
-          
-            string subKey = songListKey;
-            //Try to get more specific.
+            // stop timer timer when music is selected
+            this.Timer.Enabled = false;
 
-           
+            // get applicable music packs
+            var listOfValidMusicPacks = this.GetApplicableMusicPacks(songListKey);
+            string subKey = songListKey;
 
             //This chunk is to determine song specifics for location.
             while (listOfValidMusicPacks.Count == 0)
             {
-                if (subKey.Length == 0) break;
-                string[] subList=  subKey.Split(SongSpecifics.seperator);
-                if (subList.Length == 0) break; //Because things would go bad otherwise.
+                if (subKey.Length == 0)
+                    break;
+
+                string[] subList = subKey.Split(SongSpecifics.seperator);
+                if (subList.Length == 0)
+                    break; //Because things would go bad otherwise.
+
                 subKey = "";
-                for(int i = 0; i < subList.Length-1; i++)
+                for (int i = 0; i < subList.Length - 1; i++)
                 {
                     subKey += subList[i];
                     if (i != subList.Length - 2)
-                    {
                         subKey += SongSpecifics.seperator;
-                    }
                 }
-                if (subKey == "") break;
+                if (subKey == "")
+                    break;
+
                 if (StardewSymphony.Config.EnableDebugLog)
-                    StardewSymphony.ModMonitor.Log(subKey,StardewModdingAPI.LogLevel.Alert);
-                listOfValidMusicPacks = getListOfApplicableMusicPacks(subKey);
+                    StardewSymphony.ModMonitor.Log(subKey, StardewModdingAPI.LogLevel.Alert);
+                listOfValidMusicPacks = this.GetApplicableMusicPacks(subKey);
                 if (listOfValidMusicPacks.Count == 0)
                 {
                     //No valid songs to play at this time.
@@ -401,16 +217,11 @@ namespace StardewSymphonyRemastered.Framework
                 {
                     subKey += season[i];
                     if (i != season.Length - 1)
-                    {
                         subKey += SongSpecifics.seperator;
-                    }
                 }
                 if (string.IsNullOrEmpty(subKey))
                 {
-
-                    bool f = checkGenericMusic(songListKey);
-
-                    if (f == false)
+                    if (!this.checkGenericMusic(songListKey))
                     {
                         if (StardewSymphony.Config.EnableDebugLog)
                             StardewSymphony.ModMonitor.Log("Error: There are no songs to play across any music pack for the song key: " + songListKey + ".2 Are you sure you did this properly?");
@@ -420,7 +231,7 @@ namespace StardewSymphonyRemastered.Framework
                 }
                 if (StardewSymphony.Config.EnableDebugLog)
                     StardewSymphony.ModMonitor.Log(subKey, StardewModdingAPI.LogLevel.Alert);
-                listOfValidMusicPacks = getListOfApplicableMusicPacks(subKey);
+                listOfValidMusicPacks = this.GetApplicableMusicPacks(subKey);
                 if (listOfValidMusicPacks.Count == 0)
                 {
                     //No valid songs to play at this time.
@@ -442,14 +253,14 @@ namespace StardewSymphonyRemastered.Framework
                     {
                         subKey += subList[i];
                         if (i != subList.Length - 2)
-                        {
                             subKey += SongSpecifics.seperator;
-                        }
                     }
-                    if (subKey == "") break;
-                    if(StardewSymphony.Config.EnableDebugLog)
+                    if (subKey == "")
+                        break;
+
+                    if (StardewSymphony.Config.EnableDebugLog)
                         StardewSymphony.ModMonitor.Log(subKey, StardewModdingAPI.LogLevel.Alert);
-                    listOfValidMusicPacks = getListOfApplicableMusicPacks(subKey);
+                    listOfValidMusicPacks = this.GetApplicableMusicPacks(subKey);
                     if (listOfValidMusicPacks.Count == 0)
                     {
                         //No valid songs to play at this time.
@@ -463,10 +274,7 @@ namespace StardewSymphonyRemastered.Framework
             //If the list of valid packs are 0, check if I'm currently at an event or festival or get some location specific music and try to play a generalized song from there.
             if (listOfValidMusicPacks.Count == 0)
             {
-
-                bool f= checkGenericMusic(songListKey);
-
-                if (f == false)
+                if (!this.checkGenericMusic(songListKey))
                 {
                     //No valid songs to play at this time.
                     if (StardewSymphony.Config.EnableDebugLog)
@@ -476,13 +284,13 @@ namespace StardewSymphonyRemastered.Framework
                 }
             }
 
-
             string[] sizeList = subKey.Split(SongSpecifics.seperator);
 
-            if (this.currentMusicPack != null) {
+            if (this.CurrentMusicPack != null)
+            {
                 //If I am trying to play a generic song and a generic song is playing don't change the music.
                 //If I am trying to play a generic song and a non-generic song is playing, then play my generic song since I don't want to play the specific music anymore.
-                if (sizeList.Length < 3 && (this.currentMusicPack.isPlaying() && this.lastSongWasLocationSpecific==false))
+                if (sizeList.Length < 3 && (this.CurrentMusicPack.IsPlaying() && !this.lastSongWasLocationSpecific))
                 {
                     if (StardewSymphony.Config.EnableDebugLog)
                         StardewSymphony.ModMonitor.Log("Non specific music change detected. Not going to change the music this time");
@@ -490,48 +298,39 @@ namespace StardewSymphonyRemastered.Framework
                 }
             }
 
-            if (sizeList.Length < 3) this.lastSongWasLocationSpecific = false;
-            else this.lastSongWasLocationSpecific = true;
+            this.lastSongWasLocationSpecific = sizeList.Length >= 3;
 
             //If there is a valid key for the place/time/event/festival I am at, play it!
 
-            int randInt = packSelector.Next(0, listOfValidMusicPacks.Count-1);
+            int randInt = this.Random.Next(0, listOfValidMusicPacks.Count - 1);
 
             var musicPackPair = listOfValidMusicPacks.ElementAt(randInt);
 
 
             //used to swap the music packs and stop the last playing song.
-            this.swapMusicPacks(musicPackPair.Key.musicPackInformation.name);
-
-            int randInt2 = songSelector.Next(0, musicPackPair.Value.Count);
-
-
-            var songName = musicPackPair.Value.ElementAt(randInt2);
-
-            this.currentMusicPack.playSong(songName.name);
+            this.SwapMusicPacks(musicPackPair.Key.Name);
+            string songName = musicPackPair.Value.ElementAt(this.Random.Next(0, musicPackPair.Value.Count));
+            this.CurrentMusicPack.PlaySong(songName);
         }
 
 
-        public Dictionary<MusicPack,List<Song>> getLocationSpecificMusic()
+        public Dictionary<MusicPack, List<string>> getLocationSpecificMusic()
         {
-            Dictionary<MusicPack, List<Song>> listOfValidDictionaries = new Dictionary<MusicPack, List<Song>>();
+            Dictionary<MusicPack, List<string>> listOfValidDictionaries = new Dictionary<MusicPack, List<string>>();
             //StardewSymphony.ModMonitor.Log(SongSpecifics.getCurrentConditionalString(true));
 
-            foreach (var v in this.musicPacks)
+            foreach (var v in this.MusicPacks)
             {
                 try
                 {
-                    var songList = v.Value.songInformation.getSongList(SongSpecifics.getCurrentConditionalString(true)).Value;
+                    var songList = v.Value.SongInformation.getSongList(SongSpecifics.getCurrentConditionalString(true)).Value;
                     if (songList == null) return null;
                     if (songList.Count > 0)
                     {
                         listOfValidDictionaries.Add(v.Value, songList);
                     }
                 }
-                catch (Exception err)
-                {
-                    err.ToString();
-                }
+                catch { }
             }
             return listOfValidDictionaries;
         }
@@ -543,21 +342,17 @@ namespace StardewSymphonyRemastered.Framework
                 if (Game1.CurrentEvent.isFestival)
                 {
                     //Try to play a generalized festival song.
-                    var listOfFestivalPacks = this.getListOfApplicableMusicPacksForFestivals();
+                    var listOfFestivalPacks = this.GetListOfApplicableMusicPacksForFestivals();
                     if (listOfFestivalPacks.Count > 0)
                     {
-                        int randFestivalPack = packSelector.Next(0, listOfFestivalPacks.Count - 1);
+                        int randFestivalPack = this.Random.Next(0, listOfFestivalPacks.Count - 1);
 
                         var festivalMusicPackPair = listOfFestivalPacks.ElementAt(randFestivalPack);
 
                         //used to swap the music packs and stop the last playing song.
-                        this.swapMusicPacks(festivalMusicPackPair.Key.musicPackInformation.name);
-
-                        int randFestivalPack2 = songSelector.Next(0, festivalMusicPackPair.Value.Count);
-
-                        var festivalSongName = festivalMusicPackPair.Value.ElementAt(randFestivalPack2);
-
-                        this.currentMusicPack.playSong(festivalSongName.name);
+                        this.SwapMusicPacks(festivalMusicPackPair.Key.Name);
+                        string festivalSongName = festivalMusicPackPair.Value.ElementAt(this.Random.Next(0, festivalMusicPackPair.Value.Count));
+                        this.CurrentMusicPack.PlaySong(festivalSongName);
                         StardewSymphony.menuChangedMusic = false;
                         return true;
                     }
@@ -571,25 +366,21 @@ namespace StardewSymphonyRemastered.Framework
                         return false;
                     }
                 }
-                
+
                 else
                 {
                     //Try to play a generalized event song.
-                    var listOfEventPacks = this.getListOfApplicableMusicPacksForEvents();
+                    var listOfEventPacks = this.GetListOfApplicableMusicPacksForEvents();
                     if (listOfEventPacks.Count > 0)
                     {
-                        int randEventPack = packSelector.Next(0, listOfEventPacks.Count - 1);
+                        int randEventPack = this.Random.Next(0, listOfEventPacks.Count - 1);
 
                         var eventMusicPackPair = listOfEventPacks.ElementAt(randEventPack);
 
                         //used to swap the music packs and stop the last playing song.
-                        this.swapMusicPacks(eventMusicPackPair.Key.musicPackInformation.name);
-
-                        int randEventPack2 = songSelector.Next(0, eventMusicPackPair.Value.Count);
-
-                        var eventSongName = eventMusicPackPair.Value.ElementAt(randEventPack2);
-
-                        this.currentMusicPack.playSong(eventSongName.name);
+                        this.SwapMusicPacks(eventMusicPackPair.Key.Name);
+                        string eventSongName = eventMusicPackPair.Value.ElementAt(this.Random.Next(0, eventMusicPackPair.Value.Count));
+                        this.CurrentMusicPack.PlaySong(eventSongName);
                         StardewSymphony.menuChangedMusic = false;
                         return true;
                     }
@@ -611,18 +402,14 @@ namespace StardewSymphonyRemastered.Framework
                 var listOfLocationPacks = this.getLocationSpecificMusic();
                 if (listOfLocationPacks.Count > 0)
                 {
-                    int randFestivalPack = packSelector.Next(0, listOfLocationPacks.Count - 1);
+                    int randFestivalPack = this.Random.Next(0, listOfLocationPacks.Count - 1);
 
                     var locationMusicPackPair = listOfLocationPacks.ElementAt(randFestivalPack);
 
                     //used to swap the music packs and stop the last playing song.
-                    this.swapMusicPacks(locationMusicPackPair.Key.musicPackInformation.name);
-
-                    int randLocPack2 = songSelector.Next(0, locationMusicPackPair.Value.Count);
-
-                    var songName = locationMusicPackPair.Value.ElementAt(randLocPack2);
-
-                    this.currentMusicPack.playSong(songName.name);
+                    this.SwapMusicPacks(locationMusicPackPair.Key.Name);
+                    string songName = locationMusicPackPair.Value.ElementAt(this.Random.Next(0, locationMusicPackPair.Value.Count));
+                    this.CurrentMusicPack.PlaySong(songName);
                     StardewSymphony.menuChangedMusic = false;
                     return true;
                 }
@@ -635,101 +422,62 @@ namespace StardewSymphonyRemastered.Framework
                     StardewSymphony.menuChangedMusic = false;
                     return false;
                 }
-
             }
-            return false;
         }
 
-        /// <summary>
-        /// Adds a valid xwb music pack to the list of music packs available.
-        /// </summary>
-        /// <param name="musicPack"></param>
+        /// <summary>Adds a valid xwb music pack to the list of music packs available.</summary>
+        /// <param name="musicPack">The music pack to add.</param>
         /// <param name="displayLogInformation">Whether or not to display the process to the console. Will include information from the pack's metadata. Default:False</param>
-        /// <param name="xwbMusicPack">If displayLogInformation is also true this will display the name of all of the songs in the music pack when it is added in.</param>
-        public void addMusicPack(MusicPack musicPack,bool displayLogInformation=false,bool displaySongs=false)
+        /// <param name="displaySongs">If displayLogInformation is also true this will display the name of all of the songs in the music pack when it is added in.</param>
+        public void addMusicPack(MusicPack musicPack, bool displayLogInformation = false, bool displaySongs = false)
         {
-            if (displayLogInformation == true)
+            if (displayLogInformation)
             {
                 if (StardewSymphony.Config.EnableDebugLog)
                 {
-                    StardewSymphony.ModMonitor.Log("Adding a new music pack!");
-
-
-                    //StardewSymphony.ModMonitor.Log("    Location:" + musicPack.shortenedDirectory);
-                    StardewSymphony.ModMonitor.Log("    Name:" + musicPack.musicPackInformation.name);
-                    StardewSymphony.ModMonitor.Log("    Author:" + musicPack.musicPackInformation.author);
-                    StardewSymphony.ModMonitor.Log("    Description:" + musicPack.musicPackInformation.description);
-                    StardewSymphony.ModMonitor.Log("    Version Info:" + musicPack.musicPackInformation.versionInfo);
-                    StardewSymphony.ModMonitor.Log("    Song List:");
+                    StardewSymphony.ModMonitor.Log("Adding music pack:");
+                    StardewSymphony.ModMonitor.Log($"   Name: {musicPack.Name}");
+                    StardewSymphony.ModMonitor.Log($"   Author: {musicPack.Manifest.Author}");
+                    StardewSymphony.ModMonitor.Log($"   Description: {musicPack.Manifest.Description}");
+                    StardewSymphony.ModMonitor.Log($"   Version Info: {musicPack.Manifest.Version}");
                 }
-
-                if (displaySongs == true)
+                if (displaySongs && StardewSymphony.Config.EnableDebugLog)
                 {
-                    foreach(var song in musicPack.songInformation.listOfSongsWithoutTriggers)
-                    {
-                        if (StardewSymphony.Config.EnableDebugLog)
-                            StardewSymphony.ModMonitor.Log("        " + song.name);
-                    }
+                    StardewSymphony.ModMonitor.Log("    Song List:");
+                    foreach (string song in musicPack.SongInformation.listOfSongsWithoutTriggers)
+                        StardewSymphony.ModMonitor.Log($"        {song}");
                 }
             }
 
-            this.musicPacks.Add(musicPack.musicPackInformation.name,musicPack);
+            this.MusicPacks.Add(musicPack.Name, musicPack);
         }
 
-        /// <summary>
-        /// Initializes all of the potential key triggers for playing songs.
-        /// </summary>
+        /// <summary>Initializes all of the potential key triggers for playing songs.</summary>
         public void initializeSeasonalMusic()
         {
-            foreach(var pack in this.musicPacks)
-            {
-                pack.Value.songInformation.initializeSeasonalMusic();
-            }
+            foreach (var pack in this.MusicPacks)
+                pack.Value.SongInformation.initializeSeasonalMusic();
         }
 
-        /// <summary>
-        /// Initializes all of the potential key triggers for playing songs.
-        /// </summary>
+        /// <summary>Initializes all of the potential key triggers for playing songs.</summary>
         public void initializeMenuMusic()
         {
-            foreach (var pack in this.musicPacks)
-            {
-                pack.Value.songInformation.initializeMenuMusic();
-            }
+            foreach (var pack in this.MusicPacks)
+                pack.Value.SongInformation.initializeMenuMusic();
         }
 
-        /// <summary>
-        /// Initializes all of the potential key triggers for playing songs.
-        /// </summary>
+        /// <summary>Initializes all of the potential key triggers for playing songs.</summary>
         public void initializeFestivalMusic()
         {
-            foreach (var pack in this.musicPacks)
-            {
-                pack.Value.songInformation.initializeFestivalMusic();
-            }
+            foreach (var pack in this.MusicPacks)
+                pack.Value.SongInformation.initializeFestivalMusic();
         }
 
-        /// <summary>
-        /// Initializes all of the potential key triggers for playing songs.
-        /// </summary>
+        /// <summary>Initializes all of the potential key triggers for playing songs.</summary>
         public void initializeEventMusic()
         {
-            foreach (var pack in this.musicPacks)
-            {
-                pack.Value.songInformation.initializeEventMusic();
-            }
-        }
-
-        /// <summary>
-        /// Play a random song from a given music pack.
-        /// </summary>
-        /// <param name="musicPackName"></param>
-        public void playRandomSongFromPack(string musicPackName)
-        {
-            this.musicPacks.TryGetValue(musicPackName, out MusicPack musicPack);
-            if (this.currentMusicPack != null) this.currentMusicPack.stopSong();
-            musicPack.playRandomSong();
-            this.currentMusicPack = musicPack;
+            foreach (var pack in this.MusicPacks)
+                pack.Value.SongInformation.initializeEventMusic();
         }
     }
 }

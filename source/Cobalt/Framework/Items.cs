@@ -1,40 +1,44 @@
 ﻿using System;
-using System.Collections.Specialized;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Tools;
+using Object = StardewValley.Object;
 
 namespace Cobalt.Framework
 {
     internal static class Items
     {
-        internal static void init()
+        internal static void init(IModEvents events)
         {
-            PlayerEvents.InventoryChanged += replaceModItems;
-            LocationEvents.CurrentLocationChanged += watchCurrentLocation_1;
-            GameEvents.OneSecondTick += periodicUpdate;
+            events.Player.InventoryChanged += OnInventoryChanged;
+            events.World.ObjectListChanged += OnObjectListChanged;
+            events.GameLoop.UpdateTicked += OnUpdateTicked;
         }
 
-        private static void periodicUpdate(object sender, EventArgs args)
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private static void OnUpdateTicked(object sender, EventArgs e)
         {
             if (Game1.player.CurrentTool != null && Game1.player.CurrentTool is WateringCan wcan)
             {
-                if (wcan.upgradeLevel == 5 && wcan.WaterLeft == wcan.waterCanMax)
+                if (wcan.UpgradeLevel == 5 && wcan.WaterLeft == wcan.waterCanMax)
                     wcan.waterCanMax = wcan.WaterLeft = 150;
             }
 
-            foreach (var item in Game1.player.items)
+            foreach (var item in Game1.player.Items)
             {
                 if (item == null)
                     continue;
 
-                if (item is Tool tool && tool.upgradeLevel >= 4)
+                if (item is Tool tool && tool.UpgradeLevel >= 4)
                 {
                     if (!Game1.player.knowsRecipe("Cobalt Bar"))
                         Game1.player.craftingRecipes.Add("Cobalt Bar", 0);
                 }
-                if (item is StardewValley.Object && item.parentSheetIndex == 645 && Game1.player.knowsRecipe("Cobalt Bar"))
+                if (item is StardewValley.Object && item.ParentSheetIndex == 645 && Game1.player.knowsRecipe("Cobalt Bar"))
                 {
                     if (!Game1.player.knowsRecipe("Cobalt Sprinkler"))
                         Game1.player.craftingRecipes.Add("Cobalt Sprinkler", 0);
@@ -42,48 +46,51 @@ namespace Cobalt.Framework
             }
         }
 
-        private static void replaceModItems(object sender, EventArgsInventoryChanged args)
+        /// <summary>Raised after items are added or removed to a player's inventory.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private static void OnInventoryChanged(object sender, InventoryChangedEventArgs e)
         {
-            for (int i = 0; i < args.Inventory.Count; ++i)
+            // replace mod items
+            if (e.IsLocalPlayer)
             {
-                var item = args.Inventory[i];
-                if (item == null)
-                    continue;
+                IList<Item> inventory = Game1.player.Items;
 
-                if (item.parentSheetIndex == CobaltSprinklerObject.INDEX && !(item is CobaltSprinklerObject))
+                for (int i = 0; i < inventory.Count; ++i)
                 {
-                    args.Inventory[i] = new CobaltSprinklerObject();
-                }
-                else continue;
+                    var item = inventory[i];
+                    if (item == null)
+                        continue;
 
-                Log.trace("Replacing a vanilla instance of custom item with my own. (Inventory)");
-                args.Inventory[i].Stack = item.Stack;
+                    if (item.ParentSheetIndex == CobaltSprinklerObject.INDEX && !(item is CobaltSprinklerObject))
+                    {
+                        inventory[i] = new CobaltSprinklerObject();
+                    }
+                    else continue;
+
+                    Log.trace("Replacing a vanilla instance of custom item with my own. (Inventory)");
+                    inventory[i].Stack = item.Stack;
+                }
             }
         }
 
-        private static void watchCurrentLocation_1(object sender, EventArgsCurrentLocationChanged args)
+        /// <summary>Raised after objects are added or removed in a location.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private static void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
         {
-            if (args.PriorLocation != null)
-                args.PriorLocation.objects.CollectionChanged -= watchCurrentLocation_2;
-            if (args.NewLocation != null)
-                args.NewLocation.objects.CollectionChanged += watchCurrentLocation_2;
-        }
-
-        private static void watchCurrentLocation_2(object sender, NotifyCollectionChangedEventArgs args)
-        {
-            if (args.Action == NotifyCollectionChangedAction.Add)
+            if (e.Location == Game1.currentLocation)
             {
-                foreach (var key_ in args.NewItems)
+                foreach (KeyValuePair<Vector2, Object> pair in e.Added)
                 {
-                    var key = (Vector2)key_;
-                    var obj = Game1.currentLocation.objects[key];
-                    if (obj.parentSheetIndex == CobaltSprinklerObject.INDEX && !(obj is CobaltSprinklerObject))
-                    {
+                    var key = pair.Key;
+                    var obj = pair.Value;
+                    if (obj.ParentSheetIndex == CobaltSprinklerObject.INDEX && !(obj is CobaltSprinklerObject))
                         Game1.currentLocation.objects[key] = new CobaltSprinklerObject();
-                    }
                     else continue;
+
                     Log.trace("Replacing a vanilla instance of custom item with my own. (World)");
-                    Game1.currentLocation.objects[key].tileLocation = key;
+                    Game1.currentLocation.objects[key].TileLocation = key;
                 }
             }
         }

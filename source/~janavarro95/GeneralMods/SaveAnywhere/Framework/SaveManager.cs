@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace Omegasis.SaveAnywhere.Framework
     public class SaveManager
     {
         /*********
-        ** Properties
+        ** Fields
         *********/
         /// <summary>Simplifies access to game code.</summary>
         private readonly IReflectionHelper Reflection;
@@ -26,8 +26,8 @@ namespace Omegasis.SaveAnywhere.Framework
         /// <summary>SMAPI's APIs for this mod.</summary>
         private readonly IModHelper Helper;
 
-        /// <summary>The full path to the player data file.</summary>
-        private string SavePath => Path.Combine(this.Helper.DirectoryPath, "data", $"{Constants.SaveFolderName}.json");
+        /// <summary>The relative path to the player data file.</summary>
+        private string RelativeDataPath => Path.Combine("data", $"{Constants.SaveFolderName}.json");
 
         /// <summary>Whether we should save at the next opportunity.</summary>
         private bool WaitingToSave;
@@ -52,10 +52,7 @@ namespace Omegasis.SaveAnywhere.Framework
 
         }
 
-        private void empty(object o, EventArgs args)
-        {
-
-        }
+        private void empty(object o, EventArgs args) { }
 
         /// <summary>Perform any required update logic.</summary>
         public void Update()
@@ -63,41 +60,41 @@ namespace Omegasis.SaveAnywhere.Framework
             // perform passive save
             if (this.WaitingToSave && Game1.activeClickableMenu == null)
             {
-                currentSaveMenu = new NewSaveGameMenu();
-                currentSaveMenu.SaveComplete += CurrentSaveMenu_SaveComplete;
-                Game1.activeClickableMenu = currentSaveMenu;
+                this.currentSaveMenu = new NewSaveGameMenu();
+                this.currentSaveMenu.SaveComplete += this.CurrentSaveMenu_SaveComplete;
+                Game1.activeClickableMenu = this.currentSaveMenu;
                 this.WaitingToSave = false;
             }
         }
 
-        /// <summary>
-        ///     Event function for NewSaveGameMenu event SaveComplete
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <summary>Event function for NewSaveGameMenu event SaveComplete</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         private void CurrentSaveMenu_SaveComplete(object sender, EventArgs e)
         {
-            currentSaveMenu.SaveComplete -= CurrentSaveMenu_SaveComplete;
-            currentSaveMenu = null;
+            this.currentSaveMenu.SaveComplete -= this.CurrentSaveMenu_SaveComplete;
+            this.currentSaveMenu = null;
             //AfterSave.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>Clear saved data.</summary>
         public void ClearData()
         {
-            File.Delete(this.SavePath);
+            if (File.Exists(Path.Combine(this.Helper.DirectoryPath, this.RelativeDataPath)))
+            {
+                File.Delete(Path.Combine(this.Helper.DirectoryPath, this.RelativeDataPath));
+            }
             this.RemoveLegacyDataForThisPlayer();
         }
 
         /// <summary>Initiate a game save.</summary>
         public void BeginSaveData()
         {
-            
             // save game data
             Farm farm = Game1.getFarm();
             if (farm.shippingBin.Any())
             {
-                
+
                 Game1.activeClickableMenu = new NewShippingMenu(farm.shippingBin, this.Reflection);
                 farm.shippingBin.Clear();
                 farm.lastItemShipped = null;
@@ -105,26 +102,22 @@ namespace Omegasis.SaveAnywhere.Framework
             }
             else
             {
-                currentSaveMenu = new NewSaveGameMenu();
-                currentSaveMenu.SaveComplete += CurrentSaveMenu_SaveComplete;
-                Game1.activeClickableMenu = currentSaveMenu;
+                this.currentSaveMenu = new NewSaveGameMenu();
+                this.currentSaveMenu.SaveComplete += this.CurrentSaveMenu_SaveComplete;
+                Game1.activeClickableMenu = this.currentSaveMenu;
             }
-                
 
-            // get data
+
+            // save data to disk
             PlayerData data = new PlayerData
             {
                 Time = Game1.timeOfDay,
                 Characters = this.GetPositions().ToArray(),
                 IsCharacterSwimming = Game1.player.swimming.Value
             };
+            this.Helper.Data.WriteJsonFile(this.RelativeDataPath, data);
 
-            // save to disk
-            // ReSharper disable once PossibleNullReferenceException -- not applicable
-            Directory.CreateDirectory(new FileInfo(this.SavePath).Directory.FullName);
-            this.Helper.WriteJsonFile(this.SavePath, data);
-
-            // clear any legacy data (no longer needed as backup)1
+            // clear any legacy data (no longer needed as backup)
             this.RemoveLegacyDataForThisPlayer();
         }
 
@@ -132,7 +125,7 @@ namespace Omegasis.SaveAnywhere.Framework
         public void LoadData()
         {
             // get data
-            PlayerData data = this.Helper.ReadJsonFile<PlayerData>(this.SavePath);
+            PlayerData data = this.Helper.Data.ReadJsonFile<PlayerData>(this.RelativeDataPath);
             if (data == null)
                 return;
 
@@ -146,23 +139,19 @@ namespace Omegasis.SaveAnywhere.Framework
             //AfterLoad.Invoke(this, EventArgs.Empty);
         }
 
-        /// <summary>
-        /// Checks to see if the player was swimming when the game was saved and if so, resumes the swimming animation.
-        /// </summary>
-        /// <param name="data"></param>
+        /// <summary>Checks to see if the player was swimming when the game was saved and if so, resumes the swimming animation.</summary>
         public void ResumeSwimming(PlayerData data)
         {
             try
             {
-                if (data.IsCharacterSwimming == true)
+                if (data.IsCharacterSwimming)
                 {
                     Game1.player.changeIntoSwimsuit();
                     Game1.player.swimming.Value = true;
                 }
             }
-            catch (Exception err)
+            catch
             {
-                err.ToString();
                 //Here to allow compatability with old save files.
             }
         }
@@ -178,7 +167,8 @@ namespace Omegasis.SaveAnywhere.Framework
                 var player = Game1.player;
                 string name = player.Name;
                 string map = player.currentLocation.uniqueName.Value; //Try to get a unique name for the location and if we can't we are going to default to the actual name of the map.
-                if (map == ""|| map==null) map = player.currentLocation.Name; //This is used to account for maps that share the same name but have a unique ID such as Coops, Barns and Sheds.
+                if (string.IsNullOrEmpty(map))
+                    map = player.currentLocation.Name; //This is used to account for maps that share the same name but have a unique ID such as Coops, Barns and Sheds.
                 Point tile = player.getTileLocationPoint();
                 int facingDirection = player.facingDirection;
 
@@ -189,9 +179,8 @@ namespace Omegasis.SaveAnywhere.Framework
             foreach (NPC npc in Utility.getAllCharacters())
             {
                 CharacterType? type = this.GetCharacterType(npc);
-                if (type == null)
+                if (type == null || npc?.currentLocation == null)
                     continue;
-                if (npc == null || npc.currentLocation == null) continue;
                 string name = npc.Name;
                 string map = npc.currentLocation.Name;
                 Point tile = npc.getTileLocationPoint();

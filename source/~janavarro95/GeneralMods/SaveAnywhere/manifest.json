@@ -1,11 +1,11 @@
 {
   "Name": "Save Anywhere",
   "Author": "Alpha_Omegasis",
-  "Version": "3.0.0",
+  "Version": "2.10.0",
   "Description": "Lets you save almost anywhere.",
   "UniqueID": "Omegasis.SaveAnywhere",
   "EntryDll": "SaveAnywhere.dll",
-  "MinimumApiVersion": "2.4",
+  "MinimumApiVersion": "2.10.1",
   "Dependencies": [
-	]
+  ]
 }

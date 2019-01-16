@@ -1,10 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using StardustCore.UIUtilities.SpriteFonts.Components;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StardustCore.UIUtilities.SpriteFonts.Components;
 
 namespace StardustCore.UIUtilities.SpriteFonts.CharacterSheets
 {

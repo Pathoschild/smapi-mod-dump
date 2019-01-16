@@ -1,10 +1,10 @@
 {
   "Name": "Auto Speed",
   "Author": "Alpha_Omegasis",
-  "Version": "1.6.0",
+  "Version": "1.7.0",
   "Description": "Got to go fast!",
   "UniqueID": "Omegasis.AutoSpeed",
   "EntryDll": "AutoSpeed.dll",
-  "MinimumApiVersion": "2.0",
+  "MinimumApiVersion": "2.10.1",
   "UpdateKeys": [ "Nexus:443" ]
 }

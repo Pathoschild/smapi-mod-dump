@@ -1,19 +1,14 @@
 ﻿using StardewValley;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ToolGeodes
 {
     public static class Extensions
     {
-        public static int HasAdornment(this StardewValley.Farmer player, ToolType tool, int adornment)
+        public static int HasAdornment(this Farmer player, ToolType tool, int adornment)
         {
-            var data = Mod.Data;
-            if (player != Game1.player)
-                data = Mod.instance.Helper.Data.ReadSaveData<SaveData>("spacechase0.ToolGeodes." + player.UniqueMultiplayerID) ?? new SaveData();
+            //var data = Mod.Data;
+            //if (player != Game1.player)
+            //    data = Mod.instance.Helper.Data.ReadSaveData<SaveData>("spacechase0.ToolGeodes." + player.UniqueMultiplayerID) ?? new SaveData();
 
             int[] ids = null;
             if (tool == ToolType.Weapon) ids = Mod.Data.WeaponGeodes;

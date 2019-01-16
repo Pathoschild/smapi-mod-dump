@@ -40,9 +40,9 @@ mods:
    Visualize
 
 latest commit:
-   commit 018186e01f3332fd4e49740fff940cf9471de107
+   commit ad81534325b7f052b59654fe476aabc11d75fc0c
    Author: Platonymous <david@millionideas.de>
-   Date:   Wed Jan 9 08:59:32 2019 +0100
+   Date:   Tue Jan 15 18:48:08 2019 +0100
    
        Update releases
    

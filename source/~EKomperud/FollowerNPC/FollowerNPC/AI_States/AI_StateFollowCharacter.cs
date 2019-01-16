@@ -20,6 +20,7 @@ namespace FollowerNPC.AI_States
         protected aStar aStar;
         protected Monster aggroMonster;
         protected AI_StateMachine machine;
+        protected Random r;
 
         protected Queue<Vector2> path;
         protected Vector2 currentPathNode;
@@ -47,6 +48,9 @@ namespace FollowerNPC.AI_States
         public Vector2 lastFrameMovement;
         public Vector2 animationUpdateSum;
         public bool movedLastFrame;
+        public int idleTimer;
+
+        public bool gatesInThisLocation;
         // ************************* //
 
         // Constants //
@@ -70,6 +74,7 @@ namespace FollowerNPC.AI_States
             if (f != null)
                 leaderIsFarmer = true;
             this.machine = machine;
+            r = new Random((int) Game1.uniqueIDForThisGame + (int) Game1.stats.DaysPlayed + Game1.timeOfDay);
 
             aStar = new aStar(me.currentLocation, me, leader);
 
@@ -139,6 +144,15 @@ namespace FollowerNPC.AI_States
                 AI_StateAggroEnemy monsterAggroedState = (AI_StateAggroEnemy)machine.states[(int) eAI_State.aggroEnemy];
                 monsterAggroedState.SetMonster(aggroMonster);
                 return eAI_State.aggroEnemy;
+            }
+
+            if (--idleTimer == 0)
+            {
+                if (CheckForMonstersInThisLocation(me.currentLocation) || 
+                    !(machine.states[(int)eAI_State.idle] as AI_StateIdle).CanBeIdleHere())
+                    idleTimer = -1;
+                else
+                    return eAI_State.idle;
             }
 
             return eAI_State.nil;
@@ -229,12 +243,8 @@ namespace FollowerNPC.AI_States
                 
                 me.xVelocity = nodeDiff.X * currentMovespeed;
                 me.yVelocity = -nodeDiff.Y * currentMovespeed;
-                //if (me.xVelocity != 0 && me.yVelocity != 0)
-                //{
-                //    me.xVelocity *= 1.05f;
-                //    me.yVelocity *= 1.05f;
-                //}
                 HandleWallSliding();
+                HandleGates();
                 lastFrameVelocity = new Vector2(me.xVelocity, me.yVelocity);
                 lastFramePosition = new Vector2(me.GetBoundingBox().Center.X, me.GetBoundingBox().Center.Y);
 
@@ -244,12 +254,19 @@ namespace FollowerNPC.AI_States
                 lastMovementDirection = lastFrameVelocity / lastFrameVelocity.Length();
 
                 movedLastFrame = true;
+                idleTimer = -1;
             }
             else if (movedLastFrame)
             {
                 me.Halt();
                 me.Sprite.faceDirectionStandard(GetFacingDirectionFromMovement(new Vector2(lastMovementDirection.X, -lastMovementDirection.Y)));
                 movedLastFrame = false;
+                idleTimer = r.Next(480, 840);
+            }
+            else
+            {
+                me.xVelocity = 0f;
+                me.yVelocity = 0f;
             }
         }
 
@@ -453,6 +470,62 @@ namespace FollowerNPC.AI_States
             return true;
         }
 
+        private bool CheckForMonstersInThisLocation(GameLocation l)
+        {
+            foreach (NPC n in l.characters)
+            {
+                Monster m = n as Monster;
+                if (m != null)
+                    return true;
+            }
+            return false;
+        }
+
+        protected void HandleGates()
+        {
+            if (gatesInThisLocation)
+            {
+                Vector2 velocity = new Vector2(me.xVelocity, -me.yVelocity);
+                velocity.Normalize();
+                velocity = velocity * fullTile * 1.26f;
+                Vector2 bbVector = new Vector2(me.GetBoundingBox().Center.X, me.GetBoundingBox().Center.Y);
+                Vector2 tile = me.getTileLocation();
+                Vector2 tileAhead = (bbVector + velocity) / fullTile;
+                Vector2 tileBehind = (bbVector - velocity) / fullTile;
+                Fence[] fences = new Fence[3];
+                fences[0] = (aStar.gameLocation.getObjectAtTile((int)tileAhead.X, (int)tileAhead.Y)) as Fence;
+                fences[1] = (aStar.gameLocation.getObjectAtTile((int)tileBehind.X, (int)tileBehind.Y)) as Fence;
+                fences[2] = (aStar.gameLocation.getObjectAtTile((int)tile.X, (int)tile.Y)) as Fence;
+
+                if (fences[2] != null && fences[2].isGate.Value && fences[2].gatePosition.Value == 0)
+                {
+                    fences[2].gatePosition.Value = 88;
+                    aStar.gameLocation.playSound("doorClose");
+                }
+                else if (fences[0] != null && fences[0].isGate.Value && fences[0].gatePosition.Value == 0)
+                {
+                    fences[0].gatePosition.Value = 88;
+                    aStar.gameLocation.playSound("doorClose");
+                }
+                else if (fences[1] != null && fences[1].isGate.Value && fences[1].gatePosition.Value == 88)
+                {
+                    fences[1].gatePosition.Value = 0;
+                    aStar.gameLocation.playSound("doorClose");
+                }
+            }
+        }
+
+        private bool CheckForGatesInThisLocation()
+        {
+            foreach (Vector2 o in aStar.gameLocation.Objects.Keys)
+            {
+                Fence f = aStar.gameLocation.Objects[o] as Fence;
+                if (f != null && f.isGate.Value)
+                    return true;
+            }
+            return false;
+        }
+
         #region Events
         protected void World_DebrisListChanged(object sender, DebrisListChangedEventArgs e)
         {
@@ -471,8 +544,8 @@ namespace FollowerNPC.AI_States
 
         protected void Player_Warped(object sender, WarpedEventArgs e)
         {
-
             aStar.gameLocation = leader.currentLocation;
+            gatesInThisLocation = CheckForGatesInThisLocation();
         }
         #endregion
     }

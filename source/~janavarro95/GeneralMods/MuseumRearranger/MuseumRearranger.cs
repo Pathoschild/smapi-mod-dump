@@ -1,4 +1,4 @@
-﻿using Omegasis.MuseumRearranger.Framework;
+using Omegasis.MuseumRearranger.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -10,7 +10,7 @@ namespace Omegasis.MuseumRearranger
     public class MuseumRearranger : Mod
     {
         /*********
-        ** Properties
+        ** Fields
         *********/
         /// <summary>The mod configuration.</summary>
         private ModConfig Config;
@@ -28,23 +28,23 @@ namespace Omegasis.MuseumRearranger
         {
             this.Config = helper.ReadConfig<ModConfig>();
 
-            ControlEvents.KeyPressed += this.ControlEvents_KeyPressed;
+            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
         }
 
 
         /*********
         ** Private methods
         *********/
-        /// <summary>The method invoked when the presses a keyboard button.</summary>
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void ControlEvents_KeyPressed(object sender, EventArgsKeyPressed e)
+        /// <param name="e">The event arguments.</param>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
 
             // open menu
-            if (e.KeyPressed.ToString() == this.Config.ShowMenuKey)
+            if (e.Button == this.Config.ShowMenuKey)
             {
                 if (Game1.activeClickableMenu != null)
                     return;
@@ -55,7 +55,7 @@ namespace Omegasis.MuseumRearranger
             }
 
             // toggle inventory box
-            if (e.KeyPressed.ToString() == this.Config.ToggleInventoryKey)
+            if (e.Button == this.Config.ToggleInventoryKey)
                 this.OpenMenu?.ToggleInventory();
         }
     }

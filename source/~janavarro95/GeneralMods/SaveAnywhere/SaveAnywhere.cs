@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Omegasis.SaveAnywhere.Framework;
@@ -14,7 +14,7 @@ namespace Omegasis.SaveAnywhere
     public class SaveAnywhere : Mod
     {
         /*********
-        ** Properties
+        ** Fields
         *********/
         /// <summary>The mod configuration.</summary>
         private ModConfig Config;
@@ -31,19 +31,16 @@ namespace Omegasis.SaveAnywhere
         /// <summary>Whether we're performing a non-vanilla save (i.e. not by sleeping in bed).</summary>
         private bool IsCustomSaving;
 
-
-        /// <summary>
-        /// Used to access the Mod's helper from other files associated with the mod.
-        /// </summary>
+        /// <summary>Used to access the Mod's helper from other files associated with the mod.</summary>
         public static IModHelper ModHelper;
-        /// <summary>
-        /// Used to access the Mod's monitor to allow for debug logging in other files associated with the mod.
-        /// </summary>
+
+        /// <summary>Used to access the Mod's monitor to allow for debug logging in other files associated with the mod.</summary>
         public static IMonitor ModMonitor;
 
         private List<Monster> monsters;
 
         private bool customMenuOpen;
+
 
         /*********
         ** Public methods
@@ -56,30 +53,25 @@ namespace Omegasis.SaveAnywhere
 
             this.SaveManager = new SaveManager(this.Helper, this.Helper.Reflection, onLoaded: () => this.ShouldResetSchedules = true);
 
-            SaveEvents.AfterLoad += this.SaveEvents_AfterLoad;
-            SaveEvents.AfterSave += this.SaveEvents_AfterSave;
-            ControlEvents.KeyPressed += this.ControlEvents_KeyPressed;
-            GameEvents.UpdateTick += this.GameEvents_UpdateTick;
-            TimeEvents.AfterDayStarted += this.TimeEvents_AfterDayStarted;
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            helper.Events.GameLoop.Saved += this.OnSaved;
+            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
 
             ModHelper = helper;
-            ModMonitor = Monitor;
-            customMenuOpen = false;
+            ModMonitor = this.Monitor;
+            this.customMenuOpen = false;
         }
 
-        /*Notes. Mods that want to support save anywhere will get the api for Save anywhere and then add their clean up code to the events that happen for Before/After Save and Loading. 
-        Example with pseudo code.
-        SaveAnywhere.api.BeforeSave+=StardustCore.Objects.CleanUpBeforeSave;
-        We then can use function wrapping (is that what it's called?) to just handle calling the actual function that deals with clean-up code.
 
-        */
         /*********
         ** Private methods
         *********/
-        /// <summary>The method invoked after the player loads a save.</summary>
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void SaveEvents_AfterLoad(object sender, EventArgs e)
+        /// <param name="e">The event arguments.</param>
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             // reset state
             this.IsCustomSaving = false;
@@ -89,34 +81,31 @@ namespace Omegasis.SaveAnywhere
             this.SaveManager.LoadData();
         }
 
-        /// <summary>The method invoked after the player finishes saving.</summary>
+        /// <summary>Raised after the game finishes writing data to the save file (except the initial save creation).</summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void SaveEvents_AfterSave(object sender, EventArgs e)
+        /// <param name="e">The event arguments.</param>
+        private void OnSaved(object sender, SavedEventArgs e)
         {
             // clear custom data after a normal save (to avoid restoring old state)
-            if (!this.IsCustomSaving) 
+            if (!this.IsCustomSaving)
                 this.SaveManager.ClearData();
             else
             {
-                IsCustomSaving = false;
+                this.IsCustomSaving = false;
             }
         }
 
-
-        /// <summary>The method invoked when the game updates (roughly 60 times per second).</summary>
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void GameEvents_UpdateTick(object sender, EventArgs e)
+        /// <param name="e">The event arguments.</param>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            
             // let save manager run background logic
             if (Context.IsWorldReady)
             {
-                if (Game1.player.IsMainPlayer == false) return;
+                if (!Game1.player.IsMainPlayer) return;
                 this.SaveManager.Update();
             }
-               
 
             // reset NPC schedules
             if (Context.IsWorldReady && this.ShouldResetSchedules)
@@ -125,10 +114,10 @@ namespace Omegasis.SaveAnywhere
                 this.ApplySchedules();
             }
 
-            if (Game1.activeClickableMenu == null && this.customMenuOpen == false) return;
-            if(Game1.activeClickableMenu==null && this.customMenuOpen == true)
+            if (Game1.activeClickableMenu == null && !this.customMenuOpen) return;
+            if (Game1.activeClickableMenu == null && this.customMenuOpen)
             {
-                restoreMonsters();
+                this.restoreMonsters();
                 this.customMenuOpen = false;
                 return;
             }
@@ -141,49 +130,36 @@ namespace Omegasis.SaveAnywhere
             }
         }
 
-        /// <summary>
-        /// Saves all monsters from the game world.
-        /// </summary>
+        /// <summary>Saves all monsters from the game world.</summary>
         private void cleanMonsters()
         {
-            monsters = new List<Monster>();
+            this.monsters = new List<Monster>();
 
-            foreach (var monster in Game1.player.currentLocation.characters)
+            foreach (var npc in Game1.player.currentLocation.characters)
             {
                 try
                 {
-                    if (monster is Monster)
-                    {
-                        monsters.Add(monster as Monster);
-                    }
+                    if (npc is Monster monster)
+                        this.monsters.Add(monster);
                 }
-                catch (Exception err)
-                {
-
-                }
+                catch { }
             }
 
             foreach (var monster in this.monsters)
-            {
                 Game1.player.currentLocation.characters.Remove(monster);
-            }
         }
 
-        /// <summary>
-        /// Adds all saved monster back into the game world.
-        /// </summary>
+        /// <summary>Adds all saved monster back into the game world.</summary>
         private void restoreMonsters()
         {
             foreach (var monster in this.monsters)
-            {
                 Game1.player.currentLocation.characters.Add(monster);
-            }
         }
 
-        /// <summary>The method invoked after a new day starts.</summary>
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void TimeEvents_AfterDayStarted(object sender, EventArgs e)
+        /// <param name="e">The event arguments.</param>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             // reload NPC schedules
             this.ShouldResetSchedules = true;
@@ -197,22 +173,20 @@ namespace Omegasis.SaveAnywhere
             }
         }
 
-        /// <summary>The method invoked when the presses a keyboard button.</summary>
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void ControlEvents_KeyPressed(object sender, EventArgsKeyPressed e)
+        /// <param name="e">The event arguments.</param>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsPlayerFree)
                 return;
 
-
-
             // initiate save (if valid context)
-            if (e.KeyPressed.ToString() == this.Config.SaveKey)
+            if (e.Button == this.Config.SaveKey)
             {
-                if (Game1.client==null)
+                if (Game1.client == null)
                 {
-                    cleanMonsters();
+                    this.cleanMonsters();
                     // validate: community center Junimos can't be saved
 
                     if (Game1.player.currentLocation.getCharacters().OfType<Junimo>().Any())
@@ -221,14 +195,13 @@ namespace Omegasis.SaveAnywhere
                         return;
                     }
 
-
                     // save
                     this.IsCustomSaving = true;
                     this.SaveManager.BeginSaveData();
                 }
                 else
                 {
-                    Game1.addHUDMessage(new HUDMessage("Only server hosts can save anywhere.",HUDMessage.error_type));
+                    Game1.addHUDMessage(new HUDMessage("Only server hosts can save anywhere.", HUDMessage.error_type));
                 }
             }
         }
@@ -251,16 +224,14 @@ namespace Omegasis.SaveAnywhere
                     continue;
 
                 // get schedule data
-                string scheduleData;
-                if (!this.NpcSchedules.TryGetValue(npc.Name, out scheduleData) || string.IsNullOrEmpty(scheduleData))
+                if (!this.NpcSchedules.TryGetValue(npc.Name, out string scheduleData) || string.IsNullOrEmpty(scheduleData))
                 {
                     //this.Monitor.Log("THIS IS AWKWARD");
                     continue;
                 }
 
                 // get schedule script
-                string script;
-                if (!rawSchedule.TryGetValue(scheduleData, out script))
+                if (!rawSchedule.TryGetValue(scheduleData, out string script))
                     continue;
 
                 // parse entries
@@ -300,10 +271,8 @@ namespace Omegasis.SaveAnywhere
                             .Invoke<SchedulePathDescription>(npc.currentLocation.Name, npc.getTileX(), npc.getTileY(), endMap, x, y, endFacingDir, null, null);
                         index++;
                     }
-                    catch (Exception ex)
+                    catch
                     {
-                        ex.ToString();
-                        //this.Monitor.Log($"Error pathfinding NPC {npc.name}: {ex}", LogLevel.Error);
                         continue;
                     }
 
@@ -326,7 +295,7 @@ namespace Omegasis.SaveAnywhere
             {
                 return Game1.content.Load<Dictionary<string, string>>($"Characters\\schedules\\{npcName}");
             }
-            catch (Exception)
+            catch
             {
                 return null;
             }
@@ -356,14 +325,14 @@ namespace Omegasis.SaveAnywhere
                 if ((npc.Name.Equals("Penny") && (dayName.Equals("Tue") || dayName.Equals("Wed") || dayName.Equals("Fri"))) || (npc.Name.Equals("Maru") && (dayName.Equals("Tue") || dayName.Equals("Thu"))) || (npc.Name.Equals("Harvey") && (dayName.Equals("Tue") || dayName.Equals("Thu"))))
                 {
                     this.Helper.Reflection
-                        .GetField<string>(npc, "nameofTodaysSchedule")
+                        .GetField<string>(npc, "nameOfTodaysSchedule")
                         .SetValue("marriageJob");
                     return "marriageJob";
                 }
                 if (!Game1.isRaining && schedule.ContainsKey("marriage_" + Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth)))
                 {
                     this.Helper.Reflection
-                        .GetField<string>(npc, "nameofTodaysSchedule")
+                        .GetField<string>(npc, "nameOfTodaysSchedule")
                         .SetValue("marriage_" + Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth));
                     return "marriage_" + Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth);
                 }
@@ -375,9 +344,8 @@ namespace Omegasis.SaveAnywhere
                 if (schedule.ContainsKey(Game1.currentSeason + "_" + Game1.dayOfMonth))
                     return Game1.currentSeason + "_" + Game1.dayOfMonth;
                 int i;
-                Friendship f;
-                Game1.player.friendshipData.TryGetValue(npc.Name, out f);
-                for (i = (Game1.player.friendshipData.ContainsKey(npc.Name) ? (f.Points/ 250) : -1); i > 0; i--)
+                Game1.player.friendshipData.TryGetValue(npc.Name, out Friendship f);
+                for (i = (Game1.player.friendshipData.ContainsKey(npc.Name) ? (f.Points / 250) : -1); i > 0; i--)
                 {
                     if (schedule.ContainsKey(Game1.dayOfMonth + "_" + i))
                         return Game1.dayOfMonth + "_" + i;
@@ -394,8 +362,7 @@ namespace Omegasis.SaveAnywhere
                         return "rain";
                 }
                 List<string> list = new List<string> { Game1.currentSeason, Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth) };
-                Friendship friendship;
-                Game1.player.friendshipData.TryGetValue(npc.Name, out friendship);
+                Game1.player.friendshipData.TryGetValue(npc.Name, out Friendship friendship);
                 i = (Game1.player.friendshipData.ContainsKey(npc.Name) ? (friendship.Points / 250) : -1);
                 while (i > 0)
                 {
@@ -425,8 +392,7 @@ namespace Omegasis.SaveAnywhere
                 }
                 list.RemoveAt(list.Count - 1);
                 list.Add("spring");
-                Friendship friendship2;
-                Game1.player.friendshipData.TryGetValue(npc.Name, out friendship2);
+                Game1.player.friendshipData.TryGetValue(npc.Name, out Friendship friendship2);
                 i = (Game1.player.friendshipData.ContainsKey(npc.Name) ? (friendship2.Points / 250) : -1);
                 while (i > 0)
                 {
@@ -436,9 +402,9 @@ namespace Omegasis.SaveAnywhere
                     i--;
                     list.RemoveAt(list.Count - 1);
                 }
-                if (schedule.ContainsKey("spring"))
-                    return "spring";
-                return null;
+                return schedule.ContainsKey("spring")
+                    ? "spring"
+                    : null;
             }
         }
     }

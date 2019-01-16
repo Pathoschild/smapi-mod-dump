@@ -11,9 +11,9 @@ Spouse dismissal bug-fixing							- Kinda fixed, but still needs more testing.
 Pet companions? Junimos?
 Dismiss NPC's when going to bed.					- Done!
 No talking when monsters in room in mines			- Done! Might modify this later, but works for now.
-Gates?
+Gates?												- Done!
 Swarm rooms	not spawning ladders					- Fixed!
-Companions can get stuck on big rocks and Stumps
+Companions can get stuck on big rocks and Stumps	- Fixed!
 Companions can get stuck in treasure rooms			- Fixed!
 Test what happens when companion is in event.		- Done
 Test what happens when companion is at a festival.  - Done
@@ -44,10 +44,11 @@ Remove location dialogue when leaving a specific area		- Done!
 Reset animation upon change ai state						- Done!
 Don't recruit companions past 10							- Done!
 Stop companions from acting when paused						- Done!
-Idle animations
+Idle animations												- Done!
 Seasonal and Time-based dialogue?
 Abigail warped to my house and had weird scheduling errors.
-Un-recruitable after divorce?
+Un-recruitable after divorce?								- Done!
+Allow pathing over artifact spots							- Done!
 
 Combat Behavior:
 	Companions stay a little further back in mine shafts	- Done!
@@ -57,3 +58,8 @@ Combat Behavior:
 	Don't target mummies when they're downed				- Testing...
 	Change targets if another monster gets close			- Testing...
 	Back off a little if monster is too close				- Done!
+
+Before every release:
+	Update manifest
+	Remove debug commands
+	Test every character

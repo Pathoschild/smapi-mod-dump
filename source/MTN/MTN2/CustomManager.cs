@@ -265,7 +265,7 @@ namespace MTN2
         /// <param name="OffsetY">The Offset value for the Y Coordinate</param>
         /// <returns>The coordinates in Vector2 form.</returns>
         public Vector2 FarmHouseCoords(float OffsetX = 0, float OffsetY = 0) {
-            if (Canon) {
+            if (Canon || LoadedFarm.FarmHouse == null) {
                 return FarmHouseCoordsCanon(OffsetX, OffsetY);
             }
             Placement? Coordinates = LoadedFarm.FarmHouse.Coordinates;
@@ -289,7 +289,7 @@ namespace MTN2
         /// </summary>
         /// <returns>The proper layer depth. Used in Spritebatch.Draw</returns>
         public float FarmHouseLayerDepth() {
-            if (Canon) {
+            if (Canon || LoadedFarm.FarmHouse == null) {
                 return 0.075f;
             } else {
                 return ((LoadedFarm.FarmHouse.PointOfInteraction.Y - 5 + 3) * 64) / 10000f;
@@ -301,7 +301,7 @@ namespace MTN2
         /// </summary>
         /// <returns></returns>
         public Vector2 GreenHouseCoords() {
-            if (Canon) {
+            if (Canon || LoadedFarm.GreenHouse == null) {
                 return GreenHouseCoordsCanon();
             }
             Placement? Coordinates = LoadedFarm.GreenHouse.Coordinates;
@@ -321,7 +321,7 @@ namespace MTN2
         }
 
         public Vector2 MailboxNotification(float xOffset, float yOffset, bool Option) {
-            if (Canon) {
+            if (Canon || LoadedFarm.MailBox == null) {
                 return new Vector2((Option) ? 4388f : 4352f, ((Option) ? 928f : 880f) + yOffset);
             }
             Interaction POI = LoadedFarm.MailBox.PointOfInteraction;
@@ -337,7 +337,7 @@ namespace MTN2
         }
 
         public Vector2 GrandpaShrineCoords() {
-            if (Canon) {
+            if (Canon || LoadedFarm.GrandpaShrine == null) {
                 return new Vector2(576f, 448f);
             }
             Interaction POI = LoadedFarm.GrandpaShrine.PointOfInteraction;
@@ -352,6 +352,10 @@ namespace MTN2
             SelectedIndex = 0;
             LoadedIndex = -1;
             Canon = true;
+        }
+
+        public void IntegrityCheck() {
+
         }
 
         public void CreateTemplate(string type, IModHelper helper, IMonitor monitor) {

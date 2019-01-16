@@ -2,6 +2,7 @@
 using System.Reflection;
 using StardewValley;
 using StardewValley.Menus;
+using FollowerNPC.CompanionStates;
 
 namespace FollowerNPC.Buffs
 {
@@ -22,7 +23,9 @@ namespace FollowerNPC.Buffs
         protected int[] woodsSummerForage = new int[] {259, 420};
         protected int[] woodsFallForage = new int[] {281, 420};
 
-        public LeahBuff(Farmer farmer, NPC npc) : base(farmer, npc)
+        protected System.Collections.Generic.Stack<Dialogue> combatWithheldDialogue;
+
+        public LeahBuff(Farmer farmer, NPC npc, CompanionsManager manager) : base(farmer, npc, manager)
         {
             buff = new Buff(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 30, "", "");
             buff.description = "Leah always seems to smell like chopped wood and fall mushrooms."+
@@ -40,6 +43,7 @@ namespace FollowerNPC.Buffs
             ModEntry.modHelper.Events.GameLoop.TimeChanged += GameLoop_TimeChanged;
             ModEntry.modHelper.Events.Display.MenuChanged += Display_MenuChanged;
             r = new Random((int) Game1.uniqueIDForThisGame + (int) Game1.stats.DaysPlayed);
+            combatWithheldDialogue = ((RecruitedState)manager.possibleCompanions["Leah"].currentState).combatWithheldDialogue;
         }
 
         public void SetForageFoundDialogue(string[] s)
@@ -49,7 +53,7 @@ namespace FollowerNPC.Buffs
 
         private void GameLoop_TimeChanged(object sender, StardewModdingAPI.Events.TimeChangedEventArgs e)
         {
-            if (r.Next(2) == 1 && foragedObject == null)
+            if (r.Next(6) == 1 && foragedObject == null)
             {
                 GameLocation location = buffOwner.currentLocation;
                 StardewValley.Locations.MineShaft ms = location as StardewValley.Locations.MineShaft;
@@ -103,7 +107,7 @@ namespace FollowerNPC.Buffs
                     buffGranter.CurrentDialogue.Push(d);
                     forageFoundDialogue = d;
                 }
-                else if (ms != null && manager.combatWithheldDialogue.Count == 0)
+                else if (ms != null && combatWithheldDialogue.Count == 0)
                 {
                     foragedObject = new StardewValley.Object(caveForage[r.Next(3)], 1, false, -1, 4);
 
@@ -119,7 +123,7 @@ namespace FollowerNPC.Buffs
 
             if (foragedObject != null &&
                 !buffGranter.CurrentDialogue.Contains(forageFoundDialogue) &&
-                manager.combatWithheldDialogue.Count == 0)
+                combatWithheldDialogue.Count == 0)
             {
                 buffGranter.CurrentDialogue.Push(forageFoundDialogue);
             }

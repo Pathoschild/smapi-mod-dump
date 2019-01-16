@@ -18,7 +18,7 @@ namespace StackToNearbyChests.Patches
 	
 	class InventoryPage_Patcher_Constructor : Patch
 	{
-		public override Type GetTargetType() => TypeGetter.InventoryPage();
+		public override Type GetTargetType() => typeof(InventoryPage);
 		public override string GetTargetMethodName() => null;
 		public override Type[] GetTargetMethodArguments() => new Type[] { typeof(int), typeof(int), typeof(int), typeof(int) };
 

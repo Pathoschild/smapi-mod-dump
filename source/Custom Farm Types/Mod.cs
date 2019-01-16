@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
 using StardewValley;
 using System.Collections.Generic;
 using StardewValley.Menus;
@@ -13,8 +12,6 @@ namespace CustomFarmTypes
 {
     public class Mod : StardewModdingAPI.Mod
     {
-        public const int MY_FARM_TYPE = 6;
-
         public static Mod instance;
         public static SaveData Data = new SaveData();
 
@@ -22,12 +19,12 @@ namespace CustomFarmTypes
         {
             instance = this;
             
-            SaveEvents.AfterLoad += afterLoad;
-            SaveEvents.BeforeCreate += beforeSave;
-            SaveEvents.AfterCreate += afterSave;
-            SaveEvents.BeforeSave += beforeSave;
-            SaveEvents.AfterSave += afterSave;
-            GameEvents.UpdateTick += onUpdate;
+            helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+            helper.Events.GameLoop.SaveCreating += OnSaving;
+            helper.Events.GameLoop.SaveCreated += OnSaved;
+            helper.Events.GameLoop.Saving += OnSaving;
+            helper.Events.GameLoop.Saved += OnSaved;
+            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             try
             {
                 TypeFixes.fix();
@@ -85,12 +82,15 @@ namespace CustomFarmTypes
             compileChoices();
         }
 
-        private void afterLoad(object sender, EventArgs args)
+        /// <summary>Raised after the player loads a save slot.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaveLoaded(object sender, EventArgs e)
         {
             if (!(Game1.year == 1 && Game1.currentSeason == "spring" && Game1.dayOfMonth == 0))
             {
-                Log.debug("Loading save data... " + Game1.year + " " + Game1.currentSeason + " " + Game1.dayOfMonth);
-                Data = Helper.ReadJsonFile<SaveData>(Path.Combine(Constants.CurrentSavePath, "custom-farm-type.json"));
+                Log.debug($"Loading save data... {Game1.year} {Game1.currentSeason} {Game1.dayOfMonth}");
+                Data = Helper.Data.ReadSaveData<SaveData>("custom-farm-types");
                 if (Data == null)
                 {
                     Data = new SaveData();
@@ -104,7 +104,7 @@ namespace CustomFarmTypes
                 if ( loc.GetType() != typeof( Farm ) )
                     continue;
 
-                Log.info("Custom farm type " + entry.Value + " for " + entry.Key);
+                Log.info($"Custom farm type {entry.Value} for {entry.Key}");
                 FarmType type = FarmType.getType(entry.Value);
                 if (type == null)
                 {
@@ -112,7 +112,7 @@ namespace CustomFarmTypes
                     return;
                 }
 
-                var newFarm = new CustomFarm(type, loc.name);
+                var newFarm = new CustomFarm(type, loc.Name);
                 if (Game1.year == 1 && Game1.currentSeason == "spring" && Game1.dayOfMonth == 1)
                 {
                     Log.debug("First day? from load");
@@ -126,7 +126,10 @@ namespace CustomFarmTypes
             }
         }
 
-        private void beforeSave(object sender, EventArgs args)
+        /// <summary>Raised before the game creates a new save file or saves.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaving(object sender, EventArgs e)
         {
             Log.info("Before save, use vanilla farms...");
 
@@ -135,20 +138,24 @@ namespace CustomFarmTypes
                 GameLocation loc = Game1.getLocationFromName(entry.Key);
                 if (loc.GetType() == typeof(CustomFarm))
                 {
-                    Log.debug("Putting vanilla farm over " + entry.Key + "=" + entry.Value);
+                    Log.debug($"Putting vanilla farm over {entry.Key}={entry.Value}");
                     var farm = loc as CustomFarm;
-                    Farm newFarm = new Farm(Helper.Content.Load<xTile.Map>("Maps\\Farm", ContentSource.GameContent), loc.name);
+                    Farm newFarm = new Farm("Maps\\Farm", loc.Name);
                     CustomFarm.swapFarms(farm, newFarm);
                     Game1.locations.Remove(farm);
                     Game1.locations.Add(newFarm);
                 }
             }
+
+            Helper.Data.WriteSaveData("custom-farm-types", Data);
         }
 
-        private void afterSave(object sender, EventArgs args)
+        /// <summary>Raised after the game finishes creating the save file or saving.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaved(object sender, EventArgs e)
         {
-            Log.info("Saving, putting custom farms back...");
-            Helper.WriteJsonFile(Path.Combine(Constants.CurrentSavePath, "custom-farm-type.json"), Data);
+            Log.info("Saved, putting custom farms back...");
             foreach (var entry in Data.FarmTypes)
             {
                 GameLocation loc = Game1.getLocationFromName(entry.Key);
@@ -175,50 +182,49 @@ namespace CustomFarmTypes
             }
         }
 
-        private IClickableMenu prevMenu = null;
-        private void onUpdate(object sender, EventArgs args)
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnUpdateTicked(object sender, EventArgs e)
         {
-            if (Game1.activeClickableMenu is TitleMenu)
+            if (Game1.activeClickableMenu is TitleMenu && TitleMenu.subMenu is CharacterCustomization)
             {
-                if (TitleMenu.subMenu is CharacterCustomization)
-                {
-                    Log.debug("Found vanilla new game window, replacing with our own.");
+                Log.debug("Found vanilla new game window, replacing with our own.");
 
-                    var oldMenu = (CharacterCustomization)TitleMenu.subMenu;
-                    var shirts = Helper.Reflection.GetField<List<int>>(oldMenu, "shirtOptions").GetValue();
-                    var hairs = Helper.Reflection.GetField<List<int>>(oldMenu, "hairStyleOptions").GetValue();
-                    var accessories = Helper.Reflection.GetField<List<int>>(oldMenu, "accessoryOptions").GetValue();
-                    var wizard = Helper.Reflection.GetField<bool>(oldMenu, "wizardSource").GetValue();
-                    var newMenu = new NewCharacterCustomizeMenu(shirts, hairs, accessories, wizard);
+                var oldMenu = (CharacterCustomization)TitleMenu.subMenu;
+                var shirts = Helper.Reflection.GetField<List<int>>(oldMenu, "shirtOptions").GetValue();
+                var hairs = Helper.Reflection.GetField<List<int>>(oldMenu, "hairStyleOptions").GetValue();
+                var accessories = Helper.Reflection.GetField<List<int>>(oldMenu, "accessoryOptions").GetValue();
+                var wizard = Helper.Reflection.GetField<bool>(oldMenu, "wizardSource").GetValue();
+                var newMenu = new NewCharacterCustomizeMenu(shirts, hairs, accessories, wizard);
 
-                    TitleMenu.subMenu = newMenu;
-                }
+                TitleMenu.subMenu = newMenu;
             }
-            prevMenu = Game1.activeClickableMenu;
         }
 
         private void compileChoices()
         {
             Log.info("Creating list of custom farm types...");
-            var choices = Directory.GetDirectories(Path.Combine(Helper.DirectoryPath, "FarmTypes"));
-            foreach (var choice in choices)
+            var farmTypeDirs = Directory.GetDirectories(Path.Combine(Helper.DirectoryPath, "FarmTypes"));
+            foreach (var folderPath in farmTypeDirs)
             {
-                if (!File.Exists(Path.Combine(choice, "type.json")) || !File.Exists(Path.Combine(choice, "map.xnb")) || !File.Exists(Path.Combine(choice, "icon.png")) )
+                IContentPack contentPack = this.Helper.ContentPacks.CreateFake(folderPath);
+                if (!File.Exists(Path.Combine(folderPath, "type.json")) || !File.Exists(Path.Combine(folderPath, "map.xnb")) || !File.Exists(Path.Combine(folderPath, "icon.png")) )
                 {
-                    Log.error("A required file is missing for custom farm type \"" + choice + "\".");
+                    Log.error($"A required file is missing for custom farm type \"{folderPath}\".");
                     continue;
                 }
 
-                FarmType type = Helper.ReadJsonFile<FarmType>(Path.Combine(choice, "type.json"));
+                FarmType type = contentPack.ReadJsonFile<FarmType>("type.json");
                 if ( type == null )
                 {
-                    Log.error("Problem reading type.json for custom farm type \"" + choice + "\".");
+                    Log.error($"Problem reading type.json for custom farm type \"{folderPath}\".");
                     continue;
                 }
 
-                type.Folder = Path.Combine("FarmTypes", Path.GetFileName(choice));
+                type.Folder = Path.Combine("FarmTypes", Path.GetFileName(folderPath));
                 FarmType.register(type);
-                Log.info("\tFarm type: " + type.Name + " (" + type.ID + ")");
+                Log.info($"\tFarm type: {type.Name} ({type.ID})");
             }
         }
 
@@ -244,7 +250,7 @@ namespace CustomFarmTypes
             {
                 var furn = new Furniture(fp.FurnitureID, fp.Position, fp.Rotations);
                 if (fp.HeldFurnitureID != -1)
-                    furn.heldObject = new Furniture(fp.HeldFurnitureID, fp.Position);
+                    furn.heldObject.Value = new Furniture(fp.HeldFurnitureID, fp.Position);
                 Log.debug("Furniture: " + fp.FurnitureID + "(" + fp.HeldFurnitureID + ") @ " + fp.Position + " " + fp.Rotations );
                 house.furniture.Add(furn);
             }
@@ -259,7 +265,7 @@ namespace CustomFarmTypes
                 foreach (var e in type.Farmhouse.Giftbox.Contents)
                 {
                     Log.debug("Giftbox item: " + e.ObjectID + " x " + e.Amount);
-                    items.Add(new SObject(e.ObjectID, e.Amount, false, -1, 0));
+                    items.Add(new SObject(e.ObjectID, e.Amount));
                 }
                 Log.debug("Giftbox position: " + type.Farmhouse.Giftbox.Position);
                 var giftbox = new Chest(0, items, type.Farmhouse.Giftbox.Position, items.Count == 1);

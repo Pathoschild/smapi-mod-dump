@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley.Menus;
@@ -19,15 +16,16 @@ namespace BiggerBackpack
 
         private Texture2D bigBackpack;
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             instance = this;
             bigBackpack = Helper.Content.Load<Texture2D>("backpack.png");
 
-            MenuEvents.MenuClosed += menuClosed;
-            MenuEvents.MenuChanged += menuChanged;
-            GraphicsEvents.OnPreRenderHudEvent += draw;
-            InputEvents.ButtonPressed += inputPressed;
+            helper.Events.Display.MenuChanged += onMenuChanged;
+            helper.Events.Display.RenderingHud += onRenderingHud;
+            helper.Events.Input.ButtonPressed += onButtonPressed;
 
             Helper.ConsoleCommands.Add("player_setbackpacksize", "Set the size of the player's backpack.", command);
         }
@@ -43,27 +41,33 @@ namespace BiggerBackpack
             Game1.player.MaxItems = int.Parse(args[0]);
         }
 
-        private void draw(object sender, EventArgs args)
+        /// <summary>Raised before drawing the HUD (item toolbar, clock, etc) to the screen. The vanilla HUD may be hidden at this point (e.g. because a menu is open).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void onRenderingHud(object sender, RenderingHudEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
 
             if (Game1.currentLocation.Name == "SeedShop" && Game1.player.MaxItems == 36)
             {
-                Game1.spriteBatch.Draw(bigBackpack, Game1.GlobalToLocal(new Vector2((float)(7 * Game1.tileSize + Game1.pixelZoom * 2), (float)(17 * Game1.tileSize))), new Rectangle?(new Rectangle(0, 0, 12, 14)), Color.White, 0.0f, Vector2.Zero, (float)Game1.pixelZoom, SpriteEffects.None, (float)(19.25 * (double)Game1.tileSize / 10000.0));
+                e.SpriteBatch.Draw(bigBackpack, Game1.GlobalToLocal(new Vector2(7 * Game1.tileSize + Game1.pixelZoom * 2, 17 * Game1.tileSize)), new Rectangle(0, 0, 12, 14), Color.White, 0.0f, Vector2.Zero, Game1.pixelZoom, SpriteEffects.None, (float)(19.25 * Game1.tileSize / 10000.0));
             }
         }
 
-        private void inputPressed(object sender, EventArgsInput input)
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void onButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
 
-            if (input.IsActionButton && !input.IsSuppressed)
+            if (e.Button.IsActionButton() && !this.Helper.Input.IsSuppressed(e.Button))
             {
-                if (Game1.player.MaxItems == 36 && Game1.currentLocation.Name == "SeedShop" && input.Cursor.Tile.X == 7 && (input.Cursor.Tile.Y == 17 || input.Cursor.Tile.Y == 18) )
+                if (Game1.player.MaxItems == 36 && Game1.currentLocation.Name == "SeedShop" && e.Cursor.Tile.X == 7 && (e.Cursor.Tile.Y == 17 || e.Cursor.Tile.Y == 18) )
                 {
-                    input.SuppressButton();
+                    this.Helper.Input.Suppress(e.Button);
                     Response yes = new Response("Purchase", "Purchase (50,000g)");
                     Response no = new Response("Not", Game1.content.LoadString("Strings\\Locations:SeedShop_BuyBackpack_ResponseNo"));
                     Response[] resps = new Response[] { yes, no };
@@ -72,12 +76,13 @@ namespace BiggerBackpack
             }
         }
 
-        private void menuClosed(object sender, EventArgsClickableMenuClosed args)
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void onMenuChanged(object sender, MenuChangedEventArgs e)
         {
-            if (!Context.IsWorldReady)
-                return;
-            
-            if ( args.PriorMenu is DialogueBox db )
+            // on closed
+            if (Context.IsWorldReady && e.OldMenu is DialogueBox)
             {
                 if (Game1.currentLocation.lastQuestionKey == "spacechase0.BiggerBackpack" && prevSelResponse == 0)
                 {
@@ -96,43 +101,47 @@ namespace BiggerBackpack
                         Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\UI:NotEnoughMoney2"));
                 }
 
-                GameEvents.UpdateTick -= watchSelectedResponse;
+                Helper.Events.GameLoop.UpdateTicked -= watchSelectedResponse;
                 prevSelResponse = -1;
             }
-        }
 
-        private void menuChanged(object sender, EventArgsClickableMenuChanged args)
-        {
-            if (args.NewMenu == null)
-                return;
-
-            if (args.NewMenu is GameMenu gameMenu)
+            // on new menu
+            switch (e.NewMenu)
             {
-                var pages = (List<IClickableMenu>)Helper.Reflection.GetField<List<IClickableMenu>>(gameMenu, "pages").GetValue();
-                var oldInv = pages[GameMenu.inventoryTab];
-                if (oldInv.GetType() == typeof(InventoryPage))
+                case GameMenu gameMenu:
                 {
-                    pages[GameMenu.inventoryTab] = new NewInventoryPage(oldInv.xPositionOnScreen, oldInv.yPositionOnScreen, oldInv.width, oldInv.height);
+                    var pages = (List<IClickableMenu>)Helper.Reflection.GetField<List<IClickableMenu>>(gameMenu, "pages").GetValue();
+                    var oldInv = pages[GameMenu.inventoryTab];
+                    if (oldInv.GetType() == typeof(InventoryPage))
+                    {
+                        pages[GameMenu.inventoryTab] = new NewInventoryPage(oldInv.xPositionOnScreen, oldInv.yPositionOnScreen, oldInv.width, oldInv.height);
+                    }
+
+                    break;
                 }
-            }
-            else if (args.NewMenu is MenuWithInventory menuWithInv)
-            {
-                menuWithInv.inventory.capacity = 48;
-                menuWithInv.inventory.rows = 4;
-                menuWithInv.height += 64;
-            }
-            else if ( args.NewMenu is ShopMenu shop )
-            {
-                shop.inventory = new InventoryMenu(shop.inventory.xPositionOnScreen, shop.inventory.yPositionOnScreen, false, (List<Item>)null, new InventoryMenu.highlightThisItem(shop.highlightItemToSell), 48, 4, 0, 0, true);
-            }
-            else if ( args.NewMenu is DialogueBox )
-            {
-                GameEvents.UpdateTick += watchSelectedResponse;
+
+                case MenuWithInventory menuWithInv:
+                    menuWithInv.inventory.capacity = 48;
+                    menuWithInv.inventory.rows = 4;
+                    menuWithInv.height += 64;
+                    break;
+
+                case ShopMenu shop:
+                    shop.inventory = new InventoryMenu(shop.inventory.xPositionOnScreen, shop.inventory.yPositionOnScreen, false, (List<Item>)null, new InventoryMenu.highlightThisItem(shop.highlightItemToSell), 48, 4, 0, 0, true);
+                    break;
+
+                case DialogueBox _:
+                    Helper.Events.GameLoop.UpdateTicked += watchSelectedResponse;
+                    break;
             }
         }
 
         int prevSelResponse = -1;
-        private void watchSelectedResponse(object sender, EventArgs args)
+
+        /// <summary>Raised after the game state is updated (≈60 times per second), while waiting for a dialogue response.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void watchSelectedResponse(object sender, UpdateTickedEventArgs e)
         {
             if (Game1.activeClickableMenu is DialogueBox db)
             {

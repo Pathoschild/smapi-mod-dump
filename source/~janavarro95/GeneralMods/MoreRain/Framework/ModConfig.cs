@@ -1,4 +1,4 @@
-﻿namespace Omegasis.MoreRain.Framework
+namespace Omegasis.MoreRain.Framework
 {
     /// <summary>The mod configuration.</summary>
     internal class ModConfig

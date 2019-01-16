@@ -4,8 +4,8 @@
   "Version": "1.0.4",
   "Description": "Adds another backpack size.",
   "UniqueID": "spacechase0.BiggerBackpack",
-  "PerSaveConfigs": false,
   "EntryDll": "BiggerBackpack.dll",
+  "MinimumApiVersion": "2.9.0",
   "UpdateKeys": [ "Nexus:1845", "Chucklefish:5191" ],
   "spacechase0": "bigger-backpack"
 }

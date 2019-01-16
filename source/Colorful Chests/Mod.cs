@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 
 namespace ColorfulChests
@@ -18,54 +12,65 @@ namespace ColorfulChests
     {
         private Texture2D hsl;
 
-        private IClickableMenu activeMenu;
+        private ItemGrabMenu activeMenu;
         private Chest activeChest;
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             hsl = Helper.Content.Load<Texture2D>("hsl.png");
-            MenuEvents.MenuChanged += onMenuChanged;
+            helper.Events.Display.MenuChanged += onMenuChanged;
         }
 
-        private void onMenuChanged(object sender, EventArgsClickableMenuChanged args)
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void onMenuChanged(object sender, MenuChangedEventArgs e)
         {
             activeMenu = null;
             activeChest = null;
-            GraphicsEvents.OnPostRenderGuiEvent -= onPostRenderGui;
-            ControlEvents.MouseChanged -= onMouseChanged;
+            Helper.Events.Display.RenderedActiveMenu -= onRenderedActiveMenu;
+            Helper.Events.Input.ButtonPressed -= onButtonPressed;
             
-            if ( args.NewMenu is ItemGrabMenu menu && Helper.Reflection.GetField<Item>(menu, "sourceItem").GetValue() is Chest chest )
+            if ( e.NewMenu is ItemGrabMenu menu && Helper.Reflection.GetField<Item>(menu, "sourceItem").GetValue() is Chest chest )
             {
                 activeMenu = menu;
                 activeChest = chest;
                 menu.chestColorPicker = null;
                 menu.colorPickerToggleButton = null;
-                GraphicsEvents.OnPostRenderGuiEvent += onPostRenderGui;
-                ControlEvents.MouseChanged += onMouseChanged;
+                Helper.Events.Display.RenderedActiveMenu += onRenderedActiveMenu;
+                Helper.Events.Input.ButtonPressed += onButtonPressed;
             }
         }
 
-        private void onPostRenderGui(object sender, EventArgs args)
+        /// <summary>When a menu is open (<see cref="Game1.activeClickableMenu"/> isn't null), raised after that menu is drawn to the sprite batch but before it's rendered to the screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void onRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
         {
             if (activeMenu == null)
                 return;
 
-            SpriteBatch sb = Game1.spriteBatch;
-            //sb.Begin();
-            sb.Draw(hsl, new Microsoft.Xna.Framework.Vector2((Game1.viewport.Width - hsl.Width) / 2, 32), Color.White);
-            activeMenu.drawMouse(sb);
-            //sb.End();
+            e.SpriteBatch.Draw(hsl, new Vector2((Game1.viewport.Width - hsl.Width) / 2, 32), Color.White);
+            activeMenu.drawMouse(e.SpriteBatch);
         }
 
-        private void onMouseChanged( object sender, EventArgsMouseStateChanged args)
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void onButtonPressed( object sender, ButtonPressedEventArgs e )
         {
-            if ( args.NewState.LeftButton == ButtonState.Pressed && args.PriorState.LeftButton == ButtonState.Released )
+            if (activeMenu == null)
+                return;
+
+            if ( e.Button == SButton.MouseLeft )
             {
+                Vector2 screenPos = e.Cursor.ScreenPixels;
                 int x = ( Game1.viewport.Width - hsl.Width ) / 2, y = 32;
-                if ( args.NewPosition.X >= x && args.NewPosition.Y >= y && 
-                     args.NewPosition.X <= x + hsl.Width && args.NewPosition.Y <= y + hsl.Height )
+                if (screenPos.X >= x && screenPos.Y >= y && screenPos.X <= x + hsl.Width && screenPos.Y <= y + hsl.Height )
                 {
-                    var pos = new Point(args.NewPosition.X - x, args.NewPosition.Y - y);
+                    var pos = new Point((int)screenPos.X - x, (int)screenPos.Y - y);
 
                     var cols = new Color[hsl.Width * hsl.Height];
                     hsl.GetData<Color>(cols);

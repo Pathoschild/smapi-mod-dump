@@ -5,9 +5,12 @@ mods:
    Extended Reach
 
 latest commit:
-   commit 57f966b3a578ebcff453f065893e886e637a679b
-   Author: spacechase0 <spacechase0@users.noreply.github.com>
-   Date:   Wed Nov 21 12:46:14 2018 -0500
+   commit 1e3aaaced7863bdf2447c3a2d3219e087b452126
+   Merge: 57f966b 37ea86f
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Tue Jan 15 18:28:08 2019 -0500
    
-       Fix manifest and stuff
+       Merge pull request #3 from Pathoschild/update-code
+       
+       Minor updates & cleanup
    

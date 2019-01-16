@@ -1,0 +1,14 @@
+{
+  "Name": "IV Bag",
+  "Author": "mpcomplete",
+  "Version": "1.0",
+  "Description": "Adds an IV bag to the Game",
+  "UniqueID": "mpcomplete.IVBag",
+  "EntryDll": "IntravenousCoffee.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.Toolkit"
+    }
+  ],
+  "UpdateKeys": [ "Nexus:1133" ]
+}

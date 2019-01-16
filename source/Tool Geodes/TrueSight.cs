@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Netcode;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -7,15 +6,13 @@ using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SObject = StardewValley.Object;
 
 namespace ToolGeodes
 {
     public static class TrueSight
     {
-        private static Dictionary<int, StardewValley.Object> drawObjs = new Dictionary<int, StardewValley.Object>();
+        private static readonly Dictionary<int, SObject> drawObjs = new Dictionary<int, SObject>();
         internal static void onDrawWorld(object sender, RenderedWorldEventArgs args)
         {
             if (!Context.IsWorldReady)
@@ -73,7 +70,7 @@ namespace ToolGeodes
                     {
                         if (!drawObjs.ContainsKey(doDraw))
                         {
-                            drawObjs.Add(doDraw, new StardewValley.Object(new Vector2(0, 0), doDraw, 1));
+                            drawObjs.Add(doDraw, new SObject(new Vector2(0, 0), doDraw, 1));
                         }
                         var dobj = drawObjs[doDraw];
                         dobj.drawInMenu(b, Game1.GlobalToLocal(Game1.viewport, new Vector2(pos.X * 64, pos.Y * 64)), 0.8f, 0.5f, 1, false, Color.White, false);
@@ -84,7 +81,7 @@ namespace ToolGeodes
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidNetField")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidImplicitNetFieldCast")]
-        public static int mineDrops(int tileIndexOfStone, int x, int y, Farmer who, StardewValley.Locations.MineShaft ms)
+        public static int mineDrops(int tileIndexOfStone, int x, int y, Farmer who, MineShaft ms)
         {
             int mineLevel = ms.mineLevel;
             int stonesLeftOnThisLevel = Mod.instance.Helper.Reflection.GetProperty<int>(ms, "stonesLeftOnThisLevel").GetValue();
@@ -92,14 +89,14 @@ namespace ToolGeodes
 
             if (who == null)
                 who = Game1.player;
-            double num1 = Game1.dailyLuck / 2.0 + (double)who.MiningLevel * 0.005 + (double)who.LuckLevel * 0.001;
+            double num1 = Game1.dailyLuck / 2.0 + who.MiningLevel * 0.005 + who.LuckLevel * 0.001;
             Random r = new Random(x * 1000 + y + mineLevel + (int)Game1.uniqueIDForThisGame / 2);
             r.NextDouble();
             double num2 = tileIndexOfStone == 40 || tileIndexOfStone == 42 ? 1.2 : 0.8;
             //if (tileIndexOfStone != 34 && tileIndexOfStone != 36 && tileIndexOfStone != 50)
             //    ;
             --stonesLeftOnThisLevel;
-            double num3 = 0.02 + 1.0 / (double)Math.Max(1, stonesLeftOnThisLevel) + (double)who.LuckLevel / 100.0 + Game1.dailyLuck / 5.0;
+            double num3 = 0.02 + 1.0 / Math.Max(1, stonesLeftOnThisLevel) + who.LuckLevel / 100.0 + Game1.dailyLuck / 5.0;
             if (ms.characters.Count == 0)
                 num3 += 0.04;
             if (!ladderHasSpawned && (stonesLeftOnThisLevel == 0 || r.NextDouble() < num3))
@@ -262,9 +259,9 @@ namespace ToolGeodes
                 if (r.NextDouble() < 0.25)
                     ;// ret = 74;
             }
-            if (((bool)((NetFieldBase<bool, NetBool>)ms.isOutdoors) || (bool)((NetFieldBase<bool, NetBool>)ms.treatAsOutdoors)) && ret == -1)
+            if ((ms.isOutdoors.Value || ms.treatAsOutdoors.Value) && ret == -1)
             {
-                double num2 = Game1.dailyLuck / 2.0 + (double)who.MiningLevel * 0.005 + (double)who.LuckLevel * 0.001;
+                double num2 = Game1.dailyLuck / 2.0 + who.MiningLevel * 0.005 + who.LuckLevel * 0.001;
                 Random random = new Random(x * 1000 + y + (int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame / 2);
 
                 if (who.professions.Contains(21) && random.NextDouble() < 0.05 * (1.0 + num2))
@@ -292,7 +289,7 @@ namespace ToolGeodes
         {
             Random random = new Random(xLocation * 2000 + yLocation + (int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed);
             int objectIndex = -1;
-            foreach (KeyValuePair<int, string> keyValuePair in (IEnumerable<KeyValuePair<int, string>>)Game1.objectInformation)
+            foreach (KeyValuePair<int, string> keyValuePair in Game1.objectInformation)
             {
                 string[] strArray1 = keyValuePair.Value.Split('/');
                 if (strArray1[3].Contains("Arch"))
@@ -301,7 +298,7 @@ namespace ToolGeodes
                     int index = 0;
                     while (index < strArray2.Length)
                     {
-                        if (strArray2[index].Equals((string)((NetFieldBase<string, NetString>)Game1.currentLocation.name)) && random.NextDouble() < Convert.ToDouble(strArray2[index + 1], (IFormatProvider)CultureInfo.InvariantCulture))
+                        if (strArray2[index].Equals(Game1.currentLocation.Name) && random.NextDouble() < Convert.ToDouble(strArray2[index + 1], CultureInfo.InvariantCulture))
                         {
                             objectIndex = keyValuePair.Key;
                             break;
@@ -330,9 +327,9 @@ namespace ToolGeodes
             else
             {
                 Dictionary<string, string> dictionary = Game1.content.Load<Dictionary<string, string>>("Data\\Locations");
-                if (!dictionary.ContainsKey((string)((NetFieldBase<string, NetString>)Game1.currentLocation.name)))
+                if (!dictionary.ContainsKey(Game1.currentLocation.name))
                     return -1;
-                string[] strArray = dictionary[(string)((NetFieldBase<string, NetString>)Game1.currentLocation.name)].Split('/')[8].Split(' ');
+                string[] strArray = dictionary[Game1.currentLocation.Name].Split('/')[8].Split(' ');
                 if (strArray.Length == 0 || strArray[0].Equals("-1"))
                     return -1;
                 int index1 = 0;
@@ -352,7 +349,7 @@ namespace ToolGeodes
                         }
                         if (index2 == 330 && who.hasMagnifyingGlass && Game1.random.NextDouble() < 0.11)
                         {
-                            StardewValley.Object unseenSecretNote = Game1.currentLocation.tryToCreateUnseenSecretNote(who);
+                            SObject unseenSecretNote = Game1.currentLocation.tryToCreateUnseenSecretNote(who);
                             if (unseenSecretNote != null)
                             {
                                 return 79;

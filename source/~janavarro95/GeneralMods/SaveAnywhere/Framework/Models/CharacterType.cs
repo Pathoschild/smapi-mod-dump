@@ -1,4 +1,4 @@
-﻿namespace Omegasis.SaveAnywhere.Framework.Models
+namespace Omegasis.SaveAnywhere.Framework.Models
 {
     /// <summary>The character type for an NPC.</summary>
     public enum CharacterType

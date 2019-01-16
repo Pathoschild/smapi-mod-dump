@@ -1,10 +1,13 @@
 {
-  "Name": "CustomNPCFramework",
+  "Name": "Custom NPC Framework",
   "Author": "Alpha_Omegasis",
   "Version": "0.1.0",
-  "Description": "A system to add custom npcs to Stardew.",
+  "Description": "A system to add custom NPCs to Stardew.",
   "UniqueID": "Omegasis.CustomNPCFramework",
   "EntryDll": "CustomNPCFramework.dll",
-  "MinimumApiVersion": "2.0",
-  "UpdateKeys": [ ]
+  "MinimumApiVersion": "2.10.1",
+  "UpdateKeys": [],
+  "Dependencies": [
+    { "UniqueID": "Omegasis.StardustCore" }
+  ]
 }

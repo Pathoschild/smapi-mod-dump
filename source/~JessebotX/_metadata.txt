@@ -6,9 +6,9 @@ mods:
    Health and Stamina Regeneration
 
 latest commit:
-   commit 17beda319b16254ab6f00474209cbc5c1253646b
+   commit fc502e783f6666e124d87ed4ec887492b05509ca
    Author: JessebotX <43657800+JessebotX@users.noreply.github.com>
-   Date:   Sun Jan 13 12:30:24 2019 -0800
+   Date:   Tue Jan 15 18:31:50 2019 -0800
    
-       Sprint
+       wip
    

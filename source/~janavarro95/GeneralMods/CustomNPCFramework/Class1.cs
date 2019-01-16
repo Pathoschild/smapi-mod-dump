@@ -1,20 +1,16 @@
-﻿using CustomNPCFramework.Framework.Enums;
-using CustomNPCFramework.Framework.Graphics;
-using CustomNPCFramework.Framework.ModularNPCS;
-using CustomNPCFramework.Framework.ModularNPCS.CharacterAnimationBases;
-using CustomNPCFramework.Framework.ModularNPCS.ColorCollections;
-using CustomNPCFramework.Framework.NPCS;
-using CustomNPCFramework.Framework.Utilities;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
-using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CustomNPCFramework.Framework.Enums;
+using CustomNPCFramework.Framework.Graphics;
+using CustomNPCFramework.Framework.ModularNpcs.ColorCollections;
+using CustomNPCFramework.Framework.NPCS;
+using CustomNPCFramework.Framework.Utilities;
+using Microsoft.Xna.Framework;
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewValley;
 
 namespace CustomNPCFramework
 {
@@ -44,90 +40,75 @@ namespace CustomNPCFramework
     /// Find way to make sideways shirts render correctly.
     /// 
     ///Get suggestions from modding community on requests and ways to improve the mod. 
-
     /// </summary>
-
     public class Class1 : Mod
     {
-        /// <summary>
-        /// The mod helper for the mod.
-        /// </summary>
+        /// <summary>The mod helper for the mod.</summary>
         public static IModHelper ModHelper;
-        /// <summary>
-        /// The mod monitor for the mod.
-        /// </summary>
+
+        /// <summary>The mod monitor for the mod.</summary>
         public static IMonitor ModMonitor;
 
-        /// <summary>
-        /// The npc tracker for the mod. Keeps track of all npcs added by the custom framework and cleans them up during saving.
-        /// </summary>
-        public static NPCTracker npcTracker;
-        /// <summary>
-        /// Keeps track of all of the asets/textures added in by the framework. Also manages all of the asset managers that are the ones actually managing the textures.
-        /// </summary>
+        /// <summary>The npc tracker for the mod. Keeps track of all npcs added by the custom framework and cleans them up during saving.</summary>
+        public static NpcTracker npcTracker;
+
+        /// <summary>Keeps track of all of the asets/textures added in by the framework. Also manages all of the asset managers that are the ones actually managing the textures.</summary>
         public static AssetPool assetPool;
-        
-        /// <summary>
-        /// Ran when loading the SMAPI. Used to initialize data.
-        /// </summary>
-        /// <param name="helper"></param>
+
+        public static IManifest Manifest;
+
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             ModHelper = this.Helper;
             ModMonitor = this.Monitor;
+            Manifest = this.ModManifest;
 
-            StardewModdingAPI.Events.SaveEvents.AfterLoad += SaveEvents_LoadChar;
-
-            StardewModdingAPI.Events.SaveEvents.BeforeSave += SaveEvents_BeforeSave;
-            StardewModdingAPI.Events.SaveEvents.AfterSave += SaveEvents_AfterSave;
-
-            StardewModdingAPI.Events.PlayerEvents.Warped += LocationEvents_CurrentLocationChanged;
-            StardewModdingAPI.Events.GameEvents.UpdateTick += GameEvents_UpdateTick;
-            npcTracker = new NPCTracker();
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            helper.Events.GameLoop.Saving += this.OnSaving;
+            helper.Events.GameLoop.Saved += this.OnSaved;
+            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            npcTracker = new NpcTracker();
             assetPool = new AssetPool();
             var assetManager = new AssetManager();
             assetPool.addAssetManager(new KeyValuePair<string, AssetManager>("testNPC", assetManager));
-            initializeExamples();
-            initializeAssetPool();
+            this.initializeExamples();
+            this.initializeAssetPool();
             assetPool.loadAllAssets();
         }
 
-        /// <summary>
-        /// Initialize the asset pool with some test variables.
-        /// </summary>
+        /// <summary>Initialize the asset pool with some test variables.</summary>
         public void initializeAssetPool()
         {
-            string path = Path.Combine(ModHelper.DirectoryPath, "Content", "Graphics", "NPCS");
-            assetPool.getAssetManager("testNPC").addPathCreateDirectory(new KeyValuePair<string, string>("characters", path));
+            string relativePath = Path.Combine("Content", "Graphics", "NPCS");
+            assetPool.getAssetManager("testNPC").addPathCreateDirectory(new KeyValuePair<string, string>("characters", relativePath));
         }
 
-        /// <summary>
-        /// A function that is called when the game finishes saving.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SaveEvents_AfterSave(object sender, EventArgs e)
+        /// <summary>Raised after the game finishes writing data to the save file (except the initial save creation).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaved(object sender, SavedEventArgs e)
         {
             npcTracker.afterSave();
         }
 
-        /// <summary>
-        /// A function that is called when the game is about to load. Used to clean up all the npcs from the game world to prevent it from crashing.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SaveEvents_BeforeSave(object sender, EventArgs e)
+        /// <summary>Raised before the game begins writes data to the save file (except the initial save creation).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaving(object sender, SavingEventArgs e)
         {
+            // clean up all the npcs from the game world to prevent it from crashing
             npcTracker.cleanUpBeforeSave();
         }
 
-        /// <summary>
-        /// Called upon 60 times a second. For testing purposes only. Will remove in future release.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void GameEvents_UpdateTick(object sender, EventArgs e)
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
+            // TODO For testing purposes only. Will remove in future release.
+
             /*
             if (Game1.player.currentLocation == null) return;
             if (Game1.activeClickableMenu != null) return;
@@ -144,93 +125,59 @@ namespace CustomNPCFramework
             */
         }
 
-        /// <summary>
-        /// Called when the player's location changes.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void LocationEvents_CurrentLocationChanged(object sender, StardewModdingAPI.Events.EventArgsPlayerWarped e)
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-         
-        }
+            // TODO Used to spawn a custom npc just as an example. Don't keep this code. GENERATE NPC AND CALL THE CODE
 
-        /// <summary>
-        /// Used to spawn a custom npc just as an example. Don't keep this code.
-        /// GENERATE NPC AND CALL THE CODE
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SaveEvents_LoadChar(object sender, EventArgs e)
-        {
-            ExtendedNPC myNpc3 = assetPool.generateNPC(Genders.female, 0, 1,new StandardColorCollection(null, null, Color.Blue, null, Color.Yellow, null));
-            MerchantNPC merch = new MerchantNPC(new List<Item>()
+            ExtendedNpc myNpc3 = assetPool.generateNPC(Genders.female, 0, 1, new StandardColorCollection(null, null, Color.Blue, null, Color.Yellow, null));
+            MerchantNpc merch = new MerchantNpc(new List<Item>()
             {
                 new StardewValley.Object(475,999)
             }, myNpc3);
-            npcTracker.addNewNPCToLocation(Game1.getLocationFromName("BusStop", false), merch,new Vector2(2,23));
+            npcTracker.addNewNpcToLocation(Game1.getLocationFromName("BusStop", false), merch, new Vector2(2, 23));
         }
 
-        /// <summary>
-        /// Used to initialize examples for other modders to look at as reference.
-        /// </summary>
+        /// <summary>Used to initialize examples for other modders to look at as reference.</summary>
         public void initializeExamples()
         {
             return;
-            string dirPath = Path.Combine(ModHelper.DirectoryPath, "Content", "Templates");
-            var aManager=assetPool.getAssetManager("testNPC");
-            aManager.addPathCreateDirectory(new KeyValuePair<string, string>("templates", dirPath));
-            string filePath =Path.Combine(dirPath, "Example.json");
-            if (!File.Exists(filePath))
-            {
-                string getRelativePath = getShortenedDirectory(filePath);
-                ModMonitor.Log("THIS IS THE PATH::: " + getRelativePath);
-                AssetInfo info = new AssetInfo("MyExample",new NamePairings("StandingExampleL", "StandingExampleR", "StandingExampleU", "StandingExampleD"), new NamePairings("MovingExampleL", "MovingExampleR", "MovingExampleU", "MovingExampleD"), new NamePairings("SwimmingExampleL", "SwimmingExampleR", "SwimmingExampleU", "SwimmingExampleD"), new NamePairings("SittingExampleL", "SittingExampleR", "SittingExampleU", "SittingExampleD"), new Vector2(16, 16), false);
-                info.writeToJson(filePath);
+            string relativeDirPath = Path.Combine("Content", "Templates");
+            var aManager = assetPool.getAssetManager("testNPC");
+            aManager.addPathCreateDirectory(new KeyValuePair<string, string>("templates", relativeDirPath));
 
-            }
-            string filePath2 = Path.Combine(dirPath, "AdvancedExample.json");
-            if (!File.Exists(filePath2))
+            // write example
             {
+                string relativeFilePath = Path.Combine(relativeDirPath, "Example.json");
+                if (!File.Exists(Path.Combine(this.Helper.DirectoryPath, relativeFilePath)))
+                {
+                    ModMonitor.Log("THIS IS THE PATH::: " + relativeFilePath);
+                    AssetInfo info = new AssetInfo("MyExample", new NamePairings("StandingExampleL", "StandingExampleR", "StandingExampleU", "StandingExampleD"), new NamePairings("MovingExampleL", "MovingExampleR", "MovingExampleU", "MovingExampleD"), new NamePairings("SwimmingExampleL", "SwimmingExampleR", "SwimmingExampleU", "SwimmingExampleD"), new NamePairings("SittingExampleL", "SittingExampleR", "SittingExampleU", "SittingExampleD"), new Vector2(16, 16), false);
+                    info.writeToJson(relativeFilePath);
 
-                ExtendedAssetInfo info2 = new ExtendedAssetInfo("AdvancedExample", new NamePairings("AdvancedStandingExampleL", "AdvancedStandingExampleR", "AdvancedStandingExampleU", "AdvancedStandingExampleD"), new NamePairings("AdvancedMovingExampleL", "AdvancedMovingExampleR", "AdvancedMovingExampleU", "AdvancedMovingExampleD"), new NamePairings("AdvancedSwimmingExampleL", "AdvancedSwimmingExampleR", "AdvancedSwimmingExampleU", "AdvancedSwimmingExampleD"), new NamePairings("AdvancedSittingExampleL", "AdvancedSittingExampleR", "AdvancedSittingExampleU", "AdvancedSittingExampleD"), new Vector2(16, 16), false, Genders.female, new List<Seasons>()
-            {
-                Seasons.spring,
-                Seasons.summer
-            }, PartType.hair
-                );
-                info2.writeToJson(filePath2);
+                }
             }
-        }
 
-        /// <summary>
-        /// Used to splice the mod directory to get relative paths.
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static string getShortenedDirectory(string path)
-        {
-            string lol = (string)path.Clone();
-            string[] spliter = lol.Split(new string[] { ModHelper.DirectoryPath },StringSplitOptions.None);
-            try
+            // write advanced example
             {
-                return spliter[1];
-            }
-            catch(Exception err)
-            {
-                err.ToString();
-                return spliter[0];
+                string relativeFilePath = Path.Combine(relativeDirPath, "AdvancedExample.json");
+                if (!File.Exists(Path.Combine(this.Helper.DirectoryPath, relativeFilePath)))
+                {
+                    ExtendedAssetInfo info2 = new ExtendedAssetInfo("AdvancedExample", new NamePairings("AdvancedStandingExampleL", "AdvancedStandingExampleR", "AdvancedStandingExampleU", "AdvancedStandingExampleD"), new NamePairings("AdvancedMovingExampleL", "AdvancedMovingExampleR", "AdvancedMovingExampleU", "AdvancedMovingExampleD"), new NamePairings("AdvancedSwimmingExampleL", "AdvancedSwimmingExampleR", "AdvancedSwimmingExampleU", "AdvancedSwimmingExampleD"), new NamePairings("AdvancedSittingExampleL", "AdvancedSittingExampleR", "AdvancedSittingExampleU", "AdvancedSittingExampleD"), new Vector2(16, 16), false, Genders.female, new List<Seasons>() { Seasons.spring, Seasons.summer }, PartType.hair);
+                    info2.writeToJson(relativeFilePath);
+                }
             }
         }
 
-        /// <summary>
-        /// Used to finish cleaning up absolute asset paths into a shortened relative path.
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <summary>Used to finish cleaning up absolute asset paths into a shortened relative path.</summary>
         public static string getRelativeDirectory(string path)
         {
-            string s = getShortenedDirectory(path);
-            return s.Remove(0, 1);
+            return path
+                .Split(new[] { ModHelper.DirectoryPath }, 2, StringSplitOptions.None)
+                .Last()
+                .TrimStart(Path.DirectorySeparatorChar);
         }
     }
 }

@@ -1,22 +1,22 @@
-﻿using StardewModdingAPI;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StardewModdingAPI;
 
 namespace Omegasis.NightOwl.Framework
 {
     class NightFishing : IAssetEditor
     {
+        /// <summary>Get whether this instance can edit the given asset.</summary>
+        /// <param name="asset">Basic metadata about the asset being loaded.</param>
         public bool CanEdit<T>(IAssetInfo asset)
         {
             return asset.AssetNameEquals(@"Data\Fish");
         }
 
+        /// <summary>Edit a matched asset.</summary>
+        /// <param name="asset">A helper which encapsulates metadata about an asset and enables changes to it.</param>
         public void Edit<T>(IAssetData asset)
         {
-            Dictionary<int,string> nightFish=new Dictionary<int, string> // (T)(object) is a trick to cast anything to T if we know it's compatible
+            Dictionary<int, string> nightFish = new Dictionary<int, string>
             {
                 [128] = "Pufferfish/80/floater/1/36/1200 1600/summer/sunny/690 .4 685 .1/4/.3/.5/0",
                 [129] = "Anchovy/30/dart/1/16/600 3000/spring fall/both/682 .2/1/.25/.3/0",
@@ -82,10 +82,10 @@ namespace Omegasis.NightOwl.Framework
                 [799] = "Spook Fish/60/dart/8/25/600 3000/spring summer fall winter/both/685 .35/3/.4/.1/0",
                 [800] = "Blobfish/75/floater/8/25/600 3000/spring summer fall winter/both/685 .35/3/.4/.1/0",
             };
-            foreach (KeyValuePair<int, string> pair in nightFish) {
-                asset.AsDictionary<int, string>().Set(pair.Key, pair.Value);
-            }
-        }
 
+            IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
+            foreach (KeyValuePair<int, string> pair in nightFish)
+                data[pair.Key] = pair.Value;
+        }
     }
 }

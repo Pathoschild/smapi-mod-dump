@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -15,21 +11,25 @@ namespace Bow
     {
         public static Mod instance;
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             instance = this;
 
-            MenuEvents.MenuChanged += menuChanged;
+            helper.Events.Display.MenuChanged += onMenuChanged;
 
             BowTool.Texture = helper.Content.Load<Texture2D>("bow.png");
         }
 
-        private void menuChanged(object sender, EventArgsClickableMenuChanged args)
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void onMenuChanged(object sender, MenuChangedEventArgs e)
         {
-            var menu = args.NewMenu as ShopMenu;
-            if (menu == null || menu.portraitPerson?.Name != "Marlon" )
+            if (!(e.NewMenu is ShopMenu menu) || menu.portraitPerson?.Name != "Marlon")
                 return;
-            
+
             Log.trace($"Adding bow to Marlon's shop.");
 
             var forSale = Helper.Reflection.GetField<List<Item>>(menu, "forSale").GetValue();

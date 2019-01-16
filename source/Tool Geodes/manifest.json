@@ -4,14 +4,11 @@
   "Version": "1.1.1",
   "Description": "Apply geodes to tools for special effects.",
   "UniqueID": "spacechase0.ToolGeodes",
-  "PerSaveConfigs": false,
   "EntryDll": "ToolGeodes.dll",
+  "MinimumApiVersion": "2.9.0",
   "UpdateKeys": [ "Nexus:3090", "Chucklefish:5606" ],
   "Dependencies": [
-    {
-      "UniqueID": "stokastic.PrismaticTools",
-      "IsRequired": false
-    }
+    { "UniqueID": "stokastic.PrismaticTools", "IsRequired": false }
   ],
   "spacechase0": "tool-geodes"
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -15,34 +13,38 @@ namespace ShipAnywhere
         public static Mod instance;
         public static Configuration Config;
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            base.Entry(helper);
             instance = this;
 
             Config = helper.ReadConfig<Configuration>();
 
-            ControlEvents.KeyPressed += onKeyPress;
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
         }
 
-        private void onKeyPress(object mod, EventArgsKeyPressed args)
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady || !Context.IsPlayerFree)
                 return;
 
-            if ( args.KeyPressed == Config.OpenShippingBox.key )
+            if (e.Button == Config.OpenShippingBox)
             {
-                var func = typeof(Farm).GetMethod("shipItem", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-                var del = (ItemGrabMenu.behaviorOnItemSelect) Delegate.CreateDelegate(typeof(ItemGrabMenu.behaviorOnItemSelect), Game1.getFarm(), func);
-                
-                ItemGrabMenu itemGrabMenu = new ItemGrabMenu((List<Item>)null, true, false, new InventoryMenu.highlightThisItem(Utility.highlightShippableObjects), del, "", (ItemGrabMenu.behaviorOnItemSelect)null, true, true, false, true, false, 0, (Item)null, -1, (object)null);
+                var func = typeof(Farm).GetMethod("shipItem", BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(Item), typeof(Farmer) }, null);
+                var del = (ItemGrabMenu.behaviorOnItemSelect)Delegate.CreateDelegate(typeof(ItemGrabMenu.behaviorOnItemSelect), Game1.getFarm(), func);
+
+                ItemGrabMenu itemGrabMenu = new ItemGrabMenu((List<Item>)null, true, false, Utility.highlightShippableObjects, del, "", null, true, true, false);
                 itemGrabMenu.initializeUpperRightCloseButton();
                 int num1 = 0;
                 itemGrabMenu.setBackgroundTransparency(num1 != 0);
                 int num2 = 1;
                 itemGrabMenu.setDestroyItemOnClick(num2 != 0);
                 itemGrabMenu.initializeShippingBin();
-                Game1.activeClickableMenu = (IClickableMenu)itemGrabMenu;
+                Game1.activeClickableMenu = itemGrabMenu;
             }
         }
     }

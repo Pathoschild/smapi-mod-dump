@@ -5,9 +5,12 @@ mods:
    Custom Critters
 
 latest commit:
-   commit 0f4ec780a61ece339987f1b8b340efd1e5911a2a
-   Author: spacechase0 <spacechase0@users.noreply.github.com>
-   Date:   Wed Nov 21 12:42:42 2018 -0500
+   commit 0131d5323e57f0562c4bed704f7ed3a2243f7a76
+   Merge: 0f4ec78 71dba3c
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Tue Jan 15 18:32:50 2019 -0500
    
-       Fix manifest and stuff
+       Merge pull request #7 from Pathoschild/update-code
+       
+       Add content pack support, update for SMAPI 3.0, fix crash
    

@@ -5,9 +5,12 @@ mods:
    Bigger Backpack
 
 latest commit:
-   commit 03fc48026941055528b38a14521b3675bd9707f0
-   Author: spacechase0 <spacechase0@users.noreply.github.com>
-   Date:   Wed Nov 21 12:35:13 2018 -0500
+   commit 86d5725b07403db54ec7dea5e9c4d4e888515cbc
+   Merge: 03fc480 7070838
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Tue Jan 15 18:39:28 2019 -0500
    
-       Fix manifest and stuff
+       Merge pull request #2 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0
    

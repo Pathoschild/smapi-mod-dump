@@ -31,16 +31,19 @@ namespace BattleRoyale
                 string name = assembly.GetName().Name;
                 if (name == "SplitScreen" || name == "Elevator" || name == "WindowResize" || name == "ServerBookmarker" || name == "Social Tab Patch" || name == "ServerBrowser")
                     return true;
-            }
-            catch (Exception) { }
+            
+				if (assembly != Assembly.GetExecutingAssembly())
+					foreach (Type type in assembly.GetTypes())
+						if (type.IsSubclassOf(typeof(Mod)))
+							return false;
 
-            if (assembly != Assembly.GetExecutingAssembly())
-                foreach (Type type in assembly.GetTypes())
-                    if (type.IsSubclassOf(typeof(Mod)))
-                        return false;
-
-            return true;
-        }
+				return true;
+			}
+			catch (Exception) {
+				Console.WriteLine("Failed to load assembly, assuming fine");
+				return true;
+			}
+		}
 
 		internal static bool IsLegal(IMultiplayerPeerMod mod)
 		{

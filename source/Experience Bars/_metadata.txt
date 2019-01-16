@@ -5,9 +5,12 @@ mods:
    Experience Bars
 
 latest commit:
-   commit 7502ba233c53b7e1084888e10ca0a42fd0226d0c
-   Author: spacechase0 <spacechase0@users.noreply.github.com>
-   Date:   Wed Nov 21 12:45:53 2018 -0500
+   commit 1360c5aae33ef90d3b103876f21c9c888546f5b2
+   Merge: 7502ba2 750ff7a
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Tue Jan 15 18:29:35 2019 -0500
    
-       Fix manifest and stuff
+       Merge pull request #4 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0
    

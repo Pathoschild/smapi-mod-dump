@@ -44,7 +44,6 @@ namespace MTN2.Patches.GameLocationPatches {
                     codes[x + 4] = new CodeInstruction(OpCodes.Callvirt, AccessTools.Property(typeof(CustomManager), "GreenHouseEntryY").GetGetMethod());
                 }
             }
-
             return codes.AsEnumerable();
         }
     }

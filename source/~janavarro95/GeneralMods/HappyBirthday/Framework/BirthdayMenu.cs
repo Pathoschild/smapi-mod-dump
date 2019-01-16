@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,7 +11,7 @@ namespace Omegasis.HappyBirthday.Framework
     internal class BirthdayMenu : IClickableMenu
     {
         /*********
-        ** Properties
+        ** Fields
         *********/
         /// <summary>The labels to draw.</summary>
         private readonly List<ClickableComponent> Labels = new List<ClickableComponent>();
@@ -50,9 +50,7 @@ namespace Omegasis.HappyBirthday.Framework
             this.OnChanged = onChanged;
             this.SetUpPositions();
         }
-
- 
-
+        
         /// <summary>The method called when the game window changes size.</summary>
         /// <param name="oldBounds">The former viewport.</param>
         /// <param name="newBounds">The new viewport.</param>
@@ -155,7 +153,7 @@ namespace Omegasis.HappyBirthday.Framework
                 case "OK":
                     if (this.BirthdayDay >= 1 || this.BirthdayDay <= 28)
                         MultiplayerSupport.SendBirthdayInfoToOtherPlayers(); //Send updated info to others.
-                        Game1.exitActiveMenu();
+                    Game1.exitActiveMenu();
                     break;
 
                 default:

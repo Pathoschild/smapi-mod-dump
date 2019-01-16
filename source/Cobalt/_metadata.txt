@@ -5,12 +5,12 @@ mods:
    Cobalt
 
 latest commit:
-   commit 9b6eaa69b4f621ed94cd07833e22ed541945933a
-   Merge: 3256568 7e9637b
+   commit f027e4cf37b0e285c58721f6e8d94880a76cf319
+   Merge: 9b6eaa6 081b064
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Fri Apr 27 10:24:37 2018 -0400
+   Date:   Tue Jan 15 18:42:22 2019 -0500
    
-       Merge pull request #3 from Kevin-Mok/master
+       Merge pull request #4 from Pathoschild/update-code
        
-       Fixed title and link in README
+       Update for Stardew Valley 1.3.32 and the upcoming SMAPI 3.0
    

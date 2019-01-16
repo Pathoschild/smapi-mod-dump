@@ -5,10 +5,10 @@
   "Description": "A mod that brings voice acting to Stardew Valley.",
   "UniqueID": "Omegasis.Vocalization",
   "EntryDll": "Vocalization.dll",
-  "MinimumApiVersion": "2.0",
+  "MinimumApiVersion": "2.10.1",
   "UpdateKeys": [],
   "Dependencies": [
-	"Omegasis.SimpleSoundManager",
-	"Omegasis.StardustCore"
-	]
+    { "UniqueID": "Omegasis.SimpleSoundManager" },
+    { "UniqueID": "Omegasis.StardustCore" }
+  ]
 }

@@ -5,9 +5,12 @@ mods:
    Custom Crops
 
 latest commit:
-   commit 17db31c18fba63a14462ba58a400c514a6ff9592
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Tue Nov 7 20:16:16 2017 -0500
+   commit 0a035389851355962ce63a9ebcea6f20c768466f
+   Merge: 17db31c 865b843
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Tue Jan 15 18:42:02 2019 -0500
    
-       Version 1.1.0
+       Merge pull request #4 from Pathoschild/update-code
+       
+       Update for Stardew Valley 1.3.32 and the upcoming SMAPI 3.0
    

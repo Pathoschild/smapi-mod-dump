@@ -1,83 +1,52 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StardustCore.StardustMath
 {
-    /// <summary>
-    /// Base class for hex representation.
-    /// </summary>
+    /// <summary>Base class for hex representation.</summary>
     public class Hex
     {
-        /// <summary>
-        /// The hex value represented as a string.
-        /// </summary>
+        /// <summary>The hex value represented as a string.</summary>
         public string hexValue;
 
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public Hex()
-        {
+        /// <summary>Default constructor.</summary>
+        public Hex() { }
 
-        }
-        /// <summary>
-        /// Empty Constructor;
-        /// </summary>
+        /// <summary>Construct an instance.</summary>
         /// <param name="HexValue"></param>
-        public Hex(string HexValue)
-        {
+        public Hex(string HexValue) { }
 
-        }
-
-        /// <summary>
-        /// Verifies that the hex is of the specified length.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Verifies that the hex is of the specified length.</summary>
         public virtual bool verifyHexLength()
         {
             return true;
         }
 
-        /// <summary>
-        /// Trims the hex value by removing the leading 0x;
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Trims the hex value by removing the leading 0x;</summary>
         public virtual string trimHex()
         {
             return this.hexValue.Split('x')[1];
         }
 
-        /// <summary>
-        /// A virtual function to be overriden.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>A virtual function to be overriden.</summary>
         public virtual List<string> getBytes()
         {
             return new List<string>();
         }
 
-        /// <summary>
-        /// Converts a Hex byte (represented as a length two string) to an int equal or less than 255. Ex ff=255;
-        /// </summary>
+        /// <summary>Converts a Hex byte (represented as a length two string) to an int equal or less than 255. Ex ff=255;</summary>
         /// <param name="value">The length two value to be converted.</param>
-        /// <returns></returns>
         public virtual int convertHexByteTo255Int(string value)
         {
-            int val1 = convertHexValueToInt(value[0]);
-            int val2 = convertHexValueToInt(value[1]);
+            int val1 = this.convertHexValueToInt(value[0]);
+            int val2 = this.convertHexValueToInt(value[1]);
             val1 *= 16;
             val2 *= 16;
             return val1 + val2;
         }
 
-        /// <summary>
-        /// Converts a hex char to an int.
-        /// </summary>
+        /// <summary>Converts a hex char to an int.</summary>
         /// <param name="c"></param>
-        /// <returns></returns>
         public virtual int convertHexValueToInt(char c)
         {
             if (c == 'a') return 10;
@@ -89,11 +58,8 @@ namespace StardustCore.StardustMath
             else return Convert.ToInt32(c);
         }
 
-        /// <summary>
-        /// Gets the associated byte from the hex positioning.
-        /// </summary>
+        /// <summary>Gets the associated byte from the hex positioning.</summary>
         /// <param name="index"></param>
-        /// <returns></returns>
         public virtual string getByte(int index)
         {
             string hex = this.trimHex();

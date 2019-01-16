@@ -16,7 +16,7 @@ namespace Cobalt
         {
             instance = this;
 
-            Items.init();
+            Items.init(helper.Events);
 
             helper.Content.AssetEditors.Add(new ItemInjector());
             helper.Content.AssetEditors.Add(new CobaltInjector());
