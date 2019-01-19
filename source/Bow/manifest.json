@@ -1,7 +1,7 @@
 {
   "Name": "Bow",
   "Author": "spacechase0",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "A ranged weapon.",
   "UniqueID": "spacechase0.Bow",
   "EntryDll": "Bow.dll",

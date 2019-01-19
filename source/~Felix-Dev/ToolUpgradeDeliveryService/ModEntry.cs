@@ -20,7 +20,7 @@ namespace StardewMods.ToolUpgradeDeliveryService
         public override void Entry(IModHelper helper)
         {
             // Add services
-            CommonServices = new CommonServices(Monitor, helper.Translation, helper.Reflection, helper.Content);
+            CommonServices = new CommonServices(Monitor, helper.Events, helper.Translation, helper.Reflection, helper.Content);
 
             // Setup services
             var mailGenerator = new MailGenerator();

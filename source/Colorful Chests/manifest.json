@@ -1,7 +1,7 @@
 {
   "Name": "Colorful Chests",
   "Author": "spacechase0",
-  "Version": "1.2.2",
+  "Version": "1.2.3",
   "Description": "More diverse color choices for chests.",
   "UniqueID": "spacechase0.ColorfulChests",
   "EntryDll": "ColorfulChests.dll",

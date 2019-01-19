@@ -18,78 +18,76 @@ namespace Sprint
          ***Fields***
          ************/
         private ModConfig Config;
-        /* sprint activated bool */
+
+        private int addedSpeed = 0;
+        private int secondsUntilSpeedIncrement = 4;
+        
+        /*-Buffs-*/
+        private Buff sprintBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1, "Sprint", "Sprint");
+        private Buff sprintBuff2 = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, "Sprint", "Sprint");
+        //-------//
+
         private bool playerSprinting = false;
-        /* Realistic Sprint Speed Timer*/
-        private int secondsUntilIncreaseSpeed = 0;
-        //speed
-        private int sprintSpeed;
 
         public override void Entry(IModHelper helper)
         {
             /* Event Handlers */
-            this.Helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            this.Helper.Events.Input.ButtonPressed += this.ButtonPressed;
             this.Helper.Events.GameLoop.OneSecondUpdateTicked += this.OneSecond;
+            this.Helper.Events.GameLoop.UpdateTicked += this.UpdateTicked;
 
             /* Read Config */
             this.Config = helper.ReadConfig<ModConfig>();
         }
 
-        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            //if player isn't free to act in the world, do nothing
             if (!Context.IsPlayerFree)
             {
                 return;
             }
 
-            else
+            this.Helper.Input.Suppress(this.Config.SprintKey);
+            this.Helper.Input.Suppress(this.Config.ControllerSprintButton);
+
+            bool sprintKeyPressed = this.Helper.Input.IsDown(this.Config.SprintKey | this.Config.ControllerSprintButton);
+
+            if (sprintKeyPressed && Game1.player.isMoving())
             {
-                //suppress game keybinds depending on config values
-                this.Helper.Input.Suppress(this.Config.PrimarySprintKey);
-                this.Helper.Input.Suppress(this.Config.SecondarySprintKey);
-                this.Helper.Input.Suppress(this.Config.ControllerSprintButton);
-                this.Helper.Input.Suppress(this.Config.SlowDownKey);
-
-                // is the key/button being pressed
-                bool isPrimarySprintKeyPressed = this.Helper.Input.IsDown(this.Config.PrimarySprintKey);
-                bool isSecondarySprintKeyPressed = this.Helper.Input.IsDown(this.Config.SecondarySprintKey);
-                bool isControllerSprintButtonPressed = this.Helper.Input.IsDown(this.Config.ControllerSprintButton);
-
-                if (isPrimarySprintKeyPressed || isSecondarySprintKeyPressed || isControllerSprintButtonPressed && Game1.player.isMoving())
+                playerSprinting = true;
+                if (secondsUntilSpeedIncrement <= 4 && secondsUntilSpeedIncrement > 2)
                 {
-                    playerSprinting = true;
-                    secondsUntilIncreaseSpeed = 5;
-                    Game1.player.addedSpeed += this.sprintSpeed;
+                    Game1.buffsDisplay.addOtherBuff(sprintBuff);
+                }
+                else if (secondsUntilSpeedIncrement <= 2)
+                {
+                    Game1.buffsDisplay.addOtherBuff(sprintBuff2);
                 }
             }
         }
 
         private void OneSecond(object sender, OneSecondUpdateTickedEventArgs e)
         {
-            if (!Context.IsPlayerFree)
+            if (playerSprinting)
             {
-                return;
+                if (secondsUntilSpeedIncrement > 0)
+                {
+                    secondsUntilSpeedIncrement--;
+                }
             }
+        }
 
-            if (playerSprinting == true)
+        private void UpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            if (playerSprinting)
             {
-                if (secondsUntilIncreaseSpeed > 0)
+                if (secondsUntilSpeedIncrement <= 4 && secondsUntilSpeedIncrement > 2)
                 {
-                    secondsUntilIncreaseSpeed--;
+                    sprintBuff.millisecondsDuration = 5000;
                 }
-
-                if (secondsUntilIncreaseSpeed <= 5)
+                else if (secondsUntilSpeedIncrement <= 2)
                 {
-                    sprintSpeed = 1;
-                }
-                else if (secondsUntilIncreaseSpeed <= 3)
-                {
-                    sprintSpeed = 2;
-                }
-                else if (secondsUntilIncreaseSpeed <= 0)
-                {
-                    sprintSpeed = 3;
+                    sprintBuff.millisecondsDuration = 5000;
                 }
             }
         }

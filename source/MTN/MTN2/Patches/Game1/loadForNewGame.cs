@@ -20,7 +20,7 @@ namespace MTN2.Patches.Game1Patches {
     /// </summary>
     public class loadForNewGamePatch {
 
-        private static CustomManager customManager;
+        private static ICustomManager customManager;
         private static IMonitor Monitor;
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace MTN2.Patches.Game1Patches {
         /// </summary>
         /// <param name="farmManager">The class controlling information pertaining to the customs (and the loaded customs).</param>
         /// <param name="Monitor">SMAPI's IMonitor, to print out useful information to user.</param>
-        public loadForNewGamePatch(CustomManager customManager, IMonitor Monitor) {
+        public loadForNewGamePatch(ICustomManager customManager, IMonitor Monitor) {
             loadForNewGamePatch.customManager = customManager;
             loadForNewGamePatch.Monitor = Monitor;
         }
@@ -44,6 +44,7 @@ namespace MTN2.Patches.Game1Patches {
         /// </summary>
         public static void Postfix() {
             int farmIndex;
+            int greenhouseIndex;
             Map map;
             string mapAssetKey;
 
@@ -56,8 +57,17 @@ namespace MTN2.Patches.Game1Patches {
                     if (Game1.locations[farmIndex].Name == "Farm") break;
                 }
 
-                mapAssetKey = customManager.GetAssetKey(out map);
+                mapAssetKey = customManager.GetAssetKey(out map, "Farm");
                 Game1.locations[farmIndex] = new Farm(mapAssetKey, "Farm");
+
+                if (customManager.LoadedFarm.StartingGreenHouse != null) {
+                    for (greenhouseIndex = 0; greenhouseIndex < Game1.locations.Count; greenhouseIndex++) {
+                        if (Game1.locations[greenhouseIndex].Name == "Greenhouse") break;
+                    }
+
+                    mapAssetKey = customManager.GetAssetKey(out map, "Greenhouse");
+                    Game1.locations[greenhouseIndex] = new GameLocation(mapAssetKey, "Greenhouse");
+                }
             }
 
             //Loaded Farm Maps

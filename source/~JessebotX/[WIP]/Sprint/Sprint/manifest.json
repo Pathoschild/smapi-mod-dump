@@ -1,0 +1,10 @@
+﻿{
+	"Name": "Sprint Sprint Sprint!",
+	"Author": "Jessebot",
+	"Version": "1.0-beta",
+	"Description": "Configurable keybinds for sprinting and walking",
+	"UniqueID": "Jessebot.SprintSprintSprint",
+	"MinimumApiVersion": "2.10",
+	"EntryDLL": "Sprint.dll",
+	"UpdateKeys": []
+}

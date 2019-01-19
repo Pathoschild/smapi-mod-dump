@@ -32,7 +32,6 @@ namespace ServerBrowser
 			
 			int h = 72;
 			OnlineTab = new ClickableComponent(new Rectangle((int)pos2.X, (int)pos2.Y - (!___smallScreenFormat ? h : 0), width2, h ), "", label2);
-			Console.WriteLine($"OnlineTab bounds = {OnlineTab.bounds}");
 		}
 	}
 

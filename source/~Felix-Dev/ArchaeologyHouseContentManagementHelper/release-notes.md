@@ -1,4 +1,7 @@
 # Release notes
+## 1.3.0
+* Added support for SMAPI 3.0.
+
 ## 1.2.1
 * Updated for Stardew Valley 1.3.32. 
 * For Translators: Improved Library-Status-Message newline handling: Line paddings no longer needed.

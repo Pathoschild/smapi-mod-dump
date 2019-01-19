@@ -1,10 +1,11 @@
 {
   "Name": "Bigger Backpack",
   "Author": "spacechase0, yoseiri",
-  "Version": "1.0.4",
+  "Version": "1.0.5",
   "Description": "Adds another backpack size.",
   "UniqueID": "spacechase0.BiggerBackpack",
-  "PerSaveConfigs": false,
   "EntryDll": "BiggerBackpack.dll",
-  "UpdateKeys": [ "Nexus:1845", "Chucklefish:5191", "spacechase0:bigger-backpack" ]
+  "MinimumApiVersion": "2.9.0",
+  "UpdateKeys": [ "Nexus:1845", "Chucklefish:5191" ],
+  "spacechase0": "bigger-backpack"
 }

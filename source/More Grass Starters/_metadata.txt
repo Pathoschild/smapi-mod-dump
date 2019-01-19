@@ -5,12 +5,9 @@ mods:
    More Grass Starters
 
 latest commit:
-   commit 95955131f82a7b8b764bbac04fca3940c7929591
-   Merge: 51b52f3 102902a
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 18:08:46 2019 -0500
+   commit e83e2d2e989590ecbf7d64b4340da2922616dba7
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 18 11:25:20 2019 -0500
    
-       Merge pull request #2 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0
+       Update version
    

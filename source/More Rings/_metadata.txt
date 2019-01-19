@@ -5,12 +5,9 @@ mods:
    More Rings
 
 latest commit:
-   commit d8260dc0be9415a0c24c7e79abb71fcd50b24fef
-   Merge: 69fd226 41a1a54
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 18:07:04 2019 -0500
+   commit a9e8f79f12b8a8af8cf5384c347274a3b9fbc56c
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 18 11:25:39 2019 -0500
    
-       Merge pull request #1 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0
+       Update version
    

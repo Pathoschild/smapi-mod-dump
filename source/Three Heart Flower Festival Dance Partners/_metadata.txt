@@ -5,12 +5,9 @@ mods:
    Three Heart Flower Festival Dance Partners
 
 latest commit:
-   commit 4c5c00dd7c42b4bd4bded7e51a1cafb3fef37b00
-   Merge: c762ed9 2d1edc0
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 14:49:04 2019 -0500
+   commit 28fa0a5e5e96696e7a4f9b52d51f1dff57aae6f3
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 18 11:29:07 2019 -0500
    
-       Merge pull request #3 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0, use translated dialogue, improve performance
+       Update version
    

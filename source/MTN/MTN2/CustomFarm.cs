@@ -29,6 +29,11 @@ namespace MTN2
         [JsonIgnore]
         public IContentPack ContentPack { get; set; }
 
+        //Custom Greenhouse Type link
+        public string StartingGreenHouse { get; set; }
+        [JsonIgnore]
+        public CustomGreenHouse CustomGreenhouse { get; set; }
+
         //Multiplayer
         public int CabinCapacity { get; set; } = 3;
         public bool AllowClose { get; set; } = true;

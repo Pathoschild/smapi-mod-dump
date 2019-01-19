@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 84a2a66c1cc60acbaeec7cfc9a23faae20655743
+   commit 9d8cc55a175c50db8383ffda46e027940285c038
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Mon Jan 7 13:27:16 2019 +0100
+   Date:   Fri Jan 18 00:32:09 2019 +0100
    
-       Fix treespread for tappers only
+       Attempt at fixing ring bugs
    

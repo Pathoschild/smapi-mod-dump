@@ -5,11 +5,9 @@ mods:
    Enhanced Relationships
 
 latest commit:
-   commit 8248dcaea33c56812b40432905c94e6f22416ef7
-   Author: Mizzion <mizzioninc@gmail.com>
-   Date:   Mon Apr 30 23:04:05 2018 -0600
+   commit d99c88bda99e7582e5f946ba4f8352d3d6c13bdd
+   Author: Mizzion <36684211+Mizzion@users.noreply.github.com>
+   Date:   Wed Jan 16 20:40:10 2019 -0700
    
-       Beta Updates 1.3.3beta
-       
-       Updated to Stardew 1.3.3-beta
+       Updated for Stardew 1.3.33
    

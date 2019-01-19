@@ -5,9 +5,9 @@ mods:
    Free Dusty
 
 latest commit:
-   commit 2dde3f9becb0162f942ddea71923e511aa4d85c4
+   commit 163914a98711f8be1df6e5adecf4bf31d1823605
    Author: skuldomg <scdehne@googlemail.com>
-   Date:   Thu Oct 25 14:24:10 2018 +0200
+   Date:   Wed Jan 16 15:18:05 2019 +0100
    
-       Adjusted spawn area on farm and fixed a weirdly disjointed Dusty spawning when he shouldn't.
+       Updated Nuget packages
    

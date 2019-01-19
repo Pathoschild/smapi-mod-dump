@@ -1,0 +1,10 @@
+﻿{
+  "Name": "AutoGate",
+  "Author": "Teban100 or Eroticremix (pick your poison)",
+  "Version": "1.1.0",
+  "Description": "Makes passing through gates automatic.",
+  "UniqueID": "AutoGate",
+  "EntryDll": "AutoGate.dll",
+  "MinimumApiVersion": "2.10.1",
+  "UpdateKeys": [ "Nexus:820" ]
+}

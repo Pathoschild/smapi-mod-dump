@@ -5,12 +5,9 @@ mods:
    Rush Orders
 
 latest commit:
-   commit bd88cd14c90502b9138c1c46d2e2b4e537f8ea06
-   Merge: fb5d82e 788e7e7
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 18:04:46 2019 -0500
+   commit 5b1a3dad146eb7fae411b5505462173c41de435b
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 18 11:26:09 2019 -0500
    
-       Merge pull request #1 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0
+       Update version
    

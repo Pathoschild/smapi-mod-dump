@@ -1,7 +1,3 @@
 {
-  "ToggleDisplay": {
-    "key": "X",
-    "mouseLeft": false,
-    "mouseRight": false
-  }
+  "ToggleBars": "X"
 }

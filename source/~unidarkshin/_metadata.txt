@@ -7,9 +7,9 @@ mods:
    Level Extender
 
 latest commit:
-   commit 7fcbb023ce87054ed2cfbd7f89e65e86ae1056a3
+   commit 036f7cc8a30e72c9f5444b7ec8a1864dc41202a3
    Author: Unidarkshin <devinlematty@gmail.com>
-   Date:   Mon Sep 17 13:36:23 2018 -0400
+   Date:   Thu Jan 17 22:36:07 2019 -0500
    
-       a
+       1/17/2019 updated LE/Sprint
    

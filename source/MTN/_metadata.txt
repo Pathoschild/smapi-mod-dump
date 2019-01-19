@@ -5,9 +5,9 @@ mods:
    MTN
 
 latest commit:
-   commit 8a0c2aa32bd389a2d5ba7d6a0bff59c39b2b13d3
+   commit 4c767824e5b6a535bf60a28f0817d8c621afa702
    Author: David Weil <gamemx25@gmail.com>
-   Date:   Tue Jan 15 13:24:05 2019 -0600
+   Date:   Thu Jan 17 15:57:12 2019 -0600
    
-       Add working ore spawns and rules.
+       Alpha 6 release
    

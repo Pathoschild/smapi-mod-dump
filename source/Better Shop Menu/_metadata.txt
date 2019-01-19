@@ -5,12 +5,9 @@ mods:
    Better Shop Menu
 
 latest commit:
-   commit c905d801486bb80ff0dd19766b522ce54655ceac
-   Merge: 682dcfd d699768
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 18:39:47 2019 -0500
+   commit 72937e4d9b9f8bfae435d63ef6e74c562b3d75d4
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 18 11:18:40 2019 -0500
    
-       Merge pull request #2 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0
+       Version 1.0.2
    

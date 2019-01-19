@@ -2,6 +2,8 @@
 {
    internal class ModConfig
     {
+        //If the player should receive mail on the day before the npc's birthday
+        public bool GetMail { get; set; } = true;
         //Amount of Gifts the npc's require to keep them happy for a whole week.
         public int AmtOfGiftsToKeepNpcHappy { get; set; } = 1;
         //Internal Basic Amount. Part of the calculations

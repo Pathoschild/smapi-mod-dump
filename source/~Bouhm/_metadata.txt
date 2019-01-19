@@ -6,9 +6,9 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit 9e3f253efe40e016796a9fe6b7d6af97c861b5fd
+   commit dbe19a6f31e8ab62468e9d9e12705f1a832b462f
    Author: Bouhm <bbouhm@gmail.com>
-   Date:   Sun Jan 13 14:32:59 2019 -0800
+   Date:   Thu Jan 17 16:02:36 2019 -0800
    
-       fix quest/birthday icon showing without config
+       add warning if multiplayer host doesn't have mod
    

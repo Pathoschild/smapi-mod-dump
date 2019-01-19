@@ -5,12 +5,9 @@ mods:
    Colorful Chests
 
 latest commit:
-   commit c7528bdbfbb0336b54a1f67c7d64b3c764e9fc44
-   Merge: 35e8649 418f750
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 18:34:34 2019 -0500
+   commit 167173e53d2f8370882f95e645be3dbbf3985091
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 18 11:20:01 2019 -0500
    
-       Merge pull request #1 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0
+       Update version
    

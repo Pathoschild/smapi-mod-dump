@@ -6,9 +6,9 @@ mods:
    Tool Upgrade Delivery Service
 
 latest commit:
-   commit 899a020b7611444185ea04ac37c7d716d8be5aa2
-   Author: Felix-Dev <FelixDev91@gmail.com>
-   Date:   Wed Nov 21 20:06:04 2018 +0100
+   commit 7c84234f73005d08cb7d0a3de34d2c85687984fd
+   Author: Felix <FelixDev91@gmail.com>
+   Date:   Wed Jan 16 21:25:26 2019 +0100
    
-       ArchaeologyHouse Mod: Extended release notes for version 1.2.1.
+       ArchaeologyHouseMode: Added support for SMAP 3.0.
    

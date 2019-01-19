@@ -85,7 +85,7 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework
 
         public string GenerateMailKey(Tool tool)
         {
-            switch (Game1.player.toolBeingUpgraded.Value)
+            switch (tool)
             {
                 case Axe t:
                     return TOOL_UPGRADE + $":{TOOL_AXE}:{t.UpgradeLevel}";

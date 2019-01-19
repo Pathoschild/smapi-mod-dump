@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using StardewModdingAPI;
+using StardewValley;
 
 namespace StardewNewsFeed.Wrappers {
 
@@ -7,6 +8,7 @@ namespace StardewNewsFeed.Wrappers {
     /// Wrapper for StardewValley.Farm
     /// </summary>
     public interface IFarm {
-        IList<ILocation> GetBuildings<T>(ITranslationHelper translationHelper);
+        IEnumerable<FarmAnimal> BarnAnimalsWithAvailableProduce { get; }
+        IEnumerable<ILocation> GetBuildings<T>(ITranslationHelper translationHelper);
     }
 }

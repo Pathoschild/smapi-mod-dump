@@ -6,7 +6,9 @@ namespace StardewNewsFeed.Services {
         void CheckGreenhouse();
         void CheckCellar();
         void CheckShed();
+        void CheckBarnForAnimalProducts();
         void CheckLocationForBirthdays(ILocation location);
-        void CheckFarmBuildings<T>() where T : StardewValley.Buildings.Building;
+        void CheckFarmBuildingsForHarvastableItems<T>() where T : StardewValley.Buildings.Building;
+        void CheckSilos();
     }
 }

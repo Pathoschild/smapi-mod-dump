@@ -16,7 +16,9 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
     /// </summary>
     internal class CollectionPageExMenuService
     {
-        private IMonitor monitor;
+        private readonly IMonitor monitor;
+        private readonly IModEvents events;
+
         private bool running;
 
         private bool ignoreMenuChanged;
@@ -32,6 +34,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
         public CollectionPageExMenuService()
         {
             monitor = ModEntry.CommonServices.Monitor;
+            events = ModEntry.CommonServices.Events;
 
             collectionsPageTabIndex = -1;
 
@@ -48,39 +51,41 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
 
             running = true;
 
-            MenuEvents.MenuChanged += MenuEvents_MenuChanged;
-            MenuEvents.MenuClosed += MenuEvents_MenuClosed;
+            events.Display.MenuChanged += OnMenuChanged;
         }
 
         public void Stop()
         {
             if (!running)
             {
-                monitor.Log("[LostBookFoundDialogService] is not running or has already been stopped!", LogLevel.Info);
+                monitor.Log("[CollectionPageExMenuService] is not running or has already been stopped!", LogLevel.Info);
                 return;
             }
 
-            MenuEvents.MenuChanged -= MenuEvents_MenuChanged;
-            MenuEvents.MenuClosed -= MenuEvents_MenuClosed;
+            events.Display.MenuChanged -= OnMenuChanged;
 
             running = false;
         }
 
-        private void MenuEvents_MenuClosed(object sender, EventArgsClickableMenuClosed e)
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
-            ignoreMenuChanged = false;
-
-            if (e.PriorMenu is LetterViewerMenu && switchBackToCollectionsMenu)
+            // menu closed
+            if (e.NewMenu == null)
             {
-                ignoreMenuChanged = true;
-                Game1.activeClickableMenu = savedGameMenu;
+                ignoreMenuChanged = false;
+
+                if (e.OldMenu is LetterViewerMenu && switchBackToCollectionsMenu)
+                {
+                    ignoreMenuChanged = true;
+                    Game1.activeClickableMenu = savedGameMenu;
+                }
+
+                switchBackToCollectionsMenu = false;
+                return;
             }
 
-            switchBackToCollectionsMenu = false;
-        }
+            // menu changed or opened
 
-        private void MenuEvents_MenuChanged(object sender, EventArgsClickableMenuChanged e)
-        {
             if (e.NewMenu is GameMenu gameMenu && !ignoreMenuChanged)
             {
                 List<IClickableMenu> pages = ModEntry.CommonServices.ReflectionHelper.GetField<List<IClickableMenu>>(gameMenu, "pages").GetValue();
@@ -96,13 +101,14 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
                 }
             }
 
-            else if (e.NewMenu is LetterViewerMenu && e.PriorMenu is GameMenu gameMenu2)
+            else if (e.NewMenu is LetterViewerMenu && e.OldMenu is GameMenu gameMenu2)
             {
                 switchBackToCollectionsMenu = true;
                 savedGameMenu = gameMenu2;
             }
 
             ignoreMenuChanged = false;
+
         }
     }
 }

@@ -48,7 +48,7 @@
     <None Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SpaceCore\SpaceCore.csproj">
+    <ProjectReference Include="..\SpaceCore_SDV\SpaceCore.csproj">
       <Project>{BA657CB4-93ED-4C3A-A66E-86954BEB4CE6}</Project>
       <Name>SpaceCore</Name>
       <Private>False</Private>

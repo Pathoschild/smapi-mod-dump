@@ -1,4 +1,5 @@
 ﻿using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,21 @@ namespace StardewMods.Common
 {
     public class CommonServices
     {
-        public CommonServices(IMonitor monitor, ITranslationHelper translationHelper, IReflectionHelper reflectionHelper, IContentHelper contentHelper)
+        public CommonServices(IMonitor monitor, IModEvents events, ITranslationHelper translationHelper, IReflectionHelper reflectionHelper, IContentHelper contentHelper)
         {
             Monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
+            Events = events ?? throw new ArgumentNullException(nameof(events));
             TranslationHelper = translationHelper ?? throw new ArgumentNullException(nameof(translationHelper));
             ReflectionHelper = reflectionHelper ?? throw new ArgumentNullException(nameof(reflectionHelper));
             ContentHelper = contentHelper ?? throw new ArgumentNullException(nameof(contentHelper));
         }
 
         public IMonitor Monitor { get; }
+
+        /// <summary>
+        /// Access to events raised by SAMPI.
+        /// </summary>
+        public IModEvents Events { get; }
 
         public ITranslationHelper TranslationHelper { get; }
 

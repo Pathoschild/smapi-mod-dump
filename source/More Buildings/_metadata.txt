@@ -5,12 +5,9 @@ mods:
    More Buildings
 
 latest commit:
-   commit 5ec88b34d3cf5da8de881b89d4dc1a8957ab2a1d
-   Merge: 4fee607 2d36b41
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 18:10:24 2019 -0500
+   commit 89b2253294309aa5b02b675862b775e1b885b403
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 18 11:25:04 2019 -0500
    
-       Merge pull request #1 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0
+       Update version
    

@@ -44,27 +44,27 @@ namespace Sprint
             rnd = new Random();
             dSpeed = Game1.player.addedSpeed;   
 
-            InputEvents.ButtonPressed += InputEvents_ButtonPressed;
-            InputEvents.ButtonReleased += InputEvents_ButtonReleased;
+            helper.Events.Input.ButtonPressed += InputEvents_ButtonPressed;
+            helper.Events.Input.ButtonReleased += InputEvents_ButtonReleased;
 
-            GameEvents.HalfSecondTick += GameEvents_HalfSecondTick;
+            helper.Events.GameLoop.UpdateTicked += GameEvents_HalfSecondTick;
 
-            SaveEvents.AfterLoad += SaveEvents_AfterLoad;
+            helper.Events.GameLoop.SaveLoaded += SaveEvents_AfterLoad;
 
         }
 
         private void SaveEvents_AfterLoad(object sender, EventArgs e)
         {
-            config = instance.Helper.ReadJsonFile<ModConfig>($"Data/{Constants.SaveFolderName}.json") ?? new ModConfig();
+            config = instance.Helper.Data.ReadJsonFile<ModConfig>($"Data/{Constants.SaveFolderName}.json") ?? new ModConfig();
             factor = config.SprintSpeedIncrease;
 
             if (!File.Exists($"Data/{Constants.SaveFolderName}.json"))
-                instance.Helper.WriteJsonFile<ModConfig>($"Data/{Constants.SaveFolderName}.json", config);
+                instance.Helper.Data.WriteJsonFile<ModConfig>($"Data/{Constants.SaveFolderName}.json", config);
         }
 
-        private void GameEvents_HalfSecondTick(object sender, EventArgs e)
+        private void GameEvents_HalfSecondTick(object sender, UpdateTickedEventArgs e)
         {
-            if (!Context.IsWorldReady)
+            if (!e.IsMultipleOf(30) || !Context.IsWorldReady)
                 return;
 
             if (sprinting && Game1.player.Stamina > 0.0f)
@@ -90,7 +90,7 @@ namespace Sprint
 
         }
 
-        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
+        private void InputEvents_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady || Game1.activeClickableMenu != null || Game1.player.Stamina <= 0f)
                 return;
@@ -101,7 +101,7 @@ namespace Sprint
             }
         }
 
-        private void InputEvents_ButtonReleased(object sender, EventArgsInput e)
+        private void InputEvents_ButtonReleased(object sender, ButtonReleasedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;

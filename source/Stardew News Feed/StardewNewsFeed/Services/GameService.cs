@@ -1,8 +1,9 @@
-﻿using StardewModdingAPI;
+using StardewModdingAPI;
 using StardewNewsFeed.Wrappers;
 using StardewNewsFeed.Enums;
 using StardewValley;
 using StardewValley.TerrainFeatures;
+using System.Linq;
 
 namespace StardewNewsFeed.Services {
     public class GameService : IGameService {
@@ -50,9 +51,33 @@ namespace StardewNewsFeed.Services {
             }
         }
 
-        public void CheckFarmBuildings<T>() where T : StardewValley.Buildings.Building {
+        public void CheckBarnForAnimalProducts() {
+            var groupsOfAnimalsPerBarn = GetFarm().BarnAnimalsWithAvailableProduce
+                .GroupBy(_ => _.home.nameOfIndoorsWithoutUnique);
+
+            foreach (var groupOfAnimalsInBarn in groupsOfAnimalsPerBarn) {
+                DisplayMessage( MakeAnimalProduceHudMessage(groupOfAnimalsInBarn));    
+            }
+        }
+
+        private HudMessage MakeAnimalProduceHudMessage(IGrouping<string, FarmAnimal> groupOfAnimalsInBarn) {
+            var toolsNeededForProduce = groupOfAnimalsInBarn
+                .Select(_ => _.toolUsedForHarvest.Value)
+                .Distinct()
+                .OrderBy(_ => _);
+            
+            var translationSuffix = groupOfAnimalsInBarn.Count() > 1 ? "plural" : "singular";
+            var message = _translationHelper.Get($"news-feed.harvest-animals-found-in-location-notice.{translationSuffix}", new {
+                numberOfItems = groupOfAnimalsInBarn.Count(),
+                locationName = groupOfAnimalsInBarn.Key,
+                toolsNeededForProduce = string.Join(", ", toolsNeededForProduce),
+            });
+            return new HudMessage(message, HudMessageType.NewQuest); 
+        }
+        
+        public void CheckFarmBuildingsForHarvastableItems<T>() where T : StardewValley.Buildings.Building {
             var farm = GetFarm();
-            var buildings = farm.GetBuildings<T>(_translationHelper);
+            var buildings = farm.GetBuildings<T>(_translationHelper).ToList();
             _monitor.Log($"Found {buildings.Count} {typeof(T)}(s)");
             foreach(var building in buildings) {
                 CheckLocationForHarvestableObjects(building);
@@ -65,6 +90,25 @@ namespace StardewNewsFeed.Services {
                     var message = _translationHelper.Get("news-feed.birthday-notice", new { npcName = npc.GetName() });
                     DisplayMessage(new HudMessage(message, HudMessageType.NewQuest));
                 }
+            }
+        }
+
+        public void CheckSilos() {
+            var farm = Game1.getFarm();
+            var silos = farm.buildings.Where(b => b.buildingType == new Netcode.NetString("Silo"));
+            var siloCount = silos.Count();
+
+            if(siloCount == 0) {
+                return;
+            }
+
+            var maxCapacity = siloCount * 240.0;
+            var piecesOfHay = farm.piecesOfHay;
+            var percentOfMax = piecesOfHay / maxCapacity;
+
+            if(percentOfMax < 0.15) {
+                var message = _translationHelper.Get("news-feed.silo-low-notice", new { piecesOfHay, maxCapacity });
+                DisplayMessage(new HudMessage(message, HudMessageType.NewQuest));
             }
         }
         #endregion

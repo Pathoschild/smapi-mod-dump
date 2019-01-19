@@ -13,7 +13,8 @@ using Translation = StardewMods.ArchaeologyHouseContentManagementHelper.Common.T
 namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
 {
     /// <summary>
-    /// This class is responsible for firing the [All Lost Books found] message.
+    /// This class is responsible for displaying a congratulations message when the player has 
+    /// found all [Lost Books].
     /// </summary>
     internal class LostBookFoundDialogService
     {
@@ -21,11 +22,13 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
 
         private bool running;
 
-        private IMonitor monitor;
+        private readonly IMonitor monitor;
+        private readonly IModEvents events;
 
         public LostBookFoundDialogService()
         {
             monitor = ModEntry.CommonServices.Monitor;
+            events = ModEntry.CommonServices.Events;
 
             running = false;
         }
@@ -40,8 +43,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
 
             running = true;
 
-            MenuEvents.MenuChanged += MenuEvents_MenuChanged;
-            MenuEvents.MenuClosed += MenuEvents_MenuClosed;
+            events.Display.MenuChanged += OnMenuChanged;
         }
 
         public void Stop()
@@ -52,36 +54,41 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
                 return;
             }
 
-            MenuEvents.MenuChanged -= MenuEvents_MenuChanged;
-            MenuEvents.MenuClosed -= MenuEvents_MenuClosed;
+            events.Display.MenuChanged -= OnMenuChanged;
 
             running = false;
-        }     
+        }
 
-        private void MenuEvents_MenuChanged(object sender, EventArgsClickableMenuChanged e)
+        /// <summary>
+        /// Called after a dialog has been created/changed/closed. Responsible for showing the 
+        /// congratulations message to the player when he/she has found all [Lost Books].
+        /// </summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event args.</param>
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
+            // menu opened or changed
             if (e.NewMenu is DialogueBox box)
             {
                 var mostRecentlyGrabbed = Game1.player.mostRecentlyGrabbedItem;
                 if (mostRecentlyGrabbed != null && mostRecentlyGrabbed.ParentSheetIndex == StardewMods.Common.StardewValley.Constants.ID_GAME_OBJECT_LOST_BOOK)
                 {
                     List<string> dialogues = ModEntry.CommonServices.ReflectionHelper.GetField<List<string>>(box, "dialogues").GetValue();
-                    if (dialogues.Count == 1 && dialogues[0].Equals(mostRecentlyGrabbed.checkForSpecialItemHoldUpMeessage()) 
+                    if (dialogues.Count == 1 && dialogues[0].Equals(mostRecentlyGrabbed.checkForSpecialItemHoldUpMeessage())
                         && LibraryMuseumHelper.LibraryBooks == LibraryMuseumHelper.TotalLibraryBooks)
                     {
                         showMessage = true;
                     }
                 }
             }
-        }
 
-        private void MenuEvents_MenuClosed(object sender, EventArgsClickableMenuClosed e)
-        {
-            if (e.PriorMenu is DialogueBox box && showMessage)
+            // menu closed
+            else if (e.NewMenu == null && e.OldMenu is DialogueBox && showMessage)
             {
                 Game1.drawObjectDialogue(ModEntry.CommonServices.TranslationHelper.Get(Translation.MESSAGE_LIBRARY_BOOKS_COMPLETED));
                 showMessage = false;
             }
+
         }
     }
 }

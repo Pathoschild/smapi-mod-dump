@@ -5,12 +5,9 @@ mods:
    Bow
 
 latest commit:
-   commit 9c859efcaa5379132416c37c299f3b7740f35510
-   Merge: 91fbf0a f7a15cf
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 18:38:23 2019 -0500
+   commit 5d060b7c9ece3affb6db93d5ba47679f7273937d
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 18 11:19:24 2019 -0500
    
-       Merge pull request #1 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0
+       Update version
    

@@ -18,7 +18,7 @@ namespace MTN2.Patches.FarmHousePatches
     /// </summary>
     public class ConstructorFarmHousePatch
     {
-        private static CustomManager customManager;
+        private static ICustomManager customManager;
         private static int SwappedID;
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace MTN2.Patches.FarmHousePatches
         /// are required to be static. Thus we must break good Object Orientated practices.
         /// </summary>
         /// <param name="customManager">The class controlling information pertaining to the customs (and the loaded customs).</param>
-        public ConstructorFarmHousePatch(CustomManager customManager) {
+        public ConstructorFarmHousePatch(ICustomManager customManager) {
             ConstructorFarmHousePatch.customManager = customManager;
             SwappedID = -1;
         }

@@ -5,12 +5,9 @@ mods:
    Tool Geodes
 
 latest commit:
-   commit eb73e4a9b3afedbe1c0575c9a10da8f17b3a9e47
-   Merge: 442cd78 47fba86
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 14:48:28 2019 -0500
+   commit 10f6357ade19983eab8f224376191e27b98b0320
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 18 11:31:00 2019 -0500
    
-       Merge pull request #1 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0
+       Update version
    

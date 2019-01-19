@@ -18,7 +18,7 @@ namespace MTN2.Menus {
     /// </summary>
     public class CharacterCustomizationMTN : IClickableMenu {
         //MTN Stuff//
-        private readonly CustomManager customManager;
+        private readonly ICustomManager customManager;
         protected List<ClickableTextureComponent> allFarmButtons = new List<ClickableTextureComponent>();
 
         public ClickableTextureComponent noDebrisButton;
@@ -133,7 +133,7 @@ namespace MTN2.Menus {
         private ColorPicker lastHeldColorPicker;
         private int timesRandom;
 
-        public CharacterCustomizationMTN(CustomManager customManager, CharacterCustomization.Source source) : base(Game1.viewport.Width / 2 - (632 + IClickableMenu.borderWidth * 2) / 2, Game1.viewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2 - 64, 632 + IClickableMenu.borderWidth * 2, 600 + IClickableMenu.borderWidth * 2 + 64, false) {
+        public CharacterCustomizationMTN(ICustomManager customManager, CharacterCustomization.Source source) : base(Game1.viewport.Width / 2 - (632 + IClickableMenu.borderWidth * 2) / 2, Game1.viewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2 - 64, 632 + IClickableMenu.borderWidth * 2, 600 + IClickableMenu.borderWidth * 2 + 64, false) {
             this.customManager = customManager;
 
             this.shirtOptions = new List<int>

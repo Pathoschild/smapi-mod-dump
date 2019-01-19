@@ -39,7 +39,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper
             }
 
             // Set services and mod configurations
-            CommonServices = new CommonServices(Monitor, helper.Translation, helper.Reflection, helper.Content);
+            CommonServices = new CommonServices(Monitor, helper.Events, helper.Translation, helper.Reflection, helper.Content);
             ModConfig = Helper.ReadConfig<ModConfig>();
 
             // Apply game patches
@@ -53,10 +53,10 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper
             collectionPageExMenuService = new CollectionPageExMenuService();
             collectionPageExMenuService.Start();
 
-            SaveEvents.AfterLoad += Bootstrap;
+            helper.Events.GameLoop.SaveLoaded += Bootstrap;
         }
 
-        private void Bootstrap(object sender, EventArgs e)
+        private void Bootstrap(object sender, SaveLoadedEventArgs e)
         {
             // Start remaining services
             menuInteractDialogService = new MuseumInteractionDialogService();

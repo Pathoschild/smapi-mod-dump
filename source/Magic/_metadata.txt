@@ -5,12 +5,9 @@ mods:
    Magic
 
 latest commit:
-   commit 2dca80e31bc280b3ece76cadd3fc560cb4dedb97
-   Merge: ff34ac0 fae2eea
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 18:20:42 2019 -0500
+   commit b92960b5e0d1b9044df6662d81f3f52d099f83cc
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 18 11:24:32 2019 -0500
    
-       Merge pull request #2 from Pathoschild/update-code
-       
-       Add 'active effects' system, update for SMAPI 3.0, and prepare for Stardew Valley 1.3.33
+       Update version
    

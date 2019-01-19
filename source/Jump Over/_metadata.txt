@@ -5,12 +5,9 @@ mods:
    Jump Over
 
 latest commit:
-   commit f0d9dbc9450c1cb5aba034526cd664e32beb9b7a
-   Merge: 5794b47 18104e6
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 18:23:01 2019 -0500
+   commit 68a0e6df4be7d1bb9ba2f0cfb409af34f7e35569
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 18 11:23:54 2019 -0500
    
-       Merge pull request #1 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0
+       Update version
    

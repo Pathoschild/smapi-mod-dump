@@ -11,9 +11,9 @@ namespace MTN2.Patches.PetPatches
 {
     public class setAtFarmPositionPatch
     {
-        private static CustomManager customManager;
+        private static ICustomManager customManager;
 
-        public setAtFarmPositionPatch(CustomManager customManager) {
+        public setAtFarmPositionPatch(ICustomManager customManager) {
             setAtFarmPositionPatch.customManager = customManager;
         }
 

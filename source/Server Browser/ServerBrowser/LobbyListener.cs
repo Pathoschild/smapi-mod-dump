@@ -18,22 +18,6 @@ namespace ServerBrowser
 			}
 
 			Console.WriteLine($"TRY CREATE LOBBY GALAXY, PRIVACY = {___privacy.ToString()}");
-			RepeatPrintPrivacy(__instance);
-		}
-
-		static async void RepeatPrintPrivacy (GalaxySocket socket)
-		{
-			while (true)
-			{
-				if (socket != null)
-				{
-					await Task.Delay(1000);
-					var p = ModEntry.ModHelper.Reflection.GetField<ServerPrivacy>(socket, "privacy").GetValue();
-					Console.WriteLine($"LOBBY PRIVACY = {p}");
-				}
-				else
-					return;
-			}
 		}
 	}
 

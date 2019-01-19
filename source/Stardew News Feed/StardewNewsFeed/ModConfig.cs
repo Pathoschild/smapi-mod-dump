@@ -8,5 +8,6 @@ namespace StardewNewsFeed {
         public bool BirthdayCheckEnabled { get; set; } = true;
         public bool CoopCheckEnabled { get; set; } = true;
         public bool BarnCheckEnabled { get; set; } = true;
+        public bool SiloCheckEnabled { get; set; } = true;
     }
 }

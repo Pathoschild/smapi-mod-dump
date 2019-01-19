@@ -5,9 +5,9 @@ mods:
    Cat Gifts
 
 latest commit:
-   commit f61a2162c1ea9154d3a7d3e91f145bf90c2dc30d
+   commit 7ef262fa5d10101e223953e7638b1f7123130512
    Author: skuldomg <scdehne@googlemail.com>
-   Date:   Thu Jun 7 21:53:10 2018 +0200
+   Date:   Wed Jan 16 15:18:54 2019 +0100
    
-       Updated manifest
+       Updated Nuget packages
    

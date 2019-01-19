@@ -6,19 +6,21 @@ This Stardew Valley Mod inspects various locations every morning for harvestable
 ## Nexus Mods Page
 https://www.nexusmods.com/stardewvalley/mods/3206/
 
-## Currently Supported Locations (version >= 1.1)
-* Farm Cave Notifications
-* Greenhouse Notifications
-* Cellar Notifications
-* Shed Notifications
+## Currently Supported Notifications (versions >= 1.7)
+* Farm Cave has Mushrooms/Fruit
+* Greenhouse has harvestable items
+* Cellar has harvestable items
+* Sheds have harvestable items
+* Barn Animals have produce available
+* Barn Auto-Grabber has items
+* Coops have animal products available
+* Silo's are below 15% Capacity
+* Someone nearby has a birthday today
 
 ## Currently Supported Languages (version >= 1.6)
 * English
 * Spanish
 * German
-
-## Additional Features (version >= 1.5)
-As you move around the world. Each time you move to a new location, it will check all NPC's in your new location for birthdays, and display a notification if one is found.
 
 ## How to configure this mod
 The install directory for this mod will contain a configuration file. ~/Mods/StardewNewsFeed/config.json
@@ -33,6 +35,9 @@ By default, scanning for items in the Farm Cave and the Greenhouse will be turne
 |CellarNotificationsEnabled|Enables/Disables scanning and notifications for the cellar|true|
 |ShedNotificationsEnabled|Enables/Disabled scanning and notifications for sheds|true|
 |BirthdayCheckEnabled|Enables/Disables roaming birthday checks|true|
+|CoopCheckEnabled|Enables/Disables checking coops for items|true|
+|BarnCheckEnabled|Enables/Disables checking barns and barn animals for produce|true|
+|SiloCheckEnabled|Enables/Disables checking current amount of hay compared to max capacity|true|
 
 ## Plans for additional future updates
 A persistent checklist containing areas with harvestable items.

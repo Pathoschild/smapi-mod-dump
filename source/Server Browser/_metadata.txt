@@ -5,9 +5,9 @@ mods:
    Server Browser
 
 latest commit:
-   commit de8f8ac2a4d5cae943f7cd2c1ee607d762cbad8e
+   commit 9951f1c278ae5e07003e93627fccc00a8639032b
    Author: Ilyaki <ilyaki.ilyaki@gmail.com>
-   Date:   Sun Jan 13 07:03:58 2019 +0000
+   Date:   Fri Jan 18 15:27:15 2019 +0000
    
-       Compatibility patch for Always Online Server
+       Removed debug message spam
    

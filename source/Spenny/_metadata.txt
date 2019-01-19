@@ -5,12 +5,9 @@ mods:
    Spenny
 
 latest commit:
-   commit 713e197c8310589b57272f41471749505108c7e9
-   Merge: 538669f ccda780
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 14:49:49 2019 -0500
+   commit ef1c952c05ee51066060218885ba04e63202e910
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 18 11:28:10 2019 -0500
    
-       Merge pull request #1 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0
+       Update version
    

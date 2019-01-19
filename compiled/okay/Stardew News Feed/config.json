@@ -1,8 +1,10 @@
 {
-  "DebugMode": false,
   "GreenhouseNotificationsEnabled": true,
   "CaveNotificationsEnabled": true,
   "CellarNotificationsEnabled": true,
   "ShedNotificationsEnabled": true,
-  "BirthdayCheckEnabled": true
+  "BirthdayCheckEnabled": true,
+  "CoopCheckEnabled": true,
+  "BarnCheckEnabled": true,
+  "SiloCheckEnabled": true
 }

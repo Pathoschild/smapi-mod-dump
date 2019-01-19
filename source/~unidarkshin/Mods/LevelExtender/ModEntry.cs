@@ -81,40 +81,34 @@ namespace LevelExtender
         /// <param name="asset">A helper which encapsulates metadata about an asset and enables changes to it.</param>
         public void Edit<T>(IAssetData asset)
         {
-            asset
-                .AsDictionary<int, string>()
-                .Set((id, data) =>
+            IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
+            foreach (int key in data.Keys)
+            {
+                string[] fields = data[key].Split('/');
+                if (int.TryParse(fields[1], out int val))
                 {
-                    string[] fields = data.Split('/');
-                    if (int.TryParse(fields[1], out int val))
-                    {
-                        int x = (val - rand.Next(0, (int)(Game1.player.FishingLevel / 4)));
-                        if (x < 1)
-                            x = rand.Next(1, val);
-                        fields[1] = x.ToString();
-                        return string.Join("/", fields);
-                    }
-                    else
-                    {
-                        return string.Join("/", fields);
-                    }
-                });
+                    int x = (val - rand.Next(0, (int)(Game1.player.FishingLevel / 4)));
+                    if (x < 1)
+                        x = rand.Next(1, val);
+                    fields[1] = x.ToString();
+                    data[key] = string.Join("/", fields);
+                }
+            }
         }
 
 
         public override void Entry(IModHelper helper)
         {
             //instance = this;
-            GameEvents.OneSecondTick += this.GameEvents_OneSecondTick;
-            GameEvents.EighthUpdateTick += this.GameEvents_QuarterSecondTick;
-            GameEvents.FirstUpdateTick += GameEvents_FirstUpdateTick;
-            SaveEvents.AfterLoad += this.SaveEvents_AfterLoad;
-            SaveEvents.BeforeSave += this.SaveEvents_BeforeSave;
-            SaveEvents.AfterReturnToTitle += this.SaveEvents_AfterReturnToTitle;
-            MenuEvents.MenuChanged += this.MenuEvents_MenuChanged;
-            MenuEvents.MenuClosed += this.MenuEvents_MenuClosed;
-            ControlEvents.KeyPressed += this.ControlEvent_KeyPressed;
-            TimeEvents.AfterDayStarted += this.TimeEvent_AfterDayStarted;
+            helper.Events.GameLoop.OneSecondUpdateTicked += this.GameEvents_OneSecondTick;
+            helper.Events.GameLoop.UpdateTicked += this.GameEvents_QuarterSecondTick;
+            helper.Events.GameLoop.GameLaunched += this.GameEvents_FirstUpdateTick;
+            helper.Events.GameLoop.SaveLoaded += this.SaveEvents_AfterLoad;
+            helper.Events.GameLoop.Saving += this.SaveEvents_BeforeSave;
+            helper.Events.GameLoop.ReturnedToTitle += this.SaveEvents_AfterReturnToTitle;
+            helper.Events.Display.MenuChanged += Display_MenuChanged;
+            helper.Events.Input.ButtonPressed += this.ControlEvent_KeyPressed;
+            helper.Events.GameLoop.DayStarted += this.TimeEvent_AfterDayStarted;
 
             helper.ConsoleCommands.Add("xp", "Tells the players current XP above or at level 10.", this.TellXP);
             helper.ConsoleCommands.Add("lev", "Sets the player's level: lev <type> <number>", this.SetLev);
@@ -357,30 +351,26 @@ namespace LevelExtender
                 this.Monitor.Log($"Valid decimal not used; refer to help command.");
             }
         }
-        private void MenuEvents_MenuChanged(object sender, EventArgsClickableMenuChanged e)
-        {
-
-        }
-        private void MenuEvents_MenuClosed(object sender, EventArgsClickableMenuClosed e)
+        private void Display_MenuChanged(object sender, MenuChangedEventArgs e)
         {
             if (pres_comp)
             {
-                if (e.PriorMenu.GetType().FullName == "SkillPrestige.Menus.PrestigeMenu")
+                if (e.OldMenu.GetType().FullName == "SkillPrestige.Menus.PrestigeMenu")
                 {
                     //closing();
                     SetTimer();
                 }
-                else if (e.PriorMenu.GetType().FullName == "StardewValley.Menus.GameMenu")
+                else if (e.OldMenu.GetType().FullName == "StardewValley.Menus.GameMenu")
                 {
                     //closing();
                     SetTimer();
                 }
-                else if (e.PriorMenu.GetType().FullName == "SkillPrestige.Menus.SettingsMenu")
+                else if (e.OldMenu.GetType().FullName == "SkillPrestige.Menus.SettingsMenu")
                 {
                     //closing();
                     SetTimer();
                 }
-                else if (e.PriorMenu.GetType().FullName == "SkillPrestige.Menus.Dialogs.WarningDialog")
+                else if (e.OldMenu.GetType().FullName == "SkillPrestige.Menus.Dialogs.WarningDialog")
                 {
                     //closing();
                     SetTimer();
@@ -526,10 +516,10 @@ namespace LevelExtender
             }
             return x;
         }
-        private void ControlEvent_KeyPressed(object sender, EventArgsKeyPressed e)
+        private void ControlEvent_KeyPressed(object sender, ButtonPressedEventArgs e)
         {
 
-            if (Game1.activeClickableMenu is GameMenu && e.KeyPressed == Microsoft.Xna.Framework.Input.Keys.P && !pres_comp)
+            if (Game1.activeClickableMenu is GameMenu && e.Button == SButton.P && !pres_comp)
             {
                 //this.Monitor.Log($"{Game1.player.name} pressed P--.");
                 pres_comp = true;
@@ -690,9 +680,10 @@ namespace LevelExtender
             return (0.010 + (Game1.player.CombatLevel * 0.0001));
 
         }
-        private void GameEvents_QuarterSecondTick(object sender, EventArgs e)
+        private void GameEvents_QuarterSecondTick(object sender, UpdateTickedEventArgs e)
         {
-            if (Context.IsWorldReady && Game1.player.FishingLevel > 10)
+            
+            if (Context.IsWorldReady && e.IsMultipleOf(8) && Game1.player.FishingLevel > 10)
             {
                 if (Game1.activeClickableMenu is BobberBar && !firstFade)
                 {
@@ -822,7 +813,7 @@ namespace LevelExtender
         private void SaveEvents_AfterLoad(object sender, EventArgs e)
         {
             //object[] temp = { Game1.player.FarmingLevel, Game1.player.FishingLevel, Game1.player.ForagingLevel, Game1.player.MiningLevel, Game1.player.CombatLevel };
-            var config_t = this.Helper.ReadJsonFile<ModData>($"data/{Constants.SaveFolderName}.json") ?? new ModData();
+            var config_t = this.Helper.Data.ReadJsonFile<ModData>($"data/{Constants.SaveFolderName}.json") ?? new ModData();
             addedXP[0] = config_t.FaXP;
             sLevs[0] = config_t.FaLV;
             addedXP[1] = config_t.FXP;
@@ -922,7 +913,7 @@ namespace LevelExtender
             config.WorldMonsters = wm;
             config.Xp_modifier = xp_mod;
 
-            this.Helper.WriteJsonFile<ModData>($"data/{Constants.SaveFolderName}.json", config);
+            this.Helper.Data.WriteJsonFile<ModData>($"data/{Constants.SaveFolderName}.json", config);
 
 
 

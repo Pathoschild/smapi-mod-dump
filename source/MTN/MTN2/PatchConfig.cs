@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StardewModdingAPI;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -24,13 +25,12 @@ namespace MTN2
         public Dictionary<string, bool> WandPatch { get; set; }
         public Dictionary<string, bool> WorldChangeEventPatch { get; set; }
 
-        public static PatchConfig Default {
-            get {
-                PatchConfig newConfig = new PatchConfig();
-                newConfig.EventPatch = new Dictionary<string, bool> {
+        public static PatchConfig Default(Mod mtn) {
+            PatchConfig newConfig = new PatchConfig();
+            newConfig.EventPatch = new Dictionary<string, bool> {
                     { "SetExitLocation", true }
                 };
-                newConfig.FarmPatch = new Dictionary<string, bool> {
+            newConfig.FarmPatch = new Dictionary<string, bool> {
                     { "CheckAction", true },
                     { "Constructor", true },
                     { "Draw", true },
@@ -39,44 +39,43 @@ namespace MTN2
                     { "ResetLocalState", true },
                     { "UpdateWhenCurrentLocation", true},
                 };
-                newConfig.FarmHousePatch = new Dictionary<string, bool> {
+            newConfig.FarmHousePatch = new Dictionary<string, bool> {
                     { "Constructor", true },
                     { "GetPorchStandingSpot", false},
                     { "UpdateMap", true }
                 };
-                newConfig.Game1Patch = new Dictionary<string, bool> {
+            newConfig.Game1Patch = new Dictionary<string, bool> {
                     { "LoadForNewGame", true }
                 };
-                newConfig.GameLocationPatch = new Dictionary<string, bool> {
+            newConfig.GameLocationPatch = new Dictionary<string, bool> {
                     { "LoadObjects", true },
                     { "PerformAction", true },
                     { "StartEvent", true }
                 };
-                newConfig.NPCPatch = new Dictionary<string, bool> {
+            newConfig.NPCPatch = new Dictionary<string, bool> {
                     { "UpdateConstructionAnimation", true }
                 };
-                newConfig.ObjectPatch = new Dictionary<string, bool> {
+            newConfig.ObjectPatch = new Dictionary<string, bool> {
                     { "TotemWarpForReal", true }
                 };
-                newConfig.PetPatch = new Dictionary<string, bool> {
+            newConfig.PetPatch = new Dictionary<string, bool> {
                     { "DayUpdate", true },
                     { "SetAtFarmPosition", true }
                 };
-                newConfig.SaveGamePatch = new Dictionary<string, bool> {
+            newConfig.SaveGamePatch = new Dictionary<string, bool> {
                     { "LoadDataForLocations", false }
                 };
-                newConfig.TitleMenuPatch = new Dictionary<string, bool> {
+            newConfig.TitleMenuPatch = new Dictionary<string, bool> {
                     { "SetUpIcons", true }
                 };
-                newConfig.WandPatch = new Dictionary<string, bool> {
+            newConfig.WandPatch = new Dictionary<string, bool> {
                     { "WandWarpForReal", true }
                 };
-                newConfig.WorldChangeEventPatch = new Dictionary<string, bool> {
+            newConfig.WorldChangeEventPatch = new Dictionary<string, bool> {
                     { "SetUp", true }
                 };
-                newConfig.Version = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
-                return newConfig;
-            }
+            newConfig.Version = mtn.ModManifest.Version.ToString();
+            return newConfig;
         }
     }
 }

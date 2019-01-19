@@ -14,10 +14,7 @@ namespace Sprint
 {
     class ModConfig
     {
-        public SButton PrimarySprintKey { get; set; } = SButton.LeftShift;
-        public SButton SecondarySprintKey { get; set; } = SButton.RightShift;
+        public SButton SprintKey { get; set; } = SButton.LeftShift;
         public SButton ControllerSprintButton { get; set; } = SButton.LeftStick;
-
-        public SButton SlowDownKey { get; set; } = SButton.LeftControl;
     }
 }

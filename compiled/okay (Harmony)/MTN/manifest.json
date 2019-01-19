@@ -1,7 +1,7 @@
 {
   "Name": "MTN",
   "Author": "SgtPickles aka GameMX",
-  "Version": "2.0.0-alpha4",
+  "Version": "2.0.0-alpha6",
   "Description": "Greatly Customizes farms, along with managing multitude amount of custom farm types.",
   "UniqueID": "SgtPickles.MTN",
   "EntryDll": "MTN.dll",

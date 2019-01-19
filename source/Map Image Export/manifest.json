@@ -1,7 +1,7 @@
 {
   "Name": "Map Image Exporter",
   "Author": "spacechase0",
-  "Version": "1.0.5",
+  "Version": "1.0.6",
   "Description": "Export a map to an image.",
   "UniqueID": "spacechase0.MapImageExporter",
   "EntryDll": "MapImageExporter.dll",

@@ -5,12 +5,9 @@ mods:
    Customize Exterior
 
 latest commit:
-   commit f51220c8fea592996c22796ffae5d20aef22c65b
-   Merge: fec5933 672e05e
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 18:31:58 2019 -0500
+   commit e991ee4700bebe1fc2cd43064ae5cef8c7931c1e
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 18 14:42:40 2019 -0500
    
-       Merge pull request #1 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0 & migrate to data API
+       Version 1.0.6.
    

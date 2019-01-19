@@ -1,8 +1,0 @@
-﻿{
-  "Name": "AutoGate 1.0",
-  "Author": "Teban100 or Eroticremix (pick your poison)",
-  "Version": "1.0.1-unofficial.2-Mizzion",
-  "Description": "Makes passing through gates automatic",
-  "UniqueID": "AutoGate",
-  "EntryDll": "AutoGate.dll"
-}

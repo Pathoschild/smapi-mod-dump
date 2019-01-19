@@ -1,0 +1,10 @@
+{
+  "Name": "Inventory Cycle",
+  "Author": "Teban100",
+  "Version": "1.0.0",
+  "Description": "Lets you cycle your inventory rows.",
+  "UniqueID": "InventoryCycle",
+  "EntryDll": "InventoryCycle.dll",
+  "MinimumApiVersion": "2.10.1",
+  "UpdateKeys": []
+}

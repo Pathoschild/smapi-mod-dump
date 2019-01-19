@@ -21,7 +21,7 @@ namespace MTN2.Patches.FarmPatches
     /// </summary>
     public class checkActionPatch
     {
-        private static CustomManager customManager;
+        private static ICustomManager customManager;
         private static Farm currentFarm;
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace MTN2.Patches.FarmPatches
         /// are required to be static. Thus we must break good Object Orientated practices.
         /// </summary>
         /// <param name="customManager">The class controlling information pertaining to the customs (and the loaded customs).</param>
-        public checkActionPatch(CustomManager customManager) {
+        public checkActionPatch(ICustomManager customManager) {
             checkActionPatch.customManager = customManager;
         }
 

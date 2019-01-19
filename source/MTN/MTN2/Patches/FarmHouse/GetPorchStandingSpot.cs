@@ -16,14 +16,14 @@ namespace MTN2.Patches.FarmHousePatches
     /// </summary>
     public class getPorchStandingSpotPatch
     {
-        private static CustomManager customManager;
+        private static ICustomManager customManager;
 
         /// <summary>
         /// Constructor. Awkward method of setting references needed. However, Harmony patches
         /// are required to be static. Thus we must break good Object Orientated practices.
         /// </summary>
         /// <param name="customManager">The class controlling information pertaining to the custom farms (and the loaded farm).</param>
-        public getPorchStandingSpotPatch(CustomManager customManager) {
+        public getPorchStandingSpotPatch(ICustomManager customManager) {
             getPorchStandingSpotPatch.customManager = customManager;
         }
 

@@ -5,9 +5,9 @@ mods:
    Stardew News Feed
 
 latest commit:
-   commit 4354480cb5ac68560eb27f5a19d2d5fb5b819914
-   Author: MikeNorth <mikesnorth@gmail.com>
-   Date:   Wed Jan 9 21:40:43 2019 -0500
+   commit be70f09aed471fbb58bbdd383bd695d16a1e8673
+   Author: Mike North <mikesnorth@gmail.com>
+   Date:   Fri Jan 18 13:51:55 2019 -0500
    
-       adds None to cave options (#22)
+       Updates Readme for release 1.7
    

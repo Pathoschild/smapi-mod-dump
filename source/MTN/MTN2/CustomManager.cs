@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using MTN2.Compatibility;
 using MTN2.MapData;
 using StardewModdingAPI;
+using StardewValley.Locations;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,10 +20,11 @@ namespace MTN2
     /// to properly function. It is also built to distinguish between canon, or custom. Contains a List<T>
     /// of custom classes and manipulates / gathers the data accordingly.
     /// </summary>
-    public class CustomManager {
+    internal class CustomManager : ICustomManager {
         protected int LoadedIndex = -1;
         protected int SelectedIndex = 0;
         public List<CustomFarm> FarmList { get; private set; }
+        public List<CustomGreenHouse> GreenHouseList { get; private set; }
         public bool NoDebris { get; set; } = false;
         public bool Canon { get; private set; } = true;
         public int ScienceHouseIndex { get; private set; }
@@ -76,7 +79,7 @@ namespace MTN2
 
         public Point GreenHouseDoor {
             get {
-                return new Point(LoadedFarm.GreenHouse.PointOfInteraction.X, LoadedFarm.FarmHouse.PointOfInteraction.Y);
+                return new Point(LoadedFarm.GreenHouse.PointOfInteraction.X, LoadedFarm.GreenHouse.PointOfInteraction.Y);
             }
         }
 
@@ -94,13 +97,15 @@ namespace MTN2
 
         public int GreenHouseEntryX {
             get {
-                return 10;
+                if (Canon || LoadedFarm.CustomGreenhouse == null) return 10;
+                return LoadedFarm.CustomGreenhouse.Enterance.PointOfInteraction.X;
             }
         }
 
         public int GreenHouseEntryY {
             get {
-                return 23;
+                if (Canon || LoadedFarm.CustomGreenhouse == null) return 23;
+                return LoadedFarm.CustomGreenhouse.Enterance.PointOfInteraction.Y;
             }
         }
 
@@ -119,30 +124,83 @@ namespace MTN2
         /// <param name="Monitor">SMAPI's IMonitor, to print useful information</param>
         public void Populate(IModHelper Helper, IMonitor Monitor) {
             CustomFarm FarmData;
-            string IconFile;
-
+            CustomGreenHouse GreenHouseData;
+            bool ContainsFarm = false;
+            bool ContainsGreenHouse = false;
             FarmList = new List<CustomFarm>();
 
             foreach (IContentPack ContentPack in Helper.ContentPacks.GetOwned()) {
+                FarmData = new CustomFarm();
+                GreenHouseData = new CustomGreenHouse();
                 Monitor.Log($"Reading content pack: {ContentPack.Manifest.Name} {ContentPack.Manifest.Version}.");
-                FarmData = ContentPack.ReadJsonFile<CustomFarm>("farmType.json");
+
+                ContainsFarm = ProcessFarmType(ContentPack, out FarmData);
+                ContainsGreenHouse = ProcessGreenHouseType(ContentPack, out GreenHouseData);
+
                 if (FarmData.Version < 2.0) {
                     FarmData = PopulateOld(ContentPack, Monitor);
                 }
 
+                if (ContainsFarm) Monitor.Log($"\t + Contains a custom farm.", LogLevel.Trace);
 
-                IconFile = Path.Combine(ContentPack.DirectoryPath, "icon.png");
-                if(File.Exists(IconFile)) {
-                    FarmData.IconSource = ContentPack.LoadAsset<Texture2D>("icon.png");
-                } else {
-                    FarmData.IconSource = Helper.Content.Load<Texture2D>(Path.Combine("res", "missingIcon.png"));
+                if (ContainsFarm) {
+                    LoadIcon(Helper, ContentPack, FarmData);
                 }
 
-                FarmData.ContentPack = ContentPack;
-                FarmList.Add(FarmData);
+                if (FarmData != null) {
+                    FarmData.ContentPack = ContentPack;
+                    FarmList.Add(FarmData);
+                }
+                if (GreenHouseData != null) {
+                    GreenHouseData.ContentPack = ContentPack;
+                    GreenHouseList.Add(GreenHouseData);
+                }
             }
 
             return;
+        }
+
+        private void LoadIcon(IModHelper helper, IContentPack contentPack, CustomFarm farm) {
+            string IconFile;
+            IconFile = Path.Combine(contentPack.DirectoryPath, "icon.png");
+            if (File.Exists(IconFile)) {
+                farm.IconSource = contentPack.LoadAsset<Texture2D>("icon.png");
+            } else {
+                farm.IconSource = helper.Content.Load<Texture2D>(Path.Combine("res", "missingIcon.png"));
+            }
+        }
+
+        private bool ProcessGreenHouseType(IContentPack contentPack, out CustomGreenHouse greenHouse) {
+            Dictionary<string, object> Extra;
+            if (contentPack.Manifest.ExtraFields != null && contentPack.Manifest.ExtraFields.ContainsKey("ContentPackType")) {
+                Extra = (Dictionary<string, object>)ObjectToDictionaryHelper.ToDictionary(contentPack.Manifest.ExtraFields["ContentPackType"]);
+                if (Extra.ContainsKey("Greenhouse") && bool.Parse(Extra["Greenhouse"].ToString())) {
+                    greenHouse = contentPack.ReadJsonFile<CustomGreenHouse>("greenHouseType.json");
+                    return true;
+                }
+            }
+            greenHouse = null;
+            return false;
+        }
+
+        private bool ProcessFarmType(IContentPack contentPack, out CustomFarm farm) {
+            Dictionary<string, object> Extra;
+            bool results;
+
+            if (contentPack.Manifest.ExtraFields != null && contentPack.Manifest.ExtraFields.ContainsKey("ContentPackType")) {
+                Extra = (Dictionary<string, object>) ObjectToDictionaryHelper.ToDictionary(contentPack.Manifest.ExtraFields["ContentPackType"]);
+                if (Extra.ContainsKey("Farm") && bool.Parse(Extra["Farm"].ToString())) {
+                    farm = contentPack.ReadJsonFile<CustomFarm>("farmType.json");
+                    results = true;
+                } else {
+                    farm = null;
+                    results = false;
+                }
+            } else {
+                farm = contentPack.ReadJsonFile<CustomFarm>("farmType.json");
+                results = true;
+            }
+            return results;
         }
 
         /// <summary>
@@ -197,6 +255,7 @@ namespace MTN2
             } else {
                 LoadedIndex = SelectedIndex;
                 Canon = false;
+                LinkGreenHouse();
                 return;
             }
         }
@@ -217,7 +276,18 @@ namespace MTN2
                     }
                 }
                 Canon = false;
+                LinkGreenHouse();
                 return;
+            }
+        }
+
+        private void LinkGreenHouse() {
+            if (LoadedFarm.StartingGreenHouse != null) {
+                for (int i = 0; i < GreenHouseList.Count; i++) {
+                    if (GreenHouseList[i].Name == LoadedFarm.StartingGreenHouse) {
+                        LoadedFarm.CustomGreenhouse = GreenHouseList[i];
+                    }
+                }
             }
         }
         
@@ -227,13 +297,22 @@ namespace MTN2
         /// </summary>
         /// <param name="map">The base farm map, loaded.</param>
         /// <returns>The Actual Asset Key</returns>
-        public string GetAssetKey(out Map map) {
-            if (LoadedFarm.FarmMap.FileType == FileType.raw) {
-                map = LoadedFarm.ContentPack.LoadAsset<Map>(LoadedFarm.FarmMap.FileName + ".tbin");
-            } else {
-                map = null;
-            }
-            return LoadedFarm.ContentPack.GetActualAssetKey(LoadedFarm.FarmMap.FileName + ((LoadedFarm.FarmMap.FileType == FileType.raw) ? ".tbin" : ".xnb"));
+        public string GetAssetKey(out Map map, string type) {
+            if (type == "Greenhouse") {
+                if (LoadedFarm.CustomGreenhouse.GreenhouseMap.FileType == FileType.raw) {
+                    map = LoadedFarm.CustomGreenhouse.ContentPack.LoadAsset<Map>(LoadedFarm.CustomGreenhouse.GreenhouseMap.FileName + ".tbin");
+                } else {
+                    map = null;
+                }
+                return LoadedFarm.CustomGreenhouse.ContentPack.GetActualAssetKey(LoadedFarm.CustomGreenhouse.GreenhouseMap.FileName + ((LoadedFarm.CustomGreenhouse.GreenhouseMap.FileType == FileType.raw) ? ".tbin" : ".xnb"));
+            } else { 
+                if (LoadedFarm.FarmMap.FileType == FileType.raw) {
+                    map = LoadedFarm.ContentPack.LoadAsset<Map>(LoadedFarm.FarmMap.FileName + ".tbin");
+                } else {
+                    map = null;
+                }
+                return LoadedFarm.ContentPack.GetActualAssetKey(LoadedFarm.FarmMap.FileName + ((LoadedFarm.FarmMap.FileType == FileType.raw) ? ".tbin" : ".xnb"));
+            } 
         }
 
         /// <summary>
@@ -356,85 +435,6 @@ namespace MTN2
 
         public void IntegrityCheck() {
 
-        }
-
-        public void CreateTemplate(string type, IModHelper helper, IMonitor monitor) {
-            switch (type) {
-                case "Farm":
-                    CreateFarmTemplate(helper);
-                    return;
-                default:
-                    monitor.Log("Error. Invalid input.");
-                    return;
-            }
-        }
-
-        private void CreateFarmTemplate(IModHelper helper) {
-            CustomFarm template = new CustomFarm();
-            template.ID = 25;
-            template.Name = "Example";
-            template.Description = "Example Farm_A description that appears when the player hovers over the farm icon, as they are creating a new game.";
-            template.Folder = "Example";
-            template.Icon = "fileNameOfIcon.png";
-            template.Version = 2.0f;
-            template.CabinCapacity = 3;
-            template.AllowClose = true;
-            template.AllowSeperate = true;
-            template.FarmMap = new MapFile("Farm_Example");
-            //template.AdditionalMaps
-            template.FarmHouse = new Structure(new Placement(3712.00f, 520.00f), new Interaction(64, 14));
-            template.GreenHouse = new Structure(new Placement(1600.00f, 384.00f), new Interaction(28, 15));
-            template.FarmCave = new Structure(new Placement(), new Interaction(34, 5)) {
-                Coordinates = null
-            };
-            template.ShippingBin = new Structure(new Placement(), new Interaction(71, 14)) {
-                Coordinates = null
-            };
-            template.MailBox = new Structure(new Placement(), new Interaction(68, 16)) {
-                Coordinates = null
-            };
-            template.GrandpaShrine = new Structure(new Placement(), new Interaction(8, 7)) {
-                Coordinates = null
-            };
-            template.RabbitShrine = new Structure(new Placement(), new Interaction(48, 6)) {
-                Coordinates = null
-            };
-            template.PetWaterBowl = new Structure(new Placement(), new Interaction(54, 7)) {
-                Coordinates = null
-            };
-            template.Neighbors = new List<Neighbor> {
-                new Neighbor("Backwoods") {
-                    WarpPoints = { new Warp(13, 40, 117, 0) }
-                },
-                new Neighbor("BusStop") {
-                    WarpPoints = { new Warp(-1, 22, 155, 24), new Warp(-1, 23, 155, 25) }
-                },
-                new Neighbor("Forest") {
-                    WarpPoints = { new Warp(67, -1, 116, 154) }
-                }
-            };
-            template.ResourceClumps = new LargeDebris() {
-                ResourceList = new List<Spawn> {
-                    new Spawn() {
-
-                    }
-                }
-            };
-            template.Foraging = new Forage() {
-                ResourceList = new List<Spawn> {
-                    new Spawn() {
-
-                    }
-                }
-            };
-            template.Ores = new Ore() {
-                ResourceList = new List<Spawn> {
-                    new Spawn {
-
-                    }
-                }
-            };
-            helper.Data.WriteJsonFile("farmType.json", template);
         }
     }
 }

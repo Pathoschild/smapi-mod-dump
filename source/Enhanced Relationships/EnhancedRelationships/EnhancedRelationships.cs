@@ -59,10 +59,14 @@ namespace EnhancedRelationships
             var i18n = Helper.Translation;
             for (int i = 0; i < npcz.Count(); i++)
             {
+                IDictionary<string, string> npc = asset.AsDictionary<string, string>().Data;
+                npc["birthDayMail" + npcz[i]] = i18n.Get("npc_mail", new { npc_name = npcz[i], npc_gift = npc_gifts[i] });
+                /*
                 asset
                 .AsDictionary<string, string>()
                 .Set("birthDayMail" + npcz[i], i18n.Get("npc_mail", new { npc_name = npcz[i], npc_gift = npc_gifts[i]}));
-                //$"Dear @,^ Tomorrow is {npcz[i]}'s Birthday. You should give them a gift. They would love one of the following: ^^{npc_gifts[i]}."
+                
+                *///$"Dear @,^ Tomorrow is {npcz[i]}'s Birthday. You should give them a gift. They would love one of the following: ^^{npc_gifts[i]}."
             }
         }
 
@@ -75,13 +79,16 @@ namespace EnhancedRelationships
         public override void Entry(IModHelper helper)
         {
             this.Config = Helper.ReadConfig<ModConfig>();            
-            SFarmer Player = Game1.player;            
-            TimeEvents.AfterDayStarted += this.TimeEvents_AfterDayStarted;
-            SaveEvents.BeforeSave += SaveEvents_BeforeSave;
+            SFarmer Player = Game1.player;
+            Helper.Events.GameLoop.DayStarted += this.TimeEvents_AfterDayStarted;
+            //TimeEvents.AfterDayStarted += this.TimeEvents_AfterDayStarted;
+            Helper.Events.GameLoop.Saving += SaveEvents_BeforeSave;
+            //SaveEvents.BeforeSave += SaveEvents_BeforeSave;
             //LocationEvents.CurrentLocationChanged += DoNpcGift;
-            PlayerEvents.InventoryChanged += DoNpcGift;
+            Helper.Events.Player.InventoryChanged += DoNpcGift;
+            //PlayerEvents.InventoryChanged += DoNpcGift;
         }
-        private void DoNpcGift(object sender, EventArgsInventoryChanged e)
+        private void DoNpcGift(object sender, InventoryChangedEventArgs e)
         {
             SFarmer Player = Game1.player;
             var day = SDate.Now();
@@ -142,6 +149,8 @@ namespace EnhancedRelationships
        
         private void SaveEvents_BeforeSave(object sender, EventArgs e)
         {
+            if (!this.Config.GetMail)
+                return;
             var tomorrow = SDate.Now().AddDays(1);
             foreach (GameLocation location in Game1.locations)
             {

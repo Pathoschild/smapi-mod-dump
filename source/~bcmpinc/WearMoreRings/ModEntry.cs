@@ -575,6 +575,27 @@ namespace StardewHack.WearMoreRings
                 }
             }
             
+            // I have no idea why StardewValley does this in InventoryPage::setHeldItem, but I guess it might be important.
+            if (helditem != null) {
+                helditem.NetFields.Parent = null;
+            }
+            
+            // Update inventory
+            ActualRings ar = actualdata.GetValue(Game1.player, FarmerNotFound);
+            switch (icon.name) {
+            case "Hat":          Game1.player.hat.Set (helditem as Hat);         break;
+            case "Left Ring":    Game1.player.leftRing.Set (helditem as Ring);   break;
+            case "Right Ring":   Game1.player.rightRing.Set (helditem as Ring);  break;
+            case "Boots":        Game1.player.boots.Set (helditem as Boots);     break;
+            case "Extra Ring 1": ar.ring1.Set (helditem as Ring);                break;
+            case "Extra Ring 2": ar.ring2.Set (helditem as Ring);                break;
+            case "Extra Ring 3": ar.ring3.Set (helditem as Ring);                break;
+            case "Extra Ring 4": ar.ring4.Set (helditem as Ring);                break;
+            default:
+                mon.Log ($"ERROR: Trying to fit equipment item into invalid slot '{icon.name}'", LogLevel.Error);
+                return;
+            }
+
             // Equip/unequip
             (icon.item as Ring )?.onUnequip(Game1.player, Game1.currentLocation);
             (icon.item as Boots)?.onUnequip();
@@ -584,17 +605,6 @@ namespace StardewHack.WearMoreRings
             // Swap items
             Game1.player.CursorSlotItem = icon.item;
             icon.item = helditem;
-
-            // Update inventory
-            ActualRings ar = actualdata.GetValue(Game1.player, FarmerNotFound);
-            if (icon.name == "Hat"         ) Game1.player.hat.Set(helditem as Hat);
-            if (icon.name == "Left Ring"   ) Game1.player.leftRing.Set(helditem as Ring);
-            if (icon.name == "Right Ring"  ) Game1.player.rightRing.Set(helditem as Ring);
-            if (icon.name == "Boots"       ) Game1.player.boots.Set(helditem as Boots);
-            if (icon.name == "Extra Ring 1") ar.ring1.Set(helditem as Ring);
-            if (icon.name == "Extra Ring 2") ar.ring2.Set(helditem as Ring);
-            if (icon.name == "Extra Ring 3") ar.ring3.Set(helditem as Ring);
-            if (icon.name == "Extra Ring 4") ar.ring4.Set(helditem as Ring);
         }
         
         static public void AutoEquipment(StardewValley.Menus.InventoryPage page) {

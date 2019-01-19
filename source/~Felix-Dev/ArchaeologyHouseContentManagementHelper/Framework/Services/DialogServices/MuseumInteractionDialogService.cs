@@ -31,8 +31,9 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
 
         private bool running;
 
-        private ITranslationHelper translationHelper;
-        private IMonitor monitor;
+        private readonly ITranslationHelper translationHelper;
+        private readonly IMonitor monitor;
+        private readonly IModEvents events;
 
         public MuseumInteractionDialogService()
         {
@@ -45,6 +46,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
 
             translationHelper = ModEntry.CommonServices.TranslationHelper;
             monitor = ModEntry.CommonServices.Monitor;
+            events = ModEntry.CommonServices.Events;
 
             running = false;
         }
@@ -58,7 +60,8 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
             }
 
             running = true;
-            InputEvents.ButtonPressed += InputEvents_ButtonPressed;     
+
+            events.Input.ButtonPressed += OnButtonPressed;   
         }
 
         public void Stop()
@@ -69,16 +72,18 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
                 return;
             }
 
-            InputEvents.ButtonPressed -= InputEvents_ButtonPressed;
+            events.Input.ButtonPressed -= OnButtonPressed;
             running = false;
         }
 
-        /// <summary>The method invoked when the player presses a controller, keyboard, or mouse button.</summary>
+        /// <summary>
+        /// This method is responsible for showing our custom [Museum Interaction] dialog.
+        /// </summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
+        /// <param name="e">The event args.</param>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (e.IsActionButton && Context.IsPlayerFree && LibraryMuseumHelper.IsPlayerAtCounter(Game1.player))
+            if (e.Button.IsActionButton() && Context.IsPlayerFree && LibraryMuseumHelper.IsPlayerAtCounter(Game1.player))
             {
                 LibraryMuseum museum = Game1.currentLocation as LibraryMuseum;
                 bool canDonate = museum.doesFarmerHaveAnythingToDonate(Game1.player);

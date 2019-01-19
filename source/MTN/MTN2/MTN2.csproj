@@ -93,6 +93,7 @@
     <Compile Include="Menus\CharacterCustomizationMTN.cs" />
     <Compile Include="MTN.cs" />
     <Compile Include="Messages\ServerIntro.cs" />
+    <Compile Include="ObjectToDictionaryHelper.cs" />
     <Compile Include="Patch.cs" />
     <Compile Include="PatchConfig.cs" />
     <Compile Include="Patches\Event\SetExitLocation.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="PatchManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpawnManager.cs" />
+    <Compile Include="Templates.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />

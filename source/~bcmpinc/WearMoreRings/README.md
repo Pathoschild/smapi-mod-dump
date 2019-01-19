@@ -31,3 +31,7 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 #### 1.3:
 * Fix exception during startup on windows.
+
+#### 1.3.1:
+* Some minor changes to rule out some potential causes for rings disappearing.
+

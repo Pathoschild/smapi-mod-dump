@@ -25,21 +25,21 @@ namespace MTN2
 {
     public class PatchManager
     {
-        private readonly CustomManager customManager;
+        private readonly ICustomManager customManager;
         private IModHelper helper;
         private List<Patch> patches;
         private PatchConfig patchConfig;
 
-        public PatchManager(CustomManager customManager) {
+        public PatchManager(ICustomManager customManager) {
             this.customManager = customManager;
             patches = new List<Patch>();
         }
 
-        public void Initialize(IModHelper helper, IMonitor monitor) {
-            this.helper = helper;
+        public void Initialize(Mod mtn, IMonitor monitor) {
+            this.helper = mtn.Helper;
             patchConfig = helper.Data.ReadJsonFile<PatchConfig>("darkmagic.json");
-            if (patchConfig == null || patchConfig.Version != FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion) {
-                patchConfig = PatchConfig.Default;
+            if (patchConfig == null || patchConfig.Version != mtn.ModManifest.Version.ToString()) { 
+                patchConfig = PatchConfig.Default(mtn);
                 helper.Data.WriteJsonFile("darkmagic.json", patchConfig);
             }
 

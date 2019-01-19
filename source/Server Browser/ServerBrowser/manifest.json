@@ -1,7 +1,7 @@
 ﻿{
    "Name": "ServerBrowser",
    "Author": "Ilyaki",
-   "Version": "1.0.4",
+   "Version": "1.0.5",
    "Description": "Adds a public server browser.",
    "UniqueID": "Ilyaki.ServerBrowser",
    "EntryDll": "ServerBrowser.dll",

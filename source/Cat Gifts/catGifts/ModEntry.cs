@@ -77,7 +77,7 @@ namespace catGifts
             if (this.MID_CHANCE < 0 || this.MID_CHANCE > 100)
                 this.MID_CHANCE = 40;
             if (this.HI_CHANCE < 0 || this.HI_CHANCE > 100)
-                this.HI_CHANCE = 40;
+                this.HI_CHANCE = 20;
             if (LOW_CHANCE + MID_CHANCE + HI_CHANCE != 100)
             {
                 LOW_CHANCE = 40;
@@ -278,9 +278,9 @@ namespace catGifts
                 }
             }
 
-            TimeEvents.AfterDayStarted += this.AfterDayStarted;
-            PlayerEvents.Warped += this.Warped;
-            TimeEvents.TimeOfDayChanged += TimeChanged;            
+            Helper.Events.GameLoop.DayStarted += this.AfterDayStarted;
+            Helper.Events.Player.Warped += this.Warped;
+            Helper.Events.GameLoop.TimeChanged += TimeChanged;            
         }
 
         public void TimeChanged(object sender, EventArgs e)
@@ -320,7 +320,7 @@ namespace catGifts
                             // Spawn gift                                                
 
                             // Remove old gift if there's still one on the floor
-                            OverlaidDictionary<Vector2, StardewValley.Object> obs = Game1.getLocationFromName("Farm").Objects;
+                            OverlaidDictionary obs = Game1.getLocationFromName("Farm").Objects;
                             Vector2 spawnPos = new Vector2(x, y + 1);
 
                             for(int i=0; i<obs.Count(); i++)
@@ -631,7 +631,7 @@ namespace catGifts
             // Spawn gift            
 
             // Remove old gift if there's still one on the floor
-            OverlaidDictionary<Vector2, StardewValley.Object> obs = Game1.getLocationFromName("Farm").Objects;
+            OverlaidDictionary obs = Game1.getLocationFromName("Farm").Objects;
             Vector2 spawnPos = new Vector2(tile.X, tile.Y);
 
             for (int i = 0; i < obs.Count(); i++)

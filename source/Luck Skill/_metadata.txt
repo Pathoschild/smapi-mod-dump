@@ -5,12 +5,9 @@ mods:
    Luck Skill
 
 latest commit:
-   commit c3d7c34ecebe263b70782e122e685a2fdd6891a5
-   Merge: 8f42bd9 ef7972d
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 18:22:38 2019 -0500
+   commit ddba8ca86cefb5a2be593811dfefd638b36ff1b8
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 18 11:24:08 2019 -0500
    
-       Merge pull request #1 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0
+       Update version
    

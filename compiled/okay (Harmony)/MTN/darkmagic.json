@@ -1,0 +1,50 @@
+{
+  "Version": "2.0-alpha6",
+  "EventPatch": {
+    "SetExitLocation": true
+  },
+  "FarmPatch": {
+    "CheckAction": true,
+    "Constructor": true,
+    "Draw": true,
+    "GetFrontDoorPositionForFarmer": true,
+    "LeftClick": true,
+    "ResetLocalState": true,
+    "UpdateWhenCurrentLocation": true
+  },
+  "FarmHousePatch": {
+    "Constructor": true,
+    "GetPorchStandingSpot": false,
+    "UpdateMap": true
+  },
+  "Game1Patch": {
+    "LoadForNewGame": true
+  },
+  "GameLocationPatch": {
+    "LoadObjects": true,
+    "PerformAction": true,
+    "StartEvent": true
+  },
+  "NPCPatch": {
+    "UpdateConstructionAnimation": true
+  },
+  "ObjectPatch": {
+    "TotemWarpForReal": true
+  },
+  "PetPatch": {
+    "DayUpdate": true,
+    "SetAtFarmPosition": true
+  },
+  "SaveGamePatch": {
+    "LoadDataForLocations": false
+  },
+  "TitleMenuPatch": {
+    "SetUpIcons": true
+  },
+  "WandPatch": {
+    "WandWarpForReal": true
+  },
+  "WorldChangeEventPatch": {
+    "SetUp": true
+  }
+}

@@ -5,12 +5,9 @@ mods:
    Carry Chest
 
 latest commit:
-   commit 2a37e4239269bcdaa3c11c9a39c2dc73a42c914c
-   Merge: 80f6fc8 3786e53
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 18:35:31 2019 -0500
+   commit f40f59f5e192ec3fa92f28add736d798f63b0754
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 18 11:19:47 2019 -0500
    
-       Merge pull request #3 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0 & rewrite implementation
+       Update version
    

@@ -17,14 +17,14 @@ namespace MTN2.Patches.WandPatches
     /// </summary>
     public class wandWarpForRealPatch
     {
-        private static CustomManager customManager;
+        private static ICustomManager customManager;
 
         /// <summary>
         /// Constructor. Awkward method of setting references needed. However, Harmony patches
         /// are required to be static. Thus we must break good Object Orientated practices.
         /// </summary>
         /// <param name="CustomManager">The class controlling information pertaining to the customs (and the loaded customs).</param>
-        public wandWarpForRealPatch(CustomManager customManager) {
+        public wandWarpForRealPatch(ICustomManager customManager) {
             wandWarpForRealPatch.customManager = customManager;
         }
 

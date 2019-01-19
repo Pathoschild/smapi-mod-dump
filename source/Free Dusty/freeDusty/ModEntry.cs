@@ -21,11 +21,11 @@ namespace freeDusty
             if(!Context.IsMultiplayer) { 
                 helper.Content.AssetLoaders.Add(new DustyLoader(this.Helper));         
 
-                TimeEvents.AfterDayStarted += this.AfterDayStarted;
-                SaveEvents.BeforeSave += this.BeforeSave;
+                Helper.Events.GameLoop.DayStarted += this.AfterDayStarted;
+                Helper.Events.GameLoop.Saving += this.BeforeSave;
 
-                MenuEvents.MenuChanged += this.MenuChanged;
-                PlayerEvents.Warped += this.Warped;
+                Helper.Events.Display.MenuChanged += this.MenuChanged;
+                Helper.Events.Player.Warped += this.Warped;
 
                 //GameEvents.EighthUpdateTick += this.Second;
             }

@@ -5,12 +5,9 @@ mods:
    Console Code
 
 latest commit:
-   commit cae80c1629eed873a7c2694aa5cda3d9dc625a22
-   Merge: d3d07e4 7575852
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 18:34:07 2019 -0500
+   commit d4e169e3f40d1a9e8f773c126854b1f654c4d250
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 18 11:20:46 2019 -0500
    
-       Merge pull request #1 from Pathoschild/update-code
-       
-       Minor updates & cleanup
+       Update version
    

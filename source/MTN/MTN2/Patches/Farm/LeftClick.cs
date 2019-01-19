@@ -18,14 +18,14 @@ namespace MTN2.Patches.FarmPatches
     /// </summary>
     public class leftClickPatch
     {
-        private static CustomManager customManager;
+        private static ICustomManager customManager;
 
         /// <summary>
         /// Constructor. Awkward method of setting references needed. However, Harmony patches
         /// are required to be static. Thus we must break good Object Orientated practices.
         /// </summary>
         /// <param name="farmManager">The class controlling information pertaining to the custom farms (and the loaded farm).</param>
-        public leftClickPatch(CustomManager customManager) {
+        public leftClickPatch(ICustomManager customManager) {
             leftClickPatch.customManager = customManager;
         }
 
