@@ -6,9 +6,9 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit dbe19a6f31e8ab62468e9d9e12705f1a832b462f
+   commit ed609df1192e874b8eed753ec24dcea7cdeecba8
    Author: Bouhm <bbouhm@gmail.com>
-   Date:   Thu Jan 17 16:02:36 2019 -0800
+   Date:   Fri Jan 18 23:35:32 2019 -0800
    
-       add warning if multiplayer host doesn't have mod
+       fix adjusting for modded map
    

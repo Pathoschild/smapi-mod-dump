@@ -1,10 +1,10 @@
 ﻿{
   "Name": "TimeMultiplier",
   "Author": "DefenTheNation",
-  "Version": "1.1",
+  "Version": "1.2",
   "UniqueID": "DefenTheNation.TimeMultiplier",
   "Description": "Adds a multiplier to the time counter to speed up or slow down the time progression. Recommended values are between 0.5 and 1.5.",
   "EntryDll": "TimeMultiplier.dll",
-  "MinimumApiVersion": "2.6-beta",
+  "MinimumApiVersion": "2.10",
   "UpdateKeys": [ "Nexus: 2262"  ]
 }

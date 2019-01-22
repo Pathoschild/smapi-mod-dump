@@ -1,4 +1,5 @@
-# RELEASE NOTES [(source)](https://www.nexusmods.com/stardewvalley/mods/3207)
+# RELEASE NOTES 
+[(Health and Stamina Regeneration)](https://www.nexusmods.com/stardewvalley/mods/3207)
 
 ## v1.0.1 (Jan 7, 2018)
 - More customizable with ```StaminaRegenRate``` in the config.json

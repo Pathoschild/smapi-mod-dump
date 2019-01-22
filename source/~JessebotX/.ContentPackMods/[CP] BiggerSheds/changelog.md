@@ -1,5 +1,5 @@
 # RELEASE NOTES
-### [(Bigger Sheds Nexus download)](https://www.nexusmods.com/stardewvalley/mods/2816/)
+[(Bigger Sheds)](https://www.nexusmods.com/stardewvalley/mods/2816/)
 
 ## v2.0.3 (Dec 8, 2018)
 - Updated ```manifest.json``` file

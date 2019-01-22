@@ -23,7 +23,7 @@ namespace FarmTypeManager
 
                 Random rng = new Random(); //DEVNOTE: "Game1.random" exists, but causes some odd spawn behavior; using this for now...
 
-                foreach (SpawnArea area in Utility.Config.Forage_Spawn_Settings.Areas)
+                foreach (ForageSpawnArea area in Utility.Config.Forage_Spawn_Settings.Areas)
                 {
                     //validate the map name for the area
                     if (Game1.getLocationFromName(area.MapName) == null)
@@ -47,38 +47,68 @@ namespace FarmTypeManager
                         Vector2 randomTile = validTiles[randomIndex]; //get the random tile's x,y coordinates
                         validTiles.RemoveAt(randomIndex); //remove the tile from the list, since it will be obstructed now
 
-                        int randomForageType = -1; //will stay at -1 if the current season has no forage items listed, or be set to a random item's index number
+                        int? randomForageType = null; //set to a random valid forage's item index (remains null if none is found)
                         switch (Game1.currentSeason)
                         {
                             case "spring":
-                                if (Utility.Config.Forage_Spawn_Settings.SpringItemIndex.Length > 0)
+                                if (area.SpringItemIndex != null) //if there's an override set for this area
                                 {
-                                    randomForageType = Utility.Config.Forage_Spawn_Settings.SpringItemIndex[rng.Next(Utility.Config.Forage_Spawn_Settings.SpringItemIndex.Length)]; //get a random index from the spring list
+                                    if (area.SpringItemIndex.Length > 0) //if the override includes any items
+                                    {
+                                        randomForageType = area.SpringItemIndex[rng.Next(area.SpringItemIndex.Length)]; //get a random index from the override list
+                                    }
+                                    //if an area index exists but is empty, *do not* use the main index; users may want to disable spawns in this season
+                                }
+                                else if (Utility.Config.Forage_Spawn_Settings.SpringItemIndex.Length > 0) //if the main index list includes any items
+                                {
+                                    randomForageType = Utility.Config.Forage_Spawn_Settings.SpringItemIndex[rng.Next(Utility.Config.Forage_Spawn_Settings.SpringItemIndex.Length)]; //get a random index from the main list
                                 }
                                 break;
                             case "summer":
-                                if (Utility.Config.Forage_Spawn_Settings.SummerItemIndex.Length > 0)
+                                if (area.SummerItemIndex != null)
+                                {
+                                    if (area.SummerItemIndex.Length > 0)
+                                    {
+                                        randomForageType = area.SummerItemIndex[rng.Next(area.SummerItemIndex.Length)];
+                                    }
+                                }
+                                else if (Utility.Config.Forage_Spawn_Settings.SummerItemIndex.Length > 0)
                                 {
                                     randomForageType = Utility.Config.Forage_Spawn_Settings.SummerItemIndex[rng.Next(Utility.Config.Forage_Spawn_Settings.SummerItemIndex.Length)];
                                 }
                                 break;
                             case "fall":
-                                if (Utility.Config.Forage_Spawn_Settings.FallItemIndex.Length > 0)
+                                if (area.FallItemIndex != null)
+                                {
+                                    if (area.FallItemIndex.Length > 0)
+                                    {
+                                        randomForageType = area.FallItemIndex[rng.Next(area.FallItemIndex.Length)];
+                                    }
+                                }
+                                else if (Utility.Config.Forage_Spawn_Settings.FallItemIndex.Length > 0)
                                 {
                                     randomForageType = Utility.Config.Forage_Spawn_Settings.FallItemIndex[rng.Next(Utility.Config.Forage_Spawn_Settings.FallItemIndex.Length)];
                                 }
                                 break;
                             case "winter":
-                                if (Utility.Config.Forage_Spawn_Settings.WinterItemIndex.Length > 0)
+                                if (area.WinterItemIndex != null)
+                                {
+                                    if (area.WinterItemIndex.Length > 0)
+                                    {
+                                        randomForageType = area.WinterItemIndex[rng.Next(area.WinterItemIndex.Length)];
+                                    }
+                                }
+                                else if (Utility.Config.Forage_Spawn_Settings.WinterItemIndex.Length > 0)
                                 {
                                     randomForageType = Utility.Config.Forage_Spawn_Settings.WinterItemIndex[rng.Next(Utility.Config.Forage_Spawn_Settings.WinterItemIndex.Length)];
                                 }
                                 break;
                         }
-                        if (randomForageType != -1) //if the forage type seems valid
+
+                        if (randomForageType != null) //if the forage type seems valid
                         {
                             //this method call is based on code from SDV's DayUpdate() in Farm.cs, as of SDV 1.3.27
-                            Game1.getLocationFromName(area.MapName).dropObject(new StardewValley.Object(randomTile, randomForageType, (string)null, false, true, false, true), randomTile * 64f, Game1.viewport, true, (Farmer)null);
+                            Game1.getLocationFromName(area.MapName).dropObject(new StardewValley.Object(randomTile, randomForageType.Value, (string)null, false, true, false, true), randomTile * 64f, Game1.viewport, true, (Farmer)null);
                         }
                     }
                 }

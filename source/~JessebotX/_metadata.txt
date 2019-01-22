@@ -4,11 +4,12 @@ url:
 mods:
    Bigger Riverlands Farm
    Health and Stamina Regeneration
+   Sprint Sprint Sprint
 
 latest commit:
-   commit 6bb2782aa6c6a8a050ac542f41fcebbb68d5db11
+   commit 47f74e989267cebdf6eaa047f1a45cddaee2f1bc
    Author: JessebotX <43657800+JessebotX@users.noreply.github.com>
-   Date:   Thu Jan 17 18:52:45 2019 -0800
+   Date:   Sun Jan 20 18:22:59 2019 -0800
    
-       rewritten
+       updated readme's for consistency
    

@@ -1,5 +1,5 @@
 # Health Stamina Regen
-[(source)](https://www.nexusmods.com/stardewvalley/mods/3207)
+[(nexus)](https://www.nexusmods.com/stardewvalley/mods/3207)
 
 Health and stamina regenerates overtime. Optional configurable regen rate version.
 

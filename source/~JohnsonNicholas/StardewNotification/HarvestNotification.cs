@@ -51,7 +51,7 @@ namespace StardewNotification
 
             else if (Game1.player.caveChoice.Value == FRUIT_CAVE && farmcave.Objects.Any())
             {
-                var objList = farmcave.Objects.Values.Where(c => c.Category == 100 || c.Category == 80).ToArray();
+                var objList = farmcave.Objects.Values.Where(c => c.Category == 100 || c.Category == 80 || c.Category == -79).ToArray();
                 int iCount = objList.Count();
 
                 if (iCount > 1)

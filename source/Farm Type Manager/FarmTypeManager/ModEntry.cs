@@ -17,8 +17,30 @@ namespace FarmTypeManager
         {
             Helper.Events.GameLoop.DayStarted += DayStarted; //tell SMAPI to run the DayStarted event when necessary
             Utility.Monitor.IMonitor = Monitor; //pass the monitor for use by other areas of this mod's code
-
             ModConfig conf; //settings contained in the mod's config.json file
+
+            //attempt to load the default.json FarmConfig file
+            try
+            {
+                Utility.Config = Helper.Data.ReadJsonFile<FarmConfig>($"data/default.json"); //load the default.json config file (null if it doesn't exist)
+            }
+            catch (Exception ex) //if there's an error while loading the json file, try to explain it in the user's log & then skip any further DayStarted behaviors
+            {
+                Utility.Monitor.Log($"Warning: Your default config file (default.json) could not be parsed correctly. If you load a character without their own config file, most of this mod's features will be disabled. Please edit the file, or delete it before restarting/loading to generate a new config file. The auto-generated error message is displayed below.", LogLevel.Warn);
+                Utility.Monitor.Log($"----------", LogLevel.Warn); //visual break to slightly improve clarity, based on user feedback
+                Utility.Monitor.Log($"{ex.Message}", LogLevel.Warn);
+                return;
+            }
+
+            if (Utility.Config == null) //no default.json config file
+            {
+                Utility.Config = new FarmConfig(); //load the (built-in) default config settings
+                Helper.Data.WriteJsonFile($"data/default.json", Utility.Config); //create a default.json config file
+            }
+
+            Utility.Config = null; //prevent errors later in the loading process
+
+            //attempt to load the config.json ModConfig file
             try
             {
                 conf = helper.ReadConfig<ModConfig>(); //create or load the config.json file
@@ -41,21 +63,41 @@ namespace FarmTypeManager
         {
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything; most of this mod's functions should be limited to the host player
 
+            Utility.Config = null; //avoid any errors elsewhere in the loading process
             try
             {
-                Utility.Config = Helper.Data.ReadJsonFile<FarmConfig>($"data/{Constants.SaveFolderName}.json"); //load the current save's config file ([null] if it doesn't exist)
+                Utility.Config = Helper.Data.ReadJsonFile<FarmConfig>($"data/{Constants.SaveFolderName}.json"); //load the current save's config file (null if it doesn't exist)
             }
             catch (Exception ex) //if there's an error while loading the json file, try to explain it in the user's log & then skip any further DayStarted behaviors
             {
-                Utility.Monitor.Log($"Warning: Your character's config file could not be parsed correctly. Most of this mod's functions will be disabled. Please edit the file, or delete it and reload your save to generate a new config file. The original error message is displayed below.", LogLevel.Warn);
+                Utility.Monitor.Log($"Warning: Your character's config file ({Constants.SaveFolderName}.json) could not be parsed correctly. Most of this mod's features will be disabled. Please edit the file, or delete it and reload your save to generate a new config file. The auto-generated error message is displayed below.", LogLevel.Warn);
+                Utility.Monitor.Log($"----------", LogLevel.Warn); //visual break to slightly improve clarity, based on user feedback
                 Utility.Monitor.Log($"{ex.Message}", LogLevel.Warn);
                 return;
             }
 
-            if (Utility.Config == null) //no config file for this save?
+            if (Utility.Config == null) //no config file for this save
             {
-                Utility.Config = new FarmConfig(); //load the default config settings
-                Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", Utility.Config); //create a config file for the current save
+                //attempt to load the default.json config file
+                try
+                {
+                    Utility.Config = Helper.Data.ReadJsonFile<FarmConfig>($"data/default.json"); //load the default.json config file (null if it doesn't exist)
+                }
+                catch (Exception ex) //if there's an error while loading the json file, try to explain it in the user's log & then skip any further DayStarted behaviors
+                {
+                    Utility.Monitor.Log($"Warning: Your default config file (default.json) could not be parsed correctly, and your character doesn't have their own config file yet. Most of this mod's features will be disabled. Please edit the file, or delete it and reload your save to generate a new config file. The auto-generated error message is displayed below.", LogLevel.Warn);
+                    Utility.Monitor.Log($"----------", LogLevel.Warn); //visual break to slightly improve clarity, based on user feedback
+                    Utility.Monitor.Log($"{ex.Message}", LogLevel.Warn);
+                    return;
+                }
+
+                if (Utility.Config == null) //no default.json config file
+                {
+                    Utility.Config = new FarmConfig(); //load the (built-in) default config settings
+                    Helper.Data.WriteJsonFile($"data/default.json", Utility.Config); //create a default.json config file
+                }
+
+                Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", Utility.Config); //create a config file for the current save (using default.json's settings)
             }
 
             //run the methods providing the mod's main features

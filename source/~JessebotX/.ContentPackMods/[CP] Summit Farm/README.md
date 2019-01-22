@@ -1,5 +1,5 @@
 # Summit Farm
-[(source)](https://www.nexusmods.com/stardewvalley/mods/3053)
+[(nexus)](https://www.nexusmods.com/stardewvalley/mods/3053)
 
 Replaces your hilltop farm with my summit farm.
 

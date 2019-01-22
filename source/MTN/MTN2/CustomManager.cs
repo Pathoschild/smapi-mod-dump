@@ -22,12 +22,19 @@ namespace MTN2
     /// </summary>
     internal class CustomManager : ICustomManager {
         protected int LoadedIndex = -1;
-        protected int SelectedIndex = 0;
+        protected int SelectedIndex = -1;
         public List<CustomFarm> FarmList { get; private set; }
         public List<CustomGreenHouse> GreenHouseList { get; private set; }
         public bool NoDebris { get; set; } = false;
         public bool Canon { get; private set; } = true;
         public int ScienceHouseIndex { get; private set; }
+
+        public int CabinLimit {
+            get {
+                if (Canon) return 3;
+                return FarmList[SelectedIndex].CabinCapacity;
+            }
+        }
 
         /// <summary>
         /// Gets the custom farm that the player current has selected
@@ -46,6 +53,7 @@ namespace MTN2
         public CustomFarm LoadedFarm {
             get {
                 if (LoadedIndex == -1) return null;
+                if (FarmList.Count == 0) return null;
                 return FarmList[LoadedIndex];
             }
         }
@@ -249,7 +257,7 @@ namespace MTN2
         /// </summary>
         public void LoadCustomFarm() {
             if (SelectedIndex == -1) {
-                LoadedIndex = 0;
+                LoadedIndex = -1;
                 Canon = true;
                 return;
             } else {

@@ -1,5 +1,5 @@
 # Secret Gardens
-[(source)](https://www.nexusmods.com/stardewvalley/mods/3067)
+[(nexus)](https://www.nexusmods.com/stardewvalley/mods/3067)
 
 A new greenhouse that makes it look like a garden. Still functions the same way as a greenhouse but now expanded.
 

@@ -5,9 +5,9 @@ mods:
    MTN
 
 latest commit:
-   commit 4c767824e5b6a535bf60a28f0817d8c621afa702
+   commit 908adecc9259182d8dff2e51add9d3e0caeb6da2
    Author: David Weil <gamemx25@gmail.com>
-   Date:   Thu Jan 17 15:57:12 2019 -0600
+   Date:   Mon Jan 21 00:57:01 2019 -0600
    
-       Alpha 6 release
+       Alpha 8 release
    

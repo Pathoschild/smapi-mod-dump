@@ -1,5 +1,5 @@
-# Grandpa's Grove Foraging Farm [(source)](https://www.nexusmods.com/stardewvalley/mods/3067)
 # RELEASE NOTES 
+[(Grandpa's Grove Foraging Farm)](https://www.nexusmods.com/stardewvalley/mods/3067)
 
 ## 1.1.2 (12/31/2018)
 - Fixes random (all if not most) debris spawning on unreachable places???

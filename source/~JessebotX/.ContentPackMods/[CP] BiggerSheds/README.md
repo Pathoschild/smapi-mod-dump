@@ -1,5 +1,5 @@
 # Bigger Sheds
-[(source)](https://www.nexusmods.com/stardewvalley/mods/2816)
+[(nexus)](https://www.nexusmods.com/stardewvalley/mods/2816)
 
 ## Features
 Expansion of the interior of the shed. Comes with 8 different versions with wallpaper and flooring and configurable through config.json 

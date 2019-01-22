@@ -5,10 +5,12 @@ mods:
    Time Multiplier
 
 latest commit:
-   commit 53fc42f43a5db78ca1e23745b337432974d04b86
-   Merge: 75ca54e 56afa63
-   Author: DefenTheNation <defenthenation@github>
-   Date:   Sun Jun 3 21:51:53 2018 -0700
+   commit b6b117bc58c0c0d35e9cf130171ff99ddda8e49b
+   Merge: 5813f32 53fc42f
+   Author: Josh <yodellingprofessionally@gmail.com>
+   Date:   Mon Jan 21 21:10:52 2019 -0800
    
-       Merge branch 'develop'
+       Merge branch 'master' into develop
+       
+       Updated to SMAPI 3.0
    

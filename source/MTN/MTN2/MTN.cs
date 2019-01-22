@@ -100,7 +100,7 @@ namespace MTN2
             if (Game1.activeClickableMenu is TitleMenu) {
                 if (TitleMenu.subMenu is CharacterCustomization) {
                     CharacterCustomization oldMenu = (CharacterCustomization)TitleMenu.subMenu;
-                    CharacterCustomizationMTN menu = new CharacterCustomizationMTN(CustomManager, oldMenu.source);
+                    CharacterCustomizationMTN menu = new CharacterCustomizationMTN(CustomManager, Monitor, oldMenu.source);
                     TitleMenu.subMenu = menu;
                 }
             }

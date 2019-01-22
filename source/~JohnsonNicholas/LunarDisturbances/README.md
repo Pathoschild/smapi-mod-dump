@@ -26,6 +26,7 @@ Thankfully, they don't appear to spawn on wedding and festival days..
 
 ## Changelog
 1.0.8
+- Times after midnight are properly formatted
 - Feature to turn off moon display added
 - Updated for SMAPI 3.0
 - Moon no longer watches you break down your financial report.

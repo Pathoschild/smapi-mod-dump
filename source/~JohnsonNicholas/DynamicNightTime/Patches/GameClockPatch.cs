@@ -108,15 +108,15 @@ namespace DynamicNightTime.Patches
                     {
                         float minEff = SDVTime.MinutesBetweenTwoIntTimes(Game1.timeOfDay, sunset) + (float)Math.Min(10.0, Game1.gameTimeInterval / 700);
                         float percentage = (minEff / SDVTime.MinutesBetweenTwoIntTimes(sunset, astroTwilight));
-                        Color destColor = new Color(r: (byte)(0 + (227*percentage)), g: (byte)(98 + (111 * percentage)), b: (byte)(193 - (193 * percentage)), a:(byte)(255 - (17 * percentage)));
+                        Color destColor = new Color(r: (byte)(0 + (227 * percentage)), g: (byte)(98 + (111 * percentage)), b: (byte)(193 - (193 * percentage)), a: (byte)(255 - (17 * percentage)));
 
                         //[222,222,15]
-                        
+
                         if (DynamicNightTime.LunarDisturbancesLoaded && DynamicNightTime.MoonAPI.IsMoonUp(Game1.timeOfDay))
                         {
                             //start adding the moon in naval light
-                            minEff = SDVTime.MinutesBetweenTwoIntTimes(Game1.timeOfDay, Game1.getModeratelyDarkTime()) + (float)Math.Min(10.0, Game1.gameTimeInterval / 700);
-                            percentage = (minEff  / SDVTime.MinutesBetweenTwoIntTimes(Game1.getModeratelyDarkTime(), astroTwilight));
+                            minEff = SDVTime.MinutesBetweenTwoIntTimes(Game1.timeOfDay, sunset) + (float)Math.Min(10.0, Game1.gameTimeInterval / 700);
+                            percentage = (minEff  / SDVTime.MinutesBetweenTwoIntTimes(sunset, astroTwilight));
                             
                             int rRaw = (int)(destColor.R - (moonLight.R * percentage));
                             int gRaw = (int)(destColor.G - (moonLight.G * percentage));
@@ -136,6 +136,7 @@ namespace DynamicNightTime.Patches
                         Game1.outdoorLight = destColor;
                     }
 
+                    /*
                     //astro
                     if (Game1.timeOfDay >= astroTwilight){
 
@@ -143,8 +144,8 @@ namespace DynamicNightTime.Patches
 
                         if ((DynamicNightTime.LunarDisturbancesLoaded && DynamicNightTime.MoonAPI.IsMoonUp(Game1.timeOfDay))) {
                             int rRaw = (int)(destColor.R - moonLight.R);
-                            int gRaw = (int)(Game1.outdoorLight.G - moonLight.G);
-                            int bRaw = (int)(Game1.outdoorLight.B - moonLight.B);
+                            int gRaw = (int)(destColor.R - moonLight.G);
+                            int bRaw = (int)(destColor.R - moonLight.B);
 
                             byte R = 0, G = 0, B = 0;
 
@@ -161,7 +162,7 @@ namespace DynamicNightTime.Patches
 
                             Game1.outdoorLight = destColor;
                         }
-                    }
+                    } */
                 }
             }
         }

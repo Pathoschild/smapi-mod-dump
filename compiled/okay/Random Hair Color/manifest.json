@@ -1,0 +1,10 @@
+﻿{
+  "Name": "RandomHairColorMod",
+  "Author": "Joanie Davis",
+  "Version": "1.0.1",
+  "Description": "Randomly change the color of the player character every day",
+  "UniqueID": "davis.randomhair",
+  "EntryDll": "RandomHairColorMod.dll",
+  "MinimumApiVersion": "2.9",
+  "UpdateKeys": [ "Nexus:3271" ]
+}

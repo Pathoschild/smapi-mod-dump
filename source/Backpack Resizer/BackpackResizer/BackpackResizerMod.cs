@@ -60,7 +60,7 @@ namespace BackpackResizer
                     return;
                 }
 
-                setBackpackSizeForce(Game1.player, backpackSize);
+                SetBackpackSizeForce(Game1.player, backpackSize);
 
                 Monitor.Log("Set backpack size to " + Game1.player.MaxItems, LogLevel.Info);
             });
@@ -83,7 +83,7 @@ namespace BackpackResizer
         {
             if (HasItemsThatWillBeDeleted(farmer, size)) return false;
 
-            setBackpackSizeForce(farmer, size);
+            SetBackpackSizeForce(farmer, size);
             return true;
         }
 
@@ -98,7 +98,7 @@ namespace BackpackResizer
         {
             if (!force && HasItemsThatWillBeDeleted(farmer, size)) return false;
 
-            setBackpackSizeForce(farmer, size);
+            SetBackpackSizeForce(farmer, size);
             return true;
         }
 
@@ -121,17 +121,17 @@ namespace BackpackResizer
             return false;
         }
 
-        private void setBackpackSizeForce(Farmer farmer, int size)
+        private void SetBackpackSizeForce(Farmer farmer, int size)
         {
             if (farmer.MaxItems == size) return;
-            else if (farmer.MaxItems < size) increaseBackpackSize(farmer, size);
-            else decreaseBackpackSize(farmer, size);
+            else if (farmer.MaxItems < size) IncreaseBackpackSize(farmer, size);
+            else DecreaseBackpackSize(farmer, size);
 
             farmer.MaxItems = size;
         }
 
         // Drop item if it is droppable. If not, it will be deleted.
-        private void decreaseBackpackSize(Farmer farmer, int size)
+        private void DecreaseBackpackSize(Farmer farmer, int size)
         {
             for (int i = farmer.Items.Count - 1; i >= size; i--)
             {
@@ -141,7 +141,7 @@ namespace BackpackResizer
         }
 
         // Add backpack slots. Items collection must be updated as well.
-        private void increaseBackpackSize(Farmer farmer, int size)
+        private void IncreaseBackpackSize(Farmer farmer, int size)
         {
             int additional = size - farmer.MaxItems;
             for (int i = 0; i < additional; i++) farmer.Items.Add(null);

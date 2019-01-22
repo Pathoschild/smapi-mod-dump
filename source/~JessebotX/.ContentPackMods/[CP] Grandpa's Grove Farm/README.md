@@ -1,5 +1,5 @@
 # Grandpa's Grove Farm
-[(Nexus download source)](https://www.nexusmods.com/stardewvalley/mods/2937)
+[(Nexus)](https://www.nexusmods.com/stardewvalley/mods/2937)
 
 ## Features
 You have inherited Grandpa's foraging farm. On this 100x80 tile grove, you can swim in the lakes, almost every tile is hoe-able, grass can now grow on grass tiles, 

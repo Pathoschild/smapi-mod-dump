@@ -5,9 +5,9 @@ mods:
    Backpack Resizer
 
 latest commit:
-   commit 7739c6707368458bb3c2450ccde67764cdbb99a8
-   Author: DefenTheNation <violaking89@gmail.com>
-   Date:   Sun Jun 3 21:57:18 2018 -0700
+   commit b104537547db89128a85e30f124f70ffc5fc5e51
+   Author: Josh <yodellingprofessionally@gmail.com>
+   Date:   Mon Jan 21 20:45:17 2019 -0800
    
-       Create README.md
+       Update to latest Modding API
    

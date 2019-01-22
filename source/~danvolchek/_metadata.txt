@@ -29,10 +29,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 5fef5c63758fe588f53c98a432a7cc293abb5670
-   Merge: 2d3a35f 32046f8
-   Author: Dan Volchek <volchek2@illinois.edu>
-   Date:   Wed Jan 9 18:32:48 2019 -0600
+   commit 41335c3fcd7a33c98964711d75fa40c97db1dafb
+   Author: danvolchek <volchek2@illinois.edu>
+   Date:   Mon Jan 21 23:21:43 2019 -0600
    
-       Merge branch 'master' of https://github.com/danvolchek/StardewMods
+       add read me files to projects
    

@@ -10,6 +10,7 @@ using xTile;
 
 namespace MTN2 {
     public interface ICustomManager {
+        int CabinLimit { get; }
         List<CustomFarm> FarmList { get; }
         List<CustomGreenHouse> GreenHouseList { get; }
         bool NoDebris { get; set; }

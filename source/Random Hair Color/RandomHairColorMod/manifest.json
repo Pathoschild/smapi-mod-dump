@@ -6,5 +6,5 @@
   "UniqueID": "davis.randomhair",
   "EntryDll": "RandomHairColorMod.dll",
   "MinimumApiVersion": "2.9",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:3271" ]
 }

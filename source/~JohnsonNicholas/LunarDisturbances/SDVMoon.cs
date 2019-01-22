@@ -360,7 +360,14 @@ namespace TwilightShards.LunarDisturbances
         {
             return DescribeMoonPhase(this.CurrentPhase, LunarDisturbances.Translation);
         }
-
+        public int GetMoonRiseDisplayTime()
+        {
+            int MoonRise = GetMoonRiseTime();
+            if (MoonRise >= 2400)
+                return (MoonRise - 2400);
+            else
+                return MoonRise;
+        }
         public int GetMoonRiseTime()
         {
             //Blood Moons are treated as if they are full moons

@@ -1,4 +1,5 @@
-# RELEASE NOTES [(source)](https://www.nexusmods.com/stardewvalley/mods/3067)
+# RELEASE NOTES 
+[(Secret Gardens Greenhouse)](https://www.nexusmods.com/stardewvalley/mods/3067)
 
 ## v2.0.1 (Dec 9, 2018)
 - Mod will disable itself if you have the mod ["Tunnel System"](https://www.nexusmods.com/stardewvalley/mods/3082) installed.

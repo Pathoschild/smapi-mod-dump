@@ -166,7 +166,7 @@ namespace LocationCompass
         }
 
         if (!hostHasMod)
-          Monitor.Log("Since the server host does not have NPCMapLocations installed, NPC locations cannot be synced and updated.", LogLevel.Warn);
+          Monitor.Log("Since the server host does not have LocationCompass installed, NPC locations cannot be synced and updated.", LogLevel.Warn);
       }
     }
 
@@ -226,7 +226,7 @@ namespace LocationCompass
       foreach (var warp in location.warps)
       {
         // Avoid circular loop
-        if (currLocationName == warp.TargetName || prevLocationName == currLocationName) continue;
+        if (currLocationName == warp.TargetName || prevLocationName == warp.TargetName) continue;
 
         var warpLocation = Game1.getLocationFromName(warp.TargetName);
 

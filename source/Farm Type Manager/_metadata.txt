@@ -5,9 +5,11 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 871d14a22c3ee514c7692bc2c3f2db9e8ed77a2d
+   commit b02b5ccfd3e0b013f2174f4e439d0c0df240fb75
    Author: Esca-MMC <41843952+Esca-MMC@users.noreply.github.com>
-   Date:   Thu Jan 10 22:42:34 2019 -0600
+   Date:   Sun Jan 20 17:55:15 2019 -0600
    
-       Add StrictTileChecking to readme.md
+       Update readme.md
+       
+       Add information about the forage ItemIndex overrides (#3) and default.json file (#2).
    

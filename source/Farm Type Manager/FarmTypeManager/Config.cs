@@ -49,7 +49,7 @@ namespace FarmTypeManager
     //contains configuration settings for forage item generation behavior
     public class ForageSettings
     {
-        public SpawnArea[] Areas { get; set; }
+        public ForageSpawnArea[] Areas { get; set; }
         public int PercentExtraSpawnsPerForagingLevel { get; set; }
         public int[] SpringItemIndex { get; set; }
         public int[] SummerItemIndex { get; set; }
@@ -60,7 +60,7 @@ namespace FarmTypeManager
         //default constructor: configure default forage generation settings
         public ForageSettings()
         {
-            Areas = new SpawnArea[] { new SpawnArea("Farm", 0, 3, new string[] { "Grass", "Diggable" }, new string[0], new string[0], "High") }; //a set of "SpawnArea" objects, describing where forage items can spawn on each map
+            Areas = new ForageSpawnArea[] { new ForageSpawnArea("Farm", 0, 3, new string[] { "Grass", "Diggable" }, new string[0], new string[0], "High", null, null, null, null) }; //a set of "SpawnArea" objects, describing where forage items can spawn on each map
             PercentExtraSpawnsPerForagingLevel = 0; //multiplier to give extra forage per level of foraging skill; default is +0%, since the native game lacks this mechanic
 
             //the "parentSheetIndex" values for each type of forage item allowed to spawn in each season (the numbers found in ObjectInformation.xnb)
@@ -175,7 +175,31 @@ namespace FarmTypeManager
         }
     }
 
-    //a subclass of "SpawnArea" specifically for large object generation purposes, including settings for which object types to spawn & a one-time switch to find and respawn pre-existing objects
+    //a subclass of "SpawnArea" specifically for forage generation, providing the ability to override each area's seasonal forage items
+    public class ForageSpawnArea : SpawnArea
+    {
+        public int[] SpringItemIndex { get; set; } = null; //added in version 1.2; default used here to automatically fill it in with SMAPI's json reader
+        public int[] SummerItemIndex { get; set; } = null; //""
+        public int[] FallItemIndex { get; set; } = null;   //""
+        public int[] WinterItemIndex { get; set; } = null; //""
+
+        public ForageSpawnArea()
+            :base()
+        {
+
+        }
+
+        public ForageSpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude, string safety, int[] spring, int[] summer, int[] fall, int[] winter)
+            :base(name, min, max, types, include, exclude, safety) //uses the original "SpawnArea" constructor to fill in the shared fields as usual
+        {
+            SpringItemIndex = spring;
+            SummerItemIndex = summer;
+            FallItemIndex = fall;
+            WinterItemIndex = winter;
+        }
+    }
+
+    //a subclass of "SpawnArea" specifically for large object generation, including settings for which object types to spawn & a one-time switch to find and respawn pre-existing objects
     public class LargeObjectSpawnArea : SpawnArea
     {
         public string[] ObjectTypes { get; set; }
@@ -199,7 +223,7 @@ namespace FarmTypeManager
         }
     }
 
-    //a subclass of "SpawnArea" specifically for ore generation purposes, providing the ability to optionally override each area's skill requirements & spawn chances for ore
+    //a subclass of "SpawnArea" specifically for ore generation, providing the ability to optionally override each area's skill requirements & spawn chances for ore
     public class OreSpawnArea : SpawnArea
     {
         public Dictionary<string, int> MiningLevelRequired { get; set; }

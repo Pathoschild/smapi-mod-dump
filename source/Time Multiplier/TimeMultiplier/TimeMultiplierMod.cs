@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
 using StardewValley;
 
 namespace TimeMultiplier
@@ -20,25 +19,25 @@ namespace TimeMultiplier
             
             LastTimeInterval = 0;
 
-            SaveEvents.AfterLoad += (sender, e) =>
+            helper.Events.GameLoop.SaveLoaded += (sender, e) =>
             {
                 LastTimeInterval = 0;
 
                 string configLocation = Path.Combine("data", Constants.SaveFolderName + ".json");
-                Config = helper.ReadJsonFile<TimeMultiplierConfig>(configLocation) ?? new TimeMultiplierConfig();
+                Config = helper.Data.ReadJsonFile<TimeMultiplierConfig>(configLocation) ?? new TimeMultiplierConfig();
 
-                if (Config.Enabled) timeMultiplierToggled(Config.Enabled);
+                if (Config.Enabled) TimeMultiplierToggled(Config.Enabled);
             };
 
-            SaveEvents.AfterReturnToTitle += (sender, e) =>
+            helper.Events.GameLoop.ReturnedToTitle += (sender, e) =>
             {
                 LastTimeInterval = 0;
 
                 string configLocation = Path.Combine("data", Constants.SaveFolderName + ".json");
-                helper.WriteJsonFile<TimeMultiplierConfig>(configLocation, Config);
+                helper.Data.WriteJsonFile<TimeMultiplierConfig>(configLocation, Config);
 
                 Config = new TimeMultiplierConfig();
-                timeMultiplierToggled(false);
+                TimeMultiplierToggled(false);
             };
 
             helper.ConsoleCommands.Add("time_multiplier_change", "Updates time multiplier on the fly", (string command, string[] args) =>
@@ -59,20 +58,20 @@ namespace TimeMultiplier
                 Config.TimeMultiplier = multiplierArg;
 
                 string configLocation = Path.Combine("data", Constants.SaveFolderName + ".json");
-                helper.WriteJsonFile<TimeMultiplierConfig>(configLocation, Config);
+                helper.Data.WriteJsonFile<TimeMultiplierConfig>(configLocation, Config);
 
                 Monitor.Log("Time now multiplied by " + multiplierArg, LogLevel.Info);
             });
 
             helper.ConsoleCommands.Add("time_multiplier_toggle", "Updates time multiplier on the fly", (string command, string[] args) =>
             {
-                if (!timeMultiplierToggled(!Config.Enabled)) return;
+                if (!TimeMultiplierToggled(!Config.Enabled)) return;
 
                 LastTimeInterval = 0;
                 Config.Enabled = !Config.Enabled;               
 
                 string configLocation = Path.Combine("data", Constants.SaveFolderName + ".json");
-                helper.WriteJsonFile<TimeMultiplierConfig>(configLocation, Config);
+                helper.Data.WriteJsonFile<TimeMultiplierConfig>(configLocation, Config);
 
                 Monitor.Log("Time multiplier enabled: " + Config.Enabled, LogLevel.Info);
             });
@@ -81,7 +80,7 @@ namespace TimeMultiplier
         }
 
         // Unregister the event when the mod is disabled
-        private bool timeMultiplierToggled(bool isEnabled)
+        private bool TimeMultiplierToggled(bool isEnabled)
         {
             if(!Context.IsMainPlayer)
             {
@@ -90,18 +89,18 @@ namespace TimeMultiplier
             }
             else if (isEnabled)
             {
-                GameEvents.UpdateTick += updateTick_ModifyClock;
+                Helper.Events.GameLoop.UpdateTicked += UpdateTick_ModifyClock;
             }
             else
             {
-                GameEvents.UpdateTick -= updateTick_ModifyClock;
+                Helper.Events.GameLoop.UpdateTicked -= UpdateTick_ModifyClock;
             }
 
             return true;
         }
 
         // Called on each tick to modify the rate of the game clock
-        private void updateTick_ModifyClock(object sender, EventArgs e)
+        private void UpdateTick_ModifyClock(object sender, EventArgs e)
         {
             if (!Context.IsWorldReady) return;
 

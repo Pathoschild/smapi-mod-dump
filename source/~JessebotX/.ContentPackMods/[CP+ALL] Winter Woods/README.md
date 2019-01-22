@@ -1,5 +1,5 @@
 # Winter Woods
-[(source)](https://www.nexusmods.com/stardewvalley/mods/3211)
+[(nexus)](https://www.nexusmods.com/stardewvalley/mods/3211)
 
 A new secret woods expansion that makes it look very wintry, adds shops and more hardwood stumps. Also with festive map changes in winter. Still functions like a the default secret woods. 
 
