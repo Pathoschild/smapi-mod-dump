@@ -85,11 +85,10 @@ namespace StardewNewsFeed.Services {
         }
 
         public void CheckLocationForBirthdays(ILocation location) {
-            foreach (var npc in location.GetCharacters()) {
-                if (npc.IsMyBirthday(new GameDate(Game1.Date.Season, Game1.Date.DayOfMonth))) {
-                    var message = _translationHelper.Get("news-feed.birthday-notice", new { npcName = npc.GetName() });
-                    DisplayMessage(new HudMessage(message, HudMessageType.NewQuest));
-                }
+            
+            foreach (var npc in location.GetCharactersWithBirthdays()) {
+                var message = _translationHelper.Get("news-feed.birthday-notice", new { npcName = npc.GetName() });
+                DisplayMessage(new HudMessage(message, HudMessageType.NewQuest));
             }
         }
 

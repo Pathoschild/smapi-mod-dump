@@ -1,0 +1,62 @@
+﻿{
+  // discount terms
+  // Most NPCs will say "save 50% at my store", but the dwarf and Krobus will say "save a half at
+  // my store" using these terms.
+  "discount-term.tenth": "a tenth",
+  "discount-term.fifth": "a fifth",
+  "discount-term.quarter": "a quarter",
+  "discount-term.half": "a half",
+  "discount-term.three-quarter": "a three-quart",
+  "discount-term.other": "{{discount}}%",
+
+  // letter text
+  "letter.robin1": "Hey there @,^you've been such a good customer since you've arrived here in town. So I've decided to give you a {{discount}}% discount!^^See you soon,^   -Robin, your favorite carpenter",
+  "letter.robin2": "Hi @,^since you've been such a good friend (and customer!) to me, I've decided to give you a {{discount}}% discount!^^See you soon,^   -Robin, your favorite carpenter (and friend!)",
+  "letter.robin3": "Hi! I'm really happy to be your friend, @!^From now on, whenever you go shopping at my place, I'll give you {{discount}}% off!^^I hope you swing by soon! I'll get all your stuff built in no time!^   -Robin, your friend and favorite carpenter",
+  "letter.robin-maru": "Hey @,^since we're family now, I thought I should give you another discount of {{discount}}% at my store. Take good care of my kid!^^Love,^   -Robin",
+  "letter.robin-sebastian": "Hey @,^since we're family now, I thought I should give you another discount of {{discount}}% at my store. Take good care of my kid!^^Love,^   -Robin",
+
+  "letter.marnie1": "Hey there @,^thank you for being such a good customer. Since you're going to be a regular, I've decided to give you {{discount}}% off for all your next purchases!^^Have a nice day,^   -Marnie",
+  "letter.marnie2": "Hello @, my Aunt made me write this because she's busy. Anyway, she wants you to know that you're really nice or something and that she's giving you another discount. Not even sure if we can afford it. Come buy some hay or something. It's {{discount}}% off.^   -Shane",
+  "letter.marnie3": "Hey dear,^you've been a really good friend and I'm really glad we're neighbours! Let me tell you something. From now on, you get {{discount}}% off of all the things you buy from me!^^Talk to you soon,^   -Marnie",
+  "letter.marnie-shane": "Hey @,^thought I should write you a letter. I want you to get a discount on my chickens. I talked to my Aunt and discussed it with her and she said she's fine with it. So we'll give you {{discount}}% on the chickens.^^Have a nice day,^   -Shane",
+
+  "letter.pierre1": "Dear valued customer,^Thanks for choosing 'Pierre's', your local produce shoppe! Your loyalty is very appreciated. We are happy to announce that from now on, you will receive a rebate of {{discount}}% whenever you visit our store. See you soon!^   -Pierre^^P.S. Sorry for the stock message, @. Enjoy!",
+  "letter.pierre2": "Dear valued customer,^Thanks for choosing 'Pierre's', your local produce shoppe! Your loyalty is very appreciated. We are happy to announce that from now on, you will receive a rebate of {{discount}}% whenever you visit our store. See you soon!^   -Pierre^^P.S. Sorry for the stock message, @. I'm really busy these days. Enjoy!",
+  "letter.pierre3": "Dear valued customer,^Thanks for choosing 'Pierre's', your local produce shoppe! Your loyalty is very appreciated. We are happy to announce that from now on, you will receive a rebate of {{discount}}% whenever you visit our store. See you soon!^   -Pierre^^P.S. Sorry for the stock message, @. How are you, by the way? I'm doing quite well myself, haha! Enjoy!",
+  "letter.pierre-abigail": "Hey, @!^Since we're kind of family now, Caroline made me give you a {{discount}}% discount on the store.  Anyway, I know Abby is a little wild, but she has a good heart. Treat her well.^^Take care,^   -Pierre",
+  "letter.pierre-caroline": "Hey, @, I didn't know you were best friends with my wife. She told me to give you a {{discount}}% discount in our shop yesterday. You better stop by and shop often from now on!^^See you soon,^   -Pierre",
+
+  "letter.harvey1": "Hello, @!^You've been a valued customer at my clinic. So I've decided to give you a {{discount}}% discount for my OTC medicine. Have a nice day!^   -Harvey^^PS: Don't forget to cover your mouth when you sneeze! Wash your hands often!",
+  "letter.harvey2": "Hello, @!^I'm so glad to have a friend in town. If you need tonics or remedies, just come by the clinic. I'll give you a {{discount}}% discount. See you soon!^   -Harvey^^PS: Don't forget to cover your mouth when you sneeze! Wash your hands often! If you need anything, just visit the clinic.",
+  "letter.harvey3": "Hello, @!^You've been such a good friend to me since you've arrived in town. If you need anything, just visit the clinic. I can give you a check-up before you go into the mines if you want. Oh and you get a {{discount}}% discount for my OTC medicines.^^Take care.^   -Harvey^^PS: Don't forget to cover your mouth when you sneeze! Wash your hands often! Don't forget to eat well! Oh, and don't overwork yourself.",
+  "letter.harvey-married": "Hey darling, I'm writing from my office because I forgot to tell you yesterday. Since we're married now, I'd like you to have a {{discount}}% discount on my over-the-counter medicines. It's not much, but I hope it helps you when you run off to the mines again.^^Take care,^   -your husband",
+
+  "letter.gus1": "Hello, @!^Since you've become a regular at my place, I'll give you {{discount}}% off! Come by the Stardrop Saloon when you need any refreshments. I make different dishes every week!^   -Gus",
+  "letter.gus2": "Hey there, @,^thanks for being a loyal friend and customer. I really appreciate you coming by so often. Listening to your stories is never dull, haha! Anyway, I want to give you {{discount}}% off when you buy refreshments at the bar.^^See you soon!^   -Gus",
+  "letter.gus3": "Hey, @!^I'm really glad you moved into town. Want to hear great news? I went through the numbers and am now able to give you your deserved {{discount}}% rebate for everything you purchase at my Saloon! I hope you come by more often from now on.^   -Your friend Gus",
+
+  "letter.clint1": "Hello, @^thanks for coming by my shop so often. You know what, I'll give you {{discount}}% off from now on. If you need your tools upgraded, I'm your man. You know, being a blacksmith and all. Anyway. Bye.^   -Clint",
+  "letter.clint2": "Hey, @^thanks for helping me with Emily the other day. Even though it didn't help. Anyway, I wanted to tell you that you'll get a {{discount}}% discount on your upgrades and my shop. Take care.^   -Clint",
+  "letter.clint3": "Hey, @!^You're really hitting the mines! Thanks to you, my business is going quite well. So well actually, that I can give you {{discount}}% off from now on! Don't tell anyone. Take care.^   -Clint",
+
+  "letter.sandy1": "Hello, hello, sweetie! I'm so glad you come by so often, It's so boring out here. Just me and the heat and those coconuts...^Anyway, I'll give you {{discount}}% off, so come by more often, and buy lots of seeds! Bye, kid!^   ~Sandy^^PS: Please say hi to Emily from me!",
+  "letter.sandy2": "Hi!~ How are you, sweetie? I'm writing you this because you're such a good friend. See, I've been doing better thanks to you! Come and get your {{discount}}% off now! Just kidding. But seriously, it's so boring and hot here. Come visit me!^And buy a bunch of seeds!^   ~Sandy^^PS: Say hi to Emily! She hasn't been here in ages!",
+  "letter.sandy3": "Hey, hey! It's your bestie Sandy from the desert!^Hope the valley is cooler than here, hehe!^You know that you're a valued customer and friend, right? You should come by more often. I'll give you a {{discount}}% discount! Nothing happens out here, it's depressing, really. Anyway, see you soon, honey!^   ~Sandy^^PS: Greet Emily for me, will you!",
+
+  "letter.willy1": "Hey there, @,^thanks for dropping by so often. I've considered expanding my shop, but let's leave that for now. I've decided to give you a {{discount}}% discount since you've been such a loyal customer. Take care.^   -Willy",
+  "letter.willy2": "Hey there, fellow fishing enthusiast! Glad you decided to come here. If you ever need a new fishing pole or bait, swing by my shop by the beach, I'll give you {{discount}}% off!^^Have fun fishing and good luck!^   -Willy",
+  "letter.willy3": "Hello, @!^The ocean's been exciting the past few days, fishing-wise!^The local fishing-community has expanded quite a lot since you've arrived here. I want to thank you by giving you a {{discount}}% discount in my shop. Have fun fishing!^   -Willy",
+
+  "letter.dwarf1": "I don't trust you, but you're a good customer. Keep {{discountTerm}} when you buy at my shop in the mines.",
+  "letter.dwarf2": "I have lots of things for your mining pleasure, human. You can keep {{discountTerm}}.",
+  "letter.dwarf3": "Come by my shop any time. The mine is lonely. You can keep {{discountTerm}} of your money when shopping.",
+
+  "letter.krobus1": "You are not like other humans. You are very friendly. I will give you {{discountTerm}} for that.^   -Krobus",
+  "letter.krobus2": "You are special, human. I get few visitors, and you're the good kind. Keep {{discountTerm}} when you shop.^   -Krobus",
+  "letter.krobus3": "You are a good ... nlakh. What do humans call it? I believe the right word is 'fiend'. Thank you, @. I will grant you {{discountTerm}} of the price.^   -Krobus",
+
+  "letter.wizard1": "Greetings, young adept.^It is time. I have foreseen what must be done and that you will be in need of my help. In other words, I'll give you a {{discount}}% discount when the time comes.^   -M. Rasmodius, Wizard",
+  "letter.wizard2": "Greetings, young adept.^The spirits have changed their minds. You are in need of a greater discount when the time has arrived! I'll give you {{discount}}% off.^   -M. Rasmodius, Wizard",
+  "letter.wizard3": "Greetings, young adept.^My arcane powers have increased. I have foreseen that I must grant you {{discount}}% off in total if the prophecies are to be fulfilled. Beware!^   -M. Rasmodius, Wizard"
+}

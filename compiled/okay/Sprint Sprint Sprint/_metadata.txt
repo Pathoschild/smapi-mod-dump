@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3294
+IDs: Jessebot.SprintSprintSprint
+update keys: Nexus:3294, GitHub:JessebotX/StardewMods

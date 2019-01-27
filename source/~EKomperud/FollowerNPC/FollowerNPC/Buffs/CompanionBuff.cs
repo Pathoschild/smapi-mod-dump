@@ -46,12 +46,6 @@ namespace FollowerNPC
                     break;
                 case "Leah":
                     companionBuff = new Buffs.LeahBuff(farmer, n, cm);
-                    (companionBuff as Buffs.LeahBuff).SetForageFoundDialogue(new string[]
-                    {
-                        cm.possibleCompanions["Leah"].script["companionPerk1"],
-                        cm.possibleCompanions["Leah"].script["companionPerk2a"],
-                        cm.possibleCompanions["Leah"].script["companionPerk2b"]
-                    });
                     break;
                 case "Maru":
                     companionBuff = new Buffs.MaruBuff(farmer, n, cm);

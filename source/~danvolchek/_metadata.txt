@@ -29,9 +29,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 41335c3fcd7a33c98964711d75fa40c97db1dafb
+   commit bb5f685f531d09df730a696e79aec4214bbb7b0e
    Author: danvolchek <volchek2@illinois.edu>
-   Date:   Mon Jan 21 23:21:43 2019 -0600
+   Date:   Mon Jan 21 23:56:09 2019 -0600
    
-       add read me files to projects
+       add link to all mods in main readme
    

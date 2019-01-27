@@ -87,7 +87,7 @@ namespace DesertObelisk
                     "337 10 768 10/3/3/-1/-1/-2/-1/null/Desert Obelisk/Warps you to the desert./Buildings/none/48/128/-1/null/Farm/1000000/true");
         }
 
-        public bool CanLoad<Texture2D>(IAssetInfo asset)
+        public bool CanLoad<T>(IAssetInfo asset)
         {
             return asset.AssetNameEquals(@"Buildings\Desert Obelisk");
         }
@@ -99,7 +99,7 @@ namespace DesertObelisk
 
         public void ModifyMap()
         {
-            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            this.helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
         }
 
         /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
@@ -127,7 +127,7 @@ namespace DesertObelisk
             buildingsLayer.Tiles[this.desertWarpX + 1, 42] =
                 new StaticTile(buildingsLayer, markerTileSheet, BlendMode.Alpha, 5);
 
-            helper.Events.GameLoop.UpdateTicked -= this.OnUpdateTicked;
+            this.helper.Events.GameLoop.UpdateTicked -= this.OnUpdateTicked;
         }
     }
 }

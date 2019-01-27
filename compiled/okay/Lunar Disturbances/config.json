@@ -3,6 +3,7 @@
   "EclipseOn": true,
   "EclipseChance": 0.015,
   "ShowMoonPhase": true,
+  "ShowMoonInEndOfNight": true,
   "SpawnMonsters": true,
   "SpawnMonstersAllFarms": false,
   "HazardousMoonEvents": false,

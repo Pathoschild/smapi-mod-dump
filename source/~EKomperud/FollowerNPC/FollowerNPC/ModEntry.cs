@@ -2,11 +2,9 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Threading.Tasks;
 using Harmony;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Menus;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 
@@ -23,6 +21,9 @@ namespace FollowerNPC
         public CompanionsManager companionsManager;
 
         public static MethodInfo applyVelocity;
+
+        private List<FarmerSprite.AnimationFrame> fishingLeftAnim;
+        private List<FarmerSprite.AnimationFrame> fishingRightAnim;
 
         public override void Entry(IModHelper helper)
         {
@@ -55,12 +56,34 @@ namespace FollowerNPC
             MethodInfo updateMovementPrefix = typeof(Patches).GetMethod("Prefix", updateMovementTypes1);
             harmony.Patch(updateMovementOriginal, new HarmonyMethod(updateMovementPrefix), null);
 
+            Type[] faceTowardFarmerForPeriodTypes1 = new Type[] {typeof(NPC)};
+            MethodInfo faceTowardFarmerForPeriodOriginal = typeof(NPC).GetMethod("faceTowardFarmerForPeriod");
+            MethodInfo faceTowardFarmerForPeriodPrefix =
+                typeof(Patches).GetMethod("Prefix", faceTowardFarmerForPeriodTypes1);
+            harmony.Patch(faceTowardFarmerForPeriodOriginal, new HarmonyMethod(faceTowardFarmerForPeriodPrefix), null);
+
+            Type[] gainExperienceTypes1 = new Type[] { typeof(Farmer), typeof(int).MakeByRefType() };
+            MethodInfo gainExperienceOriginal = typeof(Farmer).GetMethod("gainExperience");
+            MethodInfo gainExperiencePrefix = typeof(Patches).GetMethod("Prefix", gainExperienceTypes1);
+            harmony.Patch(gainExperienceOriginal, new HarmonyMethod(gainExperiencePrefix), null);
+
+            fishingLeftAnim = new List<FarmerSprite.AnimationFrame>
+            {
+                new FarmerSprite.AnimationFrame(0, 4000, false, true, null, false),
+                new FarmerSprite.AnimationFrame(0, 4000, false, true, null, false)
+            };
+            fishingRightAnim = new List<FarmerSprite.AnimationFrame>
+            {
+                new FarmerSprite.AnimationFrame(20, 4000),
+                new FarmerSprite.AnimationFrame(21, 4000)
+            };
+
             applyVelocity =
                 typeof(Character).GetMethod("applyVelocity", BindingFlags.NonPublic | BindingFlags.Instance);
             //**********************//
 
             // Subscribe to events //
-            Helper.Events.Input.ButtonReleased += Input_ButtonReleased;
+            //Helper.Events.Input.ButtonReleased += Input_ButtonReleased;
             //**********************//
         }
 
@@ -75,129 +98,11 @@ namespace FollowerNPC
             if (!Context.IsWorldReady || companionsManager == null)
                 return;
 
-            //if (e.Button == Microsoft.Xna.Framework.Input.Keys.B.ToSButton())
+            //if (e.Button == SButton.K)
             //{
-            //    foreach (GameLocation l in Game1.locations)
-            //        monitor.Log(l.Name);
-            //}
-
-            //else if (e.Button == Microsoft.Xna.Framework.Input.Keys.K.ToSButton())
-            //{
-            //    GameLocation gl = companionsManager.farmer.currentLocation;
-            //    foreach (Character c in gl.characters)
-            //    {
-            //        monitor.Log(c.Name);
-            //    }
-            //}
-
-            //else if (e.KeyPressed == Keys.U && spawned)
-            //{
-            //    monitor.Log(whiteBox?.currentLocation.Name + " : " + whiteBox?.getTileLocation());
-            //}
-
-            //else if (e.KeyPressed == Keys.I)
-            //{
-            //    monitor.Log(farmer?.currentLocation.Name + " : " + farmer?.getTileLocation());
+            //    companionsManager.farmer.eventsSeen.Remove(471942);
             //}
         }
-
-        //private void MenuEvents_MenuClosed(object sender, EventArgsClickableMenuClosed e)
-        //{
-        //    if (e.PriorMenu.GetType() == typeof(DialogueBox))
-        //    {
-        //        DialogueBox db = (e.PriorMenu as DialogueBox);
-
-        //        Dialogue d = (Dialogue)typeof(DialogueBox).GetField("characterDialogue", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(db);
-        //        if (d != null && d.speaker != null)
-        //        {
-        //            NPC n = d.speaker;
-
-        //            // Push Companion Ask Dialogue
-        //            if (n.CurrentDialogue.Count == 0 && npcsThatCanHangOut.TryGetValue(n.Name, out bool canHangOut) && canHangOut && !(whiteBox != null))
-        //            {
-        //                responseDialogue = new Dialogue(dialogueScripts[n.Name]["Companion"], n);
-        //                yesResponseID = GetYesResponseID(responseDialogue);
-        //                n.CurrentDialogue.Push(responseDialogue);
-        //                npcsThatCanHangOut[n.Name] = false;
-        //            }
-
-        //            // Check Companion Ask Dialogue for answer
-        //            else if (d.Equals(responseDialogue))
-        //            {
-        //                responseDialogue.speaker.CurrentDialogue.Push(new Dialogue(dialogueScripts[n.Name]["Companion"], n));
-        //                if (farmer.DialogueQuestionsAnswered.Contains(yesResponseID))
-        //                {
-        //                    farmer.DialogueQuestionsAnswered.Remove(yesResponseID);
-
-        //                    whiteBox = n;
-        //                    whiteBoxAStar = new aStar(farmer.currentLocation, whiteBox.Name);
-        //                    companionBuff = CompanionBuff.InitializeBuffFromCompanionName(whiteBox.Name, farmer);
-        //                    companionVisitedLocations = new Dictionary<string, bool>();
-        //                    Patches.companion = whiteBox;
-        //                    whiteBoxAnimationSpeed = 10f;
-        //                    whiteBoxFollow = true;
-        //                    spawned = true;
-        //                    whiteBox.faceTowardFarmerTimer = 0;
-        //                }
-        //                else if (farmer.dialogueQuestionsAnswered.Contains(yesResponseID + 1))
-        //                {
-        //                    farmer.dialogueQuestionsAnswered.Remove(yesResponseID + 1);
-        //                }
-        //                responseDialogue = null;
-        //            }
-                    
-        //            // Check Companion Actions Dialogue
-        //            else if (d.Equals(actionDialogue))
-        //            {
-        //                if (farmer.DialogueQuestionsAnswered.Contains(yesResponseID))
-        //                {
-        //                    whiteBoxFollow = false;
-        //                    spawned = false;
-        //                    farmer.DialogueQuestionsAnswered.Remove(yesResponseID);
-        //                    whiteBoxAStar = null;
-        //                    companionBuff.RemoveAndDisposeCompanionBuff();
-        //                    companionBuff = null;
-
-        //                    whiteBox.Schedule = GetWhiteBoxSchedule(Game1.dayOfMonth);
-        //                    Game1.fadeScreenToBlack();
-        //                    whiteBox.faceTowardFarmerTimer = 0;
-        //                    DelayedWarp(whiteBoxScheduleCurrentDestinationLocation,
-        //                        whiteBoxScheduleCurrentDestinationPoint, 500, new Action(CompanionEndCleanup));
-
-        //                    foreach (KeyValuePair<string, bool> npcKvP in npcsThatCanHangOut)
-        //                    {
-        //                        if (npcKvP.Value)
-        //                        {
-        //                            NPC npc = Game1.getCharacterFromName(npcKvP.Key);
-        //                            if (npc.CurrentDialogue.Count == 0)
-        //                            {
-        //                                Dialogue cRD = new Dialogue(dialogueScripts[npcKvP.Key]["Companion"], npc);
-        //                                companionRecruitDialogues[npcKvP.Key] = new RecruitDialogueInfo()
-        //                                {
-        //                                    recruitDialogue = cRD,
-        //                                    yesResponseID = GetYesResponseID(cRD)
-        //                                };
-        //                                npc.CurrentDialogue.Push(cRD);
-        //                            }
-        //                            npcsThatCanHangOut[n.Name] = false;
-        //                        }
-        //                    }
-        //                }
-        //                else if (farmer.dialogueQuestionsAnswered.Contains(yesResponseID + 1))
-        //                {
-        //                    farmer.dialogueQuestionsAnswered.Remove(yesResponseID + 1);
-        //                    whiteBox.faceTowardFarmerTimer = 0;
-        //                }
-        //            }
-
-        //            if (whiteBox != null && n.Equals(whiteBox))
-        //            {
-        //                whiteBox.faceTowardFarmerTimer = 0;
-        //                whiteBox.movementPause = 0;
-        //            }
-        //        }
-        //    }
-        //}
 
         #endregion
     }
@@ -294,6 +199,34 @@ namespace FollowerNPC
         }
 
         #endregion
+
+        #region faceTowardFarmerForPeriod
+
+        static public bool dontFace;
+
+        static public bool Prefix(NPC __instance)
+        {
+            if (dontFace && __instance.Name.Equals(companion))
+                return false;
+            return true;
+        }
+        #endregion
+
+        #region gainExperience
+
+        static public bool increaseExperience;
+        static public string farmer;
+
+        static public void Prefix(Farmer __instance, ref int howMuch)
+        {
+            if (increaseExperience && __instance.Name.Equals(farmer))
+            {
+                int expIncrease = Math.Max((int)(howMuch * 0.05f), 1);
+                howMuch += expIncrease;
+            }
+        }
+
+        #endregion
     }
 
     /// <summary>
@@ -302,12 +235,9 @@ namespace FollowerNPC
     /// </summary>
     class DebugPatches
     {
-        private static int count;
-
-        static public void Postfix()
+        static public void Prefix(GameLocation __instance, int waterDepth)
         {
-            count++;
-            ModEntry.monitor.Log(count.ToString());
+            ModEntry.monitor.Log(waterDepth.ToString());
         }
     }
 

@@ -5,9 +5,9 @@ mods:
    Custom Adventure Guild Challenges
 
 latest commit:
-   commit 5ce437a30d11aa308e88edb33ffa93d581fe3e79
-   Author: DefenTheNation <defenthenation@github>
-   Date:   Mon Aug 20 14:00:23 2018 -0700
+   commit 40a76116d2f43129ca1b771c12610baa8f238ba4
+   Author: Josh <yodellingprofessionally@gmail.com>
+   Date:   Sat Jan 26 14:32:50 2019 -0800
    
-       Update to latest SMAPI version
+       Add logic to detect Mummy kills for farmhand, set debug info in config to false by default
    

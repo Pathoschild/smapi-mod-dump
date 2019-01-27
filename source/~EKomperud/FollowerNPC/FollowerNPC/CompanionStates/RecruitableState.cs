@@ -22,7 +22,7 @@ namespace FollowerNPC.CompanionStates
             r = new Random((int) Game1.uniqueIDForThisGame + (int) Game1.stats.DaysPlayed + Game1.timeOfDay);
             if (stateMachine.manager.currentCompanion == null)
             {
-                Dialogue d = GetRecruitDialogue();
+                Dialogue d = stateMachine.manager.GenerateDialogue("Recruit", stateMachine.companion.Name, true);
                 stateMachine.recruitDialogue = d ?? throw new Exception(
                         "Tried to push a recruit dialogue, but there were no recruit strings for this character!");
                 if (CheckForMissingResponseKeys(d))
@@ -49,7 +49,7 @@ namespace FollowerNPC.CompanionStates
         {
             if (!recruitDialoguePushed && stateMachine.manager.currentCompanion == null)
             {
-                Dialogue d = GetRecruitDialogue();
+                Dialogue d = stateMachine.manager.GenerateDialogue("Recruit", stateMachine.companion.Name, true);
                 stateMachine.recruitDialogue = d ?? throw new Exception(
                         "Tried to push a recruit dialogue, but there were no recruit strings for this character!");
                 if (CheckForMissingResponseKeys(d))
@@ -87,52 +87,6 @@ namespace FollowerNPC.CompanionStates
                     }
                 }
             }
-        }
-
-        private Dialogue GetRecruitDialogue()
-        {
-            bool repeat = false;
-            List<string> ret = new List<string>();
-
-            GetDialogue:
-            // If this companion is married to the farmer
-            if (stateMachine.manager.farmer.spouse != null && stateMachine.manager.farmer.spouse.Equals(stateMachine.companion.Name))
-            {
-                string recruitFriendKey = "Companion-Recruit-Friend";
-                string recruitSpouseKey = "Companion-Recruit-Spouse";
-                string recruitSpouseOverrideKey = "Companion-Recruit-SpouseOverride";
-
-                // If there are SpouseOverride dialogue(s)
-                if (GetAnyDialogueValuesForDialogueKey(recruitSpouseOverrideKey, ref ret))
-                {
-                    return new Dialogue(ret[r.Next(ret.Count)], stateMachine.companion);
-                }
-
-                // Else, look for Spouse and Friend strings
-                else if (GetAnyDialogueValuesForDialogueKey(recruitSpouseKey, ref ret) |
-                         GetAnyDialogueValuesForDialogueKey(recruitFriendKey, ref ret))
-                {
-                    return new Dialogue(ret[r.Next(ret.Count)], stateMachine.companion);
-                }
-            }
-            // Otherwise, if they are just a friend
-            else
-            {
-                string recruitFriendKey = "Companion-Recruit-Friend";
-
-                // Look for Friend strings
-                if (GetAnyDialogueValuesForDialogueKey(recruitFriendKey, ref ret))
-                {
-                    return new Dialogue(ret[r.Next(ret.Count)], stateMachine.companion);
-                }
-            }
-
-            if (ret.Count == 0 && !repeat)
-            {
-                repeat = true;
-                goto GetDialogue;
-            }
-            return null;
         }
     }
 }

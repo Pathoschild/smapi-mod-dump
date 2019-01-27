@@ -5,9 +5,9 @@ mods:
    More Rings
 
 latest commit:
-   commit a9e8f79f12b8a8af8cf5384c347274a3b9fbc56c
+   commit a9e6ccd282d1728f80af227fdcd1232e830004c4
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:25:39 2019 -0500
+   Date:   Wed Jan 23 12:46:44 2019 -0500
    
-       Update version
+       More Rings support, version 1.0.3.
    

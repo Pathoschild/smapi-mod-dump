@@ -5,9 +5,10 @@ mods:
    Price Drops
 
 latest commit:
-   commit d9d4dc05031a1d91aa0372d197cdce04c0d49907
+   commit 8486a8646a22a0b3ac24fbb7e616709cee743d40
+   Merge: 684c95f a32589a
    Author: skuldomg <scdehne@googlemail.com>
-   Date:   Tue Jan 15 18:41:21 2019 +0100
+   Date:   Sat Jan 26 22:18:14 2019 +0100
    
-       Staged first changes for SMAPI 3.0 compatibility
+       Merge
    

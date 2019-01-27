@@ -24,12 +24,13 @@ namespace StardewNewsFeed.Wrappers {
             }
 
             if (!(_object is Object)) {
-                throw new ArgumentException($"{nameof(_object)} is not a valid StardewValley.Object");
+                throw new ArgumentException($"{_object.GetType()} is not a valid StardewValley.Object");
             }
 
             var stardewObject = (Object) _object;
             var itemIsReadyForHarvest = (stardewObject.readyForHarvest == new NetBool(true))
-                || stardewObject.isAnimalProduct(); // animal products laying around are always ready for harvest
+                || stardewObject.isAnimalProduct() // animal products laying around are always ready for harvest
+                || stardewObject.IsSpawnedObject; // fruit
             if (itemIsReadyForHarvest) {
                 return true;
             }

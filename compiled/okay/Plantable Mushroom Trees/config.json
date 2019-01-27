@@ -1,3 +1,5 @@
 {
-  "InstantMushroomTree": false
+  "InstantMushroomTree": false,
+  "ShowPlantingGrid": true,
+  "RequireAltKey": false
 }

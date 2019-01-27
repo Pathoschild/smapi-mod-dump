@@ -52,6 +52,14 @@ namespace StardewNewsFeed.Wrappers {
             return npcs;
         }
 
+        public IList<NPC> GetCharactersWithBirthdays() {
+            var birthdayCharacters = _gameLocation
+                .getCharacters()
+                .Where(c => c.isBirthday(Game1.Date.Season, Game1.Date.DayOfMonth));
+
+            return birthdayCharacters.Select(c => new NPC(c)).ToList();
+        }
+
         public int GetNumberOfHarvestableObjects() {
             return GetObjects().Count(o => o.IsReadyForHarvest());
         }

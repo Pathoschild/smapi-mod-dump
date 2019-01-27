@@ -209,41 +209,6 @@ namespace FollowerNPC.CompanionStates
 
         }
 
-        protected bool GetAnyDialogueValuesForDialogueKey(string dialogueKey, ref List<string> dialogueValues)
-        {
-            bool ret = false;
-
-            // If there is a, or mulitple, strings
-            string multiValue = null;
-            string singleValue = null;
-            if (stateMachine.companion.Dialogue.TryGetValue(dialogueKey + "1", out multiValue) ||
-                stateMachine.companion.Dialogue.TryGetValue(dialogueKey, out singleValue))
-            //if (stateMachine.script.TryGetValue(dialogueKey + "1", out multiValue) ||
-            //    stateMachine.script.TryGetValue(dialogueKey, out singleValue))
-            {
-                // If there are multiple strings
-                if (multiValue != null)
-                {
-                    ret = true;
-                    dialogueValues.Add(multiValue);
-                    int i = 2;
-                    while (stateMachine.companion.Dialogue.TryGetValue(dialogueKey + i.ToString(),
-                        out multiValue))
-                    {
-                        i++;
-                        dialogueValues.Add(multiValue);
-                    }
-                }
-                // If there is only one string
-                else if (singleValue != null)
-                {
-                    ret = true;
-                    dialogueValues.Add(singleValue);
-                }
-            }
-            return ret;
-        }
-
         protected bool CheckForMissingResponseKeys(Dialogue d)
         {
             List<NPCDialogueResponse> responseKeys = d.getNPCResponseOptions();

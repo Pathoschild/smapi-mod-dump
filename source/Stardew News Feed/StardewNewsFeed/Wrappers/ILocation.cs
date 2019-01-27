@@ -13,6 +13,7 @@ namespace StardewNewsFeed.Wrappers {
         //IList<ITerrainFeature> GetTerrainFeatures<T>() where T : StardewValley.TerrainFeatures.TerrainFeature;
         bool IsGreenhouse();
         IList<NPC> GetCharacters();
+        IList<NPC> GetCharactersWithBirthdays();
         int GetNumberOfHarvestableObjects();
         int GetNumberOfHarvestableTerrainFeatures<T>() where T : StardewValley.TerrainFeatures.TerrainFeature;
     }

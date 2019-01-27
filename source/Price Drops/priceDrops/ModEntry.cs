@@ -15,9 +15,6 @@ namespace priceDrops
         public static int DISC_1 = -1, DISC_2 = -1, DISC_3 = -1, BONUS_DISC = -1;
         private List<string> CUSTOM_NPCS = new List<string>();
 
-        // For mails
-        private LetterStatus model;
-
         /*********
         ** Public methods
         *********/
@@ -35,8 +32,6 @@ namespace priceDrops
             DISC_3 = config.disc3;
             BONUS_DISC = config.bonusDisc;
             CUSTOM_NPCS = config.customNPCs;
-
-            model = this.Helper.ReadJsonFile<LetterStatus>($"data/{Constants.SaveFolderName}.json") ?? new LetterStatus();
 
             // Security checks
             // Make sure that hearts are between 0 and 10, if not, assume standard values
@@ -67,40 +62,46 @@ namespace priceDrops
 
             // Asset editors for Robin's prices and mail
             helper.Content.AssetEditors.Add(new robinEditor());
-            helper.Content.AssetEditors.Add(new mailEditor());
+            helper.Content.AssetEditors.Add(new mailEditor(helper.Translation));
             
             // When menus change (ie. a shop window is opened), go do the magic
-            Helper.Events.Display.MenuChanged += this.MenuEvents_MenuChanged;
+            helper.Events.Display.MenuChanged += this.OnMenuChanged;
 
-           // TODO: Find better time to do this           
-           Helper.Events.GameLoop.Saving += this.SaveEvents_BeforeSave;
-        }        
+            // TODO: Find better time to do this           
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+            helper.Events.GameLoop.Saving += this.OnSaving;
+        }
 
-        public void SaveEvents_BeforeSave(object sender, EventArgs e)
+        /// <summary>Raised before the game begins writes data to the save file (except the initial save creation).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        public void OnSaving(object sender, SavingEventArgs e)
         {
             // Check for new mail before sleeping
             // If we only checked for new mail before sleeping, players who install this mod mid-game would have a one day delay in receiving already existing discounts
             this.Postman();
+        }
 
-            // Save mail status
-            Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", model);
-        }        
-
-        public void TimeEvents_AfterDayStarted(object sender, EventArgs e)
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        public void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             // Check for new mail after new day has started
             // If we only checked for new mail after the day has started, players would have a one day delay in receiving mail when NPC disposition changes, so we do both           
             Postman();
         }
-        
-        // When menus change (ie. a shop window is opened), go do the magic
-        public void MenuEvents_MenuChanged(object sender, EventArgs e)
+
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        public void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
             // Force a reload of Robin's prices
             Helper.Content.InvalidateCache("Data\\Blueprints.xnb");
 
             // Marnie's animal shop menu
-            if (Game1.activeClickableMenu is PurchaseAnimalsMenu animalsMenu)
+            if (e.NewMenu is PurchaseAnimalsMenu animalsMenu)
             {               
                 //this.Monitor.Log($"Animals are up.");
 
@@ -250,221 +251,182 @@ namespace priceDrops
         private void Postman()
         {
             // Check if any mail has to be sent
-            if (Game1.player.getFriendshipHeartLevelForNPC("Robin") >= HEART_LEVEL_1 && !model.robinMail1 && DISC_1 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Robin") >= HEART_LEVEL_1 && DISC_1 > 0)
             {
                 // First mail from Robin                
                 Game1.addMailForTomorrow("robin1");
-                model.robinMail1 = true;
                 //Monitor.Log("First Robin letter received ... ");
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Robin") >= HEART_LEVEL_2 && !model.robinMail2 && DISC_2 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Robin") >= HEART_LEVEL_2 && DISC_2 > 0)
             {
                 // Second mail from Robin                
                 Game1.addMailForTomorrow("robin2");
-                model.robinMail2 = true;
                 //Monitor.Log("Second Robin letter received ... " + robinMail2);
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Robin") >= HEART_LEVEL_3 && !model.robinMail3 && DISC_3 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Robin") >= HEART_LEVEL_3 && DISC_3 > 0)
             {
                 // Third mail from Robin                
                 Game1.addMailForTomorrow("robin3");
-                model.robinMail3 = true;
                 // Monitor.Log("Third Robin letter received ... " + robinMail3);
             }
-            if (Game1.getCharacterFromName("Maru", true).isMarried() && !model.robinMailMaru && BONUS_DISC > 0)
+            if (Game1.getCharacterFromName("Maru", true).isMarried() && BONUS_DISC > 0)
             {
                 //MailDao.SaveLetter(robinMaruLetter);
                 Game1.addMailForTomorrow("robinMaru");
-                model.robinMailMaru = true;
             }
-            if (Game1.getCharacterFromName("Sebastian", true).isMarried() && !model.robinMailSebastian && BONUS_DISC > 0)
+            if (Game1.getCharacterFromName("Sebastian", true).isMarried() && BONUS_DISC > 0)
             {                
                 Game1.addMailForTomorrow("robinSebastian");
-                model.robinMailSebastian = true;
             }
 
 
-            if (Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= HEART_LEVEL_1 && !model.marnieMail1 && DISC_1 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= HEART_LEVEL_1 && DISC_1 > 0)
             {                
                 Game1.addMailForTomorrow("marnie1");
-                model.marnieMail1 = true;
                 //Monitor.Log("First Marnie letter in queue... ");
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= HEART_LEVEL_2 && !model.marnieMail2 && DISC_2 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= HEART_LEVEL_2 && DISC_2 > 0)
             {
                 Game1.addMailForTomorrow("marnie2");
-                model.marnieMail2 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= HEART_LEVEL_3 && !model.marnieMail3 && DISC_3 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= HEART_LEVEL_3 && DISC_3 > 0)
             {
                 Game1.addMailForTomorrow("marnie3");
-                model.marnieMail3 = true;
             }
             // If the player has seen the blue chicken event
-            if (Game1.player.eventsSeen.Contains(3900074) && !model.marnieMailShane && BONUS_DISC > 0)
+            if (Game1.player.eventsSeen.Contains(3900074) && BONUS_DISC > 0)
             {
                 //this.Monitor.Log("Player has seen the blue chickens.");
                 Game1.addMailForTomorrow("marnieShane");
-                model.marnieMailShane = true;
             }
 
-            if (Game1.player.getFriendshipHeartLevelForNPC("Pierre") >= HEART_LEVEL_1 && !model.pierreMail1 && DISC_1 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Pierre") >= HEART_LEVEL_1 && DISC_1 > 0)
             {                
                 Game1.addMailForTomorrow("pierre1");
-                model.pierreMail1 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Pierre") >= HEART_LEVEL_2 && !model.pierreMail2 && DISC_2 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Pierre") >= HEART_LEVEL_2 && DISC_2 > 0)
             {
                 Game1.addMailForTomorrow("pierre2");
-                model.pierreMail2 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Pierre") >= HEART_LEVEL_3 && !model.pierreMail3 && DISC_3 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Pierre") >= HEART_LEVEL_3 && DISC_3 > 0)
             {
                 Game1.addMailForTomorrow("pierre3");
-                model.pierreMail3 = true;
             }
-            if (Game1.getCharacterFromName("Abigail", true).isMarried() && !model.pierreMailAbigail && BONUS_DISC > 0)
+            if (Game1.getCharacterFromName("Abigail", true).isMarried() && BONUS_DISC > 0)
             {
                 Game1.addMailForTomorrow("pierreAbigail");
-                model.pierreMailAbigail = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Caroline") == 10 && !model.pierreMailCaroline && BONUS_DISC > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Caroline") == 10 && BONUS_DISC > 0)
             {
                 Game1.addMailForTomorrow("pierreCaroline");
-                model.pierreMailCaroline = true;
             }
 
-            if (Game1.player.getFriendshipHeartLevelForNPC("Harvey") >= HEART_LEVEL_1 && !model.harveyMail1 && DISC_1 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Harvey") >= HEART_LEVEL_1 && DISC_1 > 0)
             {
                 Game1.addMailForTomorrow("harvey1");
-                model.harveyMail1 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Harvey") >= HEART_LEVEL_2 && !model.harveyMail2 && DISC_2 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Harvey") >= HEART_LEVEL_2 && DISC_2 > 0)
             {
                 Game1.addMailForTomorrow("harvey2");
-                model.harveyMail2 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Harvey") >= HEART_LEVEL_3 && !model.harveyMail3 && DISC_3 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Harvey") >= HEART_LEVEL_3 && DISC_3 > 0)
             {
                 Game1.addMailForTomorrow("harvey3");
-                model.harveyMail3 = true;
             }
-            if (Game1.getCharacterFromName("Harvey", true).isMarried() && !model.harveyMailMarried && BONUS_DISC > 0)
+            if (Game1.getCharacterFromName("Harvey", true).isMarried() && BONUS_DISC > 0)
             {
                 Game1.addMailForTomorrow("harveyMarried");
-                model.harveyMailMarried = true;
             }
 
-            if (Game1.player.getFriendshipHeartLevelForNPC("Gus") >= HEART_LEVEL_1 && !model.gusMail1 && DISC_1 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Gus") >= HEART_LEVEL_1 && DISC_1 > 0)
             {
                 Game1.addMailForTomorrow("gus1");
-                model.gusMail1 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Gus") >= HEART_LEVEL_2 && !model.gusMail2 && DISC_2 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Gus") >= HEART_LEVEL_2 && DISC_2 > 0)
             {
                 Game1.addMailForTomorrow("gus2");
-                model.gusMail2 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Gus") >= HEART_LEVEL_3 && !model.gusMail3 && DISC_3 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Gus") >= HEART_LEVEL_3 && DISC_3 > 0)
             {
                 Game1.addMailForTomorrow("gus3");
-                model.gusMail3 = true;
             }
 
-            if (Game1.player.getFriendshipHeartLevelForNPC("Clint") >= HEART_LEVEL_1 && !model.clintMail1 && DISC_1 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Clint") >= HEART_LEVEL_1 && DISC_1 > 0)
             {
                 Game1.addMailForTomorrow("clint1");
-                model.clintMail1 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Clint") >= HEART_LEVEL_2 && Game1.player.eventsSeen.Contains(97) && !model.clintMail2 && DISC_2 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Clint") >= HEART_LEVEL_2 && Game1.player.eventsSeen.Contains(97) && DISC_2 > 0)
             {
                 Game1.addMailForTomorrow("clint2");
-                model.clintMail2 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Clint") >= HEART_LEVEL_3 && !model.clintMail3 && DISC_3 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Clint") >= HEART_LEVEL_3 && DISC_3 > 0)
             {
                 Game1.addMailForTomorrow("clint3");
-                model.clintMail3 = true;
             }
 
-            if (Game1.player.getFriendshipHeartLevelForNPC("Sandy") >= HEART_LEVEL_1 && !model.sandyMail1 && DISC_1 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Sandy") >= HEART_LEVEL_1 && DISC_1 > 0)
             {
                 Game1.addMailForTomorrow("sandy1");
-                model.sandyMail1 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Sandy") >= HEART_LEVEL_2 && !model.sandyMail2 && DISC_2 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Sandy") >= HEART_LEVEL_2 && DISC_2 > 0)
             {
                 Game1.addMailForTomorrow("sandy2");
-                model.sandyMail2 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Sandy") >= HEART_LEVEL_3 && !model.sandyMail3 && DISC_3 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Sandy") >= HEART_LEVEL_3 && DISC_3 > 0)
             {
                 Game1.addMailForTomorrow("sandy3");
-                model.sandyMail3 = true;
             }
 
-            if (Game1.player.getFriendshipHeartLevelForNPC("Willy") >= HEART_LEVEL_1 && !model.willyMail1 && DISC_1 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Willy") >= HEART_LEVEL_1 && DISC_1 > 0)
             {
                 Game1.addMailForTomorrow("willy1");
-                model.willyMail1 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Willy") >= HEART_LEVEL_2 && !model.willyMail2 && DISC_2 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Willy") >= HEART_LEVEL_2 && DISC_2 > 0)
             {
                 Game1.addMailForTomorrow("willy2");
-                model.willyMail2 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Willy") >= HEART_LEVEL_3 && !model.willyMail3 && DISC_3 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Willy") >= HEART_LEVEL_3 && DISC_3 > 0)
             {
                 Game1.addMailForTomorrow("willy3");
-                model.willyMail3 = true;
             }
 
-            if (Game1.player.getFriendshipHeartLevelForNPC("Dwarf") >= HEART_LEVEL_1 && !model.dwarfMail1 && DISC_1 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Dwarf") >= HEART_LEVEL_1 && DISC_1 > 0)
             {
                 Game1.addMailForTomorrow("dwarf1");
-                model.dwarfMail1 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Dwarf") >= HEART_LEVEL_2 && !model.dwarfMail2 && DISC_2 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Dwarf") >= HEART_LEVEL_2 && DISC_2 > 0)
             {
                 Game1.addMailForTomorrow("dwarf2");
-                model.dwarfMail2 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Dwarf") >= HEART_LEVEL_3 && !model.dwarfMail3 && DISC_3 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Dwarf") >= HEART_LEVEL_3 && DISC_3 > 0)
             {
                 Game1.addMailForTomorrow("dwarf3");
-                model.dwarfMail3 = true;
             }
 
-            if (Game1.player.getFriendshipHeartLevelForNPC("Krobus") >= HEART_LEVEL_1 && !model.krobusMail1 && DISC_1 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Krobus") >= HEART_LEVEL_1 && DISC_1 > 0)
             {
                 Game1.addMailForTomorrow("krobus1");
-                model.krobusMail1 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Krobus") >= HEART_LEVEL_2 && !model.krobusMail2 && DISC_2 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Krobus") >= HEART_LEVEL_2 && DISC_2 > 0)
             {
                 Game1.addMailForTomorrow("krobus2");
-                model.krobusMail2 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Krobus") >= HEART_LEVEL_3 && !model.krobusMail3 && DISC_3 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Krobus") >= HEART_LEVEL_3 && DISC_3 > 0)
             {
                 Game1.addMailForTomorrow("krobus3");
-                model.krobusMail3 = true;
             }
 
-            if (Game1.player.getFriendshipHeartLevelForNPC("Wizard") >= HEART_LEVEL_1 && !model.wizardMail1 && DISC_1 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Wizard") >= HEART_LEVEL_1 && DISC_1 > 0)
             {
                 Game1.addMailForTomorrow("wizard1");
-                model.wizardMail1 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Wizard") >= HEART_LEVEL_2 && !model.wizardMail2 && DISC_2 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Wizard") >= HEART_LEVEL_2 && DISC_2 > 0)
             {
                 Game1.addMailForTomorrow("wizard2");
-                model.wizardMail2 = true;
             }
-            if (Game1.player.getFriendshipHeartLevelForNPC("Wizard") >= HEART_LEVEL_3 && !model.wizardMail3 && DISC_3 > 0)
+            if (Game1.player.getFriendshipHeartLevelForNPC("Wizard") >= HEART_LEVEL_3 && DISC_3 > 0)
             {
                 Game1.addMailForTomorrow("wizard3");
-                model.wizardMail3 = true;
             }
         }
     }    

@@ -14,16 +14,19 @@ namespace FollowerNPC.Buffs
             buff = new Buff(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 30, "", "");
             buff.description = "Dr. Harvey is the master of both preventative and reactive medicine."+
                                Environment.NewLine+
-                               "You gain +10 defense and your health slowly regenerates while below 80%.";
+                               "You gain defense equal to 1.5x your combat level and your health" +
+                               Environment.NewLine+
+                               "slowly regenerates while below 80%.";
 
+            int defense = (int)(buffOwner.CombatLevel * 1.5f);
             statBuffs = new Buff[1];
-            statBuffs[0] = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 30, "", "");
-            statBuffs[0].description = "+10 Defense" +
+            statBuffs[0] = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, defense, 0, 30, "", "");
+            statBuffs[0].description = "+"+defense+" Defense" +
                                        Environment.NewLine +
                                        "Source: Harvey";
 
             buffOwnerMaxHealth = buffOwner.maxHealth;
-            healthThreshold = (int)(buffOwnerMaxHealth * 0.7f);
+            healthThreshold = (int)(buffOwnerMaxHealth * 0.8f);
         }
 
         public override void Update()
@@ -34,7 +37,7 @@ namespace FollowerNPC.Buffs
             if (buffOwner.maxHealth != buffOwnerMaxHealth)
             {
                 buffOwnerMaxHealth = buffOwner.maxHealth;
-                healthThreshold = (int)(buffOwnerMaxHealth * 0.7f);
+                healthThreshold = (int)(buffOwnerMaxHealth * 0.8f);
             }
 
             // Regenerate buff owner's health if they're the health threshold

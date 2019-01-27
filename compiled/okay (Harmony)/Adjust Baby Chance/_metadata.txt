@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3311
+IDs: f4iTh.AdjustBabyChance
+update keys: Nexus:3311

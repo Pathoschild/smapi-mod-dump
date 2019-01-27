@@ -20,7 +20,7 @@ namespace Sprint
         private bool playerSprinting = false;
 
         //reference buff
-        private Buff sprintingBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 1, "Sprinting", "Sprinting");
+        private Buff sprintingBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 1, "Sprint Sprint Sprint", "Sprint Sprint Sprint");
 
         public override void Entry(IModHelper helper)
         {
@@ -77,7 +77,7 @@ namespace Sprint
         {
             if (playerSprinting && !Game1.paused && Game1.player.isMoving())
             {
-                Game1.player.Stamina = Math.Min(Game1.player.MaxStamina, Game1.player.Stamina - 0.5f);
+                Game1.player.Stamina = Math.Min(Game1.player.MaxStamina, Game1.player.Stamina - 0.25f);
             }
         }
     }

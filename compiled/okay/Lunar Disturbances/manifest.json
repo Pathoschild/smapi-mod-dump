@@ -1,10 +1,10 @@
 ﻿{
   "Name": "Lunar Disturbances",
   "Author": "KoihimeNakamura",
-  "Version": "1.0.7",
+  "Version": "1.0.9",
   "Description": "Adds a moon to more than just one day, and adds events based on it, including eclipses",
   "UniqueID": "KoihimeNakamura.LunarDisturbances",
   "EntryDll": "LunarDisturbances.dll",
-  "MinimumApiVersion": "2.7",
-  "UpdateKeys": ["Nexus:2208"]
-} 
+  "MinimumApiVersion": "2.10.1",
+  "UpdateKeys": [ "Nexus:2208" ]
+}

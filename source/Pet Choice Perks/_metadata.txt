@@ -1,0 +1,13 @@
+url:
+   https://github.com/skuldomg/petChoicePerks.git
+
+mods:
+   Pet Choice Perks
+
+latest commit:
+   commit a5159bcdc5133b604e1b0d04f5c7d72e9ecbe44a
+   Author: skuldomg <scdehne@googlemail.com>
+   Date:   Tue Jan 22 21:56:29 2019 +0100
+   
+       Initial release.
+   

@@ -1,6 +1,5 @@
 ﻿using CustomGuildChallenges.API;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using System;
@@ -71,10 +70,10 @@ namespace CustomGuildChallenges
                 
             }
 
-            challengeHelper = new ConfigChallengeHelper(helper, Config);
+            challengeHelper = new ConfigChallengeHelper(helper, Config, Monitor);
             
-            SaveEvents.AfterLoad += ModCompatibilityCheck;
-            SaveEvents.AfterCreate += ModCompatibilityCheck;            
+            modHelper.Events.GameLoop.SaveLoaded += ModCompatibilityCheck;
+            modHelper.Events.GameLoop.SaveCreated += ModCompatibilityCheck;            
 
             modHelper.ConsoleCommands.Add("player_setkills", "Update kill count for a monster type", (command, arguments) =>
             {
@@ -179,8 +178,8 @@ namespace CustomGuildChallenges
                 saveAnywhereAPI.AfterLoad += challengeHelper.InjectGuild;
             }
             
-            SaveEvents.AfterCreate -= ModCompatibilityCheck;
-            SaveEvents.AfterLoad -= ModCompatibilityCheck;
+            modHelper.Events.GameLoop.SaveCreated -= ModCompatibilityCheck;
+            modHelper.Events.GameLoop.SaveLoaded -= ModCompatibilityCheck;
         }
         
         

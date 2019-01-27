@@ -5,9 +5,9 @@ mods:
    Animal Social Menu
 
 latest commit:
-   commit f095f823214bd77f0ae6f5458ed75e7e71d90d30
+   commit 848721b8509b6748746cc9cde48517415383dea5
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 13:41:38 2019 -0500
+   Date:   Wed Jan 23 12:46:06 2019 -0500
    
-       Initial commit
+       Some bugfixes, version 1.0.1.
    

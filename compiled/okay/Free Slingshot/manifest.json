@@ -1,0 +1,11 @@
+{
+  "Author": "DJ-STLN",
+  "Description": "Slingshots no longer consume ammunition",
+  "EntryDll": "FreeSlingshot.dll",
+  "MinimumApiVersion": "2.0",
+  "Name": "Free Slingshot",
+  "UniqueID": "DJ-STLN.FreeSlingshot",
+  "UpdateKeys": [ "" ],
+  "Version": "0.0.1"
+ 
+}

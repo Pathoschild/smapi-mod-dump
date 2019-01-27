@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reflection;
 using StardewValley;
 using StardewValley.Locations;
@@ -12,7 +9,7 @@ using Microsoft.Xna.Framework;
 
 namespace FollowerNPC.AI_States
 {
-    class AI_StateFollowCharacter: AI_State
+    public class AI_StateFollowCharacter: AI_State
     {
         protected Character me;
         protected Character leader;
@@ -78,10 +75,8 @@ namespace FollowerNPC.AI_States
 
             aStar = new aStar(me.currentLocation, me, leader);
 
-            followThreshold = 2.25f * fullTile;
-            decelerateThreshold = 1.75f * fullTile;
-            deceleration = 0.075f;
-            pathNodeTolerance = 5f;
+            deceleration = 0.025f;
+            pathNodeTolerance = 3f;
             monsterAggroRadius = 8f * fullTile;
 
             characterMoveUp = typeof(Character).GetField("moveUp", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -100,14 +95,16 @@ namespace FollowerNPC.AI_States
             }
             else
             {
-                followThreshold = 2.25f * fullTile;
-                decelerateThreshold = 1.75f * fullTile; 
+                followThreshold = 2.65f * fullTile;
+                decelerateThreshold = 2f * fullTile; 
             }
 
             ModEntry.modHelper.Events.World.DebrisListChanged += World_DebrisListChanged;
             ModEntry.modHelper.Events.World.ObjectListChanged += World_ObjectListChanged;
             ModEntry.modHelper.Events.World.TerrainFeatureListChanged += World_TerrainFeatureListChanged;
             ModEntry.modHelper.Events.Player.Warped += Player_Warped;
+
+            PathfindingRemakeCheck();
         }
 
         public override void ExitState()
@@ -148,8 +145,7 @@ namespace FollowerNPC.AI_States
 
             if (--idleTimer == 0)
             {
-                if (CheckForMonstersInThisLocation(me.currentLocation) || 
-                    !(machine.states[(int)eAI_State.idle] as AI_StateIdle).CanBeIdleHere())
+                if (CheckForMonstersInThisLocation(me.currentLocation))
                     idleTimer = -1;
                 else
                     return eAI_State.idle;
@@ -285,7 +281,7 @@ namespace FollowerNPC.AI_States
             }
             else if (distanceFromFarmer > decelerateThreshold)
             {
-                return currentMovespeed - 0.075f;
+                return currentMovespeed - deceleration;
             }
             return 0;
         }
@@ -319,6 +315,8 @@ namespace FollowerNPC.AI_States
             {
                 Rectangle wbBB = me.GetBoundingBox();
                 int ts = Game1.tileSize;
+                bool xBlocked, yBlocked;
+                xBlocked = yBlocked = false;
 
                 if (me.xVelocity != 0)
                 {
@@ -331,7 +329,11 @@ namespace FollowerNPC.AI_States
                     foreach (bool b in xTiles)
                     {
                         if (!b)
-                            me.xVelocity = 0;
+                        {
+                            me.xVelocity *= -0.25f;
+                            xBlocked = true;
+                            break;
+                        }
                     }
                 }
 
@@ -346,9 +348,18 @@ namespace FollowerNPC.AI_States
                     foreach (bool b in yTiles)
                     {
                         if (!b)
-                            me.yVelocity = 0;
+                        {
+                            me.yVelocity *= -0.25f;
+                            yBlocked = true;
+                            break;
+                        }
                     }
                 }
+
+                if (xBlocked)
+                    me.yVelocity *= 2.5f;
+                else if (yBlocked)
+                    me.xVelocity *= 2.5f;
             }
         }
 
@@ -483,33 +494,57 @@ namespace FollowerNPC.AI_States
 
         protected void HandleGates()
         {
-            if (gatesInThisLocation)
+            if (gatesInThisLocation && (me.xVelocity != 0 || me.yVelocity != 0))
             {
                 Vector2 velocity = new Vector2(me.xVelocity, -me.yVelocity);
                 velocity.Normalize();
-                velocity = velocity * fullTile * 1.26f;
+                velocity = velocity * fullTile * 1.3f;
                 Vector2 bbVector = new Vector2(me.GetBoundingBox().Center.X, me.GetBoundingBox().Center.Y);
                 Vector2 tile = me.getTileLocation();
                 Vector2 tileAhead = (bbVector + velocity) / fullTile;
                 Vector2 tileBehind = (bbVector - velocity) / fullTile;
-                Fence[] fences = new Fence[3];
-                fences[0] = (aStar.gameLocation.getObjectAtTile((int)tileAhead.X, (int)tileAhead.Y)) as Fence;
-                fences[1] = (aStar.gameLocation.getObjectAtTile((int)tileBehind.X, (int)tileBehind.Y)) as Fence;
-                fences[2] = (aStar.gameLocation.getObjectAtTile((int)tile.X, (int)tile.Y)) as Fence;
-
-                if (fences[2] != null && fences[2].isGate.Value && fences[2].gatePosition.Value == 0)
+                Vector2 tileBehindNeighbor1, tileBehindNeighbor2;
+                bool neighborsUpDown = Math.Abs(velocity.X) > Math.Abs(velocity.Y);
+                if (Math.Abs(velocity.X) > Math.Abs(velocity.Y))
                 {
-                    fences[2].gatePosition.Value = 88;
-                    aStar.gameLocation.playSound("doorClose");
+                    tileBehindNeighbor1 = tileBehind + new Vector2(-Math.Sign(velocity.X), 1);
+                    tileBehindNeighbor2 = tileBehind + new Vector2(-Math.Sign(velocity.X), -1);
                 }
-                else if (fences[0] != null && fences[0].isGate.Value && fences[0].gatePosition.Value == 0)
+                else
+                {
+                    tileBehindNeighbor1 = tileBehind + new Vector2(1, -Math.Sign(velocity.Y));
+                    tileBehindNeighbor2 = tileBehind + new Vector2(-1, -Math.Sign(velocity.Y));
+                }
+                Fence[] fences = new Fence[5];
+                fences[0] = (aStar.gameLocation.getObjectAtTile((int)tile.X, (int)tile.Y)) as Fence;
+                fences[1] = (aStar.gameLocation.getObjectAtTile((int)tileAhead.X, (int)tileAhead.Y)) as Fence;
+                fences[2] = (aStar.gameLocation.getObjectAtTile((int)tileBehind.X, (int)tileBehind.Y)) as Fence;
+                fences[3] = (aStar.gameLocation.getObjectAtTile((int)tileBehindNeighbor1.X, (int)tileBehindNeighbor1.Y)) as Fence;
+                fences[4] = (aStar.gameLocation.getObjectAtTile((int)tileBehindNeighbor2.X, (int)tileBehindNeighbor2.Y)) as Fence;
+
+                if (fences[0] != null && fences[0].isGate.Value && fences[0].gatePosition.Value == 0)
                 {
                     fences[0].gatePosition.Value = 88;
                     aStar.gameLocation.playSound("doorClose");
                 }
-                else if (fences[1] != null && fences[1].isGate.Value && fences[1].gatePosition.Value == 88)
+                else if (fences[1] != null && fences[1].isGate.Value && fences[1].gatePosition.Value == 0)
                 {
-                    fences[1].gatePosition.Value = 0;
+                    fences[1].gatePosition.Value = 88;
+                    aStar.gameLocation.playSound("doorClose");
+                }
+                else if (fences[2] != null && fences[2].isGate.Value && fences[2].gatePosition.Value == 88)
+                {
+                    fences[2].gatePosition.Value = 0;
+                    aStar.gameLocation.playSound("doorClose");
+                }
+                else if (fences[3] != null && fences[3].isGate.Value && fences[3].gatePosition.Value == 88)
+                {
+                    fences[3].gatePosition.Value = 0;
+                    aStar.gameLocation.playSound("doorClose");
+                }
+                else if (fences[4] != null && fences[4].isGate.Value && fences[4].gatePosition.Value == 88)
+                {
+                    fences[4].gatePosition.Value = 0;
                     aStar.gameLocation.playSound("doorClose");
                 }
             }

@@ -5,9 +5,9 @@ mods:
    Stardew News Feed
 
 latest commit:
-   commit be70f09aed471fbb58bbdd383bd695d16a1e8673
+   commit 0397f77297a539752863e14d3426a8d494054bf9
    Author: Mike North <mikesnorth@gmail.com>
-   Date:   Fri Jan 18 13:51:55 2019 -0500
+   Date:   Thu Jan 24 19:50:19 2019 -0500
    
-       Updates Readme for release 1.7
+       Release 1.8
    

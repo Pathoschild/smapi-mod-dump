@@ -129,8 +129,11 @@ namespace FollowerNPC.CompanionStates
 
         private void Player_Warped(object sender, WarpedEventArgs e)
         {
-            if (!Context.IsWorldReady || stateMachine.companion.currentLocation == null)
+            if (!Context.IsWorldReady)
                 return;
+
+            if (stateMachine.companion.currentLocation == null)
+                stateMachine.companion.currentLocation = Game1.getLocationFromName(stateMachine.companion.DefaultMap);
 
             Farmer f = stateMachine.manager.farmer;
             NPC c = stateMachine.companion;
@@ -141,7 +144,7 @@ namespace FollowerNPC.CompanionStates
             }
             else
             {
-                WarpButWaitForFarmer(e.NewLocation.Name, Point.Zero,
+                WarpButWaitForFarmer(e.NewLocation.Name, f.getTileLocationPoint(),
                     new Action(TryPushLocationDialogue));
             }
         }
@@ -222,7 +225,7 @@ namespace FollowerNPC.CompanionStates
                 if (f.spouse != null && f.spouse.Equals(c.Name) && f.getFriendshipHeartLevelForNPC(c.Name) > 9 && !hbk)
                     return;
 
-                Dialogue d = GenerateAnActionDialogue();
+                Dialogue d = stateMachine.manager.GenerateDialogue("Action", stateMachine.companion.Name, true);
                 stateMachine.actionDialogue = d ?? throw new Exception(
                         "Tried to push an action dialogue, but there were no action strings for this character!");
                 if (CheckForMissingResponseKeys(d))
@@ -230,54 +233,6 @@ namespace FollowerNPC.CompanionStates
                 stateMachine.companion.CurrentDialogue.Push(stateMachine.actionDialogue);
                 actionDialoguePushed = true;
             }
-        }
-
-        private Dialogue GenerateAnActionDialogue()
-        {
-            List<string> ret = new List<string>();
-            bool repeat = false;
-
-            GetDialogue:
-            // If this companion is married to the farmer
-            if (stateMachine.manager.farmer.spouse != null && stateMachine.manager.farmer.spouse.Equals(stateMachine.companion.Name))
-            {
-                string recruitFriendKey = "Companion-Action-Friend";
-                string recruitSpouseKey = "Companion-Action-Spouse";
-                string recruitSpouseOverrideKey = "Companion-Action-SpouseOverride";
-
-                // If there are SpouseOverride dialogue(s)
-                if (GetAnyDialogueValuesForDialogueKey(recruitSpouseOverrideKey, ref ret))
-                {
-                    return new Dialogue(ret[r.Next(ret.Count)], stateMachine.companion);
-                }
-
-                // Else, look for Spouse and Friend strings
-                else if (GetAnyDialogueValuesForDialogueKey(recruitSpouseKey, ref ret) |
-                         GetAnyDialogueValuesForDialogueKey(recruitFriendKey, ref ret))
-                {
-                    return new Dialogue(ret[r.Next(ret.Count)], stateMachine.companion);
-                }
-            }
-            // Otherwise, if they are just a friend
-            else
-            {
-                string recruitFriendKey = "Companion-Action-Friend";
-
-                // Look for Friend strings
-                if (GetAnyDialogueValuesForDialogueKey(recruitFriendKey, ref ret))
-                {
-                    return new Dialogue(ret[r.Next(ret.Count)], stateMachine.companion);
-                }
-            }
-
-            if (ret.Count == 0 && !repeat)
-            {
-                repeat = true;
-                foreach (KeyValuePair<string, string> kvp in stateMachine.script)
-                    stateMachine.companion.Dialogue[kvp.Key] = kvp.Value;
-                goto GetDialogue;
-            }
-            return null;
         }
 
         private void TryPushLocationDialogue()
@@ -302,7 +257,7 @@ namespace FollowerNPC.CompanionStates
             else
             {
                 // If there is location-dialogue for this location...
-                Dialogue d = GenerateALocationDialogue();
+                Dialogue d = stateMachine.manager.GenerateDialogue(c.currentLocation.Name, stateMachine.companion.Name, false);
                 if (d != null)
                 {
                     // And it hasn't been seen yet...
@@ -334,45 +289,6 @@ namespace FollowerNPC.CompanionStates
                     }
                 }
             }
-        }
-
-        private Dialogue GenerateALocationDialogue()
-        {
-            List<string> ret = new List<string>();
-            string location = stateMachine.companion.currentLocation.Name;
-
-            // If this companion is married to the farmer
-            if (stateMachine.manager.farmer.spouse != null && stateMachine.manager.farmer.spouse.Equals(stateMachine.companion.Name))
-            {
-                string friendKey = "companion-"+location+"-Friend";
-                string spouseKey = "companion-"+location+"-Spouse";
-                string spouseOverrideKey = "companion-"+location+"-SpouseOverride";
-
-                // If there are SpouseOverride dialogue(s)
-                if (GetAnyDialogueValuesForDialogueKey(spouseOverrideKey, ref ret))
-                {
-                    return new Dialogue(ret[r.Next(ret.Count)], stateMachine.companion);
-                }
-
-                // Else, look for Spouse and Friend strings
-                else if (GetAnyDialogueValuesForDialogueKey(spouseKey, ref ret) |
-                         GetAnyDialogueValuesForDialogueKey(friendKey, ref ret))
-                {
-                    return new Dialogue(ret[r.Next(ret.Count)], stateMachine.companion);
-                }
-            }
-            // Otherwise, if they are just a friend
-            else
-            {
-                string friendKey = "companion-" + location + "-Friend";
-
-                // Look for Friend strings
-                if (GetAnyDialogueValuesForDialogueKey(friendKey, ref ret))
-                {
-                    return new Dialogue(ret[r.Next(ret.Count)], stateMachine.companion);
-                }
-            }
-            return null;
         }
 
         private bool RemoveLocationDialogueFromCompanion()
@@ -434,7 +350,7 @@ namespace FollowerNPC.CompanionStates
                 stateMachine.manager.farmer.dialogueQuestionsAnswered.Remove(CompanionsManager.recruitNoID);
                 stateMachine.manager.farmer.dialogueQuestionsAnswered.Remove(CompanionsManager.actionDismissID);
                 stateMachine.manager.farmer.dialogueQuestionsAnswered.Remove(CompanionsManager.actionContinueID);
-                Dialogue d = GenerateAnAutomaticDismissDialogue();
+                Dialogue d = stateMachine.manager.GenerateDialogue("AutomaticDismissal", stateMachine.companion.Name, true);
                 stateMachine.automaticDismissDialogue = d ?? throw new Exception("Tried to push a dismissal dialogue, but there were no dismissal strings for this character!");
                 if (CheckForMissingResponseKeys(d))
                     throw new Exception("There were missing dialogue response keys for this character!");
@@ -444,52 +360,6 @@ namespace FollowerNPC.CompanionStates
                 stateMachine.automaticDismissDialogue = d;
                 Game1.drawDialogue(stateMachine.companion);
             }
-        }
-
-        private Dialogue GenerateAnAutomaticDismissDialogue()
-        {
-            List<string> ret = new List<string>();
-            bool repeat = false;
-
-            GetDialogue:
-            // If this companion is married to the farmer
-            if (stateMachine.manager.farmer.spouse != null && stateMachine.manager.farmer.spouse.Equals(stateMachine.companion.Name))
-            {
-                string friendKey = "Companion-AutomaticDismissal-Friend";
-                string spouseKey = "Companion-AutomaticDismissal-Spouse";
-                string spouseOverrideKey = "Companion-AutomaticDismissal-SpouseOverride";
-
-                // If there are SpouseOverride dialogue(s)
-                if (GetAnyDialogueValuesForDialogueKey(spouseOverrideKey, ref ret))
-                {
-                    return new Dialogue(ret[r.Next(ret.Count)], stateMachine.companion);
-                }
-
-                // Else, look for Spouse and Friend strings
-                else if (GetAnyDialogueValuesForDialogueKey(spouseKey, ref ret) |
-                         GetAnyDialogueValuesForDialogueKey(friendKey, ref ret))
-                {
-                    return new Dialogue(ret[r.Next(ret.Count)], stateMachine.companion);
-                }
-            }
-            // Otherwise, if they are just a friend
-            else
-            {
-                string friendKey = "Companion-AutomaticDismissal-Friend";
-
-                // Look for Friend strings
-                if (GetAnyDialogueValuesForDialogueKey(friendKey, ref ret))
-                {
-                    return new Dialogue(ret[r.Next(ret.Count)], stateMachine.companion);
-                }
-            }
-
-            if (ret.Count == 0 && !repeat)
-            {
-                repeat = true;
-                goto GetDialogue;
-            }
-            return null;
         }
         #endregion
 
@@ -550,12 +420,12 @@ namespace FollowerNPC.CompanionStates
 
         private async void WarpButWaitForFarmer(String location, Point tileLocation, Action afterWarpAction)
         {
-            //await Task.Run(() => Timer(50));
-            while (!stateMachine.manager.farmer.currentLocation.Name.Equals(location))
-                await Task.Run(() => Timer(15));
-            location = location != null ? location : stateMachine.manager.farmer.currentLocation.Name;
-            tileLocation = tileLocation != Point.Zero ? tileLocation : stateMachine.manager.farmer.getTileLocationPoint();
-            //if (companion.currentLocation != null)
+            Farmer f = stateMachine.manager.farmer;
+            while (!stateMachine.manager.farmer.currentLocation.Name.Equals(location)
+                || f.getTileLocationPoint().Equals(tileLocation))
+                await Task.Run(() => Timer(2));
+            location = location != null ? location : f.currentLocation.Name;
+            tileLocation = f.getTileLocationPoint();
             Game1.warpCharacter(stateMachine.companion, location, tileLocation);
             afterWarpAction.Invoke();
         }

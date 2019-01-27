@@ -7,9 +7,9 @@ mods:
    Sprint Sprint Sprint
 
 latest commit:
-   commit 47f74e989267cebdf6eaa047f1a45cddaee2f1bc
+   commit 675d17e06b0663f4b26f7c942c47a1e683369d57
    Author: JessebotX <43657800+JessebotX@users.noreply.github.com>
-   Date:   Sun Jan 20 18:22:59 2019 -0800
+   Date:   Sat Jan 26 14:41:00 2019 -0800
    
-       updated readme's for consistency
+       README updated
    

@@ -8,7 +8,7 @@ namespace StardewNewsFeed.Wrappers {
 
         public NPC(StardewNPC npc) {
             _npc = npc;
-            _birthday = new GameDate(npc.Birthday_Season, npc.Birthday_Day);
+            _birthday = new GameDate(npc?.Birthday_Season ?? "spring", npc?.Birthday_Day ?? 0);
         }
 
         public string GetName() {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reflection;
 using StardewValley;
 using StardewValley.Monsters;
@@ -14,7 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace FollowerNPC.AI_States
 {
-    class AI_StateAggroEnemy : AI_StateFollowCharacter
+    public partial class AI_StateAggroEnemy : AI_StateFollowCharacter
     {
         public class MonsterIgnoreTimer
         {
@@ -1323,5 +1321,66 @@ namespace FollowerNPC.AI_States
         }
 
         #endregion
+    }
+
+    public partial class AI_StateAggroEnemy
+    {
+        private class CombatBehavior
+        {
+            protected AI_StateAggroEnemy combatState;
+
+            public CombatBehavior(AI_StateAggroEnemy combatState)
+            {
+                this.combatState = combatState;
+            }
+
+            public virtual void StartBehavior()
+            {
+            }
+
+            public virtual void StopBehavior()
+            {
+
+            }
+
+            public virtual void SelfTransition()
+            {
+                StartBehavior();
+            }
+
+            public virtual void Update(UpdateTickedEventArgs e)
+            {
+                if (TransitionsCheck())
+                    return;
+            }
+
+            public virtual bool TransitionsCheck()
+            {
+                return false;
+            }
+
+        }
+
+        private class AggressiveMeleeWeaponBehavior : CombatBehavior
+        {
+            public AggressiveMeleeWeaponBehavior(AI_StateAggroEnemy combatState) : base(combatState)
+            {
+            }
+        }
+
+        private class DefendingMeleeWeaponBehavior : CombatBehavior
+        {
+            public DefendingMeleeWeaponBehavior(AI_StateAggroEnemy combatState) : base(combatState)
+            {
+            }
+        }
+
+        private class CoweringMeleeWeaponBehavior : CombatBehavior
+        {
+            public CoweringMeleeWeaponBehavior(AI_StateAggroEnemy combatState) : base(combatState)
+            {
+            }
+        }
+
     }
 }
