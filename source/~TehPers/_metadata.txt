@@ -4,7 +4,6 @@ url:
 mods:
    Shroom Spotter
    Stardew Content Compatibility Layer (SCCL)
-   Teh Core
    Teh's Core Mod
    Teh's Fishing Overhaul
 

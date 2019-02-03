@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3365
+IDs: Jellypowered.GrassChance
+update keys: Nexus:3365

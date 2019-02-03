@@ -5,9 +5,9 @@ mods:
    Magic
 
 latest commit:
-   commit b92960b5e0d1b9044df6662d81f3f52d099f83cc
+   commit f05f7496ce7a5f66ab3306913124ad5b4c8fb341
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:24:32 2019 -0500
+   Date:   Tue Jan 29 15:32:36 2019 -0500
    
-       Update version
+       Version 0.1.6.
    

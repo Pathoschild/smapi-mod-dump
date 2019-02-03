@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3296
+IDs: Paritee.BetterFarmAnimalVariety
+update keys: Nexus:3296

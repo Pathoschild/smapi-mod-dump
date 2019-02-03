@@ -9,9 +9,9 @@ mods:
    Customize Cursor Sprite
 
 latest commit:
-   commit cd5df1789ee5fa959630430c527d3e7f75e0dd73
+   commit 7df5bd80cfc4975cebce4f1458a58b2d1f5ac17d
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Tue Jan 8 19:07:02 2019 -0500
+   Date:   Tue Jan 29 20:43:21 2019 -0500
    
-       Added: Passive trash to crab pots with config
+       Changed: Mod version in manifest
    

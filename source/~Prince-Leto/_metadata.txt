@@ -6,9 +6,12 @@ mods:
    Multiplayer Shaft Fix
 
 latest commit:
-   commit 80a0a0dafeff7bb52971ac314860dd0e3e0a97ec
+   commit 2fc053638141221f5e68b98c185c83b3bb42fe88
+   Merge: 80a0a0d f52fa05
    Author: GrÃ©goire Chauvet <gchauvet.home@gmail.com>
-   Date:   Wed Oct 10 00:17:04 2018 +0200
+   Date:   Wed Jan 30 18:04:25 2019 +0100
    
-       Added an update key in manifest.json - Version 1.1.1 of TwentyFourHours
+       Merge pull request #1 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0 & unify solution
    

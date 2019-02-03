@@ -10,28 +10,25 @@ namespace CustomQuestExpiration {
         private const int InfiniteDays = 100000;
         private ModConfig Config;
         private List<Quest> dailyQuests = new List<Quest>();
-       
+
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper) {
             Config = Helper.ReadConfig<ModConfig>();
 
-            if (Config.NeverExpires) {
-                MenuEvents.MenuChanged += MenuEvents_MenuChanged;
-            }
-            MenuEvents.MenuClosed += MenuEvents_MenuClosed;
+            helper.Events.Display.MenuChanged += OnMenuChanged;
         }
 
-        private void MenuEvents_MenuChanged(object sender, EventArgsClickableMenuChanged e) {
-            if (e.NewMenu is StardewValley.Menus.QuestLog) {
-                updateQuestIcons();
-            }
-        }
-      
-        private void MenuEvents_MenuClosed(object sender, EventArgsClickableMenuClosed e) {
-            if (e.PriorMenu is StardewValley.Menus.Billboard) {
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e) {
+            if (e.OldMenu is StardewValley.Menus.Billboard) {
                 updateQuest();
             }
-            else if (Config.NeverExpires && e.PriorMenu is StardewValley.Menus.QuestLog) {
-                resetQuestIcons();
+
+            if (Config.NeverExpires && (e.OldMenu is StardewValley.Menus.QuestLog || e.NewMenu is StardewValley.Menus.QuestLog)) {
+                updateQuestIcons();
             }
         }
 

@@ -118,11 +118,11 @@ namespace Magic
 
         private static void onBlankSave( object sender, EventArgs args )
         {
-            placeAltar("FarmCave", 5, 2, 54 * 3, SchoolId.Toil);
-            placeAltar("Woods", 49, 26, 54 * 2, SchoolId.Nature);
-            placeAltar("SeedShop", 36, 16, 54 * 4, SchoolId.Life);
-            placeAltar("WizardHouseBasement", 8, 3, 54 * 1, SchoolId.Elemental);
-            placeAltar("WitchHut", 6, 8, 54 * 7, SchoolId.Eldritch);
+            placeAltar(Mod.Config.ToilAltarLocation, Mod.Config.ToilAltarX, Mod.Config.ToilAltarY, 54 * 3, SchoolId.Toil);
+            placeAltar(Mod.Config.NatureAltarLocation, Mod.Config.NatureAltarX, Mod.Config.NatureAltarY, 54 * 2, SchoolId.Nature);
+            placeAltar(Mod.Config.LifeAltarLocation, Mod.Config.LifeAltarX, Mod.Config.LifeAltarY, 54 * 4, SchoolId.Life);
+            placeAltar(Mod.Config.ElementalAltarLocation, Mod.Config.ElementalAltarX, Mod.Config.ElementalAltarY, 54 * 1, SchoolId.Elemental);
+            placeAltar(Mod.Config.EldritchAltarLocation, Mod.Config.EldritchAltarX, Mod.Config.EldritchAltarY, 54 * 7, SchoolId.Eldritch);
         }
 
         /// <summary>Raised after the player loads a save slot.</summary>
@@ -332,7 +332,13 @@ namespace Magic
             if ( e.NewLocation.Name == "WizardHouse" && !Game1.player.eventsSeen.Contains( 90000 ) &&
                  Game1.player.friendshipData.ContainsKey( "Wizard" ) && Game1.player.friendshipData[ "Wizard" ].Points > 750 )
             {
-                e.NewLocation.currentEvent = new Event("WizardSong/0 5/Wizard 8 5 0 farmer 8 15 0/move farmer 0 -8 0/speak Wizard \"TODO#$b#Find one of the five altars and learn some magic.#$b#Q to start casting, then 1-4 to choose the spell.#$b#TAB to switch between spell sets.\"/textAboveHead Wizard \"MAGIC\"/pause 750/fade 750/end", 90000);
+                string eventStr = "WizardSong/0 5/Wizard 8 5 0 farmer 8 15 0/move farmer 0 -8 0/speak Wizard \"{0}#$b#{1}#$b#{2}#$b#{3}\"/textAboveHead Wizard \"{4}\"/pause 750/fade 750/end";
+                eventStr = string.Format(eventStr, Mod.instance.Helper.Translation.Get("event.wizard.1"),
+                                                   Mod.instance.Helper.Translation.Get("event.wizard.2"),
+                                                   Mod.instance.Helper.Translation.Get("event.wizard.3"),
+                                                   Mod.instance.Helper.Translation.Get("event.wizard.4"),
+                                                   Mod.instance.Helper.Translation.Get("event.wizard.abovehead"));
+                e.NewLocation.currentEvent = new Event(eventStr, 90000);
                 Game1.eventUp = true;
                 Game1.displayHUD = false;
                 Game1.player.CanMove = false;
@@ -351,7 +357,7 @@ namespace Magic
             {
                 if ( !Game1.player.eventsSeen.Contains(90000) )
                 {
-                    Game1.drawObjectDialogue("A glowing altar.");
+                    Game1.drawObjectDialogue(Mod.instance.Helper.Translation.Get("altar.glow"));
                 }
                 else if (!Game1.player.knowsSchool(actionArgs[1]))
                 {
@@ -363,7 +369,7 @@ namespace Magic
                     {
                         Game1.playSound("secret1");
                         Game1.player.getSpellBook().knownSchools.Add(actionArgs[1]);
-                        Game1.drawObjectDialogue("You are now attuned to " + actionArgs[1] + ".");
+                        Game1.drawObjectDialogue(Mod.instance.Helper.Translation.Get("altar.attuned", new { school = Mod.instance.Helper.Translation.Get($"school.{actionArgs[1]}.name") }));
                     }
                 }
                 else

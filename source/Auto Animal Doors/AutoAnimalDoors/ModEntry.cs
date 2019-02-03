@@ -7,12 +7,14 @@ namespace AutoAnimalDoors
     class ModEntry : StardewModdingAPI.Mod
     {
         private ModConfig config;
+        private StardewModdingAPI.IModHelper helper;
 
         public override void Entry(StardewModdingAPI.IModHelper helper)
         {
             Logger.Instance.Initialize(this.Monitor);
             config = helper.ReadConfig<ModConfig>();
-            StardewModdingAPI.Events.TimeEvents.AfterDayStarted += SetupAutoDoorCallbacks;
+            this.helper = helper;
+            helper.Events.GameLoop.DayStarted += SetupAutoDoorCallbacks;
         }
 
         private bool IsGoToSleepDialog(StardewValley.Menus.IClickableMenu menu)
@@ -30,7 +32,7 @@ namespace AutoAnimalDoors
             return false;
         }
 
-        private void OnMenuChanged(object sender, StardewModdingAPI.Events.EventArgsClickableMenuChanged menuChangedEventArgs)
+        private void OnMenuChanged(object sender, StardewModdingAPI.Events.MenuChangedEventArgs menuChangedEventArgs)
         {
             if (IsGoToSleepDialog(menuChangedEventArgs.NewMenu))
             {
@@ -46,7 +48,7 @@ namespace AutoAnimalDoors
             // Disable mod if not the main player (only one player needs to open/close the doors
             if (!StardewModdingAPI.Context.IsMainPlayer)
             {
-                StardewModdingAPI.Events.TimeEvents.AfterDayStarted -= SetupAutoDoorCallbacks;
+                helper.Events.GameLoop.DayStarted -= SetupAutoDoorCallbacks;
                 return;
             }
 
@@ -54,9 +56,9 @@ namespace AutoAnimalDoors
             if (game.IsLoaded())
             {
                 // Remove the subscriptions before adding them, this ensures we are only ever subscribed once
-                StardewModdingAPI.Events.MenuEvents.MenuChanged -= this.OnMenuChanged;
-                StardewModdingAPI.Events.TimeEvents.TimeOfDayChanged -= this.OpenAnimalDoors;
-                StardewModdingAPI.Events.TimeEvents.TimeOfDayChanged -= this.CloseAnimalDoors;
+                helper.Events.Display.MenuChanged -= this.OnMenuChanged;
+                helper.Events.GameLoop.TimeChanged -= this.OpenAnimalDoors;
+                helper.Events.GameLoop.TimeChanged -= this.CloseAnimalDoors;
 
                 bool skipDueToWinter = !config.OpenDoorsDuringWinter && game.Season == Season.WINTER;
                 bool skipDueToWeather = !config.OpenDoorsWhenRaining && (game.Weather == Weather.RAINING || game.Weather == Weather.LIGHTNING);
@@ -64,11 +66,11 @@ namespace AutoAnimalDoors
                 {
                     if (config.AutoOpenEnabled)
                     {
-                        StardewModdingAPI.Events.TimeEvents.TimeOfDayChanged += this.OpenAnimalDoors;
+                        helper.Events.GameLoop.TimeChanged += this.OpenAnimalDoors;
                     }
-                    
-                    StardewModdingAPI.Events.TimeEvents.TimeOfDayChanged += this.CloseAnimalDoors;
-                    StardewModdingAPI.Events.MenuEvents.MenuChanged += this.OnMenuChanged;
+
+                    helper.Events.GameLoop.TimeChanged += this.CloseAnimalDoors;
+                    helper.Events.Display.MenuChanged += this.OnMenuChanged;
                 }
             }
         }
@@ -81,9 +83,9 @@ namespace AutoAnimalDoors
             }
         }
 
-        private void CloseAnimalDoors(object sender, StardewModdingAPI.Events.EventArgsIntChanged timeOfDayChanged)
+        private void CloseAnimalDoors(object sender, StardewModdingAPI.Events.TimeChangedEventArgs timeOfDayChanged)
         {
-            if (timeOfDayChanged.NewInt >= config.AnimalDoorCloseTime)
+            if (timeOfDayChanged.NewTime >= config.AnimalDoorCloseTime)
             {
                 bool allAnimalsInAllFarmsAreHome = true;
                 foreach (Farm farm in Game.Instance.Farms)
@@ -99,16 +101,16 @@ namespace AutoAnimalDoors
                 }
                 if (allAnimalsInAllFarmsAreHome)
                 {
-                    StardewModdingAPI.Events.TimeEvents.TimeOfDayChanged -= this.CloseAnimalDoors;
+                    helper.Events.GameLoop.TimeChanged -= this.CloseAnimalDoors;
                 }
             }
         }
 
-        private void OpenAnimalDoors(object sender, StardewModdingAPI.Events.EventArgsIntChanged timeOfDayChanged)
+        private void OpenAnimalDoors(object sender, StardewModdingAPI.Events.TimeChangedEventArgs timeOfDayChanged)
         {
-            if (timeOfDayChanged.NewInt >= config.AnimalDoorOpenTime && timeOfDayChanged.NewInt < config.AnimalDoorCloseTime)
+            if (timeOfDayChanged.NewTime >= config.AnimalDoorOpenTime && timeOfDayChanged.NewTime < config.AnimalDoorCloseTime)
             {
-                StardewModdingAPI.Events.TimeEvents.TimeOfDayChanged -= this.OpenAnimalDoors;
+                helper.Events.GameLoop.TimeChanged -= this.OpenAnimalDoors;
                 SetAllAnimalDoorsState(Buildings.AnimalDoorState.OPEN);
             }
         }

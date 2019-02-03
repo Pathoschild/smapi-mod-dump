@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Starvation", "Starvation\Starvation.csproj", "{4C26A34B-DD51-4225-9A9B-3050D440BC7E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4C26A34B-DD51-4225-9A9B-3050D440BC7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C26A34B-DD51-4225-9A9B-3050D440BC7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C26A34B-DD51-4225-9A9B-3050D440BC7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C26A34B-DD51-4225-9A9B-3050D440BC7E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2BE3615A-B3AB-4894-8718-C5A00C1A9E96}
+	EndGlobalSection
+EndGlobal

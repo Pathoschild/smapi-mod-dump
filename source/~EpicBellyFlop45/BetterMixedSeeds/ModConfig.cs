@@ -191,5 +191,9 @@ namespace BetterMixedSeeds
         public bool UseSour_Diesel { get; set; } = true;
         public bool UseStrawberry_Cough_SUMMER { get; set; }
         public bool UseStrawberry_Cough_FALL { get; set; }
+        public bool UseTobacco_SPRING { get; set; }
+        public bool UseTobacco_SUMMER { get; set; }
+        public bool UseWhite_Widow_SUMMER { get; set; }
+        public bool useWhite_Widow_FALL { get; set; }
     }
 }

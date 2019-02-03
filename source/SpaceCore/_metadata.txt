@@ -5,9 +5,9 @@ mods:
    SpaceCore
 
 latest commit:
-   commit 9abaaf8d16671bdbea2c4f4761f9512ac5f2c9da
+   commit 7e7de5afe769cd3eb9443aed81770e38ab451f79
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:27:06 2019 -0500
+   Date:   Tue Jan 29 10:29:49 2019 -0500
    
-       Update version
+       Tab menus, 1.2.5
    

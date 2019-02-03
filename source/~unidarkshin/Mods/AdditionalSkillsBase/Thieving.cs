@@ -325,7 +325,7 @@ namespace AdditionalSkillsBase
 
         public void readData()
         {
-            config = instance.Helper.Data.ReadJsonFile<ModData>($"thieving/{Constants.SaveFolderName}.json") ?? new ModData();
+            config = instance.Helper.ReadJsonFile<ModData>($"thieving/{Constants.SaveFolderName}.json") ?? new ModData();
 
             xp = config.xp;
             level = config.level;
@@ -333,7 +333,7 @@ namespace AdditionalSkillsBase
             mult = config.mult;
 
             if (!File.Exists($"thieving/{Constants.SaveFolderName}.json"))
-                instance.Helper.Data.WriteJsonFile<ModData>($"thieving/{Constants.SaveFolderName}.json", config);
+                instance.Helper.WriteJsonFile<ModData>($"thieving/{Constants.SaveFolderName}.json", config);
 
             addPerks();
         }
@@ -361,7 +361,7 @@ namespace AdditionalSkillsBase
             config.xp = xp;
             config.level = level;
 
-            instance.Helper.Data.WriteJsonFile<ModData>($"thieving/{Constants.SaveFolderName}.json", config);
+            instance.Helper.WriteJsonFile<ModData>($"thieving/{Constants.SaveFolderName}.json", config);
         }
     }
 

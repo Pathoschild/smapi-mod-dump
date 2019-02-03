@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2150
-IDs: TehPers.Core
-update keys: Nexus:2150, GitHub:TehPers/StardewValleyMods

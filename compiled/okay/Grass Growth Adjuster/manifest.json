@@ -1,0 +1,10 @@
+{
+   "Name": "Grass Adjustor",
+   "Author": "Jellypowered",
+   "Version": "1.0.0",
+   "Description": "Configurable Grass Growth",
+   "UniqueID": "Jellypowered.GrassChance",
+   "EntryDll": "GrassChance.dll",
+   "MinimumApiVersion": "2.10.1",
+   "UpdateKeys": []
+}

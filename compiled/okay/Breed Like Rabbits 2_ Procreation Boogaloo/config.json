@@ -1,0 +1,10 @@
+{
+  "IgnoreGender": false,
+  "AccountForHappiness": true,
+  "AccountForFriendship": true,
+  "AccountForSeason": true,
+  "AccountForAge": true,
+  "AllowMultiples": true,
+  "EnableDebugLogging": false,
+  "BaseRate": 42.0
+}

@@ -5,9 +5,9 @@ mods:
    Json Assets
 
 latest commit:
-   commit d52fd95b4c4f30060171a03381cb6e829f68daf6
+   commit 213d292d618b778ffcd1b0ac62e5c379e215746f
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:23:29 2019 -0500
+   Date:   Wed Jan 30 15:23:00 2019 -0500
    
-       Update version
+       Fixed english descriptions being names. 1.3.1
    

@@ -5,9 +5,9 @@ mods:
    Auto Animal Doors
 
 latest commit:
-   commit 2b40bebca59ba499297bc05819086ad5fde0322b
+   commit e3033200c8cc7bc5367877d58e493959e1bce584
    Author: Aaron Taggart <ajtaggs@gmail.com>
-   Date:   Sat Dec 22 12:08:30 2018 -0600
+   Date:   Sun Jan 27 12:40:36 2019 -0600
    
-       bump version
+       Don't use deprecated apis
    

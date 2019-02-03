@@ -1,0 +1,1 @@
+# Paritee.StardewValley.Frameworks

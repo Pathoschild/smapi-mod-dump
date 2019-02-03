@@ -7,9 +7,9 @@ mods:
    Tillable Ground
 
 latest commit:
-   commit e2d608eeefca7f7d38a27a3385a379ec24a6a4f7
-   Author: hawkfalcon <contact@hawkfalcon.com>
-   Date:   Sun Aug 26 23:47:41 2018 -0700
+   commit f41f99412a2a49d39ba55a24125a6beed182f17c
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Thu Jan 10 23:24:43 2019 -0500
    
-       Work in Winter and Evenings, fix nre
+       update for SMAPI 3.0
    

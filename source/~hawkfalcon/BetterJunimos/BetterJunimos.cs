@@ -16,11 +16,13 @@ namespace BetterJunimos {
     public class BetterJunimos : Mod {
         internal ModConfig Config;
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper) {
-            Config = Helper.ReadConfig<ModConfig>();
+            Config = helper.ReadConfig<ModConfig>();
 
             Util.Config = Config;
-            Util.Reflection = Helper.Reflection;
+            Util.Reflection = helper.Reflection;
 
             JunimoAbilities junimoAbilities = new JunimoAbilities();
             junimoAbilities.Capabilities = Config.JunimoCapabilities;
@@ -31,14 +33,13 @@ namespace BetterJunimos {
             Util.Payments = junimoPayments;
             Util.MaxRadius = Config.JunimoPayment.WorkForWages ? Util.UnpaidRadius : Config.JunimoHuts.MaxRadius;
 
-            Helper.Content.AssetEditors.Add(new JunimoEditor(Helper.Content));
-            Helper.Content.AssetEditors.Add(new BlueprintEditor());
+            helper.Content.AssetEditors.Add(new JunimoEditor(helper.Content));
+            helper.Content.AssetEditors.Add(new BlueprintEditor());
 
-            InputEvents.ButtonPressed += InputEvents_ButtonPressed;
-            MenuEvents.MenuClosed += MenuEvents_MenuClosed;
-            MenuEvents.MenuChanged += MenuEvents_MenuChanged;
-            TimeEvents.AfterDayStarted += TimeEvents_AfterDayStarted;
-            SaveEvents.AfterLoad += SaveEvents_AfterLoad;
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
+            helper.Events.Display.MenuChanged += OnMenuChanged;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
 
             DoHarmonyRegistration();
         }
@@ -78,7 +79,10 @@ namespace BetterJunimos {
             }
         }
 
-        void InputEvents_ButtonPressed(object sender, EventArgsInput e) {
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        void OnButtonPressed(object sender, ButtonPressedEventArgs e) {
             if (!Context.IsWorldReady) { return; }
 
             if (e.Button == Config.Other.SpawnJunimoKeybind) {
@@ -96,25 +100,28 @@ namespace BetterJunimos {
             Game1.activeClickableMenu = (IClickableMenu)menu;
         }
 
-        // Closed Junimo Hut menu
-        void MenuEvents_MenuClosed(object sender, EventArgsClickableMenuClosed e) {
-            if (Config.JunimoPayment.WorkForWages && e.PriorMenu is ItemGrabMenu menu) {
-                if (menu.context != null && menu.context is JunimoHut hut) {
-                    CheckForWages(hut);
-                }
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        void OnMenuChanged(object sender, MenuChangedEventArgs e) {
+            // closed Junimo Hut menu
+            if (Config.JunimoPayment.WorkForWages && e.OldMenu is ItemGrabMenu menu && menu.context is JunimoHut hut) {
+                CheckForWages(hut);
             }
-        }
-
-        void MenuEvents_MenuChanged(object sender, EventArgsClickableMenuChanged e) {
-            if (e.PriorMenu == null && e.NewMenu is CarpenterMenu) {
-                // limit to only junimo hut 
+            
+            // opened menu
+            else if (e.OldMenu == null && e.NewMenu is CarpenterMenu) {
+                // limit to only junimo hut
                 if (!Game1.MasterPlayer.mailReceived.Contains("hasPickedUpMagicInk")) {
                     OpenJunimoHutMenu();
                 }
             }
         }
 
-        void TimeEvents_AfterDayStarted(object sender, EventArgs e) {
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        void OnDayStarted(object sender, DayStartedEventArgs e) {
             if (Config.JunimoPayment.WorkForWages) {
                 Util.Payments.JunimoPaymentsToday.Clear();
                 Util.Payments.WereJunimosPaidToday = false;
@@ -137,7 +144,10 @@ namespace BetterJunimos {
             }
         }
 
-        void SaveEvents_AfterLoad(object sender, EventArgs e) {
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        void OnSaveLoaded(object sender, EventArgs e) {
             AllowJunimoHutPurchasing();
         }
 

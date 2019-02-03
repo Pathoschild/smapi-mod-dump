@@ -17,9 +17,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 62966015db183a700894d70cf0c9e7960149f05b
+   commit fb17d4da354f4f689efae5e748350f6038a3aad1
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Jan 26 20:48:11 2019 -0500
+   Date:   Mon Jan 28 00:16:23 2019 -0500
    
-       add separate scythe attachment option for flowers
+       fix invalid stack prices when looking up shop inventory items
    

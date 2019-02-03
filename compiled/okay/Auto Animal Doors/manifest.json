@@ -1,10 +1,10 @@
 ﻿{
    "Name": "AutoAnimalDoors",
    "Author": "Aaron Taggart",
-   "Version": "2.1.0",
+   "Version": "2.2.0",
    "Description": "Open and close the doors automatically for your animals.",
    "UniqueID": "AaronTaggart.AutoAnimalDoors",
    "EntryDll": "AutoAnimalDoors.dll",
-   "MinimumApiVersion": "2.0",
+   "MinimumApiVersion": "2.10.1",
    "UpdateKeys": ["Nexus:1019"]
 }

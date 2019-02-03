@@ -1,0 +1,15 @@
+url:
+   https://github.com/Mizzion/Increased-Artifact-Spots.git
+
+mods:
+   Increased Artifact Spots
+
+latest commit:
+   commit a587942dc12c271e19d25ba6bfa8659216ca0a50
+   Author: Mizzion <36684211+Mizzion@users.noreply.github.com>
+   Date:   Sun Jan 27 22:29:48 2019 -0700
+   
+       Includes version 1.2.0
+       
+       Includes version 1.2.0
+   

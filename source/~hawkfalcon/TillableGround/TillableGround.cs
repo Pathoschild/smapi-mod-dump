@@ -10,18 +10,23 @@ namespace TillableGround {
      public class TillableGround : Mod {
         private ModConfig Config;
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper) {
             Config = Helper.ReadConfig<ModConfig>();
 
             if (Config.AllowTillingAnywhere) {
-                InputEvents.ButtonReleased += InputEvents_ButtonReleased;
+                helper.Events.Input.ButtonReleased += OnButtonReleased;
             }
             else {
-                InputEvents.ButtonPressed += InputEvents_ButtonPressed;
+                helper.Events.Input.ButtonPressed += OnButtonPressed;
             }
         }
 
-        void InputEvents_ButtonPressed( object sender, EventArgsInput e ) {
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnButtonPressed( object sender, ButtonPressedEventArgs e ) {
             if (!Context.IsWorldReady) { return; }
                 
             Vector2 tile = e.Cursor.Tile;
@@ -36,8 +41,11 @@ namespace TillableGround {
             }
         }
 
-        void InputEvents_ButtonReleased( object sender, EventArgsInput e ) {
-            if (e.IsUseToolButton && Game1.player.CurrentTool is StardewValley.Tools.Hoe) {
+        /// <summary>Raised after the player releases a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnButtonReleased( object sender, ButtonReleasedEventArgs e ) {
+            if (e.Button.IsUseToolButton() && Game1.player.CurrentTool is StardewValley.Tools.Hoe) {
                 foreach (Vector2 tile in GetHoedTiles()) {
                     int x = (int)tile.X, y = (int)tile.Y;
                     SetTileTillable(x, y);

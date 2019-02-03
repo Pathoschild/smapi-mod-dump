@@ -82,16 +82,16 @@ namespace LevelExtender
         public void Edit<T>(IAssetData asset)
         {
             IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
-            foreach (int key in data.Keys)
+            foreach (var pair in data.ToArray())
             {
-                string[] fields = data[key].Split('/');
+                string[] fields = pair.Value.Split('/');
                 if (int.TryParse(fields[1], out int val))
                 {
                     int x = (val - rand.Next(0, (int)(Game1.player.FishingLevel / 4)));
                     if (x < 1)
                         x = rand.Next(1, val);
                     fields[1] = x.ToString();
-                    data[key] = string.Join("/", fields);
+                    data[pair.Key] = string.Join("/", fields);
                 }
             }
         }

@@ -385,9 +385,32 @@ namespace BetterMixedSeeds
 
             if (hasCannabisKit && api != null)
             {
-                if (config.UseBlue_Dream_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Blue Dream"], "SUMMER")); summerSeedEnabled = true; }
-                if (config.UseBlue_Dream_FALL) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Blue Dream"], "FALL")); fallSeedEnabled = true; }
-                //"Blue Dream Starter", "Cannabis Starter", "Girl Scout Cookies Starter", "Green Crack Starter", "Hemp Starter", "Hybrid Starter", "Indica Starter", "Northern Lights Starter", "OG Kush Starter", "Sativa Starter", "Sour Diesel Starter", "Strawberry Cough Starter", "Tobacco Seeds", "White Widow Starter"
+                if (config.UseBlue_Dream_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Blue Dream Starter"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseBlue_Dream_FALL) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Blue Dream Starter"], "FALL")); fallSeedEnabled = true; }
+                if (config.UseCannabis_SPRING) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Cannabis Starter"], "SPRING")); springSeedEnabled = true; }
+                if (config.UseCannabis_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Cannabis Starter"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseCannabis_FALL) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Cannabis Starter"], "FALL")); fallSeedEnabled = true; }
+                if (config.UseGirl_Scout_Cookies_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Girl Scout Cookies Starter"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseGirl_Scout_Cookies_FALL) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Girl Scout Cookies Starter"], "FALL")); fallSeedEnabled = true; }
+                if (config.UseGreen_Crack_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Green Crack Starter"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseGreen_Crack_FALL) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Green Crack Starter"], "FALL")); fallSeedEnabled = true; }
+                if (config.UseHemp_SPRING) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Hemp Starter"], "SPRING")); springSeedEnabled = true; }
+                if (config.UseHemp_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Hemp Starter"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseHemp_FALL) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Hemp Starter"], "FALL")); fallSeedEnabled = true; }
+                if (config.UseHybrid_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Hybrid Starter"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseHybrid_FALL) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Hybrid Starter"], "FALL")); fallSeedEnabled = true; }
+                if (config.UseIndica) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Indica Starter"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseNorthern_Lights) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Northern Lights Starter"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseOG_Kush_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["OG Kush Starter"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseOG_Kush_FALL) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["OG Kush Starter"], "FALL")); fallSeedEnabled = true; }
+                if (config.UseSativa) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Sativa Starter"], "FALL")); fallSeedEnabled = true; }
+                if (config.UseSour_Diesel) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Sour Diesel Starter"], "FALL")); fallSeedEnabled = true; }
+                if (config.UseStrawberry_Cough_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Strawberry Cough Starter"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseStrawberry_Cough_FALL) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Strawberry Cough Starter"], "FALL")); fallSeedEnabled = true; }
+                if (config.UseTobacco_SPRING) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Tobacco Seeds"], "SPRING")); springSeedEnabled = true; }
+                if (config.UseTobacco_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Tobacco Seeds"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseWhite_Widow_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["White Widow Starter"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.useWhite_Widow_FALL) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["White Widow Starter"], "FALL")); fallSeedEnabled = true; }
             }
 
             // Check that atleast one seed from each season has enabled

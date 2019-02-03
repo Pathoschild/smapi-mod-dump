@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Breed Like Rabbits 2: Procreation Boogaloo",
+  "Author": "f4iTh",
+  "Version": "1.0.0",
+  "UniqueID": "f4iTh.BreedLikeRabbits2",
+  "Description": "Rabbits now breed like they're supposed to.",
+  "EntryDll": "BreedLikeRabbits2.dll",
+  "MinimumApiVersion": "2.10",
+  "UpdateKeys":  ["Nexus:3429"]
+}

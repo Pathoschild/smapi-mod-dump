@@ -5,6 +5,6 @@
   "Description": "Allow your junimos (from junimo huts) to automatically plant seeds, fertilize, and much more!",
   "UniqueID": "hawkfalcon.BetterJunimos",
   "EntryDll": "BetterJunimos.dll",
-  "MinimumApiVersion": "2.7",
+  "MinimumApiVersion": "2.10.1",
   "UpdateKeys": [ "Nexus:2221" ]
 }

@@ -1,0 +1,33 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="BetterFarmAnimalVariety.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="FarmAnimals_DairyCow" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1/5927/11343/1500/White Cow,Brown Cow/Barn,Big Barn,Deluxe Barn</Value>
+    </Setting>
+    <Setting Name="FarmAnimals_Chicken" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">0/5922/11334/800/White Chicken,Brown Chicken,Blue Chicken,Void Chicken/Coop,Big Coop,Deluxe Coop</Value>
+    </Setting>
+    <Setting Name="FarmAnimals_Sheep" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">4/5942/11352/8000/Sheep/Deluxe Barn</Value>
+    </Setting>
+    <Setting Name="FarmAnimals_Goat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">2/5933/11349/4000/Goat/Big Barn,Deluxe Barn</Value>
+    </Setting>
+    <Setting Name="FarmAnimals_Pig" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">6/5948/11346/16000/Pig/Deluxe Barn</Value>
+    </Setting>
+    <Setting Name="FarmAnimals_Duck" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">3/5937/11337/4000/Duck/Big Coop,Deluxe Coop</Value>
+    </Setting>
+    <Setting Name="FarmAnimals_Rabbit" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">5/5945/11340/8000/Rabbit/Deluxe Coop</Value>
+    </Setting>
+    <Setting Name="FarmAnimals_Dinosaur" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">7/null/null/null/Dinosaur/Big Coop,Deluxe Coop</Value>
+    </Setting>
+    <Setting Name="AssetsDirectory" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">assets</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

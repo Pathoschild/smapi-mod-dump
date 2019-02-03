@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/AnotherHungerMod.git
+
+mods:
+   Another Hunger Mod
+
+latest commit:
+   commit fa185c6c21f6c140326412060c9ea6f804daef0b
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Tue Jan 29 11:21:02 2019 -0500
+   
+       Added Nexus ID
+   

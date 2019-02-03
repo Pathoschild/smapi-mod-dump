@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/StardewProfitCalculator.git
+
+mods:
+   Profit Calculator
+
+latest commit:
+   commit 72c6dec40e39cb4ff3777dcf3d17d6beaa34c0de
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Tue Jan 29 11:20:40 2019 -0500
+   
+       Added nexus and spacechase0 ID
+   
