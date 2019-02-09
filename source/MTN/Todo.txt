@@ -1,0 +1,24 @@
+The MTN2 Road Map:
+
+Once all of this is done, MTN2 will be out of Alpha and in Beta.
+
+[X] Base Rewrite
+
+[ ] Implement Custom Farmhouse
+[ ] Implement Custom Greenhouse
+- [ ] Implement Ability to adjust inner greenhouse map
+[ ] Implement Stand-alone custom maps (non-farm maps)
+- [ ] Implement user ability to turn stand-alone off/on.
+[ ] Implement Map overrides
+[ ] Implement "Inject" Method for custom maps [Place between two canon maps]
+[ ] Implement Spawn Rules: Ores
+[ ] Implement Spawn Rules: Resource
+[ ] Implement Spawn Rules: Foraging
+[ ] Implement Custom Logic (DLL support)
+[ ] Implement Multi-Farm Maps
+[ ] Implement Monster Spawn Pool
+
+[ ] Implement "Mod House"
+- [ ] Implement Ability to change exterior farmhouse look
+- [ ] Implement Ability to change exterior greenhouse look
+- [ ] Implement Ability to change the internal greenhouse map.

@@ -1,277 +1,202 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using StardewValley;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewValley;
 using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
+using SObject = StardewValley.Object;
 
 namespace OmniFarm
 {
-    public class OmniFarm : Mod
+    public class OmniFarm : Mod, IAssetLoader
     {
-        public class OmniFarmConfig
-        {
-            private List<Vector2> mineLocations = new List<Vector2>();
-            private List<Vector2> grassLocations = new List<Vector2>();
+        /*********
+        ** Fields
+        *********/
+        private OmniFarmConfig Config;
 
-            public List<Tuple<Vector2, Vector2>> mineAreas { get; set; } = new List<Tuple<Vector2, Vector2>>();
-            public List<Tuple<Vector2, Vector2>> grassAreas { get; set; } = new List<Tuple<Vector2, Vector2>>();
 
-            public List<Vector2> stumpLocations { get; set; } = new List<Vector2>();
-            public List<Vector2> hollowLogLocations { get; set; } = new List<Vector2>();
-            public List<Vector2> meteoriteLocations { get; set; } = new List<Vector2>();
-            public List<Vector2> boulderLocations { get; set; } = new List<Vector2>();
-            public List<Vector2> largeRockLocations { get; set; } = new List<Vector2>();
-
-            public double oreChance { get; set; } = 0.05;
-            public double gemChance { get; set; } = 0.01;
-
-            public Vector2 WarpFromForest { get; set; } = new Vector2(32, 117);
-            public Vector2 WarpFromBackWood { get; set; } = new Vector2(-1, -1);
-            public Vector2 WarpFromBusStop { get; set; } = new Vector2(-1, -1);
-
-            public OmniFarmConfig() { }
-
-            public OmniFarmConfig Default()
-            {
-                //mine
-                mineAreas.Add(new Tuple<Vector2, Vector2>(new Vector2(89, 3), new Vector2(96, 7)));
-                mineAreas.Add(new Tuple<Vector2, Vector2>(new Vector2(97, 4), new Vector2(115, 10)));
-                mineAreas.Add(new Tuple<Vector2, Vector2>(new Vector2(91, 8), new Vector2(96, 8)));
-                mineAreas.Add(new Tuple<Vector2, Vector2>(new Vector2(92, 9), new Vector2(96, 9)));
-                mineAreas.Add(new Tuple<Vector2, Vector2>(new Vector2(93, 10), new Vector2(96, 10)));
-
-                //grass
-                grassAreas.Add(new Tuple<Vector2, Vector2>(new Vector2(99, 73), new Vector2(115, 84)));
-                grassAreas.Add(new Tuple<Vector2, Vector2>(new Vector2(99, 96), new Vector2(115, 108)));
-
-                //stump
-                List<Vector2> stumpTemp = new List<Vector2>();
-                AddVector2Grid(new Vector2(7, 24), new Vector2(7, 24), ref stumpTemp);
-                AddVector2Grid(new Vector2(9, 26), new Vector2(9, 26), ref stumpTemp);
-                AddVector2Grid(new Vector2(13, 27), new Vector2(13, 27), ref stumpTemp);
-                stumpLocations = stumpTemp;
-
-                //hollow log
-                List<Vector2> hollowLogTemp = new List<Vector2>();
-                AddVector2Grid(new Vector2(3, 23), new Vector2(3, 23), ref hollowLogTemp);
-                AddVector2Grid(new Vector2(4, 26), new Vector2(4, 26), ref hollowLogTemp);
-                AddVector2Grid(new Vector2(18, 28), new Vector2(18, 28), ref hollowLogTemp);
-                hollowLogLocations = hollowLogTemp;
-
-                //meterorite
-
-                //boulder
-
-                //large rock
-
-                return this;
-            }
-
-            public List<Vector2> getMineLocations()
-            {
-                mineLocations.Clear();
-                foreach (Tuple<Vector2, Vector2> T in mineAreas)
-                {
-                    AddVector2Grid(T.Item1, T.Item2, ref mineLocations);
-                }
-                return mineLocations;
-            }
-
-            public List<Vector2> getGrassLocations()
-            {
-                grassLocations.Clear();
-                foreach (Tuple<Vector2, Vector2> T in grassAreas)
-                {
-                    AddVector2Grid(T.Item1, T.Item2, ref grassLocations);
-                }
-                return grassLocations;
-            }
-        }
-
-        static public OmniFarmConfig ModConfig;
+        /*********
+        ** Public methods
+        *********/
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            ModConfig = helper.ReadJsonFile<OmniFarmConfig>("config.json");
-            if (ModConfig == null)
-            {
-                ModConfig = helper.ReadConfig<OmniFarmConfig>().Default();
-                helper.WriteConfig<OmniFarmConfig>(ModConfig);
-            }
+            Config = helper.ReadConfig<OmniFarmConfig>();
 
-            StardewModdingAPI.Events.TimeEvents.AfterDayStarted += AfterDayStarted;
-            
-            /*
-            StardewModdingAPI.Events.MineEvents.MineLevelChanged += (q, e) =>
-            {
-                if (ModConfig == null)
-                    return;
-
-                if ((Game1.currentLocation is MineShaft) == false)
-                    return;
-
-                List<Vector2> grassLocations = new List<Vector2>();
-                AddVector2Grid(new Vector2(0, 0), new Vector2(50, 50), ref grassLocations);
-                foreach (Vector2 tile in grassLocations)
-                {
-                    StardewValley.Object check;
-                    if (Game1.currentLocation.objects.TryGetValue(tile, out check))
-                    {
-                        Log.Debug(check.name);
-                        Log.Debug(check.bigCraftable);
-                        Log.Debug(check.isOn);
-                        Log.Debug(check.canBeGrabbed);
-                        Log.Debug(check.canBeSetDown);
-                        Log.Debug(check.parentSheetIndex);
-                        Log.Debug(check.getHealth());
-                        Log.Debug(check.fragility);
-                        Log.Debug(check.type);
-                        Log.Debug(check.GetType());
-                    }
-                }
-            };
-            */
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
         }
 
-        static void AfterDayStarted(object sender, EventArgs e)
+        /// <summary>Get whether this instance can load the initial version of the given asset.</summary>
+        /// <param name="asset">Basic metadata about the asset being loaded.</param>
+        public bool CanLoad<T>(IAssetInfo asset)
         {
-            ChangeWarpPoints();
+            return
+                asset.AssetNameEquals(@"Maps\Farm_Combat")
+                || (Config.useOptionalCave && asset.AssetNameEquals(@"Maps\FarmCave"));
+        }
 
-            if (ModConfig == null)
-                return;
+        /// <summary>Load a matched asset.</summary>
+        /// <param name="asset">Basic metadata about the asset being loaded.</param>
+        public T Load<T>(IAssetInfo asset)
+        {
+            if (asset.AssetNameEquals(@"Maps\Farm_Combat"))
+                return this.Helper.Content.Load<T>(@"assets\Farm_Combat.tbin");
+            if (asset.AssetNameEquals(@"Maps\FarmCave"))
+                return this.Helper.Content.Load<T>(@"assets\FarmCave.tbin");
+            throw new NotSupportedException($"Unknown asset {asset.AssetName}");
+        }
 
-            foreach (GameLocation GL in Game1.locations)
+
+        /*********
+        ** Private methods
+        *********/
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnDayStarted(object sender, EventArgs e)
+        {
+            if (Game1.whichFarm == Farm.combat_layout)
             {
-                if (GL is Farm)
+                ChangeWarpPoints();
+
+                foreach (GameLocation GL in Game1.locations)
                 {
-                    Farm ourFarm = (Farm)GL;
-                    foreach (Vector2 tile in ModConfig.stumpLocations)
+                    if (GL is Farm ourFarm)
                     {
-                        ourFarm.terrainFeatures.Remove(tile);
-                        ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.stumpIndex, 2, 2, tile);
-                    }
-
-                    foreach (Vector2 tile in ModConfig.hollowLogLocations)
-                    {
-                        ourFarm.terrainFeatures.Remove(tile);
-                        ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.hollowLogIndex, 2, 2, tile);
-                    }
-
-                    foreach (Vector2 tile in ModConfig.meteoriteLocations)
-                    {
-                        ourFarm.terrainFeatures.Remove(tile);
-                        ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.meteoriteIndex, 2, 2, tile);
-                    }
-
-                    foreach (Vector2 tile in ModConfig.boulderLocations)
-                    {
-                        ourFarm.terrainFeatures.Remove(tile);
-                        ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.boulderIndex, 2, 2, tile);
-                    }
-
-                    foreach (Vector2 tile in ModConfig.largeRockLocations)
-                    {
-                        ourFarm.terrainFeatures.Remove(tile);
-                        ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.mineRock1Index, 2, 2, tile);
-                    }
-                    
-                    //grass
-                    if (Game1.IsWinter == false)
-                        foreach (Vector2 tile in ModConfig.getGrassLocations())
+                        foreach (Vector2 tile in Config.stumpLocations)
                         {
-                            ourFarm.terrainFeatures.Remove(tile);
-                            ourFarm.terrainFeatures.Add(tile, new Grass(Grass.springGrass, 4));
+                            ClearResourceClump(ourFarm.resourceClumps, tile);
+                            ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.stumpIndex, 2, 2, tile);
                         }
-                    
-                    //mine
-                    Random randomGen = new Random();
-                    foreach (Vector2 tile in ModConfig.getMineLocations())
-                    {
-                        if (ourFarm.isObjectAt((int)tile.X, (int)tile.Y))
-                            continue;
 
-                        //calculate ore spawn
-                        if (Game1.player.hasSkullKey)
+                        foreach (Vector2 tile in Config.hollowLogLocations)
                         {
-                            //5% chance of spawn ore
-                            if (randomGen.NextDouble() < ModConfig.oreChance)
-                            {
-                                addRandomOre(ref ourFarm, ref randomGen, 4, tile);
-                                continue;
-                            }
+                            ClearResourceClump(ourFarm.resourceClumps, tile);
+                            ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.hollowLogIndex, 2, 2, tile);
                         }
-                        else
+
+                        foreach (Vector2 tile in Config.meteoriteLocations)
                         {
-                            //check mine level
-                            if (Game1.player.deepestMineLevel > 80) //gold level
+                            ClearResourceClump(ourFarm.resourceClumps, tile);
+                            ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.meteoriteIndex, 2, 2, tile);
+                        }
+
+                        foreach (Vector2 tile in Config.boulderLocations)
+                        {
+                            ClearResourceClump(ourFarm.resourceClumps, tile);
+                            ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.boulderIndex, 2, 2, tile);
+                        }
+
+                        foreach (Vector2 tile in Config.largeRockLocations)
+                        {
+                            ClearResourceClump(ourFarm.resourceClumps, tile);
+                            ourFarm.addResourceClumpAndRemoveUnderlyingTerrain(ResourceClump.mineRock1Index, 2, 2, tile);
+                        }
+
+                        //grass
+                        if (Game1.IsWinter == false)
+                            foreach (Vector2 tile in Config.getGrassLocations())
                             {
-                                if (randomGen.NextDouble() < ModConfig.oreChance)
+                                if (ourFarm.terrainFeatures.TryGetValue(tile, out TerrainFeature check))
                                 {
-                                    addRandomOre(ref ourFarm, ref randomGen, 3, tile);
-                                    continue;
+                                    if (check is Grass grass)
+                                        grass.numberOfWeeds.Value = Config.GrassGrowth_1forsparse_4forFull;
                                 }
+                                else
+                                    ourFarm.terrainFeatures.Add(tile, new Grass(Grass.springGrass, Config.GrassGrowth_1forsparse_4forFull));
                             }
-                            else if (Game1.player.deepestMineLevel > 40) //iron level
+
+                        //mine
+                        Random randomGen = new Random();
+                        foreach (Vector2 tile in Config.getMineLocations())
+                        {
+                            if (ourFarm.isObjectAt((int)tile.X, (int)tile.Y))
+                                continue;
+
+                            //calculate ore spawn
+                            if (Game1.player.hasSkullKey)
                             {
-                                if (randomGen.NextDouble() < ModConfig.oreChance)
+                                //5% chance of spawn ore
+                                if (randomGen.NextDouble() < Config.oreChance)
                                 {
-                                    addRandomOre(ref ourFarm, ref randomGen, 2, tile);
+                                    addRandomOre(ref ourFarm, ref randomGen, 4, tile);
                                     continue;
                                 }
                             }
                             else
                             {
-                                if (randomGen.NextDouble() < ModConfig.oreChance)
+                                //check mine level
+                                if (Game1.player.deepestMineLevel > 80) //gold level
                                 {
-                                    addRandomOre(ref ourFarm, ref randomGen, 1, tile);
-                                    continue;
+                                    if (randomGen.NextDouble() < Config.oreChance)
+                                    {
+                                        addRandomOre(ref ourFarm, ref randomGen, 3, tile);
+                                        continue;
+                                    }
                                 }
-                            }
-                        }
-
-                        //if ore doesnt spawn then calculate gem spawn
-                        //1% to spawn gem
-                        if (randomGen.NextDouble() < ModConfig.gemChance)
-                        {
-                            //0.1% chance of getting mystic stone
-                            if (Game1.player.hasSkullKey)
-                                if (randomGen.Next(0, 100) < 1)
+                                else if (Game1.player.deepestMineLevel > 40) //iron level
                                 {
-                                    ourFarm.setObject(tile, createOre("mysticStone", tile));
-                                    continue;
+                                    if (randomGen.NextDouble() < Config.oreChance)
+                                    {
+                                        addRandomOre(ref ourFarm, ref randomGen, 2, tile);
+                                        continue;
+                                    }
                                 }
                                 else
-                                if (randomGen.Next(0, 500) < 1)
                                 {
-                                    ourFarm.setObject(tile, createOre("mysticStone", tile));
-                                    continue;
+                                    if (randomGen.NextDouble() < Config.oreChance)
+                                    {
+                                        addRandomOre(ref ourFarm, ref randomGen, 1, tile);
+                                        continue;
+                                    }
                                 }
-
-                            switch (randomGen.Next(0, 100) % 8)
-                            {
-                                case 0: ourFarm.setObject(tile, createOre("gemStone", tile)); break;
-                                case 1: ourFarm.setObject(tile, createOre("diamond", tile)); break;
-                                case 2: ourFarm.setObject(tile, createOre("ruby", tile)); break;
-                                case 3: ourFarm.setObject(tile, createOre("jade", tile)); break;
-                                case 4: ourFarm.setObject(tile, createOre("amethyst", tile)); break;
-                                case 5: ourFarm.setObject(tile, createOre("topaz", tile)); break;
-                                case 6: ourFarm.setObject(tile, createOre("emerald", tile)); break;
-                                case 7: ourFarm.setObject(tile, createOre("aquamarine", tile)); break;
-                                default: break;
                             }
-                            continue;
+
+                            //if ore doesn't spawn then calculate gem spawn
+                            //1% to spawn gem
+                            if (randomGen.NextDouble() < Config.gemChance)
+                            {
+                                //0.1% chance of getting mystic stone
+                                if (Game1.player.hasSkullKey)
+                                    if (randomGen.Next(0, 100) < 1)
+                                    {
+                                        ourFarm.setObject(tile, createOre("mysticStone", tile));
+                                        continue;
+                                    }
+                                    else
+                                    if (randomGen.Next(0, 500) < 1)
+                                    {
+                                        ourFarm.setObject(tile, createOre("mysticStone", tile));
+                                        continue;
+                                    }
+
+                                switch (randomGen.Next(0, 100) % 8)
+                                {
+                                    case 0: ourFarm.setObject(tile, createOre("gemStone", tile)); break;
+                                    case 1: ourFarm.setObject(tile, createOre("diamond", tile)); break;
+                                    case 2: ourFarm.setObject(tile, createOre("ruby", tile)); break;
+                                    case 3: ourFarm.setObject(tile, createOre("jade", tile)); break;
+                                    case 4: ourFarm.setObject(tile, createOre("amethyst", tile)); break;
+                                    case 5: ourFarm.setObject(tile, createOre("topaz", tile)); break;
+                                    case 6: ourFarm.setObject(tile, createOre("emerald", tile)); break;
+                                    case 7: ourFarm.setObject(tile, createOre("aquamarine", tile)); break;
+                                }
+                                continue;
+                            }
                         }
                     }
                 }
             }
         }
-        
-        static void ChangeWarpPoints()
+
+        private void ChangeWarpPoints()
         {
             foreach (GameLocation GL in Game1.locations)
             {
-                if (ModConfig.WarpFromForest.X != -1)
+                if (Config.WarpFromForest.X != -1)
                 {
                     if (GL is Forest)
                     {
@@ -279,14 +204,14 @@ namespace OmniFarm
                         {
                             if (w.TargetName.ToLower().Contains("farm"))
                             {
-                                w.TargetX = (int)ModConfig.WarpFromForest.X;
-                                w.TargetY = (int)ModConfig.WarpFromForest.Y;
+                                w.TargetX = (int)Config.WarpFromForest.X;
+                                w.TargetY = (int)Config.WarpFromForest.Y;
                             }
                         }
                     }
                 }
-                    
-                if (ModConfig.WarpFromBackWood.X != -1)
+
+                if (Config.WarpFromBackWood.X != -1)
                 {
                     if (GL.Name.ToLower().Contains("backwood"))
                     {
@@ -294,14 +219,14 @@ namespace OmniFarm
                         {
                             if (w.TargetName.ToLower().Contains("farm"))
                             {
-                                w.TargetX = (int)ModConfig.WarpFromBackWood.X;
-                                w.TargetY = (int)ModConfig.WarpFromBackWood.Y;
+                                w.TargetX = (int)Config.WarpFromBackWood.X;
+                                w.TargetY = (int)Config.WarpFromBackWood.Y;
                             }
                         }
                     }
                 }
 
-                if (ModConfig.WarpFromBusStop.X != -1)
+                if (Config.WarpFromBusStop.X != -1)
                 {
                     if (GL.Name.ToLower().Contains("busstop"))
                     {
@@ -309,16 +234,16 @@ namespace OmniFarm
                         {
                             if (w.TargetName.ToLower().Contains("farm"))
                             {
-                                w.TargetX = (int)ModConfig.WarpFromBusStop.X;
-                                w.TargetY = (int)ModConfig.WarpFromBusStop.Y;
+                                w.TargetX = (int)Config.WarpFromBusStop.X;
+                                w.TargetY = (int)Config.WarpFromBusStop.Y;
                             }
                         }
                     }
                 }
             }
         }
-        
-        static void addRandomOre(ref Farm input, ref Random randomGen, int highestOreLevel, Vector2 tileLocation)
+
+        private void addRandomOre(ref Farm input, ref Random randomGen, int highestOreLevel, Vector2 tileLocation)
         {
             switch (randomGen.Next(0, 100) % highestOreLevel)
             {
@@ -326,57 +251,40 @@ namespace OmniFarm
                 case 1: input.setObject(tileLocation, createOre("ironStone", tileLocation)); break;
                 case 2: input.setObject(tileLocation, createOre("goldStone", tileLocation)); break;
                 case 3: input.setObject(tileLocation, createOre("iridiumStone", tileLocation)); break;
-                default: break;
             }
         }
 
-        static StardewValley.Object createOre(string oreName, Vector2 tileLocation)
+        private SObject createOre(string oreName, Vector2 tileLocation)
         {
             switch (oreName)
             {
-                case "mysticStone": return new StardewValley.Object(tileLocation, 46, "Stone", true, false, false, false);
-                case "gemStone": return new StardewValley.Object(tileLocation, (Game1.random.Next(7) + 1) * 2, "Stone", true, false, false, false);
-                case "diamond": return new StardewValley.Object(tileLocation, 2, "Stone", true, false, false, false);
-                case "ruby": return new StardewValley.Object(tileLocation, 4, "Stone", true, false, false, false);
-                case "jade": return new StardewValley.Object(tileLocation, 6, "Stone", true, false, false, false);
-                case "amethyst": return new StardewValley.Object(tileLocation, 8, "Stone", true, false, false, false);
-                case "topaz": return new StardewValley.Object(tileLocation, 10, "Stone", true, false, false, false);
-                case "emerald": return new StardewValley.Object(tileLocation, 12, "Stone", true, false, false, false);
-                case "aquamarine": return new StardewValley.Object(tileLocation, 14, "Stone", true, false, false, false);
-                case "iridiumStone": return new StardewValley.Object(tileLocation, 765, 1);
-                case "goldStone": return new StardewValley.Object(tileLocation, 764, 1);
-                case "ironStone": return new StardewValley.Object(tileLocation, 290, 1);
-                case "copperStone": return new StardewValley.Object(tileLocation, 751, 1);
+                case "mysticStone": return new SObject(tileLocation, 46, "Stone", true, false, false, false);
+                case "gemStone": return new SObject(tileLocation, (Game1.random.Next(7) + 1) * 2, "Stone", true, false, false, false);
+                case "diamond": return new SObject(tileLocation, 2, "Stone", true, false, false, false);
+                case "ruby": return new SObject(tileLocation, 4, "Stone", true, false, false, false);
+                case "jade": return new SObject(tileLocation, 6, "Stone", true, false, false, false);
+                case "amethyst": return new SObject(tileLocation, 8, "Stone", true, false, false, false);
+                case "topaz": return new SObject(tileLocation, 10, "Stone", true, false, false, false);
+                case "emerald": return new SObject(tileLocation, 12, "Stone", true, false, false, false);
+                case "aquamarine": return new SObject(tileLocation, 14, "Stone", true, false, false, false);
+                case "iridiumStone": return new SObject(tileLocation, 765, 1);
+                case "goldStone": return new SObject(tileLocation, 764, 1);
+                case "ironStone": return new SObject(tileLocation, 290, 1);
+                case "copperStone": return new SObject(tileLocation, 751, 1);
                 default: return null;
             }
         }
-        
-        static void ClearKey(ref SerializableDictionary<Vector2, TerrainFeature> input, Vector2 KeyToClear)
-        {
-            if (input.Remove(KeyToClear))
-            {
-                ClearKey(ref input, KeyToClear);
-            }
-        }
 
-        static void AddVector2Grid(Vector2 TopLeftTile, Vector2 BottomRightTile, ref List<Vector2> grid)
+        private void ClearResourceClump(IList<ResourceClump> input, Vector2 tile)
         {
-            if (TopLeftTile == BottomRightTile)
+            for (int i = 0; i < input.Count; i++)
             {
-                grid.Add(TopLeftTile);
-                return;
-            }
-
-            int i = (int)TopLeftTile.X;
-            while (i <= (int)BottomRightTile.X)
-            {
-                int j = (int)TopLeftTile.Y;
-                while (j <= (int)BottomRightTile.Y)
+                ResourceClump RC = input[i];
+                if (RC.tile.Value == tile)
                 {
-                    grid.Add(new Vector2(i, j));
-                    j++;
+                    input.RemoveAt(i);
+                    i--;
                 }
-                i++;
             }
         }
     }

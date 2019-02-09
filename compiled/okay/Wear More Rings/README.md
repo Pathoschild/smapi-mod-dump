@@ -13,7 +13,8 @@ This mod requires the following mods to be installed:
 Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 * The mod changes the network protocol. So when playing multiplayer, all players must have this mod installed.
-* While rings from the [MoreRings](https://www.nexusmods.com/stardewvalley/mods/2054) and [Giant Crop Ring](https://www.nexusmods.com/stardewvalley/mods/1182) mods can be equipped in the additional slots, their effects won't be applied.
+* While rings from the [Giant Crop Ring](https://www.nexusmods.com/stardewvalley/mods/1182) mod can be equipped in the additional slots, their effects won't be applied. Rings from the [MoreRings](https://www.nexusmods.com/stardewvalley/mods/2054) mod, v1.0.3+ should work though.
+* The additional ring slots are invisible when the [Bigger Backpack](https://www.nexusmods.com/stardewvalley/mods/1845) mod has been installed. Despite being invisible, they can still be clicked to (un)equip rings.
 
 ## Changes
 #### 1.0:
@@ -30,3 +31,8 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 #### 1.3:
 * Fix exception during startup on windows.
+
+#### 1.4:
+* Fixed old rings not working & disappearing on save&reload (hopefully).
+
+

@@ -54,7 +54,7 @@ namespace StardewHack.WearMoreRings
         
         private int getWhich(Ring r) {
             if (r==null) return -1;
-            return r.ParentSheetIndex;
+            return r.indexInTileSheet;
         }
     }
     #endregion Data Classes
@@ -174,7 +174,7 @@ namespace StardewHack.WearMoreRings
         
         public static int CountWearingRing(Farmer f, int id) {
             bool IsRing(Ring r) {
-                return r != null && r.parentSheetIndex == id;
+                return r != null && r.indexInTileSheet == id;
             }
         
             ActualRings ar = actualdata.GetValue(f, FarmerNotFound);

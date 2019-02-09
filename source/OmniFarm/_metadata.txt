@@ -5,9 +5,12 @@ mods:
    OmniFarm
 
 latest commit:
-   commit 3c72decef3249207509e9581065a907fd22f5a59
+   commit 20b74fac92fa5c2efd11bc2635442850cf178431
+   Merge: e06ccb8 2bad337
    Author: PhthaloBlue <buiphuonglamvn@gmail.com>
-   Date:   Mon May 14 20:24:50 2018 -0700
+   Date:   Mon Feb 4 22:07:44 2019 -0800
    
-       typo
+       Merge pull request #6 from Pathoschild/update-code
+       
+       Update for 2.0.4 release
    

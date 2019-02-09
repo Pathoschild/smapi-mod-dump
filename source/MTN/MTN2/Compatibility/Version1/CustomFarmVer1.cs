@@ -64,7 +64,19 @@ namespace MTN2.Compatibility {
         public static void Convert(CustomFarm farm, CustomFarmVer1 oldFarm) {
             farm.ID = oldFarm.ID;
             farm.Name = oldFarm.Name;
-            farm.Description = oldFarm.Description;
+
+            string[] description = oldFarm.Description.Split('_');
+            if (description.Length == 0) {
+                farm.DescriptionName = "MissingName";
+                farm.DescriptionDetails = "MissingDetails";
+            } else if (description.Length == 1) {
+                farm.DescriptionName = "MissingName";
+                farm.DescriptionDetails = description[0];
+            } else {
+                farm.DescriptionName = description[0];
+                farm.DescriptionDetails = description[1];
+            }
+
             farm.Folder = oldFarm.Folder;
             farm.Icon = oldFarm.Icon;
             farm.Version = oldFarm.version;

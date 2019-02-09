@@ -1,7 +1,7 @@
 ﻿{
    "Name": "Farm Type Manager",
    "Author": "Esca",
-   "Version": "1.2",
+   "Version": "1.3",
    "Description": "Allows custom spawning of content from each farm type, such as ore and forage",
    "UniqueID": "Esca.FarmTypeManager",
    "EntryDll": "FarmTypeManager.dll",

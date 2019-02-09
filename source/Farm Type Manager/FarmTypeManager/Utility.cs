@@ -10,7 +10,7 @@ using StardewValley;
 namespace FarmTypeManager
 {
     /// <summary>Methods used repeatedly by other sections of this mod, e.g. to locate tiles.</summary>
-    static class Utility
+    public static class Utility
     {
         /// <summary>Generates a list of all valid tiles for object spawning in the provided SpawnArea.</summary>
         /// <param name="area">A SpawnArea listing an in-game map name and the valid regions/terrain within it that may be valid spawn points.</param>
@@ -489,6 +489,355 @@ namespace FarmTypeManager
             return IDs;
         }
 
+        /// <summary>Checks whether objects should be spawned in a given SpawnArea based on its ExtraConditions settings.</summary>
+        /// <param name="area">The SpawnArea to be checked.</param>
+        /// <returns>True if objects are allowed to spawn. False if any extra conditions should prevent spawning.</returns>
+        public static bool CheckExtraConditions(SpawnArea area)
+        {
+            //check years
+            if (area.ExtraConditions.Years != null && area.ExtraConditions.Years.Length > 0)
+            {
+                bool validYear = false;
+
+                foreach (string year in area.ExtraConditions.Years)
+                {
+                    try //watch for errors related to string parsing
+                    {
+                        if (year.Equals("All", StringComparison.OrdinalIgnoreCase) || year.Equals("Any", StringComparison.OrdinalIgnoreCase)) //if "all" or "any" is listed
+                        {
+                            validYear = true;
+                            break; //skip the rest of the "day" checks
+                        }
+                        else if (year.Contains("+")) //contains a plus, so parse it as a single year & any years after it, e.g. "2+"
+                        {
+                            string[] split = year.Split('+'); //split into separate strings around the plus symbol
+                            int minYear = Int32.Parse(split[0].Trim()); //get the number to the left of the plus (trim whitespace) 
+
+                            if (minYear <= Game1.year) //if the current year is within the specified range
+                            {
+                                validYear = true;
+                                break; //skip the rest of the "year" checks
+                            }
+                        }
+                        else if (year.Contains("-")) //contains a delimiter, so parse it as a range of years, e.g. "1-10"
+                        {
+                            string[] split = year.Split('-'); //split into separate strings for each delimiter
+                            int minYear = Int32.Parse(split[0].Trim()); //get the first number (trim whitespace)
+                            int maxYear = Int32.Parse(split[1].Trim()); //get the second number (trim whitespace)
+
+                            if (minYear <= Game1.year && maxYear >= Game1.year) //if the current year is within the specified range
+                            {
+                                validYear = true;
+                                break; //skip the rest of the "year" checks
+                            }
+                        }
+                        else //parse as a single year, e.g. "1"
+                        {
+                            int yearNum = Int32.Parse(year.Trim()); //convert to a number
+
+                            if (yearNum == Game1.year) //if it matches the current year
+                            {
+                                validYear = true;
+                                break; //skip the rest of the "year" checks
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Monitor.Log($"Issue: This part of the extra condition \"Years\" for the {area.MapName} map isn't formatted correctly: \"{year}\"", LogLevel.Info);
+                    }
+                }
+
+                    if (validYear != true)
+                {
+                    return false;
+                }
+            }
+
+            //check seasons
+            if (area.ExtraConditions.Seasons != null && area.ExtraConditions.Seasons.Length > 0)
+            {
+                bool validSeason = false;
+
+                foreach (string season in area.ExtraConditions.Seasons)
+                {
+                    if (season.Equals("All", StringComparison.OrdinalIgnoreCase) || season.Equals("Any", StringComparison.OrdinalIgnoreCase)) //if "all" or "any" is listed
+                    {
+                        validSeason = true;
+                        break; //skip the rest of the "season" checks
+                    }
+                    else if (season.Equals(Game1.currentSeason, StringComparison.OrdinalIgnoreCase)) //if the current season is listed
+                    {
+                        validSeason = true;
+                        break; //skip the rest of the "season" checks
+                    }
+                }
+
+                if (validSeason != true) //if no valid listing for the current season was found
+                {
+                    return false; //prevent spawning
+                }
+            }
+
+            //check days
+            if (area.ExtraConditions.Days != null && area.ExtraConditions.Days.Length > 0)
+            {
+                bool validDay = false;
+
+                foreach (string day in area.ExtraConditions.Days)
+                {
+                    try //watch for errors related to string parsing
+                    {
+                        if (day.Equals("All", StringComparison.OrdinalIgnoreCase) || day.Equals("Any", StringComparison.OrdinalIgnoreCase)) //if "all" or "any" is listed
+                        {
+                            validDay = true;
+                            break; //skip the rest of the "day" checks
+                        }
+                        else if (day.Contains("+")) //contains a plus, so parse it as a single day & any days after it, e.g. "2+"
+                        {
+                            string[] split = day.Split('+'); //split into separate strings around the plus symbol
+                            int minDay = Int32.Parse(split[0].Trim()); //get the number to the left of the plus (trim whitespace) 
+
+                            if (minDay <= Game1.dayOfMonth) //if the current day is within the specified range
+                            {
+                                validDay = true;
+                                break; //skip the rest of the "day" checks
+                            }
+                        }
+                        else if (day.Contains("-")) //contains a delimiter, so parse it as a range of dates, e.g. "1-10"
+                        {
+                            string[] split = day.Split('-'); //split into separate strings for each delimiter
+                            int minDay = Int32.Parse(split[0].Trim()); //get the first number (trim whitespace)
+                            int maxDay = Int32.Parse(split[1].Trim()); //get the second number (trim whitespace)
+
+                            if (minDay <= Game1.dayOfMonth && maxDay >= Game1.dayOfMonth) //if the current day is within the specified range
+                            {
+                                validDay = true;
+                                break; //skip the rest of the "day" checks
+                            }
+                        }
+                        else //parse as a single date, e.g. "1" or "25"
+                        {
+                            int dayNum = Int32.Parse(day.Trim()); //convert to a number
+
+                            if (dayNum == Game1.dayOfMonth) //if it matches the current day
+                            {
+                                validDay = true;
+                                break; //skip the rest of the "day" checks
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Monitor.Log($"Issue: This part of the extra condition \"Days\" for the {area.MapName} map isn't formatted correctly: \"{day}\"", LogLevel.Info);
+                    }
+                }
+
+                if (validDay != true) //if no valid listing for the current day was found
+                {
+                    return false; //prevent spawning
+                }
+            }
+
+            //check yesterday's weather
+            if (area.ExtraConditions.WeatherYesterday != null && area.ExtraConditions.WeatherYesterday.Length > 0)
+            {
+                bool validWeather = false;
+
+                foreach (string weather in area.ExtraConditions.WeatherYesterday) //for each listed weather name
+                {
+                    if (weather.Equals("All", StringComparison.OrdinalIgnoreCase) || weather.Equals("Any", StringComparison.OrdinalIgnoreCase)) //if "all" or "any" is listed
+                    {
+                        validWeather = true;
+                        break; //skip the rest of these checks
+                    }
+
+                    switch (Config.Internal_Save_Data.WeatherForYesterday) //compare to yesterday's weather
+                    {
+                        case Utility.Weather.Sunny:
+                        case Utility.Weather.Festival: //festival and wedding = sunny, as far as this mod is concerned
+                        case Utility.Weather.Wedding:
+                            if (weather.Equals("Sun", StringComparison.OrdinalIgnoreCase) || weather.Equals("Sunny", StringComparison.OrdinalIgnoreCase) || weather.Equals("Clear", StringComparison.OrdinalIgnoreCase))
+                            {
+                                validWeather = true;
+                            }
+                            break;
+                        case Utility.Weather.Rain:
+                            if (weather.Equals("Rain", StringComparison.OrdinalIgnoreCase) || weather.Equals("Rainy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Raining", StringComparison.OrdinalIgnoreCase))
+                            {
+                                validWeather = true;
+                            }
+                            break;
+                        case Utility.Weather.Debris:
+                            if (weather.Equals("Wind", StringComparison.OrdinalIgnoreCase) || weather.Equals("Windy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Debris", StringComparison.OrdinalIgnoreCase))
+                            {
+                                validWeather = true;
+                            }
+                            break;
+                        case Utility.Weather.Lightning:
+                            if (weather.Equals("Storm", StringComparison.OrdinalIgnoreCase) || weather.Equals("Stormy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Storming", StringComparison.OrdinalIgnoreCase) || weather.Equals("Lightning", StringComparison.OrdinalIgnoreCase))
+                            {
+                                validWeather = true;
+                            }
+                            break;
+                        case Utility.Weather.Snow:
+                            if (weather.Equals("Snow", StringComparison.OrdinalIgnoreCase) || weather.Equals("Snowy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Snowing", StringComparison.OrdinalIgnoreCase))
+                            {
+                                validWeather = true;
+                            }
+                            break;
+                    }
+
+                    if (validWeather == true) //if a valid weather condition was listed
+                    {
+                        break; //skip the rest of these checks
+                    }
+                }
+
+                if (validWeather != true) //if no valid listing for yesterday's weather was found
+                {
+                    return false; //prevent spawning
+                }
+            }
+
+            //check today's weather
+            if (area.ExtraConditions.WeatherToday != null && area.ExtraConditions.WeatherToday.Length > 0)
+            {
+                bool validWeather = false;
+
+                foreach (string weather in area.ExtraConditions.WeatherToday) //for each listed weather name
+                {
+                    if (weather.Equals("All", StringComparison.OrdinalIgnoreCase) || weather.Equals("Any", StringComparison.OrdinalIgnoreCase)) //if "all" or "any" is listed
+                    {
+                        validWeather = true;
+                        break; //skip the rest of these checks
+                    }
+
+                    switch (Utility.WeatherForToday()) //compare to today's weather
+                    {
+                        case Utility.Weather.Sunny:
+                        case Utility.Weather.Festival: //festival and wedding = sunny, as far as this mod is concerned
+                        case Utility.Weather.Wedding:
+                            if (weather.Equals("Sun", StringComparison.OrdinalIgnoreCase) || weather.Equals("Sunny", StringComparison.OrdinalIgnoreCase) || weather.Equals("Clear", StringComparison.OrdinalIgnoreCase))
+                            {
+                                validWeather = true;
+                            }
+                            break;
+                        case Utility.Weather.Rain:
+                            if (weather.Equals("Rain", StringComparison.OrdinalIgnoreCase) || weather.Equals("Rainy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Raining", StringComparison.OrdinalIgnoreCase))
+                            {
+                                validWeather = true;
+                            }
+                            break;
+                        case Utility.Weather.Debris:
+                            if (weather.Equals("Wind", StringComparison.OrdinalIgnoreCase) || weather.Equals("Windy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Debris", StringComparison.OrdinalIgnoreCase))
+                            {
+                                validWeather = true;
+                            }
+                            break;
+                        case Utility.Weather.Lightning:
+                            if (weather.Equals("Storm", StringComparison.OrdinalIgnoreCase) || weather.Equals("Stormy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Storming", StringComparison.OrdinalIgnoreCase) || weather.Equals("Lightning", StringComparison.OrdinalIgnoreCase))
+                            {
+                                validWeather = true;
+                            }
+                            break;
+                        case Utility.Weather.Snow:
+                            if (weather.Equals("Snow", StringComparison.OrdinalIgnoreCase) || weather.Equals("Snowy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Snowing", StringComparison.OrdinalIgnoreCase))
+                            {
+                                validWeather = true;
+                            }
+                            break;
+                    }
+                    if (validWeather == true) //if a valid weather condition was listed
+                    {
+                        break; //skip the rest of these checks
+                    }
+                }
+
+                if (validWeather != true) //if no valid listing for today's weather was found
+                {
+                    return false; //prevent spawning
+                }
+            }
+
+            //check tomorrow's weather
+            if (area.ExtraConditions.WeatherTomorrow != null && area.ExtraConditions.WeatherTomorrow.Length > 0)
+            {
+                bool validWeather = false;
+
+                foreach (string weather in area.ExtraConditions.WeatherTomorrow) //for each listed weather name
+                {
+                    if (weather.Equals("All", StringComparison.OrdinalIgnoreCase) || weather.Equals("Any", StringComparison.OrdinalIgnoreCase)) //if "all" or "any" is listed
+                    {
+                        validWeather = true;
+                        break; //skip the rest of these checks
+                    }
+
+                    switch (Game1.weatherForTomorrow) //compare to tomorrow's weather
+                    {
+                        case (int)Utility.Weather.Sunny:
+                        case (int)Utility.Weather.Festival: //festival and wedding = sunny, as far as this mod is concerned
+                        case (int)Utility.Weather.Wedding:
+                            if (weather.Equals("Sun", StringComparison.OrdinalIgnoreCase) || weather.Equals("Sunny", StringComparison.OrdinalIgnoreCase) || weather.Equals("Clear", StringComparison.OrdinalIgnoreCase))
+                            {
+                                validWeather = true;
+                            }
+                            break;
+                        case (int)Utility.Weather.Rain:
+                            if (weather.Equals("Rain", StringComparison.OrdinalIgnoreCase) || weather.Equals("Rainy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Raining", StringComparison.OrdinalIgnoreCase))
+                            {
+                                validWeather = true;
+                            }
+                            break;
+                        case (int)Utility.Weather.Debris:
+                            if (weather.Equals("Wind", StringComparison.OrdinalIgnoreCase) || weather.Equals("Windy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Debris", StringComparison.OrdinalIgnoreCase))
+                            {
+                                validWeather = true;
+                            }
+                            break;
+                        case (int)Utility.Weather.Lightning:
+                            if (weather.Equals("Storm", StringComparison.OrdinalIgnoreCase) || weather.Equals("Stormy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Storming", StringComparison.OrdinalIgnoreCase) || weather.Equals("Lightning", StringComparison.OrdinalIgnoreCase))
+                            {
+                                validWeather = true;
+                            }
+                            break;
+                        case (int)Utility.Weather.Snow:
+                            if (weather.Equals("Snow", StringComparison.OrdinalIgnoreCase) || weather.Equals("Snowy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Snowing", StringComparison.OrdinalIgnoreCase))
+                            {
+                                validWeather = true;
+                            }
+                            break;
+                    }
+
+                    if (validWeather == true) //if a valid weather condition was listed
+                    {
+                        break; //skip the rest of these checks
+                    }
+                }
+
+                if (validWeather != true) //if no valid listing for yesterday's weather was found
+                {
+                    return false; //prevent spawning
+                }
+            }
+
+
+            //check number of spawns (NOTE: it's important that this is the last condition checked, because otherwise it might count down while not actually spawning (blocked by another condition)
+            if (area.ExtraConditions.LimitedNumberOfSpawns != null)
+            {
+                if (area.ExtraConditions.LimitedNumberOfSpawns > 0) //still has spawns remaining
+                {
+                    area.ExtraConditions.LimitedNumberOfSpawns--; //decrement (note that it's necessary to save this update to the config file; this is done elsewhere)
+                }
+                else //no spawns remaining
+                {
+                    return false; //prevent spawning
+                }
+            }
+
+            return true; //all extra conditions allow for spawning
+        }
+
         /// <summary>Encapsulates IMonitor.Log() for this mod's static classes. Must be given an IMonitor in the ModEntry class to produce output.</summary>
         public static class Monitor
         {
@@ -514,10 +863,29 @@ namespace FarmTypeManager
             }
         }
 
-        /// <summary>Enumerated list of player skills, in the order used by Stardew's internal code (e.g. Farmer.cs).</summary>
-        public enum Skills { Farming, Fishing, Foraging, Mining, Combat, Luck }
+        /// <summary>Parses today's weather from several booleans into a "Weather" enum.</summary>
+        /// <returns>A "Weather" enum describing today's weather.</returns>
+        public static Weather WeatherForToday()
+        {
+            if (Game1.isLightning)
+                return Weather.Lightning; //note this has to be completed before "isRaining", because both are true during storms
+            else if (Game1.isRaining)
+                return Weather.Rain;
+            else if (Game1.isSnowing)
+                return Weather.Snow;
+            else if (Game1.isDebrisWeather)
+                return Weather.Debris;
+            else
+                return Weather.Sunny;
+        }
 
         /// <summary>Data contained in the per-character configuration file, including various mod settings.</summary>
         public static FarmConfig Config { get; set; } = null;
+
+        /// <summary>Enumerated list of player skills, in the order used by Stardew's internal code (e.g. Farmer.cs).</summary>
+        public enum Skills { Farming, Fishing, Foraging, Mining, Combat, Luck }
+
+        /// <summary>Enumerated list of weather condition types, in the order used by Stardew's internal code (e.g. Game1.cs)</summary>
+        public enum Weather { Sunny, Rain, Debris, Lightning, Festival, Snow, Wedding }
     }
 }

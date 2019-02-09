@@ -57,7 +57,6 @@ Below are a few examples of changes you can make to your character's configurati
         "AutoSpawnTerrainTypes": ["Grass", "Dirt", "Diggable"],
         "IncludeAreas": [],
         "ExcludeAreas": []
-      }
 ```
 ![Most days, logs and/or boulders will spawn on the farm.](docs/images/ftm_example_2.png)
 
@@ -67,7 +66,6 @@ Below are a few examples of changes you can make to your character's configurati
 ```
 ```
 "Ore_Spawn_Settings": {
-   "Ore_Spawn_Settings": {
     "Areas": [
       {
         "MiningLevelRequired": null,
@@ -79,7 +77,6 @@ Below are a few examples of changes you can make to your character's configurati
         "AutoSpawnTerrainTypes": [],
         "IncludeAreas": [ "65,22/74,27" ],
         "ExcludeAreas": []
-      }
 ```
 ![Ore will spawn in a specific area of the Forest map.](docs/images/ftm_example_3.png)
 
@@ -91,15 +88,50 @@ Below are a few examples of changes you can make to your character's configurati
 "Forage_Spawn_Settings": {
     "Areas": [
       {
+	"SpringItemIndex": null,
+        "SummerItemIndex": null,
+        "FallItemIndex": null,
+        "WinterItemIndex": null,
         "MapName": "Farm",
         "MinimumSpawnsPerDay": 9999,
         "MaximumSpawnsPerDay": 9999,
         "AutoSpawnTerrainTypes": [ "All" ],
         "IncludeAreas": [],
         "ExcludeAreas": [ "69,17;57,10" ]
-      }
 ```
 ![Forage will spawn everywhere on the Farm map, except around the house.](docs/images/ftm_example_4.png)
+
+### Spawn [modded plants](https://www.nexusmods.com/stardewvalley/mods/1598) on the [mod-enabled summit](https://www.nexusmods.com/stardewvalley/mods/2073), but only after rainy days & after year 1
+```
+"ForageSpawnEnabled": true,
+```
+```
+  "Forage_Spawn_Settings": {
+    "Areas": [
+      {
+        "SpringItemIndex": [ 2018, 2021 ],
+        "SummerItemIndex": [ 2018, 2021 ],
+        "FallItemIndex": [ 2018, 2021 ],
+        "WinterItemIndex": null,
+        "MapName": "Summit",
+        "MinimumSpawnsPerDay": 4,
+        "MaximumSpawnsPerDay": 8,
+        "AutoSpawnTerrainTypes": [
+          "All"
+        ],
+        "IncludeAreas": [],
+        "ExcludeAreas": [],
+        "StrictTileChecking": "High",
+        "ExtraConditions": {
+          "Years": [ "2+" ],
+          "Seasons": [],
+          "Days": [],
+          "WeatherYesterday": [ "Rain", "Storm" ],
+          "WeatherToday": [],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+```
+![Custom forage spawned on a mod-enabled map with specific time and weather conditions.](docs/images/ftm_example_5.png)
 
 ## Commands
 This mod adds the command `whereami` to SMAPI's console. Enter it there to display information about the current map, including: 
@@ -144,6 +176,14 @@ AutoSpawnTerrainTypes | **"Diggable", "Grass"**, "Dirt", "Stone", "Wood", "All",
 IncludeAreas | `"x,y/x,y"` tile coordinates | A list of coordinates for areas in which forage can spawn. | Use the ``whereami`` command (see [Commands](#commands)) to get a tile's coordinates. Any space between the two coordinates you use will be open for spawning. Separate multiple include areas with commas, like so: `"IncludeAreas": ["0,0/100,100", "125,125/125,125"]`
 ExcludeAreas | `"x,y/x,y"` tile coordinates | A list of coordinates for areas in which forage *cannot* spawn. | See the notes for IncludeAreas to find coordinates. Any space covered by ExcludeAreas will not be used to spawn forage, *overriding* AutoSpawnTerrainTypes and IncludeAreas.
 StrictTileChecking | **"High"**, "Medium", "Low", "None" | How strictly the mod will validate possible locations for forage. | Depending on the map's internal settings (especially in custom farms), Stardew might consider some tiles "invalid for object placement". If your other settings seem correct but nothing is spawning in this area, try adjusting this setting. Note that "Low" and "None" might result in missing spawns: if a tile really *can't* have objects, the object won't spawn and the mod will no longer notice. May also cause clipping with terrain, buildings, etc.
+ExtraConditions | *(see Notes)* | A set of optional conditions required to spawn forage. | These can be used to restrict spawning to certain times or weather conditions. They will be ignored if they are set to their defaults, i.e. `[]` or `null`.
+Years | A list of integers, ranges, or "Any"/"All" | A list of years in which forage is allowed to spawn. | Years should be inside the brackets with quotation marks, separated by commas if multiple are listed. They can be listed as single years, ranges, or with a **+** to include any following years. See these examples: `["1"]` `["2-4"]` `["1", "3+"]`
+Seasons | A list of season names: "Spring", "Summer", "Fall", "Winter", or "Any"/"All" | A list of seasons in which forage is allowed to spawn. | Seasons should be inside the brackets with quotation marks, separated by commas if multiple are listed. See these examples: `["Spring"]`, `["Summer", "Winter"]`
+Days | A list of integers, ranges, or "Any"/"All" | A list of days on which forage is allowed to spawn. | Days should be inside the brackets with quotation marks, separated by commas if multiple are listed. They can be listed as single days, ranges, or with a **+** to include any following days. See these examples: `["1"]` `["2-14"]` `["1", "8+"]`
+WeatherYesterday | A list of weather names: "Sun", "Wind", "Rain", "Storm", "Snow", or "Any"/"All" | Forage will be allowed to spawn if yesterday's weather matched a name from this list. | Weather names should be inside the brackets with quotation marks, separated by commas if multiple are listed. Note that windy days *do not* count as sunny, and storms *do not* count as rain; remember to include both if needed. See these examples: `["Snow"]`, `["Sun", "Wind"]`, `["Rain", "Storm", "Snow"]`
+WeatherToday | A list of weather names: "Sun", "Wind", "Rain", "Storm", "Snow", or "Any"/"All" | Forage will be allowed to spawn if today's weather matches a name from this list. | Weather names should be inside the brackets with quotation marks, separated by commas if multiple are listed. Note that windy days *do not* count as sunny, and storms *do not* count as rain; remember to include both if needed. See these examples: `["Snow"]`, `["Sun", "Wind"]`, `["Rain", "Storm", "Snow"]`
+WeatherTomorrow | A list of weather names: "Sun", "Wind", "Rain", "Storm", "Snow", or "Any"/"All" | Forage will be allowed to spawn if tomorrow's weather forecast matches a name from this list. | Weather names should be inside the brackets with quotation marks, separated by commas if multiple are listed. Note that windy days *do not* count as sunny, and storms *do not* count as rain; remember to include both if needed. See these examples: `["Snow"]`, `["Sun", "Wind"]`, `["Rain", "Storm", "Snow"]`
+LimitedNumberOfSpawns | An integer | The number of times this area will spawn forage before stopping. | Each day forage spawns without being prevented by other "extra conditions", this number will count down by 1 (at the end of the day). Once it reaches zero, it will stop spawning. Note that unlike other ExtraConditions settings, this does not need to be in brackets or quotations. Example: `1`
 PercentExtraSpawnsPerForagingLevel | Any integer (default **0**) | The % of extra forage spawned for each level of Foraging skill. | In multiplayer, this is based on the highest skill level among *all* players (even if they're offline). For example, setting this to 10 will spawn +10% forage items per level; if a farmhand has the best Foraging skill of level 8, there will be 80% more forage each day.
 SpringItemIndex (Global) | Integer(s) | The index numbers for forage items to spawn in spring. | These are the forage items normally spawned on the Forest Farm during spring. To replace them with something else, see the "Raw data" section of [this wiki page](https://stardewvalleywiki.com/Modding:Object_data).
 SummerItemIndex (Global) | Integer(s) | The index numbers for forage items to spawn in summer. | These are the forage items normally spawned on the Forest Farm during summer. To replace them with something else, see the "Raw data" section of [this wiki page](https://stardewvalleywiki.com/Modding:Object_data).
@@ -166,6 +206,14 @@ AutoSpawnTerrainTypes | "Diggable", "Grass", "Dirt", "Stone", "Wood", "All", "Qu
 IncludeAreas | `"x,y/x,y"` tile coordinates | A list of coordinates for areas in which objects can spawn. | Use the ``whereami`` command (see [Commands](#commands)) to get a tile's coordinates. Any space between the two coordinates you use will be open for spawning. Separate multiple include areas with commas, like so: `"IncludeAreas": ["0,0/100,100", "125,125/125,125"]`
 ExcludeAreas | `"x,y/x,y"` tile coordinates | A list of coordinates for areas in which objects *cannot* spawn. | See the notes for IncludeAreas to find coordinates. Any space covered by ExcludeAreas will not be used to spawn forage, *overriding* AutoSpawnTerrainTypes and IncludeAreas.
 StrictTileChecking | **"High"**, "Medium", "Low", "None" | How strictly the mod will validate possible locations for large objects. | Depending on the map's internal settings (especially in custom farms), Stardew might consider some tiles "invalid for object placement". If your other settings seem correct but nothing is spawning in this area, try adjusting this setting. Note that "Low" and "None" might result in missing spawns: if a tile really *can't* have objects, the object won't spawn and the mod will no longer notice. May also cause clipping with terrain, buildings, etc.
+ExtraConditions | *(see Notes)* | A set of optional conditions required to spawn large objects. | These can be used to restrict spawning to certain times or weather conditions. They will be ignored if they are set to their defaults, i.e. `[]` or `null`.
+Years | A list of integers, ranges, or "Any"/"All" | A list of years in which large objects are allowed to spawn. | Years should be inside the brackets with quotation marks, separated by commas if multiple are listed. They can be listed as single years, ranges, or with a **+** to include any following years. See these examples: `["1"]` `["2-4"]` `["1", "3+"]`
+Seasons | A list of season names: "Spring", "Summer", "Fall", "Winter", or "Any"/"All" | A list of seasons in which large objects are allowed to spawn. | Seasons should be inside the brackets with quotation marks, separated by commas if multiple are listed. See these examples: `["Spring"]`, `["Summer", "Winter"]`
+Days | A list of integers, ranges, or "Any"/"All" | A list of days on which large objects are allowed to spawn. | Days should be inside the brackets with quotation marks, separated by commas if multiple are listed. They can be listed as single days, ranges, or with a **+** to include any following days. See these examples: `["1"]` `["2-14"]` `["1", "8+"]`
+WeatherYesterday | A list of weather names: "Sun", "Wind", "Rain", "Storm", "Snow", or "Any"/"All" | Large objects will be allowed to spawn if yesterday's weather matched a name from this list. | Weather names should be inside the brackets with quotation marks, separated by commas if multiple are listed. Note that windy days *do not* count as sunny, and storms *do not* count as rain; remember to include both if needed. See these examples: `["Snow"]`, `["Sun", "Wind"]`, `["Rain", "Storm", "Snow"]`
+WeatherToday | A list of weather names: "Sun", "Wind", "Rain", "Storm", "Snow", or "Any"/"All" | Large objects will be allowed to spawn if today's weather matches a name from this list. | Weather names should be inside the brackets with quotation marks, separated by commas if multiple are listed. Note that windy days *do not* count as sunny, and storms *do not* count as rain; remember to include both if needed. See these examples: `["Snow"]`, `["Sun", "Wind"]`, `["Rain", "Storm", "Snow"]`
+WeatherTomorrow | A list of weather names: "Sun", "Wind", "Rain", "Storm", "Snow", or "Any"/"All" | Large objects will be allowed to spawn if tomorrow's weather forecast matches a name from this list. | Weather names should be inside the brackets with quotation marks, separated by commas if multiple are listed. Note that windy days *do not* count as sunny, and storms *do not* count as rain; remember to include both if needed. See these examples: `["Snow"]`, `["Sun", "Wind"]`, `["Rain", "Storm", "Snow"]`
+LimitedNumberOfSpawns | An integer | The number of times this area will spawn large objects before stopping. | Each day large objects spawn without being prevented by other "extra conditions", this number will count down by 1 (at the end of the day). Once it reaches zero, it will stop spawning. Note that unlike other ExtraConditions settings, this does not need to be in brackets or quotations. Example: `1`
 CustomTileIndex | Integer(s) | A list of index numbers from the game's tilesheet images, used by the "Custom" setting for AutoSpawnTerrainTypes. | If the AutoSpawnTerrainTypes setting above includes the "Custom" option, any tiles with image index numbers matching this list will be valid places for objects to spawn. You can find a tile's image index number by standing on it and using the `whereami` command, or by using modding tools that edit Stardew maps and/or tilesheet images.
 
 ### Ore Spawn Settings
@@ -182,6 +230,14 @@ AutoSpawnTerrainTypes | "Diggable", "Grass", "Dirt", "Stone", "Wood", "All", **"
 IncludeAreas | `"x,y/x,y"` tile coordinates | A list of coordinates for areas in which ore can spawn. | Use the ``whereami`` command (see [Commands](#commands)) to get a tile's coordinates. Any space between the two coordinates you use will be open for spawning. Separate multiple include areas with commas, like so: `"IncludeAreas": ["0,0/100,100", "125,125/,125,125"]`
 ExcludeAreas | `"x,y/x,y"` tile coordinates | A list of coordinates for areas in which ore *cannot* spawn. | See the notes for IncludeAreas to find coordinates. Any space covered by ExcludeAreas will not be used to spawn forage, *overriding* AutoSpawnTerrainTypes and IncludeAreas.
 StrictTileChecking | **"High"**, "Medium", "Low", "None" | How strictly the mod will validate possible locations for ore. | Depending on the map's internal settings (especially in custom farms), Stardew might consider some tiles "invalid for object placement". If your other settings seem correct but nothing is spawning in this area, try adjusting this setting. Note that "Low" and "None" might result in missing spawns: if a tile really *can't* have objects, the object won't spawn and the mod will no longer notice. May also cause clipping with terrain, buildings, etc.
+ExtraConditions | *(see Notes)* | A set of optional conditions required to spawn ore. | These can be used to restrict spawning to certain times or weather conditions. They will be ignored if they are set to their defaults, i.e. `[]` or `null`.
+Years | A list of integers, ranges, or "Any"/"All" | A list of years in which ore is allowed to spawn. | Years should be inside the brackets with quotation marks, separated by commas if multiple are listed. They can be listed as single years, ranges, or with a **+** to include any following years. See these examples: `["1"]` `["2-4"]` `["1", "3+"]`
+Seasons | A list of season names: "Spring", "Summer", "Fall", "Winter", or "Any"/"All" | A list of seasons in which ore is allowed to spawn. | Seasons should be inside the brackets with quotation marks, separated by commas if multiple are listed. See these examples: `["Spring"]`, `["Summer", "Winter"]`
+Days | A list of integers, ranges, or "Any"/"All" | A list of days on which ore is allowed to spawn. | Days should be inside the brackets with quotation marks, separated by commas if multiple are listed. They can be listed as single days, ranges, or with a **+** to include any following days. See these examples: `["1"]` `["2-14"]` `["1", "8+"]`
+WeatherYesterday | A list of weather names: "Sun", "Wind", "Rain", "Storm", "Snow", or "Any"/"All" | Ore will be allowed to spawn if yesterday's weather matched a name from this list. | Weather names should be inside the brackets with quotation marks, separated by commas if multiple are listed. Note that windy days *do not* count as sunny, and storms *do not* count as rain; remember to include both if needed. See these examples: `["Snow"]`, `["Sun", "Wind"]`, `["Rain", "Storm", "Snow"]`
+WeatherToday | A list of weather names: "Sun", "Wind", "Rain", "Storm", "Snow", or "Any"/"All" | Ore will be allowed to spawn if today's weather matches a name from this list. | Weather names should be inside the brackets with quotation marks, separated by commas if multiple are listed. Note that windy days *do not* count as sunny, and storms *do not* count as rain; remember to include both if needed. See these examples: `["Snow"]`, `["Sun", "Wind"]`, `["Rain", "Storm", "Snow"]`
+WeatherTomorrow | A list of weather names: "Sun", "Wind", "Rain", "Storm", "Snow", or "Any"/"All" | Ore will be allowed to spawn if tomorrow's weather forecast matches a name from this list. | Weather names should be inside the brackets with quotation marks, separated by commas if multiple are listed. Note that windy days *do not* count as sunny, and storms *do not* count as rain; remember to include both if needed. See these examples: `["Snow"]`, `["Sun", "Wind"]`, `["Rain", "Storm", "Snow"]`
+LimitedNumberOfSpawns | An integer | The number of times this area will spawn ore before stopping. | Each day ore spawns without being prevented by other "extra conditions", this number will count down by 1 (at the end of the day). Once it reaches zero, it will stop spawning. Note that unlike other ExtraConditions settings, this does not need to be in brackets or quotations. Example: `1`
 PercentExtraSpawnsPerMiningLevel | Any integer (default **0**) | The % of extra ore spawned for each level of Mining skill. | In multiplayer, this is based on the highest skill level among *all* players (even if they're offline). For example, setting this to 10 will spawn +10% ore per Mining level; if a farmhand has the best Mining skill of level 8, there will be 80% more ore each day.
 MiningLevelRequired (Global) | 0-10 | The minimum Mining skill level needed to spawn each ore type. | An ore type won't start spawning until *any* player (even offline farmhands) has the listed Mining skill. 
 StartingSpawnChance (Global) | 0 or more | Each ore type's chance of spawning with the minimum required Mining skill. | These numbers are weighted chances; they don't need to add up to 100. The defaults are roughly based on the native game's spawn chances with slight increases.
@@ -192,6 +248,8 @@ CustomTileIndex | Integer(s) | A list of index numbers from the game's tilesheet
 Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
 QuarryTileIndex | Integer(s) | A list of index numbers for "quarry" tiles in the game's tilesheet images. | These have been manually chosen to match the "quarry" tiles in the game's Hill-top Farm and custom maps that use similar mining areas. They're provided here so that people familiar with editing Stardew maps can customize this mod's "Quarry" terrain setting.
+Internal_Save_Data | *(see Notes)* | Extra information about your farm recorded by the mod. | The information here isn't normally saved by Stardew itself, so the mod automatically records it with these fields. Editing them by hand is safe but usually unnecessary.
+WeatherForYesterday | **"Sunny"**, "Rain", "Lightning", "Snow", "Debris" | A record of the previous day's weather. | This uses the default weather names from Stardew's internal code. It will default to "Sunny" when a new config file is created.
 
 ### Mod Settings
 These settings are in the **config.json** file, which is in the mod's main folder: ``Stardew Valley/Mods/FarmTypeManager``. They change the behavior of the mod itself, rather than one specific farm.

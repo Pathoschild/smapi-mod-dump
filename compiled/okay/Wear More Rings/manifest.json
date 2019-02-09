@@ -1,7 +1,7 @@
 ﻿{
    "Name": "Wear More Rings",
    "Author": "bcmpinc",
-   "Version": "1.3",
+   "Version": "1.4",
    "Description": "Adds 4 additional ring slots to your inventory.",
    "UniqueID": "bcmpinc.WearMoreRings",
    "EntryDll": "WearMoreRings.dll",

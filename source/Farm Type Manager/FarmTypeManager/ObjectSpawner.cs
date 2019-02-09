@@ -32,6 +32,12 @@ namespace FarmTypeManager
                         continue;
                     }
 
+                    //validate extra conditions, if any
+                    if (Utility.CheckExtraConditions(area) != true)
+                    {
+                        return; //one or more extra conditions prevented spawning for this area today
+                    }
+
                     List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Forage_Spawn_Settings.CustomTileIndex, false); //calculate a list of valid tiles for forage in this area
 
                     //calculate how much forage to spawn today
@@ -128,6 +134,12 @@ namespace FarmTypeManager
                     {
                         Utility.Monitor.Log($"Issue: No map named \"{area.MapName}\" could be found. Large objects won't be spawned there.", LogLevel.Info);
                         continue;
+                    }
+
+                    //validate extra conditions, if any
+                    if (Utility.CheckExtraConditions(area) != true)
+                    {
+                        return; //one or more extra conditions prevented spawning for this area today
                     }
 
                     Farm loc = Game1.getLocationFromName(area.MapName) as Farm; //variable for the current location being worked on (NOTE: null if the current location isn't a "farm" map)
@@ -229,6 +241,12 @@ namespace FarmTypeManager
                     {
                         Utility.Monitor.Log($"Issue: No map named \"{area.MapName}\" could be found. No ore will be spawned there.", LogLevel.Info);
                         continue;
+                    }
+
+                    //validate extra conditions, if any
+                    if (Utility.CheckExtraConditions(area) != true)
+                    {
+                        return; //one or more extra conditions prevented spawning for this area today
                     }
 
                     List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Ore_Spawn_Settings.CustomTileIndex, false); //calculate a list of valid tiles for ore in this area

@@ -2,13 +2,14 @@ url:
    https://github.com/paritee/Paritee.StardewValley.Frameworks.git
 
 mods:
+   Animal Birth Every Night
    Paritee's Better Farm Animal Variety
    Paritee's Treat Your Animals
 
 latest commit:
-   commit f85972b8f42a4cbe563f78e47b142371c7f047d4
-   Author: paritee <46640608+paritee@users.noreply.github.com>
-   Date:   Sun Feb 3 00:41:26 2019 -0500
+   commit 6e0d19cbfc95542559ea61055777d25718936de3
+   Author: Paritee <paritee.hi@gmail.com>
+   Date:   Fri Feb 8 02:40:38 2019 -0500
    
-       Update README.md
+       2.2.1
    

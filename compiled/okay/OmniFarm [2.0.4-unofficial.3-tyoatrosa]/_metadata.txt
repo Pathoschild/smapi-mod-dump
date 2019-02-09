@@ -1,3 +1,0 @@
-page URL: https://github.com/lambui/StardewValleyMod_OmniFarm
-IDs: PhthaloBlue.Omnifarm, BlueMod_OmniFarm
-update keys: GitHub:lambui/StardewValleyMod_OmniFarm

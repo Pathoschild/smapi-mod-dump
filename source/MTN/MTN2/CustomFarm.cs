@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using StardewValley.Objects;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace MTN2
 {
@@ -19,7 +20,8 @@ namespace MTN2
         //Fundalmentals
         public int ID { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
+        public string DescriptionName { get; set; }
+        public string DescriptionDetails { get; set; }
         public string Folder { get; set; }
         public string Icon { get; set; }
         public float Version { get; set; }
@@ -69,5 +71,10 @@ namespace MTN2
         public List<Furniture> FurnitureList { get; set; }
         public List<StardewValley.Object> ObjectList { get; set; }
         public int FurnitureLayoutFromCanon { get; set; } = -1;
+
+        //Custom Logic
+        [JsonIgnore]
+        public MtnLogic Logic { get; set; }
+        public string LogicDll { get; set; }
     }
 }

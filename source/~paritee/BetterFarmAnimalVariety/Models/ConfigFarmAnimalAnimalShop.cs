@@ -7,6 +7,7 @@ namespace BetterFarmAnimalVariety.Models
     public class ConfigFarmAnimalAnimalShop
     {
         public const string NOT_APPLICABLE = "null";
+        public const string PRICE_PLACEHOLDER = "1000";
 
         public string DefaultNameStringID;
         public string DefaultDescriptionStringID;
@@ -113,7 +114,7 @@ namespace BetterFarmAnimalVariety.Models
                     return null;
                 }
 
-                return Path.Combine(Properties.Settings.Default.AssetsDirectory, "animal_shop_" + this.Category.ToLower() + ".png");
+                return this.GetDefaultIconPath();
             }
             set
             {
@@ -165,6 +166,16 @@ namespace BetterFarmAnimalVariety.Models
         public string DetermineDescriptionStringKey()
         {
             return "PurchaseAnimalsMenu.cs." + this.DefaultDescriptionStringID;
+        }
+
+        public string GetDescriptionPlaceholder()
+        {
+            return Game1.content.LoadString("Strings\\StringsFromCSFiles:BluePrint.cs.1");
+        }
+
+        public string GetDefaultIconPath()
+        {
+            return Path.Combine(Properties.Settings.Default.AssetsDirectory, "animal_shop_" + this.Category.ToLower() + ".png");
         }
     }
 }

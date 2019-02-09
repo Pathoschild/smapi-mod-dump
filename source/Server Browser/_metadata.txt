@@ -5,9 +5,9 @@ mods:
    Server Browser
 
 latest commit:
-   commit 9951f1c278ae5e07003e93627fccc00a8639032b
+   commit 4a03f36501705e2304f1c96d2bba4f2e7e5a6305
    Author: Ilyaki <ilyaki.ilyaki@gmail.com>
-   Date:   Fri Jan 18 15:27:15 2019 +0000
+   Date:   Wed Feb 6 15:35:34 2019 +0000
    
-       Removed debug message spam
+       Fixed server list not opening when steam server existed without a corresponding galaxy server.
    

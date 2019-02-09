@@ -23,6 +23,7 @@ namespace BetterFarmAnimalVariety
     public class ModEntry : Mod
     {
         public ModConfig Config;
+        public ModCommand Command;
 
         public Player Player;
         public BlueVariation BlueFarmAnimals;
@@ -39,19 +40,38 @@ namespace BetterFarmAnimalVariety
         public override void Entry(IModHelper helper)
         {
             // Config
-            this.Config = this.LoadConfig();
+            try
+            {
+                this.Config = this.LoadConfig();
+            }
+            catch(FormatException)
+            {
+                this.Monitor.Log($"Your config.json format is invalid and BFAV has shut down. You are running BFAV v{this.ModManifest.Version.ToString()} which requires a config.json format of {this.ModManifest.Version.MajorVersion.ToString()}.", LogLevel.Alert);
+                return;
+            }
+
+            if (!this.Config.IsEnabled)
+            {
+                this.Monitor.Log($"BFAV is disabled. To enable, set IsEnabled to true in config.json.", LogLevel.Debug);
+                return;
+            }
+
+            // Harmony
+            this.ApplyHarmonyPatches();
+
+            // Commands
+            this.ApplyConsoleCommands();
 
             // Asset Editors
             this.Helper.Content.AssetEditors.Add(new AnimalBirthEditor(this));
 
             // Events
+            this.Helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             this.Helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             this.Helper.Events.Display.RenderingActiveMenu += this.OnRenderingActiveMenu;
             this.Helper.Events.Display.RenderedActiveMenu += this.OnRenderedActiveMenu;
             this.Helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             this.Helper.Events.Display.MenuChanged += this.OnMenuChanged;
-
-            this.ApplyHarmonyPatches();
         }
 
         private void ApplyHarmonyPatches()
@@ -73,19 +93,47 @@ namespace BetterFarmAnimalVariety
             harmony.Patch(targetMethod, prefixMethod, null);
         }
 
+        private void ApplyConsoleCommands()
+        {
+            this.Command = new ModCommand(this.Config, this.Helper, this.Monitor);
+
+            this.Command.SetUp();
+        }
+
         public override object GetApi()
         {
-            return new ModApi(this.Config);
+            return new ModApi(this.Config, this.ModManifest.Version);
         }
 
         private ModConfig LoadConfig()
         {
-            // Load up the config
+            // Load the config
             ModConfig config = this.Helper.ReadConfig<ModConfig>();
+
+            string targetFormat = this.ModManifest.Version.MajorVersion.ToString();
+
+            // Do this outside of the constructor so that we can use the ModManifest helper
+            if (config.Format == null)
+            {
+                config.Format = targetFormat;
+
+                this.Helper.WriteConfig<ModConfig>(config);
+            }
+            else if (!config.IsValidFormat(targetFormat))
+            {
+                throw new FormatException();
+            }
 
             config.InitializeFarmAnimals();
 
             return config;
+        }
+
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            // Always attempt to clean up the animal types on launch to prevent on save load crashes
+            // if the patch mod had been removed without the animals being sold/deleted
+            this.Helper.ConsoleCommands.Trigger("bfav_fa_fix", new string[] { });
         }
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
@@ -123,8 +171,8 @@ namespace BetterFarmAnimalVariety
 
             if (namingMenu.GetType() == typeof(StardewValley.Menus.NamingMenu))
             {
-                List<string> loadedTypes = this.Config.GetFarmAnimalTypes();
-                BreedFarmAnimalConfig breedFarmAnimalConfig = new BreedFarmAnimalConfig(loadedTypes, this.BlueFarmAnimals);
+                Dictionary<string, List<string>> farmAnimals = this.Config.GetFarmAnimalTypes();
+                BreedFarmAnimalConfig breedFarmAnimalConfig = new BreedFarmAnimalConfig(farmAnimals, this.BlueFarmAnimals, this.Config.RandomizeNewbornFromCategory, this.Config.RandomizeHatchlingFromCategory, this.Config.IgnoreParentProduceCheck);
                 BreedFarmAnimal breedFarmAnimal = new BreedFarmAnimal(this.Player, breedFarmAnimalConfig);
 
                 NameFarmAnimalMenu nameFarmAnimalMenu = new NameFarmAnimalMenu(namingMenu, breedFarmAnimal);

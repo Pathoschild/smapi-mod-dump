@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace MTN2
 {
-    public class PatchManager
+    internal class PatchManager
     {
         private readonly ICustomManager customManager;
         private IModHelper helper;

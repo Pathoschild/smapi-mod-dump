@@ -5,11 +5,11 @@ mods:
    Water Pet Bowl
 
 latest commit:
-   commit 1e7cc2f3f8b99a57a44389171fd07dba74b68c1c
-   Author: Mizzion <mizzioninc@gmail.com>
-   Date:   Mon Apr 30 23:05:32 2018 -0600
+   commit ab1a2b1ea343caf493d43729f3fa4a763e491d52
+   Author: Mizzion <36684211+Mizzion@users.noreply.github.com>
+   Date:   Wed Feb 6 14:19:07 2019 -0700
    
-       Beta Update 1.3.3-beta
+       Updated to SDV 1.3.33
        
-       Updated to Stardew 1.3.3-beta
+       Updated to SDB 1.3.33 and SMAPI 2.10.11, also enabled custom map water bowl filling
    

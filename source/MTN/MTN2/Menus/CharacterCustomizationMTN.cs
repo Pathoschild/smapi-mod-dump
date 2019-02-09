@@ -356,7 +356,7 @@ namespace MTN2.Menus {
                     allFarmButtons.Add(farmButton);
                 }
                 foreach (CustomFarm customFarm in customManager.FarmList) {
-                    allFarmButtons.Add(new ClickableTextureComponent("MTN_" + customFarm.Name, new Rectangle(baseFarmButton.X, baseFarmButton.Y + 440, 88, 80), null, customFarm.Description, customFarm.IconSource, new Rectangle(0, 0, 22, 20), 4f, false));
+                    allFarmButtons.Add(new ClickableTextureComponent("MTN_" + customFarm.Name, new Rectangle(baseFarmButton.X, baseFarmButton.Y + 440, 88, 80), null, customFarm.DescriptionName + "_" + customFarm.DescriptionDetails, customFarm.IconSource, new Rectangle(0, 0, 22, 20), 4f, false));
                 }
 
                 //Set up scroll bar / arrow buttons

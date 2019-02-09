@@ -1,0 +1,11 @@
+﻿{
+  "Name": "Teh's Dependency Resolver",
+  "Author": "TehPers",
+  "Version": "0.0.1-alpha",
+  "Description": "Scans the folders of all mods that depend on this mod and loads the highest available version of each of their dependencies.",
+  "UniqueID": "TehPers.DependencyResolver",
+  "EntryDll": "TehPers.DependencyResolver.dll",
+  "MinimumApiVersion": "2.7",
+  "UpdateKeys": [],
+  "Dependencies": []
+}

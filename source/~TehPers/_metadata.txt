@@ -8,12 +8,10 @@ mods:
    Teh's Fishing Overhaul
 
 latest commit:
-   commit 132b808095fc0005babc7ea6e42c7b84661c0b23
-   Merge: 86bc19e 41e9208
-   Author: TehPers <flamingpers@ymail.com>
-   Date:   Thu Jan 4 23:51:31 2018 -0800
+   commit 0e195b37f42eefa2c6bd3475c36911f02a8f889c
+   Merge: 5176e9c 132b808
+   Author: TehPers <tehperz@gmail.com>
+   Date:   Tue Feb 5 22:50:14 2019 -0600
    
-       Merge pull request #1 from Pathoschild/update-code
-       
-       Update & streamline build
+       Merge branch 'master' into 3.0-dev
    

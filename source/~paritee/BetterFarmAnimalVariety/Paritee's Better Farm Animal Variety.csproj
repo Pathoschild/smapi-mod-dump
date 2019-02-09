@@ -39,8 +39,8 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Paritee.StardewValleyAPI, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Paritee.StardewValleyAPI.2.0.0\lib\net452\Paritee.StardewValleyAPI.dll</HintPath>
+    <Reference Include="Paritee.StardewValleyAPI, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Paritee.StardewValleyAPI.2.1.1\lib\net452\Paritee.StardewValleyAPI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -54,9 +54,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\BaseCommands.cs" />
+    <Compile Include="Commands\ConfigCommands.cs" />
+    <Compile Include="Commands\FarmAnimalsCommands.cs" />
     <Compile Include="ModApi.cs" />
+    <Compile Include="ModCommand.cs" />
     <Compile Include="Models\AppSettings.cs" />
     <Compile Include="Models\AppSetting.cs" />
+    <Compile Include="Models\Command.cs" />
     <Compile Include="Models\ConfigFarmAnimal.cs" />
     <Compile Include="Editors\AnimalBirthEditor.cs" />
     <Compile Include="ModConfig.cs" />
@@ -92,6 +97,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

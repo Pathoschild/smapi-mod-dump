@@ -145,14 +145,14 @@ namespace MTN2
                 ContainsFarm = ProcessFarmType(ContentPack, out FarmData);
                 ContainsGreenHouse = ProcessGreenHouseType(ContentPack, out GreenHouseData);
 
-                if (FarmData.Version < 2.0) {
-                    FarmData = PopulateOld(ContentPack, Monitor);
+                if (FarmData.Version < 2.1) {
+                    FarmData = PopulateOld(ContentPack, Monitor, FarmData.Version);
                 }
 
-                if (ContainsFarm) Monitor.Log($"\t + Contains a custom farm.", LogLevel.Trace);
-
                 if (ContainsFarm) {
+                    Monitor.Log($"\t + Contains a custom farm.", LogLevel.Trace);
                     LoadIcon(Helper, ContentPack, FarmData);
+                    Validate(FarmData);
                 }
 
                 if (FarmData != null) {
@@ -212,21 +212,68 @@ namespace MTN2
         }
 
         /// <summary>
-        /// Converts a content pack with a farmType.json that is verison 1.0 or 1.1 to
-        /// version 2.0
+        /// Converts a content pack with an older farmType.json to the latest.
         /// </summary>
         /// <param name="contentPack">A SMAPI Content Pack</param>
-        /// <param name="monitor">SMAPI's IMonitor, to print useful information</param>
-        /// <returns></returns>
-        private CustomFarm PopulateOld(IContentPack contentPack, IMonitor monitor) {
+        /// <param name="monitor">SMAPI's IMonitor, to print useful information.</param>
+        /// <returns>Converted CustomFarm</returns>
+        private CustomFarm PopulateOld(IContentPack contentPack, IMonitor monitor, float Version) {
+            switch(Version) {
+                case 2.0f:
+                    return PopulateOldVer20(contentPack, monitor);
+                default:
+                    return PopulateOldVer1(contentPack, monitor);
+            }
+        }
+
+        /// <summary>
+        /// Converts a content pack with a farmType.json 1.0 (MTN1) to the latest.
+        /// </summary>
+        /// <param name="contentPack">A SMAPI Content Pack</param>
+        /// <param name="monitor">SMAPI's IMonitor, to print useful information.</param>
+        /// <returns>Converted CustomFarm</returns>
+        private CustomFarm PopulateOldVer1(IContentPack contentPack, IMonitor monitor) {
             CustomFarmVer1 oldVersion;
             CustomFarm convertedFarm;
 
-            monitor.Log("\t - Content Pack is for MTN1. Using Backwards Compatibility.");
+            monitor.Log("\t - Content Pack is for FarmType 1.0 (MTN1). Using Backwards Compatibility.");
             oldVersion = contentPack.ReadJsonFile<CustomFarmVer1>("farmType.json");
             convertedFarm = new CustomFarm();
             CustomFarmVer1.Convert(convertedFarm, oldVersion);
             return convertedFarm;
+        }
+
+        /// <summary>
+        /// Converts a content pack with a farmType.json 2.0 to the latest.
+        /// </summary>
+        /// <param name="contentPack">A SMAPI Content Pack</param>
+        /// <param name="monitor">SMAPI's IMonitor, to print useful information.</param>
+        /// <returns>Converted CustomFarm</returns>
+        private CustomFarm PopulateOldVer20(IContentPack contentPack, IMonitor monitor) {
+            CustomFarmVer2p0 oldVersion;
+            CustomFarm convertedFarm;
+
+            monitor.Log("\t - Content Pack is using FarmType 2.0. Using Backwards Compatibility.");
+            oldVersion = contentPack.ReadJsonFile<CustomFarmVer2p0>("farmType.json");
+            convertedFarm = new CustomFarm();
+            CustomFarmVer2p0.Convert(convertedFarm, oldVersion);
+            return convertedFarm;
+        }
+
+        /// <summary>
+        /// Checks each field containing a <see cref="Structure"/> type. Implements the default (canon) values if
+        /// the field is omitted.
+        /// </summary>
+        /// <param name="farm"></param>
+        private void Validate(CustomFarm farm) {
+            farm.FarmHouse = (farm.FarmHouse == null) ? new Structure(new Placement(3712f / 64f, 520f / 64f), new Interaction(64, 15)) : farm.FarmHouse;
+            farm.GreenHouse = (farm.GreenHouse == null) ? new Structure(new Placement(1600f / 64f, 384f / 64f), new Interaction(28, 17)) : farm.GreenHouse;
+            farm.FarmCave = (farm.FarmCave == null) ? new Structure(new Placement(), new Interaction(34, 7)) : farm.FarmCave;
+            farm.ShippingBin = (farm.ShippingBin == null) ? new Structure(new Placement(), new Interaction(71, 13)) : farm.ShippingBin;
+            farm.MailBox = (farm.MailBox == null) ? new Structure(new Placement(), new Interaction(68, 16)) : farm.MailBox;
+            farm.GrandpaShrine = (farm.GrandpaShrine == null) ? new Structure(new Placement(), new Interaction(9, 7)) : farm.GrandpaShrine;
+            farm.RabbitShrine = (farm.RabbitShrine == null) ? new Structure(new Placement(), new Interaction(48, 7)) : farm.RabbitShrine;
+            farm.PetWaterBowl = (farm.PetWaterBowl == null) ? new Structure(new Placement(), new Interaction(54, 7)) : farm.PetWaterBowl;
         }
 
         /// <summary>

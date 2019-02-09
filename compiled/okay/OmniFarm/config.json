@@ -1,0 +1,54 @@
+{
+  "GrassGrowth_1forsparse_4forFull": 4,
+  "useOptionalCave": false,
+  "mineAreas": [
+    {
+      "Item1": "89, 3",
+      "Item2": "96, 7"
+    },
+    {
+      "Item1": "97, 4",
+      "Item2": "115, 10"
+    },
+    {
+      "Item1": "91, 8",
+      "Item2": "96, 8"
+    },
+    {
+      "Item1": "92, 9",
+      "Item2": "96, 9"
+    },
+    {
+      "Item1": "93, 10",
+      "Item2": "96, 10"
+    }
+  ],
+  "grassAreas": [
+    {
+      "Item1": "99, 73",
+      "Item2": "115, 84"
+    },
+    {
+      "Item1": "99, 96",
+      "Item2": "115, 108"
+    }
+  ],
+  "stumpLocations": [
+    "7, 24",
+    "9, 26",
+    "13, 27"
+  ],
+  "hollowLogLocations": [
+    "3, 23",
+    "4, 26",
+    "18, 28"
+  ],
+  "meteoriteLocations": [],
+  "boulderLocations": [],
+  "largeRockLocations": [],
+  "oreChance": 0.05,
+  "gemChance": 0.01,
+  "WarpFromForest": "32, 117",
+  "WarpFromBackWood": "-1, -1",
+  "WarpFromBusStop": "-1, -1"
+}

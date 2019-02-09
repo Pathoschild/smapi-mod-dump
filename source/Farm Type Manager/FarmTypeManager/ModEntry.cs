@@ -15,46 +15,48 @@ namespace FarmTypeManager
         ///<summary>Tasks performed when the mod initially loads.</summary>
         public override void Entry(IModHelper helper)
         {
-            Helper.Events.GameLoop.DayStarted += DayStarted; //tell SMAPI to run the DayStarted event when necessary
+            Helper.Events.GameLoop.DayStarted += DayStarted; //tell SMAPI to run the DayStarted method when necessary
+            Helper.Events.GameLoop.DayEnding += DayEnding; //tell SMAPI to run the DayEnding method when necessary
             Utility.Monitor.IMonitor = Monitor; //pass the monitor for use by other areas of this mod's code
             ModConfig conf; //settings contained in the mod's config.json file
 
-            //attempt to load the default.json FarmConfig file
+            //attempt to load and update/save the default.json FarmConfig file
             try
             {
                 Utility.Config = Helper.Data.ReadJsonFile<FarmConfig>($"data/default.json"); //load the default.json config file (null if it doesn't exist)
+
+                if (Utility.Config == null) //no default.json config file
+                {
+                    Utility.Config = new FarmConfig(); //load the (built-in) default config settings
+                }
+
+                Helper.Data.WriteJsonFile($"data/default.json", Utility.Config); //create or update the default.json config file
             }
             catch (Exception ex) //if there's an error while loading the json file, try to explain it in the user's log & then skip any further DayStarted behaviors
             {
                 Utility.Monitor.Log($"Warning: Your default config file (default.json) could not be parsed correctly. If you load a character without their own config file, most of this mod's features will be disabled. Please edit the file, or delete it before restarting/loading to generate a new config file. The auto-generated error message is displayed below.", LogLevel.Warn);
                 Utility.Monitor.Log($"----------", LogLevel.Warn); //visual break to slightly improve clarity, based on user feedback
                 Utility.Monitor.Log($"{ex.Message}", LogLevel.Warn);
-                return;
-            }
-
-            if (Utility.Config == null) //no default.json config file
-            {
-                Utility.Config = new FarmConfig(); //load the (built-in) default config settings
-                Helper.Data.WriteJsonFile($"data/default.json", Utility.Config); //create a default.json config file
             }
 
             Utility.Config = null; //prevent errors later in the loading process
 
-            //attempt to load the config.json ModConfig file
+            //attempt to load the config.json ModConfig file and activate its settings
             try
             {
                 conf = helper.ReadConfig<ModConfig>(); //create or load the config.json file
+
+                if (conf.EnableWhereAmICommand == true) //if enabled, add the WhereAmI method as a console command
+                {
+                    helper.ConsoleCommands.Add("whereami", "Outputs coordinates and other information about the player's current location.", WhereAmI);
+                }
+
+                helper.WriteConfig<ModConfig>(conf); //update the config.json file (e.g. to add settings from new versions of the mod)
             }
             catch (Exception ex) //if the config.json file can't be parsed correctly, try to explain it in the user's log & then skip any config-related behaviors
             {
                 Utility.Monitor.Log($"Warning: This mod's config.json file could not be parsed correctly. Related settings will be disabled. Please edit the file, or delete it and reload the game to generate a new config file. The original error message is displayed below.", LogLevel.Warn);
                 Utility.Monitor.Log($"{ex.Message}", LogLevel.Warn);
-                return;
-            }
-
-            if (conf.EnableWhereAmICommand == true) //if enabled, add the WhereAmI method as a console command
-            {
-                helper.ConsoleCommands.Add("whereami", "Outputs coordinates and other information about the player's current location.", WhereAmI);
             }
         }
 
@@ -94,18 +96,25 @@ namespace FarmTypeManager
                 if (Utility.Config == null) //no default.json config file
                 {
                     Utility.Config = new FarmConfig(); //load the (built-in) default config settings
-                    Helper.Data.WriteJsonFile($"data/default.json", Utility.Config); //create a default.json config file
                 }
 
-                Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", Utility.Config); //create a config file for the current save (using default.json's settings)
+                Helper.Data.WriteJsonFile($"data/default.json", Utility.Config); //create or update the default.json config file
             }
+
+            Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", Utility.Config); //create or update the config file for the current save
 
             //run the methods providing the mod's main features
             ObjectSpawner.ForageGeneration();
             ObjectSpawner.LargeObjectGeneration();
             ObjectSpawner.OreGeneration();
+        }
 
-            //NOTE: This will reformat any changes the player has made with the default SMAPI formatting
+        private void DayEnding(object sender, EventArgs e)
+        {
+            //update the internal save data
+            Utility.Config.Internal_Save_Data.WeatherForYesterday = Utility.WeatherForToday();
+
+            //save any changes to the player's config file
             Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", Utility.Config);
         }
 

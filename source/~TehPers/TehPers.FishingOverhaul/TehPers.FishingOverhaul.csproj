@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B0BECB8F-DB4B-4A41-84C0-9DAFEDE2BD12}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TehPers.FishingOverhaul</RootNamespace>
+    <AssemblyName>TehPers.FishingOverhaul</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configs\ConfigFish.cs" />
+    <Compile Include="Configs\ConfigFishTraits.cs" />
+    <Compile Include="Configs\ConfigMain.cs" />
+    <Compile Include="Configs\ConfigTreasure.cs" />
+    <Compile Include="Configs\DefaultTrashData.cs" />
+    <Compile Include="Configs\FishData.cs" />
+    <Compile Include="Configs\FishTraits.cs" />
+    <Compile Include="Configs\SpecificTrashData.cs" />
+    <Compile Include="Configs\TreasureData.cs" />
+    <Compile Include="Configs\WeightedFishData.cs" />
+    <Compile Include="CustomBobberBar.cs" />
+    <Compile Include="FishHelper.cs" />
+    <Compile Include="FishingApi.cs" />
+    <Compile Include="FishingRodOverrider.cs" />
+    <Compile Include="ModFishing.cs" />
+    <Compile Include="Patches\NetAudioPatches.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="i18n\default.json" />
+    <None Include="i18n\pt.json" />
+    <None Include="manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TehPers.Core.Api\TehPers.Core.Api.csproj">
+      <Project>{63f341d5-2440-4d3f-a11d-0d60fc0d67bd}</Project>
+      <Name>TehPers.Core.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TehPers.Core.Gui\TehPers.Core.Gui.csproj">
+      <Project>{70F21DE3-7C43-45F8-96C0-6398D9420CF6}</Project>
+      <Name>TehPers.Core.Gui</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TehPers.Core.Json\TehPers.Core.Json.csproj">
+      <Project>{D3F1F7BB-D094-4FD2-A417-2A824A20440A}</Project>
+      <Name>TehPers.Core.Json</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TehPers.Core\TehPers.Core.csproj">
+      <Project>{7b58714f-e332-4973-ab71-dc1dbe52de29}</Project>
+      <Name>TehPers.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TehPers.FishingOverhaul.Api\TehPers.FishingOverhaul.Api.csproj">
+      <Project>{cb430e93-7b42-4fc8-b7b0-f0b13a3ab790}</Project>
+      <Name>TehPers.FishingOverhaul.Api</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Lib.Harmony">
+      <Version>1.2.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>11.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig">
+      <Version>2.2.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

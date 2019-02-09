@@ -1,0 +1,11 @@
+﻿{
+    "Name": "Linked Skills",
+    "Author": "TehPers",
+    "Version": "1.0.0-beta.1",
+    "Description": "Links the skills of each player in multiplayer so they're always the same.",
+    "UniqueID": "TehPers.LinkedStats",
+    "EntryDll": "TehPers.LinkedStats.dll",
+    "MinimumApiVersion": "2.7",
+    "UpdateKeys": [],
+    "Dependencies": []
+}

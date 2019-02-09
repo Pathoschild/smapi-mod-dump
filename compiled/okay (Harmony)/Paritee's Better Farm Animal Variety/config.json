@@ -1,5 +1,10 @@
 {
+  "Format": "2",
+  "IsEnabled": true,
   "VoidFarmAnimalsInShop": "Never",
+  "RandomizeNewbornFromCategory": false,
+  "RandomizeHatchlingFromCategory": false,
+  "IgnoreParentProduceCheck": false,
   "FarmAnimals": {
     "Chicken": {
       "Types": [

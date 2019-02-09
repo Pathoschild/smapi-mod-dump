@@ -1,0 +1,43 @@
+﻿using System.Collections;
+
+// ReSharper disable once CheckNamespace
+namespace System {
+    [Serializable]
+    public readonly partial struct ValueTuple : IEquatable<ValueTuple>, IStructuralEquatable, IStructuralComparable, IComparable, IComparable<ValueTuple> {
+        internal static int CombineHashes() {
+            return 0;
+        }
+
+        public int CompareTo(object other, IComparer comparer) {
+            return other is ValueTuple ? 0 : throw new ArgumentException();
+        }
+
+        public int CompareTo(object obj) {
+            return obj is ValueTuple ? 0 : throw new ArgumentException();
+        }
+
+        public int CompareTo(ValueTuple other) {
+            return 0;
+        }
+
+        public bool Equals(ValueTuple other) {
+            return true;
+        }
+
+        public bool Equals(object other, IEqualityComparer comparer) {
+            return other is ValueTuple;
+        }
+
+        public override bool Equals(object obj) {
+            return obj is ValueTuple;
+        }
+
+        public int GetHashCode(IEqualityComparer comparer) {
+            return 0;
+        }
+
+        public override int GetHashCode() {
+            return 0;
+        }
+    }
+}

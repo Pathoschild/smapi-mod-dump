@@ -11,10 +11,15 @@ namespace BetterFarmAnimalVariety
 {
     public class ModConfig
     {
+        public string Format;
+        public bool IsEnabled;
         public VoidConfig.InShop VoidFarmAnimalsInShop;
+        public bool RandomizeNewbornFromCategory;
+        public bool RandomizeHatchlingFromCategory;
+        public bool IgnoreParentProduceCheck;
         public Dictionary<string, ConfigFarmAnimal> FarmAnimals;
 
-        private AppSettings AppSettings;
+        private readonly AppSettings AppSettings;
 
         public ModConfig()
         {
@@ -23,9 +28,19 @@ namespace BetterFarmAnimalVariety
               .ToDictionary(x => x.Name.ToString(), x => x.DefaultValue.ToString());
 
             this.AppSettings = new AppSettings(settings);
+            this.Format = null;
+            this.IsEnabled = true;
             this.VoidFarmAnimalsInShop = VoidConfig.InShop.Never;
+            this.RandomizeNewbornFromCategory = false;
+            this.RandomizeHatchlingFromCategory = false;
+            this.IgnoreParentProduceCheck = false;
 
             this.InitializeFarmAnimals();
+        }
+        
+        public bool IsValidFormat(string targetFormat)
+        {
+            return this.Format != null && this.Format.Equals(targetFormat);
         }
 
         private List<string> GetFarmAnimalGroups()
@@ -33,16 +48,16 @@ namespace BetterFarmAnimalVariety
             return this.FarmAnimals.Keys.ToList<string>();
         }
 
-        public List<string> GetFarmAnimalTypes()
+        public Dictionary<string, List<string>> GetFarmAnimalTypes()
         {
-            List<string> types = new List<string>();
+            Dictionary<string, List<string>> farmAnimals = new Dictionary<string, List<string>>();
 
-            foreach (KeyValuePair<string, ConfigFarmAnimal> Entry in this.FarmAnimals)
+            foreach (KeyValuePair<string, ConfigFarmAnimal> entry in this.FarmAnimals)
             {
-                types = types.Concat(Entry.Value.GetTypes()).ToList<string>();
+                farmAnimals.Add(entry.Key, new List<string>(entry.Value.Types));
             }
 
-            return types.ToList<string>();
+            return farmAnimals;
         }
 
         public List<string> GetFarmAnimalTypes(string category)

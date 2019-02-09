@@ -3,7 +3,7 @@
 namespace FarmTypeManager
 {
     //config.json, used by all players/saves for shared functions
-    class ModConfig
+    public class ModConfig
     {
         public bool EnableWhereAmICommand { get; set; }
 
@@ -14,7 +14,7 @@ namespace FarmTypeManager
     }
 
     //per-character configuration file, e.g. PlayerName12345.json; contains most of the mod's functional settings, split up this way to allow for different settings between saves & farm types
-    class FarmConfig
+    public class FarmConfig
     {
         public bool ForageSpawnEnabled { get; set; }
         public bool LargeObjectSpawnEnabled { get; set; }
@@ -25,6 +25,8 @@ namespace FarmTypeManager
         public OreSettings Ore_Spawn_Settings { get; set; }
 
         public int[] QuarryTileIndex { get; set; }
+
+        public InternalSaveData Internal_Save_Data { get; set; }
 
         public FarmConfig()
         {
@@ -43,6 +45,26 @@ namespace FarmTypeManager
             QuarryTileIndex = new int[] { 556, 558, 583, 606, 607, 608, 630, 635, 636, 680, 681, 685 };
             //NOTE: swap in the following code to cover more tiles, e.g. the grassy edges of the "quarry" dirt; this tends to cover too much ground and weird spots, though, such as the farm's cave entrance
             //{ 556, 558, 583, 606, 607, 608, 630, 631, 632, 633, 634, 635, 636, 654, 655, 656, 657, 658, 659, 679, 680, 681, 682, 683, 684, 685, 704, 705, 706, 707 };
+
+            //internal save data for things not normally tracked by Stardew
+            Internal_Save_Data = new InternalSaveData();
+        }
+    }
+
+    /// <summary>A class containing any per-farm information that needs to be saved by the mod. Not normally intended to be edited by the player.</summary>
+    public class InternalSaveData
+    {
+        //class added in version 1.3; defaults used here to automatically fill in values with SMAPI's json interface
+        public Utility.Weather WeatherForYesterday { get; set; } = Utility.Weather.Sunny;
+
+        public InternalSaveData()
+        {
+
+        }
+
+        public InternalSaveData(Utility.Weather wyesterday, Utility.Weather wtoday)
+        {
+            WeatherForYesterday = wyesterday; //an enum (int) value corresponding to yesterday's weather
         }
     }
 
@@ -60,7 +82,7 @@ namespace FarmTypeManager
         //default constructor: configure default forage generation settings
         public ForageSettings()
         {
-            Areas = new ForageSpawnArea[] { new ForageSpawnArea("Farm", 0, 3, new string[] { "Grass", "Diggable" }, new string[0], new string[0], "High", null, null, null, null) }; //a set of "SpawnArea" objects, describing where forage items can spawn on each map
+            Areas = new ForageSpawnArea[] { new ForageSpawnArea("Farm", 0, 3, new string[] { "Grass", "Diggable" }, new string[0], new string[0], "High", new ExtraConditions(), null, null, null, null) }; //a set of "SpawnArea" objects, describing where forage items can spawn on each map
             PercentExtraSpawnsPerForagingLevel = 0; //multiplier to give extra forage per level of foraging skill; default is +0%, since the native game lacks this mechanic
 
             //the "parentSheetIndex" values for each type of forage item allowed to spawn in each season (the numbers found in ObjectInformation.xnb)
@@ -81,7 +103,7 @@ namespace FarmTypeManager
 
         public LargeObjectSettings()
         {
-            Areas = new LargeObjectSpawnArea[] { new LargeObjectSpawnArea("Farm", 999, 999, new string[0], new string[0], new string[0], "High", new string[] { "Stump" }, true, 0, "Foraging") }; //a set of "LargeObjectSpawnArea", describing where large objects can spawn on each map
+            Areas = new LargeObjectSpawnArea[] { new LargeObjectSpawnArea("Farm", 999, 999, new string[0], new string[0], new string[0], "High", new ExtraConditions(), new string[] { "Stump" }, true, 0, "Foraging") }; //a set of "LargeObjectSpawnArea", describing where large objects can spawn on each map
             CustomTileIndex = new int[0]; //an extra list of tilesheet indices, for use by players who want to make some custom tile detection
         }
     }
@@ -101,7 +123,7 @@ namespace FarmTypeManager
         public OreSettings()
         {
             
-            Areas = new OreSpawnArea[] { new OreSpawnArea("Farm", 1, 5, new string[] { "Quarry" }, new string[0], new string[0], "High", null, null, null) }; //a set of "OreSpawnArea" objects, describing where ore can spawn on each map
+            Areas = new OreSpawnArea[] { new OreSpawnArea("Farm", 1, 5, new string[] { "Quarry" }, new string[0], new string[0], "High", new ExtraConditions(), null, null, null) }; //a set of "OreSpawnArea" objects, describing where ore can spawn on each map
             PercentExtraSpawnsPerMiningLevel = 0; //multiplier to give extra ore per level of mining skill; default is +0%, since the native game lacks this mechanic
 
             //mining skill level required to spawn each ore type; defaults are based on the vanilla "hilltop" map settings, though some types didn't spawn at all
@@ -156,29 +178,60 @@ namespace FarmTypeManager
         public string[] AutoSpawnTerrainTypes { get; set; } //Valid properties include "Quarry", "Custom", "Diggable", "All", and any tile Type properties ("Grass", "Dirt", "Stone", "Wood")
         public string[] IncludeAreas { get; set; }
         public string[] ExcludeAreas { get; set; }
-        public string StrictTileChecking { get; set; } = "High"; //added in version 1.1; default used here to automatically fill it in with SMAPI's json reader
+        public string StrictTileChecking { get; set; } = "High"; //added in version 1.1; default used here to automatically fill it in with SMAPI's json interface
+        public ExtraConditions ExtraConditions { get; set; } = new ExtraConditions(); //added in version 1.3; default used here to automatically fill in values with SMAPI's json interface
 
         public SpawnArea()
         {
 
         }
 
-        public SpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude, string safety)
+        public SpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude, string safety, ExtraConditions extra)
         {
-            MapName = name;
-            MinimumSpawnsPerDay = min;
-            MaximumSpawnsPerDay = max;
-            AutoSpawnTerrainTypes = types;
-            IncludeAreas = include;
-            ExcludeAreas = exclude;
-            StrictTileChecking = safety;
+            MapName = name; //name of the targeted map, e.g. "Farm" or "BusStop"
+            MinimumSpawnsPerDay = min; //minimum number of items to be spawned each day (before multipliers)
+            MaximumSpawnsPerDay = max; //maximum number of items to be spawned each day (before multipliers)
+            AutoSpawnTerrainTypes = types; //a list of strings describing the terrain on which objects may spawn
+            IncludeAreas = include; //a list of strings describing coordinates for object spawning
+            ExcludeAreas = exclude; //a list of strings describing coordinates *preventing* object spawning
+            StrictTileChecking = safety; //the degree of safety-checking to use before spawning objects on a tile
+            ExtraConditions = extra; //a list of additional conditions that may be used to limit object spawning
+        }
+    }
+
+    /// <summary>A set of additional requirements needed to spawn objects in a given area.</summary>
+    public class ExtraConditions
+    {
+        //class added in version 1.3; defaults used here to automatically fill in values with SMAPI's json interface
+        public string[] Years { get; set; } = new string[0];
+        public string[] Seasons { get; set; } = new string[0];
+        public string[] Days { get; set; } = new string[0];
+        public string[] WeatherYesterday { get; set; } = new string[0];
+        public string[] WeatherToday { get; set; } = new string[0];
+        public string[] WeatherTomorrow { get; set; } = new string[0];
+        public int? LimitedNumberOfSpawns { get; set; } = null;
+
+        public ExtraConditions()
+        {
+
+        }
+
+        public ExtraConditions(string[] years, string[] seasons, string[] days, string[] wyesterday, string[] wtoday, string[] wtomorrow, int? spawns)
+        {
+            Years = years; //a list of years on which objects are allowed to spawn
+            Seasons = seasons; //a list of seasons in which objects are allowed to spawn
+            Days = days; //a list of days (individual or ranges) on which objects are allowed to spawn
+            WeatherYesterday = wyesterday; //if yesterday's weather is listed here, objects are allowed to spawn
+            WeatherToday = wtoday; //if yesterday's weather is listed here, objects are allowed to spawn
+            WeatherTomorrow = wtomorrow; //if yesterday's weather is listed here, objects are allowed to spawn
+            LimitedNumberOfSpawns = spawns; //a number that will count down each day until 0, preventing any further spawns once that is reached
         }
     }
 
     //a subclass of "SpawnArea" specifically for forage generation, providing the ability to override each area's seasonal forage items
     public class ForageSpawnArea : SpawnArea
     {
-        public int[] SpringItemIndex { get; set; } = null; //added in version 1.2; default used here to automatically fill it in with SMAPI's json reader
+        public int[] SpringItemIndex { get; set; } = null; //added in version 1.2; default used here to automatically fill it in with SMAPI's json interface
         public int[] SummerItemIndex { get; set; } = null; //""
         public int[] FallItemIndex { get; set; } = null;   //""
         public int[] WinterItemIndex { get; set; } = null; //""
@@ -189,8 +242,8 @@ namespace FarmTypeManager
 
         }
 
-        public ForageSpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude, string safety, int[] spring, int[] summer, int[] fall, int[] winter)
-            :base(name, min, max, types, include, exclude, safety) //uses the original "SpawnArea" constructor to fill in the shared fields as usual
+        public ForageSpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude, string safety, ExtraConditions extra, int[] spring, int[] summer, int[] fall, int[] winter)
+            :base(name, min, max, types, include, exclude, safety, extra) //uses the original "SpawnArea" constructor to fill in the shared fields as usual
         {
             SpringItemIndex = spring;
             SummerItemIndex = summer;
@@ -213,12 +266,12 @@ namespace FarmTypeManager
 
         }
 
-        public LargeObjectSpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude, string safety, string[] objTypes, bool find, int extra, string skill)
-            : base(name, min, max, types, include, exclude, safety) //uses the original "SpawnArea" constructor to fill in the shared fields as usual
+        public LargeObjectSpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude, string safety, ExtraConditions extra, string[] objTypes, bool find, int extraSpawns, string skill)
+            : base(name, min, max, types, include, exclude, safety, extra) //uses the original "SpawnArea" constructor to fill in the shared fields as usual
         {
             ObjectTypes = objTypes;
             FindExistingObjectLocations = find;
-            PercentExtraSpawnsPerSkillLevel = extra;
+            PercentExtraSpawnsPerSkillLevel = extraSpawns;
             RelatedSkill = skill;
         }
     }
@@ -236,8 +289,8 @@ namespace FarmTypeManager
 
         }
 
-        public OreSpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude, string safety, Dictionary<string, int> skill, Dictionary<string, int> starting, Dictionary<string, int> levelTen)
-            : base (name, min, max, types, include, exclude, safety) //uses the original "SpawnArea" constructor to fill in the shared fields as usual
+        public OreSpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude, string safety, ExtraConditions extra, Dictionary<string, int> skill, Dictionary<string, int> starting, Dictionary<string, int> levelTen)
+            : base (name, min, max, types, include, exclude, safety, extra) //uses the original "SpawnArea" constructor to fill in the shared fields as usual
         {
             MiningLevelRequired = skill;
             StartingSpawnChance = starting;

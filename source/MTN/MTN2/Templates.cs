@@ -39,7 +39,8 @@ namespace MTN2 {
             CustomFarm template = new CustomFarm();
             template.ID = 25;
             template.Name = "Example";
-            template.Description = "Example Farm_A description that appears when the player hovers over the farm icon, as they are creating a new game.";
+            template.DescriptionName = "Example Farm";
+            template.DescriptionDetails = "A description that appears when the player hovers over the farm icon, as they are creating a new game.";
             template.Folder = "Example";
             template.Icon = "fileNameOfIcon.png";
             template.Version = 2.0f;

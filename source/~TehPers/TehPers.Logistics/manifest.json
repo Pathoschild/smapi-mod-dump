@@ -1,0 +1,16 @@
+﻿{
+  "Name": "Teh's Logistics",
+  "Author": "TehPers",
+  "Version": "0.1.0-alpha",
+  "Description": "Adds machines for transporting and processing items.",
+  "UniqueID": "TehPers.Logistics",
+  "EntryDll": "TehPers.Logistics.dll",
+  "MinimumApiVersion": "2.7",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "TehPers.CoreMod",
+      "IsRequired": true  
+    }
+  ]
+}

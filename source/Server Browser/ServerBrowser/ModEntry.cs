@@ -100,14 +100,20 @@ namespace ServerBrowser
 		
 		private GalaxyID GalaxyIDFromSteamID(CSteamID steamID)
 		{
-			var connectOutput = SteamMatchmaking.GetLobbyData(steamID, "connect");
+			GalaxyID parseConnectionString(string connectionString)
+			{
+				if (connectionString.StartsWith("-connect-lobby-"))
+				{
+					return new GalaxyID(Convert.ToUInt64(connectionString.Substring("-connect-lobby-".Length)));
+				}
+				if (connectionString.StartsWith("+connect_lobby "))
+				{
+					return new GalaxyID(Convert.ToUInt64(connectionString.Substring("+connect_lobby".Length + 1)));
+				}
+				return null;
+			}
 
-			ulong galaxyIDLong = 0;
-			for (int i = 0; i < connectOutput.Length; i++)
-				if (ulong.TryParse(connectOutput.Substring(i), out galaxyIDLong))
-					break;
-
-			return new GalaxyID(galaxyIDLong);
+			return parseConnectionString(SteamMatchmaking.GetLobbyData(steamID, "connect"));
 		}
 
 		private void OnReceiveSteamServers(LobbyMatchList_t x, bool bIOFailure)
@@ -144,23 +150,25 @@ namespace ServerBrowser
 				CSteamID steamID = SteamMatchmaking.GetLobbyByIndex(serverI);
 				if (!steamID.IsValid() || steamID.m_SteamID == 0)
 					break;
-
-
-				servers.Add(steamID);
-
+				
 				Console.WriteLine($"DISCOVERED SERVERID={steamID.m_SteamID}");
 
 				var galaxyID = GalaxyIDFromSteamID(steamID);
 				
-				Console.WriteLine($"Received galaxy ID = {galaxyID}");
-				
-				var mm = GalaxyInstance.Matchmaking();
+				Console.WriteLine($"Received galaxy ID = {galaxyID?.ToString() ?? "NULL"}");
 
-				var unkown = mm.RequestLobbyData(galaxyID);
-				Console.WriteLine($"Request lobby data output = {unkown}");
+				if (galaxyID != null)
+				{
+					servers.Add(steamID);
 
-				Task task = DelayForLobbyData(steamID, galaxyID, serverI, id => browser?.GetSlot(id), id => browser?.RemoveSlot(id));
-				
+					var mm = GalaxyInstance.Matchmaking();
+
+					var unkown = mm.RequestLobbyData(galaxyID);
+					Console.WriteLine($"Request lobby data output = {unkown}");
+
+					Task task = DelayForLobbyData(steamID, galaxyID, serverI, id => browser?.GetSlot(id), id => browser?.RemoveSlot(id));
+				}
+
 				serverI++;
 			}
 			if (servers.Count == 0)

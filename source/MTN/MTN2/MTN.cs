@@ -21,7 +21,7 @@ namespace MTN2
     public class MTN : Mod {
         protected ICustomManager CustomManager;
         protected HarmonyInstance Harmony;
-        protected PatchManager PatchManager;
+        private PatchManager PatchManager;
         protected SpawnManager SpawnManager;
         protected Templates Template;
 

@@ -1,4 +1,6 @@
 {
   "EnableMod": true,
-  "EnableSnowWatering": true
+  "EnableSprinklerWatering": true,
+  "EnableSnowWatering": true,
+  "WaterBowlLocation": "54, 7"
 }

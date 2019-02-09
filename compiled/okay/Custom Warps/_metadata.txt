@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3445
+IDs: f4iTh.CustomWarps
+update keys: Nexus:3445

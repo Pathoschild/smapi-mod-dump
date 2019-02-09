@@ -85,7 +85,7 @@ These are default value:
 
 ### 5. Custom Farm cave
 + **useOptionalCave**: load custom FarmCave.xnb in ``assets`` folder  
-Default to ``true``
+Default to ``false``
 
 ### 6. Restore Default config values:
 Simply delete `config.json` and relaunch SMAPI.

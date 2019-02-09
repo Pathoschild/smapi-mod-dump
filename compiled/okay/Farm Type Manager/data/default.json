@@ -18,7 +18,16 @@
         ],
         "IncludeAreas": [],
         "ExcludeAreas": [],
-        "StrictTileChecking": "High"
+        "StrictTileChecking": "High",
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": [],
+          "Days": [],
+          "WeatherYesterday": [],
+          "WeatherToday": [],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        }
       }
     ],
     "PercentExtraSpawnsPerForagingLevel": 0,
@@ -58,7 +67,16 @@
         "AutoSpawnTerrainTypes": [],
         "IncludeAreas": [],
         "ExcludeAreas": [],
-        "StrictTileChecking": "High"
+        "StrictTileChecking": "High",
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": [],
+          "Days": [],
+          "WeatherYesterday": [],
+          "WeatherToday": [],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        }
       }
     ],
     "CustomTileIndex": []
@@ -77,7 +95,16 @@
         ],
         "IncludeAreas": [],
         "ExcludeAreas": [],
-        "StrictTileChecking": "High"
+        "StrictTileChecking": "High",
+        "ExtraConditions": {
+          "Years": [],
+          "Seasons": [],
+          "Days": [],
+          "WeatherYesterday": [],
+          "WeatherToday": [],
+          "WeatherTomorrow": [],
+          "LimitedNumberOfSpawns": null
+        }
       }
     ],
     "PercentExtraSpawnsPerMiningLevel": 0,
@@ -132,5 +159,8 @@
     680,
     681,
     685
-  ]
+  ],
+  "Internal_Save_Data": {
+    "WeatherForYesterday": "Sunny"
+  }
 }

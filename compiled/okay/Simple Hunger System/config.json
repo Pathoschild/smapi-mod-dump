@@ -1,4 +1,6 @@
 {
+  "addiction": true,
+  "substanceCompList": [],
   "randomHungerReduction": true,
   "maxRand": 80,
   "event_filling": true,
@@ -7,19 +9,10 @@
   "minimum_alcohol": 3,
   "hangover_chance": 33,
   "hangover_stamina": 25,
-  "NotFoodCompItems": [
-    "joja cola"
-  ],
+  "NotFoodCompItems": [],
   "alcoholCompDrinks": [],
-  "veryGoodCompList": [
-    "field snack",
-    "spaghetti"
-  ],
-  "rawFoodCompList": [
-    "wild horseradish",
-    "leek",
-    "parsnip"
-  ],
+  "veryGoodCompList": [],
+  "rawFoodCompList": [],
   "turn_off_listadding_after_consume": true,
   "Show_Hunger_Button": "H",
   "add_item_to_VeryGoodList": "O",
@@ -30,8 +23,8 @@
     "flower",
     "forage",
     "artisan goods",
-    "",
-    "monster loot"
+    "trash",
+    ""
   ],
   "goodFoodCategory": [
     "cooking"
@@ -43,11 +36,12 @@
   "HungerValueMax": 300.0,
   "HungerValueReduction": 35.0,
   "StartHunger": 279,
-  "SpringDays": [],
-  "SummerDays": [],
-  "FallDays": [],
-  "WinterDays": [
-    25
+  "festival_days": [
+    "egg festival",
+    "flower dance",
+    "luau",
+    "spirit's eve",
+    "feast of the winter star"
   ],
   "alcoholDrinks": [
     348,
@@ -55,7 +49,11 @@
     346,
     303
   ],
+  "food_type_message": true,
   "NotFoodMessage": "That was not filling at all.",
+  "RawFoodMessage": "That was barely a meal",
+  "GoodFoodMessage": "A feast for the mouth!",
   "FullMessage": "You are satisfied.",
-  "CurrentHungerValueMessage": "Current hunger Value: "
+  "CurrentHungerValueMessage": "Current hunger Value: ",
+  "festival_eat_message": "You've gorgued yourself on the free-food availible!"
 }

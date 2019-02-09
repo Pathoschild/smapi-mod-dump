@@ -1,9 +1,0 @@
-{
-  "StreakDisplay": "Folge: {0}",
-  "UnawareFish": "Der Fisch hat dich nicht bemerkt. ({0:P} leichterer Fang)",
-  "PossibleFish": "Gerade fangbare Fische: {0}",
-  "NoPossibleFish": "Du kannst gerade keine Fische fangen.",
-  "LostStreak": "Du hast deine Fang-Folge von {0} verloren.",
-  "WarnStreak": "Fange den Schatz und den Fisch, um deine Folge von {0} zu behalten!",
-  "KeptStreak": "Du hast deine Fang-Folge behalten!"
-}

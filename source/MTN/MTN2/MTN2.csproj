@@ -61,6 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyLoader.cs" />
+    <Compile Include="Compatibility\CustomFarmVer2p0.cs" />
     <Compile Include="Compatibility\Version1\additionalMap.cs" />
     <Compile Include="Compatibility\Version1\additionalTileSheet.cs" />
     <Compile Include="Compatibility\Version1\CustomFarmVer1.cs" />
@@ -90,6 +92,7 @@
     <Compile Include="MapData\Structure.cs" />
     <Compile Include="MapData\Structs\Interaction.cs" />
     <Compile Include="MapData\Structs\Warp.cs" />
+    <Compile Include="MtnLogic.cs" />
     <Compile Include="Menus\CharacterCustomizationMTN.cs" />
     <Compile Include="MTN.cs" />
     <Compile Include="Messages\ServerIntro.cs" />

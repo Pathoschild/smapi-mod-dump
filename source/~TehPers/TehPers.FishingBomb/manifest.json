@@ -1,0 +1,19 @@
+﻿{
+  "Name": "Teh's Fishing Bomb",
+  "Author": "TehPers",
+  "Version": "1.0.0-beta.1",
+  "Description": "Adds a catchable exploding bomb while fishing.",
+  "UniqueID": "TehPers.FishingBomb",
+  "EntryDll": "TehPers.FishingBomb.dll",
+  "MinimumApiVersion": "2.8.2",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "TehPers.FishingOverhaul"
+    },
+    {
+      "UniqueID": "TehPers.CoreMod",
+      "IsRequired": false
+    }
+  ]
+}
