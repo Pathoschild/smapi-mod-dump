@@ -13,10 +13,10 @@ This is the source code for the best, poorly coded mods around!
 | **Mod Name** | Source Code Folder | Mod Download | Source Code Link | Release Notes |
 | ------------ | ------------------ | ------------ | ---------------- | ------------- |
 | Bigger Riverlands Farm | ```BiggerRiverlandsFarm``` | [nexus](https://www.nexusmods.com/stardewvalley/mods/3025) | [source](BiggerRiverlandsFarm), [download source](BiggerRiverlandsFarm/BiggerRiverlandsFarm_SourceCode.zip) | [changelog via nexus](https://www.nexusmods.com/stardewvalley/mods/3025?tab=logs) |
-| Health and Stamina Regeneration | ```HealthStaminaRegen``` | [nexus](https://www.nexusmods.com/stardewvalley/mods/3207) | [source](HealthStaminaRegen), [download source](HealthStaminaRegen/HealthStaminaRegen-1.0.1_SourceCode.zip)  | [changelog](HealthStaminaRegen/changelog.md) |
+| Health and Stamina Regeneration | ```HealthStaminaRegen``` | [nexus](https://www.nexusmods.com/stardewvalley/mods/3207) | [source](HealthStaminaRegen), [download source](HealthStaminaRegen/HealthStaminaRegen_Source.zip)  | [changelog](HealthStaminaRegen/changelog.md) |
 | Sprint Sprint Sprint! | ```Sprint``` | [nexus](https://www.nexusmods.com/stardewvalley/mods/3294), [custom](https://github.com/JessebotX/StardewMods/releases/tag/Sprint) | [source](Sprint), [download source](Sprint/SprintSourceCode.zip) | [changelog](Sprint/changelog.md) |
 
-## Contributing 
+## Contributing
 See [Contribution Guidelines](https://github.com/JessebotX/StardewMods/blob/master/contributing.md)
 *Includes* **Issues and Pull Requests, etc.**
 

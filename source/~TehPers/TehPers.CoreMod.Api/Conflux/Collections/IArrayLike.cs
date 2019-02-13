@@ -1,4 +1,6 @@
-﻿namespace TehPers.CoreMod.Api.Conflux.Collections {
+﻿using System;
+
+namespace TehPers.CoreMod.Api.Conflux.Collections {
     public interface IArrayLike<T> : IReadonlyArrayLike<T> {
         /// <summary>Selects an element.</summary>
         /// <param name="index">The index of the element to select.</param>

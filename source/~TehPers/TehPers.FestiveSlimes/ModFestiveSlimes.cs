@@ -63,15 +63,7 @@ namespace TehPers.FestiveSlimes {
             ModFood candy = new ModFood(coreApi, candySprite, "candy", 20, 5, Category.Trash, false, candyBuffs);
 
             // Register the candy with the core API to add it as an object in the game
-            ItemKey candyKey = coreApi.Items.CommonRegistry.Objects.Register("candy", candy);
-            IModInfo jsonAssets = this.Helper.ModRegistry.Get("spacechase0.JsonAssets");
-
-            // TODO: DEBUG - Add a recipe for candy
-            ModRecipe candyRecipe = new ModRecipe(coreApi, candySprite, new ModRecipePart(coreApi, candyKey), new SObjectRecipePart(coreApi, Objects.Stone, 10), new ModRecipePart(coreApi, candyKey, 5), new ModRecipePart(coreApi, new ItemKey(jsonAssets.Manifest, "Honey Cake")), new ModRecipePart(coreApi, new ItemKey(jsonAssets.Manifest, "Iron Spear")), new ModRecipePart(coreApi, new ItemKey(jsonAssets.Manifest, "Nonexistent item")));
-            string candyRecipeName = coreApi.Items.RegisterCraftingRecipe(candyRecipe);
-            this.Helper.Events.GameLoop.SaveLoaded += (sender, args) => {
-                Game1.player.craftingRecipes.Add(candyRecipeName, 0);
-            };
+            coreApi.Items.CommonRegistry.Objects.Register("candy", candy);
         }
 
         private void ReplaceSlimes() {

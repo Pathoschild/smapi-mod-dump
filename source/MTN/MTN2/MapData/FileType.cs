@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace MTN2.MapData {
     public enum FileType {
         raw,
+        tbin,
         xnb
     }
 }

@@ -36,7 +36,7 @@ namespace BetterFarmAnimalVariety.Commands
                 new Command("bfav_fa_setshopdescription", "Set the category's animal shop description.\nUsage: bfav_fa_setshopdescription <category> <description>\n- category: the unique animal category.\n- description: the description.", this.SetAnimalShopDescription),
                 new Command("bfav_fa_setshopprice", "Set the category's animal shop price.\nUsage: bfav_fa_setshopprice <category> <price>\n- category: the unique animal category.\n- price: the integer amount.", this.SetAnimalShopPrice),
                 new Command("bfav_fa_setshopicon", "Set the category's animal shop icon.\nUsage: bfav_fa_setshopicon <category> <filename>\n- category: the unique animal category.\n- filename: the name of the file (ex. filename.png).", this.SetAnimalShopIcon),
-                new Command("bfav_fa_fix", "Substitutes broken farm animal types from premature patch removal with vanilla versions.\nUsage: bfav_fa_fix", this.Fix),
+                new Command("bfav_fa_fix", "Substitutes broken farm animal types from premature patch removal with vanilla versions.\nUsage: bfav_fa_fix <savefile>\n- savefile: save file name (optional)", this.Fix),
             };
         }
 
@@ -51,89 +51,106 @@ namespace BetterFarmAnimalVariety.Commands
                 return;
             }
 
+            if (args.Length > 1)
+            {
+                this.Monitor.Log($"incorrect arguments", LogLevel.Error);
+                return;
+            }
+
             // Need to manually parse the XML since casting to a FarmAnimal 
             // triggers the data search crash that this command aims to avoid
-            if (Directory.Exists(Constants.SavesPath))
+            if (!Directory.Exists(Constants.SavesPath))
             {
-                List<string> allSubstitutions = new List<string>();
+                this.Monitor.Log($"cannot find saves path directory", LogLevel.Error);
+                return;
+            }
 
-                // Baseline
-                FarmAnimalsData data = new FarmAnimalsData();
-
-                WhiteVariation whiteVariation = new WhiteVariation();
-                string coopDwellerSubstitute = whiteVariation.ApplyPrefix(Paritee.StardewValleyAPI.FarmAnimals.Type.Base.Chicken.ToString());
-                string barnDwellerSubstitute = whiteVariation.ApplyPrefix(Paritee.StardewValleyAPI.FarmAnimals.Type.Base.Cow.ToString());
-
+            if (args.Length.Equals(0))
+            {
                 string[] saveFolders = Directory.GetDirectories(Constants.SavesPath);
 
                 foreach (string saveFolder in saveFolders)
                 {
                     // Scan only the most recent save if it can be found
-                    string saveFile = Path.Combine(saveFolder, Path.GetFileName(saveFolder));
+                    this.FixSave(saveFolder);
+                }
+            }
+            else
+            {
+                this.FixSave(Path.Combine(Constants.SavesPath, args[0]));
+            }
+        }
 
-                    if (File.Exists(saveFile))
+        private void FixSave(string saveFolder)
+        {
+            string saveFile = Path.Combine(saveFolder, Path.GetFileName(saveFolder));
+
+            if (!File.Exists(saveFile))
+            {
+                this.Monitor.Log($"{saveFile} does not exist", LogLevel.Error);
+                return;
+            }
+
+            // Baseline
+            FarmAnimalsData data = new FarmAnimalsData();
+
+            WhiteVariation whiteVariation = new WhiteVariation();
+            string coopDwellerSubstitute = whiteVariation.ApplyPrefix(Paritee.StardewValleyAPI.FarmAnimals.Type.Base.Chicken.ToString());
+            string barnDwellerSubstitute = whiteVariation.ApplyPrefix(Paritee.StardewValleyAPI.FarmAnimals.Type.Base.Cow.ToString());
+
+            this.Monitor.Log($"Searching {saveFolder} for problematic farm animal types", LogLevel.Trace);
+
+            // Replace barn animals with White Cows and coop animals with White Chickens
+            XmlDocument doc = new XmlDocument();
+
+            // Track the types to be substituted
+            List<string> typesToBeSubstituted = new List<string>();
+
+            XmlNamespaceManager namespaceManager = new XmlNamespaceManager(doc.NameTable);
+            namespaceManager.AddNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+
+            // Load the xml
+            doc.Load(saveFile);
+
+            XmlNodeList buildings = doc.SelectNodes("//GameLocation[@xsi:type='Farm']/buildings/Building[@xsi:type='Barn' or @xsi:type='Coop']", namespaceManager);
+
+            this.Monitor.Log($"- Checking {buildings.Count} buildings", LogLevel.Trace);
+
+            // Go through each building
+            for (int i = 0; i < buildings.Count; i++)
+            {
+                XmlNode building = buildings[i];
+
+                bool isCoop = building.Attributes["xsi:type"].Value.Equals("Coop");
+
+                // Grab only the animal types
+                XmlNodeList types = building.SelectNodes(".//FarmAnimal/type");
+
+                for (int k = 0; k < types.Count; k++)
+                {
+                    XmlNode type = types[k];
+
+                    // If the type can't be found in the data entries
+                    // then substitute it with an appropriate basic animal
+                    if (!data.GetEntries().ContainsKey(type.InnerText))
                     {
-                        this.Monitor.Log($"Searching {saveFolder} for problematic farm animal types", LogLevel.Trace);
+                        typesToBeSubstituted.Add(type.InnerText);
 
-                        // Replace barn animals with White Cows and coop animals with White Chickens
-                        XmlDocument doc = new XmlDocument();
-
-                        // Track the types to be substituted
-                        List<string> typesToBeSubstituted = new List<string>();
-
-                        XmlNamespaceManager namespaceManager = new XmlNamespaceManager(doc.NameTable);
-                        namespaceManager.AddNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-
-                        // Load the xml
-                        doc.Load(saveFile);
-
-                        XmlNodeList buildings = doc.SelectNodes("//GameLocation[@xsi:type='Farm']/buildings/Building[@xsi:type='Barn' or @xsi:type='Coop']", namespaceManager);
-
-                        this.Monitor.Log($"- Checking {buildings.Count} buildings", LogLevel.Trace);
-
-                        // Go through each building
-                        for (int i = 0; i < buildings.Count; i++)
-                        {
-                            XmlNode building = buildings[i];
-
-                            bool isCoop = building.Attributes["xsi:type"].Value.Equals("Coop");
-
-                            // Grab only the animal types
-                            XmlNodeList types = building.SelectNodes(".//FarmAnimal/type");
-
-                            for (int k = 0; k < types.Count; k++)
-                            {
-                                XmlNode type = types[k];
-
-                                // If the type can't be found in the data entries
-                                // then substitute it with an appropriate basic animal
-                                if (!data.GetEntries().ContainsKey(type.InnerText))
-                                {
-                                    typesToBeSubstituted.Add(type.InnerText);
-
-                                    type.InnerText = isCoop ? coopDwellerSubstitute : barnDwellerSubstitute;
-                                }
-                            }
-                        }
-
-                        // Track everything
-                        allSubstitutions = allSubstitutions.Concat(typesToBeSubstituted).ToList();
-
-                        if (typesToBeSubstituted.Count > 0)
-                        {
-                            // save the XmlDocument back to disk
-                            doc.Save(saveFile);
-
-                            this.Monitor.Log($"- Converted {typesToBeSubstituted.Count} farm animals to White Cows or White Chickens: {String.Join(", ", typesToBeSubstituted.Distinct())}", LogLevel.Trace);
-                        }
-                        else
-                        {
-                            this.Monitor.Log($"- No problematic farm animals found", LogLevel.Trace);
-                        }
+                        type.InnerText = isCoop ? coopDwellerSubstitute : barnDwellerSubstitute;
                     }
                 }
+            }
 
-                this.Monitor.Log($"Completed scan of problematic farm animal types: {allSubstitutions.Count} substitutions" + (allSubstitutions.Count > 0 ? $" of {String.Join(", ", allSubstitutions.Distinct())}" : ""), LogLevel.Debug);
+            if (typesToBeSubstituted.Count > 0)
+            {
+                // save the XmlDocument back to disk
+                doc.Save(saveFile);
+
+                this.Monitor.Log($"- Converted {typesToBeSubstituted.Count} farm animals to White Cows or White Chickens: {String.Join(", ", typesToBeSubstituted.Distinct())}", LogLevel.Trace);
+            }
+            else
+            {
+                this.Monitor.Log($"- No problematic farm animals found", LogLevel.Trace);
             }
         }
 

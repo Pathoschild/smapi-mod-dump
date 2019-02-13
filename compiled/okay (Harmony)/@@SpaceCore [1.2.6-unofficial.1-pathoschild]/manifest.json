@@ -1,0 +1,11 @@
+{
+  "Name": "SpaceCore",
+  "Author": "spacechase0",
+  "Version": "1.2.6-unofficial.1-pathoschild",
+  "Description": "Required by a few mods.",
+  "UniqueID": "spacechase0.SpaceCore",
+  "EntryDll": "SpaceCore.dll",
+  "MinimumApiVersion": "2.11.0-beta.2",
+  "UpdateKeys": [ "Nexus:1348", "Chucklefish:4868" ],
+  "spacechase0": "spacecore"
+}

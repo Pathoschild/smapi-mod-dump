@@ -1,23 +1,22 @@
-﻿using System;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using System;
+using System.Linq;
 using TehPers.CoreMod.Api;
 using TehPers.CoreMod.Api.Items;
 using TehPers.CoreMod.ContentPacks;
 using TehPers.CoreMod.Drawing;
 using TehPers.CoreMod.Integration;
 using TehPers.CoreMod.Items;
-using SObject = StardewValley.Object;
 
 namespace TehPers.CoreMod {
     public class ModCore : Mod {
         private CoreApiFactory _coreApiFactory;
         private readonly ItemDelegator _itemDelegator;
-
+        
         public ModCore() {
             // Patch needs to happen in constructor otherwise it doesn't work with Better Artisan Good Icons for some reason.
             // If that mod patches SObject.drawWhenHeld before this mod patches SpriteBatch.Draw, then the items don't appear

@@ -37,8 +37,8 @@ namespace MTN2.Patches.FarmPatches
         public static void Postfix(Farm __instance) {
             if (customManager.Canon || __instance == null || __instance.Name != "Farm") return;
 
-            int binX = customManager.ShippingBinPoints.X;
-            int binY = customManager.ShippingBinPoints.Y;
+            int binX = customManager.ShippingBin.X;
+            int binY = customManager.ShippingBin.Y;
 
             TemporaryAnimatedSprite actualBinLid = new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(134, 226, 30, 25), new Vector2(binX, binY) * 64f + new Vector2(2f, -7f) * 4f, false, 0f, Color.White) {
                 holdLastFrame = true,

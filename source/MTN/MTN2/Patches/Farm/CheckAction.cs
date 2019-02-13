@@ -63,8 +63,8 @@ namespace MTN2.Patches.FarmPatches
         /// <param name="who">From original method. The farmer (player) who clicked</param>
         public static void Postfix(Farm __instance, ref bool __result, Location tileLocation, Rectangle viewport, Farmer who) {
             if (currentFarm != __instance) currentFarm = __instance;
-            int binX = (customManager.Canon) ? 71 : customManager.ShippingBinPoints.X;
-            int binY = (customManager.Canon) ? 13 : customManager.ShippingBinPoints.Y;
+            int binX = (customManager.Canon) ? 71 : customManager.ShippingBin.X;
+            int binY = (customManager.Canon) ? 13 : customManager.ShippingBin.Y;
             if (tileLocation.X >= binX && tileLocation.X <= binX + 1 && tileLocation.Y >= binY && tileLocation.Y <= binY + 1) {
                 ItemGrabMenu itemGrabMenu = new ItemGrabMenu(null, true, false, new InventoryMenu.highlightThisItem(Utility.highlightShippableObjects), new ItemGrabMenu.behaviorOnItemSelect(shipItem), "", null, true, true, false, true, false, 0, null, -1, null);
                 itemGrabMenu.initializeUpperRightCloseButton();

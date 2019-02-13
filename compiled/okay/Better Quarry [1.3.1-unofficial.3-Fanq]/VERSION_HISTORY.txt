@@ -1,0 +1,30 @@
+1.0
+Initial release
+
+1.0.1
+Patched for SMAPI 1.1
+
+1.1
+Added "skillLevelCorrelation" (lock certain ores/gems from spawn until required skill level is reached) and "personalExperienceCorrelation" (lock certain ores/gems from spawn until they are found and shipped) settings.
+Added "bonusPerSkillLevel" setting to affect the number of items to spawn.
+Added "discovering" new mineable objects (respawning rocks as new items) with shipping ores/gems and/or raising mining skill level.
+Added "verbose" setting to configure the amiunt of messages logged to console.
+Replaced "initialSpawnChance" with "baseNumber" to make the setting more understandable and give more stable results.
+Removed "explodeValuables" option to avoid confusion when using "Mining with Explosives" mod. All items except Mystic Stones can be destroyed with bombs.
+Reworked item selection code.
+
+1.2
+Added base spawn chance for each ore to config.
+Fixed bug that prevented spawning ores and gems.
+
+1.2.1
+Compatibility patch for SMAPI 1.10
+
+1.3
+Compatibility fix for Stardew Valley 1.3
+
+1.3.1-unofficial.1-Olivki
+Compatibility fix for Stardew Valley 1.3.32 & SMAPI 2.8
+
+1.3.1-unofficial.3-Fanq
+Compatibility fix for upcoming SMAPI 3.0 update

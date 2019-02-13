@@ -35,7 +35,6 @@ namespace Starvation
 
             else
             {
-                e.SpriteBatch.Draw(HungerBarBack, new Rectangle(0 ,0 ,12 ,56), Color.White);
             }
         }
     }

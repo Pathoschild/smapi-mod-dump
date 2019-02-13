@@ -25,7 +25,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8.0</LangVersion>
+    <NullableContextOptions>enable</NullableContextOptions>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -63,6 +64,7 @@
     <Compile Include="Classes, Structs, Enums\Items\Recipes\SimpleRecipe.cs" />
     <Compile Include="Classes, Structs, Enums\Items\WeaponType.cs" />
     <Compile Include="Conflux\Collections\LinkedListX.cs" />
+    <Compile Include="Conflux\Extensions\IndexExtensions.cs" />
     <Compile Include="Interfaces\Drawing\Sprites\IHatSpriteSheet.cs" />
     <Compile Include="Interfaces\Drawing\Sprites\ITintedSprite.cs" />
     <Compile Include="Interfaces\Items\IItemComparer.cs" />
@@ -87,13 +89,13 @@
     <Compile Include="Conflux\Collections\ArrayX.cs" />
     <Compile Include="Conflux\Collections\CollectionExtensions.cs" />
     <Compile Include="Conflux\Collections\IArrayLike.cs" />
-    <Compile Include="Conflux\Collections\Index.cs" />
+    <Compile Include="System\Index.cs" />
     <Compile Include="Conflux\Collections\IReadonlyArrayLike.cs" />
     <Compile Include="Conflux\Collections\IReadonlySliceable.cs" />
     <Compile Include="Conflux\Collections\ISliceable.cs" />
     <Compile Include="Conflux\Collections\ISliceableList.cs" />
     <Compile Include="Conflux\Collections\ListX.cs" />
-    <Compile Include="Conflux\Collections\Range.cs" />
+    <Compile Include="System\Range.cs" />
     <Compile Include="Conflux\Collections\ReadonlySlice.cs" />
     <Compile Include="Conflux\Collections\Slice.cs" />
     <Compile Include="Conflux\OperatorExtensions.cs" />

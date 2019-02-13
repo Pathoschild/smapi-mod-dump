@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Harmony;
 using Microsoft.Xna.Framework;
 using MTN2.Locations;
+using MTN2.Management;
 using MTN2.MapData;
 using MTN2.Menus;
 using MTN2.Messages;
@@ -19,16 +20,18 @@ namespace MTN2
 {
     /// <summary>The mod entry point.</summary>
     public class MTN : Mod {
-        protected ICustomManager CustomManager;
-        protected HarmonyInstance Harmony;
+        private HarmonyInstance Harmony;
         private PatchManager PatchManager;
-        protected SpawnManager SpawnManager;
-        protected Templates Template;
+        private SpawnManager SpawnManager;
+        private Templates Template;
+
+        public ICustomManager CustomManager { get; private set; }
 
         /// <summary>
         /// Constructor
         /// </summary>
         public MTN() {
+            Harmony = HarmonyInstance.Create("MTN.SgtPickles");
             CustomManager = new CustomManager();
             PatchManager = new PatchManager(CustomManager);
             SpawnManager = new SpawnManager(CustomManager);
@@ -41,7 +44,6 @@ namespace MTN2
         /// <param name="helper">Interface of ModHelper. Provides access to various SMAPI tools/methods.</param>
         public override void Entry(IModHelper helper) {
             Monitor.Log("Begin: Harmony Patching", LogLevel.Trace);
-            Harmony = HarmonyInstance.Create("MTN.SgtPickles");
             PatchManager.Initialize(this, Monitor);
             PatchManager.Apply(Harmony);
             

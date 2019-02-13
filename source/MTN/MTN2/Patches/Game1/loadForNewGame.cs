@@ -59,6 +59,7 @@ namespace MTN2.Patches.Game1Patches {
 
                 mapAssetKey = customManager.GetAssetKey(out map, "Farm");
                 Game1.locations[farmIndex] = new Farm(mapAssetKey, "Farm");
+                if (customManager.LoadedFarm.FarmMap.FileType != FileType.xnb) Game1.locations[farmIndex].updateMap();
 
                 if (customManager.LoadedFarm.StartingGreenHouse != null) {
                     for (greenhouseIndex = 0; greenhouseIndex < Game1.locations.Count; greenhouseIndex++) {
@@ -69,9 +70,6 @@ namespace MTN2.Patches.Game1Patches {
                     Game1.locations[greenhouseIndex] = new GameLocation(mapAssetKey, "Greenhouse");
                 }
             }
-
-            //Loaded Farm Maps
-            //Memory.farmMaps.Add(new additionalMap<Farm>("BaseFarm", "Farm", (Game1.whichFarm > 4) ? Memory.loadedFarm.farmMapType : fileType.xnb, "Farm", "Base Farm", Game1.getFarm()));
 
             if (!customManager.Canon && customManager.LoadedFarm.AdditionalMaps != null) {
                 foreach (MapFile mf in customManager.LoadedFarm.AdditionalMaps) {

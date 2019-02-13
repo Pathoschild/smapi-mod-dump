@@ -4,6 +4,8 @@ Once all of this is done, MTN2 will be out of Alpha and in Beta.
 
 [X] Base Rewrite
 
+[X] Implement TBIN Read Support
+[ ] Implement Custom Tilesheet support for XNB maps
 [ ] Implement Custom Farmhouse
 [ ] Implement Custom Greenhouse
 - [ ] Implement Ability to adjust inner greenhouse map
@@ -11,14 +13,18 @@ Once all of this is done, MTN2 will be out of Alpha and in Beta.
 - [ ] Implement user ability to turn stand-alone off/on.
 [ ] Implement Map overrides
 [ ] Implement "Inject" Method for custom maps [Place between two canon maps]
-[ ] Implement Spawn Rules: Ores
-[ ] Implement Spawn Rules: Resource
-[ ] Implement Spawn Rules: Foraging
+[-] Implement Spawn Rules: Ores
+[-] Implement Spawn Rules: Resource
+[-] Implement Spawn Rules: Foraging
+[ ] Implement Spawn Rules: Fishing
 [ ] Implement Custom Logic (DLL support)
 [ ] Implement Multi-Farm Maps
 [ ] Implement Monster Spawn Pool
+[ ] Implement Map Diff Patching
 
 [ ] Implement "Mod House"
 - [ ] Implement Ability to change exterior farmhouse look
 - [ ] Implement Ability to change exterior greenhouse look
 - [ ] Implement Ability to change the internal greenhouse map.
+
+[ ] GUI Tool for farmType.json

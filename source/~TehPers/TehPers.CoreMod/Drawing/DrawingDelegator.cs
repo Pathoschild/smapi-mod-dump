@@ -75,7 +75,7 @@ namespace TehPers.CoreMod.Drawing {
         public static void UpdateTexture(AssetLocation location, Texture2D newTexture) {
             if (DrawingDelegator._assetToTrackedTexture.TryGetValue(location, out TrackedTexture trackedTexture)) {
                 trackedTexture.CurrentTexture = newTexture;
-                DrawingDelegator._textureToTrackedTexture.Add(newTexture, trackedTexture);
+                DrawingDelegator._textureToTrackedTexture.GetValue(newTexture, _ => trackedTexture);
             }
         }
 

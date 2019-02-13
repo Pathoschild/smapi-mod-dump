@@ -452,9 +452,9 @@ namespace TehPers.CoreMod.Items.Crafting {
         #region CraftingPage Patches
         private static bool CraftingPage_layoutRecipes_Prefix(CraftingPage __instance, List<string> playerRecipes, bool ___cooking) {
             // Just run the original method if no recipes were added
-            if (!CraftingManager._instance._addedRecipes.Any()) {
-                return true;
-            }
+            // if (!CraftingManager._instance._addedRecipes.Any()) {
+            //     return true;
+            // }
 
             // Layout the crafting pages
             CraftingManager._instance._coreMod.Monitor.Log($"Laying out {playerRecipes.Count} recipes", LogLevel.Trace);

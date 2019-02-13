@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Better Quarry",
+  "Author": "Nishtra",
+  "Version": "1.3.1-unofficial.3-Fanq",
+  "MinimumApiVersion": "2.10.1",
+  "Description": "Improves the spawn rates and items quality for Stardew Vally quarry and makes it generally more worthwhile.",
+  "UniqueID": "BetterQuarry",
+  "EntryDll": "BetterQuarry.dll",
+  "UpdateKeys": ["Nexus:771"]
+}

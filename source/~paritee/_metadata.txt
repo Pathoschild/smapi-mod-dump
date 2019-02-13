@@ -7,9 +7,11 @@ mods:
    Paritee's Treat Your Animals
 
 latest commit:
-   commit 6e0d19cbfc95542559ea61055777d25718936de3
+   commit 16dc11c1f37c3b5d60b921d3ca9041b9aa1ac895
    Author: Paritee <paritee.hi@gmail.com>
-   Date:   Fri Feb 8 02:40:38 2019 -0500
+   Date:   Fri Feb 8 16:24:40 2019 -0500
    
-       2.2.1
+       2.2.2
+       
+       Better checking of one save at a time. Handles scenarios where one save may want to use the mod and another does not.
    

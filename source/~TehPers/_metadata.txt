@@ -8,10 +8,10 @@ mods:
    Teh's Fishing Overhaul
 
 latest commit:
-   commit 0e195b37f42eefa2c6bd3475c36911f02a8f889c
-   Merge: 5176e9c 132b808
+   commit 9f5cb5c4568c6589b3487ccf47a2acfaf21e7bfb
    Author: TehPers <tehperz@gmail.com>
-   Date:   Tue Feb 5 22:50:14 2019 -0600
+   Date:   Sun Feb 10 22:40:49 2019 -0600
    
-       Merge branch 'master' into 3.0-dev
+       Cleaned up repository
+       Fixed crafting recipes not working
    

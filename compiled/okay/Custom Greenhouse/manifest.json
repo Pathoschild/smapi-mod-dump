@@ -1,0 +1,10 @@
+﻿{
+   "Name": "Custom Greenhouse",
+   "Author": "Forkmaster",
+   "Version": "1.0.2",
+   "Description": "15x15 Greenhouse with Cellar.",
+   "UniqueID": "Forkmaster.CustomGreenhouse",
+   "EntryDll": "CustomGreenhouse.dll",
+   "MinimumApiVersion": "2.9.0",
+   "UpdateKeys": [ "Nexus:3464" ]
+}

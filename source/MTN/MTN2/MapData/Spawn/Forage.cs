@@ -16,7 +16,7 @@ namespace MTN2.MapData {
         public Forage(string MapName) : base(MapName) { }
 
         public override void AddAtPoint(Vector2 Point, Spawn SItem) {
-            Map.dropObject(new SObject(Point, SItem.ItemId, null, false, true, false, true));
+            Map.dropObject(new SObject(Point, SItem.ItemId, null, false, true, false, true), Point * 64f, StardewValley.Game1.viewport, true, null);
         }
 
         public override void SpawnAll(int Attempts) {

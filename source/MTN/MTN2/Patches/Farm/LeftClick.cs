@@ -51,8 +51,8 @@ namespace MTN2.Patches.FarmPatches
         public static void Postfix(Farm __instance, ref bool __result, int x, int y, Farmer who) {
             if (customManager.Canon || __instance.Name != "Farm") return;
 
-            int binX = customManager.ShippingBinPoints.X;
-            int binY = customManager.ShippingBinPoints.Y;
+            int binX = customManager.ShippingBin.X;
+            int binY = customManager.ShippingBin.Y;
 
             if ((who.ActiveObject != null) &&
                 (x / 64 >= binX) && (x / 64 <= binX + 1) &&

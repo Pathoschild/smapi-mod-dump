@@ -4,8 +4,17 @@
 namespace System {
     [Serializable]
     public readonly partial struct ValueTuple : IEquatable<ValueTuple>, IStructuralEquatable, IStructuralComparable, IComparable, IComparable<ValueTuple> {
-        internal static int CombineHashes() {
-            return 0;
+        internal static int CombineHashes(params object[] items) {
+            if (items == null) {
+                throw new ArgumentNullException(nameof(items));
+            }
+
+            int hashCode = 0;
+            foreach (var item in items) {
+                hashCode = unchecked((hashCode * 397) ^ (item?.GetHashCode() ?? 0));
+            }
+
+            return hashCode;
         }
 
         public int CompareTo(object other, IComparer comparer) {

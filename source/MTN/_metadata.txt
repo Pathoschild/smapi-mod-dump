@@ -5,9 +5,9 @@ mods:
    MTN
 
 latest commit:
-   commit eaadfe3c80edea1e408a08ee6f3b39fd62605e43
+   commit f3e98fc68004fa46f7734ed3c76c1be4809da518
    Author: David Weil <gamemx25@gmail.com>
-   Date:   Mon Feb 4 13:25:23 2019 -0600
+   Date:   Sun Feb 10 01:33:17 2019 -0600
    
-       Alpha9
+       Refactor. Reorganize. Potential Fix for TBIN maps in multiplayer
    

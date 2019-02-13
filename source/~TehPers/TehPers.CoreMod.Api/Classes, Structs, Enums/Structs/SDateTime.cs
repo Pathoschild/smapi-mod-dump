@@ -22,12 +22,14 @@ namespace TehPers.CoreMod.Api.Structs {
         public int Year => (int) this.TotalYears + 1;
 
         /// <summary>The number of elapsed seasons in the year.</summary>
-        public Season Season => ((int) this.TotalSeasons % 4).Match<int, Season>()
-            .When(0, Season.Spring)
-            .When(1, Season.Summer)
-            .When(2, Season.Fall)
-            .When(3, Season.Winter)
-            .ElseThrow();
+        public Season Season => ((int) this.TotalSeasons % 4) switch
+        {
+            0 => Season.Spring,
+            1 => Season.Summer,
+            2 => Season.Fall,
+            3 => Season.Winter,
+            _ => throw new InvalidOperationException()
+        };
 
         /// <summary>The number of elapsed days in the season.</summary>
         public int DayOfSeason => (int) this.TotalDays % 28 + 1;
@@ -39,12 +41,14 @@ namespace TehPers.CoreMod.Api.Structs {
         public int MinutesOfDay => this.TotalMinutes % 2400;
 
         public SDateTime(int years, Season season, int days = 0, int minutes = 0) {
-            int seasons = season.Match<Season, int>()
-                .When(Season.Spring, 0)
-                .When(Season.Summer, 1)
-                .When(Season.Fall, 2)
-                .When(Season.Winter, 3)
-                .ElseThrow();
+            int seasons = season switch
+            {
+                Season.Spring => 0,
+                Season.Summer => 1,
+                Season.Fall => 2,
+                Season.Winter => 3,
+                _ => throw new ArgumentOutOfRangeException(nameof(season))
+            }; 
 
             this.TotalMinutes = minutes + days * 2400 + seasons * 28 * 2400 + years * 4 * 28 * 2400;
         }

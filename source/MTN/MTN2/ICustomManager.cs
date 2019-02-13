@@ -18,7 +18,7 @@ namespace MTN2 {
         int ScienceHouseIndex { get; }
         CustomFarm SelectedFarm { get; }
         CustomFarm LoadedFarm { get; }
-        Interaction ShippingBinPoints { get; }
+        Interaction ShippingBin { get; }
         Interaction RabbitShrine { get; }
         Interaction PetWaterBowl { get; }
         Point FarmHousePorch { get; }

@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TehPers.CoreMod.Api.Conflux.Extensions;
 
 namespace TehPers.CoreMod.Api.Conflux.Collections {
     public class ListX<T> : ISliceableList<T> {

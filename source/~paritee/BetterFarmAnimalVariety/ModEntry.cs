@@ -16,6 +16,7 @@ using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using static StardewValley.Menus.LoadGameMenu;
 
 namespace BetterFarmAnimalVariety
 {
@@ -66,7 +67,6 @@ namespace BetterFarmAnimalVariety
             this.Helper.Content.AssetEditors.Add(new AnimalBirthEditor(this));
 
             // Events
-            this.Helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             this.Helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             this.Helper.Events.Display.RenderingActiveMenu += this.OnRenderingActiveMenu;
             this.Helper.Events.Display.RenderedActiveMenu += this.OnRenderedActiveMenu;
@@ -127,13 +127,6 @@ namespace BetterFarmAnimalVariety
             config.InitializeFarmAnimals();
 
             return config;
-        }
-
-        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
-        {
-            // Always attempt to clean up the animal types on launch to prevent on save load crashes
-            // if the patch mod had been removed without the animals being sold/deleted
-            this.Helper.ConsoleCommands.Trigger("bfav_fa_fix", new string[] { });
         }
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
@@ -241,8 +234,31 @@ namespace BetterFarmAnimalVariety
             this.ChangedPurchaseAnimalsMenuClickableComponents = false;
         }
 
+        private void AttemptToCleanSaves(ButtonPressedEventArgs e)
+        {
+            // Always attempt to clean up the animal types to prevent on save load crashes
+            // if the patch mod had been removed without the animals being sold/deleted
+            if (Game1.activeClickableMenu is TitleMenu titleMenu && TitleMenu.subMenu is LoadGameMenu loadGameMenu)
+            {
+                for (int index = 0; index < loadGameMenu.slotButtons.Count; index++)
+                {
+                    if (loadGameMenu.slotButtons[index].containsPoint((int)e.Cursor.ScreenPixels.X, (int)e.Cursor.ScreenPixels.Y))
+                    {
+                        int currentItemIndex = this.Helper.Reflection.GetField<int>(loadGameMenu, "currentItemIndex").GetValue();
+                        SaveFileSlot saveFileSlot = this.Helper.Reflection.GetField<List<MenuSlot>>(loadGameMenu, "menuSlots").GetValue()[currentItemIndex + index] as SaveFileSlot;
+
+                        this.Helper.ConsoleCommands.Trigger("bfav_fa_fix", new string[] { saveFileSlot.Farmer.slotName });
+
+                        break;
+                    }
+                }
+            }
+        }
+
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
+            this.AttemptToCleanSaves(e);
+
             // Ignore if player hasn't loaded a save yet
             if (!Context.IsWorldReady)
             {

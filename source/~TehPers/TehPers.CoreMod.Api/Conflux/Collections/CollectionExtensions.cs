@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using TehPers.CoreMod.Api.Conflux.Extensions;
 
 namespace TehPers.CoreMod.Api.Conflux.Collections {
     public static class CollectionExtensions {

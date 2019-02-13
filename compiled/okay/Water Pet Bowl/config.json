@@ -2,5 +2,6 @@
   "EnableMod": true,
   "EnableSprinklerWatering": true,
   "EnableSnowWatering": true,
+  "CustomWaterBowlSet": false,
   "WaterBowlLocation": "54, 7"
 }

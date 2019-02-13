@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/798
-IDs: tstaples.StackSplitX
-update keys: Nexus:798, GitHub:tstaples/StackSplitX, GitHub:PhantomGamers/StackSplitX

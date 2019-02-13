@@ -44,7 +44,7 @@ namespace MTN2.Patches.FarmPatches
                 if (customManager.LoadedFarm == null) {
                     customManager.LoadCustomFarm(Game1.whichFarm);
                 }
-                Rectangle newOpenArea = new Rectangle((customManager.ShippingBinPoints.X - 1) * 64, customManager.ShippingBinPoints.Y * 64, 256, 192);
+                Rectangle newOpenArea = new Rectangle((customManager.ShippingBin.X - 1) * 64, customManager.ShippingBin.Y * 64, 256, 192);
                 Traverse.Create(__instance).Field("shippingBinLidOpenArea").SetValue(newOpenArea);
             }
         }

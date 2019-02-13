@@ -25,7 +25,7 @@ namespace TehPers.CoreMod {
 
         public CoreApi(IMod owner, ItemDelegator itemDelegator, TextureTracker textureTracker) {
             this.Owner = owner;
-
+            
             // Create the APIs
             this._drawing = new Lazy<IDrawingApi>(() => new DrawingApi(new ApiHelper(this, "Drawing"), textureTracker));
             this._items = new Lazy<IItemApi>(() => new ItemApi(new ApiHelper(this, "Items"), itemDelegator));

@@ -1,10 +1,7 @@
-﻿using Microsoft.Xna.Framework.Input;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-namespace WallPaperRecycler
+﻿namespace WallPaperRecycler
 {
-   internal class ModConfig
+    internal class ModConfig
     {
-        public bool showMessages { get; set; } = true;
+        public bool ShowMessages { get; set; } = true;
     }
 }

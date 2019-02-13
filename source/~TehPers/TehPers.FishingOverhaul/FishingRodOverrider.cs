@@ -83,7 +83,7 @@ namespace TehPers.FishingOverhaul {
                 if (method is AbstractNetEvent1<byte[]>.Event handler) {
                     pullFishEvent.onEvent -= handler;
                 } else {
-                    ModFishing.Instance.Monitor.Log($"Failed to remove {method} ({method.Method.Name}) from {nameof(AbstractNetEvent1<byte[]>.onEvent)}.");
+                    ModFishing.Instance.Monitor.Log($"Failed to remove {method} ({method.Method.Name}) from {nameof(AbstractNetEvent1<byte[]>.onEvent)}.", LogLevel.Warn);
                 }
             }
 
