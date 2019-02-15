@@ -1,0 +1,12 @@
+{
+  "CalculationMethod": "CIRCLE",
+  "Locations": [
+    "Farm",
+    "Greenhouse"
+  ],
+  "Radius": {
+    "599": 2.0,
+    "621": 3.0,
+    "645": 5.0
+  }
+}

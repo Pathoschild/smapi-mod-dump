@@ -1,0 +1,18 @@
+{
+  "OpenMenuKey": "NumPad1",
+  "ShowAllTasks": false,
+  "AllowMultipleOverlays": true,
+  "ShowArrow": true,
+  "ShowOverlay": true,
+  "OpenChecklistButtonLocation": "BelowJournal",
+  "IncludeTask": {
+    "Pet": true,
+    "Milk": true,
+    "Shear": true,
+    "CrabPot": true,
+    "Hay": true,
+    "Egg": true,
+    "Water": true,
+    "Harvest": true
+  }
+}

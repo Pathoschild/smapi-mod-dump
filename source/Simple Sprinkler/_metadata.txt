@@ -1,0 +1,16 @@
+url:
+   https://github.com/ADoby/SimpleSprinkler.git
+
+mods:
+   Simple Sprinkler
+
+latest commit:
+   commit 9d3e48bd06414de69382f32095341bde3731dd56
+   Merge: 1390517 b82d9e0
+   Author: ADoby <zimmerlint@gmail.com>
+   Date:   Thu Feb 14 20:59:47 2019 +0100
+   
+       Merge pull request #4 from Pathoschild/update-code
+       
+       Update for Stardew Valley 1.3 and SMAPI 3.0
+   

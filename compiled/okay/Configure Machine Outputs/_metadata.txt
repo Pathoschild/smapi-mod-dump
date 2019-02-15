@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3490
+IDs: mizzion.configuremachineoutputs
+update keys: Nexus:3490

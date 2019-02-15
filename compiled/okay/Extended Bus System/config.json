@@ -1,0 +1,7 @@
+{
+  "TicketPrice": 500,
+  "TicketOverlayKey": "B",
+  "ConfigMenuKey": "N",
+  "ShowOverlayEverywhere": false,
+  "DefaultFreeSeasonPassesCount": 4
+}

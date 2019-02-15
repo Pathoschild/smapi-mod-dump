@@ -1,0 +1,10 @@
+﻿{
+    "Name": "AdjustArtisanPrices",
+    "Author": "TheNorthernMonkey",
+    "Version": "0.0.2-unofficial.1-Mizzion",
+    "Description": "Customise the final prices of Artisan Goods",
+    "UniqueID": "ThatNorthernMonkey.AdjustArtisanPrices",
+    "EntryDll": "AdjustArtisanPrices.dll",
+    "MinimumApiVersion": "2.10.2",
+    "UpdateKeys": [ "Chucklefish:3532" ]
+}

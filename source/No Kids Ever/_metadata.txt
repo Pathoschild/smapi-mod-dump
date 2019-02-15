@@ -5,11 +5,10 @@ mods:
    No Kids Ever
 
 latest commit:
-   commit 98ddb23150b35b3d8737bb6844bc45ad76cf633a
-   Author: L3thal1ty <24803109+L3thal1ty@users.noreply.github.com>
-   Date:   Thu Jun 7 20:08:40 2018 -0400
+   commit 915c13040212777bde3392a24c07bd54cb239d6f
+   Merge: 98ddb23 b757277
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Wed Feb 13 22:34:05 2019 -0500
    
-       Create LICENSE
-       
-       Added a license because Pathos bugged me about it. :D
+       Merge branch 'develop'
    
