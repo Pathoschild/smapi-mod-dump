@@ -47,9 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssetLoaders\BigSlimeManager.cs" />
+    <Compile Include="AssetLoaders\GreenSlimeManager.cs" />
     <Compile Include="ModFestiveSlimes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SlimeLoader.cs" />
+    <Compile Include="AssetLoaders\SlimeManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\raw\Big Slime.pdn" />
@@ -72,6 +74,9 @@
     <Content Include="assets\Green Slime\textures\fall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="assets\Green Slime\textures\pufferchick.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\items\candy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -88,6 +93,10 @@
     <ProjectReference Include="..\TehPers.CoreMod.Api\TehPers.CoreMod.Api.csproj">
       <Project>{debf868c-fb0b-4b20-ba7f-afacf17c85aa}</Project>
       <Name>TehPers.CoreMod.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TehPers.CoreMod\TehPers.CoreMod.csproj">
+      <Project>{5da9f3a3-cffb-4960-b94c-f1df74fd89a5}</Project>
+      <Name>TehPers.CoreMod</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

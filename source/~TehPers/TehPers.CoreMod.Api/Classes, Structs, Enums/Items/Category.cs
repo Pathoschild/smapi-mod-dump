@@ -38,20 +38,20 @@ namespace TehPers.CoreMod.Api.Items {
         public static Category FishingTackle { get; } = new Category(-22, "Basic");
         public static Category SellAtFishShop { get; } = new Category(-23, "Basic");
         public static Category Furniture { get; } = new Category(-24, "Crafting");
-        public static Category Ingredient { get; } = new Category(-25, null); // TODO
+        public static Category Ingredient { get; } = new Category(-25, null);
         public static Category ArtisanGoods { get; } = new Category(-26, "Basic");
         public static Category Syrup { get; } = new Category(-27, "Basic");
         public static Category MonsterLoot { get; } = new Category(-28, "Basic");
-        public static Category Equipment { get; } = new Category(-29, null); // TODO
+        public static Category Equipment { get; } = new Category(-29, null);
         public static Category Seed { get; } = new Category(-74, "Seeds");
         public static Category Vegetable { get; } = new Category(-75, "Basic");
         public static Category Fruit { get; } = new Category(-79, "Basic");
         public static Category Flower { get; } = new Category(-80, "Basic");
         public static Category Forage { get; } = new Category(-81, "Basic");
-        public static Category Hat { get; } = new Category(-95, null); // TODO
-        public static Category Ring { get; } = new Category(-96, null); // TODO
-        public static Category Weapon { get; } = new Category(-98, null); // TODO
-        public static Category Tool { get; } = new Category(-99, null); // TODO
+        public static Category Hat { get; } = new Category(-95, null);
+        public static Category Ring { get; } = new Category(-96, null);
+        public static Category Weapon { get; } = new Category(-98, null);
+        public static Category Tool { get; } = new Category(-99, null);
         #endregion
     }
 }

@@ -2,28 +2,25 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Sockets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
 using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Menus;
-using StardewValley.Tools;
+using StardewValley.Network;
 using TehPers.CoreMod.Api;
-using TehPers.CoreMod.Api.Conflux.Collections;
 using TehPers.CoreMod.Api.Conflux.Matching;
 using TehPers.CoreMod.Api.ContentLoading;
 using TehPers.CoreMod.Api.Drawing.Sprites;
 using TehPers.CoreMod.Api.Extensions;
 using TehPers.CoreMod.Api.Items;
+using TehPers.CoreMod.Api.Items.Crafting.Recipes;
+using TehPers.CoreMod.Api.Items.Crafting.Recipes.Parts;
 using TehPers.CoreMod.Api.Items.Recipes;
-using TehPers.CoreMod.Api.Items.Recipes.Parts;
-using TehPers.CoreMod.Api.Structs;
 using TehPers.CoreMod.ContentLoading;
 using TehPers.CoreMod.ContentPacks.Data;
 using TehPers.CoreMod.ContentPacks.Data.Converters;
-using TehPers.CoreMod.Items;
 
 namespace TehPers.CoreMod.ContentPacks {
     internal class ContentPackLoader {
@@ -155,10 +152,14 @@ namespace TehPers.CoreMod.ContentPacks {
                 }
 
                 // Create the object's manager
-                ModObject objectManager = new ModObject(translationHelper, sprite, key.LocalKey, obj.Data.Cost, new Category(obj.Data.CategoryNumber, obj.Data.CategoryName), obj.Data.Edibility);
+                Category category = new Category(obj.Data.CategoryNumber, obj.Data.CategoryName);
+                IModObject manager = obj.Data.Buffs.HasValue.Match<bool, IModObject>()
+                    .When(true, () => new ModFood(translationHelper, sprite, key.LocalKey, obj.Data.Cost, obj.Data.Edibility, category, false, obj.Data.Buffs.Value))
+                    .When(false, () => new ModObject(translationHelper, sprite, key.LocalKey, obj.Data.Cost, category, obj.Data.Edibility))
+                    .ElseThrow();
 
                 // Register the object
-                this._api.Items.CommonRegistry.Objects.Register(key, objectManager);
+                this._api.Items.CommonRegistry.Objects.Register(key, manager);
                 this._api.Owner.Monitor.Log($" - {key} registered (object)", LogLevel.Trace);
             }
         }
@@ -215,10 +216,18 @@ namespace TehPers.CoreMod.ContentPacks {
 
                 // Create the recipe
                 ISprite sprite = results.FirstOrDefault()?.Sprite ?? ingredients.FirstOrDefault()?.Sprite ?? throw new InvalidOperationException("Unable to create a sprite for a recipe.");
-                string recipeName = this._api.Items.RegisterCraftingRecipe(new ModRecipe(this._api, sprite, results, ingredients, recipe.Data.Name));
+                string recipeName = this._api.Items.RegisterCraftingRecipe(new ModRecipe(this._api.TranslationHelper, sprite, results, ingredients, recipe.Data.Name, recipe.Data.IsCooking));
 
                 // TODO: Add conditions when the recipe can be added
-                this._api.Owner.Helper.Events.GameLoop.SaveLoaded += (sender, args) => Game1.player.craftingRecipes.Add(recipeName, 0);
+                this._api.Owner.Helper.Events.GameLoop.SaveLoaded += (sender, args) => {
+                    // Get the target dictionary
+                    NetStringDictionary<int, NetInt> targetDictionary = recipe.Data.IsCooking ? Game1.player.craftingRecipes : Game1.player.cookingRecipes;
+
+                    // Add the recipe to the target
+                    if (!targetDictionary.ContainsKey(recipeName)) {
+                        targetDictionary.Add(recipeName, 0);
+                    }
+                };
 
                 this._api.Owner.Monitor.Log($" - Added recipe: {recipeName}, Ingredients: {ingredients.Length}, Results: {results.Length}", LogLevel.Debug);
             }

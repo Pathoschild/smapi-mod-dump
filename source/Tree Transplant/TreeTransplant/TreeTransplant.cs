@@ -1,61 +1,52 @@
-﻿﻿using System;
-using System.IO;
+﻿using System.IO;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.TerrainFeatures;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace TreeTransplant
 {
+	/// <summary>
+	/// The mod entry class called by SMAPI.
+	/// </summary>
 	public class TreeTransplant : Mod
 	{
 		public static Texture2D treeTexture;
-        public static Texture2D specialTreeTexture;
+		public static Texture2D specialTreeTexture;
 		public static Texture2D flipTexture;
-        public static IModHelper helper;
+		public static IModHelper helper;
 
 		/// <summary>
-		/// Called on the mod being initialized
+		/// The mod entry point, called after the mod is first loaded.
 		/// </summary>
-		/// <param name="helper">Instance of mod helper.</param>
+		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper)
 		{
 			// batch together the trees in a render texture for our menu
 			loadTreeTexture();
-            loadSpecialTreeTexture();
+			loadSpecialTreeTexture();
 
 			// load the custom UI element for flipping the tree
 			loadFlipTexture();
 
-            TreeTransplant.helper = helper;
-            // bind to the after load handler
-			SaveEvents.AfterLoad += handleAfterLoad;
+			TreeTransplant.helper = helper;
+			// bind to the after load handler
+			helper.Events.Display.MenuChanged += OnMenuChanged;
 		}
 
 		/// <summary>
-		/// Gets called after the game's save is loaded
+		/// Raised after a game menu is opened, closed, or replaced.
 		/// </summary>
-		internal void handleAfterLoad(object sender, EventArgs e)
+		/// <param name="sender">The event sender.</param>
+		/// <param name="e">The event data.</param>
+		internal void OnMenuChanged(object sender, MenuChangedEventArgs e)
 		{
-			MenuEvents.MenuChanged += handleMenuChanged;
-		}
-
-		/// <summary>
-		/// Handles the menu changes
-		/// </summary>
-		internal void handleMenuChanged(object sender, EventArgsClickableMenuChanged e)
-		{
-			// are we in the science house
-			if (Game1.currentLocation.Name == "ScienceHouse")
-				// check for the new menu
-				if (e.NewMenu is DialogueBox)
-					// if this is the normal carpenter dialogue
-					if (Game1.currentLocation.lastQuestionKey == "carpenter")
-						handleDialogueMenu();
+			// carpenter dialog in science house?
+			if (Game1.currentLocation?.Name == "ScienceHouse" && e.NewMenu is DialogueBox && Game1.currentLocation.lastQuestionKey == "carpenter")
+				handleDialogueMenu();
 		}
 
 		/// <summary>
@@ -78,7 +69,7 @@ namespace TreeTransplant
 
 			// handle if the house can still be upgraded
 			if (Game1.player.HouseUpgradeLevel < 3)
-				answerChoices = new Response[5]
+				answerChoices = new[]
 				{
 					new Response("Shop", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Shop")),
 					new Response("Upgrade", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_UpgradeHouse")),
@@ -88,7 +79,7 @@ namespace TreeTransplant
 				};
 			// handle when the house is fully upgraded
 			else
-				answerChoices = new Response[4]
+				answerChoices = new[]
 				{
 					new Response("Shop", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Shop")),
 					new Response("Tree", "Transplant Trees"),
@@ -101,7 +92,7 @@ namespace TreeTransplant
 
 			// create the question dialogue with our custom tag
 			science.createQuestionDialogue(
-				Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu"), 
+				Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu"),
 				answerChoices,
 				handleCarpenterMenuAnswer
 			);
@@ -114,25 +105,26 @@ namespace TreeTransplant
 		/// <param name="whichAnswer">Which answer key was chosen.</param>
 		internal void handleCarpenterMenuAnswer(Farmer who, string whichAnswer)
 		{
-            switch (whichAnswer) {
-                case "Shop":
-                    Game1.player.forceCanMove();
-                    Game1.activeClickableMenu = new ShopMenu(Utility.getCarpenterStock(), 0, "Robin");
-                    break;
-                case "Upgrade":
-                    Helper.Reflection.GetMethod(Game1.currentLocation, "houseUpgradeOffer").Invoke();
-                    break;
-                case "Construct":
-                    Game1.activeClickableMenu = new CarpenterMenu(false);
-                    break;
-                case "Tree":
-                    Game1.player.forceCanMove();
-                    Game1.activeClickableMenu = new TreeTransplantMenu();
-                    break;
-                case "Leave":
-                default:
-                    break;
-            }
+			switch (whichAnswer)
+			{
+				case "Shop":
+					Game1.player.forceCanMove();
+					Game1.activeClickableMenu = new ShopMenu(Utility.getCarpenterStock(), 0, "Robin");
+					break;
+				case "Upgrade":
+					Helper.Reflection.GetMethod(Game1.currentLocation, "houseUpgradeOffer").Invoke();
+					break;
+				case "Construct":
+					Game1.activeClickableMenu = new CarpenterMenu(false);
+					break;
+				case "Tree":
+					Game1.player.forceCanMove();
+					Game1.activeClickableMenu = new TreeTransplantMenu();
+					break;
+				case "Leave":
+				default:
+					break;
+			}
 		}
 
 		/// <summary>
@@ -141,7 +133,7 @@ namespace TreeTransplant
 		internal void loadTreeTexture()
 		{
 			// the list of seasons
-			var seasons = new string[] { "spring", "summer", "fall", "winter" };
+			var seasons = new[] { "spring", "summer", "fall", "winter" };
 
 			// create a render target to prepare the tree texture to
 			var texture = new RenderTarget2D(Game1.graphics.GraphicsDevice, 144, 96 * seasons.Length);
@@ -152,7 +144,7 @@ namespace TreeTransplant
 
 			// begin drawing session
 			Game1.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
-            
+
 			for (int s = 0; s < seasons.Length; s++)
 			{
 				// loop through the three trees in the game
@@ -193,7 +185,7 @@ namespace TreeTransplant
 
 			// create memory stream to save texture as PNG
 			var stream = new MemoryStream();
-			(texture as Texture2D).SaveAsPng(stream, texture.Width, texture.Height);
+			texture.SaveAsPng(stream, texture.Width, texture.Height);
 
 			// return our tree texture
 			treeTexture = Texture2D.FromStream(Game1.graphics.GraphicsDevice, stream);
@@ -216,11 +208,11 @@ namespace TreeTransplant
 
 			// get the special tree's texture
 			Texture2D mushroomTreeTexture = Game1.content.Load<Texture2D>("TerrainFeatures\\mushroom_tree");
-            Texture2D palmTreeTexture = Game1.content.Load<Texture2D>("TerrainFeatures\\tree_palm");
+			Texture2D palmTreeTexture = Game1.content.Load<Texture2D>("TerrainFeatures\\tree_palm");
 
 			// draw the trunk of the tree
 			Game1.spriteBatch.Draw(
-                palmTreeTexture,
+				palmTreeTexture,
 				new Vector2(16, 64),
 				Tree.stumpSourceRect,
 				Color.White);
@@ -245,7 +237,7 @@ namespace TreeTransplant
 				new Vector2(48, 0),
 				Tree.treeTopSourceRect,
 				Color.White);
-            
+
 			Game1.spriteBatch.End();
 
 			// reset the render target back to the back buffer
@@ -253,7 +245,7 @@ namespace TreeTransplant
 
 			// create memory stream to save texture as PNG
 			var stream = new MemoryStream();
-			(texture as Texture2D).SaveAsPng(stream, texture.Width, texture.Height);
+			texture.SaveAsPng(stream, texture.Width, texture.Height);
 
 			// return our tree texture
 			specialTreeTexture = Texture2D.FromStream(Game1.graphics.GraphicsDevice, stream);
@@ -265,8 +257,8 @@ namespace TreeTransplant
 		internal void loadFlipTexture()
 		{
 			flipTexture = Texture2D.FromStream(
-				Game1.graphics.GraphicsDevice, 
-				new FileStream(Path.Combine(Helper.DirectoryPath, "Content", "flip.png"), FileMode.Open));
+				Game1.graphics.GraphicsDevice,
+				new FileStream(Path.Combine(Helper.DirectoryPath, "assets", "flip.png"), FileMode.Open));
 		}
 	}
 }

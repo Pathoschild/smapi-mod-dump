@@ -5,7 +5,7 @@ using Netcode;
 using Newtonsoft.Json;
 
 namespace TehPers.CoreMod.Json {
-    public sealed class NetExposer {
+    internal sealed class NetExposer {
         private readonly MethodInfo _unwrap = typeof(NetExposer).GetMethod(nameof(NetExposer.Unwrap), BindingFlags.Public | BindingFlags.Static);
 
         public Type Type { get; set; }

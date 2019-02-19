@@ -31,6 +31,7 @@ namespace NPCMapLocations
     private Dictionary<string, string> CustomNames;
     private bool hasOpenedMap;
     private bool isModMapOpen;
+    private bool shouldShowMinimap;
 
     // Multiplayer
     private Dictionary<long, CharacterMarker> FarmerMarkers;
@@ -38,6 +39,7 @@ namespace NPCMapLocations
 
     // Customizations/Custom mods
     private string MapName;
+    private string Season;
     private Dictionary<string, MapVector[]> MapVectors;
     private Dictionary<string, int> MarkerCropOffsets;
     private ModMinimap Minimap;
@@ -65,14 +67,14 @@ namespace NPCMapLocations
       try
       {
         if (!MapName.Equals("default_map"))
-          Monitor.Log($"Using recolored map {CustomHandler.LoadMap()}.", LogLevel.Debug);
+          Monitor.Log($"Using recolored map {MapName}_{Season}.", LogLevel.Debug);
 
-        map = Helper.Content.Load<T>($@"assets\{MapName}.png"); // Replace map page
+        map = Helper.Content.Load<T>($@"assets\{MapName}\{MapName}_{Season}.png"); // Replace map page
       }
       catch
       {
-        Monitor.Log($"Unable to find {MapName}; loaded default map instead.", LogLevel.Debug);
-        map = Helper.Content.Load<T>(@"assets\default_map.png");
+        Monitor.Log($"Unable to find {MapName}_{Season}; loaded default map instead.", LogLevel.Debug);
+        map = Helper.Content.Load<T>($@"assets\default\default_{Season}.png");
       }
 
       return map;
@@ -107,7 +109,9 @@ namespace NPCMapLocations
       Config = Helper.Data.ReadJsonFile<ModConfig>($"config/{Constants.SaveFolderName}.json") ?? Config;
       CustomHandler.LoadConfig(Config);
       CustomMapLocations = CustomHandler.GetCustomMapLocations();
+      Season = Config.UseSeasonalMaps ? Game1.currentSeason : "spring";
       DEBUG_MODE = Config.DEBUG_MODE;
+      shouldShowMinimap = Config.ShowMinimap;
 
       locationContexts = new Dictionary<string, LocationContext>();
       foreach (var location in Game1.locations)
@@ -317,6 +321,8 @@ namespace NPCMapLocations
     private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
     {
       var npcEntries = new Dictionary<string, bool>(SecondaryNpcs);
+
+      // Characters that are not always available, for avoiding spoilers
       foreach (var npc in npcEntries)
       {
         var name = npc.Key;
@@ -408,13 +414,23 @@ namespace NPCMapLocations
 
           Helper.Multiplayer.SendMessage(message, "SyncedLocationData", modIDs: new[] { ModManifest.UniqueID });
         }
+
+        // Check season change (for when it's changed via console)
+        if (Config.UseSeasonalMaps && Season != Game1.currentSeason)
+        {
+          Season = Game1.currentSeason;
+
+          // Force reload of map for season changes
+          this.Helper.Content.InvalidateCache("LooseSprites/Map");
+          Minimap?.UpdateMapForSeason();
+        }
       }
 
       // Half-second tick
       if (e.IsMultipleOf(30))
       {
         // Map page updates
-        var updateForMinimap = false;
+        var updateForMinimap = false || shouldShowMinimap;
 
         if (Config.ShowMinimap)
           if (Minimap != null)
@@ -516,6 +532,8 @@ namespace NPCMapLocations
       // Iterate warps of current location and traverse recursively
       foreach (var warp in location.warps)
       {
+        if (warp == null || Game1.getLocationFromName(warp.TargetName) == null) continue;
+
         // Avoid circular loop (shout-out to SgtPickles)
         if (warp.TargetName == locationName || prevLocationName == warp.TargetName)
           continue;
@@ -855,13 +873,19 @@ namespace NPCMapLocations
 
     private void Player_Warped(object sender, WarpedEventArgs e)
     {
+      if (!e.IsLocalPlayer) return;
+
+      // Hide minimap in blacklisted locations with special case for Mines as usual
+      shouldShowMinimap = !(Config.MinimapBlacklist.Contains(e.NewLocation.Name) ||
+                            ((Config.MinimapBlacklist.Contains("Mine") || Config.MinimapBlacklist.Contains("UndergroundMine")) && e.NewLocation.Name.Contains("Mine")));
+
       // Check if map does not fill screen and adjust for black bars (ex. BusStop)
       Minimap?.CheckOffsetForMap();
     }
 
     private void Display_RenderingHud(object sender, RenderingHudEventArgs e)
     {
-      if (Context.IsWorldReady && Config.ShowMinimap && Game1.displayHUD) Minimap?.DrawMiniMap();
+      if (Context.IsWorldReady && Config.ShowMinimap && shouldShowMinimap && Game1.displayHUD) Minimap?.DrawMiniMap();
 
       // Highlight tile for debug mode
       if (DEBUG_MODE && HeldKey == SButton.LeftAlt)

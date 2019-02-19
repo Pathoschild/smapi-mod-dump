@@ -6,9 +6,15 @@ using TehPers.CoreMod.Api.Items;
 using TehPers.CoreMod.Api.Json;
 
 namespace TehPers.CoreMod.Api {
-    public interface ICoreApi : ICoreTranslationHelper {
+    public interface ICoreApi {
         /// <summary>The mod that owns this core API object.</summary>
         IMod Owner { get; }
+
+        /// <summary>The content source associated with the owner of this core API. Content loaded through this will be loaded from the owner's mod folder.</summary>
+        IContentSource ContentSource { get; }
+
+        /// <summary>The translation helper associated with the owner of this core API. Translations loaded through this will be loaded from the owner's mod folder.</summary>
+        ICoreTranslationHelper TranslationHelper { get; }
 
         /// <summary>The drawing API which can be used to override draw calls to <see cref="SpriteBatch"/>.</summary>
         IDrawingApi Drawing { get; }

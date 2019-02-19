@@ -5,12 +5,12 @@ mods:
    Chill in Your Farmhouse
 
 latest commit:
-   commit f95f4263ca09d04a1d916d647acdd2c27f0a7169
-   Merge: 641306e 7ab3488
+   commit 35554d9fc44d01888ac5be97903def2aa2e5088c
+   Merge: f95f426 3b5b824
    Author: Lothar "Husky110" Hoffmann <Husky110@users.noreply.github.com>
-   Date:   Sun May 13 15:56:18 2018 +0200
+   Date:   Fri Feb 15 08:17:52 2019 +0100
    
-       Merge pull request #1 from tyrleifsen/master
+       Merge pull request #2 from Mizzion/master
        
-       Fixed the ChillInYourFarmHouse mod.
+       Updated for SMAPI 2.10.2 and SDV 1.3.33
    

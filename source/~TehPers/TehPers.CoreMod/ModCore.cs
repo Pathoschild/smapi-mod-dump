@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using TehPers.CoreMod.Api;
 using TehPers.CoreMod.Api.Items;
+using TehPers.CoreMod.Config;
 using TehPers.CoreMod.ContentPacks;
 using TehPers.CoreMod.Drawing;
 using TehPers.CoreMod.Integration;
@@ -14,17 +15,16 @@ using TehPers.CoreMod.Items;
 
 namespace TehPers.CoreMod {
     public class ModCore : Mod {
+        internal ModConfig Config { get; private set; }
+
         private CoreApiFactory _coreApiFactory;
         private readonly ItemDelegator _itemDelegator;
-        
+
         public ModCore() {
             // Patch needs to happen in constructor otherwise it doesn't work with Better Artisan Good Icons for some reason.
             // If that mod patches SObject.drawWhenHeld before this mod patches SpriteBatch.Draw, then the items don't appear
             // in the farmer's hands when held.
             DrawingDelegator.PatchIfNeeded();
-
-            // Also do other patches here because why not
-            // TODO: MachineDelegator.PatchIfNeeded();
 
             // Create the item delegator
             this._itemDelegator = new ItemDelegator(this);
@@ -40,9 +40,6 @@ namespace TehPers.CoreMod {
             // Register events for the item delegator
             this._itemDelegator.Initialize();
 
-            // Register events for the machine delegator
-            // TODO: MachineDelegator.RegisterEvents(this);
-
             // Load content packs after the game is launched
             this.Helper.Events.GameLoop.GameLaunched += (sender, args) => this.Helper.Events.GameLoop.UpdateTicking += this.UpdateTicking_LoadContentPacks;
             this.Helper.Events.GameLoop.GameLaunched += (sender, args) => this.LoadIntegrations(coreApi);
@@ -50,7 +47,17 @@ namespace TehPers.CoreMod {
             // Add console commands
             this.RegisterConsoleCommands(coreApi);
 
+            // Load the config
+            this.LoadConfig(coreApi);
+
             this.Monitor.Log("Core mod loaded!", LogLevel.Info);
+        }
+
+        private void LoadConfig(ICoreApi coreApi) {
+            this.Monitor.Log("Loading config", LogLevel.Info);
+
+            //this.Config = coreApi.Json.ReadOrCreate<ModConfig>("config.json") ?? new ModConfig();
+            this.Config = this.Helper.Data.ReadJsonFile<ModConfig>("config.json") ?? new ModConfig();
         }
 
         private void LoadIntegrations(ICoreApi coreApi) {

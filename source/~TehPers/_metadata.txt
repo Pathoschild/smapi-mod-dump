@@ -8,10 +8,9 @@ mods:
    Teh's Fishing Overhaul
 
 latest commit:
-   commit 9f5cb5c4568c6589b3487ccf47a2acfaf21e7bfb
+   commit 5429d52b9dd9848705f8a9b2c0789e6bc9ff029f
    Author: TehPers <tehperz@gmail.com>
-   Date:   Sun Feb 10 22:40:49 2019 -0600
+   Date:   Sat Feb 16 14:31:05 2019 -0600
    
-       Cleaned up repository
-       Fixed crafting recipes not working
+       Added cooking recipes, food, and pufferchick slimes
    

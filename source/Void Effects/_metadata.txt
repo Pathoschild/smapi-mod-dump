@@ -5,9 +5,13 @@ mods:
    Void Effects
 
 latest commit:
-   commit 7402ca644f97e8b9b1533a7b89adb44c0517546e
-   Author: Renny <renaldas.sorys@gmail.com>
-   Date:   Tue Aug 21 19:48:29 2018 +0100
+   commit 0bf891140bb9618945e8a7baeedbc468ea967b93
+   Merge: 7402ca6 e954dda
+   Author: Renaldas S <renaldas.sorys@gmail.com>
+   Date:   Sat Feb 16 11:42:16 2019 +0000
    
-       Minor stuff
+       Merge pull request #1 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0
+       Thanks!
    

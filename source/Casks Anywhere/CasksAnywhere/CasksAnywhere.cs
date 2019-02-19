@@ -30,19 +30,23 @@ namespace CasksAnywhere
 		public override void Entry(IModHelper helper)
 		{
 			CasksAnywhere.helper = helper;
-			PlayerEvents.InventoryChanged += OnInventoryChanged;
-			SaveEvents.BeforeSave += OnBeforeSave;
-			SaveEvents.AfterSave += OnAfterSave;
-			SaveEvents.AfterLoad += OnAfterLoad;
+		    helper.Events.Player.InventoryChanged += OnInventoryChanged;
+			//PlayerEvents.InventoryChanged += OnInventoryChanged;
+		    helper.Events.GameLoop.Saving += OnBeforeSave;
+			//SaveEvents.BeforeSave += OnBeforeSave;
+		    helper.Events.GameLoop.Saved += OnAfterSave;
+			//SaveEvents.AfterSave += OnAfterSave;
+		    helper.Events.GameLoop.SaveLoaded += OnAfterLoad;
+			//SaveEvents.AfterLoad += OnAfterLoad;
 		}
 
-		void OnPlayerWarped(object sender, EventArgsPlayerWarped e)
+		void OnPlayerWarped(object sender, WarpedEventArgs e)
 		{
 			if (!SweepedLocations.Contains(e.NewLocation))
 				CaskSweep();
 		}
 
-		void OnBeforeSave(object sender, EventArgs e)
+		void OnBeforeSave(object sender, SavingEventArgs e)
 		{
 			foreach (var j in JackedCasks)
 			{
@@ -55,7 +59,7 @@ namespace CasksAnywhere
 			}
 		}
 
-		void OnAfterSave(object sender, EventArgs e)
+		void OnAfterSave(object sender, SavedEventArgs e)
 		{
 			foreach (var j in JackedCasks)
 			{
@@ -68,25 +72,28 @@ namespace CasksAnywhere
 			}
 		}
 
-		void OnAfterLoad(object sender, EventArgs e)
+		void OnAfterLoad(object sender, SaveLoadedEventArgs e)
 		{
-			PlayerEvents.Warped += OnPlayerWarped;
-			LocationEvents.ObjectsChanged += OnLocationObjectsChanged;
+		    Helper.Events.Player.Warped += OnPlayerWarped;
+            //PlayerEvents.Warped += OnPlayerWarped;
+		    Helper.Events.World.ObjectListChanged += OnLocationObjectsChanged;
+            //LocationEvents.ObjectsChanged += OnLocationObjectsChanged;
 		}
 
-		void OnLocationObjectsChanged(object sender, EventArgsLocationObjectsChanged e)
+		void OnLocationObjectsChanged(object sender, ObjectListChangedEventArgs e)
 		{
-			LocationEvents.ObjectsChanged -= OnLocationObjectsChanged;
+		    Helper.Events.World.ObjectListChanged -= OnLocationObjectsChanged;
+			//LocationEvents.ObjectsChanged -= OnLocationObjectsChanged;
 			CaskSweep();
 		}
 
 
-		void OnInventoryChanged(object sender, EventArgsInventoryChanged e)
+		void OnInventoryChanged(object sender, InventoryChangedEventArgs e)
 		{
 			foreach (var item in e.Removed)
 			{
 				// ensure this is a cask
-				if (item.Item.Name != "Cask")
+				if (item.Name != "Cask")
 					continue;
 
 			foreach (var o in Game1.currentLocation.objects.Pairs)

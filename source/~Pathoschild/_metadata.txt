@@ -17,9 +17,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 22cf4ed7d5af7132f4541b8a021d0ea6ad9d5483
+   commit c33de5b628503345b754f164ffd9bafacec09cd6
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Feb 13 18:38:33 2019 -0500
+   Date:   Sat Feb 16 19:39:42 2019 -0500
    
-       update translation docs (#374)
+       fix compatibility with Deep Woods
    

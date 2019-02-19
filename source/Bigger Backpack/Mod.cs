@@ -38,6 +38,17 @@ namespace BiggerBackpack
                 return;
             }
 
+            int newMax = int.Parse(args[0]);
+            if (newMax < Game1.player.MaxItems)
+            {
+                for (int i = Game1.player.MaxItems - 1; i >= newMax; --i)
+                    Game1.player.Items.RemoveAt(i);
+            }
+            else
+            {
+                for (int i = Game1.player.Items.Count; i < Game1.player.MaxItems; ++i)
+                    Game1.player.Items.Add(null);
+            }
             Game1.player.MaxItems = int.Parse(args[0]);
         }
 

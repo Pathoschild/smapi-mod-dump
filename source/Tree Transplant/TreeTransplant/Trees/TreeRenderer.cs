@@ -1,9 +1,8 @@
 ﻿using System;
-using StardewValley;
-using StardewValley.TerrainFeatures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
+using StardewValley;
+using StardewValley.TerrainFeatures;
 
 namespace TreeTransplant
 {
@@ -41,7 +40,7 @@ namespace TreeTransplant
 				return new TreeWrapper((Tree)tf);
 			if (tf is FruitTree)
 				return new FruitTreeWrapper((FruitTree)tf);
-			
+
 			// throw an exception
 			throw new InvalidCastException("Type not of Tree or FruitTree cannot cast!");
 		}

@@ -5,6 +5,7 @@ namespace TehPers.CoreMod.Api.ContentLoading {
         private readonly IContentHelper _contentHelper;
         public string Path { get; }
 
+        public ModContentSource(IMod mod) : this(mod.Helper) { }
         public ModContentSource(IModHelper helper) {
             this._contentHelper = helper.Content;
             this.Path = helper.DirectoryPath;

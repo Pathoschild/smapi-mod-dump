@@ -15,8 +15,11 @@ namespace FarmTypeManager
         ///<summary>Tasks performed when the mod initially loads.</summary>
         public override void Entry(IModHelper helper)
         {
-            Helper.Events.GameLoop.DayStarted += DayStarted; //tell SMAPI to run the DayStarted method when necessary
-            Helper.Events.GameLoop.DayEnding += DayEnding; //tell SMAPI to run the DayEnding method when necessary
+            //tell SMAPI to run event methods when necessary
+            Helper.Events.GameLoop.DayStarted += DayStarted;
+            Helper.Events.GameLoop.DayEnding += DayEnding;
+            Helper.Events.GameLoop.ReturnedToTitle += ReturnedToTitle;
+
             Utility.Monitor.IMonitor = Monitor; //pass the monitor for use by other areas of this mod's code
             ModConfig conf; //settings contained in the mod's config.json file
 
@@ -109,13 +112,23 @@ namespace FarmTypeManager
             ObjectSpawner.OreGeneration();
         }
 
+        /// <summary>Tasks performed before a day ends, i.e. right before saving. This is also called when a new farm is created, *before* DayStarted.</summary>
         private void DayEnding(object sender, EventArgs e)
         {
-            //update the internal save data
-            Utility.Config.Internal_Save_Data.WeatherForYesterday = Utility.WeatherForToday();
+            if (Utility.Config != null) //avoid errors when this process runs prior to loading a config, e.g. when a new farm is created
+            {
+                //update the internal save data
+                Utility.Config.Internal_Save_Data.WeatherForYesterday = Utility.WeatherForToday();
 
-            //save any changes to the player's config file
-            Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", Utility.Config);
+                //save any changes to the player's config file
+                Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", Utility.Config);
+            }
+        }
+
+        /// <summary>Tasks performed when the player returns to the title screen from an active game session.</summary>
+        private void ReturnedToTitle(object sender, EventArgs e)
+        {
+            Utility.Config = null; //null the config file to avoid any related errors, e.g. re-using the data for a different save
         }
 
         ///<summary>Console command. Outputs the player's current location name, tile x/y coordinates, tile "Type" property (e.g. "Grass" or "Dirt"), tile "Diggable" status, and tile index.</summary>

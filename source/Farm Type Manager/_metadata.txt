@@ -5,11 +5,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 1755d2ec2df9dae3e17ecb62f5e790e8f2c07530
-   Author: Esca-MMC <41843952+Esca-MMC@users.noreply.github.com>
-   Date:   Thu Feb 7 20:49:06 2019 -0600
+   commit 7dca4ef02125f9857ca0a013cde978a018ae78c4
+   Author: Esca-MMC <esca.mmc@gmail.com>
+   Date:   Fri Feb 15 10:58:21 2019 -0600
    
-       Update readme.md
-       
-       improve phrasing for Season settings
+       Increment version number
    

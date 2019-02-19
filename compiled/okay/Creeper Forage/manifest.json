@@ -1,0 +1,10 @@
+﻿{
+	"Name": "CreeperForage",
+	"Author": "bwdy",
+	"Version": "0.8.0",
+	"Description": "A mod for creepers. Adds forageable items.",
+	"UniqueID": "bwdy.creeperforage",
+	"EntryDll": "CreeperForage.dll",
+	"MinimumApiVersion": "2.10.2",
+	"UpdateKeys": [ "Nexus:2115" ]
+}

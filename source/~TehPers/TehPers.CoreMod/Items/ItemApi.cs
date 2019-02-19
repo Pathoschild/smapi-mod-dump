@@ -7,9 +7,9 @@ using StardewValley;
 using TehPers.CoreMod.Api;
 using TehPers.CoreMod.Api.Drawing.Sprites;
 using TehPers.CoreMod.Api.Items;
+using TehPers.CoreMod.Api.Items.Events;
 using TehPers.CoreMod.Api.Items.ItemProviders;
 using TehPers.CoreMod.Api.Items.Recipes;
-using TehPers.CoreMod.Drawing.Sprites;
 using TehPers.CoreMod.Items.ItemProviders;
 
 namespace TehPers.CoreMod.Items {
@@ -72,6 +72,11 @@ namespace TehPers.CoreMod.Items {
 
             sprite = default;
             return false;
+        }
+
+        public event Action<RecipeCraftedEventArgs> RecipeCrafted {
+            add => this._itemDelegator.RecipeCrafting += value;
+            remove => this._itemDelegator.RecipeCrafting -= value;
         }
     }
 }

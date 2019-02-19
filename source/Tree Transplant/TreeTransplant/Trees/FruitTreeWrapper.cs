@@ -1,7 +1,7 @@
-﻿using StardewValley;
-using StardewValley.TerrainFeatures;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewValley;
+using StardewValley.TerrainFeatures;
 
 namespace TreeTransplant
 {
@@ -37,17 +37,17 @@ namespace TreeTransplant
 
 		public Rectangle treeTopSourceRect
 		{
-			get 
+			get
 			{
 				bool adult = tree.growthStage.Value > 3;
 				int season = Utility.getSeasonNumber(Game1.currentSeason);
 
 				return new Rectangle(
 					tree.growthStage.Value * 48 + (adult ? season * 48 : 4), // offset the small trees because idk
-					tree.treeType.Value * 80, 
-					48, 
+					tree.treeType.Value * 80,
+					48,
 					80
-				); 
+				);
 			}
 		}
 

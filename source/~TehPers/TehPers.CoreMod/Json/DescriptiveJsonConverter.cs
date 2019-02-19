@@ -9,7 +9,7 @@ using TehPers.CoreMod.Api.Extensions;
 using TehPers.CoreMod.Api.Json;
 
 namespace TehPers.CoreMod.Json {
-    public class DescriptiveJsonConverter : JsonConverter {
+    internal class DescriptiveJsonConverter : JsonConverter {
         private bool _enabled = true;
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
@@ -80,7 +80,7 @@ namespace TehPers.CoreMod.Json {
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override bool CanConvert(Type objectType) {

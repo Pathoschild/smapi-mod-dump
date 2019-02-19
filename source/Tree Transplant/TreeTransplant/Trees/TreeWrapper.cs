@@ -1,9 +1,8 @@
-﻿using StardewValley;
-using StardewValley.TerrainFeatures;
+﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
-using System;
+using StardewValley;
+using StardewValley.TerrainFeatures;
 
 namespace TreeTransplant
 {
@@ -23,24 +22,24 @@ namespace TreeTransplant
 
 		public Texture2D texture
 		{
-			get 
+			get
 			{
-                if (isAdult() && !tree.stump.Value)
-                {
-                    if (tree.treeType.Value == Tree.bushyTree || tree.treeType.Value == Tree.leafyTree || tree.treeType.Value == Tree.pineTree)
-                        return TreeTransplant.treeTexture;
-                    else if (tree.treeType.Value == Tree.mushroomTree || tree.treeType.Value == Tree.palmTree)
-                        return TreeTransplant.specialTreeTexture;
-                }
-                return TreeTransplant.helper.Reflection.GetField<Lazy<Texture2D>>(tree, "texture").GetValue().Value;
+				if (isAdult() && !tree.stump.Value)
+				{
+					if (tree.treeType.Value == Tree.bushyTree || tree.treeType.Value == Tree.leafyTree || tree.treeType.Value == Tree.pineTree)
+						return TreeTransplant.treeTexture;
+					else if (tree.treeType.Value == Tree.mushroomTree || tree.treeType.Value == Tree.palmTree)
+						return TreeTransplant.specialTreeTexture;
+				}
+				return TreeTransplant.helper.Reflection.GetField<Lazy<Texture2D>>(tree, "texture").GetValue().Value;
 			}
 		}
 
 		public bool flipped
 		{
-            get { return tree.flipped.Value; }
-            set { tree.flipped.Set(value); }
-        }
+			get { return tree.flipped.Value; }
+			set { tree.flipped.Set(value); }
+		}
 
 		public int treeType
 		{
@@ -49,7 +48,7 @@ namespace TreeTransplant
 
 		public Rectangle treeTopSourceRect
 		{
-			get 
+			get
 			{
 				if (!isAdult())
 				{
@@ -76,11 +75,11 @@ namespace TreeTransplant
 					return rect;
 				}
 
-                bool basicTree = (tree.treeType.Value >= 1 && tree.treeType.Value <= 3);
-                int xOffset = tree.treeType.Value - (basicTree ? 1 : 6);
-                int yOffset = basicTree ? Utility.getSeasonNumber(Game1.currentSeason) : 0;
+				bool basicTree = (tree.treeType.Value >= 1 && tree.treeType.Value <= 3);
+				int xOffset = tree.treeType.Value - (basicTree ? 1 : 6);
+				int yOffset = basicTree ? Utility.getSeasonNumber(Game1.currentSeason) : 0;
 
-                return new Rectangle(48 * xOffset, yOffset * 96, 48, 96);
+				return new Rectangle(48 * xOffset, yOffset * 96, 48, 96);
 			}
 		}
 

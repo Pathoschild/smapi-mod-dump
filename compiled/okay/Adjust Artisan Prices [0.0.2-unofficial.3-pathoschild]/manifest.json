@@ -1,0 +1,10 @@
+{
+  "Name": "Adjust Artisan Prices",
+  "Author": "ThatNorthernMonkey",
+  "Version": "0.0.2-unofficial.3-pathoschild",
+  "Description": "Rebalances artisanal item prices with optional configuration.",
+  "UniqueID": "ThatNorthernMonkey.AdjustArtisanPrices",
+  "EntryDll": "AdjustArtisanPrices.dll",
+  "MinimumApiVersion": "2.10.2",
+  "UpdateKeys": [ "Chucklefish:3532" ]
+}

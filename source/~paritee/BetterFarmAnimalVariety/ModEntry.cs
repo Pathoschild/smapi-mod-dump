@@ -15,6 +15,7 @@ using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using static StardewValley.Menus.LoadGameMenu;
 
@@ -240,12 +241,28 @@ namespace BetterFarmAnimalVariety
             // if the patch mod had been removed without the animals being sold/deleted
             if (Game1.activeClickableMenu is TitleMenu titleMenu && TitleMenu.subMenu is LoadGameMenu loadGameMenu)
             {
+                if (loadGameMenu.slotButtons == null)
+                {
+                    return;
+                }
+
+                List<MenuSlot> menuSlots = this.Helper.Reflection.GetField<List<MenuSlot>>(loadGameMenu, "menuSlots").GetValue();
+
+                if (menuSlots == null || !menuSlots.Any())
+                {
+                    return;
+                }
+
+                int x = (int)e.Cursor.ScreenPixels.X;
+                int y = (int)e.Cursor.ScreenPixels.Y;
+
+                int currentItemIndex = this.Helper.Reflection.GetField<int>(loadGameMenu, "currentItemIndex").GetValue();
+
                 for (int index = 0; index < loadGameMenu.slotButtons.Count; index++)
                 {
-                    if (loadGameMenu.slotButtons[index].containsPoint((int)e.Cursor.ScreenPixels.X, (int)e.Cursor.ScreenPixels.Y))
+                    if (currentItemIndex + index < menuSlots.Count && loadGameMenu.slotButtons[index].containsPoint(x, y))
                     {
-                        int currentItemIndex = this.Helper.Reflection.GetField<int>(loadGameMenu, "currentItemIndex").GetValue();
-                        SaveFileSlot saveFileSlot = this.Helper.Reflection.GetField<List<MenuSlot>>(loadGameMenu, "menuSlots").GetValue()[currentItemIndex + index] as SaveFileSlot;
+                        SaveFileSlot saveFileSlot = menuSlots[currentItemIndex + index] as SaveFileSlot;
 
                         this.Helper.ConsoleCommands.Trigger("bfav_fa_fix", new string[] { saveFileSlot.Farmer.slotName });
 

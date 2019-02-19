@@ -1,10 +1,10 @@
 {
-  "Name": "TreeTransplant",
+  "Name": "Tree Transplant",
   "Author": "James Stine",
   "Version": "1.0.2",
   "Description": "Allows you to transplant trees in game.",
   "UniqueID": "TreeTransplant",
   "EntryDll": "TreeTransplant.dll",
-  "MinimumApiVersion": "2.6-beta",
+  "MinimumApiVersion": "2.10.2",
   "UpdateKeys": [ "Github:LeonBlade/TreeTransplant" ]
 }

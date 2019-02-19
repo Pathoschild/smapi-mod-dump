@@ -18,6 +18,7 @@ using TehPers.CoreMod.Api;
 using TehPers.CoreMod.Api.Drawing.Sprites;
 using TehPers.CoreMod.Api.Extensions;
 using TehPers.CoreMod.Api.Items;
+using TehPers.CoreMod.Api.Items.Events;
 using TehPers.CoreMod.Api.Items.Inventory;
 using TehPers.CoreMod.Api.Items.Recipes;
 using TehPers.CoreMod.Items.Inventory;
@@ -28,11 +29,11 @@ namespace TehPers.CoreMod.Items.Crafting {
         private static readonly ConditionalWeakTable<CraftingPage, CraftingPageData> _extraCraftingPageData = new ConditionalWeakTable<CraftingPage, CraftingPageData>();
         private static CraftingManager _instance;
 
-        private readonly IMod _coreMod;
+        private readonly ModCore _coreMod;
         private readonly ItemDelegator _itemDelegator;
         private readonly Dictionary<string, IRecipe> _addedRecipes = new Dictionary<string, IRecipe>();
 
-        private CraftingManager(IMod coreMod, ItemDelegator itemDelegator) {
+        private CraftingManager(ModCore coreMod, ItemDelegator itemDelegator) {
             this._coreMod = coreMod;
             this._itemDelegator = itemDelegator;
 
@@ -115,12 +116,8 @@ namespace TehPers.CoreMod.Items.Crafting {
             return key;
         }
 
-        public static CraftingManager GetCraftingManager(IMod mod, ItemDelegator itemDelegator) {
-            if (CraftingManager._instance == null) {
-                CraftingManager._instance = new CraftingManager(mod, itemDelegator);
-            }
-
-            return CraftingManager._instance;
+        public static CraftingManager GetCraftingManager(ModCore mod, ItemDelegator itemDelegator) {
+            return CraftingManager._instance ?? (CraftingManager._instance = new CraftingManager(mod, itemDelegator));
         }
 
         private static CustomCraftingRecipe CreateRecipe(string name, bool cooking) {
@@ -473,7 +470,6 @@ namespace TehPers.CoreMod.Items.Crafting {
             Dictionary<CraftingPageLocation, (CustomCraftingRecipe recipe, ClickableTextureComponent component)> components = new Dictionary<CraftingPageLocation, (CustomCraftingRecipe recipe, ClickableTextureComponent component)>();
             while (recipesRemaining.Any()) {
                 CustomCraftingRecipe recipe = recipesRemaining.Dequeue();
-                CraftingManager._instance._coreMod.Monitor.Log($"Placing recipe {recipe.name}", LogLevel.Trace);
 
                 // Find the first available spot
                 CraftingPageLocation curLocation = new CraftingPageLocation(0, 0, 0);
@@ -494,7 +490,6 @@ namespace TehPers.CoreMod.Items.Crafting {
                 };
 
                 // Add it to the dictionary in each slot it takes up
-                CraftingManager._instance._coreMod.Monitor.Log($"Adding {recipe.name} to the components dictionary", LogLevel.Trace);
                 for (int slotX = x; slotX < x + recipe.ComponentWidth; slotX++) {
                     for (int slotY = y; slotY < y + recipe.ComponentHeight; slotY++) {
                         components.Add(new CraftingPageLocation(page, slotY, slotX), (recipe, component));
@@ -505,8 +500,6 @@ namespace TehPers.CoreMod.Items.Crafting {
             // Assign each component's neighbors and add them to the crafting recipe pages
             Dictionary<ClickableTextureComponent, CraftingRecipe>[] pages = Enumerable.Range(0, components.Keys.Max(location => location.Page) + 1).Select(_ => new Dictionary<ClickableTextureComponent, CraftingRecipe>()).ToArray();
             foreach (((int page, int y, int x), (CustomCraftingRecipe recipe, ClickableTextureComponent component)) in components) {
-                CraftingManager._instance._coreMod.Monitor.Log($"Assigning neighbors for {recipe.name}", LogLevel.Trace);
-
                 // Add the current component and recipe to the appropriate page
                 // This doesn't use .Add because big craftables will be iterated over multiple times during this process
                 pages[page][component] = recipe;
@@ -549,11 +542,9 @@ namespace TehPers.CoreMod.Items.Crafting {
             }
 
             // Update pages on the instance
-            CraftingManager._instance._coreMod.Monitor.Log("Converting recipe pages to a list", LogLevel.Trace);
             __instance.pagesOfCraftingRecipes = pages.ToList();
 
             // Prevent the original method from executing
-            CraftingManager._instance._coreMod.Monitor.Log("Done laying out recipes", LogLevel.Trace);
             return false;
 
             bool IsValidSpaceFor(CustomCraftingRecipe recipe, CraftingPageLocation location) {
@@ -592,11 +583,8 @@ namespace TehPers.CoreMod.Items.Crafting {
             // Try to get all the extra data for the crafting page
             CraftingPageData extraData = CraftingManager.GetExtraData(__instance);
 
-            // TODO: Config option to allow for stacking items under the cursor - default is disabled (similar to vanilla)
-            const bool canStack = false;
-
             // Check if the result can be held
-            if (!canStack && extraData.HeldItems.Any()) {
+            if (!CraftingManager._instance._coreMod.Config.AllowMultiCrafting && extraData.HeldItems.Any()) {
                 // Try to create each result
                 IEnumerable<(bool success, Item item)> craftResults = customRecipe.Recipe.Results.Select(r => r.TryCreateOne(out Item item) ? (true, item) : (false, null));
 
@@ -626,21 +614,9 @@ namespace TehPers.CoreMod.Items.Crafting {
 
             // Get all results
             foreach (Item result in results) {
-                // Update stats and achievements
                 if (___cooking) {
                     // Notify the player that the item was cooked
                     Game1.player.cookedRecipe(result.ParentSheetIndex);
-
-                    // Check for achievements
-                    Game1.stats.checkForCookingAchievements();
-                } else {
-                    // Update times crafted
-                    if (Game1.player.craftingRecipes.TryGetValue(customRecipe.name, out int timesCrafted)) {
-                        Game1.player.craftingRecipes[customRecipe.name] = timesCrafted + customRecipe.numberProducedPerCraft;
-                    }
-
-                    // Check for achievements
-                    Game1.stats.checkForCraftingAchievements();
                 }
 
                 if (Game1.options.gamepadControls && Game1.player.couldInventoryAcceptThisItem(result)) {
@@ -650,6 +626,22 @@ namespace TehPers.CoreMod.Items.Crafting {
                     // Grab the item
                     extraData.AddHeldItem(result);
                 }
+            }
+
+            // Update stats and achievements
+            if (___cooking) {
+                Game1.stats.checkForCookingAchievements();
+            } else {
+                // Update times crafted
+                if (Game1.player.craftingRecipes.TryGetValue(customRecipe.name, out int timesCrafted)) {
+                    Game1.player.craftingRecipes[customRecipe.name] = timesCrafted + customRecipe.numberProducedPerCraft;
+                }
+
+                // Check for achievements
+                Game1.stats.checkForCraftingAchievements();
+
+                // Invoke events
+                CraftingManager._instance._itemDelegator.OnRecipeCrafted(new RecipeCraftedEventArgs(customRecipe.name, ___cooking, timesCrafted, customRecipe.Recipe));
             }
 
             return false;
@@ -744,8 +736,6 @@ namespace TehPers.CoreMod.Items.Crafting {
                 Vector2 location = new Vector2(Game1.getOldMouseX() + 16 + 8 * i, Game1.getOldMouseY() + 16 + 8 * i);
                 heldItem.drawInMenu(b, location, 1f, 1f, 0.9f + 0.01f * i, true, new Color(1f, 1f, 1f, 1 - i * 0.25f), true);
             }
-
-            // TODO: Draw a +N if there are more than three stacks of items
 
             // Draw the upper right close button if it exists
             __instance.upperRightCloseButton?.draw(b);
@@ -970,12 +960,12 @@ namespace TehPers.CoreMod.Items.Crafting {
 
                 // Add all the modified items back
                 while (modifiedItems.Any()) {
-                    this.HeldItems.Add(modifiedItems.Pop());
+                    this.HeldItems.Insert(0, modifiedItems.Pop());
                 }
 
                 // Add whatever remains of the item
                 if (addedItem.Stack > 0) {
-                    this.HeldItems.Add(addedItem);
+                    this.HeldItems.Insert(0, addedItem);
                 }
             }
         }

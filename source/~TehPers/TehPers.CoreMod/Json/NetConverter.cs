@@ -4,7 +4,7 @@ using Netcode;
 using Newtonsoft.Json;
 
 namespace TehPers.CoreMod.Json {
-    public class NetConverter : JsonConverter {
+    internal class NetConverter : JsonConverter {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
             NetExposer exposer;
 
@@ -19,7 +19,7 @@ namespace TehPers.CoreMod.Json {
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override bool CanConvert(Type objectType) {

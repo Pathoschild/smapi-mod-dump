@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TehPers.CoreMod.Api.Items;
 
 namespace TehPers.CoreMod.ContentPacks.Data {
     // TODO: Use IContentPackValue instead and support tokens that change values
@@ -15,7 +16,7 @@ namespace TehPers.CoreMod.ContentPacks.Data {
         /// <summary>The number associated with the category the item is in.</summary>
         public int CategoryNumber { get; set; } = Api.Items.Category.Trash.Index;
 
-        /// <summary>The item's recipes.</summary>
-        public List<Dictionary<string, int>> Recipes { get; set; } = null;
+        /// <summary>The buffs the farmer gets when consuming this item.</summary>
+        public BuffDescription? Buffs { get; set; } = null;
     }
 }

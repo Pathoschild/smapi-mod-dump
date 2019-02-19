@@ -1,14 +1,16 @@
-﻿using SpaceCore.Events;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using SpaceCore.Events;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using StardewVoidEffects.Framework;
 
 namespace StardewVoidEffects
 {
+    /// <summary>The mod entry class called by SMAPI.</summary>
     public class ModEntry : Mod, IAssetEditor
     {
         private bool hasEatenVoid;
@@ -21,39 +23,33 @@ namespace StardewVoidEffects
         private float voidToleranceUntilSleep;
         private int daysSinceReceivingIntroLetter;
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             this.Config = this.Helper.ReadConfig<ModConfig>();
-            if (Config.modEnabledOnStartup)
-            {
-                modEnabled = true;
-            }
-            else { modEnabled = false; }
+            this.modEnabled = Config.modEnabledOnStartup;
+
             SpaceEvents.OnItemEaten += this.SpaceEvents_ItemEaten;
-            TimeEvents.AfterDayStarted += this.TimeEvents_DayAdvance;
-            GameEvents.OneSecondTick += this.Void_Drain;
-            MenuEvents.MenuChanged += this.drainMenu_Open;
-            MenuEvents.MenuClosed += this.drainMenu_Closed;
-            TimeEvents.AfterDayStarted += this.Receive_Mail_From_Wizard;
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+            helper.Events.GameLoop.OneSecondUpdateTicked += this.OnOneSecondUpdateTicked;
+            helper.Events.Display.MenuChanged += this.OnMenuChanged;
+
             helper.ConsoleCommands.Add("void_tolerance", "Checks how many void items you have consumed. (Currently Unused)", this.Void_Tolerance);
             helper.ConsoleCommands.Add("togglevoid", "Turns the void effects on/off", this.Toggle_Mod);
         }
 
+        /// <summary>Get whether this instance can edit the given asset.</summary>
+        /// <param name="asset">Basic metadata about the asset being loaded.</param>
         public bool CanEdit<T>(IAssetInfo asset)
         {
-            if (asset.AssetNameEquals("Data/ObjectInformation"))
-            {
-                return true;
-            }
-
-            if (asset.AssetNameEquals("Data/mail"))
-            {
-                return true;
-            }
-
-            return false;
+            return
+                asset.AssetNameEquals("Data/ObjectInformation")
+                || asset.AssetNameEquals("Data/mail");
         }
 
+        /// <summary>Edit a matched asset.</summary>
+        /// <param name="asset">A helper which encapsulates metadata about an asset and enables changes to it.</param>
         public void Edit<T>(IAssetData asset)
         {
             int[] validItems = { 305, 308, 174, 176, 180, 182, 184, 186, 442, 436, 438, 440, 444, 446, 306, 307, 424, 426, 428, 769, 795 };
@@ -104,72 +100,39 @@ namespace StardewVoidEffects
             }
         }
 
-        public void Receive_Mail_From_Wizard(object sender, EventArgs args)
-        {
-            if (modEnabled && Game1.player.mailReceived.Contains("wizardsIntroVoid") && Game1.player.mailReceived.Contains("wizardsInfoOnVoid"))
-                return;
-            {
-            }
-
-            var savedData = this.Helper.ReadJsonFile<SavedData>($"data/{Constants.SaveFolderName}.json") ?? new SavedData();
-            int currentYear = Game1.year;
-            int currentDay = Game1.dayOfMonth;
-            string currentSeason = Game1.currentSeason;
-            SDate year2 = new SDate(day: 1, season: "spring", year: 2);
-            SDate summerDay1Year1 = new SDate(season: "summer", day: 1, year: 1);
-
-            if (modEnabled && SDate.Now() > summerDay1Year1 && !Game1.player.mailReceived.Contains("wizardsIntroVoid"))
-            {
-                Game1.mailbox.Add("wizardsIntroVoid");
-            }
-
-            if (modEnabled && Game1.player.mailReceived.Contains("wizardsIntroVoid"))
-            {
-                daysSinceReceivingIntroLetter++;
-            }
-
-            if (modEnabled && currentYear >= 2 && !Game1.player.mailReceived.Contains("wizardsInfoOnVoid") && Game1.player.mailReceived.Contains("wizardsIntroVoid") && daysSinceReceivingIntroLetter >= 7)
-            {
-                Game1.mailbox.Add("wizardsInfoOnVoid");
-            }
-        }
-
         private void Toggle_Mod(string command, string[] args)
         {
             modEnabled = !modEnabled;
-            if (modEnabled)
-            {
-                this.Monitor.Log("Void Effects toggled on.");
-            }
-            else
-            {
-                this.Monitor.Log("Void Effects toggled off.");
-            }
+            this.Monitor.Log($"Void Effects toggled {(modEnabled ? "on" : "off")}.");
         }
 
-        private void drainMenu_Open(object sender, EventArgsClickableMenuChanged args)
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
-            if (!modEnabled) { return; }
-            isMenuOpen = true;
+            if (!modEnabled)
+                return;
+
+            isMenuOpen = e.NewMenu != null;
         }
 
-        private void drainMenu_Closed(object sender, EventArgsClickableMenuClosed args)
+        /// <summary>Raised once per second after the game state is updated.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnOneSecondUpdateTicked(object sender, EventArgs e)
         {
-            if (!modEnabled) { return; }
-            isMenuOpen = false;
-        }
+            if (!modEnabled || !Context.IsWorldReady)
+                return;
 
-        private void Void_Drain(object sender, EventArgs args)
-        {
-            if (!modEnabled) { return; }
-
-            bool voidInInventory = Game1.player.items.Any(item => item?.Name.ToLower().Contains("void") ?? false);
+            // apply void drain
+            bool voidInInventory = Game1.player.Items.Any(item => item?.Name.ToLower().Contains("void") ?? false);
             bool isIridiumRingEquippedL = Game1.player.leftRing.Any(name => name?.Name.Equals("Iridium Band") ?? false);
             bool isIridiumRingEquippedR = Game1.player.rightRing.Any(name => name?.Name.Equals("Iridium Band") ?? false);
 
             this.Config = this.Helper.ReadConfig<ModConfig>();
 
-            if (recentlyPassedOutInMP == true && isMenuOpen == false)
+            if (recentlyPassedOutInMP && !isMenuOpen)
             {
                 passedOutMPtimer--;
                 if (passedOutMPtimer <= 0)
@@ -184,14 +147,14 @@ namespace StardewVoidEffects
                 recentlyPassedOutInMP = true;
             }
 
-            if (isMenuOpen == false && recentlyPassedOutInMP == false)
+            if (!isMenuOpen && !recentlyPassedOutInMP)
             {
                 fiveSecondTimer--;
                 if (voidInInventory)
                 {
-                    if (fiveSecondTimer <= 0 && recentlyPassedOutInMP == false)
+                    if (fiveSecondTimer <= 0 && !recentlyPassedOutInMP)
                     {
-                        if (isIridiumRingEquippedL == false && isIridiumRingEquippedR == false)
+                        if (!isIridiumRingEquippedL && !isIridiumRingEquippedR)
                         {
                             int voidDecay = Config.VoidDecay;
                             int decayedHealth = Game1.player.health - (voidDecay / 2);
@@ -212,20 +175,16 @@ namespace StardewVoidEffects
 
         private void Void_Tolerance(string command, string[] args)
         {
-            if (!modEnabled) { return; }
-
-            if (!Context.IsWorldReady)
+            if (!modEnabled || !Context.IsWorldReady)
                 return;
 
-            var savedData = this.Helper.ReadJsonFile<SavedData>($"data/{Constants.SaveFolderName}.json") ?? new SavedData();
+            SavedData savedData = this.Helper.Data.ReadJsonFile<SavedData>($"data/{Constants.SaveFolderName}.json") ?? new SavedData();
             this.Monitor.Log($"You have consumed {savedData.Tolerance + voidToleranceUntilSleep} void items.");
         }
 
         private void SpaceEvents_ItemEaten(object sender, EventArgs args)
         {
-            if (!modEnabled) { return; }
-
-            if (!Context.IsWorldReady)
+            if (!modEnabled || !Context.IsWorldReady)
                 return;
 
             //this.Monitor.Log($"{Game1.player.Name} has eaten a {Game1.player.itemToEat.Name}");
@@ -254,31 +213,41 @@ namespace StardewVoidEffects
 
         private void Increase_Tolerance()
         {
-            if (!modEnabled) { return; }
-
-            if (!Context.IsWorldReady)
+            if (!modEnabled || !Context.IsWorldReady)
                 return;
 
             voidToleranceUntilSleep++;
         }
 
-        private void TimeEvents_DayAdvance(object sender, EventArgs args)
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-            if (!modEnabled) { return; }
-
-            int noOfPlayers = Game1.getOnlineFarmers().Count<Farmer>();
-            if (!Context.IsWorldReady)
-            {
+            if (!modEnabled || !Context.IsWorldReady)
                 return;
+
+            // receive mail from Wizard
+            if (!Game1.player.mailReceived.Contains("wizardsIntroVoid") || !Game1.player.mailReceived.Contains("wizardsInfoOnVoid"))
+            {
+                if (SDate.Now() > new SDate(season: "summer", day: 1, year: 1) && !Game1.player.mailReceived.Contains("wizardsIntroVoid"))
+                    Game1.mailbox.Add("wizardsIntroVoid");
+
+                if (Game1.player.mailReceived.Contains("wizardsIntroVoid"))
+                    daysSinceReceivingIntroLetter++;
+
+                if (Game1.year >= 2 && !Game1.player.mailReceived.Contains("wizardsInfoOnVoid") && Game1.player.mailReceived.Contains("wizardsIntroVoid") && daysSinceReceivingIntroLetter >= 7)
+                    Game1.mailbox.Add("wizardsInfoOnVoid");
             }
 
+            // update void effects
+            int noOfPlayers = Game1.getOnlineFarmers().Count();
             if (voidToleranceUntilSleep > 0)
             {
-                var savedData = this.Helper.ReadJsonFile<SavedData>($"data/{Constants.SaveFolderName}.json") ?? new SavedData();
+                var savedData = this.Helper.Data.ReadJsonFile<SavedData>($"data/{Constants.SaveFolderName}.json") ?? new SavedData();
                 savedData.Tolerance = savedData.Tolerance + voidToleranceUntilSleep;
                 voidToleranceUntilSleep = 0;
             }
-
             if (hasEatenVoid && !Game1.IsMultiplayer)
             {
                 this.Monitor.Log($"There are currently {noOfPlayers} players in game. (The number should be 1, if not send halp)");
@@ -293,17 +262,5 @@ namespace StardewVoidEffects
                 hasEatenVoid = false;
             }
         }
-    }
-
-    internal class SavedData
-    {
-        public float Tolerance { get; set; }
-    }
-
-    internal class ModConfig
-    {
-        public bool modEnabledOnStartup { get; set; } = true;
-        public float VoidItemPriceIncrease { get; set; } = 2.0f;
-        public int VoidDecay { get; set; } = 10;
     }
 }

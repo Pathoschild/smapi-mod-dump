@@ -1,12 +1,11 @@
 ﻿using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using StardewValley;
+using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
 using StardewValley.TerrainFeatures;
-using StardewValley.BellsAndWhistles;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 
 namespace TreeTransplant
 {
@@ -35,18 +34,18 @@ namespace TreeTransplant
 			// set the rectangles for green and red square
 			greenSquare = new Rectangle(194, 388, 16, 16);
 			redSquare = new Rectangle(210, 388, 16, 16);
-			
+
 			// initialize buttons
 			cancelButton = new ClickableTextureComponent(
 				new Rectangle(
-					xPositionOnScreen + width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - Game1.tileSize, 
-					yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + Game1.tileSize, 
-					Game1.tileSize, 
-					Game1.tileSize), 
-				Game1.mouseCursors, 
-				Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 47, -1, -1), 
+					xPositionOnScreen + width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - Game1.tileSize,
+					yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + Game1.tileSize,
+					Game1.tileSize,
+					Game1.tileSize),
+				Game1.mouseCursors,
+				Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 47, -1, -1),
 				1.0f);
-			
+
 			flipButton = new ClickableTextureComponent(
 				new Rectangle(
 					xPositionOnScreen + width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - (Game1.tileSize * 2) - (Game1.tileSize / 2),
@@ -158,7 +157,7 @@ namespace TreeTransplant
 			// if we're still fading then just ignore
 			if (Game1.globalFade)
 				return;
-			
+
 			// get X and Y relative to the viewport
 			int x = Game1.getOldMouseX() + Game1.viewport.X;
 			int y = Game1.getOldMouseY() + Game1.viewport.Y;
@@ -185,7 +184,7 @@ namespace TreeTransplant
 			// don't care if there's no tree of course
 			if (selectedTree == null)
 				return;
-				
+
 			// reset the placement
 			canPlace = true;
 			validSpot = new bool[] {
@@ -350,7 +349,7 @@ namespace TreeTransplant
 				selectedTree.propFlip();
 				selectedTree = null;
 				Game1.playSound("shwip");
-					
+
 			}
 			else if (Game1.currentLocation.terrainFeatures.ContainsKey(tileLocation))
 			{
@@ -365,8 +364,8 @@ namespace TreeTransplant
 						Game1.playSound("cancel");
 						return;
 					}
-                    // set the selected tree                    
-                    selectedTree = new TreeRenderer(terrainFeature);
+					// set the selected tree                    
+					selectedTree = new TreeRenderer(terrainFeature);
 					selectedTreeLocation = tileLocation;
 					Game1.playSound("bigSelect");
 				}
@@ -399,7 +398,7 @@ namespace TreeTransplant
 			// if we are fading then don't bother drawing
 			if (Game1.globalFade)
 				return;
-			
+
 			// get cursor tile location
 			var tileLocation = new Vector2(
 				(Game1.viewport.X + Game1.getOldMouseX()) / Game1.tileSize,

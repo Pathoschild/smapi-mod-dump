@@ -1,7 +1,7 @@
 {
   "Name": "Extended bus system",
   "Author": "Tondorian",
-  "Version": "1.4.0",
+  "Version": "1.4.1",
   "Description": "Replaces default bussystem by a more advanced system with SeasonPass and Annual Ticket",
   "UniqueID": "ExtendedBusSystem",
   "EntryDll": "ExtendedBusSystem.dll",

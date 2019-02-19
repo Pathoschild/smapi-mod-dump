@@ -23,7 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>7.3</LangVersion>
     <NullableContextOptions>enable</NullableContextOptions>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
@@ -67,8 +67,10 @@
     <Compile Include="ContentPacks\Values\TokenizedContentPackValueProvider.cs" />
     <Compile Include="ContentPacks\ContentPackValueJsonConverter.cs" />
     <Compile Include="ContentPacks\TokenRegistry.cs" />
+    <Compile Include="ContentPacks\VariableConfigValue.cs" />
     <Compile Include="CoreApiFactory.cs" />
     <Compile Include="CoreApiInitializer.cs" />
+    <Compile Include="ContentLoading\CoreTranslationHelper.cs" />
     <Compile Include="Drawing\DrawingInfo.cs" />
     <Compile Include="Drawing\IDrawingInfoInternal.cs" />
     <Compile Include="Drawing\ITrackedTextureInternal.cs" />
@@ -111,6 +113,7 @@
     <Compile Include="Json\DescriptiveJsonWriter.cs" />
     <Compile Include="Json\NetConverter.cs" />
     <Compile Include="Json\NetExposer.cs" />
+    <Compile Include="Config\ModConfig.cs" />
     <Compile Include="ModCore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ContentLoading\CoreTranslation.cs" />

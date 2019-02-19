@@ -30,7 +30,6 @@ namespace TehPers.CoreMod.Drawing {
         public IHatSpriteSheet HatSpriteSheet { get; }
 
         public DrawingApi(IApiHelper coreApiHelper, TextureTracker textureTracker) {
-            // TODO: Only one texture tracker should ever be created
             this._coreApiHelper = coreApiHelper;
             this._textureTracker = textureTracker;
 

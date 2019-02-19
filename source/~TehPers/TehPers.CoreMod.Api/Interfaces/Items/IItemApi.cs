@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using TehPers.CoreMod.Api.Drawing.Sprites;
+using TehPers.CoreMod.Api.Items.Events;
 using TehPers.CoreMod.Api.Items.Inventory;
 using TehPers.CoreMod.Api.Items.ItemProviders;
 using TehPers.CoreMod.Api.Items.Recipes;
@@ -41,5 +42,8 @@ namespace TehPers.CoreMod.Api.Items {
         /// <param name="sourceRectangle">The source rectangle for the item's sprite.</param>
         /// <returns>A sprite object pointing to your item's sprite on the dynamically-created sprite sheet.</returns>
         ISprite CreateSprite(Texture2D texture, Rectangle? sourceRectangle = null);
+
+        /// <summary>Occurs after a recipe is crafted and the items are placed in the farmer's inventory.</summary>
+        event Action<RecipeCraftedEventArgs> RecipeCrafted;
     }
 }

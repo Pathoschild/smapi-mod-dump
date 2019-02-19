@@ -1,6 +1,6 @@
-﻿using StardewValley.TerrainFeatures;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewValley.TerrainFeatures;
 
 namespace TreeTransplant
 {

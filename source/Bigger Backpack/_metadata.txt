@@ -5,9 +5,9 @@ mods:
    Bigger Backpack
 
 latest commit:
-   commit 21e2e1d3d7d480632be1cda5d53a808a7f4637f6
+   commit f0f0f1287e272e5dfc9ca3652b52999f94582fb8
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:19:09 2019 -0500
+   Date:   Fri Feb 15 12:51:36 2019 -0500
    
-       Update version
+       1.0.6
    

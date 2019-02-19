@@ -45,11 +45,7 @@ namespace System {
         /// <summary>Creates a new range starting from the beginning and extending to the end.</summary>
         /// <returns>A range which covers all possible indexes.</returns>
         public static Range All => new Range(Index.Start, Index.End);
-
-        public static implicit operator Range((int Start, int End) range) {
-            return new Range(range.Start, range.End);
-        }
-
+        
         /// <inheritdoc />
         public IEnumerator<int> GetEnumerator() {
             int start = this.Start.Value * (this.Start.IsFromEnd ? -1 : 1);

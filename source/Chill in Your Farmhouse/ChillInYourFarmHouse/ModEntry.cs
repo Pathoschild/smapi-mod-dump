@@ -20,9 +20,9 @@ namespace ChillInYourFarmHouse
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            PlayerEvents.Warped += this.PlayerEvents_Warped;
-            TimeEvents.TimeOfDayChanged += this.TimeEvents_TimeChanged;
-
+            helper.Events.Player.Warped += PlayerEvents_Warped;
+            helper.Events.GameLoop.TimeChanged += TimeEvents_TimeChanged;
+            
         }
 
         /*********
@@ -30,7 +30,7 @@ namespace ChillInYourFarmHouse
         *********/
 
 
-        private void PlayerEvents_Warped(object sender, EventArgsPlayerWarped e)
+        private void PlayerEvents_Warped(object sender, WarpedEventArgs e)
         {
             if (Context.IsWorldReady)
             {
@@ -38,18 +38,14 @@ namespace ChillInYourFarmHouse
             }
         }
 
-        private void TimeEvents_TimeChanged(object sender, EventArgs e)
+        private void TimeEvents_TimeChanged(object sender, TimeChangedEventArgs e)
         {
 
             StardewValley.Farmer player = Game1.player;
 
-            bool allowAccess = false;
-            if (this.location == "FarmHouse" || this.location == "Cabin") 
-            {
-                allowAccess = true;
-            }
+            bool allowAccess = this.location == "FarmHouse" || this.location == "Cabin";
 
-            if (Context.IsWorldReady == false || allowAccess == false || player.stamina == player.MaxStamina)
+            if (Context.IsWorldReady == false || allowAccess == false || player.Stamina >= (float)player.MaxStamina)
             {
                 return;
             }
@@ -68,12 +64,12 @@ namespace ChillInYourFarmHouse
             }
 
             int staminaToGive = (int)Math.Round(player.MaxStamina * multiplicator, MidpointRounding.AwayFromZero);
-            if((player.stamina + staminaToGive) > player.MaxStamina)
+            if((player.Stamina + staminaToGive) > player.MaxStamina)
             {
                 staminaToGive = (int)Math.Floor(player.MaxStamina - player.stamina);
             }
 
-            player.stamina += staminaToGive;
+            player.Stamina += staminaToGive;
 
         }
 

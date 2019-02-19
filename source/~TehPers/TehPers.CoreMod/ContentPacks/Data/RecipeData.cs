@@ -9,6 +9,7 @@ using TehPers.CoreMod.Api.Conflux.Matching;
 namespace TehPers.CoreMod.ContentPacks.Data {
     internal class RecipeData {
         public string Name { get; set; } = null;
+        public bool IsCooking { get; set; } = false;
         public List<Part> Ingredients { get; set; } = new List<Part>();
         public List<Part> Results { get; set; } = new List<Part>();
 

@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using TehPers.CoreMod.Api.Items;
-using TehPers.CoreMod.Api.Items.Recipes;
 
 namespace TehPers.CoreMod.ContentPacks.Data {
     internal class ContentPackData {

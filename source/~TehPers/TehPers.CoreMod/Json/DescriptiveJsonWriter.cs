@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 using TehPers.CoreMod.Api.Extensions;
 
 namespace TehPers.CoreMod.Json {
-    public class DescriptiveJsonWriter : JsonWriter {
+    internal class DescriptiveJsonWriter : JsonWriter {
         private readonly TextWriter _writer;
         private int _indent;
         private string _propertyName;

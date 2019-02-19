@@ -11,6 +11,7 @@ using TehPers.CoreMod.Api.Drawing;
 using TehPers.CoreMod.Api.Drawing.Sprites;
 using TehPers.CoreMod.Api.Extensions;
 using TehPers.CoreMod.Api.Items;
+using TehPers.CoreMod.Api.Items.Events;
 using TehPers.CoreMod.Api.Items.ItemProviders;
 using TehPers.CoreMod.Api.Items.Recipes;
 using TehPers.CoreMod.Drawing.Sprites;
@@ -21,7 +22,7 @@ namespace TehPers.CoreMod.Items {
         private const int STARTING_INDEX = 100000;
         private static readonly Regex _legacyKeyRegex = new Regex("^(?<modId>[^:]+):(?<localKey>.*)$");
 
-        private readonly IMod _coreMod;
+        private readonly ModCore _coreMod;
         private readonly List<IItemProvider> _providers = new List<IItemProvider>();
         private readonly Dictionary<ItemKey, int> _itemIndexes = new Dictionary<ItemKey, int>();
         private readonly Dictionary<ItemKey, TrackedIndex> _trackedIndices = new Dictionary<ItemKey, TrackedIndex>();
@@ -31,7 +32,7 @@ namespace TehPers.CoreMod.Items {
 
         public DynamicSpriteSheet CustomItemSpriteSheet { get; private set; }
 
-        public ItemDelegator(IMod coreMod) {
+        public ItemDelegator(ModCore coreMod) {
             this._coreMod = coreMod;
             this._craftingManager = CraftingManager.GetCraftingManager(coreMod, this);
         }
@@ -297,6 +298,12 @@ namespace TehPers.CoreMod.Items {
                 provider.InvalidateAssets();
             }
         }
+
+        public virtual void OnRecipeCrafted(RecipeCraftedEventArgs obj) {
+            this.RecipeCrafting?.Invoke(obj);
+        }
+
+        public event Action<RecipeCraftedEventArgs> RecipeCrafting;
 
         private class TrackedIndex {
             public int? Index { get; set; }

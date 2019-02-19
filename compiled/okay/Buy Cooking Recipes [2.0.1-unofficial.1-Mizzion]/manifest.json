@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Buy Recipes",
+  "Author": "Denifia",
+  "version": "2.0.1-unofficial.1-Mizzion",
+  "MinimumApiVersion": "2.10.2",
+  "Description": "Buy recipes you don't know from the SMAPI console.",
+  "UniqueID": "Denifia.BuyRecipes",
+  "EntryDll": "Denifia.Stardew.BuyRecipes.dll",
+  "UpdateKeys": [ "Nexus:1126" ]
+}

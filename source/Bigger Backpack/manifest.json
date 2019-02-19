@@ -1,7 +1,7 @@
 {
   "Name": "Bigger Backpack",
   "Author": "spacechase0, yoseiri",
-  "Version": "1.0.5",
+  "Version": "1.0.6",
   "Description": "Adds another backpack size.",
   "UniqueID": "spacechase0.BiggerBackpack",
   "EntryDll": "BiggerBackpack.dll",

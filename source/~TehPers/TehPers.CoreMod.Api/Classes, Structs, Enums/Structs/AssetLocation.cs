@@ -5,6 +5,7 @@ using System.Linq;
 using StardewModdingAPI;
 using StardewValley;
 using TehPers.CoreMod.Api.Conflux.Matching;
+using TehPers.CoreMod.Api.ContentLoading;
 
 namespace TehPers.CoreMod.Api.Structs {
     public readonly struct AssetLocation : IEquatable<AssetLocation> {
@@ -16,12 +17,12 @@ namespace TehPers.CoreMod.Api.Structs {
             this.Path = AssetLocation.Normalize(path);
         }
 
-        public T Load<T>(IContentHelper contentHelper) {
+        public T Load<T>(IContentSource contentSource) {
             switch (this.Source) {
                 case ContentSource.GameContent:
                     return Game1.content.Load<T>(this.Path);
                 case ContentSource.ModFolder:
-                    return contentHelper.Load<T>(this.Path);
+                    return contentSource.Load<T>(this.Path);
                 default:
                     throw new InvalidOperationException($"Could not load from content source: {this.Source}");
             }
