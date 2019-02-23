@@ -28,6 +28,7 @@
   "AutoRefillWateringCan": true,
   "ButtonShowMenu": "R",
   "FilterBackgroundInMenu": true,
+  "ShowMousePositionWhenAssigningLocation": true,
   "AutoCollectCollectibles": false,
   "AutoCollectRadius": 1,
   "AutoShakeFruitedPlants": true,

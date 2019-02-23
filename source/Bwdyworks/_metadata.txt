@@ -1,0 +1,13 @@
+url:
+   https://github.com/bwdymods/SDV-bwdylib.git
+
+mods:
+   Bwdyworks
+
+latest commit:
+   commit 48a6607a532e5e5377fd9085c9c1254defa180fd
+   Author: bwdymods <bwdymods@gmail.com>
+   Date:   Wed Feb 20 18:31:17 2019 -0900
+   
+       a starting point
+   

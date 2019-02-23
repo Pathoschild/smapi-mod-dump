@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-
+using System.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Menus;
 using StardewValley.Locations;
-using StardewValley.Characters;
+using StardewValley.Menus;
 
-namespace IsaacS.FriendsForever {
+namespace FriendsForever
+{
     public class Config {
         /// <summary>Whether spouses should be prevented from having friendship decay.</summary>
         public bool AffectSpouses = false;
@@ -24,50 +23,51 @@ namespace IsaacS.FriendsForever {
     }
 
     public class ModEntry : Mod {
-        internal Config config;
-        internal Dictionary<FarmAnimal, int> animalFriendships = new Dictionary<FarmAnimal, int>();
+        internal Config Config;
+        internal Dictionary<FarmAnimal, int> AnimalFriendships = new Dictionary<FarmAnimal, int>();
 
         /// <summary>Mod entry point. Reads the config and adds the listeners.</summary>
         /// <param name="helper">Helper object for various mod functions (such as loading config files).</param>
         public override void Entry(IModHelper helper) {//is Menus.SaveGameMenu
-            config = helper.ReadConfig<Config>();
-            TimeEvents.AfterDayStarted += this.StartDay;
-            MenuEvents.MenuClosed += this.MenuClosed;
-            SaveEvents.BeforeSave += this.BeforeSave;
+            Config = helper.ReadConfig<Config>();
+            helper.Events.GameLoop.DayStarted += StartDay;
+            helper.Events.Display.MenuChanged += MenuClosed;
+            helper.Events.GameLoop.Saving += BeforeSave;
 
-            if (!(config.AffectDates || config.AffectDates || config.AffectEveryoneElse || config.AffectAnimals)) {
-                this.Monitor.Log("This mod can be removed, all features currently disabled.", LogLevel.Warn);
+            if (!(Config.AffectDates || Config.AffectDates || Config.AffectEveryoneElse || Config.AffectAnimals)) {
+                Monitor.Log("This mod can be removed, all features currently disabled.", LogLevel.Warn);
             }
         }
 
         /// <summary>Start the day out by 'talking' to every NPC that we don't want friendship decay for.</summary>
-        private void StartDay(object sender, EventArgs e) {
+        private void StartDay(object sender, DayStartedEventArgs e) {
             //This is a host-only mod:
             if (!Context.IsMainPlayer)
                 return;
             
-            animalFriendships.Clear();
+            AnimalFriendships.Clear();
         
             var farmers = Game1.getAllFarmers();
             var npcs = Utility.getAllCharacters();
 
+            var farmerArray = farmers as Farmer[] ?? farmers.ToArray();
             foreach (NPC character in npcs) {
                 if (!character.isVillager() && !character.IsMonster)
                     continue;
 
-                foreach (Farmer farmer in farmers) {
+                foreach (Farmer farmer in farmerArray) {
                     if (!farmer.friendshipData.ContainsKey(character.getName()))
                         continue;
                     
                     var friendship = farmer.friendshipData[character.getName()];
 
-                    if (farmer.spouse == character.name && !config.AffectSpouses) {
+                    if (farmer.spouse == character.Name && !Config.AffectSpouses) {
                         continue;
                     //If the they are 'dating' and we're not to affect dates, skip them. The exception to this is if
                     //the farmer has a spouse, in which case we want to treat them like everyone else:
-                    } else if (friendship.Status == FriendshipStatus.Dating && !config.AffectDates && farmer.spouse == null) {
+                    } else if (friendship.Status == FriendshipStatus.Dating && !Config.AffectDates && farmer.spouse == null) {
                         continue;
-                    } else if (!config.AffectEveryoneElse) {
+                    } else if (!Config.AffectEveryoneElse) {
                         continue;
                     }
 
@@ -83,13 +83,13 @@ namespace IsaacS.FriendsForever {
         /// <summary>When a menu is closed, we want to see if the player is trying to sleep in bed. If so we need to
         /// save an animal's friendship toward a player if the animal has not been pet. This is a work around since
         /// SMAPI has no way to know whether an animal was pet or not at the end of the day.</summary>
-        private void MenuClosed(object sender, EventArgsClickableMenuClosed e) {
+        private void MenuClosed(object sender, MenuChangedEventArgs e) {
             //Player can't move if they select yes to the sleep dialog:
             if (Context.CanPlayerMove)
                 return;
 
             //The sleep dialog box is of DialogBox in singleplayer but ReadyCheckDialog in multiplayer:
-            if (!(e.PriorMenu is DialogueBox || e.PriorMenu is ReadyCheckDialog))
+            if (!(e.OldMenu is DialogueBox || e.OldMenu is ReadyCheckDialog))
                 return;
                 
             var player = Game1.player;
@@ -99,10 +99,10 @@ namespace IsaacS.FriendsForever {
 
             Microsoft.Xna.Framework.Point bedLocation;
             //Of course the bed is in the FarmHouse location:
-            if (player.currentLocation.name == "FarmHouse") {
-                bedLocation = (player.currentLocation as FarmHouse).getBedSpot();
-            } else if (player.currentLocation.name == "Cabin") {
-                bedLocation = (player.currentLocation as Cabin).getBedSpot();
+            if (player.currentLocation.Name == "FarmHouse") {
+                bedLocation = ((FarmHouse) player.currentLocation).getBedSpot();
+            } else if (player.currentLocation.Name == "Cabin") {
+                bedLocation = ((Cabin) player.currentLocation).getBedSpot();
             } else {
                 return;
             }
@@ -111,26 +111,26 @@ namespace IsaacS.FriendsForever {
             if (Math.Abs(bedLocation.X * Game1.tileSize - player.position.X) < Game1.tileSize
                 && Math.Abs(bedLocation.Y * Game1.tileSize - player.position.Y) < Game1.tileSize)
             {
-                animalFriendships.Clear();
+                AnimalFriendships.Clear();
                 var animals = Game1.getFarm().getAllFarmAnimals().Distinct();
                 foreach (var animal in animals) {
-                    if (!animal.wasPet)
-                        animalFriendships[animal] = animal.friendshipTowardFarmer;
+                    if (!animal.wasPet.Value)
+                        AnimalFriendships[animal] = animal.friendshipTowardFarmer.Value;
                 }
             }
         }
         
         /// <summary>Before the save, we want to add any lost friendship to animals.</summary>
-        private void BeforeSave(object sender, EventArgs e) {
-            if (!(config.AffectAnimals && Context.IsMainPlayer))
+        private void BeforeSave(object sender, SavingEventArgs e) {
+            if (!(Config.AffectAnimals && Context.IsMainPlayer))
                 return;
         
             var animals = Game1.getFarm().getAllFarmAnimals().Distinct();
             foreach (var animal in animals) {
-                if (!animalFriendships.ContainsKey(animal))
+                if (!AnimalFriendships.ContainsKey(animal))
                     continue;
                 
-                animal.friendshipTowardFarmer.Set(animal.friendshipTowardFarmer.Get() + (10 - animalFriendships[animal] / 200));
+                animal.friendshipTowardFarmer.Set(animal.friendshipTowardFarmer.Get() + (10 - AnimalFriendships[animal] / 200));
             }
         }
     }

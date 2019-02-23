@@ -40,10 +40,12 @@ namespace JoysOfEfficiency
         private readonly string _tabControlsString;
 
         private bool _isListening;
+        private bool _isListeningClick;
 
         private bool _isFirstTime;
 
         private ModifiedInputListener _listener;
+        private ModifiedClickListener _clickListener;
 
         internal JoeMenu(int width, int height, ModEntry mod) : base(Game1.viewport.Width / 2 - width / 2, Game1.viewport.Height / 2 - height / 2, width, height, true)
         {
@@ -195,6 +197,7 @@ namespace JoysOfEfficiency
                 tab.AddOptionsElement(new EmptyLabel());
                 tab.AddOptionsElement(new LabelComponent("Fishing Probabilities Information"));
                 tab.AddOptionsElement(new ModifiedCheckBox("FishingProbabilitiesInfo", 26, ModEntry.Conf.FishingProbabilitiesInfo, OnCheckboxValueChanged));
+                tab.AddOptionsElement(new ModifiedClickListener(this, "ProbBoxLocation", 0, ModEntry.Conf.ProbBoxX, ModEntry.Conf.ProbBoxY, translation, OnSomewhereClicked, OnStartListeningClick));
 
                 tab.AddOptionsElement(new EmptyLabel());
                 tab.AddOptionsElement(new LabelComponent("Show Shipping Price"));
@@ -245,15 +248,36 @@ namespace JoysOfEfficiency
             _isListening = true;
             _listener = option;
         }
+
+        private void OnStartListeningClick(int i, ModifiedClickListener option)
+        {
+            _isListeningClick = true;
+            _clickListener = option;
+        }
+
+        private void OnSomewhereClicked(int index, Point point)
+        {
+            _isListeningClick = false;
+            _clickListener = null;
+            switch (index)
+            {
+                case 0:
+                    ModEntry.Conf.ProbBoxX = point.X;
+                    ModEntry.Conf.ProbBoxY = point.Y;
+                    break;
+                default: return;
+            }
+            _mod.WriteConfig();
+        }
         private void OnInputListnerChanged(int index, SButton value)
         {
-            if (index == 0)
+            switch (index)
             {
-                ModEntry.Conf.ButtonShowMenu = value;
-            }
-            else if (index == 1)
-            {
-                ModEntry.Conf.ButtonToggleBlackList = value;
+                case 0:
+                    ModEntry.Conf.ButtonShowMenu = value; break;
+                case 1:
+                    ModEntry.Conf.ButtonToggleBlackList = value; break;
+                default: return;
             }
             _mod.WriteConfig();
             _isListening = false;
@@ -305,50 +329,21 @@ namespace JoysOfEfficiency
         {
             switch (index)
             {
-                case 0:
-                    ModEntry.Conf.CpuThresholdFishing = value / 10.0f;
-                    break;
-                case 1:
-                    ModEntry.Conf.StaminaToEatRatio = value / 10.0f;
-                    break;
-                case 2:
-                    ModEntry.Conf.HealthToEatRatio = value / 10.0f;
-                    break;
-                case 3:
-                    ModEntry.Conf.AutoWaterRadius = value;
-                    break;
-                case 4:
-                    ModEntry.Conf.AutoPetRadius = value;
-                    break;
-                case 5:
-                    ModEntry.Conf.AutoHarvestRadius = value;
-                    break;
-                case 6:
-                    ModEntry.Conf.AutoCollectRadius = value;
-                    break;
-                case 7:
-                    ModEntry.Conf.AutoShakeRadius = value;
-                    break;
-                case 8:
-                    ModEntry.Conf.AutoDigRadius = value;
-                    break;
-                case 10:
-                    ModEntry.Conf.MachineRadius = value;
-                    break;
-                case 11:
-                    ModEntry.Conf.RadiusCraftingFromChests = value;
-                    break;
-                case 12:
-                    ModEntry.Conf.IdleTimeout = value;
-                    break;
-                case 13:
-                    ModEntry.Conf.ScavengingRadius = value;
-                    break;
-                case 14:
-                    ModEntry.Conf.AnimalHarvestRadius = value;
-                    break;
-                default:
-                    return;
+                case 0: ModEntry.Conf.CpuThresholdFishing = value / 10.0f; break;
+                case 1: ModEntry.Conf.StaminaToEatRatio = value / 10.0f; break;
+                case 2: ModEntry.Conf.HealthToEatRatio = value / 10.0f; break;
+                case 3: ModEntry.Conf.AutoWaterRadius = value; break;
+                case 4: ModEntry.Conf.AutoPetRadius = value; break;
+                case 5: ModEntry.Conf.AutoHarvestRadius = value; break;
+                case 6: ModEntry.Conf.AutoCollectRadius = value; break;
+                case 7: ModEntry.Conf.AutoShakeRadius = value; break;
+                case 8: ModEntry.Conf.AutoDigRadius = value; break;
+                case 10: ModEntry.Conf.MachineRadius = value; break;
+                case 11: ModEntry.Conf.RadiusCraftingFromChests = value; break;
+                case 12: ModEntry.Conf.IdleTimeout = value; break;
+                case 13: ModEntry.Conf.ScavengingRadius = value; break;
+                case 14: ModEntry.Conf.AnimalHarvestRadius = value; break;
+                default: return;
             }
 
             _mod.WriteConfig();
@@ -372,6 +367,10 @@ namespace JoysOfEfficiency
 
         public override void gamePadButtonHeld(Buttons b)
         {
+            if (_isListening || _isListeningClick)
+            {
+                return;
+            }
             if (b.HasFlag(Buttons.RightThumbstickUp) && _upCursor.visible)
             {
                 UpCursor();
@@ -384,6 +383,10 @@ namespace JoysOfEfficiency
 
         public override void receiveGamePadButton(Buttons b)
         {
+            if (_isListeningClick)
+            {
+                return;
+            }
             if (_isListening)
             {
                 foreach (ModifiedInputListener element in _tabs[_tabIndex].GetElements().OfType<ModifiedInputListener>())
@@ -442,7 +445,7 @@ namespace JoysOfEfficiency
 
         public override void receiveScrollWheelAction(int direction)
         {
-            if (_isListening)
+            if (_isListening || _isListeningClick)
             {
                 return;
             }
@@ -516,6 +519,13 @@ namespace JoysOfEfficiency
                 Point size = _listener.GetListeningMessageWindowSize();
                 drawTextureBox(b, (Game1.viewport.Width - size.X) / 2, (Game1.viewport.Height - size.Y) / 2, size.X, size.Y, Color.White);
                 _listener.DrawStrings(b, (Game1.viewport.Width - size.X) / 2, (Game1.viewport.Height - size.Y) / 2);
+            }
+
+            if (_isListeningClick)
+            {
+                Point size = _clickListener.GetListeningMessageWindowSize();
+                drawTextureBox(b, (Game1.viewport.Width - size.X) / 2, (Game1.viewport.Height - size.Y) / 2, size.X, size.Y, Color.White);
+                _clickListener.DrawStrings(b, (Game1.viewport.Width - size.X) / 2, (Game1.viewport.Height - size.Y) / 2);
             }
 
             Util.DrawCursor();
@@ -608,7 +618,14 @@ namespace JoysOfEfficiency
             {
                 return;
             }
-
+            if (_isListeningClick)
+            {
+                foreach (ModifiedClickListener listener in _tabs[_tabIndex].GetElements().OfType<ModifiedClickListener>())
+                {
+                    listener.receiveLeftClick(x, y);
+                }
+                return;
+            }
             if (_scrollBar.visible && _scrollBarRunner.Contains(x, y))
             {
                 _isScrolling = true;
@@ -659,6 +676,14 @@ namespace JoysOfEfficiency
         {
             _isScrolling = false;
             base.releaseLeftClick(x, y);
+            if (_isListeningClick)
+            {
+                foreach (ModifiedClickListener listener in _tabs[_tabIndex].GetElements().OfType<ModifiedClickListener>())
+                {
+                    listener.leftClickReleased(x, y);
+                }
+                return;
+            }
             if (_isListening)
             {
                 return;
@@ -739,7 +764,5 @@ namespace JoysOfEfficiency
                 Game1.playSound("drumkit6");
             }
         }
-
-        public override void receiveRightClick(int x, int y, bool playSound = true) { }
     }
 }

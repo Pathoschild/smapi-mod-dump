@@ -234,10 +234,10 @@ MachineRadius("Automation", int, default:1) - How far tiles can be affected by t
 - FishingProbabilitiesInfo("UIs", bool, default:false) - whether this utility is enabled.
 ﻿
 
-- ProbBoxX("UIs", int, default:100) - Base X location of rendering info box.
+- ProbBoxX("UIs", int, default:100) - Base X location of the information box .
 ﻿
 
-- ProbBoxY("UIs", int, default:500) - Base Y location of rendering info box.
+- ProbBoxY("UIs", int, default:500) - Base Y location of the information box.
 
 ## Crafting From Chests
 This feature lets player craft using contents of nearby chests or fridge as ingredients.

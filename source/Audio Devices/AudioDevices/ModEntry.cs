@@ -1,23 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Threading;
+using Microsoft.Xna.Framework.Audio;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using System.Collections.Concurrent;
 using StardewValley;
-using Microsoft.Xna.Framework.Audio;
-using System.IO;
-using System.Threading;
-using System.Collections.Generic;
 using StardewValley.BellsAndWhistles;
-using StardewValley.Minigames;
-using StardewValley.Monsters;
 using StardewValley.Locations;
 using StardewValley.Menus;
-using StardewValley.Tools;
+using StardewValley.Minigames;
+using StardewValley.Monsters;
 using StardewValley.TerrainFeatures;
-using System.Reflection;
+using StardewValley.Tools;
 
 namespace AudioDevices
 {
+    /// <summary>The entry class loaded by SMAPI.</summary>
     public class ModEntry : Mod
     {
         private static volatile bool doTheThing = true;
@@ -43,12 +43,14 @@ namespace AudioDevices
             }
         }
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             ModEntry.mod = this;
             Settings = helper.ReadConfig<AudioDeviceSettings>() ?? new AudioDeviceSettings();
-            GameEvents.UpdateTick += this.GameEvents_UpdateTick;
-            MenuEvents.MenuChanged += this.MenuEvents_MenuChanged;
+            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            helper.Events.Display.MenuChanged += this.OnMenuChanged;
         }
 
         private void SwitchAudioDevice(RendererDetail rendererDetail)
@@ -183,15 +185,21 @@ namespace AudioDevices
             }.Start();
         }
 
-        private void MenuEvents_MenuChanged(object sender, EventArgsClickableMenuChanged args)
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
-            if (args.NewMenu is GameMenu gameMenu)
+            if (e.NewMenu is GameMenu gameMenu)
             {
                 InjectAudioOptionsIntoGameMenu(gameMenu);
             }
         }
 
-        private void GameEvents_UpdateTick(object sender, EventArgs args)
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             InitTheThing();
 

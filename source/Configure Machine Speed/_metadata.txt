@@ -1,0 +1,13 @@
+url:
+   https://github.com/BayesianBandit/ConfigureMachineSpeed.git
+
+mods:
+   Configure Machine Speed
+
+latest commit:
+   commit 39753f37b24acc1183f8f4e63eab8f1426e0b800
+   Author: BayesianBandit <47843785+BayesianBandit@users.noreply.github.com>
+   Date:   Fri Feb 22 03:00:21 2019 -0500
+   
+       Prep README/manifest for v1.1.0
+   

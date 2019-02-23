@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1326
-IDs: RockinMods.ZoomMod, ZoomMod
-update keys: Nexus:1326, GitHub:rockinrolla/ZoomMod

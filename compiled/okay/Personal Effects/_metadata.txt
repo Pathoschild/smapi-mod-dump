@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3532
+IDs: bwdy.personaleffects
+update keys: Nexus:3532

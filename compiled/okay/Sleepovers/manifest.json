@@ -1,0 +1,16 @@
+﻿{
+	"Name": "Sleepovers",
+	"Author": "bwdy",
+	"Version": "0.1.0",
+	"Description": "A Stardew Valley mod for besties that don't care about a curfew.",
+	"UniqueID": "bwdy.sleepovers",
+	"EntryDll": "Sleepovers.dll",
+	"MinimumApiVersion": "2.10.2",
+	"Dependencies": [
+		{
+			"UniqueID": "bwdyworks",
+			"MinimumVersion": "0.1.0"
+		}
+	],
+	"UpdateKeys": [ "Nexus:3531" ]
+}

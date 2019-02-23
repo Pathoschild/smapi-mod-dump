@@ -5,9 +5,9 @@ mods:
    Community Bundle Item Tooltip
 
 latest commit:
-   commit e6d03f3149951a9d8a72826f52f5568698b2bb21
+   commit e51a22d017fcb90b06f35c302bf1e002d782d77c
    Author: Musbah Sinno <musbahsinno@hotmail.com>
-   Date:   Sat Jun 2 02:15:15 2018 +0300
+   Date:   Thu Feb 21 19:41:53 2019 -0700
    
-       bundle tooltips won't show up if the player is a joja member
+       Updated manifest
    

@@ -5,9 +5,12 @@ mods:
    Adjustable Stamina Healing
 
 latest commit:
-   commit eac9a5a2ea449eb8c7f0c41976ebd8fc9efd09b4
+   commit 6eaa58722eaa364de2c57587f41d4617be0fa058
+   Merge: eac9a5a 4ed693b
    Author: pomepome <punyoon03@gmail.com>
-   Date:   Fri Jun 8 02:23:16 2018 +0900
+   Date:   Fri Feb 22 09:04:05 2019 +0900
    
-       1.0.4
+       Merge pull request #1 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0
    

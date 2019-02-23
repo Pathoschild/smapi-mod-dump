@@ -5,7 +5,7 @@ namespace JoysOfEfficiency.OptionsElements
 {
     internal class MenuTab
     {
-        public int Count { get { return _optionsElements.Count; } }
+        public int Count => _optionsElements.Count;
 
         private readonly List<OptionsElement> _optionsElements = new List<OptionsElement>();
 

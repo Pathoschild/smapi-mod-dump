@@ -5,10 +5,10 @@ mods:
    Audio Devices
 
 latest commit:
-   commit ef0899fe91f1d2b4946771a401874be8e37a3dbc
+   commit b69a32dcd25ea2c455c04a34cad01c7d5cb2a18d
    Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Tue Sep 18 10:17:45 2018 +0200
+   Date:   Fri Feb 22 17:52:04 2019 +0100
    
-       * Added customizable interval for checking audio devices
-       * Added call to Dispose() on temporary AudioEngine created for checking audio devices
+       * Restored original name
+       * Increased version number for release
    

@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewModdingAPI.Framework;
 using StardewValley;
 using StardewValley.Quests;
 using StardewValley.Locations;
-using System.Reflection;
 
 namespace HelpWantedQuestFixes
 {
@@ -34,13 +26,13 @@ namespace HelpWantedQuestFixes
     public class ModEntry : Mod
     {
 
-        private ModConfig Config;
-        private float fishPercent;
-        private float resourcePercent;
-        private float itemPercent;
-        private float slayPercent;
-        private float totality;
-        private float noQuestPercent;
+        private ModConfig _config;
+        private float _fishPercent;
+        private float _resourcePercent;
+        private float _itemPercent;
+        private float _slayPercent;
+        private float _totality;
+        private float _noQuestPercent;
 
         /*********
         ** Public methods
@@ -49,58 +41,53 @@ namespace HelpWantedQuestFixes
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            this.Config = this.Helper.ReadConfig<ModConfig>();
-            noQuestPercent = Math.Max(0,(100 - this.Config.ChanceOfQuestPerDay))/100;
+            _config = Helper.ReadConfig<ModConfig>();
+            _noQuestPercent = (float)Math.Max(0,100 - _config.ChanceOfQuestPerDay)/100;
 
-            totality = this.Config.CategoryChancePercent.ItemDelivery + this.Config.CategoryChancePercent.Gathering + this.Config.CategoryChancePercent.Fishing + this.Config.CategoryChancePercent.SlayMonsters;
-            fishPercent = (1 - noQuestPercent) * this.Config.CategoryChancePercent.Fishing / totality;
-            resourcePercent = (1 - noQuestPercent) * this.Config.CategoryChancePercent.Gathering / totality;
-            itemPercent = (1 - noQuestPercent) * this.Config.CategoryChancePercent.ItemDelivery / totality;
-            slayPercent = (1 - noQuestPercent) * this.Config.CategoryChancePercent.SlayMonsters / totality;
-           
-            TimeEvents.AfterDayStarted += Time_AfterDayStarted;
+            _totality = _config.CategoryChancePercent.ItemDelivery + _config.CategoryChancePercent.Gathering + _config.CategoryChancePercent.Fishing + _config.CategoryChancePercent.SlayMonsters;
+            _fishPercent = (1 - _noQuestPercent) * _config.CategoryChancePercent.Fishing / _totality;
+            _resourcePercent = (1 - _noQuestPercent) * _config.CategoryChancePercent.Gathering / _totality;
+            _itemPercent = (1 - _noQuestPercent) * _config.CategoryChancePercent.ItemDelivery / _totality;
+            _slayPercent = (1 - _noQuestPercent) * _config.CategoryChancePercent.SlayMonsters / _totality;
+            
+            //Events
+            helper.Events.GameLoop.DayStarted += Time_AfterDayStarted;
         }
 
         private void Time_AfterDayStarted(object sender, EventArgs e)
         {
-            Quest questy = (Quest)null;
-            ItemDeliveryQuest itemy = (ItemDeliveryQuest)null;
-            FishingQuest fishy = (FishingQuest)null;
-            SlayMonsterQuest slayey = (SlayMonsterQuest)null;
-            ResourceCollectionQuest sourcy = (ResourceCollectionQuest)null;
-
-
-            this.Monitor.Log($"Daily Help Wanted quest generated.");
-            double num = new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed + (int)Game1.timeOfDay).NextDouble();
+            //Quest questy = null;
+            Monitor.Log("Daily Help Wanted quest generated.");
+            double num = new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed + Game1.timeOfDay).NextDouble();
             if (Game1.stats.DaysPlayed <= 1U)
             {
-                Game1.questOfTheDay = questy;
+                Game1.questOfTheDay = null;
             }
-            else if (num >= 1 - this.itemPercent)
+            else if (num >= 1 - _itemPercent)
             {
-                itemy = new ItemDeliveryQuest();
+                var itemy = new ItemDeliveryQuest();
                 itemy.loadQuestInfo();
                 Game1.questOfTheDay = itemy;
             }
-            else if (num >= 1 - this.itemPercent - this.fishPercent)
+            else if (num >= 1 - _itemPercent - _fishPercent)
             {
-                fishy = new FishingQuest();
+                FishingQuest fishy = new FishingQuest();
                 fishy.loadQuestInfo();
                 Game1.questOfTheDay = fishy;
             }
-            else if (num >= 1 - this.itemPercent - this.fishPercent - this.noQuestPercent || MineShaft.lowestLevelReached <= 0 || Game1.stats.DaysPlayed <= 5U)
+            else if (num >= 1 - _itemPercent - _fishPercent - _noQuestPercent || MineShaft.lowestLevelReached <= 0 || Game1.stats.DaysPlayed <= 5U)
             {
-                Game1.questOfTheDay = (Quest)null;
+                Game1.questOfTheDay = null;
             }
-            else if (num >= 1 - this.itemPercent - this.fishPercent - this.noQuestPercent - this.slayPercent)
+            else if (num >= 1 - _itemPercent - _fishPercent - _noQuestPercent - _slayPercent)
             {
-                slayey = new SlayMonsterQuest();
+                SlayMonsterQuest slayey = new SlayMonsterQuest();
                 slayey.loadQuestInfo();
                 Game1.questOfTheDay = slayey;
             }
             else
             {
-                sourcy = new ResourceCollectionQuest();
+                ResourceCollectionQuest sourcy = new ResourceCollectionQuest();
                 sourcy.loadQuestInfo();
                 Game1.questOfTheDay = sourcy;
             }

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Tainted Cellar",
+  "Author": "Jinxiewinxie for TaintedWheat",
+  "Version": "1.1.1-unofficial.1-pathoschild",
+  "Description": "Adds an underground cellar, complete with amenities only found in bomb shelters owned by paranoid survivalists or Cold War homeowners!",
+  "UniqueID": "TaintedCellar",
+  "EntryDll": "TaintedCellar.dll",
+  "MinimumApiVersion": "2.10.2",
+  "UpdateKeys": [ "Nexus:1672" ]
+}

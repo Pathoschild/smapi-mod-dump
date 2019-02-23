@@ -1,7 +1,7 @@
-﻿using StardewValley;
+﻿using System.Reflection;
+using StardewModdingAPI;
+using StardewValley;
 using StardewValley.Locations;
-using System;
-using System.Reflection;
 
 namespace BetterSkullCavernFalling
 {
@@ -9,8 +9,8 @@ namespace BetterSkullCavernFalling
     {
         private static readonly MethodInfo MINESHAFT_AFTERFALL_METHOD = typeof(MineShaft).GetMethod("afterFall", BindingFlags.Instance | BindingFlags.NonPublic);
 
-        private int mineLevel;
-        private int levelsDownFallen;
+        private readonly int mineLevel;
+        private readonly int levelsDownFallen;
 
         private void AfterFall()
         {
@@ -24,19 +24,19 @@ namespace BetterSkullCavernFalling
             Game1.globalFadeToClear(null, 0.01f);
         }
 
-        private SkullCavernFallMessageIntercepter(MineShaft mineShaft)
+        private SkullCavernFallMessageIntercepter(MineShaft mineShaft, IReflectionHelper reflection)
         {
             this.mineLevel = mineShaft.mineLevel;
-            this.levelsDownFallen = (int)typeof(MineShaft).GetField("lastLevelsDownFallen", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(mineShaft);
+            this.levelsDownFallen = reflection.GetField<int>(mineShaft, "lastLevelsDownFallen").GetValue();
         }
 
-        internal static void Intercept()
+        internal static void Intercept(IReflectionHelper reflection)
         {
             if (Game1.afterFade != null
                 && Game1.afterFade.Target is MineShaft mineShaft
                 && Game1.afterFade.Method == MINESHAFT_AFTERFALL_METHOD)
             {
-                Game1.afterFade = new Game1.afterFadeFunction(new SkullCavernFallMessageIntercepter(mineShaft).AfterFall);
+                Game1.afterFade = new SkullCavernFallMessageIntercepter(mineShaft, reflection).AfterFall;
             }
         }
     }

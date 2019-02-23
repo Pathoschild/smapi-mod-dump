@@ -1,4 +1,5 @@
 ﻿using System;
+using JoysOfEfficiency.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -98,7 +99,6 @@ namespace JoysOfEfficiency.OptionsElements
             bounds = new Rectangle(0, 0, (int)size.X + _buttonRect.Width, _buttonRect.Height);
 
             b.Draw(Game1.mouseCursors, _buttonRect, new Rectangle(294, 428, 21, 11), Color.White, 0, Vector2.Zero, SpriteEffects.None, 1.0f);
-            //IClickableMenu.drawTextureBox(b, Game1.menuTexture, new Rectangle(0, 256, 60, 60), slotX + bounds.Left, slotY + bounds.Top, bounds.Width, bounds.Height, Color.White);
         }
 
         public override void receiveLeftClick(int x, int y)

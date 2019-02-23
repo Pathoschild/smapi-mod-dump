@@ -1014,7 +1014,7 @@ namespace JoysOfEfficiency.Utils
             return new Rectangle(rect.Left - radius, rect.Top - radius, 2 * radius, 2 * radius);
         }
 
-        public static void DrawSimpleTextbox(SpriteBatch batch, string text, int x, int y, SpriteFont font, Item item = null)
+        public static void DrawSimpleTextbox(SpriteBatch batch, string text, int x, int y, SpriteFont font, object ctx, Item item = null)
         {
             Vector2 stringSize = text == null ? Vector2.Zero : font.MeasureString(text);
             if (x < 0)
@@ -1024,6 +1024,11 @@ namespace JoysOfEfficiency.Utils
             if (y < 0)
             {
                 y = 0;
+            }
+
+            if (ctx is OptionsElement)
+            {
+                y -= 64;
             }
             int rightX = (int)stringSize.X + tileSize / 2 + 8;
             if (item != null)
@@ -1052,9 +1057,9 @@ namespace JoysOfEfficiency.Utils
             item?.drawInMenu(batch, new Vector2(x + (int)stringSize.X + 24, y + 16), 1.0f, 1.0f, 0.9f, false);
         }
 
-        public static void DrawSimpleTextbox(SpriteBatch batch, string text, SpriteFont font, bool isIcon = false, Item item = null)
+        public static void DrawSimpleTextbox(SpriteBatch batch, string text, SpriteFont font, object context, bool isIcon = false, Item item = null)
         {
-            DrawSimpleTextbox(batch, text, getMouseX() + tileSize / 2, getMouseY() + (isIcon ? 24 : tileSize) + 24, font, item);
+            DrawSimpleTextbox(batch, text, getMouseX() + tileSize / 2, getMouseY() + (isIcon ? 24 : tileSize) + 24, font, context, item);
         }
 
         public static bool IsThereAnyWaterNear(GameLocation location, Vector2 tileLocation)

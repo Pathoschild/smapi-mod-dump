@@ -50,6 +50,7 @@ namespace JoysOfEfficiency
 
         public SButton ButtonShowMenu { get; set; } = Keys.R.ToSButton();
         public bool FilterBackgroundInMenu { get; set; } = true;
+        public bool ShowMousePositionWhenAssigningLocation { get; set; } = true;
 
         public bool AutoCollectCollectibles { get; set; } = false;
         public int AutoCollectRadius { get; set; } = 1;

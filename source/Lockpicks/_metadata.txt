@@ -1,0 +1,13 @@
+url:
+   https://github.com/bwdymods/SDV-Lockpicks.git
+
+mods:
+   Lockpicks
+
+latest commit:
+   commit 9e32a4a48567134f393d3b169b976be05385e0b0
+   Author: bwdymods <bwdymods@gmail.com>
+   Date:   Wed Feb 20 18:31:46 2019 -0900
+   
+       a starting point
+   

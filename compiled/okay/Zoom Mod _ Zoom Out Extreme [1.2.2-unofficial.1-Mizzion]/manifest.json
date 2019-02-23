@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Zoom Mod",
+    "Authour": "Rockin Rolla",
+    "Version": "1.2.2-unofficial.1-Mizzion",
+    "Description": "You guessed it!",
+    "UniqueID": "RockinMods.ZoomMod",
+    "EntryDll": "ZoomMod.dll",
+    "MinimumApiLevel": "2.10.2",
+    "UpdateKeys": [ "Nexus:1326" ]
+}

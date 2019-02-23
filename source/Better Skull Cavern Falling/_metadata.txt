@@ -5,9 +5,10 @@ mods:
    Better Skull Cavern Falling
 
 latest commit:
-   commit f0167a4c077f70d3ff301d3f5555b65488add841
+   commit 17350c62d0183c2be3b9161ece9b27fd1cd5c943
    Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Wed Jul 25 20:39:09 2018 +0200
+   Date:   Fri Feb 22 17:51:28 2019 +0100
    
-       Added update key
+       * Restored original name
+       * Increased version number for release
    

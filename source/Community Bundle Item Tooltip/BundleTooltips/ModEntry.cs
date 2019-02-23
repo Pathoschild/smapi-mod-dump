@@ -46,10 +46,11 @@ namespace StardewValleyBundleTooltips
             isCJBSellItemPriceLoaded = this.Helper.ModRegistry.IsLoaded("CJBok.ShowItemSellPrice");
             isUiInfoSuiteLoaded = this.Helper.ModRegistry.IsLoaded("Cdaragorn.UiInfoSuite");
 
-            SaveEvents.AfterLoad += this.SaveEvents_AfterLoad;
-            GraphicsEvents.OnPostRenderGuiEvent += GraphicsEvents_OnPostRenderGuiEvent;
-            GraphicsEvents.OnPreRenderHudEvent += GraphicsEvents_OnPreRenderHudEvent;
-            GraphicsEvents.OnPostRenderHudEvent += GraphicsEvents_OnPostRenderHudEvent;
+            //Events
+            helper.Events.GameLoop.SaveLoaded += SaveEvents_AfterLoad;
+            helper.Events.Display.RenderedHud += GraphicsEvents_OnPostRenderHudEvent;
+            helper.Events.Display.RenderingHud += GraphicsEvents_OnPreRenderHudEvent;
+            helper.Events.Display.RenderedActiveMenu += GraphicsEvents_OnPostRenderGuiEvent;
         }
 
 
@@ -60,7 +61,7 @@ namespace StardewValleyBundleTooltips
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         /// 
-        private void SaveEvents_AfterLoad(object sender, EventArgs e)
+        private void SaveEvents_AfterLoad(object sender, SaveLoadedEventArgs e)
         {
             //This will be filled with the itemIDs of every item in every bundle (for a fast search without details)
             itemsInBundles = new List<int>();
@@ -72,13 +73,13 @@ namespace StardewValleyBundleTooltips
             isLoaded = true;
         }
 
-        private void GraphicsEvents_OnPreRenderHudEvent(object sender, EventArgs e)
+        private void GraphicsEvents_OnPreRenderHudEvent(object sender, RenderingHudEventArgs e)
         {
             //I have to get it on preRendering because it gets set to null post
             toolbarItem = GetHoveredItemFromToolbar();
         }
 
-        private void GraphicsEvents_OnPostRenderHudEvent(object sender, EventArgs e)
+        private void GraphicsEvents_OnPostRenderHudEvent(object sender, RenderedHudEventArgs e)
         {
             if (isLoaded && !Game1.MasterPlayer.mailReceived.Contains("JojaMember") && Game1.activeClickableMenu == null && toolbarItem != null)
             {
@@ -87,7 +88,7 @@ namespace StardewValleyBundleTooltips
             }
         }
 
-        private void GraphicsEvents_OnPostRenderGuiEvent(object sender, EventArgs e)
+        private void GraphicsEvents_OnPostRenderGuiEvent(object sender, RenderedActiveMenuEventArgs e)
         {
             if (isLoaded && !Game1.MasterPlayer.mailReceived.Contains("JojaMember") && Game1.activeClickableMenu != null)
             {

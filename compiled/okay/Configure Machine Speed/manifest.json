@@ -1,0 +1,10 @@
+{
+  "Name": "Configure Machine Speed",
+  "Author": "BayesianBandit",
+  "Version": "1.1.0",
+  "Description": "Configure the speed of your machines.",
+  "UniqueID": "BayesianBandit.ConfigureMachineSpeed",
+  "EntryDll": "ConfigureMachineSpeed.dll",
+  "MinimumApiVersion": "2.10.2",
+  "UpdateKeys": ["Nexus:3519"]
+}

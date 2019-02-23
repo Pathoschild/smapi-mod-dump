@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2620
+IDs: KevinConnors.RealisticFishing
+update keys: GitHub:kevinforrestconnors/RealisticFishing, Nexus:2620, Nexus:2623

@@ -1,10 +1,10 @@
 {
-   "Name": "AdjustableStaminaHealing",
-   "Author": "punyo",
-   "Version": "1.0.4",
-   "Description": "Utility to change stamina healing value to adjust difficulty",
-   "UniqueID": "punyo.AdjustableStaminaHealing",
-   "EntryDll": "AdjustableStaminaHealing.dll",
-   "MinimumApiVersion": "2.0",
+  "Name": "Adjustable Stamina Healing",
+  "Author": "punyo",
+  "Version": "1.0.4",
+  "Description": "Change the stamina healing value to adjust difficulty.",
+  "UniqueID": "punyo.AdjustableStaminaHealing",
+  "EntryDll": "AdjustableStaminaHealing.dll",
+  "MinimumApiVersion": "2.10.2",
   "UpdateKeys": [ "Nexus:2149" ]
 }

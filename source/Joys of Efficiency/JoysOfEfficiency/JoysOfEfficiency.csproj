@@ -81,6 +81,7 @@
     <Compile Include="OptionsElements\LabelComponent.cs" />
     <Compile Include="OptionsElements\MenuTab.cs" />
     <Compile Include="OptionsElements\ModifiedCheckBox.cs" />
+    <Compile Include="OptionsElements\ModifiedClickListener.cs" />
     <Compile Include="OptionsElements\ModifiedInputListener.cs" />
     <Compile Include="OptionsElements\ModifiedSlider.cs" />
     <Compile Include="Patches\CraftingRecipePatcher.cs" />

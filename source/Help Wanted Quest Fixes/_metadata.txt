@@ -5,9 +5,12 @@ mods:
    Help Wanted Quest Fixes
 
 latest commit:
-   commit ea3a15965bb36d944d3481a69022de4d401e8fa5
-   Author: Geoff Embree <gembree@gmail.com>
-   Date:   Sun Aug 12 20:49:14 2018 -0400
+   commit ac8dad93764dd36b4b3cb0a79064429d2383cd43
+   Merge: ea3a159 cad025f
+   Author: gembree <gembree@gmail.com>
+   Date:   Fri Feb 22 07:25:33 2019 -0500
    
-       Add project files.
+       Merge pull request #1 from Mizzion/master
+       
+       Updated to be compliant with the up-coming SMAPI 3.0 release
    

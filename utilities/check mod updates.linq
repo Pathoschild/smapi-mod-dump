@@ -142,6 +142,7 @@ public IDictionary<string, string> OverrideFolderNames = new Dictionary<string, 
 {
 	// prefixes for testing convenience
 	["bcmpinc.StardewHack"] = "@@Stardew Hack",
+	["bwdyworks"] = "@Bwdyworks",
 	["cat.Pong"] = "(1) Pong",
 	["DIGUS.MailFrameworkMod"] = "@@Mail Framework Mod",
 	["Entoarox.AdvancedLocationLoader"] = "@Advanced Location Loader",

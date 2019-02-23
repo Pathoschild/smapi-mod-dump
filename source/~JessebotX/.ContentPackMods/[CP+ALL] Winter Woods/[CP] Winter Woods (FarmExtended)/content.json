@@ -1,0 +1,35 @@
+{
+	"Format": "1.6",
+	"Changes": [
+		{
+      "Action": "Load",
+      "Target": "Maps/Farm",
+      "FromFile": "assets/Farm.tbin",
+    },
+		{
+			"LogName": "Winter Woods Main Map",
+			"Action": "Load",
+			"Target": "Maps/Woods",
+			"FromFile": "assets/Woods.tbin",
+			"When": {
+				"Season": "Spring, Summer, Fall"
+			}
+		},
+		{
+			"LogName": "Winter Extras for Winter Woods",
+			"Action": "Load",
+			"Target": "Maps/Woods",
+			"FromFile": "assets/ALLWinterWoods.tbin",
+			"When": {
+				"Season": "Winter"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Strings/StringsFromMaps",
+			"Entries": {
+				"FarmMod.1": "Secret Woods",
+			 }
+		}
+	],
+}

@@ -5,8 +5,8 @@ mods:
    New Game on Launch
 
 latest commit:
-   commit 23b8f994ac15430b2faace777f92faf12d460a4f
-   Author: viggo ingmarsson <viggo.ingmarsson@gmail.com>
+   commit 052850e15c4ddd2478c5d7a1e81b98a17d507370
+   Author: Nobbele <realnobbele@gmail.com>
    Date:   Sun Aug 12 02:26:19 2018 +0200
    
        Initial Commit

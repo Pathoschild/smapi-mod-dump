@@ -1,0 +1,16 @@
+﻿{
+	"Name": "Lockpicks",
+	"Author": "bwdy",
+	"Version": "0.2.0",
+	"Description": "A Stardew Valley mod for criminals. Now you can enter buildings outside of visiting hours.",
+	"UniqueID": "bwdy.lockpicks",
+	"EntryDll": "Lockpicks.dll",
+	"MinimumApiVersion": "2.10.2",
+	"Dependencies": [
+		{
+			"UniqueID": "bwdyworks",
+			"MinimumVersion": "0.1.0"
+		}
+	],
+	"UpdateKeys": [ "Nexus:3521" ]
+}

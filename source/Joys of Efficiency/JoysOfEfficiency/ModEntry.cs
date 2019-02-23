@@ -443,7 +443,7 @@ namespace JoysOfEfficiency
             }
             if (Context.IsPlayerFree && !string.IsNullOrEmpty(_hoverText) && Game1.player.CurrentItem != null)
             {
-                Util.DrawSimpleTextbox(Game1.spriteBatch, _hoverText, Game1.dialogueFont, false, _unableToGift ? null : Game1.player.CurrentItem);
+                Util.DrawSimpleTextbox(Game1.spriteBatch, _hoverText, Game1.dialogueFont, this, false, _unableToGift ? null : Game1.player.CurrentItem);
             }
             if (Conf.FishingProbabilitiesInfo && Game1.player.CurrentTool is FishingRod rod && rod.isFishing)
             {
@@ -480,7 +480,6 @@ namespace JoysOfEfficiency
             {
                 return;
             }
-            Monitor.Log("OnBeforeSave", LogLevel.Trace);
             Util.LetAnimalsInHome();
             Farm farm = Game1.getFarm();
             foreach (Building building in farm.buildings)
@@ -526,7 +525,6 @@ namespace JoysOfEfficiency
             {
                 return;
             }
-            Monitor.Log("OnDayStarted", LogLevel.Trace);
             _dayEnded = false;
             if (Game1.isRaining || Game1.isSnowing)
             {

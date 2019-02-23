@@ -1,9 +1,4 @@
-﻿using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using StardewModdingAPI;
 
 namespace AdjustableStaminaHealing
 {
@@ -13,7 +8,7 @@ namespace AdjustableStaminaHealing
         public int SecondsNeededToStartHealing { get; set; } = 3;
         public bool StopHealingWhileGamePaused { get; set; } = true;
         public bool HealHealth { get; set; } = false;
-        public Keys IncreaseKey{ get; set; } = Keys.O;
-        public Keys DecreaseKey { get; set; } = Keys.P;
+        public SButton IncreaseKey { get; set; } = SButton.O;
+        public SButton DecreaseKey { get; set; } = SButton.P;
     }
 }

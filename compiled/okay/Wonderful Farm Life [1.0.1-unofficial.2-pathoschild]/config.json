@@ -1,0 +1,18 @@
+{
+  "EditPath": true,
+  "RemovePathAlltogether": false,
+  "ShowFarmStand": true,
+  "RemoveShippingBin": true,
+  "ShowPatio": true,
+  "ShowBinClutter": true,
+  "AddDogHouse": true,
+  "AddGreenHouseArch": true,
+  "AddTelescopeArea": true,
+  "ShowTreeSwing": true,
+  "ShowPicnicTable": true,
+  "ShowPicnicBlanket": true,
+  "AddStoneBridge": true,
+  "ShowMemorialArea": true,
+  "ShowMemorialAreaArch": true,
+  "UsingTSE": true
+}

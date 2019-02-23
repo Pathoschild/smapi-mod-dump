@@ -133,3 +133,7 @@ This is a changelog from 1.0.22
 ## 1.2.10
 - Updated Russian Text.
 - Updated for the latest SMAPI (>=2.9) events.
+
+## 1.2.11
+- Added support for CasksAnywhere mod.
+- Fixed a bug around the config menu.
