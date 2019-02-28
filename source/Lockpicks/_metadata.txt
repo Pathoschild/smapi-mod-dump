@@ -5,9 +5,9 @@ mods:
    Lockpicks
 
 latest commit:
-   commit 9e32a4a48567134f393d3b169b976be05385e0b0
+   commit 4c267cb9c121c993ca6d42a9ca5b8b3cf62e6bd1
    Author: bwdymods <bwdymods@gmail.com>
-   Date:   Wed Feb 20 18:31:46 2019 -0900
+   Date:   Mon Feb 25 23:54:09 2019 -0900
    
-       a starting point
+       Update for new bwdyworks API
    

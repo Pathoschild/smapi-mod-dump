@@ -25,10 +25,11 @@ namespace NPCMapLocations
 
     private Texture2D BuildingMarkers;
     private ModConfig Config;
-    private ModCustomHandler CustomHandler;
-    private Dictionary<string, MapVector[]> CustomMapLocations;
-    private Texture2D CustomMarkerTex;
-    private Dictionary<string, string> CustomNames;
+    private Dictionary<string, MapVector[]> MapVectors;
+    private Dictionary<string, int> MarkerCropOffsets;
+    private ModMinimap Minimap;
+    private HashSet<CharacterMarker> NpcMarkers;
+    private Dictionary<string, bool> SecondaryNpcs;
     private bool hasOpenedMap;
     private bool isModMapOpen;
     private bool shouldShowMinimap;
@@ -40,11 +41,10 @@ namespace NPCMapLocations
     // Customizations/Custom mods
     private string MapName;
     private string Season;
-    private Dictionary<string, MapVector[]> MapVectors;
-    private Dictionary<string, int> MarkerCropOffsets;
-    private ModMinimap Minimap;
-    private HashSet<CharacterMarker> NpcMarkers;
-    private Dictionary<string, bool> SecondaryNpcs;
+    private ModCustomHandler CustomHandler;
+    private Dictionary<string, MapVector[]> CustomMapLocations;
+    private Texture2D CustomMarkerTex;
+    private Dictionary<string, string> CustomNames;
 
     // Debugging
     private static bool DEBUG_MODE;
@@ -63,19 +63,23 @@ namespace NPCMapLocations
     public T Load<T>(IAssetInfo asset)
     {
       T map;
-      MapName = CustomHandler.LoadMap();
+      MapName = Config.MapRecolor != "" ? Config.MapRecolor : CustomHandler.LoadMap();
+      var mapFile = MapName;
+      if (mapFile == "toned_down") MapName = "eemie_recolour";
+
       try
       {
-        if (!MapName.Equals("default_map"))
-          Monitor.Log($"Using recolored map {MapName}_{Season}.", LogLevel.Debug);
-
         map = Helper.Content.Load<T>($@"assets\{MapName}\{MapName}_{Season}.png"); // Replace map page
       }
       catch
       {
-        Monitor.Log($"Unable to find {MapName}_{Season}; loaded default map instead.", LogLevel.Debug);
+        Monitor.Log($"Unable to find {mapFile}_{Season}; loaded default map instead.", LogLevel.Debug);
         map = Helper.Content.Load<T>($@"assets\default\default_{Season}.png");
+        return map;
       }
+
+      if (!MapName.Equals("default_map"))
+        Monitor.Log($"Using recolored map {mapFile}_{Season}.", LogLevel.Debug);
 
       return map;
     }
@@ -362,6 +366,14 @@ namespace NPCMapLocations
         CustomMapLocations,
         CustomMarkerTex
       );
+
+      shouldShowMinimap = !IsLocationBlacklisted(Game1.player.currentLocation.Name);
+    }
+
+    private bool IsLocationBlacklisted(string location)
+    {
+      return Config.ShowMinimap && Config.MinimapBlacklist.Any(loc => loc != "Farm" && location.StartsWith(loc) || loc == "Farm" && location == "Farm") ||
+               ((Config.MinimapBlacklist.Contains("Mine") || Config.MinimapBlacklist.Contains("UndergroundMine")) && location.Contains("Mine"));
     }
 
     private void ResetMarkers(List<NPC> villagers)
@@ -876,9 +888,8 @@ namespace NPCMapLocations
       if (!e.IsLocalPlayer) return;
 
       // Hide minimap in blacklisted locations with special case for Mines as usual
-      shouldShowMinimap = !(Config.MinimapBlacklist.Contains(e.NewLocation.Name) ||
-                            ((Config.MinimapBlacklist.Contains("Mine") || Config.MinimapBlacklist.Contains("UndergroundMine")) && e.NewLocation.Name.Contains("Mine")));
-
+      shouldShowMinimap = !IsLocationBlacklisted(e.NewLocation.Name);
+       
       // Check if map does not fill screen and adjust for black bars (ex. BusStop)
       Minimap?.CheckOffsetForMap();
     }

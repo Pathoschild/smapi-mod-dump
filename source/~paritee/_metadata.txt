@@ -7,9 +7,9 @@ mods:
    Paritee's Treat Your Animals
 
 latest commit:
-   commit c5a8ebb3dbbb48967a995e70b0aa10e0e2f34ec9
+   commit 290d511e6361c05a659254dd86cb8633cf411551
    Author: Paritee <paritee.hi@gmail.com>
-   Date:   Mon Feb 18 15:10:48 2019 -0500
+   Date:   Mon Feb 25 19:43:36 2019 -0500
    
-       Fixed crash when navigating away from saves screen without tapping a save to load
+       Fixed animal not becoming available if required building built within same session
    

@@ -16,6 +16,7 @@ namespace ConvenientChests.CraftFromChests {
         public static List<Chest> NearbyChests { get; set; }
         public static List<Item>  NearbyItems  { get; private set; }
 
+        private MenuListener MenuListener;
         private static IList<IList<Item>> _nearbyInventories;
 
         public static IList<IList<Item>> NearbyInventories {
@@ -26,15 +27,17 @@ namespace ConvenientChests.CraftFromChests {
             }
         }
 
-        public CraftFromChestsModule(ModEntry modEntry) : base(modEntry) { }
+        public CraftFromChestsModule(ModEntry modEntry) : base(modEntry) {
+            this.MenuListener = new MenuListener(this.Events);
+        }
 
         public override void Activate() {
             IsActive = true;
 
             // Register Events
-            MenuListener.RegisterEvents();
-            MenuListener.CraftingMenuShown  += CraftingMenuShown;
-            MenuListener.CraftingMenuClosed += CraftingMenuClosed;
+            this.MenuListener.RegisterEvents();
+            this.MenuListener.CraftingMenuShown  += CraftingMenuShown;
+            this.MenuListener.CraftingMenuClosed += CraftingMenuClosed;
 
             // Apply method patches
             Harmony = HarmonyInstance.Create("aEnigma.convenientchests");
@@ -46,9 +49,9 @@ namespace ConvenientChests.CraftFromChests {
             IsActive = false;
 
             // Unregister Events
-            MenuListener.CraftingMenuShown  -= CraftingMenuShown;
-            MenuListener.CraftingMenuClosed -= CraftingMenuClosed;
-            MenuListener.UnregisterEvents();
+            this.MenuListener.CraftingMenuShown  -= CraftingMenuShown;
+            this.MenuListener.CraftingMenuClosed -= CraftingMenuClosed;
+            this.MenuListener.UnregisterEvents();
 
             // Remove method patches
             CraftingRecipePatch.Remove(Harmony);

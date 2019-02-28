@@ -1,0 +1,10 @@
+{
+   "Name": "Infinite Cart Lives",
+   "Author": "Renny",
+   "Version": "1.0.1",
+   "Description": "Gives you infinite lives in Junimo Cart.",
+   "UniqueID": "renny.infinitejunimocartlives",
+   "EntryDll": "InfiniteJunimoCartLives.dll",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": [ "Nexus:2705" ]
+}

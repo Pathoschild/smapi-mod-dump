@@ -5,9 +5,12 @@ mods:
    Infinite Junimo Cart Lives
 
 latest commit:
-   commit a80eaf94625a1d98280934a6112fd55c6aa8a14f
-   Author: Renny <renaldas.sorys@gmail.com>
-   Date:   Mon Aug 20 18:01:57 2018 +0100
+   commit 9202dee628679b98e3e545bec9281ed9dcdcba05
+   Merge: a80eaf9 9b90393
+   Author: Renaldas S <renaldas.sorys@gmail.com>
+   Date:   Sat Feb 23 14:42:25 2019 +0000
    
-       Commented out a line used for debug, so it doesn't spam your SMAPI monitor
+       Merge pull request #1 from Mizzion/master
+       
+       Updated to be compliant with SMAPI 3.0
    

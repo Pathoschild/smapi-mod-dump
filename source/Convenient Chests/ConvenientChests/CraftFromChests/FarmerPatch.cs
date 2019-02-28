@@ -12,7 +12,7 @@ namespace ConvenientChests.CraftFromChests {
         }
 
         internal static void Remove(HarmonyInstance harmony) {
-            harmony.RemovePatch(Original, HarmonyPatchType.Postfix, harmony.Id);
+            harmony.Unpatch(Original, HarmonyPatchType.Postfix, harmony.Id);
         }
 
         public static bool HasItemInInventory(bool __result, StardewValley.Farmer __instance, int itemIndex, int quantity, int minPrice = 0) =>

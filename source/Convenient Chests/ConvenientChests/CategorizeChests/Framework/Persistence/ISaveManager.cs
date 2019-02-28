@@ -2,7 +2,7 @@
 {
     interface ISaveManager
     {
-        void Save(string path);
-        void Load(string path);
+        void Save(string relativePath);
+        void Load(string relativePath);
     }
 }

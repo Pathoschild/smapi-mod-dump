@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3539
+IDs: mizzion.watercanrefiller
+update keys: Nexus:3539

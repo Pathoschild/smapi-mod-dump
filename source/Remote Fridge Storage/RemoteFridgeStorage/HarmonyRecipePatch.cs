@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Harmony;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
@@ -15,11 +14,9 @@ using Object = StardewValley.Object;
 
 namespace RemoteFridgeStorage
 {
-    [HarmonyPatch(typeof(CraftingRecipe))]
-    [HarmonyPatch("consumeIngredients")]
-    public class HarmonyRecipePatchConsumeIngredients
+    internal static class HarmonyRecipePatchConsumeIngredients
     {
-        static bool Prefix(CraftingRecipe __instance)
+        public static bool Prefix(CraftingRecipe __instance)
         {
             // Copied from CraftingRecipe consumeIngredients method.
             // The only change in this is the use of the ModEntry Fridge() method.
@@ -91,9 +88,7 @@ namespace RemoteFridgeStorage
         }
     }
 
-    [HarmonyPatch(typeof(CraftingRecipe))]
-    [HarmonyPatch("drawRecipeDescription")]
-    public class HarmonyRecipePatchDraw
+    internal class HarmonyRecipePatchDraw
     {
         public static bool Prefix(CraftingRecipe __instance, SpriteBatch b, Vector2 position, int width)
         {

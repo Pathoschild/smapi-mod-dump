@@ -5,9 +5,12 @@ mods:
    Convenient Chests
 
 latest commit:
-   commit 9ee6b4d816045f9d1ba5706eabc0597e3e88ee5e
-   Author: Guido Kubach <guido.kubach@campus.lmu.de>
-   Date:   Thu Nov 22 13:09:43 2018 +0100
+   commit 85eed00e1b904e4710232a3cccce33760f5c8091
+   Merge: 9ee6b4d 858b1ce
+   Author: aEnigmatic <aEnigmatic@users.noreply.github.com>
+   Date:   Sun Feb 24 14:32:34 2019 +0100
    
-       2.8.2 version bump
+       Merge pull request #2 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0
    

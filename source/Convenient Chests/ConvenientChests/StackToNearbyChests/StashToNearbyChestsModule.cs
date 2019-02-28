@@ -1,5 +1,4 @@
-﻿using System;
-using ConvenientChests.CategorizeChests.Framework;
+﻿using ConvenientChests.CategorizeChests.Framework;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
@@ -18,8 +17,7 @@ namespace ConvenientChests.StackToNearbyChests {
             AcceptingFunction = CreateAcceptingFunction();
 
             // Events
-            ControlEvents.ControllerButtonPressed += OnControllerButtonPressed;
-            ControlEvents.KeyPressed              += OnKeyPressed;
+            this.Events.Input.ButtonPressed += OnButtonPressed;
         }
 
         private StackLogic.AcceptingFunction CreateAcceptingFunction() {
@@ -39,8 +37,7 @@ namespace ConvenientChests.StackToNearbyChests {
             IsActive = false;
 
             // Events
-            ControlEvents.ControllerButtonPressed -= OnControllerButtonPressed;
-            ControlEvents.KeyPressed              -= OnKeyPressed;
+            this.Events.Input.ButtonPressed -= OnButtonPressed;
         }
 
         private void TryStashNearby() {
@@ -54,12 +51,9 @@ namespace ConvenientChests.StackToNearbyChests {
                 StackLogic.StashToNearbyChests(Config.StashRadius, AcceptingFunction);
         }
 
-        private void OnKeyPressed(object sender, EventArgsKeyPressed e) {
-            if (e.KeyPressed == Config.StashKey) TryStashNearby();
-        }
-
-        private void OnControllerButtonPressed(object sender, EventArgsControllerButtonPressed e) {
-            if (e.ButtonPressed.Equals(Config.StashButton)) TryStashNearby();
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e) {
+            if (e.Button == Config.StashKey || e.Button == Config.StashButton)
+                TryStashNearby();
         }
     }
 }

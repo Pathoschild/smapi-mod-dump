@@ -1,10 +1,16 @@
 ﻿{
-	"Name": "CreeperForage",
+	"Name": "PersonalEffects",
 	"Author": "bwdy",
-	"Version": "0.8.0",
-	"Description": "A mod for creepers. Adds forageable items.",
-	"UniqueID": "bwdy.creeperforage",
-	"EntryDll": "CreeperForage.dll",
+	"Version": "0.9.0",
+	"Description": "A Stardew Valley mod for creepers. A 'forage' mod.",
+	"UniqueID": "bwdy.personaleffects",
+	"EntryDll": "PersonalEffects.dll",
 	"MinimumApiVersion": "2.10.2",
-	"UpdateKeys": [ "Nexus:2115" ]
+	"Dependencies": [
+		{
+			"UniqueID": "bwdyworks",
+			"MinimumVersion": "0.1.0"
+		}
+	],
+	"UpdateKeys": [ "Nexus:3532" ]
 }

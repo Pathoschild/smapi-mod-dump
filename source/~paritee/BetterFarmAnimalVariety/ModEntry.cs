@@ -30,7 +30,6 @@ namespace BetterFarmAnimalVariety
         public Player Player;
         public BlueVariation BlueFarmAnimals;
         public VoidVariation VoidFarmAnimals;
-        public AnimalShop AnimalShop;
 
         private bool ChangedPurchaseAnimalsMenuClickableComponents = false;
 
@@ -140,12 +139,15 @@ namespace BetterFarmAnimalVariety
 
             VoidConfig voidConfig = new VoidConfig(this.Config.VoidFarmAnimalsInShop, this.Player.HasCompletedQuest(VoidVariation.QUEST_ID));
             this.VoidFarmAnimals = new VoidVariation(voidConfig);
+        }
 
+        private AnimalShop GetAnimalShop()
+        {
             List<FarmAnimalForPurchase> farmAnimalsForPurchase = this.Config.GetFarmAnimalsForPurchase(Game1.getFarm());
             StockConfig stockConfig = new StockConfig(farmAnimalsForPurchase, this.BlueFarmAnimals, this.VoidFarmAnimals);
             Stock stock = new Stock(stockConfig);
 
-            this.AnimalShop = new AnimalShop(stock);
+            return new AnimalShop(stock);
         }
 
         private void OnRenderingActiveMenu(object sender, RenderingActiveMenuEventArgs e)
@@ -214,7 +216,9 @@ namespace BetterFarmAnimalVariety
                     }
                 }
 
-                purchaseAnimalsMenu.animalsToPurchase = this.AnimalShop.FarmAnimalStock.DetermineClickableComponents(purchaseAnimalsMenu, textures);
+                AnimalShop animalShop = this.GetAnimalShop();
+
+                purchaseAnimalsMenu.animalsToPurchase = animalShop.FarmAnimalStock.DetermineClickableComponents(purchaseAnimalsMenu, textures);
 
                 int rows = (int)Math.Ceiling((float)purchaseAnimalsMenu.animalsToPurchase.Count / 3); // Always at least one row
 
@@ -303,7 +307,9 @@ namespace BetterFarmAnimalVariety
             // Purchasing a new animal
             StardewValley.Menus.PurchaseAnimalsMenu purchaseAnimalsMenu = activeClickableMenu.GetMenu() as StardewValley.Menus.PurchaseAnimalsMenu;
 
-            PurchaseFarmAnimal purchaseFarmAnimal = new PurchaseFarmAnimal(this.Player, this.AnimalShop);
+            AnimalShop animalShop = this.GetAnimalShop();
+
+            PurchaseFarmAnimal purchaseFarmAnimal = new PurchaseFarmAnimal(this.Player, animalShop);
             PurchaseFarmAnimalMenu purchaseFarmAnimalMenu = new PurchaseFarmAnimalMenu(purchaseAnimalsMenu, purchaseFarmAnimal);
 
             purchaseFarmAnimalMenu.HandleTap(e);

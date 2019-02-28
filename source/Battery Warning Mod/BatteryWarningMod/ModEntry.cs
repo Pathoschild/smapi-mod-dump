@@ -1,11 +1,8 @@
 ﻿using System;
-using Microsoft.Xna.Framework;
+using System.Management;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
-using System.Management;
-using System.IO;
 
 namespace BatteryWarningMod
 {
@@ -14,7 +11,8 @@ namespace BatteryWarningMod
     {
         private bool messageShown = false;
         private bool noBattery = false;
-        private ITranslationHelper translations = null;
+
+
         /*********
         ** Public methods
         *********/
@@ -22,34 +20,35 @@ namespace BatteryWarningMod
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-
-            TimeEvents.TimeOfDayChanged += this.CheckBatteryState;
-            this.translations = this.Helper.Translation;
+            helper.Events.GameLoop.TimeChanged += this.OnTimeChanged;
         }
+
 
         /*********
         ** Private methods
         *********/
-        /// <summary>The method invoked when the player presses a controller, keyboard, or mouse button.</summary>
-        private void CheckBatteryState(object sender, EventArgs e)
+        /// <summary>Raised after the in-game clock time changes.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
-            if (this.noBattery == false) { 
+            // check battery state
+            if (!this.noBattery)
+            {
                 ObjectQuery query = new ObjectQuery("Select EstimatedChargeRemaining FROM Win32_Battery");
                 ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
                 ManagementObjectCollection col = searcher.Get();
-                if(col.Count == 0)
-                {
+                if (col.Count == 0)
                     this.noBattery = true;
-                }
-                if(this.noBattery == false && this.messageShown == false) //checking no Battery twice, cause of first run...
+                else if (!this.messageShown) //checking no Battery twice, cause of first run...
                 {
-                    foreach (ManagementObject mo in col)
+                    foreach (ManagementBaseObject mo in col)
                     {
                         foreach (PropertyData property in mo.Properties)
                         {
-                            if(Convert.ToInt16(property.Value) < 25)
+                            if (Convert.ToInt16(property.Value) < 25)
                             {
-                                Game1.drawObjectDialogue(this.translations.Get("message"));
+                                Game1.drawObjectDialogue(this.Helper.Translation.Get("message"));
                                 this.messageShown = true;
                             }
                         }

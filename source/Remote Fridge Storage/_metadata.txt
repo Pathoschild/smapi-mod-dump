@@ -5,9 +5,12 @@ mods:
    Remote Fridge Storage
 
 latest commit:
-   commit c512443a24e67d97c0b843e06ffc2c6728df38b0
-   Author: Arjan Seijs <A.M.Seijs@student.tudelft.nl>
-   Date:   Sat Dec 1 16:59:24 2018 +0100
+   commit 0f201240455dfd927068505f334c65f96702e6f5
+   Merge: c512443 8b287b3
+   Author: Arjan <arjan.seijs@gmail.com>
+   Date:   Tue Feb 26 20:14:58 2019 +0100
    
-       Updated to latest smapi / stardewvalley version
+       Merge pull request #3 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0, fix Linux/Mac compatibility, & streamline build
    

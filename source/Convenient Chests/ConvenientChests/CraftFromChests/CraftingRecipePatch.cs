@@ -13,7 +13,7 @@ namespace ConvenientChests.CraftFromChests {
         }
 
         internal static void Remove(HarmonyInstance harmony) {
-            harmony.RemovePatch(Original, HarmonyPatchType.Prefix, harmony.Id);
+            harmony.Unpatch(Original, HarmonyPatchType.Prefix, harmony.Id);
         }
 
         public static bool ConsumeIngredients(CraftingRecipe __instance, Dictionary<int, int> ___recipeList) {

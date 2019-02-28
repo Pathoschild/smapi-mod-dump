@@ -2,12 +2,10 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Netcode;
-using StardewModdingAPI.Events;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
-using StardewValley.Network;
 using StardewValley.Objects;
 
 namespace RemoteFridgeStorage
@@ -89,13 +87,13 @@ namespace RemoteFridgeStorage
         /// <summary>
         /// Handle the click event if it was on the fridge icon.
         /// </summary>
-        /// <param name="eventArgsInput"></param>
-        public void HandleClick(EventArgsInput eventArgsInput)
+        /// <param name="cursor">The current cursor position.</param>
+        public void HandleClick(ICursorPosition cursor)
         {
             var chest = GetOpenChest();
             if (chest == null) return;
 
-            var screenPixels = eventArgsInput.Cursor.ScreenPixels;
+            var screenPixels = cursor.ScreenPixels;
 
             if (!_fridgeSelected.containsPoint((int) screenPixels.X, (int) screenPixels.Y)) return;
 
@@ -238,15 +236,15 @@ namespace RemoteFridgeStorage
         }
 
         /// <summary>
-        /// Replace the menu 
+        /// Replace the menu.
         /// </summary>
-        /// <param name="argEvents"></param>
-        public void LoadMenu(EventArgsClickableMenuChanged argEvents)
+        /// <param name="newMenu">The new menu to replace.</param>
+        public void LoadMenu(IClickableMenu newMenu)
         {
             FridgeList = new FridgeVirtualList(this);
             if (!_cookingSkillLoaded || ModEntry.Instance.CookinSkillApi == null)
             {
-                Game1.activeClickableMenu = new RemoteFridgeCraftingPage(argEvents.NewMenu, this);
+                Game1.activeClickableMenu = new RemoteFridgeCraftingPage(newMenu, this);
             }
         }
     }

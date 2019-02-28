@@ -19,18 +19,20 @@ namespace BetterJunimos {
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper) {
+            // Only run if the master game
+            if (!Game1.IsMasterGame) {
+                return;
+            }
+
             Config = helper.ReadConfig<ModConfig>();
 
             Util.Config = Config;
             Util.Reflection = helper.Reflection;
 
-            JunimoAbilities junimoAbilities = new JunimoAbilities();
-            junimoAbilities.Capabilities = Config.JunimoCapabilities;
-            JunimoPayments junimoPayments = new JunimoPayments();
-            junimoPayments.Payment = Config.JunimoPayment;
+            Util.Abilities = new JunimoAbilities(Config.JunimoAbilites);
+            helper.WriteConfig(Config);
 
-            Util.Abilities = junimoAbilities;
-            Util.Payments = junimoPayments;
+            Util.Payments = new JunimoPayments(Config.JunimoPayment);
             Util.MaxRadius = Config.JunimoPayment.WorkForWages ? Util.UnpaidRadius : Config.JunimoHuts.MaxRadius;
 
             helper.Content.AssetEditors.Add(new JunimoEditor(helper.Content));
@@ -40,6 +42,8 @@ namespace BetterJunimos {
             helper.Events.Display.MenuChanged += OnMenuChanged;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+            helper.Events.GameLoop.Saved += OnSaved;
+            helper.Events.World.BuildingListChanged += OnBuildingListChanged;
 
             DoHarmonyRegistration();
         }
@@ -54,7 +58,6 @@ namespace BetterJunimos {
             Type junimoType = typeof(JunimoHarvester);
             replacements.Add("foundCropEndFunction", junimoType, typeof(PatchFindingCropEnd));
             replacements.Add("tryToHarvestHere", junimoType, typeof(PatchHarvestAttemptToCustom));
-            //replacements.Add("pokeToHarvest", junimoType, typeof(PatchPokeToHarvest));
             replacements.Add("update", junimoType, typeof(PatchJunimoShake));
 
             // improve pathfinding
@@ -68,6 +71,7 @@ namespace BetterJunimos {
             // replacements for hardcoded max junimos
             replacements.Add("Update", junimoHutType, typeof(ReplaceJunimoHutUpdate));
             replacements.Add("getUnusedJunimoNumber", junimoHutType, typeof(ReplaceJunimoHutNumber));
+            replacements.Add("performTenMinuteAction", junimoHutType, typeof(ReplaceJunimoTimerNumber));
 
             foreach (Tuple<string, Type, Type> replacement in replacements) {
                 MethodInfo original = replacement.Item2.GetMethods(BindingFlags.Instance | BindingFlags.Public).ToList().Find(m => m.Name == replacement.Item1);
@@ -90,6 +94,13 @@ namespace BetterJunimos {
             }
         }
 
+        /// <summary>Raised after a the game is saved</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        void OnSaved(object sender, SavedEventArgs e) {
+            Helper.WriteConfig(Config);
+        }
+
         // BUG: player warps back to wizard hut after use
         private void OpenJunimoHutMenu() {
             CarpenterMenu menu = new CarpenterMenu(true);
@@ -105,8 +116,11 @@ namespace BetterJunimos {
         /// <param name="e">The event arguments.</param>
         void OnMenuChanged(object sender, MenuChangedEventArgs e) {
             // closed Junimo Hut menu
-            if (Config.JunimoPayment.WorkForWages && e.OldMenu is ItemGrabMenu menu && menu.context is JunimoHut hut) {
-                CheckForWages(hut);
+            if (e.OldMenu is ItemGrabMenu menu && menu.context is JunimoHut hut) {
+                Util.Abilities.UpdateHutItems(Util.GetHutIdFromHut(hut));
+                if (Config.JunimoPayment.WorkForWages) {
+                    CheckForWages(hut);
+                }
             }
             
             // opened menu
@@ -141,6 +155,17 @@ namespace BetterJunimos {
             if (!Config.FunChanges.JunimosAlwaysHaveLeafUmbrellas) {
                 // reset for rainy days
                 Helper.Content.InvalidateCache(@"Characters\Junimo");
+            }
+        }
+
+        /// <summary>Raised after a building is added
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        void OnBuildingListChanged(object sender, BuildingListChangedEventArgs e) {
+            foreach (Building building in e.Added) {
+                if (building is JunimoHut hut) {
+                    Util.Abilities.UpdateHutItems(Util.GetHutIdFromHut(hut));
+                }
             }
         }
 

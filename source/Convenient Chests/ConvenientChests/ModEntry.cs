@@ -1,14 +1,10 @@
-﻿using System.Linq;
-using ConvenientChests.CategorizeChests;
+﻿using ConvenientChests.CategorizeChests;
 using ConvenientChests.CraftFromChests;
 using ConvenientChests.StackToNearbyChests;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewValley;
-using StardewValley.Locations;
-using StardewValley.TerrainFeatures;
 
 namespace ConvenientChests {
+    /// <summary>The mod entry class loaded by SMAPI.</summary>
     public class ModEntry : Mod {
         public static   Config     Config        { get; private set; }
         internal static IModHelper StaticHelper  { get; private set; }
@@ -20,13 +16,15 @@ namespace ConvenientChests {
         public static CategorizeChestsModule    CategorizeChests;
         public static CraftFromChestsModule     CraftFromChests;
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper) {
             Config = helper.ReadConfig<Config>();
             StaticMonitor = Monitor;
             StaticHelper  = Helper;
 
-            SaveEvents.AfterLoad          += (sender, e) => LoadModules();
-            SaveEvents.AfterReturnToTitle += (sender, e) => UnloadModules();
+            helper.Events.GameLoop.SaveLoaded      += (sender, e) => LoadModules();
+            helper.Events.GameLoop.ReturnedToTitle += (sender, e) => UnloadModules();
         }
 
         private void LoadModules() {

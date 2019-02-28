@@ -4,6 +4,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using Rectangle = xTile.Dimensions.Rectangle;
@@ -14,8 +15,14 @@ namespace ConvenientChests.CategorizeChests.Interface
     public abstract class InterfaceHost : IDisposable
     {
         /*********
-        ** Properties
+        ** Fields
         *********/
+        /// <summary>The SMAPI events available for mods.</summary>
+        private readonly IModEvents Events;
+
+        /// <summary>An API for checking and changing input state.</summary>
+        protected readonly IInputHelper InputHelper;
+
         /// <summary>The last viewport bounds.</summary>
         private Rectangle LastViewport;
 
@@ -29,12 +36,11 @@ namespace ConvenientChests.CategorizeChests.Interface
         /// <summary>Release all resources.</summary>
         public virtual void Dispose()
         {
-            GraphicsEvents.OnPostRenderGuiEvent -= this.OnPostRenderGuiEvent;
-            GameEvents.UpdateTick -= this.OnUpdateTick;
-            ControlEvents.KeyPressed -= this.OnKeyPressed;
-            ControlEvents.ControllerButtonPressed -= this.OnControllerButtonPressed;
-            ControlEvents.ControllerTriggerPressed -= this.OnControllerTriggerPressed;
-            ControlEvents.MouseChanged -= this.OnMouseChanged;
+            this.Events.Display.Rendered -= this.OnRendered;
+            this.Events.GameLoop.UpdateTicked -= this.OnUpdateTicked;
+            this.Events.Input.ButtonPressed -= this.OnButtonPressed;
+            this.Events.Input.CursorMoved -= this.OnCursorMoved;
+            this.Events.Input.MouseWheelScrolled -= this.OnMouseWheelScrolled;
         }
 
 
@@ -45,25 +51,26 @@ namespace ConvenientChests.CategorizeChests.Interface
         ** Implementation
         ****/
         /// <summary>Construct an instance.</summary>
+        /// <param name="events">The SMAPI events available for mods.</param>
+        /// <param name="inputHelper">An API for checking and changing input state.</param>
         /// <param name="keepAlive">Indicates whether to keep the overlay active. If <c>null</c>, the overlay is kept until explicitly disposed.</param>
-        protected InterfaceHost(Func<bool> keepAlive = null)
+        protected InterfaceHost(IModEvents events, IInputHelper inputHelper, Func<bool> keepAlive = null)
         {
+            this.Events = events;
+            this.InputHelper = inputHelper;
             this.KeepAliveCheck = keepAlive;
-            this.LastViewport = new Rectangle(Game1.viewport.X, Game1.viewport.Y, Game1.viewport.Width,
-                Game1.viewport.Height);
-            GraphicsEvents.OnPostRenderGuiEvent += this.OnPostRenderGuiEvent;
-            GameEvents.UpdateTick += this.OnUpdateTick;
-            ControlEvents.KeyPressed += this.OnKeyPressed;
-            ControlEvents.ControllerButtonPressed += this.OnControllerButtonPressed;
-            ControlEvents.ControllerTriggerPressed += this.OnControllerTriggerPressed;
-            ControlEvents.MouseChanged += this.OnMouseChanged;
+            this.LastViewport = new Rectangle(Game1.viewport.X, Game1.viewport.Y, Game1.viewport.Width, Game1.viewport.Height);
+
+            events.Display.Rendered += this.OnRendered;
+            events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            events.Input.ButtonPressed += this.OnButtonPressed;
+            events.Input.CursorMoved += this.OnCursorMoved;
+            events.Input.MouseWheelScrolled += this.OnMouseWheelScrolled;
         }
 
         /// <summary>Draw the overlay to the screen.</summary>
         /// <param name="batch">The sprite batch being drawn.</param>
-        protected virtual void Draw(SpriteBatch batch)
-        {
-        }
+        protected virtual void Draw(SpriteBatch batch) { }
 
         /// <summary>The method invoked when the player left-clicks.</summary>
         /// <param name="x">The X-position of the cursor.</param>
@@ -74,26 +81,10 @@ namespace ConvenientChests.CategorizeChests.Interface
             return false;
         }
 
-        /// <summary>The method invoked when the player presses a key.</summary>
-        /// <param name="input">The key that was pressed.</param>
-        /// <returns>Whether the event has been handled and shouldn't be propagated further.</returns>
-        protected virtual bool ReceiveKeyPress(Keys input)
-        {
-            return false;
-        }
-
-        /// <summary>The method invoked when the player presses a controller button.</summary>
+        /// <summary>The method invoked when the player presses a button.</summary>
         /// <param name="input">The button that was pressed.</param>
         /// <returns>Whether the event has been handled and shouldn't be propagated further.</returns>
-        protected virtual bool ReceiveButtonPress(Buttons input)
-        {
-            return false;
-        }
-
-        /// <summary>The method invoked when the player presses a controller trigger.</summary>
-        /// <param name="input">The trigger that was pressed.</param>
-        /// <returns>Whether the event has been handled and shouldn't be propagated further.</returns>
-        protected virtual bool ReceiveTriggerPress(Buttons input)
+        protected virtual bool ReceiveButtonPress(SButton input)
         {
             return false;
         }
@@ -118,9 +109,7 @@ namespace ConvenientChests.CategorizeChests.Interface
         /// <summary>The method invoked when the player resizes the game windoww.</summary>
         /// <param name="oldBounds">The previous game window bounds.</param>
         /// <param name="newBounds">The new game window bounds.</param>
-        protected virtual void ReceiveGameWindowResized(Rectangle oldBounds, Rectangle newBounds)
-        {
-        }
+        protected virtual void ReceiveGameWindowResized(Rectangle oldBounds, Rectangle newBounds) { }
 
         /// <summary>Draw the mouse cursor.</summary>
         /// <remarks>Derived from <see cref="StardewValley.Menus.IClickableMenu.drawMouse"/>.</remarks>
@@ -128,9 +117,7 @@ namespace ConvenientChests.CategorizeChests.Interface
         {
             if (Game1.options.hardwareCursor)
                 return;
-            Game1.spriteBatch.Draw(Game1.mouseCursors, new Vector2(Game1.getOldMouseX(), Game1.getOldMouseY()),
-                Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 0, 16, 16), Color.White, 0.0f, Vector2.Zero,
-                Game1.pixelZoom + Game1.dialogueButtonScale / 150f, SpriteEffects.None, 0f);
+            Game1.spriteBatch.Draw(Game1.mouseCursors, new Vector2(Game1.getMouseX(), Game1.getMouseY()), Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, Game1.options.SnappyMenus ? 44 : 0, 16, 16), Color.White * Game1.mouseCursorTransparency, 0.0f, Vector2.Zero, Game1.pixelZoom + Game1.dialogueButtonScale / 150f, SpriteEffects.None, 1f);
         }
 
         /****
@@ -139,7 +126,7 @@ namespace ConvenientChests.CategorizeChests.Interface
         /// <summary>The method called when the game finishes drawing components to the screen.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The event arguments.</param>
-        private void OnPostRenderGuiEvent(object sender, EventArgs e)
+        private void OnRendered(object sender, RenderedEventArgs e)
         {
             this.Draw(Game1.spriteBatch);
         }
@@ -147,7 +134,7 @@ namespace ConvenientChests.CategorizeChests.Interface
         /// <summary>The method called once per event tick.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The event arguments.</param>
-        private void OnUpdateTick(object sender, EventArgs e)
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             // detect end of life
             if (this.KeepAliveCheck != null && !this.KeepAliveCheck())
@@ -169,74 +156,55 @@ namespace ConvenientChests.CategorizeChests.Interface
         /// <summary>The method invoked when the player presses a key.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The event arguments.</param>
-        private void OnKeyPressed(object sender, EventArgsKeyPressed e)
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            bool handled = this.ReceiveKeyPress(e.KeyPressed);
+            bool handled = e.Button == SButton.MouseLeft || e.Button.IsUseToolButton()
+                ? this.ReceiveLeftClick(Game1.getMouseX(), Game1.getMouseY())
+                : this.ReceiveButtonPress(e.Button);
+
             if (handled)
-                Game1.oldKBState = Keyboard.GetState();
+                this.InputHelper.Suppress(e.Button);
         }
 
-        /// <summary>The method invoked when the player presses a controller button.</summary>
+        /// <summary>The method invoked when the mouse wheel is scrolled.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The event arguments.</param>
-        private void OnControllerButtonPressed(object sender, EventArgsControllerButtonPressed e)
+        private void OnMouseWheelScrolled(object sender, MouseWheelScrolledEventArgs e)
         {
-            GamePadState state = GamePad.GetState(PlayerIndex.One);
-
-            // handle controller cursor click
-            if (state.IsButtonDown(Buttons.A) && !Game1.oldPadState.IsButtonDown(Buttons.X))
-            {
-                bool handled = this.ReceiveLeftClick(Game1.getMouseX(), Game1.getMouseY());
-                if (handled)
-                    Game1.oldPadState = GamePad.GetState(PlayerIndex.One);
-            }
-
-            // handle button press
-            else
-            {
-                bool handled = this.ReceiveButtonPress(e.ButtonPressed);
-                if (handled)
-                    Game1.oldPadState = GamePad.GetState(PlayerIndex.One);
-            }
-        }
-
-        /// <summary>The method invoked when the player presses a controller trigger.</summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The event arguments.</param>
-        private void OnControllerTriggerPressed(object sender, EventArgsControllerTriggerPressed e)
-        {
-            bool handled = this.ReceiveTriggerPress(e.ButtonPressed);
-            if (handled)
-                Game1.oldPadState = GamePad.GetState(PlayerIndex.One);
-        }
-
-        /// <summary>The method invoked when the mouse state changes.</summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The event arguments.</param>
-        private void OnMouseChanged(object sender, EventArgsMouseStateChanged e)
-        {
-            // get data
-            MouseState oldState = e.PriorState;
-            MouseState newState = e.NewState;
-            Point position = e.NewPosition;
-
-            // raise events
-            bool hoverHandled = this.ReceiveCursorHover(position.X, position.Y);
-            bool leftClickHandled = oldState.LeftButton != ButtonState.Pressed &&
-                                    newState.LeftButton == ButtonState.Pressed &&
-                                    this.ReceiveLeftClick(position.X, position.Y);
-            bool scrollHandled = oldState.ScrollWheelValue != newState.ScrollWheelValue &&
-                                 this.ReceiveScrollWheelAction(newState.ScrollWheelValue - oldState.ScrollWheelValue);
-
-            // suppress handled input
-            if (hoverHandled || leftClickHandled || scrollHandled)
+            bool scrollHandled = this.ReceiveScrollWheelAction(e.Delta);
+            if (scrollHandled)
             {
                 MouseState cur = Game1.oldMouseState;
                 Game1.oldMouseState = new MouseState(
                     x: cur.X,
                     y: cur.Y,
-                    scrollWheel: scrollHandled ? newState.ScrollWheelValue : cur.ScrollWheelValue,
-                    leftButton: leftClickHandled ? newState.LeftButton : cur.LeftButton,
+                    scrollWheel: e.NewValue,
+                    leftButton: cur.LeftButton,
+                    middleButton: cur.MiddleButton,
+                    rightButton: cur.RightButton,
+                    xButton1: cur.XButton1,
+                    xButton2: cur.XButton2
+                );
+            }
+        }
+
+        /// <summary>The method invoked when the in-game cursor is moved.</summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnCursorMoved(object sender, CursorMovedEventArgs e)
+        {
+            int x = (int)e.NewPosition.ScreenPixels.X;
+            int y = (int)e.NewPosition.ScreenPixels.Y;
+
+            bool hoverHandled = this.ReceiveCursorHover(x, y);
+            if (hoverHandled)
+            {
+                MouseState cur = Game1.oldMouseState;
+                Game1.oldMouseState = new MouseState(
+                    x: x,
+                    y: y,
+                    scrollWheel: cur.ScrollWheelValue,
+                    leftButton: cur.LeftButton,
                     middleButton: cur.MiddleButton,
                     rightButton: cur.RightButton,
                     xButton1: cur.XButton1,

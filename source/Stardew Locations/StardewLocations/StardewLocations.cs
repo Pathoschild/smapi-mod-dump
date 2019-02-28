@@ -1,50 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Locations;
-using StardewValley.Menus;
-using SFarmer = StardewValley.Farmer;
 
 namespace StardewLocations
 {
+    /// <summary>The mod entry class loaded by SMAPI.</summary>
     internal class StardewLocations : Mod
     {
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            
-            LocationEvents.CurrentLocationChanged += LocationEvents_CurrentLocationChanged;
+            helper.Events.Player.Warped += onWarped;
         }
-        private void LocationEvents_CurrentLocationChanged(object sender, EventArgsCurrentLocationChanged e)
+
+        /// <summary>Raised after a player warps to a new location.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void onWarped(object sender, WarpedEventArgs e)
         {
-            if (Game1.player == null)
-                return;
-            if (Game1.player.currentLocation != null)
-                Game1.showGlobalMessage(getLocationNames(Game1.player.currentLocation.Name));
+            if (e.IsLocalPlayer && Game1.player?.currentLocation != null)
+                Game1.showGlobalMessage(getLocationName(Game1.player.currentLocation.Name));
         }
-        //Void to get Actual Location Names
-        private string getLocationNames(string name)
+
+        /// <summary>Get the display name for an in-game location.</summary>
+        /// <param name="name">The in-game location name.</param>
+        private string getLocationName(string name)
         {
             var i18n = Helper.Translation;
-            string outster = i18n.Get(name);
-            if (outster.Contains("farm_name"))
+            return "Current Location:\n\r" + i18n.Get(name, new
             {
-                outster = i18n.Get(name, new { farm_name = Game1.player.farmName });
-            }                
-            else if (outster.Contains("player_name"))
-            {
-                outster = i18n.Get(name, new { player_name = Game1.player.Name });
-            }
-            else
-            {
-                outster = i18n.Get(name);
-            }            
-            return "Current Location:\n\r"+ outster;
+                farm_name = Game1.player.farmName,
+                player_name = Game1.player.Name
+            });
         }
     }
 }

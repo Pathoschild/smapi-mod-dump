@@ -1,13 +1,18 @@
 ﻿# Speedy Paths
 
-Current Version: 1.0.0
+Current Version: 1.0.0-beta
 
-Dependancies: SMAPI 2.6-beta+
+Dependancies: SMAPI 2.10.2
 Note: This is a singleplayer and client-side mod.
 
-Download: Not available; to be released soon.
+Download: Unrelesed
 
-#### Configuration:
+## Notice
+
+I am currently too busy to work on/release many of these mods. I welcome anyone
+to take them (especially the unreleased ones!).
+
+## Configuration:
 Most of the options in config.json have to do with specific flooring boosts and
 boosts designed to occur in the world map. Specific flooring boosts should
 hopefully be obvious from the file.

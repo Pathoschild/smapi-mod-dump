@@ -1,0 +1,10 @@
+{
+  "Farmers": [
+    {
+      "CharacterName": "NoName",
+      "ShowCrib": true,
+      "ShowBed1": false,
+      "ShowBed2": true
+    }
+  ]
+}

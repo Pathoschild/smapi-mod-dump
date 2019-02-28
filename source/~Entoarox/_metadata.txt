@@ -14,10 +14,9 @@ mods:
    XNB Loader
 
 latest commit:
-   commit 613dbb74bce29f4a951e2e5a91229e51ddcd046a
-   Merge: 7db2af1 19d19b7
-   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Fri Dec 28 14:49:59 2018 -0500
+   commit 7631743bd6808765768a9f8aa0cc26f60f5cf092
+   Author: Entoarox <kvdk@kvdk.net>
+   Date:   Mon Feb 25 00:20:22 2019 +0100
    
-       Merge branch 'develop'
+       Fix missing tile handler
    

@@ -5,12 +5,15 @@ mods:
    Friends Forever
 
 latest commit:
-   commit 3d30890254dcefbc05156c8d7ba107e39ac2c9c3
-   Merge: 400cf97 91615a0
-   Author: Isaac S <isaacs-dev@users.noreply.github.com>
-   Date:   Thu Feb 21 22:22:59 2019 -0700
+   commit e98c2abaa1b61e9f9da3f48070b65b98b129a9e6
+   Author: isaacs-dev <isaacs-dev@users.noreply.github.com>
+   Date:   Fri Feb 22 22:02:13 2019 -0700
    
-       Merge pull request #2 from Mizzion/master
+       Add Any Heart Dance mod
        
-       Updated to be compliant with SMAPI 3.0
+       This adds the Any Heart Dance mod I've used before (since
+       3-Heart Dance caused a lot of lag).
+       
+       I've also updated it to be compatible with SMAPI 3.0. Do
+       note that this mod has not been tested.
    

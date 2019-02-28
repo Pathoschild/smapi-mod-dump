@@ -1,10 +1,10 @@
 {
   "Name": "SeparateMoney",
   "Author": "funnysnek",
-  "Version": "1.4",
+  "Version": "1.4.2",
   "Description": "Separate Money for multiplayer",
   "UniqueID": "funnysnek.SeparateMoney",
   "EntryDll": "SeparateMoney.dll",
-  "MinimumApiVersion": "2.0",
+  "MinimumApiVersion": "2.10.2",
   "UpdateKeys": [ "Nexus:3086" ]
 }

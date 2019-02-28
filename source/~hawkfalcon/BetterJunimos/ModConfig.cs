@@ -1,15 +1,9 @@
-﻿using StardewModdingAPI;
+﻿using System.Collections.Generic;
+using StardewModdingAPI;
 
 namespace BetterJunimos {
     internal class ModConfig {
-        public JunimoCapability JunimoCapabilities { get; set; } = new JunimoCapability();
-        internal class JunimoCapability {
-            public bool HarvestCrops { get; set; } = true;
-            public bool PlantCrops { get; set; } = true;
-            public bool FertilizeCrops { get; set; } = true;
-            public bool HarvestForageCrops { get; set; } = true;
-            public bool ClearDeadCrops { get; set; } = true;
-        }
+        public Dictionary<string, bool> JunimoAbilites { get; set; } = new Dictionary<string, bool>();
 
         public HutSettings JunimoHuts { get; set; } = new HutSettings();
         internal class HutSettings {

@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
 
 namespace ConvenientChests
 {
@@ -9,8 +9,8 @@ namespace ConvenientChests
 
         public bool StashToNearbyChests { get; set; } = true;
         public int StashRadius { get; set; } = 5;
-        public Keys StashKey { get; set; } = Keys.Q;
-        public Buttons? StashButton { get; set; } = Buttons.RightStick;
+        public SButton StashKey { get; set; } = SButton.Q;
+        public SButton? StashButton { get; set; } = SButton.RightStick;
 
         public bool CraftFromChests { get; set; } = true;
         public int CraftRadius { get; set; } = 5;

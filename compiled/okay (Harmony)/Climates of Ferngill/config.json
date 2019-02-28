@@ -22,5 +22,6 @@
   "DarkenLightInFog": true,
   "DisableHighRainWind": false,
   "ShowLighterFog": false,
+  "RedrawCursor": true,
   "Verbose": true
 }

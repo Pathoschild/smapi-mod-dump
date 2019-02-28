@@ -1,7 +1,7 @@
 using System;
 using ConvenientChests.StackToNearbyChests;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -69,7 +69,7 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
         }
 
         private string ChooseStashButtonLabel() {
-            return Module.Config.StashKey == Keys.None
+            return Module.Config.StashKey == SButton.None
                        ? "Stash"
                        : $"Stash ({Module.Config.StashKey})";
         }

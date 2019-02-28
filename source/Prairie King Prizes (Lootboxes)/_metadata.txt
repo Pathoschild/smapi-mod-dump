@@ -5,9 +5,12 @@ mods:
    Prairie King Prizes (Lootboxes)
 
 latest commit:
-   commit b73f9eb18bda33f44fe79aadddbb0143250b3c8f
-   Author: Renny <renaldas.sorys@gmail.com>
-   Date:   Mon Dec 24 03:21:11 2018 +0000
+   commit 77c0acd9eca9864576ff4d3b2f475de330395e35
+   Merge: b73f9eb f065cbb
+   Author: Renaldas S <renaldas.sorys@gmail.com>
+   Date:   Sat Feb 23 14:47:58 2019 +0000
    
-       Added config support
+       Merge pull request #1 from Mizzion/master
+       
+       Updated to be compliant with the upcoming SMAPI 3.0
    

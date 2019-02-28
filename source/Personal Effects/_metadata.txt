@@ -5,12 +5,9 @@ mods:
    Personal Effects
 
 latest commit:
-   commit 12a22c9d2dbaf360f62a9648f95e7d101055b857
-   Merge: e5e1216 a1b5b20
-   Author: bwdy <47769190+bwdymods@users.noreply.github.com>
-   Date:   Wed Feb 20 18:38:40 2019 -0900
+   commit 1d67dd0b8c378929b14e06c5e370d6bea9f8d755
+   Author: bwdymods <bwdymods@gmail.com>
+   Date:   Mon Feb 25 23:54:29 2019 -0900
    
-       Merge pull request #1 from bwdymods/add-license-1
-       
-       Create LICENSE
+       Update for new bwdyworks API
    

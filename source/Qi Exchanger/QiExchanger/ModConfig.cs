@@ -1,9 +1,10 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using StardewModdingAPI;
+
 namespace QiExchanger
 {
-   internal class ModConfig
+    internal class ModConfig
     {
-        public string ActivationKey { get; set; } = Keys.F9.ToString();
+        public SButton ActivationKey { get; set; } = SButton.F9;
         public int ExchangeRate { get; set; } = 10;
     }
 }

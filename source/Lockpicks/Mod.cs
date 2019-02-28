@@ -1,27 +1,30 @@
 ﻿using StardewModdingAPI;
 using StardewValley;
 using StardewModdingAPI.Events;
+using Modworks = bwdyworks.Modworks;
+
 using System.Collections.Generic;
 
 namespace Lockpicks
 {
     public class Mod : StardewModdingAPI.Mod
     {
-        public static Mod instance;
-#if DEBUG
-        public static bool Debug = true;
-#else
-        public static bool Debug = false;
-#endif
+        internal static bool Debug = false;
+        [System.Diagnostics.Conditional("DEBUG")]
+        public void EntryDebug() { Debug = true; }
+        internal static string Module;
+
         public override void Entry(IModHelper helper)
         {
-            instance = this;
-            Monitor.Log("Lockpicks reporting in. " + (Debug ? "Debug" : "Release") + " build active.");
+            Module = helper.ModRegistry.ModID;
+            EntryDebug();
+            if (!Modworks.InstallModule(Module, Debug)) return;
 
-            Config.Load();
+            Config.Load(Helper.DirectoryPath + System.IO.Path.DirectorySeparatorChar);
             if (Config.ready)
             {
-                Item.Setup();
+                Modworks.Items.AddItem(Module, new bwdyworks.BasicItemEntry(this, "lockpick", 30, -300, "Basic", Object.junkCategory, "Lockpick", "Used to bypass locked doors."));
+                Modworks.Items.AddMonsterLoot(Module, new bwdyworks.MonsterLootEntry(this, "Green Slime", "lockpick", 0.1f));                 
             }
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
         }
@@ -32,70 +35,69 @@ namespace Lockpicks
             {
                 if (e.Button == SButton.NumPad0)
                 {
-                    var f = Game1.getFarmer(0);
-                    //give lockpick
-                    Item ei = Item.items["lx.lockpick"];
-                    StardewValley.Object i = (StardewValley.Object)StardewValley.Objects.ObjectFactory.getItemFromDescription(0, ei.internal_id, 1);
-                    i.IsSpawnedObject = true;
-                    i.ParentSheetIndex = ei.internal_id;
-                    f.addItemByMenuIfNecessary(i);
+                    var id = Modworks.Items.GetModItemId(Module, "lockpick");
+                    if (Debug && id != null) Monitor.Log("lockpick id: " + id.Value);
+
+                    if (id != null) Modworks.Player.GiveItem(id.Value, 1);
                 }
             }
             if (e.Button.IsActionButton())
             {
-                var f = Game1.getFarmer(0);
                 if (Context.IsPlayerFree)
                 {
-                    if (f.ActiveObject != null && f.ActiveObject.DisplayName == "Lockpick")
+                    var ao = Game1.player.ActiveObject;
+                    if (ao != null && ao.DisplayName == "Lockpick")
                     {
-                        int target_x = (int)(f.getTileX());
-                        int target_y = (int)(f.getTileY());
-                        int d = f.FacingDirection;
-                        switch (d)
-                        {
-                            case 0: target_y -= 1; break; //up
-                            case 1: target_x += 1; break; //right
-                            case 2: target_y += 1; break; //down
-                            case 3: target_x -= 1; break; //left
-                        }
-                        if(Debug) Monitor.Log("Facing target: " + Game1.currentLocation.Name + ", " + target_x + ", " + target_y);
-                        var cle = new ConfigLockEnd(Game1.currentLocation.Name, target_x, target_y);
-                        var cle2 = Config.GetMatchingLockEnd(cle);
+                        var targetOut = Modworks.Player.GetFacingTileCoordinate();
+                        var keyOut = Game1.currentLocation.Name + "." + targetOut[0] + "." + targetOut[1];
+                        if (Debug) Monitor.Log("Facing target: " + keyOut);
+
+                        var targetIn = Modworks.Player.GetStandingTileCoordinate();
+                        var keyIn = Game1.currentLocation.Name + "." + targetIn[0] + "." + targetIn[1];
+                        if (Debug) Monitor.Log("Standing at: " + keyIn);
+
+                        //check out lock
+                        var cle2 = Config.GetMatchingOutLock(keyOut);
                         if (cle2 != null)
                         {
-                            this.Helper.Input.Suppress(e.Button);//prevent the original click
-                            Response[] responses = new[]
-                            {
-                                new Response(cle2.str(), "Yes"),
-                                new Response("No", "No"),
-                            };
-                            Game1.currentLocation.lastQuestionKey = "custom_lockpick";
-                            Game1.currentLocation.createQuestionDialogue("Use lockpick?", responses, handleLockpickMenuResponse);
+                            Helper.Input.Suppress(e.Button);
+                            Modworks.Menus.AskQuestion("Use lockpick?", new[]{new Response(keyOut, "Yes"),new Response("No","No")}, QuestionCallbackOutLock);
+                        }
+                        //check in lock
+                        cle2 = Config.GetMatchingInLock(keyIn);
+                        if (cle2 != null)
+                        {
+                            Helper.Input.Suppress(e.Button);
+                            Modworks.Menus.AskQuestion("Use lockpick?", new[] { new Response(keyIn, "Yes"), new Response("No", "No") }, QuestionCallbackInLock);
                         }
                     }
                 }
             }
         }
 
-        public void handleLockpickMenuResponse(Farmer who, string answerKey)
+        public void QuestionCallbackOutLock(Farmer who, string answerKey)
         {
             if (answerKey != "No")
             {
-                if(new System.Random().Next(100) < 30)
+                ConfigLockEnd cle2 = Config.GetMatchingOutLock(answerKey);
+                if (new System.Random().Next(100) < 10) //ohno. the pick broke.
                 {
-                    //ohno. the pick broke.
                     Game1.playSound("axe");
                     Game1.showRedMessage("The lockpick broke!");
-                    int count = who.ActiveObject.getStack();
-                    if (count <= 1)
-                    {
-                        who.removeItemFromInventory(who.ActiveObject);
-                    }
-                    else who.ActiveObject.Stack = who.ActiveObject.Stack - 1;
+                    Modworks.Player.RemoveItem(who.ActiveObject);
                     return;
                 }
                 Game1.playSound("axchop");
-                ConfigLockEnd cle2 = new ConfigLockEnd(answerKey);
+                who.warpFarmer(new Warp(cle2.MapX, cle2.MapY, cle2.MapName, cle2.MapX, cle2.MapY, false));
+            }
+        }
+
+        public void QuestionCallbackInLock(Farmer who, string answerKey)
+        {
+            if (answerKey != "No")
+            {
+                ConfigLockEnd cle2 = Config.GetMatchingInLock(answerKey);
+                Game1.playSound("axchop");
                 who.warpFarmer(new Warp(cle2.MapX, cle2.MapY, cle2.MapName, cle2.MapX, cle2.MapY, false));
             }
         }

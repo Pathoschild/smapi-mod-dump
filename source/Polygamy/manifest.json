@@ -1,0 +1,16 @@
+﻿{
+	"Name": "Polygamy",
+	"Author": "bwdy",
+	"Version": "0.1.0",
+	"Description": "A Stardew Valley mod for people with extra love to give.",
+	"UniqueID": "bwdy.polygamy",
+	"EntryDll": "Polygamy.dll",
+	"MinimumApiVersion": "2.10.2",
+	"Dependencies": [
+		{
+			"UniqueID": "bwdyworks",
+			"MinimumVersion": "0.3.0"
+		}
+	],
+	"UpdateKeys": [ "Nexus:3542" ]
+}

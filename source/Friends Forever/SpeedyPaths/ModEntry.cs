@@ -1,11 +1,33 @@
-﻿using System;
+﻿/*
+ * MIT License
+ *
+ * Copyright (c) 2017-2019 Isaac S.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
+using System;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 
-namespace IsaacS.SpeedyPaths {
+namespace SpeedyPaths {
     public class Config {
         //!The config file for various speed boosts. If a boost is 0, it is considered disabled and won't be given.
         //!The general boost will be given instead if it is enabled.
@@ -172,8 +194,8 @@ namespace IsaacS.SpeedyPaths {
             config = this.Helper.ReadConfig<Config>();
             GenerateBuffs();
 
-            GameEvents.UpdateTick += this.UpdateTick;
-            TimeEvents.AfterDayStarted += this.EveryDay;
+            helper.Events.GameLoop.UpdateTicked += this.UpdateTick;
+            helper.Events.GameLoop.DayStarted += this.EveryDay;
 
             if (config.EnableCommand)
                 helper.ConsoleCommands.Add("sp_floorinfo", "Grab's some small info about the tile the player is "
@@ -202,20 +224,20 @@ namespace IsaacS.SpeedyPaths {
                 //false.
                 if (currentBuff != null && !config.ShowStatusEffect) {
                     currentBuff.removeBuff();
-                    Game1.player.buffs.Remove(currentBuff);
+                    //Game1.player.buffs.Remove(currentBuff);
                     currentBuff = null;
                 }
             
                 //If the general buff isn't active, then that means we need to add it:
                 if (!generalBuffActive && config.GeneralBoost != 0) {
                     generalBuff.addBuff();
-                    Game1.player.buffs.Add(generalBuff);
+                    //Game1.player.buffs.Add(generalBuff);
                     generalBuffActive = true;
                 }
             } else {
                 //Remove the general buff if it is active:
                 if (generalBuffActive && config.GeneralBoost != 0) {
-                    Game1.player.buffs.Remove(generalBuff);
+                    //Game1.player.buffs.Remove(generalBuff);
                     generalBuff.removeBuff();
                     generalBuffActive = false;
                 }
@@ -230,10 +252,10 @@ namespace IsaacS.SpeedyPaths {
                 } else if (currentBuff != newBoost) {
                     if (currentBuff != null) {
                         currentBuff.removeBuff();
-                        Game1.player.buffs.Remove(currentBuff);
+                        //Game1.player.buffs.Remove(currentBuff);
                     }
                     
-                    Game1.player.buffs.Add(newBoost);
+                    //Game1.player.buffs.Add(newBoost);
                     newBoost.addBuff();
                     currentBuff = newBoost;
                 }

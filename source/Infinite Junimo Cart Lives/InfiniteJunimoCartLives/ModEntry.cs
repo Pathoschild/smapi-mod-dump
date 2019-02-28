@@ -2,7 +2,6 @@
 using StardewModdingAPI.Events;
 using StardewValley.Minigames;
 using StardewValley;
-using System;
 
 namespace InfiniteJunimoCartLives
 {
@@ -10,33 +9,24 @@ namespace InfiniteJunimoCartLives
     {
         public override void Entry(IModHelper helper)
         {
-            GameEvents.HalfSecondTick += this.Junimo_Lives;
-
+            helper.Events.GameLoop.UpdateTicked += Junimo_Lives;
         }
 
-        private void Junimo_Lives(object sender, EventArgs args)
+        private void Junimo_Lives(object sender, UpdateTickedEventArgs args)
         {
             if (!Context.IsWorldReady)
             {
                 return;
             }
 
-            if (Game1.currentMinigame is MineCart game)
+            if (Game1.currentMinigame is MineCart game && args.IsMultipleOf(30))
             {
-                IReflectedField<int> livesLeft = this.Helper.Reflection.GetField<int>(game, "livesLeft");
-                if (livesLeft != null)
+                IReflectedField<int> livesLeft = Helper.Reflection.GetField<int>(game, "livesLeft");
+                if (livesLeft?.GetValue() < 3)
                 {
-                    if (livesLeft.GetValue() < 3)
-                    {
-                        livesLeft.SetValue(3);
-                        //this.Monitor.Log("Set Cart Lives to 3");
-                    }
-                    else { return; }
+                    livesLeft.SetValue(3);
+                    //this.Monitor.Log("Set Cart Lives to 3");
                 }
-            }
-            else
-            {
-                return;
             }
         }
     }

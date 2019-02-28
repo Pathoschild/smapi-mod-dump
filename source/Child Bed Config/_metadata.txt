@@ -1,0 +1,13 @@
+url:
+   https://github.com/rscotchmer/ChildBedConfig.git
+
+mods:
+   Child Bed Config
+
+latest commit:
+   commit 12dad6f52bc5d4df5702b7379238af9f352ccaa5
+   Author: rscotchmer <raescotchmer@gmail.com>
+   Date:   Wed Feb 27 20:10:53 2019 -0500
+   
+       Added update key
+   

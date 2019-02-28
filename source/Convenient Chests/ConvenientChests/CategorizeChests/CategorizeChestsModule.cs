@@ -16,8 +16,8 @@ namespace ConvenientChests.CategorizeChests {
         internal IChestDataManager ChestDataManager { get; } = new ChestDataManager();
         internal ChestFinder       ChestFinder      { get; } = new ChestFinder();
 
-        protected string      SaveDirectory => Path.Combine(ModEntry.Helper.DirectoryPath, "savedata");
-        protected string      SavePath      => Path.Combine(ModEntry.Helper.DirectoryPath, "savedata", $"{Constants.SaveFolderName}.json");
+        protected string      SavePath      => Path.Combine("savedata", $"{Constants.SaveFolderName}.json");
+        protected string      AbsoluteSavePath => Path.Combine(ModEntry.Helper.DirectoryPath, SavePath);
         private   SaveManager SaveManager   { get; set; }
 
 
@@ -26,17 +26,13 @@ namespace ConvenientChests.CategorizeChests {
         internal bool ChestAcceptsItem(Chest chest, Item    item)    => item != null && ChestAcceptsItem(chest, ItemDataManager.GetItemKey(item));
         internal bool ChestAcceptsItem(Chest chest, ItemKey itemKey) => ChestDataManager.GetChestData(chest).Accepts(itemKey);
 
-        public CategorizeChestsModule(ModEntry modEntry) : base(modEntry) {
-            if (!Directory.Exists(SaveDirectory))
-                Directory.CreateDirectory(SaveDirectory);
-        }
+        public CategorizeChestsModule(ModEntry modEntry) : base(modEntry) { }
 
         public override void Activate() {
             IsActive = true;
 
             // Menu Events
-            MenuEvents.MenuChanged += OnMenuChanged;
-            MenuEvents.MenuClosed  += OnMenuClosed;
+            this.Events.Display.MenuChanged += OnMenuChanged;
 
             if (Context.IsMultiplayer && !Context.IsMainPlayer) {
                 ModEntry.Log("Due to limitations in the network code, CHEST CATEGORIES CAN NOT BE SAVED as farmhand, sorry :(", LogLevel.Warn);
@@ -44,24 +40,25 @@ namespace ConvenientChests.CategorizeChests {
             }
 
             // Save Events
-            SaveManager           =  new SaveManager(ModEntry.ModManifest.Version, this);
-            SaveEvents.BeforeSave += OnGameSaving;
-            OnGameLoaded(this, EventArgs.Empty);
+            SaveManager                 =  new SaveManager(ModEntry.ModManifest.Version, this);
+            this.Events.GameLoop.Saving += OnSaving;
+            OnGameLoaded();
         }
 
         public override void Deactivate() {
             IsActive = false;
 
             // Menu Events
-            MenuEvents.MenuChanged -= OnMenuChanged;
-            MenuEvents.MenuClosed  -= OnMenuClosed;
+            this.Events.Display.MenuChanged -= OnMenuChanged;
 
             // Save Events
-            SaveEvents.BeforeSave -= OnGameSaving;
-            SaveEvents.AfterLoad  -= OnGameLoaded;
+            this.Events.GameLoop.Saving -= OnSaving;
         }
 
-        private void OnGameSaving(object sender, EventArgs e) {
+        /// <summary>Raised before the game begins writes data to the save file (except the initial save creation).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnSaving(object sender, SavingEventArgs e) {
             try {
                 SaveManager.Save(SavePath);
             }
@@ -71,9 +68,9 @@ namespace ConvenientChests.CategorizeChests {
             }
         }
 
-        private void OnGameLoaded(object sender, EventArgs e) {
+        private void OnGameLoaded() {
             try {
-                if (File.Exists(SavePath))
+                if (File.Exists(AbsoluteSavePath))
                     SaveManager.Load(SavePath);
             }
             catch (Exception ex) {
@@ -82,27 +79,25 @@ namespace ConvenientChests.CategorizeChests {
             }
         }
 
-        private void OnMenuChanged(object sender, EventArgsClickableMenuChanged e) {
-            if (e.NewMenu == e.PriorMenu)
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e) {
+            if (e.NewMenu == e.OldMenu)
                 return;
 
-            if (e.PriorMenu is ItemGrabMenu)
+            if (e.OldMenu is ItemGrabMenu)
                 ClearMenu();
 
             if (e.NewMenu is ItemGrabMenu itemGrabMenu)
                 CreateMenu(itemGrabMenu);
         }
 
-        private void OnMenuClosed(object sender, EventArgsClickableMenuClosed e) {
-            if (e.PriorMenu is ItemGrabMenu)
-                ClearMenu();
-        }
-
         private void CreateMenu(ItemGrabMenu itemGrabMenu) {
             if (!(itemGrabMenu.behaviorOnItemGrab?.Target is Chest chest))
                 return;
 
-            WidgetHost = new WidgetHost();
+            WidgetHost = new WidgetHost(this.Events, this.ModEntry.Helper.Input);
             var overlay = new ChestOverlay(this, chest, itemGrabMenu, WidgetHost.TooltipManager);
             WidgetHost.RootWidget.AddChild(overlay);
         }

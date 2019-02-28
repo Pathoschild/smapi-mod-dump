@@ -16,7 +16,6 @@ namespace RemoteFridgeStorage
     {
         private FridgeHandler _handler;
         public static ModEntry Instance;
-        private HarmonyInstance _harmony;
         private bool cookingSkillLoaded;
         public ICookingSkillApi CookinSkillApi { get; private set; }
 
@@ -36,18 +35,23 @@ namespace RemoteFridgeStorage
             if (cookingSkillLoaded) Monitor.Log("Cooking skill is loaded on game start try to hook into the api");
             _handler = new FridgeHandler(fridgeSelected, fridgeDeselected, categorizeChestsLoaded, cookingSkillLoaded);
 
-            MenuEvents.MenuChanged += MenuChanged_Event;
-            InputEvents.ButtonPressed += Button_Pressed_Event;
-            GameEvents.FirstUpdateTick += Game_FirstTick;
-            GraphicsEvents.OnPostRenderGuiEvent += Draw;
+            helper.Events.Display.MenuChanged += OnMenuChanged;
+            helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
+            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
 
-            SaveEvents.AfterLoad += AfterLoad;
-            SaveEvents.BeforeSave += BeforeSave;
-            SaveEvents.AfterSave += AfterSave;
-            GameEvents.UpdateTick += Game_Update;
+            helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+            helper.Events.GameLoop.Saving += OnSaving;
+            helper.Events.GameLoop.Saved += OnSaved;
+            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
         }
 
-        private void Game_FirstTick(object sender, EventArgs e)
+        /// <summary>
+        /// Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialised at this point, so this is a good time to set up mod integrations.
+        /// </summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             if (cookingSkillLoaded)
             {
@@ -69,68 +73,96 @@ namespace RemoteFridgeStorage
 
         private void Harmony()
         {
-            if (cookingSkillLoaded) return;
-            _harmony = HarmonyInstance.Create("productions.EternalSoap.RemoteFridgeStorage");
-            _harmony.PatchAll(Assembly.GetExecutingAssembly());
+            if (cookingSkillLoaded)
+                return;
+
+            var harmony = HarmonyInstance.Create("productions.EternalSoap.RemoteFridgeStorage");
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(CraftingRecipe), nameof(CraftingRecipe.consumeIngredients)),
+                prefix: new HarmonyMethod(AccessTools.Method(typeof(HarmonyRecipePatchConsumeIngredients), nameof(HarmonyRecipePatchConsumeIngredients.Prefix)))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(CraftingRecipe), nameof(CraftingRecipe.drawRecipeDescription)),
+                prefix: new HarmonyMethod(AccessTools.Method(typeof(HarmonyRecipePatchDraw), nameof(HarmonyRecipePatchDraw.Prefix)))
+            );
         }
 
-        private void Game_Update(object sender, EventArgs e)
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (!Context.IsWorldReady) return;
 
             _handler.Game_Update();
         }
 
-        private void AfterSave(object sender, EventArgs e)
+        /// <summary>Raised after the game finishes writing data to the save file (except the initial save creation).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnSaved(object sender, SavedEventArgs e)
         {
             if (!Context.IsWorldReady) return;
             _handler.AfterSave();
         }
 
-        private void BeforeSave(object sender, EventArgs e)
+        /// <summary>Raised before the game begins writes data to the save file (except the initial save creation).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnSaving(object sender, SavingEventArgs e)
         {
             if (!Context.IsWorldReady) return;
             _handler.BeforeSave();
         }
 
-        private void AfterLoad(object sender, EventArgs e)
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             if (!Context.IsWorldReady) return;
             _handler.AfterLoad();
         }
 
 
-        private void Draw(object sender, EventArgs e)
+        /// <summary>When a menu is open (<see cref="Game1.activeClickableMenu"/> isn't null), raised after that menu is drawn to the sprite batch but before it's rendered to the screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
         {
             if (!Context.IsWorldReady) return;
             _handler.DrawFridge();
         }
 
-        private void Button_Pressed_Event(object sender, EventArgsInput e)
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady) return;
 
             if (e.Button == SButton.MouseLeft)
             {
-                _handler.HandleClick(e);
+                _handler.HandleClick(e.Cursor);
             }
         }
 
-        /// <summary>
-        /// If the opened menu was a crafting menu, call the handler to load the menu.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MenuChanged_Event(object sender, EventArgsClickableMenuChanged e)
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
             if (!Context.IsWorldReady) return;
+            
+            // If the opened menu was a crafting menu, call the handler to load the menu.
             //Replace menu if the new menu has the attribute cooking set to true and the new menu is not my crafting page.
             if (e.NewMenu != null &&
                 Helper.Reflection.GetField<bool>(e.NewMenu, "cooking", false) != null &&
                 Helper.Reflection.GetField<bool>(e.NewMenu, "cooking").GetValue() &&
                 !(e.NewMenu is RemoteFridgeCraftingPage))
             {
-                _handler.LoadMenu(e);
+                _handler.LoadMenu(e.NewMenu);
             }
         }
 

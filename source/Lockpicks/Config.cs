@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Modworks = bwdyworks.Modworks;
 
 namespace Lockpicks
 {
@@ -11,6 +12,8 @@ namespace Lockpicks
         public string MapName;
         public int MapX;
         public int MapY;
+        [JsonIgnore]
+        public bool OutLock = true;
         public ConfigLockEnd() { }
         public ConfigLockEnd(string mn, int x, int y)
         {
@@ -27,7 +30,7 @@ namespace Lockpicks
             MapY = int.Parse(ss[2]);
         }
 
-        public string str()
+        public string Str()
         {
             return MapName + "." + MapX + "." + MapY;
         }
@@ -35,47 +38,46 @@ namespace Lockpicks
 
     class Config
     {
-        public static Dictionary<string, string> Data;
+        public static Dictionary<string, string> OutLocks;
+        public static Dictionary<string, string> InLocks;
         public static bool ready = false;
-        public static void Load()
+        public static void Load(string directory)
         {
-            string filepath = Mod.instance.Helper.DirectoryPath + Path.DirectorySeparatorChar + "config.json";
-            if (File.Exists(filepath))
+            try
             {
-                try
+                string filecontents = File.ReadAllText(directory + "out_locks.json");
+                OutLocks = JsonConvert.DeserializeObject<Dictionary<string, string>>(filecontents);
+                filecontents = File.ReadAllText(directory + "in_locks.json");
+                InLocks = JsonConvert.DeserializeObject<Dictionary<string, string>>(filecontents);
+                //add inverse inlocks
+                foreach (var l in InLocks.Keys.ToArray())
                 {
-                    string filecontents = File.ReadAllText(filepath);
-                    Dictionary<string, int> config = JsonConvert.DeserializeObject<Dictionary<string, int>>(filecontents);
-                    Item.base_id = config["item_id"];
+                    InLocks[InLocks[l]] = l;
                 }
-                catch (Exception e)
-                {
-                    Item.base_id = 1919;
-                }
-            } else
-            {
-                Item.base_id = 1919;
+                ready = true;
             }
-            filepath = Mod.instance.Helper.DirectoryPath + Path.DirectorySeparatorChar + "locks.json";
-            if (File.Exists(filepath))
+            catch (Exception e)
             {
-                try
-                {
-                    string filecontents = File.ReadAllText(filepath);
-                    Data = JsonConvert.DeserializeObject<Dictionary<string, string>>(filecontents);
-                    ready = true;
-                }
-                catch (Exception e)
-                {
-                    Mod.instance.Monitor.Log("Failed to read config file: " + e.Message, StardewModdingAPI.LogLevel.Error);
-                }
+                Modworks.Log.Error("Failed to read lock config file: " + e.Message);
             }
         }
 
-        public static ConfigLockEnd GetMatchingLockEnd(ConfigLockEnd cle)
+        public static ConfigLockEnd GetMatchingOutLock(string key)
         {
-            string key = cle.str();
-            if (Data.ContainsKey(key)) return new ConfigLockEnd(Data[key]);
+            if (OutLocks.ContainsKey(key)) return new ConfigLockEnd(OutLocks[key]);
+            return null;
+        }
+
+        public static ConfigLockEnd GetMatchingInLock(string key)
+        {
+            if (InLocks.ContainsKey(key))
+            {
+                var c2 = new ConfigLockEnd(InLocks[key])
+                {
+                    OutLock = false
+                };
+                return c2;
+            }
             return null;
         }
     }

@@ -1,0 +1,13 @@
+url:
+   https://github.com/bwdymods/SDV-Polygamy.git
+
+mods:
+   Polygamy
+
+latest commit:
+   commit 4297432aeaa47d9fae3c445c80da74311f89ccc5
+   Author: bwdymods <bwdymods@gmail.com>
+   Date:   Mon Feb 25 23:54:48 2019 -0900
+   
+       Update for new bwdyworks API
+   

@@ -3,9 +3,10 @@ using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Generic;
+using Modworks = bwdyworks.Modworks;
 using System.Linq;
 
-namespace CreeperForage
+namespace PersonalEffects
 {
     public class Spot
     {
@@ -14,7 +15,6 @@ namespace CreeperForage
         public int X;
         public int Y;
         public int PercentChance;
-        public static Dictionary<string, List<string>> Loot;
         public static List<Spot> Spots;
 
         public static void Roll(object sender, EventArgs e)
@@ -36,7 +36,7 @@ namespace CreeperForage
                     {
                         if (o1.displayName.Contains("Panties") || o1.displayName.Contains("Underwear"))
                         {
-                            DebugLog("Despawning item from " + ss.Location, LogLevel.Debug);
+                            if (Mod.Debug) Modworks.Log.Trace("Despawning item from " + ss.Location);
                             l.objects.Remove(pos);
                         }
                     }
@@ -48,23 +48,21 @@ namespace CreeperForage
                     //is npc enabled?
                     if (Config.GetNPC(ss.NPC).Enabled)
                     {
-                        if (Loot.ContainsKey(ss.NPC))
+                        int strikepoint = rng.Next(2001);
+                        int chance = (int)(((((float)ss.PercentChance) / 100f) * (((float)base_luck) / 100f)) * 100f);
+                        if (chance > strikepoint)
                         {
-                            if(Loot[ss.NPC].Count > 0)
+                            var npcd = Config.Data[ss.NPC];
+                            string sid = "px" + npcd.Abbreviate() + (npcd.HasMaleItems() ? "m" : "f") + (new Random(DateTime.Now.Millisecond).Next(2) + 1);
+                            int ? id = Modworks.Items.GetModItemId(Mod.Module, sid);
+                            if(!id.HasValue)
                             {
-                                int strikepoint = rng.Next(2001);
-                                int chance = (int)(((((float)ss.PercentChance) / 100f) * (((float)base_luck) / 100f)) * 100f);
-                                if (chance > strikepoint)
-                                {
-                                    Item ei = Item.items[Loot[ss.NPC].ElementAt(new Random(DateTime.Now.Millisecond).Next(Loot[ss.NPC].Count))];
-                                    StardewValley.Object i = (StardewValley.Object)StardewValley.Objects.ObjectFactory.getItemFromDescription(0, ei.internal_id, 1);
-                                    i.IsSpawnedObject = true; //.isSpawnedObject.Value = true;
-                                    i.Quality = ss.RollQuality();// quality.Value = ss.RollQuality(); //1.3
-                                    i.ParentSheetIndex = ei.internal_id;
-                                    DebugLog("Spawning item " + ei.unique_id + " at " + ss.Location + " (" + ss.X + ", " + ss.Y + ")", LogLevel.Debug);
-                                    l.objects.Add(pos, i);
-                                }
+                                Modworks.Log.Warn("Attempted to spawn forage of invalid item id: " + sid);
+                                continue;
                             }
+                            var i = Modworks.Items.CreateItemstack(id.Value, 1);
+                            if(Mod.Debug) Modworks.Log.Trace("Spawning forage item " + sid + " at " + ss.Location + " (" + ss.X + ", " + ss.Y + ")");
+                            l.objects.Add(pos, i);
                         }
                     }
                 }
@@ -73,7 +71,7 @@ namespace CreeperForage
 
         public int RollQuality()
         {
-            int luv = Stardew.GetFriendshipPoints(NPC);
+            int luv = Modworks.Player.GetFriendshipPoints(NPC);
             Random rng = new Random(DateTime.Now.Millisecond);
             int mq = luv / 500;
             int quality = (mq > 0 && rng.Next(100) < 15 * mq) ? 1 : 0;
@@ -87,51 +85,10 @@ namespace CreeperForage
             return quality;
         }
 
-
-        public static void DebugLog(string msg, LogLevel level)
-        {
-            #if DEBUG
-                Mod.instance.Monitor.Log(msg, level);
-            #endif
-        }
-
         public static void Setup(IModHelper helper)
         {
 
             helper.Events.GameLoop.DayStarted += Roll;
-
-            Loot = new Dictionary<string, List<string>>();
-            Loot["Haley"] = new List<string> { "px.haley1", "px.haley2" };
-            Loot["Emily"] = new List<string> { "px.emily1", "px.emily2" };
-            Loot["Penny"] = new List<string> { "px.penny1", "px.penny2" };
-            Loot["Jodi"] = new List<string> { "px.jodi1", "px.jodi1" };
-            Loot["Leah"] = new List<string> { "px.leah1", "px.leah2" };
-            Loot["Caroline"] = new List<string> { "px.caroline1", "px.caroline2" };
-            Loot["Abigail"] = new List<string> { "px.abigail1", "px.abigail2" };
-            Loot["Maru"] = new List<string> { "px.maru1", "px.maru2" };
-            Loot["Robin"] = new List<string> { "px.robin1", "px.robin2" };
-            Loot["Alex"] = new List<string> { "px.alex1", "px.alex2" };
-            Loot["Elliott"] = new List<string> { "px.elliott1", "px.elliott2" };
-            Loot["Harvey"] = new List<string> { "px.harvey1", "px.harvey2" };
-            Loot["Sam"] = new List<string> { "px.sam1", "px.sam2" };
-            Loot["Sebastian"] = new List<string> { "px.sebastian1", "px.sebastian2" };
-            Loot["Shane"] = new List<string> { "px.shane1", "px.shane2" };
-            Loot["Clint"] = new List<string> { "px.clint1", "px.clint2" };
-            Loot["Demetrius"] = new List<string> { "px.demetrius1", "px.demetrius2" };
-            Loot["Gus"] = new List<string> { "px.gus1", "px.gus2" };
-            Loot["Kent"] = new List<string> { "px.kent1", "px.kent2" };
-            Loot["Lewis"] = new List<string> { "px.lewis1", "px.lewis2" };
-            Loot["Marnie"] = new List<string> { "px.marnie1", "px.marnie2" };
-            Loot["Pam"] = new List<string> { "px.pam1", "px.pam2" };
-            Loot["Pierre"] = new List<string> { "px.pierre1", "px.pierre2" };
-            Loot["Sandy"] = new List<string> { "px.sandy1", "px.sandy2" };
-            Loot["Willy"] = new List<string> { "px.willy1", "px.willy2" };
-            Loot["Wizard"] = new List<string> { "px.wizard1", "px.wizard2" };
-            Loot["Vincent"] = new List<string> { "px.vincent1", "px.vincent2" };
-            Loot["Jas"] = new List<string> { "px.jas1", "px.jas2" };
-            Loot["Linus"] = new List<string> { "px.linus1", "px.linus2" };
-            Loot["Evelyn"] = new List<string> { "px.1evelyn", "px.evelyn2" };
-            Loot["George"] = new List<string> { "px.george1", "px.george2" };
 
             //order is important for bath house odds
             Spots = new List<Spot>();

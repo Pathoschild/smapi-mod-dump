@@ -1,36 +1,39 @@
 ﻿ using System;
-using System.Collections.Generic;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace ConvenientChests.CraftFromChests {
-    public static class MenuListener {
-        public static List<IClickableMenu> GetTabs(this GameMenu m, IReflectionHelper h) => h.GetField<List<IClickableMenu>>(m, "pages").GetValue();
+    public class MenuListener {
+        private readonly IModEvents Events;
 
-        public static event EventHandler GameMenuShown;
-        public static event EventHandler GameMenuClosed;
-        public static event EventHandler CraftingMenuShown;
-        public static event EventHandler CraftingMenuClosed;
+        public event EventHandler GameMenuShown;
+        public event EventHandler GameMenuClosed;
+        public event EventHandler CraftingMenuShown;
+        public event EventHandler CraftingMenuClosed;
 
-        public static void RegisterEvents() {
+        public MenuListener(IModEvents events) {
+            this.Events = events;
+        }
+
+        public void RegisterEvents() {
             ModEntry.Log("Register");
-            MenuEvents.MenuChanged += OnMenuChanged;
-            MenuEvents.MenuClosed  += OnMenuClosed;
+            this.Events.Display.MenuChanged += OnMenuChanged;
         }
 
-        public static void UnregisterEvents() {
+        public void UnregisterEvents() {
             ModEntry.Log("UnRegister");
-            MenuEvents.MenuChanged -= OnMenuChanged;
-            MenuEvents.MenuClosed  -= OnMenuClosed;
+            this.Events.Display.MenuChanged -= OnMenuChanged;
         }
 
-        private static void OnMenuChanged(object sender, EventArgsClickableMenuChanged e) {
-            if (e.NewMenu == e.PriorMenu)
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e) {
+            if (e.NewMenu == e.OldMenu)
                 return;
 
-            switch (e.PriorMenu) {
+            switch (e.OldMenu) {
                 case GameMenu _:
                     GameMenuClosed?.Invoke(sender, e);
                     UnregisterTabEvent();
@@ -47,7 +50,7 @@ namespace ConvenientChests.CraftFromChests {
             switch (e.NewMenu) {
                 case GameMenu _:
                     GameMenuShown?.Invoke(sender, e);
-                    GraphicsEvents.OnPostRenderGuiEvent += OnPostRenderGuiEvent;
+                    this.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
                     break;
 
                 case CraftingPage _:
@@ -56,25 +59,14 @@ namespace ConvenientChests.CraftFromChests {
             }
         }
 
-        private static void OnMenuClosed(object sender, EventArgsClickableMenuClosed e) {
-            switch (e.PriorMenu) {
-                case GameMenu _:
-                    GameMenuClosed?.Invoke(sender, e);
-                    UnregisterTabEvent();
-                    break;
+        private int _previousTab = -1;
 
-                case CraftingPage _:
-                    CraftingMenuClosed?.Invoke(sender, e);
-                    break;
-            }
-        }
+        public event EventHandler GameMenuTabChanged;
 
-
-        private static int _previousTab = -1;
-
-        public static event EventHandler GameMenuTabChanged;
-
-        private static void OnPostRenderGuiEvent(object sender, EventArgs e) {
+        /// <summary>When a menu is open (<see cref="Game1.activeClickableMenu"/> isn't null), raised after that menu is drawn to the sprite batch but before it's rendered to the screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e) {
             switch (Game1.activeClickableMenu) {
                 case TitleMenu _:
                     // Quit to title
@@ -107,9 +99,9 @@ namespace ConvenientChests.CraftFromChests {
             }
         }
 
-        private static void UnregisterTabEvent() {
-            GraphicsEvents.OnPostRenderGuiEvent -= OnPostRenderGuiEvent;
-            _previousTab                        =  -1;
+        private void UnregisterTabEvent() {
+            this.Events.Display.RenderedActiveMenu -= OnRenderedActiveMenu;
+            _previousTab                           =  -1;
         }
     }
 }

@@ -1,0 +1,11 @@
+﻿{
+    "Name": "Any Heart Dance",
+    "Author": "Isaac S.",
+    "Version": "1.0.0-beta",
+    "Description": "Makes it so you can set the dance requirement to any heart level!",
+    "UniqueID": "IsaacS.AnyHeartDance",
+    "EntryDll": "AnyHeartDance.dll",
+    "UpdateKeys": [],
+    "MinimumApiVersion": "2.10.2",
+    "Dependencies": []
+}

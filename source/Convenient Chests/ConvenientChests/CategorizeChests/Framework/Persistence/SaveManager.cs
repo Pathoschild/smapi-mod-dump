@@ -17,17 +17,18 @@ namespace ConvenientChests.CategorizeChests.Framework.Persistence {
         /// <summary>
         /// Generate save data and write it to the given file path.
         /// </summary>
-        /// <param name="path">The full path of the save file.</param>
-        public void Save(string path) {
+        /// <param name="relativePath">The path of the save file relative to the mod folder.</param>
+        public void Save(string relativePath) {
             var saver = new Saver(Version, Module.ChestDataManager);
-            Module.ModEntry.Helper.WriteJsonFile(path, saver.GetSerializableData());
+            Module.ModEntry.Helper.Data.WriteJsonFile(relativePath, saver.GetSerializableData());
         }
 
         /// <summary>
         /// Load save data from the given file path.
         /// </summary>
-        public void Load(string path) {
-            var model = Module.ModEntry.Helper.ReadJsonFile<SaveData>(path) ?? new SaveData();
+        /// <param name="relativePath">The path of the save file relative to the mod folder.</param>
+        public void Load(string relativePath) {
+            var model = Module.ModEntry.Helper.Data.ReadJsonFile<SaveData>(relativePath) ?? new SaveData();
 
             foreach (var entry in model.ChestEntries) {
                 try {

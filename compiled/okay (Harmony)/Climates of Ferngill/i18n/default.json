@@ -87,7 +87,7 @@
   "weat-wedToday.0": "Today, in Stardew Valley, for the wedding, expect {{weather}}.#Tomorrow, expect {{tomorrowWeather}} with a high of {{tomorrowHigh}} and low {{tomorrowLow}}",
 
   //And Tomorrow
-  "weat-wedTomorrow.0": "Today, expect {{weather}} with high:{{high}} and low:{{low}}#Tommorow, for the wedding, expect {{tomorrowWeather}}",
+  "weat-wedTomorrow.0": "Today, expect {{descWeather}} with high:{{todayHigh}} and low:{{todayLow}}#Tommorow, for the wedding, expect {{tomorrowWeather}}",
   "weat-wedTomorrow.BM.0": "Today, PANIC! PANIC! THE BLOOD MOON HAS DESCENDED!!!!#I mean, expect {{descWeather}} with high:{{todayHigh}} and low:{{todayLow}}#Tommorow, for the wedding, expect {{tomorrowWeather}}",
 
   //Weather - Condition Strings

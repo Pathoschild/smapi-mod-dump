@@ -6,9 +6,9 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit 49137dcda6e7b6ea5e932c5737f2b1e4d0965e4f
+   commit 9b83ef5f005acd060d95afa329ab0ba5ee0051a8
    Author: Bouhm <bbouhm@gmail.com>
-   Date:   Sat Feb 16 19:35:57 2019 -0800
+   Date:   Tue Feb 26 20:07:08 2019 -0800
    
-       update version
+       fix default map load string
    

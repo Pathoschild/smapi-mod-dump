@@ -1,13 +1,13 @@
 url:
-   https://github.com/bwdymods/SDV-bwdylib.git
+   https://github.com/bwdymods/SDV-bwdyworks.git
 
 mods:
    Bwdyworks
 
 latest commit:
-   commit 48a6607a532e5e5377fd9085c9c1254defa180fd
+   commit 2aaef867b401760f9b63010d0a0e02a5e14f0055
    Author: bwdymods <bwdymods@gmail.com>
-   Date:   Wed Feb 20 18:31:17 2019 -0900
+   Date:   Tue Feb 26 22:43:04 2019 -0900
    
-       a starting point
+       initial event API
    

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
+using BetterJunimos.Abilities;
 using BetterJunimos.Utils;
 using Harmony;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Characters;
-using StardewValley.TerrainFeatures;
 
 namespace BetterJunimos.Patches {
     /* areThereMatureCropsWithinRadius **OVERWRITES PREFIX**
@@ -29,17 +29,20 @@ namespace BetterJunimos.Patches {
         // search for crops + open plantable spots
         internal static bool searchAroundHut(JunimoHut hut) {
             Guid id = Util.GetHutIdFromHut(hut);
-            Util.Abilities.UpdateHutItems(id);
             int radius = Util.MaxRadius;
             for (int x = hut.tileX.Value + 1 - radius; x < hut.tileX.Value + 2 + radius; ++x) {
                 for (int y = hut.tileY.Value + 1 - radius; y < hut.tileY.Value + 2 + radius; ++y) {
+                    // skip if we find the same lastKnownCropLocation twice
+                    if (x == hut.lastKnownCropLocation.X && y == hut.lastKnownCropLocation.Y) continue;
                     Vector2 pos = new Vector2((float)x, (float)y);
-                    if (Util.Abilities.IsActionable(pos, id)) {
+                    IJunimoAbility ability = Util.Abilities.IdentifyJunimoAbility(pos, id);
+                    if (ability != null) {
                         hut.lastKnownCropLocation = new Point(x, y);
                         return true;
                     }
                 }
             }
+            hut.lastKnownCropLocation = Point.Zero;
             return false;
         }
     }
@@ -52,20 +55,20 @@ namespace BetterJunimos.Patches {
     internal class ReplaceJunimoHutUpdate {
         // This is to prevent the update function from running, other than base.Update()
         // Capture sendOutTimer and use to stop execution
-        public static void Prefix(JunimoHut __instance, int __state) {
-            var junimoSendOutTimer = Util.Reflection.GetField<int>(__instance, "junimoSendOutTimer");
-            __state = junimoSendOutTimer.GetValue();
-            junimoSendOutTimer.SetValue(0);
+        public static void Prefix(JunimoHut __instance, ref int ___junimoSendOutTimer, ref int __state) {
+            int timer = ___junimoSendOutTimer;
+            __state = timer;
+            ___junimoSendOutTimer = 0;
         }
 
-        public static void Postfix(JunimoHut __instance, GameTime time, int __state) {
-            var junimoSendOutTimer = Util.Reflection.GetField<int>(__instance, "junimoSendOutTimer");
+        public static void Postfix(JunimoHut __instance, GameTime time, ref int ___junimoSendOutTimer, int __state) {
             int sendOutTimer = __state;
+            if (sendOutTimer <= 0)
+                return;
 
-            // from Update
-            junimoSendOutTimer.SetValue(sendOutTimer - time.ElapsedGameTime.Milliseconds);
-            if (sendOutTimer > 0 || __instance.myJunimos.Count() >= Util.Config.JunimoHuts.MaxJunimos ||
-                !__instance.areThereMatureCropsWithinRadius() || Game1.farmEvent != null)
+            ___junimoSendOutTimer = sendOutTimer - time.ElapsedGameTime.Milliseconds;
+            // Don't work on farmEvent days
+            if (Game1.farmEvent != null)
                 return;
             // Winter
             if (Game1.IsWinter && !Util.Config.JunimoImprovements.CanWorkInWinter)
@@ -73,9 +76,34 @@ namespace BetterJunimos.Patches {
             // Rain
             if (Game1.isRaining && !Util.Config.JunimoImprovements.CanWorkInRain) 
                 return;
-            
+            // Currently sending out a junimo
+            if (___junimoSendOutTimer > 0) 
+                return;
+            // Already enough junimos
+            if (__instance.myJunimos.Count() >= Util.Config.JunimoHuts.MaxJunimos)
+                return;
+            // Nothing to do
+            if (!__instance.areThereMatureCropsWithinRadius())
+                return;
+
             Util.SpawnJunimoAtHut(__instance);
-            junimoSendOutTimer.SetValue(1000);
+            ___junimoSendOutTimer = 1000;
+        }
+    }
+
+    /*
+     * performTenMinuteAction
+     * 
+     * Add the end to trigger more than 3 junimos to spawn
+     */
+    [HarmonyPriority(Priority.Low)]
+    internal class ReplaceJunimoTimerNumber {
+        public static void Postfix(JunimoHut __instance, ref int ___junimoSendOutTimer) {
+            int time = Util.Config.JunimoImprovements.CanWorkInEvenings ? 2400 : 1900;
+            if (__instance.myJunimos.Count() < Util.Config.JunimoHuts.MaxJunimos && 
+                Game1.timeOfDay < time) {
+                ___junimoSendOutTimer = 1;
+            }
         }
     }
 

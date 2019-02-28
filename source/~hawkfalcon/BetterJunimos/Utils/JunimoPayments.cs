@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Netcode;
 using StardewValley;
 using StardewValley.Buildings;
+using StardewValley.Objects;
 
 namespace BetterJunimos.Utils {
     public class JunimoPayments {
@@ -11,9 +11,13 @@ namespace BetterJunimos.Utils {
         public bool WereJunimosPaidToday;
         public Dictionary<string, List<int>> JunimoPaymentsToday = new Dictionary<string, List<int>>();
 
+        internal JunimoPayments(ModConfig.JunimoPayments Payment) {
+            this.Payment = Payment;
+        }
+
         public bool ReceivePaymentItems(JunimoHut hut) {
             Farm farm = Game1.getFarm();
-            NetObjectList<Item> chest = hut.output.Value.items;
+            Chest chest = hut.output.Value;
             bool paidForage = ReceiveItems(chest, Payment.DailyWage.ForagedItems, "Forage");
             bool paidFlowers = ReceiveItems(chest, Payment.DailyWage.Flowers, "Flower");
             bool paidFruit = ReceiveItems(chest, Payment.DailyWage.Fruit, "Fruit");
@@ -22,7 +26,7 @@ namespace BetterJunimos.Utils {
             return paidForage && paidFlowers && paidFruit && paidWine;
         }
 
-        public bool ReceiveItems(NetObjectList<Item> chest, int needed, string type) {
+        public bool ReceiveItems(Chest chest, int needed, string type) {
             if (needed == 0) return true;
             List<int> items;
             if (!JunimoPaymentsToday.TryGetValue(type, out items)) {
@@ -33,10 +37,10 @@ namespace BetterJunimos.Utils {
             if (paidSoFar == needed) return true;
 
             foreach (int i in Enumerable.Range(paidSoFar, needed)) {
-                Item foundItem = chest.FirstOrDefault(item => item.getCategoryName() == type);
+                Item foundItem = chest.items.FirstOrDefault(item => item.getCategoryName() == type);
                 if (foundItem != null) {
                     items.Add(foundItem.ParentSheetIndex);
-                    Util.ReduceItemCount(chest, foundItem);
+                    Util.RemoveItemFromChest(chest, foundItem);
                 }
             }
             return items.Count() == needed;

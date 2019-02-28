@@ -1,10 +1,10 @@
 {
-  "Name": "BatteryWarningMod",
+  "Name": "Battery Warning",
   "Author": "Husky110",
   "Version": "1.0.3",
   "Description": "Gives you a warning when your device-battery reaches 25%.",
   "UniqueID": "Husky110.BatteryWarningMod",
   "EntryDll": "BatteryWarningMod.dll",
-  "MinimumApiVersion": "2.3",
-  "UpdateKeys": ["Nexus:1886"]
+  "MinimumApiVersion": "2.10.2",
+  "UpdateKeys": [ "Nexus:1886" ]
 }

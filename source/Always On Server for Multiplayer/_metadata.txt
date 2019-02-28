@@ -5,9 +5,12 @@ mods:
    Always On Server for Multiplayer
 
 latest commit:
-   commit ba7721c47f3f1584e9adc7361ce648d803b3ebed
-   Author: DESKTOP-S07204M\Curtis <curtis368@gmail.com>
-   Date:   Wed Dec 19 21:03:47 2018 -0600
+   commit d486401da07a69966ae40408ea4b142df10f5abf
+   Merge: ba7721c 6780172
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Tue Feb 26 23:52:37 2019 -0500
    
-       added note
+       Merge pull request #3 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0
    

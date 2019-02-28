@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Characters;
 
 namespace ConvenientChests.CategorizeChests.Interface.Widgets
 {
@@ -105,9 +104,9 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets
             return Parent != null ? Parent.Globalize(global) : global;
         }
 
-        public virtual bool ReceiveKeyPress(Keys input)
+        public virtual bool ReceiveButtonPress(SButton input)
         {
-            return PropagateKeyPress(input);
+            return PropagateButtonPress(input);
         }
 
         public virtual bool ReceiveLeftClick(Point point)
@@ -125,11 +124,11 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets
             return PropagateScrollWheelAction(amount);
         }
 
-        protected bool PropagateKeyPress(Keys input)
+        protected bool PropagateButtonPress(SButton input)
         {
             foreach (var child in Children)
             {
-                var handled = child.ReceiveKeyPress(input);
+                var handled = child.ReceiveButtonPress(input);
                 if (handled)
                     return true;
             }
