@@ -1,0 +1,9 @@
+{
+  "SearchString": "crow",
+  "Radius": 8,
+  "TexturePath": "LooseSprites/buildingPlacementTiles.xnb",
+  "TextureSourceRectangle": "{X:0 Y:0 Width:64 Height:64}",
+  "ToggleHighlightButton": "L",
+  "HighlightOnHold": true,
+  "HighlightOnHovered": true
+}

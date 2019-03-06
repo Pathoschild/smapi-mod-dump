@@ -17,6 +17,7 @@ namespace MailFrameworkMod
         private static String _nextLetterId = "none";
         private static readonly List<Letter> Letters = new List<Letter>();
         private static Letter _shownLetter = null;
+        private static IModEvents _events => MailFrameworkModEntery.ModHelper.Events;
 
         /// <summary>
         /// Call this method to update the mail box with new letters.
@@ -186,7 +187,7 @@ namespace MailFrameworkMod
                         }
                     }
 
-                    MenuEvents.MenuClosed += MenuEvents_MenuClosed;
+                    _events.Display.MenuChanged += OnMenuChanged;
                 }
                 else
                 {
@@ -196,13 +197,16 @@ namespace MailFrameworkMod
         }
 
         /// <summary>
-        /// Event method to be called when the letter menu is closed.
+        /// Raised after a game menu is opened, closed, or replaced.
         /// Remove the showed letter from the list and calls the callback function.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private static void MenuEvents_MenuClosed(object sender, EventArgsClickableMenuClosed e)
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private static void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
+            if (e.NewMenu != null)
+                return;
+
             if (_shownLetter != null)
             { 
                 Letters.Remove(_shownLetter);
@@ -210,7 +214,7 @@ namespace MailFrameworkMod
                 _shownLetter = null;
             }
             UpdateNextLetterId();
-            MenuEvents.MenuClosed -= MenuEvents_MenuClosed;
+            _events.Display.MenuChanged -= OnMenuChanged;
         }
 
         /// <summary>
@@ -244,7 +248,7 @@ namespace MailFrameworkMod
                 }
                 else
                 {
-                    MenuEvents.MenuClosed += MenuEvents_MenuClosed;
+                    _events.Display.MenuChanged += OnMenuChanged;
                 }
             }
             return true;

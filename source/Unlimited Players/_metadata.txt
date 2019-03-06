@@ -5,9 +5,9 @@ mods:
    Unlimited Players
 
 latest commit:
-   commit b0ab60893689889b1eb93e9d2bfcc06959dad303
+   commit 166db532b6876b2fcd8c49f2106917e10d89308b
    Author: Armitxes <4rmitxes@gmail.com>
-   Date:   Tue May 22 20:20:44 2018 +0200
+   Date:   Tue Mar 5 20:30:14 2019 +0100
    
-       Removed Lidgren, overwrite player limit earlier
+       [IMP] Remove old bin release folder to prevent confusion
    

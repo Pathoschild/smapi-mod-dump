@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using Harmony;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Tools;
-using Object = StardewValley.Object;
 
 namespace EverlastingBaitsAndUnbreakableTacklesMod
 {
@@ -21,7 +17,7 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
             ModMonitor = Monitor;
             DataLoader = new DataLoader(helper);
 
-            SaveEvents.AfterLoad += (x,y) => DataLoader.ReloadQuestWhenClient();
+            helper.Events.GameLoop.SaveLoaded += (sender, e) => DataLoader.ReloadQuestWhenClient();
 
             var harmony = HarmonyInstance.Create("Digus.InfiniteBaitAndLureMod");
 

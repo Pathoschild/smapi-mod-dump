@@ -12,9 +12,11 @@ mods:
    Weather Illnesses
 
 latest commit:
-   commit f07259f7ec560f3688d41a5f5840d516b5e8ef59
-   Author: Nicholas Johnson <johnson.nicholas.h@gmail.com>
-   Date:   Fri Jan 18 20:10:30 2019 -0800
+   commit e131cf81c775f6ee3e23e8f44bb873f5cc3c7832
+   Author: S2SKY <45951943+S2SKY@users.noreply.github.com>
+   Date:   Fri Mar 1 18:40:55 2019 +1300
    
-       Updated readme to be correct
+       Create ko.json (#67)
+       
+       Korean lang support for beta Kor ver of SDV
    

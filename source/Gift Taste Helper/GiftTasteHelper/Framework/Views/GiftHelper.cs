@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -28,7 +26,7 @@ namespace GiftTasteHelper.Framework
         ** Accessors
         *********/
         public bool IsInitialized { get; private set; }
-        public bool IsOpen { get; private set; }        
+        public bool IsOpen { get; private set; }
         public GiftHelperType GiftHelperType { get; }
         public float ZoomLevel => 1.0f; // SMAPI's draw call will handle zoom
 
@@ -85,7 +83,7 @@ namespace GiftTasteHelper.Framework
             return true;
         }
 
-        public virtual void OnMouseStateChange(EventArgsMouseStateChanged e)
+        public virtual void OnCursorMoved(CursorMovedEventArgs e)
         {
             // Empty
         }
@@ -152,7 +150,7 @@ namespace GiftTasteHelper.Framework
             }
 
             float spriteScale = 2.0f * this.ZoomLevel; // 16x16 is pretty small
-            Rectangle spriteRect = numItemsToDraw > 0 ? drawData.IconSize : new Rectangle(0,0,0,0); // We just need the dimensions which we assume are all the same
+            Rectangle spriteRect = numItemsToDraw > 0 ? drawData.IconSize : new Rectangle(0, 0, 0, 0); // We just need the dimensions which we assume are all the same
             SVector2 scaledSpriteSize = new SVector2(spriteRect.Width * spriteScale, spriteRect.Height * spriteScale);
 
             // The longest length of text will help us determine how wide the tooltip box should be 

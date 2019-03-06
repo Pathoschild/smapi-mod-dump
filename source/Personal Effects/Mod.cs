@@ -13,11 +13,6 @@ namespace PersonalEffects
         public void EntryDebug() { Debug = true; }
         internal static string Module;
 
-        public static int tickUpdateLimiter = 0;
-        public static bool EatingPrimed = false;
-        public static StardewValley.Item EatingItem;
-        public static int eatingQuantity = 0;
-
         public override void Entry(IModHelper helper)
         {
             Module = helper.ModRegistry.ModID;
@@ -30,36 +25,13 @@ namespace PersonalEffects
                 AddItems();
                 Spot.Setup(helper);
             }
-            if (Debug) helper.Events.Input.ButtonPressed += Input_ButtonPressed;
-            helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
+            Modworks.Events.ItemEaten += Events_ItemEaten;
+            helper.Events.Input.ButtonPressed += Input_ButtonPressed;
         }
 
-        private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
+        private void Events_ItemEaten(object sender, bwdyworks.Events.ItemEatenEventArgs args)
         {
-            tickUpdateLimiter++;
-            if (tickUpdateLimiter < 10) return;
-            tickUpdateLimiter = 0;
-            if (EatingPrimed)
-            {
-                if (!Game1.player.isEating)
-                {
-                    
-                    EatingPrimed = false;
-                    //make sure we didn't say no
-                    if(Game1.player.ActiveObject == null || Game1.player.ActiveObject.Stack < eatingQuantity) OnItemEaten(Game1.player, EatingItem);
-                    EatingItem = null;
-                }
-            } else if (Game1.player.isEating)
-            {
-                EatingPrimed = true;
-                EatingItem = Game1.player.itemToEat;
-                eatingQuantity = Game1.player.ActiveObject.Stack;
-            }
-        }
-
-        public static void OnItemEaten(StardewValley.Farmer who, StardewValley.Item what)
-        {
-            string dn = what.DisplayName;
+            string dn = args.Item.DisplayName;
             string npc;
             if (dn.EndsWith("'s Panties")) npc = dn.Substring(0, dn.IndexOf("'s Panties"));
             else if (dn.EndsWith("'s Underwear")) npc = dn.Substring(0, dn.IndexOf("'s Underwear"));
@@ -70,14 +42,10 @@ namespace PersonalEffects
             var npcConfig = Config.GetNPC(npcName);
             Game1.showGlobalMessage("You feel like this changes your relationship with " + npcConfig.Name + ".");
             int friendship = Modworks.Player.GetFriendshipPoints(npcName);
-            int chance = 500 + (int)((StardewValley.Game1.dailyLuck * 10f) * 500f); //0-1000
-            Random rng = new Random(DateTime.Now.Millisecond);
-            int strikepoint = rng.Next(1250);
-            if (Debug) Modworks.Log.Trace(chance + " > " + strikepoint);
-            if (chance > strikepoint)
+            if (Modworks.RNG.NextDouble() < Modworks.Player.GetLuckFactorFloat())
             {
                 Modworks.Player.SetFriendshipPoints(npcName, Math.Min(2500, friendship + 125));
-                if(Debug) Modworks.Log.Trace("Relationship increased by 125");
+                if (Debug) Modworks.Log.Trace("Relationship increased by 125");
             }
             else
             {
@@ -111,7 +79,7 @@ namespace PersonalEffects
             AddPersonalEffectItem("Elliott", 1, "Nothing but class.", 29);
             AddPersonalEffectItem("Elliott", 2, "Such graceful elegance.", 31);
             AddPersonalEffectItem("Harvey", 1, "They seem reliable.", 24);
-            AddPersonalEffectItem("Harvey", 2, Config.GetNPC("Harvey").GetPronoun(0) + " kind of suprises me.", 28);
+            AddPersonalEffectItem("Harvey", 2, UppercaseFirst(Config.GetNPC("Harvey").GetPronoun(0)) + " kind of suprises me.", 28);
             AddPersonalEffectItem("Sam", 1, "So adventurous!", 33);
             AddPersonalEffectItem("Sam", 2, "They smell like " + Config.GetNPC("Sam").GetPronoun(1) + ".", 16);
             AddPersonalEffectItem("Sebastian", 1, UppercaseFirst(Config.GetNPC("Sebastian").GetPronoun(0)) + " never disappoints.", 19);
@@ -124,8 +92,8 @@ namespace PersonalEffects
             AddPersonalEffectItem("Demetrius", 2, "They don't smell worn.", 24);
             AddPersonalEffectItem("Gus", 1, "These definitely belong to " + Config.GetNPC("Gus").Name + ".", 33);
             AddPersonalEffectItem("Gus", 2, "They're still kind of warm.", 36);
-            AddPersonalEffectItem("Kent", 1, "A bit less brave on the inside.", 17);
-            AddPersonalEffectItem("Kent", 2, "What parts of the world these have seen?", 22);
+            AddPersonalEffectItem("Kent", 1, "They seem well-travelled.", 17);
+            AddPersonalEffectItem("Kent", 2, "I don't even know what to do with these.", 22);
             AddPersonalEffectItem("Lewis", 1, "Another fine display for the fair.", 33);
             AddPersonalEffectItem("Lewis", 2, "Perfectly in character.", 19);
             AddPersonalEffectItem("Marnie", 1, "Soooo comfortable!", 25);
@@ -133,7 +101,7 @@ namespace PersonalEffects
             AddPersonalEffectItem("Pam", 1, "They're... broken in.", 14);
             AddPersonalEffectItem("Pam", 2, "These smell like something, but what?", 19);
             AddPersonalEffectItem("Pierre", 1, "Clearly doing alright for " + Config.GetNPC("Pierre").GetPronoun(1) + "self.", 33);
-            AddPersonalEffectItem("Pierre", 2, Config.GetNPC("Pierre").GetPronoun(0) + " should be more careful.", 36);
+            AddPersonalEffectItem("Pierre", 2, UppercaseFirst(Config.GetNPC("Pierre").GetPronoun(0)) + " should be more careful.", 36);
             AddPersonalEffectItem("Sandy", 1, "Absolutely fabulous.", 40);
             AddPersonalEffectItem("Sandy", 2, "Worth the trip.", 41);
             AddPersonalEffectItem("Willy", 1, "Salty.", 17);
@@ -154,7 +122,7 @@ namespace PersonalEffects
 
         public void AddPersonalEffectItem(string npc, int variant, string desc, int price)
         {
-            Modworks.Items.AddItem(Module, new bwdyworks.BasicItemEntry(this, "px" + Config.GetNPC(npc).Abbreviate() + (Config.GetNPC(npc).HasMaleItems() ? "m" : "f") + variant, price, 10, "Personal Effects", StardewValley.Object.sellAtFishShopCategory, Config.GetNPC(npc).Name + "'s " + (Config.GetNPC(npc).HasMaleItems() ? "Underwear" : "Panties"), desc));
+            Modworks.Items.AddItem(Module, new bwdyworks.BasicItemEntry(this, "px" + Config.GetNPC(npc).Abbreviate() + (Config.GetNPC(npc).HasMaleItems() ? "m" : "f") + variant, price, -300, "Underwear", StardewValley.Object.sellAtFishShopCategory, Config.GetNPC(npc).Name + "'s " + (Config.GetNPC(npc).HasMaleItems() ? "Underwear" : "Panties"), desc));
         }
 
         static string UppercaseFirst(string s)
@@ -168,44 +136,16 @@ namespace PersonalEffects
 
         private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (e.Button == SButton.OemTilde)
+            if (e.Button.IsActionButton())
             {
-
-                Monitor.Log("friendship power!");
-                Modworks.Player.SetFriendshipPoints("Alex", 2500);
-                Modworks.Player.SetFriendshipPoints("Elliott", 2500);
-                Modworks.Player.SetFriendshipPoints("Harvey", 2500);
-                Modworks.Player.SetFriendshipPoints("Sam", 2500);
-                Modworks.Player.SetFriendshipPoints("Sebastian", 2500);
-                Modworks.Player.SetFriendshipPoints("Shane", 2500);
-                Modworks.Player.SetFriendshipPoints("Abigail", 2500);
-                Modworks.Player.SetFriendshipPoints("Emily", 2500);
-                Modworks.Player.SetFriendshipPoints("Haley", 2500);
-                Modworks.Player.SetFriendshipPoints("Leah", 2500);
-                Modworks.Player.SetFriendshipPoints("Maru", 2500);
-                Modworks.Player.SetFriendshipPoints("Penny", 2500);
-                Modworks.Player.SetFriendshipPoints("Caroline", 2500);
-                Modworks.Player.SetFriendshipPoints("Clint", 2500);
-                Modworks.Player.SetFriendshipPoints("Demetrius", 2500);
-                Modworks.Player.SetFriendshipPoints("Gus", 2500);
-                Modworks.Player.SetFriendshipPoints("Jodi", 2500);
-                Modworks.Player.SetFriendshipPoints("Kent", 2500);
-                Modworks.Player.SetFriendshipPoints("Lewis", 2500);
-                Modworks.Player.SetFriendshipPoints("Marnie", 2500);
-                Modworks.Player.SetFriendshipPoints("Pam", 2500);
-                Modworks.Player.SetFriendshipPoints("Pierre", 2500);
-                Modworks.Player.SetFriendshipPoints("Robin", 2500);
-                Modworks.Player.SetFriendshipPoints("Sandy", 2500);
-                Modworks.Player.SetFriendshipPoints("Willy", 2500);
-                Modworks.Player.SetFriendshipPoints("Wizard", 2500);
-                Modworks.Player.SetFriendshipPoints("Vincent", 2500);
-                Modworks.Player.SetFriendshipPoints("Jas", 2500);
-                Modworks.Player.SetFriendshipPoints("Linus", 2500);
-                Modworks.Player.SetFriendshipPoints("Evelyn", 2500);
-                Modworks.Player.SetFriendshipPoints("George", 2500);
-
-                var pos = Modworks.Player.GetStandingTileCoordinate();
-                this.Monitor.Log($"Loc: {Game1.currentLocation.Name} @ {pos[0]} x {pos[1]}", LogLevel.Alert);
+                if(Game1.player.ActiveObject != null)
+                {
+                    string name = Game1.player.ActiveObject.Name;
+                    if(name.Contains("'s Underwear") || name.Contains("'s Panties"))
+                    {
+                        Modworks.Player.ForceOfferEatInedibleHeldItem();
+                    }
+                }
             }
         }
     }

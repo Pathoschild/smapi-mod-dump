@@ -5,12 +5,10 @@ mods:
    Json Assets
 
 latest commit:
-   commit df5f0e6c233694fc1e2f613efc69634dd28a1910
-   Merge: 99ff30e 112c89b
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Fri Feb 15 13:47:21 2019 -0500
+   commit e67eaccacec77d9a9b23a1611fcfaafd10834ed2
+   Merge: 10fab21 df5f0e6
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Mon Mar 4 21:43:56 2019 -0500
    
-       Merge pull request #28 from paradigmnomad/patch-3
-       
-       Documentation for Hats, Weapons, & Localization
+       Merge remote-tracking branch 'origin/master'
    

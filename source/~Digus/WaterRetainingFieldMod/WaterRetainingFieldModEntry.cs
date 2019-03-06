@@ -1,13 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using Harmony;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+﻿using Harmony;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewValley;
 using StardewValley.TerrainFeatures;
-using StardewValley.Tools;
 
 namespace WaterRetainingFieldMod
 {
@@ -19,7 +12,7 @@ namespace WaterRetainingFieldMod
         {
             DataLoader = new DataLoader(helper);
 
-            TimeEvents.AfterDayStarted += (x, y) => HoeDirtOverrides.TileLocationState.Clear();
+            helper.Events.GameLoop.DayStarted += (sender, e) => HoeDirtOverrides.TileLocationState.Clear();
 
             var harmony = HarmonyInstance.Create("Digus.WaterRetainingFieldMod");
 

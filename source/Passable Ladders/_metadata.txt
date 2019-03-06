@@ -5,9 +5,12 @@ mods:
    Passable Ladders
 
 latest commit:
-   commit b4b48c1bf51bd9286a7e951dd6f66ab6ad7b6b56
-   Author: Joel Anderson <joelr.anders@gmail.com>
-   Date:   Thu Nov 1 19:12:52 2018 -0500
+   commit 3942bc51224deffce742a89e6c513b584d087279
+   Merge: b4b48c1 73f3e6f
+   Author: joelra <3359379+joelra@users.noreply.github.com>
+   Date:   Sun Mar 3 21:44:15 2019 -0600
    
-       Added Nexus update tag
+       Merge pull request #1 from Mizzion/master
+       
+       Updated to be compliant with SMAPI 3.0
    

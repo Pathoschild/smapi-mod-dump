@@ -5,9 +5,9 @@ mods:
    Tree Transplant
 
 latest commit:
-   commit 6ee060433a1bbc39abf451cb32dde6db10d2bf59
-   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Fri Feb 15 23:33:57 2019 -0500
+   commit 39602cbadcd4c017abba5b9c710b4178d0a119d2
+   Author: James Stine <leon.blade@gmail.com>
+   Date:   Fri Mar 1 19:39:13 2019 -0500
    
-       update for SMAPI 3.0
+       Fix Chucklefish Mod link.
    

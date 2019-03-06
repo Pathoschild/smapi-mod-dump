@@ -5,10 +5,9 @@
       - Crops grow faster
       - Crops have higher chance to stay hydrated
       - Animals produce ```1.5x``` faster
-      - Fences last twice as long 
+      - Fences last twice as long
       - _Additionally..._
         - Larger Greenhouse
-        - Farm Expansion: Extra Farmland
         - Unlockable Shed
     - [ ] Fishing
       - Be able to find almost every fish on your farm
@@ -17,5 +16,9 @@
       - _Additionally..._
         - Farm Expansion: Some farmland, lake to find all legendary fishes
     - [ ] Foraging
+      - More regenerating hardwood stumps & logs
+      - Trees drop hardwood (copper axe)
+      - Normal stumps drop hardwood (steel axe)
+      - More forage spawns
     - [ ] Mining
     - [ ] Combat

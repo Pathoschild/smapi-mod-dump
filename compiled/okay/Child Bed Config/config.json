@@ -2,9 +2,12 @@
   "Farmers": [
     {
       "CharacterName": "NoName",
-      "ShowCrib": true,
-      "ShowBed1": false,
-      "ShowBed2": true
+      "ShowHomeCrib": true,
+      "ShowHomeBed1": true,
+      "ShowHomeBed2": true,
+      "ShowCabinCrib": true,
+      "ShowCabinBed1": true,
+      "ShowCabinBed2": true
     }
   ]
 }

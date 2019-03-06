@@ -11,8 +11,7 @@ namespace CleanFarm.CleanTasks
     class ObjectCleanTask : CleanTask<SDVObject>
     {
         /// <summary>The names of the objects that should be removed, populated from config settings.</summary>
-        private List<string> ObjectsToRemove;
-
+        private readonly IList<string> ObjectsToRemove;
 
         /// <summary>Creats an instance of the clean task.</summary>
         /// <param name="config">The config object for this mod.</param>
@@ -36,7 +35,10 @@ namespace CleanFarm.CleanTasks
         /// <param name="farm">The farm to be cleaned.</param>
         public override void Run(Farm farm)
         {
-            RemoveAndRecordItems(farm.objects, pair => pair.Value);
+            RemoveAndRecordItems(
+                farm.objects.Pairs,
+                pair => pair.Value,
+                pair => farm.objects.Remove(pair.Key));
         }
 
         /// <summary>Restores all removed items for debug purposes.</summary>
@@ -44,7 +46,10 @@ namespace CleanFarm.CleanTasks
         /// <returns>The number of items that were restored.</returns>
         public override int RestoreRemovedItems(Farm farm)
         {
-            return RestoreItems(farm.objects);
+            return RestoreItems(
+                farm.objects.Pairs,
+                pair => !farm.objects.ContainsKey(pair.Key),
+                pair => farm.objects.Add(pair.Key, pair.Value));
         }
 
         /// <summary>Gets the human readable name of an item. Used for reporting the item.</summary>

@@ -1,0 +1,7 @@
+{
+  "Menu_DefaultText": "Select a tree to transplant.",
+  "Menu_PlacementText": "Choose a new spot for the tree.",
+  "Menu_InvalidPlace": "Can't place here!",
+  "Menu_InvalidCap": "Can't move tree with a tree tap!",
+  "Carpenter_Option": "Transplant Tree"
+}

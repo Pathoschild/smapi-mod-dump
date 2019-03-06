@@ -1,6 +1,10 @@
 # RELEASE NOTES 
 [(Secret Gardens Greenhouse)](https://www.nexusmods.com/stardewvalley/mods/3067)
 
+## v2.0.2 (Mar 2, 2019)
+Thanks to [Pathoschild](https://github.com/Pathoschild)
+- Fixed mine tilesheet error that occurs in Stardew Valley [1.3.36](https://stardewvalleywiki.com/Version_History#1.3.36)
+
 ## v2.0.1 (Dec 9, 2018)
 - Mod will disable itself if you have the mod ["Tunnel System"](https://www.nexusmods.com/stardewvalley/mods/3082) installed.
   - The secret gardens has been implemented into Tunnel System.

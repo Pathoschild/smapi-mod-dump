@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
-using ClickableTextureComponent = StardewValley.Menus.ClickableTextureComponent;
+using StardewValley.Menus;
 using SDVSocialPage = StardewValley.Menus.SocialPage;
 
 namespace GiftTasteHelper.Framework

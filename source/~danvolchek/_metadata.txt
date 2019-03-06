@@ -29,9 +29,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit bb5f685f531d09df730a696e79aec4214bbb7b0e
+   commit 8cce0548d0364bbab7089cc68d725810d07e1d98
    Author: danvolchek <volchek2@illinois.edu>
-   Date:   Mon Jan 21 23:56:09 2019 -0600
+   Date:   Tue Mar 5 03:51:06 2019 -0600
    
-       add link to all mods in main readme
+       [Stack Everything] use getOne instead of calling the furniture constructor and bump version for release
    

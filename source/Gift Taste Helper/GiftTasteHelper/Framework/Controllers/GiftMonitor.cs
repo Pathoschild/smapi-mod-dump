@@ -1,7 +1,7 @@
-﻿using Netcode;
+﻿using System.Collections.Generic;
+using Netcode;
 using StardewValley;
 using StardewValley.Network;
-using System.Collections.Generic;
 
 namespace GiftTasteHelper.Framework
 {

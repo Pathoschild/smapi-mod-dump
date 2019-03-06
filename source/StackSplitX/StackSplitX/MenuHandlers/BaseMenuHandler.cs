@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Diagnostics;
+using StardewModdingAPI.Events;
 
 namespace StackSplitX.MenuHandlers
 {
@@ -109,14 +109,12 @@ namespace StackSplitX.MenuHandlers
             }
         }
 
-        /// <summary>Interprets the mouse input and propogates it to the appropriate handlers.</summary>
-        /// <param name="priorState">Previous mouse state.</param>
-        /// <param name="newState">New mouse state.</param>
-        /// <returns>Whether the input was handled, consumed or not handled.</returns>
-        public EInputHandled HandleMouseInput(MouseState priorState, MouseState newState)
+        /// <summary>Handle user input.</summary>
+        /// <param name="button">The pressed button.</param>
+        public EInputHandled HandleInput(SButton button)
         {
             // Was right click pressed
-            if (Utils.WasPressedThisFrame(priorState.RightButton, newState.RightButton))
+            if (button == SButton.MouseRight)
             {
                 // Invoke split menu if the modifier key was also down
                 if (IsModifierKeyDown() && CanOpenSplitMenu())
@@ -132,7 +130,8 @@ namespace StackSplitX.MenuHandlers
                     this.ClickItemLocation = new Point(Game1.getOldMouseX(), Game1.getOldMouseY());
 
                     // Notify the handler the inventory was clicked.
-                    this.Monitor.Log(this.HasInventory && !this.Inventory.Initialized, "Handler has inventory but inventory isn't initialized.", LogLevel.Trace);
+                    if (this.HasInventory && !this.Inventory.Initialized)
+                        this.Monitor.Log("Handler has inventory but inventory isn't initialized.", LogLevel.Trace);
                     if (this.HasInventory && this.Inventory.Initialized && this.Inventory.WasClicked(Game1.getMouseX(), Game1.getMouseY()))
                     {
                         return InventoryClicked();
@@ -142,7 +141,7 @@ namespace StackSplitX.MenuHandlers
                 }
                 return EInputHandled.NotHandled;
             }
-            else if (Utils.WasPressedThisFrame(priorState.LeftButton, newState.LeftButton))
+            else if (button == SButton.MouseLeft)
             {
                 // If the player clicks within the bounds of the tooltip then forward the input to that. 
                 // Otherwise they're clicking elsewhere and we should close the tooltip.
@@ -160,25 +159,12 @@ namespace StackSplitX.MenuHandlers
                 }
                 return handled;
             }
-            else if (this.SplitMenu != null)
-            {
-                // For other input events (ie. mouse move) don't close the split menu if it's open.
+            else if (ShouldConsumeKeyboardInput(button))
                 return EInputHandled.Handled;
-            }
+
             return EInputHandled.NotHandled;
         }
 
-        /// <summary>Checks with the current menu handler if the keyboard input should be consumed.</summary>
-        /// <param name="keyPressed">Which key was pressed.</param>
-        /// <returns>If the input was handled or should be consumed.</returns>
-        public EInputHandled HandleKeyboardInput(Keys keyPressed)
-        {
-            if (ShouldConsumeKeyboardInput(keyPressed))
-            {
-                return EInputHandled.Handled;
-            }
-            return EInputHandled.NotHandled;
-        }
 
         /// <summary>Allows derived classes to handle left clicks when they are not focused on the split menu.</summary>
         /// <returns>If the input was handled or consumed.</returns>
@@ -190,9 +176,9 @@ namespace StackSplitX.MenuHandlers
         /// <summary>Whether we should consume the input, preventing it from reaching the game.</summary>
         /// <param name="keyPressed">The key that was pressed.</param>
         /// <returns>True if it should be consumed, false otherwise.</returns>
-        protected virtual bool ShouldConsumeKeyboardInput(Keys keyPressed)
+        protected virtual bool ShouldConsumeKeyboardInput(SButton keyPressed)
         {
-            return (this.SplitMenu != null);
+            return this.SplitMenu != null;
         }
 
         /// <summary>How long the right click has to be held for before the receiveRIghtClick gets called rapidly (See Game1.Update)</summary>
@@ -250,9 +236,8 @@ namespace StackSplitX.MenuHandlers
             {
                 var inventoryMenu = this.NativeMenu.GetType().GetField("inventory").GetValue(this.NativeMenu) as InventoryMenu;
                 var hoveredItemField = Helper.Reflection.GetField<Item>(this.NativeMenu, "hoveredItem");
-                var heldItemField = Helper.Reflection.GetField<Item>(this.NativeMenu, "heldItem");
 
-                this.Inventory.Init(inventoryMenu, heldItemField, hoveredItemField);
+                this.Inventory.Init(inventoryMenu, hoveredItemField);
             }
             catch (Exception e)
             {
@@ -260,12 +245,11 @@ namespace StackSplitX.MenuHandlers
             }
         }
 
-        #region Input Util
         protected bool IsModifierKeyDown()
         {
-            // TODO: load modifier keys from config settings
-            return Utils.IsAnyKeyDown(Game1.oldKBState, new Keys[] { Keys.LeftAlt, Keys.LeftShift });
+            return
+                this.Helper.Input.IsDown(SButton.LeftAlt)
+                || this.Helper.Input.IsDown(SButton.LeftShift);
         }
-        #endregion Input Util
     }
 }

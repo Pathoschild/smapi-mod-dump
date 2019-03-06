@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Menus;
 using StardewValley;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
-using StardewValley.BellsAndWhistles;
+using StardewModdingAPI;
 
 namespace StackSplitX
 {
@@ -34,16 +29,17 @@ namespace StackSplitX
         /// <summary>The OK button.</summary>
         private ClickableTextureComponent OKButton;
 
-        /// <summary>Constructs an intance.</summary>
+        /// <summary>Constructs an instance.</summary>
+        /// <param name="inputHelper">The SMAPI input helper.</param>
         /// <param name="textSubmittedCallback">The callback for when the text is submitted.</param>
         /// <param name="heldStackAmount">The default stack amount to set the text to.</param>
-        public StackSplitMenu(TextSubmittedDelegate textSubmittedCallback, int heldStackAmount)
+        public StackSplitMenu(TextSubmittedDelegate textSubmittedCallback, int heldStackAmount, IInputHelper inputHelper)
         {
             this.OnTextSubmitted = textSubmittedCallback;
             this.HeldStackAmount = heldStackAmount;
 
             // Character limit of 4 since max stack size of anything (afaik is 999).
-            this.InputTextBox = new InputTextBox(4, heldStackAmount.ToString())
+            this.InputTextBox = new InputTextBox(inputHelper, 4, heldStackAmount.ToString())
             {
                 Position = new Vector2(Game1.getMouseX(), Game1.getMouseY() - Game1.tileSize),
                 Extent = new Vector2(Game1.tileSize * 2, Game1.tileSize),

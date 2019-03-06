@@ -6,6 +6,7 @@ using System.Reflection;
 using bwdyworks.Registry;
 using StardewValley;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI.Events;
 
 namespace bwdyworks
 {
@@ -23,6 +24,36 @@ namespace bwdyworks
             Monitor.Log("bwdy here! let's have some fun <3 " + Assembly.GetEntryAssembly().GetName().Version.ToString() + (DEBUG ? " (DEBUG MODE ACTIVE)":""));
             Helper.Events.GameLoop.Saving += GameLoop_Saving;
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+            helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
+        }
+
+
+        public static int tickUpdateLimiter = 0;
+        public static bool EatingPrimed = false;
+        public static StardewValley.Item EatingItem;
+        public static int eatingQuantity = 0;
+        private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            tickUpdateLimiter++;
+            if (tickUpdateLimiter < 10) return;
+            tickUpdateLimiter = 0;
+            if (EatingPrimed)
+            {
+                if (!Game1.player.isEating)
+                {
+
+                    EatingPrimed = false;
+                    //make sure we didn't say no
+                    if (Game1.player.ActiveObject == null || Game1.player.ActiveObject.Stack < eatingQuantity) Modworks.Events.ItemEatenEvent(Game1.player, EatingItem);
+                    EatingItem = null;
+                }
+            }
+            else if (Game1.player.isEating)
+            {
+                EatingPrimed = true;
+                EatingItem = Game1.player.itemToEat;
+                eatingQuantity = Game1.player.ActiveObject.Stack;
+            }
         }
 
         private void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)

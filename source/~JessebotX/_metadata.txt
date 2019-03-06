@@ -7,9 +7,9 @@ mods:
    Sprint Sprint Sprint
 
 latest commit:
-   commit 70aa59cc8be7c824628012515fe342e7cac9b9f4
-   Author: JessebotX <43657800+JessebotX@users.noreply.github.com>
-   Date:   Mon Feb 25 15:52:57 2019 -0800
+   commit a47841cbb4bf73ee10d650dc4eaf3a223db18a3f
+   Author: JessebotX <jessebotx2003@gmail.com>
+   Date:   Mon Mar 4 18:58:15 2019 -0800
    
-       Harder Crafting Recipes
+       stuff
    

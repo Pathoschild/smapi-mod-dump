@@ -1,34 +1,38 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Characters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace BetterRanching
 {
+	/// <summary>The mod entry class loaded by SMAPI.</summary>
 	public class BetterRanching : Mod
 	{
 		private FarmAnimal AnimalBeingRanched { get; set; }
 		private ModConfig Config { get; set; }
 
+		/// <summary>The mod entry point, called after the mod is first loaded.</summary>
+		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper)
 		{
 			Config = helper.ReadConfig<ModConfig>();
-			GameEvents.UpdateTick += Event_UpdateTick;
-			GraphicsEvents.OnPreRenderHudEvent += Event_OnPreRenderHudEvent;
-			ControlEvents.MouseChanged += Event_MouseChanged;
-			ControlEvents.ControllerButtonPressed += Event_ControllerButtonPressed;
+			helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+			helper.Events.Display.RenderingHud += OnRenderingHud;
+			helper.Events.Input.ButtonPressed += OnButtonPressed;
 		}
 
-		private void Event_UpdateTick(object sender, EventArgs e)
+		/// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+		/// <param name="sender">The event sender.</param>
+		/// <param name="e">The event data.</param>
+		private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
 		{
-			//Override auto-click on hold for milkpail
+			//Override auto-click on hold for milk pail
 			if (Config.PreventHarvestRepeating && GameExtensions.HoldingOverridableTool() && GameExtensions.IsClickableArea() && Game1.mouseClickPolling > 50)
 			{
 				Game1.mouseClickPolling = 50;
@@ -40,63 +44,43 @@ namespace BetterRanching
 			}
 		}
 
-		private void Event_MouseChanged(object sender, EventArgsMouseStateChanged e)
+		/// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+		/// <param name="sender">The event sender.</param>
+		/// <param name="e">The event data.</param>
+		private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
 		{
-			if (!Game1.hasLoadedGame || !Game1.currentLocation.IsFarm)
+			if (!Context.IsWorldReady || !Game1.currentLocation.IsFarm)
 			{
 				return;
 			}
 
-			if (e.NewState.LeftButton == ButtonState.Pressed)
+			if (e.Button.IsUseToolButton() && Config.PreventFailedHarvesting && GameExtensions.HoldingOverridableTool() && GameExtensions.IsClickableArea())
 			{
-				ActionTriggered(e);
-			}
-		}
+				Farmer who = Game1.player;
 
-		private void Event_ControllerButtonPressed(object sender, EventArgsControllerButtonPressed e)
-		{
-			if (!Game1.hasLoadedGame || !Game1.currentLocation.IsFarm)
-			{
-				return;
-			}
-
-			if (e.ButtonPressed == Buttons.X)
-			{
-				ActionTriggered(e);
-			}
-		}
-
-		private void ActionTriggered(EventArgs e)
-		{
-			var who = Game1.player;
-
-			if (Config.PreventFailedHarvesting && GameExtensions.HoldingOverridableTool() && GameExtensions.IsClickableArea())
-			{
-				if (e is EventArgsMouseStateChanged mouse)
+				if (e.Button == SButton.MouseLeft)
 				{
-					Vector2 vector2 = (double)Game1.mouseCursorTransparency == 0.0 ? Game1.player.GetToolLocation(false) : new Vector2((float)(Game1.getOldMouseX() + @Game1.viewport.X), (float)(Game1.getOldMouseY() + Game1.viewport.Y));
+					Vector2 pos = Game1.mouseCursorTransparency == 0.0 ? Game1.player.GetToolLocation() : new Vector2(Game1.getOldMouseX() + @Game1.viewport.X, Game1.getOldMouseY() + Game1.viewport.Y);
 
-					if (Utility.withinRadiusOfPlayer((int)vector2.X, (int)vector2.Y, 1, Game1.player)
-						&& ((double)Math.Abs(vector2.X - (float)Game1.player.getStandingX()) >= (double)(Game1.tileSize / 2) || (double)Math.Abs(vector2.Y - (float)Game1.player.getStandingY()) >= (double)(Game1.tileSize / 2)))
+					if (Utility.withinRadiusOfPlayer((int)pos.X, (int)pos.Y, 1, Game1.player)
+						&& (Math.Abs(pos.X - Game1.player.getStandingX()) >= (double)(Game1.tileSize / 2) || Math.Abs(pos.Y - Game1.player.getStandingY()) >= (double)(Game1.tileSize / 2)))
 					{
-						if (who.CanMove && (double)Game1.mouseCursorTransparency != 0.0 && !Game1.isAnyGamePadButtonBeingHeld())
+						if (who.CanMove && Game1.mouseCursorTransparency != 0.0 && !Game1.isAnyGamePadButtonBeingHeld())
 						{
 							who.Halt();
-							who.faceGeneralDirection(new Vector2((float)(int)vector2.X, (float)(int)vector2.Y), 0);
+							who.faceGeneralDirection(new Vector2((int)pos.X, (int)pos.Y), 0);
 						}
 					}
-					OverrideRanching(Game1.currentLocation, (int)who.GetToolLocation().X, (int)who.GetToolLocation().Y, who, mouse.NewState, who.CurrentTool?.Name);
+					OverrideRanching(Game1.currentLocation, (int)who.GetToolLocation().X, (int)who.GetToolLocation().Y, who, e.Button, who.CurrentTool?.Name);
 				}
-				else if (e is EventArgsControllerButtonPressed)
+				else
 				{
-					OverrideRanching(Game1.currentLocation, (int)who.GetToolLocation().X, (int)who.GetToolLocation().Y, who
-						, new GamePadState(Game1.oldPadState.ThumbSticks, Game1.oldPadState.Triggers, new GamePadButtons(Buttons.X), Game1.oldPadState.DPad)
-						, who.CurrentTool?.Name);
+					OverrideRanching(Game1.currentLocation, (int)who.GetToolLocation().X, (int)who.GetToolLocation().Y, who, e.Button, who.CurrentTool?.Name);
 				}
 			}
 		}
 
-		private void OverrideRanching(GameLocation currentLocation, int x, int y, StardewValley.Farmer who, object state, string toolName)
+		private void OverrideRanching(GameLocation currentLocation, int x, int y, Farmer who, SButton button, string toolName)
 		{
 			AnimalBeingRanched = null;
 			FarmAnimal animal = null;
@@ -132,7 +116,7 @@ namespace BetterRanching
 
 			if (animal == null)
 			{
-				Game1.game1.OverwriteState(state, $"{ranchAction} Failed");
+				this.Helper.Input.OverwriteState(button, $"{ranchAction} Failed");
 				return;
 			}
 
@@ -145,23 +129,26 @@ namespace BetterRanching
 				}
 				else
 				{
-					Game1.game1.OverwriteState(state, "Inventory Full");
+					this.Helper.Input.OverwriteState(button, "Inventory Full");
 				}
 			}
 			else if (animal?.isBaby() == true && animal.toolUsedForHarvest.Equals(toolName))
 			{
-				Game1.game1.OverwriteState(state);
+				this.Helper.Input.OverwriteState(button);
 				DelayedAction.showDialogueAfterDelay($"Baby {animal.Name} will produce {ranchProduct} in {animal.ageWhenMature.Value - animal.age.Value} days.", 0);
 			}
 			else
 			{
-				Game1.game1.OverwriteState(state, $"{ranchAction} Failed");
+				this.Helper.Input.OverwriteState(button, $"{ranchAction} Failed");
 			}
 		}
 
-		private void Event_OnPreRenderHudEvent(object sender, EventArgs e)
+		/// <summary>Raised before drawing the HUD (item toolbar, clock, etc) to the screen. The vanilla HUD may be hidden at this point (e.g. because a menu is open).</summary>
+		/// <param name="sender">The event sender.</param>
+		/// <param name="e">The event data.</param>
+		private void OnRenderingHud(object sender, RenderingHudEventArgs e)
 		{
-			if (!Game1.hasLoadedGame || !Game1.currentLocation.IsFarm)
+			if (!Context.IsWorldReady || !Game1.currentLocation.IsFarm)
 			{
 				return;
 			}
@@ -195,7 +182,7 @@ namespace BetterRanching
 		public void DrawItemBubble(SpriteBatch spriteBatch, FarmAnimal animal)
 		{
 			bool hasProduce = AnimalBeingRanched != animal && (animal.CanBeRanched(GameConstants.Tools.MilkPail) || animal.CanBeRanched(GameConstants.Tools.Shears));
-			Rectangle? sourceRectangle = new Rectangle?(new Rectangle(218, 428, 7, 6));
+			Rectangle? sourceRectangle = new Rectangle(218, 428, 7, 6);
 
 			if ((Config.DisplayProduce && hasProduce) || (Config.DisplayHearts && !animal.wasPet.Value))
 			{
@@ -203,9 +190,9 @@ namespace BetterRanching
 				if (animal.isCoopDweller() && !animal.isBaby()) { num -= Game1.tileSize * 1 / 2; }
 
 				// Thought Bubble
-				spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(animal.Position.X + (animal.Sprite.getWidth() / 2)),
-					(float)(animal.Position.Y - (Game1.tileSize * 4 / 3)) + num)),
-					new Microsoft.Xna.Framework.Rectangle?(new Rectangle(141, 465, 20, 24)),
+				spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(animal.Position.X + (animal.Sprite.getWidth() / 2),
+					animal.Position.Y - (Game1.tileSize * 4 / 3) + num)),
+					new Rectangle(141, 465, 20, 24),
 					Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
 					0);
 
@@ -215,16 +202,16 @@ namespace BetterRanching
 					{
 						// Small Heart
 						spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(animal.Position.X + (animal.Sprite.getWidth() / 2) + (Game1.tileSize * .65)),
-						   (float)(animal.Position.Y - (Game1.tileSize * 4 / 10)) + num)),
+						   animal.Position.Y - (Game1.tileSize * 4 / 10) + num)),
 							sourceRectangle,
-							Color.White * 0.75f, 0.0f, new Vector2(8f, 8f), (float)Game1.pixelZoom, SpriteEffects.None,
+							Color.White * 0.75f, 0.0f, new Vector2(8f, 8f), Game1.pixelZoom, SpriteEffects.None,
 							1);
 					}
 					else
 					{
 						// Big Heart
 						spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(animal.Position.X + (animal.Sprite.getWidth() / 2) + (Game1.tileSize * 1.1)),
-						   (float)(animal.Position.Y - (Game1.tileSize * 1 / 10)) + num)),
+						   animal.Position.Y - (Game1.tileSize * 1 / 10) + num)),
 							sourceRectangle,
 							Color.White * 0.75f, 0.0f, new Vector2(8f, 8f), (float)Game1.pixelZoom * 5 / 3, SpriteEffects.None,
 							1);
@@ -237,8 +224,8 @@ namespace BetterRanching
 					{
 						// Small Milk
 						spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(animal.Position.X + (animal.Sprite.getWidth() / 2) + (Game1.tileSize * .85)),
-						   (float)(animal.Position.Y - (Game1.tileSize * 7 / 10)) + num)),
-							new Microsoft.Xna.Framework.Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, animal.currentProduce.Value, 16, 16)),
+						   animal.Position.Y - (Game1.tileSize * 7 / 10) + num)),
+							Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, animal.currentProduce.Value, 16, 16),
 							Color.White * 0.75f, 0.0f, new Vector2(8f, 8f), (float)(Game1.pixelZoom * .60), SpriteEffects.None,
 							1);
 					}
@@ -246,9 +233,9 @@ namespace BetterRanching
 					{
 						// Big Milk
 						spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(animal.Position.X + (animal.Sprite.getWidth() / 2) + (Game1.tileSize * .625)),
-						   (float)(animal.Position.Y - (Game1.tileSize * 7 / 10)) + num)),
-							new Microsoft.Xna.Framework.Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, animal.currentProduce.Value, 16, 16)),
-							Color.White * 0.75f, 0.0f, new Vector2(8f, 8f), (float)(Game1.pixelZoom), SpriteEffects.None,
+						   animal.Position.Y - (Game1.tileSize * 7 / 10) + num)),
+							Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, animal.currentProduce.Value, 16, 16),
+							Color.White * 0.75f, 0.0f, new Vector2(8f, 8f), Game1.pixelZoom, SpriteEffects.None,
 							1);
 					}
 				}
@@ -257,22 +244,22 @@ namespace BetterRanching
 
 		public void DrawItemBubble(SpriteBatch spriteBatch, Pet pet)
 		{
-			Rectangle? sourceRectangle = new Rectangle?(new Rectangle(218, 428, 7, 6));
+			Rectangle? sourceRectangle = new Rectangle(218, 428, 7, 6);
 			bool wasPet = (bool)typeof(Pet).GetField("wasPetToday", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(pet);
 			if (!wasPet)
 			{
 				float num = (float)(4.0 * Math.Round(Math.Sin(DateTime.Now.TimeOfDay.TotalMilliseconds / 250.0), 2)) - (Game1.tileSize * 1 / 2);
 
 				// Thought Bubble
-				spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(pet.Position.X + (pet.Sprite.getWidth() / 2)),
-					(float)(pet.Position.Y - (Game1.tileSize * 4 / 3)) + num)),
-					new Microsoft.Xna.Framework.Rectangle?(new Rectangle(141, 465, 20, 24)),
+				spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(pet.Position.X + (pet.Sprite.getWidth() / 2),
+					pet.Position.Y - (Game1.tileSize * 4 / 3) + num)),
+					new Rectangle(141, 465, 20, 24),
 					Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
 					0);
 
 				// Big Heart
 				spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(pet.Position.X + (pet.Sprite.getWidth() / 2) + (Game1.tileSize * 1.1)),
-				   (float)(pet.Position.Y - (Game1.tileSize * 1 / 10)) + num)),
+				   pet.Position.Y - (Game1.tileSize * 1 / 10) + num)),
 					sourceRectangle,
 					Color.White * 0.75f, 0.0f, new Vector2(8f, 8f), (float)Game1.pixelZoom * 5 / 3, SpriteEffects.None,
 					1);

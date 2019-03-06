@@ -15,6 +15,8 @@ namespace CropTransplantMod
 {
     internal class TransplantOverrides
     {
+        private static IModEvents Events => CropTransplantModEntry.Events;
+
         internal static Object RegularPotObject =  null;
         internal static HeldIndoorPot CurrentHeldIndoorPot = null;
         internal static bool ShakeFlag = false;
@@ -60,7 +62,7 @@ namespace CropTransplantMod
                             ShakeCrop(holdenHoeDirt, pot.TileLocation);
                             Game1.player.Stamina -= ((float)DataLoader.ModConfig.CropTransplantEnergyCost - (float)Game1.player.FarmingLevel * DataLoader.ModConfig.CropTransplantEnergyCost / 20f);
                             Game1.player.ActiveObject = CurrentHeldIndoorPot;
-                            GameEvents.UpdateTick += TickUpdate;
+                            Events.GameLoop.UpdateTicked += OnUpdateTicked;
                         }
                         else
                         {
@@ -278,7 +280,7 @@ namespace CropTransplantMod
                                     RegularPotObject = Game1.player.ActiveObject;
                                     Game1.player.ActiveObject = null;
                                     Game1.player.ActiveObject = CurrentHeldIndoorPot;
-                                    GameEvents.UpdateTick += TickUpdate;
+                                    Events.GameLoop.UpdateTicked += OnUpdateTicked;
                                     HoeDirt potHoeDirt = CurrentHeldIndoorPot.hoeDirt.Value;
                                     potHoeDirt.crop = hoeDirt.crop;
                                     potHoeDirt.fertilizer.Value = hoeDirt.fertilizer.Value;
@@ -305,7 +307,7 @@ namespace CropTransplantMod
                                 hoeDirt.crop = heldPot.hoeDirt.Value.crop;
                                 ShakeCrop(hoeDirt, tileLocation);
                                 hoeDirt.fertilizer.Value = heldPot.hoeDirt.Value.fertilizer.Value;
-                                GameEvents.UpdateTick -= TickUpdate;
+                                Events.GameLoop.UpdateTicked -= OnUpdateTicked;
                                 Game1.player.ActiveObject = null;
                                 Game1.player.ActiveObject = RegularPotObject;
                                 location.playSound("dirtyHit");
@@ -366,7 +368,7 @@ namespace CropTransplantMod
 
                             location.terrainFeatures.Add(tileLocation, heldPot.tree);
 
-                            GameEvents.UpdateTick -= TickUpdate;
+                            Events.GameLoop.UpdateTicked -= OnUpdateTicked;
                             Game1.player.ActiveObject = null;
                             Game1.player.ActiveObject = RegularPotObject;
                             location.playSound("dirtyHit");
@@ -386,7 +388,7 @@ namespace CropTransplantMod
                                     RegularPotObject = Game1.player.ActiveObject;
                                     Game1.player.ActiveObject = null;
                                     Game1.player.ActiveObject = CurrentHeldIndoorPot;
-                                    GameEvents.UpdateTick += TickUpdate;
+                                    Events.GameLoop.UpdateTicked += OnUpdateTicked;
                                     CurrentHeldIndoorPot.tree = terrainFeature;
                                     float treeTransplantEnergyCost = 0;
                                     if (terrainFeature is Tree tree)
@@ -464,7 +466,10 @@ namespace CropTransplantMod
             tree.performUseAction(tileLocation ?? Game1.player.getTileLocation() + new Vector2(0, -2), Game1.player.currentLocation);
         }
 
-        private static void TickUpdate(object sender, EventArgs e)
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private static void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (Game1.player.ActiveObject is HeldIndoorPot heldPot)
             {
@@ -524,7 +529,7 @@ namespace CropTransplantMod
                 }
                 
                 CurrentHeldIndoorPot = null;
-                GameEvents.UpdateTick -= TickUpdate;
+                Events.GameLoop.UpdateTicked -= OnUpdateTicked;
             }
         }
 

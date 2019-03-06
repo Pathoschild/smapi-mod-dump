@@ -1,0 +1,16 @@
+﻿{
+	"Name": "Moongates",
+	"Author": "bwdy",
+	"Version": "0.1.1",
+	"Description": "A Stardew Valley mod that breaks the laws of physics.",
+	"UniqueID": "bwdy.moongates",
+	"EntryDll": "Moongates.dll",
+	"MinimumApiVersion": "2.11",
+	"Dependencies": [
+		{
+			"UniqueID": "bwdyworks",
+			"MinimumVersion": "0.5.0"
+		}
+	],
+	"UpdateKeys": [ "Nexus:3545" ]
+}

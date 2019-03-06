@@ -8,16 +8,14 @@ using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AnimalHusbandryMod.animals.data;
 using AnimalHusbandryMod.common;
-using Netcode;
 
 namespace AnimalHusbandryMod.animals
 {
     public class PregnancyController
     {
+        private static IModEvents events => AnimalHusbandryModEntery.ModHelper.Events;
         static Queue<FarmAnimal> parentAnimals = new Queue<FarmAnimal>();
         static FarmAnimal parentAnimal = null;
 
@@ -140,8 +138,8 @@ namespace AnimalHusbandryMod.animals
                 animalsWithBirthTomorrow = CheckBirthTomorrow();
             }
             if (parentAnimals.Count > 0 || animalsWithBirthTomorrow.Count > 0)
-            {                
-                GameEvents.UpdateTick += tickUpdate;
+            {
+                events.GameLoop.UpdateTicked += OnUpdateTicked;
             }
         }
 
@@ -159,7 +157,10 @@ namespace AnimalHusbandryMod.animals
             return animals;      
         }
         
-        private static void tickUpdate(object sender, EventArgs e)
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private static void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (Game1.dialogueUp ||  Game1.fadeToBlackAlpha > 0)
             {
@@ -203,7 +204,7 @@ namespace AnimalHusbandryMod.animals
                 else
                 {
                     Game1.messagePause = false;
-                    GameEvents.UpdateTick -= tickUpdate;
+                    events.GameLoop.UpdateTicked -= OnUpdateTicked;
                 }
             }
             else if (Game1.activeClickableMenu == null)

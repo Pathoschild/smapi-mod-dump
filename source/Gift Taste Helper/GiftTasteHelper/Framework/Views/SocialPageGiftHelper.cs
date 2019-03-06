@@ -47,7 +47,7 @@ namespace GiftTasteHelper.Framework
             return this.IsCorrectMenuTab(Game1.activeClickableMenu) && base.CanTick();
         }
 
-        public override void OnMouseStateChange(EventArgsMouseStateChanged e)
+        public override void OnCursorMoved(CursorMovedEventArgs e)
         {
             Debug.Assert(this.IsCorrectMenuTab(Game1.activeClickableMenu));
             if (!Utils.Ensure(this.SocialPage != null, "Social Page is null!"))
@@ -55,7 +55,7 @@ namespace GiftTasteHelper.Framework
                 return;
             }
 
-            SVector2 mousePos = new SVector2(e.NewState.X, e.NewState.Y);
+            SVector2 mousePos = new SVector2(e.NewPosition.ScreenPixels.X, e.NewPosition.ScreenPixels.Y);
             string hoveredNpc = this.SocialPage.GetCurrentlyHoveredNpc(mousePos);
             if (hoveredNpc == string.Empty)
             {

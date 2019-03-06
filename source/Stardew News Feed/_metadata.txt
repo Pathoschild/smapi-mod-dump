@@ -5,9 +5,11 @@ mods:
    Stardew News Feed
 
 latest commit:
-   commit 0397f77297a539752863e14d3426a8d494054bf9
-   Author: Mike North <mikesnorth@gmail.com>
-   Date:   Thu Jan 24 19:50:19 2019 -0500
+   commit 548fc45c3556295f15d566daa23ddae9cb30076b
+   Author: S2SKY <45951943+S2SKY@users.noreply.github.com>
+   Date:   Sat Mar 2 13:40:44 2019 +1300
    
-       Release 1.8
+       Create ko.json
+       
+       Korean language support
    

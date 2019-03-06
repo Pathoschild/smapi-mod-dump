@@ -1,10 +1,6 @@
-﻿using StardewModdingAPI;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+using StardewModdingAPI;
 
 namespace GiftTasteHelper.Framework
 {
@@ -101,7 +97,7 @@ namespace GiftTasteHelper.Framework
             }
             return new int[] { };
         }
-    }   
+    }
 
     /// <summary>A gift database that is stored on disk.</summary>
     internal class StoredGiftDatabase : GiftDatabase
@@ -112,7 +108,7 @@ namespace GiftTasteHelper.Framework
         private string DBPath;
 
         public StoredGiftDatabase(IModHelper helper, string path)
-            : base(helper, helper.ReadJsonFile<GiftDatabaseModel>(path) ?? new GiftDatabaseModel())
+            : base(helper, helper.Data.ReadJsonFile<GiftDatabaseModel>(path) ?? new GiftDatabaseModel())
         {
             Utils.DebugLog($"Setting DB path to {path}", LogLevel.Info);
             this.DBPath = path;
@@ -130,7 +126,7 @@ namespace GiftTasteHelper.Framework
 
         public static void MigrateDatabase(IModHelper helper, string fromPath, ref StoredGiftDatabase newDb)
         {
-            GiftDatabaseModel fromDatabaseModel = helper.ReadJsonFile<GiftDatabaseModel>(fromPath);
+            GiftDatabaseModel fromDatabaseModel = helper.Data.ReadJsonFile<GiftDatabaseModel>(fromPath);
             if (newDb.Database.Entries.Keys.Count == 0)
             {
                 newDb.Database = fromDatabaseModel;
@@ -191,7 +187,7 @@ namespace GiftTasteHelper.Framework
         private void Write()
         {
             Utils.DebugLog($"Writing gift database to: {this.DBPath}");
-            Helper.WriteJsonFile(DBPath, Database);
+            Helper.Data.WriteJsonFile(DBPath, Database);
         }
     }
 }

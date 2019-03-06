@@ -24,6 +24,6 @@ namespace GiftTasteHelper.Framework
         bool CanDraw();
         void OnDraw();
         bool CanTick();
-        void OnMouseStateChange(EventArgsMouseStateChanged e);
+        void OnCursorMoved(CursorMovedEventArgs e);
     }
 }

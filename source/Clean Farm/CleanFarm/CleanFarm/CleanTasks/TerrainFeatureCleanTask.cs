@@ -2,6 +2,7 @@
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CleanFarm.CleanTasks
 {
@@ -9,10 +10,10 @@ namespace CleanFarm.CleanTasks
     class TerrainFeatureCleanTask : CleanTask<TerrainFeature>
     {
         /// <summary>The max growth stage of trees to allow. All trees below this stage are removed.</summary>
-        private int MaxGrowthStage = Tree.saplingStage;
+        private readonly int MaxGrowthStage = Tree.saplingStage;
 
         /// <summary>The names of the growth stages indexed by the growth stage. Used to lookup the tree name.</summary>
-        private List<string> GrowthStageNames;
+        private readonly IList<string> GrowthStageNames;
 
         /// <summary>Creats an instance of the clean task.</summary>
         /// <param name="config">The config object for this mod.</param>
@@ -34,7 +35,10 @@ namespace CleanFarm.CleanTasks
         /// <param name="farm">The farm to be cleaned.</param>
         public override void Run(Farm farm)
         {
-            RemoveAndRecordItems(farm.terrainFeatures, pair => pair.Value);
+            RemoveAndRecordItems(
+                farm.terrainFeatures.Pairs,
+                pair => pair.Value,
+                pair => farm.terrainFeatures.Remove(pair.Key));
         }
 
         /// <summary>Restores all removed items for debug purposes.</summary>
@@ -42,7 +46,10 @@ namespace CleanFarm.CleanTasks
         /// <returns>The number of items that were restored.</returns>
         public override int RestoreRemovedItems(Farm farm)
         {
-            return RestoreItems(farm.terrainFeatures);
+            return RestoreItems(
+                farm.terrainFeatures.Pairs,
+                pair => !farm.terrainFeatures.ContainsKey(pair.Key),
+                pair => farm.terrainFeatures.Add(pair.Key, pair.Value));
         }
 
         /// <summary>Gets the human readable name of an item. Used for reporting the item.</summary>
@@ -52,12 +59,12 @@ namespace CleanFarm.CleanTasks
             if (item is Tree)
             {
                 var tree = item as Tree;
-                if (tree.stump)
+                if (tree.stump.Value)
                     return "Tree Stump";
 
                 // Use the name of the growth stage if valid.
-                return tree.growthStage >= 0 && tree.growthStage < this.GrowthStageNames.Count 
-                    ? this.GrowthStageNames[tree.growthStage] 
+                return tree.growthStage.Value >= 0 && tree.growthStage.Value < this.GrowthStageNames.Count 
+                    ? this.GrowthStageNames[tree.growthStage.Value] 
                     : "Tree";
             }
 
@@ -75,8 +82,8 @@ namespace CleanFarm.CleanTasks
             if (item is Tree)
             {
                 var tree = item as Tree;
-                return ((this.Config.RemoveSaplings && tree.growthStage < this.MaxGrowthStage) ||
-                        (this.Config.RemoveStumps && tree.stump));
+                return ((this.Config.RemoveSaplings && tree.growthStage.Value < this.MaxGrowthStage) ||
+                        (this.Config.RemoveStumps && tree.stump.Value));
             }
             return (item is Grass && this.Config.RemoveGrass);
         }

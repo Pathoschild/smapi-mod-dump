@@ -4,11 +4,15 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using System.Linq;
+using StardewValley.Locations;
+using System.Collections.Generic;
+using StardewValley.Buildings;
 
 namespace ChildBedConfig
 {
     /// <summary>The mod entry point.</summary>
-    public class ModEntry : Mod, IAssetLoader
+    public class ModEntry : Mod
     {
 
         /*****************************/
@@ -27,12 +31,110 @@ namespace ChildBedConfig
         {
             this.Config = this.Helper.ReadConfig<ModConfig>();
             Farmer = new Farmer();
+            Helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
         }
 
-        public void GetFarmer()
+        /// <summary>
+        /// Modify the farmhouse tiles
+        /// </summary>
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs args)
         {
+            GetFarmer();
+            GameLocation farmhouse = Game1.getLocationFromName("FarmHouse");
+            List<GameLocation> cabins = getCabins();
+
+            //Check that the farmer has config set up, and that the house is upgraded to at least level 2
+            if (Farmer.CharacterName != "NoName" && Game1.player.HouseUpgradeLevel > 1)
+            {
+                Monitor.Log("Crib and beds exist.  Removing them from map and replacing them with default tiles...");
+
+                //Remove the crib
+                if (!Farmer.ShowHomeCrib)
+                {
+                    removeTiles(farmhouse, "Buildings", 15, 3, 17, 5); //Get rid of the tiles from the building layer
+                    removeTiles(farmhouse, "Front", 15, 2, 17, 4); //Get rid of the tiles from the front layer
+                    
+                    int wallpaper = farmhouse.getTileIndexAt(18, 3, "Buildings"); //get the wallpaper id so we can plaster it onto the tiles we're adding
+
+                    //Add wall tiles to 15 3, 16 3, and 17 3 on the Buildings layer, which were previously occupied by the crib
+                    farmhouse.Map.GetLayer("Buildings").Tiles[15, 3] = new xTile.Tiles.StaticTile(farmhouse.Map.GetLayer("Buildings"), farmhouse.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, wallpaper);
+                    farmhouse.Map.GetLayer("Buildings").Tiles[16, 3] = new xTile.Tiles.StaticTile(farmhouse.Map.GetLayer("Buildings"), farmhouse.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, wallpaper);
+                    farmhouse.Map.GetLayer("Buildings").Tiles[17, 3] = new xTile.Tiles.StaticTile(farmhouse.Map.GetLayer("Buildings"), farmhouse.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, wallpaper);
+                }
+
+                //Get rid of the bed closest to the crib
+                if(!Farmer.ShowHomeBed1)
+                {
+                    removeTiles(farmhouse, "Buildings", 22, 4, 23, 6); //Get rid of the tiles from the building layer                    
+                    removeTiles(farmhouse, "Front", 22, 3, 23, 5); //Get rid of the tiles from the front layer
+                }
+
+                //Get rid of the bed closest to the crib
+                if (!Farmer.ShowHomeBed2)
+                {
+                    removeTiles(farmhouse, "Buildings", 26, 4, 27, 6); //Get rid of the tiles from the building layer                    
+                    removeTiles(farmhouse, "Front", 26, 3, 27, 5); //Get rid of the tiles from the front layer
+                }
+
+                //If cabins exist on the farm, we go ahead and modify the children's beds there too
+                if(cabins.Count > 0)
+                {
+
+                    foreach(GameLocation c in cabins)
+                    {
+                        Cabin cabin = (Cabin)c;
+
+                        if(cabin.upgradeLevel > 1)
+                        {
+                            //Remove the crib
+                            if (!Farmer.ShowCabinCrib)
+                            {
+                                removeTiles(cabin, "Buildings", 15, 3, 17, 5); //Get rid of the tiles from the building layer
+                                removeTiles(cabin, "Front", 15, 2, 17, 4); //Get rid of the tiles from the front layer
+
+                                int wallpaper = farmhouse.getTileIndexAt(18, 3, "Buildings"); //get the wallpaper id so we can plaster it onto the tiles we're adding
+
+                                //Add wall tiles to 15 3, 16 3, and 17 3 on the Buildings layer, which were previously occupied by the crib
+                                cabin.Map.GetLayer("Buildings").Tiles[15, 3] = new xTile.Tiles.StaticTile(cabin.Map.GetLayer("Buildings"), cabin.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, wallpaper);
+                                cabin.Map.GetLayer("Buildings").Tiles[16, 3] = new xTile.Tiles.StaticTile(cabin.Map.GetLayer("Buildings"), cabin.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, wallpaper);
+                                cabin.Map.GetLayer("Buildings").Tiles[17, 3] = new xTile.Tiles.StaticTile(cabin.Map.GetLayer("Buildings"), cabin.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, wallpaper);
+                            }
+
+                            //Get rid of the bed closest to the crib
+                            if (!Farmer.ShowCabinBed1)
+                            {
+                                removeTiles(cabin, "Buildings", 22, 4, 23, 6); //Get rid of the tiles from the building layer                    
+                                removeTiles(cabin, "Front", 22, 3, 23, 5); //Get rid of the tiles from the front layer
+                            }
+
+                            //Get rid of the bed closest to the crib
+                            if (!Farmer.ShowCabinBed2)
+                            {
+                                removeTiles(cabin, "Buildings", 26, 4, 27, 6); //Get rid of the tiles from the building layer                    
+                                removeTiles(cabin, "Front", 26, 3, 27, 5); //Get rid of the tiles from the front layer
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            //If crib can't be found, the tiles are not touched
+            else Monitor.Log("Could not find crib and beds.  No edits will be made.");
+        }
+
+        /// <summary>
+        /// Find the name of the farmer in the active save file
+        /// Needed to load options
+        /// </summary>
+        private void GetFarmer()
+        {
+            Farmer = new Farmer(); //clear the old data for the farmer
+
+            //Loop through the list of farmers in config to find the current farmer
             for (int i = 0; i < Config.Farmers.Count; i++)
             {
+                //If we find the farmer we make our Farmer object equal to this specific instance of Farmer
                 if (Config.Farmers[i].CharacterName == Game1.player.Name)
                 {
                     Farmer = Config.Farmers[i];
@@ -40,124 +142,49 @@ namespace ChildBedConfig
                 }
             }
 
+            //Just output some info for the player
             if (Farmer.CharacterName.CompareTo("NoName") == 0)
             {
-                Monitor.Log("No config information was found for this character.  Loading default map.", LogLevel.Info);
+                Monitor.Log("No config information was found for this character.  No edits will be made to the map.", LogLevel.Info);
             }
             else
             {
-                Monitor.Log("Config info found for " + Farmer.CharacterName + ".  Proceeding to load appropriate map.");
+                Monitor.Log("Config info found for " + Farmer.CharacterName + ".  Proceeding to edit map.");
             }
-
         }
 
-        /// <summary>
-        /// Determines whether or not an asset can be loaded
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="asset">Basic metadata about the asset being loaded</param>
-        /// <returns>Returns true if asset can be edited</returns>
-        public bool CanLoad<T>(IAssetInfo asset)
+        //Remove tiles from startX, startY to endX, endY
+        private void removeTiles(GameLocation location, string layer, int startX, int startY, int endX, int endY)
         {
-            if (asset.AssetNameEquals("Maps/FarmHouse2") || asset.AssetNameEquals("Maps/FarmHouse2_marriage"))
+            for(int x = startX; x <= endX; x++)
             {
-                return true;
+                for(int y = startY; y <= endY; y++)
+                {
+                    location.removeTile(x, y, layer);
+                }
             }
-            return false;
         }
 
-        /// <summary>
-        /// Load a matched asset.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="asset">Basic metadata about the asset being loaded.</param>
-        public T Load<T>(IAssetInfo asset)
+        public static List<GameLocation> getCabins()
         {
-            GetFarmer();
-            //If we couldn't find any config info for the current player OR all values are set to true, we don't edit the map
-            if (Farmer.CharacterName.CompareTo("NoName") != 0 || Farmer.ShowCrib && Farmer.ShowBed1 && Farmer.ShowBed2)
-            {
-                //If the player is married we replace FarmHouse2_marriage
-                if (Game1.player.isMarried())
-                {
-                    //Show crib, no beds
-                    if (Farmer.ShowCrib && !Farmer.ShowBed1 && !Farmer.ShowBed2)
-                    {
-                        return this.Helper.Content.Load<T>("assets/married/Crib.tbin", ContentSource.ModFolder);
-                    }
-                    //Show crib, bed 1
-                    else if (Farmer.ShowCrib && Farmer.ShowBed1 && !Farmer.ShowBed2)
-                    {
-                        return this.Helper.Content.Load<T>("assets/married/Crib_Bed1.tbin", ContentSource.ModFolder);
-                    }
-                    //Show crib, bed 2
-                    else if (Farmer.ShowCrib && !Farmer.ShowBed1 && Farmer.ShowBed2)
-                    {
-                        return this.Helper.Content.Load<T>("assets/married/Crib_Bed2.tbin", ContentSource.ModFolder);
-                    }
-                    //Show no crib, both beds
-                    else if (!Farmer.ShowCrib && Farmer.ShowBed1 && Farmer.ShowBed2)
-                    {
-                        return this.Helper.Content.Load<T>("assets/married/Bed1_Bed2.tbin", ContentSource.ModFolder);
-                    }
-                    //Show only bed 1
-                    else if (!Farmer.ShowCrib && Farmer.ShowBed1 && !Farmer.ShowBed2)
-                    {
-                        return this.Helper.Content.Load<T>("assets/married/Bed1.tbin", ContentSource.ModFolder);
-                    }
-                    //Show only bed 2
-                    else if (!Farmer.ShowCrib && !Farmer.ShowBed1 && Farmer.ShowBed2)
-                    {
-                        return this.Helper.Content.Load<T>("assets/married/Bed2.tbin", ContentSource.ModFolder);
-                    }
-                    //Show none
-                    else
-                    {
-                        return this.Helper.Content.Load<T>("assets/married/None.tbin", ContentSource.ModFolder);
-                    }
-                }
+            List<GameLocation> list = Game1.locations.ToList();
+            List<GameLocation> cabins = new List<GameLocation>();
 
-                //If the player is single we replace FarmHouse2
-                else
+            foreach (GameLocation location in Game1.locations)
+                if (location is BuildableGameLocation bgl)
+                    foreach (Building building in bgl.buildings)
+                        if (building.indoors.Value != null)
+                            list.Add(building.indoors.Value);
+
+            foreach(GameLocation location in list)
+            {
+                if(location.Name == "Cabin")
                 {
-                    //Show crib, no beds
-                    if (Farmer.ShowCrib && !Farmer.ShowBed1 && !Farmer.ShowBed2)
-                    {
-                        return this.Helper.Content.Load<T>("assets/single/Crib.tbin", ContentSource.ModFolder);
-                    }
-                    //Show crib, bed 1
-                    else if (Farmer.ShowCrib && Farmer.ShowBed1 && !Farmer.ShowBed2)
-                    {
-                        return this.Helper.Content.Load<T>("assets/single/Crib_Bed1.tbin", ContentSource.ModFolder);
-                    }
-                    //Show crib, bed 2
-                    else if (Farmer.ShowCrib && !Farmer.ShowBed1 && Farmer.ShowBed2)
-                    {
-                        return this.Helper.Content.Load<T>("assets/single/Crib_Bed2.tbin", ContentSource.ModFolder);
-                    }
-                    //Show no crib, both beds
-                    else if (!Farmer.ShowCrib && Farmer.ShowBed1 && Farmer.ShowBed2)
-                    {
-                        return this.Helper.Content.Load<T>("assets/single/Bed1_Bed2.tbin", ContentSource.ModFolder);
-                    }
-                    //Show only bed 1
-                    else if (!Farmer.ShowCrib && Farmer.ShowBed1 && !Farmer.ShowBed2)
-                    {
-                        return this.Helper.Content.Load<T>("assets/single/Bed1.tbin", ContentSource.ModFolder);
-                    }
-                    //Show only bed 2
-                    else if (!Farmer.ShowCrib && !Farmer.ShowBed1 && Farmer.ShowBed2)
-                    {
-                        return this.Helper.Content.Load<T>("assets/single/Bed2.tbin", ContentSource.ModFolder);
-                    }
-                    //Show none
-                    else
-                    {
-                        return this.Helper.Content.Load<T>("assets/single/None.tbin", ContentSource.ModFolder);
-                    }
+                    cabins.Add(location);
                 }
             }
-            return this.Helper.Content.Load<T>("");
+
+            return cabins;
         }
     }
 }

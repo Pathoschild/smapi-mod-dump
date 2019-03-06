@@ -27,8 +27,10 @@ namespace PassableLadders
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            GameEvents.FourthUpdateTick += this.CheckAreaAroundPlayerForLadder;
-            LocationEvents.ObjectsChanged += this.PlacedStairs;
+            helper.Events.GameLoop.UpdateTicked += CheckAreaAroundPlayerForLadder;
+            //GameEvents.FourthUpdateTick += this.CheckAreaAroundPlayerForLadder;
+            helper.Events.World.ObjectListChanged += PlacedStairs;
+            //LocationEvents.ObjectsChanged += this.PlacedStairs;
         }
 
         /*********
@@ -70,7 +72,7 @@ namespace PassableLadders
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void PlacedStairs(object sender, EventArgsLocationObjectsChanged e)
+        private void PlacedStairs(object sender, ObjectListChangedEventArgs e)
         {
             if(Game1.currentLocation is MineShaft)
             {

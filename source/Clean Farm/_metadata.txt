@@ -5,11 +5,9 @@ mods:
    Clean Farm
 
 latest commit:
-   commit dd35339b8f414321b89a1fc6755475b18121bfb7
+   commit ea35bf2f9ecd2056be75efc3ad973417591529c4
    Author: tyler staples <tyler.a.staples@gmail.com>
-   Date:   Sun May 6 23:31:58 2018 -0700
+   Date:   Sun Mar 3 18:39:44 2019 -0800
    
-       + Exposed console commands since they're pretty useful even for non-debug uses.
-       + Added additional reporting info and error handling.
-       + Updated readme and release notes.
+       Updatd manifest and release notes
    

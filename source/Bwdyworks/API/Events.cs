@@ -15,13 +15,27 @@ namespace bwdyworks.API
         public delegate void NPCCheckActionHandler(object sender, NPCCheckActionEventArgs args);
         internal NPCCheckActionEventArgs NPCCheckActionEvent(Farmer who, NPC npc)
         {
-            NPCCheckActionEventArgs args = new NPCCheckActionEventArgs
+            var args = new NPCCheckActionEventArgs
             {
                 NPC = npc,
                 Farmer = who,
                 Cancelled = false
             };
-            NPCCheckAction?.Invoke(this, args);
+            if (NPCCheckAction != null) NPCCheckAction.Invoke(this, args);
+            return args;
+        }
+
+        //ItemEaten - called when a player starts eating an item. Not cancellable (because of how it's detected)
+        public event ItemEatenHandler ItemEaten;
+        public delegate void ItemEatenHandler(object sender, ItemEatenEventArgs args);
+        internal ItemEatenEventArgs ItemEatenEvent(Farmer who, StardewValley.Item item)
+        {
+            var args = new ItemEatenEventArgs
+            {
+                Farmer = who,
+                Item = item
+            };
+            ItemEaten?.Invoke(this, args);
             return args;
         }
     }

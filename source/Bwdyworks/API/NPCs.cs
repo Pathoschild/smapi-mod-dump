@@ -82,6 +82,7 @@ namespace bwdyworks.API
 
         public bool IsPathing(NPC npc)
         {
+            if (npc == null) return false;
             if (npc.controller == null) return false;
             if (npc.controller.endPoint == null) return false;
             if (npc.controller.endPoint == Utility.Vector2ToPoint(npc.Position)) return false;

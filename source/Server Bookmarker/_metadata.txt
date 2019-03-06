@@ -5,9 +5,9 @@ mods:
    Server Bookmarker
 
 latest commit:
-   commit b4f3ba8d97b92e5b13d75f5a523932b826d1db9a
+   commit f3bb32c685601d3df680ac0920efe692c9d16a29
    Author: Ilyaki <ilyaki.ilyaki@gmail.com>
-   Date:   Mon Nov 19 19:47:51 2018 +0000
+   Date:   Sat Mar 2 06:30:39 2019 +0000
    
-       Update to SMAPI 2.8
+       Updated versioning to 1.0.3
    

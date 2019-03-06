@@ -1,0 +1,10 @@
+{
+  "Name": "BattleRoyalley",
+  "Author": "Ilyaki",
+  "Version": "1.0.4",
+  "Description": "Exactly what you think.",
+  "UniqueID": "Ilyaki.BattleRoyale",
+  "EntryDll": "BattleRoyale.dll",
+  "MinimumApiVersion": "2.9",
+  "UpdateKeys": [ "Nexus:3199" ]
+}

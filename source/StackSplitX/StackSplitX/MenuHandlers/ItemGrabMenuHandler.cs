@@ -3,7 +3,6 @@ using System;
 using StardewValley.Menus;
 using StardewValley;
 using System.Diagnostics;
-using Microsoft.Xna.Framework;
 using SFarmer = StardewValley.Farmer;
 
 namespace StackSplitX.MenuHandlers
@@ -117,7 +116,7 @@ namespace StackSplitX.MenuHandlers
             this.StackAmount = (int)Math.Ceiling(this.TotalItems / 2.0); // default at half
 
             // Create the split menu
-            this.SplitMenu = new StackSplitMenu(OnStackAmountReceived, this.StackAmount);
+            this.SplitMenu = new StackSplitMenu(OnStackAmountReceived, this.StackAmount, this.Helper.Input);
 
             return EInputHandled.Consumed;
         }

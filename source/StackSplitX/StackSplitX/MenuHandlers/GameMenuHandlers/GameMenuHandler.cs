@@ -93,7 +93,7 @@ namespace StackSplitX.MenuHandlers
             int stackAmount = 0;
             var handled = this.CurrentPageHandler.InventoryClicked(out stackAmount);
             if (handled != EInputHandled.NotHandled)
-                this.SplitMenu = new StackSplitMenu(OnStackAmountReceived, stackAmount);
+                this.SplitMenu = new StackSplitMenu(OnStackAmountReceived, stackAmount, this.Helper.Input);
             return handled;
         }
 
@@ -104,7 +104,7 @@ namespace StackSplitX.MenuHandlers
             int stackAmount = 0;
             var handled = this.CurrentPageHandler.OpenSplitMenu(out stackAmount);
             if (handled != EInputHandled.NotHandled)
-                this.SplitMenu = new StackSplitMenu(OnStackAmountReceived, stackAmount);
+                this.SplitMenu = new StackSplitMenu(OnStackAmountReceived, stackAmount, this.Helper.Input);
             return handled;
         }
 

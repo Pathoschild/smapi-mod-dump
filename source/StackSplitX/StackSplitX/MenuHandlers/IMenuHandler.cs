@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
 
 namespace StackSplitX.MenuHandlers
 {
@@ -45,16 +47,8 @@ namespace StackSplitX.MenuHandlers
         /// <summary>Tells the handler to close the split menu.</summary>
         void CloseSplitMenu();
 
-        /// <summary>Handles mouse input.</summary>
-        /// <param name="priorState">Prior state of the mouse.</param>
-        /// <param name="newState">Current state of the mouse.</param>
-        /// <returns>Enum value representing how the input was handled.</returns>
-        EInputHandled HandleMouseInput(MouseState priorState, MouseState newState);
-
-        /// <summary>Handles keyboard input.</summary>
-        /// <param name="priorState">Prior state of the keyboard.</param>
-        /// <param name="newState">Current state of the keyboard.</param>
-        /// <returns>Enum value representing how the input was handled.</returns>
-        EInputHandled HandleKeyboardInput(Keys keyPressed);
+        /// <summary>Handle user input.</summary>
+        /// <param name="button">The pressed button.</param>
+        EInputHandled HandleInput(SButton button);
     }
 }

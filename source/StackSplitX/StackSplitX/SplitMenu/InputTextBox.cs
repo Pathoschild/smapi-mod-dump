@@ -3,17 +3,17 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.Menus;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
+using StardewModdingAPI;
 
 namespace StackSplitX
 {
     /// <summary>Custom implementation of the NameMenu input text box that has additional functionality.</summary>
     public class InputTextBox : IKeyboardSubscriber
     {
+        /// <summary>The SMAPI input helper.</summary>
+        private readonly IInputHelper InputHelper;
+
         // TODO: create proper event args
         /// <summary>Generic event.</summary>
         /// <param name="textbox">Textbox the event originated from.</param>
@@ -55,22 +55,24 @@ namespace StackSplitX
         public string Text { get; private set; }
 
         /// <summary>The texture used to draw the highlight background.</summary>
-        private Texture2D HighlightTexture;
+        private readonly Texture2D HighlightTexture;
 
         /// <summary>Is the text currently highlighted.</summary>
         private bool IsTextHighlighted = false;
 
         /// <summary>Maximum allowed characters.</summary>
-        private int CharacterLimit = 0;
+        private readonly int CharacterLimit = 0;
 
         /// <summary>The caret used for text navigation.</summary>
-        private Caret Caret;
+        private readonly Caret Caret;
 
         /// <summary>Constructs an instance.</summary>
+        /// <param name="inputHelper">The SMAPI input helper.</param>
         /// <param name="characterLimit">The character limit.</param>
         /// <param name="defaultText">The default text to display.</param>
-        public InputTextBox(int characterLimit = 0, string defaultText = "")
+        public InputTextBox(IInputHelper inputHelper, int characterLimit = 0, string defaultText = "")
         {
+            this.InputHelper = inputHelper;
             this.CharacterLimit = characterLimit;
             this.Caret = new Caret(characterLimit);
 
@@ -229,7 +231,7 @@ namespace StackSplitX
         /// <summary>Selects all the text if left control is held down.</summary>
         private void TrySelectAllText()
         {
-            if (Utils.IsKeyDown(Keyboard.GetState(), Keys.LeftControl))
+            if (this.InputHelper.IsDown(SButton.LeftControl))
                 SelectAllText();
         }
 

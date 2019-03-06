@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Show Catch Quality",
   "Author": "f4iTh",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "Shows the quality of the fish in the speech bubble after catching a fish.",
   "UniqueID": "f4iTh.ShowCatchQuality",
   "EntryDll": "ShowCatchQuality.dll",

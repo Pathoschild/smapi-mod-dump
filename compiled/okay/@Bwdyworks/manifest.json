@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "bwdyworks",
 	"Author": "bwdy",
-	"Version": "0.3.0",
+	"Version": "0.6.0",
 	"Description": "bwdy's heart and soul",
 	"UniqueID": "bwdyworks",
 	"EntryDll": "bwdyworks.dll",

@@ -64,16 +64,45 @@ namespace bwdyworks.API
             return new int[] { f.getTileX(), f.getTileY() };
         }
 
-        public void ForceOfferEatHeldItem()
+        public void ForceOfferEatInedibleHeldItem()
         {
-            //should work even for non-edibles
+            //should work even for non-edibles, bypassing the 'sickness'. still triggers the events.
             Game1.player.faceDirection(2);
             Game1.player.isEating = true;
             Game1.player.itemToEat = Game1.player.ActiveObject;
             Game1.player.FarmerSprite.setCurrentSingleAnimation(304);
-            Game1.currentLocation.createQuestionDialogue((Game1.objectInformation[Game1.player.ActiveObject.ParentSheetIndex].Split('/').Length > 6 && Game1.objectInformation[Game1.player.ActiveObject.ParentSheetIndex].Split('/')[6].Equals("drink")) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.3159", Game1.player.ActiveObject.DisplayName) : Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.3160", Game1.player.ActiveObject.DisplayName), Game1.currentLocation.createYesNoResponses(), "Eat");
+            Game1.currentLocation.createQuestionDialogue((Game1.objectInformation[Game1.player.ActiveObject.ParentSheetIndex].Split('/').Length > 6 && Game1.objectInformation[Game1.player.ActiveObject.ParentSheetIndex].Split('/')[6].Equals("drink")) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.3159", Game1.player.ActiveObject.DisplayName) : Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.3160", Game1.player.ActiveObject.DisplayName), Game1.currentLocation.createYesNoResponses(), ForceFeed);
         }
 
+        private void ForceFeed(Farmer who, string answer)
+        {
+            if (answer != "No")
+            {
+                Game1.player.isEating = false;
+                var o = Game1.player.ActiveObject;
+                Game1.player.itemToEat = o;
+                Game1.player.mostRecentlyGrabbedItem = o;
+                Game1.player.forceCanMove();
+                Game1.player.completelyStopAnimatingOrDoingAction();
+                Game1.player.FarmerSprite.animateOnce(216, 80f, 8);
+                Game1.player.freezePause = 20000;
+                Game1.player.CanMove = false;
+                Game1.player.reduceActiveItemByOne();
+            }
+        }
+
+        
+        //scaled, minimum possible to maximum possible, 0f to 1f.
+        public float GetLuckFactorFloat()
+        {
+            //-0.1 to 0.1
+            float l = (float) Game1.dailyLuck;
+            l += 0.1f; //0.0 to 0.2
+            l *= 5f; //0.0 to 1.0
+            l = (l / 2f) + (l / 2f * (Game1.player.LuckLevel / 3f)); //lucklevel is 0-3, this applies it as a float multiplier to 50% of your daily luck.
+            l = Math.Max(0f, Math.Min(1f, l));
+            return l;
+        }
 
         public int[] GetFacingTileCoordinate()
         {

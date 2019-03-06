@@ -18,16 +18,15 @@ namespace Polygamy
 
         public static Relationships Relationships;
 
-
-
         public override void Entry(IModHelper helper)
         {
             Module = helper.ModRegistry.ModID;
             EntryDebug();
             if (!Modworks.InstallModule(Module, Debug)) return;
 
+            Modworks.Events.NPCCheckAction += Events_NPCCheckAction;
+
             Relationships = new Relationships();
-            helper.Events.Input.ButtonPressed += Input_ButtonPressed;
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
             helper.Events.GameLoop.Saving += GameLoop_Saving;
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
@@ -35,6 +34,145 @@ namespace Polygamy
             Relationships = new Relationships();
             helper.ConsoleCommands.Add("polygamy", "'polygamy help' for more info", PolygamyCommand);
 
+        }
+
+        private void Events_NPCCheckAction(object sender, bwdyworks.Events.NPCCheckActionEventArgs args)
+        {
+            if (args.Cancelled) return; //someone else already ate this one
+            
+            //do we care about this NPC for our purposes?
+            var targetedNPCs = Modworks.NPCs.GetAllCharacterNames(true, false, args.Farmer.currentLocation);
+            if (!targetedNPCs.Contains(args.NPC.Name)) return;
+
+            //let's run the tests
+            Modworks.Log.Trace("Polygamy, beginning interaction with dateable NPC");
+            NPC n2 = args.NPC;
+            //are we holding an item
+            if (Game1.player.ActiveObject != null)
+            {
+                //is it the bouquet?
+                if (Game1.player.ActiveObject.ParentSheetIndex == 458)
+                {
+                    Modworks.Log.Trace("Polygamy, we are beginning a bouquet check");
+                    if (!Relationships.DateableNPCs.Contains(n2))
+                    {
+                        Modworks.Log.Trace("Polygamy, refusing date because not dateable (or not available)");
+                        //REFUSE, NOT DATEABLE
+                        //either divorced, already married, already dating, or not available
+                        args.Cancelled = true;
+                        n2.CurrentDialogue.Push(new Dialogue((n2.Gender == 1) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3970") : Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3971"), n2));
+                        Game1.drawDialogue(n2);
+                        return;
+                    }
+                    else
+                    {
+                        if (Modworks.Player.GetFriendshipPoints(n2.Name) >= 2000) //ready for relationship!
+                        {
+                            Modworks.Log.Trace("Polygamy, happy to date!");
+                            //LETTUCE DATE
+                            args.Cancelled = true;
+                            n2.faceTowardFarmerForPeriod(5000, 60, false, Game1.player);
+                            Relationships.Date(n2.Name);
+                            n2.CurrentDialogue.Push(new Dialogue((Game1.random.NextDouble() < 0.5) ? Game1.LoadStringByGender(n2.Gender, "Strings\\StringsFromCSFiles:NPC.cs.3962") : Game1.LoadStringByGender(n2.Gender, "Strings\\StringsFromCSFiles:NPC.cs.3963"), n2));
+                            Game1.player.reduceActiveItemByOne();
+                            Game1.player.completelyStopAnimatingOrDoingAction();
+                            n2.doEmote(20);
+                            Game1.drawDialogue(n2);
+                            Relationships.ScanForNPCs();
+                            return;
+                        }
+                        else
+                        {
+                            Modworks.Log.Trace("Polygamy, refusing date because friendship is too low");
+                            //REFUSE, DONT KNOW YOU WELL ENOUGH
+                            args.Cancelled = true;
+                            n2.CurrentDialogue.Push(new Dialogue((Game1.random.NextDouble() < 0.5) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3958") : Game1.LoadStringByGender(n2.Gender, "Strings\\StringsFromCSFiles:NPC.cs.3959"), n2));
+                            Game1.drawDialogue(n2);
+                            return;
+                        }
+                    }
+                }
+                //or is the pendant?
+                else if (Game1.player.ActiveObject.ParentSheetIndex == 460)
+                {
+                    Modworks.Log.Trace("Polygamy, we are beginning a pendant check");
+                    if (Game1.player.HouseUpgradeLevel < 1)
+                    {
+                        Modworks.Log.Trace("Polygamy, rejecting proposal because house is too small");
+                        //REFUSE, NOWHERE TO LIVE
+                        args.Cancelled = true;
+                        if (Game1.random.NextDouble() < 0.1) n2.CurrentDialogue.Push(new Dialogue(Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3972"), n2));
+                        else n2.CurrentDialogue.Push(new Dialogue(Game1.content.LoadString("Strings\\StringsFromCSFiles:Pickaxe.cs.14194") + "$h", n2));
+                        Game1.drawDialogue(n2);
+                        return;
+                    }
+                    else
+                    {
+                        if (!Relationships.MarryableNPCs.Contains(n2))
+                        {
+                            Modworks.Log.Trace("Polygamy, rejecting proposal because NPC is not dateable (or not available)");
+                            //REFUSE, NOT MARRYABLE
+                            //either divorced, already married, not dating, or not available
+                            args.Cancelled = true;
+                            n2.CurrentDialogue.Push(new Dialogue((n2.Gender == 1) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3970") : Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3971"), n2));
+                            Game1.drawDialogue(n2);
+                            return;
+                        }
+                        else
+                        {
+                            if (Modworks.Player.GetFriendshipPoints(n2.Name) >= 2499) //ready for marriage!
+                            {
+                                Modworks.Log.Trace("Polygamy, so happy to get engaged!");
+                                //LETTUCE MARRY
+                                args.Cancelled = true;
+                                Game1.changeMusicTrack("none");
+                                n2.CurrentDialogue.Clear();
+                                Relationships.Engage(n2.Name);
+                                Modworks.Player.SetFriendshipPoints(n2.Name, 2500);
+                                Dialogue d1, d2, d3;
+                                bool dialogueOk = Game1.content.Load<Dictionary<string, string>>("Data\\EngagementDialogue").ContainsKey(n2.Name + "0");
+                                if (!dialogueOk)
+                                {
+                                    //we're marrying something that doesn't have accept dialogue. default dialog
+                                    if (n2.Gender == 0)
+                                    { //male
+                                        d1 = new Dialogue(Game1.content.Load<Dictionary<string, string>>("Data\\EngagementDialogue")["Sebastian" + "0"], n2);
+                                        d2 = new Dialogue(Game1.content.Load<Dictionary<string, string>>("Data\\EngagementDialogue")["Alex" + "1"], n2);
+                                    }
+                                    else
+                                    { //female
+                                        d1 = new Dialogue(Game1.content.Load<Dictionary<string, string>>("Data\\EngagementDialogue")["Alex" + "0"], n2);
+                                        d2 = new Dialogue(Game1.content.Load<Dictionary<string, string>>("Data\\EngagementDialogue")["Leah" + "0"], n2);
+                                    }
+                                }
+                                else
+                                {
+                                    d1 = new Dialogue(Game1.content.Load<Dictionary<string, string>>("Data\\EngagementDialogue")[n2.Name + "0"], n2);
+                                    d2 = new Dialogue(Game1.content.Load<Dictionary<string, string>>("Data\\EngagementDialogue")[n2.Name + "1"], n2);
+                                }
+                                d3 = new Dialogue(Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3980"), n2);
+                                n2.CurrentDialogue.Push(d1);
+                                n2.CurrentDialogue.Push(d2);
+                                n2.CurrentDialogue.Push(d3);
+                                Game1.player.reduceActiveItemByOne();
+                                Game1.player.completelyStopAnimatingOrDoingAction();
+                                Game1.drawDialogue(n2);
+                                Relationships.ScanForNPCs();
+                                return;
+                            }
+                            else
+                            {
+                                Modworks.Log.Trace("Polygamy, rejecting proposal because friendship is too low");
+                                //REFUSE, DONT KNOW YOU WELL ENOUGH
+                                args.Cancelled = true;
+                                n2.CurrentDialogue.Push(new Dialogue((Game1.random.NextDouble() < 0.5) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3972") : Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3973"), n2));
+                                Game1.drawDialogue(n2);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public void PolygamyCommand(string command, string[] parameters)
@@ -156,12 +294,14 @@ namespace Polygamy
 
             if (Relationships.IsThisPlayerMarried)
             {
+                /*
                 if(Relationships.Spouses.Count == 0)
                 {
                     //let's just do a safety fix here in case you just divorced all but one who wasn't primary
                     Relationships.MakePrimarySpouse(Relationships.GetNextPrimarySpouse());
                     return;
                 }
+                */
                 var nextPrimarySpouse = Game1.getCharacterFromName(Relationships.GetNextPrimarySpouse());
                 var lastPrimarySpouse = Game1.getCharacterFromName(Relationships.PrimarySpouse);
                 Relationships.MakePrimarySpouse(nextPrimarySpouse.Name);
@@ -213,7 +353,7 @@ namespace Polygamy
                             NPC otherSpouseNPC = Game1.getCharacterFromName(spouseName);
                             //find a free tile to position them on
                             GameLocation l = Game1.getLocationFromName(Game1.player.homeLocation.Value) as StardewValley.Locations.FarmHouse;
-                            var p = FindSpotForNPC(l, l is StardewValley.Locations.FarmHouse, otherSpouseNPC.getTileLocationPoint());
+                            var p = Modworks.Locations.FindPathableAndClearTile(l, otherSpouseNPC.getTileLocationPoint());
                             if (p != Point.Zero)
                             {
                                 Modworks.NPCs.Warp(otherSpouseNPC, l, p);
@@ -227,6 +367,7 @@ namespace Polygamy
 
             //check for wedding date?
             List<string> toWed = new List<string>();
+            Modworks.Log.Alert("ENGAGEMENTS COUNT: " + Relationships.Engagements.Count);
             foreach (var ee in Relationships.Engagements.Keys)
             {
                 Monitor.Log("We have an engagement with " + ee);
@@ -236,13 +377,39 @@ namespace Polygamy
                     toWed.Add(ee);
                 }
             }
-            foreach(string newSpouse in toWed)
-            {
-                Relationships.Marry(newSpouse);
-                Relationships.MakePrimarySpouse(newSpouse);
-                Relationships.Wedding(newSpouse);
+            if (toWed.Count > 0) {
+                List<NPC> oldSpouses = new List<NPC>();
+                if (Relationships.PrimarySpouse != null)
+                {
+                    Modworks.Log.Alert("adding oldspouse " + Relationships.PrimarySpouse);
+                    oldSpouses.Add(Game1.getCharacterFromName(Relationships.PrimarySpouse));
+                }
+                foreach (string nxs in Relationships.Spouses)
+                {
+                    Modworks.Log.Alert("adding oldspouse " + nxs);
+                    oldSpouses.Add(Game1.getCharacterFromName(nxs));
+                }
+
+                List<NPC> newSpouses = new List<NPC>();
+                foreach (string newSpouse in toWed)
+                {
+                    GameLocation l = Game1.getLocationFromName(Game1.player.homeLocation.Value) as StardewValley.Locations.FarmHouse;
+                    var npc = Game1.getCharacterFromName(newSpouse);
+                    var p = Modworks.Locations.FindPathableAndClearTile(l, Point.Zero);
+                    if (p != Point.Zero)
+                    {
+                        Modworks.NPCs.Warp(npc, l, p);
+                    }
+                    Relationships.Marry(newSpouse);
+                    Relationships.MakePrimarySpouse(newSpouse);
+                    newSpouses.Add(npc);
+                    Game1.player.friendshipData[Game1.player.spouse].WeddingDate = null;
+                }
+                Relationships.PolyWedding(oldSpouses, newSpouses);
             }
         }
+
+
 
         public void FixSpouseSchedule(GameLocation l, NPC npc, bool poly = false)
         {
@@ -252,8 +419,8 @@ namespace Polygamy
                 npc.DefaultMap = npc.currentLocation.Name;
                 if (Modworks.RNG.Next(2) == 1)
                 {
-                    var p = FindSpotForNPC(l, l is StardewValley.Locations.FarmHouse, npc.getTileLocationPoint());
-                    npc.controller = new PathFindController(npc, l, new Point(p.X, p.Y), Modworks.RNG.Next(4));
+                    var p = Modworks.Locations.FindPathableAndClearTile(l, npc.getTileLocationPoint());
+                    npc.controller = new PathFindController(npc, l, p, Modworks.RNG.Next(4));
                 }
             } else
             {
@@ -278,40 +445,45 @@ namespace Polygamy
             //update poly spouses, don't leave them stagnant
             foreach (var spouse in Relationships.PolyData.PolySpouses[Game1.player.UniqueMultiplayerID])
             {
-                if (Modworks.RNG.Next(5) == 1)
+                NPC spouseNpc = Game1.getCharacterFromName(spouse);
+                //only redirect if not moving
+                if (!Modworks.NPCs.IsPathing(spouseNpc))
                 {
-                    NPC spouseNpc = Game1.getCharacterFromName(spouse);
-                    if (spouseNpc.currentLocation == null)
+                    if (Modworks.RNG.Next(5) == 1)
                     {
-                        //we lost them! let's fix it
-                        Game1.getLocationFromName(Game1.player.homeLocation.Value).addCharacterAtRandomLocation(spouseNpc);
-                        Monitor.Log(spouseNpc.Name + " went home.");
-                    }
-                    else
-                    {
-                        GameLocation l = spouseNpc.currentLocation;
-                        bool warped = false;
-                        if (l.farmers.Count == 0) //noone's looking. we could move them to an adjacent map.
+
+                        if (spouseNpc.currentLocation == null)
                         {
-                            if (Modworks.RNG.Next(3) == 0)
+                            //we lost them! let's fix it
+                            Game1.getLocationFromName(Game1.player.homeLocation.Value).addCharacterAtRandomLocation(spouseNpc);
+                            Monitor.Log(spouseNpc.Name + " went home.");
+                        }
+                        else
+                        {
+                            GameLocation l = spouseNpc.currentLocation;
+                            bool warped = false;
+                            if (l.farmers.Count == 0) //noone's looking. we could move them to an adjacent map.
                             {
-                                Warp w = l.warps[Modworks.RNG.Next(l.warps.Count)];
-                                GameLocation l2 = Game1.getLocationFromName(w.TargetName);
-                                if (l2.farmers.Count == 0) //but only if we're not looking here either. have to skip the NPCBarriers.
+                                if (Modworks.RNG.Next(3) == 0)
                                 {
-                                    l.characters.Remove(spouseNpc);
-                                    l2.addCharacterAtRandomLocation(spouseNpc);
-                                    Monitor.Log(spouseNpc.Name + " moved to " + l2.Name);
-                                    l = spouseNpc.currentLocation;
-                                    warped = true;
+                                    Warp w = l.warps[Modworks.RNG.Next(l.warps.Count)];
+                                    GameLocation l2 = Game1.getLocationFromName(w.TargetName);
+                                    if (l2.farmers.Count == 0) //but only if we're not looking here either. have to skip the NPCBarriers.
+                                    {
+                                        l.characters.Remove(spouseNpc);
+                                        l2.addCharacterAtRandomLocation(spouseNpc);
+                                        Monitor.Log(spouseNpc.Name + " moved to " + l2.Name);
+                                        l = spouseNpc.currentLocation;
+                                        warped = true;
+                                    }
                                 }
                             }
-                        }
-                        var p = FindSpotForNPC(l, l is StardewValley.Locations.FarmHouse, spouseNpc.getTileLocationPoint(), warped ? 8 : 0);
-                        if (p != Point.Zero)
-                        {
-                            spouseNpc.willDestroyObjectsUnderfoot = false;
-                            spouseNpc.controller = new PathFindController(spouseNpc, l, new Point((int)p.X, (int)p.Y), -1, OnSpouseWalkComplete, 100);
+                            var p = Modworks.Locations.FindPathableAndClearTile(l, spouseNpc.getTileLocationPoint(), warped ? 8 : 0);
+                            if (p != Point.Zero)
+                            {
+                                spouseNpc.willDestroyObjectsUnderfoot = false;
+                                spouseNpc.controller = new PathFindController(spouseNpc, l, new Point((int)p.X, (int)p.Y), -1, OnSpouseWalkComplete, 100);
+                            }
                         }
                     }
                 }
@@ -348,266 +520,6 @@ namespace Polygamy
                     break;
             }
             return list;
-        }
-
-        public Point FindSpotForNPC(GameLocation l, bool checkVanillaHouseWalls, Point p, int radius = 0)
-        {
-            Point randomPoint = Point.Zero;
-            for (int i = 0; i < 100; i++)
-            {
-                int sizeX = l.map.GetLayer("Back").TileWidth;
-                int sizeY = l.map.GetLayer("Back").TileHeight;
-                if(radius > 0)
-                    randomPoint = new Point((p.X - radius) + Modworks.RNG.Next(radius * 2), (p.Y - radius) + Modworks.RNG.Next(radius * 2));
-                else
-                    randomPoint = new Point(Modworks.RNG.Next(sizeX), Modworks.RNG.Next(sizeY));
-                bool unacceptable = false;
-                unacceptable = (l.getTileIndexAt(randomPoint.X, randomPoint.Y, "Back") == -1 || !l.isTileLocationTotallyClearAndPlaceable(randomPoint.X, randomPoint.Y) || (checkVanillaHouseWalls && Utility.pointInRectangles(GetVanillaHouseWallRects(), randomPoint.X, randomPoint.Y)));
-                if (!unacceptable) return randomPoint;
-            }
-            return Point.Zero;
-        }
-
-        private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
-        {
-            if (e.Button.IsActionButton())
-            {
-                if (Context.IsPlayerFree)
-                {
-                    //snag a list of the NPCs we are interested in
-                    var targetedNPCs = Modworks.NPCs.GetAllCharacterNames(true, false, Game1.player.currentLocation);
-
-                    //let's play my favorite game: WHO ARE WE CLICKING
-                    Vector2 actionPos = e.Cursor.GrabTile;
-                    foreach (string n in targetedNPCs)
-                    {
-                        if (!string.IsNullOrWhiteSpace(n))
-                        {
-                            NPC n2 = Game1.getCharacterFromName(n);
-                            if (n2 != null)
-                            {
-                                if (n2.currentLocation != null && n2.currentLocation.Name == Game1.currentLocation.Name)
-                                {
-                                    if (n2.getTileX() == actionPos.X && n2.getTileY() == actionPos.Y)
-                                    {
-                                        //are we holding an item
-                                        if (Game1.player.ActiveObject != null)
-                                        {
-                                            //is it the bouquet?
-                                            if(Game1.player.ActiveObject.ParentSheetIndex == 458)
-                                            {
-                                                if (!Relationships.DateableNPCs.Contains(n2))
-                                                {
-                                                    //REFUSE, NOT DATEABLE
-                                                    //either divorced, already married, already dating, or not available
-                                                    Helper.Input.Suppress(e.Button);
-                                                    n2.CurrentDialogue.Push(new Dialogue((n2.Gender == 1) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3970") : Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3971"), n2));
-                                                    Game1.drawDialogue(n2);
-                                                    return;
-                                                }
-                                                else { 
-                                                    if (Modworks.Player.GetFriendshipPoints(n2.Name) >= 2000) //ready for relationship!
-                                                    {
-                                                        //LETTUCE DATE
-                                                        Helper.Input.Suppress(e.Button);
-                                                        n2.faceTowardFarmerForPeriod(5000, 60, false, Game1.player);
-                                                        Relationships.Date(n2.Name);
-                                                        n2.CurrentDialogue.Push(new Dialogue((Game1.random.NextDouble() < 0.5) ? Game1.LoadStringByGender(n2.Gender, "Strings\\StringsFromCSFiles:NPC.cs.3962") : Game1.LoadStringByGender(n2.Gender, "Strings\\StringsFromCSFiles:NPC.cs.3963"), n2));
-                                                        Game1.player.reduceActiveItemByOne();
-                                                        Game1.player.completelyStopAnimatingOrDoingAction();
-                                                        n2.doEmote(20);
-                                                        Game1.drawDialogue(n2);
-                                                        Relationships.ScanForNPCs();
-                                                        return;
-                                                    }
-                                                    else
-                                                    {
-                                                        //REFUSE, DONT KNOW YOU WELL ENOUGH
-                                                        Helper.Input.Suppress(e.Button);
-                                                        n2.CurrentDialogue.Push(new Dialogue((Game1.random.NextDouble() < 0.5) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3958") : Game1.LoadStringByGender(n2.Gender, "Strings\\StringsFromCSFiles:NPC.cs.3959"), n2));
-                                                        Game1.drawDialogue(n2);
-                                                        return;
-                                                    }
-                                                }
-                                            }
-                                            //or is the pendant?
-                                            else if(Game1.player.ActiveObject.ParentSheetIndex == 460)
-                                            {
-                                                if (Game1.player.HouseUpgradeLevel < 2)
-                                                {
-                                                    //REFUSE, NOWHERE TO LIVE
-                                                    Helper.Input.Suppress(e.Button);
-                                                    if(Game1.random.NextDouble() < 0.1)
-                                                    {
-                                                        n2.CurrentDialogue.Push(new Dialogue(Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3972"), n2));
-                                                    } else
-                                                    {
-                                                        n2.CurrentDialogue.Push(new Dialogue(Game1.content.LoadString("Strings\\StringsFromCSFiles:Pickaxe.cs.14194") + "$h", n2));
-                                                    }
-                                                    Game1.drawDialogue(n2);
-                                                    return;
-                                                }
-                                                else
-                                                {
-                                                    if (!Relationships.MarryableNPCs.Contains(n2))
-                                                    {
-                                                        //REFUSE, NOT MARRYABLE
-                                                        //either divorced, already married, not dating, or not available
-                                                        Helper.Input.Suppress(e.Button);
-                                                        n2.CurrentDialogue.Push(new Dialogue((n2.Gender == 1) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3970") : Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3971"), n2));
-                                                        Game1.drawDialogue(n2);
-                                                        return;
-                                                    }
-                                                    else
-                                                    {
-                                                        if (Modworks.Player.GetFriendshipPoints(n2.Name) >= 2499) //ready for marriage!
-                                                        {
-                                                            //LETTUCE MARRY
-                                                            Helper.Input.Suppress(e.Button);
-                                                            Game1.changeMusicTrack("none");
-                                                            n2.CurrentDialogue.Clear();
-                                                            Relationships.Engage(n2.Name);
-                                                            Modworks.Player.SetFriendshipPoints(n2.Name, 2500);
-                                                            Dialogue d1, d2, d3;
-                                                            bool dialogueOk = Game1.content.Load<Dictionary<string, string>>("Data\\EngagementDialogue").ContainsKey(n2.Name + "0");
-                                                            if (!dialogueOk)
-                                                            {
-                                                                //we're marrying something that doesn't have accept dialogue. default dialog
-                                                                if(n2.Gender == 0)
-                                                                { //male
-                                                                    d1 = new Dialogue(Game1.content.Load<Dictionary<string, string>>("Data\\EngagementDialogue")["Sebastian" + "0"], n2);
-                                                                    d2 = new Dialogue(Game1.content.Load<Dictionary<string, string>>("Data\\EngagementDialogue")["Alex" + "1"], n2);
-                                                                } else
-                                                                { //female
-                                                                    d1 = new Dialogue(Game1.content.Load<Dictionary<string, string>>("Data\\EngagementDialogue")["Alex" + "0"], n2);
-                                                                    d2 = new Dialogue(Game1.content.Load<Dictionary<string, string>>("Data\\EngagementDialogue")["Leah" + "0"], n2);
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                d1 = new Dialogue(Game1.content.Load<Dictionary<string, string>>("Data\\EngagementDialogue")[n2.Name + "0"], n2);
-                                                                d2 = new Dialogue(Game1.content.Load<Dictionary<string, string>>("Data\\EngagementDialogue")[n2.Name + "1"], n2);
-                                                            }
-                                                            d3 = new Dialogue(Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3980"), n2);
-                                                            n2.CurrentDialogue.Push(d1);
-                                                            n2.CurrentDialogue.Push(d2);
-                                                            n2.CurrentDialogue.Push(d3);
-                                                            Game1.player.reduceActiveItemByOne();
-                                                            Game1.player.completelyStopAnimatingOrDoingAction();
-                                                            Game1.drawDialogue(n2);
-                                                            Relationships.ScanForNPCs();
-                                                            return;
-                                                        }
-                                                        else
-                                                        {
-                                                            //REFUSE, DONT KNOW YOU WELL ENOUGH
-                                                            Helper.Input.Suppress(e.Button);
-                                                            n2.CurrentDialogue.Push(new Dialogue((Game1.random.NextDouble() < 0.5) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3972") : Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3973"), n2));
-                                                            Game1.drawDialogue(n2);
-                                                            return;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    //to kiss (doesn't use normal grabTile target)
-                    if (Game1.player.ActiveObject == null)
-                    {
-                        var facingTarget = Modworks.Player.GetFacingTileCoordinate();
-                        var standingTarget = Modworks.Player.GetStandingTileCoordinate();
-                        var key = Game1.currentLocation.Name + "." + facingTarget[0] + "." + facingTarget[1];
-                        //check if npc is in front of player
-                        foreach (string n in targetedNPCs)
-                        {
-                            if (!string.IsNullOrWhiteSpace(n))
-                            {
-                                NPC n2 = Game1.getCharacterFromName(n);
-                                if (n2 != null)
-                                {
-                                    if (n2.currentLocation != null && n2.currentLocation.Name == Game1.currentLocation.Name)
-                                    {
-                                        bool npcHere = n2.getTileX() == facingTarget[0] && n2.getTileY() == facingTarget[1];
-                                        if (!npcHere) npcHere = n2.getTileX() == standingTarget[0] && n2.getTileY() == standingTarget[1];
-                                        if (npcHere)
-                                        {
-                                            Relationships.RelationshipStatus rs = Relationships.CheckStatusProper(n2.Name);
-                                            if (rs == Relationships.RelationshipStatus.DATING || rs == Relationships.RelationshipStatus.MARRIED || rs == Relationships.RelationshipStatus.PRIMARYSPOUSE)
-                                                Relationships.Kiss(n2.Name);
-                                            break; //we don't return here because a dialog/etc starting will automatically cancel the kiss
-                                                   //so this actually works really cleanly just like this
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    /*
-
-
-                    //to marry
-                    //dating?
-                    //holding the mermaid's pendant?
-                    else if (Game1.player.ActiveObject != null && Game1.player.ActiveObject.ParentSheetIndex == 460)
-                    {
-                        if (Game1.player.spouse != null) //we only need polygamy for second+ spouse
-                        {
-                            var target = ModUtil.GetLocalPlayerFacingTileCoordinate();
-                            var key = Game1.currentLocation.Name + "." + target[0] + "." + target[1];
-                            //check if npc is in front of player
-                            NPC tnpc = null;
-                            foreach (NPC n in MarryableNPCs)
-                            {
-                                if (n.getTileX() == target[0] && n.getTileY() == target[1] && n.currentLocation != null && n.currentLocation.Name == Game1.currentLocation.Name)
-                                {
-                                    tnpc = n;
-                                    break;
-                                }
-                            }
-                            if (tnpc == null || tnpc.Name == Game1.player.spouse) return;
-                            if (ModUtil.GetFriendshipPoints(tnpc.Name) >= 2500) //ready for marriage!
-                            {
-                                Helper.Input.Suppress(e.Button);
-                                //if so we can override the dialogue here if conditions are met
-                                Game1.changeMusicTrack("none");
-                                //demote current spouse to side piece\
-                                if (Game1.player.HouseUpgradeLevel < 2) Game1.player.HouseUpgradeLevel = 2; //prevent crash
-                                if (Game1.player.spouse != null)
-                                {
-                                    //push the spouse into a poly slot
-                                    PolyData.PolySpouses[Game1.player.UniqueMultiplayerID].Add(Game1.player.spouse);
-                                }
-                                //marry the new one while they're still interesting
-                                //WITH wedding ceremony (as opposed to hotswapping without)
-                                ModUtil.SetFriendshipPoints(tnpc.Name, 2500);
-                                Game1.player.spouse = tnpc.Name;
-                                PolyData.PrimarySpouse = tnpc.Name;
-                                tnpc.CurrentDialogue.Clear();
-                                tnpc.CurrentDialogue.Push(new Dialogue(Game1.content.Load<Dictionary<string, string>>("Data\\EngagementDialogue")[tnpc.Name + "0"], tnpc));
-                                tnpc.CurrentDialogue.Push(new Dialogue(Game1.content.Load<Dictionary<string, string>>("Data\\EngagementDialogue")[tnpc.Name + "1"], tnpc));
-                                tnpc.CurrentDialogue.Push(new Dialogue(Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3980"), tnpc));
-                                Game1.player.reduceActiveItemByOne();
-                                Game1.player.completelyStopAnimatingOrDoingAction();
-                                Game1.drawDialogue(tnpc);
-                                //DO WEDDIN' NAO!
-                                Game1.player.friendshipData[Game1.player.spouse].WeddingDate = null;
-                                Game1.weddingToday = true;
-                                Game1.player.friendshipData[Game1.player.spouse].Status = FriendshipStatus.Engaged;
-                                Game1.checkForWedding();
-                                Game1.player.friendshipData[Game1.player.spouse].Status = FriendshipStatus.Married;
-                            }
-                        }
-                    }
-
-                    */
-                }
-            }
         }
     }
 }

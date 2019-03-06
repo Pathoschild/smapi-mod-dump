@@ -6,9 +6,8 @@ using System.Linq;
 using GiftTasteHelper.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley.Menus;
-using Microsoft.Xna.Framework.Input;
 using StardewValley;
+using StardewValley.Menus;
 
 namespace GiftTasteHelper
 {
@@ -39,11 +38,10 @@ namespace GiftTasteHelper
             // Set the monitor ref so we can have a cheeky global log function
             Utils.InitLog(this.Monitor);
 
-            GraphicsEvents.Resize += (sender, e) => this.WasResized = true;
-            ContentEvents.AfterLocaleChanged += (sender, e) => LoadGiftHelpers(this.Helper);
-            SaveEvents.AfterLoad += (sender, e) => Initialize();
-            SaveEvents.AfterReturnToTitle += (sender, e) => Shutdown();
-            TimeEvents.AfterDayStarted += AfterDayStarted;
+            helper.Events.Display.WindowResized += (sender, e) => this.WasResized = true;
+            helper.Events.GameLoop.SaveLoaded += (sender, e) => Initialize();
+            helper.Events.GameLoop.ReturnedToTitle += (sender, e) => Shutdown();
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
 
             InitDebugCommands(this.Helper);
 
@@ -82,11 +80,13 @@ namespace GiftTasteHelper
             this.ReloadHelpers = true;
             this.CurrentGiftHelper = null;
 
-            MenuEvents.MenuClosed -= OnClickableMenuClosed;
-            MenuEvents.MenuChanged -= OnClickableMenuChanged;
+            Helper.Events.Display.MenuChanged -= OnMenuChanged;
         }
 
-        private void AfterDayStarted(object sender, EventArgs e)
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             if (Game1.dayOfMonth == 1 && this.GiftHelpers.ContainsKey(typeof(Billboard)))
             {
@@ -126,15 +126,13 @@ namespace GiftTasteHelper
                 }
 
                 dataProvider = new ProgressionGiftDataProvider(GiftDatabase);
-                ControlEvents.MouseChanged += CheckGiftGivenAfterMouseChanged;
-                ControlEvents.ControllerButtonPressed += CheckGiftGivenAfterControllerButtonPressed;
+                helper.Events.Input.ButtonPressed += CheckGift_OnButtonPressed;
             }
             else
             {
                 GiftDatabase = new GiftDatabase(helper);
                 dataProvider = new AllGiftDataProvider(GiftDatabase);
-                ControlEvents.MouseChanged -= CheckGiftGivenAfterMouseChanged;
-                ControlEvents.ControllerButtonPressed -= CheckGiftGivenAfterControllerButtonPressed;
+                helper.Events.Input.ButtonPressed -= CheckGift_OnButtonPressed;
             }
 
             // Add the helpers if they're enabled in config
@@ -149,8 +147,7 @@ namespace GiftTasteHelper
                 this.GiftHelpers.Add(typeof(GameMenu), new SocialPageGiftHelper(dataProvider, Config, helper.Reflection, helper.Translation));
             }
 
-            MenuEvents.MenuClosed += OnClickableMenuClosed;
-            MenuEvents.MenuChanged += OnClickableMenuChanged;
+            helper.Events.Display.MenuChanged += OnMenuChanged;
         }
 
         #region Gift Monitor Handling
@@ -170,59 +167,56 @@ namespace GiftTasteHelper
             this.CheckGiftGivenNextInput = false;
         }
 
-        private void CheckGiftGivenAfterControllerButtonPressed(object sender, EventArgsControllerButtonPressed e)
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void CheckGift_OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             // Giving a gift with a controller is done on button down so we can't use the same
             // trick to do the check if the gift was given. Since a dialogue is always opened after giving a gift
             // the user has to press something to proceed so it's during that input that we'll do the check (if the flag is set).
-            if (e.ButtonPressed == Buttons.A)
-            {
-                this.GiftMonitor.UpdateHeldGift();
-                this.CheckGiftGivenNextInput = this.GiftMonitor.IsHoldingValidGift;
-            }
-
             if (this.CheckGiftGivenNextInput)
-            {
                 this.GiftMonitor.CheckGiftGiven();
-            }
-        }
 
-        private void CheckGiftGivenAfterMouseChanged(object sender, EventArgsMouseStateChanged e)
-        {
-            if (e.NewState.RightButton != e.PriorState.RightButton && e.NewState.RightButton == ButtonState.Pressed)
+            switch (e.Button)
             {
-                this.GiftMonitor.UpdateHeldGift();
-            }
-            else if (e.NewState.RightButton != e.PriorState.RightButton && e.NewState.RightButton == ButtonState.Released)
-            {
-                this.GiftMonitor.CheckGiftGiven();
+                case SButton.ControllerA:
+                    this.GiftMonitor.UpdateHeldGift();
+                    this.CheckGiftGivenNextInput = this.GiftMonitor.IsHoldingValidGift;
+                    break;
+
+                case SButton.MouseLeft:
+                    this.GiftMonitor.CheckGiftGiven();
+                    break;
+
+                case SButton.MouseRight:
+                    this.GiftMonitor.UpdateHeldGift();
+                    break;
             }
         }
         #endregion Gift Monitor Handling
 
         #region Menu Handling
-        private void OnClickableMenuClosed(object sender, EventArgsClickableMenuClosed e)
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
-            Utils.DebugLog(e.PriorMenu.GetType() + " menu closed.");
-
-            if (this.CurrentGiftHelper != null)
+            // menu closed
+            if (e.NewMenu == null)
             {
-                Utils.DebugLog("Closing current helper: " + this.CurrentGiftHelper.GetType());
-
-                UnsubscribeEvents();
-
-                this.CurrentGiftHelper.OnClose();
+                if (this.CurrentGiftHelper != null)
+                {
+                    Utils.DebugLog("Closing current helper: " + this.CurrentGiftHelper.GetType());
+                    UnsubscribeEvents();
+                    this.CurrentGiftHelper.OnClose();
+                }
+                return;
             }
-        }
 
-        private void OnClickableMenuChanged(object sender, EventArgsClickableMenuChanged e)
-        {
-            //DebugPrintMenuInfo(e.PriorMenu, e.NewMenu);
-
+            // menu opened/changed
             Type newMenuType = e.NewMenu.GetType();
-
-            if (this.WasResized && this.CurrentGiftHelper != null && this.CurrentGiftHelper.IsOpen &&
-                e.PriorMenu != null && e.PriorMenu.GetType() == newMenuType)
+            if (this.WasResized && this.CurrentGiftHelper != null && this.CurrentGiftHelper.IsOpen && e.OldMenu?.GetType() == newMenuType)
             {
                 // resize event
                 Utils.DebugLog("[OnClickableMenuChanged] Invoking resize event on helper: " + this.CurrentGiftHelper.GetType());
@@ -232,7 +226,6 @@ namespace GiftTasteHelper
                 return;
             }
             this.WasResized = false;
-
 
             if (this.GiftHelpers.ContainsKey(newMenuType))
             {
@@ -265,17 +258,23 @@ namespace GiftTasteHelper
         }
         #endregion Menu Handling
 
-        private void OnMouseStateChange(object sender, EventArgsMouseStateChanged e)
+        /// <summary>Raised after the player moves the in-game cursor.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnCursorMoved(object sender, CursorMovedEventArgs e)
         {
-            Debug.Assert(this.CurrentGiftHelper != null, "OnMouseStateChange listener invoked when currentGiftHelper is null.");
+            Debug.Assert(this.CurrentGiftHelper != null, "OnCursorMoved listener invoked when currentGiftHelper is null.");
 
             if (this.CurrentGiftHelper.CanTick())
             {
-                this.CurrentGiftHelper.OnMouseStateChange(e);
+                this.CurrentGiftHelper.OnCursorMoved(e);
             }
         }
 
-        private void OnDraw(object sender, EventArgs e)
+        /// <summary>Raised after the game draws to the sprite patch in a draw tick, just before the final sprite batch is rendered to the screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnRendered(object sender, RenderedEventArgs e)
         {
             Debug.Assert(this.CurrentGiftHelper != null, "OnPostRenderEvent listener invoked when currentGiftHelper is null.");
 
@@ -287,14 +286,14 @@ namespace GiftTasteHelper
 
         private void UnsubscribeEvents()
         {
-            ControlEvents.MouseChanged -= OnMouseStateChange;
-            GraphicsEvents.OnPostRenderEvent -= OnDraw;
+            Helper.Events.Input.CursorMoved -= OnCursorMoved;
+            Helper.Events.Display.Rendered -= this.OnRendered;
         }
 
         private void SubscribeEvents()
         {
-            ControlEvents.MouseChanged += OnMouseStateChange;
-            GraphicsEvents.OnPostRenderEvent += OnDraw;
+            Helper.Events.Input.CursorMoved += OnCursorMoved;
+            Helper.Events.Display.Rendered += this.OnRendered;
         }
 
         #region Debug
@@ -348,7 +347,7 @@ namespace GiftTasteHelper
                     {
                         x = int.Parse(args[1]);
                         y = int.Parse(args[2]);
-                    }                    
+                    }
                     catch (Exception)
                     {
                         Utils.DebugLog("Error parsing params", LogLevel.Error);

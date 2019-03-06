@@ -2,14 +2,22 @@
   "Distance": 1,
   "TractorSpeed": -2,
   "MagneticRadius": 384,
-  "BuildUsesResources": true,
   "BuildPrice": 150000,
+  "BuildMaterials": {
+    "335": 20,
+    "337": 5,
+    "787": 5
+  },
   "HighlightRadius": false,
   "StandardAttachments": {
     "Axe": {
-      "CutFruitTrees": false,
+      "ClearFruitTreeSeeds": false,
+      "ClearFruitTreeSaplings": false,
+      "CutGrownFruitTrees": false,
+      "ClearTreeSeeds": false,
+      "ClearTreeSaplings": false,
+      "CutGrownTrees": false,
       "CutTappedTrees": false,
-      "CutTrees": false,
       "ClearLiveCrops": false,
       "ClearDeadCrops": true,
       "ClearDebris": true
@@ -36,12 +44,16 @@
       "ClearDirt": true,
       "ClearFlooring": false,
       "ClearBouldersAndMeteorites": true,
+      "ClearObjects": false,
+      "BreakMineContainers": true,
       "ClearWeeds": true
     },
     "Scythe": {
-      "HarvestForage": true,
       "HarvestCrops": true,
+      "HarvestFlowers": true,
+      "HarvestForage": true,
       "HarvestFruitTrees": true,
+      "HarvestMachines": false,
       "HarvestGrass": true,
       "ClearDeadCrops": true,
       "ClearWeeds": true
@@ -61,6 +73,7 @@
   },
   "Controls": {
     "SummonTractor": "Back",
+    "DismissTractor": "Back",
     "HoldToActivate": ""
   },
   "CustomAttachments": [],

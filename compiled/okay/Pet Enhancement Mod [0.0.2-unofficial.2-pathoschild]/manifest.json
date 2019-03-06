@@ -1,0 +1,10 @@
+{
+  "Name": "Pet Enhancement Mod",
+  "Author": "Jfulmer",
+  "Version": "0.0.2-unofficial.2-pathoschild",
+  "Description": "This mod makes your pet follow you when you right-click it...",
+  "UniqueID": "JfulmerPetEnhancementMod",
+  "EntryDll": "PetEnhancements.dll",
+  "MinimumApiVersion": "2.10.2",
+  "UpdateKeys": []
+}

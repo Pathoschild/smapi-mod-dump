@@ -1,8 +1,8 @@
 {
-  "Name": "GiftTasteHelper",
+  "Name": "Gift Taste Helper",
   "Author": "tstaples (aka catman)",
-  "Version": "2.9-beta",
-  "MinimumApiVersion": "2.8-beta",
+  "Version": "2.9",
+  "MinimumApiVersion": "2.10.2",
   "Description": "Displays NPC gift tastes in a handy tooltip.",
   "UniqueID": "tstaples.GiftTasteHelper",
   "EntryDll": "GiftTasteHelper.dll",

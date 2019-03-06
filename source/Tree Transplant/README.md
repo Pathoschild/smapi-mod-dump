@@ -46,4 +46,4 @@ GPL-3.0
 
 * [Nexus mods](http://www.nexusmods.com/stardewvalley/mods/1342/)
 * [Discussion thread](http://community.playstarbound.com/threads/treetransplant.135549)
-* [Chucklefish Mod](https://community.playstarbound.com/resources/tree-transplant.5484/)
+* [Chucklefish Mod](https://community.playstarbound.com/resources/tree-transplant.5485/)

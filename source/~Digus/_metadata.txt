@@ -11,10 +11,9 @@ mods:
    Water Retaining Field
 
 latest commit:
-   commit a1dd2baf82b6414c0c2a82eb02fb9107e7107bb6
+   commit 7d2cab4ec3b09cc853fb0dd096f08b5d25da4f6d
    Author: Digus-PC\Digus <diguss@gmail.com>
-   Date:   Wed Jan 9 01:20:09 2019 -0200
+   Date:   Fri Mar 1 02:05:09 2019 -0300
    
-       Crop Transplant Mod 1.1.2
-       - Update to Stardew Valley 1.3.33
+       All mods released to SMAPI 3
    

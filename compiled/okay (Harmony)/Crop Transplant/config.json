@@ -1,0 +1,26 @@
+{
+  "GetGradenPotEarlier": false,
+  "CropTransplantEnergyCost": 4.0,
+  "EnablePlacementOfCropsOutsideOutOfTheFarm": false,
+  "EnablePlacementOfFruitTreesOutOfTheFarm": false,
+  "EnablePlacementOfFruitTreesOnAnyTileType": false,
+  "EnablePlacementOfFruitTreesNextToAnotherTree": false,
+  "EnablePlacementOfTreesOnAnyTileType": false,
+  "EnableSoilTileUnderTrees": true,
+  "FruitTreeTransplantEnergyCostPerStage": [
+    4.0,
+    4.0,
+    4.0,
+    4.0,
+    20.0
+  ],
+  "TreeTransplantEnergyCostPerStage": [
+    4.0,
+    4.0,
+    8.0,
+    12.0,
+    20.0
+  ],
+  "TreeTransplantMaxStage": 4,
+  "FruitTreeTransplantMaxStage": 3
+}

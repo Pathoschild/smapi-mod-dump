@@ -5,6 +5,6 @@
   "Description": "Prevents failed milk/shear attempts and displays when animals can be milked/sheared and petted.",
   "UniqueID": "BetterRanching",
   "EntryDll": "BetterRanching.dll",
-  "MinimumApiVersion": "2.8-beta",
+  "MinimumApiVersion": "2.10.2",
   "UpdateKeys": [ "Nexus:859" ]
 }

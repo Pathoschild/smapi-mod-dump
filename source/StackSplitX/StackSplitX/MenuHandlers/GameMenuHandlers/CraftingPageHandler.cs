@@ -28,9 +28,8 @@ namespace StackSplitX.MenuHandlers
             // We need to do this explicitly because the crafting page uses a different variable name for hover item.
             var inventoryMenu = this.MenuPage.GetType().GetField("inventory").GetValue(this.MenuPage) as InventoryMenu;
             var hoveredItemField = Helper.Reflection.GetField<Item>(this.MenuPage, "hoverItem");
-            var heldItemField = Helper.Reflection.GetField<Item>(this.MenuPage, "heldItem");
 
-            this.Inventory.Init(inventoryMenu, heldItemField, hoveredItemField);
+            this.Inventory.Init(inventoryMenu, hoveredItemField);
         }
 
         /// <summary>Tells the handler that the inventory was shift-clicked.</summary>
@@ -60,7 +59,7 @@ namespace StackSplitX.MenuHandlers
                 return EInputHandled.NotHandled;
 
             // Only allow items that can actually stack
-            var extraIems = cooking ? Utility.getHomeOfFarmer(Game1.player).fridge.items : null;
+            var extraIems = cooking ? Utility.getHomeOfFarmer(Game1.player).fridge.Value.items : null;
             if (!hoveredItem.canStackWith(hoveredItem) || !hoverRecipe.doesFarmerHaveIngredientsInInventory(extraIems))
                 return EInputHandled.NotHandled;
 

@@ -1,7 +1,7 @@
 ﻿{
    "Name": "Paritee's Better Farm Animal Variety",
    "Author": "Paritee",
-   "Version": "2.2.4",
+   "Version": "2.2.6",
    "Description": "Customize the types and species of farm animals you can raise without needing to replace the default farm animal types",
    "UniqueID": "Paritee.BetterFarmAnimalVariety",
    "EntryDll": "BetterFarmAnimalVariety.dll",

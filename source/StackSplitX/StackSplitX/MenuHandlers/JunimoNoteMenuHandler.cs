@@ -27,7 +27,7 @@ namespace StackSplitX.MenuHandlers
             if (this.Inventory.CanSplitSelectedItem())
             {
                 int stackAmount = this.Inventory.GetDefaultSplitStackAmount();
-                this.SplitMenu = new StackSplitMenu(OnStackAmountReceived, stackAmount);
+                this.SplitMenu = new StackSplitMenu(OnStackAmountReceived, stackAmount, this.Helper.Input);
                 return EInputHandled.Consumed;
             }
             return EInputHandled.NotHandled;

@@ -18,7 +18,7 @@ namespace StackSplitX.MenuHandlers
         private List<ClickableComponent> Inventory => this.NativeInventory.inventory;
 
         /// <summary>Convenience for grabbing native inventory items.</summary>
-        private List<Item> InventoryItems => this.NativeInventory.actualInventory;
+        private IList<Item> InventoryItems => this.NativeInventory.actualInventory;
 
         /// <summary>Native inventory.</summary>
         private InventoryMenu NativeInventory;
@@ -28,9 +28,6 @@ namespace StackSplitX.MenuHandlers
         
         /// <summary>Where the user clicked so moving </summary>
         private Point SelectedItemPosition;
-        
-        /// <summary>The held item field owned by the parent menu that contains the inventory.</summary>
-        private IReflectedField<Item> HeldItemField;
 
         /// <summary>The hovered item field owned by the parent menu that contains the inventory.</summary>
         private IReflectedField<Item> HoveredItemField;
@@ -55,10 +52,9 @@ namespace StackSplitX.MenuHandlers
 
         /// <summary>This must be called everytime the inventory is opened/resized.</summary>
         /// <param name="inventory">Native inventory.</param>
-        public void Init(InventoryMenu inventory, IReflectedField<Item> heldItemField, IReflectedField<Item> hoveredItemField)
+        public void Init(InventoryMenu inventory, IReflectedField<Item> hoveredItemField)
         {
             this.NativeInventory = inventory;
-            this.HeldItemField = heldItemField;
             this.HoveredItemField = hoveredItemField;
 
             // Create the bounds around the inventory
@@ -105,7 +101,7 @@ namespace StackSplitX.MenuHandlers
             Debug.Assert(this.Initialized);
 
             var hoveredItem = this.HoveredItem;
-            var heldItem = this.HeldItemField.GetValue();
+            var heldItem = Game1.player.CursorSlotItem;
 
             return (hoveredItem != null && hoveredItem.Stack > 1 &&
                    (heldItem == null || (hoveredItem.canStackWith(heldItem) && heldItem.Stack < heldItem.maximumStackSize())));
@@ -115,10 +111,10 @@ namespace StackSplitX.MenuHandlers
         /// <param name="stackAmount">The amount to be added to the held amount.</param>
         public void SplitSelectedItem(int stackAmount)
         {
-            Debug.Assert(this.HeldItemField != null && this.HoveredItemField != null);
+            Debug.Assert(this.HoveredItemField != null);
 
             var hoveredItem = this.HoveredItem;
-            var heldItem = this.HeldItemField.GetValue();
+            var heldItem = Game1.player.CursorSlotItem;
 
             int hoveredItems = hoveredItem.Stack;
             int heldItems = (heldItem != null ? heldItem.Stack : 0);
@@ -143,8 +139,8 @@ namespace StackSplitX.MenuHandlers
                 RemoveItemFromInventory(hoveredItem);
 
             // Update the native fields
-            this.HeldItemField.SetValue(heldItem);
-            
+            Game1.player.CursorSlotItem = heldItem;
+
             // Null it out now that we're done with this operation
             this.HoveredItem = null;
         }

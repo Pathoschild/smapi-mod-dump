@@ -1,10 +1,10 @@
 # Release notes
-## Upcoming release
+## 4.8
 * Added attachment features:
-  * pickaxe: break mine containers, break placed objects (disabled by default).
+  * pickaxe: break mine containers (enabled by default), break placed objects (disabled by default).
   * scythe: collect machine output (disabled by default).
 * Added attachment options:
-  * axe: can now configure based on tree size.
+  * axe: can now configure based on tree maturity.
   * scythe: can now configure crops and flowers separately.
 * Added option to configure build resources.
 * Added button to send tractor back home.
@@ -13,6 +13,7 @@
 * Fixed tractor unable to break the Cindersnap forest log.
 * Fixed garage texture not applied in the Farm Expansion mod's carpenter menu.
 * Fixed tractor range affected when you charge a tool before mounting.
+* Improved translations. Thanks to S2SKY (added Korean)!
 
 ## 4.7.3
 * Fixed stable no longer in Robin's carpenter menu after building a tractor garage.

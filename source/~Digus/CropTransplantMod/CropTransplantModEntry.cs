@@ -1,10 +1,7 @@
-﻿using System.Reflection;
-using Harmony;
-using Microsoft.Xna.Framework.Input;
+﻿using Harmony;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 
 namespace CropTransplantMod
@@ -12,10 +9,12 @@ namespace CropTransplantMod
     public class CropTransplantModEntry : Mod
     {
         public static IMonitor ModMonitor;
+        public static IModEvents Events;
 
         public override void Entry(IModHelper helper)
         {
             ModMonitor = Monitor;
+            Events = helper.Events;
             new DataLoader(helper);
 
             var harmony = HarmonyInstance.Create("Digus.CustomCrystalariumMod");
@@ -51,9 +50,9 @@ namespace CropTransplantMod
                 harmony.Patch(treeDraw, new HarmonyMethod(transplantOverridesPreTreeDraw), null);
             }
 
-            SaveEvents.BeforeSave += (x, y) =>
+            helper.Events.GameLoop.Saving += (sender, e) =>
             {
-                if (Game1.player.ActiveObject is HeldIndoorPot pot)
+                if (Game1.player.ActiveObject is HeldIndoorPot)
                 {
                     Game1.player.ActiveObject = TransplantOverrides.RegularPotObject;
                     TransplantOverrides.CurrentHeldIndoorPot = null;

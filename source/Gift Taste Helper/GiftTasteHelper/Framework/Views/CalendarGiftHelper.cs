@@ -1,6 +1,5 @@
-﻿using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -91,9 +90,9 @@ namespace GiftTasteHelper.Framework
             base.OnClose();
         }
 
-        public override void OnMouseStateChange(EventArgsMouseStateChanged e)
+        public override void OnCursorMoved(CursorMovedEventArgs e)
         {
-            Debug.Assert(this.Calendar.IsOpen, "OnMouseStateChange being called but the calendar isn't open");
+            Debug.Assert(this.Calendar.IsOpen, "OnCursorMoved being called but the calendar isn't open");
 
             // This gets the scaled mouse position
             SVector2 mouse = new SVector2(Game1.getMouseX(), Game1.getMouseY());
@@ -128,7 +127,7 @@ namespace GiftTasteHelper.Framework
             this.Birthdays.Clear();
             foreach (NPC npc in Utility.getAllCharacters())
             {
-                if (npc.Birthday_Season == Game1.currentSeason && 
+                if (npc.Birthday_Season == Game1.currentSeason &&
                     this.GiftDrawDataProvider.HasDataForNpc(npc.Name) &&
                     !this.Birthdays.ContainsKey(npc.Birthday_Day)) // getAllCharacters can contain duplicates (if you break your save)
                 {

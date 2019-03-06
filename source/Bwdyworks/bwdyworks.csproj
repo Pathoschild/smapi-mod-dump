@@ -61,6 +61,7 @@
     <Compile Include="BasicItemEntry.cs" />
     <Compile Include="Enums\Priority.cs" />
     <Compile Include="Events\CancelableEventArgs.cs" />
+    <Compile Include="Events\ItemEatenEventArgs.cs" />
     <Compile Include="Events\NPCCheckActionEventArgs.cs" />
     <Compile Include="GameDate.cs" />
     <Compile Include="Registry\ItemRegistry.cs" />

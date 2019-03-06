@@ -73,7 +73,7 @@ namespace StackSplitX.MenuHandlers
         {
             if (action?.CanPerformAction() == true)
             {
-                this.SplitMenu = new StackSplitMenu(OnStackAmountReceived, this.CurrentShopAction.StackAmount);
+                this.SplitMenu = new StackSplitMenu(OnStackAmountReceived, this.CurrentShopAction.StackAmount, this.Helper.Input);
                 return EInputHandled.Consumed;
             }
             return EInputHandled.NotHandled;

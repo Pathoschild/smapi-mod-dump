@@ -5,10 +5,12 @@ mods:
    Deep Woods
 
 latest commit:
-   commit 9abc4f01a91f87c9325721de87848d33eb920386
-   Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Thu Dec 27 13:10:16 2018 +0100
+   commit 78986f0a8eb3711ac98144bf35d5876a843dd61e
+   Merge: 9abc4f0 e07cbfc
+   Author: Max Vollmer <maxvollmer@users.noreply.github.com>
+   Date:   Fri Mar 1 11:59:23 2019 +0100
    
-       * Increment version number
-       * Changed dependency to SMAPI 2.9.2
+       Merge pull request #2 from S2SKY/patch-1
+       
+       Create ko.json
    

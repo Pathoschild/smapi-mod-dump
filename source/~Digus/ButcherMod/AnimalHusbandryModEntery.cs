@@ -1,26 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using AnimalHusbandryMod.animals;
-using MailFrameworkMod;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
-using StardewValley.Buildings;
 using StardewValley.Menus;
 using Harmony;
-using AnimalHusbandryMod.common;
 using AnimalHusbandryMod.farmer;
 using AnimalHusbandryMod.tools;
 using AnimalHusbandryMod.meats;
-using StardewValley.Characters;
 using DataLoader = AnimalHusbandryMod.common.DataLoader;
 
 namespace AnimalHusbandryMod
@@ -31,9 +18,9 @@ namespace AnimalHusbandryMod
         internal static IModHelper ModHelper;
         internal static IMonitor monitor;
         internal static DataLoader DataLoader;
-        private string _meatCleaverSpawnKey;
-        private string _inseminationSyringeSpawnKey;
-        private string _feedingBasketSpawnKey;
+        private SButton? _meatCleaverSpawnKey;
+        private SButton? _inseminationSyringeSpawnKey;
+        private SButton? _feedingBasketSpawnKey;
 
         /*********
         ** Public methods
@@ -58,29 +45,29 @@ namespace AnimalHusbandryMod
                 _inseminationSyringeSpawnKey = DataLoader.ModConfig.AddInseminationSyringeToInventoryKey;
                 _feedingBasketSpawnKey = DataLoader.ModConfig.AddFeedingBasketToInventoryKey;
 
-                SaveEvents.AfterLoad += DataLoader.ToolsLoader.ReplaceOldTools;
-                SaveEvents.AfterLoad += (x, y) => FarmerLoader.LoadData();
-                SaveEvents.AfterLoad += (x, y) => DataLoader.ToolsLoader.LoadMail();
+                helper.Events.GameLoop.SaveLoaded += DataLoader.ToolsLoader.ReplaceOldTools;
+                helper.Events.GameLoop.SaveLoaded += (x, y) => FarmerLoader.LoadData();
+                helper.Events.GameLoop.SaveLoaded += (x, y) => DataLoader.ToolsLoader.LoadMail();
 
-                TimeEvents.AfterDayStarted += (x, y) => DataLoader.LivingWithTheAnimalsChannel.CheckChannelDay();
+                helper.Events.GameLoop.DayStarted += (x, y) => DataLoader.LivingWithTheAnimalsChannel.CheckChannelDay();
 
                 //TimeEvents.AfterDayStarted += (x, y) => EventsLoader.CheckEventDay();
 
                 if (!DataLoader.ModConfig.DisableMeat)
                 {
-                    TimeEvents.AfterDayStarted += (x, y) => DataLoader.RecipeLoader.MeatFridayChannel.CheckChannelDay();
+                    helper.Events.GameLoop.DayStarted += (x, y) => DataLoader.RecipeLoader.MeatFridayChannel.CheckChannelDay();
                     ModHelper.ConsoleCommands.Add("player_addallmeatrecipes", "Add all meat recipes to the player.", DataLoader.RecipeLoader.AddAllMeatRecipes);
                 }
 
                 if (_meatCleaverSpawnKey != null || _inseminationSyringeSpawnKey != null || _feedingBasketSpawnKey != null)
                 {
-                    ControlEvents.KeyPressed += this.ControlEvents_KeyPress;
+                    helper.Events.Input.ButtonPressed += this.OnButtonPressed;
                 }
 
                 if (!DataLoader.ModConfig.DisablePregnancy)
                 {
-                    TimeEvents.AfterDayStarted += (x, y) => PregnancyController.CheckForBirth();
-                    SaveEvents.BeforeSave += (x, y) => PregnancyController.UpdatePregnancy();
+                    helper.Events.GameLoop.DayStarted += (x, y) => PregnancyController.CheckForBirth();
+                    helper.Events.GameLoop.Saving += (x, y) => PregnancyController.UpdatePregnancy();
                 }
 
                 
@@ -96,7 +83,7 @@ namespace AnimalHusbandryMod
                 catch (Exception)
                 {
                     Monitor.Log("Erro patching the FarmAnimal 'pet' Method. Applying old method of opening the extended animal query menu.", LogLevel.Warn);
-                    MenuEvents.MenuChanged += (s, e) =>
+                    helper.Events.Display.MenuChanged += (s, e) =>
                     {
                         if (e.NewMenu is AnimalQueryMenu && !(e.NewMenu is AnimalQueryMenuExtended))
                         {
@@ -140,23 +127,22 @@ namespace AnimalHusbandryMod
         /*********
         ** Private methods
         *********/
-        /// <summary>The method invoked when the player presses a keyboard button.</summary>
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void ControlEvents_KeyPress(object sender, EventArgsKeyPressed e)
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (Context.IsWorldReady) // save is loaded
             {
-                
-                if (_meatCleaverSpawnKey != null && e.KeyPressed == (Keys)Enum.Parse(typeof(Keys), _meatCleaverSpawnKey.ToUpper()))
+                if (e.Button == _meatCleaverSpawnKey)
                 {
                     Game1.player.addItemToInventory(new MeatCleaver());
                 }
-                if (_inseminationSyringeSpawnKey != null && e.KeyPressed == (Keys)Enum.Parse(typeof(Keys), _inseminationSyringeSpawnKey.ToUpper()))
+                if (e.Button == _inseminationSyringeSpawnKey)
                 {
                     Game1.player.addItemToInventory(new InseminationSyringe());
                 }
-                if (_feedingBasketSpawnKey != null && e.KeyPressed == (Keys)Enum.Parse(typeof(Keys), _feedingBasketSpawnKey.ToUpper()))
+                if (e.Button == _feedingBasketSpawnKey)
                 {
                     Game1.player.addItemToInventory(new FeedingBasket());
                 }

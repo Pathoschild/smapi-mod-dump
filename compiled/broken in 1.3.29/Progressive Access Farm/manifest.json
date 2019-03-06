@@ -1,0 +1,10 @@
+﻿{
+   "Name": "ProFarm - Monsters Off",
+   "Author": "onjulraz",
+   "Version": "1.2.0",
+   "Description": "Farm access dependant on player progression.",
+   "UniqueID": "onjulraz.ProFarm",
+   "EntryDll": "ProFarm.dll",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": [ "Nexus:2923" ]
+}

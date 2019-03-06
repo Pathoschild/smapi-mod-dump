@@ -1,0 +1,11 @@
+{
+  "Name": "CleanFarm",
+  "Author": "tstaples (aka Catman)",
+  "Version": "1.4",
+  "Description": "Automatically clears debris and other undesireables from your farm each day.",
+  "PerSaveConfigs": false,
+  "MinimumApiVersion": "2.10.2",
+  "UniqueID": "tstaples.CleanFarm",
+  "EntryDll": "CleanFarm.dll",
+  "UpdateKeys": [ "Nexus:794", "GitHub:tstaples/CleanFarm" ]
+}

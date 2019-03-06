@@ -1,6 +1,7 @@
 {
   "ShowHoverTooltips": true,
   "EnableShippingBin": true,
+  "AddOrganisePlayerInventoryButton": true,
   "Range": "Unlimited",
   "Controls": {
     "Toggle": "B",

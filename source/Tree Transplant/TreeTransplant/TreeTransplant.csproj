@@ -62,6 +62,9 @@
     <Compile Include="Helpers\Notifier.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="i18n\default.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>

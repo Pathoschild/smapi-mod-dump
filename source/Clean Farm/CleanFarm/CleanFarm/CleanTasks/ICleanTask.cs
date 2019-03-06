@@ -7,6 +7,9 @@ namespace CleanFarm.CleanTasks
     /// <summary>The interface for a clean task.</summary>
     interface ICleanTask
     {
+        /// <summary>Update the internal config.</summary>
+        void UpdateConfig(ModConfig config);
+
         /// <summary>Can this task be run. Usually checks the config settings to see if it's enabled.</summary>
         bool CanRun();
 

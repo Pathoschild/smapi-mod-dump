@@ -89,7 +89,7 @@ async Task Main()
 	Helper.Print("Fetching Git repository URLs...");
 	{
 		// fetch mods
-		WikiModEntry[] mods = (await toolkit.GetWikiCompatibilityListAsync()).Mods;
+		WikiModEntry[] mods = (await toolkit.GetWikiCompatibilityListAsync()).Mods.Where(p => p.ContentPackFor == null).ToArray();
 		int totalMods = mods.Length;
 		mods = mods
 			.Where(mod => !this.IgnoreSourceUrls.Contains(mod.GitHubRepo) && !this.IgnoreSourceUrls.Contains(mod.CustomSourceUrl))
@@ -293,16 +293,30 @@ public void Delete(FileSystemInfo entry)
 	if (!entry.Exists)
 		return;
 
-	// delete subentries
-	if (entry is DirectoryInfo dir)
+	while (true)
 	{
-		foreach (FileSystemInfo child in dir.GetFileSystemInfos())
-			this.Delete(child);
-	}
+		try
+		{
+			// delete subentries
+			if (entry is DirectoryInfo dir)
+			{
+				foreach (FileSystemInfo child in dir.GetFileSystemInfos())
+					this.Delete(child);
+			}
 
-	// delete current
-	entry.Attributes = FileAttributes.Normal; // clear readonly flag
-	entry.Delete();
+			// delete current
+			entry.Attributes = FileAttributes.Normal; // clear readonly flag
+			entry.Delete();
+			break;
+		}
+		catch (Exception ex)
+		{
+			ex.Dump();
+			string choice = Helper.GetChoice($"Deleting {entry.FullName} failed! [r]etry [s]kip?", "r", "s");
+			if (choice == "s")
+				break;
+		}
+	}
 }
 
 /// <summary>Metadata about a mod repository.</summary>

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
 using StardewValley;
 
 namespace BetterRanching
@@ -10,7 +10,7 @@ namespace BetterRanching
 		{
 			return animal.currentProduce.Value > 0
 				&& (animal.age.Value >= animal.ageWhenMature.Value
-                && animal.toolUsedForHarvest.Equals(toolName));
+				&& animal.toolUsedForHarvest.Value.Equals(toolName));
 		}
 
 		public static FarmAnimal GetSelectedAnimal(this Farm farm, Rectangle rectangle)
@@ -37,24 +37,11 @@ namespace BetterRanching
 			return null;
 		}
 
-		public static void OverwriteState(this Game1 game, object state, string message = null)
+		public static void OverwriteState(this IInputHelper input, SButton button, string message = null)
 		{
-			if (state is MouseState mouseState)
-			{
-				if (message != null && Game1.oldMouseState.LeftButton == ButtonState.Released)
-				{
-					Game1.showRedMessage(message);
-				}
-				Game1.oldMouseState = mouseState;
-			}
-			else if (state is GamePadState gamePadState)
-			{
-				if (message != null)
-				{
-					Game1.showRedMessage(message);
-				}
-				Game1.oldPadState = gamePadState;
-			}
+			if (message != null)
+				Game1.showRedMessage(message);
+			input.Suppress(button);
 		}
 
 		public static bool HoldingOverridableTool()

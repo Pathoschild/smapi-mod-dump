@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
-using System.Collections.Generic;
 
 namespace GiftTasteHelper.Framework
 {
@@ -195,8 +195,8 @@ namespace GiftTasteHelper.Framework
                 taste = UniversalTasteForCategory(itemData.Category.ID);
             }
 
-           // Part II: universal taste by item ID
-           GiftTaste GetUniversalTaste(int id)
+            // Part II: universal taste by item ID
+            GiftTaste GetUniversalTaste(int id)
             {
                 foreach (var pair in UniversalTastes)
                 {

@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using StardewValley;
-using StardewValley.Menus;
+using StackSplitX.MenuHandlers;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using System.Diagnostics;
-using Microsoft.Xna.Framework.Graphics;
-using StackSplitX.MenuHandlers;
+using StardewValley;
+using StardewValley.Menus;
 
 namespace StackSplitX
 {
@@ -36,10 +32,9 @@ namespace StackSplitX
         /// <param name="helper">Mod helper.</param>
         public override void Entry(IModHelper helper)
         {
-            MenuEvents.MenuChanged += OnMenuChanged;
-            MenuEvents.MenuClosed += OnMenuClosed;
-            GraphicsEvents.Resize += OnResize;
-            GameEvents.UpdateTick += OnUpdate;
+            helper.Events.Display.MenuChanged += OnMenuChanged;
+            helper.Events.Display.WindowResized += OnWindowResized;
+            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 
             this.MenuHandlers = new Dictionary<Type, IMenuHandler>()
             {
@@ -56,9 +51,8 @@ namespace StackSplitX
         {
             if (!this.IsSubscribed)
             {
-                ControlEvents.MouseChanged += OnMouseStateChanged;
-                ControlEvents.KeyPressed += OnKeyPressed;
-                GraphicsEvents.OnPostRenderEvent += OnDraw;
+                Helper.Events.Input.ButtonPressed += OnButtonPressed;
+                Helper.Events.Display.Rendered += OnRendered;
 
                 this.IsSubscribed = true;
             }
@@ -69,52 +63,59 @@ namespace StackSplitX
         {
             if (this.IsSubscribed)
             {
-                ControlEvents.MouseChanged -= OnMouseStateChanged;
-                ControlEvents.KeyPressed -= OnKeyPressed;
-                GraphicsEvents.OnPostRenderEvent -= OnDraw;
+                Helper.Events.Input.ButtonPressed -= OnButtonPressed;
+                Helper.Events.Display.Rendered -= OnRendered;
 
                 this.IsSubscribed = false;
             }
         }
 
-        /// <summary>Callback to the resize event. Sets flags to notify handler to resize next tick as the menu isn't always recreated.</summary>
-        private void OnResize(object sender, EventArgs e)
+        /// <summary>Raised after the game window is resized.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnWindowResized(object sender, WindowResizedEventArgs e)
         {
+            // set flags to notify handler to resize next tick as the menu isn't always recreated
             this.WasResizeEvent = true;
             this.TickResizedOn = this.CurrentUpdateTick;
         }
 
-        /// <summary>Callback for the menu closed event; closes the current handler and unsubscribes from the events.</summary>
-        private void OnMenuClosed(object sender, EventArgsClickableMenuClosed e)
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
-            if (this.CurrentMenuHandler != null)
+            // menu closed
+            if (e.NewMenu == null)
             {
-                //this.Monitor.Log("[OnMenuClosed] Closing current menu handler", LogLevel.Trace);
-                this.CurrentMenuHandler.Close();
-                this.CurrentMenuHandler = null;
+                // close the current handler and unsubscribe from the events
+                if (this.CurrentMenuHandler != null)
+                {
+                    //this.Monitor.Log("[OnMenuClosed] Closing current menu handler", LogLevel.Trace);
+                    this.CurrentMenuHandler.Close();
+                    this.CurrentMenuHandler = null;
 
-                UnsubscribeEvents();
+                    UnsubscribeEvents();
+                }
+                return;
             }
-        }
 
-        /// <summary>Callback for the menu changed event; switches the currently handler to the one for the new menu type.</summary>
-        private void OnMenuChanged(object sender, EventArgsClickableMenuChanged e)
-        {
-            this.Monitor.DebugLog($"Menu changed from {e?.PriorMenu} to {e?.NewMenu}");
-
-            // Resize event; ignore
-            if (e.PriorMenu?.GetType() == e.NewMenu?.GetType() && this.WasResizeEvent)
+            // ignore resize event
+            if (e.OldMenu?.GetType() == e.NewMenu?.GetType() && this.WasResizeEvent)
             {
                 this.WasResizeEvent = false;
                 return;
             }
             this.WasResizeEvent = false; // Reset
 
+
+            // switch the currently handler to the one for the new menu type
+            this.Monitor.DebugLog($"Menu changed from {e.OldMenu} to {e.NewMenu}");
             var newMenuType = e.NewMenu.GetType();
             if (this.MenuHandlers.ContainsKey(newMenuType))
             {
-                // Close the current one of it's valid and not the same as the current one
-                if (this.CurrentMenuHandler != null && this.CurrentMenuHandler != this.MenuHandlers[newMenuType])
+                // Close the current one of it's valid
+                if (this.CurrentMenuHandler != null)
                 {
                     this.CurrentMenuHandler.Close();
                 }
@@ -126,47 +127,37 @@ namespace StackSplitX
             }
         }
 
-        /// <summary>Callback for the mouse changed event; forwards the input to the current handler and consumes it if the handler requests so.</summary>
-        private void OnMouseStateChanged(object sender, EventArgsMouseStateChanged e)
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (this.CurrentMenuHandler != null && this.CurrentMenuHandler.IsOpen())
-            {
-                switch (this.CurrentMenuHandler.HandleMouseInput(e.PriorState, e.NewState))
-                {
-                    case EInputHandled.Handled:
-                        break;
-                    case EInputHandled.Consumed:
-                        Game1.oldMouseState = e.NewState;
-                        break;
-                    case EInputHandled.NotHandled:
-                        // The click wasn't handled meaning the split menu no longer has focus and should be closed.
-                        this.CurrentMenuHandler.CloseSplitMenu();
-                        break;
-                }
-            }
-        }
-
-        /// <summary>Callback for the keypressed event. Forwards it to the handler and consumes it while the tooltip is active.</summary>
-        private void OnKeyPressed(object sender, EventArgsKeyPressed e)
-        {
+            // Forward input to the handler and consumes it while the tooltip is active.
             // Intercept keyboard input while the tooltip is active so numbers don't change the actively equipped item etc.
             // TODO: remove null checks if these events are only called subscribed when it's valid
-            if (this.CurrentMenuHandler?.HandleKeyboardInput(e.KeyPressed) == EInputHandled.Handled)
+            switch (this.CurrentMenuHandler?.HandleInput(e.Button))
             {
-                // Obey unless we're hitting 'cancel' keys.
-                if (e.KeyPressed != Keys.Escape)
-                {
-                    Game1.oldKBState = Keyboard.GetState();
-                }
-                else
-                {
-                    this.CurrentMenuHandler.CloseSplitMenu();
-                }
+                case EInputHandled.Handled:
+                    // Obey unless we're hitting 'cancel' keys.
+                    if (e.Button != SButton.Escape)
+                        this.Helper.Input.Suppress(e.Button);
+                    else
+                        this.CurrentMenuHandler.CloseSplitMenu();
+                    break;
+
+                case EInputHandled.Consumed:
+                    this.Helper.Input.Suppress(e.Button);
+                    break;
+
+                case EInputHandled.NotHandled:
+                    if (e.Button == SButton.MouseLeft || e.Button == SButton.MouseRight)
+                        this.CurrentMenuHandler.CloseSplitMenu(); // click wasn't handled meaning the split menu no longer has focus and should be closed.
+                    break;
             }
         }
 
-        /// <summary>Callback for the UpdateTick event. Updates the current handler.</summary>
-        private void OnUpdate(object sender, EventArgs e)
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             this.CurrentUpdateTick += 1;
             if (this.CurrentUpdateTick >= 60)
@@ -194,9 +185,10 @@ namespace StackSplitX
             this.CurrentMenuHandler?.Update();
         }
 
-        /// <summary>Callback for the Draw event. Tells the current handler to draw the split menu if it's active.</summary>
-        private void OnDraw(object sender, EventArgs e)
+        /// <summary>Raised after the game draws to the sprite patch in a draw tick, just before the final sprite batch is rendered to the screen. Since the game may open/close the sprite batch multiple times in a draw tick, the sprite batch may not contain everything being drawn and some things may already be rendered to the screen. Content drawn to the sprite batch at this point will be drawn over all vanilla content (including menus, HUD, and cursor).</summary>
+        private void OnRendered(object sender, RenderedEventArgs e)
         {
+            // tell the current handler to draw the split menu if it's active
             this.CurrentMenuHandler?.Draw(Game1.spriteBatch);
         }
     }

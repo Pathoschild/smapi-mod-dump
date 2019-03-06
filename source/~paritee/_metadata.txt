@@ -7,9 +7,9 @@ mods:
    Paritee's Treat Your Animals
 
 latest commit:
-   commit 290d511e6361c05a659254dd86cb8633cf411551
+   commit 9d96e485f65a74563737b09fcafd02124ebaabfa
    Author: Paritee <paritee.hi@gmail.com>
-   Date:   Mon Feb 25 19:43:36 2019 -0500
+   Date:   Mon Mar 4 12:22:03 2019 -0500
    
-       Fixed animal not becoming available if required building built within same session
+       Spacing
    

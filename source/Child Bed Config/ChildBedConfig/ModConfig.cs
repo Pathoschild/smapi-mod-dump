@@ -19,9 +19,9 @@ namespace ChildBedConfig
         ///<summary>Constructor, set up the example of the config for players to follow</summary>
         public ModConfig()
         {
-            Farmer NoName = new Farmer();
+            Farmer Default = new Farmer();
             Farmers = new List<Farmer>();
-            Farmers.Add(NoName);
+            Farmers.Add(Default);
         }
     }
 
@@ -37,13 +37,18 @@ namespace ChildBedConfig
         public string CharacterName { get; set; }
 
         ///<summary>Determines whether or not to show the crib</summary>
-        public bool ShowCrib { get; set; }
+        public bool ShowHomeCrib { get; set; }
 
         ///<summary>Determines whether or not to show the bed closest to the crib</summary>
-        public bool ShowBed1 { get; set; }
+        public bool ShowHomeBed1 { get; set; }
 
         ///<summary>Determines whether or not to show the bed furthest from the crib</summary>
-        public bool ShowBed2 { get; set; }
+        public bool ShowHomeBed2 { get; set; }
+
+        //This is all the same as the above, it just affects the cabins
+        public bool ShowCabinCrib { get; set; }
+        public bool ShowCabinBed1 { get; set; }
+        public bool ShowCabinBed2 { get; set; }
 
         /*****************************/
         /**      Public methods     **/
@@ -51,17 +56,23 @@ namespace ChildBedConfig
         public Farmer()
         {
             CharacterName = "NoName";
-            ShowCrib = true;
-            ShowBed1 = true;
-            ShowBed2 = true;
+            ShowHomeCrib = true;
+            ShowHomeBed1 = true;
+            ShowHomeBed2 = true;
+            ShowCabinCrib = true;
+            ShowCabinBed1 = true;
+            ShowCabinBed2 = true;
         }
 
-        public Farmer(string name, bool showcrib, bool showbed1, bool showbed2)
+        public Farmer(string name, bool showhcrib, bool showhbed1, bool showhbed2, bool showccrib, bool showcbed1, bool showcbed2)
         {
             CharacterName = name;
-            ShowCrib = showcrib;
-            ShowBed1 = showbed1;
-            ShowBed2 = showbed2;
+            ShowHomeCrib = showhcrib;
+            ShowHomeBed1 = showhbed1;
+            ShowHomeBed2 = showhbed2;
+            ShowCabinCrib = showccrib;
+            ShowCabinBed1 = showcbed1;
+            ShowCabinBed2 = showcbed2;
         }
     }
 }

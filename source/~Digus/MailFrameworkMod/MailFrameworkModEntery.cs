@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Harmony;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -31,9 +29,9 @@ namespace MailFrameworkMod
             ModHelper = helper;
             ModMonitor = Monitor;
             ModConfig = helper.ReadConfig<ModConfig>();
-            TimeEvents.AfterDayStarted += TimeEvents_AfterDayStarted;
-            SaveEvents.AfterReturnToTitle += SaveEvents_AfterReturnToTitle;
-            SaveEvents.BeforeSave += TimeEvents_BeforeSave;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
+            helper.Events.GameLoop.Saving += OnSaving;
             var editors = helper.Content.AssetEditors;
             editors.Add(new DataLoader());
 
@@ -72,29 +70,29 @@ namespace MailFrameworkMod
         /// </summary>
         private void WatchLetterMenu()
         {
-            SaveEvents.AfterLoad += SaveEvents_AfterLoad;
+            Helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
         }
 
         /// <summary>
-        /// To be invoked after returning to the title screen.
+        /// Raised after the game returns to the title screen.
         /// Unloads the menu changed method.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SaveEvents_AfterReturnToTitle(object sender, EventArgs e)
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
-            MenuEvents.MenuChanged -= MenuEvents_MenuChanged;
+            Helper.Events.Display.MenuChanged -= OnMenuChanged;
             MailController.UnloadMailBox();
         }
         /// <summary>
-        /// To be invoked after returning loading a game.
+        /// Raised after the player loads a save slot and the world is initialised.
         /// Loads the menu changed method.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SaveEvents_AfterLoad(object sender, EventArgs e)
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaveLoaded(object sender, EventArgs e)
         {
-            MenuEvents.MenuChanged += MenuEvents_MenuChanged;
+            Helper.Events.Display.MenuChanged += OnMenuChanged;
         }
 
 
@@ -102,26 +100,25 @@ namespace MailFrameworkMod
         ** Private methods
         *********/
         /// <summary>
-        /// The method invoked when the day starts.
+        /// Raised after the game begins a new day (including when the player loads a save).
         /// Here it updates the mail box.
         /// </summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void TimeEvents_AfterDayStarted(object sender, EventArgs e)
+        /// <param name="e">The event arguments.</param>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             MailController.UpdateMailBox();
 
         }
 
         /// <summary>
-        /// The method invocade when a menu is changed.
+        /// Raised after a game menu is opened, closed, or replaced.
         /// Here it invoke the MailController to show a custom mail when the it's a LetterViewerMenu, called from open the mailbox and there is CustomMails to be delivered
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MenuEvents_MenuChanged(object sender, EventArgsClickableMenuChanged e)
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
-            
             if (e.NewMenu is LetterViewerMenu && this.Helper.Reflection.GetField<string>(e.NewMenu, "mailTitle").GetValue() != null && MailController.HasCustomMail())
             {
                 MailController.ShowLetter();
@@ -130,12 +127,11 @@ namespace MailFrameworkMod
 
 
         /// <summary>
-        /// To be invoked before saving a game.
-        /// 
+        /// Raised before the game begins writes data to the save file (except the initial save creation).
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TimeEvents_BeforeSave(object sender, EventArgs e)
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaving(object sender, EventArgs e)
         {
             MailController.UnloadMailBox();
         }

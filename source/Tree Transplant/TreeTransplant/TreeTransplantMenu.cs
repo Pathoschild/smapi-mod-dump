@@ -21,8 +21,8 @@ namespace TreeTransplant
 		private bool[] validSpot = new bool[9];
 		private ClickableTextureComponent cancelButton;
 		private ClickableTextureComponent flipButton;
-		private readonly string defaultText = "Select a tree to transplant.";
-		private readonly string placementText = "Choose a new spot for the tree.";
+		private readonly string defaultText = TreeTransplant.helper.Translation.Get("Menu_DefaultText");
+		private readonly string placementText = TreeTransplant.helper.Translation.Get("Menu_PlacementText");
 
 		public TreeTransplantMenu()
 		{
@@ -38,8 +38,8 @@ namespace TreeTransplant
 			// initialize buttons
 			cancelButton = new ClickableTextureComponent(
 				new Rectangle(
-					xPositionOnScreen + width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - Game1.tileSize,
-					yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + Game1.tileSize,
+					xPositionOnScreen + width - borderWidth - spaceToClearSideBorder - Game1.tileSize,
+					yPositionOnScreen + spaceToClearTopBorder + Game1.tileSize,
 					Game1.tileSize,
 					Game1.tileSize),
 				Game1.mouseCursors,
@@ -48,8 +48,8 @@ namespace TreeTransplant
 
 			flipButton = new ClickableTextureComponent(
 				new Rectangle(
-					xPositionOnScreen + width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - (Game1.tileSize * 2) - (Game1.tileSize / 2),
-					yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + Game1.tileSize,
+					xPositionOnScreen + width - borderWidth - spaceToClearSideBorder - (Game1.tileSize * 2) - (Game1.tileSize / 2),
+					yPositionOnScreen + spaceToClearTopBorder + Game1.tileSize,
 					Game1.tileSize,
 					Game1.tileSize),
 				TreeTransplant.flipTexture,
@@ -341,7 +341,7 @@ namespace TreeTransplant
 
 			if (!canPlace && selectedTree != null)
 			{
-				Notifier.Message("Can't place here!");
+				Notifier.Message(TreeTransplant.helper.Translation.Get("Menu_InvalidPlace"));
 				Game1.playSound("cancel");
 			}
 			else if (selectedTree != null && tileLocation == selectedTreeLocation)
@@ -360,7 +360,7 @@ namespace TreeTransplant
 				{
 					if (terrainFeature is Tree && (terrainFeature as Tree).tapped.Value)
 					{
-						Notifier.Message("Can't move tree with a tree tap!");
+						Notifier.Message(TreeTransplant.helper.Translation.Get("Menu_InvalidCap"));
 						Game1.playSound("cancel");
 						return;
 					}

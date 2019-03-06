@@ -1,10 +1,10 @@
 ﻿{
   "Name": "Custom Warps",
   "Author": "f4iTh",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Allows the player to set custom warps.",
   "UniqueID": "f4iTh.CustomWarps",
   "EntryDll": "CustomWarps.dll",
-  "MinimumApiVersion": "2.10",
+  "MinimumApiVersion": "2.11",
   "UpdateKeys": ["Nexus:3445"]
 }

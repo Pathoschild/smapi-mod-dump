@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using StardewValley;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using StardewValley;
 
 namespace GiftTasteHelper.Framework
 {
@@ -65,7 +65,7 @@ namespace GiftTasteHelper.Framework
             {
                 int.TryParse(parts[1], out categoryId);
             }
-            return new ItemCategory{ Name = parts[0], ID = categoryId };
+            return new ItemCategory { Name = parts[0], ID = categoryId };
         }
 
         public static ItemData MakeItem(int itemId)

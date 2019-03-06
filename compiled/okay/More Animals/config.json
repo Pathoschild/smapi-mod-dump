@@ -2,6 +2,10 @@
   "UseMaxAdoptionLimit": false,
   "MaxAdoptionLimit": 10,
   "AnimalsOnly": false,
+  "BalancedPetTypes": true,
+  "BalancedPetSkins": true,
+  "DisableDailyLimit": false,
+  "ExtraTypes": [],
   "AdoptionPrice": 500,
   "RepeatedAdoptionPenality": 0.1
 }

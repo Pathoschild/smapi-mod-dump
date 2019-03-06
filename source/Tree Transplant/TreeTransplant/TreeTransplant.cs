@@ -1,9 +1,11 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.TerrainFeatures;
 
@@ -45,7 +47,7 @@ namespace TreeTransplant
 		internal void OnMenuChanged(object sender, MenuChangedEventArgs e)
 		{
 			// carpenter dialog in science house?
-			if (Game1.currentLocation?.Name == "ScienceHouse" && e.NewMenu is DialogueBox && Game1.currentLocation.lastQuestionKey == "carpenter")
+			if (Game1.currentLocation?.Name == "ScienceHouse" && e.NewMenu is DialogueBox && Game1.currentLocation.lastQuestionKey == "carpenter" && Game1.IsMasterGame)
 				handleDialogueMenu();
 		}
 
@@ -65,35 +67,30 @@ namespace TreeTransplant
 				return;
 
 			// create answer choices
-			Response[] answerChoices;
+			var responseList = new List<Response>() { new Response("Shop", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Shop")) };
 
 			// handle if the house can still be upgraded
-			if (Game1.player.HouseUpgradeLevel < 3)
-				answerChoices = new[]
-				{
-					new Response("Shop", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Shop")),
-					new Response("Upgrade", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_UpgradeHouse")),
-					new Response("Tree", "Transplant Trees"),
-					new Response("Construct", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Construct")),
-					new Response("Leave", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Leave"))
-				};
-			// handle when the house is fully upgraded
-			else
-				answerChoices = new[]
-				{
-					new Response("Shop", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Shop")),
-					new Response("Tree", "Transplant Trees"),
-					new Response("Construct", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Construct")),
-					new Response("Leave", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Leave"))
-				};
+			if (Game1.IsMasterGame)
+			{
+				if (Game1.player.HouseUpgradeLevel < 3)
+					responseList.Add(new Response("Upgrade", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_UpgradeHouse")));
+				else if ((Game1.MasterPlayer.mailReceived.Contains("ccIsComplete") || Game1.MasterPlayer.mailReceived.Contains("JojaMember") || Game1.MasterPlayer.hasCompletedCommunityCenter()) && (Game1.getLocationFromName("Town") as Town).daysUntilCommunityUpgrade.Value <= 0 && !Game1.MasterPlayer.mailReceived.Contains("pamHouseUpgrade"))
+					responseList.Add(new Response("CommunityUpgrade", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_CommunityUpgrade")));
+			}
+			else if (Game1.player.HouseUpgradeLevel < 2)
+				responseList.Add(new Response("Upgrade", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_UpgradeCabin")));
 
+			responseList.Add(new Response("Tree", helper.Translation.Get("Carpenter_Option")));
+			responseList.Add(new Response("Construct", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Construct")));
+			responseList.Add(new Response("Leave", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Leave")));
+		
 			// set the custom key for our dialogue box
 			Game1.currentLocation.lastQuestionKey = "custom_carpenter";
 
 			// create the question dialogue with our custom tag
 			science.createQuestionDialogue(
 				Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu"),
-				answerChoices,
+				responseList.ToArray(),
 				handleCarpenterMenuAnswer
 			);
 		}
@@ -113,6 +110,9 @@ namespace TreeTransplant
 					break;
 				case "Upgrade":
 					Helper.Reflection.GetMethod(Game1.currentLocation, "houseUpgradeOffer").Invoke();
+					break;
+				case "CommunityUpgrade":
+					Helper.Reflection.GetMethod(Game1.currentLocation, "communityUpgradeOffer").Invoke();
 					break;
 				case "Construct":
 					Game1.activeClickableMenu = new CarpenterMenu(false);
