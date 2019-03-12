@@ -1,0 +1,5 @@
+{
+  "SendReminderMailDaily": false,
+  "SendReminderMailWeekly": false,
+  "SendReminderMailMonthly": true
+}

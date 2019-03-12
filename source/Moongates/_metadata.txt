@@ -1,0 +1,13 @@
+url:
+   https://github.com/bwdymods/SDV-Moongates.git
+
+mods:
+   Moongates
+
+latest commit:
+   commit 973e2e6e69223cefb92835ce180aa739af07d42e
+   Author: bwdymods <bwdymods@gmail.com>
+   Date:   Fri Mar 8 23:13:02 2019 -0900
+   
+       Delete cover.png
+   

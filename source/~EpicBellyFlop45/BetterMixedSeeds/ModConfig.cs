@@ -189,11 +189,37 @@ namespace BetterMixedSeeds
         public bool UseOG_Kush_FALL { get; set; } = true;
         public bool UseSativa { get; set; } = true;
         public bool UseSour_Diesel { get; set; } = true;
-        public bool UseStrawberry_Cough_SUMMER { get; set; }
-        public bool UseStrawberry_Cough_FALL { get; set; }
-        public bool UseTobacco_SPRING { get; set; }
-        public bool UseTobacco_SUMMER { get; set; }
-        public bool UseWhite_Widow_SUMMER { get; set; }
-        public bool useWhite_Widow_FALL { get; set; }
+        public bool UseStrawberry_Cough_SUMMER { get; set; } = true;
+        public bool UseStrawberry_Cough_FALL { get; set; } = true;
+        public bool UseTobacco_SPRING { get; set; } = true;
+        public bool UseTobacco_SUMMER { get; set; } = true;
+        public bool UseWhite_Widow_SUMMER { get; set; } = true;
+        public bool UseWhite_Widow_FALL { get; set; } = true;
+
+        // Six Plantable Crops for Winter
+        public bool UseBlue_Rose { get; set; } = true;
+        public bool UseDaikon { get; set; } = true;
+        public bool UseGentian { get; set; } = true;
+        public bool UseNapa_Cabbage { get; set; } = true;
+        public bool UseSnowdrop { get; set; } = true;
+        public bool UseWinter_Broccoli { get; set; } = true;
+
+        // Bonster Crops
+        public bool UseBlackcurrant { get; set; } = true;
+        public bool UseBlue_Corn_SUMMER { get; set; } = true;
+        public bool UseBlue_Corn_FALL { get; set; } = true;
+        public bool UseCardamom { get; set; } = true;
+        public bool UseCranberry_Beans { get; set; } = true;
+        public bool UseMaypop { get; set; } = true;
+        public bool UsePeppercorn_SUMMER { get; set; } = true;
+        public bool UsePeppercorn_FALL { get; set; } = true;
+        public bool UseRedCurrant { get; set; } = true;
+        public bool UseRose_Hips_SPRING { get; set; } = true;
+        public bool UseRose_Hips_SUMMER { get; set; } = true;
+        public bool UseRoselle_Hibiscus { get; set; } = true;
+        public bool UseSummer_Squash { get; set; } = true;
+        public bool UseTaro_SUMMER { get; set; } = true;
+        public bool UseTaro_FALL { get; set; } = true;
+        public bool UseWhite_Currant { get; set; } = true;
     }
 }

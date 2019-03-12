@@ -22,6 +22,7 @@ namespace BetterJunimos {
             public bool CanWorkInEvenings { get; set; } = false;
             public bool WorkFaster { get; set; } = false;
             public bool AvoidHarvestingFlowers { get; set; } = true;
+            public bool AvoidPlantingCoffee { get; set; } = true;
         }
 
         public JunimoPayments JunimoPayment { get; set; } = new JunimoPayments();

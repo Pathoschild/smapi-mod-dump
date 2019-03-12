@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Monsters;
 
@@ -9,6 +10,13 @@ namespace Spawn_Monsters
 	/// <summary>The mod entry point.</summary>
 	public class ModEntry : Mod
 	{
+
+		/*********
+		** Properties
+		*********/
+		/// <summary>The mod configuration from the player.</summary>
+		public ModConfig config;
+
 		/*********
         ** Public methods
         *********/
@@ -16,13 +24,27 @@ namespace Spawn_Monsters
 			helper.ConsoleCommands.Add("monster_spawn", "Spawns a Monster.\n\nUsage: monster_spawn <name> [posX] [posY] [amount]\n\nUses Farmer's coordinates if none or '~' was given.", this.SpawnEntity);
 			helper.ConsoleCommands.Add("monster_list", "Shows a lists of all monsters available to spawn.", this.MonsterList);
 			helper.ConsoleCommands.Add("monster_menu", "Shows a menu for spawning monsters", this.MonsterMenu);
+
+			config = helper.ReadConfig<ModConfig>();
+
+			helper.Events.Input.ButtonPressed += this.OnButtonPressed;
 		}
 
+		/*********
+        ** Input Methods
+        *********/
+		private void OnButtonPressed(object sender, ButtonPressedEventArgs e) {
+			if (!Context.IsPlayerFree)
+				return;
+			if (e.Button == this.config.MenuKey) {
+				Game1.activeClickableMenu = new MonsterMenu();
+			}
+		}
 
 		/*********
-        ** Private methods
+        ** Command Methods
         *********/
-		private void SpawnEntity(string command, string[] args) {
+		public void SpawnEntity(string command, string[] args) {
 
 			//We need a world to spawn monsters in, duh
 			if (Context.IsWorldReady) {
@@ -57,27 +79,27 @@ namespace Spawn_Monsters
 						switch (args[0]) {
 
 							case "greenSlime": entity = new GreenSlime(pos, 0); break;
-							case "blueSlime": entity = new GreenSlime(pos, 40); break;	
+							case "blueSlime": entity = new GreenSlime(pos, 40); break;
 							case "redSlime": entity = new GreenSlime(pos, 80); break;
 							case "purpleSlime": entity = new GreenSlime(pos, 121); break;
 							case "yellowSlime": entity = new GreenSlime(pos, new Color(255, 255, 50)); break;
-							case "blackSlime": Random r = new Random();  entity = new GreenSlime(pos, new Color(40 + r.Next(10), 40 + r.Next(10), 40 + r.Next(10))); break;
+							case "blackSlime": Random r = new Random(); entity = new GreenSlime(pos, new Color(40 + r.Next(10), 40 + r.Next(10), 40 + r.Next(10))); break;
 
 							case "bat": entity = new Bat(pos); break;                           //minelevel: 0 - 40 - 80 - 171 -> type
-							case "frostBat": entity = new Bat(pos, 40); break;					
+							case "frostBat": entity = new Bat(pos, 40); break;
 							case "lavaBat": entity = new Bat(pos, 80); break;
 							case "iridiumBat": entity = new Bat(pos, 171); break;
 
-							case "bug": entity = new Bug(pos, 0); break;						//available areatypes: 121 -> armored
-							case "armoredBug": entity = new Bug(pos, 121);break;
+							case "bug": entity = new Bug(pos, 0); break;                        //available areatypes: 121 -> armored
+							case "armoredBug": entity = new Bug(pos, 121); break;
 
-							case "fly": entity = new Fly(pos); break;							//hard -> mutant
+							case "fly": entity = new Fly(pos); break;                           //hard -> mutant
 							case "mutantFly": entity = new Fly(pos, true); break;
 
-							case "ghost": entity = new Ghost(pos); break;						//name -> carbon ghost
+							case "ghost": entity = new Ghost(pos); break;                       //name -> carbon ghost
 							case "carbonGhost": entity = new Ghost(pos, "Carbon Ghost"); break;
 
-							case "grub": entity = new Grub(pos); break;							//hard -> mutant
+							case "grub": entity = new Grub(pos); break;                         //hard -> mutant
 							case "mutantGrub": entity = new Grub(pos, true); break;
 
 							case "rockCrab": entity = new RockCrab(pos); break;                 //name -> iridium crab
@@ -85,7 +107,7 @@ namespace Spawn_Monsters
 							case "iridiumCrab": entity = new RockCrab(pos, "Iridium Crab"); break;
 
 							case "metalHead": entity = new MetalHead(pos, 80); break;            //mineareas: 0, 40, 80 - seems to only spawn at 80+
-							
+
 							case "rockGolem": entity = new RockGolem(pos); break;               //mineareas: 0, 40, 80 - changes health and damage; difficultymod: 
 							case "wildernessGolem": entity = new RockGolem(pos, 5); break;
 
@@ -111,7 +133,7 @@ namespace Spawn_Monsters
 			} else { Monitor.Log("Load a save first!"); }
 		}
 
-		private void MonsterList(string command, string[] args) {
+		public void MonsterList(string command, string[] args) {
 			Monitor.Log("Monsters available to spawn:\n\n" +
 				"Slimes:\n" +
 				"	greenSlime\n" +
@@ -130,17 +152,17 @@ namespace Spawn_Monsters
 				"Bugs:\n" +
 				"	bug\n" +
 				"	armoredBug\n\n" +
-				
+
 				"Flies: \n" +
 				"	fly\n" +
 				"	grub\n" +
 				"	mutantFly\n" +
 				"	mutantGrub\n\n" +
-				
+
 				"Ghosts:\n" +
 				"	ghost\n" +
 				"	carbonGhost\n\n" +
-				
+
 				"Crabs:\n" +
 				"	rockCrab\n" +
 				"	lavaCrab\n" +
@@ -165,7 +187,7 @@ namespace Spawn_Monsters
 				"Keep in mind that some monsters don't work properly outside of the farm and the mines!", LogLevel.Info);
 		}
 
-		private void MonsterMenu(string command, string[] args) {
+		public void MonsterMenu(string command, string[] args) {
 			if (Context.IsWorldReady) {
 				Game1.activeClickableMenu = new MonsterMenu();
 			} else {

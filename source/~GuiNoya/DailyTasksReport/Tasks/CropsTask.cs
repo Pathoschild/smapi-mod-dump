@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+#pragma warning disable CC0021 // Use nameof
+
 namespace DailyTasksReport.Tasks
 {
     public class CropsTask : Task
@@ -337,3 +339,5 @@ namespace DailyTasksReport.Tasks
         FruitTreesGreenhouse = 7
     }
 }
+
+#pragma warning restore CC0021 // Use nameof

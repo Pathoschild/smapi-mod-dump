@@ -14,6 +14,7 @@ namespace BetterMixedSeeds
     public class ModEntry : Mod
     {
         public static ILookup<int, string> Seeds;
+        public static IMonitor ModMonitor;
 
         public override void Entry(IModHelper helper)
         {
@@ -34,6 +35,8 @@ namespace BetterMixedSeeds
 
             // Add an event handler when all mods are loaded, so the JA api can be connected to
             this.Helper.Events.GameLoop.SaveLoaded += Events_SaveLoaded;
+
+            ModMonitor = this.Monitor;
         }
 
         private void Events_SaveLoaded(object sender, SaveLoadedEventArgs e)
@@ -145,10 +148,12 @@ namespace BetterMixedSeeds
             bool hasPPJAFruitsAndVeggies = this.Helper.ModRegistry.IsLoaded("ppja.fruitsandveggies");
             bool hasPPJAMizusFlowers = this.Helper.ModRegistry.IsLoaded("mizu.flowers");
             bool hasCannabisKit = this.Helper.ModRegistry.IsLoaded("PPJA.cannabiskit");
+            bool hasSixPlantableCrops = this.Helper.ModRegistry.IsLoaded("Popobug.SPCFW");
+            bool hasBonsterCrops = this.Helper.ModRegistry.IsLoaded("BFV.FruitVeggie");
 
             object api = this.Helper.ModRegistry.GetApi("spacechase0.JsonAssets");
 
-            if (hasPPJAFantasyCrops || hasPPJAFreshMeat || hasPPJAFruitsAndVeggies || hasPPJAMizusFlowers || hasCannabisKit)
+            if (hasPPJAFantasyCrops || hasPPJAFreshMeat || hasPPJAFruitsAndVeggies || hasPPJAMizusFlowers || hasCannabisKit || hasSixPlantableCrops || hasBonsterCrops)
             {
                 if (api != null)
                 {
@@ -156,12 +161,13 @@ namespace BetterMixedSeeds
                     {
                         this.Monitor.Log("PPJAFantasyCrops loaded", LogLevel.Trace);
 
-                        // Create a list of crops to pass to JA API
-                        IList<string> listOfFantasyCropNames = new List<string> { "Coal Seeds", "Copper Seeds", "Gold Seeds", "Iridum Seeds", "Iron Seeds", "Doubloom Seeds" };
+                        // Create a list of crop seeds to pass to JA API
+                        List<string> fantasySeedNames = new List<string> { "Coal Seeds", "Copper Seeds", "Gold Seeds", "Iridum Seeds", "Iron Seeds", "Doubloom Seeds" };
 
-                        foreach (string fantasyName in listOfFantasyCropNames)
+                        foreach (string fantasySeedName in fantasySeedNames)
                         {
-                            integratedCrops.Add(fantasyName, this.Helper.Reflection.GetMethod(api, "GetObjectId").Invoke<int>(fantasyName));
+                            integratedCrops.Add(fantasySeedName, this.Helper.Reflection.GetMethod(api, "GetObjectId").Invoke<int>(fantasySeedName));
+                            this.Monitor.Log($"Added {fantasySeedName} crop to list", LogLevel.Trace);
                         }
                     }
 
@@ -169,12 +175,13 @@ namespace BetterMixedSeeds
                     {
                         this.Monitor.Log("PPJAFreshMeat loaded", LogLevel.Trace);
 
-                        // Create a list of crops to pass to JA API
-                        IList<string> listOfFreshMeatCropNames = new List<string> { "Beefvine Seeds", "Chevonvine Seeds", "Chickenvine Seeds", "Duckvine Seeds", "Muttonvine Seeds", "Porkvine Seeds", "Rabbitvine Seeds" };
+                        // Create a list of crop seeds to pass to JA API
+                        List<string> freshMeatSeedNames = new List<string> { "Beefvine Seeds", "Chevonvine Seeds", "Chickenvine Seeds", "Duckvine Seeds", "Muttonvine Seeds", "Porkvine Seeds", "Rabbitvine Seeds" };
 
-                        foreach (var freshMeatName in listOfFreshMeatCropNames)
+                        foreach (var freshMeatSeedName in freshMeatSeedNames)
                         {
-                            integratedCrops.Add(freshMeatName, this.Helper.Reflection.GetMethod(api, "GetObjectId").Invoke<int>(freshMeatName));
+                            integratedCrops.Add(freshMeatSeedName, this.Helper.Reflection.GetMethod(api, "GetObjectId").Invoke<int>(freshMeatSeedName));
+                            this.Monitor.Log($"Added {freshMeatSeedName} crop to list", LogLevel.Trace);
                         }
                     }
 
@@ -182,12 +189,13 @@ namespace BetterMixedSeeds
                     {
                         this.Monitor.Log("PPJAFruitsAndVeggies loaded", LogLevel.Trace);
 
-                        // Create a list of crops to pass to JA API
-                        IList<string> listOfFruitAndVeggieCropNames = new List<string> { "Adzuki Bean Seeds", "Aloe Pod", "Barley Seeds", "Basil Seeds", "Bell Pepper Seeds", "Blackberry Seeds", "Broccoli Seeds", "Cabbage Seeds", "Carrot Seeds", "Cassava Seeds", "Celery Seeds", "Chive Seeds", "Cotton Seeds", "Cucumber Starter", "Elderberry Seeds", "Fennel Seeds", "Ginger Seeds", "Gooseberry Seeds", "Green Pea Seeds", "Juniper Berry Seeds", "Kiwi Seeds", "Lettuce Seeds", "Mint Seeds", "Muskmelon Seeds", "Navy Bean Seeds", "Onion Seeds", "Oregano Seeds", "Parsley Seeds", "Passion Fruit Seeds", "Peanut Seeds", "Pineapple Seeds", "Raspberry Seeds", "Rice Seeds", "Rosemary Seeds", "Sage Seeds", "Soybean Seeds", "Spinach Seeds", "Sugar Beet Seeds", "Sugar Cane Seeds", "Sweet Canary Melon Seeds", "Sweet Potato Seeds", "Tea Seeds", "Thyme Seeds", "Wasabi Seeds", "Watermelon Seeds" };
+                        // Create a list of crop seeds to pass to JA API
+                        List<string> fruitAndVeggieSeedNames = new List<string> { "Adzuki Bean Seeds", "Aloe Pod", "Barley Seeds", "Basil Seeds", "Bell Pepper Seeds", "Blackberry Seeds", "Broccoli Seeds", "Cabbage Seeds", "Carrot Seeds", "Cassava Seeds", "Celery Seeds", "Chive Seeds", "Cotton Seeds", "Cucumber Starter", "Elderberry Seeds", "Fennel Seeds", "Ginger Seeds", "Gooseberry Seeds", "Green Pea Seeds", "Juniper Berry Seeds", "Kiwi Seeds", "Lettuce Seeds", "Mint Seeds", "Muskmelon Seeds", "Navy Bean Seeds", "Onion Seeds", "Oregano Seeds", "Parsley Seeds", "Passion Fruit Seeds", "Peanut Seeds", "Pineapple Seeds", "Raspberry Seeds", "Rice Seeds", "Rosemary Seeds", "Sage Seeds", "Soybean Seeds", "Spinach Seeds", "Sugar Beet Seeds", "Sugar Cane Seeds", "Sweet Canary Melon Seeds", "Sweet Potato Seeds", "Tea Seeds", "Thyme Seeds", "Wasabi Seeds", "Watermelon Seeds" };
 
-                        foreach (var fruitAndVeggieName in listOfFruitAndVeggieCropNames)
+                        foreach (var fruitAndVeggieSeedName in fruitAndVeggieSeedNames)
                         {
-                            integratedCrops.Add(fruitAndVeggieName, this.Helper.Reflection.GetMethod(api, "GetObjectId").Invoke<int>(fruitAndVeggieName));
+                            integratedCrops.Add(fruitAndVeggieSeedName, this.Helper.Reflection.GetMethod(api, "GetObjectId").Invoke<int>(fruitAndVeggieSeedName));
+                            this.Monitor.Log($"Added {fruitAndVeggieSeedName} crop to list", LogLevel.Trace);
                         }
                     }
 
@@ -195,12 +203,13 @@ namespace BetterMixedSeeds
                     {
                         this.Monitor.Log("PPJAMizusFlowers loaded", LogLevel.Trace);
 
-                        // Create a list of crops to pass to JA API
-                        IList<string> listOfMizusFlowerCropNames = new List<string> { "Bee Balm Seeds", "Blue Mist Seeds", "Chamomile Seeds", "Clary Sage Seeds", "Fairy Duster Pod", "Fall Rose Starter", "Fragrant Lilac Pod", "Herbal Lavender Seeds", "Honeysuckle Starter", "Passion Flower Seeds", "Pink Cat Seeds", "Purple Coneflower Seeds", "Rose Starter", "Shaded Violet Seeds", "Spring Rose Starter", "Summer Rose Starter", "Sweet Jasmine Seeds" };
+                        // Create a list of crop seeds to pass to JA API
+                        List<string> mizusFlowerSeedNames = new List<string> { "Bee Balm Seeds", "Blue Mist Seeds", "Chamomile Seeds", "Clary Sage Seeds", "Fairy Duster Pod", "Fall Rose Starter", "Fragrant Lilac Pod", "Herbal Lavender Seeds", "Honeysuckle Starter", "Passion Flower Seeds", "Pink Cat Seeds", "Purple Coneflower Seeds", "Rose Starter", "Shaded Violet Seeds", "Spring Rose Starter", "Summer Rose Starter", "Sweet Jasmine Seeds" };
 
-                        foreach (var mizusFlowerName in listOfMizusFlowerCropNames)
+                        foreach (var mizusFlowerSeedName in mizusFlowerSeedNames)
                         {
-                            integratedCrops.Add(mizusFlowerName, this.Helper.Reflection.GetMethod(api, "GetObjectId").Invoke<int>(mizusFlowerName));
+                            integratedCrops.Add(mizusFlowerSeedName, this.Helper.Reflection.GetMethod(api, "GetObjectId").Invoke<int>(mizusFlowerSeedName));
+                            this.Monitor.Log($"Added {mizusFlowerSeedName} crop to list", LogLevel.Trace);
                         }
                     }
 
@@ -208,12 +217,41 @@ namespace BetterMixedSeeds
                     {
                         this.Monitor.Log("CannabisKit loaded", LogLevel.Trace);
 
-                        // Create a list of crops to pass to JA API
-                        IList<string> listOfCannabisKitCropNames = new List<string> { "Blue Dream Starter", "Cannabis Starter", "Girl Scout Cookies Starter", "Green Crack Starter", "Hemp Starter", "Hybrid Starter", "Indica Starter", "Northern Lights Starter", "OG Kush Starter", "Sativa Starter", "Sour Diesel Starter", "Strawberry Cough Starter", "Tobacco Seeds", "White Widow Starter" };
+                        // Create a list of crop seeds to pass to JA API
+                        List<string> cannabisKitSeedNames = new List<string> { "Blue Dream Starter", "Cannabis Starter", "Girl Scout Cookies Starter", "Green Crack Starter", "Hemp Starter", "Hybrid Starter", "Indica Starter", "Northern Lights Starter", "OG Kush Starter", "Sativa Starter", "Sour Diesel Starter", "Strawberry Cough Starter", "Tobacco Seeds", "White Widow Starter" };
 
-                        foreach (var cannabisKitName in listOfCannabisKitCropNames)
+                        foreach (var cannabisKitSeedName in cannabisKitSeedNames)
                         {
-                            integratedCrops.Add(cannabisKitName, this.Helper.Reflection.GetMethod(api, "GetObjectId").Invoke<int>(cannabisKitName));
+                            integratedCrops.Add(cannabisKitSeedName, this.Helper.Reflection.GetMethod(api, "GetObjectId").Invoke<int>(cannabisKitSeedName));
+                            this.Monitor.Log($"Added {cannabisKitSeedName} crop to list", LogLevel.Trace);
+                        }
+                    }
+
+                    if (hasSixPlantableCrops)
+                    {
+                        this.Monitor.Log("SixPlantableCrops loaded", LogLevel.Trace);
+
+                        // Create a list of crop seeds to pass to JA API
+                        List<string> sixPlantableSeedNames = new List<string> { "Blue Rose Seeds", "Daikon Seeds", "Gentian Seeds", "Napa Cabbage Seeds", "Snowdrop Seeds", "Winter Broccoli Seeds" };
+
+                        foreach (var sixPlantableSeedName in sixPlantableSeedNames)
+                        {
+                            integratedCrops.Add(sixPlantableSeedName, this.Helper.Reflection.GetMethod(api, "GetObjectId").Invoke<int>(sixPlantableSeedName));
+                            this.Monitor.Log($"Added {sixPlantableSeedName} crop to list", LogLevel.Trace);
+                        }
+                    }
+
+                    if (hasBonsterCrops)
+                    {
+                        this.Monitor.Log("BonsterCrops loaded", LogLevel.Trace);
+
+                        // Create a list of crop seeds to pass to JA API
+                        List<string> bonsterCropSeedNames = new List<string> { "Blackcurrant Seeds", "Blue Corn Seeds", "Cardamom Seeds", "Cranberry Bean Seeds", "Maypop Seeds", "Peppercorn Seeds", "Red Currant Seeds", "Rose Hip Seeds", "Roselle Hibiscus Seeds", "Summer Squash Seeds", "Taro Root", "White Currant Seeds" };
+
+                        foreach (var bonsterCropSeedName in bonsterCropSeedNames)
+                        {
+                            integratedCrops.Add(bonsterCropSeedName, this.Helper.Reflection.GetMethod(api, "GetObjectId").Invoke<int>(bonsterCropSeedName));
+                            this.Monitor.Log($"Added {bonsterCropSeedName} crop to list", LogLevel.Trace);
                         }
                     }
                 }
@@ -222,9 +260,13 @@ namespace BetterMixedSeeds
                     this.Monitor.Log("Failed to retrieve Json Assets API", LogLevel.Error);
                 }
             }
+            else
+            {
+                this.Monitor.Log("No integrated mods detected", LogLevel.Trace);
+            }
 
             IList<KeyValuePair<int, string>> seeds = new List<KeyValuePair<int, string>>();
-            //IDictionary<int, string> seeds = new Dictionary<int, string>();
+            
             bool springSeedEnabled = false;
             bool summerSeedEnabled = false;
             bool fallSeedEnabled = false;
@@ -410,10 +452,40 @@ namespace BetterMixedSeeds
                 if (config.UseTobacco_SPRING) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Tobacco Seeds"], "SPRING")); springSeedEnabled = true; }
                 if (config.UseTobacco_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Tobacco Seeds"], "SUMMER")); summerSeedEnabled = true; }
                 if (config.UseWhite_Widow_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["White Widow Starter"], "SUMMER")); summerSeedEnabled = true; }
-                if (config.useWhite_Widow_FALL) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["White Widow Starter"], "FALL")); fallSeedEnabled = true; }
+                if (config.UseWhite_Widow_FALL) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["White Widow Starter"], "FALL")); fallSeedEnabled = true; }
             }
 
-            // Check that atleast one seed from each season has enabled
+            if (hasSixPlantableCrops && api != null)
+            {
+                if (config.UseBlue_Rose) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Blue Rose Seeds"], "WINTER")); }
+                if (config.UseDaikon) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Daikon Seeds"], "WINTER")); }
+                if (config.UseGentian) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Gentian Seeds"], "WINTER")); }
+                if (config.UseNapa_Cabbage) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Napa Cabbage Seeds"], "WINTER")); }
+                if (config.UseSnowdrop) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Snowdrop Seeds"], "WINTER")); }
+                if (config.UseWinter_Broccoli) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Winter Broccoli Seeds"], "WINTER")); }
+            }
+
+            if (hasBonsterCrops && api != null)
+            {
+                if (config.UseBlackcurrant) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Blackcurrant Seeds"], "FALL")); fallSeedEnabled = true; }
+                if (config.UseBlue_Corn_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Blue Corn Seeds"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseBlue_Corn_FALL) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Blue Corn Seeds"], "FALL")); fallSeedEnabled = true; }
+                if (config.UseCardamom) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Cardamom Seeds"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseCranberry_Beans) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Cranberry Bean Seeds"], "SPRING")); springSeedEnabled = true; }
+                if (config.UseMaypop) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Maypop Seeds"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UsePeppercorn_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Peppercorn Seeds"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UsePeppercorn_FALL) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Peppercorn Seeds"], "FALL")); fallSeedEnabled = true; }
+                if (config.UseRedCurrant) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Red Currant Seeds"], "SPRING")); springSeedEnabled = true; }
+                if (config.UseRose_Hips_SPRING) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Rose Hip Seeds"], "SPRING")); springSeedEnabled = true; }
+                if (config.UseRose_Hips_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Rose Hip Seeds"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseRoselle_Hibiscus) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Roselle Hibiscis Seeds"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseSummer_Squash) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Summer Squash Seeds"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseTaro_SUMMER) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Taro Root"], "SUMMER")); summerSeedEnabled = true; }
+                if (config.UseTaro_FALL) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Taro Root"], "FALL")); fallSeedEnabled = true; }
+                if (config.UseWhite_Currant) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["White Currant Seeds"], "FALL")); fallSeedEnabled = true; }
+            }
+
+            // Check that atleast one seed from each season is enabled
             if (!springSeedEnabled)
             {
                 seeds.Add(new KeyValuePair<int, string>(474, "SPRING"));
@@ -433,6 +505,12 @@ namespace BetterMixedSeeds
                 seeds.Add(new KeyValuePair<int, string>(489, "FALL"));
                 seeds.Add(new KeyValuePair<int, string>(488, "FALL"));
                 seeds.Add(new KeyValuePair<int, string>(490, "FALL"));
+            }
+
+            // Print all available seeds to console
+            foreach (var seed in seeds)
+            {
+                this.Monitor.Log($"List of available seeds include: {seed.Key}", LogLevel.Trace);
             }
 
             ILookup<int, string> lookup = seeds.ToLookup(kvp => kvp.Key, kvp => kvp.Value);

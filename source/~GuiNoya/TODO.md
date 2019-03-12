@@ -1,7 +1,6 @@
 # TODO
 
 ### Daily Tasks report
-* Update mod to SV 1.3.
 * Add void egg as product in AnimalsTask (code 305, needs confirmation).
 * Take a look and fix [this](https://log.smapi.io/sWNwTFzq).
 * Create option to only show flowers as harvestable on the last day of the season.
@@ -11,8 +10,8 @@
 * Add translations.
 
 ### Self Service shops
-* Update mod to SV 1.3.
 * Make the mod work on the clinic.
+* Make the mod work on the saloon.
 * Add an option to let the doors open.
 
 ### Zoom level keybinding

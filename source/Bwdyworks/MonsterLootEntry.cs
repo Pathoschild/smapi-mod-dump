@@ -8,14 +8,14 @@ namespace bwdyworks
 {
     public class MonsterLootEntry
     {
-        public StardewModdingAPI.Mod Mod;
+        public string Module;
         public string MonsterID;
         public string ItemID;
-        public float Weight;
+        public double Weight;
 
-        public MonsterLootEntry(StardewModdingAPI.Mod mod, string monster_id, string id, float weight)
+        public MonsterLootEntry(string module, string monster_id, string id, double weight)
         {
-            Mod = mod;
+            Module = module;
             MonsterID = monster_id;
             ItemID = id;
             Weight = weight;

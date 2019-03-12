@@ -27,11 +27,11 @@ namespace DailyTasksReport.UI
             _questCount = Game1.player.questLog.Count;
             UpdatePosition();
 
-            GameEvents.UpdateTick += GameEvents_UpdateTick;
-            SaveEvents.AfterReturnToTitle += SaveEvents_AfterReturnToTitle;
+            ModEntry.EventsHelper.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
+            ModEntry.EventsHelper.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
         }
 
-        private void GameEvents_UpdateTick(object sender, EventArgs e)
+        private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (_questCount == Game1.player.questLog.Count) return;
 
@@ -39,10 +39,10 @@ namespace DailyTasksReport.UI
             UpdatePosition();
         }
 
-        private void SaveEvents_AfterReturnToTitle(object sender, EventArgs e)
+        private void GameLoop_ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
-            GameEvents.UpdateTick -= GameEvents_UpdateTick;
-            SaveEvents.AfterReturnToTitle -= SaveEvents_AfterReturnToTitle;
+            ModEntry.EventsHelper.GameLoop.UpdateTicked -= GameLoop_UpdateTicked;
+            ModEntry.EventsHelper.GameLoop.ReturnedToTitle -= GameLoop_ReturnedToTitle;
         }
 
         public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)

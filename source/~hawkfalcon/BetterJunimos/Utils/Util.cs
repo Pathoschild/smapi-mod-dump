@@ -11,6 +11,8 @@ namespace BetterJunimos.Utils {
     public class Util {
         internal const int DefaultRadius = 8;
         internal const int UnpaidRadius = 3;
+        public const int CoffeeId = 433;
+
         public static int MaxRadius;
 
         internal static ModConfig Config;

@@ -1,0 +1,13 @@
+url:
+   https://github.com/silentoak/QualityProducts.git
+
+mods:
+   Quality Products
+
+latest commit:
+   commit 871c95228b9f3fcc0e560113ad9cf372677573cc
+   Author: SilentOak <carrotnebulae@gmail.com>
+   Date:   Sun Mar 10 12:42:53 2019 -0300
+   
+       Large Egg/Milk producing 2 products
+   

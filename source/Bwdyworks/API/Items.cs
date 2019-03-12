@@ -1,9 +1,13 @@
 ﻿using bwdyworks.Registry;
+using bwdyworks.Structures;
+using System.Collections.Generic;
 
 namespace bwdyworks.API
 {
     public class Items
     {
+        internal static List<TrashLootEntry> TrashLoot = new List<TrashLootEntry>();
+
         public void AddItem(string module, BasicItemEntry entry)
         {
             ItemRegistry.RegisterItem(module, entry);
@@ -27,6 +31,11 @@ namespace bwdyworks.API
         {
             Modworks.Assets.MonsterLoot.Add(loot);
             Modworks.Log.Trace("Module " + module + " added a loot drop to " + loot.MonsterID + "s.");
+        }
+
+        public void AddTrashLoot(string module, TrashLootEntry loot)
+        {
+            TrashLoot.Add(loot);
         }
 
         public StardewValley.Object CreateItemstack(int id, int count)

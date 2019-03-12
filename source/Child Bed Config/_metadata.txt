@@ -1,13 +1,13 @@
 url:
-   https://github.com/rscotchmer/ChildBedConfig.git
+   https://github.com/clockworkhound/SDV-ChildBedConfig.git
 
 mods:
    Child Bed Config
 
 latest commit:
-   commit 10eb77761dcc6d76cbb422b33b678f50eac85f80
-   Author: Rachael Scotchmer <37252365+rscotchmer@users.noreply.github.com>
-   Date:   Thu Feb 28 15:37:03 2019 -0500
+   commit 90a00a05189383641abb2ee648d3168840518c50
+   Author: clockworkhound <clockworkhound@gmail.com>
+   Date:   Thu Mar 7 20:55:23 2019 -0500
    
-       Updated for v1.2
+       initial commit
    

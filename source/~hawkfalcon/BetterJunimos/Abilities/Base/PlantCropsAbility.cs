@@ -21,7 +21,10 @@ namespace BetterJunimos.Abilities {
         }
 
         public bool PerformAction(Farm farm, Vector2 pos, JunimoHarvester junimo, Chest chest) {
-            Item foundItem = chest.items.FirstOrDefault(item => item.Category == ItemCategory);
+            Item foundItem = chest.items.FirstOrDefault(item =>
+                item.Category == ItemCategory &&
+                !(Util.Config.JunimoImprovements.AvoidPlantingCoffee && item.ParentSheetIndex == Util.CoffeeId)
+            );
             if (foundItem == null) return false;
 
             bool success = Plant(farm, pos, foundItem.ParentSheetIndex);

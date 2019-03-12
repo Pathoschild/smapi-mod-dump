@@ -1,8 +1,8 @@
-﻿using System.Reflection;
-[assembly: AssemblyTitle("bwdylib")]
-[assembly: AssemblyDescription("bwdy's heart and soul")]
+using System.Reflection;
+[assembly: AssemblyTitle("bwdyworks")]
+[assembly: AssemblyDescription("Basically a membership card for bwdy's secret club.")]
 [assembly: AssemblyCompany("bwdy")]
-[assembly: AssemblyProduct("bwdylib")]
+[assembly: AssemblyProduct("bwdyworks")]
+[assembly: AssemblyFileVersion("0.9.0")]
+[assembly: AssemblyVersion("0.9.0")]
 [assembly: AssemblyCopyright("Copyright © bwdy 2019")]
-[assembly: AssemblyVersion("0.1.0.0")]
-[assembly: AssemblyFileVersion("0.1.0.0")]

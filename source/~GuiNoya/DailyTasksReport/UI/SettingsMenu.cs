@@ -187,16 +187,16 @@ namespace DailyTasksReport.UI
                 base.snapCursorToCurrentSnappedComponent();
         }
 
-        protected override void customSnapBehavior(int direction, int oldRegion, int oldId)
+        protected override void customSnapBehavior(int direction, int oldRegion, int oldID)
         {
-            if (oldId == ItemsPerPage - 1 && direction == 2 && _currentIndex < _options.Count - ItemsPerPage)
+            if (oldID == ItemsPerPage - 1 && direction == 2 && _currentIndex < _options.Count - ItemsPerPage)
             {
                 // Go down
                 ++_currentIndex;
                 AdjustScrollBarPosition();
                 Game1.playSound("shiny4");
             }
-            else if (oldId == 0 && direction == 0)
+            else if (oldID == 0 && direction == 0)
             {
                 if (_currentIndex > 0)
                 {

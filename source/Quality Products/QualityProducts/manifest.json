@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Quality Products",
+  "Author": "SilentOak",
+  "Version": "1.1.0",
+  "Description": "Add quality to cooking and artisan products made from quality ingredients",
+  "UniqueID": "SilentOak.QualityProducts",
+  "EntryDll": "QualityProducts.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:3609", "GitHub:silentoak/QualityProducts" ]
+}

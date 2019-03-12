@@ -5,9 +5,9 @@ mods:
    Personal Effects
 
 latest commit:
-   commit 1bf7f0e92070ce8073190633874265901ed1b59d
+   commit c8df950260f88ed04e5f15ee82aec60b2209b140
    Author: bwdymods <bwdymods@gmail.com>
-   Date:   Wed Feb 27 23:46:04 2019 -0900
+   Date:   Fri Mar 8 23:12:17 2019 -0900
    
-       Update to use new event API
+       1.0 update
    

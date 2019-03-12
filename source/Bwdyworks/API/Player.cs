@@ -18,12 +18,13 @@ namespace bwdyworks.API
 
         public FriendshipStatus GetFriendshipStatus(string NPC)
         {
-            if (!Game1.player.friendshipData.ContainsKey(NPC)) Game1.player.friendshipData[NPC] = new Friendship(0);
+            if (!Game1.player.friendshipData.ContainsKey(NPC)) return FriendshipStatus.Friendly;
             return Game1.player.friendshipData[NPC].Status;
         }
 
         public void SetFriendshipStatus(string NPC, FriendshipStatus status)
         {
+            if (status == GetFriendshipStatus(NPC)) return;
             if (!Game1.player.friendshipData.ContainsKey(NPC)) Game1.player.friendshipData[NPC] = new Friendship(0);
             Game1.player.friendshipData[NPC].Status = status;
         }
@@ -35,27 +36,20 @@ namespace bwdyworks.API
             else f2.friendshipData[NPC].Points = points;
         }
 
+        public bool HasItem(int id, int count = 1)
+        {
+            return Game1.player.hasItemInInventory(id, count);
+        }
+
         public void GiveItem(int id, int count = 1)
         {
             var i = Modworks.Items.CreateItemstack(id, count);
             Game1.player.addItemByMenuIfNecessary(i);
         }
 
-        public void RemoveItem(Item which, int count = 1)
+        public void RemoveItem(int itemId, int count = 1)
         {
-            int currentQuantity = which.getStack();
-            if (count > currentQuantity)
-            {
-                Game1.player.removeItemsFromInventory(which.ParentSheetIndex, count);
-            }
-            else if (count == currentQuantity)
-            {
-                Game1.player.removeItemFromInventory(which);
-            }
-            else
-            {
-                which.Stack = which.Stack - count;
-            }
+            Game1.player.removeItemsFromInventory(itemId, count);
         }
 
         public int[] GetStandingTileCoordinate()

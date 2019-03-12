@@ -5,9 +5,9 @@ mods:
    Polygamy
 
 latest commit:
-   commit 298351d64c5d76865f226df61f421d61089b95e8
+   commit 4908df97bec82ccc6c1e390dd7ed99a4feeae95e
    Author: bwdymods <bwdymods@gmail.com>
-   Date:   Wed Feb 27 23:48:37 2019 -0900
+   Date:   Fri Mar 8 23:12:43 2019 -0900
    
-       WIP poly wedding
+       update to 1.0
    

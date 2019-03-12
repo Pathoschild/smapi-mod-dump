@@ -7,9 +7,9 @@ mods:
    Zoom Level Keybinding
 
 latest commit:
-   commit 60b6e652f96ff6c1f802e993d8a925a5491e2403
+   commit 4bd4aaacda989a414a9ab04f6dc36691e7db1cd1
    Author: Guilherme Noya <gui.noya@gmail.com>
-   Date:   Fri Sep 7 21:19:31 2018 -0300
+   Date:   Thu Mar 7 22:39:22 2019 -0300
    
-       [DailyTasksReport] Fix label in options for fruit trees
+       Update TODO.md
    

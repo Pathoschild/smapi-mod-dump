@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+#pragma warning disable CC0021 // Use nameof
+
 namespace DailyTasksReport.Tasks
 {
     public class FarmCaveTask : Task
@@ -102,7 +104,7 @@ namespace DailyTasksReport.Tasks
         {
             if (number < 2)
                 return name;
-            if (name.EndsWith("y"))
+            if (name.EndsWith("y", StringComparison.CurrentCulture))
                 return name.Substring(0, name.Length - 1) + "ies";
             if (name == "Peach")
                 return name + "es";
@@ -110,3 +112,5 @@ namespace DailyTasksReport.Tasks
         }
     }
 }
+
+#pragma warning restore CC0021 // Use nameof

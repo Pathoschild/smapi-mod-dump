@@ -14,5 +14,6 @@ namespace Polygamy
         public Dictionary<long, Dictionary<string, bwdyworks.GameDate>> PolyEngagements;
         public string PrimarySpouse;
         public string TomorrowSpouse;
+        public bool EnableSpouseRoom;
     }
 }

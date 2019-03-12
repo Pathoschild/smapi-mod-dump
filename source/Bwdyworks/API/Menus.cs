@@ -14,5 +14,11 @@ namespace bwdyworks.API
             Game1.currentLocation.lastQuestionKey = "bwdy_question";
             Game1.currentLocation.createQuestionDialogue(question, responses, callback);
         }
+
+        public void ShowDialogue(string dialogue, StardewValley.NPC NPC = null)
+        {
+            //if NPC is provided we'll use their portrait
+            if (NPC != null) Game1.drawDialogue(NPC, dialogue);
+        }
     }
 }

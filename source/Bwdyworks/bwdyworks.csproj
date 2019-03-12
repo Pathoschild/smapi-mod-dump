@@ -63,6 +63,7 @@
     <Compile Include="Events\CancelableEventArgs.cs" />
     <Compile Include="Events\ItemEatenEventArgs.cs" />
     <Compile Include="Events\NPCCheckActionEventArgs.cs" />
+    <Compile Include="Events\TileCheckActionEventArgs.cs" />
     <Compile Include="GameDate.cs" />
     <Compile Include="Registry\ItemRegistry.cs" />
     <Compile Include="Log.cs" />
@@ -70,6 +71,8 @@
     <Compile Include="MonsterLootEntry.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Structures\GameSpot.cs" />
+    <Compile Include="Structures\TrashLootEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />

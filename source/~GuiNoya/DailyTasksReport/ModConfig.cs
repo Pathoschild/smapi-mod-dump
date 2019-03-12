@@ -42,7 +42,8 @@ namespace DailyTasksReport
         /// <summary> Check or not if there are dead crops. </summary>
         public bool DeadCrops { get; set; } = true;
 
-        public int FruitTrees { get; set; } = 3;
+        /// <summary> Report fruits in fruit trees starting from this number. </summary>
+        public int FruitTrees { get; set; } = 1;
 
         /// <summary> Check or not for if you petted your pet. </summary>
         public bool UnpettedPet { get; set; } = true;

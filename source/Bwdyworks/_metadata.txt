@@ -5,9 +5,9 @@ mods:
    Bwdyworks
 
 latest commit:
-   commit 94142faa8d378f8a48c307558274275e28f81e75
+   commit b58b435d2ea1d75a3a99f2208871734bb0282ed0
    Author: bwdymods <bwdymods@gmail.com>
-   Date:   Wed Feb 27 23:49:37 2019 -0900
+   Date:   Thu Mar 7 22:33:06 2019 -0900
    
-       more API stuff
+       v0.9.0
    

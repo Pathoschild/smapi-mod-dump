@@ -1,8 +1,9 @@
 {
-  "JunimoCapabilities": {
-    "HarvestCrops": true,
+  "JunimoAbilites": {
+    "Fertilize": true,
+    "Water": true,
     "PlantCrops": true,
-    "FertilizeCrops": true,
+    "HarvestCrops": true,
     "HarvestForageCrops": true,
     "ClearDeadCrops": true
   },
@@ -19,7 +20,8 @@
     "CanWorkInWinter": false,
     "CanWorkInEvenings": false,
     "WorkFaster": false,
-    "AvoidHarvestingFlowers": true
+    "AvoidHarvestingFlowers": true,
+    "AvoidPlantingCoffee": true
   },
   "JunimoPayment": {
     "WorkForWages": false,

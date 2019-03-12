@@ -21,8 +21,6 @@ namespace PersonalEffects
         {
             int base_luck = (int)((StardewValley.Game1.dailyLuck + 1f) * 500f); //rng 0-100
 
-            Random rng = new Random(DateTime.Now.Millisecond);
-
             foreach (Spot ss in Spots)
             {
                 //despawn old items
@@ -41,6 +39,10 @@ namespace PersonalEffects
                         }
                     }
                 }
+                if (ss.NPC == "Kent")
+                {
+                    if (Game1.year < 2) continue;
+                }
 
                 //spawn a new item, if desireable
                 if (!l.objects.ContainsKey(pos))
@@ -48,9 +50,9 @@ namespace PersonalEffects
                     //is npc enabled?
                     if (Config.GetNPC(ss.NPC).Enabled)
                     {
-                        int strikepoint = rng.Next(2001);
-                        int chance = (int)(((((float)ss.PercentChance) / 100f) * (((float)base_luck) / 100f)) * 100f);
-                        if (chance > strikepoint)
+                        int strikepoint = (int)(Modworks.RNG.Next(200) * (1f - Modworks.Player.GetLuckFactorFloat()));
+                        int chance = ss.PercentChance;
+                        if (strikepoint <= chance)
                         {
                             var npcd = Config.Data[ss.NPC];
                             string sid = "px" + npcd.Abbreviate() + (npcd.HasMaleItems() ? "m" : "f") + (new Random(DateTime.Now.Millisecond).Next(2) + 1);
@@ -61,7 +63,7 @@ namespace PersonalEffects
                                 continue;
                             }
                             var i = Modworks.Items.CreateItemstack(id.Value, 1);
-                            if(Mod.Debug) Modworks.Log.Trace("Spawning forage item " + sid + " at " + ss.Location + " (" + ss.X + ", " + ss.Y + ")");
+                            //Modworks.Log.Alert("Spawning forage item " + sid + " at " + ss.Location + " (" + ss.X + ", " + ss.Y + ")" + "Strike: " + strikepoint + ", Chance: " + chance);
                             l.objects.Add(pos, i);
                         }
                     }
@@ -72,14 +74,13 @@ namespace PersonalEffects
         public int RollQuality()
         {
             int luv = Modworks.Player.GetFriendshipPoints(NPC);
-            Random rng = new Random(DateTime.Now.Millisecond);
             int mq = luv / 500;
-            int quality = (mq > 0 && rng.Next(100) < 15 * mq) ? 1 : 0;
-            if(mq > 1 && rng.Next(100) < 10 * mq){
+            int quality = (mq > 0 && Modworks.RNG.Next(100) < 15 * mq) ? 1 : 0;
+            if(mq > 1 && Modworks.RNG.Next(100) < 10 * mq){
                 quality = 2;
-                if(mq > 2 && rng.Next(100) < 5 * mq){
+                if(mq > 2 && Modworks.RNG.Next(100) < 6 * mq){
                     quality = 3;
-                    if(mq > 3 && rng.Next(100) < 4) quality = 4;
+                    if(mq > 3 && Modworks.RNG.Next(100) < 3) quality = 4;
                 }
             }
             return quality;
@@ -93,8 +94,8 @@ namespace PersonalEffects
             //order is important for bath house odds
             Spots = new List<Spot>();
             int very_rare = 1; //wrong house o.O - otherspots
-            int rare = 5; //wrong part of the house - otherspots
-            int normal = 20; //bedroom, usually - homespots
+            int rare = 2; //wrong part of the house - otherspots
+            int normal = 4; //bedroom, usually - homespots
             string npcName;
 
             if (Config.GetNPC("Sandy").HomeSpots)
@@ -327,65 +328,6 @@ namespace PersonalEffects
                 {
                     Spots.Add(new Spot(npcName, "BathHouse_MensLocker", 5, 6, very_rare));
                     Spots.Add(new Spot(npcName, "BathHouse_MensLocker", 5, 14, very_rare));
-                }
-            }
-            if (Config.GetNPC("Vincent").HomeSpots)
-            {
-                Spots.Add(new Spot("Vincent", "SamHouse", 12, 23, normal)); //br
-                Spots.Add(new Spot("Vincent", "SamHouse", 10, 15, rare)); //outside br
-            }
-            if (Config.GetNPC("Vincent").OtherSpots)
-            {
-                Spots.Add(new Spot("Vincent", "Mountain", 89, 37, rare)); //by quarry bridge
-                Spots.Add(new Spot("Vincent", "AnimalShop", 2, 5, very_rare)); //jas's room :o
-            }
-            npcName = "Vincent";
-            if (Config.GetNPC(npcName).BathSpots)
-            {
-                Spots.Add(new Spot(npcName, "BathHouse_Entry", 6, 5, very_rare));
-                Spots.Add(new Spot(npcName, "BathHouse_Pool", 23, 31, very_rare));
-                Spots.Add(new Spot(npcName, "BathHouse_Pool", 4, 28, very_rare));
-                Spots.Add(new Spot(npcName, "BathHouse_Pool", 10, 5, very_rare));
-                Spots.Add(new Spot(npcName, "Railroad", 5, 51, very_rare));
-                if (Config.GetNPC(npcName).IsFemale)
-                {
-                    Spots.Add(new Spot(npcName, "BathHouse_WomensLocker", 1, 25, very_rare));
-                    Spots.Add(new Spot(npcName, "BathHouse_WomensLocker", 11, 8, very_rare));
-                }
-                else
-                {
-                    Spots.Add(new Spot(npcName, "BathHouse_MensLocker", 5, 24, very_rare));
-                    Spots.Add(new Spot(npcName, "BathHouse_MensLocker", 5, 14, very_rare));
-                }
-            }
-            if (Config.GetNPC("Jas").HomeSpots)
-            {
-                Spots.Add(new Spot("Jas", "AnimalShop", 7, 7, normal)); //br
-                Spots.Add(new Spot("Jas", "AnimalShop", 5, 5, normal)); //br
-            }
-            if (Config.GetNPC("Jas").OtherSpots)
-            {
-                Spots.Add(new Spot("Jas", "AnimalShop", 31, 17, rare)); //kitchen
-                Spots.Add(new Spot("Jas", "Town", 28, 11, very_rare)); //left of community center
-            }
-            npcName = "Jas";
-            if (Config.GetNPC(npcName).BathSpots)
-            {
-                Spots.Add(new Spot(npcName, "BathHouse_Entry", 1, 7, very_rare));
-                Spots.Add(new Spot(npcName, "BathHouse_Pool", 4, 28, very_rare));
-                Spots.Add(new Spot(npcName, "BathHouse_Pool", 2, 11, very_rare));
-                Spots.Add(new Spot(npcName, "Railroad", 15, 57, very_rare));
-                if (Config.GetNPC(npcName).IsFemale)
-                {
-                    Spots.Add(new Spot(npcName, "BathHouse_WomensLocker", 1, 25, very_rare));
-                    Spots.Add(new Spot(npcName, "BathHouse_WomensLocker", 9, 24, very_rare));
-                    Spots.Add(new Spot(npcName, "BathHouse_WomensLocker", 15, 16, very_rare));
-                }
-                else
-                {
-                    Spots.Add(new Spot(npcName, "BathHouse_MensLocker", 10, 26, very_rare));
-                    Spots.Add(new Spot(npcName, "BathHouse_MensLocker", 5, 24, very_rare));
-                    Spots.Add(new Spot(npcName, "BathHouse_MensLocker", 15, 7, very_rare));
                 }
             }
             if (Config.GetNPC("Linus").HomeSpots)

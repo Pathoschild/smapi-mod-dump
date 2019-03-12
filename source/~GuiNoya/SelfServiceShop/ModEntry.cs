@@ -8,6 +8,10 @@ using StardewValley.Menus;
 using System.Collections.Generic;
 using xTile.Dimensions;
 
+#pragma warning disable CA1822 // Mark members as static
+#pragma warning disable CC0021 // Use nameof
+#pragma warning disable CC0091 // Use static method
+
 namespace SelfServiceShop
 {
     // ReSharper disable once UnusedMember.Global
@@ -21,13 +25,13 @@ namespace SelfServiceShop
         {
             _config = helper.ReadConfig<ModConfig>();
 
-            InputEvents.ButtonPressed += InputEvents_ButtonPressed;
+            helper.Events.Input.ButtonPressed += Input_ButtonPressed;
         }
 
-        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
+        private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady || !Context.IsPlayerFree || Game1.activeClickableMenu != null ||
-                !e.IsActionButton && e.Button != SButton.ControllerA)
+                !e.Button.IsActionButton() && e.Button != SButton.ControllerA)
                 return;
 
             var property = Game1.currentLocation.doesTileHaveProperty((int)e.Cursor.GrabTile.X,
@@ -38,7 +42,7 @@ namespace SelfServiceShop
                 case "Buy General":
                     if (_config.Pierre && (_config.ShopsAlwaysOpen || IsNpcInLocation("Pierre")))
                     {
-                        e.SuppressButton();
+                        Helper.Input.Suppress(e.Button);
                         Game1.activeClickableMenu =
                             new ShopMenu(((SeedShop)Game1.currentLocation).shopStock(), 0, "Pierre");
                     }
@@ -62,7 +66,7 @@ namespace SelfServiceShop
                             var tileLocation = robin.getTileLocation();
                             carpenters.Invoke(new Location((int)tileLocation.X, (int)tileLocation.Y));
                         }
-                        e.SuppressButton();
+                        Helper.Input.Suppress(e.Button);
                     }
                     break;
 
@@ -84,7 +88,7 @@ namespace SelfServiceShop
                             var tileLocation = marnie.getTileLocation();
                             animalShop.Invoke(new Location((int)tileLocation.X, (int)tileLocation.Y + 1));
                         }
-                        e.SuppressButton();
+                        Helper.Input.Suppress(e.Button);
                     }
                     break;
 
@@ -92,7 +96,7 @@ namespace SelfServiceShop
                     if (_config.FishShop &&
                         (_config.ShopsAlwaysOpen || IsNpcInLocation("Willy") || IsNpcInLocation("Willy", "Beach")))
                     {
-                        e.SuppressButton();
+                        Helper.Input.Suppress(e.Button);
                         Game1.activeClickableMenu = new ShopMenu(Utility.getFishShopStock(Game1.player), 0, "Willy");
                     }
                     break;
@@ -113,7 +117,7 @@ namespace SelfServiceShop
                                 break;
                             Blacksmith(clint);
                         }
-                        e.SuppressButton();
+                        Helper.Input.Suppress(e.Button);
                     }
                     break;
 
@@ -126,7 +130,7 @@ namespace SelfServiceShop
                             {new Object(233, 1), new[] {250, int.MaxValue}}
                         };
                         Game1.activeClickableMenu = new ShopMenu(d);
-                        e.SuppressButton();
+                        Helper.Input.Suppress(e.Button);
                     }
                     break;
 
@@ -135,7 +139,7 @@ namespace SelfServiceShop
             }
         }
 
-        private static bool IsNpcInLocation(string name, string locationName = "")
+        private bool IsNpcInLocation(string name, string locationName = "")
         {
             GameLocation location;
             location = locationName.Length == 0 ? Game1.currentLocation : Game1.locations.Find(locationName);
@@ -143,7 +147,7 @@ namespace SelfServiceShop
             return location.characters.Find(name) != null;
         }
 
-        private static void Carpenters()
+        private void Carpenters()
         {
             if (Game1.player.daysUntilHouseUpgrade.Value < 0 && !Game1.getFarm().isThereABuildingUnderConstruction() &&
                 Game1.player.currentUpgrade == null)
@@ -178,7 +182,7 @@ namespace SelfServiceShop
             Game1.activeClickableMenu = new ShopMenu(Utility.getCarpenterStock(), 0, "Robin");
         }
 
-        private static void AnimalShop()
+        private void AnimalShop()
         {
             Game1.currentLocation.createQuestionDialogue("", new[]
             {
@@ -188,23 +192,20 @@ namespace SelfServiceShop
             }, "Marnie");
         }
 
-        private static void Blacksmith(NPC clint)
+        private void Blacksmith(NPC clint)
         {
             if (Game1.player.toolBeingUpgraded.Value == null)
             {
                 Response[] answerChoices;
-                if (Game1.player.hasItemInInventory(535, 1) || Game1.player.hasItemInInventory(536, 1) ||
-                    Game1.player.hasItemInInventory(537, 1) || Game1.player.hasItemInInventory(749, 1))
-                    answerChoices = new[]
+                answerChoices = Game1.player.hasItemInInventory(535, 1) || Game1.player.hasItemInInventory(536, 1) ||
+                    Game1.player.hasItemInInventory(537, 1) || Game1.player.hasItemInInventory(749, 1) ? new[]
                     {
                         new Response("Shop", Game1.content.LoadString("Strings\\Locations:Blacksmith_Clint_Shop")),
                         new Response("Upgrade",
                             Game1.content.LoadString("Strings\\Locations:Blacksmith_Clint_Upgrade")),
                         new Response("Process", Game1.content.LoadString("Strings\\Locations:Blacksmith_Clint_Geodes")),
                         new Response("Leave", Game1.content.LoadString("Strings\\Locations:Blacksmith_Clint_Leave"))
-                    };
-                else
-                    answerChoices = new[]
+                    } : new[]
                     {
                         new Response("Shop", Game1.content.LoadString("Strings\\Locations:Blacksmith_Clint_Shop")),
                         new Response("Upgrade",
@@ -230,11 +231,13 @@ namespace SelfServiceShop
             Game1.drawDialogue(clint,
                 Game1.content.LoadString("Data\\ExtraDialogue:Clint_StillWorking",
                     Game1.player.toolBeingUpgraded.Value.DisplayName));
-            MenuEvents.MenuClosed += MenuEvents_MenuClosedBlacksmith;
+            Helper.Events.Display.MenuChanged += Display_MenuChanged;
         }
 
-        private static void MenuEvents_MenuClosedBlacksmith(object sender, EventArgsClickableMenuClosed e)
+        private void Display_MenuChanged(object sender, MenuChangedEventArgs e)
         {
+            if (e.NewMenu != null) return;
+
             if (Game1.player.hasItemInInventory(535, 1) || Game1.player.hasItemInInventory(536, 1) ||
                 Game1.player.hasItemInInventory(537, 1) || Game1.player.hasItemInInventory(749, 1))
             {
@@ -250,7 +253,11 @@ namespace SelfServiceShop
             {
                 Game1.activeClickableMenu = new ShopMenu(Utility.getBlacksmithStock(), 0, "Clint");
             }
-            MenuEvents.MenuClosed -= MenuEvents_MenuClosedBlacksmith;
+            Helper.Events.Display.MenuChanged -= Display_MenuChanged;
         }
     }
 }
+
+#pragma warning restore CA1822 // Mark members as static
+#pragma warning restore CC0091 // Use static method
+#pragma warning restore CC0021 // Use nameof

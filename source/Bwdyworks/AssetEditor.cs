@@ -92,17 +92,13 @@ namespace bwdyworks
             }
             try
             {
-                string globalid = entry.Mod.ModManifest.UniqueID + ":" + entry.ItemID;
-                int integerId;
-                if (ItemRegistry.LocalRegistry.RegisteredItemIds.ContainsKey(entry.ItemID))
-                {
-                    integerId = ItemRegistry.LocalRegistry.RegisteredItemIds[entry.ItemID];
-                }
-                else return false;
+                int? integerId = Modworks.Items.GetModItemId(entry.Module, entry.ItemID);
+                if (!integerId.HasValue) return false;
                 string[] monster = monsterdata[entry.MonsterID].Split('/');
-                monster[6] += " " + integerId + " " + entry.Weight.ToString();
+                monster[6] += " " + integerId + " " + entry.Weight.ToString().TrimStart('0');
                 string monsterCompiled = string.Join("/", monster);
                 monsterdata[entry.MonsterID] = monsterCompiled;
+                Modworks.Log.Debug(entry.Module + " added monster loot :: " + monsterCompiled);
                 return true;
             }
             catch (Exception e)
@@ -111,6 +107,5 @@ namespace bwdyworks
                 return false;
             }
         }
-
     }
 }

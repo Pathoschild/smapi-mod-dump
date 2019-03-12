@@ -14,6 +14,8 @@ namespace DailyTasksReport
     public class ModEntry : Mod
     {
         internal static IReflectionHelper ReflectionHelper;
+        internal static IModEvents EventsHelper;
+        internal static IInputHelper InputHelper;
         private readonly List<Task> _tasks = new List<Task>();
 
         private bool _firstRun = true;
@@ -29,6 +31,8 @@ namespace DailyTasksReport
         public override void Entry(IModHelper helper)
         {
             ReflectionHelper = helper.Reflection;
+            EventsHelper = helper.Events;
+            InputHelper = helper.Input;
 
             Config = helper.ReadConfig<ModConfig>();
             if (Config.Check(Monitor))
@@ -36,25 +40,25 @@ namespace DailyTasksReport
 
             SetupTasks();
 
-            SaveEvents.AfterReturnToTitle += SaveEvents_AfterReturnToTitle;
-            SaveEvents.AfterLoad += SaveEvents_AfterLoad;
-            TimeEvents.AfterDayStarted += TimeEvents_AfterDayStarted;
+            helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
+            helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
+            helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
 
             // In-game Events
-            InputEvents.ButtonPressed += InputEvents_ButtonPressed;
-            MenuEvents.MenuChanged += MenuEvents_MenuChanged;
+            helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+            helper.Events.Display.MenuChanged += Display_MenuChanged;
             SettingsMenu.ReportConfigChanged += SettingsMenu_ReportConfigChanged;
 
             // Draw Events
-            GraphicsEvents.OnPreRenderHudEvent += GraphicsEvents_OnPreRenderHudEvent;
+            helper.Events.Display.RenderingHud += Display_RenderingHud;
         }
 
-        private void SaveEvents_AfterReturnToTitle(object sender, EventArgs e)
+        private void GameLoop_ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
             _tasks.ForEach(t => t.Clear());
         }
 
-        private void SaveEvents_AfterLoad(object sender, EventArgs e)
+        private void GameLoop_SaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             // If inserted last and player has no quest, DayTimeMoneyBox will receive left click
             Game1.onScreenMenus.Insert(0, new ReportButton(this, OpenReport));
@@ -83,7 +87,7 @@ namespace DailyTasksReport
             _tasks.Add(new ObjectsTask(Config, ObjectsTaskId.UncollectedMachines));
         }
 
-        private void TimeEvents_AfterDayStarted(object sender, EventArgs e)
+        private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
         {
             _tasks.ForEach(t => t.OnDayStarted());
 
@@ -95,14 +99,14 @@ namespace DailyTasksReport
 
         // In-game events
 
-        private void MenuEvents_MenuChanged(object sender, EventArgsClickableMenuChanged e)
+        private void Display_MenuChanged(object sender, MenuChangedEventArgs e)
         {
-            if (_refreshReport && e.PriorMenu is SettingsMenu && e.NewMenu is ReportMenu)
+            if (_refreshReport && e.OldMenu is SettingsMenu && e.NewMenu is ReportMenu)
                 OpenReport(true);
             _refreshReport = false;
         }
 
-        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
+        private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady || !Context.IsPlayerFree || e.Button == SButton.None)
                 return;
@@ -137,7 +141,7 @@ namespace DailyTasksReport
 
         // Draw Events
 
-        private void GraphicsEvents_OnPreRenderHudEvent(object sender, EventArgs e)
+        private void Display_RenderingHud(object sender, RenderingHudEventArgs e)
         {
             if (!Config.DisplayBubbles || !Context.IsWorldReady || Game1.currentMinigame != null ||
                 Game1.showingEndOfNightStuff || Game1.CurrentEvent != null) return;

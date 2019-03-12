@@ -118,53 +118,8 @@ namespace Polygamy
 
         public static string getCelebrationPositionsForDatables(List<NPC> ExistingSpouses, List<NPC> NewSpouses)
         {
-            string[] npcNames = new string[NewSpouses.Count];
-            for (int i = 0; i < NewSpouses.Count; i++) npcNames[i] = NewSpouses[i].Name;
-
-            string[] npcNames2 = new string[ExistingSpouses.Count];
-            for (int i = 0; i < ExistingSpouses.Count; i++) npcNames[i] = ExistingSpouses[i].Name;
-
             string text = " ";
-            if (!npcNames.Contains("Sam") && !npcNames2.Contains("Sam"))
-            {
-                text += "Sam 25 65 0 ";
-            }
-            if (!npcNames.Contains("Sebastian") && !npcNames2.Contains("Sebastian"))
-            {
-                text += "Sebastian 24 65 0 ";
-            }
-            if (!npcNames.Contains("Alex") && !npcNames2.Contains("Alex"))
-            {
-                text += "Alex 25 69 0 ";
-            }
-            if (!npcNames.Contains("Harvey") && !npcNames2.Contains("Harvey"))
-            {
-                text += "Harvey 23 67 0 ";
-            }
-            if (!npcNames.Contains("Elliott") && !npcNames2.Contains("Elliott"))
-            {
-                text += "Elliott 32 65 0 ";
-            }
-            if (!npcNames.Contains("Haley") && !npcNames2.Contains("Haley"))
-            {
-                text += "Haley 26 69 0 ";
-            }
-            if (!npcNames.Contains("Penny") && !npcNames2.Contains("Penny"))
-            {
-                text += "Penny 23 66 0 ";
-            }
-            if (!npcNames.Contains("Maru") && !npcNames2.Contains("Maru"))
-            {
-                text += "Maru 24 68 0 ";
-            }
-            if (!npcNames.Contains("Leah") && !npcNames2.Contains("Leah"))
-            {
-                text += "Leah 33 65 0 ";
-            }
-            if (!npcNames.Contains("Abigail") && !npcNames2.Contains("Abigail"))
-            {
-                text += "Abigail 23 65 0 ";
-            }
+            List<string> usedNames = new List<string>();
 
             //bring them on up!
             //new spouses
@@ -172,7 +127,11 @@ namespace Polygamy
             int y = 63;
             for (int i2 = 0; i2 < NewSpouses.Count; i2++)
             {
-                text += NewSpouses[i2].Name + " " + (x + (i2 % 3)) + " " + (y - (i2 / 3)) + " " + 2 + " ";
+                if (!usedNames.Contains(NewSpouses[i2].Name))
+                {
+                    text += NewSpouses[i2].Name + " " + (x + (i2 % 3)) + " " + (y - (i2 / 3)) + " " + 2 + " ";
+                    usedNames.Add(NewSpouses[i2].Name);
+                }
             }
 
             //old spouses
@@ -180,7 +139,56 @@ namespace Polygamy
             y = 63;
             for (int i2 = 0; i2 < ExistingSpouses.Count; i2++)
             {
-                text += ExistingSpouses[i2].Name + " " + (x - ((i2 + 1) % 3)) + " " + (y - ((i2 + 1) / 3)) + " " + 1 + " ";
+                if (!usedNames.Contains(ExistingSpouses[i2].Name))
+                {
+                    text += ExistingSpouses[i2].Name + " " + (x - ((i2 + 1) % 3)) + " " + (y - ((i2 + 1) / 3)) + " " + 1 + " ";
+                    usedNames.Add(ExistingSpouses[i2].Name);
+                }
+            }
+
+            if (!usedNames.Contains("Sam"))
+            {
+                text += "Sam 25 65 0 ";
+            }
+            if (!usedNames.Contains("Sebastian"))
+            {
+                text += "Sebastian 24 65 0 ";
+            }
+            if (!usedNames.Contains("Alex"))
+            {
+                text += "Alex 25 69 0 ";
+            }
+            if (!usedNames.Contains("Harvey"))
+            {
+                text += "Harvey 23 67 0 ";
+            }
+            if (!usedNames.Contains("Elliott"))
+            {
+                text += "Elliott 32 65 0 ";
+            }
+            if (!usedNames.Contains("Haley"))
+            {
+                text += "Haley 26 69 0 ";
+            }
+            if (!usedNames.Contains("Penny"))
+            {
+                text += "Penny 23 66 0 ";
+            }
+            if (!usedNames.Contains("Maru"))
+            {
+                text += "Maru 24 68 0 ";
+            }
+            if (!usedNames.Contains("Leah"))
+            {
+                text += "Leah 33 65 0 ";
+            }
+            if (!usedNames.Contains("Shane"))
+            {
+                text += "Shane 32 66 0 ";
+            }
+            if (!usedNames.Contains("Emily"))
+            {
+                text += "Emily 30 66 0 ";
             }
 
             return text;
@@ -202,23 +210,96 @@ namespace Polygamy
             if (dialogue == 0) {
                 string pronoun = Game1.player.IsMale ? "he" : "she";
                 string spouseList = "";
-                foreach(var n1 in OldSpouses)
+                if (OldSpouses.Count == 0 && NewSpouses.Count == 1)
                 {
-                    spouseList += n1.displayName + (OldSpouses.Last() == n1 ? "" : ", ");
+                    spouseList += " and " + NewSpouses[0].displayName;
                 }
-                spouseList = ReplaceLastOccurrence(spouseList, ",", " and");
-                spouseList += " with ";
-                foreach (var n1 in NewSpouses)
+                else
                 {
-                    spouseList += n1.displayName + (NewSpouses.Last() == n1 ? "" : ", ");
+                    if ((OldSpouses.Count + NewSpouses.Count) > 9)
+                    {
+                        spouseList += " and " + (Game1.player.IsMale ? "his " : "her ") + "bevy of ";
+                        bool hasMales = false;
+                        bool hasFemales = false;
+                        foreach (var nx1 in NewSpouses)
+                        {
+                            if (nx1.Gender == 0) hasFemales = true;
+                            else hasMales = true;
+                        }
+                        foreach (var nx1 in OldSpouses)
+                        {
+                            if (nx1.Gender == 0) hasFemales = true;
+                            else hasMales = true;
+                        }
+                        if (hasMales && hasFemales)
+                        {
+                            spouseList += "significant others";
+                        }
+                        else if (hasMales)
+                        {
+                            spouseList += "gentlemen";
+                        }
+                        else spouseList += "ladies";
+                    }
+                    else
+                    {
+                        foreach (var n1 in OldSpouses)
+                        {
+                            spouseList += n1.displayName + (OldSpouses.Last() == n1 ? "" : ", ");
+                        }
+                        spouseList = ReplaceLastOccurrence(spouseList, ",", " and");
+                        spouseList += " with ";
+                        foreach (var n1 in NewSpouses)
+                        {
+                            spouseList += n1.displayName + (NewSpouses.Last() == n1 ? "" : ", ");
+                        }
+                        spouseList = ReplaceLastOccurrence(spouseList, ",", " and");
+                    }
                 }
-                spouseList = ReplaceLastOccurrence(spouseList, ",", " and");
                 return "When @ first arrived in Pelican Town, no one knew if " + pronoun + "'d fit in with our community...#$b#But from this day forward, @ is going to be as much a part of this town as any of us!$h#$b#It is my great honor on this day " + Game1.dayOfMonth + " of " + Game1.CurrentSeasonDisplayName + ", to unite @, " + spouseList + " in the bonds of marriage.";
             }
-            if (dialogue == 1) return Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5370");
-            if (dialogue == 2) return ((!Game1.player.IsMale) ? (Utility.isMale(Game1.player.spouse) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5377") : Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5375")) : (Utility.isMale(Game1.player.spouse) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5371") : Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5373")));
-            if (dialogue == 3) return Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5379");
-            return "WHATSUP";
+            if (dialogue == 1) return Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5370"); //"Well, let's get right to it!"
+            if (dialogue == 2)
+            {
+                //"@... %spouse... #$b# As the mayor of Pelican Town, and regional bearer of the matrimonial seal, I now pronounce you husband and..., well, husband!$h",
+                int husbands = 0;
+                int wives = 0;
+                if (Game1.player.IsMale) husbands = 1;
+                else wives = 1;
+                foreach (var n1 in OldSpouses)
+                {
+                    if (n1.Gender == 0) husbands += 1;
+                    else wives += 1;
+                }
+                foreach (var n1 in NewSpouses)
+                {
+                    if (n1.Gender == 0) husbands += 1;
+                    else wives += 1;
+                }
+
+                if (husbands > 0) //there are males involved
+                {
+                    string h = "husband";
+                    if (husbands > 1) h += "s";
+                    if(wives > 0) //there are females involved
+                    {
+                        string w = "wi";
+                        if (wives > 1) w += "ves";
+                        else w += "fe";
+                        return "As the mayor of Pelican Town, and regional bearer of the matrimonial seal, I now pronounce you " + h + " and " + w + "!$h";
+                    } else
+                    {
+                        return "As the mayor of Pelican Town, and regional bearer of the matrimonial seal, I now pronounce you husbands!$h";
+                    }
+                } else
+                {
+                    return "As the mayor of Pelican Town, and regional bearer of the matrimonial seal, I now pronounce you wives!$h";
+                }
+
+
+            }
+            if (dialogue == 3) return Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5379"); //"You may kiss."
+            return "WASSUUUUUUP";
         }
 
         public static string ShowFrameSpouse(int frame, List<NPC> NewSpouses, List<NPC> OldSpouses)
@@ -240,7 +321,7 @@ namespace Polygamy
                 int newframe = frame == 36 ? 0 : frame == 37 ? 4 : GetKissFrame(n);
                 ret += "showFrame " + n.Name + " " + newframe/*(alt_frame ? frame + 12 : frame)*/ + "/";
             }
-            Modworks.Log.Alert(ret);
+            //Modworks.Log.Alert(ret);
             return ret.Substring(0, ret.Length - 1);
         }
 
@@ -288,7 +369,7 @@ namespace Polygamy
 
         public static Event getPolyWeddingEvent(Farmer farmer, List<NPC> ExistingSpouses, List<NPC> NewSpouses)
         {
-            Event e = new Event("sweet/-1000 -100/farmer 27 63 2" + getCelebrationPositionsForDatables(ExistingSpouses, NewSpouses) + "Lewis 27 64 2 Marnie 26 65 0 Caroline 29 65 0 Pierre 30 65 0 Gus 31 65 0 Clint 31 66 0 " + (farmer.spouse.Contains("Emily") ? "" : "Emily 30 66 0 ") + (farmer.spouse.Contains("Shane") ? "" : "Shane 32 66 0 ") + ((farmer.friendshipData.ContainsKey("Sandy") && farmer.friendshipData["Sandy"].Points > 0) ? "Sandy 29 66 0 " : "") + "George 26 66 0 Evelyn 25 66 0 Pam 24 66 0 Jodi 32 67 0 " + ((Game1.getCharacterFromName("Kent") != null) ? "Kent 31 67 0 " : "") + "otherFarmers 29 69 0 Linus 29 67 0 Robin 25 67 0 Demetrius 26 67 0 Vincent 26 68 3 Jas 25 68 1" + ((farmer.timesReachedMineBottom > 0) ? " Dwarf 30 67 0" : "") + "/broadcastEvent/" + ShowFrameSpouse(36, NewSpouses, ExistingSpouses) + "/specificTemporarySprite wedding/viewport 27 64 true/pause 4000/speak Lewis \"" + GetWeddingDialogue(0, NewSpouses, ExistingSpouses) + "\"/faceDirection farmer 1/" + ShowFrameSpouse(37, NewSpouses, ExistingSpouses) + "/pause 500/faceDirection Lewis 0/pause 2000/speak Lewis \"" + GetWeddingDialogue(1, NewSpouses, ExistingSpouses) + "\"/move Lewis 0 1 0/playMusic none/pause 1000/showFrame Lewis 20/speak Lewis \"" + GetWeddingDialogue(2, NewSpouses, ExistingSpouses) + "\"/pause 500/speak Lewis \"" + GetWeddingDialogue(3, NewSpouses, ExistingSpouses) + "\"/pause 1000/showFrame 101/" + ShowFrameSpouse(38, NewSpouses, ExistingSpouses) + "/specificTemporarySprite heart 27 63/playSound dwop/pause 2000/specificTemporarySprite wed/warp Marnie -2000 -2000/faceDirection farmer 2/" + ShowFrameSpouse(36, NewSpouses, ExistingSpouses) + "/faceDirection Pam 1 true/faceDirection Evelyn 3 true/faceDirection Pierre 3 true/faceDirection Caroline 1 true/animate Robin false true 500 20 21 20 22/animate Demetrius false true 500 24 25 24 26/move Lewis 0 3 3 true/move Caroline 0 -1 3 false/pause 4000/faceDirection farmer 1/" + ShowFrameSpouse(37, NewSpouses, ExistingSpouses) + "/globalFade/viewport -1000 -1000/pause 1000/message \"" + Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5381") + "\"/pause 500/message \"" + Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5383") + "\"/pause 4000/waitForOtherPlayers weddingEnd/end wedding", -2, farmer);
+            Event e = new Event("sweet/-1000 -100/farmer 27 63 2" + getCelebrationPositionsForDatables(ExistingSpouses, NewSpouses) + "Lewis 27 64 2 Marnie 26 65 0 Caroline 29 65 0 Pierre 30 65 0 Gus 31 65 0 Clint 31 66 0 " + ((farmer.friendshipData.ContainsKey("Sandy") && farmer.friendshipData["Sandy"].Points > 0) ? "Sandy 29 66 0 " : "") + "George 26 66 0 Evelyn 25 66 0 Pam 24 66 0 Jodi 32 67 0 " + ((Game1.getCharacterFromName("Kent") != null) ? "Kent 31 67 0 " : "") + "otherFarmers 29 69 0 Linus 29 67 0 Robin 25 67 0 Demetrius 26 67 0 Vincent 26 68 3 Jas 25 68 1" + ((farmer.timesReachedMineBottom > 0) ? " Dwarf 30 67 0" : "") + "/broadcastEvent/" + ShowFrameSpouse(36, NewSpouses, ExistingSpouses) + "/specificTemporarySprite wedding/viewport 27 64 true/pause 4000/speak Lewis \"" + GetWeddingDialogue(0, NewSpouses, ExistingSpouses) + "\"/faceDirection farmer 1/" + ShowFrameSpouse(37, NewSpouses, ExistingSpouses) + "/pause 500/faceDirection Lewis 0/pause 2000/speak Lewis \"" + GetWeddingDialogue(1, NewSpouses, ExistingSpouses) + "\"/move Lewis 0 1 0/playMusic none/pause 1000/showFrame Lewis 20/speak Lewis \"" + GetWeddingDialogue(2, NewSpouses, ExistingSpouses) + "\"/pause 500/speak Lewis \"" + GetWeddingDialogue(3, NewSpouses, ExistingSpouses) + "\"/pause 1000/showFrame 101/" + ShowFrameSpouse(38, NewSpouses, ExistingSpouses) + "/specificTemporarySprite heart 27 63/playSound dwop/pause 2000/specificTemporarySprite wed/warp Marnie -2000 -2000/faceDirection farmer 2/" + ShowFrameSpouse(36, NewSpouses, ExistingSpouses) + "/faceDirection Pam 1 true/faceDirection Evelyn 3 true/faceDirection Pierre 3 true/faceDirection Caroline 1 true/animate Robin false true 500 20 21 20 22/animate Demetrius false true 500 24 25 24 26/move Lewis 0 3 3 true/move Caroline 0 -1 3 false/pause 4000/faceDirection farmer 1/" + ShowFrameSpouse(37, NewSpouses, ExistingSpouses) + "/globalFade/viewport -1000 -1000/pause 1000/message \"" + Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5381") + "\"/pause 500/message \"" + Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5383") + "\"/pause 4000/waitForOtherPlayers weddingEnd/end wedding", -2, farmer);
             string[] npcNames = new string[NewSpouses.Count];
             for (int i = 0; i < NewSpouses.Count; i++) npcNames[i] = NewSpouses[i].Name;
             for(int i2 = 0; i2 < NewSpouses.Count; i2++)
@@ -299,6 +380,43 @@ namespace Polygamy
                 //e.getActorByName(NewSpouses[i2].Name).faceDirection(2);
             }
             return e;
+        }
+
+        internal void RollSpouseRoom()
+        {
+            //only show a spouse room if it exists.
+            //todo, better way to tell than a list?
+            if (!PolyData.EnableSpouseRoom)
+            {
+                //Game1.getFarm().addSpouseOutdoorArea("???"); //should remove it
+                string backup = Game1.player.spouse;
+                StorePrimarySpouse();
+                Utility.getHomeOfFarmer(Game1.player).showSpouseRoom();
+            }
+            else
+            {
+                string NPC = PrimarySpouse;
+                if (NPC != LastSpouseRoom)
+                {
+                    string[] spousesWithHouseData = new[] { "Abigail", "Penny", "Leah", "Haley", "Maru", "Sebastian", "Alex", "Harvey", "Elliott", "Sam", "Shane", "Emily" };
+                    if (!spousesWithHouseData.Contains(NPC))
+                    {
+                        //no spouse data. let's fake it
+                        Game1.player.spouse = spousesWithHouseData[Modworks.RNG.Next(spousesWithHouseData.Length)];
+                        Game1.getFarm().addSpouseOutdoorArea(Game1.player.spouse);
+                        Utility.getHomeOfFarmer(Game1.player).showSpouseRoom();
+                        LastSpouseRoom = Game1.player.spouse;
+                        Game1.player.spouse = NPC;
+                    }
+                    else
+                    {
+                        Game1.getFarm().addSpouseOutdoorArea(Game1.player.spouse);
+                        Utility.getHomeOfFarmer(Game1.player).showSpouseRoom();
+                        LastSpouseRoom = NPC;
+                    }
+                    Modworks.Log.Debug("Changing spouse room to " + LastSpouseRoom);
+                }
+            }
         }
 
         //doesn't actually marry, it's just a ceremony to VanillaSpouse
@@ -469,28 +587,7 @@ namespace Polygamy
             Spouses.Remove(NPC);
             PrimarySpouse = NPC;
             VanillaSpouse = NPC;
-            //only show a spouse room if it exists.
-            //todo, better way to tell than a list?
-            if (NPC != LastSpouseRoom)
-            {
-                string[] spousesWithHouseData = new[] { "Abigail", "Penny", "Leah", "Haley", "Maru", "Sebastian", "Alex", "Harvey", "Elliott", "Sam", "Shane", "Emily" };
-                if (!spousesWithHouseData.Contains(NPC))
-                {
-                    //no spouse data. let's fake it
-                    Game1.player.spouse = spousesWithHouseData[Modworks.RNG.Next(spousesWithHouseData.Length)];
-                    Game1.getFarm().addSpouseOutdoorArea(Game1.player.spouse);
-                    Utility.getHomeOfFarmer(Game1.player).showSpouseRoom();
-                    LastSpouseRoom = Game1.player.spouse;
-                    Game1.player.spouse = NPC;
-                }
-                else
-                {
-                    Game1.getFarm().addSpouseOutdoorArea(Game1.player.spouse);
-                    Utility.getHomeOfFarmer(Game1.player).showSpouseRoom();
-                    LastSpouseRoom = NPC;
-                }
-                Modworks.Log.Debug("CHANGING SPOUSE ROOM TO " + LastSpouseRoom);
-            }
+            RollSpouseRoom();
         }
 
         public void StorePrimarySpouse()
@@ -556,6 +653,10 @@ namespace Polygamy
             Spouses.Remove(NPC);
             Divorces.Add(NPC);
             if(swap) MakePrimarySpouse(GetNextPrimarySpouse());
+            //delete the NPC
+            var npc = Game1.getCharacterFromName(NPC);
+            npc.currentLocation.characters.Remove(npc);
+            npc = null;
         }
 
         public void Kiss(string NPC)

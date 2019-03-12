@@ -17,10 +17,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 861b647ca17599582118aaa7d74a58a2ec4749d7
-   Merge: e32348bb 19fd5c80
+   commit 32a897d3c6e18a18ba7b8bacb66abd8f65a8d730
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Tue Mar 5 00:59:55 2019 -0500
+   Date:   Sun Mar 10 14:42:00 2019 -0400
    
-       Merge branch 'develop' into stable
+       fix chests being treated as weeds/twigs in some cases
    

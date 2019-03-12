@@ -25,8 +25,7 @@ namespace BetterJunimos.Utils {
         // register built in abilities, in order
         private void RegisterDefaultAbilites() {
             List<IJunimoAbility> DefaultAbilities = new List<IJunimoAbility> {
-                new FertilizeAbility(), 
-                new FertilizeAbility(), 
+                new FertilizeAbility(),
                 new WaterAbility(),
                 new PlantCropsAbility(), 
                 new HarvestCropsAbility(), 
@@ -99,7 +98,10 @@ namespace BetterJunimos.Utils {
             if (!ItemsInHuts.ContainsKey(id)) {
                 ItemsInHuts.Add(id, new Dictionary<int, bool>());
             }
-            ItemsInHuts[id][itemCategory] = chest.items.Any(item => item.Category == itemCategory);
+            ItemsInHuts[id][itemCategory] = chest.items.Any(item => 
+                item.Category == itemCategory && 
+                !(Util.Config.JunimoImprovements.AvoidPlantingCoffee && item.ParentSheetIndex == Util.CoffeeId)
+            );
         }
     }
 }

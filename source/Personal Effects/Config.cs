@@ -9,7 +9,9 @@ namespace PersonalEffects
 {
     public class ConfigNPC
     {
-        public string Name;
+        [JsonIgnore]
+        internal string InternalName;
+        public string DisplayName;
         public bool Enabled;
         public bool IsFemale;
         public bool CrossDress;
@@ -39,7 +41,7 @@ namespace PersonalEffects
 
         public string Abbreviate()
         {
-            string abbr = new string(new string(Name.ToLower().Where(c => !"aeiouy".Contains(c)).ToArray()).ToCharArray().Distinct().ToArray());
+            string abbr = new string(new string(InternalName.ToLower().Where(c => !"aeiouy".Contains(c)).ToArray()).ToCharArray().Distinct().ToArray());
             return abbr;
         }
     }
@@ -53,7 +55,8 @@ namespace PersonalEffects
         {
             NoData = new ConfigNPC
             {
-                Name = "{Unknown NPC}",
+                InternalName = "{Unknown NPC}",
+                DisplayName = "{Unknown NPC}",
                 IsFemale = false,
                 Enabled = false,
                 HomeSpots = false,
@@ -75,11 +78,22 @@ namespace PersonalEffects
                 {
                     Modworks.Log.Error("Failed to read config file: " + e.Message);
                 }
+                //set internal names
+                foreach(var kvp in Data)
+                {
+                    kvp.Value.InternalName = kvp.Key;
+
+                    //child safety - if any configured NPCs are children, we'll disable them here
+                    var n = StardewValley.Game1.getCharacterFromName(kvp.Value.InternalName);
+                    if (n == null) continue; //if we can't read it, we'll let it pass.
+                    if (Modworks.NPCs.IsChild(n)) kvp.Value.Enabled = false;
+                }
+
                 foreach(ConfigNPC cnpc in Data.Values)
                 {
                     if (cnpc.Enabled)
                     {
-                        Modworks.Log.Trace("Enabled for NPC " + cnpc.Name);
+                        Modworks.Log.Trace("Personal Effects enabled for NPC " + cnpc.DisplayName);
                     }
                 }
             }
@@ -95,7 +109,7 @@ namespace PersonalEffects
         {
             foreach(var npc in Data)
             {
-                if (npc.Value.Name.Equals(displayName))
+                if (npc.Value.DisplayName.Equals(displayName))
                 {
                     return npc.Key;
                 }

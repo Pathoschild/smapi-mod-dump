@@ -7,9 +7,9 @@ mods:
    Tillable Ground
 
 latest commit:
-   commit eedd2adf703892c6e075c95eaf3b11659db15abf
+   commit 56461dd41331572c6f81b36398d7b3f9b1bde30a
    Author: hawkfalcon <contact@hawkfalcon.com>
-   Date:   Tue Feb 26 22:28:09 2019 -0800
+   Date:   Wed Mar 6 23:53:35 2019 -0800
    
-       Bump version, retry pathfinding, improve timer, improve CanWorkInEvenings
+       Add new BetterJunimo API docs
    

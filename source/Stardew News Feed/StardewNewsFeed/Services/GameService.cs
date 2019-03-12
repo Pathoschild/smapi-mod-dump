@@ -61,16 +61,10 @@ namespace StardewNewsFeed.Services {
         }
 
         private HudMessage MakeAnimalProduceHudMessage(IGrouping<string, FarmAnimal> groupOfAnimalsInBarn) {
-            var toolsNeededForProduce = groupOfAnimalsInBarn
-                .Select(_ => _.toolUsedForHarvest.Value)
-                .Distinct()
-                .OrderBy(_ => _);
-            
             var translationSuffix = groupOfAnimalsInBarn.Count() > 1 ? "plural" : "singular";
             var message = _translationHelper.Get($"news-feed.harvest-animals-found-in-location-notice.{translationSuffix}", new {
                 numberOfItems = groupOfAnimalsInBarn.Count(),
                 locationName = groupOfAnimalsInBarn.Key,
-                toolsNeededForProduce = string.Join(", ", toolsNeededForProduce),
             });
             return new HudMessage(message, HudMessageType.NewQuest); 
         }

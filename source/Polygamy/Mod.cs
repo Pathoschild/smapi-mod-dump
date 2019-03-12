@@ -25,6 +25,7 @@ namespace Polygamy
             if (!Modworks.InstallModule(Module, Debug)) return;
 
             Modworks.Events.NPCCheckAction += Events_NPCCheckAction;
+            Modworks.Events.TileCheckAction += Events_TileCheckAction;
 
             Relationships = new Relationships();
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
@@ -36,10 +37,46 @@ namespace Polygamy
 
         }
 
+        private void Events_TileCheckAction(object sender, bwdyworks.Events.TileCheckActionEventArgs args)
+        {
+            if(args.Action == "DivorceBook")
+            {
+                args.Cancelled = true;
+                int optionCount = Relationships.Spouses.Count;
+                List<Response> responses = new List<Response>();
+
+                foreach(var s in Relationships.Spouses)
+                {
+                    responses.Add(new Response(s, s));
+                }
+                if (Relationships.PrimarySpouse != null) responses.Add(new Response(Relationships.PrimarySpouse, Relationships.PrimarySpouse));
+                responses.Add(new Response("cancel", "I don't want to divorce anyone."));
+
+                Modworks.Menus.AskQuestion("Who would you like to divorce? (50,000g)", responses.ToArray(), DivorceQuestionCallback1);
+            }
+        }
+
+        private void DivorceQuestionCallback1(Farmer who, string what)
+        {
+            if (what != "cancel")
+            {
+                if (Game1.player.Money > 50000)
+                {
+                    Game1.player.Money -= 50000;
+                    Relationships.Divorce(what);
+                    Game1.showGlobalMessage("You are no longer married to " + what);
+                }
+                else
+                {
+                    Game1.showRedMessage("You cannot afford this divorce.");
+                }
+            }
+        }
+
         private void Events_NPCCheckAction(object sender, bwdyworks.Events.NPCCheckActionEventArgs args)
         {
             if (args.Cancelled) return; //someone else already ate this one
-            
+
             //do we care about this NPC for our purposes?
             var targetedNPCs = Modworks.NPCs.GetAllCharacterNames(true, false, args.Farmer.currentLocation);
             if (!targetedNPCs.Contains(args.NPC.Name)) return;
@@ -177,11 +214,17 @@ namespace Polygamy
 
         public void PolygamyCommand(string command, string[] parameters)
         {
-            if(parameters.Length < 2 || parameters[0] == "help")
+            if (parameters[0] == "togglespouseroom")
+            {
+                Relationships.PolyData.EnableSpouseRoom = !Relationships.PolyData.EnableSpouseRoom;
+                Relationships.RollSpouseRoom();
+                return;
+            }
+            if (parameters.Length < 2 || parameters[0] == "help")
             {
                 var exampleNames = new[] { "Pierre", "Robin", "Sandy", "Pam", "Jodi", "Kent", "Caroline", "Clint", "Evelyn", "Gus", "Demetrius", "Lewis", "Marnie", "Wizard" };
                 string exampleName = exampleNames[Modworks.RNG.Next(exampleNames.Length)];
-                Monitor.Log($"Polygamy commands:\npolygamy flirt {exampleName} - would make '{exampleName}' a dateable NPC.\npolygamy unflirt {exampleName} - would make '{exampleName}' no longer dateable.\npolygamy roll {exampleName} - would make '{exampleName}' your 'official' spouse tomorrow\npolygamy marry {exampleName} - would immediately start a wedding with '{exampleName}'\npolygamy date {exampleName} - would make '{exampleName}' date you\npolygamy breakup {exampleName} - would make '{exampleName}' no longer dating you\npolygamy divorce {exampleName} - would, well, divorce '{exampleName}'\npolygamy undivorce {exampleName} - would make '{exampleName}' forget they were ever married to you", LogLevel.Info);
+                Monitor.Log($"Polygamy commands:\npolygamy flirt {exampleName} - would make '{exampleName}' a dateable NPC.\npolygamy unflirt {exampleName} - would make '{exampleName}' no longer dateable.\npolygamy roll {exampleName} - would make '{exampleName}' your 'official' spouse tomorrow\npolygamy marry {exampleName} - would immediately start a wedding with '{exampleName}'\npolygamy date {exampleName} - would make '{exampleName}' date you\npolygamy breakup {exampleName} - would make '{exampleName}' no longer dating you\npolygamy divorce {exampleName} - would, well, divorce '{exampleName}'\npolygamy undivorce {exampleName} - would make '{exampleName}' forget they were ever married to you\npolygamy togglespouseroom - toggles the spouse room on or off", LogLevel.Info);
                 return;
             }
             NPC npc = Game1.getCharacterFromName(parameters[1]);
@@ -213,7 +256,8 @@ namespace Polygamy
                 Relationships.SetDateable(npc.Name, false);
                 Monitor.Log("NPC " + parameters[1] + " is no longer datable.", LogLevel.Info);
                 return;
-            } else if (parameters[0] == "date")
+            }
+            else if (parameters[0] == "date")
             {
                 Relationships.Date(npc.Name);
                 Monitor.Log("NPC " + parameters[1] + " is now dating you.", LogLevel.Info);
@@ -278,6 +322,7 @@ namespace Polygamy
             if (Relationships.PolyData == null)
             {
                 Relationships.PolyData = new PolyData();
+                Relationships.PolyData.EnableSpouseRoom = true;
             }
             else Monitor.Log("Polygamy loaded.");
         }
@@ -290,18 +335,15 @@ namespace Polygamy
 
         private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
         {
+            if (Relationships.IsThisPlayerMarried) { 
+                //add more pendants to Pierre's
+                (Game1.getLocationFromName("SeedShop") as StardewValley.Locations.SeedShop).itemsToStartSellingTomorrow.Add(new StardewValley.Object(Vector2.Zero, 460, 1));
+            }
+
             Relationships.ScanForNPCs();
 
             if (Relationships.IsThisPlayerMarried)
             {
-                /*
-                if(Relationships.Spouses.Count == 0)
-                {
-                    //let's just do a safety fix here in case you just divorced all but one who wasn't primary
-                    Relationships.MakePrimarySpouse(Relationships.GetNextPrimarySpouse());
-                    return;
-                }
-                */
                 var nextPrimarySpouse = Game1.getCharacterFromName(Relationships.GetNextPrimarySpouse());
                 var lastPrimarySpouse = Game1.getCharacterFromName(Relationships.PrimarySpouse);
                 Relationships.MakePrimarySpouse(nextPrimarySpouse.Name);
@@ -334,7 +376,7 @@ namespace Polygamy
                         {
                             var npcObject = Game1.getCharacterFromName(spouseName);
                             Modworks.NPCs.Warp(npcObject, farmHouseName, (Game1.getLocationFromName(farmHouseName) as StardewValley.Locations.FarmHouse).getBedSpot());
-                            Monitor.Log("putting " + spouseName + " in bed (player side)");
+                            //Monitor.Log("putting " + spouseName + " in bed (player side)");
                             var pos = npcObject.Position;
                             pos.X += (float)(-32f + Modworks.RNG.NextDouble() * 96f); //vary the position
                             npcObject.Position = pos;
@@ -342,14 +384,14 @@ namespace Polygamy
                         {
                             var npcObject = Game1.getCharacterFromName(spouseName);
                             Modworks.NPCs.Warp(npcObject, farmHouseName, bedSpot);
-                            Monitor.Log("putting " + spouseName + " in bed (spouse side)");
+                            //Monitor.Log("putting " + spouseName + " in bed (spouse side)");
                             var pos = npcObject.Position;
                             pos.X += (float)(-32f + Modworks.RNG.NextDouble() * 96f); //vary the position
                             npcObject.Position = pos;
                         }
                         else //or around the house at random
                         {
-                            Monitor.Log("putting " + spouseName + " around the house");
+                            //Monitor.Log("putting " + spouseName + " around the house");
                             NPC otherSpouseNPC = Game1.getCharacterFromName(spouseName);
                             //find a free tile to position them on
                             GameLocation l = Game1.getLocationFromName(Game1.player.homeLocation.Value) as StardewValley.Locations.FarmHouse;
@@ -367,26 +409,22 @@ namespace Polygamy
 
             //check for wedding date?
             List<string> toWed = new List<string>();
-            Modworks.Log.Alert("ENGAGEMENTS COUNT: " + Relationships.Engagements.Count);
+            //Modworks.Log.Alert("ENGAGEMENTS COUNT: " + Relationships.Engagements.Count);
             foreach (var ee in Relationships.Engagements.Keys)
             {
-                Monitor.Log("We have an engagement with " + ee);
+                //Monitor.Log("We have an engagement with " + ee);
                 if (Relationships.Engagements[ee].IsToday())
                 {
-                    Monitor.Log("ENGAGEMENT IS GO!");
+                    //Monitor.Log("ENGAGEMENT IS GO!");
                     toWed.Add(ee);
                 }
             }
             if (toWed.Count > 0) {
                 List<NPC> oldSpouses = new List<NPC>();
-                if (Relationships.PrimarySpouse != null)
-                {
-                    Modworks.Log.Alert("adding oldspouse " + Relationships.PrimarySpouse);
-                    oldSpouses.Add(Game1.getCharacterFromName(Relationships.PrimarySpouse));
-                }
+                Relationships.StorePrimarySpouse();
                 foreach (string nxs in Relationships.Spouses)
                 {
-                    Modworks.Log.Alert("adding oldspouse " + nxs);
+                    //Modworks.Log.Alert("adding oldspouse " + nxs);
                     oldSpouses.Add(Game1.getCharacterFromName(nxs));
                 }
 
@@ -398,6 +436,10 @@ namespace Polygamy
                     var p = Modworks.Locations.FindPathableAndClearTile(l, Point.Zero);
                     if (p != Point.Zero)
                     {
+                        Modworks.NPCs.Warp(npc, l, p);
+                    } else
+                    {
+                        p = Modworks.Locations.FindPathableAndClearTile(Game1.getLocationFromName("Town"), Point.Zero);
                         Modworks.NPCs.Warp(npc, l, p);
                     }
                     Relationships.Marry(newSpouse);
@@ -452,7 +494,7 @@ namespace Polygamy
                     if (Modworks.RNG.Next(5) == 1)
                     {
 
-                        if (spouseNpc.currentLocation == null)
+                        if (spouseNpc != null && spouseNpc.currentLocation == null)
                         {
                             //we lost them! let's fix it
                             Game1.getLocationFromName(Game1.player.homeLocation.Value).addCharacterAtRandomLocation(spouseNpc);
@@ -460,6 +502,7 @@ namespace Polygamy
                         }
                         else
                         {
+                            if (spouseNpc == null) continue;
                             GameLocation l = spouseNpc.currentLocation;
                             bool warped = false;
                             if (l.farmers.Count == 0) //noone's looking. we could move them to an adjacent map.

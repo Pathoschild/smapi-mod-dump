@@ -74,11 +74,11 @@ namespace DailyTasksReport.UI
             snapCursorToCurrentSnappedComponent();
         }
 
-        protected override void customSnapBehavior(int direction, int oldRegion, int oldId)
+        protected override void customSnapBehavior(int direction, int oldRegion, int oldID)
         {
-            base.customSnapBehavior(direction, oldRegion, oldId);
+            base.customSnapBehavior(direction, oldRegion, oldID);
 
-            if (oldId != 0 || direction != 0) return;
+            if (oldID != 0 || direction != 0) return;
 
             currentlySnappedComponent = upperRightCloseButton;
             snapCursorToCurrentSnappedComponent();

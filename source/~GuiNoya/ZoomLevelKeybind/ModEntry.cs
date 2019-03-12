@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using System;
 
 namespace ZoomLevelKeybind
 {
@@ -15,14 +15,11 @@ namespace ZoomLevelKeybind
         {
             _config = helper.ReadConfig<ModConfig>();
 
-            InputEvents.ButtonPressed += InputEvents_ButtonPressed;
+            helper.Events.Input.ButtonPressed += Input_ButtonPressed;
         }
 
-        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
+        private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            //if (!Context.IsWorldReady)
-            //    return;
-
             if (e.Button.TryGetKeyboard(out Keys _))
             {
                 if (e.Button == _config.IncreaseZoomKey)
@@ -46,7 +43,7 @@ namespace ZoomLevelKeybind
                 }
 
                 if (_config.SuppressControllerButton && wasZoom)
-                    e.SuppressButton();
+                    Helper.Input.Suppress(e.Button);
             }
         }
 

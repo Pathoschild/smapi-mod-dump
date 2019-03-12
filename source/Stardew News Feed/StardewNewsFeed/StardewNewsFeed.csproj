@@ -8,7 +8,7 @@
     <RootNamespace>StardewNewsFeed</RootNamespace>
     <AssemblyName>StardewNewsFeed</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <ReleaseVersion>1.8</ReleaseVersion>
+    <ReleaseVersion>1.9</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -69,6 +69,8 @@
     <None Include="i18n\ja.json" />
     <None Include="i18n\pt.json" />
     <None Include="i18n\ru.json" />
+    <None Include="i18n\fr.json" />
+    <None Include="i18n\ko.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="i18n\default.json" />

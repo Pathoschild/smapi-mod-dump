@@ -2,6 +2,7 @@ url:
    https://github.com/EpicBellyFlop45/StardewMods.git
 
 mods:
+   Better 10 Hearts
    Better Crab Pots
    Better Mixed Seeds
    Better Rarecrows
@@ -9,9 +10,9 @@ mods:
    Customize Cursor Sprite
 
 latest commit:
-   commit 7df5bd80cfc4975cebce4f1458a58b2d1f5ac17d
+   commit 48051a1b574bdf26eee95a5f2ba9e82c12852e4c
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Tue Jan 29 20:43:21 2019 -0500
+   Date:   Sat Mar 9 18:32:05 2019 +0000
    
-       Changed: Mod version in manifest
+       Change: How to check if NPCs have a spouse to fix the error of talking to an NPC without a spouse
    

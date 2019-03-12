@@ -33,8 +33,8 @@ namespace DailyTasksReport.Tasks
         {
             if (Game1.locations.OfType<Forest>().First().travelingMerchantDay)
             {
-                MenuEvents.MenuChanged -= MenuEvents_MenuChanged;
-                MenuEvents.MenuChanged += MenuEvents_MenuChanged;
+                ModEntry.EventsHelper.Display.MenuChanged -= Display_MenuChanged;
+                ModEntry.EventsHelper.Display.MenuChanged += Display_MenuChanged;
             }
 
             if ((Game1.dayOfMonth % 7 == 0 || Game1.dayOfMonth % 7 == 3) && Game1.stats.DaysPlayed > 5)
@@ -63,12 +63,12 @@ namespace DailyTasksReport.Tasks
                     }
         }
 
-        private void MenuEvents_MenuChanged(object sender, EventArgsClickableMenuChanged e)
+        private void Display_MenuChanged(object sender, MenuChangedEventArgs e)
         {
             if (e.NewMenu is ShopMenu && Game1.currentLocation is Forest &&
                 Game1.player.GetGrabTile() == new Vector2(27, 11))
             {
-                MenuEvents.MenuChanged -= MenuEvents_MenuChanged;
+                ModEntry.EventsHelper.Display.MenuChanged -= Display_MenuChanged;
                 _wasTravelingMerchantVisited = true;
             }
         }
@@ -90,7 +90,7 @@ namespace DailyTasksReport.Tasks
         {
             _isTravelingMerchantOpen = false;
             _wasTravelingMerchantVisited = false;
-            MenuEvents.MenuChanged -= MenuEvents_MenuChanged;
+            ModEntry.EventsHelper.Display.MenuChanged -= Display_MenuChanged;
 
             _birthdayNpc = null;
 

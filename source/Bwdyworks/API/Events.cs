@@ -1,4 +1,5 @@
 ﻿using bwdyworks.Events;
+using Microsoft.Xna.Framework;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,23 @@ namespace bwdyworks.API
                 Cancelled = false
             };
             if (NPCCheckAction != null) NPCCheckAction.Invoke(this, args);
+            return args;
+        }
+
+        //Tile Check Action - called when a player activates a tile with an Action property. Cancellable.
+        public event TileCheckActionHandler TileCheckAction;
+        public delegate void TileCheckActionHandler(object sender, TileCheckActionEventArgs args);
+        internal TileCheckActionEventArgs TileCheckActionEvent(Farmer who, GameLocation location, Vector2 tile, string action)
+        {
+            var args = new TileCheckActionEventArgs
+            {
+                GameLocation = location,
+                TileLocation = tile,
+                Action = action,
+                Farmer = who,
+                Cancelled = false
+            };
+            if (TileCheckAction != null) TileCheckAction.Invoke(this, args);
             return args;
         }
 

@@ -100,5 +100,19 @@ namespace bwdyworks.API
             if (npc.Sprite == null) return Rectangle.Empty;
             return new Rectangle((int)npc.Position.X + 8, (int)npc.Position.Y + 16, npc.Sprite.SpriteWidth * 4 * 3 / 4, 32);
         }
+
+        public bool IsChild(NPC npc)
+        {
+
+            if (npc is StardewValley.Characters.Child) return true; //should get vanilla player-children
+            var dispositions = Game1.content.Load<Dictionary<string, string>>("Data\\NPCDispositions");
+            if (dispositions.ContainsKey(npc.Name))
+            {
+                if (dispositions[npc.Name].Split('/')[0] == "child") return true;
+                else return false;
+            }
+            //this npc doesn't exist in dispositions? perhaps a child, or other mod-added NPC (e.g. a Moongate)
+            return npc.Age == 2; //should get any remaining NPC children
+        }
     }
 }

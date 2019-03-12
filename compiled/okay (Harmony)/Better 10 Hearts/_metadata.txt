@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3605
+IDs: EpicBellyFlop45.Better10Hearts
+update keys: Nexus:3605

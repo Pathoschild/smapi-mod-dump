@@ -15,10 +15,12 @@ mods:
    XNB Loader
 
 latest commit:
-   commit a6b9069a6a31328f2b3862dce07c6f27509a4170
-   Merge: 2dbc94f 6ee9483
-   Author: Entoarox <kvdk@kvdk.net>
-   Date:   Tue Mar 5 15:13:47 2019 +0100
+   commit bf9416767cc4e49ab0bfc7343b1bed47fa1f403a
+   Merge: a6b9069 da55ec4
+   Author: Entoarox <Entoarox@users.noreply.github.com>
+   Date:   Thu Mar 7 21:14:47 2019 +0100
    
-       Merge branch 'master' of https://github.com/Entoarox/StardewMods.git
+       Merge pull request #65 from S2SKY/patch-2
+       
+       Create ko.json
    
