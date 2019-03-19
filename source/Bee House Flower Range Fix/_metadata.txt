@@ -5,9 +5,12 @@ mods:
    Bee House Flower Range Fix
 
 latest commit:
-   commit 87a4b3ee4c20d003735e43edffa3df9ac860524d
-   Author: KirbyLink <kjryan.reeves@gmail.com>
-   Date:   Thu Nov 29 11:25:40 2018 -0800
+   commit c25579dd2ded9c8fc83eff2464398326b145e72d
+   Merge: 87a4b3e d730924
+   Author: Justin Reeves <kjryan.reeves@gmail.com>
+   Date:   Mon Mar 18 09:38:43 2019 -0700
    
-       Recompile for compatibility
+       Merge pull request #1 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0
    

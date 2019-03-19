@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Better Windows Mod",
+  "Author": "LPMG",
+  "Version": "1.0.1",
+  "Description": "Improves the windows",
+  "UniqueID": "LPMG.Better_Windows_Mod",
+  "EntryDll": "BetterWindows.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

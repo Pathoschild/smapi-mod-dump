@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3651
+IDs: Opalie.Wedding
+update keys: Nexus:3651

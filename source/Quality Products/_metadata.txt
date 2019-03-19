@@ -5,9 +5,9 @@ mods:
    Quality Products
 
 latest commit:
-   commit 871c95228b9f3fcc0e560113ad9cf372677573cc
+   commit 2528d40adf294781945aee475f7bc33b22cf7ddc
    Author: SilentOak <carrotnebulae@gmail.com>
-   Date:   Sun Mar 10 12:42:53 2019 -0300
+   Date:   Tue Mar 12 19:44:44 2019 -0300
    
-       Large Egg/Milk producing 2 products
+       Changed Animation accessibility to internal
    

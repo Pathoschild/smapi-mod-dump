@@ -1,0 +1,16 @@
+{
+  "Name": "Line Sprinkler (L)",
+  "Description": "Waters 4 tiles in a straight line left.",
+  "Price": 100,
+  "ProvidesLight": false, 
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients" : [
+      {
+        "Object": 599,
+        "Count": 1,
+      }
+    ],
+    "IsDefault": true,
+  }
+}

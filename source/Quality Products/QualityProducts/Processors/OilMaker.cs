@@ -4,23 +4,31 @@ using SObject = StardewValley.Object;
 
 namespace QualityProducts.Processors
 {
-    public class OilMaker : Processor
+    internal class OilMaker : Processor
     {
+        /****************
+         * Public methods
+         ****************/
+
         public OilMaker() : base(ProcessorType.OIL_MAKER)
         {
         }
 
-        private void PerformGraphicsAndSounds(Farmer who, Color color)
-        {
-            who.currentLocation.playSound("bubbles");
-            who.currentLocation.playSound("sipTea");
-            Multiplayer multiplayer = QualityProducts.Instance.Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
-            multiplayer.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite("TileSheets\\animations", new Rectangle(256, 1856, 64, 128), 80f, 6, 999999, tileLocation.Value * 64f + new Vector2(0f, -128f), false, false, (tileLocation.Y + 1f) * 64f / 10000f + 0.0001f, 0f, color * 0.75f, 1f, 0f, 0f, 0f, false)
-            {
-                alphaFade = 0.005f
-            });
-        }
 
+        /*******************
+         * Protected methods
+         *******************/
+
+        /***
+         * From StardewValley.Object.performObjectDropInAction
+         ***/
+        /// <summary>
+        /// Performs item processing.
+        /// </summary>
+        /// <returns><c>true</c> if started processing, <c>false</c> otherwise.</returns>
+        /// <param name="object">Object to be processed.</param>
+        /// <param name="probe">If set to <c>true</c> probe.</param>
+        /// <param name="who">Farmer that initiated processing.</param>
         protected override bool PerformProcessing(SObject @object, bool probe, Farmer who)
         {
             switch (@object.ParentSheetIndex)
@@ -30,7 +38,10 @@ namespace QualityProducts.Processors
                     if (!probe)
                     {
                         minutesUntilReady.Value = 1000;
-                        PerformGraphicsAndSounds(who, Color.Yellow);
+                        who.currentLocation.playSound("bubbles");
+                        who.currentLocation.playSound("sipTea");
+                        Animation.PerformGraphics(who.currentLocation, Animation.Bubbles(TileLocation, Color.Yellow));
+
                     }
                     return true;
                 case 421:
@@ -38,7 +49,9 @@ namespace QualityProducts.Processors
                     if (!probe)
                     {
                         minutesUntilReady.Value = 60;
-                        PerformGraphicsAndSounds(who, Color.Yellow);
+                        who.currentLocation.playSound("bubbles");
+                        who.currentLocation.playSound("sipTea");
+                        Animation.PerformGraphics(who.currentLocation, Animation.Bubbles(TileLocation, Color.Yellow));
                     }
                     return true;
                 case 430:
@@ -46,7 +59,9 @@ namespace QualityProducts.Processors
                     if (!probe)
                     {
                         minutesUntilReady.Value = 360;
-                        PerformGraphicsAndSounds(who, Color.Yellow);
+                        who.currentLocation.playSound("bubbles");
+                        who.currentLocation.playSound("sipTea");
+                        Animation.PerformGraphics(who.currentLocation, Animation.Bubbles(TileLocation, Color.Yellow));
                     }
                     return true;
                 case 431:
@@ -54,11 +69,25 @@ namespace QualityProducts.Processors
                     if (!probe)
                     {
                         minutesUntilReady.Value = 3200;
-                        PerformGraphicsAndSounds(who, Color.Yellow);
+                        who.currentLocation.playSound("bubbles");
+                        who.currentLocation.playSound("sipTea");
+                        Animation.PerformGraphics(who.currentLocation, Animation.Bubbles(TileLocation, Color.Yellow));
                     }
                     return true;
             }
             return false;
+        }
+
+        /***
+         * From StardewValley.Object.addWorkingAnimation
+         ***/
+        /// <summary>
+        /// Adds this entity's working animation to the specified game location.
+        /// </summary>
+        /// <param name="environment">Game location.</param>
+        protected override void AddWorkingAnimationTo(GameLocation environment)
+        {
+            Animation.PerformGraphics(environment, Animation.Bubbles(TileLocation, Color.Yellow));
         }
     }
 }

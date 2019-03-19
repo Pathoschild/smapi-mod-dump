@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Reflection;
 
 using Entoarox.Framework;
 using Entoarox.Framework.Events;
@@ -32,7 +31,6 @@ namespace Entoarox.MorePetsAndAnimals
         *********/
         /// <summary>Whether to replace the bus on the next opportunity.</summary>
         private bool ReplaceBus = true;
-        private bool TriggerAction;
 
         /// <summary>The file extensions recognised by the mod.</summary>
         private readonly HashSet<string> ValidExtensions = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase)
@@ -78,7 +76,7 @@ namespace Entoarox.MorePetsAndAnimals
             ModEntry.SMonitor = this.Monitor;
 
             // Event listeners
-            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            helper.Events.GameLoop.ReturnedToTitle += this.OnReturnedToTitle;
             helper.Events.GameLoop.SaveLoaded += this.LoadSkinMap;
             helper.Events.GameLoop.Saving += this.SaveSkinMap;
             helper.Events.GameLoop.Saved += this.LoadSkinMap;
@@ -124,10 +122,14 @@ namespace Entoarox.MorePetsAndAnimals
             Api.RegisterPetType("cat", typeof(Cat));
             Api.RegisterPetType("dog", typeof(Dog));
 
-            // configure bus replacement
+            // Trigger setup
+            this.DoSetup();
+        }
+        private void DoSetup()
+        {
             if (ModEntry.Config.AnimalsOnly)
                 this.ReplaceBus = false;
-            if(this.ReplaceBus)
+            if (this.ReplaceBus)
             {
                 try
                 {
@@ -135,14 +137,13 @@ namespace Entoarox.MorePetsAndAnimals
                     string asset = this.Helper.Content.GetActualAssetKey(Path.Combine("assets", "box.png"));
                     Game1.content.Load<Texture2D>(asset);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     this.ReplaceBus = false;
                     this.Monitor.Log("Unable to patch BusStop due to exception:", LogLevel.Error, e);
                 }
             }
         }
-
         public override object GetApi()
         {
             return Api;
@@ -216,7 +217,7 @@ namespace Entoarox.MorePetsAndAnimals
                 }
 
                 // yield
-                string assetKey = this.Helper.Content.GetActualAssetKey(Path.Combine("assets", "skins", file.Name));
+                string assetKey = this.Helper.Content.GetActualAssetKey(Path.Combine("assets", "skins", extension.Equals("xnb") ? Path.Combine(Path.GetDirectoryName(file.Name), Path.GetFileNameWithoutExtension(file.Name)) : file.Name));
                 if (Animals.ContainsKey(type))
                     Animals[type].Add(new AnimalSkin(type, index, assetKey));
                 else
@@ -245,14 +246,19 @@ namespace Entoarox.MorePetsAndAnimals
                     summary.AppendLine($"    {pair.Key}: {pair.Value.Count} skins ({string.Join(", ", pair.Value.Select(p => Path.GetFileName(p.AssetKey)).OrderBy(p => p))})");
             }
             this.Monitor.Log(summary.ToString(), LogLevel.Trace);
-            if (this.ReplaceBus && !Pets.Any(a => a.Value.Count!=0))
+            if (!Config.AnimalsOnly && !Pets.Any(a => a.Value.Count!=0))
             {
-                this.ReplaceBus = false;
+                Config.AnimalsOnly = true;
+                this.ReplaceBus=false;
                 this.Monitor.Log($"The `{nameof(ModConfig.AnimalsOnly)}` config option is set to false, but no pet skins were found!", LogLevel.Error);
             }
             SkinsReady = true;
         }
 
+        private void OnReturnedToTitle(object sender, EventArgs e)
+        {
+            this.DoSetup();
+        }
         /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -265,11 +271,12 @@ namespace Entoarox.MorePetsAndAnimals
                 this.LoadSkins();
 
             // patch bus stop
-            if (this.ReplaceBus && Game1.getLocationFromName("BusStop") != null)
+            if (this.ReplaceBus && Game1.getLocationFromName("BusStop")?.map.Properties.ContainsKey("MA.Patched")==false)
             {
                 MoreEvents.ActionTriggered += this.OnActionTriggered;
                 this.Monitor.Log("Patching bus stop...", LogLevel.Trace);
                 GameLocation bus = Game1.getLocationFromName("BusStop");
+                bus.map.Properties.Add("MA.Patched", true);
                 bus.map.AddTileSheet(new TileSheet("MorePetsTilesheet", bus.map, this.Helper.Content.GetActualAssetKey("assets/box.png"), new Size(2, 2), new Size(16, 16)));
                 bus.SetTile(1, 2, "Front", 0, "MorePetsTilesheet");
                 bus.SetTile(2, 2, "Front", 1, "MorePetsTilesheet");
@@ -277,7 +284,6 @@ namespace Entoarox.MorePetsAndAnimals
                 bus.SetTile(2, 3, "Buildings", 3, "MorePetsTilesheet");
                 bus.SetTileProperty(1, 3, "Buildings", "Action", "MorePetsAdoption");
                 bus.SetTileProperty(2, 3, "Buildings", "Action", "MorePetsAdoption");
-                this.ReplaceBus = false;
             }
 
             // set pet skins
@@ -370,11 +376,20 @@ namespace Entoarox.MorePetsAndAnimals
 
         private void LoadSkinMap(object s, EventArgs e)
         {
-            SkinMap = this.Helper.Data.ReadSaveData<Dictionary<long, int>>("animal-skins") ?? new Dictionary<long, int>();
+            if(!Context.IsMainPlayer)
+                this.Monitor.Log("Multiplayer Farmhand detected, disabling MoreAnimals to prevent issues.", LogLevel.Debug);
+            else
+            {
+                this.Helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+                SkinMap = this.Helper.Data.ReadSaveData<Dictionary<long, int>>("animal-skins") ?? new Dictionary<long, int>();
+            }
         }
 
         private void SaveSkinMap(object s, EventArgs e)
         {
+            if (!Context.IsMainPlayer)
+                return;
+            this.Helper.Events.GameLoop.UpdateTicked -= this.OnUpdateTicked;
             this.Helper.Data.WriteSaveData("animal-skins", SkinMap);
         }
 
@@ -425,7 +440,7 @@ namespace Entoarox.MorePetsAndAnimals
                     break;
                 case "list_animal_types":
                     List<string> types = new List<string>();
-                    foreach(FarmAnimal animal in GetFarmAnimals())
+                    foreach(FarmAnimal animal in this.GetFarmAnimals())
                     {
                         string type = Sanitize(animal.type.Value);
                         if (!types.Contains(type))
@@ -435,7 +450,7 @@ namespace Entoarox.MorePetsAndAnimals
                     break;
                 case "list_animal_skins":
                     List<string> skins = new List<string>();
-                    foreach (FarmAnimal animal in GetFarmAnimals())
+                    foreach (FarmAnimal animal in this.GetFarmAnimals())
                     {
                         string type = Sanitize(animal.type.Value) + ':' + (SkinMap.ContainsKey(animal.myID.Value) ? SkinMap[animal.myID.Value] : 0);
                         if (!skins.Contains(type))

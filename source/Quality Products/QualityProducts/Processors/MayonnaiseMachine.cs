@@ -4,12 +4,31 @@ using SObject = StardewValley.Object;
 
 namespace QualityProducts.Processors
 {
-    public class MayonnaiseMachine : Processor
+    internal class MayonnaiseMachine : Processor
     {
+        /****************
+         * Public methods
+         ****************/
+
         public MayonnaiseMachine() : base(ProcessorType.MAYONNAISE_MACHINE)
         {
         }
 
+
+        /*******************
+         * Protected methods
+         *******************/
+
+        /***
+         * From StardewValley.Object.performObjectDropInAction
+         ***/
+        /// <summary>
+        /// Performs item processing.
+        /// </summary>
+        /// <returns><c>true</c> if started processing, <c>false</c> otherwise.</returns>
+        /// <param name="object">Object to be processed.</param>
+        /// <param name="probe">If set to <c>true</c> probe.</param>
+        /// <param name="who">Farmer that initiated processing.</param>
         protected override bool PerformProcessing(SObject @object, bool probe, Farmer who)
         {
             switch (@object.ParentSheetIndex)

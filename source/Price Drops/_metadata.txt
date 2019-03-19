@@ -5,10 +5,12 @@ mods:
    Price Drops
 
 latest commit:
-   commit 8486a8646a22a0b3ac24fbb7e616709cee743d40
-   Merge: 684c95f a32589a
-   Author: skuldomg <scdehne@googlemail.com>
-   Date:   Sat Jan 26 22:18:14 2019 +0100
+   commit d3feea714290608ea4fff860eaeb34eff0e2e50e
+   Merge: 8486a86 3fb7e6a
+   Author: Simon <scdehne@googlemail.com>
+   Date:   Tue Mar 12 17:21:23 2019 +0100
    
-       Merge
+       Merge pull request #4 from S2SKY/patch-1
+       
+       Create ko.json
    

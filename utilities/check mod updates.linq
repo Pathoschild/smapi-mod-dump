@@ -162,6 +162,8 @@ public IDictionary<string, string> OverrideFolderNames = new Dictionary<string, 
 	["Vrakyas.CurrentLocation"] = "Current Location (Vrakyas)",
 	["CurrentLocation102120161203"] = "Current Location (Omegasis)",
 	
+	["Thor.EnemyHealthBars"] = "Enemy Health Bars (TheThor59)",
+	
 	["HappyBirthday"] = "Happy Birthday (Oxyligen)",
 	["Omegasis.HappyBirthday"] = "Happy Birthday (Omegasis)",
 	

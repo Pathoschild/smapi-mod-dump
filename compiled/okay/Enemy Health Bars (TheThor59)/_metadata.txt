@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3627
+IDs: Thor.EnemyHealthBars
+update keys: Nexus:3627

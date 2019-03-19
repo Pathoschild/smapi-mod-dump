@@ -1,0 +1,10 @@
+{
+  "Name": "FarmHelper",
+  "Author": "Mizzion",
+  "Version": "0.0.1",
+  "Description": "Helps you manage your farm.",
+  "UniqueID": "mizzion.farmhelper",
+  "EntryDll": "FarmHelper.dll",
+  "MinimumApiVersion": "2.5",
+  "UpdateKeys": [ "Nexus:" ]
+}

@@ -1,0 +1,5 @@
+﻿{
+    "msg.warm": "The warmth from the fire kept you warm during the night.",
+    "msg.cold": "The cold drained your energy during the night.",
+    "msg.nowood": "You need {{wood_pieces}} pieces of wood to light the fire."
+}

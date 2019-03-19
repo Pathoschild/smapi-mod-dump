@@ -4,12 +4,30 @@ using SObject = StardewValley.Object;
 
 namespace QualityProducts.Processors
 {
-    public class CheesePress : Processor
+    internal class CheesePress : Processor
     {
+        /****************
+         * Public methods
+         ****************/
+
         public CheesePress() : base(ProcessorType.CHEESE_PRESS)
         {
         }
 
+        /*******************
+         * Protected methods
+         *******************/
+
+        /***
+         * From StardewValley.Object.performObjectDropInAction
+         ***/
+        /// <summary>
+        /// Performs item processing.
+        /// </summary>
+        /// <returns><c>true</c> if started processing, <c>false</c> otherwise.</returns>
+        /// <param name="object">Object to be processed.</param>
+        /// <param name="probe">If set to <c>true</c> probe.</param>
+        /// <param name="who">Farmer that initiated processing.</param>
         protected override bool PerformProcessing(SObject @object, bool probe, Farmer who)
         {
             switch (@object.ParentSheetIndex)
@@ -54,6 +72,25 @@ namespace QualityProducts.Processors
                     return true;
             }
             return false;
+        }
+
+        /***
+         * From StardewValley.Object.checkForAction
+         ***/
+        /// <summary>
+        /// Updates the game stats.
+        /// </summary>
+        /// <param name="object">Previously held object.</param>
+        protected override void UpdateStats(SObject @object)
+        {
+            if (@object.ParentSheetIndex == 426)
+            {
+                Game1.stats.GoatCheeseMade++;
+            }
+            else
+            {
+                Game1.stats.CheeseMade++;
+            }
         }
     }
 }

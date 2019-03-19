@@ -1,10 +1,10 @@
 ﻿{
-   "Name": "BeeHouseFix",
+   "Name": "Bee House Flower Range Fix",
    "Author": "KirbyLink",
    "Version": "1.1.0",
    "Description": "Fixes bug preventing top/bottom right tiles of bee house radius to not be checked for flowers.",
    "UniqueID": "kirbylink.beehousefix",
-   "EntryDll": "beehousefix.dll",
-   "MinimumApiVersion": "2.0",
+   "EntryDll": "BeeHouseFix.dll",
+   "MinimumApiVersion": "2.0.0",
    "UpdateKeys": ["Nexus:3013"]
 }

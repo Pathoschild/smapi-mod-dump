@@ -1,0 +1,10 @@
+{
+  "Name": "ArtifactSpotOverhaul",
+  "Author": "Mizzion",
+  "Version": "0.0.1",
+  "Description": "Overhauls the games Artifact Spots.",
+  "UniqueID": "mizzion.artifactspotoverhaul",
+  "EntryDll": "ArtifactSpotOverhaul.dll",
+  "MinimumApiVersion": "2.5",
+  "UpdateKeys": []
+}

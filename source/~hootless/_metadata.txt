@@ -1,0 +1,17 @@
+url:
+   https://github.com/hootless/StardewMods.git
+
+mods:
+   Bus Locations
+   Line Sprinklers
+
+latest commit:
+   commit 50428ffd622901c037fb1b31c225188f6ffcdcdc
+   Merge: 316eec0 71d3a1f
+   Author: hootless <jmsjunior96@gmail.com>
+   Date:   Mon Mar 11 23:37:28 2019 -0700
+   
+       Merge pull request #3 from Pathoschild/add-bus-locations
+       
+       Add Bus Locations code
+   

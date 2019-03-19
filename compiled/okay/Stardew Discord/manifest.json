@@ -1,10 +1,10 @@
 ﻿{
   "Name": "StardewDiscord",
   "Author": "Steven Kraft",
-  "Version": "0.2.0",
+  "Version": "0.3.1",
   "Description": "Relays Stardew Valley chat messages and events to Discord.",
   "UniqueID": "StevenKraft.StardewDiscord",
   "EntryDll": "StardewDiscord.dll",
   "MinimumApiVersion": "2.10.0",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:3608" ]
 }

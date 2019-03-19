@@ -1,8 +1,8 @@
 {
-   "Name": "StarDewValleyWeatherMachine",
+   "Name": "SDVWM",
    "Author": "SixthTitan",
-   "Version": "1.5.0",
-   "Description": "The scientists at Stardew Valley Laboratory made a break through in climate engineering and have discovered a way to bring the weather conditions from the real world into Stardew Valley, now you really can experience the real world from the comfort of your couch.",
+   "Version": "1.5.1",
+   "Description": "Location based Weather System for Stardew Valley",
    "UniqueID": "SixthTitan.StarDewValleyWeatherMachine",
    "EntryDll": "StarDewValleyWeatherMachine.dll",
    "MinimumApiVersion": "2.9",

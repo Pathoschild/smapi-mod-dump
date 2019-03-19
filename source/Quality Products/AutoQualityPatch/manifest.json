@@ -1,0 +1,20 @@
+﻿{
+  "Name": "AutoQualityPatch",
+  "Author": "SilentOak",
+  "Version": "1.2.1",
+  "Description": "Patch for integration with Automate",
+  "UniqueID": "SilentOak.AutoQualityPatch",
+  "EntryDll": "AutoQualityPatch.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:3609", "GitHub:silentoak/QualityProducts" ],
+  "Dependencies" : [
+    {
+      "UniqueID": "SilentOak.QualityProducts",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "Pathoschild.Automate",
+      "IsRequired": true
+    }
+  ]
+}

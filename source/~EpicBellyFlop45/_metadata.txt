@@ -10,9 +10,9 @@ mods:
    Customize Cursor Sprite
 
 latest commit:
-   commit 48051a1b574bdf26eee95a5f2ba9e82c12852e4c
+   commit d51f4c70afbc031090719f826fea4527eeb96283
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Sat Mar 9 18:32:05 2019 +0000
+   Date:   Sat Mar 16 23:16:18 2019 +0000
    
-       Change: How to check if NPCs have a spouse to fix the error of talking to an NPC without a spouse
+       [BetterMixedSeeds] Added a config option to change the chance of mixed seeds dropping from weeds
    

@@ -1,0 +1,10 @@
+{
+  "Name": "RabbitBreeding",
+  "Author": "Mizzion",
+  "Version": "1.0.0",
+  "Description": "Gives the player a chance for their rabbits to breed during the night.",
+  "UniqueID": "mizzion.rabbitbreeding",
+  "EntryDll": "RabbitBreeding.dll",
+  "MinimumApiVersion": "2.10.1",
+  "UpdateKeys": [ "Nexus:" ]
+}

@@ -1,4 +1,8 @@
 ﻿# Release notes
+## 1.3.0
+* The feature removing tool duplicates when retrieving an upgraded tool by mail is now optional. It is disabled by default.
+* Added Korean translation (thanks to user "S2SKY" from github).
+
 ## 1.2.0
  * Added support for SMAPI 3.0.
 

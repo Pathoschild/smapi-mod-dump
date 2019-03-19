@@ -1,0 +1,14 @@
+{
+  "Name": "SeedsAreRare (CP)",
+  "Author": "jahangmar",
+  "Version": "1.1.0",
+  "Description": "Content pack belonging to the SeedsAreRare mod.",
+  "UniqueID": "jahangmar.CP-SeedsAreRare",
+  "MinimumApiVersion": "2.10.0",
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "Dependencies": [],
+  "UpdateKeys": [ "Nexus:3618" ]
+
+}

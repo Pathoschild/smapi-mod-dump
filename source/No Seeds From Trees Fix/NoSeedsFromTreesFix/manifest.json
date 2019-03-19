@@ -1,10 +1,10 @@
 ﻿{
-   "Name": "NoSeedsFromTreesFix",
+   "Name": "No Seeds From Trees Fix",
    "Author": "KirbyLink",
    "Version": "1.1.0",
    "Description": "Fixes bug that causes tree seeds to not drop after Farmer levels during day.",
    "UniqueID": "kirbylink.noseedsfromtreesfix",
-   "EntryDll": "noseedsfromtreesfix.dll",
-   "MinimumApiVersion": "2.0",
+   "EntryDll": "NoSeedsFromTreesFix.dll",
+   "MinimumApiVersion": "2.0.0",
    "UpdateKeys": ["Nexus:2947"]
 }

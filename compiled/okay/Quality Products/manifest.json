@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Quality Products",
   "Author": "SilentOak",
-  "Version": "1.1.0",
+  "Version": "1.2.2",
   "Description": "Add quality to cooking and artisan products made from quality ingredients",
   "UniqueID": "SilentOak.QualityProducts",
   "EntryDll": "QualityProducts.dll",

@@ -21,34 +21,19 @@ use the right translations.
 &nbsp;     | Archaeology House Content Management Helper    | Tool-Upgrade Delivery Service    |
 ---------- | :--------------------------------------------- | :------------------------------- |
 Chinese    | [✓](ArchaeologyHouseContentManagementHelper/i18n/zh.json) | [✓](ToolUpgradeDeliveryService/i18n/zh.json) 
+French     | ❑ untranslated                                            | ❑ untranslated 
 German     | [✓](ArchaeologyHouseContentManagementHelper/i18n/de.json) | [✓](ToolUpgradeDeliveryService/i18n/de.json)
+Hungarian  | ❑ untranslated                                            | ❑ untranslated 
+Italian    | ❑ untranslated                                            | ❑ untranslated 
 Japanese   | ❑ untranslated                                            | ❑ untranslated 
+Korean     | [✓](ArchaeologyHouseContentManagementHelper/i18n/ko.json) | [✓](ToolUpgradeDeliveryService/i18n/ko.json) 
 Portuguese | [✓](ArchaeologyHouseContentManagementHelper/i18n/pt.json) | [✓](ToolUpgradeDeliveryService/i18n/pt.json)      
 Russian    | ❑ untranslated                                            | ❑ untranslated 
 Spanish    | [✓](ArchaeologyHouseContentManagementHelper/i18n/es.json) | [✓](ToolUpgradeDeliveryService/i18n/es.json) 
+Turkish    | ❑ untranslated                                            | ❑ untranslated 
 
-Here's how to translate one of my mods:
-
-1. Copy `default.json` into a new file with the right name:
-
-   language   | file name
-   ---------- | ---------
-   Chinese    | `zh.json`
-   German     | `de.json`
-   Japanese   | `ja.json`
-   Portuguese | `pt.json`
-   Spanish    | `es.json`
-
-2. Translate the second part on each line:
-   ```json
-   "example-key": "some text here"
-                   ^-- translate this
-   ```
-   Don't change the quote characters, and don't translate the text inside `{{these brackets}}`.
-3. Launch the game to try your translations.  
-   _You can edit translations without restarting the game; just type `reload_i18n` in the SMAPI console to reload the translation files._
-
-Create an issue or pull request here with your translations, or send them to me via [e-mail](mailto:felixdev91@gmail.com) or [nexus mods](https://www.nexusmods.com).
+Contributions are welcome! See [Modding:Translations](https://stardewvalleywiki.com/Modding:Translations) on the wiki for help contributing translations.
+If you don't want to create an account on Github, you can always send them to me via [e-mail](mailto:felixdev91@gmail.com) or [nexus mods](https://www.nexusmods.com/users/58769686).
 
 ## Compiling the mods
 Installing stable releases from Nexus Mods is recommended for most users. If you really want to

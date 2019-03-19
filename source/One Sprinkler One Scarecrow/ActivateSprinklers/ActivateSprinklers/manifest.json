@@ -1,0 +1,10 @@
+{
+  "Name": "ActivateSprinklers",
+  "Author": "Mizzion",
+  "Version": "1.0.0",
+  "Description": "A Mod that activates Sprinklers when you right click them. Original Idea credits to PhthaloBlue.",
+  "UniqueID": "mizzion.activatesprinklers",
+  "EntryDll": "ActivateSprinklers.dll",
+  "MinimumApiVersion": "2.5",
+  "UpdateKeys": []
+}

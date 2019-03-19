@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3649
+IDs: Zyin.TVAnnouncements
+update keys: Nexus:3649

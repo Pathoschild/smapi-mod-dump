@@ -1,0 +1,5 @@
+﻿{
+    "fishReminderDaily": "Dear {{player}}, ^^I just wanted to remind you have fish that you still need to catch this season. You need the following:^^ {{fish}}",
+    "fishReminderWeekly": "Dear {{player}}, ^^Here's your weekly report on which fish you still need to catch this season. You need the following:^^{{fish}}",
+    "fishReminderMonthly": "Dear {{player}}, ^^Here's your monthly report on which fish you still need to catch this season. You need the following: ^^{{fish}}'"
+}

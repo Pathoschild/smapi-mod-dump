@@ -1,0 +1,7 @@
+{
+  "wood_pieces": 5,
+  "penalty": true,
+  "reduce_health": 0.5,
+  "reduce_stamina": 0.5,
+  "showMessageOnStartOfDay": true
+}

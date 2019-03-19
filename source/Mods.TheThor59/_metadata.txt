@@ -1,0 +1,13 @@
+url:
+   https://github.com/TheThor59/StardewMods.git
+
+mods:
+   Enemy Health Bars
+
+latest commit:
+   commit c87252834fdc82b188794bf8aa64c0a1d94d0a83
+   Author: TheThor59 <ethanhol@yahoo.fr>
+   Date:   Sat Mar 16 18:05:26 2019 +0100
+   
+       Fix readme file
+   

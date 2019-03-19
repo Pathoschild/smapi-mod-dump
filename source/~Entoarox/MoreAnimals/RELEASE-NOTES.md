@@ -1,4 +1,18 @@
 ## Release notes
+## 3.0.1
+Released 18 march 2019.
+
+* Adds italian localization.
+* Fixes xnb files not being usable as skins.
+* Fixes pet types without skins having a chance of being selected.
+* Fixes the pet adoption box disappearing in some situations.
+
+## 3.0
+Released 3 March 2019.
+
+* Rewrite of nearly all internal logic, fixing a ton of behavioural bugs in the process.
+* *Warning:* This version is not MP compatible!
+
 ## 2.1
 Released 28 December 2018. (Thanks to Pathoschild!)
 

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3642
+IDs: misscoriel.eventrepeater
+update keys: Nexus:3642

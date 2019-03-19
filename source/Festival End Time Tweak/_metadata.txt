@@ -5,9 +5,12 @@ mods:
    Festival End Time Tweak
 
 latest commit:
-   commit cb26ce4f74b4409ec36d6fa9952f3c9fb5cc30c2
-   Author: KirbyLink <kjryan.reeves@gmail.com>
-   Date:   Thu Nov 29 12:58:52 2018 -0800
+   commit 48d599d9980bb1688b7f67c147eccd9596098dae
+   Merge: cb26ce4 b5d9236
+   Author: Justin Reeves <kjryan.reeves@gmail.com>
+   Date:   Mon Mar 18 09:38:17 2019 -0700
    
-       Recompiled and removed transpiler for compatibility with 1.3.32
+       Merge pull request #1 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0
    

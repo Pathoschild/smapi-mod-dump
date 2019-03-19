@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3672
+IDs: LPMG.Better_Windows_Mod
+update keys: Nexus:3672

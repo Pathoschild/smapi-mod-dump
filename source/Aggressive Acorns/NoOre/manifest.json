@@ -1,0 +1,10 @@
+{
+  "Name": "No Ore",
+  "Author": "Phrasefable",
+  "Version": "0.1.0",
+  "Description": "Removes ore nodes, replaces with rock drops.",
+  "UniqueID": "Phrasefable.NoOre",
+  "EntryDll": "NoOre.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

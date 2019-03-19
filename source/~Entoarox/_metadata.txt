@@ -15,12 +15,9 @@ mods:
    XNB Loader
 
 latest commit:
-   commit bf9416767cc4e49ab0bfc7343b1bed47fa1f403a
-   Merge: a6b9069 da55ec4
-   Author: Entoarox <Entoarox@users.noreply.github.com>
-   Date:   Thu Mar 7 21:14:47 2019 +0100
+   commit 0524d201b4adca8f595d89cfac14f75640db76e9
+   Author: Entoarox <kvdk@kvdk.net>
+   Date:   Mon Mar 18 11:35:22 2019 +0100
    
-       Merge pull request #65 from S2SKY/patch-2
-       
-       Create ko.json
+       [MA] 3.0.1 release
    

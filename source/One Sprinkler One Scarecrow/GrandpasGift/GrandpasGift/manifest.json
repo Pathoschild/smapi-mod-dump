@@ -1,0 +1,10 @@
+﻿{
+	"Name": "GrandpasGift",
+	"Author": "Mizzion",
+	"Version": "1.0.0",
+	"Description": "Gives the player gifts upon first creating a map. Also adds buffs based on Map Type.",
+	"UniqueID": "mizzion.grandpasgift",
+	"EntryDll": "GrandpasGift.dll",
+	"MinimumApiVersion": "2.10.1",
+	"UpdateKeys": [ "Nexus:" ]
+}

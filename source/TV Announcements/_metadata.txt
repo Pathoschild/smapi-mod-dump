@@ -1,0 +1,13 @@
+url:
+   https://github.com/Zyin055/TVAnnouncements.git
+
+mods:
+   TV Announcements
+
+latest commit:
+   commit a0242e85f829facf10ec342126e7694b871f6a58
+   Author: Zyin055 <bomber055@yahoo.com>
+   Date:   Fri Mar 15 15:09:36 2019 -0500
+   
+       Update README.md
+   

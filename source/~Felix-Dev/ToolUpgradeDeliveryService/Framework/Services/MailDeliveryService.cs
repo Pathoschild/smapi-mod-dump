@@ -151,13 +151,18 @@ namespace StardewMods.ToolUpgradeDeliveryService.Framework
                 return;
             }
 
-            // Adds compatibility for mod [Rented Tools]. Tools of the same tool class (Axe, Hoe,...)
-            // will be removed from the player's inventory (i.e. rented tools will be removed).
-            var removableItems = Game1.player.Items.Where(item => (item is Tool) && (item as Tool).BaseName.Equals(((Tool)e.SelectedItem).BaseName));
-            foreach (var item in removableItems)
+            /*
+             * Check if tools of the same tool class (Axe, Hoe,...) should be removed from the player's inventory.
+             * For example, this adds compatibility for the mod [Rented Tools] (i.e. rented tools will be removed).
+             */
+            if (ModEntry.ModConfig.RemoveToolDuplicates)
             {
-                Game1.player.removeItemFromInventory(item);
-            }
+                var removableItems = Game1.player.Items.Where(item => (item is Tool) && (item as Tool).BaseName.Equals(((Tool)e.SelectedItem).BaseName));
+                foreach (var item in removableItems)
+                {
+                    Game1.player.removeItemFromInventory(item);
+                }
+            }            
 
             // Add selected tool item to the player's inventory
             Game1.player.addItemByMenuIfNecessary(e.SelectedItem);

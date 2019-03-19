@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.489
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AggressiveAcorns", "AggressiveAcorns\AggressiveAcorns.csproj", "{212350BD-CA4E-4656-9FDB-2126938E7C1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoOre", "NoOre\NoOre.csproj", "{E0AE1E6A-7805-4668-B46E-871CA8A0A656}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		PhraseLib\PhraseLib.projitems*{212350bd-ca4e-4656-9fdb-2126938e7c1a}*SharedItemsImports = 4
+		PhraseLib\PhraseLib.projitems*{377ddc5f-a1b7-46fd-85a2-6057e0880046}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{212350BD-CA4E-4656-9FDB-2126938E7C1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{212350BD-CA4E-4656-9FDB-2126938E7C1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{212350BD-CA4E-4656-9FDB-2126938E7C1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{212350BD-CA4E-4656-9FDB-2126938E7C1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0AE1E6A-7805-4668-B46E-871CA8A0A656}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0AE1E6A-7805-4668-B46E-871CA8A0A656}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0AE1E6A-7805-4668-B46E-871CA8A0A656}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D0A7CE93-259B-4779-9EE3-216CFDB85369}
+	EndGlobalSection
+EndGlobal

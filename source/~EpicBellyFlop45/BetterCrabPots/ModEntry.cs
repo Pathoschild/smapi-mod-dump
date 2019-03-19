@@ -86,9 +86,15 @@ namespace BetterCrabPots
                     {
                         int id = new Random().Next(possiblePassiveTrash.Count());
                         __instance.heldObject.Value = new StardewValley.Object(possiblePassiveTrash[id], 1, false, -1, 0);
+
+                        ModMonitor.Log($"Crabpot contains item id: {__instance.heldObject.Value.ParentSheetIndex}", LogLevel.Trace);
+                    }
+                    else
+                    {
+                        ModMonitor.Log($"Crabpot contains item id: [null]", LogLevel.Trace);
                     }
                 }
-
+                
                 return false;
             }
 
@@ -628,6 +634,8 @@ namespace BetterCrabPots
                 {
                     int id = new Random().Next(possibleTrash.Count());
                     __instance.heldObject.Value = new StardewValley.Object(possibleTrash[id], 1, false, -1, 0);
+
+                    ModMonitor.Log($"Crabpot contains item id: {__instance.heldObject.Value.ParentSheetIndex}", LogLevel.Trace);
                 }
             }
 

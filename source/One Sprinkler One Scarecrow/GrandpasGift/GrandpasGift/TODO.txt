@@ -1,0 +1,6 @@
+﻿Things that need to be done
+
+1. Add  Grandpa's message to the player based on the Farm they chose.
+2. Add the items that Grandpa gives to the player. (May be universal items, or based on Farm Map....unsure yet).
+3 Add in the buffs that will be given to the player based on Farm Map.
+4. I'm sure I'll come up with more......

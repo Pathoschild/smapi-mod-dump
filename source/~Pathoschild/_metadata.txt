@@ -17,9 +17,11 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 32a897d3c6e18a18ba7b8bacb66abd8f65a8d730
+   commit 4d785b94f50e36d9e7e1f503968b41c156132748
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Mar 10 14:42:00 2019 -0400
+   Date:   Fri Mar 15 20:46:42 2019 -0400
    
-       fix chests being treated as weeds/twigs in some cases
+       add French translations (#390)
+       
+       Thanks to Mysti57!
    

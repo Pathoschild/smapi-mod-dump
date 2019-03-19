@@ -6,9 +6,9 @@ mods:
    Tool Upgrade Delivery Service
 
 latest commit:
-   commit 7c84234f73005d08cb7d0a3de34d2c85687984fd
+   commit 91990a12a90be2855cfb43fdb9936f1662051f6f
    Author: Felix <FelixDev91@gmail.com>
-   Date:   Wed Jan 16 21:25:26 2019 +0100
+   Date:   Mon Mar 11 15:45:50 2019 +0100
    
-       ArchaeologyHouseMode: Added support for SMAP 3.0.
+       ToolUpgradeDeliveryService: Added correct description for the configuration option <RemoveToolDuplicates>.
    

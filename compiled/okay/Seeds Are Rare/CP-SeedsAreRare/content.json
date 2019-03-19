@@ -1,0 +1,82 @@
+{
+  "Format": "1.6",
+  "Changes": [
+      {
+          "Action": "EditData",
+          "Target": "Data/CraftingRecipes",
+          "Fields": {
+             "Seed Maker": {
+                0: "388 25 382 5 390 20",
+		4: "Farming 1"
+             }
+          }
+      },
+      {
+          "Action": "EditData",
+          "Target": "Characters/Dialogue/Pierre",
+	  "When": {
+		"Language": "en"
+	  },
+          "Fields": {
+             "Introduction": {
+                0: "Hey, it's Mr. @, the new farmer! I'm Pierre, owner of the local general store.^Hey, it's Ms. @, the new farmer! I'm Pierre, owner of the local general store.#$b#If you're looking for farming supplies, my shop is the place to go. I'll also buy produce from you for a good price!#$e#A little agriculture could really inject new life into the local economy!"
+             },
+	     "Mon": {
+		0: "Welcome! If you're looking for farming supplies, you've come to the right place!"
+	     },
+	     "Mon4": {
+		0: "Hi, @. Need any fruit tree saplings?"
+	     },
+	     "Fri": {
+		0: "#$1 pierreJoja#Business has been slow since Joja moved into town. It's hard to compete with their selection.$k$s#$e#Hi there. Is your farm doing well?#$e#Maybe some of my fertilizer will spruce things up."
+	     },
+	     "summer_Mon": {
+		0: "I've got good ingredients available! You'd better stock up."
+	     },
+	     "summer_Fri": {
+		0: "Oh, hi. Are you satisfied with the quality of my products?"
+	     },
+	     "winter_Mon": {
+		0: "You can't grow any crops during winter... I hope this isn't going to cut into your profits too much."
+	     },
+	     "fall_Mon": {
+		0: "It's starting to get cold outside...#$b#That means more people come into the shop to warm up... hehe."
+	     },
+	     "fall_Fri": {
+		0: "#$1 pierreMEGA#My dream is to keep opening new stores until I become extremely wealthy. hehehe.$k#$e#Hi there. Is your farm still doing well?#$e#Maybe a few of my fertilizers will spruce things up.$h"
+	     }
+          }
+      },
+      {
+          "Action": "EditData",
+          "Target": "Strings/SpeechBubbles",
+	  "When": {
+		"Language": "en"
+	  },
+          "Fields": {
+		"SandyHouse_Sandy_Greeting4": {
+			0: "Rare items for sale!"
+		},
+		"SeedShop_Pierre_Summer": {
+                        0: "Quality goods for sale!"
+		},
+		"SeedShop_Pierre_NotSummer": {
+                        0: "Quality goods for sale!"
+		}
+
+	  }
+      },
+      {
+          "Action": "EditData",
+          "Target": "Data/mail",
+	  "When": {
+		"Language": "en"
+	  },
+          "Fields": {
+		"Lewis": {
+			  0: "@,^I'm really glad you've become part of our community! I've enclosed a 500g check from the Stardew Valley Agricultural Fund to help you continue your good work. ^Maybe you can buy some more farming supplies with it.  ^  Sincerely, Mr. Lewis%item money 500 501 %%"
+		}
+	  }
+      }
+  ]
+}

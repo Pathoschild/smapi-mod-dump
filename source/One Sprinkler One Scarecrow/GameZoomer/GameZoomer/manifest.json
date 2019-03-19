@@ -1,0 +1,10 @@
+﻿{
+	"Name": "GameZoomer",
+	"Author": "Mizzion",
+	"Version": "1.0.0",
+	"Description": "Lets you zoom your game in or out with a key touch",
+	"UniqueID": "mizzion.gamezoomer",
+	"EntryDll": "GameZoomer.dll",
+	"MinimumApiVersion": "2.10.1",
+	"UpdateKeys": [ "Nexus:2009" ]
+}

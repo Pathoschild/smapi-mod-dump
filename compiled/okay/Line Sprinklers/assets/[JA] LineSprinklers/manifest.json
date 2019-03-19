@@ -1,0 +1,11 @@
+{
+  "Name": "Line Sprinklers for JsonAssets",
+  "Description": "Adds line sprinkler items for the main Line Sprinklers mod.",
+  "Author": "Hootless",
+  "Version": "1.1.0",
+  "UniqueID": "hootless.JASprinklers",
+  "ContentPackFor": {
+    "UniqueID": "spacechase0.JsonAssets"
+  },
+  "UpdateKeys": [ "Nexus:2917" ]
+}

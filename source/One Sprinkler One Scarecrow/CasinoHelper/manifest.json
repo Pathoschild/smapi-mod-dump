@@ -1,0 +1,10 @@
+{
+  "Name": "CasinoHelper",
+  "Author": "Mizzion",
+  "Version": "0.0.1",
+  "Description": "A mod that lets the user modify alot of the fishing settings.",
+  "UniqueID": "mizzion.customfishing",
+  "EntryDll": "CasinoHelper.dll",
+  "MinimumApiVersion": "2.5",
+  "UpdateKeys": []
+}

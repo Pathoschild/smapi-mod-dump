@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateTool", "UltimateTool\UltimateTool.csproj", "{B3FEAB1E-D02D-41F7-8F63-FEA928B9343C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = ".Common", "..\..\..\Desktop\StardewModding\StardewMods-develop\Common\.Common.shproj", "{B9E9EDFC-E98A-4370-994F-40A9F39A0284}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\..\..\Desktop\StardewModding\StardewMods-develop\Common\Common.projitems*{b3feab1e-d02d-41f7-8f63-fea928b9343c}*SharedItemsImports = 4
+		..\..\..\Desktop\StardewModding\StardewMods-develop\Common\Common.projitems*{b9e9edfc-e98a-4370-994f-40a9f39a0284}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B3FEAB1E-D02D-41F7-8F63-FEA928B9343C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3FEAB1E-D02D-41F7-8F63-FEA928B9343C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3FEAB1E-D02D-41F7-8F63-FEA928B9343C}.Debug|x86.ActiveCfg = Debug|x86
+		{B3FEAB1E-D02D-41F7-8F63-FEA928B9343C}.Debug|x86.Build.0 = Debug|x86
+		{B3FEAB1E-D02D-41F7-8F63-FEA928B9343C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3FEAB1E-D02D-41F7-8F63-FEA928B9343C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3FEAB1E-D02D-41F7-8F63-FEA928B9343C}.Release|x86.ActiveCfg = Release|x86
+		{B3FEAB1E-D02D-41F7-8F63-FEA928B9343C}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {42193397-D525-4DA0-9501-AE1EE011FCB8}
+	EndGlobalSection
+EndGlobal

@@ -1,10 +1,10 @@
 ﻿{
-   "Name": "FestivalEndTimeTweak",
+   "Name": "Festival End Time Tweak",
    "Author": "KirbyLink",
    "Version": "1.2.0",
    "Description": "Changes the time of day that the Farmer is returned home.",
    "UniqueID": "kirbylink.festivalendtimetweak",
-   "EntryDll": "festivalendtimetweak.dll",
-   "MinimumApiVersion": "2.0",
+   "EntryDll": "FestivalEndTimeTweak.dll",
+   "MinimumApiVersion": "2.0.0",
    "UpdateKeys": ["Nexus:2966"]
 }

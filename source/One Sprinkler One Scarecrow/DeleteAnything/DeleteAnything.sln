@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeleteAnything", "DeleteAnything\DeleteAnything.csproj", "{BC0875D2-22B9-4386-BA77-E61FACD9769C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BC0875D2-22B9-4386-BA77-E61FACD9769C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC0875D2-22B9-4386-BA77-E61FACD9769C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC0875D2-22B9-4386-BA77-E61FACD9769C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC0875D2-22B9-4386-BA77-E61FACD9769C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {499AAB9E-F7A5-4A52-92C8-2B4F8A047F72}
+	EndGlobalSection
+EndGlobal

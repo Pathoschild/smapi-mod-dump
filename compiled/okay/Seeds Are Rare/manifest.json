@@ -1,0 +1,26 @@
+﻿{
+  "Name": "SeedsAreRare",
+  "Author": "jahangmar",
+  "Version": "1.1.0",
+  "Description": "Removes seeds from all stores and encourages the use of seed makers",
+  "UniqueID": "jahangmar.SeedsAreRare",
+  "MinimumApiVersion": "2.10.0",
+  "EntryDll": "SeedsAreRare.dll",  
+  "Dependencies": [
+   {
+      "UniqueID": "jahangmar.CP-SeedsAreRare",
+      "IsRequired": true
+   },
+   {
+      "UniqueID": "EpicBellyFlop45.BetterMixedSeeds",
+      "IsRequired": true
+   },
+   {
+      "UniqueID": "mcoocr.smcq",
+      "IsRequired": false
+   }
+
+],
+"UpdateKeys": [ "Nexus:3618" ]
+
+}

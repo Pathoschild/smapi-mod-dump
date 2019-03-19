@@ -13,6 +13,9 @@ namespace StardewMods.ToolUpgradeDeliveryService
     {
         public static CommonServices CommonServices { get; private set; }
 
+        /// <summary>The mod configuration from the player.</summary>
+        public static ModConfig ModConfig { get; private set; }
+
         private MailDeliveryService mailDeliveryService;
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
@@ -22,7 +25,9 @@ namespace StardewMods.ToolUpgradeDeliveryService
             // Add services
             CommonServices = new CommonServices(Monitor, helper.Events, helper.Translation, helper.Reflection, helper.Content);
 
-            // Setup services
+            // Setup services & mod configuration
+            ModConfig = Helper.ReadConfig<ModConfig>();
+
             var mailGenerator = new MailGenerator();
             helper.Content.AssetEditors.Add(mailGenerator);
 

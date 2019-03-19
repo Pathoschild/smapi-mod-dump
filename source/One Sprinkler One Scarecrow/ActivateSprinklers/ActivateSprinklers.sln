@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActivateSprinklers", "ActivateSprinklers\ActivateSprinklers.csproj", "{07772C07-1265-4324-B954-158C7E56B186}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = ".Common", "..\..\..\Desktop\ModStardew\StardewMods-develop\Common\.Common.shproj", "{B9E9EDFC-E98A-4370-994F-40A9F39A0284}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\..\..\Desktop\ModStardew\StardewMods-develop\Common\Common.projitems*{07772c07-1265-4324-b954-158c7e56b186}*SharedItemsImports = 4
+		..\..\..\Desktop\ModStardew\StardewMods-develop\Common\Common.projitems*{b9e9edfc-e98a-4370-994f-40a9f39a0284}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07772C07-1265-4324-B954-158C7E56B186}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07772C07-1265-4324-B954-158C7E56B186}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07772C07-1265-4324-B954-158C7E56B186}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07772C07-1265-4324-B954-158C7E56B186}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5CAD2683-75BC-44D7-BACD-F7BA6FB7557C}
+	EndGlobalSection
+EndGlobal

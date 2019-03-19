@@ -1,0 +1,10 @@
+{
+  "Name": "IncreasedMushroomTree",
+  "Author": "Mizzion",
+  "Version": "1.0.0",
+  "Description": "A Mod that increases the chances of a tree turning into a mushroom tree.",
+  "UniqueID": "mizzion.increasedmushroomtree",
+  "EntryDll": "IncreasedMushroomTree.dll",
+  "MinimumApiVersion": "2.5",
+  "UpdateKeys": [ "Nexus:1930"]
+}

@@ -5,9 +5,12 @@ mods:
    No Seeds From Trees Fix
 
 latest commit:
-   commit 6391d1294998e796e7d36405b287c1dd25bb4409
-   Author: KirbyLink <kjryan.reeves@gmail.com>
-   Date:   Wed Oct 17 20:13:40 2018 -0700
+   commit 11e21a7acb910bb60bf4402abd78b503689f9316
+   Merge: 6391d12 f9d0aa7
+   Author: Justin Reeves <kjryan.reeves@gmail.com>
+   Date:   Mon Mar 18 09:37:55 2019 -0700
    
-       Updated version in manifest
+       Merge pull request #1 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0
    

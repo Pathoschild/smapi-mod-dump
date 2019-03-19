@@ -1,0 +1,10 @@
+{
+  "Name": "Ultimate Tool",
+  "Author": "Mizzion",
+  "Version": "0.0.1",
+  "MinimumApiVersion": "2.5",
+  "UniqueID": "mizzion.ultimatetool",
+  "Description": "A cheat mod that gives the player an All in One tool.",
+  "EntryDll": "UltimateTool.dll",
+  "UpdateKeys": [ "Nexus:" ]
+}

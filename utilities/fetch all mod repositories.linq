@@ -68,6 +68,12 @@ private readonly HashSet<string> IgnoreSourceUrls = new HashSet<string>(StringCo
 	"alexnoddings/StardewMods"
 };
 
+/// <summary>Maps GitHub URLs to the folder name to use, overriding the generated name.</summary>
+public IDictionary<string, string> OverrideFolderNames = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+{
+	["https://github.com/TheThor59/StardewMods.git"] = "Mods.TheThor59"
+};
+
 
 /*********
 ** Script
@@ -133,9 +139,12 @@ async Task Main()
 	IDictionary<string, ModRepository> repoFolders = new Dictionary<string, ModRepository>();
 	foreach (ModRepository repo in repos)
 	{
-		string folderName = repo.GetRecommendedFolderName();
+		if (!this.OverrideFolderNames.TryGetValue(repo.GitUrl, out string folderName))
+			folderName = repo.GetRecommendedFolderName();
+
 		if (repoFolders.ContainsKey(folderName))
 			throw new InvalidOperationException($"Folder name conflict: can't add {folderName}, it matches both [{repo.GitUrl}] and [{repoFolders[folderName].GitUrl}].");
+
 		repoFolders[folderName] = repo;
 	}
 

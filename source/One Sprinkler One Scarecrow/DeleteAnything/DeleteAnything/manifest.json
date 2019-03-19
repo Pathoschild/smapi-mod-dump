@@ -1,0 +1,10 @@
+{
+  "Name": "DeleteAnything",
+  "Author": "Mizzion",
+  "Version": "0.0.1",
+  "Description": "A Mod that allows you to delete objects",
+  "UniqueID": "mizzion.deleteanything",
+  "EntryDll": "DeleteAnything.dll",
+  "MinimumApiVersion": "2.4",
+  "UpdateKeys": []
+}

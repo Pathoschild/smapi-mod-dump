@@ -5,9 +5,12 @@ mods:
    The Pumpkin King
 
 latest commit:
-   commit 932e5140789aa1d429b56cf067624ff2a014cfd2
-   Author: KirbyLink <kjryan.reeves@gmail.com>
-   Date:   Thu Nov 29 13:18:59 2018 -0800
+   commit eebd46ab0287d6e0a67344087118959f6134964d
+   Merge: 932e514 c80a731
+   Author: Justin Reeves <kjryan.reeves@gmail.com>
+   Date:   Mon Mar 18 09:38:29 2019 -0700
    
-       Recompilied for compatibility with v 1.3.32
+       Merge pull request #1 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0
    
