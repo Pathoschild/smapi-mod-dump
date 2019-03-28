@@ -1,0 +1,6 @@
+{
+  "showCallerName": true,
+  "AlertOnFullHour": true,
+  "AlertSpecificMinute": 30,
+  "AlertEveryXMinute": 5
+}

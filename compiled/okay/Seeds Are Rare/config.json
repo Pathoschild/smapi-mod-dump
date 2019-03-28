@@ -1,0 +1,7 @@
+{
+  "exclude_rare_seed": false,
+  "exclude_traveling_merchant": false,
+  "exclude_oasis": false,
+  "exclude_pierre": false,
+  "exclude_night_market": false
+}

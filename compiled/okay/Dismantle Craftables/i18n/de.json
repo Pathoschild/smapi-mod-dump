@@ -1,0 +1,7 @@
+﻿{
+    "msg.wrongitem": "Du kannst diesen Gegenstand nicht zerlegen.",
+    "dia.question": "Willst du {{item_Stack}} Gegenstände vom Typ {{item_DisplayName}} zerlegen?",
+    "dia.question_single": "Willst du einen Gegenstand vom Typ {{item_DisplayName}} zerlegen?",
+    "dia.yes": "Ja.",
+    "dia.no": "Nein."
+}

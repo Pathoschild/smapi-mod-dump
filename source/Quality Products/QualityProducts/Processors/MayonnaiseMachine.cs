@@ -1,78 +1,81 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using StardewValley;
 using SObject = StardewValley.Object;
 
-namespace QualityProducts.Processors
+namespace SilentOak.QualityProducts.Processors
 {
     internal class MayonnaiseMachine : Processor
     {
-        /****************
-         * Public methods
-         ****************/
+        /*********
+         * Fields 
+         *********/
 
-        public MayonnaiseMachine() : base(ProcessorType.MAYONNAISE_MACHINE)
-        {
-        }
-
-
-        /*******************
-         * Protected methods
-         *******************/
-
-        /***
-         * From StardewValley.Object.performObjectDropInAction
-         ***/
         /// <summary>
-        /// Performs item processing.
+        /// The available recipes for this entity.
         /// </summary>
-        /// <returns><c>true</c> if started processing, <c>false</c> otherwise.</returns>
-        /// <param name="object">Object to be processed.</param>
-        /// <param name="probe">If set to <c>true</c> probe.</param>
-        /// <param name="who">Farmer that initiated processing.</param>
-        protected override bool PerformProcessing(SObject @object, bool probe, Farmer who)
+        private static readonly Recipe[] recipes =
         {
-            switch (@object.ParentSheetIndex)
-            {
-                case 107:
-                case 174:
-                case 182:
-                    heldObject.Value = new SObject(Vector2.Zero, 306, null, false, true, false, false)
-                    {
-                        Stack = 2
-                    };
-                    if (!probe)
-                    {
-                        minutesUntilReady.Value = 180;
-                        who.currentLocation.playSound("Ship");
-                    }
-                    return true;
-                case 176:
-                case 180:
-                    heldObject.Value = new SObject(Vector2.Zero, 306, null, false, true, false, false);
-                    if (!probe)
-                    {
-                        minutesUntilReady.Value = 180;
-                        who.currentLocation.playSound("Ship");
-                    }
-                    return true;
-                case 442:
-                    heldObject.Value = new SObject(Vector2.Zero, 307, null, false, true, false, false);
-                    if (!probe)
-                    {
-                        minutesUntilReady.Value = 180;
-                        who.currentLocation.playSound("Ship");
-                    }
-                    return true;
-                case 305:
-                    heldObject.Value = new SObject(Vector2.Zero, 308, null, false, true, false, false);
-                    if (!probe)
-                    {
-                        minutesUntilReady.Value = 180;
-                        who.currentLocation.playSound("Ship");
-                    }
-                    return true;
-            }
-            return false;
+            // Large Egg (Brown or White) or Dinosaur Egg => 2 Mayo
+            new Recipe(
+                name: "Mayonnaise",
+                inputIDs: new int[] {107, 174, 182},
+                inputAmount: 1,
+                minutes: 180,
+                process: _ => new SObject(306, 2)
+            ),
+
+            // Egg (Brown or White) => Mayo
+            new Recipe(
+                name: "Mayonnaise",
+                inputIDs: new int[] {176, 180},
+                inputAmount: 1,
+                minutes: 180,
+                process: _ => new SObject(306, 1)
+            ),
+
+            // Duck Egg => Duck Mayo
+            new Recipe(
+                name: "Duck Mayonnaise",
+                inputID: 442,
+                inputAmount: 1,
+                minutes: 180,
+                process: _ => new SObject(307, 1)
+            ),
+
+            // Void Egg => Void Mayo
+            new Recipe(
+                name: "Void Mayonnaise",
+                inputID: 305,
+                inputAmount: 1,
+                minutes: 180,
+                process: _ => new SObject(308, 1)
+            )
+        };
+
+
+        /*************
+         * Properties 
+         *************/
+
+        /// <summary>
+        /// Gets the available recipes for this entity.
+        /// </summary>
+        /// <value>The recipes.</value>
+        public override IEnumerable<Recipe> Recipes => recipes;
+
+
+        /*****************
+         * Public methods
+         *****************/
+
+        /// <summary>
+        /// Instantiates a <see cref="T:QualityProducts.Processors.MayonnaiseMachine"/>.
+        /// </summary>
+        /// <param name="location">Where the entity is.</param>
+        public MayonnaiseMachine() : base(ProcessorTypes.MayonnaiseMachine)
+        {
         }
     }
 }

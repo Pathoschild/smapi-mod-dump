@@ -5,9 +5,9 @@ mods:
    Bwdyworks
 
 latest commit:
-   commit b58b435d2ea1d75a3a99f2208871734bb0282ed0
+   commit bd64e6444575203a6e1f3bcd5b4ce65ca569a7eb
    Author: bwdymods <bwdymods@gmail.com>
-   Date:   Thu Mar 7 22:33:06 2019 -0900
+   Date:   Tue Mar 19 19:39:17 2019 -0800
    
-       v0.9.0
+       fixes other operating systems, add maploader
    

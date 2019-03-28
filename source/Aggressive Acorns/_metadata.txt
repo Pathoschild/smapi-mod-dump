@@ -5,9 +5,9 @@ mods:
    Aggressive Acorns
 
 latest commit:
-   commit ccd383d44d4f72c2114d2a533f9b2de82d1d67ab
+   commit 2e8b191e2deb689b11c0b36a99f80024131c0c28
    Author: Anton Jelinek <ant5788jeli@gmail.com>
-   Date:   Sun Mar 17 01:07:57 2019 +1300
+   Date:   Tue Mar 19 16:53:28 2019 +1300
    
-       AA: fix log spam. bump version for release
+       AA: Add update key
    

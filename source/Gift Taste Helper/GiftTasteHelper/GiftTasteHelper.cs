@@ -284,16 +284,32 @@ namespace GiftTasteHelper
             }
         }
 
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            Debug.Assert(this.CurrentGiftHelper != null, "OnUpdateTicked listener invoked when currentGiftHelper is null.");
+
+            if (this.CurrentGiftHelper.CanTick())
+            {
+                this.CurrentGiftHelper.OnPostUpdate(e);
+            }
+        }
+
         private void UnsubscribeEvents()
         {
             Helper.Events.Input.CursorMoved -= OnCursorMoved;
             Helper.Events.Display.Rendered -= this.OnRendered;
+            Helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
         }
 
         private void SubscribeEvents()
         {
             Helper.Events.Input.CursorMoved += OnCursorMoved;
             Helper.Events.Display.Rendered += this.OnRendered;
+
+            if (this.CurrentGiftHelper.WantsUpdateEvent())
+            {
+                Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+            }
         }
 
         #region Debug

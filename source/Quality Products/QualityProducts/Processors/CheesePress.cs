@@ -1,78 +1,74 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
 using StardewValley;
 using SObject = StardewValley.Object;
 
-namespace QualityProducts.Processors
+namespace SilentOak.QualityProducts.Processors
 {
     internal class CheesePress : Processor
     {
+        /*********
+         * Fields
+         *********/
+
+        private static readonly Recipe[] recipes =
+        {
+            // Goat Milk => Goat Cheese
+            new Recipe(
+                name: "Goat Cheese",
+                inputID: 436,
+                inputAmount: 1,
+                minutes: 200,
+                process: _ => new SObject(426, 1)
+            ),
+
+            // L. Goat Milk => 2 Goat Cheese
+            new Recipe(
+                name: "Goat Cheese",
+                inputID: 438,
+                inputAmount: 1,
+                minutes: 200,
+                process: _ => new SObject(426, 2)
+            ),
+
+            // Milk => Cheese
+            new Recipe(
+                name: "Cheese",
+                inputID: 184,
+                inputAmount: 1,
+                minutes: 200,
+                process: _ => new SObject(424, 1)
+            ),
+
+            // Large Milk => 2 Cheese
+            new Recipe(
+                name: "Cheese",
+                inputID: 186,
+                inputAmount: 1,
+                minutes: 200,
+                process: _ => new SObject(424, 2)
+            )
+        };
+
+
+        /*************
+         * Properties 
+         *************/
+
+        public override IEnumerable<Recipe> Recipes => recipes;
+
+
         /****************
          * Public methods
          ****************/
 
-        public CheesePress() : base(ProcessorType.CHEESE_PRESS)
+        public CheesePress() : base(ProcessorTypes.CheesePress)
         {
         }
+
 
         /*******************
          * Protected methods
          *******************/
-
-        /***
-         * From StardewValley.Object.performObjectDropInAction
-         ***/
-        /// <summary>
-        /// Performs item processing.
-        /// </summary>
-        /// <returns><c>true</c> if started processing, <c>false</c> otherwise.</returns>
-        /// <param name="object">Object to be processed.</param>
-        /// <param name="probe">If set to <c>true</c> probe.</param>
-        /// <param name="who">Farmer that initiated processing.</param>
-        protected override bool PerformProcessing(SObject @object, bool probe, Farmer who)
-        {
-            switch (@object.ParentSheetIndex)
-            {
-                case 436:
-                    heldObject.Value = new SObject(Vector2.Zero, 426, null, false, true, false, false);
-                    if (!probe)
-                    {
-                        minutesUntilReady.Value = 200;
-                        who.currentLocation.playSound("Ship");
-                    }
-                    return true;
-                case 438:
-                    heldObject.Value = new SObject(Vector2.Zero, 426, null, false, true, false, false)
-                    {
-                        Stack = 2
-                    };
-                    if (!probe)
-                    {
-                        minutesUntilReady.Value = 200;
-                        who.currentLocation.playSound("Ship");
-                    }
-                    return true;
-                case 184:
-                    heldObject.Value = new SObject(Vector2.Zero, 424, null, false, true, false, false);
-                    if (!probe)
-                    {
-                        minutesUntilReady.Value = 200;
-                        who.currentLocation.playSound("Ship");
-                    }
-                    return true;
-                case 186:
-                    heldObject.Value = new SObject(Vector2.Zero, 424, "Cheese (=)", false, true, false, false)
-                    {
-                        Stack = 2
-                    };
-                    if (!probe)
-                    {
-                        minutesUntilReady.Value = 200;
-                        who.currentLocation.playSound("Ship");
-                    }
-                    return true;
-            }
-            return false;
-        }
 
         /***
          * From StardewValley.Object.checkForAction

@@ -1,0 +1,10 @@
+﻿{
+    "Name": "FertilizeCurrentCrops",
+    "Author": "Mizzion",
+    "Version": "1.0.1",
+    "Description": "Allows the player to add fertilizer to land plots currently holding a crop.",
+    "UniqueID": "mizzion.fertilizecurrentcrops",
+    "EntryDll": "FertilizeCurrentCrops.dll",
+    "MinimumApiVersion": "2.11",
+    "UpdateKeys": [ "Nexus:3615" ]
+}

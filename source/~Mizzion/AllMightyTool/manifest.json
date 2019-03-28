@@ -1,0 +1,10 @@
+﻿{
+    "Name": "AllMightyTool",
+    "Author": "Mizzion",
+    "Version": "1.0.0",
+    "Description": "All in one tool for Stardew Valley",
+    "UniqueID": "mizzion.allmightytool",
+    "EntryDll": "AllMightyTool.dll",
+    "MinimumApiVersion": "2.11",
+    "UpdateKeys": [ "Nexus:3490" ]
+}

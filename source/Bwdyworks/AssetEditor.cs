@@ -3,6 +3,7 @@ using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
 using bwdyworks.Registry;
+using System.IO;
 
 namespace bwdyworks
 {
@@ -14,9 +15,9 @@ namespace bwdyworks
         {
             var assetsToEdit = new string[]
             {
-                "Data\\Monsters",
-                "Maps\\springobjects",
-                "Data\\ObjectInformation"
+                Path.Combine("Data","Monsters"),
+                Path.Combine("Maps","springobjects"),
+                Path.Combine("Data","ObjectInformation")
             };
             string assetName = asset.AssetName;
             return Array.Exists(assetsToEdit, delegate (string s) { return s.Equals(assetName); });
@@ -24,7 +25,7 @@ namespace bwdyworks
 
         public void Edit<T>(IAssetData asset)
         {
-            if (asset.AssetNameEquals("Data\\Monsters"))
+            if (asset.AssetNameEquals(Path.Combine("Data","Monsters")))
             {
                 Modworks.Log.Trace("editing monsters");
                 var data = asset.AsDictionary<string, string>().Data;
@@ -33,7 +34,7 @@ namespace bwdyworks
                     AddMonsterLootEntry(data, mle);
                 }
             }
-            else if (asset.AssetNameEquals("Maps\\springobjects"))
+            else if (asset.AssetNameEquals(Path.Combine("Maps","springobjects")))
             {
                 if (!ItemRegistry.Loaded) ItemRegistry.Load();
                 Modworks.Log.Trace("editing springobjects");
@@ -58,7 +59,7 @@ namespace bwdyworks
                     }
                 }
             }
-            else if (asset.AssetNameEquals("Data\\ObjectInformation"))
+            else if (asset.AssetNameEquals(Path.Combine("Data","ObjectInformation")))
             {
                 if (!ItemRegistry.Loaded) ItemRegistry.Load();
                 Modworks.Log.Trace("editing objectinformation");

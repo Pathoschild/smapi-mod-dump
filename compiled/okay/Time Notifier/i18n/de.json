@@ -1,0 +1,16 @@
+﻿{
+"clock_suffix":"Uhr",
+"notify_text":"Es ist jetzt",
+"config_reload_error":"Konnte die Config-Datei nicht erneut laden!",
+"config_reload_success":"Config-Datei erfolgreich erneuert",
+"in_game_reminder":"In-Game Erinnerung",
+"no_reminder":"Keine Erinnerung gesetzt!",
+"once":"einmal",
+"repeatedly":"mehrmals",
+"clear_success":"Alle Erinnerungen gelöscht",
+"false_args":"Falsche Argumente übergeben - siehe Hilfe",
+"false_value":"Der Wert muss zwischen 600 und 2600 sein!",
+"removed_value":"Der Wert wurde entfernt",
+"already_exists":"Die Erinnerung existiert schon!",
+"new_ingame":"Neue In-Game Erinnerung erstellt"
+}

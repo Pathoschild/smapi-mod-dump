@@ -1,0 +1,10 @@
+{
+  "Name": "Auto-Eat",
+  "Author": "Permamiss",
+  "Version": "2.1.0",
+  "Description": "Eat food automatically upon running out of stamina",
+  "UniqueID": "Permamiss.AutoEat",
+  "EntryDll": "Auto-Eat.dll",
+  "MinimumApiVersion": "2.10.2",
+  "UpdateKeys": [ "Nexus:643" ]
+}

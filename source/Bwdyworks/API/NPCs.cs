@@ -72,7 +72,7 @@ namespace bwdyworks.API
         {
             if (l != npc.currentLocation)
             {
-                npc.currentLocation.characters.Remove(npc);
+                if(npc.currentLocation != null) npc.currentLocation.characters.Remove(npc);
                 l.characters.Add(npc);
                 npc.currentLocation = l;
             }

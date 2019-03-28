@@ -6,7 +6,7 @@
 * Create option to only show flowers as harvestable on the last day of the season.
 * Create option to set radius to omit flower near bee houses.
 * Fix issue when crab pots are placed in something not is not water (needs to be checked).
-* Check compatibility with mods that add content (eg. Artisan Valley, Extended Farm).
+* Check compatibility with mods that add content (eg. Artisan Valley, Extended Farm, Working Fireplace).
 * Add translations.
 
 ### Self Service shops

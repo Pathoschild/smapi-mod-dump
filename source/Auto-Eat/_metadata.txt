@@ -5,12 +5,12 @@ mods:
    Auto-Eat
 
 latest commit:
-   commit 74c4b1339dbb2d414edcef0d6b7200ad1905b32b
-   Merge: 3f8beeb e5f716a
+   commit 2192e1da0bb595e59812e070056bf593a3458d10
+   Merge: 74c4b13 d0e6d98
    Author: Permamiss <39325797+Permamiss@users.noreply.github.com>
-   Date:   Fri Oct 12 18:22:09 2018 -0700
+   Date:   Wed Mar 27 20:16:56 2019 -0700
    
-       Merge pull request #1 from RobertLSnead/newFeatures-edit
+       Merge pull request #2 from Pathoschild/update-code
        
-       Update ModEntry.cs
+       Update for SMAPI 3.0
    

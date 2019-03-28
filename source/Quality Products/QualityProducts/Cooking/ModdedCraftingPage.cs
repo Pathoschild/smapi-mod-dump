@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Netcode;
+using SilentOak.QualityProducts;
+using SilentOak.QualityProducts.Utils;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
@@ -15,57 +17,133 @@ using SObject = StardewValley.Object;
 
 namespace QualityProducts.Cooking
 {
+    /***
+     * Modified from StardewValley.Menus.CraftingPage
+     ***/
     /// <summary>
     /// Customized Cooking Menu for quality cooking.
     /// </summary>
     internal class ModdedCraftingPage : IClickableMenu
     {
-        /*
-         * Copied from StardewValley.Menus.CraftingPage, changes annotated
-         */
+        /*********
+         * Fields 
+         *********/
+
+        /// <summary>
+        /// Amount of recipes that fit on a page.
+        /// </summary>
         public const int howManyRecipesFitOnPage = 40;
 
+        /// <summary>
+        /// Amount of recipes that fit in a row.
+        /// </summary>
         public const int numInRow = 10;
 
+        /// <summary>
+        /// Amount of recipes that fit in a column.
+        /// </summary>
         public const int numInCol = 4;
 
-        public const int region_upArrow = 88;
-
-        public const int region_downArrow = 89;
-
+        /// <summary>
+        /// The region of crafting selection area.
+        /// </summary>
         public const int region_craftingSelectionArea = 8000;
 
+        /// <summary>
+        /// The region of crafting modifier.
+        /// </summary>
         public const int region_craftingModifier = 200;
 
-        private string descriptionText = "";
+        /// <summary>
+        /// The region of the up arrow.
+        /// </summary>
+        public const int region_upArrow = 88;
 
-        private string hoverText = "";
+        /// <summary>
+        /// The region of the down arrow.
+        /// </summary>
+        public const int region_downArrow = 89;
 
-        private Item hoverItem;
-
-        private Item lastCookingHover;
-
-        public InventoryMenu inventory;
-
-        private Item heldItem;
-
-        public List<Dictionary<ClickableTextureComponent, CraftingRecipe>> pagesOfCraftingRecipes = new List<Dictionary<ClickableTextureComponent, CraftingRecipe>>();
-
-        private int currentCraftingPage;
-
-        private CraftingRecipe hoverRecipe;
-
+        /// <summary>
+        /// The up button.
+        /// </summary>
         public ClickableTextureComponent upButton;
 
+        /// <summary>
+        /// The down button.
+        /// </summary>
         public ClickableTextureComponent downButton;
 
-        private bool cooking;
+        /// <summary>
+        /// The description text.
+        /// </summary>
+        private string descriptionText = "";
 
+        /// <summary>
+        /// The text of the hovered recipe.
+        /// </summary>
+        private string hoverText = "";
+
+        /// <summary>
+        /// The title of the hovered menu.
+        /// </summary>
+        private string hoverTitle = "";
+
+        /// <summary>
+        /// The hovered item.
+        /// </summary>
+        private Item hoverItem;
+
+        /// <summary>
+        /// The current hovered recipe.
+        /// </summary>
+        private CraftingRecipe hoverRecipe;
+
+        /// <summary>
+        /// The last cooking hover.
+        /// </summary>
+        private Item lastCookingHover;
+
+        /// <summary>
+        /// The item held by the player.
+        /// </summary>
+        private Item heldItem;
+
+        /// <summary>
+        /// The player's inventory
+        /// </summary>
+        public InventoryMenu inventory;
+
+        /// <summary>
+        /// The pages of crafting recipes.
+        /// </summary>
+        public List<Dictionary<ClickableTextureComponent, CraftingRecipe>> pagesOfCraftingRecipes = new List<Dictionary<ClickableTextureComponent, CraftingRecipe>>();
+
+        /// <summary>
+        /// The current crafting page.
+        /// </summary>
+        private int currentCraftingPage;
+
+        /// <summary>
+        /// Whether it is a cooking menu.
+        /// </summary>
+        private readonly bool cooking;
+
+        /// <summary>
+        /// The trash can.
+        /// </summary>
         public ClickableTextureComponent trashCan;
 
+        /// <summary>
+        /// Amount of rotation of the trash can lid.
+        /// </summary>
         public float trashCanLidRotation;
 
-        private string hoverTitle = "";
+        /***
+         * For Lookup Anything compatibility.
+         ***/
+        private Item HoveredItem;
+
 
         public ModdedCraftingPage(int x, int y, int width, int height, bool cooking = false)
             : base(x, y, width, height, false)
@@ -437,7 +515,7 @@ namespace QualityProducts.Cooking
                 avgQuality = 4;
             }
 
-            QualityProducts.Instance.Monitor.VerboseLog($"Crafting {recipe.DisplayName} (quality {avgQuality})");
+            Util.Monitor.VerboseLog($"Crafting {recipe.DisplayName} (quality {avgQuality})");
 
             Item item = recipe.createItem();
             if (item is SObject obj)
@@ -509,12 +587,12 @@ namespace QualityProducts.Cooking
          /// <param name="recipe">Recipe.</param>
         private List<Ingredient> SelectIngredients(CraftingRecipe recipe)
         {
-            QualityProducts.Instance.Monitor.VerboseLog($"Selecting items: ");
+            Util.Monitor.VerboseLog($"Selecting items: ");
             List<Ingredient> selected = new List<Ingredient>();
-            Dictionary<int, int> recipeList = QualityProducts.Instance.Helper.Reflection.GetField<Dictionary<int, int>>(recipe, "recipeList").GetValue();
+            Dictionary<int, int> recipeList = Util.Helper.Reflection.GetField<Dictionary<int, int>>(recipe, "recipeList").GetValue();
             NetObjectList<Item> playerItemList = Game1.player.items;
 
-            QualityProducts.Instance.Monitor.VerboseLog($"Looking in inventory");
+            Util.Monitor.VerboseLog($"Looking in inventory");
             for (int ingredientIdx = recipeList.Count - 1; ingredientIdx >= 0; ingredientIdx--)
             {
                 int ingredientID = recipeList.Keys.ElementAt(ingredientIdx);
@@ -525,7 +603,7 @@ namespace QualityProducts.Cooking
                     Item playerItem = playerItemList[itemIdx];
                     if (playerItem != null && playerItem is SObject playerObject && !(playerItem as SObject).bigCraftable && (playerItem.parentSheetIndex == ingredientID || playerItem.Category == ingredientID))
                     {
-                        QualityProducts.Instance.Monitor.VerboseLog($"Selected {playerObject.Stack} {playerObject.DisplayName} (quality {playerObject.Quality})");
+                        Util.Monitor.VerboseLog($"Selected {playerObject.Stack} {playerObject.DisplayName} (quality {playerObject.Quality})");
                         recipeList[ingredientID] -= playerItem.Stack;
 
                         selected.Add(new Ingredient(playerItemList, itemIdx, ingredientAmt));
@@ -541,14 +619,14 @@ namespace QualityProducts.Cooking
 
                 if (recipe.isCookingRecipe && !ingredientDone && Game1.currentLocation is FarmHouse farmHouse)
                 {
-                    QualityProducts.Instance.Monitor.VerboseLog($"Looking in fridge");
+                    Util.Monitor.VerboseLog($"Looking in fridge");
                     NetObjectList<Item> fridgeItemList = farmHouse.fridge.Value.items;
                     for (int itemIdx = fridgeItemList.Count - 1; itemIdx >= 0; itemIdx--)
                     {
                         Item fridgeItem = fridgeItemList[itemIdx];
                         if (fridgeItem != null && fridgeItem is SObject fridgeObject && (fridgeItem.parentSheetIndex == ingredientID || fridgeItem.Category == ingredientID))
                         {
-                            QualityProducts.Instance.Monitor.VerboseLog($"Selected {fridgeObject.Stack} {fridgeObject.DisplayName} with quality {fridgeObject.Quality}");
+                            Util.Monitor.VerboseLog($"Selected {fridgeObject.Stack} {fridgeObject.DisplayName} with quality {fridgeObject.Quality}");
                             recipeList[ingredientID] -= fridgeItem.Stack;
 
                             selected.Add(new Ingredient(fridgeItemList, itemIdx, ingredientAmt));
@@ -652,6 +730,8 @@ namespace QualityProducts.Cooking
                     trashCanLidRotation = Math.Max(trashCanLidRotation - 0.06544985f, 0f);
                 }
             }
+
+            HoveredItem = hoverItem ?? hoverRecipe?.createItem();
         }
 
         public override bool readyToClose()

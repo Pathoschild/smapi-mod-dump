@@ -108,6 +108,16 @@ namespace GiftTasteHelper.Framework
             this.DrawGiftTooltip(this.CurrentGiftDrawData, this.TooltipTitle());
         }
 
+        public virtual bool WantsUpdateEvent()
+        {
+            return false;
+        }
+
+        public virtual void OnPostUpdate(UpdateTickedEventArgs e)
+        {
+            // Empty
+        }
+
         protected bool SetSelectedNPC(string npcName)
         {
             // TODO: cache these so we only create them once per npc.

@@ -5,12 +5,11 @@ mods:
    Chill in Your Farmhouse
 
 latest commit:
-   commit 35554d9fc44d01888ac5be97903def2aa2e5088c
-   Merge: f95f426 3b5b824
-   Author: Lothar "Husky110" Hoffmann <Husky110@users.noreply.github.com>
-   Date:   Fri Feb 15 08:17:52 2019 +0100
+   commit 779b9dfaefe083f52188e0c72bfa4e7cca3cf708
+   Author: Mizzion <36684211+Mizzion@users.noreply.github.com>
+   Date:   Wed Mar 27 20:54:45 2019 -0600
    
-       Merge pull request #2 from Mizzion/master
+       Updated the Update Key
        
-       Updated for SMAPI 2.10.2 and SDV 1.3.33
+       Updated the Update Key to point to the correct nexus page, and reformatted the code some.
    

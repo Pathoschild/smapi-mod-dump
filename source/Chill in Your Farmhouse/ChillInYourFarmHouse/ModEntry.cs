@@ -11,7 +11,7 @@ namespace ChillInYourFarmHouse
     public class ModEntry : Mod
     {
 
-        private string location = "";
+        private string _location = "";
 
         /*********
         ** Public methods
@@ -20,8 +20,8 @@ namespace ChillInYourFarmHouse
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            helper.Events.Player.Warped += PlayerEvents_Warped;
-            helper.Events.GameLoop.TimeChanged += TimeEvents_TimeChanged;
+            helper.Events.Player.Warped += OnWarped;
+            helper.Events.GameLoop.TimeChanged += OnTimeChanged;
             
         }
 
@@ -29,45 +29,42 @@ namespace ChillInYourFarmHouse
         ** Private methods
         *********/
 
-
-        private void PlayerEvents_Warped(object sender, WarpedEventArgs e)
+        /// <summary>
+        /// Called when a player changes maps
+        /// </summary>
+        /// <param name="sender">Object</param>
+        /// <param name="e">Event args that contain information about the previous and new maps.</param>
+        private void OnWarped(object sender, WarpedEventArgs e)
         {
             if (Context.IsWorldReady)
             {
-                this.location = e.NewLocation.Name;
+                _location = e.NewLocation.Name;
             }
         }
 
-        private void TimeEvents_TimeChanged(object sender, TimeChangedEventArgs e)
+        /// <summary>
+        /// Called when the time changes
+        /// </summary>
+        /// <param name="sender">Object</param>
+        /// <param name="e">Event args that contain information related to the time change.</param>
+        private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
 
-            StardewValley.Farmer player = Game1.player;
+            Farmer player = Game1.player;
 
-            bool allowAccess = this.location == "FarmHouse" || this.location == "Cabin";
+            bool allowAccess = _location == "FarmHouse" || _location == "Cabin";
 
-            if (Context.IsWorldReady == false || allowAccess == false || player.Stamina >= (float)player.MaxStamina)
-            {
+            if (Context.IsWorldReady == false || allowAccess == false || player.Stamina >= player.MaxStamina)
                 return;
-            }
+       
             
-            float currentPercentage = (player.Stamina / player.MaxStamina) * 100;
-            float multiplicator = 0;
-
-            
-            if(currentPercentage < 20 || currentPercentage >= 80)
-            {
-                multiplicator = 0.05f;
-            }
-            else
-            {
-                multiplicator = 0.1f;
-            }
+            float currentPercentage = player.Stamina / player.MaxStamina * 100;
+            float multiplicator = currentPercentage < 20 || currentPercentage >= 80 ? 0.05f : 0.1f;
 
             int staminaToGive = (int)Math.Round(player.MaxStamina * multiplicator, MidpointRounding.AwayFromZero);
+
             if((player.Stamina + staminaToGive) > player.MaxStamina)
-            {
                 staminaToGive = (int)Math.Floor(player.MaxStamina - player.stamina);
-            }
 
             player.Stamina += staminaToGive;
 

@@ -1,0 +1,13 @@
+url:
+   https://github.com/CKextreme/AfkTimer.git
+
+mods:
+   AFK Timer
+
+latest commit:
+   commit 0a7d598c59401cdaace7a1b5c173ee661c135e5c
+   Author: CKextreme <CKextreme@users.noreply.github.com>
+   Date:   Tue Mar 26 22:14:17 2019 +0100
+   
+       Forgot to change Version number
+   

@@ -22,7 +22,10 @@ namespace GiftTasteHelper.Framework
         ** Public methods
         *********/
         public SocialPageGiftHelper(IGiftDataProvider dataProvider, GiftConfig config, IReflectionHelper reflection, ITranslationHelper translation)
-            : base(GiftHelperType.SocialPage, dataProvider, config, reflection, translation) { }
+            : base(GiftHelperType.SocialPage, dataProvider, config, reflection, translation)
+        {
+            SocialPage.OnSlotIndexChanged += OnSlotIndexChanged;
+        }
 
         public override bool OnOpen(IClickableMenu menu)
         {
@@ -56,33 +59,18 @@ namespace GiftTasteHelper.Framework
             }
 
             SVector2 mousePos = new SVector2(e.NewPosition.ScreenPixels.X, e.NewPosition.ScreenPixels.Y);
-            string hoveredNpc = this.SocialPage.GetCurrentlyHoveredNpc(mousePos);
-            if (hoveredNpc == string.Empty)
-            {
-                this.DrawCurrentFrame = false;
-                return;
-            }
-
-            if (hoveredNpc != this.LastHoveredNpc)
-            {
-                if (this.GiftDrawDataProvider.HasDataForNpc(hoveredNpc) &&
-                    SetSelectedNPC(hoveredNpc))
-                {
-                    this.DrawCurrentFrame = true;
-                    this.LastHoveredNpc = hoveredNpc;
-                }
-                else
-                {
-                    this.DrawCurrentFrame = false;
-                    this.LastHoveredNpc = string.Empty;
-                }
-            }
-            else
-            {
-                this.LastHoveredNpc = string.Empty;
-            }
+            UpdateHoveredNPC(mousePos);
         }
 
+        public override bool WantsUpdateEvent()
+        {
+            return true;
+        }
+
+        public override void OnPostUpdate(UpdateTickedEventArgs e)
+        {
+            this.SocialPage.OnUpdate();
+        }
 
         /*********
         ** Protected methods
@@ -118,5 +106,42 @@ namespace GiftTasteHelper.Framework
             }
         }
 
+        private void UpdateHoveredNPC(SVector2 mousePos)
+        {
+            string hoveredNpc = this.SocialPage.GetCurrentlyHoveredNpc(mousePos);
+            if (hoveredNpc == string.Empty)
+            {
+                this.DrawCurrentFrame = false;
+                return;
+            }
+
+            if (hoveredNpc != this.LastHoveredNpc)
+            {
+                if (this.GiftDrawDataProvider.HasDataForNpc(hoveredNpc) &&
+                    SetSelectedNPC(hoveredNpc))
+                {
+                    this.DrawCurrentFrame = true;
+                    this.LastHoveredNpc = hoveredNpc;
+                }
+                else
+                {
+                    this.DrawCurrentFrame = false;
+                    this.LastHoveredNpc = string.Empty;
+                }
+            }
+            else
+            {
+                this.LastHoveredNpc = string.Empty;
+            }
+        }
+
+        private void OnSlotIndexChanged()
+        {
+            // We currently only check if the hovered npc changed during mouse move events, so if the user
+            // scrolls the list without moving the mouse the tooltip won't change and it will be incorrect.
+            // Listening for when the slot index changes fixes this.
+            SVector2 mouse = new SVector2(Game1.getMouseX(), Game1.getMouseY());
+            UpdateHoveredNPC(mouse);
+        }
     }
 }

@@ -1,16 +1,155 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using SilentOak.QualityProducts.Extensions;
 using StardewValley;
 using SObject = StardewValley.Object;
 
-namespace QualityProducts.Processors
+namespace SilentOak.QualityProducts.Processors
 {
     internal class Keg : Processor
     {
+        /*********
+         * Fields
+         *********/
+
+        private static readonly Recipe[] recipes =
+        {
+            // Wheat => Beer
+            new Recipe(
+                name: "Beer",
+                inputID: 262,
+                inputAmount: 1,
+                minutes: 1750,
+                process: _ => new SObject(346, 1),
+                workingEffects: (location, tile) =>
+                {
+                    location.playSound("bubbles");
+                    Animation.PerformGraphics(location, Animation.Bubbles(tile, Color.Yellow));
+                }
+            ),
+
+            // Hops => Pale Ale
+            new Recipe(
+                name: "Pale Ale",
+                inputID: 304,
+                inputAmount: 1,
+                minutes: 2250,
+                process: _ => new SObject(303, 1),
+                workingEffects: (location, tile) =>
+                {
+                    location.playSound("bubbles");
+                    Animation.PerformGraphics(location, Animation.Bubbles(tile, Color.Yellow));
+                }
+            ),
+
+            // 5 Coffee Beans => Coffee
+            new Recipe(
+                name: "Coffee",
+                inputID: 433,
+                inputAmount: 5,
+                minutes: 120,
+                process: input => new SObject(395, 1),
+                failAmount: () =>
+                {
+                    Game1.showRedMessage(
+                        Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12721")
+                    );
+                },
+                workingEffects: (location, tile) =>
+                {
+                    location.playSound("bubbles");
+                    Animation.PerformGraphics(location, Animation.Bubbles(tile, Color.DarkGray));
+                }
+            ),
+
+            // Honey => Mead
+            new Recipe(
+                name: "Mead",
+                inputID: 340,
+                inputAmount: 1,
+                minutes: 600,
+                process: input =>
+                {
+                    SObject mead = new SObject(459, 1);
+                    HoneyType? maybeHoneyType = input.honeyType.Value;
+                    if (maybeHoneyType.HasValue && maybeHoneyType.Value != HoneyType.Wild)
+                    {
+                        mead.Name = maybeHoneyType.Value.ToString().SplitCamelCase(join: " ") + " Mead";
+                        mead.Price = 2 * input.Price;
+                    }
+
+                    mead.honeyType.Value = maybeHoneyType.Value;
+                    return mead;
+                },
+                workingEffects: (location, tile) =>
+                {
+                    location.playSound("bubbles");
+                    Animation.PerformGraphics(location, Animation.Bubbles(tile, Color.Yellow));
+                }
+            ),
+
+            // Vegetable => Juice
+            new Recipe(
+                name: "Juice",
+                inputID: SObject.VegetableCategory,
+                inputAmount: 1,
+                minutes: 6000,
+                process: input =>
+                {
+                    SObject juice = new SObject(350, 1)
+                    {
+                        Name = input.Name + " Juice",
+                        Price = (int)(2.25 * input.Price)
+                    };
+                    juice.preserve.Value = PreserveType.Juice;
+                    juice.preservedParentSheetIndex.Value = input.ParentSheetIndex;
+                    return juice;
+                },
+                workingEffects: (location, tile) =>
+                {
+                    location.playSound("bubbles");
+                    Animation.PerformGraphics(location, Animation.Bubbles(tile, Color.White));
+                }
+            ),
+            
+            // Fruit => Wine
+            new Recipe(
+                name: "Wine",
+                inputID: SObject.FruitsCategory,
+                inputAmount: 1,
+                minutes: 10000,
+                process: input =>
+                {
+                    SObject wine = new SObject(348, 1)
+                    {
+                        Name = input.Name + " Wine",
+                        Price = 3 * input.Price
+                    };
+                    wine.preserve.Value = PreserveType.Wine;
+                    wine.preservedParentSheetIndex.Value = input.ParentSheetIndex;
+                    return wine;
+                },
+                workingEffects: (location, tile) =>
+                {
+                    location.playSound("bubbles");
+                    Animation.PerformGraphics(location, Animation.Bubbles(tile, Color.Lavender));
+                }
+            )
+        };
+
+
+        /*************
+         * Properties
+         *************/
+
+        public override IEnumerable<Recipe> Recipes => recipes;
+
+
         /****************
          * Public methods
          ****************/
-        
-        public Keg() : base(ProcessorType.KEG)
+
+        public Keg() : base(ProcessorTypes.Keg)
         {
         }
 
@@ -18,113 +157,6 @@ namespace QualityProducts.Processors
         /*******************
          * Protected methods
          *******************/
-
-        /***
-         * From StardewValley.Object.performObjectDropInAction
-         ***/
-        /// <summary>
-        /// Performs item processing.
-        /// </summary>
-        /// <returns><c>true</c> if started processing, <c>false</c> otherwise.</returns>
-        /// <param name="object">Object to be processed.</param>
-        /// <param name="probe">If set to <c>true</c> probe.</param>
-        /// <param name="who">Farmer that initiated processing.</param>
-        protected override bool PerformProcessing(SObject @object, bool probe, Farmer who)
-        {
-            switch (@object.ParentSheetIndex)
-            {
-                case 262:
-                    heldObject.Value = new SObject(Vector2.Zero, 346, "Beer", false, true, false, false);
-                    if (!probe)
-                    {
-                        heldObject.Value.name = "Beer";
-                        minutesUntilReady.Value = 1750;
-                        who.currentLocation.playSound("Ship");
-                        who.currentLocation.playSound("bubbles");
-                        Animation.PerformGraphics(who.currentLocation, Animation.Bubbles(TileLocation, Color.Yellow));
-                    }
-                    return true;
-                case 304:
-                    heldObject.Value = new SObject(Vector2.Zero, 303, "Pale Ale", false, true, false, false);
-                    if (!probe)
-                    {
-                        heldObject.Value.name = "Pale Ale";
-                        minutesUntilReady.Value = 2250;
-                        who.currentLocation.playSound("Ship");
-                        who.currentLocation.playSound("bubbles");
-                        Animation.PerformGraphics(who.currentLocation, Animation.Bubbles(TileLocation, Color.Yellow));
-                    }
-                    return true;
-                case 433:
-                    if (@object.Stack < 5 && !probe)
-                    {
-                        Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12721"));
-                        return false;
-                    }
-                    heldObject.Value = new SObject(Vector2.Zero, 395, "Coffee", false, true, false, false);
-                    if (!probe)
-                    {
-                        heldObject.Value.name = "Coffee";
-                        @object.Stack -= 4;
-                        if (@object.Stack <= 0)
-                        {
-                            who.removeItemFromInventory(@object);
-                        }
-                        minutesUntilReady.Value = 120;
-                        who.currentLocation.playSound("Ship");
-                        who.currentLocation.playSound("bubbles");
-                        Animation.PerformGraphics(who.currentLocation, Animation.Bubbles(TileLocation, Color.DarkGray));
-                    }
-                    return true;
-                case 340:
-                    heldObject.Value = new SObject(Vector2.Zero, 459, "Mead", false, true, false, false);
-                    if (!probe)
-                    {
-                        heldObject.Value.name = "Mead";
-                        minutesUntilReady.Value = 600;
-                        who.currentLocation.playSound("Ship");
-                        who.currentLocation.playSound("bubbles");
-                        Animation.PerformGraphics(who.currentLocation, Animation.Bubbles(TileLocation, Color.Yellow));
-                    }
-                    return true;
-            }
-            switch (@object.Category)
-            {
-                case -75:
-                    heldObject.Value = new SObject(Vector2.Zero, 350, @object.Name + " Juice", false, true, false, false)
-                    {
-                        Price = (int)(@object.Price * 2.25)
-                    };
-                    if (!probe)
-                    {
-                        heldObject.Value.name = @object.Name + " Juice";
-                        heldObject.Value.preserve.Value = PreserveType.Juice;
-                        heldObject.Value.preservedParentSheetIndex.Value = @object.parentSheetIndex;
-                        minutesUntilReady.Value = 6000;
-                        who.currentLocation.playSound("Ship");
-                        who.currentLocation.playSound("bubbles");
-                        Animation.PerformGraphics(who.currentLocation, Animation.Bubbles(TileLocation, Color.White));
-                    }
-                    return true;
-                case -79:
-                    heldObject.Value = new SObject(Vector2.Zero, 348, @object.Name + " Wine", false, true, false, false)
-                    {
-                        Price = @object.Price * 3
-                    };
-                    if (!probe)
-                    {
-                        heldObject.Value.name = @object.Name + " Wine";
-                        heldObject.Value.preserve.Value = PreserveType.Wine;
-                        heldObject.Value.preservedParentSheetIndex.Value = @object.parentSheetIndex;
-                        minutesUntilReady.Value = 10000;
-                        who.currentLocation.playSound("Ship");
-                        who.currentLocation.playSound("bubbles");
-                        Animation.PerformGraphics(who.currentLocation, Animation.Bubbles(TileLocation, Color.Lavender));
-                    }
-                    return true;
-            }
-            return false;
-        }
 
         /***
          * From StardewValley.Object.checkForAction
@@ -136,33 +168,6 @@ namespace QualityProducts.Processors
         protected override void UpdateStats(SObject @object)
         {
             Game1.stats.BeveragesMade++;
-        }
-
-        /***
-         * From StardewValley.Object.addWorkingAnimation
-         ***/
-        /// <summary>
-        /// Adds this entity's working animation to the specified game location.
-        /// </summary>
-        /// <param name="environment">Game location.</param>
-        protected override void AddWorkingAnimationTo(GameLocation environment)
-        {
-            Color color = Color.DarkGray;
-            if (heldObject.Value.Name.Contains("Wine"))
-            {
-                color = Color.Lavender;
-            }
-            else if (heldObject.Value.Name.Contains("Juice"))
-            {
-                color = Color.White;
-            }
-            else if (heldObject.Value.name.Equals("Beer"))
-            {
-                color = Color.Yellow;
-            }
-
-            environment.playSound("bubbles");
-            Animation.PerformGraphics(environment, Animation.Bubbles(TileLocation, color));
         }
     }
 }

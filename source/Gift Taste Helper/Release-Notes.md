@@ -5,6 +5,11 @@
 * ~Option to show more than just loved gifts in the tooltip.~
 * Right-click option to open a window containing gift info for all the different tastes.
 
+### 2.9.1
+* Fixed an issue where the slot bounds on the social page would be incorrect when not at 100% zoom.
+* Fixed an issue where the tooltip on the social page wouldn't update when scrolling the list without moving the mouse.
+* Misc code cleanup.
+
 ### 2.9
 * Works with SMAPI 2.8 and above (tested with 2.11).
 * Works with the latest version of SDV (1.3.36).

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ namespace bwdyworks
 
         public Texture2D LoadTexture()
         {
-            return Mod.Helper.Content.Load<Texture2D>("./Assets/" + InternalName + ".png", StardewModdingAPI.ContentSource.ModFolder);
+            return Mod.Helper.Content.Load<Texture2D>(Path.Combine("Assets", InternalName + ".png"), StardewModdingAPI.ContentSource.ModFolder);
         }
 
         public string Compile()

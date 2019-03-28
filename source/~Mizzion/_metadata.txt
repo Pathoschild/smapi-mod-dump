@@ -1,0 +1,24 @@
+url:
+   https://github.com/Mizzion/MyStardewMods.git
+
+mods:
+   Configure Machine Outputs
+   Enhanced Relationships
+   Fish Reminder
+   Increased Artifact Spots
+   One Sprinkler One Scarecrow
+   Qi Exchanger
+   Stardew Locations
+   Wallpaper Recycler
+   Water Can Refiller
+   Water Pet Bowl
+
+latest commit:
+   commit 263a801b1a040dc9e368a4ec1fa411c6bea38e47
+   Author: Mizzion <36684211+Mizzion@users.noreply.github.com>
+   Date:   Wed Mar 20 14:44:27 2019 -0600
+   
+       Try again to commit these
+       
+       these
+   

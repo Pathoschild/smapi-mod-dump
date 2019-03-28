@@ -17,11 +17,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 4d785b94f50e36d9e7e1f503968b41c156132748
+   commit acc1f954c8eadd00a2638a1ee150ecfa3b48cc1c
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Fri Mar 15 20:46:42 2019 -0400
+   Date:   Tue Mar 26 19:20:53 2019 -0400
    
-       add French translations (#390)
-       
-       Thanks to Mysti57!
+       merge base & value-provider tokens (#377)
    

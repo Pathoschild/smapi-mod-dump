@@ -1,0 +1,16 @@
+﻿{
+"clock_suffix":"",
+"notify_text":"It's now",
+"config_reload_error":"Couldn't reload the config file",
+"config_reload_success":"Configuration was successfully reloaded",
+"in_game_reminder":"In-Game reminder",
+"no_reminder":"No reminder set!",
+"once":"once",
+"repeatedly":"repeatedly",
+"clear_success":"All  reminders cleared",
+"false_args":"False arguments given - see help",
+"false_value":"The value must between 600 and 2600!",
+"removed_value":"The value has been removed",
+"already_exists":"Repeated time already exists",
+"new_ingame":"New in-game reminder created"
+}

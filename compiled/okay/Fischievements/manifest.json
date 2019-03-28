@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Fischievements",
   "Author": "MattDeDuck",
-  "Version": "1.0.1",
+  "Version": "1.2.0",
   "Description": "Something fishy about these achievements",
   "UniqueID": "MattDeDuck.Fischievements",
   "EntryDll": "Fischievements.dll",

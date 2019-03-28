@@ -6,5 +6,5 @@
   "UniqueID": "Hangy.NoKidsEver",
   "EntryDll": "NoKidsEver.dll",
   "MinimumApiVersion": "2.7",
-  "UpdateKeys": [ "GitHub:Slamerz/SVMods" ]
+  "UpdateKeys": [ "Nexus:1464" ] // fixed locally
 }

@@ -5,9 +5,9 @@ mods:
    Gift Taste Helper
 
 latest commit:
-   commit fba5b9c4bcaa6fcdbef689a621b6e7df0361fa9c
+   commit f12af0da38318b129ec7eb418e13070df6624e1d
    Author: tyler staples <tyler.a.staples@gmail.com>
-   Date:   Sun Mar 3 17:14:42 2019 -0800
+   Date:   Sun Mar 24 16:34:33 2019 -0700
    
-       Updated release notes
+       Updated release note and manifest
    

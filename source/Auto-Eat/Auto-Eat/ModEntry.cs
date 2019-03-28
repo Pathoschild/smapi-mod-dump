@@ -1,14 +1,10 @@
-using System;
+﻿using System;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 
 namespace AutoEat
 {
-    class ModConfig
-    {
-        public float StaminaThreshold { get; set; } = 0.0f;
-    }
     /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
@@ -29,26 +25,21 @@ namespace AutoEat
         *********/
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
-
         public override void Entry(IModHelper helper)
         {
-            ModConfig theConfig = helper.ReadConfig<ModConfig>();
-            eatAtAmount = theConfig.StaminaThreshold;
+            ModConfig config = helper.ReadConfig<ModConfig>();
+            eatAtAmount = config.StaminaThreshold;
 
-            if (eatAtAmount < 0.0f)
+            if (eatAtAmount < 0)
             {
-                eatAtAmount = 0.0f;
-                ModConfig fixConfig = new ModConfig()
-                {
-                    StaminaThreshold = 0.0f
-                };
-                helper.WriteConfig(fixConfig);
+                eatAtAmount = config.StaminaThreshold = 0;
+                helper.WriteConfig(config);
             }
 
             helper.ConsoleCommands.Add("player_setstaminathreshold", "Sets the threshold at which the player will automatically consume food.\nUsage: player_setstaminathreshold <value>\n- value: the float/integer amount.", this.SetStaminaThreshold); //command that sets when to automatically eat (i.e. 25 energy instead of 0)
-            GameEvents.UpdateTick += this.GameEvents_UpdateTick; //adding the method with the same name below to the corresponding event in order to make them connect
-            SaveEvents.BeforeSave += this.SaveEvents_BeforeSave;
-            TimeEvents.AfterDayStarted += this.TimeEvents_AfterDayStarted;
+            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked; //adding the method with the same name below to the corresponding event in order to make them connect
+            helper.Events.GameLoop.Saving += this.OnSaving;
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
         }
 
         public static void ClearOldestHUDMessage() //I may have stolen this idea from CJBok (props to them)
@@ -58,10 +49,10 @@ namespace AutoEat
                 Game1.hudMessages.RemoveAt(Game1.hudMessages.Count - 1); //remove the oldest one (useful in case multiple messages are on the screen at once)
         }
 
+
         /*********
         ** Private methods
         *********/
-
         private void SetStaminaThreshold(string command, string[] args)
         {
             float newValue = (float)double.Parse(args[0]);
@@ -78,11 +69,11 @@ namespace AutoEat
 
             this.Monitor.Log($"OK, set the stamina threshold to {newValue}.");
         }
-        
-        /// <summary>The method invoked when the player presses a keyboard button.</summary>
+
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void GameEvents_UpdateTick(object sender, EventArgs e)
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (!Context.IsPlayerFree || trueOverexertion || newDay) //are they paused/in a menu, over-exerted, or it's the beginning of the day, then do not continue
             {
@@ -145,12 +136,18 @@ namespace AutoEat
             return cheapestFood;
         }
 
-        private void SaveEvents_BeforeSave(object sender, EventArgs e)
+        /// <summary>Raised before the game begins writes data to the save file (except the initial save creation).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnSaving(object sender, SavingEventArgs e)
         {
             newDay = true;
         }
 
-        private void TimeEvents_AfterDayStarted(object sender, EventArgs e) //fires just as player wakes up
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             newDay = false; //reset the variable, allowing the UpdateTick method checks to occur once more
             trueOverexertion = false; //reset the variable, allowing the UpdateTick method checks to occur once more (in other words, allowing the player to avoid over-exertion once more)

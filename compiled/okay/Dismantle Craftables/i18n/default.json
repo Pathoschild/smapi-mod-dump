@@ -1,0 +1,7 @@
+﻿{
+    "msg.wrongitem": "You cannot dismantle this item.",
+    "dia.question": "Do you want to dismantle {{item_Stack}} items of type {{item_DisplayName}}?",
+    "dia.question_single": "Do you want to dismantle one item of type {{item_DisplayName}}?",
+    "dia.yes": "Yes.",
+    "dia.no": "No."
+}

@@ -23,7 +23,7 @@ Features are classified as either:
 
 #### General
 * :seedling: **Immature trees will no longer be destroyed by the scythe** or melee weapons. This is great for when you are growing hay in your timber plantation.
-* :lock: **Winter has no effect on trees in the desert or indoors.** This is changed from vanilla, where winter had no effect in the greenhouse or on palm trees. This means that palm trees can be effected by winter outside the desert, that all trees will escape the winter in the desert, and that mushroom trees will never hibernate indoors or in the desert.
+* :lock: **Winter has no effect on trees in the desert or indoors.** This is changed from vanilla, where winter had no effect in the greenhouse or on palm trees. This means that palm trees can be affected by winter outside the desert, that all trees will escape the winter in the desert, and that mushroom trees will never hibernate indoors or in the desert.
 * :icecream: In vanilla, the highest growth stage that can be walked over is seeds. While this can be changed, it has graphical errors in-game. I am working on a fix for these.
 
 #### Held (Shakeable) Seeds

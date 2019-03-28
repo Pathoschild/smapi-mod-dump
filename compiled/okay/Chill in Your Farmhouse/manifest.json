@@ -7,6 +7,6 @@
   "EntryDll": "ChillInYourFarmHouse.dll",
   "MinimumApiVersion": "2.10.2",
   "UpdateKeys": [
-    "Github:tyrleifsen/ChillInYourFarmHouse", "Nexus:3529"
+    "Nexus:1768" // fixed locally
   ]
 }

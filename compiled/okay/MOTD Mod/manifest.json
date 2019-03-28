@@ -1,0 +1,10 @@
+﻿{
+  "Name": "MOTDMod",
+  "Author": "thfr",
+  "Version":  "1.0.0",
+  "Description": "Display message of the day",
+  "UniqueID": "thfr.MOTDMod",
+  "EntryDll": "MOTDMod.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

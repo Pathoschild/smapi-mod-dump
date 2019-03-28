@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/276
+IDs: KathrynHazuka.BirthdayMail
+update keys: Nexus:276

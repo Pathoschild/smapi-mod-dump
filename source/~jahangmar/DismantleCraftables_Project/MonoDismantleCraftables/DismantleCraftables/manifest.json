@@ -1,0 +1,11 @@
+﻿{
+  "Name": "DismantleCraftables",
+  "Author": "jahangmar",
+  "Version": "1.0.2",
+  "Description": "Allows you to dismantle crafted objects",
+  "UniqueID": "jahangmar.DismantleCraftables",
+  "MinimumApiVersion": "2.10.0",
+  "EntryDll": "DismantleCraftables.dll",
+  "Dependencies": [],
+  "UpdateKeys": [ "Nexus:3687"]
+}

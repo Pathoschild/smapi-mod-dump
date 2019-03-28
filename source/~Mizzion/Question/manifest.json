@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Question",
+    "Author": "Mizzion",
+    "Version": "1.0.0",
+    "Description": "TestMod",
+    "UniqueID": "mizzion.question",
+    "EntryDll": "Question.dll",
+    "MinimumApiVersion": "2.11",
+    "UpdateKeys": [ "Nexus:" ]
+}

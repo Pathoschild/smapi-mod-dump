@@ -252,7 +252,10 @@ namespace BetterMixedSeeds
                 }
             }
 
-            __result = selectedSeeds[new Random().Next(selectedSeeds.Count())];
+            if (selectedSeeds.Count() != 0)
+            {
+                __result = selectedSeeds[new Random().Next(selectedSeeds.Count())];
+            }
 
             return false;
         }

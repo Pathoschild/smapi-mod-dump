@@ -1,0 +1,10 @@
+﻿{
+  "Name": "AFK Timer",
+  "Author": "CKextreme",
+  "Version": "0.1.1",
+  "Description": "Pauses the game if you get idle.",
+  "UniqueID": "CKextreme.AfkTimer",
+  "EntryDll": "AfkTimer.dll",
+  "MinimumApiVersion": "2.11.1",
+  "UpdateKeys": ["Nexus:3721"]
+}

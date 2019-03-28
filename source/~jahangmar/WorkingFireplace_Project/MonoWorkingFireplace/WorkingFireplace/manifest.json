@@ -1,0 +1,11 @@
+﻿{
+  "Name": "WorkingFireplace",
+  "Author": "jahangmar",
+  "Version": "1.0.1",
+  "Description": "The fireplace consumes wood and sleeping in your cold house drains energy",
+  "UniqueID": "jahangmar.WorkingFireplace",
+  "MinimumApiVersion": "2.10.0",
+  "EntryDll": "WorkingFireplace.dll",
+  "Dependencies": [],
+  "UpdateKeys": ["Nexus:3654"]
+}

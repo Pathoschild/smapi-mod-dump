@@ -5,9 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{540D2D4A-0059-4C99-A4D6-51E10BA6E0E1}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>AutoQualityPatch</RootNamespace>
+    <RootNamespace>SilentOak.AutoQualityPatch</RootNamespace>
     <AssemblyName>AutoQualityPatch</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ReleaseVersion>2.0</ReleaseVersion>
+    <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,19 +35,16 @@
     <Reference Include="Automate">
       <HintPath>..\lib\Automate\Automate.dll</HintPath>
       <Private>False</Private>
+      <IncludeInPackage>false</IncludeInPackage>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AutoQualityPatch.cs" />
-    <Compile Include="AutomatableBase.cs" />
-    <Compile Include="ProcessorFactory.cs" />
-    <Compile Include="Automatables\AutomatableCheesePress.cs" />
-    <Compile Include="Automatables\AutomatableKeg.cs" />
-    <Compile Include="Automatables\AutomatableLoom.cs" />
-    <Compile Include="Automatables\AutomatableMayonnaiseMachine.cs" />
-    <Compile Include="Automatables\AutomatableOilMaker.cs" />
-    <Compile Include="Automatables\AutomatablePreservesJar.cs" />
+    <Compile Include="ModEntry.cs" />
+    <Compile Include="RecipeAdaptor.cs" />
+    <Compile Include="Patches\AutomateCompat\MachineGenericPullRecipePatch.cs" />
+    <Compile Include="RecipeManager.cs" />
+    <Compile Include="Utils\Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />
@@ -56,7 +55,19 @@
       <Project>{B43C6CA7-768F-4E67-9BCE-53F9CA713D79}</Project>
       <Name>QualityProducts</Name>
       <Private>False</Private>
+      <IncludeInPackage>false</IncludeInPackage>
     </ProjectReference>
+    <ProjectReference Include="..\Patching\Patching.csproj">
+      <Project>{9A04FC48-F45E-495D-95CC-CB880E7AD892}</Project>
+      <Name>Patching</Name>
+      <Private>False</Private>
+      <IncludeInPackage>false</IncludeInPackage>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Patches\" />
+    <Folder Include="Patches\AutomateCompat\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />

@@ -65,6 +65,7 @@
     <Compile Include="Events\NPCCheckActionEventArgs.cs" />
     <Compile Include="Events\TileCheckActionEventArgs.cs" />
     <Compile Include="GameDate.cs" />
+    <Compile Include="MapLoader.cs" />
     <Compile Include="Registry\ItemRegistry.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Modworks.cs" />

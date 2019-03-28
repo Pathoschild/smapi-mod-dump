@@ -1,0 +1,16 @@
+url:
+   https://github.com/jahangmar/StardewValleyMods.git
+
+mods:
+   Dismantle Craftables
+   Don't Eat That
+   Seeds are Rare
+   Working Fireplace
+
+latest commit:
+   commit 86cd8892d165383d469066bb0f57ed0004f62fb3
+   Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
+   Date:   Wed Mar 27 19:14:50 2019 +0100
+   
+       DismantleCraftables v1.0.2 and SeedsAreRare v1.2.0
+   

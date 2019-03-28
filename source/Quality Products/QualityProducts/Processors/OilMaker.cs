@@ -1,16 +1,79 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using StardewValley;
 using SObject = StardewValley.Object;
 
-namespace QualityProducts.Processors
+namespace SilentOak.QualityProducts.Processors
 {
     internal class OilMaker : Processor
     {
+        /*********
+         * Fields
+         *********/
+
+        /// <summary>
+        /// The available recipes for this entity.
+        /// </summary>
+        private static readonly Recipe[] recipes =
+        {
+            // Corn => Oil
+            new Recipe(
+                name: "Oil",
+                inputID: 270,
+                inputAmount: 1,
+                minutes: 1000,
+                process: _ => new SObject(247, 1)
+            ),
+
+            // Sunflower => Oil
+            new Recipe(
+                name: "Oil",
+                inputID: 421,
+                inputAmount: 1,
+                minutes: 60,
+                process: _ => new SObject(247, 1)
+            ),
+
+            // Sunflower Seeds => Oil
+            new Recipe(
+                name: "Oil",
+                inputID: 431,
+                inputAmount: 1,
+                minutes: 3200,
+                process: _ => new SObject(247, 1)
+            ),
+
+            // Truffle => Truffle Oil
+            new Recipe(
+                name: "Truffle Oil",
+                inputID: 430,
+                inputAmount: 1,
+                minutes: 360,
+                process: _ => new SObject(432, 1)
+            )
+        };
+
+
+        /*************
+         * Properties
+         *************/
+
+        /// <summary>
+        /// Gets the available recipes for this entity.
+        /// </summary>
+        /// <value>The recipes.</value>
+        public override IEnumerable<Recipe> Recipes => recipes;
+
+
         /****************
          * Public methods
          ****************/
 
-        public OilMaker() : base(ProcessorType.OIL_MAKER)
+        /// <summary>
+        /// Instantiates an <see cref="T:QualityProducts.Processors.OilMaker"/>.
+        /// </summary>
+        /// <param name="location">Where the entity is.</param>
+        public OilMaker() : base(ProcessorTypes.OilMaker)
         {
         }
 
@@ -19,75 +82,21 @@ namespace QualityProducts.Processors
          * Protected methods
          *******************/
 
-        /***
-         * From StardewValley.Object.performObjectDropInAction
-         ***/
         /// <summary>
-        /// Performs item processing.
+        /// Executes if recipe doesn't specify any input effects.
         /// </summary>
-        /// <returns><c>true</c> if started processing, <c>false</c> otherwise.</returns>
-        /// <param name="object">Object to be processed.</param>
-        /// <param name="probe">If set to <c>true</c> probe.</param>
-        /// <param name="who">Farmer that initiated processing.</param>
-        protected override bool PerformProcessing(SObject @object, bool probe, Farmer who)
+        protected override void DefaultInputEffects(GameLocation location)
         {
-            switch (@object.ParentSheetIndex)
-            {
-                case 270:
-                    heldObject.Value = new SObject(Vector2.Zero, 247, null, false, true, false, false);
-                    if (!probe)
-                    {
-                        minutesUntilReady.Value = 1000;
-                        who.currentLocation.playSound("bubbles");
-                        who.currentLocation.playSound("sipTea");
-                        Animation.PerformGraphics(who.currentLocation, Animation.Bubbles(TileLocation, Color.Yellow));
-
-                    }
-                    return true;
-                case 421:
-                    heldObject.Value = new SObject(Vector2.Zero, 247, null, false, true, false, false);
-                    if (!probe)
-                    {
-                        minutesUntilReady.Value = 60;
-                        who.currentLocation.playSound("bubbles");
-                        who.currentLocation.playSound("sipTea");
-                        Animation.PerformGraphics(who.currentLocation, Animation.Bubbles(TileLocation, Color.Yellow));
-                    }
-                    return true;
-                case 430:
-                    heldObject.Value = new SObject(Vector2.Zero, 432, null, false, true, false, false);
-                    if (!probe)
-                    {
-                        minutesUntilReady.Value = 360;
-                        who.currentLocation.playSound("bubbles");
-                        who.currentLocation.playSound("sipTea");
-                        Animation.PerformGraphics(who.currentLocation, Animation.Bubbles(TileLocation, Color.Yellow));
-                    }
-                    return true;
-                case 431:
-                    heldObject.Value = new SObject(247, 1, false, -1, 0);
-                    if (!probe)
-                    {
-                        minutesUntilReady.Value = 3200;
-                        who.currentLocation.playSound("bubbles");
-                        who.currentLocation.playSound("sipTea");
-                        Animation.PerformGraphics(who.currentLocation, Animation.Bubbles(TileLocation, Color.Yellow));
-                    }
-                    return true;
-            }
-            return false;
+            location.playSound("bubbles");
+            location.playSound("sipTea");
         }
 
-        /***
-         * From StardewValley.Object.addWorkingAnimation
-         ***/
         /// <summary>
-        /// Adds this entity's working animation to the specified game location.
+        /// Executes if recipe doesn't specify any working effects.
         /// </summary>
-        /// <param name="environment">Game location.</param>
-        protected override void AddWorkingAnimationTo(GameLocation environment)
+        protected override void DefaultWorkingEffects(GameLocation location)
         {
-            Animation.PerformGraphics(environment, Animation.Bubbles(TileLocation, Color.Yellow));
+            Animation.PerformGraphics(location, Animation.Bubbles(TileLocation, Color.Yellow));
         }
     }
 }

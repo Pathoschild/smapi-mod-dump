@@ -1,0 +1,15 @@
+url:
+   https://github.com/KathrynHazuka/StardewValley_BirthdayMail.git
+
+mods:
+   Birthday Mail
+
+latest commit:
+   commit 46abd3d2059f7811a3c4b30c55383f22c255c859
+   Author: Kathryn Hazuka <KathrynHazuka@hotmail.com>
+   Date:   Sat Oct 13 11:15:57 2018 -0600
+   
+       Update to 1.5.1
+       
+       Adding chinese translation to mail content
+   

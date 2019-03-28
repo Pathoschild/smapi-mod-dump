@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3718
+IDs: Lysero.Clock24
+update keys: Nexus:3718
