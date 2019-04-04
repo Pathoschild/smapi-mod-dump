@@ -99,14 +99,14 @@ public string[] IgnoreMissingMods = new[]
 	"GitHub:oranisagu/SDV-FarmAutomation",
 	"FarmAutomation.BarnDoorAutomation.dll",
 	"FarmAutomation.ItemCollector.dll",
-	
+
 	// EvilPdor's mods
 	"https://community.playstarbound.com/threads/111526",
 	"RainRandomizer.dll",
 	"StaminaRegen.dll",
 	"WakeUp.dll",
 	"WeatherController.dll",
-	
+
 	// local mods
 	"Pathoschild.TestContentMod"
 };
@@ -153,20 +153,20 @@ public IDictionary<string, string> OverrideFolderNames = new Dictionary<string, 
 	["spacechase0.JsonAssets"] = "@@Json Assets",
 	["spacechase0.SpaceCore"] = "@@SpaceCore",
 	["TehPers.CoreMod"] = "@@Teh's Core Mod",
-	
+
 	// fix duplicate IDs (Slime Minigame)
 	["Tofu.SlimeMinigame"] = "Slime Mods - Slime Minigame",
 	["Tofu.SlimeQOL"] = "Slime Mods - SlimeQoL Alt",
-	
+
 	// fix ambiguous names
 	["Vrakyas.CurrentLocation"] = "Current Location (Vrakyas)",
 	["CurrentLocation102120161203"] = "Current Location (Omegasis)",
-	
+
 	["Thor.EnemyHealthBars"] = "Enemy Health Bars (TheThor59)",
-	
+
 	["HappyBirthday"] = "Happy Birthday (Oxyligen)",
 	["Omegasis.HappyBirthday"] = "Happy Birthday (Omegasis)",
-	
+
 	["HorseWhistle_SMAPI"] = "Horse Whistle (Nabuma)",
 	["icepuente.HorseWhistle"] = "Horse Whistle (Icepuente)"
 };
@@ -178,7 +178,7 @@ public IDictionary<string, Tuple<string, string>> EquivalentModVersions = new Di
 	["439"] = Tuple.Create("1.2.1", "1.21"), // Almighty Tool
 	["FileLoading"] = Tuple.Create("1.1", "1.12"), // File Loading
 	["stephansstardewcrops"] = Tuple.Create("1.4.1", "1.41"), // Stephen's Stardew Crops
-	
+
 	// okay
 	["alphablackwolf.skillPrestige"] = Tuple.Create("1.0.9-unofficial.1-huancz", "1.2.3"), // Skill Prestige (unofficial update is for an older version)
 	["Jotser.AutoGrabberMod"] = Tuple.Create("1.0.12-beta.1", "1.0.12"),
@@ -198,7 +198,7 @@ void Main()
 	** Initialise
 	****/
 	Console.WriteLine("Initialising...");
-	
+
 	// cache
 	Barrel.ApplicationId = this.CacheApplicationKey;
 	this.Cache = Barrel.Current;
@@ -356,11 +356,11 @@ void Main()
 						break;
 					}
 				}
-				
+
 				// mark unofficial versions
 				if (mod.InstalledVersion.IsPrerelease() && (mod.InstalledVersion.PrereleaseTag.Contains("unofficial") || mod.InstalledVersion.PrereleaseTag.Contains("update")))
 					newName += $" [{mod.InstalledVersion}]";
-				
+
 				// sanitise name
 				foreach (char ch in Path.GetInvalidFileNameChars())
 					newName = newName.Replace(ch, '_');
@@ -398,18 +398,26 @@ void Main()
 	if (this.ShowCompatListErrors)
 	{
 		Console.WriteLine("Checking for potential compatibility list errors...");
+		bool EqualsInvariant(string actual, string expected)
+		{
+			if (actual == null)
+				return expected == null;
+			return actual.Equals(expected, StringComparison.InvariantCultureIgnoreCase);
+		}
+
 		object Format(string actual, string expected)
 		{
-			const string goodStyle = "color: green;";
-			const string badStyle = "color: red; font-weight: bold;";
-			return Util.WithStyle(actual ?? "null", actual == expected ? goodStyle : badStyle);
+			return Util.WithStyle(
+				actual ?? "null",
+				EqualsInvariant(actual, expected) ? "color: green;" : "color: red; font-weight: bold;"
+			);
 		}
-		
+
 		var result = (
 			from mod in mods
 			let metadata = mod?.ApiRecord?.Metadata
 			where metadata != null
-			
+
 			orderby metadata.Name.Replace(" ", "").Replace("'", "")
 			let compatHasID = metadata.ID.Any() == true
 			let ids = mod.IDs.ToArray()
@@ -417,9 +425,9 @@ void Main()
 			let commonID = metadata.ID.Intersect(ids).FirstOrDefault()
 			where
 				((modHasID || compatHasID) && commonID == null)
-				|| metadata.NexusID?.ToString() != mod.GetModID("Nexus")
-				|| metadata.ChucklefishID?.ToString() != mod.GetModID("Chucklefish")
-				|| metadata.GitHubRepo != mod.GetModID("GitHub")
+				|| !EqualsInvariant(metadata.NexusID?.ToString(), mod.GetModID("Nexus"))
+				|| !EqualsInvariant(metadata.ChucklefishID?.ToString(), mod.GetModID("Chucklefish"))
+				|| !EqualsInvariant(metadata.GitHubRepo, mod.GetModID("GitHub"))
 			select new
 			{
 				ID = ids.FirstOrDefault(),
@@ -473,7 +481,6 @@ void Main()
 				})
 				.Dump("Installed mods not on compatibility list");
 		}
-			
 	}
 
 	/****
@@ -487,16 +494,18 @@ void Main()
 		{
 			if (!mod.IsValid)
 				return (dynamic)new { NormalisedFolder = Util.WithStyle(mod.NormalisedFolder, "color: red;") };
-			
+
+			bool hasMajorUpdateCheckErrors = mod.UpdateCheckErrors.Any() && mod.UpdateCheckErrors.Any(p => !p.Contains("matches a mod with invalid semantic version"));
+			const string errorStyle = "color: red; font-weight: bold;";
 			return new
 			{
 				Name = Util.WithStyle(mod.Author != null ? $"{mod.Name}\n  by {mod.Author}" : mod.Name, "font-size: 0.8em;"),
 				Installed = Util.WithStyle(mod.Installed, "font-size: 0.8em"),
-				Latest = Util.WithStyle(mod.HasUpdate ? new Hyperlinq(mod.DownloadUrl, mod.Latest) : (mod.Latest == null ? (object)Util.WithStyle("not found", "color: red; font-weight: bold;") : (object)Util.WithStyle(mod.Latest, "color: gray;")), "font-size: 0.8em"),
-				WikiSummary = Util.WithStyle($"{mod.WikiSummary} [{mod.WikiStatus}]".Trim(), "font-size: 0.8em;" + (mod.WikiStatus != null && this.HighlightStatuses.Contains(mod.WikiStatus.Value) ? "color: red; font-weight: bold;" : "")),
-				ManifestUpdateKeys = mod.ManifestUpdateKeys != null ? mod.ManifestUpdateKeys : Util.WithStyle("none", "color: red; font-weight: bold;"),
+				Latest = Util.WithStyle(mod.HasUpdate ? new Hyperlinq(mod.DownloadUrl, mod.Latest) : (mod.Latest == null ? (object)Util.WithStyle("not found", errorStyle) : (object)Util.WithStyle(mod.Latest, "color: gray;")), "font-size: 0.8em"),
+				WikiSummary = Util.WithStyle($"{mod.WikiSummary} [{mod.WikiStatus}]".Trim(), "font-size: 0.8em;" + (mod.WikiStatus != null && this.HighlightStatuses.Contains(mod.WikiStatus.Value) ? errorStyle : "")),
+				ManifestUpdateKeys = mod.ManifestUpdateKeys != null ? mod.ManifestUpdateKeys : Util.WithStyle("none", errorStyle),
 				UpdateKeys = Util.WithStyle(mod.UpdateKeys, "font-size: 0.8em;"),
-				UpdateCheckErrors = mod.UpdateCheckErrors.Length > 0 ? Util.WithStyle(string.Join("\n", mod.UpdateCheckErrors), "font-size> 0.8em") : null,
+				UpdateCheckErrors = mod.UpdateCheckErrors.Length > 0 ? Util.WithStyle(string.Join("\n", mod.UpdateCheckErrors), $"font-size: 0.8em; {(hasMajorUpdateCheckErrors ? errorStyle : "color: gray;")}") : "",
 				NormalisedFolder = new Lazy<string>(() => mod.NormalisedFolder),
 				Manifest = new Lazy<Manifest>(() => mod.Manifest),
 				Smapi3Status = mod.ModData?.ApiRecord?.Metadata?.Smapi3Status
@@ -571,7 +580,6 @@ IEnumerable<ReportEntry> GetReport(IEnumerable<ModData> mods, bool forBeta)
 T CacheOrFetch<T>(string key, Func<T> fetch)
 {
 	var jsonHelper = new JsonHelper();
-	
 	if (this.Cache.Exists(key))
 	{
 		string json = this.Cache.Get<string>(key);
@@ -621,7 +629,7 @@ class ModData
 
 	/// <summary>Whether the mod is installed (regardless of whether it's compatible).</summary>
 	public bool IsInstalled => this.Folder?.Manifest != null;
-	
+
 	/// <summary>The installed mod version.</summary>
 	public ISemanticVersion InstalledVersion => this.Folder?.Manifest?.Version;
 
@@ -636,7 +644,7 @@ class ModData
 		this.Folder = folder;
 		this.Update();
 	}
-	
+
 	/// <summary>Get the mod ID in a repository from the mod's update keys, if available.</summary>
 	/// <param name="repositoryKey">The case-insensitive repository key (like Nexus or Chucklefish) to match.</summary>
 	public string GetModID(string repositoryKey)
@@ -655,7 +663,7 @@ class ModData
 			?? this.ApiRecord?.Metadata?.Name
 			?? this.IDs.FirstOrDefault();
 	}
-	
+
 	/// <summary>Get the unofficial update for this mod, if any.</summary>
 	/// <param name="forBeta">If there's an ongoing Stardew Valley or SMAPI beta which affects compatibility, whether to return the unofficial update for that beta version instead of the one for the stable version.</param>
 	public ISemanticVersion GetUnofficialVersion(bool forBeta)
@@ -664,7 +672,7 @@ class ModData
 			? this.ApiRecord.UnofficialForBeta?.Version
 			: this.ApiRecord.Unofficial?.Version;
 	}
-	
+
 	/// <summary>Get the URL to this mod's web page.</summary>
 	public string GetModPageUrl()
 	{
@@ -735,7 +743,7 @@ class ModData
 						yield return key;
 				}
 			}
-			
+
 			// API record
 			var compat = this.ApiRecord?.Metadata;
 			if (compat != null)
@@ -752,7 +760,7 @@ class ModData
 			UpdateKey parsed = UpdateKey.Parse(key);
 			if (!parsed.LooksValid)
 				continue;
-			
+
 			string parsedStr = parsed.ToString();
 			if (seen.Add(parsedStr))
 				yield return parsedStr;
@@ -819,7 +827,7 @@ class ReportEntry
 	{
 		var manifest = mod.Folder.Manifest;
 		var apiMetadata = mod.ApiRecord?.Metadata;
-		
+
 		this.ModData = mod;
 		this.IsValid = true;
 		this.Manifest = manifest;

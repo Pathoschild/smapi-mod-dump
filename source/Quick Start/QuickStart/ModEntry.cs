@@ -225,12 +225,12 @@
 
 		public void checkForNewLevelPerks()
 		{
-			Dictionary<string, string> dictionary1 = Game1.content.Load<Dictionary<string, string>>("Data\\CookingRecipes");
+			Dictionary<string, string> cookingRecipes = Game1.content.Load<Dictionary<string, string>>("Data\\CookingRecipes");
 			int level = Game1.player.Level;
 
-			foreach (string key in dictionary1.Keys)
+			foreach (string key in cookingRecipes.Keys)
 			{
-				string[] strArray = dictionary1[key].Split('/')[3].Split(' ');
+				string[] strArray = cookingRecipes[key].Split('/')[3].Split(' ');
 
 				if (strArray[0].Equals("l") && Convert.ToInt32(strArray[1]) <= level && !Game1.player.cookingRecipes.ContainsKey(key))
 				{
@@ -239,51 +239,51 @@
 				}
 				else if (strArray[0].Equals("s"))
 				{
-					int int32 = Convert.ToInt32(strArray[2]);
-					bool flag = false;
-					string str = strArray[1];
+					int requiredlevel = Convert.ToInt32(strArray[2]);
+					bool addRecipe = false;
+					string skill = strArray[1];
 
-					if (!(str == "Farming"))
+					if (!(skill == "Farming"))
 					{
-						if (!(str == "Fishing"))
+						if (!(skill == "Fishing"))
 						{
-							if (!(str == "Mining"))
+							if (!(skill == "Mining"))
 							{
-								if (!(str == "Combat"))
+								if (!(skill == "Combat"))
 								{
-									if (!(str == "Foraging"))
+									if (!(skill == "Foraging"))
 									{
-										if (str == "Luck" && Game1.player.LuckLevel >= int32)
+										if (skill == "Luck" && Game1.player.LuckLevel >= requiredlevel)
 										{
-											flag = true;
+											addRecipe = true;
 										}
 									}
-									else if (Game1.player.ForagingLevel >= int32)
+									else if (Game1.player.ForagingLevel >= requiredlevel)
 									{
-										flag = true;
+										addRecipe = true;
 									}
 								}
-								else if (Game1.player.CombatLevel >= int32)
+								else if (Game1.player.CombatLevel >= requiredlevel)
 								{
-									flag = true;
+									addRecipe = true;
 								}
 							}
-							else if (Game1.player.MiningLevel >= int32)
+							else if (Game1.player.MiningLevel >= requiredlevel)
 							{
-								flag = true;
+								addRecipe = true;
 							}
 						}
-						else if (Game1.player.FishingLevel >= int32)
+						else if (Game1.player.FishingLevel >= requiredlevel)
 						{
-							flag = true;
+							addRecipe = true;
 						}
 					}
-					else if (Game1.player.FarmingLevel >= int32)
+					else if (Game1.player.FarmingLevel >= requiredlevel)
 					{
-						flag = true;
+						addRecipe = true;
 					}
 
-					if (flag && !Game1.player.cookingRecipes.ContainsKey(key))
+					if (addRecipe && !Game1.player.cookingRecipes.ContainsKey(key))
 					{
 						this.Monitor.Log("Adding Cooking Recipe: " + key);
 						Game1.player.cookingRecipes.Add(key, 0);
@@ -291,11 +291,11 @@
 				}
 			}
 
-			Dictionary<string, string> dictionary2 = Game1.content.Load<Dictionary<string, string>>("Data\\CraftingRecipes");
+			Dictionary<string, string> craftingRecipes = Game1.content.Load<Dictionary<string, string>>("Data\\CraftingRecipes");
 
-			foreach (string key in dictionary2.Keys)
+			foreach (string key in craftingRecipes.Keys)
 			{
-				string[] strArray = dictionary2[key].Split('/')[4].Split(' ');
+				string[] strArray = craftingRecipes[key].Split('/')[4].Split(' ');
 
 				if ((key.ToLower() == "scarecrow" && this.options.SetLevel1HarvestingLevel)
 					|| (key.ToLower() == "cherry bomb" && this.options.SetLevel1Mininglevel)
@@ -305,75 +305,90 @@
 				{
 					this.Monitor.Log("Adding Crafting Recipe: " + key);
 					Game1.player.craftingRecipes.Add(key, 0);
+					continue;
 				}
 
 				if (strArray[0].Equals("l") && Convert.ToInt32(strArray[1]) <= level && !Game1.player.craftingRecipes.ContainsKey(key))
 				{
+					if (key.ToLower().EndsWith("floor") 
+						|| key.ToLower().EndsWith("path"))
+					{
+						// Don't add the paths or floors since the player should have to pay for it.
+						continue;
+					}
+
 					this.Monitor.Log("Adding Crafting Recipe: " + key);
 					Game1.player.craftingRecipes.Add(key, 0);
 				}
 				else if (strArray[0].Equals("s"))
 				{
-					int int32 = Convert.ToInt32(strArray[2]);
-					bool flag = false;
-					string str = strArray[1];
+					int requiredLevel = Convert.ToInt32(strArray[2]);
+					bool addRecipe = false;
+					string skillName = strArray[1];
 
 					if (key.ToLower() == "scarecrow")
 					{
-						this.Monitor.Log("Found Scarecrow, it's skill is: " + str);
+						this.Monitor.Log("Found Scarecrow, it's skill is: " + skillName);
 					}
 
-					if (!(str == "Farming"))
+					if (!(skillName == "Farming"))
 					{
-						if (!(str == "Fishing"))
+						if (!(skillName == "Fishing"))
 						{
-							if (!(str == "Mining"))
+							if (!(skillName == "Mining"))
 							{
-								if (!(str == "Combat"))
+								if (!(skillName == "Combat"))
 								{
-									if (!(str == "Foraging"))
+									if (!(skillName == "Foraging"))
 									{
-										if (str == "Luck" && Game1.player.LuckLevel >= int32)
+										if (skillName == "Luck" && Game1.player.LuckLevel >= requiredLevel)
 										{
-											flag = true;
+											addRecipe = true;
 										}
 									}
-									else if (Game1.player.ForagingLevel >= int32)
+									else if (Game1.player.ForagingLevel >= requiredLevel)
 									{
-										flag = true;
+										addRecipe = true;
 									}
 								}
-								else if (Game1.player.CombatLevel >= int32)
+								else if (Game1.player.CombatLevel >= requiredLevel)
 								{
-									flag = true;
+									addRecipe = true;
 								}
 							}
-							else if (Game1.player.MiningLevel >= int32)
+							else if (Game1.player.MiningLevel >= requiredLevel)
 							{
-								flag = true;
+								addRecipe = true;
 							}
 						}
-						else if (Game1.player.FishingLevel >= int32)
+						else if (Game1.player.FishingLevel >= requiredLevel)
 						{
-							flag = true;
+							addRecipe = true;
 						}
 					}
-					else if (Game1.player.FarmingLevel >= int32)
+					else if (Game1.player.FarmingLevel >= requiredLevel)
 					{
-						flag = true;
+						addRecipe = true;
 					}
 
-					if (key.ToLower() == "scarecrow" && !flag)
+					if (key.ToLower() == "scarecrow" && !addRecipe)
 					{
-						this.Monitor.Log("Found Scarecrow but cannot award....why? Level Number is: " + int32.ToString());
+						this.Monitor.Log("Found Scarecrow but cannot award....why? Level Number is: " + requiredLevel.ToString());
 					}
-					else if (key.ToLower() == "scarecrow" && flag && !Game1.player.craftingRecipes.ContainsKey(key))
+					else if (key.ToLower() == "scarecrow" && addRecipe && !Game1.player.craftingRecipes.ContainsKey(key))
 					{
 						this.Monitor.Log("Found Scarecrow but cannot award because they already have it?");
 					}
 
-					if (flag && !Game1.player.craftingRecipes.ContainsKey(key))
+					if (addRecipe && !Game1.player.craftingRecipes.ContainsKey(key))
 					{
+						if (key.ToLower().EndsWith("floor")
+						|| key.ToLower().EndsWith("path"))
+						{
+							// Don't add the paths or floors since the player should have to pay for it.
+							continue;
+						}
+
 						this.Monitor.Log("Adding Crafting Recipe: " + key);
 						Game1.player.craftingRecipes.Add(key, 0);
 					}

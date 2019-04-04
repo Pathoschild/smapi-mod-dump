@@ -351,12 +351,15 @@ namespace DeepWoodsMod
 
 
         // Called whenever a player warps, both from and to may be null
-        public static void PlayerWarped(Farmer who, DeepWoods from, DeepWoods to, GameLocation rawTo)
+        public static void PlayerWarped(Farmer who, GameLocation rawFrom, GameLocation rawTo)
         {
-            if (from is DeepWoods dw1 && to is DeepWoods dw2 && dw1.Name == dw2.Name)
+            DeepWoods from = rawFrom as DeepWoods;
+            DeepWoods to = rawTo as DeepWoods;
+
+            if (from != null && to != null && from.Name == to.Name)
                 return;
 
-            ModEntry.Log("PlayerWarped from: " + from?.Name + ", to: " + to?.Name, LogLevel.Trace);
+            ModEntry.Log("PlayerWarped from: " + rawFrom?.Name + ", to: " + rawTo?.Name, LogLevel.Trace);
 
             from?.RemovePlayer(who);
             to?.AddPlayer(who);

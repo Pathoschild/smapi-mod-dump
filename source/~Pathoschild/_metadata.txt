@@ -17,9 +17,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit acc1f954c8eadd00a2638a1ee150ecfa3b48cc1c
+   commit b711a0b68101f132e045eb9617968fa59c153853
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Tue Mar 26 19:20:53 2019 -0400
+   Date:   Wed Apr 3 19:05:50 2019 -0400
    
-       merge base & value-provider tokens (#377)
+       improve Automate performance by minimising empty machine polling
    

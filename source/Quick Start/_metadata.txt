@@ -5,9 +5,9 @@ mods:
    Quick Start
 
 latest commit:
-   commit c41c41507a25873df3ce025eb80054dbba182d9e
+   commit 8fea0a85574600f9540cdca2365d8f221d1d79c5
    Author: Brian Wuest <brian.wuest@outlook.com>
-   Date:   Wed Jan 9 20:22:54 2019 -0600
+   Date:   Sun Mar 31 20:27:36 2019 -0500
    
-       Switching to non-deprecated events.
+       fixing issue where the player got floor and path recipes instead of having to buy them.
    

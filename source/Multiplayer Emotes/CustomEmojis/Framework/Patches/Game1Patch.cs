@@ -2,13 +2,8 @@
 using System.Reflection;
 using Harmony;
 using StardewValley;
-using StardewValley.Network;
 using System;
-using System.IO;
 using CustomEmojis.Framework.Patches;
-using CustomEmojis.Framework.Extensions;
-using CustomEmojis.Framework.Constants;
-using StardewModdingAPI;
 using StardewValley.Menus;
 using Microsoft.Xna.Framework.Graphics;
 using CustomEmojis.Framework.Menu;

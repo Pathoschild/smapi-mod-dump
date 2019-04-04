@@ -5,9 +5,10 @@ mods:
    Right Click Move Mode
 
 latest commit:
-   commit e896a86af62b6b0ea571220700ac9203d43e84a3
+   commit 59b1cb24b271412827385900acd788d8a88d5793
+   Merge: f96cd60 d01aa5d
    Author: DucNghia <ducnghia.tin47@gmail.com>
-   Date:   Thu Aug 16 10:37:09 2018 +0700
+   Date:   Wed Apr 3 14:51:50 2019 +0700
    
-       1.1.5 updated
+       Merge branch 'In-Beta'
    

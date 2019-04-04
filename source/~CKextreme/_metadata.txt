@@ -1,0 +1,16 @@
+url:
+   https://github.com/CKextreme/StardewValley-Mods.git
+
+mods:
+   AFK Timer
+   Time Notifier
+
+latest commit:
+   commit a7d7a4ba7a288e572c6bcdc33c9599955878a09f
+   Author: CKextreme <CKextreme@users.noreply.github.com>
+   Date:   Sun Mar 31 21:22:47 2019 +0200
+   
+       Made one Mod Solution
+       
+       Remove old single Repositorys and made one big Solution
+   

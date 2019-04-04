@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/252
-IDs: Speeder.SlowerFenceDecay, SPDSlowFenceDecay
-update keys: Nexus:252

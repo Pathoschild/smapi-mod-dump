@@ -46,11 +46,11 @@ namespace CustomEmojis.Framework.Extensions {
 				Message = message
 			};
 #if DEBUG
-            ModEntry.ModLogger.LogToMonitor = false;
-            ModEntry.ModLogger.LogTrace();
-            ModEntry.ModLogger.LogToMonitor = true;
+			ModEntry.ModLogger.LogToMonitor = false;
+			ModEntry.ModLogger.LogTrace();
+			ModEntry.ModLogger.LogToMonitor = true;
 #endif
-            OnChatBoxAddedMessage(null, args);
+			OnChatBoxAddedMessage(null, args);
 		}
 
 	}

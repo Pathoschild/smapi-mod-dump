@@ -53,6 +53,14 @@ namespace DeepWoodsMod.API.Impl
         public List<Tuple<Func<IDeepWoodsLocation, Vector2, bool>, Func<StardewValley.Object>>> Objects { get; } = new List<Tuple<Func<IDeepWoodsLocation, Vector2, bool>, Func<StardewValley.Object>>>();
         public List<Tuple<Func<IDeepWoodsLocation, Vector2, bool>, Func<Monster>>> Monsters { get; } = new List<Tuple<Func<IDeepWoodsLocation, Vector2, bool>, Func<Monster>>>();
 
+        public IDeepWoodsTextures Textures
+        {
+            get
+            {
+                return DeepWoodsTextures.Textures;
+            }
+        }
+
         public void RegisterTerrainFeature(Func<IDeepWoodsLocation, Vector2, bool> decisionCallback, Func<TerrainFeature> creationCallback)
         {
             TerrainFeatures.Add(Tuple.Create(decisionCallback, creationCallback));

@@ -5,11 +5,11 @@ mods:
    Chill in Your Farmhouse
 
 latest commit:
-   commit 779b9dfaefe083f52188e0c72bfa4e7cca3cf708
+   commit 0a7460f75d04b621308fd81c89f951ab0274d468
    Author: Mizzion <36684211+Mizzion@users.noreply.github.com>
-   Date:   Wed Mar 27 20:54:45 2019 -0600
+   Date:   Mon Apr 1 18:55:10 2019 -0600
    
-       Updated the Update Key
+       Update manifest.json
        
-       Updated the Update Key to point to the correct nexus page, and reformatted the code some.
+       Fixed an update key issue
    

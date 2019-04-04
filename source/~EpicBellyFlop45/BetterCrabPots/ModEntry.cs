@@ -713,6 +713,20 @@ namespace BetterCrabPots
                     __result = false;
                     return false;
                 }
+                
+                // Check if the item is in Fish.xnb and that they are a fish to add to the collection screen
+                Dictionary<int, string> dictionary = Game1.content.Load<Dictionary<int, string>>("Data\\Fish");
+                if (dictionary.ContainsKey((int)((NetFieldBase<int, NetInt>)@object.parentSheetIndex)))
+                {
+                    string[] strArray = dictionary[(int)((NetFieldBase<int, NetInt>)@object.parentSheetIndex)].Split('/');
+                    
+                    if (strArray[1] != "trap")
+                    {
+                        int minValue = strArray.Length > 5 ? Convert.ToInt32(strArray[3]) : 1;
+                        int num = strArray.Length > 5 ? Convert.ToInt32(strArray[4]) : 10;
+                        who.caughtFish((int)((NetFieldBase<int, NetInt>)@object.parentSheetIndex), Game1.random.Next(minValue, num + 1));
+                    }
+                }
 
                 __instance.readyForHarvest.Value = false;
                 __instance.tileIndexToShow = 710;

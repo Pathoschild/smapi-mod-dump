@@ -62,14 +62,14 @@ namespace CustomEmojis.Framework.Types {
 
 				}
 #if DEBUG
-                ModEntry.ModLogger.LogToMonitor = false;
-                ModEntry.ModLogger.Log("Cached values:");
+				ModEntry.ModLogger.LogToMonitor = false;
+				ModEntry.ModLogger.Log("Cached values:");
 				foreach(KeyValuePair<string, object> entry in cache.ToList()) {
 					ModEntry.ModLogger.Log($"Key: {entry.Key}", $"Value: {entry.Value}");
 				}
-                ModEntry.ModLogger.LogToMonitor = true;
+				ModEntry.ModLogger.LogToMonitor = true;
 #endif
-            }
+			}
 
 			return cachedEmojiTexture;
 		}

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DeepWoodsMod.API.Impl;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.TerrainFeatures;
@@ -34,8 +35,8 @@ namespace DeepWoodsMod
             Vector2 globalTopPosition = new Vector2(globalPosition.X, globalPosition.Y - 2 * 64);
             Vector2 globalBottomPosition = new Vector2(globalPosition.X, globalPosition.Y);
 
-            spriteBatch.Draw(Textures.healingFountain, Game1.GlobalToLocal(Game1.viewport, globalTopPosition), fountainTopSourceRectangle, Color.White, 0.0f, Vector2.Zero, 2f, SpriteEffects.None, ((tileLocation.Y + 1f) * 64f / 10000f + tileLocation.X / 100000f));
-            spriteBatch.Draw(Textures.healingFountain, Game1.GlobalToLocal(Game1.viewport, globalBottomPosition), fountainBottomSourceRectangle, Color.White, 0.0f, Vector2.Zero, 2f, SpriteEffects.None, ((tileLocation.Y + 1f) * 64f / 10000f + tileLocation.X / 100000f));
+            spriteBatch.Draw(DeepWoodsTextures.Textures.HealingFountain, Game1.GlobalToLocal(Game1.viewport, globalTopPosition), fountainTopSourceRectangle, Color.White, 0.0f, Vector2.Zero, 2f, SpriteEffects.None, ((tileLocation.Y + 1f) * 64f / 10000f + tileLocation.X / 100000f));
+            spriteBatch.Draw(DeepWoodsTextures.Textures.HealingFountain, Game1.GlobalToLocal(Game1.viewport, globalBottomPosition), fountainBottomSourceRectangle, Color.White, 0.0f, Vector2.Zero, 2f, SpriteEffects.None, ((tileLocation.Y + 1f) * 64f / 10000f + tileLocation.X / 100000f));
         }
 
         public override bool performToolAction(Tool t, int damage, Vector2 tileLocation, GameLocation location)

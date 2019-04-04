@@ -7,8 +7,8 @@ namespace MapPings.Framework.Constants {
 
 		internal enum Action {
 			None,
-            SendMapPing,
-            BroadcastMapPing
+			SendMapPing,
+			BroadcastMapPing
 		};
 
 	}

@@ -1,7 +1,7 @@
 {
 	"Name": "bwdyworks",
 	"Author": "bwdy",
-	"Version": "0.9.0",
+	"Version": "0.9.2",
 	"Description": "Basically a membership card for bwdy's secret club.",
 	"EntryDll": "bwdyworks.dll",
 	"MinimumApiVersion": "2.11",

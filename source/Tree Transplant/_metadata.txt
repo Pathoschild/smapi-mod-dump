@@ -5,9 +5,11 @@ mods:
    Tree Transplant
 
 latest commit:
-   commit 39602cbadcd4c017abba5b9c710b4178d0a119d2
-   Author: James Stine <leon.blade@gmail.com>
-   Date:   Fri Mar 1 19:39:13 2019 -0500
+   commit 463b3a1328ae8609328a88fd3455a5bf31ab35b0
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Tue Apr 2 20:52:56 2019 -0400
    
-       Fix Chucklefish Mod link.
+       update for SMAPI 3.0 loading mods earlier
+       
+       The game is no longer fully initialised when Entry is called, so this commit moves affected logic into GameLaunched.
    

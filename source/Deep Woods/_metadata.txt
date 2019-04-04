@@ -5,12 +5,12 @@ mods:
    Deep Woods
 
 latest commit:
-   commit 78986f0a8eb3711ac98144bf35d5876a843dd61e
-   Merge: 9abc4f0 e07cbfc
+   commit 2af28fc8fb5806cd4e98fd637fa4db248f07616c
+   Merge: 0c3dfa2 7dfa3a1
    Author: Max Vollmer <maxvollmer@users.noreply.github.com>
-   Date:   Fri Mar 1 11:59:23 2019 +0100
+   Date:   Wed Apr 3 08:36:10 2019 +0200
    
-       Merge pull request #2 from S2SKY/patch-1
+       Merge pull request #3 from Pathoschild/minor-changes
        
-       Create ko.json
+       Simplify deploy, reduce logs visible to players
    

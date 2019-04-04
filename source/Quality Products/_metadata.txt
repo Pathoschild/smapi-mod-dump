@@ -1,5 +1,5 @@
 url:
-   https://github.com/silentoak/QualityProducts.git
+   https://github.com/silentoak/StardewMods.git
 
 mods:
    Quality Products

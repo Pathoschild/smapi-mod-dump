@@ -1,6 +1,5 @@
 ﻿
 using Harmony;
-using StardewModdingAPI;
 using System.Reflection;
 
 namespace MultiplayerEmotes.Framework.Patches {

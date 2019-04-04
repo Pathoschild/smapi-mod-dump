@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DeepWoodsMod.API.Impl;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewValley;
@@ -48,11 +49,11 @@ namespace DeepWoodsMod
                 globalPosition.X += (float)Math.Sin(2.0 * Math.PI / this.shakeTimer) * 4f;
             }
 
-            Rectangle upperHousePartRectangle = Game1.getSourceRectForStandardTileSheet(Textures.gingerbreadHouse, this.parentSheetIndex, 16, 16);
+            Rectangle upperHousePartRectangle = Game1.getSourceRectForStandardTileSheet(DeepWoodsTextures.Textures.GingerbreadHouse, this.parentSheetIndex, 16, 16);
             upperHousePartRectangle.Width = 5 * 16;
             upperHousePartRectangle.Height = 4 * 16;
 
-            Rectangle bottomHousePartRectangle = Game1.getSourceRectForStandardTileSheet(Textures.gingerbreadHouse, this.parentSheetIndex, 16, 16);
+            Rectangle bottomHousePartRectangle = Game1.getSourceRectForStandardTileSheet(DeepWoodsTextures.Textures.GingerbreadHouse, this.parentSheetIndex, 16, 16);
             bottomHousePartRectangle.Y += 4 * 16;
             bottomHousePartRectangle.Width = 5 * 16;
             bottomHousePartRectangle.Height = 3 * 16;
@@ -60,8 +61,8 @@ namespace DeepWoodsMod
             Vector2 upperHousePartPosition = globalPosition;
             upperHousePartPosition.Y -= 4 * 64;
 
-            spriteBatch.Draw(Textures.gingerbreadHouse, Game1.GlobalToLocal(Game1.viewport, upperHousePartPosition), upperHousePartRectangle, Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, ((this.tile.Y + 1f) * 64f / 10000f + this.tile.X / 100000f));
-            spriteBatch.Draw(Textures.gingerbreadHouse, Game1.GlobalToLocal(Game1.viewport, globalPosition), bottomHousePartRectangle, Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, ((this.tile.Y + 1f) * 64f / 10000f + this.tile.X / 100000f));
+            spriteBatch.Draw(DeepWoodsTextures.Textures.GingerbreadHouse, Game1.GlobalToLocal(Game1.viewport, upperHousePartPosition), upperHousePartRectangle, Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, ((this.tile.Y + 1f) * 64f / 10000f + this.tile.X / 100000f));
+            spriteBatch.Draw(DeepWoodsTextures.Textures.GingerbreadHouse, Game1.GlobalToLocal(Game1.viewport, globalPosition), bottomHousePartRectangle, Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, ((this.tile.Y + 1f) * 64f / 10000f + this.tile.X / 100000f));
         }
 
         public override bool performToolAction(Tool t, int damage, Vector2 tileLocation, GameLocation location)

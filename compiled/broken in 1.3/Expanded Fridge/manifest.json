@@ -1,0 +1,13 @@
+﻿{
+   "Name": "Expanded Fridge",
+   "Author": "Uwazouri",
+   "Version": {
+      "MajorVersion": 1,
+      "MinorVersion": 2,
+      "PatchVersion": 8,
+      "Build": null
+   },
+   "Description": "Expands the fridge in the players house.",
+   "UniqueID": "Uwazouri.ExpandedFridge",
+   "EntryDll": "ExpandedFridge.dll"
+}

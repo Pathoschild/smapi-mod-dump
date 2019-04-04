@@ -228,7 +228,7 @@ namespace DeepWoodsMod
 
             if (parent != null)
             {
-                ModEntry.Log("Child spawned, time: " + Game1.timeOfDay + ", name: " + this.Name + ", level: " + this.level + ", parent: " + this.parentName + ", enterDir: " + this.EnterDir + ", enterLocation: " + this.EnterLocation.X + ", " + this.EnterLocation.Y, LogLevel.Debug);
+                ModEntry.Log($"Child spawned, time: {Game1.timeOfDay}, name: {this.Name}, level: {this.level}, parent: {this.parentName}, enterDir: {this.EnterDir}, enterLocation: {this.EnterLocation.X}, {this.EnterLocation.Y}", LogLevel.Trace);
             }
         }
 
@@ -305,7 +305,7 @@ namespace DeepWoodsMod
 
         public void RemovePlayer(Farmer who)
         {
-            ModEntry.Log("RemovePlayer(" + who.UniqueMultiplayerID + "): " + this.Name, LogLevel.Debug);
+            ModEntry.Log($"RemovePlayer({who.UniqueMultiplayerID}): {this.Name}", LogLevel.Trace);
 
             if (who == Game1.player)
             {
@@ -334,7 +334,7 @@ namespace DeepWoodsMod
                 || mapHeight.Value == 0)
                 return;
 
-            ModEntry.Log("FixPlayerPosAfterWarp: " + this.Name + ", mapWidth: " + mapWidth, LogLevel.Debug);
+            ModEntry.Log($"FixPlayerPosAfterWarp: {this.Name}, mapWidth: {mapWidth}", LogLevel.Trace);
 
             // First check for current warp request (stored globally for local player):
             if (DeepWoodsManager.currentWarpRequestName == this.Name
@@ -374,7 +374,7 @@ namespace DeepWoodsMod
 
         public void AddPlayer(Farmer who)
         {
-            ModEntry.Log("AddPlayer(" + who.UniqueMultiplayerID + "): " + this.Name, LogLevel.Debug);
+            ModEntry.Log($"AddPlayer({who.UniqueMultiplayerID}): {this.Name}", LogLevel.Trace);
 
             if (who == Game1.player)
             {
@@ -663,7 +663,7 @@ namespace DeepWoodsMod
                     targetLocationWrapper = ParentExitLocation;
                 }
 
-                ModEntry.Log("Trying to warp from " + this.Name + ": (ExitDir: " + exitDir + ", Position: " + Game1.player.Position.X + ", " + Game1.player.Position.Y + ", targetDeepWoodsName: " + targetDeepWoodsName + ", targetLocation: " + (targetLocationWrapper?.X ?? -1) + ", " + (targetLocationWrapper?.Y ?? -1) + ")", LogLevel.Debug);
+                ModEntry.Log($"Trying to warp from {this.Name}: (ExitDir: {exitDir}, Position: {Game1.player.Position.X}, {Game1.player.Position.Y}, targetDeepWoodsName: {targetDeepWoodsName}, targetLocation: {(targetLocationWrapper?.X ?? -1)}, {(targetLocationWrapper?.Y ?? -1)})", LogLevel.Trace);
 
                 if (targetLocationWrapper.HasValue && targetDeepWoodsName != null)
                 {

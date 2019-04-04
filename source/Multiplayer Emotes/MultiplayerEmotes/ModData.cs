@@ -1,8 +1,12 @@
 ﻿
 using Microsoft.Xna.Framework;
 
-public class ModData {
+namespace MultiplayerEmotes {
 
-	public Vector2 MenuPosition { get; set; } = new Vector2(0f, 200f);
+	public class ModData {
+
+		public Point MenuPosition { get; set; } = new Point(0, 200);
+
+	}
 
 }

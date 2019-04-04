@@ -1,0 +1,16 @@
+﻿{
+  "Name": "Realistic Fishing",
+  "Author": "Kevin Connors",
+  "Version": "1.2.3-unofficial.3-Mizzion",
+  "Description": "Overhauls fishing to provide a more realistic experience",
+  "UniqueID": "KevinConnors.RealisticFishing",
+  "EntryDll": "RealisticFishing.dll",
+  "MinimumApiVersion": "2.10.2",
+  "UpdateKeys": ["GitHub:kevinforrestconnors/RealisticFishing", "Nexus:2623"],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.Toolkit",
+      "MinimumVersion": "1.6.3"
+    }
+  ]
+}

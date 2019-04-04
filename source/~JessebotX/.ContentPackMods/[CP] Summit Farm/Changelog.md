@@ -1,6 +1,10 @@
 # RELEASE NOTES 
 [(Summit Farm)](https://www.nexusmods.com/stardewvalley/mods/3053)
 
+### v1.1.2 (Mar 28, 2019)
+**Summit Farm & Summit Farm - Vanilla Dirt**
+- Fixed collision/untillable tile issues
+
 ### v1.1.1 (Nov 13, 2018)
 - Removed an invisible wall and some annoying bushes
   - For old saves, you can download [Entoarox Framework](https://www.nexusmods.com/stardewvalley/mods/2269) and type in **world_bushreset** in the console

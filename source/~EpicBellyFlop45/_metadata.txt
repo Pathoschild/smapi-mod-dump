@@ -10,9 +10,9 @@ mods:
    Customize Cursor Sprite
 
 latest commit:
-   commit bfc02f67b94e85af2ac3b1cf82e08cb4e1ef2426
+   commit 87b5c8fb8e948eef92bc1246573650ef48747d8b
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Wed Mar 20 08:12:25 2019 +0000
+   Date:   Tue Apr 2 10:31:15 2019 +0100
    
-       [BetterMixedSeeds] Fixed a bug that caused a crash when trying to plant in winter without any integrated mods
+       [Better10Hearts] Changed Shane's mail
    

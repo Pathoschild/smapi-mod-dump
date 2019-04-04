@@ -1,12 +1,4 @@
-﻿
-using CustomEmojis.Framework.Utilities;
-using StardewModdingAPI;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-public class ModDebugData {
+﻿public class ModDebugData {
 	
 	public bool IsHost { get; set; }
 

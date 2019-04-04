@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DeepWoodsMod.API.Impl;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewValley;
@@ -84,9 +85,9 @@ namespace DeepWoodsMod
             Vector2 local = Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64, tileLocation.Y * 64));
 
             Rectangle destinationRectangle = new Rectangle((int)local.X, (int)local.Y, 64, 64);
-            Rectangle sourceRectangle = Game1.getSourceRectForStandardTileSheet(Textures.festivals, this.eggTileIndex, 16, 16);
+            Rectangle sourceRectangle = Game1.getSourceRectForStandardTileSheet(DeepWoodsTextures.Textures.Festivals, this.eggTileIndex, 16, 16);
 
-            b.Draw(Textures.festivals, destinationRectangle, sourceRectangle, Color.White);
+            b.Draw(DeepWoodsTextures.Textures.Festivals, destinationRectangle, sourceRectangle, Color.White);
         }
     }
 }

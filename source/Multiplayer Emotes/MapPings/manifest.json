@@ -5,5 +5,5 @@
 	"Description": "Allows to ping in the map, and to other players see it.",
 	"UniqueID": "FerMod.MapPings",
 	"EntryDll": "MapPings.dll",
-	"UpdateKeys": [ "Nexus:" ]
+	"UpdateKeys": [ ]
 }

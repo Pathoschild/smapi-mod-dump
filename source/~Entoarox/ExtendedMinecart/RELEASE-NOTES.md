@@ -1,4 +1,18 @@
 ## Release notes
+## 1.8.2
+Released 01 April 2019.
+
+* Hopefully fixed minecart destinations disappearing in some situations.
+* Hopefully fixed certain destinations not unlocking for FarmHands.
+* Added debug logging in case these fixes are not working.
+
+## 1.8.1
+Released 06 March 2019.
+
+* Fixed the beach being a valid destination during the Night Market festival.
+* Made patching logic more robust.
+* Added warning for multiplayer, due to full support not yet being available.
+
 ## 1.8.0
 Released 28 December 2018. (Thanks to Pathoschild!)
 

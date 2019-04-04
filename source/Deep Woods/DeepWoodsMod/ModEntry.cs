@@ -38,7 +38,7 @@ namespace DeepWoodsMod
             }
         }
 
-        public static void Log(string message, LogLevel level = LogLevel.Debug)
+        public static void Log(string message, LogLevel level = LogLevel.Trace)
         {
             ModEntry.mod?.Monitor?.Log(message, level);
         }
@@ -71,9 +71,6 @@ namespace DeepWoodsMod
         public override void Entry(IModHelper helper)
         {
             ModEntry.mod = this;
-            ModEntry.multiplayer = helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
-            DeepWoodsSettings.Init(helper.Translation);
-            Textures.LoadAll();
             RegisterEvents(helper.Events);
         }
 
@@ -103,6 +100,9 @@ namespace DeepWoodsMod
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs args)
         {
+            ModEntry.multiplayer = Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
+            DeepWoodsSettings.Init(Helper.Translation);
+            DeepWoodsTextures.Textures.LoadAll();
             if (Helper.ModRegistry.IsLoaded("Omegasis.SaveAnywhere"))
             {
                 ISaveAnywhereAPI api = Helper.ModRegistry.GetApi<ISaveAnywhereAPI>("Omegasis.SaveAnywhere");
@@ -225,7 +225,7 @@ namespace DeepWoodsMod
             if (Game1.IsMasterGame)
                 return;
 
-            ModEntry.Log("DeepWoodsInitServerAnswerReceived", StardewModdingAPI.LogLevel.Debug);
+            ModEntry.Log("DeepWoodsInitServerAnswerReceived", StardewModdingAPI.LogLevel.Trace);
 
             DeepWoodsManager.AddAll(deepWoodsLevelNames);
             EasterEggFunctions.RestoreAllEasterEggsInGame();
@@ -324,7 +324,7 @@ namespace DeepWoodsMod
                 OpenPassageInSecretWoods(woods);
             }
 
-            DeepWoodsManager.PlayerWarped(who, prevLocation as DeepWoods, newLocation as DeepWoods, newLocation);
+            DeepWoodsManager.PlayerWarped(who, prevLocation, newLocation);
 
             if (newLocation is AnimalHouse animalHouse)
             {
@@ -520,11 +520,11 @@ namespace DeepWoodsMod
         {
             if (asset.AssetNameEquals($"Buildings\\{WOODS_OBELISK_BUILDING_NAME}"))
             {
-                return (T)(object)Textures.woodsObelisk;
+                return (T)(object)DeepWoodsTextures.Textures.WoodsObelisk;
             }
             else if (asset.AssetNameEquals("Maps\\deepWoodsLakeTilesheet"))
             {
-                return (T)(object)Textures.lakeTilesheet;
+                return (T)(object)DeepWoodsTextures.Textures.LakeTilesheet;
             }
             else
             {

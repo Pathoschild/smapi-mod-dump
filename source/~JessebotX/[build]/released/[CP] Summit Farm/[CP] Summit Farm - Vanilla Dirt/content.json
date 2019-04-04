@@ -1,0 +1,10 @@
+{
+	"Format": "1.4",
+	"Changes": [
+		{
+			"Action": "Load",
+			"Target": "Maps/Farm_Mining",
+			"FromFile": "assets/Farm_Mining_Dirt.tbin",
+		}
+	]
+}

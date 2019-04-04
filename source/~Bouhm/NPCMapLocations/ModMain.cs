@@ -66,6 +66,11 @@ namespace NPCMapLocations
       MapName = Config.MapRecolor != "" ? Config.MapRecolor : CustomHandler.LoadMap();
       var mapFile = MapName;
       if (mapFile == "toned_down") MapName = "eemie_recolour";
+      if (Season == null)
+      {
+        Monitor.Log($"Unable to get current season. Defaulted to spring.", LogLevel.Debug);
+        Season = "spring";
+      }
 
       try
       {
@@ -78,7 +83,7 @@ namespace NPCMapLocations
         return map;
       }
 
-      if (!MapName.Equals("default_map"))
+      if (!MapName.Equals("default"))
         Monitor.Log($"Using recolored map {mapFile}_{Season}.", LogLevel.Debug);
 
       return map;
@@ -113,6 +118,7 @@ namespace NPCMapLocations
       Config = Helper.Data.ReadJsonFile<ModConfig>($"config/{Constants.SaveFolderName}.json") ?? Config;
       CustomHandler.LoadConfig(Config);
       CustomMapLocations = CustomHandler.GetCustomMapLocations();
+      this.Helper.Content.InvalidateCache("LooseSprites/Map");
       Season = Config.UseSeasonalMaps ? Game1.currentSeason : "spring";
       DEBUG_MODE = Config.DEBUG_MODE;
       shouldShowMinimap = Config.ShowMinimap;
@@ -426,9 +432,9 @@ namespace NPCMapLocations
 
           Helper.Multiplayer.SendMessage(message, "SyncedLocationData", modIDs: new[] { ModManifest.UniqueID });
         }
-
+       
         // Check season change (for when it's changed via console)
-        if (Config.UseSeasonalMaps && Season != Game1.currentSeason)
+        if (Config.UseSeasonalMaps && Season != Game1.currentSeason && Game1.currentSeason != null)
         {
           Season = Game1.currentSeason;
 

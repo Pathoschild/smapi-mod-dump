@@ -1,0 +1,10 @@
+﻿{
+  "Name": "CK's Time Notifier",
+  "Author": "CKextreme",
+  "Version": "0.1.2",
+  "Description": "Notifys you if specific time reached",
+  "UniqueID": "CKextreme.TimeNotifier",
+  "EntryDll": "TimeNotifier.dll",
+  "MinimumApiVersion": "2.11.1",
+  "UpdateKeys": ["Nexus:3706"]
+}

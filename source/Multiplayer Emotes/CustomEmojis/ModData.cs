@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using StardewModdingAPI;
-using System.Linq;
 using CustomEmojis.Framework.Constants;
 using System.Diagnostics;
 

@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using System;
 using System.Collections.Generic;
 
 namespace MultiplayerEmotes.Framework {
@@ -17,20 +16,20 @@ namespace MultiplayerEmotes.Framework {
 		private readonly IReflectionHelper Reflection;
 		List<TemporaryAnimatedSprite> temporaryAnimationList = new List<TemporaryAnimatedSprite>();
 
-		public EmoteTemporaryAnimation(IReflectionHelper reflectionHelper) {
+		public EmoteTemporaryAnimation(IReflectionHelper reflectionHelper, IModEvents events) {
 			Reflection = reflectionHelper;
-			//GraphicsEvents.OnPostRenderEvent += GraphicsEvents_OnPostRenderEvent;
+			events.Display.Rendered += OnRendered;
 		}
 
-		/*
-		 private void GraphicsEvents_OnPostRenderEvent(object sender, EventArgs e) {
+		/// <summary>Raised after the game draws to the sprite patch in a draw tick, just before the final sprite batch is rendered to the screen.</summary>
+		/// <param name="sender">The event sender.</param>
+		/// <param name="e">The event data.</param>
+		private void OnRendered(object sender, RenderedEventArgs e) {
 			foreach(TemporaryAnimatedSprite animatedSprite in temporaryAnimationList) {
-				if(animatedSprite != null) {
-					animatedSprite.Position = new Vector2(Game1.player.Position.X, Game1.player.Position.Y - 160);
-				}
+				//animatedSprite.update(Game1.currentGameTime);
+				animatedSprite.Position = new Vector2(Game1.player.Position.X, Game1.player.Position.Y - 160);
 			}
 		}
-		*/
 
 		public void BroadcastEmote(int whichEmote) {
 

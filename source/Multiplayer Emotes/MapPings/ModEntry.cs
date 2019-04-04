@@ -41,7 +41,7 @@ namespace MapPings {
 					"\n\tThe color can be also specified in RGB." +
 					"\n\te.g.: ping_color \"Player Name\" 153 50 204 ", this.PingColor);
 
-			SaveEvents.AfterLoad += this.OnAfterLoad;
+			helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
 			
 		}
 
@@ -143,10 +143,10 @@ namespace MapPings {
 		** Private methods
 		*********/
 
-		/// <summary>The method called after the player loads their save.</summary>
+		/// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
 		/// <param name="sender">The event sender.</param>
 		/// <param name="e">The event arguments.</param>
-		private void OnAfterLoad(object sender, EventArgs e) {
+		private void OnSaveLoaded(object sender, SaveLoadedEventArgs e) {
 
 #if DEBUG
 			// Pause time and set it to 09:00

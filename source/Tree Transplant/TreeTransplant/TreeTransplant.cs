@@ -27,16 +27,25 @@ namespace TreeTransplant
 		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper)
 		{
+			TreeTransplant.helper = helper;
+
+			helper.Events.GameLoop.GameLaunched += onGameLaunched;
+			helper.Events.Display.MenuChanged += onMenuChanged;
+		}
+
+		/// <summary>
+		/// Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialised at this point, so this is a good time to set up mod integrations.
+		/// </summary>
+		/// <param name="sender">The event sender.</param>
+		/// <param name="e">The event data.</param>
+		private void onGameLaunched(object sender, GameLaunchedEventArgs e)
+		{
 			// batch together the trees in a render texture for our menu
 			loadTreeTexture();
 			loadSpecialTreeTexture();
 
 			// load the custom UI element for flipping the tree
 			loadFlipTexture();
-
-			TreeTransplant.helper = helper;
-			// bind to the after load handler
-			helper.Events.Display.MenuChanged += OnMenuChanged;
 		}
 
 		/// <summary>
@@ -44,7 +53,7 @@ namespace TreeTransplant
 		/// </summary>
 		/// <param name="sender">The event sender.</param>
 		/// <param name="e">The event data.</param>
-		internal void OnMenuChanged(object sender, MenuChangedEventArgs e)
+		private void onMenuChanged(object sender, MenuChangedEventArgs e)
 		{
 			// carpenter dialog in science house?
 			if (Game1.currentLocation?.Name == "ScienceHouse" && e.NewMenu is DialogueBox && Game1.currentLocation.lastQuestionKey == "carpenter" && Game1.IsMasterGame)
@@ -54,7 +63,7 @@ namespace TreeTransplant
 		/// <summary>
 		/// Used to override the old carpenter menu with our custom one
 		/// </summary>
-		internal void handleDialogueMenu()
+		private void handleDialogueMenu()
 		{
 			// get the current location
 			var science = Game1.currentLocation;
@@ -100,7 +109,7 @@ namespace TreeTransplant
 		/// </summary>
 		/// <param name="who">Farmer that answered.</param>
 		/// <param name="whichAnswer">Which answer key was chosen.</param>
-		internal void handleCarpenterMenuAnswer(Farmer who, string whichAnswer)
+		private void handleCarpenterMenuAnswer(Farmer who, string whichAnswer)
 		{
 			switch (whichAnswer)
 			{
@@ -130,7 +139,7 @@ namespace TreeTransplant
 		/// <summary>
 		/// Used to load the tree texture by batching together the textures from XNB into a custom render target
 		/// </summary>
-		internal void loadTreeTexture()
+		private void loadTreeTexture()
 		{
 			// the list of seasons
 			var seasons = new[] { "spring", "summer", "fall", "winter" };
@@ -194,7 +203,7 @@ namespace TreeTransplant
 		/// <summary>
 		/// Used to load the special tree texture by batching together the textures from XNB into a custom render target
 		/// </summary>
-		internal void loadSpecialTreeTexture()
+		private void loadSpecialTreeTexture()
 		{
 			// create a render target to prepare the tree texture to
 			var texture = new RenderTarget2D(Game1.graphics.GraphicsDevice, 96, 96);
@@ -254,7 +263,7 @@ namespace TreeTransplant
 		/// <summary>
 		/// Used to load the texture for the flip tree UI element
 		/// </summary>
-		internal void loadFlipTexture()
+		private void loadFlipTexture()
 		{
 			flipTexture = Texture2D.FromStream(
 				Game1.graphics.GraphicsDevice,

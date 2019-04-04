@@ -2,8 +2,8 @@
 	"Name": "Multiplayer Emotes",
 	"Author": "FerMod",
 	"Version": "1.0.0-beta.3",
-	"MinimumApiVersion": "2.6",
-	"Description": "Allows you to do emotes and to see other players emotes using a draggable interface.",
+	"MinimumApiVersion": "2.11",
+	"Description": "Allows you to do emotes using a draggable interface and to see other player, npc and farm animal emotes.",
 	"UniqueID": "FerMod.MultiplayerEmotes",
 	"EntryDll": "MultiplayerEmotes.dll",
 	"UpdateKeys": [ "Nexus:2347" ]

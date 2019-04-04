@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using System.IO;
 using System;
-using System.Linq;
 using CustomEmojis.Framework.Utilities;
 
 namespace CustomEmojis.Framework.Network {

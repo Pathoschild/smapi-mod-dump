@@ -15,9 +15,9 @@ mods:
    XNB Loader
 
 latest commit:
-   commit 0524d201b4adca8f595d89cfac14f75640db76e9
+   commit 9252def83d4d2dc145ebf20437905b547c3f1e19
    Author: Entoarox <kvdk@kvdk.net>
-   Date:   Mon Mar 18 11:35:22 2019 +0100
+   Date:   Mon Apr 1 17:20:24 2019 +0200
    
-       [MA] 3.0.1 release
+       [EM] Fix release notes
    

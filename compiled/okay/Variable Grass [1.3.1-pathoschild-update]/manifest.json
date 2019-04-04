@@ -1,12 +1,7 @@
 ﻿{
   "Name": "VariableGrass",
   "Author": "dantheman999",
-  "Version": {
-    "MajorVersion": 1,
-    "MinorVersion": 3,
-    "PatchVersion": 1,
-    "Build": "pathoschild-update"
-  },
+  "Version": "1.3.1-pathoschild-update", // fixed locally
   "MinimumApiVersion": "1.12",
   "Description": "Grass grows at variable rates",
   "UniqueID": "dantheman999.VariableGrass",

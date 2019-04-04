@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DeepWoodsMod.API.Impl;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewValley;
@@ -43,10 +44,10 @@ namespace DeepWoodsMod
                 globalPosition.X += (float)Math.Sin(2.0 * Math.PI / this.shakeTimer) * 4f;
             }
 
-            Rectangle treeTopSourceRectangle = Game1.getSourceRectForStandardTileSheet(Textures.iridiumTree, TREE_TOP_TILE_INDEX, 16, 16);
+            Rectangle treeTopSourceRectangle = Game1.getSourceRectForStandardTileSheet(DeepWoodsTextures.Textures.IridiumTree, TREE_TOP_TILE_INDEX, 16, 16);
             treeTopSourceRectangle.Width = 16 * 6;
             treeTopSourceRectangle.Height = 16 * 4;
-            Rectangle trunkSourceRectangle = Game1.getSourceRectForStandardTileSheet(Textures.iridiumTree, TREE_TRUNK_TILE_INDEX, 16, 16);
+            Rectangle trunkSourceRectangle = Game1.getSourceRectForStandardTileSheet(DeepWoodsTextures.Textures.IridiumTree, TREE_TRUNK_TILE_INDEX, 16, 16);
             trunkSourceRectangle.Width = 16 * 2;
             trunkSourceRectangle.Height = 16 * 3;
 
@@ -57,8 +58,8 @@ namespace DeepWoodsMod
             Vector2 trunkPosition = globalPosition;
             trunkPosition.Y -= 2 * 64;
 
-            spriteBatch.Draw(Textures.iridiumTree, Game1.GlobalToLocal(Game1.viewport, treeTopPosition), treeTopSourceRectangle, Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, ((this.tile.Y + 1f) * 64f / 10000f + this.tile.X / 100000f));
-            spriteBatch.Draw(Textures.iridiumTree, Game1.GlobalToLocal(Game1.viewport, trunkPosition), trunkSourceRectangle, Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, ((this.tile.Y + 1f) * 64f / 10000f + this.tile.X / 100000f));
+            spriteBatch.Draw(DeepWoodsTextures.Textures.IridiumTree, Game1.GlobalToLocal(Game1.viewport, treeTopPosition), treeTopSourceRectangle, Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, ((this.tile.Y + 1f) * 64f / 10000f + this.tile.X / 100000f));
+            spriteBatch.Draw(DeepWoodsTextures.Textures.IridiumTree, Game1.GlobalToLocal(Game1.viewport, trunkPosition), trunkSourceRectangle, Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, ((this.tile.Y + 1f) * 64f / 10000f + this.tile.X / 100000f));
         }
 
         public override bool performToolAction(Tool t, int damage, Vector2 tileLocation, GameLocation location)

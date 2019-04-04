@@ -3,12 +3,9 @@ using CustomEmojis.Framework.Utilities;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Menus;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace CustomEmojis.Framework.Types {
 

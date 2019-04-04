@@ -29,9 +29,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 92a83124554ae75a5c2fad15d82ec02cc5421a74
-   Author: Dan Volchek <volchek2@illinois.edu>
-   Date:   Sat Mar 23 12:46:08 2019 -0500
+   commit e12f219b14a4917afc9c78985d05019cc4a832eb
+   Author: danvolchek <volchek2@illinois.edu>
+   Date:   Sat Mar 30 02:05:37 2019 -0500
    
-       [Customizable Death Penalty] #7 - don't copy attachments if they don't exist
+       [Mod Update Menu] fix method comment
    

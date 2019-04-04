@@ -56,20 +56,6 @@
   <ItemGroup>
     <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BetterMixedSeeds\BetterMixedSeeds.csproj">
-      <Project>{836B52BE-2E94-4819-8572-E1F6A48D8692}</Project>
-      <Name>BetterMixedSeeds</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BetterRareCrows\BetterRarecrows.csproj">
-      <Project>{38797228-CC51-4301-8975-33426362C045}</Project>
-      <Name>BetterRarecrows</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CleanCellar\CleanCellar.csproj">
-      <Project>{F98375A3-2FDF-48E1-A648-3A5B7582D8F3}</Project>
-      <Name>CleanCellar</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
