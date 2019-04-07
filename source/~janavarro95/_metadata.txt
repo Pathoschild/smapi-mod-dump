@@ -25,12 +25,9 @@ mods:
    Time Freeze
 
 latest commit:
-   commit 82499561b90a1fedc5489c116b1cbeda7905e942
-   Merge: 79c2965 0862d75
-   Author: Joshua Navarro <janavarro95@users.noreply.github.com>
-   Date:   Mon Jan 14 12:28:14 2019 -0800
+   commit 5ded80f371633b45eba024be04a95a153abbb642
+   Author: JoshuaNavarro <janavarro95@gmail.com>
+   Date:   Sat Apr 6 16:00:46 2019 -0700
    
-       Merge pull request #51 from janavarro95/Development
-       
-       Development
+       Tested content packs and got them working properly.
    

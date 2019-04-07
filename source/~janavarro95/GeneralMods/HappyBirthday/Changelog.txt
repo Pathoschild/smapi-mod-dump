@@ -1,4 +1,12 @@
-﻿Happy Birthday Change Log
+Happy Birthday Change Log
+
+~~~~~~~~~~~~~~~~
+Manifest 1.9.0 Changelog
+~~~~~~~~~~~~~~~~
+General Changes
+    -Added support for Chinese birthday translations thanks to Nexus user erinyang.
+    -Added support for loading translation strings for Birthday Mail and HUD Messages.
+
 
 ~~~~~~~~~~~~~~~~
 Manifest 1.8.0 Changelog
@@ -9,12 +17,12 @@ Manifest 1.8.0 Changelog
 	﻿-A language can be set for birthday messages in the Config.json file.
 	-Added support for birthday messages to be in .json files for easier editing.
 	-Added support for birthday messages to be in multiple supported languages
-	-English
-	-Spanish
-	-German
-	-Chinese
-	-Japanese
-	-Brazilian Portuguese
+	    -English
+	    -Spanish
+	    -German
+	    -Chinese
+	    -Japanese
+	    -Brazilian Portuguese
 	-Added in spouse specific birthday dialogue messages which can be created by the players.
 	-Added in multiple languages for spouse birthday messages.
 	-Added in birthday gifts to be in .json files.

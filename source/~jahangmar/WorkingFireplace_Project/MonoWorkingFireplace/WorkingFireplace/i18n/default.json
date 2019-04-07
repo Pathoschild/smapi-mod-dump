@@ -1,5 +1,10 @@
 ﻿{
     "msg.warm": "The warmth from the fire kept you warm during the night.",
     "msg.cold": "The cold drained your energy during the night.",
+    "msg.spousecold": "Your family was freezing in the night.",
+    "dia.spousecold": "I was freezing tonight.",
+    "dia.spousecold_child": "{{child1}} is freezing.",
+    "dia.spousecold_children": "{{child1}} and {{child2}} are freezing.",
+    "dia.please": "Please light the fireplace.",
     "msg.nowood": "You need {{wood_pieces}} pieces of wood to light the fire."
 }

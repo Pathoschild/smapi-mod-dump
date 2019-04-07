@@ -1,7 +1,7 @@
 {
   "CustomChallengesEnabled": true,
   "CountKillsOnFarm": true,
-  "DebugMonsterKills": true,
+  "DebugMonsterKills": false,
   "GilNoRewardDialogue": "I ain't got nothin' for ya. Now get out there and get to swingin' that sword.",
   "GilSleepingDialogue": "I'm tryin to sleep, ya hippie! *grumble grumble*",
   "GilSpecialGiftDialogue": "Thanks for cleanin' up all those monsters. Figured you deserved somethin' extra special.",

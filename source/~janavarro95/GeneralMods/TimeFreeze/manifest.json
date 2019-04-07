@@ -1,7 +1,7 @@
 {
   "Name": "Time Freeze",
   "Author": "Alpha_Omegasis",
-  "Version": "1.6.0",
+  "Version": "1.7.0",
   "Description": "Emulates old Harvest Moon-style games where time is frozen inside.",
   "UniqueID": "Omegasis.TimeFreeze",
   "EntryDll": "TimeFreeze.dll",

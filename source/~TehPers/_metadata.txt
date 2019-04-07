@@ -5,6 +5,7 @@ mods:
    Shroom Spotter
    Stardew Content Compatibility Layer (SCCL)
    Teh's Core Mod
+   Teh's Festive Slimes
    Teh's Fishing Overhaul
 
 latest commit:

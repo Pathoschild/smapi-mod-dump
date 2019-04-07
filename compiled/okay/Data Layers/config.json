@@ -6,7 +6,12 @@
     "NextLayer": "RightControl, RightShoulder"
   },
   "Layers": {
-    "Accessibility": {
+    "Accessible": {
+      "Enabled": true,
+      "UpdatesPerSecond": 2.0,
+      "UpdateWhenViewChange": true
+    },
+    "Buildable": {
       "Enabled": true,
       "UpdatesPerSecond": 2.0,
       "UpdateWhenViewChange": true
@@ -47,6 +52,11 @@
       "UpdateWhenViewChange": true
     },
     "Machines": {
+      "Enabled": true,
+      "UpdatesPerSecond": 2.0,
+      "UpdateWhenViewChange": true
+    },
+    "Tillable": {
       "Enabled": true,
       "UpdatesPerSecond": 2.0,
       "UpdateWhenViewChange": true

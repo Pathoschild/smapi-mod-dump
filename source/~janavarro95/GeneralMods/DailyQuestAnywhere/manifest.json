@@ -1,7 +1,7 @@
 {
   "Name": "Daily Quest Anywhere",
   "Author": "Alpha_Omegasis",
-  "Version": "1.6.0",
+  "Version": "1.7.0",
   "Description": "Open the daily quest board from anywhere in the game.",
   "UniqueID": "Omegasis.DailyQuestAnywhere",
   "EntryDll": "DailyQuestAnywhere.dll",

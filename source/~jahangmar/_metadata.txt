@@ -8,9 +8,9 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit 86cd8892d165383d469066bb0f57ed0004f62fb3
+   commit 951d17a9362e50b540148bcea69e7a5bd069d02f
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Wed Mar 27 19:14:50 2019 +0100
+   Date:   Sat Apr 6 08:27:09 2019 +0200
    
-       DismantleCraftables v1.0.2 and SeedsAreRare v1.2.0
+       WorkingFireplace v1.1.0
    

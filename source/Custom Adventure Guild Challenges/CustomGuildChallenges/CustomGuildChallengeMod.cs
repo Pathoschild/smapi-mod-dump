@@ -5,13 +5,13 @@ using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using StardewModdingAPI.Events;
 
 namespace CustomGuildChallenges
 {
     /// Mod entry - handles all events and linking custom objects to game state
     public class CustomGuildChallengeMod : Mod
     {
-        protected IModHelper modHelper;
         protected ISaveAnywhereAPI saveAnywhereAPI;
         protected AdventureGuild adventureGuild;
         protected ConfigChallengeHelper challengeHelper;
@@ -26,56 +26,12 @@ namespace CustomGuildChallenges
         /// <param name="helper"></param>
         public override void Entry(IModHelper helper)
         {
-            modHelper = helper;
-            VanillaChallenges = GetVanillaSlayerChallenges();
-
             Config = helper.ReadConfig<ModConfig>();
+            challengeHelper = new ConfigChallengeHelper(Helper, Config, Monitor);
 
-            // Create config file using vanilla challenges
-            if (Config == null || Config.Challenges == null || Config.Challenges.Count == 0)
-            {
-                Config = new ModConfig()
-                {
-                    CustomChallengesEnabled = false,
-                    CountKillsOnFarm = false,
-                    DebugMonsterKills = false,
-                    Challenges = GetVanillaSlayerChallenges().ToList(),
-                    GilNoRewardDialogue = Game1.content.LoadString("Characters\\Dialogue\\Gil:ComeBackLater"),
-                    GilSleepingDialogue = Game1.content.LoadString("Characters\\Dialogue\\Gil:Snoring"),
-                    GilSpecialGiftDialogue = "Thanks for cleanin' up all those monsters. Figured you deserved somethin' extra special."
-                };
+            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 
-                helper.WriteConfig(Config);
-            }
-            // Use vanilla challenges but do not overwrite the config
-            else if(!Config.CustomChallengesEnabled)
-            {
-                Config.Challenges = GetVanillaSlayerChallenges().ToList();
-            }
-
-            // Verify config
-            for(int i = 0; i < Config.Challenges.Count; i++)
-            {
-                for(int j = 0; j < Config.Challenges[i].MonsterNames.Count; j++)
-                {
-                    if(!Monsters.MonsterList.Contains(Config.Challenges[i].MonsterNames[j]))
-                    {
-                        Monitor.Log("Warning: Invalid monster name '" + Config.Challenges[i].MonsterNames[j] +
-                            "' found. " + Config.Challenges[i].ChallengeName + " challenge will display but " +
-                            "cannot be completed until monster name is fixed! ", LogLevel.Warn);
-                    }
-                }
-
-                // TODO: Validate items on startup
-                
-            }
-
-            challengeHelper = new ConfigChallengeHelper(helper, Config, Monitor);
-            
-            modHelper.Events.GameLoop.SaveLoaded += ModCompatibilityCheck;
-            modHelper.Events.GameLoop.SaveCreated += ModCompatibilityCheck;            
-
-            modHelper.ConsoleCommands.Add("player_setkills", "Update kill count for a monster type", (command, arguments) =>
+            helper.ConsoleCommands.Add("player_setkills", "Update kill count for a monster type", (command, arguments) =>
             {
                 if (arguments.Length != 2)
                 {
@@ -94,7 +50,7 @@ namespace CustomGuildChallenges
                 }
             });
 
-            modHelper.ConsoleCommands.Add("player_getkills", "Get kill count for monster type", (command, arguments) =>
+            helper.ConsoleCommands.Add("player_getkills", "Get kill count for monster type", (command, arguments) =>
             {
                 if(arguments.Length == 0)
                 {
@@ -103,10 +59,10 @@ namespace CustomGuildChallenges
                 else
                 {
                     Monitor.Log(arguments[0] + "'s killed: " + Game1.player.stats.getMonstersKilled(arguments[0]), LogLevel.Info);
-                }               
+                }
             });
 
-            modHelper.ConsoleCommands.Add("player_giveitem", "See mod README for item number info", (command, arguments) =>
+            helper.ConsoleCommands.Add("player_giveitem", "See mod README for item number info", (command, arguments) =>
             {
                 int itemStack = 1;
 
@@ -134,7 +90,7 @@ namespace CustomGuildChallenges
                 }
             });
 
-            modHelper.ConsoleCommands.Add("player_getallkills", "Display all kills for all monsters", (command, arguments) =>
+            helper.ConsoleCommands.Add("player_getallkills", "Display all kills for all monsters", (command, arguments) =>
             {
                 foreach(var item in Game1.player.stats.specificMonstersKilled)
                 {
@@ -142,7 +98,7 @@ namespace CustomGuildChallenges
                 }
             });
 
-            modHelper.ConsoleCommands.Add("toggle_monsterskilledinfo", "Turn debug statement of monster kill on or off", (command, arguments) =>
+            helper.ConsoleCommands.Add("toggle_monsterskilledinfo", "Turn debug statement of monster kill on or off", (command, arguments) =>
             {
                 Config.DebugMonsterKills = !Config.DebugMonsterKills;
 
@@ -166,10 +122,51 @@ namespace CustomGuildChallenges
             return challengeHelper;
         }
 
-        private void ModCompatibilityCheck(object sender, EventArgs e)
+        /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialised at this point, so this is a good time to set up mod integrations.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
+            // Normalise config
+            if (Config.Challenges == null || Config.Challenges.Count == 0)
+            {
+                Config = new ModConfig
+                {
+                    CustomChallengesEnabled = false,
+                    CountKillsOnFarm = false,
+                    DebugMonsterKills = false,
+                    Challenges = GetVanillaSlayerChallenges().ToList(),
+                    GilNoRewardDialogue = Game1.content.LoadString("Characters\\Dialogue\\Gil:ComeBackLater"),
+                    GilSleepingDialogue = Game1.content.LoadString("Characters\\Dialogue\\Gil:Snoring"),
+                    GilSpecialGiftDialogue = "Thanks for cleanin' up all those monsters. Figured you deserved somethin' extra special."
+                };
+                Helper.WriteConfig(Config);
+            }
+            else if (!Config.CustomChallengesEnabled)
+            {
+                Config.Challenges = GetVanillaSlayerChallenges().ToList(); // Use vanilla challenges but do not overwrite the config
+            }
+
+            // Verify config
+            for (int i = 0; i < Config.Challenges.Count; i++)
+            {
+                for (int j = 0; j < Config.Challenges[i].MonsterNames.Count; j++)
+                {
+                    if (!Monsters.MonsterList.Contains(Config.Challenges[i].MonsterNames[j]))
+                    {
+                        Monitor.Log("Warning: Invalid monster name '" + Config.Challenges[i].MonsterNames[j] +
+                                    "' found. " + Config.Challenges[i].ChallengeName + " challenge will display but " +
+                                    "cannot be completed until monster name is fixed! ", LogLevel.Warn);
+                    }
+                }
+
+                // TODO: Validate items on startup
+            }
+
+            VanillaChallenges = GetVanillaSlayerChallenges();
+
             // Integrate: Save Anywhere
-            if(Helper.ModRegistry.IsLoaded("Omegasis.SaveAnywhere"))
+            if (Helper.ModRegistry.IsLoaded("Omegasis.SaveAnywhere"))
             {
                 saveAnywhereAPI = Helper.ModRegistry.GetApi<ISaveAnywhereAPI>("Omegasis.SaveAnywhere");
 
@@ -177,13 +174,8 @@ namespace CustomGuildChallenges
                 saveAnywhereAPI.AfterSave += challengeHelper.InjectGuild;
                 saveAnywhereAPI.AfterLoad += challengeHelper.InjectGuild;
             }
-            
-            modHelper.Events.GameLoop.SaveCreated -= ModCompatibilityCheck;
-            modHelper.Events.GameLoop.SaveLoaded -= ModCompatibilityCheck;
         }
-        
-        
-       
+
         /// <summary>
         ///     Returns a list of the vanilla challenges
         /// </summary>

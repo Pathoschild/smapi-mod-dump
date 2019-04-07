@@ -62,6 +62,7 @@ namespace Revitalize.Framework.Objects.Furniture
                 objs.Add(pair.Key, (MultiTiledComponent)pair.Value);
             }
 
+
             return new ChairMultiTiledObject(this.info, this.TileLocation, objs);
         }
 

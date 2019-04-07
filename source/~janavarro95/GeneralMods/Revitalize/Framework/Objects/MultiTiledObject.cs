@@ -101,13 +101,17 @@ namespace Revitalize.Framework.Objects
         public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1)
         {
             foreach (KeyValuePair<Vector2, StardewValley.Object> pair in this.objects)
-                pair.Value.draw(spriteBatch, x + (int)pair.Key.X * Game1.tileSize, y + (int)pair.Key.Y * Game1.tileSize, alpha);
+            {
+                (pair.Value as MultiTiledComponent).draw(spriteBatch, x + ((int)pair.Key.X), y + ((int)pair.Key.Y), alpha);
+            }
         }
 
         public override void draw(SpriteBatch spriteBatch, int xNonTile, int yNonTile, float layerDepth, float alpha = 1)
         {
             foreach (KeyValuePair<Vector2, StardewValley.Object> pair in this.objects)
+            {
                 pair.Value.draw(spriteBatch, xNonTile + (int)pair.Key.X * Game1.tileSize, yNonTile + (int)pair.Key.Y * Game1.tileSize, layerDepth, alpha);
+            }
 
             //base.draw(spriteBatch, xNonTile, yNonTile, layerDepth, alpha);
         }
@@ -147,9 +151,18 @@ namespace Revitalize.Framework.Objects
                     x = (int)translatedVector2.X * 64;
                     y = (int)translatedVector2.Y * 64;
                 }
-                bool flag = Utility.playerCanPlaceItemHere(location, (Item)pair.Value, x, y, Game1.player);
+                bool flag = (pair.Value as MultiTiledComponent).canBePlacedHere(location, new Vector2(x/Game1.tileSize, y/Game1.tileSize));
                 spriteBatch.Draw(Game1.mouseCursors, new Vector2((float)(x / 64 * 64 - Game1.viewport.X), (float)(y / 64 * 64 - Game1.viewport.Y)), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(flag ? 194 : 210, 388, 16, 16)), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0.01f);
-                this.draw(spriteBatch, x / 64, y / 64, 0.5f);
+
+                //Revitalize.ModCore.log(new Vector2(x + ((int)pair.Key.X), y + ((int)pair.Key.Y)));
+                if((pair.Value as MultiTiledComponent).info.ignoreBoundingBox)
+                {
+                    x *= -1;
+                    y *= -1;
+                }
+                (pair.Value as MultiTiledComponent).draw(spriteBatch, x/Game1.tileSize, y/Game1.tileSize, 0.5f);
+                //break;
+                //this.draw(spriteBatch, x / 64, y / 64, 0.5f);
             }
         }
         
@@ -183,7 +196,14 @@ namespace Revitalize.Framework.Objects
         {
             foreach (KeyValuePair<Vector2, StardewValley.Object> pair in this.objects)
             {
-                pair.Value.placementAction(location, x + (int)pair.Key.X * Game1.tileSize, y + (int)pair.Key.Y * Game1.tileSize, who);
+                if ((pair.Value as CustomObject).info.ignoreBoundingBox)
+                {
+                    pair.Value.placementAction(location, -1 * (x + (int)pair.Key.X * Game1.tileSize), -1 * (y + (int)pair.Key.Y * Game1.tileSize), who);
+                }
+                else
+                {
+                    pair.Value.placementAction(location, x + (int)pair.Key.X * Game1.tileSize, y + (int)pair.Key.Y * Game1.tileSize, who);
+                }
                 //ModCore.log(pair.Value.TileLocation);
             }
             this.location = location;

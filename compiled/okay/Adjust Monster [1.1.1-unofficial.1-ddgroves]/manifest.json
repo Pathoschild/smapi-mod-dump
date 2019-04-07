@@ -1,0 +1,9 @@
+{
+  "Name": "AdjustMonster",
+  "Author": "mmanlapat",
+  "Version": "1.1.1-unofficial.1-ddgroves",
+  "Description": "Adjust the health, damage and XP gain from monsters.",
+  "UniqueID": "mmanlapat.adjustmonster",
+  "EntryDll": "AdjustMonster.dll",
+  "MinimumApiVersion": "2.10.2"
+}

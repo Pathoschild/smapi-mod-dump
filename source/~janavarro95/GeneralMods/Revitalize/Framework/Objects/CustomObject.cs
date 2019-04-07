@@ -35,11 +35,27 @@ namespace Revitalize.Framework.Objects
         [JsonIgnore]
         public Texture2D displayTexture => this.animationManager.getTexture();
 
+        public string ItemInfo
+        {
+            get
+            {
+                return Revitalize.ModCore.Serializer.ToJSONString(this.info);
+            }
+            set
+            {
+                Revitalize.ModCore.log("GUESS SERIALIZATION IS WORKING???");
+                this.info =(BasicItemInformation)Revitalize.ModCore.Serializer.DeserializeFromJSONString(value, typeof(BasicItemInformation));
+            }
+        }
 
+        
+
+        protected Netcode.NetString netItemInfo; 
 
         /// <summary>Empty constructor.</summary>
         public CustomObject() {
             this.guid = Guid.NewGuid();
+            InitNetFields();
         }
 
         /// <summary>Construct an instance.</summary>
@@ -77,12 +93,13 @@ namespace Revitalize.Framework.Objects
 
             this.bigCraftable.Value = false;
 
-            this.initNetFields();
-            
-
+            //this.initNetFields();
+            InitNetFields();
             //if (this.info.ignoreBoundingBox)
             //    this.boundingBox.Value = new Rectangle(int.MinValue, int.MinValue, 0, 0);
         }
+
+
 
         public override bool isPassable()
         {
@@ -221,6 +238,12 @@ namespace Revitalize.Framework.Objects
             this.updateDrawPosition(x, y);
             this.location = location;
             return base.placementAction(location, x, y, who);
+        }
+
+        public override bool canBePlacedHere(GameLocation l, Vector2 tile)
+        {
+            if (this.info.ignoreBoundingBox) return true;
+            return base.canBePlacedHere(l, tile);
         }
 
         public virtual void rotate()
@@ -371,11 +394,35 @@ namespace Revitalize.Framework.Objects
 
         public void InitNetFields()
         {
+            if (Game1.IsMultiplayer == false &&(Game1.IsClient==false || Game1.IsClient==false)) return;
             this.initNetFields();
             this.syncObject = new PySync(this);
             this.NetFields.AddField(this.syncObject);
+            this.netItemInfo = new Netcode.NetString(this.ItemInfo);
+            this.NetFields.AddField(this.netItemInfo);
         }
 
+        /// <summary>
+        /// Gets all of the data necessary for syncing.
+        /// </summary>
+        /// <returns></returns>
+        public override Dictionary<string, string> getSyncData()
+        {
+            Dictionary<string,string> syncData= base.getSyncData();
+            syncData.Add("BasicItemInfo", Revitalize.ModCore.Serializer.ToJSONString(this.info));
+            return syncData;
+        }
+
+        /// <summary>
+        /// Syncs all of the info to all players.
+        /// </summary>
+        /// <param name="syncData"></param>
+        public override void sync(Dictionary<string, string> syncData)
+        {
+            Revitalize.ModCore.log("SYNC OBJECT DATA!");
+            base.sync(syncData);
+            this.info = Revitalize.ModCore.Serializer.DeserializeFromJSONString<BasicItemInformation>(syncData["BasicItemInfo"]);
+        }
 
         public string getDisplayNameFromStringsFile(string objectID)
         {

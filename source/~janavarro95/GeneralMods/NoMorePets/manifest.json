@@ -1,7 +1,7 @@
 {
   "Name": "No More Pets",
   "Author": "Alpha_Omegasis",
-  "Version": "1.6.0",
+  "Version": "1.7.0",
   "Description": "Removes all pets from the game.",
   "UniqueID": "Omegasis.NoMorePets",
   "EntryDll": "NoMorePets.dll",

@@ -19,12 +19,12 @@ namespace StackToNearbyChests
 		{
 			ButtonHolder.inventoryPage = inventoryPage;
 
-			button = new ClickableTextureComponent("", 
-				new Rectangle(inventoryPage.xPositionOnScreen + width, inventoryPage.yPositionOnScreen + height / 3 - 64 + 8 + 80, 64, 64), 
+			button = new ClickableTextureComponent("",
+				new Rectangle(inventoryPage.xPositionOnScreen + width, inventoryPage.yPositionOnScreen + height / 3 - 64 + 8 + 80, 64, 64),
 				"",
-				"Stack to nearby chests", 
-				ButtonIcon, 
-				Rectangle.Empty, 
+				"Stack to nearby chests",
+				ButtonIcon,
+				Rectangle.Empty,
 				4f,
 				false)
 			{
@@ -37,7 +37,7 @@ namespace StackToNearbyChests
 			inventoryPage.organizeButton.downNeighborID = buttonID;
 			inventoryPage.trashCan.upNeighborID = buttonID;
 		}
-		
+
 		public static void ReceiveLeftClick(int x, int y)
 		{
 			if (button != null && button.containsPoint(x, y))

@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using System;
+using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Menus;
-using System;
 
 namespace StackToNearbyChests.Patches
 {
@@ -15,7 +15,7 @@ namespace StackToNearbyChests.Patches
 			0f).GetType();
 		public static Type SpriteBatch() => new Microsoft.Xna.Framework.Graphics.SpriteBatch(StardewValley.Game1.graphics.GraphicsDevice).GetType();
 	}
-	
+
 	class InventoryPage_Patcher_Constructor : Patch
 	{
 		public override Type GetTargetType() => typeof(InventoryPage);
@@ -27,7 +27,7 @@ namespace StackToNearbyChests.Patches
 			ButtonHolder.Constructor(__instance, x, y, width, height);
 		}
 	}
-	
+
 	class InventoryPage_Patcher_receiveLeftClick : Patch
 	{
 		public override Type GetTargetType() => TypeGetter.InventoryPage();
@@ -39,7 +39,7 @@ namespace StackToNearbyChests.Patches
 			ButtonHolder.ReceiveLeftClick(x, y);
 		}
 	}
-	
+
 	class InventoryPage_Patcher_draw : Patch
 	{
 		public override Type GetTargetType() => TypeGetter.InventoryPage();
@@ -51,7 +51,7 @@ namespace StackToNearbyChests.Patches
 			ButtonHolder.PostDraw(b);
 		}
 	}
-	
+
 	class InventoryPage_Patcher_performHoverAction : Patch
 	{
 		public override Type GetTargetType() => TypeGetter.InventoryPage();
@@ -63,7 +63,7 @@ namespace StackToNearbyChests.Patches
 			ButtonHolder.PerformHoverAction(x, y);
 		}
 	}
-	
+
 	class IClickableMenu_Patcher_populateClickableComponentList : Patch
 	{
 		public override Type GetTargetType() => TypeGetter.IClickableMenu();
@@ -76,7 +76,7 @@ namespace StackToNearbyChests.Patches
 				ButtonHolder.PopulateClickableComponentsList(inventoryPage);
 		}
 	}
-	
+
 	class ClickableTextureComponent_Patcher_Draw : Patch
 	{
 		public override Type GetTargetType() => TypeGetter.ClickableTextureComponent();

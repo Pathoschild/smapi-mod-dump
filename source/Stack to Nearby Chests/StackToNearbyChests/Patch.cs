@@ -1,7 +1,7 @@
-﻿using Harmony;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
+using Harmony;
 
 namespace StackToNearbyChests
 {
@@ -22,10 +22,10 @@ namespace StackToNearbyChests
 
 		public void ApplyPatch(HarmonyInstance harmonyInstance)
 		{
-			MethodBase targetMethod = String.IsNullOrEmpty(GetTargetMethodName()) ? 
-				(MethodBase)GetTargetType().GetConstructor(GetTargetMethodArguments()) : 
+			MethodBase targetMethod = String.IsNullOrEmpty(GetTargetMethodName()) ?
+				(MethodBase)GetTargetType().GetConstructor(GetTargetMethodArguments()) :
 				targetMethod = GetTargetType().GetMethod(GetTargetMethodName(), GetTargetMethodArguments());
-				
+
 			harmonyInstance.Patch(targetMethod, new HarmonyMethod(GetType().GetMethod("Prefix")), new HarmonyMethod(GetType().GetMethod("Postfix")));
 		}
 

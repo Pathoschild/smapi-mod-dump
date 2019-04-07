@@ -1,9 +1,10 @@
-﻿{
-    "Name": "Shroom Spotter",
-    "Author": "TehPers",
-    "Version": "1.2.0-beta",
-    "Description": "Tells you which floor the shrooms will be on today.",
-    "UniqueID": "TehPers.ShroomSpotter",
-    "EntryDll": "ShroomSpotter.dll",
-    "UpdateKeys": [ "Nexus:908" ]
+{
+  "Name": "Shroom Spotter",
+  "Author": "TehPers",
+  "Version": "1.2.0",
+  "Description": "Tells you which floor the shrooms will be on today.",
+  "UniqueID": "TehPers.ShroomSpotter",
+  "EntryDll": "TehPers.ShroomSpotter.dll",
+  "MinimumApiVersion": "2.11.1",
+  "UpdateKeys": [ "Nexus:908" ]
 }

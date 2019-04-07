@@ -1,8 +1,14 @@
 # Release notes
 ## Upcoming release
+* Improved translations. Thanks to YSRyeol (updated Korean)!
+
+## 1.6.1
+* Improved translations. Thanks to binxhlin (updated Chinese)!
+
+## 1.6
 * Added _buildable_ and _tillable_ layers.
 * Added support for Line Sprinklers mod.
-* Improved translations. Thanks to kelvindules (updated Portuguese) and TheOzonO3 (updated Russian)!
+* Improved translations. Thanks to binxhlin (updated Chinese), kelvindules (updated Portuguese), and TheOzonO3 (updated Russian)!
 
 ## 1.5.1
 * Improved translations. Thanks to S2SKY (added Korean) and VincentRoth (added French)!

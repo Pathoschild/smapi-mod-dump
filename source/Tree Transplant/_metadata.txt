@@ -5,11 +5,10 @@ mods:
    Tree Transplant
 
 latest commit:
-   commit 463b3a1328ae8609328a88fd3455a5bf31ab35b0
-   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Tue Apr 2 20:52:56 2019 -0400
+   commit 076e73b36f3d9c32c1f4fe5c3ec6736f75923abc
+   Merge: cf5becd 463b3a1
+   Author: James Stine <leon.blade@gmail.com>
+   Date:   Thu Apr 4 20:06:40 2019 -0400
    
-       update for SMAPI 3.0 loading mods earlier
-       
-       The game is no longer fully initialised when Entry is called, so this commit moves affected logic into GameLaunched.
+       Merge remote-tracking branch 'origin/master'
    

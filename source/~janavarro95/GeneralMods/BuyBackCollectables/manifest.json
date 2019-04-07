@@ -1,7 +1,7 @@
 {
   "Name": "Buy Back Collectables",
   "Author": "Alpha_Omegasis",
-  "Version": "1.6.0",
+  "Version": "1.7.0",
   "Description": "Lets you buy back any obtained collectable.",
   "UniqueID": "Omegasis.BuyBackCollectables",
   "EntryDll": "BuyBackCollectables.dll",

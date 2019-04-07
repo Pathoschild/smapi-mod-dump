@@ -1,5 +1,10 @@
 ﻿{
     "msg.warm": "Die Wärme des Feuers wärmte dich in der Nacht.",
     "msg.cold": "Die Kälte entzog dir Energie in der Nacht.",
+    "msg.spousecold": "Deine Familie fror in der Nacht.",
+    "dia.spousecold": "Ich musste heute Nacht frieren.",
+    "dia.spousecold_child": "{{child1}} friert.",
+    "dia.spousecold_children": "{{child1}} und {{child2}} frieren.",
+    "dia.please": "Zünde bitte das Kaminfeuer an.",
     "msg.nowood": "Du benötigst {{wood_pieces}} Holzstücke zum Entzünden des Feuers."
 }

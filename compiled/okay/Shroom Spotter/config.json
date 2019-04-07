@@ -1,4 +1,5 @@
 {
   "ModEnabled": true,
-  "GetShroomLevels": "NumPad5"
+  "GetShroomLevels": "NumPad5",
+  "ShroomIcon": "Common"
 }

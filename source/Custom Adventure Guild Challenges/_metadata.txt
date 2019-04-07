@@ -5,9 +5,9 @@ mods:
    Custom Adventure Guild Challenges
 
 latest commit:
-   commit 40a76116d2f43129ca1b771c12610baa8f238ba4
+   commit c3a85341c23cb1c4172c1e6ab3aa56da84fabb35
    Author: Josh <yodellingprofessionally@gmail.com>
-   Date:   Sat Jan 26 14:32:50 2019 -0800
+   Date:   Fri Apr 5 17:45:27 2019 -0700
    
-       Add logic to detect Mummy kills for farmhand, set debug info in config to false by default
+       Increment version to 1.9
    

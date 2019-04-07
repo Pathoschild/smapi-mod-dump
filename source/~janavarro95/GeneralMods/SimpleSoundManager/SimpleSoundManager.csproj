@@ -66,6 +66,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="NAudio">
+      <Version>1.8.5</Version>
+    </PackageReference>
+    <PackageReference Include="NAudio.Vorbis">
+      <Version>1.0.0</Version>
+    </PackageReference>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
@@ -73,12 +79,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Framework\Sound.cs" />
-    <Compile Include="Framework\SoundManager.cs" />
-    <Compile Include="Framework\WavSound.cs" />
-    <Compile Include="Framework\XactMusicPair.cs" />
-    <Compile Include="Framework\XACTSound.cs" />
-    <Compile Include="SimpleSoundManagerMod.cs" />
+    <Compile Include="Framework\Music\Config.cs" />
+    <Compile Include="Framework\Music\MusicManager.cs" />
+    <Compile Include="Framework\Music\MusicPack.cs" />
+    <Compile Include="Framework\Music\SongListNode.cs" />
+    <Compile Include="ModCore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

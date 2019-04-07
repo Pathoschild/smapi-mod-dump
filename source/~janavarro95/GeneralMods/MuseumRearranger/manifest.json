@@ -1,7 +1,7 @@
 {
   "Name": "Museum Rearranger",
   "Author": "Alpha_Omegasis",
-  "Version": "1.7.0",
+  "Version": "1.8.0",
   "Description": "Lets you rearrange the museum without needing to donate something.",
   "UniqueID": "Omegasis.MuseumRearranger",
   "EntryDll": "MuseumRearranger.dll",

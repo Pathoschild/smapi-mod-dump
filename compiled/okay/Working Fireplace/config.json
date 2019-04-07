@@ -3,5 +3,7 @@
   "penalty": true,
   "reduce_health": 0.5,
   "reduce_stamina": 0.5,
-  "showMessageOnStartOfDay": true
+  "showMessageOnStartOfDay": true,
+  "reduce_friendship_spouse": 40,
+  "reduce_friendship_children": 20
 }

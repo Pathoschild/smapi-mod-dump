@@ -13,13 +13,16 @@ mods:
    No Debug Mode
    Rotate Toolbar
    Skip Intro
+   Small Beach Farm
    The Long Night
    Tractor Mod
 
 latest commit:
-   commit b711a0b68101f132e045eb9617968fa59c153853
+   commit 4c37e3c068095efe59500a3fb27f080e20831121
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Apr 3 19:05:50 2019 -0400
+   Date:   Sun Apr 7 12:31:19 2019 -0400
    
-       improve Automate performance by minimising empty machine polling
+       update Chinese translations, update docs
+       
+       Thanks to binxhlin in the mod-translations repo!
    

@@ -67,8 +67,11 @@
     <Compile Include="Framework\Objects\Furniture\ChairTileComponent.cs" />
     <Compile Include="Framework\Objects\Furniture\CustomFurniture.cs" />
     <Compile Include="Framework\Objects\Furniture\FurnitureTileComponent.cs" />
+    <Compile Include="Framework\Objects\Furniture\RugMultiTiledObject.cs" />
+    <Compile Include="Framework\Objects\Furniture\RugTileComponent.cs" />
     <Compile Include="Framework\Objects\InformationFiles\Furniture\ChairInformation.cs" />
     <Compile Include="Framework\Objects\InformationFiles\Furniture\FurnitureInformation.cs" />
+    <Compile Include="Framework\Objects\InformationFiles\ObjectGUIDInfo.cs" />
     <Compile Include="Framework\Objects\MultiTiledComponent.cs" />
     <Compile Include="Framework\Objects\MultiTiledObject.cs" />
     <Compile Include="Framework\Player\Managers\MagicManager.cs" />

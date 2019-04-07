@@ -12,6 +12,9 @@ namespace CustomGuildChallenges.API
 {
     public class ConfigChallengeHelper : ICustomChallenges
     {
+        private CustomAdventureGuild _customAdventureGuild;
+        private AdventureGuild _adventureGuild;
+
         // Location Names to find dying monsters
         public readonly string FarmLocationName = "Farm";
         public readonly string BugLocationName = "BugLand";
@@ -24,17 +27,31 @@ namespace CustomGuildChallenges.API
         /// <summary>
         ///     Configuration and challenge list
         /// </summary>
-        internal static IList<SlayerChallenge> ChallengeList;      
+        internal static IList<SlayerChallenge> ChallengeList;
 
         /// <summary>
         ///     Mod's version of the Adventure Guild
         /// </summary>
-        internal readonly CustomAdventureGuild customAdventureGuild;
+        internal CustomAdventureGuild customAdventureGuild
+        {
+            get
+            {
+                InitLocations();
+                return _customAdventureGuild;
+            }
+        }
 
         /// <summary>
         ///     Vanilla version of the Adventure Guild
         /// </summary>
-        internal readonly AdventureGuild adventureGuild;
+        internal AdventureGuild adventureGuild
+        {
+            get
+            {
+                InitLocations();
+                return _adventureGuild;
+            }
+        }
 
         /// <summary>
         ///     SMAPI API - used for saving and loading JSON files
@@ -61,15 +78,10 @@ namespace CustomGuildChallenges.API
             Monitor = monitor;
             Config = config;
 
-            ChallengeList = new List<SlayerChallenge>();               
-            adventureGuild = new AdventureGuild(CustomAdventureGuild.StandardMapPath, CustomAdventureGuild.StandardMapName);
-            customAdventureGuild = new CustomAdventureGuild();
+            ChallengeList = new List<SlayerChallenge>();
+            foreach (var info in Config.Challenges)
+                ChallengeList.Add(new SlayerChallenge { Info = info });
 
-            if(ChallengeList == null || ChallengeList.Count == 0)
-            {
-                foreach (var info in config.Challenges) ChallengeList.Add(new SlayerChallenge() { Info = info });
-            }
-            
             helper.Events.GameLoop.SaveCreated += SetupMonsterKilledEvent;
             helper.Events.GameLoop.SaveLoaded += SetupMonsterKilledEvent;
             
@@ -81,7 +93,17 @@ namespace CustomGuildChallenges.API
             MonsterKilled += Events_MonsterKilled;
         }
 
-        
+        private void InitLocations()
+        {
+            if (Game1.locations == null)
+                throw new InvalidOperationException("Can't access Adventure Guild before the game is initialised.");
+
+            if (_adventureGuild == null)
+            {
+                _adventureGuild = new AdventureGuild(CustomAdventureGuild.StandardMapPath, CustomAdventureGuild.StandardMapName);
+                _customAdventureGuild = new CustomAdventureGuild();
+            }
+        }
 
         /// <summary>
         ///     Add a challenge for the player to complete. The global config will not be updated.

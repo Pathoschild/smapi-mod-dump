@@ -17,13 +17,10 @@ using System;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
-using StardewValley.BellsAndWhistles;
-
-using Netcode;
+using StardewValley.Characters;
 
 //using StardewValley.Menus;
 //using System.Collections.Generic;
@@ -38,7 +35,7 @@ namespace WorkingFireplace
         {
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
-
+           
             Config = helper.ReadConfig<WorkingFireplaceConfig>();
         }
 
@@ -66,18 +63,49 @@ namespace WorkingFireplace
                 else
                 {
                     if (Config.showMessageOnStartOfDay)
-                        Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("msg.cold"), ""));
+                    {
+                        if (HasSpouse())
+                            Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("msg.spousecold"), ""));
+                        else
+                            Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("msg.cold"), ""));
+                    }
                     Game1.currentLocation.playSound("coldSpell");
 
                     if (Config.penalty)
                     {
                         Game1.player.health = CalcAttribute(Game1.player.health, Config.reduce_health, Game1.player.maxHealth);
                         Game1.player.stamina = CalcAttribute(Game1.player.stamina, Config.reduce_stamina, Game1.player.maxStamina);
+                        if (HasSpouse())
+                            Game1.player.changeFriendship(-Config.reduce_friendship_spouse, GetSpouse());
+                        Game1.player.getChildren().ForEach((child) => Game1.player.changeFriendship(-Config.reduce_friendship_children, child));
                     }
+
+                    if (HasSpouse())
+                    {
+                        string please = Helper.Translation.Get("dia.please");
+                        switch (Game1.player.getChildrenCount())
+                        {
+                            case 1:
+                                Child child = Game1.player.getChildren()[0];
+                                GetSpouse().setNewDialogue("$2" + Helper.Translation.Get("dia.spousecold_child", new { child1 = child.Name }) + " " + please, true);
+                                break;
+                            case 2:
+                                Child child1 = Game1.player.getChildren()[0];
+                                Child child2 = Game1.player.getChildren()[1];
+                                GetSpouse().setNewDialogue("$2" + Helper.Translation.Get("dia.spousecold_children", new { child1 = child1.Name, child2 = child2.Name }) + " " + please, true);
+                                break;
+                            default:
+                                GetSpouse().setNewDialogue("$2" + Helper.Translation.Get("dia.spousecold") + " " + please, true);
+                                break;
+                        }
+                    }
+
                 }
             }
         }
 
+        private bool HasSpouse() => GetSpouse() != null;
+        private NPC GetSpouse() => Game1.player.getSpouse();
 
         void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {

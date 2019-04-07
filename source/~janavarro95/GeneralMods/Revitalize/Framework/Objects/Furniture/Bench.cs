@@ -24,7 +24,7 @@ namespace Revitalize.Framework.Objects.Furniture
         }
 
 
-        public Bench(BasicItemInformation info,Vector2 TilePosition, Dictionary<Vector2,MultiTiledComponent> Objects): base(info, TilePosition, Objects)
+        public Bench(BasicItemInformation info,Vector2 TilePosition, Dictionary<Vector2,MultiTiledComponent> Objects) : base(info, TilePosition, Objects)
         {
 
         }
