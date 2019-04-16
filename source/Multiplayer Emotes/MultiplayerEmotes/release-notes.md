@@ -1,6 +1,11 @@
 
 # Release Notes
 
+## 1.0.0-beta.4
+
+- Fixed open/close sound playing every left-click
+- Fixed emotes sending multiple times
+
 ## 1.0.0-beta.3
 
 - Updated mod for SMAPI 3.0 (Thank you Pathoschild)
@@ -25,3 +30,13 @@
   - Fixed duplicated emote menu button when forced to return to `TitleMenu` (e.g. client disconnection from host)
   - Fixed not saving last position
   - Fixed strange animation behaviour
+
+## 1.0.0-beta.1
+
+- Added mod configurations
+- Improved the way the emotes send and receive
+
+
+## 1.0.0-beta
+
+- First release

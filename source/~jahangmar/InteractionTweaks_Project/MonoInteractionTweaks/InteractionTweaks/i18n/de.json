@@ -1,0 +1,12 @@
+﻿{
+    "dia.eatquestion": "Verzehre {{item}}?",
+    "dia.eatanswerOne": "Ja, eins.",
+    "dia.eatanswerMulti": "Ja, {{amount}} bis gesättigt.",
+    "dia.eatanswerNo": "Nein.",
+    "menu.slingshotempty": "Schleuder muss zum Verkauf leer sein.",
+    "item.slingshotdescr": "Verschießt verschiedene Gegenstände wie Steine, Erz, Gemüse oder explosive Munition.",
+    "menu.carpentermoneybuttonon": "Einschalten: Kaufe fehlende Ressourcen.",
+    "menu.carpentermoneybuttonoff": "Ausschalten: Kaufe fehlende Ressourcen.",
+    "menu.carpenteringredinfo": "wird gekauft",
+    "menu.fishingrodempty": "Entferne Zusätze vor dem Verkauf."
+}

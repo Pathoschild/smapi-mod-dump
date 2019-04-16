@@ -1,0 +1,13 @@
+url:
+   https://github.com/Opalie/Wedding.git
+
+mods:
+   Wedding Mod
+
+latest commit:
+   commit 2a4bbfb7ff94a9e2d2077be747ac8b5752f4cf0c
+   Author: Opalie <31365045+Opalie@users.noreply.github.com>
+   Date:   Sun Apr 7 19:15:32 2019 +0100
+   
+       Create LICENSE
+   

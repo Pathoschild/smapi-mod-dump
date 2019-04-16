@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Console Chat",
+  "Author": "EpicBellyFlop45",
+  "Version": "1.0.0",
+  "Description": "Logs chat in console",
+  "UniqueID": "EpicBellyFlop45.ConsoleChat",
+  "EntryDll": "ConsoleChat.dll",
+  "MinimumApiVersion": "2.9",
+  "UpdateKeys": [ "Nexus:3768" ]
+}

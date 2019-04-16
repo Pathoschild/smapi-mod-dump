@@ -1,0 +1,13 @@
+url:
+   https://github.com/rupak0577/FishDex.git
+
+mods:
+   FishDex
+
+latest commit:
+   commit 2afd57c091ab1f56322ed29862522a1df43139df
+   Author: Rupak <rupak0577@gmail.com>
+   Date:   Mon Apr 8 00:37:23 2019 +0530
+   
+       Add License and Readme
+   

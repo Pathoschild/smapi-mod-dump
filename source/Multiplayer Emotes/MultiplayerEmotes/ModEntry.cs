@@ -33,10 +33,10 @@ namespace MultiplayerEmotes {
 			ModHelper = Helper;
 			MultiplayerMessage = new MultiplayerModMessage(helper);
 
-			ModPatchControl PatchContol = new ModPatchControl(helper);
-			PatchContol.PatchList.Add(new FarmerPatch.DoEmotePatch(helper.Reflection));
-			PatchContol.PatchList.Add(new CharacterPatch.DoEmotePatch(helper.Reflection));
-			PatchContol.ApplyPatch();
+			ModPatchManager patchManager = new ModPatchManager(helper);
+			patchManager.PatchList.Add(FarmerPatch.DoEmotePatch.CreatePatch(helper.Reflection));
+			patchManager.PatchList.Add(CharacterPatch.DoEmotePatch.CreatePatch(helper.Reflection));
+			patchManager.ApplyPatch();
 
 			this.Monitor.Log("Loading mod config...", LogLevel.Debug);
 			Config = helper.ReadConfig<ModConfig>();
@@ -59,9 +59,6 @@ namespace MultiplayerEmotes {
 #endif
 		}
 
-		/*********
-		** Private methods
-		*********/
 		/// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
 		/// <param name="sender">The event sender.</param>
 		/// <param name="e">The event data.</param>
@@ -109,12 +106,12 @@ namespace MultiplayerEmotes {
 		private void EmoteNpc(string command, string[] args) {
 
 			if(!Context.IsMainPlayer && !Config.AllowNonHostEmoteNpcCommand) {
-				this.Monitor.Log($"Permission denied. You dont have enough permissions to run this command.", LogLevel.Info);
+				this.Monitor.Log("Permission denied. You dont have enough permissions to run this command.", LogLevel.Info);
 				return;
 			}
 
 			if(args.Length < 2) {
-				this.Monitor.Log($"Missing parameters.\n\nUsage: emote_npc <name> <value>\n- name: a string representing the npc name.\n- value: a integer representing the animation id.", LogLevel.Info);
+				this.Monitor.Log("Missing parameters.\n\nUsage: emote_npc <name> <value>\n- name: a string representing the npc name.\n- value: a integer representing the animation id.", LogLevel.Info);
 				return;
 			}
 
@@ -125,12 +122,12 @@ namespace MultiplayerEmotes {
 			}
 
 			if(!int.TryParse(args[1], out int id)) {
-				this.Monitor.Log($"The emote id must be a integer.", LogLevel.Info);
+				this.Monitor.Log("The emote id must be a integer.", LogLevel.Info);
 				return;
 			}
 
 			if(id <= 0) {
-				this.Monitor.Log($"The emote id value must be greater than 0.", LogLevel.Info);
+				this.Monitor.Log("The emote id value must be greater than 0.", LogLevel.Info);
 				return;
 			}
 
@@ -148,12 +145,12 @@ namespace MultiplayerEmotes {
 		private void EmoteFarmAnimal(string command, string[] args) {
 
 			if(!Context.IsMainPlayer && !Config.AllowNonHostEmoteAnimalCommand) {
-				this.Monitor.Log($"Permission denied. You dont have enough permissions to run this command.", LogLevel.Info);
+				this.Monitor.Log("Permission denied. You dont have enough permissions to run this command.", LogLevel.Info);
 				return;
 			}
 
 			if(args.Length < 2) {
-				this.Monitor.Log($"Missing parameters.\n\nUsage: emote_animal <name> <value>\n- name: a string representing the farm animal name.\n- value: a integer representing the animation id.", LogLevel.Info);
+				this.Monitor.Log("Missing parameters.\n\nUsage: emote_animal <name> <value>\n- name: a string representing the farm animal name.\n- value: a integer representing the animation id.", LogLevel.Info);
 				return;
 			}
 
@@ -164,12 +161,12 @@ namespace MultiplayerEmotes {
 			}
 
 			if(!int.TryParse(args[1], out int id)) {
-				this.Monitor.Log($"The emote id must be a integer.", LogLevel.Info);
+				this.Monitor.Log("The emote id must be a integer.", LogLevel.Info);
 				return;
 			}
 
 			if(id <= 0) {
-				this.Monitor.Log($"The emote id value must be greater than 0.", LogLevel.Info);
+				this.Monitor.Log("The emote id value must be greater than 0.", LogLevel.Info);
 				return;
 			}
 
@@ -186,17 +183,17 @@ namespace MultiplayerEmotes {
 		private void StopEmote(string command, string[] args) {
 
 			if(Game1.player.IsEmoting) {
-				this.Monitor.Log($"Stoping playing emote...", LogLevel.Info);
+				this.Monitor.Log("Stoping playing emote...", LogLevel.Info);
 				Game1.player.IsEmoting = false;
 			} else {
-				this.Monitor.Log($"No emote is playing.", LogLevel.Info);
+				this.Monitor.Log("No emote is playing.", LogLevel.Info);
 			}
 
 		}
 
 		private void StopAllEmotes(string command, string[] args) {
 
-			this.Monitor.Log($"Stoping any playing emotes...", LogLevel.Info);
+			this.Monitor.Log("Stoping any playing emotes...", LogLevel.Info);
 			foreach(Farmer farmer in Game1.getAllFarmers()) {
 				farmer.IsEmoting = false;
 			}
@@ -216,7 +213,7 @@ namespace MultiplayerEmotes {
 		private void MultiplayerEmotesAvailable(string command, string[] args) {
 
 			if(!Context.IsMultiplayer) {
-				this.Monitor.Log($"You are not currently in a online session.", LogLevel.Info);
+				this.Monitor.Log("You are not currently in a online session.", LogLevel.Info);
 				return;
 			}
 
@@ -224,7 +221,7 @@ namespace MultiplayerEmotes {
 			int numPlayers = Game1.getOnlineFarmers().Count - 1;
 
 			if(numPlayers <= 0) {
-				this.Monitor.Log($"No players connected in the current session.", LogLevel.Info);
+				this.Monitor.Log("No players connected in the current session.", LogLevel.Info);
 				return;
 			}
 

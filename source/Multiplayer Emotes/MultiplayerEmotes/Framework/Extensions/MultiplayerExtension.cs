@@ -12,28 +12,32 @@ namespace MultiplayerEmotes.Extensions {
 
 	public static class MultiplayerExtension {
 
-		public static void BroadcastEmote(this Multiplayer multiplayer, int emoteIndex, Character character = null) {
+		public static void BroadcastEmote(this Multiplayer multiplayer, int emoteIndex, Character character) {
 
-			if(Game1.IsMultiplayer) {
+			if (!Game1.IsMultiplayer) {
+				return;
+			}
 
-				EmoteMessage message = new EmoteMessage {
-					EmoteIndex = emoteIndex
-				};
+			EmoteMessage message = new EmoteMessage {
+				EmoteIndex = emoteIndex
+			};
 
-				if(character is Farmer farmer) {
+			switch (character) {
+				case Farmer farmer:
 					message.EmoteSourceId = farmer.UniqueMultiplayerID.ToString();
 					message.EmoteSourceType = CharacterType.Farmer;
-				} else if(character is NPC npc) {
+					break;
+				case NPC npc:
 					message.EmoteSourceId = npc.Name;
 					message.EmoteSourceType = CharacterType.NPC;
-				} else if(character is FarmAnimal farmAnimal) {
+					break;
+				case FarmAnimal farmAnimal:
 					message.EmoteSourceId = farmAnimal.myID.Value.ToString();
 					message.EmoteSourceType = CharacterType.FarmAnimal;
-				}
-
-				ModEntry.MultiplayerMessage.Send(message);
-
+					break;
 			}
+
+			ModEntry.MultiplayerMessage.Send(message);
 
 		}
 

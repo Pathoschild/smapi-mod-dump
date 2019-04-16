@@ -1,0 +1,9 @@
+{
+    "news-feed.birthday-notice": "Oggi è il compleanno di {{npcName}}. Non dimenticare il regalo!",
+    "news-feed.harvest-items-found-in-location-notice": "Ci sono {{numberOfItems}} cose da raccogliere presso {{locationName}}!",
+    "news-feed.harvest-animals-found-in-location-notice.singular": "1 animale ha prodotto qualcosa presso {{locationName}}!",
+    "news-feed.harvest-animals-found-in-location-notice.plural": "{{numberOfItems}} animali hanno prodotto qualcosa presso {{locationName}}!",
+    "news-feed.bats-dropped-fruit-notice": "I pipistrelli ti hanno portato della frutta!",
+    "news-feed.cave-display-name": "Caverna della fattoria",
+    "news-feed.silo-low-notice": "I tuoi sili sono quasi vuoti ({{piecesOfHay}}/{{maxCapacity}})"
+}

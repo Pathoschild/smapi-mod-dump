@@ -8,6 +8,7 @@ using StardewModdingAPI;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Framework;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using xTile;
 using xTile.Layers;
 using xTile.Tiles;
@@ -20,51 +21,41 @@ namespace BeyondTheValley
 {
     class ModEntry : Mod, IAssetLoader
     {
+        /*********
+        ** Fields
+        *********/
+        public ITranslationHelper i18n;
+
         /* content pack replacement */
         /// <summary> content pack replaces Farm </summary>
-        public bool replaceFarm = false;
+        private bool replaceFarm = false;
         /// <summary> content pack replaces Farm </summary>
-        public bool replaceFarm_Foraging = false;
-
-        public GameLocation Farm_Foraging = Game1.getLocationFromName("Farm_Foraging");
+        private bool replaceFarm_Foraging = false;
 
         /* other */
         private bool tileRemoved;
+        private bool axeNotEquipped;
+        private bool axeUnderLeveled;
+
+        /// <summary> All layer values accepted </summary>
+        private string[] layerValues = { "Back", "Buildings", "Front", "AlwaysFront" };
+        /// <summary> How many Content Packs are installed </summary>
+        private int contentPacksInstalled;
 
         /// <summary> CopperAxeDeletedTiles model </summary>
         private SaveDeletedTilesModel _saveDeletedTiles;
         /// <summary> Retrieve multiplayer message of deleted tiles </summary>
         private List<string> mpInputArgs = new List<string>();
 
-        private string[] layerValues =  { "Back", "Buildings", "Front", "AlwaysFront" };
-
+        /*********
+        ** Entry
+        *********/
         public override void Entry(IModHelper helper)
         {
-            /* --------- Content Packs ------------ */
-            foreach (IContentPack contentPack in this.Helper.ContentPacks.GetOwned())
-            {
-                bool contentFileExists = File.Exists(Path.Combine(contentPack.DirectoryPath, "content.json"));
+            this.i18n = helper.Translation;
 
-                ContentPackModel cPack = contentPack.ReadJsonFile<ContentPackModel>("content.json");
-                this.Monitor.Log($"Reading: {contentPack.Manifest.Name} {contentPack.Manifest.Version} by {contentPack.Manifest.Author} from {contentPack.DirectoryPath} (ID: {contentPack.Manifest.UniqueID})", LogLevel.Trace);
-
-                if (!contentFileExists)
-                    this.Monitor.Log($"{contentPack.Manifest.Name}({contentPack.Manifest.Version}) by {contentPack.Manifest.Author} is missing a content.json file. Mod will be ignored", LogLevel.Warn);
-
-                foreach (ReplaceFileModel contentPackEdit in cPack.ReplaceFiles)
-                {
-                    this.Monitor.Log($"Replacing {contentPackEdit.ReplaceFile} with {contentPackEdit.FromFile}", LogLevel.Trace);
-
-                    /* Check if content pack replaces one of the following files */
-                    /// <summary> If content pack replaces Farm/Standard Farm </summary>
-                    if (contentPackEdit.ReplaceFile == "assets/Maps/FarmMaps/Farm.tbin")
-                        replaceFarm = true;
-                    /// <summary> If content pack
-                    if (contentPackEdit.ReplaceFile == "assets/Maps/FarmMaps/Farm_Foraging.tbin")
-                        replaceFarm_Foraging = true;
-                }
-            }
-            //--------------------------------------//
+            /* other methods */
+            ContentPackData();
 
             /* Helper Events */
             helper.Events.GameLoop.SaveLoaded += this.SaveLoaded;
@@ -73,14 +64,67 @@ namespace BeyondTheValley
             helper.Events.Input.ButtonPressed += this.ButtonPressed;
         }
 
+        /*********
+        ** Content API crap
+        *********/
+
+        private void ContentPackData()
+        {
+            foreach (IContentPack contentPack in this.Helper.ContentPacks.GetOwned())
+            {
+                // bool for if content.json exists
+                bool contentFileExists = File.Exists(Path.Combine(contentPack.DirectoryPath, "content.json"));
+
+                //read content packs
+                ContentPackModel pack = contentPack.ReadJsonFile<ContentPackModel>("content.json");
+                this.Monitor.Log($"Reading: {contentPack.Manifest.Name} {contentPack.Manifest.Version} by {contentPack.Manifest.Author} from {contentPack.DirectoryPath} (ID: {contentPack.Manifest.UniqueID})", LogLevel.Trace);
+
+                // if content.json does not exists
+                if (!contentFileExists)
+                    this.Monitor.Log($"{contentPack.Manifest.Name}({contentPack.Manifest.Version}) by {contentPack.Manifest.Author} is missing a content.json file. Mod will be ignored", LogLevel.Warn);
+
+                // if content.json exists
+                else if (contentFileExists)
+                    contentPacksInstalled += 1;
+
+                foreach (BVEEditModel edit in pack.ReplaceFiles)
+                {
+                    this.Monitor.Log($"Replacing {edit.ReplaceFile} with {edit.FromFile}", LogLevel.Trace);
+                    /* Check if content pack replaces one of the following files */
+                    /// <summary> 
+                    /// If content pack replaces Farm/Standard Farm 
+                    /// </summary>
+                    if (edit.ReplaceFile == "assets/Maps/FarmMaps/Farm.tbin")
+                    {
+                        contentPack.LoadAsset<Map>(edit.FromFile);
+                        replaceFarm = true;
+                        continue;
+                    }
+
+                    /// <summary> 
+                    /// If content pack replaces Farm_Combat/Wilderness Farm 
+                    /// </summary>
+                    if (edit.ReplaceFile == "assets/Maps/FarmMaps/Farm_Foraging.tbin")
+                    {
+                        contentPack.LoadAsset<Map>(edit.FromFile);
+                        replaceFarm_Foraging = true;
+                        continue;
+                    }
+                }
+            }
+        }
+
         public bool CanLoad<T>(IAssetInfo asset)
         {
             // Standard Farm/Farm
-            if (asset.AssetNameEquals(@"Maps/Farm"))
+            if (asset.AssetNameEquals("Maps/Farm"))
                 return true;
 
+            if (asset.AssetNameEquals("Maps/Farm_Combat"))
+                return true;
 
-            throw new FileNotFoundException();
+            else
+                return false;
         }
 
         public T Load<T>(IAssetInfo asset)
@@ -89,16 +133,18 @@ namespace BeyondTheValley
             if (!replaceFarm && asset.AssetNameEquals("Maps/Farm"))
                 return this.Helper.Content.Load<T>("assets/Maps/FarmMaps/Farm.tbin");
 
-            else if (!replaceFarm_Foraging && asset.AssetNameEquals("Maps/Farm_Foraging"))
-                return this.Helper.Content.Load<T>("assets/Map/FarmMaps/Farm_Foraging.tbin");
-
             else
                 return this.Helper.Content.Load<T>("assets/Maps/FarmMaps/Farm_Combat.tbin");
         }
 
         private void SaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            _saveDeletedTiles = this.Helper.Data.ReadSaveData<SaveDeletedTilesModel>("CopperAxe.DeletedTiles") ?? new SaveDeletedTilesModel();
+            if (!Context.IsWorldReady)
+                return;
+
+            this.Monitor.Log($"{contentPacksInstalled} content packs installed for Beyond the Valley");
+
+            _saveDeletedTiles = this.Helper.Data.ReadSaveData<SaveDeletedTilesModel>("DeletedTiles") ?? new SaveDeletedTilesModel();
 
             // if there are any tiles needed to be deleted
             if (_saveDeletedTiles.inputArgs != null)
@@ -124,9 +170,8 @@ namespace BeyondTheValley
             if (!Context.IsWorldReady)
                 return;
 
-            /********************
-            Mult*/
-            if (tileRemoved == true)
+            /* --- (Multiplayer) sync deleted tiles from tile actions --- */
+            if (tileRemoved == true && !Context.IsMainPlayer)
             {
                 foreach (string input in mpInputArgs)
                 {
@@ -156,14 +201,14 @@ namespace BeyondTheValley
             }
         }
 
-        public void ButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
 
-            /********************** 
-             **Custom Tile Actions 
-             **********************/
+            // Custom \\
+             // Tile \\
+            // Actions \\
             if (e.Button.IsActionButton())
             {
                 // grabs player's cursor xy coords
@@ -173,38 +218,152 @@ namespace BeyondTheValley
 
                 if (tileAction != null)
                 {
-                    /* Action | CopperAxe (coordX) (coordY) (strLayer) */
-                    /// <summary> If interacted with your Copper axe(+) equipped, it will remove the following tiles on that layer, separate with '/' delimiter </summary>
-                    if (tileAction.StartsWith("CopperAxe "))
+                    // --- General Tile Actions ---
+                    // ----------------------------
+
+                    /// <summary> 
+                    /// Action | BVEMessage (strMessage)
+                    /// If interacted, prints out a message from the i18n key 
+                    /// </summary>
+                    if (tileAction.StartsWith("BVEMessage "))
                     {
+                        string[] input = tileAction.Split(' ').Skip(1).ToArray();
+
+                        // get's strMessage
+                        string strMessage = i18n.Get(input[0]);
+
+                        //print's message out
+                        Game1.drawObjectDialogue(strMessage);
+                    }
+
+                    // --- Delete Tiles Actions --- 
+                    // ---------------------------- 
+
+                    /// <summary>
+                    /// Action | BVECopperAxe (coordX) (coordY) (strLayer)
+                    /// If interacted with your Copper axe(+) equipped, it will remove the following tiles on that layer, separate with '/' delimiter 
+                    /// </summary>
+                    if (tileAction.StartsWith("BVECopperAxe "))
+                    {
+                        // process to get the first word in the current tile action
+                        string[] fullString = tileAction.Split(' ').ToArray();
+                        string currentAction = fullString[0];
+                            
                         if (Game1.player.CurrentTool is Axe)
                         {
                             /* --- copper axe or better required --- */
                             if (Game1.player.CurrentTool.UpgradeLevel >= 1)
                             {
                                 // skips first word (CopperAxe)
-                                string arguments = String.Join(" ", tileAction.Split(' ').Skip(1));
+                                string arguments = string.Join(" ", tileAction.Split(' ').Skip(1));
 
                                 // perform deleting tiles
-                                this.DeletedTilesAction(arguments);
+                                DeletedTilesAction(arguments, currentAction);
                             }
 
                             // does not have copper axe or better
                             else
-                                Game1.drawObjectDialogue("It seems like I'll need a better axe first");
+                            {
+                                axeUnderLeveled = true;
+                                FailedTileActionState();
+                            }
                         }
 
                         // does not have axe equipped
                         else
-                            Game1.drawObjectDialogue("It seems like I can interact with this if my axe is equipped");
+                        {
+                            axeNotEquipped = true;
+                            FailedTileActionState();
+                        }
                     }
                 }
 
-                /* Action | IridiumAxe (coordX) (coordY) (strLayer) */
-                /// <summary> If interacted with your Iridium axe(+) equipped, it will remove the following tiles on that layer, separate with '/' delimiter </summary>
-                /// unfinished
-                if (tileAction.StartsWith("IridiumAxe "))
+                /// <summary> 
+                /// Action | BVESteel Axe (coordX) (coordY) (strLayer
+                /// If interacted with your Steel axe(+) equipped, it will remove the following tiles on that layer, separate with '/' delimiter 
+                /// </summary>
+                if (tileAction.StartsWith("BVESteelAxe "))
                 {
+                    // process to get the first word in the current tile action
+                    string[] fullString = tileAction.Split(' ').ToArray();
+                    string currentAction = fullString[0];
+
+                    if (Game1.player.CurrentTool is Axe)
+                    {
+                        /* --- steel axe or better required --- */
+                        if (Game1.player.CurrentTool.UpgradeLevel >= 2)
+                        {
+                            // skips first word (SteelAxe)
+                            string arguments = string.Join(" ", tileAction.Split(' ').Skip(1));
+
+                            // perform deleting tiles
+                            DeletedTilesAction(arguments, currentAction);
+                        }
+
+                        // does not have steel axe
+                        else
+                        {
+                            axeUnderLeveled = true;
+                            FailedTileActionState();
+                        }
+                    }
+
+                    // does not have axe equipped
+                    else
+                    {
+                        axeNotEquipped = true;
+                        FailedTileActionState();
+                    }
+                }
+
+                /// <summary> 
+                /// Action | BVEGold Axe (coordX) (coordY) (strLayer)
+                /// If interacted with your Gold axe(+) equipped, it will remove the following tiles on that layer, separate with '/' delimiter 
+                /// </summary>
+                if (tileAction.StartsWith("BVEGoldAxe "))
+                {
+                    // process to get the first word in the current tile action
+                    string[] fullString = tileAction.Split(' ').ToArray();
+                    string currentAction = fullString[0];
+
+                    if (Game1.player.CurrentTool is Axe)
+                    {
+                        /* --- steel axe or better required --- */
+                        if (Game1.player.CurrentTool.UpgradeLevel >= 2)
+                        {
+                            // skips first word (SteelAxe)
+                            string arguments = string.Join(" ", tileAction.Split(' ').Skip(1));
+
+                            // perform deleting tiles
+                            DeletedTilesAction(arguments, currentAction);
+                        }
+
+                        // does not have steel axe
+                        else
+                        {
+                            axeUnderLeveled = true;
+                            FailedTileActionState();
+                        }
+                    }
+
+                    // does not have axe equipped
+                    else
+                    {
+                        axeNotEquipped = true;
+                        FailedTileActionState();
+                    }
+                }
+
+                /// <summary> 
+                /// Action | BVEIridiumAxe (coordX) (coordY) (strLayer)
+                /// If interacted with your Iridium axe(+) equipped, it will remove the following tiles on that layer, separate with '/' delimiter 
+                /// </summary>
+                if (tileAction.StartsWith("BVEIridiumAxe "))
+                { 
+                    // process to get the first word in the current tile action
+                    string[] fullString = tileAction.Split(' ').ToArray();
+                    string currentAction = fullString[0];
+
                     if (Game1.player.CurrentTool is Axe)
                     {
                         /* --- iridium axe or better required --- */
@@ -214,21 +373,28 @@ namespace BeyondTheValley
                             string arguments = String.Join(" ", tileAction.Split(' ').Skip(1));
 
                             // perform deleting tiles
-                            this.DeletedTilesAction(arguments);
+                            DeletedTilesAction(arguments, currentAction);
                         }
 
+                        // does not have iridium axe
                         else
-                            Game1.drawObjectDialogue("It seems like I'll need a better axe first");
+                        {
+                            axeUnderLeveled = true;
+                            FailedTileActionState();
+                        }
                     }
 
                     // does not have axe equipped
                     else
-                        Game1.drawObjectDialogue("It seems like I can interact with this if my axe is equipped");
+                    {
+                        axeNotEquipped = true;
+                        FailedTileActionState();
+                    }
                 }
             }
         }
 
-        private void DeletedTilesAction(string arguments)
+        private void DeletedTilesAction(string arguments, string currentAction)
         {
             foreach (string[] arg in arguments.Split('/').Select(item => item.Split(' ')))
             {
@@ -238,14 +404,14 @@ namespace BeyondTheValley
                 if (!int.TryParse(arg[0], out int tileX)) // get tile's X coordinate
                 {
                     parseError = true;
-                    this.Monitor.Log("[Action CopperAxe] Error parsing first argument as an integer", LogLevel.Error);
+                    this.Monitor.Log($"[Action {currentAction}]Error parsing first argument as an integer", LogLevel.Error);
                     continue;
                 }
 
                 if (!int.TryParse(arg[1], out int tileY)) // get tile's Y coordinate
                 {
                     parseError = true;
-                    this.Monitor.Log("[Action CopperAxe] Error parsing second argument as an integer", LogLevel.Error);
+                    this.Monitor.Log($"[Action {currentAction}]Error parsing second argument as an integer", LogLevel.Error);
                     continue;
                 }
 
@@ -259,7 +425,7 @@ namespace BeyondTheValley
                     string value = string.Join(", ", layerValues);
 
                     parseError = true;
-                    this.Monitor.Log($"The specified layer(\"{strLayer}\") for 'Action CopperAxe' is not valid. Eligible values: \"{layerValues}\". The TileAction will not work", LogLevel.Error);
+                    this.Monitor.Log($"The specified layer(\"{strLayer}\") for a [Action {currentAction}] is not valid. Eligible values: \"{value}\". The TileAction will not work", LogLevel.Error);
                 }
 
                 // success state
@@ -269,19 +435,36 @@ namespace BeyondTheValley
                     Game1.player.currentLocation.removeTile(tileX, tileY, strLayer);
 
                     // write deleted file data to save files
-                    this.Helper.Data.WriteSaveData("CopperAxe.DeletedTiles", _saveDeletedTiles);
+                    this.Helper.Data.WriteSaveData("DeletedTiles", _saveDeletedTiles);
                     _saveDeletedTiles.inputArgs.Add(Convert.ToString(tileX) + " " + Convert.ToString(tileY) + " " + strLayer + " " + currentGameLocation);
 
                     // send multiplayer message
                     this.Helper.Multiplayer.SendMessage(_saveDeletedTiles.inputArgs, "DeletedTiles");
-
-                    Game1.drawObjectDialogue("Success");
-                    this.Monitor.Log($"Action CopperAxe, removed the tile on [{tileX}, {tileY}] from the {strLayer} Layer", LogLevel.Trace);
+                    Game1.drawObjectDialogue(i18n.Get("tileaction-success.1"));
+                    this.Monitor.Log($"[Action {currentAction}] removed the tile on [{tileX}, {tileY}] from the {strLayer} Layer", LogLevel.Trace);
 
                     // check if tile was removed bool
                     tileRemoved = true;
                 }
             }
         }
+
+        private void FailedTileActionState()
+        {
+            /* --- Axe Deleted Tiles --- */
+            /// <summary> Axe is not equipped </summary>
+            if (axeNotEquipped)
+            {
+                Game1.drawObjectDialogue(i18n.Get("tileaction-axe.1"));
+                axeNotEquipped = false;
+            }
+
+            /// <summary> Axe is under leveled/does not meet requirement </summary>
+            if (axeUnderLeveled)
+            {
+                Game1.drawObjectDialogue(i18n.Get("tileaction-axe.2"));
+                axeUnderLeveled = false;
+            }
+        } 
     }
 }

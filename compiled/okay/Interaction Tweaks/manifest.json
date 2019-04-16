@@ -1,0 +1,11 @@
+﻿{
+  "Name": "InteractionTweaks",
+  "Author": "jahangmar",
+  "Version": "1.1.1", // fixed locally
+  "Description": "Allows eating of multiple items, improves some menus, and more.",
+    "UniqueID": "jahangmar.InteractionTweaks",
+  "MinimumApiVersion": "2.10.0",
+    "EntryDll": "InteractionTweaks.dll",
+  "Dependencies": [],
+  "UpdateKeys": ["Nexus:3771"]
+}

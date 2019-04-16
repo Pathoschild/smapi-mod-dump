@@ -5,9 +5,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 7dca4ef02125f9857ca0a013cde978a018ae78c4
+   commit 435c354bf6f17205245f80e5e1aa5e53d5e8b28c
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Fri Feb 15 10:58:21 2019 -0600
+   Date:   Mon Apr 15 08:25:10 2019 -0500
    
-       Increment version number
+       fix #7, tweak trace message phrase
    

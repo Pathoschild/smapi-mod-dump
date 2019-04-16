@@ -1,0 +1,7 @@
+{
+  "Passthrough_Lamps": true,
+  "Passthrough_Braziers": true,
+  "Passthrough_Chests": false,
+  "Passthrough_BigObjects": false,
+  "Passthrough_Normal": false
+}

@@ -18,11 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 4c37e3c068095efe59500a3fb27f080e20831121
+   commit a644c947946d99726094de2caa6372bef7a97585
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Apr 7 12:31:19 2019 -0400
+   Date:   Wed Apr 10 20:39:51 2019 -0400
    
-       update Chinese translations, update docs
-       
-       Thanks to binxhlin in the mod-translations repo!
+       update for machine changes (#403)
    

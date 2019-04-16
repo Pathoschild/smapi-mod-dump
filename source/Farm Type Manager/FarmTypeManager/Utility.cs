@@ -276,12 +276,11 @@ namespace FarmTypeManager
         /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
         public static void SpawnOre(string oreName, string mapName, Vector2 tile)
         {
-            Random rng = new Random();
             StardewValley.Object ore = null; //ore object, to be spawned into the world later
             switch (oreName.ToLower()) //avoid any casing issues in method calls by making this lower-case
             {
                 case "stone":
-                    ore = new StardewValley.Object(tile, 668 + (rng.Next(2) * 2), 1); //either of the two random stones spawned in the vanilla hilltop quarry
+                    ore = new StardewValley.Object(tile, 668 + (RNG.Next(2) * 2), 1); //either of the two random stones spawned in the vanilla hilltop quarry
                     ore.MinutesUntilReady = 2; //durability, i.e. number of hits with basic pickaxe required to break the ore (each pickaxe level being +1 damage)
                     break;
                 case "geode":
@@ -297,7 +296,7 @@ namespace FarmTypeManager
                     ore.MinutesUntilReady = 8; //TODO: replace this guess w/ actual vanilla durability
                     break;
                 case "gem":
-                    ore = new StardewValley.Object(tile, (rng.Next(7) + 1) * 2, "Stone", true, false, false, false); //any of the possible gem rocks
+                    ore = new StardewValley.Object(tile, (RNG.Next(7) + 1) * 2, "Stone", true, false, false, false); //any of the possible gem rocks
                     ore.MinutesUntilReady = 5; //based on "gemstone" durability, but applies to every type for simplicity's sake
                     break;
                 case "copper":
@@ -404,8 +403,7 @@ namespace FarmTypeManager
         /// <returns>The final number of objects to spawn today in the current spawning process.</returns>
         public static int AdjustedSpawnCount(int min, int max, int percent, Utility.Skills skill)
         {
-            Random rng = new Random(); //DEVNOTE: "Game1.random" exists, but causes some odd spawn behavior; using this for now...
-            int spawnCount = rng.Next(min, max + 1); //random number from min to max (higher number is exclusive, so +1 to adjust for it)
+            int spawnCount = RNG.Next(min, max + 1); //random number from min to max (higher number is exclusive, so +1 to adjust for it)
 
             //calculate skill multiplier bonus
             double skillMultiplier = percent;
@@ -422,7 +420,7 @@ namespace FarmTypeManager
             spawnCount = (int)skillMultiplier; //store the integer portion of the current multiplied value (e.g. this is "1" if the multiplier is "1.7")
             double remainder = skillMultiplier - (int)skillMultiplier; //store the decimal portion of the multiplied value (e.g. this is "0.7" if the multiplier is "1.7")
 
-            if (rng.NextDouble() < remainder) //use remainder as a % chance to spawn one extra object (e.g. if the final count would be "1.7", there's a 70% chance of spawning 2 objects)
+            if (RNG.NextDouble() < remainder) //use remainder as a % chance to spawn one extra object (e.g. if the final count would be "1.7", there's a 70% chance of spawning 2 objects)
             {
                 spawnCount++;
             }
@@ -494,9 +492,13 @@ namespace FarmTypeManager
         /// <returns>True if objects are allowed to spawn. False if any extra conditions should prevent spawning.</returns>
         public static bool CheckExtraConditions(SpawnArea area)
         {
+            Monitor.Log($"Checking extra conditions for the {area.MapName} area...", LogLevel.Trace);
+
             //check years
             if (area.ExtraConditions.Years != null && area.ExtraConditions.Years.Length > 0)
             {
+                Monitor.Log("Years condition(s) found. Checking...", LogLevel.Trace);
+
                 bool validYear = false;
 
                 foreach (string year in area.ExtraConditions.Years)
@@ -506,7 +508,7 @@ namespace FarmTypeManager
                         if (year.Equals("All", StringComparison.OrdinalIgnoreCase) || year.Equals("Any", StringComparison.OrdinalIgnoreCase)) //if "all" or "any" is listed
                         {
                             validYear = true;
-                            break; //skip the rest of the "day" checks
+                            break; //skip the rest of the "year" checks
                         }
                         else if (year.Contains("+")) //contains a plus, so parse it as a single year & any years after it, e.g. "2+"
                         {
@@ -548,8 +550,13 @@ namespace FarmTypeManager
                     }
                 }
 
-                    if (validYear != true)
+                if (validYear)
                 {
+                    Monitor.Log("The current year matched a setting. Spawn allowed.", LogLevel.Trace);
+                }
+                else
+                {
+                    Monitor.Log("The current year did NOT match any settings. Spawn disabled.", LogLevel.Trace);
                     return false;
                 }
             }
@@ -557,6 +564,8 @@ namespace FarmTypeManager
             //check seasons
             if (area.ExtraConditions.Seasons != null && area.ExtraConditions.Seasons.Length > 0)
             {
+                Monitor.Log("Seasons condition(s) found. Checking...", LogLevel.Trace);
+
                 bool validSeason = false;
 
                 foreach (string season in area.ExtraConditions.Seasons)
@@ -573,8 +582,13 @@ namespace FarmTypeManager
                     }
                 }
 
-                if (validSeason != true) //if no valid listing for the current season was found
+                if (validSeason)
                 {
+                    Monitor.Log("The current season matched a setting. Spawn allowed.", LogLevel.Trace);
+                }
+                else
+                {
+                    Monitor.Log("The current season did NOT match any settings. Spawn disabled.", LogLevel.Trace);
                     return false; //prevent spawning
                 }
             }
@@ -582,6 +596,8 @@ namespace FarmTypeManager
             //check days
             if (area.ExtraConditions.Days != null && area.ExtraConditions.Days.Length > 0)
             {
+                Monitor.Log("Days condition(s) found. Checking...", LogLevel.Trace);
+
                 bool validDay = false;
 
                 foreach (string day in area.ExtraConditions.Days)
@@ -633,8 +649,13 @@ namespace FarmTypeManager
                     }
                 }
 
-                if (validDay != true) //if no valid listing for the current day was found
+                if (validDay)
                 {
+                    Monitor.Log("The current day matched a setting. Spawn allowed.", LogLevel.Trace);
+                }
+                else
+                {
+                    Monitor.Log("The current day did NOT match any settings. Spawn disabled.", LogLevel.Trace);
                     return false; //prevent spawning
                 }
             }
@@ -642,6 +663,8 @@ namespace FarmTypeManager
             //check yesterday's weather
             if (area.ExtraConditions.WeatherYesterday != null && area.ExtraConditions.WeatherYesterday.Length > 0)
             {
+                Monitor.Log("Yesterday's Weather condition(s) found. Checking...", LogLevel.Trace);
+
                 bool validWeather = false;
 
                 foreach (string weather in area.ExtraConditions.WeatherYesterday) //for each listed weather name
@@ -694,8 +717,14 @@ namespace FarmTypeManager
                     }
                 }
 
-                if (validWeather != true) //if no valid listing for yesterday's weather was found
+
+                if (validWeather)
                 {
+                    Monitor.Log("Yesterday's weather matched a setting. Spawn allowed.", LogLevel.Trace);
+                }
+                else
+                {
+                    Monitor.Log("Yesterday's weather did NOT match any settings. Spawn disabled.", LogLevel.Trace);
                     return false; //prevent spawning
                 }
             }
@@ -703,6 +732,8 @@ namespace FarmTypeManager
             //check today's weather
             if (area.ExtraConditions.WeatherToday != null && area.ExtraConditions.WeatherToday.Length > 0)
             {
+                Monitor.Log("Today's Weather condition(s) found. Checking...", LogLevel.Trace);
+
                 bool validWeather = false;
 
                 foreach (string weather in area.ExtraConditions.WeatherToday) //for each listed weather name
@@ -754,8 +785,13 @@ namespace FarmTypeManager
                     }
                 }
 
-                if (validWeather != true) //if no valid listing for today's weather was found
+                if (validWeather)
                 {
+                    Monitor.Log("Today's weather matched a setting. Spawn allowed.", LogLevel.Trace);
+                }
+                else
+                {
+                    Monitor.Log("Today's weather did NOT match any settings. Spawn disabled.", LogLevel.Trace);
                     return false; //prevent spawning
                 }
             }
@@ -763,6 +799,8 @@ namespace FarmTypeManager
             //check tomorrow's weather
             if (area.ExtraConditions.WeatherTomorrow != null && area.ExtraConditions.WeatherTomorrow.Length > 0)
             {
+                Monitor.Log("Tomorrow's Weather condition(s) found. Checking...", LogLevel.Trace);
+
                 bool validWeather = false;
 
                 foreach (string weather in area.ExtraConditions.WeatherTomorrow) //for each listed weather name
@@ -815,8 +853,13 @@ namespace FarmTypeManager
                     }
                 }
 
-                if (validWeather != true) //if no valid listing for yesterday's weather was found
+                if (validWeather)
                 {
+                    Monitor.Log("Tomorrow's weather matched a setting. Spawn allowed.", LogLevel.Trace);
+                }
+                else
+                {
+                    Monitor.Log("Tomorrow's weather did NOT match any settings. Spawn disabled.", LogLevel.Trace);
                     return false; //prevent spawning
                 }
             }
@@ -825,12 +868,15 @@ namespace FarmTypeManager
             //check number of spawns (NOTE: it's important that this is the last condition checked, because otherwise it might count down while not actually spawning (blocked by another condition)
             if (area.ExtraConditions.LimitedNumberOfSpawns != null)
             {
+                Monitor.Log("Limited Number Of Spawns condition found. Checking...", LogLevel.Trace);
                 if (area.ExtraConditions.LimitedNumberOfSpawns > 0) //still has spawns remaining
                 {
+                    Monitor.Log($"Spawns remaining: {area.ExtraConditions.LimitedNumberOfSpawns} (including today). Spawn allowed.", LogLevel.Trace);
                     area.ExtraConditions.LimitedNumberOfSpawns--; //decrement (note that it's necessary to save this update to the config file; this is done elsewhere)
                 }
                 else //no spawns remaining
                 {
+                    Monitor.Log($"Spawns remaining: {area.ExtraConditions.LimitedNumberOfSpawns}. Spawn disabled.", LogLevel.Trace);
                     return false; //prevent spawning
                 }
             }
@@ -881,6 +927,9 @@ namespace FarmTypeManager
 
         /// <summary>Data contained in the per-character configuration file, including various mod settings.</summary>
         public static FarmConfig Config { get; set; } = null;
+
+        /// <summary>Random number generator shared throughout the mod. Initialized automatically.</summary>
+        public static Random RNG { get; } = new Random();
 
         /// <summary>Enumerated list of player skills, in the order used by Stardew's internal code (e.g. Farmer.cs).</summary>
         public enum Skills { Farming, Fishing, Foraging, Mining, Combat, Luck }

@@ -1,102 +1,168 @@
-﻿using BetterDoors.Framework.ContentPacks;
-using BetterDoors.Framework.DoorGeneration;
+﻿using BetterDoors.Framework.DoorGeneration;
+using BetterDoors.Framework.Enums;
+using BetterDoors.Framework.Mapping.Properties;
 using BetterDoors.Framework.Utility;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewValley;
-using StardewValley.Buildings;
-using StardewValley.Locations;
 using System.Collections.Generic;
+using StardewModdingAPI;
+using xTile;
 using xTile.Layers;
 using xTile.ObjectModel;
 using xTile.Tiles;
 
 namespace BetterDoors.Framework.Mapping
 {
-    /// <summary>
-    /// Uses content packs and map data to actually create doors.
-    /// </summary>
+    /// <summary>Creates doors out of door definitions in maps.</summary>
     internal class DoorCreator
     {
-        private readonly IMonitor monitor;
-        private readonly CallbackTimer timer;
-        private readonly DoorSpriteGenerator generator;
+        /*********
+        ** Fields
+        *********/
+        /// <summary>Manages information about the tiles needed to draw doors.</summary>
+        private readonly GeneratedDoorTileInfoManager doorTileInfoManager;
 
-        public DoorCreator(IModHelper helper, IMonitor monitor, CallbackTimer timer)
+        /// <summary>Callback timer for door animations.</summary>
+        private readonly CallbackTimer timer;
+
+        /// <summary>Queues door definitions errors.</summary>
+        private readonly ErrorQueue errorQueue;
+
+        /// <summary>The loaded version of Better Doors.</summary>
+        private readonly ISemanticVersion modVersion;
+
+        /*********
+        ** Public methods
+        *********/
+        /// <summary>Construct an instance.</summary>
+        /// <param name="doorTileInfoManager">Manages information about the tiles needed to draw doors.</param>
+        /// <param name="timer">Callback timer for door animations.</param>
+        /// <param name="errorQueue">Error manager for reading door definitions from map files.</param>
+        public DoorCreator(GeneratedDoorTileInfoManager doorTileInfoManager, CallbackTimer timer, ErrorQueue errorQueue, ISemanticVersion modVersion)
         {
-            this.monitor = monitor;
+            this.doorTileInfoManager = doorTileInfoManager;
+            this.errorQueue = errorQueue;
             this.timer = timer;
-            this.generator = new DoorSpriteGenerator(helper.Content, this.monitor, Game1.graphics.GraphicsDevice);
+            this.modVersion = modVersion;
         }
 
-        public IDictionary<GameLocation, IList<Door>> FindAndCreateDoors(IList<LoadedContentPackDoorEntry> loadedDoorPacks)
+        /// <summary>Finds every door in a map.</summary>
+        /// <param name="map">The map to look in.</param>
+        /// <param name="pendingDoors">The doors that were found.</param>
+        /// <returns>Whether any doors were found.</returns>
+        public bool FindDoorsInLocation(Map map, out IList<PendingDoor> pendingDoors)
         {
-            // Generate different door types from the loaded content packs.
-            GeneratedSpriteManager manager = this.generator.GenerateDoorSprites(loadedDoorPacks);
+            pendingDoors = new List<PendingDoor>();
 
-            // Search for doors in all maps.
-            IDictionary<GameLocation, IList<Door>> foundDoors = new Dictionary<GameLocation, IList<Door>>();
-            foreach (GameLocation location in DoorCreator.GetAllLocations())
+            Layer backLayer = map?.GetLayer("Back");
+            if (backLayer == null)
             {
-                Layer backLayer = location?.Map.GetLayer("Back");
-                if (backLayer == null)
-                {
-                    continue;
-                }
-
-                IList<Door> doorsToAdd = new List<Door>();
-
-                for (int x = 0; x < backLayer.LayerWidth; x++)
-                {
-                    for (int y = 0; y < backLayer.LayerHeight; y++)
-                    {
-                        Tile tile = backLayer.Tiles[x, y];
-
-                        if (tile == null || !tile.Properties.TryGetValue("Door", out PropertyValue value))
-                        {
-                            continue;
-                        }
-
-                        // Parse and validate the door property.
-                        if (!MapDoorProperty.TryParseString(value, out string error, out MapDoorProperty property))
-                        {
-                            Utils.LogContentPackError(this.monitor, $"The tile property at {x} {y} is malformed. Info: {error}.");
-                            continue;
-                        }
-
-                        // Get the right door type to create.
-                        if (!manager.GetDoorSprite(property.ModId, property.DoorName, property.Orientation, property.OpeningDirection, out error, out GeneratedDoorTileInfo tileInfo))
-                        {
-                            Utils.LogContentPackError(this.monitor, $"The tile property at {x} {y} is invalid. Info: {error}.");
-                            continue;
-                        }
-
-                        // Finally, create a door at the given tile.
-                        doorsToAdd.Add(new Door(new Point(x, y), property.Orientation, location.Map, tileInfo, this.timer));
-                    }
-                }
-
-                if (doorsToAdd.Count != 0)
-                    foundDoors[location] = doorsToAdd;
+                return false;
             }
+
+            // Search for doors in the provided location.
+            bool foundDoors = false;
+
+            for (int x = 0; x < backLayer.LayerWidth; x++)
+            {
+                for (int y = 0; y < backLayer.LayerHeight; y++)
+                {
+                    Tile tile = backLayer.Tiles[x, y];
+
+                    if (tile == null)
+                    {
+                        continue;
+                    }
+
+                    // If there's no version property log an error if other properties are present.
+                    if (!tile.Properties.TryGetValue(MapDoorVersion.PropertyKey, out PropertyValue doorVersionValue))
+                    {
+                        if (tile.Properties.ContainsKey(MapDoor.PropertyKey) || tile.Properties.ContainsKey(MapDoorExtras.PropertyKey))
+                        {
+                            this.errorQueue.AddError($"The door at ({x},{y}) is malformed. Info: Missing a {MapDoorVersion.PropertyKey} property.");
+                        }
+
+                        continue;
+                    }
+
+                    // Log an error if the version is invalid.
+                    if(!MapDoorVersion.TryParseString(doorVersionValue.ToString(), out string error, out MapDoorVersion version))
+                    {
+                        this.errorQueue.AddError($"The {MapDoorVersion.PropertyKey} property at ({x},{y}) is malformed. Info: {error}.");
+                        continue;
+                    }
+
+                    if (version.PropertyVersion.IsNewerThan(this.modVersion))
+                    {
+                        this.errorQueue.AddError($"The door at ({x},{y}) is too new to be loaded ({version.PropertyVersion}). Please update Better Doors! ");
+                        continue;
+                    }
+
+                    // Log an error if the door property is missing.
+                    if (!tile.Properties.TryGetValue(MapDoor.PropertyKey, out PropertyValue doorValue))
+                    {
+                        this.errorQueue.AddError($"The door at ({x},{y}) is malformed. Info: No {MapDoor.PropertyKey} property was found.");
+                        continue;
+                    }
+
+                    // Log an error if the door property is invalid.
+                    if (!MapDoor.TryParseString(doorValue.ToString(), version.PropertyVersion, out error, out MapDoor property))
+                    {
+                        this.errorQueue.AddError($"The {MapDoor.PropertyKey} property at ({x},{y}) is malformed. Info: {error}.");
+                        continue;
+                    }
+
+                    // Log an error if the door extras property is present but invalid.
+                    MapDoorExtras extras = new MapDoorExtras();
+                    if (tile.Properties.TryGetValue(MapDoorExtras.PropertyKey, out PropertyValue doorExtraValue) && !MapDoorExtras.TryParseString(doorExtraValue.ToString(), version.PropertyVersion, out error, out extras))
+                    {
+                        this.errorQueue.AddError($"The {MapDoorExtras.PropertyKey} property at ({x},{y}) is malformed. Info: {error}.");
+                        continue;
+                    }
+
+                    // Log an error for invalid door and extras property combinations.
+                    if (property.Orientation == Orientation.Horizontal && extras.IsDoubleDoor)
+                    {
+                        this.errorQueue.AddError($"The door at ({x},{y}) is invalid. Info: Horizontal doors can't be double doors.");
+                        continue;
+                    }
+
+                    foundDoors = true;
+
+                    // Record sprite request.
+                    this.doorTileInfoManager.RegisterDoorRequest(property.ModId, property.DoorName, property.Orientation, property.OpeningDirection);
+
+                    // Mark door as pending.
+                    pendingDoors.Add(new PendingDoor(new Point(x, y), property, map, extras, this.timer));
+                }
+            }
+
+            this.errorQueue.PrintErrors("Found some errors when parsing doors from maps:");
 
             return foundDoors;
         }
 
-        private static IEnumerable<GameLocation> GetAllLocations()
+        /// <summary>Creates doors.</summary>
+        /// <param name="pendingDoors">The pending doors to use.</param>
+        /// <returns>The created doors.</returns>
+        public IList<Door> CreateDoors(IList<PendingDoor> pendingDoors)
         {
-            foreach (GameLocation location in Game1.locations)
-            {
-                yield return location;
+            IList<Door> foundDoors = new List<Door>();
 
-                if (!(location is BuildableGameLocation bLoc))
+            foreach (PendingDoor pendingDoor in pendingDoors)
+            {
+                // Get the right door type to create.
+                if (!this.doorTileInfoManager.GetGeneratedTileInfo(pendingDoor.Property.ModId, pendingDoor.Property.DoorName, pendingDoor.Property.Orientation, pendingDoor.Property.OpeningDirection, out string error, out GeneratedDoorTileInfo tileInfo))
                 {
+                    this.errorQueue.AddError($"The door at ({pendingDoor.Position.X},{pendingDoor.Position.Y}) is invalid. Info: {error}.");
                     continue;
                 }
 
-                foreach (Building building in bLoc.buildings)
-                    yield return building.indoors.Value;
+                foundDoors.Add(pendingDoor.ToDoor(tileInfo));
             }
+
+            this.errorQueue.PrintErrors("Found some errors when creating doors from maps:");
+
+            return foundDoors;
         }
     }
 }

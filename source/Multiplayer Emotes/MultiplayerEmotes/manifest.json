@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "Multiplayer Emotes",
 	"Author": "FerMod",
-	"Version": "1.0.0-beta.3",
+	"Version": "1.0.0-beta.4",
 	"MinimumApiVersion": "2.11",
 	"Description": "Allows you to do emotes using a draggable interface and to see other player, npc and farm animal emotes.",
 	"UniqueID": "FerMod.MultiplayerEmotes",

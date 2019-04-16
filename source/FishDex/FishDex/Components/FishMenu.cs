@@ -1,0 +1,341 @@
+﻿using FishDex.Helpers;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
+using StardewValley;
+using StardewValley.Menus;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using static FishDex.DataParser;
+using SObject = StardewValley.Object;
+
+namespace FishDex.Components
+{
+	/// <summary>A UI which shows information about fishes.</summary>
+	internal class FishMenu : IClickableMenu
+	{
+		/*********
+        ** Fields
+        *********/
+
+		private readonly IEnumerable<FishInfo> Fishes;
+
+		/// <summary>Encapsulates logging and monitoring.</summary>
+		private readonly IMonitor Monitor;
+
+		/// <summary>The aspect ratio of the page background.</summary>
+		private readonly Vector2 AspectRatio = new Vector2(Sprites.Letter.Sprite.Width, Sprites.Letter.Sprite.Height);
+
+		/// <summary>Simplifies access to private game code.</summary>
+		private readonly IReflectionHelper Reflection;
+
+		/// <summary>The amount to scroll long content on each up/down scroll.</summary>
+		private readonly int ScrollAmount;
+
+		/// <summary>The clickable 'scroll up' icon.</summary>
+		private readonly ClickableTextureComponent ScrollUpButton;
+
+		/// <summary>The clickable 'scroll down' icon.</summary>
+		private readonly ClickableTextureComponent ScrollDownButton;
+
+		/// <summary>The spacing around the scroll buttons.</summary>
+		private readonly int ScrollButtonGutter = 15;
+
+		/// <summary>The maximum pixels to scroll.</summary>
+		private int MaxScroll;
+
+		/// <summary>The number of pixels to scroll.</summary>
+		private int CurrentScroll;
+
+
+		/*********
+        ** Public methods
+        *********/
+		/****
+        ** Constructors
+        ****/
+		/// <summary>Construct an instance.</summary>
+		/// <param name="parser">Provides access to parsed fish data.</param>
+		/// <param name="monitor">Encapsulates logging and monitoring.</param>
+		/// <param name="reflectionHelper">Simplifies access to private game code.</param>
+		/// <param name="scroll">The amount to scroll long content on each up/down scroll.</param>
+		public FishMenu(DataParser parser, IMonitor monitor, IReflectionHelper reflectionHelper, int scroll)
+		{
+			// save data
+			this.Fishes = parser.GetFishData();
+			this.Monitor = monitor;
+			this.Reflection = reflectionHelper;
+			this.ScrollAmount = scroll;
+
+			// add scroll buttons
+			this.ScrollUpButton = new ClickableTextureComponent(Rectangle.Empty, Sprites.Icons.Sheet, Sprites.Icons.UpArrow, 1);
+			this.ScrollDownButton = new ClickableTextureComponent(Rectangle.Empty, Sprites.Icons.Sheet, Sprites.Icons.DownArrow, 1);
+
+			// update layout
+			this.UpdateLayout();
+		}
+
+		/****
+        ** Events
+        ****/
+		/// <summary>The method invoked when the player left-clicks on the lookup UI.</summary>
+		/// <param name="x">The X-position of the cursor.</param>
+		/// <param name="y">The Y-position of the cursor.</param>
+		/// <param name="playSound">Whether to enable sound.</param>
+		public override void receiveLeftClick(int x, int y, bool playSound = true)
+		{
+			this.HandleLeftClick(x, y);
+		}
+
+		/// <summary>The method invoked when the player right-clicks on the lookup UI.</summary>
+		/// <param name="x">The X-position of the cursor.</param>
+		/// <param name="y">The Y-position of the cursor.</param>
+		/// <param name="playSound">Whether to enable sound.</param>
+		public override void receiveRightClick(int x, int y, bool playSound = true) { }
+
+		/// <summary>The method invoked when the player scrolls the mouse wheel on the lookup UI.</summary>
+		/// <param name="direction">The scroll direction.</param>
+		public override void receiveScrollWheelAction(int direction)
+		{
+			if (direction > 0)    // positive number scrolls content up
+				this.ScrollUp();
+			else
+				this.ScrollDown();
+		}
+
+		/// <summary>The method called when the game window changes size.</summary>
+		/// <param name="oldBounds">The former viewport.</param>
+		/// <param name="newBounds">The new viewport.</param>
+		public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
+		{
+			this.UpdateLayout();
+		}
+
+		/// <summary>The method called when the player presses a controller button.</summary>
+		/// <param name="button">The controller button pressed.</param>
+		public override void receiveGamePadButton(Buttons button)
+		{
+			switch (button)
+			{
+				// left click
+				case Buttons.A:
+					Point p = Game1.getMousePosition();
+					this.HandleLeftClick(p.X, p.Y);
+					break;
+
+				// exit
+				case Buttons.B:
+					this.exitThisMenu();
+					break;
+
+				// scroll up
+				case Buttons.RightThumbstickUp:
+					this.ScrollUp();
+					break;
+
+				// scroll down
+				case Buttons.RightThumbstickDown:
+					this.ScrollDown();
+					break;
+			}
+		}
+
+		/****
+        ** Methods
+        ****/
+		/// <summary>Scroll up the menu content by the specified amount (if possible).</summary>
+		public void ScrollUp()
+		{
+			this.CurrentScroll -= this.ScrollAmount;
+		}
+
+		/// <summary>Scroll down the menu content by the specified amount (if possible).</summary>
+		public void ScrollDown()
+		{
+			this.CurrentScroll += this.ScrollAmount;
+		}
+
+		/// <summary>Handle a left-click from the player's mouse or controller.</summary>
+		/// <param name="x">The x-position of the cursor.</param>
+		/// <param name="y">The y-position of the cursor.</param>
+		public void HandleLeftClick(int x, int y)
+		{
+			// close menu when clicked outside
+			if (!this.isWithinBounds(x, y))
+				this.exitThisMenu();
+
+			// scroll up or down
+			else if (this.ScrollUpButton.containsPoint(x, y))
+				this.ScrollUp();
+			else if (this.ScrollDownButton.containsPoint(x, y))
+				this.ScrollDown();
+		}
+
+		/// <summary>Render the UI.</summary>
+		/// <param name="spriteBatch">The sprite batch being drawn.</param>
+		public override void draw(SpriteBatch spriteBatch)
+		{
+			this.Monitor.InterceptErrors("drawing the lookup info", () =>
+			{
+				// calculate dimensions
+				int x = this.xPositionOnScreen;
+				int y = this.yPositionOnScreen;
+				const int gutter = 15;
+				float leftOffset = gutter;
+				float topOffset = gutter;
+				float contentWidth = this.width - gutter * 2;
+				float contentHeight = this.height - gutter * 2;
+				int tableBorderWidth = 1;
+
+				// get font
+				SpriteFont font = Game1.smallFont;
+				float lineHeight = font.MeasureString("ABC").Y;
+				float spaceWidth = DrawHelper.GetSpaceWidth(font);
+
+				// draw background
+				// (This uses a separate sprite batch because it needs to be drawn before the
+				// foreground batch, and we can't use the foreground batch because the background is
+				// outside the clipping area.)
+				using (SpriteBatch backgroundBatch = new SpriteBatch(Game1.graphics.GraphicsDevice))
+				{
+					backgroundBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null);
+					backgroundBatch.DrawSprite(Sprites.Letter.Sheet, Sprites.Letter.Sprite, x, y, scale: this.width / (float)Sprites.Letter.Sprite.Width);
+					backgroundBatch.End();
+				}
+
+				// draw foreground
+				// (This uses a separate sprite batch to set a clipping area for scrolling.)
+				using (SpriteBatch contentBatch = new SpriteBatch(Game1.graphics.GraphicsDevice))
+				{
+					GraphicsDevice device = Game1.graphics.GraphicsDevice;
+					Rectangle prevScissorRectangle = device.ScissorRectangle;
+					try
+					{
+						// begin draw
+						device.ScissorRectangle = new Rectangle(x + gutter, y + gutter, (int)contentWidth, (int)contentHeight);
+						contentBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, new RasterizerState { ScissorTestEnable = true });
+
+						// scroll view
+						this.CurrentScroll = Math.Max(0, this.CurrentScroll); // don't scroll past top
+						this.CurrentScroll = Math.Min(this.MaxScroll, this.CurrentScroll); // don't scroll past bottom
+						topOffset -= this.CurrentScroll; // scrolled down == move text up
+
+						leftOffset += 72;
+						float wrapWidth = this.width - leftOffset - gutter;
+
+						{
+							int caught = 0;
+							foreach (var fish in this.Fishes)
+							{
+								if (fish.Caught)
+									caught++;
+							}
+
+							Vector2 caughtLabelSize = contentBatch.DrawTextBlock(font, $"Caught : ", new Vector2(x + leftOffset, y + topOffset), wrapWidth);
+							Vector2 caughtValueSize = contentBatch.DrawTextBlock(font, $"{caught}/{this.Fishes.Count()}", new Vector2(x + leftOffset + caughtLabelSize.X, y + topOffset), wrapWidth, bold: Game1.content.GetCurrentLanguage() != LocalizedContentManager.LanguageCode.zh);
+							topOffset += lineHeight * 4;
+						}
+
+						// draw fish info
+						foreach (FishInfo fish in this.Fishes)
+						{
+							// draw sprite
+							{
+								Item item = new SObject(fish.Id, 1);
+								item.drawInMenu(contentBatch, new Vector2(x + leftOffset, y + topOffset), 1f, 1f, 1f, false, fish.Caught ? Color.White : Color.Black * 0.2f, false);
+								topOffset += Game1.tileSize / 2 + spaceWidth;
+							}
+
+							// draw name
+							{
+								Vector2 nameSize = contentBatch.DrawTextBlock(font, $"{(fish.Caught? fish.Name : "???")}", new Vector2(x + leftOffset + Game1.tileSize + spaceWidth, y + topOffset), wrapWidth, bold: Game1.content.GetCurrentLanguage() != LocalizedContentManager.LanguageCode.zh);
+								topOffset += Game1.tileSize / 2 + spaceWidth;
+							}
+
+							// draw table
+							foreach (string key in fish.Data.Keys)
+							{
+								float cellPadding = 3;
+								float labelWidth = fish.Data.Keys.Max(p => font.MeasureString(p).X);
+								float valueWidth = wrapWidth - labelWidth - cellPadding * 4 - tableBorderWidth;
+
+								// draw label & value
+								Vector2 labelSize = contentBatch.DrawTextBlock(font, key, new Vector2(x + leftOffset + cellPadding, y + topOffset + cellPadding), wrapWidth);
+								Vector2 valuePosition = new Vector2(x + leftOffset + labelWidth + cellPadding * 3, y + topOffset + cellPadding);
+								Vector2 valueSize = contentBatch.DrawTextBlock(font, fish.Caught? fish.Data[key] : "???", valuePosition, valueWidth);
+								Vector2 rowSize = new Vector2(labelWidth + valueWidth + cellPadding * 4, Math.Max(labelSize.Y, valueSize.Y));
+
+								// draw table row
+								Color lineColor = Color.Gray;
+								contentBatch.DrawLine(x + leftOffset, y + topOffset, new Vector2(rowSize.X, tableBorderWidth), lineColor); // top
+								contentBatch.DrawLine(x + leftOffset, y + topOffset + rowSize.Y, new Vector2(rowSize.X, tableBorderWidth), lineColor); // bottom
+								contentBatch.DrawLine(x + leftOffset, y + topOffset, new Vector2(tableBorderWidth, rowSize.Y), lineColor); // left
+								contentBatch.DrawLine(x + leftOffset + labelWidth + cellPadding * 2, y + topOffset, new Vector2(tableBorderWidth, rowSize.Y), lineColor); // middle
+								contentBatch.DrawLine(x + leftOffset + rowSize.X, y + topOffset, new Vector2(tableBorderWidth, rowSize.Y), lineColor); // right
+
+								// update offset
+								topOffset += Math.Max(labelSize.Y, valueSize.Y);
+							}
+
+							// draw spacer
+							topOffset += lineHeight;
+						}
+
+						// update max scroll
+						this.MaxScroll = Math.Max(0, (int)(topOffset - contentHeight + this.CurrentScroll));
+
+						// draw scroll icons
+						if (this.MaxScroll > 0 && this.CurrentScroll > 0)
+							this.ScrollUpButton.draw(contentBatch);
+						if (this.MaxScroll > 0 && this.CurrentScroll < this.MaxScroll)
+							this.ScrollDownButton.draw(spriteBatch);
+
+						// end draw
+						contentBatch.End();
+					}
+					finally
+					{
+						device.ScissorRectangle = prevScissorRectangle;
+					}
+				}
+
+				// draw cursor
+				this.drawMouse(Game1.spriteBatch);
+			}, this.OnDrawError);
+		}
+
+
+		/*********
+        ** Private methods
+        *********/
+		/// <summary>Update the layout dimensions based on the current game scale.</summary>
+		private void UpdateLayout()
+		{
+			// update size
+			this.width = Math.Min(Game1.tileSize * 14, Game1.viewport.Width);
+			this.height = Math.Min((int)(this.AspectRatio.Y / this.AspectRatio.X * this.width), Game1.viewport.Height);
+
+			// update position
+			Vector2 origin = Utility.getTopLeftPositionForCenteringOnScreen(this.width, this.height);
+			this.xPositionOnScreen = (int)origin.X;
+			this.yPositionOnScreen = (int)origin.Y;
+
+			// update up/down buttons
+			int x = this.xPositionOnScreen;
+			int y = this.yPositionOnScreen;
+			int gutter = this.ScrollButtonGutter;
+			float contentHeight = this.height - gutter * 2;
+			this.ScrollUpButton.bounds = new Rectangle(x + gutter, (int)(y + contentHeight - Sprites.Icons.UpArrow.Height - gutter - Sprites.Icons.DownArrow.Height), Sprites.Icons.UpArrow.Height, Sprites.Icons.UpArrow.Width);
+			this.ScrollDownButton.bounds = new Rectangle(x + gutter, (int)(y + contentHeight - Sprites.Icons.DownArrow.Height), Sprites.Icons.DownArrow.Height, Sprites.Icons.DownArrow.Width);
+		}
+
+		/// <summary>The method invoked when an unhandled exception is intercepted.</summary>
+		/// <param name="ex">The intercepted exception.</param>
+		private void OnDrawError(Exception ex)
+		{
+			this.Monitor.InterceptErrors("handling an error in the lookup code", () => this.exitThisMenu());
+		}
+	}
+}

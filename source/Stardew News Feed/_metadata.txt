@@ -5,9 +5,9 @@ mods:
    Stardew News Feed
 
 latest commit:
-   commit b7adf3553d8d661150052610e86fbfff1e4cd36f
-   Author: Mike North <mikesnorth@gmail.com>
-   Date:   Sun Mar 10 09:48:18 2019 -0400
+   commit 9673cdcd206dccf0fc8c49afcede937affb3b378
+   Author: MikeNorth <mikesnorth@gmail.com>
+   Date:   Thu Apr 11 10:39:44 2019 -0400
    
-       include korean and french in solution
+       Adds credit to translators
    

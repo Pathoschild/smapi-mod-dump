@@ -191,7 +191,7 @@ namespace MultiplayerEmotes.Menus {
 		}
 
 		public override void clickAway() {
-			if(!this.IsOpen || !this.isWithinBounds(Game1.getMouseX(), Game1.getMouseY())) {
+			if(this.IsOpen && !this.isWithinBounds(Game1.getMouseX(), Game1.getMouseY())) {
 				Close();
 			}
 		}

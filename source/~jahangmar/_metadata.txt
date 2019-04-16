@@ -4,13 +4,14 @@ url:
 mods:
    Dismantle Craftables
    Don't Eat That
+   Interaction Tweaks
    Seeds are Rare
    Working Fireplace
 
 latest commit:
-   commit 951d17a9362e50b540148bcea69e7a5bd069d02f
+   commit 0f55ba9b7f3fee2a2d2e8d39c7612ab1402a5c2b
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Sat Apr 6 08:27:09 2019 +0200
+   Date:   Mon Apr 15 03:35:34 2019 +0200
    
-       WorkingFireplace v1.1.0
+       InteractionTweaks 1.1.1
    

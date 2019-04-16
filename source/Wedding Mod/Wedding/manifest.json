@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Wedding",
+    "Author": "Opalie",
+    "Version": "1.0.0",
+    "Description": "Changes the location of the wedding.",
+    "UniqueID": "Opalie.Wedding",
+    "EntryDll": "Wedding.dll",
+    "MinimumApiVersion": "2.10.0",
+    "UpdateKeys": [ "Nexus:3651" ]
+}

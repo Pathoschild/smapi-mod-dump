@@ -5,9 +5,9 @@ mods:
    Multiplayer Emotes
 
 latest commit:
-   commit 4c060401c7e63ccd5fa476b5d8c84090253a9d18
+   commit d703d4617f58b632c6be5a48fce47fcf0e7fdd04
    Author: Ferran Tudela <tudelaigarcia@gmail.com>
-   Date:   Tue Apr 2 10:01:07 2019 +0200
+   Date:   Fri Apr 12 18:24:02 2019 +0200
    
        Update release-notes.md
    

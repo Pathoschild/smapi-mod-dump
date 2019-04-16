@@ -2,7 +2,8 @@
 
 # Release notes
 ## Upcoming release
-* Improved translations. Thanks to binxhlin (updated Chinese)!
+* Updated for Stardew Valley 1.4.
+* Improved translations. Thanks to binxhlin (updated Chinese) and YSRyeol (updated Korean)!
 
 ## 1.16
 * Added owner's name to cabin categories.

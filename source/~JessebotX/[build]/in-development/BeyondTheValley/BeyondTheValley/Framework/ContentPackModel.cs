@@ -9,6 +9,8 @@ namespace BeyondTheValley.Framework
 {
     class ContentPackModel
     {
-        public ReplaceFileModel[] ReplaceFiles;
+        public List<BVEEditModel> ReplaceFiles { get; set; } = new List<BVEEditModel>();
+        public List<BVEEditModel> EditFiles { get; set; } = new List<BVEEditModel>();
+        public List<BVEEditModel> MapWarps { get; set; } = new List<BVEEditModel>();
     }
 }

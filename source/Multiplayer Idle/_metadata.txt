@@ -1,0 +1,13 @@
+url:
+   https://github.com/SourceZh/MultiplayerIdle.git
+
+mods:
+   Multiplayer Idle
+
+latest commit:
+   commit 06c1ede17a05ac498b5a68b8db39c05b63613303
+   Author: å¼ æ¡æº <zhangtongyuan.cpp@gmail.com>
+   Date:   Thu Apr 11 16:01:21 2019 +0800
+   
+       Add UpdateKeys
+   

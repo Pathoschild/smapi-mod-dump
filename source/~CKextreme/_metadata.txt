@@ -6,11 +6,9 @@ mods:
    Time Notifier
 
 latest commit:
-   commit a7d7a4ba7a288e572c6bcdc33c9599955878a09f
+   commit c0e95eb75f7a9a2f089b1ebb225323754f41ac65
    Author: CKextreme <CKextreme@users.noreply.github.com>
-   Date:   Sun Mar 31 21:22:47 2019 +0200
+   Date:   Sun Mar 31 22:04:29 2019 +0200
    
-       Made one Mod Solution
-       
-       Remove old single Repositorys and made one big Solution
+       Update README.md
    

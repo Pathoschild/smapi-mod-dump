@@ -1,41 +1,44 @@
 ﻿using BetterDoors.Framework.Enums;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewValley;
 using System.Collections.Generic;
 
 namespace BetterDoors.Framework.Serialization
 {
-    /// <summary>
-    /// Serializes door positions.
-    /// </summary>
+    /// <summary>Serializes door positions.</summary>
     internal class DoorPositionSerializer
     {
-        private const string DoorPositionKey = "door-positions";
+        /*********
+        ** Fields
+        *********/
+        /// <summary>The key used to read and write data.</summary>
+        internal const string DoorPositionKey = "door-positions";
+
+        /// <summary>Provides an API for reading and storing local mod data.</summary>
         private readonly IDataHelper dataHelper;
 
+        /*********
+        ** Public methods
+        *********/
+        /// <summary>Constructs an instance.</summary>
+        /// <param name="dataHelper">Provides an API for reading and storing local mod data.</param>
         public DoorPositionSerializer(IDataHelper dataHelper)
         {
             this.dataHelper = dataHelper;
         }
 
-        public void Save(IDictionary<GameLocation, IList<Door>> doorsByLocation)
+        /// <summary>Save states to the save file.</summary>
+        /// <param name="doorsByLocation">The state to save.</param>
+        public void Save(Dictionary<string, Dictionary<Point, State>> doorsByLocation)
         {
-            IDictionary<string, IDictionary<Point, State>> doorPositions = new Dictionary<string, IDictionary<Point, State>>();
-
-            foreach (KeyValuePair<GameLocation, IList<Door>> doorsInLocation in doorsByLocation)
-            {
-                doorPositions[doorsInLocation.Key.Name] = new Dictionary<Point, State>();
-                foreach (Door door in doorsInLocation.Value)
-                    doorPositions[doorsInLocation.Key.Name][door.Position] = door.State;
-            }
-
-            this.dataHelper.WriteSaveData(DoorPositionSerializer.DoorPositionKey, doorPositions);
+            this.dataHelper.WriteSaveData(DoorPositionSerializer.DoorPositionKey, doorsByLocation);
         }
 
+        /// <summary>Read states from the save file.</summary>
+        /// <returns>The read states.</returns>
         public IDictionary<string, IDictionary<Point, State>> Load()
         {
-            return this.dataHelper.ReadSaveData<IDictionary<string, IDictionary<Point, State>>>(DoorPositionSerializer.DoorPositionKey);
+            return this.dataHelper.ReadSaveData<IDictionary<string, IDictionary<Point, State>>>(DoorPositionSerializer.DoorPositionKey) ?? new Dictionary<string, IDictionary<Point, State>>();
         }
     }
 }

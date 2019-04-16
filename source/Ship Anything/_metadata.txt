@@ -1,0 +1,13 @@
+url:
+   https://github.com/berkayylmao/StardewValleyMods.git
+
+mods:
+   Ship Anything
+
+latest commit:
+   commit d9bbadef73a93573b5068d846224d08c90c2eded
+   Author: berkay2578 <berkaytgy@gmail.com>
+   Date:   Mon Apr 15 15:53:07 2019 +0300
+   
+       Add project files.
+   

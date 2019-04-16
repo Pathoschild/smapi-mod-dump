@@ -29,9 +29,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 6722dc7722b3b6272ea8ab33fb4858667331dd07
+   commit 17320bbd1385689ca8948af4423c70c7f6d72c02
    Author: danvolchek <volchek2@illinois.edu>
-   Date:   Sun Apr 7 05:10:49 2019 -0500
+   Date:   Mon Apr 15 16:04:01 2019 -0500
    
-       [Better Doors] fix hash set type
+       [Better Doors] better multiplayer handling, add door toggle range, update todos
    

@@ -101,7 +101,7 @@
     <Compile Include="Framework\Patches\IClassPatch.cs" />
     <Compile Include="Framework\Extensions\MultiplayerExtension.cs" />
     <Compile Include="Framework\Patches\FarmerPatch.cs" />
-    <Compile Include="Framework\Patches\ModPatchControl.cs" />
+    <Compile Include="Framework\Patches\ModPatchManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

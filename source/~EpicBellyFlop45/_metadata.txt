@@ -7,12 +7,13 @@ mods:
    Better Mixed Seeds
    Better Rarecrows
    Clean Cellar
+   Console Chat
    Customize Cursor Sprite
 
 latest commit:
-   commit 87b5c8fb8e948eef92bc1246573650ef48747d8b
+   commit 418194c59e5fe1ba372264633505ac422e9a338b
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Tue Apr 2 10:31:15 2019 +0100
+   Date:   Mon Apr 15 16:56:07 2019 +0100
    
-       [Better10Hearts] Changed Shane's mail
+       [BetterCrabPots] Added an 'AllWater' config option, a global config option for Ids
    

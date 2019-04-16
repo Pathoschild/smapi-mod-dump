@@ -21,6 +21,10 @@ https://www.nexusmods.com/stardewvalley/mods/3206/
 * English
 * Spanish
 * German
+* French -> Thanks to https://github.com/VincentRoth 
+* Portugese -> Thanks to https://github.com/kelvindules
+* Korean -> Thanks to https://github.com/S2SKY
+* Italian -> Thanks to https://github.com/sfal
 
 ## How to configure this mod
 The install directory for this mod will contain a configuration file. ~/Mods/StardewNewsFeed/config.json
