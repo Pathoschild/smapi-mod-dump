@@ -107,7 +107,7 @@ Here's a quick example of each possible patch type (explanations below):
           "ToArea": { "X": 256, "Y": 96, "Width": 16, "Height": 16 } // optional, defaults to source size from top-left
        },
 
-       // edit fields for existing entries in a data file (zero-indexed)
+       // edit fields for existing entries in a string data file (zero-indexed)
        {
           "Action": "EditData",
           "Target": "Data/ObjectInformation",
@@ -119,13 +119,37 @@ Here's a quick example of each possible patch type (explanations below):
           }
        },
 
-       // add or replace entries in a data file
+       // edit fields for existing entries in an object data file
+       {
+          "Action": "EditData",
+          "Target": "Data/Things",
+          "Fields": {
+             "spring_thing_0": {
+                "Title": "A Thing",
+                "Description": "Example content"
+             }
+          }
+       },
+
+       // add or replace entries in a string data file
        {
           "Action": "EditData",
           "Target": "Data/ObjectInformation",
           "Entries": {
              "70": "Jade/200/-300/Minerals -2/Jade/A pale green ornamental stone.",
              "72": "Diamond/750/-300/Minerals -2/Diamond/A rare and valuable gem."
+          }
+       },
+
+       // add or replace entries in an object file
+       {
+          "Action": "EditData",
+          "Target": "Data/Things",
+          "Entries": {
+             "spring_thing_0": {
+                "Title": "A Thing",
+                "Description": "Example content"
+             }
           }
        }
     ]
@@ -204,7 +228,7 @@ their house:
 ```js
 {
     "Action": "EditImage",
-    "Target": "Building/houses",
+    "Target": "Buildings/houses",
     "FromFile": "assets/green_house.png",
     "When": {
         "Season": "spring, summer",
@@ -259,13 +283,12 @@ For example, this gives the farmhouse a different appearance in each season:
 ```js
 {
     "Action": "EditImage",
-    "Target": "Building/houses",
+    "Target": "Buildings/houses",
     "FromFile": "assets/{{season}}_house.png" // assets/spring_house.png, assets/summer_house.png, etc
 }
 ```
 
-You can do this in the `FromFile`, `Target`, `Enabled`, `Entries` (keys and values), and `Fields`
-(entry keys and field values) fields.
+You can do this in the `FromFile`, `Target`, `Enabled`, `Entries`, and `Fields` fields (including entry/field keys).
 
 Only tokens which return a single value can be used as tokens. For example, `{{season}}` is allowed
 but `{{hasProfession}}` is not. Most tokens have an optional `{{tokenName:value}}` form which

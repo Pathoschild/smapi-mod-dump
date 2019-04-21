@@ -27,7 +27,7 @@ namespace DeepWoodsMod
                 if (a.behavior == a.doGlobalFade && a.afterFadeBehavior != null
                     && a.afterFadeBehavior.GetMethodInfo() == typeof(Building).GetMethod("obeliskWarpForReal", BindingFlags.Instance | BindingFlags.NonPublic)
                     && a.afterFadeBehavior.Target is Building building
-                    && building.buildingType == WOODS_OBELISK_BUILDING_NAME)
+                    && building.buildingType.Value == WOODS_OBELISK_BUILDING_NAME)
                 {
                     a.afterFadeBehavior = new Game1.afterFadeFunction(ObeliskWarpForRealOverride);
                 }
@@ -97,14 +97,14 @@ namespace DeepWoodsMod
                 foreach (Building building in buildableGameLocation.buildings)
                 {
                     ProcessAllInLocation(building.indoors.Value, method);
-                    if (method == ProcessMethod.Remove && building.buildingType == WOODS_OBELISK_BUILDING_NAME)
+                    if (method == ProcessMethod.Remove && building.buildingType.Value == WOODS_OBELISK_BUILDING_NAME)
                     {
                         building.buildingType.Value = EARTH_OBELISK_BUILDING_NAME;
-                        DeepWoodsState.WoodsObeliskLocations.Add(new XY(building.tileX, building.tileY));
+                        DeepWoodsState.WoodsObeliskLocations.Add(new XY(building.tileX.Value, building.tileY.Value));
                     }
-                    else if (method == ProcessMethod.Restore && building.buildingType == EARTH_OBELISK_BUILDING_NAME)
+                    else if (method == ProcessMethod.Restore && building.buildingType.Value == EARTH_OBELISK_BUILDING_NAME)
                     {
-                        if (DeepWoodsState.WoodsObeliskLocations.Contains(new XY(building.tileX, building.tileY)))
+                        if (DeepWoodsState.WoodsObeliskLocations.Contains(new XY(building.tileX.Value, building.tileY.Value)))
                         {
                             building.buildingType.Value = WOODS_OBELISK_BUILDING_NAME;
                             building.resetTexture();

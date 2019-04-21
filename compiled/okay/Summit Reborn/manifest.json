@@ -1,9 +1,10 @@
 ﻿{
-  "Name": "Summit Reborn",
+  "Name": "Summit Reborn [Combined]",
   "Author": "KoihimeNakamura and Emissary of Infinity",
-  "Version": "1.2.0",
-  "Description": "Enables the cut summit map, fixes rain there, and adds a neat cloud visual while we're at it!",
+  "Version": "1.4.0",
+  "Description": "Enables the summit, fixes rain on the summit map, and adds a neat cloud visual",
   "UniqueID": "KoihimeNakamura.summitreborn",
   "EntryDll": "SummitReborn.dll",
+  "MinimumApiVersion": "2.10.1",
   "UpdateKeys": [ "Nexus:2073" ]
 }

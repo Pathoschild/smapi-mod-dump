@@ -118,7 +118,7 @@ namespace DeepWoodsMod
                 }
             }
         }
-        public int Level { get { return this.level; } }
+        public int Level { get { return this.level.Value; } }
         public int EnterSide { get { return (int)this.EnterDir; } }
         public bool IsLost
         {
@@ -138,7 +138,14 @@ namespace DeepWoodsMod
             }
         }
         public int CombatLevel { get { return this.GetCombatLevel(); } }
-        public IEnumerable<IDeepWoodsExit> Exits { get { return this.exits; } }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidImplicitNetFieldCast")]
+        public IEnumerable<IDeepWoodsExit> Exits
+        {
+            get
+            {
+                return this.exits;
+            }
+        }
         public ICollection<ResourceClump> ResourceClumps { get { return this.resourceClumps; } }
         public ICollection<Vector2> Baubles { get { return this.baubles; } }
         public ICollection<WeatherDebris> WeatherDebris { get { return this.weatherDebris; } }
@@ -167,12 +174,14 @@ namespace DeepWoodsMod
             base.critters = new List<Critter>();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidNetField")]
         public DeepWoods(string name)
             : this()
         {
             base.name.Value = name;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidNetField")]
         public DeepWoods(DeepWoods parent, int level, EnterDirection enterDir)
             : this()
         {
@@ -208,7 +217,7 @@ namespace DeepWoodsMod
             updateMap();
 
             ModEntry.GetAPI().CallBeforeFill(this);
-            if ((this.isLichtung && this.lichtungHasLake) || !ModEntry.GetAPI().CallOverrideFill(this))
+            if ((this.isLichtung.Value && this.lichtungHasLake.Value) || !ModEntry.GetAPI().CallOverrideFill(this))
             {
                 DeepWoodsStuffCreator.AddStuff(this, new DeepWoodsRandom(this, this.seed ^ Game1.currentGameTime.TotalGameTime.Milliseconds ^ Game1.random.Next()));
             }
@@ -282,12 +291,12 @@ namespace DeepWoodsMod
 
             var random = new DeepWoodsRandom(this, this.Seed ^ Game1.currentGameTime.TotalGameTime.Milliseconds ^ Game1.random.Next());
 
-            if (!this.isLichtungSetByAPI)
+            if (!this.isLichtungSetByAPI.Value)
                 this.isLichtung.Value = this.level.Value >= Settings.Level.MinLevelForClearing && !(this.Parent?.isLichtung ?? true) && random.CheckChance(Settings.Luck.Clearings.ChanceForClearing);
 
-            if (!this.isMapSizeSetByAPI)
+            if (!this.isMapSizeSetByAPI.Value)
             {
-                if (this.isLichtung)
+                if (this.isLichtung.Value)
                 {
                     this.mapWidth.Value = Game1.random.Next(Settings.Map.MinMapWidth, Settings.Map.MaxMapWidthForClearing);
                     this.mapHeight.Value = Game1.random.Next(Settings.Map.MinMapWidth, Settings.Map.MaxMapWidthForClearing);
@@ -300,7 +309,7 @@ namespace DeepWoodsMod
                 }
             }
 
-            this.EnterLocation = this.level == 1 ? Settings.Map.RootLevelEnterLocation : new DeepWoodsSpaceManager(this.mapWidth.Value, this.mapHeight.Value).GetRandomEnterLocation(this.EnterDir, random);
+            this.EnterLocation = this.level.Value == 1 ? Settings.Map.RootLevelEnterLocation : new DeepWoodsSpaceManager(this.mapWidth.Value, this.mapHeight.Value).GetRandomEnterLocation(this.EnterDir, random);
         }
 
         public void RemovePlayer(Farmer who)
@@ -396,7 +405,7 @@ namespace DeepWoodsMod
             if (!Game1.IsMasterGame)
                 return;
 
-            if (this.playerCount <= 0)
+            if (this.playerCount.Value <= 0)
                 return;
 
             if (this.level.Value > 1 && this.Parent == null && !this.HasExit(CastEnterDirToExitDir(this.EnterDir)))
@@ -410,7 +419,7 @@ namespace DeepWoodsMod
                 DeepWoods exitDeepWoods = Game1.getLocationFromName(exit.TargetLocationName) as DeepWoods;
                 if (exitDeepWoods == null)
                 {
-                    exitDeepWoods = new DeepWoods(this, this.level + 1, ExitDirToEnterDir(exit.ExitDir));
+                    exitDeepWoods = new DeepWoods(this, this.level.Value + 1, ExitDirToEnterDir(exit.ExitDir));
                     DeepWoodsManager.AddDeepWoodsToGameLocations(exitDeepWoods);
                 }
                 exit.TargetLocationName = exitDeepWoods.Name;
@@ -441,13 +450,13 @@ namespace DeepWoodsMod
             if (!Game1.IsMasterGame)
                 return;
 
-            if (!this.hasEverBeenVisited)
+            if (!this.hasEverBeenVisited.Value)
                 return;
 
             if (!CanGetLost)
                 return;
 
-            if (this.level > 1
+            if (this.level.Value > 1
                 && !this.HasExit(CastEnterDirToExitDir(this.EnterDir))
                 && (Parent?.CanGetLost ?? true))
             {
@@ -462,7 +471,7 @@ namespace DeepWoodsMod
                 // Randomize exit if child level exists and has been visited
                 if (exit.TargetLocationName != null
                     && Game1.getLocationFromName(exit.TargetLocationName) is DeepWoods exitDeepWoods
-                    && exitDeepWoods.hasEverBeenVisited
+                    && exitDeepWoods.hasEverBeenVisited.Value
                     && exitDeepWoods.CanGetLost)
                 {
                     exit.TargetLocationName = null;
@@ -477,16 +486,16 @@ namespace DeepWoodsMod
             if (!Game1.IsMasterGame)
                 throw new ApplicationException("Illegal call to DeepWoods.TryRemove() in client.");
 
-            if (this.level == 1)
+            if (this.level.Value == 1)
                 return false;
 
-            if (this.playerCount > 0)
+            if (this.playerCount.Value > 0)
                 return false;
 
-            if ((this.Parent?.playerCount ?? 0) > 0 && Game1.timeOfDay <= (this.abandonedByParentTime + TIME_BEFORE_DELETION_ALLOWED))
+            if ((this.Parent?.playerCount ?? 0) > 0 && Game1.timeOfDay <= (this.abandonedByParentTime.Value + TIME_BEFORE_DELETION_ALLOWED))
                 return false;
 
-            if (Game1.timeOfDay <= (this.spawnTime + TIME_BEFORE_DELETION_ALLOWED))
+            if (Game1.timeOfDay <= (this.spawnTime.Value + TIME_BEFORE_DELETION_ALLOWED))
                 return false;
 
             foreach (var exit in this.exits)
@@ -578,7 +587,7 @@ namespace DeepWoodsMod
         {
             base.DayUpdate(dayOfMonth);
 
-            if (this.level < Settings.Level.MinLevelForFruits)
+            if (this.level.Value < Settings.Level.MinLevelForFruits)
             {
                 foreach (TerrainFeature terrainFeature in this.terrainFeatures.Values)
                 {
@@ -702,7 +711,7 @@ namespace DeepWoodsMod
             {
                 foreach (ResourceClump resourceClump in this.resourceClumps)
                 {
-                    if (resourceClump.getBoundingBox(resourceClump.tile).Intersects(position))
+                    if (resourceClump.getBoundingBox(resourceClump.tile.Value).Intersects(position))
                         return true;
                 }
             }
@@ -715,7 +724,7 @@ namespace DeepWoodsMod
             {
                 if (resourceClump.occupiesTile(tileX, tileY))
                 {
-                    if (resourceClump.performToolAction(t, 1, resourceClump.tile, this))
+                    if (resourceClump.performToolAction(t, 1, resourceClump.tile.Value, this))
                     {
                         this.resourceClumps.Remove(resourceClump);
                     }
@@ -815,7 +824,7 @@ namespace DeepWoodsMod
                     if (IsLocationOnBorderOrExit(v))
                         return false;
 
-                    if (!monster.isGlider
+                    if (!monster.isGlider.Value
                         && !isTileLocationTotallyClearAndPlaceable(v)
                         && !(this.terrainFeatures.ContainsKey(v) && this.terrainFeatures[v] is Grass))
                         return false;
@@ -937,7 +946,7 @@ namespace DeepWoodsMod
                         Vector2 location = new Vector2(tile.X + x - radius, tile.Y + y - radius);
                         resourceClumpsCopy.RemoveAll(r =>
                         {
-                            if (r.getBoundingBox(r.tile).Contains((int)location.X * 64, (int)location.Y * 64))
+                            if (r.getBoundingBox(r.tile.Value).Contains((int)location.X * 64, (int)location.Y * 64))
                             {
                                 if (r.performToolAction(null, radius, location, this))
                                 {
@@ -949,7 +958,7 @@ namespace DeepWoodsMod
                         });
                         largeTerrainFeaturesCopy.RemoveAll(lt =>
                         {
-                            if (lt.getBoundingBox(lt.tilePosition).Contains((int)location.X * 64, (int)location.Y * 64))
+                            if (lt.getBoundingBox(lt.tilePosition.Value).Contains((int)location.X * 64, (int)location.Y * 64))
                             {
                                 if (lt.performToolAction(null, radius, location, this))
                                 {
@@ -976,7 +985,7 @@ namespace DeepWoodsMod
             DeepWoodsDebris.Update(this, time);
             foreach (ResourceClump resourceClump in this.resourceClumps)
             {
-                resourceClump.tickUpdate(time, resourceClump.tile, this);
+                resourceClump.tickUpdate(time, resourceClump.tile.Value, this);
             }
         }
 
@@ -985,7 +994,7 @@ namespace DeepWoodsMod
             base.draw(b);
             foreach (ResourceClump resourceClump in this.resourceClumps)
             {
-                resourceClump.draw(b, resourceClump.tile);
+                resourceClump.draw(b, resourceClump.tile.Value);
             }
         }
 

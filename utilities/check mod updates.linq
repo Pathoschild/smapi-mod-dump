@@ -851,7 +851,6 @@ class ReportEntry
 			this.WikiStatus = apiMetadata?.CompatibilityStatus;
 			this.WikiSummary = apiMetadata?.CompatibilitySummary;
 		}
-
 	}
 }
 

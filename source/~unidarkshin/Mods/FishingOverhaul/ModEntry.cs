@@ -71,10 +71,11 @@ namespace ExtremeFishingOverhaul
             if (!fIDS.Any())
                 return;
 
-
+            
 
             if (asset.AssetNameEquals(@"Data\Fish"))
             {
+                IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
 
 
                 for (int i = 0; i < MaxFish; i++)
@@ -97,10 +98,8 @@ namespace ExtremeFishingOverhaul
 
 
                     int maxSize = rnd.Next(10, 100);
-                    asset
-                            .AsDictionary<int, string>()
-                            .Set
-                            (fIDS[i], $"Fish {fIDS[i]}/{diffs[i]}/{type[i]}/1/{maxSize.ToString()}/600 2600/spring/both/1 .1 1 .1/{rnd.Next(3, 6).ToString()}/{spawn.ToString()}/0.5/{levRS[i]}");
+                    
+                    data[fIDS[i]] = $"Fish {fIDS[i]}/{diffs[i]}/{type[i]}/1/{maxSize.ToString()}/600 2600/spring/both/1 .1 1 .1/{rnd.Next(3, 6).ToString()}/{spawn.ToString()}/0.5/{levRS[i]}";
 
                     // Teh's Fishing Overhaul compatibilty
                     int fishId = this.fIDS[i];
@@ -113,6 +112,9 @@ namespace ExtremeFishingOverhaul
             }
             else if (asset.AssetNameEquals(@"Data\ObjectInformation"))
             {
+
+                IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
+
                 for (int i = 0; i < this.MaxFish; i++)
                 {
                     int price = 0 + (int)(((diffs[i] * diffs[i]) / 40.0) * (((levRS[i] + 8) * (levRS[i] + 8)) / (100.0 * ((levRS[i] + 1) / 2.0))));
@@ -176,10 +178,7 @@ namespace ExtremeFishingOverhaul
                         price = 20;
                     }
 
-                    asset
-                        .AsDictionary<int, string>()
-                        .Set
-                            (fIDS[i], $"{fNames[i]}/{price}/{food}/Fish -4/{fNames[i]}/Price: {price}\nDifficulty: {diffs[i]}\nLevel Requirement: {levRS[i]}\nFish Type: {fTypes[i]}\nSpecial: {specialIDs[i]}/ Day Night^Spring Fall");
+                    data[fIDS[i]] = $"{fNames[i]}/{price}/{food}/Fish -4/{fNames[i]}/Price: {price}\nDifficulty: {diffs[i]}\nLevel Requirement: {levRS[i]}\nFish Type: {fTypes[i]}\nSpecial: {specialIDs[i]}/ Day Night^Spring Fall";
                 }
 
 
@@ -189,13 +188,13 @@ namespace ExtremeFishingOverhaul
             }
             else if (asset.AssetNameEquals(@"Data\Locations"))
             {
+                IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                //ICollection<string> keys = data.Keys;
 
-                asset
-                .AsDictionary<string, string>()
-                .Set((id, data) =>
+                foreach (string id in data.Keys.ToArray())
                 {
 
-                    string[] fields = data.Split('/');
+                    string[] fields = data[id].Split('/');
 
 
                     for (int i = 0; i < fIDS.Count; i++)
@@ -206,7 +205,7 @@ namespace ExtremeFishingOverhaul
                             fields[4] += " " + fIDS[i] + " -1";
                             //this.Monitor.Log($"|||||-----> {fIDS[i]}");
 
-                            this.tehHelper.AddLocation(fIDS[i], id);
+                            this.tehHelper.AddLocation(fIDS[i], id.ToString());
                             this.tehHelper.AddedData[fIDS[i]].Seasons.Add("spring");
                         }
                         if (rnd.NextDouble() < 0.33)
@@ -214,7 +213,7 @@ namespace ExtremeFishingOverhaul
                             fields[5] += " " + fIDS[i] + " -1";
                             //this.Monitor.Log($"|||||-----> {fIDS[i]}");
 
-                            this.tehHelper.AddLocation(fIDS[i], id);
+                            this.tehHelper.AddLocation(fIDS[i], id.ToString());
                             this.tehHelper.AddedData[fIDS[i]].Seasons.Add("summer");
                         }
                         if (rnd.NextDouble() < 0.33)
@@ -222,7 +221,7 @@ namespace ExtremeFishingOverhaul
                             fields[6] += " " + fIDS[i] + " -1";
                             //this.Monitor.Log($"|||||-----> {fIDS[i]}");
 
-                            this.tehHelper.AddLocation(fIDS[i], id);
+                            this.tehHelper.AddLocation(fIDS[i], id.ToString());
                             this.tehHelper.AddedData[fIDS[i]].Seasons.Add("fall");
                         }
                         if (rnd.NextDouble() < 0.33)
@@ -230,22 +229,28 @@ namespace ExtremeFishingOverhaul
                             fields[7] += " " + fIDS[i] + " -1";
                             //this.Monitor.Log($"|||||-----> {fIDS[i]}");
 
-                            this.tehHelper.AddLocation(fIDS[i], id);
+                            this.tehHelper.AddLocation(fIDS[i], id.ToString());
                             this.tehHelper.AddedData[fIDS[i]].Seasons.Add("winter");
                         }
 
 
                     }
 
-                    return string.Join("/", fields);
+                    data[id] = string.Join("/", fields);
 
-                });
+                }
+                //});
 
             }
             else if (asset.AssetNameEquals(@"Maps\springobjects"))
             {
                 var texture = this.Helper.Content.Load<Texture2D>(@"assets\springobjects.xnb", ContentSource.ModFolder);
+
                 asset.AsImage().ReplaceWith(texture);
+
+                //asset
+                    //.AsImage()
+                    //.Data.
             }
         }
 
@@ -395,7 +400,7 @@ namespace ExtremeFishingOverhaul
             GenerateFish();
 
             // Experimental compatibility with Teh's Fishing Overhaul (until Nuget package is updated)
-            GameEvents.FirstUpdateTick += (sender, e) => this.tehHelper.TryRegisterFish();
+            helper.Events.GameLoop.SaveLoaded += (sender, e) => this.tehHelper.TryRegisterFish();
         }
 
 

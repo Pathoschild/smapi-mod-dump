@@ -4,6 +4,7 @@ url:
 mods:
    Auto Stacker
    Better Artisan Good Icons
+   Better Doors
    Better Fruit Trees
    Better Garden Pots
    Better Hay
@@ -29,9 +30,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 17320bbd1385689ca8948af4423c70c7f6d72c02
+   commit 878871f3ec3c2bb9b938b6edc810863ad5fb3b25
    Author: danvolchek <volchek2@illinois.edu>
-   Date:   Mon Apr 15 16:04:01 2019 -0500
+   Date:   Thu Apr 18 16:58:09 2019 -0500
    
-       [Better Doors] better multiplayer handling, add door toggle range, update todos
+       [Better Doors] add update key
    

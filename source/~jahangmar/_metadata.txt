@@ -9,9 +9,9 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit 0f55ba9b7f3fee2a2d2e8d39c7612ab1402a5c2b
+   commit 3328a9ec416089e50f80f7d4d51226a0e126e21a
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Mon Apr 15 03:35:34 2019 +0200
+   Date:   Wed Apr 17 01:06:42 2019 +0200
    
-       InteractionTweaks 1.1.1
+       InteractionTweaks 1.2.0
    

@@ -23,17 +23,17 @@ namespace DeepWoodsMod
             {
                 this.health.Value -= damage;
 
-                if (this.health <= 0)
+                if (this.health.Value <= 0)
                 {
-                    Game1.createRadialDebris(Game1.currentLocation, GetDebrisType(), (int)tileLocation.X + Game1.random.Next(this.width / 2 + 1), (int)tileLocation.Y + Game1.random.Next(this.height / 2 + 1), Game1.random.Next(12, 20), false, -1, false, -1);
-                    if (this.parentSheetIndex == 600 || this.parentSheetIndex == 602)
+                    Game1.createRadialDebris(Game1.currentLocation, GetDebrisType(), (int)tileLocation.X + Game1.random.Next(this.width.Value / 2 + 1), (int)tileLocation.Y + Game1.random.Next(this.height.Value / 2 + 1), Game1.random.Next(12, 20), false, -1, false, -1);
+                    if (this.parentSheetIndex.Value == 600 || this.parentSheetIndex.Value == 602)
                         location.playSound("stumpCrack");
                     else
                         location.playSound("boulderBreak");
                     return true;
                 }
 
-                Game1.createRadialDebris(Game1.currentLocation, GetDebrisType(), (int)tileLocation.X + Game1.random.Next(this.width / 2 + 1), (int)tileLocation.Y + Game1.random.Next(this.height / 2 + 1), Game1.random.Next(4, 9), false, -1, false, -1);
+                Game1.createRadialDebris(Game1.currentLocation, GetDebrisType(), (int)tileLocation.X + Game1.random.Next(this.width.Value / 2 + 1), (int)tileLocation.Y + Game1.random.Next(this.height.Value / 2 + 1), Game1.random.Next(4, 9), false, -1, false, -1);
                 return false;
             }
 
@@ -42,7 +42,7 @@ namespace DeepWoodsMod
 
         private int GetDebrisType()
         {
-            switch (this.parentSheetIndex)
+            switch (this.parentSheetIndex.Value)
             {
                 case 622:
                 case 672:

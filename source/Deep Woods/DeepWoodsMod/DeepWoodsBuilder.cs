@@ -591,7 +591,7 @@ namespace DeepWoodsMod
             // If this level is a lichtung, GenerateLichtung() will generate bright grass growing out from each exit,
             // so we need to generate Settings.Map.ExitLength tiles here, that are "open ended".
             // In normal forest levels, we generate a random amount of tiles with variable end pieces.
-            int brightGrassPacesInwards = deepWoods.isLichtung ? Settings.Map.ExitLength : this.random.GetRandomValue(2, 4);
+            int brightGrassPacesInwards = deepWoods.isLichtung.Value ? Settings.Map.ExitLength : this.random.GetRandomValue(2, 4);
 
             // Add bright grass some paces inwards
             for (int i = 1; i < brightGrassPacesInwards; i++)
@@ -602,7 +602,7 @@ namespace DeepWoodsMod
             }
 
             // Add one of 4 possible bright grass ends
-            if (!deepWoods.isLichtung)
+            if (!deepWoods.isLichtung.Value)
             {
                 switch (this.random.GetRandomValue(0, 4))
                 {

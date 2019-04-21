@@ -1,13 +1,13 @@
 # Stardew Valley Mods
 
-This is the source code for the best, poorly coded mods around!
+This is the source code for things that are better than you!
 [My Nexus Mods Profile](https://www.nexusmods.com/users/55529772) **is where the good stuff is stored**
 
-- [SMAPI Mods](#SMAPI-Mods-Hub)
+- [Mods](#mods)
 - [Contributing](#contributing)
 - [Licensing](#licensing)
 
-### SMAPI Mods Hub
+### Mods 
 **See my [Content Pack Mods Hub](.ContentPackMods)**
 
 | **Mod Name** | Source Code Folder | Mod Download | Source Code Link | Release Notes |

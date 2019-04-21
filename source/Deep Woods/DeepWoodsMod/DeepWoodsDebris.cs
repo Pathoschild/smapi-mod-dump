@@ -24,7 +24,7 @@ namespace DeepWoodsMod
                     deepWoods.baubles.Add(new Vector2(Game1.random.Next(0, mapWidth * 64), Game1.random.Next(0, mapHeight * 64)));
                 }
 
-                if (Game1.currentSeason != "winter" && !deepWoods.isLichtung)
+                if (Game1.currentSeason != "winter" && !deepWoods.isLichtung.Value)
                 {
                     int numWeatherDebris = (mapWidth * mapHeight) / MINIMUM_TILES_FOR_LEAVES;
 
@@ -54,7 +54,7 @@ namespace DeepWoodsMod
 
         private static int GetLeaveType(DeepWoods deepWoods)
         {
-            if (deepWoods.isLichtung)
+            if (deepWoods.isLichtung.Value)
             {
                 return WeatherDebris.pinkPetals;
             }
@@ -101,7 +101,7 @@ namespace DeepWoodsMod
                 }
             }
 
-            if (deepWoods.weatherDebris != null && !deepWoods.isLichtung)
+            if (deepWoods.weatherDebris != null && !deepWoods.isLichtung.Value)
             {
                 foreach (WeatherDebris weatherDebris in deepWoods.weatherDebris)
                 {
@@ -122,7 +122,7 @@ namespace DeepWoodsMod
                 }
             }
 
-            if (deepWoods.weatherDebris != null && !deepWoods.isLichtung)
+            if (deepWoods.weatherDebris != null && !deepWoods.isLichtung.Value)
             {
                 foreach (WeatherDebris weatherDebris in deepWoods.weatherDebris)
                 {

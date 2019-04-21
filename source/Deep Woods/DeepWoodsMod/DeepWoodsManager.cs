@@ -133,7 +133,7 @@ namespace DeepWoodsMod
             {
                 Game1.warpFarmer(Game1.getLocationRequest("Woods", false), WOODS_WARP_LOCATION.X, WOODS_WARP_LOCATION.Y, 0);
                 // Take away all health and energy to avoid cheaters using Save Anywhere to escape getting lost
-                if (deepWoods.level > 1 && deepWoods.IsLost)
+                if (deepWoods.level.Value > 1 && deepWoods.IsLost)
                 {
                     Game1.player.health = 1;
                     Game1.player.Stamina = 0;
@@ -386,7 +386,7 @@ namespace DeepWoodsMod
                 && from.Parent == null
                 && to.Parent == from
                 && !lostMessageDisplayedToday
-                && !to.spawnedFromObelisk
+                && !to.spawnedFromObelisk.Value
                 && ExitDirToEnterDir(CastEnterDirToExitDir(from.EnterDir)) == to.EnterDir)
             {
                 Game1.addHUDMessage(new HUDMessage(I18N.LostMessage) { noIcon = true });
@@ -395,7 +395,7 @@ namespace DeepWoodsMod
 
             if (who == Game1.player
                 && to != null
-                && to.level >= Settings.Level.MinLevelForWoodsObelisk
+                && to.level.Value >= Settings.Level.MinLevelForWoodsObelisk
                 && !Game1.player.hasOrWillReceiveMail(WOODS_OBELISK_WIZARD_MAIL_ID)
                 && (Game1.player.mailReceived.Contains("hasPickedUpMagicInk") || Game1.player.hasMagicInk))
             {

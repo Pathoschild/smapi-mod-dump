@@ -41,7 +41,7 @@ namespace DeepWoodsMod
 
         public override bool performUseAction(Vector2 tileLocation, GameLocation location)
         {
-            if (this.wasPickedUp)
+            if (this.wasPickedUp.Value)
                 return false;
 
             if (Game1.player.addItemToInventoryBool(new EasterEggItem(), false))
@@ -79,13 +79,13 @@ namespace DeepWoodsMod
 
         public override void draw(SpriteBatch b, Vector2 tileLocation)
         {
-            if (this.wasPickedUp)
+            if (this.wasPickedUp.Value)
                 return;
 
             Vector2 local = Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64, tileLocation.Y * 64));
 
             Rectangle destinationRectangle = new Rectangle((int)local.X, (int)local.Y, 64, 64);
-            Rectangle sourceRectangle = Game1.getSourceRectForStandardTileSheet(DeepWoodsTextures.Textures.Festivals, this.eggTileIndex, 16, 16);
+            Rectangle sourceRectangle = Game1.getSourceRectForStandardTileSheet(DeepWoodsTextures.Textures.Festivals, this.eggTileIndex.Value, 16, 16);
 
             b.Draw(DeepWoodsTextures.Textures.Festivals, destinationRectangle, sourceRectangle, Color.White);
         }

@@ -59,7 +59,7 @@ namespace DeepWoodsMod
 
             Vector2 local = Game1.GlobalToLocal(Game1.viewport, tileLocation * 64);
 
-            spriteBatch.Draw(DeepWoodsTextures.Textures.BushThorns, local, sourceRectangle, Color.White, GetShakeRotation(), Vector2.Zero, 4f, this.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, ((destinationRectangle.Center.Y + 48) / 10000 - tileLocation.X / 1000000) + float.Epsilon);
+            spriteBatch.Draw(DeepWoodsTextures.Textures.BushThorns, local, sourceRectangle, Color.White, GetShakeRotation(), Vector2.Zero, 4f, this.flipped.Value ? SpriteEffects.FlipHorizontally : SpriteEffects.None, ((destinationRectangle.Center.Y + 48) / 10000 - tileLocation.X / 1000000) + float.Epsilon);
         }
 
         private float GetShakeRotation()

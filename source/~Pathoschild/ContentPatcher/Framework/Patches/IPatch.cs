@@ -6,7 +6,7 @@ using StardewModdingAPI;
 namespace ContentPatcher.Framework.Patches
 {
     /// <summary>A patch which can be applied to an asset.</summary>
-    internal interface IPatch
+    internal interface IPatch : IContextual
     {
         /*********
         ** Accessors
@@ -19,7 +19,7 @@ namespace ContentPatcher.Framework.Patches
 
         /// <summary>The content pack which requested the patch.</summary>
         ManagedContentPack ContentPack { get; }
-        
+
         /// <summary>The asset key to load from the content pack instead.</summary>
         TokenString FromLocalAsset { get; }
 
@@ -32,12 +32,6 @@ namespace ContentPatcher.Framework.Patches
         /// <summary>The conditions which determine whether this patch should be applied.</summary>
         ConditionDictionary Conditions { get; }
 
-        /// <summary>Whether this patch should be applied in the latest context.</summary>
-        bool MatchesContext { get; }
-
-        /// <summary>Whether this patch is valid if <see cref="MatchesContext"/> is true.</summary>
-        bool IsValidInContext { get; }
-
         /// <summary>Whether the patch is currently applied to the target asset.</summary>
         bool IsApplied { get; set; }
 
@@ -45,11 +39,6 @@ namespace ContentPatcher.Framework.Patches
         /*********
         ** Public methods
         *********/
-        /// <summary>Update the patch data when the context changes.</summary>
-        /// <param name="context">Provides access to contextual tokens.</param>
-        /// <returns>Returns whether the patch data changed.</returns>
-        bool UpdateContext(IContext context);
-
         /// <summary>Load the initial version of the asset.</summary>
         /// <typeparam name="T">The asset type.</typeparam>
         /// <param name="asset">The asset to load.</param>

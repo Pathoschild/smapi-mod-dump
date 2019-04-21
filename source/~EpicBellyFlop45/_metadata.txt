@@ -11,9 +11,9 @@ mods:
    Customize Cursor Sprite
 
 latest commit:
-   commit 418194c59e5fe1ba372264633505ac422e9a338b
+   commit ca2e820e64aebce13ac8d66933898e86b4ab3ca3
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Mon Apr 15 16:56:07 2019 +0100
+   Date:   Sat Apr 20 22:33:27 2019 +0100
    
-       [BetterCrabPots] Added an 'AllWater' config option, a global config option for Ids
+       [Better10Hearts] Updated manifest
    

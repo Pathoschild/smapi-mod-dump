@@ -48,7 +48,7 @@ namespace InfiniteInventory
 
         public void loadData()
         {
-            config = instance.Helper.ReadJsonFile<ModData>($"data/{Constants.SaveFolderName}.json") ?? new ModData();
+            config = instance.Helper.Data.ReadJsonFile<ModData>($"data/{Constants.SaveFolderName}.json") ?? new ModData();
 
             List<List<string>> itemInfo = config.itemInfo;
 
@@ -337,7 +337,7 @@ namespace InfiniteInventory
 
             config.itemInfo = itemInfo;
 
-            instance.Helper.WriteJsonFile<ModData>($"data/{Constants.SaveFolderName}.json", config);
+            instance.Helper.Data.WriteJsonFile<ModData>($"data/{Constants.SaveFolderName}.json", config);
         }
 
         public void changeTabs(int n)

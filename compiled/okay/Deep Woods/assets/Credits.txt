@@ -17,3 +17,7 @@ Texture: unicorn_zhuria.png
 Found at: https://www.nexusmods.com/stardewvalley/mods/8
 By: https://forums.nexusmods.com/index.php?/user/5497250-zhuria/
 License: Exclusive/Custom, please ask author directly for permission if you want to use this asset.
+
+Texture: gingerbread_house_technopoptart98.png
+By: https://forums.nexusmods.com/index.php?/user/55392892-technopoptart98/
+License: Exclusive/Custom, please ask author directly for permission if you want to use this asset.

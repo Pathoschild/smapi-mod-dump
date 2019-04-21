@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="2.2.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.0.0-alpha.20190419" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -92,12 +92,8 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="assets\tractor.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="assets\garage.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="assets\tractor.png" />
+    <Content Include="assets\garage.png" />
     <Content Include="screenshots\build-garage.png" />
     <Content Include="screenshots\buy-garage.png" />
     <Content Include="screenshots\final-garage.png" />

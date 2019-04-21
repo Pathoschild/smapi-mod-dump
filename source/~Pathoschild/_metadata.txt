@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit a644c947946d99726094de2caa6372bef7a97585
+   commit daff1e5ee87e6c56d257fe4e028cb17a004f0ddc
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Apr 10 20:39:51 2019 -0400
+   Date:   Sun Apr 21 14:22:13 2019 -0400
    
-       update for machine changes (#403)
+       update for settings now handled by mod build package (#403)
    

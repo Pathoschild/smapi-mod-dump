@@ -30,21 +30,21 @@ namespace DeepWoodsMod
 
         public override bool tickUpdate(GameTime time, Vector2 tileLocation, GameLocation location)
         {
-            if (this.crop == null || this.crop.dead)
+            if (this.crop == null || this.crop.dead.Value)
                 return true;
             return base.tickUpdate(time, tileLocation, location);
         }
 
         public override bool performUseAction(Vector2 tileLocation, GameLocation location)
         {
-            if (this.crop == null || this.crop.dead)
+            if (this.crop == null || this.crop.dead.Value)
                 return false;
             return base.performUseAction(tileLocation, location);
         }
 
         public override bool performToolAction(Tool t, int damage, Vector2 tileLocation, GameLocation location)
         {
-            return this.crop == null || this.crop.dead;
+            return this.crop == null || this.crop.dead.Value;
         }
 
         public override void drawInMenu(SpriteBatch spriteBatch, Vector2 positionOnScreen, Vector2 tileLocation, float scale, float layerDepth)

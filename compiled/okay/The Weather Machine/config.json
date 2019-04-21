@@ -3,5 +3,6 @@
   "coldTemp": 30,
   "hotTemp": 70,
   "tempType": "F",
+  "AmbientLight": true,
   "EnableExperimental": false
 }

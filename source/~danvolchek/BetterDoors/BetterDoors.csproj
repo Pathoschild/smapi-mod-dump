@@ -85,8 +85,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Framework\Serialization\BetterDoorsModConfig.cs" />
     <Compile Include="Framework\DoorGeneration\DoorGenerationState.cs" />
-    <Compile Include="Framework\Mapping\Properties\MapDoorExtra.cs" />
+    <Compile Include="Framework\Mapping\Properties\MapDoorExtras.cs" />
     <Compile Include="Framework\Mapping\Properties\MapDoorVersion.cs" />
     <Compile Include="Framework\Mapping\MapTileSheetManager.cs" />
     <Compile Include="Framework\Mapping\PendingDoor.cs" />
@@ -94,14 +95,15 @@
     <Compile Include="Framework\Multiplayer\DoorStateRequest.cs" />
     <Compile Include="Framework\Multiplayer\DoorToggle.cs" />
     <Compile Include="Framework\Patches\DoorCollisionPatch.cs" />
+    <Compile Include="Framework\Patches\MouseCursorPatch.cs" />
+    <Compile Include="Framework\Serialization\ConfigManager.cs" />
     <Compile Include="Framework\Utility\CallbackTimer.cs" />
     <Compile Include="BetterDoorsMod.cs" />
     <Compile Include="Framework\ContentPacks\ContentPack.cs" />
     <Compile Include="Framework\ContentPacks\ContentPackLoader.cs" />
-    <Compile Include="Framework\ContentPacks\ContentPackDoorEntry.cs" />
     <Compile Include="Framework\Door.cs" />
     <Compile Include="Framework\DoorManager.cs" />
-    <Compile Include="Framework\ContentPacks\LoadedContentPackDoorEntry.cs" />
+    <Compile Include="Framework\ContentPacks\ContentPackDoor.cs" />
     <Compile Include="Framework\Enums\OpeningDirection.cs" />
     <Compile Include="Framework\DoorGeneration\DoorAssetLoader.cs" />
     <Compile Include="Framework\DoorGeneration\DoorSpriteGenerator.cs" />
@@ -120,6 +122,7 @@
   <ItemGroup>
     <None Include="manifest.json" />
     <None Include="packages.config" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />

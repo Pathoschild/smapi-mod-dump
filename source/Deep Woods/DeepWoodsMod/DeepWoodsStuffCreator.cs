@@ -101,7 +101,7 @@ namespace DeepWoodsMod
             int mapHeight = this.spaceManager.GetMapHeight();
 
             // Add thorny bushes around exit areas.
-            if (!deepWoods.isLichtung && deepWoods.level.Value > Settings.Level.MinLevelForThornyBushes)
+            if (!deepWoods.isLichtung.Value && deepWoods.level.Value > Settings.Level.MinLevelForThornyBushes)
             {
                 foreach (var exit in deepWoods.exits)
                 {
@@ -112,13 +112,13 @@ namespace DeepWoodsMod
                 }
             }
 
-            if (deepWoods.isLichtung)
+            if (deepWoods.isLichtung.Value)
             {
                 // Add something awesome in the lichtung center
                 AddSomethingAwesomeForLichtung(new Vector2(deepWoods.lichtungCenter.X, deepWoods.lichtungCenter.Y));
             }
 
-            if (!deepWoods.isLichtung && deepWoods.level.Value >= Settings.Level.MinLevelForGingerbreadHouse && this.random.CheckChance(Settings.Luck.Terrain.ChanceForGingerbreadHouse))
+            if (!deepWoods.isLichtung.Value && deepWoods.level.Value >= Settings.Level.MinLevelForGingerbreadHouse && this.random.CheckChance(Settings.Luck.Terrain.ChanceForGingerbreadHouse))
             {
                 // Add a gingerbread house
                 deepWoods.resourceClumps.Add(new GingerBreadHouse(new Vector2(mapWidth / 2, mapHeight / 2)));
@@ -161,14 +161,14 @@ namespace DeepWoodsMod
                     continue;
 
                 // Don't place anything on the bright grass in Lichtungen
-                if (deepWoods.isLichtung && DeepWoodsBuilder.IsTileIndexBrightGrass(deepWoods.map.GetLayer("Back").Tiles[x, y]?.TileIndex ?? 0))
+                if (deepWoods.isLichtung.Value && DeepWoodsBuilder.IsTileIndexBrightGrass(deepWoods.map.GetLayer("Back").Tiles[x, y]?.TileIndex ?? 0))
                     continue;
 
                 // Don't place anything on water
                 if (deepWoods.doesTileHaveProperty(x, y, "Water", "Back") != null)
                     continue;
 
-                if (deepWoods.isLichtung)
+                if (deepWoods.isLichtung.Value)
                 {
                     if (this.random.CheckChance(Settings.Luck.Terrain.ChanceForFlowerOnClearing))
                     {
@@ -272,7 +272,7 @@ namespace DeepWoodsMod
             }
 
             // Fill up with grass (if not a Lichtung)
-            if (!deepWoods.isLichtung)
+            if (!deepWoods.isLichtung.Value)
             {
                 int maxGrass = (allTilesInRandomOrder.Count() - maxTerrainFeatures) / 3;
                 if (Game1.currentSeason == "winter")
@@ -601,9 +601,9 @@ namespace DeepWoodsMod
         private void AddMushroomTrees(Vector2 location)
         {
             int minX = Settings.Map.ForestPatchMinGapToMapBorder;
-            int maxX = deepWoods.mapWidth - Settings.Map.ForestPatchMinGapToMapBorder;
+            int maxX = deepWoods.mapWidth.Value - Settings.Map.ForestPatchMinGapToMapBorder;
             int minY = Settings.Map.ForestPatchMinGapToMapBorder;
-            int maxY = deepWoods.mapHeight - Settings.Map.ForestPatchMinGapToMapBorder;
+            int maxY = deepWoods.mapHeight.Value - Settings.Map.ForestPatchMinGapToMapBorder;
 
             int numMushroomTrees = this.random.GetRandomValue(3, 9);
 
@@ -627,9 +627,9 @@ namespace DeepWoodsMod
         private void AddMushrooms()
         {
             int minX = Settings.Map.MaxBumpSizeForForestBorder;
-            int maxX = deepWoods.mapWidth - Settings.Map.MaxBumpSizeForForestBorder;
+            int maxX = deepWoods.mapWidth.Value - Settings.Map.MaxBumpSizeForForestBorder;
             int minY = Settings.Map.MaxBumpSizeForForestBorder;
-            int maxY = deepWoods.mapHeight - Settings.Map.MaxBumpSizeForForestBorder;
+            int maxY = deepWoods.mapHeight.Value - Settings.Map.MaxBumpSizeForForestBorder;
 
             int numMushrooms = (Game1.currentSeason == "winter") ? this.random.GetRandomValue(12, 24) : this.random.GetRandomValue(9, 14);
 

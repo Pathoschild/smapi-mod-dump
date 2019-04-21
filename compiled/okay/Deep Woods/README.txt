@@ -1,8 +1,8 @@
 DeepWoodsMod for Stardew Valley
 Author: Max Vollmer
-Version: 1.5-beta.1
+Version: 1.6-beta.0
 
-Needs SMAPI v2.9.2 or higher: https://smapi.io/
+Needs SMAPI v2.11.1 or higher: https://smapi.io/
 
 Web: https://www.nexusmods.com/stardewvalley/mods/2571
 Sourcecode: https://github.com/maxvollmer/DeepWoodsMod
@@ -28,4 +28,8 @@ License: Exclusive/Custom, please ask author directly for permission if you want
 Texture: unicorn_zhuria.png
 Found at: https://www.nexusmods.com/stardewvalley/mods/8
 By: https://forums.nexusmods.com/index.php?/user/5497250-zhuria/
+License: Exclusive/Custom, please ask author directly for permission if you want to use this asset.
+
+Texture: gingerbread_house_technopoptart98.png
+By: https://forums.nexusmods.com/index.php?/user/55392892-technopoptart98/
 License: Exclusive/Custom, please ask author directly for permission if you want to use this asset.

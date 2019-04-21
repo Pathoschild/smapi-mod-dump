@@ -9,5 +9,8 @@
 	"tileaction-success.1": "Successfully destroyed tiles",
 	// --- Axe Specific --- \\
 	"tileaction-axe.1": "It seems like I can interact with this if my axe is equipped",
-	"tileaction-axe.2": "It seems like I'll need a better axe first"
+	"tileaction-axe.2": "It seems like I'll need a better axe first",
+	// --- Pickaxe Specific --- \\
+	"tileaction-pickaxe.1": "It seems like I can interact with this if my pickaxe is equipped",
+	"tileaction-pickaxe.2": "It seems like I'll need a better pickaxe first"
 }

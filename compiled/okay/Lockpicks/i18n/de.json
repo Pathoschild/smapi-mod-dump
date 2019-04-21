@@ -1,0 +1,9 @@
+{
+  "yes": "Ja",
+  "no": "Nein",
+  "use": "Sperrwerkzeug verwenden?",
+  "tool": "Sperrwerkzeug",
+  "tooltip": "Ein Werkzeug zum Öffnen von verschlossenen Türen.",
+  "broke": "Das Werkzeug ist kaputt!",
+  "complex": "Diese Sperre ist zu kompliziert."
+}

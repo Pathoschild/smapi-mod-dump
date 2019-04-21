@@ -37,14 +37,14 @@ namespace DeepWoodsMod
             : base(true)
         {
             this.name = nameof(Chest);
-            this.type.Value = "interactive";
+            this.Type = "interactive";
             this.giftbox.Value = false;
             this.items.Set(items);
             this.coins.Value = 0;
-            this.tileLocation.Value = location;
+            this.TileLocation = location;
             this.Tint = Color.Pink;
             this.isTrashCan.Value = isTrashCan;
-            this.boundingBox.Value = new Rectangle((int)this.tileLocation.X * 64, (int)this.tileLocation.Y * 64, 64, 64);
+            this.boundingBox.Value = new Rectangle((int)this.TileLocation.X * 64, (int)this.TileLocation.Y * 64, 64, 64);
         }
 
         public override bool performToolAction(Tool t, GameLocation location)
@@ -59,10 +59,10 @@ namespace DeepWoodsMod
 
             this.mutex.RequestLock((Action)(() =>
             {
-                if (this.isTrashCan)
+                if (this.isTrashCan.Value)
                     SetCurrentLidFrame(135);
                 this.frameCounter.Value = 5;
-                Game1.playSound(this.isTrashCan ? "trashcan" : "openChest");
+                Game1.playSound(this.isTrashCan.Value ? "trashcan" : "openChest");
                 Game1.player.Halt();
                 Game1.player.freezePause = 1000;
             }), null);
@@ -72,7 +72,7 @@ namespace DeepWoodsMod
 
         public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1f)
         {
-            if (this.isTrashCan)
+            if (this.isTrashCan.Value)
             {
                 if (this.texture == null)
                     this.texture = Game1.content.Load<Texture2D>("Maps\\spring_town");

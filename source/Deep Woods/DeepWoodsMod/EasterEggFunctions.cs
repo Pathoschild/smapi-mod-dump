@@ -45,7 +45,7 @@ namespace DeepWoodsMod
             }
             else if (method == ProcessMethod.Restore
                 && item is StardewValley.Object @object
-                && @object.parentSheetIndex == EASTER_EGG_REPLACEMENT_ITEM
+                && @object.ParentSheetIndex == EASTER_EGG_REPLACEMENT_ITEM
                 && @object.name == UNIQUE_NAME_FOR_EASTER_EGG_ITEMS)
             {
                 return new EasterEggItem() { Stack = @object.Stack };
@@ -95,6 +95,7 @@ namespace DeepWoodsMod
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidNetField")]
         public static void RemoveAllEasterEggsFromGame()
         {
             foreach (GameLocation location in Game1.locations)
@@ -108,6 +109,7 @@ namespace DeepWoodsMod
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidNetField")]
         public static void RestoreAllEasterEggsInGame()
         {
             foreach (GameLocation location in Game1.locations)
@@ -144,7 +146,7 @@ namespace DeepWoodsMod
                                 animalHouse.incubatingEgg.Y = -1;
                                 animalHouse.map.GetLayer("Front").Tiles[1, 2].TileIndex = 45;
                                 long newId = ModEntry.GetMultiplayer().getNewID();
-                                animalHouse.animals.Add(newId, new FarmAnimal("Rabbit", newId, coop.owner));
+                                animalHouse.animals.Add(newId, new FarmAnimal("Rabbit", newId, coop.owner.Value));
                             }
                         }
                     }
@@ -159,7 +161,7 @@ namespace DeepWoodsMod
 
             foreach (StardewValley.Object @object in animalHouse.objects.Values)
             {
-                if (@object.bigCraftable && @object.Name.Contains("Incubator") && @object.heldObject.Value != null && @object.heldObject.Value.ParentSheetIndex == EasterEggItem.PARENT_SHEET_INDEX && @object.minutesUntilReady <= 0 && !animalHouse.isFull())
+                if (@object.bigCraftable.Value && @object.Name.Contains("Incubator") && @object.heldObject.Value != null && @object.heldObject.Value.ParentSheetIndex == EasterEggItem.PARENT_SHEET_INDEX && @object.MinutesUntilReady <= 0 && !animalHouse.isFull())
                 {
                     @object.heldObject.Value = null;
                     @object.ParentSheetIndex = 101;
@@ -185,13 +187,13 @@ namespace DeepWoodsMod
         {
             long animalId = ModEntry.GetMultiplayer().getNewID();
 
-            FarmAnimal farmAnimal = new FarmAnimal("Rabbit", animalId, who.uniqueMultiplayerID);
+            FarmAnimal farmAnimal = new FarmAnimal("Rabbit", animalId, who.UniqueMultiplayerID);
             farmAnimal.Name = animalName;
             farmAnimal.displayName = animalName;
 
             Building building = animalHouse.getBuilding();
             farmAnimal.home = building;
-            farmAnimal.homeLocation.Value = new Vector2(building.tileX, building.tileY);
+            farmAnimal.homeLocation.Value = new Vector2(building.tileX.Value, building.tileY.Value);
             farmAnimal.setRandomPosition(animalHouse);
 
             animalHouse.animals.Add(animalId, farmAnimal);

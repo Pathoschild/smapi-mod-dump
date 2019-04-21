@@ -46,9 +46,9 @@ namespace DeepWoodsMod
             {
                 location.playSound("leafrustle");
                 ModEntry.GetReflection().GetMethod(this, "shake").Invoke(tileLocation, true);
-                if ((t as Axe).upgradeLevel >= minAxeLevel)
+                if ((t as Axe).UpgradeLevel >= minAxeLevel)
                 {
-                    this.health -= (t as Axe).upgradeLevel / 5f;
+                    this.health -= (t as Axe).UpgradeLevel / 5f;
                     if (this.health <= -1)
                     {
                         location.playSound("treethud");
@@ -83,7 +83,7 @@ namespace DeepWoodsMod
             }
             else
                 color = Color.Green;
-            for (int index1 = 0; index1 <= this.size; ++index1)
+            for (int index1 = 0; index1 <= this.size.Value; ++index1)
             {
                 for (int index2 = 0; index2 < 12; ++index2)
                 {

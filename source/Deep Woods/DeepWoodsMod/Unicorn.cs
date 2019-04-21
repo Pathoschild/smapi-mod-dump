@@ -162,10 +162,10 @@ namespace DeepWoodsMod
 
                 Flee(time);
 
-                if (this.FacingDirection != this.fleeFacingDirection)
+                if (this.FacingDirection != this.fleeFacingDirection.Value)
                 {
                     this.Sprite.StopAnimation();
-                    this.faceDirection(this.fleeFacingDirection);
+                    this.faceDirection(this.fleeFacingDirection.Value);
                 }
 
                 if (this.Sprite.CurrentAnimation == null)

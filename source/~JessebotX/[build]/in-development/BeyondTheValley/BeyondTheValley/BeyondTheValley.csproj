@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BeyondTheValley</RootNamespace>
-    <AssemblyName>BeyondTheValley</AssemblyName>
+    <AssemblyName>BeyondTheValleyExpansion</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -44,10 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Framework\Actions\SaveDeletedTilesModel.cs" />
-    <Compile Include="Framework\BVEAPI.cs" />
-    <Compile Include="Framework\ContentPackModel.cs" />
-    <Compile Include="Framework\BVEEditModel.cs" />
-    <Compile Include="Framework\IBVEAPI.cs" />
+    <Compile Include="Framework\Actions\TileActionFramework.cs" />
+    <Compile Include="Framework\Alchemy.cs" />
+    <Compile Include="Framework\ContentPacks\AvailableContentPackEdits.cs" />
+    <Compile Include="Framework\ContentPacks\ContentPackModel.cs" />
+    <Compile Include="Framework\ContentPacks\BVEEditModel.cs" />
+    <Compile Include="Framework\Misc.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

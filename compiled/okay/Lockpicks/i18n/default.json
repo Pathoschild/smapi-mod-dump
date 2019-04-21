@@ -1,0 +1,9 @@
+{
+  "yes": "Yes",
+  "no": "No",
+  "use": "Use lockpick?",
+  "tool": "Lockpick",
+  "tooltip": "Used to bypass locked doors.",
+  "broke": "The lockpick broke!",
+  "complex": "The lock is too complex to open with a lockpick."
+}

@@ -32,12 +32,15 @@ namespace InteractionTweaks
 
             if (config.EatingFeature || false/*config.WeaponBlockingFeature*/)
                 EatingBlockingFeature.Enable();
-            if (config.AdventurersGuildShopFeature || config.SlingshotFeature)
+            if (config.AdventurersGuildShopFeature || config.SellableItemsFeature)
                 AdventurersGuildFeature.Enable();
             if (config.CarpenterMenuFeature)
                 CarpenterMenuFeature.Enable();
-            if (config.FishingRodFeature)
+            if (config.SellableItemsFeature)
                 FishingRodFeature.Enable();
+            if (config.SellableItemsFeature)
+                MarniesItemShopFeature.Enable();
+
             //if (config.ToolsFeature)
             //     DontUseToolsFeature.Enable();
 
@@ -45,14 +48,9 @@ namespace InteractionTweaks
             Monitor.Log($"config.EatingFeature: {config.EatingFeature}", LogLevel.Trace);
             Monitor.Log($"config.AdventurersGuildShopFeature: {config.AdventurersGuildShopFeature}", LogLevel.Trace);
             Monitor.Log($"config.CarpenterMenuFeature: {config.CarpenterMenuFeature}", LogLevel.Trace);
-            Monitor.Log($"config.SlingshotFeature: {config.SlingshotFeature}", LogLevel.Trace);
-            Monitor.Log($"config.FishingRodFeature: {config.FishingRodFeature}", LogLevel.Trace);
-
-            Helper.ConsoleCommands.Add("carp", "", (string arg1, string[] arg2) =>
-            {
-                StardewValley.Game1.activeClickableMenu = new StardewValley.Menus.CarpenterMenu();
-            });
-
+            Monitor.Log($"config.SellableItemsFeature: {config.SellableItemsFeature}", LogLevel.Trace);
+            //Monitor.Log($"config.SlingshotFeature: {config.SlingshotFeature}", LogLevel.Trace);
+            //Monitor.Log($"config.FishingRodFeature: {config.FishingRodFeature}", LogLevel.Trace);
         }
 
         public InteractionTweaksConfig GetConfig() {

@@ -51,7 +51,7 @@ namespace DeepWoodsMod
 
         public override bool performUseAction(Vector2 tileLocation, GameLocation location)
         {
-            if (this.swordPulledOut)
+            if (this.swordPulledOut.Value)
                 return true;
 
             if (Game1.player.LuckLevel >= 10
@@ -65,13 +65,13 @@ namespace DeepWoodsMod
                 && (!Game1.player.mailReceived.Contains("JojaMember") && !Game1.MasterPlayer.mailReceived.Contains("JojaMember"))
                 && (Game1.player.hasCompletedCommunityCenter() || Game1.MasterPlayer.hasCompletedCommunityCenter()))
             {
-                location.playSoundAt(Sounds.YOBA, this.tilePosition);
+                location.playSoundAt(Sounds.YOBA, this.tilePosition.Value);
                 Game1.player.addItemByMenuIfNecessaryElseHoldUp(Excalibur.GetOne());
                 this.swordPulledOut.Value = true;
             }
             else
             {
-                location.playSoundAt(Sounds.THUD_STEP, this.tilePosition);
+                location.playSoundAt(Sounds.THUD_STEP, this.tilePosition.Value);
                 Game1.showRedMessage("It won't budge.");
             }
 
@@ -110,7 +110,7 @@ namespace DeepWoodsMod
 
             Rectangle topSourceRectangle;
             Vector2 globalTopPosition;
-            if (this.swordPulledOut)
+            if (this.swordPulledOut.Value)
             {
                 topSourceRectangle = new Rectangle(0, 0, 32, 16);
                 globalTopPosition = new Vector2(globalPosition.X, globalPosition.Y - 64);

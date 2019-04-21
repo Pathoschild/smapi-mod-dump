@@ -53,7 +53,7 @@ namespace DeepWoodsMod
             if (!Game1.IsMasterGame)
                 return;
 
-            if (deepWoods.isLichtung)
+            if (deepWoods.isLichtung.Value)
                 return;
 
             // random.EnterMasterMode();

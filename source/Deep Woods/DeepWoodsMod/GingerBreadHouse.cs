@@ -77,7 +77,7 @@ namespace DeepWoodsMod
             if (!(t is Axe))
                 return false;
 
-            if (t.upgradeLevel < Settings.Objects.GingerBreadHouse.MinimumAxeLevel)
+            if (t.UpgradeLevel < Settings.Objects.GingerBreadHouse.MinimumAxeLevel)
             {
                 location.playSound("axe");
                 Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\StringsFromCSFiles:ResourceClump.cs.13948"));
@@ -89,11 +89,11 @@ namespace DeepWoodsMod
 
             location.playSound("axchop");
             Game1.createRadialDebris(Game1.currentLocation, Debris.woodDebris, (int)debrisLocation.X, (int)tileLocation.Y, Game1.random.Next(4, 9), false, -1, false, -1);
-            this.health.Value -= Math.Max(1f, (t.upgradeLevel + 1) * 0.75f);
+            this.health.Value -= Math.Max(1f, (t.UpgradeLevel + 1) * 0.75f);
 
-            if (this.health > 0)
+            if (this.health.Value > 0)
             {
-                if (this.health <= this.nextSpawnFoodHealth)
+                if (this.health.Value <= this.nextSpawnFoodHealth.Value)
                 {
                     location.playSound("stumpCrack");
 
@@ -101,7 +101,7 @@ namespace DeepWoodsMod
 
                     SpawnFoodItem(location as DeepWoods, t, (int)tileLocation.X, (int)tileLocation.Y);
 
-                    this.nextSpawnFoodHealth.Value = this.health - Settings.Objects.GingerBreadHouse.DamageIntervalForFoodDrop;
+                    this.nextSpawnFoodHealth.Value = this.health.Value - Settings.Objects.GingerBreadHouse.DamageIntervalForFoodDrop;
                 }
 
                 this.shakeTimer = 100f;
@@ -110,9 +110,9 @@ namespace DeepWoodsMod
 
             PlayDestroyedSounds(location);
 
-            for (int x = 0; x < this.width; x++)
+            for (int x = 0; x < this.width.Value; x++)
             {
-                for (int y = 0; y < this.height; y++)
+                for (int y = 0; y < this.height.Value; y++)
                 {
                     SpawnFoodItems(location as DeepWoods, t, (int)(this.tile.X + x), (int)(this.tile.Y + y));
                     Game1.createRadialDebris(Game1.currentLocation, Debris.woodDebris, (int)(this.tile.X + x), (int)(this.tile.Y + y), Game1.random.Next(4, 9), false, -1, false, -1);
@@ -178,7 +178,7 @@ namespace DeepWoodsMod
 
             Vector2 debrisLocation = new Vector2(tileLocation.X, tileLocation.Y);
 
-            if ((tileLocation.X + xOffset) > (this.tile.X + this.width - 1))
+            if ((tileLocation.X + xOffset) > (this.tile.X + this.width.Value - 1))
             {
                 debrisLocation.X = debrisLocation.X - xOffset;
             }
@@ -191,7 +191,7 @@ namespace DeepWoodsMod
                 debrisLocation.X = debrisLocation.X + (Game1.random.NextDouble() < 0.5 ? xOffset : -xOffset);
             }
 
-            if ((tileLocation.Y + yOffset) > (this.tile.Y + this.height - 1))
+            if ((tileLocation.Y + yOffset) > (this.tile.Y + this.height.Value - 1))
             {
                 debrisLocation.Y = debrisLocation.Y - yOffset;
             }

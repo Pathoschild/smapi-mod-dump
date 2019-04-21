@@ -7,9 +7,11 @@ mods:
    Level Extender
 
 latest commit:
-   commit d1126f8ced9579e54e38b2ead893754a5650558a
+   commit 7df986b17e353d609f0bab71ba5f8914e29f981f
    Author: unidarkshin <devinlematty@gmail.com>
-   Date:   Thu Jan 31 14:20:29 2019 -0500
+   Date:   Tue Apr 16 14:08:53 2019 -0400
    
-       Fixed for 3.1
+       FISHING OVERHAUL UPDATE
+       
+       --
    

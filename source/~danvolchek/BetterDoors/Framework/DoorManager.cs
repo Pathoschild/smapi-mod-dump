@@ -1,4 +1,5 @@
 ﻿using BetterDoors.Framework.Enums;
+using BetterDoors.Framework.Serialization;
 using BetterDoors.Framework.Utility;
 using Microsoft.Xna.Framework;
 using StardewValley;
@@ -14,6 +15,9 @@ namespace BetterDoors.Framework
         /*********
          ** Fields
          *********/
+        /// <summary>Mod configuration.</summary>
+        private readonly BetterDoorsModConfig config;
+
         /// <summary>The action to take when a door is toggled.</summary>
         private readonly Action<Door> onToggledDoor;
 
@@ -27,9 +31,11 @@ namespace BetterDoors.Framework
         ** Public methods
         *********/
         /// <summary>Constructs an instance.</summary>
+        /// <param name="config">Mod configuration.</param>
         /// <param name="onToggledDoor">The action to take when a door is toggled.</param>
-        public DoorManager(Action<Door> onToggledDoor)
+        public DoorManager(BetterDoorsModConfig config, Action<Door> onToggledDoor)
         {
+            this.config = config;
             this.onToggledDoor = onToggledDoor;
         }
 
@@ -86,26 +92,21 @@ namespace BetterDoors.Framework
             if ((door.IsAnimating && door.StateBeforeToggle != stateBeforeToggle) || (!door.IsAnimating && door.State == stateBeforeToggle))
             {
                 // Don't callback forceful changes.
-                door.Toggle(true);
+                door.Toggle(true, true);
             }
         }
 
         /// <summary>Unforcefully toggles a door state if found at the position or near it.</summary>
         /// <param name="locationName">The location to toggle the door in.</param>
-        /// <param name="position">The position to look for a door at.</param>
-        public void FuzzyToggleDoor(string locationName, Point position)
+        /// <param name="mouseTile">The position to look for a door at.</param>
+        public void MouseToggleDoor(string locationName, Point mouseTile)
         {
             if (!this.doors.TryGetValue(locationName, out IDictionary<Point, Door> doorsInLocation))
                 return;
 
-            for (int y = 0; y < 2; y++)
-            {
-                if (doorsInLocation.TryGetValue(new Point(position.X, position.Y + y), out Door door))
-                {
-                    foreach (Door toggleDoor in this.TryToggleDoor(door, doorsInLocation, false))
-                        this.onToggledDoor(toggleDoor);
-                }
-            }
+            if(DoorManager.TryGetDoorFromMouse(mouseTile, doorsInLocation, out Door door))
+                foreach (Door toggleDoor in this.TryToggleDoor(door, doorsInLocation, false))
+                    this.onToggledDoor(toggleDoor);
         }
 
         /// <summary>Toggles automatic doors as necessary.</summary>
@@ -116,7 +117,7 @@ namespace BetterDoors.Framework
                 return;
 
             // Get currently near doors.
-            IList<Door> nearDoors = this.GetDoorsNearPlayers(location).ToList();
+            IList<Door> nearDoors = this.GetAutomaticDoorsNearLocalPlayer(location).ToList();
 
             // Find doors that entered and exited the range.
             ISet<Door> newInRangeDoors = new HashSet<Door>(nearDoors);
@@ -127,13 +128,13 @@ namespace BetterDoors.Framework
             // Find doors to toggle that:
             // - Are not both in and out of the range (can be caused by double doors).
             // - Should be open and are not open.
-            // - Should be closed and are not closed.
+            // - Should be closed and are not closed and aren't near any other players.
             HashSet<Door> doorsToToggle = new HashSet<Door>(newInRangeDoors.Where(door => door.State != State.Open));
-            doorsToToggle.SymmetricExceptWith(newOutOfRangeDoors.Where(door => door.State != State.Closed));
+            doorsToToggle.SymmetricExceptWith(newOutOfRangeDoors.Where(door => door.State != State.Closed && !this.IsAutomaticDoorNearAnyPlayer(door, location)));
 
             this.doorsNearPlayers = nearDoors;
 
-            foreach (Door toggleDoor in doorsToToggle.Where(door => door.Toggle(true)))
+            foreach (Door toggleDoor in doorsToToggle.Where(door => door.Toggle(true, !this.config.SilenceAutomaticDoors)))
                 this.onToggledDoor(toggleDoor);
         }
 
@@ -160,6 +161,26 @@ namespace BetterDoors.Framework
             return this.doors.TryGetValue(locationName, out IDictionary<Point, Door> doorsInLocation) && doorsInLocation.Values.Where(door => door.State == State.Closed).Any(door => door.CollisionInfo.Intersects(position));
         }
 
+        /// <summary>Gets the mouse cursor to display if a door is found.</summary>
+        /// <param name="locationName">The location to check in.</param>
+        /// <param name="playerTile">The position the player is at.</param>
+        /// <param name="mouseTile">The position of the mouse.</param>
+        /// <param name="cursor">The resulting cursor index, if any.</param>
+        /// <param name="transparency">The resulting transparency value, if any.</param>
+        /// <returns>Whether a door was found.</returns>
+        public bool TryGetMouseCursorForDoor(string locationName, Point playerTile, Point mouseTile, out int cursor, out float transparency)
+        {
+            cursor = 0;
+            transparency = 0;
+
+            if (!this.doors.TryGetValue(locationName, out IDictionary<Point, Door> doorsInLocation) || !DoorManager.TryGetDoorFromMouse(mouseTile, doorsInLocation, out Door _))
+                return false;
+
+            cursor = 2;
+            transparency = Utils.GetTaxiCabDistance(playerTile, mouseTile) <= this.config.DoorToggleRadius ? 1f : 0.5f;
+            return true;
+        }
+
         /// <summary>Resets the manager, removing each door from its map.</summary>
         public void Reset()
         {
@@ -178,45 +199,79 @@ namespace BetterDoors.Framework
         /// <returns>All doors that were toggled.</returns>
         private IEnumerable<Door> TryToggleDoor(Door door, IDictionary<Point, Door> doorsInLocation, bool force)
         {
-            if (door.Toggle(force))
+            if (door.Toggle(force, true))
             {
                 yield return door;
-                if (DoorManager.GetDoubleDoor(door, doorsInLocation, out Door doubleDoor) && doubleDoor.Toggle(force))
+                if (DoorManager.TryGetDoubleDoor(door, doorsInLocation, out Door doubleDoor) && doubleDoor.Toggle(force, true))
                     yield return doubleDoor;
             }
         }
 
-        /// <summary>Gets all doors near any player.</summary>
+        /// <summary>Gets all doors near the local player.</summary>
         /// <param name="location">The location to look in.</param>
         /// <returns>The doors that were found.</returns>
-        private IEnumerable<Door> GetDoorsNearPlayers(GameLocation location)
+        private IEnumerable<Door> GetAutomaticDoorsNearLocalPlayer(GameLocation location)
+        {
+            return this.GetAutomaticDoorsNearPosition(location, new Point(Game1.player.getTileX(), Game1.player.getTileY()));
+        }
+
+        /// <summary>Gets whether the door is near any player in the given location.</summary>
+        /// <param name="door">The door to look for.</param>
+        /// <param name="location">The location to look in.</param>
+        /// <returns>Whether a player is near the door.</returns>
+        private bool IsAutomaticDoorNearAnyPlayer(Door door, GameLocation location)
+        {
+            return location.farmers.Select(player => new Point(player.getTileX(), player.getTileY())).Any(position => this.GetAutomaticDoorsNearPosition(location, position).Contains(door));
+        }
+
+        /// <summary>Gets all doors near the given position.</summary>
+        /// <param name="location">The location to look in.</param>
+        /// <param name="position">The position to search at.</param>
+        /// <returns>The doors that were found.</returns>
+        private IEnumerable<Door> GetAutomaticDoorsNearPosition(GameLocation location, Point position)
         {
             if (!this.doors.TryGetValue(Utils.GetLocationName(location), out IDictionary<Point, Door> doorsInLocation))
                 yield break;
 
-            foreach (Farmer farmer in location.farmers)
+            for (int i = -1 * this.config.DoorToggleRadius; i <= this.config.DoorToggleRadius; i++)
             {
-                for (int i = -2; i < 3; i++)
+                // Search along the x axis for horizontal doors and along the y axis for vertical doors (parallel to the hallway direction).
+
+                if (doorsInLocation.TryGetValue(new Point(position.X + i, position.Y), out Door door) && (door.Extras.IsAutomaticDoor || this.config.MakeAllDoorsAutomatic) && door.Orientation == Orientation.Horizontal)
                 {
-                    // Search along the x axis for horizontal doors and along the y axis for vertical doors (parallel to the hallway direction).
+                    yield return door;
 
-                    if (doorsInLocation.TryGetValue(new Point(farmer.getTileX() + i, farmer.getTileY()), out Door door) && door.Extras.IsAutomaticDoor && door.Orientation == Orientation.Horizontal)
-                    {
-                        yield return door;
+                    if (DoorManager.TryGetDoubleDoor(door, doorsInLocation, out Door doubleDoor))
+                        yield return doubleDoor;
+                }
 
-                        if (DoorManager.GetDoubleDoor(door, doorsInLocation, out Door doubleDoor))
-                            yield return doubleDoor;
-                    }
+                if (doorsInLocation.TryGetValue(new Point(position.X, position.Y + i), out door) && (door.Extras.IsAutomaticDoor || this.config.MakeAllDoorsAutomatic) && door.Orientation == Orientation.Vertical)
+                {
+                    yield return door;
 
-                    if (doorsInLocation.TryGetValue(new Point(farmer.getTileX(), farmer.getTileY() + i), out door) && door.Extras.IsAutomaticDoor && door.Orientation == Orientation.Vertical)
-                    {
-                        yield return door;
-
-                        if (DoorManager.GetDoubleDoor(door, doorsInLocation, out Door doubleDoor))
-                            yield return doubleDoor;
-                    }
+                    if (DoorManager.TryGetDoubleDoor(door, doorsInLocation, out Door doubleDoor))
+                        yield return doubleDoor;
                 }
             }
+        }
+
+        /// <summary>Gets a door from a mouse position, allowing for some fuzzyness.</summary>
+        /// <param name="mouseTile">The tile the mouse is on.</param>
+        /// <param name="doorsInLocation">The doors in the location to search.</param>
+        /// <param name="door">The resulting door, if any.</param>
+        /// <returns>Whether a door was found.</returns>
+        private static bool TryGetDoorFromMouse(Point mouseTile, IDictionary<Point, Door> doorsInLocation, out Door door)
+        {
+            door = null;
+            for (int y = 0; y < 2; y++)
+            {
+                if (doorsInLocation.TryGetValue(new Point(mouseTile.X, mouseTile.Y + y), out door))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>Gets the associated double door for the given door, if both are double doors.</summary>
@@ -224,7 +279,7 @@ namespace BetterDoors.Framework
         /// <param name="doorsInLocation">The doors in the location.</param>
         /// <param name="doubleDoor">The found double door.</param>
         /// <returns>Whether a double door was found.</returns>
-        private static bool GetDoubleDoor(Door door, IDictionary<Point, Door> doorsInLocation, out Door doubleDoor)
+        private static bool TryGetDoubleDoor(Door door, IDictionary<Point, Door> doorsInLocation, out Door doubleDoor)
         {
             doubleDoor = null;
 

@@ -24,7 +24,6 @@ namespace DeepWoodsMod
         private static Multiplayer multiplayer;
 
         private bool isDeepWoodsGameRunning = false;
-        private bool hasRequestedInitMessageFromServer = false;
         private Dictionary<long, GameLocation> playerLocations = new Dictionary<long, GameLocation>();
 
         private static ConcurrentQueue<string> queuedErrorMessages = new ConcurrentQueue<string>();
@@ -180,7 +179,6 @@ namespace DeepWoodsMod
             ModEntry.Log("GameEvents_AfterReturnToTitle", StardewModdingAPI.LogLevel.Trace);
 
             isDeepWoodsGameRunning = false;
-            hasRequestedInitMessageFromServer = false;
         }
 
         private void InitGameIfNecessary()
@@ -201,7 +199,6 @@ namespace DeepWoodsMod
             else
             {
                 DeepWoodsManager.Remove();
-                hasRequestedInitMessageFromServer = true;
                 ModEntry.SendMessage(MessageId.RequestMetadata, Game1.MasterPlayer.UniqueMultiplayerID);
             }
         }
@@ -216,7 +213,6 @@ namespace DeepWoodsMod
             ModEntry.Log("SaveEvents_AfterLoad", StardewModdingAPI.LogLevel.Trace);
 
             isDeepWoodsGameRunning = false;
-            hasRequestedInitMessageFromServer = false;
             InitGameIfNecessary();
         }
 

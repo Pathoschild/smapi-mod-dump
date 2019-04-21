@@ -1,4 +1,4 @@
-﻿using Harmony;
+﻿ using Harmony;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Netcode;
@@ -236,7 +236,7 @@ namespace Better10Hearts
                     float hearts = friendship.Points / NPC.friendshipPointsPerHeartLevel;
 
                     // Check if friendship is at 10 hearts
-                    if (hearts >= 10)
+                    if (hearts >= 10 && !npcEnergyGeneration.ContainsKey(npc.Name))
                     {
                         // Add the npc to a list to check if they have spoken today
                         npcEnergyGeneration.Add(npc.Name, false);
