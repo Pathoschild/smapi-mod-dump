@@ -1,5 +1,6 @@
 ﻿using Magic.Schools;
 using Netcode;
+using SpaceCore;
 using StardewValley;
 
 namespace Magic.Spells
@@ -26,7 +27,7 @@ namespace Magic.Spells
 
         public override int getManaCost(Farmer player, int level)
         {
-            return 10;
+            return 25;
         }
 
         public override IActiveEffect onCast(Farmer player, int level, int targetX, int targetY)
@@ -58,7 +59,7 @@ namespace Magic.Spells
             }
 
             Game1.buffsDisplay.addOtherBuff(new Buff(farm, fish, mine, 0, luck, forage, 0, 0, 0, 0, def, atk, 60 + level * 120, "spell:light:buff", "Buff (spell)"));
-            player.addMagicExp(10);
+            player.AddCustomSkillExperience(Magic.Skill,10);
             return null;
         }
     }

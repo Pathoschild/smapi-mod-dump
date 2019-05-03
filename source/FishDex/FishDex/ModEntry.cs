@@ -70,6 +70,9 @@ namespace FishDex
 		{
 			if (e.IsLocalPlayer)
 			{
+				if (this.Config.ShowAll)
+					return;
+
 				foreach (var item in e.Added.Where(p => p.Category == -4))
 				{
 					foreach (var fish in Parser.GetFishData().Where(p => !p.Caught && p.Name == item.Name))
@@ -118,7 +121,7 @@ namespace FishDex
 				{
 					this.Monitor.Log($"Opening fish menu", LogLevel.Trace);
 
-					FishMenu fishMenu = new FishMenu(this.Parser, this.Monitor, this.Helper.Reflection, this.Config.ScrollAmount);
+					FishMenu fishMenu = new FishMenu(this.Parser, this.Monitor, this.Helper.Reflection, this.Config.ScrollAmount, this.Config.ShowAll);
 					Game1.activeClickableMenu = fishMenu;
 				});
 			}

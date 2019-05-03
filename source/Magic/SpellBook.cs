@@ -37,6 +37,12 @@ namespace Magic
 
         internal static void init(Func<long> getNewId)
         {
+            register(new AnalyzeSpell());
+            register(new DummySpell("arcane", "magicmissle"));
+            register(new EnchantSpell(false));
+            register(new EnchantSpell(true));
+            register(new RewindSpell());
+
             register(new ClearDebrisSpell());
             register(new TillSpell());
             register(new WaterSpell());
@@ -52,14 +58,15 @@ namespace Magic
             register(new BuffSpell());
             register(new EvacSpell());
 
-            register(new ProjectileSpell(SchoolId.Elemental, "frostbolt", 1, 4, 10, 20, "flameSpell", "flameSpellHit"));
-            register(new ProjectileSpell(SchoolId.Elemental, "fireball", 1, 4, 10, 20, "flameSpell", "flameSpellHit"));
+            register(new ProjectileSpell(SchoolId.Elemental, "frostbolt", 5, 10, 20, "flameSpell", "flameSpellHit"));
+            register(new ProjectileSpell(SchoolId.Elemental, "fireball", 5, 10, 20, "flameSpell", "flameSpellHit"));
             register(new DescendSpell());
             register(new TeleportSpell());
 
             register(new MeteorSpell());
             register(new BloodManaSpell());
             register(new LuckStealSpell());
+            register(new DummySpell("eldritch", "spirit"));
         }
 
 
@@ -67,7 +74,6 @@ namespace Magic
         public Farmer Owner { get; internal set; }
 
         public Dictionary<string, int> knownSpells = new Dictionary<string, int>();
-        public HashSet<string> knownSchools = new HashSet<string>();
         public PreparedSpell[][] prepared =
         new PreparedSpell[2][]
         {

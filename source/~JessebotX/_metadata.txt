@@ -7,9 +7,9 @@ mods:
    Sprint Sprint Sprint
 
 latest commit:
-   commit fd017b6fe47759e92cea2c8312d30e194581a12e
+   commit 07975ad8cd28f1e52db7b32d7852793a1b6f1e6b
    Author: JessebotX <jessebotx2003@gmail.com>
-   Date:   Sat Apr 20 20:00:35 2019 -0700
+   Date:   Wed May 1 18:08:49 2019 -0700
    
-       prepare IF2 unofficial fix for update
+       Sprint Sprint Sprint 1.0.4
    

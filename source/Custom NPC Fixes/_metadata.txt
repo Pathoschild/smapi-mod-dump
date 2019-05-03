@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/CustomNPCFixes.git
+
+mods:
+   Custom NPC Fixes
+
+latest commit:
+   commit a9892b91b921386e8349a6bf59d5932b6fe29929
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Mon Apr 29 21:28:35 2019 -0400
+   
+       Update manifest with update keys.
+   

@@ -1,0 +1,7 @@
+{
+  "Menu_DefaultText": "Choisis un arbre à transplanter.",
+  "Menu_PlacementText": "Choisis un nouvel emplacement pour l'arbre.",
+  "Menu_InvalidPlace": "Impossible de déplacer ici !",
+  "Menu_InvalidCap": "Impossible de déplacer un arbre avec un saigneur !",
+  "Carpenter_Option": "Transplanter un arbre"
+}

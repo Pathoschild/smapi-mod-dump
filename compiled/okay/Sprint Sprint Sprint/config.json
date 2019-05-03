@@ -1,3 +1,6 @@
 {
-  "SprintKey": "LeftShift"
+  "SprintKey": "LeftShift",
+  "SprintSpeed": 5,
+  "DrainStamina": true,
+  "StaminaCost": 0.25
 }

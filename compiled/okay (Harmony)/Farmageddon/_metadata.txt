@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2618
+IDs: maxvollmer.farmageddon
+update keys: Nexus:2618

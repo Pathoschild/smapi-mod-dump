@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/569
+IDs: Alphablackwolf.CookingSkillPrestigeAdapter, 20d6b8a3-b6e7-460b-a6e4-07c2b0cb6c63
+update keys: Nexus:569, GitHub:Alphablackwolf/SkillPrestige

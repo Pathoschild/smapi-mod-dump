@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2035
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28407.52
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SauvignonInStardew", "SauvignonInStardew\SauvignonInStardew.csproj", "{9462B13A-0E4A-422D-8194-D8ECB8A27232}"
 EndProject
@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{8CD749FC-D
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		README.md = README.md
+		RELEASE-NOTES.md = RELEASE-NOTES.md
 	EndProjectSection
 EndProject
 Global

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2861
+IDs: Clark.MiloDog
+update keys: Nexus:2861

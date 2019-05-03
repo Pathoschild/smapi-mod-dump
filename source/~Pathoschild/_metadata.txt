@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit daff1e5ee87e6c56d257fe4e028cb17a004f0ddc
+   commit eb93b95d44e3d30a842ea81fd56150988ceac55b
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Apr 21 14:22:13 2019 -0400
+   Date:   Sun Apr 28 18:01:39 2019 -0400
    
-       update for settings now handled by mod build package (#403)
+       fix incorrect error when dynamic/config tokens conflict
    

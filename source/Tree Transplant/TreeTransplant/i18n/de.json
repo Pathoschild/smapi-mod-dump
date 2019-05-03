@@ -1,0 +1,7 @@
+{
+  "Menu_DefaultText": "Wähle einen Baum zum umpflanzen.",
+  "Menu_PlacementText": "Wähle einen neuen Ort für den Baum.",
+  "Menu_InvalidPlace": "Kann hier nicht plaziert werden!",
+  "Menu_InvalidCap": "Ein Baum mit Zapfhahn kann nicht bewegt werden!",
+  "Carpenter_Option": "Baum umpflanzen"
+}

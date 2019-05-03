@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3849
+IDs: spacechase0.CustomNPCFixes
+update keys: Nexus:3849

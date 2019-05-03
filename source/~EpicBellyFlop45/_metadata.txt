@@ -11,9 +11,9 @@ mods:
    Customize Cursor Sprite
 
 latest commit:
-   commit ca2e820e64aebce13ac8d66933898e86b4ab3ca3
+   commit 4b9d0338e7c578a4e1eb5707a0a8526a7947e799
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Sat Apr 20 22:33:27 2019 +0100
+   Date:   Wed May 1 23:31:17 2019 +0100
    
-       [Better10Hearts] Updated manifest
+       [BetterMixedSeeds] Fixed a misspelling causing a bug and fixed logging to be shown as trace and not debug
    

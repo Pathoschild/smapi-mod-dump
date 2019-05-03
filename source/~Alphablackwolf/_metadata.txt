@@ -1,0 +1,15 @@
+url:
+   https://github.com/Alphablackwolf/SkillPrestige.git
+
+mods:
+   Skill Prestige
+   Skill Prestige for Cooking Skill
+   Skill Prestige for Luck Skill
+
+latest commit:
+   commit 80b7ca3ec58311a96820c8d6583f02e8342cc3f0
+   Author: Chris <Christopher.R.Couture@gmail.com>
+   Date:   Fri Aug 4 09:20:02 2017 -0400
+   
+       tying in animal produce handling, prepping for merge to v2 branch.
+   

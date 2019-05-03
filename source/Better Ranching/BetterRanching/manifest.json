@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Better Ranching",
   "Author": "Urbanyeti",
-  "Version": "1.7.1",
+  "Version": "1.7.2",
   "Description": "Prevents failed milk/shear attempts and displays when animals can be milked/sheared and petted.",
   "UniqueID": "BetterRanching",
   "EntryDll": "BetterRanching.dll",

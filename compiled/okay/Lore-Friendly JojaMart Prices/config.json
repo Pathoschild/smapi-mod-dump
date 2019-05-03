@@ -1,0 +1,11 @@
+{
+  "ModifySunflowerSeeds": false,
+  "PriceDiscountNoMembership": "3g",
+  "PriceDiscountMembership": "20%",
+  "MatchRandomWallpaperFlooring": true,
+  "RandomWallpaperFlooringDiscountNoMembership": "3g",
+  "RandomWallpaperFlooringDiscountMembership": "20%",
+  "JojaBrandedItemDiscountMembership": "20%",
+  "WheatDiscountNoMembership": "3g",
+  "WheatDiscountMembership": "4g"
+}

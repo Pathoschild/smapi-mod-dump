@@ -6,7 +6,7 @@ namespace StackToNearbyChests.Patches
 {
 	static class TypeGetter
 	{
-		public static Type InventoryPage() => new StardewValley.Menus.InventoryPage(0, 0, 0, 0).GetType();
+		public static Type InventoryPage() => typeof(InventoryPage);
 		public static Type IClickableMenu() => InventoryPage().BaseType;
 		public static Type ClickableTextureComponent() => new StardewValley.Menus.ClickableTextureComponent(
 			new Microsoft.Xna.Framework.Rectangle(),

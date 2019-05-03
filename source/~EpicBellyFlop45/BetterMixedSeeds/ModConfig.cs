@@ -297,5 +297,35 @@ namespace BetterMixedSeeds
         public bool UseTea_Leaf_Plant_SPRING { get; set; } = true;
         public bool UseTea_Leaf_Plant_SUMMER { get; set; } = true;
         public bool UseTea_Leaf_Plant_FALL { get; set; } = true;
+
+        // Forage to Farm
+        public bool UseCave_Carrot_SPRING { get; set; } = true;
+        public bool UseCave_Carrot_SUMMER { get; set; } = true;
+        public bool UseCave_Carrot_FALL { get; set; } = true;
+        public bool UseChanterelle_Mushroom { get; set; } = true;
+        public bool UseCoconut { get; set; } = true;
+        public bool UseCommon_Mushroom_SPRING { get; set; } = true;
+        public bool UseCommon_Mushroom_FALL { get; set; } = true;
+        public bool UseCrocus { get; set; } = true;
+        public bool UseCrystal_Fruit { get; set; } = true;
+        public bool UseDaffodil { get; set; } = true;
+        public bool UseDandelion { get; set; } = true;
+        public bool UseFiddlehead_Fern { get; set; } = true;
+        public bool UseHazelnut { get; set; } = true;
+        public bool UseHolly { get; set; } = true;
+        public bool UseWild_Horseradish { get; set; } = true;
+        public bool UseLeek { get; set; } = true;
+        public bool UseMorel_Mushroom { get; set; } = true;
+        public bool UsePurple_Mushroom { get; set; } = true;
+        public bool UseRed_Mushroom_SUMMER { get; set; } = true;
+        public bool UseRed_Mushroom_FALL { get; set; } = true;
+        public bool UseSalmonberry { get; set; } = true;
+        public bool UseSnow_Yam { get; set; } = true;
+        public bool UseSpice_Berry { get; set; } = true;
+        public bool UseSpring_Onion { get; set; } = true;
+        public bool UseSweet_Pea { get; set; } = true;
+        public bool UseWild_Blackberry { get; set; } = true;
+        public bool UseWild_Plum { get; set; } = true;
+        public bool UseWinter_Root { get; set; } = true;
     }
 }

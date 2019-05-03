@@ -20,17 +20,20 @@ namespace Sprint
         private bool playerSprinting = false;
 
         //reference buff
-        private Buff sprintingBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 1, "Sprint Sprint Sprint", "Sprint Sprint Sprint");
-        private Buff sprintingBuff2 = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 1, "Sprint Sprint Sprint", "Sprint Sprint Sprint");
+        private Buff sprintingBuff;
+        private Buff sprintingBuff2;
 
         public override void Entry(IModHelper helper)
         {
+            /* Read Config */
+            this.Config = helper.ReadConfig<ModConfig>();
+
+            sprintingBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, Config.SprintSpeed, 0, 0, 1, "Sprint Sprint Sprint", "Sprint Sprint Sprint");
+            sprintingBuff2 = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, Config.SprintSpeed + 7, 0, 0, 1, "Sprint Sprint Sprint", "Sprint Sprint Sprint");
+
             /* Event Handlers */
             helper.Events.GameLoop.UpdateTicked += this.UpdateTicked;
             helper.Events.GameLoop.OneSecondUpdateTicked += this.OneSecond;
-
-            /* Read Config */
-            this.Config = helper.ReadConfig<ModConfig>();
         }
 
         private void UpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -83,10 +86,12 @@ namespace Sprint
         /* stamina drain */
         private void OneSecond(object sender, OneSecondUpdateTickedEventArgs e)
         {
-            if (playerSprinting && !Game1.paused && Game1.player.isMoving())
-            {
-                Game1.player.Stamina = Math.Min(Game1.player.MaxStamina, Game1.player.Stamina - 0.25f);
-            }
+            if (!Context.IsWorldReady)
+                return;
+
+            if (Config.DrainStamina)
+                if (playerSprinting && !Game1.paused && Game1.player.isMoving())
+                    Game1.player.Stamina = Math.Min(Game1.player.MaxStamina, Game1.player.Stamina - this.Config.StaminaCost);
         }
 
         /* Check if sprinting buff exists */

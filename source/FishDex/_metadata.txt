@@ -5,9 +5,9 @@ mods:
    FishDex
 
 latest commit:
-   commit 2afd57c091ab1f56322ed29862522a1df43139df
+   commit 09cb4529dd7b3fc48c00c4b50f53dbe57fba39b9
    Author: Rupak <rupak0577@gmail.com>
-   Date:   Mon Apr 8 00:37:23 2019 +0530
+   Date:   Wed Apr 24 01:26:13 2019 +0530
    
-       Add License and Readme
+       Update readme
    

@@ -1,6 +1,6 @@
 <Query Kind="Program">
-  <Reference>&lt;ProgramFilesX86&gt;\Steam\steamapps\common\Stardew Valley\smapi-internal\StardewModdingAPI.Toolkit.CoreInterfaces.dll</Reference>
-  <Reference>&lt;ProgramFilesX86&gt;\Steam\steamapps\common\Stardew Valley\smapi-internal\StardewModdingAPI.Toolkit.dll</Reference>
+  <Reference Relative="..\..\SMAPI\bin\Debug\SMAPI.Toolkit\netstandard2.0\SMAPI.Toolkit.CoreInterfaces.dll">C:\source\_Stardew\SMAPI\bin\Debug\SMAPI.Toolkit\netstandard2.0\SMAPI.Toolkit.CoreInterfaces.dll</Reference>
+  <Reference Relative="..\..\SMAPI\bin\Debug\SMAPI.Toolkit\netstandard2.0\SMAPI.Toolkit.dll">C:\source\_Stardew\SMAPI\bin\Debug\SMAPI.Toolkit\netstandard2.0\SMAPI.Toolkit.dll</Reference>
   <NuGetReference>HtmlAgilityPack</NuGetReference>
   <NuGetReference Prerelease="true">MonkeyCache.FileStore</NuGetReference>
   <NuGetReference>Newtonsoft.Json</NuGetReference>
@@ -17,13 +17,22 @@
   <Namespace>StardewModdingAPI.Toolkit.Framework.Clients.Wiki</Namespace>
   <Namespace>StardewModdingAPI.Toolkit.Framework.ModData</Namespace>
   <Namespace>StardewModdingAPI.Toolkit.Framework.ModScanning</Namespace>
+  <Namespace>StardewModdingAPI.Toolkit.Framework.UpdateData</Namespace>
   <Namespace>StardewModdingAPI.Toolkit.Serialisation</Namespace>
   <Namespace>StardewModdingAPI.Toolkit.Serialisation.Models</Namespace>
   <Namespace>StardewModdingAPI.Toolkit.Utilities</Namespace>
   <Namespace>System.Net</Namespace>
   <Namespace>System.Threading.Tasks</Namespace>
-  <Namespace>StardewModdingAPI.Toolkit.Framework.UpdateData</Namespace>
 </Query>
+
+/*
+
+  This script...
+     1. scans the Mods folder for installed mods;
+	 2. crossreferences each mod to the update API and wiki;
+	 3. displays the metadata for review, with available updates shown first.
+
+*/
 
 /*********
 ** Configuration
@@ -168,7 +177,10 @@ public IDictionary<string, string> OverrideFolderNames = new Dictionary<string, 
 	["Omegasis.HappyBirthday"] = "Happy Birthday (Omegasis)",
 
 	["HorseWhistle_SMAPI"] = "Horse Whistle (Nabuma)",
-	["icepuente.HorseWhistle"] = "Horse Whistle (Icepuente)"
+	["icepuente.HorseWhistle"] = "Horse Whistle (Icepuente)",
+	
+	// prefix sub-mods
+	["SilentOak.AutoQualityPatch"] = "Quality Products - Auto Quality Patch"
 };
 
 /// <summary>The mod versions to consider equivalent in update checks (indexed by mod ID to local/server versions).</summmary>

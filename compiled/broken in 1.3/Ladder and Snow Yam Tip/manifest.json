@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Ladder And SnowYam Tip",
+  "Author": "WhiteMind",
+  "Version": "1.1.0",
+  "MinimumApiVersion": "2.1",
+  "Description": "Draw the ladder and SnowYam position.",
+  "UniqueID": "WhiteMind.LAST",
+  "EntryDll": "LadderAndSnowYamTip.dll",
+  "UpdateKeys": [ "Nexus:1906" ]
+}

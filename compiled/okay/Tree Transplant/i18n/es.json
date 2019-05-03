@@ -1,0 +1,7 @@
+{
+  "Menu_DefaultText": "Selecciona un árbol a trasplantar.",
+  "Menu_PlacementText": "Elige un nuevo lugar para el árbol.",
+  "Menu_InvalidPlace": "¡No se puede colocar aquí!",
+  "Menu_InvalidCap": "¡No puedes mover un árbol que tenga resinera!",
+  "Carpenter_Option": "Trasplantar árbol"
+}

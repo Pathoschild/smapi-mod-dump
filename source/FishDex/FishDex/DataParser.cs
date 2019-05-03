@@ -50,10 +50,19 @@ namespace FishDex
 						locations.Append(" | ");
 					}
 				}
-				if (locations.Length == 0)
+				if (fish.Key == 158) // stonefish
+					locations.Append("Mines, Level 20 | ");
+				else if (fish.Key == 161) // ice pip
+					locations.Append("Mines, Level 60 | ");
+				else if (fish.Key == 162) // lava eel
+					locations.Append("Mines, Level 100 | ");
+				else if (fish.Key == 798 || fish.Key == 799 || fish.Key == 800) // midnight squid, spookfish, blobfish
+					locations.Append("Submarine at Night Market | ");
+
+				if (locations.Length == 0) // location field still empty => legendary fishes
 					locations.Append("-");
 				else
-					locations.Length -= 3;
+					locations.Length -= 3; // exclude the last " | " separator
 
 				// add fish info object
 				Fishes.Add(new FishInfo(fish.Key, fields[0], false, tod, locations.ToString(), fields[6].Replace(" ", " | "), 
@@ -85,7 +94,7 @@ namespace FishDex
 		/// <summary>A fish entry parsed from the game's data files.</summary>
 		internal class FishInfo
 		{
-			public static string[] LABELS = { "Time of Day", "Locations", "Season", "Weather" };
+			private string[] LABELS = { "Time of Day", "Locations", "Season", "Weather" };
 
 			/*********
 			** Accessors
@@ -125,6 +134,26 @@ namespace FishDex
 					{ LABELS[2], season },
 					{ LABELS[3], weather }
 				};
+			}
+
+			public String GetTod()
+			{
+				return this.Data[LABELS[0]];
+			}
+
+			public String GetLocation()
+			{
+				return this.Data[LABELS[1]];
+			}
+
+			public String GetSeason()
+			{
+				return this.Data[LABELS[2]];
+			}
+
+			public String GetWeather()
+			{
+				return this.Data[LABELS[3]];
 			}
 		}
 	}

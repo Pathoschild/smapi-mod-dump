@@ -1,6 +1,6 @@
 <Query Kind="Program">
-  <Reference>&lt;ProgramFilesX86&gt;\Steam\steamapps\common\Stardew Valley\smapi-internal\StardewModdingAPI.Toolkit.CoreInterfaces.dll</Reference>
-  <Reference>&lt;ProgramFilesX86&gt;\Steam\steamapps\common\Stardew Valley\smapi-internal\StardewModdingAPI.Toolkit.dll</Reference>
+  <Reference Relative="..\..\SMAPI\bin\Debug\SMAPI.Toolkit\netstandard2.0\SMAPI.Toolkit.CoreInterfaces.dll">C:\source\_Stardew\SMAPI\bin\Debug\SMAPI.Toolkit\netstandard2.0\SMAPI.Toolkit.CoreInterfaces.dll</Reference>
+  <Reference Relative="..\..\SMAPI\bin\Debug\SMAPI.Toolkit\netstandard2.0\SMAPI.Toolkit.dll">C:\source\_Stardew\SMAPI\bin\Debug\SMAPI.Toolkit\netstandard2.0\SMAPI.Toolkit.dll</Reference>
   <NuGetReference>HtmlAgilityPack</NuGetReference>
   <NuGetReference>Pathoschild.Http.FluentClient</NuGetReference>
   <Namespace>StardewModdingAPI</Namespace>
@@ -16,6 +16,14 @@
   <Namespace>System.Net</Namespace>
   <Namespace>System.Threading.Tasks</Namespace>
 </Query>
+
+/*
+
+  This script...
+     1. fetches the list of SMAPI mods from the wiki;
+	 2. downloads every Git repository for those mods to a local folder.
+
+*/
 
 /*********
 ** Configuration

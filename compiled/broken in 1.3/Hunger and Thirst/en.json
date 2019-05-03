@@ -1,0 +1,28 @@
+﻿{
+	"Food_Low": [
+		"You're hungry.",
+		"Your stomach rumbles.",
+		"You're thinking about eating food.",
+		"You think about finding food.",
+		"You need some food."
+	],
+	"Food_None": [
+		"You're starving!",
+		"All you can think about is food! Better eat!",
+		"You're so hungry you can't think straight!"
+	],
+	"Water_Low": [
+		"You're getting pretty thirsty.",
+		"You could really use some water.",
+		"You're thinking about getting a drink.",
+		"You need a drink."
+	],
+	"Water_None": [
+		"You're dehydrated!",
+		"You're super thirsty! Get a drink right now!",
+		"You're so thirsty you can't think straight!"
+	],
+	"Drink_Water_Source": [
+		"You scoop up some water in a cup and drain it down."
+	]
+}

@@ -12,6 +12,9 @@ namespace FishDex
 		/// <summary>The amount to scroll long content on each up/down scroll.</summary>
 		public int ScrollAmount { get; set; } = 160;
 
+		/// <summary>Whether to show all the fishes.</summary>
+		public bool ShowAll { get; set; } = false;
+
 		/// <summary>The control bindings.</summary>
 		public ModConfigControls Controls { get; set; } = new ModConfigControls();
 

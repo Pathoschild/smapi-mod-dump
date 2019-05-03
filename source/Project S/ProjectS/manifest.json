@@ -1,0 +1,10 @@
+{
+  "Name": "Project S",
+  "Author": "Narlan",
+  "Version": "1.0.0-alpha",
+  "Description": "Retextures skeletons",
+  "UniqueID": "narlan.projects",
+  "EntryDll":  "ProjectS.dll",
+  "MinimumApiVersion": "2.9",
+  "UpdateKeys": [ "GitHub:NolanEastburn/ProjectS" ]
+}

@@ -2,6 +2,7 @@
 using Magic.Schools;
 using StardewValley;
 using StardewValley.TerrainFeatures;
+using SpaceCore;
 
 namespace Magic.Spells
 {
@@ -30,7 +31,7 @@ namespace Magic.Spells
             {
                 for (int iy = targetY - level; iy <= targetY + level; ++iy)
                 {
-                    if (player.getCurrentMana() <= 0)
+                    if (player.getCurrentMana() <= 3)
                         return null;
 
                     Vector2 pos = new Vector2(ix, iy);
@@ -49,8 +50,8 @@ namespace Magic.Spells
                     });
                     num++;
 
-                    player.addMana(-1);
-                    player.addMagicExp(1);
+                    player.addMana(-4);
+                    player.AddCustomSkillExperience(Magic.Skill, 1);
                     Game1.playSound("wateringCan");
                 }
             }

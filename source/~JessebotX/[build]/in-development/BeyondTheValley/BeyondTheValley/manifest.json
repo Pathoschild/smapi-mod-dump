@@ -1,8 +1,0 @@
-﻿{
-  "Name": "Beyond The Valley",
-  "Author": "Jessebot",
-  "Description": "test",
-  "Version": "1.0-pre-release",
-  "EntryDll": "BeyondTheValley.dll",
-  "UniqueID": "Jessebot.BeyondTheValley"
-}

@@ -5,12 +5,9 @@ mods:
    Stack to Nearby Chests
 
 latest commit:
-   commit 075b650c8e261aac28634c75cc87817244dc98b4
-   Merge: 701ff9e 7670a6c
-   Author: Ilyaki <ilyaki@protonmail.com>
-   Date:   Thu Apr 4 15:12:20 2019 +0100
+   commit 27a0b6fac34080d6c034dda9f7efb632015093a1
+   Author: Ilyaki <ilyaki.ilyaki@gmail.com>
+   Date:   Wed May 1 06:12:45 2019 +0100
    
-       Merge pull request #8 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0
+       Fixed conflict with Wear More Rings
    

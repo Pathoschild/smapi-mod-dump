@@ -1,0 +1,487 @@
+{
+	"Format": "1.6",
+	"ConfigSchema": {
+		"EnabledColor": {
+			"AllowValues": "Blue, Red, Yellow, Green, Black, White, Grey, Orange, Pink, Brown, Purple",
+			"Default": "Black"
+		},
+		"DisabledTilesheets": {
+			"AllowValues": "bathhouse_tiles, bugLandTiles, cave, cavedarker, coopTiles, darkroom_tiles, DesertTiles, ElliottHouseTiles, ElliottSeaTiles, EmilyDreamscapeTiles, farmhouse_tiles, FarmhouseTiles, Festivals, GreenHouseInterior, HarveyBalloonTiles, mermaid_house_tiles, night_market_tilesheet_objects, nightSceneMaru, samshowtiles, season_beach, season_outdoorsTileSheet, sebastianMountainTiles, sebastianRideTile, SewerTiles, stadium_tiles, TownIndoors, townInterior, walls_and_floors, WitchHutTiles, witchSwampTiles, WizardHouseTiles, WoodBuildings",
+			"AllowMultiple": "true",
+			"AllowBlank": "true",
+			"Default": ""
+		},
+		"WorldMap": {
+			"AllowValues": "true, false"
+		}
+	},
+	"DynamicTokens": [
+		{
+			"Name": "Color",
+			"Value": "blue",
+			"When": {
+				"EnabledColor": "Blue",
+				"HasFile:assets/blue.png": "true" 
+			}
+		},
+
+		{
+			"Name": "Color",
+			"Value": "red",
+			"When": {
+				"EnabledColor": "Red",
+				"HasFile:assets/red.png": "true" 
+			}
+		},
+
+		{
+			"Name": "Color",
+			"Value": "yellow",
+			"When": {
+				"EnabledColor": "Yellow",
+				"HasFile:assets/yellow.png": "true" 
+			}
+		},
+
+		{
+			"Name": "Color",
+			"Value": "green",
+			"When": {
+				"EnabledColor": "Green",
+				"HasFile:assets/green.png": "true" 
+			}
+		},
+
+		{
+			"Name": "Color",
+			"Value": "black",
+			"When": {
+				"EnabledColor": "Black",
+				"HasFile:assets/black.png": "true" 
+			}
+		},
+
+		{
+			"Name": "Color",
+			"Value": "white",
+			"When": {
+				"EnabledColor": "White",
+				"HasFile:assets/white.png": "true" 
+			}
+		},
+
+		{
+			"Name": "Color",
+			"Value": "grey",
+			"When": {
+				"EnabledColor": "Grey",
+				"HasFile:assets/grey.png": "true" 
+			}
+		},
+
+		{
+			"Name": "Color",
+			"Value": "orange",
+			"When": {
+				"EnabledColor": "Orange",
+				"HasFile:assets/orange.png": "true" 
+			}
+		},
+
+		{
+			"Name": "Color",
+			"Value": "pink",
+			"When": {
+				"EnabledColor": "Pink",
+				"HasFile:assets/pink.png": "true" 
+			}
+		},
+
+		{
+			"Name": "Color",
+			"Value": "brown",
+			"When": {
+				"EnabledColor": "Brown",
+				"HasFile:assets/brown.png": "true" 
+			}
+		},
+	],
+
+	"Changes": [
+
+		// World Map
+		{
+			"LogName": "Replace World Map",
+			"Action": "EditImage",
+			"Target": "LooseSprites/map",
+			"FromFile": "assets/{{Color}}.png",
+			"FromArea": {"X": 0, "Y": 0, "Width": 300, "Height": 302},
+			"When": {
+				"WorldMap": "true"
+			}
+		},
+
+		// bathhouse_tiles
+		{
+			"LogName": "Replace bathhouse_tiles",
+			"Action": "Load",
+			"Target": "Maps/bathhouse_tiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:bathhouse_tiles": "false"
+			}
+		},
+
+		// bugLandTiles
+		{
+			"LogName": "Replace bugLandTiles",
+			"Action": "Load",
+			"Target": "Maps/bugLandTiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:bugLandTiles": "false"
+			}
+		},
+
+		// cave
+		{
+			"LogName": "Replace cave",
+			"Action": "Load",
+			"Target": "Maps/cave",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:cave": "false"
+			}
+		},
+
+		// cavedarker
+		{
+			"LogName": "Replace cavedarker",
+			"Action": "Load",
+			"Target": "Maps/cavedarker",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:cavedarker": "false"
+			}
+		},
+
+		// coopTiles
+		{
+			"LogName": "Replace coopTiles",
+			"Action": "Load",
+			"Target": "Maps/coopTiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:coopTiles": "false"
+			}
+		},
+
+		// darkroom_tiles
+		{
+			"LogName": "Replace darkroom_tiles",
+			"Action": "Load",
+			"Target": "Maps/darkroom_tiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:darkroom_tiles": "false"
+			}
+		},
+
+		// DesertTiles
+		{
+			"LogName": "Replace DesertTiles",
+			"Action": "Load",
+			"Target": "Maps/DesertTiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:DesertTiles": "false"
+			}
+		},
+
+		// ElliottHouseTiles
+		{
+			"LogName": "Replace ElliottHouseTiles",
+			"Action": "Load",
+			"Target": "Maps/ElliottHouseTiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:ElliottHouseTiles": "false"
+			}
+		},
+
+		// ElliottSeaTiles
+		{
+			"LogName": "Replace ElliottSeaTiles",
+			"Action": "Load",
+			"Target": "Maps/ElliottSeaTiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:ElliottSeaTiles": "false"
+			}
+		},
+
+		// EmilyDreamscapeTiles
+		{
+			"LogName": "Replace EmilyDreamscapeTiles",
+			"Action": "Load",
+			"Target": "Maps/EmilyDreamscapeTiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:EmilyDreamscapeTiles": "false"
+			}
+		},
+
+		// farmhouse_tiles
+		{
+			"LogName": "Replace farmhouse_tiles",
+			"Action": "Load",
+			"Target": "Maps/farmhouse_tiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:farmhouse_tiles": "false"
+			}
+		},
+
+		// FarmhouseTiles
+		{
+			"LogName": "Replace FarmhouseTiles",
+			"Action": "Load",
+			"Target": "Maps/FarmhouseTiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:FarmhouseTiles": "false"
+			}
+		},
+
+		// Festivals
+		{
+			"LogName": "Replace Festivals",
+			"Action": "Load",
+			"Target": "Maps/Festivals",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:Festivals": "false" 
+			}
+		},
+
+		// GreenHouseInterior
+		{
+			"LogName": "Replace GreenHouseInterior",
+			"Action": "Load",
+			"Target": "Maps/GreenHouseInterior",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:GreenHouseInterior": "false"
+			}
+		},
+
+		// HarveyBalloonTiles
+		{
+			"LogName": "Replace HarveyBalloonTiles",
+			"Action": "Load",
+			"Target": "Maps/HarveyBalloonTiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:HarveyBalloonTiles": "false"
+			}
+		},
+
+		// mermaid_house_tiles
+		{
+			"LogName": "Replace mermaid_house_tiles",
+			"Action": "Load",
+			"Target": "Maps/mermaid_house_tiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:mermaid_house_tiles": "false"
+			}
+		},
+
+		// night_market_tilesheet_objects
+		{
+			"LogName": "Replace night_market_tilesheet_objects",
+			"Action": "Load",
+			"Target": "Maps/night_market_tilesheet_objects",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:night_market_tilesheet_objects": "false"
+			}
+		},
+
+		// nightSceneMaru (and nightSceneMaruTrees)
+		{
+			"LogName": "Replace nightSceneMaru and nightSceneMaruTrees",
+			"Action": "Load",
+			"Target": "Maps/nightSceneMaru, Maps/nightSceneMaruTrees",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:nightSceneMaru": "false"
+			}
+		},
+
+		// samshowtiles
+		{
+			"LogName": "Replace samshowtiles",
+			"Action": "Load",
+			"Target": "Maps/samshowtiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:samshowtiles": "false"
+			}
+		},
+
+		// season_beach (spring, summer, fall, winter)
+		{
+			"LogName": "Replace {{season}}_beach",
+			"Action": "Load",
+			"Target": "Maps/{{season}}_beach",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:season_beach": "false"
+			}
+		},
+
+		// season_outdoorsTileSheet (spring, summer, fall, winter)
+		{
+			"LogName": "Replace {{season}}_outdoorsTileSheet",
+			"Action": "Load",
+			"Target": "Maps/{{season}}_outdoorsTileSheet",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:season_outdoorsTileSheet": "false"
+			}
+		},
+
+		// season_town (spring, summer, fall, winter)
+		{
+			"LogName": "Replace {{season}}_town",
+			"Action": "Load",
+			"Target": "Maps/{{season}}_town",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:season_town": "false"
+			}
+		},
+
+		// sebastianMountainTiles 
+		{
+			"LogName": "Replace sebastianMountainTiles",
+			"Action": "Load",
+			"Target": "Maps/sebastianMountainTiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:sebastianMountainTiles": "false"
+			}
+		},
+
+		// sebastianRideTiles 
+		{
+			"LogName": "Replace sebastianRideTiles",
+			"Action": "Load",
+			"Target": "Maps/sebastianRideTiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:sebastianRideTiles": "false"
+			}
+		},
+
+		// SewerTiles
+		{
+			"LogName": "Replace SewerTiles",
+			"Action": "Load",
+			"Target": "Maps/SewerTiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:SewerTiles": "false"
+			}
+		},
+
+		// stadium_tiles
+		{
+			"LogName": "Replace stadium_tiles",
+			"Action": "Load",
+			"Target": "Maps/stadium_tiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:stadium_tiles": "false"
+			}
+		},
+
+		// TownIndoors
+		{
+			"LogName": "Replace TownIndoors",
+			"Action": "Load",
+			"Target": "Maps/TownIndoors",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:TownIndoors": "false"
+			}
+		},
+
+		// townInterior
+		{
+			"LogName": "Replace townInterior",
+			"Action": "Load",
+			"Target": "Maps/townInterior",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:townInterior": "false"
+			}
+		},
+
+		// walls_and_floors
+		{
+			"LogName": "Replace walls_and_floors",
+			"Action": "Load",
+			"Target": "Maps/walls_and_floors",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:walls_and_floors": "false"
+			}
+		},
+
+		// WitchHutTiles
+		{
+			"LogName": "Replace WitchHutTiles",
+			"Action": "Load",
+			"Target": "Maps/WitchHutTiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:WitchHutTiles": "false"
+			}
+		},
+
+		// witchSwampTiles
+		{
+			"LogName": "Replace witchSwampTiles",
+			"Action": "Load",
+			"Target": "Maps/witchSwampTiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:witchSwampTiles": "false"
+			}
+		},
+
+		// WizardHouseTiles
+		{
+			"LogName": "Replace WizardHouseTiles",
+			"Action": "Load",
+			"Target": "Maps/WizardHouseTiles",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:WizardHouseTiles": "false"
+			}
+		},
+
+		// WoodBuildings
+		{
+			"LogName": "Replace WoodBuildings",
+			"Action": "Load",
+			"Target": "Maps/WoodBuildings",
+			"FromFile": "assets/{{Color}}.png",
+			"When": {
+				"DisabledTilesheets:WoodBuildings": "false"
+			}
+		}
+	]
+}

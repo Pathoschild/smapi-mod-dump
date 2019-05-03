@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "Configure Machine Outputs",
 	"Author": "Mizzion",
-	"Version": "2.0.0",
+	"Version": "2.0.2",
 	"Description": "Allows the player to change the Input/Output amounts an most vanilla machines.",
 	"UniqueID": "mizzion.configuremachineOutputs",
 	"EntryDll": "ConfigureMachineOutputs.dll",

@@ -5,12 +5,9 @@ mods:
    Better Ranching
 
 latest commit:
-   commit 55783331bf01ce3d18d6b5a3c8d0d2a510aaf0f7
-   Merge: 25da909 fe01e57
-   Author: Urbanyeti <urbanski@gmail.com>
-   Date:   Sun Mar 3 23:07:32 2019 -0800
+   commit 689335240cd7b7cb93c1bb94448c0a9c9bac4c5f
+   Author: urbanyeti <urbanski@gmail.com>
+   Date:   Wed Apr 24 15:07:52 2019 -0700
    
-       Merge pull request #4 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0
+       v1.7.2
    

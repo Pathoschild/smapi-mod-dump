@@ -1,0 +1,13 @@
+url:
+   https://github.com/NolanEastburn/ProjectS.git
+
+mods:
+   Project S
+
+latest commit:
+   commit 1d0cd4a8a5adb93cb9d4b305ba4dd1a10d7eb0c2
+   Author: Nolan Eastburn <nolieman1@gmail.com>
+   Date:   Sun Apr 7 22:46:13 2019 -0500
+   
+       Added update key to manifest
+   

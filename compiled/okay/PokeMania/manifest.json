@@ -1,0 +1,12 @@
+{
+   "Name": "PokeMania",
+   "Author": "TheKrominator",
+   "Version": "4.0",
+   "Description": "Transform many aspects of the game into a Pokemon town.",
+   "UniqueID": "TheKrominatorPokemania",
+   "LogName": "PokeMania",
+   "Language": "en",
+   "MinimumApiVersion": "2.7",
+   "UpdateKeys": ["Nexus: 2676"],
+   "EntryDll":"PokeMania.dll"
+}

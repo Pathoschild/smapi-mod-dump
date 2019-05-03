@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnalyzeEventArgs.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Content.cs" />
@@ -54,14 +55,15 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Game\CloudMount.cs" />
     <Compile Include="Game\SpellProjectile.cs" />
-    <Compile Include="Game\Interface\MagicLevelUpMenu.cs" />
     <Compile Include="Game\Interface\MagicMenu.cs" />
     <Compile Include="Game\Interface\TeleportMenu.cs" />
     <Compile Include="Magic.cs" />
+    <Compile Include="Skill.cs" />
     <Compile Include="Other\ExperienceBars.cs" />
     <Compile Include="Other\JsonAssetsApi.cs" />
     <Compile Include="PreparedSpell.cs" />
     <Compile Include="MultiplayerSaveData.cs" />
+    <Compile Include="Schools\ArcaneSchool.cs" />
     <Compile Include="Schools\EldritchSchool.cs" />
     <Compile Include="Schools\ElementalSchool.cs" />
     <Compile Include="Schools\LifeSchool.cs" />
@@ -70,6 +72,8 @@
     <Compile Include="Schools\SchoolId.cs" />
     <Compile Include="Schools\ToilSchool.cs" />
     <Compile Include="SpellBook.cs" />
+    <Compile Include="Spells\EnchantSpell.cs" />
+    <Compile Include="Spells\AnalyzeSpell.cs" />
     <Compile Include="Spells\LuckStealSpell.cs" />
     <Compile Include="Spells\BlinkSpell.cs" />
     <Compile Include="Spells\BloodManaSpell.cs" />
@@ -86,13 +90,13 @@
     <Compile Include="Spells\ProjectileSpell.cs" />
     <Compile Include="Spells\ShockwaveSpell.cs" />
     <Compile Include="Spells\Spell.cs" />
+    <Compile Include="Spells\RewindSpell.cs" />
     <Compile Include="Spells\TeleportSpell.cs" />
     <Compile Include="Spells\TendrilsSpell.cs" />
     <Compile Include="Spells\TillSpell.cs" />
     <Compile Include="Spells\WaterSpell.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SaveData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\content-pack.json">
@@ -128,6 +132,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\interface\spellbg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\magic\arcane\disenchant\1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\magic\arcane\enchant\1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\magic\arcane\rewind\1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="res\magic\arcane\analyze\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="res\magic\eldritch\bloodmana\1.png">

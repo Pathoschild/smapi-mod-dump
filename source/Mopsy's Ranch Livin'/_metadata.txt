@@ -5,12 +5,9 @@ mods:
    Mopsy's Ranch Livin'
 
 latest commit:
-   commit bf942075cda86475a9cf06870a5a587c2d6b9dea
-   Merge: 5397cd3 1df8a84
+   commit caedd02ecb330597b9db8fd37b3a25a6ba419c27
    Author: mopquill <1709954+mopquill@users.noreply.github.com>
-   Date:   Thu Dec 27 16:24:07 2018 -0700
+   Date:   Tue Apr 30 16:24:53 2019 -0600
    
-       Merge pull request #1 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0, use data API, improve multiplayer handling, etc
+       Fixed typo in readme.
    

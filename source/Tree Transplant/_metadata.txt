@@ -5,10 +5,9 @@ mods:
    Tree Transplant
 
 latest commit:
-   commit 076e73b36f3d9c32c1f4fe5c3ec6736f75923abc
-   Merge: cf5becd 463b3a1
+   commit a2bc9e972446248afca8fb555233f7bdea93ee33
    Author: James Stine <leon.blade@gmail.com>
-   Date:   Thu Apr 4 20:06:40 2019 -0400
+   Date:   Fri Apr 26 22:12:18 2019 -0400
    
-       Merge remote-tracking branch 'origin/master'
+       Portuguese translation, thanks @Arcareon!
    

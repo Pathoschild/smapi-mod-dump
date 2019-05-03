@@ -1,6 +1,11 @@
 # RELEASE NOTES 
 (Sprint Sprint Sprint: [(nexus)](https://www.nexusmods.com/stardewvalley/mods/3294), [(custom)](https://github.com/JessebotX/StardewMods/releases/tag/Sprint)
 
+## v1.0.4 (5/01/2019)
+- Added 3 new config options
+  - ```DrainStamina``` true or false, default true
+  - ```SprintSpeed``` the sprinting speed, default 5
+  - ```StaminaCost``` the amount of stamina you lose if DrainStamina is true, default 0.25
 ## v1.0.3 (01/28/2019)
 - Binding ```LeftShoulder``` or ```RightShoulder``` button will override default game preset.
   - (These are Controller Keybinds)

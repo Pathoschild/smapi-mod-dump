@@ -9,7 +9,9 @@ mods:
    Crop Extension
    Custom Element Handler
    Custom Farming Redux
+   Custom Farming Redux → CFAutomate
    Custom Furniture
+   Custom Furniture → Custom Furniture Anywhere
    Custom Music
    Custom NPC
    Custom Shirts

@@ -1,0 +1,10 @@
+{
+   "Name": "MiloDog",
+   "Author": "Clark",
+   "Version": "2.1.0",
+   "Description": "Turns your dog into Milo!",
+   "UniqueID": "Clark.MiloDog",
+   "EntryDll": "MiloDog.dll",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": [ "Nexus:2861" ]
+}
