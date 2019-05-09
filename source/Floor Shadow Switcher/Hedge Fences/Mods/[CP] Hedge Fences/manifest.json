@@ -1,0 +1,13 @@
+{
+   "Name": "Hedge Fences",
+   "Author": "MouseyPounds",
+   "Version": "1.1.0",
+   "Description": "Content Patcher mod replacing fences with hedges.",
+   "UniqueID": "MouseyPounds.HedgeFences",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": [ "Nexus:2568" ],
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.3.0"
+   }
+}

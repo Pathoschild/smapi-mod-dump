@@ -1,0 +1,13 @@
+{
+   "Name": "Night Market Cat Boat",
+   "Author": "MouseyPounds",
+   "Version": "1.0.0",
+   "Description": "ContentPatcher mod changing one of the Night Market vendors to a Cat",
+   "UniqueID": "MouseyPounds.NightMarketCatBoat",
+   "MinimumApiVersion": "2.6",
+   "UpdateKeys": ["Nexus:2643"],
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.4.0"
+   }
+}

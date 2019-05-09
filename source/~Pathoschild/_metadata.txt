@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit eb93b95d44e3d30a842ea81fd56150988ceac55b
+   commit d1ae92b1f18b5204df8bdbb596e8f93ee8beba40
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Apr 28 18:01:39 2019 -0400
+   Date:   Wed May 8 19:11:09 2019 -0400
    
-       fix incorrect error when dynamic/config tokens conflict
+       migrate NoClip Mode to new project format
    

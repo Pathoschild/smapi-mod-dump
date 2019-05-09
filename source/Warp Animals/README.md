@@ -11,9 +11,9 @@ respective home.
 
 ## Installation
 
-* Install [SMAPI 1.15 or later](https://github.com/Pathoschild/SMAPI/releases).
+* Install [SMAPI 2.11.2 or later](https://smapi.io/).
 
-* [Download](http://www.nexusmods.com/stardewvalley/mods/1400/?) and unzip this mod into `Stardew Valley/Mods`.
+* [Download](https://github.com/simonbru/WarpAnimals/releases) and unzip this mod into `Stardew Valley/Mods`.
 
 ## Usage
 

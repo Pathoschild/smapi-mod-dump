@@ -1,5 +1,5 @@
 {
-	"Format": "1.6",
+	"Format": "1.7",
 	"ConfigSchema": {
 		"EnabledColor": {
 			"AllowValues": "Blue, Red, Yellow, Green, Black, White, Grey, Orange, Pink, Brown, Purple",
@@ -8,11 +8,11 @@
 		"DisabledTilesheets": {
 			"AllowValues": "bathhouse_tiles, bugLandTiles, cave, cavedarker, coopTiles, darkroom_tiles, DesertTiles, ElliottHouseTiles, ElliottSeaTiles, EmilyDreamscapeTiles, farmhouse_tiles, FarmhouseTiles, Festivals, GreenHouseInterior, HarveyBalloonTiles, mermaid_house_tiles, night_market_tilesheet_objects, nightSceneMaru, samshowtiles, season_beach, season_outdoorsTileSheet, sebastianMountainTiles, sebastianRideTile, SewerTiles, stadium_tiles, TownIndoors, townInterior, walls_and_floors, WitchHutTiles, witchSwampTiles, WizardHouseTiles, WoodBuildings",
 			"AllowMultiple": "true",
-			"AllowBlank": "true",
-			"Default": ""
+			"AllowBlank": "true"
 		},
 		"WorldMap": {
-			"AllowValues": "true, false"
+			"AllowValues": "true, false",
+			"Default": "true"
 		}
 	},
 	"DynamicTokens": [

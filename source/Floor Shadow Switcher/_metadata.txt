@@ -1,0 +1,13 @@
+url:
+   https://github.com/MouseyPounds/stardew-mods.git
+
+mods:
+   Floor Shadow Switcher
+
+latest commit:
+   commit f746550afdccf857d14adcfe114a2ae01b8e0279
+   Author: MouseyPounds <mouseypounds+github@gmail.com>
+   Date:   Wed May 8 21:37:49 2019 -0400
+   
+       FSS reorg directory and add Nexus stuff
+   

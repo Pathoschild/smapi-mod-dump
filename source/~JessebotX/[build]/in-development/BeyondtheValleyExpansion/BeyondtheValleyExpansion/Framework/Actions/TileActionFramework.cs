@@ -15,7 +15,9 @@ using xTile.Tiles;
 using System.IO;
 using BeyondTheValleyExpansion.Framework;
 using BeyondTheValleyExpansion.Framework.Actions;
+using BeyondTheValleyExpansion.Framework.Alchemy;
 using StardewValley.Tools;
+using StardewValley.Menus;
 
 namespace BeyondTheValleyExpansion.Framework.Actions
 {
@@ -24,13 +26,6 @@ namespace BeyondTheValleyExpansion.Framework.Actions
         /*********
          ** Fields
          *********/
-        /// <summary> provides simplified API's for writing mods </summary>
-        internal IModHelper Helper;
-        /// <summary> encapsulates monitoring and logging for a given module </summary>
-        internal IMonitor Monitor;
-        /// <summary> provides translations stored in the mods i18n folder </summary>
-        internal ITranslationHelper i18n;
-
         /// <summary> check if a tile has been recently deleted from the custom tile actions </summary>
         public bool tileRemoved;
         /// <summary> check if axe is currently equipped </summary>
@@ -43,22 +38,36 @@ namespace BeyondTheValleyExpansion.Framework.Actions
         public bool pickaxeUnderLeveled;
 
         /// <summary> references the <see cref="SaveDeletedTilesModel"/> class</summary>
-        private SaveDeletedTilesModel _saveDeletedTiles;
+        private SaveDeletedTilesModel SaveDeletedTiles;
+        /// <summary> instance of <see cref="Alchemy"/> class that contains the alchemy framework </summary>
+        private AlchemyFramework _Alchemy = new AlchemyFramework();
 
         /// <summary> Retrieve multiplayer message of deleted tiles </summary>
         public List<string> mpInputArgs = new List<string>();
 
-        /*********
-         ** Constructor
-         *********/
-        /// <summary> constructor that allows <see cref="TileActionFramework"/> to access <seealso cref="IModHelper"/>, <seealso cref="IMonitor"/> and <seealso cref="ITranslationHelper"/> </summary>
-        /// <param name="helper"> provides simplified API's for writing mods </param>
-        /// <param name="monitor"> encapsulates monitoring and logging for a given module </param>
-        public TileActionFramework(IModHelper helper, IMonitor monitor)
+        /// <summary> first phase of triggering the Alchemy feature/options </summary>
+        /// <param name="tileAction"> the custom tile action string </param>
+        /// <param name="currentAction"> the current action that evoked this method </param>
+        public void Alchemy(string tileAction)
         {
-            this.Helper = helper;
-            this.Monitor = monitor;
-            this.i18n = helper.Translation;
+            RefMod.ModMonitor.Log($"{Game1.player.Name} interacted with [Action {tileAction}]", LogLevel.Trace);
+
+            if (_Alchemy.unlockedAlchemy)
+            {
+                _Alchemy.alchemyMenuOptions.Add(new Response("mix-ingredients", RefMod.i18n.Get("tileaction-alchemy.3")));
+                _Alchemy.alchemyMenuOptions.Add(new Response("remove-ingredients", RefMod.i18n.Get("tileaction-alchemy.4")));
+                _Alchemy.alchemyMenuOptions.Add(new Response("add-ingredients", RefMod.i18n.Get("tileaction-alchemy.5")));
+
+                Game1.activeClickableMenu = new DialogueBox(RefMod.i18n.Get("tileaction-alchemy.1"), _Alchemy.alchemyMenuOptions);
+                Game1.player.currentLocation.afterQuestion = new GameLocation.afterQuestionBehavior((who, choice) => {
+                    _Alchemy.Alchemy(who, choice);
+                });
+            }
+
+            else
+            {
+                Game1.drawObjectDialogue(RefMod.i18n.Get("tileaction-alchemy.2"));
+            }
         }
 
         /// <summary> trigger's the deleting tiles tileactions that require a pickaxe equipped </summary>
@@ -142,14 +151,14 @@ namespace BeyondTheValleyExpansion.Framework.Actions
                 if (!int.TryParse(arg[0], out int tileX)) // get tile's X coordinate
                 {
                     parseError = true;
-                    this.Monitor.Log($"[Action {currentAction}]Error parsing first argument as an integer", LogLevel.Error);
+                    RefMod.ModMonitor.Log($"[Action {currentAction}]Error parsing first argument as an integer", LogLevel.Error);
                     continue;
                 }
 
                 if (!int.TryParse(arg[1], out int tileY)) // get tile's Y coordinate
                 {
                     parseError = true;
-                    this.Monitor.Log($"[Action {currentAction}]Error parsing second argument as an integer", LogLevel.Error);
+                    RefMod.ModMonitor.Log($"[Action {currentAction}]Error parsing second argument as an integer", LogLevel.Error);
                     continue;
                 }
 
@@ -163,7 +172,7 @@ namespace BeyondTheValleyExpansion.Framework.Actions
                     string value = string.Join(", ", RefFarm.layerValues);
 
                     parseError = true;
-                    this.Monitor.Log($"The specified layer(\"{strLayer}\") for a [Action {currentAction}] is not valid. Eligible values: \"{value}\". The TileAction will not work", LogLevel.Error);
+                    RefMod.ModMonitor.Log($"The specified layer(\"{strLayer}\") for a [Action {currentAction}] is not valid. Eligible values: \"{value}\". The TileAction will not work", LogLevel.Error);
                 }
 
                 // success state
@@ -173,13 +182,13 @@ namespace BeyondTheValleyExpansion.Framework.Actions
                     Game1.player.currentLocation.removeTile(tileX, tileY, strLayer);
 
                     // write deleted tile data to save files
-                    Helper.Data.WriteSaveData("DeletedTiles", _saveDeletedTiles);
-                    _saveDeletedTiles.inputArgs.Add(Convert.ToString(tileX) + " " + Convert.ToString(tileY) + " " + strLayer + " " + currentGameLocation);
+                    RefMod.ModHelper.Data.WriteSaveData("DeletedTiles", SaveDeletedTiles);
+                    SaveDeletedTiles.inputArgs.Add(Convert.ToString(tileX) + " " + Convert.ToString(tileY) + " " + strLayer + " " + currentGameLocation);
 
                     // send multiplayer message
-                    Helper.Multiplayer.SendMessage(_saveDeletedTiles.inputArgs, "DeletedTiles");
-                    Game1.drawObjectDialogue(i18n.Get("tileaction-success.1"));
-                    this.Monitor.Log($"[Action {currentAction}] removed the tile on [{tileX}, {tileY}] from the {strLayer} Layer", LogLevel.Trace);
+                    RefMod.ModHelper.Multiplayer.SendMessage(SaveDeletedTiles.inputArgs, "DeletedTiles");
+                    Game1.drawObjectDialogue(RefMod.i18n.Get("tileaction-success.1"));
+                    RefMod.ModMonitor.Log($"[Action {currentAction}] removed the tile on [{tileX}, {tileY}] from the {strLayer} Layer", LogLevel.Trace);
 
                     // check if tile was removed bool
                     tileRemoved = true;
@@ -194,28 +203,28 @@ namespace BeyondTheValleyExpansion.Framework.Actions
             // Axe is not equipped
             if (axeNotEquipped)
             {
-                Game1.drawObjectDialogue(i18n.Get("tileaction-axe.1"));
+                Game1.drawObjectDialogue(RefMod.i18n.Get("tileaction-axe.1"));
                 axeNotEquipped = false;
             }
 
             // Axe is under leveled/does not meet requirement 
             if (axeUnderLeveled)
             {
-                Game1.drawObjectDialogue(i18n.Get("tileaction-axe.2"));
+                Game1.drawObjectDialogue(RefMod.i18n.Get("tileaction-axe.2"));
                 axeUnderLeveled = false;
             }
 
             // Pickaxe is not equipped
             if (pickaxeNotEquipped)
             {
-                Game1.drawObjectDialogue(i18n.Get("tileaction-pickaxe.1"));
+                Game1.drawObjectDialogue(RefMod.i18n.Get("tileaction-pickaxe.1"));
                 pickaxeNotEquipped = false;
             }
 
             // Pickaxe is under leveled/does not meet requirement
             if (pickaxeUnderLeveled)
             {
-                Game1.drawObjectDialogue(i18n.Get("tileaction-pickaxe.2"));
+                Game1.drawObjectDialogue(RefMod.i18n.Get("tileaction-pickaxe.2"));
                 pickaxeUnderLeveled = false;
             }
         }
@@ -223,12 +232,12 @@ namespace BeyondTheValleyExpansion.Framework.Actions
         /// <summary> deletes the saved deleted tiles on the location from <see cref="SaveDeletedTilesModel.inputArgs"/></summary>
         public void SaveDeleteTilesAction()
         {
-            _saveDeletedTiles = Helper.Data.ReadSaveData<SaveDeletedTilesModel>("DeletedTiles") ?? new SaveDeletedTilesModel();
+            SaveDeletedTiles = RefMod.ModHelper.Data.ReadSaveData<SaveDeletedTilesModel>("DeletedTiles") ?? new SaveDeletedTilesModel();
 
             // if there are any tiles needed to be deleted
-            if (_saveDeletedTiles.inputArgs != null)
+            if (SaveDeletedTiles.inputArgs != null)
             {
-                foreach (string input in _saveDeletedTiles.inputArgs)
+                foreach (string input in SaveDeletedTiles.inputArgs)
                 {
                     string[] arg = input.Split(' ').ToArray();
 
@@ -259,18 +268,23 @@ namespace BeyondTheValleyExpansion.Framework.Actions
 
                 // remove tile
                 Game1.getLocationFromName(previousGameLocation).removeTile(tileX, tileY, strLayer);
-                this.Monitor.Log($"Action CopperAxe from host, removed the tile on [{tileX}, {tileY}] from the {strLayer} Layer", LogLevel.Trace);
+                RefMod.ModMonitor.Log($"Action CopperAxe from host, removed the tile on [{tileX}, {tileY}] from the {strLayer} Layer", LogLevel.Trace);
             }
         }
 
         /// <summary> evokes when console command 'bve_purgesavedeletedtiles' is used, clearing out <see cref="SaveDeletedTilesModel.inputArgs"/></summary>
         public void PurgeSaveDeletedTiles()
         {
-            _saveDeletedTiles.inputArgs.Clear();
-            Helper.Data.WriteSaveData("DeletedTiles", _saveDeletedTiles);
+            SaveDeletedTiles.inputArgs.Clear();
+            RefMod.ModHelper.Data.WriteSaveData("DeletedTiles", SaveDeletedTiles);
 
+            if (SaveDeletedTiles.inputArgs == null)
+                RefMod.ModMonitor.Log("The contents in 'DeletedTiles' will be removed from your save file once you save the game. " +
+                    "\n\n You will need to reload your save game after saving...", LogLevel.Debug);
+                
             // update for multiplayer
-            tileRemoved = true;
+            this.tileRemoved = true;
+
         }
     }
 }

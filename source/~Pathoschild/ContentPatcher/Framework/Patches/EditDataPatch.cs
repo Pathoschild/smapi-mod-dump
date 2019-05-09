@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using ContentPatcher.Framework.Conditions;
 using ContentPatcher.Framework.ConfigModels;
-using ContentPatcher.Framework.Tokens;
+using ContentPatcher.Framework.Lexing.LexTokens;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -29,10 +29,7 @@ namespace ContentPatcher.Framework.Patches
         private readonly EditDataPatchField[] Fields;
 
         /// <summary>The token strings which contain mutable tokens.</summary>
-        private readonly TokenString[] MutableTokenStrings;
-
-        /// <summary>The underlying contextual values.</summary>
-        private readonly IContextual[] ContextualValues;
+        private readonly ITokenString[] MutableTokenStrings;
 
 
         /*********
@@ -47,42 +44,32 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="fields">The data fields to edit.</param>
         /// <param name="monitor">Encapsulates monitoring and logging.</param>
         /// <param name="normaliseAssetName">Normalise an asset name.</param>
-        public EditDataPatch(string logName, ManagedContentPack contentPack, TokenString assetName, ConditionDictionary conditions, IEnumerable<EditDataPatchRecord> records, IEnumerable<EditDataPatchField> fields, IMonitor monitor, Func<string, string> normaliseAssetName)
+        public EditDataPatch(string logName, ManagedContentPack contentPack, ITokenString assetName, IEnumerable<Condition> conditions, IEnumerable<EditDataPatchRecord> records, IEnumerable<EditDataPatchField> fields, IMonitor monitor, Func<string, string> normaliseAssetName)
             : base(logName, PatchType.EditData, contentPack, assetName, conditions, normaliseAssetName)
         {
+            // set fields
             this.Records = records.ToArray();
             this.Fields = fields.ToArray();
             this.Monitor = monitor;
-            this.MutableTokenStrings = this.GetTokenStrings(this.Records, this.Fields).Where(str => str.Tokens.Any()).ToArray();
+            this.MutableTokenStrings = this.GetTokenStrings(this.Records, this.Fields).Where(str => str.HasAnyTokens).ToArray();
 
-            this.ContextualValues = this.Records.Concat<IContextual>(this.Fields).Where(p => p != null).ToArray();
+            // track contextuals
+            this.ContextualValues.AddRange(this.Records.Where(p => p != null));
+            this.ContextualValues.AddRange(this.Fields.Where(p => p != null));
+            this.ContextualValues.AddRange(this.Conditions);
         }
 
-        /// <summary>Update the patch data when the context changes.</summary>
-        /// <param name="context">Provides access to contextual tokens.</param>
-        /// <returns>Returns whether the patch data changed.</returns>
-        public override bool UpdateContext(IContext context)
+        /// <summary>Get the token names used by this patch in its fields.</summary>
+        public override IEnumerable<string> GetTokensUsed()
         {
-            bool changed = base.UpdateContext(context);
+            foreach (string name in base.GetTokensUsed())
+                yield return name;
 
-            foreach (IContextual value in this.ContextualValues)
+            foreach (ITokenString str in this.MutableTokenStrings)
             {
-                if (value.UpdateContext(context))
-                    changed = true;
+                foreach (LexTokenToken lexToken in str.GetTokenPlaceholders(recursive: true))
+                    yield return lexToken.Name;
             }
-
-            return changed;
-        }
-
-        /// <summary>Get the tokens used by this patch in its fields.</summary>
-        public override IEnumerable<TokenName> GetTokensUsed()
-        {
-            if (this.MutableTokenStrings.Length == 0)
-                return base.GetTokensUsed();
-
-            return base
-                .GetTokensUsed()
-                .Union(this.MutableTokenStrings.SelectMany(p => p.Tokens));
         }
 
         /// <summary>Apply the patch to a loaded asset.</summary>
@@ -151,11 +138,11 @@ namespace ContentPatcher.Framework.Patches
         /// <summary>Get all token strings in the given data.</summary>
         /// <param name="records">The data records to edit.</param>
         /// <param name="fields">The data fields to edit.</param>
-        private IEnumerable<TokenString> GetTokenStrings(IEnumerable<EditDataPatchRecord> records, IEnumerable<EditDataPatchField> fields)
+        private IEnumerable<ITokenString> GetTokenStrings(IEnumerable<EditDataPatchRecord> records, IEnumerable<EditDataPatchField> fields)
         {
-            foreach (TokenString tokenStr in records.SelectMany(p => p.GetTokenStrings()))
+            foreach (ITokenString tokenStr in records.SelectMany(p => p.GetTokenStrings()))
                 yield return tokenStr;
-            foreach (TokenString tokenStr in fields.SelectMany(p => p.GetTokenStrings()))
+            foreach (ITokenString tokenStr in fields.SelectMany(p => p.GetTokenStrings()))
                 yield return tokenStr;
         }
 

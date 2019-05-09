@@ -1,3 +1,4 @@
 {
-  "EnableWhereAmICommand": true
+  "EnableWhereAmICommand": true,
+  "EnableContentPacks": true
 }

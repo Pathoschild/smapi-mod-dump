@@ -1,0 +1,44 @@
+Category: Miscellaneous
+
+Tags:
+SMAPI
+Works with Stardew 1.3
+Incompatible with Stardew 1.2
+New Textures
+Animation - New
+Humour, Joke or Just for Fun
+
+Overview:
+Night Market Cat Boat is a Content Patcher mod which changes the Night Market vendor that sells Seasonal Plants into a Cat and also alters the decorations on their boat. The Cat still sells all the same items and performs animations similar to the original vendor.
+
+Details:
+[b]Description:
+
+[color=#ffff00]Night Market Cat Boat[/color][/b] is a Content Patcher mod which changes the Night Market vendor that sells Seasonal Plants into a Cat and changes the decorations on their boat to include a board game, cheese wheel, and only fish in the bins. All graphics used are based on original game assets. The Cat still sells all the same items and performs animations similar to the original vendor. By default the Cat wears a Sailor's Cap, but this can be turned off in the [i]config.json[/i] file; this file is not included with the download and will be automatically created the first time the game is run with the mod loaded.
+
+[img]https://i.imgur.com/aRFvJA4.gif[/img]
+
+
+[b]Installation[/b]
+[list=1]
+[*]Install the latest version of [url=https://smapi.io/]SMAPI[/url].
+[*]Install the latest version of [url=https://www.nexusmods.com/stardewvalley/mods/1915]Content Patcher[/url].
+[*]Unzip the X download and place the included [color=#b6d7a8][code][CP] X[/code][/color] folder into your [color=#b6d7a8][code]Mods[/code][/color] folder.
+[/list]
+
+[b]
+Configuration:
+[/b]
+[list]
+[*][color=#6d9eeb][b]SailorHat[/b][/color] lets you choose whether or not the Cat will wear a hat. Choices are [color=#b4a7d6][i]true[/i] [/color](default) or [i][color=#b4a7d6]false[/color][/i].
+[/list]
+[b]
+Additional Notes:
+[/b]
+[list]
+[*]There are reasons this exists, but those reasons are silly. I hope you enjoy the mod anyway.
+[/list][b]
+
+Compatibility:
+[/b]
+[b][color=#ffff00][b][color=#ffff00]Night Market Cat Boat[/color][/b][/color][/b] requires [url=https://www.nexusmods.com/stardewvalley/mods/1915]Content Patcher[/url] version 1.4 or higher (which means it also requires [url=https://smapi.io]SMAPI[/url] version 2.6 or higher); it will only work with version 1.3 (or higher) of Stardew Valley since the Night Market was added with that version.

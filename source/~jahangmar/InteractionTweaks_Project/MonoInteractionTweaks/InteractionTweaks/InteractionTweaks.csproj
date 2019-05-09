@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit.3.11.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.11.0\build\NUnit.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -30,16 +31,16 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="EatingBlockingFeature.cs" />
-    <Compile Include="ModFeature.cs" />
-    <Compile Include="AdventurersGuildFeature.cs" />
-    <Compile Include="DontUseToolsFeature.cs" />
-    <Compile Include="InteractionTweaksConfig.cs" />
-    <Compile Include="CarpenterMenuFeature.cs" />
-    <Compile Include="FishingRodFeature.cs" />
-    <Compile Include="MarniesItemShopFeature.cs" />
+    <Compile Include="src\AdventurersGuildFeature.cs" />
+    <Compile Include="src\CarpenterMenuFeature.cs" />
+    <Compile Include="src\DontUseToolsFeature.cs" />
+    <Compile Include="src\EatingBlockingFeature.cs" />
+    <Compile Include="src\FishingRodFeature.cs" />
+    <Compile Include="src\InteractionTweaksConfig.cs" />
+    <Compile Include="src\MarniesItemShopFeature.cs" />
+    <Compile Include="src\ModEntry.cs" />
+    <Compile Include="src\ModFeature.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -49,6 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="i18n\" />
+    <Folder Include="src\" />
+    <Folder Include="tests\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />

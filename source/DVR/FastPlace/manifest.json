@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Fast Place",
+  "Author": "captncraig",
+  "Version": "1.0.0",
+  "Description": "Automatically select another of the same kind machine afte you place one.",
+  "UniqueID": "captncraig.fastplace",
+  "EntryDll": "FastPlace.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

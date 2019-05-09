@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Mouse Bundles",
+  "Author": "captncraig",
+  "Version": "1.0.0",
+  "Description": "The mouse sells any items you need for the community center. At High cost.",
+  "UniqueID": "captncraig.mousebundles",
+  "EntryDll": "MouseBundles.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

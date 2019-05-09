@@ -1,0 +1,2579 @@
+{
+	"Format": "1.3",
+	"ConfigSchema": {
+		"CobblestonePath_Replacement": {
+			"AllowValues": "DarkDirt, DarkGrass, LightDirt, LightGrass, None, Sand, Shadow, Straw, Transparent",
+			"Default": "None"
+		},
+		"CrystalFloor_Replacement": {
+			"AllowValues": "DarkDirt, DarkGrass, LightDirt, LightGrass, None, Sand, Shadow, Straw, Transparent",
+			"Default": "None"
+		},
+		"CrystalPath_Replacement": {
+			"AllowValues": "DarkDirt, DarkGrass, LightDirt, LightGrass, None, Sand, Shadow, Straw, Transparent",
+			"Default": "None"
+		},
+		"GravelPath_Replacement": {
+			"AllowValues": "DarkDirt, DarkGrass, LightDirt, LightGrass, None, Sand, Shadow, Straw, Transparent",
+			"Default": "DarkDirt"
+		},
+		"StoneFloor_Replacement": {
+			"AllowValues": "DarkDirt, DarkGrass, LightDirt, LightGrass, None, Sand, Shadow, Straw, Transparent",
+			"Default": "None"
+		},
+		"StrawFloor_Replacement": {
+			"AllowValues": "DarkDirt, DarkGrass, LightDirt, LightGrass, None, Sand, Shadow, Straw, Transparent",
+			"Default": "None"
+		},
+		"WeatheredFloor_Replacement": {
+			"AllowValues": "DarkDirt, DarkGrass, LightDirt, LightGrass, None, Sand, Shadow, Straw, Transparent",
+			"Default": "None"
+		},
+		"WoodFloor_Replacement": {
+			"AllowValues": "DarkDirt, DarkGrass, LightDirt, LightGrass, None, Sand, Shadow, Straw, Transparent",
+			"Default": "None"
+		},
+		"WoodPath_Replacement": {
+			"AllowValues": "DarkDirt, DarkGrass, LightDirt, LightGrass, None, Sand, Shadow, Straw, Transparent",
+			"Default": "LightGrass"
+		},
+		"Crafting_Material": {
+			"AllowValues":  "Clay, Fiber, Hardwood, NoChange, Sap, Stone, Wood",
+			"Default": "Fiber"
+		},
+		"Crafting_Amount": {
+			"AllowValues":  "1, 5, 10",
+			"Default": "1"
+		},
+		"Snow_Overrides_LightGrass": {
+			"AllowValues": "true, false",
+			"Default": "false"
+		},
+		"Ice_Overrides_DarkGrass": {
+			"AllowValues": "true, false",
+			"Default": "false"
+		},
+	},
+	"Changes": [
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/{{CobblestonePath_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 0, "Y": 128, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"When": { "CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/{{CobblestonePath_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 48, "Y": 272, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"When": { "CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "330 1", 2: "411" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "330 1", 2: "411 5" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "330 1", 2: "411 10" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "771 1", 2: "411" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "771 1", 2: "411 5" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "771 1", 2: "411 10" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "709 1", 2: "411" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "709 1", 2: "411 5" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "709 1", 2: "411 10" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "92 1", 2: "411" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "92 1", 2: "411 5" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "92 1", 2: "411 10" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "390 1", 2: "411" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "390 1", 2: "411 5" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "390 1", 2: "411 10" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "388 1", 2: "411" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "388 1", 2: "411 5" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Cobblestone Path": { 0: "388 1", 2: "411 10" } },
+			"When": { 
+				"CobblestonePath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"411": { 0: "Dark Dirt Path" } },
+			"When": { "CobblestonePath_Replacement": "DarkDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"411": { 0: "Dark Grass Path" } },
+			"When": { "CobblestonePath_Replacement": "DarkGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"411": { 0: "Light Dirt Path" } },
+			"When": { "CobblestonePath_Replacement": "LightDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"411": { 0: "Light Grass Path" } },
+			"When": { "CobblestonePath_Replacement": "LightGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"411": { 0: "Sand Path" } },
+			"When": { "CobblestonePath_Replacement": "Sand" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"411": { 0: "Shadow Path" } },
+			"When": { "CobblestonePath_Replacement": "Shadow" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"411": { 0: "Straw Path" } },
+			"When": { "CobblestonePath_Replacement": "Straw" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"411": { 0: "Transparent Path" } },
+			"When": { "CobblestonePath_Replacement": "Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/{{CrystalFloor_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 192, "Y": 0, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"When": { "CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/{{CrystalFloor_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 336, "Y": 208, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"When": { "CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "330 1", 2: "333" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "330 1", 2: "333 5" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "330 1", 2: "333 10" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "771 1", 2: "333" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "771 1", 2: "333 5" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "771 1", 2: "333 10" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "709 1", 2: "333" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "709 1", 2: "333 5" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "709 1", 2: "333 10" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "92 1", 2: "333" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "92 1", 2: "333 5" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "92 1", 2: "333 10" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "390 1", 2: "333" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "390 1", 2: "333 5" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "390 1", 2: "333 10" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "388 1", 2: "333" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "388 1", 2: "333 5" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Floor": { 0: "388 1", 2: "333 10" } },
+			"When": { 
+				"CrystalFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"333": { 0: "Dark Dirt Floor" } },
+			"When": { "CrystalFloor_Replacement": "DarkDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"333": { 0: "Dark Grass Floor" } },
+			"When": { "CrystalFloor_Replacement": "DarkGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"333": { 0: "Light Dirt Floor" } },
+			"When": { "CrystalFloor_Replacement": "LightDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"333": { 0: "Light Grass Floor" } },
+			"When": { "CrystalFloor_Replacement": "LightGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"333": { 0: "Sand Floor" } },
+			"When": { "CrystalFloor_Replacement": "Sand" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"333": { 0: "Shadow Floor" } },
+			"When": { "CrystalFloor_Replacement": "Shadow" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"333": { 0: "Straw Floor" } },
+			"When": { "CrystalFloor_Replacement": "Straw" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"333": { 0: "Transparent Floor" } },
+			"When": { "CrystalFloor_Replacement": "Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/{{CrystalPath_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 192, "Y": 64, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"When": { "CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/{{CrystalPath_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 16, "Y": 272, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"When": { "CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "330 1", 2: "409" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "330 1", 2: "409 5" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "330 1", 2: "409 10" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "771 1", 2: "409" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "771 1", 2: "409 5" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "771 1", 2: "409 10" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "709 1", 2: "409" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "709 1", 2: "409 5" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "709 1", 2: "409 10" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "92 1", 2: "409" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "92 1", 2: "409 5" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "92 1", 2: "409 10" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "390 1", 2: "409" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "390 1", 2: "409 5" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "390 1", 2: "409 10" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "388 1", 2: "409" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "388 1", 2: "409 5" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Crystal Path": { 0: "388 1", 2: "409 10" } },
+			"When": { 
+				"CrystalPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"409": { 0: "Dark Dirt Path" } },
+			"When": { "CrystalPath_Replacement": "DarkDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"409": { 0: "Dark Grass Path" } },
+			"When": { "CrystalPath_Replacement": "DarkGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"409": { 0: "Light Dirt Path" } },
+			"When": { "CrystalPath_Replacement": "LightDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"409": { 0: "Light Grass Path" } },
+			"When": { "CrystalPath_Replacement": "LightGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"409": { 0: "Sand Path" } },
+			"When": { "CrystalPath_Replacement": "Sand" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"409": { 0: "Shadow Path" } },
+			"When": { "CrystalPath_Replacement": "Shadow" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"409": { 0: "Straw Path" } },
+			"When": { "CrystalPath_Replacement": "Straw" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"409": { 0: "Transparent Path" } },
+			"When": { "CrystalPath_Replacement": "Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/{{GravelPath_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 64, "Y": 64, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"When": { "GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/{{GravelPath_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 368, "Y": 256, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"When": { "GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "330 1", 2: "407" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "330 1", 2: "407 5" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "330 1", 2: "407 10" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "771 1", 2: "407" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "771 1", 2: "407 5" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "771 1", 2: "407 10" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "709 1", 2: "407" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "709 1", 2: "407 5" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "709 1", 2: "407 10" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "92 1", 2: "407" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "92 1", 2: "407 5" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "92 1", 2: "407 10" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "390 1", 2: "407" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "390 1", 2: "407 5" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "390 1", 2: "407 10" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "388 1", 2: "407" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "388 1", 2: "407 5" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Gravel Path": { 0: "388 1", 2: "407 10" } },
+			"When": { 
+				"GravelPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"407": { 0: "Dark Dirt Path" } },
+			"When": { "GravelPath_Replacement": "DarkDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"407": { 0: "Dark Grass Path" } },
+			"When": { "GravelPath_Replacement": "DarkGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"407": { 0: "Light Dirt Path" } },
+			"When": { "GravelPath_Replacement": "LightDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"407": { 0: "Light Grass Path" } },
+			"When": { "GravelPath_Replacement": "LightGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"407": { 0: "Sand Path" } },
+			"When": { "GravelPath_Replacement": "Sand" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"407": { 0: "Shadow Path" } },
+			"When": { "GravelPath_Replacement": "Shadow" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"407": { 0: "Straw Path" } },
+			"When": { "GravelPath_Replacement": "Straw" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"407": { 0: "Transparent Path" } },
+			"When": { "GravelPath_Replacement": "Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/{{StoneFloor_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 64, "Y": 0, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"When": { "StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/{{StoneFloor_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 272, "Y": 208, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"When": { "StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "330 1", 2: "329" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "330 1", 2: "329 5" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "330 1", 2: "329 10" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "771 1", 2: "329" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "771 1", 2: "329 5" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "771 1", 2: "329 10" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "709 1", 2: "329" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "709 1", 2: "329 5" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "709 1", 2: "329 10" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "92 1", 2: "329" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "92 1", 2: "329 5" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "92 1", 2: "329 10" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "390 1", 2: "329" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "390 1", 2: "329 5" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "390 1", 2: "329 10" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "388 1", 2: "329" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "388 1", 2: "329 5" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Stone Floor": { 0: "388 1", 2: "329 10" } },
+			"When": { 
+				"StoneFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"329": { 0: "Dark Dirt Floor" } },
+			"When": { "StoneFloor_Replacement": "DarkDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"329": { 0: "Dark Grass Floor" } },
+			"When": { "StoneFloor_Replacement": "DarkGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"329": { 0: "Light Dirt Floor" } },
+			"When": { "StoneFloor_Replacement": "LightDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"329": { 0: "Light Grass Floor" } },
+			"When": { "StoneFloor_Replacement": "LightGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"329": { 0: "Sand Floor" } },
+			"When": { "StoneFloor_Replacement": "Sand" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"329": { 0: "Shadow Floor" } },
+			"When": { "StoneFloor_Replacement": "Shadow" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"329": { 0: "Straw Floor" } },
+			"When": { "StoneFloor_Replacement": "Straw" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"329": { 0: "Transparent Floor" } },
+			"When": { "StoneFloor_Replacement": "Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/{{StrawFloor_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 0, "Y": 64, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"When": { "StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/{{StrawFloor_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 272, "Y": 256, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"When": { "StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "330 1", 2: "401" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "330 1", 2: "401 5" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "330 1", 2: "401 10" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "771 1", 2: "401" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "771 1", 2: "401 5" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "771 1", 2: "401 10" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "709 1", 2: "401" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "709 1", 2: "401 5" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "709 1", 2: "401 10" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "92 1", 2: "401" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "92 1", 2: "401 5" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "92 1", 2: "401 10" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "390 1", 2: "401" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "390 1", 2: "401 5" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "390 1", 2: "401 10" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "388 1", 2: "401" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "388 1", 2: "401 5" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Straw Floor": { 0: "388 1", 2: "401 10" } },
+			"When": { 
+				"StrawFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"401": { 0: "Dark Dirt Floor" } },
+			"When": { "StrawFloor_Replacement": "DarkDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"401": { 0: "Dark Grass Floor" } },
+			"When": { "StrawFloor_Replacement": "DarkGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"401": { 0: "Light Dirt Floor" } },
+			"When": { "StrawFloor_Replacement": "LightDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"401": { 0: "Light Grass Floor" } },
+			"When": { "StrawFloor_Replacement": "LightGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"401": { 0: "Sand Floor" } },
+			"When": { "StrawFloor_Replacement": "Sand" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"401": { 0: "Shadow Floor" } },
+			"When": { "StrawFloor_Replacement": "Shadow" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"401": { 0: "Straw Floor" } },
+			"When": { "StrawFloor_Replacement": "Straw" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"401": { 0: "Transparent Floor" } },
+			"When": { "StrawFloor_Replacement": "Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/{{WeatheredFloor_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 128, "Y": 0, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"When": { "WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/{{WeatheredFloor_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 304, "Y": 208, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"When": { "WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "330 1", 2: "331" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "330 1", 2: "331 5" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "330 1", 2: "331 10" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "771 1", 2: "331" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "771 1", 2: "331 5" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "771 1", 2: "331 10" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "709 1", 2: "331" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "709 1", 2: "331 5" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "709 1", 2: "331 10" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "92 1", 2: "331" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "92 1", 2: "331 5" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "92 1", 2: "331 10" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "390 1", 2: "331" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "390 1", 2: "331 5" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "390 1", 2: "331 10" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "388 1", 2: "331" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "388 1", 2: "331 5" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Weathered Floor": { 0: "388 1", 2: "331 10" } },
+			"When": { 
+				"WeatheredFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"331": { 0: "Dark Dirt Floor" } },
+			"When": { "WeatheredFloor_Replacement": "DarkDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"331": { 0: "Dark Grass Floor" } },
+			"When": { "WeatheredFloor_Replacement": "DarkGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"331": { 0: "Light Dirt Floor" } },
+			"When": { "WeatheredFloor_Replacement": "LightDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"331": { 0: "Light Grass Floor" } },
+			"When": { "WeatheredFloor_Replacement": "LightGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"331": { 0: "Sand Floor" } },
+			"When": { "WeatheredFloor_Replacement": "Sand" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"331": { 0: "Shadow Floor" } },
+			"When": { "WeatheredFloor_Replacement": "Shadow" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"331": { 0: "Straw Floor" } },
+			"When": { "WeatheredFloor_Replacement": "Straw" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"331": { 0: "Transparent Floor" } },
+			"When": { "WeatheredFloor_Replacement": "Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/{{WoodFloor_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"When": { "WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/{{WoodFloor_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 256, "Y": 208, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"When": { "WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "330 1", 2: "328" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "330 1", 2: "328 5" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "330 1", 2: "328 10" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "771 1", 2: "328" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "771 1", 2: "328 5" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "771 1", 2: "328 10" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "709 1", 2: "328" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "709 1", 2: "328 5" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "709 1", 2: "328 10" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "92 1", 2: "328" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "92 1", 2: "328 5" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "92 1", 2: "328 10" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "390 1", 2: "328" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "390 1", 2: "328 5" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "390 1", 2: "328 10" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "388 1", 2: "328" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "388 1", 2: "328 5" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Floor": { 0: "388 1", 2: "328 10" } },
+			"When": { 
+				"WoodFloor_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"328": { 0: "Dark Dirt Floor" } },
+			"When": { "WoodFloor_Replacement": "DarkDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"328": { 0: "Dark Grass Floor" } },
+			"When": { "WoodFloor_Replacement": "DarkGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"328": { 0: "Light Dirt Floor" } },
+			"When": { "WoodFloor_Replacement": "LightDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"328": { 0: "Light Grass Floor" } },
+			"When": { "WoodFloor_Replacement": "LightGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"328": { 0: "Sand Floor" } },
+			"When": { "WoodFloor_Replacement": "Sand" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"328": { 0: "Shadow Floor" } },
+			"When": { "WoodFloor_Replacement": "Shadow" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"328": { 0: "Straw Floor" } },
+			"When": { "WoodFloor_Replacement": "Straw" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"328": { 0: "Transparent Floor" } },
+			"When": { "WoodFloor_Replacement": "Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/{{WoodPath_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 128, "Y": 64, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"When": { "WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/{{WoodPath_Replacement}}_{{Season}}.png",
+			"ToArea": { "X": 336, "Y": 256, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"When": { "WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "330 1", 2: "405" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "330 1", 2: "405 5" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "330 1", 2: "405 10" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Clay",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "771 1", 2: "405" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "771 1", 2: "405 5" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "771 1", 2: "405 10" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Fiber",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "709 1", 2: "405" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "709 1", 2: "405 5" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "709 1", 2: "405 10" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Hardwood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "92 1", 2: "405" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "92 1", 2: "405 5" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "92 1", 2: "405 10" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Sap",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "390 1", 2: "405" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "390 1", 2: "405 5" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "390 1", 2: "405 10" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Stone",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "388 1", 2: "405" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 1
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "388 1", 2: "405 5" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 5
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "Wood Path": { 0: "388 1", 2: "405 10" } },
+			"When": { 
+				"WoodPath_Replacement": "LightGrass, DarkGrass, LightDirt, DarkDirt, Sand, Straw, Shadow, Transparent",
+				"Crafting_Material": "Wood",
+				"Crafting_Amount": 10
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"405": { 0: "Dark Dirt Path" } },
+			"When": { "WoodPath_Replacement": "DarkDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"405": { 0: "Dark Grass Path" } },
+			"When": { "WoodPath_Replacement": "DarkGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"405": { 0: "Light Dirt Path" } },
+			"When": { "WoodPath_Replacement": "LightDirt" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"405": { 0: "Light Grass Path" } },
+			"When": { "WoodPath_Replacement": "LightGrass" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"405": { 0: "Sand Path" } },
+			"When": { "WoodPath_Replacement": "Sand" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"405": { 0: "Shadow Path" } },
+			"When": { "WoodPath_Replacement": "Shadow" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"405": { 0: "Straw Path" } },
+			"When": { "WoodPath_Replacement": "Straw" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {	"405": { 0: "Transparent Path" } },
+			"When": { "WoodPath_Replacement": "Transparent" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 0, "Y": 128, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "CobblestonePath_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 48, "Y": 272, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "CobblestonePath_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 0, "Y": 128, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "CobblestonePath_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 48, "Y": 272, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "CobblestonePath_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 192, "Y": 0, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "CrystalFloor_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 336, "Y": 208, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "CrystalFloor_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 192, "Y": 0, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "CrystalFloor_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 336, "Y": 208, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "CrystalFloor_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 192, "Y": 64, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "CrystalPath_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 16, "Y": 272, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "CrystalPath_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 192, "Y": 64, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "CrystalPath_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 16, "Y": 272, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "CrystalPath_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 64, "Y": 64, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "GravelPath_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 368, "Y": 256, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "GravelPath_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 64, "Y": 64, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "GravelPath_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 368, "Y": 256, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "GravelPath_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 64, "Y": 0, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "StoneFloor_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 272, "Y": 208, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "StoneFloor_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 64, "Y": 0, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "StoneFloor_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 272, "Y": 208, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "StoneFloor_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 0, "Y": 64, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "StrawFloor_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 272, "Y": 256, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "StrawFloor_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 0, "Y": 64, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "StrawFloor_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 272, "Y": 256, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "StrawFloor_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 128, "Y": 0, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "WeatheredFloor_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 304, "Y": 208, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "WeatheredFloor_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 128, "Y": 0, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "WeatheredFloor_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 304, "Y": 208, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "WeatheredFloor_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "WoodFloor_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 256, "Y": 208, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "WoodFloor_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "WoodFloor_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 256, "Y": 208, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "WoodFloor_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 128, "Y": 64, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "WoodPath_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Snow_Override.png",
+			"ToArea": { "X": 336, "Y": 256, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Snow_Overrides_LightGrass}}",
+			"When": { "WoodPath_Replacement": "LightGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 128, "Y": 64, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "WoodPath_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+		{
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/Ice_Override.png",
+			"ToArea": { "X": 336, "Y": 256, "Width": 16, "Height": 16},
+			"FromArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16},
+			"Enabled": "{{Ice_Overrides_DarkGrass}}",
+			"When": { "WoodPath_Replacement": "DarkGrass", "Season": "Winter" }
+		},
+	]
+}

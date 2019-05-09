@@ -1,0 +1,351 @@
+{
+	"Format": "1.5",
+	"ConfigSchema": {
+		"ReplaceFence": {
+			"AllowValues": "Hardwood, Iron, Stone, Wood",
+			"Default": "Hardwood"
+		},
+		"CraftingMaterial": {
+			"AllowValues":  "Fiber, Hardwood, Wood",
+			"Default": "Hardwood"
+		},
+		"AddFlowers": {
+			"AllowValues": "true, false",
+			"Default": "true"
+		},
+		"FlowerType": {
+			"AllowValues": "mixed, pink, blue, yellow",
+			"Default": "mixed"
+		},
+		"HedgeShade": {
+			"AllowValues": "dark, light",
+			"Default": "dark"
+		},
+		"SnowInWinter": {
+			"AllowValues": "all, half, none",
+			"Default": "all"
+		},
+		"FlowersInWinter": {
+			"AllowValues": "true, false",
+			"Default": "false"
+		},
+	},
+    "DynamicTokens": [
+        {
+            "Name": "FenceTarget",
+            "Value": "LooseSprites/Fence1",
+            "When": { "ReplaceFence": "Wood" }
+        },
+        {
+            "Name": "FenceTarget",
+            "Value": "LooseSprites/Fence2",
+            "When": { "ReplaceFence": "Stone" }
+        },
+        {
+            "Name": "FenceTarget",
+            "Value": "LooseSprites/Fence3",
+            "When": { "ReplaceFence": "Iron" }
+        },
+        {
+            "Name": "FenceTarget",
+            "Value": "LooseSprites/Fence5",
+            "When": { "ReplaceFence": "Hardwood" }
+        },
+        {
+            "Name": "FenceObject",
+            "Value": "322",
+            "When": { "ReplaceFence": "Wood" }
+        },
+        {
+            "Name": "FenceObject",
+            "Value": "323",
+            "When": { "ReplaceFence": "Stone" }
+        },
+        {
+            "Name": "FenceObject",
+            "Value": "324",
+            "When": { "ReplaceFence": "Iron" }
+        },
+        {
+            "Name": "FenceObject",
+            "Value": "298",
+            "When": { "ReplaceFence": "Hardwood" }
+        },
+        {
+            "Name": "CraftObject",
+            "Value": "771",
+            "When": { "CraftingMaterial": "Fiber" }
+        },
+        {
+            "Name": "CraftObject",
+            "Value": "388",
+            "When": { "CraftingMaterial": "Wood" }
+        },
+        {
+            "Name": "CraftObject",
+            "Value": "709",
+            "When": { "CraftingMaterial": "Hardwood" }
+        },
+    ],
+	"Changes": [
+		{
+			"LogName": "Main Fence Replace",
+			"Action": "EditImage",
+			"Target": "{{FenceTarget}}",
+			"FromFile": "assets/hedge_{{HedgeShade}}.png",
+			"ToArea": { "X": 0, "Y": 0, "Width": 48, "Height": 128},
+			"FromArea": { "X": 0, "Y": 0, "Width": 48, "Height": 128},
+		},
+		{
+			"LogName": "Lower Right Fence Replace",
+			"Action": "EditImage",
+			"Target": "{{FenceTarget}}",
+			"FromFile": "assets/hedge_{{HedgeShade}}.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 32, "Y": 160, "Width": 16, "Height": 32 },
+			"FromArea": { "X": 32, "Y": 160, "Width": 16, "Height": 32 },
+		},
+		{
+			"LogName": "Flower Overlay SSF",
+			"Action": "EditImage",
+			"Target": "{{FenceTarget}}",
+			"FromFile": "assets/flowers_{{FlowerType}}.png",
+			"PatchMode": "Overlay",
+			"When": { "Season": "Spring, Summer, Fall", "AddFlowers": "true" }
+		},
+		{
+			"LogName": "Flower Overlay Winter",
+			"Action": "EditImage",
+			"Target": "{{FenceTarget}}",
+			"FromFile": "assets/flowers_{{FlowerType}}.png",
+			"PatchMode": "Overlay",
+			"When": { "Season": "Winter" , "FlowersInWinter": "true", "AddFlowers": "true" }
+		},
+		{
+			"LogName": "Snow Overlay All",
+			"Action": "EditImage",
+			"Target": "{{FenceTarget}}",
+			"FromFile": "assets/snow.png",
+			"PatchMode": "Overlay",
+			"When": { "season": "winter", "SnowInWinter": "all" }
+		},
+		{
+			"LogName": "Snow Overlay Half",
+			"Action": "EditImage",
+			"Target": "{{FenceTarget}}",
+			"FromFile": "assets/snow_half.png",
+			"PatchMode": "Overlay",
+			"When": { "season": "winter", "SnowInWinter": "half" }
+		},
+		{
+			"LogName": "Names in ObjectInformation",
+			"Action": "EditData",
+			"Target": "Data/ObjectInformation",
+			"Fields": {
+				"{{FenceObject}}": { "0": "Hedge Fence", "1": "1", "4": "Hedge Fence" }
+				},
+		},
+		{
+			"LogName": "CraftingRecipe",
+			"Action": "EditData",
+			"Target": "Data/CraftingRecipes",
+			"Fields": { "{{ReplaceFence}} Fence": { 0: "{{CraftObject}} 1", 2: "{{FenceObject}}" } },
+		},
+		{
+			"LogName": "Inventory Sprite (Hardwood)",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/hedge_{{HedgeShade}}.png",
+			"ToArea": { "X": 160, "Y": 192, "Width": 16, "Height": 16},
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16},
+			"When": { "ReplaceFence": "Hardwood" }
+		},
+		{
+			"LogName": "Inventory Sprite (Hardwood) with Flowers SSF",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/flowers_{{FlowerType}}.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 160, "Y": 192, "Width": 16, "Height": 16 },
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16 },
+			"When": { "ReplaceFence": "Hardwood", "Season": "Spring, Summer, Fall", "AddFlowers": "true" }
+		},
+		{
+			"LogName": "Inventory Sprite (Hardwood) with Flowers Winter",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/flowers_{{FlowerType}}.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 160, "Y": 192, "Width": 16, "Height": 16 },
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16 },
+			"When": { "ReplaceFence": "Hardwood", "Season": "Winter" , "FlowersInWinter": "true", "AddFlowers": "true" }
+		},
+		{
+			"LogName": "Inventory Sprite (Hardwood) with Snow All",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/snow.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 160, "Y": 192, "Width": 16, "Height": 16 },
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16 },
+			"When": { "season": "winter", "ReplaceFence": "Hardwood", "SnowInWinter": "all"  }
+		},
+		{
+			"LogName": "Inventory Sprite (Hardwood) with Snow Half",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/snow_half.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 160, "Y": 192, "Width": 16, "Height": 16 },
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16 },
+			"When": { "season": "winter", "ReplaceFence": "Hardwood", "SnowInWinter": "half"  }
+		},
+		{
+			"LogName": "Inventory Sprite (Iron)",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/hedge_{{HedgeShade}}.png",
+			"ToArea": { "X": 192, "Y": 208, "Width": 16, "Height": 16},
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16},
+			"When": { "ReplaceFence": "Iron" }
+		},
+		{
+			"LogName": "Inventory Sprite (Iron) with Flowers SSF",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/flowers_{{FlowerType}}.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 192, "Y": 208, "Width": 16, "Height": 16 },
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16 },
+			"When": { "ReplaceFence": "Iron", "Season": "Spring, Summer, Fall", "AddFlowers": "true" }
+		},
+		{
+			"LogName": "Inventory Sprite (Iron) with Flowers Winter",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/flowers_{{FlowerType}}.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 192, "Y": 208, "Width": 16, "Height": 16 },
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16 },
+			"When": { "ReplaceFence": "Iron", "Season": "Winter" , "FlowersInWinter": "true", "AddFlowers": "true" }
+		},
+		{
+			"LogName": "Inventory Sprite (Iron) with Snow All",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/snow.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 192, "Y": 208, "Width": 16, "Height": 16 },
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16 },
+			"When": { "season": "winter", "ReplaceFence": "Iron", "SnowInWinter": "all"  }
+		},
+		{
+			"LogName": "Inventory Sprite (Iron) with Snow Half",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/snow_half.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 192, "Y": 208, "Width": 16, "Height": 16 },
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16 },
+			"When": { "season": "winter", "ReplaceFence": "Iron", "SnowInWinter": "half"  }
+		},
+		{
+			"LogName": "Inventory Sprite (Stone)",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/hedge_{{HedgeShade}}.png",
+			"ToArea": { "X": 176, "Y": 208, "Width": 16, "Height": 16},
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16},
+			"When": { "ReplaceFence": "Stone" }
+		},
+		{
+			"LogName": "Inventory Sprite (Stone) with Flowers SSF",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/flowers_{{FlowerType}}.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 176, "Y": 208, "Width": 16, "Height": 16 },
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16 },
+			"When": { "ReplaceFence": "Stone", "Season": "Spring, Summer, Fall", "AddFlowers": "true" }
+		},
+		{
+			"LogName": "Inventory Sprite (Stone) with Flowers Winter",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/flowers_{{FlowerType}}.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 176, "Y": 208, "Width": 16, "Height": 16 },
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16 },
+			"When": { "ReplaceFence": "Stone", "Season": "Winter" , "FlowersInWinter": "true", "AddFlowers": "true" }
+		},
+		{
+			"LogName": "Inventory Sprite (Stone) with Snow All",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/snow.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 176, "Y": 208, "Width": 16, "Height": 16 },
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16 },
+			"When": { "season": "winter", "ReplaceFence": "Stone", "SnowInWinter": "all"  }
+		},
+		{
+			"LogName": "Inventory Sprite (Stone) with Snow Half",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/snow_half.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 176, "Y": 208, "Width": 16, "Height": 16 },
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16 },
+			"When": { "season": "winter", "ReplaceFence": "Stone", "SnowInWinter": "half"  }
+		},
+		{
+			"LogName": "Inventory Sprite (Wood)",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/hedge_{{HedgeShade}}.png",
+			"ToArea": { "X": 160, "Y": 208, "Width": 16, "Height": 16},
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16},
+			"When": { "ReplaceFence": "Wood" }
+		},
+		{
+			"LogName": "Inventory Sprite (Wood) with Flowers SSF",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/flowers_{{FlowerType}}.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 160, "Y": 208, "Width": 16, "Height": 16 },
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16 },
+			"When": { "ReplaceFence": "Wood", "Season": "Spring, Summer, Fall", "AddFlowers": "true" }
+		},
+		{
+			"LogName": "Inventory Sprite (Wood) with Flowers Winter",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/flowers_{{FlowerType}}.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 160, "Y": 208, "Width": 16, "Height": 16 },
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16 },
+			"When": { "ReplaceFence": "Wood", "Season": "Winter" , "FlowersInWinter": "true", "AddFlowers": "true" }
+		},
+		{
+			"LogName": "Inventory Sprite (Wood) with Snow All",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/snow.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 160, "Y": 208, "Width": 16, "Height": 16 },
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16 },
+			"When": { "season": "winter", "ReplaceFence": "Wood", "SnowInWinter": "all"  }
+		},
+		{
+			"LogName": "Inventory Sprite (Wood) with Snow Half",
+			"Action": "EditImage",
+			"Target": "Maps/springobjects",
+			"FromFile": "assets/snow_half.png",
+			"PatchMode": "Overlay",
+			"ToArea": { "X": 160, "Y": 208, "Width": 16, "Height": 16 },
+			"FromArea": { "X": 16, "Y": 64, "Width": 16, "Height": 16 },
+			"When": { "season": "winter", "ReplaceFence": "Wood", "SnowInWinter": "half"  }
+		},
+	]
+}

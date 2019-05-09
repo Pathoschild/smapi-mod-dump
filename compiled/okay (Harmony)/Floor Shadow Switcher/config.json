@@ -1,0 +1,12 @@
+{
+  "EnableShadowsForType_0_WoodFloor": false,
+  "EnableShadowsForType_1_StoneFloor": false,
+  "EnableShadowsForType_2_WeatheredFloor": false,
+  "EnableShadowsForType_3_CrystalFloor": false,
+  "EnableShadowsForType_4_StrawFloor": false,
+  "EnableShadowsForType_5_GravelPath": false,
+  "EnableShadowsForType_6_WoodPath": false,
+  "EnableShadowsForType_7_CrystalPath": false,
+  "EnableShadowsForType_8_CobblestonePath": false,
+  "EnableShadowsForType_9_SteppingStonePath": false
+}

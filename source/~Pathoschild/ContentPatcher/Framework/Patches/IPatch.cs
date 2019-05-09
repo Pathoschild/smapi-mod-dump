@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using ContentPatcher.Framework.Conditions;
-using ContentPatcher.Framework.Tokens;
 using StardewModdingAPI;
 
 namespace ContentPatcher.Framework.Patches
@@ -21,16 +20,16 @@ namespace ContentPatcher.Framework.Patches
         ManagedContentPack ContentPack { get; }
 
         /// <summary>The asset key to load from the content pack instead.</summary>
-        TokenString FromLocalAsset { get; }
+        ITokenString FromLocalAsset { get; }
 
         /// <summary>The normalised asset name to intercept.</summary>
         string TargetAsset { get; }
 
         /// <summary>The raw asset name to intercept, including tokens.</summary>
-        TokenString RawTargetAsset { get; }
+        ITokenString RawTargetAsset { get; }
 
         /// <summary>The conditions which determine whether this patch should be applied.</summary>
-        ConditionDictionary Conditions { get; }
+        Condition[] Conditions { get; }
 
         /// <summary>Whether the patch is currently applied to the target asset.</summary>
         bool IsApplied { get; set; }
@@ -50,8 +49,5 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="asset">The asset to edit.</param>
         /// <exception cref="System.NotSupportedException">The current patch type doesn't support editing assets.</exception>
         void Edit<T>(IAssetData asset);
-
-        /// <summary>Get the tokens used by this patch in its fields.</summary>
-        IEnumerable<TokenName> GetTokensUsed();
     }
 }

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "DVR",
+  "Author": "captncraig",
+  "Version": "1.0.0",
+  "Description": "Multiple enhancements to TV content",
+  "UniqueID": "captncraig.dvr",
+  "EntryDll": "DVR.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:3860" ]
+}

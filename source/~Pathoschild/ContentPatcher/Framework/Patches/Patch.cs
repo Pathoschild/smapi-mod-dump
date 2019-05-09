@@ -16,6 +16,9 @@ namespace ContentPatcher.Framework.Patches
         /// <summary>Normalise an asset name.</summary>
         private readonly Func<string, string> NormaliseAssetName;
 
+        /// <summary>The underlying contextual values.</summary>
+        protected readonly List<IContextual> ContextualValues = new List<IContextual>();
+
 
         /*********
         ** Accessors
@@ -39,16 +42,16 @@ namespace ContentPatcher.Framework.Patches
         public ManagedContentPack ContentPack { get; }
 
         /// <summary>The raw asset key to intercept (if applicable), including tokens.</summary>
-        public TokenString FromLocalAsset { get; protected set; }
+        public ITokenString FromLocalAsset { get; protected set; }
 
         /// <summary>The normalised asset name to intercept.</summary>
         public string TargetAsset { get; private set; }
 
         /// <summary>The raw asset name to intercept, including tokens.</summary>
-        public TokenString RawTargetAsset { get; }
+        public ITokenString RawTargetAsset { get; }
 
         /// <summary>The conditions which determine whether this patch should be applied.</summary>
-        public ConditionDictionary Conditions { get; }
+        public Condition[] Conditions { get; }
 
         /// <summary>Whether the patch is currently applied to the target asset.</summary>
         public bool IsApplied { get; set; }
@@ -63,29 +66,37 @@ namespace ContentPatcher.Framework.Patches
         public virtual bool UpdateContext(IContext context)
         {
             this.LastContext = context;
+            bool changed = false;
 
-            // update conditions
-            bool conditionsChanged;
+            // update contextual values
+            foreach (IContextual contextual in this.ContextualValues)
+            {
+                bool wasReady = contextual.IsReady;
+                if (contextual.UpdateContext(context) || contextual.IsReady != wasReady)
+                    changed = true;
+            }
+
+            // update source asset
+            if (this.FromLocalAsset != null)
+            {
+                bool sourceChanged = this.FromLocalAsset.UpdateContext(context);
+                this.IsReady = this.IsReady && this.FromLocalAsset.IsReady && this.ContentPack.HasFile(this.FromLocalAsset.Value);
+                changed = changed || sourceChanged;
+            }
+
+            // update target asset
+            this.TargetAsset = this.NormaliseAssetName(this.RawTargetAsset.Value);
+
+            // update ready flag
             {
                 bool wasReady = this.IsReady;
                 this.IsReady =
-                    (this.Conditions.Count == 0 || this.Conditions.Values.All(p => p.IsMatch(context)))
-                    && this.GetTokensUsed().All(p => context.Contains(p, enforceContext: true));
-                conditionsChanged = wasReady != this.IsReady;
-            }
-            // update target asset
-            bool targetChanged = this.RawTargetAsset.UpdateContext(context);
-            this.TargetAsset = this.NormaliseAssetName(this.RawTargetAsset.Value);
-
-            // update source asset
-            bool sourceChanged = false;
-            if (this.FromLocalAsset != null)
-            {
-                sourceChanged = this.FromLocalAsset.UpdateContext(context);
-                this.IsReady = this.IsReady && this.FromLocalAsset.IsReady && this.ContentPack.HasFile(this.FromLocalAsset.Value);
+                    (!this.Conditions.Any() || this.Conditions.All(p => p.IsMatch(context)))
+                    && this.GetTokensUsed().All(name => context.Contains(name, enforceContext: true));
+                changed = changed || this.IsReady != wasReady;
             }
 
-            return conditionsChanged || targetChanged || sourceChanged;
+            return changed;
         }
 
         /// <summary>Load the initial version of the asset.</summary>
@@ -106,10 +117,10 @@ namespace ContentPatcher.Framework.Patches
             throw new NotSupportedException("This patch type doesn't support loading assets.");
         }
 
-        /// <summary>Get the tokens used by this patch in its fields.</summary>
-        public virtual IEnumerable<TokenName> GetTokensUsed()
+        /// <summary>Get the token names used by this patch in its fields.</summary>
+        public virtual IEnumerable<string> GetTokensUsed()
         {
-            return this.RawTargetAsset.Tokens;
+            return this.RawTargetAsset.GetTokensUsed();
         }
 
 
@@ -123,14 +134,19 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="assetName">The normalised asset name to intercept.</param>
         /// <param name="conditions">The conditions which determine whether this patch should be applied.</param>
         /// <param name="normaliseAssetName">Normalise an asset name.</param>
-        protected Patch(string logName, PatchType type, ManagedContentPack contentPack, TokenString assetName, ConditionDictionary conditions, Func<string, string> normaliseAssetName)
+        protected Patch(string logName, PatchType type, ManagedContentPack contentPack, ITokenString assetName, IEnumerable<Condition> conditions, Func<string, string> normaliseAssetName)
         {
+            // set values
             this.LogName = logName;
             this.Type = type;
             this.ContentPack = contentPack;
             this.RawTargetAsset = assetName;
-            this.Conditions = conditions;
+            this.Conditions = conditions.ToArray();
             this.NormaliseAssetName = normaliseAssetName;
+
+            // track contextuals
+            this.ContextualValues.AddRange(this.Conditions);
+            this.ContextualValues.Add(this.RawTargetAsset);
         }
     }
 }

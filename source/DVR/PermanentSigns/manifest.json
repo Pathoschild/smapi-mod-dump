@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Permanent Signs",
+  "Author": "captncraig",
+  "Version": "1.0.0",
+  "Description": "Once a sign has an icon, it won't change",
+  "UniqueID": "captncraig.permanentsigns",
+  "EntryDll": "PermanentSigns.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

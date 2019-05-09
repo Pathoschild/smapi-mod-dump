@@ -1,0 +1,13 @@
+url:
+   https://github.com/Uwazouri/ExpandedFridge.git
+
+mods:
+   Expanded Fridge
+
+latest commit:
+   commit 53f2a4638d2e9107cfcc8cad1964d45d6a47b16f
+   Author: Emil SundstrÃ¶m <flash_port@hotmail.com>
+   Date:   Tue Apr 30 11:45:47 2019 +0200
+   
+       Removed global message when looking at note and the remote button when the fridge upgrade doesn't allow access due to location.
+   

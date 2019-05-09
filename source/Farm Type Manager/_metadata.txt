@@ -5,9 +5,11 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 435c354bf6f17205245f80e5e1aa5e53d5e8b28c
-   Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Mon Apr 15 08:25:10 2019 -0500
+   commit c51c48d61e9fcc9175cb8a10230ef735f0e204c3
+   Author: Esca-MMC <41843952+Esca-MMC@users.noreply.github.com>
+   Date:   Tue May 7 04:01:01 2019 -0500
    
-       fix #7, tweak trace message phrase
+       Update readme.md
+       
+       Misleading typo
    

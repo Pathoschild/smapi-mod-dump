@@ -5,9 +5,9 @@ mods:
    Warp Animals
 
 latest commit:
-   commit 370c3b7fb3c11d9c13ba7640d6b18e78054d8ee6
+   commit ba8fbbc730d73450ba58321b9dc1933a45e605b0
    Author: Simon Brulhart <simon@brulhart.me>
-   Date:   Fri Aug 18 14:20:22 2017 +0200
+   Date:   Sun May 5 19:36:53 2019 +0200
    
-       Remove dummy class
+       Update README
    

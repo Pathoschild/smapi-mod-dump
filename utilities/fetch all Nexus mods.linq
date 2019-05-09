@@ -17,6 +17,8 @@
   <Namespace>System.Globalization</Namespace>
   <Namespace>System.Net</Namespace>
   <Namespace>System.Threading.Tasks</Namespace>
+  <Namespace>Newtonsoft.Json.Linq</Namespace>
+  <Namespace>StardewModdingAPI.Toolkit.Serialisation</Namespace>
 </Query>
 
 /*
@@ -30,7 +32,7 @@
 */
 
 /*********
-** Fields
+** Configuration
 *********/
 /// <summary>The Nexus API key.</summary>
 readonly string ApiKey = "";
@@ -41,8 +43,9 @@ readonly string RootPath = @"C:\dev\nexus";
 /// <summary>Which mods to refetch from Nexus (or <c>null</c> to not refetch any).</summary>
 readonly ISelectStrategy FetchMods =
 	null;
-	//new FetchAllFromStrategy(startFrom: 3855);
-	//new FetchUpdatedStrategy("1d"); // 1d, 1w, 1m, or a custom date up to 28 days ago
+	//new FetchAllFromStrategy(startFrom: 3792);
+	//new FetchUpdatedStrategy(TimeSpan.FromDays(3));
+	//new FetchUpdatedStrategy("1d"); // "1d", "1w", "1m", or a custom timespan/date up to 28 days ago
 
 /// <summary>Whether to delete the unpacked folder and unpack files from the export path.</summary>
 readonly bool ResetUnpacked = false;
@@ -59,17 +62,110 @@ async Task Main()
 	// fetch mods from Nexus API
 	HashSet<int> unpackMods = new HashSet<int>();
 	if (this.FetchMods != null)
-		unpackMods = new HashSet<int>(await this.ImportMods(apiKey: this.ApiKey, gameKey: "stardewvalley", fetchStrategy: this.FetchMods));
+		unpackMods = new HashSet<int>(await this.ImportMods(apiKey: this.ApiKey, gameKey: "stardewvalley", fetchStrategy: this.FetchMods, rootPath: this.RootPath));
 
 	// unpack fetched files
 	this.UnpackMods(rootPath: this.RootPath, filter: id => this.ResetUnpacked || unpackMods.Contains(id));
 
 	// run analysis
-	ModToolkit toolkit = new ModToolkit();
-	WikiModList compatList = await toolkit.GetWikiCompatibilityListAsync();
-	HashSet<string> knownModIDs = new HashSet<string>(compatList.Mods.SelectMany(p => p.ID), StringComparer.InvariantCultureIgnoreCase);
+	ParsedModData[] mods = this.ReadMods(this.RootPath).ToArray();
+	await this.GetModsNotOnWiki(mods).Dump("SMAPI mods not on the wiki");
+	await this.GetInvalidMods(mods).Dump("Mods marked invalid by SMAPI toolkit (except blacklist)");
+	//await this.CustomContentPatcherQuery(mods).Dump("Custom CP query");
+}
 
-	// mods not listed on the wiki
+/*********
+** Common queries
+*********/
+/// <summary>Placeholder for custom Content Patcher pack queries.</summary>
+/// <param name="parsedMods">The mods to check.</param>
+async Task<dynamic> CustomContentPatcherQuery(IEnumerable<ParsedModData> parsedMods)
+{
+	IDictionary<string, int> formatVersions = new Dictionary<string, int>();
+	
+	JToken GetProperty(JToken parent, string name)
+	{
+		if (parent is JObject obj)
+			return obj.GetValue(name, StringComparison.InvariantCultureIgnoreCase);
+		throw new InvalidOperationException($"Can't get property '{name}' for non-object token (found {parent.Type} at {parent.Path}).");
+	}
+	
+	List<string> results = new List<string>();
+	JsonHelper jsonHelper = new JsonHelper();
+	foreach (ParsedModData modEntry in parsedMods)
+	{
+		foreach (ParsedFileData download in modEntry.ModFolders)
+		{
+			// get Content Patcher mod
+			var mod = download.RawFolder.Value;
+			if (mod.Type != ModType.ContentPack || !"Pathoschild.ContentPatcher".Equals(mod.Manifest.ContentPackFor.UniqueID, StringComparison.InvariantCultureIgnoreCase))
+				continue;
+
+			// find content.json
+			FileInfo contentFile = new FileInfo(Path.Combine(mod.Directory.FullName, "content.json"));
+			if (!contentFile.Exists)
+			{
+				Helper.Print($"Ignored CP pack {modEntry.ID} > {download.FileID}: no content.json found.", Severity.Error);
+				continue;
+			}
+
+			// parse content.json
+			CPContentModel content;
+			try
+			{
+				content = jsonHelper.Deserialise<CPContentModel>(File.ReadAllText(contentFile.FullName));
+			}
+			catch (Exception ex)
+			{
+				Helper.Print($"Ignored CP pack {modEntry.ID} > {download.FileID}: {ex.Message}.", Severity.Error);
+				new Lazy<Exception>(() => ex).Dump("`--> exception");
+				continue;
+			}
+
+			// get format version
+			results.Add(content.Format);
+
+			// check if any When conditions have values containing a colon
+//			List<CPPatchModel> patches = new List<CPPatchModel>();
+//			foreach (CPPatchModel patch in content.Changes ?? new CPPatchModel[0])
+//			{
+//				foreach (var entry in patch.When ?? new Dictionary<string, string>())
+//				{
+//					if (entry.Value.Contains(":"))
+//						patches.Add(patch);
+//				}
+//			}
+//			if (patches.Any())
+//				results.Add(new { mod, content = new Lazy<CPContentModel>(() => content), patches = new Lazy<CPPatchModel[]>(() => patches.ToArray()) });
+		}
+	}
+	
+	return results.GroupBy(p => p).ToDictionary(p => p.Key, p => p.Count()).OrderByDescending(p => p.Value);
+}
+
+class CPContentModel
+{
+	public string Format { get; set; }
+	
+	public CPPatchModel[] Changes { get; set; }
+
+	[JsonExtensionData]
+	public IDictionary<string, JToken> OtherFields { get; set; }
+}
+
+class CPPatchModel
+{
+	public IDictionary<string, string> When { get; set; }
+
+	[JsonExtensionData]
+	public IDictionary<string, JToken> OtherFields { get; set; }
+}
+
+/// <summary>Get SMAPI mods which aren't listed on the wiki compatibility list.</summary>
+/// <param name="mods">The mods to check.</param>
+async Task<dynamic[]> GetModsNotOnWiki(IEnumerable<ParsedModData> mods)
+{
+	// set mods to ignore
 	HashSet<string> ignoreModIDs = new HashSet<string>(new[]
 	{
 		// utility mods that are part of a larger mod
@@ -83,13 +179,20 @@ async Task Main()
 		"magimatica.HudsonValley",
 		"oomps62.HudsonValleySeasonalObelisks",
 		
-		// not worth tracking
-		"shuaiz.SaveAnywhereV3"    // fork reposted without permission
+		// outdated fork reposted without permission
+		"shuaiz.SaveAnywhereV3"
 	}, StringComparer.InvariantCultureIgnoreCase);
-	(
-		from mod in this.ReadMods(this.RootPath)
+
+	// fetch mods on the wiki
+	ModToolkit toolkit = new ModToolkit();
+	WikiModList compatList = await toolkit.GetWikiCompatibilityListAsync();
+	HashSet<string> knownModIDs = new HashSet<string>(compatList.Mods.SelectMany(p => p.ID), StringComparer.InvariantCultureIgnoreCase);
+
+	// fetch report
+	return (
+		from mod in mods
 		let notOnWiki = mod.ModFolders
-			.Where(folder => 
+			.Where(folder =>
 				folder.ModType == ModType.Smapi
 				&& !string.IsNullOrWhiteSpace(folder.ModID)
 				&& !knownModIDs.Contains(folder.ModID)
@@ -99,13 +202,153 @@ async Task Main()
 		where notOnWiki.Any()
 		select new { mod, notOnWiki }
 	)
-	.Dump("SMAPI mod files not listed on the wiki");
+	.ToArray();
 }
 
+/// <summary>Get mods which the SMAPI toolkit marked as invalid or unparseable.</summary>
+/// <param name="mods">The mods to check.</param>
+async Task<dynamic[]> GetInvalidMods(IEnumerable<ParsedModData> mods)
+{
+	// set mod files to ignore
+	// This query ensures that mods which *should* be correctly parsed by SMAPI are, so we don't want to list downloads that were already manually checked and confirmed invalid.
+	HashSet<int> ignoreMods = new HashSet<int>
+	{
+		// non-mod tools
+		3431, // BFAV JSON Update [tool]
+		1080, // Easy XNB for Xnb Node
+		1213, // Natural Color - Reshade
+		21,   // SDVMM/Stardew Valley Mod Manager
+		1022, // SDV MultiTweak
+		2400, // SMAPI
+		2367, // SMAPI Templates [for Visual Studio]
+		782,  // Sound Modding Tools
+		1298, // Stardew Editor
+		3814, // Stardew Valley Hack Player for Name_Yusuf (???)
+		3787, // Stardew Valley Planner
+		2451, // StardewZem - Very Easy XNB Merger
+		337,  // SVPM/Stardew Valley Package Manager
+		1832, // Twelfth Night - American Gothic - ReShade
+		1770, // Twelfth Night - Depixelate - ReShade
+		1798, // Twelfth Night - Gameboy Pocket - ReShade
+		2152  // Updated XACT file for audio modding [.xap file]
+	};
+	HashSet<int> ignoreFiles = new HashSet<int>
+	{
+		// pre-manifest SMAPI mods
+		239,   // Rise and Shine (#3)
+		294,   // Sprint (#2)
+		456,   // Taxes Mod (#38)
+
+		// SMAPI mods with outdated manifest formats (e.g. old version format)
+		929,   // No Soil Decay (#283)
+		2949,  // Siv's Marriage Mod (#366)
+		3757,  // SmartMod (#1048)
+
+		// replacement files (e.g. tbin to drop into downloaded mod)
+		12282, // Ace's Expanded Farms MTN (#2711) > MelodicLullaby Less Saturated Valley Compatibility
+		2051,  // Add a Room and Attic (#379)
+		15896, // Capitalist Dream Farm (#3679) > SVE Compatibility
+		9873,  // Even More Secret Woods (#2364), replacement file for Immersive Farm 2
+		13120, // Immersive Farm 2 (#1531)
+		13647, // Immersive Farm 2 (#1531)
+		12634, // Phoenix Farm (#3026) > Pethouse Phoenix Farm
+		12863, // Secret Gardens Greenhouse (#3067) > "" for Immersive Farm 2
+		16328, // Stardew Valley Expanded (#3753)
+
+		// legacy zipped Seasonal Immersion content packs
+		5438,  // Seasonal Custom Farm Buildings (#1451)
+		5439,  // Seasonal Custom Farm Buildings (#1451)
+		3164,  // Seasonal Victorian Buildings and Flowers (#891)
+		5688,  // Witchy Decorations (#1515)
+
+		// legacy CustomNPC pack (files to drop into Mods/CustomNPC/Npcs)
+		8179,  // Costum Npc Base (#1964)
+		8203,  // Costum Npc Base (#1964)
+		7569,  // CustomNPCs Nagito Komaeda (#1964)
+		6423,  // NPC Alec (#1692)
+		8870,  // Steins Gate Kurisu Maho and Leskinen mod (#2249)
+		8871,  // Steins Gate Kurisu Maho and Leskinen mod (#2249)
+
+		// legacy Stardew Symphony pack (files to drop into Mods/StardewSymphonyRemastered/Content/Music/Wav)
+		12421, // Chill of Winter Music Pack (#3015)
+
+		// Better Farm Animal Variety pack (files to merged into BFAV's config file)
+		14395, // Gray Chicken (#3416)
+		14394, // Harvest Moon Cows (#3419)
+		14367, // Monster Girls (#3408)
+		14365, // Yoshis (#3420)
+		14366, // Zelda LTTP Lifestock Animals (#3421)
+
+		// collections of zipped content packs
+		13533, // A Less Yellow Stardew (#2415) > All Lanuage Version In One File
+		9295,  // Clint Narrative Overhaul (#1067)
+		9297,  // Demetrius Narrative Overhaul (#1120)
+		9303,  // Dwarf Narrative Overhaul (#1250)
+		9299,  // Gus Narrative Overhaul (#1144)
+		9307,  // Linus Narrative Overhaul (#1488)
+		9301,  // Marnie Narrative Overhaul (#1192)
+		9309,  // Pam Narrative Overhaul (#1978)
+		9293,  // Willy Narrative Overhaul (#1047)
+		9305,  // Wizard Narrative Overhaul (#1309)
+
+		// XNB mods with non-standard files
+		9634,  // Ali's Foraging Map With a Few Changes (#2381), includes redundant .zip files
+		445,   // Better Pigs and Recolours (#10), collection of zipped XNB mods
+		2008,  // Chickens to Cardinal or Toucan (#578), XNB mod with misnamed `White Chickenxnb`
+		10040, // Hero Academia Shota Mod (#2490), includes .zip file
+		4462,  // Hope's Secret Cave (#1155), includes unpacked files
+		535,   // New Rabbit Sprites and Recolours (#535), collection of zipped XNB mods
+		2118,  // Semi-Realistic Animal Replacer (#597), collection of zipped XNB mods
+		1680,  // Simple Building Cleaner (#493), has a `ModInfo.ini` file for some reason
+		15332, // Tieba Chinese Revision (#2936), has junk files to show instructions in filenames
+		2224,  // Toddlers Take After Parents (#626), files misnamed with `.zip_`
+
+		// other
+		10976, // Always On Server (#2677) > AutoHotKey Paste Every 2 Minutes
+		12257, // Always On Server (#2677) > Auto Restart SDV
+		13516, // Battle Royalley (#3199) > World File for Hosting
+		14839, // Battle Royalley (#3199), custom .bat/.command/.sh launch script
+		15901, // Better Crab Pots (#3159) > Config Updater
+		10352, // Birthstone Plants (#1632), JA pack with broken manifest JSON
+		5721,  // Chao Replacement for Cat (#1524), .wav files
+		15399, // Hidden Forest Farm (#3583) > XNB version, includes .tbin file
+		14664, // Husky New NPC (#14664), has .xslx file in root with multiple content pack folders
+		9967,  // Sam to Samantha (#2472), CP pack with invalid update keys
+		15746, // Stardew Valley Expanded (#3753) > Wallpapers, Event Guide and Script
+		16198, // Stardew Valley Expanded (#3753), includes replacement files
+		11658, // Visual Crossing Sprite Overhaul (#1942), CP pack with invalid version format
+		11717, // Pencilstab's Portraits (#2351), content pack with separate previews folder including .zip
+		9495,  // Quieter Cat Dog and Keg (#2371), .wav files
+	};
+
+	// fetch report
+	return (
+		from mod in mods
+		where !ignoreMods.Contains(mod.ID)
+		let invalid = mod.ModFolders
+			.Where(folder => 
+				(folder.ModType == ModType.Invalid || folder.ModType == ModType.Ignored)
+				&& folder.ModError != ModParseError.EmptyFolder // contains only non-mod files (e.g. replacement PNG assets)
+				&& !ignoreFiles.Contains(folder.RawDownload.Value.FileID)
+			)
+			.ToArray()
+		where invalid.Any()
+		select new { mod, invalid }
+	)
+	.ToArray();
+}
+
+
+/*********
+** Implementation
+*********/
 /// <summary>Import data for matching mods.</summary>
 /// <param name="apiKey">The Nexus API key.</param>
+/// <param name="gameKey">The unique game key.</param>
+/// <param name="fetchStrategy">The strategy which decides which mods to fetch.</param>
+/// <param name="rootPath">The path in which to store cached data.</param>
 /// <returns>Returns the imported mod IDs.</returns>
-async Task<int[]> ImportMods(string apiKey, string gameKey, ISelectStrategy fetchStrategy)
+async Task<int[]> ImportMods(string apiKey, string gameKey, ISelectStrategy fetchStrategy, string rootPath)
 {
 	NexusClient nexus = new NexusClient(apiKey);
 	
@@ -124,7 +367,7 @@ async Task<int[]> ImportMods(string apiKey, string gameKey, ISelectStrategy fetc
 		progress.Caption = $"Fetching mod {id} ({progress.Percent}%)";
 
 		// fetch
-		await this.ImportMod(nexus, gameKey, id, fetchStrategy, this.RootPath);
+		await this.ImportMod(nexus, gameKey, id, fetchStrategy, rootPath);
 	}
 	
 	progress.Caption = $"Fetched {modIDs.Length} updated mods ({progress.Percent}%)";
@@ -191,11 +434,31 @@ async Task ImportMod(NexusClient nexus, string gameKey, int id, ISelectStrategy 
 			{
 				foreach (ModFile file in files)
 				{
-					Uri downloadUri = (await nexus.ModFiles.GetDownloadLinks(gameKey, id, file.FileID)).First().Uri;
-
+					// create folder
 					FileInfo localFile = new FileInfo(Path.Combine(folder.FullName, "files", $"{file.FileID}{Path.GetExtension(file.FileName)}"));
 					localFile.Directory.Create();
-					downloader.DownloadFile(downloadUri, localFile.FullName);
+
+					// download file from first working CDN
+					Queue<ModFileDownloadLink> sources = new Queue<ModFileDownloadLink>((await nexus.ModFiles.GetDownloadLinks(gameKey, id, file.FileID)));
+					while (true)
+					{
+						if (!sources.Any())
+						{
+							Helper.Print($"Skipped file {id} > {file.FileID}: no download sources available for this file.", Severity.Error);
+							break;
+						}
+
+						ModFileDownloadLink source = sources.Dequeue();
+						try
+						{
+							downloader.DownloadFile(source.Uri, localFile.FullName);
+							break;
+						}
+						catch (Exception ex)
+						{
+							Helper.Print($"Failed downloading mod {id} > file {file.FileID} from {source.CdnName}.{(sources.Any() ? " Trying next CDN..." : "")}\n{ex}", Severity.Error);
+						}
+					}
 				}
 			}
 
@@ -366,6 +629,43 @@ private IEnumerable<DirectoryInfo> GetSortedSubfolders(DirectoryInfo root)
 		);
 }
 
+/// <summary>Extract an archive file to the given folder.</summary>
+/// <param name="file">The archive file to extract.</param>
+/// <param name="extractTo">The directory to extract into.</param>
+void ExtractFile(FileInfo file, DirectoryInfo extractTo)
+{
+	try
+	{
+		Task
+			.Run(() =>
+			{
+				using (SevenZipExtractor unpacker = new SevenZipExtractor(file.FullName))
+					unpacker.ExtractArchive(extractTo.FullName);
+			})
+			.Wait(TimeSpan.FromSeconds(60));
+	}
+	catch (AggregateException outerEx)
+	{
+		throw outerEx.InnerException;
+	}
+}
+
+/// <summary>Get a human-readable formatted time span.</summary>
+/// <param name="span">The time span to format.</param>
+private string GetFormattedTime(TimeSpan span)
+{
+	int hours = (int)span.TotalHours;
+	int minutes = (int)span.TotalMinutes - (hours * 60);
+	return $"{hours:00}:{minutes:00}";
+}
+
+/// <summary>Get a human-readable summary for the current rate limits.</summary>
+/// <param name="meta">The current rate limits.</param>
+private string GetRateLimitSummary(IRateLimitManager meta)
+{
+	return $"{meta.DailyRemaining}/{meta.DailyLimit} daily resetting in {this.GetFormattedTime(meta.DailyReset - DateTimeOffset.UtcNow)}, {meta.HourlyRemaining}/{meta.HourlyLimit} hourly resetting in {this.GetFormattedTime(meta.HourlyReset - DateTimeOffset.UtcNow)}";
+}
+
 /// <summary>Contains parsed data about a mod page.</summary>
 class ParsedModData
 {
@@ -377,13 +677,13 @@ class ParsedModData
 
 	/// <summary>The Nexus author names.</summary>
 	public string Author { get; }
-	
+
 	/// <summary>The Nexus mod ID.</summary>
 	public int ID { get; }
-	
+
 	/// <summary>The mod publication status.</summary>
 	public ModStatus Status { get; }
-	
+
 	/// <summary>The mod version number.</summary>
 	public string Version { get; }
 
@@ -392,7 +692,7 @@ class ParsedModData
 
 	/// <summary>The raw mod metadata.</summary>
 	public Lazy<ModMetadata> RawMod { get; }
-	
+
 	/// <summary>The raw mod download data.</summary>
 	public Lazy<IDictionary<ModFile, ModFolder[]>> RawDownloads { get; }
 
@@ -443,33 +743,36 @@ class ParsedFileData
 	/*********
 	** Accessors
 	*********/
+	/// <summary>The file ID.</summary>
+	public int FileID { get; }
+	
 	/// <summary>The file category.</summary.
 	public FileCategory FileCategory { get; }
-	
+
 	/// <summary>The file name on Nexus.</summary>
 	public string FileName { get; }
-	
+
 	/// <summary>The file version on Nexus.</summary>
 	public string FileVersion { get; }
-	
+
 	/// <summary>The mod display name based on the manifest.</summary>
 	public string ModDisplayName { get; }
-	
+
 	/// <summary>The mod type.</summary>
 	public ModType ModType { get; }
-	
+
 	/// <summary>The mod parse error, if it could not be parsed.</summary>
 	public ModParseError? ModError { get; }
-	
+
 	/// <summary>The mod ID from the manifest.</summary>
 	public string ModID { get; }
-	
+
 	/// <summary>The mod version from the manifest.</summary>
 	public string ModVersion { get; }
-	
+
 	/// <summary>The raw mod file.</summary>
 	public Lazy<ModFile> RawDownload { get; }
-	
+
 	/// <summary>The raw parsed mod folder.</summary>
 	public Lazy<ModFolder> RawFolder { get; }
 
@@ -485,12 +788,13 @@ class ParsedFileData
 		// set raw data
 		this.RawDownload = new Lazy<ModFile>(() => download);
 		this.RawFolder = new Lazy<ModFolder>(() => folder);
-		
+
 		// set file fields
+		this.FileID = download.FileID;
 		this.FileCategory = download.Category;
 		this.FileName = download.FileName;
 		this.FileVersion = download.FileVersion;
-		
+
 		// set folder fields
 		this.ModDisplayName = folder.DisplayName;
 		this.ModType = folder.Type;
@@ -515,43 +819,6 @@ class ModMetadata
 
 	/// <summary>The mod file metadata from the Nexus API.</summary>
 	public ModFile[] Files { get; set; }
-}
-
-/// <summary>Extract an archive file to the given folder.</summary>
-/// <param name="file">The archive file to extract.</param>
-/// <param name="extractTo">The directory to extract into.</param>
-void ExtractFile(FileInfo file, DirectoryInfo extractTo)
-{
-	try
-	{
-		Task
-			.Run(() =>
-			{
-				using (SevenZipExtractor unpacker = new SevenZipExtractor(file.FullName))
-					unpacker.ExtractArchive(extractTo.FullName);
-			})
-			.Wait(TimeSpan.FromSeconds(60));
-	}
-	catch (AggregateException outerEx)
-	{
-		throw outerEx.InnerException;
-	}
-}
-
-/// <summary>Get a human-readable formatted time span.</summary>
-/// <param name="span">The time span to format.</param>
-private string GetFormattedTime(TimeSpan span)
-{
-	int hours = (int)span.TotalHours;
-	int minutes = (int)span.TotalMinutes - (hours * 60);
-	return $"{hours:00}:{minutes:00}";
-}
-
-/// <summary>Get a human-readable summary for the current rate limits.</summary>
-/// <param name="meta">The current rate limits.</param>
-private string GetRateLimitSummary(IRateLimitManager meta)
-{
-	return $"{meta.DailyRemaining}/{meta.DailyLimit} daily resetting in {this.GetFormattedTime(meta.DailyReset - DateTimeOffset.UtcNow)}, {meta.HourlyRemaining}/{meta.HourlyLimit} hourly resetting in {this.GetFormattedTime(meta.HourlyReset - DateTimeOffset.UtcNow)}";
 }
 
 /// <summary>Handles the logic for deciding which mods to fetch.</summary>
@@ -641,6 +908,11 @@ public class FetchUpdatedStrategy : FetchAllFromStrategy
 		else
 			throw new InvalidOperationException($"The given date ({this.StartFrom}) can't be used with {this.GetType().Name} because it exceeds the maximum update period for the Nexus API.");
 	}
+
+	/// <summary>Construct an instance.</summary>
+	/// <param name="startFrom">The amount of time to fetch, working back from today.</param>
+	public FetchUpdatedStrategy(TimeSpan startFrom)
+		: this(DateTimeOffset.UtcNow.Subtract(startFrom)) { }
 
 	/// <summary>Construct an instance.</summary>
 	/// <param name="startFrom">The period to fetch. The supported values are <c>1d</c>, <c>1w</c>, or <c>1m</c>.</param>

@@ -1,7 +1,7 @@
 {
   "Name": "Animal Patting",
   "Author": "DiddyP",
-  "Version": "1.0.2",
+  "Version": "1.0.3",
   "Description": "Your spouse will pat the animals at the start of the day.",
   "UniqueID": "DiddyP.AnimalPatting",
   "EntryDll": "AnimalPatting.dll",

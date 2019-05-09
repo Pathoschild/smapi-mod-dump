@@ -1,0 +1,10 @@
+{
+  "Name": "Loan Mod",
+  "Author": "Doomnik",
+  "Version": "1.0.1",
+  "Description": "Allows to borrow and repay money.",
+  "UniqueID": "Doomnik.LoanMod",
+  "EntryDll": "LoanMod.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:3882" ]
+}

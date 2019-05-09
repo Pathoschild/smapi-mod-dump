@@ -1,0 +1,10 @@
+﻿{
+  "Name": "starstats client",
+  "Author": "captncraig",
+  "Version": "1.0.0",
+  "Description": "Collect a variety of statistics and save to local files",
+  "UniqueID": "captncraig.starstars.client",
+  "EntryDll": "StarStats.Client.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

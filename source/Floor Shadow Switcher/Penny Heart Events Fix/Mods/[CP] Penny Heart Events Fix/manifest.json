@@ -1,0 +1,13 @@
+{
+   "Name": "Penny Heart Events Fix",
+   "Author": "MouseyPounds",
+   "Version": "1.0.0",
+   "Description": "ContentPatcher mod which lets Penny's 4- and 6-heart events work in Pam's upgraded house",
+   "UniqueID": "MouseyPounds.PennyHeartEventsFix",
+   "MinimumApiVersion": "2.6",
+   "UpdateKeys": ["Nexus:2802"],
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.4.0"
+   }
+}

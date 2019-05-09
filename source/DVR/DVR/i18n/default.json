@@ -1,0 +1,20 @@
+﻿{
+  "fish_or": " or ",
+  "fish_channel": "The Big One",
+  "fish_intro": "Today is a great day for fishing!",
+  "fish_catch": "can be caught",
+  "loc_Beach": "in the Ocean",
+  "loc_Farm": "on your Farm",
+  "loc_UndergroundMine": "deep in the Mines",
+  "loc_Desert": "in the Desert",
+  "loc_Forest": "in Cindersnap Forest",
+  "loc_Town": "in Pelican Town",
+  "loc_Mountain": "in the Mountain Lake",
+  "loc_Woods": "in the Secret Woods",
+  "loc_Sewer": "in the Sewer",
+  "loc_BugLand": "in the Mutant Bug Lair",
+  "loc_WitchSwamp": "in the Witch's Swamp",
+
+  "fish_default_preposition": "in the ",  
+  "fish_from":  "from"
+}

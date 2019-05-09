@@ -1,0 +1,13 @@
+{
+   "Name": "Farmhouse Floor Strip Fix",
+   "Author": "MouseyPounds",
+   "Version": "1.0.0",
+   "Description": "ContentPatcher Mod which changes default floor texture to match spouse room",
+   "UniqueID": "MouseyPounds.FarmhouseFloorStripFix",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": ["Nexus:2660"],
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.4.0"
+   }
+}

@@ -5,9 +5,9 @@ mods:
    Content Patcher Animations
 
 latest commit:
-   commit d1532567ab2083c98af7ea26f713f13a17d9b384
+   commit 9d528b23eeb6e256ac977265a84866f4fcac1363
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Tue Apr 30 14:57:27 2019 -0400
+   Date:   Mon May 6 20:57:53 2019 -0400
    
-       Initial commit
+       Added token support.
    

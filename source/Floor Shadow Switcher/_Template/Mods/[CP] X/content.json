@@ -1,0 +1,16 @@
+{
+	"Format": "1.3",
+	"ConfigSchema": {
+		"Key": {
+			"AllowValues": "",
+			"Default": ""
+		},
+	},
+	"Changes": [
+		{
+			"Action": "",
+			"Target": "",
+			"FromFile": "",
+		},
+	]
+}

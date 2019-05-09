@@ -1,0 +1,13 @@
+url:
+   https://github.com/MaciejMarkuszewski/StardewValleyMod.git
+
+mods:
+   Multiplayer Time
+
+latest commit:
+   commit b1b75ce27fd824215341b17e5e560c13ae900951
+   Author: MaciejMarkuszewski <maciej.markuszewski1998@gmail.com>
+   Date:   Mon May 6 22:46:51 2019 +0200
+   
+       Mod Update commit
+   

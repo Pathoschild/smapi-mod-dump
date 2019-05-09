@@ -1,0 +1,69 @@
+Category: Items
+
+Tags:
+SMAPI
+Works with Stardew 1.3
+New Textures
+
+Overview:
+Natural Paths is a Content Patcher mod which offers eight possible replacements for the craftable paths. Choices include two shades of grass, two shades of dirt, sand, straw, and more; most options include seasonal variations.
+
+Details:
+[b]Description:
+
+[color=#ffff00]Natural Paths[/color][/b] is a Content Patcher mod which offers a variety of replacements for the craftable path items in the game, with an emphasis on "natural" styles. All graphics are modifications of original game assets and most include seasonal variations. There are a variety of Customization options which can be set in the [i]config.json[/i] file; this file is not included with the download and will be automatically created the first time the game is run with the mod loaded.
+
+
+[b]Installation:[/b]
+[list=1]
+[*]Install the latest version of [url=https://smapi.io/]SMAPI[/url].
+[*]Install the latest version of [url=https://www.nexusmods.com/stardewvalley/mods/1915]Content Patcher[/url].
+[*]Unzip the download and place the included [color=#b6d7a8][code][CP] Natural Paths[/code][/color] folder into your [color=#b6d7a8][code]Mods[/code][/color] folder.
+[/list]
+
+
+[b]Configuration:
+[/b]
+[list][*]The standard configuration allows the player to replace as many as four different path items with any of eight different textures. First, the replacement textures themselves are listed:[list][*][i][color=#b4a7d6]None[/color][/i] -- no change; this option lets the player keep the original texture for that item
+[*][i][color=#b4a7d6]LightGrass[/color][/i] -- matches the lighter grass texture on the farm such as the area above the shipping bin
+[*][i][color=#b4a7d6]DarkGrass[/color][/i] -- matches the darker grass textures seen most commonly on the Forest/Foraging Farm layout
+[*][i][color=#b4a7d6]LightDirt[/color][/i] -- matches the common tillable dirt areas of the farm
+[*][i][color=#b4a7d6]DarkDirt[/color][/i] -- matches the darker dirt textures seen on some maps such as the area in front of Robin's house
+[*][i][color=#b4a7d6]Sand[/color][/i] -- matches the sand on the Beach map
+[*][i][color=#b4a7d6]Straw[/color][/i] -- a texture similar to the vanilla Straw Floor but without the wood underneath; it also has seasonal color changes and the straw shows even when the path is 1 tile wide
+[*][i][color=#b4a7d6]Shadow[/color][/i] -- a dark translucent texture which has the feel of a shadow
+[*][i][color=#b4a7d6]Transparent[/color][/i] -- a nearly invisible texture which allows the player to cover the ground to block seed dispersal without significantly changing the look of the area; it was designed to be just dark enough to see but that visibility depends a lot on what's underneath
+[/list]
+
+[*]In the standard version of the mod, only the following four "Path" items can be replaced. Each one can be assigned any of the above textures.[list][*] ﻿[color=#6d9eeb][b]CobblestonePath_Replacement[/b][/color] chooses the replacement for [i]Cobblestone Path[/i]. Default is [i][color=#b4a7d6]None[/color][/i].
+[*] ﻿[color=#6d9eeb][b]CrystalPath_Replacement[/b][/color] chooses the replacement for [i]Crystal Path[/i]. Default is [i][color=#b4a7d6]None[/color][/i].
+[*] ﻿[color=#6d9eeb][b]GravelPath_Replacement[/b][/color] chooses the replacement for [i]Gravel Path[/i]. Default is [i][color=#b4a7d6]DarkDirt[/color][/i].
+[*] ﻿[color=#6d9eeb][b]WoodPath_Replacement[/b][/color] chooses the replacement for [i]Wood Path[/i]. Default is [i][color=#b4a7d6]LightGrass[/color][/i].
+[/list]
+
+[*]The base game also has five craftable "Floor" items. These have a hardcoded shadow that cannot be removed through a simple Content Patch, so they are not included in the main file. However, there is an alternate version of the mod in the "Optional Files" section that supports changing these as well. When using the alternate version, the additional configuration options are:[list][*] ﻿[color=#6d9eeb][b]CrystalFloor_Replacement[/b][/color] chooses the replacement for [i]Crystal Floor[/i]. Default is [i][color=#b4a7d6]None[/color][/i].
+[*] ﻿[color=#6d9eeb][b]StoneFloor_Replacement[/b][/color] chooses the replacement for [i]Stone Floor[/i]. Default is [i][color=#b4a7d6]None[/color][/i].
+[*] ﻿[color=#6d9eeb][b]StrawFloor_Replacement[/b][/color] chooses the replacement for [i]Straw Floor[/i]. Default is [i][color=#b4a7d6]None[/color][/i].
+[*] ﻿[color=#6d9eeb][b]WeatheredFloor_Replacement[/b][/color] chooses the replacement for [i]Weathered Floor[/i]. Default is [i][color=#b4a7d6]None[/color][/i].
+[*] ﻿[color=#6d9eeb][b]WoodFloor_Replacement[/b][/color] chooses the replacement for [i]Wood Floor[/i]. Default is [i][color=#b4a7d6]None[/color][/i].
+[/list]
+
+[*]The [i][color=#b4a7d6]LightGrass[/color][/i] and [i][color=#b4a7d6]DarkGrass[/color][/i] textures for Winter are made to look similar to the grass textures of other seasons. However, the farm layouts use smoother snow & ice textures in these areas. The following configuration options let the player override the rough grass textures with those alternatives.[list][*] ﻿[color=#6d9eeb][b]Snow_Overrides_LightGrass[/b][/color] chooses the smoother snowy texture in Winter when LightGrass is in use.
+Choices are [color=#b4a7d6][i]true[/i][/color] or [i][color=#b4a7d6]false[/color][/i] (default).[*] ﻿[color=#6d9eeb][b]Ice_Overrides_DarkGrass[/b][/color] chooses the smoother icy texture in Winter when DarkGrass is in use.
+Choices are [color=#b4a7d6][i]true[/i][/color] or [i][color=#b4a7d6]false[/color][/i] (default).[/list]
+[*]Finally, there are some options which can be set for how the modded items are crafted. [list]
+[*][color=#6d9eeb][b]Crafting_Material[/b][/color] lets the player choose which material is necessary to craft all modded paths.
+Choices are [i][color=#b4a7d6]clay[/color][/i], [i][color=#b4a7d6]fiber[/color][/i] (default), [i][color=#b4a7d6]hardwood[/color][/i], [i][color=#b4a7d6]sap[/color][/i], [i][color=#b4a7d6]stone[/color][/i], [color=#b4a7d6][i]wood[/i] [/color], and [i][color=#b4a7d6]NoChange[/color][/i].The [i][color=#b4a7d6]NoChange[/color][/i] option keeps the crafting recipe unchanged from whatever original item was replaced.[*][b][color=#6d9eeb]Crafting_Amount[/color][/b] lets the player choose how many path items are crafted from each single material.
+Choices are [color=#b4a7d6][i]1[/i] [/color](default), [i][color=#b4a7d6]5[/color][/i], or [i][color=#b4a7d6]10[/color][/i].[/list]
+[/list]
+
+
+[b]Additional Notes:[/b][list]
+[*]The path item will be renamed to their chosen replacement (e.g. "Light Grass Path"). [i][color=#ea9999]The name change will only apply to items that are newly crafted or uprooted after the mod was installed; path items currently in storage will still retain their old name[/color].[/i]
+[*]The crafting recipe [i][color=#ea9999]will not change names[/color][/i] and will still refer to the item that was replaced. This is done to prevent possible issues with acquiring recipes and awarding of the [i]Craft Master[/i]  achievement.
+[*]Footstep & placement sounds are hardcoded based on the original path type and [i][color=#ea9999]cannot be changed[/color][/i] through a Content Patch.
+[/list]
+
+
+[b]Compatibility:[/b]
+[b][color=#ffff00]Natural Paths[/color][/b] requires [url=https://www.nexusmods.com/stardewvalley/mods/1915]Content Patcher[/url] version 1.3 or higher (which means it also requires [url=https://smapi.io/]SMAPI[/url] version 2.5.4 or higher). It should work with both version 1.2 and 1.3 of Stardew Valley, but it has only been tested on version 1.3

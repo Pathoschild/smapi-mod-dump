@@ -1,11 +1,13 @@
 {
 	"Name": "Color Valley",
 	"Author": "Jessebot",
-	"Version": "1.0",
+	"Version": "1.0.1",
 	"Description": "Replaces most things with just the same colour",
+	"MinimumApiVersion": "2.11.0",
 	"UniqueID": "Jessebot.ColorValley",
 	"UpdateKeys": [ "Nexus:3854"],
 	"ContentPackFor": {
-		"UniqueID": "Pathoschild.ContentPatcher"
+		"UniqueID": "Pathoschild.ContentPatcher",
+		"MinimumVersion": "1.7.0"
 	}
 }

@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Giant Seeds",
+  "Author": "captncraig",
+  "Version": "1.0.0",
+  "Description": "Seeds with better chance for giant crops",
+  "UniqueID": "captncraig.giantseeds",
+  "EntryDll": "GiantSeeds.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets"
+    }
+  ]
+}

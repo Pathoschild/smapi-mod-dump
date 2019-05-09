@@ -1,0 +1,13 @@
+url:
+   https://github.com/MaciejMarkuszewski/StardewValleyAutoToolSelect.git
+
+mods:
+   Auto Tool Select
+
+latest commit:
+   commit dea48f162a687044bea5f69a51a5288f3ae4a865
+   Author: MaciejMarkuszewski <maciej.markuszewski1998@gmail.com>
+   Date:   Thu May 9 09:10:40 2019 +0200
+   
+       Mod 1.1 update commit
+   

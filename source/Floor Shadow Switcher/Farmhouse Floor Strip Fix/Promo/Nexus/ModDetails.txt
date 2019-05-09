@@ -1,0 +1,37 @@
+Category: Miscellaneous
+
+Tags:
+SMAPI
+Incompatible with Stardew 1.2
+Works with Stardew 1.3
+
+Overview:
+Farmhouse Floor Strip Fix is a Content Patcher Mod which changes the default flooring based on the player's spouse so that the small strip of floor between the bedroom and spouse room in the largest farmhouse blends in better.
+
+Details:
+[b]Description:
+
+[color=#ffff00]Farmhouse Floor Strip Fix[/color][/b] is a Content Patcher mod which changes the default flooring based on the player's spouse so that the small strip of floor between the bedroom and spouse room in the largest farmhouse blends in better. Note that if you use the default flooring in another part of the house (or in sheds) those will also change to match the floor in the spouse room. There are also two optional changes which can be made to Shane's spouse room to remove the footprints and/or replace the beer cans with books & plants. These are disabled by default but can be enabled in the [i]config.json[/i] file; this file is not included with the download and will be automatically created the first time the game is run with the mod loaded.
+
+
+[b]Configuration:
+[/b]
+[list]
+[*][color=#6d9eeb][b]ShaneRemoveFootprints[/b][/color] lets you choose whether or not to remove the footprints from the floor of his spouse room. Choices are [color=#b4a7d6][i]true[/i]  [/color]or [i][color=#b4a7d6]false [/color][/i](default).
+[*][color=#6d9eeb][b]ShaneReplaceBeerCans[/b][/color] lets you choose whether or not to replace the beer can objects on the floor of his spouse room with books and small plants. Choices are [color=#b4a7d6][i]true[/i]  [/color]or [i][color=#b4a7d6]false [/color][/i](default).
+[/list]
+
+[b]Additional Notes:
+[/b]
+[list]
+[*]As stated in the description, this [i][color=#ea9999]will change the default flooring wherever it is used[/color][/i]  (including sheds) to match the floor of the spouse room.
+[*]When using SMAPI 2.6, the texture changes do not take effect immediately on load and require the player to leave and reenter the farmhouse. This [i][color=#d5a6bd][i][color=#ea9999]was fixed  in SMAPI 2.7[/color][/i][/color][/i] .
+[*]When used in multiplayer, [color=#ea9999][i]the default floor texture will match that of the room for the local player's spouse[/i][/color] (if applicable). This means other player's houses and cabins may still appear to have strips of mismatched flooring.
+[*][b][/b]If the [color=#6d9eeb][b]ShaneReplaceBeerCans[/b][/color] option is enabled and the player completes the Community Upgrade for Pam, [i][color=#ea9999]the beer cans in her bedroom will also change to books and plants[/color][/i].
+[/list][b]
+
+Compatibility:[/b]
+
+[b][color=#ffff00][b][color=#ffff00]Farmhouse Floor Strip Fix[/color][/b][/color][/b] requires [url=https://www.nexusmods.com/stardewvalley/mods/1915]Content Patcher[/url] version 1.4 or higher (which means it also requires [url=https://smapi.io/]SMAPI[/url]) and will only work with version 1.3 (or higher) of Stardew Valley.
+
+This mod may have conflicts with other mods which change the floor textures, spouse room or farmhouse map.

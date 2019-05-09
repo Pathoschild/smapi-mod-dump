@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Come Get Presents",
+  "Author": "captncraig",
+  "Version": "1.0.0",
+  "Description": "All npcs will be at bus stop in morning.",
+  "UniqueID": "captncraig.comegetpresents",
+  "EntryDll": "ComeGetPresents.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}
