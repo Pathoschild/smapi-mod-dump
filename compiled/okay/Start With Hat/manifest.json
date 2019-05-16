@@ -1,7 +1,7 @@
 ﻿{
    "Name": "Start With Hat",
    "Author": "treyh0",
-   "Version": "1.1",
+   "Version": "1.2",
    "Description": "Start the game with a hat (defaults to Eye Patch).  Refer to https://stardewvalleywiki.com/Modding:Hat_data to set a different hat in config.json.",
    "UniqueID": "treyh0.StartWithHat",
    "EntryDll": "StartWithHat.dll",

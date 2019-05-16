@@ -96,6 +96,11 @@ namespace DeepWoodsMod.API.Impl
             DeepWoodsManager.RemoveExitLocation(deepWoodsLocation as DeepWoods, tile);
         }
 
+        public void WarpPlayerToDeepWoodsLevel(int level)
+        {
+            DeepWoodsManager.WarpFarmerIntoDeepWoods(level);
+        }
+
         public void CallOnCreate(DeepWoods deepWoods)
         {
             if (OnCreate == null)

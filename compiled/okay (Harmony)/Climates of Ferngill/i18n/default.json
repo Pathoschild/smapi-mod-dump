@@ -18,9 +18,12 @@
   //HUD Messages
   "hud-text.desc_stormtotem": "You hear a roll of thunder...",
   "hud-text.desc_frost_killed": "{{deadCrops}} crops died in the night due to the cold..!",
-  "hud-text.desc_heatwave_dry": "The extreme heat has caused some of your crops to become dry....!",
-  "hud-text.desc_heatwave_kill": "The extreme heat has caused some of your crops to dry out. If you don't water them, they'll die!",
+  "hud-text.desc_heatwave_dry": "The extreme heat has caused {{crops}} of your crops to become dry....!",
+  "hud-text.desc_heatwave_kill": "The extreme heat has caused {{crops}} of your crops to dry out. If you don't water them, they'll die!",
   "hud-text.desc_heatwave_cropdeath": "Some of the crops have died due to lack of water!",
+  "hud-text.desc_sandstorm_dry": "The sand is choking {{crops}} of your crops....!",
+  "hud-text.desc_sandstorm_kill": "The sand is choking {{crops}} of your crops! If you don't rinse them off, they'll die!",
+  "hud-text.desc_sandstorm_cropdeath": "Some of the crops have died due to being buried under sand!",
 
   //Ferngill Locations
   "fern-loc.0": "Castle Village",
@@ -35,6 +38,15 @@
   "fern-loc.9": "Fern Island",
   "fern-loc.10": "Tanker Grove",
   "fern-loc.11": "Pathos Isle",
+
+  //Temp Strings
+  //"temp-bothScales": "{{temp}} Kraggs ({tempFaren} Farenheit)",
+  //"temp-bothScalesCelsius": "{{temp}} Celsius ({{tempFaren}} Farenheit)",
+  "temp-bothScalesCelsius": "{{temp}} C ({{tempFaren}} F)",
+  "temp-bothScales": "{{temp}} Kr ({{tempFaren}} F)",
+  "temp-farenOnly": "{{temp}} F",
+  "temp-celsiusSet": "{{temp}} C",
+  "temp-normal": "{{temp}} Kr",
 
   //Weather - Generic Strings
   "weat-loc.0": ".. concludes the weather in {{location}}.#Now for Pelican Town, expect {{descWeather}}, with a high of {{todayHigh}} and low {{todayLow}}. {{condWarning}}{{eveningFog}} #Tomorrow, expect {{tomorrowWeather}} with a high of {{tomorrowHigh}} and low of {{tomorrowLow}}",
@@ -84,7 +96,7 @@
   "weat-fesTomorrow.BM.0": "Today, PANIC! PANIC! THE BLOOD MOON HAS DESCENDED!!!!#I mean, expect {{descWeather}} with high:{{todayHigh}} and low:{{todayLow}}#Tommorow, for the {{festivalTomorrow}}, expect {{tomorrowWeather}}",
 
   //Weather - Wedding Today
-  "weat-wedToday.0": "Today, in Stardew Valley, for the wedding, expect {{weather}}.#Tomorrow, expect {{tomorrowWeather}} with a high of {{tomorrowHigh}} and low {{tomorrowLow}}",
+  "weat-wedToday.0": "Today, in Stardew Valley, for the wedding, expect {{descWeather}}.#Tomorrow, expect {{tomorrowWeather}} with a high of {{tomorrowHigh}} and low {{tomorrowLow}}",
 
   //And Tomorrow
   "weat-wedTomorrow.0": "Today, expect {{descWeather}} with high:{{todayHigh}} and low:{{todayLow}}#Tommorow, for the wedding, expect {{tomorrowWeather}}",
@@ -106,6 +118,10 @@
   "weather-condition.thunderfrenzy.0": "RWS: SEVERE THUNDERSTORM WARNING. Seek shelter immediately.",
   "weather-condition.thunderfrenzy.1": "RWS: SEVERE THUNDERSTORM WARNING. Supercells are moving through the area. ",
   "weather-condition.thunderfrenzy.2": "RWS: SEVERE THUNDERSTORM WARNING. Be advised of the possiblity of downdrafts along with an immense number of thunder strikes. ",
+
+  "weather-condition.sandstorm.0": "RWS: Sandstorm warning due to high winds blowing from Calico Desert. ",
+  "weather-condition.sandstorm.1": "RWS: Due to the lack of recent moisture, a sandstorm is blowing through the valley",
+  "weather-condition.sandstorm.2": "RWS: Take care when moving about outside as a sandstorm blows through the valley",
 
   //this is the night string
   "weather-condition.frost.night": "Forecasters are already seeing the temperatures dip dangerously low, and you should expect frosts outside tonight. ",
@@ -149,6 +165,14 @@
   "weat-spring.thundersnow.1": "a rare and out of season thunder snow will be in the valley",
   "weat-spring.thundersnow.2": "a rare and out of season thunder snow will be in the valley",
 
+  "weat-spring.sandstorm.0": "a sandstorm blowing through the valley",
+  "weat-spring.sandstorm.1": "an unusually early sandstorm blowing through the valley from the desert",
+  "weat-spring.sandstorm.2": "due to lack of moisture, a sandstorm will be blowing through the valley",
+
+  "weat-spring.overcast.0": "the sky will be overcast with no preciptation expected",
+  "weat-spring.overcast.1": "a front will be moving through bringing through no preciptation and overcast skies",
+  "weat-spring.sandstorm.2": "expect gloomy days outside - forecasted to be overcast all day",
+
   //Weather Descriptions - Summer
   "weat-summer.sunny_daytime.0": "a hot sunny day",
   "weat-summer.sunny_daytime.1": "a good day to enjoy the sun",
@@ -178,13 +202,21 @@
   "weat-summer.drythunder.1": "due to the lack of moisture, the lightning today will not include rain. Areas are expected to watch for wildfires.",
   "weat-summer.drythunder.2": "expect lightning and thunder but no rain",
   
-      "weat-summer.drylightning.0": "there will be thunder and lightning today, but no rain",
+  "weat-summer.drylightning.0": "there will be thunder and lightning today, but no rain",
   "weat-summer.drylightning.1": "due to the lack of moisture, the lightning today will not include rain. Areas are expected to watch for wildfires.",
   "weat-summer.drylightning.2": "expect lightning and thunder but no rain",
 
   "weat-summer.thundersnow.0": "a rare and out of season thunder snow will be in the valley",
   "weat-summer.thundersnow.1": "a rare and out of season thunder snow will be in the valley",
   "weat-summer.thundersnow.2": "a rare and out of season thunder snow will be in the valley",
+    
+  "weat-summer.sandstorm.0": "a sandstorm blowing through the valley",
+  "weat-summer.sandstorm.1": "a sandstorm blowing through the valley from the desert due to the lack of rain",
+  "weat-summer.sandstorm.2": "a cropchoking sandstorm blowing through the valley",
+
+  "weat-summer.overcast.0": "the sky will be overcast with no preciptation expected",
+  "weat-summer.overcast.1": "a front will be moving through bringing through no preciptation and overcast skies",
+  "weat-summer.sandstorm.2": "expect gloomy days outside - forecasted to be overcast all day",
 
   //Weather Descriptions - Fall
   "weat-fall.sunny_daytime.0": "a cool sunny day",
@@ -223,6 +255,14 @@
   "weat-fall.thundersnow.1": "a rare thunder snow will be in the valley",
   "weat-fall.thundersnow.2": "an almost unheard of thunder snow will be in the valley",
 
+  "weat-fall.sandstorm.0": "a sandstorm blowing through the valley",
+  "weat-fall.sandstorm.1": "an unusually late sandstorm blowing through the valley from the desert",
+  "weat-fall.sandstorm.2": "due to lack of moisture, a sandstorm will be blowing through the valley",
+
+  "weat-fall.overcast.0": "the sky will be overcast with no preciptation expected",
+  "weat-fall.overcast.1": "a front will be moving through bringing through no preciptation and overcast skies",
+  "weat-fall.sandstorm.2": "expect gloomy days outside - forecasted to be overcast all day",
+
   //Weather Descriptions - Winter
   "weat-winter.sunny_daytime.0": "a cool sunny day",
   "weat-winter.sunny_daytime.1": "a good day to enjoy the sun on a chilly winter morning",
@@ -260,6 +300,14 @@
   "weat-winter.thundersnow.1": "a rare thunder snow will be in the valley",
   "weat-winter.thundersnow.2": "expect thunder in the snow",
 
+  "weat-winter.sandstorm.0": "ERROR: Sandstorm in Winter",
+  "weat-winter.sandstorm.1": "ERROR: Sandstorm in Winter",
+  "weat-winter.sandstorm.2": "ERROR: Sandstorm in Winter",
+
+  "weat-winter.overcast.0": "the sky will be overcast with no preciptation expected",
+  "weat-winter.overcast.1": "a front will be moving through bringing through no preciptation and overcast skies",
+  "weat-winter.sandstorm.2": "expect gloomy days outside - forecasted to be overcast all day",
+
   //Lunar Messages
   "moon-text.phase-full": "Full Moon",
   "moon-text.phase-firstqrt": "First Quarter",
@@ -283,6 +331,7 @@
   "weather-menu.openingS4D28": "This is Kylie from KZAM Radio, broadcasting on 92.5 out of Point Drake. It is the end of the year, the {{descDay}}, and here is the weather report for Stardew Valley:",
   "weather-menu.condition.frost": "RWS Warning: Frost tonight.",
   "weather-menu.condition.heatwave": "RWS Warning: Heatwave expected through the day.",
+  "weather-menu.condition.sandstorm": "RWS Warning: Sandstorms moving through the area. Stay inside and wear a mask outside if you must leave the house.",
   "weather-menu.condition.whiteOut": "RWS Warning: Extreme blizzards are moving through the valley:",
   "weather-menu.condition.thunderFrenzy": "RWS Warning: Mesocyclones are moving through the valley:",
   "weather-menu.condition.bloodmoon": "Beware, for the blood moon rises.....",
@@ -322,6 +371,8 @@
   "weather_thundersnow": "Thundersnow",
   "weather_fog": "Fog with {{condition}} expected",
   "weather_fog_basic": "Fog",
+  "weather_sandstorm": "Sandstorm",
+  "weather_overcast": "Overcast",
   "weather_unset": "Unset",
 
   //ordinal strings

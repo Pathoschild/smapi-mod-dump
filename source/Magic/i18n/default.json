@@ -10,6 +10,8 @@
   "event.wizard.9": "(These controls can be adjusted in Magic's config file.)",
   "event.wizard.abovehead": "MAGIC",
 
+  "tv.analyzehints.name": "Magical Analytics",
+  "tv.analyzehints.notmagical": "*static*",
   "tv.analyzehints.1": "Looking to use magic to work around the farm? Try analyzing your tools.",
   "tv.analyzehints.2": "Need a quick escape? I wonder if some boots will give you some inspiration.",
   "tv.analyzehints.3": "Sunlight is pretty nice, but not always available. I wonder if artificial lights can be recreated?",
@@ -24,6 +26,7 @@
   "tv.analyzehints.12": "I saw someone cast a spell to regain mana!? It looked like it hurt. Rumor has it they learned this technique while fishing for Lava Eels.",
 
   "spell.learn": "You learned a spell: {{spellName}}",
+  "spell.learn.ancient": "You learned an ancient spell: {{spellName}}",
 
   "school.arcane.name": "arcane",
   "school.toil.name": "toil",
@@ -55,7 +58,7 @@
   "spell.nature:lantern.name": "Lantern",
   "spell.nature:lantern.desc": "Summon a light to follow you.\nHigher levels create more light.",
   "spell.nature:tendrils.name": "Tendrils",
-  "spell.nature:tendrils.desc": "Summon tendrils to stop a foe in their path.\nHigher levels give them less room to move.",
+  "spell.nature:tendrils.desc": "Summon tendrils to stop a foe in their path.",
   "spell.nature:shockwave.name": "Shockwave",
   "spell.nature:shockwave.desc": "Jump into the air and slam down, sending out a shockwave.\n Higher levels are larger and more fierce.",
   "spell.nature:photosynthesis.name": "Photosynthesis",

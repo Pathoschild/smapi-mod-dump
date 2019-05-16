@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit d1ae92b1f18b5204df8bdbb596e8f93ee8beba40
+   commit a111a87e8988a9476acf7ff110b02440212d809d
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed May 8 19:11:09 2019 -0400
+   Date:   Mon May 13 00:23:50 2019 -0400
    
-       migrate NoClip Mode to new project format
+       fix null entries no longer handled correctly in CP 1.7
    

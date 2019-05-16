@@ -213,6 +213,8 @@ namespace DeepWoodsMod
             if (!Game1.IsMasterGame)
                 return;
 
+            ModEntry.Log("DeepWoodsManager.Add()", StardewModdingAPI.LogLevel.Trace);
+
             CheckValid();
         }
 

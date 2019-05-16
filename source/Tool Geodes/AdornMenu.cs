@@ -139,7 +139,7 @@ namespace ToolGeodes
             else
             {
                 Log.debug("Sending tool geode data to host");
-                Mod.instance.Helper.Multiplayer.SendMessage(Mod.Data, Mod.MSG_TOOLGEODEDATA);
+                Mod.instance.Helper.Multiplayer.SendMessage(Mod.Data, Mod.MSG_TOOLGEODEDATA, playerIDs: new[] { Game1.MasterPlayer.UniqueMultiplayerID } );
             }
         }
 

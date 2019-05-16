@@ -5,9 +5,9 @@ mods:
    Magic
 
 latest commit:
-   commit 6b5af09e3e9141f795363815bb2debd707bc0823
+   commit 348da7d7b9f4d7150511c7a9aefcb22893fcb7b1
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Tue Apr 30 14:49:14 2019 -0400
+   Date:   Thu May 9 23:23:00 2019 -0400
    
-       Added enchant/disenchant spells. Level 1 spells are unforgetable.
+       Removed reference to higher levels of tendrils. (Also in 0.2.0)
    

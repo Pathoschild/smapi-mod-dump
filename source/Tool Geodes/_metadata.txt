@@ -5,9 +5,9 @@ mods:
    Tool Geodes
 
 latest commit:
-   commit 10f6357ade19983eab8f224376191e27b98b0320
+   commit d1de94122a12b25be8f863f7938b8122021434a6
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:31:00 2019 -0500
+   Date:   Thu May 9 22:09:49 2019 -0400
    
-       Update version
+       Version 1.1.5
    

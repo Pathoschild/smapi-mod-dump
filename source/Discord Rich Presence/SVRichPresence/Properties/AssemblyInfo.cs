@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Stardew Valley Rich Presence")]
-[assembly: AssemblyCopyright("Copyright © Fayne Aldan 2018")]
+[assembly: AssemblyCopyright("Copyright © Fayne Aldan 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("09756636-fa49-4706-8951-4aeb7ccca411")]
 
-[assembly: AssemblyVersion("2.2.2.0")]
-[assembly: AssemblyFileVersion("2.2.2.0")]
+[assembly: AssemblyVersion("2.3.0.0")]
+[assembly: AssemblyFileVersion("2.3.0.0")]
 [assembly: NeutralResourcesLanguage("en-US")]
 

@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using PyTK.CustomTV;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DVR
 {
-    public class MyDialogue : DialogueBox {
+    public class MyDialogue : DialogueBox
+    {
         public MyDialogue(string dialogue, List<Response> responses, int width = 1200) : base(dialogue, responses, width) { }
     }
 
@@ -18,11 +20,44 @@ namespace DVR
     {
         public override void Entry(IModHelper helper)
         {
-            
-            helper.Events.Display.MenuChanged += MenuChanged;
             helper.Events.GameLoop.DayStarted += DayStarted;
+            CustomTVMod.addChannel("fish", Helper.Translation.Get("fish_channel"), showFishChannel);
+            CustomTVMod.changeAction("rerun", showRerun);
         }
 
+        private void showRerun(TV tv, TemporaryAnimatedSprite tas, Farmer f, string s)
+        {
+            var screenInfo = Helper.Reflection.GetField<TemporaryAnimatedSprite>(tv, "screen");
+            var strs = getWeeklyRecipe();
+            screenInfo.SetValue(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(602, 361, 42, 28), 150f, 2, 999999, tv.getScreenPosition(), false, false, (float)(tv.boundingBox.Bottom - 1) / 10000f + 1E-05f, 0f, Color.White, tv.getScreenSizeModifier(), 0f, 0f, 0f, false));
+            Game1.drawObjectDialogue(Game1.parseText(Game1.content.LoadString("Strings\\StringsFromCSFiles:TV.cs.13127")));
+            Game1.afterDialogues = new Game1.afterFadeFunction(() =>
+            {
+                Game1.multipleDialogues(strs);
+                Game1.afterDialogues = new Game1.afterFadeFunction(() => tv.turnOffTV());
+            });
+        }
+
+        private void showFishChannel(TV tv, TemporaryAnimatedSprite tas, Farmer frm, string s)
+        {
+            var screenInfo = Helper.Reflection.GetField<TemporaryAnimatedSprite>(tv, "screen");
+            var fish = fishForToday[timesViewedFish];
+            timesViewedFish = (timesViewedFish + 1) % fishForToday.Count;
+            var pos = tv.getScreenPosition();
+            var scale = tv.getScreenSizeModifier() + 1;
+            pos.X += 7 * scale;
+            pos.Y += (float)(scale * 1.4);
+
+            screenInfo.SetValue(new TemporaryAnimatedSprite(Game1.objectSpriteSheetName, GameLocation.getSourceRectForObject(fish.ID), 150f, 1, 999999, pos, false, false, (float)(tv.boundingBox.Bottom - 1) / 10000f + 1E-05f, 0f, Color.White, scale, 0f, 0f, 0f, false));
+
+            Game1.drawObjectDialogue(Game1.parseText(Helper.Translation.Get("fish_intro")));
+            Game1.afterDialogues = new Game1.afterFadeFunction(() =>
+            {
+                Game1.multipleDialogues(fish.GetTvText(Helper.Translation).ToArray());
+                Game1.afterDialogues = new Game1.afterFadeFunction(() => tv.turnOffTV());
+            });
+
+        }
 
         private int todaysRecipe = 0;
         private IList<Fish> fishForToday = null;
@@ -35,64 +70,6 @@ namespace DVR
             fishForToday = Fishies.GetFishForToday();
         }
 
-
-        private void MenuChanged(object sender, MenuChangedEventArgs e)
-        {
-            if (!Game1.hasLoadedGame) return;
-            var loc = Game1.currentLocation;
-            if (loc == null || loc.Name != "FarmHouse") return;
-            var dia = e.NewMenu as DialogueBox;
-            if (dia == null || dia is MyDialogue) return;
-
-            var tv = loc.afterQuestion?.Target as TV;
-            var texts = Helper.Reflection.GetField<List<string>>(dia, "dialogues").GetValue();
-            if (tv == null || texts?.Count != 1 || texts[0] != Game1.content.LoadString("Strings\\StringsFromCSFiles:TV.cs.13120")) return;
-            var responses = Helper.Reflection.GetField<List<Response>>(dia, "responses").GetValue();
-
-            var t = Helper.Translation;
-
-            responses.Insert(responses.Count - 2, new Response("fish", t.Get("fish_channel")));
-            Game1.activeClickableMenu = new MyDialogue(texts[0], responses);
-
-            loc.afterQuestion = new GameLocation.afterQuestionBehavior((f, s) =>
-            {
-                var screenInfo = Helper.Reflection.GetField<TemporaryAnimatedSprite>(tv, "screen");
-                var day = Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth);
-                if (s == "fish")
-                {
-                    var fish = fishForToday[timesViewedFish];
-                    timesViewedFish = (timesViewedFish + 1) % fishForToday.Count;
-                    var pos = tv.getScreenPosition();
-                    var scale = tv.getScreenSizeModifier() + 1;
-                    pos.X += 7 * scale;
-                    pos.Y += (float)(scale * 1.4);
-                   
-                    screenInfo.SetValue(new TemporaryAnimatedSprite(Game1.objectSpriteSheetName, GameLocation.getSourceRectForObject(fish.ID), 150f, 1, 999999, pos, false, false, (float)(tv.boundingBox.Bottom - 1) / 10000f + 1E-05f, 0f, Color.White, scale, 0f, 0f, 0f, false));
-                    
-                    Game1.drawObjectDialogue(Game1.parseText(t.Get("fish_intro")));
-                    Game1.afterDialogues = new Game1.afterFadeFunction(() =>
-                    {
-                        Game1.multipleDialogues(fish.GetTvText(t).ToArray());
-                        Game1.afterDialogues = new Game1.afterFadeFunction(() => tv.turnOffTV());
-                    });
-                }
-                else if (day == "Wed" && s == "The")
-                {
-                    var strs = getWeeklyRecipe();
-                    screenInfo.SetValue(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(602, 361, 42, 28), 150f, 2, 999999, tv.getScreenPosition(), false, false, (float)(tv.boundingBox.Bottom - 1) / 10000f + 1E-05f, 0f, Color.White, tv.getScreenSizeModifier(), 0f, 0f, 0f, false));
-                    Game1.drawObjectDialogue(Game1.parseText(Game1.content.LoadString("Strings\\StringsFromCSFiles:TV.cs.13127")));
-                    Game1.afterDialogues = new Game1.afterFadeFunction(()=>
-                    {
-                        Game1.multipleDialogues(strs);
-                        Game1.afterDialogues = new Game1.afterFadeFunction(()=>tv.turnOffTV());
-                    });
-                }
-                else
-                {
-                    tv.selectChannel(f, s);
-                }
-            });
-        }
 
         // straight from decompilation with a few modifications, in commented block
         protected virtual string[] getWeeklyRecipe()

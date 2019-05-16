@@ -5,12 +5,12 @@ mods:
    Tree Shaker
 
 latest commit:
-   commit 42027b2250bbec5506a47744d791744d419f1785
-   Merge: 39adcd2 80f7020
+   commit 1ce5f9a86603382d17fa3d14a8f46972f4f54c73
+   Merge: 42027b2 a926d5b
    Author: TyoAtrosa <TyoAtrosa@gmail.com>
-   Date:   Sun May 20 13:29:56 2018 -0500
+   Date:   Sun May 12 19:19:25 2019 -0500
    
-       Merge pull request #1 from TyoAtrosa/add-license-1
+       Merge pull request #2 from Mizzion/master
        
-       Create LICENSE
+       Updated to work with SMAPI 3.0 when released
    

@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/CombatLevelDamageScaler.git
+
+mods:
+   Combat Level Damage Scalar
+
+latest commit:
+   commit 3f188ea367720d4199d91a33030398df1ea2281a
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Fri May 10 10:50:31 2019 -0400
+   
+       Initial commit
+   

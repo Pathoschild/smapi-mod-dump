@@ -1,0 +1,13 @@
+url:
+   https://github.com/rei2hu/stardewvalley-esp.git
+
+mods:
+   Stardew Valley ESP
+
+latest commit:
+   commit 3f4a248af7ae6d4b2f41f58ad5f468c16b3dde6f
+   Author: rei2hu <rei2hu@users.noreply.github.com>
+   Date:   Wed May 15 15:32:27 2019 -0500
+   
+       Update README.md
+   

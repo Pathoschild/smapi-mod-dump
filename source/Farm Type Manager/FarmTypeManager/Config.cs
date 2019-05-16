@@ -16,11 +16,13 @@ namespace FarmTypeManager
         {
             public bool EnableWhereAmICommand { get; set; }
             public bool EnableContentPacks { get; set; } = true; //added in version 1.4; default used here to automatically fill in values with SMAPI's json interface
+            public bool EnableContentPackFileChanges { get; set; } = true; //added in version 1.4.2
 
             public ModConfig()
             {
                 EnableWhereAmICommand = true; //enable the "whereami" command in the SMAPI console
                 EnableContentPacks = true; //enable any content packs for this mod
+                EnableContentPackFileChanges = true; //allow content packs to manipulate files, e.g. reset the main data folder
             }
         }
 
@@ -84,16 +86,32 @@ namespace FarmTypeManager
 
             public Utility.Weather WeatherForYesterday { get; set; } = Utility.Weather.Sunny;
             public Dictionary<string, int> LNOSCounter { get; set; } = new Dictionary<string, int>(); //added in version 1.4
+            public bool ExistingObjectsFound { get; set; } = false; //added in version 1.4.1
+            public Dictionary<string, string[]> ExistingObjectLocations { get; set; } = new Dictionary<string, string[]>(); //added in version 1.4.1
 
             public InternalSaveData()
             {
 
             }
 
-            public InternalSaveData(Utility.Weather wyesterday, Dictionary<string, int> counter)
+            public InternalSaveData(Utility.Weather wyesterday, Dictionary<string, int> counter, Dictionary<string, string[]> locations)
             {
                 WeatherForYesterday = wyesterday; //an enum (int) value corresponding to yesterday's weather
                 LNOSCounter = counter; //dictionary for LimitedNumberOfSpawns tracking; designed to use SpawnArea.UniqueAreaID as a key, and increment the value each day items spawn in an area
+                ExistingObjectsFound = false; //indicates whether FindExistingObjectLocations has already been performed
+                ExistingObjectLocations = locations; //dictionary of IncludeArea coordinates, filled by FindExistingObjectLocations; designed to use SpawnArea.UniqueAreaID as a key
+            }
+        }
+
+        /// <summary>A class containing and save data relating specifically to a content pack.</summary>
+        private class ContentPackSaveData
+        {
+            //class added in version 1.4.2; defaults used here to automatically fill in values with SMAPI's json interface
+            public bool MainDataFolderReset { get; set; } = false;
+
+            public ContentPackSaveData()
+            {
+
             }
         }
 
@@ -267,6 +285,8 @@ namespace FarmTypeManager
             public string[] FarmTypes { get; set; } = new string[0]; //a list of farm types on which the config may be used
             public string[] FarmerNames { get; set; } = new string[0]; //a list of farmer names; if the current farmer matches, the config file may be used
             public string[] SaveFileNames { get; set; } = new string[0]; //a list of save file (technically folder) names; if they match the current farm, the config file may be used
+            //field below added in version 1.5
+            public bool ResetMainDataFolder { get; set; } = false; //when true, the "FarmTypeManager/data" folder should be archived; used to remove obsolete mod settings
 
             public FileConditions()
             {

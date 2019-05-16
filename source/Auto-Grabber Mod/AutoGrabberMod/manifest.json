@@ -1,10 +1,10 @@
 ﻿{
-   "Name": "AutoGrabberMod",
-   "Author": "Jotser",
-   "Version": "1.0.13",
-   "Description": "Adds additional functionality to the Auto-Grabbers",
-   "UniqueID": "Jotser.AutoGrabberMod",
-   "EntryDll": "AutoGrabberMod.dll",
-   "MinimumApiVersion": "2.8.1",
-   "UpdateKeys": ["Nexus:2783"]
+  "Name": "AutoGrabberMod",
+  "Author": "Jotser",
+  "Version": "1.0.13",
+  "Description": "Adds additional functionality to the Auto-Grabbers",
+  "UniqueID": "Jotser.AutoGrabberMod",
+  "EntryDll": "AutoGrabberMod.dll",
+  "MinimumApiVersion": "2.10.2",
+  "UpdateKeys": [ "Nexus:2783" ]
 }

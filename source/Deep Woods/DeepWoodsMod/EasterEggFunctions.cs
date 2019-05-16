@@ -19,8 +19,14 @@ namespace DeepWoodsMod
             Restore
         }
 
+        private static HashSet<GameLocation> processedLocations = new HashSet<GameLocation>();
+        private static HashSet<Item> processedItems = new HashSet<Item>();
+
         private static void ProcessItemList(IList<Item> items, ProcessMethod method)
         {
+            if (items == null)
+                return;
+
             for (int index = items.Count - 1; index >= 0; --index)
             {
                 items[index] = ProcessSingleItem(items[index], method);
@@ -29,6 +35,16 @@ namespace DeepWoodsMod
 
         private static Item ProcessSingleItem(Item item, ProcessMethod method)
         {
+            if (item == null)
+                return item;
+
+            if (processedItems.Contains(item))
+            {
+                ModEntry.Log("EasterEggFunctions.ProcessSingleItem(" + item.Name + ", " + method + "): Already processed this item (infinite recursion?), aborting!", StardewModdingAPI.LogLevel.Warn);
+                return item;
+            }
+            processedItems.Add(item);
+
             if (item is Chest chest)
             {
                 ProcessItemList(chest.items, method);
@@ -58,6 +74,15 @@ namespace DeepWoodsMod
         {
             if (location == null)
                 return;
+
+            ModEntry.Log("EasterEggFunctions.ProcessLocation(" + location.Name + ", " + method + ")", StardewModdingAPI.LogLevel.Trace);
+
+            if (processedLocations.Contains(location))
+            {
+                ModEntry.Log("EasterEggFunctions.ProcessLocation(" + location.Name + ", " + method + "): Already processed this location (infinite recursion?), aborting!", StardewModdingAPI.LogLevel.Warn);
+                return;
+            }
+            processedLocations.Add(location);
 
             if (location is BuildableGameLocation buildableGameLocation)
             {
@@ -98,6 +123,11 @@ namespace DeepWoodsMod
         [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidNetField")]
         public static void RemoveAllEasterEggsFromGame()
         {
+            ModEntry.Log("EasterEggFunctions.RemoveAllEasterEggsFromGame()", StardewModdingAPI.LogLevel.Trace);
+
+            processedLocations.Clear();
+            processedItems.Clear();
+
             foreach (GameLocation location in Game1.locations)
             {
                 ProcessLocation(location, ProcessMethod.Remove);
@@ -107,11 +137,19 @@ namespace DeepWoodsMod
             {
                 ProcessItemList(farmer.items, ProcessMethod.Remove);
             }
+
+            processedLocations.Clear();
+            processedItems.Clear();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidNetField")]
         public static void RestoreAllEasterEggsInGame()
         {
+            ModEntry.Log("EasterEggFunctions.RestoreAllEasterEggsInGame()", StardewModdingAPI.LogLevel.Trace);
+
+            processedLocations.Clear();
+            processedItems.Clear();
+
             foreach (GameLocation location in Game1.locations)
             {
                 ProcessLocation(location, ProcessMethod.Restore);
@@ -121,6 +159,9 @@ namespace DeepWoodsMod
             {
                 ProcessItemList(farmer.items, ProcessMethod.Restore);
             }
+
+            processedLocations.Clear();
+            processedItems.Clear();
         }
 
 

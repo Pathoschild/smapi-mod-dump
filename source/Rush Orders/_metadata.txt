@@ -5,9 +5,9 @@ mods:
    Rush Orders
 
 latest commit:
-   commit 5b1a3dad146eb7fae411b5505462173c41de435b
+   commit 64d91cdb9fafbbe1637eed20f514cf715c811167
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:26:09 2019 -0500
+   Date:   Fri May 10 13:39:46 2019 -0400
    
-       Update version
+       Fix API not being saved (also in 1.1.4).
    

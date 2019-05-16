@@ -1,7 +1,7 @@
 ﻿{
   "Name": "AutomaticGates",
   "Author": "Rakiin aKa ScheKaa",
-  "Version": "2.3.1", // fixed locally
+  "Version": "2.3.2",
   "Description": "Opens and closes gates automatically",
   "UniqueID": "Rakiin.AutomaticGates",
   "EntryDll": "AutomaticGates.dll",

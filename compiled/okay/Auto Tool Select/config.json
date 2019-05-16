@@ -1,4 +1,6 @@
 {
   "ActivationKey": "LeftControl",
-  "HoeSelect": true
+  "ToggleKey": "F5",
+  "HoeSelect": true,
+  "IfNoneToolChooseWeapon": true
 }

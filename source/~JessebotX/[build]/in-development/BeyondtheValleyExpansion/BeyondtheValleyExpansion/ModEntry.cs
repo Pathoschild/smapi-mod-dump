@@ -65,7 +65,6 @@ namespace BeyondTheValleyExpansion
             _TilesheetCompat = new TilesheetCompatibility();
 
             /* other methods */
-            AddDefaultConfigData();
             ContentPackData();
 
             /* Hook Events */
@@ -80,7 +79,6 @@ namespace BeyondTheValleyExpansion
                 "\n\n Best used when you are changing maps mid save (and that map has the Delete Tile Actions)", this.ConsoleCommands_PurgeSaveDeletedTiles);
 
             _AlchemyFramework.AlchemyData = this.Helper.Data.ReadJsonFile<AlchemyDataModel>("Data/AlchemyIDs.json") ?? new AlchemyDataModel();
-                  
             this.Helper.Data.WriteJsonFile("Data/AlchemyIDs.json", _AlchemyFramework.AlchemyData);
         }
 
@@ -176,14 +174,6 @@ namespace BeyondTheValleyExpansion
         }
 
         // ---------------------------- \\
-
-        private void AddDefaultConfigData()
-        {
-            /* Custom Alchemy Items*/
-            this.Config.CustomAlchemyItems = new Dictionary<int, string>();
-            this.Config.CustomAlchemyItems.Add(1, "reactive");
-        }
-
         private void ContentPackData()
         {
             foreach (IContentPack contentPack in this.Helper.ContentPacks.GetOwned())

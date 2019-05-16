@@ -5,9 +5,10 @@ mods:
    Deep Woods
 
 latest commit:
-   commit 9265bfbdd5e9290ef6a60ae0f74481e022ddb9f9
+   commit 404d1a0fa62009aa29443bde94cca2bb66637621
    Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Fri Apr 19 19:22:34 2019 +0200
+   Date:   Wed May 15 01:27:52 2019 +0200
    
-       Increment version number
+       * Added support for DeepWoodsAPI 2.0.2, which adds a method for third party mods to warp the local player into the DeepWoods forest at a given level.
+       * Increment version number
    

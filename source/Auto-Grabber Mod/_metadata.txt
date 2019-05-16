@@ -5,9 +5,12 @@ mods:
    Auto-Grabber Mod
 
 latest commit:
-   commit a45b6fd0d3dfa320bdf87867f5b414881cc5245a
-   Author: Roberto R <robertodrinkscoffee@gmail.com>
-   Date:   Mon Nov 19 11:52:21 2018 -0800
+   commit c60bde1e927f7166c4a17e7a9a9743406500e25c
+   Merge: a45b6fd d1e99b3
+   Author: Jotser <42102336+jotser@users.noreply.github.com>
+   Date:   Fri May 10 00:28:52 2019 -0700
    
-       Updates Mod for SMAPI 2.8.1 and SDV 1.3.32, Adds catcher for actions
+       Merge pull request #8 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0
    

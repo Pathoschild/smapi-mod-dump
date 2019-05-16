@@ -128,7 +128,7 @@ namespace AutoGrabberMod.Features
             Grabber.Grabber.showNextIndex.Value |= Grabber.GrabberChest.items.Count != 0;
         }
 
-        public void ActionItemAddedRemoved(object sender, EventArgsLocationObjectsChanged e)
+        public void ActionItemAddedRemoved(object sender, ObjectListChangedEventArgs e)
         {
             if (!IsAllowed || !(bool)Value || Grabber.IsChestFull) return;
             //Utilities.Monitor.Log($"  {Grabber.InstanceName} Attempting to forage truffle items", StardewModdingAPI.LogLevel.Trace);

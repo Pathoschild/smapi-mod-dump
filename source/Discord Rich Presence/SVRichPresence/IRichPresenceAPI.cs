@@ -77,7 +77,7 @@ namespace SVRichPresence {
 		/// <param name="removeNull">Set to true to remove all null values (applied after <paramref name="removeNull"/> and <paramref name="replaceException"/>)</param>
 		/// <returns>A dictionary with the names as the keys and the resolved values as the values.</returns>
 		IDictionary<string, string> ListTags(string replaceNull = null, string replaceException = null, bool removeNull = true);
-		
+
 		/// <summary>
 		/// Returns a helper class that allows easier usage of methods in the API.
 		/// </summary>

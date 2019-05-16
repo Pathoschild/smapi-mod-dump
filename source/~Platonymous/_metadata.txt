@@ -42,9 +42,9 @@ mods:
    Visualize
 
 latest commit:
-   commit ad81534325b7f052b59654fe476aabc11d75fc0c
-   Author: Platonymous <david@millionideas.de>
-   Date:   Tue Jan 15 18:48:08 2019 +0100
+   commit 155f208ffc8659d9a8abd8469485cd27ad1d79ae
+   Author: David <david@millionideas.de>
+   Date:   Wed May 15 14:25:48 2019 +0200
    
-       Update releases
+       Fixed loading map content
    

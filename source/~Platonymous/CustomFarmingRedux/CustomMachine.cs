@@ -34,7 +34,7 @@ namespace CustomFarmingRedux
         private bool active = true;
         private bool wasBuild = false;
         public virtual bool isWorking { get => active && !readyForHarvest && ((completionTime != null && activeRecipe != null) || blueprint.production == null); }
-        private string id;
+        public string id { get; private set; }
         public string conditions = null;
         public virtual STime completionTime { get; set; }
         private int tileindex;
@@ -492,7 +492,7 @@ namespace CustomFarmingRedux
             if (additionalSaveData.ContainsKey("completionTime"))
                 completionTime = new STime(int.Parse(additionalSaveData["completionTime"]));
 
-            build(machines.Find(cmb => additionalSaveData["id"] == cmb.fullid));
+           build(blueprint);
 
             if (additionalSaveData.ContainsKey("location"))
             {

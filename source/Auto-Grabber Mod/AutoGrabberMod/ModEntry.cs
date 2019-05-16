@@ -11,25 +11,28 @@ using StardewValley;
 
 namespace AutoGrabberMod
 {
+    /// <summary>The mod entry class loaded by SMAPI.</summary>
     public class ModEntry : Mod
     {
         private AutoGrabber _currentGrabber;
         private bool IsLoaded => Context.IsWorldReady;
         private static readonly Dictionary<string, AutoGrabber> AutoGrabbers = new Dictionary<string, AutoGrabber>();
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             Utilities.Monitor = Monitor;
             Utilities.Helper = helper;
             Utilities.Config = helper.ReadConfig<ModConfig>();
-            TimeEvents.AfterDayStarted += TimeEvents_AfterDayStarted;
-            LocationEvents.ObjectsChanged += LocationEvents_ObjectsChanged;
-            InputEvents.ButtonPressed += InputEvents_ButtonPressed;
-            MenuEvents.MenuClosed += MenuEvents_MenuClosed;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.World.ObjectListChanged += OnObjectListChanged;
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
+            helper.Events.Display.MenuChanged += OnMenuChanged;
 
-            GraphicsEvents.OnPreRenderHudEvent += DrawHoverRange;
-            GameEvents.FourthUpdateTick += GetTileUnderCursor;
-            SaveEvents.AfterReturnToTitle += ReturnToTitle;
+            helper.Events.Display.RenderingHud += OnRenderingHud;
+            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+            helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
 
             //var featureType = typeof(Feature);
             //Utilities.FeatureTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes()).Where(p => featureType.IsAssignableFrom(p) && !p.Equals(featureType)).ToArray();
@@ -46,13 +49,19 @@ namespace AutoGrabberMod
             };
         }
 
-        private void ReturnToTitle(object sender, EventArgs e)
+        /// <summary>Raised after the game returns to the title screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
             _currentGrabber = null;
             AutoGrabbers.Clear();
         }
 
-        private void TimeEvents_AfterDayStarted(object sender, System.EventArgs e)
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             //Monitor.Log($"Day Started {Context.IsWorldReady}", LogLevel.Trace);
 
@@ -89,10 +98,13 @@ namespace AutoGrabberMod
             {
                 Monitor.Log($"An error occurred while running Actions", LogLevel.Info);
                 Monitor.Log($"{error.TargetSite} {error.Message}: {error.StackTrace}", LogLevel.Error);
-            }            
+            }
         }
 
-        private void LocationEvents_ObjectsChanged(object sender, EventArgsLocationObjectsChanged e)
+        /// <summary>Raised after objects are added or removed in a location.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
         {
             if (e.Added.Any())
             {
@@ -140,7 +152,10 @@ namespace AutoGrabberMod
             }
         }
 
-        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!this.IsLoaded || !Context.IsPlayerFree) return;
             if (e.Button == Utilities.Config.OpenMenuKey) OpenMenu();
@@ -175,18 +190,25 @@ namespace AutoGrabberMod
             }
         }
 
-        private void MenuEvents_MenuClosed(object sender, EventArgsClickableMenuClosed e)
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
-            if (e.PriorMenu is MenuContainer)
+            if (e.OldMenu is MenuContainer)
             {
                 //Monitor.Log("Menu was closed updating Global settings");
                 Helper.WriteConfig(Utilities.Config);
             }
         }
 
-        private void GetTileUnderCursor(object sender, EventArgs e)
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (Game1.currentLocation != null)
+            // get tile under cursor
+            if (e.IsMultipleOf(4) && Game1.currentLocation != null)
             {
                 if (Game1.currentLocation.Objects == null || !AutoGrabbers.TryGetValue(AutoGrabber.MakeId(Game1.currentLocation, Game1.currentCursorTile), out _currentGrabber))
                 {
@@ -200,8 +222,12 @@ namespace AutoGrabberMod
             }
         }
 
-        private void DrawHoverRange(object sender, EventArgs e)
+        /// <summary>Raised before drawing the HUD (item toolbar, clock, etc) to the screen. The vanilla HUD may be hidden at this point (e.g. because a menu is open).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnRenderingHud(object sender, RenderingHudEventArgs e)
         {
+            // draw hover range
             var grabbers = AutoGrabbers.Values.Where(g => g.Location.Equals(Game1.currentLocation));
             if (_currentGrabber != null && !_currentGrabber.ShowRange)
             {

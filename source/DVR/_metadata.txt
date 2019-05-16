@@ -5,9 +5,9 @@ mods:
    DVR
 
 latest commit:
-   commit 95e2cff541a6c0348d75334cef1a3e88a58f85c3
-   Author: Craig Peterson <captncraig@users.noreply.github.com>
-   Date:   Thu May 2 13:52:56 2019 -0400
+   commit d3d083d17e590515b7a8e6b8fec55cdff419faa5
+   Author: Craig Peterson <cpeterson@stackoverflow.com>
+   Date:   Wed May 15 09:15:11 2019 -0400
    
-       Delete older version of collector
+       no idea
    

@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using System.IO;
 using StardewModdingAPI;
 using SpaceCore;
+using StardewValley.Objects;
 
 namespace Magic
 {
@@ -78,6 +79,8 @@ namespace Magic
             Command.register("player_setmaxmana", setMaxManaCommand);
             Command.register("player_learnspell", learnSpellCommand);
             Command.register("magicmenu", magicMenuCommand);
+
+            PyTK.CustomTV.CustomTVMod.addChannel("magic", Mod.instance.Helper.Translation.Get("tv.analyzehints.name"), onTvChannelSelected);
         }
 
         private static void onAnalyze(object sender, AnalyzeEventArgs e)
@@ -159,8 +162,54 @@ namespace Magic
                 {
                     Log.debug("Player learnt spell: " + spell);
                     farmer.learnSpell(spell, 0, true);
-                    Game1.drawObjectDialogue(Mod.instance.Helper.Translation.Get("spell.learn", new { spellName = Mod.instance.Helper.Translation.Get("spell." + spell + ".name") }));
+                    //Game1.drawObjectDialogue(Mod.instance.Helper.Translation.Get("spell.learn", new { spellName = Mod.instance.Helper.Translation.Get("spell." + spell + ".name") }));
+                    Game1.addHUDMessage(new HUDMessage(Mod.instance.Helper.Translation.Get("spell.learn", new { spellName = Mod.instance.Helper.Translation.Get("spell." + spell + ".name") })));
                 }
+            }
+
+            // Temporary - 0.3.0 will add dungeons to get these
+            bool knowsAll = true;
+            foreach ( var schoolId in School.getSchoolList() )
+            {
+                var school = School.getSchool(schoolId);
+
+                bool knowsAllSchool = true;
+                foreach ( var spell in school.GetSpellsTier1() )
+                {
+                    if (!farmer.knowsSpell(spell, 0))
+                    {
+                        knowsAll = knowsAllSchool = false;
+                        break;
+                    }
+                }
+                foreach (var spell in school.GetSpellsTier2())
+                {
+                    if (!farmer.knowsSpell(spell, 0))
+                    {
+                        knowsAll = knowsAllSchool = false;
+                        break;
+                    }
+                }
+
+                // Have to know all other spells for the arcane one
+                if (schoolId == SchoolId.Arcane)
+                    continue;
+
+                var ancientSpell = school.GetSpellsTier3()[0];
+                if ( knowsAllSchool && !farmer.knowsSpell(ancientSpell, 0 ) )
+                {
+                    Log.debug("Player learnt ancient spell: " + ancientSpell);
+                    farmer.learnSpell(ancientSpell, 0, true);
+                    Game1.addHUDMessage(new HUDMessage(Mod.instance.Helper.Translation.Get("spell.learn.ancient", new { spellName = Mod.instance.Helper.Translation.Get("spell." + ancientSpell.FullId + ".name") })));
+                }
+            }
+
+            var rewindSpell = School.getSchool( SchoolId.Arcane ).GetSpellsTier3()[0];
+            if (knowsAll && !farmer.knowsSpell(rewindSpell, 0))
+            {
+                Log.debug("Player learnt ancient spell: " + rewindSpell);
+                farmer.learnSpell(rewindSpell, 0, true);
+                Game1.addHUDMessage(new HUDMessage(Mod.instance.Helper.Translation.Get("spell.learn.ancient", new { spellName = Mod.instance.Helper.Translation.Get("spell." + rewindSpell.FullId + ".name") })));
             }
         }
 
@@ -217,6 +266,8 @@ namespace Magic
             Data.players[ Game1.player.UniqueMultiplayerID ].spellBook.Owner = Game1.player;
             foreach ( var farmer in Game1.otherFarmers )
             {
+                if (!Data.players.ContainsKey(farmer.Key))
+                    continue;
                 Data.players[farmer.Key].spellBook.Owner = farmer.Value;
             }
         }
@@ -478,8 +529,25 @@ namespace Magic
 
         private static void onItemEaten(object sender, EventArgs args)
         {
+            if (Game1.player.itemToEat == null)
+            {
+                Log.warn("No item eaten for the item eat event?!?");
+                return;
+            }
             if (Game1.player.itemToEat.ParentSheetIndex == ja.GetObjectId("Magic Elixir"))
                 Game1.player.addMana(Game1.player.getMaxMana());
+        }
+        
+        private static void onTvChannelSelected(TV tv, TemporaryAnimatedSprite sprite, Farmer farmer, string answer)
+        {
+            TemporaryAnimatedSprite tas = new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(540, 305, 42, 28), 150f, 2, 999999, tv.getScreenPosition(), false, false, (float)((double)(tv.boundingBox.Bottom - 1) / 10000.0 + 9.99999974737875E-06), 0.0f, Color.White, tv.getScreenSizeModifier(), 0.0f, 0.0f, 0.0f, false);
+
+            string transKey = "tv.analyzehints.notmagical";
+            Random r = new Random((int)Game1.stats.DaysPlayed + (int)(Game1.uniqueIDForThisGame / 2));
+            if (Game1.player.getMaxMana() > 0)
+                transKey = "tv.analyzehints." + (r.Next(12) + 1);
+
+            PyTK.CustomTV.CustomTVMod.showProgram(tas, Mod.instance.Helper.Translation.Get(transKey));
         }
 
         public static void placeAltar(string locName, int x, int y, int baseAltarIndex)

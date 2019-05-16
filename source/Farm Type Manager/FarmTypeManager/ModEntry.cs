@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
@@ -73,7 +74,7 @@ namespace FarmTypeManager
         /// <summary>Tasks performed before a day ends, i.e. right before saving. This is also called when a new farm is created, *before* DayStarted.</summary>
         private void DayEnding(object sender, EventArgs e)
         {
-            if (Utility.FarmDataList == null || Utility.FarmDataList.Count < 1) { return; } //if the farm list is blank, do nothing (e.g. when called by a newly created farm)
+            if (Utility.FarmDataList == null || Utility.FarmDataList.Count < 1) { return; } //if the farm data list is blank, do nothing (e.g. when called by a newly created farm)
 
             //update information in each save file
             foreach (FarmData data in Utility.FarmDataList)
@@ -82,11 +83,11 @@ namespace FarmTypeManager
 
                 if (data.Pack != null) //if this data is from a content pack
                 {
-                    data.Pack.WriteJsonFile<InternalSaveData>($"data/{Constants.SaveFolderName}_SaveData.save", data.Save); //update the save file for that content pack
+                    data.Pack.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), data.Save); //update the save file for that content pack
                 }
                 else //this data is from this mod's own folders
                 {
-                    Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}_SaveData.save", data.Save); //update the save file in this mod's own folders
+                    Helper.Data.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), data.Save); //update the save file in this mod's own folders
                 }
             }
     }

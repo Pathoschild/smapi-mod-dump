@@ -90,24 +90,41 @@ namespace DeepWoodsMod
             Restore
         }
 
+        private static HashSet<GameLocation> processedLocations = new HashSet<GameLocation>();
+
         private static void ProcessAllInLocation(GameLocation location, ProcessMethod method)
         {
+            if (location == null)
+                return;
+
+            ModEntry.Log("WoodsObelisk.ProcessAllInLocation(" + location.Name + ", " + method + ")", StardewModdingAPI.LogLevel.Trace);
+
+            if (processedLocations.Contains(location))
+            {
+                ModEntry.Log("WoodsObelisk.ProcessAllInLocation(" + location.Name + ", " + method + "): Already processed this location (infinite recursion?), aborting!", StardewModdingAPI.LogLevel.Warn);
+                return;
+            }
+            processedLocations.Add(location);
+
             if (location is BuildableGameLocation buildableGameLocation)
             {
                 foreach (Building building in buildableGameLocation.buildings)
                 {
-                    ProcessAllInLocation(building.indoors.Value, method);
-                    if (method == ProcessMethod.Remove && building.buildingType.Value == WOODS_OBELISK_BUILDING_NAME)
+                    if (building != null)
                     {
-                        building.buildingType.Value = EARTH_OBELISK_BUILDING_NAME;
-                        DeepWoodsState.WoodsObeliskLocations.Add(new XY(building.tileX.Value, building.tileY.Value));
-                    }
-                    else if (method == ProcessMethod.Restore && building.buildingType.Value == EARTH_OBELISK_BUILDING_NAME)
-                    {
-                        if (DeepWoodsState.WoodsObeliskLocations.Contains(new XY(building.tileX.Value, building.tileY.Value)))
+                        ProcessAllInLocation(building.indoors.Value, method);
+                        if (method == ProcessMethod.Remove && building.buildingType.Value == WOODS_OBELISK_BUILDING_NAME)
                         {
-                            building.buildingType.Value = WOODS_OBELISK_BUILDING_NAME;
-                            building.resetTexture();
+                            building.buildingType.Value = EARTH_OBELISK_BUILDING_NAME;
+                            DeepWoodsState.WoodsObeliskLocations.Add(new XY(building.tileX.Value, building.tileY.Value));
+                        }
+                        else if (method == ProcessMethod.Restore && building.buildingType.Value == EARTH_OBELISK_BUILDING_NAME)
+                        {
+                            if (DeepWoodsState.WoodsObeliskLocations.Contains(new XY(building.tileX.Value, building.tileY.Value)))
+                            {
+                                building.buildingType.Value = WOODS_OBELISK_BUILDING_NAME;
+                                building.resetTexture();
+                            }
                         }
                     }
                 }
@@ -119,12 +136,17 @@ namespace DeepWoodsMod
             if (!Game1.IsMasterGame)
                 return;
 
+            ModEntry.Log("WoodsObelisk.RemoveAllFromGame()", StardewModdingAPI.LogLevel.Trace);
+
             DeepWoodsState.WoodsObeliskLocations.Clear();
+            processedLocations.Clear();
 
             foreach (GameLocation location in Game1.locations)
             {
                 ProcessAllInLocation(location, ProcessMethod.Remove);
             }
+
+            processedLocations.Clear();
         }
 
         public static void RestoreAllInGame()
@@ -132,10 +154,16 @@ namespace DeepWoodsMod
             if (!Game1.IsMasterGame)
                 return;
 
+            ModEntry.Log("WoodsObelisk.RestoreAllInGame()", StardewModdingAPI.LogLevel.Trace);
+
+            processedLocations.Clear();
+
             foreach (GameLocation location in Game1.locations)
             {
                 ProcessAllInLocation(location, ProcessMethod.Restore);
             }
+
+            processedLocations.Clear();
         }
     }
 }

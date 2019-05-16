@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
@@ -20,7 +21,7 @@ namespace FarmTypeManager
             /// <param name="customTileIndex">The list of custom tile indices for this spawn process.</param>
             /// <param name="isLarge">True if the objects to be spawned are 2x2 tiles in size, otherwise false (1 tile).</param>
             /// <returns>A completed list of all valid tile coordinates for this spawn process in this SpawnArea.</returns>
-            public static List<Vector2> GenerateTileList(SpawnArea area, int[] quarryTileIndex, int[] customTileIndex, bool isLarge)
+            public static List<Vector2> GenerateTileList(SpawnArea area, InternalSaveData save, int[] quarryTileIndex, int[] customTileIndex, bool isLarge)
             {
                 List<Vector2> validTiles = new List<Vector2>(); //list of all open, valid tiles for new spawns on the current map
 
@@ -42,6 +43,14 @@ namespace FarmTypeManager
                 foreach (string include in area.IncludeAreas) //check for valid tiles in each "include" zone for the area
                 {
                     validTiles.AddRange(Utility.GetTilesByVectorString(area, include, isLarge));
+                }
+
+                if (area is LargeObjectSpawnArea objArea && objArea.FindExistingObjectLocations) //if this area is the large object type and "find existing objects" is enabled
+                {
+                    foreach (string include in save.ExistingObjectLocations[area.UniqueAreaID]) //check each saved "include" string for the area
+                    {
+                        validTiles.AddRange(Utility.GetTilesByVectorString(area, include, isLarge));
+                    }
                 }
 
                 validTiles = validTiles.Distinct().ToList(); //remove any duplicate tiles from the list
@@ -911,9 +920,82 @@ namespace FarmTypeManager
             /// <summary>Checks whether a config file should be used with the currently loaded farm.</summary>
             /// <param name="config">The FarmConfig to be checked.</param>
             /// <returns>True if the file should be used with the current farm; false otherwise.</returns>
-            public static bool CheckFileConditions(FarmConfig config)
+            public static bool CheckFileConditions(FarmConfig config, IContentPack pack, IModHelper helper)
             {
                 Monitor.Log("Checking file conditions...", LogLevel.Trace);
+
+                //check "reset main data folder" flag
+                //NOTE: it's preferable to do this as the first step; it's intended to be a one-off cleaning process, rather than a conditional effect
+                if (config.File_Conditions.ResetMainDataFolder && MConfig.EnableContentPackFileChanges) //if "reset" is true and file changes are enabled
+                {
+                    if (pack != null) //if this is part of a content pack
+                    {
+                        //attempt to load the content pack's global save data
+                        ContentPackSaveData packSave = null;
+                        try
+                        {
+                            packSave = pack.ReadJsonFile<ContentPackSaveData>(Path.Combine("data", "ContentPackSaveData.save")); //load the content pack's global save data (null if it doesn't exist)
+                        }
+                        catch (Exception ex)
+                        {
+                            Monitor.Log($"Warning: This content pack's save data could not be parsed correctly: {pack.Manifest.Name}", LogLevel.Warn);
+                            Monitor.Log($"Affected file: data/ContentPackSaveData.save", LogLevel.Warn);
+                            Monitor.Log($"Please delete the file and/or contact the mod's developer.", LogLevel.Warn);
+                            Monitor.Log($"The content pack will be skipped until this issue is fixed. The auto-generated error message is displayed below:", LogLevel.Warn);
+                            Monitor.Log($"----------", LogLevel.Warn);
+                            Monitor.Log($"{ex.Message}", LogLevel.Warn);
+                            return false; //disable this content pack's config, since it may require this process to function
+                        }
+
+                        if (packSave == null) //no global save data exists for this content pack
+                        {
+                            packSave = new ContentPackSaveData();
+                        }
+
+                        if (!packSave.MainDataFolderReset) //if this content pack has NOT reset the main data folder yet
+                        {
+                            Monitor.Log($"ResetMainDataFolder requested by content pack: {pack.Manifest.Name}", LogLevel.Debug);
+                            string dataPath = Path.Combine(helper.DirectoryPath, "data"); //the path to this mod's data folder
+                            DirectoryInfo dataFolder = new DirectoryInfo(dataPath); //an object representing this mod's data directory
+
+                            if (dataFolder.Exists) //the data folder exists
+                            {
+                                Monitor.Log("Attempting to archive data folder...", LogLevel.Trace);
+                                try
+                                {
+                                    string archivePath = Path.Combine(helper.DirectoryPath, "data", "archive", DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"));
+                                    DirectoryInfo archiveFolder = Directory.CreateDirectory(archivePath); //create a timestamped archive folder
+                                    foreach (FileInfo file in dataFolder.GetFiles()) //for each file in dataFolder
+                                    {
+                                        file.MoveTo(Path.Combine(archiveFolder.FullName, file.Name)); //move each file to archiveFolder
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Monitor.Log($"Warning: This content pack attempted to archive Farm Type Manager's data folder but failed: {pack.Manifest.Name}", LogLevel.Warn);
+                                    Monitor.Log($"Please report this issue to Farm Type Manager's developer. This might also be fixed by manually removing your FarmTypeManager/data/ files.", LogLevel.Warn);
+                                    Monitor.Log($"The content pack will be skipped until this issue is fixed. The auto-generated error message is displayed below:", LogLevel.Warn);
+                                    Monitor.Log($"----------", LogLevel.Warn);
+                                    Monitor.Log($"{ex.Message}", LogLevel.Warn);
+                                    return false; //disable this content pack's config, since it may require this process to function
+                                }
+                            }
+                            else //the data folder doesn't exist
+                            {
+                                Monitor.Log("Data folder not found; assuming it was deleted or not yet generated.", LogLevel.Trace);
+                            }
+
+                            packSave.MainDataFolderReset = true; //update save data
+                        }
+
+                        pack.WriteJsonFile(Path.Combine("data", "ContentPackSaveData.save"), packSave); //update the content pack's global save data file
+                        Monitor.Log("Data folder archive successful.", LogLevel.Trace);
+                    }
+                    else //if this is NOT part of a content pack
+                    {
+                        Monitor.Log("This farm's config file has ResetMainDataFolder = true, but this setting only works for content packs.", LogLevel.Info);
+                    }
+                }
 
                 //check farm type
                 if (config.File_Conditions.FarmTypes != null && config.File_Conditions.FarmTypes.Length > 0)
@@ -1106,9 +1188,9 @@ namespace FarmTypeManager
                         ValidateFarmData(config, pack); //validate certain data in the current file before using it
 
                         pack.WriteJsonFile($"content.json", config); //update the content pack's config file
-                        pack.WriteJsonFile($"data/{Constants.SaveFolderName}_SaveData.save", save); //create or update the content pack's save file for the current farm
+                        pack.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), save); //create or update the content pack's save file for the current farm
 
-                        if (CheckFileConditions(config)) //check file conditions; only use this config if this returns true
+                        if (CheckFileConditions(config, pack, helper)) //check file conditions; only use the current data if this returns true
                         {
                             FarmDataList.Add(new FarmData(config, save, pack)); //add the config, save, and content pack to the farm data list
                             Monitor.Log("Content pack loaded successfully.", LogLevel.Trace);
@@ -1132,7 +1214,7 @@ namespace FarmTypeManager
                 //NOTE: this should always be done *after* content packs, because it will end the loading process if an error occurs
                 try
                 {
-                    config = helper.Data.ReadJsonFile<FarmConfig>($"data/{Constants.SaveFolderName}.json"); //load the current save's config file (null if it doesn't exist)
+                    config = helper.Data.ReadJsonFile<FarmConfig>(Path.Combine("data", $"{Constants.SaveFolderName}.json")); //load the current save's config file (null if it doesn't exist)
                 }
                 catch (Exception ex)
                 {
@@ -1149,7 +1231,7 @@ namespace FarmTypeManager
                     //attempt to load the default.json config file
                     try
                     {
-                        config = helper.Data.ReadJsonFile<FarmConfig>($"data/default.json"); //load the default.json config file (null if it doesn't exist)
+                        config = helper.Data.ReadJsonFile<FarmConfig>(Path.Combine("data", "default.json")); //load the default.json config file (null if it doesn't exist)
                     }
                     catch (Exception ex)
                     {
@@ -1168,13 +1250,13 @@ namespace FarmTypeManager
 
                     ValidateFarmData(config, null); //validate certain data in the current file before using it
 
-                    helper.Data.WriteJsonFile($"data/default.json", config); //create or update the default.json config file
+                    helper.Data.WriteJsonFile(Path.Combine("data", "default.json"), config); //create or update the default.json config file
                 }
 
                 //attempt to load the save data for this farm
                 try
                 {
-                    save = helper.Data.ReadJsonFile<InternalSaveData>($"data/{Constants.SaveFolderName}_SaveData.save"); //load the mod's save data for this farm (null if it doesn't exist)
+                    save = helper.Data.ReadJsonFile<InternalSaveData>(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save")); //load the mod's save data for this farm (null if it doesn't exist)
                 }
                 catch (Exception ex)
                 {
@@ -1193,10 +1275,10 @@ namespace FarmTypeManager
 
                 ValidateFarmData(config, null); //validate certain data in the current file before using it
 
-                helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", config); //create or update the config file for the current farm
-                helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}_SaveData.save", save); //create or update this config's save file for the current farm
+                helper.Data.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}.json"), config); //create or update the config file for the current farm
+                helper.Data.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), save); //create or update this config's save file for the current farm
 
-                if (CheckFileConditions(config)) //check file conditions; only use this config if this returns true
+                if (CheckFileConditions(config, null, helper)) //check file conditions; only use the current data if this returns true
                 {
                     FarmDataList.Add(new FarmData(config, save, null)); //add the config, save, and a *null* content pack to the farm data list
                     Monitor.Log("FarmTypeManager/data farm data loaded successfully.", LogLevel.Trace);
@@ -1242,7 +1324,7 @@ namespace FarmTypeManager
                             if (pack != null) //if this config is from a content pack
                             {
                                 Monitor.Log($"Content pack: {pack.Manifest.Name}", LogLevel.Info);
-                                Monitor.Log($"If this happens after updating another mod, it might cause one-time-only or limited spawns to reset in that area.", LogLevel.Info);
+                                Monitor.Log($"If this happens after updating another mod, it might cause certain conditions (such as one-time-only spawns) to reset in that area.", LogLevel.Info);
                             }
 
                             area.UniqueAreaID = ""; //erase this area's ID, marking it for replacement
@@ -1285,6 +1367,23 @@ namespace FarmTypeManager
                         }
 
                         IDs.Add(area.UniqueAreaID); //the ID is finalized, so add it to the set of encountered IDs
+                    }
+                }
+
+                Monitor.Log("Checking for valid min/max spawn settings...", LogLevel.Trace);
+                foreach (SpawnArea[] areas in allAreas) //for each "Areas" array in allAreas
+                {
+                    foreach (SpawnArea area in areas) //for each area in the current array
+                    {
+                        if (area.MinimumSpawnsPerDay > area.MaximumSpawnsPerDay) //if max spawns > min spawns
+                        {
+                            //swap the two numbers
+                            int temp = area.MinimumSpawnsPerDay;
+                            area.MinimumSpawnsPerDay = area.MaximumSpawnsPerDay;
+                            area.MaximumSpawnsPerDay = temp;
+
+                            Monitor.Log($"Min > max spawns in this area: \"{area.UniqueAreaID}\" ({area.MapName}). Numbers swapped.", LogLevel.Trace);
+                        }
                     }
                 }
 

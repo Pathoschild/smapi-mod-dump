@@ -178,6 +178,13 @@
           "VariableLowerBound": -0.1,
           "VariableHigherBound": 0.1
         },
+		{
+		   "WeatherType": "debris",
+		   "BaseValue": 0.21,
+		   "ChangeRate": 0,
+		   "VariableLowerBound": -.08,
+		   "VariableHigherBound": .06
+		},
         {
           "WeatherType": "lowtemp",
           "BaseValue": 24.0,
@@ -215,6 +222,13 @@
           "VariableLowerBound": -0.04,
           "VariableHigherBound": 0.04
         },
+		{
+		   "WeatherType": "debris",
+		   "BaseValue": 0.19,
+		   "ChangeRate": 0,
+		   "VariableLowerBound": -.08,
+		   "VariableHigherBound": .06
+		},
         {
           "WeatherType": "storm",
           "BaseValue": 0.8,
@@ -259,6 +273,13 @@
           "VariableLowerBound": -0.07,
           "VariableHigherBound": 0.07
         },
+		{
+		   "WeatherType": "debris",
+		   "BaseValue": 0.23,
+		   "ChangeRate": 0,
+		   "VariableLowerBound": -.04,
+		   "VariableHigherBound": .08
+		},
         {
           "WeatherType": "storm",
           "BaseValue": 0.8,

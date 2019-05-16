@@ -15,7 +15,7 @@
   "TooHotOutside": 39.0,
   "DeadCropPercentage": 0.1,
   "CropResistance": 0.75,
-  "DarkFogChance": 0.0875,
+  "DisableAllFog": false,
   "Use12HourTime": false,
   "EnableCustomWeatherIcon": true,
   "ThunderFrenzyOdds": 0.01,
@@ -23,5 +23,16 @@
   "DisableHighRainWind": false,
   "ShowLighterFog": false,
   "RedrawCursor": true,
-  "Verbose": true
+  "SetDefaultScaleToF": false,
+  "VariableRainChance": 0.145,
+  "OvercastChance": 0.05,
+  "VRChangeChance": 0.35,
+  "VRStepPercent": 0.245,
+  "VRMassiveStepChance": 0.13,
+  "DisplayCelsiusInsteadOfKraggs": false,
+  "Verbose": true,
+  "SandstormsInDesertOnly": false,
+  "MoreSevereThunderFrenzyOdds": 0.22,
+  "ShowSummitClouds": true,
+  "RainToSnowConversion": 0.525
 }

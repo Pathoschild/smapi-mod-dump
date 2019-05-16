@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Netcode;
 using PyTK.Extensions;
-using PyTK.Types;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Network;
@@ -14,7 +12,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using SObject = StardewValley.Object;
 
 namespace PyTK.CustomElementHandler
@@ -138,7 +135,7 @@ namespace PyTK.CustomElementHandler
         {
             Monitor.Log("Replacing Custom Objects");
 
-            rebuildActions.Clear();
+            //rebuildActions.Clear();
             OnBeforeRemoving(EventArgs.Empty);
 
             ReplaceAllObjects<object>(FindAllObjects(Game1.locations, Game1.game1), o => hasSaveType(o), o => getReplacement(o), true);

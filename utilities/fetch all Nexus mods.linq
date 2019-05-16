@@ -7,6 +7,7 @@
   <NuGetReference>Squid-Box.SevenZipSharp</NuGetReference>
   <Namespace>Newtonsoft.Json</Namespace>
   <Namespace>Newtonsoft.Json.Converters</Namespace>
+  <Namespace>Newtonsoft.Json.Linq</Namespace>
   <Namespace>Pathoschild.FluentNexus</Namespace>
   <Namespace>Pathoschild.FluentNexus.Models</Namespace>
   <Namespace>Pathoschild.Http.Client</Namespace>
@@ -14,11 +15,10 @@
   <Namespace>StardewModdingAPI.Toolkit</Namespace>
   <Namespace>StardewModdingAPI.Toolkit.Framework.Clients.Wiki</Namespace>
   <Namespace>StardewModdingAPI.Toolkit.Framework.ModScanning</Namespace>
+  <Namespace>StardewModdingAPI.Toolkit.Serialisation</Namespace>
   <Namespace>System.Globalization</Namespace>
   <Namespace>System.Net</Namespace>
   <Namespace>System.Threading.Tasks</Namespace>
-  <Namespace>Newtonsoft.Json.Linq</Namespace>
-  <Namespace>StardewModdingAPI.Toolkit.Serialisation</Namespace>
 </Query>
 
 /*
@@ -57,12 +57,12 @@ readonly bool ResetUnpacked = false;
 async Task Main()
 {
 	Directory.CreateDirectory(this.RootPath);
-	NexusClient nexus = new NexusClient(this.ApiKey);
+	NexusClient nexus = new NexusClient(this.ApiKey, "Pathoschild", "1.0.0");
 
 	// fetch mods from Nexus API
 	HashSet<int> unpackMods = new HashSet<int>();
 	if (this.FetchMods != null)
-		unpackMods = new HashSet<int>(await this.ImportMods(apiKey: this.ApiKey, gameKey: "stardewvalley", fetchStrategy: this.FetchMods, rootPath: this.RootPath));
+		unpackMods = new HashSet<int>(await this.ImportMods(nexus, gameKey: "stardewvalley", fetchStrategy: this.FetchMods, rootPath: this.RootPath));
 
 	// unpack fetched files
 	this.UnpackMods(rootPath: this.RootPath, filter: id => this.ResetUnpacked || unpackMods.Contains(id));
@@ -224,6 +224,7 @@ async Task<dynamic[]> GetInvalidMods(IEnumerable<ParsedModData> mods)
 		782,  // Sound Modding Tools
 		1298, // Stardew Editor
 		3814, // Stardew Valley Hack Player for Name_Yusuf (???)
+		3916, // Stardew Valley Money Hack
 		3787, // Stardew Valley Planner
 		2451, // StardewZem - Very Easy XNB Merger
 		337,  // SVPM/Stardew Valley Package Manager
@@ -253,7 +254,7 @@ async Task<dynamic[]> GetInvalidMods(IEnumerable<ParsedModData> mods)
 		13647, // Immersive Farm 2 (#1531)
 		12634, // Phoenix Farm (#3026) > Pethouse Phoenix Farm
 		12863, // Secret Gardens Greenhouse (#3067) > "" for Immersive Farm 2
-		16328, // Stardew Valley Expanded (#3753)
+		16524, // Stardew Valley Expanded (#3753)
 
 		// legacy zipped Seasonal Immersion content packs
 		5438,  // Seasonal Custom Farm Buildings (#1451)
@@ -343,15 +344,13 @@ async Task<dynamic[]> GetInvalidMods(IEnumerable<ParsedModData> mods)
 ** Implementation
 *********/
 /// <summary>Import data for matching mods.</summary>
-/// <param name="apiKey">The Nexus API key.</param>
+/// <param name="apiKey">The Nexus API client.</param>
 /// <param name="gameKey">The unique game key.</param>
 /// <param name="fetchStrategy">The strategy which decides which mods to fetch.</param>
 /// <param name="rootPath">The path in which to store cached data.</param>
 /// <returns>Returns the imported mod IDs.</returns>
-async Task<int[]> ImportMods(string apiKey, string gameKey, ISelectStrategy fetchStrategy, string rootPath)
+async Task<int[]> ImportMods(NexusClient nexus, string gameKey, ISelectStrategy fetchStrategy, string rootPath)
 {
-	NexusClient nexus = new NexusClient(apiKey);
-	
 	// get mod IDs
 	int[] modIDs = await fetchStrategy.GetModIds(nexus, gameKey);
 	if (!modIDs.Any())

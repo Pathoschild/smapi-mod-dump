@@ -5,9 +5,9 @@ mods:
    Better Shop Menu
 
 latest commit:
-   commit ef10cf91c9365f3281f300727726f117be35b4c3
+   commit bd0f8c195b3a6c14f1172560ad7e373f431b624d
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Sat Apr 27 21:35:34 2019 -0400
+   Date:   Thu May 9 22:14:02 2019 -0400
    
-       Version 1.1.0
+       Added scrollbar, version 1.1.2.
    

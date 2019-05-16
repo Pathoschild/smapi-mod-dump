@@ -1,4 +1,5 @@
 {
   "EnableWhereAmICommand": true,
-  "EnableContentPacks": true
+  "EnableContentPacks": true,
+  "EnableContentPackFileChanges": true
 }

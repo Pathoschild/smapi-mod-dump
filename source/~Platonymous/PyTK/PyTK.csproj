@@ -30,11 +30,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DotNetZip" Version="1.11.0" />
+    <PackageReference Include="DotNetZip" Version="1.13.3" />
     <PackageReference Include="Lib.Harmony" Version="1.2.0.1" />
     <PackageReference Include="MoonSharp" Version="2.0.0.0" />
     <PackageReference Include="ncalc" Version="1.3.8" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
@@ -71,6 +71,7 @@
     <Compile Include="Extensions\PyTextures.cs" />
     <Compile Include="ConsoleCommands\CcLocations.cs" />
     <Compile Include="CustomElementHandler\ISaveElement.cs" />
+    <Compile Include="APIs\IScalerAPI.cs" />
     <Compile Include="Lua\LuaUtils.cs" />
     <Compile Include="Lua\PyLua.cs" />
     <Compile Include="Overrides\OvSmapi.cs" />
@@ -83,11 +84,13 @@
     <Compile Include="Overrides\OvSleep.cs" />
     <Compile Include="PyNet.cs" />
     <Compile Include="CustomElementHandler\PySync.cs" />
+    <Compile Include="APIs\PyTKAPI.cs" />
     <Compile Include="Tiled\EnumHelper.cs" />
     <Compile Include="Tiled\IXmlFormatable.cs" />
     <Compile Include="Tiled\NewTiledTmxFormat.cs" />
     <Compile Include="Tiled\PathHelper.cs" />
     <Compile Include="Tiled\TiledAnimationFrame.cs" />
+    <Compile Include="Tiled\TiledImageLayer.cs" />
     <Compile Include="Tiled\TiledLayer.cs" />
     <Compile Include="Tiled\TiledLayerData.cs" />
     <Compile Include="Tiled\TiledMap.cs" />

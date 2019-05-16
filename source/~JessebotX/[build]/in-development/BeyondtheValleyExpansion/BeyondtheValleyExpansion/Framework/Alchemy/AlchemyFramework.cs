@@ -69,15 +69,15 @@ namespace BeyondTheValleyExpansion.Framework.Alchemy
         /// <param name="ans"> the chosen option </param>
         private void AddIngredients(Farmer who, string ans)
         {
-            if (_AlchemyDataModel.itemData.ContainsKey(Game1.player.CurrentItem.ParentSheetIndex))
+            if (Game1.player.CurrentItem.Category == RefObjectCategory.object_GemCategory)
             {
-                this.itemsInUsed.Add(Game1.player.CurrentItem.ParentSheetIndex);
-                RefMod.ModHelper.Data.WriteSaveData("AlchemyItemsInUsed", itemsInUsed);
-                Game1.player.removeItemFromInventory(Game1.player.CurrentItem);
-            }
 
-            else
-                Game1.drawObjectDialogue(RefMod.i18n.Get("alchemy-failed.1"));
+            }
+            this.itemsInUsed.Add(Game1.player.CurrentItem.ParentSheetIndex);
+            RefMod.ModHelper.Data.WriteSaveData("AlchemyItemsInUsed", itemsInUsed);
+            Game1.player.removeItemFromInventory(Game1.player.CurrentItem);
+
+            Game1.drawObjectDialogue(RefMod.i18n.Get("alchemy-failed.1"));
         }
     }
 }

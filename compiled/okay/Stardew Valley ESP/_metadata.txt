@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3917
+IDs: reimu.sdv-helper
+update keys: GitHub:rei2hu/stardewvalley-esp, Nexus:3917

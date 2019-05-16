@@ -11,6 +11,7 @@ You can watch it over and over again to learn about more fish, but it will only 
 [size=5]Install[/size]
 [list=1]
 [*][url=https://smapi.io]Install the latest version of SMAPI[/url].
+[*][url=https://www.nexusmods.com/stardewvalley/mods/1726]Install PyTk mod[/url]
 [*]Download this mod and unzip it into [font=Courier New]Stardew Valley/Mods[/font].
 [*]Run the game using SMAPI.
 [/list]
@@ -35,4 +36,11 @@ On any day, you can get tips for what fish to attempt next. Watch "The Big One" 
 [*]Release notes
 [*][url=https://github.com/captncraig/StardewMods/tree/master/DVR]Source Code[/url].
 [*][url=https://github.com/captncraig/StardewMods/issues]Issues[/url].
+[/list]
+
+[size=5]Changelog[/size]
+
+[list]
+[*]v1.1.0 - Rewrote internals to use PyTK custom tv. Should give greater compatibility with other mods that change tv.
+[*]v1.0.0 - Initial Release
 [/list]

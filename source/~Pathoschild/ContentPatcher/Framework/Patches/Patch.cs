@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
+using ContentPatcher.Framework.Lexing.LexTokens;
 using ContentPatcher.Framework.Tokens;
 using StardewModdingAPI;
 
@@ -66,6 +67,7 @@ namespace ContentPatcher.Framework.Patches
         public virtual bool UpdateContext(IContext context)
         {
             this.LastContext = context;
+            bool isReady = true;
             bool changed = false;
 
             // update contextual values
@@ -80,7 +82,7 @@ namespace ContentPatcher.Framework.Patches
             if (this.FromLocalAsset != null)
             {
                 bool sourceChanged = this.FromLocalAsset.UpdateContext(context);
-                this.IsReady = this.IsReady && this.FromLocalAsset.IsReady && this.ContentPack.HasFile(this.FromLocalAsset.Value);
+                isReady = this.FromLocalAsset.IsReady && this.ContentPack.HasFile(this.FromLocalAsset.Value);
                 changed = changed || sourceChanged;
             }
 
@@ -91,7 +93,8 @@ namespace ContentPatcher.Framework.Patches
             {
                 bool wasReady = this.IsReady;
                 this.IsReady =
-                    (!this.Conditions.Any() || this.Conditions.All(p => p.IsMatch(context)))
+                    isReady
+                    && (!this.Conditions.Any() || this.Conditions.All(p => p.IsMatch(context)))
                     && this.GetTokensUsed().All(name => context.Contains(name, enforceContext: true));
                 changed = changed || this.IsReady != wasReady;
             }
@@ -120,7 +123,20 @@ namespace ContentPatcher.Framework.Patches
         /// <summary>Get the token names used by this patch in its fields.</summary>
         public virtual IEnumerable<string> GetTokensUsed()
         {
-            return this.RawTargetAsset.GetTokensUsed();
+            // from local asset
+            if (this.FromLocalAsset != null)
+            {
+                foreach (LexTokenToken lexToken in this.FromLocalAsset.GetTokenPlaceholders(recursive: true))
+                    yield return lexToken.Name;
+            }
+
+            // raw target asset
+            foreach (LexTokenToken lexToken in this.RawTargetAsset.GetTokenPlaceholders(recursive: true))
+                yield return lexToken.Name;
+
+            // conditions
+            foreach (string name in this.Conditions.SelectMany(p => p.GetTokensUsed()))
+                yield return name;
         }
 
 

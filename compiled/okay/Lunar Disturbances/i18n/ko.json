@@ -1,0 +1,25 @@
+{
+  //Lunar Messages
+  "moon-text.phase-full": "보름달",
+  "moon-text.phase-firstqrt": "상현달",
+  "moon-text.phase-thirdqrt": "하현달",
+  "moon-text.phase-waningcres": "그믐달",
+  "moon-text.phase-waxingcres": "초승달",
+  "moon-text.phase-waninggibb": "기우는 달",
+  "moon-text.phase-waxinggibb": "차가는 달",
+  "moon-text.phase-new": "삭월",
+  "moon-text.error": "오류발생",
+  "moon-text.phase-blood": "블러드 문",
+  
+  "moon-text.solareclipse": "보기드문 일식이 하루 종일 하늘을 어둡게 하는 모양입니다!",
+
+  "moon-text.moonrise": "달이 떴습니다! 오늘의 월상은 {{moonPhase}}입니다.",
+  "moon-text.moonriseBefore6": "달이 떴습니다! 오늘의 월상은 {{moonPhase}}입니다. 달이 뜬 시각은 {{riseTime}}입니다.",
+  "moon-text.moonset": "달이 집니다! 오늘의 월상은 {{moonPhase}}입니다",
+  "moon-text.hud_message_full": "보름달입니다! 해변가의 물건들이 평소보다 더 많을지도 모르지만, 유령이 출몰할 수 있습니다.",
+  "moon-text.hud_message_bloodMoon": "블러드 문입니다!! 조심하세요, 모두가 긴장하고 있고 몬스터들이 날뛰게 될테니까요!",
+  "moon-text.hud_message_new": "삭월입니다! 해변가의 물건들이 평소보다 적을 것입니다...",
+  "moon-text.fullmoon_eff": "보름달의 힘의 도움으로 인해 {{cropsAffected}} 작물의 성장을 촉진됩니다..",
+  "moon-text.newmoon_eff": "삭월의 힘으로 인해 {{cropsAffected}} 작물의 성장이 둔화됩니다...",
+  "moon-desc.desc_moonphase": "현재의 월상: {{moonPhase}}"
+}

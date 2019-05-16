@@ -3,18 +3,23 @@
 This is the source code for things that are better than you!
 [My Nexus Mods Profile](https://www.nexusmods.com/users/55529772) **is where the good stuff is stored**
 
+## Contents
 - [Mods](#mods)
+  - [Main Mods](#main-mods)
+  - [Content Packs](#content-packs)
 - [Contributing](#contributing)
 - [Licensing](#licensing)
 
 ### Mods 
-**See my [Content Pack Mods Hub](.ContentPackMods)**
-
+#### Main Mods
 | **Mod Name** | Source Code Folder | Mod Download | Source Code Link | Release Notes |
 | ------------ | ------------------ | ------------ | ---------------- | ------------- |
 | Bigger Riverlands Farm | ```BiggerRiverlandsFarm``` | [nexus](https://www.nexusmods.com/stardewvalley/mods/3025) | [source](BiggerRiverlandsFarm), [download source](BiggerRiverlandsFarm/BiggerRiverlandsFarm_SourceCode.zip) | [changelog via nexus](https://www.nexusmods.com/stardewvalley/mods/3025?tab=logs) |
 | Health and Stamina Regeneration | ```HealthStaminaRegen``` | [nexus](https://www.nexusmods.com/stardewvalley/mods/3207) | [source](HealthStaminaRegen), [download source](HealthStaminaRegen/HealthStaminaRegen_Source.zip)  | [changelog](HealthStaminaRegen/changelog.md) |
 | Sprint Sprint Sprint! | ```Sprint``` | [nexus](https://www.nexusmods.com/stardewvalley/mods/3294), [custom](https://github.com/JessebotX/StardewMods/releases/tag/Sprint) | [source](Sprint), [download source](Sprint/SprintSourceCode.zip) | [changelog](Sprint/changelog.md) |
+
+#### Content Packs
+**See my [Content Pack Mods Hub](.ContentPackMods) for more**
 
 ## Contributing
 See [Contribution Guidelines](https://github.com/JessebotX/StardewMods/blob/master/contributing.md)

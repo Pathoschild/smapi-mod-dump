@@ -105,7 +105,6 @@ namespace ToolGeodes
             {
                 Data = Helper.Data.ReadSaveData<SaveData>($"spacechase0.ToolGeodes.{Game1.player.UniqueMultiplayerID}") ?? new SaveData();
             }
-
         }
 
         /// <summary>Raised after the mod context for a peer is received. This happens before the game approves the connection, so the player doesn't yet exist in the game. This is the earliest point where messages can be sent to the peer via SMAPI.</summary>
@@ -113,9 +112,13 @@ namespace ToolGeodes
         /// <param name="e">The event arguments.</param>
         private void onPeerContextReceived(object sender, PeerContextReceivedEventArgs e)
         {
+            Log.debug("Received peer context: " + e.Peer.PlayerID + " " + Game1.IsMasterGame);
+            if (!Game1.IsServer)
+                return;
+
             Log.debug($"Sending tool geode data to {e.Peer.PlayerID}");
             var data = Helper.Data.ReadSaveData<SaveData>($"spacechase0.ToolGeodes.{e.Peer.PlayerID}") ?? new SaveData();
-            Helper.Multiplayer.SendMessage(data, MSG_TOOLGEODEDATA);
+            Helper.Multiplayer.SendMessage(data, MSG_TOOLGEODEDATA, playerIDs: new[] { e.Peer.PlayerID });
         }
 
         /// <summary>Raised after a mod message is received over the network.</summary>

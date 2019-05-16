@@ -510,6 +510,8 @@ namespace DeepWoodsMod
             if (!Game1.IsMasterGame)
                 return;
 
+            ModEntry.Log("DeepWoodsSettings.DoLoad()", StardewModdingAPI.LogLevel.Trace);
+
             // load data
             DeepWoodsState = ModEntry.GetHelper().Data.ReadSaveData<DeepWoodsStateData>("data");
             if (DeepWoodsState == null)

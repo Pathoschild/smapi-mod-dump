@@ -60,6 +60,7 @@ namespace JsonAssets
                 doPrefix(typeof(StardewValley.Object), "canBePlacedHere", typeof(ObjectCanPlantHereOverride));
                 doPrefix(typeof(StardewValley.Object), "checkForAction", typeof(ObjectNoActionHook));
                 doPostfix(typeof(StardewValley.Object), "isIndexOkForBasicShippedCategory", typeof(ObjectCollectionShippingHook));
+                doPrefix(typeof(StardewValley.Objects.Ring), "loadDisplayFields", typeof(RingLoadDisplayFieldsHook));
             }
             catch (Exception e)
             {
@@ -69,7 +70,7 @@ namespace JsonAssets
 
         private void doPrefix(Type origType, string origMethod, Type newType)
         {
-            doPrefix(origType.GetMethod(origMethod), newType.GetMethod("Prefix"));
+            doPrefix(origType.GetMethod(origMethod, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static), newType.GetMethod("Prefix"));
         }
         private void doPrefix(MethodInfo orig, MethodInfo prefix)
         {

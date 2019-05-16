@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace SVRichPresence {
 	public class RichPresenceAPI : IRichPresenceAPI {
-		private IDictionary<string, Tag> tags = new Dictionary<string, Tag>(StringComparer.InvariantCultureIgnoreCase);
+		private readonly IDictionary<string, Tag> tags = new Dictionary<string, Tag>(StringComparer.InvariantCultureIgnoreCase);
 		private readonly RichPresenceMod RPMod;
 
 		public RichPresenceAPI(RichPresenceMod mod) {
@@ -67,21 +67,13 @@ namespace SVRichPresence {
 			return true;
 		}
 
-		public string GetTag(string key) {
-			return tags[key]?.Resolve() ?? null;
-		}
+		public string GetTag(string key) => tags[key]?.Resolve() ?? null;
 
-		public string GetTagThrow(string key) {
-			return tags[key]?.resolver.Invoke() ?? null;
-		}
+		public string GetTagThrow(string key) => tags[key]?.resolver.Invoke() ?? null;
 
-		public bool TagExists(string key) {
-			return tags.ContainsKey(key);
-		}
+		public bool TagExists(string key) => tags.ContainsKey(key);
 
-		public string GetTagOwner(string key) {
-			return tags[key]?.owner ?? null;
-		}
+		public string GetTagOwner(string key) => tags[key]?.owner ?? null;
 
 		public IDictionary<string, string> ListTags(string replaceNull = null, string replaceException = null, bool removeNull = true) {
 			IDictionary<string, string> list =
@@ -100,9 +92,7 @@ namespace SVRichPresence {
 			return list;
 		}
 
-		public ITagRegister GetTagRegister(Mod mod) {
-			return new TagRegister(this, mod);
-		}
+		public ITagRegister GetTagRegister(Mod mod) => new TagRegister(this, mod);
 
 		public string None => Game1.content.LoadString("Strings\\UI:Character_none");
 
@@ -115,7 +105,7 @@ namespace SVRichPresence {
 
 		public string FormatText(string text) {
 			if (text.Length == 0)
-				return null;
+				return "";
 
 			// Code is copied and modified from SMAPI.
 			IDictionary<string, string> tags = ListTags();

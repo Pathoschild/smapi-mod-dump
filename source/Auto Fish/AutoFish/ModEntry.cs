@@ -19,10 +19,12 @@ namespace AutoFish
         public override void Entry(IModHelper helper)
         {
             Config = Helper.ReadConfig<ModConfig>();
-            GameEvents.UpdateTick += new EventHandler(UpdateTick);
+
+            //Events
+            helper.Events.GameLoop.UpdateTicked += UpdateTick;
         }
 
-        private void UpdateTick(object sender, EventArgs e)
+        private void UpdateTick(object sender, UpdateTickedEventArgs e)
         {
             if (Game1.player == null)
                 return;

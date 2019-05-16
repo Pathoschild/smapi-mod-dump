@@ -1,7 +1,7 @@
 ﻿{
    "Name": "God Mode",
    "Author": "treyh0",
-   "Version": "1.1",
+   "Version": "1.2",
    "Description": "Lightweight god-mode cheat with infinite health and infinite stamina options",
    "UniqueID": "treyh0.GodMode",
    "EntryDll": "GodMode.dll",
