@@ -38,14 +38,14 @@ namespace SkillPrestige
             if (!ExperienceLoaded)
             {
                 ExperienceLoaded = true;
-                LastExperiencePoints = (int[])Game1.player.experiencePoints.Clone();
+                LastExperiencePoints = Game1.player.experiencePoints.ToArray();
                 Logger.LogVerbose("Loaded Experience state.");
                 return;
             }
             if (Game1.player.experiencePoints.SequenceEqual(LastExperiencePoints)) return;
             if (Game1.player.experiencePoints.Length != LastExperiencePoints.Length)
             {
-                LastExperiencePoints = (int[])Game1.player.experiencePoints.Clone();
+                LastExperiencePoints = Game1.player.experiencePoints.ToArray();
                 return;
             }
             for (var skillIndex = 0; skillIndex < Game1.player.experiencePoints.Length; skillIndex++)
@@ -62,7 +62,7 @@ namespace SkillPrestige
                 Logger.LogVerbose($"Adding {extraExperience} experience to {Skill.AllSkills.Single(x => x.Type.Ordinal == skillIndex).Type.Name} skill.");
                 Game1.player.gainExperience(skillIndex, extraExperience);
             }
-            LastExperiencePoints = (int[])Game1.player.experiencePoints.Clone();
+            LastExperiencePoints = Game1.player.experiencePoints.ToArray();
         }
     }
 }

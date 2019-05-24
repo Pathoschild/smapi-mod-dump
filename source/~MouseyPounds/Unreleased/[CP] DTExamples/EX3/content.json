@@ -1,0 +1,46 @@
+//Example 3. Requires 8 asset files.
+{
+  "Format": "1.5",
+  "ConfigSchema": {
+    "BarnColor": {
+      "AllowValues": "Blue, Green, Yellow, Rainbow, NoChange",
+    },
+    "CoopColor": {
+      "AllowValues": "Blue, Green, Yellow, Rainbow, NoChange",
+    }
+  },
+  "DynamicTokens": [
+    {
+      "Name": "ChangeBarn",
+      "Value": true,
+    },
+    {
+      "Name": "ChangeBarn",
+      "Value": false,
+      "When": { "BarnColor": "NoChange" }
+    },
+    {
+      "Name": "ChangeCoop",
+      "Value": true,
+    },
+    {
+      "Name": "ChangeCoop",
+      "Value": false,
+      "When": { "CoopColor": "NoChange" }
+    },
+  ],
+  "Changes": [
+     {
+      "Action": "Load",
+      "Target": "Buildings/Deluxe Barn",
+      "FromFile": "assets/Deluxe Barn {{BarnColor}}.png",
+      "When": { "ChangeBarn": true }
+     },
+     {
+      "Action": "Load",
+      "Target": "Buildings/Deluxe Coop",
+      "FromFile": "assets/Deluxe Coop {{CoopColor}}.png",
+      "When": { "ChangeCoop": true }
+     }
+   ]
+}

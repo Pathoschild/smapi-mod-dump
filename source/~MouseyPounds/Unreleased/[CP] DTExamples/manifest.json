@@ -1,0 +1,13 @@
+{
+   "Name": "Dynamic Token Examples",
+   "Author": "MouseyPounds",
+   "Version": "1.0.0",
+   "Description": "Showcase for ContentPatcher Dynamic Tokens",
+   "UniqueID": "MouseyPounds.DynamicTokenExamples",
+   "MinimumApiVersion": "2.8-beta",
+   "UpdateKeys": [],
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.5.0-beta"
+   }
+}

@@ -3,6 +3,7 @@
 # Release notes
 ## Upcoming release
 * Updated for Stardew Valley 1.4.
+* Improved `config.json` keybind parsing.
 * Improved translations. Thanks to binxhlin (updated Chinese), Firevulture (updated German), Yllelder (updated Spanish), and YSRyeol (updated Korean)!
 
 ## 1.16

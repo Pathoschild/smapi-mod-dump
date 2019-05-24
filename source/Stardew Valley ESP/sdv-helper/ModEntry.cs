@@ -12,18 +12,19 @@ namespace sdv_helper
     {
         private static Detector detector;
         private static Settings settings;
-        private static DrawingManager drawingManager;
+        private static LabelDrawingManager drawingManager;
         private static ConfigMenu configMenu;
 
         public override void Entry(IModHelper helper)
         {
             settings = new Config.Settings(Helper);
+            configMenu = new ConfigMenu(settings);
+            drawingManager = new LabelDrawingManager(settings);
             detector = new Detector(settings);
             detector.AddDetector("NPC")
                 .AddDetector("Object")
-                .AddDetector("FarmAnimal");
-            drawingManager = new DrawingManager(settings);
-            configMenu = new ConfigMenu(settings);
+                .AddDetector("FarmAnimal")
+                .AddDetector("WaterEntity");
 
             Helper.Events.Display.RenderingHud += Display_RenderingHud;
             Helper.Events.Player.Warped += Player_Warped;
@@ -38,15 +39,13 @@ namespace sdv_helper
 
         private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (e.Button == SButton.L)
+            if (e.Button == settings.LoadKey)
             {
                 settings.LoadSettings();
                 drawingManager.SendHudMessage("Loaded settings from file", 4);
             }
-            else if (e.Button == SButton.K)
-            {
+            else if (e.Button == settings.MenuKey)
                 Game1.activeClickableMenu = configMenu;
-            }
         }
 
         private void Player_Warped(object sender, WarpedEventArgs e)

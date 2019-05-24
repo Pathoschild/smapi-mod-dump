@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SkillPrestige.Logging;
 using SkillPrestige.Menus.Dialogs;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -57,39 +58,51 @@ namespace SkillPrestige.Menus.Elements.Buttons
             DrawTitleText(spriteBatch);
         }
 
-        protected override void OnMouseHover()
+        /// <summary>Raised when the player begins hovering over the button.</summary>
+        protected override void OnMouseHovered()
         {
-            base.OnMouseHover();
-            if (!IsDisabled) Game1.playSound("smallSelect");
+            base.OnMouseHovered();
+            if (IsDisabled)
+                return;
+
+            Game1.playSound("smallSelect");
         }
 
-        protected override void OnMouseClick()
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="e">The event data.</param>
+        /// <param name="isClick">Whether the button press is a click.</param>
+        public override void OnButtonPressed(ButtonPressedEventArgs e, bool isClick)
         {
-            if (IsDisabled) return;
-            Game1.playSound("bigSelect");
-            if (PerSaveOptions.Instance.PainlessPrestigeMode)
-            {
-                Game1.activeClickableMenu.exitThisMenuNoSound();
-                Prestige.PrestigeSkill(Skill);
+            base.OnButtonPressed(e, isClick);
+            if (IsDisabled)
                 return;
-            }
-            //Magic numbers for tile size multipliers have been determined through trial and error.
-            var dialogWidth = Game1.tileSize * 12;
-            var dialogHeight = Game1.tileSize * 6;
 
-            var viewport = Game1.graphics.GraphicsDevice.Viewport;
-            var screenXCenter = (int)(viewport.Width * (1.0 / Game1.options.zoomLevel)) / 2;
-            var screenYCenter = (int)(viewport.Height * (1.0 / Game1.options.zoomLevel)) / 2;
-            var dialogXCenter = (dialogWidth + IClickableMenu.borderWidth * 2) / 2;
-            var dialogYCenter = (dialogHeight + IClickableMenu.borderWidth * 2) / 2;
-            var bounds = new Rectangle(screenXCenter - dialogXCenter, screenYCenter - dialogYCenter,
-                dialogWidth + IClickableMenu.borderWidth * 2, dialogHeight + IClickableMenu.borderWidth * 2);
-            Logger.LogVerbose($"{Skill.Type.Name} skill prestige attempted.");
-            var message = $"Are you sure you wish to prestige your {Skill.Type.Name} skill? This cannot be undone and will revert you back to level 0 {Skill.Type.Name}. All associated benefits {(PerSaveOptions.Instance.ResetRecipesOnPrestige ? "and" : "except for")} crafting/cooking recipes will be lost.";
-            Game1.activeClickableMenu.exitThisMenuNoSound();
-            Game1.activeClickableMenu = new WarningDialog(bounds, message, () => { Prestige.PrestigeSkill(Skill); },
-                () => { });
-            
+            if (isClick && IsHovered)
+            {
+                Game1.playSound("bigSelect");
+                if (PerSaveOptions.Instance.PainlessPrestigeMode)
+                {
+                    Game1.activeClickableMenu.exitThisMenuNoSound();
+                    Prestige.PrestigeSkill(Skill);
+                    return;
+                }
+                //Magic numbers for tile size multipliers have been determined through trial and error.
+                var dialogWidth = Game1.tileSize * 12;
+                var dialogHeight = Game1.tileSize * 6;
+
+                var viewport = Game1.graphics.GraphicsDevice.Viewport;
+                var screenXCenter = (int)(viewport.Width * (1.0 / Game1.options.zoomLevel)) / 2;
+                var screenYCenter = (int)(viewport.Height * (1.0 / Game1.options.zoomLevel)) / 2;
+                var dialogXCenter = (dialogWidth + IClickableMenu.borderWidth * 2) / 2;
+                var dialogYCenter = (dialogHeight + IClickableMenu.borderWidth * 2) / 2;
+                var bounds = new Rectangle(screenXCenter - dialogXCenter, screenYCenter - dialogYCenter,
+                    dialogWidth + IClickableMenu.borderWidth * 2, dialogHeight + IClickableMenu.borderWidth * 2);
+                Logger.LogVerbose($"{Skill.Type.Name} skill prestige attempted.");
+                var message = $"Are you sure you wish to prestige your {Skill.Type.Name} skill? This cannot be undone and will revert you back to level 0 {Skill.Type.Name}. All associated benefits {(PerSaveOptions.Instance.ResetRecipesOnPrestige ? "and" : "except for")} crafting/cooking recipes will be lost.";
+                Game1.activeClickableMenu.exitThisMenuNoSound();
+                Game1.activeClickableMenu = new WarningDialog(bounds, message, () => { Prestige.PrestigeSkill(Skill); },
+                    () => { });
+            }
         }
     }
 }

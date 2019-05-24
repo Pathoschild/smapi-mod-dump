@@ -7,6 +7,7 @@ using SkillPrestige.InputHandling;
 using SkillPrestige.Logging;
 using SkillPrestige.Menus.Elements.Buttons;
 using SkillPrestige.Professions;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -15,7 +16,7 @@ namespace SkillPrestige.Menus
     /// <summary>
     /// Represents a menu where players can choose to prestige a skill and select prestige awards.
     /// </summary>
-    internal class PrestigeMenu : IClickableMenu
+    internal class PrestigeMenu : IClickableMenu, IInputHandler
     {
         private readonly Skill _skill;
         private readonly Prestige _prestige;
@@ -25,7 +26,7 @@ namespace SkillPrestige.Menus
         private Vector2 _prestigePointBonusLocation;
         private readonly int _rowPadding = Game1.tileSize / 3;
         private int _leftProfessionStartingXLocation;
-        private readonly IList<MinimalistProfessionButton> _professionButtons;
+        private readonly IList<MinimalistProfessionButton> _professionButtons = new List<MinimalistProfessionButton>();
         private static int Offset => 4*Game1.pixelZoom;
 
         private static int ProfessionButtonHeight(Profession profession)
@@ -46,19 +47,44 @@ namespace SkillPrestige.Menus
         } 
 
         private const string CostText = "Cost:";
-        private int _debouceWaitTime;
+        private int _debounceTimer = 10;
         private int _xSpaceAvailableForProfessionButtons;
-        private static bool _buttonClickRegistered;
 
-        public PrestigeMenu(Rectangle bounds, Skill skill, Prestige prestige) : base(bounds.X, bounds.Y, bounds.Width, bounds.Height, true)
+        public PrestigeMenu(Rectangle bounds, Skill skill, Prestige prestige)
+            : base(bounds.X, bounds.Y, bounds.Width, bounds.Height, true)
         {
             Logger.LogVerbose($"New {skill.Type.Name} Prestige Menu created.");
             _skill = skill;
             _prestige = prestige;
             InitiatePrestigeButton();
             InitiateSettingsButton();
-            _professionButtons = new List<MinimalistProfessionButton>();
-            exitFunction = DeregisterMouseEvents;
+        }
+
+        /// <summary>Raised after the player moves the in-game cursor.</summary>
+        /// <param name="e">The event data.</param>
+        public void OnCursorMoved(CursorMovedEventArgs e)
+        {
+            if (_debounceTimer > 0)
+                return;
+
+            foreach (var button in _professionButtons)
+                button.OnCursorMoved(e);
+            _prestigeButton.OnCursorMoved(e);
+            _settingsButton.OnCursorMoved(e);
+        }
+
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="e">The event data.</param>
+        /// <param name="isClick">Whether the button press is a click.</param>
+        public void OnButtonPressed(ButtonPressedEventArgs e, bool isClick)
+        {
+            if (_debounceTimer > 0)
+                return;
+
+            foreach (var button in _professionButtons)
+                button.OnButtonPressed(e, isClick);
+            _prestigeButton.OnButtonPressed(e, isClick);
+            _settingsButton.OnButtonPressed(e, isClick);
         }
 
         private void InitiatePrestigeButton()
@@ -137,40 +163,6 @@ namespace SkillPrestige.Menus
             Logger.LogVerbose("Prestige menu - Profession button initiated.");
         }
 
-        private void RegisterMouseEvents()
-        {
-            if (_buttonClickRegistered) return;
-            _buttonClickRegistered = true;
-            Logger.LogVerbose("Prestige menu - Registering mouse events...");
-            foreach (var button in _professionButtons)
-            {
-                Mouse.MouseMoved += button.CheckForMouseHover;
-                Mouse.MouseClicked += button.CheckForMouseClick;
-            }
-            Mouse.MouseMoved += _prestigeButton.CheckForMouseHover;
-            Mouse.MouseMoved += _settingsButton.CheckForMouseHover;
-            Mouse.MouseClicked += _prestigeButton.CheckForMouseClick;
-            Mouse.MouseClicked += _settingsButton.CheckForMouseClick;
-            Logger.LogVerbose("Prestige menu - Mouse events registered.");
-        }
-
-        private void DeregisterMouseEvents()
-        {
-            Logger.LogVerbose("Prestige menu - Deregistering mouse events...");
-            if (!_buttonClickRegistered) return;
-            foreach (var button in _professionButtons)
-            {
-                Mouse.MouseMoved -= button.CheckForMouseHover;
-                Mouse.MouseClicked -= button.CheckForMouseClick;
-            }
-            Mouse.MouseMoved -= _prestigeButton.CheckForMouseHover;
-            Mouse.MouseMoved -= _settingsButton.CheckForMouseHover;
-            Mouse.MouseClicked -= _prestigeButton.CheckForMouseClick;
-            Mouse.MouseClicked -= _settingsButton.CheckForMouseClick;
-            _buttonClickRegistered = false;
-            Logger.LogVerbose("Prestige menu - Mouse events deregistered.");
-        }
-
         private static int ProfessionButtonWidth(Profession profession)
         {
             return Game1.dialogueFont.MeasureString(string.Join(Environment.NewLine, profession.DisplayName.Split(' '))).X.Ceiling() + Offset * 2;
@@ -181,7 +173,7 @@ namespace SkillPrestige.Menus
             Logger.LogVerbose("Prestige menu - Initiating level 5 profession buttons...");
             var leftProfessionButtonXCenter = _leftProfessionStartingXLocation + _xSpaceAvailableForProfessionButtons / 4;
             var rightProfessionButtonXCenter = _leftProfessionStartingXLocation + (_xSpaceAvailableForProfessionButtons * .75d).Floor();
-            var firstProfession = _skill.Professions.OrderBy(x => x.Id).First(x => x is TierOneProfession);
+            var firstProfession = _skill.Professions.Where(x => x is TierOneProfession).First();
 
             _professionButtons.Add(new MinimalistProfessionButton
             {
@@ -192,7 +184,7 @@ namespace SkillPrestige.Menus
                 Selected = _prestige.PrestigeProfessionsSelected.Contains(firstProfession.Id),
                 Profession = firstProfession
             });
-            var secondProfession = _skill.Professions.OrderBy(x => x.Id).Skip(1).First(x => x is TierOneProfession);
+            var secondProfession = _skill.Professions.Where(x => x is TierOneProfession).Skip(1).First();
             _professionButtons.Add(new MinimalistProfessionButton
             {
 
@@ -210,7 +202,7 @@ namespace SkillPrestige.Menus
             Logger.LogVerbose("Prestige menu - Initiating level 10 profession buttons...");
             var buttonCenterIndex = 1;
             var canBeAfforded = _prestige.PrestigePoints >= PerSaveOptions.Instance.CostOfTierTwoPrestige;
-            foreach (var profession in _skill.Professions.OrderBy(x => x.Id).Where(x => x is TierTwoProfession)
+            foreach (var profession in _skill.Professions.Where(x => x is TierTwoProfession)
             )
             {
                 var tierTwoProfession = (TierTwoProfession)profession;
@@ -240,14 +232,8 @@ namespace SkillPrestige.Menus
 
         public override void draw(SpriteBatch spriteBatch)
         {
-            if (_debouceWaitTime < 10)
-            {
-                _debouceWaitTime++;
-            }
-            else
-            {
-                RegisterMouseEvents();
-            }
+            if (_debounceTimer > 0)
+                _debounceTimer--;
 
             Game1.drawDialogueBox(xPositionOnScreen, yPositionOnScreen, width, height, false, true);
             upperRightCloseButton?.draw(spriteBatch);

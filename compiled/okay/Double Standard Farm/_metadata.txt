@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3928
+IDs: Leaf.DoubleStandardFarm
+update keys: Nexus:3928

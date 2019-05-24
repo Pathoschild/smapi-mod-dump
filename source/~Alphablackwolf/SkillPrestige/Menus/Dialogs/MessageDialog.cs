@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SkillPrestige.InputHandling;
 using SkillPrestige.Logging;
 using SkillPrestige.Menus.Elements.Buttons;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -11,42 +12,17 @@ namespace SkillPrestige.Menus.Dialogs
     /// <summary>
     /// Represents a message dialog box to display information to the user.
     /// </summary>
-    internal class MessageDialog : IClickableMenu
+    internal class MessageDialog : IClickableMenu, IInputHandler
     {
-        public override void receiveRightClick(int x, int y, bool playSound = true) { }
-
-        private static bool _buttonClickRegistered;
         private bool _buttonInstantiated;
-        private int _debouceWaitTime;
+        private int _debounceTimer = 10;
         private TextureButton _okayButton;
         private readonly string _message;
-
 
         protected MessageDialog(Rectangle bounds, string message)
             : base(bounds.X, bounds.Y, bounds.Width, bounds.Height, true)
         {
-            exitFunction = DeregisterMouseEvents;
             _message = message;
-        }
-
-        private void RegisterMouseEvents()
-        {
-            if (_buttonClickRegistered) return;
-            _buttonClickRegistered = true;
-            Logger.LogVerbose("Message Dialog - Registering Mouse Events...");
-            Mouse.MouseMoved += _okayButton.CheckForMouseHover;
-            Mouse.MouseClicked += _okayButton.CheckForMouseClick;
-            Logger.LogVerbose("Message Dialog - Mouse Events Registered.");
-        }
-
-        private void DeregisterMouseEvents()
-        {
-            if (!_buttonClickRegistered) return;
-            Logger.LogVerbose("Message Dialog - Deregistering Mouse Events.");
-            Mouse.MouseMoved -= _okayButton.CheckForMouseHover;
-            Mouse.MouseClicked -= _okayButton.CheckForMouseClick;
-            Logger.LogVerbose("Message Dialog - Mouse Events Deregistered.");
-            _buttonClickRegistered = false;
         }
 
         private void InstantiateButtons()
@@ -69,14 +45,9 @@ namespace SkillPrestige.Menus.Dialogs
 
         public override void draw(SpriteBatch spriteBatch)
         {
-            if (_debouceWaitTime < 10)
-            {
-                _debouceWaitTime++;
-            }
-            else
-            {
-                RegisterMouseEvents();
-            }
+            if (_debounceTimer > 0)
+                _debounceTimer--;
+
             Game1.drawDialogueBox(xPositionOnScreen, yPositionOnScreen, width, height, false, true);
             upperRightCloseButton?.draw(spriteBatch);
             DrawDecorations(spriteBatch);
@@ -101,5 +72,26 @@ namespace SkillPrestige.Menus.Dialogs
         }
 
         protected virtual void DrawDecorations(SpriteBatch spriteBatch) { }
+
+        /// <summary>Raised after the player moves the in-game cursor.</summary>
+        /// <param name="e">The event data.</param>
+        public void OnCursorMoved(CursorMovedEventArgs e)
+        {
+            if (_debounceTimer > 0)
+                return;
+
+            _okayButton.OnCursorMoved(e);
+        }
+
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="e">The event data.</param>
+        /// <param name="isClick">Whether the button press is a click.</param>
+        public void OnButtonPressed(ButtonPressedEventArgs e, bool isClick)
+        {
+            if (_debounceTimer > 0)
+                return;
+
+            _okayButton.OnButtonPressed(e, isClick);
+        }
     }
 }

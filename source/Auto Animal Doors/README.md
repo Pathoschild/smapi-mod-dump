@@ -16,7 +16,7 @@ Your animal doors will close automatically at the time you specified in the conf
 
 If you go to bed before your animal door close time, your animal doors will be closed, and all your animals will be warped back to their homes to keep them safe from attacks ;)
 
-Note: The current implementation closes the animal doors and warps the animals back as soon as you get into bed (even if you select "No" from the "Go to sleep now?" dialog). It is difficult (impossible?) to warp your animals back to safty on time once "Yes" is pressed.
+Note: The current implementation closes the animal doors and warps the animals back as soon as you get into bed (even if you select "No" from the "Go to sleep now?" dialog). It is difficult (impossible?) to warp your animals back to safety on time once "Yes" is pressed.
 
 ## Config File
 

@@ -1,0 +1,9 @@
+Dynamic Token Examples.
+
+1) Linking intuitive config values to obscure filenames. In this example, the mod contains four different varieties of fence with different graphics for each season. The player can choose one of the four fence types in the config and using a combination of Global, Dynamic, and Config Tokens, a single patch entry can handle everything.
+
+2) Adding an alternate texture without having to change old filenames. In this example the author of a seasonal house mod wants to add a new Fall texture as an alternate without affecting other seasons or renaming previously existing files. A dynamic token which is blank unless the player has enabled the alternate texture is added to the FromFile reference to accomplish this.
+
+3) Creating a negative condition. In this example, the mod has a variety of configuration options to change the deluxe barn & coop textures, but the options also include a "NoChange" option for each in case the player wants to leave one of them unchanged. Using a Dynamic Token allows the modder to have the patch apply only when something other than "NoChange" is selected without having to explictly specify all of the other options in the "When."
+
+4) Creating an AND condition. In this example, Clint is given special dialogue that only appears after the player has triggered both 10-heart confrontation scenes (the "bad" versions.) By using Dynamic Tokens, a patch can require two (or more) HasSeenEvent or HasFlag conditions to be met.

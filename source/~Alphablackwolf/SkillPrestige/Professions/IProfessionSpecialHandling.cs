@@ -5,8 +5,10 @@
     /// </summary>
     public interface IProfessionSpecialHandling
     {
+        /// <summary>Apply effects for the profession.</summary>
         void ApplyEffect();
 
+        /// <summary>Remove effects for the profession.</summary>
         void RemoveEffect();
     }
 }

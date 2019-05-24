@@ -11,8 +11,6 @@
     <AssemblyName>SkillPrestige</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <!-- mod build config -->
-    <DeployModFolderName>SkillPrestige</DeployModFolderName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,16 +32,14 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ExtendedMinecart">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Mods\ExtendedMinecart\ExtendedMinecart.dll</HintPath>
-    </Reference>
-    <Reference Include="LuckSkill">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Mods\LuckSkill\LuckSkill.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <PackageReference Include="JsonNet.PrivateSettersContractResolvers.Source" Version="0.1.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="2.2.0" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -62,6 +59,7 @@
     <Compile Include="Commands\SkillPrestigeCommand.cs" />
     <Compile Include="Bonuses\TypeRegistration\IBonusTypeRegistration.cs" />
     <Compile Include="CropRegrowthFactor.cs" />
+    <Compile Include="InputHandling\IInputHandler.cs" />
     <Compile Include="JsonNet.PrivateSettersContractResolvers\MemberInfoExtensions.cs" />
     <Compile Include="JsonNet.PrivateSettersContractResolvers\PrivateSetterContractResolver.cs" />
     <Compile Include="Logging\LogLevel.cs" />
@@ -75,9 +73,6 @@
     <Compile Include="Menus\Dialogs\MessageDialog.cs" />
     <Compile Include="Menus\Dialogs\WarningDialog.cs" />
     <Compile Include="Menus\SettingsMenu.cs" />
-    <Compile Include="Mods\MyLuckSkill\LuckSkillTypeRegistration.cs" />
-    <Compile Include="Mods\MyLuckSkill\LuckRegistration.cs" />
-    <Compile Include="Mods\MyLuckSkill\LuckProfessions.cs" />
     <Compile Include="PerSaveOptions.cs" />
     <Compile Include="PlayerManager.cs" />
     <Compile Include="Professions\CombatProfessions.cs" />
@@ -99,12 +94,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Professions\DefenderSpecialHandling.cs" />
     <Compile Include="Professions\FighterSpecialHandling.cs" />
-    <Compile Include="InputHandling\MouseMoveEventArguments.cs" />
     <Compile Include="Mods\ISkillMod.cs" />
-    <Compile Include="Mods\MyLuckSkill\SpecialCharmSpecialHandling.cs" />
-    <Compile Include="Mods\MyLuckSkill\LuckSkillMod.cs" />
-    <Compile Include="Mods\SkillMod.cs" />
-    <Compile Include="InputHandling\MouseClickEventArguments.cs" />
     <Compile Include="InputHandling\Mouse.cs" />
     <Compile Include="Professions\IProfessionSpecialHandling.cs" />
     <Compile Include="Menus\SkillsMenuExtension.cs" />
@@ -125,7 +115,6 @@
     <Compile Include="ToolType.cs" />
     <Compile Include="ToolProficiencyHandler.cs" />
     <Compile Include="SkillPrestigeMod.cs" />
-    <Compile Include="Mods\MyLuckSkill\LuckSkillType.cs" />
     <Compile Include="SkillTypes\DefaultSkillTypeRegistration.cs" />
     <Compile Include="SkillTypes\DefaultSkillTypes.cs" />
     <Compile Include="SkillTypes\ISkillTypeRegistration.cs" />
@@ -135,11 +124,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="manifest.json" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Checkmark.png">
@@ -156,11 +141,4 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.1.6.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.1.6.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.1.6.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.1.6.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
-  </Target>
 </Project>

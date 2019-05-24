@@ -1,0 +1,283 @@
+{
+  "mapLayout": {
+    "minStonePerDenominator": 10,
+    "maxStonePerDenominator": 30,
+    "stoneDenominator": 100.0,
+    "minMonsterChance": 0.0002,
+    "maxRandomMonsterPerDenominator": 200,
+    "maxRandomMonsterDenominator": 10000.0,
+    "itemOnFloorChance": 0.005,
+    "gemStoneChanceDoubled": 0.003,
+    "barrelLuckMultiplier": 20.0,
+    "chanceForIceCrystals": 0.15,
+    "chanceForMushrooms": 0.55,
+    "chanceMonsterHasSpecialItem": 0.003,
+    "chanceForBigBolder": 0.01
+  },
+  "stoneChances": {
+    "CopperChanceUpToLevel40": 0.15,
+    "IronChanceFromLevel40To80": 0.15,
+    "GoldChanceFromLevel80To120": 0.15,
+    "SkullMineBaseOreChance": 0.1,
+    "SkullMineBaseOreChancePerLevel": 0.001,
+    "IridiumBaseChance": 0.001,
+    "GoldChanceSkullMine": 0.02,
+    "GoldChanceSkullMinePerLevelBoost": 0.001,
+    "SkullMineMaxIronChance": 0.8,
+    "IronChanceSkullMinePerLevelBoost": 0.008,
+    "ChanceModifierPerMiningLevel": 0.001,
+    "GemChancePerLevelDenominator": 2400.0,
+    "ChanceForPurpleStonePerMiningLevel": 0.016,
+    "ChanceForMysthicStonePerMiningLevel": 0.016
+  },
+  "breakStones": [
+    {
+      "stoneIndex": 56,
+      "stoneName": "",
+      "oreChances": [
+        {
+          "oreIndex": 382,
+          "oreName": "",
+          "oreChance": 0.9,
+          "minOre": 1,
+          "maxOre": 1,
+          "professionChanges": [
+            {
+              "profession": 18,
+              "affectsCount": true,
+              "professionChange": 1.0,
+              "professionOperation": "min+"
+            },
+            {
+              "profession": 18,
+              "affectsCount": true,
+              "professionChange": 2.0,
+              "professionOperation": "max+"
+            },
+            {
+              "profession": 18,
+              "affectsCount": false,
+              "professionChange": 1.3,
+              "professionOperation": "*"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stoneIndex": 58,
+      "stoneName": "",
+      "oreChances": [
+        {
+          "oreIndex": 382,
+          "oreName": "",
+          "oreChance": 0.5,
+          "minOre": 1,
+          "maxOre": 1,
+          "professionChanges": [
+            {
+              "profession": 18,
+              "affectsCount": true,
+              "professionChange": 1.0,
+              "professionOperation": "min+"
+            },
+            {
+              "profession": 18,
+              "affectsCount": true,
+              "professionChange": 2.0,
+              "professionOperation": "max+"
+            },
+            {
+              "profession": 18,
+              "affectsCount": false,
+              "professionChange": 1.3,
+              "professionOperation": "*"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stoneIndex": 38,
+      "stoneName": "",
+      "oreChances": [
+        {
+          "oreIndex": 382,
+          "oreName": "",
+          "oreChance": 0.5,
+          "minOre": 1,
+          "maxOre": 1,
+          "professionChanges": [
+            {
+              "profession": 18,
+              "affectsCount": true,
+              "professionChange": 1.0,
+              "professionOperation": "min+"
+            },
+            {
+              "profession": 18,
+              "affectsCount": true,
+              "professionChange": 2.0,
+              "professionOperation": "max+"
+            },
+            {
+              "profession": 18,
+              "affectsCount": false,
+              "professionChange": 1.3,
+              "professionOperation": "*"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stoneIndex": 54,
+      "stoneName": "",
+      "oreChances": [
+        {
+          "oreIndex": 382,
+          "oreName": "",
+          "oreChance": 0.5,
+          "minOre": 1,
+          "maxOre": 1,
+          "professionChanges": [
+            {
+              "profession": 18,
+              "affectsCount": true,
+              "professionChange": 1.0,
+              "professionOperation": "min+"
+            },
+            {
+              "profession": 18,
+              "affectsCount": true,
+              "professionChange": 2.0,
+              "professionOperation": "max+"
+            },
+            {
+              "profession": 18,
+              "affectsCount": false,
+              "professionChange": 1.3,
+              "professionOperation": "*"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stoneIndex": 760,
+      "stoneName": "",
+      "oreChances": [
+        {
+          "oreIndex": 382,
+          "oreName": "",
+          "oreChance": 0.5,
+          "minOre": 1,
+          "maxOre": 1,
+          "professionChanges": [
+            {
+              "profession": 18,
+              "affectsCount": true,
+              "professionChange": 1.0,
+              "professionOperation": "min+"
+            },
+            {
+              "profession": 18,
+              "affectsCount": true,
+              "professionChange": 2.0,
+              "professionOperation": "max+"
+            },
+            {
+              "profession": 18,
+              "affectsCount": false,
+              "professionChange": 1.3,
+              "professionOperation": "*"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stoneReplacements": [
+    {
+      "stoneIndex": 76,
+      "stoneName": "",
+      "stonesToReplace": [],
+      "mineAreas": [
+        40,
+        121
+      ],
+      "mineLevels": [],
+      "replaceAll": false,
+      "chance": 0.005,
+      "durability": 3,
+      "professionChanges": [
+        {
+          "profession": 22,
+          "affectsCount": false,
+          "professionChange": 2.0,
+          "professionOperation": "*"
+        }
+      ]
+    },
+    {
+      "stoneIndex": 77,
+      "stoneName": "",
+      "stonesToReplace": [],
+      "mineAreas": [
+        80,
+        121
+      ],
+      "mineLevels": [],
+      "replaceAll": false,
+      "chance": 0.005,
+      "durability": 3,
+      "professionChanges": [
+        {
+          "profession": 22,
+          "affectsCount": false,
+          "professionChange": 2.0,
+          "professionOperation": "*"
+        }
+      ]
+    },
+    {
+      "stoneIndex": 75,
+      "stoneName": "",
+      "stonesToReplace": [],
+      "mineAreas": [],
+      "mineLevels": [],
+      "replaceAll": false,
+      "chance": 0.005,
+      "durability": 3,
+      "professionChanges": [
+        {
+          "profession": 22,
+          "affectsCount": false,
+          "professionChange": 2.0,
+          "professionOperation": "*"
+        }
+      ]
+    },
+    {
+      "stoneIndex": 75,
+      "stoneName": "",
+      "stonesToReplace": [],
+      "mineAreas": [
+        10
+      ],
+      "mineLevels": [],
+      "replaceAll": false,
+      "chance": 0.02,
+      "durability": 3,
+      "professionChanges": [
+        {
+          "profession": 22,
+          "affectsCount": false,
+          "professionChange": 2.0,
+          "professionOperation": "*"
+        }
+      ]
+    }
+  ],
+  "itemReplacements": []
+}

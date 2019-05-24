@@ -93,6 +93,7 @@ namespace SkillPrestige
                 else
                 {
                     Logger.LogInformation($"Prestiging skill {skill.Type.Name}.");
+                    skill.OnPrestige?.Invoke();
                     skill.SetSkillExperience(0);
                     skill.SetSkillLevel(0);
                     Logger.LogInformation($"Skill {skill.Type.Name} experience and level reset.");

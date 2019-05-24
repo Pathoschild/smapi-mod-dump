@@ -1,0 +1,14 @@
+url:
+   https://github.com/MouseyPounds/stardew-mods.git
+
+mods:
+   Dish of the Day Display
+   Floor Shadow Switcher
+
+latest commit:
+   commit 99b36336a732bfcf7c266d88db5e6dca33de3835
+   Author: MouseyPounds <mouseypounds+github@gmail.com>
+   Date:   Thu May 23 00:59:50 2019 -0400
+   
+       DoDD polish before release
+   

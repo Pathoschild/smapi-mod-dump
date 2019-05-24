@@ -45,14 +45,14 @@ namespace SkillPrestige
                 if (whichForageCrop == 1) forageCropObject = new Object(399, 1);
                 if (Game1.player.professions.Contains(16))
                 {
-                    if (forageCropObject != null) forageCropObject.quality = 4;
+                    if (forageCropObject != null) forageCropObject.Quality = 4;
                 }
                 else if (Game1.random.NextDouble() < Game1.player.ForagingLevel / 30.0)
                 {
-                    if (forageCropObject != null) forageCropObject.quality = 2;
+                    if (forageCropObject != null) forageCropObject.Quality = 2;
                 }
                 else if (Game1.random.NextDouble() < Game1.player.ForagingLevel / 15.0)
-                    if (forageCropObject != null) forageCropObject.quality = 1;
+                    if (forageCropObject != null) forageCropObject.Quality = 1;
                 if (junimoHarvester != null)
                 {
                     junimoHarvester.tryToAddItemToHut(forageCropObject);
@@ -121,15 +121,15 @@ namespace SkillPrestige
                         else Game1.createObjectDebris(seedIndex, xTile, yTile);
                     }
                     if (regrowAfterHarvest == -1) return true;
-                    dayOfCurrentPhase = regrowAfterHarvest;
-                    fullyGrown = true;
+                    dayOfCurrentPhase.Value = regrowAfterHarvest;
+                    fullyGrown.Value = true;
                 }
                 else
                 {
                     if (junimoHarvester == null)
                     {
                         var player = Game1.player;
-                        var crop = !programColored ? new Object(indexOfHarvest, 1, false, -1, quality) : new ColoredObject(indexOfHarvest, 1, tintColor) {quality = quality};
+                        var crop = !programColored ? new Object(indexOfHarvest, 1, false, -1, quality) : new ColoredObject(indexOfHarvest, 1, tintColor) {Quality = quality};
                         if (!player.addItemToInventoryBool(crop))
                         {
                             Game1.showRedMessage("Inventory Full");
@@ -145,7 +145,7 @@ namespace SkillPrestige
                     else
                     {
                         var junimoHarvester1 = junimoHarvester;
-                        var crop = !programColored ? new Object(indexOfHarvest, 1, false, -1, quality) : new ColoredObject(indexOfHarvest, 1, tintColor) {quality = quality};
+                        var crop = !programColored ? new Object(indexOfHarvest, 1, false, -1, quality) : new ColoredObject(indexOfHarvest, 1, tintColor) {Quality = quality};
                         junimoHarvester1.tryToAddItemToHut(crop);
                     }
                     if (random.NextDouble() < Game1.player.LuckLevel / 1500.0 + Game1.dailyLuck / 1200.0 + 10f)
@@ -168,7 +168,7 @@ namespace SkillPrestige
                     }
                     if (indexOfHarvest == 421)
                     {
-                        indexOfHarvest = 431;
+                        indexOfHarvest.Value = 431;
                         numberOfCropsProduced = random.Next(1, 4);
                     }
                     for (var index = 0; index < numberOfCropsProduced - 1; ++index)
@@ -181,8 +181,8 @@ namespace SkillPrestige
                     var farmingExperienceGain = (float)(16.0 * Math.Log(0.018 * Convert.ToInt32(Game1.objectInformation[indexOfHarvest].Split('/')[1]) + 1.0, Math.E));
                     if (junimoHarvester == null) Game1.player.gainExperience(0, (int)Math.Round(farmingExperienceGain));
                     if (regrowAfterHarvest == -1) return true;
-                    dayOfCurrentPhase = regrowAfterHarvest;
-                    fullyGrown = true;
+                    dayOfCurrentPhase.Value = regrowAfterHarvest;
+                    fullyGrown.Value = true;
                 }
             }
             return false;

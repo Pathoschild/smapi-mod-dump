@@ -5,11 +5,15 @@ mods:
    Skill Prestige
    Skill Prestige for Cooking Skill
    Skill Prestige for Luck Skill
+   Skill Prestige for Magic
 
 latest commit:
-   commit 80b7ca3ec58311a96820c8d6583f02e8342cc3f0
-   Author: Chris <Christopher.R.Couture@gmail.com>
-   Date:   Fri Aug 4 09:20:02 2017 -0400
+   commit 087861d4c73ef0d7b1321d73877062e64758b4fd
+   Merge: 80b7ca3 3933cbd
+   Author: Chris <Christopher.r.couture@gmail.com>
+   Date:   Tue May 21 15:24:08 2019 -0400
    
-       tying in animal produce handling, prepping for merge to v2 branch.
+       Merge pull request #10 from Pathoschild/develop
+       
+       Ongoing development
    

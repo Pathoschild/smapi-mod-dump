@@ -5,9 +5,9 @@ mods:
    Json Assets
 
 latest commit:
-   commit 6972c0dc2f0fd46cf04768fcde74bf8f9b3b8485
+   commit 14db3ead9aa9364556a05977acdeb07f5620ba26
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Thu May 9 22:18:57 2019 -0400
+   Date:   Sat May 18 21:28:54 2019 -0400
    
-       Version 1.3.4
+       Fix non-vanilla entries in collections disappearing. Version 1.3.6
    

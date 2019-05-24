@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using SkillPrestige.Logging;
 
 namespace SkillPrestige.Mods
@@ -13,53 +11,6 @@ namespace SkillPrestige.Mods
     public static class ModHandler
     {
         private static readonly List<ISkillMod> Mods = new List<ISkillMod>();
-
-        /// <summary>
-        /// Registers mods found loaded into the assembly.
-        /// </summary>
-        public static void RegisterLoadedMods()
-        {
-            Logger.LogInformation("Registering internally loaded mods...");
-            if (Mods.Any())
-            {
-                Logger.LogWarning("Cannot bulk register mods, as there are mods already loaded.");
-                return;
-            }
-            var targetInterface = typeof(ISkillMod);
-            var concreteModTypes = AppDomain.CurrentDomain.GetNonSystemAssemblies()
-                .SelectMany(x => x.GetTypesSafely())
-                .Where(x => targetInterface.IsAssignableFrom(x) && !x.IsAbstract).ToList();
-            Logger.LogInformation($"{concreteModTypes.Count} skill mods found.");
-            var numberOfModsLoadedSuccessfully = 0;
-            foreach (var mod in concreteModTypes)
-            {
-                try
-                {
-                    var skillMod = (ISkillMod)Activator.CreateInstance(mod);
-                    RegisterMod(skillMod);
-                    numberOfModsLoadedSuccessfully++;
-                }
-                catch (Exception exception)
-                    when (exception.GetType().In(typeof(ArgumentNullException), typeof(ArgumentException)))
-                {
-                    Logger.LogWarning(
-                        $"Attempt to instantiate mod of type {mod.FullName} failed: {Environment.NewLine} {exception}");
-                    continue;
-                }
-                catch (Exception exception)
-                    when (exception.GetType().In(typeof(NotSupportedException), typeof(TargetInvocationException),
-                        typeof(MethodAccessException), typeof(MemberAccessException),
-                        typeof(InvalidComObjectException), typeof(MissingMethodException),
-                        typeof(COMException), typeof(TypeLoadException)))
-                {
-                    Logger.LogError(
-                        $"Attempt to instantiate mod of type {mod.FullName} failed: {Environment.NewLine} {exception}");
-                    continue;
-                }
-                
-                Logger.LogInformation($"Internally loaded mods registered: {numberOfModsLoadedSuccessfully}");
-            }
-        }
 
         /// <summary>
         /// Registers another skill mod to work with the skill prestige system.

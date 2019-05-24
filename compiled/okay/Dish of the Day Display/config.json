@@ -1,0 +1,8 @@
+{
+  "Show_Chat_Message": true,
+  "Place_Sign": true,
+  "Sign_Type": "wood",
+  "Sign_Location_Map_Name": "Town",
+  "Sign_Location_Tile_X": 42,
+  "Sign_Location_Tile_Y": 71
+}

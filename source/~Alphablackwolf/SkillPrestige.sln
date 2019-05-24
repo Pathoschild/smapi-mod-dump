@@ -1,13 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillPrestige", "SkillPrestige\SkillPrestige.csproj", "{D444AC8A-8D4C-4256-94BB-B075B717FEFF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{30F8CE8F-CEF0-4017-8CC3-B319577C8EDB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{F01C8A45-B07E-401F-BD4E-8A164316ADB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillPrestige.LuckSkill", "SkillPrestige.LuckSkill\SkillPrestige.LuckSkill.csproj", "{29A15869-3965-4533-870B-483AA5DBE80D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillPrestige.CookingSkill", "SkillPrestige.CookingSkill\SkillPrestige.CookingSkill.csproj", "{A1415907-3D4B-4D55-AA4A-063696DF3019}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillPrestige.Magic", "SkillPrestige.Magic\SkillPrestige.Magic.csproj", "{B353BCD7-BB57-421D-BFF5-EFBA59B62FA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,11 +39,38 @@ Global
 		{F01C8A45-B07E-401F-BD4E-8A164316ADB0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F01C8A45-B07E-401F-BD4E-8A164316ADB0}.Release|x86.ActiveCfg = Release|x86
 		{F01C8A45-B07E-401F-BD4E-8A164316ADB0}.Release|x86.Build.0 = Release|x86
+		{29A15869-3965-4533-870B-483AA5DBE80D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29A15869-3965-4533-870B-483AA5DBE80D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29A15869-3965-4533-870B-483AA5DBE80D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{29A15869-3965-4533-870B-483AA5DBE80D}.Debug|x86.Build.0 = Debug|Any CPU
+		{29A15869-3965-4533-870B-483AA5DBE80D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29A15869-3965-4533-870B-483AA5DBE80D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29A15869-3965-4533-870B-483AA5DBE80D}.Release|x86.ActiveCfg = Release|Any CPU
+		{29A15869-3965-4533-870B-483AA5DBE80D}.Release|x86.Build.0 = Release|Any CPU
+		{A1415907-3D4B-4D55-AA4A-063696DF3019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1415907-3D4B-4D55-AA4A-063696DF3019}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1415907-3D4B-4D55-AA4A-063696DF3019}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A1415907-3D4B-4D55-AA4A-063696DF3019}.Debug|x86.Build.0 = Debug|Any CPU
+		{A1415907-3D4B-4D55-AA4A-063696DF3019}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1415907-3D4B-4D55-AA4A-063696DF3019}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1415907-3D4B-4D55-AA4A-063696DF3019}.Release|x86.ActiveCfg = Release|Any CPU
+		{A1415907-3D4B-4D55-AA4A-063696DF3019}.Release|x86.Build.0 = Release|Any CPU
+		{B353BCD7-BB57-421D-BFF5-EFBA59B62FA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B353BCD7-BB57-421D-BFF5-EFBA59B62FA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B353BCD7-BB57-421D-BFF5-EFBA59B62FA8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B353BCD7-BB57-421D-BFF5-EFBA59B62FA8}.Debug|x86.Build.0 = Debug|Any CPU
+		{B353BCD7-BB57-421D-BFF5-EFBA59B62FA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B353BCD7-BB57-421D-BFF5-EFBA59B62FA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B353BCD7-BB57-421D-BFF5-EFBA59B62FA8}.Release|x86.ActiveCfg = Release|Any CPU
+		{B353BCD7-BB57-421D-BFF5-EFBA59B62FA8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F01C8A45-B07E-401F-BD4E-8A164316ADB0} = {30F8CE8F-CEF0-4017-8CC3-B319577C8EDB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E300D7CC-B8E9-4B5E-82A5-424A920BCCFB}
 	EndGlobalSection
 EndGlobal

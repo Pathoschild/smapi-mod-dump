@@ -5,9 +5,9 @@ mods:
    Auto Tool Select
 
 latest commit:
-   commit 63dc01eefe34811ec0b4e5840a539faa55e7ac4e
+   commit 779945256e912d67faa3dd91c804848161b38ade
    Author: MaciejMarkuszewski <maciej.markuszewski1998@gmail.com>
-   Date:   Tue May 14 19:51:46 2019 +0200
+   Date:   Tue May 21 01:37:43 2019 +0200
    
-       Mod 1.4 version commit
+       1.4.2 update commit
    

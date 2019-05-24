@@ -1,0 +1,11 @@
+﻿{
+  "Name": "SeparateGreenhouse",
+  "Author": "lolmaj",
+  "Version": "1.1",
+  "Description": "Separate greenhouses for multiplayer",
+  "UniqueID": "lolmaj.SeparateGreenhouse",
+  "EntryDll": "SeparateGreenhouse.dll",
+  "MinimumApiVersion": "2.11",
+  "UpdateKeys": [ "Nexus:3965" ]
+}
+ 

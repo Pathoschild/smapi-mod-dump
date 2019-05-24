@@ -1,0 +1,13 @@
+url:
+   https://github.com/JPANv2/Stardew-Valley-Tree-Changes.git
+
+mods:
+   Tree Changes
+
+latest commit:
+   commit 644d6304072b6122e6e391d4aa464a02072cd114
+   Author: JPAN <JPAmaralNunes@gmail.com>
+   Date:   Thu May 23 09:43:25 2019 +0100
+   
+       Added Example config
+   

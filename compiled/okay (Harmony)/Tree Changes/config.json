@@ -1,0 +1,8 @@
+{
+  "treeParameters": {
+    "treeGrowthChance": 0.2,
+    "treeSpreadChance": 0.15,
+    "treeHasSeedChance": 0.05
+  },
+  "seedChanges": []
+}

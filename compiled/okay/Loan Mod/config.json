@@ -7,5 +7,6 @@
   "MoneyAmount1": 500,
   "MoneyAmount2": 1000,
   "MoneyAmount3": 5000,
-  "MoneyAmount4": 10000
+  "MoneyAmount4": 10000,
+  "Reset": false
 }

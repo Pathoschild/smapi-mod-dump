@@ -401,7 +401,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Constants
             public static Translation SummaryHarvestMulti(int daysToFirstHarvest, int daysToNextHarvests) => L10n.Helper.Get("crop.summary.harvest-multi", new { daysToFirstHarvest, daysToNextHarvests });
 
             /// <summary>A value like <c>grows in {{seasons}}</c>.</summary>
-            public static Translation SummarySeasons(string seasons) => L10n.Helper.Get("crop.summary.seasons", new { season = seasons });
+            public static Translation SummarySeasons(string seasons) => L10n.Helper.Get("crop.summary.seasons", new { seasons });
 
             /// <summary>A value like <c>sells for {{price}}</c>.</summary>
             public static Translation SummarySellsFor(string price) => L10n.Helper.Get("crop.summary.sells-for", new { price });

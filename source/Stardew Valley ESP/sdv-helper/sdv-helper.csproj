@@ -53,10 +53,13 @@
     <Compile Include="Detectors\NPCDetector.cs" />
     <Compile Include="Detectors\IDetector.cs" />
     <Compile Include="Detectors\ObjectDetector.cs" />
+    <Compile Include="Detectors\WaterEntityDetector.cs" />
     <Compile Include="Labels\ColorManager.cs" />
-    <Compile Include="Labels\DrawingManager.cs" />
+    <Compile Include="Labels\LabelDrawingManager.cs" />
     <Compile Include="Menu\ColorComponent.cs" />
     <Compile Include="Menu\ConfigMenu.cs" />
+    <Compile Include="Menu\Scrollbar.cs" />
+    <Compile Include="Menu\Tab.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Config\Settings.cs" />

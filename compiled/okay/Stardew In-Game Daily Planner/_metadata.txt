@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3941
+IDs: MevNav.DailyPlanner
+update keys: Nexus:3941

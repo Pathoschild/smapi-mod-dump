@@ -21,7 +21,9 @@ namespace ContentPatcher.Framework.Migrations
             this.AddedTokens = new InvariantHashSet
             {
                 ConditionType.IsOutdoors.ToString(),
-                ConditionType.LocationName.ToString()
+                ConditionType.LocationName.ToString(),
+                ConditionType.Target.ToString(),
+                ConditionType.TargetWithoutPath.ToString()
             };
         }
 
@@ -35,7 +37,7 @@ namespace ContentPatcher.Framework.Migrations
                 return false;
 
             // 1.8 adds MoveEntries
-            if (content.Changes != null)
+            if (content.Changes?.Any() == true)
             {
                 foreach (PatchConfig patch in content.Changes)
                 {

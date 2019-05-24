@@ -1,0 +1,29 @@
+//Example 2. Requires 5 asset files.
+{
+      "Format": "1.5",
+      "ConfigSchema": {
+        "FallVariant": {
+          "AllowValues": "Standard, Spooky",
+        }
+      },
+      "DynamicTokens": [
+        {
+          "Name": "Variant",
+          "Value": "",
+          // Blank default
+        },
+        {
+          "Name": "Variant",
+          "Value": "_Spooky",
+          "When": { "FallVariant": "Spooky", "Season": "Fall" }
+        }
+      ],
+      "Changes": [
+         {
+          "Action": "EditImage",
+          "Target": "Buildings/houses",
+          "FromFile": "assets/FancyHouse_{{Season}}{{Variant}}.png",
+          "ToArea": { "X": 16, "Y": 288, "Width": 144, "Height": 144 }
+         }
+       ]
+}

@@ -1,6 +1,7 @@
 # Release notes
 ## Upcoming release
-* Updated for Stardew Valley 1.4.
+* Improved `config.json` keybind parsing.
+* Fixed tractor not working in Deep Woods after the first screen.
 * Fixed issue where pressing the dismiss-tractor key while riding a horse caused the horse to disappear.
 
 ## 4.8.2

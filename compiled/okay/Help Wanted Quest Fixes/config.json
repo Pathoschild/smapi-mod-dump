@@ -1,5 +1,6 @@
 {
   "ChanceOfQuestPerDay": 65,
+  "AllowShallowMineQuests": false,
   "CategoryChancePercent": {
     "ItemDelivery": 62,
     "Gathering": 11,

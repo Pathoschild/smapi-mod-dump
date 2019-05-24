@@ -1,0 +1,38 @@
+//Example 1. Requires 16 asset files.
+    {
+      "Format": "1.5",
+      "ConfigSchema": {
+        "FenceType": {
+          "AllowValues": "Wood, Stone, Iron, Hardwood",
+        }
+      },
+      "DynamicTokens": [
+        {
+          "Name": "FenceFile",
+          "Value": "Fence1",
+          "When": { "FenceType": "Wood" }
+        },
+        {
+          "Name": "FenceFile",
+          "Value": "Fence2",
+          "When": { "FenceType": "Stone" }
+        },
+        {
+          "Name": "FenceFile",
+          "Value": "Fence3",
+          "When": { "FenceType": "Iron" }
+        },
+        {
+          "Name": "FenceFile",
+          "Value": "Fence5",
+          "When": { "FenceType": "Hardwood" }
+        }
+      ],
+      "Changes": [
+         {
+          "Action": "Load",
+          "Target": "LooseSprites/{{FenceFile}}",
+          "FromFile": "assets/Fence_{{FenceType}}_{{Season}}.png"
+         }
+       ]
+    }

@@ -5,9 +5,12 @@ mods:
    Unlimited Players
 
 latest commit:
-   commit 166db532b6876b2fcd8c49f2106917e10d89308b
-   Author: Armitxes <4rmitxes@gmail.com>
-   Date:   Tue Mar 5 20:30:14 2019 +0100
+   commit 71047421fc5d7959ed2161f440a62f07dd7809ba
+   Merge: 166db53 36e7a94
+   Author: Jan Brodersen <6265296+Armitxes@users.noreply.github.com>
+   Date:   Fri May 17 01:48:05 2019 +0200
    
-       [IMP] Remove old bin release folder to prevent confusion
+       Merge pull request #11 from Armitxes/add-license-1
+       
+       [ADD] License
    

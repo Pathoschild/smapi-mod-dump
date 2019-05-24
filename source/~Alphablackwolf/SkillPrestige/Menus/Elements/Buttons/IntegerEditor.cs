@@ -2,8 +2,8 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SkillPrestige.InputHandling;
 using SkillPrestige.Logging;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -23,7 +23,6 @@ namespace SkillPrestige.Menus.Elements.Buttons
 
         private readonly TextureButton _minusButton;
         private readonly TextureButton _plusButton;
-        private bool _buttonEventsRegistered;
 
         public delegate void ClickCallback(int number);
 
@@ -74,31 +73,25 @@ namespace SkillPrestige.Menus.Elements.Buttons
             _onClick.Invoke(Value);
         }
 
-        protected override void OnMouseClick()
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="e">The event data.</param>
+        /// <param name="isClick">Whether the button press is a click.</param>
+        public override void OnButtonPressed(ButtonPressedEventArgs e, bool isClick)
         {
-            RegisterMouseEvents();
+            base.OnButtonPressed(e, isClick);
+
+            _minusButton.OnButtonPressed(e, isClick);
+            _plusButton.OnButtonPressed(e, isClick);
         }
 
-        public void RegisterMouseEvents()
+        /// <summary>Raised after the player moves the in-game cursor.</summary>
+        /// <param name="e">The event data.</param>
+        public override void OnCursorMoved(CursorMovedEventArgs e)
         {
-            if (_buttonEventsRegistered) return;
-            _buttonEventsRegistered = true;
-            Mouse.MouseMoved += _minusButton.CheckForMouseHover;
-            Mouse.MouseClicked += _minusButton.CheckForMouseClick;
-            Mouse.MouseMoved += _plusButton.CheckForMouseHover;
-            Mouse.MouseClicked += _plusButton.CheckForMouseClick;
-            Logger.LogVerbose($"{Text} mouse events registered.");
-        }
+            base.OnCursorMoved(e);
 
-        public void DeregisterMouseEvents()
-        {
-            if (!_buttonEventsRegistered) return;
-            _buttonEventsRegistered = false;
-            Mouse.MouseMoved -= _minusButton.CheckForMouseHover;
-            Mouse.MouseClicked -= _minusButton.CheckForMouseClick;
-            Mouse.MouseMoved -= _plusButton.CheckForMouseHover;
-            Mouse.MouseClicked -= _plusButton.CheckForMouseClick;
-            Logger.LogVerbose($"{Text} mouse events deregistered.");
+            _minusButton.OnCursorMoved(e);
+            _plusButton.OnCursorMoved(e);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

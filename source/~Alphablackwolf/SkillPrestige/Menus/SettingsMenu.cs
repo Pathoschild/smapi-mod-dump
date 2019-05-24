@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SkillPrestige.InputHandling;
 using SkillPrestige.Logging;
 using SkillPrestige.Menus.Elements.Buttons;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -11,10 +12,9 @@ namespace SkillPrestige.Menus
     /// <summary>
     /// Represents a menu where players can change their per-save settings.
     /// </summary>
-    internal class SettingsMenu : IClickableMenu
+    internal class SettingsMenu : IClickableMenu, IInputHandler
     {
-        private static bool _buttonClickRegistered;
-        private int _debouceWaitTime;
+        private int _debounceTimer = 10;
         private bool _inputInitiated;
         
         private Checkbox _resetRecipesCheckbox;
@@ -25,50 +25,46 @@ namespace SkillPrestige.Menus
         private IntegerEditor _pointsPerPrestigeEditor;
         private IntegerEditor _experiencePerPainlessPrestigeEditor;
 
-        public SettingsMenu(Rectangle bounds) : base(bounds.X, bounds.Y, bounds.Width, bounds.Height, true)
+        public SettingsMenu(Rectangle bounds)
+            : base(bounds.X, bounds.Y, bounds.Width, bounds.Height, true)
         {
             Logger.LogVerbose("New Settings Menu created.");
-
-            exitFunction = DeregisterMouseEvents;
         }
 
-
-        private void RegisterMouseEvents()
+        /// <summary>Raised after the player moves the in-game cursor.</summary>
+        /// <param name="e">The event data.</param>
+        public void OnCursorMoved(CursorMovedEventArgs e)
         {
-            if (_buttonClickRegistered) return;
-            _buttonClickRegistered = true;
-            Logger.LogVerbose("Settings menu - Registering mouse events...");
-            Mouse.MouseMoved += _resetRecipesCheckbox.CheckForMouseHover;
-            Mouse.MouseMoved += _useExperienceMultiplierCheckbox.CheckForMouseHover;
-            Mouse.MouseClicked += _resetRecipesCheckbox.CheckForMouseClick;
-            Mouse.MouseClicked += _useExperienceMultiplierCheckbox.CheckForMouseClick;
-            Mouse.MouseClicked += _painlessPrestigeModeCheckbox.CheckForMouseClick;
-            _tierOneCostEditor.RegisterMouseEvents();
-            _tierTwoCostEditor.RegisterMouseEvents();
-            _pointsPerPrestigeEditor.RegisterMouseEvents();
-            _experiencePerPainlessPrestigeEditor.RegisterMouseEvents();
-            Logger.LogVerbose("Settings menu - Mouse events registered.");
+            if (_debounceTimer > 0)
+                return;
+
+            _resetRecipesCheckbox.OnCursorMoved(e);
+            _useExperienceMultiplierCheckbox.OnCursorMoved(e);
+            _painlessPrestigeModeCheckbox.OnCursorMoved(e);
+
+            _tierOneCostEditor.OnCursorMoved(e);
+            _tierTwoCostEditor.OnCursorMoved(e);
+            _pointsPerPrestigeEditor.OnCursorMoved(e);
+            _experiencePerPainlessPrestigeEditor.OnCursorMoved(e);
         }
 
-        private void DeregisterMouseEvents()
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="e">The event data.</param>
+        /// <param name="isClick">Whether the button press is a click.</param>
+        public void OnButtonPressed(ButtonPressedEventArgs e, bool isClick)
         {
-            Logger.LogVerbose("Settings menu - Deregistering mouse events...");
-            if (!_buttonClickRegistered) return;
-            Mouse.MouseMoved -= _resetRecipesCheckbox.CheckForMouseHover;
-            Mouse.MouseMoved -= _useExperienceMultiplierCheckbox.CheckForMouseHover;
-            Mouse.MouseClicked -= _resetRecipesCheckbox.CheckForMouseClick;
-            Mouse.MouseClicked -= _useExperienceMultiplierCheckbox.CheckForMouseClick;
-            Mouse.MouseClicked -= _painlessPrestigeModeCheckbox.CheckForMouseClick;
-            _tierOneCostEditor.DeregisterMouseEvents();
-            _tierTwoCostEditor.DeregisterMouseEvents();
-            _pointsPerPrestigeEditor.DeregisterMouseEvents();
-            _experiencePerPainlessPrestigeEditor.DeregisterMouseEvents();
-            _buttonClickRegistered = false;
-            Logger.LogVerbose("Settings menu - Mouse events deregistered.");
+            if (_debounceTimer > 0)
+                return;
+
+            _resetRecipesCheckbox.OnButtonPressed(e, isClick);
+            _useExperienceMultiplierCheckbox.OnButtonPressed(e, isClick);
+            _painlessPrestigeModeCheckbox.OnButtonPressed(e, isClick);
+
+            _tierOneCostEditor.OnButtonPressed(e, isClick);
+            _tierTwoCostEditor.OnButtonPressed(e, isClick);
+            _pointsPerPrestigeEditor.OnButtonPressed(e, isClick);
+            _experiencePerPainlessPrestigeEditor.OnButtonPressed(e, isClick);
         }
-
-
-        public override void receiveRightClick(int x, int y, bool playSound = true) { }
 
         private void InitiateInput()
         {
@@ -142,14 +138,8 @@ namespace SkillPrestige.Menus
 
         public override void draw(SpriteBatch spriteBatch)
         {
-            if (_debouceWaitTime < 10)
-            {
-                _debouceWaitTime++;
-            }
-            else
-            {
-                RegisterMouseEvents();
-            }
+            if (_debounceTimer > 0)
+                _debounceTimer--;
 
             Game1.drawDialogueBox(xPositionOnScreen, yPositionOnScreen, width, height, false, true);
             upperRightCloseButton?.draw(spriteBatch);

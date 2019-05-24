@@ -8,6 +8,7 @@ using SkillPrestige.Logging;
 using SkillPrestige.Menus.Dialogs;
 using SkillPrestige.Menus.Elements.Buttons;
 using SkillPrestige.Professions;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -16,7 +17,7 @@ namespace SkillPrestige.Menus
     /// <summary>
     /// Decorates the Level Up Menu with a prestiged! indicator on prestiged professions.
     /// </summary>
-    public class LevelUpMenuDecorator<T> : IClickableMenu where T : IClickableMenu
+    public class LevelUpMenuDecorator<T> : IClickableMenu, IInputHandler where T : IClickableMenu
     {
         private readonly Skill _currentSkill;
         private readonly int _currentLevel;
@@ -66,24 +67,6 @@ namespace SkillPrestige.Menus
             _leftProfessionDescriptionInternalName = leftProfessionDescriptionInternalName;
             _rightProfessionDescriptionInternalName = rightProfessionDescriptionInternalName;
             _getProfessionDescription = getProfessionDescription;
-            exitFunction = DeregisterMouseEvents;
-        }
-
-        private void RegisterMouseEvents()
-        {
-            Logger.LogInformation("Level Up Menu - Registering mouse events...");
-            Mouse.MouseMoved += _levelTenToggleButton.CheckForMouseHover;
-            Mouse.MouseClicked += _levelTenToggleButton.CheckForMouseClick;
-            Logger.LogInformation("Level Up Menu - Mouse events registered.");
-        }
-
-        private void DeregisterMouseEvents()
-        {
-            Logger.LogInformation("Level Up Menu - Deregistering mouse events...");
-            if (_levelTenToggleButton == null) return;
-            Mouse.MouseMoved += _levelTenToggleButton.CheckForMouseHover;
-            Mouse.MouseClicked += _levelTenToggleButton.CheckForMouseClick;
-            Logger.LogInformation("Level Up Menu - Mouse events deregistered.");
         }
 
         public override void receiveRightClick(int x, int y, bool playSound = true)
@@ -107,6 +90,21 @@ namespace SkillPrestige.Menus
             if (!_uiInitiated) InitiateUi();
             DecorateUi(spriteBatch);
             drawMouse(spriteBatch);
+        }
+
+        /// <summary>Raised after the player moves the in-game cursor.</summary>
+        /// <param name="e">The event data.</param>
+        public void OnCursorMoved(CursorMovedEventArgs e)
+        {
+            _levelTenToggleButton?.OnCursorMoved(e);
+        }
+
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="e">The event data.</param>
+        /// <param name="isClick">Whether the button press is a click.</param>
+        public void OnButtonPressed(ButtonPressedEventArgs e, bool isClick)
+        {
+            _levelTenToggleButton?.OnButtonPressed(e, isClick);
         }
 
         private void InitiateUi()
@@ -269,7 +267,6 @@ namespace SkillPrestige.Menus
             var position = new Vector2(_internalMenu.xPositionOnScreen + _internalMenu.width + Game1.tileSize, _internalMenu.yPositionOnScreen);
             var bounds = new Rectangle(position.X.Floor(), position.Y.Floor(), Game1.tileSize, Game1.tileSize);
             _levelTenToggleButton = new TextureButton(bounds, Game1.mouseCursors, new Rectangle(0, 192, 64, 64), ToggleLevelTenMenu, "More professions...");
-            RegisterMouseEvents();
             Logger.LogInformation("Level Up Menu - Level 10 toggle button initiated.");
         }
 

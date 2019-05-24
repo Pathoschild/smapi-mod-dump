@@ -572,12 +572,12 @@ namespace JsonAssets
                         : new Dictionary<TKey, TValue>();
                 }
                 Directory.CreateDirectory(Path.Combine(Constants.CurrentSavePath, "JsonAssets"));
-                oldObjectIds = LoadDictionary<string, int>("ids-objects.json");
-                oldCropIds = LoadDictionary<string, int>("ids-crops.json");
-                oldFruitTreeIds = LoadDictionary<string, int>("ids-fruittrees.json");
-                oldBigCraftableIds = LoadDictionary<string, int>("ids-big-craftables.json");
-                oldHatIds = LoadDictionary<string, int>("ids-hats.json");
-                oldWeaponIds = LoadDictionary<string, int>("ids-weapons.json");
+                oldObjectIds = LoadDictionary<string, int>("ids-objects.json") ?? new Dictionary<string, int>();
+                oldCropIds = LoadDictionary<string, int>("ids-crops.json") ?? new Dictionary<string, int>();
+                oldFruitTreeIds = LoadDictionary<string, int>("ids-fruittrees.json") ?? new Dictionary<string, int>();
+                oldBigCraftableIds = LoadDictionary<string, int>("ids-big-craftables.json") ?? new Dictionary<string, int>();
+                oldHatIds = LoadDictionary<string, int>("ids-hats.json") ?? new Dictionary<string, int>();
+                oldWeaponIds = LoadDictionary<string, int>("ids-weapons.json") ?? new Dictionary<string, int>();
 
                 Log.trace("OLD IDS START");
                 foreach (var id in oldObjectIds)
@@ -614,6 +614,9 @@ namespace JsonAssets
         /// <param name="e">The event arguments.</param>
         private void onSaved(object sender, SavedEventArgs e)
         {
+            if (!Game1.IsMasterGame)
+                return;
+
             if (!Directory.Exists(Path.Combine(Constants.CurrentSavePath, "JsonAssets")))
                 Directory.CreateDirectory(Path.Combine(Constants.CurrentSavePath, "JsonAssets"));
 
@@ -754,6 +757,12 @@ namespace JsonAssets
             fixItemList(Game1.player.Items);
             foreach ( var loc in Game1.locations )
                 fixLocation(loc);
+
+            Game1.player.basicShipped = fixIdDict(Game1.player.basicShipped);
+            Game1.player.mineralsFound = fixIdDict(Game1.player.mineralsFound);
+            Game1.player.recipesCooked = fixIdDict(Game1.player.recipesCooked);
+            Game1.player.archaeologyFound = fixIdDict2(Game1.player.archaeologyFound);
+            Game1.player.fishCaught = fixIdDict2(Game1.player.fishCaught);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage( "SMAPI.CommonErrors", "AvoidNetField") ]
@@ -926,6 +935,42 @@ namespace JsonAssets
                         items[i] = null;
                 }
             }
+        }
+
+        private SerializableDictionary<int, int> fixIdDict(SerializableDictionary<int, int> dict)
+        {
+            var newDict = new SerializableDictionary<int, int>();
+            foreach (var entry in dict)
+            {
+                if (origObjects.ContainsKey(entry.Key))
+                    newDict.Add(entry.Key, entry.Value);
+                else if (oldObjectIds.Values.Contains(entry.Key))
+                {
+                    var key = oldObjectIds.FirstOrDefault(x => x.Value == entry.Key).Key;
+
+                    if (objectIds.ContainsKey(key))
+                        newDict.Add(objectIds[key], entry.Value);
+                }
+            }
+            return newDict;
+        }
+
+        private SerializableDictionary<int, int[]> fixIdDict2(SerializableDictionary<int, int[]> dict)
+        {
+            var newDict = new SerializableDictionary<int, int[]>();
+            foreach (var entry in dict)
+            {
+                if (origObjects.ContainsKey(entry.Key))
+                    newDict.Add(entry.Key, entry.Value);
+                else if (oldObjectIds.Values.Contains(entry.Key))
+                {
+                    var key = oldObjectIds.FirstOrDefault(x => x.Value == entry.Key).Key;
+
+                    if (objectIds.ContainsKey(key))
+                        newDict.Add(objectIds[key], entry.Value);
+                }
+            }
+            return newDict;
         }
 
         // Return true if the item should be deleted, false otherwise.

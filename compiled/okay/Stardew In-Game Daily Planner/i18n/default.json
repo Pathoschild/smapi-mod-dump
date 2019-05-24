@@ -1,0 +1,11 @@
+{
+  // menu title
+  "title": "Daily Planner Menu",
+
+  // menu tabs
+  "tabs.daily": "Day",
+  "tabs.checklist": "Checklist",
+  "tabs.weekly": "Week",
+  "tabs.monthly": "Month",
+  "tabs.add": "Add Task"
+}

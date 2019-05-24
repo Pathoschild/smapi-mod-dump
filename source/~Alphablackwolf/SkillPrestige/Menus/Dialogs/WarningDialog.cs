@@ -3,24 +3,22 @@ using Microsoft.Xna.Framework.Graphics;
 using SkillPrestige.InputHandling;
 using SkillPrestige.Logging;
 using SkillPrestige.Menus.Elements.Buttons;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace SkillPrestige.Menus.Dialogs
 {
-    internal class WarningDialog : IClickableMenu
+    internal class WarningDialog : IClickableMenu, IInputHandler
     {
-        public override void receiveRightClick(int x, int y, bool playSound = true) { }
-
         public delegate void OkayCallback();
 
         public delegate void CancelCallback();
 
         private OkayCallback OnOkay { get; }
         private CancelCallback OnCancel { get; }
-        private static bool _buttonClickRegistered;
         private bool _buttonsInstantiated;
-        private int _debouceWaitTime;
+        private int _debounceTimer = 10;
         private TextureButton _okayButton;
         private TextureButton _cancelButton;
         private readonly string _message;
@@ -38,32 +36,7 @@ namespace SkillPrestige.Menus.Dialogs
         private void Cancel()
         {
             Logger.LogInformation("Warning Dialog - Cancel/Close called.");
-            DeregisterMouseEvents();
             OnCancel.Invoke();
-        }
-
-        private void RegisterMouseEvents()
-        {
-            if (_buttonClickRegistered) return;
-            _buttonClickRegistered = true;
-            Logger.LogVerbose("Warning Dialog - Registering Mouse Events...");
-            Mouse.MouseMoved += _okayButton.CheckForMouseHover;
-            Mouse.MouseMoved += _cancelButton.CheckForMouseHover;
-            Mouse.MouseClicked += _okayButton.CheckForMouseClick;
-            Mouse.MouseClicked += _cancelButton.CheckForMouseClick;
-            Logger.LogVerbose("Warning Dialog - Mouse Events Registered.");
-        }
-
-        private void DeregisterMouseEvents()
-        {
-            if (!_buttonClickRegistered) return;
-            Logger.LogVerbose("Warning Dialog - Deregistering Mouse Events.");
-            Mouse.MouseMoved -= _okayButton.CheckForMouseHover;
-            Mouse.MouseMoved -= _cancelButton.CheckForMouseHover;
-            Mouse.MouseClicked -= _okayButton.CheckForMouseClick;
-            Mouse.MouseClicked -= _cancelButton.CheckForMouseClick;
-            Logger.LogVerbose("Warning Dialog - Mouse Events Deregistered.");
-            _buttonClickRegistered = false;
         }
 
         private void InstantiateButtons()
@@ -92,14 +65,9 @@ namespace SkillPrestige.Menus.Dialogs
 
         public override void draw(SpriteBatch spriteBatch)
         {
-            if (_debouceWaitTime < 10)
-            {
-                _debouceWaitTime++;
-            }
-            else
-            {
-                RegisterMouseEvents();
-            }
+            if (_debounceTimer > 0)
+                _debounceTimer--;
+
             Game1.drawDialogueBox(xPositionOnScreen, yPositionOnScreen, width, height, false, true);
             var textPadding = 2 * Game1.pixelZoom;
             Game1.spriteBatch.DrawString(Game1.dialogueFont,
@@ -113,6 +81,30 @@ namespace SkillPrestige.Menus.Dialogs
             _okayButton.DrawHoverText(spriteBatch);
             _cancelButton.DrawHoverText(spriteBatch);
             Mouse.DrawCursor(spriteBatch);
+        }
+
+        /// <summary>Raised after the player moves the in-game cursor.</summary>
+        /// <param name="e">The event data.</param>
+        public void OnCursorMoved(CursorMovedEventArgs e)
+        {
+            if (_debounceTimer > 0)
+                return;
+
+            _okayButton.OnCursorMoved(e);
+            _cancelButton.OnCursorMoved(e);
+        }
+
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="e">The event data.</param>
+        /// <param name="isClick">Whether the button press is a click.</param>
+        public void OnButtonPressed(ButtonPressedEventArgs e, bool isClick)
+        {
+
+            if (_debounceTimer > 0)
+                return;
+
+            _okayButton.OnButtonPressed(e, isClick);
+            _cancelButton.OnButtonPressed(e, isClick);
         }
     }
 }

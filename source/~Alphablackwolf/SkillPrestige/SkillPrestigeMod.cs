@@ -1,17 +1,15 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewValley;
-using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
+using Microsoft.Xna.Framework.Graphics;
 using SkillPrestige.Commands;
+using SkillPrestige.InputHandling;
 using SkillPrestige.Logging;
 using SkillPrestige.Menus;
 using SkillPrestige.Menus.Elements.Buttons;
-using SkillPrestige.Mods;
 using SkillPrestige.Professions;
-using static SkillPrestige.InputHandling.Mouse;
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewValley;
 
 namespace SkillPrestige
 {
@@ -28,7 +26,7 @@ namespace SkillPrestige
 
         public static IMonitor LogMonitor { get; private set; }
 
-        public static string CurrentSaveOptionsPath { get; private set; }
+        public static string CurrentSaveOptionsPath => Path.Combine(ModPath, "psconfigs/", Constants.SaveFolderName);
 
         public static string PerSaveOptionsDirectory { get; private set; }
 
@@ -42,10 +40,10 @@ namespace SkillPrestige
 
         private IModHelper ModHelper { get; set; }
 
-        private static bool _isFirstUpdate = true;
-
         #endregion
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             ModHelper = helper;
@@ -56,7 +54,7 @@ namespace SkillPrestige
             OptionsPath = Path.Combine(ModPath, "config.json");
             Logger.LogInformation("Detected game entry.");
             PrestigeSaveData.Instance.Read();
-            
+
             if (ModHelper.ModRegistry.IsLoaded("community.AllProfessions"))
             {
                 Logger.LogCriticalWarning("Conflict Detected. This mod cannot work with AllProfessions. Skill Prestige disabled.");
@@ -64,53 +62,69 @@ namespace SkillPrestige
                 return;
             }
             LoadSprites();
-            RegisterGameEvents();
+            RegisterGameEvents(helper.Events);
             //ReplaceStardewValleyCode();
             Logger.LogDisplay($"{ModManifest.Name} version {ModManifest.Version} by {ModManifest.Author} Initialized.");
         }
 
-        private void RegisterGameEvents()
+        private void RegisterGameEvents(IModEvents events)
         {
-            Logger.LogInformation("Registering game events...");
-            ControlEvents.MouseChanged += MouseChanged;
-            LocationEvents.CurrentLocationChanged += LocationChanged;
-            GraphicsEvents.OnPostRenderGuiEvent += PostRenderGuiEvent;
-            GameEvents.UpdateTick += GameUpdate;
-            GameEvents.HalfSecondTick += HalfSecondTick;
-            GameEvents.OneSecondTick += OneSecondTick;
-            TimeEvents.AfterDayStarted += AfterDayStarted;
-            Logger.LogInformation("Game events registered.");
-            SaveEvents.AfterLoad += SaveFileLoaded;
-            SaveEvents.AfterReturnToTitle += ReturnToTitle;
+            events.Input.ButtonPressed += OnButtonPressed;
+            events.Input.CursorMoved += OnCursorMoved;
+            events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
+            events.GameLoop.GameLaunched += OnGameLaunched;
+            events.GameLoop.UpdateTicked += OnUpdateTicked;
+            events.GameLoop.DayStarted += OnDayStarted;
+            events.GameLoop.SaveLoaded += OnSaveLoaded;
+            events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
         }
 
-        private static void MouseChanged(object sender, EventArgsMouseStateChanged args)
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            HandleState(args);
+            bool isClick = e.Button == SButton.MouseLeft;
+
+            SkillsMenuExtension.OnButtonPressed(e, isClick);
+            if (Game1.activeClickableMenu is IInputHandler handler)
+                handler.OnButtonPressed(e, isClick);
         }
 
-        private static void LocationChanged(object sender, EventArgs args)
+        /// <summary>Raised after the player moves the in-game cursor.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private static void OnCursorMoved(object sender, CursorMovedEventArgs e)
         {
-            Logger.LogVerbose("Location change detected.");
-            CurrentSaveOptionsPath = Path.Combine(ModPath, "psconfigs/", $@"{Game1.player.name.RemoveNonAlphanumerics()}_{Game1.uniqueIDForThisGame}.json");
-            PrestigeSaveData.Instance.UpdateCurrentSaveFileInformation();
-            PerSaveOptions.Instance.Check();
-            Profession.AddMissingProfessions();
+            SkillsMenuExtension.OnCursorMoved(e);
+            if (Game1.activeClickableMenu is IInputHandler handler)
+                handler.OnCursorMoved(e);
         }
 
-        private static void AfterDayStarted(object sender, EventArgs args)
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private static void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             Logger.LogVerbose("New Day Started");
             AnimalProduceHandler.HandleSpawnedAnimalProductQuantityIncrease();
         }
 
-        private static void SaveFileLoaded(object sender, EventArgs args)
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private static void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             PrestigeSaveData.Instance.UpdateCurrentSaveFileInformation();
+            PerSaveOptions.Instance.Check();
+            Profession.AddMissingProfessions();
             SaveIsLoaded = true;
         }
 
-        private static void ReturnToTitle(object sender, EventArgs args)
+        /// <summary>Raised after the game returns to the title screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private static void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
             PrestigeSaveData.Instance.Read();
             SaveIsLoaded = false;
@@ -118,7 +132,11 @@ namespace SkillPrestige
             PerSaveOptions.ClearLoadedPerSaveOptionsFile();
             ExperienceHandler.ResetExperience();
         }
-        private static void PostRenderGuiEvent(object sender, EventArgs args)
+
+        /// <summary>When a menu is open (<see cref="Game1.activeClickableMenu"/> isn't null), raised after that menu is drawn to the sprite batch but before it's rendered to the screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private static void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
         {
             SkillsMenuExtension.AddPrestigeButtonsToMenu();
         }
@@ -141,30 +159,28 @@ namespace SkillPrestige
             Logger.LogInformation("Sprites loaded.");
         }
 
-        private void GameUpdate(object sender, EventArgs args)
+        /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialised at this point, so this is a good time to set up mod integrations.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            if (_isFirstUpdate)
-            {
-                ModHandler.RegisterLoadedMods();
-                if (Options.Instance.TestingMode) RegisterTestingCommands();
-                RegisterCommands();
-                _isFirstUpdate = false;
-            }
+            if (Options.Instance.TestingMode)
+                RegisterTestingCommands();
+            RegisterCommands();
+        }
+
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
             CheckForGameSave();
             CheckForLevelUpMenu();
-        }
 
-
-        private static void OneSecondTick(object sender, EventArgs args)
-        {
-            //one second tick for this, as the detection of changed experience can happen as infrequently as possible. a 10 second tick would be well within tolerance.
-            UpdateExperience();
-        }
-
-        private static void HalfSecondTick(object sender, EventArgs args)
-        {
-            //from what I can tell of the original game code, tools cannot be used quicker than 600ms, so a half second tick is the largest tick that will always catch that the tool was used.
-            ToolProficiencyHandler.HandleToolProficiency();
+            if (e.IsMultipleOf(30)) // half-second
+                ToolProficiencyHandler.HandleToolProficiency(); //from what I can tell of the original game code, tools cannot be used quicker than 600ms, so a half second tick is the largest tick that will always catch that the tool was used.
+            if (e.IsOneSecond)
+                UpdateExperience(); //one second tick for this, as the detection of changed experience can happen as infrequently as possible. a 10 second tick would be well within tolerance.
         }
 
         private static void UpdateExperience()
@@ -181,9 +197,9 @@ namespace SkillPrestige
 
         private static void CheckForLevelUpMenu()
         {
-            foreach (var levelUpManager in Skill.AllSkills.Select(x => x.LevelUpManager).GroupBy(x => x.MenuType).Select(g => g.First()))
+            foreach (var levelUpManager in Skill.AllSkills.Select(x => x.LevelUpManager))
             {
-                if (Game1.activeClickableMenu == null || Game1.activeClickableMenu.GetType() != levelUpManager.MenuType) continue;
+                if (Game1.activeClickableMenu == null || !levelUpManager.IsMenu(Game1.activeClickableMenu)) continue;
                 var currentLevel = levelUpManager.GetLevel.Invoke();
                 if (currentLevel % 5 != 0) return;
                 Logger.LogInformation("Level up menu as profession chooser detected.");

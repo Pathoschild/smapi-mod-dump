@@ -2,5 +2,7 @@
   "ActivationKey": "LeftControl",
   "ToggleKey": "F5",
   "HoeSelect": true,
-  "IfNoneToolChooseWeapon": true
+  "IfNoneToolChooseWeapon": true,
+  "RideHorseCursor": true,
+  "PickaxeOverWareringCan": true
 }

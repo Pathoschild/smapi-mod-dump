@@ -5,9 +5,9 @@ mods:
    Stardew Valley ESP
 
 latest commit:
-   commit 3f4a248af7ae6d4b2f41f58ad5f468c16b3dde6f
+   commit 89b9849de5a459db7d6061c7e9bf89eb19709d3a
    Author: rei2hu <rei2hu@users.noreply.github.com>
-   Date:   Wed May 15 15:32:27 2019 -0500
+   Date:   Thu May 23 15:20:03 2019 -0500
    
        Update README.md
    

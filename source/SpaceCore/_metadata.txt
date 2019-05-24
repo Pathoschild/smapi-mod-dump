@@ -5,9 +5,9 @@ mods:
    SpaceCore
 
 latest commit:
-   commit 2a382c60651603a7390968811fdd6e4819ce36c8
+   commit 206d6936e9280cfe9bfa99f8a7e6e6e2c21ce59e
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Apr 29 12:48:03 2019 -0400
+   Date:   Sat May 18 15:06:44 2019 -0400
    
-       Version 1.2.6.
+       Version 1.2.7.
    

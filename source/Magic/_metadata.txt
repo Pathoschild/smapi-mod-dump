@@ -5,9 +5,12 @@ mods:
    Magic
 
 latest commit:
-   commit 348da7d7b9f4d7150511c7a9aefcb22893fcb7b1
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Thu May 9 23:23:00 2019 -0400
+   commit 290f767f9db0b64eb6397851de8a5d8564de2b69
+   Merge: 4258b14 fcf6850
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon May 20 21:29:53 2019 -0400
    
-       Removed reference to higher levels of tendrils. (Also in 0.2.0)
+       Merge pull request #6 from S2SKY/patch-4
+       
+       Update object.json
    

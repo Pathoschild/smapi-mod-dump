@@ -26,13 +26,13 @@ namespace SkillPrestige
 
             animalProduce = animalProduce.Where(x => x != "-1").Distinct().ToList();
 
-            var animalHouseBuildings = Game1.getFarm().buildings.Where(x => x.indoors != null && x.indoors.GetType() == typeof(AnimalHouse));
+            var animalHouseBuildings = Game1.getFarm().buildings.Where(x => x.indoors.Value is AnimalHouse);
 
-            foreach (var produce in animalHouseBuildings.SelectMany(x => x.indoors.objects.Values).Where(x => x.isSpawnedObject && x.parentSheetIndex.ToString().IsOneOf(animalProduce)))
+            foreach (var produce in animalHouseBuildings.SelectMany(x => x.indoors.Value.objects.Values).Where(x => x.IsSpawnedObject && x.ParentSheetIndex.ToString().IsOneOf(animalProduce)))
             {
                 if (ShouldAnimalProductQuanityIncrease())
                 {
-                    Logger.LogInformation($"Adding 1 to stack of object id: {produce.parentSheetIndex}: {produce.Type}");
+                    Logger.LogInformation($"Adding 1 to stack of object id: {produce.ParentSheetIndex}: {produce.Type}");
                     produce.addToStack(1);
                 }
                 //TODO: apply effect after each new day

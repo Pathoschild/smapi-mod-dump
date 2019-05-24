@@ -1,0 +1,38 @@
+{
+   "Format": "1.5",
+   "ConfigSchema": {
+       "UseSeasonalTextures": {
+           "AllowValues": "true, false",
+           "Default": "true",
+       },
+   },
+   "Changes": [
+       {
+           "LogName": "Default non-seasonal farmhouse",
+           "Action": "EditImage",
+           "Target": "Buildings/houses",
+           "FromFile": "assets/houses.png",
+           "ToArea": { "X":0, "Y":0, "Width":160, "Height":432 },
+           "FromArea": { "X":0, "Y":0, "Width":160, "Height":432 },
+       },
+       {
+           "LogName": "Optional seasonal farmhouse",
+           "Action": "EditImage",
+           "Target": "Buildings/houses",
+           "FromFile": "assets/houses_{{Season}}.png",
+           "ToArea": { "X":0, "Y":0, "Width":160, "Height":432 },
+           "FromArea": { "X":0, "Y":0, "Width":160, "Height":432 },
+           "Enabled": "{{UseSeasonalTextures}}",
+       },
+       {
+           "LogName": "Rain Overlay",
+           "Action": "EditImage",
+           "Target": "Buildings/houses",
+           "FromFile": "assets/RainOverlay.png",
+           "PatchMode": "overlay",
+           "ToArea": { "X":0, "Y":0, "Width":160, "Height":432 },
+           "FromArea": { "X":0, "Y":0, "Width":160, "Height":432 },
+		   "When": { "Weather": "Rain, Storm" }
+       },	   
+   ]
+}

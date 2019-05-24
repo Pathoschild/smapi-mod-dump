@@ -1,7 +1,7 @@
 {
   "Name": "Intravenous Coffee",
   "Author": "mpcomplete",
-  "Version": "1.2",
+  "Version": "1.3",
   "MinimumApiVersion": "2.11.0",
   "Description": "Adds an IV bag that can be filled with coffee",
   "UniqueID": "mpcomplete.IntravenousCoffee",

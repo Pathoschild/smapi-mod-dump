@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit a111a87e8988a9476acf7ff110b02440212d809d
+   commit 1ecd4db1c6c197f4134fb17d23555c8fca8c7751
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Mon May 13 00:23:50 2019 -0400
+   Date:   Tue May 21 20:14:00 2019 -0400
    
-       fix null entries no longer handled correctly in CP 1.7
+       simplify `patch summary` output
    

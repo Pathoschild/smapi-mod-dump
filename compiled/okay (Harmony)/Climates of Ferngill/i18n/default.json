@@ -340,6 +340,8 @@
   "weather-menu.expectedFog": " Evening fog is expected as well.",
   "weather-menu.fogFuture": " Expected fog later at about {{fogTime}} to {{endFog}}.",
   "weather-menu.tomorrow": "Tomorrow's Forecast: {{tomorrowCondition}}. High: {{tomorrowHigh}} with Low: {{tomorrowLow}}.",
+  "weather-menu.desc-moonNotUp": "The moon will be a {{moonPhase}}, rising at {{moonRise}} and setting at {{moonSet}}",
+  "weather-menu.desc-moonUp": "The moon is a {{moonPhase}}, and will set at {{moonSet}}",
   "nightTime" :  "Sunrise will be at {{sunrise}} with sunset at {{sunset}}. It is expected to be fully dark at {{nighttime}}",
 
   //basic conditions

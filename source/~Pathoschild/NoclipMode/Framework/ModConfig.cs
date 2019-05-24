@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-using Pathoschild.Stardew.Common;
 using StardewModdingAPI;
 
 namespace Pathoschild.Stardew.NoclipMode.Framework
@@ -10,8 +8,7 @@ namespace Pathoschild.Stardew.NoclipMode.Framework
         /*********
         ** Accessors
         *********/
-        /// <summary>The button which toggles noclip mode.</summary>
-        [JsonConverter(typeof(StringEnumArrayConverter))]
-        public SButton[] ToggleKey { get; set; } = { SButton.F11 };
+        /// <summary>The key which toggles noclip mode.</summary>
+        public string ToggleKey { get; set; } = SButton.F11.ToString();
     }
 }

@@ -1,4 +1,5 @@
 using ContentPatcher.Framework.Conditions;
+using ContentPatcher.Framework.Tokens;
 using StardewModdingAPI;
 
 namespace ContentPatcher.Framework.Patches
@@ -37,6 +38,9 @@ namespace ContentPatcher.Framework.Patches
         /*********
         ** Public methods
         *********/
+        /// <summary>Get whether the <see cref="FromLocalAsset"/> file exists.</summary>
+        bool FromLocalAssetExists();
+
         /// <summary>Load the initial version of the asset.</summary>
         /// <typeparam name="T">The asset type.</typeparam>
         /// <param name="asset">The asset to load.</param>
@@ -48,5 +52,8 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="asset">The asset to edit.</param>
         /// <exception cref="System.NotSupportedException">The current patch type doesn't support editing assets.</exception>
         void Edit<T>(IAssetData asset);
+
+        /// <summary>Get the context which provides tokens for this patch, including patch-specific tokens like <see cref="ConditionType.Target"/>.</summary>
+        IContext GetPatchContext();
     }
 }

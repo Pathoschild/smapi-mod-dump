@@ -1,0 +1,13 @@
+url:
+   https://github.com/MaciejMarkuszewski/StardewValleySeparateGreenhouse.git
+
+mods:
+   Separate Greenhouse
+
+latest commit:
+   commit e28585120fa295c8e7ecd2776408469c80edf263
+   Author: MaciejMarkuszewski <maciej.markuszewski1998@gmail.com>
+   Date:   Fri May 24 04:27:11 2019 +0200
+   
+       1.1 update commit
+   

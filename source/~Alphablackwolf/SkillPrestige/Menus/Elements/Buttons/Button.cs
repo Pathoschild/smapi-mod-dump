@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using SkillPrestige.InputHandling;
 using SkillPrestige.Logging;
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -10,7 +12,7 @@ namespace SkillPrestige.Menus.Elements.Buttons
     /// <summary>
     /// Represnets a button in Stardew Valley.
     /// </summary>
-    public abstract class Button
+    public abstract class Button : IInputHandler
     {
         /// <summary>
         /// The texture to draw for the button.
@@ -46,24 +48,11 @@ namespace SkillPrestige.Menus.Elements.Buttons
         }
         private Rectangle _bounds;
 
-        private bool IsHovered { get; set; }
+        protected bool IsHovered { get; private set; }
         protected SpriteFont TitleTextFont { get; set; }
         protected abstract string HoverText { get; }
         protected abstract string Text { get; }
 
-        protected virtual void OnMouseHover()
-        {
-            IsHovered = true;
-        }
-
-        // ReSharper disable once VirtualMemberNeverOverridden.Global
-        protected virtual void OnMouseLeave()
-        {
-            IsHovered = false;
-        }
-
-        protected abstract void OnMouseClick();
-        
         /// <summary>
         /// The Stardew Valley component used to draw clickable items. 
         /// Certain items are handled better by the original game using the clickable texture component, 
@@ -103,28 +92,31 @@ namespace SkillPrestige.Menus.Elements.Buttons
             spriteBatch.DrawString(TitleTextFont, Text ?? string.Empty, textLocation.Value, Game1.textColor);
         }
 
-        internal void CheckForMouseHover(MouseMoveEventArguments arguments)
+        /// <summary>Raised after the player moves the in-game cursor.</summary>
+        /// <param name="e">The event data.</param>
+        public virtual void OnCursorMoved(CursorMovedEventArgs e)
         {
-            if (!ClickableTextureComponent.containsPoint(arguments.LastPoint.X, arguments.LastPoint.Y)
-                && ClickableTextureComponent.containsPoint(arguments.CurrentPoint.X, arguments.CurrentPoint.Y))
+            IsHovered = ContainsPoint(e.NewPosition);
+            if (IsHovered && !ContainsPoint(e.OldPosition))
             {
                 Logger.LogVerbose($"{Text ?? HoverText} button has focus.");
-                OnMouseHover();
-            }
-            else if (ClickableTextureComponent.containsPoint(arguments.LastPoint.X, arguments.LastPoint.Y)
-              && !ClickableTextureComponent.containsPoint(arguments.CurrentPoint.X, arguments.CurrentPoint.Y))
-            {
-                Logger.LogVerbose($"{Text ?? HoverText} button lost focus.");
-                OnMouseLeave();
+                OnMouseHovered();
             }
         }
 
-        internal void CheckForMouseClick(MouseClickEventArguments arguments)
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="e">The event data.</param>
+        /// <param name="isClick">Whether the button press is a click.</param>
+        public virtual void OnButtonPressed(ButtonPressedEventArgs e, bool isClick) { }
+
+        /// <summary>Raised when the player begins hovering over the button.</summary>
+        protected virtual void OnMouseHovered() { }
+
+        /// <summary>Get whether the cursor position is over the button.</summary>
+        /// <param name="pos">The cursor position.</param>
+        protected bool ContainsPoint(ICursorPosition pos)
         {
-            if (!ClickableTextureComponent.containsPoint(arguments.ClickPoint.X, arguments.ClickPoint.Y) ||
-                !ClickableTextureComponent.containsPoint(arguments.ReleasePoint.X, arguments.ReleasePoint.Y)) return;
-            Logger.LogVerbose($"Mouse click of button {Text ?? HoverText} detected.");
-            OnMouseClick();
+            return ClickableTextureComponent.containsPoint((int)pos.ScreenPixels.X, (int)pos.ScreenPixels.Y);
         }
     }
 }

@@ -47,7 +47,7 @@ readonly ISelectStrategy FetchMods =
 	//new FetchUpdatedStrategy(TimeSpan.FromDays(3));
 	//new FetchUpdatedStrategy("1d"); // "1d", "1w", "1m", or a custom timespan/date up to 28 days ago
 
-/// <summary>Whether to delete the unpacked folder and unpack files from the export path.</summary>
+/// <summary>Whether to delete the entire unpacked folder and unpack all files from the export path. If this is false, only updated mods will be re-unpacked.</summary>
 readonly bool ResetUnpacked = false;
 
 
@@ -315,6 +315,8 @@ async Task<dynamic[]> GetInvalidMods(IEnumerable<ParsedModData> mods)
 		15399, // Hidden Forest Farm (#3583) > XNB version, includes .tbin file
 		14664, // Husky New NPC (#14664), has .xslx file in root with multiple content pack folders
 		9967,  // Sam to Samantha (#2472), CP pack with invalid update keys
+		16623, // Stardew In-Game Daily Planner > Example Plan
+		16660, // Stardew In-Game Daily Planner > Example Checklist
 		15746, // Stardew Valley Expanded (#3753) > Wallpapers, Event Guide and Script
 		16198, // Stardew Valley Expanded (#3753), includes replacement files
 		11658, // Visual Crossing Sprite Overhaul (#1942), CP pack with invalid version format

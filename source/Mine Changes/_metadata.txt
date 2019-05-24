@@ -1,0 +1,13 @@
+url:
+   https://github.com/JPANv2/Stardew-Valley-Mine-Changes.git
+
+mods:
+   Mine Changes
+
+latest commit:
+   commit f56896e29d9366f96c9d93e9658a308c9e0a0898
+   Author: JPAN <JPAmaralNunes@gmail.com>
+   Date:   Thu May 23 09:42:59 2019 +0100
+   
+       Added Example config
+   

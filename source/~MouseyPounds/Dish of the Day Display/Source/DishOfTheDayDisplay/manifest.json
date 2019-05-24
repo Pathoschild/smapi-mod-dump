@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Dish of the Day Display",
+  "Author": "MouseyPounds",
+  "Version": "1.0.0",
+  "Description": "What is Gus cooking?",
+  "UniqueID": "MouseyPounds.DishOfTheDayDisplay",
+  "EntryDll": "DishOfTheDayDisplay.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": ["Nexus:3960"]
+}

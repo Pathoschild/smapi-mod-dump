@@ -15,6 +15,7 @@ using ContentPatcher.Framework.Patches;
 using ContentPatcher.Framework.Tokens;
 using ContentPatcher.Framework.Tokens.Json;
 using ContentPatcher.Framework.Validators;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json.Linq;
 using Pathoschild.Stardew.Common.Utilities;
 using StardewModdingAPI;
@@ -69,6 +70,9 @@ namespace ContentPatcher
         /// <summary>The mod configuration.</summary>
         private ModConfig Config;
 
+        /// <summary>The configured key bindings.</summary>
+        private ModConfigKeys Keys;
+
         /// <summary>The debug overlay (if enabled).</summary>
         private DebugOverlay DebugOverlay;
 
@@ -81,6 +85,7 @@ namespace ContentPatcher
         public override void Entry(IModHelper helper)
         {
             this.Config = helper.ReadConfig<ModConfig>();
+            this.Keys = this.Config.Controls.ParseControls(this.Monitor);
 
             // init migrations
             IMigration[] migrations = this.Migrations();
@@ -96,8 +101,8 @@ namespace ContentPatcher
             // load content packs and context
             this.TokenManager = new TokenManager(helper.Content, installedMods);
             this.PatchManager = new PatchManager(this.Monitor, this.TokenManager, this.AssetValidators());
-            this.LoadContentPacks(contentPacks);
             this.TokenManager.UpdateContext();
+            this.LoadContentPacks(contentPacks);
 
             // register patcher
             helper.Content.AssetLoaders.Add(this.PatchManager);
@@ -131,7 +136,7 @@ namespace ContentPatcher
             if (this.Config.EnableDebugFeatures)
             {
                 // toggle overlay
-                if (this.Config.Controls.ToggleDebug.Contains(e.Button))
+                if (this.Keys.ToggleDebug.Contains(e.Button))
                 {
                     if (this.DebugOverlay == null)
                         this.DebugOverlay = new DebugOverlay(this.Helper.Events, this.Helper.Input, this.Helper.Content);
@@ -146,9 +151,9 @@ namespace ContentPatcher
                 // cycle textures
                 if (this.DebugOverlay != null)
                 {
-                    if (this.Config.Controls.DebugPrevTexture.Contains(e.Button))
+                    if (this.Keys.DebugPrevTexture.Contains(e.Button))
                         this.DebugOverlay.PrevTexture();
-                    if (this.Config.Controls.DebugNextTexture.Contains(e.Button))
+                    if (this.Keys.DebugNextTexture.Contains(e.Button))
                         this.DebugOverlay.NextTexture();
                 }
             }
@@ -280,7 +285,7 @@ namespace ContentPatcher
                     ContentConfig content = current.Content;
 
                     // load tokens
-                    ModTokenContext tokenContext = this.TokenManager.TrackLocalTokens(current.ManagedPack.Pack);
+                    ModTokenContext modContext = this.TokenManager.TrackLocalTokens(current.ManagedPack.Pack);
                     {
                         // load config.json
                         InvariantDictionary<ConfigField> config = configFileHandler.Read(current.ManagedPack, content.ConfigSchema, current.Content.Format);
@@ -292,7 +297,7 @@ namespace ContentPatcher
                         foreach (KeyValuePair<string, ConfigField> pair in config)
                         {
                             ConfigField field = pair.Value;
-                            tokenContext.Add(new ImmutableToken(pair.Key, field.Value, scope: current.Manifest.UniqueID, allowedValues: field.AllowValues, canHaveMultipleValues: field.AllowMultiple));
+                            modContext.Add(new ImmutableToken(pair.Key, field.Value, scope: current.Manifest.UniqueID, allowedValues: field.AllowValues, canHaveMultipleValues: field.AllowMultiple));
                         }
 
                         // load dynamic tokens
@@ -326,7 +331,7 @@ namespace ContentPatcher
                             ITokenString values;
                             if (!string.IsNullOrWhiteSpace(entry.Value))
                             {
-                                if (!this.TryParseStringTokens(entry.Value, tokenContext, current.Migrator, out string valueError, out values))
+                                if (!this.TryParseStringTokens(entry.Value, modContext, current.Migrator, out string valueError, out values))
                                 {
                                     LogSkip($"the token value is invalid: {valueError}");
                                     continue;
@@ -338,7 +343,7 @@ namespace ContentPatcher
                             // parse conditions
                             IList<Condition> conditions;
                             {
-                                if (!this.TryParseConditions(entry.When, tokenContext, current.Migrator, out conditions, out string conditionError))
+                                if (!this.TryParseConditions(entry.When, modContext, current.Migrator, out conditions, out string conditionError))
                                 {
                                     this.Monitor.Log($"Ignored {current.Manifest.Name} > '{entry.Name}' token: its {nameof(DynamicTokenConfig.When)} field is invalid: {conditionError}.", LogLevel.Warn);
                                     continue;
@@ -346,17 +351,20 @@ namespace ContentPatcher
                             }
 
                             // add token
-                            tokenContext.Add(new DynamicTokenValue(entry.Name, values, conditions));
+                            modContext.Add(new DynamicTokenValue(entry.Name, values, conditions));
                         }
                     }
 
                     // load patches
+                    IContext patchTokenContext = new SinglePatchContext(current.Manifest.UniqueID, parentContext: modContext); // make patch tokens available to patches
+
                     content.Changes = this.SplitPatches(content.Changes).ToArray();
                     this.NamePatches(current.ManagedPack, content.Changes);
+
                     foreach (PatchConfig patch in content.Changes)
                     {
                         this.Monitor.VerboseLog($"   loading {patch.LogName}...");
-                        this.LoadPatch(current.ManagedPack, patch, tokenContext, current.Migrator, logSkip: reasonPhrase => this.Monitor.Log($"Ignored {patch.LogName}: {reasonPhrase}", LogLevel.Warn));
+                        this.LoadPatch(current.ManagedPack, patch, patchTokenContext, current.Migrator, logSkip: reasonPhrase => this.Monitor.Log($"Ignored {patch.LogName}: {reasonPhrase}", LogLevel.Warn));
                     }
                 }
                 catch (Exception ex)
@@ -404,25 +412,17 @@ namespace ContentPatcher
                     patch.LogName = $"{patch.Action} {patch.Target}";
             }
 
-            // detect duplicate names
-            InvariantHashSet duplicateNames = new InvariantHashSet(
-                from patch in patches
-                group patch by patch.LogName into nameGroup
-                where nameGroup.Count() > 1
-                select nameGroup.Key
-            );
-
-            // make names unique
-            int i = 0;
-            foreach (PatchConfig patch in patches)
+            // make names unique within content pack
+            foreach (var patchGroup in patches.GroupBy(p => p.LogName, StringComparer.InvariantCultureIgnoreCase).Where(p => p.Count() > 1))
             {
-                i++;
-
-                if (duplicateNames.Contains(patch.LogName))
-                    patch.LogName = $"entry #{i} ({patch.LogName})";
-
-                patch.LogName = $"{contentPack.Manifest.Name} > {patch.LogName}";
+                int i = 0;
+                foreach (var patch in patchGroup)
+                    patch.LogName += $" #{++i}";
             }
+
+            // prefix with content pack name
+            foreach (var patch in patches)
+                patch.LogName = $"{contentPack.Manifest.Name} > {patch.LogName}";
         }
 
         /// <summary>Load one patch from a content pack's <c>content.json</c> file.</summary>
@@ -435,9 +435,10 @@ namespace ContentPatcher
         {
             bool TrackSkip(string reason, bool warn = true)
             {
+                reason = reason.TrimEnd('.', ' ');
                 this.PatchManager.AddPermanentlyDisabled(new DisabledPatch(entry.LogName, entry.Action, entry.Target, pack, reason));
                 if (warn)
-                    logSkip(reason);
+                    logSkip(reason + '.');
                 return false;
             }
 
@@ -451,8 +452,8 @@ namespace ContentPatcher
                 if (!Enum.TryParse(entry.Action, true, out PatchType action))
                 {
                     return TrackSkip(string.IsNullOrWhiteSpace(entry.Action)
-                        ? $"must set the {nameof(PatchConfig.Action)} field."
-                        : $"invalid {nameof(PatchConfig.Action)} value '{entry.Action}', expected one of: {string.Join(", ", Enum.GetNames(typeof(PatchType)))}."
+                        ? $"must set the {nameof(PatchConfig.Action)} field"
+                        : $"invalid {nameof(PatchConfig.Action)} value '{entry.Action}', expected one of: {string.Join(", ", Enum.GetNames(typeof(PatchType)))}"
                     );
                 }
 
@@ -460,7 +461,7 @@ namespace ContentPatcher
                 ITokenString assetName;
                 {
                     if (string.IsNullOrWhiteSpace(entry.Target))
-                        return TrackSkip($"must set the {nameof(PatchConfig.Target)} field.");
+                        return TrackSkip($"must set the {nameof(PatchConfig.Target)} field");
                     if (!this.TryParseStringTokens(entry.Target, tokenContext, migrator, out string error, out assetName))
                         return TrackSkip($"the {nameof(PatchConfig.Target)} is invalid: {error}");
                 }
@@ -476,7 +477,7 @@ namespace ContentPatcher
                 IList<Condition> conditions;
                 {
                     if (!this.TryParseConditions(entry.When, tokenContext, migrator, out conditions, out string error))
-                        return TrackSkip($"the {nameof(PatchConfig.When)} field is invalid: {error}.");
+                        return TrackSkip($"the {nameof(PatchConfig.When)} field is invalid: {error}");
                 }
 
                 // get patch instance
@@ -498,7 +499,7 @@ namespace ContentPatcher
                         {
                             // validate
                             if (entry.Entries == null && entry.Fields == null && entry.MoveEntries == null)
-                                return TrackSkip($"one of {nameof(PatchConfig.Entries)}, {nameof(PatchConfig.Fields)}, or {nameof(PatchConfig.MoveEntries)} must be specified for an '{action}' change.");
+                                return TrackSkip($"one of {nameof(PatchConfig.Entries)}, {nameof(PatchConfig.Fields)}, or {nameof(PatchConfig.MoveEntries)} must be specified for an '{action}' change");
 
                             // parse entries
                             List<EditDataPatchRecord> entries = new List<EditDataPatchRecord>();
@@ -507,9 +508,9 @@ namespace ContentPatcher
                                 foreach (KeyValuePair<string, JToken> pair in entry.Entries)
                                 {
                                     if (!this.TryParseStringTokens(pair.Key, tokenContext, migrator, out string keyError, out ITokenString key))
-                                        return TrackSkip($"{nameof(PatchConfig.Entries)} > '{key}' key is invalid: {keyError}.");
+                                        return TrackSkip($"{nameof(PatchConfig.Entries)} > '{key}' key is invalid: {keyError}");
                                     if (!this.TryParseJsonTokens(pair.Value, tokenContext, migrator, out string error, out TokenisableJToken value))
-                                        return TrackSkip($"{nameof(PatchConfig.Entries)} > '{key}' value is invalid: {error}.");
+                                        return TrackSkip($"{nameof(PatchConfig.Entries)} > '{key}' value is invalid: {error}");
 
                                     entries.Add(new EditDataPatchRecord(key, value));
                                 }
@@ -523,20 +524,20 @@ namespace ContentPatcher
                                 {
                                     // parse entry key
                                     if (!this.TryParseStringTokens(recordPair.Key, tokenContext, migrator, out string keyError, out ITokenString key))
-                                        return TrackSkip($"{nameof(PatchConfig.Fields)} > entry {recordPair.Key} is invalid: {keyError}.");
+                                        return TrackSkip($"{nameof(PatchConfig.Fields)} > entry {recordPair.Key} is invalid: {keyError}");
 
                                     // parse fields
                                     foreach (var fieldPair in recordPair.Value)
                                     {
                                         // parse field key
                                         if (!this.TryParseStringTokens(fieldPair.Key, tokenContext, migrator, out string fieldError, out ITokenString fieldKey))
-                                            return TrackSkip($"{nameof(PatchConfig.Fields)} > entry {recordPair.Key} > field {fieldPair.Key} key is invalid: {fieldError}.");
+                                            return TrackSkip($"{nameof(PatchConfig.Fields)} > entry {recordPair.Key} > field {fieldPair.Key} key is invalid: {fieldError}");
 
                                         // parse value
                                         if (!this.TryParseJsonTokens(fieldPair.Value, tokenContext, migrator, out string valueError, out TokenisableJToken value))
-                                            return TrackSkip($"{nameof(PatchConfig.Fields)} > entry {recordPair.Key} > field {fieldKey} is invalid: {valueError}.");
+                                            return TrackSkip($"{nameof(PatchConfig.Fields)} > entry {recordPair.Key} > field {fieldKey} is invalid: {valueError}");
                                         if (value?.Value is JValue jValue && jValue.Value<string>()?.Contains("/") == true)
-                                            return TrackSkip($"{nameof(PatchConfig.Fields)} > entry {recordPair.Key} > field {fieldKey} is invalid: value can't contain field delimiter character '/'.");
+                                            return TrackSkip($"{nameof(PatchConfig.Fields)} > entry {recordPair.Key} > field {fieldKey} is invalid: value can't contain field delimiter character '/'");
 
                                         fields.Add(new EditDataPatchField(key, fieldKey, value));
                                     }
@@ -552,24 +553,24 @@ namespace ContentPatcher
                                     // validate
                                     string[] targets = new[] { moveEntry.BeforeID, moveEntry.AfterID, moveEntry.ToPosition };
                                     if (string.IsNullOrWhiteSpace(moveEntry.ID))
-                                        return TrackSkip($"{nameof(PatchConfig.MoveEntries)} > move entry is invalid: must specify an {nameof(PatchMoveEntryConfig.ID)} value.");
+                                        return TrackSkip($"{nameof(PatchConfig.MoveEntries)} > move entry is invalid: must specify an {nameof(PatchMoveEntryConfig.ID)} value");
                                     if (targets.All(string.IsNullOrWhiteSpace))
-                                        return TrackSkip($"{nameof(PatchConfig.MoveEntries)} > entry '{moveEntry.ID}' is invalid: must specify one of {nameof(PatchMoveEntryConfig.ToPosition)}, {nameof(PatchMoveEntryConfig.BeforeID)}, or {nameof(PatchMoveEntryConfig.AfterID)}.");
+                                        return TrackSkip($"{nameof(PatchConfig.MoveEntries)} > entry '{moveEntry.ID}' is invalid: must specify one of {nameof(PatchMoveEntryConfig.ToPosition)}, {nameof(PatchMoveEntryConfig.BeforeID)}, or {nameof(PatchMoveEntryConfig.AfterID)}");
                                     if (targets.Count(p => !string.IsNullOrWhiteSpace(p)) > 1)
-                                        return TrackSkip($"{nameof(PatchConfig.MoveEntries)} > entry '{moveEntry.ID}' is invalid: must specify only one of {nameof(PatchMoveEntryConfig.ToPosition)}, {nameof(PatchMoveEntryConfig.BeforeID)}, and {nameof(PatchMoveEntryConfig.AfterID)}.");
+                                        return TrackSkip($"{nameof(PatchConfig.MoveEntries)} > entry '{moveEntry.ID}' is invalid: must specify only one of {nameof(PatchMoveEntryConfig.ToPosition)}, {nameof(PatchMoveEntryConfig.BeforeID)}, and {nameof(PatchMoveEntryConfig.AfterID)}");
 
                                     // parse IDs
                                     if (!this.TryParseStringTokens(moveEntry.ID, tokenContext, migrator, out string idError, out ITokenString moveId))
-                                        return TrackSkip($"{nameof(PatchConfig.MoveEntries)} > entry '{moveEntry.ID}' > {nameof(PatchMoveEntryConfig.ID)} is invalid: {idError}.");
+                                        return TrackSkip($"{nameof(PatchConfig.MoveEntries)} > entry '{moveEntry.ID}' > {nameof(PatchMoveEntryConfig.ID)} is invalid: {idError}");
                                     if (!this.TryParseStringTokens(moveEntry.BeforeID, tokenContext, migrator, out string beforeIdError, out ITokenString beforeId))
-                                        return TrackSkip($"{nameof(PatchConfig.MoveEntries)} > entry '{moveEntry.ID}' > {nameof(PatchMoveEntryConfig.BeforeID)} is invalid: {beforeIdError}.");
+                                        return TrackSkip($"{nameof(PatchConfig.MoveEntries)} > entry '{moveEntry.ID}' > {nameof(PatchMoveEntryConfig.BeforeID)} is invalid: {beforeIdError}");
                                     if (!this.TryParseStringTokens(moveEntry.AfterID, tokenContext, migrator, out string afterIdError, out ITokenString afterId))
-                                        return TrackSkip($"{nameof(PatchConfig.MoveEntries)} > entry '{moveEntry.ID}' > {nameof(PatchMoveEntryConfig.AfterID)} is invalid: {afterIdError}.");
+                                        return TrackSkip($"{nameof(PatchConfig.MoveEntries)} > entry '{moveEntry.ID}' > {nameof(PatchMoveEntryConfig.AfterID)} is invalid: {afterIdError}");
 
                                     // parse position
                                     MoveEntryPosition toPosition = MoveEntryPosition.None;
                                     if (!string.IsNullOrWhiteSpace(moveEntry.ToPosition) && (!Enum.TryParse(moveEntry.ToPosition, true, out toPosition) || toPosition == MoveEntryPosition.None))
-                                        return TrackSkip($"{nameof(PatchConfig.MoveEntries)} > entry '{moveEntry.ID}' > {nameof(PatchMoveEntryConfig.ToPosition)} is invalid: must be one of {nameof(MoveEntryPosition.Bottom)} or {nameof(MoveEntryPosition.Top)}.");
+                                        return TrackSkip($"{nameof(PatchConfig.MoveEntries)} > entry '{moveEntry.ID}' > {nameof(PatchMoveEntryConfig.ToPosition)} is invalid: must be one of {nameof(MoveEntryPosition.Bottom)} or {nameof(MoveEntryPosition.Top)}");
 
                                     // create move entry
                                     moveEntries.Add(new EditDataPatchMoveRecord(moveId, beforeId, afterId, toPosition));
@@ -587,7 +588,7 @@ namespace ContentPatcher
                             // read patch mode
                             PatchMode patchMode = PatchMode.Replace;
                             if (!string.IsNullOrWhiteSpace(entry.PatchMode) && !Enum.TryParse(entry.PatchMode, true, out patchMode))
-                                return TrackSkip($"the {nameof(PatchConfig.PatchMode)} is invalid. Expected one of these values: [{string.Join(", ", Enum.GetNames(typeof(PatchMode)))}].");
+                                return TrackSkip($"the {nameof(PatchConfig.PatchMode)} is invalid. Expected one of these values: [{string.Join(", ", Enum.GetNames(typeof(PatchMode)))}]");
 
                             // save
                             if (!this.TryPrepareLocalAsset(pack, entry.FromFile, tokenContext, migrator, out string error, out ITokenString fromAsset))
@@ -596,14 +597,30 @@ namespace ContentPatcher
                         }
                         break;
 
+                    // edit map
+                    case PatchType.EditMap:
+                        {
+                            // read map asset
+                            if (!this.TryPrepareLocalAsset(pack, entry.FromFile, tokenContext, migrator, out string error, out ITokenString fromAsset))
+                                return TrackSkip(error);
+
+                            // validate
+                            if (entry.ToArea == Rectangle.Empty)
+                                return TrackSkip($"must specify {nameof(entry.ToArea)} (use \"Action\": \"Load\" if you want to replace the whole map file)");
+
+                            // save
+                            patch = new EditMapPatch(entry.LogName, pack, assetName, conditions, fromAsset, entry.FromArea, entry.ToArea, this.Monitor, this.Helper.Content.NormaliseAssetName);
+                        }
+                        break;
+
                     default:
-                        return TrackSkip($"unsupported patch type '{action}'.");
+                        return TrackSkip($"unsupported patch type '{action}'");
                 }
 
                 // skip if not enabled
                 // note: we process the patch even if it's disabled, so any errors are caught by the modder instead of only failing after the patch is enabled.
                 if (!enabled)
-                    return TrackSkip($"{nameof(PatchConfig.Enabled)} is false.", warn: false);
+                    return TrackSkip($"{nameof(PatchConfig.Enabled)} is false", warn: false);
 
                 // save patch
                 this.PatchManager.Add(patch);
@@ -802,7 +819,7 @@ namespace ContentPatcher
             if (tokenStrings.Any())
             {
                 // validate unknown tokens
-                string[] unknownTokens = tokenStrings.SelectMany(p => p.InvalidTokens).OrderBy(p => p).ToArray();
+                string[] unknownTokens = tokenStrings.SelectMany(p => p.GetDiagnosticState().InvalidTokens).OrderBy(p => p).ToArray();
                 if (unknownTokens.Any())
                 {
                     error = $"found unknown tokens ({string.Join(", ", unknownTokens)})";
@@ -844,9 +861,10 @@ namespace ContentPatcher
                 return false;
 
             // validate unknown tokens
-            if (parsed.InvalidTokens.Any())
+            IContextualState state = parsed.GetDiagnosticState();
+            if (state.InvalidTokens.Any())
             {
-                error = $"found unknown tokens ({string.Join(", ", parsed.InvalidTokens.OrderBy(p => p))})";
+                error = $"found unknown tokens ({string.Join(", ", state.InvalidTokens.OrderBy(p => p))})";
                 parsed = null;
                 return false;
             }

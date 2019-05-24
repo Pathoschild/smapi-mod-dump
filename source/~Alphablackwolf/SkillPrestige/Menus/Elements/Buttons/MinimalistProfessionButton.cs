@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SkillPrestige.Logging;
 using SkillPrestige.Professions;
+using StardewModdingAPI.Events;
 using StardewValley;
 
 namespace SkillPrestige.Menus.Elements.Buttons
@@ -84,18 +85,31 @@ namespace SkillPrestige.Menus.Elements.Buttons
             spriteBatch.Draw(SkillPrestigeMod.CheckmarkTexture, checkmarkLocation, _checkmarkSourceRectangle, Color.White, 0f, Vector2.Zero, Game1.pixelZoom / 4f, SpriteEffects.None, 1f);
         }
 
-        protected override void OnMouseHover()
+        /// <summary>Raised when the player begins hovering over the button.</summary>
+        protected override void OnMouseHovered()
         {
-            base.OnMouseHover();
-            if (!IsDisabled) Game1.playSound("smallSelect");
+            base.OnMouseHovered();
+            if (IsDisabled)
+                return;
+
+            Game1.playSound("smallSelect");
         }
 
-        protected override void OnMouseClick()
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="e">The event data.</param>
+        /// <param name="isClick">Whether the button press is a click.</param>
+        public override void OnButtonPressed(ButtonPressedEventArgs e, bool isClick)
         {
-            if (IsDisabled) return;
-            Game1.playSound("bigSelect");
-            Prestige.AddPrestigeProfession(Profession.Id);
-            Selected = true;
+            base.OnButtonPressed(e, isClick);
+            if (IsDisabled)
+                return;
+
+            if (isClick && IsHovered)
+            {
+                Game1.playSound("bigSelect");
+                Prestige.AddPrestigeProfession(Profession.Id);
+                Selected = true;
+            }
         }
 
         private int GetPrestigeCost()

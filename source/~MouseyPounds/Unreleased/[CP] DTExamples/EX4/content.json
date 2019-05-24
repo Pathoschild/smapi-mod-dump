@@ -1,0 +1,32 @@
+//Example 4. Requires no asset files.
+{
+  "Format": "1.5",
+  "DynamicTokens": [
+    {
+      "Name": "GirlsConfrontation",
+      "Value": false,
+    },
+    {
+      "Name": "GirlsConfrontation",
+      "Value": true,
+      "When": { "HasSeenEvent": "195012" }
+    },
+    {
+      "Name": "GuysConfrontation",
+      "Value": false,
+    },
+    {
+      "Name": "GuysConfrontation",
+      "Value": true,
+      "When": { "HasSeenEvent": "195013" }
+    },
+  ],
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Clint",
+	  "Entries": { "Wed8": "Man, I'm too nervous to even ask someone out, and you're dating the whole town!?#$e#I bet they'll all forgive you too." },
+      "When": { "GirlsConfrontation": true, "GuysConfrontation": true }
+    }
+  ]
+}

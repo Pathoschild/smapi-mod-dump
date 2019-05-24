@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -31,18 +32,27 @@ namespace SkillPrestige.Menus.Elements.Buttons
 
         protected override string Text => string.Empty;
 
-        protected override void OnMouseHover()
+        /// <summary>Raised when the player begins hovering over the button.</summary>
+        protected override void OnMouseHovered()
         {
-            base.OnMouseHover();
+            base.OnMouseHovered();
+
             Game1.playSound("smallSelect");
         }
 
-        protected override void OnMouseClick()
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="e">The event data.</param>
+        /// <param name="isClick">Whether the button press is a click.</param>
+        public override void OnButtonPressed(ButtonPressedEventArgs e, bool isClick)
         {
-            Game1.playSound("bigSelect");
-            _onClick.Invoke();
-        }
+            base.OnButtonPressed(e, isClick);
 
+            if (isClick && IsHovered)
+            {
+                Game1.playSound("bigSelect");
+                _onClick.Invoke();
+            }
+        }
 
         public override void Draw(SpriteBatch spriteBatch)
         {

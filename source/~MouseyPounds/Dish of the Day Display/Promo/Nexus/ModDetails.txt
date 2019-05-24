@@ -1,0 +1,46 @@
+Category: Miscellaneous
+
+Tags:
+SMAPI
+Works with Stardew 1.3
+
+Overview:
+Dish of the Day Display is a SMAPI mod which adds a localized chat message and/or an in-game sign indicating what special food item Gus is selling at the Saloon each day.
+
+Permissions:
+This mod is released under [url=https://github.com/MouseyPounds/stardew-mods/blob/master/LICENSE]an MIT License[/url]. Although not required, the author would appreciate being informed of any derivative works which include or alter the mod or its assets.
+
+Credits:
+This mod uses only original assets and modifications of existing game assets.
+
+Details:
+[b]Description:
+
+[color=#ffff00]Dish of the Day Display[/color][/b] is a SMAPI mod which adds a localized chat message and/or an in-game sign indicating what special food item Gus is selling at the Saloon each day. The toggling of types of display and the location of the sign are set in the [i]config.json[/i] file; this file is not included with the download and will be automatically created the first time the game is run with the mod loaded.
+
+
+[b]Installation:[/b]
+[list=1]
+[*]Install the latest version of [url=https://smapi.io/]SMAPI[/url].
+[*]Unzip the download and place the included [color=#b6d7a8][code]DishOfTheDayDisplay[/code][/color] folder into your [color=#b6d7a8][code]Mods[/code][/color] folder.
+[/list]
+
+[b]Configuration:
+[/b]
+[list]
+[*][color=#6d9eeb][b]Show_Chat_Message[/b][/color] lets you choose whether the localized text message appears. Choices are [color=#b4a7d6][i]true[/i] [/color](default) or [i][color=#b4a7d6]false[/color][/i].
+[*][color=#6d9eeb][b]Place_Sign[/b][/color] lets you choose whether an in-game sign will be created. Choices are [color=#b4a7d6][i]true[/i] [/color](default) or [i][color=#b4a7d6]false[/color][/i].
+[*][color=#6d9eeb][b]Sign_Type[/b][/color] lets you choose which variation of sign (if it's enabled.) Choices are [color=#b4a7d6][i]wood[/i] [/color](default) or [i][color=#b4a7d6]stone[/color][/i].
+[*][color=#6d9eeb][b]Sign_Location_Map_Name[/b][/color] lets you choose on which map the sign will appear (if it's enabled.) The default is [color=#b4a7d6][i]Town[/i][/color]; any other valid location identifier (including those added by mods) should work.
+[*][color=#6d9eeb][b]Sign_Location_Tile_X[/b][/color] lets you choose the X coordinate where the sign will appear (if it's enabled.) The default is [color=#b4a7d6][i]42[/i][/color]; accepts integer values.
+[*][color=#6d9eeb][b]Sign_Location_Tile_Y[/b][/color] lets you choose the Y coordinate where the sign will appear (if it's enabled.) The default is [color=#b4a7d6][i]71[/i][/color]; accepts integer values.
+[/list]
+
+[b]Compatibility:
+[/b]
+[b][color=#ffff00]Dish of the Day Display[/color][/b] requires [url=https://smapi.io]SMAPI[/url] version 2.10 or higher and should work with Stardew Valley 1.3.36 or higher.
+
+
+[b]Source Code Repository:
+[/b]
+[url=https://github.com/MouseyPounds/stardew-mods/tree/master/DishOftheDayDisplay]GitHub[/url]

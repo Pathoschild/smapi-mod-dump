@@ -8,7 +8,8 @@ namespace sdv_helper.Detectors
     class FarmAnimalDetector : IDetector
     {
         private GameLocation location;
-        private Settings settings;
+        private readonly Settings settings;
+
         public FarmAnimalDetector(Settings settings)
         {
             this.settings = settings;
@@ -22,7 +23,8 @@ namespace sdv_helper.Detectors
                 {
                     // bug: if an animal is located in a building, the position is
                     // incorrect
-                    e.Add(new KeyValuePair<Vector2, object>(c.getTileLocation(), c));
+                    if (location.isTileOnMap(c.getTileLocation()))
+                        e.Add(new KeyValuePair<Vector2, object>(c.getTileLocation(), c));
                 }
             return e;
         }

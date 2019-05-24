@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/569
+IDs: alphablackwolf.MagicPrestigeAdapter
+update keys: Nexus:569, GitHub:Alphablackwolf/SkillPrestige

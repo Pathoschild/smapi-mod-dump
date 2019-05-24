@@ -16,6 +16,9 @@ namespace Pathoschild.Stardew.NoclipMode
         /// <summary>The mod configuration.</summary>
         private ModConfig Config;
 
+        /// <summary>The key which toggles noclip mode.</summary>
+        private SButton[] ToggleKey;
+
 
         /*********
         ** Public methods
@@ -24,8 +27,11 @@ namespace Pathoschild.Stardew.NoclipMode
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            // read config
             this.Config = helper.ReadConfig<ModConfig>();
+            this.ToggleKey = CommonHelper.ParseButtons(this.Config.ToggleKey, this.Monitor, nameof(this.Config.ToggleKey));
 
+            // hook events
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
         }
 
@@ -38,7 +44,7 @@ namespace Pathoschild.Stardew.NoclipMode
         /// <param name="e">The event data.</param>
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (Context.IsPlayerFree && this.Config.ToggleKey.Any(p => p == e.Button))
+            if (Context.IsPlayerFree && this.ToggleKey.Contains(e.Button))
             {
                 Game1.player.ignoreCollisions = !Game1.player.ignoreCollisions;
                 if (Game1.player.ignoreCollisions)

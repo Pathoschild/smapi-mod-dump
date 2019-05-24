@@ -38,8 +38,7 @@ namespace SkillPrestige.Commands
                 SkillPrestigeMod.LogMonitor.Log("<skill> is invalid");
                 return;
             }
-            int experienceArgument;
-            if (!int.TryParse(args[1], out experienceArgument))
+            if (!int.TryParse(args[1], out int experienceArgument))
             {
                 SkillPrestigeMod.LogMonitor.Log("experience must be an integer.");
                 return;

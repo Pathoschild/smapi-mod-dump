@@ -1,0 +1,29 @@
+{
+  "treeParameters": {
+    "treeGrowthChance": 0.6,
+    "treeSpreadChance": 0.3,
+    "treeHasSeedChance": 1.0
+  },
+  "seedChanges": [
+    {
+      "seedIndex": -1000,
+      "replaceOldSeed": false,
+      "seedChances": [
+        {
+          "seedIndex": 388,
+          "seedChance": 0.3,
+          "minSeed": 2,
+          "maxSeed": 4,
+		  "professionChanges": [
+            {
+              "profession": 12,
+              "affectsCount": true,
+              "professionChange": 2.0,
+              "professionOperation": "+"
+            }
+			]
+        }
+      ]
+    }
+  ]
+}
