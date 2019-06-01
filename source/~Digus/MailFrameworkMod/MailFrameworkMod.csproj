@@ -72,7 +72,7 @@
     <Compile Include="LetterViewerMenuExtended.cs" />
     <Compile Include="MailController.cs" />
     <Compile Include="MailDao.cs" />
-    <Compile Include="MailFrameworkModEntery.cs" />
+    <Compile Include="MailFrameworkModEntry.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -13,7 +13,7 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
 {
     public class Commands
     {
-        public static IMonitor ModMonitor = EverlastingBaitsAndUnbreakableTacklesModEntery.ModMonitor;
+        public static IMonitor ModMonitor = EverlastingBaitsAndUnbreakableTacklesModEntry.ModMonitor;
 
         public static void AddAllBaitTackleRecipes(string command, string[] args)
         {

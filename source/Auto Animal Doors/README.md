@@ -18,6 +18,11 @@ If you go to bed before your animal door close time, your animal doors will be c
 
 Note: The current implementation closes the animal doors and warps the animals back as soon as you get into bed (even if you select "No" from the "Go to sleep now?" dialog). It is difficult (impossible?) to warp your animals back to safety on time once "Yes" is pressed.
 
+### Upgrade Level Requirement
+You can set the required upgrade level for barns or coops before the auto open/close feature is enabled via the CoopRequiredUpgradeLevel and BarnRequiredUpgradeLevel respectively. The number corresponds to the minimim upgrade level required for the feature to be enabled. If you want to only have the doors automatically open/close on the last upgrade level (to correspond with the auto feeder system) you can set these values to 3. 
+
+Consequently, you can disable this mod for barns or coops by setting the value to anything 4 or over, since you can never have a coop/barn with that high of an upgrade level.
+
 ## Config File
 
 The config file is where all the options for this mod can be set. It will be automatically created the first time the game is launched with this mod installed.
@@ -26,21 +31,26 @@ You can find it in the mods install directory.
 
 ### Values
 
-| Name                      | Type      | Default | Description                                                                  |
-|:------------------------- |:--------- |:------- |:---------------------------------------------------------------------------- |
-| **AutoOpenEnabled**       | *boolean* | true    | true if doors should automatically open, false if not                        |
-| **AnimalDoorOpenTime**    | *integer* | 730     | The time animal doors are scheduled to open (730 = 7:30 am, 1310 = 1:10 pm)  |
-| **AnimalDoorCloseTime**   | *integer* | 1800    | The time animal doors are scheduled to close (730 = 7:30 am, 1310 = 1:10 pm) |
-| **OpenDoorsWhenRaining**  | *boolean* | false   | true if doors should open even when raining/lightning, false if not          |
-| **OpenDoorsDuringWinter** | *boolean* | false   | true if doors should open even during winter, false if not                   |
+| Name                        | Type      | Default | Description                                                                      |
+|:-------------------------   |:--------- |:------- |:-------------------------------------------------------------------------------- |
+| **AnimalDoorOpenTime**      | *integer* | 730     | The time animal doors are scheduled to open (730 = 7:30 am, 1310 = 1:10 pm)      |
+| **AnimalDoorCloseTime**     | *integer* | 1800    | The time animal doors are scheduled to close (730 = 7:30 am, 1310 = 1:10 pm)     |
+| **CoopRequiredUpgradeLevel**| *integer* | 1       | The coop upgrade level required for auto open/close (1=base, 2=big, 3=deluxe)    |
+| **BarnRequiredUpgradeLevel**| *integer* | 1       | The barn upgrade level required for auto open/close (1=base, 2=big, 3=deluxe)    |
+| **AutoOpenEnabled**         | *boolean* | true    | true if doors should automatically open, false if not                            |
+| **OpenDoorsWhenRaining**    | *boolean* | false   | true if doors should open even when raining/lightning, false if not              |
+| **OpenDoorsDuringWinter**   | *boolean* | false   | true if doors should open even during winter, false if not                       |
 
 ### Example config.json
 
 ```json
 {
-  "AutoOpenEnabled": false,
+
   "AnimalDoorOpenTime": 730,
   "AnimalDoorCloseTime": 1800,
+  "CoopRequiredUpgradeLevel": 1,
+  "BarnRequiredUpgradeLevel": 1,
+  "AutoOpenEnabled": true,
   "OpenDoorsWhenRaining": false,
   "OpenDoorsDuringWinter": false
 }

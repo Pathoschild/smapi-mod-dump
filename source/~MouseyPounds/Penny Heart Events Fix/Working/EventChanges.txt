@@ -1,0 +1,19 @@
+Event 35
+
+1) change "warp farmer" coords from "12 9" to "13 24"
+2) add 3 commands after "doorClose/":
+"move farmer 0 -1 0/move farmer -1 0 3/move farmer 0 -14 0/"
+3) change "warp Pam" coords from "12 9" to "13 24"
+4) move the "move Pam 0 -1 0/" from after "stopMusic" to before it.
+5) add 2 more movement commands before "stopMusic" as well:
+"move Pam -1 0 3/move Pam 0 -15 0/"
+6) a little before the final "doorClose", 2 sets of commands need adjustment. First, between the pair of "pause 500" there are two movement commands ("move farmer -1 0 2/
+move farmer 0 1 2/") which must be replaced by a single command ("move farmer 0 3 2/")
+7) Then, after the "pause 700" two commands ("faceDirection farmer 2/
+pause 500/") must be replaced by a movement ("move farmer 0 13 2/")
+
+Event 36
+
+1) change "warp farmer" coords from "12 9" to "13 24"
+2) add a "move farmer 0 -15 0/" just after that warp
+3) between "faceDirection Penny 1/" and Penny's 2nd "speak" the command "move farmer -2 0 3/" should change to "move farmer -3 0 3/"

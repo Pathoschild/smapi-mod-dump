@@ -43,4 +43,4 @@ Details:
 
 [b]Source Code Repository:
 [/b]
-[url=https://github.com/MouseyPounds/stardew-mods/tree/master/DishOftheDayDisplay]GitHub[/url]
+[url=https://github.com/MouseyPounds/stardew-mods/tree/master/Dish%20of%20the%20Day%20Display]GitHub[/url]

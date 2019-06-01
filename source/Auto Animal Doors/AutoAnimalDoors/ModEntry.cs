@@ -36,9 +36,9 @@ namespace AutoAnimalDoors
         {
             if (IsGoToSleepDialog(menuChangedEventArgs.NewMenu))
             {
-                foreach (Farm farm in Game.Instance.Farms)
+                foreach (Buildings.AnimalBuilding eligibleAnimalBuilding in this.EligibleAnimalBuildings)
                 {
-                    farm.SendAllAnimalsHome();
+                    eligibleAnimalBuilding.SendAllAnimalsHome();
                 }
             }
         }
@@ -75,11 +75,50 @@ namespace AutoAnimalDoors
             }
         }
 
+        private int GetUpgradeLevelRequirementForBuidlingType(Buildings.AnimalBuildingType type)
+        {
+            if (type == Buildings.AnimalBuildingType.BARN)
+            {
+                return config.BarnRequiredUpgradeLevel;
+            } else if (type == Buildings.AnimalBuildingType.COOP)
+            {
+                return config.CoopRequiredUpgradeLevel;
+            }
+            return 0;
+        }
+
+        /// <summary>This method gets only the animal buildings that are eligible for 
+        ///    auto opening/closing based off the config settings.
+        /// <example>For example:
+        ///    If the CoopRequiredUpgradeLevel was set to 2, the Coops that are upgrade 
+        ///    level 2 or higher would be returned ("Big Coop"s and "Deluxe Coop"s) while the coops
+        ///    below that upgrade level (Normal "Coop"s) would not be returned.
+        /// </example>
+        /// </summary>
+        private List<Buildings.AnimalBuilding> EligibleAnimalBuildings
+        {
+            get
+            {
+                List<Buildings.AnimalBuilding> eligibleAnimalBuildings = new List<Buildings.AnimalBuilding>(); ;
+                foreach (Farm farm in Game.Instance.Farms)
+                {
+                    foreach (Buildings.AnimalBuilding animalBuilding in farm.AnimalBuildings)
+                    {
+                        if (animalBuilding.UpgradeLevel >= GetUpgradeLevelRequirementForBuidlingType(animalBuilding.Type))
+                        {
+                            eligibleAnimalBuildings.Add(animalBuilding);
+                        }
+                    }
+                }
+                return eligibleAnimalBuildings;
+            }
+        }
+
         private void SetAllAnimalDoorsState(Buildings.AnimalDoorState state)
         {
-            foreach (Farm farm in Game.Instance.Farms)
+            foreach (Buildings.AnimalBuilding animalBuilding in this.EligibleAnimalBuildings)
             {
-                farm.SetAnimalDoorsState(state);
+                animalBuilding.AnimalDoorState = state;
             }
         }
 
@@ -87,22 +126,17 @@ namespace AutoAnimalDoors
         {
             if (timeOfDayChanged.NewTime >= config.AnimalDoorCloseTime)
             {
-                bool allAnimalsInAllFarmsAreHome = true;
-                foreach (Farm farm in Game.Instance.Farms)
+                List<Buildings.AnimalBuilding> eligibleAnimalBuildings = this.EligibleAnimalBuildings;
+                foreach (Buildings.AnimalBuilding animalBuilding in eligibleAnimalBuildings)
                 {
-                    if (farm.AreAllAnimalsHome())
+                    if (!animalBuilding.AreAllAnimalsHome())
                     {
-                        farm.SetAnimalDoorsState(Buildings.AnimalDoorState.CLOSED);
-                    }
-                    else
-                    {
-                        allAnimalsInAllFarmsAreHome = false;
+                        return;
                     }
                 }
-                if (allAnimalsInAllFarmsAreHome)
-                {
-                    helper.Events.GameLoop.TimeChanged -= this.CloseAnimalDoors;
-                }
+
+                SetAllAnimalDoorsState(Buildings.AnimalDoorState.CLOSED);
+                helper.Events.GameLoop.TimeChanged -= this.CloseAnimalDoors;
             }
         }
 

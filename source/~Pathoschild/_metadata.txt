@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 1ecd4db1c6c197f4134fb17d23555c8fca8c7751
+   commit 5fe316284bf04793cdb0f79ba14a37ca63fd64ac
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Tue May 21 20:14:00 2019 -0400
+   Date:   Wed May 29 03:01:25 2019 -0400
    
-       simplify `patch summary` output
+       extend recipe model for excluded inputs too (#403, #423)
    

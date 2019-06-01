@@ -11,9 +11,12 @@ mods:
    Water Retaining Field
 
 latest commit:
-   commit 7d2cab4ec3b09cc853fb0dd096f08b5d25da4f6d
-   Author: Digus-PC\Digus <diguss@gmail.com>
-   Date:   Fri Mar 1 02:05:09 2019 -0300
+   commit 7ee065ce900f37938a4a9918bcdd73dd45db221c
+   Merge: 7d2cab4 cafac44
+   Author: Digus <32422267+Digus@users.noreply.github.com>
+   Date:   Sun May 26 14:44:42 2019 -0300
    
-       All mods released to SMAPI 3
+       Merge pull request #8 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0 changes
    

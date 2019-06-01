@@ -1,0 +1,2 @@
+# Crop Color Combiner
+A SMAPI mod which adds two keybinds -- one to unify all color variants of items in your inventory to the default color and another to reduce the quality of items in your inventory to no stars. You can target just flowers or all item types and customize the key assignments for both.

@@ -30,10 +30,10 @@ namespace Mine_Changes.MineChanges.Hook
                         {
                             int oreIdx = ore.getOreIndex();
                             if (oreIdx >= 0) {
-                                double trueOreChance = ore.applyProfessionChances(who);
+                                double trueOreChance = ore.applyChances(who);
                                 if (r.NextDouble() < trueOreChance)
                                 {
-                                    int oreCount = ore.applyProfessionCount(r, who);
+                                    int oreCount = ore.getCount(r, who);
                                     if (oreCount > 0)
                                     {
                                         Game1.createMultipleObjectDebris(oreIdx, x, y, oreCount, who.UniqueMultiplayerID, __instance);

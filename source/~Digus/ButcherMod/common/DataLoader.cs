@@ -43,33 +43,25 @@ namespace AnimalHusbandryMod.common
             LooseSpritesName = Helper.Content.GetActualAssetKey("common/LooseSprites.png", ContentSource.ModFolder);
             LooseSprites = Helper.Content.Load<Texture2D>("common/LooseSprites.png");
 
-            var editors = Helper.Content.AssetEditors;
-
-            //editors.Add(new EventsLoader());
-
-            if (!ModConfig.DisableMeat)
-            {               
-                editors.Add(this);
-            }
-
+            // load tools
             ToolsSprites = Helper.Content.Load<Texture2D>("tools/Tools.png");
             ToolsLoader = new ToolsLoader(ToolsSprites, Helper.Content.Load<Texture2D>("tools/MenuTiles.png"), Helper.Content.Load<Texture2D>("common/CustomLetterBG.png"));   
-            editors.Add(ToolsLoader);
             ToolsLoader.LoadMail();
 
+            // load recipes
             if (!ModConfig.DisableMeat)
             {
                 RecipeLoader = new RecipesLoader();
-                editors.Add(RecipeLoader);
                 RecipeLoader.LoadMails();
             }
 
+            // load animal data
             AnimalBuildingData = DataLoader.Helper.Data.ReadJsonFile<AnimalBuildingData>("data\\animalBuilding.json") ?? new AnimalBuildingData();
             DataLoader.Helper.Data.WriteJsonFile("data\\animalBuilding.json", AnimalBuildingData);
-
             AnimalData = DataLoader.Helper.Data.ReadJsonFile<AnimalData>("data\\animals.json") ?? new AnimalData();
             DataLoader.Helper.Data.WriteJsonFile("data\\animals.json", AnimalData);
 
+            // look cooking data
             CookingData = Helper.Data.ReadJsonFile<CookingData>("data\\cooking.json") ?? new CookingData();
             if (CookingData.Meatloaf.Recipe == null)
             {
@@ -77,7 +69,18 @@ namespace AnimalHusbandryMod.common
             }
             Helper.Data.WriteJsonFile("data\\cooking.json", CookingData);
 
+            // load TV channel
             LivingWithTheAnimalsChannel = new LivingWithTheAnimalsChannel();
+
+            // add editors (must happen *after* data is initialised above, since SMAPI may reload affected assets immediately)
+            var editors = Helper.Content.AssetEditors;
+            //editors.Add(new EventsLoader());
+            editors.Add(ToolsLoader);
+            if (!ModConfig.DisableMeat)
+            {
+                editors.Add(this);
+                editors.Add(RecipeLoader);
+            }
         }
 
         public bool CanEdit<T>(IAssetInfo asset)

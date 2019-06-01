@@ -5,9 +5,9 @@ mods:
    Tree Changes
 
 latest commit:
-   commit 644d6304072b6122e6e391d4aa464a02072cd114
+   commit 5219ca34a1f18a51969332dbb7037dea59903703
    Author: JPAN <JPAmaralNunes@gmail.com>
-   Date:   Thu May 23 09:43:25 2019 +0100
+   Date:   Sun May 26 04:03:55 2019 +0100
    
-       Added Example config
+       Added new chance changing parameters, by day, by skill level and by weather, as well as a way to prioritize them.
    

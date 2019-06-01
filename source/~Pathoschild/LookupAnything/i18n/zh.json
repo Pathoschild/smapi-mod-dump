@@ -6,6 +6,11 @@
   "generic.date": "{{seasonName}}{{dayNumber}}日",
   "generic.date-with-year": "第{{year}}年{{seasonName}}{{dayNumber}}日",
 
+  // date names
+  "generic.now": "现在",
+  "generic.tomorrow": "明天",
+  "generic.yesterday": "yesterday", // TODO
+
   // generic field values
   "generic.percent": "{{percent}}%",
   "generic.percent-chance-of": "{{percent}}%几率{{label}}",
@@ -19,13 +24,14 @@
   "generic.hours": "{{count}}小时",
   "generic.days": "{{count}}天",
   "generic.in-x-days": "在{{count}}天内",
-  "generic.tomorrow": "明天",
+  "generic.x-days-ago": "{{count}} days ago", // TODO
   "generic.price": "{{price}}g",
   "generic.price-for-quality": "{{price}}g({{quality}})",
   "generic.price-for-stack": "{{count}}个，总共价值{{price}}g",
 
   // types
   "type.building": "建筑",
+  "type.bush": "Bush", // TODO
   "type.fruit-tree": "果树",
   "type.map-tile": "地格",
   "type.monster": "怪物",
@@ -206,6 +212,18 @@
   "building.upgrades.coop.2": "上升至 12 只动物，解锁自动喂食和兔子",
   "building.water-trough.summary": "{{filled}} 之 {{max}} 水槽已填充",
 
+  // bush lookup labels
+  // TODO
+  "bush.name.berry": "Berry Bush",
+  "bush.name.plain": "Plain Bush",
+  "bush.description.berry": "A bush that grows salmonberries and blackberries.",
+  "bush.description.plain": "A plain bush that doesn't grow anything.",
+  "bush.next-harvest": "Next harvest",
+
+  // bush lookup values
+  // TODO
+  "bush.schedule.berry": "20% chance of salmonberries in spring 15-18 and blackberries in fall 8-11.",
+
   // fruit tree lookup labels
   "fruit-tree.complaints": "问题",
   "fruit-tree.name": "{{fruitName}}树",
@@ -238,7 +256,6 @@
   "crop.summary.harvest-multi": "{{daysToFirstHarvest}}天后收获，之后每隔{{daysToNextHarvests}}天收获一次",
   "crop.summary.seasons": "在{{seasons}}生长",
   "crop.summary.sells-for": "以{{price}}出售",
-  "crop.harvest.now": "现在",
   "crop.harvest.too-late": "下次收获超出本季(下次收获将在{{date}})",
 
   // item lookup labels
@@ -282,7 +299,8 @@
   "item.needed-for.gourmet-chef": "美食大厨成就(烹饪{{recipes}})",
   "item.needed-for.craft-master": "制造大师成就(制造{{recipes}})",
   "item.sells-to.shipping-box": "出货箱",
-  "item.recipes.entry": "{{name}} (需要{{count}})",
+  "item.recipes-for-ingredient.entry": "{{name}} (需要{{count}})",
+  "item.recipes-for-machine.multiple-items": "{{name}} x{{count}}", // TODO
   "item.number-owned.summary": "你目前拥有的总数为{{count}}",
   "item.number-crafted.summary": "你已制造{{count}}个此物",
 

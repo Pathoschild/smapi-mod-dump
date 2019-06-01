@@ -10,7 +10,7 @@ namespace MailFrameworkMod
 {
     public class Commands
     {
-        public static IMonitor ModMonitor = MailFrameworkModEntery.ModMonitor;
+        public static IMonitor ModMonitor = MailFrameworkModEntry.ModMonitor;
 
         public static void AddsReceivedMail(string command, string[] args)
         {

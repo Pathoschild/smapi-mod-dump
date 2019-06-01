@@ -101,9 +101,9 @@ namespace TreeChanges.TreeChanges.Hooks
                         foreach (SeedChances newSeed in sc.seedChances)
                         {
                             int seedIndex = newSeed.getSeedIndex();
-                            if(seedIndex >= 0 && Game1.random.NextDouble() < newSeed.applyProfessionChances(Game1.player))
+                            if(seedIndex >= 0 && Game1.random.NextDouble() < newSeed.applyChances())
                             {
-                                int totalSeeds = newSeed.applyProfessionCount(Game1.player);
+                                int totalSeeds = newSeed.getCount();
                                 if(totalSeeds > 0)
                                 {
                                     Game1.createMultipleObjectDebris(seedIndex, xTile, yTile, totalSeeds);

@@ -36,9 +36,9 @@ namespace MailFrameworkMod
 
         private void initiPrivateProperties()
         {
-            _moneyIncluded = MailFrameworkModEntery.ModHelper.Reflection.GetField<int>(this, "moneyIncluded").GetValue();
-            LearnedRecipe = MailFrameworkModEntery.ModHelper.Reflection.GetField<string>(this, "learnedRecipe").GetValue();
-            CookingOrCrafting = MailFrameworkModEntery.ModHelper.Reflection.GetField<string>(this, "cookingOrCrafting").GetValue();
+            _moneyIncluded = MailFrameworkModEntry.ModHelper.Reflection.GetField<int>(this, "moneyIncluded").GetValue();
+            LearnedRecipe = MailFrameworkModEntry.ModHelper.Reflection.GetField<string>(this, "learnedRecipe").GetValue();
+            CookingOrCrafting = MailFrameworkModEntry.ModHelper.Reflection.GetField<string>(this, "cookingOrCrafting").GetValue();
         }
 
         public static bool GetTextColor(LetterViewerMenu __instance, ref int __result)
@@ -58,11 +58,11 @@ namespace MailFrameworkMod
         {
             base.draw(b);
             
-            if ((double)MailFrameworkModEntery.ModHelper.Reflection.GetField<float>(this, "scale").GetValue() == 1.0 && this._moneyIncluded <= 0)
+            if ((double)MailFrameworkModEntry.ModHelper.Reflection.GetField<float>(this, "scale").GetValue() == 1.0 && this._moneyIncluded <= 0)
             {
                 if (!string.IsNullOrEmpty(this.LearnedRecipe))
                 {
-                    int textColor = MailFrameworkModEntery.ModHelper.Reflection.GetMethod(this, "getTextColor").Invoke<int>();
+                    int textColor = MailFrameworkModEntry.ModHelper.Reflection.GetMethod(this, "getTextColor").Invoke<int>();
                     string s = Game1.content.LoadString("Strings\\UI:LetterViewer_LearnedRecipe", (object)this.CookingOrCrafting);
                     SpriteText.drawStringHorizontallyCenteredAt(b, s, this.xPositionOnScreen + this.width / 2, this.yPositionOnScreen + this.height - 32 - SpriteText.getHeightOfString(s, 999999) * 2, 999999, this.width - 64, 9999, 0.65f, 0.865f, false, textColor);
                     SpriteText.drawStringHorizontallyCenteredAt(b, Game1.content.LoadString("Strings\\UI:LetterViewer_LearnedRecipeName", (object)this.LearnedRecipe), this.xPositionOnScreen + this.width / 2, this.yPositionOnScreen + this.height - 32 - SpriteText.getHeightOfString("t", 999999), 999999, this.width - 64, 9999, 0.9f, 0.865f, false, textColor);

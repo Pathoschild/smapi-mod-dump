@@ -6,6 +6,11 @@
   "generic.date": "{{seasonName}} {{dayNumber}}",
   "generic.date-with-year": "{{seasonName}} {{dayNumber}} im Jahr {{year}}",
 
+  // date names
+  "generic.now": "jetzt",
+  "generic.tomorrow": "morgen",
+  "generic.yesterday": "yesterday", // TODO
+
   // generic field values
   "generic.percent": "{{percent}}%",
   "generic.percent-chance-of": "{{percent}}% Chance von {{label}}",
@@ -19,13 +24,14 @@
   "generic.hours": "{{count}} Stunden",
   "generic.days": "{{count}} Tage",
   "generic.in-x-days": "in {{count}} Tagen",
-  "generic.tomorrow": "morgen",
+  "generic.x-days-ago": "{{count}} days ago", // TODO
   "generic.price": "{{price}}g",
   "generic.price-for-quality": "{{price}}g ({{quality}})",
   "generic.price-for-stack": "{{price}}g für einen Stapel von {{count}}",
 
   // types
   "type.building": "Gebäude",
+  "type.bush": "Bush", // TODO
   "type.fruit-tree": "Fruchtbaum",
   "type.map-tile": "Kartenkachel",
   "type.monster": "Monster",
@@ -206,6 +212,18 @@
   "building.upgrades.coop.2": "bis zu 12 Tiere, fügt automatische Fütterung und Hasen hinzu",
   "building.water-trough.summary": "{{filled}} von {{max}} Wassertrögen gefüllt",
 
+  // bush lookup labels
+  // TODO
+  "bush.name.berry": "Berry Bush",
+  "bush.name.plain": "Plain Bush",
+  "bush.description.berry": "A bush that grows salmonberries and blackberries.",
+  "bush.description.plain": "A plain bush that doesn't grow anything.",
+  "bush.next-harvest": "Next harvest",
+
+  // bush lookup values
+  // TODO
+  "bush.schedule.berry": "20% chance of salmonberries in spring 15-18 and blackberries in fall 8-11.",
+
   // fruit tree lookup labels
   "fruit-tree.complaints": "Beschwerden",
   "fruit-tree.name": "{{fruitName}}baum",
@@ -238,7 +256,6 @@
   "crop.summary.harvest-multi": "Ernte nach {{daysToFirstHarvest}} Tagen, danach alle {{daysToNextHarvests}} Tage.",
   "crop.summary.seasons": "Wächst im {{seasons}}.",
   "crop.summary.sells-for": "Lässt sich für {{price}} verkaufen.",
-  "crop.harvest.now": "jetzt",
   "crop.harvest.too-late": "Zu spät in der Jahrezeit für eine weitere Ernte (wäre am {{date}}).",
 
   // item lookup labels
@@ -283,7 +300,8 @@
   "item.needed-for.gourmet-chef": "\"Gourmetkoch\" Errungenschaft (koche {{recipes}})",
   "item.needed-for.craft-master": "\"Handwerksmeister\" Errungenschaft (stelle {{recipes}} her)",
   "item.sells-to.shipping-box": "Versandkiste",
-  "item.recipes.entry": "{{name}} (braucht {{count}})",
+  "item.recipes-for-ingredient.entry": "{{name}} (braucht {{count}})",
+  "item.recipes-for-machine.multiple-items": "{{name}} x{{count}}", // TODO
   "item.number-owned.summary": "Du besitzt {{count}} davon",
   "item.number-crafted.summary": "Du hast bereits {{count}} davon hergestellt",
 

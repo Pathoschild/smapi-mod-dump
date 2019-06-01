@@ -53,7 +53,7 @@ namespace WorkingFireplace
                     }
                 }
             }
-            if (Game1.IsWinter)
+            if (Game1.IsWinter && Config.need_fire_in_winter || Game1.wasRainingYesterday && Config.need_fire_on_rainy_day)
             {
                 if (warmth)
                 {

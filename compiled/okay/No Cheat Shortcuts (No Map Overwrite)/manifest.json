@@ -1,7 +1,7 @@
 {
    "Name": "NoCheatShortCuts",
    "Author": "kulcris",
-   "Version": "3.0.3",
+   "Version": "4.0",
    "Description": "Shortcuts without cheating",
    "UniqueID": "kulcris.NoCheatShortcuts",
    "EntryDll": "NoCheatShortCuts.dll",

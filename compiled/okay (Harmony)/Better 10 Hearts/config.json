@@ -1,4 +1,5 @@
 {
   "NPCStaminaIncrease": 20,
-  "SpouseStaminaIncrease": 40
+  "SpouseStaminaIncrease": 40,
+  "OnlyGetStaminaAt10Hearts": true
 }

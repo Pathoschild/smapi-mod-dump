@@ -43,6 +43,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
         /// <summary>Whether the item quality is known. This is <c>true</c> for an inventory item, <c>false</c> for a map object.</summary>
         private readonly bool KnownQuality;
 
+        /// <summary>A cached item instance customised for drawing the item portait.</summary>
+        private Item CachedPortraitItem;
+
 
         /*********
         ** Public methods
@@ -171,11 +174,25 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
             }
 
             // recipes
-            if (item.GetSpriteType() == ItemSpriteType.Object)
+            switch (item.GetSpriteType())
             {
-                RecipeModel[] recipes = this.GameHelper.GetRecipesForIngredient(this.DisplayItem).ToArray();
-                if (recipes.Any())
-                    yield return new RecipesForIngredientField(this.GameHelper, L10n.Item.Recipes(), item, recipes);
+                // for ingredient
+                case ItemSpriteType.Object:
+                    {
+                        RecipeModel[] recipes = this.GameHelper.GetRecipesForIngredient(this.DisplayItem).ToArray();
+                        if (recipes.Any())
+                            yield return new RecipesForIngredientField(this.GameHelper, L10n.Item.Recipes(), item, recipes);
+                    }
+                    break;
+
+                // for machine
+                case ItemSpriteType.BigCraftable:
+                    {
+                        RecipeModel[] recipes = this.GameHelper.GetRecipesForMachine(this.DisplayItem as SObject).ToArray();
+                        if (recipes.Any())
+                            yield return new RecipesForMachineField(this.GameHelper, L10n.Item.Recipes(), recipes);
+                    }
+                    break;
             }
 
             // owned and times cooked/crafted
@@ -250,20 +267,22 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
         /// <returns>Returns <c>true</c> if a portrait was drawn, else <c>false</c>.</returns>
         public override bool DrawPortrait(SpriteBatch spriteBatch, Vector2 position, Vector2 size)
         {
-            Item item = this.DisplayItem;
-
-            // draw stackable object
-            if ((item as SObject)?.Stack > 1)
+            // get portrait item
+            Item item = this.CachedPortraitItem;
+            if (item == null)
             {
-                // remove stack number (doesn't play well with clipped content)
-                SObject obj = (SObject)item;
-                obj = new SObject(obj.ParentSheetIndex, 1, obj.IsRecipe, obj.Price, obj.Quality);
-                obj.bigCraftable.Value = obj.bigCraftable.Value;
-                obj.drawInMenu(spriteBatch, position, 1);
-                return true;
+                item = this.DisplayItem;
+                if (item is SObject original && original.Stack > 1)
+                {
+                    // remove stack number (doesn't play well with clipped content)
+                    SObject obj = new SObject(original.ParentSheetIndex, 1, original.IsRecipe, original.Price, original.Quality);
+                    obj.bigCraftable.Value = original.bigCraftable.Value;
+                    item = obj;
+                }
+                this.CachedPortraitItem = item;
             }
 
-            // draw generic item
+            // draw item
             item.drawInMenu(spriteBatch, position, 1);
             return true;
         }
@@ -343,16 +362,15 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
             {
                 // get next harvest
                 SDate nextHarvest = data.GetNextHarvest();
-                int daysToNextHarvest = nextHarvest.DaysSinceStart - SDate.Now().DaysSinceStart;
 
                 // generate field
                 string summary;
                 if (data.CanHarvestNow)
-                    summary = L10n.Crop.HarvestNow();
+                    summary = L10n.Generic.Now();
                 else if (!Game1.currentLocation.IsGreenhouse && !data.Seasons.Contains(nextHarvest.Season))
                     summary = L10n.Crop.HarvestTooLate(date: this.Stringify(nextHarvest));
                 else
-                    summary = $"{this.Stringify(nextHarvest)} ({this.Text.GetPlural(daysToNextHarvest, L10n.Generic.Tomorrow(), L10n.Generic.InXDays(count: daysToNextHarvest))})";
+                    summary = $"{this.Stringify(nextHarvest)} ({this.GetRelativeDateStr(nextHarvest)})";
 
                 yield return new GenericField(this.GameHelper, L10n.Crop.Harvest(), summary);
             }

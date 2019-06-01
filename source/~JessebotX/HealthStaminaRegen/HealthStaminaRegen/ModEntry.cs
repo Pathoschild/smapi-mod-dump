@@ -8,85 +8,151 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using HealthStaminaRegen.Config;
 
 namespace HealthStaminaRegen
 {
     class ModEntry : Mod
     {
         private ModConfig Config;
+        private bool DebugLogging;
 
-        private int secondsUntilHealthRegen = 0;
-        private int secondsUntilStaminaRegen = 0;
+        private int SecondsUntilHealthRegen = 0;
+        private int SecondsUntilStaminaRegen = 0;
 
-        private int lastHealth;
-        private float lastStamina;
+        private int LastHealth;
+        private float LastStamina;
 
         public override void Entry(IModHelper helper)
         {
-            helper.Events.GameLoop.OneSecondUpdateTicked += this.oneSecond;
+            this.Monitor.Log("Note: Since Health & Stamina Regeneration v2.0.0, a config overhaul has been done and your config.json has been reset, " +
+                "if you had custom values set before v2.0.0, you will need to go into the config.json and re add the values again, " +
+                "if you never configured the mod and think that the default values are fine, you can safely ignore this. \n",LogLevel.Alert
+            );
 
-            /* Read Config */
+            /* Read config */
             this.Config = helper.ReadConfig<ModConfig>();
+
+            /* Hook events */
+            helper.Events.GameLoop.UpdateTicked += this.UpdateTicked;
+
+            /* Console Commands */
+            this.Helper.ConsoleCommands.Add("healthstaminaregen_confighelp", "shows config.json document", this.ConfigHelpCommand);
+            this.Helper.ConsoleCommands.Add("healthstaminaregen_debuglogging", "spams your smapi log with debug info used to debug things.\n" +
+                "Note that you have to restart in order to stop the debug info spamming on your console, this command is for when you have found a bug and want to report it (including the parsed log(see https://log.smapi.io))", 
+                this.DebugLoggingCommand);
         }
 
-        private void oneSecond(object sender, EventArgs e)
+        private void UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            /* Variables */
-            var player = Game1.player;
-
             if (!Context.IsPlayerFree || Game1.paused)
-            {
                 return;
-            }
 
-            else
-            {   /****************
-                **Health Regen**
-                ****************/
-                // if player took damage
-                if (player.health < this.lastHealth)
+            /********
+            ** Health
+            ********/
+            if (this.Config.Health.Enabled)
+            {
+                if (e.IsMultipleOf(this.Config.Health.RegenRateInSeconds * 60))
                 {
-                    this.secondsUntilHealthRegen = this.Config.SecondsUntilHealthRegen;
-                }
-                //timer
-                else if (this.secondsUntilHealthRegen > 0)
-                {
-                    this.secondsUntilHealthRegen--;
-                }
-                //regen
-                else if (this.secondsUntilHealthRegen <= 0)
-                {
-                    if (player.health < player.maxHealth)
+                    if (!this.Config.Health.DontCheckConditions)
                     {
-                        player.health = Math.Min(player.maxHealth, player.health + this.Config.HealthRegenRate);
+                        // if player took damage
+                        if (Game1.player.health < this.LastHealth)
+                            this.SecondsUntilHealthRegen = this.Config.Health.SecondsUntilRegenWhenTakenDamage;
+                        //timer
+                        else if (this.SecondsUntilHealthRegen > 0)
+                            this.SecondsUntilHealthRegen--;
+                        //regen
+                        else if (this.SecondsUntilHealthRegen <= 0)
+                            if (Game1.player.health < Game1.player.maxHealth)
+                                Game1.player.health = Math.Min(Game1.player.maxHealth, Game1.player.health + this.Config.Health.HealthPerRegenRate);
+
+                        this.LastHealth = Game1.player.health;
+
+                        if (this.DebugLogging)
+                        {
+                            this.Monitor.Log("Health Updated", LogLevel.Debug);
+                            this.Monitor.Log($"Last Health: {LastHealth.ToString()} ");
+                        }
+                    }
+
+                    else
+                    {
+                        Game1.player.health += this.Config.Health.HealthPerRegenRate;
+
+                        if (this.DebugLogging)
+                            this.Monitor.Log("Health Updated (No Regen Delay)", LogLevel.Debug);
                     }
                 }
+            }
 
-                /***************
-                 *Stamina Regen*
-                 ***************/
-                // if player used stamina
-                if (player.Stamina < this.lastStamina)
+            /********
+            ** Stamina
+            *********/
+            if (this.Config.Stamina.Enabled)
+            {
+                if (e.IsMultipleOf(this.Config.Stamina.RegenRateInSeconds * 60))
                 {
-                    this.secondsUntilStaminaRegen = this.Config.SecondsUntilStaminaRegen;
-                }
-                //timer
-                else if (this.secondsUntilStaminaRegen > 0)
-                {
-                    this.secondsUntilStaminaRegen--;
-                }
-                // regen
-                else if (this.secondsUntilStaminaRegen <= 0)
-                {
-                    if (player.Stamina < player.MaxStamina)
+                    if (!this.Config.Stamina.DontCheckConditions)
                     {
-                        player.Stamina = Math.Min(player.MaxStamina, player.Stamina + this.Config.StaminaRegenRate);
+                        // if player used stamina
+                        if (Game1.player.Stamina < this.LastStamina)
+                            this.SecondsUntilStaminaRegen = this.Config.Stamina.SecondsUntilRegenWhenUsedStamina;
+                        //timer
+                        else if (this.SecondsUntilStaminaRegen > 0)
+                            this.SecondsUntilStaminaRegen--;
+                        // regen
+                        else if (this.SecondsUntilStaminaRegen <= 0)
+                            if (Game1.player.Stamina < Game1.player.MaxStamina)
+                                Game1.player.Stamina = Math.Min(Game1.player.MaxStamina, Game1.player.Stamina + this.Config.Stamina.StaminaPerRegenRate);
+
+                        this.LastStamina = Game1.player.Stamina;
+
+                        if (this.DebugLogging)
+                        {
+                            this.Monitor.Log("Stamina Updated", LogLevel.Debug);
+                            this.Monitor.Log($"Last Stamina: {LastStamina.ToString()}");
+                        }
+                    }
+
+                    else
+                    {
+                        Game1.player.Stamina += this.Config.Stamina.StaminaPerRegenRate;
+
+                        if (this.DebugLogging)
+                            this.Monitor.Log("Stamina Updated (No Regen Delay)", LogLevel.Debug);
                     }
                 }
-
-                this.lastHealth = player.health;
-                this.lastStamina = player.Stamina;
             }
+
+            if (e.IsMultipleOf(60) && this.DebugLogging == true)
+                this.Monitor.Log("1 second has passed", LogLevel.Debug);
+        }
+
+        private void ConfigHelpCommand(string command, string[] args)
+        {
+            this.Monitor.Log(
+                "[NOTE: 2.0 breaks old configs] \n\n" +
+                "CONFIG DOCUMENTATION\n" +
+                "-----------------------------\n" +
+                "-> Enabled: default true, if you want to enable/disable either health or stamina regenerating" +
+                "-> HealthPerRegenRate/StaminaPerRegenRate: the amount you regenerate every {RegenRate} seconds. \n" +
+                "-> RegenRateInSeconds: the rate in seconds you regen.\n" +
+                "-> SecondsUntilRegenWhenUsedStamina/SecondsUntilRegenWhenTakenDamage: the regen cooldown when you take damage or used stamina.\n" +
+                "-> DontCheckConditions: default false, if true, makes it so that it ignores SecondsUntilRegen and just keeps regenerating, ignoring max health/stamina " +
+                "(recommended for people who are using the mod to degenerate like a hunger mod)\n" +
+                "-----------------------------\n" +
+                "See https://github.com/JessebotX/StardewMods/tree/master/HealthStaminaRegen#configure for the full config.json documentation\n\n" +
+                "(If you dont see the config.json in the HealthStaminaRegen folder, you have to run the game once with this mod installed for it to generate)",
+                LogLevel.Info
+            );
+        }
+
+        private void DebugLoggingCommand(string command, string[] args)
+        {
+            this.DebugLogging = true;
         }
     }
 }
+

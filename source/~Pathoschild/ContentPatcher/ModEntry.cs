@@ -98,11 +98,13 @@ namespace ContentPatcher
                 .OrderByIgnoreCase(p => p)
                 .ToArray();
 
-            // load content packs and context
+            // load content packs
             this.TokenManager = new TokenManager(helper.Content, installedMods);
             this.PatchManager = new PatchManager(this.Monitor, this.TokenManager, this.AssetValidators());
-            this.TokenManager.UpdateContext();
             this.LoadContentPacks(contentPacks);
+
+            // set initial context once patches & dynamic tokens are loaded
+            this.UpdateContext();
 
             // register patcher
             helper.Content.AssetLoaders.Add(this.PatchManager);
@@ -387,14 +389,15 @@ namespace ContentPatcher
                     continue;
                 }
 
-                int i = 0;
-                foreach (string target in patch.Target.Split(','))
+                foreach (string target in patch.Target.Split(',').Select(p => p.Trim()).Distinct(StringComparer.InvariantCultureIgnoreCase))
                 {
-                    i++;
+                    if (string.IsNullOrWhiteSpace(target))
+                        continue;
+
                     yield return new PatchConfig(patch)
                     {
-                        LogName = !string.IsNullOrWhiteSpace(patch.LogName) ? $"{patch.LogName} {"".PadRight(i, 'I')}" : "",
-                        Target = target.Trim()
+                        LogName = !string.IsNullOrWhiteSpace(patch.LogName) ? $"{patch.LogName} > {target}" : "",
+                        Target = target
                     };
                 }
             }

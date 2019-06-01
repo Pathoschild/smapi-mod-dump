@@ -335,6 +335,7 @@
   "weather-menu.condition.whiteOut": "RWS Warning: Extreme blizzards are moving through the valley:",
   "weather-menu.condition.thunderFrenzy": "RWS Warning: Mesocyclones are moving through the valley:",
   "weather-menu.condition.bloodmoon": "Beware, for the blood moon rises.....",
+  "weather-menu.condition.solareclipse": "A rare solar eclipse will darken the sky today",
   "weather-menu.current": "Current Conditions: {{todayCondition}}. Today, the high: {{todayHigh}} with Low: {{todayLow}}.{{fogString}}",
   "weather-menu.fog": "Fog present until {{fogTime}} giving way to {{condition}}.",
   "weather-menu.expectedFog": " Evening fog is expected as well.",

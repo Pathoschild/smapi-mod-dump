@@ -1,0 +1,29 @@
+{
+	"Format": "1.8",
+	"Changes": [
+		{
+			"LogName": "Adding to Data/FarmAnimals",
+			"Action": "EditData",
+			"Target": "Data/FarmAnimals",
+			"Entries": {
+				"Black Bear": "1/5/138/699/grunt/36/64/64/64/36/64/64/64/0/false/Barn/32/32/32/32/20/5/null/639/2500/Black Bear/Barn",
+				"Brown Bear": "1/5/139/698/grunt/36/64/64/64/36/64/64/64/0/false/Barn/32/32/32/32/20/5/null/639/2500/Brown Bear/Barn",
+				"Panda Bear": "1/5/154/155/grunt/36/64/64/64/36/64/64/64/0/false/Barn/32/32/32/32/20/5/null/639/2500/Panda Bear/Barn",
+				"Polar Bear": "1/5/717/715/grunt/36/64/64/64/36/64/64/64/0/false/Barn/32/32/32/32/20/5/null/639/2500/Polar Bear/Barn",
+			},
+		},
+		{
+			"LogName": "Adult Sprites",
+			"Action": "Load",
+			"Target": "Animals/Black Bear, Animals/Brown Bear, Animals/Panda Bear, Animals/Polar Bear",
+			"FromFile": "assets/{{TargetWithoutPath}}.png",
+		},
+		{
+			"LogName": "Baby Sprites",
+			"Action": "Load",
+			"Target": "Animals/BabyBlack Bear, Animals/BabyBrown Bear, Animals/BabyPanda Bear, Animals/BabyPolar Bear",
+			"FromFile": "assets/{{TargetWithoutPath}}.png",
+		},
+	],
+}
+

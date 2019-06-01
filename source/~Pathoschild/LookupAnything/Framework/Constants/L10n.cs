@@ -38,6 +38,15 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Constants
             /// <param name="year">The year.</param>
             public static Translation DateWithYear(string seasonName, int seasonNumber, int dayNumber, int year) => L10n.Helper.Get("generic.date-with-year", new { seasonName, seasonNumber, dayNumber, year });
 
+            /// <summary>A value like <c>now</c>.</summary>
+            public static Translation Now() => L10n.Helper.Get("generic.now");
+
+            /// <summary>A value like <c>tomorrow</c>.</summary>
+            public static Translation Tomorrow() => L10n.Helper.Get("generic.tomorrow");
+
+            /// <summary>A value like <c>yesterday</c>.</summary>
+            public static Translation Yesterday() => L10n.Helper.Get("generic.yesterday");
+
             /// <summary>A value like <c>{{percent}}%</c>.</summary>
             /// <param name="percent">The percentage chance.</param>
             public static Translation Percent(int percent) => L10n.Helper.Get("generic.percent", new { percent });
@@ -84,8 +93,8 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Constants
             /// <summary>A value like <c>in {{count}} days</c>.</summary>
             public static Translation InXDays(int count) => L10n.Helper.Get("generic.in-x-days", new { count });
 
-            /// <summary>A value like <c>tomorrow</c>.</summary>
-            public static Translation Tomorrow() => L10n.Helper.Get("generic.tomorrow");
+            /// <summary>A value like <c>{{count}} days ago</c>.</summary>
+            public static Translation XDaysAgo(int count) => L10n.Helper.Get("generic.x-days-ago", new { count });
 
             /// <summary>A value like <c>{{price}}g</c>.</summary>
             public static Translation Price(int price) => L10n.Helper.Get("generic.price", new { price });
@@ -102,6 +111,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Constants
         {
             /// <summary>A value like <c>Building</c>.</summary>
             public static Translation Building() => L10n.Helper.Get("type.building");
+
+            /// <summary>A value like <c>Bush</c>.</summary>
+            public static Translation Bush() => L10n.Helper.Get("type.bush");
 
             /// <summary>A value like <c>{{fruitName}} Tree</c>.</summary>
             public static Translation FruitTree() => L10n.Helper.Get("type.fruit-tree");
@@ -312,6 +324,34 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Constants
             public static Translation WaterTroughSummary(int filled, int max) => L10n.Helper.Get("building.water-trough.summary", new { filled, max });
         }
 
+        /// <summary>Bush lookup translations.</summary>
+        public static class Bush
+        {
+            /****
+            ** Labels
+            ****/
+            /// <summary>A value like <c>Berry Bush</c>.</summary>
+            public static Translation BerryName() => L10n.Helper.Get("bush.name.berry");
+
+            /// <summary>A value like <c>A bush that grows salmonberries and blackberries.</c></summary>
+            public static Translation BerryDescription() => L10n.Helper.Get("bush.description.berry");
+
+            /// <summary>A value like <c>Plain Bush</c>.</summary>
+            public static Translation PlainName() => L10n.Helper.Get("bush.name.plain");
+
+            /// <summary>A value like <c>A plain bush that doesn't grow anything.</c></summary>
+            public static Translation PlainDescription() => L10n.Helper.Get("bush.description.plain");
+
+            /// <summary>A value like <c>Next harvest</c>.</summary>
+            public static Translation NextHarvest() => L10n.Helper.Get("bush.next-harvest");
+
+            /****
+            ** Values
+            ****/
+            /// <summary>A value like <c>Provides salmonberries in spring 15 to 18, and blackberries in fall 8 to 11.</c>.</summary>
+            public static Translation ScheduleBerry() => L10n.Helper.Get("bush.schedule.berry");
+        }
+
         /// <summary>Fruit tree lookup translations.</summary>
         public static class FruitTree
         {
@@ -405,9 +445,6 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Constants
 
             /// <summary>A value like <c>sells for {{price}}</c>.</summary>
             public static Translation SummarySellsFor(string price) => L10n.Helper.Get("crop.summary.sells-for", new { price });
-
-            /// <summary>A value like <c>now</c>.</summary>
-            public static Translation HarvestNow() => L10n.Helper.Get("crop.harvest.now");
 
             /// <summary>A value like <c>too late in the season for the next harvest (would be on {{date}})</c>.</summary>
             public static Translation HarvestTooLate(string date) => L10n.Helper.Get("crop.harvest.too-late", new { date });
@@ -519,7 +556,13 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Constants
             public static Translation FenceHealthSummary(int percent, int count) => L10n.Helper.Get("item.fence-health.summary", new { percent, count });
 
             /// <summary>A value like <c>{{name}} (needs {{count}})</c>.</summary>
-            public static Translation RecipesEntry(string name, int count) => L10n.Helper.Get("item.recipes.entry", new { name, count });
+            public static Translation RecipesForIngredientEntry(string name, int count) => L10n.Helper.Get("item.recipes-for-ingredient.entry", new { name, count });
+
+            /// <summary>A value like <c>{{name}} x{{count}}</c>.</summary>
+            public static Translation RecipesForMachineMultipleItems(string name, int count) => L10n.Helper.Get("item.recipes-for-machine.multiple-items", new { name, count });
+
+            /// <summary>A value like <c>{{name}} x{{minCount}} to {{maxCount}}</c>.</summary>
+            public static Translation RecipesForMachineMultipleItems(string name, int minCount, int maxCount) => L10n.Helper.Get("item.recipes-for-machine.multiple-items", new { name, count = L10n.Generic.Range(minCount, maxCount) });
 
             /// <summary>A value like <c>you own {{count}} of these</c>.</summary>
             public static Translation OwnedSummary(int count) => L10n.Helper.Get("item.number-owned.summary", new { count });

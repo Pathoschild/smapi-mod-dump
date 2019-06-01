@@ -15,7 +15,7 @@ namespace AnimalHusbandryMod.animals
 {
     public class PregnancyController
     {
-        private static IModEvents events => AnimalHusbandryModEntery.ModHelper.Events;
+        private static IModEvents events => AnimalHusbandryModEntry.ModHelper.Events;
         static Queue<FarmAnimal> parentAnimals = new Queue<FarmAnimal>();
         static FarmAnimal parentAnimal = null;
 
@@ -109,7 +109,7 @@ namespace AnimalHusbandryMod.animals
             }
             else
             {
-                AnimalHusbandryModEntery.monitor.Log($"The animal id '{id}' was not found in the game and its pregnancy data is being discarted.", LogLevel.Warn);
+                AnimalHusbandryModEntry.monitor.Log($"The animal id '{id}' was not found in the game and its pregnancy data is being discarted.", LogLevel.Warn);
                 PregnancyController.RemovePregnancyItem(id);
                 return null;
             }

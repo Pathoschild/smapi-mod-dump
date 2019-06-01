@@ -1,0 +1,18 @@
+{
+   "Name": "Bears in the Barn",
+   "Author": "MouseyPounds and MS_Paintdra",
+   "Version": "1.0.0",
+   "Description": "Adds several species of Bears as barn animals. Requires Paritee's Better Farm Animal Variety.",
+   "UniqueID": "MouseyPounds.BearsForBFAV",
+   "MinimumApiVersion": "2.11",
+   "UpdateKeys": ["Nexus:4000"],
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.8.0"
+   },
+   "Dependencies": [
+		{
+			"UniqueID": "Paritee.BetterFarmAnimalVariety",
+		},
+	],
+}

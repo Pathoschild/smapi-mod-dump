@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace AutoAnimalDoors.StardewValleyWrapper
 {
     class Farm
     {
-        private StardewValley.Farm farm;
+        public StardewValley.Farm StardewValleyFarm { get; private set; }
 
         public Farm(StardewValley.Farm farm)
         {
-            this.farm = farm;
+            this.StardewValleyFarm = farm;
         }
 
         public List<Buildings.Building> Buildings
@@ -18,13 +17,13 @@ namespace AutoAnimalDoors.StardewValleyWrapper
             {
                 List<Buildings.Building> buildings = new List<Buildings.Building>();
 
-                if (farm != null)
+                if (this.StardewValleyFarm != null)
                 {
-                    foreach (StardewValley.Buildings.Building stardewBuilding in farm.buildings)
+                    foreach (StardewValley.Buildings.Building stardewBuilding in this.StardewValleyFarm.buildings)
                     {
                         if (stardewBuilding is StardewValley.Buildings.Barn || stardewBuilding is StardewValley.Buildings.Coop)
                         {
-                            buildings.Add(new Buildings.AnimalBuilding(stardewBuilding));
+                            buildings.Add(new Buildings.AnimalBuilding(stardewBuilding, this));
                         }
                         else
                         {
@@ -57,9 +56,9 @@ namespace AutoAnimalDoors.StardewValleyWrapper
 
         public bool AreAllAnimalsHome()
         {
-            foreach (StardewValley.FarmAnimal farmAnimal in farm.animals.Values)
+            foreach (Buildings.AnimalBuilding building in this.AnimalBuildings)
             {
-                if (farmAnimal.home != null)
+                if (!building.AreAllAnimalsHome())
                 {
                     return false;
                 }
@@ -70,14 +69,9 @@ namespace AutoAnimalDoors.StardewValleyWrapper
 
         public void SendAllAnimalsHome()
         {
-            SetAnimalDoorsState(StardewValleyWrapper.Buildings.AnimalDoorState.CLOSED);
-
-            var farmAnimals = farm.animals.Values.ToList();
-            // Warping them home causes them to be removed from the farm.animals dictionary, so copy the list as an iterator
-            // will not work. I also don't want to rely on the elements being removed because that may be changed in the future
-            foreach (var farmAnimal in farmAnimals)
+            foreach (Buildings.AnimalBuilding building in this.AnimalBuildings)
             {
-                farmAnimal.warpHome(farm, farmAnimal);
+                building.SendAllAnimalsHome();
             }
         }
 

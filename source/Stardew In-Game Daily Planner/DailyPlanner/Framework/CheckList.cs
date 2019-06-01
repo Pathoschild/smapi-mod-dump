@@ -1,25 +1,24 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DailyPlanner.Framework
 {
     class CheckList
     {
-        private List<string> CheckListItems;
+        /// <summary>List of items on the checklist.</summary>
+        private readonly List<string> CheckListItems;
 
+        /// <summary>Construct a checklist by reading the Checklist.txt file, or create a file if it doesn't exist.</summary>
         public CheckList()
         {
-            string filename = Path.Combine("Mods", "DailyPlanner", "Plans", "Checklist.txt");
-            if (File.Exists(filename))
+            string filename = Path.Combine("Mods", "DailyPlanner", "Plans", "Checklist.txt");  // TODO: Make sure we don't need the complete path from the root directory.
+            if (File.Exists(filename))  // Read each line of the file into a list, then remove blank entries. 
             {
-                this.CheckListItems = new List<string>(File.ReadAllLines(filename, Encoding.UTF8));
+                this.CheckListItems = new List<string>(File.ReadAllLines(filename, Encoding.UTF8));  
                 this.CheckListItems.Remove("");
                 this.CheckListItems.Remove(" ");
-            } else
+            } else  // If file doesn't exist, create it and fill it with instructions on how to edit it.
             {
                 string[] list = new string[] { "Find DailyPlanner/Plans/Checklist.txt.", "Open it in notepad.", "Add your tasks.", "Open this menu agian." };
                 File.WriteAllLines(filename, list);
@@ -33,6 +32,8 @@ namespace DailyPlanner.Framework
             return this.CheckListItems;
         }
 
+        /// <summary>Delete item from the checklist, then save the file.</summary>
+        /// <param name="label">Text of the item being marked off.</param>
         public void CompleteTask(string label)
         {
             this.CheckListItems.Remove(label);

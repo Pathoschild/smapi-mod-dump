@@ -1,0 +1,8 @@
+{
+  "Unify_Color_Keybind": "OemOpenBrackets",
+  "Unify_Color_For_Flowers": true,
+  "Unify_Color_For_Everything_Else": false,
+  "Reduce_Quality_Keybind": "OemCloseBrackets",
+  "Reduce_Quality_For_Flowers": true,
+  "Reduce_Quality_For_Everything_Else": false
+}

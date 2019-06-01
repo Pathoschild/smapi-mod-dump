@@ -30,9 +30,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 80076ffa68bec990b003d94d6a2d79b897247852
+   commit b522b56be6074f05512c463d38e7486bccc4a7fe
    Author: danvolchek <volchek2@illinois.edu>
-   Date:   Tue May 21 22:44:08 2019 -0500
+   Date:   Mon May 27 00:49:00 2019 -0500
    
-       [Pong] add additional multiplayer tweaks, remove multiplayer access for release
+       [Winter Grass] update readme
    

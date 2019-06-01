@@ -103,7 +103,7 @@ namespace AnimalHusbandryMod.tools
             }
         }
 
-        internal void ReplaceOldTools(object sender, EventArgs e)
+        internal void ReplaceOldTools()
         {
             IList<Item> inventory = Game1.player.Items;
             for (int i = 0; i < inventory.Count; i++)
@@ -155,12 +155,12 @@ namespace AnimalHusbandryMod.tools
                 if (item.Name.Contains("ButcherMod.MeatCleaver"))
                 {
                     items[i] = new MeatCleaver();
-                    AnimalHusbandryModEntery.monitor.Log($"An older version of the MeatCleaver found. Replacing it with the new one.", LogLevel.Debug);
+                    AnimalHusbandryModEntry.monitor.Log($"An older version of the MeatCleaver found. Replacing it with the new one.", LogLevel.Debug);
                 }
                 else if (item.Name.Contains("ButcherMod.tools.InseminationSyringe"))
                 {
                     items[i] = new InseminationSyringe();
-                    AnimalHusbandryModEntery.monitor.Log($"An older version of the InseminationSyringe found. Replacing it with the new one.", LogLevel.Debug);
+                    AnimalHusbandryModEntry.monitor.Log($"An older version of the InseminationSyringe found. Replacing it with the new one.", LogLevel.Debug);
                 }
             }
         }

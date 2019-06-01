@@ -1,0 +1,30 @@
+Installation Instructions
+
+1) Make sure "Content Patcher" (https://www.nexusmods.com/stardewvalley/mods/1915) is installed.
+
+2) Make sure BFAV ("Paritee's Better Farm Animal Variety" - https://www.nexusmods.com/stardewvalley/mods/3296) is installed 
+
+3) Install the "[CP-BFAV] Bears in the Barn" folder from this mod into your Mods folder
+
+2) Move or copy the "animal_shop_bears.png" file from this mod into the "assets" directory of BFAV.
+
+3) Add the following to the end of the "Farm Animals" section of BFAV's config.json
+
+    "Bear": {
+      "Types": [
+        "Black Bear",
+        "Brown Bear",
+        "Panda Bear",
+        "Polar Bear"
+      ],
+      "Buildings": [
+        "Big Barn",
+        "Deluxe Barn"
+      ],
+      "AnimalShop": {
+        "Name": "Bear",
+        "Description": "Adult bears are expert fishermen and will sometimes share their catch.",
+        "Price": "5000",
+        "Icon": "assets\\animal_shop_bears.png"
+      }
+    }

@@ -1,7 +1,7 @@
 ﻿{
   "Name": "SeedsAreRare",
   "Author": "jahangmar",
-  "Version": "1.2.0",
+  "Version": "1.2.1",
   "Description": "Removes seeds from all stores and encourages the use of seed makers",
   "UniqueID": "jahangmar.SeedsAreRare",
   "MinimumApiVersion": "2.10.0",

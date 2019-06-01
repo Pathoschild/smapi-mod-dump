@@ -1,6 +1,0 @@
-IF YOU ARE WONDERING WHERE THE CONFIG.JSON FILE IS, RUN THE GAME VIA SMAPI ONCE WITH THIS MOD INSTALLED FOR IT TO GENERATE
-
-HealthRegenRate: 2 (the amount of health you get per second(can't be below "1"))
-StaminaRegenRate: 2 (the amount of stamina you get per second)
-SecondsUntilHealthRegen: 2 (if you took dmg, this number is the cooldown in seconds until you start regenerating again(must be a whole number, not 1.5 or etc.))
-SecondsUntilStaminaRegen: 2 (if you used stamina, this number is the cooldown in seconds until you start regenerating again(must be a whole number, not 1.5 or etc.))

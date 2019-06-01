@@ -299,7 +299,7 @@ namespace AnimalHusbandryMod.tools
                 if (this._animal != null)
                 {
                     Game1.delayedActions.Add(new DelayedAction(300, new DelayedAction.delayedBehavior(() => {
-                        AnimalHusbandryModEntery.ModHelper.Reflection.GetField<NetBool>(this._animal, "isEating").GetValue().Value = true;
+                        AnimalHusbandryModEntry.ModHelper.Reflection.GetField<NetBool>(this._animal, "isEating").GetValue().Value = true;
                         this._animal.Sprite.loop = false;
                     })));
                 }

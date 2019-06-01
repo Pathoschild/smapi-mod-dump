@@ -71,12 +71,31 @@ async Task Main()
 	ParsedModData[] mods = this.ReadMods(this.RootPath).ToArray();
 	await this.GetModsNotOnWiki(mods).Dump("SMAPI mods not on the wiki");
 	await this.GetInvalidMods(mods).Dump("Mods marked invalid by SMAPI toolkit (except blacklist)");
+	//this.GetModsDependentOn(mods, "Entoarox.EntoaroxFramework").Dump("Dependent mods");
 	//await this.CustomContentPatcherQuery(mods).Dump("Custom CP query");
 }
 
 /*********
 ** Common queries
 *********/
+/// <summary>Get all mods which depend on the given mod.</summary>
+/// <param name="parsedMods">The mods to check.</param>
+/// <param name="modID">The dependency mod ID.</param>
+IEnumerable<ModFolder> GetModsDependentOn(IEnumerable<ParsedModData> parsedMods, string modID)
+{
+	foreach (ParsedModData mod in parsedMods)
+	{
+		foreach (ModFolder folder in mod.ModFolders.Select(p => p.RawFolder.Value))
+		{
+			bool dependent =
+				folder.Manifest?.Dependencies?.Any(p => p.UniqueID?.Equals("Entoarox.EntoaroxFramework", StringComparison.InvariantCultureIgnoreCase) == true) == true
+				|| folder.Manifest?.ContentPackFor?.UniqueID?.Equals("Entoarox.EntoaroxFramework", StringComparison.InvariantCultureIgnoreCase) == true;
+			if (dependent)
+				yield return folder;
+		}
+	}
+}
+
 /// <summary>Placeholder for custom Content Patcher pack queries.</summary>
 /// <param name="parsedMods">The mods to check.</param>
 async Task<dynamic> CustomContentPatcherQuery(IEnumerable<ParsedModData> parsedMods)
@@ -252,6 +271,7 @@ async Task<dynamic[]> GetInvalidMods(IEnumerable<ParsedModData> mods)
 		9873,  // Even More Secret Woods (#2364), replacement file for Immersive Farm 2
 		13120, // Immersive Farm 2 (#1531)
 		13647, // Immersive Farm 2 (#1531)
+		16898, // Oasis Greenhouse (#3969) > IF2R Version
 		12634, // Phoenix Farm (#3026) > Pethouse Phoenix Farm
 		12863, // Secret Gardens Greenhouse (#3067) > "" for Immersive Farm 2
 		16524, // Stardew Valley Expanded (#3753)

@@ -6,6 +6,11 @@
   "generic.date": "{{dayNumber}} {{seasonName}}",
   "generic.date-with-year": "{{dayNumber}} {{seasonName}} de l'année {{year}}",
 
+  // date names
+  "generic.now": "maintenant",
+  "generic.tomorrow": "demain",
+  "generic.yesterday": "hier",
+
   // generic field values
   "generic.percent": "{{percent}}%",
   "generic.percent-chance-of": "{{percent}}% chance de {{label}}",
@@ -19,13 +24,14 @@
   "generic.hours": "{{count}} heures",
   "generic.days": "{{count}} jours",
   "generic.in-x-days": "dans {{count}} jours",
-  "generic.tomorrow": "demain",
+  "generic.x-days-ago": "{{count}} days ago", // TODO
   "generic.price": "{{price}}po",
   "generic.price-for-quality": "{{price}}po ({{quality}})",
   "generic.price-for-stack": "{{price}}po le lot de {{count}}",
 
   // types
   "type.building": "Bâtiment",
+  "type.bush": "Bush", // TODO
   "type.fruit-tree": "Arbre fruitié",
   "type.map-tile": "Case de carte",
   "type.monster": "Monstre",
@@ -206,6 +212,18 @@
   "building.upgrades.coop.2": "jusqu'à 12 animaux, ajoute le nourrissage automatique, permet les lapins",
   "building.water-trough.summary": "{{filled}} de {{max}} capacité d'eau",
 
+  // bush lookup labels
+  // TODO
+  "bush.name.berry": "Berry Bush",
+  "bush.name.plain": "Plain Bush",
+  "bush.description.berry": "A bush that grows salmonberries and blackberries.",
+  "bush.description.plain": "A plain bush that doesn't grow anything.",
+  "bush.next-harvest": "Next harvest",
+
+  // bush lookup values
+  // TODO
+  "bush.schedule.berry": "20% chance of salmonberries in spring 15-18 and blackberries in fall 8-11.",
+
   // fruit tree lookup labels
   "fruit-tree.complaints": "Problèmes",
   "fruit-tree.name": "Arbre : {{fruitName}}",
@@ -238,7 +256,6 @@
   "crop.summary.harvest-multi": "récolté après {{daysToFirstHarvest}} jours, puis tout les {{daysToNextHarvests}} jours",
   "crop.summary.seasons": "pousse en {{seasons}}",
   "crop.summary.sells-for": "vendu pour {{price}}",
-  "crop.harvest.now": "maintenant",
   "crop.harvest.too-late": "trop tard dans la saison pour la prochaine récolte (sera le {{date}})",
 
   // item lookup labels
@@ -282,7 +299,8 @@
   "item.needed-for.gourmet-chef": "succès chef gourmet (cuisiner {{recipes}})",
   "item.needed-for.craft-master": "succès maître artisant (fabriquer {{recipes}})",
   "item.sells-to.shipping-box": "bac d'expédition",
-  "item.recipes.entry": "{{name}} (nécessite {{count}})",
+  "item.recipes-for-ingredient.entry": "{{name}} (nécessite {{count}})",
+  "item.recipes-for-machine.multiple-items": "{{name}} x{{count}}", // TODO
   "item.number-owned.summary": "vous en possédez {{count}}",
   "item.number-crafted.summary": "vous en avez fabriqué {{count}}",
 

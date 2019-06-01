@@ -5,12 +5,9 @@ mods:
    Auto Animal Doors
 
 latest commit:
-   commit ffd52fa8483814b808aa4cf73097811605e8daaf
-   Merge: e303320 b4434f2
+   commit 51fd64807b577bce8f9a193aa629b029ca21c926
    Author: Aaron Taggart <ajtaggs@gmail.com>
-   Date:   Mon May 20 20:47:10 2019 -0500
+   Date:   Tue May 28 21:11:35 2019 -0500
    
-       Merge pull request #9 from taggartaa/update-README
-       
-       update read me
+       Update README.md
    

@@ -74,6 +74,7 @@
     <Compile Include="MineChanges\Config\MineConfig.cs" />
     <Compile Include="MineChanges\JsonAssetsAPI.cs" />
     <Compile Include="MineChanges\Mod.cs" />
+    <Compile Include="MineChanges\SpaceCoreAPI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

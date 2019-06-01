@@ -15,7 +15,8 @@ namespace DailyPlanner
         /// <summary>The mod settings.</summary>
         private ModConfig Config;
 
-        private Planner Planner = new Planner(Game1.year);
+        private Planner Planner;
+
 
 
         /*********
@@ -73,7 +74,7 @@ namespace DailyPlanner
 
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-            this.Planner = new Planner(Game1.year);
+            this.Planner = new Planner(Game1.year, this.Helper.DirectoryPath);
             this.Planner.CreateDailyPlan();
         }
 

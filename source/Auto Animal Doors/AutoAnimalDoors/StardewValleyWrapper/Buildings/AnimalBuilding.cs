@@ -1,16 +1,19 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
 {
     public enum AnimalDoorState { OPEN, CLOSED };
 
+    public enum AnimalBuildingType { BARN, COOP, OTHER };
+
     class AnimalBuilding : Building
     {
-        public AnimalBuilding(StardewValley.Buildings.Building building) :
+        private Farm Farm { get; set; }
+
+        public AnimalBuilding(StardewValley.Buildings.Building building, Farm farm) :
             base(building)
         {
-
+            this.Farm = farm;
         }
 
         protected StardewValley.AnimalHouse Indoors
@@ -21,17 +24,35 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
             }
         }
 
-        public List<Animals.FarmAnimal> FarmAnimals
+        private List<StardewValley.FarmAnimal> FarmAnimals
         {
             get
             {
-                List<Animals.FarmAnimal> farmAnimals = new List<Animals.FarmAnimal>();
-                foreach (StardewValley.FarmAnimal stardewValleyFarmAnimal in Indoors.animals.Values)
+                List<StardewValley.FarmAnimal> farmAnimals = new List<StardewValley.FarmAnimal>();
+                foreach (long id in Indoors.animalsThatLiveHere)
                 {
-                    farmAnimals.Add(new Animals.FarmAnimal(stardewValleyFarmAnimal));
+                    farmAnimals.Add(StardewValley.Utility.getAnimal(id));
                 }
                 return farmAnimals;
             }
+        }
+
+        public void SendAllAnimalsHome()
+        {
+            this.CloseAnimalDoor();
+            foreach (StardewValley.FarmAnimal animal in FarmAnimals)
+            {
+                // Only warp home animals that are still on the farm
+                if (this.Farm.StardewValleyFarm.animals.ContainsKey(animal.myID.Value))
+                {
+                    animal.warpHome(this.Farm.StardewValleyFarm, animal);
+                }
+            }
+        }
+
+        public bool AreAllAnimalsHome()
+        {
+            return Indoors.animalsThatLiveHere.Count == Indoors.animals.Count();
         }
 
         public AnimalDoorState AnimalDoorState
@@ -76,5 +97,44 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
                 this.ToggleAnimalDoorState();
             }
         }
+
+        public AnimalBuildingType Type
+        {
+            get
+            {
+                string buildingTypeString = this.building.buildingType.Value.ToLower();
+                if (buildingTypeString.Contains("coop"))
+                {
+                    return AnimalBuildingType.COOP;
+                } else if (buildingTypeString.Contains("barn"))
+                {
+                    return AnimalBuildingType.BARN;
+                }
+
+                return AnimalBuildingType.OTHER;
+            }
+        }
+
+        public int UpgradeLevel
+        {
+            get
+            {
+                switch (this.building.buildingType.Value.ToLower())
+                {
+                    case "coop":
+                    case "barn":
+                        return 1;
+                    case "big coop":
+                    case "big barn":
+                        return 2;
+                    case "deluxe coop":
+                    case "deluxe barn":
+                        return 3;
+                }
+
+                return 4;
+            }
+        }
+
     }
 }

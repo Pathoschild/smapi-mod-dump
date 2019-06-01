@@ -41,6 +41,7 @@
           "oreChance": 0.9,
           "minOre": 1,
           "maxOre": 1,
+          "prioritizedListOfChanges": [],
           "professionChanges": [
             {
               "profession": 18,
@@ -60,7 +61,10 @@
               "professionChange": 1.3,
               "professionOperation": "*"
             }
-          ]
+          ],
+          "skillChanges": [],
+          "timeChanges": [],
+          "weatherChanges": []
         }
       ]
     },
@@ -74,6 +78,7 @@
           "oreChance": 0.5,
           "minOre": 1,
           "maxOre": 1,
+          "prioritizedListOfChanges": [],
           "professionChanges": [
             {
               "profession": 18,
@@ -93,7 +98,10 @@
               "professionChange": 1.3,
               "professionOperation": "*"
             }
-          ]
+          ],
+          "skillChanges": [],
+          "timeChanges": [],
+          "weatherChanges": []
         }
       ]
     },
@@ -107,6 +115,7 @@
           "oreChance": 0.5,
           "minOre": 1,
           "maxOre": 1,
+          "prioritizedListOfChanges": [],
           "professionChanges": [
             {
               "profession": 18,
@@ -126,7 +135,10 @@
               "professionChange": 1.3,
               "professionOperation": "*"
             }
-          ]
+          ],
+          "skillChanges": [],
+          "timeChanges": [],
+          "weatherChanges": []
         }
       ]
     },
@@ -140,6 +152,7 @@
           "oreChance": 0.5,
           "minOre": 1,
           "maxOre": 1,
+          "prioritizedListOfChanges": [],
           "professionChanges": [
             {
               "profession": 18,
@@ -159,7 +172,10 @@
               "professionChange": 1.3,
               "professionOperation": "*"
             }
-          ]
+          ],
+          "skillChanges": [],
+          "timeChanges": [],
+          "weatherChanges": []
         }
       ]
     },
@@ -173,6 +189,7 @@
           "oreChance": 0.5,
           "minOre": 1,
           "maxOre": 1,
+          "prioritizedListOfChanges": [],
           "professionChanges": [
             {
               "profession": 18,
@@ -192,7 +209,10 @@
               "professionChange": 1.3,
               "professionOperation": "*"
             }
-          ]
+          ],
+          "skillChanges": [],
+          "timeChanges": [],
+          "weatherChanges": []
         }
       ]
     }
@@ -208,8 +228,10 @@
       ],
       "mineLevels": [],
       "replaceAll": false,
+      "onlyFirstFarmer": false,
       "chance": 0.005,
       "durability": 3,
+      "prioritizedListOfChanges": [],
       "professionChanges": [
         {
           "profession": 22,
@@ -217,7 +239,52 @@
           "professionChange": 2.0,
           "professionOperation": "*"
         }
-      ]
+      ],
+      "skillChanges": [],
+      "timeChanges": [],
+      "weatherChanges": []
+    },
+    {
+      "stoneIndex": 76,
+      "stoneName": "",
+      "stonesToReplace": [],
+      "mineAreas": [],
+      "mineLevels": [],
+      "replaceAll": false,
+      "onlyFirstFarmer": false,
+      "chance": 0.0,
+      "durability": 3,
+      "prioritizedListOfChanges": [
+        {
+          "professionChanges": [],
+          "skillChanges": [],
+          "timeChanges": [
+            {
+              "minMinute": -1,
+              "maxMinute": -1,
+              "minDay": 84,
+              "maxDay": -1,
+              "minYear": -1,
+              "maxYear": -1,
+              "affectsCount": false,
+              "change": 0.01,
+              "operation": "+"
+            }
+          ],
+          "weatherChanges": []
+        }
+      ],
+      "professionChanges": [
+        {
+          "profession": 22,
+          "affectsCount": false,
+          "professionChange": 2.0,
+          "professionOperation": "*"
+        }
+      ],
+      "skillChanges": [],
+      "timeChanges": [],
+      "weatherChanges": []
     },
     {
       "stoneIndex": 77,
@@ -229,8 +296,10 @@
       ],
       "mineLevels": [],
       "replaceAll": false,
+      "onlyFirstFarmer": false,
       "chance": 0.005,
       "durability": 3,
+      "prioritizedListOfChanges": [],
       "professionChanges": [
         {
           "profession": 22,
@@ -238,7 +307,52 @@
           "professionChange": 2.0,
           "professionOperation": "*"
         }
-      ]
+      ],
+      "skillChanges": [],
+      "timeChanges": [],
+      "weatherChanges": []
+    },
+    {
+      "stoneIndex": 77,
+      "stoneName": "",
+      "stonesToReplace": [],
+      "mineAreas": [],
+      "mineLevels": [],
+      "replaceAll": false,
+      "onlyFirstFarmer": false,
+      "chance": 0.0,
+      "durability": 3,
+      "prioritizedListOfChanges": [
+        {
+          "professionChanges": [],
+          "skillChanges": [],
+          "timeChanges": [
+            {
+              "minMinute": -1,
+              "maxMinute": -1,
+              "minDay": 28,
+              "maxDay": 55,
+              "minYear": -1,
+              "maxYear": -1,
+              "affectsCount": false,
+              "change": 0.01,
+              "operation": "+"
+            }
+          ],
+          "weatherChanges": []
+        }
+      ],
+      "professionChanges": [
+        {
+          "profession": 22,
+          "affectsCount": false,
+          "professionChange": 2.0,
+          "professionOperation": "*"
+        }
+      ],
+      "skillChanges": [],
+      "timeChanges": [],
+      "weatherChanges": []
     },
     {
       "stoneIndex": 75,
@@ -247,8 +361,10 @@
       "mineAreas": [],
       "mineLevels": [],
       "replaceAll": false,
+      "onlyFirstFarmer": false,
       "chance": 0.005,
       "durability": 3,
+      "prioritizedListOfChanges": [],
       "professionChanges": [
         {
           "profession": 22,
@@ -256,7 +372,22 @@
           "professionChange": 2.0,
           "professionOperation": "*"
         }
-      ]
+      ],
+      "skillChanges": [],
+      "timeChanges": [
+        {
+          "minMinute": 1800,
+          "maxMinute": 2400,
+          "minDay": -1,
+          "maxDay": -1,
+          "minYear": -1,
+          "maxYear": -1,
+          "affectsCount": false,
+          "change": 2.0,
+          "operation": "*"
+        }
+      ],
+      "weatherChanges": []
     },
     {
       "stoneIndex": 75,
@@ -267,8 +398,10 @@
       ],
       "mineLevels": [],
       "replaceAll": false,
+      "onlyFirstFarmer": false,
       "chance": 0.02,
       "durability": 3,
+      "prioritizedListOfChanges": [],
       "professionChanges": [
         {
           "profession": 22,
@@ -276,7 +409,10 @@
           "professionChange": 2.0,
           "professionOperation": "*"
         }
-      ]
+      ],
+      "skillChanges": [],
+      "timeChanges": [],
+      "weatherChanges": []
     }
   ],
   "itemReplacements": []

@@ -95,13 +95,13 @@ namespace AnimalHusbandryMod.recipes
                     if (!Game1.player.cookingRecipes.ContainsKey(cooking.GetDescription()))
                     {
                         Game1.player.cookingRecipes.Add(cooking.GetDescription(), 0);
-                        AnimalHusbandryModEntery.monitor.Log($"Added {cooking.GetDescription()} recipe to the player.", LogLevel.Info);
+                        AnimalHusbandryModEntry.monitor.Log($"Added {cooking.GetDescription()} recipe to the player.", LogLevel.Info);
                     }
                 }
             }
             else
             {
-                AnimalHusbandryModEntery.monitor.Log("No player loaded to add the recipes.", LogLevel.Info);
+                AnimalHusbandryModEntry.monitor.Log("No player loaded to add the recipes.", LogLevel.Info);
             }
         }
     }

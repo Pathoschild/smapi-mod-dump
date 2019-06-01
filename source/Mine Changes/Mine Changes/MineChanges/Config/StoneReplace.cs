@@ -38,10 +38,14 @@ namespace Mine_Changes.MineChanges.Config
         public List<int> mineAreas = new List<int>();
         public List<int> mineLevels = new List<int>();
         public bool replaceAll = false;
+        public bool onlyFirstFarmer = false;
         public double chance = 0.0f;
         public int durability = 3;
+        public List<GroupOfChanges> prioritizedListOfChanges = new List<GroupOfChanges>();
         public List<ProfessionChanges> professionChanges = new List<ProfessionChanges>();
-
+        public List<SkillChanges> skillChanges = new List<SkillChanges>();
+        public List<TimeChanges> timeChanges = new List<TimeChanges>();
+        public List<WeatherChanges> weatherChanges = new List<WeatherChanges>();
 
         public StardewValley.Object tryAndReplaceObject(StardewValley.Object source, MineShaft locale, Vector2 tile)
         {
@@ -55,9 +59,13 @@ namespace Mine_Changes.MineChanges.Config
                 if (replaceAll || stonesToReplace.Contains(source.ParentSheetIndex))
                 {
                     double realChance = chance;
-                    foreach (Farmer who in locale.farmers)
+                    if (!onlyFirstFarmer)
                     {
-                        realChance = applyProfessionChances(who, chance);
+                        realChance = applyChances(locale);
+                    }
+                    else
+                    {
+                        realChance = applyChances();
                     }
                     if (r.NextDouble() < realChance)
                     {
@@ -100,37 +108,61 @@ namespace Mine_Changes.MineChanges.Config
             return stoneIndex;
         }
 
-        public double applyProfessionChances(Farmer who, double chance)
+        public double applyChances(GameLocation loc)
         {
-            double ans = chance;
-            if (professionChanges == null || professionChanges.Count == 0)
-                return ans;
-
-            foreach (ProfessionChanges p in professionChanges)
+            double ans = this.chance;
+            foreach (Farmer who in loc.farmers)
             {
-                if (!p.affectsCount && who.professions.Contains(p.profession))
+                ans = applyChances(who, ref ans);
+            }
+            return ans;
+        }
+
+        public double applyChances()
+        {
+            double ans = this.chance;
+            return applyChances(Game1.player, ref ans);
+        }
+
+        public double applyChances(Farmer who, ref double chance)
+        {
+            if (prioritizedListOfChanges != null && prioritizedListOfChanges.Count > 0)
+            {
+                foreach (GroupOfChanges gr in prioritizedListOfChanges)
                 {
-                    switch (p.professionOperation)
-                    {
-                        case "+":
-                            ans += p.professionChange;
-                            break;
-                        case "-":
-                            ans -= p.professionChange;
-                            break;
-                        case "*":
-                            ans *= p.professionChange;
-                            break;
-                        case "/":
-                            ans /= p.professionChange;
-                            break;
-                        default:
-                            break;
-                    }
+                    gr.applyChances(who, ref chance);
+                }
+            }
+            if (professionChanges != null && professionChanges.Count > 0)
+            {
+                foreach (ProfessionChanges pr in professionChanges)
+                {
+                    pr.applyChances(who, ref chance);
+                }
+            }
+            if (skillChanges != null && skillChanges.Count > 0)
+            {
+                foreach (SkillChanges pr in skillChanges)
+                {
+                    pr.applyChances(who, ref chance);
+                }
+            }
+            if (timeChanges != null && timeChanges.Count > 0)
+            {
+                foreach (TimeChanges pr in timeChanges)
+                {
+                    pr.applyChances(who, ref chance);
+                }
+            }
+            if (weatherChanges != null && weatherChanges.Count > 0)
+            {
+                foreach (WeatherChanges pr in weatherChanges)
+                {
+                    pr.applyChances(who, ref chance);
                 }
             }
 
-            return ans;
+            return chance;
         }
     }
 }

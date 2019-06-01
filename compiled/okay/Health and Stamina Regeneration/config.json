@@ -1,6 +1,16 @@
 {
-  "HealthRegenRate": 2,
-  "StaminaRegenRate": 0.5,
-  "SecondsUntilHealthRegen": 4,
-  "SecondsUntilStaminaRegen": 4
+  "Health": {
+    "Enabled": true,
+    "HealthPerRegenRate": 2,
+    "RegenRateInSeconds": 1,
+    "SecondsUntilRegenWhenTakenDamage": 3,
+    "DontCheckConditions": false
+  },
+  "Stamina": {
+    "Enabled": true,
+    "StaminaPerRegenRate": 2.0,
+    "RegenRateInSeconds": 1,
+    "SecondsUntilRegenWhenUsedStamina": 3,
+    "DontCheckConditions": false
+  }
 }

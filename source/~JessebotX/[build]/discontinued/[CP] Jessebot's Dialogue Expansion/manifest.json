@@ -1,0 +1,11 @@
+{
+	"Name": "Jessebot's Dialogue Expansion",
+	"Author": "Jessebot",
+	"Version": "1.0-alpha",
+	"Description": "A dialogue expansion for all friendable characters mainly including dialogue trees and more...",
+	"UniqueID": "Jessebot.DialogueExpansion",
+	"UpdateKeys": [],
+	"ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher",
+	},
+}

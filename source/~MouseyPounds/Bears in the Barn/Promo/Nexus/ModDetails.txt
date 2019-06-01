@@ -1,0 +1,62 @@
+Category: Livestock & Animals
+
+Tags:
+SMAPI
+Works with Stardew 1.3
+Animation - New
+New Models
+
+Overview:
+Bears in the Barn is a Content Patcher and Better Farm Animal Variety mod which adds 4 different Bears (Brown, Black, Polar, and Panda) as new barn animals that will bring you fish every day.
+
+Details:
+[b]Description:
+
+[color=#ffff00]Bears in the Barn[/color][/b] is a Content Patcher and Better Farm Animal Variety mod which adds Bears as new barn animals. Bears cost 5000 G each and can be purchased once you have a Big Barn or better. There are 4 different types of Bears and each one brings different fish to you each day once they become adults:
+
+[list]
+[*][color=#b4a7d6][b]Brown Bears[/b][/color] bring [i]Salmon[/i] (regular product) or [i]Sturgeon[/i] (deluxe product).
+[*][color=#b4a7d6][b]Black Bears[/b][/color] bring [i]Rainbow Trout[/i] (regular product) or [i]Tiger Trout[/i] (deluxe product).
+[*][color=#b4a7d6][b]Polar Bears[/b][/color] bring [i]Crab[/i] (regular product) or [i]Lobster[/i] (deluxe product).
+[*][color=#b4a7d6][b]Panda Bears[/b][/color] bring [i]Sea Cucumbe[/i]r (regular product) or [i]Super Cucumber[/i] (deluxe product).
+[/list]
+
+
+[b]Installation:
+[/b]
+[list=1]
+[*]Install the latest version of [url=https://smapi.io/]SMAPI[/url].
+[*]Install the latest version of [url=https://www.nexusmods.com/stardewvalley/mods/1915]Content Patcher[/url].
+[*]Install the latest version of [url=https://www.nexusmods.com/stardewvalley/mods/3296]Paritee's Better Farm Animal Variety[/url] (BFAV).
+[*]Unzip the download and place the included [color=#b6d7a8][code][CP-BFAV] Bears in the Barn[/code][/color] folder into your [color=#b6d7a8][code]Mods[/code][/color] folder.
+[*]Move or copy the [color=#b6d7a8][code]animal_shop_bears.png[/code][/color] from the [color=#b6d7a8][code][CP-BFAV] Bears in the Barn[/code][/color] folder to BFAV's [color=#b6d7a8][code]assets[/code][/color] folder.
+[*]Open up the BFAV's [color=#b6d7a8][code]config.json[/code][/color] file and add the following entry at the end of the "Farm Animals" section:
+[code]
+    "Bear": {
+      "Types": [
+        "Black Bear",
+        "Brown Bear",
+        "Panda Bear",
+        "Polar Bear"
+      ],
+      "Buildings": [
+        "Big Barn",
+        "Deluxe Barn"
+      ],
+      "AnimalShop": {
+        "Name": "Bear",
+        "Description": "Adult bears are expert fishermen and will sometimes share their catch.",
+        "Price": "5000",
+        "Icon": "assets\\animal_shop_bears.png"
+      }
+    }
+[/code]
+[/list]
+[b]Credits:
+[/b]
+Adult bear sprites are minor edits and recolors of [url=https://www.nexusmods.com/stardewvalley/mods/2695]Friendly magical vegan truffle Bears[/url] by MS_Paintdra/DorakoKentaurosu which allows both reuse and modification with attribution.
+
+
+[b]Compatibility:
+[/b]
+[b][color=#ffff00]Bears in the Barn[/color][/b] requires [url=https://www.nexusmods.com/stardewvalley/mods/1915]Content Patcher[/url] version 1.8 or higher, Paritee's Better Farm Animal Variety version , and of course [url=https://smapi.io]SMAPI[/url] (version 2.11.2 or higher). It should work with game version 1.3.36 or higher.

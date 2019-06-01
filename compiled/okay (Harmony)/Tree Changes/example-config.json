@@ -11,17 +11,43 @@
       "seedChances": [
         {
           "seedIndex": 388,
+          "seedName": "",
           "seedChance": 0.3,
           "minSeed": 2,
           "maxSeed": 4,
-		  "professionChanges": [
+          "prioritizedListOfChanges": [],
+          "professionChanges": [
             {
               "profession": 12,
               "affectsCount": true,
               "professionChange": 2.0,
               "professionOperation": "+"
             }
-			]
+          ],
+          "skillChanges": [],
+          "timeChanges": [],
+          "weatherChanges": []
+        },
+        {
+          "seedIndex": 403,
+          "seedName": "",
+          "seedChance": 0.0,
+          "minSeed": 1,
+          "maxSeed": 1,
+          "prioritizedListOfChanges": [],
+          "professionChanges": [],
+          "skillChanges": [
+            {
+              "skill": "Foraging",
+              "minSkillLevel": 5,
+              "maxSkillLevel": -1,
+              "affectsCount": false,
+              "change": 0.04,
+              "operation": "+"
+            }
+          ],
+          "timeChanges": [],
+          "weatherChanges": []
         }
       ]
     }

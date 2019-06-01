@@ -1,5 +1,6 @@
 {
   "BeachShortcut": true,
   "AdventureShortcut": true,
-  "RiverShortcut": true
+  "RiverShortcut": true,
+  "BusStopShortcut": true
 }

@@ -1,7 +1,7 @@
 {
   "Name": "Tree Changes",
   "Author": "JPAN",
-  "Version": "1.0",
+  "Version": "1.1",
   "Description": "Allows you to change the Tree's specific parameters.",
   "UniqueID": "jpan.TreeChanges",
   "EntryDll": "TreeChanges.dll",
@@ -10,6 +10,10 @@
    "Dependencies": [
 	{
 		"UniqueID": "spacechase0.JsonAssets",
+		  "IsRequired": false
+	},
+	{
+		"UniqueID": "spacechase0.SpaceCore",
 		  "IsRequired": false
 	}
    ]

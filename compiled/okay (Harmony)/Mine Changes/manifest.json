@@ -1,7 +1,7 @@
 {
   "Name": "Mine Changes",
   "Author": "JPAN",
-  "Version": "1.0",
+  "Version": "1.1",
   "Description": "Allows you to change the Mine's spawn rates",
   "UniqueID": "jpan.MineChanges",
   "EntryDll": "MineChanges.dll",
@@ -10,6 +10,10 @@
    "Dependencies": [
 	{
 		"UniqueID": "spacechase0.JsonAssets",
+		  "IsRequired": false
+	},
+	{
+		"UniqueID": "spacechase0.SpaceCore",
 		  "IsRequired": false
 	}
    ]

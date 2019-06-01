@@ -65,13 +65,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="JsonAssetsAPI.cs" />
+    <Compile Include="TreeChanges\JsonAssetsAPI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TreeChanges\Config\SeedChanges.cs" />
     <Compile Include="TreeChanges\Config\TreeConfig.cs" />
     <Compile Include="TreeChanges\Config\TreeParams.cs" />
     <Compile Include="TreeChanges\Hooks\TreeHooks.cs" />
     <Compile Include="TreeChanges\Mod.cs" />
+    <Compile Include="TreeChanges\SpaceCoreAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />

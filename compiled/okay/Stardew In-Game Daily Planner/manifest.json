@@ -1,7 +1,7 @@
 ﻿{
   "Name": "In-Game Daily Planner",
   "Author": "MevNav",
-  "Version": "0.5.1",
+  "Version": "0.5.2",
   "Description": "Provides an in-game menu to keep track of your daily tasks.",
   "UniqueID": "MevNav.DailyPlanner",
   "EntryDll": "DailyPlanner.dll",

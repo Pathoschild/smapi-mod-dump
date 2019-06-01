@@ -6,6 +6,11 @@
   "generic.date": "{{seasonName}} {{dayNumber}}日",
   "generic.date-with-year": "{{year}}年目 {{seasonName}} {{dayNumber}}日",
 
+  // date names
+  "generic.now": "今",
+  "generic.tomorrow": "明日",
+  "generic.yesterday": "yesterday", // TODO
+
   // generic field values
   "generic.percent": "{{percent}}%",
   "generic.percent-chance-of": "{{percent}}% のチャンス: {{label}}",
@@ -19,13 +24,14 @@
   "generic.hours": "{{count}}時間",
   "generic.days": "{{count}}日",
   "generic.in-x-days": "{{count}}日後",
-  "generic.tomorrow": "明日",
+  "generic.x-days-ago": "{{count}} days ago", // TODO
   "generic.price": "{{price}}G",
   "generic.price-for-quality": "{{price}}G ({{quality}})",
   "generic.price-for-stack": "{{price}}g (スタック:{{count}})",
 
   // types
   "type.building": "Building", // TODO
+  "type.bush": "Bush", // TODO
   "type.fruit-tree": "果樹",
   "type.map-tile": "マップタイル",
   "type.monster": "モンスター",
@@ -208,6 +214,18 @@
   "building.upgrades.coop.2": "up to 12 animals; add autofeed and rabbits",
   "building.water-trough.summary": "{{filled}} of {{max}} water troughs filled",
 
+  // bush lookup labels
+  // TODO
+  "bush.name.berry": "Berry Bush",
+  "bush.name.plain": "Plain Bush",
+  "bush.description.berry": "A bush that grows salmonberries and blackberries.",
+  "bush.description.plain": "A plain bush that doesn't grow anything.",
+  "bush.next-harvest": "Next harvest",
+
+  // bush lookup values
+  // TODO
+  "bush.schedule.berry": "20% chance of salmonberries in spring 15-18 and blackberries in fall 8-11.",
+
   // fruit tree lookup labels
   "fruit-tree.complaints": "不満点",
   "fruit-tree.name": "{{fruitName}}の木",
@@ -240,7 +258,6 @@
   "crop.summary.harvest-multi": "{{daysToFirstHarvest}}後ののち{{daysToNextHarvests}}日毎に収穫可能",
   "crop.summary.seasons": "{{seasons}}に成長",
   "crop.summary.sells-for": "{{price}}Gで売れる",
-  "crop.harvest.now": "今",
   "crop.harvest.too-late": "次の収穫には遅すぎる ({{date}}になる)",
 
   // item lookup labels
@@ -284,7 +301,8 @@
   "item.needed-for.gourmet-chef": "gourmet chef achievement (cook {{recipes}})", // TODO
   "item.needed-for.craft-master": "craft master achievement (make {{recipes}})", // TODO
   "item.sells-to.shipping-box": "出荷箱",
-  "item.recipes.entry": "{{name}} ({{count}}個必要)",
+  "item.recipes-for-ingredient.entry": "{{name}} ({{count}}個必要)",
+  "item.recipes-for-machine.multiple-items": "{{name}} x{{count}}", // TODO
   "item.number-owned.summary": "{{count}}個持っている",
   "item.number-crafted.summary": "you made {{count}} of these", // TODO
 

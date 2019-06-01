@@ -17,7 +17,7 @@ namespace MailFrameworkMod
         private static String _nextLetterId = "none";
         private static readonly List<Letter> Letters = new List<Letter>();
         private static Letter _shownLetter = null;
-        private static IModEvents _events => MailFrameworkModEntery.ModHelper.Events;
+        private static IModEvents _events => MailFrameworkModEntry.ModHelper.Events;
 
         /// <summary>
         /// Call this method to update the mail box with new letters.
@@ -93,10 +93,10 @@ namespace MailFrameworkMod
                 {
                     _shownLetter = Letters.First();
                     var activeClickableMenu = new LetterViewerMenuExtended(_shownLetter.Text.Replace("@", Game1.player.Name),_shownLetter.Id);
-                    MailFrameworkModEntery.ModHelper.Reflection.GetField<int>(activeClickableMenu,"whichBG").SetValue(_shownLetter.WhichBG);
+                    MailFrameworkModEntry.ModHelper.Reflection.GetField<int>(activeClickableMenu,"whichBG").SetValue(_shownLetter.WhichBG);
                     if (_shownLetter.LetterTexture != null)
                     {
-                        MailFrameworkModEntery.ModHelper.Reflection.GetField<Texture2D>(activeClickableMenu, "letterTexture").SetValue(_shownLetter.LetterTexture);
+                        MailFrameworkModEntry.ModHelper.Reflection.GetField<Texture2D>(activeClickableMenu, "letterTexture").SetValue(_shownLetter.LetterTexture);
                     }
                     activeClickableMenu.TextColor = _shownLetter.TextColor;
                     
@@ -126,8 +126,8 @@ namespace MailFrameworkMod
                     if (_shownLetter.Recipe != null)
                     {
                         string recipe = _shownLetter.Recipe;
-                        Dictionary<string, string> cookingData = MailFrameworkModEntery.ModHelper.Content.Load<Dictionary<string, string>>("Data\\CookingRecipes", ContentSource.GameContent);
-                        Dictionary<string, string> craftingData = MailFrameworkModEntery.ModHelper.Content.Load<Dictionary<string, string>>("Data\\CraftingRecipes", ContentSource.GameContent);
+                        Dictionary<string, string> cookingData = MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<string, string>>("Data\\CookingRecipes", ContentSource.GameContent);
+                        Dictionary<string, string> craftingData = MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<string, string>>("Data\\CraftingRecipes", ContentSource.GameContent);
                         string recipeString = null;
                         int dataArrayI18NSize = 0;
                         string cookingOrCraftingText = null;
@@ -153,7 +153,7 @@ namespace MailFrameworkMod
                         }
                         else
                         {
-                            MailFrameworkModEntery.ModMonitor.Log($"The recipe '{recipe}' was not found. The mail will ignore it.", LogLevel.Warn);
+                            MailFrameworkModEntry.ModMonitor.Log($"The recipe '{recipe}' was not found. The mail will ignore it.", LogLevel.Warn);
                         }
 
                         if (recipeString != null)
@@ -164,7 +164,7 @@ namespace MailFrameworkMod
                                 string[] strArray = recipeString.Split('/');
                                 if (strArray.Length < dataArrayI18NSize)
                                 {
-                                    MailFrameworkModEntery.ModMonitor.Log($"The recipe '{recipe}' does not have a internationalized name. The default name will be used.", LogLevel.Warn);
+                                    MailFrameworkModEntry.ModMonitor.Log($"The recipe '{recipe}' does not have a internationalized name. The default name will be used.", LogLevel.Warn);
                                 }
                                 else
                                 {
@@ -172,11 +172,11 @@ namespace MailFrameworkMod
                                 }
                             }
 
-                            if (MailFrameworkModEntery.ModHelper.Reflection.GetMethod(activeClickableMenu, "getTextColor").Invoke<int>() == -1)
+                            if (MailFrameworkModEntry.ModHelper.Reflection.GetMethod(activeClickableMenu, "getTextColor").Invoke<int>() == -1)
                             {
-                                MailFrameworkModEntery.ModHelper.Reflection
+                                MailFrameworkModEntry.ModHelper.Reflection
                                     .GetField<String>(activeClickableMenu, "cookingOrCrafting").SetValue(cookingOrCraftingText);
-                                MailFrameworkModEntery.ModHelper.Reflection
+                                MailFrameworkModEntry.ModHelper.Reflection
                                     .GetField<String>(activeClickableMenu, "learnedRecipe").SetValue(learnedRecipe);
                             }
                             else

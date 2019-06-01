@@ -1,0 +1,14 @@
+{
+  "Name": "Skill Prestige for Magic",
+  "Author": "Alphablackwolf",
+  "Version": "1.2.4-unofficial.5-pathoschild",
+  "Description": "Extends Skill Prestige to support the Magic mod.",
+  "UniqueID": "alphablackwolf.MagicPrestigeAdapter",
+  "EntryDll": "SkillPrestige.Magic.dll",
+  "MinimumApiVersion": "2.11.0",
+  "Dependencies": [
+    { "UniqueID": "alphablackwolf.skillPrestige" },
+    { "UniqueID": "spacechase0.Magic" }
+  ],
+  "UpdateKeys": [ "Nexus:569" ]
+}

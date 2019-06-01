@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Crop Color Combiner",
+    "Author": "MouseyPounds",
+    "Version": "1.0.0",
+    "Description": "Provides keybinds to unify the color and/or quality of items in inventory to save storage space.",
+    "UniqueID": "MouseyPounds.CropColorCombiner",
+    "EntryDll": "CropColorCombiner.dll",
+    "MinimumApiVersion": "2.10.0",
+    "UpdateKeys": [ "Nexus:3986"]
+}

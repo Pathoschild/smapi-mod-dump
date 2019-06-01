@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3618
+IDs: jahangmar.CP-SeedsAreRare
+update keys: Nexus:3618

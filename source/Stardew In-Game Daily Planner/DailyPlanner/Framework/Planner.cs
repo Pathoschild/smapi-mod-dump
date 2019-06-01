@@ -12,20 +12,20 @@ namespace DailyPlanner.Framework
         private List<List<string>> data;
         private List<string> DailyPlan;
 
-        public Planner(int year)
+        public Planner(int year, string filepath)
         {
             this.Filename = year.ToString() + ".csv";
             bool AccessDenied = false;
             try
             {
-                this.Reader = new StreamReader(File.OpenRead(Path.Combine("Mods", "DailyPlanner", "Plans", this.Filename)));
+                this.Reader = new StreamReader(File.OpenRead(Path.Combine(filepath, "Plans", this.Filename)));
             } catch (FileNotFoundException)
             {
-                File.Copy(Path.Combine("Mods", "DailyPlanner", "Plans", "Template.csv"), Path.Combine("Mods", "DailyPlanner", "Plans", this.Filename));
-                this.Reader = new StreamReader(File.OpenRead(Path.Combine("Mods", "DailyPlanner", "Plans", this.Filename)));
+                File.Copy(Path.Combine(filepath, "Plans", "Template.csv"), Path.Combine("Mods", "DailyPlanner", "Plans", this.Filename));
+                this.Reader = new StreamReader(File.OpenRead(Path.Combine(filepath, "Plans", this.Filename)));
             } catch (IOException)
             {
-                this.Reader = new StreamReader(File.OpenRead(Path.Combine("Mods", "DailyPlanner", "Plans", "Template.csv")));
+                this.Reader = new StreamReader(File.OpenRead(Path.Combine(filepath, "Plans", "Template.csv")));
                 AccessDenied = true;
             }
             
@@ -60,8 +60,9 @@ namespace DailyPlanner.Framework
 
         public void CreateDailyPlan()
         {
-            int season = Game1.Date.SeasonIndex + 1;
-            int day = Game1.Date.DayOfMonth;
+            int season = this.SeasonToInt(StardewModdingAPI.Utilities.SDate.Now().Season);
+            
+            int day = StardewModdingAPI.Utilities.SDate.Now().Day;
 
             if (day <= 0) { day = 1; }
             if (day >= 29) { day = 28; }
@@ -116,8 +117,8 @@ namespace DailyPlanner.Framework
 
         public List<string> CreateWeekList()
         {
-            int season = Game1.Date.SeasonIndex + 1;
-            int day = Game1.Date.DayOfMonth;
+            int season = this.SeasonToInt(StardewModdingAPI.Utilities.SDate.Now().Season);
+            int day = StardewModdingAPI.Utilities.SDate.Now().Day;
 
             if (day <= 0) { day = 1; }
             if (day >= 29) { day = 28; }
@@ -145,7 +146,7 @@ namespace DailyPlanner.Framework
 
         public List<string> CreateMonthList()
         {
-            int season = Game1.Date.SeasonIndex + 1;
+            int season = this.SeasonToInt(StardewModdingAPI.Utilities.SDate.Now().Season);
 
             List<string> ReturnList = new List<string>();
 
@@ -156,6 +157,23 @@ namespace DailyPlanner.Framework
             }
 
             return ReturnList;
+        }
+
+        private int SeasonToInt(string season) 
+        {
+            switch (season.ToLower())
+            {
+                case "spring":
+                    return 1;
+                case "summer":
+                    return 2;
+                case "fall":
+                    return 3;
+                case "winter":
+                    return 4;
+                default:
+                    return 0;
+            }
         }
     }
 }

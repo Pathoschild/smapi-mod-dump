@@ -1,103 +1,108 @@
-﻿using System.Collections.Generic;
-using BetterSlingshots.Slingshot;
+﻿using BetterSlingshots.Framework.Config;
+using Harmony;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using StardewValley.Tools;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using BetterSlingshots.Framework.Patches;
 
 namespace BetterSlingshots
 {
     public class BetterSlingshotsMod : Mod
     {
-        private BetterSlingshotsConfig config;
-        private SlingshotManager manager;
-        private bool wasUsingSlingshot;
+        internal bool IsAutoFire { get; private set; }
+        internal BetterSlingshotsModConfig Config { get; private set; }
+        internal static BetterSlingshotsMod Instance;
+
+        private readonly IDictionary<string, string> nameToConfigName = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+        {
+            {"Slingshot", "Basic"},
+            {"Master Slingshot", "Master"},
+            {"Galaxy Slingshot", "Galaxy"}
+        };
+        private readonly IDictionary<string, int> configNameToFireRate = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase)
+        {
+            {"Basic", 60},
+            {"Master", 45},
+            {"Galaxy", 30}
+        };
+        private bool isActionButtonDown;
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            this.config = helper.ReadConfig<BetterSlingshotsConfig>();
-            if (this.config.GalaxySlingshotPrice < 0)
-            {
-                this.config.GalaxySlingshotPrice = new BetterSlingshotsConfig().GalaxySlingshotPrice;
-                helper.WriteConfig(this.config);
-            }
+            this.Config = new ConfigManager(this.Helper).GetConfig();
+            BetterSlingshotsMod.Instance = this;
 
-            this.manager = new SlingshotManager(this.config, helper.Reflection);
+            HarmonyInstance harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
-            helper.Events.Input.ButtonReleased += this.OnButtonReleased;
-            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
-            helper.Events.Display.MenuChanged += this.OnMenuChanged;
-        }
-
-        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
-        {
-            if (e.NewMenu is ShopMenu shopMenu && shopMenu.portraitPerson == null && Game1.currentLocation is Club)
-            {
-                Item slingshotItem = new StardewValley.Tools.Slingshot(34);
-
-                Dictionary<Item, int[]> itemPriceAndStock = this.Helper.Reflection
-                    .GetField<Dictionary<Item, int[]>>(shopMenu, "itemPriceAndStock").GetValue();
-                itemPriceAndStock.Add(slingshotItem, new[] { this.config.GalaxySlingshotPrice, 1 });
-                List<Item> forSale = this.Helper.Reflection.GetField<List<Item>>(shopMenu, "forSale").GetValue();
-                forSale.Insert(0, slingshotItem);
-            }
-        }
-
-        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
-        {
-            bool usingSlingshot = Game1.player?.usingSlingshot ?? false;
-            if (usingSlingshot)
-            {
-                if (!this.wasUsingSlingshot) this.manager.PrepareForFiring();
-            }
-            else if (this.wasUsingSlingshot)
-            {
-                this.manager.FiringOver();
-            }
-
-            /*//this fixes the problem, which means that for some reason the finish event is not getting sent. No idea why
-            //it does it when we can only detect the issue - when they scroll away
-            foreach (Farmer farmer in Game1.getAllFarmers())
-            {
-                if (farmer.usingSlingshot && !(farmer.CurrentTool is StardewValley.Tools.Slingshot))
-                {
-                    farmer.usingSlingshot = false;
-                    farmer.canReleaseTool = true;
-                    farmer.UsingTool = false;
-                    farmer.canMove = true;
-                    farmer.Halt();
-                }
-            }*/
-
-            this.wasUsingSlingshot = usingSlingshot;
+            helper.Events.Display.MenuChanged += this.Display_MenuChanged;
+            helper.Events.GameLoop.UpdateTicking += this.GameLoop_UpdateTicking;
+            helper.Events.Input.ButtonPressed += this.Input_ButtonPressed;
+            helper.Events.Input.ButtonReleased += this.Input_ButtonReleased;
         }
 
         /// <summary>Raised after the player releases a button on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void OnButtonReleased(object sender, ButtonReleasedEventArgs e)
+        private void Input_ButtonReleased(object sender, ButtonReleasedEventArgs e)
         {
             if (e.Button.IsActionButton())
-                this.manager.SetActionButtonDownState(false);
+                this.isActionButtonDown = false;
         }
 
         /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
-        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (e.Button.IsActionButton())
-                this.manager.SetActionButtonDownState(true);
+                this.isActionButtonDown = true;
+        }
+
+        /// <summary>Raised before the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void GameLoop_UpdateTicking(object sender, UpdateTickingEventArgs e)
+        {
+            if (Game1.player.usingSlingshot && Game1.player.CurrentTool is Slingshot slingshot &&
+                this.isActionButtonDown &&
+                this.nameToConfigName.TryGetValue(slingshot.BaseName, out string configName) &&
+                this.Config.AutomaticSlingshots.Contains(configName) &&
+                this.configNameToFireRate.TryGetValue(configName, out int rate) && e.IsMultipleOf((uint)(this.Config.RapidFire ? rate / 2 : rate)) &&
+                slingshot.attachments[0] != null)
+            {
+                this.IsAutoFire = true;
+                SlingshotFinishPatch.ShouldRun(slingshot, false);
+                slingshot.DoFunction(Game1.currentLocation, Game1.getMouseX(), Game1.getMouseY(), 1, slingshot.getLastFarmerToUse());
+                SlingshotFinishPatch.ShouldRun(slingshot, true);
+                this.IsAutoFire = false;
+            }
+        }
+
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void Display_MenuChanged(object sender, MenuChangedEventArgs e)
+        {
+            if (e.NewMenu is ShopMenu shopMenu && shopMenu.portraitPerson == null && Game1.currentLocation is Club)
+            {
+                Item slingshotItem = new Slingshot(34);
+
+                Dictionary<Item, int[]> itemPriceAndStock = this.Helper.Reflection
+                    .GetField<Dictionary<Item, int[]>>(shopMenu, "itemPriceAndStock").GetValue();
+                itemPriceAndStock.Add(slingshotItem, new[] { this.Config.GalaxySlingshotPrice, 1 });
+                List<Item> forSale = this.Helper.Reflection.GetField<List<Item>>(shopMenu, "forSale").GetValue();
+                forSale.Insert(0, slingshotItem);
+            }
         }
     }
 }
