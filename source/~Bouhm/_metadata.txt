@@ -6,12 +6,9 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit 704e4e5069f159ac53b5b64e039c8b2ec79a5d71
-   Merge: 9e39ccf 36424ef
-   Author: Brian Pak <bbouhm@gmail.com>
-   Date:   Sun May 26 09:49:13 2019 -0700
+   commit efee35870a60bb887c6060835284e68a0f2d2fb2
+   Author: Bouhm <bbouhm@gmail.com>
+   Date:   Sat Jun 1 16:29:52 2019 -0700
    
-       Merge pull request #46 from TheOzonO3/patch-1
-       
-       Update Russian translations for NPCMapLocations
+       all optional assets
    

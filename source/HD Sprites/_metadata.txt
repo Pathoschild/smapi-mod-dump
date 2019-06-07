@@ -1,0 +1,13 @@
+url:
+   https://github.com/ninthworld/HDSprites.git
+
+mods:
+   HD Sprites
+
+latest commit:
+   commit 91ab94d497f0a172a0b7c936839cc9cc9cd7125d
+   Author: ninthworld <theninthworldix@gmail.com>
+   Date:   Tue Jun 4 15:50:45 2019 -0700
+   
+       new media
+   

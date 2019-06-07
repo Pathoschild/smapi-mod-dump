@@ -5,15 +5,12 @@ mods:
    Friends Forever
 
 latest commit:
-   commit e98c2abaa1b61e9f9da3f48070b65b98b129a9e6
+   commit c7241f6fa75e81647b42f310ebb070025b793b38
    Author: isaacs-dev <isaacs-dev@users.noreply.github.com>
-   Date:   Fri Feb 22 22:02:13 2019 -0700
+   Date:   Thu Jun 6 00:08:43 2019 -0600
    
-       Add Any Heart Dance mod
+       Fix FriendsForever in alternate languages
        
-       This adds the Any Heart Dance mod I've used before (since
-       3-Heart Dance caused a lot of lag).
-       
-       I've also updated it to be compatible with SMAPI 3.0. Do
-       note that this mod has not been tested.
+       FriendsForever failed to function in non-english languages. This
+       fix was found by skagh0919 on the Nexus forums.
    

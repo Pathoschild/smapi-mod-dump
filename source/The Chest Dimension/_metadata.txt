@@ -1,0 +1,13 @@
+url:
+   https://github.com/cilekli-link/SDVMods.git
+
+mods:
+   The Chest Dimension
+
+latest commit:
+   commit d9c4acf27f39725eb213971094c6b789b341dfc0
+   Author: Ã‡ilekli Link <41624564+cilekli-link@users.noreply.github.com>
+   Date:   Mon Jun 3 02:36:06 2019 +0300
+   
+       2!!!!!!
+   

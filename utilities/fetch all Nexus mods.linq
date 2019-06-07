@@ -267,11 +267,14 @@ async Task<dynamic[]> GetInvalidMods(IEnumerable<ParsedModData> mods)
 		// replacement files (e.g. tbin to drop into downloaded mod)
 		12282, // Ace's Expanded Farms MTN (#2711) > MelodicLullaby Less Saturated Valley Compatibility
 		2051,  // Add a Room and Attic (#379)
+		16992, // Bears in the Barn for BFAV (#4000) > BFAV JSON Update data file
+		16975, // BFAV Velociraptors (#4015) > Animals file to BFAV Json Update
+		16979, // BFAV Cutter Animals (#4016) > Animals file to BFAV Json Update
 		15896, // Capitalist Dream Farm (#3679) > SVE Compatibility
 		9873,  // Even More Secret Woods (#2364), replacement file for Immersive Farm 2
 		13120, // Immersive Farm 2 (#1531)
 		13647, // Immersive Farm 2 (#1531)
-		16898, // Oasis Greenhouse (#3969) > IF2R Version
+		16926, // Oasis Greenhouse (#3969) > IF2R Version
 		12634, // Phoenix Farm (#3026) > Pethouse Phoenix Farm
 		12863, // Secret Gardens Greenhouse (#3067) > "" for Immersive Farm 2
 		16524, // Stardew Valley Expanded (#3753)
@@ -337,7 +340,7 @@ async Task<dynamic[]> GetInvalidMods(IEnumerable<ParsedModData> mods)
 		9967,  // Sam to Samantha (#2472), CP pack with invalid update keys
 		16623, // Stardew In-Game Daily Planner > Example Plan
 		16660, // Stardew In-Game Daily Planner > Example Checklist
-		15746, // Stardew Valley Expanded (#3753) > Wallpapers, Event Guide and Script
+		16954, // Stardew Valley Expanded (#3753) > Wallpapers, Event Guide and Script
 		16198, // Stardew Valley Expanded (#3753), includes replacement files
 		11658, // Visual Crossing Sprite Overhaul (#1942), CP pack with invalid version format
 		11717, // Pencilstab's Portraits (#2351), content pack with separate previews folder including .zip

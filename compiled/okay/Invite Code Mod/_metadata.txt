@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4023
+IDs: KOREJJamJar.InviteCodeMod
+update keys: Nexus:4023

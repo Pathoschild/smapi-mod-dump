@@ -57,13 +57,18 @@ private readonly Regex[] IgnoreIncorrectNames =
 	new Regex(@"\.DotSettings\.user$", RegexOptions.Compiled),
 	new Regex(@"\.userprefs$", RegexOptions.Compiled),
 	new Regex(@"\.zip$", RegexOptions.Compiled),
-	new Regex(@"_(?:BACKUP|BASE|LOCAL)_\d+\.[a-z]+", RegexOptions.Compiled), // merge backups
+	new Regex(@"_(?:BACKUP|BASE|LOCAL)_\d+\.[a-z]+", RegexOptions.Compiled) // merge backups
+};
 
-	// mod release files
-	new Regex(@"^Demo\.gif$", RegexOptions.Compiled), // StackSplitX (10MB file)
-	new Regex(@"^Release$", RegexOptions.Compiled), // Birthday Mail, Faster Run
-	new Regex(@"^zip\.exe$", RegexOptions.Compiled), // Chest Label System
-	new Regex(@"^oldversions$", RegexOptions.Compiled) // ~JessebotX
+/// <summary>Patterns matching valid file or folder names that shouldn't be in Git for a specific repo folder.</summary>
+private readonly IDictionary<string, Regex> IgnoreFilesByRepo = new Dictionary<string, Regex>
+{
+	["~JessebotX"] = new Regex(@"^oldversions$", RegexOptions.Compiled),
+	["Birthday Mail"] = new Regex(@"^Release$", RegexOptions.Compiled),
+	["Chest Label System"] = new Regex(@"^zip\.exe$", RegexOptions.Compiled),
+	["Faster Run"] = new Regex(@"^Release$", RegexOptions.Compiled),
+	["HD Sprites"] = new Regex(@"^tools$", RegexOptions.Compiled), // dependencies, including exe over 10MB
+	["StackSplitX"] = new Regex(@"^Demo\.gif$", RegexOptions.Compiled), // 10MB file
 };
 
 /// <summary>The source URLs to skip when cloning repositories. This should match the GitHub repository name or custom URL specified on the wiki.</summary>
@@ -214,10 +219,17 @@ async Task Main()
 			+ $"mods:\n   {string.Join("\n   ", repo.Mods.Select(p => p.Name.FirstOrDefault()).OrderBy(p => p))}\n\n"
 			+ $"latest commit:\n   {string.Join("\n   ", lastCommit.Replace("\r", "").Split('\n'))}"
 		);
-		
+
+		// get patterns to ignore
+		IEnumerable<Regex> ignorePatterns = this.IgnoreLegitNames.Concat(this.IgnoreIncorrectNames);
+		{
+			if (this.IgnoreFilesByRepo.TryGetValue(entry.Key, out Regex pattern))
+				ignorePatterns = ignorePatterns.Concat(new[] { pattern });
+		}
+
 		// clean up
 		var logDeletedEntries = this
-			.RecursivelyDeleteMatches(dir, this.IgnoreLegitNames.Concat(this.IgnoreIncorrectNames).ToArray())
+			.RecursivelyDeleteMatches(dir, ignorePatterns.ToArray())
 			.Where(deleted => !this.IgnoreLegitNames.Any(pattern => pattern.IsMatch(deleted.Name)))
 			.ToArray();
 		if (logDeletedEntries.Any())

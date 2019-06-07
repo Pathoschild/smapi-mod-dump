@@ -55,7 +55,7 @@ namespace DVR
                     {
                         if (cc.bundles[bid][i]) continue;
                         var itemId = int.Parse(items[i]);
-                        var objectToAdd = new StardewValley.Object(Vector2.Zero, itemId, 1);
+                        var objectToAdd = new Object(Vector2.Zero, itemId, 1);
                         if (objectToAdd.Name.Contains("rror") || objectToAdd.Category != -4)
                         {
                             continue;

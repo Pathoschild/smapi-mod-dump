@@ -5,9 +5,9 @@ mods:
    Another Hunger Mod
 
 latest commit:
-   commit fa185c6c21f6c140326412060c9ea6f804daef0b
+   commit bd7f2251a63817db5206ca6e87fdebf8f773a116
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Tue Jan 29 11:21:02 2019 -0500
+   Date:   Tue May 28 17:00:18 2019 -0400
    
-       Added Nexus ID
+       Configurable UI position
    

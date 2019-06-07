@@ -2,6 +2,9 @@
 Fast Travel is a mod which allows the player to fast travel to any location on the map, by simply left clicking the icon.
 This allows the player to quickly go from say, the mines, to the blacksmith.
 
+# IMPORTANT!
+This mod is no longer regularly maintained, as I now lack the time to continue development / updates for each SDV version. If you would like to see this mod continue, feel free to make a pull request and message me on discord at Death#1880 :)
+
 # Download
 The latest version of the mod can be found on **Nexus**:  
 [![Download from Nexus](https://i.imgur.com/dJobTR2.png)](https://www.nexusmods.com/stardewvalley/mods/1529/?)  

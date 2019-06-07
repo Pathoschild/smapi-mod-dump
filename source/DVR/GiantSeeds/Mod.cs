@@ -1,20 +1,14 @@
 ﻿
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Locations;
-using StardewValley.Menus;
-using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
+using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GiantSeeds
 {
@@ -30,7 +24,61 @@ namespace GiantSeeds
         {
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
+           // helper.Events.Input.ButtonPressed += ButtonPressed;
+        }
+        private int numberOfTimesUsed = 0;
+        IList<int> items = new List<int>
+            {
+                72, 797
+            };
+        int howManyDiamonds = 5;
 
+
+        private void ButtonPressed(object sender, ButtonPressedEventArgs e)
+        {
+            var p = Game1.player;
+            var r = Game1.random;
+            
+            if (!e.Button.IsUseToolButton() || Game1.activeClickableMenu != null) return;
+            var weapon = Game1.player.CurrentTool as MeleeWeapon;
+            if (weapon == null) return;
+            if (weapon.CurrentParentTileIndex == 41)
+            {
+                update();
+                for (var i = 0; i < howManyDiamonds; i++)
+                {
+                    var x = r.Next(10) - 5;
+                    var y = r.Next(10) - 5;
+                    var idx = r.Next(items.Count);
+                    Game1.createObjectDebris(items[idx], p.getTileX() + x, p.getTileY() + y, p.UniqueMultiplayerID);
+                }
+            }
+        }
+
+        private void update()
+        {
+            numberOfTimesUsed++;
+            if (numberOfTimesUsed >= 3)
+            {
+                howManyDiamonds = 50;
+            }
+            if (numberOfTimesUsed == 4)
+            {
+                items.Add(60);
+                items.Add(70);
+                items.Add(64);
+                items.Add(68);
+            }
+            if (numberOfTimesUsed == 8)
+            {
+                items.Clear();
+                items.Add(241);
+            }
+            if (numberOfTimesUsed == 10)
+            {
+                items.Clear();
+                items.Add(72);
+            }
         }
 
         private void OnDayStarted(object sender, DayStartedEventArgs e)
@@ -94,7 +142,7 @@ namespace GiantSeeds
             }
         }
 
-        private bool isValidCenter(List<Vector2> giants ,Vector2 center)
+        private bool isValidCenter(List<Vector2> giants, Vector2 center)
         {
             foreach (var v in neighbors(center))
             {
@@ -118,7 +166,7 @@ namespace GiantSeeds
 
             // inject Json Assets content pack
             this.JsonAssets.LoadAssets(Path.Combine(this.Helper.DirectoryPath, "assets"));
-            
+
         }
     }
 

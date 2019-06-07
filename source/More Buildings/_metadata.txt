@@ -5,9 +5,9 @@ mods:
    More Buildings
 
 latest commit:
-   commit 3d2d6d97d7142c42d5b7aa6e3fc03e4a5e725234
+   commit ca38e09b949a4cec1501d6dba349dc0ba41486d9
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Sun May 19 18:39:36 2019 -0400
+   Date:   Sun Jun 2 16:34:38 2019 -0400
    
-       Version 1.0.3
+       Fix error with squid kids
    

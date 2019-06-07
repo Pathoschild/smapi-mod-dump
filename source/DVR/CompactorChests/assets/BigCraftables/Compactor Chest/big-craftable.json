@@ -1,0 +1,16 @@
+{
+  "Name": "Compactor Chest",
+  "Price": 50,
+  "Description": "Merges items of different qualities and colors into a single stack. Always downgrades.",
+  "ProvidesLight": true,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": 388,
+        "Count": 60
+      }
+    ],
+    "IsDefault": true
+  }
+}

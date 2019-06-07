@@ -1,0 +1,12 @@
+﻿{
+  "Name": "HDSprites",
+  "Author": "NinthWorld",
+  "Version": "1.0.2",
+  "Description": "Doubles the resolution of most textures using a 2xBR upscale algorithm.",
+  "UniqueID": "NinthWorld.HDSprites",
+  "EntryDll": "HDSprites.dll",
+  "MinimumApiVersion": "2.11.1",
+  "UpdateKeys": [
+    "Nexus:4024"
+  ]
+}

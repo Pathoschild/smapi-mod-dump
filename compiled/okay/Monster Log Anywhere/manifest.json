@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Monster Log Anywhere",
+    "Author": "MouseyPounds",
+    "Version": "1.0.0",
+    "Description": "Provides keybind to show the Monster Log whenever you want. Also provides a way to configure the header and footer of the log.",
+    "UniqueID": "MouseyPounds.MonsterLogAnywhere",
+    "EntryDll": "MonsterLogAnywhere.dll",
+    "MinimumApiVersion": "2.10.0",
+    "UpdateKeys": [ "Nexus:3997" ]
+}

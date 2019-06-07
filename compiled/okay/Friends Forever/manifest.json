@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Friends Forever",
     "Author": "Isaac S.",
-    "Version": "1.2.2",
+    "Version": "1.2.3",
     "Description": "Makes it so friendship levels never decay!",
     "UniqueID": "IsaacS.FriendsForever",
     "EntryDll": "FriendsForever.dll",

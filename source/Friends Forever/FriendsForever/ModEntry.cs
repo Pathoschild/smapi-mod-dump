@@ -70,11 +70,11 @@ namespace FriendsForever
                     continue;
 
                 foreach (Farmer farmer in farmerArray) {
-                    if (!farmer.friendshipData.ContainsKey((character.getName())))
+                    if (!farmer.friendshipData.ContainsKey((character.Name)))
                         continue;
 
-                    var friendship = farmer.friendshipData[character.getName()];
-                    this.Monitor.Log(character.getName() + ": " + friendship.Points);
+                    var friendship = farmer.friendshipData[character.Name];
+                    this.Monitor.Log(character.Name + ": " + friendship.Points);
                 }
             }
 
@@ -101,10 +101,10 @@ namespace FriendsForever
                     continue;
 
                 foreach (Farmer farmer in farmerArray) {
-                    if (!farmer.friendshipData.ContainsKey((character.getName())))
+                    if (!farmer.friendshipData.ContainsKey(character.Name))
                         continue;
 
-                    var friendship = farmer.friendshipData[character.getName()];
+                    var friendship = farmer.friendshipData[character.Name];
                     
                     if (farmer.spouse == character.Name && !Config.AffectSpouses) {
                         continue;

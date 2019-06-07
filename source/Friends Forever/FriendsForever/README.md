@@ -1,6 +1,6 @@
 ﻿# Friends Forever
 
-Current Version: 1.2.2
+Current Version: 1.2.3
 
 Dependancies: SMAPI 2.10.2
 Note: This is a singleplayer and host-side mod.

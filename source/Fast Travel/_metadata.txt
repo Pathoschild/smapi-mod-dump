@@ -5,9 +5,9 @@ mods:
    Fast Travel
 
 latest commit:
-   commit 9bec73e426db75103d9d709dd743ddb54f0abc1f
+   commit a831e68f8cfb7d0b2b7137243417e5f491b5c02e
    Author: Mckenon <DeathGameDev@gmail.com>
-   Date:   Wed Jan 2 00:00:45 2019 -0600
+   Date:   Wed Jun 5 19:19:41 2019 -0600
    
        Update readme.md
    

@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Compactor Chests",
+  "Author": "captncraig",
+  "Version": "1.0.0",
+  "Description": "Chests that combine alike items to make them stackable",
+  "UniqueID": "captncraig.compactor",
+  "EntryDll": "CompactorChests.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Animal Skinner",
+  "Author": "Gathouria",
+  "Version": "1.2.0",
+  "Description": "Randomize and select the skins on your animals, pet, and horse with custom sprites!",
+  "UniqueID": "Gathouria.AnimalSkinner",
+  "EntryDll": "AnimalSkinner.dll",
+  "MinimumApiVersion": "2.11.0",
+  "UpdateKeys": [ "Nexus:4011" ],
+  "Dependencies": [
+    { "UniqueID": "Entoarox.EntoaroxFramework" }
+  ]
+}

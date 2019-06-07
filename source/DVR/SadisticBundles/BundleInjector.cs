@@ -114,7 +114,7 @@ namespace SadisticBundles
                 bundles.Clear();
                 rewards.Clear();
             }
-            // remove anything in those collections we don't have a bun
+            // remove anything in the existing collections that doesn't exist in our set.
             var desiredIds = mydata.Select(x => int.Parse(x.Key.Split('/')[1])).ToList();
             foreach (var nuke in bundles.Keys.Where(x => !desiredIds.Contains(x)))
             {
@@ -124,6 +124,7 @@ namespace SadisticBundles
             {
                 rewards.Remove(nuke);
             }
+
             // now add anything not in existing collections. 
             // making sure to adjust ingredient counts as needed (so we can ever update mod).
             foreach (var kvp in mydata)
@@ -137,6 +138,8 @@ namespace SadisticBundles
                 }
                 if (count != bundles[id].Count())
                 {
+                    // gotta make a new array and copy old values into it.
+                    // Also can't just set new value. Gotta remove old array and re-add.
                     var b = new bool[count];
                     var old = bundles[id];
                     for (var i = 0; i < old.Length && i < count; i++)

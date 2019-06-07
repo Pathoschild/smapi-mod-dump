@@ -1,0 +1,8 @@
+﻿{
+  "addMaps": [
+    {
+      "name": "ChestDimension",
+      "file": "assets/ChestDimension.tbin"
+    }
+  ]
+}

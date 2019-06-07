@@ -32,7 +32,7 @@ namespace PyTK
                 if (_contentPath == "")
                 {
                     _contentPath = getContentFolder();
-                    Monitor.Log("ContentPath:" + _contentPath);
+                    Monitor.Log("ContentPath:" + _contentPath, LogLevel.Info);
                 }
                 return _contentPath;
             }
@@ -117,13 +117,13 @@ namespace PyTK
 
         public static string getContentFolder()
         {
-            string folder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Game1.content.RootDirectory);
+            string folder = Path.Combine(Constants.ExecutionPath, Game1.content.RootDirectory);
             DirectoryInfo directoryInfo = new DirectoryInfo(folder);
 
             if (directoryInfo.Exists)
                 return folder;
 
-            folder = folder.Replace("MacOS", "Resources");
+            folder = folder.Replace("MacOS", "Resources").Replace("smapi-internal/","");
 
             directoryInfo = new DirectoryInfo(folder);
             if (directoryInfo.Exists)
@@ -131,10 +131,20 @@ namespace PyTK
             else
                 Monitor.Log("DebugF:" + folder);
 
-            return @"C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Content";
+            return @"failed";
         }
 
-        public static bool checkEventConditions(string conditions, object caller = null)
+        public static bool checkEventConditions(string conditions)
+        {
+            return checkEventConditions(conditions, null, null);
+        }
+
+        public static bool checkEventConditions(string conditions, object caller)
+        {
+            return checkEventConditions(conditions, caller, null);
+        }
+
+        public static bool checkEventConditions(string conditions, object caller, GameLocation location)
         {
             if (!Context.IsWorldReady)
                 return false;
@@ -158,8 +168,10 @@ namespace PyTK
                 result = checkLuaConditions(conditions.Replace("LC ", ""), caller);
             else
             {
-                GameLocation location = Game1.currentLocation;
-                if (location == null)
+                if(location == null)
+                    location = Game1.currentLocation;
+
+                if (!(location is GameLocation))
                     location = Game1.getFarm();
 
                 if (location == null)
@@ -173,7 +185,24 @@ namespace PyTK
                     result = false;
                 }
                 else
-                    result = Helper.Reflection.GetMethod(location, "checkEventPrecondition").Invoke<int>("9999999/" + conditions) != -1;
+                {
+                    try
+                    {
+                        result = Helper.Reflection.GetMethod(location, "checkEventPrecondition").Invoke<int>("9999999/" + conditions) != -1;
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            var m = typeof(GameLocation).GetMethod("checkEventPrecondition", BindingFlags.NonPublic | BindingFlags.Instance);
+                            result = (int)m.Invoke(location, new string[] { ("9999999/" + conditions) }) != -1;
+                        }
+                        catch
+                        {
+                            result = false;
+                        }
+                    }
+                }
             }
 
             return result == comparer;

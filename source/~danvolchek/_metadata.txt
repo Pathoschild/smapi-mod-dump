@@ -9,6 +9,7 @@ mods:
    Better Garden Pots
    Better Hay
    Better Slingshots
+   Cacti Hurt You
    Casks Everywhere
    Chat Commands
    Copy Invite Code
@@ -30,9 +31,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit b522b56be6074f05512c463d38e7486bccc4a7fe
+   commit 89c6cca65ef730e8426c910d7cb5a88cfccb05bf
    Author: danvolchek <volchek2@illinois.edu>
-   Date:   Mon May 27 00:49:00 2019 -0500
+   Date:   Sun Jun 2 19:22:46 2019 -0500
    
-       [Winter Grass] update readme
+       [Cacti Hurt You] include readme in project
    

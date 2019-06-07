@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 5fe316284bf04793cdb0f79ba14a37ca63fd64ac
+   commit 1c5aa2e469dd24fe512b2cebbcafedde15eccf60
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed May 29 03:01:25 2019 -0400
+   Date:   Wed Jun 5 19:00:20 2019 -0400
    
-       extend recipe model for excluded inputs too (#403, #423)
+       simplify Automate connector config
    

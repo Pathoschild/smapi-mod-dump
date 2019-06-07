@@ -14,6 +14,7 @@ using StardewValley.Tools;
 using PyTK;
 using System.Reflection;
 using StardewValley.Menus;
+using System.Threading.Tasks;
 
 namespace CustomFarmingRedux
 {
@@ -48,7 +49,6 @@ namespace CustomFarmingRedux
         public GameLocation location;
         private CustomObjectData data;
         public bool meetsConditions = true;
-        public bool checkedToday = false;
         private bool skipDrop = false;
         private int identifier => (int)((double)tileLocation.X * 2000.0 + (double)tileLocation.Y);
         public PySync syncObject { get; set; }
@@ -97,7 +97,6 @@ namespace CustomFarmingRedux
                 syncObject = new PySync(this);
                 syncObject.init();
             }
-            CustomFarmingReduxMod._helper.Events.GameLoop.DayStarted += (s, e) => checkedToday = false;
             CustomFarmingReduxMod.machineHandlers.TryGetValue(blueprint.fullid, out machineHandler);
 
             if (blueprint.worklight)
@@ -253,10 +252,9 @@ namespace CustomFarmingRedux
             if (location == null)
                 location = new List<GameLocation>(Game1.locations).Find(g => new List<SObject>(g.Objects.Values).Contains(this));
 
-            if (!checkedToday)
-                meetsConditions = PyUtils.CheckEventConditions(conditions, this);
+            if (location == null)
+                location = Game1.currentLocation;
 
-            checkedToday = true;
 
             if (!meetsConditions)
             {
@@ -299,6 +297,9 @@ namespace CustomFarmingRedux
 
         public override bool minutesElapsed(int minutes, GameLocation environment)
         {
+            Task.Run(() => meetsConditions = PyUtils.checkEventConditions(conditions, this, location));
+
+            location = environment;
             if (isWorking && completionTime != null && STime.CURRENT >= completionTime && activeRecipe != null)
                 getReadyForHarvest();
 
@@ -307,44 +308,44 @@ namespace CustomFarmingRedux
 
         public override void updateWhenCurrentLocation(GameTime time, GameLocation environment)
         {
-            location = environment;
-            bool isWorking = this.isWorking;
-
             if (tileLocation == Vector2.Zero)
-                if (!Game1.currentLocation.objects.ContainsKey(tileLocation) || Game1.currentLocation.objects[tileLocation] != this)
-                    if (new List<SObject>(Game1.currentLocation.objects.Values).Contains(this))
-                        tileLocation.Value = new List<Vector2>(Game1.currentLocation.objects.Keys).Find(k => Game1.currentLocation.objects[k] == this);
+                if (!environment.objects.ContainsKey(tileLocation) || environment.objects[tileLocation] != this)
+                    if ((new List<SObject>(environment.objects.Values)).Contains(this))
+                        tileLocation.Value = new List<Vector2>(environment.objects.Keys).Find(k => environment.objects[k] == this);
 
-            if (blueprint.worklight)
-                this.IsOn = isWorking;
-            else
-                this.IsOn = true;
+               location = environment;
+               bool isWorking = this.isWorking;
 
-            if (!IsOn && lightSource != null)
-            {
-                removeLightSource();
-                this.IsOn = false;
-            }
+               if (blueprint.worklight)
+                   this.IsOn = isWorking;
+               else
+                   this.IsOn = true;
 
-            if (IsOn && lightSource == null)
-                addLightSource();
+               if (!IsOn && lightSource != null)
+               {
+                   removeLightSource();
+                   this.IsOn = false;
+               }
 
-            if (!wasBuild || blueprint.asdisplay)
-            {
-                shakeTimer = 0;
-                return;
-            }
+               if (IsOn && lightSource == null)
+                   addLightSource();
 
-            if (isWorking && completionTime != null && STime.CURRENT >= completionTime && activeRecipe != null)
-                getReadyForHarvest();
+               if (!wasBuild || blueprint.asdisplay)
+               {
+                   shakeTimer = 0;
+                   return;
+               }
 
-            if (!(isWorking && completionTime != null))
-                startAutoProduction();
+               if (isWorking && completionTime != null && STime.CURRENT >= completionTime && activeRecipe != null)
+                   getReadyForHarvest();
 
-            base.updateWhenCurrentLocation(time, environment);
+               if (!(isWorking && completionTime != null))
+                   startAutoProduction();
 
-            if (completionTime != null)
-                minutesUntilReady.Set((completionTime + 1 - STime.CURRENT).timestamp);
+               base.updateWhenCurrentLocation(time, environment);
+
+               if (completionTime != null)
+                   minutesUntilReady.Set((completionTime + 1 - STime.CURRENT).timestamp);
         }
 
         public override string DisplayName { get => name; set => base.DisplayName = value; }
@@ -508,8 +509,7 @@ namespace CustomFarmingRedux
             else
                 completionTime = STime.CURRENT;
 
-            checkedToday = false;
-            meetsConditions = PyUtils.CheckEventConditions(conditions, this);
+            meetsConditions = PyUtils.checkEventConditions(conditions, this, location);
 
             if (completionTime != null && completionTime > STime.CURRENT && !meetsConditions)
             {
@@ -542,7 +542,8 @@ namespace CustomFarmingRedux
 
         public override void DayUpdate(GameLocation location)
         {
-            checkedToday = false;
+            this.location = location;
+           meetsConditions = PyUtils.checkEventConditions(conditions, this, location);
         }
 
         public override bool checkForAction(SFarmer who, bool justCheckingForActivity = false)
@@ -647,7 +648,7 @@ namespace CustomFarmingRedux
 
         public virtual void startAutoProduction()
         {
-            if (!isWorking && blueprint.production != null && blueprint.production[0].materials == null)
+            if (meetsConditions && !isWorking && blueprint.production != null && blueprint.production[0].materials == null)
                 startProduction(null, blueprint.production[0], null);
         }
 
@@ -709,6 +710,7 @@ namespace CustomFarmingRedux
         public override bool performDropDownAction(SFarmer who)
         {
             location = Game1.currentLocation;
+            meetsConditions = PyUtils.checkEventConditions(conditions, this, location);
             activeMachines.AddOrReplace(this);
             startAutoProduction();
             return false;
@@ -754,11 +756,6 @@ namespace CustomFarmingRedux
 
             if (canProduce && blueprint.conditionaldropin)
             {
-                if (!checkedToday)
-                    meetsConditions = PyUtils.CheckEventConditions(conditions, this);
-
-                checkedToday = true;
-
                 if (!meetsConditions)
                     return false;
             }
@@ -835,10 +832,7 @@ namespace CustomFarmingRedux
 
             if (canProduce && blueprint.conditionaldropin)
             {
-                if (!checkedToday)
-                    meetsConditions = PyUtils.CheckEventConditions(conditions, this);
-
-                checkedToday = true;
+                    meetsConditions = PyUtils.checkEventConditions(conditions, this, location);
 
                 if (!meetsConditions)
                 {

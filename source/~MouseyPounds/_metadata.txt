@@ -5,14 +5,12 @@ mods:
    Crop Color Combiner
    Dish of the Day Display
    Floor Shadow Switcher
+   Monster Log Anywhere
 
 latest commit:
-   commit 4c8453dc36be567419289af88640cb80a476ef84
+   commit b99425e6eb1988c4e3550d9464d233f81803520c
    Author: MouseyPounds <mouseypounds+github@gmail.com>
-   Date:   Fri May 31 15:23:26 2019 -0400
+   Date:   Sun Jun 2 03:32:16 2019 -0400
    
-       2 new mods and an update
-       
-       Penny Hart Events updated with 5 new languages, new joke mod Shane Sings
-       99 Bottles of Beer released, new real mod Bears in the Barn released
+       MLA ready for release
    

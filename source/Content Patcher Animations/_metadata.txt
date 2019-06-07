@@ -5,9 +5,9 @@ mods:
    Content Patcher Animations
 
 latest commit:
-   commit 297456f58280117e2fa0ee48132fdbbad03b55ff
+   commit 9cc9ace9ee746745e6189d89581356fef8143e58
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Thu May 9 22:11:50 2019 -0400
+   Date:   Sun Jun 2 16:33:56 2019 -0400
    
-       Version 1.1.0
+       Some changes I made before to work for when my CP API PR gets through
    

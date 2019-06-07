@@ -19,6 +19,7 @@ namespace Spawn_Monsters
 		public int Area { get; set; }
 		public object[] Args { get; set; }
 		public bool ShouldShow { get; set; } = true;
+		private Texture2D placementTile;
 
 		public MonsterPlaceMenu(string name, int arealevel = 0)
 			: base(0, 0, Game1.viewport.Width, Game1.viewport.Height) {
@@ -39,7 +40,7 @@ namespace Spawn_Monsters
 					Args = new object[2];
 					break;
 				case "Duggy":
-					Monster = Type.GetType("StardewValley.Monsters.Duggy, " + a);
+					Monster = new DuggyFixed(new Vector2(0,0)).GetType();
 					Args = new object[1];
 					break;
 				case "Dust Spirit":
@@ -98,6 +99,8 @@ namespace Spawn_Monsters
 			Game1.playSound("bigSelect");
 			Area = arealevel;
 			ok = new ClickableTextureComponent(new Rectangle(16, 16, 60, 60), Game1.mouseCursors, new Rectangle(128, 256, 63, 63), 1f, false);
+			this.placementTile = Game1.content.Load<Texture2D>("LooseSprites\\buildingPlacementTiles");
+
 		}
 
 		public override void receiveLeftClick(int x, int y, bool playSound = true) {
@@ -113,20 +116,40 @@ namespace Spawn_Monsters
 			}
 
 			//spawn monster
-			Monster m = (Monster)Activator.CreateInstance(Monster, Args);
-			m.currentLocation = Game1.currentLocation;
-			m.setTileLocation(new Vector2(Game1.currentCursorTile.X, Game1.currentCursorTile.Y));
-			Game1.currentLocation.addCharacter(m);
+			if (IsOkToPlace((int)Game1.currentCursorTile.X, (int)Game1.currentCursorTile.Y)) {
+				Monster m = (Monster)Activator.CreateInstance(Monster, Args);
+				m.currentLocation = Game1.currentLocation;
+				m.setTileLocation(new Vector2(Game1.currentCursorTile.X, Game1.currentCursorTile.Y));
+				Game1.currentLocation.addCharacter(m);
 
-			ShouldShow = false;
-			Game1.playSound("axe");
+				ShouldShow = false;
+				Game1.playSound("axe");
+			}
 			base.receiveLeftClick(x, y, playSound);
+		}
+
+		private bool IsOkToPlace(int tileX, int tileY) {
+			if (Monster.Name.Contains("Duggy")) {
+				if(Game1.currentLocation.map.GetLayer("Back").Tiles[tileX, tileY].TileIndexProperties.ContainsKey("Diggable")) {
+					return true;
+				} else if(!Game1.currentLocation.map.GetLayer("Back").Tiles[tileX, tileY].TileIndexProperties.ContainsKey("Diggable") && Game1.currentLocation.map.GetLayer("Back").Tiles[tileX, tileY].TileIndex == 0) {
+					return true;
+				}
+				return false;
+			}
+			return true;
 		}
 
 		public override void draw(SpriteBatch b) {
 			if (ShouldShow) {
 				Game1.drawDialogueBox(0, Game1.viewport.Height - 400, 280, 300, false, true, (string)null, false, false);
-				b.DrawString(Game1.dialogueFont, $"Click\nanywhere\nto spawn a\n{Monster.Name}", new Vector2(35, Game1.viewport.Height - 300), Color.Black);
+				b.DrawString(Game1.dialogueFont, $"Click\nanywhere\nto spawn a\n{Monster.Name.Replace("Fixed", "")}", new Vector2(35, Game1.viewport.Height - 300), Color.Black);
+			}
+
+			if (IsOkToPlace((int)Game1.currentCursorTile.X, (int)Game1.currentCursorTile.Y)) {
+				b.Draw(this.placementTile, new Vector2((Game1.currentCursorTile.X * Game1.tileSize) - Game1.viewport.X, (Game1.currentCursorTile.Y * Game1.tileSize) - Game1.viewport.Y), new Rectangle(0, 0, 64, 64), Color.White);
+			} else {
+				b.Draw(this.placementTile, new Vector2((Game1.currentCursorTile.X * Game1.tileSize) - Game1.viewport.X, (Game1.currentCursorTile.Y * Game1.tileSize) - Game1.viewport.Y), new Rectangle(64, 0, 64, 64), Color.White);
 			}
 			ok.draw(b);
 			drawMouse(b);

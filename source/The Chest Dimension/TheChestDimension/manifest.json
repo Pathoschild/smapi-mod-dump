@@ -1,0 +1,9 @@
+﻿{
+  "Name": "The Chest Dimension",
+  "Author": "zazizu",
+  "Version": "0.0.2",
+  "Description": "A large, empty room for your chests and machines.",
+  "UniqueID": "zazizu.TheChestDimension",
+  "MinimumApiVersion": "2.0",
+  "EntryDll": "TheChestDimension.dll"
+}

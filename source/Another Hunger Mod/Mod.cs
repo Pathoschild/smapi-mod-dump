@@ -60,7 +60,7 @@ namespace AnotherHungerMod
 
             SpriteBatch b = e.SpriteBatch;
 
-            Vector2 pos = new Vector2(20, (Game1.viewport.Height - hungerBar.Height * 4) / 2);
+            Vector2 pos = new Vector2(Config.FullnessUiX, Config.FullnessUiY);
             b.Draw(hungerBar, pos, new Rectangle(0, 0, hungerBar.Width, hungerBar.Height), Color.White, 0, new Vector2(), 4, SpriteEffects.None, 1);
             if (Game1.player.GetFullness() > 0)
             {
@@ -87,7 +87,6 @@ namespace AnotherHungerMod
 
         private void onItemEaten(object sender, EventArgs e)
         {
-            Log.trace("MEOW? " + sender + Game1.player.itemToEat);
             if (sender != Game1.player)
                 return;
 
@@ -137,7 +136,7 @@ namespace AnotherHungerMod
             {
                 if (fullBuff == null)
                 {
-                    fullBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 3, 10, "Fullness", "Fullness");
+                    fullBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 10, "Fullness", "Fullness");
                     Game1.buffsDisplay.addOtherBuff(fullBuff);
                 }
                 fullBuff.millisecondsDuration = 7000 * (int)((fullness - Config.PositiveBuffThreshold) / Config.DrainPer10Min);
@@ -196,6 +195,8 @@ namespace AnotherHungerMod
 
         private void onPeerContextReceived(object sender, PeerContextReceivedEventArgs e)
         {
+            if (!Game1.IsServer)
+                return;
             //Log.debug($"Sending hunger data to {e.Peer.PlayerID}");
             var data = Helper.Data.ReadSaveData<SaveData>($"spacechase0.AnotherHungerMod.{e.Peer.PlayerID}") ?? new SaveData();
             Helper.Multiplayer.SendMessage(data, MSG_HUNGERDATA, null, new long[] { e.Peer.PlayerID });

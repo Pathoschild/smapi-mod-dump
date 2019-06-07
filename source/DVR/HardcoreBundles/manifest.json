@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Hardcore Bundles",
+  "Author": "captncraig",
+  "Version": "1.0.0",
+  "Description": "Extremely difficult community center",
+  "UniqueID": "captncraig.hardcorebundles",
+  "EntryDll": "HardcoreBundles.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}
