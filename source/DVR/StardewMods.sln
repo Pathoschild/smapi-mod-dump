@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompactorChests", "Compacto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HardcoreBundles", "HardcoreBundles\HardcoreBundles.csproj", "{20606BF7-8015-49CD-8634-A6DBFC7C5AD1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarStats.Web", "StarStats.Web\StarStats.Web.csproj", "{18A53E5C-8B2E-46C3-9153-218F5D939E06}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{20606BF7-8015-49CD-8634-A6DBFC7C5AD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20606BF7-8015-49CD-8634-A6DBFC7C5AD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20606BF7-8015-49CD-8634-A6DBFC7C5AD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18A53E5C-8B2E-46C3-9153-218F5D939E06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18A53E5C-8B2E-46C3-9153-218F5D939E06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18A53E5C-8B2E-46C3-9153-218F5D939E06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18A53E5C-8B2E-46C3-9153-218F5D939E06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

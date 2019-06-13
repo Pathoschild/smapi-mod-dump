@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28516.95
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VerticalToolbar", "VerticalToolbar\VerticalToolbar.csproj", "{268833D2-5A5F-45DB-88F3-0437A3DFA34A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{8F53BD53-02DD-4A40-BF51-76F1FD57B8EF}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{268833D2-5A5F-45DB-88F3-0437A3DFA34A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{268833D2-5A5F-45DB-88F3-0437A3DFA34A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{268833D2-5A5F-45DB-88F3-0437A3DFA34A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{268833D2-5A5F-45DB-88F3-0437A3DFA34A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {578A96F0-8B5C-45A6-98E7-A4C2AC19C3A2}
+	EndGlobalSection
+EndGlobal

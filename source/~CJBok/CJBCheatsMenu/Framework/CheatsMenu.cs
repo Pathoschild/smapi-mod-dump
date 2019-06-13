@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CJBCheatsMenu.Framework.Constants;
@@ -29,6 +29,9 @@ namespace CJBCheatsMenu.Framework
         /// <summary>Provides translations for the mod.</summary>
         private readonly ITranslationHelper TranslationHelper;
 
+        /// <summary>Encapsulates monitoring and logging.</summary>
+        private readonly IMonitor Monitor;
+
         private readonly List<ClickableComponent> OptionSlots = new List<ClickableComponent>();
         private readonly List<OptionsElement> Options = new List<OptionsElement>();
         private readonly ClickableTextureComponent UpArrow;
@@ -46,16 +49,38 @@ namespace CJBCheatsMenu.Framework
         private bool CanClose;
         private readonly MenuTab CurrentTab;
 
+        /// <summary>Maps JojaMart completion flags to their Community Center equivalent.</summary>
+        private readonly IDictionary<string, string> JojaMartCompletionFlags = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+        {
+            ["jojaBoilerRoom"] = "ccBoilerRoom",
+            ["jojaCraftsRoom"] = "ccCraftsRoom",
+            ["jojaFishTank"] = "ccFishTank",
+            ["jojaPantry"] = "ccPantry",
+            ["jojaVault"] = "ccVault"
+        };
+
+        /// <summary>Maps Community Center completion flags to their area ID.</summary>
+        private readonly Dictionary<string, int> CommunityCenterCompletionFlags = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase)
+        {
+            ["ccBoilerRoom"] = CommunityCenter.AREA_BoilerRoom,
+            ["ccBulletin"] = CommunityCenter.AREA_Bulletin,
+            ["ccCraftsRoom"] = CommunityCenter.AREA_CraftsRoom,
+            ["ccFishTank"] = CommunityCenter.AREA_FishTank,
+            ["ccPantry"] = CommunityCenter.AREA_Pantry,
+            ["ccVault"] = CommunityCenter.AREA_Vault
+        };
+
 
         /*********
         ** Public methods
         *********/
-        public CheatsMenu(MenuTab tabIndex, ModConfig config, Cheats cheats, ITranslationHelper i18n)
+        public CheatsMenu(MenuTab tabIndex, ModConfig config, Cheats cheats, ITranslationHelper i18n, IMonitor monitor)
           : base(Game1.viewport.Width / 2 - (600 + IClickableMenu.borderWidth * 2) / 2, Game1.viewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2, 800 + IClickableMenu.borderWidth * 2, 600 + IClickableMenu.borderWidth * 2)
         {
             this.Config = config;
             this.Cheats = cheats;
             this.TranslationHelper = i18n;
+            this.Monitor = monitor;
 
             this.Title = new ClickableComponent(new Rectangle(this.xPositionOnScreen + this.width / 2, this.yPositionOnScreen, Game1.tileSize * 4, Game1.tileSize), i18n.Get("title"));
             this.CurrentTab = tabIndex;
@@ -73,7 +98,7 @@ namespace CJBCheatsMenu.Framework
                 this.Tabs.Add(new ClickableComponent(new Rectangle(labelX, labelY + labelHeight * i++, Game1.tileSize * 5, Game1.tileSize), MenuTab.Relationships.ToString(), i18n.Get("tabs.relationships")));
                 this.Tabs.Add(new ClickableComponent(new Rectangle(labelX, labelY + labelHeight * i++, Game1.tileSize * 5, Game1.tileSize), MenuTab.WarpLocations.ToString(), i18n.Get("tabs.warp")));
                 this.Tabs.Add(new ClickableComponent(new Rectangle(labelX, labelY + labelHeight * i++, Game1.tileSize * 5, Game1.tileSize), MenuTab.Time.ToString(), i18n.Get("tabs.time")));
-                this.Tabs.Add(new ClickableComponent(new Rectangle(labelX, labelY + labelHeight * i++, Game1.tileSize * 5, Game1.tileSize), MenuTab.Quests.ToString(), i18n.Get("tabs.quests")));
+                this.Tabs.Add(new ClickableComponent(new Rectangle(labelX, labelY + labelHeight * i++, Game1.tileSize * 5, Game1.tileSize), MenuTab.Advanced.ToString(), i18n.Get("tabs.advanced")));
                 this.Tabs.Add(new ClickableComponent(new Rectangle(labelX, labelY + labelHeight * i, Game1.tileSize * 5, Game1.tileSize), MenuTab.Controls.ToString(), i18n.Get("tabs.controls")));
             }
 
@@ -84,7 +109,18 @@ namespace CJBCheatsMenu.Framework
             for (int i = 0; i < CheatsMenu.ItemsPerPage; i++)
                 this.OptionSlots.Add(new ClickableComponent(new Rectangle(this.xPositionOnScreen + Game1.tileSize / 4, this.yPositionOnScreen + Game1.tileSize * 5 / 4 + Game1.pixelZoom + i * ((this.height - Game1.tileSize * 2) / CheatsMenu.ItemsPerPage), this.width - Game1.tileSize / 2, (this.height - Game1.tileSize * 2) / CheatsMenu.ItemsPerPage + Game1.pixelZoom), string.Concat(i)));
 
+            this.SetOptions();
+        }
+
+        /// <summary>Set the options to display.</summary>
+        private void SetOptions()
+        {
+            ITranslationHelper i18n = this.TranslationHelper;
+            ModConfig config = this.Config;
+            Cheats cheats = this.Cheats;
+
             int slotWidth = this.OptionSlots[0].bounds.Width;
+            this.Options.Clear();
             switch (this.CurrentTab)
             {
                 case MenuTab.PlayerAndTools:
@@ -129,33 +165,29 @@ namespace CJBCheatsMenu.Framework
                     this.Options.Add(new CheatsOptionsCheckbox(i18n.Get("fishing.durable-tackles"), config.DurableTackles, value => config.DurableTackles = value));
 
                     this.Options.Add(new OptionsElement($"{i18n.Get("fast-machines.title")}:"));
-                    {
-                        IList<CheatsOptionsCheckbox> machines = new[]
-                        {
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.cask"), config.FastCask, value => config.FastCask = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.furnace"), config.FastFurnace, value => config.FastFurnace = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.recycling-machine"), config.FastRecyclingMachine, value => config.FastRecyclingMachine = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.crystalarium"), config.FastCrystalarium, value => config.FastCrystalarium = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.incubator"), config.FastIncubator, value => config.FastIncubator = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.slime-incubator"), config.FastSlimeIncubator, value => config.FastSlimeIncubator = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.keg"), config.FastKeg, value => config.FastKeg = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.preserves-jar"), config.FastPreservesJar, value => config.FastPreservesJar = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.cheese-press"), config.FastCheesePress, value => config.FastCheesePress = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.mayonnaise-machine"), config.FastMayonnaiseMachine, value => config.FastMayonnaiseMachine = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.loom"), config.FastLoom, value => config.FastLoom = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.oil-maker"), config.FastOilMaker, value => config.FastOilMaker = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.seed-maker"), config.FastSeedMaker, value => config.FastSeedMaker = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.charcoal-kiln"), config.FastCharcoalKiln, value => config.FastCharcoalKiln = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.slime-egg-press"), config.FastSlimeEggPress, value => config.FastSlimeEggPress = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.tapper"), config.FastTapper, value => config.FastTapper = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.lightning-rod"), config.FastLightningRod, value => config.FastLightningRod = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.bee-house"), config.FastBeeHouse, value => config.FastBeeHouse = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.mushroom-box"), config.FastMushroomBox, value => config.FastMushroomBox = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.worm-bin"), config.FastWormBin, value => config.FastWormBin = value),
-                            new CheatsOptionsCheckbox(i18n.Get("fast-machines.fruit-trees"), config.FastFruitTree, value => config.FastFruitTree = value)
-                        };
-                        this.Options.AddRange(machines.OrderBy(p => p.label));
-                    }
+                    this.AddSortedOptions(this.Options,
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.cask"), config.FastCask, value => config.FastCask = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.furnace"), config.FastFurnace, value => config.FastFurnace = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.recycling-machine"), config.FastRecyclingMachine, value => config.FastRecyclingMachine = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.crystalarium"), config.FastCrystalarium, value => config.FastCrystalarium = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.incubator"), config.FastIncubator, value => config.FastIncubator = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.slime-incubator"), config.FastSlimeIncubator, value => config.FastSlimeIncubator = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.keg"), config.FastKeg, value => config.FastKeg = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.preserves-jar"), config.FastPreservesJar, value => config.FastPreservesJar = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.cheese-press"), config.FastCheesePress, value => config.FastCheesePress = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.mayonnaise-machine"), config.FastMayonnaiseMachine, value => config.FastMayonnaiseMachine = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.loom"), config.FastLoom, value => config.FastLoom = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.oil-maker"), config.FastOilMaker, value => config.FastOilMaker = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.seed-maker"), config.FastSeedMaker, value => config.FastSeedMaker = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.charcoal-kiln"), config.FastCharcoalKiln, value => config.FastCharcoalKiln = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.slime-egg-press"), config.FastSlimeEggPress, value => config.FastSlimeEggPress = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.tapper"), config.FastTapper, value => config.FastTapper = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.lightning-rod"), config.FastLightningRod, value => config.FastLightningRod = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.bee-house"), config.FastBeeHouse, value => config.FastBeeHouse = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.mushroom-box"), config.FastMushroomBox, value => config.FastMushroomBox = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.worm-bin"), config.FastWormBin, value => config.FastWormBin = value),
+                        new CheatsOptionsCheckbox(i18n.Get("fast-machines.fruit-trees"), config.FastFruitTree, value => config.FastFruitTree = value)
+                    );
                     break;
 
                 case MenuTab.Skills:
@@ -214,9 +246,12 @@ namespace CJBCheatsMenu.Framework
                         this.Options.Add(new CheatsOptionsCheckbox(i18n.Get("relationships.give-gifts-anytime"), config.AlwaysGiveGift, value => config.AlwaysGiveGift = value));
                         this.Options.Add(new CheatsOptionsCheckbox(i18n.Get("relationships.no-decay"), config.NoFriendshipDecay, value => config.NoFriendshipDecay = value));
                         this.Options.Add(new OptionsElement($"{i18n.Get("relationships.friends")}:"));
-
-                        foreach (NPC npc in this.GetSocialCharacters().Distinct().OrderBy(p => p.displayName))
-                            this.Options.Add(new CheatsOptionsNpcSlider(npc, onValueChanged: points => this.Cheats.UpdateFriendship(npc, points)));
+                        this.AddSortedOptions(this.Options,
+                            this.GetSocialCharacters()
+                                .Distinct()
+                                .Select(npc => (OptionsElement)new CheatsOptionsNpcSlider(npc, onValueChanged: points => this.Cheats.UpdateFriendship(npc, points)))
+                                .ToArray()
+                        );
                     }
                     break;
 
@@ -254,9 +289,12 @@ namespace CJBCheatsMenu.Framework
                     this.Options.Add(new CheatsOptionsSlider(i18n.Get("time.time"), (Game1.timeOfDay - 600) / 100, 19, value => this.SafelySetTime((value * 100) + 600), width: 100, format: value => Game1.getTimeOfDayString((value * 100) + 600)));
                     break;
 
-                case MenuTab.Quests:
+                case MenuTab.Advanced:
                     {
-                        this.Options.Add(new OptionsElement($"{i18n.Get("activequests.title")}:"));
+                        this.Options.AddRange(this.GetDescriptionElements(i18n.Get("flags.warning")));
+
+                        // quests
+                        this.Options.Add(new OptionsElement($"{i18n.Get("flags.quests")}:"));
                         {
                             int i = 0;
                             foreach (Quest quest in Game1.player.questLog)
@@ -265,13 +303,43 @@ namespace CJBCheatsMenu.Framework
                                     this.Options.Add(new CheatsOptionsInputListener(quest.questTitle, 300 + i++, slotWidth, config, cheats, i18n));
                             }
                         }
-                        this.Options.Add(new OptionsElement($"{i18n.Get("completedquests.title")}:"));
 
-                        foreach (Quest quest in Game1.player.questLog)
-                        {
-                            if (quest.completed.Value)
-                                this.Options.Add(new OptionsElement(quest.questTitle) { whichOption = -999 });
-                        }
+                        // wallet items
+                        this.Options.Add(new OptionsElement($"{i18n.Get("flags.wallet")}:"));
+                        this.AddSortedOptions(this.Options,
+                            new CheatsOptionsCheckbox(Game1.content.LoadString(@"Strings\StringsFromCSFiles:SkillsPage.cs.11587"), Game1.player.canUnderstandDwarves, value => Game1.player.canUnderstandDwarves = value),
+                            new CheatsOptionsCheckbox(Game1.content.LoadString(@"Strings\StringsFromCSFiles:SkillsPage.cs.11588"), Game1.player.hasRustyKey, value => Game1.player.hasRustyKey = value),
+                            new CheatsOptionsCheckbox(Game1.content.LoadString(@"Strings\StringsFromCSFiles:SkillsPage.cs.11589"), Game1.player.hasClubCard, value => Game1.player.hasClubCard = value),
+                            new CheatsOptionsCheckbox(Game1.content.LoadString(@"Strings\StringsFromCSFiles:SkillsPage.cs.11590"), Game1.player.hasSpecialCharm, value => Game1.player.hasSpecialCharm = value),
+                            new CheatsOptionsCheckbox(Game1.content.LoadString(@"Strings\StringsFromCSFiles:SkillsPage.cs.11591"), Game1.player.hasSkullKey, value => Game1.player.hasSkullKey = value),
+                            new CheatsOptionsCheckbox(Game1.content.LoadString(@"Strings\Objects:MagnifyingGlass"), Game1.player.hasMagnifyingGlass, value => Game1.player.hasMagnifyingGlass = value),
+                            new CheatsOptionsCheckbox(Game1.content.LoadString(@"Strings\Objects:DarkTalisman"), Game1.player.hasDarkTalisman, value => Game1.player.hasDarkTalisman = value),
+                            new CheatsOptionsCheckbox(Game1.content.LoadString(@"Strings\Objects:MagicInk"), Game1.player.hasMagicInk, value => Game1.player.hasMagicInk = value),
+                            new CheatsOptionsCheckbox(Game1.content.LoadString(@"Strings\Objects:BearPaw"), this.HasEvent(2120303), value => this.SetEvent(2120303, value)),
+                            new CheatsOptionsCheckbox(Game1.content.LoadString(@"Strings\Objects:SpringOnionBugs"), this.HasEvent(3910979), value => this.SetEvent(3910979, value))
+                        );
+
+                        // unlocked areas
+                        this.Options.Add(new OptionsElement($"{i18n.Get("flags.unlocked")}:"));
+                        this.Options.Add(new CheatsOptionsCheckbox(i18n.Get("flags.unlocked.guild"), this.HasFlag("guildMember"), value => this.SetFlag(value, "guildMember")));
+                        this.AddSortedOptions(this.Options,
+                            this.GetSocialCharacters()
+                                .Select(npc => (OptionsElement)new CheatsOptionsCheckbox(i18n.Get("flags.unlocked.room", new { name = npc.displayName }), this.HasFlag($"doorUnlock{npc.Name}"), value => this.SetFlag(value, $"doorUnlock{npc.Name}")))
+                                .ToArray()
+                        );
+
+                        // community center
+                        this.Options.Add(new OptionsElement($"{i18n.Get("flags.community-center")}:"));
+                        this.Options.Add(new CheatsOptionsCheckbox(i18n.Get("flags.community-center.door-unlocked"), this.HasFlag("ccDoorUnlock"), value => this.SetFlag(value, "ccDoorUnlock")));
+                        this.Options.Add(new CheatsOptionsCheckbox(i18n.Get("flags.jojamart.membership"), this.HasFlag("JojaMember"), value => this.SetCommunityCenterFlags(value, "JojaMember")));
+                        this.AddSortedOptions(this.Options,
+                            new CheatsOptionsCheckbox(this.GetJunimoRewardText("BoilerRoom", "Boiler"), this.HasFlag("ccBoilerRoom"), value => this.SetCommunityCenterFlags(value, "ccBoilerRoom")),
+                            new CheatsOptionsCheckbox(this.GetJunimoRewardText("BulletinBoard", "Bulletin"), this.HasFlag("ccBulletin"), value => this.SetCommunityCenterFlags(value, "ccBulletin")),
+                            new CheatsOptionsCheckbox(this.GetJunimoRewardText("CraftsRoom", "Crafts"), this.HasFlag("ccCraftsRoom"), value => this.SetCommunityCenterFlags(value, "ccCraftsRoom")),
+                            new CheatsOptionsCheckbox(this.GetJunimoRewardText("FishTank", "FishTank"), this.HasFlag("ccFishTank"), value => this.SetCommunityCenterFlags(value, "ccFishTank")),
+                            new CheatsOptionsCheckbox(this.GetJunimoRewardText("Pantry", "Pantry"), this.HasFlag("ccPantry"), value => this.SetCommunityCenterFlags(value, "ccPantry")),
+                            new CheatsOptionsCheckbox(this.GetJunimoRewardText("Vault", "Vault"), this.HasFlag("ccVault"), value => this.SetCommunityCenterFlags(value, "ccVault"))
+                        );
                     }
                     break;
 
@@ -286,6 +354,49 @@ namespace CJBCheatsMenu.Framework
             this.SetScrollBarToCurrentIndex();
         }
 
+        /// <summary>Get option elements to display a paragraph of explanatory text.</summary>
+        /// <param name="text">The text to display.</param>
+        private IEnumerable<DescriptionElement> GetDescriptionElements(string text)
+        {
+            // get text lines
+            int maxWidth = this.width - Game1.tileSize - 10;
+
+            foreach (string originalLine in text.Replace("\r\n", "\n").Split('\n'))
+            {
+                string line = "";
+                foreach (string word in originalLine.Split(' '))
+                {
+                    if (line == "")
+                        line = word;
+                    else if (Game1.smallFont.MeasureString(line + " " + word).X <= maxWidth)
+                        line += " " + word;
+                    else
+                    {
+                        yield return new DescriptionElement(line);
+                        line = word;
+                    }
+                }
+                if (line != "")
+                    yield return new DescriptionElement(line);
+            }
+        }
+
+        /// <summary>Add options to the list in alphabetical label order.</summary>
+        /// <param name="list">The option list to populate.</param>
+        /// <param name="elements">The options to add.</param>
+        private void AddSortedOptions(List<OptionsElement> list, params OptionsElement[] elements)
+        {
+            list.AddRange(elements.OrderBy(p => p.label));
+        }
+
+        /// <summary>Get the display text for a toggle to mark a Community Center or JojaMart bundle complete.</summary>
+        /// <param name="areaName">The name used in the translation key for the bundle name.</param>
+        /// <param name="rewardName">The name used in the translation key for the reward name (or <c>null</c> to show '???').</param>
+        private string GetJunimoRewardText(string areaName, string rewardName = null)
+        {
+            return $"{Game1.content.LoadString($@"Strings\Locations:CommunityCenter_AreaName_{areaName}")} ({(rewardName != null ? Game1.content.LoadString($@"Strings\UI:JunimoNote_Reward{rewardName}") : "???")})";
+        }
+
         /// <summary>Get all NPCs which have relationship data.</summary>
         /// <remarks>Derived from the <see cref="SocialPage"/> constructor.</remarks>
         private IEnumerable<NPC> GetSocialCharacters()
@@ -295,6 +406,127 @@ namespace CJBCheatsMenu.Framework
                 if (npc.CanSocialize || Game1.player.friendshipData.ContainsKey(npc.Name))
                     yield return npc;
             }
+        }
+
+        /// <summary>Get whether the player has the given mail flag.</summary>
+        /// <param name="flag">The mail flag to check.</param>
+        public bool HasFlag(string flag)
+        {
+            return Game1.player.mailReceived.Contains(flag);
+        }
+
+        /// <summary>Set whether the player has the given mail flag.</summary>
+        /// <param name="enable">Whether to add the flag, as opposed to removing it.</param>
+        /// <param name="flag">The mail flag to set.</param>
+        /// <param name="log">Whether to log the flag change.</param>
+        /// <returns>Returns whether the flag changed.</returns>
+        public bool SetFlag(bool enable, string flag, bool log = true)
+        {
+            bool changed = false;
+            if (enable)
+            {
+                if (!this.HasFlag(flag))
+                {
+                    Game1.player.mailReceived.Add(flag);
+                    changed = true;
+                }
+            }
+            else
+                changed = Game1.player.mailReceived.Remove(flag);
+
+            if (log && changed)
+                this.Monitor.Log($"{(enable ? "Set" : "Unset")} flag: {flag}", LogLevel.Trace);
+
+            return changed;
+        }
+
+        /// <summary>Set whether the player has the given mail flag, and automatically fix issues related to community center flag changes.</summary>
+        /// <param name="enable">Whether to add the flag, as opposed to removing it.</param>
+        /// <param name="flags">The mail flags to set.</param>
+        public void SetCommunityCenterFlags(bool enable, params string[] flags)
+        {
+            // track changes
+            IDictionary<bool, HashSet<string>> logFlags = new Dictionary<bool, HashSet<string>>
+            {
+                [true] = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase),
+                [false] = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase)
+            };
+            void SetAndTrackFlag(bool tryAdd, string flag)
+            {
+                if (this.SetFlag(tryAdd, flag, log: false))
+                {
+                    logFlags[tryAdd].Add(flag);
+                    logFlags[!tryAdd].Remove(flag);
+                }
+            }
+
+            // set initial flags
+            foreach (string flag in flags)
+                SetAndTrackFlag(enable, flag);
+
+            // adjust game to reflect changes
+            {
+                bool allAreasDone = this.CommunityCenterCompletionFlags.Keys.All(this.HasFlag);
+                bool isJoja = this.HasFlag("JojaMember");
+
+                // fix completion flags
+                SetAndTrackFlag(allAreasDone, "ccComplete");
+                foreach (var pair in this.JojaMartCompletionFlags)
+                {
+                    bool areaDone = isJoja && this.HasFlag(pair.Value);
+                    SetAndTrackFlag(areaDone, pair.Key);
+                }
+
+                // mark areas complete
+                if (Game1.getLocationFromName("CommunityCenter") is CommunityCenter communityCenter)
+                {
+                    foreach (var pair in this.CommunityCenterCompletionFlags)
+                    {
+                        if (communityCenter.areasComplete.Length > pair.Value)
+                            communityCenter.areasComplete[pair.Value] = this.HasFlag(pair.Key);
+                    }
+                }
+
+                // log flag changes
+                bool added = logFlags[true].Any();
+                bool removed = logFlags[false].Any();
+                if (added || removed)
+                {
+                    string summary = "";
+                    if (added)
+                        summary += $"Set flags: {string.Join(", ", logFlags[true])}";
+                    if (removed)
+                    {
+                        if (added)
+                            summary += "; unset ";
+                        else
+                            summary += "Unset ";
+                        summary += $"flags: {string.Join(", ", logFlags[false])}";
+                    }
+                    this.Monitor.Log(summary, LogLevel.Trace);
+                }
+            }
+        }
+
+        /// <summary>Get whether the player has seen the given event.</summary>
+        /// <param name="id">The event ID to check.</param>
+        public bool HasEvent(int id)
+        {
+            return Game1.player.eventsSeen.Contains(id);
+        }
+
+        /// <summary>Set whether the player has seen the given event.</summary>
+        /// <param name="id">The event to set.</param>
+        /// <param name="enable">Whether to add the event, as opposed to removing it.</param>
+        public void SetEvent(int id, bool enable)
+        {
+            if (enable)
+            {
+                if (!this.HasEvent(id))
+                    Game1.player.eventsSeen.Add(id);
+            }
+            else
+                Game1.player.eventsSeen.Remove(id);
         }
 
         /// <summary>Safely transition to the given time, allowing NPCs to update their schedule.</summary>
@@ -452,7 +684,7 @@ namespace CJBCheatsMenu.Framework
 
                 // open menu with new index
                 MenuTab tabID = this.GetTabID(this.Tabs[index]);
-                Game1.activeClickableMenu = new CheatsMenu(tabID, this.Config, this.Cheats, this.TranslationHelper);
+                Game1.activeClickableMenu = new CheatsMenu(tabID, this.Config, this.Cheats, this.TranslationHelper, this.Monitor);
             }
         }
 
@@ -520,7 +752,7 @@ namespace CJBCheatsMenu.Framework
                 if (tab.bounds.Contains(x, y))
                 {
                     MenuTab tabID = this.GetTabID(tab);
-                    Game1.activeClickableMenu = new CheatsMenu(tabID, this.Config, this.Cheats, this.TranslationHelper);
+                    Game1.activeClickableMenu = new CheatsMenu(tabID, this.Config, this.Cheats, this.TranslationHelper, this.Monitor);
                     break;
                 }
             }

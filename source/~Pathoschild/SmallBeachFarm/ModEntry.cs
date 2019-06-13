@@ -4,10 +4,12 @@ using System.IO;
 using System.Linq;
 using Harmony;
 using Microsoft.Xna.Framework;
+using Pathoschild.Stardew.SmallBeachFarm.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Objects;
+using StardewValley.Tools;
 using xTile;
 using xTile.Dimensions;
 using xTile.Tiles;
@@ -33,8 +35,8 @@ namespace Pathoschild.Stardew.SmallBeachFarm
         /// <summary>The relative path to the folder containing tilesheet variants.</summary>
         private readonly string TilesheetsPath = Path.Combine("assets", "tilesheets");
 
-        /// <summary>Whether the mod is currently applying patch changes (to avoid infinite recursion),</summary>
-        private static bool IsInPatch = false;
+        /// <summary>The mod configuration.</summary>
+        private ModConfig Config;
 
 
         /*********
@@ -44,6 +46,9 @@ namespace Pathoschild.Stardew.SmallBeachFarm
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            // read config
+            this.Config = helper.ReadConfig<ModConfig>();
+
             // hook events
             helper.Events.Player.Warped += this.OnWarped;
             helper.Events.GameLoop.DayEnding += this.DayEnding;
@@ -52,7 +57,7 @@ namespace Pathoschild.Stardew.SmallBeachFarm
             ModEntry.StaticMonitor = this.Monitor;
             HarmonyInstance harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
             harmony.Patch(
-                original: AccessTools.Method(typeof(Farm), nameof(Farm.getFish)),
+                original: AccessTools.Method(typeof(Farm), nameof(Farm.getFish), new[] { typeof(float), typeof(int), typeof(int), typeof(Farmer), typeof(double) }),
                 prefix: new HarmonyMethod(this.GetType(), nameof(ModEntry.GetFishPrefix))
             );
         }
@@ -71,7 +76,10 @@ namespace Pathoschild.Stardew.SmallBeachFarm
             if (asset.AssetNameEquals("Maps/Farm_Fishing"))
             {
                 // load map
-                Map map = this.Helper.Content.Load<Map>("assets/SmallBeachFarm.tbin");
+                Map map = this.Helper.Content.Load<Map>(this.Config.EnableIslands
+                    ? "assets/SmallBeachFarmWithIslands.tbin"
+                    : "assets/SmallBeachFarm.tbin"
+                );
 
                 // apply tilesheet recolors
                 DirectoryInfo compatFolder = this.GetCustomTilesheetFolder();
@@ -150,35 +158,31 @@ namespace Pathoschild.Stardew.SmallBeachFarm
         /// <param name="waterDepth">An argument passed through to the underlying method.</param>
         /// <param name="who">An argument passed through to the underlying method.</param>
         /// <param name="baitPotency">An argument passed through to the underlying method.</param>
-        /// <param name="bobberTile">The tile containing the bobber.</param>
         /// <param name="__result">The return value to use for the method.</param>
         /// <returns>Returns <c>true</c> if the original logic should run, or <c>false</c> to use <paramref name="__result"/> as the return value.</returns>
         [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "The naming convention is defined by Harmony.")]
-        private static bool GetFishPrefix(Farm __instance, float millisecondsAfterNibble, int bait, int waterDepth, Farmer who, double baitPotency, Vector2 bobberTile, ref SObject __result)
+        private static bool GetFishPrefix(Farm __instance, float millisecondsAfterNibble, int bait, int waterDepth, Farmer who, double baitPotency, ref SObject __result)
         {
-            if (ModEntry.IsInPatch || !ModEntry.IsSmallBeachFarm(who?.currentLocation))
+            if (!ModEntry.IsSmallBeachFarm(who?.currentLocation))
                 return false;
 
-            try
-            {
-                ModEntry.IsInPatch = true;
+            // get tile being fished
+            FishingRod rod = who.CurrentTool as FishingRod;
+            if (rod == null)
+                return false;
+            Point tile = new Point((int)(rod.bobber.X / Game1.tileSize), (int)(rod.bobber.Y / Game1.tileSize));
 
-                // get ocean fish
-                if (ModEntry.IsOceanTile(__instance, (int)bobberTile.X, (int)bobberTile.Y))
-                {
-                    __result = __instance.getFish(millisecondsAfterNibble, bait, waterDepth, who, baitPotency, bobberTile, "Beach");
-                    ModEntry.StaticMonitor.VerboseLog($"Fishing ocean tile at ({bobberTile.X / Game1.tileSize}, {bobberTile.Y / Game1.tileSize}).");
-                    return false;
-                }
-
-                // get default riverlands fish
-                ModEntry.StaticMonitor.VerboseLog($"Fishing river tile at ({bobberTile.X / Game1.tileSize}, {bobberTile.Y / Game1.tileSize}).");
-                return true;
-            }
-            finally
+            // get ocean fish
+            if (ModEntry.IsOceanTile(__instance, tile.X, tile.Y))
             {
-                ModEntry.IsInPatch = false;
+                __result = __instance.getFish(millisecondsAfterNibble, bait, waterDepth, who, baitPotency, "Beach");
+                ModEntry.StaticMonitor.VerboseLog($"Fishing ocean tile at ({rod.bobber.X / Game1.tileSize}, {rod.bobber.Y / Game1.tileSize}).");
+                return false;
             }
+
+            // get default riverlands fish
+            ModEntry.StaticMonitor.VerboseLog($"Fishing river tile at ({rod.bobber.X / Game1.tileSize}, {rod.bobber.Y / Game1.tileSize}).");
+            return true;
         }
 
         /// <summary>Get whether the given location is the Small Beach Farm.</summary>

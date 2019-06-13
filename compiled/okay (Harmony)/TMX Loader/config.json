@@ -1,3 +1,5 @@
 {
+  "openBuildMenu": "F2",
+  "clearBuildingSpace": true,
   "converter": false
 }

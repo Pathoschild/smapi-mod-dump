@@ -1,0 +1,10 @@
+{
+  "Name": "Phrasefable's Modding Tools",
+  "Author": "Phrasefable",
+  "Version": "0.0.1",
+  "Description": "A bunch of tools I use when modding or developing.",
+  "UniqueID": "Phrasefable.ModdingTools",
+  "EntryDll": "Phrasefable_Modding_Tools.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

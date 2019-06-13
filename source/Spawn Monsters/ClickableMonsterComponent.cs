@@ -14,9 +14,12 @@ namespace Spawn_Monsters
 		public int StartFrame;
 		public int NumberOfFrames;
 		public float Interval;
+		public object arg;
+
 
 		public ClickableMonsterComponent(string textureName, int xPosition, int yPosition, int width, int height, int spriteWidth = 16, int spriteHeight = 24, int startFrame = 0, int numberOfFrames = 4, float interval = 100)
-			: base(new Microsoft.Xna.Framework.Rectangle(xPosition, yPosition, width, height), textureName) {
+			: base(new Microsoft.Xna.Framework.Rectangle(xPosition, yPosition, width, height), textureName)
+		{
 			sprite = new AnimatedSprite($"Characters\\Monsters\\{textureName}") {
 				SpriteHeight = spriteHeight,
 				SpriteWidth = spriteWidth
@@ -41,6 +44,11 @@ namespace Spawn_Monsters
 		public void Draw(SpriteBatch b) {
 			Point p = bounds.Center;
 			sprite.draw(b, new Vector2(p.X - sprite.SpriteWidth, p.Y - sprite.SpriteHeight), 1);
+		}
+
+		public void Draw(SpriteBatch b, Color c) {
+			Point p = bounds.Center;
+			sprite.draw(b, new Vector2(p.X - sprite.SpriteWidth, p.Y - sprite.SpriteHeight), 1, 0, 0, c, false, 4);
 		}
 	}
 }

@@ -14,93 +14,111 @@ namespace Spawn_Monsters
 	class MonsterPlaceMenu : IClickableMenu
 	{
 		private ClickableTextureComponent ok;
-
-		public Type Monster { get; set; }
-		public int Area { get; set; }
-		public object[] Args { get; set; }
-		public bool ShouldShow { get; set; } = true;
 		private Texture2D placementTile;
+		public Type Monster { get; set; }
+		public object[] Args { get; set; }
 
-		public MonsterPlaceMenu(string name, int arealevel = 0)
+		public MonsterPlaceMenu(string name, object arg)
 			: base(0, 0, Game1.viewport.Width, Game1.viewport.Height) {
 
 			Assembly a = Assembly.GetAssembly(new Monster().GetType());
 
+			//prepare arguments, we will have 2 args if we passed an additional argument
+			if (arg != null) {
+				Args = new object[2];
+				Args[1] = arg;
+			} else Args = new object[1];
+
+			//Determine type of monster to spawn
 			switch (name) {
 				case "Green Slime":
 					Monster = Type.GetType("StardewValley.Monsters.GreenSlime, " + a);
-					Args = new object[1];
 					break;
+
 				case "Bat":
-					Monster = Type.GetType("StardewValley.Monsters.Bat, " + a);
-					Args = new object[1];
+				case "Frost Bat":
+				case "Lava Bat":
+				case "Iridium Bat":
+					Monster = Type.GetType("StardewValley.Monsters.Bat, " + a);	
 					break;
+
 				case "Bug":
+				case "Armored Bug":
 					Monster = Type.GetType("StardewValley.Monsters.Bug, " + a);
-					Args = new object[2];
+					if((int)arg == 121) Game1.addHUDMessage(new HUDMessage("Be aware that armored bugs are unkillable.",2));
 					break;
+
 				case "Duggy":
 					Monster = new DuggyFixed(new Vector2(0,0)).GetType();
-					Args = new object[1];
+					Game1.addHUDMessage(new HUDMessage("Duggies can only be spawned on diggable tiles.", 2));
 					break;
+
 				case "Dust Spirit":
 					Monster = Type.GetType("StardewValley.Monsters.DustSpirit, " + a);
-					Args = new object[1];
 					break;
+
 				case "Fly":
 					Monster = Type.GetType("StardewValley.Monsters.Fly, " + a);
-					Args = new object[1];
 					break;
+
 				case "Ghost":
+				case "Carbon Ghost":
 					Monster = Type.GetType("StardewValley.Monsters.Ghost, " + a);
-					Args = new object[1];
 					break;
+
 				case "Grub":
 					Monster = Type.GetType("StardewValley.Monsters.Grub, " + a);
-					Args = new object[1];
 					break;
+
+				case "Lava Crab":
+					Monster = Type.GetType("StardewValley.Monsters.LavaCrab, " + a);
+					break;
+
 				case "Metal Head":
 					Monster = Type.GetType("StardewValley.Monsters.MetalHead, " + a);
 					Args = new object[2];
 					break;
+
 				case "Mummy":
 					Monster = Type.GetType("StardewValley.Monsters.Mummy, " + a);
-					Args = new object[1];
 					break;
+
 				case "Rock Crab":
+				case "Iridium Crab":
 					Monster = Type.GetType("StardewValley.Monsters.RockCrab, " + a);
-					Args = new object[1];
 					break;
+
 				case "Stone Golem":
+				case "Wilderness Golem":
 					Monster = Type.GetType("StardewValley.Monsters.RockGolem, " + a);
-					Args = new object[1];
 					break;
+
 				case "Serpent":
 					Monster = Type.GetType("StardewValley.Monsters.Serpent, " + a);
-					Args = new object[1];
 					break;
+
 				case "Shadow Brute":
 					Monster = Type.GetType("StardewValley.Monsters.ShadowBrute, " + a);
-					Args = new object[1];
 					break;
+
 				case "Shadow Shaman":
 					Monster = Type.GetType("StardewValley.Monsters.ShadowShaman, " + a);
-					Args = new object[1];
 					break;
+
 				case "Skeleton":
 					Monster = Type.GetType("StardewValley.Monsters.Skeleton, " + a);
-					Args = new object[1];
 					break;
+
 				case "Squid Kid":
 					Monster = Type.GetType("StardewValley.Monsters.SquidKid, " + a);
-					Args = new object[1];
 					break;
 			}
-			Game1.playSound("bigSelect");
-			Area = arealevel;
-			ok = new ClickableTextureComponent(new Rectangle(16, 16, 60, 60), Game1.mouseCursors, new Rectangle(128, 256, 63, 63), 1f, false);
-			this.placementTile = Game1.content.Load<Texture2D>("LooseSprites\\buildingPlacementTiles");
+			
 
+			Game1.playSound("bigSelect");
+			ok = new ClickableTextureComponent(new Rectangle(16, 16, 60, 60), Game1.mouseCursors, new Rectangle(128, 256, 63, 63), 1f, false);
+			placementTile = Game1.content.Load<Texture2D>("LooseSprites\\buildingPlacementTiles");
+			Game1.addHUDMessage(new HUDMessage($"Click anywhere to spawn a {name.Replace("Green ", "")}", null));
 		}
 
 		public override void receiveLeftClick(int x, int y, bool playSound = true) {
@@ -109,11 +127,8 @@ namespace Spawn_Monsters
 				Game1.playSound("bigDeSelect");
 				return;
 			}
-			//Build args
+
 			Args[0] = new Vector2(Game1.currentCursorTile.X, Game1.currentCursorTile.Y); //Every monster has a position argument at the first arg
-			if (Args.Length == 2) {
-				Args[1] = Area;
-			}
 
 			//spawn monster
 			if (IsOkToPlace((int)Game1.currentCursorTile.X, (int)Game1.currentCursorTile.Y)) {
@@ -121,8 +136,6 @@ namespace Spawn_Monsters
 				m.currentLocation = Game1.currentLocation;
 				m.setTileLocation(new Vector2(Game1.currentCursorTile.X, Game1.currentCursorTile.Y));
 				Game1.currentLocation.addCharacter(m);
-
-				ShouldShow = false;
 				Game1.playSound("axe");
 			}
 			base.receiveLeftClick(x, y, playSound);
@@ -141,10 +154,6 @@ namespace Spawn_Monsters
 		}
 
 		public override void draw(SpriteBatch b) {
-			if (ShouldShow) {
-				Game1.drawDialogueBox(0, Game1.viewport.Height - 400, 280, 300, false, true, (string)null, false, false);
-				b.DrawString(Game1.dialogueFont, $"Click\nanywhere\nto spawn a\n{Monster.Name.Replace("Fixed", "")}", new Vector2(35, Game1.viewport.Height - 300), Color.Black);
-			}
 
 			if (IsOkToPlace((int)Game1.currentCursorTile.X, (int)Game1.currentCursorTile.Y)) {
 				b.Draw(this.placementTile, new Vector2((Game1.currentCursorTile.X * Game1.tileSize) - Game1.viewport.X, (Game1.currentCursorTile.Y * Game1.tileSize) - Game1.viewport.Y), new Rectangle(0, 0, 64, 64), Color.White);

@@ -1,8 +1,19 @@
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
-* Improved `config.json` keybind parsing.
+## 1.9.1
+Released 12 June 2019.
+
+* Fixed error loading local XNB files in some cases with Content Patcher 1.9.
+* Fixed mod-provided tokens being asked for values when they're marked non-ready.
+
+## 1.9
+Released 09 June 2019.
+
+* Added API to let other mods create custom tokens and conditions.
+* Fixed config parsing errors for some players.
+* Fixed tokens not being validated consistently in some cases.
+* Fixed a broken warning message.
 
 ## 1.8.2
 Released 27 May 2019.

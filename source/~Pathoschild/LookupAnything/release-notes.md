@@ -1,20 +1,29 @@
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
-* Updated for Stardew Valley 1.4, including new content.
-* Added recipes to machine lookups (but not custom machines currently).
+## 1.22.1
+Released 10 June 2019.
+
+* Fixed HUD left hidden if you close lookup menu by pressing lookup key.
+
+## 1.22
+Released 09 June 2019.
+
+* Added recipes to machine lookups (except for custom machines).
 * Added bush lookups.
 * Added 'kissed today' to spouse lookups.
 * Added farm type description to player lookup.
-* Improved `config.json` keybind parsing.
-* Increased width of lookup UI.
+* Increased size of lookup UI.
+* Fixed HUD being drawn over lookup UI in small resolutions.
+* Fixed config parsing errors for some players.
 * Fixed planted coffee beans showing seed fields instead of crop fields.
 * Fixed seed growth time predictions not accounting for Agriculturist profession.
 * Fixed "you made -1 of these" field for some crafted items.
 * Fixed some missing/incorrect recipes.
+* Fixed incorrect 'needed for' entries when looking up some furniture/craftable items.
 * Fixed incorrect subject image when looking up a bigcraftable item in your inventory.
 * Fixed date years not shown when needed.
+* Fixed unable to lookup inventory items from kitchen cooking menu.
 
 ## 1.21.2
 Released 06 April 2019.

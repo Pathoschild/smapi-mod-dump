@@ -139,15 +139,20 @@ namespace StarStats.Client
         // 600 day 2 is 121.
         public static uint TimeStamp()
         {
-            var date = SDate.Now();
+            return TimeStamp(SDate.Now(), Game1.timeOfDay);
+        }
+
+        public static uint TimeStamp(SDate date, int tod)
+        {
             var datePart = 121 * (date.DaysSinceStart - 1);
             // 10 minute increments starting from 600. So Subtract 600 and divide by 10.
-            var timePart = (Game1.timeOfDay - 600) / 10;
+            var timePart = (tod - 600) / 10;
             // Now its 0 1 2 3 4 5 10 11 12 13 14 15 20 21 ....
             var tens = (int)Math.Floor((double)timePart / 10);
             timePart -= 4 * tens;
             return (uint)(datePart + timePart);
         }
+
 
         private void locationStats(GameLocation loc, uint ts)
         {

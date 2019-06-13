@@ -59,7 +59,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework.Containers
         {
             this.DataHelper = dataHelper;
             this.Farm = farm;
-            this.ShippingBin = farm.getShippingBin(Game1.player);
+            this.ShippingBin = farm.shippingBin;
             this.IsDataEditable = Context.IsMainPlayer;
             this.Data = this.IsDataEditable
                 ? dataHelper.ReadSaveData<ContainerData>(this.DataKey) ?? new ContainerData(defaultInternalName: null)
@@ -132,7 +132,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework.Containers
                 if (!slot.canStackWith(item))
                     continue;
 
-                item.Stack = slot.addToStack(item);
+                item.Stack = slot.addToStack(item.Stack);
                 if (item.Stack <= 0)
                     break;
             }
@@ -164,7 +164,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework.Containers
             this.ShippingBin.Remove(item);
             this.ShippingBin.Filter(p => p != null);
             if (item == this.Farm.lastItemShipped)
-                this.Farm.lastItemShipped = this.ShippingBin.LastOrDefault();
+                this.Farm.lastItemShipped = this.Farm.shippingBin.LastOrDefault();
         }
     }
 }

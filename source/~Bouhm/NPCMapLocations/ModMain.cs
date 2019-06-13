@@ -495,7 +495,7 @@ namespace NPCMapLocations
           }
           else
           {
-            marker.MapLocation = new Vector2(-1000, -1000);
+            marker.MapLocation = Vector2.Zero;
           }
         }
       }
@@ -608,7 +608,8 @@ namespace NPCMapLocations
         if (locationName.StartsWith("UndergroundMine"))
           locationName = getMinesLocationName(locationName);
 
-        if (locationName == null || (!locationName.Contains("Cabin") && !locationName.Contains("UndergroundMine")) && !MapVectors.TryGetValue(locationName, out var loc))
+        if (locationName == null || (!locationName.Contains("Cabin") && !locationName.Contains("UndergroundMine")) &&
+            !MapVectors.TryGetValue(locationName, out var loc))
         {
           if (!alertFlags.Contains("UnknownLocation:" + locationName))
           {
@@ -621,19 +622,29 @@ namespace NPCMapLocations
 
         // For layering indoor/outdoor NPCs and indoor indicator
         if (locationContexts.TryGetValue(locationName, out var locCtx))
+        {
           npcMarker.IsOutdoors = locCtx.Type == "outdoors";
+        }
         else
+        {
           npcMarker.IsOutdoors = false;
+        }
 
-        // For show Npcs in player's location option
+      // For show Npcs in player's location option
         var isSameLocation = false;
         if (Config.OnlySameLocation)
         {
-          if (locationName == Game1.player.currentLocation.Name)
+          string playerLocationName =
+            Game1.player.currentLocation.uniqueName.Value ?? Game1.player.currentLocation.Name;
+          if (locationName == playerLocationName)
+          {
             isSameLocation = true;
+          }
           else if (locationContexts.TryGetValue(locationName, out var npcLocCtx) &&
-                   locationContexts.TryGetValue(Game1.player.currentLocation.Name, out var playerLocCtx))
+                   locationContexts.TryGetValue(playerLocationName, out var playerLocCtx))
+          {
             isSameLocation = npcLocCtx.Root == playerLocCtx.Root;
+          }
         }
 
         // NPCs that won't be shown on the map unless 'Show Hidden NPCs' is checked
@@ -704,7 +715,7 @@ namespace NPCMapLocations
         else
         {
           // Set no location so they don't get drawn
-          npcMarker.MapLocation = new Vector2(-1000, -1000);
+          npcMarker.MapLocation = Vector2.Zero;
         }
       }
     }
@@ -730,7 +741,8 @@ namespace NPCMapLocations
         }
 
         var farmerId = farmer.UniqueMultiplayerID;
-        var farmerLoc = LocationToMap(farmer.currentLocation.uniqueName.Value ?? farmer.currentLocation.Name,
+        var farmerLocationName = farmer.currentLocation.uniqueName.Value ?? farmer.currentLocation.Name;
+        var farmerLoc = LocationToMap(farmerLocationName,
           farmer.getTileX(), farmer.getTileY(), CustomMapLocations);
 
         if (FarmerMarkers.TryGetValue(farmer.UniqueMultiplayerID, out var farMarker))
@@ -740,7 +752,7 @@ namespace NPCMapLocations
 
           // Location changes before tile position, causing farmhands to blink
           // to the wrong position upon entering new location. Handle this in draw.
-          if (farmer.currentLocation.Name == farMarker.PrevLocationName && MathHelper.Distance(deltaX, deltaY) > 15)
+          if (farmerLocationName == farMarker.PrevLocationName && MathHelper.Distance(deltaX, deltaY) > 15)
             FarmerMarkers[farmerId].DrawDelay = DRAW_DELAY;
           else if (farMarker.DrawDelay > 0)
             FarmerMarkers[farmerId].DrawDelay--;
@@ -758,7 +770,7 @@ namespace NPCMapLocations
 
         FarmerMarkers[farmerId].MapLocation = farmerLoc;
         FarmerMarkers[farmerId].PrevMapLocation = farmerLoc;
-        FarmerMarkers[farmerId].PrevLocationName = farmer.currentLocation.Name;
+        FarmerMarkers[farmerId].PrevLocationName = farmer.currentLocation.uniqueName.Value ?? farmer.currentLocation.Name;
         FarmerMarkers[farmerId].IsOutdoors = farmer.currentLocation.IsOutdoors;
       }
     }
@@ -785,11 +797,11 @@ namespace NPCMapLocations
         }
       }
 
-      if (CustomMapLocations != null  &&
+      if (CustomMapLocations != null &&
           !CustomMapLocations.ContainsKey(locationName) && !ModConstants.MapVectors.ContainsKey(locationName))
-        return new Vector2(-1000, -1000);
-      if (!ModConstants.MapVectors.ContainsKey(locationName))
-        return new Vector2(-1000, -1000);
+      {
+        return Vector2.Zero;
+      } 
 
       MapVector[] locVectors = (CustomMapLocations != null && CustomMapLocations.ContainsKey(locationName)) ? CustomMapLocations[locationName] : ModConstants.MapVectors[locationName];
 
@@ -841,10 +853,8 @@ namespace NPCMapLocations
         if (upper == null)
           upper = lower == vectors.First() ? vectors.Skip(1).First() : vectors.First();
 
-        x = (int) (lower.MapX +
-                   (tileX - lower.TileX) / (double) (upper.TileX - lower.TileX) * (upper.MapX - lower.MapX));
-        y = (int) (lower.MapY +
-                   (tileY - lower.TileY) / (double) (upper.TileY - lower.TileY) * (upper.MapY - lower.MapY));
+        x = (int) MathHelper.Clamp((int)(lower.MapX + (tileX - lower.TileX) / (double) (upper.TileX - lower.TileX) * (upper.MapX - lower.MapX)), 0, 1200);
+        y = (int) MathHelper.Clamp((int)(lower.MapY + (tileY - lower.TileY) / (double) (upper.TileY - lower.TileY) * (upper.MapY - lower.MapY)), 0, 720);
 
         if (DEBUG_MODE && isPlayer)
         {
@@ -926,16 +936,18 @@ namespace NPCMapLocations
     private void ShowDebugInfo()
     {
       if (Game1.player.currentLocation == null) return;
+      string locationName = Game1.player.currentLocation.uniqueName.Value ?? Game1.player.currentLocation.Name;
+      string locationText =
+        $"{locationName} ({Game1.currentLocation.Map.DisplayWidth / Game1.tileSize} x {Game1.currentLocation.Map.DisplayHeight / Game1.tileSize})";
 
       // Black background for legible text
-      Game1.spriteBatch.Draw(Game1.shadowTexture, new Rectangle(0, 0, 425, 200), new Rectangle(3, 0, 1, 1),
+      Game1.spriteBatch.Draw(Game1.shadowTexture, new Rectangle(0, 0, 200 + (int)Game1.smallFont
+                                                                        .MeasureString(locationText).X, 200), new Rectangle(3, 0, 1, 1),
         Color.Black);
-
-      var locationName = Game1.player.currentLocation.uniqueName.Value ?? Game1.player.currentLocation.Name;
 
       // Show map location and tile positions
       DrawText(
-        $"{locationName} ({Game1.currentLocation.Map.DisplayWidth / Game1.tileSize} x {Game1.currentLocation.Map.DisplayHeight / Game1.tileSize})",
+        locationText,
         new Vector2(Game1.tileSize / 4, Game1.tileSize / 4), Color.White);
       DrawText(
         "Position: (" + Math.Ceiling(Game1.player.Position.X / Game1.tileSize) + ", " +

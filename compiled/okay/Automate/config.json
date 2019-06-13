@@ -4,5 +4,9 @@
   "Controls": {
     "ToggleOverlay": "U"
   },
-  "Connectors": []
+  "ConnectorNames": [],
+  "ModCompatibility": {
+    "AutoGrabberMod": true,
+    "BetterJunimos": true
+  }
 }

@@ -5,9 +5,12 @@ mods:
    Vertical Toolbar
 
 latest commit:
-   commit 38caef7bf3da7274c63c281275dd3e9336bf054f
-   Author: U-MarquisSeven\Brandon <bmmgreen@gmail.com>
-   Date:   Sun Jun 4 18:26:20 2017 -0500
+   commit c90850467287d14bf363387d2ded431b7ca3bc57
+   Merge: 38caef7 99c7ea3
+   Author: bmarquismarkail <bmmgreen@gmail.com>
+   Date:   Sun Jun 9 16:11:19 2019 -0500
    
-       1.3.4: updated positioning code
+       Merge pull request #1 from Pathoschild/update-code
+       
+       Update for Stardew Valley 1.3 and SMAPI 3.0, add keybind options
    

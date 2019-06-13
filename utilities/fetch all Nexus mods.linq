@@ -19,6 +19,8 @@
   <Namespace>System.Globalization</Namespace>
   <Namespace>System.Net</Namespace>
   <Namespace>System.Threading.Tasks</Namespace>
+  <Namespace>StardewModdingAPI.Toolkit.Serialisation.Models</Namespace>
+  <Namespace>StardewModdingAPI</Namespace>
 </Query>
 
 /*
@@ -210,17 +212,43 @@ async Task<dynamic[]> GetModsNotOnWiki(IEnumerable<ParsedModData> mods)
 	// fetch report
 	return (
 		from mod in mods
-		let notOnWiki = mod.ModFolders
-			.Where(folder =>
-				folder.ModType == ModType.Smapi
-				&& !string.IsNullOrWhiteSpace(folder.ModID)
-				&& !knownModIDs.Contains(folder.ModID)
-				&& !ignoreModIDs.Contains(folder.ModID)
+		from folder in mod.ModFolders
+		where
+			folder.ModType == ModType.Smapi
+			&& !string.IsNullOrWhiteSpace(folder.ModID)
+			&& !knownModIDs.Contains(folder.ModID)
+			&& !ignoreModIDs.Contains(folder.ModID)
+		let manifest = folder.RawFolder.Value.Manifest
+		select new
+		{
+			NexusID = new Hyperlinq($"https://www.nexusmods.com/stardewvalley/mods/{mod.ID}", mod.ID.ToString()),
+			NexusName = mod.Name,
+			NexusAuthor = mod.Author,
+			NexusVersion = SemanticVersion.TryParse(mod.Version, out ISemanticVersion nexusVersion) ? nexusVersion.ToString() : mod.Version,
+			NexusStatus = mod.Status,
+			folder.FileID,
+			folder.FileCategory,
+			folder.FileName,
+			folder.ModType,
+			folder.ModID,
+			folder.ModVersion,
+			UpdateKeys = new Lazy<string[]>(() => manifest.UpdateKeys),
+			Manifest = new Lazy<Manifest>(() => manifest),
+			NexusMod = new Lazy<ParsedModData>(() => mod),
+			Folder = new Lazy<ParsedFileData>(() => folder),
+			WikiEntry = new Lazy<string>(() =>
+				"{{/entry\n"
+				+ $"  | name     = {folder.ModDisplayName}\n"
+				+ $"  | author   = {manifest?.Author}{(manifest?.Author != null && !manifest.Author.Trim().Equals(mod.Author?.Trim(), StringComparison.InvariantCultureIgnoreCase) ? $", {mod.Author}" : "")}\n"
+				+ $"  | id       = {manifest?.UniqueID}\n"
+				+ $"  | nexus id = {mod.ID}\n"
+				+ $"  | github   = {manifest?.UpdateKeys?.Where(p => p.Trim().StartsWith("GitHub")).Select(p => p.Trim().Substring(6)).FirstOrDefault()}\n"
+				+ $"  | 3.0 ready= yes\n"
+				+ "}}"
 			)
-			.ToArray()
-		where notOnWiki.Any()
-		select new { mod, notOnWiki }
+		}
 	)
+	.OrderBy(p => p.NexusName)
 	.ToArray();
 }
 
@@ -274,7 +302,7 @@ async Task<dynamic[]> GetInvalidMods(IEnumerable<ParsedModData> mods)
 		9873,  // Even More Secret Woods (#2364), replacement file for Immersive Farm 2
 		13120, // Immersive Farm 2 (#1531)
 		13647, // Immersive Farm 2 (#1531)
-		16926, // Oasis Greenhouse (#3969) > IF2R Version
+		17216, // Oasis Greenhouse (#3969) > IF2R Version
 		12634, // Phoenix Farm (#3026) > Pethouse Phoenix Farm
 		12863, // Secret Gardens Greenhouse (#3067) > "" for Immersive Farm 2
 		16524, // Stardew Valley Expanded (#3753)

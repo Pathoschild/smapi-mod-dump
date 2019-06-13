@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
@@ -15,6 +16,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Targets
         /// <summary>Simplifies access to private game code.</summary>
         private readonly IReflectionHelper Reflection;
 
+        /// <summary>The bush texture.</summary>
+        private readonly Lazy<Texture2D> Texture;
+
 
         /*********
         ** Public methods
@@ -27,6 +31,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Targets
             : base(gameHelper, TargetType.Bush, value, value.tilePosition.Value)
         {
             this.Reflection = reflectionHelper;
+            this.Texture = this.Reflection.GetField<Lazy<Texture2D>>(typeof(Bush), "texture").GetValue();
         }
 
         /// <summary>Get the sprite's source rectangle within its texture.</summary>
@@ -51,7 +56,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Targets
         public override bool SpriteIntersectsPixel(Vector2 tile, Vector2 position, Rectangle spriteArea)
         {
             SpriteEffects spriteEffects = this.Value.flipped.Value ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            return this.SpriteIntersectsPixel(tile, position, spriteArea, Bush.texture.Value, this.GetSpritesheetArea(), spriteEffects);
+            return this.SpriteIntersectsPixel(tile, position, spriteArea, this.Texture.Value, this.GetSpritesheetArea(), spriteEffects);
         }
     }
 }

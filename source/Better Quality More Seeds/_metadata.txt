@@ -5,9 +5,9 @@ mods:
    Better Quality More Seeds
 
 latest commit:
-   commit 09bfcbee858ed8936a6c9abb7ed56bcba52d5d5f
-   Author: U-MarquisSeven\Brandon <bmmgreen@gmail.com>
-   Date:   Sun May 14 12:50:13 2017 -0500
+   commit d542d848b928f2f09d3ad35da1a64ac17a3514b4
+   Author: Brandon Marquis Markail Green <bmarquismarkail@github.com>
+   Date:   Mon Jun 10 11:56:43 2019 -0500
    
-       fixing Exit to Title and choosing separate PC issue
+       Updated for SMAPI 2.11
    

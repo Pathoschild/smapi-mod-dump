@@ -114,7 +114,6 @@ namespace NPCMapLocations
 	  public Dictionary<string, MapVector[]> GetCustomMapLocations()
 	  {
       var customMapVectors = new Dictionary<string, MapVector[]>();
-	    var moddedLocations = new List<string>();
 
       foreach (KeyValuePair<string, JObject[]> mapVectors in Config.CustomMapLocations)
 	    {
@@ -143,19 +142,19 @@ namespace NPCMapLocations
             );
           }
 	      }
-	      moddedLocations.Add(mapVectors.Key);
         customMapVectors.Add(mapVectors.Key, mapVectorArr);        
 	    }
 
       // Automatically adjust tracking for modded maps that are sized differently from vanilla map
 	    foreach (var location in Game1.locations)
 	    {
-	      if (!location.IsOutdoors || location.Name == "Summit" || customMapVectors.ContainsKey(location.Name) || !ModConstants.MapVectors.TryGetValue(location.Name, out var mapVector)) continue;
+	      var locationName = location.uniqueName.Value ?? location.Name;
+
+	      if (!location.IsOutdoors || locationName == "Summit" || customMapVectors.ContainsKey(locationName) || !ModConstants.MapVectors.TryGetValue(locationName, out var mapVector)) continue;
 	      if (mapVector.LastOrDefault().TileX != location.Map.DisplayWidth / Game1.tileSize ||
-	          mapVector.LastOrDefault().TileY != location.Map.DisplayHeight / Game1.tileSize)
+	          mapVector.LastOrDefault().TileY != location.Map.DisplayHeight / Game1.tileSize) 
 	      {
-          moddedLocations.Add(location.Name);
-	        customMapVectors.Add(location.Name,
+	        customMapVectors.Add(locationName,
 	          new MapVector[]
 	          {
 	            mapVector.FirstOrDefault(),
@@ -169,20 +168,23 @@ namespace NPCMapLocations
 	      }
 	    }
 
-	    if (moddedLocations.Count > 0)
+	    string[] customLocations = customMapVectors.Keys.ToArray();
+       if (customMapVectors.Keys.Count > 0)
 	    {
-	      if (moddedLocations.Count == 1)
+	      if (customLocations.Length == 1)
 	      {
-	        Monitor.Log($"Detected modded location {moddedLocations[0]}. Adjusting map tracking to scale.", LogLevel.Debug);
-        }
+	        Monitor.Log($"Handled custom location: { customLocations[0]}.", LogLevel.Debug);
+	      }
 	      else
 	      {
 	        var locationList = "";
-          for (var i = 0; i < moddedLocations.Count; i++)
-            locationList += moddedLocations[i] + (i + 1 == moddedLocations.Count ? ", " : "");
+	        for (var i = 0; i < customLocations.Length; i++)
+	        {
+	          locationList += customLocations[i] + (i + 1 == customLocations.Length ? "" : ", ");
+	        }
 
-	        Monitor.Log($"Detected modded locations {locationList}. Adjusting map tracking to scale.", LogLevel.Debug);
-        }
+	        Monitor.Log($"Handled custom locations: {locationList}.", LogLevel.Debug);
+	      }
       }
 
       return customMapVectors;
@@ -199,7 +201,7 @@ namespace NPCMapLocations
 				else
 				{
 					this.CustomNames.Add(npc.Name, npc.displayName);
-					if (!npc.Name.Equals(npc.displayName) || this.Config.CustomCropOffsets.ContainsKey(npc.Name))
+					if (!npc.Name.Equals(npc.displayName) || this.Config.CustomNpcs.ContainsKey(npc.Name))
 						this.NpcCustomizations.Add(npc.Name);
 				}
 			}
@@ -208,9 +210,9 @@ namespace NPCMapLocations
 		// Load user-specified NPC crops for custom sprites
 		private void LoadNpcCrop(NPC npc)
 		{
-			if (this.Config.CustomCropOffsets != null && this.Config.CustomCropOffsets.Count > 0)
+			if (this.Config.CustomNpcs != null && this.Config.CustomNpcs.Count > 0)
 			{
-				foreach (KeyValuePair<string, int> villager in this.Config.CustomCropOffsets)
+				foreach (KeyValuePair<string, int> villager in this.Config.CustomNpcs)
 				{
 					if (npc.Name.Equals(villager.Key))
 					{

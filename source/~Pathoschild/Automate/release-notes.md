@@ -1,14 +1,20 @@
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
-* Updated for Stardew Valley 1.4, including new machine recipes.
-* Added compatibility with Auto-Grabber Mod and Better Junimos. If they're installed, seeds/fertiliser in their respective machines will be ignored.
-* Simplified connector configuration.
-* Improved `config.json` keybind parsing.
+## 1.13.1
+Released 12 June 2019.
+
+* Fixed stepping stone path not being usable as a connector.
+
+## 1.13
+Released 09 June 2019.
+
+* Added compatibility with Auto-Grabber Mod and Better Junimos. If installed, seeds/fertiliser in their machines will be ignored (configurable).
+* Simplified configuring connectors.
+* Fixed config parsing errors for some players.
 * Fixed items with different item qualities being combined into one input stack.
 
-**Breaking change:** previously-enabled connectors in `config.json` will be removed next time you
+**Breaking change:** connectors previously enabled in `config.json` will be removed next time you
 launch the game; See the readme for the new format.
 
 ## 1.12

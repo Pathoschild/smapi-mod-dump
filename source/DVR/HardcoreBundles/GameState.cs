@@ -9,8 +9,8 @@ namespace HardcoreBundles
         public bool Activated { get; set; }
         public bool Declined { get; set; }
 
-        public bool LookingAtVanillaRewards { get; set; }
-
         public IList<int> Level5PerksAdded = new List<int>();
+
+
     }
 }

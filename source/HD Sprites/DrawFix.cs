@@ -33,7 +33,7 @@ namespace HDSprites
             internal static bool Prefix(ref SpriteBatch __instance, ref Texture2D texture, ref Vector4 destination, ref bool scaleDestination, ref Rectangle? sourceRectangle, ref Color color, ref float rotation, ref Vector2 origin, ref SpriteEffects effects, ref float depth)
             {
                 if (skip || !sourceRectangle.HasValue || !HDSpritesMod.EnableMod) return true;
-
+                
                 // Fix white box assets
                 foreach (string fixAsset in HDSpritesMod.WhiteBoxFixAssets)
                 {
@@ -67,7 +67,7 @@ namespace HDSprites
                     }
 
                     skip = true;
-                    drawMethod.Invoke(__instance, new object[] { a.STexture, newDestination, scaleDestination, newSR, color, rotation, newOrigin, effects, depth });
+                    drawMethod.Invoke(__instance, new object[] { a.HDTexture, newDestination, scaleDestination, newSR, color, rotation, newOrigin, effects, depth });
                     skip = false;
 
                     return false;

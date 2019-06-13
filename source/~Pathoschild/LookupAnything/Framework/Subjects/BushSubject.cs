@@ -25,6 +25,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
         /// <summary>Simplifies access to private game code.</summary>
         private readonly IReflectionHelper Reflection;
 
+        /// <summary>The bush texture.</summary>
+        private readonly Lazy<Texture2D> Texture;
+
 
         /*********
         ** Public methods
@@ -39,6 +42,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
         {
             this.Target = bush;
             this.Reflection = reflection;
+            this.Texture = this.Reflection.GetField<Lazy<Texture2D>>(typeof(Bush), "texture").GetValue();
 
             if (this.IsBerryBush(bush))
                 this.Initialise(L10n.Bush.BerryName(), L10n.Bush.BerryDescription(), L10n.Types.Bush());
@@ -104,7 +108,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
 
             // draw portrait
             spriteBatch.Draw(
-                texture: Bush.texture.Value,
+                texture: this.Texture.Value,
                 destinationRectangle: new Rectangle((int)(position.X + offset.X), (int)(position.Y + offset.Y), targetSize.X, targetSize.Y),
                 sourceRectangle: sourceArea,
                 color: Color.White,

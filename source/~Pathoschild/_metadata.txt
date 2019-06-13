@@ -18,9 +18,10 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 1c5aa2e469dd24fe512b2cebbcafedde15eccf60
+   commit 774053a3549f6a5d97c1f05a4a0e6531b96c6b19
+   Merge: de5fcacd bf7f8189
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Jun 5 19:00:20 2019 -0400
+   Date:   Wed Jun 12 14:04:37 2019 -0400
    
-       simplify Automate connector config
+       Merge branch 'develop' into stable
    

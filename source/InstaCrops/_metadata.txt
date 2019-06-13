@@ -1,0 +1,13 @@
+url:
+   https://github.com/Brian-Wuest/Instacrops.git
+
+mods:
+   InstaCrops
+
+latest commit:
+   commit db5feb244af2b51dae2a4eeddba2d0534e178acf
+   Author: Brian Wuest <brian.wuest@outlook.com>
+   Date:   Wed Jun 12 19:13:38 2019 -0500
+   
+       Update README.md
+   

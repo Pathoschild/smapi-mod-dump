@@ -1,0 +1,10 @@
+﻿{
+  "Name": "starstats server",
+  "Author": "captncraig",
+  "Version": "1.0.0",
+  "Description": "Presents a web ui for viewing dashboards and graphs",
+  "UniqueID": "captncraig.starstars.web",
+  "EntryDll": "StarStats.Web.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

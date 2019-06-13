@@ -5,9 +5,9 @@ mods:
    Custom NPC Fixes
 
 latest commit:
-   commit f939ffa7936fc9ef21431c56cdafd8dd92d74457
+   commit e2a9bd32fc66f4acc11e9f8619907b4fbc6e1bb0
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Wed May 15 16:01:47 2019 -0400
+   Date:   Sun Jun 9 20:34:10 2019 -0400
    
-       Made the mod load after TMX Loader. Version 1.1.1.
+       Another fix I never committed (1.1.3)
    

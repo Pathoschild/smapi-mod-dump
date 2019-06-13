@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Mod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StatsApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />

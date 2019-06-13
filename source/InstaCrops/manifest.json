@@ -1,0 +1,10 @@
+{
+	"Name": "InstaCrops",
+	"Author": "WuestMan",
+	"Version": "1.0.0",
+	"Description": "Allows crops to instantly grow overnight",
+	"UniqueID": "WuestMan.InstaCrops",
+	"EntryDll": "InstaCrops.dll",
+	"MinimumApiVersion": "2.11",
+	"UpdateKeys": [ "Nexus:4077" ]
+}

@@ -10,7 +10,9 @@ namespace HardcoreBundles
         // This is the master list of bundles...
         // Only add new bundles to end of list, regardless of room.
         // Never remove bundles outright. No promises what happens with ids.
-        public static IList<BundleModel> List = new List<BundleModel>
+        public static IList<BundleModel> MakeList()
+        {
+            return new List<BundleModel>
         {
             new BundleModel(CraftRoom, "BasicForage",
                 new BundleItem(C.WildHorseradish, 50, Gold),
@@ -527,5 +529,6 @@ namespace HardcoreBundles
 
 
         };
+        }
     }
 }

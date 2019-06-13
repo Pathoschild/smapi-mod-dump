@@ -101,10 +101,11 @@ namespace HardcoreBundles
         private const string FishTank = "Fish Tank";
         private const string Vault = "Vault";
 
-        
-
-        static Bundles()
+        public static IList<BundleModel> List;
+       
+        public static void Init()
         {
+            List = MakeList();
             for (var i = 0; i < List.Count; i++)
             {
                 List[i].ID = i;
@@ -124,12 +125,13 @@ namespace HardcoreBundles
             File.WriteAllText(f, md);
         }
 
-        public static void Fix(bool hard)
+        public static void Fix(bool hardReset)
         {
             // this makes the "shape" of the game's internal bundle tracking representation match the bundles we have.
+            // very important to avoid crashes
             var bundles = Game1.netWorldState.Value.Bundles;
             var rewards = Game1.netWorldState.Value.BundleRewards;
-            if (hard)
+            if (hardReset)
             {
                 bundles.Clear();
                 rewards.Clear();

@@ -7,9 +7,9 @@ mods:
    Sprint Sprint Sprint
 
 latest commit:
-   commit 0d23007251f7b5a801392bbd590d11510e02b20b
+   commit ee8497cf490f2c17eb0d881d7ccea434b5147769
    Author: JessebotX <jessebotx2003@gmail.com>
-   Date:   Wed May 29 16:25:29 2019 -0700
+   Date:   Tue Jun 11 20:06:40 2019 -0700
    
-       wip stuff readded
+       #moddingFarm release
    

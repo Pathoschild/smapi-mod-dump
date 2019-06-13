@@ -351,7 +351,7 @@ You shouldn't change this file unless you know what you're doing.
             "Ingredients": [
                 { "ID": 107 } // dinosaur egg
             ],
-            "Output": 807 // dinosaur mayonnaise
+            "Output": 306 // mayonnaise
         },
         {
             "MachineID": 24,

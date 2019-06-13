@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using CJBCheatsMenu.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -71,12 +71,12 @@ namespace CJBCheatsMenu
         /// <param name="e">The event arguments.</param>
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (!Context.IsPlayerFree)
+            if (!Context.IsPlayerFree || Game1.currentMinigame != null)
                 return;
 
             // open menu
             if (e.Button == this.Config.OpenMenuKey)
-                Game1.activeClickableMenu = new CheatsMenu(this.Config.DefaultTab, this.Config, this.Cheats, this.Helper.Translation);
+                Game1.activeClickableMenu = new CheatsMenu(this.Config.DefaultTab, this.Config, this.Cheats, this.Helper.Translation, this.Monitor);
 
             // handle button if applicable
             else

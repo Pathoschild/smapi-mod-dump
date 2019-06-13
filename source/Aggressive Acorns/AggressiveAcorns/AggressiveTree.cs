@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Reflection;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
+using Netcode;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
@@ -15,7 +14,11 @@ namespace AggressiveAcorns {
 
         private GameLocation _location;
         private Vector2 _position;
-        private readonly IModConfig _config = ModConfig.Instance;
+        private readonly IModConfig _config = AggressiveAcorns.Config;
+
+
+        [UsedImplicitly]
+        public AggressiveTree() { }
 
 
         public AggressiveTree([NotNull] Tree tree) {
@@ -41,11 +44,7 @@ namespace AggressiveAcorns {
             tree.stump.Value = stump.Value;
             tree.tapped.Value = tapped.Value;
 
-            var privates = new[] {"destroy"};
-            foreach (var fieldName in privates) {
-                var field = GetFieldInfo(fieldName);
-                field.SetValue(tree, field.GetValue(this));
-            }
+            SyncFieldToTree<NetBool, bool>(tree, "destroy");
 
             return tree;
         }
@@ -61,7 +60,7 @@ namespace AggressiveAcorns {
             _position = tileLocation;
 
             if (health.Value <= -100) {
-                SetPrivateField("destroy", true);
+                SetField<NetBool, bool>("destroy", true);
             } else if (TreeCanGrow()) {
                 TryIncreaseStage();
                 ManageHibernation();
@@ -81,19 +80,20 @@ namespace AggressiveAcorns {
         // ===========================================================================================================
 
 
-        [NotNull]
-        private FieldInfo GetFieldInfo([NotNull] string fieldName) {
-            var field = typeof(Tree).GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
-            if (field == null) {
-                throw new InvalidOperationException($"Could not access field {fieldName} of {typeof(Tree).FullName}");
-            }
-
-            return field;
+        private void SetField<TNetField, T>(string name, T value) where TNetField : NetField<T, TNetField> {
+            AggressiveAcorns.ReflectionHelper.GetField<TNetField>(this, name).GetValue().Value = value;
         }
 
 
-        private void SetPrivateField([NotNull] string fieldName, object value) {
-            GetFieldInfo(fieldName).SetValue(this, value);
+        private void SyncField<TNetField, T>(object origin, object target, string name)
+            where TNetField : NetField<T, TNetField> {
+            var value = AggressiveAcorns.ReflectionHelper.GetField<TNetField>(origin, name).GetValue().Value;
+            AggressiveAcorns.ReflectionHelper.GetField<TNetField>(target, name).GetValue().Value = value;
+        }
+
+
+        private void SyncFieldToTree<TNetField, T>(Tree tree, string name) where TNetField : NetField<T, TNetField> {
+            SyncField<TNetField, T>(this, tree, name);
         }
 
 
@@ -153,7 +153,7 @@ namespace AggressiveAcorns {
              *  serialization (ie. new objects created so rotation is reset).
              *  If this changes (ie. Aggressive Tree cached over save or otherwise reused), must re-enable below code.
              */
-            // SetPrivateField("rotation", 0);
+            // AggressiveAcorns.ReflectionHelper.GetField<float>(this, "shakeRotation").SetValue(0);
         }
 
 

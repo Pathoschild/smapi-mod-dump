@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/3989
 IDs: Alek.ChangeProfessions
-update keys: Nexus:3989
+update keys: Nexus:3989, GitHub:aleksanderwaagr/Stardew-ChangeProfessions

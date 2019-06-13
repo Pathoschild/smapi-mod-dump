@@ -40,7 +40,7 @@ namespace ChangeProfessions
         {
             if (IsCloseButton(e.Button))
             {
-                ReturnToSkillsPage();
+                _modHelper.Events.Input.ButtonReleased -= InputOnButtonReleased;
                 return;
             }
 
@@ -50,6 +50,8 @@ namespace ChangeProfessions
             var chosenProfessionId = GetChosenProfession();
             if (chosenProfessionId == null)
                 return;
+
+            _modHelper.Events.Input.ButtonReleased -= InputOnButtonReleased;
 
             if (chosenProfessionId != _oldProfessionId)
             {
@@ -66,12 +68,11 @@ namespace ChangeProfessions
 
         private bool IsCloseButton(SButton button)
         {
-            return button == SButton.Escape || button == SButton.ControllerB;
+            return button == SButton.Escape || button == SButton.E || button == SButton.ControllerB;
         }
 
         private void ReturnToSkillsPage()
         {
-            _modHelper.Events.Input.ButtonReleased -= InputOnButtonReleased;
             var mainMenu = new GameMenu();
             mainMenu.changeTab(1);
             Game1.activeClickableMenu = mainMenu;

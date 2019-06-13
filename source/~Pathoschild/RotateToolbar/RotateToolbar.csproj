@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <AssemblyName>RotateToolbar</AssemblyName>
-    <Version>1.3.2</Version>
+    <Version>1.3.3</Version>
     <RootNamespace>Pathoschild.Stardew.RotateToolbar</RootNamespace>
     <TargetFramework>net452</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.0.0-alpha.20190426" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="2.2.0" />
   </ItemGroup>
 
   <Import Project="..\Common\Common.projitems" Label="Shared" />

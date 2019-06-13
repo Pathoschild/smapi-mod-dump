@@ -1,0 +1,10 @@
+﻿{
+    "Name": "MoreHealth",
+    "Author": "j4c0b333",
+    "Version": "1.0.0",
+    "Description": "Increase your health and stamina with the push of a button.",
+    "UniqueID": "j4c0b333.Morehealth",
+    "EntryDll": "MoreHealth.dll",
+    "MinimumApiVersion": "2.10.0",
+    "UpdateKeys": []
+}

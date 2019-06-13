@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AggressiveAcorns", "Aggress
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoOre", "NoOre\NoOre.csproj", "{E0AE1E6A-7805-4668-B46E-871CA8A0A656}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phrasefable Modding Tools", "Phrasefable Modding Tools\Phrasefable Modding Tools.csproj", "{0D71AC5A-7F9E-4912-BC06-9664509A4583}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		PhraseLib\PhraseLib.projitems*{212350bd-ca4e-4656-9fdb-2126938e7c1a}*SharedItemsImports = 4
@@ -24,6 +26,11 @@ Global
 		{E0AE1E6A-7805-4668-B46E-871CA8A0A656}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E0AE1E6A-7805-4668-B46E-871CA8A0A656}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0AE1E6A-7805-4668-B46E-871CA8A0A656}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0AE1E6A-7805-4668-B46E-871CA8A0A656}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D71AC5A-7F9E-4912-BC06-9664509A4583}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D71AC5A-7F9E-4912-BC06-9664509A4583}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D71AC5A-7F9E-4912-BC06-9664509A4583}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D71AC5A-7F9E-4912-BC06-9664509A4583}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

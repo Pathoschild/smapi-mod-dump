@@ -1,0 +1,10 @@
+﻿{
+  "Name": "SetMoney",
+  "Author": "j4c0b333",
+  "Version": "1.2.0",
+  "Description": "Allows you to set your money",
+  "UniqueID": "j4c0b333.SetMoney",
+  "EntryDll": "SetMoney.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

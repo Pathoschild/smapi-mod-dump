@@ -5,10 +5,9 @@ mods:
    DVR
 
 latest commit:
-   commit aff419e2b086ba45f1ccba13506177935849a096
-   Merge: 13f27dc d3d083d
+   commit f2324e46c4dd2dde0d04f2ff54559f54f6beaae8
    Author: Craig Peterson <captncraig@users.noreply.github.com>
-   Date:   Fri May 31 23:29:10 2019 -0400
+   Date:   Thu Jun 6 23:25:05 2019 -0400
    
-       mrge
+       basic web stuff wired up as simple as possible
    

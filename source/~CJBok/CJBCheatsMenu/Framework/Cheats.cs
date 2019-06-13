@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -124,12 +124,15 @@ namespace CJBCheatsMenu.Framework
 
             foreach (Vector2 tile in tiles)
             {
+                // grow planted crop (if any)
                 if (player.currentLocation.terrainFeatures.TryGetValue(tile, out TerrainFeature terrainFeature))
                 {
                     if (terrainFeature is HoeDirt dirt)
                         dirt.crop?.growCompletely();
                 }
-                else if (player.currentLocation.objects.TryGetValue(tile, out SObject obj))
+
+                // grow garden pot (if any)
+                if (player.currentLocation.objects.TryGetValue(tile, out SObject obj))
                 {
                     if (obj is IndoorPot pot && pot.hoeDirt.Value is HoeDirt dirt)
                         dirt.crop?.growCompletely();
@@ -228,12 +231,12 @@ namespace CJBCheatsMenu.Framework
                     }
                 }
 
-                // autofeed animals
+                // auto-feed animals
                 if (this.Config.AutoFeed && farm != null && location is AnimalHouse animalHouse)
                 {
-                    int animalcount = animalHouse.animals.Values.Count();
-                    int hayobjects = animalHouse.numberOfObjectsWithName("Hay");
-                    int hayUsed = Math.Min(animalcount - hayobjects, farm.piecesOfHay.Value);
+                    int animalCount = animalHouse.animals.Values.Count();
+                    int hayObjects = animalHouse.numberOfObjectsWithName("Hay");
+                    int hayUsed = Math.Min(animalCount - hayObjects, farm.piecesOfHay.Value);
                     farm.piecesOfHay.Value -= hayUsed;
 
                     int tileX = 6;

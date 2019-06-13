@@ -57,7 +57,9 @@ namespace StarStats.Common
             ts.Add(t, val);
         }
 
-        // like add, but won;t add a zero value unless it is already in the dataset.
+        // like add, but won't add a zero value unless it is already in the dataset.
+        // useful for not having too many empty tag sets for things that report empty values
+        // on high cardinality things. 
         public void AddSkipZero(uint t, double val, string metric, string tags = null)
         {
             var ts = get(metric, tags);
