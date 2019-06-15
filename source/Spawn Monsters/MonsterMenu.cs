@@ -8,7 +8,7 @@ using System;
 namespace Spawn_Monsters
 {
 	/// <summary>
-	/// A menu for selecting a monster to spawn
+	/// Represents a menu for selecting a monster to spawn.
 	/// </summary>
 	class MonsterMenu : IClickableMenu
 	{
@@ -192,30 +192,22 @@ namespace Spawn_Monsters
 			if (this.isWithinBounds(x, y)) {
 
 				foreach (ClickableComponent monster in Pages[currentPage]) {
-
 					if(monster.GetType() == typeof(MultiClickableMonsterComponent)) {
 						MultiClickableMonsterComponent m = (MultiClickableMonsterComponent)monster;
 						m.ReceiveLeftClick(x, y);
 					} else if (monster.containsPoint(x, y)) {
-						Game1.activeClickableMenu = new MonsterPlaceMenu(monster.name, null);
+						ClickableMonsterComponent m = (ClickableMonsterComponent)monster;
+						Game1.activeClickableMenu = new MonsterPlaceMenu(monster.name, null, m.sprite);
 					}
 				}
 				base.receiveLeftClick(x, y, true);
 
 			} else if (leftArrow.containsPoint(x, y)) {
-
-				currentPage--;
-				if (currentPage < 0) {
-					currentPage = Pages.Count - 1;
-				}
+				currentPage = currentPage - 1 < 0 ? Pages.Count - 1 : currentPage-1;
 				Game1.playSound("smallSelect");
 
 			} else if (rightArrow.containsPoint(x, y)) {
-
-				currentPage++;
-				if (currentPage == Pages.Count) {
-					currentPage = 0;
-				}
+				currentPage = currentPage + 1 == Pages.Count ? 0 : currentPage+1;
 				Game1.playSound("smallSelect");
 
 			} else {

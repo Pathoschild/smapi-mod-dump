@@ -8,9 +8,9 @@ mods:
    Monster Log Anywhere
 
 latest commit:
-   commit b99425e6eb1988c4e3550d9464d233f81803520c
+   commit 6c56fae5820bc4a2002e66397868eeb04a1d014b
    Author: MouseyPounds <mouseypounds+github@gmail.com>
-   Date:   Sun Jun 2 03:32:16 2019 -0400
+   Date:   Thu Jun 13 19:36:31 2019 -0400
    
-       MLA ready for release
+       MHM update for new ATDSV
    

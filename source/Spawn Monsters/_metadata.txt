@@ -5,9 +5,14 @@ mods:
    Spawn Monsters
 
 latest commit:
-   commit f5c47c634b7b4777fadf592d3fd2b081a2a079ec
+   commit 35159675f234fb87c9a1be6a2cc612e233cdfb5e
    Author: Berisan <e.berisa04@gmail.com>
-   Date:   Tue Jun 11 01:30:39 2019 +0200
+   Date:   Fri Jun 14 18:41:00 2019 +0200
    
-       Code cleanup and optimization
+       Version 2.5
+       
+       - Now uses exact cursor position rather than tile position for spawning for monsters that aren't tile based.
+       - Fixed a bug where trying to spawn a Metal Head crashes the spawning menu.
+       - Fixed a bug where hovering over tiles that don't exist (e.g. in buildings) with a Duggy crashes the spawning menu.
+       - Code cleanup and optimization
    

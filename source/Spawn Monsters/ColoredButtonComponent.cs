@@ -4,6 +4,9 @@ using StardewValley.Menus;
 
 namespace Spawn_Monsters
 {
+	/// <summary>
+	/// Represents a button used in MultiClickableMonsterComponents.
+	/// </summary>
 	class ColoredButtonComponent : ClickableComponent
 	{
 		public Color color;

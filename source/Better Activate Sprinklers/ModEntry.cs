@@ -56,6 +56,10 @@ namespace BetterActivateSprinklers
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
+            // Ignore event if world is not loaded and player is not interacting with the world
+            if (!Context.IsPlayerFree)
+                return;
+                
             if (e.Button.IsActionButton())
             {
                 var tile = e.Cursor.GrabTile;

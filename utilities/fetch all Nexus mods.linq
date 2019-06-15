@@ -368,7 +368,7 @@ async Task<dynamic[]> GetInvalidMods(IEnumerable<ParsedModData> mods)
 		9967,  // Sam to Samantha (#2472), CP pack with invalid update keys
 		16623, // Stardew In-Game Daily Planner > Example Plan
 		16660, // Stardew In-Game Daily Planner > Example Checklist
-		16954, // Stardew Valley Expanded (#3753) > Wallpapers, Event Guide and Script
+		17288, // Stardew Valley Expanded (#3753) > Wallpapers, Event Guide and Script
 		16198, // Stardew Valley Expanded (#3753), includes replacement files
 		11658, // Visual Crossing Sprite Overhaul (#1942), CP pack with invalid version format
 		11717, // Pencilstab's Portraits (#2351), content pack with separate previews folder including .zip

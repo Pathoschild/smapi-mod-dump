@@ -5,9 +5,9 @@ mods:
    Better Activate Sprinklers
 
 latest commit:
-   commit bd6448114c572eb1a8e33d2d7a78a332fe68dfc3
+   commit 1d034a6934633c191ac4ce235047eb075820cc90
    Author: Yuri Moens <yuri.moens@gmail.com>
-   Date:   Sun Dec 23 01:27:55 2018 +0100
+   Date:   Fri Jun 14 13:05:35 2019 +0200
    
-       Add support for prismatic sprinklers
+       Change version to 1.3.1
    

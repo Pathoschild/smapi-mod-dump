@@ -7,7 +7,7 @@ using StardewValley.Monsters;
 
 namespace Spawn_Monsters
 {
-	/// <summary>The mod entry point.</summary>
+	/// <summary>Represents the mod entry point.</summary>
 	public class ModEntry : Mod
 	{
 

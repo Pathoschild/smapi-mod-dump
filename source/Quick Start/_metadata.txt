@@ -5,9 +5,12 @@ mods:
    Quick Start
 
 latest commit:
-   commit 8fea0a85574600f9540cdca2365d8f221d1d79c5
+   commit 09f33fb300a328e6df507d6c78185c822185ee90
+   Merge: 8fea0a8 c3d5068
    Author: Brian Wuest <brian.wuest@outlook.com>
-   Date:   Sun Mar 31 20:27:36 2019 -0500
+   Date:   Fri Jun 14 20:30:24 2019 -0500
    
-       fixing issue where the player got floor and path recipes instead of having to buy them.
+       Merge pull request #2 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0, internal refactoring
    

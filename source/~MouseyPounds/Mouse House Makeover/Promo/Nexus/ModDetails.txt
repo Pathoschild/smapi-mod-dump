@@ -1,0 +1,47 @@
+Category: 
+
+Tags:
+SMAPI
+Works with Stardew 1.3
+
+Overview:
+Gives Hat Mouse a fancy new stone house and some friends to share the burden of minding the store. Also fixes a vanilla tilesheet bug for those scoundrels who choose to keep Hat Mouse and friends living in squalor.
+
+Permissions:
+This mod is released under [url=https://github.com/MouseyPounds/stardew-mods/blob/master/LICENSE]an MIT License[/url]. Although not required, the author would appreciate being informed of any derivative works which include or alter the mod or its assets.
+
+Credits:
+This mod uses only original assets and modifications of existing game assets.
+
+Details:
+[b]Description:
+
+[color=#ffff00]Mouse House Makeover[/color][/b] is a Content Patcher mod which gives Hat Mouse a fancy new stone house and some friends to share the burden of minding the store. Also fixes a vanilla tilesheet bug for those scoundrels who choose to keep Hat Mouse and friends living in squalor. Compatible with [url=https://www.nexusmods.com/stardewvalley/mods/1975]Fixed Mouse House[/url] Mod although it does not affect that mod's alignment problems. House and mouse options can be set in the [i]config.json[/i] file; this file is not included with the download and will be automatically created the first time the game is run with the mod loaded.
+
+
+[b]Installation:[/b]
+[list=1]
+[*]Install the latest version of [url=https://smapi.io/]SMAPI[/url].
+[*]Install the latest version of [url=https://www.nexusmods.com/stardewvalley/mods/1915]Content Patcher[/url].
+[*]Unzip the download and place the included [color=#b6d7a8][code][CP] Mouse House Makeover[/code][/color] folder into your [color=#b6d7a8][code]Mods[/code][/color] folder.
+[/list]
+
+[b]Configuration:
+[/b]
+[list]
+[*][color=#6d9eeb][b]WhichMouseSprite[/b][/color] lets you select who minds the store. The default is [color=#b4a7d6][i]all[/i][/color] which assigns the mice based on the day of the week. A single store minder can be chosen with the other options ([i][color=#b4a7d6]original[/color][/i], [i][color=#b4a7d6]beret[/color][/i], or [i][color=#b4a7d6]glasses[/color][/i]).
+[*][color=#6d9eeb][b]UseFancyHouse[/b][/color] lets you decide whether Hat Mouse and friends get a fabulous new stone house ([color=#b4a7d6][i]true[/i][/color] - the default) or continue to toil in abandoned ruins ([color=#b4a7d6][i]false[/i][/color]). Also set to false in order to use with [url=https://www.nexusmods.com/stardewvalley/mods/1975]Fixed Mouse House[/url].
+[*][color=#6d9eeb][b]RecolorOption[/b][/color] lets you change recolor compatibility if not using the fancy house. Default option of [color=#b4a7d6][i]auto[/i][/color] is probably the best choice, but you can force a specific recolor with the other options ([i][color=#b4a7d6]ATDSV[/color][/i], [i][color=#b4a7d6]Ace[/color][/i], [i][color=#b4a7d6]Starblue[/color][/i], or [i][color=#b4a7d6]none[/color][/i]).
+[*][color=#6d9eeb][b]UseMapPatch[/b][/color] lets you choose whether or not to use a tiny little map merge to fix a missing piece on the right side of the roof. Options are [color=#b4a7d6][i]true[/i][/color] (default) or [color=#b4a7d6][i]false[/i][/color].
+[/list]
+
+[b]Additional Notes:
+[/b]
+[list]
+[*]The tiny map match might fail to apply if using another mod which edits or replaces the Forest map.
+[*]Special thanks to [url=https://www.nexusmods.com/users/64022386]toe[/url] for moral support.
+[/list][b]
+
+Compatibility:
+[/b]
+[b][color=#ffff00]Mouse House Makeover[/color][/b] requires [url=https://www.nexusmods.com/stardewvalley/mods/1915]Content Patcher[/url] version 1.8 or higher (which means it also requires [url=https://smapi.io]SMAPI[/url] version 2.11 or higher). It should work version 1.3.36 of Stardew Valley.

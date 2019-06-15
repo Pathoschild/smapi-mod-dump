@@ -5,9 +5,9 @@ mods:
    Change Professions
 
 latest commit:
-   commit b1c66cc6e4ceee43b44bba5d0005ab0ea100bc2e
-   Author: aleksanderwaagr <alek.ntnu@gmail.com>
-   Date:   Sat Jun 8 18:51:51 2019 +0200
+   commit 999b3f97389f2f2f1506c9414dd1e5ca3fc28642
+   Author: amazingalek <alek.ntnu@gmail.com>
+   Date:   Fri Jun 14 22:30:17 2019 +0200
    
        Update README.md
    

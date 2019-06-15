@@ -6,7 +6,7 @@ using StardewValley.Menus;
 namespace Spawn_Monsters
 {
 	/// <summary>
-	///A clickable menu component that contains an animated sprite of a monster.
+	/// Represents a single monster in one component.
 	///</summary>
 	class ClickableMonsterComponent : ClickableComponent
 	{

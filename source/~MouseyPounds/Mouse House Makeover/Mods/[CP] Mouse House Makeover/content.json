@@ -1,0 +1,240 @@
+{
+	"Format": "1.8",
+	"ConfigSchema": {
+		"WhichMouseSprite": {
+			"AllowValues": "beret, glasses, original, all",
+			"Default": "all",
+		},
+		"RecolorOption": {
+			"AllowValues": "auto, none, ATDSV, Starblue, Ace",
+			"Default": "auto",
+		},
+		"UseFancyHouse": {
+			"AllowValues": "true, false",
+			"Default": "true",
+		},
+		"UseMapPatch": {
+			"AllowValues": "true, false",
+			"Default": "true",
+		},
+	},
+	"DynamicTokens": [
+		// Start with Specific Sprite
+		{
+			"Name": "ThisMouse",
+			"Value": "{{WhichMouseSprite}}",
+			"When": {
+				"WhichMouseSprite": "glasses, beret, original",
+			}
+		},
+		// Original only works Mon, Beret works Tue-Thur, Glasses works Fri-Sun
+		{
+			"Name": "ThisMouse",
+			"Value": "original",
+			"When": {
+				"WhichMouseSprite": "all",
+				"DayOfWeek": "Monday"
+			}
+		},
+		{
+			"Name": "ThisMouse",
+			"Value": "beret",
+			"When": {
+				"WhichMouseSprite": "all",
+				"DayOfWeek": "Tuesday, Wednesday, Thursday"
+			}
+		},
+		{
+			"Name": "ThisMouse",
+			"Value": "glasses",
+			"When": {
+				"WhichMouseSprite": "all",
+				"DayOfWeek": "Friday, Saturday, Sunday"
+			}
+		},
+		// Filenames are [RECOLOR_]HOUSE[_SEASON]
+		// RECOLOR should be self-explanatory
+		// HOUSE is "ruins" (normal) or "fixed" (from another mod)
+		// SEASON is standard CP token
+		{	// Blank default
+			"Name": "Recolor",
+			"Value": "",
+		},//
+		{
+			"Name": "Recolor",
+			"Value": "atdsv_",
+			"When": {
+				"HasMod": "Lavender.TonedDownSDV",
+				"RecolorOption": "auto"
+			}
+		},
+		{
+			"Name": "Recolor",
+			"Value": "atdsv_",
+			"When": {
+				"HasMod": "minervamaga.CP.ATDSV",
+				"RecolorOption": "auto"
+			}
+		},
+		{
+			"Name": "Recolor",
+			"Value": "atdsv_",
+			"When": {
+				"RecolorOption": "ATDSV"
+			}
+		},
+		{
+			"Name": "Recolor",
+			"Value": "starblue_",
+			"When": {
+				"HasMod": "Lita.StarblueValley",
+				"RecolorOption": "auto"
+			}
+		},
+		{
+			"Name": "Recolor",
+			"Value": "starblue_",
+			"When": {
+				"RecolorOption": "Starblue"
+			}
+		},
+		{
+			"Name": "Recolor",
+			"Value": "ace_",
+			"When": {
+				"HasMod": "Acerbicon.Recolor",
+				"RecolorOption": "auto"
+			}
+		},
+		{
+			"Name": "Recolor",
+			"Value": "ace_",
+			"When": {
+				"RecolorOption": "Ace"
+			}
+		},
+		{
+			"Name": "House",
+			"Value": "ruins",
+		},
+		{
+			"Name": "House",
+			"Value": "fixed",
+			"When": {
+				"HasMod": "thingwithwings.FixedHatMouse",
+			}
+		},
+		
+	],
+	"Changes": [
+		// -------------------------------------------------------------------
+		// Ridiculous single-tile map merge to fix a little tiny piece of roof
+		{
+			"LogName": "The Saddest Little Map Tile",
+            "Action": "EditMap",
+            "Target": "Maps/Forest",
+            "FromFile": "assets/saddesttile.tbin",
+            "ToArea": { "X": 36, "Y": 89,"Width": 1, "Height": 1 },
+			"When": { "UseMapPatch": "true", },
+        },
+		// -------------------------------------------------------------------
+		// Fancy house option (including special mouse background)
+		{
+			"LogName": "Fancy House Garden",
+			"Action": "EditImage",
+			"Target": "Maps/{{Season}}_outdoorsTilesheet",
+			"FromFile": "assets/FancyHouse_{{Season}}.png",
+			"FromArea": { "X":0, "Y":64, "Width":32, "Height":64 },
+			"ToArea": { "X":288, "Y":1200, "Width":32, "Height":64 },
+			"When": { "UseFancyHouse": "true", },
+		},
+		{
+			"LogName": "Fancy House Base",
+			"Action": "EditImage",
+			"Target": "Maps/{{Season}}_outdoorsTilesheet",
+			"FromFile": "assets/FancyHouse_{{Season}}.png",
+			"FromArea": { "X":32, "Y":32, "Width":80, "Height":96 },
+			"ToArea": { "X":320, "Y":1168, "Width":80, "Height":96 },
+			"When": { "UseFancyHouse": "true", },
+		},
+		{
+			"LogName": "Fancy House Roof Peak",
+			"Action": "EditImage",
+			"Target": "Maps/{{Season}}_outdoorsTilesheet",
+			"FromFile": "assets/FancyHouse_{{Season}}.png",
+			"FromArea": { "X":48, "Y":0, "Width":48, "Height":32 },
+			"ToArea": { "X":336, "Y":1136, "Width":48, "Height":32 },
+			"When": { "UseFancyHouse": "true", },
+		},
+		{
+			"LogName": "Fancy House Roof Notch",
+			"Action": "EditImage",
+			"Target": "Maps/{{Season}}_outdoorsTilesheet",
+			"FromFile": "assets/FancyHouse_{{Season}}.png",
+			"FromArea": { "X":96, "Y":16, "Width":16, "Height":16 },
+			"ToArea": { "X":384, "Y":1152, "Width":16, "Height":16 },
+			"When": { "UseFancyHouse": "true", },
+		},
+		{
+			"LogName": "Fancy House Chimney",
+			"Action": "EditImage",
+			"Target": "Maps/{{Season}}_outdoorsTilesheet",
+			"FromFile": "assets/FancyHouse_{{Season}}.png",
+			"FromArea": { "X":32, "Y":16, "Width":16, "Height":16 },
+			"ToArea": { "X":336, "Y":1120, "Width":16, "Height":16 },
+			"When": { "UseFancyHouse": "true", },
+		},
+		{
+			"LogName": "Fancy Mouse Background",
+			"Action": "EditImage",
+			"Target": "LooseSprites/Cursors",
+			"FromFile": "assets/fancy.png",
+			"PatchMode": "Overlay",
+			// No FromArea, using entire file
+			"ToArea": { "X":600, "Y":1957, "Width":64, "Height":32 },
+			"When": { "UseFancyHouse": "true", },
+		},
+		// -------------------------------------------------------------------
+		// Backgrounds for all the different non-fancy possibilities
+		{
+			"LogName": "Other Background - Nonseasonal",
+			"Action": "EditImage",
+			"Target": "LooseSprites/Cursors",
+			"FromFile": "assets/{{Recolor}}{{House}}.png",
+			"PatchMode": "Overlay",
+			// No FromArea, using entire file
+			"ToArea": { "X":600, "Y":1957, "Width":64, "Height":32 },
+			"When": { "UseFancyHouse": "false", "HasFile:assets/{{Recolor}}{{House}}.png": "true", }
+		},
+		{
+			"LogName": "Other Background - Seasonal",
+			"Action": "EditImage",
+			"Target": "LooseSprites/Cursors",
+			"FromFile": "assets/{{Recolor}}{{House}}_{{Season}}.png",
+			"PatchMode": "Overlay",
+			// No FromArea, using entire file
+			"ToArea": { "X":600, "Y":1957, "Width":64, "Height":32 },
+			"When": { "UseFancyHouse": "false", "HasFile:assets/{{Recolor}}{{House}}_{{Season}}.png": "true", }
+		},
+		// -------------------------------------------------------------------
+		// Desk & Banner plus the mouse. Always applies.
+		{
+			"LogName": "Decor",
+			"Action": "EditImage",
+			"Target": "LooseSprites/Cursors",
+			"FromFile": "assets/decor.png",
+			"PatchMode": "Overlay",
+			// No FromArea, using entire file
+			"ToArea": { "X":630, "Y":1961, "Width":17, "Height":27 }
+		},
+		{
+			"LogName": "Mouse",
+			"Action": "EditImage",
+			"Target": "LooseSprites/Cursors",
+			"FromFile": "assets/mouse_{{ThisMouse}}.png",
+			"PatchMode": "Overlay",
+			// No FromArea, using entire file
+			"ToArea": { "X":631, "Y":1967, "Width":15, "Height":15 }
+		},
+ 	]
+}

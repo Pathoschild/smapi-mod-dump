@@ -1,20 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickStart", "QuickStart\QuickStart.csproj", "{3FA86381-855B-4570-800C-70A57D9CAC60}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{4A720F13-74E4-4BE7-9092-E33DD5E80DC3}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickStart", "QuickStart\QuickStart.csproj", "{2AF9839A-DAEF-4DB2-9EE1-F76635BD690C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3FA86381-855B-4570-800C-70A57D9CAC60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3FA86381-855B-4570-800C-70A57D9CAC60}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3FA86381-855B-4570-800C-70A57D9CAC60}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3FA86381-855B-4570-800C-70A57D9CAC60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AF9839A-DAEF-4DB2-9EE1-F76635BD690C}.Debug|x86.ActiveCfg = Debug|x86
+		{2AF9839A-DAEF-4DB2-9EE1-F76635BD690C}.Debug|x86.Build.0 = Debug|x86
+		{2AF9839A-DAEF-4DB2-9EE1-F76635BD690C}.Release|x86.ActiveCfg = Release|x86
+		{2AF9839A-DAEF-4DB2-9EE1-F76635BD690C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
