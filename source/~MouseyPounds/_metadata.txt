@@ -8,9 +8,9 @@ mods:
    Monster Log Anywhere
 
 latest commit:
-   commit 6c56fae5820bc4a2002e66397868eeb04a1d014b
+   commit 94c334df0258fa21b3238257764bad95fd71d90f
    Author: MouseyPounds <mouseypounds+github@gmail.com>
-   Date:   Thu Jun 13 19:36:31 2019 -0400
+   Date:   Sun Jun 16 22:56:40 2019 -0400
    
-       MHM update for new ATDSV
+       PPT wallpaper bug fix
    

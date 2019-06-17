@@ -296,13 +296,14 @@ async Task<dynamic[]> GetInvalidMods(IEnumerable<ParsedModData> mods)
 		12282, // Ace's Expanded Farms MTN (#2711) > MelodicLullaby Less Saturated Valley Compatibility
 		2051,  // Add a Room and Attic (#379)
 		16992, // Bears in the Barn for BFAV (#4000) > BFAV JSON Update data file
+		17296, // BFAV Dragons (#3991) > BFAV JSON Update
 		16975, // BFAV Velociraptors (#4015) > Animals file to BFAV Json Update
 		16979, // BFAV Cutter Animals (#4016) > Animals file to BFAV Json Update
 		15896, // Capitalist Dream Farm (#3679) > SVE Compatibility
 		9873,  // Even More Secret Woods (#2364), replacement file for Immersive Farm 2
 		13120, // Immersive Farm 2 (#1531)
 		13647, // Immersive Farm 2 (#1531)
-		17216, // Oasis Greenhouse (#3969) > IF2R Version
+		17338, // Oasis Greenhouse (#3969) > IF2R Version
 		12634, // Phoenix Farm (#3026) > Pethouse Phoenix Farm
 		12863, // Secret Gardens Greenhouse (#3067) > "" for Immersive Farm 2
 		16524, // Stardew Valley Expanded (#3753)

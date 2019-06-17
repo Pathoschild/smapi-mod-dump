@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MegaStorage.Mapping;
 using MegaStorage.Models;
 using StardewModdingAPI;
 using StardewValley;
@@ -73,6 +74,11 @@ namespace MegaStorage.Persistence
                     var inventoryIndex = niceChestIndex.Key;
                     var niceChest = niceChestIndex.Value;
                     _monitor.VerboseLog($"Re-adding: {niceChest.Name} ({inventoryIndex})");
+                    if (!Game1.otherFarmers.ContainsKey(playerId))
+                    {
+                        _monitor.VerboseLog($"Other player isn't loaded: {playerId}");
+                        continue;
+                    }
                     var player = Game1.otherFarmers.Single(x => x.Key == playerId).Value;
                     player.Items[inventoryIndex] = niceChest;
                 }
@@ -95,12 +101,13 @@ namespace MegaStorage.Persistence
             }
             foreach (var deserializedChest in saveData.DeserializedChests)
             {
-                if (Game1.otherFarmers.All(x => x.Key != deserializedChest.PlayerId))
+                var playerId = deserializedChest.PlayerId;
+                if (!Game1.otherFarmers.ContainsKey(playerId))
                 {
-                    _monitor.VerboseLog($"Other player isn't loaded: {deserializedChest.PlayerId}");
+                    _monitor.VerboseLog($"Other player isn't loaded: {playerId}");
                     continue;
                 }
-                var player = Game1.otherFarmers.Single(x => x.Key == deserializedChest.PlayerId).Value;
+                var player = Game1.otherFarmers.Single(x => x.Key == playerId).Value;
                 var chest = (Chest)player.Items[deserializedChest.InventoryIndex];
                 var niceChest = chest.ToNiceChest(deserializedChest.ChestType);
                 _monitor.VerboseLog($"Loading: {deserializedChest}");

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using MegaStorage.Mapping;
 using MegaStorage.Models;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -17,13 +18,13 @@ namespace MegaStorage
             _monitor = monitor;
         }
 
-        public void Patch()
+        public void Start()
         {
             _modHelper.Events.Player.InventoryChanged += OnInventoryChanged;
             _modHelper.Events.World.ObjectListChanged += OnObjectListChanged;
             _modHelper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
         }
-
+        
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             foreach (var niceChest in NiceChestFactory.NiceChests)
@@ -42,6 +43,7 @@ namespace MegaStorage
 
         private void OnInventoryChanged(object sender, InventoryChangedEventArgs e)
         {
+            _monitor.VerboseLog("OnInventoryChanged");
             if (!e.IsLocalPlayer || e.Added.Count() != 1)
                 return;
 
@@ -49,16 +51,18 @@ namespace MegaStorage
             if (addedItem is NiceChest)
                 return;
 
-            var itemId = addedItem.ParentSheetIndex;
-            if (!NiceChestFactory.IsNiceChest(itemId))
+            if (!NiceChestFactory.IsNiceChest(addedItem))
                 return;
 
+            _monitor.VerboseLog("OnInventoryChanged: converting");
+
             var index = Game1.player.Items.IndexOf(addedItem);
-            Game1.player.Items[index] = NiceChestFactory.Create(itemId);
+            Game1.player.Items[index] = NiceChestFactory.Create(addedItem.ParentSheetIndex);
         }
 
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
         {
+            _monitor.VerboseLog("OnObjectListChanged");
             if (e.Added.Count() != 1)
                 return;
 
@@ -67,12 +71,13 @@ namespace MegaStorage
             if (addedItem is NiceChest)
                 return;
 
-            var itemId = addedItem.ParentSheetIndex;
-            if (!NiceChestFactory.IsNiceChest(itemId))
+            if (!NiceChestFactory.IsNiceChest(addedItem))
                 return;
 
+            _monitor.VerboseLog("OnObjectListChanged: converting");
+
             var position = addedItemPosition.Key;
-            e.Location.objects[position] = NiceChestFactory.Create(itemId);
+            e.Location.objects[position] = NiceChestFactory.Create(addedItem.ParentSheetIndex);
         }
 
     }

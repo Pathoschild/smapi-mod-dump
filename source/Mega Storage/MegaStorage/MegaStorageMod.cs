@@ -1,4 +1,5 @@
-﻿using MegaStorage.Persistence;
+﻿using MegaStorage.Models;
+using MegaStorage.Persistence;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
@@ -7,21 +8,17 @@ namespace MegaStorage
     public class MegaStorageMod : Mod
     {
         public static IModHelper ModHelper;
-        //public static IMonitor Logger;
+        public static IMonitor Logger;
         public static IReflectionHelper Reflection;
 
         public override void Entry(IModHelper modHelper)
         {
             Monitor.VerboseLog("Entry of MegaStorageMod");
             ModHelper = modHelper;
-            //Logger = Monitor;
+            Logger = Monitor;
             Reflection = modHelper.Reflection;
             modHelper.Events.GameLoop.GameLaunched += OnGameLaunched;
-        }
-
-        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
-        {
-            new SpritePatcher(Helper, Monitor).Patch();
+            modHelper.ReadConfig<Config>();
             new SaveManager(Helper, Monitor, new ISaver[]
             {
                 new InventorySaver(Helper, Monitor),
@@ -29,7 +26,12 @@ namespace MegaStorage
                 new LocationSaver(Helper, Monitor),
                 new LocationInventorySaver(Helper, Monitor)
             }).Start();
-            new ItemPatcher(Helper, Monitor).Patch();
+        }
+
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            Helper.Content.AssetEditors.Add(new SpritePatcher(Helper, Monitor));
+            new ItemPatcher(Helper, Monitor).Start();
         }
 
     }

@@ -1,14 +1,15 @@
-﻿using Microsoft.Xna.Framework;
+﻿using MegaStorage.Mapping;
+using MegaStorage.Models;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 
 namespace MegaStorage
 {
-    public class SpritePatcher
+    public class SpritePatcher : IAssetEditor
     {
         private const int NewHeight = 4000;
-        //private const int SourceItemId = 130;
 
         private readonly IModHelper _modHelper;
         private readonly IMonitor _monitor;
@@ -19,42 +20,45 @@ namespace MegaStorage
             _monitor = monitor;
         }
 
-        public void Patch()
+        public bool CanEdit<T>(IAssetInfo asset)
         {
-            ExpandSpriteSheet();
+            return asset.AssetNameEquals("TileSheets/Craftables");
+        }
+
+        public void Edit<T>(IAssetData asset)
+        {
+            var assetImage = asset.AsImage();
+            ExpandSpriteSheet(assetImage);
             foreach (var niceChest in NiceChestFactory.NiceChests)
             {
-                CopySprite(niceChest.SpritePath, niceChest.ParentSheetIndex);
+                PatchSprite(assetImage, niceChest);
             }
         }
 
-        private void ExpandSpriteSheet()
+        private void ExpandSpriteSheet(IAssetDataForImage assetImage)
         {
-            _monitor.VerboseLog("Expanding spritesheet");
-            var originalWidth = Game1.bigCraftableSpriteSheet.Width;
-            var originalHeight = Game1.bigCraftableSpriteSheet.Height;
-            if (originalHeight >= NewHeight) return;
-            var originalSize = originalWidth * originalHeight;
+            _monitor.VerboseLog("Expanding sprite sheet.");
+            var spriteSheet = assetImage.Data;
+            _monitor.VerboseLog($"Width: {spriteSheet.Width}, Height: {spriteSheet.Height}");
+            if (spriteSheet.Height >= NewHeight)
+                return;
+            var originalSize = spriteSheet.Width * spriteSheet.Height;
             var data = new Color[originalSize];
-            Game1.bigCraftableSpriteSheet.GetData(data);
-            var originalRect = new Rectangle(0, 0, originalWidth, originalHeight);
-            var biggerCraftableSpriteSheet = new Texture2D(Game1.graphics.GraphicsDevice, originalWidth, NewHeight);
-            biggerCraftableSpriteSheet.SetData(0, originalRect, data, 0, originalSize);
-            Game1.bigCraftableSpriteSheet = biggerCraftableSpriteSheet;
+            spriteSheet.GetData(data);
+            var originalRect = new Rectangle(0, 0, spriteSheet.Width, spriteSheet.Height);
+            var expandedSpriteSheet = new Texture2D(Game1.graphics.GraphicsDevice, spriteSheet.Width, NewHeight);
+            _monitor.VerboseLog($"New width: {expandedSpriteSheet.Width}, New height: {expandedSpriteSheet.Height}");
+            expandedSpriteSheet.SetData(0, originalRect, data, 0, originalSize);
+            assetImage.ReplaceWith(expandedSpriteSheet);
         }
 
-        private void CopySprite(string spritePath, int destinationId)
+        private void PatchSprite(IAssetDataForImage assetImage, NiceChest niceChest)
         {
-            var sprite = _modHelper.Content.Load<Texture2D>(spritePath);
-            var sourceRect = new Rectangle(0, 0, sprite.Width, sprite.Height);
-            _monitor.VerboseLog($"Source rect: ({sourceRect.Width}, {sourceRect.Height})");
-            var count = sourceRect.Width * sourceRect.Height;
-            var data = new Color[count];
-            sprite.GetData(0, sourceRect, data, 0, count);
-            var destinationRect = Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, destinationId, 16, 32);
+            var sprite = _modHelper.Content.Load<Texture2D>(niceChest.SpritePath);
+            var destinationRect = Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, niceChest.ParentSheetIndex, 16, 32);
             destinationRect.Width = sprite.Width;
             _monitor.VerboseLog($"Destination rect: ({destinationRect.X}, {destinationRect.Y}) - ({destinationRect.Width}, {destinationRect.Height})");
-            Game1.bigCraftableSpriteSheet.SetData(0, destinationRect, data, 0, count);
+            assetImage.PatchImage(sprite, targetArea: destinationRect);
         }
 
     }

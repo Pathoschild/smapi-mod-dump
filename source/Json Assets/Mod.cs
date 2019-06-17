@@ -20,6 +20,7 @@ using System.Text.RegularExpressions;
 using JsonAssets.Overrides;
 using Newtonsoft.Json;
 using StardewValley.Tools;
+using JsonAssets.Other.ContentPatcher;
 
 // TODO: Refactor recipes
 
@@ -39,6 +40,7 @@ namespace JsonAssets
             helper.Events.Display.MenuChanged += onMenuChanged;
             helper.Events.GameLoop.Saved += onSaved;
             helper.Events.Player.InventoryChanged += onInventoryChanged;
+            helper.Events.GameLoop.GameLaunched += onGameLaunched;
             helper.Events.GameLoop.SaveCreated += onCreated;
             helper.Events.Specialised.LoadStageChanged += onLoadStageChanged;
             helper.Events.Multiplayer.PeerContextReceived += clientConnected;
@@ -105,6 +107,11 @@ namespace JsonAssets
         public override object GetApi()
         {
             return api ?? (api = new Api(this.loadData));
+        }
+
+        private void onGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            ContentPatcherIntegration.Initialize();
         }
 
         private void loadData(string dir)
@@ -209,27 +216,30 @@ namespace JsonAssets
                     {
                         str += $"/z {season}";
                     }
-                    string strtrimstart = str.TrimStart(new char[] { '/' });
-                    if (crop.SeedPurchaseRequirements != null && crop.SeedPurchaseRequirements.Count > 0)
+                    if (str != "")
                     {
-                        for (int index = 0; index < crop.SeedPurchaseRequirements.Count; index++)
+                        string strtrimstart = str.TrimStart(new char[] { '/' });
+                        if (crop.SeedPurchaseRequirements != null && crop.SeedPurchaseRequirements.Count > 0)
                         {
-                            if (SeasonLimiter.IsMatch(crop.SeedPurchaseRequirements[index]))
+                            for (int index = 0; index < crop.SeedPurchaseRequirements.Count; index++)
                             {
-                                crop.SeedPurchaseRequirements[index] = strtrimstart;
-                                Log.warn($"        Faulty season requirements for {crop.SeedName}!\n        Fixed season requirements: {crop.SeedPurchaseRequirements[index]}");
+                                if (SeasonLimiter.IsMatch(crop.SeedPurchaseRequirements[index]))
+                                {
+                                    crop.SeedPurchaseRequirements[index] = strtrimstart;
+                                    Log.warn($"        Faulty season requirements for {crop.SeedName}!\n        Fixed season requirements: {crop.SeedPurchaseRequirements[index]}");
+                                }
+                            }
+                            if (!crop.SeedPurchaseRequirements.Contains(str.TrimStart('/')))
+                            {
+                                Log.trace($"        Adding season requirements for {crop.SeedName}:\n        New season requirements: {strtrimstart}");
+                                crop.seed.PurchaseRequirements.Add(strtrimstart);
                             }
                         }
-                        if (!crop.SeedPurchaseRequirements.Contains(str.TrimStart('/')))
+                        else
                         {
                             Log.trace($"        Adding season requirements for {crop.SeedName}:\n        New season requirements: {strtrimstart}");
                             crop.seed.PurchaseRequirements.Add(strtrimstart);
                         }
-                    }
-                    else
-                    {
-                        Log.trace($"        Adding season requirements for {crop.SeedName}:\n        New season requirements: {strtrimstart}");
-                        crop.seed.PurchaseRequirements.Add(strtrimstart);
                     }
 
                     objects.Add(crop.seed);
@@ -492,7 +502,12 @@ namespace JsonAssets
                         continue;
                     Item item = new StardewValley.Object(Vector2.Zero, obj.id, int.MaxValue);
                     forSale.Add(item);
-                    itemPriceAndStock.Add(item, new int[] { obj.PurchasePrice, int.MaxValue });
+                    int price = obj.PurchasePrice;
+                    if ( obj.Category == ObjectData.Category_.Seeds )
+                    {
+                        price = (int)(price * Game1.MasterPlayer.difficultyModifier);
+                    }
+                    itemPriceAndStock.Add(item, new int[] { price, int.MaxValue });
                     Log.trace($"\tAdding {obj.Name}");
                 }
                 foreach (var big in bigCraftables)

@@ -39,14 +39,17 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="manifest.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\ItemIds.cs" />
+    <Compile Include="Models\Config.cs" />
     <Compile Include="Persistence\FarmhandInventorySaver.cs" />
     <Compile Include="UI\MagicItemGrabMenu.cs" />
-    <Compile Include="NiceChestFactory.cs" />
+    <Compile Include="Mapping\NiceChestFactory.cs" />
     <Compile Include="SpritePatcher.cs" />
     <Compile Include="ItemPatcher.cs" />
     <Compile Include="MegaStorageMod.cs" />
@@ -60,7 +63,7 @@
     <Compile Include="Persistence\ISaver.cs" />
     <Compile Include="Persistence\LocationInventorySaver.cs" />
     <Compile Include="Persistence\LocationSaver.cs" />
-    <Compile Include="Models\MappingExtensions.cs" />
+    <Compile Include="Mapping\MappingExtensions.cs" />
     <Compile Include="Persistence\SaveData.cs" />
     <Compile Include="Persistence\SaveManager.cs" />
   </ItemGroup>
@@ -71,6 +74,9 @@
     <Content Include="Resources\MagicChest.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />

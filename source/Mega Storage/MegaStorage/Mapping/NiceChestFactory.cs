@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using MegaStorage.Models;
+using StardewValley;
+using Object = StardewValley.Object;
 
-namespace MegaStorage
+namespace MegaStorage.Mapping
 {
     public static class NiceChestFactory
     {
@@ -18,9 +20,11 @@ namespace MegaStorage
             };
         }
 
-        public static bool IsNiceChest(int id)
+        public static bool IsNiceChest(Item item)
         {
-            return NiceChests.Any(x => x.ItemId == id);
+            if (!(item is Object)) return false;
+            if (!((Object)item).bigCraftable.Value) return false;
+            return NiceChests.Any(x => x.ItemId == item.ParentSheetIndex);
         }
 
         public static NiceChest Create(int id)

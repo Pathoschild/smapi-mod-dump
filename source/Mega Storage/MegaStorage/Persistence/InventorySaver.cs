@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MegaStorage.Mapping;
 using MegaStorage.Models;
 using StardewModdingAPI;
 using StardewValley;

@@ -5,9 +5,9 @@ mods:
    Mega Storage
 
 latest commit:
-   commit 9ae9b897b651cbb3493d10e7d98559739285c633
+   commit 6c289e7092d1ee4b096f9426b6ef2e2eeea5f351
    Author: amazingalek <alek.ntnu@gmail.com>
-   Date:   Fri Jun 14 22:30:36 2019 +0200
+   Date:   Sun Jun 16 23:28:46 2019 +0200
    
        Update README.md
    

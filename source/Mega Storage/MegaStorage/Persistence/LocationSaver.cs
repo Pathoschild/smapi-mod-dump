@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MegaStorage.Mapping;
 using MegaStorage.Models;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
@@ -28,11 +29,13 @@ namespace MegaStorage.Persistence
             _monitor.VerboseLog("LocationSaver: HideAndSaveNiceChests");
             _locationNiceChests = new Dictionary<GameLocation, Dictionary<Vector2, NiceChest>>();
             var deserializedChests = new List<DeserializedChest>();
-            foreach (var location in Game1.locations)
+            var locations = Game1.locations.Concat(Game1.getFarm().buildings.Select(x => x.indoors.Value).Where(x => x != null));
+            foreach (var location in locations)
             {
                 var niceChestPositions = location.objects.Pairs.Where(x => x.Value is NiceChest).ToDictionary(pair => pair.Key, pair => (NiceChest)pair.Value);
                 if (!niceChestPositions.Any())
                     continue;
+                var locationName = location.uniqueName?.Value ?? location.Name;
                 _locationNiceChests.Add(location, niceChestPositions);
                 foreach (var niceChestPosition in niceChestPositions)
                 {
@@ -40,8 +43,8 @@ namespace MegaStorage.Persistence
                     var niceChest = niceChestPosition.Value;
                     var chest = niceChest.ToChest();
                     location.objects[position] = chest;
-                    var deserializedChest = niceChest.ToDeserializedChest(location.Name, position);
-                    _monitor.VerboseLog($"Hiding and saving: {deserializedChest}");
+                    var deserializedChest = niceChest.ToDeserializedChest(locationName, position);
+                    _monitor.VerboseLog($"Hiding and saving in {locationName}: {deserializedChest}");
                     deserializedChests.Add(deserializedChest);
                 }
             }
@@ -73,7 +76,8 @@ namespace MegaStorage.Persistence
                 {
                     var position = niceChestPosition.Key;
                     var niceChest = niceChestPosition.Value;
-                    _monitor.VerboseLog($"Re-adding: {niceChest.Name} ({position})");
+                    var locationName = location.uniqueName.Value ?? location.Name;
+                    _monitor.VerboseLog($"Re-adding in {locationName}: {niceChest.Name} ({position})");
                     location.objects[position] = niceChest;
                 }
             }
@@ -93,9 +97,11 @@ namespace MegaStorage.Persistence
                 _monitor.VerboseLog("Nothing to load");
                 return;
             }
-            foreach (var location in Game1.locations)
+            var locations = Game1.locations.Concat(Game1.getFarm().buildings.Select(x => x.indoors.Value).Where(x => x != null));
+            foreach (var location in locations)
             {
-                var niceChestsInLocation = saveData.DeserializedChests.Where(x => x.LocationName == location.Name);
+                var locationName = location.uniqueName?.Value ?? location.Name;
+                var niceChestsInLocation = saveData.DeserializedChests.Where(x => x.LocationName == locationName);
                 foreach (var deserializedChest in niceChestsInLocation)
                 {
                     var position = new Vector2(deserializedChest.PositionX, deserializedChest.PositionY);

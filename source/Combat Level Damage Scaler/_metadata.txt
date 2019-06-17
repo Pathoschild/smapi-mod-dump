@@ -2,7 +2,7 @@ url:
    https://github.com/spacechase0/CombatLevelDamageScaler.git
 
 mods:
-   Combat Level Damage Scalar
+   Combat Level Damage Scaler
 
 latest commit:
    commit 3f188ea367720d4199d91a33030398df1ea2281a

@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 3667757e3af7567596404075f7c2e281361a987b
+   commit 6089a0e96d6c14c8f19cf0f712b099f0655802c3
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Thu Jun 13 17:45:51 2019 -0400
+   Date:   Sun Jun 16 18:11:11 2019 -0400
    
-       update mod build package (#403)
+       fix Day token not allowing zero values
    
