@@ -11,12 +11,12 @@ namespace MegaStorage.Persistence
 {
     public class LocationInventorySaver : ISaver
     {
-        private const string SaveDataKey = "LocationInventoryNiceChests";
+        public string SaveDataKey => "LocationInventoryNiceChests";
 
         private readonly IModHelper _modHelper;
         private readonly IMonitor _monitor;
 
-        private Dictionary<GameLocation, Dictionary<Vector2, Dictionary<int, NiceChest>>> _locationInventoryNiceChests;
+        private Dictionary<GameLocation, Dictionary<Vector2, Dictionary<int, CustomChest>>> _locationInventoryCustomChests;
 
         public LocationInventorySaver(IModHelper modHelper, IMonitor monitor)
         {
@@ -24,10 +24,10 @@ namespace MegaStorage.Persistence
             _monitor = monitor;
         }
 
-        public void HideAndSaveNiceChests()
+        public void HideAndSaveCustomChests()
         {
-            _monitor.VerboseLog("LocationInventorySaver: HideAndSaveNiceChests");
-            _locationInventoryNiceChests = new Dictionary<GameLocation, Dictionary<Vector2, Dictionary<int, NiceChest>>>();
+            _monitor.VerboseLog("LocationInventorySaver: HideAndSaveCustomChests");
+            _locationInventoryCustomChests = new Dictionary<GameLocation, Dictionary<Vector2, Dictionary<int, CustomChest>>>();
             var deserializedChests = new List<DeserializedChest>();
             var locations = Game1.locations.Concat(Game1.getFarm().buildings.Select(x => x.indoors.Value).Where(x => x != null));
             foreach (var location in locations)
@@ -35,28 +35,28 @@ namespace MegaStorage.Persistence
                 var chestPositions = location.objects.Pairs.Where(x => x.Value is Chest).ToDictionary(pair => pair.Key, pair => (Chest)pair.Value);
                 if (!chestPositions.Any())
                     continue;
-                var niceChestsInChestPositions = new Dictionary<Vector2, Dictionary<int, NiceChest>>();
+                var customChestsInChestPositions = new Dictionary<Vector2, Dictionary<int, CustomChest>>();
                 foreach (var chestPosition in chestPositions)
                 {
                     var position = chestPosition.Key;
                     var chest = chestPosition.Value;
-                    var niceChestsInChest = chest.items.OfType<NiceChest>().ToList();
-                    if (!niceChestsInChest.Any())
+                    var customChestsInChest = chest.items.OfType<CustomChest>().ToList();
+                    if (!customChestsInChest.Any())
                         continue;
-                    var niceChestIndexes = new Dictionary<int, NiceChest>();
+                    var customChestIndexes = new Dictionary<int, CustomChest>();
                     var locationName = location.uniqueName?.Value ?? location.Name;
-                    foreach (var niceChest in niceChestsInChest)
+                    foreach (var customChest in customChestsInChest)
                     {
-                        var index = chest.items.IndexOf(niceChest);
-                        chest.items[index] = niceChest.ToChest();
-                        niceChestIndexes.Add(index, niceChest);
-                        var deserializedChest = niceChest.ToDeserializedChest(locationName, position, index);
+                        var index = chest.items.IndexOf(customChest);
+                        chest.items[index] = customChest.ToChest();
+                        customChestIndexes.Add(index, customChest);
+                        var deserializedChest = customChest.ToDeserializedChest(locationName, position, index);
                         _monitor.VerboseLog($"Hiding and saving: {deserializedChest}");
                         deserializedChests.Add(deserializedChest);
                     }
-                    niceChestsInChestPositions.Add(position, niceChestIndexes);
+                    customChestsInChestPositions.Add(position, customChestIndexes);
                 }
-                _locationInventoryNiceChests.Add(location, niceChestsInChestPositions);
+                _locationInventoryCustomChests.Add(location, customChestsInChestPositions);
             }
             if (!Context.IsMainPlayer)
             {
@@ -70,37 +70,37 @@ namespace MegaStorage.Persistence
             _modHelper.Data.WriteSaveData(SaveDataKey, saveData);
         }
 
-        public void ReAddNiceChests()
+        public void ReAddCustomChests()
         {
-            _monitor.VerboseLog("LocationInventorySaver: ReAddNiceChests");
-            if (_locationInventoryNiceChests == null)
+            _monitor.VerboseLog("LocationInventorySaver: ReAddCustomChests");
+            if (_locationInventoryCustomChests == null)
             {
                 _monitor.VerboseLog("Nothing to re-add");
                 return;
             }
-            foreach (var niceChestLocations in _locationInventoryNiceChests)
+            foreach (var customChestLocations in _locationInventoryCustomChests)
             {
-                var location = niceChestLocations.Key;
-                var niceChestsInChestPositions = niceChestLocations.Value;
-                foreach (var niceChestsInChestPosition in niceChestsInChestPositions)
+                var location = customChestLocations.Key;
+                var customChestsInChestPositions = customChestLocations.Value;
+                foreach (var customChestsInChestPosition in customChestsInChestPositions)
                 {
-                    var position = niceChestsInChestPosition.Key;
-                    var chestIndexes = niceChestsInChestPosition.Value;
+                    var position = customChestsInChestPosition.Key;
+                    var chestIndexes = customChestsInChestPosition.Value;
                     foreach (var chestIndex in chestIndexes)
                     {
                         var index = chestIndex.Key;
-                        var niceChest = chestIndex.Value;
-                        _monitor.VerboseLog($"Re-adding: {niceChest.Name} in chest at {position} ({index})");
+                        var customChest = chestIndex.Value;
+                        _monitor.VerboseLog($"Re-adding: {customChest.Name} in chest at {position} ({index})");
                         var chest = (Chest)location.objects[position];
-                        chest.items[index] = niceChest;
+                        chest.items[index] = customChest;
                     }
                 }
             }
         }
 
-        public void LoadNiceChests()
+        public void LoadCustomChests()
         {
-            _monitor.VerboseLog("LocationInventorySaver: LoadNiceChests");
+            _monitor.VerboseLog("LocationInventorySaver: LoadCustomChests");
             if (!Context.IsMainPlayer)
             {
                 _monitor.VerboseLog("Not main player!");
@@ -116,8 +116,8 @@ namespace MegaStorage.Persistence
             foreach (var location in locations)
             {
                 var locationName = location.uniqueName?.Value ?? location.Name;
-                var niceChestsInLocation = saveData.DeserializedChests.Where(x => x.LocationName == locationName);
-                foreach (var deserializedChest in niceChestsInLocation)
+                var customChestsInLocation = saveData.DeserializedChests.Where(x => x.LocationName == locationName);
+                foreach (var deserializedChest in customChestsInLocation)
                 {
                     var position = new Vector2(deserializedChest.PositionX, deserializedChest.PositionY);
                     if (!location.objects.ContainsKey(position))
@@ -127,10 +127,10 @@ namespace MegaStorage.Persistence
                     }
                     var chest = (Chest)location.objects[position];
                     var index = deserializedChest.InventoryIndex;
-                    var hiddenNiceChest = (Chest)chest.items[index];
-                    var niceChest = hiddenNiceChest.ToNiceChest(deserializedChest.ChestType);
+                    var hiddenCustomChest = (Chest)chest.items[index];
+                    var customChest = hiddenCustomChest.ToCustomChest(deserializedChest.ChestType);
                     _monitor.VerboseLog($"Loading: {deserializedChest}");
-                    chest.items[index] = niceChest;
+                    chest.items[index] = customChest;
                 }
             }
         }

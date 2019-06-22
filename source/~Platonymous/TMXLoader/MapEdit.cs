@@ -1,4 +1,5 @@
-﻿using xTile;
+﻿using StardewModdingAPI;
+using xTile;
 
 namespace TMXLoader
 {
@@ -20,5 +21,16 @@ namespace TMXLoader
         public string conditions { get; set; } = "";
 
         internal Map _map = null;
+        internal IContentPack _pack = null;
+
+        public override bool Equals(object obj)
+        {
+            return obj is MapEdit me && me.file == file && name == "name" && conditions == me.conditions && position == me.position;
+        }
+
+        public override int GetHashCode()
+        {
+            return (file + ":" + name + ":" + conditions + ":" + position[0] + ":" +position[1]).GetHashCode();
+        }
     }
 }

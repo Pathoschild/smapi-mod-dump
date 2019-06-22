@@ -1,0 +1,7 @@
+{
+  "Menu_DefaultText": "이식할 나무를 선택하시오",
+  "Menu_PlacementText": "나무에 대한 새 위치를 선택하시오",
+  "Menu_InvalidPlace": "여기에서 이식을 수 없다",
+  "Menu_InvalidCap": "수액 채취기있는 나무를 옮길 수 없다",
+  "Carpenter_Option": "나무를 이식하세요"
+}

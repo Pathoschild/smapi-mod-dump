@@ -10,12 +10,12 @@ namespace MegaStorage.Persistence
 {
     public class InventorySaver : ISaver
     {
-        private const string SaveDataKey = "InventoryNiceChests";
+        public string SaveDataKey => "InventoryNiceChests";
 
         private readonly IModHelper _modHelper;
         private readonly IMonitor _monitor;
 
-        private Dictionary<int, NiceChest> _inventoryNiceChests;
+        private Dictionary<int, CustomChest> _inventoryCustomChests;
 
         public InventorySaver(IModHelper modHelper, IMonitor monitor)
         {
@@ -23,21 +23,21 @@ namespace MegaStorage.Persistence
             _monitor = monitor;
         }
 
-        public void HideAndSaveNiceChests()
+        public void HideAndSaveCustomChests()
         {
-            _monitor.VerboseLog("InventorySaver: HideAndSaveNiceChests");
-            _inventoryNiceChests = new Dictionary<int, NiceChest>();
+            _monitor.VerboseLog("InventorySaver: HideAndSaveCustomChests");
+            _inventoryCustomChests = new Dictionary<int, CustomChest>();
             var deserializedChests = new List<DeserializedChest>();
-            var niceChests = Game1.player.Items.OfType<NiceChest>();
-            foreach (var niceChest in niceChests)
+            var customChests = Game1.player.Items.OfType<CustomChest>();
+            foreach (var customChest in customChests)
             {
-                var chest = niceChest.ToChest();
-                var index = Game1.player.Items.IndexOf(niceChest);
+                var chest = customChest.ToChest();
+                var index = Game1.player.Items.IndexOf(customChest);
                 Game1.player.Items[index] = chest;
-                var deserializedChest = niceChest.ToDeserializedChest(index);
+                var deserializedChest = customChest.ToDeserializedChest(index);
                 _monitor.VerboseLog($"Hiding and saving: {deserializedChest}");
                 deserializedChests.Add(deserializedChest);
-                _inventoryNiceChests.Add(index, niceChest);
+                _inventoryCustomChests.Add(index, customChest);
             }
             if (!Context.IsMainPlayer)
             {
@@ -51,27 +51,27 @@ namespace MegaStorage.Persistence
             _modHelper.Data.WriteSaveData(SaveDataKey, saveData);
         }
 
-        public void ReAddNiceChests()
+        public void ReAddCustomChests()
         {
-            _monitor.VerboseLog("InventorySaver: ReAddNiceChests");
+            _monitor.VerboseLog("InventorySaver: ReAddCustomChests");
 
-            if (_inventoryNiceChests == null)
+            if (_inventoryCustomChests == null)
             {
                 _monitor.VerboseLog("Nothing to re-add");
                 return;
             }
-            foreach (var niceChestIndex in _inventoryNiceChests)
+            foreach (var customChestIndex in _inventoryCustomChests)
             {
-                var index = niceChestIndex.Key;
-                var niceChest = niceChestIndex.Value;
-                _monitor.VerboseLog($"Re-adding: {niceChest.Name} ({index})");
-                Game1.player.Items[index] = niceChest;
+                var index = customChestIndex.Key;
+                var customChest = customChestIndex.Value;
+                _monitor.VerboseLog($"Re-adding: {customChest.Name} ({index})");
+                Game1.player.Items[index] = customChest;
             }
         }
 
-        public void LoadNiceChests()
+        public void LoadCustomChests()
         {
-            _monitor.VerboseLog("InventorySaver: LoadNiceChests");
+            _monitor.VerboseLog("InventorySaver: LoadCustomChests");
             if (!Context.IsMainPlayer)
             {
                 _monitor.VerboseLog("Not main player!");
@@ -86,9 +86,9 @@ namespace MegaStorage.Persistence
             foreach (var deserializedChest in saveData.DeserializedChests)
             {
                 var chest = (Chest)Game1.player.Items[deserializedChest.InventoryIndex];
-                var niceChest = chest.ToNiceChest(deserializedChest.ChestType);
+                var customChest = chest.ToCustomChest(deserializedChest.ChestType);
                 _monitor.VerboseLog($"Loading: {deserializedChest}");
-                Game1.player.Items[deserializedChest.InventoryIndex] = niceChest;
+                Game1.player.Items[deserializedChest.InventoryIndex] = customChest;
             }
 
         }

@@ -10,12 +10,12 @@ namespace MegaStorage.Persistence
 {
     public class FarmhandInventorySaver : ISaver
     {
-        private const string SaveDataKey = "FarmhandInventoryNiceChests";
+        public string SaveDataKey => "FarmhandInventoryNiceChests";
 
         private readonly IModHelper _modHelper;
         private readonly IMonitor _monitor;
 
-        private Dictionary<long, Dictionary<int, NiceChest>> _farmhandInventoryNiceChests;
+        private Dictionary<long, Dictionary<int, CustomChest>> _farmhandInventoryCustomChests;
 
         public FarmhandInventorySaver(IModHelper modHelper, IMonitor monitor)
         {
@@ -23,28 +23,28 @@ namespace MegaStorage.Persistence
             _monitor = monitor;
         }
 
-        public void HideAndSaveNiceChests()
+        public void HideAndSaveCustomChests()
         {
-            _monitor.VerboseLog("FarmhandInventorySaver: HideAndSaveNiceChests");
-            _farmhandInventoryNiceChests = new Dictionary<long, Dictionary<int, NiceChest>>();
+            _monitor.VerboseLog("FarmhandInventorySaver: HideAndSaveCustomChests");
+            _farmhandInventoryCustomChests = new Dictionary<long, Dictionary<int, CustomChest>>();
             var deserializedChests = new List<DeserializedChest>();
             foreach (var otherFarmer in Game1.otherFarmers)
             {
                 var playerId = otherFarmer.Key;
                 var player = otherFarmer.Value;
-                var playerNiceChests = new Dictionary<int, NiceChest>();
-                var niceChests = player.Items.OfType<NiceChest>();
-                foreach (var niceChest in niceChests)
+                var playerCustomChests = new Dictionary<int, CustomChest>();
+                var customChests = player.Items.OfType<CustomChest>();
+                foreach (var customChest in customChests)
                 {
-                    var chest = niceChest.ToChest();
-                    var index = player.Items.IndexOf(niceChest);
+                    var chest = customChest.ToChest();
+                    var index = player.Items.IndexOf(customChest);
                     player.Items[index] = chest;
-                    var deserializedChest = niceChest.ToDeserializedChest(playerId, index);
+                    var deserializedChest = customChest.ToDeserializedChest(playerId, index);
                     _monitor.VerboseLog($"Hiding and saving: {deserializedChest}");
                     deserializedChests.Add(deserializedChest);
-                    playerNiceChests.Add(index, niceChest);
+                    playerCustomChests.Add(index, customChest);
                 }
-                _farmhandInventoryNiceChests.Add(playerId, playerNiceChests);
+                _farmhandInventoryCustomChests.Add(playerId, playerCustomChests);
             }
             if (!Context.IsMainPlayer)
             {
@@ -58,36 +58,36 @@ namespace MegaStorage.Persistence
             _modHelper.Data.WriteSaveData(SaveDataKey, saveData);
         }
 
-        public void ReAddNiceChests()
+        public void ReAddCustomChests()
         {
-            _monitor.VerboseLog("FarmhandInventorySaver: ReAddNiceChests");
-            if (_farmhandInventoryNiceChests == null)
+            _monitor.VerboseLog("FarmhandInventorySaver: ReAddCustomChests");
+            if (_farmhandInventoryCustomChests == null)
             {
                 _monitor.VerboseLog("Nothing to re-add");
                 return;
             }
-            foreach (var playerNiceChest in _farmhandInventoryNiceChests)
+            foreach (var playerCustomChest in _farmhandInventoryCustomChests)
             {
-                var playerId = playerNiceChest.Key;
-                foreach (var niceChestIndex in playerNiceChest.Value)
+                var playerId = playerCustomChest.Key;
+                foreach (var customChestIndex in playerCustomChest.Value)
                 {
-                    var inventoryIndex = niceChestIndex.Key;
-                    var niceChest = niceChestIndex.Value;
-                    _monitor.VerboseLog($"Re-adding: {niceChest.Name} ({inventoryIndex})");
+                    var inventoryIndex = customChestIndex.Key;
+                    var customChest = customChestIndex.Value;
+                    _monitor.VerboseLog($"Re-adding: {customChest.Name} ({inventoryIndex})");
                     if (!Game1.otherFarmers.ContainsKey(playerId))
                     {
                         _monitor.VerboseLog($"Other player isn't loaded: {playerId}");
                         continue;
                     }
                     var player = Game1.otherFarmers.Single(x => x.Key == playerId).Value;
-                    player.Items[inventoryIndex] = niceChest;
+                    player.Items[inventoryIndex] = customChest;
                 }
             }
         }
 
-        public void LoadNiceChests()
+        public void LoadCustomChests()
         {
-            _monitor.VerboseLog("FarmhandInventorySaver: LoadNiceChests");
+            _monitor.VerboseLog("FarmhandInventorySaver: LoadCustomChests");
             if (!Context.IsMainPlayer)
             {
                 _monitor.VerboseLog("Not main player!");
@@ -109,9 +109,9 @@ namespace MegaStorage.Persistence
                 }
                 var player = Game1.otherFarmers.Single(x => x.Key == playerId).Value;
                 var chest = (Chest)player.Items[deserializedChest.InventoryIndex];
-                var niceChest = chest.ToNiceChest(deserializedChest.ChestType);
+                var customChest = chest.ToCustomChest(deserializedChest.ChestType);
                 _monitor.VerboseLog($"Loading: {deserializedChest}");
-                player.Items[deserializedChest.InventoryIndex] = niceChest;
+                player.Items[deserializedChest.InventoryIndex] = customChest;
             }
         }
 

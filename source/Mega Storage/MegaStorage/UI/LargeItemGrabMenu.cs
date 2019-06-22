@@ -24,7 +24,7 @@ namespace MegaStorage.UI
         protected const int ItemsPerRow = 12;
         protected const int Capacity = ItemsPerRow * Rows;
 
-        protected readonly NiceChest NiceChest;
+        protected readonly CustomChest CustomChest;
 
         private Item SourceItem => _sourceItemReflected.GetValue();
         private readonly IReflectedField<Item> _sourceItemReflected;
@@ -38,15 +38,15 @@ namespace MegaStorage.UI
         public ClickableTextureComponent UpButton;
         public ClickableTextureComponent DownButton;
 
-        public LargeItemGrabMenu(NiceChest niceChest)
-            : base(niceChest.items, false, true, InventoryMenu.highlightAllItems, niceChest.grabItemFromInventory, null, niceChest.grabItemFromChest,
-                false, true, true, true, true, 1, niceChest, -1, niceChest)
+        public LargeItemGrabMenu(CustomChest customChest)
+            : base(customChest.items, false, true, InventoryMenu.highlightAllItems, customChest.grabItemFromInventory, null, customChest.grabItemFromChest,
+                false, true, true, true, true, 1, customChest, -1, customChest)
         {
-            NiceChest = niceChest;
+            CustomChest = customChest;
             _sourceItemReflected = MegaStorageMod.Reflection.GetField<Item>(this, "sourceItem");
             _poofReflected = MegaStorageMod.Reflection.GetField<TemporaryAnimatedSprite>(this, "poof");
             _behaviorFunctionReflected = MegaStorageMod.Reflection.GetField<behaviorOnItemSelect>(this, "behaviorFunction");
-            ItemsToGrabMenu = new InventoryMenu(xPositionOnScreen + 32, yPositionOnScreen, false, niceChest.items, null, Capacity, Rows);
+            ItemsToGrabMenu = new InventoryMenu(xPositionOnScreen + 32, yPositionOnScreen, false, customChest.items, null, Capacity, Rows);
             ItemsToGrabMenu.movePosition(0, MoveTop);
             inventory.movePosition(0, MoveBottom);
             CreateArrows();
@@ -151,7 +151,7 @@ namespace MegaStorage.UI
 
         public virtual void Refresh()
         {
-            ItemsToGrabMenu.actualInventory = NiceChest.items.ToList();
+            ItemsToGrabMenu.actualInventory = CustomChest.items.ToList();
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -249,7 +249,7 @@ namespace MegaStorage.UI
             }
             if (organizeButton != null && organizeButton.containsPoint(x, y))
             {
-                organizeItemsInList(NiceChest.items);
+                organizeItemsInList(CustomChest.items);
                 Refresh();
                 Game1.playSound("Ship");
             }
@@ -349,8 +349,8 @@ namespace MegaStorage.UI
 
         private TemporaryAnimatedSprite CreatePoof(int x, int y)
         {
-            return new TemporaryAnimatedSprite("TileSheets/animations", 
-                new Rectangle(0, 320, 64, 64), 50f, 8, 0, 
+            return new TemporaryAnimatedSprite("TileSheets/animations",
+                new Rectangle(0, 320, 64, 64), 50f, 8, 0,
                 new Vector2(x - x % 64 + 16, y - y % 64 + 16), false, false);
         }
 
@@ -358,25 +358,23 @@ namespace MegaStorage.UI
         {
             var itemInChest = ItemsToGrabMenu.actualInventory.FirstOrDefault(i => i != null && IsSameItem(i, heldItem));
             if (itemInChest != null) return;
-                        var itemInNiceChest = NiceChest.items.Single(i => IsSameItem(i, heldItem));
-            var index = NiceChest.items.IndexOf(itemInNiceChest);
-            NiceChest.items[index] = null;
+            var itemInCustomChest = CustomChest.items.SingleOrDefault(i => IsSameItem(i, heldItem));
+            if (itemInCustomChest == null)
+                return;
+            var index = CustomChest.items.IndexOf(itemInCustomChest);
+            CustomChest.items[index] = null;
         }
 
         private bool IsSameItem(Item item, Item other)
         {
+            if (item == null || other == null)
+                return false;
             if (item.ParentSheetIndex != other.ParentSheetIndex || item is Object && !(other is Object) || !(item is Object) && other is Object)
-            {
                 return false;
-            }
             if (item is ColoredObject coloredObject && other is ColoredObject otherColoredObject && !coloredObject.color.Value.Equals(otherColoredObject.color.Value))
-            {
                 return false;
-            }
             if (item is Object itemObject && other is Object otherObject && (itemObject.bigCraftable.Value != otherObject.bigCraftable.Value || itemObject.Quality != otherObject.Quality))
-            {
                 return false;
-            }
             return item.Name.Equals(other.Name);
         }
 

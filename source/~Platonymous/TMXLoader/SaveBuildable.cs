@@ -1,12 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using PyTK.Types;
-using StardewModdingAPI;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using xTile;
 
 namespace TMXLoader
 {
@@ -37,6 +30,7 @@ namespace TMXLoader
             Location = location;
             Colors = colors;
             _editor = editor;
+            editor.saveBuildable = this;
         }
     }
 }

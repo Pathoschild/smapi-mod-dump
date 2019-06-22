@@ -9,18 +9,20 @@ using StardewValley.Tools;
 
 namespace MegaStorage.Models
 {
-    public abstract class NiceChest : Chest
+    public abstract class CustomChest : Chest
     {
-        public abstract string ItemName { get; }
-        public abstract string Description { get; }
         public abstract int Capacity { get; }
-        public abstract int ItemId { get; }
         public abstract ChestType ChestType { get; }
-        public abstract string SpritePath { get; }
-        public abstract string RecipeString { get; }
-        public abstract string BigCraftableInfo { get; }
-        protected abstract LargeItemGrabMenu CreateItemGrabMenu();
+        public abstract LargeItemGrabMenu CreateItemGrabMenu();
 
+        public CustomChestConfig Config { get; }
+        public string BigCraftableInfo => $"{Config.Name}/0/-300/Crafting -9/{Config.Description}/true/true/0";
+        public string RecipeString => $"{Config.Recipe}/Home/{Config.Id}/true/null";
+
+        private readonly Texture2D _sprite;
+        private readonly Texture2D _spriteBW;
+        private readonly Texture2D _spriteBraces;
+        
         private readonly IReflectedField<int> _currentLidFrameReflected;
         private int CurrentLidFrame
         {
@@ -28,17 +30,19 @@ namespace MegaStorage.Models
             set => _currentLidFrameReflected.SetValue(value);
         }
 
-        private LargeItemGrabMenu _largeItemGrabMenu;
-
-        protected NiceChest() : base(true)
+        protected CustomChest(CustomChestConfig config) : base(true)
         {
-            ParentSheetIndex = ItemId;
+            Config = config;
+            ParentSheetIndex = config.Id;
             _currentLidFrameReflected = MegaStorageMod.Reflection.GetField<int>(this, "currentLidFrame");
-            startingLidFrame.Value = ItemId + 1;
-            name = ItemName;
+            startingLidFrame.Value = config.Id + 1;
+            name = config.Name;
+            _sprite = MegaStorageMod.ModHelper.Content.Load<Texture2D>(config.SpritePath);
+            _spriteBW = MegaStorageMod.ModHelper.Content.Load<Texture2D>(config.SpriteBWPath);
+            _spriteBraces = MegaStorageMod.ModHelper.Content.Load<Texture2D>(config.SpriteBracesPath);
         }
 
-        public override string getDescription() => Description;
+        public override string getDescription() => Config.Description;
 
         public override Item addItem(Item itemToAdd)
         {
@@ -66,7 +70,7 @@ namespace MegaStorage.Models
                 return;
             items.Remove(item);
             clearNulls();
-            _largeItemGrabMenu.Refresh();
+            Game1.activeClickableMenu = CreateItemGrabMenu();
         }
 
         public override void updateWhenCurrentLocation(GameTime time, GameLocation environment)
@@ -87,8 +91,7 @@ namespace MegaStorage.Models
                     return;
                 if (currentLidFrameValue == ParentSheetIndex + 5)
                 {
-                    _largeItemGrabMenu = CreateItemGrabMenu();
-                    Game1.activeClickableMenu = _largeItemGrabMenu;
+                    Game1.activeClickableMenu = CreateItemGrabMenu();
                     frameCounter.Value = -1;
                 }
                 else
@@ -121,8 +124,9 @@ namespace MegaStorage.Models
                 addedItem = who.addItemToInventory(addedItem);
             clearNulls();
             var id = Game1.activeClickableMenu.currentlySnappedComponent != null ? Game1.activeClickableMenu.currentlySnappedComponent.myID : -1;
-            _largeItemGrabMenu.Refresh();
-            _largeItemGrabMenu.heldItem = addedItem;
+            var menu = CreateItemGrabMenu();
+            menu.heldItem = addedItem;
+            Game1.activeClickableMenu = menu;
             if (id == -1)
                 return;
             Game1.activeClickableMenu.currentlySnappedComponent = Game1.activeClickableMenu.getComponentWithID(id);
@@ -187,19 +191,21 @@ namespace MegaStorage.Models
             };
         }
 
-        public override void drawInMenu(SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, bool drawStackNumber, Color color, bool drawShadow)
-        {
-            var drawColor = playerChoiceColor.Value == Color.Black ? Color.White : playerChoiceColor.Value;
-            base.drawInMenu(spriteBatch, location, scaleSize, transparency, layerDepth, drawStackNumber, drawColor, drawShadow);
-        }
-
         public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1)
         {
-            var drawColor = playerChoiceColor.Value == Color.Black ? Color.White : playerChoiceColor.Value;
-            spriteBatch.Draw(Game1.bigCraftableSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, (y - 1) * 64 + (shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))), Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, ParentSheetIndex, 16, 32), drawColor * alpha, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, (y * 64 + 4) / 10000f);
-            spriteBatch.Draw(Game1.bigCraftableSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 + 20)), new Rectangle(0, 725, 16, 11), Color.White * alpha, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, (y * 64 + 6) / 10000f);
-            //spriteBatch.Draw(Game1.bigCraftableSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, (y - 1) * 64 + (this.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))), Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, 176 + (CurrentLidFrame - ParentSheetIndex), 16, 32), Color.White * alpha, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, (y * 64 + 6) / 10000f);
-            spriteBatch.Draw(Game1.bigCraftableSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, (y - 1) * 64 + (shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))), Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, CurrentLidFrame, 16, 32), drawColor * alpha * alpha, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, (y * 64 + 5) / 10000f);
+            var lidFrameIndex = CurrentLidFrame - ParentSheetIndex - 1;
+            if (playerChoiceColor.Value.Equals(Color.Black))
+            {
+                spriteBatch.Draw(_sprite, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + (shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0), (y - 1) * 64)), Game1.getSourceRectForStandardTileSheet(_sprite, 0, 16, 32), tint.Value * alpha, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, (y * 64 + 4) / 10000f);
+                spriteBatch.Draw(_sprite, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + (shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0), (y - 1) * 64)), Game1.getSourceRectForStandardTileSheet(_sprite, lidFrameIndex, 16, 32), tint.Value * alpha * alpha, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, (y * 64 + 5) / 10000f);
+            }
+            else
+            {
+                spriteBatch.Draw(_spriteBW, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, (y - 1) * 64 + (shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))), Game1.getSourceRectForStandardTileSheet(_spriteBW, 0, 16, 32), playerChoiceColor.Value * alpha, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, (y * 64 + 4) / 10000f);
+                spriteBatch.Draw(_spriteBW, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, (y - 1) * 64 + (shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))), Game1.getSourceRectForStandardTileSheet(_spriteBW, lidFrameIndex, 16, 32), playerChoiceColor.Value * alpha * alpha, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, (y * 64 + 5) / 10000f);
+                spriteBatch.Draw(Game1.bigCraftableSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 + 20)), new Rectangle(0, 725, 16, 11), Color.White * alpha, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, (y * 64 + 6) / 10000f);
+                spriteBatch.Draw(_spriteBraces, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, (y - 1) * 64 + (shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))), Game1.getSourceRectForStandardTileSheet(_spriteBraces, lidFrameIndex, 16, 32), Color.White * alpha, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, (y * 64 + 6) / 10000f);
+            }
         }
 
     }

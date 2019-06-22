@@ -334,6 +334,7 @@ async Task<dynamic[]> GetInvalidMods(IEnumerable<ParsedModData> mods)
 
 		// collections of zipped content packs
 		13533, // A Less Yellow Stardew (#2415) > All Lanuage Version In One File
+		17433, // A Less Yellow Stardew (#2415) > ALYSD Map update (invalid manifest)
 		9295,  // Clint Narrative Overhaul (#1067)
 		9297,  // Demetrius Narrative Overhaul (#1120)
 		9303,  // Dwarf Narrative Overhaul (#1250)

@@ -11,7 +11,7 @@ namespace MegaStorage.UI
         private int _currentRow;
         private int _maxRow;
 
-        public MagicItemGrabMenu(NiceChest niceChest) : base(niceChest)
+        public MagicItemGrabMenu(CustomChest customChest) : base(customChest)
         {
             _currentRow = 0;
             Refresh();
@@ -33,8 +33,8 @@ namespace MegaStorage.UI
 
         public override void Refresh()
         {
-            ItemsToGrabMenu.actualInventory = NiceChest.items.Skip(ItemsPerRow * _currentRow).ToList();
-            _maxRow = (NiceChest.items.Count - 1) / 12 + 1 - Rows;
+            ItemsToGrabMenu.actualInventory = CustomChest.items.Skip(ItemsPerRow * _currentRow).ToList();
+            _maxRow = (CustomChest.items.Count - 1) / 12 + 1 - Rows;
             if (_currentRow > _maxRow)
                 _currentRow = _maxRow;
         }

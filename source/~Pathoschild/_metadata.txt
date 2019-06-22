@@ -18,9 +18,11 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 6089a0e96d6c14c8f19cf0f712b099f0655802c3
+   commit 847040ff51deda5e0f69d029b9c6203cf19ba413
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Jun 16 18:11:11 2019 -0400
+   Date:   Fri Jun 21 12:44:31 2019 -0400
    
-       fix Day token not allowing zero values
+       add Turkish translations for Chests Anywhere and Tractor Mod
+       
+       Thanks to cilekli-link!
    

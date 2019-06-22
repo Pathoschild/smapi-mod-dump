@@ -6,6 +6,7 @@ mods:
    Dish of the Day Display
    Floor Shadow Switcher
    Monster Log Anywhere
+   Plantable Palm Trees
 
 latest commit:
    commit 94c334df0258fa21b3238257764bad95fd71d90f

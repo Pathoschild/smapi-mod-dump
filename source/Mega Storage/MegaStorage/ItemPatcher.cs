@@ -27,18 +27,20 @@ namespace MegaStorage
         
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            foreach (var niceChest in NiceChestFactory.NiceChests)
+            foreach (var customChest in CustomChestFactory.CustomChests)
             {
-                Register(niceChest);
+                Register(customChest);
             }
         }
 
-        private void Register(NiceChest niceChest)
+        private void Register(CustomChest customChest)
         {
-            _monitor.VerboseLog($"Registering {niceChest.ItemName} ({niceChest.ItemId})");
-            Game1.bigCraftablesInformation[niceChest.ItemId] = niceChest.BigCraftableInfo;
-            CraftingRecipe.craftingRecipes[niceChest.ItemName] = niceChest.RecipeString;
-            Game1.player.craftingRecipes[niceChest.ItemName] = 0;
+            _monitor.VerboseLog($"Registering {customChest.Config.Name} ({customChest.Config.Id})");
+            _monitor.VerboseLog($"Recipe: {customChest.Config.Recipe}");
+            _monitor.VerboseLog($"BigCraftableInfo: {customChest.BigCraftableInfo}");
+            Game1.bigCraftablesInformation[customChest.Config.Id] = customChest.BigCraftableInfo;
+            CraftingRecipe.craftingRecipes[customChest.Config.Name] = customChest.RecipeString;
+            Game1.player.craftingRecipes[customChest.Config.Name] = 0;
         }
 
         private void OnInventoryChanged(object sender, InventoryChangedEventArgs e)
@@ -48,16 +50,17 @@ namespace MegaStorage
                 return;
 
             var addedItem = e.Added.Single();
-            if (addedItem is NiceChest)
+            if (addedItem is CustomChest)
                 return;
 
-            if (!NiceChestFactory.IsNiceChest(addedItem))
+            if (!CustomChestFactory.IsCustomChest(addedItem))
                 return;
 
             _monitor.VerboseLog("OnInventoryChanged: converting");
 
             var index = Game1.player.Items.IndexOf(addedItem);
-            Game1.player.Items[index] = NiceChestFactory.Create(addedItem.ParentSheetIndex);
+            var item = Game1.player.Items[index];
+            Game1.player.Items[index] = item.ToCustomChest();
         }
 
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
@@ -68,16 +71,17 @@ namespace MegaStorage
 
             var addedItemPosition = e.Added.Single();
             var addedItem = addedItemPosition.Value;
-            if (addedItem is NiceChest)
+            if (addedItem is CustomChest)
                 return;
 
-            if (!NiceChestFactory.IsNiceChest(addedItem))
+            if (!CustomChestFactory.IsCustomChest(addedItem))
                 return;
 
             _monitor.VerboseLog("OnObjectListChanged: converting");
 
             var position = addedItemPosition.Key;
-            e.Location.objects[position] = NiceChestFactory.Create(addedItem.ParentSheetIndex);
+            var item = e.Location.objects[position];
+            e.Location.objects[position] = item.ToCustomChest();
         }
 
     }

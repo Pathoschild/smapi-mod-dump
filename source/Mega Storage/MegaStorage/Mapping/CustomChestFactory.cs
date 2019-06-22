@@ -7,33 +7,33 @@ using Object = StardewValley.Object;
 
 namespace MegaStorage.Mapping
 {
-    public static class NiceChestFactory
+    public static class CustomChestFactory
     {
-        public static List<NiceChest> NiceChests { get; }
+        public static List<CustomChest> CustomChests { get; }
 
-        static NiceChestFactory()
+        static CustomChestFactory()
         {
-            NiceChests = new List<NiceChest>
+            CustomChests = new List<CustomChest>
             {
                 new LargeChest(),
                 new MagicChest()
             };
         }
 
-        public static bool IsNiceChest(Item item)
+        public static bool IsCustomChest(Item item)
         {
             if (!(item is Object)) return false;
             if (!((Object)item).bigCraftable.Value) return false;
-            return NiceChests.Any(x => x.ItemId == item.ParentSheetIndex);
+            return CustomChests.Any(x => x.Config.Id == item.ParentSheetIndex);
         }
 
-        public static NiceChest Create(int id)
+        public static CustomChest Create(int id)
         {
-            var chestType = NiceChests.Single(x => x.ItemId == id).ChestType;
+            var chestType = CustomChests.Single(x => x.Config.Id == id).ChestType;
             return Create(chestType);
         }
 
-        public static NiceChest Create(ChestType chestType)
+        public static CustomChest Create(ChestType chestType)
         {
             switch (chestType)
             {

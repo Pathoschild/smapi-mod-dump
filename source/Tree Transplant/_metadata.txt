@@ -5,9 +5,9 @@ mods:
    Tree Transplant
 
 latest commit:
-   commit a2bc9e972446248afca8fb555233f7bdea93ee33
+   commit e390cb5752190491938cec1ac4a2c3e494823beb
    Author: James Stine <leon.blade@gmail.com>
-   Date:   Fri Apr 26 22:12:18 2019 -0400
+   Date:   Fri Jun 21 14:26:44 2019 -0400
    
-       Portuguese translation, thanks @Arcareon!
+       Update to v1.0.8
    

@@ -19,62 +19,55 @@ namespace MegaStorage.Persistence
 
         public void Start()
         {
-            _modHelper.Events.GameLoop.SaveLoaded += (sender, args) => LoadNiceChests();
-            _modHelper.Events.GameLoop.DayEnding += (sender, args) => HideAndSaveNiceChests();
-            _modHelper.Events.GameLoop.DayStarted += (sender, args) => ReAddNiceChests();
-            _modHelper.Events.GameLoop.ReturnedToTitle += (sender, args) => HideAndSaveNiceChests();
+            _modHelper.Events.GameLoop.SaveLoaded += (sender, args) => LoadCustomChests();
+            _modHelper.Events.GameLoop.Saving += (sender, args) => HideAndSaveCustomChests();
+            _modHelper.Events.GameLoop.Saved += (sender, args) => ReAddCustomChests();
+            _modHelper.Events.GameLoop.ReturnedToTitle += (sender, args) => HideAndSaveCustomChests();
 
-            _modHelper.Events.Multiplayer.PeerContextReceived += (sender, args) => HideAndSaveNiceChests();
-            _modHelper.Events.Multiplayer.PeerDisconnected += (sender, args) => OnPeerDisconnected();
-            _modHelper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
+            _modHelper.Events.Multiplayer.PeerContextReceived += OnPeerContextReceived;
+            _modHelper.Events.Multiplayer.PeerDisconnected += OnPeerDisconnected;
         }
 
-        private void LoadNiceChests()
+        private void LoadCustomChests()
         {
-            _monitor.VerboseLog("LoadNiceChests");
+            _monitor.VerboseLog("LoadCustomChests");
             foreach (var saver in _savers)
             {
-                saver.LoadNiceChests();
-            }
-            ReportIsLoaded();
-        }
-
-        private void ReAddNiceChests()
-        {
-            _monitor.VerboseLog("ReAddNiceChests");
-            foreach (var saver in _savers)
-            {
-                saver.ReAddNiceChests();
+                saver.LoadCustomChests();
             }
         }
 
-        private void HideAndSaveNiceChests()
+        private void ReAddCustomChests()
         {
-            _monitor.VerboseLog("HideAndSaveNiceChests");
+            _monitor.VerboseLog("ReAddCustomChests");
             foreach (var saver in _savers)
             {
-                saver.HideAndSaveNiceChests();
+                saver.ReAddCustomChests();
             }
         }
 
-        private void ReportIsLoaded()
+        private void HideAndSaveCustomChests()
         {
-            _modHelper.Multiplayer.SendMessage("PlayerLoaded", "PlayerLoaded", new[] { "Alek.MegaStorage" });
+            _monitor.VerboseLog("HideAndSaveCustomChests");
+            foreach (var saver in _savers)
+            {
+                saver.HideAndSaveCustomChests();
+            }
         }
 
-        private async void OnPeerDisconnected()
+        private async void OnPeerContextReceived(object sender, PeerContextReceivedEventArgs e)
+        {
+            _monitor.VerboseLog("OnPeerContextReceived");
+            HideAndSaveCustomChests();
+            await Task.Delay(1000); // hack :-(
+            ReAddCustomChests();
+        }
+
+        private async void OnPeerDisconnected(object sender, PeerDisconnectedEventArgs e)
         {
             _monitor.VerboseLog("OnPeerDisconnected");
             await Task.Delay(1000); // hack :-(
-            ReAddNiceChests();
-        }
-
-        private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
-        {
-            _monitor.VerboseLog($"OnModMessageReceived from {e.FromModID}: {e.Type}");
-            if (e.FromModID != "Alek.MegaStorage" || e.Type != "PlayerLoaded")
-                return;
-            ReAddNiceChests();
+            ReAddCustomChests();
         }
 
     }

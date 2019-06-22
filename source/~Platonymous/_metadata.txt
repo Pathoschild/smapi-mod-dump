@@ -43,9 +43,9 @@ mods:
    Visualize
 
 latest commit:
-   commit da0f1ebab0af6c4d74340be9d170a818bfd1685d
+   commit 069a5f99a7f554c0322a5337e7752a9838bd6b06
    Author: David <david@millionideas.de>
-   Date:   Tue Jun 11 21:49:05 2019 +0200
+   Date:   Thu Jun 20 23:17:27 2019 +0200
    
-       Minor changes
+       Fix locations not being added early enough for npcs
    

@@ -20,6 +20,7 @@ using xTile;
 using xTile.Dimensions;
 using PyTK.Overrides;
 using PyTK.APIs;
+using Microsoft.Xna.Framework.Input;
 
 namespace PyTK
 {
@@ -36,16 +37,13 @@ namespace PyTK
 
         public override void Entry(IModHelper helper)
         {
+
             _helper = helper;
             _monitor = Monitor;
-            try
-            {
+    
                 harmonyFix();
-            }
-            catch
-            {
-                Monitor.Log("Harmony Patching failed", LogLevel.Error);
-            }
+
+            // Monitor.Log("Harmony Patching failed", LogLevel.Error);
 
             FormatManager.Instance.RegisterMapFormat(new NewTiledTmxFormat());
 
@@ -82,21 +80,24 @@ namespace PyTK
 
             Helper.Events.Display.RenderingHud += (s, e) =>
             {
-                if(Game1.displayHUD)
-                    PyTK.PlatoUI.UIHelper.DrawHud(e.SpriteBatch, true);
+                if (Game1.displayHUD && Context.IsWorldReady)
+                PyTK.PlatoUI.UIHelper.DrawHud(e.SpriteBatch, true);
+
             };
 
             Helper.Events.Display.RenderedHud += (s, e) =>
             {
-                if (Game1.displayHUD)
+                if (Game1.displayHUD && Context.IsWorldReady)
                     PyTK.PlatoUI.UIHelper.DrawHud(e.SpriteBatch, false);
             };
 
             Helper.Events.Input.ButtonPressed += (s, e) =>
             {
-                if (Game1.displayHUD)
+                if (Game1.displayHUD && Context.IsWorldReady)
+                {
                     if (e.Button == SButton.MouseLeft || e.Button == SButton.MouseRight)
                         PlatoUI.UIHelper.BaseHud.PerformClick(e.Cursor.ScreenPixels.toPoint(), e.Button == SButton.MouseRight, false, false);
+                }
             };
 
             Helper.Events.Display.WindowResized += (s, e) =>
@@ -144,8 +145,9 @@ namespace PyTK
                 if (Context.IsWorldReady && Game1.currentLocation is GameLocation location && location.Map is Map map)
                     PyUtils.checkDrawConditions(map);
             };
-        }
 
+        }
+        
         public static void syncCounter(string id, int value)
         {
             if (Game1.IsMultiplayer)
@@ -159,14 +161,37 @@ namespace PyTK
 
         private void Player_Warped(object sender, WarpedEventArgs e)
         {
+            if (!e.IsLocalPlayer)
+                return;
+
             e.NewLocation?.Map.enableMoreMapLayers();
 
             if (e.NewLocation is GameLocation g && g.map is Map m)
             {
-                if (m.Properties.ContainsKey("EntryAction"))
-                    TileAction.invokeCustomTileActions("EntryAction", g, Vector2.Zero, "Map");
+                int forceX = Game1.player.getTileX();
+                int forceY = Game1.player.getTileY();
+                int forceF = Game1.player.FacingDirection;
+                if (e.OldLocation is GameLocation og && m.Properties.ContainsKey("ForceEntry_" + og.Name)){
+                    string[] pos = m.Properties["ForceEntry_" + og.Name].ToString().Split(' ');
+                    if(pos.Length > 0 && pos[1] != "X")
+                        int.TryParse(pos[0], out forceX);
 
-                PyUtils.checkDrawConditions(m);
+                    if (pos.Length > 1 && pos[1] != "Y")
+                        int.TryParse(pos[1], out forceY);
+
+                    if (pos.Length > 2 && pos[2] != "F")
+                        int.TryParse(pos[2], out forceF);
+
+                    Game1.player.Position = new Vector2(forceX, forceY);
+                    Game1.player.FacingDirection = forceF;
+                }
+                else {
+
+                    if (m.Properties.ContainsKey("EntryAction"))
+                        TileAction.invokeCustomTileActions("EntryAction", g, Vector2.Zero, "Map");
+
+                    PyUtils.checkDrawConditions(m);
+                }
             }
         }
 
@@ -179,6 +204,7 @@ namespace PyTK
         private void harmonyFix()
         {
             HarmonyInstance instance = HarmonyInstance.Create("Platonymous.PyTK");
+            OvSpritebatchNew.initializePatch(instance);
            // PyUtils.initOverride("SObject", PyUtils.getTypeSDV("Object"),typeof(DrawFix1), new List<string>() { "draw", "drawInMenu", "drawWhenHeld", "drawAsProp" });
            // PyUtils.initOverride("TemporaryAnimatedSprite", PyUtils.getTypeSDV("TemporaryAnimatedSprite"),typeof(DrawFix2), new List<string>() { "draw" });
             instance.PatchAll(Assembly.GetExecutingAssembly());
@@ -321,6 +347,19 @@ namespace PyTK
 
         private void registerTileActions()
         {
+            TileAction CC = new TileAction("CC", (action, location, tile, layer) =>
+            {
+                List<string> text = action.Split(' ').ToList();
+                string key = text[1];
+                text.RemoveAt(0);
+                text.RemoveAt(0);
+                action = String.Join(" ", text);
+                if (key == "cs")
+                    action += ";";
+                 Helper.ConsoleCommands.Trigger(key, action.Split(' '));
+                 return true;
+             }).register();
+
             TileAction Game = new TileAction("Game", (action, location, tile, layer) =>
             {
                 List<string> text = action.Split(' ').ToList();
@@ -349,8 +388,6 @@ namespace PyTK
 
                                     PyLua.loadScriptFromString(script, id);
                                 }
-                                else
-                                    PyLua.loadScriptFromString("Luau.log(\"Error: Could not find Lua property on Map.\")", id);
                             }
                             else
                             {
@@ -359,11 +396,11 @@ namespace PyTK
                                 function callthis(location,tile,layer)
                                 " + lua + @"
                                 end", id);
-                                else
-                                    PyLua.loadScriptFromString("Luau.log(\"Error: Could not find Lua property on Tile.\")", id);
                             }
                         }
-                        PyLua.callFunction(id, "callthis", new object[] { location, tile, layer });
+
+                        if(PyLua.hasScript(id))
+                            PyLua.callFunction(id, "callthis", new object[] { location, tile, layer });
                     }
                     else
                         PyLua.callFunction(a[1], a[2], new object[] { location, tile, layer });

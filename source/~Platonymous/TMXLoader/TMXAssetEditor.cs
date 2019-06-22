@@ -29,8 +29,19 @@ namespace TMXLoader
         public string assetName;
         public string conditions;
         public string inLocation;
+        public SaveBuildable saveBuildable = null;
 
         public bool lastCheck = true;
+
+        public override bool Equals(object obj)
+        {
+            return obj is TMXAssetEditor tmxe && edit == tmxe.edit && inLocation == tmxe.inLocation && assetName == tmxe.assetName;
+        }
+
+        public override int GetHashCode()
+        {
+            return (edit.GetHashCode() + ":" + inLocation + ":" + assetName + ":" + edit.position).GetHashCode();
+        }
 
         public TMXAssetEditor(MapEdit edit, Map map, EditType type)
         {
@@ -42,7 +53,7 @@ namespace TMXLoader
             if (edit is BuildableEdit b)
                 this.inLocation = b._location;
 
-            this.conditions = edit.conditions;
+            this.conditions = edit is BuildableEdit ? "" : edit.conditions;
             lastCheck = conditions == "";
         }
 
@@ -56,11 +67,17 @@ namespace TMXLoader
         }
         public bool CanEdit<T>(IAssetInfo asset)
         {
+            if (saveBuildable != null && !TMXLoaderMod.buildablesBuild.Contains(saveBuildable))
+                return false;
+
             return asset.AssetNameEquals(edit is BuildableEdit ? assetName : "Maps/" + assetName);
         }
 
         public void Edit<T>(IAssetData asset)
         {
+            if (saveBuildable != null && !TMXLoaderMod.buildablesBuild.Contains(saveBuildable))
+                return;
+
             if (!lastCheck)
                 return;
             Map map = newMap;
@@ -101,7 +118,13 @@ namespace TMXLoader
                     foreach (Layer layer in map.Layers)
                         layer.Id = layer.Id.Replace("Spouse", edit.info);
 
-                map.Properties.Add("EntryAction", "Lua Platonymous.TMXLoader.SpouseRoom entry");
+                string eAction = "Lua Platonymous.TMXLoader.SpouseRoom entry";
+
+                if (map.Properties.ContainsKey("EntryAction"))
+                    map.Properties["EntryAction"] = eAction + ";" + map.Properties["EntryAction"];
+                else
+                    map.Properties.Add("EntryAction", eAction);
+
                 map = map.mergeInto(original, new Vector2(edit.position[0], edit.position[1]), null, true);
             }
 

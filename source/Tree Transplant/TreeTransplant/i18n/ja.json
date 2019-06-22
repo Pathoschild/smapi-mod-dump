@@ -1,0 +1,7 @@
+{
+  "Menu_DefaultText": "植え替えをする樹木を 選んでください",
+  "Menu_PlacementText": "新しく植え替える位置を 選んでください",
+  "Menu_InvalidPlace": "そこには 配置できません！",
+  "Menu_InvalidCap": "その樹木は 移動できません！",
+  "Carpenter_Option": "樹木の植え替え"
+}

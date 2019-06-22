@@ -29,9 +29,9 @@ namespace MegaStorage
         {
             var assetImage = asset.AsImage();
             ExpandSpriteSheet(assetImage);
-            foreach (var niceChest in NiceChestFactory.NiceChests)
+            foreach (var customChest in CustomChestFactory.CustomChests)
             {
-                PatchSprite(assetImage, niceChest);
+                PatchSprite(assetImage, customChest);
             }
         }
 
@@ -52,13 +52,13 @@ namespace MegaStorage
             assetImage.ReplaceWith(expandedSpriteSheet);
         }
 
-        private void PatchSprite(IAssetDataForImage assetImage, NiceChest niceChest)
+        private void PatchSprite(IAssetDataForImage assetImage, CustomChest customChest)
         {
-            var sprite = _modHelper.Content.Load<Texture2D>(niceChest.SpritePath);
-            var destinationRect = Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, niceChest.ParentSheetIndex, 16, 32);
-            destinationRect.Width = sprite.Width;
+            var sprite = _modHelper.Content.Load<Texture2D>(customChest.Config.SpritePath);
+            var destinationRect = Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, customChest.ParentSheetIndex, 16, 32);
+            var sourceRect = new Rectangle(0, 0, 16, 32);
             _monitor.VerboseLog($"Destination rect: ({destinationRect.X}, {destinationRect.Y}) - ({destinationRect.Width}, {destinationRect.Height})");
-            assetImage.PatchImage(sprite, targetArea: destinationRect);
+            assetImage.PatchImage(sprite, targetArea: destinationRect, sourceArea: sourceRect);
         }
 
     }

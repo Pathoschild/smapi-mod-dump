@@ -46,10 +46,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Config.cs" />
+    <Compile Include="Models\CustomChestConfig.cs" />
+    <Compile Include="Models\ModConfig.cs" />
     <Compile Include="Persistence\FarmhandInventorySaver.cs" />
     <Compile Include="UI\MagicItemGrabMenu.cs" />
-    <Compile Include="Mapping\NiceChestFactory.cs" />
+    <Compile Include="Mapping\CustomChestFactory.cs" />
     <Compile Include="SpritePatcher.cs" />
     <Compile Include="ItemPatcher.cs" />
     <Compile Include="MegaStorageMod.cs" />
@@ -58,7 +59,7 @@
     <Compile Include="Models\LargeChest.cs" />
     <Compile Include="UI\LargeItemGrabMenu.cs" />
     <Compile Include="Models\MagicChest.cs" />
-    <Compile Include="Models\NiceChest.cs" />
+    <Compile Include="Models\CustomChest.cs" />
     <Compile Include="Persistence\InventorySaver.cs" />
     <Compile Include="Persistence\ISaver.cs" />
     <Compile Include="Persistence\LocationInventorySaver.cs" />
@@ -71,7 +72,22 @@
     <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\MagicChest.png">
+    <Content Include="Sprites\LargeChest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sprites\LargeChestBraces.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sprites\LargeChestBW.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sprites\MagicChest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sprites\MagicChestBraces.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sprites\MagicChestBW.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -1,7 +1,7 @@
 {
   "Name": "Wait Around",
   "Author": "Alhifar",
-  "Version": "1.2.2-unofficial.2-pathoschild",
+  "Version": "1.2.2-unofficial.4-pathoschild",
   "Description": "Wait around for something to happen",
   "UniqueID": "Alhifar.WaitAround",
   "EntryDll": "WaitAroundSMAPI.dll",

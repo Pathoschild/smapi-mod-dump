@@ -1,0 +1,14 @@
+﻿{
+  "hud-text.desc_sick": "你感冒了...!",
+  "hud-text.desc_hot": "外面温度越高，你的体力消耗就越大。",
+  "hud-text.desc_cold": "外面温度越低，你的体力消耗就越大。",
+  "hud-text.desc_turntheheaton": "寒冷已经渗入了你的房子墙壁，让你疲惫不堪...",
+  "hud-text.desc_inclement": "恶劣的天气使你感到不舒服...",
+  "hud-text.desc_blizzard": "风和雪把你冻僵了...",
+  "hud-text.desc_wampa": "外面的狂风和大雪正在消耗你的体力...", 
+  "hud-text.desc_freeze": "外面的严寒让你昏昏欲睡，精疲力竭。",
+  "hud-text.desc_flu": "你因为恶劣天气得了流感，最好快点吃点药！",
+  "hud-text.desc_cold_removed": "你感觉到这种药能治疗你的疾病，舒缓你的疲惫。",
+  "hud-text.desc_bathHouse":  "温暖的浴室是一剂舒缓的镇静剂，你感觉好多了。",
+  "hud-text.desc_HeatOn":  "寒冷正从你房子的墙壁渗进来，你应该点燃壁炉..."
+}

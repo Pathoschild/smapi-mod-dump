@@ -2,6 +2,7 @@
 {
     public class DeserializedChest
     {
+        public string Name { get; set; }
         public long PlayerId { get; set; }
         public string LocationName { get; set; }
         public float PositionX { get; set; }
