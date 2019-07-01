@@ -235,17 +235,36 @@ namespace Better10Hearts
 
                     float hearts = friendship.Points / NPC.friendshipPointsPerHeartLevel;
 
-                    // Check if friendship is at 10 hearts
-                    if (hearts >= 10 && !npcEnergyGeneration.ContainsKey(npc.Name))
+                    if (Config.OnlyGetStaminaAt10Hearts)
                     {
-                        // Add the npc to a list to check if they have spoken today
-                        npcEnergyGeneration.Add(npc.Name, false);
-
-                        // Check if it's the NPC's birthday
-                        if (npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth))
+                        // Check if friendship is at 10 hearts
+                        if (hearts >= 10 && !npcEnergyGeneration.ContainsKey(npc.Name))
                         {
-                            // Set max luck 
-                            Game1.dailyLuck = 0.12;
+                            // Add the npc to a list to check if they have spoken today
+                            npcEnergyGeneration.Add(npc.Name, false);
+
+                            // Check if it's the NPC's birthday
+                            if (npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth))
+                            {
+                                // Set max luck 
+                                Game1.dailyLuck = 0.12;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Check if friendship is at 10 hearts
+                        if (!npcEnergyGeneration.ContainsKey(npc.Name))
+                        {
+                            // Add the npc to a list to check if they have spoken today
+                            npcEnergyGeneration.Add(npc.Name, false);
+
+                            // Check if it's the NPC's birthday
+                            if (npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth))
+                            {
+                                // Set max luck 
+                                Game1.dailyLuck = 0.12;
+                            }
                         }
                     }
                 }

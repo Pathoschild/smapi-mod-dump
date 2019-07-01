@@ -69,4 +69,15 @@ namespace HDSprites.Token.Global
             this.GlobalValues = new List<ValueExt>() { new ValueExt(this.GlobalValue, new List<string>()) };
         }
     }
+
+    public class LanguageGlobalToken : GlobalToken
+    {
+        public LanguageGlobalToken() : base("Language") { }
+
+        public override void Update()
+        {
+            this.GlobalValue = "en";
+            this.GlobalValues = new List<ValueExt>() { new ValueExt(this.GlobalValue, new List<string>()) };
+        }
+    }
 }

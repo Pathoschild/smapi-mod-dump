@@ -1,0 +1,10 @@
+{
+  "Name": "Traveling Takes Time",
+  "Author": "Vrakyas",
+  "Version": "1.1.2",
+  "Description": "Traveling by mine cart or bus takes time instead of being instant.",
+  "UniqueID": "Vrakyas.TravelingTakesTime",
+  "EntryDll": "TravelingTakesTime.dll",
+  "MinimumApiVersion": "2.9",
+  "UpdateKeys":  [ "Nexus:4031" ]
+}

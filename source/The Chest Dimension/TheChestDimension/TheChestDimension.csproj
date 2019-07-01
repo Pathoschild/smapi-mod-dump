@@ -46,6 +46,7 @@
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TCDRules.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />

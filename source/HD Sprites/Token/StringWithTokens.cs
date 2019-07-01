@@ -65,7 +65,7 @@ namespace HDSprites.Token
                                     break;
                                 }
                             }
-                            output = contains.ToString().ToLower();
+                            output = contains.ToString();
                         }
                         else
                         {

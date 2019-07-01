@@ -1,18 +1,13 @@
-﻿using Denifia.Stardew.SendItems.Domain;
+﻿using System;
+using System.Linq;
+using Denifia.Stardew.SendItems.Domain;
 using Denifia.Stardew.SendItems.Events;
 using Denifia.Stardew.SendItems.Framework;
 using StardewValley;
 using StardewValley.Menus;
-using System;
-using System.Linq;
 
 namespace Denifia.Stardew.SendItems.Services
 {
-    public interface ILetterboxService
-    {
-
-    }
-
     /// <summary>
     /// Handles what to do when a player uses the letter box and reads letters
     /// </summary>
@@ -35,8 +30,8 @@ namespace Denifia.Stardew.SendItems.Services
         private void PlayerUsingLetterbox(object sender, EventArgs e)
         {
             var currentFarmerId = _farmerService.CurrentFarmer.Id;
-            var mail = Repository.Instance.FirstOrDefault<Mail>(x => 
-                x.Status == MailStatus.Delivered && 
+            var mail = Repository.Instance.FirstOrDefault<Mail>(x =>
+                x.Status == MailStatus.Delivered &&
                 x.ToFarmerId == currentFarmerId
             );
             if (mail != null && !(Game1.mailbox == null || !Game1.mailbox.Any()))

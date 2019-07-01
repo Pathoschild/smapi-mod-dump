@@ -27,6 +27,12 @@ namespace StardewHack
             this.enabled = enabled;
         }
 
+        /// <summary>
+        /// Returns a reference to the method or constructor specified by this BytecodePatch Attribute.
+        /// Methods are specified with the pattern "fully.qualified.type::function_name". 
+        /// In case of overloading, argument types must be specified, for example: "fully.qualified.type::function_name(fully.qualified.argument.type1,fully.qualified.argument.type2)"
+        /// Constructors are specified using the magic method name ".ctor".
+        /// </summary>
         public MethodBase GetMethod() 
         {
             string[] a = sig.Split(':','(',',',')');
@@ -56,23 +62,47 @@ namespace StardewHack
             }
             MethodBase method;
             if (name == ".ctor") {
-                method = AccessTools.Constructor(type, parameters);
+                if (parameters == null) {
+                    // If no parameters are specified, assume there is a unique constructor.
+                    var array = type.GetConstructors();
+                    if (array.Length != 1) {
+                        throw new Exception($"Found {array.Length} matching constructors for \"{sig}\".");
+                    }
+                    method = array[0];
+                } else {
+                    method = AccessTools.DeclaredConstructor(type, parameters);
+                }
+                if (method == null) {
+                    throw new Exception($"Failed to find constructor \"{sig}\".");
+                }
             } else {
-                method = AccessTools.Method(type, name, parameters);
-            }
-            if (method == null) {
-                throw new Exception($"Failed to find method \"{sig}\".");
+                method = AccessTools.DeclaredMethod(type, name, parameters);
+                if (method == null) {
+                    throw new Exception($"Failed to find method \"{sig}\".");
+                }
             }
             return method;
         }
 
         /// <summary>
         /// Retrieves the type definition with the specified name.
+        /// For inner types, specify the path seperated by '/'.
         /// </summary>
         internal static Type GetType(string type) {
-            var res = AccessTools.TypeByName(type.Trim());
+            string[] a = type.Trim().Split('/');
+            
+            // Retrieve the base type.
+            var res = AccessTools.TypeByName(a[0]);
             if (res == null) {
-                throw new TypeAccessException($"ERROR: type \"{type}\" not found.");
+                throw new TypeAccessException($"ERROR: type \"{a[0]}\" not found.");
+            }
+            
+            // Recursively retrieve the inner type (if any)
+            for (int i=1; i<a.Length; i++) {
+                res = AccessTools.Inner(res, a[i]);
+                if (res == null) {
+                    throw new TypeAccessException($"ERROR: sub-type \"{a[i]}\" not found.");
+                }
             }
             return res;
         }

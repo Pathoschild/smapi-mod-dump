@@ -43,9 +43,9 @@ mods:
    Visualize
 
 latest commit:
-   commit 069a5f99a7f554c0322a5337e7752a9838bd6b06
+   commit ebd8a485481101f372f5699052f38355026d478a
    Author: David <david@millionideas.de>
-   Date:   Thu Jun 20 23:17:27 2019 +0200
+   Date:   Mon Jun 24 09:02:16 2019 +0200
    
-       Fix locations not being added early enough for npcs
+       Big money fix
    

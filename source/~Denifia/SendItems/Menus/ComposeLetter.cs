@@ -1,12 +1,11 @@
-﻿using Denifia.Stardew.SendItems.Events;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Denifia.Stardew.SendItems.Events;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.Menus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Denifia.Stardew.SendItems.Menus
 {
@@ -19,12 +18,12 @@ namespace Denifia.Stardew.SendItems.Menus
         private bool okClicked;
 
         public ComposeLetter(string toPlayerId, List<Item> inventory, int capacity, int rows = 3, ComposeLetter.behaviorOnItemChange itemChangeBehavior = null, InventoryMenu.highlightThisItem highlightMethod = null)
-          : base(highlightMethod, true, false, 0, 0)
+          : base(highlightMethod, true)
         {
             this.toFarmerId = toPlayerId;
             this.itemChangeBehavior = itemChangeBehavior;
             int num1 = Game1.tileSize * (capacity / rows);
-            this.ItemsToGrabMenu = new InventoryMenu(Game1.viewport.Width / 2 - num1 / 2, this.yPositionOnScreen + Game1.tileSize, false, inventory, (InventoryMenu.highlightThisItem)null, capacity, rows, 0, 0, true);
+            this.ItemsToGrabMenu = new InventoryMenu(Game1.viewport.Width / 2 - num1 / 2, this.yPositionOnScreen + Game1.tileSize, false, inventory, (InventoryMenu.highlightThisItem)null, capacity, rows);
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -34,7 +33,7 @@ namespace Denifia.Stardew.SendItems.Menus
             int num = heldItem != null ? heldItem.Stack : -1;
             if (this.isWithinBounds(x, y))
             {
-                base.receiveLeftClick(x, y, true);
+                base.receiveLeftClick(x, y);
                 if (this.itemChangeBehavior == null && heldItem == null && (this.heldItem != null && Game1.oldKBState.IsKeyDown(Keys.LeftShift)))
                     this.heldItem = this.ItemsToGrabMenu.tryToAddItem(this.heldItem, "Ship");
             }
@@ -58,7 +57,7 @@ namespace Denifia.Stardew.SendItems.Menus
                         old.Stack = num;
                     }
                     if (this.itemChangeBehavior != null)
-                        flag = this.itemChangeBehavior(heldItem, this.ItemsToGrabMenu.getInventoryPositionOfClick(x, y), old, this, false);
+                        flag = this.itemChangeBehavior(heldItem, this.ItemsToGrabMenu.getInventoryPositionOfClick(x, y), old, this);
                     if (flag)
                         Game1.playSound("Ship");
                 }
@@ -79,7 +78,7 @@ namespace Denifia.Stardew.SendItems.Menus
                     }
                     this.heldItem = (Item)null;
                 }
-                else if (Game1.oldKBState.IsKeyDown(Keys.LeftShift) && Game1.player.addItemToInventoryBool(this.heldItem, false))
+                else if (Game1.oldKBState.IsKeyDown(Keys.LeftShift) && Game1.player.addItemToInventoryBool(this.heldItem))
                 {
                     this.heldItem = (Item)null;
                     if (this.itemChangeBehavior != null)
@@ -118,7 +117,7 @@ namespace Denifia.Stardew.SendItems.Menus
             Item heldItem = this.heldItem;
             if (this.isWithinBounds(x, y))
             {
-                base.receiveRightClick(x, y, true);
+                base.receiveRightClick(x, y);
                 if (this.itemChangeBehavior == null && heldItem == null && (this.heldItem != null && Game1.oldKBState.IsKeyDown(Keys.LeftShift)))
                     this.heldItem = this.ItemsToGrabMenu.tryToAddItem(this.heldItem, "Ship");
             }
@@ -137,7 +136,7 @@ namespace Denifia.Stardew.SendItems.Menus
             {
                 if (this.itemChangeBehavior != null)
                 {
-                    int num2 = this.itemChangeBehavior(heldItem, this.ItemsToGrabMenu.getInventoryPositionOfClick(x, y), this.heldItem, this, false) ? 1 : 0;
+                    int num2 = this.itemChangeBehavior(heldItem, this.ItemsToGrabMenu.getInventoryPositionOfClick(x, y), this.heldItem, this) ? 1 : 0;
                 }
                 Game1.playSound("Ship");
             }
@@ -160,7 +159,7 @@ namespace Denifia.Stardew.SendItems.Menus
             }
             else
             {
-                if (!Game1.oldKBState.IsKeyDown(Keys.LeftShift) || !Game1.player.addItemToInventoryBool(this.heldItem, false))
+                if (!Game1.oldKBState.IsKeyDown(Keys.LeftShift) || !Game1.player.addItemToInventoryBool(this.heldItem))
                     return;
                 this.heldItem = (Item)null;
                 Game1.playSound("coin");
@@ -175,7 +174,7 @@ namespace Denifia.Stardew.SendItems.Menus
             base.update(time);
             if (this.poof == null || !this.poof.update(time))
                 return;
-            this.poof = (TemporaryAnimatedSprite)null;
+            this.poof = null;
         }
 
         public override void performHoverAction(int x, int y)
@@ -188,18 +187,16 @@ namespace Denifia.Stardew.SendItems.Menus
         {
             b.Draw(Game1.fadeToBlackRect, new Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height), Color.Black * 0.5f);
             this.draw(b, false, false);
-            Game1.drawDialogueBox(this.ItemsToGrabMenu.xPositionOnScreen - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder, this.ItemsToGrabMenu.yPositionOnScreen - IClickableMenu.borderWidth - IClickableMenu.spaceToClearTopBorder, this.ItemsToGrabMenu.width + IClickableMenu.borderWidth * 2 + IClickableMenu.spaceToClearSideBorder * 2, this.ItemsToGrabMenu.height + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth * 2, false, true, (string)null, false);
+            Game1.drawDialogueBox(this.ItemsToGrabMenu.xPositionOnScreen - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder, this.ItemsToGrabMenu.yPositionOnScreen - IClickableMenu.borderWidth - IClickableMenu.spaceToClearTopBorder, this.ItemsToGrabMenu.width + IClickableMenu.borderWidth * 2 + IClickableMenu.spaceToClearSideBorder * 2, this.ItemsToGrabMenu.height + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth * 2, false, true);
             this.ItemsToGrabMenu.draw(b);
-            if (this.poof != null)
-                this.poof.draw(b, true, 0, 0);
+            poof?.draw(b, true);
             if (!this.hoverText.Equals(""))
-                IClickableMenu.drawHoverText(b, this.hoverText, Game1.smallFont, 0, 0, -1, (string)null, -1, (string[])null, (Item)null, 0, -1, -1, -1, -1, 1f, (CraftingRecipe)null);
-            if (this.heldItem != null)
-                this.heldItem.drawInMenu(b, new Vector2((float)(Game1.getOldMouseX() + Game1.pixelZoom * 4), (float)(Game1.getOldMouseY() + Game1.pixelZoom * 4)), 1f);
+                IClickableMenu.drawHoverText(b, this.hoverText, Game1.smallFont);
+            heldItem?.drawInMenu(b, new Vector2((float)(Game1.getOldMouseX() + Game1.pixelZoom * 4), (float)(Game1.getOldMouseY() + Game1.pixelZoom * 4)), 1f);
             this.drawMouse(b);
             if (this.ItemsToGrabMenu.descriptionTitle == null || this.ItemsToGrabMenu.descriptionTitle.Length <= 1)
                 return;
-            IClickableMenu.drawHoverText(b, this.ItemsToGrabMenu.descriptionTitle, Game1.smallFont, Game1.tileSize / 2 + (this.heldItem != null ? Game1.tileSize / 4 : -Game1.tileSize / 3), Game1.tileSize / 2 + (this.heldItem != null ? Game1.tileSize / 4 : -Game1.tileSize / 3), -1, (string)null, -1, (string[])null, (Item)null, 0, -1, -1, -1, -1, 1f, (CraftingRecipe)null);
+            IClickableMenu.drawHoverText(b, this.ItemsToGrabMenu.descriptionTitle, Game1.smallFont, Game1.tileSize / 2 + (this.heldItem != null ? Game1.tileSize / 4 : -Game1.tileSize / 3), Game1.tileSize / 2 + (this.heldItem != null ? Game1.tileSize / 4 : -Game1.tileSize / 3));
         }
 
         public delegate bool behaviorOnItemChange(Item i, int position, Item old, ComposeLetter container, bool onRemoval = false);

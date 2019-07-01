@@ -1,0 +1,28 @@
+﻿using System.Collections.Generic;
+using StardewModdingAPI;
+
+namespace FarmTypeManager
+{
+    public partial class ModEntry : Mod
+    {
+        /// <summary>A set of additional requirements needed for a config file to be used on a given farm.</summary>
+        private class FileConditions
+        {
+            //class added in version 1.4; defaults used here to automatically fill in values with SMAPI's json interface
+            public string[] FarmTypes { get; set; } = new string[0]; //a list of farm types on which the config may be used
+            public string[] FarmerNames { get; set; } = new string[0]; //a list of farmer names; if the current farmer matches, the config file may be used
+            public string[] SaveFileNames { get; set; } = new string[0]; //a list of save file (technically folder) names; if they match the current farm, the config file may be used
+
+            //field below added in version 1.5.0
+            public Dictionary<string, bool> OtherMods { get; set; } = new Dictionary<string, bool>(); //a list of mod names + booleans representing whether that mod exists; if the list is accurate, the config file may be used
+
+            //field below added in version 1.4.2
+            public bool ResetMainDataFolder { get; set; } = false; //when true, the "FarmTypeManager/data" folder should be archived; used to remove obsolete mod settings
+
+            public FileConditions()
+            {
+
+            }
+        }
+    }
+}

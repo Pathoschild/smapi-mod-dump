@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 
 namespace HDSprites
 {
@@ -12,6 +13,7 @@ namespace HDSprites
         public string AssetName { get; set; }
         public float Scale { get; set; }
         public virtual Texture2D HDTexture { get; set; }
+        public virtual Texture2D EXTexture { get; set; }
 
         private int UniqueID { get; set; }
         
@@ -28,23 +30,40 @@ namespace HDSprites
             if (shouldEncode)
             {
                 this.UniqueID = assetName.GetHashCode() & 0xffffff;
-                data[0] = encode(this.UniqueID);
+                data[0] = Encode(this.UniqueID);
             }
             SetData(data);
+
+            // For Mods such as JSON Assets
+            this.EXTexture = null;
+            if (this.Height * this.Scale > 4096)
+            {
+                int lowerHeight = (int)(4096 / this.Scale);
+                int upperHeight = this.Height - lowerHeight;
+
+                Texture2D lowerTexture = new Texture2D(this.GraphicsDevice, this.Width, lowerHeight);
+                lowerTexture.SetData(0, lowerTexture.Bounds, data, 0, lowerTexture.Width * lowerTexture.Height);                
+
+                Texture2D upperTexture = new Texture2D(this.GraphicsDevice, this.Width, upperHeight);
+                upperTexture.SetData(0, upperTexture.Bounds, data, upperTexture.Width * lowerHeight, upperTexture.Width * upperTexture.Height);
+
+                this.HDTexture = Upscaler.Upscale(lowerTexture);
+                this.EXTexture = Upscaler.Upscale(upperTexture);
+            }
         }
 
-        public void setOriginalTexture(Texture2D texture)
+        public void SetOriginalTexture(Texture2D texture)
         {
             Color[] data = new Color[texture.Width * texture.Height];
             texture.GetData(data);
             if (this.UniqueID != 0)
             {
-                data[0] = encode(this.UniqueID);
+                data[0] = Encode(this.UniqueID);
             }
             SetData(data);
         }
 
-        public void setSubTexture(Texture2D texture, Rectangle fromArea, Rectangle toArea, bool overlay)
+        public void SetSubTexture(Texture2D texture, Rectangle fromArea, Rectangle toArea, bool overlay)
         {
             if (texture == null) return;
             if (fromArea.IsEmpty) fromArea = new Rectangle(0, 0, texture.Width, texture.Height);
@@ -93,23 +112,23 @@ namespace HDSprites
             }
             if (this.UniqueID != 0)
             {
-                hdData[0] = encode(this.UniqueID);
+                hdData[0] = Encode(this.UniqueID);
             }
             HDTexture.SetData(hdData);
         }
 
-        public bool checkUniqueID(Color[] data)
+        public bool CheckUniqueID(Color[] data)
         {
             if (data.Length < 1) return false;
-            return decode(data[0]).Equals(this.UniqueID);
+            return Decode(data[0]).Equals(this.UniqueID);
         }
 
-        private static Color encode(int uniqueId)
+        private static Color Encode(int uniqueId)
         {
             return new Color((uniqueId >> 16) & 0xff, (uniqueId >> 8) & 0xff, (uniqueId >> 0) & 0xff, 0);
         }
 
-        private static int decode(Color color)
+        private static int Decode(Color color)
         {
             return ((color.R << 16) | (color.G << 8) | (color.B << 0));
         }

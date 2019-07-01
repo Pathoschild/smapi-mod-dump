@@ -1,7 +1,7 @@
 ﻿{
    "Name": "Wear More Rings",
    "Author": "bcmpinc",
-   "Version": "1.4",
+   "Version": "1.5",
    "Description": "Adds 4 additional ring slots to your inventory.",
    "UniqueID": "bcmpinc.WearMoreRings",
    "EntryDll": "WearMoreRings.dll",
@@ -9,6 +9,6 @@
    "UpdateKeys": ["Nexus:3214"],
    "Dependencies": [{
       "UniqueID": "bcmpinc.StardewHack",
-      "MinimumVersion": "1.0"
+      "MinimumVersion": "1.1"
    }]
 }

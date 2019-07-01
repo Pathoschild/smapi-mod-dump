@@ -18,11 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 847040ff51deda5e0f69d029b9c6203cf19ba413
+   commit 9eda01fe93027870a25048c5c27b896c20daa852
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Fri Jun 21 12:44:31 2019 -0400
+   Date:   Sat Jun 29 14:25:41 2019 -0400
    
-       add Turkish translations for Chests Anywhere and Tractor Mod
-       
-       Thanks to cilekli-link!
+       improve error if Automate's data.json is missing/invalid
    

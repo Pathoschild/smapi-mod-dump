@@ -18,15 +18,13 @@ namespace NPCMapLocations
 {
 	public class ModMapPage : MapPage
 	{
-		private readonly IModHelper Helper;
-		private readonly ModConfig Config;
-		private Dictionary<string, bool> SecondaryNpcs { get; }
-		private HashSet<CharacterMarker> NpcMarkers;
-		private Dictionary<long, CharacterMarker> FarmerMarkers;
-		private Dictionary<string, int> MarkerCropOffsets { get; }
+		private Dictionary<string, bool> ConditionalNpcs { get; set; }
+		private HashSet<CharacterMarker> NpcMarkers { get; set; }
+		private Dictionary<long, CharacterMarker> FarmerMarkers { get; set; }
 		private Dictionary<string, KeyValuePair<string, Vector2>> FarmBuildings { get; }
+
     private readonly Texture2D BuildingMarkers;
-	  private readonly string MapName;
+	  private readonly ModCustomizations Customizations;
 		private string hoveredNames = "";
 		private string hoveredLocationText = "";
 		private Texture2D map;
@@ -36,37 +34,24 @@ namespace NPCMapLocations
 		private Vector2 indoorIconVector;
 		private bool drawPamHouseUpgrade;
 
-	  private readonly Dictionary<string, MapVector[]> CustomMapLocations;
-	  private readonly Texture2D CustomMarkerTex;
-
     // Map menu that uses modified map page and modified component locations for hover
     public ModMapPage(
-			HashSet<CharacterMarker> npcMarkers,
-			Dictionary<string, bool> secondaryNpcs,
+      HashSet<CharacterMarker> npcMarkers,
+			Dictionary<string, bool> conditionalNpcs,
 			Dictionary<long, CharacterMarker> farmerMarkers,
-			Dictionary<string, int> MarkerCropOffsets,
 			Dictionary<string, KeyValuePair<string, Vector2>> farmBuildings,
 			Texture2D buildingMarkers,
-			IModHelper helper,
-			ModConfig config,
-      string mapName = null,
-      Dictionary<string, MapVector[]> customMapLocations = null,
-      Texture2D CustomMarkerTex = null
+      ModCustomizations customizations
     ) : base(Game1.viewport.Width / 2 - (800 + IClickableMenu.borderWidth * 2) / 2,
 			Game1.viewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2, 800 + IClickableMenu.borderWidth * 2,
 			600 + IClickableMenu.borderWidth * 2)
-		{
-			this.NpcMarkers = npcMarkers;
-			this.SecondaryNpcs = secondaryNpcs;
+    {
+      this.NpcMarkers = npcMarkers;
+			this.ConditionalNpcs = conditionalNpcs;
 			this.FarmerMarkers = farmerMarkers;
-			this.MarkerCropOffsets = MarkerCropOffsets;
 			this.FarmBuildings = farmBuildings;
 			this.BuildingMarkers = buildingMarkers;
-			this.Helper = helper;
-			this.Config = config;
-		  this.MapName = mapName;
-		  this.CustomMapLocations = customMapLocations;
-		  this.CustomMarkerTex = CustomMarkerTex;
+		  this.Customizations = customizations;
 
       map = Game1.content.Load<Texture2D>("LooseSprites\\map");
 			drawPamHouseUpgrade = Game1.MasterPlayer.mailReceived.Contains("pamHouseUpgrade");
@@ -75,18 +60,68 @@ namespace NPCMapLocations
 			mapY = (int) center.Y;
 
 			var regionRects = RegionRects().ToList();
-			for (int i = 0; i < this.points.Count; i++)
+      var customTooltips = Customizations.Tooltips.ToList();
+
+			for (int i = 0; i < regionRects.Count; i++)
 			{
-				var rect = regionRects.ElementAt(i);
-				this.points[i].bounds = new Rectangle(
-					// Snaps the cursor to the center instead of bottom right (default)
-					(int) (mapX + ModMain.LocationToMap(rect.Key).X - rect.Value.Width / 2),
-					(int) (mapY + ModMain.LocationToMap(rect.Key).Y - rect.Value.Height / 2),
-					rect.Value.Width,
-					rect.Value.Height
-				);
-			}
-		}
+			  var rect = regionRects.ElementAtOrDefault(i);
+
+			  this.points[i].bounds = new Rectangle(
+			    // Snaps the cursor to the center instead of bottom right (default)
+			    (int)(mapX + ModMain.LocationToMap(rect.Key).X - rect.Value.Width / 2),
+			    (int)(mapY + ModMain.LocationToMap(rect.Key).Y - rect.Value.Height / 2),
+			    rect.Value.Width,
+			    rect.Value.Height
+			  );
+
+			  if (ModMain.IsSVE)
+			  {
+			    // Adventure's Guild is in a different location in SVE
+			    if (this.points[i].myID == 1025)
+			    {
+			      this.points[i].bounds = new Rectangle(mapX + 682, mapY + 451, 22, 30);
+			    }
+			    // Remove sewer which gets replaced by Adventure Guild
+			    else if (this.points[i].myID == 1018)
+			    {
+			      this.points[i].bounds.Width = 0;
+			      this.points[i].bounds.Height = 0;
+			    }
+			    // So it doesn't cover up the other new points in the railroad
+			    else if (this.points[i].myID == 1034)
+			    {
+			      this.points[i].bounds.Width /= 2;
+			    }
+			  }
+      }
+
+      int idx = 0;
+
+      // Add custom tooltips
+      for(int i = regionRects.Count; i < regionRects.Count + customTooltips.Count; i++)
+      {
+        var tooltip = customTooltips.ElementAtOrDefault(idx);
+        if (tooltip == null) break;
+
+        var point = new ClickableComponent(new Rectangle(
+          tooltip.bounds.X + mapX,
+          tooltip.bounds.Y + mapY,
+          tooltip.bounds.Width,
+          tooltip.bounds.Height
+        ), tooltip.name);
+
+        if (this.points.Count <= i)
+        {
+          this.points.Add(point);
+        }
+        else
+        {
+          this.points[i] = point;
+        }
+
+        idx++;
+      }
+    }
 
 		public override void performHoverAction(int x, int y)
 		{
@@ -195,7 +230,7 @@ namespace NPCMapLocations
           y += Game1.tileSize / 4;
         }
 
-        if (this.Config.NameTooltipMode == 1)
+        if (ModMain.Config.NameTooltipMode == 1)
         {
           if (y + height > Game1.viewport.Height)
           {
@@ -205,7 +240,7 @@ namespace NPCMapLocations
 
           offsetY = 2 - Game1.tileSize;
         }
-        else if (this.Config.NameTooltipMode == 2)
+        else if (ModMain.Config.NameTooltipMode == 2)
         {
           if (y + height > Game1.viewport.Height)
           {
@@ -225,7 +260,7 @@ namespace NPCMapLocations
         }
 
         // Draw name tooltip positioned around location tooltip
-        DrawNames(b, hoveredNames, x, y, offsetY, height, this.Config.NameTooltipMode);
+        DrawNames(b, hoveredNames, x, y, offsetY, height, ModMain.Config.NameTooltipMode);
 
         // Draw location tooltip
         IClickableMenu.drawTextureBox(b, Game1.menuTexture, new Rectangle(0, 256, 60, 60), x, y, width, height,
@@ -245,10 +280,8 @@ namespace NPCMapLocations
       else
       {
         // Draw name tooltip only
-        DrawNames(Game1.spriteBatch, hoveredNames, x, y, offsetY, this.height, this.Config.NameTooltipMode);
+        DrawNames(Game1.spriteBatch, hoveredNames, x, y, offsetY, this.height, ModMain.Config.NameTooltipMode);
       }
-
-      
 
       // Draw indoor icon
       if (hasIndoorCharacter && !String.IsNullOrEmpty(hoveredNames))
@@ -390,7 +423,7 @@ namespace NPCMapLocations
 		// Subtractions within location vectors are to set the origin to the center of the sprite
 		public void DrawMarkers(SpriteBatch b)
 		{
-			if (Config.ShowFarmBuildings && FarmBuildings != null && BuildingMarkers != null)
+			if (ModMain.Config.ShowFarmBuildings && FarmBuildings != null && BuildingMarkers != null)
 			{
 				var sortedBuildings = FarmBuildings.ToList();
 				sortedBuildings.Sort((x, y) => x.Value.Value.Y.CompareTo(y.Value.Value.Y));
@@ -398,9 +431,9 @@ namespace NPCMapLocations
 				foreach (KeyValuePair<string, KeyValuePair<string, Vector2>> building in sortedBuildings)
 				{
 					if (ModConstants.FarmBuildingRects.TryGetValue(building.Value.Key, out Rectangle buildingRect))
-					  if (MapName == "starblue_map")
+					  if (Customizations.MapName == "starblue_map")
 					    buildingRect.Y = 7;
-					  else if (MapName == "eemie_recolour_map")
+					  else if (Customizations.MapName == "eemie_recolour_map")
 					    buildingRect.Y = 14;
 
           b.Draw(
@@ -415,27 +448,16 @@ namespace NPCMapLocations
 			}
 
       // ===== Custom locations =====
-      if (Config.CustomMapMarkers != null && CustomMarkerTex != null)
-      {
-        foreach (var location in Config.CustomMapMarkers)
-        {
-          if (CustomMapLocations.TryGetValue(location.Key, out var locationVector) && Config.CustomMapMarkers.TryGetValue(location.Key, out var locationRects))
-          {
-            var fromAreaRect = locationRects.GetValue("FromArea");
-            var toAreaRect = locationRects.GetValue("ToArea");
-            var srcRect = new Rectangle(fromAreaRect.Value<int>("X"), fromAreaRect.Value<int>("Y"),
-              fromAreaRect.Value<int>("Width"), fromAreaRect.Value<int>("Height"));
-
-            b.Draw(CustomMarkerTex, new Vector2(mapX + toAreaRect.Value<int>("X"), mapY + toAreaRect.Value<int>("Y")),
-              srcRect, Color.White,
-              0f,
-              Vector2.Zero, 4f, SpriteEffects.None, 0.861f);
-          }
-        }
+      foreach (var location in Customizations.Locations)
+      {   
+        b.Draw(Customizations.LocationTextures, new Vector2(mapX + location.Value.LocVector.X, mapY + location.Value.LocVector.Y),
+          location.Value.SrcRect, Color.White,
+          0f,
+          Vector2.Zero, 4f, SpriteEffects.None, 0.861f);
       }
 
       // Traveling Merchant
-      if (Config.ShowTravelingMerchant && SecondaryNpcs["Merchant"])
+      if (ModMain.Config.ShowTravelingMerchant && ConditionalNpcs["Merchant"])
 			{
 				Vector2 merchantLoc = new Vector2(ModConstants.MapVectors["Merchant"][0].MapX, ModConstants.MapVectors["Merchant"][0].MapY);
         b.Draw(Game1.mouseCursors, new Vector2(mapX + merchantLoc.X - 16, mapY + merchantLoc.Y - 15),
@@ -463,7 +485,7 @@ namespace NPCMapLocations
 			else
 			{
 				Vector2 playerLoc = ModMain.LocationToMap(Game1.player.currentLocation.uniqueName.Value ?? Game1.player.currentLocation.Name, Game1.player.getTileX(),
-					Game1.player.getTileY(), CustomMapLocations, true);
+					Game1.player.getTileY(), Customizations.MapVectors, true);
         if (playerLoc.X >= 0)
 				  Game1.player.FarmerRenderer.drawMiniPortrat(b,
 					  new Vector2(mapX + playerLoc.X - 16, mapY + playerLoc.Y - 15), 0.00011f, 2f, 1,
@@ -481,7 +503,7 @@ namespace NPCMapLocations
         {
           // Skip if no specified location
           if (npcMarker.MapLocation.Equals(Vector2.Zero) || npcMarker.Marker == null ||
-              !MarkerCropOffsets.ContainsKey(npcMarker.Npc.Name))
+              !Customizations.NpcMarkerOffsets.ContainsKey(npcMarker.Npc.Name))
           {
             continue;
           }
@@ -493,10 +515,10 @@ namespace NPCMapLocations
           b.Draw(npcMarker.Marker,
             new Rectangle((int)(mapX + npcMarker.MapLocation.X), (int)(mapY + npcMarker.MapLocation.Y),
               32, 30),
-            new Rectangle?(new Rectangle(0, MarkerCropOffsets[npcMarker.Npc.Name], 16, 15)), markerColor);
+            new Rectangle?(new Rectangle(0, Customizations.NpcMarkerOffsets[npcMarker.Npc.Name], 16, 15)), markerColor);
 
           // Draw icons for quests/birthday
-          if (Config.MarkQuests)
+          if (ModMain.Config.MarkQuests)
           {
             if (npcMarker.IsBirthday)
             {

@@ -1,15 +1,12 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Denifia.Stardew.SendItemsApi.Domain
 {
-
     public class AzureTableStorageRepository : ITableStorageRepository
     {
         CloudStorageAccount _storageAccount;
@@ -42,7 +39,7 @@ namespace Denifia.Stardew.SendItemsApi.Domain
             }
             catch
             {
-                
+
             }
             return false;
         }

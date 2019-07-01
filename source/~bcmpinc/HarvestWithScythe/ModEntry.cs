@@ -119,11 +119,20 @@ namespace StardewHack.HarvestWithScythe
             // >>> The other item drops are handled by the plucking code.
 
             // Remove start of loop
-            FindCode(
+            var start_loop = FindCode(
+                // for (int i = 0
                 OpCodes.Ldc_I4_0,
-                Instructions.Stloc_S(12),
-                OpCodes.Br
-            ).Remove();
+                OpCodes.Stloc_S,
+                OpCodes.Br,
+                // junimoHarvester != null
+                Instructions.Ldarg_S(4),
+                OpCodes.Brfalse
+            );
+            // Get a reference to the 'i' variable.
+            var var_i = (LocalBuilder)start_loop[1].operand;
+            // Remove the head of the loop.
+            start_loop.length = 3;
+            start_loop.Remove();
 
             // Find the start of the 'drop sunflower seeds' part.
             var DropSunflowerSeeds = FindCode(
@@ -148,11 +157,11 @@ namespace StardewHack.HarvestWithScythe
                 OpCodes.Bne_Un
             ).Follow(4);
             ScytheBranchTail.ExtendBackwards(
-                Instructions.Ldloc_S(12),
+                Instructions.Ldloc_S(var_i),
                 OpCodes.Ldc_I4_1,
                 OpCodes.Add,
-                Instructions.Stloc_S(12),
-                Instructions.Ldloc_S(12),
+                Instructions.Stloc_S(var_i),
+                Instructions.Ldloc_S(var_i),
                 Instructions.Ldloc_S(4),
                 OpCodes.Blt
             );

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4029
+IDs: Vrakyas.DynamicRunningSpeed
+update keys: Nexus:4029, Nexus:2425

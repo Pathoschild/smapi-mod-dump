@@ -9,20 +9,21 @@ namespace NotReallyHostedMultiplayer
 {
     class ModEntry : Mod
     {
-
         bool isPaused = false;
         bool triedStartServer = false;
         int s = 0;
         private ModConfig Config;
         int sleepCountdown = 10;
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             this.Config = helper.ReadConfig<ModConfig>();
             this.sleepCountdown = this.Config.SleepCountdownTimer;
 
-            GameEvents.OneSecondTick += oneSecondUpdate;
-            TimeEvents.AfterDayStarted += delegate { SpecialisedEvents.UnvalidatedUpdateTick -= this.endOfNightHandle; };
+            helper.Events.GameLoop.OneSecondUpdateTicked += onOneSecondUpdateTicked;
+            helper.Events.GameLoop.DayStarted += onDayStarted;
 
             this.Helper.ConsoleCommands.Add("nrhm_toggle", "Toggle NotReallyHostedMultiplayer main loop", delegate
             {
@@ -33,7 +34,6 @@ namespace NotReallyHostedMultiplayer
 
             this.Helper.ConsoleCommands.Add("nrhm_autostart_toggle", "Toggle launching the game into the currently loaded save.", delegate
             {
-
                 if (this.Config.AutoLoad)
                 {
                     this.Config.AutoLoad = false;
@@ -56,15 +56,15 @@ namespace NotReallyHostedMultiplayer
                         this.Monitor.Log("Load the save first.", LogLevel.Warn);
                     }
                 }
-
-               
             });
+        }
 
-
-
-
-
-
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void onDayStarted(object sender, DayStartedEventArgs e)
+        {
+            Helper.Events.Specialised.UnvalidatedUpdateTicked -= this.endOfNightHandle;
         }
 
         private String getInviteCode()
@@ -90,9 +90,11 @@ namespace NotReallyHostedMultiplayer
             } else { return null; }
         }
 
-        public void oneSecondUpdate(object sender, EventArgs e)
+        /// <summary>Raised once per second after the game state is updated.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        public void onOneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
         {
-            
             if (!this.Config.Enabled) return;
 
             if (!Game1.hasLoadedGame)
@@ -190,53 +192,33 @@ namespace NotReallyHostedMultiplayer
 
                         int i = 0;
 
-
-
-
-
-
-
-                        SpecialisedEvents.UnvalidatedUpdateTick += this.endOfNightHandle;
-                        };
-                        
+                        Helper.Events.Specialised.UnvalidatedUpdateTicked += this.endOfNightHandle;
                     }
-
-
-                }  else
-                {
-                    sleepCountdown = this.Config.SleepCountdownTimer;
-                    Game1.player.team.SetLocalReady("sleep", false);
                 }
-              
+            } 
+            else
+            {
+                sleepCountdown = this.Config.SleepCountdownTimer;
+                Game1.player.team.SetLocalReady("sleep", false);
             }
+        }
 
 
-
-            
-
-            public void endOfNightHandle(object sender, EventArgs e)
-            {                
-                
-                if (Game1.ticks % 30 == 0)
+        public void endOfNightHandle(object sender, EventArgs e)
+        {
+            if (Game1.ticks % 30 == 0)
+            {
+                this.Monitor.Log("Waiting For New Day", LogLevel.Warn);
+               
+                if (Game1.activeClickableMenu is ShippingMenu m)
                 {
-                    this.Monitor.Log("Waiting For New Day", LogLevel.Warn);
-                   
-                    if (Game1.activeClickableMenu is ShippingMenu m)
+                    if (m.okButton.visible)
                     {
-                        if (m.okButton.visible)
-                        {
-                            this.Helper.Reflection.GetMethod(m, "okClicked", true).Invoke<object[]>();
-                            m.okButton.visible = false;
-                        }
+                        this.Helper.Reflection.GetMethod(m, "okClicked", true).Invoke<object[]>();
+                        m.okButton.visible = false;
                     }
                 }
             }
-
-
-
+        }
     }
-
-        
-
-
-    }
+}

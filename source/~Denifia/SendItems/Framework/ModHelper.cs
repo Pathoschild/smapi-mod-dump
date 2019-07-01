@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
-using StardewValley;
-using StardewValley.Menus;
 using Denifia.Stardew.SendItems.Domain;
 using RestSharp;
+using StardewModdingAPI;
+using StardewValley;
 
 namespace Denifia.Stardew.SendItems.Framework
 {
@@ -34,7 +31,7 @@ namespace Denifia.Stardew.SendItems.Framework
         {
             Game1.addHUDMessage(new HUDMessage(message, 3));
         }
-        
+
         /****
         ** Error handling
         ****/

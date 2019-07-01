@@ -1,18 +1,14 @@
-﻿using StardewValley;
+﻿using System;
 using System.Collections.Generic;
-using Denifia.Stardew.SendItems.Domain;
-using Denifia.Stardew.SendItems.Menus;
-using Denifia.Stardew.SendItems.Events;
-using System;
-using Denifia.Stardew.SendItems.Framework;
 using System.Linq;
+using Denifia.Stardew.SendItems.Domain;
+using Denifia.Stardew.SendItems.Events;
+using Denifia.Stardew.SendItems.Framework;
+using Denifia.Stardew.SendItems.Menus;
+using StardewValley;
 
 namespace Denifia.Stardew.SendItems.Services
 {
-    public interface IPostboxService {
-
-    }
-
     /// <summary>
     /// Handles what to do when a player uses the postbox and creates a letter
     /// </summary>

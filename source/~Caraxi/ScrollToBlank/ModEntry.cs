@@ -1,5 +1,4 @@
-﻿using System;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
@@ -8,13 +7,18 @@ namespace ScrollToBlank
 {
     public class ModEntry : Mod
     {
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            GameEvents.UpdateTick += this.updateTick;
-            ControlEvents.MouseChanged += this.mouseChanged;
+            helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
+            helper.Events.Input.MouseWheelScrolled += this.onMouseWheelScrolled;
         }
 
-        private void updateTick(object sender, EventArgs e)
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void onUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (this.updateToolIndex)
             {
@@ -29,8 +33,6 @@ namespace ScrollToBlank
                     this.Monitor.Log("Menu Up");
                 }
 
-
-
                 if (!blockUpdate)
                 {
                     Game1.player.CurrentToolIndex = this.newToolIndex;
@@ -38,40 +40,38 @@ namespace ScrollToBlank
             }
         }
 
-        private void mouseChanged(object sender, EventArgsMouseStateChanged e)
+        /// <summary>Raised after the player scrolls the mouse wheel.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void onMouseWheelScrolled(object sender, MouseWheelScrolledEventArgs e)
         {
-            
-            if (e.NewState.ScrollWheelValue != e.PriorState.ScrollWheelValue)
+            int currentToolIndex = Game1.player.CurrentToolIndex;
+            this.newToolIndex = currentToolIndex;
+
+            bool mouseWheelMovedDown = e.Delta < 0;
+            bool invertScrollDirection = Game1.options.invertScrollDirection;
+
+            if (mouseWheelMovedDown && !invertScrollDirection)
             {
-                int currentToolIndex = Game1.player.CurrentToolIndex;
-                this.newToolIndex = currentToolIndex;
-
-                bool mouseWheelMovedDown = e.NewState.ScrollWheelValue < e.PriorState.ScrollWheelValue;
-                bool invertScrollDirection = Game1.options.invertScrollDirection;
-
-                if (mouseWheelMovedDown && !invertScrollDirection)
-                {
-                    this.newToolIndex++;
-                }
-                else
-                {
-                    this.newToolIndex--;
-                }
-
-                // Wrap Around
-                if (this.newToolIndex < 0)
-                {
-                    this.newToolIndex = 11;
-                }
-
-                if (this.newToolIndex >= 12)
-                {
-                    this.newToolIndex = 0;
-                }
-
-                this.updateToolIndex = true;
-
+                this.newToolIndex++;
             }
+            else
+            {
+                this.newToolIndex--;
+            }
+
+            // Wrap Around
+            if (this.newToolIndex < 0)
+            {
+                this.newToolIndex = 11;
+            }
+
+            if (this.newToolIndex >= 12)
+            {
+                this.newToolIndex = 0;
+            }
+
+            this.updateToolIndex = true;
         }
 
         private bool updateToolIndex = false;

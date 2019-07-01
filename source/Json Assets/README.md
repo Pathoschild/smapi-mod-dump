@@ -34,13 +34,15 @@
 ## Introduction
 ### What is Json Assets?
 Json Assets allows you to add custom objects to the game without having to create a SMAPI mod or altering vanilla files. Currently, Json Assets supports the following types of items:
-* Crops
-* Fruit Trees
-* Recipes
+* Crops (JA Max 156)
+* Fruit Trees (JA Max 41)
+* Recipes 
 * Craftables (16x16)
-* Big-Craftables (16x32)
-* Hats (20x80)
-* Weapons
+* Big-Craftables (16x32) (JA Max 724)
+* Hats (20x80) (JA Max 562)
+* Weapons (JA Max 1984)
+
+Objects (Recipes, Craftables (16x16), Crop Objects etc.) have a total limit of 4144.
 
 Examples of how to set up all types of objects can be found in the [Blank JSON Assets Template](https://www.nexusmods.com/stardewvalley/mods/1746). I also highly recommend looking up preexisting content packs for further examples:
 
@@ -235,8 +237,8 @@ field                  | purpose
 `Knockback`            | How far the enemy will be pushed back from the player after being hit with this weapon.
 `Speed`                | How fast the swing of the weapon is.
 `Accurary`             | How accurate the weapon is.
-`Defense`              | When blocking, how much protection it provides. * This could be a
-`MineDropVar`          | * I'm honestly not sure what this one is
+`Defense`              | When blocking, how much protection it provides.
+`MineDropVar`          | 
 `MineDropMinimumLevel` | The first level the weapon can drop when in the mines.
 `ExtraSwingArea`       |
 `CritChance`           | The chance the weapon will land a critical hit.

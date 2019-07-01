@@ -5,10 +5,12 @@ mods:
    Deep Woods
 
 latest commit:
-   commit 404d1a0fa62009aa29443bde94cca2bb66637621
-   Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Wed May 15 01:27:52 2019 +0200
+   commit bd39fdc2848c6c7121d6e880d4b4e59c02a63ce7
+   Merge: 404d1a0 5b35a36
+   Author: Max Vollmer <maxvollmer@users.noreply.github.com>
+   Date:   Sun Jun 30 18:02:13 2019 +0200
    
-       * Added support for DeepWoodsAPI 2.0.2, which adds a method for third party mods to warp the local player into the DeepWoods forest at a given level.
-       * Increment version number
+       Merge pull request #4 from FixThisPlz/FixThisPlz-patch-1
+       
+       Can you add ru.json, please?
    

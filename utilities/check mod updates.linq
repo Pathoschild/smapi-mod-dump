@@ -91,9 +91,6 @@ public bool ShowMissingCompatMods = true;
 /// <summary>Whether to show potential errors in the compatibility list.</summary>
 public bool ShowCompatListErrors = true;
 
-/// <summary>Whether to group mods into folders based on their SMAPI 3.0 status on the wiki, for testing SMAPI 3.0 readiness.</summary>
-public bool GroupBySmapi3Status = false;
-
 /****
 ** Mod exception lists
 ****/
@@ -377,10 +374,6 @@ void Main()
 				foreach (char ch in Path.GetInvalidFileNameChars())
 					newName = newName.Replace(ch, '_');
 
-				// group by SMAPI 3.0 status
-				if (this.GroupBySmapi3Status)
-					newName = Path.Combine($"SMAPI 3.0 {mod.ApiRecord?.Metadata?.Smapi3Status.ToString() ?? "none"}", newName);
-
 				// move to new name
 				DirectoryInfo newDir = new DirectoryInfo(Path.Combine(this.ModFolderPath, newName));
 				newDir.Parent.Create();
@@ -514,13 +507,12 @@ void Main()
 				Name = Util.WithStyle(mod.Author != null ? $"{mod.Name}\n  by {mod.Author}" : mod.Name, "font-size: 0.8em;"),
 				Installed = Util.WithStyle(mod.Installed, "font-size: 0.8em"),
 				Latest = Util.WithStyle(mod.HasUpdate ? new Hyperlinq(mod.DownloadUrl, mod.Latest) : (mod.Latest == null ? (object)Util.WithStyle("not found", errorStyle) : (object)Util.WithStyle(mod.Latest, "color: gray;")), "font-size: 0.8em"),
-				WikiSummary = Util.WithStyle($"{mod.WikiSummary} [{mod.WikiStatus}]".Trim(), "font-size: 0.8em;" + (mod.WikiStatus != null && this.HighlightStatuses.Contains(mod.WikiStatus.Value) ? errorStyle : "")),
+				WikiSummary = Util.WithStyle($"{mod.WikiSummary} [{mod.WikiStatus}{(!string.IsNullOrWhiteSpace(mod.WikiBrokeIn) ? $" in {mod.WikiBrokeIn}" : "")}]".Trim(), "font-size: 0.8em;" + (mod.WikiStatus != null && this.HighlightStatuses.Contains(mod.WikiStatus.Value) ? errorStyle : "")),
 				ManifestUpdateKeys = mod.ManifestUpdateKeys != null ? mod.ManifestUpdateKeys : Util.WithStyle("none", errorStyle),
 				UpdateKeys = Util.WithStyle(mod.UpdateKeys, "font-size: 0.8em;"),
 				UpdateCheckErrors = mod.UpdateCheckErrors.Length > 0 ? Util.WithStyle(string.Join("\n", mod.UpdateCheckErrors), $"font-size: 0.8em; {(hasMajorUpdateCheckErrors ? errorStyle : "color: gray;")}") : "",
 				NormalisedFolder = new Lazy<string>(() => mod.NormalisedFolder),
-				Manifest = new Lazy<Manifest>(() => mod.Manifest),
-				Smapi3Status = mod.ModData?.ApiRecord?.Metadata?.Smapi3Status
+				Manifest = new Lazy<Manifest>(() => mod.Manifest)
 			};
 		})
 		.Dump("mods");
@@ -821,6 +813,9 @@ class ReportEntry
 
 	/// <summary>The compatibility status from the wiki.</summary>
 	public WikiCompatibilityStatus? WikiStatus { get; }
+	
+	/// <summary>The compatibility 'broke in' field from the wiki.</summary>
+	public string WikiBrokeIn { get; }
 
 	/// <summary>The compatibility summary from the wiki.</summary>
 	public string WikiSummary { get; }
@@ -857,11 +852,13 @@ class ReportEntry
 		{
 			this.WikiStatus = apiMetadata?.BetaCompatibilityStatus ?? apiMetadata?.CompatibilityStatus;
 			this.WikiSummary = apiMetadata?.BetaCompatibilitySummary ?? apiMetadata?.CompatibilitySummary;
+			this.WikiBrokeIn = apiMetadata?.BetaBrokeIn ?? apiMetadata?.BrokeIn;
 		}
 		else
 		{
 			this.WikiStatus = apiMetadata?.CompatibilityStatus;
 			this.WikiSummary = apiMetadata?.CompatibilitySummary;
+			this.WikiBrokeIn = apiMetadata?.BrokeIn;
 		}
 	}
 }

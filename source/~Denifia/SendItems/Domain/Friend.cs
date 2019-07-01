@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Denifia.Stardew.SendItems.Domain
+﻿namespace Denifia.Stardew.SendItems.Domain
 {
     public class Friend : BasePerson
     {

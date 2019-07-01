@@ -20,7 +20,7 @@ namespace MegaStorage.Mapping
             };
         }
 
-        public static bool IsCustomChest(Item item)
+        public static bool ShouldBeCustomChest(Item item)
         {
             if (!(item is Object)) return false;
             if (!((Object)item).bigCraftable.Value) return false;

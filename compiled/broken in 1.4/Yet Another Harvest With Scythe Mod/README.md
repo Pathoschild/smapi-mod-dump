@@ -38,3 +38,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 #### 1.0:
 * Added dependency on StardewHack.
+
+#### 1.1:
+* Fix support for Stardew Valley 1.3.36 on MacOS.

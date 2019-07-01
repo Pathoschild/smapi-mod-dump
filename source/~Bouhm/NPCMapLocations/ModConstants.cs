@@ -11,7 +11,7 @@ public static class ModConstants
 {
 	// Cropping heads for NPC markers
 	// Values shift the head up (negative) or down (positive)
-	public static Dictionary<string, int> MarkerCropOffsets => new Dictionary<string, int>
+	public static Dictionary<string, int> NpcMarkerOffsets => new Dictionary<string, int>
 	{
 		{"Abigail", 3},
 		{"Alex", 0},
@@ -55,7 +55,8 @@ public static class ModConstants
 		"Bouncer",
 		"Henchman",
 		"Gunther",
-		"Krobus"
+		"Krobus",
+    "Dusty"
 	};
 
 	// tileX and TileY (the first two values) are tile positions in the game for that location
@@ -199,12 +200,9 @@ public static class ModConstants
 		{
 			"Town", new MapVector[]
 			{
-			  // Top-Right of town
-			  new MapVector(899, 197, 102, 1),
-
 				// Top half of town
 				new MapVector(593, 173, 0, 0),
-				new MapVector(921, 275, 120, 40),
+				new MapVector(940, 275, 120, 40),
 
 				// Bottom half of town
 				new MapVector(602, 268, 0, 41),
@@ -317,8 +315,8 @@ public static class ModConstants
 		{
 			"Sewer", new MapVector[]
 			{
-				new MapVector(701, 465)
-			}
+			  new MapVector(489, 643)
+      }
 		},
 		{
 			"BugLand", new MapVector[]

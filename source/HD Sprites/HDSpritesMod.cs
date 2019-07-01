@@ -24,27 +24,19 @@ using System.Collections.Generic;
 using HDSprites.ContentPack;
 using System;
 using HDSprites.Token;
+using Microsoft.Xna.Framework;
 
 namespace HDSprites
 {
     public class HDSpritesMod : Mod, IAssetEditor
     {
+        public static IMonitor Logger;
+        public static Dictionary<string, bool> EnabledAssets { get; set; }
         public static GraphicsDevice GraphicsDevice = null;
         public static IModHelper ModHelper;
         public static bool EnableMod = true;
         public static Dictionary<string, AssetTexture> AssetTextures = new Dictionary<string, AssetTexture>();
-
-        public static List<string> ScaleFixAssets = new List<string>()
-        {
-            "TileSheets\\Craftables",
-            "Maps\\MenuTiles",
-            "LooseSprites\\LanguageButtons",
-            "LooseSprites\\chatBox",
-            "LooseSprites\\textBox",
-            "LooseSprites\\yellowLettersLogo",
-            "LooseSprites\\JunimoNote"
-        };
-
+        
         public static List<string> WhiteBoxFixAssets = new List<string>()
         {
             "TileSheets\\tools"
@@ -58,6 +50,8 @@ namespace HDSprites
         {
             this.Config = this.Helper.ReadConfig<ModConfig>();
 
+            Logger = this.Monitor;
+            EnabledAssets = new Dictionary<string, bool>();
             ModHelper = help;
             EnableMod = this.Config.EnableMod;
             
@@ -70,16 +64,14 @@ namespace HDSprites
 
             foreach (var asset in this.Config.LoadAssets)
             {
-                if (asset.Value)
-                {
-                    string loadSection = asset.Key.Substring(0, asset.Key.LastIndexOf("/"));
-                    if (this.Config.LoadSections.GetValueSafe(loadSection))
+                string loadSection = asset.Key.Substring(0, asset.Key.LastIndexOf("/"));
+                bool enabled = asset.Value && this.Config.LoadSections.GetValueSafe(loadSection);
+                AddEnabledAsset(asset.Key, enabled);
+                if (enabled) { 
+                    string assetFile = Path.Combine(this.Config.AssetsPath, asset.Key) + ".png";
+                    if (File.Exists(Path.Combine(help.DirectoryPath, assetFile)))
                     {
-                        string assetFile = Path.Combine(this.Config.AssetsPath, asset.Key) + ".png";
-                        if (File.Exists(Path.Combine(help.DirectoryPath, assetFile)))
-                        {
-                            this.HDAssetManager.AddAssetFile(asset.Key, assetFile);
-                        }
+                        this.HDAssetManager.AddAssetFile(asset.Key, assetFile);
                     }
                 }
             }
@@ -88,50 +80,96 @@ namespace HDSprites
             foreach (string dir in contentPackDirs)
             {
                 string manifestFile = Path.Combine(dir, "manifest.json");
-                ContentPackManifest manifest = this.Helper.ReadJsonFile<ContentPackManifest>(manifestFile);
+                if (Directory.GetParent(manifestFile).Name.StartsWith(".")) continue;
+
+                ContentPackManifest manifest = null;
+                try
+                {
+                    manifest = this.Helper.ReadJsonFile<ContentPackManifest>(manifestFile);
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+
                 if (manifest != null && this.Config.LoadContentPacks.TryGetValue(manifest.UniqueID, out bool load) && load)
                 {
-                    this.Monitor.Log($"Reading content pack: {manifest.Name} {manifest.Version} from {manifestFile}");
+                    this.Monitor.Log($"Reading content pack: {manifest.Name} {manifest.Version}");
                     
-                    WhenDictionary configChoices = this.Helper.ReadJsonFile<WhenDictionary>(Path.Combine(dir, "config.json"));
+                    WhenDictionary configChoices = null;
+                    try
+                    {
+                        configChoices = this.Helper.ReadJsonFile<WhenDictionary>(Path.Combine(dir, "config.json"));
+                    }
+                    catch (Exception e)
+                    {
+                        this.Monitor.Log($"Failed to read config.json for {manifest.Name} {manifest.Version}");
+                        continue;
+                    }
+                        
                     if (configChoices == null) configChoices = new WhenDictionary();
 
-                    ContentConfig contentConfig = this.Helper.ReadJsonFile<ContentConfig>(Path.Combine(dir, "content.json"));
+                    ContentConfig contentConfig = null;
+
+                    try
+                    {
+                        contentConfig = this.Helper.ReadJsonFile<ContentConfig>(Path.Combine(dir, "content.json"));
+                    }
+                    catch (Exception e)
+                    {
+                        this.Monitor.Log($"Failed to read content.json for {manifest.Name} {manifest.Version}");
+                        continue;
+                    }
+
                     if (contentConfig == null) continue;
 
                     string contentPath = Path.Combine(help.DirectoryPath, this.Config.ContentPacksPath, manifest.UniqueID);
                     Directory.CreateDirectory(contentPath);
-                                        
+
                     ContentPackObject contentPack = new ContentPackObject(dir, contentPath, manifest, contentConfig, configChoices);
                     this.ContentPackManager.AddContentPack(contentPack);
                 }
             }
 
             HarmonyInstance instance = HarmonyInstance.Create("NinthWorld.HDSprites");
+            DrawFix.InitializePatch(instance);
             instance.PatchAll(Assembly.GetExecutingAssembly());
         }
 
         public bool CanEdit<T>(IAssetInfo assetInfo)
         {
-            return this.HDAssetManager.ContainsAsset(assetInfo.AssetName);
+            string assetName = assetInfo.AssetName.Replace("/", $"\\");
+            if (this.ContentPackManager != null) this.ContentPackManager.UpdateAssetEditable(assetName);
+            return IsAssetEnabled(assetName);
         }
 
         public void Edit<T>(IAssetData assetData)
         {
             AssetTexture assetTexture;
-            if (!AssetTextures.ContainsKey(assetData.AssetName))
+            string assetName = assetData.AssetName.Replace("/", $"\\");
+            
+            if (!AssetTextures.ContainsKey(assetName))
             {
-                Texture2D texture = this.HDAssetManager.LoadAsset(assetData.AssetName);
-                assetTexture = new AssetTexture(assetData.AssetName, assetData.AsImage().Data, texture, this.Config.AssetScale, WhiteBoxFixAssets.Contains(assetData.AssetName));
-                AssetTextures.Add(assetData.AssetName, assetTexture);
+                Texture2D texture = this.HDAssetManager.LoadAsset(assetName);
+
+                assetTexture = new AssetTexture(assetName, assetData.AsImage().Data, texture, this.Config.AssetScale, WhiteBoxFixAssets.Contains(assetName));
+                AssetTextures.Add(assetName, assetTexture);
             }
             else
             {
-                assetTexture = AssetTextures.GetValueSafe(assetData.AssetName);
-                assetTexture.setOriginalTexture(assetData.AsImage().Data);
+                assetTexture = AssetTextures.GetValueSafe(assetName);
+
+                if (assetData.AsImage().Data.Bounds.Equals(assetTexture.Bounds))
+                {
+                    assetTexture.SetOriginalTexture(assetData.AsImage().Data);
+                }
+                else
+                {
+                    AssetTextures[assetName] = assetTexture = new AssetTexture(assetName, assetData.AsImage().Data, assetTexture.HDTexture, this.Config.AssetScale, WhiteBoxFixAssets.Contains(assetName));
+                }
             }
 
-            this.ContentPackManager.EditAsset(assetData.AssetName);
+            this.ContentPackManager.EditAsset(assetName);
 
             if (GraphicsDevice == null) GraphicsDevice = assetTexture.GraphicsDevice;
 
@@ -156,6 +194,20 @@ namespace HDSprites
         private void OnWarped(object s, WarpedEventArgs e)
         {
             this.ContentPackManager.DynamicTokenManager.CheckTokens();
+        }
+
+        public static void AddEnabledAsset(string assetName, bool enabled)
+        {
+            assetName = assetName.Replace("/", $"\\");
+            if (!EnabledAssets.ContainsKey(assetName))
+            {
+                EnabledAssets.Add(assetName, enabled);
+            }
+        }
+
+        public static bool IsAssetEnabled(string assetName)
+        {
+            return EnabledAssets.TryGetValue(assetName, out bool enabled) && enabled;
         }
     }
 }

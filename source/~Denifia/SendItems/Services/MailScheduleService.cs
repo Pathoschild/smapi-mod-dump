@@ -1,15 +1,10 @@
-﻿using Denifia.Stardew.SendItems.Events;
+﻿using System;
+using Denifia.Stardew.SendItems.Events;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using System;
 
 namespace Denifia.Stardew.SendItems.Services
 {
-    public interface IMailScheduleService
-    {
-
-    }
-
     public class MailScheduleService : IMailScheduleService
     {
         private readonly IMod _mod;
@@ -20,23 +15,30 @@ namespace Denifia.Stardew.SendItems.Services
             _mod = mod;
             _configService = configService;
 
-            TimeEvents.AfterDayStarted += AfterDayStarted;
-            TimeEvents.TimeOfDayChanged += TimeOfDayChanged;
+            var events = mod.Helper.Events;
+            events.GameLoop.DayStarted += OnDayStarted;
+            events.GameLoop.TimeChanged += OnTimeChanged;
         }
 
-        private void AfterDayStarted(object sender, EventArgs e)
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             // Deliver mail each morning
             ModEvents.RaiseOnMailCleanup(this, EventArgs.Empty);
         }
 
-        private void TimeOfDayChanged(object sender, EventArgsIntChanged e)
+        /// <summary>Raised after the in-game clock time changes.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
             // Deliver mail every 30 mins
-            var timeString = e.NewInt.ToString();
+            var timeString = e.NewTime.ToString();
             var correctTime = timeString.EndsWith("30") || timeString.EndsWith("00");
 
-            if (_configService.InDebugMode() && e.NewInt != 600 && correctTime)
+            if (_configService.InDebugMode() && e.NewTime != 600 && correctTime)
             {
                 ModEvents.RaiseOnMailCleanup(this, EventArgs.Empty);
             }

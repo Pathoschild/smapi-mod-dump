@@ -7,24 +7,9 @@ namespace Denifia.Stardew.SendItems.Domain
         public string Id { get; set; }
         public string Name { get; set; }
         public string FarmName { get; set; }
-
-        public string DisplayText
-        {
-            get
-            {
-                return $"{Name} ({FarmName} Farm)";
-            }
-        }
-
-        public string ConsoleSafeName
-        {
-            get { return MakeConsoleSave(Name); }
-        }
-
-        public string ConsoleSaveFarmName
-        {
-            get { return MakeConsoleSave(FarmName); }
-        }
+        public string DisplayText => $"{Name} ({FarmName} Farm)";
+        public string ConsoleSafeName => MakeConsoleSave(Name);
+        public string ConsoleSaveFarmName => MakeConsoleSave(FarmName);
 
         private string MakeConsoleSave(string text)
         {

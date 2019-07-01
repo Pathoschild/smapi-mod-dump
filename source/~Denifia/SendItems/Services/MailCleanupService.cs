@@ -1,20 +1,15 @@
-﻿using Denifia.Stardew.SendItems.Domain;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Denifia.Stardew.SendItems.Domain;
 using Denifia.Stardew.SendItems.Events;
 using Denifia.Stardew.SendItems.Framework;
 using RestSharp;
 using StardewModdingAPI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Denifia.Stardew.SendItems.Services
 {
-    public interface IMailCleanupService
-    {
-    }
-
     public class MailCleanupService : IMailCleanupService
     {
         private readonly IMod _mod;
@@ -77,8 +72,8 @@ namespace Denifia.Stardew.SendItems.Services
 
         private void DeleteFutureComposedMail()
         {
-            var localMail = Repository.Instance.Fetch<Mail>(x => 
-                x.Status == MailStatus.Composed && 
+            var localMail = Repository.Instance.Fetch<Mail>(x =>
+                x.Status == MailStatus.Composed &&
                 x.ToFarmerId == _farmerService.CurrentFarmer.Id
             );
             if (!localMail.Any()) return;
@@ -142,7 +137,7 @@ namespace Denifia.Stardew.SendItems.Services
                 {
                 }
             }
-            
+
             _mod.Monitor.Log($"{logPrefix}.done", LogLevel.Debug);
         }
 

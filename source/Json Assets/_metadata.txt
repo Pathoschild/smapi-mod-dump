@@ -5,9 +5,12 @@ mods:
    Json Assets
 
 latest commit:
-   commit a67791fecb7cfe8ae55a322ad83ba451e683c067
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Sun Jun 16 17:41:57 2019 -0400
+   commit 66436b6b71d981fee8d6de1de13d7b4f09c9d355
+   Merge: 4f6c7cf 08a0a87
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Wed Jun 26 16:02:27 2019 -0400
    
-       CP-missing fix and price difficulty margin fix. 1.3.8
+       Merge pull request #36 from paradigmnomad/patch-3
+       
+       Includes item limits
    

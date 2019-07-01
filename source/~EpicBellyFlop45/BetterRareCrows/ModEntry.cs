@@ -18,6 +18,7 @@ namespace BetterRarecrows
         public static List<int> CurrentRarecrows;
         public static int PreviousDate = 0;
         public static IMonitor ModMonitor;
+        public static ModConfig Config;
 
         public override void Entry(IModHelper helper)
         {
@@ -34,6 +35,8 @@ namespace BetterRarecrows
             harmony.Patch(targetMethod, prefix: new HarmonyMethod(prefix));
 
             ModMonitor = this.Monitor;
+
+            Config = this.Helper.ReadConfig<ModConfig>();
         }
 
         private static bool Prefix(ref Farm __instance)
@@ -47,25 +50,23 @@ namespace BetterRarecrows
             // Check if all rare crows have been placed
             foreach (KeyValuePair<Vector2, StardewValley.Object> pair in __instance.objects.Pairs)
             {
-                if ((bool)((NetFieldBase<bool, NetBool>)pair.Value.bigCraftable) && pair.Value.Name.Contains("arecrow"))
+                if ((bool)((NetFieldBase<bool, NetBool>)pair.Value.bigCraftable) && pair.Value.Name.Contains("Rarecrow"))
                 {
-                    List<int> listOfPossibleRarecrows = new List<int> { 140, 139, 138, 137, 136, 126, 113, 110 };
-
-                    if (listOfPossibleRarecrows.Contains(pair.Value.parentSheetIndex) && !CurrentRarecrows.Contains(pair.Value.parentSheetIndex))
+                    if (!CurrentRarecrows.Contains(pair.Value.ParentSheetIndex))
                     {
-                        ModEntry.CurrentRarecrows.Add(pair.Value.parentSheetIndex);
+                        ModEntry.CurrentRarecrows.Add(pair.Value.ParentSheetIndex);
                     }
                 }
             }
 
-            if (ModEntry.CurrentRarecrows.Count() == 8)
+            if (ModEntry.CurrentRarecrows.Count() == Config.NumberOfRequiredRareCrows)
             {
-                ModEntry.ModMonitor.Log("All 8 rarecrows found on farm", LogLevel.Trace);
+                ModEntry.ModMonitor.Log($"All {Config.NumberOfRequiredRareCrows} rarecrows found on farm", LogLevel.Trace);
                 return false;
             }
             else
             {
-                ModEntry.ModMonitor.Log($"Only {CurrentRarecrows.Count()} rarecrows found on farm", LogLevel.Trace);
+                ModEntry.ModMonitor.Log($"Only {CurrentRarecrows.Count()} out of {Config.NumberOfRequiredRareCrows} rarecrows found on the farm", LogLevel.Trace);
                 return true;
             }
         }

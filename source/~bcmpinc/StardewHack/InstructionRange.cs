@@ -59,7 +59,9 @@ namespace StardewHack
                     } else if (query is CodeInstruction) {
                         CodeInstruction qin = query as CodeInstruction;
                         if (!inst.opcode.Equals(qin.opcode)) goto NO_MATCH;
-                        if (!inst.operand.Equals(qin.operand)) {
+                        if (inst.operand == null) {
+                            if (qin.operand != null) goto NO_MATCH;
+                        } else if (!inst.operand.Equals(qin.operand)) {
                             if (inst.operand is LocalBuilder) {
                                 // Local variable access can use both an index or a LocalBuilder object as operand.
                                 var lb = (LocalBuilder)inst.operand;
@@ -68,7 +70,7 @@ namespace StardewHack
                                 } catch {
                                     goto NO_MATCH;
                                 }
-                            } else if (inst.operand!=null && qin.operand!=null) {
+                            } else if (qin.operand!=null) {
                                 // In case the operand is an integer, but their boxing types don't match.
                                 try {
                                     if (Convert.ToInt64(inst.operand) != Convert.ToInt64(qin.operand)) goto NO_MATCH;

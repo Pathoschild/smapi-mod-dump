@@ -65,6 +65,11 @@ namespace FarmTypeManager
 
             Utility.LoadFarmData(Helper); //load all available data files
 
+            foreach (FarmData data in Utility.FarmDataList) //for each loaded set of data
+            {
+                Utility.ReplaceProtectedSpawnsOvernight(data.Save); //protect unexpired spawns listed in the save data
+            }
+
             //run the methods providing the mod's main features
             ObjectSpawner.ForageGeneration();
             ObjectSpawner.LargeObjectGeneration();
@@ -76,9 +81,10 @@ namespace FarmTypeManager
         {
             if (Utility.FarmDataList == null || Utility.FarmDataList.Count < 1) { return; } //if the farm data list is blank, do nothing (e.g. when called by a newly created farm)
 
-            //update information in each save file
-            foreach (FarmData data in Utility.FarmDataList)
+            foreach (FarmData data in Utility.FarmDataList) //for each set of farm data
             {
+                Utility.ProcessObjectExpiration(data.Save); //remove expired objects & update saved expiration data
+
                 data.Save.WeatherForYesterday = Utility.WeatherForToday(); //update saved weather info
 
                 if (data.Pack != null) //if this data is from a content pack

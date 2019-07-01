@@ -6,9 +6,9 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit bd721f593d481b8c81e3bea2d0660810a8f8e23a
-   Author: Brian Pak <bbouhm@gmail.com>
-   Date:   Mon Jun 10 17:24:40 2019 -0700
+   commit 08e847183fc81e679f4cf03b703704d99f34d6ab
+   Author: Bouhm <bbouhm@gmail.com>
+   Date:   Sun Jun 30 14:28:07 2019 -0700
    
-       Update README.md
+       more sve config tweaks
    

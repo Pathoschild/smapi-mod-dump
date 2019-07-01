@@ -1,9 +1,4 @@
-﻿using StardewValley;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace Denifia.Stardew.BuyRecipes.Domain
 {
@@ -44,8 +39,6 @@ namespace Denifia.Stardew.BuyRecipes.Domain
                     break;
                 case "winter":
                     seasonInt = 4;
-                    break;
-                default:
                     break;
             }
             return seasonInt;

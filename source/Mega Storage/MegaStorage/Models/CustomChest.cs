@@ -1,4 +1,5 @@
-﻿using MegaStorage.UI;
+﻿using MegaStorage.Mapping;
+using MegaStorage.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -17,12 +18,14 @@ namespace MegaStorage.Models
 
         public CustomChestConfig Config { get; }
         public string BigCraftableInfo => $"{Config.Name}/0/-300/Crafting -9/{Config.Description}/true/true/0";
-        public string RecipeString => $"{Config.Recipe}/Home/{Config.Id}/true/null";
+        public string RecipeString => $"{Config.Recipe}/Home/{Config.Id}/true/{Config.Name}";
 
         private readonly Texture2D _sprite;
         private readonly Texture2D _spriteBW;
         private readonly Texture2D _spriteBraces;
-        
+
+        private LargeItemGrabMenu _itemGrabMenu;
+
         private readonly IReflectedField<int> _currentLidFrameReflected;
         private int CurrentLidFrame
         {
@@ -64,15 +67,6 @@ namespace MegaStorage.Models
             return null;
         }
 
-        public override void grabItemFromChest(Item item, Farmer who)
-        {
-            if (!who.couldInventoryAcceptThisItem(item))
-                return;
-            items.Remove(item);
-            clearNulls();
-            Game1.activeClickableMenu = CreateItemGrabMenu();
-        }
-
         public override void updateWhenCurrentLocation(GameTime time, GameLocation environment)
         {
             var currentLidFrameValue = CurrentLidFrame;
@@ -91,7 +85,8 @@ namespace MegaStorage.Models
                     return;
                 if (currentLidFrameValue == ParentSheetIndex + 5)
                 {
-                    Game1.activeClickableMenu = CreateItemGrabMenu();
+                    _itemGrabMenu = CreateItemGrabMenu();
+                    Game1.activeClickableMenu = _itemGrabMenu;
                     frameCounter.Value = -1;
                 }
                 else
@@ -113,6 +108,18 @@ namespace MegaStorage.Models
             }
         }
 
+        public override void grabItemFromChest(Item item, Farmer who)
+        {
+            if (!who.couldInventoryAcceptThisItem(item))
+                return;
+            items.Remove(item);
+            clearNulls();
+            if (_itemGrabMenu == null)
+                _itemGrabMenu = CreateItemGrabMenu();
+            _itemGrabMenu.Refresh();
+            Game1.activeClickableMenu = _itemGrabMenu;
+        }
+
         public override void grabItemFromInventory(Item item, Farmer who)
         {
             if (item.Stack == 0)
@@ -124,9 +131,11 @@ namespace MegaStorage.Models
                 addedItem = who.addItemToInventory(addedItem);
             clearNulls();
             var id = Game1.activeClickableMenu.currentlySnappedComponent != null ? Game1.activeClickableMenu.currentlySnappedComponent.myID : -1;
-            var menu = CreateItemGrabMenu();
-            menu.heldItem = addedItem;
-            Game1.activeClickableMenu = menu;
+            if (_itemGrabMenu == null)
+                _itemGrabMenu = CreateItemGrabMenu();
+            _itemGrabMenu.Refresh();
+            _itemGrabMenu.heldItem = addedItem;
+            Game1.activeClickableMenu = _itemGrabMenu;
             if (id == -1)
                 return;
             Game1.activeClickableMenu.currentlySnappedComponent = Game1.activeClickableMenu.getComponentWithID(id);
@@ -144,7 +153,8 @@ namespace MegaStorage.Models
                 return false;
             }
             shakeTimer = 50;
-            location.objects.Add(objectKey, this);
+            var newCustomChest = CustomChestFactory.Create(ChestType);
+            location.objects.Add(objectKey, newCustomChest);
             location.playSound("axe");
             return true;
         }
@@ -205,6 +215,23 @@ namespace MegaStorage.Models
                 spriteBatch.Draw(_spriteBW, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, (y - 1) * 64 + (shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))), Game1.getSourceRectForStandardTileSheet(_spriteBW, lidFrameIndex, 16, 32), playerChoiceColor.Value * alpha * alpha, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, (y * 64 + 5) / 10000f);
                 spriteBatch.Draw(Game1.bigCraftableSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 + 20)), new Rectangle(0, 725, 16, 11), Color.White * alpha, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, (y * 64 + 6) / 10000f);
                 spriteBatch.Draw(_spriteBraces, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, (y - 1) * 64 + (shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))), Game1.getSourceRectForStandardTileSheet(_spriteBraces, lidFrameIndex, 16, 32), Color.White * alpha, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, (y * 64 + 6) / 10000f);
+            }
+        }
+
+        public override void drawInMenu(SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, bool drawStackNumber, Color color, bool drawShadow)
+        {
+            if (playerChoiceColor.Value.Equals(Color.Black))
+            {
+                spriteBatch.Draw(_sprite, location + new Vector2(32f, 32f), Game1.getSourceRectForStandardTileSheet(_sprite, 0, 16, 32), color * transparency, 0.0f, new Vector2(8f, 16f), (float)(4.0 * (scaleSize < 0.2 ? scaleSize : scaleSize / 2.0)), SpriteEffects.None, layerDepth);
+            }
+            else
+            {
+                spriteBatch.Draw(_spriteBW, location + new Vector2(32f, 32f), Game1.getSourceRectForStandardTileSheet(_spriteBW, 0, 16, 32), playerChoiceColor.Value * transparency, 0.0f, new Vector2(8f, 16f), (float)(4.0 * (scaleSize < 0.2 ? scaleSize : scaleSize / 2.0)), SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(_spriteBraces, location + new Vector2(32f, 32f), Game1.getSourceRectForStandardTileSheet(_spriteBraces, 0, 16, 32), color * transparency, 0.0f, new Vector2(8f, 16f), (float)(4.0 * (scaleSize < 0.2 ? scaleSize : scaleSize / 2.0)), SpriteEffects.None, layerDepth);
+            }
+            if (drawStackNumber && maximumStackSize() > 1 && (scaleSize > 0.3 && Stack != int.MaxValue) && Stack > 1)
+            {
+                Utility.drawTinyDigits(Stack, spriteBatch, location + new Vector2(64 - Utility.getWidthOfTinyDigitString(Stack, 3f * scaleSize) + 3f * scaleSize, (float)(64.0 - 18.0 * scaleSize + 2.0)), 3f * scaleSize, 1f, color);
             }
         }
 

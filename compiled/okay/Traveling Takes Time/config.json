@@ -1,0 +1,7 @@
+{
+  "BusstopMineTimecost": 20,
+  "MineQuarryTimecost": 10,
+  "QuarryTownTimecost": 20,
+  "BusstopDesertTimecost": 30,
+  "VerboseLogging": false
+}

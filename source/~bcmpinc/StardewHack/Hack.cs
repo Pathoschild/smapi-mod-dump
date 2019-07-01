@@ -87,6 +87,10 @@ namespace StardewHack
             target.labels.Add(lbl);
             return lbl;
         }
+        
+        public string getReportUrl() {
+            return "https://github.com/bcmpinc/StardewHack";
+        }
     }
 
     // I 'love' generics. :P
@@ -120,6 +124,7 @@ namespace StardewHack
             // Iterate all methods in this class and search for those that have a BytecodePatch annotation.
             var methods = typeof(T).GetMethods(AccessTools.all);
             var apply = AccessTools.Method(typeof(Hack<T>), "ApplyPatch");
+            var broken = false;
             foreach (MethodInfo patch in methods) {
                 var bytecode_patches = patch.GetCustomAttributes<BytecodePatch>();
                 foreach (var bp in bytecode_patches) {
@@ -131,9 +136,27 @@ namespace StardewHack
                 // Apply the patch to the method specified in the annotation.
                 while (to_be_patched.Count > 0) {
                     var method = to_be_patched.Pop();
-                    harmony.Patch(method, null, null, new HarmonyMethod(apply));
+                    try {
+                        harmony.Patch(method, null, null, new HarmonyMethod(apply));
+                    } catch (Exception err) {
+                        if (!broken) {
+                            Monitor.Log("The patch failed to apply cleanly. Usually this means the mod needs to be updated.", LogLevel.Alert);
+                            Monitor.Log("As a result, this mod does not function properly or at all.", LogLevel.Alert);
+                            Monitor.Log("Please upload your log file at https://log.smapi.io/ and report this bug at "+getReportUrl()+".", LogLevel.Alert);
+                            StardewHack.Library.ModEntry.broken_mods.Add(helper.ModRegistry.ModID);
+                            broken = true;
+                        }
+                        LogException(err);
+                    }
                 }
             }
+        }
+        
+        public void LogException(Exception err, LogLevel level = LogLevel.Error) {
+            while (err.InnerException != null) {
+                err = err.InnerException;
+            }
+            Monitor.Log(err.Message + System.Environment.NewLine + err.StackTrace, level);
         }
 
         /// <summary>

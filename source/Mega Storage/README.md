@@ -28,8 +28,9 @@ Names, descriptions and recipes for Large Chest and Magic Chest are configurable
 # Compatibility
 * Requires [SMAPI](https://smapi.io/).
 * Supports multiplayers and controllers.
-* Compatible with Chests Anywhere, Automate, Carry Chest and content packs for Content Patcher and Json Assets.
-* NOT compatible with Stack Everything or Save Anywhere. Using these mods together may result in crashes or loss of items.
+* Compatible with Chests Anywhere, Stack Everything, Automate, Carry Chest and content packs for Content Patcher and Json Assets.
+* Minor incompatibility with Convenient Chests. The mods work well together except for categories not being saved.
+* NOT compatible with Save Anywhere. Using these mods together may result in crashes and loss of items.
 
 # Is this safe?
 Before saving, all Large Chests and Magic Chests are converted to normal chests. After saving, they are converted back. This makes sure your items aren't lost, even if uninstalling this mod. Normal chests actually have infinite capacity, it's only when adding items one at a time they are limited to 36 capacity.

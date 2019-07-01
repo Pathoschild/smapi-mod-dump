@@ -1,16 +1,12 @@
-﻿using Denifia.Stardew.SendItems.Domain;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Denifia.Stardew.SendItems.Domain;
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
 
 namespace Denifia.Stardew.SendItems.Services
 {
-    public interface ICommandService
-    {
-    }
-
     public class CommandService : ICommandService
     {
         private bool _savedGameLoaded = false;
@@ -28,7 +24,7 @@ namespace Denifia.Stardew.SendItems.Services
         private const string _myFriendsCommand = "si_myfriends";
 
         public CommandService(
-            IMod mod, 
+            IMod mod,
             IConfigurationService configService,
             IFarmerService farmerService)
         {
@@ -38,11 +34,15 @@ namespace Denifia.Stardew.SendItems.Services
 
             RegisterCommands();
 
-            SaveEvents.AfterLoad += AfterSavedGameLoad;
-            SaveEvents.AfterReturnToTitle += AfterReturnToTitle;
+            var events = mod.Helper.Events;
+            events.GameLoop.SaveLoaded += OnSaveLoaded;
+            events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
         }
 
-        private void AfterReturnToTitle(object sender, EventArgs e)
+        /// <summary>Raised after the game returns to the title screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
             _savedGameLoaded = false;
         }
@@ -174,7 +174,7 @@ namespace Denifia.Stardew.SendItems.Services
             if (count == 0)
             {
                 _mod.Monitor.Log($"No local farmers were added. They may already be added.", LogLevel.Info);
-            }            
+            }
         }
 
         private void AddFriend(string[] args)
@@ -201,7 +201,7 @@ namespace Denifia.Stardew.SendItems.Services
                 var friend = _farmerService.CurrentFarmer.Friends.FirstOrDefault(x => x.Id == args[0]);
                 if (friend != null)
                 {
-                    var success = _farmerService.RemoveFriendFromCurrentPlayer(friend.Id); 
+                    var success = _farmerService.RemoveFriendFromCurrentPlayer(friend.Id);
                     if (success)
                     {
                         _mod.Monitor.Log($"{friend.Name} ({friend.FarmName} Farm) [id:{friend.Id}] was removed!", LogLevel.Info);
@@ -252,7 +252,7 @@ namespace Denifia.Stardew.SendItems.Services
                 _mod.Monitor.Log($"You can add friends with the {_addFriendCommand} command.", LogLevel.Info);
             }
         }
-        
+
         private void AddFriend(Friend friend)
         {
             var success = _farmerService.AddFriendToCurrentPlayer(friend);
@@ -266,7 +266,10 @@ namespace Denifia.Stardew.SendItems.Services
             }
         }
 
-        private void AfterSavedGameLoad(object sender, EventArgs e)
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             _savedGameLoaded = true;
             _mod.Monitor.Log($"This is your \"friend command\". Get your friends to run this command in the SMAPI console to add you as a friend...", LogLevel.Info);

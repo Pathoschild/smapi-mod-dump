@@ -38,7 +38,7 @@ namespace StardewHack.GrassGrowth
             return config.DailyGrowth != 1 || config.MonthlyGrowth != 40;
         }
     
-        // Change the milk pail such that it doesn't do anything while no animal is in range. 
+        // Change the rate at which new grass spawns during the night. 
         [BytecodePatch("StardewValley.Farm::DayUpdate", "IterationsChanged")]
         void Farm_DayUpdate() {
             var code = FindCode(

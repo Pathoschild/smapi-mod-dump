@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4151
+IDs: pepoluan.GrandfatherGiftRemade
+update keys: Nexus:4151, Chucklefish:5783

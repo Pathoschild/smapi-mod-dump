@@ -231,6 +231,7 @@ namespace HDSprites
                 { "LooseSprites/Lighting/lantern", true },
                 { "LooseSprites/Lighting/sconceLight", true },
                 { "LooseSprites/Lighting/windowLight", true },
+                { "LooseSprites/Cursors", false },
                 { "Maps/bathhouse_tiles", true },
                 { "Maps/bugLandTiles", true },
                 { "Maps/characterSheet", true },

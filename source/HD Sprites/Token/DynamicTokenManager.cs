@@ -51,6 +51,7 @@ namespace HDSprites.Token
             this.AddToken(new FarmNameGlobalToken());
             this.AddToken(new FarmTypeGlobalToken());
             this.AddToken(new IsCommunityCenterCompleteGlobalToken());
+            this.AddToken(new LanguageGlobalToken());
         }
 
         public void AddToken(DynamicToken token)

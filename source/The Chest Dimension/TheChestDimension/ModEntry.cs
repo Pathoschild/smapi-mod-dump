@@ -17,12 +17,15 @@ namespace TheChestDimension
         playerEntry currentEntry = new playerEntry();
 
         private ModConfig config;
+        private TCDRules rules;
 
         // player's location and position before the warp
         GameLocation OldLocation;
         Vector2 OldPosition;
         // true after requesting playerEntry from master, false after receiving playerEntry
         private bool waitingToWarp = false;
+        // true after receiving playerEntry from master
+        private bool entryReceived = false;
         public override void Entry(IModHelper helper)
         {
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
@@ -30,6 +33,7 @@ namespace TheChestDimension
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
             helper.Events.Multiplayer.ModMessageReceived += Multiplayer_ModMessageReceived;
             config = Helper.ReadConfig<ModConfig>();
+            rules = new TCDRules(config);
         }
 
         private void GameLoop_DayEnding(object sender, DayEndingEventArgs e)
@@ -45,7 +49,14 @@ namespace TheChestDimension
                 if (entries == null) entries = new List<playerEntry>();
                 currentEntry = getEntryWithName(Game1.player.Name);
             }
+            else
+            {
+                entryReceived = false;
+                requestRules();
+            }
         }
+
+        private void requestRules() => Helper.Multiplayer.SendMessage(currentEntry, "TCDruleRequest", new[] { ModManifest.UniqueID });
 
         private void Multiplayer_ModMessageReceived(object sender, ModMessageReceivedEventArgs e)
         {
@@ -59,7 +70,11 @@ namespace TheChestDimension
                     {
                         Helper.Multiplayer.SendMessage(getEntryWithName(receivedEntry.Name), "TCDentry", new[] { ModManifest.UniqueID });
                     }
-
+                    // master: received rules request from slave
+                    if (e.Type == "TCDruleRequest")
+                    {
+                        Helper.Multiplayer.SendMessage(rules, "TCDrules", new[] { ModManifest.UniqueID });
+                    }
                     // master: received entry set request from slave
                     if (e.Type == "TCDentrySet")
                     {
@@ -72,12 +87,17 @@ namespace TheChestDimension
                     if (e.Type == "TCDentry" && receivedEntry.Name == Game1.player.Name)
                     {
                         currentEntry = receivedEntry;
+                        entryReceived = true;
                         if (currentEntry.emptyPos)
                         {
                             currentEntry.customPos = null;
                         }
-                        waitingToWarp = false;
-                        Warp();
+                        if (waitingToWarp) waitingToWarp = false; Warp();
+                    }
+                    // slave: received rules from master
+                    if (e.Type == "TCDrules")
+                    {
+                        rules = e.ReadAs<TCDRules>();
                     }
                 }
             }
@@ -107,7 +127,11 @@ namespace TheChestDimension
                 currentEntry.emptyPos = false;
                 currentEntry.customPos = new spawnPos(xPos, yPos);
                 Game1.chatBox.addInfoMessage("TCD spawn position set to " + xPos + "," + yPos + ".");
-                if (!Game1.IsMasterGame)
+                if (Game1.IsMasterGame)
+                {
+                    addOrUpdateEntry(currentEntry);
+                }
+                else
                 {
                     Helper.Multiplayer.SendMessage(currentEntry, "TCDentrySet", new[] { ModManifest.UniqueID });
                 }
@@ -121,72 +145,73 @@ namespace TheChestDimension
         private bool PlayerInTCD => Game1.player.currentLocation.Name == "ChestDimension";
 
 
+        bool canEnterTCD
+        {
+            get
+            {
+                string coef = config.CanOnlyEnterFrom;
+                string curloc = Game1.player.currentLocation.Name;
+                if
+                    // no specific entry location, or if there is any, it's the same as the current location
+                    (coef == null || coef == "" || coef == curloc)
+                {
+                    // player is not in a cave, when CanEnterFromCave is false
+                    if (!(!config.CanEnterFromCave && curloc.StartsWith("UndergroundMine")))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
 
         void Warp()
         {
+            // cancel if player can't move (UI open, cutscene in progress, etc)
+            if (!Context.IsPlayerFree) return;
             // if already in TCD, go back
             if (PlayerInTCD)
             {
                 Game1.warpFarmer(new LocationRequest("oldLoc", true, OldLocation), (int)OldPosition.X, (int)OldPosition.Y, 0);
                 return;
             }
-
-            // shorten string names
-            string coef = config.CanOnlyEnterFrom;
-            string curloc = Game1.player.currentLocation.Name;
-
-            if
-
-                // no specific entry location, or if there is any, it's the same as the current location
-                (coef == null || coef == "" || coef == curloc)
+            if (canEnterTCD)
             {
-                // player is not in a cave, when CanEnterFromCave is false
-                if (!(!config.CanEnterFromCave && curloc.StartsWith("UndergroundMine")))
+
+                OldLocation = Game1.player.currentLocation;
+                OldPosition = Game1.player.getTileLocation();
+
+                if (!Game1.IsMasterGame && !entryReceived)
                 {
-
-                    OldLocation = Game1.player.currentLocation;
-                    OldPosition = Game1.player.getTileLocation();
-
-                    if (!Game1.IsMasterGame)
-                    {
-                        waitingToWarp = true;
-                        requestEntry();
-                        return;
-                    }
-                    // if custom spawn location is null, warp to default spawn location, else warp to custom spawn location 
-                    if (currentEntry.emptyPos)
-                    {
-                        Game1.warpFarmer("ChestDimension", 55, 37, false);
-                    }
-                    else
-                    {
-                        Game1.warpFarmer("ChestDimension", int.Parse(currentEntry.customPos.X), int.Parse(currentEntry.customPos.Y), false);
-                    }
-
-                    // if entry message is enabled, replace variables and show entry message in chat
-                    if (config.ShowEntryMessage)
-                    {
-                        string msg = config.EntryMessage;
-                        msg.Replace("{TCDkey}", config.TCDKey.ToString());
-                        Game1.chatBox.addInfoMessage(msg);
-                    }
-
+                    waitingToWarp = true;
+                    requestEntry();
+                    return;
                 }
-            }
+                // if custom spawn location is null, warp to default spawn location, else warp to custom spawn location 
+                if (currentEntry.emptyPos)
+                {
+                    Game1.warpFarmer("ChestDimension", 55, 37, false);
+                }
+                else
+                {
+                    Game1.warpFarmer("ChestDimension", int.Parse(currentEntry.customPos.X), int.Parse(currentEntry.customPos.Y), false);
+                }
 
-            else // cannot enter TCD
+                // if entry message is enabled, replace variables and show entry message in chat
+                if (config.ShowEntryMessage)
+                {
+                    string msg = config.EntryMessage;
+                    msg.Replace("{TCDkey}", config.TCDKey.ToString());
+                    Game1.chatBox.addInfoMessage(msg);
+                }
+
+            } else
             {
-                if (config.ShowCannotEnterMessage)
-                {
-                    Game1.chatBox.addInfoMessage(config.CannotEnterMessage);
-                }
+                if (config.ShowCannotEnterMessage) Game1.chatBox.addErrorMessage(config.CannotEnterMessage);
             }
         }
 
-        private void requestEntry()
-        {
-            Helper.Multiplayer.SendMessage(new playerEntry(Game1.player.Name), "TCDentryRequest", new[] { ModManifest.UniqueID });
-        }
+        private void requestEntry() => Helper.Multiplayer.SendMessage(new playerEntry(Game1.player.Name), "TCDentryRequest", new[] { ModManifest.UniqueID });
 
         void addOrUpdateEntry(playerEntry entry)
         {
@@ -201,13 +226,13 @@ namespace TheChestDimension
             entries.Add(entry);
         }
 
-        playerEntry getEntryWithName(string ID)
+        playerEntry getEntryWithName(string name)
         {
             foreach (playerEntry e in entries)
             {
-                if (e.Name == ID) return e;
+                if (e.Name == name) return e;
             }
-            return new playerEntry(ID);
+            return new playerEntry(name);
         }
     }
 
@@ -253,6 +278,4 @@ namespace TheChestDimension
             emptyPos = updateFrom.emptyPos;
         }
     }
-
-
 }

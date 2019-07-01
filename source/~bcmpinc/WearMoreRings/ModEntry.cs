@@ -30,7 +30,13 @@ namespace StardewHack.WearMoreRings
         
         private Ring MakeRing(int which) {
             if (which < 0) return null;
-            return new Ring(which);
+            try {
+                return new Ring(which);
+            } catch {
+                // Ring no longer exists, so delete it.
+                ModEntry.mon.Log($"Failed to create ring with id {which}.", LogLevel.Warn);
+                return null;
+            }
         }
     }
     
@@ -75,16 +81,16 @@ namespace StardewHack.WearMoreRings
     public class ModEntry : Hack<ModEntry>
     {
         static readonly ConditionalWeakTable<Farmer, ActualRings> actualdata = new ConditionalWeakTable<Farmer, ActualRings>();
-        static IMonitor mon;
+        public static IMonitor mon;
         public static readonly System.Random random = new System.Random();
         
         public override void Entry(IModHelper helper) {
+            mon = Monitor;
+            
             base.Entry(helper);
             
             helper.Events.GameLoop.Saving += GameLoop_Saving;
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
-            
-            mon = Monitor;
         }
 
         public override object GetApi() {
@@ -367,42 +373,6 @@ namespace StardewHack.WearMoreRings
         #endregion Patch GameLocation
         
         #region Patch InventoryPage
-        static public void AddEquipmentIcon(StardewValley.Menus.InventoryPage page, int x, int y, string name) {
-            var rect = new Rectangle (
-                page.xPositionOnScreen + 48 + x*64, 
-                page.yPositionOnScreen + StardewValley.Menus.IClickableMenu.borderWidth + StardewValley.Menus.IClickableMenu.spaceToClearTopBorder + 256 - 12 + y*64, 
-                64, 64
-            );
-            
-            // Get the item that should be in this slot.
-            Item item = null;
-            if (x == 0) { 
-                if (y == 0) item = Game1.player.hat.Value;
-                if (y == 1) item = Game1.player.leftRing.Value;
-                if (y == 2) item = Game1.player.rightRing.Value;
-                if (y == 3) item = Game1.player.boots.Value;
-            } else {
-                ActualRings ar = actualdata.GetValue(Game1.player, FarmerNotFound);
-                if (y == 0) item = ar.ring1.Value;
-                if (y == 1) item = ar.ring2.Value;
-                if (y == 2) item = ar.ring3.Value;
-                if (y == 3) item = ar.ring4.Value;
-            }
-            
-            // Create the GUI element.
-            int id = 101+10*x+y;
-            var component = new StardewValley.Menus.ClickableComponent(rect, name) {
-                myID = id,
-                downNeighborID = y<3 ? id+1 : -1,
-                upNeighborID = y==0 ? Game1.player.MaxItems - 12 + x : id-1,
-                upNeighborImmutable = y==0,
-                rightNeighborID = x==0 ? id+10 : 105,
-                leftNeighborID = x==0 ? -1 : id-10,
-                item = item
-            };
-            page.equipmentIcons.Add(component);
-        }
-        
         static string[] EquipmentIcons = {
             "Hat",
             "Left Ring",
@@ -413,6 +383,48 @@ namespace StardewHack.WearMoreRings
             "Extra Ring 3",
             "Extra Ring 4",
         };
+
+        static public void AddEquipmentIcons(StardewValley.Menus.InventoryPage page) {
+            for (int i=0; i<EquipmentIcons.Length; i++) {
+                int x = i/4;
+                int y = i%4;
+                string name = EquipmentIcons[i];
+                
+                var rect = new Rectangle (
+                    page.xPositionOnScreen + 48 + x*64, 
+                    page.yPositionOnScreen + StardewValley.Menus.IClickableMenu.borderWidth + StardewValley.Menus.IClickableMenu.spaceToClearTopBorder + 256 - 12 + y*64, 
+                    64, 64
+                );
+                
+                // Get the item that should be in this slot.
+                Item item = null;
+                if (x == 0) { 
+                    if (y == 0) item = Game1.player.hat.Value;
+                    if (y == 1) item = Game1.player.leftRing.Value;
+                    if (y == 2) item = Game1.player.rightRing.Value;
+                    if (y == 3) item = Game1.player.boots.Value;
+                } else {
+                    ActualRings ar = actualdata.GetValue(Game1.player, FarmerNotFound);
+                    if (y == 0) item = ar.ring1.Value;
+                    if (y == 1) item = ar.ring2.Value;
+                    if (y == 2) item = ar.ring3.Value;
+                    if (y == 3) item = ar.ring4.Value;
+                }
+                
+                // Create the GUI element.
+                int id = 101+10*x+y;
+                var component = new StardewValley.Menus.ClickableComponent(rect, name) {
+                    myID = id,
+                    downNeighborID = y<3 ? id+1 : -1,
+                    upNeighborID = y==0 ? Game1.player.MaxItems - 12 + x : id-1,
+                    upNeighborImmutable = y==0,
+                    rightNeighborID = x==0 ? id+10 : 105,
+                    leftNeighborID = x==0 ? -1 : id-10,
+                    item = item
+                };
+                page.equipmentIcons.Add(component);
+            }
+        }
         
         [BytecodePatch("StardewValley.Menus.InventoryPage::.ctor(System.Int32,System.Int32,System.Int32,System.Int32)")]
         void InventoryPage_ctor() {
@@ -424,25 +436,37 @@ namespace StardewHack.WearMoreRings
                 Instructions.Ldfld(typeof(StardewValley.Menus.IClickableMenu), "xPositionOnScreen"),
                 Instructions.Ldc_I4_S(48)
             );
-            items.Extend(
-                OpCodes.Dup,
-                Instructions.Ldc_I4_S(104),
-                Instructions.Stfld(typeof(StardewValley.Menus.ClickableComponent), "myID"),
-                OpCodes.Dup,
-                Instructions.Ldc_I4_S(105),
-                Instructions.Stfld(typeof(StardewValley.Menus.ClickableComponent), "rightNeighborID"),
-                OpCodes.Callvirt
-            );
-            items.Remove();
-            for (int i=0; i<EquipmentIcons.Length; i++) {
-                items.Append(
-                    Instructions.Ldarg_0(),                 // page
-                    Instructions.Ldc_I4_S((byte)(i/4)),     // x
-                    Instructions.Ldc_I4_S((byte)(i%4)),     // y
-                    Instructions.Ldstr(EquipmentIcons[i]),  // name
-                    Instructions.Call(typeof(ModEntry), "AddEquipmentIcon", typeof(StardewValley.Menus.InventoryPage), typeof(int), typeof(int), typeof(string))
+            // Differences in optimization might cause CIL to contain either ldloc or dup.
+            // Use EAFP to figure out which we're dealing with here.
+            try {
+                items.Extend(
+                    OpCodes.Dup,
+                    Instructions.Ldc_I4_S(104),
+                    Instructions.Stfld(typeof(StardewValley.Menus.ClickableComponent), "myID"),
+                    OpCodes.Dup,
+                    Instructions.Ldc_I4_S(105),
+                    Instructions.Stfld(typeof(StardewValley.Menus.ClickableComponent), "rightNeighborID"),
+                    OpCodes.Callvirt
+                );
+            } catch (System.Exception err) {
+                LogException(err, LogLevel.Trace);
+                items.Extend(
+                    OpCodes.Stloc_0,
+                    OpCodes.Ldloc_0,
+                    Instructions.Ldc_I4_S(104),
+                    Instructions.Stfld(typeof(StardewValley.Menus.ClickableComponent), "myID"),
+                    OpCodes.Ldloc_0,
+                    Instructions.Ldc_I4_S(105),
+                    Instructions.Stfld(typeof(StardewValley.Menus.ClickableComponent), "rightNeighborID"),
+                    OpCodes.Ldloc_0,
+                    OpCodes.Callvirt
                 );
             }
+            // Add our own equipment icons
+            items.Replace(
+                Instructions.Ldarg_0(), // page
+                Instructions.Call(typeof(ModEntry), "AddEquipmentIcons", typeof(StardewValley.Menus.InventoryPage))
+            );
             
             // Move portrait 64px to the right.
             // This only affects where the tooltip shows up.
@@ -473,18 +497,41 @@ namespace StardewHack.WearMoreRings
         [BytecodePatch("StardewValley.Menus.InventoryPage::draw")]
         void InventoryPage_draw() {
             // Change the equipment slot drawing code to draw the 4 additional slots.
-            object[] loop_start = {
-                Instructions.Ldloca_S(3),
-                OpCodes.Call,
-                Instructions.Stloc_S(4),
-                Instructions.Ldloc_S(4),
-                Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "name"),
-                Instructions.Stloc_S(5),
-                Instructions.Ldloc_S(5),
-                Instructions.Ldstr("Hat")
-            };
-            var range = FindCode(loop_start).Follow(-1);
-            range.ExtendBackwards(loop_start);
+            InstructionRange range = null;
+            try {
+                range = FindCode(
+                    // switch (equipmentIcon.name) {
+                    Instructions.Ldloca_S(3),
+                    OpCodes.Call,
+                    Instructions.Stloc_S(4),
+                    Instructions.Ldloc_S(4),
+                    Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "name"),
+                    Instructions.Stloc_S(5),
+                    Instructions.Ldloc_S(5),
+                    // case "Hat":
+                    Instructions.Ldstr("Hat")
+                );
+            } catch (System.Exception err) {
+                LogException(err, LogLevel.Trace);
+                range = FindCode(
+                    // switch (equipmentIcon.name) {
+                    Instructions.Ldloca_S(1),
+                    OpCodes.Call,
+                    Instructions.Stloc_0(),
+                    Instructions.Ldloc_0(),
+                    Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "name"),
+                    Instructions.Stloc_2(),
+                    Instructions.Ldloc_2(),
+                    // case null (shortcut)
+                    OpCodes.Brfalse,
+                    Instructions.Ldloc_2(),
+                    // case "Hat":
+                    Instructions.Ldstr("Hat")
+                );
+            }
+            if (range.length != 8 && range.length != 10) throw new System.Exception($"Failed to properly match code. Length={range.length}");
+            
+            range.Extend(range.Follow(-1));
             range.Replace(
                 range[0],
                 range[1],
@@ -510,13 +557,27 @@ namespace StardewHack.WearMoreRings
         void InventoryPage_performHoverAction() {
             // Change code responsible for obtaining the tooltip information.
             var var_item = generator.DeclareLocal(typeof(Item));
-            var code = FindCode(
-                OpCodes.Ldloc_1,
-                Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "name"),
-                OpCodes.Stloc_2,
-                OpCodes.Ldloc_2,
-                Instructions.Ldstr("Hat")
-            );
+            InstructionRange code;
+            try {
+                code = FindCode(
+                    OpCodes.Ldloc_1,
+                    Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "name"),
+                    OpCodes.Stloc_2,
+                    OpCodes.Ldloc_2,
+                    Instructions.Ldstr("Hat")
+                );
+            } catch (System.Exception err) {
+                LogException(err, LogLevel.Trace);
+                code = FindCode(
+                    OpCodes.Ldloc_0,
+                    Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "name"),
+                    OpCodes.Stloc_2,
+                    OpCodes.Ldloc_2,
+                    OpCodes.Brfalse,
+                    OpCodes.Ldloc_2,
+                    Instructions.Ldstr("Hat")
+                );
+            }
             code.Extend(
                 OpCodes.Ldarg_0,
                 Instructions.Call_get(typeof(Game1), "player"),
@@ -527,7 +588,7 @@ namespace StardewHack.WearMoreRings
             );
             code.Replace(
                 // var item = EquipmentIcon.item
-                Instructions.Ldloc_1(),
+                code[0],
                 Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "item"),
                 Instructions.Stloc_S(var_item),
                 // if (item != null)
@@ -621,13 +682,27 @@ namespace StardewHack.WearMoreRings
         [BytecodePatch("StardewValley.Menus.InventoryPage::receiveLeftClick")]
         void InventoryPage_receiveLeftClick() {
             // Handle a ring-inventory slot being clicked.
-            var code = FindCode(
-                OpCodes.Ldloc_1,
-                Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "name"),
-                OpCodes.Stloc_3,
-                OpCodes.Ldloc_3,
-                Instructions.Ldstr("Hat")
-            );
+            InstructionRange code;
+            try {
+                code = FindCode(
+                    OpCodes.Ldloc_1,
+                    Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "name"),
+                    OpCodes.Stloc_3,
+                    OpCodes.Ldloc_3,
+                    Instructions.Ldstr("Hat")
+                );
+            } catch (System.Exception err) {
+                LogException(err, LogLevel.Trace);
+                code = FindCode(
+                    OpCodes.Ldloc_0,
+                    Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "name"),
+                    OpCodes.Stloc_3,
+                    OpCodes.Ldloc_3,
+                    OpCodes.Brfalse,
+                    OpCodes.Ldloc_3,
+                    Instructions.Ldstr("Hat")
+                );
+            }
             code.Extend(
                 OpCodes.Ldloc_3,
                 Instructions.Ldstr("Boots"),
@@ -637,7 +712,7 @@ namespace StardewHack.WearMoreRings
             );
             code.Extend(code.End.Follow(-1));
             code.Replace(
-                Instructions.Ldloc_1(),
+                code[0],
                 Instructions.Call(typeof(ModEntry), "EquipmentClick", typeof(StardewValley.Menus.ClickableComponent))
             );
             

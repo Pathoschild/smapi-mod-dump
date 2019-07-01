@@ -2,6 +2,5 @@
 {
     public class ModConfig
     {
-        public bool Debug { get; set; }
     }
 }

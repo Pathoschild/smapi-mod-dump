@@ -15,6 +15,7 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 * The mod changes the network protocol. So when playing multiplayer, all players must have this mod installed.
 * While rings from the [Giant Crop Ring](https://www.nexusmods.com/stardewvalley/mods/1182) mod can be equipped in the additional slots, their effects won't be applied. Rings from the [MoreRings](https://www.nexusmods.com/stardewvalley/mods/2054) mod, v1.0.3+ should work though.
 * The additional ring slots are invisible when the [Bigger Backpack](https://www.nexusmods.com/stardewvalley/mods/1845) mod has been installed. Despite being invisible, they can still be clicked to (un)equip rings.
+* Rings from mods might disappear on load due to ID's of modded items changing between restarts. There's currently no easy way to fix this.
 
 ## Changes
 #### 1.0:
@@ -35,4 +36,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 #### 1.4:
 * Fixed old rings not working & disappearing on save&reload (hopefully).
 
-
+#### 1.5:
+* Don't delete all rings if one has an unknown object ID.
+* Fix support for Stardew Valley 1.3.36 on MacOS.

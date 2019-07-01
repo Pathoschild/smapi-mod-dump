@@ -12,11 +12,14 @@ mods:
    Weather Illnesses
 
 latest commit:
-   commit e131cf81c775f6ee3e23e8f44bb873f5cc3c7832
-   Author: S2SKY <45951943+S2SKY@users.noreply.github.com>
-   Date:   Fri Mar 1 18:40:55 2019 +1300
+   commit 75b549437201b5e857c82f267a0206e07f01102b
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Thu Jun 27 02:50:03 2019 -0400
    
-       Create ko.json (#67)
+       update mod build package and migrate to new .csproj format (#74)
        
-       Korean lang support for beta Kor ver of SDV
+       The new package version...
+       - can add a Harmony reference automatically using <EnableHarmony>;
+       - deploys 'assets' folders automatically;
+       - sets x86 build mode by default to avoid processor architecture mismatch warnings.
    

@@ -53,36 +53,13 @@
 			}
 		},
 		// Filenames are [RECOLOR_]HOUSE[_SEASON]
-		// RECOLOR should be self-explanatory
+		// RECOLOR should be self-explanatory -- ATDSV should be checked after others
 		// HOUSE is "ruins" (normal) or "fixed" (from another mod)
 		// SEASON is standard CP token
 		{	// Blank default
 			"Name": "Recolor",
 			"Value": "",
 		},//
-		{
-			"Name": "Recolor",
-			"Value": "atdsv_",
-			"When": {
-				"HasMod": "Lavender.TonedDownSDV",
-				"RecolorOption": "auto"
-			}
-		},
-		{
-			"Name": "Recolor",
-			"Value": "atdsv_",
-			"When": {
-				"HasMod": "minervamaga.CP.ATDSV",
-				"RecolorOption": "auto"
-			}
-		},
-		{
-			"Name": "Recolor",
-			"Value": "atdsv_",
-			"When": {
-				"RecolorOption": "ATDSV"
-			}
-		},
 		{
 			"Name": "Recolor",
 			"Value": "starblue_",
@@ -111,6 +88,29 @@
 			"Value": "ace_",
 			"When": {
 				"RecolorOption": "Ace"
+			}
+		},
+		{
+			"Name": "Recolor",
+			"Value": "atdsv_",
+			"When": {
+				"HasMod": "Lavender.TonedDownSDV",
+				"RecolorOption": "auto"
+			}
+		},
+		{
+			"Name": "Recolor",
+			"Value": "atdsv_",
+			"When": {
+				"HasMod": "minervamaga.CP.ATDSV",
+				"RecolorOption": "auto"
+			}
+		},
+		{
+			"Name": "Recolor",
+			"Value": "atdsv_",
+			"When": {
+				"RecolorOption": "ATDSV"
 			}
 		},
 		{

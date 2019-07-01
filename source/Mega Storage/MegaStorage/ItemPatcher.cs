@@ -24,7 +24,7 @@ namespace MegaStorage
             _modHelper.Events.World.ObjectListChanged += OnObjectListChanged;
             _modHelper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
         }
-        
+
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             foreach (var customChest in CustomChestFactory.CustomChests)
@@ -36,8 +36,6 @@ namespace MegaStorage
         private void Register(CustomChest customChest)
         {
             _monitor.VerboseLog($"Registering {customChest.Config.Name} ({customChest.Config.Id})");
-            _monitor.VerboseLog($"Recipe: {customChest.Config.Recipe}");
-            _monitor.VerboseLog($"BigCraftableInfo: {customChest.BigCraftableInfo}");
             Game1.bigCraftablesInformation[customChest.Config.Id] = customChest.BigCraftableInfo;
             CraftingRecipe.craftingRecipes[customChest.Config.Name] = customChest.RecipeString;
             Game1.player.craftingRecipes[customChest.Config.Name] = 0;
@@ -53,14 +51,13 @@ namespace MegaStorage
             if (addedItem is CustomChest)
                 return;
 
-            if (!CustomChestFactory.IsCustomChest(addedItem))
+            if (!CustomChestFactory.ShouldBeCustomChest(addedItem))
                 return;
 
             _monitor.VerboseLog("OnInventoryChanged: converting");
 
             var index = Game1.player.Items.IndexOf(addedItem);
-            var item = Game1.player.Items[index];
-            Game1.player.Items[index] = item.ToCustomChest();
+            Game1.player.Items[index] = addedItem.ToCustomChest();
         }
 
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
@@ -74,7 +71,7 @@ namespace MegaStorage
             if (addedItem is CustomChest)
                 return;
 
-            if (!CustomChestFactory.IsCustomChest(addedItem))
+            if (!CustomChestFactory.ShouldBeCustomChest(addedItem))
                 return;
 
             _monitor.VerboseLog("OnObjectListChanged: converting");

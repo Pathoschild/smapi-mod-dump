@@ -3,19 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Denifia.Stardew.SendItems.Domain;
-using RestSharp;
 using Denifia.Stardew.SendItems.Events;
-using Denifia.Stardew.SendItems.Models;
-using StardewValley;
 using Denifia.Stardew.SendItems.Framework;
+using Denifia.Stardew.SendItems.Models;
+using RestSharp;
 using StardewModdingAPI;
+using StardewValley;
 
 namespace Denifia.Stardew.SendItems.Services
 {
-    public interface IMailDeliveryService
-    {
-    }
-
     /// <summary>
     /// Handles the local and remote delivery of mail to farmers
     /// </summary>
@@ -95,7 +91,7 @@ namespace Denifia.Stardew.SendItems.Services
                 {
                     mail.Status = MailStatus.Delivered;
                     updatedLocalMail.Add(mail);
-				}
+                }
             }
 
             UpdateLocalMail(updatedLocalMail);
@@ -164,7 +160,7 @@ namespace Denifia.Stardew.SendItems.Services
                 _mod.Monitor.Log($"{logPrefix}..done", LogLevel.Debug);
                 return;
             }
-            
+
             var localFarmers = _farmerService.GetFarmers();
             if (!localFarmers.Any()) return;
 
@@ -200,7 +196,7 @@ namespace Denifia.Stardew.SendItems.Services
             _mod.Monitor.Log($"{logPrefix}..downloading cloud mail...", LogLevel.Debug);
 
             var urlSegments = new Dictionary<string, string> { { "farmerId", currentFarmerId } };
-			var request = ModHelper.FormStandardRequest("mail/to/{farmerId}", urlSegments, Method.GET);
+            var request = ModHelper.FormStandardRequest("mail/to/{farmerId}", urlSegments, Method.GET);
             var response = await _restClient.ExecuteTaskAsync<List<Mail>>(request);
 
             var mail = new List<Mail>();
@@ -218,7 +214,7 @@ namespace Denifia.Stardew.SendItems.Services
                     mail.AddRange(response.Data);
                 }
             }
-            
+
             _mod.Monitor.Log($"{logPrefix}...done.", LogLevel.Debug);
             return mail;
         }

@@ -1,7 +1,8 @@
-﻿using Denifia.Stardew.SendItems.Services;
-using Autofac;
+﻿using Autofac;
 using Denifia.Stardew.SendItems.Domain;
+using Denifia.Stardew.SendItems.Services;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 
 namespace Denifia.Stardew.SendItems
 {
@@ -14,8 +15,9 @@ namespace Denifia.Stardew.SendItems
             var builder = new ContainerBuilder();
             builder.RegisterInstance(this).As<IMod>();
             builder.RegisterInstance(helper).As<IModHelper>();
+            builder.RegisterInstance(helper.Events).As<IModEvents>();
             builder.RegisterAssemblyTypes(typeof(SendItems).Assembly)
-                .Where(t => t.Name.EndsWith("Service")) 
+                .Where(t => t.Name.EndsWith("Service"))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
             builder.RegisterAssemblyTypes(typeof(SendItems).Assembly)

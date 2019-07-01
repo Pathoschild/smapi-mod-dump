@@ -5,9 +5,9 @@ mods:
    HD Sprites
 
 latest commit:
-   commit 2a27477f97740eec1113ad3656dca261a08e4026
+   commit ece8f0074c4d784cf8103629d034f611e3426f1b
    Author: ninthworld <theninthworldix@gmail.com>
-   Date:   Wed Jun 12 11:09:56 2019 -0700
+   Date:   Sun Jun 30 12:23:24 2019 -0700
    
-       add automatic content pack upscaling
+       add support for json assets
    

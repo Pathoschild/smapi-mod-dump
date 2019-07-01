@@ -1,0 +1,10 @@
+{
+  "NewRandomShirt": true,
+  "NewShirtXDays": 1.0,
+  "NewRandomPants": true,
+  "NewPantsXDays": 2.0,
+  "NewRandomShoes": true,
+  "NewShoesXDays": 3.0,
+  "BuyNewClothesMonthly": true,
+  "VerboseLogging": false
+}

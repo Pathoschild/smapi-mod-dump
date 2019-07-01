@@ -4,7 +4,7 @@
    "Version": "1.0.0",
    "Description": "Fix the random level issue of shafts in Multiplayer",
    "UniqueID": "princeleto.multiplayershaftfix",
-   "EntryDll": "multiplayershaftfix.dll",
+   "EntryDll": "MultiplayerShaftFix.dll", // fixed locally
    "MinimumApiVersion": "2.0",
    "UpdateKeys": [ "Nexus:2922" ]
 }

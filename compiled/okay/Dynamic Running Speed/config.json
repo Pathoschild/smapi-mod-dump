@@ -1,0 +1,11 @@
+{
+  "BuffOutdoorsGoodWeather": true,
+  "BuffFlooring": true,
+  "DebuffOutdoorsStormyWeather": true,
+  "DebuffHoeDirt": true,
+  "DebuffLateTime": true,
+  "DebuffOverEncumbered": true,
+  "DisplaySpeed": true,
+  "MetricUnit": true,
+  "VerboseLogging": false
+}

@@ -1,7 +1,4 @@
-﻿using System.Text;
-using System.Threading.Tasks;
-
-namespace Denifia.Stardew.BuyRecipes.Domain
+﻿namespace Denifia.Stardew.BuyRecipes.Domain
 {
     public class DefaultRecipeAquisition : BaseRecipeAquisition, IRecipeAquisitionConditions
     {

@@ -1,6 +1,6 @@
-﻿using Microsoft.WindowsAzure.Storage.Table;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Denifia.Stardew.SendItemsApi.Domain
 {

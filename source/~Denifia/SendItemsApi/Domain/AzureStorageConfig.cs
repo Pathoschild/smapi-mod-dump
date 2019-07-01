@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Denifia.Stardew.SendItemsApi.Domain
+﻿namespace Denifia.Stardew.SendItemsApi.Domain
 {
     public class AzureStorageConfig
     {

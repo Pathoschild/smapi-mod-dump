@@ -9,9 +9,12 @@ mods:
    Plantable Palm Trees
 
 latest commit:
-   commit 94c334df0258fa21b3238257764bad95fd71d90f
+   commit 1114d456dee8de2d232e84476bf236a8f4d612bc
    Author: MouseyPounds <mouseypounds+github@gmail.com>
-   Date:   Sun Jun 16 22:56:40 2019 -0400
+   Date:   Thu Jun 27 19:09:51 2019 -0400
    
-       PPT wallpaper bug fix
+       MHM Upate and NP cleanup
+       
+       Moved old perl helper script that is no longer used into an unsynched
+       Archive folder because it was throwing off language detection
    

@@ -40,9 +40,9 @@ namespace SummitReborn
         public T Load<T>(IAssetInfo asset)
         {
             if (asset.AssetNameEquals(@"Maps\Railroad"))
-                return this.Helper.Content.Load<T>(@"Assets\Railroad_alt.tbin");
+                return this.Helper.Content.Load<T>(@"assets\Railroad_alt.tbin");
             if (asset.AssetNameEquals(@"Maps\Summit"))
-                return this.Helper.Content.Load<T>(@"Assets\Summit_alt.tbin");
+                return this.Helper.Content.Load<T>(@"assets\Summit_alt.tbin");
             throw new NotSupportedException($"Unexpected asset name: {asset.AssetName}");
         }
 

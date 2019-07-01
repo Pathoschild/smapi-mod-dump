@@ -181,6 +181,10 @@ namespace MegaStorage.UI
             if (heldItem == null && showReceivingMenu)
             {
                 heldItem = ItemsToGrabMenu.leftClick(x, y, heldItem, false);
+                if (Game1.player.isInventoryFull())
+                {
+                    ClearNulls();
+                }
                 if (heldItem != null && behaviorOnItemGrab != null)
                 {
                     behaviorOnItemGrab(heldItem, Game1.player);
@@ -294,7 +298,10 @@ namespace MegaStorage.UI
                 heldItem = ItemsToGrabMenu.rightClick(x, y, heldItem, false);
                 if (heldItem != null && behaviorOnItemGrab != null)
                 {
-                    FixItemDupeBug();
+                    if (HasNulls())
+                    {
+                        ClearNulls();
+                    }
                     behaviorOnItemGrab(heldItem, Game1.player);
                     if (Game1.activeClickableMenu != null && Game1.activeClickableMenu is ItemGrabMenu)
                         ((ItemGrabMenu)Game1.activeClickableMenu).setSourceItem(SourceItem);
@@ -347,35 +354,29 @@ namespace MegaStorage.UI
             }
         }
 
+        private bool HasNulls()
+        {
+            var nullsInMenu = ItemsToGrabMenu.actualInventory.Count(x => x == null);
+            var nullsInChest = CustomChest.items.Count(x => x == null);
+            return nullsInMenu > nullsInChest;
+        }
+
+        protected virtual void ClearNulls()
+        {
+            MegaStorageMod.Logger.VerboseLog("ClearNulls (Large)");
+            var shownItems = ItemsToGrabMenu.actualInventory.ToList();
+            MegaStorageMod.Logger.VerboseLog("Shown items: " + shownItems.Count);
+            CustomChest.items.Clear();
+            CustomChest.items.AddRange(shownItems);
+            CustomChest.clearNulls();
+            Refresh();
+        }
+
         private TemporaryAnimatedSprite CreatePoof(int x, int y)
         {
             return new TemporaryAnimatedSprite("TileSheets/animations",
                 new Rectangle(0, 320, 64, 64), 50f, 8, 0,
                 new Vector2(x - x % 64 + 16, y - y % 64 + 16), false, false);
-        }
-
-        private void FixItemDupeBug()
-        {
-            var itemInChest = ItemsToGrabMenu.actualInventory.FirstOrDefault(i => i != null && IsSameItem(i, heldItem));
-            if (itemInChest != null) return;
-            var itemInCustomChest = CustomChest.items.SingleOrDefault(i => IsSameItem(i, heldItem));
-            if (itemInCustomChest == null)
-                return;
-            var index = CustomChest.items.IndexOf(itemInCustomChest);
-            CustomChest.items[index] = null;
-        }
-
-        private bool IsSameItem(Item item, Item other)
-        {
-            if (item == null || other == null)
-                return false;
-            if (item.ParentSheetIndex != other.ParentSheetIndex || item is Object && !(other is Object) || !(item is Object) && other is Object)
-                return false;
-            if (item is ColoredObject coloredObject && other is ColoredObject otherColoredObject && !coloredObject.color.Value.Equals(otherColoredObject.color.Value))
-                return false;
-            if (item is Object itemObject && other is Object otherObject && (itemObject.bigCraftable.Value != otherObject.bigCraftable.Value || itemObject.Quality != otherObject.Quality))
-                return false;
-            return item.Name.Equals(other.Name);
         }
 
         public override void draw(SpriteBatch b)

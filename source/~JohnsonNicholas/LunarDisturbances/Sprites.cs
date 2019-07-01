@@ -27,7 +27,7 @@ namespace TwilightShards.LunarDisturbances
 
             public Icons(IContentHelper helper)
             {
-                MoonSource = helper.Load<Texture2D>(Path.Combine("Assets", "MoonPhases.png"));
+                MoonSource = helper.Load<Texture2D>(Path.Combine("assets", "MoonPhases.png"));
                 source2 = Game1.mouseCursors;
             }
 

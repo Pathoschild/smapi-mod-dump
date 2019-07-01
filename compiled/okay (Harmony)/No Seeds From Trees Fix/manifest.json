@@ -4,7 +4,7 @@
    "Version": "1.1.0",
    "Description": "Fixes bug that causes tree seeds to not drop after Farmer levels during day.",
    "UniqueID": "kirbylink.noseedsfromtreesfix",
-   "EntryDll": "noseedsfromtreesfix.dll",
+   "EntryDll": "NoSeedsFromTreesFix.dll", // fixed locally
    "MinimumApiVersion": "2.0",
    "UpdateKeys": ["Nexus:2947"]
 }

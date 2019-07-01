@@ -1,4 +1,5 @@
-﻿using MegaStorage.Mapping;
+﻿using System;
+using MegaStorage.Mapping;
 using MegaStorage.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,6 +28,7 @@ namespace MegaStorage
 
         public void Edit<T>(IAssetData asset)
         {
+            _monitor.VerboseLog("Type of asset: " + typeof(T));
             var assetImage = asset.AsImage();
             ExpandSpriteSheet(assetImage);
             foreach (var customChest in CustomChestFactory.CustomChests)
@@ -49,7 +51,14 @@ namespace MegaStorage
             var expandedSpriteSheet = new Texture2D(Game1.graphics.GraphicsDevice, spriteSheet.Width, NewHeight);
             _monitor.VerboseLog($"New width: {expandedSpriteSheet.Width}, New height: {expandedSpriteSheet.Height}");
             expandedSpriteSheet.SetData(0, originalRect, data, 0, originalSize);
-            assetImage.ReplaceWith(expandedSpriteSheet);
+            try
+            {
+                assetImage.ReplaceWith(expandedSpriteSheet);
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log("Error while expanding bigCraftableSpriteSheet: " + ex.Message);
+            }
         }
 
         private void PatchSprite(IAssetDataForImage assetImage, CustomChest customChest)
@@ -58,7 +67,14 @@ namespace MegaStorage
             var destinationRect = Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, customChest.ParentSheetIndex, 16, 32);
             var sourceRect = new Rectangle(0, 0, 16, 32);
             _monitor.VerboseLog($"Destination rect: ({destinationRect.X}, {destinationRect.Y}) - ({destinationRect.Width}, {destinationRect.Height})");
-            assetImage.PatchImage(sprite, targetArea: destinationRect, sourceArea: sourceRect);
+            try
+            {
+                assetImage.PatchImage(sprite, targetArea: destinationRect, sourceArea: sourceRect);
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log("Error while patching bigCraftableSpriteSheet: " + ex.Message);
+            }
         }
 
     }

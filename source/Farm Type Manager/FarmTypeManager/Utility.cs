@@ -7,6 +7,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.TerrainFeatures;
 
 namespace FarmTypeManager
 {
@@ -282,11 +283,33 @@ namespace FarmTypeManager
                 return valid;
             }
 
-            /// <summary>Generates ore and places it on the specified map and tile.</summary>
-            /// <param name="oreName">A string representing the name of the ore type to be spawned, e.g. "</param>
-            /// <param name="mapName">The name of the GameLocation where the ore should be spawned.</param>
+            /// <summary>Generates forage and places it on the specified map and tile.</summary>
+            /// <param name="index">The parent sheet index (a.k.a. object ID) of the object type to spawn.</param>
+            /// <param name="location">The GameLocation where the forage should be spawned.</param>
             /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
-            public static void SpawnOre(string oreName, string mapName, Vector2 tile)
+            public static void SpawnForage(int index, GameLocation location, Vector2 tile)
+            {
+                StardewValley.Object forageObj = new StardewValley.Object(tile, index, (string)null, false, true, false, true); //generate the forage object
+                Monitor.Log($"Spawning forage. Type: {forageObj.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).", LogLevel.Trace);
+                location.dropObject(forageObj, tile * 64f, Game1.viewport, true, (Farmer)null); //place the forage at the location
+            }
+
+            /// <summary>Generates a large object and places it on the specified map and tile.</summary>
+            /// <param name="index">The parent sheet index (a.k.a. object ID) of the object type to spawn.</param>
+            /// <param name="location">The Farm where the large object should be spawned.</param>
+            /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
+            public static void SpawnLargeObject(int index, Farm location, Vector2 tile)
+            {
+                Monitor.Log($"Spawning large object. ID: {index}. Location: {tile.X},{tile.Y} ({location.Name}).", LogLevel.Trace);
+                location.addResourceClumpAndRemoveUnderlyingTerrain(index, 2, 2, tile); //generate an object using the list of valid index numbers
+            }
+
+            /// <summary>Generates ore and places it on the specified map and tile.</summary>
+            /// <param name="oreName">A string representing the name of the ore type to be spawned, e.g. "stone"</param>
+            /// <param name="location">The GameLocation where the ore should be spawned.</param>
+            /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
+            /// <returns>The spawned ore's parentSheetIndex. Null if spawn failed.</returns>
+            public static int? SpawnOre(string oreName, GameLocation location, Vector2 tile)
             {
                 StardewValley.Object ore = null; //ore object, to be spawned into the world later
                 switch (oreName.ToLower()) //avoid any casing issues in method calls by making this lower-case
@@ -336,15 +359,15 @@ namespace FarmTypeManager
 
                 if (ore != null)
                 {
-                    GameLocation loc = Game1.getLocationFromName(mapName);
-                    loc.setObject(tile, ore); //actually spawn the ore object into the world
+                    Utility.Monitor.Log($"Spawning ore. Type: {oreName}. Location: {tile.X},{tile.Y} ({location.Name}).", LogLevel.Trace);
+                    location.setObject(tile, ore); //actually spawn the ore object into the world
+                    return ore.ParentSheetIndex;
                 }
                 else
                 {
                     Utility.Monitor.Log($"The ore to be spawned (\"{oreName}\") doesn't match any known ore types. Make sure that name isn't misspelled in your player config file.", LogLevel.Info);
-                }
-
-                return;
+                    return null;
+                } 
             }
 
             /// <summary>Produces a dictionary containing the final, adjusted spawn chance of each object in the provided dictionaries. (Part of the convoluted object spawning process for ore.)</summary>
@@ -1117,6 +1140,60 @@ namespace FarmTypeManager
                     }
                 }
 
+                //check whether other mods exist
+                if (config.File_Conditions.OtherMods != null && config.File_Conditions.OtherMods.Count > 0)
+                {
+                    Monitor.Log("Other mod condition(s) found. Checking...", LogLevel.Trace);
+
+                    bool validMods = true; //whether all entries are accurate (true by default, unlike most other settings)
+
+                    foreach (KeyValuePair<string, bool> entry in config.File_Conditions.OtherMods) //for each mod entry in OtherMods
+                    {
+                        bool validEntry = !(entry.Value); //whether the current entry is accurate (starts false if the mod should exist; starts true if the mod should NOT exist)
+
+                        foreach (IModInfo mod in helper.ModRegistry.GetAll()) //for each mod currently loaded by SMAPI
+                        {
+                            if (entry.Value == true) //if the mod should exist
+                            {
+                                if (entry.Key.Equals(mod.Manifest.UniqueID, StringComparison.OrdinalIgnoreCase)) //if this mod's UniqueID matches the OtherMods entry
+                                {
+                                    validEntry = true; //this entry is valid
+                                    break; //skip the rest of these checks
+                                }
+                            }
+                            else //if the mod should NOT exist
+                            {
+                                if (entry.Key.Equals(mod.Manifest.UniqueID, StringComparison.OrdinalIgnoreCase)) //if this mod's UniqueID matches the OtherMods entry
+                                {
+                                    validEntry = false; //this entry is invalid
+                                    break; //skip the rest of these checks
+                                }
+                            }
+                        }
+
+                        if (validEntry) //if the current mod entry is valid
+                        {
+                            Monitor.Log($"Mod check successful: \"{entry.Key}\" {(entry.Value ? "does exist" : "does not exist")}.", LogLevel.Trace);
+                        }
+                        else //if the current mod entry is NOT valid
+                        {
+                            Monitor.Log($"Mod check failed: \"{entry.Key}\" {(entry.Value ? "does not exist" : "does exist")}.", LogLevel.Trace);
+                            validMods = false;
+                            break; //skip the rest of these checks
+                        }
+                    }
+
+                    if (validMods) //if all mod entries in the list are valid
+                    {
+                        Monitor.Log("The OtherMods list matches the player's mods. File allowed.", LogLevel.Trace);
+                    }
+                    else //if any entries were NOT valid
+                    {
+                        Monitor.Log("The OtherMods list does NOT match the player's mods. File disabled.", LogLevel.Trace);
+                        return false; //prevent config use
+                    }
+                }
+
                 return true; //all checks were successful; config should be used
             }
 
@@ -1285,7 +1362,7 @@ namespace FarmTypeManager
                 }
             }
 
-            /// <summary>Validates a single instance of farm data, correcting certain settings automatically.</summary>
+            /// <summary>Validates a single instance of farm data, correcting obsolete/invalid settings automatically.</summary>
             /// <param name="config">The contents of a single config file to be validated.</param>
             /// <param name="pack">The content pack associated with this config data; null if the file was from this mod's own folders.</param>
             public static void ValidateFarmData(FarmConfig config, IContentPack pack)
@@ -1304,9 +1381,8 @@ namespace FarmTypeManager
                 allAreas.Add(config.Large_Object_Spawn_Settings.Areas);
                 allAreas.Add(config.Ore_Spawn_Settings.Areas);
 
-                HashSet<string> IDs = new HashSet<string>(); //a record of all unique IDs encountered during this process
-
                 Monitor.Log("Checking for duplicate UniqueAreaIDs...", LogLevel.Trace);
+                HashSet<string> IDs = new HashSet<string>(); //a record of all unique IDs encountered during this process
 
                 //erase any duplicate IDs and record the others in the "IDs" hashset
                 foreach (SpawnArea[] areas in allAreas) //for each "Areas" array in allAreas
@@ -1337,7 +1413,6 @@ namespace FarmTypeManager
                 }
 
                 Monitor.Log("Assigning new UniqueAreaIDs to any blanks or duplicates...", LogLevel.Trace);
-
                 string newName; //temp storage for a new ID while it's created/tested
                 int newNumber; //temp storage for the numeric part of a new ID
 
@@ -1370,32 +1445,207 @@ namespace FarmTypeManager
                     }
                 }
 
-                Monitor.Log("Checking for valid min/max spawn settings...", LogLevel.Trace);
-                foreach (SpawnArea[] areas in allAreas) //for each "Areas" array in allAreas
-                {
-                    foreach (SpawnArea area in areas) //for each area in the current array
-                    {
-                        if (area.MinimumSpawnsPerDay > area.MaximumSpawnsPerDay) //if max spawns > min spawns
-                        {
-                            //swap the two numbers
-                            int temp = area.MinimumSpawnsPerDay;
-                            area.MinimumSpawnsPerDay = area.MaximumSpawnsPerDay;
-                            area.MaximumSpawnsPerDay = temp;
-
-                            Monitor.Log($"Min > max spawns in this area: \"{area.UniqueAreaID}\" ({area.MapName}). Numbers swapped.", LogLevel.Trace);
-                        }
-                    }
-                }
-
                 if (pack != null)
                 {
                     Monitor.Log($"Validation complete for content pack: {pack.Manifest.Name}", LogLevel.Trace);
                 }
                 else
                 {
-                    Monitor.Log("Validation complete for FarmTypeManager/data", LogLevel.Trace);
+                    Monitor.Log("Validation complete for this file from FarmTypeManager/data", LogLevel.Trace);
                 }
                 return;
+            }
+
+            /// <summary>Check each saved object with an expiration setting, respawning them if they were removed overnight (e.g. by the weekly forage removal process).</summary>
+            /// <param name="save">The save data to the checked.</param>
+            public static void ReplaceProtectedSpawnsOvernight(InternalSaveData save)
+            {
+                Monitor.Log($"Checking for saved objects that went missing overnight...", LogLevel.Trace);
+                int missing = 0; //# of objects missing
+                int blocked = 0; //# of objects that could not respawn due to blocked locations
+                int respawned = 0; //# of objects respawned
+                int unloaded = 0; //# of objects skipped due to missing (unloaded) or invalid map names
+                foreach (SavedObject saved in save.SavedObjects)
+                {
+                    if (saved.DaysUntilExpire == null) //if the object's expiration setting is null
+                    {
+                        continue; //skip to the next object
+                    }
+
+                    if (saved.Type == SavedObject.ObjectType.LargeObject) //if this is a large object
+                    {
+                        Farm farm = Game1.getLocationFromName(saved.MapName) as Farm; //get the specified location & treat it as a farm (null otherwise)
+
+                        if (farm == null) //if this isn't a valid map
+                        {
+                            unloaded++; //increment unloaded tracker
+                            //note: don't remove the object's save data; this might be a temporary issue, e.g. a map that didn't load correctly
+                            continue; //skip to the next object
+                        }
+
+                        bool stillExists = false; //does this large object still exist?
+
+                        //WARNING: this section accesses SDV "Net" objects; it does not edit them directly, but should be suspected if inconsistent errors occur
+                        foreach (ResourceClump clump in farm.resourceClumps) //for each clump (a.k.a. large object) on this map
+                        {
+                            if (clump.tile.X == saved.Tile.X && clump.tile.Y == saved.Tile.Y && clump.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
+                            {
+                                stillExists = true;
+                                break; //skip the rest of these clumps
+                            }
+                        }
+                        //end of WARNING
+
+                        if (!stillExists) //if the object no longer exists
+                        {
+                            missing++; //increment missing tracker
+
+                            //if the object's tiles are not unoccupied
+                            if (!farm.isTileOccupiedForPlacement(saved.Tile) && !farm.isTileOccupiedForPlacement(new Vector2(saved.Tile.X + 1, saved.Tile.Y)) && !farm.isTileOccupiedForPlacement(new Vector2(saved.Tile.X, saved.Tile.Y + 1)) && !farm.isTileOccupiedForPlacement(new Vector2(saved.Tile.X + 1, saved.Tile.Y + 1)))
+                            {
+                                SpawnLargeObject(saved.ID, farm, saved.Tile); //respawn it
+                                respawned++; //increment respawn tracker
+                            }
+                            else //the tiles are occupied
+                            {
+                                blocked++; //increment obstruction tracker
+                            }
+                        }
+                    }
+                    else //if this is forage or ore
+                    {
+                        GameLocation location = Game1.getLocationFromName(saved.MapName); //get the object's location
+
+                        if (location == null) //if the map wasn't found
+                        {
+                            unloaded++; //increment unloaded tracker
+                            //note: don't remove the object's save data; this might be a temporary issue, e.g. a map that didn't load correctly
+                            continue; //skip to the next object
+                        }
+
+                        StardewValley.Object realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
+
+                        if (realObject == null) //if the object no longer exists
+                        {
+                            missing++; //increment missing object tracker
+
+                            if (!location.isTileOccupiedForPlacement(saved.Tile)) //if the object's tile is not occupied
+                            {
+                                if (saved.Type == SavedObject.ObjectType.Forage) //if this is forage
+                                {
+                                    Utility.SpawnForage(saved.ID, location, saved.Tile); //respawn it
+                                }
+                                else //if this is ore
+                                {
+                                    Utility.SpawnOre(saved.Name, location, saved.Tile); //respawn it
+                                }
+                                respawned++; //increment respawn tracker
+                            } 
+                            else //if the object's tile is occupied
+                            {
+                                blocked++; //increment obstruction tracker
+                            }
+                        }
+                    }
+
+                    Monitor.Log($"Missing object check complete. Missing objects: {missing}. Respawned: {respawned}. Not respawned due to obstructions: {blocked}. Skipped due to missing maps: {unloaded}.", LogLevel.Trace);
+                }
+            }
+
+            /// <summary>Check each saved object's expiration data, updating counters & removing missing/expired objects from the data and game.</summary>
+            /// <param name="save">The save data to the checked.</param>
+            public static void ProcessObjectExpiration(InternalSaveData save)
+            {
+                Monitor.Log($"Updating save data for missing/expired objects...", LogLevel.Trace);
+                List<SavedObject> objectsToRemove = new List<SavedObject>(); //objects to remove from saved data after processing (note: do not remove them while looping through them)
+
+                foreach (SavedObject saved in save.SavedObjects) //for each saved object & expiration countdown
+                {
+                    if (saved.DaysUntilExpire == null) //if the object's expiration setting is null
+                    {
+                        continue; //skip to the next object
+                    }
+                    
+                    if (saved.Type == SavedObject.ObjectType.LargeObject) //if this is a large object
+                    {
+                        Farm farm = Game1.getLocationFromName(saved.MapName) as Farm; //get the specified location & treat it as a farm (null otherwise)
+
+                        if (farm == null) //if this isn't a valid map
+                        {
+                            //note: don't remove the object's save data; this might be a temporary issue, e.g. a map that didn't load correctly
+                            continue; //skip to the next object
+                        }
+
+                        bool stillExists = false; //does this large object still exist?
+
+                        //WARNING: this section accesses SDV "Net" objects; it does not edit them directly, but should be suspected if inconsistent errors occur
+                        foreach (ResourceClump clump in farm.resourceClumps) //for each clump (a.k.a. large object) on this map
+                        {
+                            if (clump.tile.X == saved.Tile.X && clump.tile.Y == saved.Tile.Y && clump.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
+                            {
+                                stillExists = true;
+                                break; //skip the rest of these clumps
+                            }
+                        }
+                        //end of WARNING
+
+                        if (stillExists) //if the object still exists
+                        {
+                            if (saved.DaysUntilExpire == 1) //if the object should expire tonight
+                            {
+                                Monitor.Log($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).", LogLevel.Trace);
+                                farm.removeEverythingExceptCharactersFromThisTile((int)saved.Tile.X, (int)saved.Tile.Y); //remove the object from the game
+                                objectsToRemove.Add(saved); //mark object for removal from save
+                            }
+                            else if (saved.DaysUntilExpire > 1) //if the object should expire, but not tonight
+                            {
+                                saved.DaysUntilExpire--; //decrease counter by 1
+                            }
+                        }
+                        else //if the object no longer exists
+                        {
+                            objectsToRemove.Add(saved); //mark object for removal from save
+                        }
+                    }
+                    else //if this is forage or ore
+                    {
+                        GameLocation location = Game1.getLocationFromName(saved.MapName); //get the object's location
+
+                        if (location == null) //if the map wasn't found
+                        {
+                            //note: don't remove the object's save data; this might be a temporary issue, e.g. a map that didn't load correctly
+                            continue; //skip to the next object
+                        }
+
+                        StardewValley.Object realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
+
+                        if (realObject != null && realObject.ParentSheetIndex == saved.ID) //if an object exists in the saved location & matches the saved object's ID
+                        {
+                            if (saved.DaysUntilExpire == 1) //if the object should expire tonight
+                            {
+                                Monitor.Log($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).", LogLevel.Trace);
+                                location.removeObject(saved.Tile, false); //remove the object from the game
+                                objectsToRemove.Add(saved); //mark object for removal from save
+                            }
+                            else if (saved.DaysUntilExpire > 1) //if the object should expire, but not tonight
+                            {
+                                saved.DaysUntilExpire--; //decrease counter by 1
+                            }
+                            
+                        }
+                        else //if the object no longer exists
+                        {
+                            objectsToRemove.Add(saved); //mark object for removal from save
+                        }
+                    }
+                    
+                }
+
+                Monitor.Log($"Expiration check complete. Clearing {objectsToRemove.Count} missing/expired objects from save data.", LogLevel.Trace);
+                foreach (SavedObject saved in objectsToRemove) //for each object that should be removed from the save data
+                {
+                    save.SavedObjects.Remove(saved); //remove it
+                }
             }
 
             /// <summary>Encapsulates IMonitor.Log() for this mod's static classes. Must be given an IMonitor in the ModEntry class to produce output.</summary>
@@ -1427,16 +1677,14 @@ namespace FarmTypeManager
             /// <returns>A "Weather" enum describing today's weather.</returns>
             public static Weather WeatherForToday()
             {
-                if (Game1.isLightning)
-                    return Weather.Lightning; //note this has to be completed before "isRaining", because both are true during storms
-                else if (Game1.isRaining)
-                    return Weather.Rain;
-                else if (Game1.isSnowing)
+                if (Game1.isSnowing)
                     return Weather.Snow;
-                else if (Game1.isDebrisWeather)
+                if (Game1.isRaining)
+                    return Game1.isLightning ? Weather.Lightning : Weather.Rain;
+                if (SaveGame.loaded?.isDebrisWeather ?? Game1.isDebrisWeather)
                     return Weather.Debris;
-                else
-                    return Weather.Sunny;
+
+                return Weather.Sunny;
             }
 
             /// <summary>A list of all config data for the current farm, related save data, and content pack (if applicable).</summary>

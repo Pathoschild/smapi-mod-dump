@@ -5,6 +5,7 @@ using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.AccessControl;
 
 namespace HDSprites.ContentPack
 {
@@ -87,7 +88,8 @@ namespace HDSprites.ContentPack
             foreach (var change in contentPack.Content.Changes)
             {
                 if (!(change.Action.Equals("Load") || change.Action.Equals("EditImage")) 
-                    || change.Enabled.ToLower().Equals("false")) continue;
+                    || change.Enabled.ToLower().Equals("false")
+                    || !change.FromFile.ToLower().EndsWith(".png")) continue;
 
                 List<TokenEntry> parsedWhen = new List<TokenEntry>();
                 foreach (var entry in change.When)
@@ -151,21 +153,9 @@ namespace HDSprites.ContentPack
         {
             string assetName = asset.GetTarget();
 
-            if (assetName.Equals("Characters\\Haley"))
-            {
-
-            }
-
             if (HDSpritesMod.AssetTextures.TryGetValue(assetName, out var assetTexture))
             {
                 bool enabled = asset.IsEnabled();
-
-                /*
-                if (!enabled && !asset.IsPartial())
-                {
-                    assetTexture.HDTexture = this.HDAssetManager.LoadAsset(assetName);
-                }
-                */
 
                 if (enabled)
                 {
@@ -177,7 +167,7 @@ namespace HDSprites.ContentPack
                     }
                     else
                     {
-                        assetTexture.setSubTexture(texture, asset.FromArea, asset.ToArea, asset.Overlay);
+                        assetTexture.SetSubTexture(texture, asset.FromArea, asset.ToArea, asset.Overlay);
                     }
                 }
 
@@ -193,10 +183,25 @@ namespace HDSprites.ContentPack
                             Texture2D partialTexture = this.LoadTexture(contentPack.GetFile(), contentPack.ContentPack);
                             if (partialTexture != null)
                             {
-                                assetTexture.setSubTexture(partialTexture, contentPack.FromArea, contentPack.ToArea, contentPack.Overlay);
+                                assetTexture.SetSubTexture(partialTexture, contentPack.FromArea, contentPack.ToArea, contentPack.Overlay);
                             }
                         }
                     }
+                }
+            } 
+        }
+
+        public void UpdateAssetEditable(string assetName)
+        {
+            foreach (ContentPackAsset asset in this.ContentPackAssets)
+            {
+                if (asset.GetTarget().ToLower().Equals(assetName.ToLower()))
+                {
+                    if (!HDSpritesMod.EnabledAssets.ContainsKey(assetName))
+                    {
+                        HDSpritesMod.AddEnabledAsset(assetName, true);
+                    }
+                    return;
                 }
             }
         }
@@ -211,29 +216,72 @@ namespace HDSprites.ContentPack
                 string modFile = Path.Combine(contentPack.ModPath, file);
                 string contentFile = Path.Combine(contentPack.ContentPath, file);
                 
-                if (File.Exists(contentFile))
+                if (FileExistsCaseInsensitive(contentFile, out contentFile))
                 {
                     FileStream inStream = new FileStream(contentFile, FileMode.Open);
                     texture = Texture2D.FromStream(device, inStream);
                 }
                 else
                 {
-                    if (!File.Exists(modFile)) return null;
+                    if (!FileExistsCaseInsensitive(modFile, out modFile)) return null;
 
                     FileStream inStream = new FileStream(modFile, FileMode.Open);
                     Texture2D modTexture = Texture2D.FromStream(device, inStream);
-
+                    
                     texture = Upscaler.Upscale(modTexture);
 
                     Directory.CreateDirectory(contentFile.Substring(0, contentFile.Replace("/", "\\").LastIndexOf("\\")));
 
                     FileStream outStream = new FileStream(contentFile, FileMode.Create);
-                    texture.SaveAsPng(outStream, texture.Width, texture.Height);
+                    texture.SaveAsPng(outStream, texture.Width, texture.Height);                    
                 }
 
                 this.ContentPackTextures.Add(file, texture);
             }
             return texture;
+        }
+
+        public static bool FileExistsCaseInsensitive(string file, out string output)
+        {
+            output = file;
+                    
+            if (File.Exists(file))
+            {
+                return true;
+            }
+            
+            string[] splits = file.Replace($"\\", "/").Split('/');
+            string realFile = splits[0] + "/";
+            for (int i = 1; i < splits.Length - 1; ++i)
+            {
+                if (splits[i].Equals(".."))
+                {
+                    realFile = realFile.Substring(0, realFile.Substring(0, realFile.Length - 1).LastIndexOf('/') + 1);
+                    continue;
+                }
+
+                var dirs = Directory.EnumerateDirectories(realFile);
+                foreach (string d in dirs)
+                {
+                    if (d.ToLower().Equals((realFile + splits[i]).ToLower()))
+                    {
+                        realFile = d + "/";
+                        break;
+                    }
+                }
+            }
+
+            var files = Directory.EnumerateFiles(realFile);
+            foreach (string f in files)
+            {
+                if (f.ToLower().Equals((realFile + splits[splits.Length - 1]).ToLower()))
+                {
+                    output = f;
+                    return true;
+                }
+            }
+            
+            return false;
         }
     }
 }

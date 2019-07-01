@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 58eb19e74f1264c75f50bc4296f3479e719dd964
+   commit 377aefe9a114127714f75e1886b60a230d52ee62
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Mon Feb 4 13:26:17 2019 +0100
+   Date:   Fri Jun 28 19:46:46 2019 +0200
    
-       Fix formatting error in WearMoreRings README
+       Added method to log exceptions.
    

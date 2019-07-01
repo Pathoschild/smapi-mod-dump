@@ -4,7 +4,7 @@
    "Version": "1.2.0",
    "Description": "Changes the time of day that the Farmer is returned home.",
    "UniqueID": "kirbylink.festivalendtimetweak",
-   "EntryDll": "festivalendtimetweak.dll",
+   "EntryDll": "FestivalEndTimeTweak.dll", // fixed locally
    "MinimumApiVersion": "2.0",
    "UpdateKeys": ["Nexus:2966"]
 }

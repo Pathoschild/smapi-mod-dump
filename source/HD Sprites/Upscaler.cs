@@ -59,10 +59,10 @@ namespace HDSprites
         public static Color Blend(Color colorA, Color colorB, double alpha)
         {
             double reverseAlpha = 1.0 - alpha;
-            int r = (int)Math.Floor((alpha * colorB.R) + (reverseAlpha * colorA.R));
-            int g = (int)Math.Floor((alpha * colorB.G) + (reverseAlpha * colorA.G));
-            int b = (int)Math.Floor((alpha * colorB.B) + (reverseAlpha * colorA.B));
-            int a = (int)Math.Floor((alpha * colorB.A) + (reverseAlpha * colorA.A));
+            int r = (int)Math.Floor((alpha * (int)colorB.R) + (reverseAlpha * (int)colorA.R));
+            int g = (int)Math.Floor((alpha * (int)colorB.G) + (reverseAlpha * (int)colorA.G));
+            int b = (int)Math.Floor((alpha * (int)colorB.B) + (reverseAlpha * (int)colorA.B));
+            int a = (int)Math.Floor((alpha * (int)colorB.A) + (reverseAlpha * (int)colorA.A));
             return new Color(r, g, b, a);
         }
 

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Denifia.Stardew.SendItems.Domain
 {
@@ -57,8 +53,6 @@ namespace Denifia.Stardew.SendItems.Domain
                     break;
                 case "winter":
                     seasonInt = 4;
-                    break;
-                default:
                     break;
             }
             return seasonInt;

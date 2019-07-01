@@ -33,10 +33,11 @@ namespace NPCMapLocations
 
     public string MapRecolor { get; set; } = "";
 	  public bool UseSeasonalMaps { get; set; } = true;
-    public Dictionary<string, int> CustomNpcs { get; set; } = new Dictionary<string, int>();
+    public Dictionary<string, int> CustomNpcMarkerOffsets { get; set; } = new Dictionary<string, int>();
     public HashSet<string> NpcBlacklist { get; set; } = new HashSet<string>() {};
     public Dictionary<string, JObject[]> CustomMapLocations { get; set; } = new Dictionary<string, JObject[]>();
-    public Dictionary<string, JObject> CustomMapMarkers { get; set; } = new Dictionary<string, JObject>();
+    public Dictionary<string, JObject> CustomMapTextures { get; set; } = new Dictionary<string, JObject>();
+    public Dictionary<string, JObject> CustomMapTooltips { get; set; } = new Dictionary<string, JObject>();
 	  public bool DEBUG_MODE { get; set; } = false;
   }
 }

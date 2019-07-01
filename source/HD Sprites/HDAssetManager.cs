@@ -26,11 +26,6 @@ namespace HDSprites
             }
         }
 
-        public bool ContainsAsset(string assetName)
-        {
-            return this.HDAssetFiles.ContainsKey(assetName);
-        }
-
         public Texture2D LoadAsset(string assetName)
         {
             if (!this.HDTextures.TryGetValue(assetName, out Texture2D texture))
