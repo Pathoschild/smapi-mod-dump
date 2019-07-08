@@ -7,6 +7,6 @@
     "item.slingshotdescr": "Shoots various items such as stones, ores, vegetables or explosive ammo.",
     "menu.carpentermoneybuttonon": "Toggle on: Buy missing resources.",
     "menu.carpentermoneybuttonoff": "Toggle off: Buy missing resources.",
-    "menu.carpenteringredinfo": "will be bought",
+    "menu.carpenteringredinfo": "{{itemname}} will be bought",
     "menu.fishingrodempty": "Remove attachments to sell."
 }

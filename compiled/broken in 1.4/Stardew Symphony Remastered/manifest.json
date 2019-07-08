@@ -1,7 +1,7 @@
 {
   "Name": "Stardew Symphony Remastered",
   "Author": "Alpha_Omegasis",
-  "Version": "2.5.2",
+  "Version": "3.0.0",
   "Description": "Adding more music to the game one beep at a time. Now with streaming!",
   "UniqueID": "Omegasis.StardewSymphonyRemastered",
   "EntryDll": "StardewSymphonyRemastered.dll",

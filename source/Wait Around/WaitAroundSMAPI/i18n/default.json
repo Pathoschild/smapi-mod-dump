@@ -1,0 +1,4 @@
+{
+  "question": "How long do you want to wait?",
+  "time-format": "{{hours}}:{{minutes}}" 
+}

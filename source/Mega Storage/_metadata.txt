@@ -5,9 +5,9 @@ mods:
    Mega Storage
 
 latest commit:
-   commit f35c2003c0c204cefb5bea9ca25a8bc0a9192f05
-   Author: amazingalek <alek.ntnu@gmail.com>
-   Date:   Sun Jun 30 08:19:18 2019 +0200
+   commit 93c30ccdc7f3efc9f9cdca3ed4c11e6ac97a7f99
+   Author: Aleksander Waage <alek.ntnu@gmail.com>
+   Date:   Sat Jul 6 20:06:49 2019 +0200
    
-       Update README.md
+       fixed startup crash
    

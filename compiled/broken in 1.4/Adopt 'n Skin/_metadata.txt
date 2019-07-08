@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4011
+IDs: Gathouria.AdoptSkin, Gathouria.AnimalSkinner
+update keys: Nexus:4011, GitHub:Gathouria/Adopt-Skin

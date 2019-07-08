@@ -482,7 +482,8 @@ void Main()
 					ApiRecord = new Lazy<ModEntryModel>(() => mod.ApiRecord),
 					IDs = mod.IDs,
 					UpdateKeys = mod.UpdateKeys,
-					Installed = mod.InstalledVersion.ToString()
+					Installed = mod.InstalledVersion.ToString(),
+					Source = mod.GetSourceUrl() != null ? new Hyperlinq(mod.GetSourceUrl(), "source") : null
 				})
 				.Dump("Installed mods not on compatibility list");
 		}
@@ -512,7 +513,8 @@ void Main()
 				UpdateKeys = Util.WithStyle(mod.UpdateKeys, "font-size: 0.8em;"),
 				UpdateCheckErrors = mod.UpdateCheckErrors.Length > 0 ? Util.WithStyle(string.Join("\n", mod.UpdateCheckErrors), $"font-size: 0.8em; {(hasMajorUpdateCheckErrors ? errorStyle : "color: gray;")}") : "",
 				NormalisedFolder = new Lazy<string>(() => mod.NormalisedFolder),
-				Manifest = new Lazy<Manifest>(() => mod.Manifest)
+				Manifest = new Lazy<Manifest>(() => mod.Manifest),
+				Source = mod.SourceUrl != null ? new Hyperlinq(mod.SourceUrl, "source") : null
 			};
 		})
 		.Dump("mods");
@@ -698,6 +700,21 @@ class ModData
 		return null;
 	}
 
+	/// <summary>Get the URL to the mod's code repository, if any.</summary>
+	public string GetSourceUrl()
+	{
+		// GitHub
+		string repo = this.GetModID("GitHub");
+		if (repo != null)
+			return $"https://github.com/{repo}";
+
+		// custom source
+		if (!string.IsNullOrWhiteSpace(this.ApiRecord?.Metadata?.CustomSourceUrl))
+			return this.ApiRecord.Metadata.CustomSourceUrl;
+
+		return null;
+	}
+
 	/// <summary>Get a recommended folder name based on the mod data.</summary>
 	public string GetRecommendedFolderName()
 	{
@@ -826,6 +843,9 @@ class ReportEntry
 	/// <summary>Any errors that occurred while checking for updates.</summary>
 	public string[] UpdateCheckErrors { get; set; }
 
+	/// <summary>The code repository URL, if any.</summary>
+	public string SourceUrl { get; }
+
 
 	/********
 	** Public methods
@@ -848,6 +868,7 @@ class ReportEntry
 		this.HasUpdate = !ignoreUpdate && latestVersion != null && latestVersion.IsNewerThan(mod.InstalledVersion);
 		this.DownloadUrl = downloadUrl;
 		this.UpdateCheckErrors = mod.ApiRecord.Errors;
+		this.SourceUrl = mod.GetSourceUrl();
 		if (forBeta)
 		{
 			this.WikiStatus = apiMetadata?.BetaCompatibilityStatus ?? apiMetadata?.CompatibilityStatus;

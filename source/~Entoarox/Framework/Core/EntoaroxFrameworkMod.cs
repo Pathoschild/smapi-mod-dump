@@ -18,6 +18,7 @@ using StardewValley.Monsters;
 using StardewValley.Objects;
 using StardewValley.Quests;
 using StardewValley.TerrainFeatures;
+using StardewValley.Buildings;
 using xTile.Dimensions;
 using xTile.ObjectModel;
 using xTile.Tiles;
@@ -25,6 +26,7 @@ using SObject = StardewValley.Object;
 
 namespace Entoarox.Framework.Core
 {
+    /// <summary>The mod entry class.</summary>
     internal class EntoaroxFrameworkMod : Mod
     {
         /*********
@@ -32,7 +34,7 @@ namespace Entoarox.Framework.Core
         *********/
         private static readonly List<string> Farms = new List<string> { "standard", "river", "forest", "hilltop", "wilderniss" };
         private static string Verify;
-        private JsonSerializer Serializer;
+        internal static JsonSerializer Serializer;
         private EventArgsActionTriggered ActionInfo;
         private Item PrevItem;
         private static Vector2? LastTouchAction;
@@ -121,12 +123,12 @@ namespace Entoarox.Framework.Core
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            this.Serializer = new JsonSerializer();
-            this.Serializer.Converters.Add(new RectangleConverter());
-            this.Serializer.Formatting = Formatting.None;
-            this.Serializer.NullValueHandling = NullValueHandling.Ignore;
-            this.Serializer.DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate;
-            this.Serializer.ContractResolver = new ReadonlyContractResolver();
+            Serializer = new JsonSerializer();
+            Serializer.Converters.Add(new RectangleConverter());
+            Serializer.Formatting = Formatting.None;
+            Serializer.NullValueHandling = NullValueHandling.Ignore;
+            Serializer.DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate;
+            Serializer.ContractResolver = new ReadonlyContractResolver();
             DeferredAssetHandler typeHandler = new DeferredAssetHandler();
             helper.Content.AssetEditors.Add(typeHandler);
             helper.Content.AssetEditors.Add(typeHandler);
@@ -139,6 +141,7 @@ namespace Entoarox.Framework.Core
             EntoaroxFrameworkMod.Config = this.Helper.ReadConfig<ModConfig>();
 
             this.Helper.ConsoleCommands.Add("world_bushreset", "Resets bushes in the whole game, use this if you installed a map mod and want to keep using your old save.", this.Commands);
+            this.Helper.ConsoleCommands.Add("world_reset", "world_reset (bushes|characters) - Resets the selected data by reloading it from disk.", this.WorldReset);
             if (EntoaroxFrameworkMod.Config.TrainerCommands)
             {
                 helper.ConsoleCommands
@@ -153,8 +156,18 @@ namespace Entoarox.Framework.Core
             helper.Events.GameLoop.Saving += this.OnSaving;
             helper.Events.GameLoop.Saved += this.OnSaved;
             helper.Events.Input.ButtonReleased += this.OnButtonReleased;
+
+            // Check if the serializer override should be skipped
+            if (typeof(SaveGame).GetField("contract") != null)
+            {
+                this.Monitor.Log("Detected incompatible SDV version for serializer function, function is disabled.", LogLevel.Warn);
+                return;
+            }
+            helper.Events.GameLoop.GameLaunched += this.SetupSerializer;
+            helper.Events.GameLoop.UpdateTicked += this.EnforceSerializer;
         }
 
+        /// <summary>Get an API that other mods can access. This is always called after <see cref="Entry" />.</summary>
         public override object GetApi()
         {
             return new EntoaroxFrameworkAPI();
@@ -189,6 +202,172 @@ namespace Entoarox.Framework.Core
             }
         }
 
+        private void WorldReset(string command, string[] args)
+        {
+            if (args.Length < 1)
+                this.Monitor.Log("No reset target provided.", LogLevel.Error);
+            else
+                switch (args[0])
+                {
+                    case "bushes":
+                        this.Monitor.Log("Reloading bush positions from disk...", LogLevel.Alert);
+                        foreach (GameLocation loc in Game1.locations)
+                        {
+                            loc.largeTerrainFeatures.Filter(a => !(a is Bush));
+                            if ((loc.IsOutdoors || loc.Name.Equals("BathHouse_Entry") || loc.treatAsOutdoors.Value) && loc.map.GetLayer("Paths") != null)
+                            {
+                                for (int x = 0; x < loc.map.Layers[0].LayerWidth; ++x)
+                                {
+                                    for (int y = 0; y < loc.map.Layers[0].LayerHeight; ++y)
+                                    {
+                                        Tile tile = loc.map.GetLayer("Paths").Tiles[x, y];
+                                        if (tile != null)
+                                        {
+                                            Vector2 vector2 = new Vector2(x, y);
+                                            switch (tile.TileIndex)
+                                            {
+                                                case 24:
+                                                    if (!loc.terrainFeatures.ContainsKey(vector2))
+                                                        loc.largeTerrainFeatures.Add(new Bush(vector2, 2, loc));
+                                                    break;
+                                                case 25:
+                                                    if (!loc.terrainFeatures.ContainsKey(vector2))
+                                                        loc.largeTerrainFeatures.Add(new Bush(vector2, 1, loc));
+                                                    break;
+                                                case 26:
+                                                    if (!loc.terrainFeatures.ContainsKey(vector2))
+                                                        loc.largeTerrainFeatures.Add(new Bush(vector2, 0, loc));
+                                                    break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case "characters":
+                        this.Monitor.Log("Reloading NPC dispositions from disk...", LogLevel.Alert);
+                        foreach (GameLocation location in Game1.locations)
+                            foreach (NPC npc in location.characters)
+                            {
+
+                                try
+                                {
+                                    Dictionary<string, string> NPCDispositions = Game1.content.Load<Dictionary<string, string>>("Data\\NPCDispositions");
+                                    if (NPCDispositions.ContainsKey(npc.Name))
+                                    {
+                                        string[] dataSplit = NPCDispositions[npc.Name].Split('/');
+                                        string a = dataSplit[0];
+                                        if (!(a == "teen"))
+                                        {
+                                            if (a == "child")
+                                            {
+                                                npc.Age = 2;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            npc.Age = 1;
+                                        }
+                                        a = dataSplit[1];
+                                        if (!(a == "rude"))
+                                        {
+                                            if (a == "polite")
+                                            {
+                                                npc.Manners = 1;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            npc.Manners = 2;
+                                        }
+                                        a = dataSplit[2];
+                                        if (!(a == "shy"))
+                                        {
+                                            if (a == "outgoing")
+                                            {
+                                                npc.SocialAnxiety = 0;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            npc.SocialAnxiety = 1;
+                                        }
+                                        a = dataSplit[3];
+                                        if (!(a == "positive"))
+                                        {
+                                            if (a == "negative")
+                                            {
+                                                npc.Optimism = 1;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            npc.Optimism = 0;
+                                        }
+                                        a = dataSplit[4];
+                                        if (!(a == "female"))
+                                        {
+                                            if (a == "undefined")
+                                            {
+                                                npc.Gender = 2;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            npc.Gender = 1;
+                                        }
+                                        a = dataSplit[5];
+                                        if (!(a == "datable"))
+                                        {
+                                            if (a == "not-datable")
+                                            {
+                                                npc.datable.Value = false;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            npc.datable.Value = true;
+                                        }
+                                        npc.loveInterest = dataSplit[6];
+                                        switch (dataSplit[7])
+                                        {
+                                            case "Desert":
+                                                npc.homeRegion = 1;
+                                                break;
+                                            case "Other":
+                                                npc.homeRegion = 0;
+                                                break;
+                                            case "Town":
+                                                npc.homeRegion = 2;
+                                                break;
+                                        }
+                                        if (dataSplit.Length > 8)
+                                        {
+                                            npc.Birthday_Season = dataSplit[8].Split(' ')[0];
+                                            npc.Birthday_Day = Convert.ToInt32(dataSplit[8].Split(' ')[1]);
+                                        }
+                                        for (int i = 0; i < NPCDispositions.Count; i++)
+                                        {
+                                            if (NPCDispositions.ElementAt(i).Key.Equals(npc.Name))
+                                            {
+                                                npc.id = i;
+                                                break;
+                                            }
+                                        }
+                                        npc.displayName = dataSplit[11];
+                                    }
+                                }
+                                catch (Exception)
+                                {
+                                }
+                            }
+                        break;
+                    default:
+                        this.Monitor.Log("Unknown reset target: " + args[0], LogLevel.Error);
+                        break;
+                }
+        }
         private void Commands(string command, string[] args)
         {
             if (!Game1.hasLoadedGame)
@@ -287,7 +466,7 @@ namespace Entoarox.Framework.Core
         /// <param name="e">The event arguments.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            this.SetupSerializer();
+            EntoaroxFrameworkAPI.Ready();
         }
 
         /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
@@ -295,7 +474,6 @@ namespace Entoarox.Framework.Core
         /// <param name="e">The event arguments.</param>
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            this.EnforceSerializer();
             if (!Context.IsWorldReady)
                 return;
             if (Game1.player.CurrentItem == null && this.PrevItem != null || Game1.player.CurrentItem != null && !Game1.player.CurrentItem.Equals(this.PrevItem))
@@ -359,20 +537,35 @@ namespace Entoarox.Framework.Core
             {
                 this.Monitor.Log("Packing custom objects...", LogLevel.Trace);
                 ItemEvents.FireBeforeSerialize();
-                Dictionary<string, InstanceState> data = new Dictionary<string, InstanceState>();
-                foreach (GameLocation loc in Game1.locations)
+                var data = new Dictionary<string, InstanceState>();
+                var features = new List<Tuple<string, Vector2, InstanceState>>();
+                var locations = new Dictionary<string, Tuple<bool, InstanceState>>();
+                foreach (var loc in this.GetAllLocations())
                 {
                     foreach (Chest chest in loc.Objects.Values.OfType<Chest>())
                         this.Serialize(data, chest.items);
+                    this.Serialize(data, loc.Objects);
+                    if (loc.terrainFeatures != null)
+                        this.Serialize(features, loc, loc.terrainFeatures);
                 }
-
+                foreach (var location in Game1.locations.Where(a => a is ICustomItem).ToArray())
+                {
+                    Game1.locations.Remove(location);
+                    this.Serialize(locations, location);
+                }
                 this.Serialize(data, Game1.player.Items);
                 FarmHouse house = Game1.getLocationFromName("FarmHouse") as FarmHouse;
-
                 if (house.fridge.Value != null)
                     this.Serialize(data, house.fridge.Value.items);
+                this.Monitor.Log("Found and serialized [" + data.Count + "] Item instances", LogLevel.Trace);
+                this.Monitor.Log("Found and serialized [" + features.Count + "] TerrainFeature instances", LogLevel.Trace);
+                this.Monitor.Log("Found and serialized [" + locations.Count + "] GameLocation instances", LogLevel.Trace);
+                string path = Path.Combine(Constants.CurrentSavePath, "Entoarox.Framework");
                 this.Helper.Data.WriteSaveData("custom-items", data);
+                this.Helper.Data.WriteSaveData("custom-features", features);
+                this.Helper.Data.WriteSaveData("custom-locations", locations);
                 ItemEvents.FireAfterSerialize();
+                this.Monitor.Log("Packing complete", LogLevel.Trace);
             }
         }
 
@@ -395,11 +588,83 @@ namespace Entoarox.Framework.Core
             // read data
             this.Monitor.Log("Unpacking custom objects...", LogLevel.Trace);
             ItemEvents.FireBeforeDeserialize();
+            Dictionary<string, Tuple<bool, InstanceState>> locations = this.Helper.Data.ReadSaveData<Dictionary<string, Tuple<bool, InstanceState>>>("custom-locations") ?? new Dictionary<string, Tuple<bool, InstanceState>>();
+            foreach (var location in locations)
+            {
+                if (location.Value.Item1)
+                    return;
+                Game1.locations.Remove(Game1.getLocationFromName(location.Key));
+                Game1.locations.Add(location.Value.Item2.Restore<GameLocation>());
+            }
             IDictionary<string, InstanceState> data = this.Helper.Data.ReadSaveData<Dictionary<string, InstanceState>>("custom-items") ?? new Dictionary<string, InstanceState>();
             this.RestoreItems(data);
+            List<Tuple<string, Vector2, InstanceState>> features = this.Helper.Data.ReadSaveData<List<Tuple<string, Vector2, InstanceState>>>("custom-features") ?? new List<Tuple<string, Vector2, InstanceState>>();
+            foreach(var feature in features)
+                Game1.getLocationFromName(feature.Item1)?.terrainFeatures.Add(feature.Item2, feature.Item3.Restore<TerrainFeature>());
             ItemEvents.FireAfterDeserialize();
         }
-
+        #region Functions
+        private IEnumerable<GameLocation> GetAllLocations()
+        {
+            foreach (GameLocation loc in Game1.locations)
+            {
+                if (loc is BuildableGameLocation farm)
+                    foreach (var building in farm.buildings.Where(a => a.indoors.Value != null).Select(a => a.indoors))
+                        yield return building;
+                yield return loc;
+            }
+        }
+        private void Serialize(List<Tuple<string, Vector2, InstanceState>> data, GameLocation location, StardewValley.Network.NetVector2Dictionary<TerrainFeature, Netcode.NetRef<TerrainFeature>> features)
+        {
+            foreach(SerializableDictionary<Vector2, TerrainFeature> dict in features)
+                foreach (var pair in dict)
+                {
+                    if (pair.Value is ICustomItem)
+                    {
+                        data.Add(new Tuple<string, Vector2, InstanceState>(location.Name, pair.Key, new InstanceState(pair.Value.GetType().AssemblyQualifiedName, JToken.FromObject(pair.Value, Serializer))));
+                        features.Remove(pair.Key);
+                    }
+                }
+        }
+        private void Serialize(Dictionary<string, InstanceState> data, StardewValley.Network.OverlaidDictionary items)
+        {
+            foreach (var dict in items)
+                foreach (var item in dict)
+                {
+                    if (item.Value is ICustomItem)
+                    {
+                        string id = Guid.NewGuid().ToString();
+                        int counter = 0;
+                        while (data.ContainsKey(id) && counter++ < 25)
+                            id = Guid.NewGuid().ToString();
+                        if (counter >= 25)
+                            throw new TimeoutException("Unable to assign a GUID to all items!");
+                        SObject obj = new SObject()
+                        {
+                            Stack = item.Value.getStack(),
+                            ParentSheetIndex = 0,
+                            Type = id,
+                            Name = "(Entoarox.Framework.ICustomItem)",
+                            Price = item.Value.salePrice(),
+                        };
+                        if (item.Value is Placeholder pitm)
+                            data.Add(id, new InstanceState(pitm.Id, pitm.Data));
+                        else
+                            data.Add(id, new InstanceState(item.GetType().AssemblyQualifiedName, JToken.FromObject(item, Serializer)));
+                        items[item.Key] = obj;
+                    }
+                }
+        }
+        private GameLocation Serialize(Dictionary<string, Tuple<bool, InstanceState>> data, GameLocation location, bool building = false)
+        {
+            string guid = Guid.NewGuid().ToString();
+            var output = new GameLocation();
+#pragma warning disable AvoidNetField // Avoid Netcode types when possible
+            output.name.Value = guid;
+#pragma warning restore AvoidNetField // Avoid Netcode types when possible
+            data.Add(building ? guid : location.Name, new Tuple<bool, InstanceState>(building, new InstanceState(location.GetType().AssemblyQualifiedName, JToken.FromObject(location, Serializer))));
+            return output;
+        }
         private void RestoreItems(IDictionary<string, InstanceState> data)
         {
             foreach (GameLocation loc in Game1.locations)
@@ -437,7 +702,7 @@ namespace Entoarox.Framework.Core
                     if (item is Placeholder pitm)
                         data.Add(id, new InstanceState(pitm.Id, pitm.Data));
                     else
-                        data.Add(id, new InstanceState(item.GetType().AssemblyQualifiedName, JToken.FromObject(item, this.Serializer)));
+                        data.Add(id, new InstanceState(item.GetType().AssemblyQualifiedName, JToken.FromObject(item, Serializer)));
 
                     items[i] = obj;
                 }
@@ -473,7 +738,7 @@ namespace Entoarox.Framework.Core
                         else
                             try
                             {
-                                items[i] = (Item)data[obj.Type].Data.ToObject(type, this.Serializer);
+                                items[i] = (Item)data[obj.Type].Data.ToObject(type, Serializer);
                             }
                             catch (Exception err)
                             {
@@ -486,20 +751,20 @@ namespace Entoarox.Framework.Core
                 }
             }
         }
-
+        #endregion functions
         /****
         ** Serializer
         ****/
-        private void SetupSerializer()
+        private void SetupSerializer(object sender, EventArgs e)
         {
             this.MainSerializer = new XmlSerializer(typeof(SaveGame), EntoaroxFrameworkMod.SerialiserTypes.Concat(EntoaroxFrameworkMod.SerializerTypes).ToArray());
             this.FarmerSerializer = new XmlSerializer(typeof(Farmer), EntoaroxFrameworkMod.FarmerTypes.Concat(EntoaroxFrameworkMod.SerializerTypes).ToArray());
             this.LocationSerializer = new XmlSerializer(typeof(GameLocation), EntoaroxFrameworkMod.LocationTypes.Concat(EntoaroxFrameworkMod.SerializerTypes).ToArray());
             EntoaroxFrameworkMod.SerializerInjected = true;
-            this.EnforceSerializer();
+            this.EnforceSerializer(null, null);
         }
 
-        private void EnforceSerializer()
+        private void EnforceSerializer(object sender, EventArgs e)
         {
             SaveGame.serializer = this.MainSerializer;
             SaveGame.farmerSerializer = this.FarmerSerializer;

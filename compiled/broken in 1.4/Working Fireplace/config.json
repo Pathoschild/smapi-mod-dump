@@ -16,5 +16,6 @@
   "reduce_friendship_children": 20,
   "COFIntegration": true,
   "COFMinTemp": 15.0,
-  "COFRainImpact": 5.0
+  "COFRainImpact": 5.0,
+  "show_temperature_in_bed": true
 }

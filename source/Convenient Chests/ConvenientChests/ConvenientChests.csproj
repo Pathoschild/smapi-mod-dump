@@ -123,6 +123,7 @@
     <Compile Include="Module.cs" />
     <Compile Include="StackToNearbyChests\StackLogic.cs" />
     <Compile Include="StackToNearbyChests\StashToNearbyChestsModule.cs" />
+    <Compile Include="ModAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json">

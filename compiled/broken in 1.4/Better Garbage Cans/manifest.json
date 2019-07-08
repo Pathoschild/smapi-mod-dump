@@ -1,0 +1,12 @@
+{
+  "Name": "Better Garbage Cans",
+  "Author": "AairTheGreat",
+  "Version": "1.0.1",
+  "Description": "Hopefully makes digging thru the garbage more interesting",
+  "UniqueID": "AairTheGreat.BetterGarbageCans",
+  "EntryDll": "Better Garbage Cans.dll",
+  "MinimumApiVersion": "2.11",
+  "UpdateKeys": [
+    "GitHub:AairTheGreat/StardewValleyMods"
+  ]
+}

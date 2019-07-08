@@ -113,14 +113,21 @@ readonly HashSet<int> IgnoreFileIDsForValidation = new HashSet<int>
 	12282, // Ace's Expanded Farms MTN (#2711) > MelodicLullaby Less Saturated Valley Compatibility
 	2051,  // Add a Room and Attic (#379)
 	16992, // Bears in the Barn for BFAV (#4000) > BFAV JSON Update data file
-	17296, // BFAV Dragons (#3991) > BFAV JSON Update
-	16975, // BFAV Velociraptors (#4015) > Animals file to BFAV Json Update
+	17704, // Better Woods (#3995) > Selective compatibility Immersive Farm 2
+	17688, // BFAV Bulls (#4136) > BFAV JSON Update
+	17685, // BFAV Cel's sheep (#3399) > Animals file to BFAV Json Update
 	16979, // BFAV Cutter Animals (#4016) > Animals file to BFAV Json Update
+	17296, // BFAV Dragons (#3991) > BFAV JSON Update
+	17687, // BFAV Pokemons (#3396) > Animals file to BFAV Json Update
+	17684, // BFAV More Blue Chickens (#3400) > file for BFAV Json Update
+	17686, // BFAV Round Chickens mod (#3398) > Animals file to BFAV Json Update
+	16975, // BFAV Velociraptors (#4015) > Animals file to BFAV Json Update
 	9873,  // Even More Secret Woods (#2364), replacement file for Immersive Farm 2
 	13120, // Immersive Farm 2 (#1531)
 	13647, // Immersive Farm 2 (#1531)
 	12863, // Secret Gardens Greenhouse (#3067) > "" for Immersive Farm 2
-	17658, // Stardew Valley Reimagined (#4119) > compatibility patches
+	17756, // Stardew Valley Reimagined (#4119) > compatibility patches
+	17692, // Trent's New Animals (#3634) > JSON Update
 
 	// legacy zipped Seasonal Immersion content packs
 	5438,  // Seasonal Custom Farm Buildings (#1451)
@@ -139,7 +146,7 @@ readonly HashSet<int> IgnoreFileIDsForValidation = new HashSet<int>
 	// legacy Stardew Symphony pack (files to drop into Mods/StardewSymphonyRemastered/Content/Music/Wav)
 	12421, // Chill of Winter Music Pack (#3015)
 
-	// Better Farm Animal Variety pack (files to merged into BFAV's config file)
+	// Better Farm Animal Variety pack (files to merge into BFAV's config file)
 	14395, // Gray Chicken (#3416)
 	14394, // Harvest Moon Cows (#3419)
 	14365, // Yoshis (#3420)
@@ -199,7 +206,6 @@ readonly HashSet<int> IgnoreFileIDsForValidation = new HashSet<int>
 	15901, // Better Crab Pots (#3159) > Config Updater
 	10352, // Birthstone Plants (#1632), JA pack with broken manifest JSON
 	5721,  // Chao Replacement for Cat (#1524), .wav files
-	17643, // Diverse Stardew Valley with Seasonal Villager Outfits (#4079) > README - FIXED IMAGES
 	15399, // Hidden Forest Farm (#3583) > XNB version, includes .tbin file
 	14664, // Husky New NPC (#14664), has .xslx file in root with multiple content pack folders
 	9967,  // Sam to Samantha (#2472), CP pack with invalid update keys

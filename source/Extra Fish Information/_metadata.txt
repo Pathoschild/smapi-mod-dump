@@ -1,0 +1,13 @@
+url:
+   https://github.com/ceasg/StardewValleyMods.git
+
+mods:
+   Extra Fish Information
+
+latest commit:
+   commit c38db3d282df48b44609378efe326b813dd22b6f
+   Author: Jessica <jessica.sammon@hotmail.co.uk>
+   Date:   Sat Jul 6 22:45:25 2019 +0100
+   
+       Added project files
+   

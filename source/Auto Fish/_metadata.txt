@@ -5,12 +5,9 @@ mods:
    Auto Fish
 
 latest commit:
-   commit f71012109398e3cc5ff5424744df6c24dd6bf3c8
-   Merge: 7ebcf36 ca827b0
-   Author: WhiteMind <WhiteMind@qq.com>
-   Date:   Tue May 14 16:38:49 2019 +0800
+   commit 211cd7e48899c325e11dc847670a88ed9a569334
+   Author: WhiteMinds <WhiteMind@qq.com>
+   Date:   Sun Jul 7 08:11:07 2019 +0800
    
-       Merge pull request #1 from Mizzion/master
-       
-       Updated to be compliant with SMAPI 3.0
+       update
    

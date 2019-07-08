@@ -16,9 +16,9 @@ mods:
    XNB Loader
 
 latest commit:
-   commit 9252def83d4d2dc145ebf20437905b547c3f1e19
+   commit af78a766b7dc270a2cbe1a38e7a4de7eb8d00973
    Author: Entoarox <kvdk@kvdk.net>
-   Date:   Mon Apr 1 17:20:24 2019 +0200
+   Date:   Sat Jul 6 09:28:59 2019 +0200
    
-       [EM] Fix release notes
+       EF ~ 2.4.6
    

@@ -9,9 +9,9 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit bc818d7a4c1e5127959706aca0879bc426288f40
+   commit e65d676b0a70eea6c870528f6b435ef295555501
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Sat May 25 19:11:02 2019 +0200
+   Date:   Thu Jul 4 07:54:25 2019 +0200
    
-       WorkingFireplace v1.2.0
+       fixed possible problem with translations
    

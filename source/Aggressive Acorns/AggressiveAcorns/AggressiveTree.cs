@@ -16,6 +16,13 @@ namespace AggressiveAcorns {
         private Vector2 _position;
         private readonly IModConfig _config = AggressiveAcorns.Config;
 
+        /// <summary>
+        /// Flag to skip first update, used to prevent spread seeds from updating the night they are created.
+        /// As spread seeds are not guaranteed to be hit in the update loop of the night they are planted, clearing this
+        /// flag currently relies on the AggressiveTree -> Tree -> AggressiveTree conversion around serialization.
+        /// </summary>
+        private bool _skipUpdate;
+
 
         [UsedImplicitly]
         public AggressiveTree() { }
@@ -28,10 +35,14 @@ namespace AggressiveAcorns {
             flipped.Value = tree.flipped.Value;
             stump.Value = tree.stump.Value;
             tapped.Value = tree.tapped.Value;
+            hasSeed.Value = tree.hasSeed.Value;
         }
 
 
-        private AggressiveTree(int treeType, int growthStage) : base(treeType, growthStage) { }
+        private AggressiveTree(int treeType, int growthStage, bool skipFirstUpdate = false)
+            : base(treeType, growthStage) {
+            _skipUpdate = skipFirstUpdate;
+        }
 
 
         [NotNull]
@@ -43,6 +54,7 @@ namespace AggressiveAcorns {
             tree.flipped.Value = flipped.Value;
             tree.stump.Value = stump.Value;
             tree.tapped.Value = tapped.Value;
+            tree.hasSeed.Value = hasSeed.Value;
 
             SyncFieldToTree<NetBool, bool>(tree, "destroy");
 
@@ -55,19 +67,26 @@ namespace AggressiveAcorns {
         }
 
 
-        public override void dayUpdate(GameLocation environment, Vector2 tileLocation) {
+        public override void dayUpdate([NotNull] GameLocation environment, Vector2 tileLocation) {
             _location = environment;
             _position = tileLocation;
 
             if (health.Value <= -100) {
                 SetField<NetBool, bool>("destroy", true);
-            } else if (TreeCanGrow()) {
+            } else if (!_skipUpdate && TreeCanGrow()) {
+                PopulateSeed();
+                TrySpread();
                 TryIncreaseStage();
                 ManageHibernation();
                 TryRegrow();
-                TrySpread();
-                PopulateSeed();
+            } else {
+                _skipUpdate = false;
             }
+
+            // Revert to vanilla type early to prevent serialization issues in mods that serialize during the Saving event.
+            // Relies on the fact that Terrain Feature iteration means that dayUpdate only won't be called again for the
+            // same tileLocation.
+            environment.terrainFeatures[tileLocation] = ToTree();
         }
 
 
@@ -111,7 +130,7 @@ namespace AggressiveAcorns {
             ) return;
 
             if (_config.DoGrowInstantly) {
-                growthStage.Value = treeStage;
+                growthStage.Value = IsShaded() ? _config.MaxShadedGrowthStage : treeStage;
             } else if (Game1.random.NextDouble() < _config.DailyGrowthChance) {
                 growthStage.Value += 1;
             }
@@ -169,23 +188,22 @@ namespace AggressiveAcorns {
                 var tileY = (int) seedPos.Y;
                 if (_config.SeedsReplaceGrass && _location.terrainFeatures.TryGetValue(seedPos, out var feature) &&
                     feature is Grass) {
-                    _location.terrainFeatures[seedPos] = new Tree(treeType.Value, 0);
-                    hasSeed.Value = false;
+                    PlaceOffspring(seedPos);
                 } else if (_location.isTileLocationOpen(new Location(tileX * 64, tileY * 64))
                            && !_location.isTileOccupied(seedPos)
                            && _location.doesTileHaveProperty(tileX, tileY, "Water", "Back") == null
                            && _location.isTileOnMap(seedPos)) {
-                    _location.terrainFeatures.Add(seedPos, BuildOffspring());
-                    hasSeed.Value = false;
+                    PlaceOffspring(seedPos);
                 }
             }
         }
 
 
-        [NotNull]
-        private AggressiveTree BuildOffspring() {
-            var tree = new AggressiveTree(treeType.Value, 0);
-            return tree;
+        private void PlaceOffspring(Vector2 position) {
+            hasSeed.Value = false;
+
+            var tree = new AggressiveTree(treeType.Value, 0, true);
+            _location.terrainFeatures[position] = tree;
         }
 
 

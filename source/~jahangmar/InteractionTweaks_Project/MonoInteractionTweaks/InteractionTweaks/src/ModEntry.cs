@@ -41,6 +41,9 @@ namespace InteractionTweaks
             if (config.SellableItemsFeature)
                 MarniesItemShopFeature.Enable();
 
+            //TODO:
+            //ReturnMuseumRewardsFeature.Enable();
+
             //if (config.ToolsFeature)
             //     DontUseToolsFeature.Enable();
 
@@ -62,6 +65,7 @@ namespace InteractionTweaks
                 MarniesItemShopFeature.ResetItems(new StardewValley.Menus.ShopMenu(StardewValley.Utility.getAnimalShopStock()));
             });
             */
+
         }
 
         public InteractionTweaksConfig GetConfig() {

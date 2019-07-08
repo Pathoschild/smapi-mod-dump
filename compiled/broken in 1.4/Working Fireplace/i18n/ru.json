@@ -6,5 +6,8 @@
     "dia.spousecold_child": "{{child1}} холодно.",
     "dia.spousecold_children": "{{child1}} и {{child2}} холодно.",
     "dia.please": "Пожалуйста, зажгите камин.",
-    "msg.nowood": "Вам нужно {{wood_pieces}} кусков дерева, чтобы разжеть огонь."
+    "msg.nowood": "Вам нужно {{wood_pieces}} кусков дерева, чтобы разжеть огонь.",
+    "msg.temp": "температура: ",
+    "msg.tempwarm": "теплый",
+    "msg.tempcold": "простуда"
 }

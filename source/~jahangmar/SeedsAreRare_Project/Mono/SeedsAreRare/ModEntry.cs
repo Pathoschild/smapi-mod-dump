@@ -39,7 +39,21 @@ namespace SeedsAreRare
             config = helper.ReadConfig<SeedsAreRareConfig>();
 
             helper.Events.Display.MenuChanged += this.MenuChanged;
+            helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
         }
+
+        void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
+        {
+            if(!Game1.player.craftingRecipes.Keys.Contains("Seed Maker") && Game1.player.farmingLevel >= 1)
+            {
+                Monitor.Log("Adding Seed Maker recipe", LogLevel.Trace);
+                Game1.player.craftingRecipes.Add("Seed Maker", 0);
+            }
+
+            if (Game1.player.farmingLevel >= 1)
+                Helper.Events.GameLoop.DayStarted -= GameLoop_DayStarted;
+        }
+
 
         /// <summary>Raised after a menu was opened.</summary>
         /// <param name="sender">The event sender.</param>

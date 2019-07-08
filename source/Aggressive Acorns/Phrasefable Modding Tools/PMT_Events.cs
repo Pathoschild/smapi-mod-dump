@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +9,6 @@ using StardewModdingAPI.Events;
 namespace Phrasefable_Modding_Tools {
 
     public partial class PhrasefableModdingTools {
-
         private readonly ToggleableEventLoggerCollection _loggers = new ToggleableEventLoggerCollection();
         private readonly string[] _enable = {"1", "true", "t"};
         private readonly string[] _disable = {"0", "false", "f"};
@@ -28,7 +26,7 @@ namespace Phrasefable_Modding_Tools {
             BuildLogger_GameLoop_DayStarted();
             BuildLogger_GameLoop_DayEnding();
 
-            var desc = "args: [event...][ {1|true|t|0|false|f}]";
+            const string desc = "Usage: log-events [event...][ {1|true|t|0|false|f}]";
             Helper.ConsoleCommands.Add("log-events", desc, Callback);
 
         }
@@ -149,94 +147,6 @@ namespace Phrasefable_Modding_Tools {
         private void BuildLogger_GameLoop_DayEnding() {
             var logger = BuildLogger("day-ending", (DayEndingEventArgs args) => "GameLoop.DayEnding");
             Helper.Events.GameLoop.DayEnding += logger.OnEvent;
-        }
-
-
-    }
-
-
-    internal enum ToggleAction {
-        Enable,
-        Disable,
-        Toggle
-    }
-
-
-    internal class ToggleableEventLoggerCollection : IEnumerable<IToggleableEventLogger> {
-        private readonly IDictionary<string, IToggleableEventLogger> _loggers =
-            new Dictionary<string, IToggleableEventLogger>();
-
-        public IEnumerator<IToggleableEventLogger> GetEnumerator() => _loggers.Values.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable) _loggers.Values).GetEnumerator();
-
-
-        public void Add([NotNull] IToggleableEventLogger item) {
-            _loggers[item.Id] = item;
-        }
-
-
-        public void Set([NotNull] IEnumerable<string> loggers, ToggleAction action) {
-            foreach (var logger in loggers) {
-                _loggers[logger].Set(action);
-            }
-        }
-
-
-        [NotNull] public IEnumerable<string> Ids => _loggers.Keys;
-    }
-
-
-    internal interface IToggleableEventLogger {
-
-        bool IsEnabled { get; }
-
-        string Id { get; }
-
-        void Set(ToggleAction action);
-    }
-
-
-    internal class ToggleableEventLogger<TArgs> : IToggleableEventLogger where TArgs : EventArgs {
-        private readonly IMonitor _monitor;
-        private readonly Func<TArgs, string> _message;
-        public string Id { get; }
-
-        public bool IsEnabled { get; private set; }
-
-
-        public ToggleableEventLogger([NotNull] string id, IMonitor monitor, Func<TArgs, string> message) {
-            if (string.IsNullOrEmpty(id)) {
-                throw new ArgumentNullException($"invalid event logger id: `{id}`");
-            }
-
-            Id = id;
-            _message = message;
-            _monitor = monitor;
-        }
-
-
-        public void OnEvent(object sender, TArgs args) {
-            if (IsEnabled) {
-                _monitor.Log(_message(args), LogLevel.Info);
-            }
-        }
-
-
-        public void Set(ToggleAction action) {
-            switch (action) {
-                case ToggleAction.Enable:
-                    IsEnabled = true;
-                    break;
-                case ToggleAction.Disable:
-                    IsEnabled = false;
-                    break;
-                case ToggleAction.Toggle:
-                    IsEnabled = !IsEnabled;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(action), action, null);
-            }
         }
     }
 

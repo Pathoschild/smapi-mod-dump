@@ -41,6 +41,7 @@
     <Compile Include="src\MarniesItemShopFeature.cs" />
     <Compile Include="src\ModEntry.cs" />
     <Compile Include="src\ModFeature.cs" />
+    <Compile Include="src\ReturnMuseumRewardsFeature.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

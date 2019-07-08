@@ -1,7 +1,7 @@
 {
   "Name": "Convenient Chests",
   "Author": "aEnigma",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Makes your life easier: Allows crafting from and auto-stashing to nearby chests.",
   "UniqueID": "aEnigma.ConvenientChests",
   "MinimumApiVersion": "2.10.2",

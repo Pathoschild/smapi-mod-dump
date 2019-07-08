@@ -43,7 +43,7 @@ namespace InteractionTweaks
         private static int remainingWoodReq;
         private static int remainingStoneReq;
 
-        private static string hoverTextOn, hoverTextOff, ingredInfo;
+        private static string hoverTextOn, hoverTextOff, ingredInfoWood, ingredInfoStone;
 
         public static new void Enable()
         {
@@ -61,25 +61,8 @@ namespace InteractionTweaks
         {
             if (e.NewMenu is CarpenterMenu carpenterMenu)
             {
-                if (Helper.ModRegistry.IsLoaded("Pathoschild.TractorMod"))
-                {
-                    Monitor.Log("TractorMod was detected.", LogLevel.Debug);
-                    int stableCount = Helper.Reflection.GetField<List<BluePrint>>(carpenterMenu, "blueprints").GetValue().FindAll((BluePrint blueprint) => blueprint.name.Equals("Stable")).Count;
-                    if (stableCount == 1)//garage not added
-                    {
-                        Monitor.Log("CarpenterMenu: TractorMod hasn't changed blueprints yet.", LogLevel.Trace);
-                        setupBlueprints = false;
-                    }
-                    else
-                    {
-                        Monitor.Log("CarpenterMenu: TractorMod changed blueprints already.", LogLevel.Trace);
-                        SetupBlueprints(carpenterMenu);
-                    }
-                }
-                else
-                {
-                    SetupBlueprints(carpenterMenu);
-                }
+                //blueprints are setup on first button press to avoid problems with mods adding new blueprints
+                setupBlueprints = false;
 
                 SetupButtons(carpenterMenu);
 
@@ -92,9 +75,6 @@ namespace InteractionTweaks
                 Helper.Events.Display.RenderingActiveMenu -= Display_RenderingActiveMenu;
                 Helper.Events.Display.RenderedActiveMenu -= Display_RenderedActiveMenu;
                 Helper.Events.Input.ButtonPressed -= Input_ButtonPressed;
-                Monitor.Log("CarpenterMenu: setting vanillaBlueprint", LogLevel.Trace);
-                Helper.Reflection.GetField<List<BluePrint>>(oldCarpenterMenu, "blueprints").SetValue(vanillaBlueprints);
-                oldCarpenterMenu.setNewActiveBlueprint();
             }
         }
 
@@ -208,7 +188,7 @@ namespace InteractionTweaks
                     ingredient = woodObject.getOne();
                     ingredient.Stack = remainingWoodReq;
                     ingredient.drawInMenu(e.SpriteBatch, vector, 1f);
-                    Utility.drawTextWithShadow(e.SpriteBatch, ingredient.DisplayName + " " + ingredInfo, Game1.dialogueFont, new Vector2(vector.X + 64f + 16f, vector.Y + 20f), magicalConstruction ? Color.PaleGoldenrod : Game1.textColor, 1f, -1f, -1, -1, magicalConstruction ? 0f : 0.25f, 3);
+                    Utility.drawTextWithShadow(e.SpriteBatch, ingredInfoWood, Game1.dialogueFont, new Vector2(vector.X + 64f + 16f, vector.Y + 20f), magicalConstruction ? Color.PaleGoldenrod : Game1.textColor, 1f, -1f, -1, -1, magicalConstruction ? 0f : 0.25f, 3);
                     if (ingredient.Stack == 0)
                         Utility.drawTinyDigits(0, e.SpriteBatch, vector + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(0, 3f * 1f)) + 3f * 1f, 64f - 18f * 1f + 2f), 3f * 1f, 1f, Color.White);
                 }
@@ -219,7 +199,7 @@ namespace InteractionTweaks
                     ingredient = stoneObject.getOne();
                     ingredient.Stack = remainingStoneReq;
                     ingredient.drawInMenu(e.SpriteBatch, vector, 1f);
-                    Utility.drawTextWithShadow(e.SpriteBatch, ingredient.DisplayName + " " + ingredInfo, Game1.dialogueFont, new Vector2(vector.X + 64f + 16f, vector.Y + 20f), magicalConstruction ? Color.PaleGoldenrod : Game1.textColor, 1f, -1f, -1, -1, magicalConstruction ? 0f : 0.25f, 3);
+                    Utility.drawTextWithShadow(e.SpriteBatch, ingredInfoStone, Game1.dialogueFont, new Vector2(vector.X + 64f + 16f, vector.Y + 20f), magicalConstruction ? Color.PaleGoldenrod : Game1.textColor, 1f, -1f, -1, -1, magicalConstruction ? 0f : 0.25f, 3);
                     if (ingredient.Stack == 0)
                         Utility.drawTinyDigits(0, e.SpriteBatch, vector + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(0, 3f * 1f)) + 3f * 1f, 64f - 18f * 1f + 2f), 3f * 1f, 1f, Color.White);
                 }
@@ -241,7 +221,8 @@ namespace InteractionTweaks
             moneyButtonEnabled = false;
             hoverTextOn = Helper.Translation.Get("menu.carpentermoneybuttonon");
             hoverTextOff = Helper.Translation.Get("menu.carpentermoneybuttonoff");
-            ingredInfo = Helper.Translation.Get("menu.carpenteringredinfo");
+            ingredInfoWood = Helper.Translation.Get("menu.carpenteringredinfo", new { itemname = woodObject.DisplayName });
+            ingredInfoStone = Helper.Translation.Get("menu.carpenteringredinfo", new { itemname = stoneObject.DisplayName });
 
             cancelTexture = new ClickableTextureComponent("CMON", new Rectangle(carpenterMenu.xPositionOnScreen + carpenterMenu.width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 256 - 20 - 64 - 10 + 5, carpenterMenu.yPositionOnScreen + carpenterMenu.maxHeightOfBuildingViewer + 64 + 5, 64 - 8, 64 - 8), null, hoverTextOn, Game1.mouseCursors, new Microsoft.Xna.Framework.Rectangle(267, 469, 16, 16), 3.0f, false);
 
@@ -281,23 +262,24 @@ namespace InteractionTweaks
 
         private static BluePrint NewBlueprint(BluePrint bluePrint)
         {
-            if (bluePrint.name.Equals("Stable"))
+            //compatibility with "Sauvignon in Stardew"
+            bool winery = bluePrint.name.Equals("Winery");
+            string name = winery ? "Slime Hutch" : bluePrint.name;
+
+            //the values are copied one-by-one to ensure compatibility with mods altering the list of blueprints
+            BluePrint newBlueprint = new BluePrint(name)
             {
-                BluePrint newBlueprint = new BluePrint(bluePrint.name)
-                {
-                    displayName = bluePrint.displayName,
-                    description = bluePrint.description,
-                    maxOccupants = bluePrint.maxOccupants,
-                    moneyRequired = bluePrint.moneyRequired,
-                    tilesWidth = bluePrint.tilesWidth,
-                    tilesHeight = bluePrint.tilesHeight,
-                    sourceRectForMenuView = bluePrint.sourceRectForMenuView,
-                    itemsRequired = bluePrint.itemsRequired
-                };
-                return newBlueprint;
-            }
-            else
-                return new BluePrint(bluePrint.name);
+                name = winery ? "Winery" : name,
+                displayName = bluePrint.displayName,
+                description = bluePrint.description,
+                maxOccupants = bluePrint.maxOccupants,
+                moneyRequired = bluePrint.moneyRequired,
+                tilesWidth = bluePrint.tilesWidth,
+                tilesHeight = bluePrint.tilesHeight,
+                sourceRectForMenuView = new Rectangle(bluePrint.sourceRectForMenuView.X, bluePrint.sourceRectForMenuView.Y, bluePrint.sourceRectForMenuView.Width, bluePrint.sourceRectForMenuView.Height),
+                itemsRequired = new Dictionary<int,int>(bluePrint.itemsRequired)
+            };
+            return newBlueprint;
         }
 
         private static int GetPrice(BluePrint bluePrint)

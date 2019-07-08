@@ -25,6 +25,7 @@ namespace ConvenientChests {
 
             helper.Events.GameLoop.SaveLoaded      += (sender, e) => LoadModules();
             helper.Events.GameLoop.ReturnedToTitle += (sender, e) => UnloadModules();
+
         }
 
         private void LoadModules() {
@@ -44,12 +45,16 @@ namespace ConvenientChests {
         private void UnloadModules() {
             StashNearby.Deactivate();
             StashNearby = null;
-            
+
             CategorizeChests.Deactivate();
             CategorizeChests = null;
-            
+
             CraftFromChests.Deactivate();
             CraftFromChests = null;
+        }
+
+        public override object GetApi() {
+            return new ModAPI();
         }
     }
 }

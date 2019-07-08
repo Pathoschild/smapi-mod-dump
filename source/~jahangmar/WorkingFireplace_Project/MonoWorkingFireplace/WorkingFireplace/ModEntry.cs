@@ -15,12 +15,14 @@
 
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.Characters;
+using StardewValley.BellsAndWhistles;
 
 //using StardewValley.Menus;
 //using System.Collections.Generic;
@@ -31,29 +33,61 @@ namespace WorkingFireplace
     {
         private WorkingFireplaceConfig Config;
 
+        private const double defaultYesterdayCOFLow = 1000;
+        private double yesterdayCOFLow = defaultYesterdayCOFLow;
+        private bool tooColdToday = false;
+        private double tempToday = defaultYesterdayCOFLow;
+
         public override void Entry(IModHelper helper)
         {
+            Config = helper.ReadConfig<WorkingFireplaceConfig>();
+
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
-           
-            Config = helper.ReadConfig<WorkingFireplaceConfig>();
+            helper.Events.Display.MenuChanged += Display_MenuChanged;
         }
+
+        void Display_MenuChanged(object sender, MenuChangedEventArgs e)
+        {
+            if (e.NewMenu is StardewValley.Menus.DialogueBox && Game1.player.isInBed && Config.show_temperature_in_bed)
+            {
+                Helper.Events.Display.RenderedActiveMenu += Display_RenderedActiveMenu;
+            }
+            else
+            {
+                Helper.Events.Display.RenderedActiveMenu -= Display_RenderedActiveMenu;
+            }
+        }
+
+        void Display_RenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
+        {
+            //from Game1.drawHUD
+            float num = 0.625f;
+            Rectangle rectangle = Game1.graphics.GraphicsDevice.Viewport.GetTitleSafeArea();
+            float x = (float)(rectangle.Right - 48 - 8);
+            rectangle = Game1.graphics.GraphicsDevice.Viewport.GetTitleSafeArea();
+            Vector2 vector = new Vector2(x, (float)(rectangle.Bottom - 224 - 16 - (int)((float)(Game1.player.MaxStamina - 270) * num)));
+
+            bool isCold = !WarmInside(false) && tooColdToday;
+
+            string text = Helper.Translation.Get("msg.temp") + ((isCold ? Helper.Translation.Get("msg.tempcold") : Helper.Translation.Get("msg.tempwarm")));
+
+            int width = SpriteText.getWidthOfString(text);
+            SpriteText.drawString(e.SpriteBatch, text, (int)vector.X - width, (int)vector.Y - 100, 999999, -1, 999999, 1f, 0.88f, false, -1, "", isCold ? SpriteText.color_Cyan : SpriteText.color_Orange);
+        }
+
 
         void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
         {
-            bool warmth = false;
-            if (Game1.currentLocation is FarmHouse farmHouse)
-            {
-                foreach (Furniture furniture in farmHouse.furniture)
-                {
-                    if (furniture.furniture_type == Furniture.fireplace && furniture.isOn) {
-                        Point tile = VectorToPoint(furniture.tileLocation.Get());
-                        SetFireplace(farmHouse, tile.X, tile.Y, false, false);
-                        warmth = true;
-                    }
-                }
-            }
-            if (Game1.IsWinter && Config.need_fire_in_winter || Game1.wasRainingYesterday && Config.need_fire_on_rainy_day)
+
+            SetTemperatureToday();
+
+            bool warmth = WarmInside(true);
+
+
+            bool tooColdOutside = TooColdYesterday();
+
+            if (tooColdOutside)
             {
                 if (warmth)
                 {
@@ -139,6 +173,73 @@ namespace WorkingFireplace
             }
         }
 
+        private bool WarmInside(bool changeFireplace)
+        {
+            bool warmth = false;
+            if (Game1.currentLocation is FarmHouse farmHouse)
+            {
+                foreach (Furniture furniture in farmHouse.furniture)
+                {
+                    if (furniture.furniture_type == Furniture.fireplace && furniture.isOn)
+                    {
+                        Point tile = VectorToPoint(furniture.tileLocation.Get());
+                        if (changeFireplace)
+                            SetFireplace(farmHouse, tile.X, tile.Y, false, false);
+                        warmth = true;
+                    }
+                }
+            }
+            else
+            {
+                warmth = true; //if the player sleeps somewhere else (Sleepover mod)
+            }
+            return warmth;
+        }
+
+        private bool TooColdYesterday()
+        {
+            bool tooColdOutside = false;
+            if (Config.COFIntegration && Helper.ModRegistry.IsLoaded("KoihimeNakamura.ClimatesOfFerngill")) //check if ClimatesOfFerngill is loaded and integration is activated
+            {
+                double todayCOFLow = Helper.Reflection.GetMethod(Helper.ModRegistry.GetApi("KoihimeNakamura.ClimatesOfFerngill"), "GetTodaysLow").Invoke<double>(Array.Empty<object>());
+                tooColdOutside = (((int)yesterdayCOFLow == (int)defaultYesterdayCOFLow) ? todayCOFLow : yesterdayCOFLow) - (Game1.wasRainingYesterday ? Config.COFRainImpact : 0) <= Config.COFMinTemp;
+                Monitor.Log("Climates of Ferngill integration is active. Temperature is " + (tooColdOutside ? "cold" : "warm"), LogLevel.Trace);
+                yesterdayCOFLow = todayCOFLow;
+                Monitor.Log("yesterdayCOFLow set to " + yesterdayCOFLow, LogLevel.Trace);
+
+            }
+            else
+            {
+                tooColdOutside = Game1.IsWinter && (Config.need_fire_in_winter || Game1.wasRainingYesterday && Config.need_fire_in_winter_rain) ||
+                                 Game1.IsSpring && (Config.need_fire_in_spring || Game1.wasRainingYesterday && Config.need_fire_in_spring_rain) ||
+                                 Game1.IsSummer && (Config.need_fire_in_summer || Game1.wasRainingYesterday && Config.need_fire_in_summer_rain) ||
+                                 Game1.IsFall && (Config.need_fire_in_fall || Game1.wasRainingYesterday && Config.need_fire_in_fall_rain);
+
+                Monitor.Log("Temperature is " + (tooColdOutside ? "cold" : "warm"), LogLevel.Trace);
+            }
+            return tooColdOutside;
+        }
+
+        private void SetTemperatureToday()
+        {
+            bool tooColdOutside = false;
+            if (Config.COFIntegration && Helper.ModRegistry.IsLoaded("KoihimeNakamura.ClimatesOfFerngill")) //check if ClimatesOfFerngill is loaded and integration is activated
+            {
+                double todayCOFLow = Helper.Reflection.GetMethod(Helper.ModRegistry.GetApi("KoihimeNakamura.ClimatesOfFerngill"), "GetTodaysLow").Invoke<double>(Array.Empty<object>());
+                tooColdOutside = todayCOFLow - (Game1.isRaining ? Config.COFRainImpact : 0) <= Config.COFMinTemp;
+                tempToday = todayCOFLow;
+
+            }
+            else
+            {
+                tooColdOutside = Game1.IsWinter && (Config.need_fire_in_winter || Game1.isRaining && Config.need_fire_in_winter_rain) ||
+                                 Game1.IsSpring && (Config.need_fire_in_spring || Game1.isRaining && Config.need_fire_in_spring_rain) ||
+                                 Game1.IsSummer && (Config.need_fire_in_summer || Game1.isRaining && Config.need_fire_in_summer_rain) ||
+                                 Game1.IsFall && (Config.need_fire_in_fall || Game1.isRaining && Config.need_fire_in_fall_rain);
+            }
+            tooColdToday = tooColdOutside;
+        }
+
         private int CalcAttribute(float value, double fac, int max)
         {
             int result = Convert.ToInt32(value - max * fac);
@@ -173,6 +274,10 @@ namespace WorkingFireplace
                 {
                     furniture.isOn.Set(on);
                     farmHouse.setFireplace(on, X, Y, playsound);
+                    if (!on && furniture.lightSource != null)
+                    {
+                        farmHouse.removeLightSource(furniture.lightSource.Identifier);
+                    }
                 }
             }
         }

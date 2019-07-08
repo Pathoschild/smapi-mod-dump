@@ -7,10 +7,10 @@ using StardewValley;
 namespace Phrasefable_Modding_Tools {
 
     public partial class PhrasefableModdingTools {
-
-
         private void SetUp_Ground() {
-            Helper.ConsoleCommands.Add("ground", "prints data on the tiles around the mouse cursor", GroundCommand);
+            var desc = new StringBuilder("Prints data on the tiles around the player.");
+            desc.AppendLine("Usage: ground [radius]");
+            Helper.ConsoleCommands.Add("ground", desc.ToString(), GroundCommand);
         }
 
 
@@ -64,7 +64,6 @@ namespace Phrasefable_Modding_Tools {
             Monitor.Log(message.ToString(), LogLevel.Info);
 
         }
-
     }
 
 }

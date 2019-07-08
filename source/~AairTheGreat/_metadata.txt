@@ -1,0 +1,14 @@
+url:
+   https://github.com/AairTheGreat/StardewValleyMods.git
+
+mods:
+   Better Garbage Cans
+   Better Panning
+
+latest commit:
+   commit eb41f06ebfc3b1a2d479c614d205f855808cffb6
+   Author: Aair <a_aair@hotmailc.om>
+   Date:   Sun Jul 7 21:21:51 2019 -0700
+   
+       Updated manifest and readme files.
+   

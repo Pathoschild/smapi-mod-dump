@@ -1,0 +1,13 @@
+url:
+   https://github.com/Gathouria/Adopt-Skin.git
+
+mods:
+   Adopt 'n Skin
+
+latest commit:
+   commit d331d6f1adf6a7cbb4e31534e1d276eb127da05d
+   Author: Gathouria <katey.huddleston@gmail.com>
+   Date:   Thu Jul 4 13:12:05 2019 -0700
+   
+       Update README.md
+   

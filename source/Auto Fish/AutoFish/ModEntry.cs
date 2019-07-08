@@ -3,35 +3,35 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Tools;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoFish
 {
+    /// <summary>The mod entry class.</summary>
     public class ModEntry : Mod
     {
         private ModConfig Config;
         private bool catching = false;
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             Config = Helper.ReadConfig<ModConfig>();
 
             //Events
-            helper.Events.GameLoop.UpdateTicked += UpdateTick;
+            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
         }
 
-        private void UpdateTick(object sender, UpdateTickedEventArgs e)
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (Game1.player == null)
                 return;
 
-            if (Game1.player.CurrentTool is FishingRod)
+            if (Game1.player.CurrentTool is FishingRod currentTool)
             {
-                FishingRod currentTool = Game1.player.CurrentTool as FishingRod;
                 if (Config.fastBite && currentTool.timeUntilFishingBite > 0)
                     currentTool.timeUntilFishingBite /= 2; // 快速咬钩
 
@@ -42,9 +42,8 @@ namespace AutoFish
                     currentTool.castingPower = 1;
             }
 
-            if (Game1.activeClickableMenu is BobberBar) // 自动小游戏
+            if (Game1.activeClickableMenu is BobberBar bar) // 自动小游戏
             {
-                BobberBar bar = Game1.activeClickableMenu as BobberBar;
                 float barPos = Helper.Reflection.GetField<float>(bar, "bobberBarPos").GetValue();
                 float barHeight = Helper.Reflection.GetField<int>(bar, "bobberBarHeight").GetValue();
                 float fishPos = Helper.Reflection.GetField<float>(bar, "bobberPosition").GetValue();
@@ -53,7 +52,6 @@ namespace AutoFish
 
                 bool treasureCaught = Helper.Reflection.GetField<bool>(bar, "treasureCaught").GetValue();
                 bool hasTreasure = Helper.Reflection.GetField<bool>(bar, "treasure").GetValue();
-                float treasureScale = Helper.Reflection.GetField<float>(bar, "treasureScale").GetValue();
                 float bobberBarSpeed = Helper.Reflection.GetField<float>(bar, "bobberBarSpeed").GetValue();
                 float barPosMax = 568 - barHeight;
 

@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 9eda01fe93027870a25048c5c27b896c20daa852
+   commit 7397e35fde674ae179e1ef5338c04ab4c8eecf3d
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Jun 29 14:25:41 2019 -0400
+   Date:   Sun Jul 7 20:12:16 2019 -0400
    
-       improve error if Automate's data.json is missing/invalid
+       fix custom mod tokens called with non-ready inputs
    

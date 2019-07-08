@@ -2,16 +2,19 @@
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace WaitAroundSMAPI
 {
-    class WaitAroundMenu : IClickableMenu
+    internal class WaitAroundMenu : IClickableMenu
     {
         private WaitAroundMod Mod { get; set; }
         private Rectangle MenuRect { get; set; }
         private readonly MenuButton[] Buttons;
+        private IInputHelper Input => this.Mod.Helper.Input;
+        private ITranslationHelper Translation => this.Mod.Helper.Translation;
 
         public WaitAroundMenu(WaitAroundMod mod)
         {
@@ -40,14 +43,19 @@ namespace WaitAroundSMAPI
             );
         }
 
+        private bool isShiftPressed()
+        {
+            return this.Input.IsDown(SButton.LeftShift) || this.Input.IsDown(SButton.RightShift);
+        }
+
         private void upButton(MenuButton menuButton)
         {
-            Mod.timeToWait += 10;
+            Mod.timeToWait += this.isShiftPressed() ? 60 : 10;
         }
 
         private void downButton(MenuButton menuButton)
         {
-            Mod.timeToWait -= 10;
+            Mod.timeToWait -= this.isShiftPressed() ? 60 : 10;
         }
 
         private void enterButton(MenuButton menuButton)
@@ -65,7 +73,7 @@ namespace WaitAroundSMAPI
 
         private void reloadMap()
         {
-            Game1.locationAfterWarp = Game1.currentLocation;
+            //Game1.locationAfterWarp = Game1.currentLocation;
             Game1.xLocationAfterWarp = (int)(Game1.player.Position.X / Game1.tileSize);
             Game1.yLocationAfterWarp = (int)(Game1.player.Position.Y / Game1.tileSize);
             Game1.facingDirectionAfterWarp = 2;
@@ -93,11 +101,11 @@ namespace WaitAroundSMAPI
             }
 
             //Draw title
-            String titleString = "How long do you want to wait?";
+            string titleString = this.Translation.Get("question");
             b.DrawString(Game1.dialogueFont, titleString, new Vector2(MenuRect.X + (MenuRect.Width / 2) - (Game1.dialogueFont.MeasureString(titleString).X / 2), MenuRect.Y + 15), Color.Black);
 
             //Draw time
-            String timeString = String.Format("{0:00}:{1:00}", Math.Floor(Mod.timeToWait / 60.0), Mod.timeToWait % 60);
+            string timeString = this.Translation.Get("time-format", new { hours = $"{Math.Floor(Mod.timeToWait / 60.0):00}", minutes = $"{Mod.timeToWait % 60:00}" });
             b.DrawString(Game1.dialogueFont, timeString, new Vector2((MenuRect.Width / 2) - (Game1.dialogueFont.MeasureString(timeString).X) + MenuRect.X, (MenuRect.Height / 2) - (Game1.dialogueFont.MeasureString(timeString).Y) + MenuRect.Y), Color.Black, 0f, Vector2.Zero, 2.0f, SpriteEffects.None, 0.0f);
 
             //Draw mouse

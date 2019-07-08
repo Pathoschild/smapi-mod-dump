@@ -1,6 +1,10 @@
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Updated for Stardew Valley 1.4, including new content.
+* Improved translations. Thanks to FixThisPlz (updated Russian) and jahangmar (updated German)!
+
 ## 1.22.1
 Released 10 June 2019.
 

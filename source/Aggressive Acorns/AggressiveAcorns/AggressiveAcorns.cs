@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 
 namespace AggressiveAcorns {
@@ -23,6 +22,8 @@ namespace AggressiveAcorns {
         private bool ManageTrees {
             get => _manageTrees;
             set {
+                if (value == _manageTrees) return;
+
                 Monitor.Log($"{(value ? "Started" : "Stopped")} watching for new trees/new areas.", LogLevel.Trace);
                 _manageTrees = value;
             }
@@ -42,7 +43,7 @@ namespace AggressiveAcorns {
 
         private void OnDayStarted(object sender, DayStartedEventArgs e) {
             Monitor.Log("Enraging trees in all available areas.", LogLevel.Trace);
-            ReplaceTerrainFeatures<Tree, AggressiveTree>(EnrageTree, GetLocations());
+            ReplaceTerrainFeatures<Tree, AggressiveTree>(EnrageTree, Common.Utilities.GetLocations(Helper));
             ManageTrees = true;
         }
 
@@ -50,7 +51,7 @@ namespace AggressiveAcorns {
         private void OnSaving(object sender, SavingEventArgs e) {
             ManageTrees = false;
             Monitor.Log("Calming trees in all available areas.", LogLevel.Trace);
-            ReplaceTerrainFeatures<AggressiveTree, Tree>(CalmTree, GetLocations());
+            ReplaceTerrainFeatures<AggressiveTree, Tree>(CalmTree, Common.Utilities.GetLocations(Helper));
         }
 
 
@@ -68,8 +69,9 @@ namespace AggressiveAcorns {
             var toReplace = GetTerrainFeatures<Tree>(e.Added);
             if (!toReplace.Any()) return;
 
-            Monitor.Log("TerrainFeature list changed, enraging any new trees.", LogLevel.Trace);
-            ReplaceTerrainFeatures(EnrageTree, e.Location, toReplace);
+            var msg = ReplaceTerrainFeatures(EnrageTree, e.Location, toReplace);
+            Monitor.Log("TerrainFeature list changed: " + msg, LogLevel.Trace);
+
         }
 
 
@@ -93,7 +95,7 @@ namespace AggressiveAcorns {
             foreach (var location in locations) {
                 var toReplace = GetTerrainFeatures<TOriginal>(location.terrainFeatures.Pairs);
                 if (toReplace.Any()) {
-                    ReplaceTerrainFeatures(converter, location, toReplace);
+                    Monitor.Log(ReplaceTerrainFeatures(converter, location, toReplace), LogLevel.Trace);
                 }
             }
         }
@@ -109,7 +111,8 @@ namespace AggressiveAcorns {
         }
 
 
-        private void ReplaceTerrainFeatures<TOriginal, TReplacement>(
+        [NotNull]
+        private string ReplaceTerrainFeatures<TOriginal, TReplacement>(
             Func<TOriginal, TReplacement> converter,
             [NotNull] GameLocation location,
             [NotNull] ICollection<KeyValuePair<Vector2, TOriginal>> terrainFeatures)
@@ -119,26 +122,8 @@ namespace AggressiveAcorns {
                 location.terrainFeatures[keyValuePair.Key] = converter(keyValuePair.Value);
             }
 
-            Monitor.Log(
-                $"{location.Name} - replaced {terrainFeatures.Count} {typeof(TOriginal).Name} with {typeof(TReplacement).Name}.",
-                LogLevel.Trace);
-        }
-
-
-        [NotNull]
-        private IEnumerable<GameLocation> GetLocations() {
-            if (Context.IsMainPlayer) {
-                // From https://stardewvalleywiki.com/Modding:Common_tasks#Get_all_locations on 2019/03/16
-                return Game1.locations.Concat(
-                    from location in Game1.locations.OfType<BuildableGameLocation>()
-                    from building in location.buildings
-                    where building.indoors.Value != null
-                    select building.indoors.Value
-                );
-            }
-
-            return Helper.Multiplayer.GetActiveLocations();
-
+            return
+                $"{location.Name} - replaced {terrainFeatures.Count} {typeof(TOriginal).Name} with {typeof(TReplacement).Name}.";
         }
     }
 

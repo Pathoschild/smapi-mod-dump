@@ -1,8 +1,0 @@
-{
-  "HealingValuePerSeconds": 0.4,
-  "SecondsNeededToStartHealing": 3,
-  "StopHealingWhileGamePaused": true,
-  "HealHealth": false,
-  "IncreaseKey": "O",
-  "DecreaseKey": "P"
-}

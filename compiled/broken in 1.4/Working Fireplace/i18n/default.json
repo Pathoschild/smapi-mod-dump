@@ -6,5 +6,8 @@
     "dia.spousecold_child": "{{child1}} is freezing.",
     "dia.spousecold_children": "{{child1}} and {{child2}} are freezing.",
     "dia.please": "Please light the fireplace.",
-    "msg.nowood": "You need {{wood_pieces}} pieces of wood to light the fire."
+    "msg.nowood": "You need {{wood_pieces}} pieces of wood to light the fire.",
+    "msg.temp": "Temperature: ",
+    "msg.tempwarm": "warm",
+    "msg.tempcold": "cold"
 }

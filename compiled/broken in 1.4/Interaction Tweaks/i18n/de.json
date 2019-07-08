@@ -7,6 +7,6 @@
     "item.slingshotdescr": "Verschießt verschiedene Gegenstände wie Steine, Erz, Gemüse oder explosive Munition.",
     "menu.carpentermoneybuttonon": "Einschalten: Kaufe fehlende Ressourcen.",
     "menu.carpentermoneybuttonoff": "Ausschalten: Kaufe fehlende Ressourcen.",
-    "menu.carpenteringredinfo": "wird gekauft",
+    "menu.carpenteringredinfo": "{{itemname}} wird gekauft",
     "menu.fishingrodempty": "Entferne Zusätze vor dem Verkauf."
 }

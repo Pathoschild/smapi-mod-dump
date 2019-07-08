@@ -1,0 +1,10 @@
+{
+  "Name": "Entoarox Framework",
+  "Author": "Entoarox",
+  "Version": "2.4.3-unofficial.2-pathoschild",
+  "Description": "A collection of APIs to make modding easier.",
+  "UniqueID": "Entoarox.EntoaroxFramework",
+  "EntryDll": "EntoaroxFramework.dll",
+  "MinimumApiVersion": "3.0-alpha",
+  "UpdateKeys": [ "Nexus:2269" ]
+}

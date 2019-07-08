@@ -5,12 +5,12 @@ mods:
    Variable Grass
 
 latest commit:
-   commit ef1c34d53203276f053eb64cf9e2cc3b8546bf90
-   Merge: c236c1f ff1dab2
+   commit c53418108a22c9bf214cfed3a6fb194e2f2ff459
+   Merge: ef1c34d 7f06e3c
    Author: Daniel Edwards <d.edwards.15.de@gmail.com>
-   Date:   Fri May 5 14:17:03 2017 +0100
+   Date:   Wed Jul 3 10:16:50 2019 +0200
    
-       Merge pull request #1 from Pathoschild/master
+       Merge pull request #2 from Pathoschild/update-code
        
-       Update for Stardew Valley 1.2 & SMAPI 1.12, streamline build process
+       Update for SMAPI 3.0
    

@@ -1,6 +1,6 @@
 ﻿using StardewModdingAPI;
-using StardewValley;
 using StardewModdingAPI.Events;
+using StardewValley;
 
 namespace WaitAroundSMAPI
 {
@@ -28,22 +28,27 @@ namespace WaitAroundSMAPI
                 }
             }
         }
-        private WaitAroundMenu waitMenu { get; set; }
         private WaitAroundConfig config { get; set; }
 
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             config = helper.ReadConfig<WaitAroundConfig>();
-            InputEvents.ButtonPressed += KeyPressed;
+
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
         }
 
-        public void KeyPressed(object sender, EventArgsInput e)
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        public void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (e.Button == config.menuKey && Context.IsWorldReady)
             {
                 if (Game1.activeClickableMenu == null && Context.IsPlayerFree)
                     Game1.activeClickableMenu = new WaitAroundMenu(this);
-                else if(Game1.activeClickableMenu is WaitAroundMenu)
+                else if (Game1.activeClickableMenu is WaitAroundMenu)
                     ((WaitAroundMenu)Game1.activeClickableMenu).Close();
             }
         }

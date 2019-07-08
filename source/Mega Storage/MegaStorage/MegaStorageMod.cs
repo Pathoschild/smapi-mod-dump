@@ -20,22 +20,29 @@ namespace MegaStorage
             ModHelper = modHelper;
             Logger = Monitor;
             Reflection = modHelper.Reflection;
+
             modHelper.Events.GameLoop.GameLaunched += OnGameLaunched;
             modHelper.Events.Display.MenuChanged += OnMenuChanged;
         }
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            Helper.ReadConfig<ModConfig>();
-            Helper.Content.AssetEditors.Add(new SpritePatcher(Helper, Monitor));
-            new ItemPatcher(Helper, Monitor).Start();
-            new SaveManager(Helper, Monitor, new ISaver[]
+            var itemPatcher = new ItemPatcher(Helper, Monitor);
+            var spritePatcher = new SpritePatcher(Helper, Monitor);
+            var farmhandMonitor = new FarmhandMonitor(Helper, Monitor);
+            var savers = new ISaver[]
             {
                 new InventorySaver(Helper, Monitor),
                 new FarmhandInventorySaver(Helper, Monitor),
                 new LocationSaver(Helper, Monitor),
                 new LocationInventorySaver(Helper, Monitor)
-            }).Start();
+            };
+            var saveManager = new SaveManager(Helper, Monitor, farmhandMonitor, savers);
+
+            Helper.ReadConfig<ModConfig>();
+            Helper.Content.AssetEditors.Add(spritePatcher);
+            itemPatcher.Start();
+            saveManager.Start();
         }
 
         private void OnMenuChanged(object sender, MenuChangedEventArgs e)

@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Text;
 using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -7,26 +8,46 @@ using StardewValley;
 namespace Phrasefable_Modding_Tools {
 
     public partial class PhrasefableModdingTools {
-
-        private bool _doTallyObjects;
+        private ToggleableEventHandler<WarpedEventArgs> _tallyHandler;
 
 
         private void SetUp_Tally() {
-            Helper.Events.Player.Warped += Tally;
+            _tallyHandler = new ToggleableEventHandler<WarpedEventArgs>(Tally);
+            Helper.Events.Player.Warped += _tallyHandler.OnEvent;
 
-            var desc = "Counts the different types of objects in the current GameLocation";
-            Helper.ConsoleCommands.Add("obj-count", desc, CountObjects);
-
-            desc = "Counts the types of objects in each new GameLocation";
-            Helper.ConsoleCommands.Add("obj-count-start", desc, (s, strings) => _doTallyObjects = true);
-
-            desc = "Stops counting all the objects each time you move to a new GameLocation";
-            Helper.ConsoleCommands.Add("obj-count-stop", desc, (s, strings) => _doTallyObjects = false);
-
-            desc = "Tallies the objects by type for each loaded GameLocation";
-            Helper.ConsoleCommands.Add("obj-count-all", desc, CountAllObjects);
-
+            var desc = new StringBuilder("Counts the objects in the current location.");
+            desc.AppendLine("Usage: count-objects [all|start|stop]");
+            desc.AppendLine("    all   - count the objects in every location");
+            desc.AppendLine("    start - start counting each time a location is entered");
+            desc.AppendLine("    stop  - stop counting each time a location is entered");
+            Helper.ConsoleCommands.Add("count-objects", desc.ToString(), TallyObjectCommand);
             Helper.ConsoleCommands.Add("count-terrain", "counts terrain features", CountTerrainFeatures);
+        }
+
+
+        private void Tally(object sender, [NotNull] WarpedEventArgs e) {
+            if (e.IsLocalPlayer) CountObjects(e.NewLocation);
+        }
+
+
+        private void TallyObjectCommand(string command, [NotNull] string[] args) {
+            if (args.Length == 0) {
+                CountObjects();
+            } else
+                switch (args[0]) {
+                    case "start":
+                        _tallyHandler.Set(ToggleAction.Enable);
+                        break;
+                    case "stop":
+                        _tallyHandler.Set(ToggleAction.Disable);
+                        break;
+                    case "all":
+                        CountObjects(true);
+                        break;
+                    default:
+                        Monitor.Log($"Arguments `{string.Join(" ", args)}` malformed.", LogLevel.Info);
+                        break;
+                }
         }
 
 
@@ -39,26 +60,17 @@ namespace Phrasefable_Modding_Tools {
         }
 
 
-        private void CountObjects(string s, string[] strings) {
-            if (Context.IsWorldReady) {
+        private void CountObjects(bool allLocations = false) {
+            if (!Context.IsWorldReady) {
+                Monitor.Log("World not ready", LogLevel.Info);
+                return;
+            }
+
+            if (allLocations) {
+                foreach (var location in Common.Utilities.GetLocations(Helper)) CountObjects(location);
+            } else {
                 CountObjects(Game1.currentLocation);
-            } else {
-                Monitor.Log("World not ready", LogLevel.Info);
             }
-        }
-
-
-        private void CountAllObjects(string s, string[] strings) {
-            if (Context.IsWorldReady) {
-                foreach (var location in Game1.locations) CountObjects(location);
-            } else {
-                Monitor.Log("World not ready", LogLevel.Info);
-            }
-        }
-
-
-        private void Tally(object sender, [NotNull] WarpedEventArgs e) {
-            if (_doTallyObjects && e.IsLocalPlayer) CountObjects(e.NewLocation);
         }
 
 
@@ -93,7 +105,7 @@ namespace Phrasefable_Modding_Tools {
 
 
         // todo make some sort of command that will rapidly warp through all mine floors.
-        // todo add name filter?, make commands better.
+        // todo add name filter?
     }
 
 }

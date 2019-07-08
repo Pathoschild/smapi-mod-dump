@@ -5,9 +5,10 @@ mods:
    Aggressive Acorns
 
 latest commit:
-   commit d479dc15f542197d701995801df0e6caab8672ec
+   commit 7f7921442f3273da57238a227c5720e38f36c5ce
+   Merge: 655dcc6 bc2e9b9
    Author: Anton Jelinek <ant5788jeli@gmail.com>
-   Date:   Sat Mar 23 00:09:19 2019 +1300
+   Date:   Mon Jul 8 16:30:32 2019 +1200
    
-       PMT: fixes + dev + split into multiple files
+       Merge branch 'master' of https://github.com/phrasefable/StardewMods
    

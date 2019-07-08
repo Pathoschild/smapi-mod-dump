@@ -35,6 +35,6 @@
       "Brazillian Portuguese": "pt"
     }
   },
-  "useLegacyBirthdayFiles": true,
+  "useLegacyBirthdayFiles": false,
   "KeyBinding": "O"
 }

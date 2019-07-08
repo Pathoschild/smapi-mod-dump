@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtraFishInformation", "ExtraFishInformation\ExtraFishInformation.csproj", "{7C82D301-50A6-4053-BB23-0DC63F75655E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7C82D301-50A6-4053-BB23-0DC63F75655E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C82D301-50A6-4053-BB23-0DC63F75655E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C82D301-50A6-4053-BB23-0DC63F75655E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C82D301-50A6-4053-BB23-0DC63F75655E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D9670B6-D229-4A82-A4D7-FF7CCA30944D}
+	EndGlobalSection
+EndGlobal

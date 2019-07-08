@@ -1,0 +1,51 @@
+128 Pufferfish 
+129 Anchovy 
+130 Tuna 
+131 Sardine 
+132 Bream 
+136 Largemouth Bass 
+137 Smallmouth Bass 
+138 Rainbow Trout 
+139 Salmon 
+140 Walleye 
+141 Perch 
+142 Carp 
+143 Catfish 
+144 Pike 
+145 Sunfish 
+146 Red Mullet 
+147 Herring 
+148 Eel 
+149 Octopus 
+150 Red Snapper 
+151 Squid 
+154 Sea Cucumber 
+155 Super Cucumber 
+156 Ghostfish 
+158 Stonefish 
+159 Crimsonfish 
+160 Angler 
+161 Ice Pip 
+162 Lava Eel 
+163 Legend 
+164 Sandfish 
+165 Scorpion Carp 
+372 Clam 
+682 Mutant Carp 
+698 Sturgeon 
+699 Tiger Trout 
+700 Bullhead 
+701 Tilapia 
+702 Chub 
+704 Dorado 
+705 Albacore 
+706 Shad 
+707 Lingcod 
+708 Halibut 
+734 Woodskip 
+775 Glacierfish 
+795 Void Salmon 
+796 Slimejack 
+798 Midnight Squid 
+799 Spook Fish 
+800 Blobfish 

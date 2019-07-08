@@ -6,5 +6,8 @@
     "dia.spousecold_child": "{{child1}} friert.",
     "dia.spousecold_children": "{{child1}} und {{child2}} frieren.",
     "dia.please": "Zünde bitte das Kaminfeuer an.",
-    "msg.nowood": "Du benötigst {{wood_pieces}} Holzstücke zum Entzünden des Feuers."
+    "msg.nowood": "Du benötigst {{wood_pieces}} Holzstücke zum Entzünden des Feuers.",
+    "msg.temp": "Temperatur: ",
+    "msg.tempwarm": "warm",
+    "msg.tempcold": "kalt"
 }

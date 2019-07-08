@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
+﻿using StardewModdingAPI;
 
 namespace MegaStorage.Persistence
 {
@@ -9,12 +7,14 @@ namespace MegaStorage.Persistence
         private readonly IModHelper _modHelper;
         private readonly IMonitor _monitor;
         private readonly ISaver[] _savers;
+        private readonly FarmhandMonitor _farmhandMonitor;
 
-        public SaveManager(IModHelper modHelper, IMonitor monitor, ISaver[] savers)
+        public SaveManager(IModHelper modHelper, IMonitor monitor, FarmhandMonitor farmhandMonitor, ISaver[] savers)
         {
             _modHelper = modHelper;
             _monitor = monitor;
             _savers = savers;
+            _farmhandMonitor = farmhandMonitor;
         }
 
         public void Start()
@@ -23,9 +23,11 @@ namespace MegaStorage.Persistence
             _modHelper.Events.GameLoop.Saving += (sender, args) => HideAndSaveCustomChests();
             _modHelper.Events.GameLoop.Saved += (sender, args) => ReAddCustomChests();
             _modHelper.Events.GameLoop.ReturnedToTitle += (sender, args) => HideAndSaveCustomChests();
+            _modHelper.Events.Multiplayer.PeerContextReceived += (sender, args) => HideAndSaveCustomChests();
 
-            _modHelper.Events.Multiplayer.PeerContextReceived += OnPeerContextReceived;
-            _modHelper.Events.Multiplayer.PeerDisconnected += OnPeerDisconnected;
+            _farmhandMonitor.Start();
+            _farmhandMonitor.OnPlayerAdded += ReAddCustomChests;
+            _farmhandMonitor.OnPlayerRemoved += ReAddCustomChests;
         }
 
         private void LoadCustomChests()
@@ -53,21 +55,6 @@ namespace MegaStorage.Persistence
             {
                 saver.HideAndSaveCustomChests();
             }
-        }
-
-        private async void OnPeerContextReceived(object sender, PeerContextReceivedEventArgs e)
-        {
-            _monitor.VerboseLog("OnPeerContextReceived");
-            HideAndSaveCustomChests();
-            await Task.Delay(1000); // hack :-(
-            ReAddCustomChests();
-        }
-
-        private async void OnPeerDisconnected(object sender, PeerDisconnectedEventArgs e)
-        {
-            _monitor.VerboseLog("OnPeerDisconnected");
-            await Task.Delay(1000); // hack :-(
-            ReAddCustomChests();
         }
 
     }

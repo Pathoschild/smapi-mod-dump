@@ -1,0 +1,14 @@
+{
+  "enableMod": true,
+  "useCustomGarbageCanTreasure": true,
+  "allowMultipleItemsPerDay": true,
+  "allowGarbageCanRecheck": true,
+  "baseChancePercent": 0.25,
+  "baseTrashChancePercent": 0.25,
+  "enableBirthdayGiftTrash": true,
+  "birthdayGiftChancePercent": 0.75,
+  "FriendshipPoints": -25,
+  "LinusFriendshipPoints": 5,
+  "WaitTimeIfFoundNothing": 60,
+  "WaitTimeIfFoundSomething": 240
+}

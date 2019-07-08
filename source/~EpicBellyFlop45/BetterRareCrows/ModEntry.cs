@@ -59,9 +59,9 @@ namespace BetterRarecrows
                 }
             }
 
-            if (ModEntry.CurrentRarecrows.Count() == Config.NumberOfRequiredRareCrows)
+            if (ModEntry.CurrentRarecrows.Count() >= Config.NumberOfRequiredRareCrows)
             {
-                ModEntry.ModMonitor.Log($"All {Config.NumberOfRequiredRareCrows} rarecrows found on farm", LogLevel.Trace);
+                ModEntry.ModMonitor.Log($"All {CurrentRarecrows.Count()} out of {Config.NumberOfRequiredRareCrows} rarecrows found on the farm", LogLevel.Trace);
                 return false;
             }
             else

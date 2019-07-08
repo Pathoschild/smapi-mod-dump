@@ -3,6 +3,6 @@
   "MinimumDelayBetweenSongsInMilliseconds": 5000,
   "MaximumDelayBetweenSongsInMilliseconds": 60000,
   "KeyBinding": "L",
-  "WriteAllConfigMusicOptions": false,
-  "DisableStardewMusic": false
+  "DisableStardewMusic": false,
+  "LocationsToIgnoreWarpMusicChange": []
 }
