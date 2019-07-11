@@ -1,8 +1,8 @@
 {
   "Name": "Event Repeater",
   "Author": "MissCoriel",
-  "Version": "1.6.0",
-  "Description": "Create and Install Repeater Packs;",
+  "Version": "2.7.0",
+  "Description": "Create and Install Repeater Packs Now with Mail Tags",
   "UniqueID": "misscoriel.eventrepeater",
   "EntryDll": "EventRepeater.dll",
   "MinimumApiVersion": "2.10.0",

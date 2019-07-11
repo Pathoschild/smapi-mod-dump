@@ -1,0 +1,12 @@
+{
+    "dia.eatquestion": "吃下{{item}}?",
+    "dia.eatanswerOne": "对, 吃下一个.",
+    "dia.eatanswerMulti": "对, 吃下{{amount}}个到满.",
+    "dia.eatanswerNo": "不吃.",
+    "menu.slingshotempty": "弹弓必须清空才能贩售",
+    "item.slingshotdescr": "弹弓可以射击出石头，矿物，一些蛋类，蔬菜水果或是高爆弹丸",
+    "menu.carpentermoneybuttonon": "开启：购买缺少资源",
+    "menu.carpentermoneybuttonoff": "關閉：購買缺少資源",
+    "menu.carpenteringredinfo": "{{itemname}}即将买下",
+    "menu.fishingrodempty": "必须移除钓具才能贩售."
+}

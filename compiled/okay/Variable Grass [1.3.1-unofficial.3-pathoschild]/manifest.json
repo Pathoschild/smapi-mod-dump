@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Variable Grass",
+  "Author": "dantheman999",
+  "Version": "1.3.1-unofficial.3-pathoschild",
+  "Description": "Grass grows at variable rates",
+  "UniqueID": "dantheman999.VariableGrass",
+  "EntryDll": "VariableGrass.dll",
+  "MinimumApiVersion": "2.11.2",
+  "UpdateKeys": []
+}

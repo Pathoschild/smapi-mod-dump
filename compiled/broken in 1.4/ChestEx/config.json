@@ -1,0 +1,6 @@
+{
+  "rows_Description": "The amount of rows that the chest menu will have:",
+  "rows": 3,
+  "columns_Description": "The amount of columns that the chest menu will have:",
+  "columns": 12
+}

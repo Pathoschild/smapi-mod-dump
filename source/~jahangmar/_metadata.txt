@@ -9,9 +9,9 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit e65d676b0a70eea6c870528f6b435ef295555501
+   commit 770d75c5db55ad4749a41233640f50f49346adfd
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Thu Jul 4 07:54:25 2019 +0200
+   Date:   Mon Jul 8 16:43:05 2019 +0200
    
-       fixed possible problem with translations
+       added cpc project, fixed menu issue in working fireplace
    

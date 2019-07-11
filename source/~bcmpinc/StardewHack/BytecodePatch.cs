@@ -1,6 +1,8 @@
 ﻿using Harmony;
 using System;
 using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace StardewHack
 {
@@ -29,37 +31,52 @@ namespace StardewHack
 
         /// <summary>
         /// Returns a reference to the method or constructor specified by this BytecodePatch Attribute.
-        /// Methods are specified with the pattern "fully.qualified.type::function_name". 
-        /// In case of overloading, argument types must be specified, for example: "fully.qualified.type::function_name(fully.qualified.argument.type1,fully.qualified.argument.type2)"
-        /// Constructors are specified using the magic method name ".ctor".
         /// </summary>
         public MethodBase GetMethod() 
         {
-            string[] a = sig.Split(':','(',',',')');
-            // Hack.Log("Signature: " + String.Join(";", a));
-
-            // Get type
-            Type type = GetType(a[0]);
-            if (a.Length < 3 || a[1].Length > 0) throw new Exception($"Expected \"::\" between class and method name, but got \"{sig}\".");
-
-            // Get name
-            string name = a[2];
-
-            // Check for arguments.
+            return new MethodParser(sig).ParseMethod();
+        }
+    }
+    
+    /// <summary>
+    /// Retrieves the method with the given signature.
+    /// Methods are specified with the pattern "fully.qualified.type::function_name". 
+    /// In case of overloading, argument types must be specified, for example: "fully.qualified.type::function_name(fully.qualified.argument.type1,fully.qualified.argument.type2)"
+    /// Constructors are specified using the magic method name ".ctor".
+    /// For inner types, specify the path seperated by '/'.
+    /// Generic types are supported using the parameter types enclosed in &lt; and >.
+    /// </summary>
+    public class MethodParser {
+        static Regex split = new Regex("([(,)/<>]|::)");
+        
+        readonly string sig;
+        readonly string[] tokens;
+        int position;
+        
+        public MethodParser(string sig) {
+            this.sig = sig;
+            position = 0;
+            // Tokenize the signature.
+            tokens = split.Split(sig).Where(s => s != string.Empty).ToArray();
+        }
+        
+        public MethodBase ParseMethod() {
+            // Parse & retrieve the base type.
+            Type type = ParseType();
+            expectToken("::");
+            
+            // Parse the method name
+            string name = getToken("method name");
+            
+            // Parse parameters, if specified.
             Type[] parameters = null;
-            if (a.Length > 3) {
-                if (a[3].Trim().Length == 0) {
-                    // Empty argument list
-                    if (a.Length != 5) throw new Exception($"Expected \"()\" for method without arguments, but got \"{sig}\".");
-                    parameters = new Type[0];
-                } else {
-                    if (a[a.Length-1].Length > 0) throw new Exception($"Expected parentheses around method arguments, but got \"{sig}\".");
-                    parameters = new Type[a.Length-4];
-                    for (int i=0; i<parameters.Length; i++) {
-                        parameters[i] = GetType(a[i+3]);
-                    }
-                }
+            if (!end()) {
+                expectToken("(");
+                parameters = ParseTypes();
+                expectToken(")");
             }
+            
+            // Retrieve the method.
             MethodBase method;
             if (name == ".ctor") {
                 if (parameters == null) {
@@ -83,28 +100,71 @@ namespace StardewHack
             }
             return method;
         }
-
-        /// <summary>
-        /// Retrieves the type definition with the specified name.
-        /// For inner types, specify the path seperated by '/'.
-        /// </summary>
-        internal static Type GetType(string type) {
-            string[] a = type.Trim().Split('/');
-            
-            // Retrieve the base type.
-            var res = AccessTools.TypeByName(a[0]);
-            if (res == null) {
-                throw new TypeAccessException($"ERROR: type \"{a[0]}\" not found.");
+        
+        // Parse a comma separated list of Types.
+        internal Type[] ParseTypes() {
+            System.Collections.Generic.List<Type> ret = new System.Collections.Generic.List<Type>();
+            while (!end() && !split.IsMatch(tokens[position])) {
+                ret.Add(ParseType());
+                if (!end() && tokens[position] == ",") position++;
             }
-            
+            return ret.ToArray();
+        }
+
+        internal Type ParseType() {
+            string name = getToken("type");
+            System.Collections.Generic.List<Type> generic_parameters = new System.Collections.Generic.List<Type>();
+            TryParseGenericParameters(ref name, ref generic_parameters);
+            Type res = AccessTools.TypeByName(name);
+            if (res == null) {
+                throw new TypeAccessException($"Type \"{name}\" not found.");
+            }
             // Recursively retrieve the inner type (if any)
-            for (int i=1; i<a.Length; i++) {
-                res = AccessTools.Inner(res, a[i]);
+            while (!end() && tokens[position] == "/") {
+                position++;
+                name = getToken("inner type");
+                TryParseGenericParameters(ref name, ref generic_parameters);
+                res = AccessTools.Inner(res, name);
                 if (res == null) {
-                    throw new TypeAccessException($"ERROR: sub-type \"{a[i]}\" not found.");
+                    throw new TypeAccessException($"Inner-type \"{name}\" not found.");
                 }
             }
+            // Apply generic type arguments (if any)
+            if (generic_parameters.Count > 0) {
+                res = res.MakeGenericType(generic_parameters.ToArray());
+            }
             return res;
+        }
+        
+        // Parse the generic parameters of a type, if available, and update the name accordingly.
+        internal void TryParseGenericParameters(ref string name, ref System.Collections.Generic.List<Type> generic_parameters) {
+            if (end() || tokens[position] != "<") return;
+            position++;
+            var par = ParseTypes();
+            expectToken(">");
+            name += "`" + par.Length;
+            generic_parameters.AddRange(par);
+        }
+        
+        // Retrieve the next token.
+        internal string getToken(string what) {
+            if (end()) {
+                throw new FormatException($"Unexpected end of signature, expected '{what}'.");
+            }
+            return tokens[position++];
+        }
+
+        // Parse a token and check whether it is the expected token.
+        // Assumes position > 0.
+        internal void expectToken(string what) {
+            string tok = getToken(what);
+            if (tok != what) {
+                throw new FormatException($"Unexpected token '{tok}', expected '{what}' after '{tokens[position-2]}'.");
+            }
+        }
+        
+        internal bool end() {
+            return position >= tokens.Length;
         }
     }
 }

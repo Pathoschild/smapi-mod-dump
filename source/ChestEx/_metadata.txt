@@ -1,0 +1,13 @@
+url:
+   https://github.com/berkayylmao/ChestEx.git
+
+mods:
+   ChestEx
+
+latest commit:
+   commit 9c726e86b18e8c16a8a0abefb68883872c3d5b51
+   Author: Berkay YÄ°ÄžÄ°T <berkayyigit@anadolu.edu.tr>
+   Date:   Wed Jul 10 18:15:49 2019 +0300
+   
+       1.0.0
+   

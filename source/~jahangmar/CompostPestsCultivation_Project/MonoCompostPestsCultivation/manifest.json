@@ -1,0 +1,11 @@
+﻿{
+  "Name": "Compost, Pests and Cultivation",
+  "Author": "jahangmar",
+  "Version": "1.0.0",
+  "Description": "Introduces pests and other negative effects for crops while giving the farmer new tools to make crops stronger",
+  "UniqueID": "jahangmar.CompostPestsCultivation",
+  "MinimumApiVersion": "2.10.0",
+  "EntryDll": "CompostPestsCultivation.dll",  
+  "Dependencies": [],
+  "UpdateKeys": []
+}

@@ -5,9 +5,9 @@ mods:
    Combat Level Damage Scaler
 
 latest commit:
-   commit 3f188ea367720d4199d91a33030398df1ea2281a
+   commit 1dc9cc0e6692510085cacf7774f2c8ed6d66de2f
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri May 10 10:50:31 2019 -0400
+   Date:   Mon Jul 8 21:04:22 2019 -0400
    
-       Initial commit
+       Add update keys
    

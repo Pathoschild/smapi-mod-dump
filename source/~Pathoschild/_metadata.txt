@@ -18,9 +18,11 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 7397e35fde674ae179e1ef5338c04ab4c8eecf3d
+   commit 59d06c4ba2ef5f82d7924116ae90026fd15c4b64
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Jul 7 20:12:16 2019 -0400
+   Date:   Thu Jul 11 13:42:51 2019 -0400
    
-       fix custom mod tokens called with non-ready inputs
+       update French translations for Data Layers
+       
+       Thanks to Skirmsiher!
    

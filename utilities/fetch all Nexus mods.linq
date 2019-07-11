@@ -94,6 +94,7 @@ readonly HashSet<int> IgnoreNexusIDsForValidation = new HashSet<int>
 	
 	// special cases
 	4109, // PPJA Home of Abandoned Mods - CFR Conversions
+	4181  // Hilltop Immersive Farm (replaces a file in Immersive Farm 2)
 };
 
 /// <summary>Nexus file IDs to ignore when validating or cross-referencing mods.</summary>

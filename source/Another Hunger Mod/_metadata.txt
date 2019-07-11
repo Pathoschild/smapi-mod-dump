@@ -5,9 +5,9 @@ mods:
    Another Hunger Mod
 
 latest commit:
-   commit bd7f2251a63817db5206ca6e87fdebf8f773a116
+   commit c4a618bf54bb2533f22b11a37e1452d04778ed62
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Tue May 28 17:00:18 2019 -0400
+   Date:   Mon Jul 8 21:03:32 2019 -0400
    
-       Configurable UI position
+       Manifest update I never committed
    

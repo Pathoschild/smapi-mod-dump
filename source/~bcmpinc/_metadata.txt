@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 377aefe9a114127714f75e1886b60a230d52ee62
+   commit c224c6569b50edc35c79429937acc9f5ca2f417b
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Fri Jun 28 19:46:46 2019 +0200
+   Date:   Sun Jun 30 13:51:49 2019 +0200
    
-       Added method to log exceptions.
+       Wrote a halfway decent parser for method signatures.
    

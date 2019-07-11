@@ -5,9 +5,9 @@ mods:
    Cooking Skill
 
 latest commit:
-   commit 951625f740d26cebf2c11896fab7d69c3ee75c4f
+   commit f464a6212581a9ae7e21b90d812428e86458903d
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:21:09 2019 -0500
+   Date:   Mon Feb 11 10:05:28 2019 -0500
    
-       Update version
+       Fixed drink bug
    

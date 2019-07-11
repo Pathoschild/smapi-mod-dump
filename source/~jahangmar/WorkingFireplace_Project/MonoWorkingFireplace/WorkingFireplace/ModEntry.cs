@@ -27,6 +27,11 @@ using StardewValley.BellsAndWhistles;
 //using StardewValley.Menus;
 //using System.Collections.Generic;
 
+    //TODO: fix multiplayer bug
+    //TODO: fixed menu open click bug
+    //TODO: fixed russian translation ???
+    //TODO: implement loading of old save state
+
 namespace WorkingFireplace
 {
     public class ModEntry : Mod
@@ -145,14 +150,14 @@ namespace WorkingFireplace
         {
             Point grabtile = VectorToPoint(e.Cursor.GrabTile);
 
-            if (Game1.currentLocation is FarmHouse farmHouse1 &&
+            if (Game1.currentLocation is FarmHouse farmHouse1 && Game1.activeClickableMenu == null &&
                 e.Button.IsUseToolButton() && e.IsDown(e.Button))
             {
                 //the fireplace is moved. We want to turn it off to avoid floating flames.
                 Point tile = VectorToPoint(e.Cursor.Tile);
                 SetFireplace(farmHouse1, tile.X, tile.Y, false, true);
             }
-            else if (Game1.currentLocation is FarmHouse farmHouse &&
+            else if (Game1.currentLocation is FarmHouse farmHouse && Game1.activeClickableMenu == null &&
                 e.Button.IsActionButton() && e.IsDown(e.Button) &&
                 farmHouse.getObjectAtTile(grabtile.X, grabtile.Y) is Furniture furniture &&
                 furniture.furniture_type == Furniture.fireplace)

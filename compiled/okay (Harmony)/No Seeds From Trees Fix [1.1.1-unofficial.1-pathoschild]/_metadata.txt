@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/2947
+IDs: kirbylink.noseedsfromtreesfix
+update keys: Nexus:2947, GitHub:KirbyLink/NoSeedsFromTreesFix

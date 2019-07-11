@@ -1,7 +1,10 @@
 ﻿{
-  "Format": "1.0",
+  "Format": "2.7",
   "RepeatEvents": [
     
 
+  ],
+  "RepeatMail": [
+  	  //Note In order to repeat mail messages, you must also repeat the ID of the mail event.  Special Mail messages will NOT be sent.
   ]
 }

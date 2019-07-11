@@ -5,12 +5,10 @@ mods:
    Magic
 
 latest commit:
-   commit 290f767f9db0b64eb6397851de8a5d8564de2b69
-   Merge: 4258b14 fcf6850
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon May 20 21:29:53 2019 -0400
+   commit 194f4c567d80f38867bf98006f23fef3cec5aa98
+   Merge: 09d665f 290f767
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Mon Jul 8 21:08:58 2019 -0400
    
-       Merge pull request #6 from S2SKY/patch-4
-       
-       Update object.json
+       Merge remote-tracking branch 'origin/master'
    

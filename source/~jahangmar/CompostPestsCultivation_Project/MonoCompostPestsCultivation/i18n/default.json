@@ -1,0 +1,15 @@
+﻿{
+    "cult.msg_traitinc": "The {{traitdesc}} trait of your {{seed}} increased and is now {{trait}}",
+    "cult.msg_traitdesc_quality": "quality",
+    "cult.msg_trait_qualityI": "Quality I",
+    "cult.msg_trait_qualityII": "Quality II",
+    "cult.msg_traitdesc_pestres": "pest resistance",
+    "cult.msg_trait_pestresI": "Pest Resistance I",
+    "cult.msg_trait_pestresII": "Pest Resistance II",
+    "cult.msg_traitdesc_speed": "growing speed",
+    "cult.msg_trait_speedI": "Speed I",
+    "cult.msg_trait_speedII": "Speed II",
+    "cult.msg_traitdesc_water": "water retention",
+    "cult.msg_trait_waterI": "Water I",
+    "cult.msg_trait_waterII": "Water II"
+}

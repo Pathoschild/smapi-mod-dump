@@ -1,0 +1,16 @@
+﻿{
+  "Name": "ChestEx",
+  "Author": "Berkay Yigit (berkayylmao)",
+  "Version": "1.0.0",
+  "Description": "Have you ever needed multiple chests just for one purpose? Then worry no more, for ChestEx is here!",
+  "UniqueID": "berkayylmao.ChestEx",
+  "EntryDll": "ChestEx.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:4180" ],
+  "Dependencies": [
+     {
+        "UniqueID": "Pathoschild.ChestsAnywhere",
+        "IsRequired": false
+     }
+  ]
+}

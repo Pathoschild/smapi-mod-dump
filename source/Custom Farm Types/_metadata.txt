@@ -5,12 +5,9 @@ mods:
    Custom Farm Types
 
 latest commit:
-   commit fac79c629019e827305aacabac603aa2e11931ce
-   Merge: 7a390aa aad44fa
-   Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Jan 15 18:41:43 2019 -0500
+   commit 7125f97865add9047b7fe5af66043d669d53c458
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Mon Jul 8 21:06:10 2019 -0400
    
-       Merge pull request #7 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0 and partially for Stardew Valley 1.3.32
+       Fix reference to SpaceCore
    
