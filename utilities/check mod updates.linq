@@ -368,7 +368,7 @@ void Main()
 
 				// mark unofficial versions
 				if (mod.InstalledVersion.IsPrerelease() && (mod.InstalledVersion.PrereleaseTag.Contains("unofficial") || mod.InstalledVersion.PrereleaseTag.Contains("update")))
-					newName += $" [{mod.InstalledVersion}]";
+					newName += $" [unofficial]";
 
 				// sanitise name
 				foreach (char ch in Path.GetInvalidFileNameChars())

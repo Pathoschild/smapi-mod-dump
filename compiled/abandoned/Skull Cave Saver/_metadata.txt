@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/175
-IDs: cantorsdust.SkullCaveSaver, 8ac06349-26f7-4394-806c-95d48fd35774, community.SkullCaveSaver
+IDs: cantorsdust.SkullCaveSaver, community.SkullCaveSaver, 8ac06349-26f7-4394-806c-95d48fd35774
 update keys: Nexus:175, GitHub:cantorsdust/StardewMods

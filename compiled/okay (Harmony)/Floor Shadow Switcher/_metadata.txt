@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/3885
 IDs: MouseyPounds.FloorShadowSwitcher
-update keys: Nexus:3885
+update keys: Nexus:3885, GitHub:MouseyPounds/stardew-mods

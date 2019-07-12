@@ -1,3 +1,3 @@
-page URL: https://community.playstarbound.com/resources/4201
+page URL: https://www.nexusmods.com/stardewvalley/mods/560
 IDs: littleraskol.SprintAndDashRedux, lrsk_sdvm_sndr.0921161059
-update keys: Chucklefish:4201
+update keys: Nexus:560, Chucklefish:4201

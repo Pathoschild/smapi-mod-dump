@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/3687
 IDs: jahangmar.DismantleCraftables
-update keys: Nexus:3687
+update keys: Nexus:3687, GitHub:jahangmar/StardewValleyMods

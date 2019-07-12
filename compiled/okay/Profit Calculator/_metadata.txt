@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/3378
 IDs: spacechase0.ProfitCalculator
-update keys: Nexus:3378
+update keys: Nexus:3378, Chucklefish:5657, GitHub:spacechase0/StardewProfitCalculator

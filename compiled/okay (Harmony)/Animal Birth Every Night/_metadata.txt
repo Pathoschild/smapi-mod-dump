@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/3440
 IDs: Paritee.AnimalBirthEveryNight
-update keys: Nexus:3440
+update keys: Nexus:3440, GitHub:paritee/Paritee.StardewValley.Frameworks

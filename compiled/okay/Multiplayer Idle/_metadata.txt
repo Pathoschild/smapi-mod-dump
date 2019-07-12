@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/3765
 IDs: DoubleZ.MultiplayerIdle
-update keys: Nexus:3765
+update keys: Nexus:3765, GitHub:SourceZh/MultiplayerIdle
