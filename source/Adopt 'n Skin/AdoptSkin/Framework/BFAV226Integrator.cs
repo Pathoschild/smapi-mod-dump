@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using StardewModdingAPI;
 
+using StardewValley;
+
 namespace AdoptSkin.Framework
 {
     public interface IModApi
@@ -54,11 +56,11 @@ namespace AdoptSkin.Framework
                     {
                         string newType = ModEntry.Sanitize(pair.Key);
                         if (newType.Contains("dinosaur"))
-                            ModApi.RegisterAnimalType(type, false, false);
+                            ModApi.RegisterType(type, typeof(FarmAnimal), false, false);
                         else if (newType.Contains("sheep"))
-                            ModApi.RegisterAnimalType(type, true, true);
+                            ModApi.RegisterType(type, typeof(FarmAnimal), true, true);
                         else
-                            ModApi.RegisterAnimalType(type);
+                            ModApi.RegisterType(type, typeof(FarmAnimal));
                     }
                 }
             }

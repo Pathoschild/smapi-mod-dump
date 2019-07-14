@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Horse Whistle",
+  "Author": "icepuente",
+  "Version": "1.2.3-unofficial.1-pathoschild",
+  "Description": "Press V to call your horse to any outdoor location with an audible whistle.",
+  "UniqueID": "icepuente.HorseWhistle",
+  "EntryDll": "HorseWhistle.dll",
+  "MinimumApiVersion": "2.11.2",
+  "UpdateKeys": [ "Nexus:1131" ]
+}

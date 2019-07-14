@@ -27,6 +27,7 @@ namespace AdoptSkin.Framework
 
         /// <summary>Randomizer for logic within CreationHandler instances.</summary>
         private readonly Random Randomizer = new Random();
+        private readonly int PetWarpTileID = 1937;
 
         /// <summary>Reference to Adopt & Skin's ModEntry. Used to access creature information and print information to the monitor when necessary.</summary>
         internal ModEntry Earth;
@@ -57,21 +58,21 @@ namespace AdoptSkin.Framework
         /// <summary>Calculates variables that change each day</summary>
         internal void ProcessNewDay(object sender, DayStartedEventArgs e)
         {
-            // Positive luck will give a negative modifier, making it more likely that the random number is in the success range
-            int luckBonus = -(int)(Game1.dailyLuck * 100);
-
+            // Make the luck bonus into a percentage for our use
+            int luckBonus = (int)(Game1.dailyLuck * 100);
             // Luck affect has been turned off in the Config
             if (!ModEntry.Config.ChanceAffectedByLuck)
                 luckBonus = 0;
 
             // Check chances for Stray and WildHorse to spawn, add creation to update loop if spawn should occur
-            if (ModEntry.Config.StraySpawn && FirstPetReceived && Randomizer.Next(0, 100) + luckBonus < StrayChance)
+            if (ModEntry.Config.StraySpawn && FirstPetReceived && Randomizer.Next(0, 100) - luckBonus < StrayChance)
                 ModEntry.SHelper.Events.GameLoop.UpdateTicked += this.PlaceStray;
-            if (ModEntry.Config.WildHorseSpawn && FirstHorseReceived && Randomizer.Next(0, 100) + luckBonus < WildHorseChance)
+            if (ModEntry.Config.WildHorseSpawn && FirstHorseReceived && Randomizer.Next(0, 100) - luckBonus < WildHorseChance)
                 ModEntry.SHelper.Events.GameLoop.UpdateTicked += this.PlaceWildHorse;
 
             // Spread out pets from around water dish
-            ModEntry.SHelper.Events.Player.Warped += this.SpreadPets;
+            if (ModEntry.Config.DisperseCuddlePuddle)
+                ModEntry.SHelper.Events.Player.Warped += this.SpreadPets;
         }
 
 
@@ -91,7 +92,6 @@ namespace AdoptSkin.Framework
         {
             if (!Game1.hasLoadedGame || !ModEntry.AssetsLoaded)
                 return;
-
             StrayInfo = new Stray();
             ModEntry.SHelper.Events.GameLoop.UpdateTicked -= this.PlaceStray;
         }
@@ -108,57 +108,91 @@ namespace AdoptSkin.Framework
         }
 
 
+        internal void MoveStrayToSpawn()
+        {
+            if (StrayInfo != null && StrayInfo.PetInstance != null)
+                Game1.warpCharacter(StrayInfo.PetInstance, Stray.Marnies, Stray.CreationLocation);
+        }
+
+
         internal void SpreadPets(object sender, WarpedEventArgs e)
         {
-            // Only warp pets on return to farm, and when the weather is proper for pets being outside
-            if (!(e.NewLocation is Farm) || Game1.isRaining || Game1.isLightning || Game1.isSnowing)
-                return;
-            // Make sure pets are not otherwise in the FarmHouse
-            List<Pet> pets = ModEntry.GetPets().ToList();
-            if (!ModEntry.PetSkinMap.ContainsKey(pets[0].Manners) || !(pets[0].currentLocation is Farm))
+            List<Pet> pets = ModApi.GetPets().ToList();
+
+            // No pets are in the game
+            if (pets.Count == 0)
                 return;
 
+            // Only do teleport if the player is entering the Farm, FarmHouse, or Marnie's
+            if (!typeof(Farm).IsAssignableFrom(e.NewLocation.GetType()) &&
+                !typeof(FarmHouse).IsAssignableFrom(e.NewLocation.GetType()) &&
+                (Stray.Marnies != e.NewLocation))
+                return;
 
-            Farm farm = Game1.getFarm();
-            int initX = (int)pets[0].getTileLocation().X;
-            int initY = (int)pets[0].getTileLocation().Y;
-            List<Vector2> warpableTiles = new List<Vector2>();
-            int cer = ModEntry.Config.CuddleExplosionRadius;
+            // Ensure Stray isn't moved around by vanilla
+            ModEntry.Creator.MoveStrayToSpawn();
 
-            // Collect a set of potential tiles to warp a pet to
-            for (int i = -cer; i < cer; i++)
+
+            if (IsIndoorWeather())
             {
-                for (int j = -cer; j < cer; j++)
-                {
-                    int warpX = initX + i;
-                    int warpY = initY + j;
-                    if (warpX < 0)
-                        warpX = 0;
-                    if (warpY < 0)
-                        warpY = 0;
-
-                    Vector2 tile = new Vector2(warpX, warpY);
-                    if (IsTileAccessible(farm, tile))
-                        warpableTiles.Add(tile);
-                }
-            }
-
-            // Can't warp in the range specified in the Config
-            if (warpableTiles.Count == 0)
-            {
-                ModEntry.SMonitor.Log($"Pets cannot be spread within the given radius: {cer}", LogLevel.Error);
+                IndoorWeatherPetSpawn();
                 return;
             }
+            else
+            {
+                // Find area to warp pets to
+                Farm farm = Game1.getFarm();
+                int initX = (int)pets[0].getTileLocation().X;
+                int initY = (int)pets[0].getTileLocation().Y;
+                List<Vector2> warpableTiles = new List<Vector2>();
+                int cer = ModEntry.Config.CuddleExplosionRadius;
 
-            // Warp pets
-            foreach (Pet pet in ModEntry.GetPets())
-                if (ModEntry.PetSkinMap.ContainsKey(pet.Manners))
+                // Collect a set of potential tiles to warp a pet to
+                for (int i = -cer; i < cer; i++)
                 {
-                    Vector2 ranTile = warpableTiles[Randomizer.Next(0, warpableTiles.Count)];
-                    Game1.warpCharacter(pet, farm, ranTile);
+                    for (int j = -cer; j < cer; j++)
+                    {
+                        int warpX = initX + i;
+                        int warpY = initY + j;
+                        if (warpX < 0)
+                            warpX = 0;
+                        if (warpY < 0)
+                            warpY = 0;
+
+                        Vector2 tile = new Vector2(warpX, warpY);
+                        if (IsTileAccessible(farm, tile))
+                            warpableTiles.Add(tile);
+                    }
                 }
 
+                // No placeable tiles found within the range given in the Config
+                if (warpableTiles.Count == 0)
+                {
+                    ModEntry.SMonitor.Log($"Pets cannot be spread within the given radius: {cer}", LogLevel.Alert);
+                    return;
+                }
+
+                // Spread pets
+                foreach (Pet pet in ModApi.GetPets())
+                    if (!ModApi.IsStray(pet))
+                    {
+                        Vector2 ranTile = warpableTiles[Randomizer.Next(0, warpableTiles.Count)];
+                        Game1.warpCharacter(pet, farm, ranTile);
+                    }
+            }
         }
+
+
+        /// <summary>Spawns all owned pets into the FarmHouse</summary>
+        internal void IndoorWeatherPetSpawn()
+        {
+            foreach (Pet pet in ModApi.GetPets())
+                if (!ModApi.IsStray(pet))
+                    pet.warpToFarmHouse(Game1.player);
+        }
+
+
+        internal bool IsIndoorWeather() { return (Game1.isRaining || Game1.isSnowing || Game1.isLightning || Game1.isDarkOut()); }
 
 
         internal static bool IsTileAccessible(GameLocation map, Vector2 tile)
@@ -178,6 +212,66 @@ namespace AdoptSkin.Framework
         }
 
 
+        /// <summary>Returns true if the given X and Y coordinates are overlapped with the given Pet or Horse</summary>
+        internal bool IsOverPetOrHorse(int mouseX, int mouseY, NPC petOrHorse)
+        {
+            return (mouseX >= petOrHorse.getLeftMostTileX().X && mouseX <= petOrHorse.getRightMostTileX().X &&
+                    mouseY >= petOrHorse.getTileY() - 1 && mouseY <= petOrHorse.getTileY() + 1);
+        }
+
+
+        /// <summary>Check to see if the player is attempting to interact with a Stray or WildHorse</summary>
+        internal void AdoptableInteractionCheck(object sender, ButtonReleasedEventArgs e)
+        {
+            if (StrayInfo != null)
+            {
+                // Check for mouse and controller versions of interaction
+                if (((e.Button.Equals(SButton.MouseRight) && IsOverPetOrHorse((int)e.Cursor.Tile.X, (int)e.Cursor.Tile.Y, StrayInfo.PetInstance) && StrayInfo.PetInstance.withinPlayerThreshold(3))   ||
+                    (e.Button.Equals(SButton.ControllerA) && StrayInfo.PetInstance.withinPlayerThreshold(1)))
+                    && Game1.player.currentLocation == Stray.Marnies)
+                {
+                    Game1.activeClickableMenu = new ConfirmationDialog("This is one of the strays that Marnie has taken in. \n\n" +
+                        $"The animal is wary, but curious. Will you adopt this {ModEntry.Sanitize(StrayInfo.PetInstance.GetType().Name)} for {AdoptPrice}G?", (who) =>
+                        {
+                            if (Game1.activeClickableMenu is StardewValley.Menus.ConfirmationDialog cd)
+                                cd.cancel();
+
+                            if (Game1.player.Money >= AdoptPrice)
+                            {
+                                Game1.player.Money -= AdoptPrice;
+                                Game1.activeClickableMenu = new NamingMenu(PetNamer, $"What will you name it?");
+                            }
+                            else
+                            {
+                                // Exit the naming menu
+                                Game1.drawObjectDialogue($"You don't have {AdoptPrice}G..");
+                            }
+                        });
+                }
+            }
+            if (HorseInfo != null)
+            {
+                // Check for mouse and controller versions of interaction
+                if (((e.Button.Equals(SButton.MouseRight) && IsOverPetOrHorse((int)e.Cursor.Tile.X, (int)e.Cursor.Tile.Y, HorseInfo.HorseInstance) && HorseInfo.HorseInstance.withinPlayerThreshold(3)) ||
+                    (e.Button.Equals(SButton.ControllerA) && HorseInfo.HorseInstance.withinPlayerThreshold(1)))
+                    && Game1.player.currentLocation == HorseInfo.Map)
+                {
+                    Game1.activeClickableMenu = new ConfirmationDialog("This appears to be an escaped horse from a neighboring town. \n\nIt looks tired, but friendly. Will you adopt this horse?", (who) =>
+                    {
+                        if (Game1.activeClickableMenu is StardewValley.Menus.ConfirmationDialog cd)
+                            cd.cancel();
+
+                        Game1.activeClickableMenu = new NamingMenu(HorseNamer, "What will you name this horse?");
+                    }, (who) =>
+                    {
+                        // Exit the naming menu
+                        Game1.drawObjectDialogue($"You leave the creature to rest for now. It's got a big, bright world ahead of it.");
+                    });
+                }
+            }
+        }
+
+
 
 
 
@@ -187,7 +281,7 @@ namespace AdoptSkin.Framework
          *****************************/
 
         /// <summary>Places the pet bed in Marnie's</summary>
-        internal void PlaceBetBed()
+        internal void PlacePetBed()
         {
             GameLocation marnies = Game1.getLocationFromName("AnimalShop");
             TileSheet tileSheet = new xTile.Tiles.TileSheet("PetBed", marnies.map, Earth.Helper.Content.GetActualAssetKey("assets/petbed.png"), new xTile.Dimensions.Size(1, 1), new xTile.Dimensions.Size(16, 15));
@@ -196,40 +290,15 @@ namespace AdoptSkin.Framework
             buildingLayer.Tiles[17, 15] = new StaticTile(buildingLayer, tileSheet, BlendMode.Alpha, 0);
             marnies.updateMap();
         }
-        
 
-        /// <summary>Check to see if the player is attempting to interact with the stray</summary>
-        internal void StrayInteractionCheck(object sender, ButtonPressedEventArgs e)
+
+        /// <summary>Places the pet bed in Marnie's on the next day, rather than immediately.</summary>
+        internal void PlacePetBedTomorrow(object sender, DayStartedEventArgs e)
         {
-            if (StrayInfo != null &&
-                e.Button.Equals(SButton.MouseRight) &&
-                StrayInfo.PetInstance.withinPlayerThreshold(3))
-            {
-                if ((int)e.Cursor.Tile.X >= StrayInfo.PetInstance.getLeftMostTileX().X && (int)e.Cursor.Tile.X <= StrayInfo.PetInstance.getRightMostTileX().X &&
-                    (int)e.Cursor.Tile.Y >= StrayInfo.PetInstance.getTileY() - 1 && (int)e.Cursor.Tile.Y <= StrayInfo.PetInstance.getTileY() + 1)
-                {
-
-                    Game1.activeClickableMenu = new ConfirmationDialog("This is one of the strays that Marnie has taken in. \n\n" +
-                        $"The animal is wary, but curious. Will you adopt this {ModEntry.Sanitize(StrayInfo.PetInstance.GetType().Name)} for {AdoptPrice}G?", (who) =>
-                    {
-                        if (Game1.activeClickableMenu is StardewValley.Menus.ConfirmationDialog cd)
-                            cd.cancel();
-
-                        if (Game1.player.Money >= AdoptPrice)
-                        {
-                            Game1.player.Money -= AdoptPrice;
-                            Game1.activeClickableMenu = new NamingMenu(PetNamer, $"What will you name it?");
-                        }
-                        else
-                        {
-                            // Exit the naming menu
-                            Game1.drawObjectDialogue($"You don't have {AdoptPrice}G..");
-                        }
-                    });
-                }
-            }
+            PlacePetBed();
+            ModEntry.SHelper.Events.GameLoop.DayStarted -= PlacePetBedTomorrow;
         }
-
+        
 
         /// <summary>Adopts and names the stray being interacted with. Called in the CheckStray event handler.</summary>
         internal void PetNamer(string petName)
@@ -261,33 +330,6 @@ namespace AdoptSkin.Framework
         /*********************************
          ** H O R S E   A D O P T I O N **
          *********************************/
-
-        /// <summary>Check to see if the player is attempting to interact with the wild horse</summary>
-        internal void WildHorseInteractionCheck(object sender, ButtonPressedEventArgs e)
-        {
-            if (HorseInfo != null && 
-                e.Button.Equals(SButton.MouseRight) &&
-                HorseInfo.HorseInstance.withinPlayerThreshold(3))
-            {
-                if ((int)e.Cursor.Tile.X >= HorseInfo.HorseInstance.getLeftMostTileX().X && (int)e.Cursor.Tile.X <= HorseInfo.HorseInstance.getRightMostTileX().X &&
-                    (int)e.Cursor.Tile.Y >= HorseInfo.HorseInstance.getTileY() - 1 && (int)e.Cursor.Tile.Y <= HorseInfo.HorseInstance.getTileY() + 1)
-                {
-
-                    Game1.activeClickableMenu = new ConfirmationDialog("This appears to be an escaped horse from a neighboring town. \n\nIt looks tired, but friendly. Will you adopt this horse?", (who) =>
-                    {
-                        if (Game1.activeClickableMenu is StardewValley.Menus.ConfirmationDialog cd)
-                            cd.cancel();
-
-                        Game1.activeClickableMenu = new NamingMenu(HorseNamer, "What will you name this horse?");
-                    }, (who) =>
-                    {
-                        // Exit the naming menu
-                        Game1.drawObjectDialogue($"You leave the creature to rest for now. It's got a big, bright world ahead of it.");
-                    });
-                }
-            }
-        }
-
 
         /// <summary>Adopts and names the wild horse being interacted with. Called in the CheckHorse event handler.</summary>
         internal void HorseNamer(string horseName)

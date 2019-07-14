@@ -18,11 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 59d06c4ba2ef5f82d7924116ae90026fd15c4b64
+   commit 81c9e7bfc62f235396aa2eb26b3502f7f7471ce2
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Thu Jul 11 13:42:51 2019 -0400
+   Date:   Sun Jul 14 00:18:50 2019 -0400
    
-       update French translations for Data Layers
-       
-       Thanks to Skirmsiher!
+       improve Data Layers warp detection
    

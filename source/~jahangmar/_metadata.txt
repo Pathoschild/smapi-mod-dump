@@ -9,9 +9,12 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit 770d75c5db55ad4749a41233640f50f49346adfd
+   commit 346ed947eea0a0ee78c783900722b7aad3cb9aab
+   Merge: 86c9c01 d3be4fb
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Mon Jul 8 16:43:05 2019 +0200
+   Date:   Sun Jul 14 17:41:03 2019 +0200
    
-       added cpc project, fixed menu issue in working fireplace
+       Merge pull request #4 from xLPMG/patch-2
+       
+       Create it.json for InteractionTweaks
    

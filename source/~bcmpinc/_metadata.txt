@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit c224c6569b50edc35c79429937acc9f5ca2f417b
+   commit a36bf6cfe344ff945ec1abb5a55f416fc0975c2c
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Sun Jun 30 13:51:49 2019 +0200
+   Date:   Fri Jul 12 17:34:32 2019 +0200
    
-       Wrote a halfway decent parser for method signatures.
+       Bigger Backpack & Wear More Rings now work properly together
    

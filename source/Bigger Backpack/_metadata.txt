@@ -5,9 +5,9 @@ mods:
    Bigger Backpack
 
 latest commit:
-   commit f0f0f1287e272e5dfc9ca3652b52999f94582fb8
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Feb 15 12:51:36 2019 -0500
+   commit 7313e95734bd925953ed9bfe328aa33c888d8024
+   Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
+   Date:   Fri Jul 12 17:04:42 2019 +0200
    
-       1.0.6
+       Fix compatibility for Linux.
    

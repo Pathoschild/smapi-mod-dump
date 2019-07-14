@@ -1,7 +1,7 @@
 ﻿{
    "Name": "StardewHack",
    "Author": "bcmpinc",
-   "Version": "1.1",
+   "Version": "1.2",
    "Description": "Library mod used by my other mods. Doesn't do much on its own.",
    "UniqueID": "bcmpinc.StardewHack",
    "EntryDll": "StardewHack.dll",

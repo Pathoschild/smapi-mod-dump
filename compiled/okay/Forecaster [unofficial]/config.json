@@ -1,0 +1,9 @@
+{
+  "ShowLuckForecastOnWakeUp": true,
+  "ShowWeatherOnWakeUp": true,
+  "InitialDelay": 1,
+  "OffsetDelay": 2,
+  "EnableShortcutKeys": false,
+  "TipKey": "OemOpenBrackets",
+  "WeatherKey": "OemCloseBrackets"
+}

@@ -36,21 +36,21 @@ namespace AdoptSkin.Framework
         internal Stray()
         {
             // Create Stray traits
-            PetType = ModEntry.PetAssets.Keys.ToList()[Randomizer.Next(0, ModEntry.PetAssets.Count)];
-            SkinID = Randomizer.Next(1, ModEntry.PetAssets[PetType].Count + 1);
+            PetType = ModEntry.PetTypeMap.Keys.ToList()[Randomizer.Next(0, ModEntry.PetTypeMap.Count)];
+            SkinID = ModEntry.GetRandomSkin(PetType);
 
             // Create Pet instance
             PetInstance = (Pet)Activator.CreateInstance(ModEntry.PetTypeMap[PetType], (int)CreationLocation.X, (int)CreationLocation.Y);
-            PetInstance.Sprite = new AnimatedSprite(ModEntry.GetSkinFromID(PetType, SkinID).AssetKey, 28, 32, 32);
-
-            // Temporary Stray traits
             PetInstance.Manners = StrayID;
             PetInstance.Name = "Stray";
             PetInstance.displayName = "Stray";
             PetInstance.farmerPassesThrough = true;
 
+            int[] info = ModApi.GetSpriteInfo(PetInstance);
+            PetInstance.Sprite = new AnimatedSprite(ModEntry.GetSkin(PetType, SkinID).AssetKey, info[0], info[1], info[2]);
+
             // Put that thing where it belongs
-            Game1.warpCharacter(PetInstance as Pet, Marnies, CreationLocation);
+            Game1.warpCharacter(PetInstance, Marnies, CreationLocation);
 
             if (ModEntry.Config.NotifyStraySpawn)
             {

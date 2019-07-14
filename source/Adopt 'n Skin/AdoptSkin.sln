@@ -3,20 +3,26 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdoptSkin", "AnimalSkinner\AdoptSkin.csproj", "{C506D237-CC8A-48F2-A129-84D27175B09E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{439F8C7C-FA4E-4F50-98BE-253AE231999C}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{439F8C7C-FA4E-4F50-98BE-253AE231999C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdoptSkin", "AdoptSkin\AdoptSkin.csproj", "{E5681E0D-7A8E-4999-829C-2C072B551C36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C506D237-CC8A-48F2-A129-84D27175B09E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C506D237-CC8A-48F2-A129-84D27175B09E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C506D237-CC8A-48F2-A129-84D27175B09E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C506D237-CC8A-48F2-A129-84D27175B09E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5681E0D-7A8E-4999-829C-2C072B551C36}.Debug|x86.ActiveCfg = Debug|x86
+		{E5681E0D-7A8E-4999-829C-2C072B551C36}.Debug|x86.Build.0 = Debug|x86
+		{E5681E0D-7A8E-4999-829C-2C072B551C36}.Release|x86.ActiveCfg = Release|x86
+		{E5681E0D-7A8E-4999-829C-2C072B551C36}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

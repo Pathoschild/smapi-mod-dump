@@ -1,10 +1,10 @@
 ﻿{
   "Name": "Wonderful Farm Life",
   "Author": "Jinxiewinxie and TaintedWheat",
-  "Version": "1.0.1-unofficial.2-pathoschild",
+  "Version": "1.0.1-unofficial.3-pathoschild",
   "Description": "Adds a bunch of map edits to your farm",
   "UniqueID": "WonderfulFarmLife",
   "EntryDll": "WonderfulFarmLife.dll",
   "UpdateKeys": [],
-  "MinimumApiVersion": "2.10.2"
+  "MinimumApiVersion": "2.11.2"
 }

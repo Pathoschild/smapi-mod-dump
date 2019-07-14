@@ -1,7 +1,7 @@
 # Stardew Hack
 
 ## Description
-This is a library/core mod, containing bits of code that all my other mods use. It has some functions to make small bytecode changes to Stardew Valley in a way that is somewhat update proof, but also makes sure it reliably breaks in cases where it isn't. My other mods contain descriptions of byte code changes and passes those to StardewHack to apply them. Without any of my other mods instaled, StardewHack won't do much. 
+This is a library/core mod, containing bits of code that all my other mods use. It has some functions to make small bytecode changes to Stardew Valley in a way that is somewhat update proof, but also makes sure it reliably breaks in cases where it isn't. My other mods contain descriptions of byte code changes and passes those to StardewHack to apply them. Without any of my other mods installed, StardewHack won't do much. 
 
 While I could just package a copy of this core mod with all my other mods, that allows people to have mixed versions, which cause really weird bugs. Having StardewHack as a separate mod ensures there's only one copy and thus no version issues.
 
@@ -9,6 +9,7 @@ While I could just package a copy of this core mod with all my other mods, that 
 This library is used by the following mods:
 
 * [Always Scroll Map](https://www.nexusmods.com/stardewvalley/mods/2733):                   Makes the map scroll past the edge of the map.
+* [Bigger Backpack](https://www.nexusmods.com/stardewvalley/mods/1845):                     Adds an additional upgrade to the backpack for 48 slots.
 * [Craft Counter](https://www.nexusmods.com/stardewvalley/mods/2739):                       Adds a counter to the description of crafting recipes telling how often it has been crafted.
 * [Fix Animal Tool Animations](https://www.nexusmods.com/stardewvalley/mods/3215):          When using the shears or milk pail, the animation no longer plays when no animal is nearby.
 * [Grass Growth](https://www.nexusmods.com/stardewvalley/mods/2732):                        Allows long grass to spread everywhere on your farm.

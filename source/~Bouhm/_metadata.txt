@@ -6,9 +6,12 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit e24b72e0525732c89b175c9412b5dd9c242d2dad
-   Author: Bouhm <bbouhm@gmail.com>
-   Date:   Mon Jul 8 16:10:34 2019 -0700
+   commit 3c81da1a0f8c74401fbc0fbb79071b1d8d9c843f
+   Merge: e24b72e 48d3bf4
+   Author: Brian Pak <bbouhm@gmail.com>
+   Date:   Fri Jul 12 22:34:19 2019 -0700
    
-       update version
+       Merge pull request #51 from Pathoschild/dynamic-recolors
+       
+       Add dynamic recolor support, internal refactoring
    

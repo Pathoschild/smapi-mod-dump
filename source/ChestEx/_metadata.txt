@@ -5,9 +5,9 @@ mods:
    ChestEx
 
 latest commit:
-   commit 9c726e86b18e8c16a8a0abefb68883872c3d5b51
+   commit 8233f332c915310db5a681523d2b4d4c66c588f6
    Author: Berkay YÄ°ÄžÄ°T <berkayyigit@anadolu.edu.tr>
-   Date:   Wed Jul 10 18:15:49 2019 +0300
+   Date:   Fri Jul 12 19:37:59 2019 +0300
    
-       1.0.0
+       v1.1.2
    

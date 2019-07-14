@@ -1,7 +1,7 @@
 {
   "Name": "Dynamic Night Time",
   "Author": "knakamura",
-  "Version": "1.2.7",
+  "Version": "1.2.9",
   "Description": "Dynamic Night Time",
   "UniqueID": "knakamura.dynamicnighttime",
   "EntryDll": "DynamicNightTime.dll",

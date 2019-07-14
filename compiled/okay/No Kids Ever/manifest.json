@@ -1,0 +1,10 @@
+{
+  "Name": "No Kids Ever",
+  "Author": "Hangy",
+  "Version": "1.1.1",
+  "Description": "Want to get married, but don't want to be nagged to have a kid? Me too! Now we can!",
+  "UniqueID": "Hangy.NoKidsEver",
+  "EntryDll": "NoKidsEver.dll",
+  "MinimumApiVersion": "2.10.2",
+  "UpdateKeys": [ "Nexus:1464" ]
+}

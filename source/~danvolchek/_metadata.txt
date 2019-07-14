@@ -31,9 +31,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 9e9fbf1b46a5e22dbf15a58de4ce5dd704368497
+   commit 7eb233f30d2d10ecf9488eeb1ad600c78b8fb027
    Author: danvolchek <volchek2@illinois.edu>
-   Date:   Mon Jun 10 16:48:30 2019 -0500
+   Date:   Sat Jul 13 22:56:59 2019 -0500
    
-       [Stack Everything] support for CF furniture, refactoring improvements
+       update all projects to new csproj format
    
