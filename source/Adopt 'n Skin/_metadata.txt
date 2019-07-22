@@ -5,9 +5,9 @@ mods:
    Adopt 'n Skin
 
 latest commit:
-   commit e76c321d251db112769ebab29460d6867a63cf15
+   commit 0c8ad907ef7b45c381a4de04544db346e6c3f0d3
    Author: Gathouria <katey.huddleston@gmail.com>
-   Date:   Sat Jul 13 20:51:41 2019 -0700
+   Date:   Mon Jul 22 01:19:34 2019 -0700
    
-       Updated for 2.6.6
+       Additional troubleshooting added
    

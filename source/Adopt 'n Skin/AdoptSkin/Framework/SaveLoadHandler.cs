@@ -306,37 +306,31 @@ namespace AdoptSkin.Framework
             // Gather handled types
             string validTypes = string.Join(", ", ModApi.GetHandledAllTypes());
 
-            // Parse file name. Ignore if using an invalid name or file extension.
-            foreach (FileInfo file in new DirectoryInfo(Path.Combine(SHelper.DirectoryPath, "assets", "skins")).EnumerateFiles())
+            foreach (string path in Directory.EnumerateFiles(Path.Combine(SHelper.DirectoryPath, "assets", "skins"), "*", SearchOption.AllDirectories))
             {
-                string extension = Path.GetExtension(file.Name);
-                string[] nameParts = Path.GetFileNameWithoutExtension(file.Name).Split(new[] { '_' }, 2);
+                string extension = Path.GetExtension(path);
+                string fileName = Path.GetFileNameWithoutExtension(path);
+                string[] nameParts = fileName.Split(new[] { '_' }, 2);
                 string type = ModEntry.Sanitize(nameParts[0]);
                 int skinID = 0;
 
                 if (!ValidExtensions.Contains(extension))
-                    ModEntry.SMonitor.Log($"Ignored skin `assets/skins/{file.Name}` with invalid extension (extension must be one of type {string.Join(", ", ValidExtensions)})", LogLevel.Warn);
+                    ModEntry.SMonitor.Log($"Ignored skin `{fileName}` with invalid extension (extension must be one of type {string.Join(", ", ValidExtensions)})", LogLevel.Warn);
                 else if (!ModEntry.Assets.ContainsKey(type))
-                    ModEntry.SMonitor.Log($"Ignored skin `assets/skins/{file.Name}` with invalid naming convention (can't parse {nameParts[0]} as an animal, pet, or horse. Expected one of type: {validTypes})", LogLevel.Warn);
+                    ModEntry.SMonitor.Log($"Ignored skin `{fileName}` with invalid naming convention (can't parse {nameParts[0]} as an animal, pet, or horse. Expected one of type: {validTypes})", LogLevel.Warn);
                 else if (nameParts.Length != 2)
-                    ModEntry.SMonitor.Log($"Ignored skin `assets/skins/{file.Name} with invalid naming convention (no skin ID found)", LogLevel.Warn);
+                    ModEntry.SMonitor.Log($"Ignored skin `{fileName} with invalid naming convention (no skin ID found)", LogLevel.Warn);
                 else if (nameParts.Length == 2 && !int.TryParse(nameParts[1], out skinID))
-                    ModEntry.SMonitor.Log($"Ignored skin `assets/skins/{file.Name}` with invalid skin ID (can't parse {nameParts[1]} as a number)", LogLevel.Warn);
+                    ModEntry.SMonitor.Log($"Ignored skin `{fileName}` with invalid skin ID (can't parse {nameParts[1]} as a number)", LogLevel.Warn);
                 else if (skinID <= 0)
-                    ModEntry.SMonitor.Log($"Ignored skin `assets/skins/{file.Name}` with skin ID of less than or equal to 0. Skins must have an ID of at least 1.", LogLevel.Warn);
+                    ModEntry.SMonitor.Log($"Ignored skin `{fileName}` with skin ID of less than or equal to 0. Skins must have an ID of at least 1.", LogLevel.Warn);
                 else
                 {
                     // File naming is valid, add asset into system
-                    string assetKey = SHelper.Content.GetActualAssetKey(Path.Combine("assets", "skins", extension.Equals("xnb") ? Path.Combine(Path.GetDirectoryName(file.Name), Path.GetFileNameWithoutExtension(file.Name)) : file.Name));
+                    string assetKey = SHelper.Content.GetActualAssetKey(Path.Combine(Path.GetDirectoryName(path), extension.Equals("xnb") ? Path.GetFileNameWithoutExtension(path) : Path.GetFileName(path)));
                     ModEntry.Assets[type].Add(skinID, new AnimalSkin(type, skinID, assetKey));
                 }
             }
-            /*
-            // Sort each skin list by ID
-            AnimalSkin.Comparer comp = new AnimalSkin.Comparer();
-            foreach (string type in ModEntry.Assets.Keys)
-                ModEntry.Assets[type]
-            */
 
             // Print loaded assets to console
             StringBuilder summary = new StringBuilder();

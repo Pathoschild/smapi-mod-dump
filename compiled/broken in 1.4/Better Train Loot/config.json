@@ -1,0 +1,11 @@
+{
+  "enableMod": true,
+  "useCustomTrainTreasure": true,
+  "enableNoLimitTreasurePerTrain": false,
+  "baseChancePercent": 0.2,
+  "basePctChanceOfTrain": 0.15,
+  "trainCreateDelay": 10000,
+  "maxNumberOfItemsPerTrain": 5,
+  "enableForceCreateTrain": false,
+  "enableMultiplayerChatMessage": true
+}

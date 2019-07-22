@@ -5,9 +5,12 @@ mods:
    Generic Shop Extender
 
 latest commit:
-   commit 9174bdf67dcf9c47ae9ec2e96d4f06557022b226
+   commit bbd213d6f09700e6508875959d916ac5f4fb4de9
+   Merge: 9174bdf 33ab17f
    Author: IrregularPorygon <IrregularPorygon@gmail.com>
-   Date:   Wed May 23 18:00:43 2018 -0400
+   Date:   Sat Jul 20 20:48:33 2019 -0400
    
-       Adding a new test mod
+       Merge pull request #3 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0, internal refactoring
    

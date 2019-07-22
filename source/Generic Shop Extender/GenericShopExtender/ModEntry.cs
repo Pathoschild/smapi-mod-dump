@@ -1,28 +1,33 @@
-﻿using StardewModdingAPI;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using StardewValley.Menus;
-using System;
+using SObject = StardewValley.Object;
 
 namespace GenericShopExtender
 {
+    /// <summary>The mod entry class.</summary>
     public class ModEntry : Mod
     {
+        /*********
+        ** Fields
+        *********/
+        private ModConfig _config;
 
-        private ModConfig config;
 
         /*********
         ** Public methods
         *********/
-        /// <summary>Initialise the mod.</summary>
-        /// <param name="helper">Provides methods for interacting with the mod directory, such as read/writing a config file or custom JSON files.</param>
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            MenuEvents.MenuChanged += Events_MenuChanged;
+            helper.Events.Display.MenuChanged += OnMenuChanged;
 
-            config = this.Helper.ReadConfig<ModConfig>();
+            _config = Helper.ReadConfig<ModConfig>();
             //this.Monitor.Log("Printing the configuration", LogLevel.Info);
             //this.Monitor.Log(config.ToString(), LogLevel.Info);
             //foreach (string s in config.shopkeepers.Keys)
@@ -31,53 +36,50 @@ namespace GenericShopExtender
             //}
         }
 
-        void Events_MenuChanged(object sender, EventArgsClickableMenuChanged e)
+
+        /*********
+        ** Private methods
+        *********/
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
             //Is this even a shop?
-            if (e.NewMenu is ShopMenu)
+            if (e.NewMenu is ShopMenu menu)
             {
                 //Yup, sure is.
-                ShopMenu currentShopMenu = (ShopMenu)e.NewMenu;
+                ShopMenu currentShopMenu = menu;
                 //But who runs it?
-                foreach (string shopkeep in config.shopkeepers.Keys)
+                foreach (string shopKeeperKey in _config.Shopkeepers.Keys)
                 {
-                    string formattedShopkeep = shopkeep;
+                    string shopKeeper = shopKeeperKey;
                     int yearDefined = 0;
                     List<string> seasonsDefined = new List<string>();
                     //this.Monitor.Log("Checking " + shopkeep + " if it contains " + "_Year", LogLevel.Info);
-                    if (formattedShopkeep.Contains("_Year"))
+                    if (shopKeeper.Contains("_Year"))
                     {
-                        this.Monitor.Log("Found a year modifier", LogLevel.Info);
-                        yearDefined = Int32.Parse(formattedShopkeep.Substring(formattedShopkeep.IndexOf("_Year") + 5,1));
-                        formattedShopkeep = formattedShopkeep.Remove(formattedShopkeep.IndexOf("_Year"), 6);
-                        this.Monitor.Log(formattedShopkeep, LogLevel.Info);
-                        this.Monitor.Log("With year " + yearDefined, LogLevel.Info);
+                        Monitor.Log("Found a year modifier", LogLevel.Info);
+                        yearDefined = int.Parse(shopKeeper.Substring(shopKeeper.IndexOf("_Year", StringComparison.Ordinal) + 5, 1));
+                        shopKeeper = shopKeeper.Remove(shopKeeper.IndexOf("_Year", StringComparison.Ordinal), 6);
+                        Monitor.Log(shopKeeper, LogLevel.Info);
+                        Monitor.Log("With year " + yearDefined, LogLevel.Info);
                     }
 
-                    if(formattedShopkeep.Contains("_Season"))
+                    if (shopKeeper.Contains("_Season"))
                     {
-                        this.Monitor.Log("Found a season modifier", LogLevel.Info);
-                        if (formattedShopkeep.IndexOf("_spring") != -1)
+                        Monitor.Log("Found a season modifier", LogLevel.Info);
+
+                        foreach (string season in new[] { "spring", "summer", "fall", "winter" })
                         {
-                            seasonsDefined.Add("spring");
-                            formattedShopkeep = formattedShopkeep.Remove(formattedShopkeep.IndexOf("_spring"), 7);
+                            string marker = $"_{season}";
+                            if (shopKeeper.IndexOf(marker, StringComparison.Ordinal) != -1)
+                            {
+                                seasonsDefined.Add(season);
+                                shopKeeper = shopKeeper.Remove(shopKeeper.IndexOf(marker, StringComparison.Ordinal), marker.Length);
+                            }
                         }
-                        if (formattedShopkeep.IndexOf("_summer") != -1)
-                        {
-                            seasonsDefined.Add("summer");
-                            formattedShopkeep = formattedShopkeep.Remove(formattedShopkeep.IndexOf("_summer"), 7);
-                        }
-                        if (formattedShopkeep.IndexOf("_winter") != -1)
-                        {
-                            seasonsDefined.Add("winter");
-                            formattedShopkeep = formattedShopkeep.Remove(formattedShopkeep.IndexOf("_winter"), 7);
-                        }
-                        if (formattedShopkeep.IndexOf("_fall") != -1)
-                        {
-                            seasonsDefined.Add("fall");
-                            formattedShopkeep = formattedShopkeep.Remove(formattedShopkeep.IndexOf("_fall"), 5);
-                        }
-                        formattedShopkeep = formattedShopkeep.Remove(formattedShopkeep.IndexOf("_Season"), 7);
+                        shopKeeper = shopKeeper.Remove(shopKeeper.IndexOf("_Season", StringComparison.Ordinal), 7);
                     }
                     else
                     {
@@ -86,24 +88,24 @@ namespace GenericShopExtender
                         seasonsDefined.Add("winter");
                         seasonsDefined.Add("fall");
                     }
-                    this.Monitor.Log(formattedShopkeep, LogLevel.Info);
+                    Monitor.Log(shopKeeper, LogLevel.Info);
 
-                    if (currentShopMenu.portraitPerson.Equals(StardewValley.Game1.getCharacterFromName(formattedShopkeep, false)) && Game1.year >= yearDefined && seasonsDefined.Contains(Game1.currentSeason))
+                    if (currentShopMenu.portraitPerson.Equals(Game1.getCharacterFromName(shopKeeper)) && Game1.year >= yearDefined && seasonsDefined.Contains(Game1.currentSeason))
                     {
                         //The current shopkeep does! Now we need to get the list of what's being sold
-                        IReflectedField<Dictionary<Item, int[]>> inventoryInformation = this.Helper.Reflection.GetField<Dictionary<Item, int[]>>(currentShopMenu, "itemPriceAndStock");
+                        IReflectedField<Dictionary<Item, int[]>> inventoryInformation = Helper.Reflection.GetField<Dictionary<Item, int[]>>(currentShopMenu, "itemPriceAndStock");
                         Dictionary<Item, int[]> itemPriceAndStock = inventoryInformation.GetValue();
-                        IReflectedField<List<Item>> forSaleInformation = this.Helper.Reflection.GetField<List<Item>>(currentShopMenu, "forSale");
+                        IReflectedField<List<Item>> forSaleInformation = Helper.Reflection.GetField<List<Item>>(currentShopMenu, "forSale");
                         List<Item> forSale = forSaleInformation.GetValue();
 
                         //Now, lets add a few things...
-                        int[,] itemsAndPrices = config.shopkeepers[shopkeep];
+                        int[,] itemsAndPrices = _config.Shopkeepers[shopKeeperKey];
                         for (int index = 0; index < itemsAndPrices.GetLength(0); index++)
                         {
                             int itemId = itemsAndPrices[index, 0];
                             int price = itemsAndPrices[index, 1];
-                            Item objectToAdd = (Item)new StardewValley.Object(Vector2.Zero, itemId, int.MaxValue);
-                            itemPriceAndStock.Add(objectToAdd, new int[2] { price, int.MaxValue });
+                            Item objectToAdd = new SObject(Vector2.Zero, itemId, int.MaxValue);
+                            itemPriceAndStock.Add(objectToAdd, new[] { price, int.MaxValue });
                             forSale.Add(objectToAdd);
                         }
 

@@ -1,17 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using WarpToFriends.Helpers;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StardewValley.BellsAndWhistles;
-using StardewValley.Locations;
 
 namespace WarpToFriends
 {
@@ -21,7 +14,7 @@ namespace WarpToFriends
 		private readonly List<Farmer> _farmers;
 
 		private List<PlayerBar> _playerBars;
-		private ClickableTextureComponent _optionsButtom;
+		private ClickableTextureComponent _optionsButton;
 
 		public WarpMenu(int w = 700, int h = 400)
 			: base(Game1.viewport.Width / 2 - w / 2, Game1.viewport.Height / 2 - h / 2, w, h, true)
@@ -32,7 +25,7 @@ namespace WarpToFriends
 			
 			setUpPlayerBars();
 
-			_optionsButtom = new ClickableTextureComponent("Options", new Rectangle(xPositionOnScreen + width, yPositionOnScreen + height, 16 * Game1.pixelZoom, 16 * Game1.pixelZoom),
+			_optionsButton = new ClickableTextureComponent("Options", new Rectangle(xPositionOnScreen + width, yPositionOnScreen + height, 16 * Game1.pixelZoom, 16 * Game1.pixelZoom),
 				"", "Configure mod options", Game1.mouseCursors, new Rectangle(162, 440, 16, 16), Game1.pixelZoom);
 		}
 
@@ -49,14 +42,14 @@ namespace WarpToFriends
 				int yPos = yPositionOnScreen + ((height / 4) * i);
 
 				Rectangle sectionBounds = new Rectangle(xPos + 16, yPos + 16, width - 32, height / 4);
-				pb.section = new ClickableComponent(sectionBounds, _farmers[i].name);
+				pb.section = new ClickableComponent(sectionBounds, _farmers[i].Name);
 
 				int iconStartX = xPos + 30;
 				int iconStartY = yPos + 20;
-				pb.icon = new ClickableComponent(new Rectangle(iconStartX, iconStartY, 80, 80), _farmers[i].name);
+				pb.icon = new ClickableComponent(new Rectangle(iconStartX, iconStartY, 80, 80), _farmers[i].Name);
 
 				Rectangle buttonBounds = new Rectangle(iconStartX + 530, iconStartY + 16, 85, 50);
-				pb.warpButton = new ClickableComponent(buttonBounds, _farmers[i].name);
+				pb.warpButton = new ClickableComponent(buttonBounds, _farmers[i].Name);
 
 				_playerBars.Add(pb);
 			}
@@ -80,11 +73,11 @@ namespace WarpToFriends
 
 		private void drawOptionsButton(SpriteBatch b)
 		{
-			_optionsButtom.draw(b);
-			_optionsButtom.tryHover(Game1.getMouseX(), Game1.getMouseY());
-			if(_optionsButtom.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
+			_optionsButton.draw(b);
+			_optionsButton.tryHover(Game1.getMouseX(), Game1.getMouseY());
+			if(_optionsButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
 			{
-				IClickableMenu.drawToolTip(b, _optionsButtom.hoverText, _optionsButtom.name, null);
+				IClickableMenu.drawToolTip(b, _optionsButton.hoverText, _optionsButton.name, null);
 			}
 		}
 
@@ -112,24 +105,16 @@ namespace WarpToFriends
 				if (!pb.online || pb.farmer == Game1.player) continue;
 				if(pb.warpButton.containsPoint(x, y))
 				{
-					warpFarmerToPlayer(pb.farmer);
+					PlayerHelper.warpFarmerToPlayer(pb.farmer);
 				}
 			}
-			if(_optionsButtom.containsPoint(x, y))
+			if(_optionsButton.containsPoint(x, y))
 			{
 				Game1.activeClickableMenu.exitThisMenuNoSound();
-				Game1.activeClickableMenu = new OptionsMenu<ModConfig>(ModEntry.Helper, 500, 400, Game1.player.uniqueMultiplayerID, ModEntry.config, this);
+				Game1.activeClickableMenu = new OptionsMenu<ModConfig>(ModEntry.Helper, 500, 400, Game1.player.UniqueMultiplayerID, ModEntry.config, this);
 			}
 
 			base.receiveLeftClick(x, y, playSound);
-		}
-
-		private void warpFarmerToPlayer(Farmer f)
-		{
-			var toLocation = (string.IsNullOrEmpty(f.currentLocation.uniqueName)) ? f.currentLocation.name : f.currentLocation.uniqueName;
-
-			Game1.warpFarmer(toLocation, (int)(f.position.X + 16) / Game1.tileSize, (int)f.position.Y / Game1.tileSize, false);
-
 		}
 	}
 }

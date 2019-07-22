@@ -33,6 +33,10 @@ What A&S lets you do:
 That's it! You're all set.
 (Customized options can be set in the `Config` file, as described below)
 
+# Incompatible mods:
+
+- **More Animals -** MA competes with A&S when trying to reskin and move animals around the map, and A&S covers the functionality of MA
+- **Reskin mods -** These mods compete with A&S when trying to reskin or adjust animals, and cause weird issues. A&S covers their functionality once the skins from these mods have been moved into the `AdoptSkin/assets/skins` folder.
 
 # Sprite names:
 
@@ -98,6 +102,9 @@ If you know what you're doing (a.k.a I am not user support for BFAV, and am also
 **Can I turn off/change X feature?**
 > Check the `Config` file. There's a ton of things you can turn on and off or set to a different value. Explanations of the options in the `Config` are described below.
 
+**Can I change/rename/delete/add to folders inside of `/assets/skins`?**
+> Yep! Any subfolder of the `/skins` folder is purely serving as a visual means to organize! You can do whatever you like to them, and nest folders to your heart's content; A&S will grab any skin inside. Just make sure you're still naming everything the same- A&S doesn't care *what* folder you put them in.
+
 **Where's the `Config` file?**
 > The `Config` file will generate after you've run Stardew Valley at least once after installing A&S.
 
@@ -117,6 +124,26 @@ If you know what you're doing (a.k.a I am not user support for BFAV, and am also
 
 **Can I reskin the petbed at Marnie's?**
 > Sure can. Just make sure your image is named petbed.png and is the same size as the one in `AdoptSkin/assets`. Then just replace that image with yours!
+
+**The game crashes when I enter Marnie's**
+> If you removed `petbed.png`, this is the culprit. You can replace the image with something else, but it has to be there!
+
+**My pet/horse turns invisible when I reskin it**
+> This seems to be corrupted game problem, due to mods other than A&S. Try these steps to fix the issue, and feel free to ping me (@gathouria#9832) on the SDV #modding server if the issue continues.
+> 
+> 1. Make a copy of your `Mods` folder somewhere else on your computer (i.e. your Desktop)
+> 2. Delete your Stardew Valley folder. Yes, the entire folder. No saved data will be lost, as not only does Steam back your save files up, but they're located in other location on your computer.
+> 3. Open up Steam. In your library, right click on Stardew Valley, and select `Properties`. Select the `Local Files` tab, and click `Verify Integrity of Game Files`. Steam will then alert you that your files are missing, and then redownload Stardew Valley for you. The reason for deleting the entire folder instead of just validating files is due to the fact that Steam cannot detect many corruptions of files, and reacquiring ensures that your files are Stardew-original.
+> 4. Run Stardew Valley. You can close this as soon as it opens.
+> 5. Reinstall SMAPI.
+> 6. Create a new `Mods` folder within your Stardew Valley folder, and ONLY move Adopt & Skin into it.
+> 7. Check that the issue still occurs on a new save file. You can use [CJB Cheats Menu](https://www.nexusmods.com/stardewvalley/mods/4) and [CJB Item Spawner](https://www.nexusmods.com/stardewvalley/mods/93) to quickly get to owning a pet or having a stable, as they have always worked fine for my personal testing. The save that you encountered the issue on may or may not continue to have the issue, as Stardew made the file while it was corrupted.
+> 8. If the issue is fixed, move your `Mods` folder back into the Stardew Valley folder, and check that the issue doesn't reoccur by again making a new save file. If it does, then the issue is coming from a conflict with another mod. Make sure that none of the known incompatible mods, listed near the beginning of this page, are also installed.
+
+**My horse isn't showing up when I call `list_creatures horse`**
+> Make sure that you are not currently riding your horse. Stardew Valley's code removes a horse from all existence when it is being ridden, and re-adds it to existence when it is dismounted. When your horse doesn't exist, A&S will not list it for you, as you cannot reskin it at that time.
+
+> This also seems to be an issue in some multiplayer games. Reminder that **multiplayer is not yet tested for A&S, and there are likely many bugs.**
 
 **I don't see any stray pets at Marnie's!**
 > Strays only start appearing the day after you've received your first pet from Marnie in-game, and don't appear every day. The chance of them appearing can be altered in the `Config` file.

@@ -8,7 +8,7 @@ namespace MegaStorage.Models
         public override int Capacity => int.MaxValue;
         public override ChestType ChestType => ChestType.MagicChest;
 
-        public override LargeItemGrabMenu CreateItemGrabMenu() => new MagicItemGrabMenu(this);
+        protected override LargeItemGrabMenu CreateItemGrabMenu() => new MagicItemGrabMenu(this);
         public override Item getOne() => new MagicChest();
 
         public MagicChest() : base(ModConfig.Instance.MagicChest) { }

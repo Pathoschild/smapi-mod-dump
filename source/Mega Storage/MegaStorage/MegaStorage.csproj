@@ -46,10 +46,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MenuChanger.cs" />
     <Compile Include="Models\CustomChestConfig.cs" />
     <Compile Include="Models\ModConfig.cs" />
     <Compile Include="Persistence\FarmhandInventorySaver.cs" />
     <Compile Include="Persistence\FarmhandMonitor.cs" />
+    <Compile Include="UI\AllCategory.cs" />
+    <Compile Include="UI\MiscCategory.cs" />
+    <Compile Include="UI\ChestCategory.cs" />
     <Compile Include="UI\MagicItemGrabMenu.cs" />
     <Compile Include="Mapping\CustomChestFactory.cs" />
     <Compile Include="SpritePatcher.cs" />
@@ -68,8 +72,12 @@
     <Compile Include="Mapping\MappingExtensions.cs" />
     <Compile Include="Models\SaveData.cs" />
     <Compile Include="Persistence\SaveManager.cs" />
+    <Compile Include="IConvenientChestsAPI.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Sprites\AllTab.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Sprites\LargeChest.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -5,14 +5,11 @@ mods:
    Spawn Monsters
 
 latest commit:
-   commit 35159675f234fb87c9a1be6a2cc612e233cdfb5e
+   commit 0abed22aca9fdb96c23b68027687224c079f824b
    Author: Berisan <e.berisa04@gmail.com>
-   Date:   Fri Jun 14 18:41:00 2019 +0200
+   Date:   Mon Jul 15 18:03:45 2019 +0200
    
-       Version 2.5
+       Relative Positioning
        
-       - Now uses exact cursor position rather than tile position for spawning for monsters that aren't tile based.
-       - Fixed a bug where trying to spawn a Metal Head crashes the spawning menu.
-       - Fixed a bug where hovering over tiles that don't exist (e.g. in buildings) with a Duggy crashes the spawning menu.
-       - Code cleanup and optimization
+       A configurable character for use in place of farmers own coords, with ability to add/substract/multiply/divide
    

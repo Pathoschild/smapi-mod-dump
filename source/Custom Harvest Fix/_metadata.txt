@@ -1,0 +1,13 @@
+url:
+   https://github.com/mytigio/CustomHarvestFix.git
+
+mods:
+   Custom Harvest Fix
+
+latest commit:
+   commit 0536f76e8549561b3d3e2edf0db4c85f6fde8c09
+   Author: Robert Howe <mytigio+github@gmail.com>
+   Date:   Sun Jul 14 11:54:44 2019 -0600
+   
+       Fixed bug where only the standard or deluxe item would get updated if both were broken.
+   

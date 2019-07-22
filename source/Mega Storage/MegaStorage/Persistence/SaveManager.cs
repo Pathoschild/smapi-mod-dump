@@ -9,7 +9,7 @@ namespace MegaStorage.Persistence
         private readonly ISaver[] _savers;
         private readonly FarmhandMonitor _farmhandMonitor;
 
-        public SaveManager(IModHelper modHelper, IMonitor monitor, FarmhandMonitor farmhandMonitor, ISaver[] savers)
+        public SaveManager(IModHelper modHelper, IMonitor monitor, FarmhandMonitor farmhandMonitor, params ISaver[] savers)
         {
             _modHelper = modHelper;
             _monitor = monitor;

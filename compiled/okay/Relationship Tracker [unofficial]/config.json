@@ -1,0 +1,15 @@
+{
+  "DebugKey": "J",
+  "ActivateKey": "R",
+  "ActivateButton": "LeftStick",
+  "PageLeftButton": "LeftShoulder",
+  "PageRightButton": "RightShoulder",
+  "OffsetX": 2,
+  "OffsetY": 112,
+  "AllVillagers": false,
+  "DatableType": "Bachelorette",
+  "ShowPortrait": true,
+  "DrawBackground": true,
+  "BackgroundOpacity": 1.0,
+  "ShowGifts": false
+}

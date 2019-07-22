@@ -9,16 +9,13 @@ namespace MegaStorage.Mapping
 {
     public static class CustomChestFactory
     {
-        public static List<CustomChest> CustomChests { get; }
-
-        static CustomChestFactory()
-        {
-            CustomChests = new List<CustomChest>
+        private static List<CustomChest> _customChests;
+        public static List<CustomChest> CustomChests =>
+            _customChests ?? (_customChests = new List<CustomChest>
             {
                 new LargeChest(),
                 new MagicChest()
-            };
-        }
+            });
 
         public static bool ShouldBeCustomChest(Item item)
         {

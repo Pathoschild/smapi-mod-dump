@@ -2,6 +2,7 @@ url:
    https://github.com/Mizzion/MyStardewMods.git
 
 mods:
+   Artifact Digger
    Configure Machine Outputs
    Enhanced Relationships
    Fish Reminder
@@ -14,11 +15,11 @@ mods:
    Water Pet Bowl
 
 latest commit:
-   commit 263a801b1a040dc9e368a4ec1fa411c6bea38e47
+   commit 05b2103a0f84e333cfe58d14e92080dadfd8def4
    Author: Mizzion <36684211+Mizzion@users.noreply.github.com>
-   Date:   Wed Mar 20 14:44:27 2019 -0600
+   Date:   Mon Jul 22 11:48:28 2019 -0700
    
-       Try again to commit these
+       Added Artifact Digger
        
-       these
+       Added Artifact Digger
    

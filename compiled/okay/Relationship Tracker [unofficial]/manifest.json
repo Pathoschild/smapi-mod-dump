@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Relationship Tracker",
+  "Author": "Branic",
+  "Version": "1.1.0-beta.2-unofficial.1-pathoschild",
+  "Description": "UI HUD that tracks friendship stats of Villagers",
+  "UniqueID": "Branic.RelationshipTracker",
+  "EntryDll": "RelationshipTracker.dll",
+  "MinimumApiVersion": "2.11.2",
+  "UpdateKeys": [ "Nexus:2845" ]
+}

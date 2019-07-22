@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4234
+IDs: AairTheGreat.BetterTrainLoot
+update keys: GitHub:AairTheGreat/StardewValleyMods, Nexus:4234

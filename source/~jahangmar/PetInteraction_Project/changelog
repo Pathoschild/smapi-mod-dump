@@ -1,0 +1,14 @@
+1.0.0-beta:
+	-Initial release with following, fetching, chasing, not liking getting hit by tools
+
+1.0.0-beta.1:
+	-added safety check to fix possible pet duplication (should also fix
+	the additional cat if it is already there)
+	-added French translation (thanks to Reikounet)
+	-fixed ability to throw sticks during events
+	-fixed that pet wasn't moving (no behavior) before in follow mode
+	-improved compatibility with Paritee's Treat Your Animals
+	-added config option to disable messages on entering a location
+
+1.0.0-beta.2:
+	planned: following while mounted bug?, multiple pets, remove map-specific stuff

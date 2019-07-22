@@ -1,0 +1,10 @@
+{
+  "Name": "Custom Harvest Fix",
+  "Author": "mytigio",
+  "Version": "1.0.0",
+  "Description": "Fixes custom farm animal harvests if they get broken due to a change in mod load (additional/fewer JA items).",
+  "UniqueID": "mytigio.customharvestfix",
+  "EntryDll": "CustomHarvestFix.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

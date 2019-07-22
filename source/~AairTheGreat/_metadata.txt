@@ -4,11 +4,12 @@ url:
 mods:
    Better Garbage Cans
    Better Panning
+   Better Train Loot
 
 latest commit:
-   commit eb41f06ebfc3b1a2d479c614d205f855808cffb6
+   commit 8004d51e454929c444c229fe1d7878bd6454ced2
    Author: Aair <a_aair@hotmailc.om>
-   Date:   Sun Jul 7 21:21:51 2019 -0700
+   Date:   Sun Jul 21 19:39:19 2019 -0700
    
-       Updated manifest and readme files.
+       Updated config readme.
    

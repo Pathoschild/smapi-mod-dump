@@ -76,8 +76,9 @@ readonly HashSet<int> IgnoreNexusIDsForValidation = new HashSet<int>
 	2152, // Updated XACT file for audio modding [.xap file],
 	
 	// mod translations
-	2825, // Auto-Grabber Mod (Chinese)
-	3954, // Happy Birthday (Portuguese)
+	2825, // Auto-Grabber Mod (zh)
+	3954, // Happy Birthday (pt)
+	4197, // Companion NPCs (pt)
 	
 	// mods which include a copy of another mod for some reason
 	3496, // Farm Extended (content pack with a copy of Farm Type Manager)
@@ -210,6 +211,7 @@ readonly HashSet<int> IgnoreFileIDsForValidation = new HashSet<int>
 	15399, // Hidden Forest Farm (#3583) > XNB version, includes .tbin file
 	14664, // Husky New NPC (#14664), has .xslx file in root with multiple content pack folders
 	9967,  // Sam to Samantha (#2472), CP pack with invalid update keys
+	18065, // Spouse Rooms Redesigned (#828) > All Options
 	16623, // Stardew In-Game Daily Planner > Example Plan
 	16660, // Stardew In-Game Daily Planner > Example Checklist
 	17288, // Stardew Valley Expanded (#3753) > Wallpapers, Event Guide and Script

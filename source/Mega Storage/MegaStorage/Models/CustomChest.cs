@@ -14,7 +14,7 @@ namespace MegaStorage.Models
     {
         public abstract int Capacity { get; }
         public abstract ChestType ChestType { get; }
-        public abstract LargeItemGrabMenu CreateItemGrabMenu();
+        protected abstract LargeItemGrabMenu CreateItemGrabMenu();
 
         public CustomChestConfig Config { get; }
         public string BigCraftableInfo => $"{Config.Name}/0/-300/Crafting -9/{Config.Description}/true/true/0";
@@ -37,12 +37,12 @@ namespace MegaStorage.Models
         {
             Config = config;
             ParentSheetIndex = config.Id;
-            _currentLidFrameReflected = MegaStorageMod.Reflection.GetField<int>(this, "currentLidFrame");
+            _currentLidFrameReflected = MegaStorageMod.Instance.Helper.Reflection.GetField<int>(this, "currentLidFrame");
             startingLidFrame.Value = config.Id + 1;
             name = config.Name;
-            _sprite = MegaStorageMod.ModHelper.Content.Load<Texture2D>(config.SpritePath);
-            _spriteBW = MegaStorageMod.ModHelper.Content.Load<Texture2D>(config.SpriteBWPath);
-            _spriteBraces = MegaStorageMod.ModHelper.Content.Load<Texture2D>(config.SpriteBracesPath);
+            _sprite = MegaStorageMod.Instance.Helper.Content.Load<Texture2D>(config.SpritePath);
+            _spriteBW = MegaStorageMod.Instance.Helper.Content.Load<Texture2D>(config.SpriteBWPath);
+            _spriteBraces = MegaStorageMod.Instance.Helper.Content.Load<Texture2D>(config.SpriteBracesPath);
         }
 
         public override string getDescription() => Config.Description;
@@ -235,5 +235,9 @@ namespace MegaStorage.Models
             }
         }
 
+        public LargeItemGrabMenu GetItemGrabMenu()
+        {
+            return _itemGrabMenu ?? (_itemGrabMenu = CreateItemGrabMenu());
+        }
     }
 }

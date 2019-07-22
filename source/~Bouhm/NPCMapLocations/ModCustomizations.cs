@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
@@ -16,6 +17,7 @@ namespace NPCMapLocations
   {
     private readonly IMonitor Monitor;
     private readonly HashSet<string> NpcCustomizations;
+    public readonly string MapsRootPath = Path.Combine("assets", "maps");
 
     public Dictionary<string, MapVector[]> MapVectors { get; set; }
     public Dictionary<string, string> Names { get; set; }
@@ -23,7 +25,7 @@ namespace NPCMapLocations
     public Dictionary<string, CustomLocation> Locations { get; set; }
     public Dictionary<string, int> NpcMarkerOffsets { get; set; }
     public List<ClickableComponent> Tooltips { get; set; }
-    public string MapName { get; set; }
+    public string MapsPath { get; set; }
     private ModConfig SVEConfig;
 
     public ModCustomizations(IMonitor monitor)
@@ -34,6 +36,9 @@ namespace NPCMapLocations
       NpcCustomizations = new HashSet<string>();
       Locations = new Dictionary<string, CustomLocation>();
       Tooltips = new List<ClickableComponent>();
+      MapsPath = GetCustomMapFolderName();
+      if (MapsPath != null)
+        MapsPath = Path.Combine(MapsRootPath, MapsPath);
 
       if (ModMain.IsSVE)
       {
@@ -48,7 +53,6 @@ namespace NPCMapLocations
         }
       }
 
-      LoadMap();
       LoadTooltips();
       LoadMarkerCropOffsets();
       LoadCustomNpcs();
@@ -81,27 +85,50 @@ namespace NPCMapLocations
       ModMain.Helper.Data.WriteJsonFile($"config/{Constants.SaveFolderName}.json", ModMain.Config);
     }
 
-    // Load recolored map if user has recolor mods
-    private void LoadMap()
+    /// <summary>Get the folder from which to load tilesheet overrides for compatibility with other mods, if applicable.</summary>
+    /// <remarks>This selects a folder in assets/tilesheets by checking the folder name against the installed mod IDs. Each folder can optionally be comma-delimited to require multiple mods, with ~ separating alternative IDs. For example "A ~ B, C" means "if the player has (A OR B) AND C installed". If multiple folders match, the first one sorted alphabetically which matches the most mods is used.</remarks>
+    private string GetCustomMapFolderName()
     {
-      // Eemie's Map Recolour
-      if (ModMain.Helper.ModRegistry.IsLoaded("minervamaga.CP.eemieMapRecolour"))
-        MapName = "eemie_recolour";
-      // A Toned Down SDV
-      else if (ModMain.Helper.ModRegistry.IsLoaded("Lavender.TonedDownSDV"))
-        MapName = "toned_down";
-      // Starblue Valley
-      else if (ModMain.Helper.ModRegistry.IsLoaded("Lita.StarblueValley"))
-        MapName = "starblue_valley";
-      // Elle's Dirt and Cliff Recolor
-      else if (ModMain.Helper.ModRegistry.IsLoaded("Elle.DirtCliffRecolor"))
-        MapName = "elle_recolor";
-      // Extended Farm
-      else if (ModMain.Helper.ModRegistry.IsLoaded("Forkmaster.ExtendedFarm"))
-        MapName = "farm_extended";
-      // Default
-      else
-        MapName = "default";
+      // get root compatibility folder
+      DirectoryInfo compatFolder = new DirectoryInfo(Path.Combine(ModMain.Helper.DirectoryPath, MapsRootPath));
+      if (!compatFolder.Exists)
+        return null;
+
+      // get tilesheet subfolder matching the highest number of installed mods
+      string folderName = null;
+      {
+        int modsMatched = 0;
+        foreach (DirectoryInfo folder in compatFolder.GetDirectories().OrderBy(p => p.Name))
+        {
+          if (folder.Name == "_default")
+            continue;
+
+          // get mod ID groups
+          string[] modGroups = folder.Name.Split(',');
+          if (modGroups.Length <= modsMatched)
+            continue;
+
+          // check if all mods are installed
+          bool matched = true;
+          foreach (string group in modGroups)
+          {
+            string[] modIDs = group.Split('~');
+            if (!modIDs.Any(id => ModMain.Helper.ModRegistry.IsLoaded(id.Trim())))
+            {
+              matched = false;
+              break;
+            }
+          }
+
+          if (matched)
+          {
+            folderName = folder.Name;
+            modsMatched = modGroups.Length;
+          }
+        }
+      }
+
+      return folderName;
     }
 
     private void LoadTooltips()

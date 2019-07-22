@@ -5,9 +5,9 @@ mods:
    Warp To Friends
 
 latest commit:
-   commit fba3498a60deba676cefd1b0aed3a0985c7003d3
+   commit ea355cf3f584cdef3b34b1328bc56d4da4436763
    Author: Jonathan Goodman <jgoodman@algomau.ca>
-   Date:   Sun May 20 00:31:32 2018 -0400
+   Date:   Sun Jul 21 01:28:50 2019 -0400
    
-       - Release build
+       refactoring
    

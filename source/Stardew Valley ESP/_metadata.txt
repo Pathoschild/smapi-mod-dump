@@ -5,9 +5,23 @@ mods:
    Stardew Valley ESP
 
 latest commit:
-   commit 89b9849de5a459db7d6061c7e9bf89eb19709d3a
-   Author: rei2hu <rei2hu@users.noreply.github.com>
-   Date:   Thu May 23 15:20:03 2019 -0500
+   commit f94e08594530dfa378fbab156bc32b7d63e8c228
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Wed Jul 17 12:23:50 2019 -0400
    
-       Update README.md
+       Update for SMAPI 3.0, internal refactoring (#1)
+       
+       * update mod build package & migrate to new .csproj format
+       
+       The new package version adds support for SMAPI 3.0 and Stardew Valley 1.4.
+       
+       * minor refactoring
+       
+       * update manifest name & description to match mod page
+       
+       * update for lifecycle change in SMAPI 3.0
+       
+       The upcoming SMAPI 3.0 loads mods much earlier, so some of the game data isn't available in Entry.
+       
+       * rename project to match mod name
    

@@ -1,15 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
-using WarpToFriends.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
 
 namespace WarpToFriends
@@ -64,7 +60,7 @@ namespace WarpToFriends
 		{
 			var property = _config.GetType().GetProperties().FirstOrDefault(p => p.Name == _property);
 			if(property != null)
-				property.SetValue(_config, key.ToString());
+				property.SetValue(_config, key.ToSButton());
 
 			exitThisMenu(true);
 			Game1.activeClickableMenu = _returnMenu;
@@ -153,6 +149,11 @@ namespace WarpToFriends
 					DrawOption(idx, displayName, b);
 
 					DrawBoolOption(idx, (bool)value, option.Name, b);
+				}
+				else if (optionType == typeof(SButton))
+				{
+					DrawOption(idx, displayName, b, value.ToString());
+					DrawKeyOption(idx, ((SButton)value).ToString(), option.Name, b);
 				}
 				else if(optionType == typeof(string))
 				{

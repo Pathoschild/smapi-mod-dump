@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2003
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomHarvestFix", "CustomHarvestFix\CustomHarvestFix.csproj", "{D00B86CC-2962-4E80-A7D0-3B4B4DD9FF35}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D00B86CC-2962-4E80-A7D0-3B4B4DD9FF35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D00B86CC-2962-4E80-A7D0-3B4B4DD9FF35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D00B86CC-2962-4E80-A7D0-3B4B4DD9FF35}.Debug|x86.ActiveCfg = Debug|x86
+		{D00B86CC-2962-4E80-A7D0-3B4B4DD9FF35}.Debug|x86.Build.0 = Debug|x86
+		{D00B86CC-2962-4E80-A7D0-3B4B4DD9FF35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D00B86CC-2962-4E80-A7D0-3B4B4DD9FF35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D00B86CC-2962-4E80-A7D0-3B4B4DD9FF35}.Release|x86.ActiveCfg = Release|x86
+		{D00B86CC-2962-4E80-A7D0-3B4B4DD9FF35}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F59173D5-DA02-46E2-8579-E06B4723A62A}
+	EndGlobalSection
+EndGlobal

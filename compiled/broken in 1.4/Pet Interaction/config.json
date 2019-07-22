@@ -1,0 +1,8 @@
+{
+  "pet_friendship_decrease_onhit": 20,
+  "pet_fetch_friendship_chance": 40,
+  "pet_fetch_friendship_increase": 10,
+  "show_message_on_warp": true,
+  "pet_speed": 6,
+  "pet_fast_speed": 10
+}

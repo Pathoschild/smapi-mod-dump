@@ -55,6 +55,10 @@ namespace Pathoschild.Stardew.SmallBeachFarm.Framework
                 prefix: new HarmonyMethod(typeof(FarmPatcher), nameof(FarmPatcher.After_ResetLocalState))
             );
             harmony.Patch(
+                original: AccessTools.Method(typeof(Farm), "resetSharedState"),
+                prefix: new HarmonyMethod(typeof(FarmPatcher), nameof(FarmPatcher.After_ResetSharedState))
+            );
+            harmony.Patch(
                 original: AccessTools.Method(typeof(Farm), nameof(Farm.cleanupBeforePlayerExit)),
                 prefix: new HarmonyMethod(typeof(FarmPatcher), nameof(FarmPatcher.After_CleanupBeforePlayerExit))
             );
@@ -102,32 +106,56 @@ namespace Pathoschild.Stardew.SmallBeachFarm.Framework
             }
         }
 
-        /// <summary>A method called via Harmony after <see cref="Farm.resetLocalState"/>, which changes the background soundtrack.</summary>
+        /// <summary>A method called via Harmony after <see cref="Farm.resetLocalState"/>.</summary>
         /// <param name="__instance">The farm instance.</param>
         [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "The naming convention is defined by Harmony.")]
         private static void After_ResetLocalState(GameLocation __instance)
         {
-            if (FarmPatcher.ShouldUseBeachMusic(__instance))
+            if (!FarmPatcher.IsSmallBeachFarm(__instance))
+                return;
+
+            // change background track
+            if (FarmPatcher.ShouldUseBeachMusic())
                 Game1.changeMusicTrack("ocean", music_context: Game1.MusicContext.SubLocation);
         }
 
-        /// <summary>A method called via Harmony after <see cref="Farm.cleanupBeforePlayerExit"/>, which resets the background soundtrack.</summary>
+        /// <summary>A method called via Harmony after <see cref="Farm.resetSharedState"/>.</summary>
+        /// <param name="__instance">The farm instance.</param>
+        [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "The naming convention is defined by Harmony.")]
+        private static void After_ResetSharedState(GameLocation __instance)
+        {
+            if (!FarmPatcher.IsSmallBeachFarm(__instance))
+                return;
+
+            // add campfire (derived from StardewValley.Locations.Mountain:resetSharedState
+            Vector2 campfireTile = new Vector2(64, 22);
+            if (!__instance.objects.ContainsKey(campfireTile))
+            {
+                __instance.objects.Add(campfireTile, new Torch(campfireTile, 146, true)
+                {
+                    IsOn = false,
+                    Fragility = Object.fragility_Indestructable
+                });
+            }
+        }
+
+        /// <summary>A method called via Harmony after <see cref="Farm.cleanupBeforePlayerExit"/>.</summary>
         /// <param name="__instance">The farm instance.</param>
         [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "The naming convention is defined by Harmony.")]
         private static void After_CleanupBeforePlayerExit(GameLocation __instance)
         {
-            if (FarmPatcher.ShouldUseBeachMusic(__instance))
+            if (!FarmPatcher.IsSmallBeachFarm(__instance))
+                return;
+
+            // change background track
+            if (FarmPatcher.ShouldUseBeachMusic())
                 Game1.changeMusicTrack("none", music_context: Game1.MusicContext.SubLocation);
         }
 
-        /// <summary>Get whether the location's music should be overridden with the beach sounds.</summary>
-        /// <param name="location">The location to check.</param>
-        private static bool ShouldUseBeachMusic(GameLocation location)
+        /// <summary>Get whether the Small Beach Farm's music should be overridden with the beach sounds.</summary>
+        private static bool ShouldUseBeachMusic()
         {
-            return
-                FarmPatcher.UseBeachMusic
-                && !Game1.isRaining
-                && FarmPatcher.IsSmallBeachFarm(location);
+            return FarmPatcher.UseBeachMusic && !Game1.isRaining;
         }
     }
 }

@@ -1,12 +1,7 @@
 ﻿{
-  "Name": "GenericShopExtender",
+  "Name": "Generic Shop Extender",
   "Author": "IrregularPorygon",
-  "Version": {
-    "MajorVersion": 0,
-    "MinorVersion": 1,
-    "PatchVersion": 4,
-    "Build": null
-  },
+  "Version": "0.1.4",
   "Description": "Ability to add any item to any shop. By default, adds animal goods to Marnie's shop",
   "UniqueID": "GenericShopExtender",
   "EntryDll": "GenericShopExtender.dll",

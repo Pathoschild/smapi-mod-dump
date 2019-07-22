@@ -1,0 +1,13 @@
+{
+  "Name": "Stardew Valley ESP",
+  "Author": "reimu",
+  "Version": "1.1.0",
+  "Description": "Adds name tags to in-game entities for easier detection and finding.",
+  "UniqueID": "reimu.sdv-helper",
+  "EntryDll": "StardewValleyEsp.dll",
+  "MinimumApiVersion": "2.11.2",
+  "UpdateKeys": [
+    "GitHub:rei2hu/stardewvalley-esp",
+    "Nexus:3917"
+  ]
+}

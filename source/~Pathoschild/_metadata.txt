@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 81c9e7bfc62f235396aa2eb26b3502f7f7471ce2
+   commit 47090b5ea1c33ffb30653964d56a9630e9802ecc
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Jul 14 00:18:50 2019 -0400
+   Date:   Mon Jul 22 18:13:52 2019 -0400
    
-       improve Data Layers warp detection
+       update for accessibility changes (#403)
    

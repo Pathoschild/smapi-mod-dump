@@ -5,16 +5,14 @@ mods:
    Dismantle Craftables
    Don't Eat That
    Interaction Tweaks
+   Pet Interaction
    Seeds are Rare
    Working Fireplace
 
 latest commit:
-   commit 346ed947eea0a0ee78c783900722b7aad3cb9aab
-   Merge: 86c9c01 d3be4fb
+   commit dba1aa18a3949dcf820ac8cfdd192a2254a77cd6
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Sun Jul 14 17:41:03 2019 +0200
+   Date:   Mon Jul 22 08:41:50 2019 +0200
    
-       Merge pull request #4 from xLPMG/patch-2
-       
-       Create it.json for InteractionTweaks
+       1.0.0-beta.1, debugging, changelog
    

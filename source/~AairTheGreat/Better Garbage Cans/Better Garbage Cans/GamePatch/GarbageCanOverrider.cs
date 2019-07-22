@@ -5,6 +5,7 @@ using StardewValley;
 using StardewValley.Characters;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -184,9 +185,19 @@ namespace BetterGarbageCans.GamePatch
             // Create reward item
             Item reward;
 
-            int count = Game1.random.Next(treasure.MinAmount, treasure.MaxAmount);
-            reward = (Item) new StardewValley.Object(id, count);
-            
+            if (id >= 516 && id <= 534)
+            {
+                reward = new Ring(id);
+            }
+            else if (id >= 504 && id <= 515)
+            {
+                reward = new Boots(id);
+            }
+            else
+            {
+                int count = Game1.random.Next(treasure.MinAmount, treasure.MaxAmount);
+                reward = (Item)new StardewValley.Object(id, count);
+            }
             return reward;
         }
 
