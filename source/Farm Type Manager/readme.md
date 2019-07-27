@@ -22,10 +22,14 @@ This mod allows you to customize the features from Stardew Valley's different fa
 2. **Download FarmTypeManager** from [the Releases page on GitHub](https://github.com/Esca-MMC/FarmTypeManager/releases) or from [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/3231/).
 3. **Unzip FarmTypeManager** into your `Stardew Valley\Mods` folder.
 
+If you use other mods that require Farm Type Manager, then you’re all set here!
+
+If you want to customize Farm Type Manager’s settings yourself, follow these instructions:
+
 ## Setup
 1. **Run the game** using SMAPI.
 2. **Load the farm** you want to customize, or create a new character and progress past the game's intro. This will create a configuration file for your character in the `Stardew Valley\Mods\FarmTypeManager\data` folder.
-3. **Open the .json file** with your character's name on it. It's a text file, so any text editor should work.
+3. **Find the .json file** with your character's name on it. Load it with the **ConfigEditor.html** file in the `FarmTypeManager` folder, or edit manually with any text editor.
 4. **Customize the file's settings** (see [Examples](#examples) or [Settings](#settings)) and save your changes.
 5. **Exit your farm and reload it**, or progress to the next in-game day. The mod's settings should now be active.
  

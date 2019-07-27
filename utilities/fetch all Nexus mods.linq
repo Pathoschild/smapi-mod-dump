@@ -40,7 +40,7 @@
 readonly string ApiKey = "";
 
 /// <summary>The path in which to store cached data.</summary>
-readonly string RootPath = @"C:\dev\nexus";
+readonly string RootPath = @"D:\dev\nexus";
 
 /// <summary>Which mods to refetch from Nexus (or <c>null</c> to not refetch any).</summary>
 readonly ISelectStrategy FetchMods =
@@ -57,6 +57,7 @@ readonly HashSet<int> IgnoreNexusIDsForValidation = new HashSet<int>
 {
 	// non-mod tools
 	3431, // BFAV JSON Update [tool]
+	4241, // Dreamy Valley Reshade
 	1080, // Easy XNB for Xnb Node
 	1213, // Natural Color - Reshade
 	21,   // SDVMM/Stardew Valley Mod Manager
@@ -235,7 +236,8 @@ async Task Main()
 		unpackMods = new HashSet<int>(await this.ImportMods(nexus, gameKey: "stardewvalley", fetchStrategy: this.FetchMods, rootPath: this.RootPath));
 
 	// unpack fetched files
-	this.UnpackMods(rootPath: this.RootPath, filter: id => this.ResetUnpacked || unpackMods.Contains(id));
+	HashSet<int> modIdsToUnpack = new HashSet<int>(this.GetModIdsWithFilesNotUnpacked(this.RootPath));
+	this.UnpackMods(rootPath: this.RootPath, filter: id => this.ResetUnpacked || unpackMods.Contains(id) || modIdsToUnpack.Contains(id));
 
 	// run analysis
 	ParsedModData[] mods = this.ReadMods(this.RootPath).ToArray();
@@ -486,12 +488,42 @@ async Task ImportMod(NexusClient nexus, string gameKey, int id, ISelectStrategy 
 	}
 }
 
+/// <summary>Get all mod IDs which have files that haven't been unpacked.</summary>
+/// <param name="rootPath">The path containing mod folders.</param>
+IEnumerable<int> GetModIdsWithFilesNotUnpacked(string rootPath)
+{
+	// unpack files
+	foreach (DirectoryInfo modDir in this.GetSortedSubfolders(new DirectoryInfo(rootPath)))
+	{
+		// get packed folder
+		DirectoryInfo packedDir = new DirectoryInfo(Path.Combine(modDir.FullName, "files"));
+		if (!packedDir.Exists)
+			continue;
+
+		// check for files that need unpacking
+		DirectoryInfo unpackedDir = new DirectoryInfo(Path.Combine(modDir.FullName, "unpacked"));
+		foreach (FileInfo archiveFile in packedDir.GetFiles())
+		{
+			if (archiveFile.Extension == ".exe")
+				continue;
+
+			string id = Path.GetFileNameWithoutExtension(archiveFile.Name);
+			DirectoryInfo targetDir = new DirectoryInfo(Path.Combine(unpackedDir.FullName, id));
+			if (!targetDir.Exists)
+			{
+				yield return int.Parse(modDir.Name);
+				break;
+			}
+		}
+	}
+}
+
 /// <summary>Unpack all mods in the given folder.</summary>
 /// <param name="rootPath">The path in which to store cached data.</param>
 /// <param name="filter">A filter which indicates whether a mod ID should be unpacked.</param>
 void UnpackMods(string rootPath, Func<int, bool> filter)
 {
-	SevenZipBase.SetLibraryPath(@"C:\Program Files\7-Zip\7z.dll");
+	SevenZipBase.SetLibraryPath(@"C:\Program Files (x86)\7-Zip\7z.dll");
 
 	// get folders to unpack
 	DirectoryInfo[] modDirs = this

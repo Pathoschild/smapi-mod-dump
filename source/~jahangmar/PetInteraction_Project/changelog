@@ -11,4 +11,22 @@
 	-added config option to disable messages on entering a location
 
 1.0.0-beta.2:
-	planned: following while mounted bug?, multiple pets, remove map-specific stuff
+	-removes all additional cats that were accidentally added by previous versions
+1.0.0-beta.3:
+	-fixed another case were a cat was accidentally teleported to the farmhouse
+
+1.0.0:
+	-fixed pet not correctly warping if player is on horse
+	-removed message when entering farm building
+	-better collision checks, no more map specific path finding
+	-fixed name of pet in inventory
+	-added driftwood as throwable
+	-support for multiple pets (one can follow at a time)
+	-improved fetching and following behaviour
+	-improved pathfinding performance
+
+
+TODO:
+	-no greetings by your pet to other people [no idea]
+	-better walking animation
+

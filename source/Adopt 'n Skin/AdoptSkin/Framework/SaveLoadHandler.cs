@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Xna.Framework.Graphics;
+
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
@@ -77,7 +79,7 @@ namespace AdoptSkin.Framework
         internal static void StartUpdateChecks()
         {
             SHelper.Events.GameLoop.UpdateTicked += Entry.OnUpdateTicked;
-            SHelper.Events.Input.ButtonReleased += ModEntry.Creator.AdoptableInteractionCheck;
+            SHelper.Events.Input.ButtonPressed += ModEntry.Creator.AdoptableInteractionCheck;
             SHelper.Events.Input.ButtonReleased += ModEntry.HotKeyCheck;
 
             SHelper.Events.World.NpcListChanged += ModEntry.HorseMountedCheck;
@@ -92,7 +94,7 @@ namespace AdoptSkin.Framework
         internal static void StopUpdateChecks(object s, EventArgs e)
         {
             SHelper.Events.GameLoop.UpdateTicked -= Entry.OnUpdateTicked;
-            SHelper.Events.Input.ButtonReleased -= ModEntry.Creator.AdoptableInteractionCheck;
+            SHelper.Events.Input.ButtonPressed -= ModEntry.Creator.AdoptableInteractionCheck;
             SHelper.Events.Input.ButtonReleased -= ModEntry.HotKeyCheck;
 
             SHelper.Events.World.NpcListChanged -= ModEntry.HorseMountedCheck;
@@ -306,6 +308,7 @@ namespace AdoptSkin.Framework
             // Gather handled types
             string validTypes = string.Join(", ", ModApi.GetHandledAllTypes());
 
+            // Add custom sprites
             foreach (string path in Directory.EnumerateFiles(Path.Combine(SHelper.DirectoryPath, "assets", "skins"), "*", SearchOption.AllDirectories))
             {
                 string extension = Path.GetExtension(path);

@@ -1,3 +1,4 @@
 {
-  "EnableIslands": false
+  "EnableIslands": false,
+  "UseBeachMusic": false
 }

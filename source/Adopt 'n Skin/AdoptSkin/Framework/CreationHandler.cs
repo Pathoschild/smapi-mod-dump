@@ -16,6 +16,7 @@ using StardewValley.Menus;
 using StardewValley.Characters;
 using StardewValley.Buildings;
 using StardewValley.Locations;
+using StardewValley.Tools;
 
 namespace AdoptSkin.Framework
 {
@@ -212,27 +213,21 @@ namespace AdoptSkin.Framework
         }
 
 
-        /// <summary>Returns true if the given X and Y coordinates are overlapped with the given Pet or Horse</summary>
-        internal bool IsOverPetOrHorse(int mouseX, int mouseY, NPC petOrHorse)
-        {
-            return (mouseX >= petOrHorse.getLeftMostTileX().X && mouseX <= petOrHorse.getRightMostTileX().X &&
-                    mouseY >= petOrHorse.getTileY() - 1 && mouseY <= petOrHorse.getTileY() + 1);
-        }
-
-
         /// <summary>Check to see if the player is attempting to interact with a Stray or WildHorse</summary>
-        internal void AdoptableInteractionCheck(object sender, ButtonReleasedEventArgs e)
+        internal void AdoptableInteractionCheck(object sender, ButtonPressedEventArgs e)
         {
             if (StrayInfo != null)
             {
                 // Check for mouse and controller versions of interaction
-                if (((e.Button.Equals(SButton.MouseRight) && IsOverPetOrHorse((int)e.Cursor.Tile.X, (int)e.Cursor.Tile.Y, StrayInfo.PetInstance) && StrayInfo.PetInstance.withinPlayerThreshold(3))   ||
-                    (e.Button.Equals(SButton.ControllerA) && StrayInfo.PetInstance.withinPlayerThreshold(1)))
-                    && Game1.player.currentLocation == Stray.Marnies)
+                if (((e.Button.Equals(SButton.MouseRight) && StrayInfo.PetInstance.withinPlayerThreshold(1))   ||
+                    (e.Button.Equals(SButton.ControllerA) && StrayInfo.PetInstance.withinPlayerThreshold(1))))
                 {
                     Game1.activeClickableMenu = new ConfirmationDialog("This is one of the strays that Marnie has taken in. \n\n" +
                         $"The animal is wary, but curious. Will you adopt this {ModEntry.Sanitize(StrayInfo.PetInstance.GetType().Name)} for {AdoptPrice}G?", (who) =>
                         {
+                            if (ModEntry.Config.DebuggingMode)
+                                ModEntry.SMonitor.Log("Confirmation dialog for stray adoption opened", LogLevel.Debug);
+
                             if (Game1.activeClickableMenu is StardewValley.Menus.ConfirmationDialog cd)
                                 cd.cancel();
 
@@ -252,12 +247,15 @@ namespace AdoptSkin.Framework
             if (HorseInfo != null)
             {
                 // Check for mouse and controller versions of interaction
-                if (((e.Button.Equals(SButton.MouseRight) && IsOverPetOrHorse((int)e.Cursor.Tile.X, (int)e.Cursor.Tile.Y, HorseInfo.HorseInstance) && HorseInfo.HorseInstance.withinPlayerThreshold(3)) ||
-                    (e.Button.Equals(SButton.ControllerA) && HorseInfo.HorseInstance.withinPlayerThreshold(1)))
-                    && Game1.player.currentLocation == HorseInfo.Map)
+                if (((e.Button.Equals(SButton.MouseRight) && HorseInfo.HorseInstance.withinPlayerThreshold(1)) ||
+                    (e.Button.Equals(SButton.ControllerA) && HorseInfo.HorseInstance.withinPlayerThreshold(1))))
                 {
+                    
                     Game1.activeClickableMenu = new ConfirmationDialog("This appears to be an escaped horse from a neighboring town. \n\nIt looks tired, but friendly. Will you adopt this horse?", (who) =>
                     {
+                        if (ModEntry.Config.DebuggingMode)
+                            ModEntry.SMonitor.Log("Confirmation dialog for wild horse adoption opened", LogLevel.Debug);
+
                         if (Game1.activeClickableMenu is StardewValley.Menus.ConfirmationDialog cd)
                             cd.cancel();
 

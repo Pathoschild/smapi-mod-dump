@@ -1,40 +1,59 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Harmony;
 using Microsoft.Xna.Framework.Graphics;
-using RemoteFridgeStorage.apis;
+using RemoteFridgeStorage.API;
+using RemoteFridgeStorage.CraftingPage;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 
 namespace RemoteFridgeStorage
 {
+    /// <inheritdoc />
     /// <summary>The mod entry point.</summary>
-    // ReSharper disable once ClassNeverInstantiated.Global
     public class ModEntry : Mod
     {
+        private HarmonyInstance _harmony;
+        private bool _cookingSkillLoaded;
         private FridgeHandler _handler;
-        public static ModEntry Instance;
-        private bool cookingSkillLoaded;
-        public ICookingSkillApi CookinSkillApi { get; private set; }
 
+        /// <summary>The mod configuration from the player.</summary>
+        public Config Config;
+
+        public static ModEntry Instance { get; private set; }
+
+        /// <inheritdoc />
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             Instance = this;
+            Config = helper.ReadConfig<Config>();
+            // Assets
+            var fridgeSelected =
+                helper.Content.Load<Texture2D>(Config.FlipImage ? "assets/fridge-flipped.png" : "assets/fridge.png");
+            var fridgeDeselected =
+                helper.Content.Load<Texture2D>(Config.FlipImage ? "assets/fridge2-flipped.png" : "assets/fridge2.png");
+            // Compatibility checks
+            _cookingSkillLoaded = helper.ModRegistry.IsLoaded("spacechase0.CookingSkill");
+            var categorizeChestsLoaded = helper.ModRegistry.IsLoaded("CategorizeChests");
+            var convenientChestsLoaded = helper.ModRegistry.IsLoaded("aEnigma.ConvenientChests");
+            var megaStorageLoaded = helper.ModRegistry.IsLoaded("Alek.MegaStorage");
+
+            if (categorizeChestsLoaded) Monitor.Log("Categorize chests detected, moving icon location.", LogLevel.Info);
+            if (convenientChestsLoaded) Monitor.Log("Convenient chests detected, moving icon location.", LogLevel.Info);
+            if (megaStorageLoaded) Monitor.Log("Mega Storage detected, moving icon location.", LogLevel.Info);
+
+            var offsetIcon = categorizeChestsLoaded || convenientChestsLoaded || megaStorageLoaded;
+
+            _handler = new FridgeHandler(fridgeSelected, fridgeDeselected, offsetIcon, Config);
             Harmony();
+            AddEvents(helper);
+        }
 
-            var fridgeSelected = helper.Content.Load<Texture2D>("assets/fridge.png");
-            var fridgeDeselected = helper.Content.Load<Texture2D>("assets/fridge2.png");
-
-            var categorizeChestsLoaded = helper.ModRegistry.IsLoaded("CategorizeChests") ||
-                                         helper.ModRegistry.IsLoaded("aEnigma.ConvenientChests");
-            cookingSkillLoaded = helper.ModRegistry.IsLoaded("spacechase0.CookingSkill");
-            if (cookingSkillLoaded) Monitor.Log("Cooking skill is loaded on game start try to hook into the api");
-            _handler = new FridgeHandler(fridgeSelected, fridgeDeselected, categorizeChestsLoaded, cookingSkillLoaded);
-
+        private void AddEvents(IModHelper helper)
+        {
             helper.Events.Display.MenuChanged += OnMenuChanged;
             helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
@@ -53,38 +72,39 @@ namespace RemoteFridgeStorage
         /// <param name="e">The event data.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            if (cookingSkillLoaded)
-            {
-                CookinSkillApi = Helper.ModRegistry.GetApi<ICookingSkillApi>("spacechase0.CookingSkill");
+            if (!_cookingSkillLoaded) return;
+            var cookingSkillApi = Helper.ModRegistry.GetApi<ICookingSkillApi>("spacechase0.CookingSkill");
 
-                if (CookinSkillApi == null)
-                {
-                    Monitor.Log(
-                        "Could not load Cookingskill API, mods might not work correctly, are you using the patched version of cooking skills https://github.com/SoapStuff/CookingSkill/releases?",
-                        LogLevel.Warn);
-                }
-                else
-                {
-                    CookinSkillApi.setFridgeFunction(Fridge);
-                    Monitor.Log("Succesfully hooked into the cooking skill API!", LogLevel.Info);
-                }
+            if (cookingSkillApi == null)
+            {
+                Monitor.Log("Could not load CookingSkill API, mods might not work correctly.", LogLevel.Warn);
+            }
+            else
+            {
+                cookingSkillApi.setFridgeFunction(Fridge);
+                _handler.CookingSkillApi = cookingSkillApi;
+                Monitor.Log("Successfully hooked into the cooking skill API!", LogLevel.Info);
             }
         }
 
+        /// <summary>
+        /// Patch the game methods if _cookingSkill was not loaded.
+        /// </summary>
         private void Harmony()
         {
-            if (cookingSkillLoaded)
-                return;
+            if (_cookingSkillLoaded) return;
 
-            var harmony = HarmonyInstance.Create("productions.EternalSoap.RemoteFridgeStorage");
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(CraftingRecipe), nameof(CraftingRecipe.consumeIngredients)),
-                prefix: new HarmonyMethod(AccessTools.Method(typeof(HarmonyRecipePatchConsumeIngredients), nameof(HarmonyRecipePatchConsumeIngredients.Prefix)))
+            _harmony = HarmonyInstance.Create("productions.EternalSoap.RemoteFridgeStorage");
+            var type = typeof(CraftingRecipe);
+            _harmony.Patch(
+                AccessTools.Method(type, nameof(CraftingRecipe.consumeIngredients)),
+                new HarmonyMethod(AccessTools.Method(typeof(HarmonyRecipePatchConsumeIngredients),
+                    nameof(HarmonyRecipePatchConsumeIngredients.Prefix)))
             );
-            harmony.Patch(
-                original: AccessTools.Method(typeof(CraftingRecipe), nameof(CraftingRecipe.drawRecipeDescription)),
-                prefix: new HarmonyMethod(AccessTools.Method(typeof(HarmonyRecipePatchDraw), nameof(HarmonyRecipePatchDraw.Prefix)))
+            _harmony.Patch(
+                AccessTools.Method(type, nameof(CraftingRecipe.drawRecipeDescription)),
+                new HarmonyMethod(AccessTools.Method(typeof(HarmonyRecipePatchDraw),
+                    nameof(HarmonyRecipePatchDraw.Prefix)))
             );
         }
 
@@ -94,7 +114,6 @@ namespace RemoteFridgeStorage
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (!Context.IsWorldReady) return;
-
             _handler.Game_Update();
         }
 
@@ -141,7 +160,6 @@ namespace RemoteFridgeStorage
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady) return;
-
             if (e.Button == SButton.MouseLeft)
             {
                 _handler.HandleClick(e.Cursor);
@@ -154,7 +172,7 @@ namespace RemoteFridgeStorage
         private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
             if (!Context.IsWorldReady) return;
-            
+
             // If the opened menu was a crafting menu, call the handler to load the menu.
             //Replace menu if the new menu has the attribute cooking set to true and the new menu is not my crafting page.
             if (e.NewMenu != null &&
@@ -166,22 +184,14 @@ namespace RemoteFridgeStorage
             }
         }
 
-        /// <summary>
-        /// Return the list used for the fridge items.
-        /// </summary>
-        /// <returns></returns>
-        protected virtual IList<Item> FridgeImpl()
+        public override object GetApi()
         {
-            return _handler.FridgeList;
+            return new RemoteFridgeApi(_handler);
         }
 
-        /// <summary>
-        /// Calls the FridgeImpl method on the ModEntry instance.
-        /// </summary>
-        /// <returns></returns>
-        public static IList<Item> Fridge()
+        public IList<Item> Fridge()
         {
-            return Instance.FridgeImpl();
+            return _handler.FridgeList;
         }
     }
 }

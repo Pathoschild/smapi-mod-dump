@@ -24,6 +24,9 @@ namespace AdoptSkin
     // 
     // - Add support for custom animal types (Ento added an ExtraTypes to the Config, look there)
     // - Figure out pet spawn before moving maps (check to see if pet is already on map? Will this cause cuddle puddle?)
+    // - Android control compat
+    // - Is there a keyboard interact button to do compat for?
+    // - Baby stage pets and horses
 
     //
     // TEST - RECENTLY ADDED:
@@ -214,7 +217,9 @@ namespace AdoptSkin
             type = Sanitize(type);
             if (!ModApi.HasSkins(type))
                 return 0;
-
+            // ** TODO: Find out why erroring with stray spawn, issue in GetSkin likely.
+            // Issue related to lack of cat skins? Fix this
+            // Android: A Button works, but not right click
             int randomLookup = Randomizer.Next(0, Assets[type].Keys.Count);
             return Assets[type].ElementAt(randomLookup).Key;
         }
@@ -246,15 +251,15 @@ namespace AdoptSkin
             // Take care of owned Pets and Horses
             else
                 skinID = SkinMap[GetLongID(creature)];
-            
 
-            if (!Assets[ModApi.GetInternalType(creature)].ContainsKey(skinID))
+
+            if (skinID == 0)
+                return null;
+            else if (!Assets[ModApi.GetInternalType(creature)].ContainsKey(skinID))
             {
                 ModEntry.SMonitor.Log($"{creature.Name}'s skin ID no longer exists in `/assets/skins`. Skin will be randomized.", LogLevel.Alert);
                 skinID = RandomizeSkin(creature);
             }
-            else if (skinID == 0)
-                return null;
 
             return GetSkin(type, skinID);
         }

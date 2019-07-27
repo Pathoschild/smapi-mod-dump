@@ -49,8 +49,10 @@ namespace AdoptSkin.Framework
                 Name = "Wild horse",
                 displayName = "Wild horse"
             };
+
             int[] info = ModApi.GetSpriteInfo(HorseInstance);
-            HorseInstance.Sprite = new AnimatedSprite(ModEntry.GetSkin(ModEntry.Sanitize(typeof(Horse).Name), SkinID).AssetKey, info[0], info[1], info[2]);
+            if (SkinID != 0)
+                HorseInstance.Sprite = new AnimatedSprite(ModEntry.GetSkin(ModEntry.Sanitize(typeof(Horse).Name), SkinID).AssetKey, info[0], info[1], info[2]);
 
             // Put that thing where it belongs
             Game1.warpCharacter(HorseInstance, Map, Tile);

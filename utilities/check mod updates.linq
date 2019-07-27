@@ -294,7 +294,7 @@ void Main()
 		{
 			IncrementalProgressBar progress = new IncrementalProgressBar(fetchQueue.Count) { HideWhenCompleted = true }.Dump();
 
-			WebApiClient client = new WebApiClient("http://api.smapi.io/", new SemanticVersion("2.8-beta"));
+			WebApiClient client = new WebApiClient("http://api.smapi.io/", new SemanticVersion("3.0"));
 			foreach (var pair in fetchQueue)
 			{
 				string id = pair.Key;

@@ -1,7 +1,10 @@
 # Release notes
-## Upcoming release
+## 1.7
+Released 25 July 2019.
+
 * The accessibility layer now shows mine ladders/shafts as warp tiles.
 * Fixed accessibility layer showing incorrect warp tiles near some buildings.
+* Fixed accessibility layer errors when viewing some areas patched by TMX Loader.
 * Dropped Data Maps migration code.
 * Improved translations. Thanks to Shirutan (updated Japanese) and Skirmsiher (updated French)!
 

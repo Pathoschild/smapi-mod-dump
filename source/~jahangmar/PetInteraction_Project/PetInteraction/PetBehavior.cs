@@ -38,7 +38,9 @@ namespace PetInteraction
             WaitingToFetch
         }
 
+        //game constants
         private const int pet_max_friendship = 1000;
+        private const int driftwood_index = 169;
 
         //1 out of x
         private const int complain_not_reaching_critter = 20;
@@ -52,7 +54,7 @@ namespace PetInteraction
 
 
 
-        private static bool throwing = false;
+        public static bool throwing = false;
 
         public static bool hasFetchedToday;
 
@@ -77,6 +79,7 @@ namespace PetInteraction
             switch (state)
             {
                 case PetState.Vanilla:
+                    throwing = false;
                     break;
                 case PetState.CatchingUp:
                     break;
@@ -94,7 +97,14 @@ namespace PetInteraction
                     SetTimer();
                     break;
                 case PetState.Retrieve:
+                    throwing = false;
                     break;
+            }
+
+            if (state != PetState.Retrieve && state != PetState.Waiting && Stick != null)
+            {
+                Game1.createItemDebris(Stick, GetPet().Position, 5, Game1.currentLocation);
+                Stick = null;
             }
         }
 
@@ -108,9 +118,9 @@ namespace PetInteraction
             return Game1.ticks > timer + timeout_after;
         }
 
-        private static Pet FindPet()
+        private static Pet FindPet(string name = null)
         {
-            bool check(Character c) => c is Pet p && !ModEntry.IsTempPet(p);
+            bool check(Character c) => c is Pet p && !ModEntry.IsTempPet(p) && (name == null || p.displayName == name);
 
             foreach (Character c in Game1.getFarm().characters)
             {
@@ -131,14 +141,28 @@ namespace PetInteraction
                         return c as Pet;
                 }
 
-            return null;
+            if (name == null)
+                return null;
+            else
+                return FindPet(null);
         }
 
         public static Pet GetPet()
         {
             if (pet == null)
                 pet = FindPet();
+
+            if (pet != null)
+                ModEntry.TempPet.displayName = pet.displayName;
+
             return pet;
+        }
+
+        public static void SetPet(Pet pet)
+        {
+            PetBehavior.pet = pet;
+            if (pet != null)
+                ModEntry.TempPet.displayName = pet.displayName;
         }
 
         /// <summary>
@@ -159,7 +183,9 @@ namespace PetInteraction
 
         public static bool CanThrow(Item item)
         {
-            return !throwing && petState != PetState.Vanilla && petState != PetState.Retrieve && item != null && item.ParentSheetIndex == Object.wood;
+            return !throwing && petState != PetState.Vanilla && petState != PetState.Retrieve && item != null
+                    && (item.ParentSheetIndex == Object.wood || item.ParentSheetIndex == driftwood_index);
+                    
         }
 
         public static void Throw(Item item, Vector2 cursorTile)
@@ -189,7 +215,9 @@ namespace PetInteraction
             }
             public override bool isColliding(GameLocation location)
             {
-                return !PathFinder.IsPassableSingle(position.Value / Game1.tileSize, false) || travelTime > 1000;
+                Rectangle rect = new Rectangle((int)position.Value.X + 1, (int)position.Value.Y + 1, Game1.tileSize - 2, Game1.tileSize - 2);
+
+                return travelTime > 1500 || !Game1.player.GetBoundingBox().Intersects(rect) && location.isCollidingPosition(rect, Game1.viewport, false, 0, false, null, false, false, true);
             }
 
             static void HandleonCollisionBehavior(GameLocation location, int xPosition, int yPosition, Character who)
@@ -199,6 +227,7 @@ namespace PetInteraction
 
 
                 Vector2 pathdest = new Vector2((int)(destination.X / Game1.tileSize), (int)(destination.Y / Game1.tileSize));
+                RemovePlayerFromPassableCache();
                 CurrentPath = PathFinder.CalculatePath(GetPet(), pathdest);
                 if (CurrentPath.Count > 0)
                 {
@@ -245,14 +274,14 @@ namespace PetInteraction
                 if (CurrentPath.Count > 0)
                 {
                     SetPetPositionFromTile(CurrentPath.Peek());
-                    SetState(PetState.CatchingUp);
+                    SetState(PetState.Retrieve);
                 }
                 else
                 {
                     CannotReachPlayer();
+                    SetState(PetState.Waiting);
                 }
 
-                SetState(PetState.Retrieve);
             }
             else
             {
@@ -276,6 +305,8 @@ namespace PetInteraction
 
             if (GetPet() is Dog dog)
                 dog.pantSound(null);
+
+            Stick = null;
 
             SetState(PetState.Waiting);
         }
@@ -306,7 +337,10 @@ namespace PetInteraction
                         speed = ModEntry.config.pet_fast_speed;
                         break;                    
                 }
-                return Utility.getVelocityTowardPoint(pet.Position, pathPosition, speed);
+
+                Vector2 vel = Utility.getVelocityTowardPoint(pet.Position, pathPosition, speed);
+                          
+                return vel; 
             }
         }
 
@@ -321,11 +355,13 @@ namespace PetInteraction
                 SetPetBehavior(Pet.behavior_walking);
 
             Vector2 velocity = GetVelocity();
-
-            if (System.Math.Abs(velocity.X) > System.Math.Abs(velocity.Y))
-                pet.FacingDirection = velocity.X >= 0 ? 1 : 3;
-            else
-                pet.FacingDirection = velocity.Y >= 0 ? 2 : 0;
+            if (velocity != new Vector2(0, 0))
+            {
+                if (System.Math.Abs(velocity.X) > System.Math.Abs(velocity.Y))
+                    pet.FacingDirection = velocity.X >= 0 ? 1 : 3;
+                else
+                    pet.FacingDirection = velocity.Y >= 0 ? 2 : 0;
+            }
 
             pet.xVelocity = velocity.X;
             pet.yVelocity = -velocity.Y;
@@ -403,6 +439,7 @@ namespace PetInteraction
 
                 if (chasable(critter) && PetDistance(position / Game1.tileSize) < 20)
                 {
+                    RemovePlayerFromPassableCache();
                     Queue<Vector2> path = PathFinder.CalculatePath(GetPet(), position / Game1.tileSize);
                     if (path.Count > 0)
                     {
@@ -445,6 +482,15 @@ namespace PetInteraction
         {
             Confused();
             ModEntry.Log("Cannot find stick");
+        }
+
+        public static void RemovePlayerFromPassableCache()
+        {
+            Vector2 playerTile = new Vector2((int) (Game1.player.GetBoundingBox().X / Game1.tileSize), (int) (Game1.player.GetBoundingBox().Y / Game1.tileSize));
+            List<Vector2> tiles = Utility.getAdjacentTileLocations(playerTile);
+            tiles.Add(playerTile);
+            foreach (Vector2 tile in tiles)
+                PathFinder.RemoveCachedPassableTile(tile);
         }
     }
 }

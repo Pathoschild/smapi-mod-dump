@@ -5,9 +5,10 @@ mods:
    Adopt 'n Skin
 
 latest commit:
-   commit 0c8ad907ef7b45c381a4de04544db346e6c3f0d3
+   commit 634d95a246229bc4d460dd83dcded4e5efc21173
+   Merge: 2d903e1 0c8ad90
    Author: Gathouria <katey.huddleston@gmail.com>
-   Date:   Mon Jul 22 01:19:34 2019 -0700
+   Date:   Thu Jul 25 21:28:52 2019 -0700
    
-       Additional troubleshooting added
+       Merge branch '2.6.0' of https://github.com/Gathouria/Adopt-Skin into 2.6.0
    

@@ -23,9 +23,6 @@ namespace AdoptSkin.Framework
 
 
 
-
-
-
         /************************
         ** Public methods
         *************************/
@@ -123,8 +120,8 @@ namespace AdoptSkin.Framework
         /// <summary>Returns true if the given creature subtype (i.e. Dog, Cat, WhiteChicken) is being handled by A&S</summary>
         public static bool IsRegisteredType(string type) { return ModEntry.Assets.ContainsKey(ModEntry.Sanitize(type)); }
 
-        /// <summary>Returns true if the given creature subtype (i.e. Dog, Cat, WhiteChicken) has at least one skin loaded for it in A&S.</summary>
-        public static bool HasSkins(string type) { return (ModEntry.Assets.ContainsKey(ModEntry.Sanitize(type)) && (ModEntry.Assets[ModEntry.Sanitize(type)]).Count != 0); }
+        /// <summary>Returns true if the given creature subtype (i.e. Dog, Cat, WhiteChicken) has at least one custom skin loaded for it in A&S.</summary>
+        public static bool HasSkins(string type) { return (ModEntry.Assets.ContainsKey(ModEntry.Sanitize(type)) && (ModEntry.Assets[ModEntry.Sanitize(type)]).Count > 0); }
 
 
 

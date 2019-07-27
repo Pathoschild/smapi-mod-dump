@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using StardewValley;
 
-namespace RemoteFridgeStorage.apis
+namespace RemoteFridgeStorage.API
 {
     public interface ICookingSkillApi
     {

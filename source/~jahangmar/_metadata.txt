@@ -10,9 +10,9 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit dba1aa18a3949dcf820ac8cfdd192a2254a77cd6
+   commit 9e543ae8d9afe69c32e1d698de516014c9de7934
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Mon Jul 22 08:41:50 2019 +0200
+   Date:   Fri Jul 26 16:13:27 2019 +0200
    
-       1.0.0-beta.1, debugging, changelog
+       manifest version fixed
    

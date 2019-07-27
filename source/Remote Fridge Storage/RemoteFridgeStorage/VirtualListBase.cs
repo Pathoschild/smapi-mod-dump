@@ -92,8 +92,6 @@ namespace RemoteFridgeStorage
         {
             _suppliers = suppliers;
             _converter = converter;
-//            _chests = fridgeHandler.Chests.ToList();
-//            if (Game1.currentLocation is FarmHouse farm) _chests.Add(farm.fridge.Value);
         }
 
         public IList<TSupplier> Suppliers => _suppliers;

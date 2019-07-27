@@ -47,7 +47,8 @@ namespace AdoptSkin.Framework
             PetInstance.farmerPassesThrough = true;
 
             int[] info = ModApi.GetSpriteInfo(PetInstance);
-            PetInstance.Sprite = new AnimatedSprite(ModEntry.GetSkin(PetType, SkinID).AssetKey, info[0], info[1], info[2]);
+            if (SkinID != 0)
+                PetInstance.Sprite = new AnimatedSprite(ModEntry.GetSkin(PetType, SkinID).AssetKey, info[0], info[1], info[2]);
 
             // Put that thing where it belongs
             Game1.warpCharacter(PetInstance, Marnies, CreationLocation);

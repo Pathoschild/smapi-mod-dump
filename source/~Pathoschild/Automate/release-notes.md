@@ -3,6 +3,10 @@
 # Release notes
 ## Upcoming release
 * Updated for Stardew Valley 1.4, including new machine recipes.
+
+## 1.13.2
+Released 25 July 2019.
+
 * Reduced performance impact when a location's objects or terrain features change.
 * Improved error if `data.json` file is missing or invalid.
 * Fixed machines not updated when an automatable building is added or removed.

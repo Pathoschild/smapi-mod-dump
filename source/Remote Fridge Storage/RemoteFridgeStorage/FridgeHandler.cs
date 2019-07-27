@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RemoteFridgeStorage.API;
+using RemoteFridgeStorage.CraftingPage;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
@@ -10,51 +12,46 @@ using StardewValley.Objects;
 
 namespace RemoteFridgeStorage
 {
-    /// <summary>
-    /// Takes care of adding and removing elements for crafting.
-    /// </summary>
     public class FridgeHandler
     {
-        public HashSet<Chest> Chests { get; }
+        private readonly Config _config;
+        private readonly bool _offsetIcon;
+        private readonly ClickableTextureComponent _fridgeSelected;
+        private readonly ClickableTextureComponent _fridgeDeselected;
+
+
+        /// <summary>
+        /// The chests to be used by the fridge.
+        /// </summary>
+        public HashSet<Chest> Chests { get; private set; }
+
+        /// <summary>
+        /// List with all the items contained by <see cref="SaveData"/>, this list will be updated 
+        /// when a chest is added or removed or the inventory is changed.
+        /// </summary>
         public IList<Item> FridgeList { get; private set; }
 
-        /// <summary>
-        /// Is true when the _categorizeChests is loaded so that the icon can be moved.
-        /// </summary>
-        private readonly bool _categorizeChestsLoaded;
-
-        private readonly bool _cookingSkillLoaded;
-
-        /// <summary>
-        /// Texture button state included.
-        /// </summary>
-        private readonly ClickableTextureComponent _fridgeSelected;
-
-        /// <summary>
-        /// Texture button state excluded (default state)
-        /// </summary>
-        private readonly ClickableTextureComponent _fridgeDeselected;
+        public ICookingSkillApi CookingSkillApi { get; set; }
 
         /// <summary>
         /// If the chest is currently open.
         /// </summary>
         private bool _opened;
 
-        /// <summary>
-        /// Creates a new handler for fridge items.
-        /// </summary>
-        /// <param name="textureFridge"></param>
-        /// <param name="textureFridge2"></param>
-        /// <param name="categorizeChestsLoaded"></param>
-        /// <param name="cookingSkillLoaded"></param>
-        public FridgeHandler(Texture2D textureFridge, Texture2D textureFridge2, bool categorizeChestsLoaded,
-            bool cookingSkillLoaded)
+        private bool _dragging;
+
+        public bool MenuEnabled { get; set; }
+
+        public FridgeHandler(Texture2D fridgeSelectedIcon, Texture2D fridgeDeselectedIcon, bool offsetIcon,
+            Config config)
         {
-            _cookingSkillLoaded = cookingSkillLoaded;
-            _categorizeChestsLoaded = categorizeChestsLoaded;
-            _opened = false;
-            _fridgeSelected = new ClickableTextureComponent(Rectangle.Empty, textureFridge, Rectangle.Empty, 1f);
-            _fridgeDeselected = new ClickableTextureComponent(Rectangle.Empty, textureFridge2, Rectangle.Empty, 1f);
+            _config = config;
+            _offsetIcon = offsetIcon;
+            _fridgeSelected = new ClickableTextureComponent(Rectangle.Empty, fridgeSelectedIcon, Rectangle.Empty, 1f);
+            _fridgeDeselected =
+                new ClickableTextureComponent(Rectangle.Empty, fridgeDeselectedIcon, Rectangle.Empty, 1f);
+
+            MenuEnabled = true;
             Chests = new HashSet<Chest>();
             FridgeList = new FridgeVirtualList(this);
         }
@@ -69,19 +66,25 @@ namespace RemoteFridgeStorage
 
             var xOffset = 0.0;
             var yOffset = 1.0;
-            if (_categorizeChestsLoaded)
+            if (_offsetIcon)
             {
                 xOffset = -1.0;
                 yOffset = -0.25;
             }
-
+            
             var xScaledOffset = (int) (xOffset * Game1.tileSize);
             var yScaledOffset = (int) (yOffset * Game1.tileSize);
 
-            _fridgeSelected.bounds = _fridgeDeselected.bounds = new Rectangle(
-                menu.xPositionOnScreen - 17 * Game1.pixelZoom + xScaledOffset,
-                menu.yPositionOnScreen + yScaledOffset + Game1.pixelZoom * 5, 16 * Game1.pixelZoom,
-                16 * Game1.pixelZoom);
+            var screenX = menu.xPositionOnScreen - 17 * Game1.pixelZoom + xScaledOffset;
+            var screenY = menu.yPositionOnScreen + yScaledOffset + Game1.pixelZoom * 5;
+            
+            if (_config.OverrideOffset)
+            {
+                screenX = _config.XOffset;
+                screenY = _config.YOffset;
+            }
+            _fridgeSelected.bounds = _fridgeDeselected.bounds = new Rectangle(screenX, screenY,
+                (int) (_config.ImageScale * 16 * Game1.pixelZoom), (int) (_config.ImageScale * 16 * Game1.pixelZoom));
         }
 
         /// <summary>
@@ -151,6 +154,7 @@ namespace RemoteFridgeStorage
                 4f + Game1.dialogueButtonScale / 150f, SpriteEffects.None, 0);
         }
 
+
         /// <summary>
         /// Load all fridges.
         /// </summary>
@@ -183,11 +187,10 @@ namespace RemoteFridgeStorage
         {
             if (!(gameLocationObject is Chest chest)) return;
 
-            if (chest.fridge.Value && chest != farmHouse?.fridge.Value)
-            {
-                Chests.Add(chest);
-                chest.fridge.Value = false;
-            }
+            if (!chest.fridge.Value || chest == farmHouse?.fridge.Value) return;
+
+            Chests.Add(chest);
+            chest.fridge.Value = false;
         }
 
         /// <summary>
@@ -218,21 +221,61 @@ namespace RemoteFridgeStorage
         /// </summary>
         public void Game_Update()
         {
+            UpdateChest();
+            UpdateOffset();
+        }
+
+        /// <summary>
+        /// Update the position of the icon when dragging it while holding the right mouse button 
+        /// </summary>
+        private void UpdateOffset()
+        {
+            if (GetOpenChest() == null) return;
+            var mouseButton = new InputButton(false).ToSButton();
+            if (ModEntry.Instance.Helper.Input.IsDown(mouseButton))
+            {
+                var screenPixels = ModEntry.Instance.Helper.Input.GetCursorPosition().ScreenPixels;
+                if (_dragging)
+                {
+                    _config.XOffset = (int) screenPixels.X;
+                    _config.YOffset = (int) screenPixels.Y;
+                    _config.OverrideOffset = true;
+                    ModEntry.Instance.Helper.Input.Suppress(mouseButton);
+                }
+                else if (_fridgeSelected.containsPoint((int) screenPixels.X, (int) screenPixels.Y))
+                {
+                    _dragging = true;
+                }
+            }
+            else
+            {
+                _dragging = false;
+                ModEntry.Instance.Helper.WriteConfig(_config);
+            }
+        }
+
+        private void UpdateChest()
+        {
             var chest = GetOpenChest();
             if (chest == null && _opened)
             {
                 //Chest close event;
-                FridgeList = new FridgeVirtualList(this);
+                UpdateFridgeContents();
             }
 
             if (chest != null && !_opened)
             {
                 //Chest open event
-                FridgeList = new FridgeVirtualList(this);
+                UpdateFridgeContents();
                 UpdatePos();
             }
 
             _opened = chest != null;
+        }
+
+        public void UpdateFridgeContents()
+        {
+            FridgeList = new FridgeVirtualList(this);
         }
 
         /// <summary>
@@ -242,10 +285,9 @@ namespace RemoteFridgeStorage
         public void LoadMenu(IClickableMenu newMenu)
         {
             FridgeList = new FridgeVirtualList(this);
-            if (!_cookingSkillLoaded || ModEntry.Instance.CookinSkillApi == null)
-            {
-                Game1.activeClickableMenu = new RemoteFridgeCraftingPage(newMenu, this);
-            }
+            if (!MenuEnabled) return;
+            if (CookingSkillApi != null) return;
+            Game1.activeClickableMenu = new RemoteFridgeCraftingPage(newMenu, this);
         }
     }
 }

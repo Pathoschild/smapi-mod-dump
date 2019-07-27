@@ -4,7 +4,7 @@ using Harmony;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
-using Object = StardewValley.Object;
+using SObject = StardewValley.Object;
 
 namespace Pathoschild.Stardew.SmallBeachFarm.Framework
 {
@@ -20,14 +20,14 @@ namespace Pathoschild.Stardew.SmallBeachFarm.Framework
         /// <summary>Use the beach's background music (i.e. wave sounds) on the beach farm.</summary>
         private static bool UseBeachMusic;
 
-        /// <summary>Whether the mod is currently applying patch changes (to avoid infinite recursion).</summary>
-        private static bool IsInPatch = false;
-
         /// <summary>Get whether the given location is the Small Beach Farm.</summary>
         private static Func<GameLocation, bool> IsSmallBeachFarm;
 
         /// <summary>Get whether a given position is ocean water.</summary>
         private static Func<Farm, int, int, bool> IsOceanTile;
+
+        /// <summary>Whether the mod is currently applying patch changes (to avoid infinite recursion),</summary>
+        private static bool IsInPatch = false;
 
 
         /*********
@@ -68,7 +68,7 @@ namespace Pathoschild.Stardew.SmallBeachFarm.Framework
         /*********
         ** Private methods
         *********/
-        /// <summary>A method called via Harmony before <see cref="Farm.getFish"/>, which gets ocean fish from the beach properties if fishing the ocean water.</summary>
+        /// <summary>A method called via Harmony before <see cref="Farm.getFish(float, int, int, Farmer, double)"/>, which gets ocean fish from the beach properties if fishing the ocean water.</summary>
         /// <param name="__instance">The farm instance.</param>
         /// <param name="millisecondsAfterNibble">An argument passed through to the underlying method.</param>
         /// <param name="bait">An argument passed through to the underlying method.</param>
@@ -79,7 +79,7 @@ namespace Pathoschild.Stardew.SmallBeachFarm.Framework
         /// <param name="__result">The return value to use for the method.</param>
         /// <returns>Returns <c>true</c> if the original logic should run, or <c>false</c> to use <paramref name="__result"/> as the return value.</returns>
         [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "The naming convention is defined by Harmony.")]
-        private static bool Before_GetFish(Farm __instance, float millisecondsAfterNibble, int bait, int waterDepth, Farmer who, double baitPotency, Vector2 bobberTile, ref Object __result)
+        private static bool Before_GetFish(Farm __instance, float millisecondsAfterNibble, int bait, int waterDepth, Farmer who, double baitPotency, Vector2 bobberTile, ref SObject __result)
         {
             if (FarmPatcher.IsInPatch || !FarmPatcher.IsSmallBeachFarm(who?.currentLocation))
                 return false;
@@ -134,7 +134,7 @@ namespace Pathoschild.Stardew.SmallBeachFarm.Framework
                 __instance.objects.Add(campfireTile, new Torch(campfireTile, 146, true)
                 {
                     IsOn = false,
-                    Fragility = Object.fragility_Indestructable
+                    Fragility = SObject.fragility_Indestructable
                 });
             }
         }

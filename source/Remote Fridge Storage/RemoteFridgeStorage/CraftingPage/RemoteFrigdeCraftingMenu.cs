@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace RemoteFridgeStorage
+namespace RemoteFridgeStorage.CraftingPage
 {
     /// <summary>
     /// Overwrite the fridge().
     /// </summary>
-    public class RemoteFridgeCraftingPage : CraftingPage
+    public class RemoteFridgeCraftingPage : StardewValley.Menus.CraftingPage
     {
         private readonly FridgeHandler _fridgeHandler;
 
@@ -19,7 +19,7 @@ namespace RemoteFridgeStorage
 
         protected override IList<Item> fridge()
         {
-            return ModEntry.Fridge();
+            return _fridgeHandler.FridgeList;
         }
     }
 }
