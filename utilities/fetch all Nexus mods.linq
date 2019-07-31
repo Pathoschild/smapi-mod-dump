@@ -80,6 +80,7 @@ readonly HashSet<int> IgnoreNexusIDsForValidation = new HashSet<int>
 	2825, // Auto-Grabber Mod (zh)
 	3954, // Happy Birthday (pt)
 	4197, // Companion NPCs (pt)
+	4265, // Magic (pt)
 	
 	// mods which include a copy of another mod for some reason
 	3496, // Farm Extended (content pack with a copy of Farm Type Manager)
@@ -215,7 +216,7 @@ readonly HashSet<int> IgnoreFileIDsForValidation = new HashSet<int>
 	18065, // Spouse Rooms Redesigned (#828) > All Options
 	16623, // Stardew In-Game Daily Planner > Example Plan
 	16660, // Stardew In-Game Daily Planner > Example Checklist
-	17288, // Stardew Valley Expanded (#3753) > Wallpapers, Event Guide and Script
+	18233, // Stardew Valley Expanded (#3753) > Wallpapers, Event Guide and Script
 	11658, // Visual Crossing Sprite Overhaul (#1942), CP pack with invalid version format
 	11717, // Pencilstab's Portraits (#2351), content pack with separate previews folder including .zip
 	9495,  // Quieter Cat Dog and Keg (#2371), .wav files

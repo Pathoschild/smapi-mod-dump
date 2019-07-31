@@ -1,5 +1,6 @@
 {
   "OneTileHorse": true,
+  "PetAndHorseNameTags": true,
   "HorseWhistleKey": "R",
   "CorralKey": "Y",
   "StrayAdoptionPrice": 1000,

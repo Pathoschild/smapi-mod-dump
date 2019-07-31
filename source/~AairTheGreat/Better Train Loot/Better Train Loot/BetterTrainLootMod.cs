@@ -46,6 +46,7 @@ namespace BetterTrainLoot
         {
             Instance = this;
             config = helper.Data.ReadJsonFile<ModConfig>("config.json") ?? ModConfigDefaultConfig.CreateDefaultConfig("config.json");
+            config = ModConfigDefaultConfig.UpdateConfigToLatest(config, "config.json");
 
             if (config.enableMod)
             {
@@ -186,36 +187,17 @@ namespace BetterTrainLoot
             enableCreatedTrain = true;
             numberOfTrains = 0;
             numberOfRewardsPerTrain = 0;
-            pctChanceOfNewTrain = Game1.dailyLuck + config.basePctChanceOfTrain;
+            pctChanceOfNewTrain = Game1.dailyLuck + config.basePctChanceOfTrain;                                                                                    // SDV 1.4... use Game1.player.DailyLuck
         }
 
         private void SetMaxNumberOfTrainsAndStartTime()
-        {            
-            switch (Game1.random.Next(0, 10))
-            {
-                case 0:
-                    maxNumberOfTrains = 0;
-                    startTimeOfFirstTrain = 2600;
-                    break;
-                case 1:
-                case 2:
-                case 3:
-                    maxNumberOfTrains = 1;
-                    startTimeOfFirstTrain = 1000;
-                    break;
-                case 4:
-                case 5:
-                case 6:
-                    maxNumberOfTrains = 3;
-                    startTimeOfFirstTrain = 800;
-                    break;
-                case 7:
-                case 8:
-                case 9:
-                    maxNumberOfTrains = 5;
-                    startTimeOfFirstTrain = 600;
-                    break;
-            }
+        {
+            maxNumberOfTrains = (int)Math.Round((Game1.random.NextDouble() + Game1.dailyLuck) * (double)config.maxTrainsPerDay, 0, MidpointRounding.AwayFromZero);  // SDV 1.4... use Game1.player.DailyLuck
+
+            double ratio = (double)maxNumberOfTrains / (double)config.maxTrainsPerDay;  
+
+            startTimeOfFirstTrain = 1200 - (int)(ratio * 500);
+            
             Monitor.Log($"Setting Max Trains to {maxNumberOfTrains}");
         }
 
@@ -224,7 +206,7 @@ namespace BetterTrainLoot
             //Update the treasure chances for today
             foreach (TrainData train in trainCars.Values)
             {
-                train.UpdateTrainLootChances(Game1.dailyLuck);
+                train.UpdateTrainLootChances(Game1.dailyLuck);                                                                                                      // SDV 1.4... use Game1.player.DailyLuck
             }
         }
 

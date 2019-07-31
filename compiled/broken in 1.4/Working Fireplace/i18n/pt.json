@@ -1,0 +1,14 @@
+{
+    "msg.warm": "O calor do fogo te manteu quente durante a noite.",
+    "msg.cold": "O frio drenou sua energia durante a noite.",
+    "msg.spousecold": "Sua família estava congelando durante a noite.",
+    "dia.spousecold": "Eu estava congelando esta noite.",
+    "dia.spousecold_child": "{{child1}} está se congelando.",
+    "dia.spousecold_children": "{{child1}} e {{child2}} estão se congelando.",
+    "dia.please": "Por favor, acenda a lareira.",
+    "msg.nowood": "Você precisa de {{wood_pieces}} pedaços de madeira para acender o fogo.",
+    "msg.temp": "Temperatura: ",
+    "msg.tempwarm": "quente",
+    "msg.tempcold": "frio"
+}
+

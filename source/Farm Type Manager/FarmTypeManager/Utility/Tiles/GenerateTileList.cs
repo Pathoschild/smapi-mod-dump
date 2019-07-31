@@ -46,11 +46,19 @@ namespace FarmTypeManager
                     validTiles.AddRange(Utility.GetTilesByVectorString(area, include, isLarge));
                 }
 
-                if (area is LargeObjectSpawnArea objArea && objArea.FindExistingObjectLocations) //if this area is the large object type and "find existing objects" is enabled
+                if (area is LargeObjectSpawnArea objArea && objArea.FindExistingObjectLocations) //if this area is the large object type and is set to use existing object locations
                 {
-                    foreach (string include in save.ExistingObjectLocations[area.UniqueAreaID]) //check each saved "include" string for the area
+                    if (save.ExistingObjectLocations.ContainsKey(area.UniqueAreaID)) //if this area has save data for existing locations
                     {
-                        validTiles.AddRange(Utility.GetTilesByVectorString(area, include, isLarge));
+                        foreach (string include in save.ExistingObjectLocations[area.UniqueAreaID]) //check each saved "include" string for the area
+                        {
+                            validTiles.AddRange(Utility.GetTilesByVectorString(area, include, isLarge));
+                        }
+                    }
+                    else //if this area has not generated any save dat for existing locations yet (note: this *shouldn't* be reachable)
+                    {
+                        Monitor.Log($"Issue: This area never saved its object location data: {area.UniqueAreaID}", LogLevel.Info);
+                        Monitor.Log($"FindExistingObjectLocations will not function for this area. Please report this to the mod's author.", LogLevel.Info);
                     }
                 }
 

@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/3231
 IDs: Esca.FarmTypeManager
-update keys: Nexus:3231, GitHub:Esca-MMC/FarmTypeManager
+update keys: Nexus:3231, GitHub:Esca-MMC/FarmTypeManager, ModDrop:598755

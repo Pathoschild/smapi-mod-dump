@@ -5,10 +5,11 @@ mods:
    Adopt 'n Skin
 
 latest commit:
-   commit 634d95a246229bc4d460dd83dcded4e5efc21173
-   Merge: 2d903e1 0c8ad90
+   commit 92e0a5581bb18b4b9fd75e91f92db223c0fe363e
    Author: Gathouria <katey.huddleston@gmail.com>
-   Date:   Thu Jul 25 21:28:52 2019 -0700
+   Date:   Sun Jul 28 23:09:03 2019 -0700
    
-       Merge branch '2.6.0' of https://github.com/Gathouria/Adopt-Skin into 2.6.0
+       OneTileHorse fix
+       
+       OneTileHorse fix, console command call horse by ID fix, horse whistle now calls last ridden or adopted horse
    

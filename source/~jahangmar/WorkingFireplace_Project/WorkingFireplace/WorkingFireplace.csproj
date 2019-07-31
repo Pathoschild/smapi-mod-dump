@@ -42,6 +42,7 @@
     <None Include="i18n\it.json" />
     <None Include="i18n\es.json" />
     <None Include="packages.config" />
+    <None Include="i18n\pt.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="i18n\" />

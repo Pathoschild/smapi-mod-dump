@@ -14,7 +14,6 @@ namespace FarmTypeManager
 
             public Utility.Weather WeatherForYesterday { get; set; } = Utility.Weather.Sunny;
             public Dictionary<string, int> LNOSCounter { get; set; } = new Dictionary<string, int>(); //added in version 1.4.0
-            public bool ExistingObjectsFound { get; set; } = false; //added in version 1.4.1
             public Dictionary<string, string[]> ExistingObjectLocations { get; set; } = new Dictionary<string, string[]>(); //added in version 1.4.1
             public List<SavedObject> SavedObjects { get; set; } = new List<SavedObject>(); //added in version 1.5.0
 

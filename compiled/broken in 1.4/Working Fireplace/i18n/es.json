@@ -1,0 +1,13 @@
+﻿{
+    "msg.warm": "El calor del fuego te mantuvo caliente durante la noche.",
+    "msg.cold": "El frío agotó tu energía durante la noche.",
+    "msg.spousecold": "Tu familia se estaba congelando en la noche.",
+    "dia.spousecold": "Me estaba congelando esta noche.",
+    "dia.spousecold_child": "{{child1}} se está congelando.",
+    "dia.spousecold_children": "{{child1}} y {{child2}} se están congelando.",
+    "dia.please": "Encienda la chimenea, por favor.",
+    "msg.nowood": "Necesitas {{wood_pieces}} trozos de madera para encender el fuego.",
+    "msg.temp": "Temperatura: ",
+    "msg.tempwarm": "caliente",
+    "msg.tempcold": "frío"
+}

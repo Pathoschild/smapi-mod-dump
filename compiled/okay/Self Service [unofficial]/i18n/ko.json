@@ -1,0 +1,11 @@
+{
+  "SeedShop_Menu": "\"필요한게 있으면 아무거나 고르신 후 지불하세요.\"",
+  "SeedShopMenu_Shop": "쇼핑하기",
+  "SeedShopMenu_Leave": "떠나기",
+  "FishShop_Menu": "\"낚시하러 잠깐 자릴 비우겠습니다. 필요한게 있다면 가져가고 달아두십시오.\"",
+  "FishShop_Menu_DocVisit": "\"의사 선생을 보고 오겠습니다. 필요한게 있다면 가져가고 달아두십시오.\"",
+  "FishShopMenu_Shop": "쇼핑하기",
+  "FishShopMenu_Leave": "떠나기",
+  "AnimalShop_Menu": "\"오늘 중요한 일때문에 자리를 비워 죄송합니다, 돈은 카운터에 두고, 필요한 걸 가져가세요!\"",
+  "ScienceHouse_CarpenterMenu": "\"지금 가게에 부재중이니, 필요한게 있다면 여기 메모를 남겨주세요.\""
+}

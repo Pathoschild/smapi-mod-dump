@@ -73,7 +73,11 @@ namespace FarmTypeManager
                         //find the locations any existing objects (of the listed types)
                         if (area.FindExistingObjectLocations == true) //if enabled 
                         {
-                            if (data.Save.ExistingObjectsFound == false) //if this hasn't been done yet for the current config+farm
+                            if (data.Save.ExistingObjectLocations.ContainsKey(area.UniqueAreaID)) //if this config+farm already has a list of existing objects (even if it's blank)
+                            {
+                                Utility.Monitor.Log("Find Existing Objects enabled. Using save file data from a previous search.", LogLevel.Trace);
+                            }
+                            else //if this config+farm hasn't been checked for existing objects yet 
                             {
                                 Utility.Monitor.Log("Find Existing Objects enabled. Finding...", LogLevel.Trace);
 
@@ -116,11 +120,6 @@ namespace FarmTypeManager
                                 Utility.Monitor.Log($"Existing objects found: {existingObjects.Count}.", LogLevel.Trace);
 
                                 data.Save.ExistingObjectLocations.Add(area.UniqueAreaID, existingObjects.ToArray()); //add the new strings to the save data for the current config+farm
-                                data.Save.ExistingObjectsFound = true; //record that this process has already been done
-                            }
-                            else //this config+farm already has a list of existing objects (if any)
-                            {
-                                Utility.Monitor.Log("Find Existing Objects enabled. Using save file data from a previous search.", LogLevel.Trace);
                             }
                         }
                         else
@@ -169,7 +168,6 @@ namespace FarmTypeManager
                         }
 
                         Utility.Monitor.Log($"Large object spawn process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
-                        Utility.Monitor.Log("", LogLevel.Trace);
                     }
 
                     if (data.Pack != null) //content pack

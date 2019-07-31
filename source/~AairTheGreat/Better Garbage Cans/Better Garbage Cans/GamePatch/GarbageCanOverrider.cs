@@ -49,7 +49,7 @@ namespace BetterGarbageCans.GamePatch
         private static void CheckForTreasure(int index, ref Farmer player)
         {
             Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + 777 + index + Game1.timeOfDay);
-            if (random.NextDouble() < BetterGarbageCansMod.Instance.config.baseChancePercent + Game1.dailyLuck)
+            if (random.NextDouble() < BetterGarbageCansMod.Instance.config.baseChancePercent + Game1.dailyLuck)  //Game1.player.DailyLuck  // -- Use for SDV 1.4 WHEN it comes out.
             {
                 Item reward = GetTreasure(index, random);
 
@@ -238,23 +238,23 @@ namespace BetterGarbageCans.GamePatch
                     break;
             }
 
-            if (index == 3 && random.NextDouble() < 0.2 + Game1.dailyLuck)
+            if (index == 3 && random.NextDouble() < 0.2 + Game1.dailyLuck)  //Game1.player.DailyLuck                                // -- Use for SDV 1.4 WHEN it comes out.
             {
                 parentSheetIndex = 535;
                 if (random.NextDouble() < 0.05)
                     parentSheetIndex = 749;
             }
 
-            if (index == 4 && random.NextDouble() < 0.2 + Game1.dailyLuck)
+            if (index == 4 && random.NextDouble() < 0.2 + Game1.dailyLuck)  //Game1.player.DailyLuck                                // -- Use for SDV 1.4 WHEN it comes out.
             {
                 parentSheetIndex = 378 + random.Next(3) * 2;
                 random.Next(1, 5);
             }
 
-            if (index == 5 && random.NextDouble() < 0.2 + Game1.dailyLuck && Game1.dishOfTheDay != null)
+            if (index == 5 && random.NextDouble() < 0.2 + Game1.dailyLuck && Game1.dishOfTheDay != null)  //Game1.player.DailyLuck  // -- Use for SDV 1.4 WHEN it comes out.
                 parentSheetIndex = Game1.dishOfTheDay.ParentSheetIndex != 217 ? Game1.dishOfTheDay.ParentSheetIndex : 216;
 
-            if (index == 6 && random.NextDouble() < 0.2 + Game1.dailyLuck)
+            if (index == 6 && random.NextDouble() < 0.2 + Game1.dailyLuck)  //Game1.player.DailyLuck                                // -- Use for SDV 1.4 WHEN it comes out.
                 parentSheetIndex = 223;
             
             return (Item)new StardewValley.Object(parentSheetIndex, 1);

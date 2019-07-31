@@ -30,6 +30,7 @@ namespace BetterPanning
 
         private Dictionary<string, List<Point>> openWaterTiles = new Dictionary<string, List<Point>>();
         internal ModConfig config; 
+
         internal Dictionary<TREASURE_GROUP, TreasureGroup> treasureGroups;
 
         internal HarmonyInstance harmony { get; private set; }
@@ -42,8 +43,16 @@ namespace BetterPanning
             helper.Events.Display.RenderedHud += Display_RenderedHud;
             helper.Events.Input.ButtonReleased += Input_ButtonReleased;
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
-                 
-            config = this.Helper.Data.ReadJsonFile<ModConfig>("config.json") ?? ModConfigDefaultConfig.CreateDefaultConfig("config.json");
+
+            try
+            {
+                config = this.Helper.Data.ReadJsonFile<ModConfig>("config.json") ?? ModConfigDefaultConfig.CreateDefaultConfig("config.json");
+                config = ModConfigDefaultConfig.UpdateConfigToLatest(config, "config.json"); 
+            }
+            catch  //Really the only time this is going to error is when going from old version to new version of the config file or there is a bad config file
+            {               
+                config = ModConfigDefaultConfig.UpdateConfigToLatest(config, "config.json") ?? ModConfigDefaultConfig.CreateDefaultConfig("config.json"); 
+            }
 
             if (config.useCustomPanningTreasure)
             {
@@ -409,7 +418,7 @@ namespace BetterPanning
                     if (location.isOpenWater(newOrePoint.X, newOrePoint.Y) && FishingRod.distanceToLand(newOrePoint.X, newOrePoint.Y, location) <= 0)
                     {
 
-                        if (Game1.player.currentLocation.Equals(location))
+                        if (Game1.player.currentLocation.Equals(location) && config.enableSplashSounds)
                         {
                             location.playSound("slosh");
                         }

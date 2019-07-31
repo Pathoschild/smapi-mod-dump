@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4174
+IDs: de.trienow.stardew.craftpriority
+update keys: Nexus:4174, GitHub:trienow/Stardew-CraftPriority

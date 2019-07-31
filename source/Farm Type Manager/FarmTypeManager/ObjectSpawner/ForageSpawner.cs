@@ -213,7 +213,6 @@ namespace FarmTypeManager
                 }
 
                 Utility.Monitor.Log("All files and content packs checked. Forage spawn process complete.", LogLevel.Trace);
-                Utility.Monitor.Log("", LogLevel.Trace);
             }
         }
     }

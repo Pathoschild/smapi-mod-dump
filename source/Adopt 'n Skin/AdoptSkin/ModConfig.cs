@@ -10,6 +10,7 @@ namespace AdoptSkin
     {
         /// <summary>Whether or not to allow horses being ridden to fit through any area that the player can normally walk through</summary>
         public bool OneTileHorse { get; set; } = true;
+        public bool PetAndHorseNameTags { get; set; } = true;
         public string HorseWhistleKey { get; set; } = "R";
         public string CorralKey { get; set; } = "Y";
 

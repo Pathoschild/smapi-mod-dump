@@ -27,10 +27,7 @@ using StardewValley.BellsAndWhistles;
 //using StardewValley.Menus;
 //using System.Collections.Generic;
 
-    //TODO: fix multiplayer bug
-    //TODO: fixed menu open click bug
-    //TODO: fixed russian translation ???
-    //TODO: implement loading of old save state
+//TODO: implement loading of old save state
 
 namespace WorkingFireplace
 {

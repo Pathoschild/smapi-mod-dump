@@ -32,11 +32,26 @@ Every time the game time changes, this the percent chance of a new train, assumi
 How many milliseconds from when the message about a train is going thru Stardew Valley and when the train shows up.
 - Default Value: 10000 (10 seconds) 
 
+#### maxTrainsPerDay
+Sets the maximum possible number of trains.  
+Note: You can still get more or less than the maximum since the game can still create trains and you might have a really bad luck day.    
+- Default Value: 5 
+
 #### maxNumberOfItemsPerTrain
-Limits the amount of items per train that the mod will create.  Note: You can still get more than the maximum since the game can still create items.    
+Limits the amount of items per train that the mod will create.  
+Note: You can still get more than the maximum since the game can still create items.    
 - Default Value: 5 
  
 #### enableForceCreateTrain
 If value is true, allows the user to force a train to be created by pressing the button Y.  
 Note: The train will be created on next game time update if there is no current train.
 - Default Value: false 
+
+#### enableMultiplayerChatMessage
+If value is true, a chat message will appear to the farmhands letting them know a train is coming.  
+Note: This message is currently only in English.
+- Default Value: true 
+
+#### configVersion
+Don't modify.  This is used to update the config file if new settings are added.
+- Default Value: 2 

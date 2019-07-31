@@ -86,7 +86,8 @@ namespace AdoptSkin.Framework
             SHelper.Events.World.NpcListChanged += Entry.CheckForFirstPet;
             SHelper.Events.World.NpcListChanged += Entry.CheckForFirstHorse;
 
-            SHelper.Events.Display.RenderingHud += ModEntry.ToolTip.RenderHoverTooltip;
+            if (ModEntry.Config.PetAndHorseNameTags)
+                SHelper.Events.Display.RenderingHud += ModEntry.ToolTip.RenderHoverTooltip;
         }
 
 
@@ -99,7 +100,8 @@ namespace AdoptSkin.Framework
 
             SHelper.Events.World.NpcListChanged -= ModEntry.HorseMountedCheck;
 
-            SHelper.Events.Display.RenderingHud -= ModEntry.ToolTip.RenderHoverTooltip;
+            if (ModEntry.Config.PetAndHorseNameTags)
+                SHelper.Events.Display.RenderingHud -= ModEntry.ToolTip.RenderHoverTooltip;
 
             // Ensure variables don't carry-over between saves if leave to title screen
             FlatlineAllVariables();
@@ -188,12 +190,18 @@ namespace AdoptSkin.Framework
         internal static void LoadCreatureSkins()
         {
             foreach (FarmAnimal animal in ModApi.GetAnimals())
-                ModEntry.UpdateSkin(animal);
+                if (!ModEntry.AnimalLongToShortIDs.ContainsKey(ModEntry.GetLongID(animal)))
+                    Entry.AddCreature(animal);
+                else
+                    ModEntry.UpdateSkin(animal);
+
 
             foreach (Pet pet in ModApi.GetPets())
                 // Remove extra Strays left on the map
                 if (ModApi.IsStray(pet))
                     Game1.removeThisCharacterFromAllLocations(pet);
+                else if (ModEntry.GetLongID(pet) == 0)
+                    Entry.AddCreature(pet);
                 else
                     ModEntry.UpdateSkin(pet);
 
@@ -201,6 +209,8 @@ namespace AdoptSkin.Framework
                 // Remove extra WildHorses left on the map
                 if (ModApi.IsWildHorse(horse))
                     Game1.removeThisCharacterFromAllLocations(horse);
+                else if (ModApi.IsNotATractor(horse) && ModEntry.GetLongID(horse) == 0)
+                    Entry.AddCreature(horse);
                 else if (ModApi.IsNotATractor(horse))
                     ModEntry.UpdateSkin(horse);
         }

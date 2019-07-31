@@ -1,7 +1,7 @@
 {
   "Name": "Better Train Loot",
   "Author": "AairTheGreat",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "Hopefully makes train loot more interesting",
   "UniqueID": "AairTheGreat.BetterTrainLoot",
   "EntryDll": "Better Train Loot.dll",

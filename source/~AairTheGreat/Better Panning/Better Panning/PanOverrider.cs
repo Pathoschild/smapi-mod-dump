@@ -83,7 +83,7 @@ namespace BetterPanning.GamePatch
                     possibleLoot.Remove(treasure);
 
                 // Update chance
-                chance *= PanningMod.Instance.config.additionalLootChance + Game1.dailyLuck;
+                chance *= PanningMod.Instance.config.additionalLootChance + Game1.dailyLuck; //Game1.player.DailyLuck  // -- Use for SDV 1.4 WHEN it comes out.
             }
 
             return rewards;

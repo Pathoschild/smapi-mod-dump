@@ -11,12 +11,10 @@ mods:
    Water Retaining Field
 
 latest commit:
-   commit 7ee065ce900f37938a4a9918bcdd73dd45db221c
-   Merge: 7d2cab4 cafac44
-   Author: Digus <32422267+Digus@users.noreply.github.com>
-   Date:   Sun May 26 14:44:42 2019 -0300
+   commit 7d53d401b4c98932a717c87348c12f83cd101ce3
+   Author: Digus-PC\Digus <diguss@gmail.com>
+   Date:   Sun Jul 28 16:00:29 2019 -0300
    
-       Merge pull request #8 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0 changes
+       WaterRetainingFieldMod 1.0.4
+       - Fix to work inside the greenhouse
    

@@ -7,24 +7,26 @@
 * [Introduction](#introduction)
 * [Configuration Setting](#configuration-setting)
   * [Overview of config json file](#Overview-of-config-json-file)
-    - [showDistance](#showdistance)
-    - [sp_alwaysCreatePanningSpots](#spalwaysCreatePanningSpots)
-    - [mp_alwaysCreatePanningSpots](#mpalwaysCreatePanningSpots)
-    - [maxNumberOfOrePointsGathered](#maxNumberOfOrePointsGathered)
-    - [showHudData](#showHudData)
-    - [hudXPostion](#hudXPostion)
-    - [hudYPostion](#hudYPostion)
-    - [additionalLootChance](#additionalLootChance)
     - [useCustomPanningTreasure](#useCustomPanningTreasure)
+	- [enableSplashSounds](#enableSplashSounds)
     - [enableGeodeMineralsTreasure](#enableGeodeMineralsTreasure)
     - [enablePanningTrash](#enablePanningTrash)
     - [enableArtifactTreasures](#enableArtifactTreasures)
     - [enableAllArtifactsAfterFoundThemAll](#enableAllArtifactsAfterFoundThemAll)
     - [enableSeedPanning](#enableSeedPanning)
     - [enableAllSeedsEverySeason](#enableAllSeedsEverySeason)
-    - [enableAllSecondYearSeedsOnFirstYear](#enableAllSecondYearSeedsOnFirstYear)
+    - [enableAllSecondYearSeedsOnFirstYear](#enableAllSecondYearSeedsOnFirstYear)	
+    - [sp_alwaysCreatePanningSpots](#spalwaysCreatePanningSpots)
+    - [mp_alwaysCreatePanningSpots](#mpalwaysCreatePanningSpots)
+    - [maxNumberOfOrePointsGathered](#maxNumberOfOrePointsGathered)
+    - [showHudData](#showHudData)
+    - [hudXPostion](#hudXPostion)
+    - [hudYPostion](#hudYPostion)
+    - [showDistance](#showdistance)
+	- [additionalLootChance](#additionalLootChance)    
     - [useCustomFarmMaps](#useCustomFarmMaps)
     - [customMaps](#customMaps)
+	- [configVersion](#configVersion)
   * [Overview of treasure json file](#Overview-of-treasure-json-file)
     - [Treasure Groups](#Treasure-Groups)
     - [Treasure Data](#Treasure-List)
@@ -70,34 +72,11 @@ Once this mod is installed and you have the pan you can adjust some settings.
 If you don't have a config.json file, then the config file will be created when you first run Stardew Valley with this mod.
 
 You should not need to adjust the configuration settings but if you do, here are what the setting are inside the config.json file:
-#### showDistance
-Shows the distance to the panning spot in the hud when player is holding the pan.  
-- Default Value: true 
-#### sp_alwaysCreatePanningSpots
-Single Player Only - If the mod detects a panning point that it did not create, it creates a new spot.  This helps reduce the potential of spots too far away.  
-- Default Value: true 
-#### mp_alwaysCreatePanningSpots
-Multiplayer Player Only - If the mod detects a panning point that it did not create, it creates a new spot, but if a different player creates the spot, it will move 
-the spot.  Set to true if you want panning spots to potentially move on your friends!
-- Default Value: false 
-#### maxNumberOfOrePointsGathered
-Maximum times per day a player can pan spots before the mod stops creating them.  The game can/will create more spots but not the mod.
-- Default Value: 50 
-#### showHudData
-Shows the hud when player is holding the pan.   
-- Default Value: true 
-#### hudXPostion
-The upper left corner X coordinate of the hud position.  The top left corner of the screen is 0,0.  If this value > 0 then it moves the hud right.    
-- Default Value: 0 
-#### hudYPostion
-The upper left corner Y coordinate of the hud position.  The top left corner of the screen is 0,0.  If this value > 0 then it moves the hud down.    
-Note: If you use the [UI Info Suite](https://www.nexusmods.com/stardewvalley/mods/1150), A good setting is 200 for this.
-- Default Value: 0 
-#### additionalLootChance
-The chance of panning up more than one type of item
-- Default Value: 0.4
 #### useCustomPanningTreasure
 Use the custom treasure from the mod.  Setting to false will use the standard game item list.   
+- Default Value: true 
+#### enableSplashSounds
+Maybe you don't want the splash sound of the panning spots... then set this to false.   
 - Default Value: true 
 #### enableGeodeMineralsTreasure
 Maybe you don't want the [Geode Minerals](https://stardewvalleywiki.com/Minerals)... then set this to false.   
@@ -127,6 +106,32 @@ Note: if enableSeedPanning is false, this setting does not matter.
 Sorry you can't get second year seeds in the first year, unless you set this to true.    
 Note: if enableSeedPanning is false, this setting does not matter.  
 - Default Value: false 
+#### sp_alwaysCreatePanningSpots
+Single Player Only - If the mod detects a panning point that it did not create, it creates a new spot.  This helps reduce the potential of spots too far away.  
+- Default Value: true 
+#### mp_alwaysCreatePanningSpots
+Multiplayer Player Only - If the mod detects a panning point that it did not create, it creates a new spot, but if a different player creates the spot, it will move 
+the spot.  Set to true if you want panning spots to potentially move on your friends!
+- Default Value: false 
+#### maxNumberOfOrePointsGathered
+Maximum times per day a player can pan spots before the mod stops creating them.  The game can/will create more spots but not the mod.
+- Default Value: 50 
+#### showHudData
+Shows the hud when player is holding the pan.   
+- Default Value: true 
+#### hudXPostion
+The upper left corner X coordinate of the hud position.  The top left corner of the screen is 0,0.  If this value > 0 then it moves the hud right.    
+- Default Value: 0 
+#### hudYPostion
+The upper left corner Y coordinate of the hud position.  The top left corner of the screen is 0,0.  If this value > 0 then it moves the hud down.    
+Note: If you use the [UI Info Suite](https://www.nexusmods.com/stardewvalley/mods/1150), A good setting is 200 for this.
+- Default Value: 0 
+#### showDistance
+Shows the distance to the panning spot in the hud when player is holding the pan.  
+- Default Value: true 
+#### additionalLootChance
+The chance of panning up more than one type of item
+- Default Value: 0.4
 #### useCustomFarmMaps
 You using a custom farm?  Then you can enable it.  Currently this mod has a fine-tuned selection for the [Immersive Farm 2](https://www.nexusmods.com/stardewvalley/mods/3561) map.  But that's okay, setup the map with the next setting and the mod will create a un-optimized panning spot file... but still be better then the base game.    
 - Default Value: false
@@ -163,6 +168,10 @@ Here is an example where you have a riverland farm mod:
 ```
 
 When you first enter the farm, the mod will scan for valid panning spots and create the configured file but there could be unreachable spots.  This is where you can fine tune the file created "DataFiles\MyCoolFishingFarmMapMod.json" and remove unreachable spots.
+
+#### configVersion
+Don't modify.  This is used to update the config file if new settings are added.
+- Default Value: 2
 
 ### Overview of treasure json file
 Everyone loves treasure!  Therefore, it's time to talk about how the configuration file is put together.  Here is the general workflow:
@@ -248,7 +257,7 @@ Here is an example of a treasure group entry looks like:
 ```
 
 ### Overview of DataFiles Folder
-Each game location/area can be configured to setup where panning spots can show up.  There is a limit on where spots can should up, so you can't jsut have a spot in the middle of land.  The files are used to finetune each area to limit unreachable panning spots being created.  The file is formated as a list of X and Y coordinates like:
+Each game location/area can be configured to setup where panning spots can show up.  There is a limit on where spots can should up, so you can't just have a spot in the middle of land.  The files are used to finetune each area to limit unreachable panning spots being created.  The file is formated as a list of X and Y coordinates like:
 ```
 [
   "9, 36",

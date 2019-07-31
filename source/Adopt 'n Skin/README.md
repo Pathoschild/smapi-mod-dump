@@ -22,7 +22,7 @@ What A&S lets you do:
 
 # To Use Adopt & Skin:
 
-- Uninstall other mods that affect the skins of creatures. A&S will take over handling these.
+- Uninstall other mods that affect the skins of creatures. If you're using A&S on an existing save, call `randomize_creature` once in-game on the affected creatures. A&S will take over handling their skins after that.
 
 - To use skins with A&S (including skins from those other mods you uninstalled), rename the spritesheet `.png` or `.xnb` files as described below. A few example skins are included with the download from [Nexus](https://www.nexusmods.com/stardewvalley/mods/4011/).
 
@@ -111,10 +111,20 @@ If you know what you're doing (a.k.a I am not user support for BFAV, and am also
 **The SMAPI commands aren't working!**
 > The commands went through an overhaul with the release of 2.4.0, and again with 2.6.0. If you're used to the old commands, or are confused on how to use them in general, refer to the explanations and example of the commands below.
 
-**Why aren't the skins showing up?**
-> First, make sure that you've placed skins in `AdoptSkin/assets/skins`, as A&S does not come with many skins of its own- only a few example skins.
-> Second, check the file naming guide below.
-> Third, if you're still having problems or are confused, feel free to post a comment or ask on the SDV discord's modding channel!
+**Why aren't the skins showing up? / I'm getting an error and skins aren't showing up**
+> **First**, make sure that you've placed skins in `AdoptSkin/assets/skins`, as A&S does not come with many skins of its own- only a few example skins.
+
+> **Second**, check the file naming guide below.
+
+> **Third**, Make sure you don't have any other skin replacers for animals, pets, or horses. If you do:
+
+> 1. Since reskinners can cause conflict, you'll have to make sure you've moved any skins that you want from those mods into `AdoptSkin/assets/skins`
+> 2. Remove the reskin mods from the `Mods` folder
+> 3. When you load older saves that used these replacers, call `randomize_skin` on the creatures or creature category that was using those skins
+
+> Those creatures, and new ones of its kind, should be good to go after that!
+
+> **Fourth**, if you're still having problems or are confused, feel free to post a comment or ask on the SDV discord's modding channel!
 
 **Why aren't my BFAV animal skins working?**
 > Make sure the skins are named **exactly** as they appear in the BFAV Config file. Some BFAV animals have "color variants", that work just like how brown chickens and white chickens do, in that they're each treated as a completely different animal. You'll have to name skins for each variant.

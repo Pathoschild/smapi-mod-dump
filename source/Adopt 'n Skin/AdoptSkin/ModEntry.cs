@@ -23,8 +23,6 @@ namespace AdoptSkin
     // ** The TODO List **
     // 
     // - Add support for custom animal types (Ento added an ExtraTypes to the Config, look there)
-    // - Figure out pet spawn before moving maps (check to see if pet is already on map? Will this cause cuddle puddle?)
-    // - Android control compat
     // - Is there a keyboard interact button to do compat for?
     // - Baby stage pets and horses
 
@@ -421,9 +419,18 @@ namespace AdoptSkin
                 return false;
             }
 
-            // Teleport the first horse you find that the player actually owns
-            foreach (Horse taxi in ModApi.GetHorses())
-                if (ModApi.IsInDatabase(taxi) && (id == 0 || id == GetLongID(taxi)))
+            // Teleport the horse with the given ID or the last horse ridden
+            List<Horse> taxis = ModApi.GetHorses().ToList();
+            taxis.Reverse();
+            foreach (Horse taxi in taxis)
+                if (ModApi.IsWildHorse(taxi))
+                    continue;
+                else if (id != 0 && GetShortID(taxi) == id)
+                {
+                    Game1.warpCharacter(taxi, Game1.player.currentLocation, Game1.player.getTileLocation());
+                    return true;
+                }
+                else if (id == 0)
                 {
                     Game1.warpCharacter(taxi, Game1.player.currentLocation, Game1.player.getTileLocation());
                     return true;
@@ -450,7 +457,7 @@ namespace AdoptSkin
                 Vector2 stableWarp = new Vector2(stableX, stableY);
 
                 foreach (Horse horse in ModApi.GetHorses())
-                    if (ModApi.IsInDatabase(horse))
+                    if (!ModApi.IsWildHorse(horse))
                         Game1.warpCharacter(horse, "farm", stableWarp);
 
                 ModEntry.SMonitor.Log("All horses have been warped to the stable.", LogLevel.Alert);
@@ -475,12 +482,17 @@ namespace AdoptSkin
         {
             // Check if a horse needs to be re-added to the map
             HorseDismountedCheck();
+            // OneTileHorse mounted check
+            if (Config.OneTileHorse)
+                foreach (Horse horse in BeingRidden)
+                    horse.squeezeForGate();
 
             // Make sure A&S database is up-to-date
             AnimalListChangeCheck();
 
             // Display name tooltip if necessary
-            ToolTip.HoverCheck();
+            if (Config.PetAndHorseNameTags)
+                ToolTip.HoverCheck();
         }
 
 
@@ -489,11 +501,7 @@ namespace AdoptSkin
         {
             foreach (NPC npc in e.Removed)
                 if (npc is Horse horse && horse.rider != null && horse.Manners != 0)
-                {
                     BeingRidden.Add(horse);
-                    if (Config.OneTileHorse)
-                        horse.squeezeForGate();
-                }
         }
 
 
@@ -605,7 +613,7 @@ namespace AdoptSkin
             if (!Context.IsPlayerFree)
                 return;
 
-            if (e.Button.ToString().ToLower() == Config.HorseWhistleKey.ToLower())
+            if (Config.HorseWhistleKey != null && e.Button.ToString().ToLower() == Config.HorseWhistleKey.ToLower())
             {
                 if (!CallHorse())
                 {
@@ -613,7 +621,7 @@ namespace AdoptSkin
                     Game1.chatBox.addInfoMessage("Your Grandfather's voice echoes in your head.. \"You aren't yet ready for this gift.\"");
                 }
             }
-            if (e.Button.ToString().ToLower() == Config.CorralKey.ToLower())
+            if (Config.CorralKey != null && e.Button.ToString().ToLower() == Config.CorralKey.ToLower())
             {
                 CorralHorses();
             }

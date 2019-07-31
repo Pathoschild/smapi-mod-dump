@@ -1,7 +1,7 @@
 {
   "Name": "Better Panning",
   "Author": "AairTheGreat",
-  "Version": "1.0.2",
+  "Version": "1.0.3",
   "Description": "Hopefully makes panning more interesting",
   "UniqueID": "AairTheGreat.BetterPanning",
   "EntryDll": "Better Panning.dll",

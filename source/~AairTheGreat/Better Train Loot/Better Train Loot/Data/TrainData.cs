@@ -26,8 +26,7 @@ namespace BetterTrainLoot.Data
         }
 
         public void UpdateTrainLootChances(double todayLuck)
-        {            
-            //double todayLuck = Game1.dailyLuck;
+        {                        
             double itemBaseChance = 0.0;
             foreach (TrainTreasure item in this.treasureList)
             {

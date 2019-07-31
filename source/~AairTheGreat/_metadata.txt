@@ -7,9 +7,9 @@ mods:
    Better Train Loot
 
 latest commit:
-   commit 8004d51e454929c444c229fe1d7878bd6454ced2
+   commit 5c4ee1a655c8f24a4b38b737f49c8e0f206f2a0d
    Author: Aair <a_aair@hotmailc.om>
-   Date:   Sun Jul 21 19:39:19 2019 -0700
+   Date:   Sat Jul 27 11:22:27 2019 -0700
    
-       Updated config readme.
+       Added notes for SDV 1.4 needed changes
    

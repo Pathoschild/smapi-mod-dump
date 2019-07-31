@@ -8,8 +8,10 @@
         public double baseChancePercent { get; set; }
         public double basePctChanceOfTrain { get; set; }
         public int trainCreateDelay { get; set; }
+        public int maxTrainsPerDay { get; set; }
         public int maxNumberOfItemsPerTrain { get; set; }
         public bool enableForceCreateTrain { get; set; }
         public bool enableMultiplayerChatMessage { get; set; }
+        public int configVersion { get; set; }
     }
 }

@@ -13,9 +13,11 @@
     - [baseChancePercent](#baseChancePercent)
     - [basePctChanceOfTrain](#basePctChanceOfTrain)    
     - [trainCreateDelay](#trainCreateDelay)
+	- [maxTrainsPerDay](#maxTrainsPerDay)
     - [maxNumberOfItemsPerTrain](#maxNumberOfItemsPerTrain)
 	- [enableForceCreateTrain](#enableForceCreateTrain)
 	- [enableMultiplayerChatMessage](#enableMultiplayerChatMessage)
+	- [configVersion](#configVersion)
   * [Overview of Trains json File](#overview-of-Trains-json-file)
     - [Train Data](#train-data)
     - [Treasure List Data](#Treasure-List)  
@@ -58,6 +60,7 @@ Once this mod is installed and been started at least once, you can adjust some s
 If you don't have a config.json file, then the config file will be created when you first run Stardew Valley with this mod.
 
 You should not need to adjust the configuration settings but if you do, here are what the setting are inside the config.json file:
+
 #### enableMod
 Sets the mod as enabled or disabled.  Normally should be set to true unless you are having issues and want to test something without removing the mod.  
 - Default Value: true 
@@ -76,8 +79,14 @@ Every time the game time changes, this the percent chance of a new train, assumi
 #### trainCreateDelay
 How many milliseconds from when the message about a train is going thru Stardew Valley and when the train shows up.
 - Default Value: 10000 (10 seconds) 
+#### maxTrainsPerDay
+Sets the maximum possible number of trains.  
+Note: You can still get more or less than the maximum since the game can still create trains 
+and you might have a really bad luck day.    
+- Default Value: 5 
 #### maxNumberOfItemsPerTrain
-Limits the amount of items per train that the mod will create.  Note: You can still get more than the maximum since the game can still create items.    
+Limits the amount of items per train that the mod will create.  
+Note: You can still get more than the maximum since the game can still create items.    
 - Default Value: 5 
 #### enableForceCreateTrain
 If value is true, allows the user to force a train to be created by pressing the button Y.  
@@ -87,6 +96,9 @@ Note: The train will be created on next game time update if there is no current 
 If value is true, a chat message will appear to the farmhands letting them know a train is coming.  
 Note: This message is currently only in English.
 - Default Value: true 
+#### configVersion
+Don't modify.  This is used to update the config file if new settings are added.
+- Default Value: 2 
 
 ### Overview of Trains json File
 Everyone loves items flying off trains!  Therefore, it's time to talk about how the configuration file is put together.  Here is the general workflow:

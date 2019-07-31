@@ -5,9 +5,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 5958e4aeb960f1115c313843d99f66284d669a49
+   commit 3329a9b3fd2d0746e7c19329355bdef8c0021547
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Fri Jul 26 12:21:07 2019 -0500
+   Date:   Mon Jul 29 13:54:19 2019 -0500
    
-       Refactor Utility.cs
+       Increment manifest version
    
