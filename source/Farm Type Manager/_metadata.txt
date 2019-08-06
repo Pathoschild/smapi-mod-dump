@@ -5,9 +5,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 3329a9b3fd2d0746e7c19329355bdef8c0021547
+   commit e8b14bf68287527e180e93fe114d9d7ea846983e
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Mon Jul 29 13:54:19 2019 -0500
+   Date:   Fri Aug 2 17:50:34 2019 -0500
    
        Increment manifest version
    

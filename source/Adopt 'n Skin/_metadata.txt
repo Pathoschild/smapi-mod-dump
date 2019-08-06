@@ -5,11 +5,12 @@ mods:
    Adopt 'n Skin
 
 latest commit:
-   commit 92e0a5581bb18b4b9fd75e91f92db223c0fe363e
+   commit 3e4e90a328f3a60509da261901be33b980365d66
    Author: Gathouria <katey.huddleston@gmail.com>
-   Date:   Sun Jul 28 23:09:03 2019 -0700
+   Date:   Thu Aug 1 23:43:17 2019 -0700
    
-       OneTileHorse fix
+       Skin error fixes and console messages
        
-       OneTileHorse fix, console command call horse by ID fix, horse whistle now calls last ridden or adopted horse
+       - Fixes issues related to skins being moved around
+       - Alerts user when a creature type has no skins loaded for it in /assets/skins
    

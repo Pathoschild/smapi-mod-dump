@@ -1,0 +1,12 @@
+﻿{
+    "dia.eatquestion": "Comer {{item}}?",
+    "dia.eatanswerOne": "Sim, um.",
+    "dia.eatanswerMulti": "Sim, {{amount}} até ficar satisfeito.",
+    "dia.eatanswerNo": "Não.",
+    "menu.slingshotempty": "O estilingue precisa estar vazio para ser vendido.",
+    "item.slingshotdescr": "Atira vários itens, como pedras, minérios, vegetais e munição explosiva.",
+    "menu.carpentermoneybuttonon": "Ligado: Comprar recursos faltantes.",
+    "menu.carpentermoneybuttonoff": "Desligado: Comprar recursos faltantes.",
+    "menu.carpenteringredinfo": "{{itemname}} será comprado",
+    "menu.fishingrodempty": "Remova os acessórios para vender."
+}

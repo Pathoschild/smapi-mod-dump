@@ -10,9 +10,9 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit c4f6c34f7ad4936dd7aa60424fba581b58292b6c
+   commit 09e77cfc004b283da412c4a1f72fdf0118c8bc39
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Wed Jul 31 04:09:08 2019 +0200
+   Date:   Sun Aug 4 21:22:10 2019 +0200
    
        added Portuguese translation
    

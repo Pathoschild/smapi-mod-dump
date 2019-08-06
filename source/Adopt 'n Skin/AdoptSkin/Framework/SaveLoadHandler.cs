@@ -139,7 +139,7 @@ namespace AdoptSkin.Framework
             ModEntry.AnimalLongToShortIDs = SHelper.Data.ReadSaveData<Dictionary<long, int>>("animal-long-to-short-ids") ?? new Dictionary<long, int>();
             ModEntry.AnimalShortToLongIDs = SHelper.Data.ReadSaveData<Dictionary<int, long>>("animal-short-to-long-ids") ?? new Dictionary<int, long>();
 
-            // Set up maps if save data is from an older A&S
+            // Set up maps if save data is from an older data format of A&S
             if (ModEntry.SkinMap.Count == 0)
                 LoadSkinsOldVersion();
 
@@ -189,6 +189,16 @@ namespace AdoptSkin.Framework
         /// <summary>Refreshes creature information based on how much information the save file contains</summary>
         internal static void LoadCreatureSkins()
         {
+            // Alert player that there are creatures with no skins loaded for them
+            List<string> skinless = new List<string>();
+            foreach (string type in ModEntry.Assets.Keys)
+                if (ModEntry.Assets[type].Count == 0)
+                    skinless.Add(type);
+            if (skinless.Count > 0)
+                ModEntry.SMonitor.Log($"NOTICE: The following creature types have no skins located in `/assets/skins`:\n" +
+                    $"{string.Join(", ", skinless)}", LogLevel.Alert);
+
+
             foreach (FarmAnimal animal in ModApi.GetAnimals())
                 if (!ModEntry.AnimalLongToShortIDs.ContainsKey(ModEntry.GetLongID(animal)))
                     Entry.AddCreature(animal);
@@ -339,11 +349,19 @@ namespace AdoptSkin.Framework
                     ModEntry.SMonitor.Log($"Ignored skin `{fileName}` with skin ID of less than or equal to 0. Skins must have an ID of at least 1.", LogLevel.Warn);
                 else
                 {
-                    // File naming is valid, add asset into system
+                    // File naming is valid, get the asset key
                     string assetKey = SHelper.Content.GetActualAssetKey(Path.Combine(Path.GetDirectoryName(path), extension.Equals("xnb") ? Path.GetFileNameWithoutExtension(path) : Path.GetFileName(path)));
-                    ModEntry.Assets[type].Add(skinID, new AnimalSkin(type, skinID, assetKey));
+
+                    // User has duplicate skin names. Only keep the first skin found with the identifier and number ID
+                    if (ModEntry.Assets[type].ContainsKey(skinID))
+                        ModEntry.SMonitor.Log($"Ignored skin `{fileName}` with duplicate type and ID (more than one skin named `{fileName}` exists in `/assets/skins`)", LogLevel.Warn);
+                    // Skin is valid, add into system
+                    else
+                        ModEntry.Assets[type].Add(skinID, new AnimalSkin(type, skinID, assetKey));
                 }
             }
+
+            // ** TODO: Check if Sheared/Baby/Adult skins have all three, remove if not
 
             // Print loaded assets to console
             StringBuilder summary = new StringBuilder();

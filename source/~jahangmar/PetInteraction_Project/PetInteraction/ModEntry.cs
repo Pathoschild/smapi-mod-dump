@@ -84,6 +84,7 @@ namespace PetInteraction
 
             //helper.ConsoleCommands.Add("add_pet", "", AddPet);
             //helper.ConsoleCommands.Add("setdis", "", (string arg1, string[] arg2) => next_path_pixel_distance = System.Convert.ToInt32(arg2[0]));
+            helper.ConsoleCommands.Add("check_pets", "", Test);
         }
 
         void AddPet(string arg1, string[] arg2)
@@ -182,7 +183,7 @@ namespace PetInteraction
             //make sure your pet is at the farmhouse
             if (GetPet() != null && !(Game1.getFarm().characters.Contains(pet) && !(Game1.getLocationFromName(Game1.player.homeLocation).characters.Contains(pet))))
             {
-                pet.warpToFarmHouse(Game1.player);
+                WarpPetToFarmhouse(Game1.player);
             }
         }
 
@@ -218,7 +219,7 @@ namespace PetInteraction
             bool PetClicked(Pet p)
             {
                 Vector2 grabTile = e.Cursor.GrabTile;
-                return p.yJumpOffset == 0 && p.GetBoundingBox().Intersects(new Rectangle((int)grabTile.X * Game1.tileSize, (int)grabTile.Y * Game1.tileSize, Game1.tileSize, Game1.tileSize));
+                return pet.currentLocation == Game1.currentLocation && p.yJumpOffset == 0 && p.GetBoundingBox().Intersects(new Rectangle((int)grabTile.X * Game1.tileSize, (int)grabTile.Y * Game1.tileSize, Game1.tileSize, Game1.tileSize));
             }
 
             bool NotGiftingTreat()
@@ -467,7 +468,13 @@ namespace PetInteraction
                 return PlayerTile.Y < 2 || PlayerTile.Y > e.NewLocation.map.GetLayer("Back").LayerHeight - 2;
             }
 
-            if (e.NewLocation is Town
+            if (e.NewLocation.Name == "Temp")
+            {
+                Monitor.Log("Pet cannot follow on temporary map. Warping to Farm and unfollow.");
+                WarpPet(Game1.getLocationFromName("Farm"), new Vector2(54f, 8f));
+                SetState(PetState.Vanilla);
+            }
+            else if (e.NewLocation is Town
                 || e.NewLocation is Forest
                 || e.NewLocation is Desert
                 || e.NewLocation is BusStop
@@ -515,7 +522,7 @@ namespace PetInteraction
                 //Log("Player loc: " + new Vector2(Game1.player.getTileX(), Game1.player.getTileY()) + ", horse: " + (Game1.player.isRidingHorse() ? new Vector2(Game1.player.mount.getTileX(), Game1.player.mount.getTileY()).ToString() : ""));
                 if (petTile != null)
                 {
-                    Game1.warpCharacter(GetPet(), e.NewLocation, petTile);
+                    WarpPet(e.NewLocation, petTile);
                     Log("Warped pet to " + petTile);
                 }
 
@@ -524,13 +531,15 @@ namespace PetInteraction
             }
             else if (e.NewLocation is Farm)
             {
-                Game1.warpCharacter(GetPet(), "Farm", new Vector2(54f, 8f));
+                //Game1.warpCharacter(GetPet(), "Farm", new Vector2(54f, 8f));
+                WarpPet(Game1.getLocationFromName("Farm"), new Vector2(54f, 8f));
                 pet.position.X -= 64f;
             }
 
             else if (e.NewLocation is FarmHouse farmHouse)
             {
-                GetPet().warpToFarmHouse(farmHouse.owner);
+                //GetPet().warpToFarmHouse(farmHouse.owner);
+                WarpPetToFarmhouse(farmHouse.owner);
             }
             else if (e.NewLocation is MineShaft && !(e.OldLocation is MineShaft) || e.NewLocation is Woods /*|| e.NewLocation is Sewer*/)
             {
@@ -548,11 +557,40 @@ namespace PetInteraction
             }
         }
 
+        private void WarpPet(GameLocation location, Vector2 tile)
+        {
+            Pet pet = GetPet();
+            if (pet == null)
+            {
+                Monitor.Log("Couldn't find pet to warp to "+location.Name, LogLevel.Trace);
+                return;
+            }
+
+            if (pet.currentLocation == null)
+                pet.currentLocation = location;
+            Game1.warpCharacter(pet, location, tile);
+        }
+
+        private void WarpPetToFarmhouse(Farmer owner)
+        {
+            Pet pet = GetPet();
+            if (pet == null)
+            {
+                Monitor.Log("Couldn't find pet to warp to farmhouse", LogLevel.Trace);
+                return;
+            }
+            if (pet.currentLocation == null)
+                pet.currentLocation = Game1.currentLocation;
+            GetPet().warpToFarmHouse(owner);
+        }
+
         private static IMonitor _Monitor;
         public static void Log(string msg, LogLevel level = LogLevel.Trace) => _Monitor.Log(msg, level);
 
         private static IModHelper _Helper;
         public static IModHelper GetHelper() => _Helper;
+
+
 
     }
 }

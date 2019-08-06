@@ -1,10 +1,10 @@
-{
+﻿{
    "Name": "Grass Adjustor",
    "Author": "Jellypowered",
-   "Version": "1.0.0",
+   "Version": "1.0.2",
    "Description": "Configurable Grass Growth",
    "UniqueID": "Jellypowered.GrassChance",
-   "EntryDll": "GrassChance.dll",
-   "MinimumApiVersion": "2.10.1",
-   "UpdateKeys": []
+   "EntryDll": "GrassGrowthAdjuster.dll",
+   "MinimumApiVersion": "2.11.2",
+   "UpdateKeys": [ "Nexus:3365" ]
 }

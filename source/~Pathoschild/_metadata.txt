@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit fa7b8d4fcaf97addc6433a5f3dc659f7f9c6e889
+   commit 8a329f5f8837f9942f57e07dd731e063bd8f9df7
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Jul 27 21:48:17 2019 -0400
+   Date:   Mon Aug 5 01:03:32 2019 -0400
    
-       expand PatchMode info in Content Patcher readme
+       tidy translations, update docs (#447)
    

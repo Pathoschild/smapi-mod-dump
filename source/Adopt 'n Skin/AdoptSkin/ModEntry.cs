@@ -239,7 +239,10 @@ namespace AdoptSkin
             // Take care of FarmAnimal subtypes
             else if (creature is FarmAnimal animal)
             {
-                skinID = SkinMap[GetLongID(creature)];
+                if (SkinMap.ContainsKey(GetLongID(creature)))
+                    skinID = SkinMap[GetLongID(creature)];
+                else
+                    skinID = RandomizeSkin(creature);
 
                 if (ModApi.HasBabySprite(type) && animal.age.Value < animal.ageWhenMature.Value)
                     type = "baby" + type;
@@ -248,7 +251,12 @@ namespace AdoptSkin
             }
             // Take care of owned Pets and Horses
             else
-                skinID = SkinMap[GetLongID(creature)];
+            {
+                if (SkinMap.ContainsKey(GetLongID(creature)))
+                    skinID = SkinMap[GetLongID(creature)];
+                else
+                    skinID = RandomizeSkin(creature);
+            }
 
 
             if (skinID == 0)

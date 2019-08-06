@@ -25,8 +25,16 @@
 	-improved fetching and following behaviour
 	-improved pathfinding performance
 
+1.0.1:
+	-fixed problem regarding festival maps that could delete the pet
+	-Pets do not follow on maps called "Temp" (e.g. Egg Festival)
+
+1.X:
+	-added Portuguese translation (thanks to BeckySie)
 
 TODO:
-	-no greetings by your pet to other people [no idea]
+	-no greetings by your pet
+	-trash shaming issue
 	-better walking animation
+	-cannot follow on festival maps
 

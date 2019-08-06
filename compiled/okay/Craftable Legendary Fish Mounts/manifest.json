@@ -1,0 +1,10 @@
+{
+  "Name": "Craftable Legendary Fish Mounts",
+  "Author": "FallToot",
+  "Version": "1.0.1",
+  "Description": "Adds craftable and purchasable wall mounts for showing off your prized legendary fish!",
+  "UniqueID": "FallToot.CraftableFishMounts",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:4286" ],
+  "EntryDll": "CraftableFishMounts.dll"
+}

@@ -598,7 +598,9 @@
 						<option value="blank"></option>
 						<option value="custom">[NEW]</option>
 						<input name="Forage-Area" style="width:16em; display:none" disabled="disabled" onchange="areaCreate(this);" onblur="areaCreate(this);">
+						<input id="Forage-Area-EditArea" style="width:16em; display:none" disabled="disabled" onchange="areaEditIDConfirmed(this);" onblur="areaEditIDConfirmed(this);">
 						<div>
+							<button type="button" class="basic" id="Forage-Area-EditAreaButton" style="margin-top:1em" onclick="areaEditID(this);">Edit Area ID</button>
 							<button type="button" class="basic" id="Forage-Area-DelAreaButton" style="margin-top:1em" onclick="areaDelete(this);" onblur="areaDeleteCancel(this);">Delete Area</button>
 						</div>
 					</div>
@@ -1388,7 +1390,9 @@
 						<option value="blank"></option>
 						<option value="custom">[NEW]</option>
 						<input name="LargeObject-Area" style="width:16em; display:none" disabled="disabled" onchange="areaCreate(this);" onblur="areaCreate(this);">
+						<input id="LargeObject-Area-EditArea" style="width:16em; display:none" disabled="disabled" onchange="areaEditIDConfirmed(this);" onblur="areaEditIDConfirmed(this);">
 						<div>
+							<button type="button" class="basic" id="LargeObject-Area-EditAreaButton" style="margin-top:1em" onclick="areaEditID(this);">Edit Area ID</button>
 							<button type="button" class="basic" id="LargeObject-Area-DelAreaButton" style="margin-top:1em" onclick="areaDelete(this);" onblur="areaDeleteCancel(this);">Delete Area</button>
 						</div>
 					</div>
@@ -1489,6 +1493,11 @@
 						<button class="accordion">Spawn locations</button>
 						<div class="accordion-content">
 							<div class="setting">
+								<label for="LargeObject-FindExistingObjectLocations" class="clickable">Find existing object locations<span class="tooltip">?<span class="tooltiptext">Enable this to perform a one-time "scan" for large objects that already exist, save their locations, and automatically include them.<br/><br/>This is mainly used to respawn the farm's pre-existing hardwood stumps.</span></span></label>
+								<input type="checkbox" class="small" name="LargeObject-FindExistingObjectLocations" id="LargeObject-FindExistingObjectLocations">
+								<label for="LargeObject-FindExistingObjectLocations" class="small-checkbox-label"></label>
+							</div>
+							<div class="setting">
 								<fieldset class="border">
 								<legend>Spawn objects on these terrain types<span class="tooltip">?<span class="tooltiptext">Select terrain types to automatically allow spawning on them.<br/><br/>The <b>All</b> setting allows spawning everywhere on the map.</span></span></legend>
 									<table class="checkboxes">
@@ -1577,11 +1586,6 @@
 											</td>
 										</tr>
 									</table>
-									<div style="clear:left; padding-top:0.5em">
-										<label for="LargeObject-FindExistingObjectLocations" class="clickable">Find existing object locations<span class="tooltip">?<span class="tooltiptext">Enable this to auto-include the locations of any pre-existing large objects.<br/><br/>This is mainly used to respawn hardwood stumps after they're harvested.</span></span></label>
-										<input type="checkbox" class="small" name="LargeObject-FindExistingObjectLocations" id="LargeObject-FindExistingObjectLocations">
-										<label for="LargeObject-FindExistingObjectLocations" class="small-checkbox-label"></label>
-									</div>
 								</fieldset>
 							</div>
 							
@@ -1948,7 +1952,9 @@
 						<option value="blank"></option>
 						<option value="custom">[NEW]</option>
 						<input name="Ore-Area" style="width:16em; display:none" disabled="disabled" onchange="areaCreate(this);" onblur="areaCreate(this);">
+						<input id="Ore-Area-EditArea" style="width:16em; display:none" disabled="disabled" onchange="areaEditIDConfirmed(this);" onblur="areaEditIDConfirmed(this);">
 						<div>
+							<button type="button" class="basic" id="Ore-Area-EditAreaButton" style="margin-top:1em" onclick="areaEditID(this);">Edit Area ID</button>
 							<button type="button" class="basic" id="Ore-Area-DelAreaButton" style="margin-top:1em" onclick="areaDelete(this);" onblur="areaDeleteCancel(this);">Delete Area</button>
 						</div>
 					</div>
@@ -3494,10 +3500,7 @@
 						return; //quit without filling in settings
 					}
 					
-                    fillAllSettings(); //json loaded, so use it to fill in this page's settings
-					
-					document.getElementById("alertbox-file").textContent = file.name; //display the current file's name
-					document.getElementById("alertbox-message").textContent = ""; //clear any error messages
+                    fillAllSettings(file.name); //json loaded, so use it to fill in this page's settings
                 }
                 reader.readAsText(file); //read the file
             }
@@ -3508,12 +3511,17 @@
 		}
 		
 		//fill the editor's fields from a json object
-		function fillAllSettings()
+		function fillAllSettings(fileName)
 		{
-			if (json.ForageSpawnEnabled == null && json.LargeObjectSpawnEnabled == null && json.OreSpawnEnabled == null) //if none of the basic "enable" switches are defined
+			if (json.ForageSpawnEnabled == null && json.LargeObjectSpawnEnabled == null && json.OreSpawnEnabled == null) //if the file seems invalid (e.g. it lacks the main json properties)
 			{
-				document.getElementById("alertbox-message").textContent = "Error - This seems to be the wrong kind of config file.\n\nLook for .json files in the FarmTypeManager/data folder, or for content packs, the content.json file.";
-				return;
+				document.getElementById("alertbox-message").textContent = "\n\nError - This seems to be the wrong kind of config file.\n\nLook for .json files in the FarmTypeManager/data folder, or for content packs, the content.json file.";
+				return; //don't fill any settings
+			}
+			else //if the file seems valid
+			{
+				document.getElementById("alertbox-file").textContent = fileName || "[new]"; //display the current file's name (or a default if not provided)
+				document.getElementById("alertbox-message").textContent = ""; //clear any error messages
 			}
 			
 			//set main checkboxes
@@ -4156,10 +4164,87 @@
 			input.value = ""; //clear the text field
 		}
 		
+		//display the textbox used to edit the selected area's ID
+		function areaEditID(button)
+		{
+			//get the relevant area select field
+			var selector = button.id.replace("-EditAreaButton", "");
+			selector = document.getElementById(selector);
+		
+			if (selector.selectedIndex < 2) //if the current selection can't be edited
+			{
+				return; //do nothing
+			}
+		
+			var textbox = document.getElementById(button.id.replace("-EditAreaButton", "-EditArea")); //get the textbox
+			textbox.value = selector.options[selector.selectedIndex].text; //fill the textbox with the current area's ID
+			toggleField(selector, textbox); //display the textbox
+		}
+		
+		
+		function areaEditIDConfirmed(textbox)
+		{
+			if (textbox.style.display == "none") //if the textbox isn't currently visible
+			{
+				return; //do nothing
+			}
+		
+			document.getElementById("alertbox-message").textContent = ""; //clear the alertbox message section
+		
+			//get the relevant area select field
+			var selector = textbox.id.replace("-EditArea", "");
+			selector = document.getElementById(selector);
+
+			var areaIndex = selector.selectedIndex; //get the index for the currently selected area
+			areaSelect(selector); //store the currently selected area (note: may or may not be necessary)
+			
+			//get the relevant area list
+			var areas;
+			if (selector.id.includes("Forage")) //if forage area
+			{
+				areas = json.Forage_Spawn_Settings.Areas;
+			}
+			else if (selector.id.includes("LargeObject")) //if large object area
+			{
+				areas = json.Large_Object_Spawn_Settings.Areas;
+			}
+			else //if ore area
+			{
+				areas = json.Ore_Spawn_Settings.Areas;
+			}
+			
+			if (textbox.value == selector.options[selector.selectedIndex].text) //if the ID is unchanged
+			{
+				textbox.value = ""; //clear the textbox
+			}
+			
+			for (var x = 0; x < areas.length; x++) //for each area
+			{
+				if (textbox.value == areas[x].UniqueAreaID) //if this area ID is already used
+				{
+					document.getElementById("alertbox-message").textContent = "\n\nError - That area ID is already used.";
+					textbox.value = ""; //clear the textbox
+					break;
+				}
+			}
+			
+			toggleField(textbox, selector); //display the selector
+			
+			if (textbox.value.trim() == "") //if the entered ID is blank (or matched a previous ID)
+			{
+				textbox.value = ""; //clear the textbox
+				return;
+			}
+			
+			selector.options[selector.selectedIndex].text = textbox.value; //update the selected option's ID
+			areas[areaIndex - 2].UniqueAreaID = textbox.value; //update the stored area ID
+			textbox.value = ""; //clear the textbox
+		}
+		
 		//delete the currently selected area
 		function areaDelete(button)
 		{
-			// get the relevant area select field
+			//get the relevant area select field
 			var selector = button.id.replace("-DelAreaButton", "");
 			selector = document.getElementById(selector);
 			
@@ -4674,6 +4759,8 @@
 						}
 					}
 					
+					prev.FindExistingObjectLocations = document.getElementById("LargeObject-FindExistingObjectLocations").checked;
+					
 					prev.AutoSpawnTerrainTypes = [];
 					var terrains = document.getElementsByName("LargeObject-AutoSpawnTerrainTypes");
 					for (var x = 0; x < terrains.length; x++) //for each terrain type checkbox
@@ -4811,6 +4898,8 @@
 							}
 						}
 					}
+					
+					document.getElementById("LargeObject-FindExistingObjectLocations").checked = curr.FindExistingObjectLocations;
 					
 					var terrains = document.getElementsByName("LargeObject-AutoSpawnTerrainTypes");
 					for (var x = 0; x < terrains.length; x++) //for each terrain type checkbox
