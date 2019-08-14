@@ -5,12 +5,9 @@ mods:
    Adopt 'n Skin
 
 latest commit:
-   commit 3e4e90a328f3a60509da261901be33b980365d66
+   commit 48137c1938fe7c205448c108fcf22c8426e67bdc
    Author: Gathouria <katey.huddleston@gmail.com>
-   Date:   Thu Aug 1 23:43:17 2019 -0700
+   Date:   Wed Aug 7 17:21:10 2019 -0700
    
-       Skin error fixes and console messages
-       
-       - Fixes issues related to skins being moved around
-       - Alerts user when a creature type has no skins loaded for it in /assets/skins
+       Corrected a "bug" in which strays could only be cats
    

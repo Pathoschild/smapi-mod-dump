@@ -269,6 +269,7 @@ Name | Valid settings | Description
 EnableWhereAmICommand | **true**, false | Enables or disables the `whereami` console command.
 EnableContentPacks | **true**, false | Enables or disables any installed content packs for Farm Type Manager.
 EnableContentPackFileChanges | **true**, false | Enables or disables special file changes by content packs, such as resetting the `FarmTypeManager\data` folder.
+EnableTraceLogMessages | **true**, false | Enables or disables `[TRACE]`-level messages in the SMAPI error log.
 
 ## Content Packs
 In version 1.4 and later, Farm Type Manager can use configuration files from content packs. They will be used *in addition* to the farm-specific files in the `FarmTypeManager\data` folder; they will not replace or override each other.

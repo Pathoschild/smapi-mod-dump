@@ -31,9 +31,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 7eb233f30d2d10ecf9488eeb1ad600c78b8fb027
-   Author: danvolchek <volchek2@illinois.edu>
-   Date:   Sat Jul 13 22:56:59 2019 -0500
+   commit c388295ced2dca937dc13d1d43f51c720808b11b
+   Author: Dan Volchek <volchek2@illinois.edu>
+   Date:   Sun Aug 11 18:41:46 2019 -0700
    
-       update all projects to new csproj format
+       [Better Doors] fix rare android bug
    

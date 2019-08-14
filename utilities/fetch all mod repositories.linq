@@ -10,8 +10,8 @@
   <Namespace>StardewModdingAPI.Toolkit.Framework.ModData</Namespace>
   <Namespace>StardewModdingAPI.Toolkit.Framework.ModScanning</Namespace>
   <Namespace>StardewModdingAPI.Toolkit.Framework.UpdateData</Namespace>
-  <Namespace>StardewModdingAPI.Toolkit.Serialisation</Namespace>
-  <Namespace>StardewModdingAPI.Toolkit.Serialisation.Models</Namespace>
+  <Namespace>StardewModdingAPI.Toolkit.Serialization</Namespace>
+  <Namespace>StardewModdingAPI.Toolkit.Serialization.Models</Namespace>
   <Namespace>StardewModdingAPI.Toolkit.Utilities</Namespace>
   <Namespace>System.Net</Namespace>
   <Namespace>System.Threading.Tasks</Namespace>

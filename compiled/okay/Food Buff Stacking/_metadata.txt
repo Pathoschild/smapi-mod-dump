@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4321
+IDs: thejcannon.foodbuffstacking
+update keys: Nexus:4321, GitHub:thejcannon/Stardew-FoodBuffStacking

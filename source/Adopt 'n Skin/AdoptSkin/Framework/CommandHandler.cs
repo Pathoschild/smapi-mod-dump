@@ -38,7 +38,7 @@ namespace AdoptSkin.Framework
         {
             switch (command)
             {
-                case "debug_reset":
+                case "debug_asreset":
                     if (!EnforceArgCount(args, 0))
                         return;
 
@@ -62,6 +62,7 @@ namespace AdoptSkin.Framework
                             Earth.AddCreature(horse);
                     foreach (FarmAnimal animal in ModApi.GetAnimals())
                         Earth.AddCreature(animal);
+                    ModEntry.SMonitor.Log("All creatures have be readded into the A&S system. This has randomized all skins.", LogLevel.Info);
                     return;
 
 
@@ -69,7 +70,7 @@ namespace AdoptSkin.Framework
                     if (!EnforceArgCount(args, 0))
                         return;
                     ModEntry.SMonitor.Log($"Animals Long to Short:\n{string.Join("\n", ModEntry.AnimalLongToShortIDs)}", LogLevel.Info);
-                    ModEntry.SMonitor.Log($"Animals Short to Long equal length: {ModEntry.AnimalLongToShortIDs.Count == ModEntry.AnimalShortToLongIDs.Count}", LogLevel.Alert);
+                    ModEntry.SMonitor.Log($"Animals Short to Long equal length: {ModEntry.AnimalLongToShortIDs.Count == ModEntry.AnimalShortToLongIDs.Count}", LogLevel.Warn);
                     return;
 
 
@@ -253,7 +254,7 @@ namespace AdoptSkin.Framework
                     foreach (FarmAnimal animal in ModApi.GetAnimals())
                         ModEntry.RandomizeSkin(animal);
 
-                    ModEntry.SMonitor.Log("All animal, pet, and horse skins have been randomized.", LogLevel.Alert);
+                    ModEntry.SMonitor.Log("All animal, pet, and horse skins have been randomized.", LogLevel.Info);
                     return;
 
 
@@ -271,7 +272,7 @@ namespace AdoptSkin.Framework
                         {
                             ModEntry.RandomizeSkin(creature);
                         }
-                        ModEntry.SMonitor.Log($"All creatures in group `{call}` have been randomized.", LogLevel.Alert);
+                        ModEntry.SMonitor.Log($"All creatures in group `{call}` have been randomized.", LogLevel.Info);
                     }
                     else if (EnforceArgTypeInt(args[0], 1))
                     {
@@ -285,7 +286,7 @@ namespace AdoptSkin.Framework
                             if (ModEntry.RandomizeSkin(creature) == 0)
                                 ModEntry.SMonitor.Log($"No skins are located in `/assets/skins` for {creature.Name}'s type: {ModEntry.Sanitize(creature.GetType().Name)}", LogLevel.Error);
                             else
-                                ModEntry.SMonitor.Log($"{creature.Name}'s skin has been randomized.", LogLevel.Alert);
+                                ModEntry.SMonitor.Log($"{creature.Name}'s skin has been randomized.", LogLevel.Info);
                         }
                         else
                             ModEntry.SMonitor.Log($"Creature with given ID does not exist: {creatureID}", LogLevel.Error);
@@ -320,7 +321,7 @@ namespace AdoptSkin.Framework
 
                     // Successfully found given creature to set skin for
                     ModEntry.SetSkin(creatureToSkin, skinID);
-                    ModEntry.SMonitor.Log($"{creatureToSkin.Name}'s skin has been set to skin {skinID}", LogLevel.Alert);
+                    ModEntry.SMonitor.Log($"{creatureToSkin.Name}'s skin has been set to skin {skinID}", LogLevel.Info);
                     return;
 
 
@@ -522,8 +523,8 @@ namespace AdoptSkin.Framework
                 foreach (FarmAnimal animal in ModApi.GetAnimals())
                     animalInfo.Add(GetPrintString(animal));
 
-                ModEntry.SMonitor.Log("Animals:", LogLevel.Alert);
-                ModEntry.SMonitor.Log($"{string.Join(", ", animalInfo)}", LogLevel.Info);
+                ModEntry.SMonitor.Log("Animals:", LogLevel.Debug);
+                ModEntry.SMonitor.Log($"{string.Join(", ", animalInfo)}\n", LogLevel.Info);
             }
             // Handle coop animal types only
             else if (type == "coop")
@@ -534,8 +535,8 @@ namespace AdoptSkin.Framework
                     if (animal.isCoopDweller())
                         coopInfo.Add(GetPrintString(animal));
 
-                ModEntry.SMonitor.Log("Coop Animals:", LogLevel.Alert);
-                ModEntry.SMonitor.Log($"{string.Join(", ", coopInfo)}", LogLevel.Info);
+                ModEntry.SMonitor.Log("Coop Animals:", LogLevel.Debug);
+                ModEntry.SMonitor.Log($"{string.Join(", ", coopInfo)}\n", LogLevel.Info);
             }
             // Handle barn animal types only
             else if (type == "barn")
@@ -546,8 +547,8 @@ namespace AdoptSkin.Framework
                     if (!animal.isCoopDweller())
                         barnInfo.Add(GetPrintString(animal));
 
-                ModEntry.SMonitor.Log("Barn Animals:", LogLevel.Alert);
-                ModEntry.SMonitor.Log($"{string.Join(", ", barnInfo)}", LogLevel.Info);
+                ModEntry.SMonitor.Log("Barn Animals:", LogLevel.Debug);
+                ModEntry.SMonitor.Log($"{string.Join(", ", barnInfo)}\n", LogLevel.Info);
             }
             // Handle chicken type arguments
             else if (type == "chicken")
@@ -558,8 +559,8 @@ namespace AdoptSkin.Framework
                     if (ModApi.IsChicken(ModApi.GetInternalType(animal)))
                         chickenInfo.Add(GetPrintString(animal));
 
-                ModEntry.SMonitor.Log("Chickens:", LogLevel.Alert);
-                ModEntry.SMonitor.Log($"{string.Join(", ", chickenInfo)}", LogLevel.Info);
+                ModEntry.SMonitor.Log("Chickens:", LogLevel.Debug);
+                ModEntry.SMonitor.Log($"{string.Join(", ", chickenInfo)}\n", LogLevel.Info);
             }
             // Handle cow type arguments
             else if (type == "cow")
@@ -570,8 +571,8 @@ namespace AdoptSkin.Framework
                     if (ModApi.IsCow(ModApi.GetInternalType(animal)))
                         cowInfo.Add(GetPrintString(animal));
 
-                ModEntry.SMonitor.Log("Cows:", LogLevel.Alert);
-                ModEntry.SMonitor.Log($"{string.Join(", ", cowInfo)}", LogLevel.Info);
+                ModEntry.SMonitor.Log("Cows:", LogLevel.Debug);
+                ModEntry.SMonitor.Log($"{string.Join(", ", cowInfo)}\n", LogLevel.Info);
             }
             // Handle other animal type arguments
             else if (ModApi.GetHandledAnimalTypes().Contains(type))
@@ -582,8 +583,8 @@ namespace AdoptSkin.Framework
                     if (type == ModEntry.Sanitize(animal.type.Value))
                         animalInfo.Add(GetPrintString(animal));
 
-                ModEntry.SMonitor.Log($"{arg}s:", LogLevel.Alert);
-                ModEntry.SMonitor.Log($"{string.Join(", ", animalInfo)}", LogLevel.Info);
+                ModEntry.SMonitor.Log($"{arg}s:", LogLevel.Debug);
+                ModEntry.SMonitor.Log($"{string.Join(", ", animalInfo)}\n", LogLevel.Info);
             }
 
 
@@ -596,8 +597,8 @@ namespace AdoptSkin.Framework
                     if (!ModApi.IsStray(pet))
                         petInfo.Add(GetPrintString(pet));
 
-                ModEntry.SMonitor.Log("Pets:", LogLevel.Alert);
-                ModEntry.SMonitor.Log($"{string.Join(", ", petInfo)}", LogLevel.Info);
+                ModEntry.SMonitor.Log("Pets:", LogLevel.Debug);
+                ModEntry.SMonitor.Log($"{string.Join(", ", petInfo)}\n", LogLevel.Info);
 
             }
             else if (ModApi.GetHandledPetTypes().Contains(type))
@@ -608,8 +609,8 @@ namespace AdoptSkin.Framework
                     if (type == ModEntry.Sanitize(pet.GetType().Name) && !ModApi.IsStray(pet))
                         petInfo.Add(GetPrintString(pet));
 
-                ModEntry.SMonitor.Log($"{arg}s:", LogLevel.Alert);
-                ModEntry.SMonitor.Log($"{string.Join(", ", petInfo)}", LogLevel.Info);
+                ModEntry.SMonitor.Log($"{arg}s:", LogLevel.Debug);
+                ModEntry.SMonitor.Log($"{string.Join(", ", petInfo)}\n", LogLevel.Info);
             }
 
 
@@ -622,8 +623,8 @@ namespace AdoptSkin.Framework
                     if (!ModApi.IsWildHorse(horse) && ModApi.IsNotATractor(horse))
                         horseInfo.Add(GetPrintString(horse));
 
-                ModEntry.SMonitor.Log("Horses:", LogLevel.Alert);
-                ModEntry.SMonitor.Log($"{string.Join(", ", horseInfo)}", LogLevel.Info);
+                ModEntry.SMonitor.Log("Horses:", LogLevel.Debug);
+                ModEntry.SMonitor.Log($"{string.Join(", ", horseInfo)}\n", LogLevel.Info);
             }
         }
 

@@ -18,8 +18,8 @@
   <Namespace>StardewModdingAPI.Toolkit.Framework.ModData</Namespace>
   <Namespace>StardewModdingAPI.Toolkit.Framework.ModScanning</Namespace>
   <Namespace>StardewModdingAPI.Toolkit.Framework.UpdateData</Namespace>
-  <Namespace>StardewModdingAPI.Toolkit.Serialisation</Namespace>
-  <Namespace>StardewModdingAPI.Toolkit.Serialisation.Models</Namespace>
+  <Namespace>StardewModdingAPI.Toolkit.Serialization</Namespace>
+  <Namespace>StardewModdingAPI.Toolkit.Serialization.Models</Namespace>
   <Namespace>StardewModdingAPI.Toolkit.Utilities</Namespace>
   <Namespace>System.Net</Namespace>
   <Namespace>System.Threading.Tasks</Namespace>
@@ -46,8 +46,8 @@ private readonly string GameFolderPath = @"C:\Program Files (x86)\Steam\steamapp
 /// <summary>The absolute path for the folder containing mods.</summary>
 private string ModFolderPath => Path.Combine(this.GameFolderPath, "Mods (test)");
 
-/// <summary>The absolute path for the file which, if present, indicates mod folders should not be normalised.</summary>
-private string ModFolderPathDoNotNormaliseToken => Path.Combine(this.ModFolderPath, "DO_NOT_NORMALISE.txt");
+/// <summary>The absolute path for the file which, if present, indicates mod folders should not be normalized.</summary>
+private string ModFolderPathDoNotNormalizeToken => Path.Combine(this.ModFolderPath, "DO_NOT_NORMALIZE.txt");
 
 /// <summary>The absolute path for SMAPI's metadata file.</summary>
 private string MetadataFilePath => Path.Combine(this.GameFolderPath, "smapi-internal", "StardewModdingAPI.metadata.json");
@@ -79,8 +79,8 @@ private readonly HashSet<WikiCompatibilityStatus> HighlightStatuses = new HashSe
 /// <summary>Whether to show data for the latest version of the game, even if it's a beta.</summary>
 public bool ForBeta = true;
 
-/// <summary>Whether to normalise mod folders.</summary>
-public bool NormaliseFolders = true;
+/// <summary>Whether to normalize mod folders.</summary>
+public bool NormalizeFolders = true;
 
 /// <summary>Whether to perform update checks for mods installed locally.</summary>
 public bool UpdateCheckLocal = true;
@@ -204,7 +204,7 @@ private IBarrel Cache;
 void Main()
 {
 	/****
-	** Initialise
+	** Initialize
 	****/
 	Console.WriteLine("Initialising...");
 
@@ -219,10 +219,10 @@ void Main()
 	var mods = new List<ModData>();
 
 	// check tokens
-	if (this.NormaliseFolders && File.Exists(this.ModFolderPathDoNotNormaliseToken))
+	if (this.NormalizeFolders && File.Exists(this.ModFolderPathDoNotNormalizeToken))
 	{
-		Console.WriteLine("   WARNING: detected 'do not normalise' file, disabling folder normalising.");
-		this.NormaliseFolders = false;
+		Console.WriteLine("   WARNING: detected 'do not normalize' file, disabling folder normalising.");
+		this.NormalizeFolders = false;
 	}
 
 	/****
@@ -314,9 +314,9 @@ void Main()
 	}
 
 	/****
-	** Normalise mod folders
+	** Normalize mod folders
 	****/
-	if (this.NormaliseFolders)
+	if (this.NormalizeFolders)
 	{
 		Console.WriteLine("Normalising mod folders...");
 		foreach (ModData mod in mods)
@@ -351,7 +351,7 @@ void Main()
 				+ $"update keys: {string.Join(", ", mod.UpdateKeys)}\n"
 			);
 
-			// normalise
+			// normalize
 			string newName = null;
 			try
 			{
@@ -370,7 +370,7 @@ void Main()
 				if (mod.InstalledVersion.IsPrerelease() && (mod.InstalledVersion.PrereleaseTag.Contains("unofficial") || mod.InstalledVersion.PrereleaseTag.Contains("update")))
 					newName += $" [unofficial]";
 
-				// sanitise name
+				// sanitize name
 				foreach (char ch in Path.GetInvalidFileNameChars())
 					newName = newName.Replace(ch, '_');
 
@@ -499,7 +499,7 @@ void Main()
 		.Select(mod =>
 		{
 			if (!mod.IsValid)
-				return (dynamic)new { NormalisedFolder = Util.WithStyle(mod.NormalisedFolder, "color: red;") };
+				return (dynamic)new { NormalizedFolder = Util.WithStyle(mod.NormalizedFolder, "color: red;") };
 
 			bool hasMajorUpdateCheckErrors = mod.UpdateCheckErrors.Any() && mod.UpdateCheckErrors.Any(p => !p.Contains("matches a mod with invalid semantic version"));
 			const string errorStyle = "color: red; font-weight: bold;";
@@ -512,7 +512,7 @@ void Main()
 				ManifestUpdateKeys = mod.ManifestUpdateKeys != null ? mod.ManifestUpdateKeys : Util.WithStyle("none", errorStyle),
 				UpdateKeys = Util.WithStyle(mod.UpdateKeys, "font-size: 0.8em;"),
 				UpdateCheckErrors = mod.UpdateCheckErrors.Length > 0 ? Util.WithStyle(string.Join("\n", mod.UpdateCheckErrors), $"font-size: 0.8em; {(hasMajorUpdateCheckErrors ? errorStyle : "color: gray;")}") : "",
-				NormalisedFolder = new Lazy<string>(() => mod.NormalisedFolder),
+				NormalizedFolder = new Lazy<string>(() => mod.NormalizedFolder),
 				Manifest = new Lazy<Manifest>(() => mod.Manifest),
 				Source = mod.SourceUrl != null ? new Hyperlinq(mod.SourceUrl, "source") : null
 			};
@@ -589,12 +589,12 @@ T CacheOrFetch<T>(string key, Func<T> fetch)
 	if (this.Cache.Exists(key))
 	{
 		string json = this.Cache.Get<string>(key);
-		return jsonHelper.Deserialise<T>(json);
+		return jsonHelper.Deserialize<T>(json);
 	}
 	else
 	{
 		T data = fetch();
-		string json = jsonHelper.Serialise(data); // MonkeyCache handles string values weirdly, and will try to deserialise as JSON when we read it
+		string json = jsonHelper.Serialize(data); // MonkeyCache handles string values weirdly, and will try to deserialize as JSON when we read it
 		this.Cache.Add(key, json, this.CacheTime);
 		return data;
 	}
@@ -805,7 +805,7 @@ class ReportEntry
 	public Manifest Manifest { get; }
 
 	/// <summary>The mod folder name.</summary>
-	public string NormalisedFolder { get; }
+	public string NormalizedFolder { get; }
 
 	/// <summary>The mod name.</summary>
 	public string Name { get; }
@@ -858,7 +858,7 @@ class ReportEntry
 		this.ModData = mod;
 		this.IsValid = true;
 		this.Manifest = manifest;
-		this.NormalisedFolder = mod.Folder.Directory.Name;
+		this.NormalizedFolder = mod.Folder.Directory.Name;
 		this.Name = manifest.Name;
 		this.Author = manifest.Author;
 		this.Installed = manifest.Version.ToString();
@@ -885,7 +885,7 @@ class ReportEntry
 }
 
 /// <summary>Get the unique anchor for the mod on the compatibility list, excluding the '#' symbol.</summary>
-/// <param name="name">The standardised mod name.</param>
+/// <param name="name">The standardized mod name.</param>
 private string GetAnchor(string name)
 {
 	name = name.Replace(' ', '_');

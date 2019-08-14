@@ -28,7 +28,6 @@ namespace AdoptSkin.Framework
 
         /// <summary>Randomizer for logic within CreationHandler instances.</summary>
         private readonly Random Randomizer = new Random();
-        private readonly int PetWarpTileID = 1937;
 
         /// <summary>Reference to Adopt & Skin's ModEntry. Used to access creature information and print information to the monitor when necessary.</summary>
         internal ModEntry Earth;
@@ -169,7 +168,7 @@ namespace AdoptSkin.Framework
                 // No placeable tiles found within the range given in the Config
                 if (warpableTiles.Count == 0)
                 {
-                    ModEntry.SMonitor.Log($"Pets cannot be spread within the given radius: {cer}", LogLevel.Alert);
+                    ModEntry.SMonitor.Log($"Pets cannot be spread within the given radius: {cer}", LogLevel.Debug);
                     return;
                 }
 
@@ -203,6 +202,7 @@ namespace AdoptSkin.Framework
                 map.isBehindTree(tile) ||
                 map.isBehindBush(tile) ||
                 map.isCollidingWithWarpOrDoor(new Microsoft.Xna.Framework.Rectangle((int)tile.X, (int)tile.Y, 1, 1)) != null ||
+                IsBuildingInCreatureSpace(map, tile) ||
                 !map.isTileLocationTotallyClearAndPlaceableIgnoreFloors(tile) ||
                 !map.isTileLocationTotallyClearAndPlaceableIgnoreFloors(new Vector2(tile.X + 1, tile.Y)))
             {
@@ -213,14 +213,30 @@ namespace AdoptSkin.Framework
         }
 
 
+        /// <summary>Returns true if a building collides with the 2x2 space that a creature would occupy if placed on the given tile</summary>
+        internal static bool IsBuildingInCreatureSpace(GameLocation map, Vector2 tile)
+        {
+            if (map is BuildableGameLocation buildableLocation)
+            {
+                foreach (Building building in buildableLocation.buildings)
+                    if (building.occupiesTile(tile) ||
+                        building.occupiesTile(new Vector2(tile.X + 1, tile.Y)) ||
+                        building.occupiesTile(new Vector2(tile.X + 1, tile.Y + 1)) ||
+                        building.occupiesTile(new Vector2(tile.X, tile.Y + 1)))
+                        return true;
+            }
+            return false;
+        }
+
+
         /// <summary>Check to see if the player is attempting to interact with a Stray or WildHorse</summary>
         internal void AdoptableInteractionCheck(object sender, ButtonPressedEventArgs e)
         {
             if (StrayInfo != null)
             {
-                // Check for mouse and controller versions of interaction
-                if (((e.Button.Equals(SButton.MouseRight) && StrayInfo.PetInstance.withinPlayerThreshold(1))   ||
-                    (e.Button.Equals(SButton.ControllerA) && StrayInfo.PetInstance.withinPlayerThreshold(1))))
+                // Check for mouse, keyboard, and controller versions of interaction
+                if ((e.Button.Equals(SButton.MouseRight) || (e.Button.Equals(SButton.ControllerA)) || e.Button.IsActionButton()) &&
+                    StrayInfo.PetInstance.withinPlayerThreshold(2))
                 {
                     Game1.activeClickableMenu = new ConfirmationDialog("This is one of the strays that Marnie has taken in. \n\n" +
                         $"The animal is wary, but curious. Will you adopt this {ModEntry.Sanitize(StrayInfo.PetInstance.GetType().Name)} for {AdoptPrice}G?", (who) =>
@@ -232,25 +248,20 @@ namespace AdoptSkin.Framework
                                 cd.cancel();
 
                             if (Game1.player.Money >= AdoptPrice)
-                            {
-                                Game1.player.Money -= AdoptPrice;
                                 Game1.activeClickableMenu = new NamingMenu(PetNamer, $"What will you name it?");
-                            }
                             else
-                            {
                                 // Exit the naming menu
                                 Game1.drawObjectDialogue($"You don't have {AdoptPrice}G..");
-                            }
                         });
                 }
             }
             if (HorseInfo != null)
             {
-                // Check for mouse and controller versions of interaction
-                if (((e.Button.Equals(SButton.MouseRight) && HorseInfo.HorseInstance.withinPlayerThreshold(1)) ||
-                    (e.Button.Equals(SButton.ControllerA) && HorseInfo.HorseInstance.withinPlayerThreshold(1))))
+                // Check for mouse, keyboard, and controller versions of interaction
+                if ((e.Button.Equals(SButton.MouseRight) || (e.Button.Equals(SButton.ControllerA)) || e.Button.IsActionButton()) &&
+                    HorseInfo.HorseInstance.withinPlayerThreshold(2))
                 {
-                    
+
                     Game1.activeClickableMenu = new ConfirmationDialog("This appears to be an escaped horse from a neighboring town. \n\nIt looks tired, but friendly. Will you adopt this horse?", (who) =>
                     {
                         if (ModEntry.Config.DebuggingMode)
@@ -318,6 +329,7 @@ namespace AdoptSkin.Framework
 
             // Exit the naming menu
             Game1.drawObjectDialogue($"{petName} was brought home.");
+            Game1.player.Money -= AdoptPrice;
         }
 
 

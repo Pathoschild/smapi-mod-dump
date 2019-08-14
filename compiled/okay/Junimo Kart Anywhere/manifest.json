@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Junimo Kart Anywhere",
+  "Author": "MartyrPher",
+  "Version": "1.0.0",
+  "MinimumApiVersion": "2.10.1",
+  "Description": "Start your save off right with Junimo Kart",
+  "UniqueID": "JunimoKartAnywhere",
+  "EntryDll": "JunimoKartAnywhere.dll",
+  "UpdateKeys": [ "Nexus: 4315" ]
+}

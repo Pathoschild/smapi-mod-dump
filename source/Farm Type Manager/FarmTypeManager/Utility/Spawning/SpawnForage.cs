@@ -23,7 +23,7 @@ namespace FarmTypeManager
             public static void SpawnForage(int index, GameLocation location, Vector2 tile)
             {
                 StardewValley.Object forageObj = new StardewValley.Object(tile, index, (string)null, false, true, false, true); //generate the forage object
-                Monitor.Log($"Spawning forage. Type: {forageObj.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).", LogLevel.Trace);
+                Monitor.VerboseLog($"Spawning forage. Type: {forageObj.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
                 location.dropObject(forageObj, tile * 64f, Game1.viewport, true, (Farmer)null); //place the forage at the location
             }
         }

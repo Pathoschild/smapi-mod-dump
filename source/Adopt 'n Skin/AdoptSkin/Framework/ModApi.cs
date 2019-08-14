@@ -45,6 +45,10 @@ namespace AdoptSkin.Framework
             {
                 HandledPetTypes.Add(id);
                 ModEntry.PetTypeMap.Add(id, type);
+                if (typeof(Dog).IsAssignableFrom(type))
+                    Stray.PetConstructors.Add(type, (x, y) => new Dog(x, y));
+                else
+                    Stray.PetConstructors.Add(type, (x, y) => new Cat(x, y));
             }
             else if (typeof(Horse).IsAssignableFrom(type))
             {

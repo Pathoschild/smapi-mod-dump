@@ -22,7 +22,7 @@ namespace FarmTypeManager
             /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
             public static void SpawnLargeObject(int index, Farm location, Vector2 tile)
             {
-                Monitor.Log($"Spawning large object. ID: {index}. Location: {tile.X},{tile.Y} ({location.Name}).", LogLevel.Trace);
+                Monitor.VerboseLog($"Spawning large object. ID: {index}. Location: {tile.X},{tile.Y} ({location.Name}).");
                 location.addResourceClumpAndRemoveUnderlyingTerrain(index, 2, 2, tile); //generate an object using the list of valid index numbers
             }
         }

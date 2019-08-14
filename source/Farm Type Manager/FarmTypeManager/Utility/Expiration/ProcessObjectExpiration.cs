@@ -88,6 +88,7 @@ namespace FarmTypeManager
                             if (saved.DaysUntilExpire == 1) //if the object should expire tonight
                             {
                                 Monitor.Log($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).", LogLevel.Trace);
+                                realObject.CanBeGrabbed = true; //workaround for certain objects being ignored by the removeObject method
                                 location.removeObject(saved.Tile, false); //remove the object from the game
                                 objectsToRemove.Add(saved); //mark object for removal from save
                             }

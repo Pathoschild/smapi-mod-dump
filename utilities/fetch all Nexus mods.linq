@@ -12,15 +12,15 @@
   <Namespace>Pathoschild.FluentNexus.Models</Namespace>
   <Namespace>Pathoschild.Http.Client</Namespace>
   <Namespace>SevenZip</Namespace>
+  <Namespace>StardewModdingAPI</Namespace>
   <Namespace>StardewModdingAPI.Toolkit</Namespace>
   <Namespace>StardewModdingAPI.Toolkit.Framework.Clients.Wiki</Namespace>
   <Namespace>StardewModdingAPI.Toolkit.Framework.ModScanning</Namespace>
-  <Namespace>StardewModdingAPI.Toolkit.Serialisation</Namespace>
+  <Namespace>StardewModdingAPI.Toolkit.Serialization</Namespace>
+  <Namespace>StardewModdingAPI.Toolkit.Serialization.Models</Namespace>
   <Namespace>System.Globalization</Namespace>
   <Namespace>System.Net</Namespace>
   <Namespace>System.Threading.Tasks</Namespace>
-  <Namespace>StardewModdingAPI.Toolkit.Serialisation.Models</Namespace>
-  <Namespace>StardewModdingAPI</Namespace>
 </Query>
 
 /*
@@ -78,6 +78,7 @@ readonly HashSet<int> IgnoreNexusIDsForValidation = new HashSet<int>
 	
 	// mod translations
 	2825, // Auto-Grabber Mod (zh)
+	4305, // Climates of Ferngill (pt)
 	3954, // Happy Birthday (pt)
 	4197, // Companion NPCs (pt)
 	4265, // Magic (pt)
@@ -217,6 +218,7 @@ readonly HashSet<int> IgnoreFileIDsForValidation = new HashSet<int>
 	16623, // Stardew In-Game Daily Planner > Example Plan
 	16660, // Stardew In-Game Daily Planner > Example Checklist
 	18233, // Stardew Valley Expanded (#3753) > Wallpapers, Event Guide and Script
+	18540, // Stardew Valley Expanded (#3753) > Grampleton Fields
 	11658, // Visual Crossing Sprite Overhaul (#1942), CP pack with invalid version format
 	11717, // Pencilstab's Portraits (#2351), content pack with separate previews folder including .zip
 	9495,  // Quieter Cat Dog and Keg (#2371), .wav files
@@ -271,6 +273,29 @@ async Task<dynamic[]> GetModsNotOnWikiAsync(IEnumerable<ParsedModData> mods)
 			&& (!knownModIDs.Contains(folder.ModID) || !knownNexusIDs.Contains(mod.ID))
 			&& !this.ShouldIgnoreForValidation(mod.ID, folder.FileID)
 		let manifest = folder.RawFolder.Value.Manifest
+		
+		let names = 
+			(
+				from name in new[] { folder.ModDisplayName?.Trim(), mod.Name?.Trim() }
+				where !string.IsNullOrWhiteSpace(name)
+				orderby name
+				select name
+			)
+			.Distinct(StringComparer.InvariantCultureIgnoreCase).OrderBy(p => p)
+
+		let authorNames =
+			(
+				from name in
+					new[] { manifest?.Author?.Trim(), mod.Author?.Trim() }
+					.Where(p => p != null)
+					.SelectMany(p => p.Split(','))
+					.Select(p => p.Trim())
+				where !string.IsNullOrWhiteSpace(name)
+				orderby name
+				select name
+			)
+			.Distinct(StringComparer.InvariantCultureIgnoreCase)
+		
 		select new
 		{
 			NexusID = new Hyperlinq($"https://www.nexusmods.com/stardewvalley/mods/{mod.ID}", mod.ID.ToString()),
@@ -290,11 +315,11 @@ async Task<dynamic[]> GetModsNotOnWikiAsync(IEnumerable<ParsedModData> mods)
 			Folder = new Lazy<ParsedFileData>(() => folder),
 			WikiEntry = new Lazy<string>(() =>
 				"{{/entry\n"
-				+ $"  |name     = {folder.ModDisplayName}\n"
-				+ $"  |author   = {manifest?.Author}{(manifest?.Author != null && !manifest.Author.Trim().Equals(mod.Author?.Trim(), StringComparison.InvariantCultureIgnoreCase) ? $", {mod.Author}" : "")}\n"
+				+ $"  |name     = {string.Join(", ", names)}\n"
+				+ $"  |author   = {string.Join(", ", authorNames)}\n"
 				+ $"  |id       = {manifest?.UniqueID}\n"
 				+ $"  |nexus id = {mod.ID}\n"
-				+ $"  |github   = {manifest?.UpdateKeys?.Where(p => p.Trim().StartsWith("GitHub")).Select(p => p.Trim().Substring(6)).FirstOrDefault()}\n"
+				+ $"  |github   = {manifest?.UpdateKeys?.Where(p => p.Trim().StartsWith("GitHub:")).Select(p => p.Trim().Substring("GitHub:".Length)).FirstOrDefault()}\n"
 				+ "}}"
 			)
 		}

@@ -50,28 +50,37 @@ namespace AdoptSkin.Framework
         /// <summary>Sets up initial values needed for A&S.</summary>
         internal static void Setup(object sender, SaveLoadedEventArgs e)
         {
-            ModApi.RegisterDefaultTypes();
-            IntegrateMods();
+            // Register FarmAnimal Types
+            Dictionary<string, string> farmAnimalData = ModEntry.SHelper.Content.Load<Dictionary<string, string>>("Data/FarmAnimals", ContentSource.GameContent);
+            foreach (KeyValuePair<string, string> pair in farmAnimalData)
+            {
+                string[] animalInfo = pair.Value.Split(new[] { '/' });
+                string harvestTool = animalInfo[22];
+                int maturedDay = int.Parse(animalInfo[1]);
+
+                ModApi.RegisterType(pair.Key, typeof(FarmAnimal), maturedDay > 0, ModEntry.Sanitize(harvestTool) == "shears");
+            }
+
+            // Register default supported pet types
+            ModApi.RegisterType("cat", typeof(Cat));
+            ModApi.RegisterType("dog", typeof(Dog));
+
+            // Register horse type
+            ModApi.RegisterType("horse", typeof(Horse));
 
             LoadAssets();
 
+            // Alert player that there are creatures with no skins loaded for them
+            List<string> skinless = new List<string>();
+            foreach (string type in ModEntry.Assets.Keys)
+                if (ModEntry.Assets[type].Count == 0)
+                    skinless.Add(type);
+            if (skinless.Count > 0)
+                ModEntry.SMonitor.Log($"NOTICE: The following creature types have no skins located in `/assets/skins`:\n" +
+                    $"{string.Join(", ", skinless)}", LogLevel.Debug);
+
             // Remove the Setup from the loop, so that it isn't done twice when the player returns to the title screen and loads again
             SHelper.Events.GameLoop.SaveLoaded -= Setup;
-        }
-
-
-        /// <summary>Loads handlers for integration of other mods</summary>
-        private static void IntegrateMods()
-        {
-            if (SHelper.ModRegistry.IsLoaded("Paritee.BetterFarmAnimalVariety"))
-            {
-                ISemanticVersion bfavVersion = SHelper.ModRegistry.Get("Paritee.BetterFarmAnimalVariety").Manifest.Version;
-
-                if (bfavVersion.IsNewerThan("2.2.6"))
-                    ModEntry.BFAV300Worker = new BFAV300Integrator();
-                else
-                    ModEntry.BFAV226Worker = new BFAV226Integrator();
-            }
         }
 
 
@@ -189,16 +198,6 @@ namespace AdoptSkin.Framework
         /// <summary>Refreshes creature information based on how much information the save file contains</summary>
         internal static void LoadCreatureSkins()
         {
-            // Alert player that there are creatures with no skins loaded for them
-            List<string> skinless = new List<string>();
-            foreach (string type in ModEntry.Assets.Keys)
-                if (ModEntry.Assets[type].Count == 0)
-                    skinless.Add(type);
-            if (skinless.Count > 0)
-                ModEntry.SMonitor.Log($"NOTICE: The following creature types have no skins located in `/assets/skins`:\n" +
-                    $"{string.Join(", ", skinless)}", LogLevel.Alert);
-
-
             foreach (FarmAnimal animal in ModApi.GetAnimals())
                 if (!ModEntry.AnimalLongToShortIDs.ContainsKey(ModEntry.GetLongID(animal)))
                     Entry.AddCreature(animal);
@@ -328,6 +327,12 @@ namespace AdoptSkin.Framework
             // Gather handled types
             string validTypes = string.Join(", ", ModApi.GetHandledAllTypes());
 
+            List<string> invalidExt = new List<string>();
+            List<string> invalidType = new List<string>();
+            List<string> invalidID = new List<string>();
+            List<string> invalidNum = new List<string>();
+            List<string> invalidRange = new List<string>();
+
             // Add custom sprites
             foreach (string path in Directory.EnumerateFiles(Path.Combine(SHelper.DirectoryPath, "assets", "skins"), "*", SearchOption.AllDirectories))
             {
@@ -338,15 +343,15 @@ namespace AdoptSkin.Framework
                 int skinID = 0;
 
                 if (!ValidExtensions.Contains(extension))
-                    ModEntry.SMonitor.Log($"Ignored skin `{fileName}` with invalid extension (extension must be one of type {string.Join(", ", ValidExtensions)})", LogLevel.Warn);
+                    invalidExt.Add(fileName);
                 else if (!ModEntry.Assets.ContainsKey(type))
-                    ModEntry.SMonitor.Log($"Ignored skin `{fileName}` with invalid naming convention (can't parse {nameParts[0]} as an animal, pet, or horse. Expected one of type: {validTypes})", LogLevel.Warn);
+                    invalidType.Add(fileName);
                 else if (nameParts.Length != 2)
-                    ModEntry.SMonitor.Log($"Ignored skin `{fileName} with invalid naming convention (no skin ID found)", LogLevel.Warn);
+                    invalidID.Add(fileName);
                 else if (nameParts.Length == 2 && !int.TryParse(nameParts[1], out skinID))
-                    ModEntry.SMonitor.Log($"Ignored skin `{fileName}` with invalid skin ID (can't parse {nameParts[1]} as a number)", LogLevel.Warn);
+                    invalidNum.Add(fileName);
                 else if (skinID <= 0)
-                    ModEntry.SMonitor.Log($"Ignored skin `{fileName}` with skin ID of less than or equal to 0. Skins must have an ID of at least 1.", LogLevel.Warn);
+                    invalidRange.Add(fileName);
                 else
                 {
                     // File naming is valid, get the asset key
@@ -354,14 +359,26 @@ namespace AdoptSkin.Framework
 
                     // User has duplicate skin names. Only keep the first skin found with the identifier and number ID
                     if (ModEntry.Assets[type].ContainsKey(skinID))
-                        ModEntry.SMonitor.Log($"Ignored skin `{fileName}` with duplicate type and ID (more than one skin named `{fileName}` exists in `/assets/skins`)", LogLevel.Warn);
+                        ModEntry.SMonitor.Log($"Ignored skin `{fileName}` with duplicate type and ID (more than one skin named `{fileName}` exists in `/assets/skins`)", LogLevel.Debug);
                     // Skin is valid, add into system
                     else
                         ModEntry.Assets[type].Add(skinID, new AnimalSkin(type, skinID, assetKey));
                 }
             }
 
-            // ** TODO: Check if Sheared/Baby/Adult skins have all three, remove if not
+            // Warn for invalid files
+            if (invalidExt.Count > 0)
+                ModEntry.SMonitor.Log($"Ignored skins with invalid extension:\n`{string.Join("`, `", invalidExt)}`\nExtension must be one of type {string.Join(", ", ValidExtensions)}", LogLevel.Warn);
+            if (invalidType.Count > 0)
+                ModEntry.SMonitor.Log($"Ignored skins with invalid naming convention:\n`{string.Join("`, `", invalidType)}`\nCan't parse as an animal, pet, or horse. Expected one of type: {validTypes}", LogLevel.Warn);
+            if (invalidID.Count > 0)
+                ModEntry.SMonitor.Log($"Ignored skins with invalid naming convention (no skin ID found):\n`{string.Join("`, `", invalidID)}`", LogLevel.Warn);
+            if (invalidNum.Count > 0)
+                ModEntry.SMonitor.Log($"Ignored skins with invalid ID (can't parse ID number):\n`{string.Join("`, `", invalidNum)}`", LogLevel.Warn);
+            if (invalidRange.Count > 0)
+                ModEntry.SMonitor.Log($"Ignored skins with ID of less than or equal to 0 (Skins must have an ID of at least 1):\n`{string.Join("`, `", invalidRange)}`", LogLevel.Warn);
+
+            EnforceSpriteSets();
 
             // Print loaded assets to console
             StringBuilder summary = new StringBuilder();
@@ -378,6 +395,72 @@ namespace AdoptSkin.Framework
 
             ModEntry.SMonitor.Log(summary.ToString(), LogLevel.Trace);
             ModEntry.AssetsLoaded = true;
+        }
+
+        /// <summary>
+        /// Checks the list of loaded assets, removes incomplete skin sets
+        /// (i.e. a "sheared" or "baby" skin exists, but not the typical skin, or vice versa where applicable)
+        /// </summary>
+        private static void EnforceSpriteSets()
+        {
+            Dictionary<string, int> skinsToRemove = new Dictionary<string, int>();
+            foreach (KeyValuePair<string, Dictionary<int, AnimalSkin>> pair in ModEntry.Assets)
+            {
+                if (pair.Key.StartsWith("sheared"))
+                {
+                    // Look at the creature type that comes after "sheared"
+                    if (ModEntry.Assets.ContainsKey(pair.Key.Substring(7)))
+                    {
+                        // Make sure every sheared skin has a normal skin variant for its ID
+                        foreach (int id in ModEntry.Assets[pair.Key].Keys)
+                            if (!ModEntry.Assets[pair.Key.Substring(7)].ContainsKey(id) && !skinsToRemove.Contains(new KeyValuePair<string, int>(pair.Key, id)))
+                                skinsToRemove.Add(pair.Key, id);
+
+                        // Since the normal skin has a sheared version, make sure all normal versions have sheared skins
+                        foreach (int id in ModEntry.Assets[pair.Key.Substring(7)].Keys)
+                            if (!ModEntry.Assets[pair.Key].ContainsKey(id) && !skinsToRemove.Contains(new KeyValuePair<string, int>(pair.Key, id)))
+                                skinsToRemove.Add(pair.Key.Substring(7), id);
+                    }
+                    // This sheared skin has no normal skins at all; remove them all
+                    else
+                        foreach (int id in ModEntry.Assets[pair.Key].Keys)
+                            skinsToRemove.Add(pair.Key, id);
+                }
+                else if (pair.Key.StartsWith("baby"))
+                {
+                    // Look at the creature type that comes after "baby"
+                    if (ModEntry.Assets.ContainsKey(pair.Key.Substring(4)))
+                    {
+                        // Make sure every baby skin has a normal skin variant for its ID
+                        foreach (int id in ModEntry.Assets[pair.Key].Keys)
+                            if (!ModEntry.Assets[pair.Key.Substring(4)].ContainsKey(id) && !skinsToRemove.Contains(new KeyValuePair<string, int>(pair.Key, id)))
+                                skinsToRemove.Add(pair.Key, id);
+
+                        // Since the normal skin has a baby version, make sure all normal versions have baby skins
+                        foreach (int id in ModEntry.Assets[pair.Key.Substring(4)].Keys)
+                            if (!ModEntry.Assets[pair.Key].ContainsKey(id) && !skinsToRemove.Contains(new KeyValuePair<string, int>(pair.Key, id)))
+                                skinsToRemove.Add(pair.Key.Substring(4), id);
+                    }
+                    // This baby skin has no normal skins at all; remove them all
+                    else
+                        foreach (int id in ModEntry.Assets[pair.Key].Keys)
+                            if (!skinsToRemove.Contains(new KeyValuePair<string, int>(pair.Key, id)))
+                                skinsToRemove.Add(pair.Key, id);
+                }
+            }
+
+            // Warn player of any incomplete sets and remove them from the Assets dictionary
+            if (skinsToRemove.Count > 0)
+            {
+                ModEntry.SMonitor.Log($"The following skins are incomplete skin sets, and will be removed (missing a paired sheared, baby, or adult skin):\n{string.Join(", ", skinsToRemove)}", LogLevel.Warn);
+
+                foreach (KeyValuePair<string, int> removing in skinsToRemove)
+                    ModEntry.Assets[removing.Key].Remove(removing.Value);
+            }
+
+
+            // ** TODO: Is there a way to check for types, so adults with no baby *or* sheared can be caught? Just make grab adult skin?
+            // -- Cycle through FarmAnimal typing list and check while in there
         }
     }
 }

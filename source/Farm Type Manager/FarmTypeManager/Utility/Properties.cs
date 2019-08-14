@@ -49,9 +49,25 @@ namespace FarmTypeManager
                 /// <param name="level">The log severity level.</param>
                 public static void Log(string message, LogLevel level = LogLevel.Debug)
                 {
-                    if (monitor != null)
+                    if (monitor != null) //if the monitor is ready
                     {
-                        monitor.Log(message, level);
+                        if (MConfig.EnableTraceLogMessages || level != LogLevel.Trace) //if trace messages are enabled OR this isn't a trace message
+                        {
+                            monitor.Log(message, level);
+                        }
+                    }
+                }
+
+                /// <summary>Log a message that only appears when IMonitor.IsVerbose is enabled.</summary>
+                /// <param name="message">The message to log.</param>
+                public static void VerboseLog(string message)
+                {
+                    if (monitor != null) //if the monitor is ready
+                    {
+                        if (MConfig.EnableTraceLogMessages) //if trace messages are enabled (since verbose logs are equivalent to trace-level)
+                        {
+                            monitor.VerboseLog(message);
+                        }
                     }
                 }
             }

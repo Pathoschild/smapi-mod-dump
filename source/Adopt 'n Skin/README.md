@@ -139,7 +139,7 @@ If you know what you're doing (a.k.a I am not user support for BFAV, and am also
 > If you removed `petbed.png`, this is the culprit. You can replace the image with something else, but it has to be there!
 
 **My pet/horse turns invisible when I reskin it**
-> This seems to be corrupted game problem, due to mods other than A&S. Try these steps to fix the issue, and feel free to ping me (@gathouria#9832) on the SDV #modding server if the issue continues.
+> This can happen for some users when in fullscreen mode and pulling SMAPI over the top of the game. However, this also can be from a corrupted game problem, due to mods other than A&S. Try these steps to fix the issue, and feel free to ping me (@gathouria#9832) on the SDV #modding server if the issue continues.
 > 
 > 1. Make a copy of your `Mods` folder somewhere else on your computer (i.e. your Desktop)
 > 2. Delete your Stardew Valley folder. Yes, the entire folder. No saved data will be lost, as not only does Steam back your save files up, but they're located in other location on your computer.
@@ -158,6 +158,8 @@ If you know what you're doing (a.k.a I am not user support for BFAV, and am also
 **I don't see any stray pets at Marnie's!**
 > Strays only start appearing the day after you've received your first pet from Marnie in-game, and don't appear every day. The chance of them appearing can be altered in the `Config` file.
 
+> There is also a known bug that happens when you return to the title screen and load a save file again, without exiting to desktop, that causes Strays to not appear in Marnie's, or to be invisible at Marnie's, even if a notification is given that one should be there. This is fixed by just exiting Stardew and reloading the game.
+
 **I can't find any wild horses!**
 > Wild horses will only appear after you've built a stable, and are somewhat uncommon, having about a 25% chance to appear somewhere on the map each day, give or take some luck. This choice was made in order for wild horses to be an exciting find, rather than something you get bored of running across. That said, you can increase the chance of one appearing or set the chat and console to notify you when and where a wild horse appears via the `Config` file.
 
@@ -169,6 +171,7 @@ If you know what you're doing (a.k.a I am not user support for BFAV, and am also
 # Config Options
 
 * **OneTileHorse** : Squishes the horse you're riding to fit anywhere your can normally walk
+* **PetAndHorseNameTags** : Whether or not to show the name of the pet or horse that your cursor is hovering over
 * **HorseWhistleKey** : The hotkey for calling one of your horses to you. By default, this is set to R
 * **CorralKey** : The hotkey for calling all horses back to the stable. By default, this is set to Y
 * **StrayAdoptionPrice** : The price for adopting a stray pet at Marnie's, once the player receives their first pet

@@ -35,7 +35,14 @@ namespace FarmTypeManager
                     { "Iron", 4 },
                     { "Gold", 7 },
                     { "Iridium", 9 },
-                    { "Mystic", 10 }
+                    { "Mystic", 10 },
+                    { "Diamond", 6 },
+                    { "Ruby", 6 },
+                    { "Jade", 6 },
+                    { "Amethyst", 6 },
+                    { "Topaz", 6 },
+                    { "Emerald", 6 },
+                    { "Aquamarine", 6 }
                 };
 
                 //weighted chance to spawn ore at the minimum required skill level (e.g. by default, iron starts spawning at level 4 mining skill with a 15% chance, but is 0% before that)
@@ -50,7 +57,14 @@ namespace FarmTypeManager
                     { "Iron", 15 },
                     { "Gold", 10 },
                     { "Iridium", 1 },
-                    { "Mystic", 1 }
+                    { "Mystic", 1 },
+                    { "Diamond", 0 },
+                    { "Ruby", 0 },
+                    { "Jade", 0 },
+                    { "Amethyst", 0 },
+                    { "Topaz", 0 },
+                    { "Emerald", 0 },
+                    { "Aquamarine", 0 }
                 };
 
                 //weighted chance to spawn ore at level 10 mining skill; for any levels in between "starting" and level 10, the odds are gradually adjusted (e.g. by default, stone is 66% at level 0, 57% at level 5, and 48% at level 10)
@@ -65,7 +79,14 @@ namespace FarmTypeManager
                     { "Iron", 13 },
                     { "Gold", 10 },
                     { "Iridium", 1 },
-                    { "Mystic", 1 }
+                    { "Mystic", 1 },
+                    { "Diamond", 0 },
+                    { "Ruby", 0 },
+                    { "Jade", 0 },
+                    { "Amethyst", 0 },
+                    { "Topaz", 0 },
+                    { "Emerald", 0 },
+                    { "Aquamarine", 0 }
                 };
 
                 CustomTileIndex = new int[0]; //an extra list of tilesheet indices, for use by players who want to make some custom tile detection

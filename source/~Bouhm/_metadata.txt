@@ -6,9 +6,9 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit 547dcd550849118903c283283e46b5f236d70749
+   commit 7878367c5f0756909ed83bc102bcff80981d03c9
    Author: Bouhm <bbouhm@gmail.com>
-   Date:   Mon Jul 22 16:55:20 2019 -0700
+   Date:   Mon Aug 12 22:55:49 2019 -0700
    
-       get mapPage tab by indexOf for compat with SDV mobile
+       properly handle locations not found
    

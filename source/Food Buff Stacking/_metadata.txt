@@ -1,0 +1,13 @@
+url:
+   https://github.com/thejcannon/Stardew-BuffStacking.git
+
+mods:
+   Food Buff Stacking
+
+latest commit:
+   commit b4f5f21e0f07de7b1b51cdfe02867a55a15995b3
+   Author: Joshua Cannon <joshdcannon@gmail.com>
+   Date:   Tue Aug 13 07:33:54 2019 -0500
+   
+       Update README.md
+   
