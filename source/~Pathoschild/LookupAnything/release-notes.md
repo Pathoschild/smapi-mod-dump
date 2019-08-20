@@ -3,10 +3,11 @@
 # Release notes
 ## Upcoming release
 * Updated for Stardew Valley 1.4, including new content.
+* Updated for compatibility with Json Assets 1.3.8.
 * Fixed player luck in multiplayer showing your own luck instead of theirs.
 * Fixed 'scissor rectangle is invalid' error in rare cases.
 * Fixed game freeze if you open a lookup on the load screen and then close it by pressing `F1` again.
-* Improved translations. Thanks to shiro2579 (updated Portuguese)!
+* Improved translations. Thanks to Hesperusrus (updated Russian) and shiro2579 (updated Portuguese)!
 
 ## 1.22.2
 Released 25 July 2019.

@@ -5,23 +5,10 @@ mods:
    Stardew Valley ESP
 
 latest commit:
-   commit f94e08594530dfa378fbab156bc32b7d63e8c228
-   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Jul 17 12:23:50 2019 -0400
+   commit ce790f7af931c7b824b00c0e9eff057dcd95bc1b
+   Author: rei2hu <r2hkri@gmail.com>
+   Date:   Sat Aug 17 22:17:56 2019 -0500
    
-       Update for SMAPI 3.0, internal refactoring (#1)
-       
-       * update mod build package & migrate to new .csproj format
-       
-       The new package version adds support for SMAPI 3.0 and Stardew Valley 1.4.
-       
-       * minor refactoring
-       
-       * update manifest name & description to match mod page
-       
-       * update for lifecycle change in SMAPI 3.0
-       
-       The upcoming SMAPI 3.0 loads mods much earlier, so some of the game data isn't available in Entry.
-       
-       * rename project to match mod name
+       Add crop detection
+       Also use enum instead of string for detector factory
    

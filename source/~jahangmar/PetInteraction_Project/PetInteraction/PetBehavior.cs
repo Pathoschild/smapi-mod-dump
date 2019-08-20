@@ -113,9 +113,9 @@ namespace PetInteraction
             timer = Game1.ticks;
         }
 
-        public static bool TimeOut()
+        public static bool TimeOut(int after = timeout_after)
         {
-            return Game1.ticks > timer + timeout_after;
+            return Game1.ticks > timer + after;
         }
 
         private static Pet FindPet(string name = null)
@@ -165,6 +165,9 @@ namespace PetInteraction
                 ModEntry.TempPet.displayName = pet.displayName;
         }
 
+        public static bool Compare(double a, double b) => System.Math.Abs(a - b) < 0.01;
+        public static bool Compare(Vector2 v1, Vector2 v2) => Compare(v1.X, v2.X) && Compare(v1.Y, v2.Y);
+
         /// <summary>
         /// Returns distance (in pixels) from pet position to current goal of the path. 
         /// </summary>
@@ -179,7 +182,10 @@ namespace PetInteraction
 
         private static int Distance(Vector2 vec1, Vector2 vec2) => (int)Utility.distance(vec1.X, vec2.X, vec1.Y, vec2.Y);
 
-        public static void SetPetPositionFromTile(Vector2 tile) => GetPet().Position = tile * Game1.tileSize;
+        public static void SetPetPositionFromTile(Vector2 tile)
+        {
+            GetPet().Position = new Vector2(tile.X * Game1.tileSize, tile.Y * Game1.tileSize);
+        }
 
         public static bool CanThrow(Item item)
         {
@@ -314,7 +320,7 @@ namespace PetInteraction
         /// <summary>
         /// Returns velocity of pet towards current goal of the path.
         /// </summary>
-        private static Vector2 GetVelocity()
+        public static Vector2 GetVelocity()
         {
             if (CurrentPath.Count == 0)
                 return new Vector2(0, 0);
@@ -344,7 +350,9 @@ namespace PetInteraction
             }
         }
 
-        public static void CatchUp()
+        //static int last_dir = 0;
+
+        public static void CatchUp(int oldFacingDir)
         {
             GetPet();
             if (pet == null)
@@ -354,20 +362,42 @@ namespace PetInteraction
             else
                 SetPetBehavior(Pet.behavior_walking);
 
+            pet.FacingDirection = oldFacingDir;
+
             Vector2 velocity = GetVelocity();
-            if (velocity != new Vector2(0, 0))
+
+            velocity = new Vector2((int)System.Math.Round(velocity.X), (int)System.Math.Round(velocity.Y));
+
+            if (!Compare(velocity, new Vector2(0,0)))
             {
                 if (System.Math.Abs(velocity.X) > System.Math.Abs(velocity.Y))
                     pet.FacingDirection = velocity.X >= 0 ? 1 : 3;
                 else
                     pet.FacingDirection = velocity.Y >= 0 ? 2 : 0;
+
+                //ModEntry.Log("Dir changed by mod");
             }
+
+            /*
+            if (pet.FacingDirection != last_dir)
+            {
+                ModEntry.Log("Dir changed: " + pet.FacingDirection);
+                ModEntry.Log("velocity: " + velocity);
+                ModEntry.Log("pet.Pos: " + pet.Position);
+                ModEntry.Log("next pos: " + CurrentPath.Peek() * Game1.tileSize);
+                last_dir = pet.FacingDirection;
+            }
+            */
 
             pet.xVelocity = velocity.X;
             pet.yVelocity = -velocity.Y;
 
+
+            ModEntry.GetHelper().Reflection.GetField<bool>(pet, "moveUp").SetValue(false);
+            ModEntry.GetHelper().Reflection.GetField<bool>(pet, "moveRight").SetValue(false);
+            ModEntry.GetHelper().Reflection.GetField<bool>(pet, "moveDown").SetValue(false);
+            ModEntry.GetHelper().Reflection.GetField<bool>(pet, "moveLeft").SetValue(false);
             pet.animateInFacingDirection(Game1.currentGameTime);
-            pet.setMovingInFacingDirection();
         }
 
         public static void Sit()

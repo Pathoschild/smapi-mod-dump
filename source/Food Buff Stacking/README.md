@@ -1,8 +1,7 @@
-# Stardew-FoodBuffStacking (0.2.1)
-Stardew Valley mod which stacks buffs from different foods (instead of wiping out previous buffs)
+# Stardew-FoodBuffStacking (1.0.0)
+Stardew Valley mod which stacks buffs from different foods/drinks (instead of wiping out previous buffs)
 
 ## Shortcomings:
-- Doesn't work on drinks (yet)
 - The display stops including hover information after a certain number of buffs
 
 ## Installation:
@@ -17,6 +16,8 @@ Stardew Valley mod which stacks buffs from different foods (instead of wiping ou
 - Tested with Stardew Valley 1.3.36 on Windows.
 
 ## Versions
+### 1.0
+- Added drink support
 ### 0.2.1
 - Updated manifest with new naming of DLLs and repo
 ### 0.2

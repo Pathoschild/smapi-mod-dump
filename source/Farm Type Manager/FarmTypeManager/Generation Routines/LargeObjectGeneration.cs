@@ -13,7 +13,7 @@ namespace FarmTypeManager
     public partial class ModEntry : Mod
     {
         /// <summary>Methods involved in spawning objects into the game.</summary> 
-        private static partial class ObjectSpawner
+        private static partial class Generation
         {
             /// <summary>Generates large objects (e.g. stumps and logs) in the game based on the current player's config settings.</summary>
             public static void LargeObjectGeneration()

@@ -20,6 +20,7 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
+using System.Linq;
 
 namespace StardewBuffStack
 {
@@ -40,7 +41,7 @@ namespace StardewBuffStack
                 this.reflector = reflector;
             }
 
-            /* The API for manipulating the Buffs applied to the user through foods  */
+            /* The API for manipulating the Buffs applied to the user through foods/drinks  */
 
             /// <summary>
             /// Removes the current food and its buffs from the player.
@@ -49,6 +50,15 @@ namespace StardewBuffStack
             {
                 buffHolder.food.removeBuff();
                 buffHolder.food = null;
+            }
+
+            /// <summary>
+            /// Removes the current drink and its buffs from the player.
+            /// </summary>
+            public void removeCurrentDrink()
+            {
+                buffHolder.drink.removeBuff();
+                buffHolder.drink = null;
             }
 
             /// <summary>
@@ -63,17 +73,16 @@ namespace StardewBuffStack
             }
 
 
-            public Dictionary<int, Buff> splitFoodIntoBuffMap()
+            public Dictionary<int, Buff> splitIntoBuffMap(Buff foodOrDrink)
             {
-                Buff food = this.buffHolder.food;
-                int[] buffAttributes = getBuffAttributes(food);
+                int[] buffAttributes = getBuffAttributes(foodOrDrink);
                 Dictionary<int, Buff> buffMap = new Dictionary<int, Buff>();
                 for (int buffID = 0; buffID < totalNumBuffIDs; buffID++)
                 {
                     int attributeValue = buffAttributes[buffID];
                     if (attributeValue != 0)
                     {
-                        Buff singleBuff = getSingleBuffFromFood(food, attributeValue, buffID);
+                        Buff singleBuff = getSingleBuffFrom(foodOrDrink, attributeValue, buffID);
                         buffMap.Add(buffID, singleBuff);
                     }
                 }
@@ -90,10 +99,10 @@ namespace StardewBuffStack
                 return getBuffAttributes(buff)[buff.which];
             }
 
-            private Buff getSingleBuffFromFood(Buff food, int value, int buffID)
+            private Buff getSingleBuffFrom(Buff foodOrDrink, int value, int buffID)
             {
-                Buff buff = new Buff("", food.millisecondsDuration, food.source, buffID);
-                buff.displaySource = food.displaySource;
+                Buff buff = new Buff("", foodOrDrink.millisecondsDuration, foodOrDrink.source, buffID);
+                buff.displaySource = foodOrDrink.displaySource;
                 buff.which = buffID;
                 getBuffAttributes(buff)[buffID] = value;
                 return buff;
@@ -107,20 +116,30 @@ namespace StardewBuffStack
 
         private void DoFoodThings(object sender, UpdateTickedEventArgs e)
         {
-            if (Game1.buffsDisplay.food != null)
+            BuffsDisplay buffHolder = Game1.buffsDisplay;
+            if (buffHolder.food != null || buffHolder.drink != null)
             {
-                BuffStackHelper helper = new BuffStackHelper(Game1.buffsDisplay, this.Helper.Reflection);
+                BuffStackHelper helper = new BuffStackHelper(buffHolder, this.Helper.Reflection);
 
-                Dictionary<int, Buff> foodBuffMap = helper.splitFoodIntoBuffMap();
-                helper.removeCurrentFood();
+                Dictionary<int, Buff> buffMap = new Dictionary<int, Buff>();
+                if (buffHolder.food != null)
+                {
+                    helper.splitIntoBuffMap(buffHolder.food).ToList().ForEach(x => buffMap.Add(x.Key, x.Value));
+                    helper.removeCurrentFood();
+                }
+                if (buffHolder.drink != null)
+                {
+                    helper.splitIntoBuffMap(buffHolder.drink).ToList().ForEach(x => buffMap.Add(x.Key, x.Value));
+                    helper.removeCurrentDrink();
+                }
 
                 List<Buff> currentBuffs = Game1.buffsDisplay.otherBuffs;
                 for (int index = 0; index < currentBuffs.Count; index++)
                 {
                     Buff currentBuff = currentBuffs[index];
-                    if (foodBuffMap.ContainsKey(currentBuff.which))
+                    if (buffMap.ContainsKey(currentBuff.which))
                     {
-                        Buff newBuff = foodBuffMap[currentBuff.which];
+                        Buff newBuff = buffMap[currentBuff.which];
                         if (helper.shouldReplaceBuff(newBuff, currentBuff))
                         {
                             // Instead of going through the song-and-dance of removing 
@@ -130,12 +149,12 @@ namespace StardewBuffStack
                             currentBuffs[index] = newBuff;
                         }
 
-                        foodBuffMap.Remove(currentBuff.which);
+                        buffMap.Remove(currentBuff.which);
                     }
                 }
 
                 // Whatever is leftover is a completely new buff, add it
-                foreach (Buff buff in foodBuffMap.Values)
+                foreach (Buff buff in buffMap.Values)
                 {
                     currentBuffs.Add(buff);
                     buff.addBuff();

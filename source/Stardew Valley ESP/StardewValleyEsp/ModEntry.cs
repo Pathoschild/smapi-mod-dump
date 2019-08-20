@@ -35,10 +35,11 @@ namespace StardewValleyEsp
             configMenu = new ConfigMenu(settings);
             drawingManager = new LabelDrawingManager(settings);
             detector = new Detector(settings);
-            detector.AddDetector("NPC")
-                .AddDetector("Object")
-                .AddDetector("FarmAnimal")
-                .AddDetector("WaterEntity");
+            detector.AddDetector(DetectorType.NPC)
+                .AddDetector(DetectorType.Object)
+                .AddDetector(DetectorType.FarmAnimal)
+                .AddDetector(DetectorType.WaterEntity)
+                .AddDetector(DetectorType.Crop);
         }
 
 

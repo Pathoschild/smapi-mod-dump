@@ -10,9 +10,9 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit 09e77cfc004b283da412c4a1f72fdf0118c8bc39
+   commit 51dae328b9a0d203dda060bae1cd8fa9a46f0100
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Sun Aug 4 21:22:10 2019 +0200
+   Date:   Thu Aug 15 09:39:02 2019 +0200
    
-       added Portuguese translation
+       new changelogs, fixed issues for pi 1.0.2
    

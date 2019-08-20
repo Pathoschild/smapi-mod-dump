@@ -1,10 +1,10 @@
 ﻿{
 	"Name": "Sprint Sprint Sprint",
 	"Author": "Jessebot",
-	"Version": "1.0.4",
-	"Description": "Configurable keybinds for sprinting and walking",
+	"Version": "1.0.5-beta.20190816",
+	"Description": "Allows player to set a keybind to Sprint with optional stamina drain.",
 	"UniqueID": "Jessebot.SprintSprintSprint",
-	"MinimumApiVersion": "2.10",
+	"MinimumApiVersion": "2.11",
 	"EntryDLL": "Sprint.dll",
 	"UpdateKeys": ["Nexus:3294"]
 }

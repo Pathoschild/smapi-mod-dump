@@ -5,9 +5,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 6a03b1cb19807fe5a3632e48a769046c97a43e7b
+   commit ef91259d391783ab45275d064a775d0daf4649e2
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Sun Aug 11 16:51:35 2019 -0500
+   Date:   Fri Aug 16 19:52:50 2019 -0500
    
-       Add EnableTraceLogMessages setting to config.json
+       Rename folders and the "generation" class
    

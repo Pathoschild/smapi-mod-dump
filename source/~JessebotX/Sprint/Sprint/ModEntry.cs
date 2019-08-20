@@ -20,16 +20,16 @@ namespace Sprint
         private bool playerSprinting = false;
 
         //reference buff
-        private Buff sprintingBuff;
-        private Buff sprintingBuff2;
+        private Buff SprintingBuff;
+        private Buff SprintingBuff2;
 
         public override void Entry(IModHelper helper)
         {
             /* Read Config */
             this.Config = helper.ReadConfig<ModConfig>();
 
-            sprintingBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, Config.SprintSpeed, 0, 0, 1, "Sprint Sprint Sprint", "Sprint Sprint Sprint");
-            sprintingBuff2 = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, Config.SprintSpeed + 7, 0, 0, 1, "Sprint Sprint Sprint", "Sprint Sprint Sprint");
+            SprintingBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, Config.Sprint.SprintSpeed, 0, 0, 1, "Sprint Sprint Sprint", "Sprint Sprint Sprint");
+            SprintingBuff2 = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, Config.Sprint.SprintSpeed + Config.Sprint.LeftShiftKeybindExtraSpeed, 0, 0, 1, "Sprint Sprint Sprint", "Sprint Sprint Sprint");
 
             /* Event Handlers */
             helper.Events.GameLoop.UpdateTicked += this.UpdateTicked;
@@ -44,8 +44,8 @@ namespace Sprint
                 this.Helper.Input.Suppress(this.Config.SprintKey);
             }
 
-            sprintingBuff.millisecondsDuration = 5000;
-            sprintingBuff2.millisecondsDuration = 5000;
+            SprintingBuff.millisecondsDuration = 5000;
+            SprintingBuff2.millisecondsDuration = 5000;
             if (!Context.IsPlayerFree)
             {
                 return;
@@ -58,7 +58,7 @@ namespace Sprint
                 {
                     playerSprinting = true;
 
-                    Game1.buffsDisplay.addOtherBuff(sprintingBuff);
+                    Game1.buffsDisplay.addOtherBuff(SprintingBuff);
                 }
 
                 else if (isSprintKey && !SprintBuff2Exists() && this.Config.SprintKey == SButton.LeftShift)
@@ -66,7 +66,7 @@ namespace Sprint
                     //left shift only
                     playerSprinting = true;
 
-                    Game1.buffsDisplay.addOtherBuff(sprintingBuff2);
+                    Game1.buffsDisplay.addOtherBuff(SprintingBuff2);
                 }
 
                 else
@@ -74,10 +74,10 @@ namespace Sprint
                     playerSprinting = false;
 
                     //remove buffs
-                    Game1.buffsDisplay.otherBuffs.Remove(sprintingBuff);
-                    Game1.buffsDisplay.otherBuffs.Remove(sprintingBuff2);
-                    sprintingBuff.removeBuff();
-                    sprintingBuff2.removeBuff();
+                    Game1.buffsDisplay.otherBuffs.Remove(SprintingBuff);
+                    Game1.buffsDisplay.otherBuffs.Remove(SprintingBuff2);
+                    SprintingBuff.removeBuff();
+                    SprintingBuff2.removeBuff();
                     Game1.buffsDisplay.syncIcons();
                 }
             }
@@ -89,31 +89,31 @@ namespace Sprint
             if (!Context.IsWorldReady)
                 return;
 
-            if (Config.DrainStamina)
+            if (Config.StaminaDrain.DrainStamina)
                 if (playerSprinting && !Game1.paused && Game1.player.isMoving())
-                    Game1.player.Stamina = Math.Min(Game1.player.MaxStamina, Game1.player.Stamina - this.Config.StaminaCost);
+                    Game1.player.Stamina = Math.Min(Game1.player.MaxStamina, Game1.player.Stamina - this.Config.StaminaDrain.StaminaDrainCost);
         }
 
         /* Check if sprinting buff exists */
         private bool SprintBuffExists()
         {
-            if (sprintingBuff == null)
+            if (SprintingBuff == null)
             {
                 return false;
             }
 
-            return Game1.buffsDisplay.otherBuffs.Contains(sprintingBuff);
+            return Game1.buffsDisplay.otherBuffs.Contains(SprintingBuff);
         }
 
         /* check if sprinting buff 2 (when leftshift is the keybind) exists */
         private bool SprintBuff2Exists()
         {
-            if (sprintingBuff2 == null)
+            if (SprintingBuff2 == null)
             {
                 return false;
             }
 
-            return Game1.buffsDisplay.otherBuffs.Contains(sprintingBuff2);
+            return Game1.buffsDisplay.otherBuffs.Contains(SprintingBuff2);
         }
     }
 }

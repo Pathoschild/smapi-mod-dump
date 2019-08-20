@@ -65,15 +65,25 @@ namespace FarmTypeManager
 
             Utility.LoadFarmData(Helper); //load all available data files
 
+            Monitor.Log($"Checking for saved objects that went missing overnight...", LogLevel.Trace);
             foreach (FarmData data in Utility.FarmDataList) //for each loaded set of data
             {
+                if (data.Pack != null) //if this data is from a content pack
+                {
+                    Monitor.VerboseLog($"Checking objects from content pack: {data.Pack.Manifest.Name}");
+                }
+                else //this data is from this mod's own folders
+                {
+                    Monitor.VerboseLog($"Checking objects from FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
+                }
+
                 Utility.ReplaceProtectedSpawnsOvernight(data.Save); //protect unexpired spawns listed in the save data
             }
 
             //run the methods providing the mod's main features
-            ObjectSpawner.ForageGeneration();
-            ObjectSpawner.LargeObjectGeneration();
-            ObjectSpawner.OreGeneration();
+            Generation.ForageGeneration();
+            Generation.LargeObjectGeneration();
+            Generation.OreGeneration();
         }
 
         /// <summary>Tasks performed before a day ends, i.e. right before saving. This is also called when a new farm is created, *before* DayStarted.</summary>
@@ -102,25 +112,6 @@ namespace FarmTypeManager
         private void ReturnedToTitle(object sender, EventArgs e)
         {
             Utility.FarmDataList = new List<FarmData>(); //clear this list to avoid any possible errors caused by a previous farm's data
-        }
-
-        ///<summary>Console command. Outputs the player's current location name, tile x/y coordinates, tile "Type" property (e.g. "Grass" or "Dirt"), tile "Diggable" status, and tile index.</summary>
-        private void WhereAmI(string command, string[] args)
-        {
-            if (!Context.IsWorldReady) { return; } //if the player isn't in a fully loaded game yet, ignore this command
-
-            GameLocation loc = Game1.currentLocation;
-            int x = Game1.player.getTileX();
-            int y = Game1.player.getTileY();
-            int index = loc.getTileIndexAt(x, y, "Back");
-            string type = loc.doesTileHaveProperty(x, y, "Type", "Back") ?? "[none]";
-            string diggable = loc.doesTileHaveProperty(x, y, "Diggable", "Back");
-            if (diggable == "T") { diggable = "Yes"; } else { diggable = "No"; };
-            Monitor.Log($"Map name: {loc.Name}", LogLevel.Info);
-			Monitor.Log($"Your location (x,y): {x},{y}", LogLevel.Info);
-            Monitor.Log($"Terrain type: {type}", LogLevel.Info);
-            Monitor.Log($"Diggable: {diggable}", LogLevel.Info);
-            Monitor.Log($"Tile image index: {index}", LogLevel.Info);
         }
     }
 }

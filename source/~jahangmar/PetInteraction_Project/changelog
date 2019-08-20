@@ -29,12 +29,15 @@
 	-fixed problem regarding festival maps that could delete the pet
 	-Pets do not follow on maps called "Temp" (e.g. Egg Festival)
 
-1.X:
+1.0.2:
 	-added Portuguese translation (thanks to BeckySie)
+	-fixed errors during new game intro sequence
+	-fixed animation issues during walking/running
 
 TODO:
 	-no greetings by your pet
 	-trash shaming issue
-	-better walking animation
 	-cannot follow on festival maps
+	-pet can get stuck on some specific edges
+	-idea: pet runs away if watered
 

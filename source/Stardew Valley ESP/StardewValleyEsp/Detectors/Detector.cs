@@ -4,9 +4,18 @@ using StardewValleyEsp.Config;
 
 namespace StardewValleyEsp.Detectors
 {
+    internal enum DetectorType
+    {
+        NPC,
+        Object,
+        FarmAnimal,
+        WaterEntity,
+        Crop
+    }
+
     class Detector : IDetector
     {
-        private readonly Dictionary<string, IDetector> detectors = new Dictionary<string, IDetector>();
+        private readonly Dictionary<DetectorType, IDetector> detectors = new Dictionary<DetectorType, IDetector>();
         private readonly Settings settings;
 
         public EntityList Entities { get; set; } = new EntityList();
@@ -17,24 +26,27 @@ namespace StardewValleyEsp.Detectors
             this.settings = settings;
         }
 
-        public Detector AddDetector(string type)
+        public Detector AddDetector(DetectorType type)
         {
-            IDetector d = null;
+            IDetector d;
             switch (type)
             {
-                case "NPC":
+                case DetectorType.NPC:
                     d = new NPCDetector(settings);
                     break;
-                case "Object":
+                case DetectorType.Object:
                     d = new ObjectDetector(settings);
                     break;
-                case "FarmAnimal":
+                case DetectorType.FarmAnimal:
                     d = new FarmAnimalDetector(settings);
                     break;
-                case "WaterEntity":
+                case DetectorType.WaterEntity:
                     d = new WaterEntityDetector(settings);
                     break;
-                case null:
+                case DetectorType.Crop:
+                    d = new CropDetector(settings);
+                    break;
+                default:
                     return this;
             }
             detectors.Add(type, d);

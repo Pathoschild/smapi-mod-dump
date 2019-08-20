@@ -81,6 +81,7 @@ readonly HashSet<int> IgnoreNexusIDsForValidation = new HashSet<int>
 	4305, // Climates of Ferngill (pt)
 	3954, // Happy Birthday (pt)
 	4197, // Companion NPCs (pt)
+	4339, // Lunar Disturbances (pt)
 	4265, // Magic (pt)
 	
 	// mods which include a copy of another mod for some reason

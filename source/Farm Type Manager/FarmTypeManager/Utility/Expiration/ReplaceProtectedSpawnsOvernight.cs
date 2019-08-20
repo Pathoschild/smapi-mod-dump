@@ -20,7 +20,6 @@ namespace FarmTypeManager
             /// <param name="save">The save data to the checked.</param>
             public static void ReplaceProtectedSpawnsOvernight(InternalSaveData save)
             {
-                Monitor.Log($"Checking for saved objects that went missing overnight...", LogLevel.Trace);
                 int missing = 0; //# of objects missing
                 int blocked = 0; //# of objects that could not respawn due to blocked locations
                 int respawned = 0; //# of objects respawned
@@ -93,11 +92,11 @@ namespace FarmTypeManager
                             {
                                 if (saved.Type == SavedObject.ObjectType.Forage) //if this is forage
                                 {
-                                    Utility.SpawnForage(saved.ID, location, saved.Tile); //respawn it
+                                    SpawnForage(saved.ID, location, saved.Tile); //respawn it
                                 }
                                 else //if this is ore
                                 {
-                                    Utility.SpawnOre(saved.Name, location, saved.Tile); //respawn it
+                                    SpawnOre(saved.Name, location, saved.Tile); //respawn it
                                 }
                                 respawned++; //increment respawn tracker
                             }
@@ -107,9 +106,9 @@ namespace FarmTypeManager
                             }
                         }
                     }
-
-                    Monitor.Log($"Missing object check complete. Missing objects: {missing}. Respawned: {respawned}. Not respawned due to obstructions: {blocked}. Skipped due to missing maps: {unloaded}.", LogLevel.Trace);
                 }
+
+                Monitor.VerboseLog($"Missing objects: {missing}. Respawned: {respawned}. Not respawned due to obstructions: {blocked}. Skipped due to missing maps: {unloaded}.");
             }
         }
     }

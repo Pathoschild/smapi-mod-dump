@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 6984dbc50f8cfd708e71b5f0a4080acfa3ba0496
+   commit 4e79c2f18b8ba371d712d6b3937324da6e042a6b
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Fri Aug 9 18:04:29 2019 -0400
+   Date:   Tue Aug 20 15:15:13 2019 -0400
    
-       update for SMAPI 3.0 changes (#403)
+       add tractor support for chopping bushes
    

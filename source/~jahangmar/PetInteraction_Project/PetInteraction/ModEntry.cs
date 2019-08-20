@@ -37,7 +37,7 @@ namespace PetInteraction
 
         private const int catch_up_distance = 2;
 
-        private int next_path_pixel_distance = 4; //4
+        //private int next_path_pixel_distance = 4; //4
 
         public static int PetBehaviour = -1;
 
@@ -143,6 +143,9 @@ namespace PetInteraction
 
         void Display_RenderedWorld(object sender, StardewModdingAPI.Events.RenderedWorldEventArgs e)
         {
+            if (!CanUpdatePet())
+                return;
+
             foreach (Vector2 vec in CurrentPath)
                 e.SpriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, vec * 64f), new Rectangle(194 + 0 * 16, 388, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.999f);
             foreach (Vector2 vec in NonPassables)
@@ -213,7 +216,7 @@ namespace PetInteraction
 
         void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
         {
-            if (Game1.currentLocation == null || !Game1.player.hasPet() || GetPet() == null || Game1.activeClickableMenu != null || Game1.eventUp)
+            if (!CanUpdatePet())
                 return;
 
             bool PetClicked(Pet p)
@@ -316,9 +319,11 @@ namespace PetInteraction
             }
         }
 
+        private Vector2 oldPetPos;
+
         void GameLoop_OneSecondUpdateTicked(object sender, StardewModdingAPI.Events.OneSecondUpdateTickedEventArgs e)
         {
-            if (Game1.currentLocation == null || !Game1.player.hasPet() || GetPet() == null)
+            if (!CanUpdatePet())
                 return;
 
             switch (petState)
@@ -328,13 +333,31 @@ namespace PetInteraction
                 case PetState.CatchingUp:
                 case PetState.Waiting:
                 case PetState.Retrieve:
-                    if (PlayerPetDistance() > catch_up_distance && Game1.currentLocation == pet.currentLocation)
+
+                    if (petState == PetState.Waiting || !Compare(pet.Position, oldPetPos))
                     {
-                        CurrentPath = PathFinder.CalculatePath(pet, new Vector2(Game1.player.getTileX(), Game1.player.getTileY()));
+                        oldPetPos = pet.Position;
+                        SetTimer();
+                    }
+
+                    if (PlayerPetDistance() > catch_up_distance && Game1.currentLocation == pet.currentLocation)// && (CurrentPath == null || CurrentPath.Count == 0))
+                    {
+                        var oldpath = CurrentPath;
+                        var path = PathFinder.CalculatePath(pet, new Vector2(Game1.player.getTileX(), Game1.player.getTileY()));//TODO use player.Position instead?
+                        CurrentPath = path;
 
                         if (CurrentPath.Count > 0)
                         {
-                            SetPetPositionFromTile(CurrentPath.Peek());
+                            if (oldpath == null || oldpath.Count == 0)
+                            {
+                                SetPetPositionFromTile(CurrentPath.Peek()); //this sets the pet on a proper tile. This is only done if the pet starts moving 
+                                //Log("Snapped pet position to first tile of current path");
+                            }
+                            else
+                            {
+                                CurrentPath.Dequeue(); //if pet is already moving: remove first node. Otherwise the pet might be a few pixels ahead and tries to move back first.
+                            }
+
                             if (petState == PetState.Waiting)
                                 SetState(PetState.CatchingUp);
                         }
@@ -346,6 +369,12 @@ namespace PetInteraction
 
                     TryChaseCritterInRange();
 
+                    if (TimeOut(60))
+                    {
+                        Log("timeout during " + petState);
+                        Confused();
+                        SetState(PetState.Waiting);
+                    }
                     break;
                 case PetState.Chasing:
                 case PetState.Fetching:
@@ -362,20 +391,27 @@ namespace PetInteraction
                 GetPet().CurrentBehavior = PetBehaviour;
         }
 
+        int FacingDirectionBeforeUpdate = 0;
+
         void GameLoop_UpdateTicking(object sender, StardewModdingAPI.Events.UpdateTickingEventArgs e)
         {
-            if (Game1.currentLocation == null || !Game1.player.hasPet() || GetPet() == null)
+            if (!CanUpdatePet())
                 return;
 
             if (petState != PetState.Vanilla)
                 GetPet().CurrentBehavior = -1;
+
+            FacingDirectionBeforeUpdate = GetPet().FacingDirection;
         }
 
 
         void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
         {
-            if (Game1.currentLocation == null || !Game1.player.hasPet() || GetPet() == null)
+            if (!CanUpdatePet())
                 return;
+
+            //if (pet.FacingDirection != petFace)
+            //    Monitor.Log("Game changed FacingDirection: " + petFace + " -> " + GetPet().FacingDirection);
 
             switch (petState)
             {
@@ -387,10 +423,14 @@ namespace PetInteraction
                 case PetState.Retrieve:
 
                     if (CurrentPath.Count > 0)
-                        CatchUp();
+                    {
+                        CatchUp(FacingDirectionBeforeUpdate);
+                    }
 
                     if (petState == PetState.Fetching && CurrentPath.Count == 4 && GetPet() is Cat cat)
                         cat.leap(null);
+
+                    int check_distance = petState == PetState.CatchingUp || petState == PetState.Retrieve ? 4 : 6;
 
                     if (CurrentPath.Count == 0)
                     {
@@ -409,10 +449,12 @@ namespace PetInteraction
                             SetState(PetState.Waiting);
                         }
                     }
-                    else if (PetCurrentCatchUpGoalDistance() <= next_path_pixel_distance)
+                    else if (PetCurrentCatchUpGoalDistance() <= check_distance)//next_path_pixel_distance) TODO
                     {
-                        Vector2 pos = CurrentPath.Dequeue();
-                        SetPetPositionFromTile(pos);
+                        //Vector2 velocityTowardsGoal = GetVelocity();
+                        Vector2 goalPos = CurrentPath.Dequeue() * Game1.tileSize;
+                        pet.Position = goalPos;
+
                     }
 
                     if (petState == PetState.CatchingUp && PlayerPetDistance() <= 2)
@@ -434,7 +476,6 @@ namespace PetInteraction
         {
             if (GetPet() == null)
                 return;
-
 
             if (e.NewLocation is Farm)
             {
@@ -531,14 +572,12 @@ namespace PetInteraction
             }
             else if (e.NewLocation is Farm)
             {
-                //Game1.warpCharacter(GetPet(), "Farm", new Vector2(54f, 8f));
                 WarpPet(Game1.getLocationFromName("Farm"), new Vector2(54f, 8f));
                 pet.position.X -= 64f;
             }
 
             else if (e.NewLocation is FarmHouse farmHouse)
             {
-                //GetPet().warpToFarmHouse(farmHouse.owner);
                 WarpPetToFarmhouse(farmHouse.owner);
             }
             else if (e.NewLocation is MineShaft && !(e.OldLocation is MineShaft) || e.NewLocation is Woods /*|| e.NewLocation is Sewer*/)
@@ -583,6 +622,8 @@ namespace PetInteraction
                 pet.currentLocation = Game1.currentLocation;
             GetPet().warpToFarmHouse(owner);
         }
+
+        private bool CanUpdatePet() => Context.IsWorldReady && Game1.currentLocation != null && Game1.player.hasPet() && GetPet() != null && Game1.activeClickableMenu == null && !Game1.eventUp;
 
         private static IMonitor _Monitor;
         public static void Log(string msg, LogLevel level = LogLevel.Trace) => _Monitor.Log(msg, level);
