@@ -12,14 +12,16 @@ that change the game's images and data without replacing XNB files.
   * [Replace an entire file](#replace-an-entire-file)
   * [Edit part of an image](#edit-part-of-an-image)
   * [Edit part of a data file](#edit-part-of-a-data-file)
+  * [Edit part of a map](#edit-part-of-a-map)
 * [Advanced: tokens & conditions](#advanced-tokens--conditions)
   * [Overview](#overview-1)
   * [Global tokens](#global-tokens)
   * [Dynamic tokens](#dynamic-tokens)
   * [Player config](#player-config)
-* [Validate JSON files](#validate-json-files)
+  * [Mod-provided tokens](#mod-provided-tokens)
 * [Release a content pack](#release-a-content-pack)
 * [Troubleshoot](#troubleshoot)
+  * [Schema validator](#schema-validator)
   * [Patch commands](#patch-commands)
   * [Debug mode](#debug-mode)
   * [Verbose log](#verbose-log)
@@ -67,12 +69,11 @@ Content Patcher supports all game assets with some very powerful features, but i
 framework. More specialised frameworks might be better for specific things. You should consider
 whether one of these would work for you:
 
-  * [Advanced Location Loader](https://community.playstarbound.com/resources/smapi-advanced-location-loader.3619/) to add and edit maps.
+  * [Advanced Location Loader](https://community.playstarbound.com/resources/smapi-advanced-location-loader.3619/) for complex changes to maps. (For simple changes, see _[edit part of a map](#edit-part-of-a-map)_ below.)
   * [Custom Farming Redux](https://www.nexusmods.com/stardewvalley/mods/991) to add machines.
   * [Custom Furniture](https://www.nexusmods.com/stardewvalley/mods/1254) to add furniture.
-  * [CustomNPC](https://www.nexusmods.com/stardewvalley/mods/1607) to add NPCs.
   * [Custom Shirts](https://www.nexusmods.com/stardewvalley/mods/2416) to add shirts.
-  * [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720) to add items and fruit trees.
+  * [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720) to add items, crafting recipes, crops, fruit trees, hats, and weapons.
 
 ## Create a content pack
 ### Overview
@@ -85,7 +86,7 @@ The `content.json` file has three main fields:
 
 field          | purpose
 -------------- | -------
-`Format`       | The format version. You should always use the latest version (currently `1.9`) to use the latest features and avoid obsolete behavior.
+`Format`       | The format version. You should always use the latest version (currently `1.10`) to use the latest features and avoid obsolete behavior.
 `Changes`      | The changes you want to make. Each entry is called a **patch**, and describes a specific action to perform: replace this file, copy this image into the file, etc. You can list any number of patches.
 `ConfigSchema` | _(optional)_ Defines the `config.json` format, to support more complex mods. See [_player configuration_](#player-config).
 
@@ -93,7 +94,7 @@ You can list any number of patches (surrounded by `{` and `}` in the `Changes` f
 few sections for more info about the format. For example:
 ```js
 {
-   "Format": "1.9",
+   "Format": "1.10",
    "Changes": [
       {
          "Action": "Load",
@@ -137,7 +138,7 @@ field      | purpose
 For example, this replaces the dinosaur sprite with your own image:
 ```js
 {
-   "Format": "1.9",
+   "Format": "1.10",
    "Changes": [
       {
          "Action": "Load",
@@ -167,7 +168,7 @@ field      | purpose
 For example, this changes one object sprite:
 ```js
 {
-   "Format": "1.9",
+   "Format": "1.10",
    "Changes": [
       {
          "Action": "EditImage",
@@ -189,9 +190,10 @@ field      | purpose
 `Fields`   | _(optional)_ The individual fields you want to change for existing entries. This field supports [tokens](#advanced-tokens--conditions) in field keys and values. The key for each field is the field index (starting at zero) for a slash-delimited string, or the field name for an object.
 `Entries`  | _(optional)_ The entries in the data file you want to add, replace, or delete. If you only want to change a few fields, use `Fields` instead for best compatibility with other mods. To add an entry, just specify a key that doesn't exist; to delete an entry, set the value to `null` (like `"some key": null`). This field supports [tokens](#advanced-tokens--conditions) in entry keys and values.<br />**Caution:** some XNB files have extra fields at the end for translations; when adding or replacing an entry for all locales, make sure you include the extra fields to avoid errors for non-English players.
 `MoveEntries` | _(optional)_ Change the entry order in a list asset like `██████████`. (Using this with a non-list asset will cause an error, since those have no order.)
+`FromFile` | The relative path to a JSON file in your content pack folder containing the `Fields`, `Entries`, and `MoveEntries`. The field and file contents can contain [tokens](#advanced-tokens--conditions). Mutually exclusive with `Fields`, `Entries`, and `MoveEntries`. See _load changes from a file_ below for an example.
 
 You can have any combination of those fields within one patch. They'll be applied in this order:
-`Entries`, `Fields`, `MoveEntries`.
+`Entries`, `FromFile`, `Fields`, `MoveEntries`.
 
 <dl>
 <dt>Definitions</dt>
@@ -216,20 +218,20 @@ description fields for an existing entry (item #70):
 
 ```js
 {
-   "Format": "1.9",
+   "Format": "1.10",
    "Changes": [
-       {
-          "Action": "EditData",
-          "Target": "Data/ObjectInformation",
-          "Entries": {
-             "900": "Crimson Jade/400/-300/Minerals -2/Crimson Jade/A pale green ornamental stone with a strange crimson sheen."
-          },
-          "Fields": {
-             "70": {
-                4: "Normal Jade",
-                5: "A pale green ornamental stone with no sheen."
-             }
-          }
+      {
+         "Action": "EditData",
+         "Target": "Data/ObjectInformation",
+         "Entries": {
+            "900": "Crimson Jade/400/-300/Minerals -2/Crimson Jade/A pale green ornamental stone with a strange crimson sheen."
+         },
+         "Fields": {
+            "70": {
+               4: "Normal Jade",
+               5: "A pale green ornamental stone with no sheen."
+            }
+         }
        }
    ]
 }
@@ -239,16 +241,69 @@ You can also delete entries entirely by setting their value to `null`. For examp
 used to change event conditions:
 ```js
 {
-   "Format": "1.9",
+   "Format": "1.10",
    "Changes": [
-       {
-          "Action": "EditData",
-          "Target": "Data/Events/Beach",
-          "Entries": {
-             "733330/f Sam 750/w sunny/t 700 1500/z winter/y 1": null,
-             "733330/f Sam 750/w sunny/t 700 1500/z winter": "[snipped: long event script here]"
-          }
-       }
+      {
+         "Action": "EditData",
+         "Target": "Data/Events/Beach",
+         "Entries": {
+            "733330/f Sam 750/w sunny/t 700 1500/z winter/y 1": null,
+            "733330/f Sam 750/w sunny/t 700 1500/z winter": "[snipped: long event script here]"
+         }
+      }
+   ]
+}
+```
+
+</dd>
+
+<dt>Load changes from a file</dt>
+<dd>
+
+You can optionally load changes from a separate JSON file in your content pack. The file can contain
+`Entries`, `Fields`, and `MoveEntries`. It can use any tokens that would work if used directly in
+the patch.
+
+For example, this patch in `content.json`:
+```js
+{
+   "Format": "1.10",
+   "Changes": [
+      {
+         "Action": "EditData",
+         "Target": "Data/ObjectInformation",
+         "FromFile": "assets/jade.json"
+      }
+   ]
+}
+```
+
+Loads changes from this `assets/jade.json` file:
+```js
+{
+   "Entries": {
+      "900": "Crimson Jade/400/-300/Minerals -2/Crimson Jade/A pale green ornamental stone with a strange crimson sheen."
+   },
+   "Fields": {
+      "70": {
+         4: "Normal Jade",
+         5: "A pale green ornamental stone with no sheen."
+      }
+   }
+}
+```
+
+The `FromFile` field can contain tokens, so you can dynamically load a different file. For example,
+this single patch loads a dialogue file for multiple NPCs:
+```js
+{
+   "Format": "1.10",
+   "Changes": [
+      {
+         "Action": "EditData",
+         "Target": "Characters/Dialogue/Abigail, Characters/Dialogue/Alex, Characters/Dialogue/Caroline",
+         "FromFile": "assets/dialogue/{{TargetWithoutPath}}.json"
+      }
    ]
 }
 ```
@@ -269,7 +324,7 @@ structures instead of strings.
 For example, this ██████████ and adds ██████████:
 ```js
 {
-   "Format": "1.9",
+   "Format": "1.10",
    "Changes": [
       {
          "Action": "EditData",
@@ -328,7 +383,7 @@ Here's an example showing all possible reorder options. (If you specify a `Befor
 that doesn't match any entry, a warning will be shown.)
 ```js
 {
-   "Format": "1.9",
+   "Format": "1.10",
    "Changes": [
       {
          "Action": "EditData",
@@ -349,7 +404,7 @@ New entries are added at the bottom of the list by default.
 </dd>
 </dl>
 
-## Edit part of a map
+### Edit part of a map
 `"Action": "EditMap"` changes part of an in-game map by copying tiles, properties, and tilesheets
 from a source map. This is essentially a copy & paste from one map into another, replacing whatever
 was in the target area before.
@@ -378,11 +433,18 @@ See _common fields_ above.
 </td>
 <td>
 
-The relative path to the map in your content pack folder from which to copy (like `assets/town.tbin`). This can be a `.tbin` or `.xnb` file. This field supports [tokens](#advanced-tokens--conditions) and capitalisation doesn't matter.
+The relative path to the map in your content pack folder from which to copy (like
+`assets/town.tbin`). This can be a `.tbin` or `.xnb` file. This field supports [tokens](#advanced-tokens--conditions)
+and capitalisation doesn't matter.
 
-Content Patcher will handle tilesheets referenced by the `FromFile` map for you if it's a `.tbin` file:
-* If a tilesheet isn't referenced by the target map, Content Patcher will add it for you (with a `z_` ID prefix to avoid conflicts with hardcoded game logic). If the source map has a custom version of a tilesheet that's already referenced, it'll be added as a separate tilesheet only used by your tiles.
-* If you include the tilesheet file in your mod folder, Content Patcher will use that one automatically; otherwise it will be loaded from the game's `Content/Maps` folder.
+Content Patcher will handle tilesheets referenced by the `FromFile` map for you if it's a `.tbin`
+file:
+* If a tilesheet isn't referenced by the target map, Content Patcher will add it for you (with a
+  `z_` ID prefix to avoid conflicts with hardcoded game logic). If the source map has a custom
+  version of a tilesheet that's already referenced, it'll be added as a separate tilesheet only
+  used by your tiles.
+* If you include the tilesheet file in your mod folder, Content Patcher will use that one
+  automatically; otherwise it will be loaded from the game's `Content/Maps` folder.
 
 </td>
 </tr>
@@ -394,7 +456,9 @@ Content Patcher will handle tilesheets referenced by the `FromFile` map for you 
 </td>
 <td>
 
-_(optional)_ The part of the source map to copy. Defaults to the whole source map. This is specified as an object with the X and Y tile coordinates of the top-left corner, and the tile width and height of the area.
+_(optional)_ The part of the source map to copy. Defaults to the whole source map. This is
+specified as an object with the X and Y tile coordinates of the top-left corner, and the tile width
+and height of the area.
 
 </td>
 </tr>
@@ -415,7 +479,7 @@ _(optional)_ The part of the source map to copy. Defaults to the whole source ma
 For example, this replaces the town square with the one in another map:
 ```js
 {
-   "Format": "1.9",
+   "Format": "1.10",
    "Changes": [
       {
          "Action": "EditMap",
@@ -994,6 +1058,35 @@ code | meaning
 </td>
 </tr>
 
+<tr>
+<td>Random</td>
+<td>
+
+A random value from the options you specify:
+```js
+{
+   "Action": "Load",
+   "Target": "Characters/Abigail",
+   "FromFile": "assets/abigail-{{Random:hood, jacket, raincoat}}.png"
+}
+```
+
+The selection is based on the save ID and in-game date, so reloading a save with the same patches
+won't change the selection. Calling the token twice may return different values (you can use a
+[dynamic token](#dynamic-token) to reuse the same selection).
+
+For weighted random, you can specify a value multiple times. For example, 'red' is twice as likely
+as 'blue' in this patch:
+```js
+{
+   "Action": "Load",
+   "Target": "Characters/Abigail",
+   "FromFile": "assets/abigail-{{Random:red, red, blue}}.png"
+}
+```
+
+</td>
+</tr>
 </table>
 </dd>
 
@@ -1043,7 +1136,6 @@ Equivalent to `Target`, but only the part after the last path separator:
 
 </td>
 </tr>
-
 </table>
 </dd>
 </dl>
@@ -1079,27 +1171,27 @@ crop sprites depending on the weather:
 
 ```js
 {
-    "Format": "1.9",
-    "DynamicTokens": [
-        {
-            "Name": "Style",
-            "Value": "dry"
-        },
-        {
-            "Name": "Style",
-            "Value": "wet",
-            "When": {
-                "Weather": "rain, storm"
-            }
-        }
-    ],
-    "Changes": [
-        {
-            "Action": "Load",
-            "Target": "TileSheets/crops",
-            "FromFile": "assets/crop-{{style}}.png"
-        }
-    ]
+   "Format": "1.10",
+   "DynamicTokens": [
+      {
+         "Name": "Style",
+         "Value": "dry"
+      },
+      {
+         "Name": "Style",
+         "Value": "wet",
+         "When": {
+            "Weather": "rain, storm"
+         }
+      }
+   ],
+   "Changes": [
+      {
+         "Action": "Load",
+         "Target": "TileSheets/crops",
+         "FromFile": "assets/crop-{{style}}.png"
+      }
+   ]
 }
 ```
 
@@ -1124,31 +1216,31 @@ patch is applied. See below for more details.
 
 ```js
 {
-    "Format": "1.9",
-    "ConfigSchema": {
-        "Material": {
-            "AllowValues": "Wood, Metal",
-            "Default": "Wood"
-        }
-    },
-    "Changes": [
-        // as a token
-        {
-            "Action": "Load",
-            "Target": "LooseSprites/Billboard",
-            "FromFile": "assets/material_{{material}}.png"
-        },
+   "Format": "1.10",
+   "ConfigSchema": {
+      "Material": {
+         "AllowValues": "Wood, Metal",
+         "Default": "Wood"
+      }
+   },
+   "Changes": [
+      // as a token
+      {
+         "Action": "Load",
+         "Target": "LooseSprites/Billboard",
+         "FromFile": "assets/material_{{material}}.png"
+      },
 
-        // as a condition
-        {
-            "Action": "Load",
-            "Target": "LooseSprites/Billboard",
-            "FromFile": "assets/material_wood.png",
-            "When": {
-                "Material": "Wood"
-            }
-        }
-    ]
+      // as a condition
+      {
+         "Action": "Load",
+         "Target": "LooseSprites/Billboard",
+         "FromFile": "assets/material_wood.png",
+         "When": {
+            "Material": "Wood"
+         }
+      }
+   ]
 }
 ```
 
@@ -1162,29 +1254,46 @@ When you run the game, a `config.json` file will appear automatically with text 
 
 Players can edit it to configure your content pack.
 
-## Validate JSON files
-You can validate your `content.json` and `manifest.json` automatically to detect some common issues.
-(You should still test your content pack in-game before releasing it, since the validator won't
-detect all issues.)
+### Mod-provided tokens
+SMAPI mods can add new tokens for content packs to use (see [_extensibility for modders_](#extensibility-for-modders)),
+which work just like normal Content Patcher tokens. For example, this patch uses a token from Json
+Assets:
+```js
+{
+   "Format": "1.10",
+   "Changes": [
+      {
+         "Action": "EditData",
+         "Target": "Data/NpcGiftTastes",
+         "Entries": {
+            "Universal_Love": "74 446 797 373 {{spacechase0.jsonAssets/ObjectId:item name}}",
+         }
+      }
+   ]
+}
+```
 
-To validate online:
-1. Go to [json.smapi.io](https://json.smapi.io/).
-2. Set the format to 'Manifest' (for `manifest.json`) or 'Content Patcher' (for `content.json`).
-3. Drag & drop the JSON file onto the textbox, or paste in the text.
-4. Click the button to view the validation summary. You can optionally share the URL to let someone
-   else see the result.
-
-To validate in a text editor that supports JSON Schema, see
-[_Using a schema file directly_](https://github.com/Pathoschild/SMAPI/blob/develop/docs/technical/web.md#using-a-schema-file-directly)
-in the JSON validator documentation.
-
-### Tips
-* You should update your content pack to the latest format version whenever you update it, for best
-  futureproofing.
-* If you get an error like `Unexpected character`, your JSON syntax is invalid. Try checking the
-  line mentioned (or the one above it) for a missing comma, bracket, etc.
-* If you need help figuring out an error, see [_see also_](#see-also) for some links to places you
-  can ask.
+To use a mod-provided token, at least one of these must be true:
+* The mod which provides the token is a [required dependency](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Manifest#Dependencies)
+  of your content pack.
+* Or the patch using the token has an immutable (i.e. not using any tokens) `HasMod` condition which lists the mod:
+  ```js
+  {
+     "Format": "1.10",
+     "Changes": [
+        {
+           "Action": "EditData",
+           "Target": "Data/NpcGiftTastes",
+           "Entries": {
+              "Universal_Love": "74 446 797 373 {{spacechase0.jsonAssets/ObjectId:item name}}",
+           },
+           "When": {
+              "HasMod": "spacechase0.jsonAssets"
+           }
+        }
+     ]
+  }
+  ```
 
 ## Release a content pack
 See [content packs](https://stardewvalleywiki.com/Modding:Content_packs) on the wiki for general
@@ -1207,6 +1316,30 @@ info. Suggestions:
    generate when the game is launched, just like a SMAPI mod's `content.json`.
 
 ## Troubleshoot
+### Schema validator
+You can validate your `content.json` and `manifest.json` automatically to detect some common issues.
+(You should still test your content pack in-game before releasing it, since the validator won't
+detect all issues.)
+
+To validate online:
+1. Go to [json.smapi.io](https://json.smapi.io/).
+2. Set the format to 'Manifest' (for `manifest.json`) or 'Content Patcher' (for `content.json`).
+3. Drag & drop the JSON file onto the textbox, or paste in the text.
+4. Click the button to view the validation summary. You can optionally share the URL to let someone
+   else see the result.
+
+To validate in a text editor that supports JSON Schema, see
+[_Using a schema file directly_](https://github.com/Pathoschild/SMAPI/blob/develop/docs/technical/web.md#using-a-schema-file-directly)
+in the JSON validator documentation.
+
+Tips:
+* You should update your content pack to the latest format version whenever you update it, for best
+  futureproofing.
+* If you get an error like `Unexpected character`, your JSON syntax is invalid. Try checking the
+  line mentioned (or the one above it) for a missing comma, bracket, etc.
+* If you need help figuring out an error, see [_see also_](#see-also) for some links to places you
+  can ask.
+
 ### Patch commands
 Content Patcher adds two patch commands for testing and troubleshooting.
 
@@ -1357,7 +1490,7 @@ argument   | type | purpose
 That's it! Now any content pack which lists your mod as a dependency can use the token in its fields:
 ```js
 {
-   "Format": "1.9",
+   "Format": "1.10",
    "Changes": [
       {
          "Action": "EditData",
@@ -1483,7 +1616,7 @@ field | type | purpose
 That's it! Now any content pack which lists your mod as a dependency can use the token in its fields:
 ```js
 {
-   "Format": "1.9",
+   "Format": "1.10",
    "Changes": [
       {
          "Action": "EditData",

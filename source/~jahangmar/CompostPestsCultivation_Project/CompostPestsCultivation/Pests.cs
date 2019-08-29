@@ -31,7 +31,7 @@ namespace CompostPestsCultivation
     public class Pests : ModComponent
     {
         private static Config config;
-        private static readonly List<Pest> pests = new List<Pest>();
+        public static readonly List<Pest> pests = new List<Pest>();
         private static readonly Random rand = new Random();
 
         private static Texture2D pestTexture;
@@ -43,25 +43,21 @@ namespace CompostPestsCultivation
             pestTexture = Game1.content.Load<Texture2D>("TileSheets\\debris");
         }
 
-        public static void Load()
+        public static void Load(SaveData data)
         {
             pests.Clear();
-
-            List<Vector2> loadedInfestedCrops = ModEntry.GetHelper().Data.ReadSaveData<SaveData>(SaveData._InfestedCrops)?.InfestedCrops;
+            List<Vector2> loadedInfestedCrops = data.InfestedCrops;
             if (loadedInfestedCrops != null)
                 pests.AddRange(loadedInfestedCrops.Select((vec) => TryInfestCrop(vec, Game1.getFarm().terrainFeatures[vec] is HoeDirt hd ? hd : null)).Where((arg) => arg != null));
             ModEntry.GetMonitor().Log("Pests.Load() executed", LogLevel.Trace);
             ModEntry.GetMonitor().Log($"loaded {pests.Count} pests", LogLevel.Trace);
         }
 
-        public static void Save()
+        public static void Save(SaveData data)
         {
-            SaveData dat = new SaveData()
-            {
-                InfestedCrops = pests.Select((pest) => pest.GetPos()).ToList()
-            };
-
-            ModEntry.GetHelper().Data.WriteSaveData<SaveData>(SaveData._InfestedCrops, dat);
+            List<Vector2> InfestedCrops = pests.Select((pest) => pest.GetPos()).ToList();
+            //SaveField(nameof(InfestedCrops), InfestedCrops);
+            AddToSaveData(data, nameof(InfestedCrops), InfestedCrops);
             ModEntry.GetMonitor().Log("Pests.Save() executed", LogLevel.Trace);
         }
 
@@ -119,7 +115,7 @@ namespace CompostPestsCultivation
 
         public static Pest TryInfestCrop(Vector2 pos, HoeDirt hd)
         {
-            if (hd != null && hd.crop == null || hd.crop.dead.Value || pests.Exists((Pest p) => p.HasPosition(pos)))
+            if (hd == null || hd != null && hd.crop == null || hd.crop.dead.Value || pests.Exists((Pest p) => p.HasPosition(pos)))
                 return null;
 
             List<CropTrait> traits = Cultivation.GetTraits(hd.crop);

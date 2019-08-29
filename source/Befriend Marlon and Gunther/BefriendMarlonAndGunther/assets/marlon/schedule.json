@@ -1,0 +1,8 @@
+{
+    "Fri": "600 AdventureGuild 8 4 2/1000 Blacksmith 2 16 1/1400 ArchaeologyHouse 15 15 0/1700 Saloon 40 17 2/2300 AdventureGuild 8 4 2",
+    "rain": "GOTO spring",
+    "fall": "GOTO spring",
+    "winter": "GOTO spring",
+    "summer": "GOTO spring",
+    "spring": "600 AdventureGuild 8 4 2/1000 Mountain 76 14 2/1100 Mountain 55 6 3/1200 Mine 18 4 0/1400 AdventureGuild 4 11 2/2200 AdventureGuild 8 4 2"
+}

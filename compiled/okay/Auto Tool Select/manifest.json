@@ -1,7 +1,7 @@
 ﻿{
   "Name": "AutoToolSelect",
   "Author": "lolmaj",
-  "Version": "1.4.2",
+  "Version": "1.5",
   "Description": "Choose right tool from toolbox based on hovering tile",
   "UniqueID": "lolmaj.AutoToolSelect",
   "EntryDll": "AutoToolSelect.dll",

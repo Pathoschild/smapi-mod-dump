@@ -5,9 +5,9 @@ mods:
    Multiplayer Time
 
 latest commit:
-   commit bc9cc1be2c29ffd0ed087f90d3ebc2d5f74d23fc
+   commit 9c180d84fb428cbfdf2098784bd0e5f259721f4a
    Author: MaciejMarkuszewski <maciej.markuszewski1998@gmail.com>
-   Date:   Tue May 14 19:50:33 2019 +0200
+   Date:   Mon Aug 26 03:46:46 2019 +0200
    
-       Mod 2.2 version commit
+       2.2.1 update commit
    

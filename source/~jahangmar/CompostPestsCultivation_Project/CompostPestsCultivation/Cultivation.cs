@@ -25,8 +25,8 @@ namespace CompostPestsCultivation
 {
     public class Cultivation : ModComponent
     {
-        private static Dictionary<int, List<CropTrait>> CropTraits = new Dictionary<int, List<CropTrait>>();
-        private static Dictionary<int, int> CropSeeds = new Dictionary<int, int>();
+        public static Dictionary<int, List<CropTrait>> CropTraits = new Dictionary<int, List<CropTrait>>();
+        public static Dictionary<int, int> CropSeeds = new Dictionary<int, int>();
 
         private static Config config;
         private static Random rand = new Random();
@@ -36,60 +36,30 @@ namespace CompostPestsCultivation
             config = conf;
         }
 
-        public static void Load()
+        public static void Load(SaveData data)
         {
-            Dictionary<int, List<CropTrait>> loadedCropTraits = ModEntry.GetHelper().Data.ReadSaveData<SaveData>(SaveData._CropTraits)?.CropTraits;
-            if (loadedCropTraits != null)
-                CropTraits = loadedCropTraits;
-
-            Dictionary<int, int> loadedCropSeeds = ModEntry.GetHelper().Data.ReadSaveData<SaveData>(SaveData._CropSeeds)?.CropSeeds;
-            if (loadedCropSeeds != null)
-                CropSeeds = loadedCropSeeds;
-
-            List<Vector2> loadedTempQualityFertilizer = ModEntry.GetHelper().Data.ReadSaveData<SaveData>(SaveData._TempQualityFertilizer)?.TempQualityFertilizer;
-            if (loadedTempQualityFertilizer != null)
-                TempQualityFertilizer = loadedTempQualityFertilizer;
-
-            List<Vector2> loadedTempQualityIIFertilizer = ModEntry.GetHelper().Data.ReadSaveData<SaveData>(SaveData._TempQualityIIFertilizer)?.TempQualityIIFertilizer;
-            if (loadedTempQualityIIFertilizer != null)
-                TempQualityIIFertilizer = loadedTempQualityIIFertilizer;
-
-            List<Vector2> loadedTempWaterStop = ModEntry.GetHelper().Data.ReadSaveData<SaveData>(SaveData._TempWaterStop)?.TempWaterStop;
-            if (loadedTempWaterStop != null)
-                TempWaterStop = loadedTempWaterStop;
-
-            List<Vector2> loadedTempWaterOneDay = ModEntry.GetHelper().Data.ReadSaveData<SaveData>(SaveData._TempWaterOneDay)?.TempWaterOneDay;
-            if (loadedTempWaterOneDay != null)
-                TempWaterOneDay = loadedTempWaterOneDay;
-
-            List<Vector2> loadedTempWaterTwoDays = ModEntry.GetHelper().Data.ReadSaveData<SaveData>(SaveData._TempWaterTwoDays)?.TempWaterTwoDays;
-            if (loadedTempWaterTwoDays != null)
-                TempWaterTwoDays = loadedTempWaterTwoDays;
+            CropTraits = data.CropTraits;
+            CropSeeds = data.CropSeeds;
+            TempQualityFertilizer = data.TempQualityFertilizer;
+            TempQualityIIFertilizer = data.TempQualityIIFertilizer;
+            TempWaterStop = data.TempWaterStop;
+            TempWaterOneDay = data.TempWaterOneDay;
+            TempWaterTwoDays = data.TempWaterTwoDays;
 
             ModEntry.GetMonitor().Log("Cultivation.Load() executed", LogLevel.Trace);
             ModEntry.GetMonitor().Log($"loaded {CropTraits.Count} crop traits and {CropSeeds.Count} crop seeds", LogLevel.Trace);
         }
 
-        public static void Save()
+        public static void Save(SaveData data)
         {
-            SaveData dat = new SaveData()
-            {
-                CropTraits = CropTraits,
-                CropSeeds = CropSeeds,
-                TempQualityFertilizer = TempQualityFertilizer,
-                TempQualityIIFertilizer = TempQualityIIFertilizer,
-                TempWaterStop = TempWaterStop,
-                TempWaterOneDay = TempWaterOneDay,
-                TempWaterTwoDays = TempWaterTwoDays
-            };
+            AddToSaveData(data, nameof(CropTraits), CropTraits);
+            AddToSaveData(data, nameof(CropSeeds), CropSeeds);
+            AddToSaveData(data, nameof(TempQualityFertilizer), TempQualityFertilizer);
+            AddToSaveData(data, nameof(TempQualityIIFertilizer), TempQualityIIFertilizer);
+            AddToSaveData(data, nameof(TempWaterStop), TempWaterStop);
+            AddToSaveData(data, nameof(TempWaterOneDay), TempWaterOneDay);
+            AddToSaveData(data, nameof(TempWaterTwoDays), TempWaterTwoDays);
 
-            ModEntry.GetHelper().Data.WriteSaveData<SaveData>(SaveData._CropTraits, dat);
-            ModEntry.GetHelper().Data.WriteSaveData<SaveData>(SaveData._CropSeeds, dat);
-            ModEntry.GetHelper().Data.WriteSaveData<SaveData>(SaveData._TempQualityFertilizer, dat);
-            ModEntry.GetHelper().Data.WriteSaveData<SaveData>(SaveData._TempQualityIIFertilizer, dat);
-            ModEntry.GetHelper().Data.WriteSaveData<SaveData>(SaveData._TempWaterStop, dat);
-            ModEntry.GetHelper().Data.WriteSaveData<SaveData>(SaveData._TempWaterOneDay, dat);
-            ModEntry.GetHelper().Data.WriteSaveData<SaveData>(SaveData._TempWaterTwoDays, dat);
             ModEntry.GetMonitor().Log("Cultivation.Save() executed", LogLevel.Trace);
         }
 

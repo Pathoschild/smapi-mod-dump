@@ -16,5 +16,8 @@
 
         public int pest_resistance_i_chance { set; get; } = 50;
         public int pest_resistance_ii_chance { set; get; } = 100;
+
+        public int compost_last_for_days { set; get; } = 28;
+        public int composter_takes_days { set; get; } = 28;
     }
 }

@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29020.237
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{C4E3B456-9BCC-447A-96B7-713EFFC87C66}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BefriendMarlonAndGunther", "BefriendMarlonAndGunther\BefriendMarlonAndGunther.csproj", "{542BAC33-2CC1-4CB9-978F-A1A48F703AEE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{542BAC33-2CC1-4CB9-978F-A1A48F703AEE}.Debug|x86.ActiveCfg = Debug|x86
+		{542BAC33-2CC1-4CB9-978F-A1A48F703AEE}.Debug|x86.Build.0 = Debug|x86
+		{542BAC33-2CC1-4CB9-978F-A1A48F703AEE}.Release|x86.ActiveCfg = Release|x86
+		{542BAC33-2CC1-4CB9-978F-A1A48F703AEE}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {08284ED8-CF07-42EE-AC12-89907BB0A2A3}
+	EndGlobalSection
+EndGlobal

@@ -287,10 +287,11 @@ namespace BetterMixedSeeds
             bool hasEemiesCrops = this.Helper.ModRegistry.IsLoaded("minervamaga.JA.EemieCrops");
             bool hasTeaTime = this.Helper.ModRegistry.IsLoaded("jfujii.TeaTime");
             bool hasForageToFarm = this.Helper.ModRegistry.IsLoaded("Mae.foragetofarm");
+            bool hasGemAndMineralCrops = this.Helper.ModRegistry.IsLoaded("rearda88.GemandMineralCrops");
 
             object api = this.Helper.ModRegistry.GetApi("spacechase0.JsonAssets");
 
-            if (hasPPJAFantasyCrops || hasPPJAFreshMeat || hasPPJAFruitsAndVeggies || hasPPJAMizusFlowers || hasCannabisKit || hasSixPlantableCrops || hasBonsterCrops || hasRevenantCrops || hasFarmerToFlorist || hasLuckyClover || hasFishFlowers || hasStephansLotsOfCrops || hasEemiesCrops || hasTeaTime || hasForageToFarm)
+            if (hasPPJAFantasyCrops || hasPPJAFreshMeat || hasPPJAFruitsAndVeggies || hasPPJAMizusFlowers || hasCannabisKit || hasSixPlantableCrops || hasBonsterCrops || hasRevenantCrops || hasFarmerToFlorist || hasLuckyClover || hasFishFlowers || hasStephansLotsOfCrops || hasEemiesCrops || hasTeaTime || hasForageToFarm || hasGemAndMineralCrops)
             {
                 if (api != null)
                 {
@@ -501,6 +502,20 @@ namespace BetterMixedSeeds
                         {
                             integratedCrops.Add(forageToFarmCropSeedName, this.Helper.Reflection.GetMethod(api, "GetObjectId").Invoke<int>(forageToFarmCropSeedName));
                             this.Monitor.Log($"Added {forageToFarmCropSeedName} crop to list", LogLevel.Trace);
+                        }
+                    }
+
+                    if (hasGemAndMineralCrops)
+                    {
+                        this.Monitor.Log("GemAndMineralCrops loaded", LogLevel.Trace);
+
+                        // Create a list of crops to pass to JA API
+                        List<string> gemAndMineralCropSeedNames = new List<string> { "Aerinite Root Seeds", "Aquamarine Rose Seeds", "Celestine Flower Seeds", "Diamond Flower Seed", "Ghost Rose Seed", "Kyanite Flower Seed", "Opal Cat Seeds", "Slate Bean Seed", "Soap Root Seed" };
+
+                        foreach (var gemAndMineralCropSeedName in gemAndMineralCropSeedNames)
+                        {
+                            integratedCrops.Add(gemAndMineralCropSeedName, this.Helper.Reflection.GetMethod(api, "GetObjectId").Invoke<int>(gemAndMineralCropSeedName));
+                            this.Monitor.Log($"Added {gemAndMineralCropSeedName} crop to list", LogLevel.Trace);
                         }
                     }
                 }
@@ -852,6 +867,19 @@ namespace BetterMixedSeeds
                 if (config.UseWild_Blackberry) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Wild Blackberry Seeds"], "FALL")); fallSeedEnabled = true; }
                 if (config.UseWild_Plum) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Wild Plum Seed"], "FALL")); fallSeedEnabled = true; }
                 if (config.UseWinter_Root) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Winter Root Seeds"], "WINTER")); }
+            }
+
+            if (hasGemAndMineralCrops && api != null)
+            {
+                if (config.UseAerinite_Root) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Aerinite Root Seeds"], "WINTER")); }
+                if (config.UseAquamarine_Rose) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Aquamarine Rose Seeds"], "WINTER")); }
+                if (config.UseCelestine_Flower) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Celestine Flower Seeds"], "WINTER")); }
+                if (config.UseDiamond_Flower) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Diamond Flower Seed"], "WINTER")); }
+                if (config.UseGhost_Rose) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Ghost Rose Seed"], "WINTER")); }
+                if (config.UseKyanite_Flower) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Kyanite Flower Seed"], "WINTER")); }
+                if (config.UseOpal_Cat) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Opal Cat Seeds"], "WINTER")); }
+                if (config.UseSlate_Bean) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Slate Bean Seed"], "WINTER")); }
+                if (config.UseSoap_Root) { seeds.Add(new KeyValuePair<int, string>(integratedCrops["Soap Root Seed"], "WINTER")); }
             }
 
             // Check that atleast one seed from each season is enabled

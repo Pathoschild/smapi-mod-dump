@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Befriend Marlon and Gunther",
+  "Author": "Yoshimax",
+  "Version": "1.0.5",
+  "Description": "A mod that lets you befriend Marlon and Gunther.",
+  "UniqueID": "Yoshimax.BefriendMarlon",
+  "EntryDll": "BefriendMarlonAndGunther.dll",
+  "MinimumApiVersion": "2.10.2",
+  "UpdateKeys": [ "Nexus:2569" ]
+}

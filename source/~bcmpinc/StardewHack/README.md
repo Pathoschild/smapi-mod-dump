@@ -26,6 +26,7 @@ If this mod fails to load with something like the error below, make sure that yo
 
 ## Known bugs
 Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
+* StardewHack has been built on Linux and therefore needs rewriting to work on Windows. SMAPI does this automatically, however if during startup Stardew Valley hangs on `Loading StardewHack.dll (rewritten in memory)...`, this is probably due to your virusscanner preventing SMAPI from doing so.
 
 ## Changes
 #### 1.1:

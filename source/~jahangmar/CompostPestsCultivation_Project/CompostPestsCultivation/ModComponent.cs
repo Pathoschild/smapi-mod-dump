@@ -15,27 +15,73 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 
 namespace CompostPestsCultivation
 {
     public class ModComponent
     {
-        public static T LoadField<T>(string name)
+        /*
+        public static T LoadField<T>(string name, T def = default(T))
         {
-            SaveData data = ModEntry.GetHelper().Data.ReadSaveData<SaveData>(name);
+            ModEntry.GetMonitor().Log("Loading field: " + name, StardewModdingAPI.LogLevel.Trace);
+            //SaveData data = ModEntry.GetHelper().Data.ReadSaveData<SaveData>(name);
+            T data = ModEntry.GetHelper().Data.ReadSaveData<T>(name);
             if (data == null)
-                return default(T);
+            {
+                ModEntry.GetMonitor().Log("No value found, returning default value", StardewModdingAPI.LogLevel.Trace);
+                return def;
+            }
             else
-                return ModEntry.GetHelper().Reflection.GetField<T>(ModEntry.GetHelper().Data.ReadSaveData<SaveData>(name), name).GetValue();
+            {
+                FieldInfo fi = typeof(SaveData).GetField(name);
+                if (fi == null)
+                {
+                    ModEntry.GetMonitor().Log("Couldn't access field " + name + " in " + nameof(SaveData), StardewModdingAPI.LogLevel.Error);
+                    return def;
+                }
+                return (T)fi.GetValue(data);
+            }
+
+                //return ModEntry.GetHelper().Reflection.GetField<T>(data, name).GetValue();
+        }
+        */
+           
+        /*
+        public static T LoadField<T>(T field)
+        {
+            return LoadField<T>(nameof(field), field);
+        }
+        */
+
+        /*
+        public static void SaveField<T>(string name, T value)
+        {
+            ModEntry.GetMonitor().Log("Saving field: " + name, StardewModdingAPI.LogLevel.Trace);
+            SaveData data = new SaveData();
+            ModEntry.GetHelper().Reflection.GetField<T>(data, name).SetValue(value);
+            ModEntry.GetHelper().Data.WriteSaveData<SaveData>(name, data);
+        }
+        */
+
+        public static SaveData AddToSaveData<T>(SaveData data, string name, T value)
+        {
+            ModEntry.GetHelper().Reflection.GetField<T>(data, name).SetValue(value);
+            return data;
         }
 
-        public static void SaveField<T>(T value)
+        /*
+        public static void SaveSaveData(SaveData data)
         {
-            SaveData data = new SaveData();
-            ModEntry.GetHelper().Reflection.GetField<T>(data, value.GetType().Name).SetValue(value);
-            ModEntry.GetHelper().Data.WriteSaveData<SaveData>(value.GetType().Name, data);
+            ModEntry.GetHelper().Data.WriteSaveData<SaveData>(nameof(SaveData), data);
         }
+
+        public static SaveData LoadSaveData()
+        {
+            return ModEntry.GetHelper().Data.ReadSaveData<SaveData>(nameof(SaveData));
+        }
+*/
 
         public static List<Vector2> GetAdjacentTiles(Vector2 vec)
         {

@@ -10,9 +10,9 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit 51dae328b9a0d203dda060bae1cd8fa9a46f0100
+   commit 24a36688fe78eaff345e9010f4eeeaf83e7c5a18
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Thu Aug 15 09:39:02 2019 +0200
+   Date:   Thu Aug 29 08:08:53 2019 +0200
    
-       new changelogs, fixed issues for pi 1.0.2
+       fixed load/save and more, tweaked interface, composting
    

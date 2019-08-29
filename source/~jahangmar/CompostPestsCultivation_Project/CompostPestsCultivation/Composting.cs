@@ -20,14 +20,20 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
+using StardewValley.Objects;
+
+using SavableItemList = System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<int, int>>;
 
 namespace CompostPestsCultivation
 {
     public class Composting : ModComponent
     {
-        public static List<Vector2> CompostApplied;
+        public static Dictionary<Vector2, int> CompostAppliedDays;
         public static Dictionary<Vector2, List<Item>> ComposterContents;
-        public static Dictionary<Vector2, bool> ComposterRunning;
+        public static Dictionary<Vector2, int> ComposterDaysLeft;
+        public static Dictionary<Vector2, int> ComposterCompostLeft;
+
+        public static Config config;
 
         private static readonly int MaxOccupantsID = -8763921;
 
@@ -66,27 +72,60 @@ namespace CompostPestsCultivation
         public static int GetGreen(Item item) => item == null ? 0 : GetGreenBrown(item).Green;
         public static int GetBrown(Item item) => item == null ? 0 : GetGreenBrown(item).Brown;
 
-        public static void Load()
+        public static void Init(Config conf)
         {
-            CompostApplied = LoadField<List<Vector2>>(SaveData._CompostApplied);
-            ComposterContents = LoadField<Dictionary<Vector2, List<Item>>>(SaveData._ComposterContents);
-            ComposterRunning = LoadField<Dictionary<Vector2, bool>>(SaveData._ComposterRunning);
-
-            if (CompostApplied == null)
-                CompostApplied = new List<Vector2>();
-            if (ComposterContents == null)
-                ComposterContents = new Dictionary<Vector2, List<Item>>();
-            if (ComposterRunning == null)
-                ComposterRunning = new Dictionary<Vector2, bool>();
+            config = conf;
         }
 
-        public static void Save()
+        private static Dictionary<Vector2, List<Item>> SavableItemsToItems(Dictionary<Vector2, SavableItemList> dic)
+        {
+            Dictionary<Vector2, List<Item>> result = new Dictionary<Vector2, List<Item>>();
+            foreach (KeyValuePair<Vector2, SavableItemList> pair in dic)
+            {
+                result.Add(pair.Key, pair.Value.Select((arg) => arg.Key == -1 ? null : ObjectFactory.getItemFromDescription(ObjectFactory.regularObject, arg.Key, arg.Value)).ToList());
+            }
+            return result;
+        }
+
+        private static Dictionary<Vector2, SavableItemList> ItemsToSavableItems(Dictionary<Vector2, List<Item>> dic)
+        {
+            Dictionary<Vector2, SavableItemList> result = new Dictionary<Vector2, SavableItemList>();
+            foreach (KeyValuePair<Vector2, List<Item>> pair in dic)
+            {
+                result.Add(pair.Key, pair.Value.Select((arg) => arg == null ? new KeyValuePair<int, int>(-1,-1) : new KeyValuePair<int, int>(arg.ParentSheetIndex, arg.Stack)).ToList());
+            }
+            return result;
+        }
+
+        public static void Load(SaveData data)
+        {
+            CompostAppliedDays = data.CompostAppliedDays;
+            ComposterContents = SavableItemsToItems(data.ComposterContents);
+            //ComposterContents = data.ComposterContents.Select((KeyValuePair<Vector2, Dictionary<int, int>> arg) => new KeyValuePair<Vector2, List<Item>>(arg.Key, IntsToItems(arg.Value))).ToDictionary((arg) => arg.Key);
+            ComposterDaysLeft = data.ComposterDaysLeft;
+            ComposterCompostLeft = data.ComposterCompostLeft;
+
+            ModEntry.GetMonitor().Log("Composting.Load() executed", StardewModdingAPI.LogLevel.Trace);
+        }
+
+        public static void Save(SaveData data)
+        {
+            data.CompostAppliedDays = CompostAppliedDays;
+            data.ComposterContents = ItemsToSavableItems(ComposterContents);
+            data.ComposterDaysLeft = ComposterDaysLeft;
+            data.ComposterCompostLeft = ComposterCompostLeft;
+
+            ModEntry.GetMonitor().Log("Composting.Save() executed", StardewModdingAPI.LogLevel.Trace);
+        }
+
+        public static void ResetCompostingBins()
         {
             Game1.getFarm().buildings.Set(new List<Building>(Game1.getFarm().buildings).Select((Building building) => building is CompostingBin bin ? bin.ToShippingBin() : building).ToList());
+        }
 
-            SaveField(CompostApplied);
-            SaveField(ComposterContents);
-            SaveField(ComposterRunning);
+        public static void SetCompostingBins()
+        {
+            Game1.getFarm().buildings.Set(new List<Building>(Game1.getFarm().buildings).Select((Building building) => building is ShippingBin bin && Composting.IsComposter(bin) ? CompostingBin.FromShippingBin(bin) : building).ToList());
         }
 
         public static void OnNewDay()
@@ -94,15 +133,51 @@ namespace CompostPestsCultivation
             //if (Game1.getFarm().buildings.ToList().Exists((Building obj) => Composting.IsComposter(obj)))
             //    ModEntry.GetMonitor().Log("Found Composter", StardewModdingAPI.LogLevel.Alert);
 
-            Game1.getFarm().buildings.Set(new List<Building>(Game1.getFarm().buildings).Select((Building building) => building is ShippingBin bin && Composting.IsComposter(bin) ? CompostingBin.FromShippingBin(bin) : building).ToList());
+            SetCompostingBins();
 
             //if (Game1.getFarm().buildings.ToList().Exists((Building obj) => obj is CompostingBin))
             //    ModEntry.GetMonitor().Log("transformed composter", StardewModdingAPI.LogLevel.Alert);
+
+            void DecreaseDays(Dictionary<Vector2, int> dic)
+            {
+                var copy = new Dictionary<Vector2, int>(dic);
+                dic.Clear();
+                foreach (KeyValuePair<Vector2, int> pair in copy)
+                {
+                    Vector2 key = pair.Key;
+                    int value = pair.Value;
+                    if (value > 0)
+                        value--;
+                    dic.Add(key, value);
+                }
+            }
+
+            DecreaseDays(ComposterDaysLeft);
+            ComposterDaysLeft.Keys.ToList().ForEach((Vector2 vec) =>
+            {
+                if (ComposterDaysLeft[vec] <= 0)
+                {
+                    ComposterDaysLeft.Remove(vec);
+                    int left = ComposterContents[vec].Sum((Item arg) => arg == null ? 0 : arg.Stack);
+                    if (ComposterCompostLeft.ContainsKey(vec))
+                        ComposterCompostLeft[vec] = left;
+                    else
+                        ComposterCompostLeft.Add(vec, left);
+                    ComposterContents.Remove(vec);
+                }
+            });
+
+            DecreaseDays(CompostAppliedDays);
+            CompostAppliedDays.Keys.ToList().ForEach((Vector2 vec) =>
+            {
+                if (CompostAppliedDays[vec] <= 0)
+                    CompostAppliedDays.Remove(vec);
+            });
         }
 
         public static bool AffectedByCompost(Vector2 tile)
         {
-            return CompostApplied.Contains(tile) || CompostApplied.Exists((Vector2 vec) => GetAdjacentTiles(vec).Contains(tile));
+            return CompostAppliedDays.ContainsKey(tile) && CompostAppliedDays[tile] > 0 || CompostAppliedDays.Keys.Intersect(GetAdjacentTiles(tile)).ToList().Exists((Vector2 vec) => CompostAppliedDays[vec] > 0);
         }
 
         public static BluePrint GetComposterBlueprint()

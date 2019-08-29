@@ -61,7 +61,7 @@ namespace AutoToolSelect
         
         private void GameTicked(object sender, EventArgs e)
         {
-            if (Context.IsWorldReady && Context.IsPlayerFree)
+            if (Context.IsWorldReady && Context.IsPlayerFree && !Game1.player.FarmerSprite.isOnToolAnimation())
             {
                 Vector2 ToolLocationVector;
                 Point ToolLocationPoint;

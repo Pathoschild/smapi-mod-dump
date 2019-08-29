@@ -16,9 +16,9 @@ mods:
    XNB Loader
 
 latest commit:
-   commit 73348878c075134297a06ce43697b388ddaf0eb8
+   commit 730975bddf9bda86bbdd0400741691fbab4496af
    Author: Entoarox <kvdk@kvdk.net>
-   Date:   Fri Aug 9 19:48:17 2019 +0200
+   Date:   Thu Aug 22 00:21:18 2019 +0200
    
-       ALL THE UPDATE!
+       Change push
    

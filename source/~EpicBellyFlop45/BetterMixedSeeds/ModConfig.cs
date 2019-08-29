@@ -327,5 +327,16 @@ namespace BetterMixedSeeds
         public bool UseWild_Blackberry { get; set; } = true;
         public bool UseWild_Plum { get; set; } = true;
         public bool UseWinter_Root { get; set; } = true;
+
+        // Gem and Mineral Crops
+        public bool UseAerinite_Root { get; set; } = true;
+        public bool UseAquamarine_Rose { get; set; } = true;
+        public bool UseCelestine_Flower { get; set; } = true;
+        public bool UseDiamond_Flower { get; set; } = true;
+        public bool UseGhost_Rose { get; set; } = true;
+        public bool UseKyanite_Flower { get; set; } = true;
+        public bool UseOpal_Cat { get; set; } = true;
+        public bool UseSlate_Bean { get; set; } = true;
+        public bool UseSoap_Root { get; set; } = true;
     }
 }

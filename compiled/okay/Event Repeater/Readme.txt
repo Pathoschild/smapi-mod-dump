@@ -13,6 +13,7 @@ A. Introduction
 B. Explaination of Mod use
 B1. Repeating Events
 B2. Repeating Mail
+B3. Repeating Responses
 C. Console Commands
 D. Tips for Modders!
 E. Special Thanks/Credits
@@ -111,6 +112,46 @@ you still qualify for the event conditions.
 
 With the use of Repeating Mail, you can have loved ones send you gifts and beyond (Read Tips for Modders for more).
 
+[B3. Repeating Response IDs:]
+
+Version 5 of Event Repeater gives you the power to remove responses to questions you have been asked in either dialogue or events.  Like the others, it's straight foward:
+
+	"RepeatResponse": [
+	[ResponseID],
+	]
+
+The [ResponseID] is a numerical value added to a question ($q) and response ($r) string.  Here is an example of what It would look like:
+
+	speak Penny \"I don't know if we talked yesterday...#$b#$q 690001 null#Did we test the new response yet?#$r 690001 0 repeat_yes#Yes.. it works#$r 690002 0 repeat_no#Not yet.. let's try tomorrow!\"/
+
+This is how it would look within an event.  See the Stardew Valley Wiki Modding: Event_data page for more information.
+Take note the the question string referrs to the number 690001 and 690002 within it.  These are response IDs in which it will be stored and used when called for.
+The $q and $r can be used in day to day dialogue:
+
+	"Mon": "Did you know that I have a sword at my house?#$b#$q 1000/1001 swordplay#Would you like to see it?#$r 1000 10 swordYes#Sure!#$r 1001 -10 swordNO#Heck no!",
+	"swordYes": "Great!! Maybe we can meet up later when Dad is not watching.$1",
+	"swordNo": "Well I didn't want to show it to you anyways.$5",
+	"swordplay": "$p 1000#It's real shiny.$1|Not that you care.$5",
+
+This indicates that Response ID 1000 is a positive response, while 1001 is a Negative. When the question is asked it will store the [ResponseID] and divert to "swordplay".. thus:
+
+	<If 1000:>
+		"Did you know that I have a sword at my house?"After pressing the button to move on: "It's real Shiny."
+
+	<If 1001:>
+		"Did  you know that I have a sword at my house?"After Pressing the button to move on: "Not that you care."
+
+Being able to forget either case is knowing the [ResponseID]:
+
+	"RepeatResponse": [
+	690001,
+	690002,
+	1000,
+	1001,
+	]
+
+Every morning, Event Repeater will remove the listed [ResponseIDs].  This means the game will ask you the same question again for a response.
+	
 -=+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=-
 [C. Console Commands:]
 
@@ -156,6 +197,14 @@ The SMAPI console will then, if the ID is correct, will return this:
 	"Check Mail Tomorrow!  Sending: Dobson"
 
 Tomorrow morning, the mail with the [MailID] "Dobson" will appear in your mailbox.  This is good to test mail formatting and item receiving.
+
+	{showresoponse}
+
+This is for Advanced Modders who know how to find specific [ResponseIDs].  It will show only the ID numbers and no other context. If an Event is repeated, you may see the same ID more than once.
+
+	{responseforget}
+
+This is a Manual forget command to remove a [ResponseID] from the list.  
 
 -=+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=-
 [D. Tips for Modders:]

@@ -41,7 +41,7 @@ namespace CompostPestsCultivation
         {
             if ((int)daysOfConstructionLeft <= 0 && tileLocation.X >= (float)(int)tileX && tileLocation.X <= (float)((int)tileX + 1) && (int)tileLocation.Y == (int)tileY)
             {
-                Game1.showGlobalMessage("CompostingBin.doAction");
+                //Game1.showGlobalMessage("CompostingBin.doAction");
                 if (Game1.activeClickableMenu == null)
                     Game1.activeClickableMenu = new ComposterMenu(this);
             }

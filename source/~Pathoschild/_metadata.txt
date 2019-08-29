@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 4e79c2f18b8ba371d712d6b3937324da6e042a6b
+   commit 65c9b68ffab68899befd47ecb0a549b575f27344
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Tue Aug 20 15:15:13 2019 -0400
+   Date:   Mon Aug 26 14:46:07 2019 -0400
    
-       add tractor support for chopping bushes
+       generalise single-patch context for reuse (#421)
    

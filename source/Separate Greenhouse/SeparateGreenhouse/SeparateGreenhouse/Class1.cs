@@ -13,8 +13,25 @@ namespace SeparateGreenhouse
     {
         public SButton UpdateGreenhouses { get; set; } = SButton.F6;
     }
-    class SeparateGreenhouseMod : Mod
+
+    class SeparateGreenhouseMod : Mod, IAssetLoader
     {
+        public bool CanLoad<T>(IAssetInfo asset)
+        {
+            return
+            asset.AssetNameEquals("Buildings/Greenhouse")
+            || asset.AssetNameEquals("Maps/FarmGreenHouse");
+        }
+
+        public T Load<T>(IAssetInfo asset)
+        {
+            if (asset.AssetNameEquals("Buildings/Greenhouse"))
+                return this.Helper.Content.Load<T>("assets/building.png");
+            if (asset.AssetNameEquals("Maps/FarmGreenHouse"))
+                return this.Helper.Content.Load<T>("Maps/Greenhouse", ContentSource.GameContent);
+            throw new InvalidOperationException($"Unexpected asset '{asset.AssetName}'.");
+        }
+
         private ModConfig Config;
         public override void Entry(IModHelper helper)
         {

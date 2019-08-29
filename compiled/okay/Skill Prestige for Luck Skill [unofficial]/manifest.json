@@ -1,0 +1,14 @@
+{
+    "Name": "Skill Prestige for Luck Skill",
+    "Author": "Alphablackwolf",
+    "Version": "1.2.4-unofficial.9-pathoschild",
+    "Description": "Extends Skill Prestige to support the Luck Skill mod.",
+    "UniqueID": "alphablackwolf.LuckSkillPrestigeAdapter",
+    "EntryDll": "SkillPrestige.LuckSkill.dll",
+    "MinimumApiVersion": "3.0.0-beta",
+    "Dependencies": [
+        { "UniqueID": "alphablackwolf.skillPrestige" },
+        { "UniqueID": "spacechase0.LuckSkill" }
+    ],
+    "UpdateKeys": [ "Nexus:569" ]
+}

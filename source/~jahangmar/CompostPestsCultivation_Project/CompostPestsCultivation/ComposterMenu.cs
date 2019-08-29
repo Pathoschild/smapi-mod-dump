@@ -22,6 +22,8 @@ using StardewValley.TerrainFeatures;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using StardewValley.BellsAndWhistles;
+using StardewValley.Objects;
+using System.Linq;
 //using System;
 
 namespace CompostPestsCultivation
@@ -33,7 +35,9 @@ namespace CompostPestsCultivation
         const int cancel_button_size = 64;
         const int activate_button_size = 64;
 
-        const int min_activate_amount = 100;
+        //const int min_activate_amount = 100;
+
+        const int rotten_plant_idx = 747;
 
         private string hoverText = "";
 
@@ -59,6 +63,8 @@ namespace CompostPestsCultivation
 
         private Item heldItem;
 
+        private List<Vector2> greenTiles;
+
         public ComposterMenu(CompostingBin bin)
         {
             BinPos = new Vector2(bin.tileX, bin.tileY);
@@ -72,6 +78,31 @@ namespace CompostPestsCultivation
             AddCompostItems();
 
             resetGUI();
+
+            if (Composting.ComposterDaysLeft.ContainsKey(BinPos) && Composting.ComposterDaysLeft[BinPos] > 0) //composter is active
+                ShowAsActive();
+            if (Composting.ComposterCompostLeft.ContainsKey(BinPos) && Composting.ComposterCompostLeft[BinPos] > 0) //composter has compost in it
+            {
+                MakeReady();
+            }
+
+            Game1.player.Halt();
+
+            UpdateGreenTiles();
+        }
+
+        private void UpdateGreenTiles()
+        {
+            greenTiles = new List<Vector2>(Composting.CompostAppliedDays.Keys);
+            foreach (Vector2 tile in greenTiles.ToList())
+            {
+                List<Vector2> adjacents = ModComponent.GetAdjacentTiles(tile);
+                foreach (Vector2 adj in adjacents)
+                {
+                    if (!greenTiles.Contains(adj))
+                        greenTiles.Add(adj);
+                }
+            }
         }
 
         private void resetGUI()
@@ -95,8 +126,8 @@ namespace CompostPestsCultivation
 
             cancelButton.bounds = new Rectangle(Game1.viewport.Width - space - cancel_button_size, Game1.viewport.Height - space - cancel_button_size, cancel_button_size, cancel_button_size);
             //int actWidth = SpriteText.getWidthOfString(ModEntry.GetHelper().Translation.Get("composter.activate_button"));
-            activateButton.bounds = new Rectangle(compostInventoryMenu.xPositionOnScreen + compostInventoryMenu.width / 2 - activate_button_size / 2, playerInventoryMenu.yPositionOnScreen + playerInventoryMenu.height + space + nutrition_area_height + space, activate_button_size, activate_button_size);
-            applyButton.bounds = activateButton.bounds;
+            activateButton.bounds = new Rectangle(compostInventoryMenu.xPositionOnScreen + compostInventoryMenu.width / 2 - activate_button_size / 2 - activate_button_size, playerInventoryMenu.yPositionOnScreen + playerInventoryMenu.height + space + nutrition_area_height + space, activate_button_size, activate_button_size);
+            applyButton.bounds = new Rectangle(activateButton.bounds.X + activateButton.bounds.Width*2, activateButton.bounds.Y, activate_button_size, activate_button_size);
         }
 
         public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
@@ -132,36 +163,58 @@ namespace CompostPestsCultivation
 
                 compostInventoryMenu.draw(b);
                 playerInventoryMenu.draw(b);
-                nutritionsComponent.draw(b);
-                if (state == State.ready)
-                    b.Draw(Game1.mouseCursors, applyButton.bounds, new Rectangle(366, 373, 16, 16), Color.White); //okButton (366, 373, 16, 16)
-                else if (state == State.fill && nutritionsComponent.GoodDistribution())
-                    b.Draw(Game1.mouseCursors, activateButton.bounds, new Rectangle(175, 379, 190 - 175, 394 - 379), Color.White);
-
                 if (state == State.fill)
-                    SpriteText.drawStringWithScrollCenteredAt(b, ModEntry.GetHelper().Translation.Get("composter.fillheadline"), Game1.viewport.Width / 2, 64);
+                    nutritionsComponent.draw(b);
+
+                b.Draw(Game1.mouseCursors, applyButton.bounds, new Rectangle(366, 373, 16, 16), Color.White); //okButton (366, 373, 16, 16)
+
+                if (state == State.fill && nutritionsComponent.GoodDistribution())
+                    b.Draw(Game1.mouseCursors, activateButton.bounds, new Rectangle(175, 379, 191 - 175, 394 - 379), Color.White);
+
+                switch (state)
+                {
+                    case State.fill:
+                        SpriteText.drawStringWithScrollCenteredAt(b, ModEntry.GetHelper().Translation.Get("composter.fillheadline"), Game1.viewport.Width / 2, 64);
+                        break;
+                    case State.ready:
+                        SpriteText.drawStringWithScrollCenteredAt(b, ModEntry.GetHelper().Translation.Get("composter.readyheadline", new { amount = Composting.ComposterCompostLeft[BinPos]}), Game1.viewport.Width / 2, 64);
+                        break;
+                    case State.active:
+                        SpriteText.drawStringWithScrollCenteredAt(b, ModEntry.GetHelper().Translation.Get("composter.activeheadline", new { amount = Composting.ComposterDaysLeft[BinPos]}), Game1.viewport.Width / 2, 64);
+                        break;
+                }
             }
-            else
+            else //applyMode
             {
                 int color = 0; //1: red, 0: green
-                foreach (Vector2 vec in Composting.CompostApplied)
-                {
-                    for (int i=1; i<=3; i++)
-                        b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, vec * 64f), new Rectangle(194 + color * 16, 388, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.999f);
+                               /*
+                               foreach (Vector2 vec in Composting.CompostAppliedDays.Keys)
+                               {
 
-                    foreach (Vector2 v in ModComponent.GetAdjacentTiles(vec))
-                        b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, (new Vector2(v.X,v.Y)) * 64f), new Rectangle(194 + color * 16, 388, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.999f);
-                }
-                b.Draw(Game1.mouseCursors, cancelButton.bounds, new Rectangle(192, 256, 256-192, 320-256), Color.White);
+                                   for (int i=1; i<=3; i++)
+                                       b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, vec * 64f), new Rectangle(194 + color * 16, 388, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.999f);
 
-                SpriteText.drawStringWithScrollCenteredAt(b, ModEntry.GetHelper().Translation.Get("composter.applyheadline"), Game1.viewport.Width / 2, 64);
+                                   foreach (Vector2 v in ModComponent.GetAdjacentTiles(vec))
+                                       b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, (new Vector2(v.X,v.Y)) * 64f), new Rectangle(194 + color * 16, 388, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.999f);
+
+
+            }
+            */
+                foreach (Vector2 v in greenTiles)
+                    b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, (new Vector2(v.X, v.Y)) * 64f), new Rectangle(194 + color * 16, 388, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.999f);
+                foreach (Vector2 vec in Composting.CompostAppliedDays.Keys)
+                    b.DrawString(Game1.smallFont, Composting.CompostAppliedDays[vec].ToString(), Game1.GlobalToLocal(Game1.viewport, new Vector2(vec.X * Game1.tileSize + Game1.tileSize/2, vec.Y * Game1.tileSize + Game1.tileSize/2)), Color.White);
+
+                b.Draw(Game1.mouseCursors, cancelButton.bounds, new Rectangle(192, 256, 256 - 192, 320 - 256), Color.White);
+
+                SpriteText.drawStringWithScrollCenteredAt(b, ModEntry.GetHelper().Translation.Get("composter.applyheadline", new { amount = Composting.ComposterCompostLeft[BinPos] }), Game1.viewport.Width / 2, 64);
             }
 
             drawMouse(b);
             if (heldItem != null)
                 heldItem.drawInMenu(b, new Vector2(Game1.getOldMouseX()+32, Game1.getOldMouseY()-32), 1);
 
-            if (hoverText.Length > 0)
+            if (!applyMode && hoverText.Length > 0)
             {
                 drawHoverText(b, hoverText, Game1.dialogueFont, 0, 0, -1, null, -1, null, null, 0, -1, -1, -1, -1, 1f, null);
             }
@@ -180,16 +233,41 @@ namespace CompostPestsCultivation
                 compostInventoryMenu.receiveLeftClick(x, y, playSound);
                 playerInventoryMenu.receiveLeftClick(x, y, playSound);
 
-                if (state == State.ready && applyButton.containsPoint(x, y))
+                if (applyButton.containsPoint(x, y))
                     applyMode = true;
                 else if (state == State.fill && nutritionsComponent.GoodDistribution() && activateButton.containsPoint(x, y))
                     MakeActive();
 
                 base.receiveLeftClick(x, y, playSound);
             }
-            else if (Game1.currentLocation is Farm farm && !Composting.AffectedByCompost(vec) && farm.terrainFeatures.ContainsKey(vec) && farm.terrainFeatures[vec] is HoeDirt)
+            else if (Game1.currentLocation is Farm farm && !Composting.AffectedByCompost(vec) && farm.terrainFeatures.ContainsKey(vec) && farm.terrainFeatures[vec] is HoeDirt && Composting.ComposterCompostLeft[BinPos] > 0)
             {
-                Composting.CompostApplied.Add(vec);
+                void apply()
+                {
+                    Composting.ComposterCompostLeft[BinPos]--;
+                    if (Composting.ComposterCompostLeft[BinPos] <= 0)
+                        MakeInactive();
+
+                    UpdateGreenTiles();
+                    //greenTiles.Add(vec);
+                    //greenTiles.AddRange(ModComponent.GetAdjacentTiles(vec));
+                }
+
+                if (Composting.CompostAppliedDays.ContainsKey(vec))
+                {
+                    if (Composting.CompostAppliedDays[vec] <= 0)
+                    {
+                        Composting.CompostAppliedDays[vec] = Composting.config.compost_last_for_days;
+                        apply();
+                    }
+                    else
+                        Game1.playSound("cancel");
+                }
+                else
+                {
+                    Composting.CompostAppliedDays.Add(vec, Composting.config.compost_last_for_days);
+                    apply();
+                }
             }
             else if (cancelButton.bounds.Contains(x, y))
             {
@@ -227,17 +305,21 @@ namespace CompostPestsCultivation
                 else
                     hoverText = "";
             }
-            else if (nutritionsComponent.GetGreenBarArea().Contains(x, y))
+            else if (state == State.fill && nutritionsComponent.GetBoundingBox().Contains(x, y))
             {
                 hoverText = ModEntry.GetHelper().Translation.Get("composter.greenbar");
             }
             else if (state == State.fill && nutritionsComponent.GoodDistribution() && activateButton.containsPoint(x, y))
             {
-                hoverText = ModEntry.GetHelper().Translation.Get("composter.activate_button");
+                    hoverText = ModEntry.GetHelper().Translation.Get("composter.activate_button");
             }
             else if (state == State.ready && applyButton.containsPoint(x, y))
             {
                 hoverText = ModEntry.GetHelper().Translation.Get("composter.apply_button");
+            }
+            else if (applyButton.containsPoint(x, y))
+            {
+                hoverText = ModEntry.GetHelper().Translation.Get("composter.apply_button_show");
             }
             else
             {
@@ -249,7 +331,16 @@ namespace CompostPestsCultivation
 
         public void AddCompostItems()
         {
-            List<Item> items = Composting.ComposterContents.ContainsKey(BinPos) ? Composting.ComposterContents[BinPos] : new List<Item>();
+            List<Item> items;
+            if (Composting.ComposterContents.ContainsKey(BinPos))
+                items = Composting.ComposterContents[BinPos];
+            else
+            {
+                items = new List<Item>();
+                Composting.ComposterContents.Add(BinPos, items);
+            }
+
+            //List<Item> items = Composting.ComposterContents.ContainsKey(BinPos) ? Composting.ComposterContents[BinPos] : new List<Item>();
             int count = items.Count;
             for (int i = 1; i <= 36-count; i++)
                 items.Add(null);
@@ -270,28 +361,56 @@ namespace CompostPestsCultivation
             }
         }
 
-        public void MakeActive()
+        public void ShowAsReady()
+        {
+            state = State.ready;
+            compostInventoryMenu.highlightMethod = InventoryMenu.highlightNoItems;
+            playerInventoryMenu.highlightMethod = InventoryMenu.highlightNoItems;
+        }
+
+        public void MakeReady()
+        {
+            ShowAsReady();
+            List<Item> contents = Composting.ComposterContents[BinPos];
+            for (int i = 0; i < contents.Count; i++)
+            {
+                if (contents[i] != null)
+                    contents[i] = ObjectFactory.getItemFromDescription(ObjectFactory.regularObject, rotten_plant_idx, contents[i].Stack);
+            }
+        }
+
+        public void ShowAsActive()
         {
             state = State.active;
             compostInventoryMenu.highlightMethod = InventoryMenu.highlightNoItems;
             playerInventoryMenu.highlightMethod = InventoryMenu.highlightNoItems;
-
-            if (Composting.ComposterRunning.ContainsKey(BinPos))
-                Composting.ComposterRunning[BinPos] = true;
-            else
-                Composting.ComposterRunning.Add(BinPos, true);
         }
 
-        public void MakeInactive()
+        public void MakeActive()
+        {
+            ShowAsActive();
+
+            if (Composting.ComposterDaysLeft.ContainsKey(BinPos))
+                Composting.ComposterDaysLeft[BinPos] = Composting.config.composter_takes_days;
+            else
+                Composting.ComposterDaysLeft.Add(BinPos, Composting.config.composter_takes_days);
+        }
+
+        public void ShowAsInActive()
         {
             state = State.fill;
             compostInventoryMenu.highlightMethod = HighlightMethod;
             playerInventoryMenu.highlightMethod = HighlightMethod;
+        }
 
-            if (Composting.ComposterRunning.ContainsKey(BinPos))
-                Composting.ComposterRunning[BinPos] = false;
+        public void MakeInactive()
+        {
+            ShowAsInActive();
+
+            if (Composting.ComposterDaysLeft.ContainsKey(BinPos))
+                Composting.ComposterDaysLeft[BinPos] = 0;
             else
-                Composting.ComposterRunning.Add(BinPos, false);
+                Composting.ComposterDaysLeft.Add(BinPos, 0);
         }
 
         public void ApplyMode(bool mode)
@@ -331,25 +450,25 @@ namespace CompostPestsCultivation
 
             public override void receiveLeftClick(int x, int y, bool playSound = true)
             {
-                menu.heldItem = leftClick(x, y, menu.heldItem, playSound);
+                Item clickedItem = leftClick(x, y, menu.heldItem, false);
+                if (clickedItem == null)
+                    return;
+                Item remItem = playerInventoryMenu.tryToAddItem(clickedItem);
+                if (remItem != null && remItem.Stack > 0)
+                    menu.heldItem = remItem;
+
                 CalcGreenBrown();
             }
 
             public override void receiveRightClick(int x, int y, bool playSound = true)
             {
-                if (getItemAt(x, y) == null && menu.heldItem != null)
-                {
-                    int idx = getInventoryPositionOfClick(x, y);
-                    if (idx >= 0)
-                    {
-                        actualInventory[idx] = menu.heldItem.getOne();
-                        menu.heldItem.Stack -= 1;
-                        if (menu.heldItem.Stack == 0)
-                            menu.heldItem = null;
-                    }
-                }
-                else
-                    menu.heldItem = rightClick(x, y, menu.heldItem, playSound);
+                Item clickedItem = rightClick(x, y, menu.heldItem, false);
+                if (clickedItem == null)
+                    return;
+                Item remItem = playerInventoryMenu.tryToAddItem(clickedItem);
+                if (remItem != null && remItem.Stack > 0)
+                    menu.heldItem = remItem;
+
                 CalcGreenBrown();
             }
 
@@ -386,27 +505,31 @@ namespace CompostPestsCultivation
 
             public override void receiveLeftClick(int x, int y, bool playSound = true)
             {
-                 menu.heldItem = leftClick(x, y, menu.heldItem, playSound);               
+                Item clickedItem = leftClick(x, y, menu.heldItem, false);
+                if (clickedItem == null)
+                    return;
+                Item remItem = compostInventoryMenu.tryToAddItem(clickedItem);
+                if (remItem != null && remItem.Stack > 0)
+                    menu.heldItem = remItem;
+
+                compostInventoryMenu.CalcGreenBrown();
+
             }
 
             public override void receiveRightClick(int x, int y, bool playSound = true)
             {
-                if (getItemAt(x, y) == null && menu.heldItem != null)
-                {
-                    int idx = getInventoryPositionOfClick(x, y);
-                    if (idx >= 0)
-                    {
-                        actualInventory[idx] = menu.heldItem.getOne();
-                        menu.heldItem.Stack -= 1;
-                        if (menu.heldItem.Stack == 0)
-                            menu.heldItem = null;
-                    }
-                }
-                else
-                    menu.heldItem = rightClick(x, y, menu.heldItem, playSound);
+                Item clickedItem = rightClick(x, y, menu.heldItem, false);
+                if (clickedItem == null)
+                    return;
+                Item remItem = compostInventoryMenu.tryToAddItem(clickedItem);
+                if (remItem != null && remItem.Stack > 0)
+                    menu.heldItem = remItem;
+
+                compostInventoryMenu.CalcGreenBrown();
             }
 
-        }
+
+            }
 
         class NutritionsComponent
         {
@@ -440,11 +563,13 @@ namespace CompostPestsCultivation
                 this.height = height;
             }
 
+            public Rectangle GetBoundingBox() => new Rectangle(x, y, width, height);
+
             public bool GoodDistribution()
             {
                 Rectangle greenBarArea = GetGreenBarArea();
-                double brownq = (green + brown) == 0 ? 0.5 : brown / (brown + green);
-                return (green+brown >= min_activate_amount) && greenBarArea.X <= x + brownq*width && x + brownq*width <= greenBarArea.X + greenBarArea.Width;
+                double brownq = (green + brown) == 0 ? 0.5 : (double)brown / (brown + green);
+                return (green+brown >= Composting.config.composter_takes_days*10) && greenBarArea.X <= x + brownq*width && x + brownq*width <= greenBarArea.X + greenBarArea.Width;
             }
 
             public Rectangle GetGreenBarArea()
@@ -454,8 +579,11 @@ namespace CompostPestsCultivation
 
             public void draw(SpriteBatch b)
             {
-                double greenq = (green + brown) == 0 ? 0.5 : green / (green + brown);
-                double brownq = (green + brown) == 0 ? 0.5 : brown / (brown + green);
+                double greenq = (green + brown) == 0 ? 0.5 : (double)green / (green + brown);
+                double brownq = (green + brown) == 0 ? 0.5 : (double)brown / (brown + green);
+
+                greenq = System.Math.Round(greenq, 2);
+                brownq = System.Math.Round(brownq, 2);
 
                 b.DrawString(Game1.smallFont, ModEntry.GetHelper().Translation.Get("composter.C", new { C = brown } ), new Vector2(x, y + height / 2), Color.Brown);
                 string greenstr = ModEntry.GetHelper().Translation.Get("composter.N", new { N = green });
@@ -465,8 +593,8 @@ namespace CompostPestsCultivation
                 //draw green bar
                 b.Draw(Game1.mouseCursors, GetGreenBarArea(), new Rectangle(682+1, 2078, 690 - (682+1), 2086 - 2078), Color.White);
                 //draw arrow
-                b.Draw(Game1.mouseCursors, new Rectangle((int) (x + brownq*width - arrow_width / 2), (int) (y+height / 2 - (height / 2)*0.3) , (int)(arrow_width), height / 2), new Rectangle(120, 1234, 128 - 120, 1250 - 1234), Color.White);
-                b.DrawString(Game1.dialogueFont, brownq.ToString(), new Vector2((int)(x + brownq * width - arrow_width / 2), (int)(y + height / 2 - (height / 2) * 0.3)), Color.White);
+                b.Draw(Game1.mouseCursors, new Rectangle((int) (x + greenq*width - arrow_width / 2), (int) (y+height / 2 - (height / 2)*0.3) , (int)(arrow_width), height / 2), new Rectangle(120, 1234, 128 - 120, 1250 - 1234), Color.White);
+                //b.DrawString(Game1.dialogueFont, greenq.ToString(), new Vector2((int)(x + greenq * width - arrow_width / 2), (int)(y + height / 2 - (height / 2) * 0.3)), Color.White);
             }
         }
     }

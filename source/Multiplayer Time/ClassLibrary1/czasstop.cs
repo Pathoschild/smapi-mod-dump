@@ -17,6 +17,7 @@ namespace MultiplayerTime
     {
         public SButton ActivationKey { get; set; } = SButton.F3;
         public bool Active { get; set; } = true;
+        public bool UiInfoSuite { get; set; } = false;
     }
 
     class MultiplayerTimeMod : Mod
@@ -35,6 +36,7 @@ namespace MultiplayerTime
         Vector2 PasekZoomPositionColor = new Vector2(68, 292);
         Color textColor=Game1.textColor;
         Texture2D Pasek;
+        Texture2D PasekWithUIS;
         Texture2D PasekZoom;
         Texture2D Black;
         Texture2D Blue;
@@ -44,6 +46,7 @@ namespace MultiplayerTime
         public override void Entry(IModHelper helper)
         {
             Pasek = helper.Content.Load<Texture2D>("assets/Pasek.png", ContentSource.ModFolder);
+            PasekWithUIS = helper.Content.Load<Texture2D>("assets/PasekWithUIS.png", ContentSource.ModFolder);
             PasekZoom = helper.Content.Load<Texture2D>("assets/PasekZoom.png", ContentSource.ModFolder);
             Black = helper.Content.Load<Texture2D>("assets/Black.png", ContentSource.ModFolder);
             Blue = helper.Content.Load<Texture2D>("assets/Blue.png", ContentSource.ModFolder);
@@ -63,6 +66,12 @@ namespace MultiplayerTime
             Helper.Events.GameLoop.SaveLoaded += this.Save;
             Helper.Events.Multiplayer.PeerContextReceived += this.PlayerConnected;
             Helper.Events.Multiplayer.PeerDisconnected += this.PlayerDisconnected;
+            if (this.Config.UiInfoSuite)
+            {
+                PasekPosition.Y += 42;
+                PasekPositionColor.Y += 42;
+                PasekZoomPositionColor.Y += 42;
+            }
         }
 
         private void ButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -460,6 +469,10 @@ namespace MultiplayerTime
         {
             int width = (int)(108-(Game1.getOnlineFarmers().Count-1)*4)/ Game1.getOnlineFarmers().Count;
             int i = 0;
+            if (this.Config.UiInfoSuite)
+            {
+                b.Draw(PasekWithUIS, Game1.dayTimeMoneyBox.position + PasekPosition + new Vector2 (0,-42), null, Color.White, 0.0f, Vector2.Zero, 4, SpriteEffects.None, 0.99f);
+            }
             if (Game1.options.zoomButtons)
             {
                 b.Draw(PasekZoom, Game1.dayTimeMoneyBox.position + PasekPosition, null, Color.White, 0.0f, Vector2.Zero, 4, SpriteEffects.None, 0.99f);

@@ -38,3 +38,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 #### 1.5:
 * Don't delete all rings if one has an unknown object ID.
 * Fix support for Stardew Valley 1.3.36 on MacOS.
+
+#### 1.6:
+* Change the network protocol version to prevent people with the mod from connecting to servers without the mod and vice-versa.

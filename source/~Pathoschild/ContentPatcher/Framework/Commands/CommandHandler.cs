@@ -194,18 +194,24 @@ namespace ContentPatcher.Framework.Commands
                             output.AppendLine("[ ] n/a");
                         else if (token.RequiresInput)
                         {
-                            bool isFirst = true;
-                            foreach (string input in token.GetAllowedInputArguments().OrderByIgnoreCase(input => input))
+                            InvariantHashSet allowedInputs = token.GetAllowedInputArguments();
+                            if (allowedInputs.Any())
                             {
-                                if (isFirst)
+                                bool isFirst = true;
+                                foreach (string input in allowedInputs.OrderByIgnoreCase(input => input))
                                 {
-                                    output.Append("[X] ");
-                                    isFirst = false;
+                                    if (isFirst)
+                                    {
+                                        output.Append("[X] ");
+                                        isFirst = false;
+                                    }
+                                    else
+                                        output.Append($"      {"".PadRight(labelWidth, ' ')} |     ");
+                                    output.AppendLine($":{input}: {string.Join(", ", token.GetValues(new LiteralString(input)))}");
                                 }
-                                else
-                                    output.Append($"      {"".PadRight(labelWidth, ' ')} |     ");
-                                output.AppendLine($":{input}: {string.Join(", ", token.GetValues(new LiteralString(input)))}");
                             }
+                            else
+                                output.AppendLine("[X] (token returns a dynamic value)");
                         }
                         else
                             output.AppendLine("[X] " + string.Join(", ", token.GetValues(null).OrderByIgnoreCase(p => p)));
@@ -242,13 +248,15 @@ namespace ContentPatcher.Framework.Commands
                         (
                             // get non-global tokens
                             from IToken token in tokenContext.GetTokens(enforceContext: false)
-                            where token.Scope != null && token.Name != ConditionType.HasFile.ToString()
+                            where token.Scope != null
 
                             // get input arguments
                             let validInputs = token.IsReady && token.RequiresInput
                                 ? token.GetAllowedInputArguments().Select(p => new LiteralString(p)).AsEnumerable<ITokenString>()
                                 : new ITokenString[] { null }
                             from ITokenString input in validInputs
+
+                            where !token.RequiresInput || validInputs.Any() // don't show tokens which can't be represented
 
                             // select display data
                             let result = new
@@ -436,8 +444,8 @@ namespace ContentPatcher.Framework.Commands
             // state error
             if (state.InvalidTokens.Any())
                 return $"invalid tokens: {string.Join(", ", state.InvalidTokens.OrderByIgnoreCase(p => p))}";
-            if (state.UnavailableTokens.Any())
-                return $"tokens not ready: {string.Join(", ", state.UnavailableTokens.OrderByIgnoreCase(p => p))}";
+            if (state.UnreadyTokens.Any())
+                return $"tokens not ready: {string.Join(", ", state.UnreadyTokens.OrderByIgnoreCase(p => p))}";
             if (state.Errors.Any())
                 return string.Join("; ", state.Errors);
 
@@ -446,7 +454,7 @@ namespace ContentPatcher.Framework.Commands
             {
                 string[] failedConditions = (
                     from condition in patch.ParsedConditions
-                    let displayText = !condition.Name.EqualsIgnoreCase("HasFile") && !string.IsNullOrWhiteSpace(condition.Input?.Raw)
+                    let displayText = !condition.Is(ConditionType.HasFile) && condition.HasInput()
                         ? $"{condition.Name}:{condition.Input.Raw}"
                         : condition.Name
                     orderby displayText
@@ -457,6 +465,10 @@ namespace ContentPatcher.Framework.Commands
                 if (failedConditions.Any())
                     return $"conditions don't match: {string.Join(", ", failedConditions)}";
             }
+
+            // fallback to unavailable tokens (should never happen due to HasMod check)
+            if (state.UnavailableModTokens.Any())
+                return $"tokens provided by an unavailable mod: {string.Join(", ", state.UnavailableModTokens.OrderByIgnoreCase(p => p))}";
 
             // non-matching for an unknown reason
             if (!patch.MatchesContext)

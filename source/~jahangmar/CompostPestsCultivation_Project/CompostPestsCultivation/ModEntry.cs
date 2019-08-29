@@ -36,6 +36,7 @@ namespace CompostPestsCultivation
             Config conf = helper.ReadConfig<Config>();
             Pests.Init(conf);
             Cultivation.Init(conf);
+            Composting.Init(conf);
 
             helper.Events.Display.RenderingHud += Display_RenderingHud;
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
@@ -50,20 +51,57 @@ namespace CompostPestsCultivation
             helper.Events.Display.MenuChanged += Display_MenuChanged;
 
             //helper.Events.Player.Warped += Player_Warped;
+
+            Helper.ConsoleCommands.Add("cpc_clearcompost", "", (string arg1, string[] arg2) =>
+            {
+                Composting.CompostAppliedDays.Clear();
+                Composting.ComposterDaysLeft.Clear();
+                Composting.ComposterCompostLeft.Clear();
+            });
+            Helper.ConsoleCommands.Add("cpc_clearcomposterinv", "", (string arg1, string[] arg2) =>
+            {
+                Composting.ComposterContents.Clear();
+            });
+            Helper.ConsoleCommands.Add("cpc_clearpests", "", (string arg1, string[] arg2) =>
+            {
+                Pests.pests.Clear();
+            });
+            Helper.ConsoleCommands.Add("cpc_cleartraits", "", (string arg1, string[] arg2) =>
+            {
+                Cultivation.CropSeeds.Clear();
+                Cultivation.CropTraits.Clear();
+            });
         }
 
         void GameLoop_Saving(object sender, StardewModdingAPI.Events.SavingEventArgs e)
         {
-            Pests.Save();
-            Cultivation.Save();
-            Composting.Save();
+            try
+            {
+                SaveData data = new SaveData();
+                Pests.Save(data);
+                Cultivation.Save(data);
+                Composting.Save(data);
+                ModEntry.GetHelper().Data.WriteSaveData<SaveData>(nameof(SaveData), data);
+            }
+            finally
+            {
+                Composting.ResetCompostingBins();
+            }
         }
 
         void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
         {
-            Composting.Load();
-            Cultivation.Load();
-            Pests.Load();
+            SaveData data = Helper.Data.ReadSaveData<SaveData>(nameof(SaveData));
+            if (data == null)
+            {
+                Monitor.Log($"No save data with key '{nameof(SaveData)}' found");
+                data = new SaveData();
+            }
+
+            Composting.Load(data);
+            Cultivation.Load(data);
+            Pests.Load(data);
+
 
             /*
             for (int i = 0; i < 10; i++)
@@ -166,12 +204,17 @@ namespace CompostPestsCultivation
 
 }
 
-//TODO test loading/saving
-//TODO: Test Effects of Cultivation system
+//TODO cache translation
+//TODO hover text for cancel button in composter menu
+//TODO fix positions of buttons
+//TODO add info for amount needed to fill compost
 
-//TODO: Implement whole Compost menu and applying
-    //menu has mode similar to carpentermenu building moving to apply compost
-//TODO: Rotten plant item is usefull for compost or ...
+//TODO test loading/saving
+//TODO Test Effects of Cultivation system
+
+//TODO compost menu has mode similar to carpentermenu building moving to apply compost
+//TODO if compost bin is moved or removed, variables have to be changed too
+
 
 //Effects
 //0: normal Quality

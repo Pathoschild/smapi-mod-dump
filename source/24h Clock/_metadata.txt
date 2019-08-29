@@ -5,9 +5,12 @@ mods:
    24h Clock
 
 latest commit:
-   commit 90ea334b5d5ca88117e99ab15119eeb7d03c1cbd
-   Author: Linus <LajnaLegenden@users.noreply.github.com>
-   Date:   Thu Jan 4 16:27:49 2018 +0100
+   commit 19a9f4f42caba28f2c943b8f8eec60ebf1076ed5
+   Merge: 90ea334 535b474
+   Author: LajnaLegenden <34426335+LajnaLegenden@users.noreply.github.com>
+   Date:   Wed Aug 21 15:08:29 2019 +0200
    
-       Uploaded new mod thing something
+       Merge pull request #2 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0
    

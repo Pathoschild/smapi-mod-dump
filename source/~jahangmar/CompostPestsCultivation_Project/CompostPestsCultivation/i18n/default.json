@@ -29,8 +29,11 @@
     "composter.greenbar": "You need a 50/50 distribution of C/N to start composting",
     "composter.C": "C: {{C}}",
     "composter.N": "N: {{N}}",
-    "composter.applyheadline": "Click tilled soil to apply compost",
+    "composter.applyheadline": "Apply compost to tilled soil ({{amount}} left)",
     "composter.fillheadline": "Fill compost pile",
-    "composter.activate_button": "Activate Pile",
-    "composter.apply_button": "Apply Compost"
+    "composter.readyheadline": "Apply finished compost ({{amount}} left)",
+    "composter.activeheadline": "Pile is active ({{amount}} days left)",
+    "composter.activate_button": "Activate pile",
+    "composter.apply_button": "Apply compost",
+    "composter.apply_button_show": "Show applied compost"
 }

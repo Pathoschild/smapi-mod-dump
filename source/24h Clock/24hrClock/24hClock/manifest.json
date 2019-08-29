@@ -1,9 +1,10 @@
 {
-   "Name": "24h Clock",
-   "Author": "Lajna",
-   "Version": "0.0.4",
-   "Description": "Makes the clock show time in 24h format.",
-   "UniqueID": "Lajna.24hClock",
-   "EntryDll": "24hClock.dll",
-   "UpdateKeys": ["Nexus:1695"]
+  "Name": "24h Clock",
+  "Author": "Lajna",
+  "Version": "1.0.0",
+  "Description": "Makes the clock show time in 24h format.",
+  "UniqueID": "Lajna.24hClock",
+  "EntryDll": "24hClock.dll",
+  "MinimumApiVersion": "2.11.2",
+  "UpdateKeys": [ "Nexus:1695" ]
 }

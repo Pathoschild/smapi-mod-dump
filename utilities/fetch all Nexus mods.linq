@@ -83,6 +83,7 @@ readonly HashSet<int> IgnoreNexusIDsForValidation = new HashSet<int>
 	4197, // Companion NPCs (pt)
 	4339, // Lunar Disturbances (pt)
 	4265, // Magic (pt)
+	4370, // Trent's New Animals (pt)
 	
 	// mods which include a copy of another mod for some reason
 	3496, // Farm Extended (content pack with a copy of Farm Type Manager)
@@ -366,6 +367,24 @@ IEnumerable<dynamic> GetInvalidIgnoreEntries(IEnumerable<ParsedModData> mods)
 		yield return new { Type = "mod id", modId };
 	foreach (int fileId in invalidFileIds)
 		yield return new { Type = "file id", fileId };
+}
+
+/// <summary>Get all mods which depend on the given mod.</summary>
+/// <param name="parsedMods">The mods to check.</param>
+/// <param name="modID">The dependency mod ID.</param>
+IEnumerable<ModFolder> GetModsDependentOn(IEnumerable<ParsedModData> parsedMods, string modID)
+{
+	foreach (ParsedModData mod in parsedMods)
+	{
+		foreach (ModFolder folder in mod.ModFolders.Select(p => p.RawFolder.Value))
+		{
+			bool dependency =
+				folder.Manifest?.Dependencies?.Any(p => p.UniqueID?.Equals(modID, StringComparison.InvariantCultureIgnoreCase) == true) == true
+				|| folder.Manifest?.ContentPackFor?.UniqueID?.Equals(modID, StringComparison.InvariantCultureIgnoreCase) == true;
+			if (dependency)
+				yield return folder;
+		}
+	}
 }
 
 /*********

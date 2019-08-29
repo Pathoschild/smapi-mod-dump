@@ -91,8 +91,13 @@ namespace StardewHack.WearMoreRings
             
             helper.Events.GameLoop.Saving += GameLoop_Saving;
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
+            
+            // Change the network protocol version.
+            // I've tried doing this through SMAPI events, but stuff already breaks prior to those events being received and when scanning for local games.
+            var mp = Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer");
+            mp.GetValue().protocolVersion += "+WearMoreRings";
         }
-
+        
         public override object GetApi() {
             return new RingsImplementation();
         }
@@ -135,7 +140,7 @@ namespace StardewHack.WearMoreRings
             Monitor.Log("Loaded extra rings save data.");
         }
         #endregion Events
-        
+
         #region Patch Farmer
         /// <summary>
         /// Add the extra rings to the Netcode tree.

@@ -5,9 +5,9 @@ mods:
    Separate Greenhouse
 
 latest commit:
-   commit e28585120fa295c8e7ecd2776408469c80edf263
+   commit 6c194cf2caf22dc07e3a4866d0504e7d8ae86f91
    Author: MaciejMarkuszewski <maciej.markuszewski1998@gmail.com>
-   Date:   Fri May 24 04:27:11 2019 +0200
+   Date:   Mon Aug 26 03:48:46 2019 +0200
    
-       1.1 update commit
+       1.1.1 update commit
    

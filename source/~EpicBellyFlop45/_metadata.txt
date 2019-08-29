@@ -11,11 +11,9 @@ mods:
    Customize Cursor Sprite
 
 latest commit:
-   commit 68635f9e67554f638572b2f29190092bc57e3fd5
+   commit d4917f1777a86903f9cddbac69fa8825d54fcd26
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Thu Jul 4 17:55:39 2019 +0100
+   Date:   Thu Aug 22 11:48:37 2019 +0100
    
-       [BetterRarecrow] Fixed config bug
-       
-       A bug when the descrete number of rarecorws is more than the number in the config caused crows to spawn as if not enough rarecrows was found
+       [BetterMixedSeeds] Added compatibility with Gems and Mineral Crops
    

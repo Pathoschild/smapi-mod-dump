@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit a36bf6cfe344ff945ec1abb5a55f416fc0975c2c
+   commit 4bb83cb80b442c6b85ba22094a493500d24dcb13
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Fri Jul 12 17:34:32 2019 +0200
+   Date:   Wed Aug 21 18:30:07 2019 +0200
    
-       Bigger Backpack & Wear More Rings now work properly together
+       fix #15: Change network protocol version to prevent connecting with clients/servers that don't have this mod installed.
    
