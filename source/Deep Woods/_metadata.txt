@@ -5,12 +5,10 @@ mods:
    Deep Woods
 
 latest commit:
-   commit bd39fdc2848c6c7121d6e880d4b4e59c02a63ce7
-   Merge: 404d1a0 5b35a36
-   Author: Max Vollmer <maxvollmer@users.noreply.github.com>
-   Date:   Sun Jun 30 18:02:13 2019 +0200
+   commit a4b1984537f1565dccb1253e4365780a2c3fcc15
+   Author: maxvollmer <maxvollmer@users.noreply.github.com>
+   Date:   Thu Sep 12 02:28:57 2019 +0200
    
-       Merge pull request #4 from FixThisPlz/FixThisPlz-patch-1
-       
-       Can you add ru.json, please?
+       * Fixed bugs in adding passage to SecretWoods
+       * Made passage to SecretWoods configurable
    

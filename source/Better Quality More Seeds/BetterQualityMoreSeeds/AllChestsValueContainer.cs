@@ -1,19 +1,14 @@
 ﻿using StardewValley;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SB_BQMS
+namespace BetterQualityMoreSeeds
 {
-    public class AllChestsValueContainer
+    internal class AllChestsValueContainer
     {
         public Item previousItem;
-        public StardewValley.GameLocation location;
-        public bool hasBeenChecked = false;
+        public GameLocation location;
+        public bool hasBeenChecked;
 
-        public AllChestsValueContainer(Item item, StardewValley.GameLocation whereat, bool isChecked)
+        public AllChestsValueContainer(Item item, GameLocation whereat, bool isChecked)
         {
             previousItem = item;
             location = whereat;

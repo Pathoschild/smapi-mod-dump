@@ -1,0 +1,9 @@
+﻿{
+  "Name": "Crafter",
+  "Author": "zazizu",
+  "Version": "0.0.1",
+  "Description": "e",
+  "UniqueID": "zazizu.crafter",
+  "MinimumApiVersion": "2.0",
+  "EntryDll": "AutoCrafterJA.dll"
+}

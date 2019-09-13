@@ -246,11 +246,19 @@ namespace PetInteraction
                             }
                         }
                         //Log(pet.Name + " is selected");
-                        if (PetClicked(pet) && Helper.Reflection.GetField<bool>(pet, "wasPetToday").GetValue() && NotGiftingTreat())
+                        if (PetClicked(pet) && NotGiftingTreat())
                         {
-                            Helper.Input.Suppress(e.Button);
-                            SetState(PetState.Waiting);
-                            Jump();
+                            if (Helper.Reflection.GetField<bool>(pet, "wasPetToday").GetValue())
+                            {
+                                Helper.Input.Suppress(e.Button);
+                                SetState(PetState.Waiting);
+                                Jump();
+                            }
+                            else if (!Helper.Reflection.GetField<bool>(pet, "wasPetToday").GetValue())
+                            {
+                                Helper.Input.Suppress(e.Button);
+                                Petting(pet);
+                            }
                         }
                         break;
                     case PetState.CatchingUp:

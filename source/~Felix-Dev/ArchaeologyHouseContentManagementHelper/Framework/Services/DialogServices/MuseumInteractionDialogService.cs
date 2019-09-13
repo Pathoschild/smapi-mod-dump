@@ -4,7 +4,7 @@ using StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Menus;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
-using StardewMods.Common.StardewValley;
+using FelixDev.StardewMods.Common.StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +37,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
 
         public MuseumInteractionDialogService()
         {
-            gunther = Game1.getCharacterFromName(StardewMods.Common.StardewValley.Constants.NPC_GUNTHER_NAME);
+            gunther = Game1.getCharacterFromName(FelixDev.StardewMods.Common.StardewValley.Constants.NPC_GUNTHER_NAME);
             if (gunther == null)
             {
                 ModEntry.CommonServices.Monitor.Log("Error: NPC [Gunther] not found!", LogLevel.Error);

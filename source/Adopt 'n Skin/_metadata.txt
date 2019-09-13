@@ -5,9 +5,11 @@ mods:
    Adopt 'n Skin
 
 latest commit:
-   commit 48137c1938fe7c205448c108fcf22c8426e67bdc
+   commit faefef3a79ba0ec19bdcb98d95ba7cee53e94d30
    Author: Gathouria <katey.huddleston@gmail.com>
-   Date:   Wed Aug 7 17:21:10 2019 -0700
+   Date:   Sat Aug 31 21:47:03 2019 -0700
    
-       Corrected a "bug" in which strays could only be cats
+       Asset loading error fixed
+       
+       fixed an error in which A&S attempted to remove a skin multiple times, and couldn't find it the second time.
    

@@ -1,0 +1,10 @@
+﻿{
+	"Name": "Train Whistle",
+	"Author": "Taskmaster",
+	"Version": "1.0.0",
+	"Description": "Add a powerful train whistle that allows player to summon a train!",
+	"UniqueID": "Taskmaster.TrainWhistle",
+	"EntryDll": "TrainWhistle.dll",
+	"MinimumApiVersion": "2.10.0",
+	"UpdateKeys": ["nexus:4472"]
+}

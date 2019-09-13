@@ -1,6 +1,6 @@
 ﻿using Harmony;
 using Microsoft.Xna.Framework;
-using StardewMods.Common.StardewValley;
+using FelixDev.StardewMods.Common.StardewValley;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;

@@ -34,13 +34,15 @@ You can do these by default:
 
 hold item  | default effects | optional effects (disabled by default)
 ---------- | --------------- | --------------------------------------
-axe        | clear twigs; clear dead crops. | chop down trees; clear live crops.
+axe        | clear debris; clear dead crops; cut giant crops. | chop down trees; clear live crops.
 fertiliser | fertilise dirt. | —
 hoe        | till dirt; dig artifact spots. | —
 melee weapon | clear dead crops; break mine containers. | attack monsters.
+milk pail  | collect milk from farm animals. | —
 pickaxe    | break rocks; clear tilled dirt; clear dead crops. | break paths/flooring; break placed objects.
 scythe     | harvest crops, flowers, bushes, fruit trees, forage; clear weeds and dead crops. | collect machine output.
 seeds      | plant seeds in dirt. | —
+shears     | shear wool from farm animals. | —
 slingshot  | — | shoot one projectile/tile/second in the aimed direction.
 watering can | water crops. | —
 
@@ -212,9 +214,10 @@ field                    | default | effect
 `CutGrownTrees`          | false   | Whether to clear full-grown non-fruit trees.
 `CutTappedTrees`         | false   | Whether to cut non-fruit trees that have a tapper.
 `CutBushes`              | false   | Whether to cut choppable bushes.
+`CutGiantCrops`          | true    | Whether to cut giant crops.
 `ClearLiveCrops`         | false   | Whether to clear live crops.
 `ClearDeadCrops`         | true    | Whether to clear dead crops.
-`ClearDebris`            | true    | Whether to clear debris like weeds and twigs.
+`ClearDebris`            | true    | Whether to clear debris like weeds, twigs, giant stumps, and fallen logs.
 
 </td>
 </tr>
@@ -294,6 +297,23 @@ field                 | default | effect
 <tr>
 <td>
 
+`MilkPail`
+
+</td>
+<td>
+
+Configure the tractor effects when holding a milk pail:
+
+field    | default | effect
+-------- | ------- | ------
+`Enable` | true    | Whether to collect milk from farm animals.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
 `PickAxe`
 
 </td>
@@ -352,6 +372,23 @@ Configure the tractor effects when holding seeds or saplings:
 field    | default | effect
 -------- | ------- | ------
 `Enable` | true    | Whether to plant the seeds in tilled dirt.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`Shears`
+
+</td>
+<td>
+
+Configure the tractor effects when holding shears:
+
+field    | default | effect
+-------- | ------- | ------
+`Enable` | true    | Whether to shear wool from farm animals.
 
 </td>
 </tr>

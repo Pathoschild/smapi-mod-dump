@@ -514,6 +514,20 @@ namespace PetInteraction
             ModEntry.Log("Cannot find stick");
         }
 
+        public static void Petting(Pet pet)
+        {
+            ModEntry.GetHelper().Reflection.GetField<bool>(pet, "wasPetToday").SetValue(true);
+            pet.friendshipTowardFarmer = System.Math.Min(1000, pet.friendshipTowardFarmer + ModEntry.config.pet_petting_friendship_increase);
+            if (ModEntry.config.unconditional_love || pet.friendshipTowardFarmer >= 1000 && Game1.player != null)
+            {
+                Game1.showGlobalMessage(Game1.content.LoadString("Strings\\Characters:PetLovesYou", pet.displayName));
+                if (!Game1.player.mailReceived.Contains("petLoveMessage"))
+                    Game1.player.mailReceived.Add("petLoveMessage");
+            }
+            pet.doEmote(20, true);
+            pet.playContentSound();
+        }
+
         public static void RemovePlayerFromPassableCache()
         {
             Vector2 playerTile = new Vector2((int) (Game1.player.GetBoundingBox().X / Game1.tileSize), (int) (Game1.player.GetBoundingBox().Y / Game1.tileSize));

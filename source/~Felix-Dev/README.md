@@ -1,5 +1,4 @@
-This repository contains my SMAPI mods for Stardew Valley. See the individual mods for
-documentation and release notes.
+This repository contains my SMAPI mods for Stardew Valley. See the individual mods for documentation and release notes.
 
 ## Mods
 * **[ArchaeologyHouseContentManagementHelper](http://www.nexusmods.com/stardewvalley/mods/2804)** <small>([source](ArchaeologyHouseContentManagementHelper))</small>  
@@ -9,8 +8,14 @@ documentation and release notes.
   Largely fixes the in-game item-placement bug.
   Lost Books can be "grabbed & sent" to the library even if the player's inventory has no space.
   Lost Books can be read without having to go the library._
-* **[ToolUpgradeDeliveryService](http://www.nexusmods.com/stardewvalley/mods/2938)** <small>([source](ToolUpgradeDeliveryService))</small> 
- _This mod makes retrieving upgraded farm tools less tedious. With this mod, Clint (the blacksmith) will simply send you a mail with the upgraded tool included as soon as the upgrade is finished. No more visiting the blacksmith simply to get your improved farm tool!_
+  
+* **[ToolUpgradeDeliveryService](http://www.nexusmods.com/stardewvalley/mods/2938)** <small>([source](ToolUpgradeDeliveryService))</small>  
+  _This mod makes retrieving upgraded farm tools less tedious. With this mod, Clint (the blacksmith) will simply send you a mail with the
+  upgraded tool included as soon as the upgrade is finished. No more visiting the blacksmith simply to get your improved farm tool!_
+  
+* **[FeTK](https://www.nexusmods.com/stardewvalley/mods/4403)** <small>([source](FeTK))</small>  
+   _This mod is a collection of helper functions and mod services. It simplifies common developer tasks building Stardew-Valley mods and empowers developers to build rich 
+   and high-quality mod experiences!_
   
 ## Translating the mods
 The mods can be translated into any language supported by the game, and SMAPI will automatically
@@ -21,11 +26,11 @@ use the right translations.
 &nbsp;     | Archaeology House Content Management Helper    | Tool-Upgrade Delivery Service    |
 ---------- | :--------------------------------------------- | :------------------------------- |
 Chinese    | [✓](ArchaeologyHouseContentManagementHelper/i18n/zh.json) | [✓](ToolUpgradeDeliveryService/i18n/zh.json) 
-French     | ❑ untranslated                                            | ❑ untranslated 
+French     | ❑ untranslated                                            | [✓](ToolUpgradeDeliveryService/i18n/fr.json)
 German     | [✓](ArchaeologyHouseContentManagementHelper/i18n/de.json) | [✓](ToolUpgradeDeliveryService/i18n/de.json)
 Hungarian  | ❑ untranslated                                            | ❑ untranslated 
 Italian    | ❑ untranslated                                            | ❑ untranslated 
-Japanese   | ❑ untranslated                                            | ❑ untranslated 
+Japanese   | ❑ untranslated                                            | [✓](ToolUpgradeDeliveryService/i18n/ja.json) 
 Korean     | [✓](ArchaeologyHouseContentManagementHelper/i18n/ko.json) | [✓](ToolUpgradeDeliveryService/i18n/ko.json) 
 Portuguese | [✓](ArchaeologyHouseContentManagementHelper/i18n/pt.json) | [✓](ToolUpgradeDeliveryService/i18n/pt.json)      
 Russian    | ❑ untranslated                                            | ❑ untranslated 

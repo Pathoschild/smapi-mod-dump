@@ -1,7 +1,7 @@
 {
   "Name": "Configure Machine Speed",
   "Author": "BayesianBandit",
-  "Version": "1.1.0",
+  "Version": "2.0.0-beta.2",
   "Description": "Configure the speed of your machines.",
   "UniqueID": "BayesianBandit.ConfigureMachineSpeed",
   "EntryDll": "ConfigureMachineSpeed.dll",

@@ -84,7 +84,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="i18n\default.json" />
+    <None Include="i18n\fr.json" />
     <None Include="i18n\ko.json" />
+    <None Include="i18n\ru.json" />
+    <None Include="i18n\pt.json" />
     <None Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>

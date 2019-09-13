@@ -1,0 +1,10 @@
+-Something that tells you what the travelling merchant is selling without having to go see him
+
+-A mod that tells you the best loadout for the stardew fair based on what items you have 
+
+-Hovering a gift over someone tells you if its netrual, liked, loved ect
+
+-A letter in the mail telling you what you could get from that day/season that you currently don't have
+or don't have x amount of, also could tie this into the community center bundles
+
+-Some sort of profit calculator in game to tell you what the best seed is to buy based on the current day

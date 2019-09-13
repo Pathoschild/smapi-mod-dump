@@ -1,6 +1,6 @@
-﻿using StardewModdingAPI;
+﻿using FelixDev.StardewMods.Common.Helpers.Extensions;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewMods.Common.Helpers;
 using StardewValley;
 using StardewValley.Menus;
 using System;

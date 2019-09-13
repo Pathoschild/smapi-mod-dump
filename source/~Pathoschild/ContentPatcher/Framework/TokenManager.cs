@@ -70,6 +70,20 @@ namespace ContentPatcher.Framework
             return localTokens;
         }
 
+        /// <summary>Get the token context for a given mod ID.</summary>
+        /// <param name="contentPackID">The content pack ID to search for.</param>
+        /// <exception cref="KeyNotFoundException">There's no content pack registered with the given <paramref name="contentPackID"/>.</exception>
+        public IContext GetContextFor(string contentPackID)
+        {
+            foreach (var pair in this.LocalTokens)
+            {
+                if (pair.Key.Manifest.UniqueID.Equals(contentPackID, StringComparison.InvariantCultureIgnoreCase))
+                    return pair.Value;
+            }
+
+            throw new KeyNotFoundException($"There's no content pack registered for ID '{contentPackID}'.");
+        }
+
         /// <summary>Update the current context.</summary>
         /// <param name="globalChangedTokens">The global token values which changed, or <c>null</c> to update all tokens.</param>
         public void UpdateContext(InvariantHashSet globalChangedTokens = null)
@@ -152,7 +166,7 @@ namespace ContentPatcher.Framework
             yield return new ConditionTypeValueProvider(ConditionType.Weather, this.GetCurrentWeather, NeedsBasicInfo, allowedValues: Enum.GetNames(typeof(Weather)));
 
             // player
-            yield return new ConditionTypeValueProvider(ConditionType.HasFlag, this.GetMailFlags, NeedsBasicInfo);
+            yield return new ConditionTypeValueProvider(ConditionType.HasFlag, this.GetFlags, NeedsBasicInfo);
             yield return new HasProfessionValueProvider(NeedsBasicInfo);
             yield return new ConditionTypeValueProvider(ConditionType.HasReadLetter, this.GetReadLetters, NeedsBasicInfo);
             yield return new ConditionTypeValueProvider(ConditionType.HasSeenEvent, this.GetEventsSeen, NeedsBasicInfo);
@@ -176,6 +190,9 @@ namespace ContentPatcher.Framework
             yield return new ConditionTypeValueProvider(ConditionType.FarmName, () => Game1.player.farmName.Value, NeedsBasicInfo);
             yield return new ConditionTypeValueProvider(ConditionType.FarmType, () => this.GetEnum(Game1.whichFarm, FarmType.Custom).ToString(), NeedsBasicInfo);
             yield return new ConditionTypeValueProvider(ConditionType.IsCommunityCenterComplete, () => this.GetIsCommunityCenterComplete().ToString(), NeedsBasicInfo);
+            yield return new ConditionTypeValueProvider(ConditionType.IsJojaMartComplete, () => this.GetIsJojaMartComplete().ToString(), NeedsBasicInfo);
+            yield return new HavingChildValueProvider(ConditionType.Pregnant, NeedsBasicInfo);
+            yield return new HavingChildValueProvider(ConditionType.HavingChild, NeedsBasicInfo);
 
             // other
             yield return new ImmutableValueProvider(ConditionType.HasMod.ToString(), installedMods, canHaveMultipleValues: true);
@@ -239,18 +256,20 @@ namespace ContentPatcher.Framework
             return Game1.player.mailReceived;
         }
 
-        /// <summary>Get the letter IDs and mail flags set for the player.</summary>
-        /// <remarks>See game logic in <see cref="Farmer.hasOrWillReceiveMail"/>.</remarks>
-        private IEnumerable<string> GetMailFlags()
+        /// <summary>Get the letter IDs, mail flags, and world state IDs set for the player.</summary>
+        /// <remarks>See mail logic in <see cref="Farmer.hasOrWillReceiveMail"/>.</remarks>
+        private IEnumerable<string> GetFlags()
         {
-            Farmer player = Game1.player;
-            if (player == null)
-                return new string[0];
+            // mail flags
+            if (Game1.player != null)
+            {
+                foreach (string flag in Game1.player.mailReceived.Union(Game1.player.mailForTomorrow).Union(Game1.player.mailbox))
+                    yield return flag;
+            }
 
-            return player
-                .mailReceived
-                .Union(player.mailForTomorrow)
-                .Union(player.mailbox);
+            // world state flags
+            foreach (string flag in Game1.worldStateIDs)
+                yield return flag;
         }
 
         /// <summary>Get whether the community center is complete.</summary>
@@ -258,6 +277,13 @@ namespace ContentPatcher.Framework
         private bool GetIsCommunityCenterComplete()
         {
             return Game1.MasterPlayer.mailReceived.Contains("ccIsComplete") || Game1.MasterPlayer.hasCompletedCommunityCenter();
+        }
+
+        /// <summary>Get whether the JojaMart is complete.</summary>
+        /// <remarks>See game logic in <see cref="StardewValley.Locations.Town.resetLocalState"/>.</remarks>
+        private bool GetIsJojaMartComplete()
+        {
+            return Game1.MasterPlayer.mailReceived.Contains("JojaMember") && this.GetIsCommunityCenterComplete();
         }
 
         /// <summary>Get the name for today's day event (e.g. wedding or festival) from the game data.</summary>

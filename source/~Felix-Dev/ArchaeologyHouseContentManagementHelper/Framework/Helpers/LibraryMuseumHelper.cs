@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Constants = StardewMods.Common.StardewValley.Constants;
+using Constants = FelixDev.StardewMods.Common.StardewValley.Constants;
 
 namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework
 {

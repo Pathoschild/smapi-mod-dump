@@ -403,6 +403,91 @@ namespace AdoptSkin.Framework
         /// </summary>
         private static void EnforceSpriteSets()
         {
+            Dictionary<string, List<int>> skinsToRemove = new Dictionary<string, List<int>>();
+            // ** Make list of values added, when check is done, see if Key already exists- simply add to values if so
+
+            //Dictionary<string, Dictionary<int, AnimalSkin>> assetCopy = new Dictionary<string, Dictionary<int, AnimalSkin>>(ModEntry.Assets);
+            foreach (KeyValuePair<string, Dictionary<int, AnimalSkin>> pair in ModEntry.Assets)
+            {
+                if (pair.Key.StartsWith("sheared"))
+                {
+                    // Look at the creature type that comes after "sheared"
+                    if (ModEntry.Assets.ContainsKey(pair.Key.Substring(7)))
+                    {
+                        // Make sure every sheared skin has a normal skin variant for its ID
+                        foreach (int id in ModEntry.Assets[pair.Key].Keys)
+                            if (!ModEntry.Assets[pair.Key.Substring(7)].ContainsKey(id))
+                                skinsToRemove = AddToValueList(skinsToRemove, pair.Key, id);
+
+                        // Since the normal skin has a sheared version, make sure all normal versions have sheared skins
+                        foreach (int id in ModEntry.Assets[pair.Key.Substring(7)].Keys)
+                            if (!ModEntry.Assets[pair.Key].ContainsKey(id))
+                                skinsToRemove = AddToValueList(skinsToRemove, pair.Key.Substring(7), id);
+                    }
+                    // This sheared skin has no normal animal type registered to it; remove all sheared variants of this skin
+                    else
+                        foreach (int id in ModEntry.Assets[pair.Key].Keys)
+                            skinsToRemove = AddToValueList(skinsToRemove, pair.Key, id);
+                }
+                else if (pair.Key.StartsWith("baby"))
+                {
+                    // Look at the creature type that comes after "baby"
+                    if (ModEntry.Assets.ContainsKey(pair.Key.Substring(4)))
+                    {
+                        // Make sure every baby skin has a normal skin variant for its ID
+                        foreach (int id in ModEntry.Assets[pair.Key].Keys)
+                            if (!ModEntry.Assets[pair.Key.Substring(4)].ContainsKey(id))
+                                skinsToRemove = AddToValueList(skinsToRemove, pair.Key, id);
+
+                        // Since the normal skin has a baby version, make sure all normal versions have baby skins
+                        foreach (int id in ModEntry.Assets[pair.Key.Substring(4)].Keys)
+                            if (!ModEntry.Assets[pair.Key].ContainsKey(id))
+                                skinsToRemove = AddToValueList(skinsToRemove, pair.Key.Substring(4), id);
+                    }
+                    // This baby skin has no normal skins at all; remove them all
+                    else
+                        foreach (int id in ModEntry.Assets[pair.Key].Keys)
+                            skinsToRemove = AddToValueList(skinsToRemove, pair.Key, id);
+                }
+            }
+
+
+            // Warn player of any incomplete sets and remove them from the Assets dictionary
+            if (skinsToRemove.Count > 0)
+            {
+                string warnString = "";
+
+                foreach (KeyValuePair<string, List<int>> removing in skinsToRemove)
+                {
+                    warnString += removing.Key.ToString() + ": IDs " + string.Join(", ", removing.Value) + "\n";
+                    foreach (int id in removing.Value)
+                        ModEntry.Assets[removing.Key].Remove(id);
+                }
+
+                ModEntry.SMonitor.Log($"The following skins are incomplete skin sets, and will not be loaded (missing a paired sheared, baby, or adult skin):\n{warnString}", LogLevel.Warn);
+            }
+
+
+            // ** TODO: Is there a way to check for types, so adults with no baby *or* sheared can be caught? Just make grab adult skin?
+            // -- Cycle through FarmAnimal typing list and check while in there
+        }
+
+        private static Dictionary<string, List<int>> AddToValueList(Dictionary<string, List<int>> dict, string type, int id)
+        {
+            if (!dict.ContainsKey(type))
+                dict.Add(type, new List<int> { id });
+            else if (!dict[type].Contains(id))
+                dict[type].Add(id);
+
+            return dict;
+        }
+
+        /*/// <summary>
+        /// Checks the list of loaded assets, removes incomplete skin sets
+        /// (i.e. a "sheared" or "baby" skin exists, but not the typical skin, or vice versa where applicable)
+        /// </summary>
+        private static void EnforceSpriteSets()
+        {
             Dictionary<string, int> skinsToRemove = new Dictionary<string, int>();
             foreach (KeyValuePair<string, Dictionary<int, AnimalSkin>> pair in ModEntry.Assets)
             {
@@ -461,6 +546,6 @@ namespace AdoptSkin.Framework
 
             // ** TODO: Is there a way to check for types, so adults with no baby *or* sheared can be caught? Just make grab adult skin?
             // -- Cycle through FarmAnimal typing list and check while in there
-        }
+        }*/
     }
 }

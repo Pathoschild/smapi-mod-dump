@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StardewMods.Common.StardewValley
+namespace FelixDev.StardewMods.Common.StardewValley
 {
     /// <summary>
     /// Adds support for a custom newline indicator (defined in DialogHelper) to the in-game 

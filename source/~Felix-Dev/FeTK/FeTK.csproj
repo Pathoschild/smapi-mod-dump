@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{49F0430B-5E62-409C-BDF7-D653F3A39431}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FelixDev.StardewMods.FeTK</RootNamespace>
+    <AssemblyName>FeTK</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="BmFont">
+      <HintPath>$(GamePath)\BmFont.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssetEditor.cs" />
+    <Compile Include="Framework\Serialization\ItemSerializer\IItemSerializer.cs" />
+    <Compile Include="Framework\Serialization\ItemSerializer\ItemSaveData.cs" />
+    <Compile Include="Framework\Serialization\ItemSerializer\ItemSerializer.cs" />
+    <Compile Include="Framework\Serialization\ItemSerializer\ItemTypeOrigin.cs" />
+    <Compile Include="Framework\Services\MailService\Extensions\MailExtensions.cs" />
+    <Compile Include="Framework\Helpers\ColorHelper.cs" />
+    <Compile Include="Framework\Helpers\SDateHelper.cs" />
+    <Compile Include="Framework\Helpers\SpriteTextHelper.cs" />
+    <Compile Include="Framework\Data\Parsers\TextColorInfo.cs" />
+    <Compile Include="Framework\Serialization\JsonHelper.cs" />
+    <Compile Include="Framework\Services\MailService\Events\MailClosedCoreEventArgs.cs" />
+    <Compile Include="Framework\Services\MailService\Interfaces\IMailManager.cs" />
+    <Compile Include="Framework\Services\MailService\Interfaces\IMailObserver.cs" />
+    <Compile Include="Framework\Services\MailService\Interfaces\IMailSender.cs" />
+    <Compile Include="Framework\Services\MailService\Interfaces\IMailService.cs" />
+    <Compile Include="Framework\Services\MailService\MailAssetEditor\MailAssetEditor.cs" />
+    <Compile Include="Framework\Services\MailService\MailManager.cs" />
+    <Compile Include="Framework\Services\MailService\MailAssetEditor\MailAssetDataEntry.cs" />
+    <Compile Include="Framework\Services\MailService\MailAssetEditor\MailAssetLoadingEventArgs.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\Interfaces\IItemMailContent.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\Interfaces\IMailContent.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\Interfaces\IMoneyMailContent.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\Interfaces\IQuestMailContent.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\Interfaces\IRecipeMailContent.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\ItemMail.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\MailContent\ItemMailContent.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\MailContent\MailContent.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\MailContent\QuestMailContent.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\MailContent\RecipeMailContent.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\MailInteractionRecords\QuestMailInteractionRecord.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\MailInteractionRecords\RecipeMailInteractionRecord.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\QuestMail.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\MailInteractionRecords\ItemMailInteractionRecord.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\MailInteractionRecords\MailInteractionRecord.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\MailInteractionRecords\MoneyMailInteractionRecord.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\MoneyMail.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\MailContent\MoneyMailContent.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\RecipeData.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\RecipeMail.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\RecipeType.cs" />
+    <Compile Include="Framework\UI\Menus\LetterViewerMenu\LetterViewerMenuClosedEventArgs.cs" />
+    <Compile Include="Framework\UI\Menus\LetterViewerMenu\LetterViewerMenuEx.cs" />
+    <Compile Include="Framework\UI\Menus\LetterViewerMenu\LetterViewerMenuWrapper.cs" />
+    <Compile Include="Framework\ModHelpers\ModSaveDataHelper.cs" />
+    <Compile Include="Framework\Data\Parsers\StringColorParser.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\MailType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Framework\Services\MailService\Events\MailClosedEventArgs.cs" />
+    <Compile Include="Framework\Services\MailService\Mails\Mail.cs" />
+    <Compile Include="Framework\Services\MailService\MailService.cs" />
+    <Compile Include="Framework\Services\MailService\Events\MailOpeningEventArgs.cs" />
+    <Compile Include="Framework\Services\ServiceFactory.cs" />
+    <Compile Include="ToolkitMod.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig">
+      <Version>2.2.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="docs\features.md" />
+    <None Include="Framework\Services\MailService\README.md" />
+    <None Include="manifest.json" />
+    <None Include="README.md" />
+    <None Include="release-notes.md" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="docs\images\mail-service-cp-edit-example.png" />
+    <Content Include="docs\images\mail-service-mail-opening-example-1.png" />
+    <Content Include="docs\images\mail-service-mail-opening-example-2.png" />
+    <Content Include="docs\images\mail-service-text-coloring-api-example-1.png" />
+    <Content Include="docs\images\mail-service-text-coloring-api-example-2.png" />
+    <Content Include="docs\images\mail-service-text-coloring-api-example-3.png" />
+    <Content Include="docs\images\mail-service-text-coloring-api-example-rainbow.png" />
+  </ItemGroup>
+  <Import Project="..\Common\Common.projitems" Label="Shared" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -10,15 +10,21 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 
-// TODO: change the size of the Description box to make it more readable with the new information
+// TODO: figure out why fish from content packs, e.g. more new fish, are not being handled
 
 namespace ExtraFishInformation
 {
+
+    // MOD ENTRY CLASS
+
     /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod, IAssetEditor
     {
         // PUBLIC VARIABLES
         IDictionary<int, string> updatedDescriptions = new Dictionary<int, string>();
+
+        // PRIVATE VARIABLES
+        private ModConfig Config;
 
 
         // PUBLIC METHODS
@@ -27,6 +33,18 @@ namespace ExtraFishInformation
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            // get data frm config.json - try/catched to handle errors
+            bool timeIn24Hours = true;
+            try
+            {
+                this.Config = this.Helper.ReadConfig<ModConfig>();
+                timeIn24Hours = this.Config.TimeIn24Hours;
+            }
+            catch (Exception e)
+            {
+                this.Monitor.Log($"There was an error with parsing config.json. 24 hour time will be used for fish info, by default.", LogLevel.Error);
+            }
+
             // read in required data files
             IDictionary<int, string> objectInfo = helper.Content.Load<Dictionary<int, string>>("Data/ObjectInformation", ContentSource.GameContent);
             IDictionary<int, string> fishInfo = helper.Content.Load<Dictionary<int, string>>("Data/Fish", ContentSource.GameContent);
@@ -49,7 +67,7 @@ namespace ExtraFishInformation
             foreach (KeyValuePair<int, string> item in objectInfo)
             {
                 // get info from ObjectInformation
-                // TODO: change to include just "Fish" not "Fish -4" so as to include seaweed, etc. - crashes on joja cola
+                // TODO: change to include "/Fish/" or "/Fish -4/" so as to include seaweed, etc. but algae/etc is segmentended as if normal fish, not as trap??? - trash is "/Fish -20/"
                 string objectItemInfo = item.Value;
                 if (!objectItemInfo.Contains("Fish -4")) continue;  // ignore non-fish items
                 int fishId = item.Key;
@@ -58,11 +76,11 @@ namespace ExtraFishInformation
 
                 // get info from Fish
                 string fishItemInfo = fishInfo[fishId];  // get individual fish info 
-                string[] fishInfoSections = fishItemInfo.Split('/');  // sections are 0-12 for all except trapper fish which are 0-6 [see sdv wiki for more info]
+                string[] fishInfoSections = fishItemInfo.Split('/');  // sections are 0-12 (or 0-13 for localisations) for all except trapper fish which are 0-6 (or 0-7 for localisations) [see sdv wiki for more info]
                 string newDescription;
 
                 // handle each fish
-                if (fishInfoSections.Length != 13) // handle trapper fish
+                if ((fishInfoSections.Length == 7) || (fishInfoSections.Length == 8)) // handle trapper fish
                 {
                     string location = fishInfoSections[4];
                     string extraInfo = $" Found in the {location}.";
@@ -72,10 +90,9 @@ namespace ExtraFishInformation
                 {
                     string locations = ParseLocation(fishId, seasonalLocationInfo);
                     string weather = ParseWeather(fishInfoSections[7]);
-                    string schedule = ParseTimes(fishInfoSections[5]);
+                    string schedule = ParseTimes(fishInfoSections[5], timeIn24Hours);
                     string extraInfo = $" Found {weather} from {schedule}.\n\nLocations:\n{locations}";
                     newDescription = description + extraInfo;
-
                 } // end if/else statement
 
                 // repack object sections
@@ -96,7 +113,8 @@ namespace ExtraFishInformation
         public bool CanEdit<T>(IAssetInfo asset)
         {
             return asset.AssetNameEquals("Data/ObjectInformation");
-        }
+
+        } // end CanEdit method
 
 
         /// <summary>Edit a matched asset.</summary>
@@ -104,12 +122,14 @@ namespace ExtraFishInformation
         public void Edit<T>(IAssetData asset)
         {
             if (!asset.AssetNameEquals("Data/ObjectInformation")) return;
+            // updates descriptions with new descriptions
             IDictionary<int, string> objectData = asset.AsDictionary<int, string>().Data;
             foreach (KeyValuePair<int, string> item in updatedDescriptions)
             {
                 objectData[item.Key] = item.Value;
             }
-        }
+
+        } // end Edit method
 
 
         // PRIVATE METHODS
@@ -126,7 +146,7 @@ namespace ExtraFishInformation
             foreach (KeyValuePair<string, string[]> location in seasonalLocationInfo)
             {
                 // TODO: convert namesLikeThis to Names Like This
-                string locationName = parseLocationName(location.Key);
+                string locationName = ParseLocationName(location.Key);
 
                 // locations to ignore: Temp, Fishing Game, 
                 if (locationName == "Temp")
@@ -177,7 +197,7 @@ namespace ExtraFishInformation
         /// <summary>A helper method to parse location names from namesLikeThis to Names Like This</summary>
         /// <param name="weather">String containing unparsed location name</param>
         /// <returns>String containing parsed location name</returns>
-        private string parseLocationName(string locationName)
+        private string ParseLocationName(string locationName)
         {
             // convert to NamesLikeThis
             string parsedLocationName = $"{locationName.First().ToString().ToUpper()}{locationName.Substring(1)}";
@@ -187,7 +207,7 @@ namespace ExtraFishInformation
             // return parsed location name
             return parsedLocationName;
 
-        }
+        } // end ParseLocationName method
 
 
         /// <summary>A helper method to parse weather information from Fish.xnb</summary>
@@ -219,8 +239,9 @@ namespace ExtraFishInformation
 
         /// <summary>A helper method to parse active times from from Fish.xnb</summary>
         /// <param name="times">String containing unparsed time data</param>
+        /// <param name="timeIn24Hours">Boolean to show whether time should be in 24 or 12 hour format</param>
         /// <returns>Parsed time data, to add directly to description</returns>
-        private string ParseTimes(string times)
+        private string ParseTimes(string times, bool timeIn24Hours)
         {
             string parsedTimes = "";
             string[] splitTimes = times.Split(' ');
@@ -232,8 +253,8 @@ namespace ExtraFishInformation
                 string endTime = splitTimes[1];
 
                 // parse time strings from XXX or XXXX to XX:XX
-                startTime = ParseTimeString(startTime);
-                endTime = ParseTimeString(endTime);
+                startTime = ParseTimeString(startTime, timeIn24Hours);
+                endTime = ParseTimeString(endTime, timeIn24Hours);
 
                 // add parsed times to new string
                 parsedTimes = $"{startTime} to {endTime}";
@@ -247,8 +268,8 @@ namespace ExtraFishInformation
                     string endTime = splitTimes[i + 1];
 
                     // parse time strings from XXX or XXXX to XX:XX
-                    startTime = ParseTimeString(startTime);
-                    endTime = ParseTimeString(endTime);
+                    startTime = ParseTimeString(startTime, timeIn24Hours);
+                    endTime = ParseTimeString(endTime, timeIn24Hours);
 
                     // add parsed times to new string
                     if (i == 0)
@@ -276,8 +297,9 @@ namespace ExtraFishInformation
 
         /// <summary>A helper method for ParseTimes() to parse time strings from from Fish.xnb</summary>
         /// <param name="timeToParse">String containing unparsed time data in XXX or XXXX form</param>
+        /// <param name="timeIn24Hours">Boolean to show whether time should be in 24 or 12 hour format</param>
         /// <returns>Parsed time data in XX:XX</returns>
-        private string ParseTimeString(string timeToParse)
+        private string ParseTimeString(string timeToParse, bool timeIn24Hours)
         {
             string newTime = "";
             if (timeToParse.Length == 3)
@@ -307,12 +329,68 @@ namespace ExtraFishInformation
                 newTime = newTime.Insert(0, "0");
             }
 
+            if (timeIn24Hours == false)
+                { newTime = ConvertTo12HourTime(newTime); }
+
             return newTime;
 
         } // end ParseTimeString method
 
 
+        /// <summary>A helper method for ParseTimeString() to parse time strings from 24 hour format to 12 hour format.</summary>
+        /// <param name="time24Hours">String containing 24 hour time in XX:XX format</param>
+        /// <returns>Time in 12 hour format in XX.XXam/pm format</returns>
+        private string ConvertTo12HourTime(string time24Hours)
+        {
+            string time12Hours = "";
+
+            int hours = Int32.Parse(time24Hours.Substring(0, 2));
+            int minutes = Int32.Parse(time24Hours.Substring(3));
+
+            if (hours >= 0 && hours <= 11)
+            {
+                if (minutes == 0)
+                    { time12Hours = $"{hours}am"; }
+                else
+                    { time12Hours = $"{hours}.{minutes}am"; }
+            }
+            else if (hours == 12)
+            {
+                if (minutes == 0)
+                    { time12Hours = $"{hours}pm"; }
+                else
+                    { time12Hours = $"{hours}.{minutes}pm"; }
+            }
+            else if (hours >= 13 && hours <= 23)
+            {
+                if (minutes == 0)
+                    { time12Hours = $"{hours-12}pm"; }
+                else
+                    { time12Hours = $"{hours-12}.{minutes}pm"; }
+            }
+            else if (hours == 24)
+            {
+                if (minutes == 0)
+                    { time12Hours = $"{hours - 12}am"; }
+                else
+                    { time12Hours = $"{hours - 12}.{minutes}am"; }
+            }
+
+            return time12Hours;
+
+        } // end ConvertTo12HourTime method
+
+
     } // end ModEntry class
+
+
+    // MOD CONFIG CLASS
+
+    /// <summary>Generates config.json</summary>
+    class ModConfig
+    {
+        public bool TimeIn24Hours { get; set; } = true;
+    } // end Mod Config class
 
 
 } // end namespace

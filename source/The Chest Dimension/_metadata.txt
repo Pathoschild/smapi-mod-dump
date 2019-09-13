@@ -5,9 +5,9 @@ mods:
    The Chest Dimension
 
 latest commit:
-   commit c6d117779c66666362ad2c11742e9840b18695a0
-   Author: Ã‡ilekli Link <41624564+cilekli-link@users.noreply.github.com>
-   Date:   Fri Jun 28 12:38:49 2019 +0300
+   commit 047ee60f66d2b243ac2e196eb24c11acbddc119b
+   Author: aÄŸl <aÄŸl@aÄŸl.aÄŸl>
+   Date:   Mon Sep 9 21:05:56 2019 +0300
    
-       Updated comments
+       Added a bunch of stuff
    

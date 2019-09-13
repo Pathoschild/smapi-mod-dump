@@ -12,7 +12,7 @@ the upgrade is finished. No more visiting the blacksmith simply to get your impr
 
 ## Install
 1. [Install the latest version of SMAPI](https://smapi.io/).
-2. [Install this mod from Nexus mods]().
+2. [Install this mod from Nexus mods](https://www.nexusmods.com/stardewvalley/mods/2938).
 3. Run the game using SMAPI.
 
 ## Use
@@ -38,6 +38,7 @@ These are the available settings:
 * Works in both single-player and multiplayer.
 * This mod is compatible with the mod [Rented Tools](https://www.nexusmods.com/stardewvalley/mods/1307). Enable the option `RemoveToolDuplicates` so that rented tools will be removed from the inventory. See [Configure](#configure) for more details.
 * This mod is compatible with the mod [Prismatic Tools](https://www.nexusmods.com/stardewvalley/mods/2428).
+* This mod is compatible with the mod [Rush Orders](https://www.nexusmods.com/stardewvalley/mods/605) (Rush Orders 1.1.4 and above).
 
 ## See also
 * [Release notes](release-notes.md)

@@ -101,10 +101,12 @@ namespace Pathoschild.Stardew.TractorMod
                     new GrassStarterAttachment(toolConfig.GrassStarter, reflection),
                     new HoeAttachment(toolConfig.Hoe, reflection),
                     new MeleeWeaponAttachment(toolConfig.MeleeWeapon, reflection),
+                    new MilkPailAttachment(toolConfig.MilkPail, reflection),
                     new PickaxeAttachment(toolConfig.PickAxe, reflection),
                     new ScytheAttachment(toolConfig.Scythe, reflection),
                     new SeedAttachment(toolConfig.Seeds, reflection),
                     new SeedBagAttachment(toolConfig.SeedBagMod, reflection),
+                    new ShearsAttachment(toolConfig.Shears, reflection),
                     new SlingshotAttachment(toolConfig.Slingshot, reflection),
                     new WateringCanAttachment(toolConfig.WateringCan, reflection)
                 });
@@ -220,14 +222,13 @@ namespace Pathoschild.Stardew.TractorMod
                         Horse tractor = this.FindHorse(garage.HorseId);
                         if (!garage.isUnderConstruction())
                         {
-                            int x = garage.tileX.Value + 1;
-                            int y = garage.tileY.Value + 1;
+                            Vector2 tractorTile = this.GetDefaultTractorTile(garage);
                             if (tractor == null)
                             {
-                                tractor = new Horse(garage.HorseId, x, y);
+                                tractor = new Horse(garage.HorseId, (int)tractorTile.X, (int)tractorTile.Y);
                                 location.addCharacter(tractor);
                             }
-                            tractor.DefaultPosition = new Vector2(x, y);
+                            tractor.DefaultPosition = tractorTile;
                         }
 
                         // normalise tractor
@@ -542,9 +543,19 @@ namespace Pathoschild.Stardew.TractorMod
             if (tractor == null || !this.IsTractor(tractor))
                 return;
 
+            // dismount
             if (tractor.rider != null)
                 tractor.dismount();
-            TractorManager.SetLocation(tractor, Game1.getFarm(), tractor.DefaultPosition);
+
+            // get home position (garage may have been moved since the tractor was spawned)
+            Farm location = Game1.getFarm();
+            Stable garage = location.buildings.OfType<Stable>().FirstOrDefault(p => p.HorseId == tractor.HorseId);
+            Vector2 tile = garage != null
+                ? this.GetDefaultTractorTile(garage)
+                : tractor.DefaultPosition;
+
+            // warp home
+            TractorManager.SetLocation(tractor, location, tile);
         }
 
         /// <summary>Migrate tractors and garages from older versions of the mod.</summary>
@@ -700,6 +711,13 @@ namespace Pathoschild.Stardew.TractorMod
                 sourceRectForMenuView = new Rectangle(0, 0, 64, 96),
                 itemsRequired = this.Config.BuildMaterials
             };
+        }
+
+        /// <summary>Get the default tractor tile position in a garage.</summary>
+        /// <param name="garage">The tractor's home garage.</param>
+        private Vector2 GetDefaultTractorTile(Stable garage)
+        {
+            return new Vector2(garage.tileX.Value + 1, garage.tileY.Value + 1);
         }
 
         /// <summary>Get the asset key for a texture from the assets folder (including seasonal logic if applicable).</summary>

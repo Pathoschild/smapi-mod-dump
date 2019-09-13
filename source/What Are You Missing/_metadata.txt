@@ -1,0 +1,15 @@
+url:
+   https://github.com/LukeSeewald/StardewValleyMods.git
+
+mods:
+   What Are You Missing
+
+latest commit:
+   commit 1c85cf852c5ecc3731f9e61744c10f7d73c6d926
+   Author: Luke Seewald <lseewald@uwaterloo.ca>
+   Date:   Wed Sep 11 00:10:47 2019 -0400
+   
+       Added some logging and did a bit of refactoring.
+       
+       Won't crash if it fails to parse an int.
+   

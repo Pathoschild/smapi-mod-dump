@@ -1,2 +1,0 @@
-﻿Version 2.0
-  - Minimum requirements : Stardew Valley 1.3.31 beta and SMAPI 2.8-beta.6

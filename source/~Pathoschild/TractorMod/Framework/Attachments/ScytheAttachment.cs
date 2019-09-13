@@ -57,7 +57,21 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
             // spawned forage
             if (this.Config.HarvestForage && tileObj?.IsSpawnedObject == true)
             {
-                this.CheckTileAction(location, tile, player);
+                // pick up forage & cancel animation
+                if (this.CheckTileAction(location, tile, player))
+                {
+                    IReflectedField<int> animationID = this.Reflection.GetField<int>(player.FarmerSprite, "currentSingleAnimation");
+                    switch (animationID.GetValue())
+                    {
+                        case FarmerSprite.harvestItemDown:
+                        case FarmerSprite.harvestItemLeft:
+                        case FarmerSprite.harvestItemRight:
+                        case FarmerSprite.harvestItemUp:
+                            player.completelyStopAnimatingOrDoingAction();
+                            player.forceCanMove();
+                            break;
+                    }
+                }
                 return true;
             }
 
@@ -69,7 +83,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
 
                 if (this.Config.ClearDeadCrops && dirt.crop.dead.Value)
                 {
-                    this.UseToolOnTile(this.FakePickaxe, tile); // clear dead crop
+                    this.UseToolOnTile(this.FakePickaxe, tile, player, location); // clear dead crop
                     return true;
                 }
 
@@ -78,10 +92,9 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
                     : this.Config.HarvestCrops;
                 if (shouldHarvest)
                 {
-                    if (dirt.crop.harvestMethod.Value == Crop.sickleHarvest)
-                        return dirt.performToolAction(tool, 0, tile, location);
-                    else
-                        this.CheckTileAction(location, tile, player);
+                    return dirt.crop.harvestMethod.Value == Crop.sickleHarvest
+                        ? dirt.performToolAction(tool, 0, tile, location)
+                        : dirt.performUseAction(tile, location);
                 }
 
                 return true;
@@ -113,7 +126,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
             // weeds
             if (this.Config.ClearWeeds && this.IsWeed(tileObj))
             {
-                this.UseToolOnTile(tool, tile); // doesn't do anything to the weed, but sets up for the tool action (e.g. sets last user)
+                this.UseToolOnTile(tool, tile, player, location); // doesn't do anything to the weed, but sets up for the tool action (e.g. sets last user)
                 tileObj.performToolAction(tool, location); // triggers weed drops, but doesn't remove weed
                 location.removeObject(tile, false);
                 return true;

@@ -1,0 +1,10 @@
+{
+  "Name": "Crafter (JA)",
+  "Description": "Anan",
+  "Author": "zazizu",
+  "Version": "0.0.1",
+  "UniqueID": "zazizu.JACrafter",
+  "ContentPackFor": {
+    "UniqueID": "spacechase0.JsonAssets"
+  }
+}

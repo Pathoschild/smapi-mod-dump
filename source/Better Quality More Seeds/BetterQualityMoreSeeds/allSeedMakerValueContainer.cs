@@ -1,13 +1,18 @@
-﻿namespace SB_BQMS
-{
-    public class allSeedMakerValueContainer
-    {
-        public StardewValley.Object droppedObject;
-        public bool hasBeenChecked = false;
+﻿using StardewValley;
+using SObject = StardewValley.Object;
 
-        public allSeedMakerValueContainer(StardewValley.Object droppedObject, bool isChecked)
+namespace BetterQualityMoreSeeds
+{
+    internal class AllSeedMakerValueContainer
+    {
+        public SObject droppedObject;
+        public GameLocation location;
+        public bool hasBeenChecked;
+
+        public AllSeedMakerValueContainer(SObject firstObject, GameLocation whereat, bool isChecked)
         {
-            this.droppedObject = droppedObject;
+            droppedObject = firstObject;
+            location = whereat;
             hasBeenChecked = isChecked;
         }
     }

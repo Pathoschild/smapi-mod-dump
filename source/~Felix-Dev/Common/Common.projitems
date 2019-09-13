@@ -6,16 +6,17 @@
     <SharedGUID>f4697672-af08-4413-a1aa-4cf106f093ac</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Common</Import_RootNamespace>
+    <Import_RootNamespace>FelixDev.StardewMods.Common</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CommonServices.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ListExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Extensions\DictionaryExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Extensions\ListExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StardewValley\Constants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StardewValley\Constants\Currency.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StardewValley\Constants\ToolConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StardewValley\Dialog\DialogHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StardewValley\Dialog\DialogueBoxEx.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)StardewValley\Input\CursorDirection.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)StardewValley\LetterMenu\ItemLetterMenuHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)StardewValley\LetterMenu\ItemLetterMenuClosedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StardewValley\Constants\CursorDirection.cs" />
   </ItemGroup>
 </Project>

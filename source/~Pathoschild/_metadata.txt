@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 65c9b68ffab68899befd47ecb0a549b575f27344
+   commit 9c5d557b9591721ea34dd162da25e21c19b22ba0
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Mon Aug 26 14:46:07 2019 -0400
+   Date:   Tue Sep 10 20:39:35 2019 -0400
    
-       generalise single-patch context for reuse (#421)
+        add world state IDs to HasFlag token
    

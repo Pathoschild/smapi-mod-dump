@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace StardewMods.Common.StardewValley
+namespace FelixDev.StardewMods.Common.StardewValley
 {
     /// <summary>
     /// Wraps the in-game draw dialogue method to support additional features, 

@@ -107,19 +107,23 @@ namespace CompostPestsCultivation
         public static void DrawPests(SpriteBatch spriteBatch)
         {
             if (Game1.currentLocation is Farm)
-            foreach (Pest pest in pests)
             {
-                pest.Draw(spriteBatch);
+                foreach (Pest pest in pests)
+                {
+                    pest.Draw(spriteBatch);
+                }
+
+                pests.RemoveAll(p => p.CropDestroyed());
             }
         }
 
         public static Pest TryInfestCrop(Vector2 pos, HoeDirt hd)
         {
-            if (hd == null || hd != null && hd.crop == null || hd.crop.dead.Value || pests.Exists((Pest p) => p.HasPosition(pos)))
+            if (hd == null || hd != null && hd.crop == null || hd.crop.dead.Value || hd.crop.isWildSeedCrop() || pests.Exists((Pest p) => p.HasPosition(pos)))
                 return null;
 
             List<CropTrait> traits = Cultivation.GetTraits(hd.crop);
-            switch (Cultivation.GetPestRes(pos, traits))
+            switch (Cultivation.GetPestRes(pos, traits, false))
             {
                 case 0:
                     break;
@@ -138,19 +142,6 @@ namespace CompostPestsCultivation
 
             Pest pest = new Pest(pos, hd);
             return pest;
-        }
-
-        public static double GetRandom()
-        {
-            return rand.NextDouble() * 100;
-        }
-
-        public static bool CheckChance(double chance)
-        {
-            double randd = GetRandom();
-            //ModEntry.GetMonitor().Log("Got random number " + randd, LogLevel.Trace);
-            //ModEntry.GetMonitor().Log("(chance <= GetRandom()) is " + (randd <= chance), LogLevel.Trace);
-            return (randd <= chance);
         }
 
         public static Config GetConfig() => config;
@@ -249,9 +240,9 @@ namespace CompostPestsCultivation
 
             bfList = new List<PestFly>();
             bfList.Add(new PestFly(pos));
-            if (Pests.GetRandom() >= 50)
+            if (Pests.CheckChance(50))
                 bfList.Add(new PestFly(pos));
-            if (Pests.GetRandom() >= 50)
+            if (Pests.CheckChance(50))
                 bfList.Add(new PestFly(pos));
             //ModEntry.GetMonitor().Log("pos is " + pos + " and pestfly pos is" + pos * Game1.tileSize);
         }
@@ -298,6 +289,8 @@ namespace CompostPestsCultivation
 
             return Cultivation.UngrowCrop(hd.crop, pos, "Pest");
         }
+
+        public bool CropDestroyed() => hd.crop == null;
 
         private List<KeyValuePair<Vector2, TerrainFeature>> GetAdjacentCrops()
         {

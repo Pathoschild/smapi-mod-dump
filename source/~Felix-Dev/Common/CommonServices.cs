@@ -10,13 +10,15 @@ namespace StardewMods.Common
 {
     public class CommonServices
     {
-        public CommonServices(IMonitor monitor, IModEvents events, ITranslationHelper translationHelper, IReflectionHelper reflectionHelper, IContentHelper contentHelper)
+        public CommonServices(IMonitor monitor, IModEvents events, ITranslationHelper translationHelper, IReflectionHelper reflectionHelper, IContentHelper contentHelper,
+            IDataHelper dataHelper)
         {
             Monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
             Events = events ?? throw new ArgumentNullException(nameof(events));
             TranslationHelper = translationHelper ?? throw new ArgumentNullException(nameof(translationHelper));
             ReflectionHelper = reflectionHelper ?? throw new ArgumentNullException(nameof(reflectionHelper));
             ContentHelper = contentHelper ?? throw new ArgumentNullException(nameof(contentHelper));
+            DataHelper = dataHelper ?? throw new ArgumentNullException(nameof(dataHelper));
         }
 
         public IMonitor Monitor { get; }
@@ -31,5 +33,7 @@ namespace StardewMods.Common
         public IReflectionHelper ReflectionHelper { get; }
 
         public IContentHelper ContentHelper { get; }
+
+        public IDataHelper DataHelper { get; }
     }
 }

@@ -1,0 +1,10 @@
+{
+  "Name": "Middle Click Teleport",
+  "Author": "Cilekli Link",
+  "Version": "1.0.0",
+  "Description": "Middle-click to teleport the player to the mouse cursor.",
+  "UniqueID": "clink.MiddleClickTeleport",
+  "EntryDll": "MiddleClickTeleport.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

@@ -28,6 +28,8 @@ namespace CompostPestsCultivation
 {
     public class Composting : ModComponent
     {
+        public const int one_part = 100;
+
         public static Dictionary<Vector2, int> CompostAppliedDays;
         public static Dictionary<Vector2, List<Item>> ComposterContents;
         public static Dictionary<Vector2, int> ComposterDaysLeft;
@@ -51,12 +53,17 @@ namespace CompostPestsCultivation
 
         private static Dictionary<string, GreenBrown> GreenBrownDistributionsByName = new Dictionary<string, GreenBrown>(){
             {"Hay", new GreenBrown(1,9) },
-            {"Weeds", new GreenBrown(5,5) }
+            {"Fiber", new GreenBrown(5,5) },
+            {"Green Algae", new GreenBrown(10,5) },
+            {"White Algae", new GreenBrown(8,7) },
+            {"Seaweed", new GreenBrown(12,8) },
+            {"Sap", new GreenBrown(0,0) }
             };
         private static Dictionary<int, GreenBrown> GreenBrownDistributionsByCategory = new Dictionary<int, GreenBrown>(){
-            {Object.VegetableCategory, new GreenBrown(8,2) },
-            {Object.FruitsCategory, new GreenBrown(8,2) },
-            {Object.flowersCategory, new GreenBrown(8,2) }
+            {Object.VegetableCategory, new GreenBrown(16,4) },
+            {Object.FruitsCategory, new GreenBrown(16,4) },
+            {Object.flowersCategory, new GreenBrown(16,4) },
+            {Object.GreensCategory, new GreenBrown(16,4) }
             };
 
         private static GreenBrown GetGreenBrown(Item item)
@@ -71,6 +78,8 @@ namespace CompostPestsCultivation
 
         public static int GetGreen(Item item) => item == null ? 0 : GetGreenBrown(item).Green;
         public static int GetBrown(Item item) => item == null ? 0 : GetGreenBrown(item).Brown;
+
+        public static float GetParts(Item item) => (float)(GetGreen(item) + GetBrown(item)) / one_part;
 
         public static void Init(Config conf)
         {
@@ -128,6 +137,33 @@ namespace CompostPestsCultivation
             Game1.getFarm().buildings.Set(new List<Building>(Game1.getFarm().buildings).Select((Building building) => building is ShippingBin bin && Composting.IsComposter(bin) ? CompostingBin.FromShippingBin(bin) : building).ToList());
         }
 
+        public static void RemoveCompostingBin(CompostingBin bin)
+        {
+            Vector2 BinPos = new Vector2(bin.tileX, bin.tileY);
+            ComposterContents.Remove(BinPos);
+            ComposterDaysLeft.Remove(BinPos);
+            ComposterCompostLeft.Remove(BinPos);
+            ModEntry.GetMonitor().Log($"Removed CompostingBin at {BinPos}", StardewModdingAPI.LogLevel.Trace);
+        }
+
+        public static void MoveCompostingBin(Vector2 oldPos, Vector2 newPos)
+        {
+            if (ComposterContents.ContainsKey(newPos))
+                ComposterContents.Remove(newPos);
+            if (ComposterDaysLeft.ContainsKey(newPos))
+                ComposterDaysLeft.Remove(newPos);
+            if (ComposterCompostLeft.ContainsKey(newPos))
+                ComposterCompostLeft.Remove(newPos);
+
+            ComposterContents[newPos] = ComposterContents[oldPos];
+            ComposterContents.Remove(oldPos);
+            ComposterDaysLeft[newPos] = ComposterDaysLeft[oldPos];
+            ComposterDaysLeft.Remove(oldPos);
+            ComposterCompostLeft[newPos] = ComposterCompostLeft[oldPos];
+            ComposterCompostLeft.Remove(oldPos);
+            ModEntry.GetMonitor().Log($"Moved CompostingBin from {oldPos} to {newPos}", StardewModdingAPI.LogLevel.Trace);
+        }
+
         public static void OnNewDay()
         {
             //if (Game1.getFarm().buildings.ToList().Exists((Building obj) => Composting.IsComposter(obj)))
@@ -158,7 +194,10 @@ namespace CompostPestsCultivation
                 if (ComposterDaysLeft[vec] <= 0)
                 {
                     ComposterDaysLeft.Remove(vec);
-                    int left = ComposterContents[vec].Sum((Item arg) => arg == null ? 0 : arg.Stack);
+                    int left = ComposterContents[vec].Sum((Item arg) => arg == null ? 0 : (int) (100 * GetParts(arg) * arg.Stack)) / 100;
+                    ModEntry.GetMonitor().Log($"Added {left} compost part to {vec}", StardewModdingAPI.LogLevel.Trace);
+                    //ModEntry.GetMonitor().Log($"ComposterContents[{vec}].Count == {ComposterContents[vec].Count}");
+                    //ComposterContents[vec].ForEach((Item obj) => { if (obj != null) ModEntry.GetMonitor().Log("Found item " + obj.Name + "x" + obj.Stack + ", "+GetParts(obj)+" parts"); });
                     if (ComposterCompostLeft.ContainsKey(vec))
                         ComposterCompostLeft[vec] = left;
                     else

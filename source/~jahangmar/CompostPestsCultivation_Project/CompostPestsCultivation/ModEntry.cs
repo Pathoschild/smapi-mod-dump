@@ -22,7 +22,6 @@ using StardewValley.Menus;
 using StardewValley.TerrainFeatures;
 using System.Linq;
 using StardewModdingAPI.Events;
-//using System;
 
 namespace CompostPestsCultivation
 {
@@ -49,6 +48,8 @@ namespace CompostPestsCultivation
             helper.Events.GameLoop.DayEnding += GameLoop_DayEnding;
 
             helper.Events.Display.MenuChanged += Display_MenuChanged;
+
+            helper.Events.World.BuildingListChanged += World_BuildingListChanged;
 
             //helper.Events.Player.Warped += Player_Warped;
 
@@ -91,24 +92,25 @@ namespace CompostPestsCultivation
 
         void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
         {
-            SaveData data = Helper.Data.ReadSaveData<SaveData>(nameof(SaveData));
-            if (data == null)
+            SaveData data = null;
+            try
             {
-                Monitor.Log($"No save data with key '{nameof(SaveData)}' found");
-                data = new SaveData();
+                data = Helper.Data.ReadSaveData<SaveData>(nameof(SaveData));
+
             }
+            finally
+            {
+                if (data == null)
+                {
+                    Monitor.Log($"No save data with key '{nameof(SaveData)}' found");
+                    data = new SaveData();
+                }
+                data.InitNullValues();
 
-            Composting.Load(data);
-            Cultivation.Load(data);
-            Pests.Load(data);
-
-
-            /*
-            for (int i = 0; i < 10; i++)
-                Helper.ConsoleCommands.Trigger("player_add", new string[2] { "name", "Seed Maker" });
-            Helper.ConsoleCommands.Trigger("player_add", new string[3] { "name", "Melon", "100" });
-
-            */           
+                Composting.Load(data);
+                Cultivation.Load(data);
+                Pests.Load(data);
+            }         
         }
 
         void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
@@ -121,20 +123,28 @@ namespace CompostPestsCultivation
             //Monitor.Log("3" + obj2.Name.Equals("Seed Maker"));
             //Monitor.Log("4" + (obj2.heldObject?.Value != null));
             //Monitor.Log("5" + obj2.heldObject.Value.CanBeGrabbed);
-            if (Game1.currentLocation != null && Game1.activeClickableMenu == null && Game1.currentLocation.getObjectAtTile((int)grabTile.X, (int)grabTile.Y) is Object obj && obj != null &&
-            e.Button.IsActionButton() && obj.Name.Equals("Seed Maker"))
+            if (Game1.currentLocation != null && Game1.activeClickableMenu == null && e.Button.IsActionButton())
             {
-                if (obj.heldObject?.Value != null && obj.heldObject?.Value.Category == Object.SeedsCategory && obj.readyForHarvest && Game1.player.couldInventoryAcceptThisObject(obj.heldObject.Value.ParentSheetIndex, obj.heldObject.Value.Stack))
+                if (Game1.currentLocation.getObjectAtTile((int)grabTile.X, (int)grabTile.Y) is Object obj && obj != null && obj.Name.Equals("Seed Maker"))
                 {
-                    //Monitor.Log("Detected Seeds in Seed Maker", LogLevel.Alert);
-                    Cultivation.NewSeeds(obj.heldObject.Value.ParentSheetIndex);
+                    if (obj.heldObject?.Value != null && obj.heldObject?.Value.Category == Object.SeedsCategory && obj.readyForHarvest && Game1.player.couldInventoryAcceptThisObject(obj.heldObject.Value.ParentSheetIndex, obj.heldObject.Value.Stack))
+                    {
+                        //Monitor.Log("Detected Seeds in Seed Maker", LogLevel.Alert);
+                        Cultivation.NewSeeds(obj.heldObject.Value.ParentSheetIndex);
+                    }
+                    else if (obj.heldObject?.Value == null && Game1.player.ActiveObject?.Category == Object.SeedsCategory)
+                    {
+                        if (Cultivation.GetCropItemFromSeeds(Game1.player.ActiveObject) is Object crop)
+                            Game1.activeClickableMenu = new SeedsInfoMenu(Game1.player.ActiveObject, crop, false);
+                    }
                 }
-                else if (obj.heldObject?.Value == null && Game1.player.ActiveObject?.Category == Object.SeedsCategory)
+                else if (Game1.currentLocation is Farm farm && farm.getBuildingAt(grabTile) is CompostingBin && Game1.player.ActiveObject?.Category == Object.SeedsCategory)
                 {
                     if (Cultivation.GetCropItemFromSeeds(Game1.player.ActiveObject) is Object crop)
-                        Game1.activeClickableMenu = new SeedsInfoMenu(Game1.player.ActiveObject, crop);
+                        Game1.activeClickableMenu = new SeedsInfoMenu(Game1.player.ActiveObject, crop, true);
                 }
             }
+
 
             /*if (e.Button.IsActionButton() && Game1.currentLocation is Farm farm && Game1.activeClickableMenu == null && Composting.IsComposter(farm.getBuildingAt(grabTile)))
             {
@@ -166,11 +176,13 @@ namespace CompostPestsCultivation
             if (e.NewMenu is CarpenterMenu menu)
             {
                 Helper.Events.Input.ButtonReleased += CarpenterMenu_ButtonReleased;
+                Helper.Events.Input.ButtonPressed += CarpenterMenu_ButtonPressed;
                 Composting.AddBlueprint(menu);
             }
             else if (e.OldMenu is CarpenterMenu oldmenu)
             {
                 Helper.Events.Input.ButtonReleased -= CarpenterMenu_ButtonReleased;
+                Helper.Events.Input.ButtonPressed -= CarpenterMenu_ButtonPressed;
                 Game1.getFarm().buildings.Set(new List<Building>(Game1.getFarm().buildings).Select((Building building) => building is ShippingBin bin && Composting.IsComposter(bin) ? CompostingBin.FromShippingBin(bin) : building).ToList());
             }
 
@@ -185,12 +197,73 @@ namespace CompostPestsCultivation
 
         }
 
+        void World_BuildingListChanged(object sender, BuildingListChangedEventArgs e)
+        {
+            if (Game1.activeClickableMenu is CarpenterMenu menu && Helper.Reflection.GetField<bool>(menu, "onFarm").GetValue() && Helper.Reflection.GetField<bool>(menu, "demolishing").GetValue())
+                foreach (Building building in e.Removed)
+                {
+                    //Monitor.Log("Removed: " + building.GetType(), LogLevel.Error);
+                    if (building is CompostingBin bin)
+                        Composting.RemoveCompostingBin(bin);
+                }
+                
+        }
+
+        private bool clickedToSelect;
+        private bool clickedToPlace;
+        private ShippingBin binToMove;
+        private Vector2 binOldPos;
+
+        private void CarpenterMenu_ButtonPressed(object sender, ButtonPressedEventArgs e)
+        {
+            if (Game1.activeClickableMenu is CarpenterMenu menu && e.Button.IsUseToolButton() && Helper.Reflection.GetField<bool>(menu, "onFarm").GetValue())
+            {
+                if (Helper.Reflection.GetField<bool>(menu, "moving").GetValue())
+                {
+                    if (Helper.Reflection.GetField<Building>(menu, "buildingToMove").GetValue() == null)
+                        clickedToSelect = true;
+                    else
+                        clickedToPlace = true;
+                }
+            }
+        }
+
         private void CarpenterMenu_ButtonReleased(object sender, ButtonReleasedEventArgs e)
         {
-            if (Game1.activeClickableMenu is CarpenterMenu menu && Composting.IsComposterBlueprint(menu.CurrentBlueprint))
+            if (Game1.activeClickableMenu is CarpenterMenu menu)
             {
-                Helper.Reflection.GetField<Building>(menu, "currentBuilding").SetValue(new CompostingBin(menu.CurrentBlueprint, Vector2.Zero));
+                if (Composting.IsComposterBlueprint(menu.CurrentBlueprint))
+                {
+                    Helper.Reflection.GetField<Building>(menu, "currentBuilding").SetValue(new CompostingBin(menu.CurrentBlueprint, Vector2.Zero));
+                }
+
+                if (e.Button.IsUseToolButton() && Helper.Reflection.GetField<bool>(menu, "moving").GetValue() && Helper.Reflection.GetField<bool>(menu, "onFarm").GetValue())
+                {
+                    Building buildingToMove = Helper.Reflection.GetField<Building>(menu, "buildingToMove").GetValue();
+
+                    if (buildingToMove != null && clickedToSelect)
+                    {
+                        //Monitor.Log("Building selected?", LogLevel.Error);
+                        if (buildingToMove is CompostingBin bin)
+                        {
+                            binOldPos = new Vector2(bin.tileX, bin.tileY);
+                            binToMove = bin;
+                        }
+                    }
+                    else if (buildingToMove == null && clickedToPlace)
+                    {
+                        //Monitor.Log("Building placed?", LogLevel.Error);
+                         if (binToMove != null)
+                        {
+                            Composting.MoveCompostingBin(binOldPos, new Vector2(binToMove.tileX, binToMove.tileY));
+                            binToMove = null;
+                        }
+                    }
+                }
             }
+
+            clickedToSelect = false;
+            clickedToPlace = false;
         }
 
         private static IMonitor _Monitor;
@@ -203,18 +276,6 @@ namespace CompostPestsCultivation
 
 
 }
-
-//TODO cache translation
-//TODO hover text for cancel button in composter menu
-//TODO fix positions of buttons
-//TODO add info for amount needed to fill compost
-
-//TODO test loading/saving
-//TODO Test Effects of Cultivation system
-
-//TODO compost menu has mode similar to carpentermenu building moving to apply compost
-//TODO if compost bin is moved or removed, variables have to be changed too
-
 
 //Effects
 //0: normal Quality
@@ -234,3 +295,13 @@ namespace CompostPestsCultivation
 //normal Water
 //staying watered 1
 //staying watered 2
+
+
+//Greenhouse:
+//Quality level base is 0
+//Speed level base is 1
+//Resistance ignored
+//Water base is 1
+
+//Wild Seed Crops are can not gain traits but also have no negative effects and are resistant against pests.
+//Mixed Seeds can not gain traits

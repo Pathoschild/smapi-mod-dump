@@ -443,6 +443,13 @@ namespace DeepWoodsMod
                 return;
             }
 
+            // Already patched
+            if (woods.warps.Where(warp => "DeepWoods".Equals(warp.TargetName)).Any())
+            {
+                ModEntry.Log("OpenPassageInSecretWoods: Cancelled, map already patched.", LogLevel.Trace);
+                return;
+            }
+
             Layer buildingsLayer = woods.map.GetLayer("Buildings");
 
             // Just to be sure
@@ -452,40 +459,49 @@ namespace DeepWoodsMod
                 return;
             }
 
-            // Already patched
-            if (buildingsLayer.Tiles[29, 25] == null)
+            ModEntry.Log("OpenPassageInSecretWoods:", LogLevel.Trace);
+
+            TileSheet borderTileSheet = woods.map.TileSheets.First();
+            int borderTileIndex = 0;
+
+            int removed = 0;
+            int added = 0;
+
+            foreach (var location in Settings.WoodsPassage.DeleteBuildingTiles)
             {
-                ModEntry.Log("OpenPassageInSecretWoods: Cancelled, map incompatible or already patched.", LogLevel.Trace);
-                return;
+                if (buildingsLayer.Tiles[location.X, location.Y] == null)
+                {
+                    ModEntry.Log($"    Can't remove tile from building layer at {location.X}, {location.Y}, there is no tile here! (Custom Woods map? Please modify WoodsPassage settings in the DeepWoods config file for custom Woods maps.)", LogLevel.Trace);
+                }
+                else
+                {
+                    ModEntry.Log($"    Removing tile from building layer at {location.X}, {location.Y}.", LogLevel.Trace);
+                    buildingsLayer.Tiles[location.X, location.Y] = null;
+                    removed++;
+                }
             }
 
-            ModEntry.Log("OpenPassageInSecretWoods", LogLevel.Trace);
-
-            TileSheet borderTileSheet = buildingsLayer.Tiles[29, 25].TileSheet;
-            int borderTileIndex = buildingsLayer.Tiles[29, 25].TileIndex;
-
-            buildingsLayer.Tiles[29, 25] = null;
-            buildingsLayer.Tiles[29, 26] = null;
-
-            for (int x = 24; x < 29; x++)
+            foreach (var location in Settings.WoodsPassage.AddBuildingTiles)
             {
-                buildingsLayer.Tiles[x, 24] = new StaticTile(buildingsLayer, borderTileSheet, BlendMode.Alpha, borderTileIndex);
-                woods.warps.Add(new Warp(x, 32, "DeepWoods", Settings.Map.RootLevelEnterLocation.X, Settings.Map.RootLevelEnterLocation.Y + 1, false));
+                if (buildingsLayer.Tiles[location.X, location.Y] == null)
+                {
+                    ModEntry.Log($"    Adding tile to building layer at {location.X}, {location.Y}.", LogLevel.Trace);
+                    buildingsLayer.Tiles[location.X, location.Y] = new StaticTile(buildingsLayer, borderTileSheet, BlendMode.Alpha, borderTileIndex);
+                    added++;
+                }
+                else
+                {
+                    ModEntry.Log($"    Can't add tile to building layer at {location.X}, {location.Y}, already have a tile there! (Custom Woods map? Please modify WoodsPassage settings in the DeepWoods config file for custom Woods maps.)", LogLevel.Trace);
+                }
             }
 
-            /*
-            foreach (var location in DeleteBuildingTiles)
+            foreach (var location in Settings.WoodsPassage.WarpLocations)
             {
+                ModEntry.Log($"    Adding warp to DeepWoods at {location.X}, {location.Y}.", LogLevel.Trace);
+                woods.warps.Add(new Warp(location.X, location.Y, "DeepWoods", Settings.Map.RootLevelEnterLocation.X, Settings.Map.RootLevelEnterLocation.Y + 1, false));
             }
 
-            foreach (var location in AddBuildingTiles)
-            {
-            }
-
-            foreach (var location in WarpLocations)
-            {
-            }
-            */
+            ModEntry.Log($"OpenPassageInSecretWoods done. (Added {added}/{Settings.WoodsPassage.AddBuildingTiles.Length} tiles, removed {removed}/{Settings.WoodsPassage.DeleteBuildingTiles.Length} tiles, added {Settings.WoodsPassage.WarpLocations.Length} warps.)", LogLevel.Trace);
         }
 
         public void Edit<T>(IAssetData asset)

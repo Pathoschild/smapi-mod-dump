@@ -39,7 +39,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper
             }
 
             // Set services and mod configurations
-            CommonServices = new CommonServices(Monitor, helper.Events, helper.Translation, helper.Reflection, helper.Content);
+            CommonServices = new CommonServices(Monitor, helper.Events, helper.Translation, helper.Reflection, helper.Content, helper.Data);
             ModConfig = Helper.ReadConfig<ModConfig>();
 
             // Apply game patches

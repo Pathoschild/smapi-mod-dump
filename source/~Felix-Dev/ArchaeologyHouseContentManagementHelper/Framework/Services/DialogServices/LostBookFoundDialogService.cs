@@ -71,7 +71,7 @@ namespace StardewMods.ArchaeologyHouseContentManagementHelper.Framework.Services
             if (e.NewMenu is DialogueBox box)
             {
                 var mostRecentlyGrabbed = Game1.player.mostRecentlyGrabbedItem;
-                if (mostRecentlyGrabbed != null && mostRecentlyGrabbed.ParentSheetIndex == StardewMods.Common.StardewValley.Constants.ID_GAME_OBJECT_LOST_BOOK)
+                if (mostRecentlyGrabbed != null && mostRecentlyGrabbed.ParentSheetIndex == FelixDev.StardewMods.Common.StardewValley.Constants.ID_GAME_OBJECT_LOST_BOOK)
                 {
                     List<string> dialogues = ModEntry.CommonServices.ReflectionHelper.GetField<List<string>>(box, "dialogues").GetValue();
                     if (dialogues.Count == 1 && dialogues[0].Equals(mostRecentlyGrabbed.checkForSpecialItemHoldUpMeessage())

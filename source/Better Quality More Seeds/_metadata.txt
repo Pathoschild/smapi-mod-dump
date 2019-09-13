@@ -1,0 +1,14 @@
+url:
+   https://github.com/bmarquismarkail/SV_BetterQualityMoreSeeds.git
+
+mods:
+   Better Quality More Seeds
+
+latest commit:
+   commit 1d4bcffc3df7caaa4e02a93b32b88f48d6f65279
+   Merge: 874ac74 fe67469
+   Author: Brandon Marquis Markail Green <bmarquismarkail@github.com>
+   Date:   Tue Sep 10 14:47:36 2019 -0500
+   
+       Merge branch 'Pathoschild-refactoring'
+   

@@ -1,9 +1,10 @@
+<<<<<<< HEAD
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterQualityMoreSeeds", "BetterQualityMoreSeeds\BetterQualityMoreSeeds.csproj", "{C970CF86-3B25-42B7-8903-AB6D794188EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterQualityMoreSeeds", "BetterQualityMoreSeeds\BetterQualityMoreSeeds.csproj", "{268833D2-5A5F-45DB-88F3-0437A3DFA34A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +12,45 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C970CF86-3B25-42B7-8903-AB6D794188EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C970CF86-3B25-42B7-8903-AB6D794188EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C970CF86-3B25-42B7-8903-AB6D794188EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C970CF86-3B25-42B7-8903-AB6D794188EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{268833D2-5A5F-45DB-88F3-0437A3DFA34A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{268833D2-5A5F-45DB-88F3-0437A3DFA34A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{268833D2-5A5F-45DB-88F3-0437A3DFA34A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{268833D2-5A5F-45DB-88F3-0437A3DFA34A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
+=======
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{DD3FB8BC-5FCA-400F-833D-D040FADA4736}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetterQualityMoreSeeds", "BetterQualityMoreSeeds\BetterQualityMoreSeeds.csproj", "{DAB60E3E-3A7F-42BD-8187-0A7CA5ACC246}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DAB60E3E-3A7F-42BD-8187-0A7CA5ACC246}.Debug|x86.ActiveCfg = Debug|x86
+		{DAB60E3E-3A7F-42BD-8187-0A7CA5ACC246}.Debug|x86.Build.0 = Debug|x86
+		{DAB60E3E-3A7F-42BD-8187-0A7CA5ACC246}.Release|x86.ActiveCfg = Release|x86
+		{DAB60E3E-3A7F-42BD-8187-0A7CA5ACC246}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7924FE24-18CB-4E5F-9D01-46F62ADFA7EF}
+	EndGlobalSection
+EndGlobal
+>>>>>>> cb341e8d6d0ef384e6f156d4b3044d17f306c5f7

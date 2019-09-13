@@ -1,0 +1,10 @@
+{
+  "Name": "OnlyIridium",
+  "Author": "xiaoye97",
+  "Version": "1.0.0",
+  "Description": "All items iridium quality",
+  "UniqueID": "xiaoye97.OnlyIridium",
+  "EntryDll": "OnlyIridium.dll",
+  "MinimumApiVersion": "2.11.2",
+  "UpdateKeys": [ "Nexus:4471" ]
+}

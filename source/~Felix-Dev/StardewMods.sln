@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2026
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchaeologyHouseContentManagementHelper", "ArchaeologyHouseContentManagementHelper\ArchaeologyHouseContentManagementHelper.csproj", "{E508687E-A71D-48F9-8EE0-DDA8F19F38D9}"
 EndProject
@@ -17,8 +17,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{7CEE1D43-C
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeTK", "FeTK\FeTK.csproj", "{49F0430B-5E62-409C-BDF7-D653F3A39431}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMod", "TestMod\TestMod.csproj", "{14DC6EF0-55F0-4285-85DD-6E87D5CDDE48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMod2", "TestMod2\TestMod2.csproj", "{136B3D90-54EF-4B0D-9837-982CB5CD3278}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Common\Common.projitems*{49f0430b-5e62-409c-bdf7-d653f3a39431}*SharedItemsImports = 4
 		Common\Common.projitems*{b60c7009-a672-490b-ad9b-de3c2bec0171}*SharedItemsImports = 4
 		Common\Common.projitems*{e508687e-a71d-48f9-8ee0-dda8f19f38d9}*SharedItemsImports = 4
 		Common\Common.projitems*{f4697672-af08-4413-a1aa-4cf106f093ac}*SharedItemsImports = 13
@@ -46,6 +53,30 @@ Global
 		{B60C7009-A672-490B-AD9B-DE3C2BEC0171}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B60C7009-A672-490B-AD9B-DE3C2BEC0171}.Release|x86.ActiveCfg = Release|x86
 		{B60C7009-A672-490B-AD9B-DE3C2BEC0171}.Release|x86.Build.0 = Release|x86
+		{49F0430B-5E62-409C-BDF7-D653F3A39431}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49F0430B-5E62-409C-BDF7-D653F3A39431}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49F0430B-5E62-409C-BDF7-D653F3A39431}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{49F0430B-5E62-409C-BDF7-D653F3A39431}.Debug|x86.Build.0 = Debug|Any CPU
+		{49F0430B-5E62-409C-BDF7-D653F3A39431}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49F0430B-5E62-409C-BDF7-D653F3A39431}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49F0430B-5E62-409C-BDF7-D653F3A39431}.Release|x86.ActiveCfg = Release|Any CPU
+		{49F0430B-5E62-409C-BDF7-D653F3A39431}.Release|x86.Build.0 = Release|Any CPU
+		{14DC6EF0-55F0-4285-85DD-6E87D5CDDE48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14DC6EF0-55F0-4285-85DD-6E87D5CDDE48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14DC6EF0-55F0-4285-85DD-6E87D5CDDE48}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{14DC6EF0-55F0-4285-85DD-6E87D5CDDE48}.Debug|x86.Build.0 = Debug|Any CPU
+		{14DC6EF0-55F0-4285-85DD-6E87D5CDDE48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14DC6EF0-55F0-4285-85DD-6E87D5CDDE48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14DC6EF0-55F0-4285-85DD-6E87D5CDDE48}.Release|x86.ActiveCfg = Release|Any CPU
+		{14DC6EF0-55F0-4285-85DD-6E87D5CDDE48}.Release|x86.Build.0 = Release|Any CPU
+		{136B3D90-54EF-4B0D-9837-982CB5CD3278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{136B3D90-54EF-4B0D-9837-982CB5CD3278}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{136B3D90-54EF-4B0D-9837-982CB5CD3278}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{136B3D90-54EF-4B0D-9837-982CB5CD3278}.Debug|x86.Build.0 = Debug|Any CPU
+		{136B3D90-54EF-4B0D-9837-982CB5CD3278}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{136B3D90-54EF-4B0D-9837-982CB5CD3278}.Release|Any CPU.Build.0 = Release|Any CPU
+		{136B3D90-54EF-4B0D-9837-982CB5CD3278}.Release|x86.ActiveCfg = Release|Any CPU
+		{136B3D90-54EF-4B0D-9837-982CB5CD3278}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

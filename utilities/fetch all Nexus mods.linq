@@ -62,6 +62,7 @@ readonly HashSet<int> IgnoreNexusIDsForValidation = new HashSet<int>
 	1213, // Natural Color - Reshade
 	21,   // SDVMM/Stardew Valley Mod Manager
 	1022, // SDV MultiTweak
+	4429, // Separated layers for easy custom recoloring - For Gimp and Photoshop
 	2400, // SMAPI
 	2367, // SMAPI Templates [for Visual Studio]
 	782,  // Sound Modding Tools
@@ -219,8 +220,7 @@ readonly HashSet<int> IgnoreFileIDsForValidation = new HashSet<int>
 	18065, // Spouse Rooms Redesigned (#828) > All Options
 	16623, // Stardew In-Game Daily Planner > Example Plan
 	16660, // Stardew In-Game Daily Planner > Example Checklist
-	18233, // Stardew Valley Expanded (#3753) > Wallpapers, Event Guide and Script
-	18540, // Stardew Valley Expanded (#3753) > Grampleton Fields
+	18999, // Stardew Valley Expanded (#3753) > Wallpapers, Event Guide and Script
 	11658, // Visual Crossing Sprite Overhaul (#1942), CP pack with invalid version format
 	11717, // Pencilstab's Portraits (#2351), content pack with separate previews folder including .zip
 	9495,  // Quieter Cat Dog and Keg (#2371), .wav files
@@ -603,42 +603,47 @@ void UnpackMods(string rootPath, Func<int, bool> filter)
 		// unzip each download
 		foreach (FileInfo archiveFile in packedDir.GetFiles())
 		{
-			progress.Caption = $"Unpacking {modDir.Name} > {archiveFile.Name} ({progress.Percent}%)...";
+			Helper.AutoRetry(() =>
+			{
+				progress.Caption = $"Unpacking {modDir.Name} > {archiveFile.Name} ({progress.Percent}%)...";
 
-			// validate
-			if (archiveFile.Extension == ".exe")
-			{
-				Helper.Print($"  Skipped {archiveFile.FullName} (not an archive).", Severity.Error);
-				continue;
-			}
+				// validate
+				if (archiveFile.Extension == ".exe")
+				{
+					Helper.Print($"  Skipped {archiveFile.FullName} (not an archive).", Severity.Error);
+					return;
+				}
 
-			// unzip into temporary folder
-			string id = Path.GetFileNameWithoutExtension(archiveFile.Name);
-			DirectoryInfo tempDir = new DirectoryInfo(Path.Combine(unpackedDir.FullName, "_tmp", $"{archiveFile.Name}"));
-			tempDir.Create();
-			try
-			{
-				this.ExtractFile(archiveFile, tempDir);
-			}
-			catch (Exception ex)
-			{
-				Helper.Print($"  Could not unpack {archiveFile.FullName}:\n{(ex is SevenZipArchiveException ? ex.Message : ex.ToString())}", Severity.Error);
-				Console.WriteLine();
-				FileHelper.ForceDelete(tempDir);
-				continue;
-			}
-			
-			// move into final location
-			if (tempDir.EnumerateFiles().Any() || tempDir.EnumerateDirectories().Count() > 1) // no root folder in zip
-				tempDir.Parent.MoveTo(Path.Combine(unpackedDir.FullName, id));
-			else
-			{
-				tempDir.MoveTo(Path.Combine(unpackedDir.FullName, id));
-				FileHelper.ForceDelete(new DirectoryInfo(Path.Combine(unpackedDir.FullName, "_tmp")));
-			}
+				// unzip into temporary folder
+				string id = Path.GetFileNameWithoutExtension(archiveFile.Name);
+				DirectoryInfo tempDir = new DirectoryInfo(Path.Combine(unpackedDir.FullName, "_tmp", $"{archiveFile.Name}"));
+				if (tempDir.Exists)
+					FileHelper.ForceDelete(tempDir);
+				tempDir.Create();
+				try
+				{
+					this.ExtractFile(archiveFile, tempDir);
+				}
+				catch (Exception ex)
+				{
+					Helper.Print($"  Could not unpack {archiveFile.FullName}:\n{(ex is SevenZipArchiveException ? ex.Message : ex.ToString())}", Severity.Error);
+					Console.WriteLine();
+					FileHelper.ForceDelete(tempDir);
+					return;
+				}
+
+				// move into final location
+				if (tempDir.EnumerateFiles().Any() || tempDir.EnumerateDirectories().Count() > 1) // no root folder in zip
+					tempDir.Parent.MoveTo(Path.Combine(unpackedDir.FullName, id));
+				else
+				{
+					tempDir.MoveTo(Path.Combine(unpackedDir.FullName, id));
+					FileHelper.ForceDelete(new DirectoryInfo(Path.Combine(unpackedDir.FullName, "_tmp")));
+				}
+			});
 		}
 	}
-	
+
 	progress.Caption = $"Unpacked {progress.Total} mods (100%)";
 }
 

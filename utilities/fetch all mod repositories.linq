@@ -136,7 +136,9 @@ async Task Main()
 		int haveCode = repos.SelectMany(repo => repo.Mods).Count();
 		int haveSharedRepo = haveCode - uniqueRepos;
 
-		Helper.Print($"   Found {totalMods} mods with {uniqueRepos} Git repos. {haveCode} mods ({this.GetPercentage(haveCode, totalMods)}) have a Git repo; {haveSharedRepo} repos ({this.GetPercentage(haveSharedRepo, haveCode)}) contain multiple mods.");
+		Helper.Print($"   {totalMods} mods in the SMAPI compatibility list.");
+		Helper.Print($"   {haveCode} mods ({this.GetPercentage(haveCode, totalMods)}) have a Git repository.");
+		Helper.Print($"   {uniqueRepos} repositories ({this.GetPercentage(haveSharedRepo, haveCode)}) contain multiple mods.");
 		if (invalidUrls.Any())
 		{
 			Helper.Print($"   Found {invalidUrls.Length} unsupported source URLs on the wiki:", Severity.Trace);

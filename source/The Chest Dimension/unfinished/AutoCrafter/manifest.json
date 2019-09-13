@@ -1,0 +1,9 @@
+﻿{
+  "Name": "h",
+  "Author": "zazizu",
+  "Version": "0.0.1",
+  "Description": "h",
+  "UniqueID": "zazizu.h",
+  "MinimumApiVersion": "2.0",
+  "EntryDll": "AutoCrafter.dll"
+}

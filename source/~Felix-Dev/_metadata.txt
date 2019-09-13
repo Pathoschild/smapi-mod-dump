@@ -6,9 +6,9 @@ mods:
    Tool Upgrade Delivery Service
 
 latest commit:
-   commit 91990a12a90be2855cfb43fdb9936f1662051f6f
+   commit 87f88f905eef39aa843571d33c02205a465cc4c2
    Author: Felix <FelixDev91@gmail.com>
-   Date:   Mon Mar 11 15:45:50 2019 +0100
+   Date:   Thu Aug 29 16:45:07 2019 +0200
    
-       ToolUpgradeDeliveryService: Added correct description for the configuration option <RemoveToolDuplicates>.
+       FeTK: Added platform target "x86".
    

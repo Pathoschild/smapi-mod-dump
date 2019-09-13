@@ -1,5 +1,5 @@
 ﻿using Harmony;
-using StardewMods.Common.StardewValley;
+using FelixDev.StardewMods.Common.StardewValley;
 using StardewValley;
 using System;
 using System.Collections.Generic;

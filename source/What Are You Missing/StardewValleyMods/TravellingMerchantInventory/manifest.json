@@ -1,0 +1,10 @@
+{
+  "Name": "TravellingMerchantInventory",
+  "Author": "Luke",
+  "Version": "1.0.0",
+  "Description": "Shows you the travelling merchants inventory from your menu",
+  "UniqueID": "Luke.TravellingMerchantInventory",
+  "EntryDll": "TravellingMerchantInventory.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

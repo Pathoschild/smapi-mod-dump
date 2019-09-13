@@ -1,0 +1,9 @@
+{
+  "button": "F2",
+  "ShowItemsFromLockedPlaces": true,
+  "ShowAllFishFromCurrentSeason": false,
+  "ShowAllRecipes": false,
+  "AlwaysShowAllRecipes": false,
+  "CommonAmount": 5,
+  "HighestQualityAmount": 5
+}

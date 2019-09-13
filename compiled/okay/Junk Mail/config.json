@@ -1,0 +1,6 @@
+{
+  "MailChance": 10,
+  "MailNotification": "basic",
+  "MailReplay": false,
+  "ShowDebug": false
+}

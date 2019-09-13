@@ -2,6 +2,7 @@ url:
    https://github.com/jahangmar/StardewValleyMods.git
 
 mods:
+   Compost
    Dismantle Craftables
    Don't Eat That
    Interaction Tweaks
@@ -10,9 +11,9 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit 24a36688fe78eaff345e9010f4eeeaf83e7c5a18
+   commit 0a70ac63d3c7f54b5797003dcea46535f910bab0
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Thu Aug 29 08:08:53 2019 +0200
+   Date:   Fri Sep 6 16:40:58 2019 +0200
    
-       fixed load/save and more, tweaked interface, composting
+       better wording
    

@@ -1,6 +1,6 @@
 DeepWoodsMod for Stardew Valley
 Author: Max Vollmer
-Version: 1.6-beta.3
+Version: 1.6-beta.4
 
 Needs SMAPI v2.11.1 or higher: https://smapi.io/
 
@@ -33,3 +33,11 @@ License: Exclusive/Custom, please ask author directly for permission if you want
 Texture: gingerbread_house_technopoptart98.png
 By: https://forums.nexusmods.com/index.php?/user/55392892-technopoptart98/
 License: Exclusive/Custom, please ask author directly for permission if you want to use this asset.
+
+====
+Translations:
+
+fr.json by AresRyu (https://forums.nexusmods.com/index.php?/user/31452340-aresryu/)
+ko.json by S2SKY (https://github.com/S2SKY)
+ru.json by FixThisPlz (https://github.com/FixThisPlz)
+pt.json by shiro2579 (https://github.com/shiro2579)

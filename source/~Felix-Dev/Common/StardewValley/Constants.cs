@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace StardewMods.Common.StardewValley
+namespace FelixDev.StardewMods.Common.StardewValley
 {
     public class Constants
     {

@@ -16,9 +16,9 @@ mods:
    XNB Loader
 
 latest commit:
-   commit 730975bddf9bda86bbdd0400741691fbab4496af
+   commit 339b023bd05bd857d1da50444226774b6ada8519
    Author: Entoarox <kvdk@kvdk.net>
-   Date:   Thu Aug 22 00:21:18 2019 +0200
+   Date:   Fri Aug 30 00:03:05 2019 +0200
    
-       Change push
+       Uploading the TDIFF stuffs
    

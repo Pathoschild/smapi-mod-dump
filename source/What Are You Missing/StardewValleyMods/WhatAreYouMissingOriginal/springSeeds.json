@@ -1,0 +1,36 @@
+{
+  "header": {
+    "target": "w",
+    "formatVersion": 5,
+    "hidef": true,
+    "compressed": 128
+  },
+  "readers": [
+    {
+      "type": "Microsoft.Xna.Framework.Content.DictionaryReader`2[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+      "version": 0
+    },
+    {
+      "type": "Microsoft.Xna.Framework.Content.Int32Reader",
+      "version": 0
+    },
+    {
+      "type": "Microsoft.Xna.Framework.Content.StringReader",
+      "version": 0
+    }
+  ],
+  "content": {
+    "427": "Tulip Bulb/10/-300/Seeds -74/Tulip Bulb/Plant in spring. Takes 6 days to produce a colorful flower. Assorted colors.",
+    "429": "Jazz Seeds/15/-300/Seeds -74/Jazz Seeds/Plant in spring. Takes 7 days to produce a blue puffball flower.",
+    "433": "Coffee Bean/15/-300/Seeds -74/Coffee Bean/Plant in spring or summer to grow a coffee plant. Place five beans in a keg to make coffee.",
+    "472": "Parsnip Seeds/10/-300/Seeds -74/Parsnip Seeds/Plant these in the spring. Takes 4 days to mature.",
+    "473": "Bean Starter/30/-300/Seeds -74/Bean Starter/Plant these in the spring. Takes 10 days to mature, but keeps producing after that. Yields multiple beans per harvest. Grows on a trellis.",
+    "474": "Cauliflower Seeds/40/-300/Seeds -74/Cauliflower Seeds/Plant these in the spring. Takes 12 days to produce a large cauliflower.",
+    "475": "Potato Seeds/25/-300/Seeds -74/Potato Seeds/Plant these in the spring. Takes 6 days to mature, and has a chance of yielding multiple potatoes at harvest.",
+    "476": "Garlic Seeds/20/-300/Seeds -74/Garlic Seeds/Plant these in the spring. Takes 4 days to mature.",
+    "477": "Kale Seeds/35/-300/Seeds -74/Kale Seeds/Plant these in the spring. Takes 6 days to mature. Harvest with the scythe.",
+    "478": "Rhubarb Seeds/50/-300/Seeds -74/Rhubarb Seeds/Plant these in the spring. Takes 13 days to mature.",
+    "745": "Strawberry Seeds/0/-300/Seeds -74/Strawberry Seeds/Plant these in spring. Takes 8 days to mature, and keeps producing strawberries after that."
+
+  }
+}

@@ -7,17 +7,33 @@ using static DeepWoodsMod.DeepWoodsGlobals;
 using Newtonsoft.Json;
 using StardewValley.Tools;
 using StardewValley;
-using System;
 using System.IO;
+using System;
 
 namespace DeepWoodsMod
 {
-    class NetworkSettings
+    class WoodsPassageSettings
     {
-        // SMAPI will handle custom network messages in a future version,
-        // until then let's hope no other mod uses this value for custom messages :S
-        // (and in case there is incompatibility, users can change the id in their config.json)
-        public byte DeepWoodsMessageId { get; set; } = 220;
+        public Location[] DeleteBuildingTiles { get; set; } = new Location[] {
+            new Location(29, 25),
+            new Location(29, 26),
+        };
+
+        public Location[] AddBuildingTiles { get; set; } = new Location[] {
+            new Location(24, 24),
+            new Location(25, 24),
+            new Location(26, 24),
+            new Location(27, 24),
+            new Location(28, 24),
+        };
+
+        public Location[] WarpLocations { get; set; } = new Location[] {
+            new Location(24, 32),
+            new Location(25, 32),
+            new Location(26, 32),
+            new Location(27, 32),
+            new Location(28, 32),
+        };
     }
 
     class MapSettings
@@ -479,7 +495,7 @@ namespace DeepWoodsMod
         public static DeepWoodsSettings Settings { get; set; } = new DeepWoodsSettings();
 
         // Settings subcategories
-        public NetworkSettings Network { get; set; } = new NetworkSettings();
+        public WoodsPassageSettings WoodsPassage { get; set; } = new WoodsPassageSettings();
         public LevelSettings Level { get; set; } = new LevelSettings();
         public MapSettings Map { get; set; } = new MapSettings();
         public ObjectsSettings Objects { get; set; } = new ObjectsSettings();
@@ -518,14 +534,41 @@ namespace DeepWoodsMod
             {
                 // legacy file
                 FileInfo legacyFile = new FileInfo($"{Constants.CurrentSavePath}/{SAVE_FILE_NAME}.json");
+                ModEntry.Log("DeepWoodsSettings.DoLoad: Couldn't find savedata, trying legacy save: " + legacyFile.FullName, StardewModdingAPI.LogLevel.Trace);
                 if (legacyFile.Exists)
+                {
+                    ModEntry.Log("DeepWoodsSettings.DoLoad: Loading legacy save.", StardewModdingAPI.LogLevel.Trace);
                     DeepWoodsState = JsonConvert.DeserializeObject<DeepWoodsStateData>(File.ReadAllText(legacyFile.FullName));
+                }
             }
             if (DeepWoodsState == null)
+            {
+                ModEntry.Log("DeepWoodsSettings.DoLoad: No savedata, falling back to default.", StardewModdingAPI.LogLevel.Trace);
                 DeepWoodsState = new DeepWoodsStateData();
+            }
 
             // init settings
-            Settings = ModEntry.GetHelper().ReadConfig<DeepWoodsSettings>() ?? new DeepWoodsSettings();
+            ModEntry.Log("DeepWoodsSettings.DoLoad: Loading settings.", StardewModdingAPI.LogLevel.Trace);
+            DeepWoodsSettings settings = ModEntry.GetHelper().ReadConfig<DeepWoodsSettings>();
+            if (settings == null)
+            {
+                ModEntry.Log("Settings are null, using defaults.", StardewModdingAPI.LogLevel.Trace);
+                Settings = new DeepWoodsSettings();
+            }
+            else
+            {
+                ModEntry.Log("Settings loaded successfully.", StardewModdingAPI.LogLevel.Trace);
+                Settings = settings;
+
+                if (Settings.WoodsPassage.AddBuildingTiles.Length == 0
+                    && Settings.WoodsPassage.DeleteBuildingTiles.Length == 0
+                    && Settings.WoodsPassage.WarpLocations.Length == 0)
+                {
+                    Settings.WoodsPassage = new WoodsPassageSettings();
+                }
+            }
+
+            ModEntry.Log("DeepWoodsSettings.DoLoad: Done.", StardewModdingAPI.LogLevel.Trace);
         }
     }
 }
