@@ -95,10 +95,10 @@
       <Version>2.0.2</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.1</Version>
+      <Version>12.0.3-beta1</Version>
     </PackageReference>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig">
-      <Version>2.2.0</Version>
+      <Version>3.0.0-beta.8</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -132,6 +132,7 @@
     <Content Include="assets\woods_obelisk_mostlyreal.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="i18n\Credits.txt" />
     <Content Include="README.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

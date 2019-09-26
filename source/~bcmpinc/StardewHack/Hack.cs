@@ -123,7 +123,7 @@ namespace StardewHack
 
             // Iterate all methods in this class and search for those that have a BytecodePatch annotation.
             var methods = typeof(T).GetMethods(AccessTools.all);
-            var apply = AccessTools.Method(typeof(Hack<T>), "ApplyPatch");
+            var apply = AccessTools.Method(typeof(Hack<T>), nameof(ApplyPatch));
             var broken = false;
             foreach (MethodInfo patch in methods) {
                 var bytecode_patches = patch.GetCustomAttributes<BytecodePatch>();

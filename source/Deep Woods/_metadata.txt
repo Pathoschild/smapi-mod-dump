@@ -5,10 +5,9 @@ mods:
    Deep Woods
 
 latest commit:
-   commit a4b1984537f1565dccb1253e4365780a2c3fcc15
+   commit 4ce96990484da536b646abc3eab227359127cf80
    Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Thu Sep 12 02:28:57 2019 +0200
+   Date:   Sat Sep 14 18:40:03 2019 +0200
    
-       * Fixed bugs in adding passage to SecretWoods
-       * Made passage to SecretWoods configurable
+       Update SMAPI version in README.txt
    

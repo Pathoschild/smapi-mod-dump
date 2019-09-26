@@ -3,6 +3,7 @@ url:
 
 mods:
    Archaeology House Content Management Helper
+   FeTK - Stardew-Valley Toolkit
    Tool Upgrade Delivery Service
 
 latest commit:

@@ -9,30 +9,43 @@ using StardewValley.Tools;
 using StardewValley;
 using System.IO;
 using System;
+using Newtonsoft.Json.Converters;
 
 namespace DeepWoodsMod
 {
+    public struct SimpleCoord
+    {
+        public int X;
+        public int Y;
+
+        public SimpleCoord(int x, int y)
+        {
+            X = x;
+            Y = y;
+        }
+    }
+
     class WoodsPassageSettings
     {
-        public Location[] DeleteBuildingTiles { get; set; } = new Location[] {
-            new Location(29, 25),
-            new Location(29, 26),
+        public SimpleCoord[] DeleteBuildingTiles { get; set; } = new SimpleCoord[] {
+            new SimpleCoord(29, 25),
+            new SimpleCoord(29, 26),
         };
 
-        public Location[] AddBuildingTiles { get; set; } = new Location[] {
-            new Location(24, 24),
-            new Location(25, 24),
-            new Location(26, 24),
-            new Location(27, 24),
-            new Location(28, 24),
+        public SimpleCoord[] AddBuildingTiles { get; set; } = new SimpleCoord[] {
+            new SimpleCoord(24, 24),
+            new SimpleCoord(25, 24),
+            new SimpleCoord(26, 24),
+            new SimpleCoord(27, 24),
+            new SimpleCoord(28, 24),
         };
 
-        public Location[] WarpLocations { get; set; } = new Location[] {
-            new Location(24, 32),
-            new Location(25, 32),
-            new Location(26, 32),
-            new Location(27, 32),
-            new Location(28, 32),
+        public SimpleCoord[] WarpLocations { get; set; } = new SimpleCoord[] {
+            new SimpleCoord(24, 32),
+            new SimpleCoord(25, 32),
+            new SimpleCoord(26, 32),
+            new SimpleCoord(27, 32),
+            new SimpleCoord(28, 32),
         };
     }
 

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Reflection.Emit;
+using StardewValley;
+using StardewValley.Menus;
 
 namespace StardewHack.CraftCounter
 {
     public class ModEntry : Hack<ModEntry>
     {
-        public static string AddTimesCraftedText(string description, StardewValley.CraftingRecipe recipe) {
+        public static string AddTimesCraftedText(string description, CraftingRecipe recipe) {
             string prefix = recipe.isCookingRecipe
                 ? "\n\nTimes Cooked: "
                 : "\n\nTimes Crafted: ";
@@ -18,11 +20,11 @@ namespace StardewHack.CraftCounter
         void AddTimesCrafted() {
             var range = FindCode(
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(StardewValley.CraftingRecipe), "description")
+                Instructions.Ldfld(typeof(CraftingRecipe), "description")
             );
             range.Append(
                 Instructions.Ldarg_0(),
-                Instructions.Call(typeof(ModEntry), "AddTimesCraftedText", typeof(string), typeof(StardewValley.CraftingRecipe))
+                Instructions.Call(typeof(ModEntry), nameof(AddTimesCraftedText), typeof(string), typeof(CraftingRecipe))
             );
         }
         
@@ -32,18 +34,18 @@ namespace StardewHack.CraftCounter
             BeginCode().Append(
                 Instructions.Ldarg_0(),
                 Instructions.Ldarg_0(),
-                Instructions.Ldfld(typeof(StardewValley.CraftingRecipe),"numberProducedPerCraft"),
+                Instructions.Ldfld(typeof(CraftingRecipe), nameof(CraftingRecipe.numberProducedPerCraft)),
                 Instructions.Ldarg_0(),
-                Instructions.Ldfld(typeof(StardewValley.CraftingRecipe),"timesCrafted"),
+                Instructions.Ldfld(typeof(CraftingRecipe), nameof(CraftingRecipe.timesCrafted)),
                 Instructions.Add(),
-                Instructions.Stfld(typeof(StardewValley.CraftingRecipe),"timesCrafted")
+                Instructions.Stfld(typeof(CraftingRecipe), nameof(CraftingRecipe.timesCrafted))
             );
         }
         
-        public static void GetCookedCounter(StardewValley.CraftingRecipe recipe, StardewValley.Item item) {
+        public static void GetCookedCounter(CraftingRecipe recipe, Item item) {
             if (recipe.isCookingRecipe) {
                 var item_key = item.ParentSheetIndex;
-                recipe.timesCrafted = StardewValley.Game1.player.recipesCooked.ContainsKey(item_key) ? StardewValley.Game1.player.recipesCooked[item_key] : 0;
+                recipe.timesCrafted = Game1.player.recipesCooked.ContainsKey(item_key) ? Game1.player.recipesCooked[item_key] : 0;
             }
         }
         
@@ -55,15 +57,15 @@ namespace StardewHack.CraftCounter
             FindCode(
                 OpCodes.Ldarg_0,
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(StardewValley.Menus.CraftingPage), "hoverRecipe"),
-                Instructions.Callvirt(typeof(StardewValley.CraftingRecipe), "createItem"),
-                Instructions.Stfld(typeof(StardewValley.Menus.CraftingPage), "lastCookingHover")
+                Instructions.Ldfld(typeof(CraftingPage), "hoverRecipe"),
+                Instructions.Callvirt(typeof(CraftingRecipe), nameof(CraftingRecipe.createItem)),
+                Instructions.Stfld(typeof(CraftingPage), "lastCookingHover")
             ).Append(
                 Instructions.Ldarg_0(),
-                Instructions.Ldfld(typeof(StardewValley.Menus.CraftingPage), "hoverRecipe"),
+                Instructions.Ldfld(typeof(CraftingPage), "hoverRecipe"),
                 Instructions.Ldarg_0(),
-                Instructions.Ldfld(typeof(StardewValley.Menus.CraftingPage), "lastCookingHover"),
-                Instructions.Call(typeof(ModEntry), "GetCookedCounter", typeof(StardewValley.CraftingRecipe), typeof(StardewValley.Item))
+                Instructions.Ldfld(typeof(CraftingPage), "lastCookingHover"),
+                Instructions.Call(typeof(ModEntry), nameof(GetCookedCounter), typeof(CraftingRecipe), typeof(Item))
             );
         }
     }

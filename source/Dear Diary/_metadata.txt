@@ -1,0 +1,16 @@
+url:
+   https://github.com/MissCoriel/Dear-Diary.git
+
+mods:
+   Dear Diary
+
+latest commit:
+   commit 43afd3d10a309b1adabd19e372293553161e2b9d
+   Merge: 4cdcecd d3672a0
+   Author: MissCoriel <44127678+MissCoriel@users.noreply.github.com>
+   Date:   Tue Sep 17 21:31:18 2019 -0500
+   
+       Merge pull request #1 from MissCoriel/add-license-1
+       
+       Create LICENSE
+   

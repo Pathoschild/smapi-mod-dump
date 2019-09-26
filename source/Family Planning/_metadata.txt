@@ -1,0 +1,16 @@
+url:
+   https://github.com/loe2run/FamilyPlanningMod.git
+
+mods:
+   Family Planning
+
+latest commit:
+   commit 81a9669194b5fd668a4bf36c6d8b969fbb33e51b
+   Merge: 62c34f8 8b6406d
+   Author: loe2run <55768216+loe2run@users.noreply.github.com>
+   Date:   Wed Sep 25 18:44:58 2019 -0400
+   
+       Merge pull request #3 from loe2run/loe2run-final-update
+       
+       Final Update
+   

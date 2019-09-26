@@ -1,6 +1,9 @@
 ﻿using StardewModdingAPI;
 using System;
 using System.Reflection.Emit;
+using Netcode;
+using StardewValley;
+using StardewValley.TerrainFeatures;
 
 namespace StardewHack.TilledSoilDecay
 {
@@ -27,15 +30,15 @@ namespace StardewHack.TilledSoilDecay
             //var state = GetField("StardewValley.TerrainFeatures.HoeDirt::state");
             var DayUpdate = BeginCode();
 
-            var hdv = generator.DeclareLocal(typeof(StardewValley.TerrainFeatures.HoeDirt));
+            var hdv = generator.DeclareLocal(typeof(HoeDirt));
 
             // There are 2 updates. One for normal day transitions and one for the first of the month.
             for (int i=0; i<2; i++) {
                 DayUpdate = DayUpdate.FindNext(
-                    Instructions.Isinst(typeof(StardewValley.TerrainFeatures.HoeDirt)),
-                    Instructions.Callvirt_get(typeof(StardewValley.TerrainFeatures.HoeDirt), "crop"),
+                    Instructions.Isinst(typeof(HoeDirt)),
+                    Instructions.Callvirt_get(typeof(HoeDirt), nameof(HoeDirt.crop)),
                     OpCodes.Brtrue,
-                    Instructions.Ldsfld(typeof(StardewValley.Game1), "random"),
+                    Instructions.Ldsfld(typeof(Game1), nameof(Game1.random)),
                     OpCodes.Callvirt,
                     OpCodes.Ldc_R8
                 );
@@ -48,8 +51,8 @@ namespace StardewHack.TilledSoilDecay
                         // Inject && state <= delay
                         Instructions.Stloc_S(hdv),
                         Instructions.Ldloc_S(hdv),
-                        Instructions.Ldfld(typeof(StardewValley.TerrainFeatures.HoeDirt), "state"),
-                        Instructions.Call_get(typeof(Netcode.NetInt), "Value"),
+                        Instructions.Ldfld(typeof(HoeDirt), nameof(HoeDirt.state)),
+                        Instructions.Call_get(typeof(NetInt), nameof(NetInt.Value)),
                         Instructions.Ldc_I4(-delay),
                         Instructions.Bgt((Label)DayUpdate[2].operand),
                         Instructions.Ldloc_S(hdv)
@@ -73,22 +76,22 @@ namespace StardewHack.TilledSoilDecay
             dayUpdate.Prepend(
                 // if (crop == null 
                 Instructions.Ldarg_0(),
-                Instructions.Callvirt_get(typeof(StardewValley.TerrainFeatures.HoeDirt), "crop"),
+                Instructions.Callvirt_get(typeof(HoeDirt), nameof(HoeDirt.crop)),
                 Instructions.Brtrue(begin),
                 //   && state <= 0) {
                 Instructions.Ldarg_0(),
-                Instructions.Ldfld(typeof(StardewValley.TerrainFeatures.HoeDirt), "state"),
-                Instructions.Call_get(typeof(Netcode.NetInt), "Value"),
+                Instructions.Ldfld(typeof(HoeDirt), nameof(HoeDirt.state)),
+                Instructions.Call_get(typeof(NetInt), nameof(NetInt.Value)),
                 Instructions.Ldc_I4_0(),
                 Instructions.Bgt(begin),
                 //   state--;
                 Instructions.Ldarg_0(),
-                Instructions.Ldfld(typeof(StardewValley.TerrainFeatures.HoeDirt), "state"),
+                Instructions.Ldfld(typeof(HoeDirt), nameof(HoeDirt.state)),
                 Instructions.Dup(),
-                Instructions.Call_get(typeof(Netcode.NetInt), "Value"),
+                Instructions.Call_get(typeof(NetInt), nameof(NetInt.Value)),
                 Instructions.Ldc_I4_1(),
                 Instructions.Sub(),
-                Instructions.Call_set(typeof(Netcode.NetInt), "Value"),
+                Instructions.Call_set(typeof(NetInt), nameof(NetInt.Value)),
                 //   return;
                 Instructions.Ret()
                 // }

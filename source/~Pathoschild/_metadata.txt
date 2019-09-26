@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 9c5d557b9591721ea34dd162da25e21c19b22ba0
+   commit 722c18f1e474f647abc10e4735107b0d15473d38
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Tue Sep 10 20:39:35 2019 -0400
+   Date:   Wed Sep 18 23:42:20 2019 -0400
    
-        add world state IDs to HasFlag token
+       update for the next version of Pelican Fiber
    

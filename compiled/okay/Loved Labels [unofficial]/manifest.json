@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Loved Labels",
+  "Author": "Advize & Jinxiewinxie",
+  "Version": "2.2.1-unofficial.3-pathoschild",
+  "Description": "Gives pets customizable tooltips so you can see who needs the love.",
+  "UniqueID": "Advize.LovedLabels",
+  "EntryDll": "LovedLabels.dll",
+  "MinimumApiVersion": "3.0.0-beta",
+  "UpdateKeys": [ "Nexus:279" ]
+}

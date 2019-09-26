@@ -24,10 +24,10 @@ namespace ContentPatcher.Framework.Patches
         public TokenisableJToken Value { get; }
 
         /// <summary>Whether the instance may change depending on the context.</summary>
-        public bool IsMutable => this.Key.IsMutable || (this.Value?.IsMutable == true);
+        public bool IsMutable => this.Contextuals.IsMutable;
 
         /// <summary>Whether the instance is valid for the current context.</summary>
-        public bool IsReady => this.Key.IsReady && this.Value?.IsReady != false;
+        public bool IsReady => this.Contextuals.IsReady;
 
 
         /*********

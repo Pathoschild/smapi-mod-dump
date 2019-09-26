@@ -1,15 +1,13 @@
 url:
-   https://github.com/LukeSeewald/StardewValleyMods.git
+   https://github.com/LukeSeewald/PublicStardewValleyMods.git
 
 mods:
    What Are You Missing
 
 latest commit:
-   commit 1c85cf852c5ecc3731f9e61744c10f7d73c6d926
+   commit e9c8d3be884f64b3ee6399c496ee47544e4a1cd4
    Author: Luke Seewald <lseewald@uwaterloo.ca>
-   Date:   Wed Sep 11 00:10:47 2019 -0400
+   Date:   Wed Sep 25 20:09:45 2019 -0400
    
-       Added some logging and did a bit of refactoring.
-       
-       Won't crash if it fails to parse an int.
+       A mix of the release for 1.4.0 and the start of my next patch
    

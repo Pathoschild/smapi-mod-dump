@@ -1,14 +1,10 @@
 {
-   "Name": "WitchPrincess",
-   "Author": "Sasara",
-   "Version": {
-      "MajorVersion": 1,
-      "MinorVersion": 4,
-      "PatchVersion": 0,
-      "Build": ""
-   },
-   "MininumApiVersion": "1.14",
-   "Description": "let your Witch live in your house with her own room",
-   "UniqueID": "Sasara.WitchPrincess",
-   "EntryDll": "WitchPrincess.dll"
+  "Name": "WitchPrincess",
+  "Author": "Sasara",
+  "Version": "1.5.1",
+  "Description": "Let the Witch Princess lives in Stardew Valley with her own sprouse room!.",
+  "UniqueID": "Sasara.Witch-Princess",
+  "EntryDll": "WitchPrincess.dll",
+  "MinimumApiVersion": "2.11.1",
+  "UpdateKeys": ["Nexus:1157"]
 }

@@ -6,14 +6,19 @@
   * `HavingChild` and `Pregnant`: check if an NPC/player is having a child.
   * `IsJojaMartComplete`: whether the player bought a Joja membership and completed all Joja bundles.
   * `Random`: choose a random value from a given list.
+  * `Range`: a list of integers between the specified min/max values.
+* Added support for editing map properties with `EditMap` patches.
 * Added support for using `FromFile` with `EditData` patches.
 * Added `patch export` console command, which lets you see what an asset looks like with all changes applied.
 * Added `patch parse` console command, which parses an arbitrary tokenisable string and shows the result.
-* Added [`manifest.json` and `content.json` validator](https://github.com/Pathoschild/StardewMods/tree/develop/ContentPatcher#schema-validator) for content pack authors.
+* Added new 'current changes' list for each content pack to `patch summary` output.
 * Added world state IDs to the `HasFlag` token.
+* Added [`manifest.json` and `content.json` validator](https://github.com/Pathoschild/StardewMods/tree/develop/ContentPatcher#schema-validator) for content pack authors.
 * Content packs can now use mod-provided tokens without a dependency if the patch has an appropriate `HasMod` condition.
 * Improved error if a content pack sets a `FromFile` path with invalid characters.
+* Fixed issue where dynamic tokens weren't correctly updated in some cases if they depend on another dynamic token whose conditions changed. (Thanks to kfahy!)
 * Fixed `patch summary` display for mod-provided tokens which require an unbounded input.
+* Fixed `patch summary` not showing token input validation errors in some cases.
 
 ## 1.9.2
 Released 25 July 2019.

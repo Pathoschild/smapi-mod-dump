@@ -135,6 +135,8 @@ field      | purpose
 &nbsp;     | See _common fields_ above.
 `FromFile` | The relative file path in your content pack folder to load instead (like `assets/dinosaur.png`). This can be a `.json` (data), `.png` (image), `.tbin` (map), or `.xnb` file. This field supports [tokens](#advanced-tokens--conditions) and capitalisation doesn't matter.
 
+Required fields: `FromFile`.
+
 For example, this replaces the dinosaur sprite with your own image:
 ```js
 {
@@ -160,10 +162,11 @@ field      | purpose
 ---------- | -------
 &nbsp;     | See _common fields_ above.
 `FromFile` | The relative path to the image in your content pack folder to patch into the target (like `assets/dinosaur.png`). This can be a `.png` or `.xnb` file. This field supports [tokens](#advanced-tokens--conditions) and capitalisation doesn't matter.
-`FromArea` | _(optional)_ The part of the source image to copy. Defaults to the whole source image. This is specified as an object with the X and Y pixel coordinates of the top-left corner, and the pixel width and height of the area.
-`ToArea`   | _(optional)_ The part of the target image to replace. Defaults to the `FromArea` size starting from the top-left corner. This is specified as an object with the X and Y pixel coordinates of the top-left corner, and the pixel width and height of the area.
-`PatchMode`| _(optional)_ How to apply `FromArea` to `ToArea`. Defaults to `Replace`. Possible values: <ul><li><code>Replace</code>: replace every pixel in the target area with your source image. If the source image has transparent pixels, the target image will become transparent there.</li><li><code>Overlay</code>: draw your source image over the target area. If the source image has transparent pixels, the target image will 'show through' those pixels. Semi-transparent or opaque pixels will replace the target pixels.</li></ul>For example, let's say your source image is a pufferchick with a transparent background, and the target image is a solid green square. Here's how they'll be combined with different `PatchMode` values:<br />![](docs/screenshots/patch-mode-examples.png)
+`FromArea` | he part of the source image to copy. Defaults to the whole source image. This is specified as an object with the X and Y pixel coordinates of the top-left corner, and the pixel width and height of the area.
+`ToArea`   | The part of the target image to replace. Defaults to the `FromArea` size starting from the top-left corner. This is specified as an object with the X and Y pixel coordinates of the top-left corner, and the pixel width and height of the area.
+`PatchMode`| How to apply `FromArea` to `ToArea`. Defaults to `Replace`. Possible values: <ul><li><code>Replace</code>: replace every pixel in the target area with your source image. If the source image has transparent pixels, the target image will become transparent there.</li><li><code>Overlay</code>: draw your source image over the target area. If the source image has transparent pixels, the target image will 'show through' those pixels. Semi-transparent or opaque pixels will replace the target pixels.</li></ul>For example, let's say your source image is a pufferchick with a transparent background, and the target image is a solid green square. Here's how they'll be combined with different `PatchMode` values:<br />![](docs/screenshots/patch-mode-examples.png)
 
+Required fields: `FromFile`.
 
 For example, this changes one object sprite:
 ```js
@@ -187,10 +190,12 @@ For example, this changes one object sprite:
 field      | purpose
 ---------- | -------
 &nbsp;     | See _common fields_ above.
-`Fields`   | _(optional)_ The individual fields you want to change for existing entries. This field supports [tokens](#advanced-tokens--conditions) in field keys and values. The key for each field is the field index (starting at zero) for a slash-delimited string, or the field name for an object.
-`Entries`  | _(optional)_ The entries in the data file you want to add, replace, or delete. If you only want to change a few fields, use `Fields` instead for best compatibility with other mods. To add an entry, just specify a key that doesn't exist; to delete an entry, set the value to `null` (like `"some key": null`). This field supports [tokens](#advanced-tokens--conditions) in entry keys and values.<br />**Caution:** some XNB files have extra fields at the end for translations; when adding or replacing an entry for all locales, make sure you include the extra fields to avoid errors for non-English players.
-`MoveEntries` | _(optional)_ Change the entry order in a list asset like `██████████`. (Using this with a non-list asset will cause an error, since those have no order.)
+`Fields`   | The individual fields you want to change for existing entries. This field supports [tokens](#advanced-tokens--conditions) in field keys and values. The key for each field is the field index (starting at zero) for a slash-delimited string, or the field name for an object.
+`Entries`  | The entries in the data file you want to add, replace, or delete. If you only want to change a few fields, use `Fields` instead for best compatibility with other mods. To add an entry, just specify a key that doesn't exist; to delete an entry, set the value to `null` (like `"some key": null`). This field supports [tokens](#advanced-tokens--conditions) in entry keys and values.<br />**Caution:** some XNB files have extra fields at the end for translations; when adding or replacing an entry for all locales, make sure you include the extra fields to avoid errors for non-English players.
+`MoveEntries` | Change the entry order in a list asset like `██████████`. (Using this with a non-list asset will cause an error, since those have no order.)
 `FromFile` | The relative path to a JSON file in your content pack folder containing the `Fields`, `Entries`, and `MoveEntries`. The field and file contents can contain [tokens](#advanced-tokens--conditions). Mutually exclusive with `Fields`, `Entries`, and `MoveEntries`. See _load changes from a file_ below for an example.
+
+Required fields: at least one of `Fields`, `Entries`, `MoveEntries`, or `FromFile`.
 
 You can have any combination of those fields within one patch. They'll be applied in this order:
 `Entries`, `FromFile`, `Fields`, `MoveEntries`.
@@ -456,9 +461,9 @@ file:
 </td>
 <td>
 
-_(optional)_ The part of the source map to copy. Defaults to the whole source map. This is
-specified as an object with the X and Y tile coordinates of the top-left corner, and the tile width
-and height of the area.
+The part of the source map to copy. Defaults to the whole source map. This is specified as an
+object with the X and Y tile coordinates of the top-left corner, and the tile width and height of
+the area.
 
 </td>
 </tr>
@@ -470,11 +475,31 @@ and height of the area.
 </td>
 <td>
 
-(Required) The part of the target map to replace. This is specified as an object with the X and Y tile coordinates of the top-left corner, and the tile width and height of the area.
+The part of the target map to replace. This is specified as an object with the X and Y tile
+coordinates of the top-left corner, and the tile width and height of the area.
 
 </td>
 </tr>
+
+<tr>
+<td>
+
+`MapProperties`
+
+</td>
+<td>
+
+The map properties (not tile properties) to add, replace, or delete. To add an property, just
+specify a key that doesn't exist; to delete an entry, set the value to `null` (like
+`"some key": null`). This field supports [tokens](#advanced-tokens--conditions) in property keys
+and values.
+
+</td>
+</tr>
+
 </table>
+
+Required fields: at least one of (`FromFile` and `ToArea`) or (`MapProperties`).
 
 For example, this replaces the town square with the one in another map:
 ```js
@@ -491,6 +516,24 @@ For example, this replaces the town square with the one in another map:
    ]
 }
 ```
+
+This changes the warp map property for the farm cave:
+```js
+{
+   "Format": "1.10",
+   "Changes": [
+      {
+         "Action": "EditMap",
+         "Target": "Maps/FarmCave",
+         "MapProperties": {
+            "Warp": "8 12 Farm 34 6"
+         }
+      },
+   ]
+}
+```
+
+(You can patch a map area and change map properties in the same patch.)
 
 Known limitations:
 * Patching non-farmhouse-floor tiles into the farmhouse's `Back` layer may cause strange effects,
@@ -649,7 +692,8 @@ The festival or wedding happening today. Possible values:
 <td>DayOfWeek</td>
 <td>
 
-The day of week. Possible values: `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, and `Sunday`.
+The day of week. Possible values: `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`,
+`Saturday`, and `Sunday`.
 
 </td>
 </tr>
@@ -708,7 +752,8 @@ The year number (like `1` or `2`).
 <td>HasFlag</td>
 <td>
 
-The flags set for the current player, including letters received and world state IDs. Some useful flags:
+The flags set for the current player, including letters received and world state IDs. Some useful
+flags:
 
 flag | meaning
 ---- | -------
@@ -848,7 +893,8 @@ The player's skill levels. You can specify the skill level as an input argument 
 }
 ```
 
-The valid skills are `Combat`, `Farming`, `Fishing`, `Foraging`, `Luck` (unused in the base game), and `Mining`.
+The valid skills are `Combat`, `Farming`, `Fishing`, `Foraging`, `Luck` (unused in the base game),
+and `Mining`.
 
 </td>
 </tr>
@@ -934,7 +980,8 @@ conditional map spawn logic.
 <td>FarmCave</td>
 <td>
 
-The [farm cave](https://stardewvalleywiki.com/The_Cave) type. Possible values: `None`, `Bats`, `Mushrooms`.
+The [farm cave](https://stardewvalleywiki.com/The_Cave) type. Possible values: `None`, `Bats`,
+`Mushrooms`.
 
 </td>
 </tr>
@@ -943,7 +990,9 @@ The [farm cave](https://stardewvalleywiki.com/The_Cave) type. Possible values: `
 <td>FarmhouseUpgrade</td>
 <td>
 
-The [farmhouse upgrade level](https://stardewvalleywiki.com/Farmhouse#Upgrades). The normal values are 0 (initial farmhouse), 1 (adds kitchen), 2 (add children's bedroom), and 3 (adds cellar). Mods may add upgrade levels beyond that.
+The [farmhouse upgrade level](https://stardewvalleywiki.com/Farmhouse#Upgrades). The normal values
+are 0 (initial farmhouse), 1 (adds kitchen), 2 (add children's bedroom), and 3 (adds cellar). Mods
+may add upgrade levels beyond that.
 
 </td>
 </tr>
@@ -957,7 +1006,8 @@ The [farmhouse upgrade level](https://stardewvalleywiki.com/Farmhouse#Upgrades).
 <td>FarmType</td>
 <td>
 
-The [farm type](https://stardewvalleywiki.com/The_Farm#Farm_Maps). Possible values: `Standard`, `Riverland`, `Forest`, `Hilltop`, `Wilderness`, `Custom`.
+The [farm type](https://stardewvalleywiki.com/The_Farm#Farm_Maps). Possible values: `Standard`,
+`Riverland`, `Forest`, `Hilltop`, `Wilderness`, `Custom`.
 
 </td>
 </tr>
@@ -975,7 +1025,8 @@ Whether all bundles in the community center are completed. Possible values: `tru
 <td>IsJojaMartComplete</td>
 <td>
 
-Whether the player bought a Joja membership and completed all Joja bundles. Possible values: `true`, `false`.
+Whether the player bought a Joja membership and completed all Joja bundles. Possible values: `true`
+ `false`.
 
 </td>
 </tr>
@@ -1096,7 +1147,15 @@ code | meaning
 
 </td>
 </tr>
+</table>
+</dd>
 
+<dt>String manipulation tokens:</dt>
+<dd>
+<table>
+<tr>
+<th>condition</th>
+<th>purpose</th>
 <tr>
 <td>Random</td>
 <td>
@@ -1123,6 +1182,28 @@ as 'blue' in this patch:
    "FromFile": "assets/abigail-{{Random:red, red, blue}}.png"
 }
 ```
+
+</td>
+</tr>
+
+<tr valign="top">
+<td>Range</td>
+<td>
+
+A list of integers between the specified min/max integers (inclusive). This is mainly meant for
+comparing values; for example:
+
+```js
+"When": {
+   "Hearts:Abigail": "{{Range: 6, 14}}" // equivalent to "6, 7, 8, 9, 10, 11, 12, 13, 14"
+}
+```
+
+You can use tokens for the individual numbers (like `{{Range:6, {{MaxHearts}}}}`) or both (like
+`{{Range:{{FriendshipRange}}}})`, as long as the final parsed input has the form `min, max`.
+
+To minimise the possible performance impact, the range can't exceed 5000 numbers and should be much
+smaller if possible.
 
 </td>
 </tr>
@@ -1239,8 +1320,8 @@ You can let players configure your mod using a `config.json` file. Content Patch
 automatically create and load the file, and you can use the config values as
 [tokens & conditions](#advanced-tokens--conditions). Config fields are not case-sensitive.
 
-To do this, you add a `ConfigSchema` section which defines your config fields and how to validate them
-(see below for an example).
+To do this, you add a `ConfigSchema` section which defines your config fields and how to validate
+them (see below for an example).
 Available fields for each field:
 
    field               | meaning
@@ -1315,7 +1396,8 @@ Assets:
 To use a mod-provided token, at least one of these must be true:
 * The mod which provides the token is a [required dependency](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Manifest#Dependencies)
   of your content pack.
-* Or the patch using the token has an immutable (i.e. not using any tokens) `HasMod` condition which lists the mod:
+* Or the patch using the token has an immutable (i.e. not using any tokens) `HasMod` condition
+  which lists the mod:
   ```js
   {
      "Format": "1.10",
@@ -1384,8 +1466,8 @@ Content Patcher adds several console commands for testing and troubleshooting. E
 directly into the SMAPI console for more info.
 
 #### patch summary
-`patch summary` lists all the loaded patches, their current values, and (if applicable) the reasons
-they weren't applied.
+`patch summary` lists all the loaded patches, their current values, what they changed, and (if
+applicable) the reasons they weren't applied.
 
 For example:
 
@@ -1425,10 +1507,16 @@ Example Content Pack:
       ----------------- | -----
       WeatherVariant    | [X] Wet
 
-   loaded  | conditions | applied | name + details
-   ------- | ---------- | ------- | --------------
-   [X]     | [ ]        | [ ]     | Dry Palm Trees // conditions don't match: WeatherVariant
-   [X]     | [X]        | [X]     | Wet Palm Trees
+   Patches:
+      loaded  | conditions | applied | name + details
+      ------- | ---------- | ------- | --------------
+      [X]     | [ ]        | [ ]     | Dry Palm Trees // conditions don't match: WeatherVariant
+      [X]     | [X]        | [X]     | Wet Palm Trees
+
+   Current changes:
+      asset name                | changes
+      ------------------------- | -------
+      TerrainFeatures/tree_palm | edited image
 ```
 
 #### patch update
@@ -1497,9 +1585,9 @@ reopen the debug UI to refresh the texture list.
 > ![](docs/screenshots/debug-mode.png)
 
 ### Verbose log
-Content Patcher doesn't log much info. You can change that by opening SMAPI's `smapi-internal/StardewModdingAPI.config.json`
-in a text editor and enabling `VerboseLogging`. **This may significantly slow down loading, and
-should normally be left disabled unless you need it.**
+Content Patcher doesn't log much info. You can change that by opening SMAPI's
+`smapi-internal/StardewModdingAPI.config.json` in a text editor and enabling `VerboseLogging`.
+**This may significantly slow down loading, and should normally be left disabled unless you need it.**
 
 Once enabled, it will log significantly more information at three points:
 1. when loading patches (e.g. whether each patch was enabled and which files were preloaded);
@@ -1509,8 +1597,8 @@ Once enabled, it will log significantly more information at three points:
 If your changes aren't appearing in game, make sure you set a `LogName` (see [common fields](#common-fields))
 and then search the SMAPI log file for that name. Particular questions to ask:
 * Did Content Patcher load the patch?  
-  _If it doesn't appear, check that your `content.json` is correct. If it says 'skipped', check your
-  `Enabled` value or `config.json`._
+  _If it doesn't appear, check that your `content.json` is correct. If it says 'skipped', check
+  your `Enabled` value or `config.json`._
 * When the context is updated, is the box ticked next to the patch name?  
   _If not, checked your `When` field._
 * When SMAPI checks if it can load/edit the asset name, is the box ticked?  
@@ -1543,8 +1631,8 @@ need to explicitly patch after another content pack, see [manifest dependencies]
 ### Known limitations
 * Dialogue is set when the day starts, so conditions that update during the day (like `IsOutdoors`)
   won't affect dialogue.
-* Some game assets have special logic. This isn't specific to Content Patcher, but they're documented
-  here for convenience.
+* Some game assets have special logic. This isn't specific to Content Patcher, but they're
+  documented here for convenience.
 
   asset | notes
   ----- | -----

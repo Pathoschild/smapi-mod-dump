@@ -1,0 +1,6 @@
+Translations:
+
+fr.json by AresRyu (https://forums.nexusmods.com/index.php?/user/31452340-aresryu/)
+ko.json by S2SKY (https://github.com/S2SKY)
+ru.json by FixThisPlz (https://github.com/FixThisPlz)
+pt.json by shiro2579 (https://github.com/shiro2579)

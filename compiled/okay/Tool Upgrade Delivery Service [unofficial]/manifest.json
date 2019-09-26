@@ -1,0 +1,16 @@
+{
+  "Name": "Tool-Upgrade Delivery Service",
+  "Author": "Felix-Dev",
+  "Version": "1.4.1-unofficial.1-pathoschild",
+  "Description": "Clint sends you a mail when he finished upgrading your tool. Tool included.",
+  "UniqueID": "Felix-Dev.ToolUpgradeDeliveryService",
+  "EntryDll": "ToolUpgradeDeliveryService.dll",
+  "MinimumApiVersion": "3.0.0-beta",
+  "UpdateKeys": [ "Nexus:2938" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Felix-Dev.FeTK",
+      "MinimumVersion": "1.0.0"
+    }
+  ]
+}

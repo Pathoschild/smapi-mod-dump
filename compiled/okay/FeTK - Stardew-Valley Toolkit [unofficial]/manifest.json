@@ -1,0 +1,10 @@
+{
+  "Name": "FeTK",
+  "Author": "Felix-Dev",
+  "Version": "1.0.1-unofficial.1-pathoschild",
+  "Description": "FeTK is a collection of helper functions and mod services. It simplifies common developer tasks building Stardew-Valley mods and empowers developers to build rich mod experiences.",
+  "UniqueID": "Felix-Dev.FeTK",
+  "EntryDll": "FeTK.dll",
+  "MinimumApiVersion": "3.0.0-beta",
+  "UpdateKeys": [ "nexus:4403" ]
+}

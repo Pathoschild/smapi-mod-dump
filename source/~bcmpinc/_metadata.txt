@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 4bb83cb80b442c6b85ba22094a493500d24dcb13
+   commit 4051f807065c8c60f646c9829bda3338951c7722
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Wed Aug 21 18:30:07 2019 +0200
+   Date:   Sat Sep 21 11:23:42 2019 +0200
    
-       fix #15: Change network protocol version to prevent connecting with clients/servers that don't have this mod installed.
+       Update bigger backpack to use new csproj format.
    

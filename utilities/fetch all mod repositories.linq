@@ -138,7 +138,7 @@ async Task Main()
 
 		Helper.Print($"   {totalMods} mods in the SMAPI compatibility list.");
 		Helper.Print($"   {haveCode} mods ({this.GetPercentage(haveCode, totalMods)}) have a Git repository.");
-		Helper.Print($"   {uniqueRepos} repositories ({this.GetPercentage(haveSharedRepo, haveCode)}) contain multiple mods.");
+		Helper.Print($"   {haveSharedRepo} repositories ({this.GetPercentage(haveSharedRepo, haveCode)}) contain multiple mods.");
 		if (invalidUrls.Any())
 		{
 			Helper.Print($"   Found {invalidUrls.Length} unsupported source URLs on the wiki:", Severity.Trace);

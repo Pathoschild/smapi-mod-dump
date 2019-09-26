@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
+using StardewValley.Menus;
+using StardewValley.Monsters;
 
 namespace StardewHack.WearMoreRings
 {
@@ -51,16 +53,16 @@ namespace StardewHack.WearMoreRings
 
         public SaveRings() { }
         
-        public SaveRings(ActualRings er) {
-            which1 = getWhich(er.ring1);
-            which2 = getWhich(er.ring2);
-            which3 = getWhich(er.ring3);
-            which4 = getWhich(er.ring4);
+        public SaveRings(ActualRings ar) {
+            which1 = getWhich(ar.ring1.Value);
+            which2 = getWhich(ar.ring2.Value);
+            which3 = getWhich(ar.ring3.Value);
+            which4 = getWhich(ar.ring4.Value);
         }
         
         private int getWhich(Ring r) {
             if (r==null) return -1;
-            return r.indexInTileSheet;
+            return r.indexInTileSheet.Value;
         }
     }
     #endregion Data Classes
@@ -160,11 +162,11 @@ namespace StardewHack.WearMoreRings
         void Farmer_farmerInit() {
             var addfields = FindCode(
                 OpCodes.Stelem_Ref,
-                Instructions.Callvirt(typeof(NetFields), "AddFields", typeof(INetSerializable[]))
+                Instructions.Callvirt(typeof(NetFields), nameof(NetFields.AddFields), typeof(INetSerializable[]))
             );
             addfields.Append(
                 Instructions.Ldarg_0(),
-                Instructions.Call(typeof(ModEntry), "InitFarmer", typeof(Farmer))
+                Instructions.Call(typeof(ModEntry), nameof(ModEntry.InitFarmer), typeof(Farmer))
             );
         }
         
@@ -174,28 +176,28 @@ namespace StardewHack.WearMoreRings
                 if (ring!=null) r.Add(ring);
             }
             ActualRings ar = ModEntry.actualdata.GetValue(f, ModEntry.FarmerNotFound);
-            Add(f.leftRing);
-            Add(f.rightRing);
-            Add(ar.ring1);
-            Add(ar.ring2);
-            Add(ar.ring3);
-            Add(ar.ring4);
+            Add(f.leftRing.Value);
+            Add(f.rightRing.Value);
+            Add(ar.ring1.Value);
+            Add(ar.ring2.Value);
+            Add(ar.ring3.Value);
+            Add(ar.ring4.Value);
             return r;
         }
         
         public static int CountWearingRing(Farmer f, int id) {
             bool IsRing(Ring r) {
-                return r != null && r.indexInTileSheet == id;
+                return r != null && r.indexInTileSheet.Value == id;
             }
         
             ActualRings ar = actualdata.GetValue(f, FarmerNotFound);
             int res = 0;
-            if (IsRing(f.leftRing)) res++;
-            if (IsRing(f.rightRing)) res++;
-            if (IsRing(ar.ring1)) res++;
-            if (IsRing(ar.ring2)) res++;
-            if (IsRing(ar.ring3)) res++;
-            if (IsRing(ar.ring4)) res++;
+            if (IsRing(f.leftRing.Value)) res++;
+            if (IsRing(f.rightRing.Value)) res++;
+            if (IsRing(ar.ring1.Value)) res++;
+            if (IsRing(ar.ring2.Value)) res++;
+            if (IsRing(ar.ring3.Value)) res++;
+            if (IsRing(ar.ring4.Value)) res++;
             return res;
         }
 
@@ -204,7 +206,7 @@ namespace StardewHack.WearMoreRings
             AllCode().Replace(
                 Instructions.Ldarg_0(),
                 Instructions.Ldarg_1(),
-                Instructions.Call(typeof(ModEntry), "CountWearingRing", typeof(Farmer), typeof(int)),
+                Instructions.Call(typeof(ModEntry), nameof(ModEntry.CountWearingRing), typeof(Farmer), typeof(int)),
                 Instructions.Ret()
             );
         }
@@ -215,24 +217,24 @@ namespace StardewHack.WearMoreRings
             };
             
             ActualRings ar = actualdata.GetValue(f, FarmerNotFound);
-            update(f.leftRing);
-            update(f.rightRing);
-            update(ar.ring1);
-            update(ar.ring2);
-            update(ar.ring3);
-            update(ar.ring4);
+            update(f.leftRing.Value);
+            update(f.rightRing.Value);
+            update(ar.ring1.Value);
+            update(ar.ring2.Value);
+            update(ar.ring3.Value);
+            update(ar.ring4.Value);
         }
         
         [BytecodePatch("StardewValley.Farmer::updateCommon")]
         void Farmer_updateCommon() {
             FindCode(
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(Farmer), "rightRing"),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.rightRing)),
                 OpCodes.Callvirt,
                 OpCodes.Brfalse,
                 
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(Farmer), "rightRing"),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.rightRing)),
                 OpCodes.Callvirt,
                 OpCodes.Ldarg_1,
                 OpCodes.Ldarg_2,
@@ -240,12 +242,12 @@ namespace StardewHack.WearMoreRings
                 OpCodes.Callvirt,
                 
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(Farmer), "leftRing"),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.leftRing)),
                 OpCodes.Callvirt,
                 OpCodes.Brfalse,
                 
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(Farmer), "leftRing"),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.leftRing)),
                 OpCodes.Callvirt,
                 OpCodes.Ldarg_1,
                 OpCodes.Ldarg_2,
@@ -255,7 +257,7 @@ namespace StardewHack.WearMoreRings
                 Instructions.Ldarg_1(),
                 Instructions.Ldarg_2(),
                 Instructions.Ldarg_0(),
-                Instructions.Call(typeof(ModEntry), "UpdateRings", typeof (GameTime), typeof(GameLocation), typeof(Farmer))
+                Instructions.Call(typeof(ModEntry), nameof(UpdateRings), typeof (GameTime), typeof(GameLocation), typeof(Farmer))
             );
         }
         #endregion Patch Farmer
@@ -274,22 +276,22 @@ namespace StardewHack.WearMoreRings
         [BytecodePatch("StardewValley.GameLocation::cleanupBeforePlayerExit")]
         void GameLocation_cleanupBeforePlayerExit() { 
             var code = FindCode(
-                Instructions.Call_get(typeof(Game1), "player"),
-                Instructions.Ldfld(typeof(Farmer), "rightRing"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.rightRing)),
                 OpCodes.Callvirt,
                 OpCodes.Brfalse
             );
             code.Extend(
-                Instructions.Call_get(typeof(Game1), "player"),
-                Instructions.Ldfld(typeof(Farmer), "leftRing"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.leftRing)),
                 OpCodes.Callvirt,
-                Instructions.Call_get(typeof(Game1), "player"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
                 OpCodes.Ldarg_0,
-                Instructions.Callvirt(typeof(Ring), "onLeaveLocation", typeof(Farmer), typeof(GameLocation))
+                Instructions.Callvirt(typeof(Ring), nameof(Ring.onLeaveLocation), typeof(Farmer), typeof(GameLocation))
             );
             code.Replace(
                 Instructions.Ldarg_0(),
-                Instructions.Call(typeof(ModEntry), "ring_onLeaveLocation", typeof(GameLocation))
+                Instructions.Call(typeof(ModEntry), nameof(ModEntry.ring_onLeaveLocation), typeof(GameLocation))
             );
         }
         
@@ -306,26 +308,26 @@ namespace StardewHack.WearMoreRings
         [BytecodePatch("StardewValley.GameLocation::resetLocalState")]
         void GameLocation_resetLocalState() { 
             var code = FindCode(
-                Instructions.Call_get(typeof(Game1), "player"),
-                Instructions.Ldfld(typeof(Farmer), "rightRing"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.rightRing)),
                 OpCodes.Callvirt,
                 OpCodes.Brfalse
             );
             code.Extend(
-                Instructions.Call_get(typeof(Game1), "player"),
-                Instructions.Ldfld(typeof(Farmer), "leftRing"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.leftRing)),
                 OpCodes.Callvirt,
-                Instructions.Call_get(typeof(Game1), "player"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
                 OpCodes.Ldarg_0,
-                Instructions.Callvirt(typeof(Ring), "onNewLocation", typeof(Farmer), typeof(GameLocation))
+                Instructions.Callvirt(typeof(Ring), nameof(Ring.onNewLocation), typeof(Farmer), typeof(GameLocation))
             );
             code.Replace(
                 Instructions.Ldarg_0(),
-                Instructions.Call(typeof(ModEntry), "ring_onNewLocation", typeof(GameLocation))
+                Instructions.Call(typeof(ModEntry), nameof(ring_onNewLocation), typeof(GameLocation))
             );
         }
          
-        public static void ring_onMonsterSlay(Farmer who, StardewValley.Monsters.Monster target) {
+        public static void ring_onMonsterSlay(Farmer who, Monster target) {
             if (who==null) return;
             ActualRings ar = actualdata.GetValue(who, FarmerNotFound);
             who.leftRing.Value?.onMonsterSlay(target);
@@ -343,24 +345,24 @@ namespace StardewHack.WearMoreRings
                 Instructions.Ldarg_S(10), // who
                 OpCodes.Brfalse,
                 Instructions.Ldarg_S(10), // who
-                Instructions.Ldfld(typeof(Farmer), "leftRing"),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.leftRing)),
                 OpCodes.Callvirt,
                 OpCodes.Brfalse
             );
             code.Extend(
                 // who.rightRing.Value
                 Instructions.Ldarg_S(10), // who
-                Instructions.Ldfld(typeof(Farmer), "rightRing"),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.rightRing)),
                 OpCodes.Callvirt,
                 // (Monster)characters[i]
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(GameLocation), "characters"),
+                Instructions.Ldfld(typeof(GameLocation), nameof(GameLocation.characters)),
                 OpCodes.Ldloc_1,
                 OpCodes.Ldfld,
                 OpCodes.Callvirt,
                 OpCodes.Castclass,
                 // .onMonsterSlay(...)
-                Instructions.Callvirt(typeof(Ring), "onMonsterSlay", typeof(StardewValley.Monsters.Monster))
+                Instructions.Callvirt(typeof(Ring), nameof(Ring.onMonsterSlay), typeof(Monster))
             );
             var monster = code.SubRange(code.length - 7, 6);
             code.Replace(
@@ -372,7 +374,7 @@ namespace StardewHack.WearMoreRings
                 monster[3],
                 monster[4],
                 monster[5],
-                Instructions.Call(typeof(ModEntry), "ring_onMonsterSlay", typeof(Farmer), typeof(StardewValley.Monsters.Monster))
+                Instructions.Call(typeof(ModEntry), nameof(ring_onMonsterSlay), typeof(Farmer), typeof(Monster))
             );
         }
         #endregion Patch GameLocation
@@ -389,7 +391,7 @@ namespace StardewHack.WearMoreRings
             "Extra Ring 4",
         };
 
-        static public void AddEquipmentIcons(StardewValley.Menus.InventoryPage page) {
+        static public void AddEquipmentIcons(InventoryPage page) {
             for (int i=0; i<EquipmentIcons.Length; i++) {
                 int x = i/4;
                 int y = i%4;
@@ -397,7 +399,7 @@ namespace StardewHack.WearMoreRings
                 
                 var rect = new Rectangle (
                     page.xPositionOnScreen + 48 + x*64, 
-                    page.yPositionOnScreen + StardewValley.Menus.IClickableMenu.borderWidth + StardewValley.Menus.IClickableMenu.spaceToClearTopBorder + 256 - 12 + y*64, 
+                    page.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearTopBorder + 256 - 12 + y*64, 
                     64, 64
                 );
                 
@@ -418,7 +420,7 @@ namespace StardewHack.WearMoreRings
                 
                 // Create the GUI element.
                 int id = 101+10*x+y;
-                var component = new StardewValley.Menus.ClickableComponent(rect, name) {
+                var component = new ClickableComponent(rect, name) {
                     myID = id,
                     downNeighborID = y<3 ? id+1 : -1,
                     upNeighborID = y==0 ? Game1.player.MaxItems - 12 + x : id-1,
@@ -436,9 +438,9 @@ namespace StardewHack.WearMoreRings
             // Replace code for equipment icon creation with method calls to our AddEquipmentIcon method.
             var items = FindCode(
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(StardewValley.Menus.InventoryPage), "equipmentIcons"),
+                Instructions.Ldfld(typeof(InventoryPage), nameof(InventoryPage.equipmentIcons)),
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(StardewValley.Menus.IClickableMenu), "xPositionOnScreen"),
+                Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.xPositionOnScreen)),
                 Instructions.Ldc_I4_S(48)
             );
             // Differences in optimization might cause CIL to contain either ldloc or dup.
@@ -447,10 +449,10 @@ namespace StardewHack.WearMoreRings
                 items.Extend(
                     OpCodes.Dup,
                     Instructions.Ldc_I4_S(104),
-                    Instructions.Stfld(typeof(StardewValley.Menus.ClickableComponent), "myID"),
+                    Instructions.Stfld(typeof(ClickableComponent), nameof(ClickableComponent.myID)),
                     OpCodes.Dup,
                     Instructions.Ldc_I4_S(105),
-                    Instructions.Stfld(typeof(StardewValley.Menus.ClickableComponent), "rightNeighborID"),
+                    Instructions.Stfld(typeof(ClickableComponent), nameof(ClickableComponent.rightNeighborID)),
                     OpCodes.Callvirt
                 );
             } catch (System.Exception err) {
@@ -459,10 +461,10 @@ namespace StardewHack.WearMoreRings
                     OpCodes.Stloc_0,
                     OpCodes.Ldloc_0,
                     Instructions.Ldc_I4_S(104),
-                    Instructions.Stfld(typeof(StardewValley.Menus.ClickableComponent), "myID"),
+                    Instructions.Stfld(typeof(ClickableComponent), nameof(ClickableComponent.myID)),
                     OpCodes.Ldloc_0,
                     Instructions.Ldc_I4_S(105),
-                    Instructions.Stfld(typeof(StardewValley.Menus.ClickableComponent), "rightNeighborID"),
+                    Instructions.Stfld(typeof(ClickableComponent), nameof(ClickableComponent.rightNeighborID)),
                     OpCodes.Ldloc_0,
                     OpCodes.Callvirt
                 );
@@ -470,14 +472,14 @@ namespace StardewHack.WearMoreRings
             // Add our own equipment icons
             items.Replace(
                 Instructions.Ldarg_0(), // page
-                Instructions.Call(typeof(ModEntry), "AddEquipmentIcons", typeof(StardewValley.Menus.InventoryPage))
+                Instructions.Call(typeof(ModEntry), nameof(AddEquipmentIcons), typeof(InventoryPage))
             );
             
             // Move portrait 64px to the right.
             // This only affects where the tooltip shows up.
             FindCode(
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(StardewValley.Menus.IClickableMenu), "xPositionOnScreen"),
+                Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.xPositionOnScreen)),
                 Instructions.Ldc_I4(192),
                 OpCodes.Add,
                 Instructions.Ldc_I4_S(64),
@@ -487,7 +489,7 @@ namespace StardewHack.WearMoreRings
             ).SubRange(4,2).Remove();
         }
         
-        static public void DrawEquipment(StardewValley.Menus.ClickableComponent icon, Microsoft.Xna.Framework.Graphics.SpriteBatch b) {
+        static public void DrawEquipment(ClickableComponent icon, Microsoft.Xna.Framework.Graphics.SpriteBatch b) {
             if (icon.item != null) {
                 b.Draw(Game1.menuTexture, icon.bounds, Game1.getSourceRectForStandardTileSheet (Game1.menuTexture, 10, -1, -1), Color.White);
                 icon.item.drawInMenu(b, new Vector2(icon.bounds.X, icon.bounds.Y), icon.scale, 1f, 0.866f, false);
@@ -510,7 +512,7 @@ namespace StardewHack.WearMoreRings
                     OpCodes.Call,
                     Instructions.Stloc_S(4),
                     Instructions.Ldloc_S(4),
-                    Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "name"),
+                    Instructions.Ldfld(typeof(ClickableComponent), nameof(ClickableComponent.name)),
                     Instructions.Stloc_S(5),
                     Instructions.Ldloc_S(5),
                     // case "Hat":
@@ -524,7 +526,7 @@ namespace StardewHack.WearMoreRings
                     OpCodes.Call,
                     Instructions.Stloc_0(),
                     Instructions.Ldloc_0(),
-                    Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "name"),
+                    Instructions.Ldfld(typeof(ClickableComponent), nameof(ClickableComponent.name)),
                     Instructions.Stloc_2(),
                     Instructions.Ldloc_2(),
                     // case null (shortcut)
@@ -541,14 +543,14 @@ namespace StardewHack.WearMoreRings
                 range[0],
                 range[1],
                 Instructions.Ldarg_1(),
-                Instructions.Call(typeof(ModEntry), "DrawEquipment", typeof(StardewValley.Menus.ClickableComponent), typeof(Microsoft.Xna.Framework.Graphics.SpriteBatch))
+                Instructions.Call(typeof(ModEntry), nameof(DrawEquipment), typeof(ClickableComponent), typeof(Microsoft.Xna.Framework.Graphics.SpriteBatch))
             );
             
             // Move other stuff 32/64px to the right to eliminate overlap.
             for (int i=0; i<11; i++) {
                 range = range.FindNext(
                     OpCodes.Ldarg_0,
-                    Instructions.Ldfld(typeof(StardewValley.Menus.IClickableMenu), "xPositionOnScreen"),
+                    Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.xPositionOnScreen)),
                     OpCodes.Ldc_I4,
                     OpCodes.Add
                 );
@@ -566,7 +568,7 @@ namespace StardewHack.WearMoreRings
             try {
                 code = FindCode(
                     OpCodes.Ldloc_1,
-                    Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "name"),
+                    Instructions.Ldfld(typeof(ClickableComponent), nameof(ClickableComponent.name)),
                     OpCodes.Stloc_2,
                     OpCodes.Ldloc_2,
                     Instructions.Ldstr("Hat")
@@ -575,7 +577,7 @@ namespace StardewHack.WearMoreRings
                 LogException(err, LogLevel.Trace);
                 code = FindCode(
                     OpCodes.Ldloc_0,
-                    Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "name"),
+                    Instructions.Ldfld(typeof(ClickableComponent), nameof(ClickableComponent.name)),
                     OpCodes.Stloc_2,
                     OpCodes.Ldloc_2,
                     OpCodes.Brfalse,
@@ -585,16 +587,16 @@ namespace StardewHack.WearMoreRings
             }
             code.Extend(
                 OpCodes.Ldarg_0,
-                Instructions.Call_get(typeof(Game1), "player"),
-                Instructions.Ldfld(typeof(Farmer), "boots"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.boots)),
                 OpCodes.Callvirt,
-                Instructions.Callvirt_get(typeof(Item), "DisplayName"),
-                Instructions.Stfld(typeof(StardewValley.Menus.InventoryPage), "hoverTitle")
+                Instructions.Callvirt_get(typeof(Item), nameof(Item.DisplayName)),
+                Instructions.Stfld(typeof(InventoryPage), "hoverTitle")
             );
             code.Replace(
                 // var item = EquipmentIcon.item
                 code[0],
-                Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "item"),
+                Instructions.Ldfld(typeof(ClickableComponent), nameof(ClickableComponent.item)),
                 Instructions.Stloc_S(var_item),
                 // if (item != null)
                 Instructions.Ldloc_S(var_item),
@@ -602,21 +604,21 @@ namespace StardewHack.WearMoreRings
                 // hoveredItem = item;
                 Instructions.Ldarg_0(),
                 Instructions.Ldloc_S(var_item),
-                Instructions.Stfld(typeof(StardewValley.Menus.InventoryPage), "hoveredItem"),
+                Instructions.Stfld(typeof(InventoryPage), "hoveredItem"),
                 // hoverText = item.getDescription();
                 Instructions.Ldarg_0(),
                 Instructions.Ldloc_S(var_item),
-                Instructions.Callvirt(typeof(Item), "getDescription"),
-                Instructions.Stfld(typeof(StardewValley.Menus.InventoryPage), "hoverText"),
+                Instructions.Callvirt(typeof(Item), nameof(Item.getDescription)),
+                Instructions.Stfld(typeof(InventoryPage), "hoverText"),
                 // hoverTitle = item.DisplayName;
                 Instructions.Ldarg_0(),
                 Instructions.Ldloc_S(var_item),
-                Instructions.Callvirt_get(typeof(Item), "DisplayName"),
-                Instructions.Stfld(typeof(StardewValley.Menus.InventoryPage), "hoverTitle")
+                Instructions.Callvirt_get(typeof(Item), nameof(Item.DisplayName)),
+                Instructions.Stfld(typeof(InventoryPage), "hoverTitle")
             );
         }
         
-        static public void EquipmentClick(StardewValley.Menus.ClickableComponent icon) {
+        static public void EquipmentClick(ClickableComponent icon) {
             // Check that item type is compatible.
             // And play corresponding sound.
             var helditem = Game1.player.CursorSlotItem;
@@ -673,9 +675,9 @@ namespace StardewHack.WearMoreRings
             icon.item = helditem;
         }
         
-        static public void AutoEquipment(StardewValley.Menus.InventoryPage page) {
+        static public void AutoEquipment(InventoryPage page) {
             var helditem = Game1.player.CursorSlotItem;
-            foreach (StardewValley.Menus.ClickableComponent icon in page.equipmentIcons) {
+            foreach (ClickableComponent icon in page.equipmentIcons) {
                 if (icon.item != null) continue;
                 if (icon.name == "Hat") continue;
                 if (icon.name == "Boots") continue;
@@ -691,7 +693,7 @@ namespace StardewHack.WearMoreRings
             try {
                 code = FindCode(
                     OpCodes.Ldloc_1,
-                    Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "name"),
+                    Instructions.Ldfld(typeof(ClickableComponent), nameof(ClickableComponent.name)),
                     OpCodes.Stloc_3,
                     OpCodes.Ldloc_3,
                     Instructions.Ldstr("Hat")
@@ -700,7 +702,7 @@ namespace StardewHack.WearMoreRings
                 LogException(err, LogLevel.Trace);
                 code = FindCode(
                     OpCodes.Ldloc_0,
-                    Instructions.Ldfld(typeof(StardewValley.Menus.ClickableComponent), "name"),
+                    Instructions.Ldfld(typeof(ClickableComponent), nameof(ClickableComponent.name)),
                     OpCodes.Stloc_3,
                     OpCodes.Ldloc_3,
                     OpCodes.Brfalse,
@@ -718,15 +720,15 @@ namespace StardewHack.WearMoreRings
             code.Extend(code.End.Follow(-1));
             code.Replace(
                 code[0],
-                Instructions.Call(typeof(ModEntry), "EquipmentClick", typeof(StardewValley.Menus.ClickableComponent))
+                Instructions.Call(typeof(ModEntry), nameof(EquipmentClick), typeof(ClickableComponent))
             );
             
             // Handle a ring in inventory being shift+clicked.
             code = code.FindNext(
-                Instructions.Callvirt(typeof(StardewValley.Menus.InventoryPage), "checkHeldItem", typeof(System.Func<Item, bool>)),
+                Instructions.Callvirt(typeof(InventoryPage), "checkHeldItem", typeof(System.Func<Item, bool>)),
                 OpCodes.Brfalse,
-                Instructions.Call_get(typeof(Game1), "player"),
-                Instructions.Ldfld(typeof(Farmer), "leftRing"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.leftRing)),
                 OpCodes.Callvirt,
                 OpCodes.Brtrue
             );
@@ -734,7 +736,7 @@ namespace StardewHack.WearMoreRings
             code = code.SubRange(2, code.length-2);
             code.Replace(
                 Instructions.Ldarg_0(),
-                Instructions.Call(typeof(ModEntry), "AutoEquipment", typeof(StardewValley.Menus.InventoryPage))
+                Instructions.Call(typeof(ModEntry), nameof(AutoEquipment), typeof(InventoryPage))
             );
         }
         #endregion Patch InventoryPage
@@ -744,22 +746,22 @@ namespace StardewHack.WearMoreRings
         void Ring_ctor() {
             var code = FindCode(
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(Ring), "uniqueID"),
-                Instructions.Ldsfld(typeof(Game1), "year"),
-                Instructions.Ldsfld(typeof(Game1), "dayOfMonth"),
+                Instructions.Ldfld(typeof(Ring), nameof(Ring.uniqueID)),
+                Instructions.Ldsfld(typeof(Game1), nameof(Game1.year)),
+                Instructions.Ldsfld(typeof(Game1), nameof(Game1.dayOfMonth)),
                 OpCodes.Add
             );
             code.Extend(
-                Instructions.Call_get(typeof(Game1), "stats"),
-                Instructions.Ldfld(typeof(Stats), "itemsCrafted"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.stats)),
+                Instructions.Ldfld(typeof(Stats), nameof(Stats.itemsCrafted)),
                 OpCodes.Add,
                 OpCodes.Callvirt
             );
             code = code.SubRange(2,code.length-3);
             code.Replace(
                 // ModEntry.random.Next()
-                Instructions.Ldsfld(typeof(ModEntry), "random"),
-                Instructions.Call(typeof(System.Random), "Next")
+                Instructions.Ldsfld(typeof(ModEntry), nameof(random)),
+                Instructions.Call(typeof(System.Random), nameof(System.Random.Next))
             );
         }
         #endregion Patch Ring

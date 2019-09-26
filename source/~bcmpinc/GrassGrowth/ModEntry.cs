@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection.Emit;
+using StardewValley;
 
 namespace StardewHack.GrassGrowth
 {
@@ -44,10 +45,10 @@ namespace StardewHack.GrassGrowth
             var code = FindCode(
                 OpCodes.Ldarg_0,
                 OpCodes.Ldc_I4_S,
-                Instructions.Call(typeof(StardewValley.GameLocation), "growWeedGrass", typeof(int)),
+                Instructions.Call(typeof(GameLocation), nameof(GameLocation.growWeedGrass), typeof(int)),
                 OpCodes.Ldarg_0,
                 OpCodes.Ldc_I4_1,
-                Instructions.Call(typeof(StardewValley.GameLocation), "growWeedGrass", typeof(int)),
+                Instructions.Call(typeof(GameLocation), nameof(GameLocation.growWeedGrass), typeof(int)),
                 OpCodes.Ret
             );
             if (config.MonthlyGrowth != 40) {
@@ -82,7 +83,7 @@ namespace StardewHack.GrassGrowth
                         null,
                         Instructions.Ldstr("Diggable"),
                         Instructions.Ldstr("Back"),
-                        Instructions.Call(typeof(StardewValley.GameLocation), "doesTileHaveProperty", typeof(int), typeof(int), typeof(string), typeof(string)),
+                        Instructions.Call(typeof(GameLocation), nameof(GameLocation.doesTileHaveProperty), typeof(int), typeof(int), typeof(string), typeof(string)),
                         OpCodes.Brfalse
                     );
                     growWeedGrass.Remove();

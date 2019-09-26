@@ -3,6 +3,7 @@ using StardewModdingAPI;
 using System;
 using System.Reflection;
 using System.Reflection.Emit;
+using StardewValley;
 
 namespace StardewHack.MovementSpeed
 {
@@ -42,13 +43,13 @@ namespace StardewHack.MovementSpeed
             MethodInfo method = (MethodInfo)FindCode(
                 OpCodes.Ldftn
             )[0].operand;
-            ChainPatch(method, AccessTools.Method(typeof(ModEntry), "Game1_UpdateControlInput_Chain"));
+            ChainPatch(method, AccessTools.Method(typeof(ModEntry), nameof(Game1_UpdateControlInput_Chain)));
         }
 
         void Game1_UpdateControlInput_Chain() {
             FindCode(
                 Instructions.Ldc_I4(600),
-                Instructions.Stfld(typeof(StardewValley.Farmer), "toolHold")
+                Instructions.Stfld(typeof(Farmer), nameof(Farmer.toolHold))
             )[0].operand = config.ToolChargeDelay;
         }
     }

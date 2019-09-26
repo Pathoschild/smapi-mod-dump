@@ -78,8 +78,8 @@ namespace BiggerBackpack
         [BytecodePatch("StardewValley.Locations.SeedShop::draw")]
         void SeedShop_draw() {
             var check = FindCode(
-                Instructions.Call_get(typeof(StardewValley.Game1), "player"),
-                Instructions.Ldfld(typeof(StardewValley.Farmer), "maxItems"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.maxItems)),
                 OpCodes.Call,
                 Instructions.Ldc_I4_S(36),
                 OpCodes.Bge
@@ -98,8 +98,8 @@ namespace BiggerBackpack
             // Inject check and call to drawBiggerBackpack.
             pos.Insert(0,
                 // else if (maxItems < 48)
-                Instructions.Call_get(typeof(StardewValley.Game1), "player"),
-                Instructions.Ldfld(typeof(StardewValley.Farmer), "maxItems"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.maxItems)),
                 check[2], // Nothing jumps here so reusing this should be OK.
                 Instructions.Ldc_I4_S(48),
                 check[4], // We'll create a new jump in check later.
@@ -126,8 +126,8 @@ namespace BiggerBackpack
         void SpecialItem_getTemporarySpriteForHoldingUp() {
             var code = FindCode(
                 Instructions.Ldstr("LooseSprites\\Cursors"),
-                Instructions.Call_get(typeof(StardewValley.Game1), "player"),
-                Instructions.Ldfld(typeof(StardewValley.Farmer), "maxItems"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.maxItems)),
                 OpCodes.Call,
                 Instructions.Ldc_I4_S(36)
                 // Beq or Bne_un
@@ -135,8 +135,8 @@ namespace BiggerBackpack
             
             code.Prepend(
                 // if (maxItems==48) {
-                Instructions.Call_get(typeof(StardewValley.Game1), "player"),
-                Instructions.Ldfld(typeof(StardewValley.Farmer), "maxItems"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.maxItems)),
                 code[3], // Nothing jumps here so reusing this should be OK.
                 Instructions.Ldc_I4_S(48),
                 Instructions.Bne_Un(AttachLabel(code[0])),
@@ -162,8 +162,8 @@ namespace BiggerBackpack
         [BytecodePatch("StardewValley.GameLocation::performAction")]
         void GameLocation_performAction() {
             var code = FindCode(
-                Instructions.Call_get(typeof(StardewValley.Game1), "player"),
-                Instructions.Ldfld(typeof(StardewValley.Farmer), "maxItems"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.maxItems)),
                 OpCodes.Call,
                 Instructions.Ldc_I4_S(36),
                 OpCodes.Bge
@@ -175,8 +175,8 @@ namespace BiggerBackpack
             );
             var len = code.length;
             code.Append(
-                Instructions.Call_get(typeof(StardewValley.Game1), "player"),
-                Instructions.Ldfld(typeof(StardewValley.Farmer), "maxItems"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.maxItems)),
                 code[2],
                 Instructions.Ldc_I4_S(48),
                 code[4],
@@ -198,23 +198,23 @@ namespace BiggerBackpack
         void GameLocation_answerDialogueAction() {
             var code = FindCode(
                 // else if ((int)Game1.player.maxItems != 36) {
-                Instructions.Call_get(typeof(StardewValley.Game1), "player"),
-                Instructions.Ldfld(typeof(StardewValley.Farmer), "maxItems"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.maxItems)),
                 OpCodes.Call,
                 Instructions.Ldc_I4_S(36),
                 OpCodes.Beq
             );
-            var get_player = Instructions.Call_get(typeof(StardewValley.Game1), "player");
+            var get_player = Instructions.Call_get(typeof(Game1), nameof(Game1.player));
             code.Replace(
                 // else if ((int)Game1.player.maxItems < 36
-                Instructions.Call_get(typeof(StardewValley.Game1), "player"),
-                Instructions.Ldfld(typeof(StardewValley.Farmer), "maxItems"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.maxItems)),
                 code[2],
                 Instructions.Ldc_I4_S(48),
                 Instructions.Bge(AttachLabel(get_player)),
                 //   && Game1.player.Money >= 50000) {
-                Instructions.Call_get(typeof(StardewValley.Game1), "player"),
-                Instructions.Callvirt_get(typeof(StardewValley.Farmer), "Money"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Callvirt_get(typeof(Farmer), nameof(Farmer.Money)),
                 Instructions.Ldc_I4(50000),
                 Instructions.Blt(AttachLabel(get_player)),
                 //   buyBackpack();
@@ -222,7 +222,7 @@ namespace BiggerBackpack
                 // }
                 // else if ((int)Game1.player.maxItems != 48) {
                 get_player,
-                Instructions.Ldfld(typeof(StardewValley.Farmer), "maxItems"),
+                Instructions.Ldfld(typeof(Farmer), nameof(Farmer.maxItems)),
                 code[2],
                 Instructions.Ldc_I4_S(48),
                 code[4]
@@ -266,7 +266,7 @@ namespace BiggerBackpack
             EndCode().Insert(-1,
                 // Shift icons down by `Game1.tileSize` pixels
                 Instructions.Ldarg_0(),
-                Instructions.Ldfld(typeof(InventoryPage), "equipmentIcons"),
+                Instructions.Ldfld(typeof(InventoryPage), nameof(InventoryPage.equipmentIcons)),
                 Instructions.Call(GetType(), "shiftIconsDown", typeof(List<ClickableComponent>))
             );
             
@@ -275,10 +275,10 @@ namespace BiggerBackpack
                 // This only affects where the tooltip shows up.
                 FindCode(
                     OpCodes.Ldarg_0,
-                    Instructions.Ldfld(typeof(IClickableMenu), "yPositionOnScreen"),
-                    Instructions.Ldsfld(typeof(IClickableMenu), "borderWidth"),
+                    Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.yPositionOnScreen)),
+                    Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.borderWidth)),
                     OpCodes.Add,
-                    Instructions.Ldsfld(typeof(IClickableMenu), "spaceToClearTopBorder"),
+                    Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.spaceToClearTopBorder)),
                     OpCodes.Add,
                     Instructions.Ldc_I4(256),
                     OpCodes.Add,
@@ -301,10 +301,10 @@ namespace BiggerBackpack
             var yoffset = generator.DeclareLocal(typeof(int));
             code.Prepend(
                 Instructions.Ldarg_0(),
-                Instructions.Ldfld(typeof(IClickableMenu), "yPositionOnScreen"),
-                Instructions.Ldsfld(typeof(IClickableMenu), "borderWidth"),
+                Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.yPositionOnScreen)),
+                Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.borderWidth)),
                 Instructions.Add(),
-                Instructions.Ldsfld(typeof(IClickableMenu), "spaceToClearTopBorder"),
+                Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.spaceToClearTopBorder)),
                 Instructions.Add(),
                 Instructions.Ldc_I4_S(Game1.tileSize),
                 Instructions.Add(),
@@ -315,10 +315,10 @@ namespace BiggerBackpack
             for (var i=0; i<12; i++) {
                 code = code.FindNext(
                     OpCodes.Ldarg_0,
-                    Instructions.Ldfld(typeof(IClickableMenu), "yPositionOnScreen"),
-                    Instructions.Ldsfld(typeof(IClickableMenu), "borderWidth"),
+                    Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.yPositionOnScreen)),
+                    Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.borderWidth)),
                     OpCodes.Add,
-                    Instructions.Ldsfld(typeof(IClickableMenu), "spaceToClearTopBorder"),
+                    Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.spaceToClearTopBorder)),
                     OpCodes.Add
                 );
                 code.Replace(
@@ -349,7 +349,7 @@ namespace BiggerBackpack
             for (int i=0; i<2; i++) {
                 code = code.FindNext(
                     Instructions.Ldc_I4(600),
-                    Instructions.Ldsfld(typeof(IClickableMenu), "borderWidth"),
+                    Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.borderWidth)),
                     Instructions.Ldc_I4_2(),
                     OpCodes.Mul,
                     OpCodes.Add
@@ -362,7 +362,7 @@ namespace BiggerBackpack
             for (int i=0; i<2; i++) {
                 code = FindCode(
                     OpCodes.Ldarg_0,
-                    Instructions.Ldfld(typeof(IClickableMenu), "height"),
+                    Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.height)),
                     Instructions.Ldc_I4(256),
                     OpCodes.Sub,
                     Instructions.Ldc_I4_4(),
@@ -381,9 +381,9 @@ namespace BiggerBackpack
             // Note: originally height = 680.
             FindCode(
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(IClickableMenu), "yPositionOnScreen"),
+                Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.yPositionOnScreen)),
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(IClickableMenu), "height"),
+                Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.height)),
                 OpCodes.Add,
                 Instructions.Ldc_I4(256),
                 OpCodes.Sub,
@@ -396,15 +396,15 @@ namespace BiggerBackpack
             // Note: originally inventory.height = 3*64+16 = 208.
             FindCode(
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(IClickableMenu), "height"),
+                Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.height)),
                 Instructions.Ldc_I4(448),
                 OpCodes.Sub,
                 Instructions.Ldc_I4_S(20),
                 OpCodes.Add
             ).Replace(
                 Instructions.Ldarg_0(),
-                Instructions.Ldfld(typeof(ShopMenu), "inventory"),
-                Instructions.Ldfld(typeof(IClickableMenu), "height"),
+                Instructions.Ldfld(typeof(ShopMenu), nameof(ShopMenu.inventory)),
+                Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.height)),
                 Instructions.Ldc_I4_S(44),
                 Instructions.Add()
             );
@@ -413,7 +413,7 @@ namespace BiggerBackpack
             // Change `height - 256 + 32 + 4` to 460.
             FindCode(
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(IClickableMenu), "height"),
+                Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.height)),
                 Instructions.Ldc_I4(256),
                 OpCodes.Sub,
                 Instructions.Ldc_I4_S(32),
@@ -433,7 +433,7 @@ namespace BiggerBackpack
             for (int i=0; i<2; i++) {
                 code = code.FindNext(
                     Instructions.Ldc_I4(600),
-                    Instructions.Ldsfld(typeof(IClickableMenu), "borderWidth"),
+                    Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.borderWidth)),
                     Instructions.Ldc_I4_2(),
                     OpCodes.Mul,
                     OpCodes.Add
@@ -447,11 +447,11 @@ namespace BiggerBackpack
             // Move the grid a few pixels
             var code = FindCode(
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(IClickableMenu), "xPositionOnScreen"),
+                Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.xPositionOnScreen)),
                 Instructions.Ldc_I4(128),
                 OpCodes.Add,
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(IClickableMenu), "yPositionOnScreen"),
+                Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.yPositionOnScreen)),
                 Instructions.Ldc_I4(140),
                 OpCodes.Add
             );
@@ -474,13 +474,13 @@ namespace BiggerBackpack
             );
             FindCode(
                 Instructions.Ldc_I4_S(36),
-                Instructions.Stfld(typeof(InventoryMenu), "capacity")
+                Instructions.Stfld(typeof(InventoryMenu), nameof(InventoryMenu.capacity))
             )[0].operand = 49;
             
             code = BeginCode();
             for (int i=0; i<2; i++) {
                 code = code.FindNext(
-                    Instructions.Ldsfld(typeof(IClickableMenu), "borderWidth"),
+                    Instructions.Ldsfld(typeof(IClickableMenu), nameof(IClickableMenu.borderWidth)),
                     OpCodes.Ldc_I4_2,
                     OpCodes.Mul,
                     OpCodes.Add
@@ -494,12 +494,12 @@ namespace BiggerBackpack
             var code = FindCode(
                 OpCodes.Ldarg_1,
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(JunimoNoteMenu), "noteTexture"),
+                Instructions.Ldfld(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.noteTexture)),
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(IClickableMenu), "xPositionOnScreen"),
+                Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.xPositionOnScreen)),
                 OpCodes.Conv_R4,
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(IClickableMenu), "yPositionOnScreen"),
+                Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.yPositionOnScreen)),
                 OpCodes.Conv_R4,
                 OpCodes.Newobj,
                 Instructions.Ldc_I4(320), // Line 10

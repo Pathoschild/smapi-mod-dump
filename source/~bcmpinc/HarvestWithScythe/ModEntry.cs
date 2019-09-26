@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Reflection.Emit;
+using Microsoft.Xna.Framework;
+using Netcode;
 using StardewModdingAPI;
+using StardewValley;
+using StardewValley.Characters;
+using StardewValley.TerrainFeatures;
 
 namespace StardewHack.HarvestWithScythe
 {
@@ -79,10 +84,10 @@ namespace StardewHack.HarvestWithScythe
             // Find the lines:
             var AddItem = FindCode(
                 // if (Game1.player.addItemToInventoryBool (@object, false)) {
-                Instructions.Call_get(typeof(StardewValley.Game1), "player"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
                 OpCodes.Ldloc_0,
                 OpCodes.Ldc_I4_0,
-                Instructions.Callvirt(typeof(StardewValley.Farmer), "addItemToInventoryBool", typeof(StardewValley.Item), typeof(bool)),
+                Instructions.Callvirt(typeof(Farmer), nameof(Farmer.addItemToInventoryBool), typeof(Item), typeof(bool)),
                 OpCodes.Brfalse
             );
 
@@ -91,8 +96,8 @@ namespace StardewHack.HarvestWithScythe
             AddItem.Prepend(
                 // if (this.harvestMethod != 0) {
                 Instructions.Ldarg_0(),
-                Instructions.Ldfld(typeof(StardewValley.Crop), "harvestMethod"),
-                Instructions.Call_get(typeof(Netcode.NetInt), "Value"),
+                Instructions.Ldfld(typeof(Crop), nameof(Crop.harvestMethod)),
+                Instructions.Call_get(typeof(NetInt), nameof(NetInt.Value)),
                 Instructions.Brfalse(AttachLabel(AddItem[0])),
                 // Game1.createItemDebris (@object, vector, -1, null, -1)
                 Instructions.Ldloc_0(), // @object
@@ -100,12 +105,12 @@ namespace StardewHack.HarvestWithScythe
                 Instructions.Ldc_I4_M1(), // -1
                 Instructions.Ldnull(), // null
                 Instructions.Ldc_I4_M1(), // -1
-                Instructions.Call(typeof(StardewValley.Game1), "createItemDebris", typeof(StardewValley.Item), typeof(Microsoft.Xna.Framework.Vector2), typeof(int), typeof(StardewValley.GameLocation), typeof(int)),
+                Instructions.Call(typeof(Game1), nameof(Game1.createItemDebris), typeof(Item), typeof(Vector2), typeof(int), typeof(GameLocation), typeof(int)),
                 // Game1.player.gainExperience (2, howMuch);
-                Instructions.Call_get(typeof(StardewValley.Game1), "player"),
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
                 Instructions.Ldc_I4_2(),
                 Instructions.Ldloc_1(),
-                Instructions.Callvirt(typeof(StardewValley.Farmer), "gainExperience", typeof(int), typeof(int)),
+                Instructions.Callvirt(typeof(Farmer), nameof(Farmer.gainExperience), typeof(int), typeof(int)),
                 // return true
                 Instructions.Ldc_I4_1(),
                 Instructions.Ret()
@@ -137,7 +142,7 @@ namespace StardewHack.HarvestWithScythe
             // Find the start of the 'drop sunflower seeds' part.
             var DropSunflowerSeeds = FindCode(
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(StardewValley.Crop), "indexOfHarvest"),
+                Instructions.Ldfld(typeof(Crop), nameof(Crop.indexOfHarvest)),
                 OpCodes.Call, // Netcode
                 Instructions.Ldc_I4(421), // 421 = Item ID of Sunflower.
                 OpCodes.Bne_Un
@@ -151,7 +156,7 @@ namespace StardewHack.HarvestWithScythe
             // Remove end of loop and everything after that until the end of the harvest==1 branch.
             var ScytheBranchTail = FindCode(
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(StardewValley.Crop), "harvestMethod"),
+                Instructions.Ldfld(typeof(Crop), nameof(Crop.harvestMethod)),
                 OpCodes.Call, // Netcode
                 OpCodes.Ldc_I4_1,
                 OpCodes.Bne_Un
@@ -194,13 +199,13 @@ namespace StardewHack.HarvestWithScythe
                 // var tmp = CreateObject(this, num3);
                 Instructions.Ldarg_0(), // this
                 Instructions.Ldloc_S(5), // num3
-                Instructions.Call(typeof(ModEntry), "CreateObject", typeof(StardewValley.Crop), typeof(int)),
+                Instructions.Call(typeof(ModEntry), nameof(CreateObject), typeof(Crop), typeof(int)),
                 // Game1.createItemDebris(tmp, vector, -1, null, -1);
                 Instructions.Ldloc_3(), // vector
                 Instructions.Ldc_I4_M1(), // -1
                 Instructions.Ldnull(), // null
                 Instructions.Ldc_I4_M1(), // -1
-                Instructions.Call(typeof(StardewValley.Game1), "createItemDebris", typeof(StardewValley.Item), typeof(Microsoft.Xna.Framework.Vector2), typeof(int), typeof(StardewValley.GameLocation), typeof(int))
+                Instructions.Call(typeof(Game1), nameof(Game1.createItemDebris), typeof(Item), typeof(Vector2), typeof(int), typeof(GameLocation), typeof(int))
             );
             #endregion
 
@@ -211,7 +216,7 @@ namespace StardewHack.HarvestWithScythe
                     OpCodes.Ldc_I4_0,
                     Instructions.Ldc_R4(1.0f),
                     OpCodes.Ldnull,
-                    Instructions.Call(typeof(StardewValley.Game1), "createObjectDebris", typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(float), typeof(StardewValley.GameLocation))
+                    Instructions.Call(typeof(Game1), nameof(Game1.createObjectDebris), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(float), typeof(GameLocation))
                 )[1] = Instructions.Ldloc_S(5);
 
                 FindCode(
@@ -220,7 +225,7 @@ namespace StardewHack.HarvestWithScythe
                     OpCodes.Ldc_I4_M1,
                     OpCodes.Ldc_I4_0,
                     OpCodes.Newobj,
-                    Instructions.Callvirt(typeof(StardewValley.Characters.JunimoHarvester), "tryToAddItemToHut", typeof(StardewValley.Item))
+                    Instructions.Callvirt(typeof(JunimoHarvester), nameof(JunimoHarvester.tryToAddItemToHut), typeof(Item))
                 )[3] = Instructions.Ldloc_S(5);
             }
             
@@ -229,12 +234,12 @@ namespace StardewHack.HarvestWithScythe
                 BeginCode().Append(
                     // if (harvestMethod==1 && programColored) {
                     Instructions.Ldarg_0(),
-                    Instructions.Ldfld(typeof(StardewValley.Crop), "harvestMethod"),
-                    Instructions.Call_get(typeof(Netcode.NetInt), "Value"),
+                    Instructions.Ldfld(typeof(Crop), nameof(Crop.harvestMethod)),
+                    Instructions.Call_get(typeof(NetInt), nameof(NetInt.Value)),
                     Instructions.Brfalse(lbl),
                     Instructions.Ldarg_0(),
-                    Instructions.Ldfld(typeof(StardewValley.Crop), "programColored"),
-                    Instructions.Call_get(typeof(Netcode.NetBool), "Value"),
+                    Instructions.Ldfld(typeof(Crop), nameof(Crop.programColored)),
+                    Instructions.Call_get(typeof(NetBool), nameof(NetBool.Value)),
                     Instructions.Brfalse(lbl),
                     // return false
                     Instructions.Ldc_I4_0(),
@@ -245,13 +250,13 @@ namespace StardewHack.HarvestWithScythe
         }
 
         // Proxy method for creating an object suitable for spawning as debris.
-        public static StardewValley.Object CreateObject(StardewValley.Crop crop, int quality) {
-            if (crop.programColored) {
-                return new StardewValley.Objects.ColoredObject (crop.indexOfHarvest, 1, crop.tintColor) {
+        public static StardewValley.Object CreateObject(Crop crop, int quality) {
+            if (crop.programColored.Value) {
+                return new StardewValley.Objects.ColoredObject(crop.indexOfHarvest.Value, 1, crop.tintColor.Value) {
                     Quality = quality
                 };
             } else {
-                return new StardewValley.Object(crop.indexOfHarvest, 1, false, -1, quality);
+                return new StardewValley.Object(crop.indexOfHarvest.Value, 1, false, -1, quality);
             }
         }
 
@@ -260,8 +265,8 @@ namespace StardewHack.HarvestWithScythe
             // Find the first harvestMethod==1 check.
             var HarvestMethodCheck = FindCode(
                 OpCodes.Ldarg_0,
-                Instructions.Call_get(typeof(StardewValley.TerrainFeatures.HoeDirt), "crop"),
-                Instructions.Ldfld(typeof(StardewValley.Crop), "harvestMethod"),
+                Instructions.Call_get(typeof(HoeDirt), nameof(HoeDirt.crop)),
+                Instructions.Ldfld(typeof(Crop), nameof(Crop.harvestMethod)),
                 OpCodes.Call, // Netcode
                 OpCodes.Ldc_I4_1,
                 OpCodes.Bne_Un
@@ -281,14 +286,14 @@ namespace StardewHack.HarvestWithScythe
                 HarvestMethodCheck[1],
                 HarvestMethodCheck[2],
                 Instructions.Ldc_I4_1(),
-                Instructions.Call_set(typeof(Netcode.NetInt), "Value")
+                Instructions.Call_set(typeof(NetInt), nameof(NetInt.Value))
             );
 
             // Set harvestMethod=damage after the following crop!=null check.
             HarvestMethodCheck.FindNext(
                 OpCodes.Ldarg_0,
-                Instructions.Call_get(typeof(StardewValley.TerrainFeatures.HoeDirt), "crop"),
-                Instructions.Ldfld(typeof(StardewValley.Crop), "dead"),
+                Instructions.Call_get(typeof(HoeDirt), nameof(HoeDirt.crop)),
+                Instructions.Ldfld(typeof(Crop), nameof(Crop.dead)),
                 OpCodes.Call, // Netcode
                 OpCodes.Brfalse
             ).Prepend(
@@ -296,7 +301,7 @@ namespace StardewHack.HarvestWithScythe
                 HarvestMethodCheck[1],
                 HarvestMethodCheck[2],
                 Instructions.Ldarg_2(), // damage
-                Instructions.Call_set(typeof(Netcode.NetInt), "Value")
+                Instructions.Call_set(typeof(NetInt), nameof(NetInt.Value))
             );
         }
 
@@ -330,8 +335,8 @@ namespace StardewHack.HarvestWithScythe
                 harvest_hand.Replace(
                     harvest_hand[0],
                     harvest_hand[1],
-                    Instructions.Ldfld(typeof(StardewValley.Crop), "programColored"),
-                    Instructions.Call_get(typeof(Netcode.NetBool), "Value"),
+                    Instructions.Ldfld(typeof(Crop), nameof(Crop.programColored)),
+                    Instructions.Call_get(typeof(NetBool), nameof(NetBool.Value)),
                     Instructions.Brfalse((Label)harvest_hand[4].operand)
                 );
                 var harvest_scythe = FindCode(
@@ -345,8 +350,8 @@ namespace StardewHack.HarvestWithScythe
                 harvest_scythe.Replace(
                     harvest_scythe[0],
                     harvest_scythe[1],
-                    Instructions.Ldfld(typeof(StardewValley.Crop), "programColored"),
-                    Instructions.Call_get(typeof(Netcode.NetBool), "Value"),
+                    Instructions.Ldfld(typeof(Crop), nameof(Crop.programColored)),
+                    Instructions.Call_get(typeof(NetBool), nameof(NetBool.Value)),
                     Instructions.Brtrue((Label)harvest_scythe[5].operand)
                 );
             }
@@ -367,37 +372,39 @@ namespace StardewHack.HarvestWithScythe
                 Instructions.Brfalse(begin),
                 Instructions.Ldarg_1(),
                 Instructions.Isinst(typeof(StardewValley.Tools.MeleeWeapon)),
-                Instructions.Callvirt_get(typeof(StardewValley.Tool), "BaseName"),
+                Instructions.Callvirt_get(typeof(Tool), nameof(Tool.BaseName)),
                 Instructions.Ldstr("Scythe"),
-                Instructions.Callvirt(typeof(System.String), "Equals", typeof(string)),
+                Instructions.Callvirt(typeof(string), nameof(string.Equals), typeof(string)),
                 Instructions.Brfalse(begin),
                 // Hook
                 Instructions.Ldarg_0(),
                 Instructions.Ldarg_1(),
                 Instructions.Ldarg_2(),
-                Instructions.Call(typeof(ModEntry), "ScytheForage", typeof(StardewValley.Object), typeof(StardewValley.Tool), typeof(StardewValley.GameLocation)),
+                Instructions.Call(typeof(ModEntry), nameof(ScytheForage), typeof(StardewValley.Object), typeof(Tool), typeof(GameLocation)),
                 Instructions.Brfalse(begin),
                 Instructions.Ldc_I4_1(),
                 Instructions.Ret()
             );
         }
 
-        public static bool ScytheForage(StardewValley.Object o, StardewValley.Tool t, StardewValley.GameLocation loc) {
-            if (o.isSpawnedObject && !o.questItem && o.isForage(loc)) {
+        public static bool ScytheForage(StardewValley.Object o, Tool t, GameLocation loc) {
+            if (o.IsSpawnedObject && !o.questItem.Value && o.isForage(loc)) {
                 var who = t.getLastFarmerToUse();
                 var vector = o.TileLocation;
                 // For objects stored in GameLocation.Objects, the TileLocation is not always set.
                 // So determine its location by looping trough all such objects.
+#pragma warning disable RECS0018 // Comparison of floating point numbers with equality operator
                 if (vector.X==0 && vector.Y==0) {
-                    foreach (System.Collections.Generic.KeyValuePair<Microsoft.Xna.Framework.Vector2, StardewValley.Object> pair in loc.Objects.Pairs) {
+#pragma warning restore RECS0018 // Comparison of floating point numbers with equality operator
+                    foreach (System.Collections.Generic.KeyValuePair<Vector2, StardewValley.Object> pair in loc.Objects.Pairs) {
                         if (pair.Value.Equals(o)) {
                             vector = pair.Key;
                             break;
                         }
                     }
                 }
-                int quality = o.quality;
-                Random random = new Random((int)StardewValley.Game1.uniqueIDForThisGame / 2 + (int)StardewValley.Game1.stats.DaysPlayed + (int)vector.X + (int)vector.Y * 777);
+                int quality = o.Quality;
+                Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + (int)vector.X + (int)vector.Y * 777);
                 if (who.professions.Contains(16)) {
                     quality = 4;
                 } else if (random.NextDouble() < (double)((float)who.ForagingLevel / 30)) {
@@ -406,10 +413,10 @@ namespace StardewHack.HarvestWithScythe
                     quality = 1;
                 }
                 who.gainExperience(2, 7);
-                StardewValley.Game1.createObjectDebris(o.ParentSheetIndex, (int)vector.X, (int)vector.Y, -1, quality, 1, loc);
-                StardewValley.Game1.stats.ItemsForaged += 1;
+                Game1.createObjectDebris(o.ParentSheetIndex, (int)vector.X, (int)vector.Y, -1, quality, 1, loc);
+                Game1.stats.ItemsForaged += 1;
                 if (who.professions.Contains(13) && random.NextDouble() < 0.2) {
-                    StardewValley.Game1.createObjectDebris(o.ParentSheetIndex, (int)vector.X, (int)vector.Y, -1, quality, 1, loc);
+                    Game1.createObjectDebris(o.ParentSheetIndex, (int)vector.X, (int)vector.Y, -1, quality, 1, loc);
                     who.gainExperience(2, 7);
                 }
                 return true;

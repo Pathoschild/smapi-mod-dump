@@ -1,0 +1,13 @@
+url:
+   https://github.com/camcamcamcam/murderdrone.git
+
+mods:
+   Murder Drone
+
+latest commit:
+   commit 349a50f169e98829210ff5e529deec4987373b60
+   Author: Cameron Nursall <cameron.nursall@resonator.ca>
+   Date:   Wed Sep 25 14:27:37 2019 -0400
+   
+       Check if actually holding a tool
+   

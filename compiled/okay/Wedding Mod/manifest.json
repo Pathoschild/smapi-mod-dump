@@ -6,5 +6,5 @@
     "UniqueID": "Opalie.Wedding",
     "EntryDll": "Wedding.dll",
     "MinimumApiVersion": "2.10.0",
-    "UpdateKeys": [ "Nexus:3651" ]
+    "UpdateKeys": [ "ModDrop:526231" ] // fixed locally
 }

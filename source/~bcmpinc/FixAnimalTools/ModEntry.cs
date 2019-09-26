@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Reflection.Emit;
+using StardewValley;
+using StardewValley.Tools;
 
 namespace StardewHack.FixAnimalTools
 {
@@ -11,7 +13,7 @@ namespace StardewHack.FixAnimalTools
             // Find the first animal != null check.
             var hasAnimal = FindCode(
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(StardewValley.Tools.MilkPail), "animal"),
+                Instructions.Ldfld(typeof(MilkPail), "animal"),
                 OpCodes.Brfalse
             );
             hasAnimal.Replace(
@@ -21,7 +23,7 @@ namespace StardewHack.FixAnimalTools
                 Instructions.Brtrue(AttachLabel(hasAnimal[3])),
                 //    who.forceCanMove();
                 Instructions.Ldarg_S(4),
-                Instructions.Callvirt(typeof(StardewValley.Farmer), "forceCanMove"),
+                Instructions.Callvirt(typeof(Farmer), nameof(Farmer.forceCanMove)),
                 //    return false;
                 Instructions.Ldc_I4_0(),
                 Instructions.Ret()
@@ -34,16 +36,16 @@ namespace StardewHack.FixAnimalTools
         void Shears_beginUsing() {
             var halt = FindCode(
                 OpCodes.Ldarg_S,
-                Instructions.Callvirt(typeof(StardewValley.Character), "Halt")
+                Instructions.Callvirt(typeof(Character), nameof(Character.Halt))
             );
             halt.Replace(
                 halt[0],
                 // if (this.animal == null) {
                 Instructions.Ldarg_0(),
-                Instructions.Ldfld(typeof(StardewValley.Tools.Shears), "animal"),
+                Instructions.Ldfld(typeof(Shears), "animal"),
                 Instructions.Brtrue(AttachLabel(halt[1])),
                 //    who.forceCanMove();
-                Instructions.Callvirt(typeof(StardewValley.Farmer), "forceCanMove"),
+                Instructions.Callvirt(typeof(Farmer), nameof(Farmer.forceCanMove)),
                 //    return false;
                 Instructions.Ldc_I4_0(),
                 Instructions.Ret(),

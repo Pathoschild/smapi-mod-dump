@@ -1,6 +1,7 @@
 ﻿
 
 "Train Whistle" MOD by Taskmaster
+(C) 2019, All Rights Reserved
 
 
 Introduction
@@ -21,9 +22,16 @@ ShowDebug - This option will display debug notifications to the console window w
 
 Console Command
 ---------------
-In the event it is necessary to receive the instuctional mail again, type the following comman in the SMAPI console window.
+In the event it is necessary to receive the instuctional mail again, type the following command in the SMAPI console window.
 
      reset_trainwhistle
+
+
+History
+-------
+v1.0.0     - Initial Release
+V1.0.1     - Correct Update Id.  Handle game controller.  Send intructional email only once
+
 
 Conclusion
 ----------
@@ -34,10 +42,6 @@ but are short stories based on the game designed to add "lore" to the game exper
 
 Legend: https://steamcommunity.com/sharedfiles/filedetails/?id=1836650115
 Amber Alert: https://steamcommunity.com/sharedfiles/filedetails/?id=1798644326
-
-If you care to trade cards and craft badges, feel free to send me a friend request (https://steamcommunity.com/id/Taskmaster1/).  I may not accept it
-depending on your profile (do we have anything in common or not), but it is nothing personal.  I can only keep track of so many folks and I don't like
-to be rude.
 
 Enjoy the MOD!
 

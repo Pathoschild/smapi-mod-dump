@@ -1,0 +1,14 @@
+url:
+   https://github.com/cilekli-link/SDVMods.git
+
+mods:
+   Dark User Interface
+   The Chest Dimension
+
+latest commit:
+   commit 047ee60f66d2b243ac2e196eb24c11acbddc119b
+   Author: aÄŸl <aÄŸl@aÄŸl.aÄŸl>
+   Date:   Mon Sep 9 21:05:56 2019 +0300
+   
+       Added a bunch of stuff
+   

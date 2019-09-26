@@ -1,0 +1,77 @@
+﻿{
+ "SEASON_SPECIFIC_HEADER" :  "Season Items",
+ "SEASON_SPECIFIC_CC_HEADER" : "Season Community Center Items",
+ "COMMON_CC_HEADER" : "Common Community Center Items",
+ "MERCHANT_HEADER" : "Travelling Cart Items",
+ "COOKED_ITEMS_HEADER" : "Cooked Items",
+
+ "SEASON_SPECIFIC_DESCRIPTION" : "Missing items specific to this season",
+ "SEASON_SPECIFIC_CC_DESCRIPTION" : "Missing Community Center items specific to this season",
+ "COMMON_CC_DESCRIPTION" : "Missing Community Center items common to all seasons",
+ "MERCHANT_DESCRIPTION" : "Missing uncommon items that are available from the Travelling Cart",
+ "COOKED_ITEMS_DESCRIPTION" : "Missing cooked items that you know how to make",
+
+ "EMPTY_LIST_MESSAGE" : "There is nothing you are missing that is available",
+
+ "MINES_DISPLAY_NAME" : "Mines",
+ "DESERT_DISPLAY_NAME" : "Desert",
+ "CINDERSAP_RIVER_DISPLAY_NAME" : "Cindersap River",
+ "CINDERSAP_POND_DISPLAY_NAME" : "Cindersap Pond",
+ "FOREST_FARM_POND_DIAPLAY_NAME" : "Forest Farm Pond",
+ "TOWN_RIVER_DISPLAY_NAME" : "Town River",
+ "MOUNTAIN_LAKE_DISPLAY_NAME" : "Mountain Lake",
+ "BEACH_DISPLAY_NAME" : "Beach",
+ "SECRET_WOODS_DISPLAY_NAME" : "Secret Woods",
+ "SEWER_DISPLAY_NAME" : "Sewer",
+ "MUTANT_BUG_LAIR_DISPLAY_NAME" : "Mutant Bug Lair",
+ "WITCHS_SWAMP_DISPLAY_NAME" : "Witch's Swamp",
+
+ "NIGHT_MARKET" : "Night Market Sub",
+
+ "OBTAINED_FROM_CRAB_POT_IN_OCEAN" : "Obtained from a crab pot in the ocean",
+ "OBTAINED_FROM_CRAB_POT_IN_FRESHWATER" : "Obtained from a crab pot in freshwater",
+
+ "TEXT_TO_HOVER_OVER_FOR_INFO" : "Info",
+
+ "RAINY_WEATHER" : "Rainy",
+ "SUNNY_WEATHER" :"Sunny",
+ "ANY_WEATHER" : "Any Weather",
+ "ANY_EGG" : "Egg (Any)",
+ "ANY_MILK" : "Milk (Any)",
+ "ANY_FISH" : "Fish (Any)",
+ "ANYTIME" : "Anytime",
+ "INGREDIENTS" : "Ingredients",
+
+ "SPRING" : "Spring",
+ "SUMMER" : "Summer",
+ "FALL" : "Fall",
+ "WINTER" :"Winter",
+
+ "LEGEND_INFO" : "Fish close to the giant log in the Mountain Lake when its raining",
+ "GLACIERFISH_INFO" : "At the bottom of the giant log in the Mountain Lake when its raining",
+ "CRIMSONFISH_INFO" : "Second Beach Pier",
+ "ANGLER_INFO": "Fish upwards on the small bridge near JoJo Mart",
+
+  "FARMING": "Farming",
+  "FISHING": "Fishing",
+  "MINING" : "Mining",
+  "LUCK": "Luck",
+  "FORAGING": "Foraging",
+  "MAX_ENERGY": "Max Energy",
+  "MAGNETISM": "Magnetism",
+  "SPEED": "Speed",
+  "DEFENSE": "Defense",
+  "ATTACK": "Attack",
+
+  "ENERGY": "Energy",
+  "HEALTH": "Health",
+  "BUFFS": "Buff(s)",
+  "DURATION": "Duration",
+  "MINUTE": "min",
+  "SECONDS" : "sec",
+
+  "LOCATIONS": "Location(s)",
+  "SEASONS" : "Season(s)",
+  "WEATHER": "Weather",
+  "TIME" : "Time"
+}

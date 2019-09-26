@@ -1,4 +1,7 @@
 ﻿using System.Reflection.Emit;
+using Netcode;
+using StardewValley;
+using StardewValley.TerrainFeatures;
 
 namespace StardewHack.TreeSpread
 {
@@ -18,19 +21,19 @@ namespace StardewHack.TreeSpread
             var spread = FindCode(
                 // if ((int)growthStage >= 5 
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(StardewValley.TerrainFeatures.Tree), "growthStage"),
+                Instructions.Ldfld(typeof(Tree), nameof(Tree.growthStage)),
                 OpCodes.Call,
                 OpCodes.Ldc_I4_5,
                 OpCodes.Blt,
                 // && environment is Farm ...
                 OpCodes.Ldarg_1,
-                Instructions.Isinst(typeof(StardewValley.Farm)),
+                Instructions.Isinst(typeof(Farm)),
                 OpCodes.Brfalse
             );
             spread.Extend(
                 // hasSeed.Value = false;
                 OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(StardewValley.TerrainFeatures.Tree), "hasSeed"),
+                Instructions.Ldfld(typeof(Tree), nameof(Tree.hasSeed)),
                 OpCodes.Ldc_I4_0,
                 OpCodes.Callvirt
             );
@@ -39,8 +42,8 @@ namespace StardewHack.TreeSpread
                 spread.Prepend(
                     // if (!tapped)
                     Instructions.Ldarg_0(),
-                    Instructions.Ldfld(typeof(StardewValley.TerrainFeatures.Tree), "tapped"),
-                    Instructions.Call_get(typeof(Netcode.NetBool), "Value"),
+                    Instructions.Ldfld(typeof(Tree), nameof(Tree.tapped)),
+                    Instructions.Call_get(typeof(NetBool), nameof(NetBool.Value)),
                     Instructions.Brtrue(AttachLabel(spread.End[0]))
                 );
                 spread.ReplaceJump(4, spread[0]);
@@ -52,7 +55,7 @@ namespace StardewHack.TreeSpread
                 // if (!environment is Farm)
                 spread.Append(
                     Instructions.Ldarg_1(),
-                    Instructions.Isinst(typeof(StardewValley.Farm)),
+                    Instructions.Isinst(typeof(Farm)),
                     Instructions.Brtrue(AttachLabel(spread[4]))
                 );
             }

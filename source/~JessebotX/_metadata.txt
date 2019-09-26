@@ -4,12 +4,13 @@ url:
 mods:
    Bigger Riverlands Farm
    Health and Stamina Regeneration
+   Hello SMAPI
    Sprint Sprint Sprint
 
 latest commit:
-   commit f07efcfbd01b0a56e2f903565fdc65b9dc243954
+   commit f9d8f6fd25ed50553600b8389615c9d33cf5f662
    Author: JessebotX <jessebotx2003@gmail.com>
-   Date:   Fri Aug 16 12:20:22 2019 -0700
+   Date:   Sun Sep 15 10:39:03 2019 -0700
    
-       Sprint Sprint Sprint prerelease build 1.0.5-beta.20190816
+       Added Hello SMAPI 1.0.0
    

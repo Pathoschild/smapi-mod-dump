@@ -1,0 +1,69 @@
+{
+    "header": {
+        "target": "w",
+        "formatVersion": 5,
+        "hidef": true,
+        "compressed": 128
+    },
+    "readers": [
+        {
+            "type": "Microsoft.Xna.Framework.Content.DictionaryReader`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "version": 0
+        },
+        {
+            "type": "Microsoft.Xna.Framework.Content.StringReader",
+            "version": 0
+        }
+    ],
+    "content": {
+        "Rainy_Day_Wizard": "It's raining outside.#$e#I can practically feel the energy coming down with every drop. It's a hard feeling to describe.",
+        "Rainy_Night_Wizard": "Oh, my. You're completely soaked.$3#$e#You should probably get out of those clothes.#$e#...$4",
+        "Indoor_Day_Wizard": "I tried making breakfast this morning. [194 210]#$e#It's nothing intricate, but it's edible.$4",
+        "Indoor_Night_Wizard": "My day was quite frustrating...$s#$e#But tell me about yours. I'm sure it was much more productive than mine.$7",
+        "spring_Wizard": "Is it spring already? Hmm.",
+        "summer_Wizard": "The changing of seasons is rather trivial in the grand scheme of things.#$e#That being said, the summer heat is an atrocity...",
+        "fall_Wizard": "Is summer usually this cool?#$e#What? It's fall already...?#$e#Maybe I should take a walk every once in a while...",
+        "winter_Wizard": "I think it snowed last night.",
+        "Rainy_Day_0": "It's raining outside.#$e#I can practically feel the energy coming down with every drop. It's a hard feeling to describe.",
+        "Rainy_Day_1": "Ah, rain...#$e#I plan to do some complex rituals today.$7",
+        "Rainy_Night_0": "I had a very productive day.$7#$e#What did you do today?$9",
+        "Rainy_Night_3": "The house is so quiet when you're out doing your work.#$e#Somehow, it's even more so when it's raining.#$e#I'm glad you're home.$9",
+        "Rainy_Night_4": "I find it much easier to fall asleep with the sound of rain as a backdrop.",
+        "Indoor_Day_0": "I may have discovered a new sort of elemental.#$e#I'll be quite busy today.",
+        "Indoor_Day_1": "I've let the house get too messy.$s#$e#I'll clean it today. You don't have to worry about it.",
+        "Indoor_Day_4": "Here, try this. [195]$7#$e#I think I'm getting a little better at cooking.$7#$e#No, it's not a magical omelette...$4",
+        "Indoor_Night_1": "I cleaned up the house today.$9",
+        "Indoor_Night_3": "I made dinner! No magic this time, I promise. [218 730 649]$7#$e#I hope you like it.$9",
+        "Indoor_Night_4": "My day was quite frustrating...$s#$e#But tell me about yours. I'm sure it was much more productive than mine.$7",
+        "Good_0": "I thought I was truly meant to be alone until I met you, @. I didn't know two people could love and support each other so well.$7",
+        "Good_2": "I know I don't express it well, but I love you, @.$4#$e#You mean the world to me.$6",
+        "Good_3": "Stay safe. There are many wonders beyond the farm, but promise me you'll always make it back home.$9",
+        "Good_4": "Thank you for always eating my cooking... Even though it isn't the best.",
+        "Good_5": "I'm the Witch, but you've truly got me under your spell.$7#$e#...That was awful. My apologies.$4",
+        "Neutral_0": "I sensed my ex-wife's presence the other night and I awoke in the morning with a terrible headache...$s",
+        "Neutral_1": "What are your plans for the day?",
+        "Neutral_2": "How is the farm doing financially?#$e#If we're ever in trouble, I will assist however I can. My own work can wait.",
+        "Neutral_3": "Cooking can be both a frustrating and rewarding activity.$s",
+        "Neutral_4": "The valley is a wonderful place to study magic.",
+        "Bad_0": "Leave me alone. I'm busy.$5",
+        "Bad_1": "You hardly ever speak to me anymore. It's like I still live alone in my tower.$s",
+        "Bad_2": "...$s",
+        "Bad_3": "I already have an ex-wife. Keep up your behavior and I'll have an ex-husband, too.$5^I already have an ex-wife. Keep up your behavior and I'll have two.$5",
+        "Bad_4": "You're an awful person, just like the rest of this forsaken town.$5",
+        "funLeave_Wizard": "I have some business to attend to today.#$e#Don't mind me... I'll be back soon enough.$9",
+        "funReturn_Wizard": "It's quite strange... my tower hasn't changed one bit, but it feels so empty there now.$8#$e#I was so accustomed to being alone, but now I can't wait to get back home and see you.$6",
+        "spring_1": "A new year... Let's hope it is bountiful for both of us.",
+        "spring_12": "I understand not the purpose of tomorrow's festival.#$e#It seems to be a terrible waste of eggs...$s#$e#Though I will go if you do.",
+        "spring_23": "The thought of dancing in front of the entire town is highly unpleasant.#$e#But I will endure it... only for you.$4",
+        "summer_1": "I find it hard to concentrate in the intense summer heat...#$e#Perhaps I can conjure some sort of air conditioner.$3",
+        "summer_10": "There's no telling what would happen if you put a magical item in tomorrow's soup.$3#$e#...I recommend you do not do that.",
+        "summer_27": "I find watching the moon jellies to be quite relaxing.#$e#Let us enjoy it together.$6",
+        "fall_1": "Fall is my favorite season. I can practically smell the magic in the air, flowing around us like a breeze.$9",
+        "fall_15": "The fair is quite popular, isn't it?#$e#I prefer to avoid large crowds... but I am more than willing to go, if only to spend time with you.$9",
+        "fall_26": "I quite enjoy tomorrow's festivities. I actually have a hand in setting it all up, believe it or not.#$e#I hope the maze isn't too scary for you.$7",
+        "winter_1": "The snow has a quiet, romantic feel, doesn't it?#$e#Do try and stay warm... I'll help however I can.$6",
+        "winter_7": "I would offer my magical assistance for the competition tomorrow, but I know you won't need it.#$e#...Do let me know if you want my help, though.$7",
+        "winter_24": "Tomorrow's festivities seem rather pointless.#$e#Most earthly posessions are not worth going to any trouble for.",
+        "spouseRoom_Wizard": "#$c .5#Hm... Three and four... Four and five...#$e#No, no, that's not it...$5#$e#Where did I leave that book...?$5"
+    }
+}

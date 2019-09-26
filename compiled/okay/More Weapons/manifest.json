@@ -1,0 +1,10 @@
+{
+  "Name": "MoreWeapons",
+  "Author": "Joco80 and Sasara",
+  "Version": "1.2.0",
+  "Description": "adds more weapons to SDV.",
+  "UniqueID": "Joco80.MoreWeapons",
+  "EntryDll": "MoreWeapons.dll",
+  "MinimumApiVersion": "2.11.1",
+  "UpdateKeys": ["Nexus:1168"]
+}

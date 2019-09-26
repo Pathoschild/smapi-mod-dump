@@ -3,7 +3,7 @@
   <Reference Relative="..\..\SMAPI\bin\Debug\SMAPI.Toolkit\netstandard2.0\SMAPI.Toolkit.dll">C:\source\_Stardew\SMAPI\bin\Debug\SMAPI.Toolkit\netstandard2.0\SMAPI.Toolkit.dll</Reference>
   <NuGetReference>HtmlAgilityPack</NuGetReference>
   <NuGetReference>Newtonsoft.Json</NuGetReference>
-  <NuGetReference Prerelease="true">Pathoschild.FluentNexus</NuGetReference>
+  <NuGetReference>Pathoschild.FluentNexus</NuGetReference>
   <NuGetReference>Squid-Box.SevenZipSharp</NuGetReference>
   <Namespace>Newtonsoft.Json</Namespace>
   <Namespace>Newtonsoft.Json.Converters</Namespace>

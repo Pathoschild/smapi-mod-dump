@@ -2,6 +2,7 @@
 using System.Reflection.Emit;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
 
 namespace StardewHack.AlwaysScrollMap
 {
@@ -45,17 +46,17 @@ namespace StardewHack.AlwaysScrollMap
         {
             var range = FindCode(
                 // if (!Game1.viewportFreeze ...
-                Instructions.Ldsfld(typeof(StardewValley.Game1), "viewportFreeze")
+                Instructions.Ldsfld(typeof(Game1), nameof(Game1.viewportFreeze))
             );
             range.Extend(
                 // if (Game1.currentLocation.forceViewportPlayerFollow)
-                Instructions.Ldsfld(typeof(StardewValley.Game1), "currentLocation"),
-                Instructions.Ldfld(typeof(StardewValley.GameLocation), "forceViewportPlayerFollow"),
+                Instructions.Ldsfld(typeof(Game1), nameof(Game1.currentLocation)),
+                Instructions.Ldfld(typeof(GameLocation), nameof(GameLocation.forceViewportPlayerFollow)),
                 OpCodes.Brfalse
             );
             // Encapsulate with if (!State.Enabled) {
             range.Prepend(
-                Instructions.Call(typeof(StardewHack.AlwaysScrollMap.State), "Enabled"),
+                Instructions.Call(typeof(State), nameof(State.Enabled)),
                 Instructions.Brtrue(AttachLabel(range.End[0]))
             );
         }

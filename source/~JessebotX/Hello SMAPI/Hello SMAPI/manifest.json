@@ -1,0 +1,9 @@
+﻿{
+  "name": "Hello SMAPI",
+  "version": "1.0.0",
+  "author": "Jessebot",
+  "description": "SMAPI says hello as well.",
+  "uniqueid": "Jessebot.HelloSMAPI",
+  "entrydll": "Hello SMAPI.dll",
+  "updatekeys": [ "Nexus:4483" ]
+}

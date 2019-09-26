@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/1157
-IDs: Sasara.WitchPrincess
-update keys: Nexus:1157, GitHub:Sasara2201/WitchPrincess
