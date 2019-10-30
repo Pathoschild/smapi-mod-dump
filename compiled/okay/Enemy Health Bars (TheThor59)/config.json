@@ -1,4 +1,6 @@
 {
   "EnableXPNeeded": true,
+  "HideTextInfo": false,
+  "HideFullLifeBar": false,
   "ColorScheme": 0
 }

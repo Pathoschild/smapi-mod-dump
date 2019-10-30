@@ -1,0 +1,8 @@
+{
+  "Name": "Carrot Mash",
+  "Description": "Mash made from cave carrots and a special cave fungus.",
+  "Price": 25,
+  "Category": "MonsterLoot",
+  "Edibility": -300,  
+  "Recipe": null
+}

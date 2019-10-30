@@ -1,0 +1,8 @@
+{
+  "Name": "Gold Dust",
+  "Description": "Dust from ground gold ore.",
+  "Price": 25,
+  "Category": "Metal",
+  "Edibility": -300,
+  "Recipe": null
+}

@@ -162,6 +162,13 @@ namespace WhatAreYouMissing
         public const int STRAWBERRY_SEEDS = 745;
         public const int CACTUS_SEEDS = 802;
 
+        public const int CHERRY_SAPLING = 628;
+        public const int APRICOT_SAPLING = 629;
+        public const int ORANGE_SAPLING = 630;
+        public const int PEACH_SAPLING = 631;
+        public const int POMEGRANATE_SAPLING = 632;
+        public const int APPLE_SAPLING = 633;
+
         //Other Items from the community center bundles
         public const int WOOD = 388;
         public const int STONE = 390;
@@ -188,7 +195,7 @@ namespace WhatAreYouMissing
         public const int ORANGE = 635;
         public const int PEACH = 636;
         public const int POMEGRANATE = 637;
-        public const int CHEERY = 638;
+        public const int CHERRY = 638;
         public const int LARGEMOUTH_BASS = 136;
         public const int CARP = 142;
         public const int BULLHEAD = 700;
@@ -259,20 +266,51 @@ namespace WhatAreYouMissing
         public const string GAME_NAME_MUTANT_BUG_LAIR = "BugLand";
         public const string GAME_NAME_WITCHS_SWAMP = "WitchSwamp";
 
+        public const int MUTANT_CARP = 682;
+
+        public const int STONEFISH = 158;
+        public const int ICE_PIP = 161;
+        public const int LAVA_EEL = 162;
+
+        public const int GREEN_ALGAE = 153;
+        public const int WHITE_ALGAE = 157;
+        public const int SEAWEED = 152;
+
         public readonly ReadOnlyDictionary<int, string> LEGNEDARY_FISH_INFO = new ReadOnlyDictionary<int, string>(
                                                 new Dictionary<int, string>()
                                                 {
                                                     [LEGEND] = Utilities.GetTranslation("LEGEND_INFO"),
                                                     [GLACIERFISH] = Utilities.GetTranslation("GLACIERFISH_INFO"),
                                                     [CRIMSONFISH] = Utilities.GetTranslation("CRIMSONFISH_INFO"),
-                                                    [ANGLER] = Utilities.GetTranslation("ANGLER_INFO")
+                                                    [ANGLER] = Utilities.GetTranslation("ANGLER_INFO"),
+                                                    [MUTANT_CARP] = Utilities.GetTranslation("MUTANT_CARP_INFO")
+                                                });
+
+        public readonly ReadOnlyDictionary<int, string> SPECIAL_MINE_FISH_INFO = new ReadOnlyDictionary<int, string>(
+                                                new Dictionary<int, string>()
+                                                {
+                                                    [STONEFISH] = Utilities.GetTranslation("STONEFISH_INFO"),
+                                                    [ICE_PIP] = Utilities.GetTranslation("ICE_PIP_INFO"),
+                                                    [LAVA_EEL] = Utilities.GetTranslation("LAVA_EEL_INFO")
                                                 });
 
         public readonly ReadOnlyCollection<int> LEGENDARY_FISH = new ReadOnlyCollection<int>(
-                                                new List<int> { LEGEND, GLACIERFISH, CRIMSONFISH, ANGLER });
+                                                new List<int> { LEGEND, GLACIERFISH, CRIMSONFISH, ANGLER, MUTANT_CARP });
+
+        public readonly ReadOnlyCollection<int> SPECIAL_MINE_FISH = new ReadOnlyCollection<int>(
+                                                new List<int> { STONEFISH, ICE_PIP, LAVA_EEL });
+
+        public readonly ReadOnlyCollection<int> SPECIAL_SEEDS = new ReadOnlyCollection<int>(
+                                                new List<int> { GARLIC_SEEDS, RHUBARB_SEEDS, STRAWBERRY_SEEDS,
+                                                                RED_CABBAGE_SEEDS, STARFRUIT_SEEDS, ARTICHOKE_SEEDS,
+                                                                BEET_SEEDS});
+
+        public readonly ReadOnlyCollection<int> RANDOM_SEASON_SEEDS = new ReadOnlyCollection<int>(
+                                                new List<int> { SPRING_SEEDS, SUMMER_SEEDS, FALL_SEEDS,
+                                                                WINTER_SEEDS });
 
         public readonly ReadOnlyCollection<int> ITEMS_PLAYER_CAN_ONLY_HAVE_ONE_OF = new ReadOnlyCollection<int>(
-                                                new List<int> { GLACIERFISH, CRIMSONFISH, ANGLER });
+                                                new List<int> { GLACIERFISH, CRIMSONFISH, ANGLER, MUTANT_CARP });
 
         public readonly ReadOnlyCollection<int> NIGHT_MARKET_FISH = new ReadOnlyCollection<int>(
                                                 new List<int> { MIDNIGHT_SQUID, SPOOK_FISH, BLOBFISH });

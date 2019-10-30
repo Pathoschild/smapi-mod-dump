@@ -5,9 +5,9 @@ mods:
    Custom Harvest Fix
 
 latest commit:
-   commit ed72e809b3d7ffa90841bf2627f785227ef977a5
+   commit dce9951c38a721094ae6ec12ddc116e5da835295
    Author: Robert Howe <mytigio+github@gmail.com>
-   Date:   Sun Aug 11 21:06:32 2019 -0600
+   Date:   Sat Sep 28 18:30:59 2019 -0600
    
-       Rename the solution
+       more work on trees. started voidshroom tree seeds, but so far can't get the sprites to load
    

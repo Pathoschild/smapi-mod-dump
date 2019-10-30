@@ -5,9 +5,9 @@ mods:
    Enemy Health Bars
 
 latest commit:
-   commit c87252834fdc82b188794bf8aa64c0a1d94d0a83
+   commit d511c850dec1d484e3b8ced0fc025be7f9bb54d0
    Author: TheThor59 <ethanhol@yahoo.fr>
-   Date:   Sat Mar 16 18:05:26 2019 +0100
+   Date:   Tue Oct 15 14:23:32 2019 +0200
    
-       Fix readme file
+       Implemented 2 asked feature about hiding bar and info with config
    

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AnimalHusbandryMod.common;
+using Newtonsoft.Json;
+using StardewModdingAPI;
+using StardewValley;
 
 namespace AnimalHusbandryMod.animals.data
 {
@@ -18,6 +20,10 @@ namespace AnimalHusbandryMod.animals.data
         public SheepItem Sheep;
         public GoatItem Goat;
         public PetItem Pet;
+        public DinosaurItem Dinosaur;
+        public List<CustomAnimalItem> CustomAnimals;
+        [JsonIgnore]
+        public ISet<int> SyringeItemsIds;
 
         public AnimalData()
         {
@@ -29,10 +35,19 @@ namespace AnimalHusbandryMod.animals.data
             Sheep = new SheepItem();
             Goat = new GoatItem();
             Pet = new PetItem();
+            Dinosaur = new DinosaurItem();
+            CustomAnimals = new List<CustomAnimalItem>();
+            SyringeItemsIds = new HashSet<int>();
         }
 
-        public AnimalItem getAnimalItem(Animal animalEnum)
+        public AnimalItem GetAnimalItem(FarmAnimal farmAnimal)
         {
+            return GetAnimalItem(farmAnimal.type.Value);
+        }
+
+        public AnimalItem GetAnimalItem(String farmAnimalType)
+        {
+            Animal? animalEnum = AnimalExtension.GetAnimalFromType(farmAnimalType);
             switch (animalEnum)
             {
                 case Animal.Cow:
@@ -49,8 +64,46 @@ namespace AnimalHusbandryMod.animals.data
                     return Sheep;
                 case Animal.Goat:
                     return Goat;
+                case Animal.Dinosaur:
+                    return Dinosaur;
+                case Animal.CustomAnimal:
+                    return CustomAnimals.Find(a => farmAnimalType.Contains(a.Name));
                 default:
-                    throw new ArgumentException("Invalid Animal");
+                    return null;
+            }
+        }
+
+        public void FillLikedTreatsIds()
+        {
+            Dictionary<int, string> objects = DataLoader.Helper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
+            AddTreatIdsFromTreatItems(objects, Cow);
+            AddTreatIdsFromTreatItems(objects, Pig);
+            AddTreatIdsFromTreatItems(objects, Chicken);
+            AddTreatIdsFromTreatItems(objects, Duck);
+            AddTreatIdsFromTreatItems(objects, Rabbit);
+            AddTreatIdsFromTreatItems(objects, Sheep);
+            AddTreatIdsFromTreatItems(objects, Goat);
+            AddTreatIdsFromTreatItems(objects, Dinosaur);
+            AddTreatIdsFromTreatItems(objects, Pet);
+            CustomAnimals.ForEach(customAnimal => AddTreatIdsFromTreatItems(objects, customAnimal));
+        }
+
+        private static void AddTreatIdsFromTreatItems(Dictionary<int, string> objects, TreatItem treatItem)
+        {
+            foreach (object likedTreat in treatItem.LikedTreats)
+            {
+                if (likedTreat is string s)
+                {
+                    KeyValuePair<int, string> pair = objects.FirstOrDefault(o => o.Value.StartsWith(s + "/"));
+                    if (pair.Value != null)
+                    {
+                        treatItem.LikedTreatsId.Add(pair.Key);
+                    }
+                }
+                else if (likedTreat is long l)
+                {
+                    treatItem.LikedTreatsId.Add((int)l);
+                }
             }
         }
     }

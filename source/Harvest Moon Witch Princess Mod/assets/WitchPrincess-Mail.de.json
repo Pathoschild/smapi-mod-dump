@@ -1,0 +1,6 @@
+{
+    ["Wizard"] = "Hallo, @.^Ich habe dir ein Gegenstand arkaner Macht geschickt. Nutze es weise.   ^   -Hexen Prinzessin %item object 422 1 82 1 84 1 70 1 %%";
+    ["wizardJunimoNote"] = "Meine Quelle hat mir berichted das du im Gemeindehaus warst.^Warum stattest du mir nicht ein besuch ab?^Mein Turm ist im Westen vor dem Dorf. Ich habe vielleicht Informationen über dein... 'Ratten Proplem'.^   -Hexen Prinzessin %item quest 1 true %%";
+    ["winter_12_1"] = "@-^Ich erforsche die vergessene Kunst der Schattenwahrnehmung. Ich brauche einen Gegenstand gennant 'Essenz der Leere'. Bringe es zu mir, es springt auch was für dich dabei raus.^ -Hexen Prinzessin %item quest 111 %%";
+    ["winter_5_2"] = "@,^Ich stelle gerade einen Stab mit unglaubglichen Kräfte her.^However, Dafür brauche ich aber noch etwas: Ein Iridium Barren.^Ich würde dir auch das 5x des Marktwertes zu geben. Bringe es mir so schnell zu kannst.^ -Hexen Prinzessin %item quest 123 %%";
+}

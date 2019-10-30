@@ -2,6 +2,7 @@
   "button.awaiting": "割り当てるキーかボタンを押してください...",
   "button.conflict": "そのキーかボタンはすでに割り当てられています",
   "button.esc": "Escキーを押すとキャンセルできます",
+  "location.awaiting": "座標をマウスカーソルで指定してクリックしてください",
   "estimatedprice.title": "推定出荷額",
   "fishinfo.quality": "品質: ",
   "fishinfo.size": "大きさ: {0}センチ",
@@ -9,6 +10,7 @@
   "fishinfo.treasure.appear": "宝箱が出現した",
   "fishinfo.treasure.caught": "宝物をゲットした",
   "fishinfo.treasure.incoming": "{0:f1}秒後に宝箱が出現する",
+  "fishinfo.price": "売値:{0}G",
   "hud.paused": "一時停止中",
   "ladder": "はしごが出現した！",
   "monsters.tally": "{0}: {1}匹",
@@ -65,6 +67,25 @@
   "options.ScavengingRadius": "ゴミ箱を漁る範囲",
   "options.StaminaToEatRatio": "スタミナしきい値",
   "options.UnifyFlowerColors": "花の色を統一する",
+  "options.ShowMousePositionWhenAssigningLocation": "座標指定時にマウス座標を表示",
+  "options.MorePreciseProbabilities": "より正確な確率を計算",
+  "options.TrialOfExamine": "確率の計算試行回数", 
+  "options.ButtonToggleFlowerColorUnification": "花の色の登録/登録解除",
+
+  //RegisterFlowerMenu strings
+  "options.flower": "花:{0}",
+  "options.R": "赤",
+  "options.G": "緑",
+  "options.B": "青",
+  "options.previewColor": "色のプレビュー:",
+  "options.register": "登録",
+
+  //Flower Color Unification register/unregister
+  "flower.register": "{0}の色は統一されます",
+  "flower.unregister": "{0}の色は統一されません",
+  "flower.vanilla": "バニラの花を登録解除することはできません", 
+
+
   "quality.gold": "金",
   "quality.iridium": "イリジウム",
   "quality.normal": "普通",

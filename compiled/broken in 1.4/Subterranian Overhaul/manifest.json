@@ -1,0 +1,11 @@
+{
+  "Name": "SubterranianOverhaul",
+  "Author": "mytigio",
+  "Version": "1.8",
+  "Description": "Changes to the mines to support a mining centric/dwarf playstyle.",
+  "UniqueID": "mytigio.SubterranianOverhaul",
+  "UpdateKeys": [ "Nexus:4149" ],
+  "EntryDll": "SubterranianOverhaul.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

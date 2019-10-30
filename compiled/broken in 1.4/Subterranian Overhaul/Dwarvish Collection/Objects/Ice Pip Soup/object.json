@@ -1,0 +1,49 @@
+{
+  "Name": "Ice Pip Soup",
+  "Description": "A gazpacho served with with Ice Pips to chill and flavor the soup. Refreshing!",
+  "Category": "Cooking",
+  "Edibility": 160,
+  "EdibleBuffs": {
+    "Farming": 0,
+    "Foraging": 0,
+    "Mining": 0,
+    "Fishing": 0,
+    "Luck": 0,
+	"MaxStamina": 75,
+    "Duration": 600,
+  },
+  "Price": 1139,
+  "IsColored": false,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": 161,
+        "Count": 1
+      },
+	  {
+        "Object": 412,
+        "Count": 5
+      },
+	  {
+        "Object": 78,
+        "Count": 5
+      },
+      {
+        "Object": 153,
+        "Count": 4
+      }
+    ],
+    "CanPurchase": true,
+    "PurchaseFrom": "Dwarf",
+    "PurchasePrice": 2506,
+	"GiftTastes":
+	{
+		"Love": ["Krobus","Dwarf"],
+		"Like": ["Maru","Demetrius", "Elliott","Willy","Linus"],
+		"Neutral": ["Wizard"],
+		"Dislike": ["Abigail","Alex", "Caroline", "Clint",  "Emily", "Evelyn", "George", "Gus", "Harvey", "Jas", "Jodi", "Kent", "Lewis", "Marnie", "Pam", "Pierre", "Robin", "Sam", "Sandy", "Shane", "Vincent"],
+		"Hate": ["Leah","Penny","Haley"]
+	},
+  }
+}

@@ -5,11 +5,9 @@ mods:
    Adopt 'n Skin
 
 latest commit:
-   commit faefef3a79ba0ec19bdcb98d95ba7cee53e94d30
+   commit 0cd918842a0395c281d5a71b6796b95d7b2be8a4
    Author: Gathouria <katey.huddleston@gmail.com>
-   Date:   Sat Aug 31 21:47:03 2019 -0700
+   Date:   Wed Oct 9 23:41:00 2019 -0700
    
-       Asset loading error fixed
-       
-       fixed an error in which A&S attempted to remove a skin multiple times, and couldn't find it the second time.
+       Creature renaming added
    

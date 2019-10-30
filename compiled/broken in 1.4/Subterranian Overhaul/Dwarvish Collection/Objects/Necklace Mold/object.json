@@ -1,0 +1,17 @@
+{
+  "Name": "Necklace Mold",
+  "Description": "A clay mold to make basic necklaces.",
+  "Price": 20,
+  "Category": "Junk",
+  "Edibility": -300,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": 330,
+        "Count": 1
+      }
+    ],
+    "IsDefault": true
+  }
+}

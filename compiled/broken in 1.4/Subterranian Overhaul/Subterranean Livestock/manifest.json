@@ -1,0 +1,19 @@
+{
+   "Name": "Subterranean Livestock",
+   "Author": "mytigio",
+   "Version": "1.8",
+   "Description": "Domesticated livestock from the deep caves.",
+   "UniqueID": "mytigio.subterraneanlivestock",
+   "MinimumApiVersion": "2.6",   
+   "UpdateKeys": [ "Nexus:4149" ],
+   "ContentPackFor": {	
+	"UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.9.0"
+   },
+   "Dependencies": [
+	   { "UniqueID": "spacechase0.JsonAssets"},
+	   { "UniqueID": "mytigio.dwarvishcollection", "IsRequired": false }
+	]
+   
+   
+}

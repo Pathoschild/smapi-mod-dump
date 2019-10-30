@@ -37,17 +37,17 @@ namespace PelicanFiber.Framework
         private readonly TextBoxEvent TextBoxEvent;
         private Building NewAnimalHome;
         private int PriceOfAnimal;
-        private readonly Action ShowMainMenu;
+        private readonly Action OnMenuOpened;
         private readonly Func<long> GetNewId;
 
 
         /*********
         ** Public methods
         *********/
-        public BuyAnimalMenu(List<Object> stock, Action showMainMenu, Func<long> getNewId)
+        public BuyAnimalMenu(List<Object> stock, Action onMenuOpened, Func<long> getNewId)
           : base(Game1.viewport.Width / 2 - BuyAnimalMenu.MenuWidth / 2 - IClickableMenu.borderWidth * 2, Game1.viewport.Height / 2 - BuyAnimalMenu.MenuHeight - IClickableMenu.borderWidth * 2, BuyAnimalMenu.MenuWidth + IClickableMenu.borderWidth * 2, BuyAnimalMenu.MenuHeight + IClickableMenu.borderWidth)
         {
-            this.ShowMainMenu = showMainMenu;
+            this.OnMenuOpened = onMenuOpened;
             this.GetNewId = getNewId;
             this.WhereToGo = Game1.player.currentLocation.Name;
 
@@ -124,7 +124,7 @@ namespace PelicanFiber.Framework
                             this.TextBox.Text = this.AnimalBeingPurchased.Name;
                             this.TextBox.Selected = true;
                         }
-                        else if (Game1.player.money >= this.PriceOfAnimal)
+                        else if (Game1.player.Money >= this.PriceOfAnimal)
                         {
                             this.NewAnimalHome = building;
                             this.AnimalBeingPurchased.home = this.NewAnimalHome;
@@ -140,11 +140,11 @@ namespace PelicanFiber.Framework
                                 cue.SetVariable("Pitch", 1200 + Game1.random.Next(-200, 201));
                                 cue.Play();
                             }
-                            Game1.player.money -= this.PriceOfAnimal;
+                            Game1.player.Money -= this.PriceOfAnimal;
                             Game1.addHUDMessage(new HUDMessage("Purchased " + this.AnimalBeingPurchased.type.Value, Color.LimeGreen, 3500f));
                             this.AnimalBeingPurchased = new FarmAnimal(this.AnimalBeingPurchased.type.Value, this.GetNewId(), Game1.player.UniqueMultiplayerID);
                         }
-                        else if (Game1.player.money < this.PriceOfAnimal)
+                        else if (Game1.player.Money < this.PriceOfAnimal)
                             Game1.dayTimeMoneyBox.moneyShakeTimer = 1000;
                     }
                     else
@@ -172,7 +172,7 @@ namespace PelicanFiber.Framework
                     if (textureComponent.containsPoint(x, y) && ((Object)textureComponent.item).Type == null)
                     {
                         int int32 = Convert.ToInt32(textureComponent.name);
-                        if (Game1.player.money >= int32)
+                        if (Game1.player.Money >= int32)
                         {
                             Game1.globalFadeToBlack(this.SetUpForAnimalPlacement);
                             Game1.playSound("smallSelect");
@@ -239,10 +239,6 @@ namespace PelicanFiber.Framework
                 Game1.panScreen(0, 8);
             foreach (Keys pressedKey in Game1.oldKBState.GetPressedKeys())
                 this.receiveKeyPress(pressedKey);
-        }
-
-        public override void receiveRightClick(int x, int y, bool playSound = true)
-        {
         }
 
         public override void performHoverAction(int x, int y)
@@ -364,7 +360,7 @@ namespace PelicanFiber.Framework
                     ((AnimalHouse)this.NewAnimalHome.indoors.Value).animalsThatLiveHere.Add(this.AnimalBeingPurchased.myID.Value);
                     this.NewAnimalHome = null;
                     this.NamingAnimal = false;
-                    Game1.player.money -= this.PriceOfAnimal;
+                    Game1.player.Money -= this.PriceOfAnimal;
                     Game1.globalFadeToBlack(this.SetUpForReturnAfterPurchasingAnimal);
                 }
             }
@@ -393,16 +389,14 @@ namespace PelicanFiber.Framework
             Game1.player.forceCanMove();
             this.Freeze = false;
 
-            Game1.activeClickableMenu = new BuyAnimalMenu(Utility.getPurchaseAnimalStock(), this.ShowMainMenu, this.GetNewId);
+            Game1.activeClickableMenu = new BuyAnimalMenu(Utility.getPurchaseAnimalStock(), this.OnMenuOpened, this.GetNewId);
+            this.OnMenuOpened();
         }
 
         private void BackButtonPressed()
         {
             if (this.readyToClose())
-            {
                 this.exitThisMenu();
-                this.ShowMainMenu();
-            }
         }
 
         private void SetUpForAnimalPlacement()

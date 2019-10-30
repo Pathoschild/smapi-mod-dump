@@ -1,12 +1,12 @@
 ﻿{
   "Name": "Adopt & Skin",
   "Author": "Gathouria",
-  "Version": "2.7.3",
+  "Version": "2.8.1",
   "Description": "Adopt new pets, find wild horses, and randomize and select custom skins for everyone!",
   "UniqueID": "Gathouria.AdoptSkin",
   "EntryDll": "AdoptSkin.dll",
   "MinimumApiVersion": "2.11.0",
-  "UpdateKeys": [ "Nexus:4011" ],
+  "UpdateKeys": [ "Nexus:4011", "ModDrop:600967" ],
   "Dependencies": [
       {
           "UniqueID": "Paritee.BetterFarmAnimalVariety",

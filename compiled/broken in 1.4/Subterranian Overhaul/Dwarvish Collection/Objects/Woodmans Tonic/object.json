@@ -1,0 +1,25 @@
+{
+  "Name": "Woodmans Tonic",
+  "Description": "The magical drink the smells of root and loam.",
+  "Price": 260,
+  "Category": "ArtisanGoods",
+  "Edibility": 45,
+  "EdibleIsDrink": true,
+  "EdibleBuffs": {
+    "Farming": 0,
+    "Foraging": 3,
+    "Mining": 0,
+    "Fishing": 0,
+    "Luck": 0,		
+    "Duration": 360,
+  },
+  "Recipe": null,
+  "GiftTastes":
+	{
+		"Love": ["Robin","Dwarf"],
+		"Like": ["Kent", "Lewis", "Marnie", "Maru", "Pam", "Pierre", "Krobus","Linus"],
+		"Neutral": ["Demetrius", "Elliott", "Emily", "Evelyn", "George","Wizard",  "Willy"],
+		"Dislike": ["Abigail","Alex",  "Harvey", "Jas", "Jodi", "Sam", "Sandy", "Shane", "Vincent","Leah","Penny","Haley"],
+		"Hate": ["Caroline", "Clint",  "Gus"]
+	},
+}

@@ -1,0 +1,8 @@
+{
+  "Name": "Ruby Dust",
+  "Description": "Dust from ground rubies.",
+  "Price": 250,
+  "Category": "Gem",
+  "Edibility": -300,
+  "Recipe": null
+}

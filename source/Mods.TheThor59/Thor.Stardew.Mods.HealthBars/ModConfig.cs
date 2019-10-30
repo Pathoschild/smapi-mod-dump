@@ -10,6 +10,19 @@
         /// If false, always show the life level
         /// </summary>
         public bool EnableXPNeeded { get; set; }
+
+        /// <summary>
+        /// If true, the life text info is hidden
+        /// If false, the text info appear
+        /// </summary>
+        public bool HideTextInfo { get; set; }
+
+        /// <summary>
+        /// If true, the life is hidden if mob has full life
+        /// If false, the life is shown at all time
+        /// </summary>
+        public bool HideFullLifeBar { get; set; }
+
         /// <summary>
         /// Allow selecting the color scheme of the life bar
         /// </summary>
@@ -22,6 +35,8 @@
         {
             EnableXPNeeded = true;
             ColorScheme = 0;
+            HideTextInfo = false;
+            HideFullLifeBar = false;
         }
     }
 }

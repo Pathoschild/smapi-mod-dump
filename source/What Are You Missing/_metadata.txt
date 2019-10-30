@@ -5,9 +5,9 @@ mods:
    What Are You Missing
 
 latest commit:
-   commit e9c8d3be884f64b3ee6399c496ee47544e4a1cd4
+   commit 9d69c6909d07aa6465fdee543e91125b7c1aee5d
    Author: Luke Seewald <lseewald@uwaterloo.ca>
-   Date:   Wed Sep 25 20:09:45 2019 -0400
+   Date:   Sun Oct 6 21:04:04 2019 -0400
    
-       A mix of the release for 1.4.0 and the start of my next patch
+       Some changes to make it more robust with other mods.
    

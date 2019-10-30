@@ -21,7 +21,7 @@ namespace WhatAreYouMissing
         {
             AddCrops();
             AddForagables();
-            AddFruitTrees();
+            AddFruitTrees("spring");
             AddFish();
             //Might need to throw in seeds here later if I want to check if they planted something so I don't need to remind them to plant it
             //Should check and only reccomend to plant things if there is enough time for it to grow before the season ends
@@ -55,40 +55,17 @@ namespace WhatAreYouMissing
 
         private void AddFish()
         {
-            AddFish(Constants.ANCHOVY);
-            AddFish(Constants.SMALLMOUTH_BASS);
-            AddFish(Constants.CATFISH);
-            AddFish(Constants.EEL);
-            AddFish(Constants.SHAD);
-            AddFish(Constants.SUNFISH);
-            AddFish(Constants.HERRING);
-            AddFish(Constants.SARDINE);
-            AddFish(Constants.HALIBUT);
             //The Legend requires level 10 fishing
+            AddNormalSeasonalFish("spring");
             if (Config.ShowAllFishFromCurrentSeason || Game1.player.getEffectiveSkillLevel(1) == 10)
             {
                 AddFish(Constants.LEGEND);
             }
         }
 
-        private void AddFruitTrees()
-        {
-            AddOneCommonObject(Constants.CHEERY);
-            AddOneCommonObject(Constants.APRICOT);
-        }
-
         private void AddCrops()
         {
-            AddCrop(Constants.BLUE_JAZZ);
-            AddCrop(Constants.CAULIFLOWER);
-            AddCrop(Constants.KALE);
-            AddCrop(Constants.PARSNIP);
-            AddCrop(Constants.POTATO);
-            AddCrop(Constants.TULIP);
-            AddCrop(Constants.GREEN_BEAN);
-            //The coffee bean can be purchased from the travelling merchant or found 
-            //in the mines so I'll leave it due to mines and the fact it can grow in summer
-            AddCrop(Constants.COFFEE_BEAN);
+            AddCrops("spring");
 
             if (Utilities.IsMerchantAvailiableAndHasItem(Constants.GARLIC))
             {
@@ -96,7 +73,7 @@ namespace WhatAreYouMissing
             }
             else if (Game1.Date.Year > 1 || Utilities.IsMerchantAvailiableAndHasItem(Constants.GARLIC_SEEDS))
             {
-                AddCrop(Constants.GARLIC);
+                ManuallyAddCrop(Constants.GARLIC);
             }
 
             if (Utilities.IsMerchantAvailiableAndHasItem(Constants.RHUBARB))
@@ -105,7 +82,7 @@ namespace WhatAreYouMissing
             }
             else if (Utilities.IsDesertUnlocked() || Config.ShowItemsFromLockedPlaces || Utilities.IsMerchantAvailiableAndHasItem(Constants.RHUBARB_SEEDS))
             {
-                AddCrop(Constants.RHUBARB);
+                ManuallyAddCrop(Constants.RHUBARB);
             }
 
             if ((Game1.Date.Year == 1 && Game1.Date.DayOfMonth >= 13) || Utilities.IsMerchantAvailiableAndHasItem(Constants.STRAWBERRY))
@@ -114,7 +91,7 @@ namespace WhatAreYouMissing
             }
             else if (Game1.Date.Year > 1)
             {
-                AddCrop(Constants.STRAWBERRY);
+                ManuallyAddCrop(Constants.STRAWBERRY);
             }
         }
 

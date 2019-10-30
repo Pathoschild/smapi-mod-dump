@@ -1,0 +1,10 @@
+﻿{
+	"Name": "Fantastic Frames",
+	"Author": "Taskmaster",
+	"Version": "1.0.3",
+	"Description": "Add customized dialog frames for variety",
+	"UniqueID": "Taskmaster.FantasticFrames",
+	"EntryDll": "FantasticFrames.dll",
+	"MinimumApiVersion": "2.10.0",
+	"UpdateKeys": ["nexus:4540"]
+}

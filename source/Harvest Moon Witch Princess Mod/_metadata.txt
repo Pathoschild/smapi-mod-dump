@@ -5,9 +5,9 @@ mods:
    Harvest Moon Witch Princess Mod
 
 latest commit:
-   commit 2c372e037f9ae64adb443cb7ccde6cecc06d66c2
+   commit d40f6ff7136bc2426d92117c960421d028cc2982
    Author: Sasara2201 <mdounat2201@gmail.com>
-   Date:   Mon Sep 16 19:10:42 2019 +0200
+   Date:   Thu Oct 3 19:11:34 2019 +0200
    
-       Add files via upload
+       Delete ModEntry.cs
    

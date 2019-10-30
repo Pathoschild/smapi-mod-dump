@@ -2,8 +2,11 @@
   "button": "F2",
   "ShowItemsFromLockedPlaces": true,
   "ShowAllFishFromCurrentSeason": false,
+  "AlwaysShowAllFish": false,
   "ShowAllRecipes": false,
   "AlwaysShowAllRecipes": false,
   "CommonAmount": 5,
-  "HighestQualityAmount": 5
+  "HighestQualityAmount": 5,
+  "FishHighestQuality": 2,
+  "DoNotShowCaughtFish": false
 }

@@ -11,10 +11,12 @@ mods:
    Water Retaining Field
 
 latest commit:
-   commit 7d53d401b4c98932a717c87348c12f83cd101ce3
-   Author: Digus-PC\Digus <diguss@gmail.com>
-   Date:   Sun Jul 28 16:00:29 2019 -0300
+   commit 7995acbb0114ace1668eda76e56121f34cfe71c1
+   Merge: 1920cf5 5c86442
+   Author: Digus <32422267+Digus@users.noreply.github.com>
+   Date:   Wed Oct 23 22:29:03 2019 -0300
    
-       WaterRetainingFieldMod 1.0.4
-       - Fix to work inside the greenhouse
+       Merge pull request #14 from Digus/hotfix/animal_husbandry_mod/syring_broken_with_meat_disabled
+       
+       Animal Husbandry Mod 2.4.0
    

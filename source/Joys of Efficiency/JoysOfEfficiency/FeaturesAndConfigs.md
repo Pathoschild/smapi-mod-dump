@@ -13,6 +13,16 @@ Config description will be like:
 
 # Features
 
+## Safe Mode
+If you have experienced CTD or game logic corruption, then try this.
+This will disable patching part of JoE, so it can lower the risk of corruption.
+
+When you enabled this, CraftingFromChests will be disabled.
+
+**[CONFIG]**
+
+- SafeMode("Not on menu" bool, default:false) - whether Safe Mode is enabled.
+
 ## Config Menu
 You can open mod configuration menu when specified key(Default:R).
 You can't disable this feature because it's a core feature.
@@ -26,6 +36,7 @@ You can't disable this feature because it's a core feature.
 
 - FilterBackgroundInMenu("UIs", bool, default:true) - When config menu is opened, outside of it will be darker like inventory menu.
 
+- ShowMousePositionWhenAssigningLocation("UIs", bool, default:true) - When assigning coordinates of window, shows mouse cursor's position.
 
 ## Balanced Mode
 ﻿Did you thought following utilities are a bit cheaty?
@@ -62,14 +73,18 @@ AutoDigArtifactSpot, AutoDepositIngredient, and AutoPullMachineResult.***
 
 - FindCanFromInventory("Automation", bool, default:true) - Find Can from entire inventory or just held by player.
 
+## Auto Refill Watering Can
+You can refill your watering can automatically from nearby water source.
+
+**[CONFIG]**
+
+- AutoRefillWateringCan("Automation", bool, default:true) - whether this utility is enabled.  ﻿
+
 ## Gift Information Tooltip
 ![](https://i.imgur.com/NOYidaU.gif)
 
 ﻿﻿﻿
 ﻿﻿With this utility, you can check how much do villagers like, dislike the gift before giving it to them.
-﻿Text will be localized to languages supported by Stardew Valley itself.
-__(English, German, Japanese, Portuguese, 
-﻿Spanish,﻿﻿ Russian, Simplified Chinese)__
 
 ﻿
 **[CONFIG]**
@@ -234,10 +249,13 @@ MachineRadius("Automation", int, default:1) - How far tiles can be affected by t
 - FishingProbabilitiesInfo("UIs", bool, default:false) - whether this utility is enabled.
 ﻿
 
-- ProbBoxX("UIs", int, default:100) - Base X location of the information box .
-﻿
+- ProbBoxCoordinates("UIs", Point, default:[100,400]) - Top-left coordinates of the window.
 
-- ProbBoxY("UIs", int, default:500) - Base Y location of the information box.
+
+- MorePreciseProbabilities("UIs", bool, default:true) - Displays more plactical and precise probabiilities.
+
+
+- TrialOfExamine("UIs", int, default:10 min:1 max:10) - Trial number of computing probabilities.
 
 ## Crafting From Chests
 This feature lets player craft using contents of nearby chests or fridge as ingredients.
@@ -258,7 +276,7 @@ This utility shows estimated total shipping price when you opened shipping box.
 - EstimateShippingPrice("UIs", bool, default:true) - whether this utility is enabled.
 
 ## Unify Flower Colors
-This utility unifies flower colors to reduce occupying space according to its species.
+This utility unifies flower colors to reduce occupied spaces according to its species.
 In config file, you can change the color using "R, G, B, A" format.
 
 **[CONFIG]**
@@ -280,6 +298,11 @@ In config file, you can change the color using "R, G, B, A" format.
 
 - FairyRoseColor("Misc", Color, default:{216, 191, 216, 255}) - The color of Fairy Rose.
 
+
+- ButtonToggleFlowerColorUnification("Controls", SButton, default: 'L') - The button to register/unregister flowers to unify their colors.
+
+
+- CustomizedFlowerColors("Misc", Dictionary<int, Color>) - Customized flower colors for unification.
 
 ## Auto Loot Treasures
 
@@ -338,7 +361,7 @@ It helps you not to waste in-game time when idling.
 This feature searches trash can and pick up trash without being detected.
 
 
-- PauseWhenIdle("Automation", bool, default:false) - whether this utility is enabled.
+- AutoPickUpTrash("Automation", bool, default:false) - whether this utility is enabled.
 
 
 - ScavengingRadius("Automation", int, default:2 min:1 max:3) - How far tiles can be affected by this utility.

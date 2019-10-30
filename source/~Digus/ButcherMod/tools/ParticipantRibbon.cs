@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AnimalHusbandryMod.animals;
+using AnimalHusbandryMod.animals.data;
 using AnimalHusbandryMod.common;
 using Microsoft.Xna.Framework;
+using PyTK.CustomElementHandler;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Characters;
 using StardewValley.Locations;
@@ -10,7 +13,7 @@ using StardewValley.Tools;
 
 namespace AnimalHusbandryMod.tools
 {
-    public class ParticipantRibbon : MilkPail
+    public class ParticipantRibbon : MilkPail, ISaveElement
     {
         private FarmAnimal _animal;
         private Pet _pet;
@@ -53,7 +56,7 @@ namespace AnimalHusbandryMod.tools
             y = (int)who.GetToolLocation(false).Y;
             Rectangle rectangle = new Rectangle(x - Game1.tileSize / 2, y - Game1.tileSize / 2, Game1.tileSize, Game1.tileSize);
 
-            if (!DataLoader.ModConfig.DisableTreats)
+            if (Context.IsMainPlayer && !DataLoader.ModConfig.DisableAnimalContest)
             {
                 if (location is Farm)
                 {
@@ -101,16 +104,27 @@ namespace AnimalHusbandryMod.tools
                 }
             }
 
+            string dialogue = "";
             if (this._animal != null)
             {
-                string dialogue = "";
                 if (this._animal.isBaby())
                 {
-                    dialogue = DataLoader.i18n.Get("Tool.ParticipantRibbon.CantBeBaby", new { itemName = this.attachments[0].DisplayName });
+                    dialogue = DataLoader.i18n.Get("Tool.ParticipantRibbon.CantBeBaby");
+                }
+                else if (AnimalContestController.HasParticipated(this._animal))
+                {
+                    dialogue = DataLoader.i18n.Get("Tool.ParticipantRibbon.HasAlreadyParticipatedContest", new { animalName = this._animal.displayName });
                 }
                 else if (AnimalContestController.IsParticipant(this._animal))
                 {
-                    dialogue = DataLoader.i18n.Get("Tool.ParticipantRibbon.HasAlreadyParticipatedContest", new { itemName = this.attachments[0].DisplayName });
+                    dialogue = DataLoader.i18n.Get("Tool.ParticipantRibbon.IsAlreadyParticipant", new { animalName = this._animal.displayName});
+                }
+                else if (AnimalContestController.GetNextContestParticipantId() is long nextContestParticipantId)
+                {
+                    string participantName = nextContestParticipantId != AnimalData.PetId
+                        ? AnimalContestController.GetAnimal(nextContestParticipantId).displayName
+                        : Game1.player.getPetName();
+                    dialogue = DataLoader.i18n.Get("Tool.ParticipantRibbon.AnotherParticipantAlready", new { participantName });
                 }
                 else
                 {
@@ -118,20 +132,20 @@ namespace AnimalHusbandryMod.tools
                     this._animal.makeSound();
                     this._animal.pauseTimer = 200;
                 }
-
-
-                if (dialogue.Length > 0)
-                {
-                    DelayedAction.showDialogueAfterDelay(dialogue, 150);
-                    this._animal = null;
-                }
             }
             if (this._pet != null)
             {
-                string dialogue = "";
-                if (false)
+                if (AnimalContestController.IsParticipantPet())
                 {
-                    dialogue = DataLoader.i18n.Get("Tool.ParticipantRibbon.PetCantCondition");
+                    dialogue = DataLoader.i18n.Get("Tool.ParticipantRibbon.IsAlreadyParticipant",
+                        new {animalName = this._pet.displayName});
+                }
+                else if (AnimalContestController.GetNextContestParticipantId() is long nextContestParticipantId)
+                {
+                    string participantName = nextContestParticipantId != AnimalData.PetId 
+                        ? AnimalContestController.GetAnimal(nextContestParticipantId).displayName 
+                        : Game1.player.getPetName();
+                    dialogue = DataLoader.i18n.Get("Tool.ParticipantRibbon.AnotherParticipantAlready", new { participantName });
                 }
                 else
                 {
@@ -140,18 +154,17 @@ namespace AnimalHusbandryMod.tools
                     _pet.Halt();
                     _pet.CurrentBehavior = 0;
                     _pet.Halt();
-                    _pet.Sprite.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>() { new FarmerSprite.AnimationFrame(18, 200) });
+                    _pet.Sprite.setCurrentAnimation(
+                        new List<FarmerSprite.AnimationFrame>() {new FarmerSprite.AnimationFrame(18, 200)});
 
-                }
-
-
-                if (dialogue.Length > 0)
-                {
-                    DelayedAction.showDialogueAfterDelay(dialogue, 150);
-                    this._pet = null;
                 }
             }
-
+            if (dialogue.Length > 0)
+            {
+                DelayedAction.showDialogueAfterDelay(dialogue, 150);
+                this._pet = null;
+                this._animal = null;
+            }
 
             who.Halt();
             int currentFrame = who.FarmerSprite.currentFrame;
@@ -180,7 +193,6 @@ namespace AnimalHusbandryMod.tools
             who.FarmerSprite.oldFrame = currentFrame;
             who.UsingTool = true;
             who.CanMove = false;
-            
 
             return true;
         }
@@ -215,6 +227,23 @@ namespace AnimalHusbandryMod.tools
             }
             who.UsingTool = false;
             who.canReleaseTool = true;
+        }
+
+        public object getReplacement()
+        {
+            return new Object(168, 1);
+        }
+
+        public Dictionary<string, string> getAdditionalSaveData()
+        {
+            Dictionary<string, string> savedata = new Dictionary<string, string>();
+            savedata.Add("name", Name);
+            return savedata;
+        }
+
+        public void rebuild(Dictionary<string, string> additionalSaveData, object replacement)
+        {
+            this.Name = additionalSaveData["name"];
         }
     }
 }

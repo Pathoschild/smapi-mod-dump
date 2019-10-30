@@ -54,6 +54,10 @@ namespace AdoptSkin.Framework
             Dictionary<string, string> farmAnimalData = ModEntry.SHelper.Content.Load<Dictionary<string, string>>("Data/FarmAnimals", ContentSource.GameContent);
             foreach (KeyValuePair<string, string> pair in farmAnimalData)
             {
+                // Ignore unused FarmAnimal type in SDV code
+                if (pair.Key.ToLower() == "hog" || pair.Key.ToLower() == "babyhog")
+                    continue;
+
                 string[] animalInfo = pair.Value.Split(new[] { '/' });
                 string harvestTool = animalInfo[22];
                 int maturedDay = int.Parse(animalInfo[1]);
@@ -179,13 +183,12 @@ namespace AdoptSkin.Framework
 
             // Set configuration for walk-through pets
             foreach (Pet pet in ModApi.GetPets())
-                if (!ModApi.IsStray(pet))
-                {
-                    if (ModEntry.Config.WalkThroughPets)
-                        pet.farmerPassesThrough = true;
-                    else
-                        pet.farmerPassesThrough = false;
-                }
+            {
+                if (ModEntry.Config.WalkThroughPets)
+                    pet.farmerPassesThrough = true;
+                else
+                    pet.farmerPassesThrough = false;
+            }
 
             // Set last known animal count
             ModEntry.AnimalCount = Game1.getFarm().getAllFarmAnimals().Count;
@@ -206,21 +209,15 @@ namespace AdoptSkin.Framework
 
 
             foreach (Pet pet in ModApi.GetPets())
-                // Remove extra Strays left on the map
-                if (ModApi.IsStray(pet))
-                    Game1.removeThisCharacterFromAllLocations(pet);
-                else if (ModEntry.GetLongID(pet) == 0)
+                if (ModEntry.GetLongID(pet) == 0)
                     Entry.AddCreature(pet);
                 else
                     ModEntry.UpdateSkin(pet);
 
             foreach (Horse horse in ModApi.GetHorses())
-                // Remove extra WildHorses left on the map
-                if (ModApi.IsWildHorse(horse))
-                    Game1.removeThisCharacterFromAllLocations(horse);
-                else if (ModApi.IsNotATractor(horse) && ModEntry.GetLongID(horse) == 0)
+                if (ModEntry.GetLongID(horse) == 0)
                     Entry.AddCreature(horse);
-                else if (ModApi.IsNotATractor(horse))
+                else
                     ModEntry.UpdateSkin(horse);
         }
 
@@ -234,12 +231,6 @@ namespace AdoptSkin.Framework
             Dictionary<long, int> petSkinMap = SHelper.Data.ReadSaveData<Dictionary<long, int>>("pet-skin-map") ?? new Dictionary<long, int>();
             foreach (Pet pet in ModApi.GetPets())
             {
-                if (ModApi.IsStray(pet))
-                {
-                    Game1.removeThisCharacterFromAllLocations(pet);
-                    continue;
-                }
-
                 long longID = ModEntry.GetLongID(pet);
                 // Pet unregistered
                 if (longID == 0)
@@ -255,14 +246,6 @@ namespace AdoptSkin.Framework
             Dictionary<long, int> horseSkinMap = SHelper.Data.ReadSaveData<Dictionary<long, int>>("horse-skin-map") ?? new Dictionary<long, int>();
             foreach (Horse horse in ModApi.GetHorses())
             {
-                if (ModApi.IsWildHorse(horse))
-                {
-                    Game1.removeThisCharacterFromAllLocations(horse);
-                    continue;
-                }
-                else if (!ModApi.IsNotATractor(horse))
-                    continue;
-
                 long longID = ModEntry.GetLongID(horse);
                 // Horse unregistered
                 if (longID == 0)
@@ -300,6 +283,9 @@ namespace AdoptSkin.Framework
             // Only allow the host player to save Adopt & Skin data
             if (!Context.IsMainPlayer)
                 return;
+
+            // Ensure strays and wild horses don't persist
+            ModApi.ClearUnownedPets();
 
             // Save skin and category maps
             SHelper.Data.WriteSaveData("skin-map", ModEntry.SkinMap);
@@ -481,71 +467,5 @@ namespace AdoptSkin.Framework
 
             return dict;
         }
-
-        /*/// <summary>
-        /// Checks the list of loaded assets, removes incomplete skin sets
-        /// (i.e. a "sheared" or "baby" skin exists, but not the typical skin, or vice versa where applicable)
-        /// </summary>
-        private static void EnforceSpriteSets()
-        {
-            Dictionary<string, int> skinsToRemove = new Dictionary<string, int>();
-            foreach (KeyValuePair<string, Dictionary<int, AnimalSkin>> pair in ModEntry.Assets)
-            {
-                if (pair.Key.StartsWith("sheared"))
-                {
-                    // Look at the creature type that comes after "sheared"
-                    if (ModEntry.Assets.ContainsKey(pair.Key.Substring(7)))
-                    {
-                        // Make sure every sheared skin has a normal skin variant for its ID
-                        foreach (int id in ModEntry.Assets[pair.Key].Keys)
-                            if (!ModEntry.Assets[pair.Key.Substring(7)].ContainsKey(id) && !skinsToRemove.Contains(new KeyValuePair<string, int>(pair.Key, id)))
-                                skinsToRemove.Add(pair.Key, id);
-
-                        // Since the normal skin has a sheared version, make sure all normal versions have sheared skins
-                        foreach (int id in ModEntry.Assets[pair.Key.Substring(7)].Keys)
-                            if (!ModEntry.Assets[pair.Key].ContainsKey(id) && !skinsToRemove.Contains(new KeyValuePair<string, int>(pair.Key, id)))
-                                skinsToRemove.Add(pair.Key.Substring(7), id);
-                    }
-                    // This sheared skin has no normal skins at all; remove them all
-                    else
-                        foreach (int id in ModEntry.Assets[pair.Key].Keys)
-                            skinsToRemove.Add(pair.Key, id);
-                }
-                else if (pair.Key.StartsWith("baby"))
-                {
-                    // Look at the creature type that comes after "baby"
-                    if (ModEntry.Assets.ContainsKey(pair.Key.Substring(4)))
-                    {
-                        // Make sure every baby skin has a normal skin variant for its ID
-                        foreach (int id in ModEntry.Assets[pair.Key].Keys)
-                            if (!ModEntry.Assets[pair.Key.Substring(4)].ContainsKey(id) && !skinsToRemove.Contains(new KeyValuePair<string, int>(pair.Key, id)))
-                                skinsToRemove.Add(pair.Key, id);
-
-                        // Since the normal skin has a baby version, make sure all normal versions have baby skins
-                        foreach (int id in ModEntry.Assets[pair.Key.Substring(4)].Keys)
-                            if (!ModEntry.Assets[pair.Key].ContainsKey(id) && !skinsToRemove.Contains(new KeyValuePair<string, int>(pair.Key, id)))
-                                skinsToRemove.Add(pair.Key.Substring(4), id);
-                    }
-                    // This baby skin has no normal skins at all; remove them all
-                    else
-                        foreach (int id in ModEntry.Assets[pair.Key].Keys)
-                            if (!skinsToRemove.Contains(new KeyValuePair<string, int>(pair.Key, id)))
-                                skinsToRemove.Add(pair.Key, id);
-                }
-            }
-
-            // Warn player of any incomplete sets and remove them from the Assets dictionary
-            if (skinsToRemove.Count > 0)
-            {
-                ModEntry.SMonitor.Log($"The following skins are incomplete skin sets, and will be removed (missing a paired sheared, baby, or adult skin):\n{string.Join(", ", skinsToRemove)}", LogLevel.Warn);
-
-                foreach (KeyValuePair<string, int> removing in skinsToRemove)
-                    ModEntry.Assets[removing.Key].Remove(removing.Value);
-            }
-
-
-            // ** TODO: Is there a way to check for types, so adults with no baby *or* sheared can be caught? Just make grab adult skin?
-            // -- Cycle through FarmAnimal typing list and check while in there
-        }*/
     }
 }

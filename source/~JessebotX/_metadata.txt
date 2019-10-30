@@ -8,9 +8,9 @@ mods:
    Sprint Sprint Sprint
 
 latest commit:
-   commit f9d8f6fd25ed50553600b8389615c9d33cf5f662
+   commit fc627f30f529ecf50da4fc71c9016aa66812862f
    Author: JessebotX <jessebotx2003@gmail.com>
-   Date:   Sun Sep 15 10:39:03 2019 -0700
+   Date:   Sat Oct 5 13:30:44 2019 -0700
    
-       Added Hello SMAPI 1.0.0
+       updated README
    

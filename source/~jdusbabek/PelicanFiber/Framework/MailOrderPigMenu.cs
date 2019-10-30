@@ -33,18 +33,18 @@ namespace PelicanFiber.Framework
         private Building NewAnimalHome;
         private int PriceOfAnimal;
         private readonly ItemUtils ItemUtils;
-        private readonly Action ShowMainMenu;
+        private readonly Action OnMenuOpened;
         private readonly Func<long> GetNewId;
 
 
         /*********
         ** Public methods
         *********/
-        public MailOrderPigMenu(List<Object> stock, ItemUtils itemUtils, Action showMainMenu, Func<long> getNewId)
+        public MailOrderPigMenu(List<Object> stock, ItemUtils itemUtils, Action onMenuOpened, Func<long> getNewId)
           : base(Game1.viewport.Width / 2 - MailOrderPigMenu.MenuWidth / 2 - IClickableMenu.borderWidth * 2, Game1.viewport.Height / 2 - MailOrderPigMenu.MenuHeight - IClickableMenu.borderWidth * 2, MailOrderPigMenu.MenuWidth + IClickableMenu.borderWidth * 2, MailOrderPigMenu.MenuHeight + IClickableMenu.borderWidth)
         {
             this.ItemUtils = itemUtils;
-            this.ShowMainMenu = showMainMenu;
+            this.OnMenuOpened = onMenuOpened;
             this.GetNewId = getNewId;
 
             this.height += Game1.tileSize;
@@ -126,7 +126,7 @@ namespace PelicanFiber.Framework
                 if (textureComponent.containsPoint(x, y) && ((Object)textureComponent.item).Type == null)
                 {
                     int int32 = Convert.ToInt32(textureComponent.name);
-                    if (Game1.player.money >= int32)
+                    if (Game1.player.Money >= int32)
                     {
                         //Game1.globalFadeToBlack(new Game1.afterFadeFunction(this.setUpForAnimalPlacement), 0.02f);
                         //Game1.globalFadeToBlack(new Game1.afterFadeFunction(this.setUpForAnimalPlacement), 0.02f);
@@ -169,10 +169,6 @@ namespace PelicanFiber.Framework
             Game1.player.forceCanMove();
             Game1.exitActiveMenu();
             Game1.playSound("bigDeSelect");
-        }
-
-        public override void receiveRightClick(int x, int y, bool playSound = true)
-        {
         }
 
         public override void performHoverAction(int x, int y)
@@ -286,7 +282,7 @@ namespace PelicanFiber.Framework
                     ((AnimalHouse)this.NewAnimalHome.indoors.Value).animals.Add(this.AnimalBeingPurchased.myID.Value, this.AnimalBeingPurchased);
                     ((AnimalHouse)this.NewAnimalHome.indoors.Value).animalsThatLiveHere.Add(this.AnimalBeingPurchased.myID.Value);
                     this.NewAnimalHome = null;
-                    Game1.player.money -= this.PriceOfAnimal;
+                    Game1.player.Money -= this.PriceOfAnimal;
                     this.NamingAnimal = false;
 
                     //Game1.globalFadeToBlack(new Game1.afterFadeFunction(this.setUpForReturnAfterPurchasingAnimal), 0.02f);
@@ -321,16 +317,14 @@ namespace PelicanFiber.Framework
             Game1.player.forceCanMove();
             this.Freeze = false;
 
-            Game1.activeClickableMenu = new MailOrderPigMenu(this.ItemUtils.GetPurchaseAnimalStock(), this.ItemUtils, this.ShowMainMenu, this.GetNewId);
+            Game1.activeClickableMenu = new MailOrderPigMenu(this.ItemUtils.GetPurchaseAnimalStock(), this.ItemUtils, this.OnMenuOpened, this.GetNewId);
+            this.OnMenuOpened();
         }
 
         private void BackButtonPressed()
         {
             if (this.readyToClose())
-            {
                 this.exitThisMenu();
-                this.ShowMainMenu();
-            }
         }
 
         private string GetAnimalDescription(string name)

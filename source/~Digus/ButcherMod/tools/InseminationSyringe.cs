@@ -105,6 +105,10 @@ namespace AnimalHusbandryMod.tools
                 {
                     dialogue = DataLoader.i18n.Get("Tool.InseminationSyringe.EggAnimal", new { animalName = this._animal.displayName });
                 }
+                else if (!((ImpregnatableAnimalItem)DataLoader.AnimalData.GetAnimalItem(this._animal)).MinimumDaysUtillBirth.HasValue)
+                {
+                    dialogue = DataLoader.i18n.Get("Tool.InseminationSyringe.CantBeInseminated", new { animalName = this._animal.displayName });
+                }
                 else if (this._animal.isBaby())
                 {
                     dialogue = DataLoader.i18n.Get("Tool.InseminationSyringe.TooYoung", new { animalName = this._animal.displayName });
@@ -177,10 +181,13 @@ namespace AnimalHusbandryMod.tools
 
             if (this._animal != null)
             {
-                Animal? foundAnimal = AnimalExtension.GetAnimalFromType(this._animal.type.Value);
                 who.Stamina -= ((float) 4f - (float)who.FarmingLevel * 0.2f);
-                int daysUtillBirth = (DataLoader.AnimalData.getAnimalItem((Animal)foundAnimal) as ImpregnatableAnimalItem).MinimumDaysUtillBirth;
-                PregnancyController.AddPregancy(new PregnancyItem(this._animal.myID.Value, daysUtillBirth, this._animal.allowReproduction.Value));
+                int daysUtillBirth = ((ImpregnatableAnimalItem) DataLoader.AnimalData.GetAnimalItem(this._animal)).MinimumDaysUtillBirth.Value;
+                if (!DataLoader.ModConfig.DisableContestBonus && AnimalContestController.HasFertilityBonus(_animal))
+                {
+                    daysUtillBirth -=  (int)Math.Round(daysUtillBirth/10.0,MidpointRounding.AwayFromZero);
+                }
+                PregnancyController.AddPregnancy(new PregnancyItem(this._animal.myID.Value, daysUtillBirth, this._animal.allowReproduction.Value));
                 this._animal.allowReproduction.Value = false;
                 --this.attachments[0].Stack;
                 if (this.attachments[0].Stack <= 0)
@@ -208,14 +215,9 @@ namespace AnimalHusbandryMod.tools
 
         public bool CheckCorrectProduct(FarmAnimal animal, StardewValley.Object @object)
         {
-            switch (AnimalExtension.GetAnimalFromType(animal.type.Value))
-            {
-                case Animal.Cow:
-                case Animal.Goat:                    
-                        return animal.defaultProduceIndex.Value == @object.ParentSheetIndex || animal.deluxeProduceIndex.Value == @object.ParentSheetIndex;                    
-                default:                    
-                        return animal.defaultProduceIndex.Value == @object.ParentSheetIndex;
-            }
+            return animal.defaultProduceIndex.Value == @object.ParentSheetIndex 
+                   || (((ImpregnatableAnimalItem)DataLoader.AnimalData.GetAnimalItem(animal)).CanUseDeluxeItemForPregnancy 
+                       && animal.deluxeProduceIndex.Value == @object.ParentSheetIndex) ;
         }
 
         public bool IsEggAnimal(FarmAnimal animal)
@@ -233,11 +235,7 @@ namespace AnimalHusbandryMod.tools
 
         public override bool canThisBeAttached(StardewValley.Object o)
         {
-            if (o == null || o.Category == - 6 || o.ParentSheetIndex == 430 || o.ParentSheetIndex == 440)
-            {
-                return true;
-            }
-            return false;
+            return o == null || DataLoader.AnimalData.SyringeItemsIds.Contains(o.ParentSheetIndex);
         }
 
         public override StardewValley.Object attach(StardewValley.Object o)

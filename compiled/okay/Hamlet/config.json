@@ -1,0 +1,4 @@
+{
+  "ConfigHelper": "To display the candle and skull on the right edge change DisplayOnLeft to false.",
+  "DisplayOnLeft": true
+}

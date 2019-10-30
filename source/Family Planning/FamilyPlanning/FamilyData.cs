@@ -8,7 +8,7 @@ namespace FamilyPlanning
 
         public FamilyData()
         {
-            if(Game1.player.getChildrenCount() > 0)
+            if(Game1.player.getChildrenCount() > 2)
                 TotalChildren = Game1.player.getChildrenCount();
             else
                 TotalChildren = 2;

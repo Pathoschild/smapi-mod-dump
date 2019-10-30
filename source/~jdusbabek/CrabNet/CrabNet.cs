@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using CrabNet.Framework;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using StardewLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Objects;
 using SObject = StardewValley.Object;
-using SFarmer = StardewValley.Farmer;
 
 namespace CrabNet
 {
@@ -19,7 +17,7 @@ namespace CrabNet
         ** Properties
         *********/
         // Local variable for config setting "keybind"
-        private Keys ActionKey;
+        private SButton ActionKey;
 
         // Local variable for config setting "loggingEnabled"
         private bool LoggingEnabled;
@@ -100,20 +98,23 @@ namespace CrabNet
             this.Config = this.Helper.ReadConfig<ModConfig>();
             this.DialogueManager = new DialogueManager(this.Config, helper.Content, this.Monitor);
 
-            SaveEvents.AfterLoad += this.SaveEvents_AfterLoad;
-            ControlEvents.KeyReleased += this.ControlEvents_KeyReleased;
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
         }
 
 
         /*********
         ** Private methods
         *********/
-        private void SaveEvents_AfterLoad(object sender, EventArgs e)
+        /// <summary>Raised after the player loads a save slot.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             if (!Enum.TryParse(this.Config.KeyBind, true, out this.ActionKey))
             {
-                this.ActionKey = Keys.H;
-                this.Monitor.Log("Error parsing key binding. Defaulted to H");
+                this.ActionKey = SButton.H;
+                this.Monitor.Log($"Error parsing key binding; defaulted to {this.ActionKey}.");
             }
 
             this.LoggingEnabled = this.Config.EnableLogging;
@@ -138,12 +139,15 @@ namespace CrabNet
             this.ReadInMessages();
         }
 
-        private void ControlEvents_KeyReleased(object sender, EventArgsKeyPressed e)
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsPlayerFree)
                 return;
 
-            if (e.KeyPressed == this.ActionKey)
+            if (e.Button == this.ActionKey)
             {
                 try
                 {
@@ -153,7 +157,6 @@ namespace CrabNet
                 {
                     this.Monitor.Log($"Exception onKeyReleased: {ex}", LogLevel.Error);
                 }
-
             }
         }
 
@@ -260,7 +263,7 @@ namespace CrabNet
             }
         }
 
-        private bool CheckForAction(SFarmer farmer, CrabPot pot, CrabNetStats stats)
+        private bool CheckForAction(Farmer farmer, CrabPot pot, CrabNetStats stats)
         {
             if (!this.CanAfford(farmer, this.CostPerCheck, stats))
                 return false;
@@ -291,7 +294,7 @@ namespace CrabNet
             return false;
         }
 
-        private bool PerformObjectDropInAction(SObject dropIn, SFarmer farmer, CrabPot pot)
+        private bool PerformObjectDropInAction(SObject dropIn, Farmer farmer, CrabPot pot)
         {
             if (pot.bait.Value != null || farmer.professions.Contains(11))
                 return false;
@@ -301,7 +304,7 @@ namespace CrabNet
             return true;
         }
 
-        private bool AddItemToInventory(SObject obj, SFarmer farmer, Farm farm)
+        private bool AddItemToInventory(SObject obj, Farmer farmer, Farm farm)
         {
             bool wasAdded = false;
 
@@ -379,7 +382,7 @@ namespace CrabNet
             return wasAdded;
         }
 
-        private bool CanAfford(SFarmer farmer, int amount, CrabNetStats stats)
+        private bool CanAfford(Farmer farmer, int amount, CrabNetStats stats)
         {
             // Calculate the running cost (need config passed for that) and determine if additional puts you over.
             return (amount + stats.RunningTotal) <= farmer.Money;

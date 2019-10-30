@@ -4,6 +4,7 @@ using StardewValley.Buildings;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,10 +72,18 @@ namespace AnimalHusbandryMod.animals
                         new Microsoft.Xna.Framework.Rectangle(16, 28, 16, 16), 4f, false);
                 }
             }
-
+            
             if (AnimalContestController.IsParticipant(farmAnimal))
             {
-                animalContestIndicator = new ClickableTextureComponent(new Microsoft.Xna.Framework.Rectangle(this.xPositionOnScreen + AnimalQueryMenu.width + Game1.tileSize + 4, this.yPositionOnScreen + AnimalQueryMenu.height - Game1.tileSize * 4 - IClickableMenu.borderWidth, Game1.tileSize, Game1.tileSize), DataLoader.ToolsSprites, new Microsoft.Xna.Framework.Rectangle(256, 0, 16, 16), 4f, false);
+                if (AnimalContestController.HasWon(farmAnimal))
+                {
+                    animalContestIndicator = new ClickableTextureComponent(new Microsoft.Xna.Framework.Rectangle(this.xPositionOnScreen + AnimalQueryMenu.width + Game1.tileSize + 4, this.yPositionOnScreen + AnimalQueryMenu.height - Game1.tileSize * 4 - IClickableMenu.borderWidth, Game1.tileSize, Game1.tileSize), DataLoader.LooseSprites, new Microsoft.Xna.Framework.Rectangle(AnimalContestController.HasFertilityBonus(this._farmAnimal) ? 48 : 64, 29, 16, 15), 4f, false);
+                }
+                else
+                {
+                    animalContestIndicator = new ClickableTextureComponent(new Microsoft.Xna.Framework.Rectangle(this.xPositionOnScreen + AnimalQueryMenu.width + Game1.tileSize + 4, this.yPositionOnScreen + AnimalQueryMenu.height - Game1.tileSize * 4 - IClickableMenu.borderWidth, Game1.tileSize, Game1.tileSize), DataLoader.ToolsSprites, new Microsoft.Xna.Framework.Rectangle(256, 0, 16, 16), 4f, false);
+                }
+                
             }
 
             if (!DataLoader.ModConfig.DisableMeat && MeatController.CanGetMeatFrom(farmAnimal))
@@ -176,11 +185,19 @@ namespace AnimalHusbandryMod.animals
                     this.populateClickableComponentList();
                     this.currentlySnappedComponent = (ClickableComponent)this.noButton;
                     this.snapCursorToCurrentSnappedComponent();
-                } else if (this.animalContestIndicator?.containsPoint(x, y)??false && AnimalContestController.CanChangeParticipant(this._farmAnimal))
+                } else if ((this.animalContestIndicator?.containsPoint(x, y)??false) && AnimalContestController.CanChangeParticipant(this._farmAnimal))
                 {
                     this.animalContestIndicator = null;
                     AnimalContestController.RemoveAnimalParticipant(this._farmAnimal);
                     Game1.player.addItemByMenuIfNecessary(new ParticipantRibbon());
+                }
+            }
+            else
+            {
+                if(this.yesButton.containsPoint(x, y) && AnimalContestController.CanChangeParticipant(this._farmAnimal))
+                {
+                    AnimalContestController.RemoveAnimalParticipant(this._farmAnimal);
+                    MeatController.ThrowItem(new List<Item>(new Item[]{ new ParticipantRibbon() }), this._farmAnimal);
                 }
             }
 
@@ -213,7 +230,7 @@ namespace AnimalHusbandryMod.animals
                         _hoverText.SetValue(DataLoader.i18n.Get("Menu.AnimalQueryMenu.ExchangeAnimalForMeat"));
                     }
                     else
-                        this.meatButton.scale = Math.Max(4f, this.sellButton.scale - 0.05f);
+                        this.meatButton.scale = Math.Max(4f, this.meatButton.scale - 0.05f);
                 }
                 if (this.pregnantStatus != null)
                 {
@@ -257,18 +274,21 @@ namespace AnimalHusbandryMod.animals
                     {
                         if (AnimalContestController.CanChangeParticipant(this._farmAnimal))
                         {
+                            this.animalContestIndicator.scale = Math.Min(4.1f, this.animalContestIndicator.scale + 0.05f);
                             _hoverText.SetValue(DataLoader.i18n.Get("Menu.AnimalQueryMenu.ChangeParticipant"));
-                        }
-                        else if (AnimalContestController.HasParticipated(this._farmAnimal) && AnimalContestController.HasWon(this._farmAnimal))
-                        {
-                            SDate date = AnimalContestController.GetParticipantDate(this._farmAnimal);
-                            _hoverText.SetValue(DataLoader.i18n.Get("Menu.AnimalQueryMenu.Winner", new { contestDate = Utility.getDateStringFor(date.Day, Utility.getSeasonNumber(date.Season), date.Year) }));
                         }
                         else
                         {
+                            string messageKey = AnimalContestController.HasWon(this._farmAnimal) 
+                                ? "Menu.AnimalQueryMenu.Winner" 
+                                : "Menu.AnimalQueryMenu.ContestParticipant";
                             SDate date = AnimalContestController.GetParticipantDate(this._farmAnimal);
-                            _hoverText.SetValue(DataLoader.i18n.Get("Menu.AnimalQueryMenu.ContestParticipant", new { contestDate = Utility.getDateStringFor(date.Day, Utility.getSeasonNumber(date.Season), date.Year) }));
+                            _hoverText.SetValue(DataLoader.i18n.Get(messageKey, new { contestDate = Utility.getDateStringFor(date.Day, Utility.getSeasonNumber(date.Season), date.Year) }));
                         }
+                    }
+                    else
+                    {
+                        this.animalContestIndicator.scale = Math.Max(4f, this.animalContestIndicator.scale - 0.05f);
                     }
                 }
             }
@@ -314,12 +334,12 @@ namespace AnimalHusbandryMod.animals
                 this.sellButton.draw(b);
                 this.moveHomeButton.draw(b);
                 allowReproductionButton?.draw(b);
-                // START pregancyStatus treatStatus meatButton
+                // START pregnancyStatus treatStatus meatButton
                 animalContestIndicator?.draw(b);
                 pregnantStatus?.draw(b);
                 treatStatus?.draw(b);
                 meatButton?.draw(b);
-                // END PregancyStatus
+                // END PregnancyStatus
                 // ADDED || confirmingMeat
                 if (confirmingSell || confirmingMeat)
                 {

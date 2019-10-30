@@ -1,0 +1,10 @@
+{
+	["rain"] = "700 WizardHouse 2 17 2/1200 WizardHouse 4 13 2/1900 WizardHouse 9 20 2";
+    ["summer"] = "700 WizardHouse 2 17 2/1000 Forest 21 27 2 \"Even I need fresh air sometimes.\"/1200 Woods 7 7 2 \"This area is perfect for concentrating.\"/1700 WizardHouse 4 13 2/1900 WizardHouse 9 20 2";
+    ["fall"] = "700 WizardHouse 2 17 2/1000 Forest 21 27 2 \"You should not be here.\"/1200 Woods 7 7 2 \"This area is full of potent magic.\"/1700 WizardHouse 4 13 2/1900 WizardHouse 9 20 2";
+    ["fall_26"] = "700 Town 51 60 2 \"I'm helping prepare for tomorrow's festivities.\"/1200 Town 26 29 2 \"I'm helping prepare for tomorrow's festivities.\"/1500 Town 20 62 2 \"I'm helping prepare for tomorrow's festivities.\"/1800 WizardHouse 9 20 2";
+    ["fall_27"] = "700 Town 51 60 2/2200 WizardHouse 9 20 2";
+    ["winter"] = "700 WizardHouse 2 17 2/1200 WizardHouse 4 13 2/1900 WizardHouse 9 20 2";
+    ["spring"] = "700 WizardHouse 2 17 2/1000 Forest 21 27 2 \"Even I need fresh air sometimes.\"/1200 Woods 7 7 2 \"This area is perfect for concentrating.\"/1700 WizardHouse 4 13 2/1900 WizardHouse 9 20 2";
+    ["marriage_Thu"] = "800 WizardHouse 9 20 2 \"I have a bit of work to do today. I'll be home soon enough.\"/1200 Woods 7 7 0 \"This area is potent with magical energy.\"/1700 Forest 68 -1 0";
+}

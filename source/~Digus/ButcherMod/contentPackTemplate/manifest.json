@@ -1,0 +1,17 @@
+﻿{
+	"Name": "[AHM] Name of you pack",
+	"Author": "Your name",
+	"Version": "1.0.0",
+	"Description": "Adds configuration of my animal for Animal Husbandry Mod.",
+	"UniqueID": "YourName.YouPackNameForAnimalHusbandry",
+	"MinimumApiVersion": "2.11.2",
+	"UpdateKeys": [],
+	"Dependencies": [
+		{
+			"UniqueID": "YourName.YourOthersPacksAndMods"
+		}
+	],
+	"ContentPackFor": {
+		"UniqueID": "DIGUS.ANIMALHUSBANDRYMOD"
+	}
+}

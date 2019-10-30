@@ -159,19 +159,19 @@ namespace WhatAreYouMissing
             AddOneCommonObject(Constants.PEACH);
 
             AddOneCommonObject(Constants.POMEGRANATE);
-            AddOneCommonObject(Constants.CHEERY);
+            AddOneCommonObject(Constants.CHERRY);
         }
 
         private void AddCommonLakeFish()
         {
-            AddFish(Constants.LARGEMOUTH_BASS);
-            AddFish(Constants.CARP);
-            AddFish(Constants.BULLHEAD);
+            AddOneCommonObject(Constants.LARGEMOUTH_BASS);
+            AddOneCommonObject(Constants.CARP);
+            AddOneCommonObject(Constants.BULLHEAD);
         }
 
         private void AddCommonNightFish()
         {
-            AddFish(Constants.BREAM);
+            AddOneCommonObject(Constants.BREAM);
         }
 
         private void AddCrabPot()
@@ -190,16 +190,16 @@ namespace WhatAreYouMissing
 
         private void AddCommonSpecialtyFish()
         {
-            AddFish(Constants.GHOSTFISH);
+            AddOneCommonObject(Constants.GHOSTFISH);
             
             if(Utilities.IsDesertUnlocked() || Config.ShowItemsFromLockedPlaces || Utilities.CheckMerchantForItemAndSeed(Constants.SANDFISH))
             {
-                AddFish(Constants.SANDFISH);
+                AddOneCommonObject(Constants.SANDFISH);
             }
 
             if(Utilities.IsSecretWoodsUnlocked() || Config.ShowItemsFromLockedPlaces || Utilities.CheckMerchantForItemAndSeed(Constants.WOODSKIP))
             {
-                AddFish(Constants.WOODSKIP);
+                AddOneCommonObject(Constants.WOODSKIP);
             }
         }
 

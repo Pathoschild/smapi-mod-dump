@@ -16,7 +16,7 @@ This is the source code for things that are better than you!
 | ------------ | ------------------ | ------------ | ---------------- | ------------- |
 | Bigger Riverlands Farm | ```BiggerRiverlandsFarm``` | [nexus](https://www.nexusmods.com/stardewvalley/mods/3025) | [source](BiggerRiverlandsFarm), [download source](BiggerRiverlandsFarm/BiggerRiverlandsFarm_SourceCode.zip) | [changelog via nexus](https://www.nexusmods.com/stardewvalley/mods/3025?tab=logs) |
 | Health and Stamina Regeneration | ```HealthStaminaRegen``` | [nexus](https://www.nexusmods.com/stardewvalley/mods/3207) | [source](HealthStaminaRegen), [download source](HealthStaminaRegen/HealthStaminaRegen_Source.zip)  | [changelog](HealthStaminaRegen/changelog.md) |
-| Hello SMAPI | ```Hello SMAPI``` | [https://www.nexusmods.com/stardewvalley/mods/4483] | [source](Hello SMAPI), [download source](Hello SMAPI/Hello SMAPI_Source.zip) | [changelog](Hello SMAPI/changelog.md) |
+| Hello SMAPI | ```Hello SMAPI``` | [nexus](https://www.nexusmods.com/stardewvalley/mods/4483) | [source](Hello SMAPI), [download source](Hello SMAPI/Hello SMAPI_Source.zip) | [changelog](Hello SMAPI/changelog.md) |
 | Sprint Sprint Sprint! | ```Sprint``` | [nexus](https://www.nexusmods.com/stardewvalley/mods/3294), [custom](https://github.com/JessebotX/StardewMods/releases/tag/Sprint) | [source](Sprint), [download source](Sprint/SprintSourceCode.zip) | [changelog](Sprint/changelog.md) |
 
 #### Content Packs

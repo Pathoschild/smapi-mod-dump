@@ -1,0 +1,13 @@
+{
+  "Name": "Gold Diamond Ring",
+  "Description": "A finely crafted diamond ring set in a gold band.",
+  "Price": 3000,
+  "Category": "ArtisanGoods",
+  "Edibility": -300,
+  "Recipe": null,
+  "GiftTastes":
+	{
+		"Love": ["Evelyn", "Gus", "Jodi", "Krobus", "Marnie", "Maru", "Penny", "Willy"],
+		"Like": ["Abigail", "Alex", "Caroline", "Clint", "Demetrius", "Dwarf", "Elliott", "Emily", "George", "Haily", "Harvey", "Jas", "Kent", "Leah", "Lewis", "Linus", "Pam", "Pierre", "Robin", "Sam", "Sandy", "Sebastian", "Shane", "Vincent", "Wizard"]
+	},
+}

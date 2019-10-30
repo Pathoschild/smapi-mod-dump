@@ -1,0 +1,26 @@
+{
+  "Name": "Swordsmans Elixir",
+  "Description": "A drink dripping with speed and power. A swordsman's best friend.",
+  "Price": 465,
+  "Category": "ArtisanGoods",
+  "Edibility": 125,
+  "EdibleIsDrink": true,
+  "EdibleBuffs": {
+    "Farming": 0,
+    "Foraging": 0,
+    "Mining": 0,
+    "Fishing": 0,
+    "Luck": 0,
+	"Attack": 3,
+    "Duration": 360,
+  },
+  "Recipe": null,
+  "GiftTastes":
+	{
+		"Love": ["Kent","Krobus","Dwarf"],
+		"Like": ["Alex","Clint","Linus"],
+		"Neutral": ["Pam", "Pierre", "Robin","Wizard",  "Willy"],
+		"Dislike": ["Abigail", "Caroline", "Elliott",  "Harvey", "Jas", "Jodi", "Lewis", "Marnie", "Maru", "Sam", "Sandy", "Shane", "Vincent"],
+		"Hate": ["Emily", "Evelyn", "George", "Gus","Leah","Penny","Haley"]
+	},
+}

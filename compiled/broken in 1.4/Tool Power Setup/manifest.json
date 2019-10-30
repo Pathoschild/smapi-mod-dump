@@ -1,0 +1,10 @@
+{
+  "Name": "ToolPowerSetup",
+  "Author": "Gilar Fasulaki",
+  "Version": "1.0.2",
+  "Description": "Tool Power Setup lets you setup the power of the watering can and hoe.",
+  "UniqueID": "GilarF.ToolPowerSetup",
+  "EntryDll": "ToolPowerSetup.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": ["Nexus:4517"]
+}

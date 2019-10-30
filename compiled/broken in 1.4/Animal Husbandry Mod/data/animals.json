@@ -9,7 +9,8 @@
       300,
       184
     ],
-    "MinimumDaysUtillBirth": 12
+    "MinimumDaysUtillBirth": 12,
+    "CanUseDeluxeItemForPregnancy": true
   },
   "Pig": {
     "MinimalNumberOfMeat": 4,
@@ -20,7 +21,8 @@
       254,
       276
     ],
-    "MinimumDaysUtillBirth": 18
+    "MinimumDaysUtillBirth": 18,
+    "CanUseDeluxeItemForPregnancy": false
   },
   "Chicken": {
     "MinimalNumberOfMeat": 1,
@@ -58,7 +60,8 @@
     "MaximumNumberOfExtraWool": 1,
     "MinimumNumberOfFeetChances": 0,
     "MaximumNumberOfFeetChances": 4,
-    "MinimumDaysUtillBirth": 9
+    "MinimumDaysUtillBirth": 9,
+    "CanUseDeluxeItemForPregnancy": false
   },
   "Sheep": {
     "MinimalNumberOfMeat": 4,
@@ -71,7 +74,8 @@
     ],
     "MinimumNumberOfExtraWool": 0,
     "MaximumNumberOfExtraWool": 2,
-    "MinimumDaysUtillBirth": 8
+    "MinimumDaysUtillBirth": 8,
+    "CanUseDeluxeItemForPregnancy": false
   },
   "Goat": {
     "MinimalNumberOfMeat": 3,
@@ -84,7 +88,8 @@
       274,
       436
     ],
-    "MinimumDaysUtillBirth": 10
+    "MinimumDaysUtillBirth": 10,
+    "CanUseDeluxeItemForPregnancy": true
   },
   "Pet": {
     "MinimumDaysBetweenTreats": 1,
@@ -93,5 +98,14 @@
       639,
       136
     ]
-  }
+  },
+  "Dinosaur": {
+    "MinimumDaysBetweenTreats": 4,
+    "LikedTreats": [
+      78,
+      18,
+      418
+    ]
+  },
+  "CustomAnimals": []
 }

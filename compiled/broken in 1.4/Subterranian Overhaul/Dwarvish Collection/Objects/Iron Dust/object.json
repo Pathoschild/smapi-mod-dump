@@ -1,0 +1,8 @@
+{
+  "Name": "Iron Dust",
+  "Description": "Dust from ground iron ore.",
+  "Price": 10,
+  "Category": "Metal",
+  "Edibility": -300,
+  "Recipe": null
+}

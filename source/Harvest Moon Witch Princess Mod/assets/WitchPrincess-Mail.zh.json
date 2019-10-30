@@ -1,0 +1,6 @@
+{
+    ["Wizard"] = "Hello, farmer.^I have sent you an item of arcane significance. Use it wisely.   ^   -Witch Princess %item object 422 1 82 1 84 1 70 1 %%";
+    ["wizardJunimoNote"] = "My sources tell me you've been poking around inside the old community center.^Why don't you pay me a visit?^My chambers are west of the forest lake, in the stone tower. I may have information concerning your... 'rat problem'.^   -Witch Princess %item quest 1 true %%";
+    ["winter_12_1"] = "@-^I am researching the forgotten art of shadow divination. I require an item known as 'Void Essence'. Bring it to me and you will be rewarded.^ -Witch Princess %item quest 111 %%";
+    ["winter_5_2"] = "@,^I'm creating an enchanted staff of phenomenal power.^However, I'm missing something: an Iridium Bar.^I'm willing to pay 5x the market value for it. Bring it as soon as you can.^ -Witch Princess %item quest 123 %%";
+}

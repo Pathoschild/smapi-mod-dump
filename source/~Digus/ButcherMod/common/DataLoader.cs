@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using AnimalHusbandryMod.animals;
 using AnimalHusbandryMod.animals.data;
@@ -7,15 +8,19 @@ using AnimalHusbandryMod.cooking;
 using AnimalHusbandryMod.meats;
 using AnimalHusbandryMod.recipes;
 using AnimalHusbandryMod.tools;
+using MailFrameworkMod;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
-using Object = StardewValley.Object;
+using StardewValley.Locations;
 
 namespace AnimalHusbandryMod.common
 {
-    public class DataLoader : IAssetEditor
+    public class DataLoader : IAssetEditor, IAssetLoader
     {
+        private static readonly string[] MeatDishes = { "652", "653", "654", "655", "656", "657", "658", "659", "660", "661", "662", "663", "664", "665", "666" };
+        private static readonly string[] BaseGameAnimals = new string[] { "White Chicken", "Brown Chicken", "Blue Chicken", "Void Chicken", "Duck", "Rabbit", "Dinosaur", "White Cow", "Brown Cow", "Goat", "Pig", "Hog", "Sheep" };
+
         public static IModHelper Helper;
         public static ModConfig ModConfig;
         public static ITranslationHelper i18n;
@@ -24,6 +29,7 @@ namespace AnimalHusbandryMod.common
         public static CookingData CookingData;
         public static AnimalData AnimalData;
         public static AnimalBuildingData AnimalBuildingData;
+        public static AnimalContestData AnimalContestData;
 
         public static String LooseSpritesName;
         public static Texture2D LooseSprites;
@@ -34,6 +40,8 @@ namespace AnimalHusbandryMod.common
 
         public LivingWithTheAnimalsChannel LivingWithTheAnimalsChannel { get; }
 
+        public static Dictionary<string, object> AssetsToLoad = new Dictionary<string, object>();
+        
         public DataLoader(IModHelper helper)
         {
             Helper = helper;
@@ -55,11 +63,19 @@ namespace AnimalHusbandryMod.common
                 RecipeLoader.LoadMails();
             }
 
+            //load treats mail
+            if (!ModConfig.DisableTreats)
+            {
+                LoadTreatsMail();
+            }
+
             // load animal data
             AnimalBuildingData = DataLoader.Helper.Data.ReadJsonFile<AnimalBuildingData>("data\\animalBuilding.json") ?? new AnimalBuildingData();
             DataLoader.Helper.Data.WriteJsonFile("data\\animalBuilding.json", AnimalBuildingData);
             AnimalData = DataLoader.Helper.Data.ReadJsonFile<AnimalData>("data\\animals.json") ?? new AnimalData();
             DataLoader.Helper.Data.WriteJsonFile("data\\animals.json", AnimalData);
+            AnimalContestData = DataLoader.Helper.Data.ReadJsonFile<AnimalContestData>("data\\animalContest.json") ?? new AnimalContestData();
+            DataLoader.Helper.Data.WriteJsonFile("data\\animalContest.json", AnimalContestData);
 
             // look cooking data
             CookingData = Helper.Data.ReadJsonFile<CookingData>("data\\cooking.json") ?? new CookingData();
@@ -74,18 +90,23 @@ namespace AnimalHusbandryMod.common
 
             // add editors (must happen *after* data is initialised above, since SMAPI may reload affected assets immediately)
             var editors = Helper.Content.AssetEditors;
-            //editors.Add(new EventsLoader());
+            var loaders = Helper.Content.AssetLoaders;
+            if (!ModConfig.DisableAnimalContest)
+            {
+                editors.Add(new EventsLoader());
+                loaders.Add(this);
+            }
             editors.Add(ToolsLoader);
+            editors.Add(this);
             if (!ModConfig.DisableMeat)
             {
-                editors.Add(this);
                 editors.Add(RecipeLoader);
             }
         }
 
         public bool CanEdit<T>(IAssetInfo asset)
         {
-            return asset.AssetNameEquals("Data\\ObjectInformation") || asset.AssetNameEquals("Data\\Bundles") || asset.AssetNameEquals("Data\\NPCGiftTastes");
+            return (!ModConfig.DisableMeat && (asset.AssetNameEquals("Data\\ObjectInformation") || asset.AssetNameEquals("Data\\Bundles") || asset.AssetNameEquals("Data\\NPCGiftTastes"))) || asset.AssetNameEquals("Data\\FarmAnimals");
         }
 
         public void Edit<T>(IAssetData asset)
@@ -188,9 +209,51 @@ namespace AnimalHusbandryMod.common
                 AddNpcGiftTaste(data, "Sandy", Taste.Hate, "661");
                 AddNpcGiftTaste(data, "Vincent", Taste.Love, "659");
             }
+            else if (asset.AssetNameEquals("Data\\FarmAnimals"))
+            {
+                AddCustomAnimalsTemplate();
+            }
         }
 
-        private static string[] MeatDishes = { "652", "653", "654", "655", "656", "657", "658", "659", "660", "661", "662", "663", "664", "665", "666" };
+        public bool CanLoad<T>(IAssetInfo asset)
+        {
+            return AssetsToLoad.ContainsKey(asset.AssetName);
+        }
+
+        public T Load<T>(IAssetInfo asset)
+        {
+            return (T)AssetsToLoad[asset.AssetName];
+        }
+
+        private static void LoadTreatsMail()
+        {
+            MailDao.SaveLetter(
+                new Letter(
+                    "DinosaursFirtTreat"
+                    , DataLoader.i18n.Get("Feeding.TreatDaffodil.Letter")
+                    , (letter) => !Game1.player.mailReceived.Contains(letter.Id)
+                                  && Game1.getLocationFromName("ArchaeologyHouse") is LibraryMuseum libraryMuseum
+                                  && libraryMuseum.museumAlreadyHasArtifact(107)
+                    , (letter) => Game1.player.mailReceived.Add(letter.Id)
+                )
+            );
+
+            MailDao.SaveLetter(
+                new Letter(
+                    "DinosaursSecondTreat"
+                    , DataLoader.i18n.Get("Feeding.TreatCrocus.Letter")
+                    , (letter) => !Game1.player.mailReceived.Contains(letter.Id) 
+                                  && Game1.getLocationFromName("ArchaeologyHouse") is LibraryMuseum libraryMuseum
+                                  && MuseumContainsTheseItems(new int[] { 579, 580, 581, 582, 583, 584, 585 }, new HashSet<int>(libraryMuseum.museumPieces.Values))
+                    , (letter) => Game1.player.mailReceived.Add(letter.Id)
+                )
+            );
+        }
+
+        private static bool MuseumContainsTheseItems(IEnumerable<int> items, ISet<int> museumItems)
+        {
+            return items.All(museumItems.Contains);
+        }
 
         private static void AddUniversalGiftTaste(IDictionary<string, string> data, Taste taste, params string[] values)
         {
@@ -217,6 +280,92 @@ namespace AnimalHusbandryMod.common
                 tastes[(int)taste] = currentValues.Trim();
                 data[npc] = String.Join("/",tastes);
             }
+        }
+
+        public void AddCustomAnimalsTemplate(string command = null, string[] args = null)
+        {
+            var data = Helper.Content.Load<Dictionary<string, string>>("Data\\FarmAnimals", ContentSource.GameContent);
+            Dictionary<int, string> objects =  null;
+            bool animalDataChanged = false;
+            ISet<int> syringeItemsIds = new HashSet<int>();
+            
+            foreach (KeyValuePair<string, string> farmAnimal in data)
+            {
+                if (!BaseGameAnimals.Contains(farmAnimal.Key))
+                {
+                    if (!DataLoader.AnimalData.CustomAnimals.Exists(a => farmAnimal.Key.Contains(a.Name)))
+                    {
+                        AnimalHusbandryModEntry.monitor.Log($"Creating template in animal.json for {farmAnimal.Key}.", LogLevel.Trace);
+                        CustomAnimalItem customAnimalItem = new CustomAnimalItem(farmAnimal.Key);
+                        DataLoader.AnimalData.CustomAnimals.Add(customAnimalItem);
+                        animalDataChanged = true;
+                        int meatIndex = Convert.ToInt32(farmAnimal.Value.Split('/')[23]);
+                        objects = objects ?? Helper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
+                        if (objects.ContainsKey(meatIndex))
+                        {
+                            int meatPrice = Convert.ToInt32(objects[meatIndex].Split('/')[1]);
+                            if (meatPrice > 0)
+                            {
+                                int animalPrice = Convert.ToInt32(farmAnimal.Value.Split('/')[24]);
+                                customAnimalItem.MinimalNumberOfMeat = Math.Max(1, (int)Math.Round((animalPrice * 0.3) / meatPrice, MidpointRounding.AwayFromZero));
+                                customAnimalItem.MaximumNumberOfMeat = Math.Max(1, (int)Math.Round((animalPrice * 1.3) / meatPrice, MidpointRounding.AwayFromZero));
+
+                            }
+                        }
+                    }
+                }
+
+                if (!ModConfig.DisablePregnancy)
+                {
+                    AnimalItem animalItem = DataLoader.AnimalData.GetAnimalItem(farmAnimal.Key);
+                    if (animalItem is ImpregnatableAnimalItem impregnatableAnimalItem)
+                    {
+                        try
+                        {
+                            if (impregnatableAnimalItem.MinimumDaysUtillBirth.HasValue)
+                            {
+                                syringeItemsIds.Add(Convert.ToInt32(farmAnimal.Value.Split('/')[2]));
+                                if (impregnatableAnimalItem.CanUseDeluxeItemForPregnancy)
+                                {
+                                    syringeItemsIds.Add(Convert.ToInt32(farmAnimal.Value.Split('/')[3]));
+                                }
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            AnimalHusbandryModEntry.monitor.Log($"Item to use in the syringe for {farmAnimal.Key} was not indentified.", LogLevel.Warn);
+                        }
+                    }
+                }
+            }
+
+            AnimalData.SyringeItemsIds = syringeItemsIds;
+            if (animalDataChanged)
+            {
+                Helper.Data.WriteJsonFile("data\\animals.json", DataLoader.AnimalData);
+            }
+        }
+
+        public void LoadContentPacksCommand(string command = null, string[] args = null)
+        {
+            foreach (IContentPack contentPack in Helper.ContentPacks.GetOwned())
+            {
+                if (File.Exists(Path.Combine(contentPack.DirectoryPath, "customAnimals.json")))
+                {
+                    AnimalHusbandryModEntry.monitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
+                    List<CustomAnimalItem> customAnimalItems = contentPack.ReadJsonFile<List<CustomAnimalItem>>("customAnimals.json");
+                    foreach (CustomAnimalItem customAnimalItem in customAnimalItems)
+                    {
+                        DataLoader.AnimalData.CustomAnimals.RemoveAll(c => c.Name.Contains(customAnimalItem.Name));
+                        DataLoader.AnimalData.CustomAnimals.Add(customAnimalItem);
+                    }
+                }
+                else
+                {
+                    AnimalHusbandryModEntry.monitor.Log($"Ignoring content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have an customAnimals.json file.", LogLevel.Warn);
+                }
+            }
+            AnimalData.FillLikedTreatsIds();
         }
 
         enum Taste {

@@ -1,0 +1,10 @@
+﻿{
+	"Name": "Hamlet SDV Mod",
+	"Author": "Taskmaster",
+	"Version": "1.0.0",
+	"Description": "Adds a little Halloween atmosphere",
+	"UniqueID": "Taskmaster.Hamlet",
+	"EntryDll": "Hamlet.dll",
+	"MinimumApiVersion": "2.10.0",
+	"UpdateKeys": ["Nexus:4601"]
+}

@@ -11,9 +11,9 @@ mods:
    Customize Cursor Sprite
 
 latest commit:
-   commit d4917f1777a86903f9cddbac69fa8825d54fcd26
+   commit 9acc2cfc9de4573d3a421b62846585f88968243e
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Thu Aug 22 11:48:37 2019 +0100
+   Date:   Sat Oct 26 22:30:10 2019 +0100
    
-       [BetterMixedSeeds] Added compatibility with Gems and Mineral Crops
+       [BetterMixedSeeds] Add compatibility with Mouse-Ear Cress
    

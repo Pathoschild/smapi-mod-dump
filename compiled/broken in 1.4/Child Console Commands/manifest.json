@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Child Console Commands",
+  "Author": "Loe2run",
+  "Version": "1.0.0",
+  "Description": "Adds console commands to add/remove/age children (without a spouse).",
+  "UniqueID": "Loe2run.ChildConsoleCommands",
+  "EntryDll": "ChildConsoleCommands.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ ]
+}

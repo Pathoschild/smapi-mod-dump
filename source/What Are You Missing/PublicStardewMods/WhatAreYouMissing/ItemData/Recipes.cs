@@ -52,7 +52,7 @@ namespace WhatAreYouMissing
 
         private bool ShouldRecipeBeAdded(string key)
         {
-            return ModEntry.Config.ShowAllRecipes || ModEntry.Config.AlwaysShowAllRecipes || Game1.player.cookingRecipes.ContainsKey(key);
+            return ModEntry.modConfig.ShowAllRecipes || ModEntry.modConfig.AlwaysShowAllRecipes || Game1.player.cookingRecipes.ContainsKey(key);
         }
     }
 

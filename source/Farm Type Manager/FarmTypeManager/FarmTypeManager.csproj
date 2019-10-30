@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,43 +48,71 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\TimedSpawn.cs" />
     <Compile Include="Commands\WhereAmI.cs" />
-    <Compile Include="Config Classes\Data\ContentPackSaveData.cs" />
-    <Compile Include="Config Classes\Data\FarmData.cs" />
-    <Compile Include="Config Classes\FarmConfig\OreSettings.cs" />
-    <Compile Include="Config Classes\FarmConfig\SpawnArea\SpawnArea.cs" />
-    <Compile Include="Config Classes\FarmConfig\SpawnArea\LargeObjectSpawnArea.cs" />
-    <Compile Include="Config Classes\FarmConfig\SpawnArea\ForageSpawnArea.cs" />
-    <Compile Include="Config Classes\FarmConfig\SpawnArea\OreSpawnArea.cs" />
-    <Compile Include="Config Classes\FarmConfig\LargeObjectSettings.cs" />
-    <Compile Include="Config Classes\FarmConfig\ExtraConditions.cs" />
-    <Compile Include="Config Classes\FarmConfig\FileConditions.cs" />
-    <Compile Include="Config Classes\Data\InternalSaveData.cs" />
-    <Compile Include="Config Classes\FarmConfig\FarmConfig.cs" />
-    <Compile Include="Config Classes\FarmConfig\ForageSettings.cs" />
-    <Compile Include="Config Classes\ModConfig.cs" />
+    <Compile Include="Classes\Config\Data\ContentPackSaveData.cs" />
+    <Compile Include="Classes\Config\Data\FarmData.cs" />
+    <Compile Include="Classes\SavedObject.cs" />
+    <Compile Include="Classes\Config\FarmConfig\MonsterSettings.cs" />
+    <Compile Include="Classes\Config\FarmConfig\SpawnTiming.cs" />
+    <Compile Include="Classes\Config\FarmConfig\OreSettings.cs" />
+    <Compile Include="Classes\Config\FarmConfig\SpawnArea\MonsterSpawnArea.cs" />
+    <Compile Include="Classes\Config\FarmConfig\SpawnArea\SpawnArea.cs" />
+    <Compile Include="Classes\Config\FarmConfig\SpawnArea\LargeObjectSpawnArea.cs" />
+    <Compile Include="Classes\Config\FarmConfig\SpawnArea\ForageSpawnArea.cs" />
+    <Compile Include="Classes\Config\FarmConfig\SpawnArea\OreSpawnArea.cs" />
+    <Compile Include="Classes\Config\FarmConfig\LargeObjectSettings.cs" />
+    <Compile Include="Classes\Config\FarmConfig\ExtraConditions.cs" />
+    <Compile Include="Classes\Config\FarmConfig\FileConditions.cs" />
+    <Compile Include="Classes\Config\Data\InternalSaveData.cs" />
+    <Compile Include="Classes\Config\FarmConfig\FarmConfig.cs" />
+    <Compile Include="Classes\Config\FarmConfig\ForageSettings.cs" />
+    <Compile Include="Classes\Config\ModConfig.cs" />
+    <Compile Include="Classes\MonsterType.cs" />
+    <Compile Include="Generation Routines\MonsterGeneration.cs" />
+    <Compile Include="Classes\In-Game\Monsters\GrubFTM.cs" />
+    <Compile Include="Classes\In-Game\Monsters\RockGolemFTM.cs" />
+    <Compile Include="Classes\In-Game\Monsters\BigSlimeFTM.cs" />
+    <Compile Include="Classes\In-Game\Monsters\FlyFTM.cs" />
+    <Compile Include="Classes\In-Game\Monsters\GhostFTM.cs" />
+    <Compile Include="Classes\In-Game\Monsters\BatFTM.cs" />
+    <Compile Include="Classes\In-Game\Monsters\DuggyFTM.cs" />
+    <Compile Include="Classes\In-Game\Monsters\ICustomDamage.cs" />
+    <Compile Include="Classes\In-Game\Monsters\SquidKidFTM.cs" />
+    <Compile Include="Classes\In-Game\Monsters\SerpentFTM.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Generation Routines\OreGeneration.cs" />
     <Compile Include="Generation Routines\LargeObjectGeneration.cs" />
     <Compile Include="Generation Routines\ForageGeneration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Classes\StardewTime.cs" />
+    <Compile Include="Utility\Locations\GetTMXBuildableName.cs" />
+    <Compile Include="Utility\Locations\GetAllLocationsFromName.cs" />
+    <Compile Include="Utility\Loading\LoadModConfig.cs" />
     <Compile Include="Utility\Properties.cs" />
     <Compile Include="Utility\Conditions\CheckExtraConditions.cs" />
     <Compile Include="Utility\Conditions\CheckFileConditions.cs" />
     <Compile Include="Utility\Loading\LoadFarmData.cs" />
     <Compile Include="Utility\Loading\ValidateFarmData.cs" />
-    <Compile Include="Utility\Spawning\SpawnOre.cs" />
+    <Compile Include="Utility\Spawning\Monsters\ApplyMonsterSettings.cs" />
+    <Compile Include="Utility\Clone.cs" />
+    <Compile Include="Utility\Spawning\PopulateTimedSpawnList.cs" />
+    <Compile Include="Generation Routines\SpawnTimedSpawns.cs" />
+    <Compile Include="Utility\Spawning\Monsters\ValidateMonsterTypes.cs" />
+    <Compile Include="Utility\Spawning\Forage\GetIDsFromObjects.cs" />
+    <Compile Include="Utility\Spawning\Monsters\SpawnMonster.cs" />
+    <Compile Include="Utility\Spawning\Ore\SpawnOre.cs" />
     <Compile Include="Utility\Spawning\AdjustedSpawnCount.cs" />
-    <Compile Include="Utility\Spawning\GetLargeObjectIDs.cs" />
-    <Compile Include="Utility\Spawning\AdjustedSpawnChances.cs" />
+    <Compile Include="Utility\Spawning\Large Objects\GetLargeObjectIDs.cs" />
+    <Compile Include="Utility\Spawning\Ore\AdjustedSpawnChances.cs" />
     <Compile Include="Utility\Expiration\ProcessObjectExpiration.cs" />
     <Compile Include="Utility\Expiration\ReplaceProtectedSpawnsOvernight.cs" />
     <Compile Include="Utility\Tiles\GetTilesByIndex.cs" />
     <Compile Include="Utility\Tiles\GetTilesByProperty.cs" />
     <Compile Include="Utility\Tiles\GenerateTileList.cs" />
     <Compile Include="Utility\Tiles\GetTilesByVectorString.cs" />
-    <Compile Include="Utility\Spawning\SpawnForage.cs" />
-    <Compile Include="Utility\Spawning\SpawnLargeObject.cs" />
+    <Compile Include="Utility\Spawning\Forage\SpawnForage.cs" />
+    <Compile Include="Utility\Spawning\Large Objects\SpawnLargeObject.cs" />
     <Compile Include="Utility\Tiles\IsTileValid.cs" />
   </ItemGroup>
   <ItemGroup>

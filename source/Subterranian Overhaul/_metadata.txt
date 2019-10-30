@@ -1,0 +1,13 @@
+url:
+   https://github.com/mytigio/SDVMods.git
+
+mods:
+   Subterranian Overhaul
+
+latest commit:
+   commit dce9951c38a721094ae6ec12ddc116e5da835295
+   Author: Robert Howe <mytigio+github@gmail.com>
+   Date:   Sat Sep 28 18:30:59 2019 -0600
+   
+       more work on trees. started voidshroom tree seeds, but so far can't get the sprites to load
+   

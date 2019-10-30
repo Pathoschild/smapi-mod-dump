@@ -1,0 +1,261 @@
+{
+	"Format": "1.9",
+	"ConfigSchema": {
+		"DaysToMatureCopperCrab":{
+			"AllowValues": "0,1,2,3,4,5,6,7,8,9,10",
+			"Default": "3"
+		},
+		"Copper_DaysBetweenHarvest":{
+			"AllowValues": "1,2,3,4,5,6,7,8,9,10",
+			"Default": "1"
+		},
+		"DaysToMatureIronCrab":{
+			"AllowValues": "0,1,2,3,4,5,6,7,8,9,10",
+			"Default": "3"
+		},
+		"Iron_DaysBetweenHarvest":{
+			"AllowValues": "1,2,3,4,5,6,7,8,9,10",
+			"Default": "2"
+		},
+		"DaysToMatureGoldCrab":{
+			"AllowValues": "0,1,2,3,4,5,6,7,8,9,10",
+			"Default": "3"
+		},
+		"Gold_DaysBetweenHarvest":{
+			"AllowValues": "1,2,3,4,5,6,7,8,9,10",
+			"Default": "3"
+		},
+		"DaysToMatureIridiumCrab":{
+			"AllowValues": "0,1,2,3,4,5,6,7,8,9,10",
+			"Default": "3"
+		},
+		"Iridium_DaysBetweenHarvest":{
+			"AllowValues": "1,2,3,4,5,6,7,8,9,10",
+			"Default": "4"
+		},
+		"DaysToMatureMoleRat":{
+			"AllowValues": "0,1,2,3,4,5,6,7,8,9,10",
+			"Default": "3"
+		},
+		"Molerat_DaysBetweenHarvest":{
+			"AllowValues": "0,1,2,3,4,5,6,7,8,9,10",
+			"Default": "2"
+		},
+		"NonCustomCopperDeluxe":{
+			"AllowValues": "378,334",
+			"Default": "378"
+		},
+		"NonCustomIronDeluxe":{
+			"AllowValues": "380,335",
+			"Default": "380"
+		},
+		"NonCustomGoldDeluxe":{
+			"AllowValues": "384,336",
+			"Default": "384"
+		},
+		"NonCustomIridiumDeluxe":{
+			"AllowValues": "386,337",
+			"Default": "386"
+		}
+	},
+	"DynamicTokens": [
+		{
+			"Name": "DeluxeCopperDrop",
+			"Value": "{{NonCustomCopperDeluxe}}",
+			"When": {
+				"HasMod:mytigio.dwarvishcollection":false
+			}		
+		},
+		{
+			"Name": "DeluxeCopperDrop",
+			"Value": "{{spacechase0.JsonAssets/ObjectId:Copper Cluster}}",
+			"When": {
+				"HasMod": "mytigio.dwarvishcollection"
+			}
+		},
+		{
+			"Name": "DeluxeIronDrop",
+			"Value": "{{NonCustomIronDeluxe}}",
+			"When": {
+				"HasMod:mytigio.dwarvishcollection":false
+			}	
+		},
+		{
+			"Name": "DeluxeIronDrop",
+			"Value": "{{spacechase0.JsonAssets/ObjectId:Iron Cluster}}",
+			"When": {
+				"HasMod": "mytigio.dwarvishcollection"
+			}
+		},		
+		{
+			"Name": "DeluxeGoldDrop",
+			"Value": "{{NonCustomGoldDeluxe}}",
+			"When": {
+				"HasMod:mytigio.dwarvishcollection":false
+			}	
+		},
+		{
+			"Name": "DeluxeGoldDrop",
+			"Value": "{{spacechase0.JsonAssets/ObjectId:Gold Cluster}}",
+			"When": {
+				"HasMod": "mytigio.dwarvishcollection"
+			}
+		},
+		{
+			"Name": "DeluxeIridiumDrop",
+			"Value": "{{NonCustomIridiumDeluxe}}",
+			"When": {
+				"HasMod:mytigio.dwarvishcollection":false
+			}	
+		},
+		{
+			"Name": "DeluxeIridiumDrop",
+			"Value": "{{spacechase0.JsonAssets/ObjectId:Iridium Cluster}}",
+			"When": {
+				"HasMod": "mytigio.dwarvishcollection"
+			}
+		}
+	],
+	"Changes": [
+		// ------------------------------------------------------------------------
+		// Update Shearing Messages
+		// ------------------------------------------------------------------------
+		{
+			"Action": "EditData",
+			"Target": "Strings/StringsFromCSFiles",
+			"Entries":{
+				"Shears.cs.14245": "{0} can't be sheared.",
+				"Shears.cs.14247": "{0} cannot be sheared right now."
+			}
+		},
+		// ------------------------------------------------------------------------
+		// Data/FarmAnimals Entry
+		// ------------------------------------------------------------------------		
+		{
+		  "Action": "EditData",
+		  "Target": "Data/FarmAnimals",
+		  "Entries": {
+			"Grub": "1/0/684/684/cavedrip/8/32/48/32/8/32/48/32/0/false/Coop/16/16/16/16/1/8/null/684/400/Grub/Coop"
+		  }
+		},		
+		{
+			"Action": "EditData",
+			"Target": "Data/FarmAnimals",
+			"Entries": {
+				"CopperCrab": "{{Copper_DaysBetweenHarvest}}/{{DaysToMatureCopperCrab}}/378/{{DeluxeCopperDrop}}/stoneCrack/8/32/48/32/8/32/48/32/1/true/Coop/16/16/16/16/1/8/Shears/717/800/Copper Crab/Coop"
+			}
+		},		
+		{
+		  "Action": "EditData",
+		  "Target": "Data/FarmAnimals",
+		  "Entries": {
+			"IronCrab": "{{Iron_DaysBetweenHarvest}}/{{DaysToMatureIronCrab}}/380/{{DeluxeIronDrop}}/stoneCrack/8/32/48/32/8/32/48/32/1/true/Coop/16/16/16/16/1/8/Shears/717/1200/Iron Crab/Coop"
+		  }
+		},
+		{
+		  "Action": "EditData",
+		  "Target": "Data/FarmAnimals",
+		  "Entries": {
+			"GoldCrab": "{{Gold_DaysBetweenHarvest}}/{{DaysToMatureGoldCrab}}/384/{{DeluxeGoldDrop}}/stoneCrack/8/32/48/32/8/32/48/32/1/true/Coop/16/16/16/16/1/8/Shears/717/1600/Gold Crab/Coop"
+		  }
+		},
+		{
+		  "Action": "EditData",
+		  "Target": "Data/FarmAnimals",
+		  "Entries": {
+			"IridiumCrab": "{{Iridium_DaysBetweenHarvest}}/{{DaysToMatureIridiumCrab}}/386/{{DeluxeIridiumDrop}}/stoneCrack/8/32/48/32/8/32/48/32/1/true/Coop/16/16/16/16/1/8/Shears/717/3200/Iridium Crab/Coop"
+		  }
+		},
+		{
+		  "Action": "EditData",
+		  "Target": "Data/FarmAnimals",
+		  "Entries": {
+			"NakedMoleRat": "{{Molerat_DaysBetweenHarvest}}/{{DaysToMatureMoleRat}}/184/184/rabbit/36/64/64/64/36/64/64/64/1/false/Barn/32/32/32/32/15/5/Milk Pail/639/500/Naked Mole Rat/Barn",
+		  }
+		},
+		// ------------------------------------------------------------------------
+		// Sprites
+		// ------------------------------------------------------------------------
+		{
+		  "Action": "Load",
+		  "Target": "Animals/Grub",
+		  "FromFile": "assets/FarmGrub.png"
+		},
+		{
+		  "Action": "Load",
+		  "Target": "Animals/BabyGrub",
+		  "FromFile": "assets/FarmGrub.png"
+		},
+		{
+		  "Action": "Load",
+		  "Target": "Animals/CopperCrab",
+		  "FromFile": "assets/RockCrabFarmAnimal.png"
+		},
+		{
+		  "Action": "Load",
+		  "Target": "Animals/ShearedCopperCrab",
+		  "FromFile": "assets/ShearedRockCrabFarmAnimal.png"
+		},
+		{
+		  "Action": "Load",
+		  "Target": "Animals/BabyCopperCrab",
+		  "FromFile": "assets/BabyRockCrabFarmAnimal.png"
+		},
+		{
+		  "Action": "Load",
+		  "Target": "Animals/IronCrab",
+		  "FromFile": "assets/IronCrabFarmAnimal.png"
+		},
+		{
+		  "Action": "Load",
+		  "Target": "Animals/ShearedIronCrab",
+		  "FromFile": "assets/ShearedIronCrabFarmAnimal.png"
+		},
+		{
+		  "Action": "Load",
+		  "Target": "Animals/BabyIronCrab",
+		  "FromFile": "assets/BabyIronCrabFarmAnimal.png"
+		},
+		{
+		  "Action": "Load",
+		  "Target": "Animals/GoldCrab",
+		  "FromFile": "assets/GoldCrabFarmAnimal.png"
+		},
+		{
+		  "Action": "Load",
+		  "Target": "Animals/ShearedGoldCrab",
+		  "FromFile": "assets/ShearedGoldCrabFarmAnimal.png"
+		},
+		{
+		  "Action": "Load",
+		  "Target": "Animals/BabyGoldCrab",
+		  "FromFile": "assets/BabyGoldCrabFarmAnimal.png"
+		},
+		{
+		  "Action": "Load",
+		  "Target": "Animals/IridiumCrab",
+		  "FromFile": "assets/IridiumCrabFarmAnimal.png"
+		},
+		{
+		  "Action": "Load",
+		  "Target": "Animals/ShearedIridiumCrab",
+		  "FromFile": "assets/ShearedIridiumCrabFarmAnimal.png"
+		},
+		{
+		  "Action": "Load",
+		  "Target": "Animals/BabyIridiumCrab",
+		  "FromFile": "assets/BabyIridiumCrabFarmAnimal.png"
+		},
+		{
+		  "Action": "Load",
+		  "Target": "Animals/NakedMoleRat",
+		  "FromFile": "assets/NakedMoleRat.png"
+		},
+		{
+		  "Action": "Load",
+		  "Target": "Animals/BabyNakedMoleRat",
+		  "FromFile": "assets/BabyNakedMoleRat.png"
+		}
+		
+	]
+}	

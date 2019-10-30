@@ -29,13 +29,21 @@ namespace FarmTypeManager
                         Utility.Monitor.Log($"Starting large object generation for this file: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Trace);
                     }
 
-                    if (data.Config.LargeObjectSpawnEnabled)
+                    if (data.Config.Large_Object_Spawn_Settings != null) //if this config contains large object settings
                     {
-                        Utility.Monitor.Log("Large object spawn is enabled. Starting generation process...", LogLevel.Trace);
+                        if (data.Config.LargeObjectSpawnEnabled)
+                        {
+                            Utility.Monitor.Log("Large object generation is enabled. Starting generation process...", LogLevel.Trace);
+                        }
+                        else
+                        {
+                            Utility.Monitor.Log($"Large object generation is disabled for this {(data.Pack == null ? "file" : "content pack")}.", LogLevel.Trace);
+                            continue;
+                        }
                     }
-                    else
+                    else //if this config's large object settings are null
                     {
-                        Utility.Monitor.Log("Large object spawn is disabled.", LogLevel.Trace);
+                        Utility.Monitor.Log($"This {(data.Pack == null ? "file" : "content pack")}'s large object spawn settings are blank.", LogLevel.Trace);
                         continue;
                     }
 
@@ -43,10 +51,11 @@ namespace FarmTypeManager
                     {
                         Utility.Monitor.Log($"Checking large object settings for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
 
-                        //validate the map name for the area
-                        if (Game1.getLocationFromName(area.MapName) == null)
+                        //validate map name for the area
+                        if (!(Game1.getLocationFromName(area.MapName) is Farm loc)) //if the provided map is not a farm (or is null)
                         {
-                            Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. Large objects won't be spawned there.", LogLevel.Info);
+                            //non-farm maps generally don't support resource clumps (a.k.a. large objects) properly, so display an error message and skip this area
+                            Utility.Monitor.Log($"The map named \"{area.MapName}\" could not be found OR is not a \"farm\" map type. Large objects won't be spawned there.", LogLevel.Trace);
                             continue;
                         }
 
@@ -59,14 +68,7 @@ namespace FarmTypeManager
 
                         Utility.Monitor.Log("All extra conditions met. Checking map's support for large objects...", LogLevel.Trace);
 
-                        Farm loc = Game1.getLocationFromName(area.MapName) as Farm; //variable for the current location being worked on (NOTE: null if the current location isn't a "farm" map)
-                        if (loc == null) //if this area isn't a "farm" map, there's usually no built-in support for resource clumps (i.e. large objects), so display an error message and skip this area
-                        {
-                            Utility.Monitor.Log($"Large objects cannot be spawned in the \"{area.MapName}\" map. Only \"farm\" map types are currently supported.", LogLevel.Info);
-                            continue;
-                        }
-
-                        Utility.Monitor.Log("Current map supports large objects. Generating list of valid tiles...", LogLevel.Trace);
+                        Utility.Monitor.Log("Current map supports large objects. Checking the Find Existing Objects setting...", LogLevel.Trace);
 
                         List<int> objectIDs = Utility.GetLargeObjectIDs(area.ObjectTypes); //get a list of index numbers for relevant object types in this area
 
@@ -102,7 +104,7 @@ namespace FarmTypeManager
                                     string newInclude = $"{clump.tile.X},{clump.tile.Y};{clump.tile.X},{clump.tile.Y}"; //generate an include string for this tile
                                     bool alreadyListed = false; //whether newInclude is already listed in area.IncludeAreas
 
-                                    foreach (string include in area.IncludeAreas) //check each existing include string
+                                    foreach (string include in area.IncludeCoordinates) //check each existing include string
                                     {
                                         if (include == newInclude)
                                         {
@@ -127,60 +129,41 @@ namespace FarmTypeManager
                             Utility.Monitor.Log("Find Existing Objects disabled. Skipping.", LogLevel.Trace);
                         }
 
-                        List<Vector2> validTiles = Utility.GenerateTileList(area, data.Save, data.Config.QuarryTileIndex, data.Config.Large_Object_Spawn_Settings.CustomTileIndex, true); //calculate a list of valid tiles for large objects in this area
-
-                        Utility.Monitor.Log($"Number of valid tiles: {validTiles.Count}. Deciding how many items to spawn...", LogLevel.Trace);
-
                         //calculate how many objects to spawn today
                         int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, area.PercentExtraSpawnsPerSkillLevel, (Utility.Skills)Enum.Parse(typeof(Utility.Skills), area.RelatedSkill, true));
 
-                        Utility.Monitor.Log($"Items to spawn: {spawnCount}. Beginning spawn process...", LogLevel.Trace);
+                        Utility.Monitor.Log($"Calculating potential spawns: {spawnCount}. Beginning generation process...", LogLevel.Trace);
 
-                        //begin to spawn objects
-                        while (validTiles.Count > 0 && spawnCount > 0) //while there's still open space for objects & still objects to be spawned
+                        List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
+
+                        //begin to generate objects
+                        while (spawnCount > 0) //while more objects should be spawned
                         {
-                            //this section spawns 1 large object at a random valid location
-
-                            spawnCount--; //reduce by 1, since one will be spawned
-
-                            int randomIndex;
-                            Vector2 randomTile;
-                            bool tileConfirmed = false; //false until a valid large (2x2) object location is confirmed
-                            do
-                            {
-                                randomIndex = Utility.RNG.Next(validTiles.Count); //get the array index for a random valid tile
-                                randomTile = validTiles[randomIndex]; //get the random tile's x,y coordinates
-                                validTiles.RemoveAt(randomIndex); //remove the tile from the list, since it will be invalidated now
-                                tileConfirmed = Utility.IsTileValid(area, randomTile, true); //is the tile still valid for large objects?
-                            } while (validTiles.Count > 0 && !tileConfirmed);
-
-                            if (!tileConfirmed) { break; } //if no more valid tiles could be found, stop trying to spawn things in this area
+                            spawnCount--;
 
                             int randomObject = objectIDs[Utility.RNG.Next(objectIDs.Count)]; //get a random object ID to spawn
 
-                            Utility.SpawnLargeObject(randomObject, loc, randomTile);
-
-                            if (area.DaysUntilSpawnsExpire != null) //if this area assigns expiration dates to objects
-                            {
-                                SavedObject saved = new SavedObject(area.MapName, randomTile, SavedObject.ObjectType.LargeObject, randomObject, null, area.DaysUntilSpawnsExpire); //create a record of the newly spawned object
-                                data.Save.SavedObjects.Add(saved); //add it to the save file with the area's expiration setting
-                            }
+                            //create a saved object representing this spawn (with a "blank" tile location)
+                            SavedObject saved = new SavedObject(area.MapName, new Vector2(), SavedObject.ObjectType.LargeObject, randomObject, null, area.DaysUntilSpawnsExpire);
+                            spawns.Add(saved); //add it to the list
                         }
 
-                        Utility.Monitor.Log($"Large object spawn process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
+                        Utility.PopulateTimedSpawnList(spawns, data, area); //process the listed spawns and add them to Utility.TimedSpawns
+
+                        Utility.Monitor.Log($"Large object generation complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
                     }
 
                     if (data.Pack != null) //content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Large object spawn complete for this content pack: {data.Pack.Manifest.Name}", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Large object generation complete for this content pack: {data.Pack.Manifest.Name}", LogLevel.Trace);
                     }
                     else //not a content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Large object spawn complete for this file: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Large object generation complete for this file: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Trace);
                     }
                 }
 
-                Utility.Monitor.Log("All files and content packs checked. Large object spawn process complete.", LogLevel.Trace);
+                Utility.Monitor.Log("All files and content packs checked. Large object generation process complete.", LogLevel.Trace);
             }
         }
     }

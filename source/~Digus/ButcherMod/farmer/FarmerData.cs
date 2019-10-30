@@ -8,11 +8,13 @@ namespace AnimalHusbandryMod.farmer
     {
         public List<PregnancyItem> PregnancyData;
         public List<AnimalStatus> AnimalData;
+        public List<AnimalContestItem> AnimalContestData;
 
         public FarmerData()
         {
             PregnancyData = new List<PregnancyItem>();
             AnimalData = new List<AnimalStatus>();
+            AnimalContestData = new List<AnimalContestItem>();
         }
     }
 }

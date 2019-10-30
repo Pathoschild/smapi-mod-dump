@@ -1,0 +1,25 @@
+url:
+   https://github.com/purrplingcat/PurrplingMod.git
+
+mods:
+   NPC Adventures
+
+latest commit:
+   commit 98418fd0ff6c9cfbe47d57922d851679bb9a1ba0
+   Author: Ellen FawkesovÃ¡ <4710267+purrplingcat@users.noreply.github.com>
+   Date:   Tue Oct 29 23:17:06 2019 +0100
+   
+       Fighting with swords (#17)
+       
+       * Fighting with swords
+       
+       refs #14 better npc dispositions + some refactor
+       
+       Refactor
+       
+       better active/iddle flow
+       
+       * Increassed defense radius and refactored get nearest monsters function
+       
+       * Rebase onto master and compatibilize changes
+   

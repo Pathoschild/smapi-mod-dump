@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace AnimalHusbandryMod.animals.data
 {
-    public interface AnimalItem 
+    public interface AnimalItem
     {
-        int MinimalNumberOfMeat { get; set; }
-        int MaximumNumberOfMeat { get; set; }
     }
 }

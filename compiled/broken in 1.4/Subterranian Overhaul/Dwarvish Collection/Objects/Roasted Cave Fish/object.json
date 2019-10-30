@@ -1,0 +1,39 @@
+{
+  "Name": "Roasted Cave Fish",
+  "Description": "Roasted fish on a bed of white algae and root vegitables.",
+  "Category": "Cooking",
+  "Edibility": 50,
+  "Price": 182,
+  "IsColored": false,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": -4,
+        "Count": 1
+      },
+	  {
+        "Object": 157,
+        "Count": 1
+      },
+	  {
+        "Object": 412,
+        "Count": 1
+      },
+	  {
+        "Object": 78,
+        "Count": 1
+      }
+    ],
+    "CanPurchase": true,
+    "PurchaseFrom": "Dwarf",
+    "PurchasePrice": 400,
+	"GiftTastes":
+	{
+		"Love": ["Krobus","Linus","Willy","Dwarf"],
+		"Like": ["Wizard","Caroline", "Clint", "Demetrius", "Elliott",],		
+		"Dislike": ["Abigail","Alex",  "Emily", "Evelyn", "George", "Gus", "Harvey", "Jas",  "Maru", "Pam", "Pierre", "Robin", "Sam", "Sandy", "Shane", "Vincent"],
+		"Hate": ["Jodi", "Kent", "Lewis", "Marnie","Leah","Penny","Haley"]
+	},
+  }
+}

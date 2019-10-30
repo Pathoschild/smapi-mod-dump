@@ -12,27 +12,14 @@ using StardewValley.Menus;
 
 namespace WhatAreYouMissing
 {
-    public struct ConfigOptions
+    //The index of the seasons in locationData
+    //When the data is split on'/'
+    public enum SeasonIndex
     {
-        public SButton Button { get; }
-        public bool ShowItemsFromLockedPlaces { get; }
-        public bool ShowAllFishFromCurrentSeason { get; }
-        public bool ShowAllRecipes { get; }
-        public bool AlwaysShowAllRecipes { get; }
-        public int CommonQualityAmount { get; }
-        public int HighestQualityAmount { get; }
-
-        public ConfigOptions(SButton button, bool showLockedItems, bool showAllFishFromCurrentSeason, 
-                                bool showAllRecipes, bool alwaysShowAllRecipes, int commonAmount, int highestQualityAmount)
-        {
-            Button = button;
-            ShowItemsFromLockedPlaces = showLockedItems;
-            ShowAllFishFromCurrentSeason = showAllFishFromCurrentSeason;
-            ShowAllRecipes = showAllRecipes;
-            AlwaysShowAllRecipes = alwaysShowAllRecipes;
-            CommonQualityAmount = commonAmount;
-            HighestQualityAmount = highestQualityAmount;
-        }
+        Spring = 4,
+        Summer = 5,
+        Fall = 6,
+        Winter = 7
     };
 
     public class Utilities
@@ -68,6 +55,11 @@ namespace WhatAreYouMissing
             return Game1.player.caveChoice.Value == 1;
         }
 
+        public static bool IsWitchsSwampUnlocked()
+        {
+            return Game1.player.hasDarkTalisman;
+        }
+
         public static bool CheckMerchantForItemAndSeed(int item)
         {
             CropConversion cropConverter = new CropConversion();
@@ -93,17 +85,17 @@ namespace WhatAreYouMissing
             {
                 int totalDaysNeeded = GetTotalDaysToGrowNewSeed(seedIndex);
                 string[] growthSeasons = new string[data[seedIndex].Split('/')[1].Split(' ').Length];
-
+                growthSeasons = data[seedIndex].Split('/')[1].Split(' ');
                 if (IsGreenHouseUnlocked())
                 {
                     return true;
                 }
-                else if(Game1.Date.Season == growthSeasons[growthSeasons.Length - 1] && Game1.Date.DayOfMonth + totalDaysNeeded < 29)
+                else if(Game1.currentSeason == growthSeasons[growthSeasons.Length - 1] && Game1.dayOfMonth + totalDaysNeeded < 29)
                 {
                     //Its last growth season, make sure there is enough time
                     return true;
                 }
-                else if (growthSeasons.Contains(Game1.Date.Season))
+                else if (growthSeasons.Contains(Game1.currentSeason))
                 {
                     return true;
                 }
@@ -204,13 +196,20 @@ namespace WhatAreYouMissing
             boxDimensions.Y += 32 + (lines.Length - 1) * spaceBetweenLines + 4;
             boxDimensions.X += 32;
 
-            if(IsGoingOutOfXView((int)position.X, (int)boxDimensions.X))
+            if(IsGoingOutOfXRightView((int)position.X, (int)boxDimensions.X))
             {
                 position.X = Game1.viewport.Width - boxDimensions.X;
             }
-            if(IsGoingOutOfYView((int)position.Y, (int)boxDimensions.Y))
+            if(IsGoingOutOfYDownView((int)position.Y, (int)boxDimensions.Y))
             {
-                position.Y = Game1.getOldMouseY() - boxDimensions.Y;
+                if(IsGoingOutOfYUpView((int)position.Y, (int)boxDimensions.Y))
+                {
+                    position.Y = GetBestY((int)position.Y, (int)boxDimensions.Y);
+                }
+                else
+                {
+                    position.Y = Game1.getOldMouseY() - boxDimensions.Y;
+                }
             }
 
             IClickableMenu.drawTextureBox(b, Game1.menuTexture, new Rectangle(0, 256, 60, 60), (int)position.X, (int)position.Y, (int)boxDimensions.X, (int)boxDimensions.Y, Color.White);
@@ -220,23 +219,41 @@ namespace WhatAreYouMissing
             for (int i = 0; i < lines.Length; ++i)
             {
                 b.DrawString(Game1.smallFont, lines[i], position, Game1.textColor);
-                position.Y += Game1.smallFont.MeasureString(lines[i]).Y + spaceBetweenLines;
+                position.Y += lineHeight + spaceBetweenLines;
             }
         }
 
-        private static bool IsGoingOutOfXView(int x, int width)
+        private static int GetBestY(int y, int height)
+        {
+            int overDown = Math.Abs(y + height - Game1.viewport.Height);
+            int overUp = Math.Abs(y - (Game1.viewport.Height - height));
+
+            return overDown > overUp ? Game1.getOldMouseY() - height : y;
+        }
+
+        private static bool IsGoingOutOfXRightView(int x, int width)
         {
             return x + width > Game1.viewport.Width;
         }
 
-        private static bool IsGoingOutOfYView(int y, int height)
+        private static bool IsGoingOutOfYDownView(int y, int height)
         {
             return y + height > Game1.viewport.Height;
+        }
+
+        private static bool IsGoingOutOfYUpView(int y, int height)
+        {
+            return y - height < 0;
         }
 
         public static string GetTranslation(string key)
         {
             return ModEntry.Translator.Get(key);
+        }
+
+        public static bool IsTempOrFishingGameOrBackwoodsLocation(string location)
+        {
+            return location == "Temp" || location == "fishingGame" || location == "Backwoods";
         }
     }
 }

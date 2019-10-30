@@ -1,0 +1,14 @@
+{
+  "ConfigHelper": "Each entry can be from 0 to 28, where 0 stops sending the letter and 1 to 28 indicates the day of the month you want to recieve the letter. (This item does nothing!)",
+  "AdventureGuild": 15,
+  "DadLetters": 7,
+  "DairyCouncil": 2,
+  "FishingScene": 18,
+  "Fitness": 20,
+  "FruitClub": 23,
+  "GreenPiece": 11,
+  "Mining4Ores": 24,
+  "TopTenItemsShipped": 28,
+  "ColoredEnvelopes": true,
+  "ShowDebug": false
+}

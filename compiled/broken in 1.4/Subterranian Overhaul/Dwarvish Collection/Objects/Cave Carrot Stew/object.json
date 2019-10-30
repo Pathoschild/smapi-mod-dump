@@ -1,0 +1,51 @@
+{
+  "Name": "Cave Carrot Stew",
+  "Description": "A rich Cave Carrot and Mushroom Stew. Hardy and filling.",
+  "Category": "Cooking",
+  "Edibility": 126,
+  "EdibleBuffs": {
+    "Farming": 0,
+    "Foraging": 0,
+    "Mining": 0,
+    "Fishing": 0,
+    "Luck": 0,
+	"MagnetRadius": 32,
+    "Duration": 180,
+  },
+  "Price": 589,
+  "IsColored": false,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": 78,
+        "Count": 3
+      },
+	  {
+        "Object": 412,
+        "Count": 1
+      },
+      {
+        "Object": 404,
+        "Count": 2
+      },
+      {
+        "Object": 281,
+        "Count": 1
+      },
+      {
+        "Object": 257,
+        "Count": 1
+      }
+    ],
+    "CanPurchase": true,
+    "PurchaseFrom": "Dwarf",
+    "PurchasePrice": 1295
+  },
+  "GiftTastes":
+	{
+		"Love": ["Dwarf"],
+		"Like": ["Krobus","Linus","Wizard","Willy"],		
+		"Hate": ["Haley"]
+	},
+}

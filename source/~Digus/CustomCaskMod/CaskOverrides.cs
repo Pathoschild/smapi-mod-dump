@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Netcode;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
@@ -115,6 +111,16 @@ namespace CustomCaskMod
             }
             __result = true;
             return false;
+        }
+
+        public static void CaskMachine(object __instance)
+        {
+            IReflectedField<Dictionary<int, float>> agingRates = CustomCaskModEntry.Helper.Reflection.GetField<Dictionary<int, float>>(__instance, "AgingRates");
+
+            foreach (var keyValuePair in DataLoader.CaskData)
+            {
+                agingRates.GetValue()[keyValuePair.Key] = keyValuePair.Value;
+            }
         }
     }
 }

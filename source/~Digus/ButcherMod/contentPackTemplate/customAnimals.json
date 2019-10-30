@@ -1,0 +1,13 @@
+[
+  {
+    "Name": "Animal Name",//Name of your animal. Can be just part of it if you want the config to apply for all variations.
+    "MinimalNumberOfMeat": 0,
+    "MaximumNumberOfMeat": 0, //Set it to zero if you want your animal to be immortal.
+    "MinimumDaysBetweenTreats": 4, //balance this based on the highest priced treat.
+    "LikedTreats": [
+      78 //Can also put "Item Name" or use negative numbers for categories. 78 is the cave carrot id.
+    ],
+    "MinimumDaysUtillBirth": null, //Set it to null if you don't want your animal to be able to get pregnant. Mostly for males and egg layers. 
+    "CanUseDeluxeItemForPregnancy": false //Set it true if you want the deluxe item to also be able to impregnate the animal.
+  }
+]

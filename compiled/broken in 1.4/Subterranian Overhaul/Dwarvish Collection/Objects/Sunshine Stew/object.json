@@ -1,0 +1,52 @@
+{
+  "Name": "Sunshine Stew",
+  "Description": "A thin stew embued with the essence of the Sun for a refreshing kick!",
+  "Category": "Cooking",
+  "Edibility": 70,
+  "EdibleBuffs": {
+    "Farming": 0,
+    "Foraging": 0,
+    "Mining": 0,
+    "Fishing": 0,
+    "Luck": 0,
+	"Speed": 1,
+    "Duration": 1200,
+  },
+  "Price": 732,
+  "IsColored": false,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": 768,
+        "Count": 1
+      },
+	   {
+        "Object": 412,
+        "Count": 5
+      },
+	   {
+        "Object": 78,
+        "Count": 5
+      },
+	   {
+        "Object": 420,
+        "Count": 1
+      },
+      {
+        "Object": 157,
+        "Count": 3
+      }
+    ],
+    "CanPurchase": true,
+    "PurchaseFrom": "Dwarf",
+    "PurchasePrice": 1610,
+	"GiftTastes":
+	{
+		"Love": ["Haley","Krobus","Dwarf"],
+		"Like": ["Jas", "Jodi", "Kent", "Lewis", "Marnie","Linus"],
+		"Neutral": ["Emily", "Evelyn", "George", "Gus", "Harvey",  "Maru","Wizard",  "Willy"],
+		"Dislike": ["Robin", "Sam", "Sandy", "Shane", "Vincent"]		
+	},
+  }
+}

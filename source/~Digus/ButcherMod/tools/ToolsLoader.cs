@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AnimalHusbandryMod.animals;
+using AnimalHusbandryMod.common;
+using AnimalHusbandryMod.farmer;
 using MailFrameworkMod;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
@@ -167,17 +171,7 @@ namespace AnimalHusbandryMod.tools
 
         public void LoadMail()
         {
-
-            string meatCleaverText;
-            if (DataLoader.ModConfig.Softmode)
-            {
-                meatCleaverText = DataLoader.i18n.Get("Tool.MeatCleaver.Letter.Soft");
-            }
-            else
-            {
-                meatCleaverText = DataLoader.i18n.Get("Tool.MeatCleaver.Letter");
-            }
-
+            string meatCleaverText = DataLoader.i18n.Get(DataLoader.ModConfig.Softmode ? "Tool.MeatCleaver.Letter.Soft" : "Tool.MeatCleaver.Letter");
 
             bool HasAnimal()
             {
@@ -194,7 +188,7 @@ namespace AnimalHusbandryMod.tools
 
             bool MeatCleaverCondition(Letter l)
             {
-                return HasAnimal() && !HasTool(typeof(MeatCleaver));
+                return !DataLoader.ModConfig.DisableMeatToolLetter && HasAnimal() && !HasTool(typeof(MeatCleaver));
             }
 
             List<string> validBuildingsForInsemination = new List<string>(new string[] { "Deluxe Barn", "Big Barn", "Deluxe Coop" });
@@ -241,9 +235,31 @@ namespace AnimalHusbandryMod.tools
                 MailDao.SaveLetter(inseminationSyringeLetter);
             }
 
-
-            //MailDao.SaveLetter(new Letter("participantRibbon", DataLoader.i18n.Get("Tool.ParticipantRibbon.Letter"), new List<Item> { new ParticipantRibbon() }, (l)=> true));
-
+            if (!DataLoader.ModConfig.DisableAnimalContest)
+            {
+                MailDao.SaveLetter
+                (
+                    new Letter
+                    (
+                        "participantRibbon"
+                        , DataLoader.i18n.Get("Tool.ParticipantRibbon.Letter")
+                        , new List<Item> { new ParticipantRibbon() }
+                        , (l) => SDate.Now().AddDays(1).Equals(AnimalContestController.GetNextContestDate()) && FarmerLoader.FarmerData.AnimalContestData.Count == 0
+                        , (l) => Game1.player.mailReceived.Add(l.Id + AnimalContestController.GetNextContestDateKey())
+                    )
+                );
+                MailDao.SaveLetter
+                (
+                    new Letter
+                    (
+                        "participantRibbonRedelivery"
+                        , DataLoader.i18n.Get("Tool.ParticipantRibbon.LetterRedelivery")
+                        , new List<Item> { new ParticipantRibbon() }
+                        , (l) => SDate.Now().AddDays(1).Equals(AnimalContestController.GetNextContestDate()) && FarmerLoader.FarmerData.AnimalContestData.Count > 0
+                        , (l) => Game1.player.mailReceived.Add(l.Id + AnimalContestController.GetNextContestDateKey())
+                    )
+                );
+            }
 
             if (!DataLoader.ModConfig.DisableTreats)
             {
@@ -312,6 +328,14 @@ namespace AnimalHusbandryMod.tools
                 }
                 return false;
             });
+        }
+
+        public void RemoveAllToolsCommand(string n, string[] d)
+        {
+            ItemUtility.RemoveItemAnywhere(typeof(MeatCleaver));
+            ItemUtility.RemoveItemAnywhere(typeof(InseminationSyringe));
+            ItemUtility.RemoveItemAnywhere(typeof(FeedingBasket));
+            ItemUtility.RemoveItemAnywhere(typeof(ParticipantRibbon));
         }
     }
 }

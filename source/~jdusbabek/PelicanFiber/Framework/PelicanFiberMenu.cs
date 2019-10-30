@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Locations;
@@ -23,112 +26,59 @@ namespace PelicanFiber.Framework
         private readonly bool Unfiltered;
         private readonly float Scale;
 
+        /// <summary>Simplifies access to private game code.</summary>
+        private readonly IReflectionHelper Reflection;
         private readonly ItemUtils ItemUtils;
-        private readonly Action ReopenMainMenu;
-        private readonly bool GiveAchievements;
+        private readonly Action OnLinkOpened;
         private readonly Func<long> GetNewId;
 
 
         /*********
         ** Public methods
         *********/
-        public PelicanFiberMenu(Texture2D websites, ItemUtils itemUtils, bool giveAchievements, Func<long> getNewId, Action reopenMainMenu, float scale = 1.0f, bool unfiltered = true)
+        public PelicanFiberMenu(Texture2D websites, IReflectionHelper reflection, ItemUtils itemUtils, Func<long> getNewId, Action onLinkOpened, float scale = 1.0f, bool unfiltered = true)
           : base(Game1.viewport.Width / 2 - (int)(PelicanFiberMenu.MenuWidth * scale) / 2 - IClickableMenu.borderWidth * 2,
                 Game1.viewport.Height / 2 - (int)(PelicanFiberMenu.MenuHeight * scale) / 2 - IClickableMenu.borderWidth * 2,
                 (int)(PelicanFiberMenu.MenuWidth * scale) + IClickableMenu.borderWidth * 2,
                 (int)(PelicanFiberMenu.MenuHeight * scale) + IClickableMenu.borderWidth, true)
         {
+            this.Reflection = reflection;
             this.ItemUtils = itemUtils;
-            this.GiveAchievements = giveAchievements;
             this.GetNewId = getNewId;
-            this.ReopenMainMenu = reopenMainMenu;
+            this.OnLinkOpened = onLinkOpened;
 
             this.height += Game1.tileSize;
             this.Scale = scale;
             this.Unfiltered = unfiltered;
 
+            this.AddLink("blacksmith_tools", 55, 185, websites, new Rectangle(0, 0, 256, 128));
+            this.AddLink("blacksmith", 55, 313, websites, new Rectangle(0, 128, 256, 128));
+            this.AddLink("animals", 321, 185, websites, new Rectangle(257, 0, 256, 128));
+            this.AddLink("animal_supplies", 321, 313, websites, new Rectangle(257, 128, 256, 128));
+            this.AddLink("produce", 587, 185, websites, new Rectangle(513, 0, 256, 256));
+            this.AddLink("carpentry_build", 853, 185, websites, new Rectangle(769, 0, 256, 128));
+            this.AddLink("carpentry", 853, 313, websites, new Rectangle(769, 128, 256, 128));
+            this.AddLink("sauce", 1119, 185, websites, new Rectangle(1025, 0, 256, 256));
 
-            ClickableTextureComponent c1 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 55 * scale), (int)(this.yPositionOnScreen + 185 * scale), (int)(256f * scale), (int)(128f * scale)), websites, new Rectangle(0, 0, 256, 128), scale);
-            ClickableTextureComponent c1_1 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 55 * scale), (int)(this.yPositionOnScreen + 313 * scale), (int)(256f * scale), (int)(128f * scale)), websites, new Rectangle(0, 128, 256, 128), scale);
-            ClickableTextureComponent c2 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 321 * scale), (int)(this.yPositionOnScreen + 185 * scale), (int)(256f * scale), (int)(128f * scale)), websites, new Rectangle(257, 0, 256, 128), scale);
-            ClickableTextureComponent c2_1 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 321 * scale), (int)(this.yPositionOnScreen + 313 * scale), (int)(256f * scale), (int)(128f * scale)), websites, new Rectangle(257, 128, 256, 128), scale);
-            ClickableTextureComponent c3 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 587 * scale), (int)(this.yPositionOnScreen + 185 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(513, 0, 256, 256), scale);
-            ClickableTextureComponent c4 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 853 * scale), (int)(this.yPositionOnScreen + 185 * scale), (int)(256f * scale), (int)(128f * scale)), websites, new Rectangle(769, 0, 256, 128), scale);
-            ClickableTextureComponent c4_1 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 853 * scale), (int)(this.yPositionOnScreen + 313 * scale), (int)(256f * scale), (int)(128f * scale)), websites, new Rectangle(769, 128, 256, 128), scale);
-            ClickableTextureComponent c17 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 1119 * scale), (int)(this.yPositionOnScreen + 185 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(1025, 0, 256, 256), scale);
+            this.AddLink("fish", 55, 451, websites, new Rectangle(0, 257, 256, 256));
+            this.AddLink("dining", 321, 451, websites, new Rectangle(257, 257, 256, 256));
+            this.AddLink("imports", 587, 451, websites, new Rectangle(513, 257, 256, 256));
+            this.AddLink("adventure", 853, 451, websites, new Rectangle(769, 257, 256, 256));
+            this.AddLink("bundle", 1119, 451, websites, new Rectangle(1025, 257, 256, 256));
 
-            ClickableTextureComponent c5 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 55 * scale), (int)(this.yPositionOnScreen + 451 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(0, 257, 256, 256), scale);
-            ClickableTextureComponent c6 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 321 * scale), (int)(this.yPositionOnScreen + 451 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(257, 257, 256, 256), scale);
-            ClickableTextureComponent c7 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 587 * scale), (int)(this.yPositionOnScreen + 451 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(513, 257, 256, 256), scale);
-            ClickableTextureComponent c8 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 853 * scale), (int)(this.yPositionOnScreen + 451 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(769, 257, 256, 256), scale);
-            ClickableTextureComponent c18 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 1119 * scale), (int)(this.yPositionOnScreen + 451 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(1025, 257, 256, 256), scale);
+            this.AddLink("wizard", 55, 717, websites, new Rectangle(0, 513, 256, 256));
+            this.AddLink("hats", 321, 717, websites, new Rectangle(257, 513, 256, 256));
+            this.AddLink("hospital", 587, 717, websites, new Rectangle(513, 513, 256, 256));
+            this.AddLink("krobus", 853, 717, websites, new Rectangle(769, 513, 256, 256));
+            this.AddLink("artifact", 1119, 717, websites, new Rectangle(1025, 513, 256, 256));
 
-            ClickableTextureComponent c9 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 55 * scale), (int)(this.yPositionOnScreen + 717 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(0, 513, 256, 256), scale);
-            ClickableTextureComponent c10 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 321 * scale), (int)(this.yPositionOnScreen + 717 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(257, 513, 256, 256), scale);
-            ClickableTextureComponent c11 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 587 * scale), (int)(this.yPositionOnScreen + 717 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(513, 513, 256, 256), scale);
-            ClickableTextureComponent c12 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 853 * scale), (int)(this.yPositionOnScreen + 717 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(769, 513, 256, 256), scale);
-            ClickableTextureComponent c19 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 1119 * scale), (int)(this.yPositionOnScreen + 717 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(1025, 513, 256, 256), scale);
-
-            ClickableTextureComponent c13 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 55 * scale), (int)(this.yPositionOnScreen + 983 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(0, 769, 256, 256), scale);
-            ClickableTextureComponent c14 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 321 * scale), (int)(this.yPositionOnScreen + 983 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(257, 769, 256, 256), scale);
-            ClickableTextureComponent c15 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 587 * scale), (int)(this.yPositionOnScreen + 983 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(513, 769, 256, 256), scale);
-            ClickableTextureComponent c16 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 853 * scale), (int)(this.yPositionOnScreen + 983 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(769, 769, 256, 256), scale);
-            ClickableTextureComponent c20 = new ClickableTextureComponent(new Rectangle((int)(this.xPositionOnScreen + 1119 * scale), (int)(this.yPositionOnScreen + 983 * scale), (int)(256f * scale), (int)(256f * scale)), websites, new Rectangle(1025, 769, 256, 256), scale);
+            this.AddLink("dwarf", 55, 983, websites, new Rectangle(0, 769, 256, 256));
+            this.AddLink("qi", 321, 983, websites, new Rectangle(257, 769, 256, 256));
+            this.AddLink("sandy", 587, 983, websites, new Rectangle(513, 769, 256, 256));
+            this.AddLink("joja", 853, 983, websites, new Rectangle(769, 769, 256, 256));
+            this.AddLink("leah", 1119, 983, websites, new Rectangle(1025, 769, 256, 256));
 
             this.upperRightCloseButton = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + this.width - 9 * Game1.pixelZoom, this.yPositionOnScreen - Game1.pixelZoom * 2, 12 * Game1.pixelZoom, 12 * Game1.pixelZoom), Game1.mouseCursors, new Rectangle(337, 494, 12, 12), Game1.pixelZoom);
-
-            c1.name = "blacksmith_tools";
-            c1_1.name = "blacksmith";
-            c2.name = "animals";
-            c2_1.name = "animal_supplies";
-            c3.name = "produce";
-            c4.name = "carpentry_build";
-            c4_1.name = "carpentry";
-            c5.name = "fish";
-            c6.name = "dining";
-            c7.name = "imports";
-            c8.name = "adventure";
-            c9.name = "wizard";
-            c10.name = "hats";
-            c11.name = "hospital";
-            c12.name = "krobus";
-            c13.name = "dwarf";
-            c14.name = "qi";
-            c15.name = "sandy";
-            c16.name = "joja";
-            c17.name = "sauce";
-            c18.name = "bundle";
-            c19.name = "artifact";
-            c20.name = "leah";
-
-            this.LinksToVisit.Add(c1);
-            this.LinksToVisit.Add(c1_1);
-            this.LinksToVisit.Add(c2);
-            this.LinksToVisit.Add(c2_1);
-            this.LinksToVisit.Add(c3);
-            this.LinksToVisit.Add(c4);
-            this.LinksToVisit.Add(c4_1);
-            this.LinksToVisit.Add(c5);
-            this.LinksToVisit.Add(c6);
-            this.LinksToVisit.Add(c7);
-            this.LinksToVisit.Add(c8);
-            this.LinksToVisit.Add(c9);
-            this.LinksToVisit.Add(c10);
-            this.LinksToVisit.Add(c11);
-            this.LinksToVisit.Add(c12);
-            this.LinksToVisit.Add(c13);
-            this.LinksToVisit.Add(c14);
-            this.LinksToVisit.Add(c15);
-            this.LinksToVisit.Add(c16);
-            this.LinksToVisit.Add(c17);
-            this.LinksToVisit.Add(c18);
-            this.LinksToVisit.Add(c19);
-            this.LinksToVisit.Add(c20);
-        }
-
-        public override void receiveRightClick(int x, int y, bool playSound = true)
-        {
-
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -142,105 +92,98 @@ namespace PelicanFiber.Framework
                     switch (textureComponent.name)
                     {
                         case "blacksmith":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, this.ItemUtils.GetBlacksmithStock(this.Unfiltered), 0, null, "Blacksmith");
+                            this.OpenLink(() => new ShopMenu(this.ItemUtils.GetBlacksmithStock(this.Unfiltered)), "Blacksmith");
                             break;
+
                         case "blacksmith_tools":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, Utility.getBlacksmithUpgradeStock(Game1.player));
+                            this.OpenLink(new ShopMenu(Utility.getBlacksmithUpgradeStock(Game1.player)));
                             break;
+
                         case "animals":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, Utility.getAnimalShopStock(), 0, null, "AnimalShop");
+                            this.OpenLink(() => new ShopMenu(Utility.getAnimalShopStock()), "AnimalShop");
                             break;
+
                         case "animal_supplies":
-                            this.exitThisMenu();
                             if (Game1.currentLocation is AnimalHouse)
-                                Game1.activeClickableMenu = new MailOrderPigMenu(this.ItemUtils.GetPurchaseAnimalStock(), this.ItemUtils, this.ReopenMainMenu, this.GetNewId);
+                                this.OpenLink(new MailOrderPigMenu(this.ItemUtils.GetPurchaseAnimalStock(), this.ItemUtils, this.OnLinkOpened, this.GetNewId));
                             else
-                                Game1.activeClickableMenu = new BuyAnimalMenu(Utility.getPurchaseAnimalStock(), this.ReopenMainMenu, this.GetNewId);
+                                this.OpenLink(new BuyAnimalMenu(Utility.getPurchaseAnimalStock(), this.OnLinkOpened, this.GetNewId));
                             break;
+
                         case "produce":
-                            this.exitThisMenu();
-                            //Game1.activeClickableMenu = new ShopMenu2(Utility.getShopStock(true), 0, null, "SeedShop");
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, this.ItemUtils.GetShopStock(true, this.Unfiltered), 0, null, "SeedShop");
+                            this.OpenLink(() => new ShopMenu(this.ItemUtils.GetShopStock(true, this.Unfiltered)), "SeedShop");
                             break;
+
                         case "carpentry":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, this.ItemUtils.GetCarpenterStock(this.Unfiltered), 0, null, "ScienceHouse");
+                            this.OpenLink(() => new ShopMenu(this.ItemUtils.GetCarpenterStock(this.Unfiltered)), "ScienceHouse");
                             break;
+
                         case "carpentry_build":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ConstructionMenu(false, this.ReopenMainMenu);
+                            this.OpenLink(new ConstructionMenu(false, this.OnLinkOpened));
                             break;
+
                         case "fish":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, this.ItemUtils.GetFishShopStock(Game1.player, this.Unfiltered), 0, null, "FishShop");
+                            this.OpenLink(() => new ShopMenu(this.ItemUtils.GetFishShopStock(Game1.player, this.Unfiltered)), "FishShop");
                             break;
+
                         case "dining":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, this.ItemUtils.GetSaloonStock(this.Unfiltered));
+                            this.OpenLink(new ShopMenu(this.ItemUtils.GetSaloonStock(this.Unfiltered)));
                             break;
+
                         case "imports":
-                            this.exitThisMenu();
-                            {
-                                Forest forest = (Forest)Game1.getLocationFromName("Forest");
-                                Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, Utility.getTravelingMerchantStock(forest.stockSeed.Value));
-                            }
+                            this.OpenLink(new ShopMenu(Utility.getTravelingMerchantStock((int)(Game1.uniqueIDForThisGame + Game1.stats.DaysPlayed))));
                             break;
+
                         case "adventure":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, this.GetAdventureShopStock(), 0, null, "AdventureGuild");
+                            this.OpenLink(() => new ShopMenu(this.GetAdventureShopStock()), "AdventureGuild");
                             break;
+
                         case "hats":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, Utility.getHatStock());
+                            this.OpenLink(new ShopMenu(Utility.getHatStock()));
                             break;
+
                         case "hospital":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, Utility.getHospitalStock());
+                            this.OpenLink(new ShopMenu(Utility.getHospitalStock()));
                             break;
+
                         case "wizard":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ConstructionMenu(true, this.ReopenMainMenu);
+                            this.OpenLink(new ConstructionMenu(true, this.OnLinkOpened));
                             break;
+
                         case "dwarf":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, Utility.getDwarfShopStock());
+                            this.OpenLink(new ShopMenu(Utility.getDwarfShopStock()));
                             break;
+
                         case "krobus":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, (Game1.getLocationFromName("Sewer") as Sewer).getShadowShopStock(), 0, "Krobus");
+                            this.OpenLink(new ShopMenu(((Sewer)Game1.getLocationFromName("Sewer")).getShadowShopStock(), 0, "Krobus"));
                             break;
+
                         case "qi":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, Utility.getQiShopStock());
+                            this.OpenLink(new ShopMenu(Utility.getQiShopStock()));
                             break;
+
                         case "joja":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, Utility.getJojaStock());
+                            this.OpenLink(new ShopMenu(Utility.getJojaStock()));
                             break;
+
                         case "sandy":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, this.ItemUtils.GetShopStock(false, this.Unfiltered));
+                            this.OpenLink(new ShopMenu(this.ItemUtils.GetShopStock(false, this.Unfiltered)));
                             break;
+
                         case "sauce":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, this.ItemUtils.GetRecipesStock(this.Unfiltered), 0, null, "Recipe");
+                            this.OpenLink(new ShopMenu(this.ItemUtils.GetRecipesStock(this.Unfiltered)));
                             break;
+
                         case "bundle":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, this.ItemUtils.GetJunimoStock(), 0, null, "Junimo");
-                            //ItemUtils.finishAllBundles();
-                            //Game1.showRedMessage("Error 404: Not found. www.thejunimoconspiracy.com");
+                            this.OpenLink(new ShopMenu(this.ItemUtils.GetJunimoStock()));
                             break;
+
                         case "artifact":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, this.ItemUtils.GetMineralsAndArtifactsStock(this.Unfiltered), 0, null, "Artifact");
+                            this.OpenLink(new ShopMenu(this.ItemUtils.GetMineralsAndArtifactsStock(this.Unfiltered)));
                             break;
+
                         case "leah":
-                            this.exitThisMenu();
-                            Game1.activeClickableMenu = new ShopMenu2(this.ReopenMainMenu, this.ItemUtils, this.GiveAchievements, this.ItemUtils.GetLeahShopStock(this.Unfiltered), 0, "Leah", "LeahCottage");
+                            this.OpenLink(new ShopMenu(this.ItemUtils.GetLeahShopStock(this.Unfiltered), 0, "Leah"));
                             break;
                     }
                 }
@@ -359,6 +302,69 @@ namespace PelicanFiber.Framework
         /*********
         ** Private methods
         *********/
+        /// <summary>Add a site link to the menu.</summary>
+        /// <param name="name">The internal link name.</param>
+        /// <param name="x">The pixel X position relative to the top-left corner of the menu.</param>
+        /// <param name="y">The pixel Y position relative to the top-left corner of the menu.</param>
+        /// <param name="texture">The texture containing the site image.</param>
+        /// <param name="sourceArea">The area within the texture to draw.</param>
+        private void AddLink(string name, int x, int y, Texture2D texture, Rectangle sourceArea)
+        {
+            ClickableTextureComponent component = new ClickableTextureComponent(
+                bounds: new Rectangle((int)(this.xPositionOnScreen + x * this.Scale), (int)(this.yPositionOnScreen + y * this.Scale), (int)(sourceArea.Width * this.Scale), (int)(sourceArea.Height * this.Scale)),
+                texture: texture,
+                sourceRect: sourceArea,
+                scale: this.Scale
+            );
+            component.name = name;
+            this.LinksToVisit.Add(component);
+        }
+
+        /// <summary>Track and open a link menu.</summary>
+        /// <param name="menu">The menu to open.</param>
+        private void OpenLink(IClickableMenu menu)
+        {
+            this.OpenLink(() => menu);
+        }
+
+        /// <summary>Track and open a link menu.</summary>
+        /// <param name="menu">The menu to open.</param>
+        /// <param name="locationName">The location name to simulate.</param>
+        [SuppressMessage("SMAPI", "AvoidNetField", Justification = "Net fields are accessed deliberately to bypass network sync.")]
+        private void OpenLink(Func<IClickableMenu> menu, string locationName = null)
+        {
+            // close main menu
+            this.exitThisMenu();
+
+            // simulate location name if needed
+            if (locationName != null && locationName != Game1.currentLocation.Name)
+            {
+                string prevLocationName = Game1.currentLocation.Name;
+                try
+                {
+                    this.DirectlySetValue(Game1.currentLocation.name, locationName);
+                    Game1.activeClickableMenu = menu();
+                }
+                finally
+                {
+                    this.DirectlySetValue(Game1.currentLocation.name, prevLocationName);
+                }
+            }
+            else
+                Game1.activeClickableMenu = menu();
+
+            // track link opened
+            this.OnLinkOpened();
+        }
+
+        /// <summary>Set a net string value without triggering sync logic.</summary>
+        /// <param name="field">The net field to update.</param>
+        /// <param name="value">The new value to set.</param>
+        private void DirectlySetValue(NetString field, string value)
+        {
+            this.Reflection.GetField<string>(field, "value").SetValue(value);
+        }
+
         private Dictionary<Item, int[]> GetAdventureShopStock()
         {
             Dictionary<Item, int[]> itemPriceAndStock = new Dictionary<Item, int[]>();

@@ -52,9 +52,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=1.1.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$(GamePath)\smapi-internal\0Harmony.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
     <Reference Include="PyTK">
@@ -73,8 +73,19 @@
   <ItemGroup>
     <Compile Include="animals\Animal.cs" />
     <Compile Include="animals\AnimalContestController.cs" />
+    <Compile Include="animals\data\AnimalContestData.cs" />
+    <Compile Include="animals\data\CustomAnimalItem.cs" />
+    <Compile Include="animals\data\DinosaurItem.cs" />
+    <Compile Include="animals\data\MeatAnimalItem.cs" />
+    <Compile Include="animals\events\AbigailAct.cs" />
+    <Compile Include="animals\events\AbstractAct.cs" />
+    <Compile Include="animals\events\AlexAct.cs" />
+    <Compile Include="animals\events\EmilyAct.cs" />
+    <Compile Include="animals\events\IAnimalContestAct.cs" />
     <Compile Include="animals\AnimalContestEventBuilder.cs" />
-    <Compile Include="animals\AnimalStatus.cs" />
+    <Compile Include="animals\data\AnimalContestItem.cs" />
+    <Compile Include="animals\data\AnimalContestScore.cs" />
+    <Compile Include="animals\data\AnimalStatus.cs" />
     <Compile Include="animals\AnimalStatusController.cs" />
     <Compile Include="animals\data\AnimalBuildingData.cs" />
     <Compile Include="animals\data\AnimalData.cs" />
@@ -91,7 +102,18 @@
     <Compile Include="animals\data\PetItem.cs" />
     <Compile Include="animals\data\PigItem.cs" />
     <Compile Include="animals\data\TreatItem.cs" />
+    <Compile Include="animals\events\EmilysParrotDancer.cs" />
+    <Compile Include="animals\events\JasAct.cs" />
+    <Compile Include="animals\events\JodiAct.cs" />
+    <Compile Include="animals\events\MarnieAct.cs" />
+    <Compile Include="animals\events\MaruAct.cs" />
+    <Compile Include="animals\events\ShaneAct.cs" />
+    <Compile Include="animals\events\WillyAct.cs" />
+    <Compile Include="animals\FarmAnimalOverrides.cs" />
+    <Compile Include="animals\events\VincentAct.cs" />
+    <Compile Include="animals\events\VincentAnimal.cs" />
     <Compile Include="common\CustomEvent.cs" />
+    <Compile Include="animals\events\EventGreenSlime.cs" />
     <Compile Include="common\EventsLoader.cs" />
     <Compile Include="animals\LivingWithTheAnimalsChannel.cs" />
     <Compile Include="animals\MeatController.cs" />
@@ -102,6 +124,8 @@
     <Compile Include="animals\data\WoolAnimalItem.cs" />
     <Compile Include="animals\TreatsController.cs" />
     <Compile Include="common\EventOverrides.cs" />
+    <Compile Include="common\ItemUtility.cs" />
+    <Compile Include="common\MultiplayerOverrides.cs" />
     <Compile Include="meats\MeatOverrides.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="animals\data\RabbitItem.cs" />
@@ -129,9 +153,21 @@
     <Compile Include="tools\ToolsLoader.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="i18n\pt.json" />
-    <None Include="i18n\default.json" />
-    <None Include="manifest.json" />
+    <None Include="contentPackTemplate\customAnimals.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="contentPackTemplate\manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="i18n\pt.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="i18n\default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MailFrameworkMod\MailFrameworkMod.csproj">

@@ -1,4 +1,5 @@
 {
   "DisableLetter": false,
-  "EnableCasksAnywhere": false
+  "EnableCasksAnywhere": false,
+  "DisableAutomateCompatibility": false
 }

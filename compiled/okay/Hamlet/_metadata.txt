@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4601
+IDs: Taskmaster.Hamlet
+update keys: Nexus:4601

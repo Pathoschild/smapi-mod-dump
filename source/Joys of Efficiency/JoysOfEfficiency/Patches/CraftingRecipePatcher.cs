@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using JoysOfEfficiency.Core;
 using JoysOfEfficiency.Utils;
 using StardewValley;
 using StardewValley.Objects;
@@ -10,16 +11,18 @@ namespace JoysOfEfficiency.Patches
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     internal class CraftingRecipePatcher
     {
+
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         internal static bool Prefix(ref CraftingRecipe __instance)
         {
             //consumeIngredients
-            ConsumeIngredients(__instance);
-            return false;
+            return ConsumeIngredients(__instance);
         }
 
-        private static void ConsumeIngredients(CraftingRecipe recipe)
+        private static bool ConsumeIngredients(CraftingRecipe recipe)
         {
-            Dictionary<int, int> recipeList = Util.Helper.Reflection.GetField<Dictionary<int, int>>(recipe, "recipeList").GetValue();
+            Dictionary<int, int> recipeList = InstanceHolder.Reflection.GetField<Dictionary<int, int>>(recipe, "recipeList").GetValue();
             foreach (KeyValuePair<int, int> kv in recipeList)
             {
                 int index = kv.Key;
@@ -39,8 +42,8 @@ namespace JoysOfEfficiency.Patches
                         }
                     }
                 }
-                
-                foreach (Chest chest in Util.GetNearbyChests(Game1.player))
+
+                foreach (Chest chest in Util.GetNearbyChests(!recipe.isCookingRecipe))
                 {
                     //Search for the chests
                     foreach (Item chestItem in new List<Item>(chest.items))
@@ -57,7 +60,14 @@ namespace JoysOfEfficiency.Patches
                         }
                     }
                 }
+                if (count > 0 && recipe.isCookingRecipe)
+                {
+                    //Delegate process to the original method.
+                    return true;
+                }
             }
+
+            return false;
         }
     }
 }

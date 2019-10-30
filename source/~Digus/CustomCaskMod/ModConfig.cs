@@ -4,5 +4,6 @@
     {
         public bool DisableLetter;
         public bool EnableCasksAnywhere;
+        public bool DisableAutomateCompatibility;
     }
 }

@@ -1,0 +1,10 @@
+{
+  "ContestDays": [
+    "26 spring",
+    "26 fall"
+  ],
+  "MinPointsToPossibleWin": 11,
+  "MinPointsToGaranteeWin": 14,
+  "FarmAnimalFriendshipForParticipating": 90,
+  "PetFriendshipForParticipating": 48
+}

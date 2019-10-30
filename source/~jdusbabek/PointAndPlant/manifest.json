@@ -5,6 +5,6 @@
   "Description": "Plant and harvest from the comfort of your front porch!",
   "UniqueID": "jwdred.PointAndPlant",
   "EntryDll": "PointAndPlant.dll",
-  "MinimumApiVersion": "2.8-beta",
+  "MinimumApiVersion": "2.9.0",
   "UpdateKeys": [ "Nexus:572" ]
 }

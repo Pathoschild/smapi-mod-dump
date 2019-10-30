@@ -1,0 +1,14 @@
+{
+  "Name": "Gold Jade Ring",
+  "Description": "A finely crafted jade ring set in a gold band.",
+  "Price": 1350,
+  "Category": "ArtisanGoods",
+  "Edibility": -300,
+  "Recipe": null,
+  "GiftTastes":
+	{
+		"Love": ["Clint", "Dwarf", "Emily"],
+		"Like": ["Abigail", "Alex", "Caroline","Penny", "Demetrius", "Elliott", "Evelyn", "George", "Haily", "Harvey", "Jas", "Jodi", "Kent", "Krobus", "Lewis", "Marnie", "Maru", "Pam", "Robin", "Sam", "Sandy", "Sebastian", "Shane", "Vincent", "Willy", "Wizard"],
+		"Dislike": ["Leah","Linus","Pierre"]
+	},
+}

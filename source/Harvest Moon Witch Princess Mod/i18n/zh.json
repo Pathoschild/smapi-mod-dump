@@ -27,5 +27,5 @@
 
   // Outdoor (for fixing a dialogue bug)
   "dialogue.outdoor": "今天天气很好，不是么？$7#$b#我一会儿还有工作要做，但我很高兴能够休息一小会儿。",
-  "dialogue.outdoor.low-friendship": "新鲜空气很好。$7#$b#我今天会很忙。$9"
+  "dialogue.outdoor.low-friendship": "新鲜空气很好。$7#$b#我今天会很忙。$9",
 }

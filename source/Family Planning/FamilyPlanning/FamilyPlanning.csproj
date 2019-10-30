@@ -47,10 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChildSpriteData.cs" />
+    <Compile Include="ContentPackData.cs" />
     <Compile Include="CustomBirthingEvent.cs" />
     <Compile Include="CustomNamingMenu.cs" />
     <Compile Include="FamilyData.cs" />
+    <Compile Include="IContentPatcherAPI.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Patches\CanGetPregnantPatch.cs" />
     <Compile Include="Patches\ChildReloadSpritePatch.cs" />

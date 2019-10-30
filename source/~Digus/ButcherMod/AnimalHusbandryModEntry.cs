@@ -1,12 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using AnimalHusbandryMod.animals;
+using AnimalHusbandryMod.animals.data;
+using AnimalHusbandryMod.common;
 using AnimalHusbandryMod.farmer;
 using AnimalHusbandryMod.meats;
 using AnimalHusbandryMod.tools;
 using Harmony;
+using Microsoft.Xna.Framework;
+using PyTK.CustomElementHandler;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Characters;
 using StardewValley.Menus;
 using DataLoader = AnimalHusbandryMod.common.DataLoader;
 using SObject = StardewValley.Object;
@@ -19,10 +26,7 @@ namespace AnimalHusbandryMod
         internal static IModHelper ModHelper;
         internal static IMonitor monitor;
         internal static DataLoader DataLoader;
-        private SButton? _meatCleaverSpawnKey;
-        private SButton? _inseminationSyringeSpawnKey;
-        private SButton? _feedingBasketSpawnKey;
-        private bool IsEnabled = true;
+        private bool _isEnabled = true;
 
 
         /*********
@@ -38,6 +42,7 @@ namespace AnimalHusbandryMod
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.GameLoop.Saving += OnSaving;
         }
 
 
@@ -54,22 +59,51 @@ namespace AnimalHusbandryMod
                 Monitor.Log("Animal Husbandry Mod can't run along side its older version, ButcherMod. " +
                     "You need to copy the 'data' directory from the ButcherMod directory, into the AnimalHusbandryMod directory, then delete the ButcherMod directory. " +
                     "Animal Husbandry Mod won't load until this is done.", LogLevel.Error);
-                IsEnabled = false;
+                _isEnabled = false;
             }
             else
             {
                 DataLoader = new DataLoader(Helper);
-                _meatCleaverSpawnKey = DataLoader.ModConfig.AddMeatCleaverToInventoryKey;
-                _inseminationSyringeSpawnKey = DataLoader.ModConfig.AddInseminationSyringeToInventoryKey;
-                _feedingBasketSpawnKey = DataLoader.ModConfig.AddFeedingBasketToInventoryKey;
-
-                //TimeEvents.AfterDayStarted += (x, y) => EventsLoader.CheckEventDay();
+                DataLoader.LoadContentPacksCommand();
 
                 if (!DataLoader.ModConfig.DisableMeat)
+                {
                     ModHelper.ConsoleCommands.Add("player_addallmeatrecipes", "Add all meat recipes to the player.", DataLoader.RecipeLoader.AddAllMeatRecipes);
+                    if (DataLoader.ModConfig.Softmode)
+                    {
+                        ModHelper.ConsoleCommands.Add("player_addmeatwand", "Add Meat Wand to inventory.", (n, d) => Game1.player.addItemToInventory(new MeatCleaver()));
+                    }
+                    else
+                    {
+                        ModHelper.ConsoleCommands.Add("player_addmeatcleaver", "Add Meat Cleaver to inventory.", (n, d) => Game1.player.addItemToInventory(new MeatCleaver()));
+                    }
+                }
 
-                if (_meatCleaverSpawnKey != null || _inseminationSyringeSpawnKey != null || _feedingBasketSpawnKey != null)
+                if (!DataLoader.ModConfig.DisablePregnancy)
+                {
+                    ModHelper.ConsoleCommands.Add("player_addinseminationsyringe", "Add Insemination Syringe to inventory.", (n, d) => Game1.player.addItemToInventory(new InseminationSyringe()));
+                }
+
+                if (!DataLoader.ModConfig.DisableTreats)
+                {
+                    ModHelper.ConsoleCommands.Add("player_addfeedingbasket", "Add Feeding Basket to inventory.", (n, d) => Game1.player.addItemToInventory(new FeedingBasket()));
+                }
+
+                if (!DataLoader.ModConfig.DisableAnimalContest)
+                {
+                    ModHelper.ConsoleCommands.Add("player_addparticipantribbon", "Add Participant Ribbon to inventory.", (n, d) => Game1.player.addItemToInventory(new ParticipantRibbon()));
+                }
+
+                ModHelper.ConsoleCommands.Add("config_create_customanimaltemplates", "Add custom animal templates in the data\\animal.json file for every loaded custom animal.", DataLoader.AddCustomAnimalsTemplate);
+                ModHelper.ConsoleCommands.Add("config_reload_contentpacks_animalhusbandrymod", "Reload all content packs for animal husbandry mod.",DataLoader.LoadContentPacksCommand);
+                ModHelper.ConsoleCommands.Add("world_removealltools_animalhusbandrymod", "Remove all custom tools added by the animal husbandry mod.",DataLoader.ToolsLoader.RemoveAllToolsCommand);
+
+                if (DataLoader.ModConfig.AddMeatCleaverToInventoryKey != null || DataLoader.ModConfig.AddInseminationSyringeToInventoryKey != null || DataLoader.ModConfig.AddFeedingBasketToInventoryKey != null)
+                {
                     Helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+                }
+
+                SaveHandler.BeforeRemoving += (s, e) => { if(Context.IsMainPlayer) ItemUtility.RemoveItemAnywhere(typeof(ParticipantRibbon));};
 
                 var harmony = HarmonyInstance.Create("Digus.AnimalHusbandryMod");
 
@@ -112,15 +146,46 @@ namespace AnimalHusbandryMod
                     );
                 }
 
-                //harmony.Patch(
-                //    original: AccessTools.Method(typeof(Event), "addSpecificTemporarySprite"),
-                //    transpiler: new HarmonyMethod(typeof(EventsOverrides), nameof(EventsOverrides.addSpecificTemporarySprite))
-                //);
+                if (!DataLoader.ModConfig.DisableAnimalContest)
+                {
+                    Helper.Events.Multiplayer.ModMessageReceived += (ss, a) =>
+                    {
+                        if (a.Type == "animalContestEvent")
+                        {
+                            EventsLoader.AddEvent(a.ReadAs<CustomEvent>());
+                        }
+                    };
 
-                //harmony.Patch(
-                //    original: AccessTools.Method(typeof(Pet), nameof(Pet.checkAction)),
-                //    prefix: new HarmonyMethod(typeof(PetOverrides), nameof(PetOverrides.checkAction))
-                //);
+                    harmony.Patch(
+                        original: AccessTools.Method(typeof(Event), "addSpecificTemporarySprite"),
+                        postfix: new HarmonyMethod(typeof(EventsOverrides),
+                            nameof(EventsOverrides.addSpecificTemporarySprite))
+                    );
+                    harmony.Patch(
+                        original: AccessTools.Method(typeof(Event), nameof(Event.skipEvent)),
+                        postfix: new HarmonyMethod(typeof(EventsOverrides), nameof(EventsOverrides.skipEvent))
+                    );
+
+                    harmony.Patch(
+                        original: AccessTools.Method(typeof(Pet), nameof(Pet.checkAction)),
+                        prefix: new HarmonyMethod(typeof(PetOverrides), nameof(PetOverrides.checkAction))
+                    );
+
+                    harmony.Patch(
+                        original: AccessTools.Method(typeof(Multiplayer), nameof(Multiplayer.broadcastEvent)),
+                        prefix: new HarmonyMethod(typeof(MultiplayerOverrides), nameof(MultiplayerOverrides.broadcastEvent))
+                    );
+
+                    harmony.Patch(
+                        original: AccessTools.Method(typeof(Pet), nameof(Pet.update), new[] { typeof(GameTime), typeof(GameLocation) }),
+                        prefix: new HarmonyMethod(typeof(PetOverrides), nameof(PetOverrides.update))
+                    );
+                }
+
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(FarmAnimal), nameof(FarmAnimal.dayUpdate)),
+                    postfix: new HarmonyMethod(typeof(FarmAnimalOverrides), nameof(FarmAnimalOverrides.dayUpdate))
+                );
             }
         }
 
@@ -129,12 +194,13 @@ namespace AnimalHusbandryMod
         /// <param name="e">The event data.</param>
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            if (!IsEnabled)
+            if (!_isEnabled)
                 return;
 
             DataLoader.ToolsLoader.ReplaceOldTools();
             FarmerLoader.LoadData();
             DataLoader.ToolsLoader.LoadMail();
+            DataLoader.AnimalData.FillLikedTreatsIds();
         }
 
         /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
@@ -142,15 +208,36 @@ namespace AnimalHusbandryMod
         /// <param name="e">The event data.</param>
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-            if (!IsEnabled)
+            if (!_isEnabled)
                 return;
+            if (!DataLoader.ModConfig.DisableAnimalContest)
+            {
+                EventsLoader.CheckEventDay();
+            }
 
             DataLoader.LivingWithTheAnimalsChannel.CheckChannelDay();
             if (!DataLoader.ModConfig.DisableMeat)
+            {
                 DataLoader.RecipeLoader.MeatFridayChannel.CheckChannelDay();
+            }
             if (!DataLoader.ModConfig.DisablePregnancy)
             {
                 PregnancyController.CheckForBirth();
+            }
+        }
+
+        /// <summary>Raised before the game is saved.</summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnSaving(object sender, SavingEventArgs e)
+        {
+            if (!_isEnabled)
+                return;
+
+            EventsLoader.CheckUnseenEvents();
+
+            if (!DataLoader.ModConfig.DisablePregnancy)
+            {
                 PregnancyController.UpdatePregnancy();
             }
         }
@@ -160,16 +247,16 @@ namespace AnimalHusbandryMod
         /// <param name="e">The event data.</param>
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (!IsEnabled || !Context.IsWorldReady)
+            if (!_isEnabled || !Context.IsWorldReady)
                 return;
 
-            if (e.Button == _meatCleaverSpawnKey)
+            if (e.Button == DataLoader.ModConfig.AddMeatCleaverToInventoryKey)
                 Game1.player.addItemToInventory(new MeatCleaver());
 
-            if (e.Button == _inseminationSyringeSpawnKey)
+            if (e.Button == DataLoader.ModConfig.AddInseminationSyringeToInventoryKey)
                 Game1.player.addItemToInventory(new InseminationSyringe());
                 
-            if (e.Button == _feedingBasketSpawnKey)
+            if (e.Button == DataLoader.ModConfig.AddFeedingBasketToInventoryKey)
                 Game1.player.addItemToInventory(new FeedingBasket());
         }
     }

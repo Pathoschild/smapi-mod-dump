@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Tools;
-using SFarmer = StardewValley.Farmer;
 
 namespace PointAndPlant.Framework
 {
@@ -25,7 +24,7 @@ namespace PointAndPlant.Framework
             this.Vector = vector;
         }
 
-        public new void DoDamage(GameLocation location, int x, int y, int facingDirection, int power, SFarmer who)
+        public new void DoDamage(GameLocation location, int x, int y, int facingDirection, int power, Farmer who)
         {
             this.isOnSpecial = false;
 

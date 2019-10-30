@@ -99,6 +99,6 @@ namespace AnimalHusbandryMod.cooking
             SteakWithMushrooms.CopyRecipeAndAmount(cookingData.SteakWithMushrooms);
             CowboyDinner.CopyRecipeAndAmount(cookingData.CowboyDinner);
             Bacon.CopyRecipeAndAmount(cookingData.Bacon);
-    }
+        }
     }
 }

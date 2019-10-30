@@ -1,0 +1,24 @@
+{
+  "Name": "Miners Drink",
+  "Description": "The magic of the earth in bottle form, a common morning drink for dwarves.",
+  "Price": 240,
+  "Category": "ArtisanGoods",
+  "Edibility": 60,
+  "EdibleIsDrink": true,
+  "EdibleBuffs": {
+    "Farming": 0,
+    "Foraging": 0,
+    "Mining": 3,
+    "Fishing": 0,
+    "Luck": 0,		
+    "Duration": 360,
+  },
+  "Recipe": null,
+  "GiftTastes":
+	{
+		"Love": ["Krobus","Dwarf"],
+		"Like": ["Marnie", "Maru","Clint","Linus"],		
+		"Dislike": ["Abigail","Alex", "Caroline", "Demetrius", "Elliott", "Emily", "Evelyn", "George", "Gus", "Harvey", "Jas", "Jodi", "Kent", "Lewis",  "Pam", "Pierre", "Robin", "Sam", "Sandy", "Shane", "Vincent"],
+		"Hate": ["Leah","Penny","Haley"]
+	},
+}

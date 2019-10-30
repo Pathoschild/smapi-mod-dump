@@ -38,6 +38,8 @@ namespace FamilyPlanning
          * so it's initialized to male for default purposes.
          * 
          * I'm removing the gender references in the message text because the message would always imply male.
+         * 
+         * Content Packs can now include dialogue for your spouse for when the baby is born.
          */
         public bool setUp()
         {
@@ -117,44 +119,94 @@ namespace FamilyPlanning
 
                     /*
                      * Gives new lines to spouse based on number of children.
-                     * As of now, it doesn't give any new lines after 2 children unless you're gay.
+                     * My lines are relatively simple (and worth revisiting).
                      */
                     NPC spouse = Game1.player.getSpouse();
-                    string s;
-                    if (Game1.player.getSpouse().isGaySpouse())
-                    {
-                        if (Game1.player.getSpouse().Gender != 0)
-                            s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_Adoption", (object)this.babyName).Split('/')).Last<string>();
-                        else
-                            s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_Adoption", (object)this.babyName).Split('/')).First<string>();
-                        spouse.setNewDialogue(s, false, false);
+                    string s = "";
 
-                        if(Game1.player.getChildrenCount() == 2)
+                    //Attempts to load content pack dialogue
+                    Tuple<int, string> dialoguePair = ModEntry.GetSpouseDialogueData(spouse.displayName);
+                    if (dialoguePair != null)
+                    {
+                        if(Game1.player.getChildrenCount() == dialoguePair.Item1)
+                        {
+                            //{0} to represent the baby name and {1} to represent the player name.
+                            s = dialoguePair.Item2;
+                            if (s.Contains("{0}") || s.Contains("{1}"))
+                            {
+                                for (int i = 0; i < s.Length - 3; i++)
+                                {
+                                    if (s.Substring(i, 3).Equals("{0}"))
+                                    {
+                                        s = s.Substring(0, i) + babyName + s.Substring(i + 3, s.Length - i - 3);
+                                        i = 0;
+                                    }
+                                    if (s.Substring(i, 3).Equals("{1}"))
+                                    {
+                                        s = s.Substring(0, i) + Game1.player.Name + s.Substring(i + 3, s.Length - i - 3);
+                                        i = 0;
+                                    }
+                                }
+                            }
+                            spouse.setNewDialogue(s, false, false);
+                        }
+
+                        if (Game1.player.getChildrenCount() == 2)
                             Game1.getSteamAchievement("Achievement_FullHouse");
                     }
-                    else if (Game1.player.getChildrenCount() == 1)
+
+                    //If content pack dialogue isn't available, use vanilla
+                    if(s == "")
                     {
-                        if (Game1.player.getSpouse().Gender != 0)
-                            s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_FirstChild", babyName).Split('/')).Last();
-                        else
-                            s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_FirstChild", babyName).Split('/')).First();
-                        spouse.setNewDialogue(s, false, false);
-                    }
-                    else if(Game1.player.getChildrenCount() == 2)
-                    {
-                        if (Game1.random.NextDouble() >= 0.5)
+                        if (Game1.player.getSpouse().isGaySpouse())
                         {
+                            //"It's so wonderful to welcome little {0} into our life."
                             if (Game1.player.getSpouse().Gender != 0)
-                                s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_SecondChild2").Split('/')).Last<string>();
+                                s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_Adoption", (object)this.babyName).Split('/')).Last<string>();
                             else
-                                s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_SecondChild2").Split('/')).First<string>();
+                                s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_Adoption", (object)this.babyName).Split('/')).First<string>();
+                            spouse.setNewDialogue(s, false, false);
+
+                            if (Game1.player.getChildrenCount() == 2)
+                                Game1.getSteamAchievement("Achievement_FullHouse");
                         }
-                        else if (Game1.player.getSpouse().Gender != 0)
-                            s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_SecondChild1").Split('/')).Last<string>();
+                        else if (Game1.player.getChildrenCount() == 1)
+                        {
+                            //"Everything went well, and now little {0} is part of the family. We're very fortunate."
+                            if (Game1.player.getSpouse().Gender != 0)
+                                s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_FirstChild", babyName).Split('/')).Last();
+                            else
+                                s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_FirstChild", babyName).Split('/')).First();
+                            spouse.setNewDialogue(s, false, false);
+                        }
+                        else if (Game1.player.getChildrenCount() == 2)
+                        {
+                            //"Just look at our little family... We've come a long way, haven't we?"
+                            //"Two beautiful children... We've come a long way, haven't we?"
+                            if (Game1.random.NextDouble() >= 0.5)
+                            {
+                                if (Game1.player.getSpouse().Gender != 0)
+                                    s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_SecondChild2").Split('/')).Last<string>();
+                                else
+                                    s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_SecondChild2").Split('/')).First<string>();
+                            }
+                            else if (Game1.player.getSpouse().Gender != 0)
+                                s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_SecondChild1").Split('/')).Last<string>();
+                            else
+                                s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_SecondChild1").Split('/')).First<string>();
+                            spouse.setNewDialogue(s, false, false);
+                            Game1.getSteamAchievement("Achievement_FullHouse");
+                        }
+                        else if (Game1.player.getChildrenCount() == 3)
+                        {
+                            s = "Three beautiful children... This is so wonderful.";
+                            spouse.setNewDialogue(s, false, false);
+                        }
                         else
-                            s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_SecondChild1").Split('/')).First<string>();
-                        spouse.setNewDialogue(s, false, false);
-                        Game1.getSteamAchievement("Achievement_FullHouse");
+                        {
+                            s = "What a big, happy family... I couldn't have imagined I would be so happy before I met you.";
+                            spouse.setNewDialogue(s, false, false);
+                        }
                     }
                     
                     if (Game1.keyboardDispatcher != null)

@@ -120,6 +120,7 @@ namespace Thor.Stardew.Mods.HealthBars
                 int health = monster.Health;
                 int maxHealth = monster.MaxHealth;
                 if (health > maxHealth) maxHealth = health;
+                if (_config.HideFullLifeBar && maxHealth == health) continue;
                 
                 // If monster has already been killed once by player, we get the number of kills, else it's 0
                 int monsterKilledAmount = Game1.stats.specificMonstersKilled.ContainsKey(monster.name) ? Game1.stats.specificMonstersKilled[monster.name] : 0;
@@ -223,17 +224,20 @@ namespace Thor.Stardew.Mods.HealthBars
                 // Display life count
                 Color textColor = (barColor == Color.DarkSlateGray || barLengthPercent < 0.35f) ? Color.AntiqueWhite : Color.DarkSlateGray;
                 // Draw text
-                Vector2 textsize = textProps.Font.MeasureString(healthText);
-                Game1.spriteBatch.DrawString(
-                    textProps.Font,
-                    healthText,
-                    lifebarCenterPos,
-                    textProps.Color,
-                    0f,
-                    new Vector2(textsize.X / 2, textsize.Y / 2 + textProps.BottomOffset),
-                    textProps.Scale,
-                    SpriteEffects.None,
-                    0f);
+                if (!_config.HideTextInfo)
+                {
+                    Vector2 textsize = textProps.Font.MeasureString(healthText);
+                    Game1.spriteBatch.DrawString(
+                        textProps.Font,
+                        healthText,
+                        lifebarCenterPos,
+                        textProps.Color,
+                        0f,
+                        new Vector2(textsize.X / 2, textsize.Y / 2 + textProps.BottomOffset),
+                        textProps.Scale,
+                        SpriteEffects.None,
+                        0f);
+                }
 
                 // If we display alternate sprite, there is no foreground
                 if (!useAlternateSprite)

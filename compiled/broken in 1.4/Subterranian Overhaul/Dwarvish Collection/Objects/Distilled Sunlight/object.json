@@ -1,0 +1,26 @@
+{
+  "Name": "Distilled Sunlight",
+  "Description": "A potion brewed from a captured rays of the noon-day sun.",
+  "Price": 800,
+  "Category": "ArtisanGoods",
+  "Edibility": 110,
+  "EdibleIsDrink": true,
+  "EdibleBuffs": {
+    "Farming": 0,
+    "Foraging": 0,
+    "Mining": 0,
+    "Fishing": 0,
+    "Luck": 0,	
+	"Spped": 3,	
+    "Duration": 120,
+  },
+  "Recipe": null,
+  "GiftTastes":
+	{
+		"Love": ["Wizard","Dwarf"],
+		"Like": ["Haley","Leah","Kent","Gus", "Harvey","Linus", "Pam"],
+		"Neutral": ["Abigail","Alex", "Caroline", "Clint", "Demetrius", "Elliott", "Emily", "Evelyn","Willy"],
+		"Dislike": [ "Penny","George", "Jas", "Jodi", "Lewis", "Marnie", "Maru", "Pierre", "Robin", "Sam", "Sandy", "Shane", "Vincent"],
+		"Hate": ["Krobus"]
+	},
+}

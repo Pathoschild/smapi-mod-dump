@@ -1,0 +1,14 @@
+{
+  "Name": "Earth Crystal Necklace",
+  "Description": "A finely crafted gold necklace set with a polished earth crystal.",
+  "Price": 900,
+  "Category": "ArtisanGoods",
+  "Edibility": -300,
+  "Recipe": null,  
+  "GiftTastes":
+	{
+		"Love": ["Dwarf"],
+		"Like": ["Leah","Abigail", "Clint", "Sam", "Emily","Alex", "Caroline","Penny", "Demetrius", "Elliott", "Evelyn", "George", "Haily", "Harvey", "Jas", "Jodi", "Kent", "Krobus", "Lewis", "Marnie", "Maru", "Pam", "Robin", "Sandy", "Sebastian", "Shane", "Vincent", "Willy", "Wizard"],
+		"Dislike": ["Linus","Pierre"]
+	},
+}

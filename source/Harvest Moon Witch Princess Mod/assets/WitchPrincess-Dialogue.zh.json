@@ -1,0 +1,14 @@
+{
+    ["Introduction"] = "So you're the new farm hand, huh? What was your name..? @.#$e#Well, whatever. Good luck, I guess.";
+    ["fall_24"] = "@, are you coming to the festival in 3 days?$u#$b#I have made most of the preparations today.$4#&e#Hehe...";
+    ["Tue"] = "What? Why are you bothering me? I'm busy!";
+    ["Tue4"] = "Since you've been so helpful, I suppose you can enter the basement. Don't touch anything though!.";
+    ["Wed"] = "It takes years of study to understand the language of the elementals.#$e#To actually speak their language requires a lifetime of devoted effort.#$e#Now, if you'll excuse me...";
+    ["Thu"] = "...#$e#..hm.#$e#..You're bothering me...";
+    ["Thu10"] = "Please don't tell anyone... but I have reason to think that your farm is surrounded by a strong magical field.#$e#I could be wrong... It's rare, but it does happen.";
+    ["Fri"] = "The townsfolk are afraid of me.#$e#It's fine. I'd rather be left alone anyways.";
+    ["Fri6"] = "In my school time I was befriended with a Witch. After that time she went crazy, she began flying around the countryside and putting curses on people.";
+    ["Sat"] = "You are standing above a potent magical field.#$e#I didn't move into this run-down tower for nothing...";
+    ["Sat2"] = "How are those sprites doing? Last I heard they were very needy...";
+    ["Sun"] = "Sometimes, I observe the local villagers in secret.#$e#The daily rituals of mortals are quite funny, hehe...";
+}

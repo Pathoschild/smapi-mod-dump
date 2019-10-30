@@ -1,5 +1,5 @@
 ﻿using System;
-using JoysOfEfficiency.Utils;
+using JoysOfEfficiency.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -28,7 +28,7 @@ namespace JoysOfEfficiency.OptionsElements
 
         public ModifiedInputListener(IClickableMenu parent ,string label, int which, SButton initial, ITranslationHelper translationHelper, Action<int, SButton> onButtonPressed, Action<int, ModifiedInputListener> onStartListening = null, Func<int, bool> isDisabled = null) : base(label, -1, -1, 9 * Game1.pixelZoom, 9 * Game1.pixelZoom, 0)
         {
-            this.label = ModEntry.ModHelper.Translation.Get($"options.{label}");
+            this.label = InstanceHolder.Translation.Get($"options.{label}");
             _button = initial;
             _defaultButton = initial;
             _onButtonPressed = onButtonPressed;
@@ -39,24 +39,26 @@ namespace JoysOfEfficiency.OptionsElements
             _menu = parent;
         }
 
-        public void receiveButtonPress(Buttons button)
+        public void ReceiveButtonPress(Buttons button)
         {
             if (button.ToSButton() == _button)
             {
                 return;
             }
-            if (button.ToSButton() == ModEntry.Conf.ButtonShowMenu)
+            if (button.ToSButton() == InstanceHolder.Config.ButtonShowMenu)
             {
                 _conflicting = true;
                 return;
             }
-            if (_isListening)
+
+            if (!_isListening)
             {
-                _button = button.ToSButton();
-                _conflicting = false;
-                _isListening = false;
-                _onButtonPressed(whichOption, button.ToSButton());
+                return;
             }
+            _button = button.ToSButton();
+            _conflicting = false;
+            _isListening = false;
+            _onButtonPressed(whichOption, button.ToSButton());
         }
 
         public override void receiveKeyPress(Keys key)
@@ -73,7 +75,7 @@ namespace JoysOfEfficiency.OptionsElements
                 return;
             }
             base.receiveKeyPress(key);
-            if(Game1.options.isKeyInUse(key) || key.ToSButton() == ModEntry.Conf.ButtonShowMenu)
+            if(Game1.options.isKeyInUse(key) || key.ToSButton() == InstanceHolder.Config.ButtonShowMenu)
             {
                 _conflicting = true;
                 return;
@@ -91,9 +93,9 @@ namespace JoysOfEfficiency.OptionsElements
         {
             string text = $"{label}: {_button.ToString()}";
             Vector2 size = Game1.dialogueFont.MeasureString(text);
-            b.DrawString(Game1.dialogueFont, text, new Vector2(slotX, slotY + 8), Color.Black, 0, new Vector2(), 1f, SpriteEffects.None, 1.0f);
+            b.DrawString(Game1.dialogueFont, text, new Vector2(slotX+16, slotY + 8), Color.Black, 0, new Vector2(), 1f, SpriteEffects.None, 1.0f);
 
-            int x = slotX + (int)size.X + 8;
+            int x = slotX + (int)size.X + 24;
 
             _buttonRect = new Rectangle(x, slotY, 90, 45);
             bounds = new Rectangle(0, 0, (int)size.X + _buttonRect.Width, _buttonRect.Height);
@@ -110,11 +112,10 @@ namespace JoysOfEfficiency.OptionsElements
             }
             x += _menu.xPositionOnScreen;
             y += _buttonRect.Height / 2;
-            if(_buttonRect != null && x >= _buttonRect.Left && x <= _buttonRect.Right)
-            {
-                _onStartListening(whichOption, this);
-                _isListening = true;
-            }
+            if (x < _buttonRect.Left || x > _buttonRect.Right)
+                return;
+            _onStartListening(whichOption, this);
+            _isListening = true;
         }
 
         public void DrawStrings(SpriteBatch batch, int x, int y)

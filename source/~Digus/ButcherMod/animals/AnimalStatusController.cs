@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AnimalHusbandryMod.farmer;
+using StardewModdingAPI;
+using StardewValley;
 
 namespace AnimalHusbandryMod.animals
 {
     public class AnimalStatusController
     {
-        protected static AnimalStatus GetAnimalStatus(long id)
+        public static AnimalStatus GetAnimalStatus(long id)
         {
             AnimalStatus animalStatus = FarmerLoader.FarmerData.AnimalData.Find(s => s.Id == id);
             if (animalStatus == null)
@@ -19,6 +21,11 @@ namespace AnimalHusbandryMod.animals
             }
 
             return animalStatus;
+        }
+
+        public static void RemoveAnimalStatus(long farmAnimalId)
+        {
+            FarmerLoader.FarmerData.AnimalData.RemoveAll(f => f.Id == farmAnimalId);
         }
     }
 }

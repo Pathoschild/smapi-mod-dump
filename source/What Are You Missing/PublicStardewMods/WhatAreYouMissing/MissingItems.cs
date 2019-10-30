@@ -32,6 +32,8 @@ namespace WhatAreYouMissing
         private Dictionary<int, SObject> AvailableMerchentStock;
         private Dictionary<int, SObject> AvailableRecipes;
         private Dictionary<int , Dictionary<int, SObject>> AllRecipeIngredients;
+        private Dictionary<int, SObject> AllFish;
+        private Dictionary<int, SObject> AllCrops;
         private Dictionary<int, Dictionary<int, SObject>> CondensedPlayerItems;
         private Dictionary<int, bool[]> CompletedItems;
         private Dictionary<int, SObject> CurrentSeasonSpecifics;
@@ -44,6 +46,8 @@ namespace WhatAreYouMissing
         private List<SObject> MissingSpecifics;
         private List<SObject> MissingRecipes;
         private Dictionary<int, Dictionary<int, SObject>> MissingRecipeIngredients;
+        private List<SObject> MissingFish;
+        private List<SObject> MissingCrops;
 
         public MissingItems()
         {
@@ -64,6 +68,8 @@ namespace WhatAreYouMissing
             AvailableMerchentStock = new AvailableMerchantStock(SpringItems, SummerItems, FallItems, WinterItems, CCItems).GetItems();
             AvailableRecipes = new Recipes().GetItems();
             AllRecipeIngredients = new RecipeIngredients().GetRecipeAndIngredients();
+            AllFish = new AllFish().GetItems();
+            AllCrops = new AllCrops().GetItems();
             CurrentSeasonSpecifics = GetCurrentSeasonSpecifics();
 
             CompletedItems = new CommunityCenter().bundlesDict();
@@ -78,6 +84,8 @@ namespace WhatAreYouMissing
             MissingMerchantCCItems = new List<SObject>();
             MissingRecipes = new List<SObject>();
             MissingRecipeIngredients = new Dictionary<int, Dictionary<int, SObject>>();
+            MissingFish = new List<SObject>();
+            MissingCrops = new List<SObject>();
         }
 
         private void InitializePlayerItems()
@@ -93,6 +101,8 @@ namespace WhatAreYouMissing
             FindMissingMerchantSpecifics();
             FindMissingRecipes();
             FindMissingRecipeIngredients();
+            FindMissingFish();
+            FindMissingCrops();
         }
 
         private Dictionary<int, SObject> GetCurrentSeasonSpecifics()
@@ -149,6 +159,16 @@ namespace WhatAreYouMissing
         public Dictionary<int, Dictionary<int, SObject>> GetMissingRecipeIngredients()
         {
             return MissingRecipeIngredients;
+        }
+
+        public List<SObject> GetMissingFish()
+        {
+            return MissingFish;
+        }
+
+        public List<SObject> GetMissingCrops()
+        {
+            return MissingCrops;
         }
 
         private void FindMissingCCItems()
@@ -294,7 +314,7 @@ namespace WhatAreYouMissing
             foreach(KeyValuePair<int, SObject> pair in AvailableRecipes)
             {
                 int commonQualityAmountMissing = HowManyMissingCommonQuality(new SObject(pair.Key, 1, quality: Constants.COMMON_QUALITY));
-                if(commonQualityAmountMissing != 0 || ModEntry.Config.AlwaysShowAllRecipes)
+                if(commonQualityAmountMissing != 0 || ModEntry.modConfig.AlwaysShowAllRecipes)
                 {
                     MissingRecipes.Add(new SObject(pair.Key, commonQualityAmountMissing == 0 ? 1 : commonQualityAmountMissing));
                 }
@@ -321,6 +341,48 @@ namespace WhatAreYouMissing
                             MissingRecipeIngredients.Add(recipeAndIngredients.Key, missingIngredient);
                         }
                     }
+                }
+            }
+        }
+
+        private void FindMissingFish()
+        {
+            HighestQuality highestQuality = new HighestQuality();
+            foreach (KeyValuePair<int, SObject> pair in AllFish)
+            {
+                int commonQualityAmountMissing = HowManyMissingCommonQuality(new SObject(pair.Key, 1, quality: Constants.COMMON_QUALITY));
+
+                int maxQuality = highestQuality.GetHighestQualityForItem(pair.Key);
+                int highestQualityAmountMissing = HowManyMissingHighestQuality(new SObject(pair.Key, 1, quality: maxQuality));
+
+                if (commonQualityAmountMissing != 0 || ModEntry.modConfig.AlwaysShowAllFish)
+                {
+                    MissingFish.Add(new SObject(pair.Key, commonQualityAmountMissing == 0 ? 1 : commonQualityAmountMissing));
+                }
+                if (highestQualityAmountMissing != 0)
+                {
+                    MissingFish.Add(new SObject(pair.Key, highestQualityAmountMissing, quality: maxQuality));
+                }
+            }
+        }
+
+        private void FindMissingCrops()
+        {
+            HighestQuality highestQuality = new HighestQuality();
+            foreach (KeyValuePair<int, SObject> pair in AllCrops)
+            {
+                int commonQualityAmountMissing = HowManyMissingCommonQuality(new SObject(pair.Key, 1, quality: Constants.COMMON_QUALITY));
+
+                int maxQuality = highestQuality.GetHighestQualityForItem(pair.Key);
+                int highestQualityAmountMissing = HowManyMissingHighestQuality(new SObject(pair.Key, 1, quality: maxQuality));
+
+                if (commonQualityAmountMissing != 0)
+                {
+                    MissingCrops.Add(new SObject(pair.Key, commonQualityAmountMissing));
+                }
+                if (highestQualityAmountMissing != 0)
+                {
+                    MissingCrops.Add(new SObject(pair.Key, highestQualityAmountMissing, quality: maxQuality));
                 }
             }
         }
@@ -353,10 +415,10 @@ namespace WhatAreYouMissing
             }
             if (IsQualityItemInPlayerItems(item))
             {
-                int amountMissing = ModEntry.Config.CommonQualityAmount - CondensedPlayerItems[item.ParentSheetIndex][Constants.COMMON_QUALITY].Stack;
+                int amountMissing = ModEntry.modConfig.CommonAmount - CondensedPlayerItems[item.ParentSheetIndex][Constants.COMMON_QUALITY].Stack;
                 return amountMissing < 0 ? 0 : amountMissing;
             }
-            return ModEntry.Config.CommonQualityAmount;
+            return ModEntry.modConfig.CommonAmount;
         }
 
         private int HowManyMissingHighestQuality(SObject item)
@@ -367,10 +429,10 @@ namespace WhatAreYouMissing
             }
             if (IsQualityItemInPlayerItems(item))
             {
-                int amountMissing = ModEntry.Config.HighestQualityAmount - CondensedPlayerItems[item.ParentSheetIndex][item.Quality].Stack;
+                int amountMissing = ModEntry.modConfig.HighestQualityAmount - CondensedPlayerItems[item.ParentSheetIndex][item.Quality].Stack;
                 return amountMissing < 0 ? 0 : amountMissing;
             }
-            return ModEntry.Config.HighestQualityAmount;
+            return ModEntry.modConfig.HighestQualityAmount;
         }
 
         private bool IsQualityItemInPlayerItems(SObject item)

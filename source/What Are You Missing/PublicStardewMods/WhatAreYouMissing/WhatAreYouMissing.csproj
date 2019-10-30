@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FishDisplayInfo.cs" />
+    <Compile Include="ItemData\AllCrops.cs" />
+    <Compile Include="ItemData\AllFish.cs" />
     <Compile Include="ItemData\CommonCCItems.cs" />
     <Compile Include="ItemData\Recipes.cs" />
     <Compile Include="Utility\Constants.cs" />
@@ -70,6 +73,7 @@
   <ItemGroup>
     <None Include="i18n\default.json" />
     <None Include="i18n\es.json" />
+    <None Include="i18n\pt.json" />
     <None Include="manifest.json" />
     <None Include="packages.config" />
   </ItemGroup>

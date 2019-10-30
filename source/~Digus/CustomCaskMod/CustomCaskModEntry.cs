@@ -1,6 +1,11 @@
-﻿using Harmony;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using Harmony;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
 using StardewValley.Objects;
 
 namespace CustomCaskMod
@@ -8,7 +13,8 @@ namespace CustomCaskMod
     /// <summary>The mod entry class loaded by SMAPI.</summary>
     public class CustomCaskModEntry : Mod
     {
-        internal IMonitor ModMonitor { get; set; }
+        internal static IMonitor ModMonitor { get; set; }
+        internal new static IModHelper Helper { get; set; }
 
 
         /*********
@@ -19,6 +25,7 @@ namespace CustomCaskMod
         public override void Entry(IModHelper helper)
         {
             ModMonitor = Monitor;
+            Helper = helper;
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         }
@@ -40,6 +47,26 @@ namespace CustomCaskMod
                 original: AccessTools.Method(typeof(Cask), nameof(Cask.performObjectDropInAction)),
                 prefix: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.PerformObjectDropInAction))
             );
+
+            if (!DataLoader.ModConfig.DisableAutomateCompatibility && Helper.ModRegistry.IsLoaded("Pathoschild.Automate"))
+            {
+                ModMonitor.Log("Automated detected, patching it to work with configured items and aging rates.",LogLevel.Info);
+                try
+                {
+                    Assembly automateAssembly = AppDomain.CurrentDomain.GetAssemblies().First(a => a.FullName.StartsWith("Automate,"));
+                    harmony.Patch(
+                        original: AccessTools.Constructor(automateAssembly.GetType("Pathoschild.Stardew.Automate.Framework.Machines.Objects.CaskMachine"), new Type[] { typeof(Cask), typeof(GameLocation), typeof(Vector2) }),
+                        postfix: new HarmonyMethod(typeof(CaskOverrides), nameof(CaskOverrides.CaskMachine))
+                    );
+                }
+                catch (Exception ex)
+                {
+                    ModMonitor.Log("Error trying to patch Automate. Configured items and aging rates will not work with Automate.", LogLevel.Warn);
+                    ModMonitor.Log(ex.Message, LogLevel.Trace);
+                    ModMonitor.Log(ex.StackTrace, LogLevel.Trace);
+                }
+                
+            }
         }
     }
 }

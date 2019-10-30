@@ -5,12 +5,12 @@ mods:
    Family Planning
 
 latest commit:
-   commit 81a9669194b5fd668a4bf36c6d8b969fbb33e51b
-   Merge: 62c34f8 8b6406d
+   commit ccf98ec64f3c42bee5efb516e5a5730df31e2e38
+   Merge: 4a12ce9 63071c6
    Author: loe2run <55768216+loe2run@users.noreply.github.com>
-   Date:   Wed Sep 25 18:44:58 2019 -0400
+   Date:   Sat Oct 26 11:41:24 2019 -0400
    
-       Merge pull request #3 from loe2run/loe2run-final-update
+       Merge pull request #9 from loe2run/loe2run-1.2.0
        
-       Final Update
+       Minor Edits
    

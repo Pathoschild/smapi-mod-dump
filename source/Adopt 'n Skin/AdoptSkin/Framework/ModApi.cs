@@ -8,6 +8,7 @@ using StardewModdingAPI;
 
 using StardewValley;
 using StardewValley.Characters;
+using StardewValley.Buildings;
 
 namespace AdoptSkin.Framework
 {
@@ -129,17 +130,38 @@ namespace AdoptSkin.Framework
 
 
 
-        /// <summary>Returns an enumerable list of all Horse instances that exist currently, including owned horses, wild horses, or otherwise.
-        /// Note: Horses technically don't exist while they are being ridden.</summary>
+        /// <summary>Returns an enumerable list of all owned Horse instances. This excludes WildHorses and tractors.</summary>
         public static IEnumerable<Horse> GetHorses()
         {
             foreach (NPC npc in Utility.getAllCharacters())
-                if (npc is Horse horse)
+                if (npc is Horse horse && !ModApi.IsWildHorse(horse) && ModApi.IsNotATractor(horse))
                     yield return horse;
+            // Horses being ridden don't technically exist, and must be added separately
+            foreach (Horse horse in ModEntry.BeingRidden)
+                yield return horse;
         }
 
-        /// <summary>Returns an enumerable list of all Pet instances that exist currently, including owned pets, stray pets, or otherwise.</summary>
+        /// <summary>Returns an enumerable list of all existing Horse instances. This includes WildHorses and excludes tractors.</summary>
+        public static IEnumerable<Horse> GetAllHorses()
+        {
+            foreach (NPC npc in Utility.getAllCharacters())
+                if (npc is Horse horse && ModApi.IsNotATractor(horse))
+                    yield return horse;
+            // Horses being ridden don't technically exist, and must be added separately
+            foreach (Horse horse in ModEntry.BeingRidden)
+                yield return horse;
+        }
+
+        /// <summary>Returns an enumerable list of all owned Pet instances. This excludes strays.</summary>
         public static IEnumerable<Pet> GetPets()
+        {
+            foreach (NPC npc in Utility.getAllCharacters())
+                if (npc is Pet pet && !ModApi.IsStray(pet))
+                    yield return pet;
+        }
+
+        /// <summary>Returns an enumerable list of all existing Pet instances. This includes strays.</summary>
+        public static IEnumerable<Pet> GetAllPets()
         {
             foreach (NPC npc in Utility.getAllCharacters())
                 if (npc is Pet pet)
@@ -212,6 +234,48 @@ namespace AdoptSkin.Framework
         public static bool IsStray(Character creature) { return (creature is Pet pet && IsStray(pet.Manners)); }
 
         public static bool IsStray(long longID) { return (longID == Stray.StrayID); }
+
+        public static void ClearUnownedPets()
+        {
+            foreach (NPC npc in Utility.getAllCharacters())
+            {
+                if (npc is Horse horse && ModApi.IsWildHorse(horse))
+                    Game1.removeThisCharacterFromAllLocations(horse);
+                else if (npc is Pet pet && ModApi.IsStray(pet))
+                    Game1.removeThisCharacterFromAllLocations(pet);
+            }
+        }
+
+        /// <summary>Returns the first Stable instance found on the farm.</summary>
+        public static Guid GetRandomStableID()
+        {
+            Guid stableID = CreationHandler.ZeroHorseID;
+
+            foreach (Horse horse in ModApi.GetHorses())
+                if (horse.HorseId != CreationHandler.ZeroHorseID)
+                {
+                    stableID = horse.HorseId;
+                    break;
+                }
+
+            return stableID;
+        }
+
+        /// <summary>Returns the Stable instance with the given HorseID field.</summary>
+        public static Stable GetStable(Guid guid)
+        {
+            if (Game1.getFarm() == null)
+                return null;
+
+            foreach (Building building in Game1.getFarm().buildings)
+            {
+                if (building is Stable stable && stable.HorseId == guid)
+                    return stable;
+            }
+            return null;
+        } 
+
+
 
         public static ModEntry.CreatureCategory GetCreatureCategory(Character creature) { return GetCreatureCategory(GetInternalType(creature)); }
 

@@ -5,6 +5,6 @@
   "Description": "Order stuff over the internet, and save all kinds of money!",
   "UniqueID": "jwdred.PelicanFiber",
   "EntryDll": "PelicanFiber.dll",
-  "MinimumApiVersion": "2.8-beta",
+  "MinimumApiVersion": "2.9.0",
   "UpdateKeys": [ "Nexus:631" ]
 }

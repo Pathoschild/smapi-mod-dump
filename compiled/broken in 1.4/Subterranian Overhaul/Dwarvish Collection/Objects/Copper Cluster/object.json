@@ -1,0 +1,9 @@
+{
+  "Name": "Copper Cluster",
+  "Description": "A cluster of very pure copper ore.",
+  "Category": "Metal",
+  "Edibility": -300,  
+  "Price": 25,
+  "IsColored": false,
+  "Recipe": null
+}

@@ -8,7 +8,6 @@ using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.Tools;
 using Object = StardewValley.Object;
-using SFarmer = StardewValley.Farmer;
 
 namespace PelicanFiber.Framework
 {
@@ -18,6 +17,7 @@ namespace PelicanFiber.Framework
         ** Properties
         *********/
         private readonly IContentHelper Content;
+        private readonly IDataHelper Data;
         private readonly IMonitor Monitor;
         private Dictionary<int, int> BundleToAreaDictionary;
 
@@ -25,9 +25,10 @@ namespace PelicanFiber.Framework
         /*********
         ** Public methods
         *********/
-        public ItemUtils(IContentHelper content, IMonitor monitor)
+        public ItemUtils(IContentHelper content, IDataHelper data, IMonitor monitor)
         {
             this.Content = content;
+            this.Data = data;
             this.Monitor = monitor;
         }
 
@@ -364,7 +365,7 @@ namespace PelicanFiber.Framework
             }
         }
 
-        public Dictionary<Item, int[]> GetFishShopStock(SFarmer who, bool unfiltered = false)
+        public Dictionary<Item, int[]> GetFishShopStock(Farmer who, bool unfiltered = false)
         {
             Dictionary<Item, int[]> stock = new Dictionary<Item, int[]>
             {
@@ -565,7 +566,7 @@ namespace PelicanFiber.Framework
         public List<Item> GetJunimoStock()
         {
             List<Item> junimoItems = new List<Item>();
-            Dictionary<int, string> junContent = this.Content.Load<Dictionary<int, string>>("assets\\bundles");
+            Dictionary<int, string> junContent = this.Data.ReadJsonFile<Dictionary<int, string>>("assets\\bundles.json");
             KeyValuePair<int, bool[]>[] bundleInfo = ((CommunityCenter)Game1.getLocationFromName("CommunityCenter")).bundles.Pairs.ToArray();
             this.BundleToAreaDictionary = new Dictionary<int, int>();
 

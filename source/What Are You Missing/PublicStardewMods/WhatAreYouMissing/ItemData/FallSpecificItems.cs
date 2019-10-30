@@ -20,24 +20,14 @@ namespace WhatAreYouMissing
         protected override void AddItems()
         {
             AddCrops();
+            AddFruitTrees("fall");
             AddForagables();
             AddFish();
         }
 
         private void AddCrops()
         {
-            AddCrop(Constants.AMARANTH);
-            AddCrop(Constants.BOK_CHOY);
-            AddCrop(Constants.FAIRY_ROSE);
-            AddCrop(Constants.PUMPKIN);
-            AddCrop(Constants.SUNFLOWER);
-            AddCrop(Constants.SWEET_GEM_BERRY);
-            AddCrop(Constants.WHEAT);
-            AddCrop(Constants.YAM);
-            AddCrop(Constants.CORN);
-            AddCrop(Constants.CRANBERRIES);
-            AddCrop(Constants.EGGPLANT);
-            AddCrop(Constants.GRAPE);
+            AddCrops("fall");
 
             if (Utilities.IsMerchantAvailiableAndHasItem(Constants.ARTICHOKE))
             {
@@ -45,7 +35,7 @@ namespace WhatAreYouMissing
             }
             else if (Game1.year > 1 || Utilities.IsMerchantAvailiableAndHasItem(Constants.ARTICHOKE_SEEDS))
             {
-                AddCrop(Constants.ARTICHOKE);
+                ManuallyAddCrop(Constants.ARTICHOKE);
             }
 
             if (Utilities.IsMerchantAvailiableAndHasItem(Constants.BEET))
@@ -54,7 +44,7 @@ namespace WhatAreYouMissing
             }
             if (Utilities.IsDesertUnlocked() || Config.ShowItemsFromLockedPlaces || Utilities.IsMerchantAvailiableAndHasItem(Constants.BEET_SEEDS) )
             {
-                AddCrop(Constants.BEET);
+                ManuallyAddCrop(Constants.BEET);
             }
         }
 
@@ -73,21 +63,7 @@ namespace WhatAreYouMissing
 
         private void AddFish()
         {
-            AddFish(Constants.ANCHOVY);
-            AddFish(Constants.SARDINE);
-            AddFish(Constants.SMALLMOUTH_BASS);
-            AddFish(Constants.SALMON);
-            AddFish(Constants.WALLEYE);
-            AddFish(Constants.CATFISH);
-            AddFish(Constants.EEL);
-            AddFish(Constants.RED_SNAPPER);
-            AddFish(Constants.SEA_CUCUMBER);
-            AddFish(Constants.SUPER_CUCUMBER);
-            AddFish(Constants.TIGER_TROUT);
-            AddFish(Constants.TILAPIA);
-            AddFish(Constants.ALBACORE);
-            AddFish(Constants.SHAD);
-
+            AddNormalSeasonalFish("fall");
             if (Config.ShowAllFishFromCurrentSeason || (Game1.player.getEffectiveSkillLevel(1) > 2 && !Game1.player.fishCaught.ContainsKey(Constants.ANGLER)))
             {
                 AddFish(Constants.ANGLER);

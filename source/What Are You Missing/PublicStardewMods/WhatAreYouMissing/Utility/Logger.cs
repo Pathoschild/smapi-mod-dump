@@ -44,5 +44,15 @@ namespace WhatAreYouMissing
         {
             Monitor.Log($"Unexpected duplicate ingredient. Recipe Index: {recipeIndex}, Ingredient Index: {ingredientIndex}, Amount: {amount}, Existing Amount: {existingAmount}", LogLevel.Error);
         }
+
+        public void LogFishIndexError(string lineData, string failure, int index)
+        {
+            Monitor.Log($"Failed to parse the parent sheet index of a fish in location data. Line Data: {lineData}, Failure on: {failure}, Index: {index}", LogLevel.Error);
+        }
+
+        public void LogRecipeBuffError(string lineData)
+        {
+            Monitor.Log($"There was no buff index. Data: {lineData}", LogLevel.Error);
+        }
     }
 }

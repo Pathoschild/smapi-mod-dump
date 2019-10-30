@@ -1,0 +1,14 @@
+{
+  "Name": "Celestine Necklace",
+  "Description": "A finely crafted gold necklace set with a chunk of polished celestine.",
+  "Price": 1125,
+  "Category": "ArtisanGoods",
+  "Edibility": -300,
+  "Recipe": null,  
+  "GiftTastes":
+	{
+		"Love": ["Dwarf"],
+		"Like": ["Sam","Leah","Abigail", "Clint",  "Emily","Alex", "Caroline","Penny", "Demetrius", "Elliott", "Evelyn", "George", "Haily", "Harvey", "Jas", "Jodi", "Kent", "Krobus", "Lewis", "Marnie", "Maru", "Pam", "Robin", "Sandy", "Sebastian", "Shane", "Vincent", "Willy", "Wizard"],
+		"Dislike": ["Linus","Pierre"]
+	},
+}

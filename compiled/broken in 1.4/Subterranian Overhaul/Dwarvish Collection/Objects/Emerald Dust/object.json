@@ -1,0 +1,8 @@
+{
+  "Name": "Emerald Dust",
+  "Description": "Dust from ground emeralds.",
+  "Price": 250,
+  "Category": "Gem",
+  "Edibility": -300,
+  "Recipe": null
+}

@@ -1,0 +1,45 @@
+{
+  "Name": "Stonefish Suprise",
+  "Description": "Grilled Stonefish served over sauteed root vegitables.",
+  "Category": "Cooking",
+  "Edibility": 43,
+  "EdibleBuffs": {
+    "Farming": 0,
+    "Foraging": 0,
+    "Mining": 0,
+    "Fishing": 0,
+    "Luck": 0,
+	"Defense": 2,
+    "Duration": 600,
+  },
+  "Price": 539,
+  "IsColored": false,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": 158,
+        "Count": 1
+      },
+      {
+        "Object": 412,
+        "Count": 2
+      },
+	  {
+        "Object": 78,
+        "Count": 2
+      }
+    ],
+    "CanPurchase": true,
+    "PurchaseFrom": "Dwarf",
+    "PurchasePrice": 1186
+  },
+  "GiftTastes":
+	{
+		"Love": ["Krobus","Linus","Dwarf","Willy"],
+		"Like": ["Sam", "Sandy","Clint", "Demetrius", "Elliott", "Emily", "Evelyn", "George"],
+		"Neutral": ["Wizard",  ],
+		"Dislike": ["Abigail",  "Gus","Leah","Penny","Haley","Harvey", "Jas", "Jodi", "Kent", "Lewis", "Marnie", "Maru", "Pam", "Pierre", "Robin", "Shane", "Vincent"],
+		"Hate": ["Alex", "Caroline"]
+	},
+}

@@ -23,7 +23,8 @@ namespace AnimalHusbandryMod.animals
         Sheep,
         [Meat(Meat.Mutton)]
         Goat,
-        Dinosaur
+        Dinosaur,
+        CustomAnimal
 
     }
 }

@@ -7,7 +7,7 @@ using Harmony;
 
 namespace FamilyPlanning.Patches
 {
-    [HarmonyPatch(typeof(StardewValley.NPC))]
+    [HarmonyPatch(typeof(NPC))]
     [HarmonyPatch("canGetPregnant")]
     class CanGetPregnantPatch
     {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Input;
 using SortMyStuff.Framework;
 using StardewLib;
 using StardewModdingAPI;
@@ -18,7 +17,7 @@ namespace SortMyStuff
         ** Properties
         *********/
         private ModConfig Config;
-        private Keys ActionKey;
+        private SButton ActionKey;
         private ChestManager ChestManager;
 
 
@@ -29,15 +28,18 @@ namespace SortMyStuff
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            SaveEvents.AfterLoad += this.SaveEvents_AfterLoad;
-            ControlEvents.KeyReleased += this.ControlEvents_KeyReleased;
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
         }
 
 
         /*********
         ** Private methods
         *********/
-        private void SaveEvents_AfterLoad(object sender, EventArgs e)
+        /// <summary>Raised after the player loads a save slot.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaveLoaded(object sender, EventArgs e)
         {
             try
             {
@@ -46,8 +48,8 @@ namespace SortMyStuff
 
                 if (!Enum.TryParse(this.Config.Keybind, true, out this.ActionKey))
                 {
-                    this.ActionKey = Keys.G;
-                    this.Monitor.Log("Error parsing key binding. Defaulted to G");
+                    this.ActionKey = SButton.G;
+                    this.Monitor.Log($"Error parsing key binding; defaulted to {this.ActionKey}.");
                 }
 
                 ChestManager.ParseChests(this.Config.Chests);
@@ -58,12 +60,15 @@ namespace SortMyStuff
             }
         }
 
-        private void ControlEvents_KeyReleased(object sender, EventArgsKeyPressed e)
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsPlayerFree)
                 return;
 
-            if (e.KeyPressed == this.ActionKey)
+            if (e.Button == this.ActionKey)
             {
                 this.Monitor.Log("Logging key stroke G!!!", LogLevel.Trace);
                 List<ItemContainer> ic = new List<ItemContainer>();

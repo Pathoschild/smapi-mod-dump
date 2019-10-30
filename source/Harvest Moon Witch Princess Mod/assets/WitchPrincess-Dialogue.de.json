@@ -1,0 +1,14 @@
+{
+    ["Introduction"] = "So du bist also neu hier, huh? Wie war dein Name..? @.#$e#Naja, wie auch immer. Viel glück, schätze ich.";
+    ["fall_24"] = "@, kommst du zum Fest in 3 Tagen?$u#$b#Ich habe heute fast die Vorbereitungen abgeschlossen.$4#&e#Hehe...";
+    ["Tue"] = "Was? Warum störst du mich? Ich bin beschäftigt!";
+    ["Tue4"] = "Da du dich als hilfreich herausgestellt hast, denke Ich, dass du in den Keller darfst. Aber fass nichts dort unten!.";
+    ["Wed"] = "Es braucht Jahre des Studiums um die Sprache der Elemente zu verstehen.#$e#Um die Sprache dann auch zu sprechen, braucht es eine lebenslange Hingabe.#$e#Nun, wenn du mich entschuldigst...";
+    ["Thu"] = "...#$e#..Hm.#$e#..Du störst mich...";
+    ["Thu10"] = "Erzähle es keinem... aber ich habe Gründe, anzunehmen das deine Farm umgeben ist von einem starken magischem Feld.#$e#Ich könnte daneben liegen... es ist selten, Doch sowas kann passieren.";
+    ["Fri"] = "Die Dorfbewohner sind verängstigt von mir.#$e#Das ist in Ordnung. Ich bin sowieso lieber alleine.";
+    ["Fri6"] = "In meiner Schulzeit war ich befreundet mit einer anderen Hexe. Nach der Zeit ist sie Verrückt geworden, sie begann über die Landschaft zu fliegen, und jeden zu verfluchen der ihr über den Weg kam...";
+    ["Sat"] = "Du stehst auf einem Magischem Feld.#$e#Ich kam nicht einfach so in dieses runtergekommene Dorf...";
+    ["Sat2"] = "Wie läuft es mit den Juminos? Das Letztes mal als ich von ihnen gehört habe waren sie sehr bedüftig...";
+    ["Sun"] = "Manchmal, Observiere ich die Dorfbewohner, im Geheimen.#$e#Die täglichen Rituale der Sterblichen sind lustig, hehe...";
+}

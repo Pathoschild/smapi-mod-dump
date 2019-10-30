@@ -5,6 +5,6 @@
   "Description": "Sorts your items into chests at the press of a button.",
   "UniqueID": "jwdred.SortMyStuff",
   "EntryDll": "SortMyStuff.dll",
-  "MinimumApiVersion": "2.8-beta",
+  "MinimumApiVersion": "2.9.0",
   "UpdateKeys": []
 }

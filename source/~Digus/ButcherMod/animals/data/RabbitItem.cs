@@ -11,12 +11,14 @@ namespace AnimalHusbandryMod.animals.data
         public int MinimalNumberOfMeat { get; set; }
         public int MaximumNumberOfMeat { get; set; }
         public int MinimumDaysBetweenTreats { get; set; }
-        public int[] LikedTreats { get; set; }
+        public object[] LikedTreats { get; set; }
+        public ISet<int> LikedTreatsId { get; set; }
         public int MinimumNumberOfExtraWool { get; set; }
         public int MaximumNumberOfExtraWool { get; set; }
         public int MinimumNumberOfFeetChances { get; set; }
         public int MaximumNumberOfFeetChances { get; set; }
-        public int MinimumDaysUtillBirth { get; set; }
+        public int? MinimumDaysUtillBirth { get; set; }
+        public bool CanUseDeluxeItemForPregnancy { get; set; }
 
         public RabbitItem()
         {
@@ -24,7 +26,8 @@ namespace AnimalHusbandryMod.animals.data
             MinimalNumberOfMeat = 1;
             MaximumNumberOfMeat = 4;
             MinimumDaysBetweenTreats = 4;
-            LikedTreats = new int[] { 78, 190, 414, 266 };
+            LikedTreats = new object[] { 78, 190, 414, 266 };
+            LikedTreatsId = new HashSet<int>();
             MinimumNumberOfExtraWool = 0;
             MaximumNumberOfExtraWool = 1;
             MinimumNumberOfFeetChances = 0;

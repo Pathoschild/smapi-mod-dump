@@ -1,0 +1,9 @@
+{
+  "Name": "Iridium Cluster",
+  "Description": "A cluster of very pure iridium ore.",
+  "Category": "Metal",
+  "Edibility": -300,  
+  "Price": 500,
+  "IsColored": false,
+  "Recipe": null
+}

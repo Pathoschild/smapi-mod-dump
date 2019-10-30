@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using PointAndPlant.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -10,7 +9,6 @@ using StardewValley;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using xTile.Dimensions;
-using SFarmer = StardewValley.Farmer;
 
 namespace PointAndPlant
 {
@@ -19,11 +17,11 @@ namespace PointAndPlant
         /*********
         ** Properties
         *********/
-        private Keys PlowKey;
-        private Keys PlantKey;
-        private Keys GrowKey;
-        private Keys HarvestKey;
-        private Keys GrassKey;
+        private SButton PlowKey;
+        private SButton PlantKey;
+        private SButton GrowKey;
+        private SButton HarvestKey;
+        private SButton GrassKey;
 
         private bool PlowEnabled;
         private bool PlantEnabled;
@@ -66,16 +64,19 @@ namespace PointAndPlant
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            SaveEvents.AfterLoad += this.SaveEvents_AfterLoad;
-            ControlEvents.KeyReleased += this.ControlEvents_KeyReleased;
-            GraphicsEvents.OnPreRenderHudEvent += this.GraphicsEvents_OnPreRenderHudEvent;
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            helper.Events.Input.ButtonReleased += this.OnButtonReleased;
+            helper.Events.Display.Rendered += this.OnRendered;
         }
 
 
         /*********
         ** Private methods
         *********/
-        private void SaveEvents_AfterLoad(object sender, EventArgs e)
+        /// <summary>Raised after the player loads a save slot.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             this.Config = this.Helper.ReadConfig<ModConfig>();
 
@@ -99,7 +100,7 @@ namespace PointAndPlant
             {
                 this.PlowWidth = 1;
                 if (this.PlowEnabled)
-                    this.Monitor.Log("Plow width must be at least 1. Defaulted to 1");
+                    this.Monitor.Log($"Plow width must be at least 1; defaulted to {this.PlowWidth}.");
             }
             else
                 this.PlowWidth = this.Config.PlowWidth;
@@ -108,7 +109,7 @@ namespace PointAndPlant
             {
                 this.PlowHeight = 1;
                 if (this.PlowEnabled)
-                    this.Monitor.Log("Plow height must be at least 1. Defaulted to 1");
+                    this.Monitor.Log($"Plow height must be at least 1; defaulted to {this.PlowHeight}.");
             }
             else
                 this.PlowHeight = this.Config.PlowHeight;
@@ -117,7 +118,7 @@ namespace PointAndPlant
             {
                 this.PlantRadius = 0;
                 if (this.Config.PlantEnabled)
-                    this.Monitor.Log("Plant Radius must be 0 or greater.  Defaulted to 0");
+                    this.Monitor.Log($"Plant Radius must be 0 or greater; defaulted to {this.PlantRadius}.");
             }
             else
                 this.PlantRadius = this.Config.PlantRadius;
@@ -126,7 +127,7 @@ namespace PointAndPlant
             {
                 this.GrowRadius = 0;
                 if (this.Config.GrowEnabled)
-                    this.Monitor.Log("Grow Radius must be 0 or greater.  Defaulted to 0");
+                    this.Monitor.Log($"Grow Radius must be 0 or greater; defaulted to {this.GrowRadius}.");
             }
             else
                 this.GrowRadius = this.Config.GrowRadius;
@@ -135,52 +136,55 @@ namespace PointAndPlant
             {
                 this.HarvestRadius = 0;
                 if (this.Config.PlantEnabled)
-                    this.Monitor.Log("Harvest Radius must be 0 or greater.  Defaulted to 0");
+                    this.Monitor.Log($"Harvest Radius must be 0 or greater; defaulted to {this.HarvestRadius}.");
             }
             else
                 this.HarvestRadius = this.Config.HarvestRadius;
 
             if (!Enum.TryParse(this.Config.PlowKey, true, out this.PlowKey))
             {
-                this.PlowKey = Keys.Z;
+                this.PlowKey = SButton.Z;
                 if (this.PlowEnabled)
-                    this.Monitor.Log("Error parsing plow key. Defaulted to Z");
+                    this.Monitor.Log($"Error parsing plow key; defaulted to {this.PlowKey}.");
             }
 
             if (!Enum.TryParse(this.Config.PlantKey, true, out this.PlantKey))
             {
-                this.PlantKey = Keys.A;
+                this.PlantKey = SButton.A;
                 if (this.PlantEnabled)
-                    this.Monitor.Log("Error parsing plant key. Defaulted to A");
+                    this.Monitor.Log($"Error parsing plant key; defaulted to {this.PlantKey}.");
             }
 
             if (!Enum.TryParse(this.Config.GrowKey, true, out this.GrowKey))
             {
-                this.GrowKey = Keys.S;
+                this.GrowKey = SButton.S;
                 if (this.GrowEnabled)
-                    this.Monitor.Log("Error parsing grow key. Defaulted to S");
+                    this.Monitor.Log($"Error parsing grow key; defaulted to {this.GrowKey}.");
             }
 
             if (!Enum.TryParse(this.Config.HarvestKey, true, out this.HarvestKey))
             {
-                this.HarvestKey = Keys.D;
+                this.HarvestKey = SButton.D;
                 if (this.HarvestEnabled)
-                    this.Monitor.Log("Error parsing harvest key. Defaulted to D");
+                    this.Monitor.Log($"Error parsing harvest key; defaulted to {this.HarvestKey}.");
             }
 
-            this.GrassKey = Keys.Q;
+            this.GrassKey = SButton.Q;
             this.CustomSickle = new ModSickle(47, this.Config.HarvestRadius, this.Vector);
             this.CustomHoe = new Hoe { UpgradeLevel = this.ToolLevel };
         }
 
-        private void ControlEvents_KeyReleased(object sender, EventArgsKeyPressed e)
+        /// <summary>Raised after the player releases a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnButtonReleased(object sender, ButtonReleasedEventArgs e)
         {
             if (!Context.IsPlayerFree)
                 return;
 
             if (Game1.hasLoadedGame)
             {
-                if (e.KeyPressed == this.PlowKey && this.Config.PlowEnabled)
+                if (e.Button == this.PlowKey && this.Config.PlowEnabled)
                 {
                     try
                     {
@@ -192,7 +196,7 @@ namespace PointAndPlant
                             this.Monitor.Log($"Plow (key handler) Exception: {ex}", LogLevel.Error);
                     }
                 }
-                else if (e.KeyPressed == this.PlantKey && this.Config.PlantEnabled)
+                else if (e.Button == this.PlantKey && this.Config.PlantEnabled)
                 {
                     try
                     {
@@ -205,7 +209,7 @@ namespace PointAndPlant
                     }
 
                 }
-                else if (e.KeyPressed == this.GrowKey && this.Config.GrowEnabled)
+                else if (e.Button == this.GrowKey && this.Config.GrowEnabled)
                 {
                     try
                     {
@@ -218,7 +222,7 @@ namespace PointAndPlant
                     }
 
                 }
-                else if (e.KeyPressed == this.HarvestKey && this.Config.HarvestEnabled)
+                else if (e.Button == this.HarvestKey && this.Config.HarvestEnabled)
                 {
                     try
                     {
@@ -230,7 +234,7 @@ namespace PointAndPlant
                             this.Monitor.Log($"Harvest (key handler) Exception: {ex}", LogLevel.Error);
                     }
                 }
-                else if (e.KeyPressed == this.GrassKey)
+                else if (e.Button == this.GrassKey)
                 {
                     try
                     {
@@ -264,7 +268,7 @@ namespace PointAndPlant
 
         private void Plow()
         {
-            SFarmer player = Game1.player;
+            Farmer player = Game1.player;
             List<Vector2> tiles = new List<Vector2>();
 
             if (player.currentLocation.Name.Equals("Farm") || player.currentLocation.Name.Contains("Greenhouse"))
@@ -353,7 +357,7 @@ namespace PointAndPlant
 
         private void Plant()
         {
-            SFarmer player = Game1.player;
+            Farmer player = Game1.player;
             List<Vector2> tiles = new List<Vector2>();
 
             int min = this.PlantRadius * -1;
@@ -404,7 +408,7 @@ namespace PointAndPlant
 
         private void PlantGrass()
         {
-            SFarmer player = Game1.player;
+            Farmer player = Game1.player;
             List<Vector2> tiles = new List<Vector2>();
 
             int min = this.PlantRadius * -1;
@@ -436,7 +440,7 @@ namespace PointAndPlant
 
         private void ChopTrees()
         {
-            SFarmer player = Game1.player;
+            Farmer player = Game1.player;
             List<Vector2> tiles = new List<Vector2>();
 
             if (this.PhantomAxe == null)
@@ -467,7 +471,7 @@ namespace PointAndPlant
 
         private void BreakRocks()
         {
-            SFarmer player = Game1.player;
+            Farmer player = Game1.player;
             List<Vector2> tiles = new List<Vector2>();
 
             if (this.PhantomPick == null)
@@ -505,7 +509,7 @@ namespace PointAndPlant
 
         private void Grow()
         {
-            SFarmer player = Game1.player;
+            Farmer player = Game1.player;
             List<Vector2> tiles = new List<Vector2>();
 
             int min = this.GrowRadius * -1;
@@ -536,7 +540,7 @@ namespace PointAndPlant
 
         private void Harvest()
         {
-            SFarmer player = Game1.player;
+            Farmer player = Game1.player;
             GameLocation currentLocation = Game1.currentLocation;
             currentLocation.terrainFeatures.TryGetValue(this.Vector, out var terrainFeature);
 
@@ -591,11 +595,14 @@ namespace PointAndPlant
             }
         }
 
-        /**
-         * Gets some values used by the plow.
-         */
-        private void GraphicsEvents_OnPreRenderHudEvent(object sender, EventArgs e)
+        /// <summary>When a menu is open (<see cref="Game1.activeClickableMenu"/> isn't null), raised before that menu is drawn to the screen. This includes the game's internal menus like the title screen. Content drawn to the sprite batch at this point will appear under the menu.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnRendered(object sender, EventArgs e)
         {
+            /**
+             * Gets some values used by the plow.
+             */
             try
             {
                 if (this.BuildingTiles == null)
@@ -604,8 +611,7 @@ namespace PointAndPlant
                 if (!Context.IsPlayerFree)
                     return;
 
-                KeyboardState keyboard = Keyboard.GetState();
-                if (!keyboard.IsKeyDown(this.GrassKey) && !keyboard.IsKeyDown(this.PlowKey) && !keyboard.IsKeyDown(this.PlantKey) && !keyboard.IsKeyDown(this.GrowKey) && !keyboard.IsKeyDown(this.HarvestKey))
+                if (!this.Helper.Input.IsDown(this.GrassKey) && !this.Helper.Input.IsDown(this.PlowKey) && !this.Helper.Input.IsDown(this.PlantKey) && !this.Helper.Input.IsDown(this.GrowKey) && !this.Helper.Input.IsDown(this.HarvestKey))
                     return;
 
                 this.MouseX = Game1.getMouseX() + Game1.viewport.X;
@@ -615,12 +621,12 @@ namespace PointAndPlant
                 this.TileY = this.MouseY / Game1.tileSize;
                 this.Vector = new Vector2(this.TileX, this.TileY);
 
-                if (keyboard.IsKeyDown(this.PlowKey))
+                if (this.Helper.Input.IsDown(this.PlowKey))
                 {
                     foreach (Vector2 vector2 in this.TilesAffected(Game1.player))
                         Game1.spriteBatch.Draw(this.BuildingTiles, Game1.GlobalToLocal(Game1.viewport, vector2 * Game1.tileSize), Game1.getSourceRectForStandardTileSheet(this.BuildingTiles, 0), Color.White, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
                 }
-                else if (keyboard.IsKeyDown(this.GrassKey))
+                else if (this.Helper.Input.IsDown(this.GrassKey))
                 {
                     foreach (Vector2 vector2 in this.TilesAffectedGrass())
                         Game1.spriteBatch.Draw(this.BuildingTiles, Game1.GlobalToLocal(Game1.viewport, vector2 * Game1.tileSize), Game1.getSourceRectForStandardTileSheet(this.BuildingTiles, 0), Color.White, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 0.999f);
@@ -633,7 +639,7 @@ namespace PointAndPlant
             }
         }
 
-        private List<Vector2> TilesAffected(SFarmer who)
+        private List<Vector2> TilesAffected(Farmer who)
         {
             List<Vector2> tiles = new List<Vector2>();
 

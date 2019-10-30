@@ -9,7 +9,10 @@ namespace JoysOfEfficiency.Patches
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
     internal class FarmerPatcher
     {
-        private static bool Prefix(ref bool __result, ref int itemIndex, ref int quantity)
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
+        [SuppressMessage("ReSharper", "RedundantAssignment")]
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+        internal static bool Prefix(ref bool __result, ref int itemIndex, ref int quantity)
         {
             __result = CountOfItem(itemIndex) >= quantity;
             return false;

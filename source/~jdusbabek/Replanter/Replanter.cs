@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Replanter.Framework;
 using StardewLib;
 using StardewModdingAPI;
@@ -11,7 +10,6 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-using SFarmer = StardewValley.Farmer;
 
 namespace Replanter
 {
@@ -21,7 +19,7 @@ namespace Replanter
         ** Properties
         *********/
         // The hot key which activates this mod.
-        private Keys ActionKey;
+        private SButton ActionKey;
 
         // A dictionary that allows the seed price to be looked up by the seed's id.
         private Dictionary<int, int> SeedToPrice;
@@ -123,15 +121,18 @@ namespace Replanter
             this.DialogueManager = new DialogueManager(this.Config, helper.Content, this.Monitor);
 
             // hook events
-            SaveEvents.AfterLoad += this.SaveEvents_AfterLoad;
-            ControlEvents.KeyReleased += this.ControlEvents_KeyReleased;
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
         }
 
 
         /*********
         ** Private methods
         *********/
-        private void SaveEvents_AfterLoad(object sender, EventArgs e)
+        /// <summary>Raised after the player loads a save slot.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             // Parses the always sell, never sell, and never harvest lists.
             this.GenerateLists();
@@ -145,12 +146,15 @@ namespace Replanter
             this.ReadInMessages();
         }
 
-        private void ControlEvents_KeyReleased(object sender, EventArgsKeyPressed e)
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsPlayerFree)
                 return;
 
-            if (e.KeyPressed == this.ActionKey)
+            if (e.Button == this.ActionKey)
             {
                 try
                 {
@@ -160,7 +164,6 @@ namespace Replanter
                 {
                     this.Monitor.Log($"Exception: {ex}", LogLevel.Error);
                 }
-
             }
         }
 
@@ -168,8 +171,8 @@ namespace Replanter
         {
             if (!Enum.TryParse(this.Config.KeyBind, true, out this.ActionKey))
             {
-                this.ActionKey = Keys.J;
-                this.Monitor.Log("Error parsing key binding. Defaulted to J");
+                this.ActionKey = SButton.J;
+                this.Monitor.Log($"Error parsing key binding; defaulted to {this.ActionKey}.");
             }
 
             this.MessagesEnabled = this.Config.EnableMessages;
@@ -204,7 +207,7 @@ namespace Replanter
         private void PerformAction()
         {
             Farm farm = Game1.getFarm();
-            SFarmer farmer = Game1.player;
+            Farmer farmer = Game1.player;
 
             ReplanterStats stats = new ReplanterStats();
 
@@ -526,7 +529,7 @@ namespace Replanter
             }
         }
 
-        private void HandleSunflower(SFarmer farmer, ReplanterStats stats, int quality, int tileX = 0, int tileY = 0)
+        private void HandleSunflower(Farmer farmer, ReplanterStats stats, int quality, int tileX = 0, int tileY = 0)
         {
             if (this.SellAfterHarvest)
             {
@@ -749,7 +752,7 @@ namespace Replanter
         /**
          * Sells the crops, and adds them to the inventory if they are on the never-sell list.
          */
-        private bool SellCrops(SFarmer farmer, StardewValley.Object obj, ReplanterStats stats)
+        private bool SellCrops(Farmer farmer, StardewValley.Object obj, ReplanterStats stats)
         {
             if (this.NeverSell(obj.ParentSheetIndex))
                 return (this.AddItemToInventory(obj, farmer, Game1.getFarm(), stats));
@@ -787,7 +790,7 @@ namespace Replanter
         /**
          * Attempts to add the crop to the farmer's inventory.  If the crop is on the always sell list, it is sold instead.
          */
-        private bool AddItemToInventory(StardewValley.Object obj, SFarmer farmer, Farm farm, ReplanterStats stats)
+        private bool AddItemToInventory(StardewValley.Object obj, Farmer farmer, Farm farm, ReplanterStats stats)
         {
             if (this.AlwaysSell(obj.ParentSheetIndex))
                 return this.SellCrops(farmer, obj, stats);

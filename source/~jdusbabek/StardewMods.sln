@@ -1,23 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalSitter", "AnimalSitter\AnimalSitter.csproj", "{FA5BF680-909F-48BB-8AA9-BEC93B87313E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrabNet", "CrabNet\CrabNet.csproj", "{1486BA17-0204-4E87-B646-A08809CF25DE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailOrderPigs", "MailOrderPigs\MailOrderPigs.csproj", "{46135A33-D821-4982-9333-619CC1194F98}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PelicanFiber", "PelicanFiber\PelicanFiber.csproj", "{B2CB2CDF-445E-4D3C-8BA4-D9BA5E80196E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointAndPlant", "PointAndPlant\PointAndPlant.csproj", "{A86DB13F-D389-49A0-ABC9-681A09B59D02}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Replanter", "Replanter\Replanter.csproj", "{5A4FA155-ECF4-4C38-909E-7E982599794A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SortMyStuff", "SortMyStuff\SortMyStuff.csproj", "{678661CE-D642-4778-AA29-CED9C2BE59A1}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".metadata", ".metadata", "{FBCE1D54-DEF6-453E-8FFB-FEB77025B648}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{FBCE1D54-DEF6-453E-8FFB-FEB77025B648}"
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
@@ -26,51 +12,62 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".metadata", ".metadata", "{
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = ".Common", "Common\.Common.shproj", "{EDC6B19B-A212-4692-8318-992A16D4DD44}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalSitter", "AnimalSitter\AnimalSitter.csproj", "{88733388-0FD5-4279-92C9-59FDD201DF22}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrabNet", "CrabNet\CrabNet.csproj", "{81F7BEC0-BE0B-42E3-A7B4-6F5F28BCD2CC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailOrderPigs", "MailOrderPigs\MailOrderPigs.csproj", "{2CC63DA9-C0FF-4922-A816-8CBF6C539839}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PelicanFiber", "PelicanFiber\PelicanFiber.csproj", "{5E3FA970-A798-40A7-ADB5-FD6C0B1D5460}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PointAndPlant", "PointAndPlant\PointAndPlant.csproj", "{FF0A2FB3-DC84-40A1-A3CE-AB5E77274CE0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Replanter", "Replanter\Replanter.csproj", "{44F105FC-1767-4357-97E2-30145A837B88}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SortMyStuff", "SortMyStuff\SortMyStuff.csproj", "{3DBCB972-83EB-42B9-9399-BF45562287F0}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Common\Common.projitems*{1486ba17-0204-4e87-b646-a08809cf25de}*SharedItemsImports = 4
-		Common\Common.projitems*{46135a33-d821-4982-9333-619cc1194f98}*SharedItemsImports = 4
-		Common\Common.projitems*{5a4fa155-ecf4-4c38-909e-7e982599794a}*SharedItemsImports = 4
-		Common\Common.projitems*{678661ce-d642-4778-aa29-ced9c2be59a1}*SharedItemsImports = 4
-		Common\Common.projitems*{b2cb2cdf-445e-4d3c-8ba4-d9ba5e80196e}*SharedItemsImports = 4
 		Common\Common.projitems*{edc6b19b-a212-4692-8318-992a16d4dd44}*SharedItemsImports = 13
-		Common\Common.projitems*{fa5bf680-909f-48bb-8aa9-bec93b87313e}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FA5BF680-909F-48BB-8AA9-BEC93B87313E}.Debug|x86.ActiveCfg = Debug|x86
-		{FA5BF680-909F-48BB-8AA9-BEC93B87313E}.Debug|x86.Build.0 = Debug|x86
-		{FA5BF680-909F-48BB-8AA9-BEC93B87313E}.Release|x86.ActiveCfg = Release|x86
-		{FA5BF680-909F-48BB-8AA9-BEC93B87313E}.Release|x86.Build.0 = Release|x86
-		{1486BA17-0204-4E87-B646-A08809CF25DE}.Debug|x86.ActiveCfg = Debug|x86
-		{1486BA17-0204-4E87-B646-A08809CF25DE}.Debug|x86.Build.0 = Debug|x86
-		{1486BA17-0204-4E87-B646-A08809CF25DE}.Release|x86.ActiveCfg = Release|x86
-		{1486BA17-0204-4E87-B646-A08809CF25DE}.Release|x86.Build.0 = Release|x86
-		{46135A33-D821-4982-9333-619CC1194F98}.Debug|x86.ActiveCfg = Debug|x86
-		{46135A33-D821-4982-9333-619CC1194F98}.Debug|x86.Build.0 = Debug|x86
-		{46135A33-D821-4982-9333-619CC1194F98}.Release|x86.ActiveCfg = Release|x86
-		{46135A33-D821-4982-9333-619CC1194F98}.Release|x86.Build.0 = Release|x86
-		{B2CB2CDF-445E-4D3C-8BA4-D9BA5E80196E}.Debug|x86.ActiveCfg = Debug|x86
-		{B2CB2CDF-445E-4D3C-8BA4-D9BA5E80196E}.Debug|x86.Build.0 = Debug|x86
-		{B2CB2CDF-445E-4D3C-8BA4-D9BA5E80196E}.Release|x86.ActiveCfg = Release|x86
-		{B2CB2CDF-445E-4D3C-8BA4-D9BA5E80196E}.Release|x86.Build.0 = Release|x86
-		{A86DB13F-D389-49A0-ABC9-681A09B59D02}.Debug|x86.ActiveCfg = Debug|x86
-		{A86DB13F-D389-49A0-ABC9-681A09B59D02}.Debug|x86.Build.0 = Debug|x86
-		{A86DB13F-D389-49A0-ABC9-681A09B59D02}.Release|x86.ActiveCfg = Release|x86
-		{A86DB13F-D389-49A0-ABC9-681A09B59D02}.Release|x86.Build.0 = Release|x86
-		{5A4FA155-ECF4-4C38-909E-7E982599794A}.Debug|x86.ActiveCfg = Debug|x86
-		{5A4FA155-ECF4-4C38-909E-7E982599794A}.Debug|x86.Build.0 = Debug|x86
-		{5A4FA155-ECF4-4C38-909E-7E982599794A}.Release|x86.ActiveCfg = Release|x86
-		{5A4FA155-ECF4-4C38-909E-7E982599794A}.Release|x86.Build.0 = Release|x86
-		{678661CE-D642-4778-AA29-CED9C2BE59A1}.Debug|x86.ActiveCfg = Debug|x86
-		{678661CE-D642-4778-AA29-CED9C2BE59A1}.Debug|x86.Build.0 = Debug|x86
-		{678661CE-D642-4778-AA29-CED9C2BE59A1}.Release|x86.ActiveCfg = Release|x86
-		{678661CE-D642-4778-AA29-CED9C2BE59A1}.Release|x86.Build.0 = Release|x86
+		{88733388-0FD5-4279-92C9-59FDD201DF22}.Debug|x86.ActiveCfg = Debug|x86
+		{88733388-0FD5-4279-92C9-59FDD201DF22}.Debug|x86.Build.0 = Debug|x86
+		{88733388-0FD5-4279-92C9-59FDD201DF22}.Release|x86.ActiveCfg = Release|x86
+		{88733388-0FD5-4279-92C9-59FDD201DF22}.Release|x86.Build.0 = Release|x86
+		{81F7BEC0-BE0B-42E3-A7B4-6F5F28BCD2CC}.Debug|x86.ActiveCfg = Debug|x86
+		{81F7BEC0-BE0B-42E3-A7B4-6F5F28BCD2CC}.Debug|x86.Build.0 = Debug|x86
+		{81F7BEC0-BE0B-42E3-A7B4-6F5F28BCD2CC}.Release|x86.ActiveCfg = Release|x86
+		{81F7BEC0-BE0B-42E3-A7B4-6F5F28BCD2CC}.Release|x86.Build.0 = Release|x86
+		{2CC63DA9-C0FF-4922-A816-8CBF6C539839}.Debug|x86.ActiveCfg = Debug|x86
+		{2CC63DA9-C0FF-4922-A816-8CBF6C539839}.Debug|x86.Build.0 = Debug|x86
+		{2CC63DA9-C0FF-4922-A816-8CBF6C539839}.Release|x86.ActiveCfg = Release|x86
+		{2CC63DA9-C0FF-4922-A816-8CBF6C539839}.Release|x86.Build.0 = Release|x86
+		{5E3FA970-A798-40A7-ADB5-FD6C0B1D5460}.Debug|x86.ActiveCfg = Debug|x86
+		{5E3FA970-A798-40A7-ADB5-FD6C0B1D5460}.Debug|x86.Build.0 = Debug|x86
+		{5E3FA970-A798-40A7-ADB5-FD6C0B1D5460}.Release|x86.ActiveCfg = Release|x86
+		{5E3FA970-A798-40A7-ADB5-FD6C0B1D5460}.Release|x86.Build.0 = Release|x86
+		{FF0A2FB3-DC84-40A1-A3CE-AB5E77274CE0}.Debug|x86.ActiveCfg = Debug|x86
+		{FF0A2FB3-DC84-40A1-A3CE-AB5E77274CE0}.Debug|x86.Build.0 = Debug|x86
+		{FF0A2FB3-DC84-40A1-A3CE-AB5E77274CE0}.Release|x86.ActiveCfg = Release|x86
+		{FF0A2FB3-DC84-40A1-A3CE-AB5E77274CE0}.Release|x86.Build.0 = Release|x86
+		{44F105FC-1767-4357-97E2-30145A837B88}.Debug|x86.ActiveCfg = Debug|x86
+		{44F105FC-1767-4357-97E2-30145A837B88}.Debug|x86.Build.0 = Debug|x86
+		{44F105FC-1767-4357-97E2-30145A837B88}.Release|x86.ActiveCfg = Release|x86
+		{44F105FC-1767-4357-97E2-30145A837B88}.Release|x86.Build.0 = Release|x86
+		{3DBCB972-83EB-42B9-9399-BF45562287F0}.Debug|x86.ActiveCfg = Debug|x86
+		{3DBCB972-83EB-42B9-9399-BF45562287F0}.Debug|x86.Build.0 = Debug|x86
+		{3DBCB972-83EB-42B9-9399-BF45562287F0}.Release|x86.ActiveCfg = Release|x86
+		{3DBCB972-83EB-42B9-9399-BF45562287F0}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A2055FED-6235-4490-B119-C2EEE4671139}
 	EndGlobalSection
 EndGlobal

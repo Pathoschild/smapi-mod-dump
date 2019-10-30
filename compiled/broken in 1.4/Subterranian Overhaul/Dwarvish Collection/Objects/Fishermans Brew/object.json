@@ -1,0 +1,25 @@
+{
+  "Name": "Fishermans Brew",
+  "Description": "The magic of the lakes and stream flows through this drink.",
+  "Price": 200,
+  "Category": "ArtisanGoods",
+  "Edibility": 55,
+  "EdibleIsDrink": true,
+  "EdibleBuffs": {
+    "Farming": 0,
+    "Foraging": 0,
+    "Mining": 0,
+    "Fishing": 3,
+    "Luck": 0,		
+    "Duration": 360,
+  },
+  "Recipe": null,
+  "GiftTastes":
+	{
+		"Love": ["Wizard","Dwarf","Willy"],
+		"Like": ["Haley","Leah","Kent","Gus", "Harvey","Linus", "Pam"],
+		"Neutral": ["Abigail","Alex", "Caroline", "Clint", "Demetrius", "Elliott", "Emily", "Evelyn",],
+		"Dislike": [ "Penny","George", "Jas", "Jodi", "Lewis", "Marnie", "Maru", "Pierre", "Robin", "Sam", "Sandy", "Shane", "Vincent"],
+		"Hate": ["Krobus"]
+	},
+}

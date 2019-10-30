@@ -130,6 +130,7 @@ namespace AdoptSkin
             helper.ConsoleCommands.Add("set_skin", "Sets the skin of the given creature to the given skin ID. Call `set_skin <skin ID> <creature ID>`. To find a creature's ID, call `list_creatures`.", Commander.OnCommandReceived);
             helper.ConsoleCommands.Add("corral_horses", "Warp all horses to the farm's stable, giving you the honor of being a professional clown car chauffeur.", Commander.OnCommandReceived);
             helper.ConsoleCommands.Add("horse_whistle", "Summons one of the player's horses to them. Can be called with a horse's ID to call a specific horse. To find a horse's ID, call `list_creatures horse`.", Commander.OnCommandReceived);
+            helper.ConsoleCommands.Add("rename", "Renames the pet or horse of the given ID to the given name. Call `rename <creature ID> \"new name\"`.", Commander.OnCommandReceived);
             helper.ConsoleCommands.Add("sell", "Used to give away one of your pets or horses. Call `sell <creature ID>`. To find a creature's ID, call `list_creatures`.", Commander.OnCommandReceived);
 
             // DEBUG
@@ -427,9 +428,7 @@ namespace AdoptSkin
             List<Horse> taxis = ModApi.GetHorses().ToList();
             taxis.Reverse();
             foreach (Horse taxi in taxis)
-                if (ModApi.IsWildHorse(taxi))
-                    continue;
-                else if (id != 0 && GetShortID(taxi) == id)
+                if (id != 0 && GetShortID(taxi) == id)
                 {
                     Game1.warpCharacter(taxi, Game1.player.currentLocation, Game1.player.getTileLocation());
                     return true;
@@ -447,30 +446,52 @@ namespace AdoptSkin
         /// <summary>Calls all horses owned by the player to return to the player's stable</summary>
         internal static void CorralHorses()
         {
-            // Find the farm's stable
-            Stable horsehut = null;
-            foreach (Building building in Game1.getFarm().buildings)
-                if (building is Stable)
-                    horsehut = building as Stable;
+            // Gather the taxis
+            List<Horse> horses = new List<Horse>();
+            foreach (Horse horse in ModApi.GetHorses())
+                horses.Add(horse);
 
-            if (horsehut != null)
+            // Ensure you own at least one taxi
+            if (horses.Count == 0)
             {
-                // WARP THEM. WARP THEM ALL.
-                int stableX = int.Parse(horsehut.tileX.ToString()) + 1;
-                int stableY = int.Parse(horsehut.tileY.ToString()) + 1;
-                Vector2 stableWarp = new Vector2(stableX, stableY);
-
-                foreach (Horse horse in ModApi.GetHorses())
-                    if (!ModApi.IsWildHorse(horse))
-                        Game1.warpCharacter(horse, "farm", stableWarp);
-
-                ModEntry.SMonitor.Log("All horses have been warped to the stable.", LogLevel.Info);
+                ModEntry.SMonitor.Log("NOTICE: You do not own any horses", LogLevel.Error);
+                Game1.chatBox.addInfoMessage("Your Grandfather's voice echoes in your head.. \"You aren't yet ready for this gift.\"");
                 return;
             }
 
+            // Find the farm's stable(s)
+            List<Stable> horsehuts = new List<Stable>();
+            foreach (Building building in Game1.getFarm().buildings)
+                if (building is Stable stable)
+                    foreach (Horse horse in horses)
+                        if (stable.HorseId == horse.HorseId)
+                        {
+                            horsehuts.Add(building as Stable);
+                            break;
+                        }
+                    
             // Player does not own a stable
-            ModEntry.SMonitor.Log("NOTICE: You don't have a stable to warp to!", LogLevel.Error);
-            Game1.chatBox.addInfoMessage("Your Grandfather's voice echoes in your head.. \"You aren't yet ready for this gift.\"");
+            if (horsehuts.Count == 0)
+            {
+                ModEntry.SMonitor.Log("NOTICE: You don't have a stable to warp to!", LogLevel.Error);
+                Game1.chatBox.addInfoMessage("Your Grandfather's voice echoes in your head.. \"You aren't yet ready for this gift.\"");
+                return;
+            }
+
+            // WARP THEM. WARP THEM ALL.
+            foreach (Horse horse in horses)
+                foreach (Stable stable in horsehuts)
+                    if (horse.HorseId == stable.HorseId)
+                    {
+                        int stableX = int.Parse(stable.tileX.ToString()) + 1;
+                        int stableY = int.Parse(stable.tileY.ToString()) + 1;
+                        Vector2 stableWarp = new Vector2(stableX, stableY);
+                        Game1.warpCharacter(horse, "farm", stableWarp);
+                        break;
+                    }
+
+
+            ModEntry.SMonitor.Log("All horses have been warped to the stable.", LogLevel.Info);
         }
 
 
@@ -618,13 +639,7 @@ namespace AdoptSkin
                 return;
 
             if (Config.HorseWhistleKey != null && e.Button.ToString().ToLower() == Config.HorseWhistleKey.ToLower())
-            {
-                if (!CallHorse())
-                {
-                    ModEntry.SMonitor.Log("You do not own any horse that you can call.", LogLevel.Warn);
-                    Game1.chatBox.addInfoMessage("Your Grandfather's voice echoes in your head.. \"You aren't yet ready for this gift.\"");
-                }
-            }
+                CallHorse();
             if (Config.CorralKey != null && e.Button.ToString().ToLower() == Config.CorralKey.ToLower())
             {
                 CorralHorses();
@@ -676,6 +691,13 @@ namespace AdoptSkin
             Character creature = GetCreature(longID);
             if (creature != null && (creature is Pet || creature is Horse))
                 Game1.removeThisCharacterFromAllLocations(creature as NPC);
+            // Remove FarmAnimal-specific ID markers from lists
+            else if (AnimalLongToShortIDs.ContainsKey(longID))
+            {
+                int shortID = AnimalLongToShortIDs[longID];
+                AnimalLongToShortIDs.Remove(longID);
+                AnimalShortToLongIDs.Remove(shortID);
+            }
 
             // Scrub internal IDs and skin mapping from system
             IDToCategory.Remove(longID);

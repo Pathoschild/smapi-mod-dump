@@ -112,15 +112,15 @@ namespace MailOrderPigs.Framework
             {
                 if (textureComponent.containsPoint(x, y) && ((Object)textureComponent.item).Type == null)
                 {
-                    int int32 = Convert.ToInt32(textureComponent.name);
-                    if (Game1.player.money >= int32)
+                    int price = Convert.ToInt32(textureComponent.name);
+                    if (Game1.player.Money >= price)
                     {
                         //Game1.globalFadeToBlack(new Game1.afterFadeFunction(this.setUpForAnimalPlacement), 0.02f);
                         //Game1.globalFadeToBlack(new Game1.afterFadeFunction(this.setUpForAnimalPlacement), 0.02f);
                         Game1.playSound("smallSelect");
                         //this.onFarm = true;
                         this.AnimalBeingPurchased = new FarmAnimal(textureComponent.hoverText, this.GetNewId(), Game1.player.UniqueMultiplayerID);
-                        this.PriceOfAnimal = int32;
+                        this.PriceOfAnimal = price;
 
                         //this.newAnimalHome = ((AnimalHouse)Game1.player.currentLocation).getBuilding();
                         //this.animalBeingPurchased.name = "John" + new Random().NextDouble();
@@ -272,7 +272,7 @@ namespace MailOrderPigs.Framework
                     ((AnimalHouse)this.NewAnimalHome.indoors.Value).animals.Add(this.AnimalBeingPurchased.myID.Value, this.AnimalBeingPurchased);
                     ((AnimalHouse)this.NewAnimalHome.indoors.Value).animalsThatLiveHere.Add(this.AnimalBeingPurchased.myID.Value);
                     this.NewAnimalHome = null;
-                    Game1.player.money -= this.PriceOfAnimal;
+                    Game1.player.Money -= this.PriceOfAnimal;
                     this.NamingAnimal = false;
 
                     //Game1.globalFadeToBlack(new Game1.afterFadeFunction(this.setUpForReturnAfterPurchasingAnimal), 0.02f);

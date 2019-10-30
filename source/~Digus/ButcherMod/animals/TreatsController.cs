@@ -28,27 +28,29 @@ namespace AnimalHusbandryMod.animals
 
         public static bool IsLikedTreat(int id)
         {
-            return DataLoader.AnimalData.Chicken.LikedTreats.Contains(id)
-                || DataLoader.AnimalData.Duck.LikedTreats.Contains(id)
-                || DataLoader.AnimalData.Rabbit.LikedTreats.Contains(id)
-                || DataLoader.AnimalData.Cow.LikedTreats.Contains(id)
-                || DataLoader.AnimalData.Goat.LikedTreats.Contains(id)
-                || DataLoader.AnimalData.Sheep.LikedTreats.Contains(id)
-                || DataLoader.AnimalData.Pig.LikedTreats.Contains(id)
-                || DataLoader.AnimalData.Pet.LikedTreats.Contains(id)
+            return DataLoader.AnimalData.Chicken.LikedTreatsId.Contains(id)
+                || DataLoader.AnimalData.Duck.LikedTreatsId.Contains(id)
+                || DataLoader.AnimalData.Rabbit.LikedTreatsId.Contains(id)
+                || DataLoader.AnimalData.Cow.LikedTreatsId.Contains(id)
+                || DataLoader.AnimalData.Goat.LikedTreatsId.Contains(id)
+                || DataLoader.AnimalData.Sheep.LikedTreatsId.Contains(id)
+                || DataLoader.AnimalData.Pig.LikedTreatsId.Contains(id)
+                || DataLoader.AnimalData.Pet.LikedTreatsId.Contains(id)
+                || DataLoader.AnimalData.Dinosaur.LikedTreatsId.Contains(id)
+                || DataLoader.AnimalData.CustomAnimals.Exists(c=> c.LikedTreatsId.Contains(id))
                 ;
         }
 
         public static bool IsLikedTreatPet(int itemId)
         {
-            return DataLoader.AnimalData.Pet.LikedTreats.Contains(itemId);
+            return DataLoader.AnimalData.Pet.LikedTreatsId.Contains(itemId);
         }
 
         public static bool IsLikedTreat(FarmAnimal farmAnimal, int itemId)
         {
             try
             {
-                return GetTreatItem(farmAnimal).LikedTreats.Contains(itemId);
+                return GetTreatItem(farmAnimal).LikedTreatsId.Contains(itemId);
             }
             catch (Exception)
             {
@@ -115,8 +117,7 @@ namespace AnimalHusbandryMod.animals
 
         public static TreatItem GetTreatItem(FarmAnimal farmAnimal)
         {
-            Animal? foundAnimal = AnimalExtension.GetAnimalFromType(farmAnimal.type.Value);
-            return DataLoader.AnimalData.getAnimalItem((Animal)foundAnimal) as TreatItem;
+            return DataLoader.AnimalData.GetAnimalItem(farmAnimal) as TreatItem;
         }
 
     }

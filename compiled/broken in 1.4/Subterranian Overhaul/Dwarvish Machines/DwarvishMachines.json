@@ -1,0 +1,2432 @@
+{
+   "name": "Dwarvish Machines",
+   "author": "mytigio",
+   "version": "1.0.0",
+   "machines":
+   [
+		{
+		   "id": 0,		   
+		   "name": "Dwarvish Pulverizer",
+		   "description": "Used to pulverize things like ore clusters, gems and old artifacts.",
+		   "category": "Crafting",
+		   "crafting" : "390 10 112 1 388 2",
+		   "pulsate": false,
+		   "texture": "Pulverizer.png",
+		   "shop": "Dwarf",
+		   "forsale": true,
+		   "price": 1000,
+		   "tileIndex": 0,
+		   "readyindex": 3,
+		   "frames": 2,
+		   "fps": 1,
+		   "production":
+			[
+				{
+					"index": 378,
+					"stack": 3,
+					"time": 30,
+					"materials":
+					[
+						{
+							"item": "Copper Cluster",
+							"stack": 1,
+							"exactquality": 0
+							
+						}
+					]
+				},
+				{
+					"index": 378,
+					"stack": 4,
+					"time": 30,
+					"materials":
+					[
+						{
+							"item": "Copper Cluster",
+							"stack": 1,
+							"exactquality": 1
+							
+						}
+					]
+				},
+				{
+					"index": 378,
+					"stack": 5,
+					"time": 30,
+					"materials":
+					[
+						{
+							"item": "Copper Cluster",
+							"stack": 1,
+							"exactquality": 2							
+						}
+					]
+				},
+				{
+					"index": 378,
+					"stack": 6,
+					"time": 30,
+					"materials":
+					[
+						{
+							"item": "Copper Cluster",
+							"stack": 1,
+							"exactquality": 4
+							
+						}
+					]
+				},
+				{
+					"index": 380,
+					"stack": 3,
+					"time": 120,
+					"materials":
+					[
+						{
+							"item": "Iron Cluster",
+							"stack": 1,
+							"exactquality": 0
+							
+						}
+					]
+				},
+				{
+					"index": 380,
+					"stack": 4,
+					"time": 120,
+					"materials":
+					[
+						{
+							"item": "Iron Cluster",
+							"stack": 1,
+							"exactquality": 1
+							
+						}
+					]
+				},
+				{
+					"index": 380,
+					"stack": 5,
+					"time": 120,
+					"materials":
+					[
+						{
+							"item": "Iron Cluster",
+							"stack": 1,
+							"exactquality": 2
+							
+						}
+					]
+				},
+				{
+					"index": 380,
+					"stack": 6,
+					"time": 120,
+					"materials":
+					[
+						{
+							"item": "Iron Cluster",
+							"stack": 1,
+							"exactquality": 4
+							
+						}
+					]
+				},
+				{
+					"index": 384,
+					"stack": 3,
+					"time": 360,
+					"materials":
+					[
+						{
+							"item": "Gold Cluster",
+							"stack": 1,
+							"exactquality": 0
+							
+						}
+					]
+				},
+				{
+					"index": 384,
+					"stack": 4,
+					"time": 360,
+					"materials":
+					[
+						{
+							"item": "Gold Cluster",
+							"stack": 1,
+							"exactquality": 1
+							
+						}
+					]
+				},
+				{
+					"index": 384,
+					"stack": 5,
+					"time": 360,
+					"materials":
+					[
+						{
+							"item": "Gold Cluster",
+							"stack": 1,
+							"exactquality": 2
+							
+						}
+					]
+				},
+				{
+					"index": 384,
+					"stack": 6,
+					"time": 360,
+					"materials":
+					[
+						{
+							"item": "Gold Cluster",
+							"stack": 1,
+							"exactquality": 4
+							
+						}
+					]
+				},
+				{
+					"index": 386,
+					"stack": 3,
+					"time": 480,
+					"materials":
+					[
+						{
+							"item": "Iridium Cluster",
+							"stack": 1,
+							"exactquality": 0
+							
+						}
+					]
+				},
+				{
+					"index": 386,
+					"stack": 4,
+					"time": 480,
+					"materials":
+					[
+						{
+							"item": "Iridium Cluster",
+							"stack": 1,
+							"exactquality": 1
+							
+						}
+					]
+				},
+				{
+					"index": 386,
+					"stack": 5,
+					"time": 480,
+					"materials":
+					[
+						{
+							"item": "Iridium Cluster",
+							"stack": 1,
+							"exactquality": 2
+							
+						}
+					]
+				},
+				{
+					"index": 386,
+					"stack": 6,
+					"time": 480,
+					"materials":
+					[
+						{
+							"item": "Iridium Cluster",
+							"stack": 1,
+							"exactquality": 4
+							
+						}
+					]
+				},
+				{
+					"item": "Gold Cluster",
+					"stack": 5,
+					"time": 360,
+					"quality": 2,					
+					"materials":
+					[
+						{
+							"index": 124,
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Gold Cluster",
+					"stack": 3,
+					"time": 360,
+					"quality": 2,					
+					"materials":
+					[
+						{
+							"index": 125,
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Gold Cluster",
+					"stack": 12,
+					"time": 360,
+					"quality": 2,
+					"materials":
+					[
+						{
+							"index": 373,
+							"stack": 1
+						}
+					]
+				},
+				{
+					"index": 378,
+					"stack": 5,
+					"time": 30,
+					"materials":
+					[
+						{
+							"index": 112,
+							"stack": 1
+						}
+					]
+				},
+				{
+					"index": 378,
+					"stack": 5,
+					"time": 30,
+					"materials":
+					[
+						{
+							"index": 111,
+							"stack": 1
+						}
+					]
+				},				
+				{
+					"item": "Carrot Mash",
+					"stack": 1,
+					"time": 30,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 78,
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Iridium Dust",
+					"stack": 1,
+					"time": 180,
+					"quality": -1,
+					"materials":
+					[
+						{
+							"index": 386,
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Gold Dust",
+					"stack": 1,
+					"time": 120,
+					"quality": -1,
+					"materials":
+					[
+						{
+							"index": 384,
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Iron Dust",
+					"stack": 1,
+					"time": 60,
+					"quality": -1,
+					"materials":
+					[
+						{
+							"index": 380,
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Copper Dust",
+					"stack": 1,
+					"time": 30,
+					"quality": -1,
+					"materials":
+					[
+						{
+							"index": 378,
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Emerald Dust",
+					"stack": 1,
+					"time": 30,
+					"quality": -1,
+					"materials":
+					[
+						{
+							"index": 60,
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Aquamarine Dust",
+					"stack": 1,
+					"time": 30,
+					"quality": -1,
+					"materials":
+					[
+						{
+							"index": 62,
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Ruby Dust",
+					"stack": 1,
+					"time": 30,
+					"quality": -1,
+					"materials":
+					[
+						{
+							"index": 64,
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Amethyst Dust",
+					"stack": 1,
+					"time": 30,
+					"quality": -1,
+					"materials":
+					[
+						{
+							"index": 66,
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Amethyst Dust",
+					"stack": 1,
+					"time": 30,
+					"quality": -1,
+					"materials":
+					[
+						{
+							"index": 66,
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Topaz Dust",
+					"stack": 1,
+					"time": 30,
+					"quality": -1,
+					"materials":
+					[
+						{
+							"index": 68,
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Jade Dust",
+					"stack": 1,
+					"time": 30,
+					"quality": -1,
+					"materials":
+					[
+						{
+							"index": 70,
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Diamond Dust",
+					"stack": 1,
+					"time": 30,
+					"quality": -1,
+					"materials":
+					[
+						{
+							"index": 72,
+							"stack": 1
+						}
+					]
+				}
+			]
+	   },
+		{
+		   "id": 1,		   
+		   "name": "Gem Polisher",
+		   "description": "Polishes gems to increase value.",
+		   "category": "Crafting",
+		   "crafting" : "390 10 334 2",
+		   "pulsate": false,
+		   "texture": "gempolisher.png",
+		   "shop": "Dwarf",
+		   "forsale": true,
+		   "price": 500,
+		   "tileIndex": 0,
+		   "frames": 2,
+		   "readyindex": 3,
+		   "showitem": true,
+		   "production":
+			[
+				{					
+					"index": 60,
+					"stack": 1,				
+					"time": 840,
+					"quality":1,
+					"materials":
+					[
+						{
+							"index": 60,
+							"stack": 1,
+							"exactquality": 0
+							
+						}
+					]
+				},
+				{
+					"index": 60,
+					"stack": 1,
+					"time": 840,
+					"quality":2,
+					"materials":
+					[
+						{
+							"index": 60,
+							"stack": 1,
+							"exactquality": 1
+							
+						}
+					]
+				},
+				{
+					"name": "Flawless",
+					"suffix": true,
+					"index": 60,
+					"stack": 1,
+					"time": 1680,
+					"quality":4,
+					"materials":
+					[
+						{
+							"index": 60,
+							"stack": 1,
+							"exactquality": 2
+							
+						}
+					]
+				},
+				{
+					"index": 62,
+					"stack": 1,
+					"time": 605,
+					"quality":1,
+					"materials":
+					[
+						{
+							"index": 62,
+							"stack": 1,
+							"exactquality": 0
+							
+						}
+					]
+				},
+				{
+					"index": 62,
+					"stack": 1,
+					"time": 605,
+					"quality":2,
+					"materials":
+					[
+						{
+							"index": 62,
+							"stack": 1,
+							"exactquality": 1
+							
+						}
+					]
+				},
+				{
+					"name": "Flawless",
+					"suffix": true,
+					"index": 62,
+					"stack": 1,
+					"time": 1210,
+					"quality":4,
+					"materials":
+					[
+						{
+							"index": 62,
+							"stack": 1,
+							"exactquality": 2
+							
+						}
+					]
+				},				
+				{
+					"index": 64,
+					"stack": 1,
+					"time": 840,
+					"quality":1,
+					"materials":
+					[
+						{
+							"index": 64,
+							"stack": 1,
+							"exactquality": 0
+							
+						}
+					]
+				},
+				{
+					"index": 64,
+					"stack": 1,
+					"time": 840,
+					"quality":2,
+					"materials":
+					[
+						{
+							"index": 64,
+							"stack": 1,
+							"exactquality": 1
+							
+						}
+					]
+				},
+				{
+					"name": "Flawless",
+					"suffix": true,
+					"index": 64,
+					"stack": 1,
+					"time": 1680,
+					"quality":4,
+					"materials":
+					[
+						{
+							"index": 64,
+							"stack": 1,
+							"exactquality": 2
+							
+						}
+					]
+				},				
+				{
+					"index": 66,
+					"stack": 1,
+					"time": 336,
+					"quality":1,
+					"materials":
+					[
+						{
+							"index": 66,
+							"stack": 1,
+							"exactquality": 0
+							
+						}
+					]
+				},				
+				{
+					"index": 66,
+					"stack": 1,
+					"time": 336,
+					"quality":2,
+					"materials":
+					[
+						{
+							"index": 66,
+							"stack": 1,
+							"exactquality": 1
+							
+						}
+					]
+				},
+				{
+					"name": "Flawless",
+					"suffix": true,
+					"index": 66,
+					"stack": 1,
+					"time": 672,
+					"quality":4,
+					"materials":
+					[
+						{
+							"index": 66,
+							"stack": 1,
+							"exactquality": 2
+							
+						}
+					]
+				},
+				{
+					"index": 68,
+					"stack": 1,
+					"time": 269,
+					"quality":1,
+					"materials":
+					[
+						{
+							"index": 68,
+							"stack": 1,
+							"exactquality": 0
+							
+						}
+					]
+				},				
+				{
+					"index": 68,
+					"stack": 1,
+					"time": 269,
+					"quality":2,
+					"materials":
+					[
+						{
+							"index": 68,
+							"stack": 1,
+							"exactquality": 1
+							
+						}
+					]
+				},
+				{
+					"name": "Flawless",
+					"suffix": true,
+					"index": 68,
+					"stack": 1,
+					"time": 538,
+					"quality":4,
+					"materials":
+					[
+						{
+							"index": 68,
+							"stack": 1,
+							"exactquality": 2
+							
+						}
+					]
+				},
+				{
+					"index": 70,
+					"stack": 1,
+					"time": 672,
+					"quality":1,
+					"materials":
+					[
+						{
+							"index": 70,
+							"stack": 1,
+							"exactquality": 0
+							
+						}
+					]
+				},
+				{
+					"index": 70,
+					"stack": 1,
+					"time": 672,
+					"quality":2,
+					"materials":
+					[
+						{
+							"index": 70,
+							"stack": 1,
+							"exactquality": 1
+							
+						}
+					]
+				},
+				{
+					"name": "Flawless",
+					"suffix": true,
+					"index": 70,
+					"stack": 1,
+					"time": 1344,
+					"quality":4,
+					"materials":
+					[
+						{
+							"index": 70,
+							"stack": 1,
+							"exactquality": 2
+							
+						}
+					]
+				},
+				{
+					"index": 72,
+					"stack": 1,
+					"time": 2520,
+					"quality":1,
+					"materials":
+					[
+						{
+							"index": 72,
+							"stack": 1,
+							"exactquality": 0
+							
+						}
+					]
+				},
+				{
+					"index": 72,
+					"stack": 1,
+					"time": 2520,
+					"quality":2,
+					"materials":
+					[
+						{
+							"index": 72,
+							"stack": 1,
+							"exactquality": 1
+							
+						}
+					]
+				},
+				{
+					"name": "Flawless",
+					"suffix": true,
+					"index": 72,
+					"stack": 1,
+					"time": 5040,
+					"quality":4,
+					"materials":
+					[
+						{
+							"index": 72,
+							"stack": 1,
+							"exactquality": 2
+							
+						}
+					]
+				}
+			]
+	   },
+		{
+			"id": 2,		   
+		   "name": "Dwarvish Still",
+		   "description": "Distill spirits in the traditional dwarven way!",
+		   "category": "Crafting",
+		   "crafting" : "335 5 388 5 338 3",
+		   "pulsate": false,
+		   "texture": "DwarvenStill.png",
+		   "shop": "Dwarf",
+		   "forsale": true,
+		   "price": 2000,
+		   "tileIndex": 0,
+		   "readyindex": 3,
+		   "frames": 2,
+		   "fps": 3,
+		   "production":
+			[
+				{
+					"item": "Dwarven Spirits",
+					"stack": 1,
+					"quality": 0,
+					"price": "(input) * 1.25",
+					"time": 700,
+					"materials":
+					[						
+						{
+							"item": "Copper Dust",
+							"stack": 1
+						},
+						{
+							"item": "Carrot Mash",
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Dwarven Spirits",
+					"stack": 1,
+					"insert": true,
+					"quality": 0,
+					"price": "(input) * 1.25",
+					"time": 700,
+					"materials":
+					[						
+						{
+							"item": "Dwarven Spirits",
+							"stack": 1,
+							"exactquality": 0
+						},
+						{
+							"item": "-79",
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Dwarven Spirits",
+					"name": "Strong Dwarven Spirits",
+					"stack": 1,
+					"quality": 1,
+					"price": "(input) * 1.25",
+					"time": 1400,
+					"materials":
+					[						
+						{
+							"item": "Iron Dust",
+							"stack": 1
+						},
+						{
+							"item": "Carrot Mash",
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Dwarven Spirits",
+					"name": "Strong Dwarven Spirits",
+					"insert": true,
+					"insertpos": 1,
+					"stack": 1,					
+					"quality": 1,
+					"price": "(input) * 1.25",
+					"time": 1400,
+					"materials":
+					[						
+						{
+							"item": "Dwarven Spirits",
+							"stack": 1,
+							"exactquality": 1
+						},
+						{
+							"item": "-79",
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Dwarven Spirits",
+					"name": "Fortified Dwarven Spirits",
+					"stack": 1,
+					"quality": 2,
+					"price": "(input) * 1.25",
+					"time": 2800,
+					"materials":
+					[						
+						{
+							"item": "Gold Dust",
+							"stack": 1
+						},
+						{
+							"item": "Carrot Mash",
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Dwarven Spirits",
+					"name": "Fortified Dwarven Spirits",
+					"insert": true,
+					"insertpos": 1,
+					"stack": 1,					
+					"quality": 2,
+					"price": "(input) * 1.25",
+					"time": 2800,
+					"materials":
+					[						
+						{
+							"item": "Dwarven Spirits",
+							"stack": 1,
+							"exactquality": 2
+						},
+						{
+							"item": "-79",
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Dwarven Spirits",
+					"name": "Fine Dwarven Spirits",
+					"stack": 1,
+					"quality": 4,
+					"price": "(input) * 1.25",
+					"time": 5600,
+					"materials":
+					[						
+						{
+							"item": "Iridium Dust",
+							"stack": 1
+						},
+						{
+							"item": "Carrot Mash",
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Dwarven Spirits",
+					"name": "Fine Dwarven Spirits",
+					"insert": true,
+					"insertpos": 1,
+					"stack": 1,					
+					"quality": 4,
+					"price": "(input) * 1.25",
+					"time": 5600,
+					"materials":
+					[						
+						{
+							"item": "Dwarven Spirits",
+							"stack": 1,
+							"exactquality": 4
+						},
+						{
+							"item": "-79",
+							"stack": 1
+						}
+					]
+				},
+				{
+					"Name": "Ruby Infused Spirits",
+					"item": "Infused Dwarven Spirits",
+					"stack": 1,
+					"quality": 2,
+					"price": "(input) * 1.25",
+					"time": 7200,					
+					"materials":
+					[
+						{
+							"item": "Ruby Dust",
+							"stack": 1
+						},
+						{
+							"item": "Carrot Mash",
+							"stack": 1
+						}
+					]
+				},
+				{
+					"Name": "Emerald Infused Spirits",
+					"item": "Infused Dwarven Spirits",
+					"stack": 1,
+					"quality": 2,
+					"price": "(input) * 1.25",
+					"time": 7200,					
+					"materials":
+					[
+						{
+							"item": "Emerald Dust",
+							"stack": 1
+						},
+						{
+							"item": "Carrot Mash",
+							"stack": 1
+						}
+					]
+				},
+				{
+					"Name": "Diamond Infused Spirits",
+					"item": "Infused Dwarven Spirits",					
+					"stack": 1,
+					"quality": 4,
+					"price": "(input) * 1.25",
+					"time": 10080,					
+					"materials":
+					[
+						{
+							"item": "Diamond Dust",
+							"stack": 1
+						},
+						{
+							"item": "Carrot Mash",
+							"stack": 1
+						}
+					]
+				},
+				{
+					"Name": "Topaz Infused Spirits",
+					"item": "Infused Dwarven Spirits",					
+					"stack": 1,
+					"quality": 0,
+					"price": "(input) * 1.25",
+					"time": 2880,					
+					"materials":
+					[
+						{
+							"item": "Topaz Dust",
+							"stack": 1
+						},
+						{
+							"item": "Carrot Mash",
+							"stack": 1
+						}
+					]
+				},
+				{
+					"Name": "Aquamarine Infused Spirits",
+					"item": "Infused Dwarven Spirits",					
+					"stack": 1,
+					"quality": 1,
+					"price": "(input) * 1.25",
+					"time": 4320,					
+					"materials":
+					[
+						{
+							"item": "Aquamarine Dust",
+							"stack": 1
+						},
+						{
+							"item": "Carrot Mash",
+							"stack": 1
+						}
+					]
+				},
+				{
+					"Name": "Amethyst Infused Spirits",
+					"item": "Infused Dwarven Spirits",					
+					"stack": 1,
+					"quality": 0,
+					"price": "(input) * 1.25",
+					"time": 2880,					
+					"materials":
+					[
+						{
+							"item": "Amethyst Dust",
+							"stack": 1
+						},
+						{
+							"item": "Carrot Mash",
+							"stack": 1
+						}
+					]
+				},
+				{
+					"Name": "Jade Infused Spirits",
+					"item": "Infused Dwarven Spirits",					
+					"stack": 1,
+					"quality": 1,
+					"price": "(input) * 1.25",
+					"time": 4320,					
+					"materials":
+					[
+						{
+							"item": "Jade Dust",
+							"stack": 1
+						},
+						{
+							"item": "Carrot Mash",
+							"stack": 1
+						}
+					]
+				}
+			]		
+	   },
+		{
+	   
+			"id": 3,		   
+		   "name": "Alchemy Table",
+		   "description": "Use dwarvish alchemy to create powerful concoctions",
+		   "category": "Crafting",
+		   "crafting" : "709 10 428 2 338 5",
+		   "pulsate": false,
+		   "texture": "alchemytable.png",
+		   "shop": "Dwarf",
+		   "forsale": true,
+		   "price": 4000,
+		   "tileIndex": 0,
+		   "readyindex": 4,
+		   "frames": 3,
+		   "fps": 10,
+		   "production":
+			[
+				{
+					"index": 74,
+					"stack": 1,
+					"quality": 0,
+					"time": 10080,
+					"materials":
+					[						
+						{
+							"item": "Infused Dwarven Spirits",
+							"stack": 1,
+							"quality": 1
+						},
+						{
+							"index": "768",
+							"stack": 5
+						},
+						{
+							"index": 72,
+							"stack": 1,
+							"exactquality": 4
+						}
+					]
+				},
+				{
+					"name": "Concentrated Ruby Infusion",
+					"item": "Concentrated Dwarven Spirits",
+					"stack": 1,
+					"quality": 0,
+					"price": "(input) * 2",
+					"time": 4320,
+					"materials":
+					[						
+						{
+							"item": "Infused Dwarven Spirits",
+							"stack": 1,
+							"quality": 2
+						},
+						{
+							"item": "Ruby Dust",
+							"stack": 1
+						}						
+					]
+				},
+				{
+					"name": "Concentrated Emerald Infusion",
+					"item": "Concentrated Dwarven Spirits",
+					"stack": 1,
+					"quality": 0,
+					"price": "(input) * 2",
+					"time": 4320,
+					"materials":
+					[						
+						{
+							"item": "Infused Dwarven Spirits",
+							"stack": 1,
+							"quality": 2
+						},
+						{
+							"item": "Emerald Dust",
+							"stack": 1
+						}						
+					]
+				},
+				{
+					"name": "Concentrated Diamond Infusion",
+					"item": "Concentrated Dwarven Spirits",
+					"stack": 1,
+					"quality": 0,
+					"price": "(input) * 2",
+					"time": 4320,
+					"materials":
+					[						
+						{
+							"item": "Infused Dwarven Spirits",
+							"stack": 1,
+							"quality": 4
+						},
+						{
+							"item": "Diamond Dust",
+							"stack": 1
+						}						
+					]
+				},
+				{
+					"item": "Shadowed Elixir",
+					"stack": 1,
+					"quality": 0,
+					"time": 2880,
+					"materials":
+					[						
+						{
+							"item": "Infused Dwarven Spirits",
+							"stack": 1,
+							"quality": 2
+						},
+						{
+							"index": "308",
+							"stack": 1
+						}
+					]
+				},
+				{
+					"item": "Distilled Sunlight",
+					"stack": 1,
+					"quality": 0,
+					"time": 2880,
+					"materials":
+					[						
+						{
+							"item": "Infused Dwarven Spirits",
+							"stack": 1,
+							"quality": 2
+						},
+						{
+							"index": "768",
+							"stack": 3
+						}
+					]
+				},
+				{
+					"item": "Farmers Draught",
+					"stack": 1,
+					"quality": 0,
+					"time": 1440,
+					"materials":
+					[						
+						{
+							"item": "Infused Dwarven Spirits",
+							"stack": 1
+						},
+						{
+							"index": "-74",
+							"stack": 5
+						}
+					]
+				},
+				{
+					"item": "Miners Drink",
+					"stack": 1,
+					"quality": 0,
+					"time": 1440,
+					"materials":
+					[						
+						{
+							"item": "Infused Dwarven Spirits",
+							"stack": 1
+						},
+						{
+							"index": "390",
+							"stack": 15
+						}
+					]
+				},
+				{
+				
+					"item": "Fishermans Brew",
+					"stack": 1,
+					"quality": 0,
+					"time": 1440,
+					"materials":
+					[						
+						{
+							"item": "Infused Dwarven Spirits",
+							"stack": 1
+						},
+						{
+							"index": "-4",
+							"stack": 1
+						}
+					]
+				},
+				{
+				
+					"item": "Woodmans Tonic",
+					"stack": 1,
+					"quality": 0,
+					"time": 1440,
+					"materials":
+					[						
+						{
+							"item": "Infused Dwarven Spirits",
+							"stack": 1
+						},
+						{
+							"index": "709",
+							"stack": 5
+						}
+					]
+				},
+				{
+				
+					"item": "Swordsmans Elixir",
+					"stack": 1,
+					"quality": 0,
+					"time": 1440,
+					"materials":
+					[						
+						{
+							"item": "Infused Dwarven Spirits",
+							"stack": 1
+						},
+						{
+							"index": "335",
+							"stack": 2
+						}
+					]
+				},
+				{
+				
+					"item": "One Perfect Day",
+					"stack": 1,
+					"quality": 0,
+					"time": 10080,
+					"materials":
+					[						
+						{
+							"item": "Infused Dwarven Spirits",
+							"stack": 1,
+							"exactquality": 4
+						},
+						{
+							"index": "74",
+							"stack": 1
+						}
+					]
+				}
+				
+			]
+		},		
+		{		
+			"id": 4,		   
+			"name": "Jewelmakers Bench",
+			"description": "A small anvil for crafting fine jewelry.",
+			"category": "Crafting",
+			"crafting" : "335 10 334 2",
+			"pulsate": false,
+			"texture": "JewelmakersAnvil.png",
+			"shop": "Dwarf",
+			"forsale": true,
+			"price": 1500,
+			"tileIndex": 0,
+			"frames": 2,
+			"readyindex": 3,
+			"starter": {
+				"index": 336,
+				"stack": 1
+			},
+			"production":
+			[
+				{
+					"item": "Gold Diamond Ring",
+					"name": "Dull Diamond Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 20866,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 72,
+							"stack": 1,
+							"exactquality": 0
+						}
+					]
+				},
+				{
+					"item": "Gold Diamond Ring",
+					"name": "Shining Diamond Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 26734,					
+					"quality": 1,
+					"materials":
+					[
+						{
+							"index": 72,
+							"stack": 1,
+							"exactquality": 1
+						}
+					]
+				},
+				{	
+					"item": "Gold Diamond Ring",
+					"name": "Glittering Diamond Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 32603,
+					"quality": 2,
+					"materials":
+					[
+						{
+							"index": 72,
+							"stack": 1,
+							"exactquality": 2
+						}
+					]
+				},
+				{	
+					"item": "Gold Diamond Ring",
+					"name": "Flawless Diamond Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 44339,
+					"quality": 4,
+					"materials":
+					[
+						{
+							"index": 72,
+							"stack": 1,
+							"exactquality": 4
+						}
+					]
+				},	
+				{
+					"item": "Gold Emerald Ring",
+					"name": "Dull Emerald Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 10433,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 60,
+							"stack": 1,
+							"exactquality": 0
+						}
+					]
+				},
+				{
+					"item": "Gold Emerald Ring",
+					"name": "Shining Emerald Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 13693,					
+					"quality": 1,
+					"materials":
+					[
+						{
+							"index": 60,
+							"stack": 1,
+							"exactquality": 1
+						}
+					]
+				},
+				{	
+					"item": "Gold Emerald Ring",
+					"name": "Glittering Emerald Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 16953,
+					"quality": 2,
+					"materials":
+					[
+						{
+							"index": 60,
+							"stack": 1,
+							"exactquality": 2
+						}
+					]
+				},
+				{	
+					"item": "Gold Emerald Ring",
+					"name": "Flawless Emerald Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 23474,
+					"quality": 4,
+					"materials":
+					[
+						{
+							"index": 60,
+							"stack": 1,
+							"exactquality": 4
+						}
+					]
+				},
+				{
+					"item": "Gold Ruby Ring",
+					"name": "Dull Ruby Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 10433,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 64,
+							"stack": 1,
+							"exactquality": 0
+						}
+					]
+				},
+				{
+					"item": "Gold Ruby Ring",
+					"name": "Shining Ruby Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 13693,					
+					"quality": 1,
+					"materials":
+					[
+						{
+							"index": 64,
+							"stack": 1,
+							"exactquality": 1
+						}
+					]
+				},
+				{	
+					"item": "Gold Ruby Ring",
+					"name": "Glittering Ruby Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 16953,
+					"quality": 2,
+					"materials":
+					[
+						{
+							"index": 64,
+							"stack": 1,
+							"exactquality": 2
+						}
+					]
+				},
+				{	
+					"item": "Gold Ruby Ring",
+					"name": "Flawless Ruby Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 23474,
+					"quality": 4,
+					"materials":
+					[
+						{
+							"index": 64,
+							"stack": 1,
+							"exactquality": 4
+						}
+					]
+				},
+				{
+					"item": "Gold Jade Ring",
+					"name": "Dull Jade Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 9390,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 70,
+							"stack": 1,
+							"exactquality": 0
+						}
+					]
+				},
+				{
+					"item": "Gold Jade Ring",
+					"name": "Shining Jade Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 12389,					
+					"quality": 1,
+					"materials":
+					[
+						{
+							"index": 70,
+							"stack": 1,
+							"exactquality": 1
+						}
+					]
+				},
+				{	
+					"item": "Gold Jade Ring",
+					"name": "Glittering Jade Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 15388,
+					"quality": 2,
+					"materials":
+					[
+						{
+							"index": 70,
+							"stack": 1,
+							"exactquality": 2
+						}
+					]
+				},
+				{	
+					"item": "Gold Jade Ring",
+					"name": "Flawless Jade Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 21387,
+					"quality": 4,
+					"materials":
+					[
+						{
+							"index": 70,
+							"stack": 1,
+							"exactquality": 4
+						}
+					]
+				},
+				{
+					"item": "Gold Aquamarine Ring",
+					"name": "Dull Aquamarine Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 8972,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 62,
+							"stack": 1,
+							"exactquality": 0
+						}
+					]
+				},
+				{
+					"item": "Gold Aquamarine Ring",
+					"name": "Shining Aquamarine Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 11867,					
+					"quality": 1,
+					"materials":
+					[
+						{
+							"index": 62,
+							"stack": 1,
+							"exactquality": 1
+						}
+					]
+				},
+				{	
+					"item": "Gold Aquamarine Ring",
+					"name": "Glittering Aquamarine Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 14762,
+					"quality": 2,
+					"materials":
+					[
+						{
+							"index": 62,
+							"stack": 1,
+							"exactquality": 2
+						}
+					]
+				},
+				{	
+					"item": "Gold Aquamarine Ring",
+					"name": "Flawless Aquamarine Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 20553,
+					"quality": 4,
+					"materials":
+					[
+						{
+							"index": 62,
+							"stack": 1,
+							"exactquality": 4
+						}
+					]
+				},
+				{
+					"item": "Gold Amethyst Ring",
+					"name": "Dull Amethyst Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 7303,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 66,
+							"stack": 1,
+							"exactquality": 0
+						}
+					]
+				},
+				{
+					"item": "Gold Amethyst Ring",
+					"name": "Shining Amethyst Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 9781,					
+					"quality": 1,
+					"materials":
+					[
+						{
+							"index": 66,
+							"stack": 1,
+							"exactquality": 1
+						}
+					]
+				},
+				{	
+					"item": "Gold Amethyst Ring",
+					"name": "Glittering Amethyst Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 12259,
+					"quality": 2,
+					"materials":
+					[
+						{
+							"index": 66,
+							"stack": 1,
+							"exactquality": 2
+						}
+					]
+				},
+				{	
+					"item": "Gold Amethyst Ring",
+					"name": "Flawless Amethyst Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 17214,
+					"quality": 4,
+					"materials":
+					[
+						{
+							"index": 66,
+							"stack": 1,
+							"exactquality": 4
+						}
+					]
+				},
+				{
+					"item": "Gold Topaz Ring",
+					"name": "Dull Topaz Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 6886,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 68,
+							"stack": 1,
+							"exactquality": 0
+						}
+					]
+				},
+				{
+					"item": "Gold Topaz Ring",
+					"name": "Shining Topaz Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 9259,					
+					"quality": 1,
+					"materials":
+					[
+						{
+							"index": 68,
+							"stack": 1,
+							"exactquality": 1
+						}
+					]
+				},
+				{	
+					"item": "Gold Topaz Ring",
+					"name": "Glittering Topaz Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 11633,
+					"quality": 2,
+					"materials":
+					[
+						{
+							"index": 68,
+							"stack": 1,
+							"exactquality": 2
+						}
+					]
+				},
+				{	
+					"item": "Gold Topaz Ring",
+					"name": "Flawless Topaz Ring",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 16379,
+					"quality": 4,
+					"materials":
+					[
+						{
+							"index": 68,
+							"stack": 1,
+							"exactquality": 4
+						}
+					]
+				},
+				{	
+					"item": "Golden Chicken Statue",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 6260,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 113,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Golden Chicken Statue",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 6260,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 113,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Tigerseye Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 10080,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 562,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Opal Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 7680,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 564,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Fire Opal Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 11520,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 565,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Alamite Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 7680,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 538,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Aerinite Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 7200,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 541,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Dolomite Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 10560,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 543,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Fluorapatite Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 8640,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 545,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Geminite Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 7680,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 546,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Helvite Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 13440,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 547,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Kyanite Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 9600,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 550,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Malachite Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 6720,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 552,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Lemon Stone Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 8640,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 554,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Orpiment Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 6336,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 556,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Celestine Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 7200,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 566,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Obsidian Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 8640,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 575,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Star Shards Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 14400,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 578,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Quartz Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 11088,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 80,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Earth Crystal Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 12096,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 86,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Frozen Tear Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 13104,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 84,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Fire Quartz Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 14112,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 82,
+							"stack": 1
+						}
+					]
+				},
+				{	
+					"item": "Gold Necklace",
+					"price": "(250 + input) * 3",
+					"stack": 1,
+					"time": 10886,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"item": "Necklace Mold",
+							"stack": 1
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": 5,		   
+			"name": "Efficient Furnace",
+			"description": "A more efficient furnace.",
+			"category": "Crafting",
+			"crafting" : "390 50 380 20",
+			"pulsate": true,
+			"texture": "efficientFurance.png",
+			"shop": "Clint",
+			"forsale": true,
+			"price": 1500,
+			"tileIndex": 0,
+			"frames": 2,
+			"lightsource": true,
+			"worklight": true,
+			"readyindex": 3,
+			"starter": {
+				"index": 382,
+				"stack": 2
+			},
+			"production":
+			[
+				{
+					"index": 334,
+					"stack": 2,
+					"time": 45,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 378,
+							"stack": 8
+						}
+					]
+				},
+				{
+					"index": 338,
+					"stack": 6,
+					"time": 135,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 80,
+							"stack": 5
+						}
+					]
+				},
+				{
+					"index": 338,
+					"stack": 18,
+					"time": 135,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 82,
+							"stack": 5
+						}
+					]
+				},
+				{
+					"index": 335,
+					"stack": 2,
+					"time": 180,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 380,
+							"stack": 8
+						}
+					]
+				},
+				{
+					"index": 336,
+					"stack": 2,
+					"time": 450,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 384,
+							"stack": 8
+						}
+					]
+				},
+				{
+					"index": 337,
+					"stack": 2,
+					"time": 720,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 386,
+							"stack": 8
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": 6,		   
+			"name": "Pulverized Coal Furnace",
+			"description": "Pulverizes the coal and burns the dust for more even and intense heat.",
+			"category": "Crafting",
+			"crafting" : "390 100 386 20",
+			"pulsate": true,
+			"texture": "pulverizedCoalFurnace.png",
+			"shop": "Clint",
+			"forsale": true,
+			"price": 4500,
+			"tileIndex": 0,
+			"frames": 2,
+			"lightsource": true,
+			"worklight": true,
+			"readyindex": 3,
+			"starter": {
+				"index": 382,
+				"stack": 1
+			},
+			"production":
+			[
+				{
+					"index": 334,
+					"stack": 2,
+					"time": 30,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 378,
+							"stack": 8
+						}
+					]
+				},
+				{
+					"index": 338,
+					"stack": 6,
+					"time": 90,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 80,
+							"stack": 5
+						}
+					]
+				},
+				{
+					"index": 338,
+					"stack": 18,
+					"time": 90,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 82,
+							"stack": 5
+						}
+					]
+				},
+				{
+					"index": 335,
+					"stack": 2,
+					"time": 120,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 380,
+							"stack": 8
+						}
+					]
+				},
+				{
+					"index": 336,
+					"stack": 2,
+					"time": 300,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 384,
+							"stack": 8
+						}
+					]
+				},
+				{
+					"index": 337,
+					"stack": 2,
+					"time": 480,
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 386,
+							"stack": 8
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": 7,		   
+			"name": "Slow-Burn Charcoal Kiln",
+			"description": "Reduces waste by reducing heat and burning the fuel for a longer period.",
+			"category": "Crafting",
+			"crafting" : "335 10 336 1",
+			"pulsate": true,
+			"texture": "slowburnkiln.png",
+			"shop": "Clint",
+			"forsale": true,
+			"price": 3000,
+			"tileIndex": 0,
+			"frames": 2,
+			"lightsource": true,
+			"worklight": true,
+			"readyindex": 3,
+			"production":
+			[
+				{
+					"index": 382,
+					"stack": 10,
+					"time": 720,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 388,
+							"stack": 40
+						}
+					]
+				},
+				{
+					"index": 382,
+					"stack": 20,
+					"time": 720,					
+					"quality": 0,
+					"materials":
+					[
+						{
+							"index": 709,
+							"stack": 20
+						}
+					]
+				},
+			]
+		}
+   ]
+}

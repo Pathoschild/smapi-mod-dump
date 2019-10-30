@@ -1,0 +1,14 @@
+{
+  "Name": "Gold Emerald Ring",
+  "Description": "A finely crafted emerald ring set in a gold band.",
+  "Price": 1500,
+  "Category": "ArtisanGoods",
+  "Edibility": -300,
+  "Recipe": null,
+  "GiftTastes":
+	{
+		"Love": ["Clint", "Dwarf", "Emily", "Penny"],
+		"Like": ["Abigail", "Alex", "Caroline", "Demetrius", "Elliott", "Evelyn", "George", "Haily", "Harvey", "Jas", "Jodi", "Kent", "Krobus", "Lewis", "Marnie", "Maru", "Pam", "Robin", "Sam", "Sandy", "Sebastian", "Shane", "Vincent", "Willy", "Wizard"],
+		"Dislike": ["Leah","Linus","Pierre"]
+	},
+}

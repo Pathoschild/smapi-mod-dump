@@ -1,0 +1,8 @@
+{
+  "companionAccepted": "I suppose I could take a short break from work today.",
+  "companionRejected": "Terribly sorry @. I'm fully-booked out for today.$s",
+  "companionRejectedNight": "It's far too dangerous to explore the valley at night @. You could get hurt.$u",
+  "companionDismiss": "Time for me to head back to the clinic. Thanks for a fun time @.$h",
+  "companionDismissAuto": "I'm absolutely exhausted. I've got to get some rest. Sleep is very important you know so don't stay out too late. Take care.",
+  "companionRecruited": "Let's get going! I've brought my first-aid kit just in case.$h"
+}

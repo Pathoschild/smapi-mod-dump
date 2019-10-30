@@ -1,4 +1,5 @@
 ﻿using System;
+using JoysOfEfficiency.Core;
 using JoysOfEfficiency.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,7 +28,7 @@ namespace JoysOfEfficiency.OptionsElements
 
         public ModifiedClickListener(IClickableMenu parent ,string label, int which, int initialX, int initialY, ITranslationHelper translationHelper, Action<int, Point> onSomewhereClicked, Action<int, ModifiedClickListener> onStartListening = null) : base(label, -1, -1, 9 * Game1.pixelZoom, 9 * Game1.pixelZoom, 0)
         {
-            this.label = ModEntry.ModHelper.Translation.Get($"options.{label}");
+            this.label = InstanceHolder.Translation.Get($"options.{label}");
             _point = new Point(initialX, initialY);
             _onSomewhereClicked = onSomewhereClicked;
             _translation = translationHelper;
@@ -40,9 +41,9 @@ namespace JoysOfEfficiency.OptionsElements
         {
             string text = $"{label}: [{_point.X},{_point.Y}]";
             Vector2 size = Game1.dialogueFont.MeasureString(text);
-            b.DrawString(Game1.dialogueFont, text, new Vector2(slotX, slotY + 8), Color.Black, 0, new Vector2(), 1f, SpriteEffects.None, 1.0f);
+            b.DrawString(Game1.dialogueFont, text, new Vector2(slotX+16, slotY + 8), Color.Black, 0, new Vector2(), 1f, SpriteEffects.None, 1.0f);
 
-            int x = slotX + (int)size.X + 8;
+            int x = slotX + (int)size.X + 24;
 
             _buttonRect = new Rectangle(x, slotY, 90, 45);
             bounds = new Rectangle(0, 0, (int)size.X + _buttonRect.Width, _buttonRect.Height);
@@ -107,7 +108,7 @@ namespace JoysOfEfficiency.OptionsElements
                 batch.DrawString(Font, _translation.Get("button.esc"), new Vector2(x, y), Color.Black, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 1.0f);
                 y += (int)size.Y + 8;
 
-                if (ModEntry.Conf.ShowMousePositionWhenAssigningLocation)
+                if (InstanceHolder.Config.ShowMousePositionWhenAssigningLocation)
                 {
                     Util.DrawSimpleTextbox(batch, $"[{Game1.getMouseX()},{Game1.getMouseY()}]", Game1.dialogueFont, this);
                 }
@@ -130,7 +131,7 @@ namespace JoysOfEfficiency.OptionsElements
                 {
                     x = (int)size.X + 16;
                 }
-                y += (int)size.Y + 8;
+                y += (int)size.Y + 16;
             }
 
             return new Point(x, y);

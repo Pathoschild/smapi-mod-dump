@@ -36,7 +36,7 @@ namespace AnimalHusbandryMod.animals
             FarmerLoader.FarmerData.PregnancyData.RemoveAll(f => f.Id == farmAnimalId);
         }
 
-        public static void AddPregancy(PregnancyItem pregnancyItem)
+        public static void AddPregnancy(PregnancyItem pregnancyItem)
         {
             FarmerLoader.FarmerData.PregnancyData.Add(pregnancyItem);
         }
@@ -110,7 +110,7 @@ namespace AnimalHusbandryMod.animals
             else
             {
                 AnimalHusbandryModEntry.monitor.Log($"The animal id '{id}' was not found in the game and its pregnancy data is being discarted.", LogLevel.Warn);
-                PregnancyController.RemovePregnancyItem(id);
+                RemovePregnancyItem(id);
                 return null;
             }
                 
@@ -125,9 +125,9 @@ namespace AnimalHusbandryMod.animals
 
         public static void CheckForBirth()
         {
-            foreach (PregnancyItem pregancyItem in AnimalsReadyForBirth().ToList())
+            foreach (PregnancyItem pregnancyItem in AnimalsReadyForBirth().ToList())
             {
-                FarmAnimal animal = GetAnimal(pregancyItem.Id);
+                FarmAnimal animal = GetAnimal(pregnancyItem.Id);
                 if (animal != null)
                 {
                     parentAnimals.Enqueue(animal);
@@ -146,9 +146,9 @@ namespace AnimalHusbandryMod.animals
         public static List<string> CheckBirthTomorrow()
         {
             List<string> animals = new List<string>();
-            foreach (PregnancyItem pregancyItem in AnimalsReadyForBirthTomorrow().ToList())
+            foreach (PregnancyItem pregnancyItem in AnimalsReadyForBirthTomorrow().ToList())
             {
-                FarmAnimal farmAnimal = GetAnimal(pregancyItem.Id);
+                FarmAnimal farmAnimal = GetAnimal(pregnancyItem.Id);
                 if (farmAnimal != null)
                 {
                     animals.Add(farmAnimal.displayName);

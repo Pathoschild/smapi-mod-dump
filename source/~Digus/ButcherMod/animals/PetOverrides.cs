@@ -12,8 +12,12 @@ namespace AnimalHusbandryMod.animals
 {
     public class PetOverrides
     {
-        public static bool checkAction(Pet __instance, ref int __result)
+        public static bool checkAction(Pet __instance)
         {
+            if (__instance.IsInvisible)
+            {
+                return false;
+            }
             if (DataLoader.Helper.Reflection.GetField<bool>(__instance, "wasPetToday").GetValue() && AnimalContestController.CanChangeParticipantPet())
             {
                 __instance.playContentSound();
@@ -43,6 +47,15 @@ namespace AnimalHusbandryMod.animals
                 who.FarmerSprite.oldFrame = currentFrame;
                 AnimalContestController.RemovePetParticipant();
                 Game1.player.addItemByMenuIfNecessary(new ParticipantRibbon());
+                return false;
+            }
+            return true;
+        }
+
+        public static bool update(Pet __instance)
+        {
+            if (__instance.IsInvisible)
+            {
                 return false;
             }
             return true;

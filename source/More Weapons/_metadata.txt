@@ -1,16 +1,13 @@
 url:
-   https://github.com/MrOxity/MoreWeapons-Source-Code.git
+   https://github.com/Sasara2201/More-Weapons-SDV-Mod-.git
 
 mods:
    More Weapons
 
 latest commit:
-   commit 9e5b51d4e7de1eb24f2083cea7d0bea6c398a70d
-   Merge: ba25858 ef687d6
-   Author: Joco80 <joco80.jox80@gmail.com>
-   Date:   Sat May 27 14:03:33 2017 -0700
+   commit 6cbb087acc3aaa7dd208a964bd7030b0c14f57e9
+   Author: Sasara2201 <mdounat2201@gmail.com>
+   Date:   Mon Sep 30 20:44:11 2019 +0200
    
-       Merge pull request #2 from Sasara2201/patch-2
-       
-       Update ModEntry.cs
+       Add files via upload
    

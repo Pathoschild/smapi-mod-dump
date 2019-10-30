@@ -1,0 +1,32 @@
+{
+  "Name": "Rock Crab Salad",
+  "Description": "A delcious algea and rock crab salad.",
+  "Category": "Cooking",
+  "Edibility": 28,
+  "Price": 143,
+  "IsColored": false,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": 153,
+        "Count": 2
+      },
+      {
+        "Object": 717,
+        "Count": 1
+      }
+    ],
+    "CanPurchase": true,
+    "PurchaseFrom": "Dwarf",
+    "PurchasePrice": 315
+  },
+  "GiftTastes":
+	{
+		"Love": ["Clint","Wizard","Willy","Krobus","Dwarf"],
+		"Like": ["Maru", "Pam","Shane","Linus"],
+		"Neutral": [],
+		"Dislike": ["Abigail","Alex", "Caroline", "Demetrius", "Elliott", "Emily", "Evelyn", "George", "Gus", "Harvey", "Jas", "Jodi"],
+		"Hate": ["Haley"]
+	},
+}

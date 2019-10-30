@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SObject = StardewValley.Object;
+using StardewValley;
 
 namespace WhatAreYouMissing
 {
@@ -41,15 +42,46 @@ namespace WhatAreYouMissing
             {
                 if (Utilities.CheckMerchantForItemAndSeed(pair.Key))
                 {
-                    if (IsSeasonSpecific(pair.Key))
+                    if (IsSeedOrSapling(pair.Value))
                     {
-                        AddOneCommonObject(pair.Key);
+                        int harvestID = ConvertSeedIdToHarvestId(pair.Key);
+                        AddIfSeasonal(harvestID);
+                    }
+                    else
+                    {
+                        AddIfSeasonal(pair.Key);
                     }
                 }
             }
         }
 
+        private void AddIfSeasonal(int id)
+        {
+            if (IsSeasonSpecific(id))
+            {
+                AddOneCommonObject(id);
+            }
+        }
 
+        private bool IsSeedOrSapling(SObject item)
+        {
+            return SObject.SeedsCategory == item.Category;
+        }
+
+        private int ConvertSeedIdToHarvestId(int id)
+        {
+            Dictionary<int, string> cropData = Game1.content.Load<Dictionary<int, string>>("Data\\Crops");
+            Dictionary<int, string> fruitTreeData = Game1.content.Load<Dictionary<int, string>>("Data\\fruitTrees");
+
+            if (cropData.ContainsKey(id))
+            {
+                return int.Parse(cropData[id].Split('/')[3]);
+            }
+            else
+            {
+                return int.Parse(fruitTreeData[id].Split('/')[2]);
+            }
+        }
 
         private bool IsSeasonSpecific(int parentSheetIndex)
         {
@@ -60,6 +92,7 @@ namespace WhatAreYouMissing
         private void AddPossibleItems()
         {
             AddPossibleItem(Constants.RARE_SEED);
+            AddPossibleItem(Constants.ANCIENT_SEEDS);
             //add snow rarecrow
             AddPossibleItem(Constants.COFFEE_BEAN);
             //add wedding ring for multiplayer
@@ -100,7 +133,14 @@ namespace WhatAreYouMissing
             AddPossibleItem(Constants.BEAN_STARTER);
             AddPossibleItem(Constants.HOPS_STARTER);
             AddPossibleItem(Constants.GRAPE_STARTER);
+
             //Add saplings
+            AddPossibleItem(Constants.APRICOT_SAPLING);
+            AddPossibleItem(Constants.CHERRY_SAPLING);
+            AddPossibleItem(Constants.POMEGRANATE_SAPLING);
+            AddPossibleItem(Constants.APPLE_SAPLING);
+            AddPossibleItem(Constants.ORANGE_SAPLING);
+            AddPossibleItem(Constants.PEACH_SAPLING);
 
             AddPossibleItem(Constants.GARLIC);
             AddPossibleItem(Constants.POTATO);
@@ -136,7 +176,7 @@ namespace WhatAreYouMissing
             AddPossibleItem(Constants.GREEN_BEAN);
             AddPossibleItem(Constants.GRAPE);
             AddPossibleItem(Constants.APRICOT);
-            AddPossibleItem(Constants.CHEERY);
+            AddPossibleItem(Constants.CHERRY);
             AddPossibleItem(Constants.POMEGRANATE);
             AddPossibleItem(Constants.APPLE);
             AddPossibleItem(Constants.ORANGE);

@@ -68,6 +68,7 @@ readonly HashSet<int> IgnoreNexusIDsForValidation = new HashSet<int>
 	782,  // Sound Modding Tools
 	1298, // Stardew Editor
 	3814, // Stardew Valley Hack Player for Name_Yusuf (???)
+	4536, // Stardew Valley Mod Manager 2
 	3916, // Stardew Valley Money Hack
 	3787, // Stardew Valley Planner
 	2451, // StardewZem - Very Easy XNB Merger
@@ -130,6 +131,8 @@ readonly HashSet<int> IgnoreFileIDsForValidation = new HashSet<int>
 	17684, // BFAV More Blue Chickens (#3400) > file for BFAV Json Update
 	17686, // BFAV Round Chickens mod (#3398) > Animals file to BFAV Json Update
 	16975, // BFAV Velociraptors (#4015) > Animals file to BFAV Json Update
+	19683, // Custom NPC - Denver (#4594) > John compatibility
+	19684, // Custom NPC - Denver (#4594) > Immersive map compatibility
 	9873,  // Even More Secret Woods (#2364), replacement file for Immersive Farm 2
 	13120, // Immersive Farm 2 (#1531)
 	13647, // Immersive Farm 2 (#1531)
@@ -141,7 +144,6 @@ readonly HashSet<int> IgnoreFileIDsForValidation = new HashSet<int>
 	5438,  // Seasonal Custom Farm Buildings (#1451)
 	5439,  // Seasonal Custom Farm Buildings (#1451)
 	3164,  // Seasonal Victorian Buildings and Flowers (#891)
-	5688,  // Witchy Decorations (#1515)
 
 	// legacy CustomNPC pack (files to drop into Mods/CustomNPC/Npcs)
 	8179,  // Costum Npc Base (#1964)
@@ -221,7 +223,6 @@ readonly HashSet<int> IgnoreFileIDsForValidation = new HashSet<int>
 	16623, // Stardew In-Game Daily Planner > Example Plan
 	16660, // Stardew In-Game Daily Planner > Example Checklist
 	18999, // Stardew Valley Expanded (#3753) > Wallpapers, Event Guide and Script
-	11658, // Visual Crossing Sprite Overhaul (#1942), CP pack with invalid version format
 	11717, // Pencilstab's Portraits (#2351), content pack with separate previews folder including .zip
 	9495,  // Quieter Cat Dog and Keg (#2371), .wav files
 };

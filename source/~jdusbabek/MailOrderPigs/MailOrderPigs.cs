@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using MailOrderPigs.Framework;
-using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -14,7 +13,7 @@ namespace MailOrderPigs
         /*********
         ** Properties
         *********/
-        private Keys MenuKey = Keys.PageUp;
+        private SButton MenuKey = SButton.PageUp;
         private ModConfig Config;
         private bool AllowOvercrowding;
 
@@ -26,24 +25,27 @@ namespace MailOrderPigs
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            SaveEvents.AfterLoad += this.SaveEvents_AfterLoad;
-            ControlEvents.KeyReleased += this.ControlEvents_KeyReleased;
+            this.Config = this.Helper.ReadConfig<ModConfig>();
+
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
         }
 
 
         /*********
         ** Private methods
         *********/
-        private void SaveEvents_AfterLoad(object sender, EventArgs e)
+        /// <summary>Raised after the player loads a save slot.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             try
             {
-                this.Config = this.Helper.ReadConfig<ModConfig>();
-
                 if (!Enum.TryParse(this.Config.KeyBind, true, out this.MenuKey))
                 {
-                    this.MenuKey = Keys.PageUp;
-                    this.Monitor.Log("Error parsing key binding. Defaulted to Page Up");
+                    this.MenuKey = SButton.PageUp;
+                    this.Monitor.Log($"Error parsing key binding; defaulted to {this.MenuKey}.");
                 }
 
                 this.AllowOvercrowding = this.Config.AllowOvercrowding;
@@ -57,12 +59,15 @@ namespace MailOrderPigs
 
         }
 
-        private void ControlEvents_KeyReleased(object sender, EventArgsKeyPressed e)
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsPlayerFree)
                 return;
 
-            if (e.KeyPressed == this.MenuKey)
+            if (e.Button == this.MenuKey)
             {
                 this.Monitor.Log("Attempting to bring up menu.", LogLevel.Trace);
                 if (Game1.currentLocation is AnimalHouse house)

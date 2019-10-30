@@ -1,0 +1,14 @@
+{
+  "Name": "Golden Chicken Statue",
+  "Description": "A golden chicken statue.",
+  "Price": 900,
+  "Category": "ArtisanGoods",
+  "Edibility": -300,
+  "Recipe": null,  
+  "GiftTastes":
+	{
+		"Love": ["Clint", "Dwarf","Shane", "Emily"],
+		"Like": ["Alex", "Caroline","Penny", "Demetrius", "Elliott", "Evelyn", "George", "Haily", "Harvey", "Jas", "Jodi", "Kent", "Krobus", "Marnie", "Maru", "Pam", "Robin", "Sam", "Sandy", "Sebastian", "Vincent", "Willy", "Wizard"],
+		"Dislike": ["Lewis","Leah","Linus","Pierre"]
+	},
+}

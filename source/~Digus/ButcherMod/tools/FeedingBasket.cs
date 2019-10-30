@@ -140,7 +140,7 @@ namespace AnimalHusbandryMod.tools
                 {
                     if (TreatsController.GetTreatItem(this._animal)?.MinimumDaysBetweenTreats == 1)
                     {
-                        dialogue = DataLoader.i18n.Get("Tool.FeedingBasket.AlreadyAteTreatToday", new { animalName = this._pet.displayName });
+                        dialogue = DataLoader.i18n.Get("Tool.FeedingBasket.AlreadyAteTreatToday", new { animalName = this._animal.displayName });
                     }
                     else
                     {

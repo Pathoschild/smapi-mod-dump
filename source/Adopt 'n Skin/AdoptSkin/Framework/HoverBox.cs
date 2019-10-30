@@ -36,15 +36,15 @@ namespace AdoptSkin.Framework
             Vector2 mousePos = new Vector2(Game1.getOldMouseX() + Game1.viewport.X, Game1.getOldMouseY() + Game1.viewport.Y) / Game1.tileSize;
 
             // Show pet tooltip
-            foreach (Pet pet in ModApi.GetPets())
+            foreach (Pet pet in ModApi.GetAllPets())
                 if (IsWithinSpriteBox(mousePos, pet))
                 {
                     isHovering = true;
                     HoverText = pet.displayName;
                 }
             // Show horse tooltip
-            foreach (Horse horse in ModApi.GetHorses())
-                if (IsWithinSpriteBox(mousePos, horse))
+            foreach (Horse horse in ModApi.GetAllHorses())
+                if (IsWithinSpriteBox(mousePos, horse) && !ModEntry.BeingRidden.Contains(horse))
                 {
                     isHovering = true;
                     HoverText = horse.displayName;

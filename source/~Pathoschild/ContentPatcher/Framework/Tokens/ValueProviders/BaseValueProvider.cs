@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
 using Pathoschild.Stardew.Common.Utilities;
+using StardewValley;
 
 namespace ContentPatcher.Framework.Tokens.ValueProviders
 {
@@ -95,7 +96,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
                 {
                     if (!validInputs.Contains(input.Value))
                     {
-                        error = $"invalid input argument ({(input.Raw != input.Value ? $"{input.Raw} => {input.Value}" : input.Value)}) for {this.Name} token, expected any of {string.Join(", ", validInputs)}";
+                        error = $"invalid input argument ({(input.Raw != input.Value ? $"{input.Raw} => {input.Value}" : input.Value)}) for {this.Name} token, expected any of {string.Join(", ", validInputs.OrderByIgnoreCase(p => p))}";
                         return false;
                     }
                 }
@@ -283,6 +284,20 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         {
             bool wasReady = this.IsReady;
             return action() || this.IsReady != wasReady;
+        }
+
+        /// <summary>Get all social NPCs.</summary>
+        protected IEnumerable<NPC> GetSocialVillagers()
+        {
+            foreach (NPC npc in Utility.getAllCharacters())
+            {
+                bool isSocial =
+                    npc.CanSocialize
+                    || (npc.Name == "Krobus" && !Game1.player.friendshipData.ContainsKey(npc.Name)); // Krobus is marked non-social before he's met
+
+                if (isSocial)
+                    yield return npc;
+            }
         }
     }
 }

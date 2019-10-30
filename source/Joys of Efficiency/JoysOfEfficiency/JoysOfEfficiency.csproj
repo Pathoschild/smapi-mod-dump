@@ -55,11 +55,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\Games\steamapps\common\Stardew Valley\0Harmony.dll</HintPath>
+    <Reference Include="0Harmony, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Games\steamapps\common\Stardew Valley\smapi-internal\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\Games\steamapps\common\Stardew Valley\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -71,12 +72,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
-    <Compile Include="CustomSorter.cs" />
-    <Compile Include="JoeMenu.cs" />
-    <Compile Include="MineIcons.cs" />
+    <Compile Include="Automation\AutoFisher.cs" />
+    <Compile Include="Automation\CollectibleCollector.cs" />
+    <Compile Include="Automation\FlowerColorUnifier.cs" />
+    <Compile Include="Automation\FoodAutomation.cs" />
+    <Compile Include="Automation\HarvestAutomation.cs" />
+    <Compile Include="Automation\InventoryAutomation.cs" />
+    <Compile Include="Automation\MachineOperator.cs" />
+    <Compile Include="Automation\MailAutomation.cs" />
+    <Compile Include="Automation\WateringCanRefiller.cs" />
+    <Compile Include="Core\Config.cs" />
+    <Compile Include="EventHandler\ArtifactSpotDigger.cs" />
+    <Compile Include="EventHandler\FenceGateAutomation.cs" />
+    <Compile Include="EventHandler\GraphicsEvents.cs" />
+    <Compile Include="EventHandler\InputEvents.cs" />
+    <Compile Include="Core\InstanceHolder.cs" />
+    <Compile Include="EventHandler\EventHolder.cs" />
+    <Compile Include="EventHandler\MenuEvents.cs" />
+    <Compile Include="EventHandler\SaveEvents.cs" />
+    <Compile Include="EventHandler\UpdateEvents.cs" />
+    <Compile Include="Huds\FishInformationHud.cs" />
+    <Compile Include="Huds\FishingProbabilitiesBox.cs" />
+    <Compile Include="Huds\FpsCounter.cs" />
+    <Compile Include="Huds\GiftInformationTooltip.cs" />
+    <Compile Include="Huds\MineHud.cs" />
+    <Compile Include="Huds\MineIcons.cs" />
+    <Compile Include="Huds\PausedHud.cs" />
+    <Compile Include="Menus\JoeMenu.cs" />
+    <Compile Include="Menus\RegisterFlowerMenu.cs" />
     <Compile Include="ModCheckers\ModChecker.cs" />
-    <Compile Include="ModEntry.cs" />
+    <Compile Include="Core\ModEntry.cs" />
+    <Compile Include="OptionsElements\ButtonWithLabel.cs" />
+    <Compile Include="OptionsElements\ColorBox.cs" />
     <Compile Include="OptionsElements\EmptyLabel.cs" />
     <Compile Include="OptionsElements\LabelComponent.cs" />
     <Compile Include="OptionsElements\MenuTab.cs" />
@@ -93,7 +120,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RectangleE.cs" />
+    <Compile Include="Automation\AnimalAutomation.cs" />
+    <Compile Include="Utils\HarmonyHelper.cs" />
+    <Compile Include="Automation\TrashCanScavenger.cs" />
     <Compile Include="Utils\Util.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -116,7 +145,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
+    <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
+    <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -124,11 +154,11 @@
       <UserProperties manifest_1json__JSONSchema="" />
     </VisualStudio>
   </ProjectExtensions>
-  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+      <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.2.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
   </Target>
 </Project>

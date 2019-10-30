@@ -35,20 +35,7 @@ namespace WhatAreYouMissing
 
         private void AddFish()
         {
-            AddFish(Constants.TUNA);
-            AddFish(Constants.SARDINE);
-            AddFish(Constants.PERCH);
-            AddFish(Constants.PIKE);
-            AddFish(Constants.RED_MULLET);
-            AddFish(Constants.HERRING);
-            AddFish(Constants.SQUID);
-            AddFish(Constants.SEA_CUCUMBER);
-            AddFish(Constants.STURGEON);
-            AddFish(Constants.TIGER_TROUT);
-            AddFish(Constants.ALBACORE);
-            AddFish(Constants.LINGCOD);
-            AddFish(Constants.RED_SNAPPER);
-            AddFish(Constants.HALIBUT);
+            AddNormalSeasonalFish("winter");
 
             if (Config.ShowAllFishFromCurrentSeason || (Game1.player.getEffectiveSkillLevel(1) > 6 && !Game1.player.fishCaught.ContainsKey(Constants.GLACIERFISH)))
             {

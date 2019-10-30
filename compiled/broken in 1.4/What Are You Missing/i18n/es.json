@@ -2,14 +2,20 @@
   "SEASON_SPECIFIC_HEADER": "Objetos de temporada",
   "SEASON_SPECIFIC_CC_HEADER": "Objetos de temporada del Centro cívico",
   "COMMON_CC_HEADER": "Objetos comunes del Centro cívico",
-  "MERCHANT_HEADER": "Objetos del carro ambulante",
+  "SPECIFIC_MERCHANT_HEADER": "Objetos de temporada vendidos en el carro ambulante",
+  "CCMERCHANT_HEADER": "Objetos del Centro cívico vendidos en el carro ambulante",
   "COOKED_ITEMS_HEADER": "Recetas",
+  "FISH_TAB_HEADER": "Todos los peces",
+  "CROPS_TAB_HEADER": "Todos los cultivos",
 
   "SEASON_SPECIFIC_DESCRIPTION": "Objetos específicos que te faltan de la estación actual",
   "SEASON_SPECIFIC_CC_DESCRIPTION": "Objetos específicos de la estación actual que te faltan del centro cívico",
   "COMMON_CC_DESCRIPTION": "Objetos comunes a todas las estaciones que te faltan del centro cívico",
-  "MERCHANT_DESCRIPTION": "Objetos raros que te faltan y están disponibles en el carro ambulante",
+  "SPECIFIC_MERCHANT_DESCRIPTION": "Objetos específicos de estación que puedes comprar en el carro ambulante",
+  "CCMERCHANT_DESCRIPTION": "Objetos del Centro cívico que puedes comprar en el carro ambulante",
   "COOKED_ITEMS_DESCRIPTION": "Las recetas que sabes hacer pero que te faltan",
+  "FISH_TAB_DESCRIPTION": "Todos los peces que se pueden conseguir",
+  "CROPS_TAB_DESCRIPTION": "Todos los cultivos de todas las estaciones",
 
   "EMPTY_LIST_MESSAGE": "No te falta nada de lo que está disponible",
 
@@ -51,6 +57,11 @@
   "GLACIERFISH_INFO": "En el bosque Tizón, al cruzar los puentes (invierno)",
   "CRIMSONFISH_INFO": "En la parte de la playa que se desbloquea reparando el puente(verano)",
   "ANGLER_INFO": "Pescar hacia arriba en el pequeño puente cerca de JoJo Mart (otoño)",
+  "MUTANT_CARP_INFO": "Se encuentra en las alcantarillas (donde está Krobus)",
+
+  "STONEFISH_INFO": "Se encuentra en el piso 20 de las minas",
+  "ICE_PIP_INFO": "Se encuentra en el piso 60 de las minas",
+  "LAVA_EEL_INFO": "Se encuentra en el piso 100 de las minas",
 
   "FARMING": "Agricultura",
   "FISHING": "Pesca",
@@ -73,5 +84,7 @@
   "LOCATIONS": "Lugar",
   "SEASONS": "Estación",
   "WEATHER": "Clima",
-  "TIME": "Tiempo"
+  "TIME": "Tiempo",
+
+  "AREA": "Zona"
 }

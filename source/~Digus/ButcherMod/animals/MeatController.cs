@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AnimalHusbandryMod.common;
 using AnimalHusbandryMod.animals.data;
 using AnimalHusbandryMod.meats;
+using AnimalHusbandryMod.tools;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using Object = StardewValley.Object;
@@ -23,7 +23,8 @@ namespace AnimalHusbandryMod.animals
             }
             try
             {
-                return GetAnimalItem(farmAnimal) != null;
+                AnimalItem animalItem = GetAnimalItem(farmAnimal);
+                return ((animalItem is MeatAnimalItem meatAnimalItem) && meatAnimalItem.MaximumNumberOfMeat>0);
             }
             catch (Exception)
             {
@@ -35,8 +36,7 @@ namespace AnimalHusbandryMod.animals
         {
             List<Item> itemsToReturn = new List<Item>();
 
-            Animal? foundAnimal = AnimalExtension.GetAnimalFromType(farmAnimal.type.Value);
-            return DataLoader.AnimalData.getAnimalItem((Animal)foundAnimal);
+            return DataLoader.AnimalData.GetAnimalItem(farmAnimal);
         }
 
         public static List<Item> CreateMeat(FarmAnimal farmAnimal)
@@ -45,7 +45,7 @@ namespace AnimalHusbandryMod.animals
 
             Animal animal;
             Animal? foundAnimal = AnimalExtension.GetAnimalFromType(farmAnimal.type.Value);
-            if (foundAnimal == null) 
+            if (foundAnimal == null || !CanGetMeatFrom(farmAnimal)) 
             {
                 return itemsToReturn;
             }
@@ -54,34 +54,49 @@ namespace AnimalHusbandryMod.animals
                 animal = (Animal)foundAnimal;
             }
 
-            AnimalItem animalItem;
-            Meat meat;
+            AnimalItem animalItem = DataLoader.AnimalData.GetAnimalItem(farmAnimal);
             int minimumNumberOfMeat;
             int maxNumberOfMeat;
             int meatPrice;
+            int debrisType;
             if (animal == Animal.Dinosaur)
             {
                 if (DataLoader.ModConfig.DisableMeatFromDinosaur)
                 {
                     return itemsToReturn;
                 }
-                animalItem = null;
                 var meats = Enum.GetValues(typeof(Meat));
-                meat = ((Meat)meats.GetValue(new Random((int)farmAnimal.myID.Value).Next(meats.Length)));
-                minimumNumberOfMeat = 1;
+                Meat meat = ((Meat)meats.GetValue(new Random((int)farmAnimal.myID.Value).Next(meats.Length)));
                 meatPrice = DataLoader.MeatData.getMeatItem(meat).Price;
+                minimumNumberOfMeat = 1;
                 maxNumberOfMeat = 1 + (1300 / meatPrice);
+                debrisType = (int)meat;
+            }
+            else if (animal == Animal.CustomAnimal)
+            {
+                MeatAnimalItem meatAnimalItem = (MeatAnimalItem) animalItem;
+                debrisType = farmAnimal.meatIndex.Value;
+                if (Enum.IsDefined(typeof(Meat), debrisType))
+                {
+                    meatPrice = DataLoader.MeatData.getMeatItem((Meat)debrisType).Price;
+                }
+                else
+                {
+                    var objects = DataLoader.Helper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
+                    meatPrice = Convert.ToInt32(objects[debrisType].Split('/')[1]);
+                }
+                minimumNumberOfMeat = meatAnimalItem.MinimalNumberOfMeat;
+                maxNumberOfMeat = meatAnimalItem.MaximumNumberOfMeat;
             }
             else
             {
-                animalItem = DataLoader.AnimalData.getAnimalItem(animal);
-                meat = animal.GetMeat();
-                minimumNumberOfMeat = animalItem.MinimalNumberOfMeat;
+                MeatAnimalItem meatAnimalItem = (MeatAnimalItem) animalItem;
+                Meat meat = animal.GetMeat();
                 meatPrice = DataLoader.MeatData.getMeatItem(meat).Price;
-                maxNumberOfMeat = animalItem.MaximumNumberOfMeat;
-                
+                minimumNumberOfMeat = meatAnimalItem.MinimalNumberOfMeat;
+                maxNumberOfMeat = meatAnimalItem.MaximumNumberOfMeat;
+                debrisType = (int)meat;
             }
-            var debrisType = (int)meat;
             var numberOfMeat = minimumNumberOfMeat;
 
             numberOfMeat += (int)((farmAnimal.getSellPrice() / ((double)farmAnimal.price.Value) - 0.3) * (maxNumberOfMeat - minimumNumberOfMeat));
@@ -132,9 +147,8 @@ namespace AnimalHusbandryMod.animals
                 itemsToReturn.Add(newItem);
             }
 
-            if ((animal == Animal.Sheep || animal == Animal.Rabbit))
+            if (animalItem is WoolAnimalItem woolAnimalItem)
             {
-                WoolAnimalItem woolAnimalItem = (WoolAnimalItem)animalItem;
                 int numberOfWools = farmAnimal.currentProduce.Value > 0 ? 1 : 0;
                 numberOfWools += (int)(woolAnimalItem.MinimumNumberOfExtraWool + (farmAnimal.getSellPrice() / ((double)farmAnimal.price.Value) - 0.3) * (woolAnimalItem.MaximumNumberOfExtraWool - woolAnimalItem.MinimumNumberOfExtraWool));
 
@@ -146,9 +160,8 @@ namespace AnimalHusbandryMod.animals
                 }
             }
 
-            if (animal == Animal.Duck)
+            if (animalItem is FeatherAnimalItem featherAnimalItem)
             {
-                FeatherAnimalItem featherAnimalItem = (FeatherAnimalItem)animalItem;
                 int numberOfFeather = (int)(featherAnimalItem.MinimumNumberOfFeatherChances + (farmAnimal.getSellPrice() / ((double)farmAnimal.price.Value) - 0.3) * (featherAnimalItem.MaximumNumberOfFeatherChances - featherAnimalItem.MinimumNumberOfFeatherChances));
                 float num1 = (int)farmAnimal.happiness.Value > 200 ? (float)farmAnimal.happiness.Value * 1.5f : ((int)farmAnimal.happiness.Value <= 100 ? (float)((int)farmAnimal.happiness.Value - 100) : 0.0f);
                 for (; numberOfFeather > 0; --numberOfFeather)
@@ -165,9 +178,8 @@ namespace AnimalHusbandryMod.animals
                 }
             }
 
-            if (animal == Animal.Rabbit)
+            if (animalItem is FeetAnimalItem feetAnimalItem)
             {
-                FeetAnimalItem feetAnimalItem = (FeetAnimalItem)animalItem;
                 int numberOfFeet = (int)(feetAnimalItem.MinimumNumberOfFeetChances + (farmAnimal.getSellPrice() / ((double)farmAnimal.price.Value) - 0.3) * (feetAnimalItem.MaximumNumberOfFeetChances - feetAnimalItem.MinimumNumberOfFeetChances));
                 float num1 = (int)farmAnimal.happiness.Value > 200 ? (float)farmAnimal.happiness.Value * 1.5f : ((int)farmAnimal.happiness.Value <= 100 ? (float)((int)farmAnimal.happiness.Value - 100) : 0.0f);
                 for (; numberOfFeet > 0; --numberOfFeet)
@@ -182,6 +194,11 @@ namespace AnimalHusbandryMod.animals
                         }
                     }
                 }
+            }
+            if (AnimalContestController.CanChangeParticipant(farmAnimal))
+            {
+                AnimalContestController.RemoveAnimalParticipant(farmAnimal);
+                itemsToReturn.Add(new ParticipantRibbon());
             }
 
             return itemsToReturn;
@@ -220,21 +237,22 @@ namespace AnimalHusbandryMod.animals
 
         public static void AddItemsToInventoryByMenuIfNecessary(List<Item> items, ItemGrabMenu.behaviorOnItemSelect itemSelectedCallback = null)
         {
-            Game1.player.addItemsByMenuIfNecessary(
-                new List<Item>(
-                    items
+            List<Item> listItensToAdd = items.Where(i => !(i is Object)).ToList();
+            List<Object> listObjects = items
+                    .Where(i => i is Object)
                     .GroupBy(i => new {id = i.ParentSheetIndex, (i as Object).Quality })
                     .Select(g => new Object(Vector2.Zero, g.Key.id, g.Count()) {Quality = g.Key.Quality })
-                    .ToList()
-                ),
+                    .ToList();
+            listItensToAdd.AddRange(listObjects);
+            Game1.player.addItemsByMenuIfNecessary(
+                listItensToAdd,
                 itemSelectedCallback
             );
         }
 
         private static int ProduceQuality(Random random, FarmAnimal farmAnimal)
         {
-            AnimalStatus animalStatus = GetAnimalStatus(farmAnimal.myID.Value);
-            if (animalStatus.HasWon??false)
+            if (!DataLoader.ModConfig.DisableContestBonus && AnimalContestController.HasProductionBonus(farmAnimal))
             {
                 return 4;
             }

@@ -13,13 +13,13 @@ namespace WhatAreYouMissing
 {
     public class ModEntry : Mod
     {
-        private ModConfig modConfig;
         private SButton buttonToBringUpInterface;
-        public static ConfigOptions Config;
+        public static ModConfig modConfig;
         public static MissingItems MissingItems;
         public static RecipeIngredients RecipesIngredients;
         public static Logger Logger;
         public static ITranslationHelper Translator;
+        public static IModHelper HelperInstance;
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -29,11 +29,9 @@ namespace WhatAreYouMissing
             //aren't ready yet. If you need to run stuff when a save is ready use the save loaded event
             Translator = helper.Translation;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
-
+            HelperInstance = Helper;
             modConfig = Helper.ReadConfig<ModConfig>();
             buttonToBringUpInterface = modConfig.button;
-            Config = new ConfigOptions(modConfig.button, modConfig.ShowItemsFromLockedPlaces, modConfig.ShowAllFishFromCurrentSeason, 
-                                        modConfig.ShowAllRecipes, modConfig.AlwaysShowAllRecipes, modConfig.CommonAmount, modConfig.HighestQualityAmount);
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)

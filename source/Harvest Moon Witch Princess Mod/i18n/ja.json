@@ -1,5 +1,8 @@
 {
   // Flower festival laughing
   "dialogue.flower-festival": "ふふふ。。$1",
-  "dialogue.flower-festival.low-friendship": "ふふふ。。$9"
+  "dialogue.flower-festival.low-friendship": "ふふふ。。$9",
+
+  //OpeningDialogue for replacing the Name
+  "OpeningDialogue": "私は魔女の王女です。",
 }

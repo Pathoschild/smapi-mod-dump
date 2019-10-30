@@ -1,0 +1,8 @@
+{
+  "Name": "Iridium Dust",
+  "Description": "Dust from ground iridium ore.",
+  "Price": 100,
+  "Category": "Metal",
+  "Edibility": -300,
+  "Recipe": null
+}

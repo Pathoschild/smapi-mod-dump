@@ -1,0 +1,34 @@
+{
+  "Name": "Cave Carrot Roast",
+  "Description": "A basic dish of roasted cave carrot with a mushroom and slime glaze.",
+  "Category": "Cooking",
+  "Edibility": 36,
+  "Price": 121,
+  "IsColored": false,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": 78,
+        "Count": 1
+      },
+	  {
+        "Object": 766,
+        "Count": 1
+      },
+      {
+        "Object": 404,
+        "Count": 2
+      }
+    ],
+    "CanPurchase": true,
+    "PurchaseFrom": "Dwarf",
+    "PurchasePrice": 266
+  },
+  "GiftTastes":
+	{
+		"Love": ["Dwarf"],
+		"Like": ["Krobus","Linus","Wizard","Willy"],		
+		"Hate": ["Haley"]
+	},
+}

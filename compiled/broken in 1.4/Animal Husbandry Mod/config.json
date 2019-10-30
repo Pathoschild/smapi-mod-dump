@@ -8,10 +8,13 @@
   "DisablePregnancy": false,
   "DisableMeat": false,
   "DisableTreats": false,
+  "DisableAnimalContest": false,
   "DisableRancherMeatPriceAjust": false,
   "DisableMoodInscreseWithTreats": false,
   "DisableFriendshipInscreseWithTreats": false,
   "EnableTreatsCountAsAnimalFeed": false,
   "DisableMeatFromDinosaur": false,
-  "PercentualAjustOnFriendshipInscreaseFromProfessions": 0.25
+  "PercentualAjustOnFriendshipInscreaseFromProfessions": 0.25,
+  "DisableContestBonus": false,
+  "DisableMeatToolLetter": false
 }

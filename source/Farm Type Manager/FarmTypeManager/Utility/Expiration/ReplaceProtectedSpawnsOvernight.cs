@@ -31,7 +31,32 @@ namespace FarmTypeManager
                         continue; //skip to the next object
                     }
 
-                    if (saved.Type == SavedObject.ObjectType.LargeObject) //if this is a large object
+                    if (saved.Type == SavedObject.ObjectType.Monster) //if this is a monster
+                    {
+                        missing++; //increment missing tracker (note: monsters should always be removed overnight)
+
+                        GameLocation location = Game1.getLocationFromName(saved.MapName); //get the object's location
+
+                        if (location == null) //if the map wasn't found
+                        {
+                            unloaded++; //increment unloaded tracker
+                            //note: don't remove the object's save data; this might be a temporary issue, e.g. a map that didn't load correctly
+                            continue; //skip to the next object
+                        }
+
+                        //this mod should remove all of its monsters overnight, so respawn this monster without checking for its existence
+                        int? newID = SpawnMonster(saved.MonType, location, saved.Tile, "[No Area ID: Respawning previously saved monster.]"); //respawn the monster and get its new ID (null if spawn failed)
+                        if (newID.HasValue) //if a monster ID was generated
+                        {
+                            saved.ID = newID.Value; //update this monster's saved ID
+                            respawned++; //increment respawn tracker
+                        }
+                        else //if spawn failed (presumably due to obstructions)
+                        {
+                            blocked++; //increment obstruction tracker
+                        }
+                    }
+                    else if (saved.Type == SavedObject.ObjectType.LargeObject) //if this is a large object
                     {
                         Farm farm = Game1.getLocationFromName(saved.MapName) as Farm; //get the specified location & treat it as a farm (null otherwise)
 
@@ -44,7 +69,6 @@ namespace FarmTypeManager
 
                         bool stillExists = false; //does this large object still exist?
 
-                        //WARNING: this section accesses SDV "Net" objects; it does not edit them directly, but should be suspected if inconsistent errors occur
                         foreach (ResourceClump clump in farm.resourceClumps) //for each clump (a.k.a. large object) on this map
                         {
                             if (clump.tile.X == saved.Tile.X && clump.tile.Y == saved.Tile.Y && clump.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
@@ -53,7 +77,6 @@ namespace FarmTypeManager
                                 break; //skip the rest of these clumps
                             }
                         }
-                        //end of WARNING
 
                         if (!stillExists) //if the object no longer exists
                         {
@@ -62,7 +85,7 @@ namespace FarmTypeManager
                             //if the object's tiles are not unoccupied
                             if (!farm.isTileOccupiedForPlacement(saved.Tile) && !farm.isTileOccupiedForPlacement(new Vector2(saved.Tile.X + 1, saved.Tile.Y)) && !farm.isTileOccupiedForPlacement(new Vector2(saved.Tile.X, saved.Tile.Y + 1)) && !farm.isTileOccupiedForPlacement(new Vector2(saved.Tile.X + 1, saved.Tile.Y + 1)))
                             {
-                                SpawnLargeObject(saved.ID, farm, saved.Tile); //respawn it
+                                SpawnLargeObject(saved.ID.Value, farm, saved.Tile); //respawn it
                                 respawned++; //increment respawn tracker
                             }
                             else //the tiles are occupied
@@ -92,7 +115,7 @@ namespace FarmTypeManager
                             {
                                 if (saved.Type == SavedObject.ObjectType.Forage) //if this is forage
                                 {
-                                    SpawnForage(saved.ID, location, saved.Tile); //respawn it
+                                    SpawnForage(saved.ID.Value, location, saved.Tile); //respawn it
                                 }
                                 else //if this is ore
                                 {

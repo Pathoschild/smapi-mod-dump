@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Buildings;
@@ -46,7 +45,7 @@ namespace PelicanFiber.Framework
         private bool Demolishing;
         private bool Moving;
         private readonly bool MagicalConstruction;
-        private readonly Action ShowMainMenu;
+        private readonly Action OnMenuOpened;
 
         private BluePrint CurrentBlueprint => this.Blueprints[this.CurrentBlueprintIndex];
 
@@ -54,13 +53,12 @@ namespace PelicanFiber.Framework
         /*********
         ** Public methods
         *********/
-        public ConstructionMenu(bool magicalConstruction, Action showMainMenu)
+        public ConstructionMenu(bool magicalConstruction, Action onMenuOpened)
         {
             this.MagicalConstruction = magicalConstruction;
-            this.ShowMainMenu = showMainMenu;
+            this.OnMenuOpened = onMenuOpened;
 
             this.WhereToGo = Game1.player.currentLocation.Name;
-            
 
             Game1.player.forceCanMove();
             this.ResetBounds();
@@ -280,7 +278,7 @@ namespace PelicanFiber.Framework
                 this.OnFarm = true;
                 this.Moving = true;
             }
-            if (this.OkButton.containsPoint(x, y) && !this.OnFarm && (Game1.player.money >= this.Price && this.Blueprints[this.CurrentBlueprintIndex].doesFarmerHaveEnoughResourcesToBuild()))
+            if (this.OkButton.containsPoint(x, y) && !this.OnFarm && (Game1.player.Money >= this.Price && this.Blueprints[this.CurrentBlueprintIndex].doesFarmerHaveEnoughResourcesToBuild()))
             {
                 Game1.globalFadeToBlack(this.SetUpForBuildingPlacement);
                 Game1.playSound("smallSelect");
@@ -391,7 +389,7 @@ namespace PelicanFiber.Framework
                     Utility.drawTextWithShadow(b, this.Price.ToString() + "g", Game1.dialogueFont, new Vector2(location.X + Game1.tileSize, location.Y + Game1.pixelZoom * 2), Game1.textColor * 0.5f, 1f, -1f, -1, -1, this.MagicalConstruction ? 0.0f : 0.25f);
                     Utility.drawTextWithShadow(b, this.Price.ToString() + "g", Game1.dialogueFont, new Vector2((float)(location.X + (double)Game1.tileSize + Game1.pixelZoom - 1.0), location.Y + Game1.pixelZoom * 2), Game1.textColor * 0.25f, 1f, -1f, -1, -1, this.MagicalConstruction ? 0.0f : 0.25f);
                 }
-                Utility.drawTextWithShadow(b, this.Price.ToString() + "g", Game1.dialogueFont, new Vector2(location.X + Game1.tileSize + Game1.pixelZoom, location.Y + Game1.pixelZoom), Game1.player.money >= this.Price ? (this.MagicalConstruction ? Color.PaleGoldenrod : Game1.textColor) : Color.Red, 1f, -1f, -1, -1, this.MagicalConstruction ? 0.0f : 0.25f);
+                Utility.drawTextWithShadow(b, this.Price.ToString() + "g", Game1.dialogueFont, new Vector2(location.X + Game1.tileSize + Game1.pixelZoom, location.Y + Game1.pixelZoom), Game1.player.Money >= this.Price ? (this.MagicalConstruction ? Color.PaleGoldenrod : Game1.textColor) : Color.Red, 1f, -1f, -1, -1, this.MagicalConstruction ? 0.0f : 0.25f);
                 location.X -= Game1.tileSize / 4;
                 location.Y -= Game1.tileSize / 3;
                 foreach (Item ingredient in this.Ingredients)
@@ -461,9 +459,6 @@ namespace PelicanFiber.Framework
             IClickableMenu.drawHoverText(b, this.HoverText, Game1.dialogueFont);
         }
 
-        public override void receiveRightClick(int x, int y, bool playSound = true)
-        {
-        }
 
         /*********
         ** Private methods
@@ -499,10 +494,7 @@ namespace PelicanFiber.Framework
         private void GoBackButtonPressed()
         {
             if (this.readyToClose())
-            {
                 this.exitThisMenu();
-                this.ShowMainMenu();
-            }
         }
 
         private bool TryToBuild()
@@ -549,7 +541,7 @@ namespace PelicanFiber.Framework
             this.exitThisMenu();
             Game1.player.forceCanMove();
 
-            Game1.activeClickableMenu = new ConstructionMenu(this.MagicalConstruction, this.ShowMainMenu);
+            Game1.activeClickableMenu = new ConstructionMenu(this.MagicalConstruction, this.OnMenuOpened);
             //if (this.magicalConstruction)
             //    return;
             //string path = "Data\\ExtraDialogue:Robin_" + (this.upgrading ? "Upgrade" : "New") + "Construction";

@@ -6,20 +6,23 @@ using System.Threading.Tasks;
 
 namespace AnimalHusbandryMod.animals.data
 {
-    public class PigItem : AnimalItem, TreatItem, ImpregnatableAnimalItem
+    public class PigItem : AnimalItem, MeatAnimalItem, TreatItem, ImpregnatableAnimalItem
     {
         public int MinimalNumberOfMeat { get; set; }
         public int MaximumNumberOfMeat { get; set; }
         public int MinimumDaysBetweenTreats { get; set; }
-        public int[] LikedTreats { get; set; }
-        public int MinimumDaysUtillBirth { get; set; }
+        public object[] LikedTreats { get; set; }
+        public ISet<int> LikedTreatsId { get; set; }
+        public int? MinimumDaysUtillBirth { get; set; }
+        public bool CanUseDeluxeItemForPregnancy { get; set; }
 
         public PigItem()
         {
             MinimalNumberOfMeat = 4;
             MaximumNumberOfMeat = 16;
             MinimumDaysBetweenTreats = 3;
-            LikedTreats = new int[] { 78, 254, 276 };
+            LikedTreats = new object[] { 78, 254, 276 };
+            LikedTreatsId = new HashSet<int>();
             MinimumDaysUtillBirth = 18;
         }
     }

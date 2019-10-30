@@ -10,12 +10,12 @@ mods:
    Replanter
 
 latest commit:
-   commit 1dd8df6c0252670d0ce9e30f051866ce1bc81909
-   Merge: 1df83fd af71f7a
+   commit 0c8f537e602917a2cba798ec958fdacd0565ee8e
+   Merge: 1dd8df6 a6e87ff
    Author: John Dusbabek <jdusbabek@gmail.com>
-   Date:   Thu Nov 15 10:31:02 2018 -0700
+   Date:   Thu Oct 10 14:56:54 2019 -0600
    
-       Merge pull request #7 from Pathoschild/update-code
+       Merge pull request #8 from Pathoschild/update-code
        
-       Update for Stardew Valley 1.3.31
+       Ongoing development
    

@@ -1,0 +1,13 @@
+{
+   "Name": "Dwarvish Collection",
+   "Author": "mytigio",
+   "Version": "1.8",
+   "Description": "Items and cooking recipies using ingrediants found in caves and mines!",
+   "UniqueID": "mytigio.dwarvishcollection",
+   "MinimumApiVersion": "2.6",
+   "UpdateKeys": [ "Nexus:4149" ],
+   "ContentPackFor": {
+	"UniqueID": "spacechase0.JsonAssets",
+	"MinimumVersion": "1.3.7",	
+   }
+}

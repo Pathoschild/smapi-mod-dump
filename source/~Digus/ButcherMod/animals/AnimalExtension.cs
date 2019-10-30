@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AnimalHusbandryMod.common;
 
 namespace AnimalHusbandryMod.animals
 {
@@ -22,12 +23,26 @@ namespace AnimalHusbandryMod.animals
         {
             foreach (Animal animal in System.Enum.GetValues(typeof(Animal)))
             {
-                if (type.Contains(animal.ToString()))
+                if (type.Contains(animal.ToString()) && animal != Animal.CustomAnimal)
                 {
                     return animal;
                 }
             }
+            if (DataLoader.AnimalData.CustomAnimals.Exists(a => type.Contains(a.Name)))
+            {
+                return Animal.CustomAnimal;
+            }
             return null;
+        }
+
+        public static string GetBabyAnimalName(this Animal value)
+        {
+            return DataLoader.i18n.Get($"Animal.{value.ToString()}.BabyName");
+        }
+
+        public static string GetBabyAnimalNameByType(string type)
+        {
+            return GetAnimalFromType(type)?.GetBabyAnimalName();
         }
     }
 }

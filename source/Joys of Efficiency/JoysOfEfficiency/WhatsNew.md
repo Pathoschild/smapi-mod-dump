@@ -137,3 +137,27 @@ This is a changelog from 1.0.22
 ## 1.2.11
 - Added support for CasksAnywhere mod.
 - Fixed a bug around the config menu.
+- Added Cordination Giving System.
+
+## 1.2.12
+- Edited FeaturesAndConfigs.md, so you can now see full list of features.
+- Fixed Charcole Kiln consumed 1 extra wood when you used Auto Deposit Ingredients option.
+- Rearranged folders and namespaces.
+- Fixed some configs did not documented on FeaturesAndConfigs.md .
+- Use Point type in config.json .
+- Added MorePreciseProbabilities and TrialOfExamine option to FishingProbabilitiesInfo.
+
+## 1.2.13
+- Fixed indegredients were not consumed from fridge when cooking.
+- Added SafeMode.
+
+## 1.2.14
+- Removed redundant yellow box on screen.
+- Added selling price info on FishingInfo.
+
+## 1.2.15
+- Added Flower Color Registration menu.
+- Fixed ProtectNectarProducingFlower was not working
+
+## 1.2.16
+- Added customized flower color unification.

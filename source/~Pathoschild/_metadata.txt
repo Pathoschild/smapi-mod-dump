@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 722c18f1e474f647abc10e4735107b0d15473d38
+   commit 9109fe58c59641560a67747caaa8b3df59a38b38
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Sep 18 23:42:20 2019 -0400
+   Date:   Sat Oct 19 22:43:16 2019 -0400
    
-       update for the next version of Pelican Fiber
+       update mod link in NoclipMode readme
    

@@ -1,3 +1,5 @@
 {
+  "ConfigHelper": "If the train whistle is corrupting another mod's object, then modify this Id to move the train whsitle to another slot. Zero mean din't include the train whistle. Ids >= 864 and <= 3048 are supported! (This item does nothing!)",
+  "TrainWhistleObjectId": 960,
   "ShowDebug": false
 }

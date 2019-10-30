@@ -1,0 +1,14 @@
+{
+  "Name": "Tigerseye Necklace",
+  "Description": "A finely crafted gold necklace set with a polished tigerseye.",
+  "Price": 1575,
+  "Category": "ArtisanGoods",
+  "Edibility": -300,
+  "Recipe": null,  
+  "GiftTastes":
+	{
+		"Love": ["Sam"],
+		"Like": ["Leah","Abigail", "Clint", "Dwarf", "Emily","Alex", "Caroline","Penny", "Demetrius", "Elliott", "Evelyn", "George", "Haily", "Harvey", "Jas", "Jodi", "Kent", "Krobus", "Lewis", "Marnie", "Maru", "Pam", "Robin", "Sandy", "Sebastian", "Shane", "Vincent", "Willy", "Wizard"],
+		"Dislike": ["Linus","Pierre"]
+	},
+}

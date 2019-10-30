@@ -9,6 +9,7 @@
   "fishinfo.treasure.appear": "Treasure appeared!",
   "fishinfo.treasure.caught": "Treasure caught!",
   "fishinfo.treasure.incoming": "Treasure is incoming in {0:f1}s.",
+  "fishinfo.price": "Selling Price:{0}G",
   "hud.paused": "Game paused.",
   "ladder": "Ladder has appeared!",
   "location.awaiting": "Click somewhere to designate the location you want.",
@@ -40,7 +41,7 @@
   "options.AutoWaterNearbyCrops": "Automatic Watering to crops",
   "options.AutoWaterRadius": "How far tiles to be watered",
   "options.BalancedMode": "Toggle Balanced Mode",
-  "options.CloseTreasureWhenAllLooted": "Cerrar la caja del tesoro al saquear todos los ítems",
+  "options.CloseTreasureWhenAllLooted": "Close treasure box when all items taken",
   "options.CollectLetterAttachmentsAndQuests": "Auto-accept quests or item attached to mail",
   "options.CPUThresholdFishing": "How often AI operates bar",
   "options.CraftingFromChests": "Crafting using items in nearby chests",
@@ -61,11 +62,31 @@
   "options.MuchFasterBiting": "Shortens nibbling time to immediate",
   "options.PauseWhenIdle": "Pause when idle",
   "options.ProbBoxLocation": "Top-left coordinate for the information box",
+  "options.MorePreciseProbabilities": "Compute more precise probabilities",
+  "options.TrialOfExamine": "Number of computing probabilities",
   "options.ProtectNectarProducingFlower": "Protect flowers near bee houses",
   "options.RadiusCraftingFromChests": "How far tiles to find chests",
   "options.ScavengingRadius": "How far tiles to search trash can",
   "options.StaminaToEatRatio": "Stamina Threshold to auto-eat",
   "options.UnifyFlowerColors": "Unify colors of flowers",
+  "options.ShowMousePositionWhenAssigningLocation": "Show mouse position when assigning coordinates",
+  "options.ButtonToggleFlowerColorUnification": "Register/Unregister flower colors for unification",
+
+  //RegisterFlowerMenu strings
+  "options.flower": "Flower:{0}",
+  "options.R": "R",
+  "options.G": "G",
+  "options.B": "B",
+  "options.previewColor": "Preview Color:",
+  "options.register": "Register",
+
+  //Flower Color Unification register/unregister
+  "flower.register": "{0}'s colors will be unified.",
+  "flower.unregister": "{0}'s colors won't be unified anymore.",
+  "flower.vanilla": "You can't unregister vanilla flowers.",
+
+  //Quality strings
+
   "quality.gold": "Gold",
   "quality.iridium": "Iridium",
   "quality.normal": "Normal",

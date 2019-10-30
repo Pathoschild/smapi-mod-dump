@@ -20,6 +20,13 @@ namespace FamilyPlanning.Patches
                     string assetKey = __instance.Age >= 3 ? assetNames.Item2 : assetNames.Item1;
                     __instance.Sprite = new AnimatedSprite(assetKey);
                 }
+                //If that fails, try to load the child sprite from a Content Patcher content pack
+                try
+                {
+                    __instance.Sprite = new AnimatedSprite("Characters\\Child_" + __instance.Name);
+                }
+                catch (Exception) { }
+
                 //If that fails, load the vanilla sprite
                 if (__instance.Sprite == null)
                     __instance.Sprite = new AnimatedSprite(__instance.Age >= 3 ? "Characters\\Toddler" + (__instance.Gender == 0 ? "" : "_girl") + (__instance.darkSkinned ? "_dark" : "") : "Characters\\Baby" + (__instance.darkSkinned ? "_dark" : ""));

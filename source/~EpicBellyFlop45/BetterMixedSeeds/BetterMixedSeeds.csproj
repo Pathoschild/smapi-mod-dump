@@ -45,7 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModConfig.cs" />
+    <Compile Include="Config\Crop.cs" />
+    <Compile Include="Config\CropMod.cs" />
+    <Compile Include="Config\ModConfig.cs" />
+    <Compile Include="Config\Season.cs" />
+    <Compile Include="Config\Seed.cs" />
+    <Compile Include="Data\SeedIndex.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Patches\CropPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

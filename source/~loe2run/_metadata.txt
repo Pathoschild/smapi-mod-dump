@@ -1,0 +1,17 @@
+url:
+   https://github.com/loe2run/ChildToNPC.git
+
+mods:
+   Child Console Commands
+   Child to NPC
+
+latest commit:
+   commit b0ead6e85fe43905e19552400040fff32164a074
+   Merge: aa6c3b6 8216b88
+   Author: loe2run <55768216+loe2run@users.noreply.github.com>
+   Date:   Fri Oct 18 23:47:56 2019 -0400
+   
+       Merge pull request #8 from loe2run/loe2run-1.1.2
+       
+       Bug fix for 1.1.2
+   
