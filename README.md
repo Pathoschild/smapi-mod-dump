@@ -23,4 +23,6 @@ It's used to update that page, find mods using specific APIs, etc.
   don't necessarily map directly to repositories in `source`. Although `compiled` may contain
   unofficial updates, `source` only has the official repositories.
 
-* `utilities` contains scripts used to update this repository.
+## See also
+* [Pathoschild/stardew-mod-dump-utils](https://github.com/Pathoschild/stardew-mod-dump-utils) has
+  utility scripts used to maintain this repo.
