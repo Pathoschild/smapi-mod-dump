@@ -1,0 +1,10 @@
+{
+	"Name": "Festival of the Mundane Hat Pack",
+	"Description": "Json Assets Hat Content Pack for Festival of the Mundane Mod",
+	"Author": "MouseyPounds, Mr. Podunkian, and mouse",
+	"Version": "1.0.0",
+    "UniqueID": "MouseyPounds.ShadowFestivalJA",
+	"ContentPackFor": {
+		"UniqueID": "spacechase0.JsonAssets"
+		}
+}

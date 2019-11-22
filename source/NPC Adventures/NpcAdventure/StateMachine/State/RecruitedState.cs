@@ -1,5 +1,4 @@
 ﻿using NpcAdventure.StateMachine.StateFeatures;
-using NpcAdventure.AI.Controller;
 using NpcAdventure.Utils;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -14,6 +13,7 @@ using System;
 using NpcAdventure.Buffs;
 using StardewModdingAPI;
 using NpcAdventure.AI;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace NpcAdventure.StateMachine.State
 {
@@ -26,14 +26,14 @@ namespace NpcAdventure.StateMachine.State
         public bool CanCreateDialogue { get; private set; }
         private BuffManager BuffManager { get; set; }
 
-        public RecruitedState(CompanionStateMachine stateMachine, IModEvents events) : base(stateMachine, events)
+        public RecruitedState(CompanionStateMachine stateMachine, IModEvents events, IMonitor monitor) : base(stateMachine, events, monitor)
         {
             this.BuffManager = new BuffManager(stateMachine.Companion, stateMachine.CompanionManager.Farmer, stateMachine.ContentLoader);
         }
 
         public override void Entry()
         {
-            this.ai = new AI_StateMachine(this.StateMachine.Companion, this.StateMachine.CompanionManager.Farmer, this.StateMachine.Metadata, this.Events, this.StateMachine.Monitor);
+            this.ai = new AI_StateMachine(this.StateMachine, this.Events, this.monitor);
 
             if (this.StateMachine.Companion.doingEndOfRouteAnimation.Value)
                 this.FinishScheduleAnimation();
@@ -50,17 +50,75 @@ namespace NpcAdventure.StateMachine.State
             this.Events.GameLoop.UpdateTicked += this.GameLoop_UpdateTicked;
             this.Events.GameLoop.TimeChanged += this.GameLoop_TimeChanged;
             this.Events.Player.Warped += this.Player_Warped;
+            this.Events.Display.RenderingHud += this.Display_RenderingHud;
 
             if (this.BuffManager.HasAssignableBuffs())
                 this.BuffManager.AssignBuffs();
             else
-                this.StateMachine.Monitor.Log($"Companion {this.StateMachine.Name} has no buffs defined!", LogLevel.Alert);
+                this.monitor.Log($"Companion {this.StateMachine.Name} has no buffs defined!", LogLevel.Alert);
 
             if (DialogueHelper.GetVariousDialogueString(this.StateMachine.Companion, "companionRecruited", out string dialogueText))
                 this.StateMachine.Companion.setNewDialogue(dialogueText);
             this.CanCreateDialogue = true;
 
             this.ai.Setup();
+        }
+
+        private void Display_RenderingHud(object sender, RenderingHudEventArgs e)
+        {
+            var skills = this.StateMachine.Metadata.PersonalSkills;
+            string toolTipedSkill = "";
+            bool drawTooltip = false;
+            int i = 0;
+            foreach (string skill in skills)
+            {
+                Rectangle titleSafeArea = Game1.graphics.GraphicsDevice.Viewport.GetTitleSafeArea();
+                Rectangle icon;
+                Vector2 vector2 = new Vector2(titleSafeArea.Left + 38 + (i * 76), titleSafeArea.Bottom - 52);
+                Vector2 vector3 = new Vector2(titleSafeArea.Left + 18 + (i * 76), titleSafeArea.Bottom - 76);
+
+                if (Game1.isOutdoorMapSmallerThanViewport())
+                {
+                    vector2.X = Math.Max(titleSafeArea.Left + 38 + (i * 76), -Game1.viewport.X + 38 + (i * 76));
+                    vector3.X = Math.Max(titleSafeArea.Left + 18 + (i * 76), -Game1.viewport.X + 18 + (i * 76));
+                }
+
+                switch (skill)
+                {
+                    case "doctor":
+                        icon = new Rectangle(0, 428, 10, 10);
+                        break;
+                    case "warrior":
+                        icon = new Rectangle(120, 428, 10, 10);
+                        break;
+                    case "fighter":
+                        icon = new Rectangle(40, 428, 10, 10);
+                        break;
+                    default:
+                        continue;
+                }
+
+                e.SpriteBatch.Draw(Game1.mouseCursors, vector3, new Rectangle(384, 373, 18, 18), Color.White * 1f, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+                e.SpriteBatch.Draw(Game1.mouseCursors, vector2, icon, Color.White * 1f, 0f, Vector2.Zero, 3f, SpriteEffects.None, 1f);
+
+                Rectangle bounding = new Rectangle((int)vector3.X, (int)vector3.Y, 18 * 4, 18 * 4);
+
+                if (bounding.Contains(Game1.getMouseX(), Game1.getMouseY()))
+                {
+                    toolTipedSkill = skill;
+                    drawTooltip = true;
+                }
+
+                i++;
+            }
+
+            if (drawTooltip)
+            {
+                string text = this.StateMachine.ContentLoader.LoadString($"Strings/Strings:skill.{toolTipedSkill}", this.StateMachine.Companion.displayName)
+                        + Environment.NewLine
+                        + this.StateMachine.ContentLoader.LoadString($"Strings/Strings:skillDescription.{toolTipedSkill}");
+                IClickableMenu.drawHoverText(e.SpriteBatch, text, Game1.smallFont);
+            }
         }
 
         /// <summary>
@@ -73,9 +131,9 @@ namespace NpcAdventure.StateMachine.State
 
             // And then play finish animation "end of route animation" when companion is recruited
             // Must be called via reflection, because they are private members of NPC class
-            NpcAdventureMod.Mod.Helper.Reflection.GetMethod(this.StateMachine.Companion, "finishEndOfRouteAnimation").Invoke();
+            this.StateMachine.Reflection.GetMethod(this.StateMachine.Companion, "finishEndOfRouteAnimation").Invoke();
             this.StateMachine.Companion.doingEndOfRouteAnimation.Value = false;
-            NpcAdventureMod.Mod.Helper.Reflection.GetField<Boolean>(this.StateMachine.Companion, "currentlyDoingEndOfRouteAnimation").SetValue(false);
+            this.StateMachine.Reflection.GetField<Boolean>(this.StateMachine.Companion, "currentlyDoingEndOfRouteAnimation").SetValue(false);
         }
 
         public override void Exit()
@@ -90,6 +148,7 @@ namespace NpcAdventure.StateMachine.State
             this.Events.GameLoop.UpdateTicked -= this.GameLoop_UpdateTicked;
             this.Events.GameLoop.TimeChanged -= this.GameLoop_TimeChanged;
             this.Events.Player.Warped -= this.Player_Warped;
+            this.Events.Display.RenderingHud -= this.Display_RenderingHud;
 
             this.ai = null;
             this.dismissalDialogue = null;
@@ -117,7 +176,7 @@ namespace NpcAdventure.StateMachine.State
                 var monsters = from c in mines.characters where c.IsMonster select c;
                 if (monsters.Count() == 0)
                 {
-                    Vector2 vector2 = (Vector2)mines.GetType().GetProperty("tileBeneathLadder", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(mines);
+                    Vector2 vector2 = this.StateMachine.Reflection.GetProperty<Vector2>(mines, "tileBeneathLadder").GetValue();
                     if (mines.getTileIndexAt(Utility.Vector2ToPoint(vector2), "Buildings") == -1)
                         mines.createLadderAt(vector2, "newArtifact");
                 }
@@ -151,7 +210,7 @@ namespace NpcAdventure.StateMachine.State
                 this.ai.ChangeLocation(e.NewLocation);
 
             // Show above head bubble text for location
-            if (DialogueHelper.GetBubbleString(bubbles, companion, e.NewLocation, out string bubble))
+            if (Game1.random.NextDouble() > 66f && DialogueHelper.GetBubbleString(bubbles, companion, e.NewLocation, out string bubble))
                 companion.showTextAboveHead(bubble, preTimer: 250);
 
             // Push new location dialogue
@@ -192,6 +251,9 @@ namespace NpcAdventure.StateMachine.State
 
         public void CreateRequestedDialogue()
         {
+            if (this.ai != null && this.ai.PerformAction())
+                return;
+
             Farmer leader = this.StateMachine.CompanionManager.Farmer;
             GameLocation location = this.StateMachine.CompanionManager.Farmer.currentLocation;
             string question = this.StateMachine.ContentLoader.LoadString("Strings/Strings:recruitedWant");

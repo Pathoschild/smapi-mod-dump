@@ -47,10 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomEvent\CustomBirthingEvent.cs" />
+    <Compile Include="CustomEvent\CustomNamingMenu.cs" />
     <Compile Include="IContentPatcherAPI.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="NPCFriendshipData.cs" />
+    <Compile Include="Patches\NPCPerformTenMinuteUpdatePatch.cs" />
     <Compile Include="Patches\NPCArriveAtFarmHousePatch.cs" />
     <Compile Include="Patches\NPCCheckSchedulePatch.cs" />
     <Compile Include="Patches\NPCParseMasterSchedulePatch.cs" />

@@ -11,7 +11,8 @@ should skip this one.  It was just a simple idea that no one else had done so I 
 
 Notice
 ------
-This MOD is only authorized to be offered via Nexus Mods.  If you obtained it elsewhere that site is stealing.  You should not patronize them!
+This MOD is only authorized to be offered via Nexus Mods.  If you obtained it elsewhere that site is stealing.  You should not patronize them!  Do not 
+upload this MOD to any other site as I do not allow that.  Thank you.
 
 
 Configuration
@@ -39,6 +40,7 @@ v1.0.1     - Corrected the wrong frame being shown for the specified Id, added 4
              Added Console Command.
 v1.0.2     - Random frame now changes every day.  Added specific festival day frames, for Luau, Flower Dance, Spirit's Eve and Festival of the Winter Star.
 v1.0.3     - Somehow lost a column of pixels in the frame texture causing black line on image
+v1.0.4	   - Random was broken and not changing the frame as expected.
 
 
 Thanks To

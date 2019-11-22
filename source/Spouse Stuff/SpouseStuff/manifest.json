@@ -1,0 +1,10 @@
+﻿{
+	"Name": "Spouse Stuff",
+	"Author": "Per Sikker Hansen",
+	"Version": "1.0.0",
+	"Description": "Makes it possible to interact with your spouse's stuff in your house when you are married.",
+	"UniqueID": "Sikker.SpouseStuff",
+	"EntryDll": "SpouseStuff.dll",
+	"MinimumApiVersion": "2.0",
+	"UpdateKeys": ["Nexus:4651"]
+}

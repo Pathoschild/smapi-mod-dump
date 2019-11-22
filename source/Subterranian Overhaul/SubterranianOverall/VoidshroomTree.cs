@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,16 +8,20 @@ using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
+using Newtonsoft.Json;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
+using StardewValley.Buildings;
+using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using xTile.Dimensions;
 
 namespace SubterranianOverhaul
-{
-    class VoidshroomTree :  TerrainFeature
-    {
+{   
+    public class VoidshroomTree :  TerrainFeature
+    {   
         public static Microsoft.Xna.Framework.Rectangle treeTopSourceRect = new Microsoft.Xna.Framework.Rectangle(0, 0, 48, 96);
         public static Microsoft.Xna.Framework.Rectangle stumpSourceRect = new Microsoft.Xna.Framework.Rectangle(32, 96, 16, 32);
         public static Microsoft.Xna.Framework.Rectangle shadowSourceRect = new Microsoft.Xna.Framework.Rectangle(663, 1011, 41, 30);
@@ -44,7 +49,8 @@ namespace SubterranianOverhaul
         private List<Leaf> leaves = new List<Leaf>();
         [XmlElement("lastPlayerToHit")]
         private readonly NetLong lastPlayerToHit = new NetLong();
-        public const float chanceForDailySeed = 0.05f;
+        public float chanceForDailySeed = 0.05f;
+        public float chanceForDailySpread = 0.05f;
         public const float shakeRate = 0.01570796f;
         public const float shakeDecayRate = 0.003067962f;
         public const int minWoodDebrisForFallenTree = 12;
@@ -69,6 +75,9 @@ namespace SubterranianOverhaul
         private float maxShake;
         private float shakeTimer;
 
+        private static IModHelper helper;
+        private static IMonitor monitor;
+
         public VoidshroomTree() : base(true)
         {
             this.resetTexture();
@@ -83,14 +92,24 @@ namespace SubterranianOverhaul
             this.health.Value = 10f;
         }
 
+        public VoidshroomTree(VoidshroomtreeSaveData savedData) : this()
+        {
+            this.growthStage.Value = savedData.growthStage;
+            this.hasSeed.Value = savedData.hasSeed;
+            this.health.Value = savedData.health;
+            this.stump.Value = savedData.stump;
+            this.flipped.Value = savedData.flipped;
+            this.tapped.Value = savedData.tapped;
+        }
+
         protected void resetTexture()
         {
             this.texture = new Lazy<Texture2D>(new Func<Texture2D>(this.loadTexture));
         }
 
         protected Texture2D loadTexture()
-        {            
-            return Game1.content.Load<Texture2D>("TerrainFeatures\\VoidshroomTree");
+        {
+            return TextureSet.voidShroomTree;
         }
 
         public override Microsoft.Xna.Framework.Rectangle getBoundingBox(Vector2 tileLocation)
@@ -109,7 +128,7 @@ namespace SubterranianOverhaul
         {
             if (!this.tapped.Value)
             {
-                if ((double)this.maxShake == 0.0 && !this.stump.Value && this.growthStage.Value >= 3 && (!Game1.currentSeason.Equals("winter")))
+                if ((double)this.maxShake == 0.0 && !this.stump.Value && this.growthStage.Value >= 3)
                     location.localSound("leafrustle");
                 this.shake(tileLocation, false);
             }
@@ -182,6 +201,8 @@ namespace SubterranianOverhaul
                     for (int index = 0; index < num; ++index)
                         this.leaves.Add(new Leaf(new Vector2((float)(Game1.random.Next((int)((double)tileLocation.X * 64.0), (int)((double)tileLocation.X * 64.0 + 192.0)) + (this.shakeLeft.Value ? -320 : 256)), (float)((double)tileLocation.Y * 64.0 - 64.0)), (float)Game1.random.Next(-10, 10) / 100f, Game1.random.Next(4), (float)Game1.random.Next(10, 40) / 10f));
 
+                    Game1.createRadialDebris(Game1.currentLocation, 12, (int)tileLocation.X + (((NetFieldBase<bool, NetBool>)this.shakeLeft).Value ? -4 : 4), (int)tileLocation.Y, 12 + this.extraWoodCalculator(tileLocation), true, -1, false, -1);
+
                     int number = 0;
                     if (Game1.getFarmer(this.lastPlayerToHit.Value) != null)
                     {
@@ -190,8 +211,10 @@ namespace SubterranianOverhaul
                     }
                     if (number > 0)
                         Game1.createMultipleObjectDebris(709, (int)tileLocation.X + ((bool)((NetFieldBase<bool, NetBool>)this.shakeLeft).Value ? -4 : 4), (int)tileLocation.Y, number);
-                    if (this.lastPlayerToHit.Value != 0L && Game1.getFarmer(this.lastPlayerToHit.Value).getEffectiveSkillLevel(2) >= 1 && (Game1.random.NextDouble() < 0.75 && ((NetFieldBase<int, NetInt>)this.treeType).Value < 4))
-                        Game1.createMultipleObjectDebris(308 + ((NetFieldBase<int, NetInt>)this.treeType).Value, (int)tileLocation.X + (((NetFieldBase<bool, NetBool>)this.shakeLeft).Value ? -4 : 4), (int)tileLocation.Y, Game1.random.Next(1, 3));
+                    //seed dropping code. Revisit if I get spores working.
+                    int seedIndex = VoidshroomSpore.getIndex();
+                    if (this.lastPlayerToHit.Value != 0L && Game1.getFarmer(this.lastPlayerToHit.Value).getEffectiveSkillLevel(2) >= 1 && (Game1.random.NextDouble() < 0.75 && ((NetFieldBase<int, NetInt>)this.treeType).Value < 4) && seedIndex != -1)
+                        Game1.createMultipleObjectDebris(seedIndex, (int)tileLocation.X + (((NetFieldBase<bool, NetBool>)this.shakeLeft).Value ? -4 : 4), (int)tileLocation.Y, Game1.random.Next(1, 3));
                     if ((double)this.health.Value == -100.0)
                         return true;
                     if ((double)this.health.Value <= 0.0)
@@ -217,9 +240,7 @@ namespace SubterranianOverhaul
                 this.maxShake = this.growthStage.Value >= 5 ? (float)Math.PI / 128f : (float)Math.PI / 64f;
                 if (this.growthStage.Value >= 5)
                 {
-                    //for debugging, just assume a seed every time.
-                    this.hasSeed.Value = true;
-
+                    
                     if (Game1.random.NextDouble() < 0.66)
                     {
                         int num = Game1.random.Next(1, 6);
@@ -234,41 +255,11 @@ namespace SubterranianOverhaul
                     if (!this.hasSeed.Value || !Game1.IsMultiplayer && Game1.player.ForagingLevel < 1)
                         return;
 
-                    VoidshroomSpore spore = new VoidshroomSpore();
-
-                    StardewValley.Object acorn = new StardewValley.Object(309, 1);
-
-                    Debris sporeDebris = new Debris(acorn, new Vector2(tileLocation.X, tileLocation.Y))
-                    {
-                        itemQuality = 0
-                    };
-
-                    Game1.currentLocation.debris.Add(sporeDebris);
-
-                    /*
-                     * Add this back in once we've added the seed object for these Voidshroom Trees
-                    int objectIndex = -1;
-                    switch (this.treeType.Value)
-                    {
-                        case 1:
-                            objectIndex = 309;
-                            break;
-                        case 2:
-                            objectIndex = 310;
-                            break;
-                        case 3:
-                            objectIndex = 311;
-                            break;
-                        case 6:
-                            objectIndex = 88;
-                            break;
-                    }
-                    if (Game1.currentSeason.Equals("fall") && (int)((NetFieldBase<int, NetInt>)this.treeType) == 2 && Game1.dayOfMonth >= 14)
-                        objectIndex = 408;
+                     //Add this back in once we've added the seed object for these Voidshroom Trees
+                    int objectIndex = VoidshroomSpore.getIndex();
                     if (objectIndex != -1)
                         Game1.createObjectDebris(objectIndex, (int)tileLocation.X, (int)tileLocation.Y - 3, ((int)tileLocation.Y + 1) * 64, 0, 1f, (GameLocation)null);
                     this.hasSeed.Value = false;
-                    */
                     
                 }
                 else
@@ -298,42 +289,39 @@ namespace SubterranianOverhaul
             Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)(((double)tileLocation.X - 1.0) * 64.0), (int)(((double)tileLocation.Y - 1.0) * 64.0), 192, 192);
             if ((double)this.health.Value <= -100.0)
                 this.destroy.Value = true;
-            if (!Game1.currentSeason.Equals("winter") || environment.Name.ToLower().Contains("greenhouse"))
+
+            
+            string str = environment.doesTileHaveProperty((int)tileLocation.X, (int)tileLocation.Y, "NoSpawn", "Back");
+            if (str != null && (str.Equals("All") || str.Equals(nameof(Tree)) || str.Equals("True")))
+                return;
+            if (this.growthStage.Value == 4)
             {
-                string str = environment.doesTileHaveProperty((int)tileLocation.X, (int)tileLocation.Y, "NoSpawn", "Back");
-                if (str != null && (str.Equals("All") || str.Equals(nameof(Tree)) || str.Equals("True")))
-                    return;
-                if (this.growthStage.Value == 4)
+                foreach (KeyValuePair<Vector2, TerrainFeature> pair in environment.terrainFeatures.Pairs)
                 {
-                    foreach (KeyValuePair<Vector2, TerrainFeature> pair in environment.terrainFeatures.Pairs)
-                    {
-                        if (pair.Value is Tree && !pair.Value.Equals((object)this) && (((Tree)pair.Value).growthStage.Value) >= 5 && pair.Value.getBoundingBox(pair.Key).Intersects(rectangle))
-                            return;
-                    }
+                    if (pair.Value is Tree && !pair.Value.Equals((object)this) && (((Tree)pair.Value).growthStage.Value) >= 5 && pair.Value.getBoundingBox(pair.Key).Intersects(rectangle))
+                        return;
                 }
-                else if (this.growthStage.Value == 0 && environment.objects.ContainsKey(tileLocation))
-                    return;
-                if (Game1.random.NextDouble() < 0.2)
-                    ++this.growthStage.Value;
             }
-            if (Game1.currentSeason.Equals("winter") && this.treeType.Value == 7)
-                this.stump.Value = true;
-            else if (Game1.dayOfMonth <= 1 && Game1.currentSeason.Equals("spring"))
-            {
-                this.stump.Value = false;
-                this.health.Value = 10f;
-            }
-            if (this.growthStage.Value >= 5 && environment is Farm && Game1.random.NextDouble() < 0.15)
+            else if (this.growthStage.Value == 0 && environment.objects.ContainsKey(tileLocation))
+                return;
+            if (Game1.random.NextDouble() < 0.2)
+                ++this.growthStage.Value;
+            
+
+            if (this.growthStage.Value >= 5 && environment is FarmCave && Game1.random.NextDouble() < chanceForDailySpread)
             {
                 int xTile = Game1.random.Next(-3, 4) + (int)tileLocation.X;
                 int yTile = Game1.random.Next(-3, 4) + (int)tileLocation.Y;
                 Vector2 vector2 = new Vector2((float)xTile, (float)yTile);
-                string str = environment.doesTileHaveProperty(xTile, yTile, "NoSpawn", "Back");
-                if ((str == null || !str.Equals(nameof(Tree)) && !str.Equals("All") && !str.Equals("True")) && (environment.isTileLocationOpen(new Location(xTile * 64, yTile * 64)) && !environment.isTileOccupied(vector2, "") && (environment.doesTileHaveProperty(xTile, yTile, "Water", "Back") == null && environment.isTileOnMap(vector2))))
+                string str2 = environment.doesTileHaveProperty(xTile, yTile, "NoSpawn", "Back");
+                if ((str2 == null || !str2.Equals(nameof(Tree)) && !str2.Equals("All") && !str2.Equals("True")) && (environment.isTileLocationOpen(new Location(xTile * 64, yTile * 64)) && !environment.isTileOccupied(vector2, "") && (environment.doesTileHaveProperty(xTile, yTile, "Water", "Back") == null && environment.isTileOnMap(vector2))))
+                {
                     environment.terrainFeatures.Add(vector2, (TerrainFeature)new VoidshroomTree(0));
+                }   
             }
+
             this.hasSeed.Value = false;
-            if (this.growthStage.Value < 5 || Game1.random.NextDouble() >= 0.0500000007450581)
+            if (this.growthStage.Value < 5 || Game1.random.NextDouble() >= chanceForDailySeed)
                 return;
             this.hasSeed.Value = true;
         }
@@ -559,12 +547,15 @@ namespace SubterranianOverhaul
                     location.playSound("axchop");
                     //TODO: come back and figure out this sprite broadcasting thing
                     //Game1.multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite(17, tileLocation * 64f, Color.White, 8, false, 100f, 0, -1, -1f, -1, 0));
-                    //if ((long)this.lastPlayerToHit.Value != 0L && Game1.getFarmer((long)this.lastPlayerToHit.Value).getEffectiveSkillLevel(2) >= 1)
-                        //chance to drop a seed with each swing. Replace this once we have our seed object in the game?
-                        //Game1.createMultipleObjectDebris(308 + this.treeType.Value, (int)tileLocation.X, (int)tileLocation.Y, 1, t.getLastFarmerToUse().UniqueMultiplayerID, location);
-                    //else if (Game1.player.getEffectiveSkillLevel(2) >= 1)
-                        //chance to drop a seed with each swing. Replace this once we have our seed object in the game?
-                        //Game1.createMultipleObjectDebris(308 + this.treeType.Value, (int)tileLocation.X, (int)tileLocation.Y, 1, (long)t.getLastFarmerToUse().UniqueMultiplayerID, location);
+                    int seedIndex = VoidshroomSpore.getIndex();
+                    if ((long)this.lastPlayerToHit.Value != 0L && Game1.getFarmer((long)this.lastPlayerToHit.Value).getEffectiveSkillLevel(2) >= 1 && seedIndex != -1)
+                    {
+                        Game1.createMultipleObjectDebris(seedIndex, (int)tileLocation.X, (int)tileLocation.Y, 1, t.getLastFarmerToUse().UniqueMultiplayerID, location);
+                    } else if (Game1.player.getEffectiveSkillLevel(2) >= 1 && seedIndex != -1)
+                    {   
+                        Game1.createMultipleObjectDebris(seedIndex, (int)tileLocation.X, (int)tileLocation.Y, 1, (long)t.getLastFarmerToUse().UniqueMultiplayerID, location);
+                    }
+
                     return true;
                 }
             }
@@ -704,6 +695,137 @@ namespace SubterranianOverhaul
                 boundingBox = this.getBoundingBox(tileLocation);
                 double num = (double)boundingBox.Bottom / 10000.0 + 0.00999999977648258;
                 spriteBatch1.Draw(texture, local, sourceRectangle, white, (float)rotation, zero, 4f, SpriteEffects.None, (float)num);
+            }
+        }
+
+        public static void SetHelper()
+        {
+            if(VoidshroomTree.helper == null)
+            {
+                VoidshroomTree.helper = ModEntry.GetHelper();
+            }
+        }
+
+        public static void SetMonitor()
+        {
+            if (VoidshroomTree.monitor == null)
+            {
+                VoidshroomTree.monitor = ModEntry.GetMonitor();
+            }
+        }
+
+        public VoidshroomtreeSaveData GetSaveData()
+        {
+            return new VoidshroomtreeSaveData(this);
+        }
+
+        //stealing (or at least borrowing heavily) this remove/readd method from Deep Woods pretty much whole cloth.
+
+        private static HashSet<GameLocation> processedLocations = new HashSet<GameLocation>();
+
+        public static void RemovalAll()
+        {
+            SetHelper();
+            SetMonitor();
+
+            if (!Game1.IsMasterGame)
+                return;
+
+            monitor.Log("VoidshroomTree.RemovalAll()", StardewModdingAPI.LogLevel.Trace);
+            ModState.voidshroomTreeLocations.Clear();
+
+            processedLocations.Clear();
+
+            foreach (GameLocation location in Game1.locations)
+            {
+                ProcessLocation(location, ProcessingMethod.Remove);
+            }
+
+            processedLocations.Clear();
+        }
+
+        public static void ReplaceAll()
+        {
+            SetHelper();
+            SetMonitor();
+
+            if (!Game1.IsMasterGame)
+                return;
+
+            monitor.Log("VoidshroomTree.ReplaceAll()", StardewModdingAPI.LogLevel.Trace);
+            //ModState.voidshroomTreeLocations.Clear();
+
+            processedLocations.Clear();
+
+            foreach (GameLocation location in Game1.locations)
+            {
+                ProcessLocation(location, ProcessingMethod.Restore);
+            }
+
+            processedLocations.Clear();
+        }
+
+        public static void ProcessLocation(GameLocation location, ProcessingMethod method)
+        {
+            if (location == null)
+                return;
+
+            monitor.Log("VoidshroomTree.ProcessLocation(" + location.Name + ", " + method + ")", StardewModdingAPI.LogLevel.Trace);
+
+            if (processedLocations.Contains(location))
+            {
+                monitor.Log("VoidshroomTree.ProcessLocation(" + location.Name + ", " + method + "): Already processed this location (infinite recursion?), aborting!", StardewModdingAPI.LogLevel.Warn);
+                return;
+            }
+
+            processedLocations.Add(location);
+
+            bool itemsToRemove = false;
+
+            if (VoidshroomSpore.IsValidLocation(location))
+            {
+                String locationName = location.Name.ToString();
+                if (method.Equals(ProcessingMethod.Remove))
+                {
+
+                    foreach (Vector2 featureSpot in location.terrainFeatures.Keys)
+                    {
+                        if (location.terrainFeatures[featureSpot] is VoidshroomTree)
+                        {
+
+                            StringWriter writer = new StringWriter();
+
+                            if (!ModState.voidshroomTreeLocations.ContainsKey(locationName))
+                            {
+                                ModState.voidshroomTreeLocations.Add(locationName, new Dictionary<Vector2, VoidshroomtreeSaveData>());
+                            }
+
+                            VoidshroomTree tree = (VoidshroomTree)location.terrainFeatures[featureSpot];
+
+                            ModState.voidshroomTreeLocations[locationName].Add(featureSpot, tree.GetSaveData());
+                            itemsToRemove = true;
+                        }
+                    }
+
+                    //data is stored, but if we're removing we need to actually clear stuff out of the list now.
+                    if (itemsToRemove)
+                    {
+                        foreach (Vector2 locationData in ModState.voidshroomTreeLocations[location.Name.ToString()].Keys)
+                        {
+                            location.terrainFeatures.Remove(locationData);
+                        }
+                    }
+                }
+                else if (method.Equals(ProcessingMethod.Restore))
+                {
+                    if (ModState.voidshroomTreeLocations.ContainsKey(location.Name.ToString()))
+                    {
+                        foreach (KeyValuePair<Vector2, VoidshroomtreeSaveData> locationData in ModState.voidshroomTreeLocations[location.Name.ToString()])
+                        {
+                            location.terrainFeatures.Add(locationData.Key, new VoidshroomTree(locationData.Value));
+                        }
+                    }
+                }
             }
         }
     }

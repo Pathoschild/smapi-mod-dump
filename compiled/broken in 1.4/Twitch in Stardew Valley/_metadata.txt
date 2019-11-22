@@ -1,0 +1,3 @@
+page URL: https://www.curseforge.com/stardewvalley/mods/twitch-in-stardew-valley
+IDs: telshin.twitch-for-stardew
+update keys: CurseForge:306420, GitHub:Telshin/twitch-for-stardew

@@ -1,0 +1,9 @@
+{
+  "Name": "Dinosaur Mayonnaise",
+  "Description": "It's a smooth, green mayonnaise.",
+  "Category": "ArtisanGoods",
+  "Edibility": -300,
+  "Price": 1500,
+  "IsColored": false,
+  "Recipe": null
+}

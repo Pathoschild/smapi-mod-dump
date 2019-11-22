@@ -1,0 +1,13 @@
+url:
+   https://github.com/M3ales/FishingLogbook.git
+
+mods:
+   Fishing Logbook
+
+latest commit:
+   commit 1bc1c36b31e8c7c4b604cebf793142223bfb4091
+   Author: Mira <mattfdavies12@gmail.com>
+   Date:   Fri Nov 30 00:12:06 2018 +0200
+   
+       Versioning fixes, changed to when: and where:
+   

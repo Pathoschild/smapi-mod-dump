@@ -1,0 +1,52 @@
+Category: Maps
+
+Tags:
+SMAPI
+Works with Stardew 1.3
+English
+
+Overview:
+The Shadows have their own Spirit's Eve festival in the sewers. Come visit them and see what it's about.
+
+Permissions:
+This mod is released under [url=https://github.com/MouseyPounds/stardew-mods/blob/master/LICENSE]an MIT License[/url]. Although not required, the author would appreciate being informed of any derivative works which include or alter the mod or its assets.
+
+Credits:
+This mod uses only original assets and modifications of existing game assets.
+
+Details:
+[b]Description:
+
+[color=#ffff00]Festival of the Mundane[/color][/b] is a combination SMAPI mod & [url=https://www.nexusmods.com/stardewvalley/mods/1720]Json Assets[/url] Content Pack which changes the Sewer map on the day of Spirit's Eve to a celebration full of Shadow people. There are many costumed Shadows to interact with, a small minigame with prizes, a swimming area, and special hats to purchase. Some of the hats have a side effect which can be quite useful outside of the festival.
+
+
+
+[b]Installation:[/b]
+[list=1]
+[*]Install the latest version of [url=https://smapi.io/]SMAPI[/url].
+[*]Install the latest version of [url=https://www.nexusmods.com/stardewvalley/mods/1720]Json Assets[/url].
+[*]Unzip the download and place the included [color=#b6d7a8][code]FestivalOfTheMundane[/code][/color] folder into your [color=#b6d7a8][code]Mods[/code][/color] folder.
+[/list]
+
+
+[b]Compatibility:
+[/b]
+[list][*][b][color=#ffff00]Festival of the Mundane[/color][/b] requires [url=https://smapi.io]SMAPI[/url] version 2.11.3 or higher and should work with Stardew Valley 1.3.36 or higher. It also requires [url=https://www.nexusmods.com/stardewvalley/mods/1720]Json Assets[/url].
+[*]This mod completely replaces the sewer map on a specific day and may not be compatible with other mods that replace or alter that map.
+[/list]
+
+
+[b]Additional Notes:
+[/b]
+[list]
+[*]Special thanks to [url=https://www.nexusmods.com/stardewvalley/users/1949074]hatmouse[/url] for help with initial concepts and support.
+[*]This mod was made as part of the [url=https://discordapp.com/invite/StardewValley]discord server's[/url] Fall event, but is opted out of any prize awards for the modding contest.
+[*]The mod was created with some help from the Stardew Valley team, but none of its contents should be considered canon.
+[*]All mod-added hats are only available for purchase during the festival; they will not show up at Hatmouse's regular shop.
+[*][spoiler]The Shadow masks work like the Slime Charmer ring and prevent all damage from Shadow-type enemies in combat.[/spoiler]
+[/list]
+
+
+[b]Source Code Repository:
+[/b]
+[url=https://github.com/MouseyPounds/stardew-mods/tree/master/Festival%20of%20the%20Mundane]GitHub[/url]

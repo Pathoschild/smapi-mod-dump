@@ -28,3 +28,7 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 #### 1.0:
 * Added dependency on StardewHack.
+
+#### 1.1:
+* Movement speed change is no longer applied during cutscenes.
+* Add support for android.

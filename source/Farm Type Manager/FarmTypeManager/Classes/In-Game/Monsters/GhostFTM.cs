@@ -24,7 +24,6 @@ namespace FarmTypeManager.Monsters
 
         /// <summary>Creates an instance of Stardew's Ghost class, but with adjustments made for this mod.</summary>
         /// <param name="position">The x,y coordinates of this monster's location.</param>
-        /// <param name="name">The name of the monster to be created. Use "Carbon Ghost" to create that subtype.</param>
         public GhostFTM(Vector2 position)
             : base(position)
         {

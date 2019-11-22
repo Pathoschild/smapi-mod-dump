@@ -1,0 +1,16 @@
+{
+  "Name": "Fishing Logbook",
+  "Author": "M3ales",
+  "Version": "1.0.0",
+  "Description": "Tracks your fishing, and provides tooltips to aid in finding fish again.",
+  "UniqueID": "FishingLogbook",
+  "EntryDll": "FishingLogbook.dll",
+  "MinimumApiVersion": "2.8",
+  "UpdateKeys": [ "GitHub:M3ales/FishingLogbook" ],
+  "Dependencies": [
+    {
+      "UniqueID": "darkhax.bookcase",
+      "MinimumVersion": "0.7.0"
+    }
+  ]
+}

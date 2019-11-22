@@ -1,0 +1,13 @@
+url:
+   https://github.com/jaredlll08/Item-Tooltips.git
+
+mods:
+   Item Tooltips
+
+latest commit:
+   commit 40bd4891a828e57c14dbd151d7b000598e562cbe
+   Author: Jared <jaredlll08@gmail.com>
+   Date:   Sat Aug 18 22:17:56 2018 +0200
+   
+       version push
+   

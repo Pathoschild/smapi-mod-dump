@@ -1,11 +1,11 @@
-﻿{
-	"prismatic.prefix": "五彩",
-	"prismaticBar.name": "五彩锭",
-	"prismaticBar.description": "一个神秘的铸锭，传说是由五彩碎片锻造而成的。",
-	"prismaticHoe": "五彩锄头",
-	"prismaticWatercan": "五彩水壶",
-	"prismaticPickaxe": "五彩镐",
-	"prismaticAxe": "五彩斧",
-	"prismaticSprinkler.name": "五彩洒水器",
-	"prismaticSprinkler.description": "每天早晨自动给附近的48块地浇水。",
+{
+    "prismatic.prefix": "五彩",
+    "prismaticBar.name": "五彩锭",
+    "prismaticBar.description": "一个神秘的铸锭，传说是由五彩碎片锻造而成的。",
+    "prismaticHoe": "五彩锄头",
+    "prismaticWatercan": "五彩水壶",
+    "prismaticPickaxe": "五彩镐",
+    "prismaticAxe": "五彩斧",
+    "prismaticSprinkler.name": "五彩洒水器",
+    "prismaticSprinkler.description": "每天早晨自动给附近的48块地浇水。",
 }

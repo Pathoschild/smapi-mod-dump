@@ -23,10 +23,16 @@ namespace NpcAdventure.Driver
         {
             events.GameLoop.Saving += this.GameLoop_Saving;
             events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded;
+            events.GameLoop.Saved += this.GameLoop_Saved;
 
             this.DataHelper = dataHelper;
             this.DumpedBags = new List<BagDumpInfo>();
             this.Monitor = monitor;
+        }
+
+        private void GameLoop_Saved(object sender, SavedEventArgs e)
+        {
+            this.ReviveDeliveredBags();
         }
 
         public void PrepareDeliveredBagsToSave()
@@ -105,6 +111,7 @@ namespace NpcAdventure.Driver
                 this.DumpedBags = dumpedBags ?? new List<BagDumpInfo>();
                 this.Monitor.Log($"Count of possible bags: {this.DumpedBags.Count}");
                 this.Monitor.Log("Dumped bags loaded from save file", LogLevel.Info);
+                this.ReviveDeliveredBags();
             }
             catch (InvalidOperationException ex)
             {
@@ -116,6 +123,7 @@ namespace NpcAdventure.Driver
         {
             try
             {
+                this.PrepareDeliveredBagsToSave();
                 this.DataHelper.WriteSaveData("dumped-bags", this.DumpedBags ?? new List<BagDumpInfo>());
                 this.Monitor.Log("Dumped bags successfully saved to savefile.", LogLevel.Info);
             }

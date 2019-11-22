@@ -7,6 +7,7 @@ using StardewValley;
 using StardewValley.Locations;
 using System.Collections.Generic;
 using System.Reflection;
+using StardewModdingAPI;
 
 namespace NpcAdventure.StateMachine.State
 {
@@ -18,7 +19,7 @@ namespace NpcAdventure.StateMachine.State
         private string companionRescheduleEndRouteDialogue;
         private int companionRescheduleFacingDirection;
 
-        public ResetState(CompanionStateMachine stateMachine, IModEvents events) : base(stateMachine, events)
+        public ResetState(CompanionStateMachine stateMachine, IModEvents events, IMonitor monitor) : base(stateMachine, events, monitor)
         {
         }
 

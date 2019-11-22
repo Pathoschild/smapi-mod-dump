@@ -306,5 +306,15 @@ namespace BetterMixedSeeds.Data
         {
             { "Mouse-Ear Cress", "Mouse-Ear Cress Seeds" }
         };
+
+        public Dictionary<string, string> AncientCrops { get; } = new Dictionary<string, string>
+        {
+            { "Ancient Coffee Plant", "Ancient Coffee Bean" },
+            { "Ancient Fern", "Ancient Fern Seeds" },
+            { "Ancient Flower", "Ancient Flower Seeds" },
+            { "Ancient Nut", "Ancient Nut Seeds" },
+            { "Ancient Olive Plant", "Ancient Olive Seeds" },
+            { "Ancient Tuber", "Ancient Tuber Seeds" }
+        };
     }
 }

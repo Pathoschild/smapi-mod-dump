@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using NpcAdventure.Loader;
 using NpcAdventure.Utils;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Monsters;
@@ -20,10 +22,13 @@ namespace NpcAdventure.AI.Controller
         private bool potentialIddle = false;
         private readonly IModEvents events;
         private readonly MeleeWeapon weapon;
+        private readonly Dictionary<string, string> bubbles;
         private readonly Character realLeader;
         private readonly float attackRadius;
         private readonly float backupRadius;
+        private readonly double fightSpeechTriggerThres;
         private int weaponSwingCooldown = 0;
+        private int fightBubbleCooldown = 0;
         private bool defendFistUsed;
         private List<FarmerSprite.AnimationFrame>[] attackAnimation;
         private int attackSpeedPitch = 0;
@@ -49,7 +54,7 @@ namespace NpcAdventure.AI.Controller
             }
         }
 
-        public FightController(AI_StateMachine ai, IModEvents events, int sword) : base(ai)
+        public FightController(AI_StateMachine ai, IContentLoader content, IModEvents events, int sword) : base(ai)
         {
             this.attackRadius = 1.25f * Game1.tileSize;
             this.backupRadius = 0.9f * Game1.tileSize;
@@ -57,7 +62,9 @@ namespace NpcAdventure.AI.Controller
             this.leader = null;
             this.pathFinder.GoalCharacter = null;
             this.events = events;
-            this.weapon = this.GetSword(sword, this.ai.metadata.Profession == "warrior");
+            this.weapon = this.GetSword(sword);
+            this.bubbles = content.LoadStrings("Strings/SpeechBubbles");
+            this.fightSpeechTriggerThres = ai.Csm.HasSkill("warrior") ? 0.33 : 0.15;
 
             this.attackAnimation = new List<FarmerSprite.AnimationFrame>[4]
             {
@@ -84,7 +91,7 @@ namespace NpcAdventure.AI.Controller
         };
         }
 
-        private int GetWarriorSwordIndex(int fallbackSword)
+        private int GetSwordIndex(int fallbackSword)
         {
             Farmer farmer = this.ai.player as Farmer;
 
@@ -115,12 +122,9 @@ namespace NpcAdventure.AI.Controller
             }
         }
 
-        private MeleeWeapon GetSword(int sword, bool isWarrior)
+        private MeleeWeapon GetSword(int sword)
         {
-            if (isWarrior)
-            {
-                sword = this.GetWarriorSwordIndex(sword);
-            }
+            sword = this.GetSwordIndex(sword);
 
             return sword >= 0 ? new MeleeWeapon(sword) : null;
         }
@@ -185,6 +189,33 @@ namespace NpcAdventure.AI.Controller
             this.potentialIddle = false;
             this.leader = monster;
             this.pathFinder.GoalCharacter = this.leader;
+            this.DoFightSpeak();
+        }
+
+        private void DoFightSpeak()
+        {
+            // Cooldown not expired? Say nothing
+            if (this.fightBubbleCooldown != 0)
+                return;
+
+            if (Game1.random.NextDouble() < this.fightSpeechTriggerThres && DialogueHelper.GetBubbleString(this.bubbles, this.follower, "fight", out string text))
+            {
+                bool isRed = this.ai.Csm.HasSkill("warrior") && Game1.random.NextDouble() < 0.1;
+                this.follower.showTextAboveHead(text, isRed ? 2 : -1);
+                this.fightBubbleCooldown = 600;
+            }
+            else if (this.ai.Csm.HasSkill("warrior") && Game1.random.NextDouble() < this.fightSpeechTriggerThres / 2)
+            {
+                this.follower.clearTextAboveHead();
+                this.follower.doEmote(12);
+                this.fightBubbleCooldown = 550;
+            }
+            else if (Game1.random.NextDouble() > (this.fightSpeechTriggerThres + this.fightSpeechTriggerThres * .33f))
+            {
+                this.follower.clearTextAboveHead();
+                this.follower.doEmote(16);
+                this.fightBubbleCooldown = 500;
+            }
         }
 
         public bool CheckIdleState()
@@ -226,12 +257,14 @@ namespace NpcAdventure.AI.Controller
 
         public override void Update(UpdateTickedEventArgs e)
         {
-            if (this.IsIdle)
+            if (this.IsIdle || (!Context.IsPlayerFree && !Context.IsMultiplayer))
                 return;
 
             if (this.leader == null)
                 this.CheckMonsterToFight();
 
+            if (this.fightBubbleCooldown > 0)
+                --this.fightBubbleCooldown;
 
             this.DoWeaponSwing();
             base.Update(e);
@@ -254,18 +287,23 @@ namespace NpcAdventure.AI.Controller
 
             if (criticalFist)
             {
-                attrs.knockBack *= 4;
+                attrs.knockBack *= 2.7f;
                 attrs.smashAround /= 2f;
+            }
+
+            if (criticalFist && this.follower.FacingDirection != 0)
+            {
+                this.follower.currentLocation.playSound("clubSmash");
+                this.follower.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite("TileSheets\\animations", new Microsoft.Xna.Framework.Rectangle(0, 960, 128, 128), 60f, 4, 0, this.follower.Position, false, this.follower.FacingDirection == 3, 1f, 0.0f, Color.White, .5f, 0.0f, 0.0f, 0.0f, false));
             }
 
             companionBox.Inflate(8, 8); // Personal space
             effectiveArea.Inflate((int)(effectiveArea.Width * attrs.smashAround + attrs.addedEffectiveArea), (int)(effectiveArea.Height * attrs.smashAround + attrs.addedEffectiveArea));
 
-            if (!criticalFist && !this.defendFistUsed && companionBox.Intersects(enemyBox))
+            if (!criticalFist && !this.defendFistUsed && this.ai.Csm.HasSkill("warrior") && companionBox.Intersects(enemyBox) && Game1.random.NextDouble() < .33f)
             {
-                this.ai.monitor.Log("Critical dangerous: Using defense fists!");
+                this.ai.Monitor.Log("Critical dangerous: Using defense fists!");
                 this.defendFistUsed = true;
-                this.follower.doEmote(16);
                 this.DoDamage(true); // Force fist when no damage given to a monster with weapon
                 return;
             }
@@ -273,6 +311,8 @@ namespace NpcAdventure.AI.Controller
             if (this.follower.currentLocation.damageMonster(effectiveArea, attrs.minDamage, attrs.maxDamage, false, attrs.knockBack, attrs.addedPrecision, attrs.critChance, attrs.critMultiplier, !criticalFist, this.realLeader as Farmer))
             {
                 this.follower.currentLocation.playSound("clubhit");
+                if (criticalFist || (Game1.random.NextDouble() > .7f && Game1.random.NextDouble() < .3f))
+                    this.DoFightSpeak();
             }
         }
 
@@ -389,7 +429,7 @@ namespace NpcAdventure.AI.Controller
             if (this.pathToFollow == null)
             {
                 this.potentialIddle = true;
-                this.ai.monitor.Log($"Fight controller iddle, because can't find a path to monster '{this.leader?.Name}'");
+                this.ai.Monitor.Log($"Fight controller iddle, because can't find a path to monster '{this.leader?.Name}'");
             }
         }
 
@@ -398,6 +438,7 @@ namespace NpcAdventure.AI.Controller
             this.events.World.NpcListChanged += this.World_NpcListChanged;
             this.events.Display.RenderedWorld += this.Display_RenderedWorld;
             this.weaponSwingCooldown = 0;
+            this.fightBubbleCooldown = 0;
             this.potentialIddle = false;
         }
 
@@ -408,7 +449,7 @@ namespace NpcAdventure.AI.Controller
 
         private void Display_RenderedWorld(object sender, RenderedWorldEventArgs e)
         {
-            if (this.weapon != null && this.weaponSwingCooldown > this.SwingThreshold)
+            if (this.weapon != null && this.weaponSwingCooldown > this.SwingThreshold && !this.defendFistUsed)
             {
                 int frames = this.weapon.type.Value == 3 ? 4 : 7;
                 int duration = this.CooldownTimeout - this.SwingThreshold;

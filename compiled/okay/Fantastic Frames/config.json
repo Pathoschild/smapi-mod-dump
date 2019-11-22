@@ -1,5 +1,5 @@
 {
-  "ConfigHelper": "Set frameId to 0 for a randomly selected frame every day, or select a specific frame (see ReadMe.txt).  FestivalFrames will select a festival specific frame if true, otherwsie will not change frame.  (This item does nothing!)",
+  "ConfigHelper": "Set frameId to 0 for a randomly selected frame every day, or select a specific frame (see ReadMe.txt).  FestivalFrames will select a festival specific frame if true, otherwise will not change frame.  (This item does nothing!)",
   "FantasticFrameId": 0,
   "FestivalFrames": true,
   "ShowDebug": false

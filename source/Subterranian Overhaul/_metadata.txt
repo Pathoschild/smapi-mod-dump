@@ -5,9 +5,9 @@ mods:
    Subterranian Overhaul
 
 latest commit:
-   commit dce9951c38a721094ae6ec12ddc116e5da835295
+   commit e83267a3bdb311efe775a8fa75dad5bffecb96f1
    Author: Robert Howe <mytigio+github@gmail.com>
-   Date:   Sat Sep 28 18:30:59 2019 -0600
+   Date:   Tue Nov 19 07:23:58 2019 -0700
    
-       more work on trees. started voidshroom tree seeds, but so far can't get the sprites to load
+       Start creating cave carrot crop (eh, we'll see if I finish this one up)
    

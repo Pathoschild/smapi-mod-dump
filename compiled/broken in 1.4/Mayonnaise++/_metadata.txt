@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4634
+IDs: xirsoi.mayonnaiseplusplus
+update keys: GitHub:xirsoi/MayonnaisePlusPlus, Nexus:4634

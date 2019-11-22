@@ -11,146 +11,122 @@ using System.Text;
 using System.Threading.Tasks;
 using xTile.Dimensions;
 using System.IO;
+using StardewModdingAPI.Events;
+using Microsoft.Xna.Framework.Input;
 
 namespace SubterranianOverhaul
 {
     class VoidshroomSpore : StardewValley.Object
-    {
-        private static Texture2D texture;
+    {   
+        private static int itemIndex = -1;
 
-
-        public Texture2D Texture
+        public static void setIndex()
         {
-            get {
-                if(VoidshroomSpore.texture == null)
-                {
-                    loadTexture();
-                }
-                return VoidshroomSpore.texture;
+            if (VoidshroomSpore.itemIndex == -1)
+            {
+                VoidshroomSpore.itemIndex = IndexManager.getUnusedObjectIndex();
             }
         }
 
-        public VoidshroomSpore() : base()
+        public static int getIndex()
         {
-            this.Name = "VoidshroomSpore";
+            if(VoidshroomSpore.itemIndex == -1)
+            {
+                VoidshroomSpore.setIndex();
+            }
+
+            return VoidshroomSpore.itemIndex;
+        }
+
+        public VoidshroomSpore(Vector2 tileLocation) : base(tileLocation, itemIndex, false)
+        {
+            this.Name = "Voidshroom Spore";
             this.DisplayName = "Voidshroom Spore";
             this.Quality = 0;
             this.Price = 10;
             this.Category = 74;
-            loadTexture();
         }
 
-        public VoidshroomSpore(Vector2 tileLocation) : this()
+        public VoidshroomSpore() : this(Vector2.Zero)
         {
-            this.TileLocation = tileLocation;
+            
+        }        
+
+        public string getObjectData()
+        {
+            return string.Format("{0}/{1}/{2}/Basic {3}/{4}/{5}", this.Name, this.Price, this.Edibility, (int)this.Category, this.Name, this.getDescription());
         }
 
-        public override bool placementAction(GameLocation location, int x, int y, Farmer who = null)
+        public override string getDescription()
         {
-            //First verify we're in a suitable location for plant (the mine or the cave)
-            if(location.Name.Equals("Mine") || location.Name.Contains("Cave"))
+            return "The spore of a giant Voidshroom Tree.  These giant fungi only thrive in darkness.";
+        }
+
+        public static bool IsValidLocation(GameLocation location)
+        {
+            return location.Name.Equals("Mine") || location.Name.Contains("Cave");
+        }
+
+        internal static bool AttemptPlanting(Vector2 grabTile, GameLocation location, Farmer who = null)
+        {
+            if (VoidshroomSpore.canPlaceHere(location, grabTile))
             {
-                Vector2 index1 = new Vector2((float)(x / 64), (float)(y / 64));
+                location.terrainFeatures.Remove(grabTile);
+                location.terrainFeatures.Add(grabTile, (TerrainFeature)new VoidshroomTree(0));
+                location.playSound("dirtyHit");
+                return true;
+            } else
+            {
+                if(!IsValidLocation(location))
+                {
+                    Game1.showRedMessage("These seeds can only thrive in darkness.");
+                }
+                return false;
+            }
+        }
 
+        private static bool canPlaceHere(GameLocation location, Vector2 tile)
+        {
+            if (IsValidLocation(location))
+            {
+                Vector2 index1 = tile;
+                bool occupied = location.isTileOccupiedForPlacement(index1);
                 bool flag = location.terrainFeatures.ContainsKey(index1) && location.terrainFeatures[index1] is HoeDirt && (location.terrainFeatures[index1] as HoeDirt).crop == null;
                 string str = location.doesTileHaveProperty((int)index1.X, (int)index1.Y, "NoSpawn", "Back");
-                if (!flag && (location.objects.ContainsKey(index1) || location.terrainFeatures.ContainsKey(index1) || !(location is Farm) && !location.IsGreenhouse || str != null && (str.Equals("Tree") || str.Equals("All") || str.Equals("True"))))
-                {
-                    Game1.showRedMessage(Game1.content.LoadString("Strings\\Voidshroom:CantPlantHere"));
+                if (occupied || !flag && (location.objects.ContainsKey(index1) || location.terrainFeatures.ContainsKey(index1) || str != null && (str.Equals("Tree") || str.Equals("All") || str.Equals("True"))))
+                {   
                     return false;
                 }
                 if (str != null && (str.Equals("Tree") || str.Equals("All") || str.Equals("True")))
                     return false;
-                if (flag || location.isTileLocationOpen(new Location(x * 64, y * 64)) && !location.isTileOccupied(new Vector2((float)x, (float)y), "") && location.doesTileHaveProperty(x, y, "Water", "Back") == null)
+                if (flag || !location.isTileOccupied(index1, "") && location.doesTileHaveProperty((int)index1.X, (int)index1.Y, "Water", "Back") == null)
                 {   
-                    location.terrainFeatures.Remove(index1);
-                    location.terrainFeatures.Add(index1, (TerrainFeature)new VoidshroomTree(0));
-                    location.playSound("dirtyHit");
                     return true;
                 }
-            } else
+            }
+
+            return false;
+        }
+
+        public static void drawPlacementBounds(StardewValley.Object obj, SpriteBatch spriteBatch, GameLocation location)
+        {   
+            int x = Game1.getOldMouseX() + Game1.viewport.X;
+            int y = Game1.getOldMouseY() + Game1.viewport.Y;
+            if ((double)Game1.mouseCursorTransparency == 0.0)
             {
-                Game1.showRedMessage(Game1.content.LoadString("Strings\\Voidshroom:CantPlantHere"));
-                return false;
+                x = (int)Game1.player.GetGrabTile().X * 64;
+                y = (int)Game1.player.GetGrabTile().Y * 64;
             }
-
-            return true;
-        }
-
-        public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1f)
-        {
-            if (!Game1.eventUp || Game1.CurrentEvent != null && !Game1.CurrentEvent.isTileWalkedOn(x, y))
-            {   
-                Microsoft.Xna.Framework.Rectangle boundingBox;
-                if (this.Fragility != 2)
-                {
-                    SpriteBatch spriteBatch1 = spriteBatch;
-                    Texture2D shadowTexture = Game1.shadowTexture;
-                    Vector2 local = Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(x * 64 + 32), (float)(y * 64 + 51 + 4)));
-                    Microsoft.Xna.Framework.Rectangle? sourceRectangle = new Microsoft.Xna.Framework.Rectangle?(Game1.shadowTexture.Bounds);
-                    Color color = Color.White * alpha;
-                    Vector2 origin = new Vector2((float)Game1.shadowTexture.Bounds.Center.X, (float)Game1.shadowTexture.Bounds.Center.Y);
-                    boundingBox = this.getBoundingBox(new Vector2((float)x, (float)y));
-                    double num = (double)boundingBox.Bottom / 15000.0;
-                    spriteBatch1.Draw(shadowTexture, local, sourceRectangle, color, 0.0f, origin, 4f, SpriteEffects.None, (float)num);
-                }
-                SpriteBatch spriteBatch2 = spriteBatch;
-                Microsoft.Xna.Framework.Rectangle? sourceRectangle1 = new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, 16, 16));
-                Vector2 local1 = Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(x * 64 + 32 + (this.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0)), (float)(y * 64 + 32 + (this.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))));
-                Color color1 = Color.White * alpha;
-                Vector2 origin1 = new Vector2(8f, 8f);
-                Vector2 scale1 = this.scale;
-                int num6;
-                if (!this.isPassable())
-                {
-                    boundingBox = this.getBoundingBox(new Vector2((float)x, (float)y));
-                    num6 = boundingBox.Bottom;
-                }
-                else
-                {
-                    boundingBox = this.getBoundingBox(new Vector2((float)x, (float)y));
-                    num6 = boundingBox.Top;
-                }
-                double num7 = (double)num6 / 10000.0;
-                //spriteBatch2.Draw(objectSpriteSheet, local1, sourceRectangle1, color1, 0.0f, origin1, (float)num4, (SpriteEffects)num5, (float)num7);
-                spriteBatch2.Draw(this.Texture, local1, sourceRectangle1, color1,0.0f,origin1,0f,(SpriteEffects)0,(float)num7);
+            if (Game1.player.GetGrabTile().Equals(Game1.player.getTileLocation()) && (double)Game1.mouseCursorTransparency == 0.0)
+            {
+                Vector2 translatedVector2 = Utility.getTranslatedVector2(Game1.player.GetGrabTile(), Game1.player.FacingDirection, 1f);
+                x = (int)translatedVector2.X * 64;
+                y = (int)translatedVector2.Y * 64;
             }
-        }
-
-        public override void draw(
-          SpriteBatch spriteBatch,
-          int xNonTile,
-          int yNonTile,
-          float layerDepth,
-          float alpha = 1f)
-        {
-            if (Game1.eventUp && Game1.CurrentEvent.isTileWalkedOn(xNonTile / 64, yNonTile / 64))
-                return;
-            if (this.Fragility != 2)
-            spriteBatch.Draw(Game1.shadowTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(xNonTile + 32), (float)(yNonTile + 51 + 4))), new Microsoft.Xna.Framework.Rectangle?(Game1.shadowTexture.Bounds), Color.White * alpha, 0.0f, new Vector2((float)Game1.shadowTexture.Bounds.Center.X, (float)Game1.shadowTexture.Bounds.Center.Y), 4f, SpriteEffects.None, layerDepth - 1E-06f);
-            SpriteBatch spriteBatch1 = spriteBatch;
-            Texture2D objectSpriteSheet = Game1.objectSpriteSheet;
-            Vector2 local = Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(xNonTile + 32 + (this.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0)), (float)(yNonTile + 32 + (this.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0))));
-            Microsoft.Xna.Framework.Rectangle sRect = new Microsoft.Xna.Framework.Rectangle(0, 0, 16, 16);
-            Microsoft.Xna.Framework.Rectangle? sourceRectangle = new Microsoft.Xna.Framework.Rectangle?(sRect);
-            Color color = Color.White * alpha;
-            Vector2 origin = new Vector2(8f, 8f);
-            Vector2 scale = this.scale;
-            double num1 = (double)this.scale.Y > 1.0 ? (double)this.getScale().Y : 4.0;
-            int num2 = this.Flipped ? 1 : 0;
-            double num3 = (double)layerDepth;
-            spriteBatch1.Draw(this.Texture, local, sourceRectangle, color, 0.0f, origin, (float)num1, (SpriteEffects)num2, (float)num3);
             
-        }
+            bool flag = VoidshroomSpore.canPlaceHere(location, new Vector2(x /64 ,y / 64));
 
-        public override bool performToolAction(Tool t, GameLocation location)
-        {
-            return base.performToolAction(t, location);
-        }
-
-        private static void loadTexture()
-        {
-            VoidshroomSpore.texture = VoidshroomSpore.texture ?? ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "voidshroom_spore.png"), ContentSource.ModFolder);
+            spriteBatch.Draw(Game1.mouseCursors, new Vector2((float)(x / 64 * 64 - Game1.viewport.X), (float)(y / 64 * 64 - Game1.viewport.Y)), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(flag ? 194 : 210, 388, 16, 16)), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0.01f);
         }
     }
 }

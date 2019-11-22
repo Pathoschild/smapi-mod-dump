@@ -63,7 +63,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\AI_StateMachine.cs" />
+    <Compile Include="AI\AI_StateMachine.doctor.cs" />
     <Compile Include="AI\Controller\FightController.cs" />
+    <Compile Include="AI\Controller\IdleController.cs" />
     <Compile Include="AI\EventArgsLocationChanged.cs" />
     <Compile Include="Buffs\BuffManager.cs" />
     <Compile Include="CompanionManager.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="StateMachine\State\RecruitedState.cs" />
     <Compile Include="StateMachine\State\UnavailableState.cs" />
     <Compile Include="Utils\DialogueHelper.VariousKeyGenerator.cs" />
+    <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\Helper.cs" />
     <Compile Include="Internal\IUpdateable.cs" />
     <Compile Include="Loader\ContentLoader.cs" />
@@ -96,10 +99,16 @@
     <Compile Include="Utils\Helper\DrawDuringUse.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\Buffs\Abigail.json">
+    <None Include="assets\CompanionDispositions.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\CompanionDispositions.json">
+    <None Include="assets\Data\AnimationDescriptions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\Data\IdleBehaviors.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\Data\IdleNPCDefinitions.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Dialogue\Abigail.json">
@@ -155,6 +164,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="StateMachine\CompanionState.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="assets\Buffs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />

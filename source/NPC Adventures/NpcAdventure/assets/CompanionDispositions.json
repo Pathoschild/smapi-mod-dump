@@ -1,14 +1,14 @@
 {
-  "Abigail": "recruitable/warrior/fighter//5/0/40",
-  "Maru": "recruitable/escort///5/0/36",
-  "Shane": "recruitable/escort///5/0/-1",
-  "Leah": "recruitable/forager///5/0/39",
-  "Haley": "recruitable/escort/anxious//5/0/42",
-  "Emily": "recruitable/escort///5/0/0",
-  "Penny": "recruitable/escort///5/0/38",
-  "Alex": "recruitable/warrior///5/0/25",
-  "Sam": "recruitable/escort///5/0/30",
-  "Sebastian": "recruitable/escort///5/0/41",
-  "Elliott": "recruitable/escort///5/0/35",
-  "Harvey": "recruitable/escort///5/0/37"
+  "Abigail": "recruitable/warrior//5/0/40",
+  "Maru": "recruitable/doctor fighter//5/0/36",
+  "Shane": "recruitable/warrior//5/0/-1",
+  "Leah": "recruitable/forager fighter//5/0/39",
+  "Haley": "recruitable/anxious fighter//5/0/42",
+  "Emily": "recruitable/fighter//5/0/0",
+  "Penny": "recruitable/fighter//5/0/38",
+  "Alex": "recruitable/warrior//5/0/25",
+  "Sam": "recruitable/fighter//5/0/30",
+  "Sebastian": "recruitable/fighter//5/0/41",
+  "Elliott": "recruitable/fighter//5/0/35",
+  "Harvey": "recruitable/doctor fighter//5/0/37"
 }

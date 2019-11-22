@@ -1,0 +1,16 @@
+{
+  "Name": "Mayonnaise++",
+  "Author": "Adam 'theStormWeaver' Chevalier",
+  "Version": "1.0.1",
+  "Description": "A mod that expands on mayonnaise.",
+  "UniqueID": "xirsoi.mayonnaiseplusplus",
+  "EntryDll": "MayonnaisePlusPlus.dll",
+  "MinimumApiVersion": "2.10.0",
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets",
+      "IsRequired": true
+    }
+  ],
+  "UpdateKeys": [ "GitHub:xirsoi/MayonnaisePlusPlus", "Nexus:4634" ]
+}

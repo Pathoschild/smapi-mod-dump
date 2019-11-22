@@ -1,0 +1,13 @@
+url:
+   https://github.com/Stardew-Valley-Modding/Snail-Mail.git
+
+mods:
+   Snail Mail
+
+latest commit:
+   commit 59efa48e9d28eda4bca9d05ec3b48f6473771fee
+   Author: Tyler Hancock <darklime@live.ca>
+   Date:   Mon Dec 3 20:07:31 2018 -0700
+   
+       Updated version number
+   

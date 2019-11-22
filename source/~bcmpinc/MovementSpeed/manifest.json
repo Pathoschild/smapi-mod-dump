@@ -1,7 +1,7 @@
 ﻿{
    "Name": "Movement Speed",
    "Author": "bcmpinc",
-   "Version": "1.0",
+   "Version": "1.1",
    "Description": "Changes the player's movement speed and charging time of the hoe and watering can.",
    "UniqueID": "bcmpinc.MovementSpeed",
    "EntryDll": "MovementSpeed.dll",
@@ -9,6 +9,6 @@
    "UpdateKeys": ["Nexus:2736"],
    "Dependencies": [{
       "UniqueID": "bcmpinc.StardewHack",
-      "MinimumVersion": "1.0"
+      "MinimumVersion": "1.3"
    }]
 }

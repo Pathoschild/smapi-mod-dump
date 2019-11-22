@@ -1,0 +1,13 @@
+url:
+   https://github.com/M3ales/RelationshipTooltips.git
+
+mods:
+   Relationship Tooltips
+
+latest commit:
+   commit 726f498caadadb8a767e47695697c4cb76d26a9a
+   Author: Mira <mattfdavies12@gmail.com>
+   Date:   Thu Nov 29 23:47:39 2018 +0200
+   
+       smapi dependency update
+   

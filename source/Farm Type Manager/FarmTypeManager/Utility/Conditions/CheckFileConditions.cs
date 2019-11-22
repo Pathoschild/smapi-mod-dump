@@ -103,51 +103,45 @@ namespace FarmTypeManager
 
                     bool validType = false;
 
-                    foreach (string type in config.File_Conditions.FarmTypes) //for each listed farm type
+                    foreach (object obj in config.File_Conditions.FarmTypes) //for each listed farm type
                     {
-                        if (type.Equals("All", StringComparison.OrdinalIgnoreCase) || type.Equals("Any", StringComparison.OrdinalIgnoreCase)) //if "all" or "any" is listed
+                        int type = -1;
+
+                        //parse the farm type object into an integer (int type)
+                        if (obj is long || obj is int) //if the object is a readable integer
+                        {
+                            type = Convert.ToInt32(obj); //convert it to a 32-bit integer and use it
+                        }
+                        else if (obj is string name) //if the object is a string, cast it as one
+                        {
+                            if (name.Equals("All", StringComparison.OrdinalIgnoreCase) || name.Equals("Any", StringComparison.OrdinalIgnoreCase)) //if this is "all" or "any"
+                            {
+                                validType = true;
+                                break; //skip checking the rest of the farm types
+                            }
+                            else if (Enum.TryParse(name, true, out FarmTypes farmType)) //if this name can be parsed into a FarmTypes enum
+                            {
+                                type = (int)farmType; //use it as an integer
+                            }
+                            else //if this is a string, but not a recognized value
+                            {
+                                if (int.TryParse(name, out int parsed)) //if this string can be parsed as an integer
+                                {
+                                    type = parsed; //use the parsed value
+                                }
+                                else //if this string cannot be parsed
+                                {
+                                    Monitor.Log($"This setting in the Farm Types list could not be parsed: {name}", LogLevel.Debug);
+                                    Monitor.Log($"The setting will be ignored. If it's intended to be a custom farm type, please use its ID number instead of its name.", LogLevel.Debug);
+                                    continue; //skip to the next farm type condition
+                                }
+                            }
+                        }
+
+                        if (type == Game1.whichFarm) //if the parsed type matches the current farm type
                         {
                             validType = true;
-                            break; //skip the rest of these checks
-                        }
-
-                        switch (Game1.whichFarm) //compare to the current farm type
-                        {
-                            case (int)Utility.FarmTypes.Standard:
-                                if (type.Equals("Standard", StringComparison.OrdinalIgnoreCase) || type.Equals("Default", StringComparison.OrdinalIgnoreCase) || type.Equals("Normal", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    validType = true;
-                                }
-                                break;
-                            case (int)Utility.FarmTypes.Riverland:
-                                if (type.Equals("Riverland", StringComparison.OrdinalIgnoreCase) || type.Equals("Fishing", StringComparison.OrdinalIgnoreCase) || type.Equals("Fish", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    validType = true;
-                                }
-                                break;
-                            case (int)Utility.FarmTypes.Forest:
-                                if (type.Equals("Forest", StringComparison.OrdinalIgnoreCase) || type.Equals("Foraging", StringComparison.OrdinalIgnoreCase) || type.Equals("Forage", StringComparison.OrdinalIgnoreCase) || type.Equals("Woodland", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    validType = true;
-                                }
-                                break;
-                            case (int)Utility.FarmTypes.Hilltop:
-                                if (type.Equals("Hill-top", StringComparison.OrdinalIgnoreCase) || type.Equals("Hilltop", StringComparison.OrdinalIgnoreCase) || type.Equals("Mining", StringComparison.OrdinalIgnoreCase) || type.Equals("Mine", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    validType = true;
-                                }
-                                break;
-                            case (int)Utility.FarmTypes.Wilderness:
-                                if (type.Equals("Wilderness", StringComparison.OrdinalIgnoreCase) || type.Equals("Combat", StringComparison.OrdinalIgnoreCase) || type.Equals("Monster", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    validType = true;
-                                }
-                                break;
-                        }
-
-                        if (validType) //if a valid weather condition was listed
-                        {
-                            break; //skip the rest of these checks
+                            break; //skip checking the rest of the farm types
                         }
                     }
 

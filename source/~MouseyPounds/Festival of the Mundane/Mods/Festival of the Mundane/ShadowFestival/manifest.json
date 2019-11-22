@@ -1,0 +1,14 @@
+{
+    "Name": "Festival of the Mundane",
+    "Author": "MouseyPounds, Mr. Podunkian, and mouse",
+    "Version": "1.0.0",
+    "Description": "The Shadows have their own Spirit's Eve festival in the sewers. Come visit.",
+    "UniqueID": "MouseyPounds.ShadowFestival",
+    "EntryDll": "ShadowFestival.dll",
+    "MinimumApiVersion": "2.11",
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.JsonAssets"
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+url:
+   https://github.com/Stardew-Valley-Modding/PriceTooltips.git
+
+mods:
+   Price Tooltips
+
+latest commit:
+   commit 75ce20ed2efb08bdd92a36b913d721c68551fe5a
+   Author: Tyler Hancock <darklime@live.ca>
+   Date:   Sat Sep 8 00:18:59 2018 -0600
+   
+       Attempt to fix missing image.
+   

@@ -1,0 +1,13 @@
+url:
+   https://github.com/bikinavisho/RainCoatWhenRaining.git
+
+mods:
+   Raincoat When Raining
+
+latest commit:
+   commit 9c5253f9385213f820fb835fb127ce8c786dd67d
+   Author: Bianca <bikinavisho@users.noreply.github.com>
+   Date:   Sat Nov 16 15:09:56 2019 -0600
+   
+       Update README.md
+   

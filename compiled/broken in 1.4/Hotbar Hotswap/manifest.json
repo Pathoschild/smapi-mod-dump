@@ -1,0 +1,10 @@
+﻿{
+	"Name": "HotbarHotswap",
+	"Author": "Jaredlll08",
+	"Version": "1.0.1",
+	"Description": "Allows you to press a button corresponding to a hotbar slot and move an item to the slot.",
+	"UniqueID": "BlameJared.HotbarHotswap",
+	"EntryDll": "HotbarHotswap.dll",
+	"MinimumApiVersion": "2.0",
+	"UpdateKeys": []
+}

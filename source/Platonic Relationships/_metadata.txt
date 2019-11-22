@@ -1,0 +1,13 @@
+url:
+   https://github.com/ChroniclerCherry/SDV-PlatonicRelationships.git
+
+mods:
+   Platonic Relationships
+
+latest commit:
+   commit ddfd8376e40aef3881a150c31c6211888ff74ea6
+   Author: Cherry <yiminxuezheng@gmail.com>
+   Date:   Mon Nov 18 12:28:47 2019 -0500
+   
+       Explicitly calls patches instead of patchAll to be comptaible with mac and Linux
+   

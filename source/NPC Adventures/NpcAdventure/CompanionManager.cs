@@ -177,7 +177,8 @@ namespace NpcAdventure
         /// </summary>
         /// <param name="loader"></param>
         /// <param name="gameEvents"></param>
-        public void InitializeCompanions(IContentLoader loader, IModEvents gameEvents)
+        /// <param name="reflection"></param>
+        public void InitializeCompanions(IContentLoader loader, IModEvents gameEvents, IReflectionHelper reflection)
         {
             Dictionary<string, string> dispositions = loader.Load<Dictionary<string, string>>("CompanionDispositions");
 
@@ -188,13 +189,13 @@ namespace NpcAdventure
                 if (companion == null)
                     throw new Exception($"Can't find NPC with name '{npcName}'");
 
-                CompanionStateMachine csm = new CompanionStateMachine(this, companion, new CompanionMetaData(dispositions[npcName]), loader, this.monitor);
+                CompanionStateMachine csm = new CompanionStateMachine(this, companion, new CompanionMetaData(dispositions[npcName]), loader, reflection, this.monitor);
                 Dictionary<StateFlag, ICompanionState> stateHandlers = new Dictionary<StateFlag, ICompanionState>()
                 {
-                    [StateFlag.RESET] = new ResetState(csm, gameEvents),
-                    [StateFlag.AVAILABLE] = new AvailableState(csm, gameEvents),
-                    [StateFlag.RECRUITED] = new RecruitedState(csm, gameEvents),
-                    [StateFlag.UNAVAILABLE] = new UnavailableState(csm, gameEvents),
+                    [StateFlag.RESET] = new ResetState(csm, gameEvents, this.monitor),
+                    [StateFlag.AVAILABLE] = new AvailableState(csm, gameEvents, this.monitor),
+                    [StateFlag.RECRUITED] = new RecruitedState(csm, gameEvents, this.monitor),
+                    [StateFlag.UNAVAILABLE] = new UnavailableState(csm, gameEvents, this.monitor),
                 };
 
                 csm.Setup(stateHandlers);

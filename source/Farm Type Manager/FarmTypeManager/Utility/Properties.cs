@@ -72,11 +72,17 @@ namespace FarmTypeManager
                 }
             }
 
+            /// <summary>The helper provided to this mod by SMAPI. Should be set during mod startup.</summary>
+            public static IModHelper Helper { get; set; }
+
             /// <summary>A list of all config data for the current farm, related save data, and content pack (if applicable).</summary>
             public static List<FarmData> FarmDataList = new List<FarmData>();
 
             /// <summary>A series of object lists to be spawned during the current in-game day.</summary>
             public static List<List<TimedSpawn>> TimedSpawns = new List<List<TimedSpawn>>();
+
+            /// <summary>A list of dynamically accessed class types (e.g. classes from other mods) used by this mod, stored here for more efficient reuse.</summary>
+            public static List<Type> DynamicTypes = new List<Type>();
 
             /// <summary>The global settings for this mod. Should be set during mod startup.</summary>
             public static ModConfig MConfig { get; set; }

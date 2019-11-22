@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace FarmTypeManager.Monsters
 {
-    /// <summary>An interface for subclasses of Monster that use a custom property to override hardcoded DamageToFarmer values.</summary>
+    /// <summary>An interface for subclasses of Monster that replace hardcoded damage values with a customizable value.</summary>
     interface ICustomDamage
     {
-        int CustomDamage { get; set; } //when applicable, this should be modified *instead* of DamageToFarmer
+        /// <summary>
+        /// A value that will preserve and/or replace this monster's hardcoded damage values.
+        /// </summary>
+        int CustomDamage { get; set; }
     }
 }

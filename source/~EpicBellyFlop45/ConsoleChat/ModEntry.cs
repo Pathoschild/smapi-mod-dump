@@ -56,10 +56,23 @@ namespace ConsoleChat
 
         private void Say(string command, string[] args)
         {
-            //string message = args[0];
+            string message = "";
 
-            //ChatBox chatBox = new ChatBox();
-            //chatBox.receiveChatMessage(Game1.player.UniqueMultiplayerID, 0, LocalizedContentManager.CurrentLanguageCode, message);
+            foreach (var arg in args)
+            {
+                message += arg + " ";
+            }
+
+            // Ensure a save has been loaded and the user has inputted a message
+            if (Game1.chatBox == null || string.IsNullOrEmpty(message))
+            {
+                return;
+            }
+
+            Game1.chatBox.addMessage($"Console: {message}", new Microsoft.Xna.Framework.Color(150, 150, 150));
+
+            // Log console message to console
+            ModMonitor.Log($"Console: {message}", LogLevel.Info);
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿{
   "Name": "Console Chat",
   "Author": "EpicBellyFlop45",
-  "Version": "1.0.0",
-  "Description": "Logs chat in console",
+  "Version": "1.0.1",
+  "Description": "Logs chat in console, and enables you to speak from console",
   "UniqueID": "EpicBellyFlop45.ConsoleChat",
   "EntryDll": "ConsoleChat.dll",
   "MinimumApiVersion": "2.9",

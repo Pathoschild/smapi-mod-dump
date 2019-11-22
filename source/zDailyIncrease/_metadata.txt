@@ -5,10 +5,9 @@ mods:
    zDailyIncrease
 
 latest commit:
-   commit 79c9faa66eda12beaef1ccaa3704780685b5b65a
-   Merge: a485ce2 99a286c
-   Author: Nick Mullally <thakyZ@voidinc.net>
-   Date:   Mon Jan 1 15:42:10 2018 -0800
+   commit 0671146c25c2a0f4257a28c5cf044bbfa1078ed4
+   Author: thakyZ <thakyz@outlook.com>
+   Date:   Wed Oct 30 12:55:38 2019 -0700
    
-       Merge remote-tracking branch 'origin/master'
+       Updated to 3.0
    

@@ -1,0 +1,15 @@
+﻿{
+  "Name": "BikiFae's RainCoatWhenRaining",
+  "Author": "BikiFae",
+  "Version": "1.1.0",
+  "Description": "Automatically equip a raincoat when it is raining!",
+  "UniqueID": "BikiFae.RainCoatWhenRaining",
+  "EntryDll": "RainCoatWhenRaining.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": ["Nexus:4659"],
+  "Dependencies": [
+	{
+		"UniqueID": "IMS.Rainy.Day.Clothes"
+	}
+  ]
+}

@@ -21,8 +21,8 @@ namespace ChildToNPC.Patches
         {
             if (!ModEntry.IsChildNPC(__instance))
                 return;
-
-            if (__instance.temporaryController == null && Utility.getGameLocationOfCharacter(__instance) is FarmHouse)
+            
+            if(Utility.getGameLocationOfCharacter(__instance) is FarmHouse)
             {
                 __instance.temporaryController = new PathFindController(__instance, __instance.getHome(), new Point(__instance.getHome().warps[0].X, __instance.getHome().warps[0].Y), 2, true)
                 {

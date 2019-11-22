@@ -5,9 +5,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 03dd87f7597ed5260b6b22c52dc99aeeab5aad1a
-   Author: Esca-MMC <41843952+Esca-MMC@users.noreply.github.com>
-   Date:   Sat Oct 26 12:08:13 2019 -0500
+   commit 8cd70a517c74ca56ca269324ccc5355c0b977cbc
+   Author: Esca-MMC <esca.mmc@gmail.com>
+   Date:   Fri Nov 15 08:41:48 2019 -0600
    
-       Fix formatting in readme.md
+       Fix SavedObject behavior for monster sub-spawns
    

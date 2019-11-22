@@ -1,0 +1,13 @@
+url:
+   https://github.com/KirbyLink/UnderdarkKrobus.git
+
+mods:
+   Elven Krobus
+
+latest commit:
+   commit 78e1e1d4607f12618f0dd8da37dbc542a1087c09
+   Author: KirbyLink <kjryan.reeves@gmail.com>
+   Date:   Mon Nov 12 10:03:12 2018 -0800
+   
+       removed manifest from top folder
+   

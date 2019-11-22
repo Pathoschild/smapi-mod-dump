@@ -1,0 +1,3 @@
+{
+  "46370001/t 600 1200/H": "continue/64 15/farmer 64 16 2 Demetrius 64 18 0/speak Demetrius \"{0}\"/addCraftingRecipe Propagator/pause 1750/message \"{1}\"/pause 800/speak Demetrius \"{2}\"/end dialogue Demetrius \"{3}\""
+}

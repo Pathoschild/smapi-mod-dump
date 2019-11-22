@@ -1,0 +1,18 @@
+﻿{
+  "Name": "Snail Mail",
+  "Author": "Darkhax",
+  "Version": "1.0.2",
+  "Description": "Expands available mail with new mail that follows the lore and cannon of the game.",
+  "UniqueID": "darkhax.snailmail",
+  "EntryDll": "SnailMail.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [
+    "GitHub:Stardew-Valley-Modding/Snail-Mail"
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "darkhax.bookcase",
+      "MinimumVersion": "0.7.2"
+    }
+  ]
+}

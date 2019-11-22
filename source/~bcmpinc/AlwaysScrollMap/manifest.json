@@ -1,7 +1,7 @@
 ﻿{
    "Name": "Always Scroll Map",
    "Author": "bcmpinc",
-   "Version": "1.0",
+   "Version": "1.1",
    "Description": "Makes the map scroll past the edge of the map. Useful when planting seeds while walking.",
    "UniqueID": "bcmpinc.AlwaysScrollMap",
    "EntryDll": "AlwaysScrollMap.dll",
@@ -9,6 +9,6 @@
    "UpdateKeys": ["Nexus:2733"],
    "Dependencies": [{
       "UniqueID": "bcmpinc.StardewHack",
-      "MinimumVersion": "1.0"
+      "MinimumVersion": "1.3"
    }]
 }

@@ -1,0 +1,13 @@
+url:
+   https://github.com/ChroniclerCherry/SDV-ProftMargins.git
+
+mods:
+   Profit Margins
+
+latest commit:
+   commit 6a3fee967e6421add932b3a1497ab81ad279fc67
+   Author: Cherry <yiminxuezheng@gmail.com>
+   Date:   Thu Nov 14 16:35:24 2019 -0500
+   
+       Add project files.
+   

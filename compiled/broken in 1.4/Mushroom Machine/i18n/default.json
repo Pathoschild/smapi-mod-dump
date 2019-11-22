@@ -1,0 +1,14 @@
+﻿{
+  "machine.name": "Propagator",
+  "machine.desc": "Inoculate with a mushroom to gradually grow more.",
+
+  "error.location": "Mushrooms won't grow here.",
+  "error.truffle": "Truffles won't grow this way.",
+
+  "event.4637.0000.0000": "Hey @. I seem to have lost a couple of my logs. Have you seen them around?#$b#… Actually, forget I asked.$s#",
+
+  "event.4637.0001.0000": "Hi @! I decided to stop by and check in on the cave I set up earlier for cultivating mushrooms on your farm.#$b#You've been making the most of it, I imagine? It’s certainly helped with my research. In fact, I’ve made another breakthrough.#$b#That cave has been very useful for observing local fungi in their natural environment, but I’ve come up with a new device that will make the mushrooms much easier to grow.",
+  "event.4637.0001.0001": "Learned how to craft a 'Propagator'.",
+  "event.4637.0001.0002": "With these schematics, you should be able to build it yourself and place it anywhere with similar environmental conditions to the cave.#$b#If I had a brand-new cellar, that would be the first place I'd try!$h#",
+  "event.4637.0001.0003": "How are you doing, @? Have you grown any interesting mushrooms with my little device yet?"
+}

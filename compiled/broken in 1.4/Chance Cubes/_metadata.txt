@@ -1,0 +1,3 @@
+page URL: https://www.curseforge.com/stardewvalley/mods/chance-cubes
+IDs: turkey2349.chancecubes
+update keys: CurseForge:297899

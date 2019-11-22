@@ -42,25 +42,24 @@ namespace FarmTypeManager
                 //if this spawns a Fly, replace it with a FlyFTM (note: this method is used to avoid overriding the entire method & working around readonly object fields)
                 if (Health == -500 && currentLocation.characters[currentLocation.characters.Count - 1] is Fly oldFly)
                 {
-                    //find any existing farm data to save this fly in
-                    //NOTE: this hacky workaround is used because SavedObjects are only processed in relation to Utility.FarmDataList, each of which generates a data file
-                    if (Utility.FarmDataList.Count > 0) //if any farm data exists
+                    int ID = Utility.RNG.Next(int.MinValue, -1); //generate a random ID for saving purposes (note: the ID is below -1 to avoid matching any known NPC values set by base game functions)
+                    FlyFTM newFly = new FlyFTM(oldFly.Position, oldFly.hard) //make a replacement fly of the correct subclass
                     {
-                        int ID = Utility.RNG.Next(int.MinValue, -1); //generate a random ID for saving purposes (note: the ID is below -1 to avoid matching any known NPC values set by base game functions)
-                        FlyFTM newFly = new FlyFTM(oldFly.Position, oldFly.hard) //make a replacement fly of the correct subclass
-                        {
-                            currentLocation = oldFly.currentLocation, //set its current location
-                            id = ID //assign the ID to it
-                        };
+                        currentLocation = oldFly.currentLocation, //set its current location
+                        id = ID //assign the ID to it
+                    };
+                    currentLocation.characters[currentLocation.characters.Count - 1] = newFly; //replace the old fly with the new one
 
-                        currentLocation.characters[currentLocation.characters.Count - 1] = newFly; //replace the old fly with the new one
+                    SavedObject save = new SavedObject(currentLocation.Name, Position, SavedObject.ObjectType.Monster, ID, null, 1); //create save data for the new fly (set to expire overnight) 
 
-                        SavedObject save = new SavedObject(currentLocation.Name, Position, SavedObject.ObjectType.Monster, ID, null, 1); //create save data for the new fly (set to expire overnight) 
-                        Utility.FarmDataList[0].Save.SavedObjects.Add(save); //store it in the first listed FarmData
+                    if (Context.IsMainPlayer) //if this method was run by the host player
+                    {
+                        Utility.FarmDataList[0].Save.SavedObjects.Add(save); //store the save data in the first listed FarmData
                     }
-                    else //if, for some reason, no farm data exists at all (note: this code should be unreachable if this mod works as expected)
+                    else //if this method was run by a client player (farmhand)
                     {
-                        currentLocation.characters.Remove(oldFly); //remove the spawned fly
+                        //send a message to the host player to process this save data
+                        Utility.Helper.Multiplayer.SendMessage<SavedObject>(save, "SavedObject", new string[] { Utility.Helper.ModRegistry.ModID }, new long[] { Game1.MasterPlayer.UniqueMultiplayerID });
                     }
                 }
             }

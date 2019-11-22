@@ -1,0 +1,11 @@
+Crafting Recipes=true
+Bundles=true
+Building Prices/Mats=true
+Intro Cutscene Madlib=true
+Crop Prices=true
+Fishing Difficulty=true
+Mine Layouts=true
+Animal Skins=true
+NPC Skins=true
+Rain=true
+Music=true

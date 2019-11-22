@@ -34,10 +34,11 @@ namespace StardewHack.AlwaysScrollMap
 
         private void ToggleScroll(object sender, ButtonPressedEventArgs e) {
             if (e.Button.Equals(config.ToggleScroll)) {
-                if (StardewValley.Game1.currentLocation.IsOutdoors)
+                if (StardewValley.Game1.currentLocation.IsOutdoors) {
                     config.EnabledOutdoors ^= true;
-                else
+                } else {
                     config.EnabledIndoors ^= true;
+                }
             }
         }
 
@@ -50,7 +51,7 @@ namespace StardewHack.AlwaysScrollMap
             );
             range.Extend(
                 // if (Game1.currentLocation.forceViewportPlayerFollow)
-                Instructions.Ldsfld(typeof(Game1), nameof(Game1.currentLocation)),
+                // (Note: currentLocation is a field on PC and a property on android).
                 Instructions.Ldfld(typeof(GameLocation), nameof(GameLocation.forceViewportPlayerFollow)),
                 OpCodes.Brfalse
             );
@@ -59,6 +60,7 @@ namespace StardewHack.AlwaysScrollMap
                 Instructions.Call(typeof(State), nameof(State.Enabled)),
                 Instructions.Brtrue(AttachLabel(range.End[0]))
             );
+            range.ReplaceJump(2, range[0]);
         }
     }
 }

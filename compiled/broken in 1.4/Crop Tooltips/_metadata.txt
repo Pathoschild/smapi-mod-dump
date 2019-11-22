@@ -1,0 +1,3 @@
+page URL: https://www.curseforge.com/stardewvalley/mods/crop-tooltips
+IDs: gengeathrow.croptooltip
+update keys: CurseForge:307933

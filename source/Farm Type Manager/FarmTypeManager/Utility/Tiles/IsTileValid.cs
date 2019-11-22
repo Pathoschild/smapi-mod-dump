@@ -23,63 +23,72 @@ namespace FarmTypeManager
             /// <returns>Whether the provided tile is valid for the given area and object size, based on the area's StrictTileChecking setting.</returns>
             public static bool IsTileValid(GameLocation location, Vector2 tile, bool isLarge, string strictTileChecking)
             {
-                bool valid = false;
+                bool valid = true; //whether the provided tile is valid with the given parameters
 
-                if (strictTileChecking.Equals("off", StringComparison.OrdinalIgnoreCase) || strictTileChecking.Equals("none", StringComparison.OrdinalIgnoreCase)) //no validation at all
+                List<Vector2> tilesToCheck; //a list of tiles that need to be valid (based on spawn object size)
+
+                if (isLarge) //if the object to be spawned is 2x2 tiles in size
+                {
+                    //list a 2x2 set of tiles with "tile" as the top left corner
+                    tilesToCheck = new List<Vector2> {
+                        tile,
+                        new Vector2((int)tile.X + 1, (int)tile.Y),
+                        new Vector2((int)tile.X, (int)tile.Y + 1),
+                        new Vector2((int)tile.X + 1, (int)tile.Y + 1)
+                    };
+                }
+                else //if the object is 1x1
+                {
+                    tilesToCheck = new List<Vector2> { tile }; //list only "tile"
+                }
+
+                if (strictTileChecking.Equals("none", StringComparison.OrdinalIgnoreCase)) //no validation at all
                 {
                     valid = true;
                 }
                 else if (strictTileChecking.Equals("low", StringComparison.OrdinalIgnoreCase)) //low-strictness validation
                 {
-                    if (isLarge) //2x2 tile validation
+                    foreach (Vector2 t in tilesToCheck) //for each tile to be checked
                     {
-                        //if all the necessary tiles for a 2x2 object are *not* blocked by other objects
-                        if (!location.isObjectAtTile((int)tile.X, (int)tile.Y) && !location.isObjectAtTile((int)tile.X + 1, (int)tile.Y) && !location.isObjectAtTile((int)tile.X, (int)tile.Y + 1) && !location.isObjectAtTile((int)tile.X + 1, (int)tile.Y + 1))
+                        if (location.isObjectAtTile((int)t.X, (int)t.Y)) //if this tile is blocked by another object
                         {
-                            valid = true;
-                        }
-                    }
-                    else //single tile validation
-                    {
-                        if (!location.isObjectAtTile((int)tile.X, (int)tile.Y)) //if the tile is *not* blocked by another object
-                        {
-                            valid = true;
+                            valid = false; //prevent spawning here
+                            break; //skip checking the other tiles
                         }
                     }
                 }
                 else if (strictTileChecking.Equals("medium", StringComparison.OrdinalIgnoreCase)) //medium-strictness validation
                 {
-                    if (isLarge) //2x2 tile validation
+                    foreach (Vector2 t in tilesToCheck) //for each tile to be checked
                     {
-                        //if all the necessary tiles for a 2x2 object are *not* occupied
-                        if (!location.isTileOccupiedForPlacement(tile) && !location.isTileOccupiedForPlacement(new Vector2(tile.X + 1, tile.Y)) && !location.isTileOccupiedForPlacement(new Vector2(tile.X, tile.Y + 1)) && !location.isTileOccupiedForPlacement(new Vector2(tile.X + 1, tile.Y + 1)))
+                        if (location.isTileOccupiedForPlacement(t)) //if this tile is occupied
                         {
-                            valid = true;
-                        }
-                    }
-                    else //single tile validation
-                    {
-                        if (!location.isTileOccupiedForPlacement(tile)) //if the tile is *not* occupied
-                        {
-                            valid = true;
+                            valid = false; //prevent spawning here
+                            break; //skip checking the other tiles
                         }
                     }
                 }
-                else //default to "high"-strictness validation
+                else if (strictTileChecking.Equals("high", StringComparison.OrdinalIgnoreCase)) //high-strictness validation
                 {
-                    if (isLarge) //2x2 tile validation
+                    foreach (Vector2 t in tilesToCheck) //for each tile to be checked
                     {
-                        //if all the necessary tiles for a 2x2 object are *not* occupied
-                        if (location.isTileLocationTotallyClearAndPlaceable(tile) && location.isTileLocationTotallyClearAndPlaceable(new Vector2(tile.X + 1, tile.Y)) && location.isTileLocationTotallyClearAndPlaceable(new Vector2(tile.X, tile.Y + 1)) && location.isTileLocationTotallyClearAndPlaceable(new Vector2(tile.X + 1, tile.Y + 1)))
+                        if (!location.isTileLocationTotallyClearAndPlaceable(t)) //if the tile is *not* totally clear
                         {
-                            valid = true;
+                            valid = false; //prevent spawning here
+                            break; //skip checking the other tiles
                         }
                     }
-                    else //single tile validation
+                }
+                else //max-strictness validation
+                {
+                    foreach (Vector2 t in tilesToCheck) //for each tile to be checked
                     {
-                        if (location.isTileLocationTotallyClearAndPlaceable(tile)) //if the tile is *not* occupied
+                        string noSpawn = location.doesTileHaveProperty((int)t.X, (int)t.Y, "NoSpawn", "Back"); //get the "NoSpawn" property for this tile
+
+                        if ((noSpawn != null && noSpawn != "") || !location.isTileLocationTotallyClearAndPlaceable(t)) //if noSpawn is *not* empty OR if the tile is *not* totally clear
                         {
-                            valid = true;
+                            valid = false; //prevent spawning here
+                            break; //skip checking the other tiles
                         }
                     }
                 }

@@ -1,0 +1,13 @@
+url:
+   https://github.com/xirsoi/MayonnaisePlusPlus.git
+
+mods:
+   Mayonnaise++
+
+latest commit:
+   commit aefef2999702569a98fda6da3f233100d43807b1
+   Author: xirsoi <chevalierAdam2@gmail.com>
+   Date:   Sun Nov 3 11:38:56 2019 -0600
+   
+       adds Nexus to update keys and fixes two bugs
+   

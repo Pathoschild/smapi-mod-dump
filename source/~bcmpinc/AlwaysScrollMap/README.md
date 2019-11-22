@@ -40,3 +40,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 #### 1.0:
 * Added dependency on StardewHack.
+
+#### 1.1:
+* Add support for android.

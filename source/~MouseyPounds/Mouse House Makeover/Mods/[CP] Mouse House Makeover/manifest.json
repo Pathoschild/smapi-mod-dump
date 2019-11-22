@@ -1,7 +1,7 @@
 {
    "Name": "Mouse House Makeover",
    "Author": "MouseyPounds and hatmouse",
-   "Version": "1.0.2",
+   "Version": "1.0.3",
    "Description": "Gives Hat Mouse a fancy new stone house and some friends to share the burden of minding the store.",
    "UniqueID": "MouseyPounds.HatMouseMakeover",
    "MinimumApiVersion": "2.0",
@@ -31,6 +31,10 @@
    },
    {
 	   "UniqueID": "Lita.StarblueValley",
+	   "IsRequired": false,
+   },
+   {
+	   "UniqueID": "ManaKirel.VMI",
 	   "IsRequired": false,
    }, ],
 }

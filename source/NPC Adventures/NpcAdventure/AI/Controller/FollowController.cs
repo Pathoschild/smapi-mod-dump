@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace NpcAdventure.AI.Controller
 {
-    public class FollowController : IController
+    internal class FollowController : IController
     {
         public const int FOLLOWING_LOST_TIMEOUT = 15;
         public const float SPEEDUP_DISTANCE_THRESHOLD = 7;
@@ -49,10 +49,11 @@ namespace NpcAdventure.AI.Controller
         private int switchDirectionSpeed;
         private int facingDirection;
         private Vector2 animationUpdateSum;
+        private int idleTImer;
 
-        public virtual bool IsIdle => false;
+        public virtual bool IsIdle => this.idleTImer == 0;
 
-        public FollowController(AI_StateMachine ai)
+        internal FollowController(AI_StateMachine ai)
         {
             this.pathToFollow = new Queue<Vector2>();
             this.ai = ai;
@@ -85,9 +86,10 @@ namespace NpcAdventure.AI.Controller
 
         public virtual void Update(UpdateTickedEventArgs e)
         {
-            if (this.follower == null || this.leader == null || !Context.CanPlayerMove)
+            if (this.follower == null || this.leader == null || (!Context.IsPlayerFree && !Context.IsMultiplayer))
                 return;
 
+            this.CheckIdleState();
             this.PathfindingNodeUpdateCheck();
 
             if (this.currentFollowedPoint != this.negativeOne)
@@ -95,6 +97,12 @@ namespace NpcAdventure.AI.Controller
 
             if (e.IsMultipleOf(15))
                 this.PathfindingRemakeCheck();
+        }
+
+        private void CheckIdleState()
+        {
+            if (this.idleTImer > 0)
+                --this.idleTImer;
         }
 
         protected virtual void AnimationSubUpdate()
@@ -180,6 +188,9 @@ namespace NpcAdventure.AI.Controller
 
         protected virtual void PathfindingRemakeCheck()
         {
+            if (this.leader == null || this.leader.currentLocation == null)
+                return;
+
             Vector2 leaderCurrentTile = this.leader.getTileLocation();
 
             if (this.pathFinder.GameLocation != this.leader.currentLocation) {
@@ -283,12 +294,14 @@ namespace NpcAdventure.AI.Controller
                 this.lastMovementDirection = this.lastFrameVelocity / this.lastFrameVelocity.Length();
 
                 this.movedLastFrame = true;
+                this.idleTImer = -1;
             }
             else if (this.movedLastFrame)
             {
                 this.follower.Halt();
                 this.follower.Sprite.faceDirectionStandard(this.GetFacingDirectionFromMovement(new Vector2(this.lastMovementDirection.X, -this.lastMovementDirection.Y)));
                 this.movedLastFrame = false;
+                this.idleTImer = Game1.random.Next(480, 840);
             }
             else
             {
@@ -427,8 +440,12 @@ namespace NpcAdventure.AI.Controller
             {
                 this.PathfindingRemakeCheck();
             }
+
+            this.idleTImer = Game1.random.Next(500, 800);
         }
 
-        public virtual void Deactivate() {}
+        public virtual void Deactivate() {
+            this.idleTImer = 0;
+        }
     }
 }

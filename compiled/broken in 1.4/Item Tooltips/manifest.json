@@ -1,0 +1,10 @@
+﻿{
+	"Name": "Item Tooltips",
+	"Author": "Jaredlll08",
+	"Version": "1.0.2",
+	"Description": "Adds tooltips to items that you are holding",
+	"UniqueID": "BlameJared.ItemTooltips",
+	"EntryDll": "ItemTooltips.dll",
+	"MinimumApiVersion": "2.0",
+	"UpdateKeys": []
+}

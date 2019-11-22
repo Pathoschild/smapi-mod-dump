@@ -1022,6 +1022,7 @@
 							<div class="setting">
 								<label for="Forage-StrictTileChecking">Tile checking strictness<span class="tooltip">?<span class="tooltiptext">This controls how carefully the mod checks tiles before spawning.<br/><br/>If forage won't spawn on tiles that seem valid, try lowering this setting.<br/><br/>Note that "low" and "none" may cause less forage to spawn by targeting invalid tiles.</span></span></label>
 								<select name="Forage-StrictTileChecking" id="Forage-StrictTileChecking" style="width:6em;">
+								<option>Maximum</option>
 								<option>High</option>
 								<option>Medium</option>
 								<option>Low</option>
@@ -1801,6 +1802,7 @@
 							<div class="setting">
 								<label for="LargeObject-StrictTileChecking">Tile checking strictness<span class="tooltip">?<span class="tooltiptext">This controls how carefully the mod checks tiles before spawning.<br/><br/>If objects won't spawn on tiles that seem valid, try lowering this setting.<br/><br/>Note that "low" and "none" may cause less objects to spawn by targeting invalid tiles.</span></span></label>
 								<select name="LargeObject-StrictTileChecking" id="LargeObject-StrictTileChecking" style="width:6em;">
+								<option>Maximum</option>
 								<option>High</option>
 								<option>Medium</option>
 								<option>Low</option>
@@ -2683,6 +2685,7 @@
 							<div class="setting">
 								<label for="Ore-StrictTileChecking">Tile checking strictness<span class="tooltip">?<span class="tooltiptext">This controls how carefully the mod checks tiles before spawning.<br/><br/>If ore won't spawn on tiles that seem valid, try lowering this setting.<br/><br/>Note that "low" and "none" may cause less ore to spawn by targeting invalid tiles.</span></span></label>
 								<select name="Ore-StrictTileChecking" id="Ore-StrictTileChecking" style="width:6em;">
+								<option>Maximum</option>
 								<option>High</option>
 								<option>Medium</option>
 								<option>Low</option>
@@ -3432,7 +3435,6 @@
 										<option>Damage</option>
 										<option>Defense</option>
 										<option>Dodge chance</option>
-										<option>Speed</option>
 										<option>Experience</option>
 										<option>Related skill</option>
 										<option>Minimum skill level</option>
@@ -3441,7 +3443,6 @@
 										<option>Percent extra damage per skill level</option>
 										<option>Percent extra defense per skill level</option>
 										<option>Percent extra dodge chance per skill level</option>
-										<option>Percent extra speed per skill level</option>
 										<option>Percent extra experience per skill level</option>
 										<option>Loot</option>
 										<option>Current health</option>
@@ -3479,13 +3480,6 @@
 									<fieldset class="border">
 										<legend>Dodge chance<span class="tooltip">?<span class="tooltiptext">Set the percentage of attacks the monster will dodge, taking no damage or knockback.</span></span></legend>
 										<input type="number" name="Monster-MonsterTypes-Settings-DodgeChance" id="Monster-MonsterTypes-Settings-DodgeChance" style="width:4em;">%
-									</fieldset>
-								</div>
-								
-								<div class="setting" id="Monster-MonsterTypes-Settings-Speed-Div" style="display:none">
-									<fieldset class="border">
-										<legend>Speed<span class="tooltip">?<span class="tooltiptext">Set how fast the monster moves (default 1).</span></span></legend>
-										<input type="number" name="Monster-MonsterTypes-Settings-Speed" id="Monster-MonsterTypes-Settings-Speed" style="width:4em;">
 									</fieldset>
 								</div>
 								
@@ -3549,13 +3543,6 @@
 									<fieldset class="border">
 										<legend>Percent extra dodge chance per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much dodge chance.<br/><br/>This will <b>multiply</b> the existing dodge chance.<br/><br/>Example: With level 8 Combat skill, setting this to <b>100%</b> will multiply the monster's chance by <b>9</b> (+800%).<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
 										<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraDodgeChancePerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraDodgeChancePerSkillLevel" style="width:4em;">%
-									</fieldset>
-								</div>
-								
-								<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraSpeedPerSkillLevel-Div" style="display:none">
-									<fieldset class="border">
-										<legend>Percent extra speed per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much speed.<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
-										<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraSpeedPerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraSpeedPerSkillLevel" style="width:4em;">%
 									</fieldset>
 								</div>
 								
@@ -3853,6 +3840,7 @@
 							<div class="setting">
 								<label for="Monster-StrictTileChecking">Tile checking strictness<span class="tooltip">?<span class="tooltiptext">This controls how carefully the mod checks tiles before spawning.<br/><br/>If monsters won't spawn on tiles that seem valid, try lowering this setting.<br/><br/>Note that "low" and "none" may cause fewer monsters to spawn by targeting invalid tiles.</span></span></label>
 								<select name="Monster-StrictTileChecking" id="Monster-StrictTileChecking" style="width:6em;">
+								<option>Maximum</option>
 								<option>High</option>
 								<option>Medium</option>
 								<option>Low</option>
@@ -4691,7 +4679,7 @@
 				"ExcludeTerrainTypes": [],
 				"IncludeCoordinates": [],
 				"ExcludeCoordinates": [],
-				"StrictTileChecking": "High",
+				"StrictTileChecking": "Maximum",
 				"SpawnTiming": {
 					"StartTime": 600,
 					"EndTime": 600,
@@ -4751,7 +4739,7 @@
 				"ExcludeTerrainTypes": [],
 				"IncludeCoordinates": [],
 				"ExcludeCoordinates": [],
-				"StrictTileChecking": "High",
+				"StrictTileChecking": "Maximum",
 				"SpawnTiming": {
 					"StartTime": 600,
 					"EndTime": 600,
@@ -4790,7 +4778,7 @@
 				"ExcludeTerrainTypes": [],
 				"IncludeCoordinates": [],
 				"ExcludeCoordinates": [],
-				"StrictTileChecking": "High",
+				"StrictTileChecking": "Maximum",
 				"SpawnTiming": {
 					"StartTime": 600,
 					"EndTime": 600,
@@ -4935,7 +4923,7 @@
 				"ExcludeTerrainTypes": [],
 				"IncludeCoordinates": [],
 				"ExcludeCoordinates": [],
-				"StrictTileChecking": "High",
+				"StrictTileChecking": "Maximum",
 				"SpawnTiming": {
 					"StartTime": 1900,
 					"EndTime": 2550,
@@ -5008,7 +4996,7 @@
 				"ExcludeTerrainTypes": [],
 				"IncludeCoordinates": [],
 				"ExcludeCoordinates": [],
-				"StrictTileChecking": "High",
+				"StrictTileChecking": "Maximum",
 				"SpawnTiming": {
 					"StartTime": 1900,
 					"EndTime": 2550,
@@ -5758,7 +5746,7 @@
 						"ExcludeTerrainTypes": [],
 						"IncludeCoordinates": [],
 						"ExcludeCoordinates": [],
-						"StrictTileChecking": "High",
+						"StrictTileChecking": "Maximum",
 						"SpawnTiming": {
 						  "StartTime": 600,
 						  "EndTime": 600,
@@ -5800,7 +5788,7 @@
 						"ExcludeTerrainTypes": [],
 						"IncludeCoordinates": [],
 						"ExcludeCoordinates": [],
-						"StrictTileChecking": "High",
+						"StrictTileChecking": "Maximum",
 						"SpawnTiming": {
 							"StartTime": 600,
 							"EndTime": 600,
@@ -5841,7 +5829,7 @@
 						"ExcludeTerrainTypes": [],
 						"IncludeCoordinates": [],
 						"ExcludeCoordinates": [],
-						"StrictTileChecking": "High",
+						"StrictTileChecking": "Maximum",
 						"SpawnTiming": {
 							"StartTime": 600,
 							"EndTime": 600,
@@ -5879,7 +5867,7 @@
 						"ExcludeTerrainTypes": [],
 						"IncludeCoordinates": [],
 						"ExcludeCoordinates": [],
-						"StrictTileChecking": "High",
+						"StrictTileChecking": "Maximum",
 						"SpawnTiming": {
 						  "StartTime": 600,
 						  "EndTime": 600,
@@ -7915,13 +7903,6 @@
 			}
 			curr.value = null;
 			
-			curr = document.getElementById("Monster-MonsterTypes-Settings-Speed");
-			if (Number.isNaN(parseInt(curr.value)) == false)
-			{
-				settings["Speed"] = parseInt(curr.value);
-			}
-			curr.value = null;
-			
 			curr = document.getElementById("Monster-MonsterTypes-Settings-EXP");
 			if (Number.isNaN(parseInt(curr.value)) == false)
 			{
@@ -7975,13 +7956,6 @@
 			if (Number.isNaN(parseInt(curr.value)) == false)
 			{
 				settings["PercentExtraDodgeChancePerSkillLevel"] = parseInt(curr.value);
-			}
-			curr.value = null;
-			
-			curr = document.getElementById("Monster-MonsterTypes-Settings-PercentExtraSpeedPerSkillLevel");
-			if (Number.isNaN(parseInt(curr.value)) == false)
-			{
-				settings["PercentExtraSpeedPerSkillLevel"] = parseInt(curr.value);
 			}
 			curr.value = null;
 			

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -10,14 +11,30 @@ using StardewValley;
 using StardewValley.Monsters;
 using Microsoft.Xna.Framework.Graphics;
 using xTile.Layers;
+using Netcode;
 
 namespace FarmTypeManager.Monsters
 {
     /// <summary>A subclass of Stardew's Duggy class, adjusted for use by this mod.</summary>
     class DuggyFTM : Duggy, ICustomDamage
     {
-        public int CustomDamage { get; set; } = 8; //implements ICustomDamage (default set to mimic hardcoded values)
-        public bool MoveAnywhere { get; set; } = false; //if true, ignore this monster type's default movement restrictions
+        [XmlElement("FTM_customDamage")]
+        public readonly NetInt customDamage = new NetInt(8); //default set to mimic hardcoded values
+
+        /// <summary>A customizable value for DamageToFarmer, used to preserve it during temporary damage changes.</summary>
+        [XmlIgnore]
+        public int CustomDamage
+        {
+            get
+            {
+                return customDamage.Value;
+            }
+
+            set
+            {
+                customDamage.Value = value;
+            }
+        }
 
         /// <summary>Creates an instance of Stardew's Duggy class, but with adjustments made for this mod.</summary>
         public DuggyFTM()
@@ -28,11 +45,17 @@ namespace FarmTypeManager.Monsters
 
         /// <summary>Creates an instance of Stardew's Duggy class, but with adjustments made for this mod.</summary>
         /// <param name="position">The x,y coordinates of this monster's location.</param>
-        /// <param name="moveAnywhere">If true, this monster will ignore some of its default movement restrictions.</param>
-        public DuggyFTM(Vector2 position, bool moveAnywhere = false)
+        public DuggyFTM(Vector2 position)
             : base(position)
         {
-            MoveAnywhere = moveAnywhere;
+            
+        }
+
+        /// <summary>This method adds the CustomDamage setting to to the monster's list of net fields for multiplayer functionality.</summary>
+        protected override void initNetFields()
+        {
+            base.initNetFields();
+            this.NetFields.AddField(customDamage);
         }
 
         //this override fixes the following Duggy behavioral bugs:
@@ -52,16 +75,10 @@ namespace FarmTypeManager.Monsters
                 {
                     if (this.IsInvisible)
                     {
-                        if (MoveAnywhere) //if this monster is allowed to ignore its default movement restrictions
+                        if (currentLocation?.map != null) //if the player has access to the current location's map (a necessary check for farmhands in some locations)
                         {
-                            //only check for the NPCBarrier flag
+                            //only check for the NPCBarrier flag, ignoring the base Duggy's other movement restrictions
                             if (this.currentLocation.map.GetLayer("Back").Tiles[(int)this.Player.getTileLocation().X, (int)this.Player.getTileLocation().Y].Properties.ContainsKey("NPCBarrier"))
-                                return;
-                        }
-                        else //if this monster should use its default movement restrictions
-                        {
-                            //use the default class's condition checks
-                            if (this.currentLocation.map.GetLayer("Back").Tiles[(int)this.Player.getTileLocation().X, (int)this.Player.getTileLocation().Y].Properties.ContainsKey("NPCBarrier") || !this.currentLocation.map.GetLayer("Back").Tiles[(int)this.Player.getTileLocation().X, (int)this.Player.getTileLocation().Y].TileIndexProperties.ContainsKey("Diggable") && this.currentLocation.map.GetLayer("Back").Tiles[(int)this.Player.getTileLocation().X, (int)this.Player.getTileLocation().Y].TileIndex != 0)
                                 return;
                         }
                         this.Position = new Vector2(this.Player.Position.X, this.Player.Position.Y + (float)this.Player.Sprite.SpriteHeight - (float)this.Sprite.SpriteHeight);
@@ -79,7 +96,7 @@ namespace FarmTypeManager.Monsters
                 this.currentLocation.isCollidingPosition(boundingBox, Game1.viewport, false, 8, false, (Character)this);
                 this.Sprite.AnimateRight(time, 0, "");
                 this.Sprite.interval = 220f;
-                this.DamageToFarmer = CustomDamage; //use custom damage (original value: 8)
+                this.DamageToFarmer = CustomDamage; //use customizable damage instead of hardcoded values
             }
             if (this.Sprite.currentFrame >= 8)
                 this.Sprite.AnimateUp(time, 0, "");
@@ -88,10 +105,10 @@ namespace FarmTypeManager.Monsters
             this.IsInvisible = true;
             this.Sprite.currentFrame = 0;
             this.DamageToFarmer = 0;
-            //skip the normal Duggy's tile alterations
+            //skip the base Duggy's tile alterations
         }
 
-        /// <summary>This is a copy of the virtual method "Monster.behaviorAtGameTick", used to implement the external Duggy class's "base.behaviorAtGameTick" call.</summary>
+        /// <summary>This is a copy of the virtual method "Monster.behaviorAtGameTick", used to implement the base Duggy class's "base.behaviorAtGameTick" call.</summary>
         private void Monster_behaviorAtGameTick(GameTime time)
         {
             if ((double)this.timeBeforeAIMovementAgain > 0.0)

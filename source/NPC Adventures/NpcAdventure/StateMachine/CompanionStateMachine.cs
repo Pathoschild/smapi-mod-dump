@@ -33,12 +33,13 @@ namespace NpcAdventure.StateMachine
         public NPC Companion { get; private set; }
         public CompanionMetaData Metadata { get; }
         public IContentLoader ContentLoader { get; private set; }
-        public IMonitor Monitor { get; }
+        private IMonitor Monitor { get; }
         public Chest Bag { get; private set; }
+        public IReflectionHelper Reflection { get; }
         public Dictionary<StateFlag, ICompanionState> States { get; private set; }
         private ICompanionState currentState;
 
-        public CompanionStateMachine(CompanionManager manager, NPC companion, CompanionMetaData metadata, IContentLoader loader, IMonitor monitor = null)
+        public CompanionStateMachine(CompanionManager manager, NPC companion, CompanionMetaData metadata, IContentLoader loader, IReflectionHelper reflection, IMonitor monitor = null)
         {
             this.CompanionManager = manager;
             this.Companion = companion;
@@ -46,6 +47,7 @@ namespace NpcAdventure.StateMachine
             this.ContentLoader = loader;
             this.Monitor = monitor;
             this.Bag = new Chest(true);
+            this.Reflection = reflection;
         }
 
         /// <summary>
@@ -162,6 +164,48 @@ namespace NpcAdventure.StateMachine
 
             this.Monitor.Log($"{this.Companion} delivered bag contents into farm house at position {place}");
         }
+
+        /// <summary>
+        /// Does companion have this skill?
+        /// </summary>
+        /// <param name="skill">Which skill</param>
+        /// <returns>True if companion has this skill, otherwise False</returns>
+        public bool HasSkill(string skill)
+        {
+            return this.Metadata.PersonalSkills.Contains(skill);
+        }
+
+        /// <summary>
+        /// Does companion have all of these skills?
+        /// </summary>
+        /// <param name="skills">Which skills</param>
+        /// <returns>True if companion has all of them, otherwise False</returns>
+        public bool HasSkills(params string[] skills)
+        {
+            foreach (string skill in skills)
+            {
+                if (!this.HasSkill(skill))
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Does companion have any of these skills?
+        /// </summary>
+        /// <param name="skills">Which skills</param>
+        /// <returns>True if companion have any of these skills, otherwise False</returns>
+        public bool HasSkillsAny(params string[] skills)
+        {
+            foreach (string skill in skills)
+            {
+                if (this.HasSkill(skill))
+                    return true;
+            }
+
+            return false;
+        } 
 
         /// <summary>
         /// Make companion AVAILABLE to recruit

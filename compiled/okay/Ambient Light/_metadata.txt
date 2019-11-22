@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4639
+IDs: SixthTitan.AmbientLight
+update keys: Nexus:4639

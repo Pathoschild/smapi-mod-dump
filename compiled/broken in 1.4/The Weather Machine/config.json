@@ -1,11 +1,11 @@
 {
   "coldTemp": 30,
-  "hotTemp": 70,
+  "hotTemp": 50,
   "tempType": "F",
   "WindSpeed": 4.0,
-  "AmbientLight": true,
   "EnableExhaustion": true,
-  "EnableCritters": true,
   "EnableSolunar": true,
-  "EnableExperimental": false
+  "ClassicMode": false,
+  "EnableExperimental": false,
+  "EnableCritters": true
 }

@@ -1,0 +1,13 @@
+{
+  "MaximumDaysToMature": 4,
+  "WorksInCellar": true,
+  "WorksInFarmCave": true,
+  "WorksInBuildings": false,
+  "WorksInFarmHouse": false,
+  "WorksInGreenhouse": false,
+  "WorksOutdoors": false,
+  "DisabledForFruitCave": true,
+  "RecipeAlwaysAvailable": false,
+  "Debugging": false,
+  "GivePropagatorKey": "F9"
+}

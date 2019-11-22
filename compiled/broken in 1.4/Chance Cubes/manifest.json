@@ -1,0 +1,10 @@
+﻿{
+   "Name": "Chance Cubes",
+   "Author": "Turkey2349",
+   "Version": "0.0.3",
+   "Description": "Chance Cubes! But in Stardew Valley!",
+   "UniqueID": "turkey2349.chancecubes",
+   "EntryDll": "Chance Cubes.dll",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": []
+}

@@ -1,0 +1,3 @@
+page URL: https://www.curseforge.com/stardewvalley/mods/trash-trash
+IDs: BlameJared.TrashTrash
+update keys: CurseForge:297981, GitHub:jaredlll08/Trash-Trash

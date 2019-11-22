@@ -1,0 +1,3 @@
+page URL: https://www.curseforge.com/stardewvalley/mods/bookcase
+IDs: darkhax.bookcase
+update keys: CurseForge:297252, GitHub:Stardew-Valley-Modding/Bookcase

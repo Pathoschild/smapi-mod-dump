@@ -133,8 +133,9 @@ namespace StardewHack.HarvestWithScythe
                 Instructions.Ldarg_S(4),
                 OpCodes.Brfalse
             );
+            
             // Get a reference to the 'i' variable.
-            var var_i = (LocalBuilder)start_loop[1].operand;
+            var var_i = start_loop[1].operand as LocalBuilder;
             // Remove the head of the loop.
             start_loop.length = 3;
             start_loop.Remove();
@@ -167,7 +168,7 @@ namespace StardewHack.HarvestWithScythe
                 OpCodes.Add,
                 Instructions.Stloc_S(var_i),
                 Instructions.Ldloc_S(var_i),
-                Instructions.Ldloc_S(4),
+                OpCodes.Ldloc_S, // num2
                 OpCodes.Blt
             );
             
@@ -183,7 +184,7 @@ namespace StardewHack.HarvestWithScythe
 
             #region Colored flowers
             // For colored flowers we need to call createItemDebris instead of createObjectDebris
-            FindCode(
+            var code = FindCode(
                 // Game1.createObjectDebris (indexOfHarvest, xTile, yTile, -1, num3, 1f, null);
                 OpCodes.Ldarg_0,
                 OpCodes.Ldfld,
@@ -191,14 +192,16 @@ namespace StardewHack.HarvestWithScythe
                 OpCodes.Ldarg_1,
                 OpCodes.Ldarg_2,
                 OpCodes.Ldc_I4_M1,
-                OpCodes.Ldloc_S,
+                OpCodes.Ldloc_S, // [6] num3
                 OpCodes.Ldc_R4,
                 OpCodes.Ldnull,
                 OpCodes.Call
-            ).Replace(
+            );
+            var var_num3 = code[6].operand as LocalBuilder;
+            code.Replace(
                 // var tmp = CreateObject(this, num3);
                 Instructions.Ldarg_0(), // this
-                Instructions.Ldloc_S(5), // num3
+                Instructions.Ldloc_S(var_num3), // num3
                 Instructions.Call(typeof(ModEntry), nameof(CreateObject), typeof(Crop), typeof(int)),
                 // Game1.createItemDebris(tmp, vector, -1, null, -1);
                 Instructions.Ldloc_3(), // vector
@@ -217,7 +220,7 @@ namespace StardewHack.HarvestWithScythe
                     Instructions.Ldc_R4(1.0f),
                     OpCodes.Ldnull,
                     Instructions.Call(typeof(Game1), nameof(Game1.createObjectDebris), typeof(int), typeof(int), typeof(int), typeof(int), typeof(int), typeof(float), typeof(GameLocation))
-                )[1] = Instructions.Ldloc_S(5);
+                )[1] = Instructions.Ldloc_S(var_num3);
 
                 FindCode(
                     OpCodes.Ldc_I4_1,
@@ -226,7 +229,7 @@ namespace StardewHack.HarvestWithScythe
                     OpCodes.Ldc_I4_0,
                     OpCodes.Newobj,
                     Instructions.Callvirt(typeof(JunimoHarvester), nameof(JunimoHarvester.tryToAddItemToHut), typeof(Item))
-                )[3] = Instructions.Ldloc_S(5);
+                )[3] = Instructions.Ldloc_S(var_num3);
             }
             
             if (!config.ScytheHarvestFlowers) {

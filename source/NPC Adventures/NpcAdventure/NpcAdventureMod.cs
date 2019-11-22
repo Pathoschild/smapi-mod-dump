@@ -2,6 +2,10 @@
 using StardewModdingAPI.Events;
 using NpcAdventure.Loader;
 using NpcAdventure.Driver;
+using StardewValley;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace NpcAdventure
 {
@@ -13,7 +17,6 @@ namespace NpcAdventure
         private DialogueDriver DialogueDriver { get; set; }
         private HintDriver HintDriver { get; set; }
         private StuffDriver StuffDriver { get; set; }
-        internal static NpcAdventureMod Mod { get; private set; }
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -30,8 +33,6 @@ namespace NpcAdventure
             this.StuffDriver = new StuffDriver(helper.Events, helper.Data, this.Monitor);
             this.contentLoader = new ContentLoader(helper.Content, helper.DirectoryPath, "assets", this.Monitor);
             this.companionManager = new CompanionManager(this.DialogueDriver, this.HintDriver, this.Monitor);
-
-            NpcAdventureMod.Mod = this;
         }
 
         private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
@@ -41,6 +42,9 @@ namespace NpcAdventure
 
             var dispositions = this.contentLoader.LoadStrings("CompanionDispositions");
 
+            this.contentLoader.LoadStrings("Data/AnimationDescriptions");
+            this.contentLoader.LoadStrings("Data/IdleBehaviors");
+            this.contentLoader.LoadStrings("Data/IdleNPCDefinitions");
             this.contentLoader.LoadStrings("Strings/Strings");
             this.contentLoader.LoadStrings("Strings/SpeechBubbles");
 
@@ -63,7 +67,6 @@ namespace NpcAdventure
         {
             this.companionManager.ResetStateMachines();
             this.companionManager.DumpCompanionNonEmptyBags();
-            this.StuffDriver.PrepareDeliveredBagsToSave();
         }
 
         private void GameLoop_ReturnedToTitle(object sender, StardewModdingAPI.Events.ReturnedToTitleEventArgs e)
@@ -73,7 +76,7 @@ namespace NpcAdventure
 
         private void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
         {
-            this.companionManager.InitializeCompanions(this.contentLoader, this.Helper.Events);
+            this.companionManager.InitializeCompanions(this.contentLoader, this.Helper.Events, this.Helper.Reflection);
         }
     }
 }

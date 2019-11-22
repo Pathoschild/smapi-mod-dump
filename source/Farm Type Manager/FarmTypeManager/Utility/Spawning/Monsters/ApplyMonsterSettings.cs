@@ -38,13 +38,11 @@ namespace FarmTypeManager
                 //set damage
                 if (settings.ContainsKey("Damage"))
                 {
+                    monster.DamageToFarmer = Convert.ToInt32(settings["Damage"]); //set DamageToFarmer
+
                     if (monster is ICustomDamage cd) //if this monster type uses the custom damage interface
                     {
-                        cd.CustomDamage = Convert.ToInt32(settings["Damage"]); //set CustomDamage
-                    }
-                    else
-                    {
-                        monster.DamageToFarmer = Convert.ToInt32(settings["Damage"]); //set DamageToFarmer
+                        cd.CustomDamage = Convert.ToInt32(settings["Damage"]); //set CustomDamage as well
                     }
                 }
 
@@ -58,12 +56,6 @@ namespace FarmTypeManager
                 if (settings.ContainsKey("DodgeChance"))
                 {
                     monster.missChance.Value = ((double)Convert.ToInt32(settings["DodgeChance"])) / 100;
-                }
-
-                //set movement speed
-                if (settings.ContainsKey("Speed"))
-                {
-                    monster.Speed = Convert.ToInt32(settings["Speed"]);
                 }
 
                 //set experience points
@@ -148,24 +140,6 @@ namespace FarmTypeManager
                         //apply the multiplier to the monster's dodge chance
                         skillMultiplier *= monster.missChance.Value; //multiply the current damage by the skill multiplier
                         monster.missChance.Value = Math.Max((int)skillMultiplier, 0); //set the monster's new dodge chance (rounded down to the nearest integer & minimum 0)
-                    }
-
-                    //multiply movement speed
-                    if (settings.ContainsKey("PercentExtraSpeedPerSkillLevel"))
-                    {
-                        //calculate speed multiplier based on skill level
-                        double skillMultiplier = Convert.ToInt32(settings["PercentExtraSpeedPerSkillLevel"]);
-                        skillMultiplier = (skillMultiplier / 100); //converted to percent, e.g. "10" (10% per level) converts to "0.1"
-                        int highestSkillLevel = 0; //highest skill level among all existing farmers, not just the host
-                        foreach (Farmer farmer in Game1.getAllFarmers())
-                        {
-                            highestSkillLevel = Math.Max(highestSkillLevel, farmer.getEffectiveSkillLevel((int)skill)); //record the new level if it's higher than before
-                        }
-                        skillMultiplier = 1.0 + (skillMultiplier * highestSkillLevel); //final multiplier; e.g. if the setting is "10", this is "1.0" at level 0, "1.7" at level 7, etc
-
-                        //apply the multiplier to the monster's speed
-                        skillMultiplier *= monster.Speed; //multiply the current speed by the skill multiplier
-                        monster.Speed = Math.Max((int)skillMultiplier, 1); //set the monster's new max HP (rounded down to the nearest integer & minimum 1)
                     }
 
                     //multiply experience points

@@ -1,0 +1,10 @@
+{
+  "Name": "AmbientLight",
+  "Author": "SixthTitan",
+  "Version": "1.0.0",
+  "Description": "Ambient Light - Light up your world",
+  "UniqueID": "SixthTitan.AmbientLight",
+  "EntryDll": "AmbientLight.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:4639" ]
+}

@@ -27,6 +27,8 @@ namespace FarmTypeManager
                 {
                     if (saved.DaysUntilExpire == null && saved.Type != SavedObject.ObjectType.Monster) //if the object's expiration setting is null & it's not a monster
                     {
+                        Monitor.VerboseLog($"Removing object data saved with a null expiration setting. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
+                        objectsToRemove.Add(saved); //mark this for removal from save
                         continue; //skip to the next object
                     }
 
@@ -48,7 +50,7 @@ namespace FarmTypeManager
                             if (location.characters[x] is Monster monster && monster.id == saved.ID) //if this is a monster with an ID that matches the saved ID
                             {
                                 stillExists = true;
-                                if (saved.DaysUntilExpire == 1) //if this should expire tonight
+                                if (saved.DaysUntilExpire == 1 || saved.DaysUntilExpire == null) //if this should expire tonight (including monsters generated without expiration settings)
                                 {
                                     Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
                                     objectsToRemove.Add(saved); //mark this for removal from save

@@ -1,0 +1,10 @@
+﻿{
+   "Name": "UnderdarkSewer",
+   "Author": "Mel Noelle & KirbyLink",
+   "Version": "1.0.0",
+   "Description": "Overhauls the Sewer map to make it look and feel like the Underdark",
+   "UniqueID": "melnoelle.underdark",
+   "EntryDll": "underdarksewer.dll",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": []
+}

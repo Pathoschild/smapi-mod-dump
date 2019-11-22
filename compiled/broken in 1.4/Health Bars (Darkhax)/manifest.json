@@ -1,0 +1,10 @@
+﻿{
+   "Name": "Health Bars",
+   "Author": "Darkhax",
+   "Version": "1.0.1",
+   "Description": "Adds health bars to the enemies you encounter.",
+   "UniqueID": "darkhax.healthbars",
+   "EntryDll": "HealthBars.dll",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": ["GitHub:Stardew-Valley-Modding/HealthBars"]
+}

@@ -8,8 +8,7 @@ namespace FarmTypeManager
         /// <summary>A set of additional requirements needed for a config file to be used on a given farm.</summary>
         private class FileConditions
         {
-            //class added in version 1.4; defaults used here to automatically fill in values with SMAPI's json interface
-            public string[] FarmTypes { get; set; } = new string[0]; //a list of farm types on which the config may be used
+            public object[] FarmTypes { get; set; } = new object[0]; //a list of farm types on which the config may be used; strings and/or integers are allowed
             public string[] FarmerNames { get; set; } = new string[0]; //a list of farmer names; if the current farmer matches, the config file may be used
             public string[] SaveFileNames { get; set; } = new string[0]; //a list of save file (technically folder) names; if they match the current farm, the config file may be used
 

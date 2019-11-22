@@ -119,8 +119,8 @@ namespace FarmTypeManager
                     }
                 }
 
-                        //create a new monster based on the provided name & apply type-specific settings
-                        switch (monsterType.MonsterName.ToLower()) //avoid most casing issues by making this lower-case
+                //create a new monster based on the provided name & apply type-specific settings
+                switch (monsterType.MonsterName.ToLower()) //avoid most casing issues by making this lower-case
                 {
                     case "bat":
                         monster = new BatFTM(tile, 0);
@@ -201,7 +201,7 @@ namespace FarmTypeManager
                         monster = new Bug(tile, 121);
                         break;
                     case "duggy":
-                        monster = new DuggyFTM(tile, true);
+                        monster = new DuggyFTM(tile);
                         break;
                     case "dust":
                     case "sprite":
@@ -285,7 +285,7 @@ namespace FarmTypeManager
                         }
                         break;
                     case "mummy":
-                        monster = new Mummy(tile);
+                        monster = new MummyFTM(tile);
                         break;
                     case "rockcrab":
                     case "rock crab":
@@ -326,11 +326,9 @@ namespace FarmTypeManager
                         monster = new Skeleton(tile);
                         if (seesPlayers) //if the "SeesPlayersAtSpawn" setting is true
                         {
-                            if (typeof(Skeleton).GetField("spottedPlayer", BindingFlags.NonPublic | BindingFlags.Instance) is FieldInfo field) //try to access this skeleton's private "spottedPlayer" field
-                            {
-                                field.SetValue(monster, true); //set "spottedPlayer" to true
-                                monster.IsWalkingTowardPlayer = true;
-                            }
+                            IReflectedField<bool> spottedPlayer = Helper.Reflection.GetField<bool>(monster, "spottedPlayer"); //try to access this skeleton's private "spottedPlayer" field
+                            spottedPlayer.SetValue(true);
+                            monster.IsWalkingTowardPlayer = true;
                         }
                         break;
                     case "squid":
@@ -339,7 +337,10 @@ namespace FarmTypeManager
                     case "squid kid":
                         monster = new SquidKidFTM(tile);
                         break;
-                    default: break;
+                    default: //if the name doesn't match any directly known monster types
+                        Type externalType = GetTypeFromName(monsterType.MonsterName, typeof(Monster)); //find a monster subclass with a matching name
+                        monster = (Monster)Activator.CreateInstance(externalType, tile); //create a monster with the Vector2 constructor
+                        break;
                 }
 
                 if (monster == null)

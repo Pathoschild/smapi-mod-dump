@@ -7,6 +7,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Monsters;
 using StardewValley.TerrainFeatures;
 using Newtonsoft.Json.Linq;
 
@@ -129,7 +130,21 @@ namespace FarmTypeManager
                         case "squid kid":
                             validName = true; //the name is valid
                             break;
-                        default: break; //the name is invalid
+                        default: //if the name doesn't match any directly known monster types
+                            Type externalType = GetTypeFromName(validTypes[x].MonsterName, typeof(Monster)); //find a monster subclass with a matching name
+                            if (externalType != null) //if a matching type was found
+                            {
+                                if (externalType.GetConstructor(new[] { typeof(Vector2) }) != null) //if this type has a constructor that takes a Vector2
+                                {
+                                    validName = true; //the name is valid
+                                }
+
+                                /* NOTE: Accepting monsters' default constructors would be dangerous and is not recommended.
+                                 * Many monsters' defaults create them without filling game-critical fields, and this code can't reasonably account for them.
+                                 * The game will often freeze or crash if they are used here.
+                                 */
+                            }
+                            break;
                     }
 
                     if (!validName) //if the name is invalid
@@ -227,27 +242,6 @@ namespace FarmTypeManager
                             Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
 
                             validTypes[x].Settings.Remove("DodgeChance"); //remove the setting
-                        }
-                    }
-
-                    //validate movement speed
-                    if (validTypes[x].Settings.ContainsKey("Speed"))
-                    {
-                        if (validTypes[x].Settings["Speed"] is long) //if this is a readable integer
-                        {
-                            int speed = Convert.ToInt32(validTypes[x].Settings["Speed"]);
-                            if (speed < 0) //if the setting is too low
-                            {
-                                Monitor.Log($"The \"Speed\" setting for monster type \"{validTypes[x].MonsterName}\" is {speed}. Setting it to 0.", LogLevel.Trace);
-                                validTypes[x].Settings["Speed"] = (long)0; //set the validated setting to 0
-                            }
-                        }
-                        else //if this isn't a readable integer
-                        {
-                            Monitor.Log($"The \"Speed\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's an integer.", LogLevel.Info);
-                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
-
-                            validTypes[x].Settings.Remove("Speed"); //remove the setting
                         }
                     }
 
@@ -434,19 +428,6 @@ namespace FarmTypeManager
 
                             validTypes[x].Settings.Remove("PercentExtraDodgeChancePerSkillLevel"); //remove the setting
                         }
-                    }
-
-                    //validate speed multiplier
-                    if (validTypes[x].Settings.ContainsKey("PercentExtraSpeedPerSkillLevel"))
-                    {
-                        if (!(validTypes[x].Settings["PercentExtraSpeedPerSkillLevel"] is long)) //if this isn't a readable integer
-                        {
-                            Monitor.Log($"The \"PercentExtraSpeedPerSkillLevel\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's an integer.", LogLevel.Info);
-                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
-
-                            validTypes[x].Settings.Remove("PercentExtraSpeedPerSkillLevel"); //remove the setting
-                        }
-
                     }
 
                     //validate experience multiplier

@@ -1,0 +1,12 @@
+﻿{
+    "dia.eatquestion": "{{item}}を食べようか?",
+    "dia.eatanswerOne": "一つだけ",
+    "dia.eatanswerMulti": "満腹になるまで{{amount}}個食べる",
+    "dia.eatanswerNo": "いいえ",
+    "menu.slingshotempty": "スリングショットを売るためには空でないといけない",
+    "item.slingshotdescr": "石や鉱石、野菜、炸裂弾などの多種多様なアイテムを射つことができる",
+    "menu.carpentermoneybuttonon": "有効化: 足りない資源を買う",
+    "menu.carpentermoneybuttonoff": "無効化: 足りない資源を買う",
+    "menu.carpenteringredinfo": "{{itemname}}は買うことになる",
+    "menu.fishingrodempty": "売るためにはアタッチメントを外さなければいけない"
+}

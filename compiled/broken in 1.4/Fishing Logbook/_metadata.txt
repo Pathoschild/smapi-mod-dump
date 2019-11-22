@@ -1,0 +1,3 @@
+page URL: https://www.curseforge.com/stardewvalley/mods/fishing-logbook
+IDs: FishingLogbook
+update keys: CurseForge:299792, GitHub:M3ales/FishingLogbook

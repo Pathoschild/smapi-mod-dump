@@ -1,0 +1,13 @@
+url:
+   https://github.com/M3ales/ChestNaming.git
+
+mods:
+   Chest Naming
+
+latest commit:
+   commit 414ce79af41d6ae1a63df80b40455aa28e40a122
+   Author: Mira <mattfdavies12@gmail.com>
+   Date:   Thu Aug 2 13:41:01 2018 +0200
+   
+       Hackish fix for Name length clamping
+   

@@ -542,8 +542,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
                 neededFor.Add(L10n.Item.NeededForFullShipment());
 
             // full collection achievement (donate every artifact)
-            LibraryMuseum museum = Game1.locations.OfType<LibraryMuseum>().FirstOrDefault();
-            if (museum != null && museum.isItemSuitableForDonation(obj))
+            if (obj.needsToBeDonated())
                 neededFor.Add(L10n.Item.NeededForFullCollection());
 
             // gourmet chef achievement (cook every recipe)
@@ -573,24 +572,25 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
             if (Game1.player.hasOrWillReceiveMail(Constant.MailLetters.JojaMember))
                 yield break;
 
+            // avoid false positives
+            if (item.bigCraftable.Value || item is Cask || item is Fence || item is Furniture || item is IndoorPot || item is Sign || item is Torch || item is Wallpaper)
+                yield break; // avoid false positives
+
             // get community center
             CommunityCenter communityCenter = Game1.locations.OfType<CommunityCenter>().First();
             if (communityCenter.areAllAreasComplete())
                 yield break;
 
             // get bundles
-            if (item.GetType() == typeof(SObject) && !item.bigCraftable.Value) // avoid false positives with hats, furniture, etc
+            foreach (BundleModel bundle in this.GameHelper.GetBundleData())
             {
-                foreach (BundleModel bundle in this.GameHelper.GetBundleData())
-                {
-                    // ignore completed bundle
-                    if (communityCenter.isBundleComplete(bundle.ID))
-                        continue;
+                // ignore completed bundle
+                if (communityCenter.isBundleComplete(bundle.ID))
+                    continue;
 
-                    bool isMissing = this.GetIngredientsFromBundle(bundle, item).Any(p => this.IsIngredientNeeded(bundle, p));
-                    if (isMissing)
-                        yield return bundle;
-                }
+                bool isMissing = this.GetIngredientsFromBundle(bundle, item).Any(p => this.IsIngredientNeeded(bundle, p));
+                if (isMissing)
+                    yield return bundle;
             }
         }
 

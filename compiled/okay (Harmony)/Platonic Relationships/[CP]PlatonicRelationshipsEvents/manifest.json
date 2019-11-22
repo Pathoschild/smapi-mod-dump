@@ -1,0 +1,18 @@
+﻿{
+  "Name": "Platonic Relationships Events",
+  "Author": "Cherry",
+  "Version": "1.0.0",
+  "Description": "Changes the dating requirements for 10 heart events for PlatonicRelationships",
+  "UniqueID": "Cherry.PlatonicRelationshipEvents",
+  "MinimumApiVersion": "2.11.0",
+  "UpdateKeys": [],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher",
+	},
+  "Dependencies":[
+	  {
+	  "UniqueID":"Cherry.PlatonicRelationships"
+	  }
+  ]
+  
+}

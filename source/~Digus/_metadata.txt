@@ -6,17 +6,18 @@ mods:
    Crop Transplant
    Custom Cask Mod
    Custom Crystalarium Mod
+   Custom Kissing
    Everlasting Baits and Unbreakable Tackles
    Mail Framework
    Water Retaining Field
 
 latest commit:
-   commit 7995acbb0114ace1668eda76e56121f34cfe71c1
-   Merge: 1920cf5 5c86442
+   commit 5f6669c319a3ac0bc1c023b31651d4717bce4fe9
+   Merge: a0a6d7b f172d40
    Author: Digus <32422267+Digus@users.noreply.github.com>
-   Date:   Wed Oct 23 22:29:03 2019 -0300
+   Date:   Sat Nov 16 02:37:03 2019 -0300
    
-       Merge pull request #14 from Digus/hotfix/animal_husbandry_mod/syring_broken_with_meat_disabled
+       Merge pull request #21 from Digus/develop
        
-       Animal Husbandry Mod 2.4.0
+       Develop
    

@@ -75,9 +75,9 @@ namespace NpcAdventure.Utils
             return GetVariousDialogueString(n, $"{key}_{l.Name}", out text);
         }
 
-        public static bool GetBubbleString(Dictionary<string, string> bubbles, NPC n, GameLocation l, out string text)
+        public static bool GetBubbleString(Dictionary<string, string> bubbles, NPC n, string type, out string text)
         {
-            if (GetDialogueString(bubbles, $"{l.Name}_{n.Name}", out text))
+            if (GetDialogueString(bubbles, $"{type}_{n.Name}", out text))
             {
                 text = string.Format(text, Game1.player?.Name, n.Name);
 
@@ -85,6 +85,11 @@ namespace NpcAdventure.Utils
             }
 
             return false;
+        }
+
+        public static bool GetBubbleString(Dictionary<string, string> bubbles, NPC n, GameLocation l, out string text)
+        {
+            return GetBubbleString(bubbles, n, l.Name, out text);
         }
 
         public static Dialogue GenerateDialogue(NPC n, string key, bool returnsNull = true)

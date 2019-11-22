@@ -164,6 +164,8 @@ namespace BetterMixedSeeds
                 integratedModsInstalled.Add("GemAndMineralCrops");
             if (this.Helper.ModRegistry.IsLoaded("6480.crops.arabidopsis"))
                 integratedModsInstalled.Add("MouseEarCress");
+            if (this.Helper.ModRegistry.IsLoaded("ppja.ancientcrops"))
+                integratedModsInstalled.Add("AncientCrops");
 
             return integratedModsInstalled;
         }

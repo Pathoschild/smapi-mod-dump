@@ -583,5 +583,38 @@ namespace BetterMixedSeeds
                 }),
             winter: null
         );
+
+        public CropMod AncientCrops { get; set; } = new CropMod
+        (
+            spring: new Season(
+                new List<Crop>
+                {
+                    new Crop("Ancient Coffee Plant", true, 1),
+                    new Crop("Ancient Fern", true, 1),
+                    new Crop("Ancient Flower", true, 1),
+                    new Crop("Ancient Nut", true, 1),
+                    new Crop("Ancient Olive Plant", true, 1),
+                    new Crop("Ancient Tuber", true, 1)
+                }),
+            summer: new Season(
+                new List<Crop>
+                {
+                    new Crop("Ancient Coffee Plant", true, 1),
+                    new Crop("Ancient Fern", true, 1),
+                    new Crop("Ancient Nut", true, 1),
+                    new Crop("Ancient Olive Plant", true, 1),
+                    new Crop("Ancient Tuber", true, 1)
+                }),
+            fall: new Season(
+                new List<Crop>
+                {
+                    new Crop("Ancient Coffee Plant", true, 1),
+                    new Crop("Ancient Fern", true, 1),
+                    new Crop("Ancient Nut", true, 1),
+                    new Crop("Ancient Olive Plant", true, 1),
+                    new Crop("Ancient Tuber", true, 1)
+                }),
+            winter: null
+        );
     }
 }

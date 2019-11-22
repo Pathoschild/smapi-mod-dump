@@ -1,0 +1,16 @@
+﻿{
+  "Name": "You've Got Mail - Twitch Integration",
+  "Author": "YGM Team",
+  "Version": "1.0.1",
+  "Description": "Allows Twitch chat to send gifts to streamers in the mail.",
+  "UniqueID": "YGM.SDVMod",
+  "EntryDll": "YGMTI.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "darkhax.bookcase",
+      "MinimumVersion": "0.7.2"
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 using NpcAdventure.StateMachine.StateFeatures;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewModdingAPI;
 
 namespace NpcAdventure.StateMachine.State
 {
@@ -12,7 +13,7 @@ namespace NpcAdventure.StateMachine.State
 
         public bool CanCreateDialogue { get; private set; }
 
-        public AvailableState(CompanionStateMachine stateMachine, IModEvents events) : base(stateMachine, events) {}
+        public AvailableState(CompanionStateMachine stateMachine, IModEvents events, IMonitor monitor) : base(stateMachine, events, monitor) {}
 
         public override void Entry()
         {

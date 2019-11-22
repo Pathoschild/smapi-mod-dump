@@ -130,6 +130,8 @@ namespace NPCMapLocations
 		  {
 		    foreach (CharacterMarker npcMarker in this.NpcMarkers)
 		    {
+		      if (npcMarker.MapLocation == null) continue;
+
 		      Vector2 npcLocation = new Vector2(mapX + npcMarker.MapLocation.X, mapY + npcMarker.MapLocation.Y);
 		      if (Game1.getMouseX() >= npcLocation.X && Game1.getMouseX() <= npcLocation.X + markerWidth &&
 		          Game1.getMouseY() >= npcLocation.Y && Game1.getMouseY() <= npcLocation.Y + markerHeight)
@@ -143,11 +145,13 @@ namespace NPCMapLocations
 		    }
 		  }
 
-		  if (Context.IsMultiplayer)
+		  if (Context.IsMultiplayer && FarmerMarkers != null)
 			{
 				foreach (CharacterMarker farMarker in FarmerMarkers.Values)
 				{
-					Vector2 farmerLocation = new Vector2(mapX + farMarker.MapLocation.X, mapY + farMarker.MapLocation.Y);
+				  if (farMarker.MapLocation == null) continue;
+
+          Vector2 farmerLocation = new Vector2(mapX + farMarker.MapLocation.X, mapY + farMarker.MapLocation.Y);
              if (Game1.getMouseX() >= farmerLocation.X - markerWidth / 2
 					    && Game1.getMouseX() <= farmerLocation.X + markerWidth / 2
 					    && Game1.getMouseY() >= farmerLocation.Y - markerHeight / 2
@@ -459,6 +463,7 @@ namespace NPCMapLocations
 			{
 				Vector2 playerLoc = ModMain.LocationToMap(Game1.player.currentLocation.uniqueName.Value ?? Game1.player.currentLocation.Name, Game1.player.getTileX(),
 					Game1.player.getTileY(), Customizations.MapVectors, true);
+
         if (!playerLoc.Equals(Vector2.Zero))
 				  Game1.player.FarmerRenderer.drawMiniPortrat(b,
 					  new Vector2(mapX + playerLoc.X - 16, mapY + playerLoc.Y - 15), 0.00011f, 2f, 1,

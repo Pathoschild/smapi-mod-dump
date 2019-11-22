@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Family Planning",
   "Author": "Loe2run",
-  "Version": "1.2.0",
+  "Version": "1.2.1",
   "Description": "Allows you to customize the number of children you have.",
   "UniqueID": "Loe2run.FamilyPlanning",
   "EntryDll": "FamilyPlanning.dll",

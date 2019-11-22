@@ -1,4 +1,8 @@
 {
   "AgeWhenKidsAreModified": 83,
-  "ChildParentPairs": {}
+  "DoChildrenWander": true,
+  "DoChildrenHaveCurfew": true,
+  "CurfewTime": 1900,
+  "ChildParentPairs": {},
+  "ModdingCommands": false
 }

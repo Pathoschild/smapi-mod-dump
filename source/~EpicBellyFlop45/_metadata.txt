@@ -11,9 +11,9 @@ mods:
    Customize Cursor Sprite
 
 latest commit:
-   commit 9acc2cfc9de4573d3a421b62846585f88968243e
+   commit c18865eb82fd8925f6c2ac1b10bad8ab53384d4d
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Sat Oct 26 22:30:10 2019 +0100
+   Date:   Sat Nov 16 00:13:44 2019 +0000
    
-       [BetterMixedSeeds] Add compatibility with Mouse-Ear Cress
+       [Better Mixed Seeds Config Updater] Add defaults for Ancient Crops
    

@@ -44,7 +44,7 @@ namespace ChildToNPC
         private string ToddlerGender;
         private string ToddlerParent;
 
-        private string CustomToddlerBed;
+        private string CustomToddlerBed = null;
         private string TotalChildren;
 
         public ChildToken(int childNumberIn)
@@ -67,46 +67,46 @@ namespace ChildToNPC
         {
             string lastUpdateName = ToddlerName;
             ToddlerName = ModEntry.GetChildNPCName(childNumber);
-            return (ToddlerName != lastUpdateName);
+            return ToddlerName != lastUpdateName;
         }
 
         public bool BirthdayUpdateContext()
         {
             string lastUpdateBirthday = ToddlerBirthday;
             ToddlerBirthday = ModEntry.GetChildNPCBirthday(childNumber);
-            return (ToddlerBirthday != lastUpdateBirthday);
+            return ToddlerBirthday != lastUpdateBirthday;
         }
 
-        //Allowing customization of ToddlerBed position
-        //So if it's been customized, I won't change the value
+        //If the Bed value has been customized, I don't update it.
         public bool BedUpdateContext()
         {
             if (CustomToddlerBed != null)
                 return false;
+            
             string lastUpdateBed = ToddlerBed;
             ToddlerBed = ModEntry.GetBedSpot(childNumber);
-            return (ToddlerBed != lastUpdateBed);
+            return ToddlerBed != lastUpdateBed;
         }
 
         public bool GenderUpdateContext()
         {
             string lastUpdateGender = ToddlerGender;
             ToddlerGender = ModEntry.GetChildNPCGender(childNumber);
-            return (ToddlerGender != lastUpdateGender);
+            return ToddlerGender != lastUpdateGender;
         }
 
         public bool ParentUpdateContext()
         {
             string lastUpdateParent = ToddlerParent;
             ToddlerParent = ModEntry.GetChildNPCParent(childNumber);
-            return (ToddlerParent != lastUpdateParent);
+            return ToddlerParent != lastUpdateParent;
         }
 
         public bool TotalChildrenUpdateContext()
         {
             string lastUpdateTotalChildren = TotalChildren;
             TotalChildren = ModEntry.GetTotalChildren();
-            return (TotalChildren != lastUpdateTotalChildren);
+            return TotalChildren != lastUpdateTotalChildren;
         }
 
         public IEnumerable<string> NameGetValue(string input)
@@ -119,14 +119,19 @@ namespace ChildToNPC
             yield return ToddlerBirthday;
         }
 
+        //I should come back to this, it needs work
         public IEnumerable<string> BedGetValue(string input)
         {
-            if(input == null)
+            if (input == null || input.Equals(""))
+            {
                 yield return ToddlerBed;
-            //Input is given as "x y" tile position
-            CustomToddlerBed = input;
-            ToddlerBed = input;
-            yield return ToddlerBed;
+            }
+            else
+            {
+                //Input should be given as "<MapName> x y"
+                CustomToddlerBed = input;
+                yield return CustomToddlerBed;
+            }
         }
 
         public IEnumerable<string> GenderGetValue(string input)

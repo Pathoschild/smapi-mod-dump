@@ -32,3 +32,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 #### 1.1:
 * User friendly error messages in the log file.
 * In game error message for when patches fail to apply cleanly.
+
+#### 1.3:
+* Fix error message upon start for android.

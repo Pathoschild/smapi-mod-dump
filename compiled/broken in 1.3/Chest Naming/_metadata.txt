@@ -1,0 +1,3 @@
+page URL: https://www.curseforge.com/stardewvalley/mods/chest-naming
+IDs: ChestNaming
+update keys: CurseForge:299791, GitHub:M3ales/ChestNaming

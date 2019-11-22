@@ -11,9 +11,12 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit 0a70ac63d3c7f54b5797003dcea46535f910bab0
+   commit 1e8c9153d9b6e0c19a60d0bfc44a4de85f019a1f
+   Merge: 0a70ac6 490a200
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Fri Sep 6 16:40:58 2019 +0200
+   Date:   Sat Nov 2 01:14:06 2019 +0100
    
-       better wording
+       Merge pull request #7 from pomepome/master
+       
+       Created ja.json
    

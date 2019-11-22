@@ -88,7 +88,7 @@ namespace FarmTypeManager
                 }
             }
 
-            public string StrictTileChecking { get; set; } = "High";
+            public string StrictTileChecking { get; set; } = "Maximum";
 
             private SpawnTiming spawnTiming = new SpawnTiming();
             public SpawnTiming SpawnTiming

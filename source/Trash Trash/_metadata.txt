@@ -1,0 +1,13 @@
+url:
+   https://github.com/jaredlll08/Trash-Trash.git
+
+mods:
+   Trash Trash
+
+latest commit:
+   commit d1224b1f2116a7db22ba3e0c2942f9904282b88f
+   Author: Jared <jaredlll08@gmail.com>
+   Date:   Thu Jul 12 11:32:58 2018 +0200
+   
+       fixed manifest
+   

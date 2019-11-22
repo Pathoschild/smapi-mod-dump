@@ -1,0 +1,3 @@
+page URL: https://www.curseforge.com/stardewvalley/mods/blessings-and-curses
+IDs: gendeathrow.BNC
+update keys: CurseForge:307717, GitHub:GenDeathrow/SDV_BlessingsAndCurses

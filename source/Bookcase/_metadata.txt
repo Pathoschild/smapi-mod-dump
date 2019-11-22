@@ -1,0 +1,13 @@
+url:
+   https://github.com/Stardew-Valley-Modding/Bookcase.git
+
+mods:
+   Bookcase
+
+latest commit:
+   commit 0f5b68fb35fc1af1cf60bd352c9eea2333ca4174
+   Author: Tyler Hancock <darklime@live.ca>
+   Date:   Fri Oct 26 22:37:23 2018 -0600
+   
+       Updated version numbers
+   

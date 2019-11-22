@@ -1,5 +1,5 @@
 {
-	"Format": "1.5",
+	"Format": "1.6",
 	"ConfigSchema": {
 		"ShaneRemoveFootprints": {
 			"AllowValues": "true, false",
@@ -8,11 +8,15 @@
 		"ShaneReplaceBeerCans": {
 			"AllowValues": "true, false",
 			"Default": "false"
-		}
+		},
+		"UseZosaBathroomIfInstalled": {
+			"AllowValues": "true, false",
+			"Default": "true"
+		},
 	},
 	"Changes": [
 		{
-			"LogName": "Default Floor for Abigail, Leah, Maru, Sebastian, Shane",
+			"LogName": "Floor Strip for Abigail, Leah, Maru, Sebastian, Shane",
 			"Action": "EditImage",
 			"Target": "walls_and_floors, Maps/walls_and_floors",
 			"ToArea": { "X": 0, "Y": 336, "Width": 32, "Height": 32 },
@@ -21,7 +25,7 @@
 			"When" : { "Spouse": "Abigail, Leah, Maru, Sebastian, Shane" }
 		},
 		{
-			"LogName": "Default Floor for Penny, Sam",
+			"LogName": "Floor Strip for Penny, Sam",
 			"Action": "EditImage",
 			"Target": "walls_and_floors, Maps/walls_and_floors",
 			"ToArea": { "X": 0, "Y": 336, "Width": 32, "Height": 32 },
@@ -30,7 +34,7 @@
 			"When" : { "Spouse": "Penny, Sam" }
 		},
 		{
-			"LogName": "Default Floor for Haley, Harvey",
+			"LogName": "Floor Strip for Haley, Harvey",
 			"Action": "EditImage",
 			"Target": "walls_and_floors, Maps/walls_and_floors",
 			"ToArea": { "X": 0, "Y": 336, "Width": 32, "Height": 32 },
@@ -39,7 +43,7 @@
 			"When" : { "Spouse": "Haley, Harvey" }
 		},
 		{
-			"LogName": "Default Floor for Emily",
+			"LogName": "Floor Strip for Emily",
 			"Action": "EditImage",
 			"Target": "walls_and_floors, Maps/walls_and_floors",
 			"ToArea": { "X": 0, "Y": 336, "Width": 32, "Height": 32 },
@@ -48,7 +52,7 @@
 			"When" : { "Spouse": "Emily" }
 		},
 		{
-			"LogName": "Default Floor for Alex",
+			"LogName": "Floor Strip for Alex",
 			"Action": "EditImage",
 			"Target": "walls_and_floors, Maps/walls_and_floors",
 			"ToArea": { "X": 0, "Y": 336, "Width": 32, "Height": 32 },
@@ -57,7 +61,7 @@
 			"When" : { "Spouse": "Alex" }
 		},
 		{
-			"LogName": "Default Floor for Elliott",
+			"LogName": "Floor Strip for Elliott",
 			"Action": "EditImage",
 			"Target": "walls_and_floors, Maps/walls_and_floors",
 			"ToArea": { "X": 0, "Y": 336, "Width": 32, "Height": 32 },
@@ -66,7 +70,18 @@
 			"When" : { "Spouse": "Elliott" }
 		},
 		{
-			"LogName": "Shane Footprints",
+			"LogName": "Floor Strip Override for Zosa.Bathroom",
+			"Action": "EditImage",
+			"Target": "walls_and_floors, Maps/walls_and_floors",
+			"ToArea": { "X": 0, "Y": 336, "Width": 32, "Height": 32 },
+			"FromFile": "assets/SpouseDefaults.png",
+			"FromArea": { "X": 192, "Y": 0, "Width": 32, "Height": 32 },
+			"When" : { "HasMod": "Zosa.Bathroom" },
+			"Enabled": "{{UseZosaBathroomIfInstalled}}"
+		},
+		// Optional changes: Remove footprints from Shane's room
+		{
+			"LogName": "Shane footprint removal",
 			"Action": "EditImage",
 			"Target": "townInterior, Maps/townInterior",
 			"FromFile": "assets/townInteriorEdits.png",
@@ -75,8 +90,9 @@
 			"ToArea": { "X": 416, "Y": 1056, "Width": 48, "Height": 32 },
 			"Enabled": "{{ShaneRemoveFootprints}}"
 		},
+		// Optional changes: Replace beer cans in Shane's room with books & plants
 		{
-			"LogName": "Shane Beer Cans to Books",
+			"LogName": "Shane books instead of spilled beer can",
 			"Action": "EditImage",
 			"Target": "townInterior, Maps/townInterior",
 			"FromFile": "assets/BeerCanReplacements.png",
@@ -85,7 +101,7 @@
 			"Enabled": "{{ShaneReplaceBeerCans}}"
 		},
 		{
-			"LogName": "Shane Beer Cans to Plant",
+			"LogName": "Shane plant instead of beer can six-pack",
 			"Action": "EditImage",
 			"Target": "townInterior, Maps/townInterior",
 			"FromFile": "assets/BeerCanReplacements.png",

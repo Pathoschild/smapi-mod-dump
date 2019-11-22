@@ -24,10 +24,18 @@ Child To NPC generates a config.json the first time the game is run. The default
 ```cs
 {
   "AgeWhenKidsAreModified": 83,
-  "ChildParentPairs": { }
+  "DoChildrenWander": true,
+  "DoChildrenHaveCurfew": true,
+  "CurfewTime": 1900,
+  "ChildParentPairs": {},
+  "ModdingCommands": false
 }
 ```
 The field "AgeWhenKidsAreModified" determines the age (in days) when your child is replaced by an NPC. By default, this is set to 83, which is 28 days (one season) after they become a toddler.
+
+The field "DoChildrenWander" is either true or false. When set to true, children wander around every hour like vanilla children when at home.
+
+The field "DoChildrenHaveCurfew" is either true or false. When set to true, children will have a curfew, the time of which can be set in the "CurfewTime" field in 24-hour time. By default, there is a curfew, and the curfew time is 7:00 pm, or 1900. At curfew time, children will stop whatever they were scheduled to do and start walking home. Once they arrive at home, they will go to bed for the night.
 
 The field "ChildParentPairs" allows you to customize the parentage of your children. Normally, it's assumed that the parent of a child is your current spouse, but if you'd like to have your child customized based on a previous spouse after divorce (or whatever reason you have), you can enter their parentage here.
 
@@ -39,6 +47,8 @@ For example, if want your first child Violet to have Shane as their parent, but 
     "Lily": "Elliot"
   }
 ```
+The field "ModdingCommands" is either true or false. When set to true, Child To NPC will add console commands to the game which make generating new children a little easier. (Changes to the config file aren't implemented until the game is next loaded, so if the config has generated for the first time, you will need to close the game and re-open it before console commands are added.)
+
 ## Custom Tokens for Content Patcher
 ### Manifest.json
 Inside the manifest.json, be sure that you list "Loe2run.ChildToNPC" as a required dependency. Not only does this allow Child To NPC to run first when generating NPCs, but it also allows you to make use of the Content Patcher tokens this mod creates.

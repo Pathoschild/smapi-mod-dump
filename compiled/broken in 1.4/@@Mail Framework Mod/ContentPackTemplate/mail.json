@@ -1,0 +1,19 @@
+[
+	{
+		"Id": "MyMod.MyMailId",
+		"Text": "Dear @^This is my custom mail.",
+		"Recipe": "Recipe Name",
+		"WhichBG": null,
+		"TextColor": 0,
+		"Date": "10 spring Y1",
+		"Repeatable": false,
+		"FriendshipConditions":
+		[
+			{ "NpcName": "Lewis", "FriendshipLevel": 2 }
+		],
+		"SkillConditions": 
+		[
+			{ "SkillName": "Farming", "SkillLevel": 1 }
+		]
+	}
+]

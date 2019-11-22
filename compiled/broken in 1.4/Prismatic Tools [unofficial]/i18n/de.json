@@ -1,11 +1,11 @@
-﻿{
-	"prismatic.prefix": "Prismatische",
-	"prismaticBar.name": "Prismatischer Barren",
-	"prismaticBar.description": "Ein mystischer Barren, der aus der Legende selbst geschmiedet wurde.",
-	"prismaticHoe": "Prismatische Hacke",
-	"prismaticWatercan": "Prismatische Gießkanne",
-	"prismaticPickaxe": "Prismatische Spitzhacke",
-	"prismaticAxe": "Prismatische Axt",
-	"prismaticSprinkler.name": "Prismatischer Sprinkler",
-	"prismaticSprinkler.description": "Bewässert jeden Morgen 48 Felder um sich herum.",
+{
+    "prismatic.prefix": "Prismatische",
+    "prismaticBar.name": "Prismatischer Barren",
+    "prismaticBar.description": "Ein mystischer Barren, der aus der Legende selbst geschmiedet wurde.",
+    "prismaticHoe": "Prismatische Hacke",
+    "prismaticWatercan": "Prismatische Gießkanne",
+    "prismaticPickaxe": "Prismatische Spitzhacke",
+    "prismaticAxe": "Prismatische Axt",
+    "prismaticSprinkler.name": "Prismatischer Sprinkler",
+    "prismaticSprinkler.description": "Bewässert jeden Morgen 48 Felder um sich herum.",
 }

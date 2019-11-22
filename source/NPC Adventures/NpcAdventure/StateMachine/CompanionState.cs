@@ -27,10 +27,13 @@ namespace NpcAdventure.StateMachine
         public CompanionStateMachine StateMachine { get; private set; }
         protected IModEvents Events { get; }
 
-        public CompanionState(CompanionStateMachine stateMachine, IModEvents events)
+        protected readonly IMonitor monitor;
+
+        public CompanionState(CompanionStateMachine stateMachine, IModEvents events, IMonitor monitor)
         {
             this.StateMachine = stateMachine ?? throw new Exception("State Machine must be set!");
             this.Events = events;
+            this.monitor = monitor;
         }
 
         /// <summary>

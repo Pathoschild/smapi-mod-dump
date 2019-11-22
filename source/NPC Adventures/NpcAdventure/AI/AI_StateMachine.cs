@@ -1,5 +1,7 @@
 ﻿using NpcAdventure.AI.Controller;
+using NpcAdventure.Loader;
 using NpcAdventure.Model;
+using NpcAdventure.StateMachine;
 using NpcAdventure.Utils;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -16,34 +18,39 @@ namespace NpcAdventure.AI
     /// <summary>
     /// State machine for companion AI
     /// </summary>
-    public class AI_StateMachine : Internal.IUpdateable
+    internal partial class AI_StateMachine : Internal.IUpdateable
     {
         public enum State
         {
             FOLLOW,
             FIGHT,
+            IDLE,
         }
 
         private const float MONSTER_DISTANCE = 9f;
         public readonly NPC npc;
-        public readonly Character player;
+        public readonly Farmer player;
         private readonly IModEvents events;
-        public readonly IMonitor monitor;
-        internal readonly CompanionMetaData metadata;
-        private Dictionary<State, IController> controllers;
-        private int idleTimer = 0;
+        internal IMonitor Monitor { get; private set; }
 
-        internal AI_StateMachine(NPC npc, Character player, CompanionMetaData metadata, IModEvents events, IMonitor monitor)
+        private readonly IContentLoader loader;
+        private Dictionary<State, IController> controllers;
+        private int changeStateCooldown = 0;
+
+        internal AI_StateMachine(CompanionStateMachine csm, IModEvents events, IMonitor monitor)
         {
-            this.npc = npc ?? throw new ArgumentNullException(nameof(npc));
-            this.player = player ?? throw new ArgumentNullException(nameof(player));
+            this.npc = csm.Companion;
+            this.player = csm.CompanionManager.Farmer;
             this.events = events ?? throw new ArgumentException(nameof(events));
-            this.monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
-            this.metadata = metadata;
+            this.Monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
+            this.Csm = csm;
+            this.loader = csm.ContentLoader;
         }
 
         public State CurrentState { get; private set; }
         internal IController CurrentController { get => this.controllers[this.CurrentState]; }
+
+        internal CompanionStateMachine Csm { get; }
 
         public event EventHandler<EventArgsLocationChanged> LocationChanged;
 
@@ -55,16 +62,35 @@ namespace NpcAdventure.AI
             this.controllers = new Dictionary<State, IController>()
             {
                 [State.FOLLOW] = new FollowController(this),
-                [State.FIGHT] = new FightController(this, this.events, this.metadata.Sword),
+                [State.FIGHT] = new FightController(this, this.loader, this.events, this.Csm.Metadata.Sword),
+                [State.IDLE] = new IdleController(this, this.loader),
             };
 
             // By default AI following the player
             this.ChangeState(State.FOLLOW);
+
+            this.events.GameLoop.TimeChanged += this.GameLoop_TimeChanged;
+        }
+
+        private void GameLoop_TimeChanged(object sender, TimeChangedEventArgs e)
+        {
+            this.lifeSaved = false;
+        }
+
+        public bool PerformAction()
+        {
+            if (this.Csm.HasSkill("doctor") && (this.player.health < this.player.maxHealth / 3) && this.healCooldown == 0 && this.medkits != -1)
+            {
+                this.TryHealFarmer();
+                return true;
+            }
+
+            return false;
         }
 
         private void ChangeState(State state)
         {
-            this.monitor.Log($"AI changes state {this.CurrentState} -> {state}");
+            this.Monitor.Log($"AI changes state {this.CurrentState} -> {state}");
 
             if (this.CurrentController != null)
             {
@@ -87,16 +113,21 @@ namespace NpcAdventure.AI
 
         private void CheckPotentialStateChange()
         {
-            if (this.idleTimer == 0 && this.CurrentState != State.FIGHT && this.PlayerIsNear() && this.IsThereAnyMonster())
+            if (this.Csm.HasSkillsAny("fighter", "warrior") && this.changeStateCooldown == 0 && this.CurrentState != State.FIGHT && this.PlayerIsNear() && this.IsThereAnyMonster())
             {
                 this.ChangeState(State.FIGHT);
-                this.monitor.Log("A 50ft monster is here!");
+                this.Monitor.Log("A 50ft monster is here!");
             }
 
-            if (this.CurrentState == State.FIGHT && this.CurrentController.IsIdle)
+            if (this.CurrentState != State.FOLLOW && this.CurrentController.IsIdle)
             {
-                this.idleTimer = 100;
+                this.changeStateCooldown = 100;
                 this.ChangeState(State.FOLLOW);
+            }
+
+            if (this.CurrentState == State.FOLLOW && this.CurrentController.IsIdle)
+            {
+                this.ChangeState(State.IDLE);
             }
         }
 
@@ -107,8 +138,11 @@ namespace NpcAdventure.AI
                 this.CheckPotentialStateChange();
             }
 
-            if (this.idleTimer > 0)
-                this.idleTimer--;
+            if (this.changeStateCooldown > 0)
+                this.changeStateCooldown--;
+
+            if (this.Csm.HasSkill("doctor"))
+                this.UpdateDoctor(e);
 
             if (this.CurrentController != null)
                 this.CurrentController.Update(e);
@@ -138,6 +172,8 @@ namespace NpcAdventure.AI
 
         public void Dispose()
         {
+            this.events.GameLoop.TimeChanged -= this.GameLoop_TimeChanged;
+            this.CurrentController.Deactivate();
             this.controllers.Clear();
             this.controllers = null;
         }

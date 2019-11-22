@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 9109fe58c59641560a67747caaa8b3df59a38b38
+   commit b52ec7fd4161dbe996156c10e2a59fbe711777a6
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Oct 19 22:43:16 2019 -0400
+   Date:   Mon Nov 18 20:57:45 2019 -0500
    
-       update mod link in NoclipMode readme
+       add Data Layers export
    

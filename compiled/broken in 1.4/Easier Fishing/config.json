@@ -1,0 +1,14 @@
+{
+  "easierFishingMode_Comment": "Mode for mod to run in. false = No Skill Modification, true = Skill Modification.",
+  "easierFishingMode_Info": "| Type: Boolean | Default: false |",
+  "easierFishingMode": false,
+  "fishingBarHeight_Comment": "Bar height in pixels = fishingBarHeight * 100  (2 = 200 pixels)",
+  "fishingBarHeight_Info": "| Type: Float | Default: 1.5f |",
+  "fishingBarHeight": 1.5,
+  "fishingSkillValue_Comment": "If easierFishingMode is set to true this is the value your Fishing Skill will be set to.",
+  "fishingSkillValue_Info": "| Type: Int | Default: 25 |",
+  "fishingSkillValue": 25,
+  "easierFishingDebug_Comment": "Enable debug messages in the console.",
+  "easierFishingDebug_Info": "| Type: Boolean | Default: false |",
+  "easierFishingDebug": true
+}

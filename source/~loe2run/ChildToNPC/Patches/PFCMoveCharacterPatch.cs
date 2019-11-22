@@ -19,7 +19,7 @@ namespace ChildToNPC.Patches
         {
             if (!ModEntry.IsChildNPC(___character))
                 return true;
-
+            
             Rectangle rectangle = new Rectangle(__instance.pathToEndPoint.Peek().X * 64, __instance.pathToEndPoint.Peek().Y * 64, 64, 64);
             rectangle.Inflate(-2, 0);
             Rectangle boundingBox = ___character.GetBoundingBox();
@@ -46,19 +46,12 @@ namespace ChildToNPC.Patches
             }
             else
             {
-                if (___character is Farmer)
+                foreach (NPC character in __instance.location.characters)
                 {
-                    (___character as Farmer).movementDirections.Clear();
-                }
-                else
-                {
-                    foreach (NPC character in __instance.location.characters)
+                    if (!character.Equals(___character) && character.GetBoundingBox().Intersects(boundingBox) && character.isMoving() && string.Compare(character.Name, ___character.Name) < 0)
                     {
-                        if (!character.Equals(___character) && character.GetBoundingBox().Intersects(boundingBox) && character.isMoving() && string.Compare(character.Name, ___character.Name) < 0)
-                        {
-                            ___character.Halt();
-                            return false;
-                        }
+                        ___character.Halt();
+                        return false;
                     }
                 }
                 if (boundingBox.Left < rectangle.Left && boundingBox.Right < rectangle.Right)
@@ -88,7 +81,7 @@ namespace ChildToNPC.Patches
                     if (character.temporaryController != null && character.controller != null)
                         character.controller.location = Game1.getLocationFromName(warp.TargetName);
                 }
-
+                
                 Game1.warpCharacter(___character as NPC, warp.TargetName, new Vector2((float)warp.TargetX, (float)warp.TargetY));
                 if (__instance.isPlayerPresent() && __instance.location.doors.ContainsKey(new Point(warp.X, warp.Y)))
                     __instance.location.playSoundAt("doorClose", new Vector2((float)warp.X, (float)warp.Y));

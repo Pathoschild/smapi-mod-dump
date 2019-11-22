@@ -1,0 +1,10 @@
+﻿{
+   "Name": "UnderdarkKrobus",
+   "Author": "Mel Noelle & KirbyLink",
+   "Version": "1.0.0",
+   "Description": "Changes the sprite size of Krobus to 16 x 32",
+   "UniqueID": "melnoelle.underdarkkrobus",
+   "EntryDll": "underdarkkrobus.dll",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": []
+}
