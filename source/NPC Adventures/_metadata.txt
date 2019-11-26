@@ -5,9 +5,9 @@ mods:
    NPC Adventures
 
 latest commit:
-   commit 3192e0819b6bc9ea6f8ab4e2faed17e46772cbba
+   commit e7c2df66d06793d22804a65921ce004b7d6cb211
    Author: Ellen Jana FawkesovÃ¡ <ellenfawkes@gmail.com>
-   Date:   Wed Nov 20 00:05:08 2019 +0100
+   Date:   Sat Nov 23 13:01:16 2019 +0100
    
-       Release version 0.3.0
+       enhanced nightbuild version preparer
    

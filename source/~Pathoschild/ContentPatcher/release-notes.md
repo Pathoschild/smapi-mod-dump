@@ -1,17 +1,20 @@
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.10
+Released 26 November 2019.
+
+* Updated for Stardew Valley 1.4.
 * Added new tokens:
   * `HavingChild` and `Pregnant`: check if an NPC/player is having a child.
-  * `HasDialogueAnswer`: the response IDs for the player's answers to question dialogues (thanks to mus-candidus!).
+  * `HasDialogueAnswer`: the player's selected response IDs for question dialogues (thanks to mus-candidus!).
   * `IsJojaMartComplete`: whether the player bought a Joja membership and completed all Joja bundles.
-  * `Random`: choose a random value from a given list.
+  * `Random`: a random value from the given list.
   * `Range`: a list of integers between the specified min/max values.
 * Added support for editing map properties with `EditMap` patches.
 * Added support for using `FromFile` with `EditData` patches.
 * Added `patch export` console command, which lets you see what an asset looks like with all changes applied.
-* Added `patch parse` console command, which parses an arbitrary tokenisable string and shows the result.
+* Added `patch parse` console command, which parses an arbitrary tokenizable string and shows the result.
 * Added new 'current changes' list for each content pack to `patch summary` output.
 * Added world state IDs to the `HasFlag` token.
 * Added [`manifest.json` and `content.json` validator](https://github.com/Pathoschild/StardewMods/tree/develop/ContentPatcher#schema-validator) for content pack authors.
@@ -242,7 +245,7 @@ Released 26 March 2018.
 * Added unique patch names (editable via `LogName` field) to simplify troubleshooting.
 * Improved error when a patch specifies an invalid source/target area.
 * Fixed issue where an exception in one patch prevented other patches from being applied.
-* Fixed `Target` not being normalised.
+* Fixed `Target` not being normalized.
 * Fixed errors using debug overlay on Linux/Mac.
 
 ## 1.2

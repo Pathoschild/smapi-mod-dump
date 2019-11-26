@@ -3,6 +3,7 @@ url:
 
 mods:
    Animal Husbandry Mod
+   Borderless Wood Floor
    Crop Transplant
    Custom Cask Mod
    Custom Crystalarium Mod
@@ -12,12 +13,12 @@ mods:
    Water Retaining Field
 
 latest commit:
-   commit 5f6669c319a3ac0bc1c023b31651d4717bce4fe9
-   Merge: a0a6d7b f172d40
+   commit 0eefb66f07b8dd7ef3d48e0d979c49cbd3aac062
+   Merge: 1e478ca da27c75
    Author: Digus <32422267+Digus@users.noreply.github.com>
-   Date:   Sat Nov 16 02:37:03 2019 -0300
+   Date:   Mon Nov 25 02:40:35 2019 -0300
    
-       Merge pull request #21 from Digus/develop
+       Merge pull request #27 from Digus/develop
        
        Develop
    

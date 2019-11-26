@@ -37,6 +37,10 @@ namespace CompostPestsCultivation
             Cultivation.Init(conf);
             Composting.Init(conf);
 
+            SeedMakerController.Init(helper);
+            SeedMakerController.HeldItemRemoved += SeedMakerController_HeldItemRemoved;
+
+
             helper.Events.Display.RenderingHud += Display_RenderingHud;
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
@@ -110,8 +114,17 @@ namespace CompostPestsCultivation
                 Composting.Load(data);
                 Cultivation.Load(data);
                 Pests.Load(data);
-            }         
+            }
         }
+
+        void SeedMakerController_HeldItemRemoved(object sender, SeedMakerEventArgs e)
+        {
+            if (e.HeldItem != null && e.HeldItem.Category == Object.SeedsCategory)
+            {
+                Cultivation.NewSeeds(e.HeldItem.ParentSheetIndex);
+            }
+        }
+
 
         void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
         {
@@ -130,7 +143,7 @@ namespace CompostPestsCultivation
                     if (obj.heldObject?.Value != null && obj.heldObject?.Value.Category == Object.SeedsCategory && obj.readyForHarvest && Game1.player.couldInventoryAcceptThisObject(obj.heldObject.Value.ParentSheetIndex, obj.heldObject.Value.Stack))
                     {
                         //Monitor.Log("Detected Seeds in Seed Maker", LogLevel.Alert);
-                        Cultivation.NewSeeds(obj.heldObject.Value.ParentSheetIndex);
+                        //Cultivation.NewSeeds(obj.heldObject.Value.ParentSheetIndex); //TODO should be unneccessary now
                     }
                     else if (obj.heldObject?.Value == null && Game1.player.ActiveObject?.Category == Object.SeedsCategory)
                     {

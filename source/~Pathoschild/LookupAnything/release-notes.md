@@ -1,7 +1,9 @@
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.23
+Released 26 November 2019.
+
 * Updated for Stardew Valley 1.4, including new content.
 * Added save format version to save slot lookups.
 * Updated for compatibility with Json Assets 1.3.8.
@@ -66,7 +68,7 @@ Released 04 January 2019.
 * After clicking a link in a lookup menu, closing the new lookup now returns you to the previous one.
 * Fixed previous menu not restored when `HideOnKeyUp` option is enabled.
 * Fixed visual bug on social tab after lookup when zoom is exactly 100%.
-* Fixed debug fields showing wrong values in rare cases when an item was customised after it was spawned.
+* Fixed debug fields showing wrong values in rare cases when an item was customized after it was spawned.
 * Improved translations. Thanks to Nanogamer7 (German)!
 
 ## 1.20.1

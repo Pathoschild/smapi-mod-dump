@@ -105,13 +105,17 @@ namespace StardewHack
         /// <summary>
         /// Maps the method being patched to the method doing said patching. 
         /// </summary>
-        static Dictionary<MethodBase, MethodInfo> patchmap = new Dictionary<MethodBase, MethodInfo>();
+        private static Dictionary<MethodBase, MethodInfo> patchmap = new Dictionary<MethodBase, MethodInfo>();
 
         /// <summary>
         /// A stack to allow patches to trigger additional patches. 
         /// This is necessary when dealing with delegates. 
         /// </summary>
-        static Stack<MethodBase> to_be_patched = new Stack<MethodBase>();
+        private static Stack<MethodBase> to_be_patched = new Stack<MethodBase>();
+        
+        protected Hack() {
+            instance = (T)this;
+        }
 
         /// <summary>
         /// Applies the methods annotated with BytecodePatch defined in this class. 
@@ -119,7 +123,6 @@ namespace StardewHack
         public override void Entry(IModHelper helper) {
             if (typeof(T) != this.GetType()) throw new Exception($"The type of this ({this.GetType()}) must be the same as the generic argument T ({typeof(T)}).");
             base.Entry(helper);
-            instance = (T)this;
 
             // Iterate all methods in this class and search for those that have a BytecodePatch annotation.
             var methods = typeof(T).GetMethods(AccessTools.all);
@@ -206,6 +209,12 @@ namespace StardewHack
 
             // Return the resulting code.
             return instructions;
+        }
+        
+        /// Returns the used instance of this class.
+        /// Only available after ModEntry has been called.
+        protected static T getInstance() {
+            return instance;
         }
     }
 

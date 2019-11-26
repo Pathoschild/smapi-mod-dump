@@ -90,5 +90,10 @@ namespace MailFrameworkMod
             Callback = callback;
             WhichBG = whichBG;
         }
+
+        public override string ToString()
+        {
+            return $"{nameof(Id)}: {Id}, {nameof(Text)}: {Text}";
+        }
     }
 }

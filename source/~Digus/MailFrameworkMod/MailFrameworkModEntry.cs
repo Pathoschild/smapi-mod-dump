@@ -14,7 +14,6 @@ namespace MailFrameworkMod
         public static IMonitor ModMonitor;
         public static ModConfig ModConfig;
 
-
         /*********
         ** Public methods
         *********/
@@ -33,6 +32,7 @@ namespace MailFrameworkMod
             helper.Events.GameLoop.DayStarted += OnDayStarted;
             helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
             helper.Events.GameLoop.Saving += OnSaving;
+            Helper.Events.GameLoop.SaveLoaded += DataLoader.LoadContentPacks;
 
             helper.ConsoleCommands.Add("player_addreceivedmail", "Adds a mail as received.\n\nUsage: player_addreceivedmail <value>\n- value: name of the mail.", Commands.AddsReceivedMail);
             helper.ConsoleCommands.Add("player_removereceivedmail", "Remove a mail from the list of received mail.\n\nUsage: player_removereceivedmail <value>\n- value: name of the mail.", Commands.RemoveReceivedMail);

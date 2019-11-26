@@ -5,7 +5,7 @@ using StardewValley.TerrainFeatures;
 
 namespace StardewHack.TreeSpread
 {
-     public class ModConfig
+    public class ModConfig
     {
         /** Chance that a tree will have a seed. Normally this is 0.05 (=5%). */
         public double SeedChance = 0.15;

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "FishDex",
+  "Author": "rupak0577",
+  "Version": "1.1.0",
+  "Description": "Records data of fish caught",
+  "UniqueID": "rupak0577.FishDex",
+  "EntryDll": "FishDex.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "GitHub:rupak0577/FishDex" ]
+}

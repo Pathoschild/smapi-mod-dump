@@ -17,6 +17,11 @@ using System.Collections.Generic;
 
 using StardewModdingAPI;
 using StardewValley.Tools;
+using StardewValley;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI.Events;
+using System;
 
 namespace InteractionTweaks
 {
@@ -66,7 +71,10 @@ namespace InteractionTweaks
             });
             */
 
+            //Helper.ConsoleCommands.Add("carpenter_menu", "", (arg1, arg2) => Game1.activeClickableMenu = new StardewValley.Menus.CarpenterMenu());
+
         }
+
 
         public InteractionTweaksConfig GetConfig() {
             if (config == null)

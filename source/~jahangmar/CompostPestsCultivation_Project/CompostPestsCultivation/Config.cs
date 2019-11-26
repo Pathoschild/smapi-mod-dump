@@ -13,7 +13,7 @@
         public int fertilized_weed_grow_chance { set; get; } = 20;
         public int fertilized_rain_weed_grow_chance { set; get; } = 50;
 
-        public int minimal_speed_ungrow_chance { set; get; } = 20;
+        public int minimal_speed_ungrow_chance { set; get; } = 10;
         public int speed_i_trait_grow_chance { set; get; } = 10;
         public int speed_ii_trait_grow_chance { set; get; } = 25;
 

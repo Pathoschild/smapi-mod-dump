@@ -1,0 +1,17 @@
+﻿{
+	"Name": "[CCM] Name of your pack",
+	"Author": "Your name",
+	"Version": "1.0.0",
+	"Description": "Adds configuration of my cask data to Custom Cask Mod.",
+	"UniqueID": "YourName.YouPackNameForCustomCaskMod",
+	"MinimumApiVersion": "2.11.2",
+	"UpdateKeys": [],
+	"Dependencies": [
+		{
+			"UniqueID": "YourName.YourOthersPacksAndMods"
+		}
+	],
+	"ContentPackFor": {
+		"UniqueID": "DIGUS.CustomCaskMod"
+	}
+}

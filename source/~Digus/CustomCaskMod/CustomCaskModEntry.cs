@@ -28,6 +28,9 @@ namespace CustomCaskMod
             Helper = helper;
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+
+            Helper.ConsoleCommands.Add("config_reload_contentpacks_customcaskmod", "Reload all content packs for custom cask mod.", DataLoader.LoadContentPacksCommand);
         }
 
 
@@ -67,6 +70,14 @@ namespace CustomCaskMod
                 }
                 
             }
+        }
+
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        public static void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+        {
+            DataLoader.FillCaskDataIds();
         }
     }
 }

@@ -16,11 +16,12 @@ namespace FarmTypeManager
         private void AddSMAPIEvents(IModHelper helper)
         {
             //tell SMAPI to run event methods when necessary
-            helper.Events.GameLoop.DayStarted += DayStarted;
-            helper.Events.GameLoop.TimeChanged += TimeChanged;
             helper.Events.GameLoop.DayEnding += DayEnding;
+            helper.Events.GameLoop.DayStarted += DayStarted;
             helper.Events.GameLoop.ReturnedToTitle += ReturnedToTitle;
-            helper.Events.Multiplayer.ModMessageReceived += ModMessageReceived;
+            helper.Events.GameLoop.TimeChanged += TimeChanged;
+            helper.Events.GameLoop.UpdateTicked += PlayerUsedTool;
+            helper.Events.Multiplayer.ModMessageReceived += ModMessageReceived;           
         }
     }
 }

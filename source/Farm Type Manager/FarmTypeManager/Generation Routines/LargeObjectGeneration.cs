@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Netcode;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 
 namespace FarmTypeManager
@@ -51,11 +53,11 @@ namespace FarmTypeManager
                     {
                         Utility.Monitor.Log($"Checking large object settings for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
 
-                        //validate map name for the area
-                        if (!(Game1.getLocationFromName(area.MapName) is Farm loc)) //if the provided map is not a farm (or is null)
+                        //validate the map name for the area
+                        List<GameLocation> locations = Utility.GetAllLocationsFromName(area.MapName); //get all locations for this map name
+                        if (locations.Count == 0) //if no locations were found
                         {
-                            //non-farm maps generally don't support resource clumps (a.k.a. large objects) properly, so display an error message and skip this area
-                            Utility.Monitor.Log($"The map named \"{area.MapName}\" could not be found OR is not a \"farm\" map type. Large objects won't be spawned there.", LogLevel.Trace);
+                            Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. Forage won't be spawned there.", LogLevel.Trace);
                             continue;
                         }
 
@@ -73,9 +75,9 @@ namespace FarmTypeManager
                         List<int> objectIDs = Utility.GetLargeObjectIDs(area.ObjectTypes); //get a list of index numbers for relevant object types in this area
 
                         //find the locations any existing objects (of the listed types)
-                        if (area.FindExistingObjectLocations == true) //if enabled 
+                        if (area.FindExistingObjectLocations == true && locations.Count == 1) //if enabled & exactly one location was found (TODO: rework or fix this system to support multiple locations per area)
                         {
-                            if (data.Save.ExistingObjectLocations.ContainsKey(area.UniqueAreaID)) //if this config+farm already has a list of existing objects (even if it's blank)
+                            if (data.Save.ExistingObjectLocations.ContainsKey(area.UniqueAreaID)) //if this area already has a list of existing objects (even if it's blank)
                             {
                                 Utility.Monitor.Log("Find Existing Objects enabled. Using save file data from a previous search.", LogLevel.Trace);
                             }
@@ -85,23 +87,45 @@ namespace FarmTypeManager
 
                                 List<string> existingObjects = new List<string>(); //any new object location strings to be added to area.IncludeAreas
 
-                                foreach (ResourceClump clump in loc.resourceClumps) //go through the map's set of resource clumps (stumps, logs, etc)
+                                IEnumerable<TerrainFeature> resourceClumps = null; //a list of large objects at this location
+                                if (locations[0] is Farm farm)
                                 {
-                                    bool validObjectType = false; //whether the current object is listed in this area's config
-                                    foreach (int ID in objectIDs) //check the list of valid index numbers for this area
+                                    resourceClumps = farm.resourceClumps.ToList(); //use the farm's clump list
+                                }
+                                else if (locations[0] is MineShaft mine)
+                                {
+                                    resourceClumps = mine.resourceClumps.ToList(); //use the mine's clump list
+                                }
+                                else
+                                {
+                                    resourceClumps = locations[0].largeTerrainFeatures.OfType<LargeResourceClump>(); //use this location's large resource clump list
+                                }
+
+                                foreach (TerrainFeature clump in resourceClumps) //for each of this location's large objects
+                                {
+                                    string newInclude = "";
+
+                                    bool validObjectID = false; //whether this clump's ID is listed in this area's config
+                                    foreach (int ID in objectIDs) //for each valid object ID for this area
                                     {
-                                        if (clump.parentSheetIndex.Value == ID)
+                                        if (clump is ResourceClump smallClump && smallClump.parentSheetIndex.Value == ID) //if this clump's ID matches one of the listed object IDs
                                         {
-                                            validObjectType = true; //this clump's ID matches one of the listed object IDs
+                                            validObjectID = true;
+                                            newInclude = $"{smallClump.tile.X},{smallClump.tile.Y};{smallClump.tile.X},{smallClump.tile.Y}"; //generate an include string for this clump's tile
+                                            break;
+                                        }
+                                        else if (clump is LargeResourceClump largeClump && largeClump.Clump.Value.parentSheetIndex.Value == ID) //if this large clump's ID matches one of the listed object IDs
+                                        {
+                                            validObjectID = true;
+                                            newInclude = $"{largeClump.Clump.Value.tile.X},{largeClump.Clump.Value.tile.Y};{largeClump.Clump.Value.tile.X},{largeClump.Clump.Value.tile.Y}"; //generate an include string for this large clump's tile
                                             break;
                                         }
                                     }
-                                    if (validObjectType == false) //if this clump isn't listed in the config
+                                    if (validObjectID == false) //if this clump's ID isn't listed in the config
                                     {
                                         continue; //skip to the next clump
                                     }
-
-                                    string newInclude = $"{clump.tile.X},{clump.tile.Y};{clump.tile.X},{clump.tile.Y}"; //generate an include string for this tile
+                                    
                                     bool alreadyListed = false; //whether newInclude is already listed in area.IncludeAreas
 
                                     foreach (string include in area.IncludeCoordinates) //check each existing include string
@@ -124,31 +148,51 @@ namespace FarmTypeManager
                                 data.Save.ExistingObjectLocations.Add(area.UniqueAreaID, existingObjects.ToArray()); //add the new strings to the save data for the current config+farm
                             }
                         }
-                        else
+                        else //if this setting is disabled or multiple maps prevent enabling it
                         {
-                            Utility.Monitor.Log("Find Existing Objects disabled. Skipping.", LogLevel.Trace);
+                            if (!area.FindExistingObjectLocations) //if this setting is disabled
+                            {
+                                Utility.Monitor.Log("Find Existing Objects disabled. Skipping.", LogLevel.Trace);
+                            }
+                            else //if this was caused by map limitations
+                            {
+                                Utility.Monitor.Log("Find Existing Objects does not currently support map names that target multiple locations (e.g. building types). The setting will be ignored.", LogLevel.Debug);
+                                Utility.Monitor.Log($"Affected area: {area.UniqueAreaID}", LogLevel.Debug);
+                                Utility.Monitor.Log($"Map name: {area.MapName}", LogLevel.Debug);
+                            }
                         }
 
-                        //calculate how many objects to spawn today
-                        int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, area.PercentExtraSpawnsPerSkillLevel, (Utility.Skills)Enum.Parse(typeof(Utility.Skills), area.RelatedSkill, true));
+                        Utility.Monitor.Log($"Beginning generation process...", LogLevel.Trace);
 
-                        Utility.Monitor.Log($"Calculating potential spawns: {spawnCount}. Beginning generation process...", LogLevel.Trace);
-
-                        List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
-
-                        //begin to generate objects
-                        while (spawnCount > 0) //while more objects should be spawned
+                        for (int x = 0; x < locations.Count; x++) //for each location matching this area's map name
                         {
-                            spawnCount--;
+                            //calculate how many objects to spawn today
+                            int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, area.PercentExtraSpawnsPerSkillLevel, (Utility.Skills)Enum.Parse(typeof(Utility.Skills), area.RelatedSkill, true));
 
-                            int randomObject = objectIDs[Utility.RNG.Next(objectIDs.Count)]; //get a random object ID to spawn
+                            if (locations.Count > 1) //if this area targets multiple locations
+                            {
+                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name} #{x + 1}: {spawnCount}.", LogLevel.Trace);
+                            }
+                            else //if this area only targets one location
+                            {
+                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name}: {spawnCount}.", LogLevel.Trace);
+                            }
 
-                            //create a saved object representing this spawn (with a "blank" tile location)
-                            SavedObject saved = new SavedObject(area.MapName, new Vector2(), SavedObject.ObjectType.LargeObject, randomObject, null, area.DaysUntilSpawnsExpire);
-                            spawns.Add(saved); //add it to the list
+                            //begin to generate large objects
+                            List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
+                            while (spawnCount > 0) //while more objects should be spawned
+                            {
+                                spawnCount--;
+
+                                int randomObject = objectIDs[Utility.RNG.Next(objectIDs.Count)]; //get a random object ID to spawn
+
+                                //create a saved object representing this spawn (with a "blank" tile location)
+                                SavedObject saved = new SavedObject(area.MapName, new Vector2(), SavedObject.ObjectType.LargeObject, randomObject, null, area.DaysUntilSpawnsExpire ?? 0);
+                                spawns.Add(saved); //add it to the list
+                            }
+
+                            Utility.PopulateTimedSpawnList(spawns, data, area); //process the listed spawns and add them to Utility.TimedSpawns
                         }
-
-                        Utility.PopulateTimedSpawnList(spawns, data, area); //process the listed spawns and add them to Utility.TimedSpawns
 
                         Utility.Monitor.Log($"Large object generation complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
                     }

@@ -15,17 +15,25 @@ namespace MailFrameworkMod
         /// <param name="letter"> The letter to be saved.</param>
         public static void SaveLetter(Letter letter)
         {
-            if (Game1.objectInformation == null)
-                throw new NotImplementedException("Can't add a letter before the game is launched.");
-
-            if (Letters.Exists((l) => l.Id == letter.Id))
+            if (letter.Id == null)
             {
-                Letters[Letters.FindIndex((l) => l.Id == letter.Id)] = letter;
-            } else
-            {
-                Letters.Add(letter);
+                MailFrameworkModEntry.ModMonitor.Log($"You can't add a letter with a null id. This letter will be ignored.", LogLevel.Error);
+                MailFrameworkModEntry.ModMonitor.Log(letter.ToString(), LogLevel.Trace);
             }
-            
+            else
+            {
+                if (Game1.objectInformation == null)
+                    throw new NotImplementedException("Can't add a letter before the game is launched.");
+
+                if (Letters.Exists((l) => l.Id == letter.Id))
+                {
+                    Letters[Letters.FindIndex((l) => l.Id == letter.Id)] = letter;
+                }
+                else
+                {
+                    Letters.Add(letter);
+                }
+            }
         }
 
         /// <summary>

@@ -6,10 +6,12 @@ Allows you to harvest all crops and forage using the scythe. They can also still
 ## Config
 *Note: run Stardew Valley once with this mod enabled to generate the `config.json` file.*
 
-* `HarvestForage`: Should the game be patched to allow harvesting forage with the scythe? Default = true.
-* `AllHaveQuality`: If the crop drops more than 1 harvest, should the additional harvest have the same quality as the first? Otherwise additional harvest will always have normal quality. Default = false.
-* `ScytheHarvestFlowers`: Can flowers be harvested with the scythe? Note that if this is disabled, flowers can still be plucked by hand, regardless of whether plucking by hand is disabled. Default = true.
-* `AllowManualHarvest`: Whether crops should also remain pluckable by hand. Default = true;
+* `HarvestMode`: Valid values are: `HAND` (only pluckable), `SCYTHE` (only scythable), `BOTH` (both pluckable and scythable).
+  * `Flowers`: How flowers can be harvested. Default = BOTH.
+  * `Forage`:  How forage can be harvested (Setting this to HAND disables all patches related to handling forage). Default = BOTH.
+  * `SpringOnion`: How spring onions can be harvested. Default = BOTH.
+  * `PluckableCrops`: How crops that normally can only be harvested by hand can be harvested. Default = BOTH.
+  * `ScythableCrops`: How crops that normally can only be harvested with a scythe can be harvested. Default = SCYTHE.
 
 ## Dependencies
 This mod requires the following mods to be installed:
@@ -41,3 +43,9 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 #### 1.1:
 * Fix support for Stardew Valley 1.3.36 on MacOS.
+
+#### 1.2:
+* Rewrote the mod, such that plucking is disallowed while the scythe is equipped. This should fix various issues with harvesting.
+* Generalized config, such that harvest mode is configurable separately for every kind of crop/forage.
+* The `AllHaveQuality` configuration parameter has been removed, the associated effect has been removed.
+* The format of the config file has been rewritten.

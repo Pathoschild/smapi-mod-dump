@@ -66,14 +66,13 @@ easy to troubleshoot | ✘ no record of changes         | ✓ SMAPI log + Conten
 
 ### Content Patcher vs other mods
 Content Patcher supports all game assets with some very powerful features, but it's a generalist
-framework. More specialised frameworks might be better for specific things. You should consider
+framework. More specialized frameworks might be better for specific things. You should consider
 whether one of these would work for you:
 
   * [Advanced Location Loader](https://community.playstarbound.com/resources/smapi-advanced-location-loader.3619/) for complex changes to maps. (For simple changes, see _[edit part of a map](#edit-part-of-a-map)_ below.)
   * [Custom Farming Redux](https://www.nexusmods.com/stardewvalley/mods/991) to add machines.
   * [Custom Furniture](https://www.nexusmods.com/stardewvalley/mods/1254) to add furniture.
-  * [Custom Shirts](https://www.nexusmods.com/stardewvalley/mods/2416) to add shirts.
-  * [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720) to add items, crafting recipes, crops, fruit trees, hats, and weapons.
+  * [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720) to add many things like items, crafting recipes, crops, fruit trees, hats, and weapons.
 
 ## Create a content pack
 ### Overview
@@ -1123,7 +1122,7 @@ Whether the input argument is non-blank. For example, to check if the player is 
 }
 ```
 
-This isn't limited to a single token. You can pass in any tokenised string, and `HasValue` will
+This isn't limited to a single token. You can pass in any tokenized string, and `HasValue` will
 return true if the resulting string is non-blank:
 
 ```js
@@ -1237,7 +1236,7 @@ any other field outside a patch block.
 <td>Target</td>
 <td>
 
-The patch's `Target` field value for the current asset. Path separators are normalised for the OS.
+The patch's `Target` field value for the current asset. Path separators are normalized for the OS.
 This is mainly useful for patches which specify multiple targets:
 
 ```js
@@ -1547,10 +1546,10 @@ Exported asset 'Maps/springobjects' to 'C:\Program Files (x86)\Steam\steamapps\c
 ```
 
 #### patch parse
-`patch parse` parses a tokenisable string and shows the resulting metadata, using the current
+`patch parse` parses a tokenizable string and shows the resulting metadata, using the current
 Content Patcher context (the same values used when applying patches).
 
-This recognises global tokens by default. You can use tokens for a specific content pack (including
+This recognizes global tokens by default. You can use tokens for a specific content pack (including
 dynamic tokens and config values) by giving the content pack ID from its `manifest.json` in the
 optional second argument.
 

@@ -1,0 +1,14 @@
+url:
+   https://github.com/ChroniclerCherry/stardew-valley-mods.git
+
+mods:
+   Platonic Relationships
+   Profit Margins
+
+latest commit:
+   commit ee20a8bbc0462510f1215d125c50f1fa156da96e
+   Author: Cherry <yiminxuezheng@gmail.com>
+   Date:   Fri Nov 22 15:57:19 2019 -0500
+   
+       .gitignore fix
+   

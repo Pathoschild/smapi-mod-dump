@@ -6,17 +6,15 @@ mods:
    Dismantle Craftables
    Don't Eat That
    Interaction Tweaks
+   Leveling Adjustment
    Pet Interaction
    Seeds are Rare
    Working Fireplace
 
 latest commit:
-   commit 1e8c9153d9b6e0c19a60d0bfc44a4de85f019a1f
-   Merge: 0a70ac6 490a200
+   commit b9b79c8501d75628b98ca6d23390728fcc6366fc
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Sat Nov 2 01:14:06 2019 +0100
+   Date:   Sat Nov 23 02:01:20 2019 +0100
    
-       Merge pull request #7 from pomepome/master
-       
-       Created ja.json
+       french translation
    

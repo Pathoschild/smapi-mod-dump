@@ -14,22 +14,18 @@ namespace StardewHack.AlwaysScrollMap
         public SButton ToggleScroll = SButton.OemSemicolon;
     }
     
-    static class State {
-        public static ModConfig config;
-        public static bool Enabled() {
-            if (StardewValley.Game1.currentLocation.IsOutdoors)
-                return config.EnabledOutdoors;
-            else
-                return config.EnabledIndoors;
-        }
-    }
-
     public class ModEntry : HackWithConfig<ModEntry, ModConfig>
     {
+        public static bool Enabled() {
+            if (Game1.currentLocation.IsOutdoors)
+                return getInstance().config.EnabledOutdoors;
+            else
+                return getInstance().config.EnabledIndoors;
+        }
+
         public override void Entry(IModHelper helper) {
             base.Entry(helper);
             Helper.Events.Input.ButtonPressed += ToggleScroll;
-            State.config = config;
         }
 
         private void ToggleScroll(object sender, ButtonPressedEventArgs e) {
@@ -57,7 +53,7 @@ namespace StardewHack.AlwaysScrollMap
             );
             // Encapsulate with if (!State.Enabled) {
             range.Prepend(
-                Instructions.Call(typeof(State), nameof(State.Enabled)),
+                Instructions.Call(typeof(ModEntry), nameof(ModEntry.Enabled)),
                 Instructions.Brtrue(AttachLabel(range.End[0]))
             );
             range.ReplaceJump(2, range[0]);

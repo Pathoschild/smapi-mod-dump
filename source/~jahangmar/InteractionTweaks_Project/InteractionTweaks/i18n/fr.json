@@ -1,0 +1,12 @@
+{
+    "dia.eatquestion": "Manger {{item}}?",
+    "dia.eatanswerOne": "Oui, un(e) seul(e).",
+    "dia.eatanswerMulti": "Oui, {{amount}} jusqu'à n'avoir plus faim.",
+    "dia.eatanswerNo": "Non.",
+    "menu.slingshotempty": "La fronde doit être vide pour la vendre.",
+    "item.slingshotdescr": "Tire des objets variés tels que des pierres, des minerais, des légumes ou des munitions explosives.",
+    "menu.carpentermoneybuttonon": "Activé : Acheter les ressources manquantes.",
+    "menu.carpentermoneybuttonoff": "Désactivé : Acheter les ressources manquantes.",
+    "menu.carpenteringredinfo": "{{itemname}} vont être acheté(e)s.",
+    "menu.fishingrodempty": "Enlevez les attachements pour vendre votre canne à pêche."
+}

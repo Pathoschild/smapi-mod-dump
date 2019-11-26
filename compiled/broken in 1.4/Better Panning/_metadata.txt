@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4161
+IDs: AairTheGreat.BetterPanning
+update keys: GitHub:AairTheGreat/StardewValleyMods, Nexus:4161

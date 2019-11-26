@@ -66,6 +66,8 @@ namespace CompostPestsCultivation
 
         public static void NewSeeds(int id)
         {
+            ModEntry.GetMonitor().Log($"Processing new seeds with id {id}", LogLevel.Trace);
+
             //ModEntry.GetMonitor().Log("checking key in cropseeds...");
             if (id == mixed_seeds_id || new Crop(id, 0, 0).isWildSeedCrop())
                 return;

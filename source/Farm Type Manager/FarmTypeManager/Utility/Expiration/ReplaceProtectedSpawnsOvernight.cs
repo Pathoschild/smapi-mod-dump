@@ -7,6 +7,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 
 namespace FarmTypeManager
@@ -40,7 +41,6 @@ namespace FarmTypeManager
                         if (location == null) //if the map wasn't found
                         {
                             unloaded++; //increment unloaded tracker
-                            //note: don't remove the object's save data; this might be a temporary issue, e.g. a map that didn't load correctly
                             continue; //skip to the next object
                         }
 
@@ -58,23 +58,47 @@ namespace FarmTypeManager
                     }
                     else if (saved.Type == SavedObject.ObjectType.LargeObject) //if this is a large object
                     {
-                        Farm farm = Game1.getLocationFromName(saved.MapName) as Farm; //get the specified location & treat it as a farm (null otherwise)
+                        GameLocation location = Game1.getLocationFromName(saved.MapName); //get the object's location
 
-                        if (farm == null) //if this isn't a valid map
+                        if (location == null) //if the map wasn't found
                         {
                             unloaded++; //increment unloaded tracker
-                            //note: don't remove the object's save data; this might be a temporary issue, e.g. a map that didn't load correctly
                             continue; //skip to the next object
+                        }
+
+                        IEnumerable<TerrainFeature> resourceClumps = null; //a list of large objects at this location
+                        if (location is Farm farm)
+                        {
+                            resourceClumps = farm.resourceClumps.ToList(); //use the farm's clump list
+                        }
+                        else if (location is MineShaft mine)
+                        {
+                            resourceClumps = mine.resourceClumps.ToList(); //use the mine's clump list
+                        }
+                        else
+                        {
+                            resourceClumps = location.largeTerrainFeatures.OfType<LargeResourceClump>(); //use this location's large resource clump list
                         }
 
                         bool stillExists = false; //does this large object still exist?
 
-                        foreach (ResourceClump clump in farm.resourceClumps) //for each clump (a.k.a. large object) on this map
+                        foreach (TerrainFeature clump in resourceClumps) //for each of this location's large objects
                         {
-                            if (clump.tile.X == saved.Tile.X && clump.tile.Y == saved.Tile.Y && clump.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
+                            if (clump is ResourceClump smallClump)
                             {
-                                stillExists = true;
-                                break; //skip the rest of these clumps
+                                if (smallClump.tile.X == saved.Tile.X && smallClump.tile.Y == saved.Tile.Y && smallClump.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
+                                {
+                                    stillExists = true;
+                                    break; //stop searching the clump list
+                                }
+                            }
+                            else if (clump is LargeResourceClump largeClump)
+                            {
+                                if (largeClump.Clump.Value.tile.X == saved.Tile.X && largeClump.Clump.Value.tile.Y == saved.Tile.Y && largeClump.Clump.Value.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
+                                {
+                                    stillExists = true;
+                                    break; //stop searching the clump list
+                                }
                             }
                         }
 
@@ -82,13 +106,12 @@ namespace FarmTypeManager
                         {
                             missing++; //increment missing tracker
 
-                            //if the object's tiles are not unoccupied
-                            if (!farm.isTileOccupiedForPlacement(saved.Tile) && !farm.isTileOccupiedForPlacement(new Vector2(saved.Tile.X + 1, saved.Tile.Y)) && !farm.isTileOccupiedForPlacement(new Vector2(saved.Tile.X, saved.Tile.Y + 1)) && !farm.isTileOccupiedForPlacement(new Vector2(saved.Tile.X + 1, saved.Tile.Y + 1)))
+                            if (IsTileValid(location, saved.Tile, true, "High")) //if the object's tile is valid for large object placement (defaulting to "high" strictness)
                             {
-                                SpawnLargeObject(saved.ID.Value, farm, saved.Tile); //respawn it
+                                SpawnLargeObject(saved.ID.Value, location, saved.Tile); //respawn the object
                                 respawned++; //increment respawn tracker
                             }
-                            else //the tiles are occupied
+                            else //if the object's tile is invalid
                             {
                                 blocked++; //increment obstruction tracker
                             }
@@ -101,7 +124,6 @@ namespace FarmTypeManager
                         if (location == null) //if the map wasn't found
                         {
                             unloaded++; //increment unloaded tracker
-                            //note: don't remove the object's save data; this might be a temporary issue, e.g. a map that didn't load correctly
                             continue; //skip to the next object
                         }
 

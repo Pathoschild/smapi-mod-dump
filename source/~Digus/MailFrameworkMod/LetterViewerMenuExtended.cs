@@ -72,5 +72,40 @@ namespace MailFrameworkMod
                 }
             }
         }
+
+        public override void receiveLeftClick(int x, int y, bool playSound = true)
+        {
+            if ((double)MailFrameworkModEntry.ModHelper.Reflection.GetField<float>(this, "scale").GetValue() < 1.0)
+                return;
+
+            if (this.upperRightCloseButton == null || !this.readyToClose() ||
+                !this.upperRightCloseButton.containsPoint(x, y))
+            {
+                if (Game1.activeClickableMenu != null || Game1.currentMinigame != null)
+                {
+                    if (this.itemsToGrab.Count > 0)
+                    {
+                        ClickableComponent clickableComponent = this.itemsToGrab.Last();
+                        if (clickableComponent.containsPoint(x, y) && clickableComponent.item != null)
+                        {
+                            Game1.playSound("coin");
+                            Game1.player.addItemByMenuIfNecessary(clickableComponent.item, null);
+                            if (Game1.activeClickableMenu != null && Game1.activeClickableMenu != this)
+                            {
+                                Game1.activeClickableMenu.exitFunction = new IClickableMenu.onExit(() => Game1.activeClickableMenu = this);
+                            }
+                            clickableComponent.item = (Item)null;
+                            if (this.itemsToGrab.Count > 1)
+                            {
+                                this.itemsToGrab.Remove(clickableComponent);
+                            }
+                            return;
+                        }
+                    }
+                }
+            }
+
+            base.receiveLeftClick(x, y, playSound);
+        }
     }
 }

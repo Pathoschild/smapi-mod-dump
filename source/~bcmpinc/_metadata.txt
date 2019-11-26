@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 1236e98185aa69676205f6005ae6c97a2fd3d082
+   commit c12e97dc0f75e8d8bc11b5b1462842d2e2d3ff03
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Wed Nov 20 17:31:31 2019 +0100
+   Date:   Mon Nov 25 23:57:51 2019 +0100
    
-       Harvest with scythe applies cleanly on android (but does not work & breaks wear more rings)
+       Updated HarvestWithScythe readme file.
    

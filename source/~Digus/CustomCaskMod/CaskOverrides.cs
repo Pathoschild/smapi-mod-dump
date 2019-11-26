@@ -32,15 +32,15 @@ namespace CustomCaskMod
             bool flag = false;
             float num = 1f;
 
-            if (DataLoader.CaskData.ContainsKey(dropIn.ParentSheetIndex))
+            if (DataLoader.CaskDataId.ContainsKey(dropIn.ParentSheetIndex))
             {
                 flag = true;
-                num = DataLoader.CaskData[dropIn.ParentSheetIndex];
+                num = DataLoader.CaskDataId[dropIn.ParentSheetIndex];
             }
-            else if (DataLoader.CaskData.ContainsKey(dropIn.Category))
+            else if (DataLoader.CaskDataId.ContainsKey(dropIn.Category))
             {
                 flag = true;
-                num = DataLoader.CaskData[dropIn.Category];
+                num = DataLoader.CaskDataId[dropIn.Category];
             }
             else
             {
@@ -117,7 +117,7 @@ namespace CustomCaskMod
         {
             IReflectedField<Dictionary<int, float>> agingRates = CustomCaskModEntry.Helper.Reflection.GetField<Dictionary<int, float>>(__instance, "AgingRates");
 
-            foreach (var keyValuePair in DataLoader.CaskData)
+            foreach (var keyValuePair in DataLoader.CaskDataId)
             {
                 agingRates.GetValue()[keyValuePair.Key] = keyValuePair.Value;
             }

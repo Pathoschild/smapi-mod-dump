@@ -66,6 +66,8 @@ namespace InteractionTweaks
 
                 SetupButtons(carpenterMenu);
 
+                //if (Helper.Translation.Locale.StartsWith("fr", System.StringComparison.Ordinal))
+
                 Helper.Events.Display.RenderingActiveMenu += Display_RenderingActiveMenu;
                 Helper.Events.Display.RenderedActiveMenu += Display_RenderedActiveMenu;
                 Helper.Events.Input.ButtonPressed += Input_ButtonPressed;

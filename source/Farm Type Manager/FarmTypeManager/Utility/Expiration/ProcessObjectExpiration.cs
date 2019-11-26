@@ -7,6 +7,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 using StardewValley.Monsters;
 
@@ -60,12 +61,12 @@ namespace FarmTypeManager
                                     saved.DaysUntilExpire--; //decrease counter by 1
                                 }
 
-                                if (saved.MonType != null && (!saved.MonType.Settings.ContainsKey("PersistentHP") || (bool)saved.MonType.Settings["PersistentHP"])) //if PersistentHP wasn't provided OR is set to true
+                                if (saved.MonType != null && saved.MonType.Settings.ContainsKey("PersistentHP") && (bool)saved.MonType.Settings["PersistentHP"]) //if the PersistentHP setting is enabled for this monster
                                 {
                                     saved.MonType.Settings["CurrentHP"] = monster.Health; //save this monster's current HP
                                 }
 
-                                location.characters.RemoveAt(x); //remove this monster from the location (note: this must be done even for unexpired monsters to avoid SDV save errors)
+                                location.characters.RemoveAt(x); //remove this monster from the location (NOTE: this must be done even for unexpired monsters to avoid SDV save errors)
                                 break; //stop searching the character list
                             }
                         }
@@ -77,37 +78,79 @@ namespace FarmTypeManager
                     }
                     else if (saved.Type == SavedObject.ObjectType.LargeObject) //if this is a large object
                     {
-                        Farm farm = Game1.getLocationFromName(saved.MapName) as Farm; //get the specified location & treat it as a farm (null otherwise)
+                        GameLocation location = Game1.getLocationFromName(saved.MapName); //get the specified location
 
-                        if (farm == null) //if this isn't a valid map
+                        if (location == null) //if this isn't a valid map
                         {
                             Monitor.VerboseLog($"Removing object data saved for a missing location. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
                             objectsToRemove.Add(saved); //mark this for removal from save
                             continue; //skip to the next object
                         }
 
-                        bool stillExists = false; //does this large object still exist?
-
-                        foreach (ResourceClump clump in farm.resourceClumps) //for each clump (a.k.a. large object) on this map
+                        IEnumerable<TerrainFeature> resourceClumps = null; //a list of large objects at this location
+                        if (location is Farm farm)
                         {
-                            if (clump.tile.X == saved.Tile.X && clump.tile.Y == saved.Tile.Y && clump.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
+                            resourceClumps = farm.resourceClumps.ToList(); //use the farm's clump list
+                        }
+                        else if (location is MineShaft mine)
+                        {
+                            resourceClumps = mine.resourceClumps.ToList(); //use the mine's clump list
+                        }
+                        else
+                        {
+                            resourceClumps = location.largeTerrainFeatures.OfType<LargeResourceClump>(); //use this location's large resource clump list
+                        }
+
+                        TerrainFeature existingObject = null; //the in-game object, if it currently exists
+
+                        foreach (TerrainFeature clump in resourceClumps) //for each of this location's large objects
+                        {
+                            if (clump is ResourceClump smallClump)
                             {
-                                stillExists = true;
-                                break; //stop searching the clump list
+                                if (smallClump.tile.X == saved.Tile.X && smallClump.tile.Y == saved.Tile.Y && smallClump.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
+                                {
+                                    existingObject = smallClump;
+                                    break; //stop searching the clump list
+                                }
+                            }
+                            else if (clump is LargeResourceClump largeClump)
+                            {
+                                if (largeClump.Clump.Value.tile.X == saved.Tile.X && largeClump.Clump.Value.tile.Y == saved.Tile.Y && largeClump.Clump.Value.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
+                                {
+                                    existingObject = largeClump;
+                                    break; //stop searching the clump list
+                                }
                             }
                         }
 
-                        if (stillExists) //if the object still exists
+                        if (existingObject != null) //if the object still exists
                         {
                             if (saved.DaysUntilExpire == 1) //if the object should expire tonight
                             {
                                 Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
-                                farm.removeEverythingExceptCharactersFromThisTile((int)saved.Tile.X, (int)saved.Tile.Y); //remove the object from the game
+
+                                if (existingObject is ResourceClump clump)
+                                {
+                                    if (location is Farm farmLoc)
+                                    {
+                                        farmLoc.resourceClumps.Remove(clump); //remove this object from the farm's resource clumps list
+                                    }
+                                    else if (location is MineShaft mineLoc)
+                                    {
+                                        mineLoc.resourceClumps.Remove(clump); //remove this object from the mine's resource clumps list
+                                    }
+                                }
+
                                 objectsToRemove.Add(saved); //mark object for removal from save
                             }
                             else if (saved.DaysUntilExpire > 1) //if the object should expire, but not tonight
                             {
                                 saved.DaysUntilExpire--; //decrease counter by 1
+                            }
+
+                            if (existingObject is LargeResourceClump largeClump)
+                            {
+                                location.largeTerrainFeatures.Remove(largeClump); //remove this object from the large terrain features list (NOTE: this must be done even for unexpired LargeResourceClumps to avoid SDV save errors)
                             }
                         }
                         else //if the object no longer exists

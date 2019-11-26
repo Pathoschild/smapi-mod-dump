@@ -1,17 +1,19 @@
 # Release notes
-## Upcoming release
+## 4.9
+Released 26 November 2019.
+
 * Updated for Stardew Valley 1.4.
 * Added attachment features:
   * axe: cut giant crops; cut choppable bushes (disabled by default).
   * milk pail: collect milk from animals.
   * shears: shear wool from animals.
-* Added option to allow summoning a temporary tractor without building a garage first.
-* Tractor effects are now applied radially from the tractor. (For example, trees now fall away from the tractor if cut from the side.)
+* Added support for summoning a temporary tractor without building a garage first (disabled by default).
+* Tractor effects are now applied radially from the tractor (e.g. trees now fall away from the tractor).
 * Updated for compatibility with the latest version of Pelican Fiber.
 * Fixed scythe sometimes interacting with incorrect targets (e.g. shipping bin or farm animals).
 * Fixed scythe showing item pickup animation when collecting forage items.
 * Fixed incorrect speed changes when a different speed buff expires while riding the tractor (via Stardew Valley 1.4 change).
-* Fixed performance when using the hoe attachment when surrounded by untillable tiles.
+* Fixed lag when using the hoe attachment while surrounded by untillable tiles.
 * Fixed issue where a dismissed tractor would return to the previous garage position if the garage was moved that day.
 * Fixed error when using tools as custom attachments to attack monsters.
 * Improved translations. Thanks to Hesperusrus (updated Russian)!
@@ -62,7 +64,7 @@ Released 05 March 2019.
 Released 04 January 2019.
 
 * Fixed stable no longer in Robin's carpenter menu after building a tractor garage.
-* Fixed fertiliser applied to existing crops.
+* Fixed fertilizer applied to existing crops.
 * Fixed compatibility with Tool Geodes mod.
 
 ## 4.7.2
@@ -86,7 +88,7 @@ Released 14 November 2018.
 * Added support for custom mod locations.
 * Added support for buying multiple tractors.
 * Added attachment features:
-  * tools now recognise garden pots;
+  * tools now recognize garden pots;
   * hoe now digs artifact spots;
   * scythe now harvests bush berries.
 * Changed default summon key from `T` to `Backspace` for multiplayer compatibility.
@@ -149,7 +151,7 @@ Released 14 February 2018.
 * Added support for any placeable item in `config.json` (e.g. `Mega Bomb`).
 * Changed default summon key to `T`.
 * Fixed summon key working when a menu is open.
-* Fixed seeds and fertiliser being placed under giant crops.
+* Fixed seeds and fertilizer being placed under giant crops.
 * Improved tractor and garage sprites. (Thanks to allanbachti!)
 * Improved translations. Thanks to Husky110 (German)!
 
@@ -192,7 +194,7 @@ Feature changes:
 Fixes:
 * Fixed tractor letting you phase through objects in some cases.
 * Fixed game logic treating tractor as the player's horse in some cases where it shouldn't.
-* Fixed seeds, fertiliser, and speed-gro not working if you don't play in English.
+* Fixed seeds, fertilizer, and speed-gro not working if you don't play in English.
 * Fixed harvesting crops, breaking rocks, and foraging not providing XP.
 * Fixed harvesting hay not showing hay-gained message.
 * Fixed harvesting hay giving you double hay.
@@ -221,7 +223,7 @@ Released 18 August 2017.
 ## 3.2.1
 Released 26 April 2017 [by lambui](https://github.com/lambui/StardewValleyMod_TractorMod).
 
-* Fixed initialisation errors.
+* Fixed initialization errors.
 
 ## 3.2
 Released 26 April 2017 [by lambui](https://github.com/lambui/StardewValleyMod_TractorMod).
@@ -266,7 +268,7 @@ Released 03 December 2016 [by lambui](https://github.com/lambui/StardewValleyMod
 ## 2.1.2
 Released 02 December 2016 [by lambui](https://github.com/lambui/StardewValleyMod_TractorMod).
 
-* Added setting to customise tool use frequency to reduce performance impact.
+* Added setting to customize tool use frequency to reduce performance impact.
 * Added item radius setting (for seeding and fertilizing).
 * Added ability to reload configuration in-game.
 * Fixed a bug that prevents game from saving.

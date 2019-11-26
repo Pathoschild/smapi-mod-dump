@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\In-Game\Large Objects\LargeResourceClump.cs" />
     <Compile Include="Classes\In-Game\Monsters\MummyFTM.cs" />
     <Compile Include="Classes\TimedSpawn.cs" />
     <Compile Include="Commands\WhereAmI.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Classes\Config\FarmConfig\ForageSettings.cs" />
     <Compile Include="Classes\Config\ModConfig.cs" />
     <Compile Include="Classes\MonsterType.cs" />
+    <Compile Include="Events\UpdateTicked\PlayerUsedTool.cs" />
     <Compile Include="Events\ModMessageReceived.cs" />
     <Compile Include="Events\TimeChanged.cs" />
     <Compile Include="Events\ReturnedToTitle.cs" />

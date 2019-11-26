@@ -156,7 +156,7 @@
     <None Include="assets\Strings\Strings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="manifest.json" />
+    <None Include="manifest.origin.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +168,9 @@
   <ItemGroup>
     <Folder Include="assets\Buffs\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="preparenightbuild.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -176,4 +179,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>cd $(ProjectDir)
+node preparenightbuild.js</PreBuildEvent>
+  </PropertyGroup>
 </Project>

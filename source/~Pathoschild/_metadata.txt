@@ -18,9 +18,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit b52ec7fd4161dbe996156c10e2a59fbe711777a6
+   commit 6d67085ebfc0870ca52b5e8d5f7ff2309eff3244
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Mon Nov 18 20:57:45 2019 -0500
+   Date:   Sun Nov 24 18:08:11 2019 -0500
    
-       add Data Layers export
+       fix typo
    

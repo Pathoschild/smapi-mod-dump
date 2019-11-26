@@ -1,0 +1,22 @@
+{
+  "useCustomPanningTreasure": true,
+  "enableSplashSounds": true,
+  "enableGeodeMineralsTreasure": true,
+  "enablePanningTrash": true,
+  "enableArtifactTreasures": true,
+  "enableAllArtifactsAfterFoundThemAll": true,
+  "enableSeedPanning": true,
+  "enableAllSeedsEverySeason": false,
+  "enableAllSecondYearSeedsOnFirstYear": false,
+  "sp_alwaysCreatePanningSpots": true,
+  "mp_alwaysCreatePanningSpots": false,
+  "maxNumberOfOrePointsGathered": 50,
+  "showHudData": true,
+  "hudXPostion": 0,
+  "hudYPostion": 0,
+  "showDistance": true,
+  "additionalLootChance": 0.4,
+  "useCustomFarmMaps": false,
+  "customMaps": {},
+  "configVersion": 2
+}

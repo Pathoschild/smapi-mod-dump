@@ -102,27 +102,36 @@ namespace MailFrameworkMod
                     
                     Game1.activeClickableMenu = activeClickableMenu;
                     _shownLetter.Items?.ForEach(
-                        (i) => activeClickableMenu.itemsToGrab.Add
-                        (
-                            new ClickableComponent
+                        (i) =>
+                        {
+                            var item = i.getOne();
+                            item.Stack = i.Stack;
+                            activeClickableMenu.itemsToGrab.Add
                             (
-                                new Rectangle
+                                new ClickableComponent
                                 (
-                                    activeClickableMenu.xPositionOnScreen + activeClickableMenu.width / 2 - 12 * Game1.pixelZoom
-                                    ,activeClickableMenu.yPositionOnScreen + activeClickableMenu.height - Game1.tileSize / 2 -24 * Game1.pixelZoom
-                                    , 24 * Game1.pixelZoom
-                                    , 24 * Game1.pixelZoom
+                                    new Rectangle
+                                    (
+                                        activeClickableMenu.xPositionOnScreen + activeClickableMenu.width / 2 -
+                                        12 * Game1.pixelZoom
+                                        , activeClickableMenu.yPositionOnScreen + activeClickableMenu.height -
+                                          Game1.tileSize / 2 - 24 * Game1.pixelZoom
+                                        , 24 * Game1.pixelZoom
+                                        , 24 * Game1.pixelZoom
+                                    )
+                                    , item
                                 )
-                                , i.getOne()
-
-                            )
-                            {
-                                myID = 104,
-                                leftNeighborID = 101,
-                                rightNeighborID = 102
-                            }
-                        )
-                    );
+                                {
+                                    myID = 104,
+                                    leftNeighborID = 101,
+                                    rightNeighborID = 102
+                                }
+                            );
+                            activeClickableMenu.backButton.rightNeighborID = 104;
+                            activeClickableMenu.forwardButton.leftNeighborID = 104;
+                            activeClickableMenu.populateClickableComponentList();
+                            activeClickableMenu.snapToDefaultClickableComponent();
+                        });
                     if (_shownLetter.Recipe != null)
                     {
                         string recipe = _shownLetter.Recipe;

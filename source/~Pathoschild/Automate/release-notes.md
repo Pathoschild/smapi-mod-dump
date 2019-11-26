@@ -1,7 +1,9 @@
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.14
+Released 26 November 2019.
+
 * Updated for Stardew Valley 1.4, including new machine recipes.
 * Fixed auto-grabbers not showing empty sprite when emptied automatically.
 
@@ -21,7 +23,7 @@ Released 12 June 2019.
 ## 1.13
 Released 09 June 2019.
 
-* Added compatibility with Auto-Grabber Mod and Better Junimos. If installed, seeds/fertiliser in their machines will be ignored (configurable).
+* Added compatibility with Auto-Grabber Mod and Better Junimos. If installed, seeds/fertilizer in their machines will be ignored (configurable).
 * Simplified configuring connectors.
 * Fixed config parsing errors for some players.
 * Fixed items with different item qualities being combined into one input stack.
@@ -64,7 +66,7 @@ Released 08 November 2018.
 Released 13 October 2018.
 
 * Updated for SMAPI 2.8-beta.5.
-* Fixed error if a mill contains an unrecognised item.
+* Fixed error if a mill contains an unrecognized item.
 
 ## 1.10.4
 Released 23 September 2018.

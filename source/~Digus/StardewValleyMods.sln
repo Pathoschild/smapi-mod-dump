@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCaskMod", "CustomCask
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomKissingMod", "CustomKissingMod\CustomKissingMod.csproj", "{1EE145B0-C855-4D47-83B6-F05E4371C1E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BorderlessWoodFloorMod", "BorderlessWoodFloorMod\BorderlessWoodFloorMod.csproj", "{4A7E728A-7163-4A98-8EAC-4F09A55DDB28}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,14 @@ Global
 		{1EE145B0-C855-4D47-83B6-F05E4371C1E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1EE145B0-C855-4D47-83B6-F05E4371C1E0}.Release|x86.ActiveCfg = Release|Any CPU
 		{1EE145B0-C855-4D47-83B6-F05E4371C1E0}.Release|x86.Build.0 = Release|Any CPU
+		{4A7E728A-7163-4A98-8EAC-4F09A55DDB28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A7E728A-7163-4A98-8EAC-4F09A55DDB28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A7E728A-7163-4A98-8EAC-4F09A55DDB28}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4A7E728A-7163-4A98-8EAC-4F09A55DDB28}.Debug|x86.Build.0 = Debug|Any CPU
+		{4A7E728A-7163-4A98-8EAC-4F09A55DDB28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A7E728A-7163-4A98-8EAC-4F09A55DDB28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A7E728A-7163-4A98-8EAC-4F09A55DDB28}.Release|x86.ActiveCfg = Release|Any CPU
+		{4A7E728A-7163-4A98-8EAC-4F09A55DDB28}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
