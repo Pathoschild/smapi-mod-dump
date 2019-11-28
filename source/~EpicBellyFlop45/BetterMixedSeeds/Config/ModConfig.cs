@@ -21,6 +21,7 @@ namespace BetterMixedSeeds
                     new Crop("Parsnip", true, 1),
                     new Crop("Potato", true, 1),
                     new Crop("Rhubarb", true, 1),
+                    new Crop("Rice", true, 1),
                     new Crop("Strawberry", true, 1),
                     new Crop("Tulip", true, 1)
                 }),
@@ -125,25 +126,37 @@ namespace BetterMixedSeeds
             spring: new Season(
                 new List<Crop>
                 {
+                    new Crop("Bamboo", true, 1),
                     new Crop("Basil", true, 1),
                     new Crop("Cabbage", true, 1),
+                    new Crop("Cactus Flower", true, 1),
+                    new Crop("Licorice Root", true, 1),
+                    new Crop("Maguey", true, 1),
                     new Crop("Muskmelon", true, 1),
                     new Crop("Onion", true, 1),
                     new Crop("Parsley", true, 1),
                     new Crop("Passion Fruit", true, 1),
                     new Crop("Pineapple", true, 1),
-                    new Crop("Rice", true, 1),
+                    new Crop("Rapeseed", true, 1),
+                    new Crop("Red Onion", true, 1),
+                    new Crop("Shallot", true, 1),
+                    new Crop("Shiitake Mushroom", true, 1),
                     new Crop("Spinach", true, 1),
                     new Crop("Sugar Beet", true, 1),
-                    new Crop("Sweet Canary Melon", true, 1),
-                    new Crop("Tea", true, 1)
+                    new Crop("Sweet Canary Melon", true, 1)
                 }),
             summer: new Season(
                 new List<Crop>
                 {
                     new Crop("Adzuki Bean", true, 1),
                     new Crop("Aloe", true, 1),
+                    new Crop("Asparagus", true, 1),
+                    new Crop("Bamboo", true, 1),
+                    new Crop("Blue Agave", true, 1),
+                    new Crop("Butternut Squash", true, 1),
+                    new Crop("Cactus Flower", true, 1),
                     new Crop("Cassava", true, 1),
+                    new Crop("Chickpea", true, 1),
                     new Crop("Chives", true, 1),
                     new Crop("Cotton", true, 1),
                     new Crop("Cucumber", true, 1),
@@ -151,13 +164,17 @@ namespace BetterMixedSeeds
                     new Crop("Green Pea", true, 1),
                     new Crop("Kiwi", true, 1),
                     new Crop("Lettuce", true, 1),
+                    new Crop("Maguey", true, 1),
                     new Crop("Navy Bean", true, 1),
+                    new Crop("Okra", true, 1),
                     new Crop("Oregano", true, 1),
+                    new Crop("Quinoa", true, 1),
+                    new Crop("Rapeseed", true, 1),
                     new Crop("Raspberry", true, 1),
-                    new Crop("Rice", true, 1),
                     new Crop("Sugar Cane", true, 1),
-                    new Crop("Tea", true, 1),
-                    new Crop("Wasabi", true, 1)
+                    new Crop("Sulfur Shelf Mushroom", true, 1),
+                    new Crop("Wasabi", true, 1),
+                    new Crop("Zucchini", true, 1)
                 }),
             fall: new Season(
                 new List<Crop>
@@ -167,20 +184,29 @@ namespace BetterMixedSeeds
                     new Crop("Blackberry", true, 1),
                     new Crop("Broccoli", true, 1),
                     new Crop("Cabbage", true, 1),
+                    new Crop("Cactus Flower", true, 1),
                     new Crop("Carrot", true, 1),
                     new Crop("Celery", true, 1),
                     new Crop("Cotton", true, 1),
+                    new Crop("Durum", true, 1),
                     new Crop("Fennel", true, 1),
                     new Crop("Ginger", true, 1),
+                    new Crop("Habanero", true, 1),
+                    new Crop("Jalapeno Pepper", true, 1),
+                    new Crop("Kidney Bean", true, 1),
                     new Crop("Kiwi", true, 1),
+                    new Crop("Oat", true, 1),
+                    new Crop("Okra", true, 1),
+                    new Crop("Paddy Taro", true, 1),
                     new Crop("Peanut", true, 1),
-                    new Crop("Rice", true, 1),
                     new Crop("Rosemary", true, 1),
                     new Crop("Sage", true, 1),
+                    new Crop("Shiitake Mushroom", true, 1),
                     new Crop("Soybean", true, 1),
                     new Crop("Spinach", true, 1),
+                    new Crop("Sulfur Shelf Mushroom", true, 1),
                     new Crop("Sweet Potato", true, 1),
-                    new Crop("Tea", true, 1),
+                    new Crop("Tabasco Pepper", true, 1),
                     new Crop("Thyme", true, 1),
                     new Crop("Watermelon Mizu", true, 1)
                 }),
@@ -201,6 +227,8 @@ namespace BetterMixedSeeds
                     new Crop("Chamomile", true, 1),
                     new Crop("Honeysuckle", true, 1),
                     new Crop("Pink Cat", true, 1),
+                    new Crop("Pitcher Plant", true, 1),
+                    new Crop("Rafflesia", true, 1),
                     new Crop("Rose", true, 1),
                     new Crop("Shaded Violet", true, 1),
                     new Crop("Spring Rose", true, 1)
@@ -214,6 +242,7 @@ namespace BetterMixedSeeds
                     new Crop("Herbal Lavender", true, 1),
                     new Crop("Honeysuckle", true, 1),
                     new Crop("Passion Flower", true, 1),
+                    new Crop("Rafflesia", true, 1),
                     new Crop("Rose", true, 1),
                     new Crop("Summer Rose", true, 1)
                 }),
@@ -224,6 +253,7 @@ namespace BetterMixedSeeds
                     new Crop("Fairy Duster", true, 1),
                     new Crop("Fall Rose", true, 1),
                     new Crop("Purple Coneflower", true, 1),
+                    new Crop("Rafflesia", true, 1),
                     new Crop("Rose", true, 1),
                     new Crop("Sweet Jasmine", true, 1)
                 }),
@@ -295,28 +325,46 @@ namespace BetterMixedSeeds
             spring: new Season(
                 new List<Crop>
                 {
-                    new Crop("Cranberry Bean", true, 1),
+                    new Crop("Chayote", true, 1),
+                    new Crop("Cloudberry", true, 1),
+                    new Crop("Cranberry Beans", true, 1),
+                    new Crop("Lingonberry", true, 1),
                     new Crop("Red Currant", true, 1),
-                    new Crop("Rose Hip", true, 1)
+                    new Crop("Rose Hips", true, 1),
+                    new Crop("White Alpine Strawberry", true, 1)
                 }),
             summer: new Season(
                 new List<Crop>
                 {
+                    new Crop("Benne Sesame", true, 1),
                     new Crop("Blackcurrant", true, 1),
                     new Crop("Blue Corn", true, 1),
                     new Crop("Cardamom", true, 1),
+                    new Crop("Chayote", true, 1),
+                    new Crop("Cowpeas", true, 1),
                     new Crop("Maypop", true, 1),
+                    new Crop("Nasturtium", true, 1),
                     new Crop("Peppercorn", true, 1),
-                    new Crop("Rose Hip", true, 1),
+                    new Crop("Prickly Pear", true, 1),
+                    new Crop("Rose Hips", true, 1),
                     new Crop("Roselle Hibiscus", true, 1),
+                    new Crop("Scotch Bonnet Pepper", true, 1),
                     new Crop("Summer Squash", true, 1),
+                    new Crop("Sunchoke", true, 1),
                     new Crop("Taro", true, 1)
                 }),
             fall: new Season(
                 new List<Crop>
                 {
+                    new Crop("Black Beans", true, 1),
                     new Crop("Blue Corn", true, 1),
+                    new Crop("Candy Roaster Squash", true, 1),
+                    new Crop("Cowpeas", true, 1),
+                    new Crop("Green Chile", true, 1),
+                    new Crop("Oats", true, 1),
                     new Crop("Peppercorn", true, 1),
+                    new Crop("Salsify", true, 1),
+                    new Crop("Sunchoke", true, 1),
                     new Crop("Taro", true, 1),
                     new Crop("White Currant", true, 1)
                 }),

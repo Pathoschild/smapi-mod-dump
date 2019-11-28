@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Dear Diary, Journal Keeping Mod",
+  "Author": "MissCoriel",
+  "Version": "1.3.0",
+  "Description": "Dear diary, you won't believe what I am about to write in you today...",
+  "UniqueID": "misscoriel.diary",
+  "EntryDll": "DearDiary.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": ["Nexus: 4451"]
+}

@@ -5,6 +5,6 @@
   "Description": "Let someone else pet all those pesky animals!",
   "UniqueID": "jwdred.AnimalSitter",
   "EntryDll": "AnimalSitter.dll",
-  "MinimumApiVersion": "2.9.0",
+  "MinimumApiVersion": "3.0.0",
   "UpdateKeys": [ "Nexus:581" ]
 }

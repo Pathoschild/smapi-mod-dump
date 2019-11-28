@@ -123,7 +123,7 @@ namespace JoysOfEfficiency.Huds
             int y = (int)Util.Cap(bar.yPositionOnScreen, 0, Game1.viewport.Height - height);
 
             Util.DrawWindow(x, y, width, height);
-            fish.drawInMenu(batch, new Vector2(x + width / 2 - 32, y + 16), 1.0f, 1.0f, 0.9f, false);
+            fish.drawInMenu(batch, new Vector2(x + width / 2 - 32, y + 16), 1.0f, 1.0f, 0.9f, StackDrawType.Draw_OneInclusive);
 
             Vector2 vec2 = new Vector2(x + 32, y + 96);
             Util.DrawString(batch, font, ref vec2, speciesText, Color.Black, scale);

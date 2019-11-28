@@ -1,3 +1,3 @@
-page URL: https://www.curseforge.com/stardewvalley/mods/price-tooltips
+page URL: https://stardewvalley.curseforge.com/projects/price-tooltips
 IDs: darkhax.pricetooltip
-update keys: CurseForge:299169, GitHub:Stardew-Valley-Modding/PriceTooltips
+update keys: GitHub:Stardew-Valley-Modding/PriceTooltips

@@ -12,4 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CommonHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Sprites.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Object\" />
+  </ItemGroup>
 </Project>

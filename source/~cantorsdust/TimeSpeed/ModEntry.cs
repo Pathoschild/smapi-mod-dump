@@ -122,7 +122,7 @@ namespace TimeSpeed
 
             SButton key = e.Button;
             if (key == this.Config.Keys.FreezeTime)
-                this.ToogleFreeze();
+                this.ToggleFreeze();
             else if (key == this.Config.Keys.IncreaseTickInterval || key == this.Config.Keys.DecreaseTickInterval)
                 this.ChangeTickInterval(increase: key == Config.Keys.IncreaseTickInterval);
             else if (key == this.Config.Keys.ReloadConfig)
@@ -226,7 +226,7 @@ namespace TimeSpeed
         }
 
         /// <summary>Toggle whether time is frozen.</summary>
-        private void ToogleFreeze()
+        private void ToggleFreeze()
         {
             if (!this.Frozen)
             {

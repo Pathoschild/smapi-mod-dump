@@ -1,0 +1,14 @@
+{
+  "hud-text.desc_sick": "당신은 감기에 걸렸습니다...!",
+  "hud-text.desc_hot": "바깥의 더위가 평소에 비해 당신을 더 빨리 지치게 합니다.",
+  "hud-text.desc_cold": "바깥의 추위가 평소에 비해 당신을 더 빨리 지치게 합니다.",
+  "hud-text.desc_turntheheaton": "매서운 추위가 벽을 넘어 당신의 집 안으로 스며들며, 당신을 피로하게 합니다...",
+  "hud-text.desc_inclement": "악천후가 당신을 아프게 만들었습니다...",
+  "hud-text.desc_blizzard": "강풍과 눈이 당신을 뼛속까지 시리게 만들었습니다...",
+  "hud-text.desc_wampa": "바깥의 강풍 및 폭설이 당신의 힘을 점점 빼고 있습니다...", 
+  "hud-text.desc_freeze": "바깥의 영하의 온도가 당신을 졸리게 하며, 피로하게 합니다.",
+  "hud-text.desc_flu": "극한의 날씨로 인해 당신은 독감에 걸렸습니다, 약을 좀 먹는 것이 좋을 것 같습니다!",
+  "hud-text.desc_cold_removed": "당신은 약이 당신의 병을 낫게하고 피로를 풀어줌을 느껴집니다.",
+  "hud-text.desc_bathHouse":  "따듯한 온탕은 마치 보약과도 같군요, 그리고 당신은 컨디션이 좋아짐을 느낍니다.",
+  "hud-text.desc_HeatOn":  "혹독한 추위가 당신의 집 벽을 넘어 실내로 스며듭니다, 불을 좀 땔 필요가 있겠어요.."
+}

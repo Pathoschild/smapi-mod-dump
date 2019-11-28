@@ -6,9 +6,9 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit b82aeb80d4da489c1ebe382b60eabb8b768f7ddf
+   commit fc34b2ea684810edc8f95af7f7301763426b3992
    Author: Bouhm <bbouhm@gmail.com>
-   Date:   Fri Nov 1 12:16:58 2019 -0700
+   Date:   Wed Nov 27 14:59:14 2019 -0800
    
-       remove unnecessary point
+       remove greenhouses from SVE farms
    

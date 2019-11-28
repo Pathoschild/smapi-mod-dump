@@ -1,9 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewValley;
+using StardewValley.TerrainFeatures;
+using StardewValley.Tools;
 using UltimateTool.Framework;
 using UltimateTool.Framework.Tools;
 using UltimateTool.Framework.Configuration;
+using MyStardewMods.Common;
 using SFarmer = StardewValley.Farmer;
 using SObject = StardewValley.Object;
 
@@ -12,136 +21,82 @@ namespace UltimateTool
 {
     internal class ModEntry : Mod
     {
-        private ModConfig Config;
+        private ModConfig _config;
+        
+        private ITool[] _tools;
 
-        private ITool[] Tools;
+        private SButton _actionKey;
+       private bool _showGrid = false;
 
-        private Keys ActionKey;
-        private Keys GrowKey;
-        private Keys MineKey;
-        private int ToolRadius;
-        private bool ShowGrid = false;
-        private int bID = 13379854;
+        //Player Data
+        private PlayerData PlayerData;
 
         public override void Entry(IModHelper helper)
         {
-            this.Config = helper.ReadConfig<ModConfig>();
+            _config = helper.ReadConfig<ModConfig>();
             DoTools();
             UBush.helper = helper;
-            
-            SaveEvents.AfterLoad += AfterLoad;
-            ControlEvents.KeyPressed += KeyPressed;
-            GraphicsEvents.OnPostRenderEvent += OnPostRenderEvent;
-            GameEvents.QuarterSecondTick += QuarterSecond;
-            GameEvents.UpdateTick += UpdateTick;
 
+            //Events
+            var events = helper.Events;
+            events.GameLoop.SaveLoaded += OnSaveLoaded;
+            events.GameLoop.Saving += OnSaving;
+            events.Input.ButtonPressed += OnButtonPressed;
+            events.Display.Rendered += OnRendered;
+            //events.Input.MouseWheelScrolled += OnMouseScrolled;
+            //events.GameLoop.UpdateTicked += OnUpdateTicked;
         }
-        private void OnPostRenderEvent(object sender, EventArgs e)
+
+        private void OnRendered(object sender, RenderedEventArgs e)
         {
             if(Context.IsWorldReady && Game1.activeClickableMenu == null)
             {
-                this.HighlightRadius(Game1.spriteBatch);
+                HighlightRadius(Game1.spriteBatch);
             }
         }
-        private void AfterLoad(object sender, EventArgs e)
+
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            if(!Enum.TryParse<Keys>(this.Config.ActionKey, true, out this.ActionKey))
+            if(!Enum.TryParse<SButton>(_config.ActionKey, true, out _actionKey))
             {
-                this.ActionKey = Keys.Z;
+                _actionKey = SButton.Z;
             }
-            if (!Enum.TryParse<Keys>(this.Config.GrowKey, true, out this.GrowKey))
-            {
-                this.GrowKey = Keys.X;
-            }
-            if (!Enum.TryParse<Keys>(this.Config.MineClearKey, true, out this.MineKey))
-            {
-                this.MineKey = Keys.V;
-            }
-            Game1.player.MagneticRadius = Game1.tileSize * this.Config.MagnetRadius;
+            Game1.player.MagneticRadius = Game1.tileSize * _config.MagnetRadius;
+
+            //Load or create PlayerData
+            this.PlayerData = Helper.Data.ReadSaveData<PlayerData>("UltimateData") ??
+                              new PlayerData();
         }
-        private void KeyPressed(object sender, EventArgsKeyPressed e)
+
+        private void OnSaving(object sender, SavingEventArgs e)
+        {
+            if (Context.IsMainPlayer && this.PlayerData != null)
+                this.Helper.Data.WriteSaveData("data", this.PlayerData);
+        }
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady)
                 return;
-            if(e.KeyPressed == this.ActionKey)
+            if(e.Button == _actionKey)
             {
-                doAction();
+                DoAction();
             }
-            if(e.KeyPressed == this.GrowKey)
+            if (e.Button == SButton.G)
             {
-
+                if(_config.ShowGrid)
+                    _showGrid = !_showGrid;
             }
-            if(e.KeyPressed == this.MineKey)
+            if(e.Button == SButton.F5)
             {
-                doMine();
-            }
-            if(e.KeyPressed == Keys.G)
-            {
-                this.ShowGrid = this.ShowGrid ? false : true;
-            }
-            if(e.KeyPressed == Keys.NumPad8)
-            {
-                this.UpdateBuff();
-            }
-            if(e.KeyPressed == Keys.F5)
-            {
-                this.Config = this.Helper.ReadConfig<ModConfig>();
+                _config = Helper.ReadConfig<ModConfig>();
                 DoTools();
             }
-            if(e.KeyPressed == Keys.NumPad5)
-            {
-                Dictionary<string, string> dictionary1 = Game1.content.Load<Dictionary<string, string>>("Data\\Locations");
-                string locationName = Game1.currentLocation.ToString();
-                if (dictionary1.ContainsKey(locationName))
-                {
-                    string[] strArray1 = dictionary1[locationName].Split('/')[4 + Utility.getSeasonNumber(Game1.currentSeason)].Split(' ');
-                    Dictionary<string, string> dictionary2 = new Dictionary<string, string>();
-                    if(strArray1.Length > 1)
-                    {
-                        int index = 0;
-                        while(index < strArray1.Length)
-                        {
-                            dictionary2.Add(strArray1[index], strArray1[index + 1]);
-                            index += 2;
-                        }
-                    }
+        }
 
-                }
-                
-            }
-        }
-        private void QuarterSecond(object sender, EventArgs e)
-        {
-            SFarmer Player = Game1.player;
-            // || Player.ActiveObject.Category == -74 || Player.ActiveObject.Category == -19
-            if (Context.IsWorldReady)
-            {
-                if (Game1.activeClickableMenu == null && this.Config.ModEnabled == true && (Player.CurrentTool is Hoe || Player.CurrentTool is WateringCan || Player.CurrentTool is Axe || Player.CurrentTool is Pickaxe || (Player.CurrentTool is MeleeWeapon && Player.CurrentTool.name.ToLower().Contains("scythe"))))
-                {
-                    doAction();
-                }
-            }
-        }
-        private void UpdateTick(object sender, EventArgs e)
-        {
-            if (Context.IsPlayerFree)
-                this.UpdateBuff();
-        }
-        private void UpdateBuff()
-        {
-            Buff @buff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(b => b.which == this.bID);
-            if (@buff == null)
-            {
-                    @buff = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 350, 1, 0, 0, 1, "Ultimate Tool", "Ultimate") { which = this.bID };
-                    Game1.buffsDisplay.addOtherBuff(@buff);
-               
-            }
-            @buff.millisecondsDuration = 100;
-        }
         private void DoTools()
         {            
-            IToolConfig toolConfig = this.Config.ITools;
-            this.Tools = new ITool[]
+            ToolConfig toolConfig = _config.Tools;
+            _tools = new ITool[]
             {
                 new AxeTool(toolConfig.Axe),
                 new FertilizerTool(toolConfig.Fertilizer),
@@ -150,31 +105,33 @@ namespace UltimateTool
                 new PickaxeTool(toolConfig.Pickaxe),
                 new ScytheTool(toolConfig.Scythe),
                 new SeedTool(toolConfig.Seeds),
-                new WateringCanTool(toolConfig.WateringCan)
+                new WateringCanTool(toolConfig.WateringCan),
+                new ShearTool(), 
+                new MilkPailTool()
 
             };
-            this.ToolRadius = this.Config.ToolRadius;
         }
-        private void doMine()
+
+        private void DoMine()
         {
-            SFarmer Player = Game1.player;
+            SFarmer player = Game1.player;
             GameLocation location = Game1.currentLocation;
-            Tool tool = Player.CurrentTool;
-            Item item = Player.CurrentItem;
+            Tool tool = player.CurrentTool;
+            Item item = player.CurrentItem;
             Dictionary<Vector2, SObject> curObj = new Dictionary<Vector2, SObject>();
             Dictionary<Vector2, TerrainFeature> curTerrain = new Dictionary<Vector2, TerrainFeature>();
 
-            ITool[] tools = this.Tools
-                .Where(tools1 => tools1.IsEnabled(Player, tool, item, location))
+            ITool[] tools = _tools
+                .Where(tools1 => tools1.IsEnabled(player, tool, item, location))
                 .ToArray();
             if (!tools.Any())
                 return;
 
-            if (location.isFarm || location.name.Contains("Greenhouse") || location.name.Contains("FarmExpan"))
+            if (location.IsFarm || location.Name.Contains("Greenhouse") || location.Name.Contains("FarmExpan"))
                 return;
-            
-            
-            Vector2[] grid = this.GetGrid(Player.getTileLocation(), 50).ToArray();
+
+            ICursorPosition c = Helper.Input.GetCursorPosition();
+            Vector2[] grid = GetGrid(c.Tile, 50).ToArray();
 
             foreach(Vector2 tile in grid)
             {
@@ -182,7 +139,7 @@ namespace UltimateTool
                 location.terrainFeatures.TryGetValue(tile, out TerrainFeature tileFeature);
                 foreach (ITool tool1 in tools)
                 {
-                    if (tool1.Apply(tile, tileObj, tileFeature, Player, tool, item, location))
+                    if (tool1.Apply(tile, tileObj, tileFeature, player, tool, item, location))
                     {
                         break;
                     }
@@ -190,34 +147,136 @@ namespace UltimateTool
             }
 
         }
-        private void doAction()
-        {
-            SFarmer Player = Game1.player;
-            GameLocation location = Game1.currentLocation;
-            Tool tool = Player.CurrentTool;
-            Item item = Player.CurrentItem;
 
-            ITool[] tools = this.Tools
-                .Where(tools1 => tools1.IsEnabled(Player, tool, item, location))
+        private void DoAction()
+        {
+            SFarmer player = Game1.player;
+            GameLocation location = Game1.currentLocation;
+            Tool tool = GetTool();//player.CurrentTool;
+            Item item = player.CurrentItem;
+            
+            ITool[] tools = _tools
+                .Where(tools1 => tools1.IsEnabled(player, tool, item, location))
                 .ToArray();
             if (!tools.Any())
                 return;
-
-            Vector2[] grid = this.GetGrid(Player.getTileLocation(), this.Config.ToolRadius).ToArray();
-
-
+            ICursorPosition c = Helper.Input.GetCursorPosition();
+            Vector2[] grid = GetGrid(c.Tile, _config.ToolRadius).ToArray();
+            /*
+            if (_config.ShowGrid)
+                _showGrid = true;
+            */
             foreach(Vector2 tile in grid)
             {
                 location.objects.TryGetValue(tile, out SObject tileObj);
                 location.terrainFeatures.TryGetValue(tile, out TerrainFeature tileFeature);
                 foreach(ITool tool1 in tools)
                 {
-                    if(tool1.Apply(tile, tileObj, tileFeature, Player, tool, item, location))
+                    if(tool1.Apply(tile, tileObj, tileFeature, player, tool, item, location))
                     {
                         break;
                     }
                 }                
             }            
+        }
+
+        private FarmAnimal GetAnimal(GameLocation loc, Vector2 tile)
+        {
+            GameLocation location = loc;
+
+            Rectangle rectangle = new Rectangle((int)tile.X - 32, (int)tile.Y - 32, 64, 64);
+            if (location is Farm farm)
+            {
+                foreach (FarmAnimal farmAnimal in farm.animals.Values)
+                {
+                    if (farmAnimal.GetBoundingBox().Intersects(rectangle))
+                    {
+                        return farmAnimal;
+                    }
+                }
+            }
+            else if (location is AnimalHouse house)
+            {
+                foreach (FarmAnimal farmAnimal in house.animals.Values)
+                {
+                    if (farmAnimal.GetBoundingBox().Intersects(rectangle))
+                    {
+                        return farmAnimal;
+                    }
+                }
+            }
+
+            return null;
+        }
+        private Tool GetTool()
+        {
+            ICursorPosition c = Helper.Input.GetCursorPosition();
+            Vector2[] grid = GetGrid(c.Tile, _config.ToolRadius).ToArray();
+            Tool t = new Hoe();
+            GameLocation location = Game1.player.currentLocation;
+            ToolConfig toolConfig = _config.Tools;
+
+            //FarmAnimal animal;
+            foreach (Vector2 tile in grid)
+            {
+                location.objects.TryGetValue(tile, out SObject tileObj);
+                location.terrainFeatures.TryGetValue(tile, out TerrainFeature tileFeature);
+                //animal = GetAnimal(location, tile);
+
+                //Check tiles to see if they're objects. Weed, Twig, Stone type stuff
+                if (tileObj != null)
+                {
+                    if (tileObj.Name.Contains("Weed") || tileObj.Name.Contains("Twig"))
+                        t = new Axe(){ UpgradeLevel = _config.ToolLevel };
+                    if (tileObj.Name.Contains("Stone"))
+                        t = new Pickaxe() { UpgradeLevel = _config.ToolLevel };
+                }
+                //Check tiles to see if they're terrainFeatures. Tree, HoeDirt type stuff
+                if (tileFeature != null)
+                {
+                    if (tileFeature is Tree)
+                        t = new Axe() { UpgradeLevel = _config.ToolLevel };
+                    if(tileFeature is HoeDirt dirt && dirt.crop == null || (Game1.player.ActiveObject != null && Game1.player.CurrentItem.Category != SObject.SeedsCategory && Game1.player.CurrentItem.Category != -19))
+                        t = new Pickaxe() { UpgradeLevel = _config.ToolLevel };
+                    if(tileFeature is HoeDirt dirt1 && dirt1.crop != null)
+                        t = new WateringCan() { UpgradeLevel = _config.ToolLevel };
+                    if (tileFeature is Grass grass)
+                        t = new MeleeWeapon() { Name = "Scythe", UpgradeLevel = _config.ToolLevel };
+                    if (tileFeature is HoeDirt dirt3 && dirt3.crop == null && Game1.player.ActiveObject != null &&
+                        (Game1.player.CurrentItem.Category == SObject.SeedsCategory ||
+                         Game1.player.CurrentItem.Category == -19))
+                    {
+                        bool planted;
+                        if (Game1.player.ActiveObject.Category == -19)
+                        {
+                            planted = dirt3.plant(Game1.player.ActiveObject.ParentSheetIndex, (int)tile.X, (int)tile.Y, Game1.player, true, location);
+                            if(planted)
+                                Game1.player.reduceActiveItemByOne();
+                        }
+
+                        if (Game1.player.ActiveObject.Category == SObject.SeedsCategory)
+                        {
+                            planted = dirt3.plant(Game1.player.ActiveObject.ParentSheetIndex, (int)tile.X, (int)tile.Y, Game1.player, false, location);
+                            if (planted)
+                                Game1.player.reduceActiveItemByOne();
+                        }
+                    }
+                        
+                }
+                /*
+                //See if Animal is not null
+                if (animal != null)
+                {
+                    if (animal.toolUsedForHarvest.Value.Contains("ears"))
+                        t = new Shears(){ UpgradeLevel = _config.ToolLevel };
+                    else
+                        t = new MilkPail(){ UpgradeLevel = _config.ToolLevel };
+                }*/
+                
+                
+            }
+
+            return t;
         }
 
         private IEnumerable<Vector2>GetGrid(Vector2 origin, int to)
@@ -230,15 +289,20 @@ namespace UltimateTool
                 }
             }
         }
-       //Highlight Affected Area
+        
+        //Highlight Affected Area
+
         public void HighlightRadius(SpriteBatch spriteBatch)
         {
-            foreach(Vector2 tile in this.GetGrid(Game1.player.getTileLocation(), this.ToolRadius))
+            ICursorPosition c = Helper.Input.GetCursorPosition();
+            Vector2[] grid = GetGrid(c.Tile, _config.ToolRadius).ToArray();
+
+            foreach (Vector2 tile in grid)
             {
-                bool enabled = this.IsEnabled();
+                bool enabled = IsEnabled();
                 Rectangle area = new Rectangle((int)(tile.X * Game1.tileSize - Game1.viewport.X), (int)(tile.Y * Game1.tileSize - Game1.viewport.Y), Game1.tileSize, Game1.tileSize);
                 Color color = enabled ? Color.Green : Color.Red;
-                if (this.ShowGrid)
+                if (_showGrid)
                 {
                     spriteBatch.DrawLine(area.X, area.Y, new Vector2(area.Width, area.Height), color * 0.2f);
                     int bSize = 1;
@@ -253,7 +317,7 @@ namespace UltimateTool
         }
         private bool IsEnabled()
         {
-            if (this.ShowGrid)
+            if (_showGrid)
             {
                 return true;
             }

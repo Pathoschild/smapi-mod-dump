@@ -35,16 +35,9 @@ namespace InteractionTweaks
             //initializes mod features and reads config
             ModFeature.Init(this);
 
-            if (config.EatingFeature || false/*config.WeaponBlockingFeature*/)
-                EatingBlockingFeature.Enable();
-            if (config.AdventurersGuildShopFeature || config.SellableItemsFeature)
-                AdventurersGuildFeature.Enable();
-            if (config.CarpenterMenuFeature)
-                CarpenterMenuFeature.Enable();
-            if (config.SellableItemsFeature)
-                FishingRodFeature.Enable();
-            if (config.SellableItemsFeature)
-                MarniesItemShopFeature.Enable();
+            Helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
+
+
 
             //TODO:
             //ReturnMuseumRewardsFeature.Enable();
@@ -73,6 +66,20 @@ namespace InteractionTweaks
 
             //Helper.ConsoleCommands.Add("carpenter_menu", "", (arg1, arg2) => Game1.activeClickableMenu = new StardewValley.Menus.CarpenterMenu());
 
+        }
+
+        void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            if (config.EatingFeature || false/*config.WeaponBlockingFeature*/)
+                EatingBlockingFeature.Enable();
+            if (config.AdventurersGuildShopFeature || config.SellableItemsFeature)
+                AdventurersGuildFeature.Enable();
+            if (config.CarpenterMenuFeature)
+                CarpenterMenuFeature.Enable();
+            if (config.SellableItemsFeature)
+                FishingRodFeature.Enable();
+            if (config.SellableItemsFeature)
+                MarniesItemShopFeature.Enable();
         }
 
 

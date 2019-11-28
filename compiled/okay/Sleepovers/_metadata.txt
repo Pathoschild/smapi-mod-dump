@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3531
+IDs: bwdy.sleepovers
+update keys: Nexus:3531, GitHub:bwdymods/SDV-Sleepovers

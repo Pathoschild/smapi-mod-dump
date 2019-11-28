@@ -1,10 +1,10 @@
 {
   "Name": "Stardew Locations",
   "Author": "Mizzion",
-  "Version": "1.1.2",
+  "Version": "1.1.4",
   "Description": "A mod that shows your current location in the game.",
   "UniqueID": "mizzion.stardewlocations",
   "EntryDll": "StardewLocations.dll",
   "MinimumApiVersion": "2.11",
-  "UpdateKeys": [ "Nexus:1929" ]
+  "UpdateKeys": [ "Nexus:1929", "ModDrop:661357" ]
 }

@@ -2,6 +2,7 @@ url:
    https://github.com/MouseyPounds/stardew-mods.git
 
 mods:
+   Crane Man Begone
    Crop Color Combiner
    Dish of the Day Display
    Festival of the Mundane
@@ -10,9 +11,9 @@ mods:
    Plantable Palm Trees
 
 latest commit:
-   commit a6878d10172c5712ea2dc0a0ac7eb1f24ac81f85
+   commit 80220d634f48036a04ce8436e06f2f3ac23dcd02
    Author: MouseyPounds <mouseypounds+github@gmail.com>
-   Date:   Sun Nov 3 03:20:06 2019 -0500
+   Date:   Tue Nov 26 22:34:48 2019 -0500
    
-       Festival of the Mundane release
+       Crane Man Begone mod
    

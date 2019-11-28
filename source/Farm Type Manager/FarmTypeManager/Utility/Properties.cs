@@ -91,7 +91,7 @@ namespace FarmTypeManager
             public static Random RNG { get; } = new Random();
 
             /// <summary>Enumerated list of farm types, in the order used by Stardew's internal code (e.g. Farm.cs)</summary>
-            public enum FarmTypes { Standard, Riverland, Forest, Hilltop, Wilderness }
+            public enum FarmTypes { Standard, Riverland, Forest, Hilltop, Wilderness, FourCorners }
 
             /// <summary>Enumerated list of player skills, in the order used by Stardew's internal code (e.g. Farmer.cs).</summary>
             public enum Skills { Farming, Fishing, Foraging, Mining, Combat, Luck }

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "LocationCleaner",
+  "Author": "Mizzion",
+  "Version": "0.0.1",
+  "Description": "A mod that will clean your map locations daily, giving you the items. Just like you gathered them yourself.",
+  "UniqueID": "mizzion.locationcleaner",
+  "EntryDll": "LocationCleaner.dll",
+  "MinimumApiVersion": "2.11",
+  "UpdateKeys": []
+}

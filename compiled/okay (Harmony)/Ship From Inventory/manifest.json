@@ -1,0 +1,10 @@
+﻿{
+  "Name": "ShipFromInventory",
+  "Author": "Platonymous",
+  "Version": "1.2.3",
+  "Description": "Ship from the Inventory Menu",
+  "UniqueID": "Platonymous.ShipFromInventory",
+  "EntryDll": "ShipFromInventory.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:3219" ]
+}

@@ -245,14 +245,6 @@ namespace NpcAdventure.AI.Controller
             {
                 this.weaponSwingCooldown--;
             }
-
-            if (this.leader == null)
-                return;
-
-            if (this.weaponSwingCooldown > this.SwingThreshold)
-            {
-                this.DoDamage();
-            }
         }
 
         public override void Update(UpdateTickedEventArgs e)
@@ -287,8 +279,17 @@ namespace NpcAdventure.AI.Controller
 
             if (criticalFist)
             {
-                attrs.knockBack *= 2.7f;
+                attrs.knockBack *= 3.6f;
                 attrs.smashAround /= 2f;
+            }
+
+            if (this.ai.Csm.HasSkill("warrior"))
+            {
+                // Enhanced skills ONLY for WARRIORS
+                attrs.minDamage += (int)Math.Round(attrs.minDamage * .03f); // 3% added min damage
+                attrs.knockBack += attrs.knockBack * (Game1.random.Next(2, 5) / 100); // 2-5% added knock back
+                attrs.addedEffectiveArea += (int)Math.Round(attrs.addedEffectiveArea * .01f); // 1% added effective area
+                attrs.critChance += Math.Max(0, (float)Game1.player.DailyLuck / 2); // added critical chance is half of daily luck. If luck is negative, no added critical chance
             }
 
             if (criticalFist && this.follower.FacingDirection != 0)
@@ -297,10 +298,10 @@ namespace NpcAdventure.AI.Controller
                 this.follower.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite("TileSheets\\animations", new Microsoft.Xna.Framework.Rectangle(0, 960, 128, 128), 60f, 4, 0, this.follower.Position, false, this.follower.FacingDirection == 3, 1f, 0.0f, Color.White, .5f, 0.0f, 0.0f, 0.0f, false));
             }
 
-            companionBox.Inflate(8, 8); // Personal space
+            companionBox.Inflate(4, 4); // Personal space
             effectiveArea.Inflate((int)(effectiveArea.Width * attrs.smashAround + attrs.addedEffectiveArea), (int)(effectiveArea.Height * attrs.smashAround + attrs.addedEffectiveArea));
 
-            if (!criticalFist && !this.defendFistUsed && this.ai.Csm.HasSkill("warrior") && companionBox.Intersects(enemyBox) && Game1.random.NextDouble() < .33f)
+            if (!criticalFist && !this.defendFistUsed && this.ai.Csm.HasSkill("warrior") && companionBox.Intersects(enemyBox) && this.weaponSwingCooldown == this.CooldownTimeout)
             {
                 this.ai.Monitor.Log("Critical dangerous: Using defense fists!");
                 this.defendFistUsed = true;
@@ -375,7 +376,7 @@ namespace NpcAdventure.AI.Controller
             int combatLevel = farmer?.combatLevel ?? 0;
             double skill = combatLevel * Math.Log(Math.Pow(combatLevel, 2) + 1) + Math.Pow(combatLevel, 2) + combatLevel;
 
-            return (int)Math.Round(skill) + Game1.random.Next(-10, 10) - swipeDelay;
+            return (int)Math.Round(skill) + Game1.random.Next(-10, 10) - swipeDelay + (int)Math.Round(Game1.player.DailyLuck);
         }
 
         private void AnimateMe()

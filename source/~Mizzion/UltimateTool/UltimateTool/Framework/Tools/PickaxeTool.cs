@@ -1,4 +1,8 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using StardewValley;
+using StardewValley.TerrainFeatures;
+using StardewValley.Tools;
 using UltimateTool.Framework.Configuration;
 using SFarmer = StardewValley.Farmer;
 using SObject = StardewValley.Object;
@@ -7,9 +11,9 @@ namespace UltimateTool.Framework.Tools
 {
     internal class PickaxeTool : BaseTool
     {
-        private readonly PickaxeConfig Config;
+        private readonly PickaxeConfig _config;
 
-        private readonly IDictionary<int, int> ResourceUpgradeNeeded = new Dictionary<int, int>
+        private readonly IDictionary<int, int> _resourceUpgradeNeeded = new Dictionary<int, int>
         {
             [ResourceClump.meteoriteIndex] = Tool.gold,
             [ResourceClump.boulderIndex] = Tool.steel
@@ -17,7 +21,7 @@ namespace UltimateTool.Framework.Tools
 
         public PickaxeTool(PickaxeConfig config)
         {
-            this.Config = config;
+            _config = config;
         }
      
         public override bool IsEnabled(SFarmer who, Tool tool, Item item, GameLocation location)
@@ -27,30 +31,30 @@ namespace UltimateTool.Framework.Tools
 
         public override bool Apply(Vector2 tile, SObject tileObj, TerrainFeature tileFeature, SFarmer who, Tool tool, Item item, GameLocation location)
         {
-            if(this.Config.CutDebris && tileObj?.Name == "Stone")
+            if(_config.CutDebris && tileObj?.Name == "Stone")
             {
-                return this.UseToolOnTile(tool, tile);
+                return UseToolOnTile(tool, tile);
             }
             
             if(tileFeature is HoeDirt dirt)
             {
-                if(this.Config.ClearDirt && dirt.crop == null)
+                if(_config.ClearDirt && dirt.crop == null)
                 {
-                    return this.UseToolOnTile(tool, tile);
+                    return UseToolOnTile(tool, tile);
                 }
 
-                if (this.Config.CutDeadCrops && dirt.crop.dead)
+                if (_config.CutDeadCrops && dirt.crop.dead.Value)
                 {
-                    return this.UseToolOnTile(tool, tile);
+                    return UseToolOnTile(tool, tile);
                 }
             }
 
-            if (this.Config.ClearBouldersAndMeteor)
+            if (_config.ClearBouldersAndMeteor)
             {
-                ResourceClump rc = this.ResourceClumpCoveringTile(location, tile);
-                if(rc != null && this.ResourceUpgradeNeeded.ContainsKey(rc.parentSheetIndex) && tool.upgradeLevel >= this.ResourceUpgradeNeeded[rc.parentSheetIndex])
+                ResourceClump rc = ResourceClumpCoveringTile(location, tile);
+                if(rc != null && _resourceUpgradeNeeded.ContainsKey(rc.parentSheetIndex.Value) && tool.UpgradeLevel >= _resourceUpgradeNeeded[rc.parentSheetIndex.Value])
                 {
-                    this.UseToolOnTile(tool, tile);
+                    UseToolOnTile(tool, tile);
                 }
             }
             return false;

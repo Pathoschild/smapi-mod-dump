@@ -44,7 +44,10 @@ namespace BetterGarbageCans
 
                 string garbageCanFile = Path.Combine("DataFiles", "garbage_cans.json");
                 garbageCans = helper.Data.ReadJsonFile<Dictionary<GARBAGE_CANS, GarbageCan>>(garbageCanFile) ?? GarbageCanDefaultConfig.CreateGarbageCans(garbageCanFile);
-
+                if (garbageCans.Count < 8)
+                {
+                    garbageCans = GarbageCanDefaultConfig.UpdateConfigToLatest(garbageCans, garbageCanFile);
+                }
                 AddTrashToCans(config.baseTrashChancePercent);
                 helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
                 helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
@@ -60,6 +63,17 @@ namespace BetterGarbageCans
             if (config.enableBirthdayGiftTrash)
             {
                 SetupTheBirthdayTrash();
+            }
+            if (!Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheater")
+                   && !Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheaterJoja"))
+            {
+                foreach (var treasure in garbageCans[GARBAGE_CANS.JOJA_MART].treasureList)
+                {
+                    if (treasure.Id == 270 || treasure.Id == 809)
+                    {
+                        treasure.Enabled = false;
+                    }
+                }
             }
         }
 
@@ -77,7 +91,7 @@ namespace BetterGarbageCans
                 if (Helper.ModRegistry.IsLoaded("Pathoschild.Automate"))
                 {
                     this.Monitor.Log("Found the Automate Mod, this mod is not fully compatible with this mod.");
-                }
+                }                
             }
         }
 

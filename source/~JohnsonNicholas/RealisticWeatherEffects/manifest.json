@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Realistic Weather Effects",
+  "Author": "Sakorona",
+  "Version": "1.0.0-beta1",
+  "Description": "Ever wanted weather to have a more harsher effect on crops? (or maybe a benefical one? Look here!)",
+  "UniqueID": "Sakorona.RealisticWeatherEffects",
+  "EntryDll": "RealisticWeatherEffects.dll",
+  "MinimumApiVersion": "2.10.2",
+  "Dependencies": [
+    { "UniqueID": "KoihimeNakamura.ClimatesOfFerngill", "MinimumVersion": "1.5.0-beta14" }
+  ],
+  "UpdateKeys": [ "Nexus:null" ]
+}

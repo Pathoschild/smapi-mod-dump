@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4729
+IDs: BrasileiroTop.Sentar
+update keys: Nexus:4729

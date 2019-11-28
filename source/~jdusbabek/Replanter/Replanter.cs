@@ -397,6 +397,12 @@ namespace Replanter
             return obj;
         }
 
+        /// <summary>Get the item produced by a planted crop.</summary>
+        /// <param name="dirt">The dirt tile to check.</param>
+        /// <param name="crop">The planted crop instance.</param>
+        /// <param name="tileX">The X tile position.</param>
+        /// <param name="tileY">The Y tile position.</param>
+        /// <remarks>This method is derived from <see cref="Crop.harvest"/> but assumes that the crop is live, fully-grown, and not forage.</remarks>
         private StardewValley.Object GetHarvestedCrop(HoeDirt dirt, Crop crop, int tileX, int tileY)
         {
             int stackSize = 1;
@@ -430,7 +436,7 @@ namespace Replanter
                     ++stackSize;
             }
 
-            if (random.NextDouble() < Game1.player.LuckLevel / 1500.0 + Game1.dailyLuck / 1200.0 + 9.99999974737875E-05)
+            if (random.NextDouble() < Game1.player.team.AverageLuckLevel() / 1500.0 + Game1.player.team.AverageDailyLuck() / 1200.0 + 9.99999974737875E-05)
             {
                 stackSize *= 2;
             }

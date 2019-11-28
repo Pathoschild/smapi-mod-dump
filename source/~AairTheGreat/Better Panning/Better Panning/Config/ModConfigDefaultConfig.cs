@@ -9,7 +9,7 @@ namespace BetterPanning.Config
     
     public static class ModConfigDefaultConfig
     {
-        private static readonly int currentVersion = 2;
+        private static readonly int currentVersion = 3;
         public static ModConfig CreateDefaultConfig(string file)
         {
             ModConfig config = new ModConfig()
@@ -32,6 +32,7 @@ namespace BetterPanning.Config
 
                 sp_alwaysCreatePanningSpots = true,
                 mp_alwaysCreatePanningSpots = false,
+                chanceOfCreatingPanningSpot = 1.0,
                 maxNumberOfOrePointsGathered = 50,
                 
                 additionalLootChance = 0.4,
@@ -49,9 +50,16 @@ namespace BetterPanning.Config
             ModConfig returnUpdatedConfig = oldConfig;
 
             if (oldConfig != null && oldConfig.configVersion != currentVersion)
-            {                
-                returnUpdatedConfig.enableSplashSounds = true;           // Version 2 config addition
-                returnUpdatedConfig.configVersion = currentVersion;      // Version 2 config addition
+            {
+                if (oldConfig.configVersion != 2)
+                {
+                    returnUpdatedConfig.enableSplashSounds = true;           // Version 2 config addition                 
+                }
+                if (oldConfig.configVersion != 3)
+                {
+                    returnUpdatedConfig.chanceOfCreatingPanningSpot = 1.0;   // Version 3 config addition
+                }
+                returnUpdatedConfig.configVersion = currentVersion;      
                 PanningMod.Instance.Helper.Data.WriteJsonFile(file, returnUpdatedConfig);
             }
             

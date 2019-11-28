@@ -93,9 +93,10 @@ If value is true, allows the user to force a train to be created by pressing the
 Note: The train will be created on next game time update if there is no current train.
 - Default Value: false 
 #### enableMultiplayerChatMessage
+NOTE: This is a dead configuration option as of SDV 1.4.
 If value is true, a chat message will appear to the farmhands letting them know a train is coming.  
 Note: This message is currently only in English.
-- Default Value: true 
+- Default Value: false 
 #### configVersion
 Don't modify.  This is used to update the config file if new settings are added.
 - Default Value: 2 

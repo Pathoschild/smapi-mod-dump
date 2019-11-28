@@ -32,9 +32,9 @@ namespace PelicanFiber.Framework
             this.Monitor = monitor;
         }
 
-        public List<Item> GetShopStock(bool isPierre, bool unfiltered = false)
+        public List<ISalable> GetShopStock(bool isPierre, bool unfiltered = false)
         {
-            List<Item> stock = new List<Item>();
+            List<ISalable> stock = new List<ISalable>();
             if (isPierre)
             {
                 if (Game1.currentSeason.Equals("spring") || unfiltered)
@@ -132,11 +132,11 @@ namespace PelicanFiber.Framework
         }
 
 
-        public List<Item> GetCarpenterStock(bool unfiltered = false)
+        public List<ISalable> GetCarpenterStock(bool unfiltered = false)
         {
             Random r = new Random((int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame / 2);
 
-            List<Item> stock = new List<Item>
+            List<ISalable> stock = new List<ISalable>
             {
                 new Object(Vector2.Zero, 388, int.MaxValue),
                 new Object(Vector2.Zero, 390, int.MaxValue),
@@ -314,7 +314,7 @@ namespace PelicanFiber.Framework
             return list;
         }
 
-        private Furniture GetRandomFurniture(Random r, List<Item> stock, int lowerIndexBound = 0, int upperIndexBound = 1462)
+        private Furniture GetRandomFurniture(Random r, List<ISalable> stock, int lowerIndexBound = 0, int upperIndexBound = 1462)
         {
             Dictionary<int, string> dictionary = this.Content.Load<Dictionary<int, string>>("Data\\Furniture", ContentSource.GameContent);
             int num;
@@ -334,11 +334,11 @@ namespace PelicanFiber.Framework
             return new Furniture(num, Vector2.Zero) { Stack = int.MaxValue };
         }
 
-        public Dictionary<Item, int[]> GetBlacksmithStock(bool unfiltered = false)
+        public Dictionary<ISalable, int[]> GetBlacksmithStock(bool unfiltered = false)
         {
             if (unfiltered)
             {
-                return new Dictionary<Item, int[]>
+                return new Dictionary<ISalable, int[]>
                 {
                     [new Object(Vector2.Zero, 378, int.MaxValue)] = new[] { 75, int.MaxValue },
                     [new Object(Vector2.Zero, 380, int.MaxValue)] = new[] { 150, int.MaxValue },
@@ -355,7 +355,7 @@ namespace PelicanFiber.Framework
             }
             else
             {
-                return new Dictionary<Item, int[]>
+                return new Dictionary<ISalable, int[]>
                 {
                     [new Object(Vector2.Zero, 378, int.MaxValue)] = new[] { 75, int.MaxValue },
                     [new Object(Vector2.Zero, 380, int.MaxValue)] = new[] { 150, int.MaxValue },
@@ -365,9 +365,9 @@ namespace PelicanFiber.Framework
             }
         }
 
-        public Dictionary<Item, int[]> GetFishShopStock(Farmer who, bool unfiltered = false)
+        public Dictionary<ISalable, int[]> GetFishShopStock(Farmer who, bool unfiltered = false)
         {
-            Dictionary<Item, int[]> stock = new Dictionary<Item, int[]>
+            Dictionary<ISalable, int[]> stock = new Dictionary<ISalable, int[]>
             {
                 [new Object(219, 1)] = new[] { 250, int.MaxValue }
             };
@@ -417,9 +417,9 @@ namespace PelicanFiber.Framework
             return stock;
         }
 
-        public List<Item> GetSaloonStock(bool unfiltered = false)
+        public List<ISalable> GetSaloonStock(bool unfiltered = false)
         {
-            List<Item> stock = new List<Item>
+            List<ISalable> stock = new List<ISalable>
             {
                 new Object(Vector2.Zero, 346, int.MaxValue),
                 new Object(Vector2.Zero, 196, int.MaxValue),
@@ -461,9 +461,9 @@ namespace PelicanFiber.Framework
             return stock;
         }
 
-        public List<Item> GetLeahShopStock(bool unfiltered = false)
+        public List<ISalable> GetLeahShopStock(bool unfiltered = false)
         {
-            List<Item> stock = new List<Item>();
+            List<ISalable> stock = new List<ISalable>();
 
             foreach (KeyValuePair<int, string> keyValuePair in Game1.objectInformation)
             {
@@ -482,9 +482,9 @@ namespace PelicanFiber.Framework
             return stock;
         }
 
-        public List<Item> GetRecipesStock(bool unfiltered = false)
+        public List<ISalable> GetRecipesStock(bool unfiltered = false)
         {
-            List<Item> stock = new List<Item>();
+            List<ISalable> stock = new List<ISalable>();
 
             if (unfiltered)
             {
@@ -504,9 +504,9 @@ namespace PelicanFiber.Framework
             return stock;
         }
 
-        public List<Item> GetMineralsAndArtifactsStock(bool unfiltered = false)
+        public List<ISalable> GetMineralsAndArtifactsStock(bool unfiltered = false)
         {
-            List<Item> stock = new List<Item>();
+            List<ISalable> stock = new List<ISalable>();
 
             if (unfiltered)
             {
@@ -563,9 +563,9 @@ namespace PelicanFiber.Framework
             }
         }
 
-        public List<Item> GetJunimoStock()
+        public List<ISalable> GetJunimoStock()
         {
-            List<Item> junimoItems = new List<Item>();
+            List<ISalable> junimoItems = new List<ISalable>();
             Dictionary<int, string> junContent = this.Data.ReadJsonFile<Dictionary<int, string>>("assets\\bundles.json");
             KeyValuePair<int, bool[]>[] bundleInfo = ((CommunityCenter)Game1.getLocationFromName("CommunityCenter")).bundles.Pairs.ToArray();
             this.BundleToAreaDictionary = new Dictionary<int, int>();

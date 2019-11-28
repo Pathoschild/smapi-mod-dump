@@ -17,7 +17,6 @@ namespace WhatAreYouMissing
         public bool AlwaysShowAllRecipes { get; set; }
         public int CommonAmount { get; set; }
         public int HighestQualityAmount { get; set; }
-        public int FishHighestQuality { get; set; }
         public bool DoNotShowCaughtFish { get; set; }
 
         public ModConfig()
@@ -30,7 +29,6 @@ namespace WhatAreYouMissing
             AlwaysShowAllRecipes = false;
             CommonAmount = 5;
             HighestQualityAmount = 5;
-            FishHighestQuality = Constants.GOLD_QUALITY;
             DoNotShowCaughtFish = false;
         }
     }

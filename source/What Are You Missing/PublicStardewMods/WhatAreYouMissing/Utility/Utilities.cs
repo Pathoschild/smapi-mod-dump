@@ -142,7 +142,7 @@ namespace WhatAreYouMissing
             //this is how the source code generates the seed
             int seed = (int)((long)Game1.uniqueIDForThisGame + (long)Game1.stats.DaysPlayed);
 
-            Dictionary<Item, int[]> stock = Utility.getTravelingMerchantStock(seed);
+            Dictionary<ISalable, int[]> stock = Utility.getTravelingMerchantStock(seed);
             foreach (Item item in stock.Keys)
             {
                 if (item.ParentSheetIndex == parentSheetIndex)

@@ -1,0 +1,13 @@
+﻿{
+    "msg.warm": "炎の暖かさが夜の間寒さから守ってくれた",
+    "msg.cold": "夜の寒さがあなたからスタミナを奪ってしまった",
+    "msg.spousecold": "あなたの家族は夜凍えていた",
+    "dia.spousecold": "私は今夜凍えていた",
+    "dia.spousecold_child": "{{child1}}は凍えている",
+    "dia.spousecold_children": "{{child1}}と{{child2}}は凍えている",
+    "dia.please": "暖炉に火を付けてください",
+    "msg.nowood": "火を付けるのに{{wood_pieces}}個の木が必要だ",
+    "msg.temp": "温度: ",
+    "msg.tempwarm": "温かい",
+    "msg.tempcold": "冷たい"
+}

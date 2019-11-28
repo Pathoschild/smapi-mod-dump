@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Better Resource Clumps",
+  "Author": "Mizzion",
+  "Version": "0.0.1",
+  "Description": "Improves the output of resource clumps.",
+  "UniqueID": "mizzion.betterresourceclumps",
+  "EntryDll": "Better Resource Clumps.dll",
+  "MinimumApiVersion": "2.10.1",
+  "UpdateKeys": [ "Nexus:1927" ]
+}

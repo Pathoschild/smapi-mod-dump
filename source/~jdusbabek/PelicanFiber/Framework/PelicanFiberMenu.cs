@@ -365,9 +365,9 @@ namespace PelicanFiber.Framework
             this.Reflection.GetField<string>(field, "value").SetValue(value);
         }
 
-        private Dictionary<Item, int[]> GetAdventureShopStock()
+        private Dictionary<ISalable, int[]> GetAdventureShopStock()
         {
-            Dictionary<Item, int[]> itemPriceAndStock = new Dictionary<Item, int[]>();
+            Dictionary<ISalable, int[]> itemPriceAndStock = new Dictionary<ISalable, int[]>();
             int maxValue = int.MaxValue;
             itemPriceAndStock.Add(new MeleeWeapon(12), new[] { 250, maxValue });
             if (Game1.mine != null)

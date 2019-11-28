@@ -5,10 +5,9 @@ mods:
    Mushroom Machine
 
 latest commit:
-   commit 5a727810ab0466f68fc4ad660af2991ff0e3e19f
-   Merge: 8715865 4259209
+   commit 4a6a9ed8edf94d52a9de3fa44c7205cc613e82a9
    Author: razikh-git <pocketsathome@gmail.com>
-   Date:   Thu Nov 21 09:59:20 2019 +1100
+   Date:   Wed Nov 27 11:05:09 2019 +1100
    
-       Merge branch 'master' of https://github.com/razikh-git/BlueberryMushroomMachine
+       Stardew Valley 1.4 compatibility patch
    

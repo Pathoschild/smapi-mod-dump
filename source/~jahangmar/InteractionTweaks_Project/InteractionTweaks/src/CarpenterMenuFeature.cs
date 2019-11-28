@@ -35,8 +35,8 @@ namespace InteractionTweaks
         private static bool moneyButtonEnabled;
         private static bool setupBlueprints;
 
-        private static readonly Item woodObject = ObjectFactory.getItemFromDescription(ObjectFactory.regularObject, Object.wood, 1);
-        private static readonly Item stoneObject = ObjectFactory.getItemFromDescription(ObjectFactory.regularObject, Object.stone, 1);
+        private static Item woodObject;
+        private static Item stoneObject;
 
         private static List<BluePrint> vanillaBlueprints, modBlueprints, saleBlueprints;
 
@@ -48,6 +48,8 @@ namespace InteractionTweaks
         public static new void Enable()
         {
             //enabled = true;
+            woodObject = ObjectFactory.getItemFromDescription(ObjectFactory.regularObject, Object.wood, 1); 
+            stoneObject = ObjectFactory.getItemFromDescription(ObjectFactory.regularObject, Object.stone, 1);
             Helper.Events.Display.MenuChanged += Display_MenuChanged;
         }
 

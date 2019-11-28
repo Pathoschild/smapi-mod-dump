@@ -1,3 +1,3 @@
-page URL: https://www.curseforge.com/stardewvalley/mods/relationship-tooltips
+page URL: https://stardewvalley.curseforge.com/projects/relationship-tooltips
 IDs: M3ales.RelationshipTooltips
-update keys: CurseForge:298040, GitHub:M3ales/RelationshipTooltips
+update keys: GitHub:M3ales/RelationshipTooltips

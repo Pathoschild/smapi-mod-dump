@@ -15,6 +15,7 @@ namespace BetterPanning
         public bool enableAllSecondYearSeedsOnFirstYear { get; set; }
         public bool sp_alwaysCreatePanningSpots { get; set; }
         public bool mp_alwaysCreatePanningSpots { get; set; }
+        public double chanceOfCreatingPanningSpot { get; set; }
         public int maxNumberOfOrePointsGathered { get; set; }
         public bool showHudData { get; set; }
         public int hudXPostion { get; set; }

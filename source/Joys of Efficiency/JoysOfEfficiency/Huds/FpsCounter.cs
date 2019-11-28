@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Reflection.Emit;
 using JoysOfEfficiency.Core;
 using JoysOfEfficiency.Utils;
 using StardewModdingAPI.Events;

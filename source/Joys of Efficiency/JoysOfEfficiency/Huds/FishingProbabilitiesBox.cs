@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JoysOfEfficiency.Core;
+using JoysOfEfficiency.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -16,6 +17,8 @@ namespace JoysOfEfficiency.Huds
 {
     public class FishingProbabilitiesBox
     {
+        private static readonly Logger Logger = new Logger("FishingProbabilitiesInfo");
+
         private static Dictionary<int, double> _fishingDictionary;
 
         private static bool _isFirstTimeOfFishing = true;
@@ -26,7 +29,7 @@ namespace JoysOfEfficiency.Huds
             {
                 if (_isFirstTimeOfFishing)
                 {
-                    InstanceHolder.Monitor.Log("Examine fishing probability");
+                    Logger.Log("Examine fishing probability");
 
                     _isFirstTimeOfFishing = false;
                     GameLocation location = Game1.currentLocation;
@@ -57,7 +60,7 @@ namespace JoysOfEfficiency.Huds
 
         private static Dictionary<int, double> GetFishes(GameLocation location, int bait, int waterDepth, Farmer who, int trial = 1)
         {
-            InstanceHolder.Monitor.Log($"Trial:{trial}");
+            Logger.Log($"Trial:{trial}");
             List<Dictionary<int, double>> dictList = new List<Dictionary<int, double>>();
             for (int i = 0; i < trial; i++)
             {
@@ -178,8 +181,8 @@ namespace JoysOfEfficiency.Huds
             }
             catch (KeyNotFoundException knf)
             {
-                InstanceHolder.Monitor.Log("KeyNotFoundException occured.");
-                InstanceHolder.Monitor.Log(knf.ToString());
+                Logger.Log("KeyNotFoundException occured.");
+                Logger.Log(knf.ToString());
             }
 
             return dict;
@@ -249,7 +252,7 @@ namespace JoysOfEfficiency.Huds
                     return MagnifyProbabilities(GetFishes(waterDepth, who, "Forest"), 0.5);
                 case 2:
                     {
-                        double p = 0.05 + Game1.dailyLuck;
+                        double p = 0.05 + Game1.player.DailyLuck;
                         return ConcatDictionary(
                             new Dictionary<int, double> { { 734, p } },
                             MagnifyProbabilities(
@@ -276,7 +279,7 @@ namespace JoysOfEfficiency.Huds
             {
                 double d = kv.Value * ratio;
                 result.Add(kv.Key, d);
-                ratio = ratio * (1 - kv.Value);
+                ratio *= (1 - kv.Value);
             }
 
             return result;
@@ -299,13 +302,9 @@ namespace JoysOfEfficiency.Huds
 
         private static Dictionary<int, double> ShuffleAndAverageFishingDictionary(IEnumerable<Dictionary<int, double>> list)
         {
-            List<Dictionary<int, double>> dics = new List<Dictionary<int, double>>();
-            foreach (var dict in list)
-            {
-                dics.Add(GetFinalProbabilities(ShuffleDictionary(dict)));
-            }
+            List<Dictionary<int, double>> dicts = list.Select(dict => GetFinalProbabilities(ShuffleDictionary(dict))).ToList();
 
-            return AverageDictionary(dics);
+            return AverageDictionary(dicts);
         }
 
         private static Dictionary<int, double> ShuffleDictionary(Dictionary<int, double> dict)

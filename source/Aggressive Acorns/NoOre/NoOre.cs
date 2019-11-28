@@ -24,7 +24,8 @@ namespace NoOre
                 if (value)
                 {
                     Helper.Events.World.LocationListChanged += WorldOnLocationListChanged;
-                } else
+                }
+                else
                 {
                     Helper.Events.World.LocationListChanged -= WorldOnLocationListChanged;
                 }
@@ -49,7 +50,6 @@ namespace NoOre
 
             helper.Events.GameLoop.SaveLoaded += (sender, args) => DoHandleNewLocations = Context.IsMainPlayer;
             helper.Events.GameLoop.ReturnedToTitle += (sender, args) => DoHandleNewLocations = false;
-
         }
 
 
@@ -60,8 +60,12 @@ namespace NoOre
 
 
         private static void Postfix(
-            GameLocation __instance, bool __result,
-            int indexOfStone, int x, int y, Farmer who)
+            GameLocation __instance,
+            bool __result,
+            int indexOfStone,
+            int x,
+            int y,
+            Farmer who)
         {
             // _monitor.Log(
             //     $"breakStone called in {__instance.Name} at ({x},{y}) by {who.Name} on {indexOfStone}",
@@ -94,7 +98,6 @@ namespace NoOre
             {
                 // chance to drop geodes
             }
-
         }
     }
 

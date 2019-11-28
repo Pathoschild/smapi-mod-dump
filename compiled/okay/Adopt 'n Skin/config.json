@@ -1,0 +1,18 @@
+{
+  "OneTileHorse": true,
+  "PetAndHorseNameTags": true,
+  "HorseWhistleKey": "R",
+  "CorralKey": "G",
+  "StrayAdoptionPrice": 1000,
+  "WalkThroughPets": false,
+  "DisperseCuddlePuddle": true,
+  "CuddleExplosionRadius": 5,
+  "WildHorseSpawn": true,
+  "StraySpawn": true,
+  "WildHorseChancePercentage": 25,
+  "StrayChancePercentage": 60,
+  "ChanceAffectedByLuck": true,
+  "NotifyHorseSpawn": false,
+  "NotifyStraySpawn": false,
+  "DebuggingMode": false
+}

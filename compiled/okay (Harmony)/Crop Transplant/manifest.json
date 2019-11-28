@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Crop Transplant Mod",
+  "Author": "Digus",
+  "Version": "1.1.4-beta",
+  "Description": "Adds a way to transplant crops.",
+  "UniqueID": "DIGUS.CropTransplantMod",
+  "EntryDll": "CropTransplantMod.dll",
+  "MinimumApiVersion": "3.0.0",
+  "Dependencies": [
+    { "UniqueID": "DIGUS.MailFrameworkMod", "MinimumVersion": "1.4.1" }
+  ],
+  "UpdateKeys": [ "Nexus:2594" ]
+}

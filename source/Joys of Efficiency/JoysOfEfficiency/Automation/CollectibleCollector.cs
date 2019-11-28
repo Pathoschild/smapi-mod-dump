@@ -2,7 +2,6 @@
 using JoysOfEfficiency.Core;
 using JoysOfEfficiency.Utils;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewValley;
 using SVObject = StardewValley.Object;
 
@@ -10,8 +9,8 @@ namespace JoysOfEfficiency.Automation
 {
     internal class CollectibleCollector
     {
-        private static IMonitor Monitor => InstanceHolder.Monitor;
         private static Config Config => InstanceHolder.Config;
+        private static readonly Logger Logger = new Logger("CollectibleCollector");
 
         public static void CollectNearbyCollectibles(GameLocation location)
         {
@@ -51,7 +50,7 @@ namespace JoysOfEfficiency.Automation
 
             if (who.couldInventoryAcceptThisItem(obj))
             {
-                Monitor.Log($"picked up {obj.DisplayName} at [{vector.X},{vector.Y}]");
+                Logger.Log($"picked up {obj.DisplayName} at [{vector.X},{vector.Y}]");
                 if (who.IsLocalPlayer)
                 {
                     loc.localSound("pickUpItem");

@@ -21,9 +21,10 @@ namespace BitwiseJonMods
         private const int MENU_DELAY = 200;
         private const int MULTIPLAYER_LIMIT = 4;  //Because Game1.multiplayer (and hence .playerLimit) is inaccessible due to protection level
 
+
         public int maxWidthOfBuildingViewer = 448;
         public int maxHeightOfBuildingViewer = 512;
-        public int maxWidthOfDescription = 384;
+        public int maxWidthOfDescription = 416;
         private List<Item> ingredients = new List<Item>();
         private bool drawBG = true;
         private string hoverText = "";
@@ -80,8 +81,9 @@ namespace BitwiseJonMods
             this.blueprints.Add(new BluePrint("Silo"));
             this.blueprints.Add(new BluePrint("Mill"));
             this.blueprints.Add(new BluePrint("Shed"));
+            this.blueprints.Add(new BluePrint("Fish Pond"));
             int buildingsConstructed = Game1.getFarm().getNumberBuildingsConstructed("Cabin");
-            if (Game1.IsMasterGame && buildingsConstructed < MULTIPLAYER_LIMIT - 1)
+            if (Game1.IsMasterGame && buildingsConstructed < Game1.CurrentPlayerLimit - 1)
             {
                 this.blueprints.Add(new BluePrint("Stone Cabin"));
                 this.blueprints.Add(new BluePrint("Plank Cabin"));
@@ -91,13 +93,14 @@ namespace BitwiseJonMods
                 this.blueprints.Add(new BluePrint("Stable"));
             this.blueprints.Add(new BluePrint("Slime Hutch"));
             //if (Game1.getFarm().isBuildingConstructed("Coop"))
-                this.blueprints.Add(new BluePrint("Big Coop"));
+            this.blueprints.Add(new BluePrint("Big Coop"));
             //if (Game1.getFarm().isBuildingConstructed("Big Coop"))
-                this.blueprints.Add(new BluePrint("Deluxe Coop"));
+            this.blueprints.Add(new BluePrint("Deluxe Coop"));
             //if (Game1.getFarm().isBuildingConstructed("Barn"))
-                this.blueprints.Add(new BluePrint("Big Barn"));
+            this.blueprints.Add(new BluePrint("Big Barn"));
             //if (Game1.getFarm().isBuildingConstructed("Big Barn"))
-                this.blueprints.Add(new BluePrint("Deluxe Barn"));
+            this.blueprints.Add(new BluePrint("Deluxe Barn"));
+            this.blueprints.Add(new BluePrint("Big Shed"));
             this.blueprints.Add(new BluePrint("Shipping Bin"));
 
             if (tractorBlueprint != null)
@@ -110,6 +113,7 @@ namespace BitwiseJonMods
                 this.blueprints.Add(new BluePrint("Junimo Hut"));
                 this.blueprints.Add(new BluePrint("Earth Obelisk"));
                 this.blueprints.Add(new BluePrint("Water Obelisk"));
+                this.blueprints.Add(new BluePrint("Desert Obelisk"));
                 this.blueprints.Add(new BluePrint("Gold Clock"));
             }
 
@@ -185,8 +189,14 @@ namespace BitwiseJonMods
             textureComponent7.rightNeighborID = 106;
             textureComponent7.leftNeighborID = 102;
             this.moveButton = textureComponent7;
+            bool flag = false;
+            foreach (Building building in Game1.getFarm().buildings)
+            {
+                if (building.hasCarpenterPermissions())
+                    flag = true;
+            }
             this.demolishButton.visible = Game1.IsMasterGame;
-            this.moveButton.visible = Game1.IsMasterGame;
+            this.moveButton.visible = Game1.IsMasterGame || Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.On || Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.OwnedBuildings & flag;
             if (!this.demolishButton.visible)
             {
                 this.upgradeIcon.rightNeighborID = this.demolishButton.rightNeighborID;
@@ -202,7 +212,7 @@ namespace BitwiseJonMods
 
         public void setNewActiveBlueprint()
         {
-            this.currentBuilding = !this.blueprints[this.currentBlueprintIndex].name.Contains("Coop") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Barn") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Mill") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Junimo Hut") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Shipping Bin") ? new Building(this.blueprints[this.currentBlueprintIndex], Vector2.Zero) : (Building)new ShippingBin(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new JunimoHut(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new Mill(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new Barn(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new Coop(this.blueprints[this.currentBlueprintIndex], Vector2.Zero);
+            this.currentBuilding = !this.blueprints[this.currentBlueprintIndex].name.Contains("Coop") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Barn") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Mill") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Junimo Hut") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Shipping Bin") ? (!this.blueprints[this.currentBlueprintIndex].name.Contains("Fish Pond") ? new Building(this.blueprints[this.currentBlueprintIndex], Vector2.Zero) : (Building)new FishPond(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new ShippingBin(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new JunimoHut(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new Mill(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new Barn(this.blueprints[this.currentBlueprintIndex], Vector2.Zero)) : (Building)new Coop(this.blueprints[this.currentBlueprintIndex], Vector2.Zero);
             this.price = this.blueprints[this.currentBlueprintIndex].moneyRequired;
             this.ingredients.Clear();
             foreach (KeyValuePair<int, int> keyValuePair in this.blueprints[this.currentBlueprintIndex].itemsRequired)
@@ -239,33 +249,43 @@ namespace BitwiseJonMods
                     return;
                 foreach (Building building in ((BuildableGameLocation)Game1.getLocationFromName("Farm")).buildings)
                     building.color.Value = Color.White;
-                Building building1 = ((BuildableGameLocation)Game1.getLocationFromName("Farm")).getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY()) / 64))) ?? ((BuildableGameLocation)Game1.getLocationFromName("Farm")).getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY() + 128) / 64))) ?? ((BuildableGameLocation)Game1.getLocationFromName("Farm")).getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY() + 192) / 64)));
+                Building b = ((BuildableGameLocation)Game1.getLocationFromName("Farm")).getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY()) / 64))) ?? ((BuildableGameLocation)Game1.getLocationFromName("Farm")).getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY() + 128) / 64))) ?? ((BuildableGameLocation)Game1.getLocationFromName("Farm")).getBuildingAt(new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY() + 192) / 64)));
                 if (this.upgrading)
                 {
-                    if (building1 != null && this.CurrentBlueprint.nameOfBuildingToUpgrade != null && this.CurrentBlueprint.nameOfBuildingToUpgrade.Equals((string)((NetFieldBase<string, NetString>)building1.buildingType)))
+                    if (b != null && this.CurrentBlueprint.nameOfBuildingToUpgrade != null && this.CurrentBlueprint.nameOfBuildingToUpgrade.Equals((string)((NetFieldBase<string, NetString>)b.buildingType)))
                     {
-                        building1.color.Value = Color.Lime * 0.8f;
+                        b.color.Value = Color.Lime * 0.8f;
                     }
                     else
                     {
-                        if (building1 == null)
+                        if (b == null)
                             return;
-                        building1.color.Value = Color.Red * 0.8f;
+                        b.color.Value = Color.Red * 0.8f;
                     }
                 }
                 else if (this.demolishing)
                 {
-                    if (building1 == null)
+                    if (b == null || !this.hasPermissionsToDemolish(b))
                         return;
-                    building1.color.Value = Color.Red * 0.8f;
+                    b.color.Value = Color.Red * 0.8f;
                 }
                 else
                 {
-                    if (!this.moving || building1 == null)
+                    if (!this.moving || b == null || !this.hasPermissionsToMove(b))
                         return;
-                    building1.color.Value = Color.Lime * 0.8f;
+                    b.color.Value = Color.Lime * 0.8f;
                 }
             }
+        }
+
+        public bool hasPermissionsToDemolish(Building b)
+        {
+            return Game1.IsMasterGame;
+        }
+
+        public bool hasPermissionsToMove(Building b)
+        {
+            return Game1.IsMasterGame || Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.On || Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.OwnedBuildings && b.hasCarpenterPermissions();
         }
 
         public override void receiveGamePadButton(Buttons b)
@@ -336,6 +356,11 @@ namespace BitwiseJonMods
                 Game1.panScreen(0, 16);
             foreach (Keys pressedKey in Game1.oldKBState.GetPressedKeys())
                 this.receiveKeyPress(pressedKey);
+            if (Game1.IsMultiplayer)
+                return;
+            Farm farm = Game1.getFarm();
+            foreach (Character character in farm.animals.Values)
+                character.MovePosition(Game1.currentGameTime, Game1.viewport, (GameLocation)farm);
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -397,7 +422,7 @@ namespace BitwiseJonMods
                 this.onFarm = true;
                 this.moving = true;
             }
-            if (this.okButton.containsPoint(x, y) && !this.onFarm && (Game1.player.money >= this.price && this.blueprints[this.currentBlueprintIndex].doesFarmerHaveEnoughResourcesToBuild()))
+            if (this.okButton.containsPoint(x, y) && !this.onFarm && (Game1.player.Money >= this.price && this.blueprints[this.currentBlueprintIndex].doesFarmerHaveEnoughResourcesToBuild()))
             {
                 Game1.delayedActions.Add(new DelayedAction(MENU_DELAY, new DelayedAction.delayedBehavior(this.setUpForBuildingPlacement)));
                 Game1.playSound("smallSelect");
@@ -412,45 +437,76 @@ namespace BitwiseJonMods
                 Action buildingLockFailed = (Action)(() => Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_LockFailed"), Color.Red, 3500f)));
                 Action continueDemolish = (Action)(() =>
                 {
-                    if (destroyed == null || !farm.buildings.Contains(destroyed))
+                    if (!this.demolishing || destroyed == null || !farm.buildings.Contains(destroyed))
                         return;
                     if ((int)((NetFieldBase<int, NetInt>)destroyed.daysOfConstructionLeft) > 0 || (int)((NetFieldBase<int, NetInt>)destroyed.daysUntilUpgrade) > 0)
                         Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_DuringConstruction"), Color.Red, 3500f));
                     else if (destroyed.indoors.Value != null && destroyed.indoors.Value is AnimalHouse && (destroyed.indoors.Value as AnimalHouse).animalsThatLiveHere.Count > 0)
                         Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_AnimalsHere"), Color.Red, 3500f));
                     else if (destroyed.indoors.Value != null && destroyed.indoors.Value.farmers.Count<Farmer>() > 0)
-                        Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere"), Color.Red, 3500f));
-                    else if (destroyed.indoors.Value is Cabin && (destroyed.indoors.Value as Cabin).farmhand.Value != null && (destroyed.indoors.Value as Cabin).farmhand.Value.isActive())  //jon, 8/4/18: Fixed bug where cabins cannot be destroyed if not in multiplayer.
                     {
-                        Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_FarmhandOnline"), Color.Red, 3500f));
+                        Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere"), Color.Red, 3500f));
                     }
                     else
                     {
-                        Chest chest = (Chest)null;
-                        if (destroyed.indoors.Value is Cabin)
+                        if (destroyed.indoors.Value != null && destroyed.indoors.Value is Cabin)
                         {
-                            List<Item> objList = (destroyed.indoors.Value as Cabin).demolish();
-                            if (objList.Count > 0)
+                            foreach (Character allFarmer in Game1.getAllFarmers())
                             {
-                                chest = new Chest(true);
-                                chest.items.Set((IList<Item>)objList);
+                                if (allFarmer.currentLocation.Name == (destroyed.indoors.Value as Cabin).GetCellarName())
+                                {
+                                    Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_PlayerHere"), Color.Red, 3500f));
+                                    return;
+                                }
                             }
                         }
-                        if (!farm.destroyStructure(destroyed))
-                            return;
-                        int tileY = (int)((NetFieldBase<int, NetInt>)destroyed.tileY);
-                        int tilesHigh = (int)((NetFieldBase<int, NetInt>)destroyed.tilesHigh);
-                        Game1.flashAlpha = 1f;
-                        destroyed.showDestroyedAnimation((GameLocation)Game1.getFarm());
-                        Game1.playSound("explosion");
-                        Utility.spreadAnimalsAround(destroyed, farm);
-                        Game1.delayedActions.Add(new DelayedAction(MENU_DELAY, new DelayedAction.delayedBehavior(this.returnToFarm)));
-                        this.freeze = true;
-                        if (chest == null)
-                            return;
-                        farm.objects[new Vector2((float)((int)((NetFieldBase<int, NetInt>)destroyed.tileX) + (int)((NetFieldBase<int, NetInt>)destroyed.tilesWide) / 2), (float)((int)((NetFieldBase<int, NetInt>)destroyed.tileY) + (int)((NetFieldBase<int, NetInt>)destroyed.tilesHigh) / 2))] = (StardewValley.Object)chest;
+                        if (destroyed.indoors.Value is Cabin && (destroyed.indoors.Value as Cabin).farmhand.Value.isActive())
+                        {
+                            Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_FarmhandOnline"), Color.Red, 3500f));
+                        }
+                        else
+                        {
+                            Chest chest = (Chest)null;
+                            if (destroyed.indoors.Value is Cabin)
+                            {
+                                List<Item> objList = (destroyed.indoors.Value as Cabin).demolish();
+                                if (objList.Count > 0)
+                                {
+                                    chest = new Chest(true);
+                                    chest.fixLidFrame();
+                                    chest.items.Set((IList<Item>)objList);
+                                }
+                            }
+                            if (!farm.destroyStructure(destroyed))
+                                return;
+                            int tileY = (int)((NetFieldBase<int, NetInt>)destroyed.tileY);
+                            int tilesHigh = (int)((NetFieldBase<int, NetInt>)destroyed.tilesHigh);
+                            Game1.flashAlpha = 1f;
+                            destroyed.showDestroyedAnimation((GameLocation)Game1.getFarm());
+                            Game1.playSound("explosion");
+                            Utility.spreadAnimalsAround(destroyed, farm);
+                            DelayedAction.functionAfterDelay(new DelayedAction.delayedBehavior(this.returnToFarm), MENU_DELAY);
+                            this.freeze = true;
+                            if (chest == null)
+                                return;
+                            farm.objects[new Vector2((float)((int)((NetFieldBase<int, NetInt>)destroyed.tileX) + (int)((NetFieldBase<int, NetInt>)destroyed.tilesWide) / 2), (float)((int)((NetFieldBase<int, NetInt>)destroyed.tileY) + (int)((NetFieldBase<int, NetInt>)destroyed.tilesHigh) / 2))] = (StardewValley.Object)chest;
+                        }
                     }
                 });
+                if (destroyed != null)
+                {
+                    if (destroyed.indoors.Value != null && destroyed.indoors.Value is Cabin && !Game1.IsMasterGame)
+                    {
+                        Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantDemolish_LockFailed"), Color.Red, 3500f));
+                        destroyed = (Building)null;
+                        return;
+                    }
+                    if (!Game1.IsMasterGame && !this.hasPermissionsToDemolish(destroyed))
+                    {
+                        destroyed = (Building)null;
+                        return;
+                    }
+                }
                 if (destroyed != null && destroyed.indoors.Value is Cabin)
                 {
                     Cabin cabin = destroyed.indoors.Value as Cabin;
@@ -500,6 +556,8 @@ namespace BitwiseJonMods
                     if (this.buildingToMove == null)
                         return;
                     if ((int)((NetFieldBase<int, NetInt>)this.buildingToMove.daysOfConstructionLeft) > 0)
+                        this.buildingToMove = (Building)null;
+                    else if (!Game1.IsMasterGame && !this.hasPermissionsToMove(this.buildingToMove))
                     {
                         this.buildingToMove = (Building)null;
                     }
@@ -514,6 +572,7 @@ namespace BitwiseJonMods
                     this.buildingToMove.isMoving = false;
                     if (this.buildingToMove is ShippingBin)
                         (this.buildingToMove as ShippingBin).initLid();
+                    this.buildingToMove.performActionOnBuildingPlacement();
                     this.buildingToMove = (Building)null;
                     Game1.playSound("axchop");
                     DelayedAction.playSoundAfterDelay("dirtyHit", 50, (GameLocation)null);
@@ -522,14 +581,22 @@ namespace BitwiseJonMods
                 else
                     Game1.playSound("cancel");
             }
-            else if (this.tryToBuild())
-            {
-                this.CurrentBlueprint.consumeResources();
-                Game1.delayedActions.Add(new DelayedAction(MENU_DELAY, new DelayedAction.delayedBehavior(this.returnToFarm)));
-                this.freeze = true;
-            }
             else
-                Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantBuild"), Color.Red, 3500f));
+                Game1.player.team.buildLock.RequestLock((Action)(() =>
+               {
+                   if (this.onFarm && Game1.locationRequest == null)
+                   {
+                       if (this.tryToBuild())
+                       {
+                           this.CurrentBlueprint.consumeResources();
+                           DelayedAction.functionAfterDelay(new DelayedAction.delayedBehavior(this.returnToFarm), MENU_DELAY);
+                           this.freeze = true;
+                       }
+                       else
+                           Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\UI:Carpenter_CantBuild"), Color.Red, 3500f));
+                   }
+                   Game1.player.team.buildLock.ReleaseLock();
+               }), (Action)null);
         }
 
         private void doInstantUpgrade(Building buildingAt)
@@ -570,6 +637,7 @@ namespace BitwiseJonMods
             this.resetBounds();
             this.upgrading = false;
             this.moving = false;
+            this.buildingToMove = (Building)null;
             this.freeze = true;
             Game1.displayHUD = true;
             Game1.viewportFreeze = false;
@@ -632,23 +700,89 @@ namespace BitwiseJonMods
                 this.currentBuilding.drawInMenu(b, this.xPositionOnScreen + this.maxWidthOfBuildingViewer / 2 - (int)((NetFieldBase<int, NetInt>)this.currentBuilding.tilesWide) * 64 / 2 - 64, this.yPositionOnScreen + this.maxHeightOfBuildingViewer / 2 - this.currentBuilding.getSourceRectForMenu().Height * 4 / 2);
                 if (this.CurrentBlueprint.isUpgrade())
                     this.upgradeIcon.draw(b);
-                string str = " Deluxe  Barn   ";
-                SpriteText.drawStringWithScrollBackground(b, this.buildingName, this.xPositionOnScreen + this.maxWidthOfBuildingViewer - IClickableMenu.spaceToClearSideBorder - 16 + 64 + ((this.width - (this.maxWidthOfBuildingViewer + 128)) / 2 - SpriteText.getWidthOfString(str) / 2), this.yPositionOnScreen, str, 1f, -1);
-                IClickableMenu.drawTextureBox(b, this.xPositionOnScreen + this.maxWidthOfBuildingViewer - 16, this.yPositionOnScreen + 80, this.maxWidthOfDescription + 64, this.maxWidthOfDescription + 96, this.magicalConstruction ? Color.RoyalBlue : Color.White);
+                string s = " Deluxe  Barn   ";
+                if (SpriteText.getWidthOfString(this.buildingName, 999999) >= SpriteText.getWidthOfString(s, 999999))
+                    s = this.buildingName + " ";
+                SpriteText.drawStringWithScrollCenteredAt(b, this.buildingName, this.xPositionOnScreen + this.maxWidthOfBuildingViewer - IClickableMenu.spaceToClearSideBorder - 16 + 64 + (this.width - (this.maxWidthOfBuildingViewer + 128)) / 2, this.yPositionOnScreen, SpriteText.getWidthOfString(s, 999999), 1f, -1, 0, 0.88f, false);
+                int width;
+                switch (LocalizedContentManager.CurrentLanguageCode)
+                {
+                    case LocalizedContentManager.LanguageCode.es:
+                        int num1 = this.maxWidthOfDescription + 64;
+                        BluePrint currentBlueprint1 = this.CurrentBlueprint;
+                        int num2 = (currentBlueprint1 != null ? currentBlueprint1.name : (string)null) == "Deluxe Barn" ? 96 : 0;
+                        width = num1 + num2;
+                        break;
+                    case LocalizedContentManager.LanguageCode.fr:
+                        int num3 = this.maxWidthOfDescription + 96;
+                        BluePrint currentBlueprint2 = this.CurrentBlueprint;
+                        int num4;
+                        if (!((currentBlueprint2 != null ? currentBlueprint2.name : (string)null) == "Slime Hutch"))
+                        {
+                            BluePrint currentBlueprint3 = this.CurrentBlueprint;
+                            if (!((currentBlueprint3 != null ? currentBlueprint3.name : (string)null) == "Deluxe Coop"))
+                            {
+                                BluePrint currentBlueprint4 = this.CurrentBlueprint;
+                                if (!((currentBlueprint4 != null ? currentBlueprint4.name : (string)null) == "Deluxe Barn"))
+                                {
+                                    num4 = 0;
+                                    goto label_17;
+                                }
+                            }
+                        }
+                        num4 = 72;
+                        label_17:
+                        width = num3 + num4;
+                        break;
+                    case LocalizedContentManager.LanguageCode.ko:
+                        int num5 = this.maxWidthOfDescription + 96;
+                        BluePrint currentBlueprint5 = this.CurrentBlueprint;
+                        int num6;
+                        if (!((currentBlueprint5 != null ? currentBlueprint5.name : (string)null) == "Slime Hutch"))
+                        {
+                            BluePrint currentBlueprint3 = this.CurrentBlueprint;
+                            if (!((currentBlueprint3 != null ? currentBlueprint3.name : (string)null) == "Deluxe Coop"))
+                            {
+                                BluePrint currentBlueprint4 = this.CurrentBlueprint;
+                                if (!((currentBlueprint4 != null ? currentBlueprint4.name : (string)null) == "Deluxe Barn"))
+                                {
+                                    BluePrint currentBlueprint6 = this.CurrentBlueprint;
+                                    num6 = (currentBlueprint6 != null ? currentBlueprint6.name : (string)null) == "Big Barn" ? 64 : 0;
+                                }
+                                else
+                                    num6 = 112;
+                            }
+                            else
+                                num6 = 96;
+                        }
+                        else
+                            num6 = 64;
+                        width = num5 + num6;
+                        break;
+                    case LocalizedContentManager.LanguageCode.it:
+                        width = this.maxWidthOfDescription + 96;
+                        break;
+                    default:
+                        width = this.maxWidthOfDescription + 64;
+                        break;
+                }
+                IClickableMenu.drawTextureBox(b, this.xPositionOnScreen + this.maxWidthOfBuildingViewer - 16, this.yPositionOnScreen + 80, width, this.maxHeightOfBuildingViewer - 32, this.magicalConstruction ? Color.RoyalBlue : Color.White);
                 if (this.magicalConstruction)
                 {
-                    Utility.drawTextWithShadow(b, Game1.parseText(this.buildingDescription, Game1.dialogueFont, this.maxWidthOfDescription + 32), Game1.dialogueFont, new Vector2((float)(this.xPositionOnScreen + this.maxWidthOfDescription + 64 - 4), (float)(this.yPositionOnScreen + 80 + 16 + 4)), Game1.textColor * 0.25f, 1f, -1f, -1, -1, 0.0f, 3);
-                    Utility.drawTextWithShadow(b, Game1.parseText(this.buildingDescription, Game1.dialogueFont, this.maxWidthOfDescription + 32), Game1.dialogueFont, new Vector2((float)(this.xPositionOnScreen + this.maxWidthOfDescription + 64 - 1), (float)(this.yPositionOnScreen + 80 + 16 + 4)), Game1.textColor * 0.25f, 1f, -1f, -1, -1, 0.0f, 3);
+                    Utility.drawTextWithShadow(b, Game1.parseText(this.buildingDescription, Game1.dialogueFont, width - 32), Game1.dialogueFont, new Vector2((float)(this.xPositionOnScreen + this.maxWidthOfBuildingViewer - 4), (float)(this.yPositionOnScreen + 80 + 16 + 4)), Game1.textColor * 0.25f, 1f, -1f, -1, -1, 0.0f, 3);
+                    Utility.drawTextWithShadow(b, Game1.parseText(this.buildingDescription, Game1.dialogueFont, width - 32), Game1.dialogueFont, new Vector2((float)(this.xPositionOnScreen + this.maxWidthOfBuildingViewer - 1), (float)(this.yPositionOnScreen + 80 + 16 + 4)), Game1.textColor * 0.25f, 1f, -1f, -1, -1, 0.0f, 3);
                 }
-                Utility.drawTextWithShadow(b, Game1.parseText(this.buildingDescription, Game1.dialogueFont, this.maxWidthOfDescription + 32), Game1.dialogueFont, new Vector2((float)(this.xPositionOnScreen + this.maxWidthOfDescription + 64), (float)(this.yPositionOnScreen + 80 + 16)), this.magicalConstruction ? Color.PaleGoldenrod : Game1.textColor, 1f, -1f, -1, -1, this.magicalConstruction ? 0.0f : 0.25f, 3);
-                Vector2 location = new Vector2((float)(this.xPositionOnScreen + this.maxWidthOfDescription + 16 + 64), (float)(this.yPositionOnScreen + 256 + 32));
-                SpriteText.drawString(b, "$", (int)location.X, (int)location.Y, 999999, -1, 999999, 1f, 0.88f, false, -1, "", -1);
+                Utility.drawTextWithShadow(b, Game1.parseText(this.buildingDescription, Game1.dialogueFont, width - 32), Game1.dialogueFont, new Vector2((float)(this.xPositionOnScreen + this.maxWidthOfBuildingViewer), (float)(this.yPositionOnScreen + 80 + 16)), this.magicalConstruction ? Color.PaleGoldenrod : Game1.textColor, 1f, -1f, -1, -1, this.magicalConstruction ? 0.0f : 0.75f, 3);
+                Vector2 location = new Vector2((float)(this.xPositionOnScreen + this.maxWidthOfBuildingViewer + 16), (float)(this.yPositionOnScreen + 256 + 32));
+                if (this.ingredients.Count < 3 && (LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.fr || LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.ko || LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.pt))
+                    location.Y += 64f;
+                SpriteText.drawString(b, "$", (int)location.X, (int)location.Y, 999999, -1, 999999, 1f, 0.88f, false, -1, "", -1, SpriteText.ScrollTextAlignment.Left);
                 if (this.magicalConstruction)
                 {
                     Utility.drawTextWithShadow(b, Game1.content.LoadString("Strings\\StringsFromCSFiles:LoadGameMenu.cs.11020", (object)this.price), Game1.dialogueFont, new Vector2(location.X + 64f, location.Y + 8f), Game1.textColor * 0.5f, 1f, -1f, -1, -1, this.magicalConstruction ? 0.0f : 0.25f, 3);
                     Utility.drawTextWithShadow(b, Game1.content.LoadString("Strings\\StringsFromCSFiles:LoadGameMenu.cs.11020", (object)this.price), Game1.dialogueFont, new Vector2((float)((double)location.X + 64.0 + 4.0 - 1.0), location.Y + 8f), Game1.textColor * 0.25f, 1f, -1f, -1, -1, this.magicalConstruction ? 0.0f : 0.25f, 3);
                 }
-                Utility.drawTextWithShadow(b, Game1.content.LoadString("Strings\\StringsFromCSFiles:LoadGameMenu.cs.11020", (object)this.price), Game1.dialogueFont, new Vector2((float)((double)location.X + 64.0 + 4.0), location.Y + 4f), Game1.player.money >= this.price ? (this.magicalConstruction ? Color.PaleGoldenrod : Game1.textColor) : Color.Red, 1f, -1f, -1, -1, this.magicalConstruction ? 0.0f : 0.25f, 3);
+                Utility.drawTextWithShadow(b, Game1.content.LoadString("Strings\\StringsFromCSFiles:LoadGameMenu.cs.11020", (object)this.price), Game1.dialogueFont, new Vector2((float)((double)location.X + 64.0 + 4.0), location.Y + 4f), Game1.player.Money >= this.price ? (this.magicalConstruction ? Color.PaleGoldenrod : Game1.textColor) : Color.Red, 1f, -1f, -1, -1, this.magicalConstruction ? 0.0f : 0.25f, 3);
                 location.X -= 16f;
                 location.Y -= 21f;
                 foreach (Item ingredient in this.ingredients)
@@ -665,14 +799,14 @@ namespace BitwiseJonMods
                 }
                 this.backButton.draw(b);
                 this.forwardButton.draw(b);
-                this.okButton.draw(b, this.blueprints[this.currentBlueprintIndex].doesFarmerHaveEnoughResourcesToBuild() ? Color.White : Color.Gray * 0.8f, 0.88f);
+                this.okButton.draw(b, this.blueprints[this.currentBlueprintIndex].doesFarmerHaveEnoughResourcesToBuild() ? Color.White : Color.Gray * 0.8f, 0.88f, 0);
                 this.demolishButton.draw(b);
                 this.moveButton.draw(b);
             }
             else
             {
                 string s = this.upgrading ? Game1.content.LoadString("Strings\\UI:Carpenter_SelectBuilding_Upgrade", (object)new BluePrint(this.CurrentBlueprint.nameOfBuildingToUpgrade).displayName) : (this.demolishing ? Game1.content.LoadString("Strings\\UI:Carpenter_SelectBuilding_Demolish") : Game1.content.LoadString("Strings\\UI:Carpenter_ChooseLocation"));
-                SpriteText.drawStringWithScrollBackground(b, s, Game1.viewport.Width / 2 - SpriteText.getWidthOfString(s) / 2, 16, "", 1f, -1);
+                SpriteText.drawStringWithScrollBackground(b, s, Game1.viewport.Width / 2 - SpriteText.getWidthOfString(s, 999999) / 2, 16, "", 1f, -1, SpriteText.ScrollTextAlignment.Left);
                 if (!this.upgrading && !this.demolishing && !this.moving)
                 {
                     Vector2 vector2 = new Vector2((float)((Game1.viewport.X + Game1.getOldMouseX()) / 64), (float)((Game1.viewport.Y + Game1.getOldMouseY()) / 64));
@@ -710,7 +844,7 @@ namespace BitwiseJonMods
             this.drawMouse(b);
             if (this.hoverText.Length <= 0)
                 return;
-            IClickableMenu.drawHoverText(b, this.hoverText, Game1.dialogueFont, 0, 0, -1, (string)null, -1, (string[])null, (Item)null, 0, -1, -1, -1, -1, 1f, (CraftingRecipe)null);
+            IClickableMenu.drawHoverText(b, this.hoverText, Game1.dialogueFont, 0, 0, -1, (string)null, -1, (string[])null, (Item)null, 0, -1, -1, -1, -1, 1f, (CraftingRecipe)null, (IList<Item>)null);
         }
 
         public override void receiveRightClick(int x, int y, bool playSound = true)

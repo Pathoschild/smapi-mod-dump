@@ -1,0 +1,10 @@
+﻿{
+  "Name": "GuessWhich",
+  "Author": "Mizzion",
+  "Version": "1.0.0",
+  "Description": "Guess which box is the winner",
+  "UniqueID": "mizzion.guesswhich",
+  "EntryDll": "GuessWhich.dll",
+  "MinimumApiVersion": "2.11",
+  "UpdateKeys": [ "Nexus:" ]
+}

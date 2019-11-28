@@ -1,0 +1,10 @@
+﻿{
+	"Name": "Monthly Mail",
+	"Author": "Taskmaster",
+	"Version": "1.0.2",
+	"Description": "Various newsletters mailed to the player monthly",
+	"UniqueID": "Taskmaster.MonthlyMail",
+	"EntryDll": "MonthlyMail.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": ["Nexus:4523"]
+}

@@ -24,17 +24,28 @@ namespace FarmTypeManager
             public static void SpawnLargeObject(int index, GameLocation location, Vector2 tile)
             {
                 Monitor.VerboseLog($"Spawning large object. ID: {index}. Location: {tile.X},{tile.Y} ({location.Name}).");
+
+                ResourceClump clump;
+                if (index == 190 || index == 254 || index == 276) //if this should be a GiantCrop
+                {
+                    clump = new GiantCrop(index, tile);
+                }
+                else //if this should be a ResourceClump
+                {
+                    clump = new ResourceClump(index, 2, 2, tile);
+                }
+
                 if (location is Farm farm)
                 {
-                    farm.resourceClumps.Add(new ResourceClump(index, 2, 2, tile)); //spawn the specified resource clump
+                    farm.resourceClumps.Add(clump); //spawn the specified resource clump
                 }
                 else if (location is MineShaft mine)
                 {
-                    mine.resourceClumps.Add(new ResourceClump(index, 2, 2, tile)); //spawn the specified resource clump
+                    mine.resourceClumps.Add(clump); //spawn the specified resource clump
                 }
                 else //if this is not a farm or mine, which generally means it lacks a "resourceClumps" list
                 {
-                    location.largeTerrainFeatures.Add(new LargeResourceClump(index, 2, 2, tile)); //spawn a wrapped version of the specified resource clump
+                    location.largeTerrainFeatures.Add(new LargeResourceClump(clump)); //spawn a wrapped version of the specified resource clump
                 }
             }
         }

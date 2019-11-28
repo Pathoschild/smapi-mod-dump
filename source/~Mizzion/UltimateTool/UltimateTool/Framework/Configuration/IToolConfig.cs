@@ -1,6 +1,6 @@
 ﻿namespace UltimateTool.Framework.Configuration
 {
-    internal class IToolConfig
+    internal class ToolConfig
     {
         public AxeConfig Axe = new AxeConfig();
         public FertilizerConfig Fertilizer = new FertilizerConfig();

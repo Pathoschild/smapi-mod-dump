@@ -161,3 +161,8 @@ This is a changelog from 1.0.22
 
 ## 1.2.16
 - Added customized flower color unification.
+
+## 1.3.0
+- Update for SDV 1.4 and SMAPI 3.0
+- Fixed AutoFishing moves the bar too quickly.
+-

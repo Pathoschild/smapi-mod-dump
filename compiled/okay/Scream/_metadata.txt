@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/0
-IDs: Taskmaster.Scream
-update keys: Nexus:0

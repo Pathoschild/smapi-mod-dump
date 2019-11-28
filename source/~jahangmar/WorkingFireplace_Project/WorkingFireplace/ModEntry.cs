@@ -164,7 +164,7 @@ namespace WorkingFireplace
                 if (!furniture.isOn)
                 {
                     Item item = Game1.player.CurrentItem;
-                    if (item != null && item.Name == "Wood" && item.getStack() >= Config.wood_pieces)
+                    if (item != null && item.Name == "Wood" && item.Stack >= Config.wood_pieces)
                     {
                         Game1.player.removeItemsFromInventory(item.ParentSheetIndex, Config.wood_pieces);
                         SetFireplace(farmHouse, grabtile.X, grabtile.Y, true);

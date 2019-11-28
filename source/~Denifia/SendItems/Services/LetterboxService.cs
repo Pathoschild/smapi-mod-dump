@@ -13,14 +13,11 @@ namespace Denifia.Stardew.SendItems.Services
     /// </summary>
     public class LetterboxService : ILetterboxService
     {
-        private readonly IConfigurationService _configService;
         private readonly IFarmerService _farmerService;
 
         public LetterboxService(
-            IConfigurationService configService,
             IFarmerService farmerService)
         {
-            _configService = configService;
             _farmerService = farmerService;
 
             ModEvents.PlayerUsingLetterbox += PlayerUsingLetterbox;

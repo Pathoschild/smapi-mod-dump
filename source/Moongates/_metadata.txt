@@ -5,9 +5,9 @@ mods:
    Moongates
 
 latest commit:
-   commit 973e2e6e69223cefb92835ce180aa739af07d42e
-   Author: bwdymods <bwdymods@gmail.com>
-   Date:   Fri Mar 8 23:13:02 2019 -0900
+   commit 59a70ba629897aa3f619154dcd6416c28b472b94
+   Author: bwdy <47769190+bwdymods@users.noreply.github.com>
+   Date:   Wed Nov 27 22:54:54 2019 -0900
    
-       Delete cover.png
+       graphics update
    

@@ -621,11 +621,6 @@
   },
   {
     "LocationName": "SamHouse",
-    "TileX": 12,
-    "TileY": 23
-  },
-  {
-    "LocationName": "SamHouse",
     "TileX": 21,
     "TileY": 18
   },

@@ -10,7 +10,6 @@ namespace JoysOfEfficiency.Core
         private static ModEntry ModInstance { get; set; }
 
         public static Config Config { get; private set; }
-        public static IMonitor Monitor => ModInstance.Monitor;
         private static IModHelper Helper => ModInstance.Helper;
         public static ITranslationHelper Translation => Helper.Translation;
         public static IReflectionHelper Reflection => Helper.Reflection;

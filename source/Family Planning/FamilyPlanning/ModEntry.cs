@@ -17,24 +17,24 @@ namespace FamilyPlanning
      *   -> The default is 2, vanilla behavior. (if they don't already have more than 2 kids)
      *   -> If more than 2, then they get the event even after 2 children.
      * -> Also, this mods allows the player to customize the gender of the child at birth.
+     * 
+     * This version of Family Planning is compatible with SMAPI 3.0 and Stardew Valley 1.4.
      */
 
-    /* Harmony patches needed:
+    /* Harmony patches:
      *  -> StardewValley.NPC.canGetPregnant() -> determines the number of children you can have
      *  -> StardewValley.Characters.Child.reloadSprite() -> determines the sprite for a child
      *  -> StardewValley.Characters.Child.tenMinuteUpdate() -> tells the child where their bed is
      */
 
     /* Content Packs:
-     * I've added support for Content Packs to this mod.
-     * I'll add a pre-made Content Pack on Nexus that only needs your to add the existing png's.
-     * Instructions for how to make a Content Pack are in the README.md on GitHub and to a lesser extent the ContentPackData class.
+     * Instructions for how to make a Content Pack are in the README.md on GitHub 
+     * (and to a lesser extent the ContentPackData class).
      */
 
     /* Content Patcher:
-     * I've also added support for Content Patcher content packs to this mod.
-     * I try to load the sprite from the value "Characters\\Child_<Child Name>",
-     * which they can get access to through the custom CP tokens.
+     * I try to load the sprite from the value "Characters\\Child_<Child Name>".
+     * CP Mods can get access to the child name through the custom CP tokens, then patch that value.
      * There is also a token, IsToddler, which returns:
      * -> "true" when the child is toddler age (3), and
      * -> "false" when the child is younger (0 to 2).
@@ -42,16 +42,8 @@ namespace FamilyPlanning
      */
 
     /* Multiplayer testing:
-     * -> Pathoschild discovered a glitch in Stardew Valley 1.3.
-     *    When player 2 enters player 1's house, player 2 loads player 1's child as if they were their own.
-     *    (As seen by a dark skinned child becoming a light skinned child?)
-     *    Therefore, if one player has a Family Planning content pack and the other doesn't,
-     *    there are some serious issues (crashing).
-     * -> Multiplayer compatibility: It's okay for only one player to have Family Planning,
-     *    but if you want to have a content pack, then both players need Family Planning & that exact content pack.
-     * -> I'm not sure what the effect of having a Content Patcher child mod in multiplayer is.
-     *    Considering what happens with content packs, I'd hazard to say there's the same problems?
-     * -> (Also for the sake of multiplayer compatibility, save data is now saved to data/<Save Folder Name>.json)
+     * -> I have yet to test with Stardew Valley 1.4.
+     * -> I will continue to save data to data/<Save Folder Name>.json
      */
 
     class ModEntry : Mod
@@ -60,14 +52,13 @@ namespace FamilyPlanning
         private static List<IContentPack> contentPacks;
         public static IMonitor monitor;
         public static IModHelper helper;
-        private readonly int maxChildren = 4;
         private bool firstTick = true;
 
         public override void Entry(IModHelper helper)
         {
             //Console commands
             helper.ConsoleCommands.Add("get_max_children", "Returns the number of children you can have.", GetTotalChildrenConsole);
-            helper.ConsoleCommands.Add("set_max_children", "Sets the value for how many children you can have. (Currently, the limit is " + maxChildren + ".) \nUsage: set_max_children <value>\n- value: the number of children you can have.", SetTotalChildrenConsole);
+            helper.ConsoleCommands.Add("set_max_children", "Sets the value for how many children you can have. (If you set the value to more than 4, children will overlap in bed and Content Patcher mods may not work.)\nUsage: set_max_children <value>\n- value: the number of children you can have.", SetTotalChildrenConsole);
             //Event handlers
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
@@ -86,7 +77,7 @@ namespace FamilyPlanning
                 contentPacks.Add(contentPack);
             }
         }
-        
+
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             if (!Context.IsWorldReady)
@@ -94,11 +85,11 @@ namespace FamilyPlanning
 
             try
             {
-                data = Helper.Data.ReadJsonFile<FamilyData>("data/" +  Constants.SaveFolderName +".json");
-                
-                if(data.TotalChildren > maxChildren)
+                data = Helper.Data.ReadJsonFile<FamilyData>("data/" + Constants.SaveFolderName + ".json");
+
+                if(data == null)
                 {
-                    data.TotalChildren = maxChildren;
+                    data = new FamilyData();
                     Helper.Data.WriteJsonFile("data/" + Constants.SaveFolderName + ".json", data);
                 }
             }
@@ -108,18 +99,17 @@ namespace FamilyPlanning
                 Helper.Data.WriteJsonFile("data/" + Constants.SaveFolderName + ".json", data);
             }
         }
-        
+
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (!Context.IsWorldReady)
-                return;
-
             if (firstTick)
             {
                 try
                 {
                     foreach (Child child in Game1.player.getChildren())
+                    {
                         child.reloadSprite();
+                    }
                     firstTick = false;
                 }
                 catch (Exception) { }
@@ -237,9 +227,7 @@ namespace FamilyPlanning
             {
                 input = int.Parse(args[0]);
 
-                if (input > maxChildren)
-                    Monitor.Log("This mod currently limits your maximum to " + maxChildren + ", so your input won't be accepted.");
-                else if (input >= 0)
+                if (input >= 0)
                 {
                     data.TotalChildren = input;
                     Helper.Data.WriteJsonFile("data/" + Constants.SaveFolderName + ".json", data);
@@ -253,15 +241,15 @@ namespace FamilyPlanning
                 Monitor.Log(e.Message);
             }
         }
-         
+
         public static FamilyData GetFamilyData()
         {
             return data;
         }
-         
+
         public static Tuple<string, string> GetChildSpriteData(string childName)
         {
-            foreach(IContentPack contentPack in contentPacks)
+            foreach (IContentPack contentPack in contentPacks)
             {
                 try
                 {
@@ -297,7 +285,7 @@ namespace FamilyPlanning
                     ContentPackData cpdata = contentPack.ReadJsonFile<ContentPackData>("assets/data.json");
                     if (cpdata.SpouseDialogue == null)
                         return null;
-                    foreach(string key in cpdata.SpouseDialogue.Keys)
+                    foreach (string key in cpdata.SpouseDialogue.Keys)
                     {
                         if (key.Equals(spouseName))
                         {
@@ -306,7 +294,7 @@ namespace FamilyPlanning
                         }
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     monitor.Log("An exception occurred in Loe2run.FamilyPlanning while loading spouse dialogue.");
                     monitor.Log(e.Message);

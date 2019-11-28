@@ -1,0 +1,18 @@
+{
+  "ShowHoverTooltips": true,
+  "EnableShippingBin": true,
+  "AddOrganizePlayerInventoryButton": true,
+  "Range": "Unlimited",
+  "Controls": {
+    "Toggle": "B",
+    "PrevChest": "Left, LeftShoulder",
+    "NextChest": "Right, RightShoulder",
+    "PrevCategory": "Up, LeftTrigger",
+    "NextCategory": "Down, RightTrigger",
+    "EditChest": "",
+    "SortItems": "",
+    "HoldToMouseWheelScrollChests": "LeftControl",
+    "HoldToMouseWheelScrollCategories": "LeftAlt"
+  },
+  "DisabledInLocations": []
+}

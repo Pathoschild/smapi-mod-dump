@@ -6,11 +6,15 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Monsters;
 using xTile.Dimensions;
+using System.Diagnostics.Contracts;
+using System.IO;
 
 namespace NpcAdventure.Utils
 {
     internal static partial class Helper
     {
+        private static readonly char[] PossiblePathSeparators = new[] { '/', '\\', Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }.Distinct().ToArray();
+        private static readonly string PreferredPathSeparator = Path.DirectorySeparatorChar.ToString();
         public static bool IsNPCAtTile(GameLocation location, Vector2 tile, NPC whichNPC = null)
         {
             NPC npc = location.isCharacterAtTile(tile);
@@ -25,10 +29,7 @@ namespace NpcAdventure.Utils
 
         public static bool SpouseHasBeenKissedToday(NPC spouse)
         {
-            return (bool)spouse
-                .GetType()
-                .GetField("hasBeenKissedToday",
-                          BindingFlags.NonPublic | BindingFlags.Instance).GetValue(spouse);
+            return spouse.hasBeenKissedToday.Value;
         }
 
         public static bool IsSpouseMarriedToFarmer(NPC spouse, Farmer farmer)
@@ -186,6 +187,25 @@ namespace NpcAdventure.Utils
                 return nearestMonsters.Values.First();
 
             return null;
+        }
+
+        public static string[] GetSegments(string path, int? limit = null)
+        {
+            return limit.HasValue
+                ? path.Split(PossiblePathSeparators, limit.Value, StringSplitOptions.RemoveEmptyEntries)
+                : path.Split(PossiblePathSeparators, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        /// <summary>Normalise path separators in a file path.</summary>
+        /// <param name="path">The file path to normalise.</param>
+        [Pure]
+        public static string NormalisePathSeparators(string path)
+        {
+            string[] parts = GetSegments(path);
+            string normalised = string.Join(PreferredPathSeparator, parts);
+            if (path.StartsWith(PreferredPathSeparator))
+                normalised = PreferredPathSeparator + normalised; // keep root slash
+            return normalised;
         }
     }
 }

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4704
+IDs: MouseyPounds.CraneManBegone
+update keys: Nexus:4704, GitHub:MouseyPounds/stardew-mods

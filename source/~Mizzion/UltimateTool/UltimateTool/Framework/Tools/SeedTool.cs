@@ -1,4 +1,7 @@
-﻿using UltimateTool.Framework.Configuration;
+﻿using Microsoft.Xna.Framework;
+using StardewValley;
+using StardewValley.TerrainFeatures;
+using UltimateTool.Framework.Configuration;
 using SFarmer = StardewValley.Farmer;
 using SObject = StardewValley.Object;
 
@@ -6,16 +9,16 @@ namespace UltimateTool.Framework.Tools
 {
     internal class SeedTool : BaseTool
     {
-        private readonly SeedsConfig Config;
+        private readonly SeedsConfig _config;
 
         public SeedTool(SeedsConfig config)
         {
-            this.Config = config;
+            _config = config;
         }
 
         public override bool IsEnabled(SFarmer who, Tool tool, Item item, GameLocation location)
         {
-            return this.Config.Enabled && item?.category == SObject.SeedsCategory;
+            return _config.Enabled && item?.Category == SObject.SeedsCategory;
         }
 
         public override bool Apply(Vector2 tile, SObject tileObj, TerrainFeature tileFeature, SFarmer who, Tool tool, Item item, GameLocation location)
@@ -29,10 +32,10 @@ namespace UltimateTool.Framework.Tools
             {
                 return false;
             }
-            bool planted = dirt.plant(item.parentSheetIndex, (int)tile.X, (int)tile.Y, who);
+            bool planted = dirt.plant(item.ParentSheetIndex, (int)tile.X, (int)tile.Y, who, false, location);
             if (planted)
             {
-                this.RemoveItem(who, item);
+                RemoveItem(who, item);
             }
             return planted;
         }

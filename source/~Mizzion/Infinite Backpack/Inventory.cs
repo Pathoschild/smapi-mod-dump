@@ -1,0 +1,6 @@
+﻿namespace InfiniteBackpack
+{
+    class Inventory
+    {
+    }
+}

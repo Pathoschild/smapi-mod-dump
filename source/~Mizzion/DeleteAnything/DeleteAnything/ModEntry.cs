@@ -76,12 +76,35 @@ namespace DeleteAnything
                         new Response("3", "Yes"),
                         new Response("4", "No")
                     };
-                    //var o = curLocation.objects;
-                    //curLocation.createQuestionDialogue($"Are you sure you want to delete {o.Name}?", options.ToArray(), new GameLocation.afterQuestionBehavior(this.answer), (NPC)null);                    
+                    string tName = GetTerrainName(@terrain);
+                    curLocation.createQuestionDialogue($"Are you sure you want to delete {tName}?", options.ToArray(), new GameLocation.afterQuestionBehavior(this.answer), (NPC)null);                    
                 }                
                 this.Monitor.Log($"X:{curTile.Tile.X} Y:{curTile.Tile.Y} FarmHouse: {t} Occupied: {occupied}\n\n", LogLevel.Alert);                
             }
 
+        }
+
+        private string GetTerrainName(TerrainFeature t)
+        {
+            string outter = "";
+
+            switch (t)
+            {
+                case Tree tree:
+                    Monitor.Log(tree.treeType.Value.ToString());
+                    
+                    break;
+                default:
+                    outter = "Nothing Dork.";
+                    break;
+            }
+            /*
+            if (t is Tree tree)
+                outter = Game1.objectInformation[tree.];
+            else
+                outter = "Nothing Dork.";*/
+
+            return outter;
         }
         private void DoWork(GameLocation[] locations)
         {

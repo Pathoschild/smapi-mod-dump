@@ -1,5 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
+using StardewValley;
+using StardewValley.TerrainFeatures;
 using SFarmer = StardewValley.Farmer;
 using SObject = StardewValley.Object;
 
@@ -61,7 +67,7 @@ namespace IncreasedMushroomTree
                         {
                             if (Debugging)
                                 Monitor.Log("Made it passed line 71", LogLevel.Alert);
-                            (terrain as Tree).treeType = 7;
+                            (terrain as Tree).treeType.Value = 7;
                             (terrain as Tree).loadSprite();
 
                             if (Debugging)

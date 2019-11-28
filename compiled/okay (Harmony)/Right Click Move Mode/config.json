@@ -1,0 +1,11 @@
+{
+  "ExtendedModeDefault": "On",
+  "RightClickMoveModeDefault": "On",
+  "RightClickMoveModeToggleButton": "G",
+  "HoldingMoveOnly": "Off",
+  "HoldTickCount": 10,
+  "StopAfterHold": "On",
+  "WeaponsSpecticalInteraction": "On",
+  "WeaponsSpecticalInteractionType": 1,
+  "SpecialMoveButton": "MouseX1"
+}

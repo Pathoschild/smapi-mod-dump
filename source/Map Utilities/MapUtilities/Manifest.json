@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Map Utilities",
+  "Author": "MabelSyrup",
+  "Version": "0.1.0",
+  "Description": "Various map utilities",
+  "UniqueID": "mabelsyrup.maputils",
+  "EntryDll": "MapUtilities.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": []
+}

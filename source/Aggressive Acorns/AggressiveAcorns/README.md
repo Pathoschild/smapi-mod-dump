@@ -55,13 +55,13 @@ Features are classified as either:
 
 ## Installation
 
-1. Install [SMAPI](https://smapi.io/)
+1. Install [SMAPI](https://smapi.io/) (>3.0.0)
 2. Get this mod from Nexus Mods.
 3. (Manual installation) Extract the contents of the zip file to `Stardew Valley\Mods`. 
 4. Start the game once to create the configuration file. Quit, edit the file (`Stardew Valley\Mods\Aggressive Acorns\config.json`), then play. *All options default to vanilla, so make sure to enable any features you want*.
 
 
-Compatible with version 1.3.36 of Stardew Valley. Must be installed for all players in multiplayer.
+Compatible with version 1.4 of Stardew Valley. Must be installed for all players in multiplayer.
 * Compatible with Stardew Valley Extended as of Aggressive Acorns v1.2.0.
 
 For the latest compatibility information visit https://smapi.io/compat
@@ -104,3 +104,4 @@ Future plans and features I'm considering:
  * Do fruit trees shade normal trees? Should they?
  * Make companion mod for fruit trees. Include random-er fruit tree growth.
  * Look at fix growth for trees (emulating vanilla fruit tree growth) - look at SMAPI data API.
+ * Look at adding sprites for trees with seeds.

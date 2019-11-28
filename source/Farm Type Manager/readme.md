@@ -6,7 +6,10 @@ This mod allows players and modders to customize features from Stardew Valley's 
 * [Setup](#setup)
 * [Examples](#examples)
 * [Commands](#commands)
-* [Settings](#settings)
+	* [whereami](#whereami)
+	* [list_monsters](#list_monsters)
+* [Mod Settings](#mod-settings)
+* [Spawn Settings](#spawn-settings)
     * [Basic Settings](#basic-settings)
     * [General Spawn Settings](#general-spawn-settings)
 		* [Spawn Timing Settings](#spawn-timing-settings)
@@ -18,8 +21,10 @@ This mod allows players and modders to customize features from Stardew Valley's 
     * [Extra Conditions](#extra-conditions)
     * [Other Settings](#other-settings)
     * [File Conditions](#file-conditions)
-    * [Farm Type Manager Settings](#farm-type-manager-settings)
+    
 * [Content Packs](#content-packs)
+* [SMAPI Mod Support](#smapi-mod-support)
+	 * [Adding Custom Monster Classes](#adding-custom-monster-classes)
 
 ## Installation
 1. **Install the latest version of [SMAPI](https://smapi.io/).**
@@ -42,7 +47,7 @@ Note: This mod will be disabled in multiplayer when you play as a farmhand (i.e.
 ## Examples
 Below are a few examples of changes you can make to your character's configuration file, spawning various things on your farm or the other in-game maps.
 
-### Spawn forage and respawn stumps on the farm
+### Spawn forage and respawn existing stumps on the farm
 ```
 "ForageSpawnEnabled": true,
 "LargeObjectSpawnEnabled": true,
@@ -107,10 +112,10 @@ Below are a few examples of changes you can make to your character's configurati
   "Forage_Spawn_Settings": {
     "Areas": [
       {
-        "SpringItemIndex": [ 2018, 2021 ],
-        "SummerItemIndex": [ 2018, 2021 ],
-        "FallItemIndex": [ 2018, 2021 ],
-        "WinterItemIndex": null,
+        "SpringItemIndex": [ "Mint", "Juniper" ],
+        "SummerItemIndex": [ "Mint", "Juniper" ],
+        "FallItemIndex": [ "Mint", "Juniper" ],
+        "WinterItemIndex": [],
         "MapName": "Summit",
         "MinimumSpawnsPerDay": 4,
         "MaximumSpawnsPerDay": 8,
@@ -124,24 +129,49 @@ Below are a few examples of changes you can make to your character's configurati
 ![Custom forage spawned on a mod-enabled map with specific time and weather conditions.](docs/images/ftm_example_5.png)
 
 ## Commands
-This mod adds the command `whereami` to SMAPI's console. Enter it there to display information about the current map, including: 
+This mod adds the following commands to SMAPI's console.
+
+These commands require the Console Commands mod, which is installed automatically by SMAPI. They can also be disabled in Farm Type Manager's **config.json** file if desired. See [Mod Settings](#mod-settings).
+
+### whereami
+
+Enter `whereami` in SMAPI's console to display information about the current map, including: 
 * The map's name (e.g. "Farm" or "BusStop")
 * Your current tile's X/Y coordinates
 * The tile's terrain type (e.g. "Dirt" or "Stone")
 * Whether the tile is "Diggable" with tools
-* The tile's image index number (used to identify "Quarry" tiles or set up custom tile-matching)
+* The tile's image index number (used to identify "Quarry" tiles or set up the "Custom" tile list)
 
-This command can be disabled in the **config.json** file if desired, e.g. if it conflicts with another mod. See [Mod Settings](#mod-settings).
+### list_monsters
 
-## Settings
-The settings below change how the mod affects your farm. By default, the mod will not change your farm at all; you'll have to enable features you want in the Basic Settings section, and then (optionally) configure their behavior with the rest of the settings.
+Enter `list_monsters` in SMAPI's console to display a list of available monster names to use with the MonsterName spawn setting.
 
-Your config files are stored in the `Stardew Valley\Mods\FarmTypeManager\data` folder. When you load a farm in-game and no  file exists yet, a new file will be created for it. The file is named after your save data folder, so it starts with your farmer’s name and then a series of numbers, such as **FarmerName_1234567.json**. Any text editor should be able to open it.
+The command will list the primary name of each monster from Stardew Valley itself, and then scan other mods for custom monster classes.
 
-The mod will also generate a **default.json** file in the data folder. It can be edited to change the settings of any newly generated config files. This can be useful if you create new farms frequently or need to customize settings for several farms at once. If the default.json file doesn't exist, it will be created when launching Stardew or loading a farm.
+The full provided name should be used in the MonsterName setting. Example: `"MyModName.CustomMonster"`
+
+## Mod Settings
+These settings are in the **config.json** file, which is in the mod's main folder: `Stardew Valley\Mods\FarmTypeManager`. They change the behavior of the mod itself, rather than a specific farm or content pack.
+
+Name | Valid settings | Description
+-----|----------------|------------
+EnableWhereAmICommand | **true**, false | Enables or disables the `whereami` console command.
+EnableContentPacks | **true**, false | Enables or disables any installed content packs for Farm Type Manager.
+EnableContentPackFileChanges | **true**, false | Enables or disables special file changes by content packs, such as resetting the `FarmTypeManager\data` folder.
+EnableTraceLogMessages | **true**, false | Enables or disables `[TRACE]`-level messages in the SMAPI error log.
+MonsterLimitPerLocation | An integer (minimum 0), or **null** | If a single map already contains this number of monsters, the mod will skip spawning any additional monsters there. Use this setting if your content packs are spawning too many monsters, causing Stardew to run slowly.
+
+## Spawn Settings
+The settings below control how Farm Type Manager spawns objects and monsters. The settings are found in each content pack's `content.json` file. Creating/loading a farm will also generate a "personal" config file for that farm in the `FarmTypeManager\data` folder. Personal config files are named after the farm's save data folder, such as **FarmerName_12345.json**.
+
+Any text editor should be able to open these config files. However, you can also use the `ConfigEditor.html` file in the `FarmTypeManager` folder to edit these config files. The Config Editor is an editor that should work in any web browser and make it easier to understand each setting.
+
+The mod will also generate a `default.json` file in the `FarmTypeManager\data` folder. Any newly generated config files will copy those settings. This can be useful if you create new farms frequently, or to customize settings for several farms at once.
+
+Deleting any config file in the `FarmTypeManager\data` folder will allow it to be regenerated with default settings.
 
 ### Basic Settings
-This section covers the simple on/off switches you can use to enable default configurations, which work similarly to "vanilla" Stardew farm types.
+This section covers the simple on/off switches you can use to enable default configurations, which work similarly to "vanilla" Stardew Valley farm types.
 
 Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
@@ -198,7 +228,7 @@ WinterItemIndex (Global) | A list of integers and/or item names, e.g. `[16, "Red
 ### Large Object Spawn Settings
 Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
-ObjectTypes | **"Stump"**, "Log", "Boulder", "Meteorite", "Mine Rock 1", "Mine Rock 2", "Mine Rock 3", "Mine Rock 4" | A list of object types to spawn. | Objects spawned in this area will be chosen randomly from this list. Adding the same object type multiple times will increase its chances. Separate multiple objects with commas: `"ObjectTypes: [ "Stump", "Log", "Meteorite" ]`
+ObjectTypes | **"Stump"**, "Log", "Boulder", "Meteorite", "Mine Rock 1", "Mine Rock 2", "Mine Rock 3", "Mine Rock 4", "Giant Cauliflower", "Giant Melon", "Giant Pumpkin" | A list of object types to spawn. | Objects spawned in this area will be chosen randomly from this list. Adding the same object type multiple times will increase its chances. Separate multiple objects with commas: `"ObjectTypes: [ "Stump", "Log", "Meteorite" ]`
 FindExistingObjectLocations | **true**, false | Finds any existing objects listed in ObjectTypes and adds them to the IncludeCoordinates list. | This can be used to automatically find existing objects' coordinates and respawn them each day. It will set itself to "false" in your settings file after completion.
 PercentExtraSpawnsPerSkillLevel | Any integer (default **0**) | The % of extra objects spawned for each level of the RelatedSkill. | In multiplayer, this is based on the highest skill level among *all* players (even if they're offline). For example, setting this to 10 will spawn +10% items per skill level; if a farmhand has the best skill of level 8, there will be 80% more objects each day.
 RelatedSkill | "Farming", "Fishing", **"Foraging"**, "Mining", "Combat" | The skill used by PercentExtraSpawnsPerSkillLevel to spawn extra objects.
@@ -218,8 +248,8 @@ LevelTenSpawnChance (Global) | 0 or more | Each ore type's chance of spawning wi
 Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
 MonsterTypes | A list of "monster type" sections *(see Notes)* | A list of monster types to spawn, containing a name and list of optional settings. | Separate each monster type with commas: `"MonsterTypes": [ { "MonsterName": "bat", "Settings": {} }, { "MonsterName": "ghost", "Settings": {"HP": 1, "Damage": 0} } ]`
-MonsterName | The name of an in-game monster, e.g. `"green slime"` | The "base" monster used by a Monster Type. | Spawned monsters are based on an in-game monster, and then modified by any optional settings in the "Settings" list. To find a monster name, refer to the list of monsters on the [Stardew wiki Monsters page](https://stardewvalleywiki.com/Monsters). 
-Settings | A list of setting names and values, e.g. `"HP": 1` | A list of optional customization settings to apply to a Monster Type. | See the Monster Type Settings section below for more information about each setting.
+MonsterName | The name of an in-game monster, e.g. `"green slime"` | The "base" monster used by a Monster Type. | Spawned monsters use existing monster classes, but can be individually customized by the optional "Settings" list below. To find a monster name, use the [list_monsters](#list_monsters) command. 
+Settings | A list of setting names and values, e.g. `"HP": 1` | A list of optional customization settings to apply to a Monster Type. | See the Monster Type Settings section below for more information about each setting. Separate each setting with commas: `"Settings": {"HP": 999, "Sprite":"Characters/Monsters/Skeleton"}`
 
 
 #### Monster Type Settings
@@ -275,17 +305,6 @@ SaveFileNames | A list of save file names, e.g. `["Esca_1234567"]` | If one of t
 OtherMods | A list of mods' UniqueIDs and `true` or `false` (see Notes) | If all of the player's loaded mods match this list, this config file will be used. | This can be used to make a content pack or config file only activate with certain mod requirements. `true` means a mod *must* be installed, while `false` means it *can't* be installed. Example: `OtherMods: { "Esca.FarmTypeManager" : true, "FakeModID" : false }`
 ResetMainDataFolder | true, **false** | When true, this will move any files in `FarmTypeManager\data` to an archive folder. | This is used by mods migrating from older versions to FTM v1.4's content pack format. It will only happen once, unless the content pack's save data is deleted. The data files are moved to `FarmTypeManager\data\archive\[timestamp]`.
 
-### Farm Type Manager Settings
-These settings are in the **config.json** file, which is in the mod's main folder: `Stardew Valley\Mods\FarmTypeManager`. They change the behavior of the mod itself, rather than a specific farm or content pack.
-
-Name | Valid settings | Description
------|----------------|------------
-EnableWhereAmICommand | **true**, false | Enables or disables the `whereami` console command.
-EnableContentPacks | **true**, false | Enables or disables any installed content packs for Farm Type Manager.
-EnableContentPackFileChanges | **true**, false | Enables or disables special file changes by content packs, such as resetting the `FarmTypeManager\data` folder.
-EnableTraceLogMessages | **true**, false | Enables or disables `[TRACE]`-level messages in the SMAPI error log.
-MonsterLimitPerLocation | An integer (minimum 0), or **null** | If a single map already contains this number of monsters, the mod will skip spawning any additional monsters there. Use this setting if your content packs are spawning too many monsters, causing Stardew to run slowly.
-
 ## Content Packs
 In version 1.4 and later, Farm Type Manager can use configuration files from content packs. They will be used *in addition* to the farm-specific files in the `FarmTypeManager\data` folder; they will not replace or override each other.
 
@@ -300,13 +319,29 @@ To create a content pack for Farm Type Manager:
   "Version": "1.0.0",
   "Description": "Your description here. Briefly explain what the content pack does.",
   "UniqueID": "YourName.YourPackName",
-  "MinimumApiVersion": "2.10.0",
+  "MinimumApiVersion": "3.0.0",
   "UpdateKeys": [],
   "ContentPackFor": {
     "UniqueID": "Esca.FarmTypeManager",
-    "MinimumVersion": "1.7.0"
+    "MinimumVersion": "1.8.0"
   }
 }
 ```
 3. Create or copy a Farm Type Manager configuration file into the `[FTM] Your Pack Name` folder and name it **content.json**. The format is exactly the same as a farm configuration file from the `FarmTypeManager\data` folder.
 4. If you want to combine this content pack with a custom farm map or similar mod, consider editing the **FarmTypes** and/or **OtherMods** settings under **File_Conditions** at the bottom of the configuration file. (See the [File Conditions](#file-conditions) section.)
+
+## SMAPI Mod Support
+
+### Adding custom monster classes
+
+The MonsterName setting in Farm Type Manager's monster spawn settings can use custom monster classes created by other mods. This process requires some knowledge of C# and SMAPI; you may also need to decompile and explore Stardew Valley's monster code.
+
+Creating a custom class works as follows:
+
+1. Create a basic SMAPI mod. See the wiki's [Modder Guide](https://stardewvalleywiki.com/Modding:Modder_Guide) for more information. The mod doesn't need to perform any specific actions; it just needs to exist and be loaded by SMAPI.
+2. Within that mod (in any namespace or class), create a subclass of the StardewValley.Monster class or one of its existing subclasses (e.g. Ghost).
+3. Create a default constructor (no parameters) and a constructor with only a Vector2 parameter. The default is required for some of Stardew's internal behavior, while the Vector2 constructor is used by Farm Type Manager.
+4. Customize the monster as needed. Override virtual methods to change the monster's "base" behavior, and if the monster needs any new properties, remember to add them to the `NetFields` list and use ISerializable types.
+5. Once the mod is complete, you should be able to use the [list_monsters](#list_monsters) command to find your custom monster's full name. Use that name with Farm Type Manager's MonsterName setting to spawn your monster.
+
+An example project will likely be added in a future update. For now, please see Farm Type Manager's [custom monster classes](https://github.com/Esca-MMC/FarmTypeManager/tree/master/FarmTypeManager/Classes/In-Game/Monsters) for examples of formatting and a few necessary bugfixes.

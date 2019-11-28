@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Running Late",
+  "Author": "Coll1234567",
+  "Version": "1.2.0",
+  "Description": "Changes the digital clock on the HUD to update every in-game minute instead of every 10",
+  "UniqueID": "Coll1234567.RunningLate",
+  "EntryDll": "RunningLate.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:3518" ]
+}

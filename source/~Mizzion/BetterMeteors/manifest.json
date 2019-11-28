@@ -1,0 +1,10 @@
+﻿{
+  "Name": "BetterMeteors",
+  "Author": "Mizzion",
+  "Version": "1.0.0",
+  "Description": "Improves the output of meteors.",
+  "UniqueID": "mizzion.bettermeteors",
+  "EntryDll": "BetterMeteors.dll",
+  "MinimumApiVersion": "2.10.1",
+  "UpdateKeys": [ "Nexus:" ]
+}

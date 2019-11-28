@@ -26,7 +26,7 @@ namespace InteractionTweaks
 {
     public class MarniesItemShopFeature : ModFeature
     {
-        private static Dictionary<Item, int[]> initialItemPriceAndStock;
+        private static Dictionary<ISalable, int[]> initialItemPriceAndStock;
 
         public static new void Enable()
         {
@@ -157,7 +157,7 @@ namespace InteractionTweaks
 
         private static int GetPrice(Item item)
         {
-            foreach (KeyValuePair<Item, int[]> pair in initialItemPriceAndStock)
+            foreach (KeyValuePair<ISalable, int[]> pair in initialItemPriceAndStock)
             {
                 if (pair.Key is Item keyItem && keyItem.Name.Equals(item.Name))
                 {
@@ -221,7 +221,7 @@ namespace InteractionTweaks
             }
 
             public override int salePrice() => GetPrice(obj);
-            public override int sellToStorePrice() => GetPrice(obj);
+            public override int sellToStorePrice(long specificPlayerID) => GetPrice(obj);
         }
 
         private class ModHeaterObject : Object
@@ -240,7 +240,7 @@ namespace InteractionTweaks
             public Object ToObject() => obj;
 
             public override int salePrice() => GetPrice(obj);
-            public override int sellToStorePrice() => GetPrice(obj);
+            public override int sellToStorePrice(long specificPlayerID) => GetPrice(obj);
         }
 
         private class ModAutoGrabberObject : Object
@@ -259,7 +259,7 @@ namespace InteractionTweaks
             public Object ToObject() => obj;
 
             public override int salePrice() => GetPrice(obj);
-            public override int sellToStorePrice() => GetPrice(obj);
+            public override int sellToStorePrice(long specificPlayerID) => GetPrice(obj);
         }
 
         private class ModHayBaleObject : Object
@@ -278,7 +278,7 @@ namespace InteractionTweaks
             public Object ToObject() => obj;
 
             public override int salePrice() => GetPrice(obj);
-            public override int sellToStorePrice() => GetPrice(obj);
+            public override int sellToStorePrice(long specificPlayerID) => GetPrice(obj);
         }
 
     }

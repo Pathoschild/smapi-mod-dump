@@ -1,5 +1,4 @@
-﻿using System;
-using JoysOfEfficiency.EventHandler;
+﻿using JoysOfEfficiency.EventHandler;
 using JoysOfEfficiency.Huds;
 using JoysOfEfficiency.Menus;
 using JoysOfEfficiency.ModCheckers;
@@ -32,6 +31,8 @@ namespace JoysOfEfficiency.Core
 
         public static bool DebugMode { get; private set; }
 
+        private static readonly Logger Logger = new Logger("Main");
+
         /// <summary>
         /// Called firstly when SMAPI finished loading of the mod.
         /// </summary>
@@ -43,6 +44,9 @@ namespace JoysOfEfficiency.Core
 
             // Initialize InstanceHolder.
             InstanceHolder.Init(this, conf);
+
+            // Initialize Logger
+            Logger.Init(this);
 
             // Register events.
             EventHolder.RegisterEvents(Helper.Events);
@@ -71,30 +75,30 @@ namespace JoysOfEfficiency.Core
             // Check mod compatibilities.
             if(ModChecker.IsCoGLoaded(helper))
             {
-                Monitor.Log("CasksOnGround detected.");
+                Logger.Log("CasksOnGround detected.");
                 IsCoGOn = true;
             }
 
             if (ModChecker.IsCaLoaded(helper))
             {
-                Monitor.Log("CasksAnywhere detected.");
+                Logger.Log("CasksAnywhere detected.");
                 IsCaOn = true;
             }
 
             if (ModChecker.IsCcLoaded(helper))
             {
-                Monitor.Log("Convenient Chests detected. JoE's CraftingFromChests feature will be disabled and won't patch the game.");
+                Logger.Log("Convenient Chests detected. JoE's CraftingFromChests feature will be disabled and won't patch the game.");
                 Conf.CraftingFromChests = false;
                 IsCcOn = true;
             }
             else if(!Conf.SafeMode)
             {
-                Monitor.Log("Start patching using Harmony...");
+                Logger.Log("Start patching using Harmony...");
                 HarmonyPatched = HarmonyPatcher.Init();
             }
             else
             {
-                Monitor.Log("SafeMode enabled, and won't patch the game.");
+                Logger.Log("SafeMode enabled, and won't patch the game.");
             }
             helper.WriteConfig(Conf);
             MineIcons.Init(helper);

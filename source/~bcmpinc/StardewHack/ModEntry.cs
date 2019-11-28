@@ -20,15 +20,16 @@ namespace StardewHack.Library
             }
             
             // Check incompatible mods.
-            CheckIncompatible(helper, "bcmpinc.AlwaysScrollMap",   new SemanticVersion(1,0,0));
-            CheckIncompatible(helper, "bcmpinc.CraftCounter",      new SemanticVersion(1,0,0));
-            CheckIncompatible(helper, "bcmpinc.FixAnimalTools",    new SemanticVersion(1,0,0));
-            CheckIncompatible(helper, "bcmpinc.GrassGrowth",       new SemanticVersion(1,0,0));
-            CheckIncompatible(helper, "bcmpinc.HarvestWithScythe", new SemanticVersion(1,1,0));
-            CheckIncompatible(helper, "bcmpinc.MovementSpeed",     new SemanticVersion(1,0,0));
-            CheckIncompatible(helper, "bcmpinc.TilledSoilDecay",   new SemanticVersion(1,0,0));
-            CheckIncompatible(helper, "bcmpinc.TreeSpread",        new SemanticVersion(1,0,0));
-            CheckIncompatible(helper, "bcmpinc.WearMoreRings",     new SemanticVersion(1,4,0));
+            CheckIncompatible(helper, "bcmpinc.AlwaysScrollMap",    new SemanticVersion(2,0,0));
+            CheckIncompatible(helper, "bcmpinc.CraftCounter",       new SemanticVersion(2,0,0));
+            CheckIncompatible(helper, "bcmpinc.FixAnimalTools",     new SemanticVersion(2,0,0));
+            CheckIncompatible(helper, "bcmpinc.GrassGrowth",        new SemanticVersion(2,0,0));
+            CheckIncompatible(helper, "bcmpinc.HarvestWithScythe",  new SemanticVersion(2,0,0));
+            CheckIncompatible(helper, "bcmpinc.MovementSpeed",      new SemanticVersion(2,0,0));
+            CheckIncompatible(helper, "bcmpinc.TilledSoilDecay",    new SemanticVersion(2,0,0));
+            CheckIncompatible(helper, "bcmpinc.TreeSpread",         new SemanticVersion(2,0,0));
+            CheckIncompatible(helper, "bcmpinc.WearMoreRings",      new SemanticVersion(2,0,0));
+            CheckIncompatible(helper, "spacechase0.BiggerBackpack", new SemanticVersion(2,0,0));
             
             // Register event to show warning in case some mod's patches failed to apply cleanly.
             Helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;

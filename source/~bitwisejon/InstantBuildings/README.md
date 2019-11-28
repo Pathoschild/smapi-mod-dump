@@ -1,4 +1,4 @@
-﻿**Instant Buildings from Farm** is a [Stardew Valley](http://stardewvalley.net/) v1.3+ mod which lets you build any building normally sold by the carpenter directly from your farm without waiting for days for Robin to build them. Buildings are created/upgraded instantly, and the magician buildings are included too! The configuration file allows you to turn off the resource requirements needed to build so you can play around in a sandbox mode if you want.
+﻿**Instant Buildings from Farm** is a [Stardew Valley](http://stardewvalley.net/) v1.4x mod which lets you build any building normally sold by the carpenter directly from your farm without waiting for days for Robin to build them. Buildings are created/upgraded instantly, and the magician buildings are included too! The configuration file allows you to turn off the resource requirements needed to build so you can play around in a sandbox mode if you want.
 
 ## Contents
 * [Install](#install)
@@ -62,7 +62,7 @@ setting | default | effect
 `ToggleInstantBuildMenuButton` | `B` | Change this value to bind the Instant Build menu to another key.
 
 ## Mod Compatibility
-**Note:*** This mod is only compatible with version 1.3+ of Stardew Valley (released 8/1/18) and works in multiplayer as well. Starting with version 1.0.3 of this mod, Stardew Valley v1.2* is no longer supported. 
+**Note:*** This mod is only compatible with version 1.4x of Stardew Valley (released 11/26/2019) and works in multiplayer as well. Starting with version 1.0.7 of this mod, Stardew Valley v1.3x is no longer supported. 
 
 This mod is fully compatible with:
 * [TractorMod](http://www.nexusmods.com/stardewvalley/mods/1401) by Pathoschild. The Tractor Garage will appear in the build menu if the mod is installed.

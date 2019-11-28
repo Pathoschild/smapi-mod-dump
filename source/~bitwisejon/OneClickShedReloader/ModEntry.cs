@@ -27,7 +27,8 @@ namespace BitwiseJonMods
             "Loom",
             "Mayonnaise Machine",
             "Cheese Press",
-            "Crystalarium"
+            "Crystalarium",
+            "Seed Maker"
         };
 
         private Building _currentTileBuilding = null;

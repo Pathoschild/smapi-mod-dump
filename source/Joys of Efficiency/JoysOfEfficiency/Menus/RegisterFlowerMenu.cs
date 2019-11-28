@@ -6,7 +6,6 @@ using JoysOfEfficiency.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -14,7 +13,7 @@ namespace JoysOfEfficiency.Menus
 {
     internal class RegisterFlowerMenu : IClickableMenu
     {
-        private static IMonitor Monitor => InstanceHolder.Monitor;
+        private static readonly Logger Logger = new Logger("RegisterFlowerMenu");
 
         // ReSharper disable once InconsistentNaming
         private const int MARGIN_COMPONENTS = 8;
@@ -34,7 +33,7 @@ namespace JoysOfEfficiency.Menus
         {
             _onButtonPressed = buttonCallBack ?? ((i, c) =>
             {
-                Monitor.Log($"({i}): {c}");
+                Logger.Log($"({i}): {c}");
                 exitThisMenu();
             });
 

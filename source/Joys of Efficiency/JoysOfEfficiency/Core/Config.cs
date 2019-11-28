@@ -7,6 +7,9 @@ namespace JoysOfEfficiency.Core
 {
     internal class Config
     {
+        /// <summary>
+        /// Safe Mode Section
+        /// </summary>
         public bool SafeMode { get; set; } = false;
 
         public bool MineInfoGui { get; set; } = true;

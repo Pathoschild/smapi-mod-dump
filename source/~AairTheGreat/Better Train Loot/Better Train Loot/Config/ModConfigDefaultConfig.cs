@@ -15,7 +15,7 @@
                 maxNumberOfItemsPerTrain = 5,
                 trainCreateDelay = 10000,  //Base Game Setting
                 enableForceCreateTrain = false,
-                enableMultiplayerChatMessage = true,
+                enableMultiplayerChatMessage = false,
                 maxTrainsPerDay = 5,
                 configVersion = currentVersion
             };

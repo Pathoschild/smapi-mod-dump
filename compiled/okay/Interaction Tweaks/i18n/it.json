@@ -1,0 +1,12 @@
+﻿{
+    "dia.eatquestion": "Mangiare {{item}}?",
+    "dia.eatanswerOne": "Si, uno.",
+    "dia.eatanswerMulti": "Si, {{amount}} al massimo.",
+    "dia.eatanswerNo": "No.",
+    "menu.slingshotempty": "La fionda deve essere vuota per essere venduta.",
+    "item.slingshotdescr": "Spara vari oggetti come pietre, minerali, verdure o munizioni esplosive.",
+    "menu.carpentermoneybuttonon": "Attivare: Comprare le risorse mancanti.",
+    "menu.carpentermoneybuttonoff": "Disattivare: Comprare le risorse mancanti.",
+    "menu.carpenteringredinfo": "{{itemname}} sarà comprato",
+    "menu.fishingrodempty": "Rimuovere gli allegati da vendere."
+}

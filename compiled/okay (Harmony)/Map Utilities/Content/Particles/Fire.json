@@ -1,0 +1,20 @@
+{
+	"Format" : "1.0",
+	"Image" : "LooseSprites/Cursors",
+	"Sprite" : {"X" : "309", "Y" : "1965", "Width" : "6", "Height" : "8"},
+	"Type" : "Persistent",
+	"Scale" : "4",
+	"SpawnRadius" : "0.05",
+	"Count" : "16",
+	"Lifetime" : "120",
+	"SpawnStagger" : "48",
+	"SpawnDelay" : "0",
+	"Rotation" : {"Min" : "350", "Max" : "370", "Speed" : "0", "Acceleration" : "0"},
+	"Velocity" : 
+	[
+		{
+			"Direction" : "Up",
+			"Speed" : "0.5"
+		}
+	]
+}

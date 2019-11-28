@@ -255,6 +255,12 @@ namespace NpcAdventure.StateMachine
             this.BackedupSchedule = this.Companion.Schedule;
             this.RecruitedToday = true;
 
+            // If standing on unpassable tile (like chair, couch or bench), set position to heading passable tile location
+            if (!this.Companion.currentLocation.isTilePassable(this.Companion.GetBoundingBox(), Game1.viewport))
+            {
+                this.Companion.setTileLocation(this.Companion.GetGrabTile());
+            }
+
             this.ChangeState(StateFlag.RECRUITED);
             this.CompanionManager.CompanionRecuited(this.Companion.Name);
         }

@@ -36,7 +36,7 @@ namespace StardewHack.WearMoreRings
                 return new Ring(which);
             } catch {
                 // Ring no longer exists, so delete it.
-                ModEntry.mon.Log($"Failed to create ring with id {which}.", LogLevel.Warn);
+                ModEntry.getInstance().Monitor.Log($"Failed to create ring with id {which}.", LogLevel.Warn);
                 return null;
             }
         }
@@ -83,12 +83,9 @@ namespace StardewHack.WearMoreRings
     public class ModEntry : Hack<ModEntry>
     {
         static readonly ConditionalWeakTable<Farmer, ActualRings> actualdata = new ConditionalWeakTable<Farmer, ActualRings>();
-        public static IMonitor mon;
         public static readonly System.Random random = new System.Random();
         
         public override void Entry(IModHelper helper) {
-            mon = Monitor;
-            
             base.Entry(helper);
             
             helper.Events.GameLoop.Saving += GameLoop_Saving;
@@ -327,19 +324,20 @@ namespace StardewHack.WearMoreRings
             );
         }
          
-        public static void ring_onMonsterSlay(Farmer who, Monster target) {
+        public static void ring_onMonsterSlay(Monster target, GameLocation location, Farmer who) {
             if (who==null) return;
             ActualRings ar = actualdata.GetValue(who, FarmerNotFound);
-            who.leftRing.Value?.onMonsterSlay(target);
-            who.rightRing.Value?.onMonsterSlay(target);
-            ar.ring1.Value?.onMonsterSlay(target);
-            ar.ring2.Value?.onMonsterSlay(target);
-            ar.ring3.Value?.onMonsterSlay(target);
-            ar.ring4.Value?.onMonsterSlay(target);
+            who.leftRing.Value?.onMonsterSlay(target, location, who);
+            who.rightRing.Value?.onMonsterSlay(target, location, who);
+            ar.ring1.Value?.onMonsterSlay(target, location, who);
+            ar.ring2.Value?.onMonsterSlay(target, location, who);
+            ar.ring3.Value?.onMonsterSlay(target, location, who);
+            ar.ring4.Value?.onMonsterSlay(target, location, who);
         }
         
         [BytecodePatch("StardewValley.GameLocation::damageMonster(Microsoft.Xna.Framework.Rectangle,System.Int32,System.Int32,System.Boolean,System.Single,System.Int32,System.Single,System.Single,System.Boolean,StardewValley.Farmer)")]
         void GameLocation_damageMonster() { 
+            return; // TODO: Broken due to ring_onMonsterSlay signature change.
             // Arg who = 10
             var code = FindCode(
                 Instructions.Ldarg_S(10), // who
@@ -374,7 +372,7 @@ namespace StardewHack.WearMoreRings
                 monster[3],
                 monster[4],
                 monster[5],
-                Instructions.Call(typeof(ModEntry), nameof(ring_onMonsterSlay), typeof(Farmer), typeof(Monster))
+                Instructions.Call(typeof(ModEntry), nameof(ring_onMonsterSlay), typeof(Monster), typeof(GameLocation), typeof(Farmer))
             );
         }
         #endregion Patch GameLocation
@@ -492,7 +490,7 @@ namespace StardewHack.WearMoreRings
         static public void DrawEquipment(ClickableComponent icon, Microsoft.Xna.Framework.Graphics.SpriteBatch b) {
             if (icon.item != null) {
                 b.Draw(Game1.menuTexture, icon.bounds, Game1.getSourceRectForStandardTileSheet (Game1.menuTexture, 10, -1, -1), Color.White);
-                icon.item.drawInMenu(b, new Vector2(icon.bounds.X, icon.bounds.Y), icon.scale, 1f, 0.866f, false);
+                icon.item.drawInMenu(b, new Vector2(icon.bounds.X, icon.bounds.Y), icon.scale, 1f, 0.866f, StackDrawType.Hide);
             } else {
                 int tile = 41;
                 if (icon.name == "Hat") tile = 42;
@@ -661,7 +659,7 @@ namespace StardewHack.WearMoreRings
             case "Extra Ring 3": ar.ring3.Set (helditem as Ring);                break;
             case "Extra Ring 4": ar.ring4.Set (helditem as Ring);                break;
             default:
-                mon.Log ($"ERROR: Trying to fit equipment item into invalid slot '{icon.name}'", LogLevel.Error);
+                getInstance().Monitor.Log ($"ERROR: Trying to fit equipment item into invalid slot '{icon.name}'", LogLevel.Error);
                 return;
             }
 

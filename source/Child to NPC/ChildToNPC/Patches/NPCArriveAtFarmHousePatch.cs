@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Locations;
+using StardewValley.Network;
 
 namespace ChildToNPC.Patches
 {
@@ -17,25 +18,32 @@ namespace ChildToNPC.Patches
         {
             if (!ModEntry.IsChildNPC(__instance))
                 return;
-            
-            __instance.setTilePosition(farmHouse.getEntryLocation());
-            __instance.temporaryController = null;
-            //__instance.controller = null;
 
-            //normally endPoint is Game1.timeOfDay >= 2130 ? farmHouse.getSpouseBedSpot() : farmHouse.getKitchenStandingSpot()
-            //this is normally a controller, not temporaryController (test?)
-            if(ModEntry.Config.DoChildrenHaveCurfew && Game1.timeOfDay >= ModEntry.Config.CurfewTime)//700 pm by default
+            __instance.setTilePosition(farmHouse.getEntryLocation());
+            __instance.ignoreScheduleToday = true;
+            __instance.temporaryController = null;
+            __instance.controller = null;
+            
+            if(ModEntry.Config.DoChildrenHaveCurfew && Game1.timeOfDay >= ModEntry.Config.CurfewTime)
             {
                 Point bedPoint = new Point((int)__instance.DefaultPosition.X / 64, (int)__instance.DefaultPosition.Y / 64);
-                __instance.temporaryController = new PathFindController(__instance, farmHouse, bedPoint, 2);
+                __instance.controller = new PathFindController(__instance, farmHouse, bedPoint, 2);
+                //__instance.controller = new PathFindController(__instance, farmHouse, bedPoint, 0, new PathFindController.endBehavior(FarmHouse.spouseSleepEndFunction));
             }
             else
             {
-                __instance.temporaryController = new PathFindController(__instance, farmHouse, farmHouse.getRandomOpenPointInHouse(Game1.random, 0, 30), 2);
+                __instance.controller = new PathFindController(__instance, farmHouse, farmHouse.getRandomOpenPointInHouse(Game1.random, 0, 30), 2);
             }
 
-            if (Game1.currentLocation is FarmHouse)
-                Game1.currentLocation.playSound("doorClose");
+            if(__instance.controller.pathToEndPoint == null)
+            {
+                __instance.willDestroyObjectsUnderfoot = true;
+                __instance.controller = new PathFindController(__instance, farmHouse, farmHouse.getRandomOpenPointInHouse(Game1.random, 0, 30), 0);
+                //__instance.setNewDialogue(Game1.LoadStringByGender(__instance.Gender, "Strings\\StringsFromCSFiles:NPC.cs.4500"), false, false);
+            }
+
+            if (Game1.currentLocation == farmHouse)
+                Game1.currentLocation.playSound("doorClose", NetAudio.SoundContext.NPC);
         }
     }
 }

@@ -5,10 +5,15 @@ mods:
    Aggressive Acorns
 
 latest commit:
-   commit a7a21ef022f85a4edc9248965b837944366e2feb
-   Merge: 96fe4e1 18794a9
+   commit ef2f67e52937f7d94028ffef415c7a4054ea6c6a
+   Merge: c0f8b17 ad6cfdd
    Author: Phrasefable <12666934+phrasefable@users.noreply.github.com>
-   Date:   Mon Jul 8 16:30:32 2019 +1200
+   Date:   Wed Nov 27 15:46:06 2019 +1300
    
-       Merge branch 'master' of https://github.com/phrasefable/StardewMods
+       Merge branch 'dev/dev'
+       
+       # Conflicts:
+       #       AggressiveAcorns/AggressiveAcorns.cs
+       #       AggressiveAcorns/AggressiveAcorns.csproj
+       #       AggressiveAcorns/packages.config
    

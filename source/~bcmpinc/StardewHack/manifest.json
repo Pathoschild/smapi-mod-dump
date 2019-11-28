@@ -1,10 +1,10 @@
 ﻿{
    "Name": "StardewHack",
    "Author": "bcmpinc",
-   "Version": "1.3",
-   "Description": "Library mod used by my other mods. Doesn't do much on its own.",
+   "Version": "2.1",
+   "Description": "Transpilation library used by my other mods. Doesn't do much on its own.",
    "UniqueID": "bcmpinc.StardewHack",
    "EntryDll": "StardewHack.dll",
-   "MinimumApiVersion": "2.9",
+   "MinimumApiVersion": "3.0",
    "UpdateKeys": ["Nexus:3213"]
 }

@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/2404
 IDs: an.ownscepter
-update keys: Nexus:2404, GitHub:alexnoddings/StardewMods
+update keys: Nexus:2404

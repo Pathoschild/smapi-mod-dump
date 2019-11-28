@@ -1,8 +1,17 @@
 # Release notes
+## 1.5.2
+Released 26 November 2019 for SMAPI 3.0 or later. Updated by Pathoschild.
+
+* Updated for Stardew Valley 1.4.
+
 ## 1.5.1
-* Updated for the upcoming SMAPI 3.0.
+Released 27 December 2018 for SMAPI 2.9.3 or later. Updated by Pathoschild.
+
+* Updated for SMAPI 3.0.
 
 ## 1.5
+Released 01 September 2018 for SMAPI 2.8 or later. Updated by Pathoschild.
+
 * Updated for Stardew Valley 1.3.29.
 * Added support for custom locations.
 * Added support for configuring fruit and non-fruit trees separately.
@@ -12,23 +21,30 @@
 * Fixed greenhouse non-fruit trees not growing in winter.
 
 ## 1.4
+Released 09 August 2018 for SMAPI 2.6 or later. Updated by Pathoschild.
+
 * Updated for Stardew Valley 1.3 (including multiplayer).
 * Enabled instant fruit tree growth by default.
 * Added option to instantly age fruit trees to iridium quality (disabled by default).
 
 ## 1.3.1
+Released 25 January 2018 for SMAPI 2.4 or later. Updated by Pathoschild.
+
 * Updated to SMAPI 2.4.
 * Added automatic update checks via SMAPI.
 
 ## 1.3
+Released 24 April 2017 for SMAPI 1.10 or later. Updated by Pathoschild.
+
 * Updated for Stardew Valley 1.2.
 
 ## 1.2
+Released 05 April 2017 for SMAPI 1.9 or later. Updated by Pathoschild.
+
 * Updated to SMAPI 1.9.
 * Fixed fruit tree quality not progressing after growth.
 
 ## 1.1
-* Updated to SMAPI 0.39.
+Released 23 March 2016 for SMAPI 0.38 or later.
 
-## 1.0
 * Initial release.

@@ -8,29 +8,32 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 
-namespace AggressiveAcorns {
-
+namespace AggressiveAcorns
+{
     [UsedImplicitly]
-    public class AggressiveAcorns : Mod {
-
+    public class AggressiveAcorns : Mod
+    {
         internal static IReflectionHelper ReflectionHelper;
         internal static IModConfig Config;
 
 
         private bool _manageTrees;
 
-        private bool ManageTrees {
+        private bool ManageTrees
+        {
             get => _manageTrees;
-            set {
+            set
+            {
                 if (value == _manageTrees) return;
 
-                Monitor.Log($"{(value ? "Started" : "Stopped")} watching for new trees/new areas.", LogLevel.Trace);
+                Monitor.Log($"{(value ? "Started" : "Stopped")} watching for new trees/new areas.");
                 _manageTrees = value;
             }
         }
 
 
-        public override void Entry([NotNull] IModHelper helper) {
+        public override void Entry([NotNull] IModHelper helper)
+        {
             Config = helper.ReadConfig<ModConfig>();
             ReflectionHelper = helper.Reflection;
 
@@ -41,28 +44,32 @@ namespace AggressiveAcorns {
         }
 
 
-        private void OnDayStarted(object sender, DayStartedEventArgs e) {
-            Monitor.Log("Enraging trees in all available areas.", LogLevel.Trace);
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
+        {
+            Monitor.Log("Enraging trees in all available areas.");
             ReplaceTerrainFeatures<Tree, AggressiveTree>(EnrageTree, Common.Utilities.GetLocations(Helper));
             ManageTrees = true;
         }
 
 
-        private void OnSaving(object sender, SavingEventArgs e) {
+        private void OnSaving(object sender, SavingEventArgs e)
+        {
             ManageTrees = false;
-            Monitor.Log("Calming trees in all available areas.", LogLevel.Trace);
+            Monitor.Log("Calming trees in all available areas.");
             ReplaceTerrainFeatures<AggressiveTree, Tree>(CalmTree, Common.Utilities.GetLocations(Helper));
         }
 
 
-        private void OnLocationListChanged(object sender, LocationListChangedEventArgs e) {
+        private void OnLocationListChanged(object sender, LocationListChangedEventArgs e)
+        {
             if (!ManageTrees) return;
-            Monitor.Log("Found new areas; enraging any trees.", LogLevel.Trace);
+            Monitor.Log("Found new areas; enraging any trees.");
             ReplaceTerrainFeatures<Tree, AggressiveTree>(EnrageTree, e.Added);
         }
 
 
-        private void OnTerrainFeatureListChanged(object sender, TerrainFeatureListChangedEventArgs e) {
+        private void OnTerrainFeatureListChanged(object sender, TerrainFeatureListChangedEventArgs e)
+        {
             // NOTE: this causes changes to the terrain feature list, make sure that this doesn't get stuck forever.
             if (!ManageTrees) return;
 
@@ -70,19 +77,20 @@ namespace AggressiveAcorns {
             if (!toReplace.Any()) return;
 
             var msg = ReplaceTerrainFeatures(EnrageTree, e.Location, toReplace);
-            Monitor.Log("TerrainFeature list changed: " + msg, LogLevel.Trace);
-
+            Monitor.Log("TerrainFeature list changed: " + msg);
         }
 
 
         [NotNull]
-        private static AggressiveTree EnrageTree([NotNull] Tree tree) {
+        private static AggressiveTree EnrageTree([NotNull] Tree tree)
+        {
             return new AggressiveTree(tree);
         }
 
 
         [NotNull]
-        private static Tree CalmTree([NotNull] AggressiveTree tree) {
+        private static Tree CalmTree([NotNull] AggressiveTree tree)
+        {
             return tree.ToTree();
         }
 
@@ -90,12 +98,15 @@ namespace AggressiveAcorns {
         private void ReplaceTerrainFeatures<TOriginal, TReplacement>(
             Func<TOriginal, TReplacement> converter,
             [NotNull] IEnumerable<GameLocation> locations)
-            where TReplacement : TerrainFeature where TOriginal : TerrainFeature {
-
-            foreach (var location in locations) {
+            where TReplacement : TerrainFeature
+            where TOriginal : TerrainFeature
+        {
+            foreach (var location in locations)
+            {
                 var toReplace = GetTerrainFeatures<TOriginal>(location.terrainFeatures.Pairs);
-                if (toReplace.Any()) {
-                    Monitor.Log(ReplaceTerrainFeatures(converter, location, toReplace), LogLevel.Trace);
+                if (toReplace.Any())
+                {
+                    Monitor.Log(ReplaceTerrainFeatures(converter, location, toReplace));
                 }
             }
         }
@@ -103,11 +114,12 @@ namespace AggressiveAcorns {
 
         [NotNull]
         private static IList<KeyValuePair<Vector2, T>> GetTerrainFeatures<T>(
-            [NotNull] IEnumerable<KeyValuePair<Vector2, TerrainFeature>> items) where T : TerrainFeature {
+            [NotNull] IEnumerable<KeyValuePair<Vector2, TerrainFeature>> items) where T : TerrainFeature
+        {
             return items
-                   .Where(kvp => kvp.Value.GetType() == typeof(T))
-                   .Select(kvp => new KeyValuePair<Vector2, T>(kvp.Key, kvp.Value as T))
-                   .ToList();
+                .Where(kvp => kvp.Value.GetType() == typeof(T))
+                .Select(kvp => new KeyValuePair<Vector2, T>(kvp.Key, kvp.Value as T))
+                .ToList();
         }
 
 
@@ -116,9 +128,11 @@ namespace AggressiveAcorns {
             Func<TOriginal, TReplacement> converter,
             [NotNull] GameLocation location,
             [NotNull] ICollection<KeyValuePair<Vector2, TOriginal>> terrainFeatures)
-            where TReplacement : TerrainFeature where TOriginal : class {
-
-            foreach (var keyValuePair in terrainFeatures) {
+            where TReplacement : TerrainFeature
+            where TOriginal : class
+        {
+            foreach (var keyValuePair in terrainFeatures)
+            {
                 location.terrainFeatures[keyValuePair.Key] = converter(keyValuePair.Value);
             }
 
@@ -126,5 +140,4 @@ namespace AggressiveAcorns {
                 $"{location.Name} - replaced {terrainFeatures.Count} {typeof(TOriginal).Name} with {typeof(TReplacement).Name}.";
         }
     }
-
 }

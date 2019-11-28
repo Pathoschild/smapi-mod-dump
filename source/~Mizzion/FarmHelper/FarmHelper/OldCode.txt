@@ -1,0 +1,547 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using FarmHelper.Framework;
+using Microsoft.Xna.Framework;
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewValley;
+using StardewValley.Buildings;
+using StardewValley.Characters;
+using StardewValley.Locations;
+using StardewValley.Menus;
+using StardewValley.TerrainFeatures;
+using StardewValley.Tools;
+using SFarmer = StardewValley.Farmer;
+using SObject = StardewValley.Object;
+
+namespace FarmHelper
+{
+    public class FarmHelper : Mod
+    {
+        //Properties Start
+        //Is Mod Enabled
+        private bool _modEnabled = true;
+
+        //Acitvation Key Setting
+        private SButton _activationKey;
+
+        //Where the mod runs at the beginning of eachday
+        private bool _automaticMode = true;
+
+        //To pet or not to pet
+        private bool _enablePetting = true;
+
+        //Whether or not to Harvest Animal Products
+        private bool _harvestProduct = true;
+
+        //Whether or not to Harvest Truffle
+        private bool _harvestTruffle = true;
+
+        //Are Notifications Enables
+        private bool _enableNotifications = true;
+
+        //Where Charging is Enabled
+        private bool _enableCost = true;
+
+        //What is the charge
+        private int _helperCost = 50;
+
+        //Whether or not to Add Products right into the players Inventory.
+        private bool _addItemsToInventory = true;
+
+        //The location of the Chest if AddItemsToInventory == False
+        private Vector2 _chestLocation = new Vector2(0, 0);
+
+        //ModConfig
+        private ModConfig _config;
+
+        //Total Times Action Performed.
+        private int _count;
+
+        //GameLocations used for harvesting crops
+        private GameLocation[] _locations;
+        //Properties End
+
+        //Public Methods      
+        public override void Entry(IModHelper helper)
+        {
+            _config = Helper.ReadConfig<ModConfig>(); //Read the ModConfig.
+
+            //Events
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
+
+        }
+
+        //Private Methods
+        private void InitiliseConfig()
+        {
+            if(!Enum.TryParse(_config.ActivationKey, true, out _activationKey))
+            {
+                _activationKey = SButton.NumPad7;
+                Monitor.Log("There was an error parsing the ActivationKey. It was reset to NumPad7");
+            }
+            _modEnabled = _config.ModEnabled;
+            _automaticMode = _config.AutomaticMode;
+            _enablePetting = _config.EnablePetting;
+            _harvestProduct = _config.HarvestAnimals;
+            _harvestTruffle = _config.HarvestTruffles;
+            _enableNotifications = _config.EnableNotification;
+            _enableCost = _config.EnableCost;
+            _helperCost = _config.HelperCost;
+            _addItemsToInventory = _config.AddItemsToInventory;
+            _chestLocation = _config.ChestLocation;
+            
+            //Make sure Cost is positive
+            if(_config.HelperCost < 0)
+            {
+                _helperCost = 0;
+                Monitor.Log("HelperCost can't be negative. Setting it to 0");
+            }
+            else
+            {
+                _helperCost = _config.HelperCost;
+            }
+        
+    }
+
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
+        {
+            //Initialise Config
+            InitiliseConfig();
+            StartPetting();
+        }
+
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        {
+            if (!Context.IsWorldReady)
+                return;
+            if(e.IsDown(SButton.F5))
+            {
+                _config = Helper.ReadConfig<ModConfig>();
+                InitiliseConfig();
+            }
+            if(e.IsDown(_activationKey))
+            {
+                StartPetting();
+            }
+            if(e.IsDown(SButton.NumPad6))
+            {
+                CheckPets();
+            }
+
+            if (e.IsDown(SButton.Z))
+            {
+                ICursorPosition cur = Helper.Input.GetCursorPosition();
+                DoAction(cur.Tile, Game1.currentLocation);
+            }
+        }
+
+        private void DoAction(Vector2 v, GameLocation loc)
+        {
+            //loc.objects.TryGetValue(v, out var obj);
+            //loc.terrainFeatures.TryGetValue(v, out var ter);
+            Axe fakeAxe = new Axe {UpgradeLevel = 4};
+            Pickaxe fakePick = new Pickaxe {UpgradeLevel = 4};
+            MeleeWeapon fakeSickle = new MeleeWeapon {UpgradeLevel = 4};
+
+            for (int xTile = 0; xTile < loc.Map.Layers[0].LayerWidth; ++xTile)
+            {
+                for (int yTile = 0; yTile < loc.Map.Layers[0].LayerHeight; ++yTile)
+                {
+                    loc.objects.TryGetValue(new Vector2(xTile, yTile), out var obj);
+                    loc.terrainFeatures.TryGetValue(new Vector2(xTile, yTile), out var ter);
+                    Farmer who = Game1.player;
+
+                    if (obj != null)
+                    {
+                        bool t = obj.IsSpawnedObject;//checkForAction(Game1.player);
+                        if (t)
+                        {
+                            int quality = (int)(obj.Quality);
+                            Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + (int)xTile + (int)yTile * 777);
+                            if (who.professions.Contains(16) && obj.isForage(loc))
+                                obj.Quality = 4;
+                            else if (obj.isForage(loc))
+                            {
+                                if (random.NextDouble() < (double) who.ForagingLevel / 30.0)
+                                    obj.Quality = 2;
+                                else if (random.NextDouble() < (double) who.ForagingLevel / 15.0)
+                                    obj.Quality = 1;
+                            }
+                            if (who.couldInventoryAcceptThisItem((Item)obj))
+                            {
+                                if (who.IsLocalPlayer)
+                                {
+                                    DelayedAction.playSoundAfterDelay("coin", 300, (GameLocation)null);
+                                }
+                                who.animateOnce(279 + who.FacingDirection);
+                                if (!loc.isFarmBuildingInterior())
+                                {
+                                    if (obj.isForage(loc))
+                                        who.gainExperience(2, 7);
+                                }
+                                else
+                                    who.gainExperience(0, 5);
+                                who.addItemToInventoryBool(obj.getOne(), false);
+                                ++Game1.stats.ItemsForaged;
+                                if (who.professions.Contains(13) && random.NextDouble() < 0.2 && who.couldInventoryAcceptThisItem(obj) && !loc.isFarmBuildingInterior())
+                                {
+                                    who.addItemToInventoryBool(obj.getOne(), false);
+                                    who.gainExperience(2, 7);
+                                }
+                                loc.objects.Remove(new Vector2(xTile, yTile));
+                            }
+                            obj.Quality = quality;
+
+
+
+                            //Monitor.Log($"{obj.Name} was checked.");
+                            //obj.performToolAction((Tool) null, loc);
+                            //obj.performRemoveAction(obj.TileLocation, loc);
+                        }
+                            
+                    }
+
+                    if (ter != null)
+                    { 
+                        if (ter is HoeDirt dirt)
+                        {
+                            if (dirt.crop != null)
+                            {
+                                dirt.fertilizer.Value = 369;
+                                dirt.state.Value = 1;
+                            }
+                        }
+                    }
+
+                    //Lets try bush shit
+                    
+                        Rectangle rectangle = new Rectangle((int)xTile + 32, (int)yTile - 32, 4, 192);
+                        foreach (LargeTerrainFeature largeTerrainFeature in loc.largeTerrainFeatures)
+                        {
+                            if (largeTerrainFeature is Bush && largeTerrainFeature.getBoundingBox().Intersects(rectangle))
+                            {
+                                (largeTerrainFeature as Bush).performUseAction((Vector2)(largeTerrainFeature.tilePosition.Value), loc);
+                            }
+                        }
+                }
+            }
+            /*
+            if(obj != null)
+            {
+                if(obj.Name.ToLower().Contains("weed"))
+                    fakeSickle.DoFunction(loc, (int)v.X, (int)v.Y, 0, Game1.player);
+                if(obj.Name.ToLower().Contains("stone"))
+                    fakePick.DoFunction(loc, (int)v.X, (int)v.Y, 0, Game1.player);
+                if(obj.Name.ToLower().Contains("wood"))
+                    fakeAxe.DoFunction(loc, (int)v.X, (int)v.Y, 0, Game1.player);
+            }
+
+            if (ter != null)
+            {
+                if(ter is Grass)
+                    fakeSickle.DoFunction(loc, (int)v.X, (int)v.Y, 0, Game1.player);
+                if(ter is Tree)
+                    fakeAxe.DoFunction(loc, (int)v.X, (int)v.Y, 0, Game1.player);
+            }
+            if(obj == null && ter == null)
+                Monitor.Log("All was null");
+            */
+        }
+        private void StartPetting()
+        {
+            SFarmer player = Game1.player;
+            _locations = GetAllLocations().ToArray();
+            foreach(FarmAnimal animal in GetAnimals())
+            {
+                try
+                {
+                    //Pet Animal
+                    if(!animal.wasPet.Value && _enablePetting)
+                    {
+                        animal.pet(player);
+                    }
+                    //Do Harvest
+                    if(animal.currentProduce.Value > 0 && _harvestProduct)
+                    {
+                        if (animal.type.Value.Equals("Pig"))
+                        {
+                            if (_harvestTruffle)
+                            {
+                                SObject @object = new SObject(animal.currentProduce.Value, 1, false, -1, animal.produceQuality.Value);
+                                AddToPlayer(@object, player);
+                                animal.currentProduce.Value = 0;
+                                _count++;
+                            }
+                        }
+                        else
+                        {
+                            SObject @object = new SObject(animal.currentProduce.Value, 1, false, -1, animal.produceQuality.Value);
+                            AddToPlayer(@object, player);
+                            animal.currentProduce.Value = 0;
+                            _count++;
+                        }
+                    }
+                }
+                catch(Exception e)
+                {
+                    Monitor.Log($"Enountered an Error: {e}.");
+                }
+            }
+            //Start Harvesting of crops.
+            foreach(GameLocation loc in _locations)
+            {
+                if(loc.Name.Contains("FarmExpan") || loc.Name.Contains("Greenhouse") || loc.IsFarm)
+                {
+                    foreach(var pair in loc.terrainFeatures.Pairs)
+                    {
+                        if(pair.Value is HoeDirt dirt)
+                        {
+                            if(dirt.crop != null)
+                            {
+                                Crop crop = dirt.crop;
+                                if(crop.currentPhase.Value >= crop.phaseDays.Count - 1 && (!crop.fullyGrown.Value || crop.dayOfCurrentPhase.Value <= 0))
+                                {
+                                    SObject i = HarvestedCrop(dirt, crop, (int)pair.Key.X, (int)pair.Key.Y);
+                                    var harvest = AddToPlayer(i, player);
+                                    if (harvest)
+                                    {
+                                        int placeHolder = 0;
+                                        if(placeHolder == 1)
+                                        {
+                                            //Will be to sale
+                                        }
+                                        else
+                                        {
+                                            if (crop.regrowAfterHarvest.Value != -1)
+                                                crop.dayOfCurrentPhase.Value = crop.regrowAfterHarvest.Value;
+                                            else
+                                                dirt.destroyCrop(pair.Key, false, loc);
+                                            if (crop.dead.Value)
+                                            {
+                                                dirt.destroyCrop(pair.Key, false, loc);
+                                            }
+                                        }
+                                        float exp = (float)(16.0 * Math.Log(0.018 * Convert.ToInt32(Game1.objectInformation[crop.indexOfHarvest.Value].Split('/')[1]) + 1.0, Math.E));
+                                        player.gainExperience(0, (int)Math.Round(exp));
+                                        _count++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            HarvestTruffles();
+            HarvestProducts();
+            CheckPets();
+            if(_count > 0 && _helperCost > 0)
+            {
+                int total = _count * _helperCost;
+                bool enoughMoney = player.Money >= total;
+                if (enoughMoney)
+                {
+                    player.Money = Math.Max(0, (player.Money - total));
+                    string msg = $"Dear {player.Name}^^ We came by while you were sleeping and took care of your farm for you. ^We did a total of {_count} tasks for you at a cost of {total} Gold.^We also pet and watered your pet, if you have one. Free of charge.^^Sincerly MizzionInc";
+                    _count = 0;
+                    Game1.activeClickableMenu = new LetterViewerMenu(msg);
+                }
+            }
+        }
+
+        //Harvest Truffles
+        private void HarvestTruffles()
+        {
+            Farm pFarm = Game1.getFarm();
+            SFarmer player = Game1.player;
+            List<Vector2> truffles = new List<Vector2>();
+            //Go through each truffle that needs to be removed.
+            foreach(KeyValuePair<Vector2, SObject> pair in pFarm.Objects.Pairs)
+            {
+                SObject @object = pair.Value;
+
+                if (@object.name == "Truffle")
+                {
+                    bool doubleHarvest = false;
+
+                    if (player.professions.Contains(16))
+                        @object.Quality = 4;
+                    double randomNum = Game1.random.NextDouble();
+                    bool doubleChance = randomNum < 0.2;
+
+                    if (player.professions.Contains(13) && doubleChance)
+                    {
+                        @object.Stack = 2;
+                        doubleHarvest = true;
+                    }
+
+                    if(AddToPlayer(@object, player))
+                    {
+                        truffles.Add(pair.Key);
+                        player.gainExperience(2, 7);
+
+                        if (doubleHarvest)
+                        {
+                            player.gainExperience(2, 7);
+                        }
+                    }
+                }
+            }
+
+            //Now we remove them
+            foreach(Vector2 iLocation in truffles)
+            {
+                pFarm.removeObject(iLocation, false);
+            }
+        }
+       
+        //Harvest Coops
+        private void HarvestProducts()
+        {
+            Farm pFarm = Game1.getFarm();
+            SFarmer player = Game1.player;
+
+            foreach(Building building in pFarm.buildings)
+            {
+                if(building is Coop)
+                {
+                    List<Vector2> coops = new List<Vector2>();
+
+                    foreach(KeyValuePair<Vector2, SObject> pair in building.indoors.Value.Objects.Pairs)
+                    {
+                        SObject @object = pair.Value;
+                        if(@object.isAnimalProduct() || @object.ParentSheetIndex == 107)
+                        {
+                            if(AddToPlayer(@object, player))
+                            {
+                                coops.Add(pair.Key);
+                                player.gainExperience(0, 5);
+                            }
+                        }
+                    }
+                    foreach(Vector2 iLocation in coops)
+                    {
+                        building.indoors.Value.removeObject(iLocation, false);
+                    }
+                }
+            }
+        }
+
+        //Check for pets
+        private void CheckPets()
+        {
+            Farm pFarm = Game1.getFarm();
+            SFarmer player = Game1.player;
+            //GameLocation location = Game1.currentLocation;
+            if (player.hasPet())
+            {
+                foreach (NPC character in Game1.getFarm().characters)
+                {
+                    if (character is Pet)
+                    {
+                        Helper.Reflection.GetField<bool>(character, "wasPetToday").SetValue(true);
+                    }
+                }
+                foreach (NPC character in Utility.getHomeOfFarmer(player).characters)
+                {
+                    if (character is Pet)
+                    {
+                        Helper.Reflection.GetField<bool>(character, "wasPetToday").SetValue(true);
+                    }
+                }
+                pFarm.setMapTileIndex(54, 7, 1939, "Buildings");
+            }
+        }
+
+        //Harvest Crops
+        private void HarvestCrops()
+        {
+
+        }
+        //Add Item to Player
+        private bool AddToPlayer(SObject @object, SFarmer player)
+        {
+            if (_addItemsToInventory)
+            {
+                if (player.couldInventoryAcceptThisItem(@object))
+                {
+                    player.addItemToInventory(@object);
+                    return true;
+                }
+            }
+            //Need to add for chest.
+            return false;
+        }
+
+        //HarvestedCrops
+        private SObject HarvestedCrop(HoeDirt dirt, Crop crop, int x, int y)
+        {
+            SFarmer player = Game1.player;
+            int stack = 1;
+            int iQuality = 0;
+            int fBuff = 0;
+            Random rnd = new Random(x * 7 + y +11 + (int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame);
+
+            switch (dirt.fertilizer.Value)
+            {
+                case 368:
+                    fBuff = 1;
+                    break;
+                case 369:
+                    fBuff = 2;
+                    break;
+            }
+            double qMod = 0.2 * (player.FarmingLevel / 10.0) + 0.2 * fBuff * ((player.FarmingLevel + 2) / 12.0) + 0.01;
+            //double qModifier = Math.Min(0.75, qMod * 2.0);
+            if (rnd.NextDouble() < qMod)
+                iQuality = 1;
+            if (crop.minHarvest.Value > 1 || crop.maxHarvest.Value > 1)
+                stack = rnd.Next(crop.minHarvest.Value, Math.Min(crop.minHarvest.Value + 1, crop.maxHarvest.Value + 1 + player.FarmingLevel / crop.maxHarvestIncreasePerFarmingLevel.Value));
+            if(crop.chanceForExtraCrops.Value > 0.0)
+            {
+                while (rnd.NextDouble() < Math.Min(0.9, crop.chanceForExtraCrops.Value))
+                    stack++;
+            }
+            if (rnd.NextDouble() < player.luckLevel.Value / 1500.0 + Game1.dailyLuck / 1200.0 + 9.99999974737875E-05)
+                stack *= 2;
+            if(crop.indexOfHarvest.Value == 421)
+            {
+                crop.indexOfHarvest.Value = 431;
+                stack = rnd.Next(1, 4);
+            }
+
+            return new SObject(crop.indexOfHarvest.Value, stack, false, -1, iQuality);
+
+        }
+        //Get a list of animals
+        private List<FarmAnimal> GetAnimals()
+        {
+            List<FarmAnimal> farmAnimals = Game1.getFarm().animals.Values.ToList();
+            foreach(Building fBuilding in Game1.getFarm().buildings)
+            {
+                if (fBuilding.indoors.Value != null && fBuilding.indoors.GetType() == typeof(AnimalHouse))
+                    farmAnimals.AddRange(((AnimalHouse)fBuilding.indoors.Value).animals.Values.ToList());
+            }
+            return farmAnimals;
+        }
+        //Get all locations
+        public static IEnumerable<GameLocation> GetAllLocations()
+        {
+            foreach(GameLocation cLocation in Game1.locations)
+            {
+                yield return cLocation;
+
+                if(cLocation is BuildableGameLocation bLocation)
+                {
+                    foreach (Building cBuilding in bLocation.buildings)
+                    {
+                        if (cBuilding.indoors.Value != null)
+                            yield return cBuilding.indoors.Value;
+                    }
+                }
+            }
+        }
+    }
+}

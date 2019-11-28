@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Harmony;
 using StardewValley;
+using StardewValley.Network;
 
 namespace ChildToNPC.Patches
 {
@@ -83,6 +84,15 @@ namespace ChildToNPC.Patches
                     ++index;
                 }
             }
+            //Added in the 1.4 update, I haven't checked this dialogue yet
+            else if (events[0].Contains("MAIL"))
+            {
+                string id = events[0].Split(' ')[1];
+                if (Game1.MasterPlayer.mailReceived.Contains(id) || NetWorldState.checkAnywhereForWorldStateID(id))
+                    index += 2;
+                else
+                    ++index;
+            }
 
             //For the case of "NOT friendship Sam 6/GOTO 9" (I think)
             //Handles the GOTO if friendship change happened
@@ -91,6 +101,12 @@ namespace ChildToNPC.Patches
                 string whereToGo = events[index].Split(' ')[1];
                 if (whereToGo.ToLower().Equals("season"))
                     whereToGo = Game1.currentSeason;
+                else if (whereToGo.ToLower().Equals("no_schedule"))
+                {
+                    __instance.followSchedule = false;
+                    __result = null;
+                    return false;
+                }
                 events = scheduleFromName[whereToGo].Split('/');
                 index = 1;
             }

@@ -5,6 +5,6 @@
   "Description": "Harvest and replant fields that are ready.",
   "UniqueID": "jwdred.Replanter",
   "EntryDll": "Replanter.dll",
-  "MinimumApiVersion": "2.9.0",
+  "MinimumApiVersion": "3.0.0",
   "UpdateKeys": [ "Nexus:589" ]
 }

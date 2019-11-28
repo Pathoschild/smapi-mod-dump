@@ -1,0 +1,10 @@
+{
+	"Name": "Sleepovers",
+	"Author": "bwdy",
+	"Version": "2.0.0",
+	"Description": "A Stardew Valley mod for those who just want to spend the night.",
+	"EntryDll": "Sleepovers.dll",
+	"MinimumApiVersion": "3.0",
+	"UniqueID": "bwdy.sleepovers",
+	"UpdateKeys": [ "Nexus:3531" ]
+}

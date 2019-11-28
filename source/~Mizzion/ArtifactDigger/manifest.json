@@ -1,10 +1,10 @@
 ﻿{
   "Name": "ArtifactDigger",
   "Author": "Mizzion",
-  "Version": "1.0.0",
+  "Version": "1.0.3",
   "Description": "A mod that will dig up artifact spots in a pre-defined radius.",
   "UniqueID": "mizzion.artifactdigger",
   "EntryDll": "ArtifactDigger.dll",
   "MinimumApiVersion": "2.11",
-  "UpdateKeys": [ "Nexus:4212" ]
+  "UpdateKeys": [ "Nexus:4212", "ModDrop:661378" ]
 }

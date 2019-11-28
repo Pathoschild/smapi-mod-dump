@@ -1,7 +1,7 @@
-﻿using System;
-using JoysOfEfficiency.Automation;
+﻿using JoysOfEfficiency.Automation;
 using JoysOfEfficiency.Core;
 using JoysOfEfficiency.Huds;
+using JoysOfEfficiency.Misc;
 using JoysOfEfficiency.Utils;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -29,9 +29,9 @@ namespace JoysOfEfficiency.EventHandler
             {
                 FishingProbabilitiesBox.PrintFishingInfo();
             }
-            if (UpdateEvents.Paused && Conf.PauseWhenIdle)
+            if (Conf.PauseWhenIdle)
             {
-                PausedHud.DrawPausedHud();
+                IdlePause.DrawHud();
             }
         }
 

@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit c12e97dc0f75e8d8bc11b5b1462842d2e2d3ff03
+   commit 7a658446a9ce984ecf25c3dee0c1ce2d00fff0e6
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Mon Nov 25 23:57:51 2019 +0100
+   Date:   Wed Nov 27 04:17:25 2019 +0100
    
-       Updated HarvestWithScythe readme file.
+       Don't store monitor in a public static variable
    

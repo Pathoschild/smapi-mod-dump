@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A777B504-604A-46A2-9057-22E689378CA6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MapUtilities</RootNamespace>
+    <AssemblyName>MapUtilities</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lib.Harmony.1.2.0.1\lib\net45\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="API.cs" />
+    <Compile Include="Background_Patch.cs" />
+    <Compile Include="Critters\CritterSpawnConfiguration.cs" />
+    <Compile Include="Critters\CritterSpawnData.cs" />
+    <Compile Include="Critters\CritterTileHandler.cs" />
+    <Compile Include="Contact\PainTileHandler.cs" />
+    <Compile Include="Contact\TileContactHandler.cs" />
+    <Compile Include="Contact\TileContactMorphHandler.cs" />
+    <Compile Include="Contact\TileMorph.cs" />
+    <Compile Include="Critters\PackagedCritters\Fireflies.cs" />
+    <Compile Include="Critters\PackagedCritters\HornedOwl.cs" />
+    <Compile Include="Critters\PackagedCritters\Firefly.cs" />
+    <Compile Include="Farmer_Patch.cs" />
+    <Compile Include="GameLocation_Patch.cs" />
+    <Compile Include="Loader.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="ModEntry.cs" />
+    <Compile Include="Parallax\BackgroundHandler.cs" />
+    <Compile Include="Parallax\ForegroundHandler.cs" />
+    <Compile Include="Parallax\ParallaxBackground.cs" />
+    <Compile Include="Parallax\ParallaxForeground.cs" />
+    <Compile Include="Parallax\ParallaxLayer.cs" />
+    <Compile Include="Particles\Particle.cs" />
+    <Compile Include="Particles\ParticleHandler.cs" />
+    <Compile Include="Particles\ParticleSystem.cs" />
+    <Compile Include="Perspective\PerspectiveRenderer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Pseudo3D\GameLocation_Patch.cs" />
+    <Compile Include="Pseudo3D\LevelHandler.cs" />
+    <Compile Include="Pseudo3D\MapHandler.cs" />
+    <Compile Include="Randomizer\RandomHandler.cs" />
+    <Compile Include="Reflector.cs" />
+    <Compile Include="Slope\SlopeHandler.cs" />
+    <Compile Include="Time\TimeHandler.cs" />
+    <Compile Include="Trees\Branch.cs" />
+    <Compile Include="Trees\LeafCluster.cs" />
+    <Compile Include="Trees\Limb.cs" />
+    <Compile Include="Trees\Species.cs" />
+    <Compile Include="Trees\TreeHandler.cs" />
+    <Compile Include="Trees\TreePart.cs" />
+    <Compile Include="Trees\TreeRenderer.cs" />
+    <Compile Include="Trees\Stump.cs" />
+    <Compile Include="Trees\TreeSaveHandler.cs" />
+    <Compile Include="Trees\Tree_Patch.cs" />
+    <Compile Include="Trees\Trunk.cs" />
+    <Compile Include="Util\StringUtilities.cs" />
+    <Compile Include="Velocity\VelocityHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Manifest.json" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+  </Target>
+</Project>

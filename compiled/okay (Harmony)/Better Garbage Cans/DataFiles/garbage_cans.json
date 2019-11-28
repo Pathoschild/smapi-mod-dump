@@ -1,0 +1,3158 @@
+{
+  "JODI_SAM": {
+    "GarbageCanID": "JODI_SAM",
+    "LastTimeChecked": -1,
+    "LastTimeFoundItem": -1,
+    "treasureList": [
+      {
+        "Id": 72,
+        "Name": "Diamond ",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 2100,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 88,
+        "Name": "Coconut",
+        "Chance": 0.0075,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 90,
+        "Name": "Cactus Fruit",
+        "Chance": 0.0075,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 167,
+        "Name": "Jojo Cola",
+        "Chance": 0.1,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 2300
+      },
+      {
+        "Id": 174,
+        "Name": "Large Egg",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1130
+      },
+      {
+        "Id": 200,
+        "Name": "Vegetable Medley",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1100,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 206,
+        "Name": "Pizza",
+        "Chance": 0.06,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1100,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 211,
+        "Name": "Pancake",
+        "Chance": 0.0375,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1100
+      },
+      {
+        "Id": 214,
+        "Name": "Crispy Bass",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 216,
+        "Name": "Bread",
+        "Chance": 0.04,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 2200
+      },
+      {
+        "Id": 220,
+        "Name": "Chocolate Cake",
+        "Chance": 0.03,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 221,
+        "Name": "Pink Cake",
+        "Chance": 0.025,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 222,
+        "Name": "Rhubarb Pie",
+        "Chance": 0.022,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1100,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 225,
+        "Name": "Fried Eel",
+        "Chance": 0.021,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 231,
+        "Name": "Eggplant Parmesan",
+        "Chance": 0.025,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1100,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 266,
+        "Name": "Red Cabbage",
+        "Chance": 0.0075,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 286,
+        "Name": "Cherry Bomb",
+        "Chance": 0.04,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1100,
+        "AvailableEndTime": 2400
+      },
+      {
+        "Id": 287,
+        "Name": "Bomb",
+        "Chance": 0.03,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1230,
+        "AvailableEndTime": 2530
+      },
+      {
+        "Id": 348,
+        "Name": "Wine ",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 2500
+      },
+      {
+        "Id": 398,
+        "Name": "Grape",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 408,
+        "Name": "Hazelnut",
+        "Chance": 0.025,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 442,
+        "Name": "Duck Egg",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 466,
+        "Name": "Deluxe Speed Grow",
+        "Chance": 0.009,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 562,
+        "Name": "Tigers Eye",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 607,
+        "Name": "Roasted Hazelnut",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 612,
+        "Name": "Cranberry Candy",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 2100
+      },
+      {
+        "Id": 649,
+        "Name": "Fiddle Head Risotto",
+        "Chance": 0.025,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1100,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 731,
+        "Name": "Maple Bar",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2500
+      },
+      {
+        "Id": 787,
+        "Name": "Battery Pack",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 3,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 2000
+      }
+    ]
+  },
+  "EMILY_HALEY": {
+    "GarbageCanID": "EMILY_HALEY",
+    "LastTimeChecked": -1,
+    "LastTimeFoundItem": -1,
+    "treasureList": [
+      {
+        "Id": 18,
+        "Name": "Daffodil",
+        "Chance": 0.06,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 60,
+        "Name": "Emerald",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 62,
+        "Name": "Aquamarine",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 64,
+        "Name": "Ruby",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 66,
+        "Name": "Amethyst",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 68,
+        "Name": "Topaz",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 70,
+        "Name": "Jade",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 74,
+        "Name": "Prismatic Shard",
+        "Chance": 0.001,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 2500,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 88,
+        "Name": "Coconut",
+        "Chance": 0.025,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 2530
+      },
+      {
+        "Id": 221,
+        "Name": "Pink Cake",
+        "Chance": 0.05,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 241,
+        "Name": "Survival Burger",
+        "Chance": 0.04,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1100,
+        "AvailableEndTime": 2500
+      },
+      {
+        "Id": 309,
+        "Name": "Acorn",
+        "Chance": 0.06,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 310,
+        "Name": "Maple Seed",
+        "Chance": 0.055,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 340,
+        "Name": "Honey",
+        "Chance": 0.04,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 341,
+        "Name": "Tea Set",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 348,
+        "Name": "Wine",
+        "Chance": 0.045,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1400,
+        "AvailableEndTime": 2500
+      },
+      {
+        "Id": 421,
+        "Name": "Sunflower",
+        "Chance": 0.055,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 428,
+        "Name": "Cloth",
+        "Chance": 0.039,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 440,
+        "Name": "Wool",
+        "Chance": 0.065,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 610,
+        "Name": "Fruit Salad",
+        "Chance": 0.075,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 725,
+        "Name": "Oak Resin",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      }
+    ]
+  },
+  "MAYOR_LEWIS": {
+    "GarbageCanID": "MAYOR_LEWIS",
+    "LastTimeChecked": -1,
+    "LastTimeFoundItem": -1,
+    "treasureList": [
+      {
+        "Id": 18,
+        "Name": "Daffodil",
+        "Chance": 0.045,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 72,
+        "Name": "Diamond",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 2000,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 74,
+        "Name": "Prismatic Shard",
+        "Chance": 0.001,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 2100,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 88,
+        "Name": "Coconut",
+        "Chance": 0.03,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 90,
+        "Name": "Cactus Fruit",
+        "Chance": 0.03,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 128,
+        "Name": "Puffer Fish",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 132,
+        "Name": "Bream",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 136,
+        "Name": "Largemouth Bass",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 142,
+        "Name": "Carp",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 143,
+        "Name": "Catfish",
+        "Chance": 0.025,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 145,
+        "Name": "Sunfish",
+        "Chance": 0.03,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 150,
+        "Name": "Red Snapper",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 200,
+        "Name": "Vegetable Medley",
+        "Chance": 0.03,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1100,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 208,
+        "Name": "Glazed Yams",
+        "Chance": 0.025,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 2400
+      },
+      {
+        "Id": 221,
+        "Name": "Pink Cake",
+        "Chance": 0.025,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 235,
+        "Name": "Autumn's Bounty",
+        "Chance": 0.025,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1100,
+        "AvailableEndTime": 2200
+      },
+      {
+        "Id": 240,
+        "Name": "Farmers Lunch",
+        "Chance": 0.025,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 1530
+      },
+      {
+        "Id": 258,
+        "Name": "Blueberry",
+        "Chance": 0.03,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 260,
+        "Name": "Hot Pepper",
+        "Chance": 0.03,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 266,
+        "Name": "Red Cabbage",
+        "Chance": 0.03,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 276,
+        "Name": "Pumpkin",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 340,
+        "Name": "Honey",
+        "Chance": 0.03,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 348,
+        "Name": "Wine",
+        "Chance": 0.025,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1700,
+        "AvailableEndTime": 2400
+      },
+      {
+        "Id": 444,
+        "Name": "Duck Feather",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 446,
+        "Name": "Rabbits Foot",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 750
+      },
+      {
+        "Id": 608,
+        "Name": "Pumpkin Pie",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1600,
+        "AvailableEndTime": 2430
+      },
+      {
+        "Id": 637,
+        "Name": "Pomegranate",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 698,
+        "Name": "Sturgeon",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 699,
+        "Name": "Tiger Trout",
+        "Chance": 0.03,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 700,
+        "Name": "Bullhead",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 701,
+        "Name": "Tilapia",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 706,
+        "Name": "Shad",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 724,
+        "Name": "Maple Syrup",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1500
+      },
+      {
+        "Id": 797,
+        "Name": "Pearl",
+        "Chance": 0.004,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 900
+      }
+    ]
+  },
+  "GUNTHER": {
+    "GarbageCanID": "GUNTHER",
+    "LastTimeChecked": -1,
+    "LastTimeFoundItem": -1,
+    "treasureList": [
+      {
+        "Id": 72,
+        "Name": "Diamond",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 2000,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 74,
+        "Name": "Prismatic Shard",
+        "Chance": 0.001,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 2500,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 84,
+        "Name": "Frozen Tear",
+        "Chance": 0.0175,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 96,
+        "Name": "Dwarf Scroll I",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1130
+      },
+      {
+        "Id": 97,
+        "Name": "Dwarf Scroll II",
+        "Chance": 0.0175,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1130
+      },
+      {
+        "Id": 98,
+        "Name": "Dwarf Scroll III",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 99,
+        "Name": "Dwarf Scroll IV",
+        "Chance": 0.0125,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 100,
+        "Name": "Chipped Amphora",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 1300
+      },
+      {
+        "Id": 101,
+        "Name": "Arrowhead",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 1330
+      },
+      {
+        "Id": 103,
+        "Name": "Ancient Doll",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 1400
+      },
+      {
+        "Id": 104,
+        "Name": "Elvish Jewelry",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1030,
+        "AvailableEndTime": 1230
+      },
+      {
+        "Id": 105,
+        "Name": "Chewing Stick",
+        "Chance": 0.04,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1230,
+        "AvailableEndTime": 1430
+      },
+      {
+        "Id": 106,
+        "Name": "Ornamental Fan",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1400,
+        "AvailableEndTime": 1800
+      },
+      {
+        "Id": 107,
+        "Name": "Dinosour Egg",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 1700
+      },
+      {
+        "Id": 108,
+        "Name": "Rare Disc",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1400,
+        "AvailableEndTime": 1830
+      },
+      {
+        "Id": 109,
+        "Name": "Ancient Sword",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 2300
+      },
+      {
+        "Id": 110,
+        "Name": "Rusty Spoon",
+        "Chance": 0.025,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 800,
+        "AvailableEndTime": 1200
+      },
+      {
+        "Id": 111,
+        "Name": "Rusty Spur",
+        "Chance": 0.025,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 730,
+        "AvailableEndTime": 1130
+      },
+      {
+        "Id": 112,
+        "Name": "Rusty Cog",
+        "Chance": 0.025,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 730,
+        "AvailableEndTime": 1130
+      },
+      {
+        "Id": 113,
+        "Name": "Chicken Statue",
+        "Chance": 0.03,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1500
+      },
+      {
+        "Id": 115,
+        "Name": "Prehistoric Tool",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1500,
+        "AvailableEndTime": 1900
+      },
+      {
+        "Id": 116,
+        "Name": "Dried Starfish",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1300,
+        "AvailableEndTime": 1740
+      },
+      {
+        "Id": 117,
+        "Name": "Anchor",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 1800
+      },
+      {
+        "Id": 118,
+        "Name": "Glass Shards",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1230,
+        "AvailableEndTime": 2330
+      },
+      {
+        "Id": 119,
+        "Name": "Bone Flute",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 1500
+      },
+      {
+        "Id": 120,
+        "Name": "Prehistoric Handaxe",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 1500
+      },
+      {
+        "Id": 121,
+        "Name": "Dwarvish Helm",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 630,
+        "AvailableEndTime": 1050
+      },
+      {
+        "Id": 122,
+        "Name": "Dwarf Gadget",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 700,
+        "AvailableEndTime": 1140
+      },
+      {
+        "Id": 123,
+        "Name": "Ancient Drum",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 700,
+        "AvailableEndTime": 1140
+      },
+      {
+        "Id": 124,
+        "Name": "Golden Mask",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 900,
+        "AvailableEndTime": 1600
+      },
+      {
+        "Id": 125,
+        "Name": "Golden Relic",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 730,
+        "AvailableEndTime": 1300
+      },
+      {
+        "Id": 126,
+        "Name": "Strange Doll",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1100,
+        "AvailableEndTime": 1430
+      },
+      {
+        "Id": 433,
+        "Name": "Coffee Bean",
+        "Chance": 0.0075,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 446,
+        "Name": "Rabbits Foot",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1030
+      },
+      {
+        "Id": 499,
+        "Name": "Ancient Seed Packet",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 1630
+      },
+      {
+        "Id": 535,
+        "Name": "Geode",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 557,
+        "Name": "Petrified Slime",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 800,
+        "AvailableEndTime": 1200
+      },
+      {
+        "Id": 558,
+        "Name": "Thunder Egg",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 578,
+        "Name": "Star Shards",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 579,
+        "Name": "Prehistoric Scapula",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 830,
+        "AvailableEndTime": 1230
+      },
+      {
+        "Id": 580,
+        "Name": "Prehistoric Tibia",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 830,
+        "AvailableEndTime": 1230
+      },
+      {
+        "Id": 581,
+        "Name": "Prehistoric Skull",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 830,
+        "AvailableEndTime": 1230
+      },
+      {
+        "Id": 582,
+        "Name": "Skeletal Hand",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 900,
+        "AvailableEndTime": 1300
+      },
+      {
+        "Id": 583,
+        "Name": "Prehistoric Rib",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 900,
+        "AvailableEndTime": 1300
+      },
+      {
+        "Id": 584,
+        "Name": "Prehistoric Vertebra",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 930,
+        "AvailableEndTime": 1330
+      },
+      {
+        "Id": 585,
+        "Name": "Skeletal Tail",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 930,
+        "AvailableEndTime": 1330
+      },
+      {
+        "Id": 586,
+        "Name": "Nautilus Fossil",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 1400
+      },
+      {
+        "Id": 587,
+        "Name": "Amphibian Fossil",
+        "Chance": 0.0125,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 1400
+      },
+      {
+        "Id": 588,
+        "Name": "Palm Fossil",
+        "Chance": 0.0125,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 1600
+      },
+      {
+        "Id": 589,
+        "Name": "Trilobite",
+        "Chance": 0.0125,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 1600
+      },
+      {
+        "Id": 687,
+        "Name": "Dressed Spinner",
+        "Chance": 0.0075,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2500
+      },
+      {
+        "Id": 749,
+        "Name": "Omni Geode",
+        "Chance": 0.009,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 773,
+        "Name": "Life Elixir",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 1800
+      },
+      {
+        "Id": 787,
+        "Name": "Battery Pack",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1200
+      }
+    ]
+  },
+  "CLINT": {
+    "GarbageCanID": "CLINT",
+    "LastTimeChecked": -1,
+    "LastTimeFoundItem": -1,
+    "treasureList": [
+      {
+        "Id": 60,
+        "Name": "Emerald",
+        "Chance": 0.009,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 62,
+        "Name": "Aquamarine",
+        "Chance": 0.009,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 64,
+        "Name": "Ruby",
+        "Chance": 0.009,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 66,
+        "Name": "Amethyst",
+        "Chance": 0.009,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 68,
+        "Name": "Topaz",
+        "Chance": 0.009,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 70,
+        "Name": "Jade",
+        "Chance": 0.009,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 72,
+        "Name": "Diamond",
+        "Chance": 0.0075,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1500,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 74,
+        "Name": "Prismatic Shard",
+        "Chance": 0.001,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 2300,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 80,
+        "Name": "Quartz",
+        "Chance": 0.0175,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 82,
+        "Name": "Fire Quartz",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 84,
+        "Name": "Frozen Tear",
+        "Chance": 0.0125,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 86,
+        "Name": "Earth Chrystal",
+        "Chance": 0.0115,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 334,
+        "Name": "Copper Bar",
+        "Chance": 0.0175,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 337,
+        "Name": "Iridium Bar",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1700,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 378,
+        "Name": "Copper Ore",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 5,
+        "MaxAmount": 10,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 380,
+        "Name": "Iron Ore",
+        "Chance": 0.0175,
+        "Enabled": true,
+        "MinAmount": 4,
+        "MaxAmount": 8,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 380,
+        "Name": "Iron Bar",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 382,
+        "Name": "Coal",
+        "Chance": 0.0139,
+        "Enabled": true,
+        "MinAmount": 2,
+        "MaxAmount": 6,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 384,
+        "Name": "Gold Ore",
+        "Chance": 0.0125,
+        "Enabled": true,
+        "MinAmount": 3,
+        "MaxAmount": 6,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 384,
+        "Name": "Gold Bar",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 386,
+        "Name": "Iridium Ore",
+        "Chance": 0.0075,
+        "Enabled": true,
+        "MinAmount": 2,
+        "MaxAmount": 4,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 403,
+        "Name": "Field Snack",
+        "Chance": 0.0306,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 420,
+        "Name": "Red Mushroom",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 422,
+        "Name": "Purple Mushroom",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 517,
+        "Name": "Glow Ring",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 518,
+        "Name": "Small Megnic Ring",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 527,
+        "Name": "Iridium Band",
+        "Chance": 0.0075,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 630,
+        "AvailableEndTime": 1200
+      },
+      {
+        "Id": 535,
+        "Name": "Geode",
+        "Chance": 0.014,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 536,
+        "Name": "Frozen Geode",
+        "Chance": 0.013,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 537,
+        "Name": "Magma Geode",
+        "Chance": 0.012,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 538,
+        "Name": "Alamite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 730,
+        "AvailableEndTime": 1230
+      },
+      {
+        "Id": 539,
+        "Name": "Bixite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 700,
+        "AvailableEndTime": 1200
+      },
+      {
+        "Id": 540,
+        "Name": "Baryte",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 610,
+        "AvailableEndTime": 810
+      },
+      {
+        "Id": 541,
+        "Name": "Aerinite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1600,
+        "AvailableEndTime": 1730
+      },
+      {
+        "Id": 542,
+        "Name": "Calcite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1250,
+        "AvailableEndTime": 1440
+      },
+      {
+        "Id": 543,
+        "Name": "Dolomite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 1120
+      },
+      {
+        "Id": 544,
+        "Name": "Esperite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1330,
+        "AvailableEndTime": 1500
+      },
+      {
+        "Id": 545,
+        "Name": "Fluorapatite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1120,
+        "AvailableEndTime": 1640
+      },
+      {
+        "Id": 546,
+        "Name": "Geminite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 830,
+        "AvailableEndTime": 1120
+      },
+      {
+        "Id": 547,
+        "Name": "Helvite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 730,
+        "AvailableEndTime": 1150
+      },
+      {
+        "Id": 548,
+        "Name": "Jamborite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 630,
+        "AvailableEndTime": 1040
+      },
+      {
+        "Id": 549,
+        "Name": "Jagoite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 640,
+        "AvailableEndTime": 850
+      },
+      {
+        "Id": 550,
+        "Name": "Kyanite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 940,
+        "AvailableEndTime": 1140
+      },
+      {
+        "Id": 551,
+        "Name": "Lunarite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1010,
+        "AvailableEndTime": 1500
+      },
+      {
+        "Id": 551,
+        "Name": "Lunarite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1300,
+        "AvailableEndTime": 1810
+      },
+      {
+        "Id": 552,
+        "Name": "Malachite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1330,
+        "AvailableEndTime": 1550
+      },
+      {
+        "Id": 553,
+        "Name": "Neptunite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 1430
+      },
+      {
+        "Id": 554,
+        "Name": "Lemon Stone",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 930,
+        "AvailableEndTime": 1100
+      },
+      {
+        "Id": 555,
+        "Name": "Nekoite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 1300
+      },
+      {
+        "Id": 556,
+        "Name": "Orpiment",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 730,
+        "AvailableEndTime": 1200
+      },
+      {
+        "Id": 559,
+        "Name": "Pyrite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 700,
+        "AvailableEndTime": 1130
+      },
+      {
+        "Id": 560,
+        "Name": "Ocean Stone",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 730,
+        "AvailableEndTime": 1200
+      },
+      {
+        "Id": 562,
+        "Name": "Tigers Eye",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2400
+      },
+      {
+        "Id": 563,
+        "Name": "Jasper",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1300,
+        "AvailableEndTime": 1850
+      },
+      {
+        "Id": 564,
+        "Name": "Opal",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1300
+      },
+      {
+        "Id": 565,
+        "Name": "Fire Opal",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 700,
+        "AvailableEndTime": 1300
+      },
+      {
+        "Id": 566,
+        "Name": "Celestine",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1200
+      },
+      {
+        "Id": 567,
+        "Name": "Marble",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 730,
+        "AvailableEndTime": 1130
+      },
+      {
+        "Id": 568,
+        "Name": "Sandstone",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 800,
+        "AvailableEndTime": 1300
+      },
+      {
+        "Id": 569,
+        "Name": "Granite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 900,
+        "AvailableEndTime": 1200
+      },
+      {
+        "Id": 570,
+        "Name": "Basalt",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 1550
+      },
+      {
+        "Id": 571,
+        "Name": "Limestone",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 1430
+      },
+      {
+        "Id": 572,
+        "Name": "Soapstone",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1140,
+        "AvailableEndTime": 1400
+      },
+      {
+        "Id": 573,
+        "Name": "Hematite",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 910,
+        "AvailableEndTime": 1150
+      },
+      {
+        "Id": 574,
+        "Name": "Mudstone",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 1500
+      },
+      {
+        "Id": 575,
+        "Name": "Obsidian",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 830,
+        "AvailableEndTime": 1120
+      },
+      {
+        "Id": 576,
+        "Name": "Slate",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1230,
+        "AvailableEndTime": 2500
+      },
+      {
+        "Id": 577,
+        "Name": "Fairy Stone",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 1800
+      },
+      {
+        "Id": 605,
+        "Name": "Artichoke Dip",
+        "Chance": 0.016,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 2430
+      },
+      {
+        "Id": 649,
+        "Name": "Fiddle Head Risotto",
+        "Chance": 0.014,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1100,
+        "AvailableEndTime": 2200
+      },
+      {
+        "Id": 749,
+        "Name": "Omni Geode",
+        "Chance": 0.011,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 797,
+        "Name": "Pearl",
+        "Chance": 0.004,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1050
+      }
+    ]
+  },
+  "STARDROP_SALOON": {
+    "GarbageCanID": "STARDROP_SALOON",
+    "LastTimeChecked": -1,
+    "LastTimeFoundItem": -1,
+    "treasureList": [
+      {
+        "Id": 72,
+        "Name": "Diamond",
+        "Chance": 0.004,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 2400,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 130,
+        "Name": "Tuna",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 136,
+        "Name": "Largemouth Bass",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 140,
+        "Name": "Walleye",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 143,
+        "Name": "Catfish",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 148,
+        "Name": "Eel",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 186,
+        "Name": "Large Milk",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 700,
+        "AvailableEndTime": 1130
+      },
+      {
+        "Id": 194,
+        "Name": "Fried Egg",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1200
+      },
+      {
+        "Id": 201,
+        "Name": "Complete Breakfast",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1140
+      },
+      {
+        "Id": 202,
+        "Name": "Fried Calamari",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1100,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 204,
+        "Name": "Lucky Lunch",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 1530
+      },
+      {
+        "Id": 206,
+        "Name": "Pizza",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1100,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 207,
+        "Name": "Bean Hotpot",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 2500
+      },
+      {
+        "Id": 212,
+        "Name": "Salmon Dinner",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1620,
+        "AvailableEndTime": 2250
+      },
+      {
+        "Id": 213,
+        "Name": "Fish Taco",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 214,
+        "Name": "Crispy Bass",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1300,
+        "AvailableEndTime": 2500
+      },
+      {
+        "Id": 215,
+        "Name": "Pepper Poppers",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 2500
+      },
+      {
+        "Id": 218,
+        "Name": "Tom Kha Soup",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 2000
+      },
+      {
+        "Id": 220,
+        "Name": "Chocolate Cake",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 224,
+        "Name": "Spaghetti",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1100,
+        "AvailableEndTime": 2530
+      },
+      {
+        "Id": 227,
+        "Name": "Sashimi",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1300,
+        "AvailableEndTime": 2530
+      },
+      {
+        "Id": 233,
+        "Name": "Ice Cream",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 2200
+      },
+      {
+        "Id": 234,
+        "Name": "Blueberry Tart",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1300
+      },
+      {
+        "Id": 236,
+        "Name": "Pumpkin Soup",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1300,
+        "AvailableEndTime": 2200
+      },
+      {
+        "Id": 276,
+        "Name": "Pumpkin",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 303,
+        "Name": "Pale Ale",
+        "Chance": 0.04,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1300,
+        "AvailableEndTime": 2500
+      },
+      {
+        "Id": 342,
+        "Name": "Pickles",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1030,
+        "AvailableEndTime": 1500
+      },
+      {
+        "Id": 346,
+        "Name": "Beer",
+        "Chance": 0.04,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1400,
+        "AvailableEndTime": 2500
+      },
+      {
+        "Id": 348,
+        "Name": "Wine",
+        "Chance": 0.04,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 395,
+        "Name": "Coffee",
+        "Chance": 0.05,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2300
+      },
+      {
+        "Id": 408,
+        "Name": "Hazelnut",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 426,
+        "Name": "Goat Cheese",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 430,
+        "Name": "Truffle",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 432,
+        "Name": "Truffle Oil",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 438,
+        "Name": "Large Goats Milk",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1300
+      },
+      {
+        "Id": 459,
+        "Name": "Mead",
+        "Chance": 0.021,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 2500
+      },
+      {
+        "Id": 604,
+        "Name": "Plum Pudding",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 1530
+      },
+      {
+        "Id": 607,
+        "Name": "Roasted Hazelnuts",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 611,
+        "Name": "Blackberry Cobbler",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1330,
+        "AvailableEndTime": 2400
+      },
+      {
+        "Id": 635,
+        "Name": "Orange",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 636,
+        "Name": "Peach",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 649,
+        "Name": "Fiddle Head Risotto",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 651,
+        "Name": "Poppy Seed Muffin",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1330
+      },
+      {
+        "Id": 698,
+        "Name": "Sturgeon",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 2400
+      },
+      {
+        "Id": 715,
+        "Name": "Lobster",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 900,
+        "AvailableEndTime": 1900
+      },
+      {
+        "Id": 717,
+        "Name": "Crab ",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1230,
+        "AvailableEndTime": 2100
+      },
+      {
+        "Id": 720,
+        "Name": "Shrimp",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 2000
+      },
+      {
+        "Id": 721,
+        "Name": "Snail",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1300,
+        "AvailableEndTime": 2400
+      },
+      {
+        "Id": 723,
+        "Name": "Oyster",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1300,
+        "AvailableEndTime": 2300
+      },
+      {
+        "Id": 724,
+        "Name": "Maple Syrup",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1300
+      },
+      {
+        "Id": 729,
+        "Name": "Escargot",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1100,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 731,
+        "Name": "Maple Bar",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1430
+      },
+      {
+        "Id": 732,
+        "Name": "Crab Cakes",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1300,
+        "AvailableEndTime": 2300
+      }
+    ]
+  },
+  "EVELYN_GEORGE": {
+    "GarbageCanID": "EVELYN_GEORGE",
+    "LastTimeChecked": -1,
+    "LastTimeFoundItem": -1,
+    "treasureList": [
+      {
+        "Id": 18,
+        "Name": "Daffodil",
+        "Chance": 0.045,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 20,
+        "Name": "Leek",
+        "Chance": 0.045,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 24,
+        "Name": "Parsnip",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 72,
+        "Name": "Diamond",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 2330,
+        "AvailableEndTime": 2530
+      },
+      {
+        "Id": 90,
+        "Name": "Cactus Fruit",
+        "Chance": 0.0075,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 201,
+        "Name": "Complete Breakfast",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1200
+      },
+      {
+        "Id": 205,
+        "Name": "Fried Mushroom",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 2200
+      },
+      {
+        "Id": 216,
+        "Name": "Bread",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1000,
+        "AvailableEndTime": 1800
+      },
+      {
+        "Id": 220,
+        "Name": "Chocolate Cake",
+        "Chance": 0.025,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 221,
+        "Name": "Pink Cake",
+        "Chance": 0.025,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 223,
+        "Name": "Cookies",
+        "Chance": 0.038,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 233,
+        "Name": "Ice Cream",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 2130
+      },
+      {
+        "Id": 239,
+        "Name": "Stuffing",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1130,
+        "AvailableEndTime": 2500
+      },
+      {
+        "Id": 266,
+        "Name": "Red Cabbage",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 284,
+        "Name": "Beet",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 348,
+        "Name": "Wine",
+        "Chance": 0.01,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1500,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 376,
+        "Name": "Poppy",
+        "Chance": 0.02,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 425,
+        "Name": "Fairy Seeds",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 3,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 427,
+        "Name": "Tulip Bulb",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 3,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 431,
+        "Name": "Sunflower Seeds",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 3,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 446,
+        "Name": "Rabits Foot",
+        "Chance": 0.005,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 2100,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 453,
+        "Name": "Poppy Seeds",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 3,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 466,
+        "Name": "Deluxe Speed Grow",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 3,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 472,
+        "Name": "Parsnip Seeds",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 3,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 485,
+        "Name": "Red Cabbage Seeds",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 3,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 486,
+        "Name": "Starfruit Seed",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 490,
+        "Name": "Pumpkin Seeds",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 3,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 495,
+        "Name": "Spring Seeds",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 3,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 496,
+        "Name": "Summer Seeds",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 3,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 497,
+        "Name": "Fall Seeds",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 3,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 498,
+        "Name": "Winter Seeds",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 3,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 499,
+        "Name": "Ancient Fruit Seed",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 591,
+        "Name": "Tulip",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 593,
+        "Name": "Summer Spangle",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 595,
+        "Name": "Fairy Rose",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 621,
+        "Name": "Quality Spinkler",
+        "Chance": 0.0075,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 2100,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 628,
+        "Name": "Cherry Sapling",
+        "Chance": 0.009,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1800,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 630,
+        "Name": "Orange Sapling",
+        "Chance": 0.009,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1730,
+        "AvailableEndTime": 2530
+      },
+      {
+        "Id": 631,
+        "Name": "Peach Sapling",
+        "Chance": 0.009,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1600,
+        "AvailableEndTime": 2500
+      },
+      {
+        "Id": 632,
+        "Name": "Pomegranate Sapling",
+        "Chance": 0.009,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 2000,
+        "AvailableEndTime": 2430
+      },
+      {
+        "Id": 633,
+        "Name": "Apple Sapling",
+        "Chance": 0.009,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 1200,
+        "AvailableEndTime": 1700
+      },
+      {
+        "Id": 724,
+        "Name": "Maple Syrup",
+        "Chance": 0.015,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 1500
+      },
+      {
+        "Id": 745,
+        "Name": "Strawberry Seeds",
+        "Chance": 0.008,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 2,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 797,
+        "Name": "Pearl",
+        "Chance": 0.004,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 2200,
+        "AvailableEndTime": 2600
+      }
+    ]
+  },
+  "JOJA_MART": {
+    "GarbageCanID": "JOJA_MART",
+    "LastTimeChecked": -1,
+    "LastTimeFoundItem": -1,
+    "treasureList": [
+      {
+        "Id": 167,
+        "Name": "Jojo Cola",
+        "Chance": 0.99,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 270,
+        "Name": "Corn",
+        "Chance": 0.4,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      },
+      {
+        "Id": 809,
+        "Name": "Movie Ticket",
+        "Chance": 0.1,
+        "Enabled": true,
+        "MinAmount": 1,
+        "MaxAmount": 1,
+        "AvailableStartTime": 600,
+        "AvailableEndTime": 2600
+      }
+    ]
+  }
+}

@@ -4,32 +4,38 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using StardewModdingAPI;
 
-namespace Phrasefable_Modding_Tools {
-
-    internal enum ToggleAction {
+namespace Phrasefable_Modding_Tools
+{
+    internal enum ToggleAction
+    {
         Enable,
         Disable,
         Toggle
     }
 
 
-    internal class ToggleableEventHandler<TArgs> where TArgs : EventArgs {
+    internal class ToggleableEventHandler<TArgs> where TArgs : EventArgs
+    {
         public bool IsEnabled { get; private set; }
         private readonly Action<object, TArgs> _handler;
 
 
-        public ToggleableEventHandler(Action<object, TArgs> handler) {
+        public ToggleableEventHandler(Action<object, TArgs> handler)
+        {
             _handler = handler;
         }
 
 
-        public void OnEvent(object sender, TArgs args) {
+        public void OnEvent(object sender, TArgs args)
+        {
             if (IsEnabled) _handler.Invoke(sender, args);
         }
 
 
-        public void Set(ToggleAction action) {
-            switch (action) {
+        public void Set(ToggleAction action)
+        {
+            switch (action)
+            {
                 case ToggleAction.Enable:
                     IsEnabled = true;
                     break;
@@ -46,7 +52,8 @@ namespace Phrasefable_Modding_Tools {
     }
 
 
-    internal interface IToggleableEventLogger {
+    internal interface IToggleableEventLogger
+    {
         bool IsEnabled { get; }
 
         string Id { get; }
@@ -56,13 +63,16 @@ namespace Phrasefable_Modding_Tools {
 
 
     internal class ToggleableEventLogger<TArgs> : ToggleableEventHandler<TArgs>, IToggleableEventLogger
-        where TArgs : EventArgs {
+        where TArgs : EventArgs
+    {
         public string Id { get; }
 
 
         public ToggleableEventLogger([NotNull] string id, IMonitor monitor, Func<TArgs, string> message)
-            : base((s, args) => monitor.Log(message(args), LogLevel.Info)) {
-            if (string.IsNullOrEmpty(id)) {
+            : base((s, args) => monitor.Log(message(args), LogLevel.Info))
+        {
+            if (string.IsNullOrEmpty(id))
+            {
                 throw new ArgumentNullException($"invalid event logger id: `{id}`");
             }
 
@@ -71,7 +81,8 @@ namespace Phrasefable_Modding_Tools {
     }
 
 
-    internal class ToggleableEventLoggerCollection : IEnumerable<IToggleableEventLogger> {
+    internal class ToggleableEventLoggerCollection : IEnumerable<IToggleableEventLogger>
+    {
         private readonly IDictionary<string, IToggleableEventLogger> _loggers =
             new Dictionary<string, IToggleableEventLogger>();
 
@@ -80,13 +91,16 @@ namespace Phrasefable_Modding_Tools {
         IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable) _loggers.Values).GetEnumerator();
 
 
-        public void Add([NotNull] IToggleableEventLogger item) {
+        public void Add([NotNull] IToggleableEventLogger item)
+        {
             _loggers[item.Id] = item;
         }
 
 
-        public void Set([NotNull] IEnumerable<string> loggers, ToggleAction action) {
-            foreach (var logger in loggers) {
+        public void Set([NotNull] IEnumerable<string> loggers, ToggleAction action)
+        {
+            foreach (string logger in loggers)
+            {
                 _loggers[logger].Set(action);
             }
         }
@@ -94,5 +108,4 @@ namespace Phrasefable_Modding_Tools {
 
         [NotNull] public IEnumerable<string> Ids => _loggers.Keys;
     }
-
 }

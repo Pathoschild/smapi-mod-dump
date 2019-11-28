@@ -33,9 +33,9 @@ namespace GameZoomer
         private void IncreaseZoom()
         {
             Game1.options.zoomLevel += .05f;
-
+            /*
             if (Game1.options.zoomLevel > 1.25f)
-                Game1.options.zoomLevel = 1.25f;
+                Game1.options.zoomLevel = 1.25f;*/
             Program.gamePtr.refreshWindowSettings();
             if(debugging)
                 Monitor.Log($"Current Zoom: {Game1.options.zoomLevel}");
@@ -45,9 +45,9 @@ namespace GameZoomer
         private void DecreaseZoom()
         {
             Game1.options.zoomLevel -= .05f;
-
+            /*
             if (Game1.options.zoomLevel < 0.35f)
-                Game1.options.zoomLevel = 0.35f;
+                Game1.options.zoomLevel = 0.35f;*/
             Program.gamePtr.refreshWindowSettings();
             if (debugging)
                 Monitor.Log($"Current Zoom: {Game1.options.zoomLevel}");

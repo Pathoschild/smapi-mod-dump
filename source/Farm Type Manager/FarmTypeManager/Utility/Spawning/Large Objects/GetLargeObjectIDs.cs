@@ -28,6 +28,21 @@ namespace FarmTypeManager
                     //for each valid name, add the game's internal ID for that large object (a.k.a. resource clump)
                     switch (name.ToLower())
                     {
+                        case "cauliflower":
+                        case "giantcauliflower":
+                        case "giant cauliflower":
+                            IDs.Add(190);
+                            break;
+                        case "melon":
+                        case "giantmelon":
+                        case "giant melon":
+                            IDs.Add(254);
+                            break;
+                        case "pumpkin":
+                        case "giantpumpkin":
+                        case "giant pumpkin":
+                            IDs.Add(276);
+                            break;
                         case "stump":
                         case "stumps":
                             IDs.Add(600);

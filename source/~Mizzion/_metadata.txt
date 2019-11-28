@@ -15,11 +15,11 @@ mods:
    Water Pet Bowl
 
 latest commit:
-   commit 05b2103a0f84e333cfe58d14e92080dadfd8def4
+   commit 44a10c7da0f3fcb63a8b84014b8f229324310827
    Author: Mizzion <36684211+Mizzion@users.noreply.github.com>
-   Date:   Mon Jul 22 11:48:28 2019 -0700
+   Date:   Wed Nov 27 14:46:43 2019 -0700
    
-       Added Artifact Digger
+       Updated for SDV 1.4
        
-       Added Artifact Digger
+       Updated For SDV 1.4
    

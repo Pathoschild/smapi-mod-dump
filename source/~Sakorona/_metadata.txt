@@ -1,0 +1,19 @@
+url:
+   https://github.com/Sakorona/SDVMods.git
+
+mods:
+   Climates of Ferngill
+   Customizable Cart Redux
+   Dynamic Night Time
+   Lunar Disturbances
+   Stardew Notification
+   Time Reminder
+   Weather Illnesses
+
+latest commit:
+   commit 0f65c5ce520022568a0be45fdfc9b250aa6b1209
+   Author: Nicholas Johnson <7285555+Sakorona@users.noreply.github.com>
+   Date:   Tue Nov 26 23:35:29 2019 -0800
+   
+       This bumps up to 1.5.2 and fixes the persistent bug
+   

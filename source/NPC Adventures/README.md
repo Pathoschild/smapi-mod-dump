@@ -49,7 +49,7 @@ For NPCs listed above we're missing companion dialogues. You can help us and you
 
 ## Compatibility
 
-- Works with Stardew Valley 1.3 on Linux/Mac/Windows.
+- Works with Stardew Valley 1.4 on Linux/Mac/Windows.
 - Works in **single player** ONLY.
 
 ## Feature preview

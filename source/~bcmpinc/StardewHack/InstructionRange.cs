@@ -33,7 +33,7 @@ namespace StardewHack
         /// Parameter step can be negative.
         /// The instruction at start won't match when searching backwards. 
         /// </summary>
-        public InstructionRange(List<CodeInstruction> insts, Object[] contains, int start=0, int step=1) {
+        public InstructionRange(List<CodeInstruction> insts, InstructionMatcher[] contains, int start=0, int step=1) {
             int count = insts.Count - contains.Length + 1;
             if (step<0) start -= contains.Length;
             int best_match = 0;
@@ -46,29 +46,8 @@ namespace StardewHack
                         best_match = j;
                         best_text = inst.ToString();
                     }
-                    if (query == null) {
-                        // No query
-                    } else if (query == inst) {
-                        // Exact match.
-                    } else if (query is OpCode) {
-                        if (!inst.opcode.Equals(query)) goto NO_MATCH;
-                    } else if (query is CodeInstruction) {
-                        CodeInstruction qin = query as CodeInstruction;
-                        if (!inst.opcode.Equals(qin.opcode)) goto NO_MATCH;
-                        if (inst.operand == null) {
-                            if (qin.operand != null) goto NO_MATCH;
-                        } else if (!inst.operand.Equals(qin.operand)) {
-                            if (qin.operand==null) goto NO_MATCH;
-
-                            // In case the operand is an integer, but their boxing types don't match.
-                            try {
-                                if (Convert.ToInt64(inst.operand) != Convert.ToInt64(qin.operand)) goto NO_MATCH;
-                            } catch {
-                                goto NO_MATCH;
-                            }
-                        }
-                    } else {
-                        throw new ArgumentException("Unsupported type "+query.GetType()+" for argument "+(j+1)+": " + query);
+                    if (query != null && !query.match(inst)) {
+                        goto NO_MATCH;
                     }
                 }
                 //Hack.Log($"Found match at {i} of length {contains.Length}:");
@@ -164,7 +143,7 @@ namespace StardewHack
         /// Find the first occurance of the given sequence of instructions that follows this range.
         /// See InstructionHelpers.Find() for how the matching is performed.
         /// </summary>
-        public InstructionRange FindNext(params Object[] contains) {
+        public InstructionRange FindNext(params InstructionMatcher[] contains) {
             return new InstructionRange(insts, contains, start+length);
         }
 
@@ -172,14 +151,14 @@ namespace StardewHack
         /// Find the first occurance of the given sequence of instructions that precedes this range.
         /// See InstructionHelpers.Find() for how the matching is performed.
         /// </summary>
-        public InstructionRange FindPrevious(params Object[] contains) {
+        public InstructionRange FindPrevious(params InstructionMatcher[] contains) {
             return new InstructionRange(insts, contains, start, -1);
         }
 
         /// <summary>
         /// Extend the range up-to and including the specified instructions.
         /// </summary>
-        public void Extend(params Object[] contains) {
+        public void Extend(params InstructionMatcher[] contains) {
             Extend(FindNext(contains));
         }
         public void Extend(InstructionRange ext) {
@@ -189,7 +168,7 @@ namespace StardewHack
         /// <summary>
         /// Extend the range backwards to include the specified instructions.
         /// </summary>
-        public void ExtendBackwards(params Object[] contains) {
+        public void ExtendBackwards(params InstructionMatcher[] contains) {
             ExtendBackwards(FindPrevious(contains));
         }
         public void ExtendBackwards(InstructionRange ext) {

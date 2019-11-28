@@ -58,7 +58,7 @@ namespace NpcAdventure.AI
             if (this.player.health <= 0 || npcPlayerDistance > 2.25 * Game1.tileSize || noMonstersNearPlayer)
                 return;
 
-            double chance = Math.Max(0.01, (Game1.dailyLuck / 2.0 + this.player.LuckLevel / 100.0 + this.player.getFriendshipHeartLevelForNPC(this.npc.Name) * 0.05));
+            double chance = Math.Max(0.01, (this.player.DailyLuck / 2.0 + this.player.LuckLevel / 100.0 + this.player.getFriendshipHeartLevelForNPC(this.npc.Name) * 0.05));
             double random = Game1.random.NextDouble();
             this.Monitor.Log($"{this.npc.Name} try to save your poor life. Chance is: {chance}/{1.0 - chance}, Random pass: {random}");
 

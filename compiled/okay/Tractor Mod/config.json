@@ -1,0 +1,90 @@
+{
+  "Distance": 1,
+  "TractorSpeed": -2,
+  "MagneticRadius": 384,
+  "BuildPrice": 150000,
+  "BuildMaterials": {
+    "335": 20,
+    "337": 5,
+    "787": 5
+  },
+  "CanSummonWithoutGarage": false,
+  "HighlightRadius": false,
+  "StandardAttachments": {
+    "Axe": {
+      "ClearFruitTreeSeeds": false,
+      "ClearFruitTreeSaplings": false,
+      "CutGrownFruitTrees": false,
+      "ClearTreeSeeds": false,
+      "ClearTreeSaplings": false,
+      "CutGrownTrees": false,
+      "CutTappedTrees": false,
+      "CutBushes": false,
+      "CutGiantCrops": true,
+      "ClearLiveCrops": false,
+      "ClearDeadCrops": true,
+      "ClearDebris": true
+    },
+    "Fertilizer": {
+      "Enable": true
+    },
+    "GrassStarter": {
+      "Enable": true
+    },
+    "Hoe": {
+      "TillDirt": true,
+      "ClearWeeds": true,
+      "DigArtifactSpots": true
+    },
+    "MilkPail": {
+      "Enable": true
+    },
+    "MeleeWeapon": {
+      "AttackMonsters": false,
+      "ClearDeadCrops": true,
+      "BreakMineContainers": true
+    },
+    "PickAxe": {
+      "ClearDebris": true,
+      "ClearDeadCrops": true,
+      "ClearDirt": true,
+      "ClearFlooring": false,
+      "ClearBouldersAndMeteorites": true,
+      "ClearObjects": false,
+      "BreakMineContainers": true,
+      "ClearWeeds": true
+    },
+    "Scythe": {
+      "HarvestCrops": true,
+      "HarvestFlowers": true,
+      "HarvestForage": true,
+      "HarvestFruitTrees": true,
+      "HarvestMachines": false,
+      "HarvestGrass": true,
+      "ClearDeadCrops": true,
+      "ClearWeeds": true
+    },
+    "Seeds": {
+      "Enable": true
+    },
+    "Shears": {
+      "Enable": true
+    },
+    "Slingshot": {
+      "Enable": true
+    },
+    "WateringCan": {
+      "Enable": true
+    },
+    "SeedBagMod": {
+      "Enable": true
+    }
+  },
+  "Controls": {
+    "SummonTractor": "Back",
+    "DismissTractor": "Back",
+    "HoldToActivate": ""
+  },
+  "CustomAttachments": [],
+  "InvincibleOnTractor": true
+}

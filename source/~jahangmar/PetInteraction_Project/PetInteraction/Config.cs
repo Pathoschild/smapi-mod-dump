@@ -12,5 +12,6 @@ namespace PetInteraction
         public int pet_petting_friendship_increase = 12;
         public bool show_message_on_warp = true;
         public bool unconditional_love = false;
+        public bool love_everytime_at_max_friendship = false;
     }
 }

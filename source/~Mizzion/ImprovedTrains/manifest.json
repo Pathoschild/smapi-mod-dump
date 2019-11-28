@@ -1,0 +1,10 @@
+﻿{
+  "Name": "ImprovedTrains",
+  "Author": "Mizzion",
+  "Version": "0.0.1",
+  "MinimumApiVersion": "2.11",
+  "UniqueID": "mizzion.improvedtrains",
+  "Description": "Custom the drops from trains",
+  "EntryDll": "ImprovedTrains.dll",
+  "UpdateKeys": [ "Nexus:" ]
+}

@@ -34,6 +34,11 @@ namespace FarmTypeManager
                         {
                             if (clump.getBoundingBox(clump.tilePosition.Value).Intersects(targetBox)) //if this was hit by the tool
                             {
+                                //NOTE: the reflection below prevents a non-fatal error when an Axe or Pickaxe is used for the first time to hit a LargeResourceClump containing a GiantCrop;
+                                //      this is due to the "lastUser" field being null during the first use of those tool subclasses
+                                IReflectedField<Farmer> lastUser = Utility.Helper.Reflection.GetField<Farmer>(Game1.player.CurrentTool, "lastUser", false); //get the protected "lastUser" field of this tool
+                                lastUser?.SetValue(Game1.player); //set "lastUser" to the player
+
                                 bool destroyed = clump.Clump.Value.performToolAction(Game1.player.CurrentTool, 0, targetTile, Game1.currentLocation); //make the inner ResourceClump react to being hit by the tool
 
                                 if (destroyed) //if this clump was "destroyed" by this tool hit

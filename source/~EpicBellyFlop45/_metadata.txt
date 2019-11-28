@@ -11,9 +11,9 @@ mods:
    Customize Cursor Sprite
 
 latest commit:
-   commit c18865eb82fd8925f6c2ac1b10bad8ab53384d4d
+   commit dae9bf058a77d6d682bb66b3424597d2c2306f73
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Sat Nov 16 00:13:44 2019 +0000
+   Date:   Thu Nov 28 00:15:26 2019 +0000
    
-       [Better Mixed Seeds Config Updater] Add defaults for Ancient Crops
+       [CustomizeCursorSprite] Remove experimental code so it's compilable
    

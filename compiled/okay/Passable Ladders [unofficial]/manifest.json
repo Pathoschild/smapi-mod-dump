@@ -1,0 +1,10 @@
+﻿{
+  "name": "Passable Ladders",
+  "Author": "J_Hizzal",
+  "Version": "1.1.1-unofficial.1-Drake1427",
+  "Description": "Allows you to walk over stairs or ladders in the mines.",
+  "UniqueID": "J_Hizzal.PassableLadders",
+  "EntryDll": "PassableLadders.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": [ "Nexus:2985"]
+}

@@ -6,12 +6,9 @@ mods:
    Send Items to Other Farmers
 
 latest commit:
-   commit 72c87bf773529e50fef4fece044a58300adb9aa0
-   Merge: 5b72873 7155076
-   Author: Luke Wale <mr.l.wale@gmail.com>
-   Date:   Tue Jun 25 14:46:25 2019 +0800
+   commit 6c067d1d32a8042198ce65c6d2c6a6eb0705b0d4
+   Author: Denifia <mr.l.wale@gmail.com>
+   Date:   Wed Nov 27 18:27:35 2019 +0800
    
-       Merge pull request #45 from Denifia/develop
-       
-       Update for Stardew Valley 1.3.36 and SMAPI 3.0, internal refactoring
+       bump: version 2.1.0
    

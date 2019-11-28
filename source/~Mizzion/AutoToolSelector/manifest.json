@@ -1,0 +1,10 @@
+﻿{
+  "Name": "AutoToolSelector",
+  "Author": "Mizzion",
+  "Version": "0.0.1",
+  "Description": "A mod that will automatically pick the correct tool to use on a tile.",
+  "UniqueID": "mizzion.autotool",
+  "EntryDll": "AutoToolSelector.dll",
+  "MinimumApiVersion": "2.11",
+  "UpdateKeys": []
+}

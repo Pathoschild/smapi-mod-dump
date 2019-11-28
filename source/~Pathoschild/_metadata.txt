@@ -11,6 +11,7 @@ mods:
    Fast Animations
    Lookup Anything
    No Debug Mode
+   Noclip Mode
    Rotate Toolbar
    Skip Intro
    Small Beach Farm
@@ -18,9 +19,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 6d67085ebfc0870ca52b5e8d5f7ff2309eff3244
+   commit 51a4f7040c9bc0fd8e661a758885f80b4bd1898d
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Nov 24 18:08:11 2019 -0500
+   Date:   Tue Nov 26 19:16:29 2019 -0500
    
-       fix typo
+       update readmes
    

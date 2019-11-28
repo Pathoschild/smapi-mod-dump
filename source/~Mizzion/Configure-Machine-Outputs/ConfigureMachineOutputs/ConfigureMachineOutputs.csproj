@@ -1,95 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DCF1F766-6EA8-4A15-880A-579C80008F05}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConfigureMachineOutputs</RootNamespace>
     <AssemblyName>ConfigureMachineOutputs</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <RootNamespace>ConfigureMachineOutputs</RootNamespace>
+    <Version>2.0.4</Version>
+    <TargetFramework>net452</TargetFramework>
     <PlatformTarget>x86</PlatformTarget>
+
+    <EnableHarmony>true</EnableHarmony>
+
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>7.2</LangVersion>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Mods\PyTK\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.0.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="ConfigureMachineOutputs.cs" />
-    <Compile Include="Framework\CmoConfig.cs" />
-    <Compile Include="Framework\Configs\BeeHouseConfig.cs" />
-    <Compile Include="Framework\Configs\CharcoalConfig.cs" />
-    <Compile Include="Framework\Configs\CheesePressConfig.cs" />
-    <Compile Include="Framework\Configs\CrystalariumConfig.cs" />
-    <Compile Include="Framework\Configs\FurnaceConfig.cs" />
-    <Compile Include="Framework\Configs\IncubatorConfig.cs" />
-    <Compile Include="Framework\Configs\KegConfig.cs" />
-    <Compile Include="Framework\Configs\LightningRodConfig.cs" />
-    <Compile Include="Framework\Configs\LoomConfig.cs" />
-    <Compile Include="Framework\Configs\MachineConfig.cs" />
-    <Compile Include="Framework\Configs\MayoConfig.cs" />
-    <Compile Include="Framework\Configs\OilMakerConfig.cs" />
-    <Compile Include="Framework\Configs\PreservesJarConfig.cs" />
-    <Compile Include="Framework\Configs\RecyclingConfig.cs" />
-    <Compile Include="Framework\Configs\SeedMakerConfig.cs" />
-    <Compile Include="Framework\Configs\SlimeEggPressConfig.cs" />
-    <Compile Include="Framework\Configs\SlimeIncubatorConfig.cs" />
-    <Compile Include="Framework\Configs\TapperConfig.cs" />
-    <Compile Include="Framework\Configs\WormBinConfig.cs" />
-    <Compile Include="Framework\CustomObject.cs" />
-    <Compile Include="Framework\Patches\CheckForActionPatch.cs" />
-    <Compile Include="Framework\Patches\PerformObjectDropInActionPatch.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Folder Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="manifest.json" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
-  </Target>
+
 </Project>

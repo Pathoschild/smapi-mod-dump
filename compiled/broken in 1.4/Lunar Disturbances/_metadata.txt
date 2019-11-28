@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2208
-IDs: KoihimeNakamura.LunarDisturbances
-update keys: Nexus:2208, GitHub:JohnsonNicholas/SDVMods

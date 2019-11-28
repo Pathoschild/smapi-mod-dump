@@ -5,9 +5,9 @@ mods:
    Ui Info Suite
 
 latest commit:
-   commit 07bc66a2e63c02b52c9bc296dcc762ae1a6fbf97
+   commit d31f1a0827a7b2ca5a4f5842b93b830cd921e057
    Author: cdaragorn <cdaragorn1@gmail.com>
-   Date:   Wed Jan 9 13:26:53 2019 -0700
+   Date:   Tue Nov 26 23:12:29 2019 -0700
    
-       Fixed missing travelling merchant icon. Fixed possible race condition in birthday icon.
+       Some bug fixes.
    

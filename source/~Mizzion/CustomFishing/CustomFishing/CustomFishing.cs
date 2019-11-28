@@ -1,5 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewValley;
+using StardewValley.Locations;
+using StardewValley.Menus;
+using StardewValley.Tools;
 using SFarmer = StardewValley.Farmer;
 using SObject = StardewValley.Object;
 
@@ -7,43 +15,43 @@ namespace CustomFishing
 {
     public class CustomFishing : Mod
     {
-        private ModConfig Config;
+        private ModConfig _config;
         //Config Settings
-        private int DefaultBobberVal;
-        private bool Enabled;
-        private int Difficulty;
-        private bool EasyFishing;
+        private int _defaultBobberVal;
+        private bool _enabled;
+        private int _difficulty;
+        private bool _easyFishing;
         public bool AlwaysMaxCast;
-        private int BaseBobberBarHeight;
-        private bool InstantFishBite;
-        private bool InstantCatch;
-        private bool AlwaysPerfect;
-        private bool InfiniteTackle;
-        private bool AlwaysSpawnTreasure;
-        private bool AlwaysGetTreasure;
+        private int _baseBobberBarHeight;
+        private bool _instantFishBite;
+        private bool _instantCatch;
+        private bool _alwaysPerfect;
+        private bool _infiniteTackle;
+        private bool _alwaysSpawnTreasure;
+        private bool _alwaysGetTreasure;
 
         //
-        private bool ShowMessage;
-        private string FishingMsg = "";
-        private int MotionType = 0;
+        private bool _showMessage;
+        private string _fishingMsg = "";
+        private int _motionType = 0;
         
         //Fish Data
-        private string fishName = "";
-        private float DartingAmount;
-        private string BobberBehavior;
-        private int MinFishSize;
-        private int MaxFishSize;
-        private string[] SpawnTimes;
-        private string[] SpawnSeasons;
-        private string DummyString;
-        private int SpawnStart1 = 0;
-        private int SpawnStart2 = 0;
-        private int SpawnStop1 = 0;
-        private int SpawnStop2 = 0;
-        private int MinWaterDepth;
-        private double SpawnMultiplier;
-        private double DepthMultiplier;
-        private int MinFishingLevel;
+        private string _fishName = "";
+        private float _dartingAmount;
+        private string _bobberBehavior;
+        private int _minFishSize;
+        private int _maxFishSize;
+        private string[] _spawnTimes;
+        private string[] _spawnSeasons;
+        private string _dummyString;
+        private int _spawnStart1 = 0;
+        private int _spawnStart2 = 0;
+        private int _spawnStop1 = 0;
+        private int _spawnStop2 = 0;
+        private int _minWaterDepth;
+        private double _spawnMultiplier;
+        private double _depthMultiplier;
+        private int _minFishingLevel;
 
         public override void Entry(IModHelper helper)
         {
@@ -59,69 +67,69 @@ namespace CustomFishing
         public void DrawTick(object sender, RenderedEventArgs e)
         {
             bool inCave = Game1.currentLocation is MineShaft || Game1.currentLocation is FarmCave;
-            if (ShowMessage)
+            if (_showMessage)
             {
                 
                 //DrawTextBox(5, inCave ? 100 : 5, Game1.smallFont, fishName);
-                DrawTextBox(5, (Game1.viewport.Height - 200), Game1.dialogueFont, FishingMsg);
+                DrawTextBox(5, (Game1.viewport.Height - 200), Game1.dialogueFont, _fishingMsg);
             }
         }
         private void AfterLoad(object sender, SaveLoadedEventArgs e)
         {
-            Config = Helper.ReadConfig<ModConfig>();
-            rePopulateConfig();
+            _config = Helper.ReadConfig<ModConfig>();
+            RePopulateConfig();
         }
         private void UpdateTick(object sender, UpdateTickedEventArgs e)
         {
-            if (!Context.IsWorldReady || !Enabled)
+            if (!Context.IsWorldReady || !_enabled)
                 return;
             //Everything should be good to proceed
-            SFarmer Player = Game1.player;
-            if (Enabled)
+            SFarmer player = Game1.player;
+            if (_enabled)
             {
-                if (Game1.activeClickableMenu == null && Player.CurrentTool is FishingRod rod)
+                if (Game1.activeClickableMenu == null && player.CurrentTool is FishingRod rod)
                 {
                     if (AlwaysMaxCast)
                         rod.castingPower = 1.01F;
 
-                    if (InstantFishBite)
+                    if (_instantFishBite)
                     {
                         if (rod.timeUntilFishingBite > 0)
                             rod.timeUntilFishingBite = 0;
                     }
 
-                    if (InfiniteTackle && rod.attachments[1] != null)
+                    if (_infiniteTackle && rod.attachments[1] != null)
                         rod.attachments[1].scale.Y = 1;
                 }
                 if (Game1.activeClickableMenu is BobberBar bobberMenu)
                 {
-                    getFish(Helper.Reflection.GetField<int>(bobberMenu, "whichFish").GetValue());
-                    FishingMsg = "Hooked Fish:\n\r" + fishName;
-                    ShowMessage = true;
+                    GetFish(Helper.Reflection.GetField<int>(bobberMenu, "whichFish").GetValue());
+                    _fishingMsg = "Hooked Fish:\n\r" + _fishName;
+                    _showMessage = true;
 
-                    if (InstantCatch)
+                    if (_instantCatch)
                         Helper.Reflection.GetField<float>(bobberMenu, "distanceFromCatching").SetValue(1);
 
-                    if (AlwaysPerfect)
+                    if (_alwaysPerfect)
                         Helper.Reflection.GetField<bool>(bobberMenu, "perfect").SetValue(true);
 
-                    if (EasyFishing)
+                    if (_easyFishing)
                     {
                        Helper.Reflection.GetField<int>(bobberMenu, "bobberBarHeight").SetValue(560);
                     }
                     else
                     {
-                        DefaultBobberVal = (Game1.tileSize * 3 / 2 + Player.FishingLevel * 8) + BaseBobberBarHeight;
-                        DefaultBobberVal = ((Game1.tileSize * 3 / 2 + Player.FishingLevel * 8) + BaseBobberBarHeight) >= 500 ? 499 : DefaultBobberVal;
-                       Helper.Reflection.GetField<int>(bobberMenu, "bobberBarHeight").SetValue(DefaultBobberVal);
+                        _defaultBobberVal = (Game1.tileSize * 3 / 2 + player.FishingLevel * 8) + _baseBobberBarHeight;
+                        _defaultBobberVal = ((Game1.tileSize * 3 / 2 + player.FishingLevel * 8) + _baseBobberBarHeight) >= 500 ? 499 : _defaultBobberVal;
+                       Helper.Reflection.GetField<int>(bobberMenu, "bobberBarHeight").SetValue(_defaultBobberVal);
                     }
 
-                    if (AlwaysSpawnTreasure)
+                    if (_alwaysSpawnTreasure)
                     {
                         Helper.Reflection.GetField<bool>(bobberMenu, "treasure").SetValue(true);
                         Helper.Reflection.GetField<float>(bobberMenu, "treasureScale").SetValue(1);
                     }
-                    if (AlwaysGetTreasure && Helper.Reflection.GetField<bool>(bobberMenu, "treasure").GetValue())
+                    if (_alwaysGetTreasure && Helper.Reflection.GetField<bool>(bobberMenu, "treasure").GetValue())
                     {                        
                         Helper.Reflection.GetField<bool>(bobberMenu, "treasureCaught").SetValue(true);
                         Helper.Reflection.GetField<float>(bobberMenu, "treasureScale").SetValue(0);
@@ -138,8 +146,8 @@ namespace CustomFishing
                 }
                 else
                 {
-                    fishName = "";
-                    ShowMessage = false;
+                    _fishName = "";
+                    _showMessage = false;
                 }
             }
         }
@@ -147,41 +155,41 @@ namespace CustomFishing
         {
             if(e.Button == SButton.F8)
             {
-                Config = Helper.ReadConfig<ModConfig>();
-                rePopulateConfig();
+                _config = Helper.ReadConfig<ModConfig>();
+                RePopulateConfig();
             }
             if(e.Button == SButton.F7)
             {
                 int n1 = 1;
                 if (n1 == 2)
                     return;
-                int o = MotionType;
+                int o = _motionType;
                 if(o == 4)
                 {
-                    MotionType = 0;
+                    _motionType = 0;
                 }
                 else
                 {
-                    MotionType += 1;
+                    _motionType += 1;
                 }
-                Monitor.Log($"Changed MotionType to: {MotionType}", LogLevel.Alert);
+                Monitor.Log($"Changed MotionType to: {_motionType}", LogLevel.Alert);
             }
         }
         //Custom Voids
 
-        private void rePopulateConfig()
+        private void RePopulateConfig()
         {
-            Enabled = Config.Enabled;
-            Difficulty = Config.Difficulty;
-            EasyFishing = Config.EasyFishing;
-            AlwaysMaxCast = Config.AlwaysMaxCast;
-            BaseBobberBarHeight = Config.BaseBobberBarHeight;
-            InstantFishBite = Config.InstantFishBite;
-            InstantCatch = Config.InstantCatch;
-            AlwaysPerfect = Config.AlwaysPerfect;
-            InfiniteTackle = Config.InfiniteTackle;
-            AlwaysSpawnTreasure = Config.AlwaysSpawnTreasure;
-            AlwaysGetTreasure = Config.AlwaysGetTreasure;
+            _enabled = _config.Enabled;
+            _difficulty = _config.Difficulty;
+            _easyFishing = _config.EasyFishing;
+            AlwaysMaxCast = _config.AlwaysMaxCast;
+            _baseBobberBarHeight = _config.BaseBobberBarHeight;
+            _instantFishBite = _config.InstantFishBite;
+            _instantCatch = _config.InstantCatch;
+            _alwaysPerfect = _config.AlwaysPerfect;
+            _infiniteTackle = _config.InfiniteTackle;
+            _alwaysSpawnTreasure = _config.AlwaysSpawnTreasure;
+            _alwaysGetTreasure = _config.AlwaysGetTreasure;
         }
         //Draw Text Box Thanks to CJB for the coding in CJB Cheat Menu
         public static void DrawTextBox(int x, int y, SpriteFont font, string message, int align = 0, float colorIntensity = 1F)
@@ -207,15 +215,15 @@ namespace CustomFishing
                     break;
             }
         }
-        private void getFish(int fish)
+        private void GetFish(int fish)
         {
             Dictionary<int, string> dFish = Game1.content.Load<Dictionary<int, string>>("Data\\Fish");
             if (dFish.ContainsKey(fish))
             {
                 string[] fishArray = dFish[fish].Split('/');
-                fishName = fishArray[0];
-                DartingAmount = (float)Convert.ToInt32(fishArray[1]);
-                BobberBehavior = fishArray[2];
+                _fishName = fishArray[0];
+                _dartingAmount = (float)Convert.ToInt32(fishArray[1]);
+                _bobberBehavior = fishArray[2];
                 /*
                 switch (this.BobberBehavior)
                 {
@@ -235,15 +243,15 @@ namespace CustomFishing
                         this.MotionType = 0;
                         break;
                 }*/
-                MinFishSize = Convert.ToInt32(fishArray[3]);
-                MaxFishSize = Convert.ToInt32(fishArray[4]);
+                _minFishSize = Convert.ToInt32(fishArray[3]);
+                _maxFishSize = Convert.ToInt32(fishArray[4]);
                 string[] fSpawn = fishArray[5].Split(' ');
-                SpawnStart1 = Convert.ToInt32(fSpawn[0]);
-                SpawnStop1 = Convert.ToInt32(fSpawn[1]);
+                _spawnStart1 = Convert.ToInt32(fSpawn[0]);
+                _spawnStop1 = Convert.ToInt32(fSpawn[1]);
                 if(fSpawn.Length > 2)
                 {
-                    SpawnStart2 = Convert.ToInt32(fSpawn[2]);
-                    SpawnStop2 = Convert.ToInt32(fSpawn[3]);
+                    _spawnStart2 = Convert.ToInt32(fSpawn[2]);
+                    _spawnStop2 = Convert.ToInt32(fSpawn[3]);
                 }
                 string[] fSeasons = fishArray[6].Split(' ');
 

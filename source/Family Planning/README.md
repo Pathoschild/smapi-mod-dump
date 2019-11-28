@@ -164,13 +164,11 @@ Here's an example of formatting your data.json to contain both child sprite info
 ```
 ## Multiplayer
 
-The mod Family Planning, without any content packs, is compatible with multiplayer. This mod only affects the player who has it downloaded, so there are no issues with multiplayer.
-
-When you have a content pack installed however, due to a bug in Stardew Valley 1.3, you may run into game-breaking crashes if one player has the content pack installed and the other(s) don't. If you'd like to use a content pack while playing a multiplayer game, be sure that everyone has the same content pack(s) installed.
+I haven't checked compatibility with multiplayer yet for the 1.4 update. If you're using this mod with multiplayer, proceed with caution.
 
 ## Compatibility:
 
-Works with Stardew Valley 1.3 beta on Linux/Mac/Windows.
+Works with Stardew Valley 1.4 beta on Linux/Mac/Windows.
 This mod uses Harmony, so there may be interference with other mods using Harmony to patch the same methods. If you notice any issues, please let me know.
 
 ## More details:

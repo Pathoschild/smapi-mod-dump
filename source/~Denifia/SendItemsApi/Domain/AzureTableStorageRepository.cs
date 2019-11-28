@@ -9,10 +9,10 @@ namespace Denifia.Stardew.SendItemsApi.Domain
 {
     public class AzureTableStorageRepository : ITableStorageRepository
     {
-        CloudStorageAccount _storageAccount;
-        CloudTableClient _tableClient;
-        CloudTable _table;
-        AzureStorageConfig _azureTableStorageConfig;
+        readonly CloudStorageAccount _storageAccount;
+        readonly CloudTableClient _tableClient;
+        readonly CloudTable _table;
+        readonly AzureStorageConfig _azureTableStorageConfig;
 
         public AzureTableStorageRepository(IOptions<AzureStorageConfig> azureTableStorageConfig)
         {
@@ -59,7 +59,7 @@ namespace Denifia.Stardew.SendItemsApi.Domain
             {
 
             }
-            return default(TEntity);
+            return default;
         }
 
         public async Task<bool> Delete<TEntity>(TEntity entity) where TEntity : ITableEntity

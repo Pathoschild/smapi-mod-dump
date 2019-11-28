@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.Locations;
+using StardewValley.Network;
 
 using StardewModdingAPI;
 
@@ -389,7 +390,7 @@ namespace BlueberryMushroomMachine
 			if (t == null || !t.isHeavyHitter() || t is StardewValley.Tools.MeleeWeapon)
 				return base.performToolAction(t, location);
 
-			location.playSound("woodWhack");
+			location.playSound("woodWhack", NetAudio.SoundContext.Default);
 			if (heldObject.Value != null)
 				// Extract any held mushrooms from machine.
 				popObject(true);
@@ -465,7 +466,7 @@ namespace BlueberryMushroomMachine
 			if (!probe)
 			{
 				putObject(dropIn, rate);
-				who.currentLocation.playSound("Ship");
+				who.currentLocation.playSound("Ship", NetAudio.SoundContext.Default);
 			}
 			return true;
 		}
@@ -491,7 +492,7 @@ namespace BlueberryMushroomMachine
 
 			// Spawn object.
 			location.objects.Add(index1, new Propagator(index1));
-			location.playSound("hammer");
+			location.playSound("hammer", NetAudio.SoundContext.Default);
 			if (!performDropDownAction(who))
 			{
 				StardewValley.Object one = (StardewValley.Object)getOne();
@@ -503,7 +504,7 @@ namespace BlueberryMushroomMachine
 				{
 					if (location.objects[index1].ParentSheetIndex != ParentSheetIndex)
 					{
-						Game1.createItemDebris(location.objects[index1], index1 * 64f, Game1.random.Next(4), null, -1);
+						Game1.createItemDebris(location.objects[index1], index1 * 64f, -1, null, -1);
 						location.objects[index1] = one;
 					}
 				}
@@ -511,7 +512,7 @@ namespace BlueberryMushroomMachine
 					location.objects.Add(index1, one);
 				one.initializeLightSource(index1, false);
 			}
-			location.playSound("woodyStep");
+			location.playSound("woodyStep", NetAudio.SoundContext.Default);
 			return true;
 		}
 		

@@ -9,7 +9,7 @@ namespace WaterCanRefiller
     public class WaterCanRefiller : Mod
     {
         private ModConfig _config;
-        private readonly bool _debug = true;
+        private readonly bool _debug = false;
 
         public override void Entry(IModHelper helper)
         {

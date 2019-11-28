@@ -66,10 +66,10 @@ namespace BetterTrainLoot
         }
         private void Input_ButtonReleased(object sender, StardewModdingAPI.Events.ButtonReleasedEventArgs e)
         {
-            if (e.Button == SButton.Y && !railroadMapBlocked 
+            if (e.Button == SButton.O && !railroadMapBlocked 
                 && config.enableForceCreateTrain && isMainPlayer)
             {
-                this.Monitor.Log("Player press Y... Choo choo");                
+                this.Monitor.Log("Player press O... Choo choo");                
                 forceNewTrain = true;
                 enableCreatedTrain = true;
             }
@@ -177,8 +177,7 @@ namespace BetterTrainLoot
             forceNewTrain = false;
             trainType = TRAINS.UNKNOWN;
             //this.Monitor.Log($"Setting train... Choo choo... {Game1.timeOfDay}");
-            enableCreatedTrain = false;
-            SendMulitplayerMessage("A train is approaching Stardew Valley...");
+            enableCreatedTrain = false;            
         }
 
         private void ResetDailyValues()
@@ -187,12 +186,12 @@ namespace BetterTrainLoot
             enableCreatedTrain = true;
             numberOfTrains = 0;
             numberOfRewardsPerTrain = 0;
-            pctChanceOfNewTrain = Game1.dailyLuck + config.basePctChanceOfTrain;                                                                                    // SDV 1.4... use Game1.player.DailyLuck
+            pctChanceOfNewTrain = Game1.player.DailyLuck + config.basePctChanceOfTrain;                                                                                    // SDV 1.4... use Game1.player.DailyLuck
         }
 
         private void SetMaxNumberOfTrainsAndStartTime()
         {
-            maxNumberOfTrains = (int)Math.Round((Game1.random.NextDouble() + Game1.dailyLuck) * (double)config.maxTrainsPerDay, 0, MidpointRounding.AwayFromZero);  // SDV 1.4... use Game1.player.DailyLuck
+            maxNumberOfTrains = (int)Math.Round((Game1.random.NextDouble() + Game1.player.DailyLuck) * (double)config.maxTrainsPerDay, 0, MidpointRounding.AwayFromZero);  // SDV 1.4... use Game1.player.DailyLuck
 
             double ratio = (double)maxNumberOfTrains / (double)config.maxTrainsPerDay;  
 
@@ -206,7 +205,7 @@ namespace BetterTrainLoot
             //Update the treasure chances for today
             foreach (TrainData train in trainCars.Values)
             {
-                train.UpdateTrainLootChances(Game1.dailyLuck);                                                                                                      // SDV 1.4... use Game1.player.DailyLuck
+                train.UpdateTrainLootChances(Game1.player.DailyLuck);                                                                                                      // SDV 1.4... use Game1.player.DailyLuck
             }
         }
 
@@ -215,14 +214,6 @@ namespace BetterTrainLoot
             Type type = typeof(Game1);
             FieldInfo info = type.GetField("multiplayer", BindingFlags.NonPublic | BindingFlags.Static);
             multiplayer = info.GetValue(null) as Multiplayer;
-        }
-
-        internal static void SendMulitplayerMessage(string message)
-        {
-            if (multiplayer != null && BetterTrainLootMod.Instance.config.enableMultiplayerChatMessage)
-            {
-                multiplayer.sendChatMessage(LocalizedContentManager.LanguageCode.en, message);
-            }
         }
     }
 }

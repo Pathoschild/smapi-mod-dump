@@ -5,9 +5,9 @@ mods:
    Bigger Backpack
 
 latest commit:
-   commit 4e70e33c1d15199b27f4be6596c75e551f312c49
+   commit 3c19378ff141e78c2855885e696c9c00c927a127
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Sat Sep 21 11:23:13 2019 +0200
+   Date:   Wed Nov 27 03:41:05 2019 +0100
    
-       Use nameof instead of strings
+       Disambiguate patched methods
    

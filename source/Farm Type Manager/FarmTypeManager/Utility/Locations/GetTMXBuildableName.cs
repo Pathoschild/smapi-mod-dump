@@ -42,7 +42,7 @@ namespace FarmTypeManager
                             if (sb.GetType() is Type sbType && sbType.GetProperty("UniqueId").GetValue(sb) is string UniqueId && sbType.GetProperty("Id").GetValue(sb) is string Id) //if this buildable's UniqueID and ID can be accessed
                             {
                                 string locationUniqueId = locationName.Substring(tmxPrefix.Length); //get the location's unique ID by removing the TMX prefix
-                                if (locationUniqueId == UniqueId) ; //if the location's unique ID matches this saved buildable
+                                if (locationUniqueId == UniqueId) //if the location's unique ID matches this saved buildable
                                 {
                                     return Id; //return this saved buildable's non-unique ID
                                 }

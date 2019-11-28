@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3633
+IDs: mizzion.onesprinkleronescarecrow
+update keys: Nexus:3633, ModDrop:661376, GitHub:Mizzion/MyStardewMods

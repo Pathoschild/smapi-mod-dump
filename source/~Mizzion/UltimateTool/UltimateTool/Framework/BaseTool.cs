@@ -1,5 +1,10 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using StardewValley;
+using StardewValley.Locations;
+using StardewValley.TerrainFeatures;
 using UltimateTool.Framework.Tools;
+using xTile.Dimensions;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using SFarmer = StardewValley.Farmer;
 using SObject = StardewValley.Object;
@@ -54,10 +59,10 @@ namespace UltimateTool.Framework
 
         protected ResourceClump ResourceClumpCoveringTile(GameLocation location, Vector2 tile)
         {
-            Rectangle tArea = this.AbsoluteArea(tile);
-            foreach(ResourceClump rc in this.ResourceClumps(location))
+            Rectangle tArea = AbsoluteArea(tile);
+            foreach(ResourceClump rc in ResourceClumps(location))
             {
-                if (rc.getBoundingBox(rc.tile).Intersects(tArea))
+                if (rc.getBoundingBox(rc.tile.Value).Intersects(tArea))
                 {
                     return rc;
                 }

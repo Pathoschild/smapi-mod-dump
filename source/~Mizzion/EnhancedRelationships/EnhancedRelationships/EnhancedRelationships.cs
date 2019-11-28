@@ -14,57 +14,19 @@ namespace EnhancedRelationships
         private ModConfig Config;        
         private List<NPC> BirthdayMessageQueue = new List<NPC>();
         private IDictionary<string, int> GaveNpcGift = new Dictionary<string, int>();
+        private IDictionary<string, string> NpcGifts = new Dictionary<string, string>();
         public bool CanEdit<T>(IAssetInfo asset)
         {
             return asset.AssetNameEquals(@"Data\mail");
         }
         public void Edit<T>(IAssetData asset)
         {
-            string[] npcz = { "Alex", "Elliott", "Harvey", "Sam", "Sebastian", "Shane", "Abigail", "Emily", "Haley", "Leah", "Maru", "Penny", "Caroline", "Clint", "Demetrius", "Dwarf", "Evelyn", "George", "Gus", "Jas", "Jodi", "Kent", "Krobus", "Lewis", "Linus", "Marnie", "Pam", "Pierre", "Robin", "Sandy", "Vincent", "Willy", "Wizard" };
-            string[] npc_gifts = { "Complete Breakfast, Salmon Dinner",
-            "Crab Cake, Duck Feather, Lobster, Pomegranate",
-            "Coffee, Pickles, Super Meal, Truffle Oil, Wine",
-            "Cactus Fruit, Maple Bar, Pizza, Tigerseye",
-            "Frozen Tear, Obsidian, Pumpkin Soup, Sashimi, Void Egg",
-            "Beer, Hot Pepper, Pepper Popper, Pizza",
-            "Amethyst, Blackberry Cobbler, Chocolate Cake, Pufferfish, Pumpkin, Spicy Eel",
-            "Amethyst, Aquamarine, Cloth, Emerald, Jade, Ruby, Survival Burger, Topaz, Wool",
-            "Coconut, Fruit Salad, Pink Cake, Sunflower",
-            "Goat Cheese, Poppyseed Muffin, Salad, Stir Fry, Truffle, Vegetable Medley, Wine",
-            "Battery Pack, Cauliflower, Cheese Cauliflower, Diamond, Gold Bar, Iridium Bar, Miners Treat, Pepper Popper, Rhubarb Pie, Strawberry",
-            "Diamond, Emerald, Melon, Poppy, Poppyseed Muffin, Red Plate, Roots Plate, Sandfish, Tom Kha Soup",
-            "Fish Taco, Summer Spangle",
-            "Amethyst, Aquamarine, Artichoke Risotto, Gold Bar, Iridium Bar, Jade, Omni Geode, Ruby, Topaz",
-            "Bean Hotpot, Ice Cream, Rice Pudding, Strawberry",
-            "Amethyst, Aquamarine, Emerald, Jade, Omni Geode, Ruby, Topaz",
-            "Beet, Chocolate Cake, Diamond, Fairy Rose, Stuffing, Tulip",
-            "Fried Mushroom, Leek",
-            "Escargot, Fish Taco, Orange",
-            "Fairy Rose, Plum Pudding",
-            "Chocolate Cake, Crispy Bass, Diamond, Eggplant Parmesan, Fried Eel, Pancakes, Rubarb Pie, Vegetable Medley",
-            "Fiddlehead Risotto, Roasted Hazelnuts",
-            "Diamond, Iridium Bar, Pumpkin, Void Egg, Void Mayonnaise, Wild Horseradish",
-            "Autumns Bounty, Glazed Yams, Hot Pepper, Vegetable Medley",
-            "Blueberry Tart, Cactus Fruit, Coconut, Dish O' The Sea, Yam",
-            "Diamond, Farmer's Lunch, Pink Cake, Pumpkin Pie",
-            "Beer, Cactus Fruit, Glazed Yams, Mead, Pale Ale, Parsnip, Parsnip Soup",
-            "Fried Calamari",
-            "Goat Cheese, Peach, Spaghetti",
-            "Crocus, Daffodil, Sweet Pea",
-            "Cranberry Candy, Grape, Pink Cake",
-            "Catfish, Diamond, Iridium Bar, Mead, Octopus, Pumpkin, Sea Cucumber, Sturgeon",
-            "Purple Mushroom, Solar Essence, Super Cucumber, Void Essence"};
+            NpcGifts = GetNpcGifts();
             var i18n = Helper.Translation;
-            for (int i = 0; i < npcz.Count(); i++)
+            foreach (var d in NpcGifts)
             {
                 IDictionary<string, string> npc = asset.AsDictionary<string, string>().Data;
-                npc["birthDayMail" + npcz[i]] = i18n.Get("npc_mail", new { npc_name = npcz[i], npc_gift = npc_gifts[i] });
-                /*
-                asset
-                .AsDictionary<string, string>()
-                .Set("birthDayMail" + npcz[i], i18n.Get("npc_mail", new { npc_name = npcz[i], npc_gift = npc_gifts[i]}));
-                
-                *///$"Dear @,^ Tomorrow is {npcz[i]}'s Birthday. You should give them a gift. They would love one of the following: ^^{npc_gifts[i]}."
+                npc["birthDayMail" + d.Key] = i18n.Get("npc_mail", new { npc_name = d.Key, npc_gift = d.Value });
             }
         }
 
@@ -79,13 +41,10 @@ namespace EnhancedRelationships
             this.Config = Helper.ReadConfig<ModConfig>();            
             SFarmer Player = Game1.player;
             Helper.Events.GameLoop.DayStarted += this.TimeEvents_AfterDayStarted;
-            //TimeEvents.AfterDayStarted += this.TimeEvents_AfterDayStarted;
             Helper.Events.GameLoop.Saving += SaveEvents_BeforeSave;
-            //SaveEvents.BeforeSave += SaveEvents_BeforeSave;
-            //LocationEvents.CurrentLocationChanged += DoNpcGift;
             Helper.Events.Player.InventoryChanged += DoNpcGift;
-            //PlayerEvents.InventoryChanged += DoNpcGift;
         }
+
         private void DoNpcGift(object sender, InventoryChangedEventArgs e)
         {
             SFarmer Player = Game1.player;
@@ -127,17 +86,7 @@ namespace EnhancedRelationships
                 foreach (GameLocation location in Game1.locations)
                 {
                     foreach (NPC characterz in location.characters)
-                    {
-                        this.DoLogic(characterz, yesterday.Day, yesterday.Season);
-                        /*
-                        if (!characterz.isBirthday(yesterday.Season, yesterday.Day))
-                        {
-                            if (GaveNpcGift.ContainsKey(characterz.name))
-                            {
-                                GaveNpcGift.Remove(characterz.name);
-                            }
-                        }*/
-                    }                        
+                        DoLogic(characterz, yesterday.Day, yesterday.Season);
                 }
 
                 foreach (NPC birthdayMessage in this.BirthdayMessageQueue)
@@ -206,6 +155,27 @@ namespace EnhancedRelationships
         }
         //Mail Updates
         
-
+        //Grab NPC Gifts Loves
+        private IDictionary<string, string> GetNpcGifts(bool loved = true)
+        {
+            var outter = Game1.NPCGiftTastes;
+            IDictionary<string, string> results = new Dictionary<string, string>();
+            string giftNames = "";
+            foreach (var o in outter)
+            {
+                if (o.Value.Contains('/'))
+                {
+                   foreach (var n in o.Value.Split('/')[1].Split(' '))
+                    {
+                        StardewValley.Object obj = new StardewValley.Object(Convert.ToInt32(n), 1, false, -1, 0);
+                        if(obj.DisplayName != "Error Item")
+                            giftNames += $"{obj.DisplayName}, ";
+                    }
+                    results.Add(o.Key, giftNames.Substring(0, giftNames.Length - 2));
+                    giftNames = "";
+                }
+            }
+            return results;
+        }
     }
 }

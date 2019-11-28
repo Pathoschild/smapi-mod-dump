@@ -12,10 +12,10 @@ mods:
    Regen Mod
 
 latest commit:
-   commit b7e8bc16e52f00e32572cf1b2423d0e6e59345fb
-   Merge: 7db80a3 9303818
+   commit 5fbd5a4be4a84f0ae620ee494a74a543cf859c66
+   Merge: b7e8bc1 d0577c3
    Author: Jesse Plamondon-Willard <github@jplamondonw.com>
-   Date:   Wed Jan 9 23:20:49 2019 -0500
+   Date:   Sun Nov 24 20:54:19 2019 -0500
    
        Merge branch 'develop'
    

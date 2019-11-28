@@ -83,6 +83,7 @@ namespace ConfigureMachineOutputs.Framework.Patches
                     machine.heldObject.Value = new SObject(inputItem.ParentSheetIndex, 1, false, -1, 0);
                     if (!probe)
                     {
+                        
                         who.currentLocation.playSound("coin");
                         machine.MinutesUntilReady = 9000 * inputItem.ParentSheetIndex == 107 ? 2 : 1;
                         if (who.professions.Contains(2))
@@ -592,7 +593,7 @@ namespace ConfigureMachineOutputs.Framework.Patches
                 //Lets grab the crop data
                 int pts = -1;
                 bool found = false;
-                Dictionary<int, string> crops = Game1.temporaryContent.Load<Dictionary<int, string>>("Data\\crops");
+                Dictionary<int, string> crops = Game1.temporaryContent.Load<Dictionary<int, string>>("Data\\Crops");
                 foreach (var crop in crops)
                 {
                     if (Convert.ToInt32(crop.Value.Split('/')[3]) == inputItem.ParentSheetIndex)

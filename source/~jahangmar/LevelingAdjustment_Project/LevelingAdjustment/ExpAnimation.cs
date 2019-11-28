@@ -27,35 +27,71 @@ namespace LevelingAdjustment
         private int life = 90;
         private readonly string expString;
         private readonly Color skillColor;
+        private readonly bool level_up;
 
         public ExpAnimation(int exp, int skill)
         {
+            level_up = false;
             this.expString = exp.ToString();
             switch (skill)
             {
-                case 0:
+                case ModEntry.FARMING_SKILL:
                     this.skillColor = Color.Wheat; break;
-                case 3:
+                case ModEntry.MINING_SKILL:
                     this.skillColor = Color.SteelBlue; break;
-                case 1:
+                case ModEntry.FISHING_SKILL:
                     this.skillColor = Color.Aqua; break;
-                case 2:
+                case ModEntry.FORAGING_SKILL:
                     this.skillColor = Color.ForestGreen; break;
-                case 4:
+                case ModEntry.COMBAT_SKILL:
                     this.skillColor = Color.OrangeRed; break;
                 default:
                     this.skillColor = Color.Black; break;
             }
         }
 
+        public ExpAnimation(int skill)
+        {
+            level_up = true;
+            expString = Game1.content.LoadString("Strings\\StringsFromCSFiles:" + "Farmer.cs.1925");
+
+            switch (skill)
+            {
+                case ModEntry.FARMING_SKILL:
+                    this.skillColor = Color.Wheat;
+                    break;
+                case ModEntry.MINING_SKILL:
+                    this.skillColor = Color.SteelBlue;
+                    break;
+                case ModEntry.FISHING_SKILL:
+                    this.skillColor = Color.Aqua;
+                    break;
+                case ModEntry.FORAGING_SKILL:
+                    this.skillColor = Color.ForestGreen;
+                    break;
+                case ModEntry.COMBAT_SKILL:
+                    this.skillColor = Color.OrangeRed;
+                    break;
+                default:
+                    this.skillColor = Color.Black;
+                    break;
+            }
+        }
+
         public void Draw(SpriteBatch b)
         {
-            SpriteFont f = Game1.tinyFont;
-            f = Game1.tinyFontBorder;
             Vector2 pos = Game1.player.Position + new Vector2(Game1.player.GetBoundingBox().Width / 2 + offX - Game1.viewport.X, -Game1.player.GetBoundingBox().Height + offY - Game1.viewport.Y);
-            //b.DrawString(f, expString, pos, skillColor);
-            b.DrawString(Game1.tinyFont, expString, pos, skillColor, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
-            b.DrawString(Game1.tinyFontBorder, expString, pos - new Vector2(4, 0), Color.Black, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
+
+            if (level_up)
+            {
+                b.DrawString(Game1.smallFont, expString, pos, skillColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+            }
+            else
+            {
+                b.DrawString(Game1.tinyFont, expString, pos, skillColor, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
+                b.DrawString(Game1.tinyFontBorder, expString, pos - new Vector2(4, 0), Color.Black, 0, new Vector2(0, 0), 2, SpriteEffects.None, 0);
+            }
+
         }
 
         public void update(GameTime gameTime)

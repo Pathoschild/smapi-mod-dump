@@ -20,6 +20,7 @@ namespace NpcAdventure
         private readonly HintDriver hintDriver;
         private readonly IMonitor monitor;
         public Dictionary<string, CompanionStateMachine> PossibleCompanions { get; }
+        public Config Config { get; }
 
         public Farmer Farmer
         {
@@ -31,12 +32,13 @@ namespace NpcAdventure
             }
         }
 
-        public CompanionManager(DialogueDriver dialogueDriver, HintDriver hintDriver, IMonitor monitor)
+        public CompanionManager(DialogueDriver dialogueDriver, HintDriver hintDriver, Config config, IMonitor monitor)
         {
             this.dialogueDriver = dialogueDriver ?? throw new ArgumentNullException(nameof(dialogueDriver));
             this.hintDriver = hintDriver ?? throw new ArgumentNullException(nameof(hintDriver));
             this.monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
             this.PossibleCompanions = new Dictionary<string, CompanionStateMachine>();
+            this.Config = config;
 
             this.dialogueDriver.DialogueRequested += this.DialogueDriver_DialogueRequested;
             this.dialogueDriver.DialogueChanged += this.DialogueDriver_DialogueChanged;
@@ -143,7 +145,6 @@ namespace NpcAdventure
             catch (InvalidStateException e)
             {
                 this.monitor.Log($"Error while trying to setup new day: {e.Message}");
-                this.monitor.ExitGameImmediately(e.Message);
             }
         }
 
@@ -180,7 +181,7 @@ namespace NpcAdventure
         /// <param name="reflection"></param>
         public void InitializeCompanions(IContentLoader loader, IModEvents gameEvents, IReflectionHelper reflection)
         {
-            Dictionary<string, string> dispositions = loader.Load<Dictionary<string, string>>("CompanionDispositions");
+            Dictionary<string, string> dispositions = loader.Load<Dictionary<string, string>>("Data/CompanionDispositions");
 
             foreach (string npcName in dispositions.Keys)
             {

@@ -1,3 +1,3 @@
-page URL: https://www.curseforge.com/stardewvalley/mods/easier-fishing
+page URL: https://stardewvalley.curseforge.com/projects/easier-fishing
 IDs: MajorDOT.EasierFishing
-update keys: CurseForge:305367
+update keys: 

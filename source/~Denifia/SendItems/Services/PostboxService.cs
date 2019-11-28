@@ -84,7 +84,7 @@ namespace Denifia.Stardew.SendItems.Services
 
             if (item == null) return;
 
-            var messageText = string.Format(_messageFormat, fromFarmer.Name, item.ParentSheetIndex, item.getStack());
+            var messageText = string.Format(_messageFormat, fromFarmer.Name, item.ParentSheetIndex, item.Stack);
 
             // Consider: Moving this to own service
             var mail = new Mail()

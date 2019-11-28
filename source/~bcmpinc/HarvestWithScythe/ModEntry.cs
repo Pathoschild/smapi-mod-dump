@@ -4,6 +4,7 @@ using System.Reflection.Emit;
 using Harmony;
 using Microsoft.Xna.Framework;
 using Netcode;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
@@ -58,7 +59,7 @@ namespace StardewHack.HarvestWithScythe
      * it afterwards.
      *
      * Flowers can have different colors, which is not supported by the original scythe harvesting 
-     * code. To support it, this mod provides a `CreateObject()` method as a proxy for spawning the
+     * code. To support it, this mod provides a `CreateDebris()` method as a proxy for spawning the
      * dropped crops/flowers.
      *
      * Forage are plain Objects where `isForage() && isSpawnedObject && !questItem` evaluates to true.
@@ -125,9 +126,9 @@ namespace StardewHack.HarvestWithScythe
 #region Patch Crop_harvest
         // Changes the vector to be pre-multiplied by 64, so it's easier to use for spawning debris.
         // Vector is stored in loc_3.
-        private void Crop_harvest_fix_vector() {
-            Harmony.CodeInstruction vector2_ldloca_S = null;
-            Harmony.CodeInstruction vector2_constructor = null;
+        private LocalBuilder Crop_harvest_fix_vector() {
+            CodeInstruction vector2_ldloca_S = null;
+            CodeInstruction vector2_constructor = null;
 
             // Remove line (2x)
             // Vector2 vector = new Vector2 ((float)xTile, (float)yTile);
@@ -144,6 +145,7 @@ namespace StardewHack.HarvestWithScythe
                 vector2_constructor = vec[5];
                 vec.Remove();
             }
+            var var_vector = (LocalBuilder)vector2_ldloca_S.operand;
             
             // Add to begin of function
             // Vector2 vector = new Vector2 ((float)xTile*64., (float)yTile*64.);
@@ -175,13 +177,18 @@ namespace StardewHack.HarvestWithScythe
                     OpCodes.Mul,
                     OpCodes.Newobj
                 ).Replace(
-                    Instructions.Ldloc_3() // vector
+                    Instructions.Ldloc_S(var_vector)
                 );
             }
+            
+            // Return the location of the vector variable.
+            return var_vector;
         }
 
         // Support harvesting of spring onions with scythe
-        private void Crop_harvest_support_spring_onion() {
+        private void Crop_harvest_support_spring_onion(LocalBuilder var_vector) {
+            if (config.HarvestMode.SpringOnion == HarvestModeEnum.HAND) return;
+            
             // Note: the branch
             //   if (this.forageCrop)
             // refers mainly to the crop spring union.
@@ -190,42 +197,46 @@ namespace StardewHack.HarvestWithScythe
             var AddItem = FindCode(
                 // if (Game1.player.addItemToInventoryBool (@object, false)) {
                 Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
-                OpCodes.Ldloc_0,
+                InstructionMatcher.AnyOf( // @object
+                    OpCodes.Ldloc_0,
+                    OpCodes.Ldloc_1
+                ),
                 OpCodes.Ldc_I4_0,
                 Instructions.Callvirt(typeof(Farmer), nameof(Farmer.addItemToInventoryBool), typeof(Item), typeof(bool)),
                 OpCodes.Brfalse
             );
+            
+            var ldarg_0 = Instructions.Ldarg_0();
+            var Ldloc_object = AddItem[1];
+            var tail = AttachLabel(AddItem.FindNext(
+                OpCodes.Ldarg_0,
+                Instructions.Ldfld(typeof(Crop), nameof(Crop.regrowAfterHarvest))
+            )[0]);
 
-            // Swap the lines (add '*64' to vector) &
             // Insert check for harvesting with scythe and act accordingly.
+            AddItem.ReplaceJump(0, ldarg_0);
             AddItem.Prepend(
                 // if (this.harvestMethod != 0) {
-                Instructions.Ldarg_0(),
+                ldarg_0,
                 Instructions.Ldfld(typeof(Crop), nameof(Crop.harvestMethod)),
                 Instructions.Call_get(typeof(NetInt), nameof(NetInt.Value)),
                 Instructions.Brfalse(AttachLabel(AddItem[0])),
                 // Game1.createItemDebris (@object, vector, -1, null, -1)
-                Instructions.Ldloc_0(), // @object
-                Instructions.Ldloc_3(), // vector
+                Ldloc_object, // @object
+                Instructions.Ldloc_S(var_vector), // vector
                 Instructions.Ldc_I4_M1(), // -1
                 Instructions.Ldnull(), // null
                 Instructions.Ldc_I4_M1(), // -1
                 Instructions.Call(typeof(Game1), nameof(Game1.createItemDebris), typeof(Item), typeof(Vector2), typeof(int), typeof(GameLocation), typeof(int)),
-                // Game1.player.gainExperience (2, howMuch);
-                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
-                Instructions.Ldc_I4_2(),
-                Instructions.Ldloc_1(),
-                Instructions.Callvirt(typeof(Farmer), nameof(Farmer.gainExperience), typeof(int), typeof(int)),
-                // return true
-                Instructions.Ldc_I4_1(),
-                Instructions.Ret()
-                // }
+                Instructions.Pop(), // For SDV 1.4
+                // Jump to tail
+                Instructions.Br(tail)
             );
         }
 
         // For colored flowers we need to call createItemDebris instead of createObjectDebris
         // Returns the local variable used for storing the quality of the crop.
-        private LocalBuilder Crop_harvest_colored_fowers() {
+        private LocalBuilder Crop_harvest_colored_flowers(LocalBuilder var_vector) {
             var code = FindCode(
                 // Game1.createObjectDebris (indexOfHarvest, xTile, yTile, -1, num3, 1f, null);
                 OpCodes.Ldarg_0,
@@ -241,16 +252,11 @@ namespace StardewHack.HarvestWithScythe
             );
             var var_quality = code[6].operand as LocalBuilder; // num3
             code.Replace(
-                // var tmp = CreateObject(this, num3);
+                // CreateDebris(this, num3);
                 Instructions.Ldarg_0(), // this
                 Instructions.Ldloc_S(var_quality), // num3
-                Instructions.Call(typeof(ModEntry), nameof(CreateObject), typeof(Crop), typeof(int)),
-                // Game1.createItemDebris(tmp, vector, -1, null, -1);
-                Instructions.Ldloc_3(), // vector
-                Instructions.Ldc_I4_M1(), // -1
-                Instructions.Ldnull(), // null
-                Instructions.Ldc_I4_M1(), // -1
-                Instructions.Call(typeof(Game1), nameof(Game1.createItemDebris), typeof(Item), typeof(Vector2), typeof(int), typeof(GameLocation), typeof(int))
+                Instructions.Ldloc_S(var_vector), // vector
+                Instructions.Call(typeof(ModEntry), nameof(CreateDebris), typeof(Crop), typeof(int), typeof(Vector2))
             );
             return var_quality;
         }
@@ -322,22 +328,24 @@ namespace StardewHack.HarvestWithScythe
 
         [BytecodePatch("StardewValley.Crop::harvest")]
         void Crop_harvest() {
-            Crop_harvest_fix_vector();
-            Crop_harvest_support_spring_onion();
-            var var_quality = Crop_harvest_colored_fowers();
-            Crop_harvest_sunflower_drops(var_quality);
+            var var_vector = Crop_harvest_fix_vector();
+            Crop_harvest_support_spring_onion(var_vector);
+            //var var_quality = Crop_harvest_colored_flowers(var_vector);
+            //Crop_harvest_sunflower_drops(var_quality);
         }
 #endregion
 
         // Proxy method for creating an object suitable for spawning as debris.
-        public static StardewValley.Object CreateObject(Crop crop, int quality) {
+        public static void CreateDebris(Crop crop, int quality, Vector2 vector) {
+            Item dropped_item;
             if (crop.programColored.Value) {
-                return new StardewValley.Objects.ColoredObject(crop.indexOfHarvest.Value, 1, crop.tintColor.Value) {
+                dropped_item = new StardewValley.Objects.ColoredObject(crop.indexOfHarvest.Value, 1, crop.tintColor.Value) {
                     Quality = quality
                 };
             } else {
-                return new StardewValley.Object(crop.indexOfHarvest.Value, 1, false, -1, quality);
+                dropped_item = new StardewValley.Object(crop.indexOfHarvest.Value, 1, false, -1, quality);
             }
+            Game1.createItemDebris(dropped_item, vector, -1, null, -1);
         }
 
 #region Patch HoeDirt
@@ -516,20 +524,20 @@ namespace StardewHack.HarvestWithScythe
                         }
                     }
                 }
-                int quality = o.Quality;
                 Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + (int)vector.X + (int)vector.Y * 777);
                 if (who.professions.Contains(16)) {
-                    quality = 4;
+                    o.Quality = 4;
                 } else if (random.NextDouble() < (double)((float)who.ForagingLevel / 30)) {
-                    quality = 2;
+                    o.Quality = 2;
                 } else if (random.NextDouble() < (double)((float)who.ForagingLevel / 15)) {
-                    quality = 1;
+                    o.Quality = 1;
                 }
+                vector *= 64.0f;
                 who.gainExperience(2, 7);
-                Game1.createObjectDebris(o.ParentSheetIndex, (int)vector.X, (int)vector.Y, -1, quality, 1, loc);
+                Game1.createItemDebris(o.getOne(), vector, -1, null, -1);
                 Game1.stats.ItemsForaged += 1;
                 if (who.professions.Contains(13) && random.NextDouble() < 0.2) {
-                    Game1.createObjectDebris(o.ParentSheetIndex, (int)vector.X, (int)vector.Y, -1, quality, 1, loc);
+                    Game1.createItemDebris(o.getOne(), vector, -1, null, -1);
                     who.gainExperience(2, 7);
                 }
                 return true;
@@ -549,19 +557,44 @@ namespace StardewHack.HarvestWithScythe
 
         void GameLocation_checkAction_Chain() {
             var var_object = generator.DeclareLocal(typeof(StardewValley.Object));
-            var code = FindCode(
-                // if (who.couldInventoryAcceptThisItem (objects [vector])) {
-                OpCodes.Ldarg_0,
-                OpCodes.Ldfld, // who
-                OpCodes.Ldarg_0,
-                OpCodes.Ldfld, // objects
-                Instructions.Ldfld(typeof(GameLocation), nameof(GameLocation.objects)),
-                null, // Either LdLoc_1 or LdLoc_S(8).
-                OpCodes.Callvirt,
-                // <- Insert is here.
-                Instructions.Callvirt(typeof(Farmer), nameof(Farmer.couldInventoryAcceptThisItem), typeof(Item)),
-                OpCodes.Brfalse
-            );
+            InstructionRange code;
+            Label cant_harvest;
+            try {
+                code = FindCode(
+                    // if (who.couldInventoryAcceptThisItem (objects [vector])) {
+                    OpCodes.Ldarg_0,
+                    OpCodes.Ldfld, // who
+                    OpCodes.Ldarg_0,
+                    OpCodes.Ldfld, // objects
+                    Instructions.Ldfld(typeof(GameLocation), nameof(GameLocation.objects)),
+                    null, // Either LdLoc_1 or LdLoc_S(8).
+                    OpCodes.Callvirt,
+                    // <- Insert is here.
+                    Instructions.Callvirt(typeof(Farmer), nameof(Farmer.couldInventoryAcceptThisItem), typeof(Item)),
+                    OpCodes.Brfalse,
+                    null // To make this InstructionRange have the same length as the one below for android.
+                );
+                cant_harvest = (Label)code[8].operand;
+            } catch (Exception err) {
+                LogException(err, LogLevel.Trace);
+                
+                // Android adds a boolean to the couldInventoryAcceptThisItem method.
+                code = FindCode(
+                    // if (who.couldInventoryAcceptThisItem (objects [vector], true)) {
+                    OpCodes.Ldarg_0,
+                    OpCodes.Ldfld, // who
+                    OpCodes.Ldarg_0,
+                    OpCodes.Ldfld, // objects
+                    Instructions.Ldfld(typeof(GameLocation), nameof(GameLocation.objects)),
+                    null, // Either LdLoc_1 or LdLoc_S(8).
+                    OpCodes.Callvirt,
+                    // <- Insert is here.
+                    OpCodes.Ldc_I4_1,
+                    Instructions.Callvirt(typeof(Farmer), nameof(Farmer.couldInventoryAcceptThisItem), typeof(Item), typeof(bool)),
+                    OpCodes.Brfalse
+                );
+                cant_harvest = (Label)code[9].operand;
+            }
             // Check whether harvesting forage by hand is allowed.
             code.Replace(
                 // var object = objects [vector];
@@ -575,13 +608,14 @@ namespace StardewHack.HarvestWithScythe
                 Instructions.Ldloc_S(var_object),
                 Instructions.Ldc_I4_0(),
                 Instructions.Call(typeof(ModEntry), nameof(CanHarvestObject), typeof(StardewValley.Object), typeof(int)),
-                Instructions.Brfalse((Label)code[8].operand),
+                Instructions.Brfalse(cant_harvest),
                 // if (who.couldInventoryAcceptThisItem (object)) {
                 code[2],
                 code[1], // who
                 Instructions.Ldloc_S(var_object),
-                code[7], // couldInventoryAcceptThisItem
-                code[8]
+                code[7], // true or couldInventoryAcceptThisItem
+                code[8],
+                code[9]
             );
 
             // Move to this.objects [vector].Quality = quality;

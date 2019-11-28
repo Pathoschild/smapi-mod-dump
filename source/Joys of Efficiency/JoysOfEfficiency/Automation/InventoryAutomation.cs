@@ -8,8 +8,9 @@ namespace JoysOfEfficiency.Automation
 {
     internal class InventoryAutomation
     {
-        private static IMonitor Monitor => InstanceHolder.Monitor;
         private static IReflectionHelper Reflection => InstanceHolder.Reflection;
+
+        private static readonly Logger Logger = new Logger("InventoryAutomation");
 
         public static void LootAllAcceptableItems(ItemGrabMenu menu, bool skipCheck = false)
         {
@@ -17,25 +18,25 @@ namespace JoysOfEfficiency.Automation
             {
                 if (menu.shippingBin || Util.IsCaShippingBinMenu(menu))
                 {
-                    Monitor.Log("Don't do anything with shipping bin");
+                    Logger.Log("Don't do anything with shipping bin");
                     return;
                 }
 
                 if (menu.reverseGrab)
                 {
-                    Monitor.Log("You can't get item from this menu.");
+                    Logger.Log("You can't get item from this menu.");
                     return;
                 }
 
                 if (menu.source == ItemGrabMenu.source_chest)
                 {
-                    Monitor.Log("Don't do anything with chest player placed");
+                    Logger.Log("Don't do anything with chest player placed");
                     return;
                 }
 
                 if (menu.showReceivingMenu && menu.source == ItemGrabMenu.source_none)
                 {
-                    Monitor.Log("showReceivingMenu true but is not gift or fishing chest.");
+                    Logger.Log("showReceivingMenu true but is not gift or fishing chest.");
                     return;
                 }
             }
@@ -53,7 +54,7 @@ namespace JoysOfEfficiency.Automation
                 int taken = oldStack - remain;
                 if (taken > 0)
                 {
-                    Monitor.Log($"You looted {item.DisplayName}{(taken == 1 ? "" : " x" + taken)}.");
+                    Logger.Log($"You looted {item.DisplayName}{(taken == 1 ? "" : " x" + taken)}.");
                 }
 
                 if (remain == 0)

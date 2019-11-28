@@ -5,9 +5,9 @@ mods:
    What Are You Missing
 
 latest commit:
-   commit 9d69c6909d07aa6465fdee543e91125b7c1aee5d
+   commit 7cc917520029c0de75f87a799be3a4615f6da61d
    Author: Luke Seewald <lseewald@uwaterloo.ca>
-   Date:   Sun Oct 6 21:04:04 2019 -0400
+   Date:   Tue Nov 26 15:33:40 2019 -0500
    
-       Some changes to make it more robust with other mods.
+       Quick fix so it doesn't crash with Stardew 1.4, I'll take a deeper look at things later
    

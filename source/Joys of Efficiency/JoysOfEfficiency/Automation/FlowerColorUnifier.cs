@@ -26,10 +26,10 @@ namespace JoysOfEfficiency.Automation
     }
     internal class FlowerColorUnifier
     {
-
-        private static IMonitor Monitor => InstanceHolder.Monitor;
         private static Config Config => InstanceHolder.Config;
         private static ITranslationHelper Translation => InstanceHolder.Translation;
+
+        private static readonly Logger Logger = new Logger("FlowerColorUnifier");
 
         public static void UnifyFlowerColors()
         {
@@ -84,7 +84,7 @@ namespace JoysOfEfficiency.Automation
                 }
 
                 SVObject obj = new SVObject(crop.indexOfHarvest.Value, 1);
-                Monitor.Log($"changed {obj.DisplayName} @[{loc.X},{loc.Y}] to color(R:{crop.tintColor.R},G:{crop.tintColor.G},B:{crop.tintColor.B},A:{crop.tintColor.A})");
+                Logger.Log($"changed {obj.DisplayName} @[{loc.X},{loc.Y}] to color(R:{crop.tintColor.R},G:{crop.tintColor.G},B:{crop.tintColor.B},A:{crop.tintColor.A})");
             }
         }
 
@@ -117,25 +117,25 @@ namespace JoysOfEfficiency.Automation
                     .ToDictionary(p => p.Key, p => p.Value as HoeDirt);
             if (!hoeDirts.ContainsKey(tileLoc))
             {
-                Monitor.Log("The given tile is not a hoe dirt.");
+                Logger.Log("The given tile is not a hoe dirt.");
                 return;
             }
             HoeDirt dirt = hoeDirts[tileLoc];
             Crop crop = dirt.crop;
             if (crop == null)
             {
-                Monitor.Log("There is no crop.");
+                Logger.Log("There is no crop.");
                 return;
             }
             if (crop.dead.Value)
             {
-                Monitor.Log("The crop is dead.");
+                Logger.Log("The crop is dead.");
                 return;
             }
 
             if (!crop.programColored.Value)
             {
-                Monitor.Log("That crop may not be a flower.");
+                Logger.Log("That crop may not be a flower.");
                 return;
             }
 

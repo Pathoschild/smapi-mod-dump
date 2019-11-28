@@ -1,0 +1,10 @@
+﻿{
+  "Name": "FarmCleaner",
+  "Author": "Mizzion",
+  "Version": "0.0.1",
+  "Description": "A mod that will clean your farm daily, and place the items in a chest next to your house.",
+  "UniqueID": "mizzion.farmcleaner",
+  "EntryDll": "FarmCleaner.dll",
+  "MinimumApiVersion": "2.11",
+  "UpdateKeys": []
+}

@@ -20,13 +20,18 @@ namespace BitwiseJonMods
             BitwiseJonMods.Common.Utility.InitLogging(this.Monitor);
 
             _config = helper.ReadConfig<ModConfig>();
-            _tractorModFound = helper.ModRegistry.IsLoaded("Pathoschild.TractorMod");
+            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+        }
+
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs args)
+        {
+            _tractorModFound = this.Helper.ModRegistry.IsLoaded("Pathoschild.TractorMod");
 
             BitwiseJonMods.Common.Utility.Log(string.Format("Config BuildUsesResources={0}", _config.BuildUsesResources));
             BitwiseJonMods.Common.Utility.Log(string.Format("Config ToggleInstantBuildMenuButton={0}", _config.ToggleInstantBuildMenuButton));
             BitwiseJonMods.Common.Utility.Log(string.Format("Tractor Mod Found={0}", _tractorModFound));
 
-            Helper.Events.Input.ButtonPressed += Input_ButtonPressed; 
+            Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
         }
 
         private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -66,6 +71,8 @@ namespace BitwiseJonMods
 
             try
             {
+                //jon, 11/27/19: For some reason, this is no longer showing the tractor garage image even though the blueprint is loading from the carpenter menu
+                //  correctly.  It shows the default stable instead.
                 IClickableMenu menu = Game1.activeClickableMenu is CarpenterMenu ? (CarpenterMenu)Game1.activeClickableMenu : null;
 
                 if (menu != null)
@@ -74,7 +81,9 @@ namespace BitwiseJonMods
                         .GetField<List<BluePrint>>(menu, "blueprints")
                         .GetValue();
 
-                    tractorBlueprint = blueprints.SingleOrDefault(b => b.name == "TractorGarage");
+                    var tractorModName = "Tractor Garage";
+                    tractorBlueprint = blueprints.SingleOrDefault(b => b.displayName == tractorModName);
+                    if (tractorBlueprint == null) BitwiseJonMods.Common.Utility.Log(string.Format("Could not load Tractor blueprint since it did not exist in Carpenter menu with display name '{0}'.", tractorModName));
                     menu.exitThisMenu();
                 }
                 else

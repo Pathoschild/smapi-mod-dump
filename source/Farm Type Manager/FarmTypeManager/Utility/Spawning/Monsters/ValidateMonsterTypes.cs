@@ -36,7 +36,7 @@ namespace FarmTypeManager
                     //validate monster names
                     bool validName = false;
 
-                    //NOTE: switch cases copied from SpawnMonster.cs; update this manually if new monsters are added
+                    //NOTE: these switch cases are copied from SpawnMonster.cs; update them manually when new monsters are added
                     switch (validTypes[x].MonsterName.ToLower()) //avoid any casing issues by making this lower-case
                     {
                         case "bat":
@@ -46,6 +46,12 @@ namespace FarmTypeManager
                         case "lava bat":
                         case "iridiumbat":
                         case "iridium bat":
+                        case "doll":
+                        case "curseddoll":
+                        case "cursed doll":
+                        case "skull":
+                        case "hauntedskull":
+                        case "haunted skull":
                         case "bigslime":
                         case "big slime":
                         case "biggreenslime":
@@ -65,6 +71,13 @@ namespace FarmTypeManager
                         case "bug":
                         case "armoredbug":
                         case "armored bug":
+                        case "dino":
+                        case "dinomonster":
+                        case "dino monster":
+                        case "pepper":
+                        case "pepperrex":
+                        case "pepper rex":
+                        case "rex":
                         case "duggy":
                         case "dust":
                         case "sprite":

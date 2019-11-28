@@ -73,10 +73,9 @@ namespace SeedsAreRare
                 if (config.exclude_night_market && Game1.currentLocation is StardewValley.Locations.BeachNightMarket)
                     return;
 
-                List<Item> shopInventory = this.Helper.Reflection.GetField<List<Item>>(shopMenu, "forSale").GetValue();
 
                 //remove all seeds but do not remove the tree saplings (those are also categorized as seeds)
-                shopInventory.RemoveAll((Item item) => item.Category == StardewValley.Object.SeedsCategory && !(config.exclude_rare_seed && item.Name.Equals("Rare Seed")) && !item.Name.EndsWith("Sapling", StringComparison.Ordinal));
+                shopMenu.forSale.RemoveAll((ISalable sale) => sale is Item item && item.Category == StardewValley.Object.SeedsCategory && !(config.exclude_rare_seed && item.Name.Equals("Rare Seed")) && !item.Name.EndsWith("Sapling", StringComparison.Ordinal));
                     
             }           
         }

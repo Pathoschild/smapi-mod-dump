@@ -137,6 +137,16 @@ namespace FarmTypeManager
                     case "iridium bat":
                         monster = new BatFTM(tile, 171);
                         break;
+                    case "doll":
+                    case "curseddoll":
+                    case "cursed doll":
+                        monster = new BatFTM(tile, -666);
+                        break;
+                    case "skull":
+                    case "hauntedskull":
+                    case "haunted skull":
+                        monster = new BatFTM(tile, 77377);
+                        break;
                     case "bigslime":
                     case "big slime":
                     case "biggreenslime":
@@ -199,6 +209,15 @@ namespace FarmTypeManager
                     case "armoredbug":
                     case "armored bug":
                         monster = new Bug(tile, 121);
+                        break;
+                    case "dino":
+                    case "dinomonster":
+                    case "dino monster":
+                    case "pepper":
+                    case "pepperrex":
+                    case "pepper rex":
+                    case "rex":
+                        monster = new DinoMonster(tile);
                         break;
                     case "duggy":
                         monster = new DuggyFTM(tile);

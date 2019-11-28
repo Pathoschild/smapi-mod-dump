@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using Harmony;
-using JoysOfEfficiency.Core;
-using StardewModdingAPI;
 
 namespace JoysOfEfficiency.Utils
 {
@@ -11,30 +9,32 @@ namespace JoysOfEfficiency.Utils
         private const string UniqueId = "punyo.JOE";
         private  static readonly HarmonyInstance Harmony = HarmonyInstance.Create(UniqueId);
 
+        private static readonly Logger Logger = new Logger("HarmonyHelper");
+
         public static bool Patch(MethodInfo methodObjective, MethodInfo methodPatcher)
         {
             try
             {
                 if (methodObjective == null)
                 {
-                    InstanceHolder.Monitor.Log("Object method is null.", LogLevel.Error);
+                    Logger.Error("Object method is null.");
                     return false;
                 }
 
                 if (methodPatcher == null)
                 {
-                    InstanceHolder.Monitor.Log("Patcher method is null.", LogLevel.Error);
+                    Logger.Error("Patcher method is null.");
                     return false;
                 }
 
                 Harmony.Patch(methodObjective, new HarmonyMethod(methodPatcher));
-                InstanceHolder.Monitor.Log($"Method:{GetMethodString(methodObjective)} has been patched by {GetMethodString(methodPatcher)}");
+                Logger.Log($"Method:{GetMethodString(methodObjective)} has been patched by {GetMethodString(methodPatcher)}");
 
                 return true;
             }
             catch (Exception e)
             {
-                InstanceHolder.Monitor.Log($"An Exception Occured: {e}", LogLevel.Error);
+                Logger.Error($"An Exception Occured: {e}");
                 return false;
             }
         }

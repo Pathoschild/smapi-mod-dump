@@ -19,15 +19,18 @@ namespace NpcAdventure.Driver
         public List<BagDumpInfo> DumpedBags { get; set; }
         public IMonitor Monitor { get; }
 
-        public StuffDriver(IModEvents events, IDataHelper dataHelper, IMonitor monitor)
+        public StuffDriver(IDataHelper dataHelper, IMonitor monitor)
+        {
+            this.DataHelper = dataHelper;
+            this.DumpedBags = new List<BagDumpInfo>();
+            this.Monitor = monitor;
+        }
+
+        public void RegisterEvents(IModEvents events)
         {
             events.GameLoop.Saving += this.GameLoop_Saving;
             events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded;
             events.GameLoop.Saved += this.GameLoop_Saved;
-
-            this.DataHelper = dataHelper;
-            this.DumpedBags = new List<BagDumpInfo>();
-            this.Monitor = monitor;
         }
 
         private void GameLoop_Saved(object sender, SavedEventArgs e)

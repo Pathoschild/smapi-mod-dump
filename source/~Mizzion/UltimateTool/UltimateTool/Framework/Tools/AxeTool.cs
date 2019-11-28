@@ -1,4 +1,8 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using StardewValley;
+using StardewValley.TerrainFeatures;
+using StardewValley.Tools;
 using UltimateTool.Framework.Configuration;
 using SFarmer = StardewValley.Farmer;
 using SObject = StardewValley.Object;
@@ -7,9 +11,9 @@ namespace UltimateTool.Framework.Tools
 {
    internal class AxeTool : BaseTool
     {
-        private readonly AxeConfig Config;
+        private readonly AxeConfig _config;
 
-        private readonly IDictionary<int, int> ResourceUpgradeNeeded = new Dictionary<int, int>
+        private readonly IDictionary<int, int> _resourceUpgradeNeeded = new Dictionary<int, int>
         {
             [ResourceClump.stumpIndex] = Tool.copper,
             [ResourceClump.hollowLogIndex] = Tool.steel
@@ -17,7 +21,7 @@ namespace UltimateTool.Framework.Tools
 
         public AxeTool(AxeConfig config)
         {
-            this.Config = config;
+            _config = config;
         }
 
         public override bool IsEnabled(SFarmer who, Tool tool, Item item, GameLocation location)
@@ -27,38 +31,38 @@ namespace UltimateTool.Framework.Tools
 
         public override bool Apply(Vector2 tile, SObject tileObj, TerrainFeature tileFeature, SFarmer who, Tool tool, Item item, GameLocation location)
         {
-            if(this.Config.CutDebris && (tileObj?.Name == "Twig" || tileObj?.Name.ToLower().Contains("weed") == true))
+            if(_config.CutDebris && (tileObj?.Name == "Twig" || tileObj?.Name.ToLower().Contains("weed") == true))
             {
-                return this.UseToolOnTile(tool, tile);
+                return UseToolOnTile(tool, tile);
             }
 
             switch (tileFeature)
             {
                 case Tree tree:
-                    if (this.Config.CutTrees)
+                    if (_config.CutTrees)
                     {
-                        return this.UseToolOnTile(tool, tile);
+                        return UseToolOnTile(tool, tile);
                     }
                     break;
                 case HoeDirt dirt when dirt.crop != null:
-                    if(this.Config.CutDeadCrops && dirt.crop.dead)
+                    if(_config.CutDeadCrops && dirt.crop.dead.Value)
                     {
-                        return this.UseToolOnTile(tool, tile);
+                        return UseToolOnTile(tool, tile);
                     }
-                    if(this.Config.CutLiveCrops && !dirt.crop.dead)
+                    if(_config.CutLiveCrops && !dirt.crop.dead.Value)
                     {
-                        return this.UseToolOnTile(tool, tile);
+                        return UseToolOnTile(tool, tile);
                     }
                     break;
             }
 
 
-            if (this.Config.CutDebris)
+            if (_config.CutDebris)
             {
-                ResourceClump rc = this.ResourceClumpCoveringTile(location, tile);
-                if(rc != null && this.ResourceUpgradeNeeded.ContainsKey(rc.parentSheetIndex) && tool.upgradeLevel >= this.ResourceUpgradeNeeded[rc.parentSheetIndex])
+                ResourceClump rc = ResourceClumpCoveringTile(location, tile);
+                if(rc != null && _resourceUpgradeNeeded.ContainsKey(rc.parentSheetIndex.Value) && tool.UpgradeLevel >= _resourceUpgradeNeeded[rc.parentSheetIndex.Value])
                 {
-                    this.UseToolOnTile(tool, tile);
+                    UseToolOnTile(tool, tile);
                 }
             }
             return false;

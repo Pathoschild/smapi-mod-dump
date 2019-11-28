@@ -10,118 +10,60 @@ namespace PetWaterBowl
 {
     public class PetWaterBowl : Mod
     {
-        private Config _config;
+        private ModConfig _config;
 
-        private bool debugging;
         //Config Settings
         private bool _enableMod;
         private bool _enableSnowWatering;
         private bool _enableSprinklers;
-        private Vector2 _waterBowlLocation;
 
         public override void Entry(IModHelper helper)
         {
-            _config = helper.ReadConfig<Config>();
+            _config = helper.ReadConfig<ModConfig>();
             _enableMod = _config.EnableMod;
             _enableSnowWatering = _config.EnableSnowWatering;
             _enableSprinklers = _config.EnableSprinklerWatering;
-            _waterBowlLocation = _config.WaterBowlLocation;
             
-            //Whether Im debugging
-            debugging = false;
-
+           
             //Events
-            helper.Events.Input.ButtonPressed += KeyPressed;
-            helper.Events.GameLoop.SaveLoaded += AfterLoad;
-            helper.Events.GameLoop.Saved += AfterSave;
+             helper.Events.GameLoop.DayStarted += OnDayStarted;
         }
 
-        private void KeyPressed(object sender, ButtonPressedEventArgs e)
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-            if (!Context.IsWorldReady)
-                return;
-            //Reload Config file
-            if (Helper.Input.IsDown(SButton.F5))
-            {
-                _config = Helper.ReadConfig<Config>();
-                _enableMod = _config.EnableMod;
-                _enableSnowWatering = _config.EnableSnowWatering;
-                _enableSprinklers = _config.EnableSprinklerWatering;
-                _waterBowlLocation = _config.WaterBowlLocation;
-                Monitor.Log("Config Reloaded", LogLevel.Info);
-            }
-            //Grab the Coords of the mouse cursor
-            if (Helper.Input.IsDown(SButton.F9))
-            {
-                ICursorPosition cur = Helper.Input.GetCursorPosition();
-                _config.WaterBowlLocation = new Vector2(cur.Tile.X, cur.Tile.Y);
-                Helper.WriteConfig(_config);
-                //Reload the config after writing to it.
-                _config = Helper.ReadConfig<Config>();
-                _enableMod = _config.EnableMod;
-                _enableSnowWatering = _config.EnableSnowWatering;
-                _enableSprinklers = _config.EnableSprinklerWatering;
-                _waterBowlLocation = _config.WaterBowlLocation;
-                Monitor.Log($"Current Water Bowl Location: X:{cur.Tile.X}, Y:{cur.Tile.Y}. Settings Updated.");
-            }
-            //For my testing purposes
-            if (Helper.Input.IsDown(SButton.NumPad9) && debugging)
-            {
-                Monitor.Log($"Sprinkler Watering Activated: {_enableSprinklers}");
-            }
-            //Check for water bowl at location
-            if (Helper.Input.IsDown(SButton.NumPad8) && debugging)
-            {
-                if(CheckBowlLocation(_waterBowlLocation))
-                    Monitor.Log("Bowl found.", LogLevel.Alert);
-                else
-                    Monitor.Log("Bowl not found", LogLevel.Alert);
-            }
+            //Vector2 preScan = CheckBowlLocation();
+            Farm farm = Game1.getFarm();
+            //farm.setMapTileIndex(Convert.ToInt32(preScan.X), Convert.ToInt32(preScan.Y), 1938, "Buildings");
+            WaterPetBowl(new Vector2(farm.petBowlPosition.X, farm.petBowlPosition.Y));
         }
-
-        private void AfterSave(object sender, SavedEventArgs e)
-        {
-            if (Game1.whichFarm < 4)
-                WaterPetBowl(new Vector2(54, 7));
-            else
-            {
-                if (_waterBowlLocation.X == 54 && _waterBowlLocation.Y == 7)
-                    Monitor.Log("It appears, you are using a custom map. In order for this mod to work correctly, you will need to hover your mouse over the water bowl and hit F9. This will set the water bowls coords, then the mod should work correctly.", LogLevel.Info);
-                else
-                    WaterPetBowl(_waterBowlLocation);
-            }
-        }
-        private void AfterLoad(object sender, SaveLoadedEventArgs e)
-        {
-            if (Game1.whichFarm < 4)
-                WaterPetBowl(new Vector2(54, 7));
-            else
-            {
-                if(_waterBowlLocation.X == 54 && _waterBowlLocation.Y == 7)
-                    Monitor.Log("It appears, you are using a custom map. In order for this mod to work correctly, you will need to hover your mouse over the water bowl and hit F9. This will set the water bowls coords, then the mod should work correctly.", LogLevel.Info);
-                else
-                    WaterPetBowl(_waterBowlLocation);
-            }
-        }
-
-        //Method that will be used to water the bowl. I added this, so I wont have to copy and paste code.
+        
+        /// <summary>
+        /// Fills the pet bowl with water
+        /// </summary>
+        /// <param name="tileLocation">The location of the petbowl.</param>
         private void WaterPetBowl(Vector2 tileLocation)
         {
             if (!_enableMod)
                 return;
             Farm farm = Game1.getFarm();
             if (Game1.isRaining || Game1.isLightning || (Game1.isSnowing && _enableSnowWatering) ||
-                CheckForSprinklers(tileLocation))
+                (CheckForSprinklers(tileLocation) && _enableSprinklers))
             {
-                farm.setMapTileIndex(Convert.ToInt32(tileLocation.X), Convert.ToInt32(tileLocation.Y), 1939, "Buildings", 0);
+                farm.petBowlWatered.Set(true);
+                //farm.setMapTileIndex(Convert.ToInt32(tileLocation.X), Convert.ToInt32(tileLocation.Y), 1939, "Buildings");
                 Monitor.Log("Water bowl should be filled.");
             }
             else
-                farm.setMapTileIndex(Convert.ToInt32(tileLocation.X), Convert.ToInt32(tileLocation.Y), 1938, "Buildings", 0);
+                farm.petBowlWatered.Set(false);//farm.setMapTileIndex(Convert.ToInt32(tileLocation.X), Convert.ToInt32(tileLocation.Y), 1938, "Buildings");
 
 
         }
 
+        /// <summary>
+        /// Scans looking to see if the player has Iridium Sprinklers around the bowl.
+        /// </summary>
+        /// <param name="tileLocation">Vector2 of scan spot</param>
+        /// <returns>True/False depending on if it found the sprinkler</returns>
         private bool CheckForSprinklers(Vector2 tileLocation)
         {
             bool sprinklerFound = false;
@@ -144,14 +86,28 @@ namespace PetWaterBowl
             }
             return sprinklerFound;
         }
-
-        private bool CheckBowlLocation(Vector2 tileLocation)
+        
+        /// <summary>
+        /// Scans the entire map looking for the waterbowl.
+        /// </summary>
+        /// <returns>Returns a Vector2 of where it found the waterbowl.</returns>
+        private Vector2 CheckBowlLocation()
         {
-            bool found = false;
             Farm farm = Game1.getFarm();
-            if (farm.getTileIndexAt((int)tileLocation.X, (int)tileLocation.Y, "Buildings") == 1938)
-                found = true;
-            return found;
+            for (int xTile = 0; xTile < farm.Map.Layers[0].LayerWidth; ++xTile)
+            {
+                for (int yTile = 0; yTile < farm.Map.Layers[0].LayerHeight; ++yTile)
+                {
+                    if (farm.getTileIndexAt(xTile, yTile, "Buildings") == 1938)
+                    {
+                        Monitor.Log($"Found WaterBowl: X:{xTile}, Y:{yTile}.", LogLevel.Trace);
+                        return new Vector2(xTile, yTile);
+                    }
+                        
+                }
+            }
+            Monitor.Log("Couldn't find waterbowl.", LogLevel.Trace);
+            return  new Vector2(0, 0);
         }
     }
 }

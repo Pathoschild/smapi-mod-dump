@@ -1,0 +1,10 @@
+{
+  "Name": "BetterGiantCrops",
+  "Author": "Mizzion",
+  "Version": "0.0.1",
+  "MinimumApiVersion": "2.5",
+  "UniqueID": "mizzion.BetterGiantCrops",
+  "Description": "Tet Mod",
+  "EntryDll": "BetterGiantCrops.dll",
+  "UpdateKeys": [ "Nexus:" ]
+}

@@ -27,6 +27,8 @@ namespace ChildToNPC
      * 
      * ChildToNPC creates an NPC which is outwardly identical to your child
      * and removes your child from the farmhouse during the day, effectively replacing them.
+     * 
+     * This version of Child To NPC is compatible with SMAPI 3.0/Stadew Valley 1.4.
      */
 
     /* This mod makes use of IContentPatcherAPI
@@ -40,12 +42,12 @@ namespace ChildToNPC
      */
 
     /* This mod makes use of Harmony and patches the following methods:
-     * NPC.ArriveAtFarmHouse
-     * NPC.CheckSchedule
-     * NPC.ParseMasterSchedule
-     * NPC.PerformTenMinuteUpdate
-     * NPC.PrepareToDisembarkOnNewSchedulePath
-     * PathfindController.MoveCharacter
+     * NPC.arriveAtFarmHouse
+     * NPC.checkSchedule
+     * NPC.parseMasterSchedule
+     * NPC.performTenMinuteUpdate
+     * NPC.prepareToDisembarkOnNewSchedulePath
+     * PathfindController.handleWarps
      * (These methods should only trigger for custom NPCs)
      */
 
@@ -60,7 +62,7 @@ namespace ChildToNPC
         public static IMonitor monitor;
         public static IModHelper helper;
         public static ModConfig Config;
-        public bool spriteUpdateNeeded = true;
+        public bool updateNeeded = true;
 
         public override void Entry(IModHelper helper)
         {
@@ -82,7 +84,7 @@ namespace ChildToNPC
                     helper.ConsoleCommands.Add("RemoveChild", "RemoveChild removes the named child from the farm.", RemoveChild);
                     helper.ConsoleCommands.Add("AgeChild", "Ages the named child to toddler age.", AgeChild);
                 }
-            } 
+            }
             else
                 ageForCP = 83;
 
@@ -98,13 +100,13 @@ namespace ChildToNPC
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             IModInfo cpinfo = helper.ModRegistry.Get("Pathoschild.ContentPatcher");
-        } 
-        
+        }
+
         /* OnDayStarted
          * Every time the game is saved, the children are re-added to the FarmHouse
          * So every morning, I check if there are children in the FarmHouse and remove them,
          * and I add their dopplegangers to the FarmHouse.
-         */ 
+         */
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             FarmHouse farmHouse = Utility.getHomeOfFarmer(Game1.player);
@@ -121,7 +123,7 @@ namespace ChildToNPC
                     farmHouse.getCharacters().Remove(child);
 
                     //Set the parent for the child, from config or from default
-                    foreach(string name in Config.ChildParentPairs.Keys)
+                    foreach (string name in Config.ChildParentPairs.Keys)
                     {
                         if (child.Name.Equals(name))
                         {
@@ -154,9 +156,9 @@ namespace ChildToNPC
                         Breather = false,
                         HideShadow = false,
                         Position = location,
-                        displayName = child.Name                        
+                        displayName = child.Name
                     };
-                    
+
                     copies.Add(child.Name, childCopy);
                     farmHouse.addCharacter(childCopy);
 
@@ -196,23 +198,22 @@ namespace ChildToNPC
          */
         private void OnOneSecondUpdateTicking(object sender, OneSecondUpdateTickingEventArgs e)
         {
-            if (spriteUpdateNeeded && Context.IsWorldReady)
+            if (updateNeeded && Context.IsWorldReady)
             {
                 FarmHouse farmHouse = Utility.getHomeOfFarmer(Game1.player);
 
                 foreach (NPC childCopy in copies.Values)
                 {
+                    //Try to load child sprite
                     try
                     {
-                        //Getting child sprite
                         childCopy.Sprite = new AnimatedSprite("Characters/" + childCopy.Name, 0, 16, 32);
-                        spriteUpdateNeeded = false;
                     }
                     catch (Exception) { }
 
+                    //Try to load DefaultPosition from dispositions
                     try
                     {
-                        //Getting/Setting DefaultPosition from Dispositions
                         Dictionary<string, string> dispositions = Game1.content.Load<Dictionary<string, string>>("Data\\NPCDispositions");
                         if (dispositions.ContainsKey(childCopy.Name))
                         {
@@ -227,6 +228,8 @@ namespace ChildToNPC
                     }
                     catch (Exception) { }
                 }
+
+                updateNeeded = false;
             }
         }
 
@@ -238,7 +241,7 @@ namespace ChildToNPC
          * 
          * I save the Friendship data for the generated NPC here.
          * Otherwise, exiting the game would reset gift data.
-         */ 
+         */
         private void OnSaving(object sender, SavingEventArgs e)
         {
             foreach (NPC childCopy in copies.Values)
@@ -263,7 +266,7 @@ namespace ChildToNPC
                 Game1.player.friendshipData.TryGetValue(childCopy.Name, out Friendship friendship);
                 if (friendship != null)
                 {
-                    if(friendship.LastGiftDate != null)//null when loading from Child for the first time
+                    if (friendship.LastGiftDate != null)//null when loading from Child for the first time
                     {
                         string lastGiftDate = friendship.LastGiftDate.DayOfMonth + " " + friendship.LastGiftDate.Season + " " + friendship.LastGiftDate.Year;
                         NPCFriendshipData childCopyData = new NPCFriendshipData(friendship.Points, friendship.GiftsThisWeek, lastGiftDate);
@@ -271,7 +274,7 @@ namespace ChildToNPC
                     }
                 }
             }
-            
+
             FarmHouse farmHouse = Utility.getHomeOfFarmer(Game1.player);
             //Add children
             foreach (Child child in children)
@@ -292,14 +295,14 @@ namespace ChildToNPC
             copies = new Dictionary<string, NPC>();
             children = new List<Child>();
             children_parents = new Dictionary<string, string>();
-            spriteUpdateNeeded = true;
+            updateNeeded = true;
         }
 
         /* AddChild, RemoveChild, AgeChild
          * These are for the console commands for testing.
          * This makes it easier to generate new children.
          * (They are definitely a little buggy, proceed with caution.)
-         */ 
+         */
         private void AddChild(string arg1, string[] arg2)
         {
             Monitor.Log("Generating new child.");
@@ -329,7 +332,7 @@ namespace ChildToNPC
             }
             else
             {
-                Monitor.Log("Look up returned a null result.");
+                Monitor.Log("Lookup returned a null result.");
             }
         }
 
@@ -339,13 +342,13 @@ namespace ChildToNPC
             Child c = (Child)Game1.getCharacterFromName(childName);
             if (c != null)
             {
-                if (c.daysOld < 54)
-                    c.daysOld = 54;
+                if (c.daysOld.Value < 54)
+                    c.daysOld.Value = 54;
                 Monitor.Log(childName + " is now " + c.daysOld + " days old.");
             }
             else
             {
-                Monitor.Log("Look up returned a null result.");
+                Monitor.Log("Lookup returned a null result.");
             }
         }
 
@@ -565,10 +568,10 @@ namespace ChildToNPC
 
         /* GetChildNPC(field) & GetBedSpot
          * These are for getting access to information for ContentPatcher tokens.
-         */ 
+         */
         public static string GetChildNPCName(int childNumber)
         {
-            if(children != null && children.Count >= childNumber && children[childNumber - 1].daysOld >= ageForCP)
+            if (children != null && children.Count >= childNumber && children[childNumber - 1].daysOld >= ageForCP)
                 return children[childNumber - 1].Name;
             return null;
         }
@@ -587,7 +590,7 @@ namespace ChildToNPC
                     birthdaySDate = todaySDate.AddDays(-children[childNumber - 1].daysOld);
                 }
                 catch (ArithmeticException) { }
-                
+
                 return birthdaySDate.Season + " " + birthdaySDate.Day;
             }
             return null;
@@ -602,7 +605,7 @@ namespace ChildToNPC
 
         public static string GetChildNPCParent(int childNumber)
         {
-            if(children != null && children.Count >= childNumber && children[childNumber - 1].daysOld >= ageForCP)
+            if (children != null && children.Count >= childNumber && children[childNumber - 1].daysOld >= ageForCP)
             {
                 children_parents.TryGetValue(children[childNumber - 1].Name, out string parentName);
                 return parentName;
@@ -636,7 +639,7 @@ namespace ChildToNPC
 
             foreach (Child child in children)
             {
-                if(child.daysOld >= ageForCP)
+                if (child.daysOld >= ageForCP)
                 {
                     if (child.Gender == 0)
                         boys++;
@@ -709,17 +712,32 @@ namespace ChildToNPC
         /* GetBirthOrder
          * Tells you the birth order of an NPC
          * (I'll want to go back and use this in other places)
-         */ 
+         */
         public static int GetBirthOrder(NPC npc)
         {
             int birthNumber = 1;
-            foreach(Child child in children)
+            foreach (Child child in children)
             {
                 if (child.Name.Equals(npc.Name))
                     return birthNumber;
                 birthNumber++;
             }
             return -1;
+        }
+
+        /* GetFarmerParentId
+         * Returns the parentId from the child given their NPC/Character copy
+         */
+        public static long GetFarmerParentId(Character c)
+        {
+            foreach(Child child in children)
+            {
+                if (child.Name.Equals(c.Name))
+                {
+                    return child.idOfParent.Value;
+                }
+            }
+            return 0L;
         }
     }
 }

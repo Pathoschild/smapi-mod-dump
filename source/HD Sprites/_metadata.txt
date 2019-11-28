@@ -5,9 +5,10 @@ mods:
    HD Sprites
 
 latest commit:
-   commit ece8f0074c4d784cf8103629d034f611e3426f1b
+   commit 6972d6b13919fb81170e7d63f87fe58b6342d75c
    Author: ninthworld <theninthworldix@gmail.com>
-   Date:   Sun Jun 30 12:23:24 2019 -0700
+   Date:   Wed Nov 27 20:37:54 2019 -0800
    
-       add support for json assets
+       fix main menu sky texture problem
+       fix ReadJson relative path issue
    

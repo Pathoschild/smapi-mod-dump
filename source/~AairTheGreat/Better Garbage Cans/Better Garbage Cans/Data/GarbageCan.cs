@@ -11,6 +11,7 @@ namespace BetterGarbageCans.Data
     //  Clint's             4    
     //  Stardrop Saloon     5
     //  Evelyn/George       6
+    //  JoJa Can            7
 
     public enum GARBAGE_CANS
     {
@@ -20,7 +21,8 @@ namespace BetterGarbageCans.Data
         GUNTHER,
         CLINT,
         STARDROP_SALOON,
-        EVELYN_GEORGE
+        EVELYN_GEORGE,
+        JOJA_MART
     }
 
     public class GarbageCan 

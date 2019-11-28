@@ -113,12 +113,5 @@ namespace Denifia.Stardew.SendItems.Services
         {
             return Repository.Instance.SingleOrDefault<Domain.Farmer>(x => x.Id == id);
         }
-
-        private void DetermineCurrentFarmer()
-        {
-            var name = Game1.player.Name;
-            var farmName = Game1.player.farmName;
-            _currentFarmer = Repository.Instance.FirstOrDefault<Domain.Farmer>(x => x.Name == name && x.FarmName == farmName);
-        }
     }
 }

@@ -23,13 +23,13 @@ namespace LevelingAdjustment
 {
     public class ModEntry : Mod
     {
-        const int SKILL_COUNT = 5; //without luck
-        const int FARMING_SKILL = 0;
-        const int MINING_SKILL = 3;
-        const int FISHING_SKILL = 1;
-        const int FORAGING_SKILL = 2;
-        const int LUCK_SKILL = 5;
-        const int COMBAT_SKILL = 4;
+        public const int SKILL_COUNT = 5; //without luck
+        public const int FARMING_SKILL = 0;
+        public const int MINING_SKILL = 3;
+        public const int FISHING_SKILL = 1;
+        public const int FORAGING_SKILL = 2;
+        public const int LUCK_SKILL = 5;
+        public const int COMBAT_SKILL = 4;
 
         private int[] oldExperiencePoints;
         private int[] oldLevels;
@@ -48,11 +48,12 @@ namespace LevelingAdjustment
                 return;
             }
 
-
             Helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
             Helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
 
             Helper.Events.Display.RenderedWorld += Display_RenderedWorld;
+
+
             /*
             Helper.ConsoleCommands.Add("setexp", "", HandleSetExp);
             Helper.ConsoleCommands.Add("resetlevels", "", (arg, args) =>
@@ -96,6 +97,7 @@ namespace LevelingAdjustment
 
         void GameLoop_DayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
         {
+            conf = Helper.ReadConfig<LevelingConfig>();
             SetOldExpArray();
         }
 
@@ -162,11 +164,38 @@ namespace LevelingAdjustment
                 }
             }
 
-            //if (Game1.player.farmingLevel != oldLevels[FARMING_SKILL])
-            //if (Game1.player.fishingLevel != oldLevels[FISHING_SKILL])
-            //if (Game1.player.miningLevel != oldLevels[MINING_SKILL])
-            //if (Game1.player.foragingLevel != oldLevels[FORAGING_SKILL])
-            //if (Game1.player.combatLevel != oldLevels[COMBAT_SKILL])
+            if (conf.levelNotification)
+            {
+                if (Game1.player.farmingLevel != oldLevels[FARMING_SKILL])
+                {
+                    expAnimations.Clear();
+                    expAnimations.Add(new ExpAnimation(FARMING_SKILL));
+                }
+
+                if (Game1.player.fishingLevel != oldLevels[FISHING_SKILL])
+                {
+                    expAnimations.Clear();
+                    expAnimations.Add(new ExpAnimation(FISHING_SKILL));
+                }
+
+                if (Game1.player.miningLevel != oldLevels[MINING_SKILL])
+                {
+                    expAnimations.Clear();
+                    expAnimations.Add(new ExpAnimation(MINING_SKILL));
+                }
+
+                if (Game1.player.foragingLevel != oldLevels[FORAGING_SKILL])
+                {
+                    expAnimations.Clear();
+                    expAnimations.Add(new ExpAnimation(FORAGING_SKILL));
+                }
+
+                if (Game1.player.combatLevel != oldLevels[COMBAT_SKILL])
+                {
+                    expAnimations.Clear();
+                    expAnimations.Add(new ExpAnimation(COMBAT_SKILL));
+                }
+            }
 
             if (expchanged)
                 SetOldExpArray();

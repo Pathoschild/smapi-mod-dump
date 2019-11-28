@@ -1,3 +1,3 @@
-page URL: https://www.curseforge.com/stardewvalley/mods/sorted-storages
+page URL: https://stardewvalley.curseforge.com/projects/sorted-storages
 IDs: Zeldo.LinkedStorages
-update keys: CurseForge:290653
+update keys: 

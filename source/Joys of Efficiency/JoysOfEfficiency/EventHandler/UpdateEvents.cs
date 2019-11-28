@@ -2,6 +2,7 @@
 using JoysOfEfficiency.Automation;
 using JoysOfEfficiency.Core;
 using JoysOfEfficiency.Huds;
+using JoysOfEfficiency.Misc;
 using JoysOfEfficiency.Utils;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -14,20 +15,14 @@ namespace JoysOfEfficiency.EventHandler
 {
     internal class UpdateEvents
     {
-        public static bool Paused => EventHolder.Update._paused;
-
         public static bool DayEnded { get; set; }
-
-        public static int LastTimeOfDay { get; set; }
-
-        private bool _paused;
 
         private int _ticks;
 
-        private double _timeoutCounter;
 
         private static Config Conf => InstanceHolder.Config;
-        private static IMonitor Monitor => InstanceHolder.Monitor;
+
+        private static readonly Logger Logger = new Logger("UpdateEvent");
 
         public void OnGameUpdateEvent(object sender, UpdateTickedEventArgs args)
         {
@@ -44,38 +39,8 @@ namespace JoysOfEfficiency.EventHandler
             {
                 return;
             }
-            if (Conf.PauseWhenIdle)
-            {
-                if (Util.IsPlayerIdle())
-                {
-                    _timeoutCounter += Game1.currentGameTime.ElapsedGameTime.TotalMilliseconds;
-                    if (_timeoutCounter > Conf.IdleTimeout * 1000)
-                    {
-                        if (!_paused)
-                        {
-                            Monitor.Log("Paused game");
-                            _paused = true;
-                        }
-
-                        Game1.timeOfDay = LastTimeOfDay;
-                    }
-                }
-                else
-                {
-                    if (_paused)
-                    {
-                        _paused = false;
-                        Monitor.Log("Resumed game");
-                    }
-
-                    _timeoutCounter = 0;
-                    LastTimeOfDay = Game1.timeOfDay;
-                }
-            }
-            else
-            {
-                _paused = false;
-            }
+            
+            IdlePause.OnTickUpdate();
 
             Farmer player = Game1.player;
             if (Conf.AutoGate)
@@ -205,8 +170,8 @@ namespace JoysOfEfficiency.EventHandler
             }
             catch (Exception ex)
             {
-                Monitor.Log(ex.Source);
-                Monitor.Log(ex.ToString());
+                Logger.Error(ex.Source);
+                Logger.Error(ex.ToString());
             }
         }
     }

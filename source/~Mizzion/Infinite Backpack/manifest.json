@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Infinite Backpack",
+  "Author": "Mizzion",
+  "Version": "0.0.1",
+  "MinimumApiVersion": "2.11",
+  "UniqueID": "mizzion.infinitebackpack",
+  "Description": "Allows the player to buy an infinite amount of backpack space..",
+  "EntryDll": "InfiniteBackpack.dll",
+  "UpdateKeys": [ "Nexus:" ]
+}

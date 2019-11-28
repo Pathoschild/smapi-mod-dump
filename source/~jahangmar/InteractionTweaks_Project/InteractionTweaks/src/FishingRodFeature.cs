@@ -147,12 +147,12 @@ namespace InteractionTweaks
 
         private class ModFishingRod : FishingRod
         {
-            private Dictionary<Item, int[]> itemPriceAndStock;
+            private Dictionary<ISalable, int[]> itemPriceAndStock;
 
             public ModFishingRod(FishingRod fishingRod, ShopMenu shopMenu) : base(fishingRod.upgradeLevel)
             {
                 Helper.Reflection.GetField <NetObjectArray<Object>> (this, "attachments").SetValue(fishingRod.attachments);
-                itemPriceAndStock = Helper.Reflection.GetField<Dictionary<Item, int[]>>(shopMenu, "itemPriceAndStock").GetValue();
+                itemPriceAndStock = shopMenu.itemPriceAndStock;
             }
 
             public FishingRod ToFishingRod()
@@ -164,7 +164,7 @@ namespace InteractionTweaks
 
             public override int salePrice()
             {
-                foreach (KeyValuePair<Item, int[]> pair in itemPriceAndStock)
+                foreach (KeyValuePair<ISalable, int[]> pair in itemPriceAndStock)
                 {
                     if (pair.Key is FishingRod fishingRod && fishingRod.upgradeLevel == this.upgradeLevel)
                     {

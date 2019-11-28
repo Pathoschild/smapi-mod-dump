@@ -283,7 +283,10 @@ namespace BetterPanning
                         if ((config.sp_alwaysCreatePanningSpots && Game1.getOnlineFarmers().Count == 1)
                             || (config.mp_alwaysCreatePanningSpots && Context.IsMultiplayer && Game1.getOnlineFarmers().Count > 1))
                         {
-                            CreatePanningSpot(location);
+                            if (Game1.random.NextDouble() <= config.chanceOfCreatingPanningSpot)
+                            {
+                                CreatePanningSpot(location);
+                            }
                         }
                         else
                         {
@@ -293,7 +296,10 @@ namespace BetterPanning
                     }
                     else if(orePoint.Equals(Point.Zero))
                     {
-                        CreatePanningSpot(location);
+                        if (Game1.random.NextDouble() <= config.chanceOfCreatingPanningSpot)
+                        {
+                            CreatePanningSpot(location);
+                        }
                     }
                 }
                 else

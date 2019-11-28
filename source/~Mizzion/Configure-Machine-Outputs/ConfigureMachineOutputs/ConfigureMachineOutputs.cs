@@ -34,7 +34,7 @@ namespace ConfigureMachineOutputs
             //Make sure Customized Crystalarium mod isn't installed.
             if (helper.ModRegistry.IsLoaded("DIGUS.CustomCrystalariumMod"))
             {
-                Monitor.Log("Due to incompatability issues with Customizable Crystalarium, ConfigureMachineOutputs will not function at all.", LogLevel.Info);
+                Monitor.Log("Due to incompatability issues with Customizable Crystalarium, the Crystalarium has been turned off for this mod. This way you can use both at the same time.", LogLevel.Info);
                 _config.Machines.Crystalarium.CustomCrystalariumEnabled = false;
             }
             //Harmony Original Code credit goes to Cat from the SDV Modding Discord, I modified his Harmony code.
@@ -58,8 +58,8 @@ namespace ConfigureMachineOutputs
                     {
                         try
                         {
-                            typesToPatch.Add(Type.GetType("CustomFarmingRedux.CustomMachine, CustomFarmingRedux"));
-                            Monitor.Log("CFR Support should be active.", LogLevel.Trace);
+                            //typesToPatch.Add(Type.GetType("CustomFarmingRedux.CustomMachine, CustomFarmingRedux"));
+                            Monitor.Log("CFR Support should be active(Soon).", LogLevel.Trace);
                         }
                         catch (Exception e)
                         {

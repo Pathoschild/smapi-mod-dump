@@ -58,7 +58,7 @@ namespace StardewHack
         ///  - CodeInstruction: are the instruction's OpCode and Operand equal.
         ///  - null: always matches.
         /// </summary>
-        public InstructionRange FindCode(params Object[] contains) {
+        public InstructionRange FindCode(params InstructionMatcher[] contains) {
             return new InstructionRange(instructions, contains);
         }
 
@@ -66,7 +66,7 @@ namespace StardewHack
         /// Find the last occurance of the given sequence of instructions that follows this range.
         /// See FindCode() for how the matching is performed.
         /// </summary>
-        public InstructionRange FindCodeLast(params Object[] contains) {
+        public InstructionRange FindCodeLast(params InstructionMatcher[] contains) {
             return new InstructionRange(instructions, contains, instructions.Count, -1);
         }
 
@@ -93,6 +93,7 @@ namespace StardewHack
         }
     }
 
+#pragma warning disable RECS0108 // Warns about static fields in generic types
     // I 'love' generics. :P
     // Used to have a separate static instance variable per type T.
     public abstract class Hack<T> : HackBase where T : Hack<T>
@@ -112,11 +113,24 @@ namespace StardewHack
         /// This is necessary when dealing with delegates. 
         /// </summary>
         private static Stack<MethodBase> to_be_patched = new Stack<MethodBase>();
+
+        private bool broken = false;
         
         protected Hack() {
             instance = (T)this;
         }
 
+        void MarkAsBroken(Exception err) {
+            if (!broken) {
+                Monitor.Log("The patch failed to apply cleanly. Usually this means the mod needs to be updated.", LogLevel.Alert);
+                Monitor.Log("As a result, this mod does not function properly or at all.", LogLevel.Alert);
+                Monitor.Log("Please upload your log file at https://log.smapi.io/ and report this bug at "+getReportUrl()+".", LogLevel.Alert);
+                Library.ModEntry.broken_mods.Add(helper.ModRegistry.ModID);
+                broken = true;
+            }
+            LogException(err);
+        }
+        
         /// <summary>
         /// Applies the methods annotated with BytecodePatch defined in this class. 
         /// </summary>
@@ -127,13 +141,18 @@ namespace StardewHack
             // Iterate all methods in this class and search for those that have a BytecodePatch annotation.
             var methods = typeof(T).GetMethods(AccessTools.all);
             var apply = AccessTools.Method(typeof(Hack<T>), nameof(ApplyPatch));
-            var broken = false;
             foreach (MethodInfo patch in methods) {
                 var bytecode_patches = patch.GetCustomAttributes<BytecodePatch>();
                 foreach (var bp in bytecode_patches) {
                     if (bp.IsEnabled(this)) {
+                        try {
+                            ChainPatch(bp.GetMethod(), patch);
+                        } catch (Exception err) {
+                            string info = $"Failed to find method {bp.GetSignature()}.";
+                            instance.Monitor.Log(info, LogLevel.Error);
+                            MarkAsBroken(err);
+                        }
                         // Add the patch to the to_be_patched stack.
-                        ChainPatch(bp.GetMethod(), patch);
                     }
                 }
                 // Apply the patch to the method specified in the annotation.
@@ -142,14 +161,7 @@ namespace StardewHack
                     try {
                         harmony.Patch(method, null, null, new HarmonyMethod(apply));
                     } catch (Exception err) {
-                        if (!broken) {
-                            Monitor.Log("The patch failed to apply cleanly. Usually this means the mod needs to be updated.", LogLevel.Alert);
-                            Monitor.Log("As a result, this mod does not function properly or at all.", LogLevel.Alert);
-                            Monitor.Log("Please upload your log file at https://log.smapi.io/ and report this bug at "+getReportUrl()+".", LogLevel.Alert);
-                            StardewHack.Library.ModEntry.broken_mods.Add(helper.ModRegistry.ModID);
-                            broken = true;
-                        }
-                        LogException(err);
+                        MarkAsBroken(err);
                     }
                 }
             }
@@ -212,11 +224,11 @@ namespace StardewHack
         }
         
         /// Returns the used instance of this class.
-        /// Only available after ModEntry has been called.
-        protected static T getInstance() {
+        public static T getInstance() {
             return instance;
         }
     }
+#pragma warning restore RECS0108 // Warns about static fields in generic types
 
     public abstract class HackWithConfig<T, C> : Hack<T> where T : HackWithConfig<T, C> where C : class, new()
     {

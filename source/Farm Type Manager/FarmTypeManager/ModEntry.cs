@@ -24,9 +24,10 @@ namespace FarmTypeManager
 
             Utility.Helper = helper; //pass the helper for use by other areas of this mod's code
 
-            if (Utility.MConfig?.EnableWhereAmICommand == true) //if enabled, add the WhereAmI method as a console command
+            if (Utility.MConfig?.EnableConsoleCommands == true) //if enabled, pass the mod's console command methods to the helper
             {
                 helper.ConsoleCommands.Add("whereami", "Outputs coordinates and other information about the player's current location.", WhereAmI);
+                helper.ConsoleCommands.Add("list_monsters", "Outputs a list of available monster types, including custom types loaded by other mods.", ListMonsters);
             }
         }
     }

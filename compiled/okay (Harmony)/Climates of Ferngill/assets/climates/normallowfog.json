@@ -1,0 +1,802 @@
+{
+	"AllowRainInWinter": false,
+	"AllowThunderSnow": false,
+	"AllowSnowInFall": false,
+	"LocationsAffected": [],
+	"ChanceForNonNormalRain": 0,
+	"ClimateSequences": [{
+			"BeginSeason": "spring",
+			"EndSeason": "spring",
+			"BeginDay": 1,
+			"EndDay": 9,
+			"EveningFogChance": 1.05,
+			"HeatwaveChance": 0,
+			"ChillwaveChance": 0,
+			"SystemChances": [{
+					"WeatherType": "rain",
+					"TypeChances": 0.5
+				},
+				{
+					"WeatherType": "debris",
+					"TypeChances": 0.05
+				},
+				{
+					"WeatherType": "sunny",
+					"TypeChances": 0.45
+				}
+			],
+			"WeatherChances": [{
+					"WeatherType": "rain",
+					"BaseValue": 0.845,
+					"ChangeRate": -0.044,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				},
+				{
+					"WeatherType": "storm",
+					"BaseValue": 0.25,
+					"ChangeRate": 0.0,
+					"VariableLowerBound": -0.1,
+					"VariableHigherBound": 0.1
+				},
+				{
+					"WeatherType": "debris",
+					"BaseValue": 0.05,
+					"ChangeRate": 0.025,
+					"VariableLowerBound": -0.08,
+					"VariableHigherBound": 0.08
+				},
+				{
+					"WeatherType": "lowtemp",
+					"BaseValue": 1.65,
+					"ChangeRate": 0.5,
+					"VariableLowerBound": -0.65,
+					"VariableHigherBound": 5.0
+				},
+				{
+					"WeatherType": "hightemp",
+					"BaseValue": 5.844,
+					"ChangeRate": 0.656,
+					"VariableLowerBound": -2.0,
+					"VariableHigherBound": 9.0
+				},
+				{
+					"WeatherType": "fog",
+					"BaseValue": 0.215,
+					"ChangeRate": -0.004375,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				}
+			]
+		},
+		{
+			"BeginSeason": "spring",
+			"EndSeason": "spring",
+			"BeginDay": 10,
+			"EndDay": 19,
+			"EveningFogChance": 1.05,
+			"HeatwaveChance": 0,
+			"ChillwaveChance": 0,
+			"SystemChances": [{
+					"WeatherType": "rain",
+					"TypeChances": 0.45
+				},
+				{
+					"WeatherType": "debris",
+					"TypeChances": 0.25
+				},
+				{
+					"WeatherType": "sunny",
+					"TypeChances": 0.3
+				}
+			],
+			"WeatherChances": [{
+					"WeatherType": "rain",
+					"BaseValue": 0.55,
+					"ChangeRate": -0.012,
+					"VariableLowerBound": -0.0265,
+					"VariableHigherBound": 0.0265
+				},
+				{
+					"WeatherType": "storm",
+					"BaseValue": 0.15,
+					"ChangeRate": 0.0,
+					"VariableLowerBound": -0.1,
+					"VariableHigherBound": 0.1
+				},
+				{
+					"WeatherType": "debris",
+					"BaseValue": 0.205,
+					"ChangeRate": 0.0045,
+					"VariableLowerBound": -0.08,
+					"VariableHigherBound": 0.08
+				},
+				{
+					"WeatherType": "lowtemp",
+					"BaseValue": 1.08,
+					"ChangeRate": 0.522,
+					"VariableLowerBound": -3.0,
+					"VariableHigherBound": 7.0
+				},
+				{
+					"WeatherType": "hightemp",
+					"BaseValue": 4.218,
+					"ChangeRate": 0.778,
+					"VariableLowerBound": -3.0,
+					"VariableHigherBound": 10.0
+				},
+				{
+					"WeatherType": "fog",
+					"BaseValue": 0.18,
+					"ChangeRate": -0.0008375,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				}
+			]
+		},
+		{
+			"BeginSeason": "spring",
+			"EndSeason": "spring",
+			"BeginDay": 20,
+			"EndDay": 28,
+			"EveningFogChance": 1.05,
+			"HeatwaveChance": 0,
+			"ChillwaveChance": 0,
+			"SystemChances": [{
+					"WeatherType": "rain",
+					"TypeChances": 0.2
+				},
+				{
+					"WeatherType": "debris",
+					"TypeChances": 0.39
+				},
+				{
+					"WeatherType": "sunny",
+					"TypeChances": 0.41
+				}
+			],
+			"WeatherChances": [{
+					"WeatherType": "rain",
+					"BaseValue": 0.34,
+					"ChangeRate": -0.00315,
+					"VariableLowerBound": -0.07,
+					"VariableHigherBound": 0.07
+				},
+				{
+					"WeatherType": "storm",
+					"BaseValue": 0.01,
+					"ChangeRate": 0.0085,
+					"VariableLowerBound": -0.1,
+					"VariableHigherBound": 0.1
+				},
+				{
+					"WeatherType": "debris",
+					"BaseValue": 0.3925,
+					"ChangeRate": -0.0075,
+					"VariableLowerBound": -0.14,
+					"VariableHigherBound": 0.14
+				},
+				{
+					"WeatherType": "lowtemp",
+					"BaseValue": -8.0,
+					"ChangeRate": 1.0,
+					"VariableLowerBound": -4.0,
+					"VariableHigherBound": 9.0
+				},
+				{
+					"WeatherType": "hightemp",
+					"BaseValue": 6.25,
+					"ChangeRate": 0.6875,
+					"VariableLowerBound": -6.0,
+					"VariableHigherBound": 9.0
+				},
+				{
+					"WeatherType": "fog",
+					"BaseValue": 0.25,
+					"ChangeRate": -0.0046225,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				}
+			]
+		},
+		{
+			"BeginSeason": "summer",
+			"EndSeason": "summer",
+			"BeginDay": 1,
+			"EndDay": 9,
+			"EveningFogChance": 1.3,
+			"HeatwaveChance": 0,
+			"ChillwaveChance": 0,
+			"SystemChances": [{
+					"WeatherType": "rain",
+					"TypeChances": 0.2
+				},
+				{
+					"WeatherType": "sunny",
+					"TypeChances": 0.8
+				}
+			],
+			"WeatherChances": [{
+					"WeatherType": "rain",
+					"BaseValue": 0.2,
+					"ChangeRate": -0.001,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				},
+				{
+					"WeatherType": "storm",
+					"BaseValue": 0.4,
+					"ChangeRate": 0.0,
+					"VariableLowerBound": -0.1,
+					"VariableHigherBound": 0.1
+				},
+				{
+					"WeatherType": "lowtemp",
+					"BaseValue": 19.5,
+					"ChangeRate": 0.5,
+					"VariableLowerBound": -6.0,
+					"VariableHigherBound": 5.0
+				},
+				{
+					"WeatherType": "hightemp",
+					"BaseValue": 25.375,
+					"ChangeRate": 0.625,
+					"VariableLowerBound": -8.0,
+					"VariableHigherBound": 8.0
+				},
+				{
+					"WeatherType": "fog",
+					"BaseValue": 0.0005,
+					"ChangeRate": 0.0,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				}
+			]
+		},
+		{
+			"BeginSeason": "summer",
+			"EndSeason": "summer",
+			"BeginDay": 10,
+			"EndDay": 14,
+			"EveningFogChance": 1.3,
+			"HeatwaveChance": 0,
+			"ChillwaveChance": 0,
+			"SystemChances": [{
+					"WeatherType": "rain",
+					"TypeChances": 0.2
+				},
+				{
+					"WeatherType": "sunny",
+					"TypeChances": 0.8
+				}
+			],
+			"WeatherChances": [{
+					"WeatherType": "rain",
+					"BaseValue": 0.2,
+					"ChangeRate": -0.001,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				},
+				{
+					"WeatherType": "storm",
+					"BaseValue": 0.8,
+					"ChangeRate": 0.0,
+					"VariableLowerBound": -0.1,
+					"VariableHigherBound": 0.1
+				},
+				{
+					"WeatherType": "lowtemp",
+					"BaseValue": 17.0,
+					"ChangeRate": 0.5,
+					"VariableLowerBound": -5.0,
+					"VariableHigherBound": 7.0
+				},
+				{
+					"WeatherType": "hightemp",
+					"BaseValue": 33.2,
+					"ChangeRate": 0.06,
+					"VariableLowerBound": -8.0,
+					"VariableHigherBound": 8.0
+				},
+				{
+					"WeatherType": "fog",
+					"BaseValue": 0.0005,
+					"ChangeRate": 0.0,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				}
+			]
+		},
+		{
+			"BeginSeason": "summer",
+			"EndSeason": "summer",
+			"BeginDay": 15,
+			"EndDay": 19,
+			"EveningFogChance": 1.3,
+			"HeatwaveChance": 0,
+			"ChillwaveChance": 0,
+			"SystemChances": [{
+					"WeatherType": "rain",
+					"TypeChances": 0.2
+				},
+				{
+					"WeatherType": "sunny",
+					"TypeChances": 0.8
+				}
+			],
+			"WeatherChances": [{
+					"WeatherType": "rain",
+					"BaseValue": 0.2,
+					"ChangeRate": -0.001,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				},
+				{
+					"WeatherType": "storm",
+					"BaseValue": 0.8,
+					"ChangeRate": 0.0,
+					"VariableLowerBound": -0.1,
+					"VariableHigherBound": 0.1
+				},
+				{
+					"WeatherType": "lowtemp",
+					"BaseValue": 35.25,
+					"ChangeRate": -0.75,
+					"VariableLowerBound": -5.0,
+					"VariableHigherBound": 7.0
+				},
+				{
+					"WeatherType": "hightemp",
+					"BaseValue": 34.04,
+					"ChangeRate": -0.06,
+					"VariableLowerBound": -8.0,
+					"VariableHigherBound": 8.0
+				},
+				{
+					"WeatherType": "fog",
+					"BaseValue": 0.0005,
+					"ChangeRate": 0.0,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				}
+			]
+		},
+		{
+			"BeginSeason": "summer",
+			"EndSeason": "summer",
+			"BeginDay": 20,
+			"EndDay": 28,
+			"EveningFogChance": 1.3,
+			"HeatwaveChance": 0,
+			"ChillwaveChance": 0,
+			"SystemChances": [{
+					"WeatherType": "rain",
+					"TypeChances": 0.2
+				},
+				{
+					"WeatherType": "sunny",
+					"TypeChances": 0.8
+				}
+			],
+			"WeatherChances": [{
+					"WeatherType": "rain",
+					"BaseValue": -0.12,
+					"ChangeRate": 0.0183,
+					"VariableLowerBound": -0.07,
+					"VariableHigherBound": 0.07
+				},
+				{
+					"WeatherType": "storm",
+					"BaseValue": 0.8,
+					"ChangeRate": -0.0065,
+					"VariableLowerBound": -0.1,
+					"VariableHigherBound": 0.1
+				},
+				{
+					"WeatherType": "lowtemp",
+					"BaseValue": 33.5,
+					"ChangeRate": -0.625,
+					"VariableLowerBound": -6.0,
+					"VariableHigherBound": 6.0
+				},
+				{
+					"WeatherType": "hightemp",
+					"BaseValue": 50.25,
+					"ChangeRate": -0.9375,
+					"VariableLowerBound": -6.0,
+					"VariableHigherBound": 6.0
+				},
+				{
+					"WeatherType": "fog",
+					"BaseValue": 0.0005,
+					"ChangeRate": 0.0,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				}
+			]
+		},
+		{
+			"BeginSeason": "fall",
+			"EndSeason": "fall",
+			"BeginDay": 1,
+			"EndDay": 9,
+			"EveningFogChance": 1.35,
+			"HeatwaveChance": 0,
+			"ChillwaveChance": 0,
+			"SystemChances": [{
+					"WeatherType": "rain",
+					"TypeChances": 0.4
+				},
+				{
+					"WeatherType": "debris",
+					"TypeChances": 0.05
+				},
+				{
+					"WeatherType": "sunny",
+					"TypeChances": 0.55
+				}
+			],
+			"WeatherChances": [{
+					"WeatherType": "rain",
+					"BaseValue": 0.44,
+					"ChangeRate": -0.001,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				},
+				{
+					"WeatherType": "storm",
+					"BaseValue": 0.62,
+					"ChangeRate": -0.056,
+					"VariableLowerBound": -0.1,
+					"VariableHigherBound": 0.1
+				},
+				{
+					"WeatherType": "debris",
+					"BaseValue": 0.05,
+					"ChangeRate": 0.026,
+					"VariableLowerBound": 0.0,
+					"VariableHigherBound": 0.1
+				},
+				{
+					"WeatherType": "lowtemp",
+					"BaseValue": 21.0,
+					"ChangeRate": -0.78,
+					"VariableLowerBound": -3.0,
+					"VariableHigherBound": 3.0
+				},
+				{
+					"WeatherType": "hightemp",
+					"BaseValue": 23.0,
+					"ChangeRate": -0.64,
+					"VariableLowerBound": -4.0,
+					"VariableHigherBound": 4.0
+				},
+				{
+					"WeatherType": "fog",
+					"BaseValue": 0.0005,
+					"ChangeRate": 0.01,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				}
+			]
+		},
+		{
+			"BeginSeason": "fall",
+			"EndSeason": "fall",
+			"BeginDay": 10,
+			"EndDay": 19,
+			"EveningFogChance": 1.1,
+			"HeatwaveChance": 0,
+			"ChillwaveChance": 0,
+			"SystemChances": [{
+					"WeatherType": "rain",
+					"TypeChances": 0.35
+				},
+				{
+					"WeatherType": "debris",
+					"TypeChances": 0.3
+				},
+				{
+					"WeatherType": "sunny",
+					"TypeChances": 0.35
+				}
+			],
+			"WeatherChances": [{
+					"WeatherType": "rain",
+					"BaseValue": 0.25,
+					"ChangeRate": 0.0,
+					"VariableLowerBound": -0.02,
+					"VariableHigherBound": 0.075
+				},
+				{
+					"WeatherType": "storm",
+					"BaseValue": 0.15,
+					"ChangeRate": 0.0,
+					"VariableLowerBound": -0.1,
+					"VariableHigherBound": 0.1
+				},
+				{
+					"WeatherType": "debris",
+					"BaseValue": 0.165,
+					"ChangeRate": 0.0225,
+					"VariableLowerBound": 0.0,
+					"VariableHigherBound": 0.1
+				},
+				{
+					"WeatherType": "lowtemp",
+					"BaseValue": 15.56,
+					"ChangeRate": -0.556,
+					"VariableLowerBound": -3.0,
+					"VariableHigherBound": 4.0
+				},
+				{
+					"WeatherType": "hightemp",
+					"BaseValue": 24.78,
+					"ChangeRate": -0.778,
+					"VariableLowerBound": -6.0,
+					"VariableHigherBound": 3.5
+				},
+				{
+					"WeatherType": "fog",
+					"BaseValue": 0.025,
+					"ChangeRate": 0.00925,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				}
+			]
+		},
+		{
+			"BeginSeason": "fall",
+			"EndSeason": "fall",
+			"BeginDay": 20,
+			"EndDay": 28,
+			"EveningFogChance": 1.1,
+			"HeatwaveChance": 0,
+			"ChillwaveChance": 0,
+			"SystemChances": [{
+					"WeatherType": "rain",
+					"TypeChances": 0.4
+				},
+				{
+					"WeatherType": "debris",
+					"TypeChances": 0.4
+				},
+				{
+					"WeatherType": "sunny",
+					"TypeChances": 0.2
+				}
+			],
+			"WeatherChances": [{
+					"WeatherType": "rain",
+					"BaseValue": -0.494,
+					"ChangeRate": 0.0444,
+					"VariableLowerBound": -0.07,
+					"VariableHigherBound": 0.07
+				},
+				{
+					"WeatherType": "storm",
+					"BaseValue": 0.1,
+					"ChangeRate": 0.0,
+					"VariableLowerBound": -0.1,
+					"VariableHigherBound": 0.1
+				},
+				{
+					"WeatherType": "debris",
+					"BaseValue": 0.165,
+					"ChangeRate": 0.0225,
+					"VariableLowerBound": 0.0,
+					"VariableHigherBound": 0.1
+				},
+				{
+					"WeatherType": "lowtemp",
+					"BaseValue": 13.44,
+					"ChangeRate": -0.444,
+					"VariableLowerBound": -3.0,
+					"VariableHigherBound": 2.0
+				},
+				{
+					"WeatherType": "hightemp",
+					"BaseValue": 13.25,
+					"ChangeRate": -0.3125,
+					"VariableLowerBound": -7.0,
+					"VariableHigherBound": 2.45
+				},
+				{
+					"WeatherType": "fog",
+					"BaseValue": 0.43,
+					"ChangeRate": -0.0175,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				}
+			]
+		},
+		{
+			"BeginSeason": "winter",
+			"EndSeason": "winter",
+			"BeginDay": 1,
+			"EndDay": 9,
+			"EveningFogChance": 1.2,
+			"HeatwaveChance": 0,
+			"ChillwaveChance": 0,
+			"SystemChances": [{
+					"WeatherType": "rain",
+					"TypeChances": 0.75
+				},
+				{
+					"WeatherType": "sunny",
+					"TypeChances": 0.25
+				}
+			],
+			"WeatherChances": [{
+					"WeatherType": "rain",
+					"BaseValue": 0.75,
+					"ChangeRate": 0.0,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				},
+				{
+					"WeatherType": "lowtemp",
+					"BaseValue": 1.25,
+					"ChangeRate": -1.25,
+					"VariableLowerBound": -2.0,
+					"VariableHigherBound": 1.0
+				},
+				{
+					"WeatherType": "hightemp",
+					"BaseValue": 2.875,
+					"ChangeRate": -0.675,
+					"VariableLowerBound": -6.0,
+					"VariableHigherBound": 0.85
+				},
+				{
+					"WeatherType": "fog",
+					"BaseValue": -0.01,
+					"ChangeRate": 0.0014,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				}
+			]
+		},
+		{
+			"BeginSeason": "winter",
+			"EndSeason": "winter",
+			"BeginDay": 10,
+			"EndDay": 14,
+			"EveningFogChance": 1.1,
+			"HeatwaveChance": 0,
+			"ChillwaveChance": 0,
+			"SystemChances": [{
+					"WeatherType": "rain",
+					"TypeChances": 0.58
+				},
+				{
+					"WeatherType": "sunny",
+					"TypeChances": 0.42
+				}
+			],
+			"WeatherChances": [{
+					"WeatherType": "rain",
+					"BaseValue": 0.58,
+					"ChangeRate": 0.006,
+					"VariableLowerBound": -0.07,
+					"VariableHigherBound": 0.07
+				},
+				{
+					"WeatherType": "lowtemp",
+					"BaseValue": -5.0,
+					"ChangeRate": -0.5,
+					"VariableLowerBound": -3.0,
+					"VariableHigherBound": 2.0
+				},
+				{
+					"WeatherType": "hightemp",
+					"BaseValue": -2.1,
+					"ChangeRate": -0.12,
+					"VariableLowerBound": -10.0,
+					"VariableHigherBound": 3.0
+				},
+				{
+					"WeatherType": "fog",
+					"BaseValue": -0.1,
+					"ChangeRate": 0.014,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				}
+			]
+		},
+		{
+			"BeginSeason": "winter",
+			"EndSeason": "winter",
+			"BeginDay": 15,
+			"EndDay": 19,
+			"EveningFogChance": 1.1,
+			"HeatwaveChance": 0,
+			"ChillwaveChance": 0,
+			"SystemChances": [{
+					"WeatherType": "rain",
+					"TypeChances": 0.58
+				},
+				{
+					"WeatherType": "sunny",
+					"TypeChances": 0.42
+				}
+			],
+			"WeatherChances": [{
+					"WeatherType": "rain",
+					"BaseValue": 0.58,
+					"ChangeRate": 0.006,
+					"VariableLowerBound": -0.07,
+					"VariableHigherBound": 0.07
+				},
+				{
+					"WeatherType": "lowtemp",
+					"BaseValue": -19.35,
+					"ChangeRate": 0.5,
+					"VariableLowerBound": -3.0,
+					"VariableHigherBound": 2.0
+				},
+				{
+					"WeatherType": "hightemp",
+					"BaseValue": -9.5,
+					"ChangeRate": 0.38,
+					"VariableLowerBound": -8.0,
+					"VariableHigherBound": 2.0
+				},
+				{
+					"WeatherType": "fog",
+					"BaseValue": -0.1,
+					"ChangeRate": 0.014,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				}
+			]
+		},
+		{
+			"BeginSeason": "winter",
+			"EndSeason": "winter",
+			"BeginDay": 20,
+			"EndDay": 28,
+			"EveningFogChance": 1.25,
+			"HeatwaveChance": 0,
+			"ChillwaveChance": 0,
+			"SystemChances": [{
+					"WeatherType": "rain",
+					"TypeChances": 0.58
+				},
+				{
+					"WeatherType": "sunny",
+					"TypeChances": 0.42
+				}
+			],
+			"WeatherChances": [{
+					"WeatherType": "rain",
+					"BaseValue": 0.58,
+					"ChangeRate": 0.006,
+					"VariableLowerBound": -0.07,
+					"VariableHigherBound": 0.07
+				},
+				{
+					"WeatherType": "lowtemp",
+					"BaseValue": -33.175,
+					"ChangeRate": 1.16875,
+					"VariableLowerBound": -3.0,
+					"VariableHigherBound": 1.5
+				},
+				{
+					"WeatherType": "hightemp",
+					"BaseValue": -2.9,
+					"ChangeRate": 0.056,
+					"VariableLowerBound": -2.0,
+					"VariableHigherBound": 2.5
+				},
+				{
+					"WeatherType": "fog",
+					"BaseValue": 0.2125,
+					"ChangeRate": -0.003175,
+					"VariableLowerBound": -0.04,
+					"VariableHigherBound": 0.04
+				}
+			]
+		}
+	]
+}

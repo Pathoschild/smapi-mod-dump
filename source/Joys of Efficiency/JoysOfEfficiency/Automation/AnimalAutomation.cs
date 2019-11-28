@@ -14,9 +14,10 @@ namespace JoysOfEfficiency.Automation
 {
     internal class AnimalAutomation
     {
-        private static IMonitor Monitor => InstanceHolder.Monitor;
         private static IReflectionHelper Reflection => InstanceHolder.Reflection;
         private static Config Config => InstanceHolder.Config;
+
+        private static readonly Logger Logger = new Logger("AnimalAutomation");
 
         public static void LetAnimalsInHome()
         {
@@ -24,7 +25,8 @@ namespace JoysOfEfficiency.Automation
             foreach (KeyValuePair<long, FarmAnimal> kv in farm.animals.Pairs.ToArray())
             {
                 FarmAnimal animal = kv.Value;
-                Monitor.Log($"Warped {animal.displayName}({animal.shortDisplayType()}) to {animal.displayHouse}@[{animal.homeLocation.X}, {animal.homeLocation.Y}]");
+                Logger.Log(
+                    $"Warped {animal.displayName}({animal.shortDisplayType()}) to {animal.displayHouse}@[{animal.homeLocation.X}, {animal.homeLocation.Y}]");
                 animal.warpHome(farm, animal);
             }
         }
@@ -33,14 +35,16 @@ namespace JoysOfEfficiency.Automation
         {
             if (Game1.isRaining || Game1.isSnowing)
             {
-                Monitor.Log("Don't open the animal door because of rainy/snowy weather.");
+                Logger.Log("Don't open the animal door because of rainy/snowy weather.");
                 return;
             }
+
             if (Game1.IsWinter)
             {
-                Monitor.Log("Don't open the animal door because it's winter");
+                Logger.Log("Don't open the animal door because it's winter");
                 return;
             }
+
             Farm farm = Game1.getFarm();
             foreach (Building building in farm.buildings)
             {
@@ -52,11 +56,12 @@ namespace JoysOfEfficiency.Automation
                         {
                             if (house.animals.Any() && !coop.animalDoorOpen.Value)
                             {
-                                Monitor.Log($"Opening coop door @[{coop.animalDoor.X},{coop.animalDoor.Y}]");
+                                Logger.Log($"Opening coop door @[{coop.animalDoor.X},{coop.animalDoor.Y}]");
                                 coop.animalDoorOpen.Value = true;
                                 Reflection.GetField<NetInt>(coop, "animalDoorMotion").SetValue(new NetInt(-2));
                             }
                         }
+
                         break;
                     }
                     case Barn barn:
@@ -65,11 +70,12 @@ namespace JoysOfEfficiency.Automation
                         {
                             if (house.animals.Any() && !barn.animalDoorOpen.Value)
                             {
-                                Monitor.Log($"Opening barn door @[{barn.animalDoor.X},{barn.animalDoor.Y}]");
+                                Logger.Log($"Opening barn door @[{barn.animalDoor.X},{barn.animalDoor.Y}]");
                                 barn.animalDoorOpen.Value = true;
                                 Reflection.GetField<NetInt>(barn, "animalDoorMotion").SetValue(new NetInt(-3));
                             }
                         }
+
                         break;
                     }
                 }
@@ -93,6 +99,7 @@ namespace JoysOfEfficiency.Automation
                                 Reflection.GetField<NetInt>(coop, "animalDoorMotion").SetValue(new NetInt(2));
                             }
                         }
+
                         break;
                     }
                     case Barn barn:
@@ -105,6 +112,7 @@ namespace JoysOfEfficiency.Automation
                                 Reflection.GetField<NetInt>(barn, "animalDoorMotion").SetValue(new NetInt(2));
                             }
                         }
+
                         break;
                     }
                 }
@@ -120,9 +128,10 @@ namespace JoysOfEfficiency.Automation
 
             foreach (Pet pet in location.characters.OfType<Pet>().Where(pet => pet.GetBoundingBox().Intersects(bb)))
             {
-                bool wasPet = Reflection.GetField<bool>(pet, "wasPetToday").GetValue();
+                bool wasPet = WasPetToday(pet);
                 if (!wasPet)
                 {
+                    Logger.Log($"Petted {(pet is Dog ? "Dog" : "Cat")}'{pet.Name}' @{pet.getTileLocationPoint()}");
                     pet.checkAction(player, location); // Pet pet... lol
                 }
             }
@@ -143,6 +152,7 @@ namespace JoysOfEfficiency.Automation
                 {
                     continue;
                 }
+                Logger.Log($"Petted {animal.displayType}'{animal.Name}' @{animal.getTileLocationPoint()}");
                 animal.pet(Game1.player);
             }
         }
@@ -154,7 +164,8 @@ namespace JoysOfEfficiency.Automation
             foreach (FarmAnimal animal in Util.GetAnimalsList(player))
             {
                 string lowerType = animal.type.Value.ToLower();
-                if (animal.currentProduce.Value < 0 || animal.age.Value < animal.ageWhenMature.Value || player.CurrentTool == null || !animal.GetBoundingBox().Intersects(bb))
+                if (animal.currentProduce.Value < 0 || animal.age.Value < animal.ageWhenMature.Value ||
+                    player.CurrentTool == null || !animal.GetBoundingBox().Intersects(bb))
                 {
                     continue;
                 }
@@ -164,17 +175,20 @@ namespace JoysOfEfficiency.Automation
                     (!lowerType.Contains("goat") || !(player.CurrentTool is MilkPail) || !(player.Stamina >= 4f)))
                     continue;
 
-                if (!player.addItemToInventoryBool(new Object(Vector2.Zero, animal.currentProduce.Value, null, false, true, false, false)
-                {
-                    Quality = animal.produceQuality.Value
-                }))
+                if (!player.addItemToInventoryBool(
+                    new Object(Vector2.Zero, animal.currentProduce.Value, null, false, true, false, false)
+                    {
+                        Quality = animal.produceQuality.Value
+                    }))
                 {
                     continue;
                 }
 
                 switch (player.CurrentTool)
                 {
-                    case Shears _: Shears.playSnip(player); break;
+                    case Shears _:
+                        Shears.playSnip(player);
+                        break;
                     case MilkPail _:
                         player.currentLocation.localSound("Milking");
                         DelayedAction.playSoundAfterDelay("fishingRodBend", 300);
@@ -182,6 +196,7 @@ namespace JoysOfEfficiency.Automation
                         break;
                     default: continue;
                 }
+
                 animal.doEmote(20);
                 Game1.playSound("coin");
                 animal.currentProduce.Value = -1;
@@ -189,9 +204,15 @@ namespace JoysOfEfficiency.Automation
                 {
                     animal.Sprite.LoadTexture("Animals\\Sheared" + animal.type.Value);
                 }
+
                 player.gainExperience(0, 5);
             }
         }
-        
+
+        private static bool WasPetToday(Pet pet)
+        {
+            return pet.lastPetDay.ContainsKey(Game1.player.UniqueMultiplayerID) &&
+                   pet.lastPetDay[Game1.player.UniqueMultiplayerID] == Game1.Date.TotalDays;
+        }
     }
 }

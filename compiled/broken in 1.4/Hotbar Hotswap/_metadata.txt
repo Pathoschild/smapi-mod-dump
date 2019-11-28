@@ -1,3 +1,3 @@
-page URL: https://www.curseforge.com/stardewvalley/mods/hotbar-hotswap
+page URL: https://stardewvalley.curseforge.com/projects/hotbar-hotswap
 IDs: BlameJared.HotbarHotswap
-update keys: CurseForge:298033
+update keys: GitHub:jaredlll08/HotbarHotswap

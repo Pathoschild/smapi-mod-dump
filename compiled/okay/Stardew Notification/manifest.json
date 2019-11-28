@@ -1,0 +1,10 @@
+{
+  "Name": "Stardew Notification",
+  "Author": "monopandora, maintained by Sakorona",
+  "Version": "1.8.1",
+  "Description": "Daily Notification mod for Stardew Valley",
+  "UniqueID": "mondopandora.stardewnotification",
+  "EntryDll": "StardewNotification.dll",
+  "MinimumApiVersion": "3.0",
+  "UpdateKeys": []
+}

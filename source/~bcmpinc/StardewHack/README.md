@@ -33,5 +33,8 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 * User friendly error messages in the log file.
 * In game error message for when patches fail to apply cleanly.
 
-#### 1.3:
+#### 2.0:
+* Updated for Stardew Valley 1.4
+* Improved IL searching capabilities.
 * Fix error message upon start for android.
+* Also warn when patch fails due to method not being found or being ambiguous.

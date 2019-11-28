@@ -1,4 +1,8 @@
-﻿using UltimateTool.Framework.Configuration;
+﻿using Microsoft.Xna.Framework;
+using StardewValley;
+using StardewValley.TerrainFeatures;
+using StardewValley.Tools;
+using UltimateTool.Framework.Configuration;
 using SFarmer = StardewValley.Farmer;
 using SObject = StardewValley.Object;
 
@@ -6,23 +10,23 @@ namespace UltimateTool.Framework.Tools
 {
     internal class ScytheTool : BaseTool
     {
-        private readonly ScytheConfig Config;
+        private readonly ScytheConfig _config;
 
         public ScytheTool(ScytheConfig config)
         {
-            this.Config = config;
+            _config = config;
         }
 
         public override bool IsEnabled(SFarmer who, Tool tool, Item item, GameLocation location)
         {
-            return tool is MeleeWeapon && tool.name.ToLower().Contains("scythe");
+            return tool is MeleeWeapon && tool.Name.ToLower().Contains("scythe");
         }
 
         public override bool Apply(Vector2 tile, SObject tileObj, TerrainFeature tileFeature, SFarmer who, Tool tool, Item item, GameLocation location)
         {
-            if(this.Config.HarvestForage && tileObj?.isSpawnedObject == true)
+            if(_config.HarvestForage && tileObj?.IsSpawnedObject == true)
             {
-                this.TileAction(location, tile, who);
+                TileAction(location, tile, who);
                 return true;
             }
             //Bushes
@@ -31,7 +35,7 @@ namespace UltimateTool.Framework.Tools
                 if (bush.inBloom(Game1.currentSeason, Game1.dayOfMonth))
                 {
                     UBush b = (UBush)bush;
-                    b.shake(tile, false);
+                    b.Shake(tile, false);
                 }
             }
             //End Bushes
@@ -42,32 +46,32 @@ namespace UltimateTool.Framework.Tools
                     return false;
                 }
 
-                if (this.Config.CutDeadCrops && dirt.crop.dead)
+                if (_config.CutDeadCrops && dirt.crop.dead.Value)
                 {
-                    this.UseToolOnTile(new Pickaxe(), tile);
+                    UseToolOnTile(new Pickaxe(), tile);
                     return true;
                 }
 
-                if (this.Config.HarvestCrops)
+                if (_config.HarvestCrops)
                 {
-                    if (dirt.crop.harvestMethod == Crop.sickleHarvest)
+                    if (dirt.crop.harvestMethod.Value == Crop.sickleHarvest)
                     {
                         return dirt.performToolAction(tool, 0, tile, location);
                     }
                     else
                     {
-                        this.TileAction(location, tile, who);
+                        TileAction(location, tile, who);
                     }
                 }
             }
 
-                if(this.Config.HarvestFruit && tileFeature is FruitTree fTree)
+                if(_config.HarvestFruit && tileFeature is FruitTree fTree)
                 {
-                    fTree.performUseAction(tile);
+                    fTree.performUseAction(tile, location);
                     return true;
                 }
 
-                if (this.Config.HarvestGrass && tileFeature is Grass)
+                if (_config.HarvestGrass && tileFeature is Grass)
                 {
                     location.terrainFeatures.Remove(tile);
                     if(Game1.getFarm().tryToAddHay(1) == 0)
@@ -77,10 +81,10 @@ namespace UltimateTool.Framework.Tools
                     return true;
                 }
 
-                if(this.Config.CutWeeds && tileObj?.Name.ToLower().Contains("weed") == true)
+                if(_config.CutWeeds && tileObj?.Name.ToLower().Contains("weed") == true)
                 {
-                    this.UseToolOnTile(tool, tile);
-                    tileObj.performToolAction(tool);
+                    UseToolOnTile(tool, tile);
+                    tileObj.performToolAction(tool, location);
                     location.removeObject(tile, false);
                     return true;
                 }

@@ -10,8 +10,8 @@ namespace Denifia.Stardew.SendItems.Services
     // TODO: Add private members for each of the public properties for performance
     public class ConfigurationService : IConfigurationService
     {
-        private IModHelper _modHelper;
-        private ModConfig _modConfig;
+        private readonly IModHelper _modHelper;
+        private readonly ModConfig _modConfig;
         private const string _databaseName = ModConstants.DatabaseName;
         private string _connectionString = string.Empty;
 

@@ -1,0 +1,13 @@
+url:
+   https://github.com/bwdymods/SDV-Sleepovers.git
+
+mods:
+   Sleepovers
+
+latest commit:
+   commit b6b0a65b5b0c642bbbc97c4bf9240083a0ff147f
+   Author: bwdy <47769190+bwdymods@users.noreply.github.com>
+   Date:   Tue Nov 26 15:11:39 2019 -0900
+   
+       Create blacklist.json
+   

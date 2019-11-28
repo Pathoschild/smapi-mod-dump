@@ -5,14 +5,14 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Quests;
-using static StardewValley.Game1;
 
 namespace JoysOfEfficiency.Automation
 {
     internal class MailAutomation
     {
         private static IReflectionHelper Reflection => InstanceHolder.Reflection;
-        private static IMonitor Monitor => InstanceHolder.Monitor;
+
+        private static readonly Logger Logger = new Logger("MailAutomation");
 
         public static void CollectMailAttachmentsAndQuests(LetterViewerMenu menu)
         {
@@ -29,10 +29,10 @@ namespace JoysOfEfficiency.Automation
                     }
 
                     int stack = component.item.Stack;
-                    playSound("coin");
+                    Game1.playSound("coin");
                     int remain = Util.AddItemIntoInventory(component.item);
 
-                    Monitor.Log($"You collected {component.item.DisplayName}{(stack - remain > 1 ? " x" + (stack - remain) : "")}.");
+                    Logger.Log($"You collected {component.item.DisplayName}{(stack - remain > 1 ? " x" + (stack - remain) : "")}.");
                     if (remain == 0)
                     {
                         component.item = null;
@@ -49,21 +49,21 @@ namespace JoysOfEfficiency.Automation
                 return;
             }
 
-            Monitor.Log($"You started Quest: {Quest.getQuestFromId(questId).questTitle}''.");
-            player.addQuest(questId);
-            playSound("newArtifact");
+            Logger.Log($"You started Quest: '{Quest.getQuestFromId(questId).questTitle}'.");
+            Game1.player.addQuest(questId);
+            Game1.playSound("newArtifact");
             questIdField.SetValue(-1);
         }
 
         private static bool CanPlayerAcceptsItemPartially(Item item)
         {
-            if (player.Items.Contains(null) || player.Items.Count < player.MaxItems)
+            if (Game1.player.Items.Contains(null) || Game1.player.Items.Count < Game1.player.MaxItems)
             {
                 // Inventory includes at least one free space.
                 return true;
             }
 
-            return player.Items.Any(stack => stack.canStackWith(item) && stack.Stack < stack.maximumStackSize());
+            return Game1.player.Items.Any(stack => stack.canStackWith(item) && stack.Stack < stack.maximumStackSize());
         }
     }
 }

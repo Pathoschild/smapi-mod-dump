@@ -1,0 +1,10 @@
+{
+   "Name": "Sentar",
+   "Author": "BrasileiroTop",
+   "Version": "1.0.0",
+   "MinimumApiVersion": "2.9.0",
+   "Description": "Esse mod permite sentar em algumas cadeiras do jogo.",
+   "UniqueID": "BrasileiroTop.Sentar",
+   "EntryDll": "Sentar.dll",
+   "UpdateKeys": [ "Nexus:4729" ]
+}

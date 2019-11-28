@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Crane Man Begone",
+    "Author": "MouseyPounds",
+    "Version": "1.0.2",
+    "Description": "Allows the player to violently remove the man who hogs the crane game.",
+    "UniqueID": "MouseyPounds.CraneManBegone",
+    "EntryDll": "CraneManBegone.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": ["Nexus:4704"]
+}

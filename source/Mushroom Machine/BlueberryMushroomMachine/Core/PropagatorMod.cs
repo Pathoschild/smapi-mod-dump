@@ -9,6 +9,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
 using Harmony;  // el diavolo
+using System.Collections.Generic;
 
 namespace BlueberryMushroomMachine
 {
@@ -138,12 +139,12 @@ namespace BlueberryMushroomMachine
 	
 	class CraftingPagePatch
 	{
-		internal static bool Prefix(CraftingPage __instance, int ___currentCraftingPage, Item ___heldItem,
+		internal static bool Prefix(List<Dictionary<ClickableTextureComponent, CraftingRecipe>> ___pagesOfCraftingRecipes,
+			int ___currentCraftingPage, Item ___heldItem,
 			ClickableTextureComponent c, bool playSound = true)
 		{
 			// Fetch an instance of any clicked-on craftable in the crafting menu.
-			Item tempItem = __instance
-				.pagesOfCraftingRecipes[___currentCraftingPage][c]
+			Item tempItem = ___pagesOfCraftingRecipes[___currentCraftingPage][c]
 				.createItem();
 
 			// Fall through the prefix for any craftables other than the Propagator.
@@ -153,15 +154,15 @@ namespace BlueberryMushroomMachine
 			// Behaviours as from base method.
 			if (___heldItem == null)
 			{
-				__instance.pagesOfCraftingRecipes[___currentCraftingPage][c]
-					.consumeIngredients();
+				___pagesOfCraftingRecipes[___currentCraftingPage][c]
+					.consumeIngredients(null);
 				___heldItem = tempItem;
 				if (playSound)
 					Game1.playSound("coin");
 			}
-			if (Game1.player.craftingRecipes.ContainsKey(__instance.pagesOfCraftingRecipes[___currentCraftingPage][c].name))
-				Game1.player.craftingRecipes[__instance.pagesOfCraftingRecipes[___currentCraftingPage][c].name]
-					+= __instance.pagesOfCraftingRecipes[___currentCraftingPage][c].numberProducedPerCraft;
+			if (Game1.player.craftingRecipes.ContainsKey(___pagesOfCraftingRecipes[___currentCraftingPage][c].name))
+				Game1.player.craftingRecipes[___pagesOfCraftingRecipes[___currentCraftingPage][c].name]
+					+= ___pagesOfCraftingRecipes[___currentCraftingPage][c].numberProducedPerCraft;
 			if (___heldItem == null || !Game1.player.couldInventoryAcceptThisItem(___heldItem))
 				return false;
 			

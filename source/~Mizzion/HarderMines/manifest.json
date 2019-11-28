@@ -1,0 +1,9 @@
+﻿{
+  "Name": "HarderMines",
+  "Author": "Mizzion",
+  "Version": "0.0.1",
+  "Description": "Makes the mines a little more difficult.",
+  "UniqueID": "mizzion.hardermines",
+  "EntryDll": "HarderMines.dll",
+  "UpdateKeys": []
+}

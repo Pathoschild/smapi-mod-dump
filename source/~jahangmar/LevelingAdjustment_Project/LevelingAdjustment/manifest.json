@@ -1,10 +1,10 @@
 ﻿{
   "Name": "LevelingAdjustment",
   "Author": "jahangmar",
-  "Version": "1.0.0-beta",
+  "Version": "1.1.0",
   "Description": "Allows to adjust how fast the player levels.",
     "UniqueID": "jahangmar.LevelingAdjustment",
-  "MinimumApiVersion": "2.10.0",
+  "MinimumApiVersion": "3.0.0",
     "EntryDll": "LevelingAdjustment.dll",
   "Dependencies": [],
   "UpdateKeys": [ "Nexus:4689" ]

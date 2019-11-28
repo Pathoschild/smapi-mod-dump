@@ -25,3 +25,4 @@ All files in the mod's assets folder are loaded and will replace their identical
 * Platonymous - ScaledTexture2D and SpriteBatchFix Harmony patch classes - [PyTK mod](https://github.com/Platonymous/Stardew-Valley-Mods/blob/master/PyTK)
 * draivin - XNB extractor tool - [XNB Node](https://github.com/draivin/XNBNode)
 * Salmakis - Image resizer tool for 2xBR filter - [ImageFilter](https://github.com/Salmakis/ImageFilterCollection)
+* Pathoschild - Updating code to work with SMAPI 3.0

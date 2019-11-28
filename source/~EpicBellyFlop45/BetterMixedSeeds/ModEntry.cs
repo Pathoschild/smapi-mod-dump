@@ -3,9 +3,12 @@ using BetterMixedSeeds.Data;
 using BetterMixedSeeds.Patches;
 using Harmony;
 using Microsoft.Xna.Framework;
+using Netcode;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Network;
+using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,15 +32,15 @@ namespace BetterMixedSeeds
             MHelper = this.Helper;
             ModConfig = this.Helper.ReadConfig<ModConfig>();
 
-            ApplyHarmonyPatches();
+            ApplyHarmonyPatches(this.ModManifest.UniqueID);
 
             this.Helper.Events.GameLoop.SaveLoaded += Events_SaveLoaded;
         }
 
-        private void ApplyHarmonyPatches()
+        private void ApplyHarmonyPatches(string uniqueId)
         {
             // Create a new Harmony instance for patching source code
-            HarmonyInstance harmony = HarmonyInstance.Create(ModManifest.UniqueID);
+            HarmonyInstance harmony = HarmonyInstance.Create(uniqueId);
 
             // Apply the patches
             harmony.Patch(
@@ -301,9 +304,9 @@ namespace BetterMixedSeeds
             Color color = Color.Green;
             string audioName = "cut";
             int rowInAnimationTexture = 50;
-            __instance.Fragility = 2;
+            __instance.fragility.Value = 2;
 
-            switch (__instance.ParentSheetIndex)
+            switch ((int)((NetFieldBase<int, NetInt>)__instance.parentSheetIndex))
             {
                 case 313:
                 case 314:
@@ -319,21 +322,21 @@ namespace BetterMixedSeeds
                     color = new Color(30, 216, (int)byte.MaxValue);
                     audioName = "breakingGlass";
                     rowInAnimationTexture = 47;
-                    who.currentLocation.playSound("drumkit2");
+                    who.currentLocation.playSound("drumkit2", NetAudio.SoundContext.Default);
                     parentSheetIndex = -1;
                     break;
                 case 320:
                     color = new Color(175, 143, (int)byte.MaxValue);
                     audioName = "breakingGlass";
                     rowInAnimationTexture = 47;
-                    who.currentLocation.playSound("drumkit2");
+                    who.currentLocation.playSound("drumkit2", NetAudio.SoundContext.Default);
                     parentSheetIndex = -1;
                     break;
                 case 321:
                     color = new Color(73, (int)byte.MaxValue, 158);
                     audioName = "breakingGlass";
                     rowInAnimationTexture = 47;
-                    who.currentLocation.playSound("drumkit2");
+                    who.currentLocation.playSound("drumkit2", NetAudio.SoundContext.Default);
                     parentSheetIndex = -1;
                     break;
                 case 678:
@@ -354,10 +357,9 @@ namespace BetterMixedSeeds
                 parentSheetIndex = 338;
             }
 
-            who.currentLocation.playSound(audioName);
+            who.currentLocation.playSound(audioName, NetAudio.SoundContext.Default);
 
             StardewValley.Multiplayer multiplayer = ModEntry.MHelper.Reflection.GetField<StardewValley.Multiplayer>(typeof(Game1), "multiplayer").GetValue();
-
             multiplayer.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite(rowInAnimationTexture, __instance.tileLocation.Value * 64f, color, 8, false, 100f, 0, -1, -1f, -1, 0));
             multiplayer.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite(rowInAnimationTexture, __instance.tileLocation.Value * 64f + new Vector2((float)Game1.random.Next(-16, 16), (float)Game1.random.Next(-48, 48)), color * 0.75f, 8, false, 100f, 0, -1, -1f, -1, 0)
             {
@@ -376,14 +378,19 @@ namespace BetterMixedSeeds
                 delayBeforeAnimationStart = 100
             });
 
+            if (!audioName.Equals("breakingGlass") && Game1.random.NextDouble() < 1E-05)
+            {
+                who.currentLocation.debris.Add(new Debris((Item)new Hat(40), __instance.tileLocation.Value * 64f + new Vector2(32f, 32f)));
+            }
+
             if (parentSheetIndex != -1)
             {
-                who.currentLocation.debris.Add(new Debris((Item)new StardewValley.Object(parentSheetIndex, 1, false, -1, 0), __instance.TileLocation * 64f + new Vector2(32f, 32f)));
+                who.currentLocation.debris.Add(new Debris((Item)new StardewValley.Object(parentSheetIndex, 1, false, -1, 0), __instance.tileLocation.Value * 64f + new Vector2(32f, 32f)));
             }
 
             if (Game1.random.NextDouble() < 0.02)
             {
-                who.currentLocation.addJumperFrog(__instance.TileLocation);
+                who.currentLocation.addJumperFrog((Vector2)((NetFieldBase<Vector2, NetVector2>)__instance.tileLocation));
             }
 
             if (!who.hasMagnifyingGlass || Game1.random.NextDouble() >= 0.009)
@@ -397,9 +404,9 @@ namespace BetterMixedSeeds
             {
                 return false;
             }
-
-            Game1.createItemDebris((Item)unseenSecretNote, new Vector2(__instance.TileLocation.X + 0.5f, __instance.TileLocation.Y + 0.75f) * 64f, (int)Game1.player.facingDirection, (GameLocation)null, -1);
-
+            
+            Game1.createItemDebris((Item)unseenSecretNote, new Vector2(__instance.tileLocation.X + 0.5f, __instance.tileLocation.Y + 0.75f) * 64f, (int)Game1.player.facingDirection, who.currentLocation, -1);
+            
             return false;
         }
 

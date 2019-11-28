@@ -115,7 +115,7 @@ namespace PelicanFiber.Framework
                             this.NewAnimalHome = building;
                             if (this.AnimalBeingPurchased.sound.Value != null && Game1.soundBank != null)
                             {
-                                Cue cue = Game1.soundBank.GetCue(this.AnimalBeingPurchased.sound.Value);
+                                ICue cue = Game1.soundBank.GetCue(this.AnimalBeingPurchased.sound.Value);
                                 cue.SetVariable("Pitch", 1200 + Game1.random.Next(-200, 201));
                                 cue.Play();
                             }
@@ -136,7 +136,7 @@ namespace PelicanFiber.Framework
                             this.NamingAnimal = false;
                             if (this.AnimalBeingPurchased.sound.Value != null && Game1.soundBank != null)
                             {
-                                Cue cue = Game1.soundBank.GetCue(this.AnimalBeingPurchased.sound.Value);
+                                ICue cue = Game1.soundBank.GetCue(this.AnimalBeingPurchased.sound.Value);
                                 cue.SetVariable("Pitch", 1200 + Game1.random.Next(-200, 201));
                                 cue.Play();
                             }

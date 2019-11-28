@@ -2,6 +2,7 @@
 using Harmony;
 using StardewValley;
 using StardewValley.Characters;
+using StardewValley.Locations;
 
 namespace FamilyPlanning.Patches
 {
@@ -11,7 +12,21 @@ namespace FamilyPlanning.Patches
     {
         public static void Postfix(Child __instance)
         {
-            if(__instance.Sprite == null || __instance.Sprite.textureName.Contains("Characters\\") || (__instance.Age >= 3 && __instance.Sprite.CurrentFrame == 0))
+            //Added in the 1.4 update
+            //(Presumably this fixes the multiplayer glitches)
+            if (Game1.IsMasterGame && __instance.idOfParent.Value == 0L)
+            {
+                int uniqueMultiplayerId = (int)Game1.MasterPlayer.UniqueMultiplayerID;
+                if (Game1.currentLocation is FarmHouse)
+                {
+                    FarmHouse currentLocation = Game1.currentLocation as FarmHouse;
+                    if (currentLocation.owner != null)
+                        uniqueMultiplayerId = (int)currentLocation.owner.UniqueMultiplayerID;
+                }
+                __instance.idOfParent.Value = uniqueMultiplayerId;
+            }
+
+            if (__instance.Sprite == null || __instance.Sprite.textureName.Contains("Characters\\") || (__instance.Age >= 3 && __instance.Sprite.CurrentFrame == 0))
             {
                 //Try to load the child sprite from a content pack
                 Tuple<string, string> assetNames = ModEntry.GetChildSpriteData(__instance.Name);
@@ -31,7 +46,6 @@ namespace FamilyPlanning.Patches
                 if (__instance.Sprite == null)
                     __instance.Sprite = new AnimatedSprite(__instance.Age >= 3 ? "Characters\\Toddler" + (__instance.Gender == 0 ? "" : "_girl") + (__instance.darkSkinned ? "_dark" : "") : "Characters\\Baby" + (__instance.darkSkinned ? "_dark" : ""));
             }
-            
             //This is default behavior, applies to anyone
             __instance.HideShadow = true;
             switch (__instance.Age)
@@ -64,3 +78,4 @@ namespace FamilyPlanning.Patches
         }
     }
 }
+ 

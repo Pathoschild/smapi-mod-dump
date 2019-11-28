@@ -26,8 +26,7 @@ using StardewValley.Locations;
 
 using static PetInteraction.PetBehavior;
 using StardewValley.Tools;
-
-
+using System;
 
 namespace PetInteraction
 {
@@ -87,6 +86,7 @@ namespace PetInteraction
             helper.ConsoleCommands.Add("check_pets", "", Test);
         }
 
+
         void AddPet(string arg1, string[] arg2)
         {
             Game1.getFarm().characters.Add(new Dog() { Name = "Name", displayName = "displayName" });
@@ -123,7 +123,7 @@ namespace PetInteraction
                 {
                     if (location.characters[i] is Pet p && IsTempPet(p))
                     {
-                        Monitor.Log("Found temporary pet that should not be there (" + location.Name + "). Fixed it.", LogLevel.Debug);
+                        Monitor.Log("Found temporary pet that should not be there (" + location.Name + "). Fixed it.", LogLevel.Trace);
                         location.characters.RemoveAt(i);
                     }
                 }
@@ -181,6 +181,9 @@ namespace PetInteraction
 
         private void SafeState()
         {
+            if (Game1.IsClient)
+                return;
+
             //make sure the TestPet was removed
             RemoveTempPetFromFarm();
             //make sure your pet is at the farmhouse
@@ -204,6 +207,9 @@ namespace PetInteraction
 
         void GameLoop_DayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
         {
+
+            CheckMultiplayer();
+
             pet = null;
             SetState(PetState.Vanilla);
             hasFetchedToday = false;
@@ -213,6 +219,29 @@ namespace PetInteraction
             }
         }
 
+        private void CheckMultiplayer()
+        {
+            if (Game1.IsClient)
+            {
+                Monitor.Log("Deactivating mod on the client.");
+
+                Helper.Events.Input.ButtonPressed -= Input_ButtonPressed;
+                Helper.Events.GameLoop.DayStarted -= GameLoop_DayStarted;
+                Helper.Events.GameLoop.OneSecondUpdateTicked -= GameLoop_OneSecondUpdateTicked;
+                Helper.Events.GameLoop.UpdateTicked -= GameLoop_UpdateTicked;
+                if (debug())
+                    Helper.Events.Display.RenderedWorld -= Display_RenderedWorld;
+                Helper.Events.Player.Warped -= Player_Warped;
+                Helper.Events.GameLoop.UpdateTicking -= GameLoop_UpdateTicking;
+                Helper.Events.GameLoop.Saving -= GameLoop_Saving;
+                Helper.Events.GameLoop.SaveLoaded -= GameLoop_SaveLoaded;
+
+                Helper.Events.World.BuildingListChanged -= World_BuildingListChanged;
+                Helper.Events.World.LargeTerrainFeatureListChanged -= World_LargeTerrainFeatureListChanged;
+                Helper.Events.World.ObjectListChanged -= World_ObjectListChanged;
+                Helper.Events.World.TerrainFeatureListChanged -= World_TerrainFeatureListChanged;
+            }
+        }
 
         void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
         {
@@ -248,13 +277,13 @@ namespace PetInteraction
                         //Log(pet.Name + " is selected");
                         if (PetClicked(pet) && NotGiftingTreat())
                         {
-                            if (Helper.Reflection.GetField<bool>(pet, "wasPetToday").GetValue())
+                            if (WasPetToday(pet))
                             {
                                 Helper.Input.Suppress(e.Button);
                                 SetState(PetState.Waiting);
                                 Jump();
                             }
-                            else if (!Helper.Reflection.GetField<bool>(pet, "wasPetToday").GetValue())
+                            else if (!WasPetToday(pet))
                             {
                                 Helper.Input.Suppress(e.Button);
                                 Petting(pet);
@@ -278,7 +307,7 @@ namespace PetInteraction
 
                         if ((loc is Farm || loc is FarmHouse) && NotGiftingTreat())
                         {
-                            if (newPet != null && PetClicked(newPet) && Helper.Reflection.GetField<bool>(newPet, "wasPetToday").GetValue())
+                            if (newPet != null && PetClicked(newPet) && WasPetToday(pet))
                             {
                                 Helper.Input.Suppress(e.Button);
                                 SetState(PetState.Waiting);
@@ -485,7 +514,7 @@ namespace PetInteraction
             if (GetPet() == null)
                 return;
 
-            if (e.NewLocation is Farm)
+            if (e.NewLocation is Farm || e.NewLocation is FarmHouse)
             {
                 RemoveTempPetFromFarm();
             }

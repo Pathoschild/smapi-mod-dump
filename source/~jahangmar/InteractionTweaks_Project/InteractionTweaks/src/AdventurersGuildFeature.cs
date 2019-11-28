@@ -149,15 +149,14 @@ namespace InteractionTweaks
             {
                 if (Game1.player.deepestMineLevel >= 40)
                 {
-                    Dictionary<Item, int[]> itemPriceAndStock = Helper.Reflection.GetField<Dictionary<Item, int[]>>(shopMenu, "itemPriceAndStock").GetValue();
                     Monitor.Log("Adding normal slingshot to shop menu", LogLevel.Trace);
-                    itemPriceAndStock.Add(normalSlingshot, new int[] { normalSlingshotPrice, stock });
-                    Helper.Reflection.GetField<List<Item>>(shopMenu, "forSale").GetValue().Add(normalSlingshot);
+                    shopMenu.itemPriceAndStock.Add(normalSlingshot, new int[] { normalSlingshotPrice, stock });
+                    shopMenu.forSale.Add(normalSlingshot);
                     if (Game1.player.deepestMineLevel >= 70)
                     {
                         Monitor.Log("Adding master slingshot to shop menu", LogLevel.Trace);
-                        itemPriceAndStock.Add(masterSlingshot, new int[] { masterSlingshotPrice, stock });
-                        Helper.Reflection.GetField<List<Item>>(shopMenu, "forSale").GetValue().Add(masterSlingshot);
+                        shopMenu.itemPriceAndStock.Add(masterSlingshot, new int[] { masterSlingshotPrice, stock });
+                        shopMenu.forSale.Add(masterSlingshot);
                     }
                 }
 

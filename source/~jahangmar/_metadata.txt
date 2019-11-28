@@ -12,9 +12,9 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit b9b79c8501d75628b98ca6d23390728fcc6366fc
+   commit 203854712a384cd389634244805f29ff93664744
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Sat Nov 23 02:01:20 2019 +0100
+   Date:   Wed Nov 27 12:05:28 2019 +0100
    
-       french translation
+       update for SDV 1.4
    

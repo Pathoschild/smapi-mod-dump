@@ -325,7 +325,7 @@ namespace PointAndPlant
                                     Game1.playSound("hoeHit");
                                 }
                                 Game1.removeSquareDebrisFromTile((int)index.X, (int)index.Y);
-                                location.checkForBuriedItem((int)index.X, (int)index.Y, false, false);
+                                location.checkForBuriedItem((int)index.X, (int)index.Y, false, false, Game1.player);
                                 location.temporarySprites.Add(new TemporaryAnimatedSprite(12, new Vector2(vector2.X * Game1.tileSize, vector2.Y * Game1.tileSize), Color.White, 8, Game1.random.NextDouble() < 0.5, 50f));
                                 if (tiles.Count > 2)
                                     location.temporarySprites.Add(new TemporaryAnimatedSprite(6, new Vector2(index.X * Game1.tileSize, index.Y * Game1.tileSize), Color.White, 8, Game1.random.NextDouble() < 0.5, Vector2.Distance(vector2, index) * 30f));
@@ -338,7 +338,7 @@ namespace PointAndPlant
                                 location.temporarySprites.Add(new TemporaryAnimatedSprite(12, new Vector2(index.X * Game1.tileSize, index.Y * Game1.tileSize), Color.White, 8, Game1.random.NextDouble() < 0.5, 50f));
                                 if (tiles.Count > 2)
                                     location.temporarySprites.Add(new TemporaryAnimatedSprite(6, new Vector2(index.X * Game1.tileSize, index.Y * Game1.tileSize), Color.White, 8, Game1.random.NextDouble() < 0.5, Vector2.Distance(vector2, index) * 30f));
-                                location.checkForBuriedItem((int)index.X, (int)index.Y, false, false);
+                                location.checkForBuriedItem((int)index.X, (int)index.Y, false, false, Game1.player);
                             }
                             ++Game1.stats.DirtHoed;
                         }

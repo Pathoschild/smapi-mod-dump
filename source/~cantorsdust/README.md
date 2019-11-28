@@ -13,8 +13,8 @@ And these archived mods which are no longer actively maintained:
 Installing stable releases from Nexus Mods is recommended for most users. If you really want to
 compile the mod yourself, read on.
 
-These mods use the [crossplatform build config](https://www.nuget.org/packages/Pathoschild.Stardew.ModBuildConfig)
-so they can be built on Linux, Mac, and Windows without changes. See [the build config documentation](https://www.nuget.org/packages/Pathoschild.Stardew.ModBuildConfig)
+These mods use the [crossplatform build config](https://smapi.io/package)
+so they can be built on Linux, Mac, and Windows without changes. See [the build config documentation](https://smapi.io/package)
 for troubleshooting.
 
 ### Compiling a mod for testing
@@ -30,4 +30,4 @@ To package a mod for release:
 
 1. Switch to `Release` build configuration.
 2. Recompile the mod per the previous section.
-3. Upload the generated `bin/Release/<mod name>-<version>.zip` file from the project folder.
+3. Upload the generated `<mod name>-<version>.zip` file from the project's `bin` folder.

@@ -36,6 +36,10 @@ namespace StardewHack
         {
             return new MethodParser(sig).ParseMethod();
         }
+        
+        public string GetSignature() {
+            return sig;
+        }
     }
     
     /// <summary>

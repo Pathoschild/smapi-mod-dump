@@ -7,7 +7,14 @@ namespace FarmTypeManager
         //config.json, used by all players/saves for shared functions
         private class ModConfig
         {
-            public bool EnableWhereAmICommand { get; set; } = true; //enable the "whereami" command in the SMAPI console
+            public bool EnableWhereAmICommand //(setting deprecated/renamed) enable the "whereami" command in the SMAPI console
+            {
+                set
+                {
+                    EnableConsoleCommands = value;
+                }
+            } 
+            public bool EnableConsoleCommands { get; set; } = true; //enable this mod's SMAPI console commands
             public bool EnableContentPacks { get; set; } = true; //enable any content packs for this mod
             public bool EnableContentPackFileChanges { get; set; } = true; //allow content packs to manipulate files, e.g. reset the main data folder
             public bool EnableTraceLogMessages { get; set; } = true; //allow the mod to generate trace-level log messages (which tend to spam the "SMAPI for developers" console)

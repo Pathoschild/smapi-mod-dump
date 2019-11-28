@@ -1,22 +1,33 @@
-﻿[← back to readme](readme.md)
+﻿# Release notes
 
-# Release notes
+[← back to readme](readme.md)
+
+## 2.1.0
+
+Released 27 November 2019.
+
+* Update for Stardew Valley 1.4.
+
 ## 2.0.1
+
 Released 25 June 2019.
 
 * Updated for Stardew Valley 1.3.36 and SMAPI 3.0.
 
 ## 2.0.0
+
 Released 05 October 2018.
 
 * Updated for StardewValley 1.3.
 
 ## 1.0.3
+
 Released 04 October 2017.
 
 * Updated for SMAPI 2.0.
 
 ## 1.0.2
+
 Released 07 May 2017.
 
 * Fixed quoting issue on SMAPI parameters.
@@ -26,6 +37,7 @@ Released 07 May 2017.
 * Added debug logging for mail delivery and cleanup.
 
 ## 1.0.1
+
 Released 29 April 2017.
 
 * Fixed bug with returning to tile screen.
@@ -33,6 +45,7 @@ Released 29 April 2017.
 * Fixed version number.
 
 ## 1.0
+
 Released 29 April 2017.
 
 * **Renamed from "Send Letters" to "Send Items" for clarity.**
@@ -44,11 +57,13 @@ Released 29 April 2017.
 * Fixed bug with file storage locking.
 
 ## 0.2
+
 Released 28 April 2017.
 
 * Updated readme.
 
 ## 0.1.4
+
 Released 21 April 2017.
 
 * Added console commands to manage online friends.
@@ -57,6 +72,7 @@ Released 21 April 2017.
 * Fixed sending a letter with no item crashing the game.
 
 ## 0.1.3
+
 Released 19 April 2017.
 
 * Initial version.

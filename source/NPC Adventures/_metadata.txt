@@ -5,9 +5,14 @@ mods:
    NPC Adventures
 
 latest commit:
-   commit e7c2df66d06793d22804a65921ce004b7d6cb211
+   commit 96359ccb87899c475999f292113e375330ab039c
    Author: Ellen Jana FawkesovÃ¡ <ellenfawkes@gmail.com>
-   Date:   Sat Nov 23 13:01:16 2019 +0100
+   Date:   Wed Nov 27 23:34:49 2019 +0100
    
-       enhanced nightbuild version preparer
+       Enhanced warrior fight skills and changed fight logic little bit
+       
+       - Use fist once per swing
+       - Can use fist only on begin of swing
+       - Avoid damage spam
+       - Enhance warrior's skills with: 3% added min damage, 2-5% added knock back, 1% added effective area, added crit chance depends on positive daily luck
    

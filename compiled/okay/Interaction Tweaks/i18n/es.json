@@ -1,0 +1,12 @@
+﻿{
+    "dia.eatquestion": "¿Comer {{item}}?",
+    "dia.eatanswerOne": "Si, uno.",
+    "dia.eatanswerMulti": "Si, {{amount}} a saturado.",
+    "dia.eatanswerNo": "No.",
+    "menu.slingshotempty": "La honda debe estar vacía para poder ser vendida.",
+    "item.slingshotdescr": "Dispara varios objetos como piedras, minerales, verduras o munición explosiva.",
+    "menu.carpentermoneybuttonon": "Activar: Comprar los recursos que faltan.",
+    "menu.carpentermoneybuttonoff": "Desactivar: Comprar los recursos que faltan.",
+    "menu.carpenteringredinfo": "{{itemname}} se comprará.",
+    "menu.fishingrodempty": "Quitar los accesorios para vender."
+}

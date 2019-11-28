@@ -29,7 +29,7 @@ namespace NpcAdventure.StateMachine.State
 
         private void ReactOnAnswer(NPC n, Farmer leader)
         {
-            if (leader.getFriendshipHeartLevelForNPC(n.Name) <= 4 || Game1.timeOfDay >= 2200)
+            if (leader.getFriendshipHeartLevelForNPC(n.Name) < this.StateMachine.CompanionManager.Config.HeartThreshold || Game1.timeOfDay >= 2200)
             {
                 Dialogue rejectionDialogue = new Dialogue(
                     DialogueHelper.GetDialogueString(

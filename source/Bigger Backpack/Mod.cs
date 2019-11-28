@@ -10,7 +10,7 @@ using StardewHack;
 
 namespace BiggerBackpack
 {
-    public class Mod : StardewHack.Hack<Mod>
+    public class Mod : Hack<Mod>
     {
         public static Mod instance;
 
@@ -75,7 +75,7 @@ namespace BiggerBackpack
         }
 
         // Inject code for rendering the larger backpack in the shop.
-        [BytecodePatch("StardewValley.Locations.SeedShop::draw")]
+        [BytecodePatch("StardewValley.Locations.SeedShop::draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)")]
         void SeedShop_draw() {
             var check = FindCode(
                 Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
@@ -105,7 +105,7 @@ namespace BiggerBackpack
                 check[4], // We'll create a new jump in check later.
                 // drawBiggerBackpack(b);
                 Instructions.Ldarg_1(),
-                Instructions.Call(GetType(), "drawBiggerBackpack", typeof(SpriteBatch))
+                Instructions.Call(typeof(Mod), nameof(Mod.drawBiggerBackpack), typeof(SpriteBatch))
                 // }
             );
             
@@ -142,7 +142,7 @@ namespace BiggerBackpack
                 Instructions.Bne_Un(AttachLabel(code[0])),
                 // return getBackpackSprite(position);
                 Instructions.Ldarg_1(),
-                Instructions.Call(GetType(), "getBackpackSprite", typeof(Vector2)),
+                Instructions.Call(typeof(Mod), nameof(Mod.getBackpackSprite), typeof(Vector2)),
                 Instructions.Ret()
                 // }
             );
@@ -180,7 +180,7 @@ namespace BiggerBackpack
                 code[2],
                 Instructions.Ldc_I4_S(48),
                 code[4],
-                Instructions.Call(GetType(), "clickBackpack"),
+                Instructions.Call(typeof(Mod), nameof(Mod.clickBackpack)),
                 Instructions.Br((Label)code[len-1].operand)
             );
             code[4] = Instructions.Bge(AttachLabel(code[len]));
@@ -218,7 +218,7 @@ namespace BiggerBackpack
                 Instructions.Ldc_I4(50000),
                 Instructions.Blt(AttachLabel(get_player)),
                 //   buyBackpack();
-                Instructions.Call(GetType(), "buyBackpack"),
+                Instructions.Call(typeof(Mod), nameof(Mod.buyBackpack)),
                 // }
                 // else if ((int)Game1.player.maxItems != 48) {
                 get_player,
@@ -267,7 +267,7 @@ namespace BiggerBackpack
                 // Shift icons down by `Game1.tileSize` pixels
                 Instructions.Ldarg_0(),
                 Instructions.Ldfld(typeof(InventoryPage), nameof(InventoryPage.equipmentIcons)),
-                Instructions.Call(GetType(), "shiftIconsDown", typeof(List<ClickableComponent>))
+                Instructions.Call(typeof(Mod), nameof(Mod.shiftIconsDown), typeof(List<ClickableComponent>))
             );
             
             try {
@@ -293,7 +293,7 @@ namespace BiggerBackpack
             }
         }
 
-        [BytecodePatch("StardewValley.Menus.InventoryPage::draw")]
+        [BytecodePatch("StardewValley.Menus.InventoryPage::draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)")]
         void InventoryPage_draw() {
             var code = BeginCode();
             
@@ -341,7 +341,10 @@ namespace BiggerBackpack
             resize_inventory();
         }
         
-        [BytecodePatch("StardewValley.Menus.ShopMenu::.ctor(System.Collections.Generic.List<StardewValley.Item>,System.Int32,System.String)")]
+        [BytecodePatch("StardewValley.Menus.ShopMenu::.ctor(System.Collections.Generic.List<StardewValley.ISalable>,System.Int32,System.String,"+
+            "System.Func<StardewValley.ISalable,StardewValley.Farmer,System.Int32,System.Boolean>"+
+            "System.Func<StardewValley.ISalable,System.Boolean>"+
+            "System.String)")]
         void ShopMenu_ctor() {
             resize_inventory();
             
@@ -374,7 +377,7 @@ namespace BiggerBackpack
             }
         }
         
-        [BytecodePatch("StardewValley.Menus.ShopMenu::draw")]
+        [BytecodePatch("StardewValley.Menus.ShopMenu::draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)")]
         void ShopMenu_draw() {
             // Position the inventory background
             // Change `yPositionOnScreen + height - 256 + 40` to `yPositionOnScreen + 464`
@@ -489,7 +492,7 @@ namespace BiggerBackpack
             }
         }
         
-        [BytecodePatch("StardewValley.Menus.JunimoNoteMenu::draw")]
+        [BytecodePatch("StardewValley.Menus.JunimoNoteMenu::draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)")]
         void JunimoNoteMenu_draw() {
             var code = FindCode(
                 OpCodes.Ldarg_1,
@@ -509,7 +512,7 @@ namespace BiggerBackpack
             );
             code[10] = Instructions.Ldc_I4_0();
             code.SubRange(1,2).Replace(
-                Instructions.Ldsfld(GetType(), "junimoNote")
+                Instructions.Ldsfld(typeof(Mod), nameof(Mod.junimoNote))
             );
         }
 #endregion

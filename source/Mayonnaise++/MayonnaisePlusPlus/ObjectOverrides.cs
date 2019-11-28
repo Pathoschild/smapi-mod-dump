@@ -32,13 +32,12 @@ namespace MayonnaisePlusPlus
 					switch (object1.ParentSheetIndex) {
 						case 107: // dinosaur egg!
 							if (!Loader.CONFIG.InfertileEggs) { // only accept fertile eggs if the infertile eggs option is off
-								__instance.heldObject.Value = new SObject(Vector2.Zero, Loader.DATA["Dinosaur Mayonnaise"], null, false, true, false, false) {
+								__instance.heldObject.Value = new SObject(Vector2.Zero, 807, null, false, true, false, false) {
 									Quality = CalculateQualityLevel(who, object1.Quality)
 								};
 								if (!probe) {
 									__instance.MinutesUntilReady = 180;
 									who.currentLocation.playSound("Ship");
-									Game1.player.removeItemsFromInventory(dropInItem.ParentSheetIndex, 1);
 								}
 								__result = true;
 							}
@@ -51,7 +50,6 @@ namespace MayonnaisePlusPlus
 							if (!probe) {
 								__instance.MinutesUntilReady = 180;
 								who.currentLocation.playSound("Ship");
-								Game1.player.removeItemsFromInventory(dropInItem.ParentSheetIndex, 1);
 							}
 							__result = true;
 							break;
@@ -63,7 +61,6 @@ namespace MayonnaisePlusPlus
 							if (!probe) {
 								__instance.MinutesUntilReady = 180;
 								who.currentLocation.playSound("Ship");
-								Game1.player.removeItemsFromInventory(dropInItem.ParentSheetIndex, 1);
 							}
 							__result = true;
 							break;
@@ -74,7 +71,6 @@ namespace MayonnaisePlusPlus
 							if (!probe) {
 								__instance.MinutesUntilReady = 180;
 								who.currentLocation.playSound("Ship");
-								Game1.player.removeItemsFromInventory(dropInItem.ParentSheetIndex, 1);
 							}
 							__result = true;
 							break;
@@ -84,8 +80,7 @@ namespace MayonnaisePlusPlus
 							};
 							if (!probe) {
 								__instance.MinutesUntilReady = 180;
-								who.currentLocation.playSound("Ship");
-								Game1.player.removeItemsFromInventory(dropInItem.ParentSheetIndex, 1);
+								who.currentLocation.playSound("Ship", NetAudio.SoundContext.Default);
 							}
 							__result = true;
 							break;
@@ -96,18 +91,16 @@ namespace MayonnaisePlusPlus
 								};
 								if (!probe) {
 									__instance.MinutesUntilReady = 180;
-									who.currentLocation.playSound("Ship");
-									Game1.player.removeItemsFromInventory(dropInItem.ParentSheetIndex, 1);
+									who.currentLocation.playSound("Ship", NetAudio.SoundContext.Default);
 								}
 								__result = true;
 							} else if (object1.ParentSheetIndex == Loader.DATA["Dino Egg"]) {
-								__instance.heldObject.Value = new SObject(Vector2.Zero, Loader.DATA["Dinosaur Mayonnaise"], null, false, true, false, false) {
+								__instance.heldObject.Value = new SObject(Vector2.Zero, 807, null, false, true, false, false) {
 									Quality = CalculateQualityLevel(who, object1.Quality)
 								};
 								if (!probe) {
 									__instance.MinutesUntilReady = 180;
-									who.currentLocation.playSound("Ship");
-									Game1.player.removeItemsFromInventory(dropInItem.ParentSheetIndex, 1);
+									who.currentLocation.playSound("Ship", NetAudio.SoundContext.Default);
 								}
 								__result = true;
 							}
@@ -115,7 +108,7 @@ namespace MayonnaisePlusPlus
 					}
 				}
 				if (__instance.name.Equals("Incubator")) {
-					if (__instance.heldObject.Value == null && (object1.Category == -5 || object1.ParentSheetIndex == 107) && object1.ParentSheetIndex != Loader.DATA["Dino Egg"]) {
+					if (__instance.heldObject.Value == null && (object1.Category == -5 || Utility.IsNormalObjectAtParentSheetIndex((Item)object1, 107)) && object1.ParentSheetIndex != Loader.DATA["Dino Egg"]) {
 						__instance.heldObject.Value = new SObject(object1.ParentSheetIndex, 1, false, -1, 0);
 						if (!probe) {
 							who.currentLocation.playSound("coin");
@@ -197,11 +190,11 @@ namespace MayonnaisePlusPlus
 				if (parentSheetIndex == 107 && Loader.CONFIG.InfertileEggs) parentSheetIndex = Loader.DATA["Dino Egg"];
 				if (random.NextDouble() < __instance.happiness.Value / 150.0) {
 					float num1 = (__instance.happiness.Value) > 200 ? (__instance.happiness.Value) * 1.5f : (__instance.happiness.Value <= 100 ? (__instance.happiness.Value - 100) : 0.0f);
-					if (__instance.type.Value.Equals("Duck") && random.NextDouble() < (__instance.friendshipTowardFarmer.Value + (double)num1) / 5000.0 + Game1.dailyLuck + Game1.player.LuckLevel * 0.01)
-						parentSheetIndex = __instance.deluxeProduceIndex.Value;
-					else if (__instance.type.Value.Equals("Rabbit") && random.NextDouble() < (__instance.friendshipTowardFarmer.Value + (double)num1) / 5000.0 + Game1.dailyLuck + Game1.player.LuckLevel * 0.02)
-						parentSheetIndex = __instance.deluxeProduceIndex.Value;
-					else if (__instance.type.Value.Equals("Blue Chicken") && random.NextDouble() < (__instance.friendshipTowardFarmer.Value + (double)num1) / 5000.0 + Game1.dailyLuck + Game1.player.LuckLevel * 0.01) {
+					if (__instance.type.Value.Equals("Duck") && random.NextDouble() < (__instance.friendshipTowardFarmer + num1) / 5000.0 + Game1.player.team.AverageDailyLuck() + Game1.player.team.AverageLuckLevel() * 0.01)
+						parentSheetIndex = __instance.deluxeProduceIndex;
+					else if (__instance.type.Value.Equals("Rabbit") && random.NextDouble() < (__instance.friendshipTowardFarmer + (double)num1) / 5000.0 + Game1.player.team.AverageDailyLuck() + Game1.player.team.AverageLuckLevel() * 0.02)
+						parentSheetIndex = __instance.deluxeProduceIndex;
+					else if (__instance.type.Value.Equals("Blue Chicken") && random.NextDouble() < (__instance.friendshipTowardFarmer.Value + (double)num1) / 5000.0 + Game1.player.team.AverageDailyLuck() + Game1.player.team.AverageLuckLevel() * 0.01) {
 						parentSheetIndex = Loader.DATA["Blue Chicken Egg"];
 					}
 					__instance.daysSinceLastLay.Value = 0;

@@ -1,4 +1,8 @@
-﻿using UltimateTool.Framework.Configuration;
+﻿using Microsoft.Xna.Framework;
+using StardewValley;
+using StardewValley.TerrainFeatures;
+using StardewValley.Tools;
+using UltimateTool.Framework.Configuration;
 using SFarmer = StardewValley.Farmer;
 using SObject = StardewValley.Object;
 
@@ -6,27 +10,27 @@ namespace UltimateTool.Framework.Tools
 {
     internal class HoeTool : BaseTool
     {
-        private readonly HoeConfig Config;
+        private readonly HoeConfig _config;
 
         public HoeTool(HoeConfig config)
         {
-            this.Config = config;
+            _config = config;
         }
 
         public override bool IsEnabled(SFarmer who, Tool tool, Item item, GameLocation location)
         {
-            return this.Config.TillDirt && tool is Hoe;
+            return _config.TillDirt && tool is Hoe;
         }
 
         public override bool Apply(Vector2 tile, SObject tileObj, TerrainFeature tileFeature, SFarmer who, Tool tool, Item item, GameLocation location)
         {
             if(tileFeature == null && tileObj == null)
             {
-                return this.UseToolOnTile(tool, tile);
+                return UseToolOnTile(tool, tile);
             }
             if(tileObj?.Name == "Artifact Spot")
             {
-                return this.UseToolOnTile(tool, tile);
+                return UseToolOnTile(tool, tile);
             }
             return false;
         }

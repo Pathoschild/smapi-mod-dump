@@ -2,12 +2,12 @@
 {
    internal class ModConfig
     {
-        public bool ModEnabled { get; set; } = false;
+        //public bool ModEnabled { get; set; } = false;
         public string ActionKey { get; set; } = "Z";
-        public string GrowKey { get; set; } = "X";
-        public string MineClearKey { get; set; } = "V";
-        public int MagnetRadius { get; set; } = 378;
-        public int ToolRadius { get; set; } = 5;
-        public IToolConfig ITools { get; set; } = new IToolConfig();
+        public int MagnetRadius { get; set; } = 10;
+        public int ToolRadius { get; set; } = 1;
+        public int ToolLevel { get; set; } = 1;
+        public bool ShowGrid { get; set; } = true;
+        public ToolConfig Tools { get; set; } = new ToolConfig();
     }
 }

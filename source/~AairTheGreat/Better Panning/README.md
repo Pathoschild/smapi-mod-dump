@@ -18,6 +18,7 @@
     - [enableAllSecondYearSeedsOnFirstYear](#enableAllSecondYearSeedsOnFirstYear)	
     - [sp_alwaysCreatePanningSpots](#spalwaysCreatePanningSpots)
     - [mp_alwaysCreatePanningSpots](#mpalwaysCreatePanningSpots)
+    - [chanceOfCreatingPanningSpot](#chanceOfCreatingPanningSpot)
     - [maxNumberOfOrePointsGathered](#maxNumberOfOrePointsGathered)
     - [showHudData](#showHudData)
     - [hudXPostion](#hudXPostion)
@@ -113,6 +114,9 @@ Single Player Only - If the mod detects a panning point that it did not create, 
 Multiplayer Player Only - If the mod detects a panning point that it did not create, it creates a new spot, but if a different player creates the spot, it will move 
 the spot.  Set to true if you want panning spots to potentially move on your friends!
 - Default Value: false 
+#### chanceOfCreatingPanningSpot
+This is the percent chance to have a panning spot be created when changing locations and the mod determines it needs to create a panning spot.  The range is between 0.0 and 1.0.  For example, a 0.50 would be a 50% chance.
+- Default Value: 1.0
 #### maxNumberOfOrePointsGathered
 Maximum times per day a player can pan spots before the mod stops creating them.  The game can/will create more spots but not the mod.
 - Default Value: 50 

@@ -34,6 +34,12 @@
 	-fixed errors during new game intro sequence
 	-fixed animation issues during walking/running
 
+1.1.0:
+	-update for Stardew Valley 1.4
+	-implemented two options (disabled by default) that show the "<pet>
+	loves you" message everytime or everytime friendship is at maximum
+	-better compatibility with Adopt 'n' Skin
+
 TODO:
 	-no greetings by your pet
 	-trash shaming issue

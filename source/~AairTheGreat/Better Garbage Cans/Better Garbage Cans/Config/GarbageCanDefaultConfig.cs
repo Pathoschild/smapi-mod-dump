@@ -1,4 +1,6 @@
 ﻿using BetterGarbageCans.Data;
+using StardewValley;
+using System;
 using System.Collections.Generic;
 
 namespace BetterGarbageCans.Config
@@ -15,7 +17,7 @@ namespace BetterGarbageCans.Config
             groups.Add(GARBAGE_CANS.CLINT, CreateGarbageCan(GARBAGE_CANS.CLINT));
             groups.Add(GARBAGE_CANS.STARDROP_SALOON, CreateGarbageCan(GARBAGE_CANS.STARDROP_SALOON));
             groups.Add(GARBAGE_CANS.EVELYN_GEORGE, CreateGarbageCan(GARBAGE_CANS.EVELYN_GEORGE));
-
+            groups.Add(GARBAGE_CANS.JOJA_MART, CreateGarbageCan(GARBAGE_CANS.JOJA_MART));
             BetterGarbageCansMod.Instance.Helper.Data.WriteJsonFile(file, groups);
 
             return groups;
@@ -51,13 +53,17 @@ namespace BetterGarbageCans.Config
                     return GetSaloonTreasureList();    
                     
                 case GARBAGE_CANS.EVELYN_GEORGE:
-                    return GetEvelynGeorgeTreasureList();     
+                    return GetEvelynGeorgeTreasureList();
+
+                case GARBAGE_CANS.JOJA_MART:
+                    return GetJojaMartTreasureList();
                     
                 default:
                     return new List<TrashTreasure>();                    
             }
         }
 
+       
         private static List<TrashTreasure> GetJodiSamTreasureList()
         {
             List<TrashTreasure> treasures = new List<TrashTreasure>();
@@ -414,9 +420,28 @@ namespace BetterGarbageCans.Config
             return treasures;
         }
 
+        private static List<TrashTreasure> GetJojaMartTreasureList()
+        {
+            List<TrashTreasure> treasures = new List<TrashTreasure>();
+            treasures.Add(CreateTreasure(167, "Jojo Cola", 0.99, 1, 1, 600, 2600));          
+            treasures.Add(CreateTreasure(270, "Corn", 0.4, 1, 1, 600, 2600));
+            treasures.Add(CreateTreasure(809, "Movie Ticket", 0.1, 1, 1, 600, 2600));
+            
+            return treasures;
+        }
+
         private static TrashTreasure CreateTreasure(int id, string name, double chance, int minAmount, int maxAmount, int startTime, int endTime)
         {
             return new TrashTreasure(id, name, chance, minAmount, maxAmount, startTime, endTime, true);
-        }        
+        }
+
+        internal static Dictionary<GARBAGE_CANS, GarbageCan> UpdateConfigToLatest(Dictionary<GARBAGE_CANS, GarbageCan> garbageCans, string file)
+        {           
+            garbageCans.Add(GARBAGE_CANS.JOJA_MART, CreateGarbageCan(GARBAGE_CANS.JOJA_MART));
+            BetterGarbageCansMod.Instance.Helper.Data.WriteJsonFile(file, garbageCans);
+
+            return garbageCans;
+        }
+
     }
 }

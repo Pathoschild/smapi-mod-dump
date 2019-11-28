@@ -9,7 +9,7 @@ namespace Denifia.Stardew.SendItemsApi
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -26,17 +26,18 @@ namespace Denifia.Stardew.SendItemsApi
         {
             services.Configure<AzureStorageConfig>(Configuration.GetSection("AzureStorage"));
             services.AddScoped<ITableStorageRepository, AzureTableStorageRepository>();
-            services.AddMvc();
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
+            app.UseRouting();
             app.UseStaticFiles();
-            app.UseMvc();
+            app.UseEndpoints(x => 
+            {
+                x.MapControllers();
+            });
         }
     }
 }

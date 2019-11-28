@@ -165,6 +165,19 @@ namespace PetInteraction
                 ModEntry.TempPet.displayName = pet.displayName;
         }
 
+        public static bool WasPetToday(Pet pet) => pet.lastPetDay.ContainsKey(Game1.player.UniqueMultiplayerID) && pet.lastPetDay[Game1.player.UniqueMultiplayerID] == Game1.Date.TotalDays;
+        
+
+        public static void SetWasPetToday(Pet pet, bool value)
+        {
+            int days = value ? Game1.Date.TotalDays : Game1.Date.TotalDays - 1;
+
+            if (!pet.lastPetDay.ContainsKey(Game1.player.UniqueMultiplayerID))
+                pet.lastPetDay.Add(Game1.player.UniqueMultiplayerID, days);
+            else
+                pet.lastPetDay[Game1.player.UniqueMultiplayerID] = days;
+        }
+
         public static bool Compare(double a, double b) => System.Math.Abs(a - b) < 0.01;
         public static bool Compare(Vector2 v1, Vector2 v2) => Compare(v1.X, v2.X) && Compare(v1.Y, v2.Y);
 
@@ -305,7 +318,7 @@ namespace PetInteraction
             {
                 GetPet().doEmote(Character.heartEmote);
                 pet.playContentSound();
-                pet.friendshipTowardFarmer = System.Math.Min(pet_max_friendship, pet.friendshipTowardFarmer + ModEntry.config.pet_fetch_friendship_increase);
+                pet.friendshipTowardFarmer.Value = System.Math.Min(pet_max_friendship, pet.friendshipTowardFarmer.Value + ModEntry.config.pet_fetch_friendship_increase);
                 hasFetchedToday = true;
             }
 
@@ -358,9 +371,9 @@ namespace PetInteraction
             if (pet == null)
                 return;
             if (pet is Dog dog && (petState == PetState.Chasing || petState == PetState.Fetching))
-                SetPetBehavior(Dog.behavior_sprint);
+                SetPetBehavior(Dog.behavior_Sprint);
             else
-                SetPetBehavior(Pet.behavior_walking);
+                SetPetBehavior(Pet.behavior_Walk);
 
             pet.FacingDirection = oldFacingDir;
 
@@ -407,7 +420,7 @@ namespace PetInteraction
             pet.SetMovingDown(false);
             pet.SetMovingLeft(false);
             pet.SetMovingRight(false);
-            SetPetBehavior(Pet.behavior_Sit_Down);
+            SetPetBehavior(Pet.behavior_SitDown);
         }
 
         private static void SetPetBehavior(int behavior)
@@ -426,8 +439,8 @@ namespace PetInteraction
                 SetState(PetState.Vanilla);
             GetPet().doEmote(Character.angryEmote);
             Jump();
-            pet.friendshipTowardFarmer = System.Math.Max(0, pet.friendshipTowardFarmer - ModEntry.config.pet_friendship_decrease_onhit ); // Values from StardewValley.Characters.Pet
-            ModEntry.GetHelper().Reflection.GetField<bool>(GetPet(), "wasPetToday").SetValue(false);
+            pet.friendshipTowardFarmer.Value = System.Math.Max(0, pet.friendshipTowardFarmer.Value - ModEntry.config.pet_friendship_decrease_onhit ); // Values from StardewValley.Characters.Pet
+            SetWasPetToday(pet, false);
         }
 
         public static void Confused()
@@ -516,9 +529,10 @@ namespace PetInteraction
 
         public static void Petting(Pet pet)
         {
-            ModEntry.GetHelper().Reflection.GetField<bool>(pet, "wasPetToday").SetValue(true);
-            pet.friendshipTowardFarmer = System.Math.Min(1000, pet.friendshipTowardFarmer + ModEntry.config.pet_petting_friendship_increase);
-            if (ModEntry.config.unconditional_love || pet.friendshipTowardFarmer >= 1000 && Game1.player != null)
+            //ModEntry.GetHelper().Reflection.GetField<bool>(pet, "wasPetToday").SetValue(true);
+            SetWasPetToday(GetPet(), true);
+            pet.friendshipTowardFarmer.Value = System.Math.Min(1000, pet.friendshipTowardFarmer.Value + ModEntry.config.pet_petting_friendship_increase);
+            if (ModEntry.config.unconditional_love || ModEntry.config.love_everytime_at_max_friendship && pet.friendshipTowardFarmer >= 1000 && Game1.player != null)
             {
                 Game1.showGlobalMessage(Game1.content.LoadString("Strings\\Characters:PetLovesYou", pet.displayName));
                 if (!Game1.player.mailReceived.Contains("petLoveMessage"))

@@ -7,9 +7,9 @@ mods:
    Better Train Loot
 
 latest commit:
-   commit 5c4ee1a655c8f24a4b38b737f49c8e0f206f2a0d
-   Author: Aair <a_aair@hotmailc.om>
-   Date:   Sat Jul 27 11:22:27 2019 -0700
+   commit 0550a4826306af097463d9823b397c028207b27b
+   Author: Aair the Great <a_aair@hotmail.com>
+   Date:   Tue Nov 26 18:38:00 2019 -0800
    
-       Added notes for SDV 1.4 needed changes
+       Updated to add the garbage can animation back in.
    
