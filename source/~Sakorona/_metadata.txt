@@ -11,9 +11,13 @@ mods:
    Weather Illnesses
 
 latest commit:
-   commit 0f65c5ce520022568a0be45fdfc9b250aa6b1209
-   Author: Nicholas Johnson <7285555+Sakorona@users.noreply.github.com>
-   Date:   Tue Nov 26 23:35:29 2019 -0800
+   commit a5deba03bc97e2e9e93990144c44185dd959e849
+   Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
+   Date:   Thu Nov 28 19:38:11 2019 +0100
    
-       This bumps up to 1.5.2 and fixes the persistent bug
+       German translation for ClimatesOfFerngill (#80)
+       
+       * German translation and typo in default.json
+       
+       * fix de.json
    

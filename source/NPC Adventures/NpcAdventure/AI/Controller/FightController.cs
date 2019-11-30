@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using NpcAdventure.Loader;
 using NpcAdventure.Utils;
 using StardewModdingAPI;
@@ -13,7 +14,7 @@ using System.Reflection;
 
 namespace NpcAdventure.AI.Controller
 {
-    internal class FightController : FollowController
+    internal class FightController : FollowController, Internal.IDrawable
     {
         private const int COOLDOWN_EFFECTIVE_THRESHOLD = 36;
         private const int COOLDOWN_INITAL = 50;
@@ -32,6 +33,9 @@ namespace NpcAdventure.AI.Controller
         private bool defendFistUsed;
         private List<FarmerSprite.AnimationFrame>[] attackAnimation;
         private int attackSpeedPitch = 0;
+
+        public event EventHandler<EventArgs> VisibleChanged;
+        public event EventHandler<EventArgs> DrawOrderChanged;
 
         public int SwingThreshold {
             get {
@@ -139,6 +143,10 @@ namespace NpcAdventure.AI.Controller
 
         public override bool IsIdle => this.CheckIdleState();
 
+        public bool Visible => throw new NotImplementedException();
+
+        public int DrawOrder => throw new NotImplementedException();
+
         /// <summary>
         /// Checks if spoted monster is a valid monster
         /// </summary>
@@ -245,6 +253,11 @@ namespace NpcAdventure.AI.Controller
             {
                 this.weaponSwingCooldown--;
             }
+
+            if (this.weaponSwingCooldown > this.SwingThreshold && !this.defendFistUsed)
+            {
+                this.DoDamage();
+            }
         }
 
         public override void Update(UpdateTickedEventArgs e)
@@ -267,6 +280,9 @@ namespace NpcAdventure.AI.Controller
         /// </summary>
         private void DoDamage(bool criticalFist = false)
         {
+            if (this.leader == null)
+                return;
+
             Rectangle effectiveArea = this.follower.GetBoundingBox();
             Rectangle enemyBox = this.leader.GetBoundingBox();
             Rectangle companionBox = this.follower.GetBoundingBox();
@@ -294,8 +310,7 @@ namespace NpcAdventure.AI.Controller
 
             if (criticalFist && this.follower.FacingDirection != 0)
             {
-                this.follower.currentLocation.playSound("clubSmash");
-                this.follower.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite("TileSheets\\animations", new Microsoft.Xna.Framework.Rectangle(0, 960, 128, 128), 60f, 4, 0, this.follower.Position, false, this.follower.FacingDirection == 3, 1f, 0.0f, Color.White, .5f, 0.0f, 0.0f, 0.0f, false));
+                this.follower.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite("TileSheets\\animations", new Rectangle(0, 960, 128, 128), 60f, 4, 0, this.follower.Position, false, this.follower.FacingDirection == 3, 1f, 0.0f, Color.White, .5f, 0.0f, 0.0f, 0.0f, false));
             }
 
             companionBox.Inflate(4, 4); // Personal space
@@ -311,9 +326,19 @@ namespace NpcAdventure.AI.Controller
 
             if (this.follower.currentLocation.damageMonster(effectiveArea, attrs.minDamage, attrs.maxDamage, false, attrs.knockBack, attrs.addedPrecision, attrs.critChance, attrs.critMultiplier, !criticalFist, this.realLeader as Farmer))
             {
-                this.follower.currentLocation.playSound("clubhit");
+                if (criticalFist)
+                {
+                    this.follower.currentLocation.playSound("clubSmash");
+                }
+                else
+                {
+                    this.follower.currentLocation.playSound("clubhit");
+                }
+
                 if (criticalFist || (Game1.random.NextDouble() > .7f && Game1.random.NextDouble() < .3f))
+                {
                     this.DoFightSpeak();
+                }
             }
         }
 
@@ -437,18 +462,12 @@ namespace NpcAdventure.AI.Controller
         public override void Activate()
         {
             this.events.World.NpcListChanged += this.World_NpcListChanged;
-            this.events.Display.RenderedWorld += this.Display_RenderedWorld;
             this.weaponSwingCooldown = 0;
             this.fightBubbleCooldown = 0;
             this.potentialIddle = false;
         }
 
-        private int CurrentFrame(int tick, int duration, int frames)
-        {
-            return (tick % duration) / (duration / frames);
-        }
-
-        private void Display_RenderedWorld(object sender, RenderedWorldEventArgs e)
+        public void Draw(SpriteBatch spriteBatch)
         {
             if (this.weapon != null && this.weaponSwingCooldown > this.SwingThreshold && !this.defendFistUsed)
             {
@@ -457,15 +476,19 @@ namespace NpcAdventure.AI.Controller
                 int tick = Math.Abs(this.weaponSwingCooldown - this.CooldownTimeout);
                 int currentFrame = this.CurrentFrame(tick, duration, frames);
 
-                Helper.DrawDuringUse(currentFrame, this.follower.FacingDirection, e.SpriteBatch, this.follower.getLocalPosition(Game1.viewport), this.follower, MeleeWeapon.getSourceRect(this.weapon.InitialParentTileIndex), this.weapon.type.Value, this.weapon.isOnSpecial);
+                Helper.DrawDuringUse(currentFrame, this.follower.FacingDirection, spriteBatch, this.follower.getLocalPosition(Game1.viewport), this.follower, MeleeWeapon.getSourceRect(this.weapon.InitialParentTileIndex), this.weapon.type.Value, this.weapon.isOnSpecial);
             }
+        }
+
+        private int CurrentFrame(int tick, int duration, int frames)
+        {
+            return (tick % duration) / (duration / frames);
         }
 
         public override void Deactivate()
         {
             this.follower.Sprite.StopAnimation();
             this.events.World.NpcListChanged -= this.World_NpcListChanged;
-            this.events.Display.RenderedWorld -= this.Display_RenderedWorld;
             this.leader = null;
             this.pathFinder.GoalCharacter = null;
             this.potentialIddle = true;

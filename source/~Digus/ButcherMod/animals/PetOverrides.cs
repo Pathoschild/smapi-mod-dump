@@ -12,21 +12,23 @@ namespace AnimalHusbandryMod.animals
 {
     public class PetOverrides
     {
-        public static bool checkAction(Pet __instance)
+        public static bool checkAction(Pet __instance, Farmer who)
         {
             if (__instance.IsInvisible)
             {
                 return false;
             }
-            if (DataLoader.Helper.Reflection.GetField<bool>(__instance, "wasPetToday").GetValue() && AnimalContestController.CanChangeParticipantPet())
+            if (!__instance.lastPetDay.ContainsKey(who.UniqueMultiplayerID))
+                __instance.lastPetDay.Add(who.UniqueMultiplayerID, -1);
+            if (__instance.lastPetDay[who.UniqueMultiplayerID] == Game1.Date.TotalDays && AnimalContestController.CanChangeParticipantPet())
             {
                 __instance.playContentSound();
                 __instance.Halt();
                 __instance.CurrentBehavior = 0;
-                __instance.initiateCurrentBehavior();
+                __instance.OnNewBehavior();
                 __instance.Halt();
                 __instance.Sprite.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>() { new FarmerSprite.AnimationFrame(18, 200) });
-                var who = Game1.player;
+
                 who.Halt();
                 int currentFrame = who.FarmerSprite.currentFrame;
                 switch (who.FacingDirection)

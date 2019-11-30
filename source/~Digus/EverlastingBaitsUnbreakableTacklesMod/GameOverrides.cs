@@ -49,7 +49,7 @@ namespace EverlastingBaitsAndUnbreakableTacklesMod
 
         public static bool ClickCraftingRecipe(CraftingPage __instance, ref ClickableTextureComponent c)
         {
-            CraftingRecipe craftingRecipe = __instance.pagesOfCraftingRecipes[DataLoader.Helper.Reflection.GetField<int>(__instance, "currentCraftingPage").GetValue()][c];
+            CraftingRecipe craftingRecipe = DataLoader.Helper.Reflection.GetField<List<Dictionary<ClickableTextureComponent, CraftingRecipe>>>(__instance, "pagesOfCraftingRecipes").GetValue()[DataLoader.Helper.Reflection.GetField<int>(__instance, "currentCraftingPage").GetValue()][c];
 
             BaitTackle? baitTackle = BaitTackleExtension.GetFromDescription(craftingRecipe.name);
             if (baitTackle.HasValue)

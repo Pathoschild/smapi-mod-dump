@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlwaysScrollMap", "AlwaysSc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiggerBackpack", "BiggerBackpack\BiggerBackpack.csproj", "{78E48279-65FB-4C18-A511-3B51ED68386B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CraftCounter", "CraftCounter\CraftCounter.csproj", "{025EEEE1-0A0A-4032-BF95-9F85ACF414F1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FixAnimalTools", "FixAnimalTools\FixAnimalTools.csproj", "{E9792620-7FF4-4454-B93C-D54DE4C221CA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrassGrowth", "GrassGrowth\GrassGrowth.csproj", "{2EDCD992-B416-4046-9A65-BB307FD77A44}"
@@ -33,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TreeSpread", "TreeSpread\Tr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WearMoreRings", "WearMoreRings\WearMoreRings.csproj", "{17F9659A-1C56-470D-8356-4CC57ABD64DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PressurePlate", "PressurePlate\PressurePlate.csproj", "{078475DE-5D27-411C-9089-00D65372A281}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -47,10 +47,6 @@ Global
 		{78E48279-65FB-4C18-A511-3B51ED68386B}.Debug|x86.Build.0 = Debug|x86
 		{78E48279-65FB-4C18-A511-3B51ED68386B}.Release|x86.ActiveCfg = Release|x86
 		{78E48279-65FB-4C18-A511-3B51ED68386B}.Release|x86.Build.0 = Release|x86
-		{025EEEE1-0A0A-4032-BF95-9F85ACF414F1}.Debug|x86.ActiveCfg = Debug|x86
-		{025EEEE1-0A0A-4032-BF95-9F85ACF414F1}.Debug|x86.Build.0 = Debug|x86
-		{025EEEE1-0A0A-4032-BF95-9F85ACF414F1}.Release|x86.ActiveCfg = Release|x86
-		{025EEEE1-0A0A-4032-BF95-9F85ACF414F1}.Release|x86.Build.0 = Release|x86
 		{E9792620-7FF4-4454-B93C-D54DE4C221CA}.Debug|x86.ActiveCfg = Debug|x86
 		{E9792620-7FF4-4454-B93C-D54DE4C221CA}.Debug|x86.Build.0 = Debug|x86
 		{E9792620-7FF4-4454-B93C-D54DE4C221CA}.Release|x86.ActiveCfg = Release|x86
@@ -83,6 +79,10 @@ Global
 		{17F9659A-1C56-470D-8356-4CC57ABD64DA}.Debug|x86.Build.0 = Debug|x86
 		{17F9659A-1C56-470D-8356-4CC57ABD64DA}.Release|x86.ActiveCfg = Release|x86
 		{17F9659A-1C56-470D-8356-4CC57ABD64DA}.Release|x86.Build.0 = Release|x86
+		{078475DE-5D27-411C-9089-00D65372A281}.Debug|x86.ActiveCfg = Debug|x86
+		{078475DE-5D27-411C-9089-00D65372A281}.Debug|x86.Build.0 = Debug|x86
+		{078475DE-5D27-411C-9089-00D65372A281}.Release|x86.ActiveCfg = Release|x86
+		{078475DE-5D27-411C-9089-00D65372A281}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

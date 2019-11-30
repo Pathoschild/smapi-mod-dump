@@ -664,5 +664,80 @@ namespace BetterMixedSeeds
                 }),
             winter: null
         );
+
+        public CropMod PokeCrops { get; set; } = new CropMod
+        (
+            spring: new Season(
+                new List<Crop>
+                {
+                    new Crop("Cheri Berry", true, 1),
+                    new Crop("Lum Berry", true, 1),
+                    new Crop("Rawst Berry", true, 1),
+                }),
+            summer: new Season(
+                new List<Crop>
+                {
+                    new Crop("Lum Berry", true, 1),
+                    new Crop("Nanab Berry", true, 1),
+                    new Crop("Oran Berry", true, 1),
+                    new Crop("Pecha Berry", true, 1),
+                }),
+            fall: new Season(
+                new List<Crop>
+                {
+                    new Crop("Aspear Berry", true, 1),
+                    new Crop("Chesto Berry", true, 1),
+                    new Crop("Leppa Berry", true, 1),
+                    new Crop("Oran Berry", true, 1),
+                    new Crop("Persim Berry", true, 1),
+                    new Crop("Sitrus Berry", true, 1),
+                }),
+            winter: null
+        );
+
+        public CropMod StarboundValley { get; set; } = new CropMod
+        (
+            spring: new Season(
+                new List<Crop>
+                {
+                    new Crop("Automato", true, 1),
+                    new Crop("Eggshoot", true, 1),
+                    new Crop("Feathercrown", true, 1),
+                    new Crop("Oculemon", true, 1),
+                    new Crop("Pearlpea", true, 1),
+                    new Crop("Pussplum", true, 1),
+                }),
+            summer: new Season(
+                new List<Crop>
+                {
+                    new Crop("Avesmingo", true, 1),
+                    new Crop("Beakseed", true, 1),
+                    new Crop("Coralcreep", true, 1),
+                    new Crop("Currentcorn", true, 1),
+                    new Crop("Dirturchin", true, 1),
+                    new Crop("Neonmelon", true, 1),
+                    new Crop("Reefpod", true, 1),
+                }),
+            fall: new Season(
+                new List<Crop>
+                {
+                    new Crop("Beakseed", true, 1),
+                    new Crop("Boneboo", true, 1),
+                    new Crop("Coralcreep", true, 1),
+                    new Crop("Pussplum", true, 1),
+                    new Crop("Toxictop", true, 1),
+                    new Crop("Wartweed", true, 1),
+                }),
+            winter: new Season(
+                new List<Crop>
+                {
+                    new Crop("Automato", true, 1),
+                    new Crop("Boltbulb", true, 1),
+                    new Crop("Boneboo", true, 1),
+                    new Crop("Crystal Plant", true, 1),
+                    new Crop("Currentcorn", true, 1),
+                    new Crop("Diodia", true, 1),
+                })
+        );
     }
 }

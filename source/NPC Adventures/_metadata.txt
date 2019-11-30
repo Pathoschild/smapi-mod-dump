@@ -5,14 +5,9 @@ mods:
    NPC Adventures
 
 latest commit:
-   commit 96359ccb87899c475999f292113e375330ab039c
+   commit 40e0513d061cf65800bcbb43a1375c17863b36c9
    Author: Ellen Jana FawkesovÃ¡ <ellenfawkes@gmail.com>
-   Date:   Wed Nov 27 23:34:49 2019 +0100
+   Date:   Fri Nov 29 21:22:43 2019 +0100
    
-       Enhanced warrior fight skills and changed fight logic little bit
-       
-       - Use fist once per swing
-       - Can use fist only on begin of swing
-       - Avoid damage spam
-       - Enhance warrior's skills with: 3% added min damage, 2-5% added knock back, 1% added effective area, added crit chance depends on positive daily luck
+       Fixed grammar bug in Elliott
    

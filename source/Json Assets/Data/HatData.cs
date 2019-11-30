@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace JsonAssets.Data
 {
-    class HatData : DataNeedsId
+    public class HatData : DataNeedsId
     {
         [JsonIgnore]
         internal Texture2D texture;
@@ -14,6 +14,8 @@ namespace JsonAssets.Data
         public int PurchasePrice { get; set; }
         public bool ShowHair { get; set; }
         public bool IgnoreHairstyleOffset { get; set; }
+
+        public string Metadata { get; set; } = "";
 
         public Dictionary<string, string> NameLocalization = new Dictionary<string, string>();
         public Dictionary<string, string> DescriptionLocalization = new Dictionary<string, string>();
@@ -42,7 +44,7 @@ namespace JsonAssets.Data
 
         internal string GetHatInformation()
         {
-            return $"{Name}/{LocalizedDescription()}/" + ( ShowHair ? "true" : "false" ) + "/" + (IgnoreHairstyleOffset ? "true" : "false") + $"/{LocalizedName()}";
+            return $"{Name}/{LocalizedDescription()}/" + ( ShowHair ? "true" : "false" ) + "/" + (IgnoreHairstyleOffset ? "true" : "false") + $"/{Metadata}/{LocalizedName()}";
         }
     }
 }

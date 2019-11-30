@@ -50,6 +50,11 @@ namespace JoysOfEfficiency.Misc
             }
         }
 
+        public static void OnDataLoaded()
+        {
+            LastTimeOfDay = Game1.timeOfDay;
+        }
+
         public static void DrawHud()
         {
             if (Paused)

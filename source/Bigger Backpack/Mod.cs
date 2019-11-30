@@ -269,6 +269,7 @@ namespace BiggerBackpack
                 Instructions.Ldfld(typeof(InventoryPage), nameof(InventoryPage.equipmentIcons)),
                 Instructions.Call(typeof(Mod), nameof(Mod.shiftIconsDown), typeof(List<ClickableComponent>))
             );
+            EndCode().ReplaceJump(-1, EndCode()[-4]);
             
             try {
                 // Move portrait `Game1.tileSize` pixels down.

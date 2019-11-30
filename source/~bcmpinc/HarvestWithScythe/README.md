@@ -50,3 +50,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 * Generalized config, such that harvest mode is configurable separately for every kind of crop/forage.
 * The `AllHaveQuality` configuration parameter has been removed, the associated effect has been removed.
 * The format of the config file has been rewritten.
+
+#### 2.1:
+* Now also works with the golden scythe.

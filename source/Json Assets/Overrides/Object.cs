@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using JsonAssets.Data;
+using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
 
@@ -31,7 +32,7 @@ namespace JsonAssets.Overrides
                     else
                     {
                         if (l.isTileHoeDirt(tile) || (lobj is IndoorPot))
-                            __result = l.isTileOccupiedForPlacement(tile);
+                            __result = !l.isTileOccupiedForPlacement(tile, __instance);
                         else
                             __result = false;
                         return false;
@@ -66,6 +67,84 @@ namespace JsonAssets.Overrides
                     break;
                 }
             }
+        }
+    }
+
+    public static class ObjectDisplayNameHook
+    {
+        public static bool Prefix(StardewValley.Object __instance, ref string __result)
+        {
+            if (!__instance.Name?.Contains("Honey") == true)
+                return true;
+
+            if ( !__instance.bigCraftable.Value && Mod.instance.objectIds.Values.Contains(__instance.ParentSheetIndex) )
+            {
+                string str;
+                Game1.objectInformation.TryGetValue(__instance.ParentSheetIndex, out str);
+                if (!string.IsNullOrEmpty(str))
+                    __result = str.Split('/')[4];
+                return false;
+            }
+            else if (__instance.bigCraftable.Value && Mod.instance.bigCraftableIds.Values.Contains(__instance.ParentSheetIndex) )
+            {
+                string str;
+                Game1.bigCraftablesInformation.TryGetValue(__instance.ParentSheetIndex, out str);
+                if (!string.IsNullOrEmpty(str))
+                {
+                    string[] strArray = str.Split('/');
+                    __result = strArray[strArray.Length - 1];
+                }
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+    public static class ObjectCategoryTextOverride
+    {
+        public static bool Prefix(StardewValley.Object __instance, ref string __result )
+        {
+            ObjectData objData = null;
+            foreach ( var obj in Mod.instance.objects )
+            {
+                if ( obj.GetObjectId() == __instance.ParentSheetIndex )
+                {
+                    objData = obj;
+                    break;
+                }
+            }
+
+            if ( objData != null && objData.CategoryTextOverride != null)
+            {
+                __result = objData.CategoryTextOverride;
+                return false;
+            }
+
+            return true;
+        }
+    }
+    public static class ObjectCategoryColorOverride
+    {
+        public static bool Prefix(StardewValley.Object __instance, ref Color __result)
+        {
+            ObjectData objData = null;
+            foreach (var obj in Mod.instance.objects)
+            {
+                if (obj.GetObjectId() == __instance.ParentSheetIndex)
+                {
+                    objData = obj;
+                    break;
+                }
+            }
+
+            if (objData != null && objData.CategoryColorOverride.A != 0)
+            {
+                __result = objData.CategoryColorOverride;
+                return false;
+            }
+
+            return true;
         }
     }
 }

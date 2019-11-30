@@ -1,0 +1,867 @@
+[
+  {
+    "LocationName": "BusStop",
+    "TileX": 25,
+    "TileY": 13
+  },
+  {
+    "LocationName": "BusStop",
+    "TileX": 17,
+    "TileY": 3
+  },
+  {
+    "LocationName": "BusStop",
+    "TileX": 2,
+    "TileY": 3
+  },
+  {
+    "LocationName": "Backwoods",
+    "TileX": 28,
+    "TileY": 28
+  },
+  {
+    "LocationName": "Tunnel",
+    "TileX": 16,
+    "TileY": 11
+  },
+  {
+    "LocationName": "Tunnel",
+    "TileX": 31,
+    "TileY": 8
+  },
+  {
+    "LocationName": "BusStop",
+    "TileX": 4,
+    "TileY": 14
+  },
+  {
+    "LocationName": "BusStop",
+    "TileX": 14,
+    "TileY": 24
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 15,
+    "TileY": 51
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 33,
+    "TileY": 49
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 7,
+    "TileY": 71
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 16,
+    "TileY": 96
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 34,
+    "TileY": 86
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 43,
+    "TileY": 87
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 37,
+    "TileY": 98
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 72,
+    "TileY": 101
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 73,
+    "TileY": 90
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 90,
+    "TileY": 100
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 109,
+    "TileY": 86
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 101,
+    "TileY": 69
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 110,
+    "TileY": 62
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 109,
+    "TileY": 52
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 86,
+    "TileY": 72
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 80,
+    "TileY": 57
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 76,
+    "TileY": 46
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 95,
+    "TileY": 33
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 98,
+    "TileY": 10
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 89,
+    "TileY": 4
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 74,
+    "TileY": 37
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 66,
+    "TileY": 9
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 38,
+    "TileY": 22
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 22,
+    "TileY": 23
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 16,
+    "TileY": 11
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 6,
+    "TileY": 16
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 13,
+    "TileY": 38
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 34,
+    "TileY": 36
+  },
+  {
+    "LocationName": "Town",
+    "TileX": 80,
+    "TileY": 3
+  },
+  {
+    "LocationName": "Mountain",
+    "TileX": 4,
+    "TileY": 33
+  },
+  {
+    "LocationName": "Mountain",
+    "TileX": 6,
+    "TileY": 8
+  },
+  {
+    "LocationName": "Mountain",
+    "TileX": 13,
+    "TileY": 5
+  },
+  {
+    "LocationName": "Mountain",
+    "TileX": 32,
+    "TileY": 5
+  },
+  {
+    "LocationName": "Mountain",
+    "TileX": 34,
+    "TileY": 15
+  },
+  {
+    "LocationName": "Mountain",
+    "TileX": 44,
+    "TileY": 7
+  },
+  {
+    "LocationName": "Mountain",
+    "TileX": 61,
+    "TileY": 6
+  },
+  {
+    "LocationName": "Mountain",
+    "TileX": 81,
+    "TileY": 9
+  },
+  {
+    "LocationName": "Mountain",
+    "TileX": 89,
+    "TileY": 15
+  },
+  {
+    "LocationName": "Mountain",
+    "TileX": 92,
+    "TileY": 34
+  },
+  {
+    "LocationName": "Mountain",
+    "TileX": 79,
+    "TileY": 30
+  },
+  {
+    "LocationName": "Mountain",
+    "TileX": 110,
+    "TileY": 12
+  },
+  {
+    "LocationName": "Mountain",
+    "TileX": 129,
+    "TileY": 32
+  },
+  {
+    "LocationName": "Backwoods",
+    "TileX": 11,
+    "TileY": 27
+  },
+  {
+    "LocationName": "Backwoods",
+    "TileX": 18,
+    "TileY": 15
+  },
+  {
+    "LocationName": "Backwoods",
+    "TileX": 25,
+    "TileY": 8
+  },
+  {
+    "LocationName": "Backwoods",
+    "TileX": 40,
+    "TileY": 11
+  },
+  {
+    "LocationName": "Backwoods",
+    "TileX": 42,
+    "TileY": 16
+  },
+  {
+    "LocationName": "Railroad",
+    "TileX": 13,
+    "TileY": 39
+  },
+  {
+    "LocationName": "Railroad",
+    "TileX": 2,
+    "TileY": 50
+  },
+  {
+    "LocationName": "Railroad",
+    "TileX": 15,
+    "TileY": 57
+  },
+  {
+    "LocationName": "Railroad",
+    "TileX": 48,
+    "TileY": 57
+  },
+  {
+    "LocationName": "Railroad",
+    "TileX": 67,
+    "TileY": 43
+  },
+  {
+    "LocationName": "Railroad",
+    "TileX": 52,
+    "TileY": 36
+  },
+  {
+    "LocationName": "Railroad",
+    "TileX": 24,
+    "TileY": 44
+  },
+  {
+    "LocationName": "Beach",
+    "TileX": 5,
+    "TileY": 7
+  },
+  {
+    "LocationName": "Beach",
+    "TileX": 25,
+    "TileY": 13
+  },
+  {
+    "LocationName": "Beach",
+    "TileX": 43,
+    "TileY": 22
+  },
+  {
+    "LocationName": "Beach",
+    "TileX": 55,
+    "TileY": 8
+  },
+  {
+    "LocationName": "Beach",
+    "TileX": 39,
+    "TileY": 31
+  },
+  {
+    "LocationName": "Beach",
+    "TileX": 69,
+    "TileY": 7
+  },
+  {
+    "LocationName": "Beach",
+    "TileX": 90,
+    "TileY": 22
+  },
+  {
+    "LocationName": "Beach",
+    "TileX": 84,
+    "TileY": 39
+  },
+  {
+    "LocationName": "Beach",
+    "TileX": 68,
+    "TileY": 22
+  },
+  {
+    "LocationName": "Woods",
+    "TileX": 4,
+    "TileY": 6
+  },
+  {
+    "LocationName": "Woods",
+    "TileX": 16,
+    "TileY": 4
+  },
+  {
+    "LocationName": "Woods",
+    "TileX": 3,
+    "TileY": 25
+  },
+  {
+    "LocationName": "Woods",
+    "TileX": 19,
+    "TileY": 23
+  },
+  {
+    "LocationName": "Woods",
+    "TileX": 49,
+    "TileY": 26
+  },
+  {
+    "LocationName": "Woods",
+    "TileX": 45,
+    "TileY": 19
+  },
+  {
+    "LocationName": "Woods",
+    "TileX": 46,
+    "TileY": 3
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 6,
+    "TileY": 5
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 11,
+    "TileY": 18
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 20,
+    "TileY": 27
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 13,
+    "TileY": 41
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 6,
+    "TileY": 39
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 44,
+    "TileY": 41
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 63,
+    "TileY": 35
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 84,
+    "TileY": 50
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 95,
+    "TileY": 53
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 78,
+    "TileY": 84
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 103,
+    "TileY": 96
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 94,
+    "TileY": 101
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 98,
+    "TileY": 73
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 115,
+    "TileY": 35
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 100,
+    "TileY": 33
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 115,
+    "TileY": 23
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 82,
+    "TileY": 16
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 78,
+    "TileY": 8
+  },
+  {
+    "LocationName": "Forest",
+    "TileX": 72,
+    "TileY": 2
+  },
+  {
+    "LocationName": "Desert",
+    "TileX": 3,
+    "TileY": 10
+  },
+  {
+    "LocationName": "Desert",
+    "TileX": 11,
+    "TileY": 8
+  },
+  {
+    "LocationName": "Desert",
+    "TileX": 20,
+    "TileY": 13
+  },
+  {
+    "LocationName": "Desert",
+    "TileX": 34,
+    "TileY": 6
+  },
+  {
+    "LocationName": "Desert",
+    "TileX": 46,
+    "TileY": 13
+  },
+  {
+    "LocationName": "Desert",
+    "TileX": 46,
+    "TileY": 30
+  },
+  {
+    "LocationName": "Desert",
+    "TileX": 41,
+    "TileY": 42
+  },
+  {
+    "LocationName": "Desert",
+    "TileX": 46,
+    "TileY": 54
+  },
+  {
+    "LocationName": "Desert",
+    "TileX": 41,
+    "TileY": 54
+  },
+  {
+    "LocationName": "Desert",
+    "TileX": 27,
+    "TileY": 52
+  },
+	{
+		"LocationName": "Desert",
+		"TileX": 2,
+		"TileY": 54
+	},
+  {
+    "LocationName": "Desert",
+    "TileX": 2,
+    "TileY": 52
+  },
+  {
+    "LocationName": "Desert",
+    "TileX": 4,
+    "TileY": 45
+  },
+  {
+    "LocationName": "Desert",
+    "TileX": 6,
+    "TileY": 35
+  },
+  {
+    "LocationName": "Desert",
+    "TileX": 25,
+    "TileY": 23
+  },
+  {
+    "LocationName": "ScienceHouse",
+    "TileX": 3,
+    "TileY": 7
+  },
+  {
+    "LocationName": "ScienceHouse",
+    "TileX": 18,
+    "TileY": 6
+  },
+  {
+    "LocationName": "ScienceHouse",
+    "TileX": 28,
+    "TileY": 9
+  },
+  {
+    "LocationName": "ScienceHouse",
+    "TileX": 19,
+    "TileY": 22
+  },
+  {
+    "LocationName": "ScienceHouse",
+    "TileX": 3,
+    "TileY": 19
+  },
+  {
+    "LocationName": "SebastianRoom",
+    "TileX": 3,
+    "TileY": 10
+  },
+  {
+    "LocationName": "HaleyHouse",
+    "TileX": 3,
+    "TileY": 7
+  },
+  {
+    "LocationName": "HaleyHouse",
+    "TileX": 7,
+    "TileY": 17
+  },
+  {
+    "LocationName": "HaleyHouse",
+    "TileX": 20,
+    "TileY": 20
+  },
+  {
+    "LocationName": "HaleyHouse",
+    "TileX": 20,
+    "TileY": 8
+  },
+  {
+    "LocationName": "HaleyHouse",
+    "TileX": 19,
+    "TileY": 8
+  },
+  {
+    "LocationName": "SamHouse",
+    "TileX": 4,
+    "TileY": 14
+  },
+  {
+    "LocationName": "SamHouse",
+    "TileX": 21,
+    "TileY": 18
+  },
+  {
+    "LocationName": "SamHouse",
+    "TileX": 18,
+    "TileY": 13
+  },
+  {
+    "LocationName": "SamHouse",
+    "TileX": 1,
+    "TileY": 5
+  },
+  {
+    "LocationName": "SamHouse",
+    "TileX": 19,
+    "TileY": 6
+  },
+  {
+    "LocationName": "Sewer",
+    "TileX": 13,
+    "TileY": 14
+  },
+  {
+    "LocationName": "Sewer",
+    "TileX": 3,
+    "TileY": 43
+  },
+  {
+    "LocationName": "Sewer",
+    "TileX": 32,
+    "TileY": 21
+  },
+  {
+    "LocationName": "ElliottHouse",
+    "TileX": 5,
+    "TileY": 5
+  },
+  {
+    "LocationName": "FishShop",
+    "TileX": 6,
+    "TileY": 6
+  },
+  {
+    "LocationName": "FishShop",
+    "TileX": 9,
+    "TileY": 6
+  },
+  {
+    "LocationName": "ArchaeologyHouse",
+    "TileX": 6,
+    "TileY": 12
+  },
+  {
+    "LocationName": "ArchaeologyHouse",
+    "TileX": 44,
+    "TileY": 11
+  },
+  {
+    "LocationName": "Blacksmith",
+    "TileX": 7,
+    "TileY": 16
+  },
+  {
+    "LocationName": "Blacksmith",
+    "TileX": 6,
+    "TileY": 5
+  },
+  {
+    "LocationName": "JojaMart",
+    "TileX": 3,
+    "TileY": 6
+  },
+  {
+    "LocationName": "Saloon",
+    "TileX": 6,
+    "TileY": 21
+  },
+  {
+    "LocationName": "Saloon",
+    "TileX": 7,
+    "TileY": 6
+  },
+  {
+    "LocationName": "Saloon",
+    "TileX": 15,
+    "TileY": 5
+  },
+  {
+    "LocationName": "Saloon",
+    "TileX": 33,
+    "TileY": 6
+  },
+  {
+    "LocationName": "Saloon",
+    "TileX": 37,
+    "TileY": 22
+  },
+  {
+    "LocationName": "JoshHouse",
+    "TileX": 3,
+    "TileY": 18
+  },
+  {
+    "LocationName": "JoshHouse",
+    "TileX": 19,
+    "TileY": 18
+  },
+  {
+    "LocationName": "JoshHouse",
+    "TileX": 17,
+    "TileY": 5
+  },
+  {
+    "LocationName": "JoshHouse",
+    "TileX": 2,
+    "TileY": 5
+  },
+  {
+    "LocationName": "SeedShop",
+    "TileX": 12,
+    "TileY": 27
+  },
+  {
+    "LocationName": "SeedShop",
+    "TileX": 8,
+    "TileY": 7
+  },
+  {
+    "LocationName": "SeedShop",
+    "TileX": 5,
+    "TileY": 5
+  },
+  {
+    "LocationName": "SeedShop",
+    "TileX": 21,
+    "TileY": 5
+  },
+  {
+    "LocationName": "SeedShop",
+    "TileX": 35,
+    "TileY": 17
+  },
+  {
+    "LocationName": "SeedShop",
+    "TileX": 25,
+    "TileY": 20
+  },
+  {
+    "LocationName": "SeedShop",
+    "TileX": 5,
+    "TileY": 19
+  },
+  {
+    "LocationName": "Hospital",
+    "TileX": 5,
+    "TileY": 14
+  },
+  {
+    "LocationName": "Hospital",
+    "TileX": 5,
+    "TileY": 5
+  },
+  {
+    "LocationName": "Hospital",
+    "TileX": 18,
+    "TileY": 5
+  },
+  {
+    "LocationName": "HarveyRoom",
+    "TileX": 6,
+    "TileY": 5
+  },
+  {
+    "LocationName": "CommunityCenter",
+    "TileX": 32,
+    "TileY": 11
+  },
+  {
+    "LocationName": "CommunityCenter",
+    "TileX": 5,
+    "TileY": 7
+  },
+  {
+    "LocationName": "AdventureGuild",
+    "TileX": 4,
+    "TileY": 5
+  },
+  {
+    "LocationName": "AdventureGuild",
+    "TileX": 9,
+    "TileY": 14
+  },
+  {
+    "LocationName": "AnimalShop",
+    "TileX": 4,
+    "TileY": 5
+  },
+  {
+    "LocationName": "AnimalShop",
+    "TileX": 16,
+    "TileY": 16
+  },
+  {
+    "LocationName": "AnimalShop",
+    "TileX": 15,
+    "TileY": 6
+  },
+  {
+    "LocationName": "AnimalShop",
+    "TileX": 30,
+    "TileY": 16
+  },
+  {
+    "LocationName": "AnimalShop",
+    "TileX": 24,
+    "TileY": 7
+  },
+  {
+    "LocationName": "LeahHouse",
+    "TileX": 7,
+    "TileY": 6
+  },
+  {
+    "LocationName": "LeahHouse",
+    "TileX": 11,
+    "TileY": 8
+  },
+  {
+    "LocationName": "SandyHouse",
+    "TileX": 8,
+    "TileY": 5
+  },
+  {
+    "LocationName": "BugLand",
+    "TileX": 26,
+    "TileY": 14
+  },
+  {
+    "LocationName": "BugLand",
+    "TileX": 33,
+    "TileY": 14
+  }
+]

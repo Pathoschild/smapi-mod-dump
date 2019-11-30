@@ -19,9 +19,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 51a4f7040c9bc0fd8e661a758885f80b4bd1898d
+   commit ad68f6647377c0d057e329717cc43edd90b52c83
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Tue Nov 26 19:16:29 2019 -0500
+   Date:   Fri Nov 29 19:04:59 2019 -0500
    
-       update readmes
+       fix EditData patch error when FromFile has unready tokens
    

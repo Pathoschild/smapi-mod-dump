@@ -1,7 +1,6 @@
 ﻿using Harmony;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Reflection.Emit;
 using StardewModdingAPI;
 
@@ -61,14 +60,13 @@ namespace StardewHack
             }
             // No match found, throw a descriptive Exception.
             if (contains.Length == 1) {
-                throw new System.IndexOutOfRangeException("Could not find instruction: '"+contains[0]+"'");
-            } else {
-                System.Text.StringBuilder msg = new System.Text.StringBuilder($"Could not find instruction sequence (failed to match line {best_match}: \"{best_text}\"):");
-                foreach (Object obj in contains) {
-                    msg.Append("\n  " + obj);
-                }
-                throw new System.IndexOutOfRangeException(msg.ToString());
+                throw new IndexOutOfRangeException("Could not find instruction: '"+contains[0]+"'");
+            } 
+            System.Text.StringBuilder msg = new System.Text.StringBuilder($"Could not find instruction sequence (failed to match line {best_match}: \"{best_text}\"):");
+            foreach (Object obj in contains) {
+                msg.Append("\n  " + obj);
             }
+            throw new IndexOutOfRangeException(msg.ToString());
         }
 
         /// <summary>

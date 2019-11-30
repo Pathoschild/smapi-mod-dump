@@ -76,7 +76,7 @@ namespace AnimalHusbandryMod.tools
                             else
                             {
                                 this._tempAnimal = farmAnimal;
-                                Microsoft.Xna.Framework.Audio.Cue hurtSound;
+                                ICue hurtSound;
                                 if (!DataLoader.ModConfig.Softmode)
                                 {
                                     if (farmAnimal.sound.Value != null)
@@ -112,8 +112,8 @@ namespace AnimalHusbandryMod.tools
                             else
                             {
                                 this._tempAnimal = farmAnimal;
-                                
-                                Microsoft.Xna.Framework.Audio.Cue hurtSound;
+
+                                ICue hurtSound;
                                 if (!DataLoader.ModConfig.Softmode)
                                 {
                                     if (farmAnimal.sound.Value != null)
@@ -229,7 +229,7 @@ namespace AnimalHusbandryMod.tools
                     Game1.playSound("killAnimal");
                 } else
                 {
-                    Microsoft.Xna.Framework.Audio.Cue warptSound = Game1.soundBank.GetCue("wand");
+                    ICue warptSound = Game1.soundBank.GetCue("wand");
                     warptSound.SetVariable("Pitch", 1800);
                     warptSound.Play();
                 }

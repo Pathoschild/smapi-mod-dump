@@ -377,3 +377,29 @@ This feature let you shear/milk nearby mature sheep/cows automatically when you 
 
 
 - AnimalHarvestRadius("Automation", int, default:1 min:1 max:3) - How far tiles can be affected by this utility.
+
+
+## Farm Cleaner
+
+
+This feature will clean up small rocks, twigs, and weeds in farm.
+
+
+Please note that it can consume the farmer's stamina relatively easily.
+
+
+You have to select appropriate tool in hotbar to use.
+
+
+**[CONFIG]**
+
+- RadiusFarmCleanup("Automation", int, default:1 min:1 max:3) - How far tiles can be affected by this utility.
+ 
+
+- CutWeeds("Automation", bool, default:false) - Cuts weeds nearby (requires Scythe).
+
+
+- BreakRocks("Automation", bool, default:false) - Breaks small rocks nearby (requires Pickaxe).
+
+
+- ChopTwigs("Automation", bool, default:false) - Chops twigs nearby (requires Axe).

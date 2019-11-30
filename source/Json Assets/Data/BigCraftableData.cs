@@ -8,7 +8,7 @@ namespace JsonAssets.Data
     public class BigCraftableData : DataNeedsId
     {
         [JsonIgnore]
-        internal Texture2D texture;
+        public Texture2D texture;
 
         public class Recipe_
         {
@@ -45,7 +45,7 @@ namespace JsonAssets.Data
                 return str;
             }
         }
-        
+
         public string Description { get; set; }
 
         public int Price { get; set; }

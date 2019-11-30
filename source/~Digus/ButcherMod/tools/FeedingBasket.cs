@@ -200,7 +200,7 @@ namespace AnimalHusbandryMod.tools
                 {
                     _pet.Halt();
                     _pet.CurrentBehavior = 0;
-                    _pet.initiateCurrentBehavior();
+                    _pet.OnNewBehavior();
                     _pet.Halt();
                     _pet.Sprite.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>(){ new FarmerSprite.AnimationFrame(18, 200) });
 
@@ -374,7 +374,7 @@ namespace AnimalHusbandryMod.tools
 
                 if (!DataLoader.ModConfig.DisableFriendshipInscreseWithTreats)
                 {
-                    this._pet.friendshipTowardFarmer = Math.Min(Pet.maxFriendship, this._pet.friendshipTowardFarmer + 6);
+                    this._pet.friendshipTowardFarmer.Value = Math.Min(Pet.maxFriendship, this._pet.friendshipTowardFarmer.Value + 6);
                 }
                 TreatsController.FeedPetTreat(this.attachments[0]);
 
@@ -426,7 +426,7 @@ namespace AnimalHusbandryMod.tools
                 StardewValley.Object @object = this.attachments[0];
                 if (@object != null && @object.canStackWith((Item)o))
                 {
-                    @object.Stack = o.addToStack(@object.Stack);
+                    @object.Stack = o.addToStack(@object);
                     if (@object.Stack <= 0)
                         @object = (StardewValley.Object)null;
                 }

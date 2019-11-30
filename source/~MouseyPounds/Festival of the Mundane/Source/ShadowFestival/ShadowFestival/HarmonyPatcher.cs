@@ -21,7 +21,8 @@ namespace ShadowFestival
  
         private static bool Prefix_takeDamage(Farmer __instance, int damage, bool overrideParry, Monster damager)
         {
-            Monitor.VerboseLog($"Farmer taking damge of {damage} from {damager.displayName}");
+            // damager can be null; for example if it's a bomb, so this log entry will error as-is in that situation.
+            //Monitor.VerboseLog($"Farmer taking damge of {damage} from {damager.displayName}");
 
             if (__instance.hat.Value != null &&
                 ModEntry.Data.CalmingHats.Contains(__instance.hat.Value.Name) &&

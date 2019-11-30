@@ -1,6 +1,7 @@
 ﻿using System;
 using JoysOfEfficiency.Automation;
 using JoysOfEfficiency.Core;
+using JoysOfEfficiency.Misc;
 using StardewModdingAPI;
 
 namespace JoysOfEfficiency.EventHandler
@@ -27,6 +28,7 @@ namespace JoysOfEfficiency.EventHandler
             }
             AnimalAutomation.AutoOpenAnimalDoor();
             UpdateEvents.DayEnded = false;
+            IdlePause.OnDataLoaded();
         }
     }
 }

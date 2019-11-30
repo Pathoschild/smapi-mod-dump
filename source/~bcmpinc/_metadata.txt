@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 7a658446a9ce984ecf25c3dee0c1ce2d00fff0e6
+   commit 3d894bfa371a7f0fb4d2aecf031b5ff6203a9901
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Wed Nov 27 04:17:25 2019 +0100
+   Date:   Fri Nov 29 21:03:05 2019 +0100
    
-       Don't store monitor in a public static variable
+       Update SMAPI-SDK
    

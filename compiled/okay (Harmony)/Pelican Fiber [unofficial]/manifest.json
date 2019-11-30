@@ -1,0 +1,10 @@
+﻿{
+  "Name": "PelicanFiber",
+  "Author": "jwdred",
+  "Version": "3.1.1-unofficial.8-pathoschild",
+  "Description": "Order stuff over the internet, and save all kinds of money!",
+  "UniqueID": "jwdred.PelicanFiber",
+  "EntryDll": "PelicanFiber.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:631" ]
+}

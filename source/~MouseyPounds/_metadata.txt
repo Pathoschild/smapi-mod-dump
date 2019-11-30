@@ -11,9 +11,9 @@ mods:
    Plantable Palm Trees
 
 latest commit:
-   commit 80220d634f48036a04ce8436e06f2f3ac23dcd02
+   commit 49909e2cda225290f8dd150e0666e71b283e9b41
    Author: MouseyPounds <mouseypounds+github@gmail.com>
-   Date:   Tue Nov 26 22:34:48 2019 -0500
+   Date:   Thu Nov 28 11:20:02 2019 -0500
    
-       Crane Man Begone mod
+       FotM bugfix 1.1.1
    

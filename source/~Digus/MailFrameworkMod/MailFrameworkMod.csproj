@@ -79,7 +79,6 @@
     <Compile Include="MailDao.cs" />
     <Compile Include="MailFrameworkModEntry.cs" />
     <Compile Include="ContentPack\MailItem.cs" />
-    <Compile Include="ModConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -92,7 +91,7 @@
     <None Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="2.2.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.0.0" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

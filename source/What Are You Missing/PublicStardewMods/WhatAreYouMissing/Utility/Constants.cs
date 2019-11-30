@@ -310,7 +310,7 @@ namespace WhatAreYouMissing
                                                                 WINTER_SEEDS });
 
         public readonly ReadOnlyCollection<int> ITEMS_PLAYER_CAN_ONLY_HAVE_ONE_OF = new ReadOnlyCollection<int>(
-                                                new List<int> { GLACIERFISH, CRIMSONFISH, ANGLER, MUTANT_CARP });
+                                                new List<int> { LEGEND, GLACIERFISH, CRIMSONFISH, ANGLER, MUTANT_CARP });
 
         public readonly ReadOnlyCollection<int> NIGHT_MARKET_FISH = new ReadOnlyCollection<int>(
                                                 new List<int> { MIDNIGHT_SQUID, SPOOK_FISH, BLOBFISH });

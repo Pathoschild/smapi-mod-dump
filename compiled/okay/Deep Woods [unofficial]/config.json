@@ -1,0 +1,1730 @@
+{
+  "WoodsPassage": {
+    "DeleteBuildingTiles": [
+      {
+        "X": 29,
+        "Y": 25
+      },
+      {
+        "X": 29,
+        "Y": 26
+      }
+    ],
+    "AddBuildingTiles": [
+      {
+        "X": 24,
+        "Y": 24
+      },
+      {
+        "X": 25,
+        "Y": 24
+      },
+      {
+        "X": 26,
+        "Y": 24
+      },
+      {
+        "X": 27,
+        "Y": 24
+      },
+      {
+        "X": 28,
+        "Y": 24
+      }
+    ],
+    "WarpLocations": [
+      {
+        "X": 24,
+        "Y": 32
+      },
+      {
+        "X": 25,
+        "Y": 32
+      },
+      {
+        "X": 26,
+        "Y": 32
+      },
+      {
+        "X": 27,
+        "Y": 32
+      },
+      {
+        "X": 28,
+        "Y": 32
+      }
+    ]
+  },
+  "Level": {
+    "MinLevelForFlowers": 3,
+    "MinLevelForFruits": 5,
+    "MinLevelForThornyBushes": 10,
+    "MinLevelForBuffedMonsters": 15,
+    "MinLevelForWoodsObelisk": 20,
+    "MinLevelForMeteorite": 25,
+    "MinLevelForClearing": 30,
+    "MinLevelForGingerbreadHouse": 50,
+    "ChanceForThornyBushesOnExit": {
+      "Value": {
+        "BadLuck": 50,
+        "Neutral": 27,
+        "GoodLuck": 5
+      },
+      "Range": 100,
+      "RangeLevelModifier": {
+        "Min": {
+          "Level": 0,
+          "Modifier": 0
+        },
+        "Max": {
+          "Level": 0,
+          "Modifier": 0
+        }
+      }
+    }
+  },
+  "Map": {
+    "MaxMapWidth": 64,
+    "MaxMapHeight": 64,
+    "MaxMapWidthForClearing": 32,
+    "MaxBumpSizeForForestBorder": 2,
+    "MinTilesForCorner": 3,
+    "MaxTilesForCorner": 8,
+    "ExitRadius": 2,
+    "ExitLength": 5,
+    "MinSizeForForestPatch": 12,
+    "MaxSizeForForestPatch": 24
+  },
+  "Objects": {
+    "Excalibur": {
+      "MinDamage": 120,
+      "MaxDamage": 180,
+      "Knockback": 1.5,
+      "Speed": 10,
+      "Precision": 5,
+      "Defense": 5,
+      "AreaOfEffect": 5,
+      "CriticalChance": 0.05,
+      "CriticalMultiplier": 5.0
+    },
+    "GingerBreadHouse": {
+      "MinimumAxeLevel": 3,
+      "Health": 200,
+      "DamageIntervalForFoodDrop": 20,
+      "FootItems": [
+        {
+          "Value": 245,
+          "Weight": {
+            "BadLuck": 2000,
+            "Neutral": 2000,
+            "GoodLuck": 2000
+          }
+        },
+        {
+          "Value": 246,
+          "Weight": {
+            "BadLuck": 2000,
+            "Neutral": 2000,
+            "GoodLuck": 2000
+          }
+        },
+        {
+          "Value": 229,
+          "Weight": {
+            "BadLuck": 2000,
+            "Neutral": 2000,
+            "GoodLuck": 2000
+          }
+        },
+        {
+          "Value": 216,
+          "Weight": {
+            "BadLuck": 1666,
+            "Neutral": 1666,
+            "GoodLuck": 1666
+          }
+        },
+        {
+          "Value": 223,
+          "Weight": {
+            "BadLuck": 714,
+            "Neutral": 714,
+            "GoodLuck": 714
+          }
+        },
+        {
+          "Value": 234,
+          "Weight": {
+            "BadLuck": 666,
+            "Neutral": 666,
+            "GoodLuck": 666
+          }
+        },
+        {
+          "Value": 220,
+          "Weight": {
+            "BadLuck": 500,
+            "Neutral": 500,
+            "GoodLuck": 500
+          }
+        },
+        {
+          "Value": 243,
+          "Weight": {
+            "BadLuck": 500,
+            "Neutral": 500,
+            "GoodLuck": 500
+          }
+        },
+        {
+          "Value": 203,
+          "Weight": {
+            "BadLuck": 444,
+            "Neutral": 444,
+            "GoodLuck": 444
+          }
+        },
+        {
+          "Value": 651,
+          "Weight": {
+            "BadLuck": 400,
+            "Neutral": 400,
+            "GoodLuck": 400
+          }
+        },
+        {
+          "Value": 611,
+          "Weight": {
+            "BadLuck": 384,
+            "Neutral": 384,
+            "GoodLuck": 384
+          }
+        },
+        {
+          "Value": 607,
+          "Weight": {
+            "BadLuck": 370,
+            "Neutral": 370,
+            "GoodLuck": 370
+          }
+        },
+        {
+          "Value": 731,
+          "Weight": {
+            "BadLuck": 333,
+            "Neutral": 333,
+            "GoodLuck": 333
+          }
+        },
+        {
+          "Value": 608,
+          "Weight": {
+            "BadLuck": 259,
+            "Neutral": 259,
+            "GoodLuck": 259
+          }
+        },
+        {
+          "Value": 222,
+          "Weight": {
+            "BadLuck": 250,
+            "Neutral": 250,
+            "GoodLuck": 250
+          }
+        },
+        {
+          "Value": 221,
+          "Weight": {
+            "BadLuck": 208,
+            "Neutral": 208,
+            "GoodLuck": 208
+          }
+        },
+        {
+          "Value": 388,
+          "Weight": {
+            "BadLuck": 3000,
+            "Neutral": 3000,
+            "GoodLuck": 3000
+          }
+        },
+        {
+          "Value": 92,
+          "Weight": {
+            "BadLuck": 3000,
+            "Neutral": 3000,
+            "GoodLuck": 3000
+          }
+        }
+      ]
+    },
+    "IridiumTree": {
+      "MinimumAxeLevel": 4,
+      "Health": 200,
+      "DamageIntervalForOreDrop": 20
+    },
+    "WoodsObelisk": {
+      "MoneyRequired": 10000000,
+      "ItemsRequired": {
+        "388": 999,
+        "92": 999,
+        "337": 20
+      }
+    },
+    "Unicorn": {
+      "FarmerScareDistance": 8,
+      "FarmerScareSpeed": 3,
+      "FleeSpeed": 12
+    },
+    "Bush": {
+      "MinAxeLevel": 2,
+      "ThornyBushMinAxeLevel": 4,
+      "ThornyBushDamagePerLevel": 5
+    }
+  },
+  "Luck": {
+    "Terrain": {
+      "ChanceForGingerbreadHouse": {
+        "Value": {
+          "BadLuck": 1,
+          "Neutral": 1,
+          "GoodLuck": 1
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForLargeBush": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForMediumBush": {
+        "Value": {
+          "BadLuck": 5,
+          "Neutral": 5,
+          "GoodLuck": 5
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForSmallBush": {
+        "Value": {
+          "BadLuck": 5,
+          "Neutral": 5,
+          "GoodLuck": 5
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForGrownTree": {
+        "Value": {
+          "BadLuck": 25,
+          "Neutral": 25,
+          "GoodLuck": 25
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForMediumTree": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForSmallTree": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForGrownFruitTree": {
+        "Value": {
+          "BadLuck": 1,
+          "Neutral": 1,
+          "GoodLuck": 1
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForSmallFruitTree": {
+        "Value": {
+          "BadLuck": 5,
+          "Neutral": 5,
+          "GoodLuck": 5
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForWeed": {
+        "Value": {
+          "BadLuck": 20,
+          "Neutral": 20,
+          "GoodLuck": 20
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForTwig": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForStone": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForMushroom": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForFlower": {
+        "Value": {
+          "BadLuck": 7,
+          "Neutral": 7,
+          "GoodLuck": 7
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForFlowerInWinter": {
+        "Value": {
+          "BadLuck": 3,
+          "Neutral": 3,
+          "GoodLuck": 3
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForFlowerOnClearing": {
+        "Value": {
+          "BadLuck": 5,
+          "Neutral": 5,
+          "GoodLuck": 5
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ResourceClump": {
+        "ChanceForMeteorite": {
+          "Value": {
+            "BadLuck": 1,
+            "Neutral": 1,
+            "GoodLuck": 1
+          },
+          "Range": 500,
+          "RangeLevelModifier": {
+            "Min": {
+              "Level": 0,
+              "Modifier": 0
+            },
+            "Max": {
+              "Level": 0,
+              "Modifier": 0
+            }
+          }
+        },
+        "ChanceForBoulder": {
+          "Value": {
+            "BadLuck": 1,
+            "Neutral": 1,
+            "GoodLuck": 1
+          },
+          "Range": 100,
+          "RangeLevelModifier": {
+            "Min": {
+              "Level": 0,
+              "Modifier": 0
+            },
+            "Max": {
+              "Level": 0,
+              "Modifier": 0
+            }
+          }
+        },
+        "ChanceForHollowLog": {
+          "Value": {
+            "BadLuck": 2,
+            "Neutral": 2,
+            "GoodLuck": 2
+          },
+          "Range": 100,
+          "RangeLevelModifier": {
+            "Min": {
+              "Level": 0,
+              "Modifier": 0
+            },
+            "Max": {
+              "Level": 0,
+              "Modifier": 0
+            }
+          }
+        },
+        "ChanceForStump": {
+          "Value": {
+            "BadLuck": 3,
+            "Neutral": 3,
+            "GoodLuck": 3
+          },
+          "Range": 100,
+          "RangeLevelModifier": {
+            "Min": {
+              "Level": 0,
+              "Modifier": 0
+            },
+            "Max": {
+              "Level": 0,
+              "Modifier": 0
+            }
+          }
+        }
+      },
+      "FruitCount": [
+        {
+          "Value": 0,
+          "Weight": {
+            "BadLuck": 60,
+            "Neutral": 60,
+            "GoodLuck": 60
+          }
+        },
+        {
+          "Value": 1,
+          "Weight": {
+            "BadLuck": 30,
+            "Neutral": 30,
+            "GoodLuck": 30
+          }
+        },
+        {
+          "Value": 2,
+          "Weight": {
+            "BadLuck": 20,
+            "Neutral": 20,
+            "GoodLuck": 20
+          }
+        },
+        {
+          "Value": 3,
+          "Weight": {
+            "BadLuck": 10,
+            "Neutral": 10,
+            "GoodLuck": 10
+          }
+        }
+      ],
+      "WinterFlowers": [
+        {
+          "Value": 429,
+          "Weight": {
+            "BadLuck": 290,
+            "Neutral": 290,
+            "GoodLuck": 290
+          }
+        },
+        {
+          "Value": 425,
+          "Weight": {
+            "BadLuck": 50,
+            "Neutral": 50,
+            "GoodLuck": 50
+          }
+        }
+      ],
+      "Flowers": [
+        {
+          "Value": 427,
+          "Weight": {
+            "BadLuck": 290,
+            "Neutral": 290,
+            "GoodLuck": 290
+          }
+        },
+        {
+          "Value": 429,
+          "Weight": {
+            "BadLuck": 140,
+            "Neutral": 140,
+            "GoodLuck": 140
+          }
+        },
+        {
+          "Value": 455,
+          "Weight": {
+            "BadLuck": 90,
+            "Neutral": 90,
+            "GoodLuck": 90
+          }
+        },
+        {
+          "Value": 453,
+          "Weight": {
+            "BadLuck": 50,
+            "Neutral": 50,
+            "GoodLuck": 50
+          }
+        },
+        {
+          "Value": 425,
+          "Weight": {
+            "BadLuck": 30,
+            "Neutral": 30,
+            "GoodLuck": 30
+          }
+        }
+      ],
+      "ChanceForEasterEgg": {
+        "Value": {
+          "BadLuck": 5,
+          "Neutral": 15,
+          "GoodLuck": 25
+        },
+        "Range": 1000,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForExtraEasterEgg": {
+        "Value": {
+          "BadLuck": 0,
+          "Neutral": 12,
+          "GoodLuck": 25
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForEasterEggsDoubled": {
+        "Value": {
+          "BadLuck": 75,
+          "Neutral": 87,
+          "GoodLuck": 100
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "MaxEasterEggsPerLevel": {
+        "LowerBound": {
+          "BadLuck": 0,
+          "Neutral": 1,
+          "GoodLuck": 2
+        },
+        "UpperBound": {
+          "BadLuck": 2,
+          "Neutral": 4,
+          "GoodLuck": 6
+        }
+      }
+    },
+    "Clearings": {
+      "ChanceForClearing": {
+        "Value": {
+          "BadLuck": 1,
+          "Neutral": 5,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "Perks": [
+        {
+          "Value": "Nothing",
+          "Weight": {
+            "BadLuck": 1500,
+            "Neutral": 1500,
+            "GoodLuck": 1500
+          }
+        },
+        {
+          "Value": "Lake",
+          "Weight": {
+            "BadLuck": 1250,
+            "Neutral": 1250,
+            "GoodLuck": 1250
+          }
+        },
+        {
+          "Value": "MushroomTrees",
+          "Weight": {
+            "BadLuck": 1000,
+            "Neutral": 1000,
+            "GoodLuck": 1000
+          }
+        },
+        {
+          "Value": "HealingFountain",
+          "Weight": {
+            "BadLuck": 1000,
+            "Neutral": 1000,
+            "GoodLuck": 1000
+          }
+        },
+        {
+          "Value": "GingerbreadHouse",
+          "Weight": {
+            "BadLuck": 1000,
+            "Neutral": 1000,
+            "GoodLuck": 1000
+          }
+        },
+        {
+          "Value": "IridiumTree",
+          "Weight": {
+            "BadLuck": 500,
+            "Neutral": 500,
+            "GoodLuck": 500
+          }
+        },
+        {
+          "Value": "Unicorn",
+          "Weight": {
+            "BadLuck": 500,
+            "Neutral": 500,
+            "GoodLuck": 500
+          }
+        },
+        {
+          "Value": "Treasure",
+          "Weight": {
+            "BadLuck": 250,
+            "Neutral": 250,
+            "GoodLuck": 250
+          }
+        },
+        {
+          "Value": "ExcaliburStone",
+          "Weight": {
+            "BadLuck": 250,
+            "Neutral": 250,
+            "GoodLuck": 250
+          }
+        }
+      ],
+      "ChanceForTrashOrTreasure": {
+        "Value": {
+          "BadLuck": 0,
+          "Neutral": 50,
+          "GoodLuck": 100
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "Treasure": {
+        "PileItems": [
+          {
+            "Value": 384,
+            "Weight": {
+              "BadLuck": 2000,
+              "Neutral": 2000,
+              "GoodLuck": 2000
+            }
+          },
+          {
+            "Value": 386,
+            "Weight": {
+              "BadLuck": 300,
+              "Neutral": 300,
+              "GoodLuck": 300
+            }
+          },
+          {
+            "Value": 80,
+            "Weight": {
+              "BadLuck": 75,
+              "Neutral": 75,
+              "GoodLuck": 75
+            }
+          },
+          {
+            "Value": 82,
+            "Weight": {
+              "BadLuck": 75,
+              "Neutral": 75,
+              "GoodLuck": 75
+            }
+          },
+          {
+            "Value": 66,
+            "Weight": {
+              "BadLuck": 75,
+              "Neutral": 75,
+              "GoodLuck": 75
+            }
+          },
+          {
+            "Value": 62,
+            "Weight": {
+              "BadLuck": 50,
+              "Neutral": 50,
+              "GoodLuck": 50
+            }
+          },
+          {
+            "Value": 60,
+            "Weight": {
+              "BadLuck": 40,
+              "Neutral": 40,
+              "GoodLuck": 40
+            }
+          },
+          {
+            "Value": 64,
+            "Weight": {
+              "BadLuck": 30,
+              "Neutral": 30,
+              "GoodLuck": 30
+            }
+          },
+          {
+            "Value": 72,
+            "Weight": {
+              "BadLuck": 10,
+              "Neutral": 10,
+              "GoodLuck": 10
+            }
+          },
+          {
+            "Value": 74,
+            "Weight": {
+              "BadLuck": 1,
+              "Neutral": 1,
+              "GoodLuck": 1
+            }
+          },
+          {
+            "Value": 166,
+            "Weight": {
+              "BadLuck": 1,
+              "Neutral": 1,
+              "GoodLuck": 1
+            }
+          }
+        ],
+        "ChanceForMetalBarsInChest": {
+          "Value": {
+            "BadLuck": 10,
+            "Neutral": 30,
+            "GoodLuck": 50
+          },
+          "Range": 100,
+          "RangeLevelModifier": {
+            "Min": {
+              "Level": 0,
+              "Modifier": 0
+            },
+            "Max": {
+              "Level": 0,
+              "Modifier": 0
+            }
+          }
+        },
+        "ChanceForElixirsInChest": {
+          "Value": {
+            "BadLuck": 10,
+            "Neutral": 20,
+            "GoodLuck": 30
+          },
+          "Range": 100,
+          "RangeLevelModifier": {
+            "Min": {
+              "Level": 0,
+              "Modifier": 0
+            },
+            "Max": {
+              "Level": 0,
+              "Modifier": 0
+            }
+          }
+        },
+        "ChanceForArtefactInChest": {
+          "Value": {
+            "BadLuck": 0,
+            "Neutral": 10,
+            "GoodLuck": 20
+          },
+          "Range": 100,
+          "RangeLevelModifier": {
+            "Min": {
+              "Level": 0,
+              "Modifier": 0
+            },
+            "Max": {
+              "Level": 0,
+              "Modifier": 0
+            }
+          }
+        },
+        "ChanceForDwarfScrollInChest": {
+          "Value": {
+            "BadLuck": 0,
+            "Neutral": 10,
+            "GoodLuck": 20
+          },
+          "Range": 100,
+          "RangeLevelModifier": {
+            "Min": {
+              "Level": 0,
+              "Modifier": 0
+            },
+            "Max": {
+              "Level": 0,
+              "Modifier": 0
+            }
+          }
+        },
+        "ChanceForRingInChest": {
+          "Value": {
+            "BadLuck": 0,
+            "Neutral": 10,
+            "GoodLuck": 20
+          },
+          "Range": 100,
+          "RangeLevelModifier": {
+            "Min": {
+              "Level": 0,
+              "Modifier": 0
+            },
+            "Max": {
+              "Level": 0,
+              "Modifier": 0
+            }
+          }
+        },
+        "ChanceForRandomPileItemInChest": {
+          "Value": {
+            "BadLuck": 0,
+            "Neutral": 5,
+            "GoodLuck": 10
+          },
+          "Range": 100,
+          "RangeLevelModifier": {
+            "Min": {
+              "Level": 0,
+              "Modifier": 0
+            },
+            "Max": {
+              "Level": 0,
+              "Modifier": 0
+            }
+          }
+        },
+        "MetalBarStackSize": {
+          "LowerBound": {
+            "BadLuck": 0,
+            "Neutral": 50,
+            "GoodLuck": 100
+          },
+          "UpperBound": {
+            "BadLuck": 0,
+            "Neutral": 50,
+            "GoodLuck": 100
+          }
+        },
+        "ElixirStackSize": {
+          "LowerBound": {
+            "BadLuck": 0,
+            "Neutral": 50,
+            "GoodLuck": 100
+          },
+          "UpperBound": {
+            "BadLuck": 0,
+            "Neutral": 50,
+            "GoodLuck": 100
+          }
+        },
+        "PileItemStackSize": {
+          "LowerBound": {
+            "BadLuck": 0,
+            "Neutral": 50,
+            "GoodLuck": 100
+          },
+          "UpperBound": {
+            "BadLuck": 0,
+            "Neutral": 50,
+            "GoodLuck": 100
+          }
+        }
+      },
+      "Trash": {
+        "PileItems": [
+          {
+            "Value": 168,
+            "Weight": {
+              "BadLuck": 2000,
+              "Neutral": 2000,
+              "GoodLuck": 2000
+            }
+          },
+          {
+            "Value": 172,
+            "Weight": {
+              "BadLuck": 1000,
+              "Neutral": 1000,
+              "GoodLuck": 1000
+            }
+          },
+          {
+            "Value": 170,
+            "Weight": {
+              "BadLuck": 1000,
+              "Neutral": 1000,
+              "GoodLuck": 1000
+            }
+          },
+          {
+            "Value": 171,
+            "Weight": {
+              "BadLuck": 500,
+              "Neutral": 500,
+              "GoodLuck": 500
+            }
+          },
+          {
+            "Value": 167,
+            "Weight": {
+              "BadLuck": 100,
+              "Neutral": 100,
+              "GoodLuck": 100
+            }
+          },
+          {
+            "Value": 122,
+            "Weight": {
+              "BadLuck": 5,
+              "Neutral": 5,
+              "GoodLuck": 5
+            }
+          },
+          {
+            "Value": 118,
+            "Weight": {
+              "BadLuck": 5,
+              "Neutral": 5,
+              "GoodLuck": 5
+            }
+          }
+        ],
+        "ChanceForLewisShortsInGarbagebin": {
+          "Value": {
+            "BadLuck": 0,
+            "Neutral": 1,
+            "GoodLuck": 1
+          },
+          "Range": 1000,
+          "RangeLevelModifier": {
+            "Min": {
+              "Level": 0,
+              "Modifier": 0
+            },
+            "Max": {
+              "Level": 0,
+              "Modifier": 0
+            }
+          }
+        },
+        "ChanceForBoneInGarbagebin": {
+          "Value": {
+            "BadLuck": 0,
+            "Neutral": 5,
+            "GoodLuck": 10
+          },
+          "Range": 100,
+          "RangeLevelModifier": {
+            "Min": {
+              "Level": 0,
+              "Modifier": 0
+            },
+            "Max": {
+              "Level": 0,
+              "Modifier": 0
+            }
+          }
+        },
+        "ChanceForArtefactInGarbagebin": {
+          "Value": {
+            "BadLuck": 0,
+            "Neutral": 5,
+            "GoodLuck": 10
+          },
+          "Range": 100,
+          "RangeLevelModifier": {
+            "Min": {
+              "Level": 0,
+              "Modifier": 0
+            },
+            "Max": {
+              "Level": 0,
+              "Modifier": 0
+            }
+          }
+        },
+        "ChanceForPuppetInGarbagebin": {
+          "Value": {
+            "BadLuck": 0,
+            "Neutral": 5,
+            "GoodLuck": 10
+          },
+          "Range": 100,
+          "RangeLevelModifier": {
+            "Min": {
+              "Level": 0,
+              "Modifier": 0
+            },
+            "Max": {
+              "Level": 0,
+              "Modifier": 0
+            }
+          }
+        },
+        "ChanceForRandomPileItemInGarbagebin": {
+          "Value": {
+            "BadLuck": 0,
+            "Neutral": 5,
+            "GoodLuck": 10
+          },
+          "Range": 100,
+          "RangeLevelModifier": {
+            "Min": {
+              "Level": 0,
+              "Modifier": 0
+            },
+            "Max": {
+              "Level": 0,
+              "Modifier": 0
+            }
+          }
+        },
+        "PileItemStackSize": {
+          "LowerBound": {
+            "BadLuck": 0,
+            "Neutral": 50,
+            "GoodLuck": 100
+          },
+          "UpperBound": {
+            "BadLuck": 0,
+            "Neutral": 50,
+            "GoodLuck": 100
+          }
+        }
+      }
+    },
+    "Fishies": {
+      "ChanceForAwesomeFish": {
+        "Value": {
+          "BadLuck": 0,
+          "Neutral": 0,
+          "GoodLuck": 25
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "AwesomeFishies": [
+        {
+          "Value": 163,
+          "Weight": {
+            "BadLuck": 10,
+            "Neutral": 10,
+            "GoodLuck": 10
+          }
+        },
+        {
+          "Value": 159,
+          "Weight": {
+            "BadLuck": 33,
+            "Neutral": 33,
+            "GoodLuck": 33
+          }
+        },
+        {
+          "Value": 682,
+          "Weight": {
+            "BadLuck": 50,
+            "Neutral": 50,
+            "GoodLuck": 50
+          }
+        },
+        {
+          "Value": 775,
+          "Weight": {
+            "BadLuck": 50,
+            "Neutral": 50,
+            "GoodLuck": 50
+          }
+        },
+        {
+          "Value": 160,
+          "Weight": {
+            "BadLuck": 55,
+            "Neutral": 55,
+            "GoodLuck": 55
+          }
+        },
+        {
+          "Value": 162,
+          "Weight": {
+            "BadLuck": 71,
+            "Neutral": 71,
+            "GoodLuck": 71
+          }
+        },
+        {
+          "Value": 161,
+          "Weight": {
+            "BadLuck": 100,
+            "Neutral": 100,
+            "GoodLuck": 100
+          }
+        },
+        {
+          "Value": 800,
+          "Weight": {
+            "BadLuck": 100,
+            "Neutral": 100,
+            "GoodLuck": 100
+          }
+        },
+        {
+          "Value": 158,
+          "Weight": {
+            "BadLuck": 166,
+            "Neutral": 166,
+            "GoodLuck": 166
+          }
+        },
+        {
+          "Value": 155,
+          "Weight": {
+            "BadLuck": 200,
+            "Neutral": 200,
+            "GoodLuck": 200
+          }
+        },
+        {
+          "Value": 799,
+          "Weight": {
+            "BadLuck": 227,
+            "Neutral": 227,
+            "GoodLuck": 227
+          }
+        },
+        {
+          "Value": 128,
+          "Weight": {
+            "BadLuck": 250,
+            "Neutral": 250,
+            "GoodLuck": 250
+          }
+        },
+        {
+          "Value": 143,
+          "Weight": {
+            "BadLuck": 250,
+            "Neutral": 250,
+            "GoodLuck": 250
+          }
+        },
+        {
+          "Value": 698,
+          "Weight": {
+            "BadLuck": 250,
+            "Neutral": 250,
+            "GoodLuck": 250
+          }
+        },
+        {
+          "Value": 699,
+          "Weight": {
+            "BadLuck": 333,
+            "Neutral": 333,
+            "GoodLuck": 333
+          }
+        },
+        {
+          "Value": 149,
+          "Weight": {
+            "BadLuck": 333,
+            "Neutral": 333,
+            "GoodLuck": 333
+          }
+        },
+        {
+          "Value": 165,
+          "Weight": {
+            "BadLuck": 333,
+            "Neutral": 333,
+            "GoodLuck": 333
+          }
+        },
+        {
+          "Value": 795,
+          "Weight": {
+            "BadLuck": 333,
+            "Neutral": 333,
+            "GoodLuck": 333
+          }
+        },
+        {
+          "Value": 796,
+          "Weight": {
+            "BadLuck": 500,
+            "Neutral": 500,
+            "GoodLuck": 500
+          }
+        },
+        {
+          "Value": 798,
+          "Weight": {
+            "BadLuck": 500,
+            "Neutral": 500,
+            "GoodLuck": 500
+          }
+        }
+      ]
+    }
+  },
+  "Monsters": {
+    "ChanceForHalfMonsterCount": {
+      "Value": {
+        "BadLuck": 0,
+        "Neutral": 0,
+        "GoodLuck": 50
+      },
+      "Range": 100,
+      "RangeLevelModifier": {
+        "Min": {
+          "Level": 0,
+          "Modifier": 0
+        },
+        "Max": {
+          "Level": 0,
+          "Modifier": 0
+        }
+      }
+    },
+    "ChanceForUnbuffedMonster": {
+      "Value": {
+        "BadLuck": 0,
+        "Neutral": 25,
+        "GoodLuck": 75
+      },
+      "Range": 100,
+      "RangeLevelModifier": {
+        "Min": {
+          "Level": 0,
+          "Modifier": 0
+        },
+        "Max": {
+          "Level": 0,
+          "Modifier": 0
+        }
+      }
+    },
+    "Bat": {
+      "MinLevel": 1,
+      "Chance": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      }
+    },
+    "BigSlime": {
+      "MinLevel": 2,
+      "Chance": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      }
+    },
+    "Grub": {
+      "MinLevel": 2,
+      "Chance": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      }
+    },
+    "Fly": {
+      "MinLevel": 2,
+      "Chance": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      }
+    },
+    "Brute": {
+      "MinLevel": 5,
+      "Chance": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      }
+    },
+    "Golem": {
+      "MinLevel": 5,
+      "Chance": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      }
+    },
+    "RockCrab": {
+      "MinLevel": 10,
+      "Chance": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      }
+    },
+    "Ghost": {
+      "MinLevel": 10,
+      "Chance": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      }
+    },
+    "PurpleSlime": {
+      "MinLevel": 10,
+      "Chance": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      }
+    }
+  }
+}

@@ -69,8 +69,12 @@
   "options.UnifyFlowerColors": "花の色を統一する",
   "options.ShowMousePositionWhenAssigningLocation": "座標指定時にマウス座標を表示",
   "options.MorePreciseProbabilities": "より正確な確率を計算",
-  "options.TrialOfExamine": "確率の計算試行回数", 
+  "options.TrialOfExamine": "確率の計算試行回数",
   "options.ButtonToggleFlowerColorUnification": "花の色の登録/登録解除",
+  "options.RadiusFarmCleanup": "掃除の範囲",
+  "options.CutWeeds": "雑草刈り(鎌が必要)",
+  "options.BreakRocks": "岩砕き(ツルハシが必要)",
+  "options.ChopTwigs": "小枝刈り(斧が必要)",
 
   //RegisterFlowerMenu strings
   "options.flower": "花:{0}",
@@ -83,7 +87,7 @@
   //Flower Color Unification register/unregister
   "flower.register": "{0}の色は統一されます",
   "flower.unregister": "{0}の色は統一されません",
-  "flower.vanilla": "バニラの花を登録解除することはできません", 
+  "flower.vanilla": "バニラの花を登録解除することはできません",
 
 
   "quality.gold": "金",

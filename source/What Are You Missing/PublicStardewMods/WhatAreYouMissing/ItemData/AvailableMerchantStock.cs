@@ -147,7 +147,6 @@ namespace WhatAreYouMissing
             AddPossibleItem(Constants.CAULIFLOWER);
             AddPossibleItem(Constants.RHUBARB);
             AddPossibleItem(Constants.PARSNIP);
-            AddPossibleItem(Constants.SWEET_GEM_BERRY);
             AddPossibleItem(Constants.KALE);
             AddPossibleItem(Constants.BLUE_JAZZ);
             AddPossibleItem(Constants.CORN);

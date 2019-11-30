@@ -1,22 +1,32 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26403.3
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HorseWhistle", "HorseWhistle\HorseWhistle.csproj", "{B2883CCC-B492-4A7C-B4CB-18CF2931B43B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{29F916DE-84E9-4B4C-A5D8-B1BC00759603}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HorseWhistle", "HorseWhistle\HorseWhistle.csproj", "{111CECEC-D263-42E0-8400-62BC5F085309}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B2883CCC-B492-4A7C-B4CB-18CF2931B43B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2883CCC-B492-4A7C-B4CB-18CF2931B43B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2883CCC-B492-4A7C-B4CB-18CF2931B43B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2883CCC-B492-4A7C-B4CB-18CF2931B43B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{111CECEC-D263-42E0-8400-62BC5F085309}.Debug|x86.ActiveCfg = Debug|x86
+		{111CECEC-D263-42E0-8400-62BC5F085309}.Debug|x86.Build.0 = Debug|x86
+		{111CECEC-D263-42E0-8400-62BC5F085309}.Release|x86.ActiveCfg = Release|x86
+		{111CECEC-D263-42E0-8400-62BC5F085309}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D7B1BE0A-0E8C-4B00-9E21-A4259A1CDDC5}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,9 @@
+{
+  "yes": "Sí",
+  "no": "No",
+  "use": "¿Utilizar cerrojo?",
+  "tool": "Cerrojo",
+  "tooltip": "Se utiliza para abrir puertas cerradas.",
+  "broke": "¡La herramienta se ha roto!",
+  "complex": "Este bloqueo es demasiado complicado."
+}

@@ -11,6 +11,8 @@ using NpcAdventure.Utils;
 using NpcAdventure.StateMachine.State;
 using static NpcAdventure.StateMachine.CompanionStateMachine;
 using NpcAdventure.Model;
+using Microsoft.Xna.Framework.Graphics;
+using NpcAdventure.Events;
 
 namespace NpcAdventure
 {
@@ -179,7 +181,7 @@ namespace NpcAdventure
         /// <param name="loader"></param>
         /// <param name="gameEvents"></param>
         /// <param name="reflection"></param>
-        public void InitializeCompanions(IContentLoader loader, IModEvents gameEvents, IReflectionHelper reflection)
+        public void InitializeCompanions(IContentLoader loader, IModEvents gameEvents, ISpecialModEvents specialEvents, IReflectionHelper reflection)
         {
             Dictionary<string, string> dispositions = loader.Load<Dictionary<string, string>>("Data/CompanionDispositions");
 
@@ -195,7 +197,7 @@ namespace NpcAdventure
                 {
                     [StateFlag.RESET] = new ResetState(csm, gameEvents, this.monitor),
                     [StateFlag.AVAILABLE] = new AvailableState(csm, gameEvents, this.monitor),
-                    [StateFlag.RECRUITED] = new RecruitedState(csm, gameEvents, this.monitor),
+                    [StateFlag.RECRUITED] = new RecruitedState(csm, gameEvents, specialEvents, this.monitor),
                     [StateFlag.UNAVAILABLE] = new UnavailableState(csm, gameEvents, this.monitor),
                 };
 

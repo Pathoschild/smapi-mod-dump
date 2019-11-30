@@ -1,4 +1,5 @@
-﻿using NpcAdventure.AI.Controller;
+﻿using Microsoft.Xna.Framework.Graphics;
+using NpcAdventure.AI.Controller;
 using NpcAdventure.Loader;
 using NpcAdventure.Model;
 using NpcAdventure.StateMachine;
@@ -18,7 +19,7 @@ namespace NpcAdventure.AI
     /// <summary>
     /// State machine for companion AI
     /// </summary>
-    internal partial class AI_StateMachine : Internal.IUpdateable
+    internal partial class AI_StateMachine : Internal.IUpdateable, Internal.IDrawable
     {
         public enum State
         {
@@ -155,6 +156,8 @@ namespace NpcAdventure.AI
             // Warp NPC to player's location at theirs position
             Helper.WarpTo(this.npc, l, this.player.getTileLocationPoint());
 
+            this.changeStateCooldown = 100;
+
             // Fire location changed event
             this.OnLocationChanged(previousLocation, this.npc.currentLocation);
         }
@@ -176,6 +179,14 @@ namespace NpcAdventure.AI
             this.CurrentController.Deactivate();
             this.controllers.Clear();
             this.controllers = null;
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            if (Context.IsWorldReady && this.CurrentController is Internal.IDrawable drawableController)
+            {
+                drawableController.Draw(spriteBatch);
+            }
         }
     }
 }

@@ -38,4 +38,3 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 * Improved IL searching capabilities.
 * Fix error message upon start for android.
 * Also warn when patch fails due to method not being found or being ambiguous.
-

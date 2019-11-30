@@ -62,7 +62,7 @@ namespace CropTransplantMod
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(FruitTree), nameof(FruitTree.performUseAction)),
-                prefix: new HarmonyMethod(typeof(TransplantOverrides), nameof(TransplantOverrides.FruitTreePerformUseAction))
+                postfix: new HarmonyMethod(typeof(TransplantOverrides), nameof(TransplantOverrides.FruitTreePerformUseAction))
             );
 
             harmony.Patch(

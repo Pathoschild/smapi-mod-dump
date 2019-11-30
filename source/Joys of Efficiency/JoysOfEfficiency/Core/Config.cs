@@ -71,7 +71,7 @@ namespace JoysOfEfficiency.Core
 
         //Fishing Probabilities
         public bool FishingProbabilitiesInfo { get; set; } = false;
-        public Point ProbBoxCoordinates { get; set; } = new Point(100,400);
+        public Point ProbBoxCoordinates { get; set; } = new Point(100, 400);
         public bool MorePreciseProbabilities { get; set; } = true;
         public int TrialOfExamine { get; set; } = 10;
 
@@ -105,5 +105,12 @@ namespace JoysOfEfficiency.Core
 
         public bool AutoShearingAndMilking { get; set; } = true;
         public int AnimalHarvestRadius { get; set; } = 1;
+
+        public int RadiusFarmCleanup { get; set; } = 1;
+        public bool CutWeeds { get; set; } = false;
+        public bool BreakRocks { get; set; } = false;
+        public bool ChopTwigs { get; set; } = false;
+
+        public bool DisableConfigLimitation { get; set; } = false;
     }
 }

@@ -103,7 +103,7 @@ namespace JoysOfEfficiency.EventHandler
                 {
                     return;
                 }
-
+                FarmCleaner.OnEighthUpdate();
                 if (Conf.AutoEat)
                 {
                     FoodAutomation.TryToEatIfNeeded(player);

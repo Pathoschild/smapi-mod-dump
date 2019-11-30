@@ -5,9 +5,12 @@ mods:
    Horse Whistle
 
 latest commit:
-   commit 6058ebf07212931b9fbf45461f5c0a2bf9c590ea
-   Author: Alec Puente <icepuente@gmail.com>
-   Date:   Sat Sep 29 19:03:02 2018 -0700
+   commit a6df89d25b393a771a557d61b49745d6c44f482d
+   Merge: 6058ebf df37af5
+   Author: icepuente <icepuente@gmail.com>
+   Date:   Fri Nov 29 22:23:45 2019 -0700
    
-       Add ability to toggle custom whistle audio in config file
+       Merge pull request #4 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0, internal refactoring, various fixes
    

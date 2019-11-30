@@ -5,12 +5,12 @@ mods:
    Joys of Efficiency
 
 latest commit:
-   commit 979f0b71f5244ae1b44e251ff8b7ad5d08fe089b
-   Merge: c169cd2 dce6117
+   commit 9973926213677f8e85535f6efc04c86a7c70380b
+   Merge: 7c7942d 557f4c0
    Author: pomepome <punyoon03@gmail.com>
-   Date:   Wed Nov 27 15:40:20 2019 +0900
+   Date:   Sat Nov 30 10:44:02 2019 +0900
    
-       Merge pull request #22 from pomepome/develop
+       Merge pull request #25 from AppleNorris/patch-2
        
-       hotfix
+       Updated for 1.3.1.
    

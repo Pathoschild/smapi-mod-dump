@@ -15,7 +15,6 @@ namespace CustomKissingMod
     {
         public static void checkAction(NPC __instance, ref Farmer who, ref bool __result, GameLocation l)
         {
-            IReflectedField<bool> hasBeenKissedToday = DataLoader.Helper.Reflection.GetField<bool>(__instance, "hasBeenKissedToday");
             NpcConfig npcConfig = DataLoader.ModConfig.NpcConfigs.Find(n => n.Name == __instance.Name);
 
             if (npcConfig != null && __result != true && !__instance.isMarried() && (who.friendshipData[__instance.Name].IsDating() || DataLoader.ModConfig.DisableDatingRequirement) && ( npcConfig.RequiredEvent == null || who.eventsSeen.Contains(npcConfig.RequiredEvent.Value) || DataLoader.ModConfig.DisableEventRequirement) && who.IsLocalPlayer)
@@ -42,7 +41,7 @@ namespace CustomKissingMod
                                 new FarmerSprite.AnimationFrame(frame, Game1.IsMultiplayer ? 1010 : 10, false, flip,
                                     new AnimatedSprite.endOfAnimationBehavior(__instance.haltMe), true)
                             });
-                            if (!hasBeenKissedToday.GetValue())
+                            if (!__instance.hasBeenKissedToday.Value)
                             {
                                 who.changeFriendship(DataLoader.ModConfig.KissingFriendshipPoints, __instance);
                                 DataLoader.Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue().broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite[1]
@@ -67,7 +66,7 @@ namespace CustomKissingMod
                                     if (who.spouse != null && !who.spouse.Contains(__instance.Name))
                                     {
                                         NPC characterFromName = Game1.getCharacterFromName(who.spouse, false);
-                                        if (l.characters.Contains(characterFromName) || !(Game1.random.NextDouble() >= 0.3 - (double) who.LuckLevel / 100.0 - Game1.dailyLuck))
+                                        if (l.characters.Contains(characterFromName) || !(Game1.random.NextDouble() >= 0.3 - (double) who.LuckLevel / 100.0 - who.DailyLuck))
                                         {
                                             who.changeFriendship(DataLoader.ModConfig.JealousyFriendshipPoints, characterFromName);
                                             characterFromName.CurrentDialogue.Clear();
@@ -77,7 +76,7 @@ namespace CustomKissingMod
                                 }
                             }
 
-                            hasBeenKissedToday.SetValue(true);
+                            __instance.hasBeenKissedToday.Value = true;
                             __instance.Sprite.UpdateSourceRect();
                         }
                         else
@@ -117,8 +116,8 @@ namespace CustomKissingMod
                         __instance.Sprite.currentFrame = frame;
                         var oldAnimationFrame = __instance.Sprite.CurrentAnimation[__instance.Sprite.currentAnimationIndex];
                         __instance.Sprite.CurrentAnimation[__instance.Sprite.currentAnimationIndex] =
-                            new FarmerSprite.AnimationFrame(frame, oldAnimationFrame.milliseconds, oldAnimationFrame.secondaryArm,
-                                flip,oldAnimationFrame.frameBehavior, oldAnimationFrame.behaviorAtEndOfFrame);
+                            new FarmerSprite.AnimationFrame(frame, 0, oldAnimationFrame.milliseconds, oldAnimationFrame.secondaryArm,
+                                flip, oldAnimationFrame.frameStartBehavior, oldAnimationFrame.frameEndBehavior, 0);
                         __instance.Sprite.UpdateSourceRect();
                     }
                 }

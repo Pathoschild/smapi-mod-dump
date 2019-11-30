@@ -15,7 +15,6 @@ using StardewValley.Locations;
 
 namespace HorseWhistle
 {
-    /// <inheritdoc />
     /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
@@ -33,21 +32,20 @@ namespace HorseWhistle
         /*********
         ** Public methods
         *********/
-        /// <inheritdoc />
-        /// <summary>Initialise the mod.</summary>
-        /// <param name="helper">Provides methods for interacting with the mod directory, such as read/writing a config file or custom JSON files.</param>
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            // read config
             _config = helper.ReadConfig<ModConfigModel>();
 
+            // set up sounds
             if (Constants.TargetPlatform == GamePlatform.Windows && _config.EnableWhistleAudio)
             {
                 try
                 {
-                    _customSoundBank = new SoundBankWrapper(new SoundBank(Game1.audioEngine,
-                        Path.Combine(helper.DirectoryPath, "assets", "CustomSoundBank.xsb")));
-                    _customWaveBank = new WaveBank(Game1.audioEngine,
-                        Path.Combine(helper.DirectoryPath, "assets", "CustomWaveBank.xwb"));
+                    _customSoundBank = new SoundBankWrapper(new SoundBank(Game1.audioEngine.Engine, Path.Combine(helper.DirectoryPath, "assets", "CustomSoundBank.xsb")));
+                    _customWaveBank = new WaveBank(Game1.audioEngine.Engine, Path.Combine(helper.DirectoryPath, "assets", "CustomWaveBank.xwb"));
                     _hasAudio = true;
                 }
                 catch (ArgumentException ex)
@@ -61,26 +59,28 @@ namespace HorseWhistle
                 }
             }
 
-            // add all event listener methods
-            InputEvents.ButtonPressed += InputEvents_ButtonPressed;
-            if (!_config.EnableGrid) return;
-            GameEvents.SecondUpdateTick += (sender, e) => UpdateGrid();
-            GraphicsEvents.OnPostRenderEvent += (sender, e) => DrawGrid(Game1.spriteBatch);
+            // add event listeners
+            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            if (_config.EnableGrid)
+            {
+                helper.Events.GameLoop.UpdateTicked += this.UpdateTicked;
+                helper.Events.Display.Rendered += this.OnRendered;
+            }
         }
 
 
         /*********
         ** Private methods
         *********/
-        /// <summary>The method invoked when the player presses a keyboard button.</summary>
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void InputEvents_ButtonPressed(object sender, EventArgsInput e)
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsPlayerFree)
                 return;
 
-            if (e.Button == _config.TeleportHorseKey)
+            if (e.Button == _config.TeleportHorseKey && !Game1.player.isRidingHorse())
             {
                 var horse = FindHorse();
                 if (horse == null) return;
@@ -89,6 +89,23 @@ namespace HorseWhistle
             }
             else if (_config.EnableGrid && e.Button == _config.EnableGridKey)
                 _gridActive = !_gridActive;
+        }
+
+        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void UpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            if (e.IsMultipleOf(2))
+                UpdateGrid();
+        }
+
+        /// <summary>Raised after the game draws to the sprite patch in a draw tick, just before the final sprite batch is rendered to the screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnRendered(object sender, RenderedEventArgs e)
+        {
+            DrawGrid(e.SpriteBatch);
         }
 
         /// <summary>Play the horse whistle sound.</summary>
@@ -113,21 +130,41 @@ namespace HorseWhistle
             }
         }
 
+        /// <summary>Get all available locations.</summary>
+        private IEnumerable<GameLocation> GetLocations()
+        {
+            GameLocation[] mainLocations = (Context.IsMainPlayer ? Game1.locations : this.Helper.Multiplayer.GetActiveLocations()).ToArray();
+
+            foreach (GameLocation location in mainLocations.Concat(MineShaft.activeMines))
+            {
+                yield return location;
+
+                if (location is BuildableGameLocation buildableLocation)
+                {
+                    foreach (Building building in buildableLocation.buildings)
+                    {
+                        if (building.indoors.Value != null)
+                            yield return building.indoors.Value;
+                    }
+                }
+            }
+        }
+
         /// <summary>Find the current player's horse.</summary>
         private Horse FindHorse()
         {
-            return (from stable in GetStables()
-                where !Context.IsMultiplayer || stable.owner.Value == Game1.player.UniqueMultiplayerID
-                select Utility.findHorse(stable.HorseId)).FirstOrDefault(horse => horse != null && horse.rider == null);
-        }
+            foreach (GameLocation location in this.GetLocations())
+            {
+                foreach (Horse horse in location.characters.OfType<Horse>())
+                {
+                    if (horse.rider != null || horse.Name.StartsWith("tractor/"))
+                        continue;
 
-        /// <summary>Get all stables in the game.</summary>
-        private IEnumerable<Stable> GetStables()
-        {
-            return from location in Game1.locations.OfType<BuildableGameLocation>()
-                from stable in location.buildings.OfType<Stable>()
-                where stable.GetType().FullName?.Contains("TractorMod") != true
-                select stable;
+                    return horse;
+                }
+            }
+
+            return null;
         }
 
         private void UpdateGrid()
@@ -157,8 +194,7 @@ namespace HorseWhistle
             foreach (var tile in _tiles.ToArray())
             {
                 var position = tile.TilePosition * tileSize - new Vector2(Game1.viewport.X, Game1.viewport.Y);
-                RectangleSprite.DrawRectangle(spriteBatch,
-                    new Rectangle((int) position.X, (int) position.Y, tileSize, tileSize), tile.Color * .3f, 6);
+                RectangleSprite.DrawRectangle(spriteBatch, new Rectangle((int)position.X, (int)position.Y, tileSize, tileSize), tile.Color * .3f, 6);
             }
         }
     }

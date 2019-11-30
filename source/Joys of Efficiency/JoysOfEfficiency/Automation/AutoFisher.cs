@@ -14,7 +14,6 @@ namespace JoysOfEfficiency.Automation
         private static int AutoFishingCounter { get; set; }
 
         private static IReflectionHelper Reflection => InstanceHolder.Reflection;
-        private static Config Config => InstanceHolder.Config;
 
         public static void AutoReelRod()
         {
@@ -72,12 +71,12 @@ namespace JoysOfEfficiency.Automation
                 }
             }
 
-            if (fishPos > barPos + (barHeight << 1))
+            if (fishPos > barPos + (barHeight / 2f))
             {
                 return;
             }
 
-            float strength = (fishPos - (barPos + (barHeight << 1))) / 16f;
+            float strength = (fishPos - (barPos + barHeight / 2f)) / 18f;
             float distance = fishPos - top;
 
             float threshold = Util.Cap(InstanceHolder.Config.CpuThresholdFishing, 0, 0.5f);

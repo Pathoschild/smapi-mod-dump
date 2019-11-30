@@ -9,7 +9,6 @@ namespace CustomKissingMod
         public bool DisableEventRequirement { get; set; }
         public bool DisableJealousy { get; set; }
         public bool DisableExhaustionReset { get; set; }
-        public bool DisableKissingPlayers { get; set; }
         public int RequiredFriendshipLevel { get; set; }
         public int KissingFriendshipPoints { get; set; }
         public int JealousyFriendshipPoints { get; set; }
@@ -21,7 +20,6 @@ namespace CustomKissingMod
             DisableEventRequirement = false;
             DisableJealousy = false;
             DisableExhaustionReset = false;
-            DisableKissingPlayers = false;
             RequiredFriendshipLevel = 8;
             KissingFriendshipPoints = 10;
             JealousyFriendshipPoints = -250;

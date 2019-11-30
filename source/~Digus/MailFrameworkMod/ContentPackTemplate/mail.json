@@ -1,6 +1,7 @@
 [
 	{
 		"Id": "MyMod.MyMailId", // Letter id. It's importent to be an unique string to avoid conflicts.
+		"Title": "My Letter Title", // Letter title. Will be shown in the collections menu. (Unimplemented Yet)
 		"Text": "Dear @^This is my custom mail.", // Text of the letter. You can use @ to put the players name and ^ for line breakes. You can also use the base game commands to add money, itens and stuff.
 		"Attachments": [{"Type": "Tool", "Name": "Axe"},{"Type": "Object", "Index":78, "Stack": 3},{"Type": "BigObject", "Index":159}], // Remove the line to not attach items to the mail. You can use the Name properties for Object and BigObject items too, that's required if using Json Assets. Stack is required for all Object items.
 		"Recipe": "Recipe Name", // Remove the line if you don't want to attach a recipe to the mail. It will only work if you have no other attachments to the mail.

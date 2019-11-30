@@ -5,6 +5,7 @@ namespace MailFrameworkMod.ContentPack
     public class MailItem
     {
         public string Id;
+        public string Title;
         public string Text;
         public string Recipe;
         public List<Attachment> Attachments;

@@ -16,12 +16,14 @@ Go to an adventure with Pelican Town's villagers! Recruit bachelorete or bachlor
 - Next morning you can find a package with your items you saved in companion's backpack
 - Idle animations
 - Speech bubbles while companion fighting
-- [NEW] Different personal skills: warrior, fighter and doctor (next comming soon)
-- [NEW] Doctor can heal you if your health is under 30% and can try to save your life before death
-- [NEW] Warrior can use critical defense fists
-- [NEW] Fighter can level up (syncing level with player) and can upgrade swords
-- [NEW] Display personal skills in HUD (with mouseover tooltip)
-- [NEW] Better critical defense fist fight animation and sound
+- Different personal skills: warrior, fighter and doctor (next comming soon)
+- Doctor can heal you if your health is under 30% and can try to save your life before death
+- Warrior can use critical defense fists
+- Fighter can level up (syncing level with player) and can upgrade swords
+- Display personal skills in HUD (with mouseover tooltip)
+- Better critical defense fist fight animation and sound
+- [NEW] Support for content packs and localizations
+- [NEW] User configuration (via `config.json`, see [SMAPI docs](https://stardewvalleywiki.com/Modding:Player_Guide/Getting_Started#Configure_mods)) 
 
 Next features comming soon...
 
@@ -52,6 +54,11 @@ For NPCs listed above we're missing companion dialogues. You can help us and you
 - Works with Stardew Valley 1.4 on Linux/Mac/Windows.
 - Works in **single player** ONLY.
 
+## Translations
+
+- English ([smirkii](https://www.nexusmods.com/users/75542598), [purrplingcat](https://www.nexusmods.com/users/68185132))
+- Portuguese Brazilian ([andril11](https://www.nexusmods.com/users/68848663))
+
 ## Feature preview
 
 **Asking NPC to a follow farmer**
@@ -79,6 +86,12 @@ For NPCs listed above we're missing companion dialogues. You can help us and you
 ![Companion heal a player][heal]
 
 More features comming soon...
+
+## Contributors
+
+- [purrplingcat](https://www.nexusmods.com/users/68185132) - main developer and producer
+- [smirkii](https://www.nexusmods.com/users/75542598) - author of dialogues and texts
+- [andril11](https://www.nexusmods.com/users/68848663) - Portuguese translation
 
 [library]: docs/library.gif
 [ask2follow]: docs/asktofollow.gif

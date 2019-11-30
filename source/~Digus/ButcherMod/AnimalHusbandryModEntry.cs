@@ -94,7 +94,7 @@ namespace AnimalHusbandryMod
                     ModHelper.ConsoleCommands.Add("player_addparticipantribbon", "Add Participant Ribbon to inventory.", (n, d) => Game1.player.addItemToInventory(new ParticipantRibbon()));
                 }
 
-                ModHelper.ConsoleCommands.Add("config_create_customanimaltemplates", "Add custom animal templates in the data\\animal.json file for every loaded custom animal.", DataLoader.AddCustomAnimalsTemplate);
+                ModHelper.ConsoleCommands.Add("config_create_customanimaltemplates", "Add custom animal templates in the data\\animal.json file for every loaded custom animal.", DataLoader.AddCustomAnimalsTemplateCommand);
                 ModHelper.ConsoleCommands.Add("config_reload_contentpacks_animalhusbandrymod", "Reload all content packs for animal husbandry mod.",DataLoader.LoadContentPacksCommand);
                 ModHelper.ConsoleCommands.Add("world_removealltools_animalhusbandrymod", "Remove all custom tools added by the animal husbandry mod.",DataLoader.ToolsLoader.RemoveAllToolsCommand);
 

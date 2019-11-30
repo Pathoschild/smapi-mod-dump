@@ -168,7 +168,7 @@ namespace AnimalHusbandryMod.animals
                 {
                     if (random.NextDouble() < (double)farmAnimal.happiness.Value / 150.0)
                     {
-                        if (random.NextDouble() < ((double)farmAnimal.friendshipTowardFarmer.Value + (double)num1) / 5000.0 + Game1.dailyLuck + (double)Game1.player.LuckLevel * 0.01)
+                        if (random.NextDouble() < ((double)farmAnimal.friendshipTowardFarmer.Value + (double)num1) / 5000.0 + Game1.player.DailyLuck + (double)Game1.player.LuckLevel * 0.01)
                         {
                             Object newItem = new Object(Vector2.Zero, farmAnimal.deluxeProduceIndex.Value, 1);
                             newItem.Quality = ProduceQuality(random, farmAnimal);
@@ -186,7 +186,7 @@ namespace AnimalHusbandryMod.animals
                 {
                     if (random.NextDouble() < (double)farmAnimal.happiness.Value / 150.0)
                     {
-                        if (random.NextDouble() < ((double)farmAnimal.friendshipTowardFarmer.Value + (double)num1) / 5000.0 + Game1.dailyLuck + (double)Game1.player.LuckLevel * 0.01)
+                        if (random.NextDouble() < ((double)farmAnimal.friendshipTowardFarmer.Value + (double)num1) / 5000.0 + Game1.player.DailyLuck + (double)Game1.player.LuckLevel * 0.01)
                         {
                             Object newItem = new Object(Vector2.Zero, farmAnimal.deluxeProduceIndex.Value, 1);
                             newItem.Quality = ProduceQuality(random, farmAnimal);

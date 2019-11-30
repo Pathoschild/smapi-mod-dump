@@ -8,6 +8,8 @@ namespace JoysOfEfficiency.Huds
 {
     internal class FpsCounter
     {
+        private static readonly Logger Logger = new Logger("FpsCounter");
+
         private static double _fps;
 
         private static int _lastMilliseconds = Environment.TickCount;

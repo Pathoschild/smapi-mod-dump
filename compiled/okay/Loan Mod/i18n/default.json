@@ -1,0 +1,23 @@
+{
+  "menu.cancel": "Cancel",
+  "menu.days": "Days",
+  "menu.leave": "Leave",
+  "menu.no": "No",
+  "menu.repayfull": "Repay Full Amount",
+  "menu.showbalance": "Show Balance",
+  "menu.yes": "Yes",
+  "msg.create": "Loan file has been created!",
+  "msg.hostonly": "Only the host can perform this action.",
+  "msg.menu-1": "What would you like to do?",
+  "msg.menu-2": "Repaying in full would cost you {{Balance}}g. Would you like to continue?",
+  "msg.payment.complete": "Thanks for making a payment of {{DailyAmount}}g.",
+  "msg.payment.credited": "{{creditAmount}}g has been credited to your account.",
+  "msg.payment.error": "Something went wrong, we've reset your debt.",
+  "msg.payment.failed": "You did not have {{DailyAmount}}g to make a payment.",
+  "msg.payment.full": "Thank you for your payment! You have successfully paid any outstanding balance in full.",
+  "msg.payment.missed-1": "Warning: Missing another payment means you will have to pay late payment charges of: {{LateChargeAmount}}g.",
+  "msg.payment.missed-2": "Warning: We will now add a late payment fee of: {{LateChargeAmount}}g to your balance.",
+  "msg.payment.remaining": "Your remaining balance is: {{Balance}}g. You have {{Duration}} days left. You are paying {{DailyAmount}}g per day.",
+  "msg.startborrow-1": "How much money would you like to borrow?",
+  "msg.startborrow-2": "How long would you like to borrow for?"
+}

@@ -81,7 +81,7 @@ namespace StardewHack.HarvestWithScythe
             // If mode is BOTH, then set mode depending on whether the scythe is currently equipped.
             if (mode == HarvestModeEnum.BOTH) {
                 var t = Game1.player.CurrentTool;
-                if (t is MeleeWeapon && (t as MeleeWeapon).BaseName.Equals("Scythe")) {
+                if (t is MeleeWeapon && (t as MeleeWeapon).isScythe(-1)) {
                     mode = HarvestModeEnum.SCYTHE;
                 } else {
                     mode = HarvestModeEnum.HAND;
@@ -493,9 +493,8 @@ namespace StardewHack.HarvestWithScythe
                 Instructions.Brfalse(begin),
                 Instructions.Ldarg_1(),
                 Instructions.Isinst(typeof(MeleeWeapon)),
-                Instructions.Callvirt_get(typeof(Tool), nameof(Tool.BaseName)),
-                Instructions.Ldstr("Scythe"),
-                Instructions.Callvirt(typeof(string), nameof(string.Equals), typeof(string)),
+                Instructions.Ldc_I4_M1(),
+                Instructions.Callvirt(typeof(MeleeWeapon), nameof(MeleeWeapon.isScythe), typeof(int)),
                 Instructions.Brfalse(begin),
                 // Hook
                 Instructions.Ldarg_0(),

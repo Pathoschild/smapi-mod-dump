@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3283
-IDs: spacechase0.AnimalSocialMenu
-update keys: Nexus:3283, Chucklefish:5649, GitHub:spacechase0/AnimalSocialMenu

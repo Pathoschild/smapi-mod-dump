@@ -14,6 +14,7 @@ using NpcAdventure.Buffs;
 using StardewModdingAPI;
 using NpcAdventure.AI;
 using Microsoft.Xna.Framework.Graphics;
+using NpcAdventure.Events;
 
 namespace NpcAdventure.StateMachine.State
 {
@@ -25,10 +26,12 @@ namespace NpcAdventure.StateMachine.State
 
         public bool CanCreateDialogue { get; private set; }
         private BuffManager BuffManager { get; set; }
+        public ISpecialModEvents SpecialEvents { get; }
 
-        public RecruitedState(CompanionStateMachine stateMachine, IModEvents events, IMonitor monitor) : base(stateMachine, events, monitor)
+        public RecruitedState(CompanionStateMachine stateMachine, IModEvents events, ISpecialModEvents specialEvents, IMonitor monitor) : base(stateMachine, events, monitor)
         {
             this.BuffManager = new BuffManager(stateMachine.Companion, stateMachine.CompanionManager.Farmer, stateMachine.ContentLoader);
+            this.SpecialEvents = specialEvents;
         }
 
         public override void Entry()
@@ -51,6 +54,7 @@ namespace NpcAdventure.StateMachine.State
             this.Events.GameLoop.TimeChanged += this.GameLoop_TimeChanged;
             this.Events.Player.Warped += this.Player_Warped;
             this.Events.Display.RenderingHud += this.Display_RenderingHud;
+            this.SpecialEvents.RenderedLocation += this.SpecialEvents_RenderedLocation;
 
             if (this.BuffManager.HasAssignableBuffs())
                 this.BuffManager.AssignBuffs();
@@ -62,6 +66,11 @@ namespace NpcAdventure.StateMachine.State
             this.CanCreateDialogue = true;
 
             this.ai.Setup();
+        }
+
+        private void SpecialEvents_RenderedLocation(object sender, ILocationRenderedEventArgs e)
+        {
+            this.ai.Draw(e.SpriteBatch);
         }
 
         private void Display_RenderingHud(object sender, RenderingHudEventArgs e)
@@ -148,6 +157,7 @@ namespace NpcAdventure.StateMachine.State
             this.StateMachine.Companion.farmerPassesThrough = false;
             this.CanCreateDialogue = false;
 
+            this.SpecialEvents.RenderedLocation -= this.SpecialEvents_RenderedLocation;
             this.Events.GameLoop.UpdateTicked -= this.GameLoop_UpdateTicked;
             this.Events.GameLoop.TimeChanged -= this.GameLoop_TimeChanged;
             this.Events.Player.Warped -= this.Player_Warped;

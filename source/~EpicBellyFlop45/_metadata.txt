@@ -11,9 +11,9 @@ mods:
    Customize Cursor Sprite
 
 latest commit:
-   commit dae9bf058a77d6d682bb66b3424597d2c2306f73
+   commit bac190d6de334fb3c6d761e98507f41a09052387
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Thu Nov 28 00:15:26 2019 +0000
+   Date:   Thu Nov 28 13:22:55 2019 +0000
    
-       [CustomizeCursorSprite] Remove experimental code so it's compilable
+       [BetterMixedSeeds] Add support for Starbound Valley
    

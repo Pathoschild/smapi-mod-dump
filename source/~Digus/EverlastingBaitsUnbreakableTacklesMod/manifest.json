@@ -1,13 +1,13 @@
 ﻿{
-	"Name": "EverlastingBaitsAndUnbreakableTacklesMod",
+	"Name": "Everlasting Baits And Unbreakable Tackles Mod",
 	"Author": "Digus",
-	"Version": "1.2.4",
+	"Version": "1.2.5",
 	"Description": "Adds Everlasting Baits and Unbreakable Tackles to the game.",
 	"UniqueID": "DIGUS.EverlastingBaitsAndUnbreakableTacklesMod",
 	"EntryDll": "EverlastingBaitsAndUnbreakableTacklesMod.dll",
-	"MinimumApiVersion": "2.9.3",
+	"MinimumApiVersion": "3.0.0",
 	"Dependencies": [
-		{ "UniqueID": "DIGUS.MailFrameworkMod", "MinimumVersion": "1.3.3" }
+		{ "UniqueID": "DIGUS.MailFrameworkMod", "MinimumVersion": "1.4.1" }
 	],
 	"UpdateKeys": [ "Nexus:2360" ]
 }

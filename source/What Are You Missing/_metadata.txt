@@ -5,9 +5,9 @@ mods:
    What Are You Missing
 
 latest commit:
-   commit 7cc917520029c0de75f87a799be3a4615f6da61d
+   commit 3ea4b602da1abd6d9df0a410579d234b52fdeb3e
    Author: Luke Seewald <lseewald@uwaterloo.ca>
-   Date:   Tue Nov 26 15:33:40 2019 -0500
+   Date:   Thu Nov 28 21:06:27 2019 -0500
    
-       Quick fix so it doesn't crash with Stardew 1.4, I'll take a deeper look at things later
+       Fixed the all fish tab so it just reads from the fish file. Also updated it to reflect the legen can only be caught once. Put the config option for setting the highest quality for a fish back in.
    

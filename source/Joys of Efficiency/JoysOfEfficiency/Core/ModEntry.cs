@@ -1,12 +1,10 @@
-﻿using JoysOfEfficiency.EventHandler;
+﻿using System.Collections.Generic;
+using System.Linq;
+using JoysOfEfficiency.EventHandler;
 using JoysOfEfficiency.Huds;
-using JoysOfEfficiency.Menus;
 using JoysOfEfficiency.ModCheckers;
 using JoysOfEfficiency.Patches;
 using JoysOfEfficiency.Utils;
-
-using Microsoft.Xna.Framework;
-
 using StardewModdingAPI;
 
 using StardewValley;
@@ -56,21 +54,7 @@ namespace JoysOfEfficiency.Core
             Helper.ConsoleCommands.Add("joedebug", "Debug command for JoE", OnDebugCommand);
 
             // Limit config values.
-            Conf.CpuThresholdFishing = Util.Cap(Conf.CpuThresholdFishing, 0, 0.5f);
-            Conf.HealthToEatRatio = Util.Cap(Conf.HealthToEatRatio, 0.1f, 0.8f);
-            Conf.StaminaToEatRatio = Util.Cap(Conf.StaminaToEatRatio, 0.1f, 0.8f);
-            Conf.AutoCollectRadius = (int)Util.Cap(Conf.AutoCollectRadius, 1, 3);
-            Conf.AutoHarvestRadius = (int)Util.Cap(Conf.AutoHarvestRadius, 1, 3);
-            Conf.AutoPetRadius = (int)Util.Cap(Conf.AutoPetRadius, 1, 3);
-            Conf.AutoWaterRadius = (int)Util.Cap(Conf.AutoWaterRadius, 1, 3);
-            Conf.AutoDigRadius = (int)Util.Cap(Conf.AutoDigRadius, 1, 3);
-            Conf.AutoShakeRadius = (int)Util.Cap(Conf.AutoShakeRadius, 1, 3);
-            Conf.MachineRadius = (int)Util.Cap(Conf.MachineRadius, 1, 3);
-            Conf.RadiusCraftingFromChests = (int) Util.Cap(Conf.RadiusCraftingFromChests, 1, 5);
-            Conf.IdleTimeout = (int) Util.Cap(Conf.IdleTimeout, 1, 300);
-            Conf.ScavengingRadius = (int) Util.Cap(Conf.ScavengingRadius, 1, 3);
-            Conf.AnimalHarvestRadius = (int) Util.Cap(Conf.AnimalHarvestRadius, 1, 3);
-            Conf.TrialOfExamine = (int) Util.Cap(Conf.TrialOfExamine, 1, 10);
+            ConfigLimitation.LimitConfigValues();
 
             // Check mod compatibilities.
             if(ModChecker.IsCoGLoaded(helper))
@@ -107,7 +91,18 @@ namespace JoysOfEfficiency.Core
         private static void OnDebugCommand(string name, string[] args)
         {
             DebugMode = !DebugMode;
-            Game1.activeClickableMenu = new RegisterFlowerMenu(800, 640, Color.White, 376);
+            string str = "";
+            foreach (KeyValuePair<int, string> info in Game1.objectInformation)
+            {
+                string val = info.Value.Split('/').FirstOrDefault();
+                if (val == null)
+                {
+                    continue;
+                }
+
+                Logger.Log($"{info.Key}: {val}\r\n");
+            }
+
         }
     }
 }

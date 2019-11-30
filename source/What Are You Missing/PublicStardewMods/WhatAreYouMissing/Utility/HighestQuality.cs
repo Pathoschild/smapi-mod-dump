@@ -58,7 +58,7 @@ namespace WhatAreYouMissing
                 case SObject.VegetableCategory:
                     return parentSheetIndex == Constants.FIDDLEHEAD_FERN ? Constants.IRIDIUM_QUALITY : Constants.GOLD_QUALITY;
                 case SObject.FishCategory:
-                    return Constants.IRIDIUM_QUALITY;
+                    return ModEntry.modConfig.FishHighestQuality;
                 case SObject.GreensCategory:
                     //This is foragables
                     return parentSheetIndex != Constants.CAVE_CARROT ? Constants.IRIDIUM_QUALITY : Constants.COMMON_QUALITY;

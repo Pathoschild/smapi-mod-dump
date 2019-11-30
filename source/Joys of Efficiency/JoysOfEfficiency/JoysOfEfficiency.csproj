@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="Automation\AutoFisher.cs" />
     <Compile Include="Automation\CollectibleCollector.cs" />
+    <Compile Include="Automation\FarmCleaner.cs" />
     <Compile Include="Automation\FlowerColorUnifier.cs" />
     <Compile Include="Automation\FoodAutomation.cs" />
     <Compile Include="Automation\HarvestAutomation.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Automation\MailAutomation.cs" />
     <Compile Include="Automation\WateringCanRefiller.cs" />
     <Compile Include="Core\Config.cs" />
+    <Compile Include="Core\ConfigLimitation.cs" />
     <Compile Include="EventHandler\ArtifactSpotDigger.cs" />
     <Compile Include="EventHandler\FenceGateAutomation.cs" />
     <Compile Include="EventHandler\GraphicsEvents.cs" />

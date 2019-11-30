@@ -12,7 +12,6 @@ namespace MailFrameworkMod
     {
         public static IModHelper ModHelper;
         public static IMonitor ModMonitor;
-        public static ModConfig ModConfig;
 
         /*********
         ** Public methods
@@ -26,7 +25,6 @@ namespace MailFrameworkMod
         {
             ModHelper = helper;
             ModMonitor = Monitor;
-            ModConfig = helper.ReadConfig<ModConfig>();
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
@@ -47,43 +45,17 @@ namespace MailFrameworkMod
         /// <param name="e">The event data.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            Helper.Content.AssetEditors.Add(new DataLoader());
+            var harmony = HarmonyInstance.Create("Digus.MailFrameworkMod");
 
-            try
-            {
-                var harmony = HarmonyInstance.Create("Digus.MailFrameworkMod");
-
-                harmony.Patch(
-                    original: AccessTools.Method(typeof(LetterViewerMenu), "getTextColor"), 
-                    prefix: new HarmonyMethod(typeof(LetterViewerMenuExtended), nameof(LetterViewerMenuExtended.GetTextColor))
-                );
-
-                if (!ModConfig.UseOldMethodOfOpeningCustomMail)
-                {
-                    harmony.Patch(
-                        original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.mailbox)),
-                        prefix: new HarmonyMethod(typeof(MailController), nameof(MailController.mailbox))
-                    );
-                }
-                else
-                {
-                    WatchLetterMenu();
-                }
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log("Error patching the GameLocation 'mailbox' Method. Applying old method of listening to menu change events.", LogLevel.Warn);
-                Monitor.Log(ex.Message + ex.StackTrace, LogLevel.Trace);
-                WatchLetterMenu();
-            }
-        }
-
-        /// <summary>
-        /// Old method of opening custom mails.
-        /// </summary>
-        private void WatchLetterMenu()
-        {
-            Helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+            harmony.Patch(
+                original: AccessTools.Method(typeof(LetterViewerMenu), "getTextColor"), 
+                prefix: new HarmonyMethod(typeof(LetterViewerMenuExtended), nameof(LetterViewerMenuExtended.GetTextColor))
+            );
+            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.mailbox)),
+                prefix: new HarmonyMethod(typeof(MailController), nameof(MailController.mailbox))
+            );
         }
 
         /// <summary>

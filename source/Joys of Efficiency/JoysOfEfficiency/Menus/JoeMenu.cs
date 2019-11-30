@@ -179,6 +179,13 @@ namespace JoysOfEfficiency.Menus
                 tab.AddOptionsElement(new ModifiedCheckBox("CollectLetterAttachmentsAndQuests", 36, Config.CollectLetterAttachmentsAndQuests, OnCheckboxValueChanged));
 
                 tab.AddOptionsElement(new EmptyLabel());
+                tab.AddOptionsElement(new LabelComponent("Farm Cleaner"));
+                tab.AddOptionsElement(new ModifiedSlider("ScavengingRadius", 16, Config.RadiusFarmCleanup, 1, 3, OnSliderValueChanged, ()=>!(Config.CutWeeds || Config.ChopTwigs || Config.BreakRocks)));
+                tab.AddOptionsElement(new ModifiedCheckBox("CutWeeds", 39, Config.CutWeeds, OnCheckboxValueChanged));
+                tab.AddOptionsElement(new ModifiedCheckBox("BreakRocks", 40, Config.BreakRocks, OnCheckboxValueChanged));
+                tab.AddOptionsElement(new ModifiedCheckBox("ChopTwigs", 41, Config.ChopTwigs, OnCheckboxValueChanged));
+
+                tab.AddOptionsElement(new EmptyLabel());
                 _tabs.Add(tab);
             }
             {
@@ -342,6 +349,9 @@ namespace JoysOfEfficiency.Menus
                 case 36: Config.CollectLetterAttachmentsAndQuests = value; break;
                 case 37: Config.MorePreciseProbabilities = value; break;
                 case 38: Config.ShowMousePositionWhenAssigningLocation = value; break;
+                case 39: Config.CutWeeds = value; break;
+                case 40: Config.BreakRocks = value; break;
+                case 41: Config.ChopTwigs = value; break;
                 default: return;
             }
             InstanceHolder.WriteConfig();
@@ -365,6 +375,7 @@ namespace JoysOfEfficiency.Menus
                 case 13: Config.ScavengingRadius = value; break;
                 case 14: Config.AnimalHarvestRadius = value; break;
                 case 15: Config.TrialOfExamine = value; break;
+                case 16: Config.RadiusFarmCleanup = value; break;
                 default: return;
             }
 

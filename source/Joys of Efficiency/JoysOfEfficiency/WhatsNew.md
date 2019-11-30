@@ -164,5 +164,9 @@ This is a changelog from 1.0.22
 
 ## 1.3.0
 - Update for SDV 1.4 and SMAPI 3.0
+
+## 1.3.1
 - Fixed AutoFishing moves the bar too quickly.
--
+- Fixed IdlePause set illegal time after loading or when new day started.
+- Implemented FarmCleaner function.
+- Added DisableConfigLimitation for advanced users.

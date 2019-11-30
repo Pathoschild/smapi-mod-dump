@@ -1,4 +1,5 @@
 ﻿using StardewModdingAPI;
+using StardewValley;
 
 namespace JoysOfEfficiency.Core
 {
@@ -13,6 +14,7 @@ namespace JoysOfEfficiency.Core
         private static IModHelper Helper => ModInstance.Helper;
         public static ITranslationHelper Translation => Helper.Translation;
         public static IReflectionHelper Reflection => Helper.Reflection;
+        public static Multiplayer Multiplayer => Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
 
         /// <summary>
         /// Sets mod's entry　point and configuration instance. 

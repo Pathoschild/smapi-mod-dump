@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Longevity",
+  "Author": "RTGOAT",
+  "Version": "1.6.11",
+  "Description": "Platform that will be used to continually add longevity to the game.",
+  "UniqueID": "RTGOAT.Longevity",
+  "EntryDll": "Longevity.dll",
+  "MinimumApiVersion": "2.0",
+  "UpdateKeys": ["Nexus:649"]
+}

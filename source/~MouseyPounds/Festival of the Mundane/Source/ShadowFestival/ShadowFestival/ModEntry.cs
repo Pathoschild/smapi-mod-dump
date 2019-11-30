@@ -25,7 +25,7 @@ namespace ShadowFestival
         internal static ModEntry Instance { get; private set; }
         internal static ModData Data;
         internal static Random Random = new Random();
-        private static Dictionary<Item, int[]> VendorItems = new Dictionary<Item, int[]>();
+        private static Dictionary<ISalable, int[]> VendorItems = new Dictionary<ISalable, int[]>();
         private static readonly List<Vector2> VendorTiles = new List<Vector2> { new Vector2(8, 19) };
 
         protected bool _gettingKickedOut = false;
@@ -133,6 +133,11 @@ namespace ShadowFestival
                     e.Player.mailReceived.Add("ShadowFestivalVisited");
                 }
                 Helper.Reflection.GetField<Color>(e.NewLocation, "steamColor").SetValue(new Color(240, 180, 240));
+                // Repatch the two tiles that Sewers.resetLocalState() changes on us.
+                // Beware if that part of our map is edited, we need to manually change these here too.
+                e.NewLocation.setMapTileIndex(31, 16, 77, "Front", 1);
+                e.NewLocation.setMapTileIndex(31, 17, 85, "Buildings", 1);
+                e.NewLocation.setTileProperty(31, 17, "Buildings", "Action", "FestivalDialogue BigShadow");
                 // Check for Krobus and make him scarce
                 if (e.NewLocation.characters != null)
                 {
@@ -308,11 +313,11 @@ namespace ShadowFestival
                 Game1.currentLocation.Name.Equals("Forest")
                 )
             {
-                Dictionary<Item, int[]> shopStock = Helper.Reflection.GetField<Dictionary<Item, int[]>>(shop, "itemPriceAndStock").GetValue();
-                List<Item> shopForSale = Helper.Reflection.GetField<List<Item>>(shop, "forSale").GetValue();
-                foreach (Item item in shopStock.Keys.ToArray())
+                Dictionary<ISalable, int[]> shopStock = Helper.Reflection.GetField<Dictionary<ISalable, int[]>>(shop, "itemPriceAndStock").GetValue();
+                List<ISalable> shopForSale = Helper.Reflection.GetField<List<ISalable>>(shop, "forSale").GetValue();
+                foreach (ISalable item in shopStock.Keys.ToArray())
                 {
-                    Monitor.VerboseLog($"Checking item {item.Name}");
+                    //Monitor.VerboseLog($"Checking item {item.Name}");
                     if (item is Hat hat && (Data.CalmingHats.Contains(hat.Name) || Data.OtherHats.Contains(hat.Name)))
                     {
                         Monitor.Log($"Removing {hat.Name} from forest shop.");
@@ -377,13 +382,17 @@ namespace ShadowFestival
                 // Make sure our asset changes happened
                 Helper.Content.InvalidateCache("Data/mail");
                 Helper.Content.InvalidateCache("Characters/Dialogue/Krobus");
+                Helper.Content.InvalidateCache("Strings/StringsFromCSFiles");
                 Helper.Content.InvalidateCache("Maps/Sewer");
             }
             else
             {
+                // Trigger another invalidation to remove our changes
                 if (_mapChanged)
                 {
                     Helper.Content.InvalidateCache("Maps/Sewer");
+                    Helper.Content.InvalidateCache("Characters/Dialogue/Krobus");
+                    Helper.Content.InvalidateCache("Strings/StringsFromCSFiles");
                     _mapChanged = false;
                 }
             }
@@ -419,11 +428,11 @@ namespace ShadowFestival
                 e.Button.IsActionButton()
                 )
             {
-                Monitor.VerboseLog($"Right-click intercepted on the Festival map at {e.Cursor.GrabTile.X}, {e.Cursor.GrabTile.Y}");
+                //Monitor.VerboseLog($"Right-click intercepted on the Festival map at {e.Cursor.GrabTile.X}, {e.Cursor.GrabTile.Y}");
                 if (VendorTiles.Contains(e.Cursor.GrabTile))
                 {
                     Helper.Input.Suppress(e.Button);
-                    Monitor.VerboseLog("It was a boat click, showing vendor menu");
+                    //Monitor.VerboseLog("It was a boat click, showing vendor menu");
                     ShopMenu shop = new ShopMenu(VendorItems, 0, "Hatmouse");
                     string dialogueKey = $"shop-menu.message{ModEntry.Random.Next(3)}";
                     shop.potraitPersonDialogue = Game1.parseText(Helper.Translation.Get(dialogueKey), Game1.dialogueFont, 304);
@@ -435,12 +444,13 @@ namespace ShadowFestival
 					if (action_property != null)
 					{
 						string[] split = action_property.Split(' ');
-                        Monitor.VerboseLog($"Clicked on a tile with an action property: {action_property}");
+                        //Monitor.VerboseLog($"Clicked on a tile with an action property: {action_property}");
 
 						if (split.Length >= 2 && split[0] == "FestivalDialogue")
 						{
                             Helper.Input.Suppress(e.Button);
-                            if (!split[1].StartsWith("BigShadow") && (Game1.player.hat.Value == null || !Data.CalmingHats.Contains(Game1.player.hat.Value.Name)))
+                            if (!split[1].StartsWith("BigShadow") && !split[1].StartsWith("Snack") && !split[1].StartsWith("Festival_AncientDoll") &&
+                                (Game1.player.hat.Value == null || !Data.CalmingHats.Contains(Game1.player.hat.Value.Name)))
 							{
                                 _gettingKickedOut = true;
                                 Game1.playSound("shadowpeep");
@@ -462,8 +472,8 @@ namespace ShadowFestival
 								string key = base_key + "_" + _currentDialogueIndex[base_key];
 								string dialogue_text = Helper.Translation.Get(key);
 
-                                Monitor.VerboseLog($"Base key: {base_key}, full key: {key}");
-                                Monitor.VerboseLog($"Dialogue: {dialogue_text}");
+                                //Monitor.VerboseLog($"Base key: {base_key}, full key: {key}");
+                                //Monitor.VerboseLog($"Dialogue: {dialogue_text}");
                                 // HACK: If there's no key, the key name is returned, so we can use this to determine if no key was found.
                                 if (dialogue_text.Contains(key))
 								{
@@ -472,15 +482,13 @@ namespace ShadowFestival
 									key = base_key + "_" + _currentDialogueIndex[base_key];
 									dialogue_text = Helper.Translation.Get(key);
 								}
-								else
-								{
-									// Advance this dialogue to the next string.
-									_currentDialogueIndex[base_key]++;
-								}
 
 								Game1.drawObjectDialogue(dialogue_text);
-							}
-						}
+
+                                // Advance this dialogue to the next string.
+                                _currentDialogueIndex[base_key]++;
+                            }
+                        }
                         else if (split.Length >= 1 && split[0] == "PinGame")
                         {
                             Helper.Input.Suppress(e.Button);
@@ -522,7 +530,7 @@ namespace ShadowFestival
         // Asset Editing and Loading
         public bool CanEdit<T>(IAssetInfo asset)
         {
-            return (asset.AssetNameEquals("Data/mail") || asset.AssetNameEquals("Charcters/Dialogue/Krobus") || asset.AssetNameEquals("Strings/StringsFromCSFiles"));
+            return (asset.AssetNameEquals("Data/mail") || asset.AssetNameEquals("Characters/Dialogue/Krobus") || asset.AssetNameEquals("Strings/StringsFromCSFiles"));
         }
         public void Edit<T>(IAssetData asset)
         {
@@ -532,12 +540,13 @@ namespace ShadowFestival
                 Monitor.Log("Adding our mail to Data/mail");
                 data["Wizard_ShadowFestival"] = Helper.Translation.Get("wizard-letter");
             }
-            else if (asset.AssetNameEquals("Charcters/Dialogue/Krobus"))
+            else if (IsShadowFestivalToday() && asset.AssetNameEquals("Characters/Dialogue/Krobus"))
             {
                 Monitor.Log("Adding our changes to Krobus standard dialogue");
                 data["fall_27"] = Helper.Translation.Get("krobus-dialogue-known");
+                data["Sat"] = Helper.Translation.Get("krobus-dialogue-known");
             }
-            else if (asset.AssetNameEquals("Strings/StringsFromCSFiles"))
+            else if (IsShadowFestivalToday() && asset.AssetNameEquals("Strings/StringsFromCSFiles"))
             {
                 Monitor.Log("Adding our changes to Krobus intro dialogue");
                 data["NPC.cs.3990"] = Helper.Translation.Get("krobus-dialogue-unknown");

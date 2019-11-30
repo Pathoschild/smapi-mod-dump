@@ -52,6 +52,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lib.Harmony.1.2.0.1\lib\net45\0Harmony.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SMAPI.Toolkit.CoreInterfaces, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Private>False</Private>
     </Reference>
@@ -77,6 +81,9 @@
     <Compile Include="AI\Controller\FollowController.cs" />
     <Compile Include="Driver\HintDriver.cs" />
     <Compile Include="Driver\StuffDriver.cs" />
+    <Compile Include="Events\ISpecialModEvents.cs" />
+    <Compile Include="Events\SpecialModEvents.cs" />
+    <Compile Include="Internal\IDrawable.cs" />
     <Compile Include="Loader\ContentPacks\AssetPatch.cs" />
     <Compile Include="Loader\AssetsManager.cs" />
     <Compile Include="Loader\ContentPacks\ManagedContentPack.cs" />
@@ -88,6 +95,7 @@
     <Compile Include="Model\BuffInfo.cs" />
     <Compile Include="Model\CompanionMetaData.cs" />
     <Compile Include="Objects\Package.cs" />
+    <Compile Include="Patches\GameLocationDrawPatch.cs" />
     <Compile Include="StateMachine\StateFeatures\IRequestedDialogueCreator.cs" />
     <Compile Include="StateMachine\StateFeatures\IDialogueDetector.cs" />
     <Compile Include="StateMachine\StateFeatures\ICompanionIntegrator.cs" />

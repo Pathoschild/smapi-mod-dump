@@ -41,6 +41,8 @@ namespace AnimalHusbandryMod.common
         public LivingWithTheAnimalsChannel LivingWithTheAnimalsChannel { get; }
 
         public static Dictionary<string, object> AssetsToLoad = new Dictionary<string, object>();
+
+        public static bool isLoadingFarmAnimals =  false;
         
         public DataLoader(IModHelper helper)
         {
@@ -211,7 +213,7 @@ namespace AnimalHusbandryMod.common
             }
             else if (asset.AssetNameEquals("Data\\FarmAnimals"))
             {
-                AddCustomAnimalsTemplate();
+                AddCustomAnimalsTemplate((Dictionary<string,string>) (isLoadingFarmAnimals? asset.Data : null));
             }
         }
 
@@ -282,9 +284,15 @@ namespace AnimalHusbandryMod.common
             }
         }
 
-        public void AddCustomAnimalsTemplate(string command = null, string[] args = null)
+        public void AddCustomAnimalsTemplateCommand(string command = null, string[] args = null)
         {
-            var data = Helper.Content.Load<Dictionary<string, string>>("Data\\FarmAnimals", ContentSource.GameContent);
+            AddCustomAnimalsTemplate();
+        }
+
+        public void AddCustomAnimalsTemplate(Dictionary<string, string> data =  null)
+        {
+            isLoadingFarmAnimals = true;
+            data = data ?? Helper.Content.Load<Dictionary<string, string>>("Data\\FarmAnimals", ContentSource.GameContent);
             Dictionary<int, string> objects =  null;
             bool animalDataChanged = false;
             ISet<int> syringeItemsIds = new HashSet<int>();
@@ -344,6 +352,8 @@ namespace AnimalHusbandryMod.common
             {
                 Helper.Data.WriteJsonFile("data\\animals.json", DataLoader.AnimalData);
             }
+
+            isLoadingFarmAnimals = false;
         }
 
         public void LoadContentPacksCommand(string command = null, string[] args = null)

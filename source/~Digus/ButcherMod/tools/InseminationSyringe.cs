@@ -139,7 +139,7 @@ namespace AnimalHusbandryMod.tools
                     this._animal.doEmote(16, true);
                     if (this._animal.sound.Value != null)
                     {
-                        Cue animalSound = Game1.soundBank.GetCue(this._animal.sound.Value);
+                        ICue animalSound = Game1.soundBank.GetCue(this._animal.sound.Value);
                         animalSound.Play();
                     }
                     DelayedAction.playSoundAfterDelay("fishingRodBend", 300);
@@ -245,7 +245,7 @@ namespace AnimalHusbandryMod.tools
                 StardewValley.Object @object = this.attachments[0];
                 if (@object != null && @object.canStackWith((Item)o))
                 {
-                    @object.Stack = o.addToStack(@object.Stack);
+                    @object.Stack = o.addToStack(@object);
                     if (@object.Stack <= 0)
                         @object = (StardewValley.Object)null;
                 }

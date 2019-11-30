@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using StardewValley;
@@ -10,9 +11,9 @@ namespace JsonAssets.Data
     public class ObjectData : DataNeedsId
     {
         [JsonIgnore]
-        internal Texture2D texture;
+        public Texture2D texture;
         [JsonIgnore]
-        internal Texture2D textureColor;
+        public Texture2D textureColor;
 
         [JsonConverter(typeof(StringEnumConverter))]
         public enum Category_
@@ -92,9 +93,11 @@ namespace JsonAssets.Data
             public int Attack { get; set; } = 0;
             public int Duration { get; set; } = 0;
         }
-        
+
         public string Description { get; set; }
         public Category_ Category { get; set; }
+        public string CategoryTextOverride { get; set; }
+        public Color CategoryColorOverride { get; set; } = new Color(0, 0, 0, 0);
         public bool IsColored { get; set; } = false;
 
         public int Price { get; set; }
@@ -122,6 +125,8 @@ namespace JsonAssets.Data
 
         public Dictionary<string, string> NameLocalization = new Dictionary<string, string>();
         public Dictionary<string, string> DescriptionLocalization = new Dictionary<string, string>();
+
+        public List<string> ContextTags = new List<string>();
 
         public string LocalizedName()
         {

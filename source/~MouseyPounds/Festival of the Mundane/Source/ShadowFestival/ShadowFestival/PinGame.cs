@@ -477,7 +477,12 @@ namespace ShadowFestival
             return "ShadwFestival.PinGame";
         }
 
-		public class Callout
+        public bool forceQuit()
+        {
+            return true;
+        }
+
+        public class Callout
 		{
 			public float age = 0.0F;
 			public float lifeTime = 2.5F;
@@ -557,6 +562,7 @@ namespace ShadowFestival
 
 				drawPosition += velocity;
 			}
+
 		}
 
     }

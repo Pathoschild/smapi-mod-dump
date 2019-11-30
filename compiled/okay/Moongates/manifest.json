@@ -1,0 +1,10 @@
+{
+  "Name": "Moongates",
+  "Author": "bwdy",
+  "Version": "2.0.0",
+  "Description": "A Stardew Valley mod for those who prefer the road less travelled.",
+  "EntryDll": "Moongates.dll",
+  "MinimumApiVersion": "3.0",
+  "UniqueID": "bwdy.moongates",
+  "UpdateKeys": [ "Nexus:3545" ]
+}

@@ -164,7 +164,7 @@ namespace AnimalHusbandryMod.animals
                         if (participated)
                         {
                             Pet pet = ((Pet)Game1.getCharacterFromName(Game1.player.getPetName()));
-                            pet.friendshipTowardFarmer = Math.Min(Pet.maxFriendship, pet.friendshipTowardFarmer + DataLoader.AnimalContestData.PetFriendshipForParticipating);
+                            pet.friendshipTowardFarmer.Value = Math.Min(Pet.maxFriendship, pet.friendshipTowardFarmer.Value + DataLoader.AnimalContestData.PetFriendshipForParticipating);
                         }
                         AnimalContestController.ReAddPet();
                     }

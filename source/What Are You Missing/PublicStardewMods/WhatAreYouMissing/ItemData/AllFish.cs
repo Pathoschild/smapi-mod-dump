@@ -15,21 +15,6 @@ namespace WhatAreYouMissing
         protected override void AddItems()
         {
             AddAllFish();
-
-
-            //add option to only show uncaught fish
-            AddFishBasedOnConfig(Constants.CRIMSONFISH);
-            AddFishBasedOnConfig(Constants.ANGLER);
-            AddFishBasedOnConfig(Constants.GLACIERFISH);
-            AddFishBasedOnConfig(Constants.MUTANT_CARP);
-
-            AddFishBasedOnConfig(Constants.MIDNIGHT_SQUID);
-            AddFishBasedOnConfig(Constants.SPOOK_FISH);
-            AddFishBasedOnConfig(Constants.BLOBFISH);
-
-            AddFishBasedOnConfig(Constants.STONEFISH);
-            AddFishBasedOnConfig(Constants.ICE_PIP);
-            AddFishBasedOnConfig(Constants.LAVA_EEL);
         }
 
         public Dictionary<int, SObject> GetItems()
@@ -39,32 +24,13 @@ namespace WhatAreYouMissing
 
         private void AddAllFish()
         {
-            Dictionary<string, string> LocationData = Game1.content.Load<Dictionary<string, string>>("Data\\Locations");
+            Dictionary<int, string> FishData = Game1.content.Load<Dictionary<int, string>>("Data\\Fish");
 
-            foreach (KeyValuePair<string, string> data in LocationData)
+            foreach (KeyValuePair<int, string> data in FishData)
             {
-                for (int season = (int)SeasonIndex.Spring; !Utilities.IsTempOrFishingGameOrBackwoodsLocation(data.Key) && season < (int)SeasonIndex.Winter + 1; ++season)
+                if (IsAFish(data.Key))
                 {
-                    string[] seasonalFish = data.Value.Split('/')[season].Split(' ');
-                    for (int i = 0; i < seasonalFish.Length; ++i)
-                    {
-                        if (i % 2 == 0)
-                        {
-                            //Its a parent sheet index
-                            bool successful = int.TryParse(seasonalFish[i], out int parentSheetIndex);
-                            if (!successful)
-                            {
-                                ModEntry.Logger.LogFishIndexError(data.Value.Split('/')[season], seasonalFish[i], i);
-                                continue;
-                            }
-
-                            //I want to add them manually, -1 means no fish at this location
-                            if (IsAFish(parentSheetIndex))
-                            {
-                                AddFishBasedOnConfig(parentSheetIndex);
-                            }
-                        }
-                    }
+                    AddFishBasedOnConfig(data.Key);
                 }
             }
         }

@@ -1,10 +1,10 @@
 ﻿{
-  "Name": "Horse Whistle Mod",
+  "Name": "Horse Whistle",
   "Author": "icepuente",
-  "Version": "1.2.1",
+  "Version": "1.2.3",
   "Description": "Press V to call your horse to any outdoor location with an audible whistle.",
   "UniqueID": "icepuente.HorseWhistle",
   "EntryDll": "HorseWhistle.dll",
-  "MinimumApiVersion": "2.6-beta.4",
-  "UpdateKeys": ["Nexus:1131"]
+  "MinimumApiVersion": "3.0.0-beta",
+  "UpdateKeys": [ "Nexus:1131" ]
 }

@@ -15,6 +15,10 @@ namespace MailFrameworkMod
         /// </summary>
         public string Id { get; private set; }
         /// <summary>
+        /// this letter title to be show in the collections menu (Unimplemented Yet)
+        /// </summary>
+        public string Title;
+        /// <summary>
         /// text to be show on the letter menu. You can use @ to put the players name and ^ for line breakes
         /// </summary>
         public string Text { get; private set; }
@@ -93,7 +97,7 @@ namespace MailFrameworkMod
 
         public override string ToString()
         {
-            return $"{nameof(Id)}: {Id}, {nameof(Text)}: {Text}";
+            return $"{nameof(Id)}: {Id}, {nameof(Title)}: {Title}, { nameof(Text)}: {Text}";
         }
     }
 }
