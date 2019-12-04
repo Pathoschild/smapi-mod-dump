@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4755
+IDs: bwdy.starbot
+update keys: Nexus:4755, GitHub:bwdymods/SDV-Starbot

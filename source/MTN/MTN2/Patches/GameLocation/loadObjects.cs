@@ -65,8 +65,7 @@ namespace MTN2.Patches.GameLocationPatches
 
             if (__instance.map != null) {
                 updateWarps(__instance);
-                PropertyValue springObjects;
-                __instance.map.Properties.TryGetValue(Game1.currentSeason.Substring(0, 1).ToUpper() + Game1.currentSeason.Substring(1) + "_Objects", out springObjects);
+                __instance.map.Properties.TryGetValue(Game1.currentSeason.Substring(0, 1).ToUpper() + Game1.currentSeason.Substring(1) + "_Objects", out PropertyValue springObjects);
                 if (springObjects != null && !Game1.eventUp) {
                     __instance.spawnObjects();
                 }
@@ -79,8 +78,8 @@ namespace MTN2.Patches.GameLocationPatches
                         }
                     }
                 }
-                PropertyValue trees;
-                __instance.map.Properties.TryGetValue("Trees", out trees);
+
+                __instance.map.Properties.TryGetValue("Trees", out PropertyValue trees);
                 if (trees != null) {
                     string[] rawTreeString = trees.ToString().Split(new char[]
                     {
@@ -229,9 +228,7 @@ namespace MTN2.Patches.GameLocationPatches
                                         case 29:
                                         case 30:
                                             if (Game1.startingCabins > 0) {
-
-                                                PropertyValue pv = null;
-                                                t.Properties.TryGetValue("Order", out pv);
+                                                t.Properties.TryGetValue("Order", out PropertyValue pv);
                                                 if (pv != null && int.Parse(pv.ToString()) <= Game1.startingCabins && ((t.TileIndex == 29 && !Game1.cabinsSeparate) || (t.TileIndex == 30 && Game1.cabinsSeparate))) {
                                                     startingCabins.Add(tile);
                                                     cabinCount++;
@@ -242,8 +239,7 @@ namespace MTN2.Patches.GameLocationPatches
                                 }
                             }
                             if (__instance.map.GetLayer("Buildings").Tiles[x2, y2] != null) {
-                                PropertyValue door = null;
-                                __instance.map.GetLayer("Buildings").Tiles[x2, y2].Properties.TryGetValue("Action", out door);
+                                __instance.map.GetLayer("Buildings").Tiles[x2, y2].Properties.TryGetValue("Action", out PropertyValue door);
                                 if (door != null && door.ToString().Contains("Warp")) {
                                     string[] split = door.ToString().Split(new char[]
                                     {
@@ -276,7 +272,6 @@ namespace MTN2.Patches.GameLocationPatches
             }
         }
 
-        //public static void Postfix(GameLocation __instance)
         public static void performCabins(GameLocation g, List<Vector2> cabins) {
             if (cabins.Count > 0) {
                 List<string> cabinStyleOrder = new List<string>();
@@ -332,8 +327,7 @@ namespace MTN2.Patches.GameLocationPatches
 
         protected static void updateWarps(GameLocation g) {
             g.warps.Clear();
-            PropertyValue warpsUnparsed;
-            g.map.Properties.TryGetValue("Warp", out warpsUnparsed);
+            g.map.Properties.TryGetValue("Warp", out PropertyValue warpsUnparsed);
             if (warpsUnparsed != null) {
                 string[] warpInfo = warpsUnparsed.ToString().Split(new char[]
                 {

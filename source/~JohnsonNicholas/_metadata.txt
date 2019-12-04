@@ -7,13 +7,12 @@ mods:
    Time Reminder
 
 latest commit:
-   commit a5deba03bc97e2e9e93990144c44185dd959e849
-   Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Thu Nov 28 19:38:11 2019 +0100
+   commit fa5d1d0a9628c1f0ea19c98c6fee221e1f70ff6e
+   Author: Sakorona <7285555+Sakorona@users.noreply.github.com>
+   Date:   Sun Dec 1 18:14:54 2019 -0800
    
-       German translation for ClimatesOfFerngill (#80)
+       Update WeatherProcessing.cs
        
-       * German translation and typo in default.json
-       
-       * fix de.json
+       - Fixed an issue where the most severe rain category wasn't included in the methods we use to promote it going down
+       - Adjusted some chances to make it more likely it'll go down
    

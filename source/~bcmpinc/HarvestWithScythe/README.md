@@ -53,3 +53,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 #### 2.1:
 * Now also works with the golden scythe.
+
+#### 2.3:
+* Fix issue that prevented golden scythe from harvesting forage.

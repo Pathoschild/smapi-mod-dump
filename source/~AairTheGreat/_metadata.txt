@@ -7,9 +7,9 @@ mods:
    Better Train Loot
 
 latest commit:
-   commit 0550a4826306af097463d9823b397c028207b27b
+   commit 3ec548cbb2b40ab3e04d6246365311c8f104140a
    Author: Aair the Great <a_aair@hotmail.com>
-   Date:   Tue Nov 26 18:38:00 2019 -0800
+   Date:   Mon Dec 2 19:26:15 2019 -0800
    
-       Updated to add the garbage can animation back in.
+       Updated Documentation, removed direct Harmony dependence.
    

@@ -5,9 +5,9 @@ mods:
    Better Sprinklers
 
 latest commit:
-   commit c1955ef5c144d7ed26fe39ee701ab9f48c591ac4
+   commit fb06ed3288ae7307c993e70fe44603be9d20078b
    Author: MaurÃ­cio Gomes <mauricio.gomes@coderofworlds.com>
-   Date:   Sat Mar 4 19:22:35 2017 -0300
+   Date:   Tue Dec 3 22:38:59 2019 -0300
    
-       minor ver fix
+       updated to SMAPI 3
    

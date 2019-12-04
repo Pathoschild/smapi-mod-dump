@@ -1,11 +1,11 @@
 {
   "Name": "Aggressive Acorns",
   "Author": "Phrasefable",
-  "Version": "1.2.2-beta.1-minervamaga",
+  "Version": "1.2.3-beta",
   "Description": "Tree seeds will override grass, and are not cut by the scythe. Customisable tree growth and more",
   "UniqueID": "Phrasefable.AggressiveAcorns",
   "EntryDll": "AggressiveAcorns.dll",
-  "MinimumApiVersion": "2.10.0",
+  "MinimumApiVersion": "3.0.0",
   "UpdateKeys": [
     "Nexus:3661"
   ]

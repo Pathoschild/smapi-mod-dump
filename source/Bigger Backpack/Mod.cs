@@ -428,6 +428,17 @@ namespace BiggerBackpack
                 Instructions.Ldc_I4(460)
             );
         }
+
+        [BytecodePatch("StardewValley.Menus.ShopMenu::drawCurrency(Microsoft.Xna.Framework.Graphics.SpriteBatch)")]
+        void ShopMenu_drawCurrency() {
+            FindCode(
+                Instructions.Ldc_I4_S(12),
+                OpCodes.Sub
+            ).Replace(
+                Instructions.Ldc_I4_S(64-12),
+                Instructions.Add()
+            );
+        }
         
         [BytecodePatch("StardewValley.Menus.MenuWithInventory::.ctor")]
         void ShippingMenu_ctor() {

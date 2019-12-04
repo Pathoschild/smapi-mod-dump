@@ -5,9 +5,9 @@ mods:
    Enemy Health Bars
 
 latest commit:
-   commit 87fe4d1a6fd881e88647f2522a378c762716db31
+   commit 5ecf7d835250b7912aef2c77476b90732a6b04a9
    Author: MaurÃ­cio Gomes <mauricio.gomes@coderofworlds.com>
-   Date:   Sat Mar 26 04:18:11 2016 -0300
+   Date:   Tue Dec 3 22:40:25 2019 -0300
    
-       update to build system
+       Updated to SMAPI 3
    

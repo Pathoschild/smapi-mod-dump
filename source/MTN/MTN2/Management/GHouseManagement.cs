@@ -2,6 +2,7 @@
 using MTN2.MapData;
 using MTN2.Utilities;
 using StardewModdingAPI;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,7 +94,7 @@ namespace MTN2.Management {
         /// <returns></returns>
         public Vector2 GreenHouseCoords(bool Canon) {
             if (Canon || farmManagement.LoadedFarm.GreenHouse == null) {
-                return new Vector2(1600f, 384f);
+                return (Game1.whichFarm == 5) ? new Vector2(2304f, 1600f) : new Vector2(1600f, 384f);
             }
             Placement? Coordinates = farmManagement.LoadedFarm.GreenHouse.Coordinates;
             return new Vector2(Coordinates.Value.X * 64f, Coordinates.Value.Y * 64f);

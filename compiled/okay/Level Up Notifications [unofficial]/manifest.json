@@ -1,0 +1,8 @@
+{
+    "Name":"Level Up Notifications",
+	"Author":"kd8lvt",
+	"Version": "0.0.3-unofficial.1-leifericson",
+	"Description":"A mod with a bunch of random tweaks.",
+	"UniqueID": "kd8lvt.LevelUpNotifications",
+	"EntryDll": "Level Up Notifications.dll"
+}

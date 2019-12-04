@@ -1,0 +1,32 @@
+﻿{
+	"Format": "1.10",
+	"Changes": [
+		{
+			"Action": "EditData",
+			"Target": "Data/FishPondData",
+			"Entries": {
+				"fish_legendary": {
+					"RequiredTags": [ "fish_legendary" ],
+					"SpawnTime": 999999,
+					"ProducedItems": [
+						{
+							"RequiredPopulation": 1,
+							"Chance": 1.0,
+							"ItemID": 812,
+							"MinQuantity": 1,
+							"MaxQuantity": 1
+						},
+					],
+					"PopulationGates": null,
+				},
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/FishPondData",
+			"MoveEntries": [
+				{ "ID": "fish_legendary", "ToPosition": "Top" },
+			],
+		},
+	]
+}

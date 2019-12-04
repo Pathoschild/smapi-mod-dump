@@ -2010,5 +2010,228 @@
       ]
     },
     "Winter": null
+  },
+  "PokeCrops": {
+    "Spring": {
+      "Crops": [
+        {
+          "Name": "Cheri Berry",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Lum Berry",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Rawst Berry",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Summer": {
+      "Crops": [
+        {
+          "Name": "Lum Berry",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Nanab Berry",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Oran Berry",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Pecha Berry",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Fall": {
+      "Crops": [
+        {
+          "Name": "Aspear Berry",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Chesto Berry",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Leppa Berry",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Oran Berry",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Persim Berry",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Sitrus Berry",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Winter": null
+  },
+  "StarboundValley": {
+    "Spring": {
+      "Crops": [
+        {
+          "Name": "Automato",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Eggshoot",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Feathercrown",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Oculemon",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Pearlpea",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Pussplum",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Summer": {
+      "Crops": [
+        {
+          "Name": "Avesmingo",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Beakseed",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Coralcreep",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Currentcorn",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Dirturchin",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Neonmelon",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Reefpod",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Fall": {
+      "Crops": [
+        {
+          "Name": "Beakseed",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Boneboo",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Coralcreep",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Pussplum",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Toxictop",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Wartweed",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Winter": {
+      "Crops": [
+        {
+          "Name": "Automato",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Boltbulb",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Boneboo",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Crystal Plant",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Currentcorn",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Diodia",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    }
   }
 }

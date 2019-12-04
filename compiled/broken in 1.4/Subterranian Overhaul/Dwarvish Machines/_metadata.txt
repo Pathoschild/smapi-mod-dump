@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/4149
-IDs: mytigio.dwarvishmachines
-update keys: Nexus:4149

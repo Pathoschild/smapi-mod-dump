@@ -1,7 +1,7 @@
 ﻿{
     "Name": "OneSprinklerOneScarecrow",
     "Author": "Mizzion",
-    "Version": "1.0.4",
+    "Version": "1.0.6",
     "Description": "Main mod for [JA]OneSprinklerOneScarecrow.",
     "UniqueID": "mizzion.onesprinkleronescarecrow",
     "EntryDll": "OneSprinklerOneScarecrow.dll",

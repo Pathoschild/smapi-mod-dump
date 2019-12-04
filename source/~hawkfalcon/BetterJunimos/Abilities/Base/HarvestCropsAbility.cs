@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BetterJunimos.Utils;
+using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Characters;
 using StardewValley.Objects;
@@ -27,7 +28,7 @@ namespace BetterJunimos.Abilities {
         }
 
         private bool ShouldAvoidHarvesting(Vector2 pos, HoeDirt hd) {
-            return new StardewValley.Object(pos, hd.crop.indexOfHarvest.Value, 0).Category == StardewValley.Object.flowersCategory;
+            return Util.Config.JunimoImprovements.AvoidHarvestingFlowers && new StardewValley.Object(pos, hd.crop.indexOfHarvest.Value, 0).Category == StardewValley.Object.flowersCategory;
         }
     }
 }

@@ -270,8 +270,6 @@ namespace ClimatesOfFerngillRebuild
         public bool IsTomorrowTempSet => TomorrowTemps != null;
         public bool IsFestivalToday => CurrentConditionsN.HasFlag(CurrentWeather.Festival);
         public bool IsWeddingToday => CurrentConditionsN.HasFlag(CurrentWeather.Wedding);
-
-
         /// <summary> This returns the high for today </summary>
         public double TodayHigh => TodayTemps.HigherBound;
 
@@ -1114,6 +1112,19 @@ namespace ClimatesOfFerngillRebuild
             return CurrentWeather.Sunny;
         }
 
+        internal void RefreshRainAmt()
+        {
+            Array.Resize(ref Game1.rainDrops, AmtOfRainDrops);
+
+            if (Game1.IsMasterGame)
+                ClimatesOfFerngill.Logger.Log($"Setting rain to {AmtOfRainDrops}");
+            else
+            {
+                ClimatesOfFerngill.Logger.Log($"Setting from master: rain to {AmtOfRainDrops}");
+            }
+
+        }
+
         internal void SetRainAmt(int rainAmt)
         {
             if (AmtOfRainDrops != rainAmt)
@@ -1257,7 +1268,15 @@ namespace ClimatesOfFerngillRebuild
         internal void UpdateDynamicRain()
         {
             AmtOfRainDrops = WeatherProcessing.GetNewRainAmount(AmtOfRainDrops, ClimatesOfFerngill.Translator);
-            Array.Resize(ref Game1.rainDrops, AmtOfRainDrops);
+            SetRainAmt(AmtOfRainDrops);
+        }
+
+        internal static bool PreventGoingOutside(int AmtOfRainDrops)
+        {
+            if ((WeatherUtilities.GetCategory(AmtOfRainDrops) == RainLevels.NoahsFlood) || (WeatherUtilities.GetCategory(AmtOfRainDrops) == RainLevels.Typhoon))
+                    return true;
+
+            return false;
         }
 
     }

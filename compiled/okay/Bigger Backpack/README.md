@@ -33,3 +33,9 @@ To remove the mod, first run `player_setbackpacksize 36` in the SMAPI console an
 
 #### 2.0:
 * Updated for Stardew Valley 1.4
+
+#### 2.1:
+* Fix that equipment icons sometimes overlapped inventory.
+
+#### 2.3:
+* Fix position where money is drawn in shops.

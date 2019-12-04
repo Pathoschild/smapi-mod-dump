@@ -1,0 +1,10 @@
+{
+  "Name": "Elevator",
+  "Author": "Ilyaki",
+  "Version": "1.0.8-unofficial-leifericson",
+  "Description": "Adds an elevator building to hold an unlimited number of cabins",
+  "UniqueID": "Ilyaki.Elevator",
+  "EntryDll": "Elevator.dll",
+  "MinimumApiVersion": "2.9",
+  "UpdateKeys": [ "" ]
+}

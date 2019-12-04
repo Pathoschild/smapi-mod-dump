@@ -9,6 +9,7 @@ using AnimalHusbandryMod.meats;
 using AnimalHusbandryMod.tools;
 using Harmony;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using PyTK.CustomElementHandler;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -179,6 +180,11 @@ namespace AnimalHusbandryMod
                     harmony.Patch(
                         original: AccessTools.Method(typeof(Pet), nameof(Pet.update), new[] { typeof(GameTime), typeof(GameLocation) }),
                         prefix: new HarmonyMethod(typeof(PetOverrides), nameof(PetOverrides.update))
+                    );
+
+                    harmony.Patch(
+                        original: AccessTools.Method(typeof(Pet), nameof(Pet.draw), new[] { typeof(SpriteBatch) }),
+                        prefix: new HarmonyMethod(typeof(PetOverrides), nameof(PetOverrides.draw))
                     );
                 }
 

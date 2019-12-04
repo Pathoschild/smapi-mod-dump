@@ -1,10 +1,10 @@
 ﻿{
   "Name": "Floor Shadow Switcher",
   "Author": "MouseyPounds",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Toggles hardcoded shadows for caftable flooring items.",
   "UniqueID": "MouseyPounds.FloorShadowSwitcher",
   "EntryDll": "FloorShadowSwitcher.dll",
-  "MinimumApiVersion": "2.10.0",
+  "MinimumApiVersion": "3.0.0",
   "UpdateKeys": ["Nexus:3885"]
 }

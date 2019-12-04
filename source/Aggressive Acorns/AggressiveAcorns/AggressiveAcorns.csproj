@@ -1,19 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <AssemblyName>AggressiveAcorns</AssemblyName>
         <RootNamespace>AggressiveAcorns</RootNamespace>
-        <Version>1.2.2-beta.1-minervamaga</Version>
+        <Version>1.2.3-beta</Version>
         <TargetFramework>net452</TargetFramework>
         <Platforms>x86</Platforms>
         <PlatformTarget>x86</PlatformTarget>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2019.1.3"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" ExcludeAssets="runtime"/>
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.0.0"/>
     </ItemGroup>
 
     <Import Project="..\Common\Common.projitems" Label="Shared"/>
-
 </Project>

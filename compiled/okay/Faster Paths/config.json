@@ -9,6 +9,7 @@
   "StoneFloorBoost": 3,
   "CobblePathBoost": 3,
   "SteppingStoneBoost": 3,
+  "BrickFloorBoost": 3,
   "CrystalFloorBoost": 4,
   "CrystalPathBoost": 4
 }

@@ -1,10 +1,10 @@
 ﻿{
   "Name": "Become Ethereal",
   "Author": "Coll1234567",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "Lets you pass through various objects, can be configured.",
   "UniqueID": "Coll1234567.BecomeEthereal",
   "EntryDll": "BecomeEthereal.dll",
-  "MinimumApiVersion": "2.10.0",
+  "MinimumApiVersion": "3.0.0",
   "UpdateKeys": [ "Nexus:3746" ]
 }

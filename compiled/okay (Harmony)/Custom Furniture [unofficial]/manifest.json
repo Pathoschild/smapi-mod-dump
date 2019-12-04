@@ -1,0 +1,16 @@
+{
+  "Name": "Custom Furniture",
+  "Author": "Platonymous",
+  "Version": "0.10.5-unofficial.1-mouse",
+  "Description": "Helper Mod for Custom Furniture creation.",
+  "UniqueID": "Platonymous.CustomFurniture",
+  "EntryDll": "CustomFurniture.dll",
+  "MinimumApiVersion": "2.11.2",
+  "UpdateKeys": [ "Nexus:1254" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.Toolkit",
+      "MinimumVersion": "1.5.1"
+    }
+  ]
+}

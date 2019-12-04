@@ -1,0 +1,10 @@
+﻿{
+  "Name": "FishMe",
+  "Author": "marikaefer",
+  "Version": "1.0.0",
+  "Description": "skips the fishing minigame",
+  "UniqueID": "marikaefer.FishMe",
+  "EntryDll": "FishMe.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:4756" ]
+}

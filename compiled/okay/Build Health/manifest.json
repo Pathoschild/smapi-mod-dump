@@ -1,10 +1,10 @@
 {
   "Name": "Build Health",
   "Author": "Alpha_Omegasis",
-  "Version": "1.8.0",
+  "Version": "1.8.1",
   "Description": "Increase your health as you play.",
   "UniqueID": "Omegasis.BuildHealth",
   "EntryDll": "BuildHealth.dll",
-  "MinimumApiVersion": "2.10.1",
+  "MinimumApiVersion": "3.0.0",
   "UpdateKeys": [ "Nexus:446" ]
 }

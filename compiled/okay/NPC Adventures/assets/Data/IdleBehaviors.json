@@ -1,7 +1,7 @@
 ﻿{
   "Abigail_animate": "animate/abigail_sitting abigail_flute",
   "Alex_animate": "animate/alex_footbal alex_reading alex_sitting",
-  "Elliot_animate": "animate/elliott_read",
+  "Elliott_animate": "animate/elliott_read",
   "Emily_animate": "animate/emily_exercise",
   "Haley_animate": "animate/haley_photo",
   "Harvey_animate": "animate/harvey_read harvey_eat",

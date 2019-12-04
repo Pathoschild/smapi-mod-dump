@@ -5,9 +5,12 @@ mods:
    Json Assets
 
 latest commit:
-   commit 640d413b0e98905dbec309fe28d423beabe32ce6
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Nov 29 15:04:00 2019 -0500
+   commit 25e395439bc48f947c7c72dd814ade5749c15e43
+   Merge: 640d413 e065108
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Sat Nov 30 16:36:56 2019 -0500
    
-       Version 1.5
+       Merge pull request #41 from paradigmnomad/patch-7
+       
+       Updated 1.4 Documentation
    

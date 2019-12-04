@@ -5,9 +5,12 @@ mods:
    Cat Gifts
 
 latest commit:
-   commit 7ef262fa5d10101e223953e7638b1f7123130512
-   Author: skuldomg <scdehne@googlemail.com>
-   Date:   Wed Jan 16 15:18:54 2019 +0100
+   commit e293072a076126e725a247eb80f9fdb9eb3f69de
+   Merge: 7ef262f 34c7db4
+   Author: Simon <scdehne@googlemail.com>
+   Date:   Mon Dec 2 17:19:15 2019 +0100
    
-       Updated Nuget packages
+       Merge pull request #2 from strobel1ght/master
+       
+       Updates for 1.4
    

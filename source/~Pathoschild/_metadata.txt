@@ -19,9 +19,10 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit ad68f6647377c0d057e329717cc43edd90b52c83
+   commit 6d177e6e96d336b0ecee3209155d2d2a5d80fe6c
+   Merge: d5930a1f 21275362
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Fri Nov 29 19:04:59 2019 -0500
+   Date:   Mon Dec 2 23:05:59 2019 -0500
    
-       fix EditData patch error when FromFile has unready tokens
+       Merge branch 'develop' into stable
    

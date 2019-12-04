@@ -68,7 +68,7 @@ namespace MTN2.Patches.PetPatches
             }
             if (__instance.currentLocation is Farm) {
                 if (__instance.currentLocation.getTileIndexAt(PetBowl.X, PetBowl.Y, "Buildings") == 1939) {
-                    __instance.friendshipTowardFarmer = Math.Min(1000, __instance.friendshipTowardFarmer + 6);
+                    __instance.friendshipTowardFarmer = new Netcode.NetInt(Math.Min(1000, __instance.friendshipTowardFarmer + 6));
                 }
                 __instance.currentLocation.setMapTileIndex(PetBowl.X, PetBowl.Y, 1938, "Buildings", 0);
                 __instance.setTilePosition(PetBowl.X, PetBowl.Y + 1);

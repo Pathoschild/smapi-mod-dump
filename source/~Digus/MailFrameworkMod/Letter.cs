@@ -10,12 +10,17 @@ namespace MailFrameworkMod
 {
     public class Letter
     {
+        private string _id;
         /// <summary>
         /// this letter unique id
         /// </summary>
-        public string Id { get; private set; }
+        public string Id { get => _id; private set => _id = value.Replace(" ",""); }
         /// <summary>
-        /// this letter title to be show in the collections menu (Unimplemented Yet)
+        /// this letter group id
+        /// </summary>
+        public string GroupId;
+        /// <summary>
+        /// this letter title to be show in the collections menu
         /// </summary>
         public string Title;
         /// <summary>

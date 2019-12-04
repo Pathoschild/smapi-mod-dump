@@ -1,25 +1,34 @@
 using System.Collections.Generic;
+using System.Linq;
+using Harmony;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.Objects;
 
 namespace RemoteFridgeStorage.CraftingPage
 {
     /// <summary>
-    /// Overwrite the fridge().
+    /// Create a craftubg page of the 
     /// </summary>
     public class RemoteFridgeCraftingPage : StardewValley.Menus.CraftingPage
     {
-        private readonly FridgeHandler _fridgeHandler;
 
-        public RemoteFridgeCraftingPage(IClickableMenu page, FridgeHandler fridgeHandler) :
-            base(page.xPositionOnScreen, page.yPositionOnScreen, page.width, page.height, true)
+        public RemoteFridgeCraftingPage(StardewValley.Menus.CraftingPage page, FridgeHandler fridgeHandler) :
+            base(page.xPositionOnScreen, page.yPositionOnScreen, page.width, page.height, true, true,
+                MaterialContainers(page,fridgeHandler))
         {
-            _fridgeHandler = fridgeHandler;
+            exitFunction = page.exitFunction;
+            currentRegion = page.currentRegion;
+            behaviorBeforeCleanup = page.behaviorBeforeCleanup;
         }
 
-        protected override IList<Item> fridge()
+        private static List<Chest> MaterialContainers(StardewValley.Menus.CraftingPage handler, FridgeHandler fridgeHandler)
         {
-            return _fridgeHandler.FridgeList;
+            var materialContainers = ModEntry.Instance.Helper.Reflection.GetField<List<Chest>>(handler, "_materialContainers").GetValue();
+            var chests = new List<Chest>();
+            chests.AddRange(fridgeHandler.Chests);
+            chests.AddRange(materialContainers);
+            return chests.Distinct().ToList();
         }
     }
 }

@@ -45,6 +45,7 @@ namespace MailFrameworkMod
         /// <param name="e">The event data.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
+            Helper.Content.AssetEditors.Add(new DataLoader());
             var harmony = HarmonyInstance.Create("Digus.MailFrameworkMod");
 
             harmony.Patch(
@@ -55,6 +56,11 @@ namespace MailFrameworkMod
             harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.mailbox)),
                 prefix: new HarmonyMethod(typeof(MailController), nameof(MailController.mailbox))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(CollectionsPage), nameof(CollectionsPage.receiveLeftClick)),
+                prefix: new HarmonyMethod(typeof(MailController), nameof(MailController.receiveLeftClick))
             );
         }
 
@@ -88,6 +94,10 @@ namespace MailFrameworkMod
         /// <param name="e">The event arguments.</param>
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
+            if (MailDao.HasRepositoryChanged())
+            {
+                Helper.Content.InvalidateCache("Data\\mail");
+            }
             MailController.UpdateMailBox();
 
         }

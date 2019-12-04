@@ -96,7 +96,7 @@ namespace MailFrameworkMod
                     MailFrameworkModEntry.ModHelper.Reflection.GetField<int>(activeClickableMenu,"whichBG").SetValue(_shownLetter.WhichBG);
                     if (_shownLetter.LetterTexture != null)
                     {
-                        MailFrameworkModEntry.ModHelper.Reflection.GetField<Texture2D>(activeClickableMenu, "letterTexture").SetValue(_shownLetter.LetterTexture);
+                        activeClickableMenu.letterTexture = _shownLetter.LetterTexture;
                     }
                     activeClickableMenu.TextColor = _shownLetter.TextColor;
                     
@@ -258,6 +258,36 @@ namespace MailFrameworkMod
                 else
                 {
                     _events.Display.MenuChanged += OnMenuChanged;
+                }
+            }
+            return true;
+        }
+
+        public static bool receiveLeftClick(CollectionsPage __instance, int x, int y)
+        {
+            int currentTab = MailFrameworkModEntry.ModHelper.Reflection.GetField<int>(__instance, "currentTab").GetValue();
+
+            if (__instance.letterviewerSubMenu == null && currentTab == 7)
+            {
+                int currentPage = MailFrameworkModEntry.ModHelper.Reflection.GetField<int>(__instance, "currentPage").GetValue();
+                foreach (ClickableTextureComponent clickableComponent in __instance.collections[currentTab][currentPage])
+                {
+                    if (clickableComponent.containsPoint(x, y))
+                    {
+                        Letter letter = MailDao.FindLetter(clickableComponent.name.Split(' ')[0]);
+                        if (letter != null)
+                        {
+                            LetterViewerMenuExtended letterViewerMenu = new LetterViewerMenuExtended(letter.Text.Replace("@", Game1.player.Name), letter.Id, true);
+                            MailFrameworkModEntry.ModHelper.Reflection.GetField<int>(letterViewerMenu, "whichBG").SetValue(letter.WhichBG);
+                            if (letter.LetterTexture != null)
+                            {
+                                letterViewerMenu.letterTexture = letter.LetterTexture;
+                            }
+                            letterViewerMenu.TextColor = letter.TextColor;
+                            __instance.letterviewerSubMenu = letterViewerMenu;
+                            return false;
+                        }
+                    }
                 }
             }
             return true;

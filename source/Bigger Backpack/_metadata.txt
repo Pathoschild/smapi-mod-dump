@@ -5,9 +5,9 @@ mods:
    Bigger Backpack
 
 latest commit:
-   commit df44674d711146643e6ec1facf61fd944fd5871b
+   commit 72946413f91e3b7682678c072e807ba7c80725a3
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Fri Nov 29 21:02:53 2019 +0100
+   Date:   Sun Dec 1 01:35:36 2019 +0100
    
-       Update SMAPI-SDK
+       Update version
    

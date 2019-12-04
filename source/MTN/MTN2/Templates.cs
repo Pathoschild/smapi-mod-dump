@@ -43,7 +43,7 @@ namespace MTN2 {
             template.DescriptionDetails = "A description that appears when the player hovers over the farm icon, as they are creating a new game.";
             template.Folder = "Example";
             template.Icon = "fileNameOfIcon.png";
-            template.Version = 2.0f;
+            template.Version = 2.1f;
             template.CabinCapacity = 3;
             template.AllowClose = true;
             template.AllowSeperate = true;

@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "Water Retaining Field Mod",
 	"Author": "Digus",
-	"Version": "1.0.5",
+	"Version": "1.0.6",
 	"Description": "Make adjacent tiles with retaining soil work together.",
 	"UniqueID": "DIGUS.WaterRetainingFieldMod",
 	"EntryDll": "WaterRetainingFieldMod.dll",

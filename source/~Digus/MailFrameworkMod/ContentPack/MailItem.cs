@@ -5,6 +5,7 @@ namespace MailFrameworkMod.ContentPack
     public class MailItem
     {
         public string Id;
+        public string GroupId;
         public string Title;
         public string Text;
         public string Recipe;
@@ -18,5 +19,6 @@ namespace MailFrameworkMod.ContentPack
         public string Weather;
         public List<FriendshipCondition> FriendshipConditions;
         public List<SkillCondition> SkillConditions;
+        public double? RandomChance;
     }
 }

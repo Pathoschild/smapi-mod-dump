@@ -1,0 +1,13 @@
+url:
+   https://github.com/bwdymods/SDV-Starbot.git
+
+mods:
+   Starbot
+
+latest commit:
+   commit 470d62525b5d4cbc168a44fd62517b6393d5103c
+   Author: bwdy <47769190+bwdymods@users.noreply.github.com>
+   Date:   Sun Dec 1 01:50:56 2019 -0900
+   
+       Update manifest.json
+   

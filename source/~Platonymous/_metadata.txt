@@ -13,6 +13,7 @@ mods:
    Custom Farming Redux → CFAutomate
    Custom Furniture
    Custom Furniture → Custom Furniture Anywhere
+   Custom Movies
    Custom Music
    Custom NPC
    Custom Shirts
@@ -43,12 +44,9 @@ mods:
    Visualize
 
 latest commit:
-   commit 7c302b40d02c0d1a4291e5a672d66b55d6f7d454
-   Merge: b2262a0 4239340
+   commit dfd3845550ceea542d305f94762f9b26636ba85a
    Author: David <david@millionideas.de>
-   Date:   Thu Jul 4 20:19:09 2019 +0200
+   Date:   Tue Dec 3 19:10:40 2019 +0100
    
-       Merge pull request #56 from mytigio/master
-       
-       Updated the item removal method in consumeMaterials to be more in-linâ€¦
+       Fixed Asset names
    

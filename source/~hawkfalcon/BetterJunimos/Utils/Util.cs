@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Characters;
+using StardewValley.Menus;
 using StardewValley.Objects;
 using SObject = StardewValley.Object;
 
@@ -53,7 +55,17 @@ namespace BetterJunimos.Utils {
         public static void SpawnJunimoAtPosition(Vector2 pos, JunimoHut hut, int junimoNumber) {
             if (hut == null) return;
             Farm farm = Game1.getFarm();
-            JunimoHarvester junimoHarvester = new JunimoHarvester(pos, hut, junimoNumber);
+            /*
+             * Added by Mizzion. This will set the color of the junimos based on what gem is inside the hut.
+             */
+            bool isPrismatic = false;
+            Color? gemColor = getGemColor(ref isPrismatic, hut);//Reflection.GetMethod(hut, "getGemColor").Invoke<Color>(isPrismatic);
+            /*
+             * End added By Mizzion
+             */
+
+            JunimoHarvester junimoHarvester = new JunimoHarvester(pos, hut, junimoNumber, gemColor);
+            junimoHarvester.isPrismatic.Value = isPrismatic; //Added by Mizzion, Fixes the Prismatic Junimos.
             farm.characters.Add((NPC)junimoHarvester);
             hut.myJunimos.Add(junimoHarvester);
 
@@ -64,6 +76,27 @@ namespace BetterJunimos.Utils {
             if (!Utility.isOnScreen(Utility.Vector2ToPoint(pos), 64, farm))
                 return;
             farm.playSound("junimoMeep1");
+        }
+
+        /*
+         * Added by Mizzion. This method is used to get the gem color, so the junimos can be colored
+         * I ripped this from SDV and edited it to work with this mod.
+        */
+        public static Color? getGemColor(ref bool isPrismatic, JunimoHut hut) {
+            List<Color> colorList = new List<Color>();
+            Chest chest = hut.output.Value;
+            foreach (Item dye_object in chest.items) {
+                if (dye_object != null && (dye_object.Category == -12 || dye_object.Category == -2)) {
+                    Color? dyeColor = TailoringMenu.GetDyeColor(dye_object);
+                    if (dye_object.Name == "Prismatic Shard")
+                        isPrismatic = true;
+                    if (dyeColor.HasValue)
+                        colorList.Add(dyeColor.Value);
+                }
+            }
+            if (colorList.Count > 0)
+                return new Color?(colorList[Game1.random.Next(colorList.Count)]);
+            return new Color?();
         }
 
         public static void SendMessage(string msg) {

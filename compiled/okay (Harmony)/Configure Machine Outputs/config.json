@@ -1,5 +1,6 @@
 {
   "ModEnabled": true,
+  "SDV_14": false,
   "Machines": {
     "SeedMaker": {
       "CustomSeedMakerEnabled": true,

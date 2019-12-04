@@ -63,5 +63,10 @@
   "AutoPickUpTrash": false,
   "ScavengingRadius": 2,
   "AutoShearingAndMilking": true,
-  "AnimalHarvestRadius": 1
+  "AnimalHarvestRadius": 1,
+  "RadiusFarmCleanup": 1,
+  "CutWeeds": false,
+  "BreakRocks": false,
+  "ChopTwigs": false,
+  "DisableConfigLimitation": false
 }

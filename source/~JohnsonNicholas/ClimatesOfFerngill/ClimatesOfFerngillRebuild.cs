@@ -191,7 +191,7 @@ namespace ClimatesOfFerngillRebuild
 
         private void GameLoop_UpdateTicking(object sender, UpdateTickingEventArgs e)
         {
-            if (Game1.locationRequest?.Location.IsOutdoors == true && ((WeatherUtilities.GetCategory(Conditions.AmtOfRainDrops) == RainLevels.NoahsFlood) || (WeatherUtilities.GetCategory(Conditions.AmtOfRainDrops) == RainLevels.Typhoon)))
+            if (Game1.locationRequest?.Location.IsOutdoors == true && !Game1.currentLocation.IsOutdoors && WeatherConditions.PreventGoingOutside(Conditions.AmtOfRainDrops) && !Game1.eventUp)
             {
                 Game1.locationRequest = null;
                 Game1.fadeIn = false;
@@ -229,9 +229,9 @@ namespace ClimatesOfFerngillRebuild
             }
 
             //testing for ZA MOON, YOUR HIGHNESS.
-            MoonAPI = SDVUtilities.GetModApi<Integrations.ILunarDisturbancesAPI>(Monitor, Helper, "KoihimeNakamura.LunarDisturbances", "1.0");
-            SafeLightningAPI = SDVUtilities.GetModApi<Integrations.ISafeLightningAPI>(Monitor, Helper, "cat.safelightning", "1.0");
-            DynamicNightAPI = SDVUtilities.GetModApi<Integrations.IDynamicNightAPI>(Monitor, Helper, "knakamura.dynamicnighttime", "1.1-rc3");
+            MoonAPI = SDVUtilities.GetModApi<Integrations.ILunarDisturbancesAPI>(Monitor, Helper, "KoihimeNakamura.LunarDisturbances", "1.0", "Lunar Disturbances");
+            SafeLightningAPI = SDVUtilities.GetModApi<Integrations.ISafeLightningAPI>(Monitor, Helper, "cat.safelightning", "1.0", "Safe Lightning");
+            DynamicNightAPI = SDVUtilities.GetModApi<Integrations.IDynamicNightAPI>(Monitor, Helper, "knakamura.dynamicnighttime", "1.1-rc3", "Dynamic Night Time");
 
             if (MoonAPI != null)
                 UseLunarDisturbancesApi = true;

@@ -10,6 +10,8 @@
     - [enableMod](#enableMod)
     - [useCustomTrainTreasure](#useCustomTrainTreasure)
     - [enableNoLimitTreasurePerTrain](#enableNoLimitTreasurePerTrain)
+	- [showTrainIsComingMessage](#showTrainIsComingMessage)
+	- [enableTrainWhistle](#enableTrainWhistle)
     - [baseChancePercent](#baseChancePercent)
     - [basePctChanceOfTrain](#basePctChanceOfTrain)    
     - [trainCreateDelay](#trainCreateDelay)
@@ -70,6 +72,12 @@ Uses the custom treasure list.  If set to false, then the base game item list is
 #### enableNoLimitTreasurePerTrain
 Maximum treasure from each train.  The amount is still random but there is not limit on the amount.
 - Default Value: false 
+#### showTrainIsComingMessage
+Shows the message when a train is passing thru the valley.  
+- Default Value: true 
+#### enableTrainWhistle
+When the train comes thru the valley, does it make a sound?  
+- Default Value: true 
 #### baseChancePercent
 What is the chance to get something from a train.  The player's daily luck does factor into this.
 - Default Value: 0.20 

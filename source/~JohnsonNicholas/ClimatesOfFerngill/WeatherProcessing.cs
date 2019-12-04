@@ -27,14 +27,32 @@ namespace ClimatesOfFerngillRebuild
             bool massiveChange = false;
             if (rain == 0)
                 VRChangeChance += .20;
+            if (rain > WeatherUtilities.ReturnMidPoint(RainLevels.Torrential))
+                VRChangeChance += .10;
+	    if (WeatherUtilities.GetCategory(rain) == RainLevels.NoahsFlood)
+		VRChangeChance += .15;
+
             double FlipChance = .5;
 
+            //so, lower: decrease, higher: increase
             if (WeatherUtilities.IsSevereRainFall(rain))
-                FlipChance -= .2;
+                FlipChance += .2;
+            if (WeatherUtilities.GetCategory(rain) == RainLevels.Torrential || WeatherUtilities.GetCategory(rain) == RainLevels.Typhoon || WeatherUtilities.GetCategory(rain) == RainLevels.NoahsFlood)
+                FlipChance += .15; //15% chance remaining of increasing. 
+            if (WeatherUtilities.GetCategory(rain) == RainLevels.Typhoon || WeatherUtilities.GetCategory(rain) == RainLevels.NoahsFlood)
+                FlipChance += .1456; //.44% chance remaning of increasing.
+            if (WeatherUtilities.GetCategory(rain) == RainLevels.NoahsFlood)
+                FlipChance += .0018; //.26% chance remaning of increasing.
+	    if (rain == MaxRain)
+		FlipChance = 1; //you must go ddown.
 
             if (rain <= WeatherUtilities.ReturnMidPoint(RainLevels.Light))
-                FlipChance += .2;
-
+                FlipChance -= .2; //70% chance of increasing
+            if (rain <= WeatherUtilities.ReturnMidPoint(RainLevels.Sunshower))
+                FlipChance -= .1; //80% chance of increasing
+	    if (rain == 0)
+		FlipChance -= .15; //95% chance of increasing
+		
             if (ClimatesOfFerngill.WeatherOpt.Verbose)
             {
                 ClimatesOfFerngill.Logger.Log($"Rain is {prevRain}, current VRChangeChance is {VRChangeChance}.");
@@ -45,14 +63,14 @@ namespace ClimatesOfFerngillRebuild
             {
                 //first check for a massive change 145% to 245%
                 double stepRoll = ClimatesOfFerngill.Dice.NextDouble();
-                if (ClimatesOfFerngill.Dice.NextDouble() < FlipChance)
+                if (ClimatesOfFerngill.Dice.NextDouble() > FlipChance)
                 {
                     if (ClimatesOfFerngill.WeatherOpt.Verbose)
                         ClimatesOfFerngill.Logger.Log("Increasing rain!");
 
                     if (stepRoll <= WeatherUtilities.GetStepChance(rain, increase: true))
                     {
-                        int mult = Math.Max(1,(int)(Math.Floor(rain * (ClimatesOfFerngill.Dice.NextDouble() + .98))));
+                        int mult = Math.Max(1,(int)(Math.Floor(rain * (ClimatesOfFerngill.Dice.NextDouble() + .68))));
 
                         if (rain == 0)
                             rain = 15 * mult;
@@ -85,17 +103,23 @@ namespace ClimatesOfFerngillRebuild
                 }
             }
 
-            if ((WeatherUtilities.GetCategory(rain) == RainLevels.NoahsFlood) || (WeatherUtilities.GetCategory(rain) == RainLevels.Typhoon))
+            if (WeatherConditions.PreventGoingOutside(rain))
             {
-                if (Game1.timeOfDay >= 2150 && !(Game1.currentLocation is FarmHouse))
+                if (Game1.timeOfDay >= 2300)
                 {
                     //drop the rain to at least allow the person to return home if they aren't.
                     rain = WeatherUtilities.ReturnMidPoint(RainLevels.Severe);
                 }                    
+
+                if (!ClimatesOfFerngill.WeatherOpt.HazardousWeather)
+                {
+                    rain = WeatherUtilities.ReturnMidPoint(RainLevels.Severe);
+                }
             }
 
             if (rain > WeatherUtilities.MaxRain)
                 rain = WeatherUtilities.MaxRain;
+
             if (rain < 0) rain = 0;
 
             if (rain != prevRain && Game1.timeOfDay != 600 && showRain && !(Game1.currentLocation is Desert))
@@ -292,7 +316,7 @@ namespace ClimatesOfFerngillRebuild
                 }
 
                 //set starting amount at 6am
-                Array.Resize(ref Game1.rainDrops, curr.AmtOfRainDrops);
+                curr.RefreshRainAmt();
             }
         }
 
@@ -313,13 +337,13 @@ namespace ClimatesOfFerngillRebuild
                 ProbabilityDistribution<RainLevels> RainSpread = new ProbabilityDistribution<RainLevels>(RainLevels.Normal);
                 RainSpread.AddNewCappedEndPoint(.12, RainLevels.Sunshower);
                 RainSpread.AddNewCappedEndPoint(.28, RainLevels.Light);
-                RainSpread.AddNewCappedEndPoint(.341, RainLevels.Normal);
-                RainSpread.AddNewCappedEndPoint(.12, RainLevels.Moderate);
-                RainSpread.AddNewCappedEndPoint(.08063, RainLevels.Heavy);
-                RainSpread.AddNewCappedEndPoint(.0302, RainLevels.Severe);
-                RainSpread.AddNewCappedEndPoint(.0174, RainLevels.Torrential);
-                RainSpread.AddNewCappedEndPoint(.0099, RainLevels.Typhoon);
-                RainSpread.AddNewCappedEndPoint(.00087, RainLevels.NoahsFlood);
+                RainSpread.AddNewCappedEndPoint(.351, RainLevels.Normal);
+                RainSpread.AddNewCappedEndPoint(.1362, RainLevels.Moderate);
+                RainSpread.AddNewCappedEndPoint(.09563, RainLevels.Heavy);
+                RainSpread.AddNewCappedEndPoint(.0382, RainLevels.Severe);
+                RainSpread.AddNewCappedEndPoint(.0094, RainLevels.Torrential);
+                RainSpread.AddNewCappedEndPoint(.0049, RainLevels.Typhoon);
+                RainSpread.AddNewCappedEndPoint(.00287, RainLevels.NoahsFlood);
 
                 if (!(RainSpread.GetEntryFromProb(newRainOdds, out RainLevels Result)))
                 {
@@ -338,7 +362,7 @@ namespace ClimatesOfFerngillRebuild
             }
 
             curr.TodayRain += curr.AmtOfRainDrops;
-            Array.Resize(ref Game1.rainDrops, curr.AmtOfRainDrops);
+            curr.RefreshRainAmt();
 
         }
 

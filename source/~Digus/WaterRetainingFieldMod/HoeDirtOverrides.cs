@@ -26,7 +26,7 @@ namespace WaterRetainingFieldMod
         {
             if (environment is Farm || environment.isGreenhouse.Value )
             {
-                if (__state == 1 && __instance.fertilizer.Value == 370 || __instance.fertilizer.Value == 371)
+                if ((!__instance.hasPaddyCrop() || !__instance.paddyWaterCheck(environment, tileLocation)) && __state == 1 && (__instance.fertilizer.Value == 370 || __instance.fertilizer.Value == 371))
                 {
                     if (TileLocationState.ContainsKey(tileLocation))
                     {
@@ -55,7 +55,7 @@ namespace WaterRetainingFieldMod
             {
                 if (!TileLocationState.ContainsKey(adjacentTileLocation) && environment.terrainFeatures.ContainsKey(adjacentTileLocation) && environment.terrainFeatures[adjacentTileLocation] is HoeDirt hoeDirt)
                 {
-                    if (hoeDirt.state.Value == 1 && hoeDirt.fertilizer.Value == fertilizer)
+                    if (hoeDirt.state.Value == 1 && hoeDirt.fertilizer.Value == fertilizer && (!hoeDirt.hasPaddyCrop() || !hoeDirt.paddyWaterCheck(environment, tileLocation)))
                     {
                         TileLocationState[adjacentTileLocation] = stateValue;
                         AddStateAdjacentFertilizedTiles(environment, adjacentTileLocation, stateValue, fertilizer);

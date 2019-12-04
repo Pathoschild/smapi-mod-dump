@@ -144,7 +144,7 @@
   "weather-tv.sunny.1": "sunny and clear",
 
   "weather-tv.festival": "a clear and good day to experience {{festName}}",
-  "weather-tv.wedding": "a clear day, and our congratualtions to the couples getting married",
+  "weather-tv.wedding": "a clear day, and our congratulations to the couples getting married",
 
   "weather-tv.fogChance": " with a good chance of fog in the morning",
 
@@ -177,6 +177,7 @@
   "weather-tv.rain.torrential": "torrential rainfall",
   "weather-tv.rain.typhoon": "violent rainfall",
   "weather-tv.rain.noahsflood": "the heavens pouring down",
+  "weather-tv.rain.unknown": "showers",
   
   //hazard text
   "weather-tv.twoHazardString": "{{hazardOne}} and {{hazardTwo}}",

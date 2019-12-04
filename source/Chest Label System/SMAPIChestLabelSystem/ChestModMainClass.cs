@@ -17,7 +17,6 @@
 
 using StardewValley;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
 using System;
 using StardewValley.Menus;
 using Microsoft.Xna.Framework;
@@ -25,31 +24,30 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using SpeederSDVUIUtils;
-using StardewModdingAPI.Inheritance;
 
 namespace SMAPIChestLabelSystem
 {
     public class ChestModMainClass : Mod
     {
-        public override void Entry(params object[] objects)
+        public override void Entry(IModHelper helper)
         {            
-            GameEvents.UpdateTick += EventUpdateTick;            
-            GraphicsEvents.OnPostRenderGuiEvent += PostEventGUIDrawTick;
-            GraphicsEvents.OnPostRenderHudEvent += PostEventHUDDrawTick;
+            helper.Events.GameLoop.UpdateTicked += this.EventUpdateTick;
+            helper.Events.Display.RenderedActiveMenu += this.PostEventGUIDrawTick;
+            helper.Events.Display.RenderedHud += this.PostEventHUDDrawTick;
         }
 
-        static Vector2 chestKey;
-        static ClickableTextureComponent labelButton;
-        static IClickableMenu lastMenu;
-        static SpeederSDVUIUtils.TextBox chestNameBox;
-        static bool leftClickWasDown = false;
-        static bool hovered = false;
-        static InputButton[] oldMenuButton;
-        static String hoverChestName;
+        Vector2 chestKey;
+        ClickableTextureComponent labelButton;
+        IClickableMenu lastMenu;
+        SpeederSDVUIUtils.TextBox chestNameBox;
+        bool leftClickWasDown = false;
+        bool hovered = false;
+        InputButton[] oldMenuButton;
+        String hoverChestName;
 
-        static void EventUpdateTick(object sender, EventArgs e)
+        void EventUpdateTick(object sender, EventArgs e)
         {            
-            if (Game1.currentLocation == null) return;
+            if (Game1.currentLocation == null) return;            
             hoverChestName = null;
             if(lastMenu == null || Game1.activeClickableMenu == null || lastMenu != Game1.activeClickableMenu)
             {
@@ -64,16 +62,17 @@ namespace SMAPIChestLabelSystem
                 }
             }
             GameLocation currentLocation = Game1.currentLocation;
-
+                     
             StardewValley.Objects.Chest openChest = null;            
 
-            foreach(KeyValuePair<Vector2, StardewValley.Object> keyPair in currentLocation.objects)
+            foreach (KeyValuePair<Vector2, StardewValley.Object> keyPair in currentLocation.Objects.Pairs)
             {
                 if (keyPair.Value is StardewValley.Objects.Chest)
                 {
-                    openChest = keyPair.Value as StardewValley.Objects.Chest;
-                    if(openChest.currentLidFrame == 135 && Game1.activeClickableMenu is ItemGrabMenu)
+                    openChest = keyPair.Value as StardewValley.Objects.Chest;                    
+                    if (openChest.mutex.IsLocked() && Game1.activeClickableMenu is ItemGrabMenu)
                     {
+                        
                         lastMenu = Game1.activeClickableMenu;
                         chestKey = keyPair.Key;
                         break;
@@ -157,7 +156,7 @@ namespace SMAPIChestLabelSystem
             }
         }
         
-        static void PostEventGUIDrawTick(object sender, EventArgs e)
+        void PostEventGUIDrawTick(object sender, EventArgs e)
         {            
             if (labelButton != null)
             {                                
@@ -171,7 +170,7 @@ namespace SMAPIChestLabelSystem
             }            
         }
 
-        static void PostEventHUDDrawTick(object sender, EventArgs e)
+        void PostEventHUDDrawTick(object sender, EventArgs e)
         {            
             if (hoverChestName != null && hoverChestName != "Chest" && hoverChestName != "" && Game1.activeClickableMenu == null)
             {                

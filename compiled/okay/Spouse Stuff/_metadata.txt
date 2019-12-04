@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/4651
 IDs: Sikker.SpouseStuff
-update keys: Nexus:4651
+update keys: Nexus:4651, GitHub:sikker/SpouseStuff

@@ -5,9 +5,9 @@ mods:
    Chest Label System
 
 latest commit:
-   commit 851e2159b729f9b62e4a50de6dc9641ad68e01d9
+   commit 42458c2a88ae4992ddd54c3b418b0b455a3df06e
    Author: MaurÃ­cio Gomes <mauricio.gomes@coderofworlds.com>
-   Date:   Sat Mar 4 15:06:12 2017 -0300
+   Date:   Tue Dec 3 22:41:14 2019 -0300
    
-       Updated to 1.6
+       Updated to SMAPI 3
    

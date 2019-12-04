@@ -2,6 +2,8 @@
   "enableMod": true,
   "useCustomTrainTreasure": true,
   "enableNoLimitTreasurePerTrain": false,
+  "showTrainIsComingMessage": true,
+  "enableTrainWhistle": true,
   "baseChancePercent": 0.2,
   "basePctChanceOfTrain": 0.15,
   "trainCreateDelay": 10000,
@@ -9,5 +11,5 @@
   "maxNumberOfItemsPerTrain": 5,
   "enableForceCreateTrain": false,
   "enableMultiplayerChatMessage": false,
-  "configVersion": 2
+  "configVersion": 3
 }

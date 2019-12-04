@@ -630,7 +630,7 @@ namespace StardewHack.HarvestWithScythe
             var label_dont_scythe = AttachLabel(code.End[0]);
             // Append code to handle trigger harvest with scythe.
             code.Append(
-                // if (ModEntry.CanHarvest(object, HARVEST_SCYTHING) {
+                // if (ModEntry.CanHarvestObject(object, HARVEST_SCYTHING) {
                 Instructions.Ldloc_S(var_object),
                 Instructions.Ldc_I4_1(), // HARVEST_SCYTHING
                 Instructions.Call(typeof(ModEntry), nameof(ModEntry.CanHarvestObject), typeof(StardewValley.Object), typeof(int)),
@@ -642,7 +642,7 @@ namespace StardewHack.HarvestWithScythe
         
         static void TryScythe() {
             // Copied from HoeDirt.performUseAction()
-            if (Game1.player.CurrentTool != null && Game1.player.CurrentTool is MeleeWeapon && (Game1.player.CurrentTool as MeleeWeapon).InitialParentTileIndex == 47) {
+            if (Game1.player.CurrentTool != null && Game1.player.CurrentTool is MeleeWeapon && (Game1.player.CurrentTool as MeleeWeapon).isScythe()) {
                 Game1.player.CanMove = false;
                 Game1.player.UsingTool = true;
                 Game1.player.canReleaseTool = true;

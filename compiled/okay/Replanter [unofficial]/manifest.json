@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Replanter",
   "Author": "jwdred",
-  "Version": "1.1.1-unofficial.4-pathoschild",
+  "Version": "1.1.2-unofficial.1-mizzion",
   "Description": "Harvest and replant fields that are ready.",
   "UniqueID": "jwdred.Replanter",
   "EntryDll": "Replanter.dll",

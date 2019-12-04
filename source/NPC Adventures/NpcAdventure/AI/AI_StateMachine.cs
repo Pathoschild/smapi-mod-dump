@@ -156,7 +156,7 @@ namespace NpcAdventure.AI
             // Warp NPC to player's location at theirs position
             Helper.WarpTo(this.npc, l, this.player.getTileLocationPoint());
 
-            this.changeStateCooldown = 100;
+            this.changeStateCooldown = 30;
 
             // Fire location changed event
             this.OnLocationChanged(previousLocation, this.npc.currentLocation);

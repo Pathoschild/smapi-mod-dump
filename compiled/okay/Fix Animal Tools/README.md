@@ -15,3 +15,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 ## Changes
 #### 1.0:
 * Added dependency on the StardewHack library mod.
+
+#### 2.0:
+* Updated for Stardew Valley 1.4

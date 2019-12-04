@@ -557,10 +557,13 @@ namespace AnimalHusbandryMod.common
 
         public static void skipEvent(Event __instance)
         {
-            AnimalContestItem lastAnimalContest = FarmerLoader.FarmerData.AnimalContestData.LastOrDefault();
-            if (lastAnimalContest != null && lastAnimalContest.EventId == __instance.id)
+            if (FarmerLoader.FarmerData != null)
             {
-                AnimalContestController.EndEvent(lastAnimalContest);
+                AnimalContestItem lastAnimalContest = FarmerLoader.FarmerData.AnimalContestData.LastOrDefault();
+                if (lastAnimalContest != null && lastAnimalContest.EventId == __instance.id)
+                {
+                    AnimalContestController.EndEvent(lastAnimalContest);
+                }
             }
         }
 

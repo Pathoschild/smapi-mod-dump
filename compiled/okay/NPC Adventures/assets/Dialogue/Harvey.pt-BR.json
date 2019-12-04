@@ -1,0 +1,10 @@
+{
+  "companionAccepted": "Acho que posso dar uma pausa por hoje.",
+  "companionRejected": "Minhas sinceras desculpas @. Tenho consultas marcados para hoje.$s",
+  "companionRejectedNight": "É muito perigoso sair a noite @. Você poderia se machucar.$u",
+  "companionDismiss": "Hora de eu voltar pra clínica. Obrigado por tudo @, você é um bom amigo.^Obrigado por tudo @, você é uma boa amiga.$h",
+  "companionDismissAuto": "Eu estou muito exausto. Eu tenho que descansar. Dormir é importante, você deveria saber disso. Não se machuque.",
+  "companionRecruited": "Vamos lá! Vou levar o kit de primeiros socorros, só por garantia.$h",
+  "heal": "Aguente firme. Isso pode doer um pouquinho.$1",
+  "nomedkits": "Uh-oh, os kits acabaram.$7"
+}

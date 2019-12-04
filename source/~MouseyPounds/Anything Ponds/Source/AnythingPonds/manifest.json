@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Anything Ponds",
+    "Author": "MouseyPounds",
+    "Version": "1.0.0",
+    "Description": "A way to add ponds for legendary fish, algae, seaweed, and even stranger things.",
+    "UniqueID": "MouseyPounds.AnythingPonds",
+    "EntryDll": "AnythingPonds.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": ["Nexus:4702"]
+}

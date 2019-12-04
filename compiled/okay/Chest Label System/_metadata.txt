@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/242
+IDs: SPDChestLabel, Speeder.ChestLabel
+update keys: Nexus:242, Chucklefish:3550

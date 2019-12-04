@@ -1,0 +1,10 @@
+﻿{
+   "Name": "OrganizeShortcut",
+   "Author": "Yyeahdude",
+   "Version": "1.0.0",
+   "Description": "Adds a mapable shortcut to organzie your inventory",
+   "UniqueID": "Yyeahdude.OrganzieShortcut",
+   "EntryDll": "OrganizeShortcut.dll",
+   "MinimumApiVersion": "3.0.0",
+   "UpdateKeys": ["Nexus:4772"]
+}

@@ -62,5 +62,14 @@ namespace AnimalHusbandryMod.animals
             }
             return true;
         }
+
+        public static bool draw(Pet __instance)
+        {
+            if (__instance.IsInvisible)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

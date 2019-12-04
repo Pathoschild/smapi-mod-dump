@@ -22,8 +22,8 @@ Go to an adventure with Pelican Town's villagers! Recruit bachelorete or bachlor
 - Fighter can level up (syncing level with player) and can upgrade swords
 - Display personal skills in HUD (with mouseover tooltip)
 - Better critical defense fist fight animation and sound
-- [NEW] Support for content packs and localizations
-- [NEW] User configuration (via `config.json`, see [SMAPI docs](https://stardewvalleywiki.com/Modding:Player_Guide/Getting_Started#Configure_mods)) 
+- [NEW] Support for content packs and localizations. You can add custom NPC as companion (see [how to create content pack](https://github.com/purrplingcat/PurrplingMod/wiki/Content-packs) on wiki)
+- [NEW] User configuration (via `config.json`, see [SMAPI docs] (https://stardewvalleywiki.com/Modding:Player_Guide/Getting_Started#Configure_mods)) 
 
 Next features comming soon...
 
@@ -48,6 +48,10 @@ Next features comming soon...
 - Harvey (doctor)
 
 For NPCs listed above we're missing companion dialogues. You can help us and you can create it. How? Fork this repo and see [Dialogue wiki](https://github.com/purrplingcat/PurrplingMod/wiki/Dialogues). You can get inspiration [from code](https://github.com/purrplingcat/PurrplingMod/tree/master/PurrplingMod/assets/Dialogue). Are you created dialogues? Just send us a PR.
+
+## Custom NPCs
+
+You can add your custom NPC as companion to this mod via content pack. See [documentation](https://github.com/purrplingcat/PurrplingMod/wiki/Content-packs)
 
 ## Compatibility
 

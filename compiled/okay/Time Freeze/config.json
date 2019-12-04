@@ -1,10 +1,6 @@
 {
-  "LocationsToIgnoreTimeFreeze": [],
-  "PassTimeWhileSwimming": true,
+  "freezeTimeInThisLocation": {},
   "PassTimeWhileSwimmingInBathhouse": true,
-  "PassTimeWhileInsideMine": true,
-  "PassTimeWhileInsideSkullCave": true,
-  "PassTimeWhileInNightMarketSubmarine": true,
   "freezeIfEvenOnePlayerMeetsTimeFreezeConditions": false,
   "freezeIfMajorityPlayersMeetsTimeFreezeConditions": true,
   "freezeIfAllPlayersMeetTimeFreezeConditions": false

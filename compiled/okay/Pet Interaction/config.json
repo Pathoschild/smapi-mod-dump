@@ -3,6 +3,7 @@
   "pet_fetch_friendship_chance": 40,
   "pet_fetch_friendship_increase": 10,
   "pet_petting_friendship_increase": 12,
+  "stick_range": 12.0,
   "show_message_on_warp": true,
   "unconditional_love": false,
   "love_everytime_at_max_friendship": false,

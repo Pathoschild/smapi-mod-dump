@@ -6,9 +6,25 @@ namespace CraftPriority
 {
     class ModEntry : Mod
     {
+        private ModConfig cfg;
+
+        private bool isInCoop = false;
+
         public override void Entry(IModHelper helper)
         {
+            cfg = helper.ReadConfig<ModConfig>();
+
             Helper.Events.Input.ButtonPressed += this.Input_ButtonPressed;
+
+            if (cfg.DisallowEatingInCoop)
+            {
+                Helper.Events.Player.Warped += this.Player_Warped;
+            }
+        }
+
+        private void Player_Warped(object sender, StardewModdingAPI.Events.WarpedEventArgs e)
+        {
+            isInCoop = e.IsLocalPlayer && e.NewLocation.Map.Id.ToLower() == "coop";
         }
 
         private void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
@@ -33,7 +49,7 @@ namespace CraftPriority
                         int px = player.getTileX();
                         int py = player.getTileY();
 
-                        bool preventEating = false;
+                        bool preventEating = isInCoop;
                         //Test for "action" blocks around the player
                         for (int y = -1; y <= 1 && !preventEating; y++)
                         {
@@ -44,7 +60,7 @@ namespace CraftPriority
                                     Object tile = Game1.currentLocation.getObjectAtTile(px + x, py + y);
                                     if (tile != null)
                                     {
-                                        Object tileCopy = null;
+                                        Object tileCopy;
 
                                         //Make a copy to prevent modification of the real object
                                         if (tile is Cask)
@@ -62,7 +78,7 @@ namespace CraftPriority
                                         if (tileCopy == null)
                                         {
                                             string log = "Copying tile failed. Please report to https://github.com/trienow/Stardew-CraftPriority/issues/new or https://www.nexusmods.com/stardewvalley/mods/4174?tab=bugs\r\n" +
-                                                $"Tile to copy: '{tile.Name}'\r\nThanks! -TR";
+                                                $"Tile to copy: '{tile.Name}'\r\nThanks! -trienow";
                                             Monitor.Log(log, LogLevel.Error);
                                             continue;
                                         }

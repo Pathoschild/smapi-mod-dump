@@ -1,0 +1,102 @@
+﻿{
+	"Format": "1.10",
+	"Changes": [
+		{
+			"Action": "EditData",
+			"Target": "Data/FishPondData",
+			"Entries": {
+				"toy_item": {
+					"RequiredTags": [ "toy_item" ],
+					"SpawnTime": 4,
+					"ProducedItems": [
+						{
+							"RequiredPopulation": 1,
+							"Chance": 0.80,
+							"ItemID": 178,
+							"MinQuantity": 5,
+							"MaxQuantity": 5
+						},
+						{
+							"RequiredPopulation": 1,
+							"Chance": 0.50,
+							"ItemID": 812,
+							"MinQuantity": 1,
+							"MaxQuantity": 1
+						},
+					],
+					"PopulationGates": {
+						"3": [
+							"684 5",
+							"84 2"
+						],
+						"5": [
+							"110 1",
+						],
+						"7": [
+							"176 1",
+							"174 1",
+							"180 1",
+							"182 1",
+						],
+					}
+				},
+				"doll_item": {
+					"RequiredTags": [ "doll_item" ],
+					"SpawnTime": 6,
+					"ProducedItems": [
+						{
+							"RequiredPopulation": 1,
+							"Chance": 0.80,
+							"ItemID": 206,
+							"MinQuantity": 1,
+							"MaxQuantity": 1
+						},
+						{
+							"RequiredPopulation": 7,
+							"Chance": 0.50,
+							"ItemID": 809,
+							"MinQuantity": 2,
+							"MaxQuantity": 2
+						},
+						{
+							"RequiredPopulation": 4,
+							"Chance": 0.50,
+							"ItemID": 809,
+							"MinQuantity": 1,
+							"MaxQuantity": 2
+						},
+						{
+							"RequiredPopulation": 1,
+							"Chance": 0.50,
+							"ItemID": 809,
+							"MinQuantity": 1,
+							"MaxQuantity": 1
+						},
+					],
+					"PopulationGates": {
+						"3": [
+							"306 1",
+							"307 1",
+							"308 1"
+						],
+						"5": [
+							"342 1",
+							"344 1",
+						],
+						"7": [
+							"430 2",
+						],
+					}
+				},
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/FishPondData",
+			"MoveEntries": [
+				{ "ID": "doll_item", "ToPosition": "Top" },
+				{ "ID": "toy_item", "ToPosition": "Top" },
+			],
+		},
+	]
+}

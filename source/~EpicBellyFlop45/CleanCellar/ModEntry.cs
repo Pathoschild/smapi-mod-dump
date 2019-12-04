@@ -1,12 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using xTile;
 
 namespace CleanCellar
 {
@@ -74,7 +68,7 @@ namespace CleanCellar
         /// <param name="asset">Basic metadata about the asset being loaded.</param>
         public T Load<T>(IAssetInfo asset)
         {
-            return this.Helper.Content.Load<T>("Assets/Cellar.xnb", ContentSource.ModFolder);
+            return this.Helper.Content.Load<T>("Assets/Cellar.tbin", ContentSource.ModFolder);
         }
     }
 }

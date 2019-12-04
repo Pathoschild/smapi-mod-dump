@@ -437,16 +437,15 @@ namespace catGifts
 
             if (hasCat)
             {
-                int catFriendship = theCat.friendshipTowardFarmer;
-
+              
                 // Determine gift chance
                 int giftChance = 0;
 
-                if (catFriendship < THRESHOLD_1)
+                if (theCat.friendshipTowardFarmer.Value < THRESHOLD_1)
                     giftChance = GIFT_CHANCE_1;
-                else if (catFriendship >= THRESHOLD_1 && catFriendship < THRESHOLD_2)
+                else if (theCat.friendshipTowardFarmer.Value >= THRESHOLD_1 && theCat.friendshipTowardFarmer.Value < THRESHOLD_2)
                     giftChance = GIFT_CHANCE_2;
-                else if (catFriendship >= THRESHOLD_2 && catFriendship <= THRESHOLD_3)
+                else if (theCat.friendshipTowardFarmer.Value >= THRESHOLD_2 && theCat.friendshipTowardFarmer.Value <= THRESHOLD_3)
                     giftChance = GIFT_CHANCE_3;
 
                 // if the player is a farmhand, relationship with the cat is broken. Use predetermined chance for farmhands
@@ -509,16 +508,15 @@ namespace catGifts
                 //this.Monitor.Log("Found a clear tile at " + tile.X + "/" + tile.Y);
 
                 // Spawn gift at its location
-                int dogFriendship = theDog.friendshipTowardFarmer;
 
                 // Determine gift chance
                 int giftChance = 0;
 
-                if (dogFriendship < THRESHOLD_1)
+                if (theDog.friendshipTowardFarmer.Value < THRESHOLD_1)
                     giftChance = GIFT_CHANCE_1;
-                else if (dogFriendship >= THRESHOLD_1 && dogFriendship < THRESHOLD_2)
+                else if (theDog.friendshipTowardFarmer.Value >= THRESHOLD_1 && theDog.friendshipTowardFarmer.Value < THRESHOLD_2)
                     giftChance = GIFT_CHANCE_2;
-                else if (dogFriendship >= THRESHOLD_2 && dogFriendship <= THRESHOLD_3)
+                else if (theDog.friendshipTowardFarmer.Value >= THRESHOLD_2 && theDog.friendshipTowardFarmer.Value <= THRESHOLD_3)
                     giftChance = GIFT_CHANCE_3;
 
                 // if the player is a farmhand, relationship with the dog is broken. Use predetermined chance for farmhands

@@ -5,6 +5,8 @@
         <RootNamespace>NoOre</RootNamespace>
         <TargetFramework>net452</TargetFramework>
         <EnableHarmony>true</EnableHarmony>
+        <Platforms>x86</Platforms>
+        <Configurations>Debug;Release</Configurations>
     </PropertyGroup>
 
     <ItemGroup>

@@ -93,9 +93,11 @@ namespace MTN2.Menus {
         public List<ClickableComponent> rightSelectionButtons = new List<ClickableComponent>();
         public List<ClickableComponent> genderButtons = new List<ClickableComponent>();
         public List<ClickableComponent> petButtons = new List<ClickableComponent>();
-        public List<ClickableTextureComponent> farmTypeButtons = new List<ClickableTextureComponent>();
         public List<ClickableComponent> colorPickerCCs = new List<ClickableComponent>();
+
+        public List<ClickableTextureComponent> farmTypeButtons = new List<ClickableTextureComponent>();
         public List<ClickableTextureComponent> cabinLayoutButtons = new List<ClickableTextureComponent>();
+
         public ClickableTextureComponent okButton;
         public ClickableTextureComponent skipIntroButton;
         public ClickableTextureComponent randomButton;
@@ -133,7 +135,8 @@ namespace MTN2.Menus {
         private ColorPicker lastHeldColorPicker;
         private int timesRandom;
 
-        public CharacterCustomizationMTN(ICustomManager customManager, IMonitor monitor, CharacterCustomization.Source source) : base(Game1.viewport.Width / 2 - (632 + IClickableMenu.borderWidth * 2) / 2, Game1.viewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2 - 64, 632 + IClickableMenu.borderWidth * 2, 600 + IClickableMenu.borderWidth * 2 + 64, false) {
+        public CharacterCustomizationMTN(ICustomManager customManager, IMonitor monitor, CharacterCustomization.Source source) 
+            : base(Game1.viewport.Width / 2 - (632 + IClickableMenu.borderWidth * 2) / 2, Game1.viewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2 - 64, 632 + IClickableMenu.borderWidth * 2, 600 + IClickableMenu.borderWidth * 2 + 64, false) {
             this.customManager = customManager;
             this.monitor = monitor;
 

@@ -13,69 +13,76 @@ namespace ClimatesOfFerngillRebuild
 {
     internal static class WeatherUtilities
     {
+		internal static Dictionary<RainLevels,StaticRange> RainCategories{
+			{(RainLevel.None,new StaticRange(0,0,0))},
+			{(RainLevel.Sunshower, new StaticRange(0,9,17.5))},
+			{(RainLevel.Light, new StaticRange(17.5,35,52.5))},
+			{(RainLevel.Normal, new StaticRange(52.5,70,105))},
+			{(RainLevel.Moderate, new StaticRange(105,140,210))},
+			{(RainLevel.Heavy, new StaticRange(210,280,420))},
+			{(RainLevel.Severe, new StaticRange(420,560,840))},
+		        {(RainLevel.Torrential, new StaticRange(840,1120,1680))},
+			{(RainLevel.Typhoon, new StaticRange(1680,2240,3360))},
+			{(RainLevel.NoahsFlood, new StaticRange(3360,3680,6720))},
+		};
+		
         internal static int MaxRain = 4000;
+
+        internal static int ReturnMidPoint(RainLevels level)
+        {
+            return RainCategories[level].MidPoint;
+        }
+
+        internal static RainLevels GetCategory(int rain)
+        {
+           foreach (var rl in RainCategories)
+		   {
+				if (rl.Value.IsWithinFullRange(rain))
+					return  rl.Key;
+		   }
+
+            throw new System.Exception($"Rain is {rain}, reached point in execution it shouldn't reach.");
+        }
 
         internal static bool IsSevereRainFall(int rainAmt)
         {
-            if (GetCategory(rainAmt) == RainLevels.Torrential || GetCategory(rainAmt) == RainLevels.Typhoon || 
+			if (GetCategory(rainAmt) == RainLevels.Torrential || GetCategory(rainAmt) == RainLevels.Typhoon || 
 				GetCategory(rainAmt) == RainLevels.NoahsFlood || GetCategory(rainAmt) == RainLevels.Severe)
                 return true;
 
             return false;
         }
 
-        internal static int ReturnMidPoint(RainLevels level)
-        {
-            switch (level)
-            {
-                case RainLevels.None:
-                    return 0;
-                case RainLevels.Sunshower:
-                    return 9;
-                case RainLevels.Light:
-                    return 35;
-                case RainLevels.Normal:
-                    return 70;
-                case RainLevels.Moderate:
-                    return 140;
-                case RainLevels.Heavy:
-                    return 280;
-                case RainLevels.Severe:
-                    return 560;
-                case RainLevels.Torrential:
-                    return 1120;
-                case RainLevels.Typhoon:
-                    return 2240;
-                case RainLevels.NoahsFlood:
-                    return 3680;
-                default:
-                    return 0;
-            }
-        }
-
         internal static int ReturnRndRainAmtInLevel(MersenneTwister dice, RainLevels rl)
         {
-            if (rl == RainLevels.Sunshower)
-                return dice.Next(0, (ReturnMidPoint(RainLevels.Light) / 2));
-            else if (rl == RainLevels.Light)
-                return dice.Next((ReturnMidPoint(RainLevels.Light) / 2), (ReturnMidPoint(RainLevels.Normal) / 2));
-            else if (rl == RainLevels.Normal)
-                return dice.Next((ReturnMidPoint(RainLevels.Normal) / 2), (ReturnMidPoint(RainLevels.Normal) + ReturnMidPoint(RainLevels.Light)));
-            else if (rl == RainLevels.Moderate)
-                return dice.Next((ReturnMidPoint(RainLevels.Normal) + ReturnMidPoint(RainLevels.Light)), (ReturnMidPoint(RainLevels.Moderate) + ReturnMidPoint(RainLevels.Normal)));
-            else if (rl == RainLevels.Heavy)
-                return dice.Next((ReturnMidPoint(RainLevels.Moderate) + ReturnMidPoint(RainLevels.Normal)), (ReturnMidPoint(RainLevels.Moderate) + ReturnMidPoint(RainLevels.Heavy)));
-            else if (rl == RainLevels.Severe)
-                return dice.Next((ReturnMidPoint(RainLevels.Moderate) + ReturnMidPoint(RainLevels.Heavy)), (ReturnMidPoint(RainLevels.Severe) + ReturnMidPoint(RainLevels.Heavy)));
-            else if (rl == RainLevels.Torrential)
-                return dice.Next((ReturnMidPoint(RainLevels.Severe) + ReturnMidPoint(RainLevels.Heavy)), (ReturnMidPoint(RainLevels.Severe) + ReturnMidPoint(RainLevels.Torrential)));
-            else if (rl == RainLevels.Typhoon)
-                return dice.Next((ReturnMidPoint(RainLevels.Severe) + ReturnMidPoint(RainLevels.Torrential)), (ReturnMidPoint(RainLevels.Typhoon) + ReturnMidPoint(RainLevels.Torrential)));
-            else if (rl == RainLevels.NoahsFlood)
-                return dice.Next((ReturnMidPoint(RainLevels.Typhoon) + ReturnMidPoint(RainLevels.Torrential)), MaxRain);
+			return RainCategories[rl].RandomInFullRange(dice);
+        }
 
 
-            return dice.Next((ReturnMidPoint(RainLevels.Normal) / 2), (ReturnMidPoint(RainLevels.Normal) + ReturnMidPoint(RainLevels.Light)));
+        internal static string DescCategory(int rain)
+        {
+            if (rain == 0)
+                return ClimatesOfFerngill.Translator.Get("category-none");
+            else if (RainCategories[RainLevels.Sunshower].IsWithinFullRange(rain))
+                return ClimatesOfFerngill.Translator.Get("category-sunshower");
+            else if (RainCategories[RainLevels.Light].IsWithinFullRange(rain))
+                return ClimatesOfFerngill.Translator.Get("category-light");
+            else if (RainCategories[RainLevels.Normal].IsWithinFullRange(rain))
+                return ClimatesOfFerngill.Translator.Get("category-normal");
+            else if (RainCategories[RainLevels.Moderate].IsWithinFullRange(rain))
+                return ClimatesOfFerngill.Translator.Get("category-moderate");
+            else if (RainCategories[RainLevels.Heavy].IsWithinFullRange(rain))
+                return ClimatesOfFerngill.Translator.Get("category-heavy");
+           else if (RainCategories[RainLevels.Severe].IsWithinFullRange(rain))
+                return ClimatesOfFerngill.Translator.Get("category-severe");
+            else if (RainCategories[RainLevels.Torrential].IsWithinFullRange(rain))
+                return ClimatesOfFerngill.Translator.Get("category-torrential");
+            else if (RainCategories[RainLevels.Typhoon].IsWithinFullRange(rain))
+                return ClimatesOfFerngill.Translator.Get("category-typhoon");
+          else if (RainCategories[RainLevels.NoahsFlood].IsWithinFullRange(rain))
+                return ClimatesOfFerngill.Translator.Get("category-noahsflood");
+
+            throw new System.Exception($"Rain is {rain}, reached point in execution it shouldn't reach.");
         }
 
         internal static double GetStepChance(int rain, bool increase = true)
@@ -85,125 +92,62 @@ namespace ClimatesOfFerngillRebuild
             {
                 if (increase)
                 {
-                    if (rain > 0 && rain <= ReturnMidPoint(RainLevels.Sunshower))
+		    if (RainCategories[RainLevels.Sunshower].IsWithinLowerRange(rain))
                         multiplier *= 5.4;
-                    if (rain > ReturnMidPoint(RainLevels.Sunshower) && rain <= ReturnMidPoint(RainLevels.Light) / 2)
+                    else if (RainCategories[RainLevels.Sunshower].IsWithinUpperRange(rain))
                         multiplier *= 3.2;
-                    else if (rain > (ReturnMidPoint(RainLevels.Light) / 2) && rain <= (ReturnMidPoint(RainLevels.Light)))
+                    else if (RainCategories[RainLevels.Light].IsWithinLowerRange(rain))
                         multiplier *= 1.8;
-                    else if (rain > (ReturnMidPoint(RainLevels.Light)) && rain <= (ReturnMidPoint(RainLevels.Normal) / 2))
+                    else if (RainCategories[RainLevels.Light].IsWithinUpperRange(rain))
                         multiplier *= 1.5;
-                    else if (rain > (ReturnMidPoint(RainLevels.Normal) / 2) && rain <= (ReturnMidPoint(RainLevels.Normal)))
+                    else if (RainCategories[RainLevels.Normal].IsWithinLowerRange(rain))
                         multiplier *= 1.4;
-                    else if (rain > (ReturnMidPoint(RainLevels.Normal)) && rain <= (ReturnMidPoint(RainLevels.Heavy)))
-                        multiplier /= 1.1;
-                    else if (rain > (ReturnMidPoint(RainLevels.Heavy)) && rain <= (ReturnMidPoint(RainLevels.Severe)))
-                        multiplier /= 1.65;
-                    else if (rain > (ReturnMidPoint(RainLevels.Severe)) && rain <= (ReturnMidPoint(RainLevels.Severe) + ReturnMidPoint(RainLevels.Heavy)))
+
+                    else if (RainCategories[RainLevels.Heavy].IsWithinUpperRange(rain) || RainCategories[RainLevels.Severe].IsWithinLowerRange(rain))
+                        multiplier /= 1.4;
+                    else if (RainCategories[RainLevels.Severe].IsWithinUpperRange(rain)))
                         multiplier /= 1.95;
-                    else if (rain > (ReturnMidPoint(RainLevels.Torrential) + ReturnMidPoint(RainLevels.Severe)) && rain <= (ReturnMidPoint(RainLevels.Torrential) + ReturnMidPoint(RainLevels.Severe)))
+                    else if (RainCategories[RainLevels.Torrential].IsWithinFullRange(rain))
                         multiplier /= 2.25;
-                    else if (rain > (ReturnMidPoint(RainLevels.Typhoon)) && rain <= (ReturnMidPoint(RainLevels.Typhoon) + ReturnMidPoint(RainLevels.Torrential)))
+                    else if (RainCategories[RainLevels.Typhoon].IsWithinLowerRange(rain))
                         multiplier /= 3.15;
-                    else if (rain > (ReturnMidPoint(RainLevels.Typhoon) + ReturnMidPoint(RainLevels.Torrential)) && rain <= (ReturnMidPoint(RainLevels.NoahsFlood)))
+                    else if (RainCategories[RainLevels.Typhoon].IsWithinUpperRange(rain))
                         multiplier /= 3.5;
-                    else if (rain > (ReturnMidPoint(RainLevels.NoahsFlood)) && rain <= MaxRain)
+		    else if (RainCategories[RainLevels.NoahsFlood].IsWithinLowerRange(rain)))
                         multiplier /= 5.4;
+                    else if (RainCategories[RainLevels.NoahsFlood].IsWithinUpperRange(rain)))
+                        multiplier /= 7.8;
                 }
                 if (!increase)
                 {
-                    if (rain > 0 && rain <= ReturnMidPoint(RainLevels.Sunshower))
+		    if (RainCategories[RainLevels.Sunshower].IsWithinLowerRange(rain))
                         multiplier /= 5.4;
-                    if (rain > ReturnMidPoint(RainLevels.Sunshower) && rain <= ReturnMidPoint(RainLevels.Light) / 2)
+                    else if (RainCategories[RainLevels.Sunshower].IsWithinUpperRange(rain))
                         multiplier /= 3.2;
-                    else if (rain > (ReturnMidPoint(RainLevels.Light) / 2) && rain <= (ReturnMidPoint(RainLevels.Light)))
+                    else if (RainCategories[RainLevels.Light].IsWithinLowerRange(rain))
                         multiplier /= 1.8;
-                    else if (rain > (ReturnMidPoint(RainLevels.Light)) && rain <= (ReturnMidPoint(RainLevels.Normal) / 2))
+                    else if (RainCategories[RainLevels.Light].IsWithinUpperRange(rain))
                         multiplier /= 1.5;
-                    else if (rain > (ReturnMidPoint(RainLevels.Normal) / 2) && rain <= (ReturnMidPoint(RainLevels.Normal)))
+                    else if (RainCategories[RainLevels.Normal].IsWithinLowerRange(rain))
                         multiplier /= 1.4;
-                    else if (rain > (ReturnMidPoint(RainLevels.Normal)) && rain <= (ReturnMidPoint(RainLevels.Heavy)))
-                        multiplier *= 1.1;
-                    else if (rain > (ReturnMidPoint(RainLevels.Heavy)) && rain <= (ReturnMidPoint(RainLevels.Severe)))
+                    else if (RainCategories[RainLevels.Heavy].IsWithinUpperRange(rain) || RainCategories[RainLevels.Severe].IsWithinLowerRange(rain))
                         multiplier *= 1.65;
-                    else if (rain > (ReturnMidPoint(RainLevels.Severe)) && rain <= (ReturnMidPoint(RainLevels.Severe) + ReturnMidPoint(RainLevels.Heavy)))
+                    else if (RainCategories[RainLevels.Severe].IsWithinUpperRange(rain)))
                         multiplier *= 1.95;
-                    else if (rain > (ReturnMidPoint(RainLevels.Torrential) + ReturnMidPoint(RainLevels.Severe)) && rain <= (ReturnMidPoint(RainLevels.Torrential) + ReturnMidPoint(RainLevels.Severe)))
-                        multiplier *= 2.15;
-                    else if (rain > (ReturnMidPoint(RainLevels.Typhoon)) && rain <= (ReturnMidPoint(RainLevels.Typhoon) + ReturnMidPoint(RainLevels.Torrential)))
+                    else if (RainCategories[RainLevels.Torrential].IsWithinFullRange(rain))
+                        multiplier *= 2.25;
+                    else if (RainCategories[RainLevels.Typhoon].IsWithinLowerRange(rain))
                         multiplier *= 3.15;
-                    else if (rain > (ReturnMidPoint(RainLevels.Typhoon) + ReturnMidPoint(RainLevels.Torrential)) && rain <= (ReturnMidPoint(RainLevels.NoahsFlood)))
+                    else if (RainCategories[RainLevels.Typhoon].IsWithinUpperRange(rain))
                         multiplier *= 3.5;
-                    else if (rain > (ReturnMidPoint(RainLevels.NoahsFlood)) && rain <= MaxRain)
+		    else if (RainCategories[RainLevels.NoahsFlood].IsWithinLowerRange(rain)))
                         multiplier *= 5.4;
+                    else if (RainCategories[RainLevels.NoahsFlood].IsWithinUpperRange(rain)))
+                        multiplier *= 7.8;
                 }
             }
-            multiplier *= 1.18;
-
+            
             return multiplier;
-        }
-
-
-        internal static RainLevels GetCategory(int rain)
-        {
-            if (rain == 0)
-                return RainLevels.None;
-            if (rain < ReturnMidPoint(RainLevels.Light) / 2)
-                return RainLevels.Sunshower;
-            else if (rain >= ReturnMidPoint(RainLevels.Light) / 2 && rain < (ReturnMidPoint(RainLevels.Normal) / 2))
-                return RainLevels.Light;
-            else if (rain >= (ReturnMidPoint(RainLevels.Normal) / 2) && rain < (ReturnMidPoint(RainLevels.Normal) + ReturnMidPoint(RainLevels.Light)))
-                return RainLevels.Normal;
-            else if (rain >= (ReturnMidPoint(RainLevels.Normal) + ReturnMidPoint(RainLevels.Light)) &&
-                rain < (ReturnMidPoint(RainLevels.Moderate) + ReturnMidPoint(RainLevels.Normal)))
-                return RainLevels.Moderate;
-            else if (rain >= (ReturnMidPoint(RainLevels.Moderate) + ReturnMidPoint(RainLevels.Normal)) &&
-                rain < (ReturnMidPoint(RainLevels.Heavy) + ReturnMidPoint(RainLevels.Moderate)))
-                return RainLevels.Heavy;
-            else if (rain >= (ReturnMidPoint(RainLevels.Heavy) + ReturnMidPoint(RainLevels.Moderate)) &&
-                rain < (ReturnMidPoint(RainLevels.Severe) + ReturnMidPoint(RainLevels.Heavy)))
-                return RainLevels.Severe;
-            else if (rain >= (ReturnMidPoint(RainLevels.Severe) + ReturnMidPoint(RainLevels.Heavy)) &&
-                rain < (ReturnMidPoint(RainLevels.Torrential) + ReturnMidPoint(RainLevels.Severe)))
-                return RainLevels.Torrential;
-            else if (rain >= (ReturnMidPoint(RainLevels.Severe) + ReturnMidPoint(RainLevels.Torrential)) &&
-                rain < (ReturnMidPoint(RainLevels.Torrential) + ReturnMidPoint(RainLevels.Typhoon)))
-                return RainLevels.Typhoon;
-            else if (rain >= (ReturnMidPoint(RainLevels.Torrential) + ReturnMidPoint(RainLevels.Severe)))
-                return RainLevels.NoahsFlood;
-
-            throw new System.Exception($"Rain is {rain}, reached point in execution it shouldn't reach.");
-        }
-
-        internal static string DescCategory(int rain)
-        {
-            if (rain == 0)
-                return ClimatesOfFerngill.Translator.Get("category-none");
-            if (rain < ReturnMidPoint(RainLevels.Light) / 2)
-                return ClimatesOfFerngill.Translator.Get("category-sunshower");
-            else if (rain >= ReturnMidPoint(RainLevels.Light) / 2 && rain < (ReturnMidPoint(RainLevels.Normal) / 2))
-                return ClimatesOfFerngill.Translator.Get("category-light");
-            else if (rain >= (ReturnMidPoint(RainLevels.Normal) / 2) && rain < (ReturnMidPoint(RainLevels.Normal) + ReturnMidPoint(RainLevels.Light)))
-                return ClimatesOfFerngill.Translator.Get("category-normal");
-            else if (rain >= (ReturnMidPoint(RainLevels.Normal) + ReturnMidPoint(RainLevels.Light)) &&
-                rain < (ReturnMidPoint(RainLevels.Moderate) + ReturnMidPoint(RainLevels.Normal)))
-                return ClimatesOfFerngill.Translator.Get("category-moderate");
-            else if (rain >= (ReturnMidPoint(RainLevels.Moderate) + ReturnMidPoint(RainLevels.Normal)) &&
-                rain < (ReturnMidPoint(RainLevels.Heavy) + ReturnMidPoint(RainLevels.Moderate)))
-                return ClimatesOfFerngill.Translator.Get("category-heavy");
-            else if (rain >= (ReturnMidPoint(RainLevels.Heavy) + ReturnMidPoint(RainLevels.Moderate)) &&
-                rain < (ReturnMidPoint(RainLevels.Severe) + ReturnMidPoint(RainLevels.Heavy)))
-                return ClimatesOfFerngill.Translator.Get("category-severe");
-            else if (rain >= (ReturnMidPoint(RainLevels.Severe) + ReturnMidPoint(RainLevels.Heavy)) &&
-                rain < (ReturnMidPoint(RainLevels.Torrential) + ReturnMidPoint(RainLevels.Severe)))
-                return ClimatesOfFerngill.Translator.Get("category-torrential");
-            else if (rain >= (ReturnMidPoint(RainLevels.Severe) + ReturnMidPoint(RainLevels.Torrential)) &&
-                rain < (ReturnMidPoint(RainLevels.Torrential) + ReturnMidPoint(RainLevels.Typhoon)))
-                return ClimatesOfFerngill.Translator.Get("category-typhoon");
-            else if (rain >= (ReturnMidPoint(RainLevels.Torrential) + ReturnMidPoint(RainLevels.Severe)))
-                return ClimatesOfFerngill.Translator.Get("category-noahsflood");
-
-            throw new System.Exception($"Rain is {rain}, reached point in execution it shouldn't reach.");
         }
 
         private static readonly Dictionary<SDate, int> _forceDays = new Dictionary<SDate, int>

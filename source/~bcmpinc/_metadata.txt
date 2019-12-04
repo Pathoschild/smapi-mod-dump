@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 3d894bfa371a7f0fb4d2aecf031b5ff6203a9901
+   commit 9e7f07457aa739494463791c9e4c2dcfc2cd0073
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Fri Nov 29 21:03:05 2019 +0100
+   Date:   Sun Dec 1 03:40:25 2019 +0100
    
-       Update SMAPI-SDK
+       Fixed issue with golden scythe.
    

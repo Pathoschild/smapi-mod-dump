@@ -1,7 +1,7 @@
 {
   "Name": "Mushroom Levels",
   "Author": "Eireon",
-  "Version": "1.0.4",
+  "Version": "1.0.5",
   "Description": "Dislays Mushroom levels in Mine",
   "UniqueID": "Eireon.MushroomLevels",
   "EntryDll": "MushroomLevel.dll",

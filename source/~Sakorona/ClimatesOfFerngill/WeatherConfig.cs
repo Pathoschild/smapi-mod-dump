@@ -5,7 +5,6 @@ namespace ClimatesOfFerngillRebuild
     {
         //required options
         public SButton WeatherMenuToggle { get; set; } = SButton.Z;
-
         public bool UseImperialForRainfall { get; set; } = false; 
         public string ClimateType { get; set; } = "enhanced";
         public double DryLightning { get; set; } = .1; // 10%

@@ -22,6 +22,8 @@ namespace MTN2.Patches.FarmPatches
     /// (Farmhouse, Greenhouse, Mailbox, Grandpa Shrine)
     /// </summary>
     public class drawPatch {
+        private const int insertionPoint = 154;
+
         private static ICustomManager customManager;
 
         /// <summary>
@@ -40,17 +42,9 @@ namespace MTN2.Patches.FarmPatches
         /// <param name="instructions">Code Instructions (in CLI)</param>
         /// <returns></returns>
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
-            int i;
             var codes = new List<CodeInstruction>(instructions);
 
-            // TO-DO: Refactor. Simply remove the code instead of replacing with Nops.
-            for (i = 48; i < 215; i++) {
-                codes[i].opcode = OpCodes.Nop;
-            }
-
-            for (i = 226; i < 249; i++) {
-                codes[i].opcode = OpCodes.Nop;
-            }
+            codes.RemoveRange(insertionPoint, codes.Count - insertionPoint);
 
             return codes.AsEnumerable();
         }
@@ -67,6 +61,7 @@ namespace MTN2.Patches.FarmPatches
             if (__instance.Name != "Farm") return;
             NetRectangle house = (NetRectangle)Traverse.Create(__instance).Field("houseSource").GetValue();
             NetRectangle greenhouse = (NetRectangle)Traverse.Create(__instance).Field("greenhouseSource").GetValue();
+            TemporaryAnimatedSprite binLid = (TemporaryAnimatedSprite)Traverse.Create(__instance).Field("shippingBinLid").GetValue();
 
             //Farmhouse & Farmhouse Shadows 
             b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, customManager.FarmHouseCoords(64f, 568f)), new Rectangle?(Building.leftShadow), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1E-05f);
@@ -82,8 +77,16 @@ namespace MTN2.Patches.FarmPatches
             //Mailbox Notification ("!" symbol when new mail arrives).
             if (Game1.mailbox.Count > 0) {
                 float yOffset = 4f * (float)Math.Round(Math.Sin(DateTime.Now.TimeOfDay.TotalMilliseconds / 250.0), 2);
-                b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, customManager.MailboxNotification(0f, (2.25f * -64f) + yOffset, false)), new Rectangle?(new Rectangle(141, 465, 20, 24)), Color.White * 0.75f, 0f, Vector2.Zero, 4f, SpriteEffects.None, customManager.MailBoxNotifyLayerDepth(false));
-                b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, customManager.MailboxNotification(0.5626f * 64f, (1.5f * -64f) + yOffset, true)), new Rectangle?(new Rectangle(189, 423, 15, 13)), Color.White, 0f, new Vector2(7f, 6f), 4f, SpriteEffects.None, customManager.MailBoxNotifyLayerDepth(true));
+
+                b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, customManager.MailboxNotification(0f, yOffset, false)), 
+                    new Rectangle?(new Rectangle(141, 465, 20, 24)), Color.White * 0.75f, 0f, Vector2.Zero, 4f, SpriteEffects.None, customManager.MailBoxNotifyLayerDepth(false));
+                b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, customManager.MailboxNotification(0.5626f * 64f, (1.5f * -64f) + yOffset, true)), 
+                    new Rectangle?(new Rectangle(189, 423, 15, 13)), Color.White, 0f, new Vector2(7f, 6f), 4f, SpriteEffects.None, customManager.MailBoxNotifyLayerDepth(true));
+            }
+
+            //Shipping Bin Animation
+            if (binLid != null) {
+                binLid.draw(b, false, 0, 0, 1f);
             }
 
             //Shrine note

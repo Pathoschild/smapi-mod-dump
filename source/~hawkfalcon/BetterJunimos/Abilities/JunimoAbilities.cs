@@ -27,8 +27,9 @@ namespace BetterJunimos.Utils {
             List<IJunimoAbility> DefaultAbilities = new List<IJunimoAbility> {
                 new FertilizeAbility(),
                 new WaterAbility(),
-                new PlantCropsAbility(), 
-                new HarvestCropsAbility(), 
+                new PlantCropsAbility(),
+                new HarvestCropsAbility(),
+                new HarvestBushesAbility(),
                 new HarvestForageCropsAbility(), 
                 new ClearDeadCropsAbility() 
             };

@@ -57,7 +57,7 @@ namespace BetterTrainLoot
 
                 harmony = HarmonyInstance.Create("com.aairthegreat.mod.trainloot");
                 harmony.Patch(typeof(TrainCar).GetMethod("draw"), null, new HarmonyMethod(typeof(TrainCarOverrider).GetMethod("postfix_getTrainTreasure")));
-
+                harmony.Patch(typeof(Railroad).GetMethod("PlayTrainApproach"), new HarmonyMethod(typeof(RailroadOverrider).GetMethod("prefix_playTrainApproach")));
                 string trainCarFile = Path.Combine("DataFiles", "trains.json");
                 trainCars = helper.Data.ReadJsonFile<Dictionary<TRAINS, TrainData>>(trainCarFile) ?? TrainDefaultConfig.CreateTrainCarData(trainCarFile);
 
@@ -186,12 +186,12 @@ namespace BetterTrainLoot
             enableCreatedTrain = true;
             numberOfTrains = 0;
             numberOfRewardsPerTrain = 0;
-            pctChanceOfNewTrain = Game1.player.DailyLuck + config.basePctChanceOfTrain;                                                                                    // SDV 1.4... use Game1.player.DailyLuck
+            pctChanceOfNewTrain = Game1.player.DailyLuck + config.basePctChanceOfTrain;                                                                                    
         }
 
         private void SetMaxNumberOfTrainsAndStartTime()
         {
-            maxNumberOfTrains = (int)Math.Round((Game1.random.NextDouble() + Game1.player.DailyLuck) * (double)config.maxTrainsPerDay, 0, MidpointRounding.AwayFromZero);  // SDV 1.4... use Game1.player.DailyLuck
+            maxNumberOfTrains = (int)Math.Round((Game1.random.NextDouble() + Game1.player.DailyLuck) * (double)config.maxTrainsPerDay, 0, MidpointRounding.AwayFromZero);  
 
             double ratio = (double)maxNumberOfTrains / (double)config.maxTrainsPerDay;  
 
@@ -205,7 +205,7 @@ namespace BetterTrainLoot
             //Update the treasure chances for today
             foreach (TrainData train in trainCars.Values)
             {
-                train.UpdateTrainLootChances(Game1.player.DailyLuck);                                                                                                      // SDV 1.4... use Game1.player.DailyLuck
+                train.UpdateTrainLootChances(Game1.player.DailyLuck);                                                                                                     
             }
         }
 

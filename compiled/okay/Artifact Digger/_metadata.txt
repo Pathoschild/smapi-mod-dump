@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/4212
 IDs: mizzion.artifactdigger
-update keys: Nexus:4212
+update keys: Nexus:4212, ModDrop:661378, GitHub:Mizzion/MyStardewMods

@@ -1,0 +1,155 @@
+{
+  "Format": "1.0",
+  "Categories": [
+	{
+      "Action": "Create",
+      "Category": "Grub",
+      "Types": [
+        {
+          "Type": "Grub",
+          "Data": "1/0/684/684/cavedrip/8/32/48/32/8/32/48/32/0/false/Coop/16/16/16/16/1/8/null/684/400/Grub/Coop",
+          "Sprites": {
+            "Adult": "assets/FarmGrub.png",
+            "Baby": "assets/FarmGrub.png",
+          },
+        },
+      ],
+      "Buildings": [
+        "Coop",
+        "Big Coop",
+        "Deluxe Coop"
+      ],
+      "AnimalShop": {
+        "Name": "Grub",
+        "Description": "Grubs have a short life span, but keep their population constant.  The result for the aspiring grub farmer is a steady supply of slightly revolting meat!",
+        "Icon": "assets/animal_shop_grubs.png",
+        "Exclude": []
+      }
+    },
+	{
+      "Action": "Create",
+      "Category": "CopperCrab",
+      "Types": [
+        {
+          "Type": "CopperCrab",
+          "Data": "1/3/378/Copper Cluster/stoneCrack/8/32/48/32/8/32/48/32/1/true/Coop/16/16/16/16/1/8/Shears/717/800/Copper Crab/Coop",
+          "Sprites": {
+            "Adult": "assets/RockCrabFarmAnimal.png",
+            "Baby": "assets/BabyRockCrabFarmAnimal.png",
+			"ReadyForHarvest": "assets/ShearedRockCrabFarmAnimal.png"
+          },
+        },
+      ],
+      "Buildings": [
+        "Coop",
+        "Big Coop",
+        "Deluxe Coop"
+      ],
+      "AnimalShop": {
+        "Name": "Copper Crab",
+        "Description": "Adults grow ore on their shell, which can be scrapped off with a set of shears. Happy rock crabs produce extreamly pure metal.",
+        "Icon": "assets/animal_shop_rockcrab.png",
+        "Exclude": []
+      }
+    },
+	{
+      "Action": "Create",
+      "Category": "IronCrab",
+      "Types": [
+        {
+          "Type": "IronCrab",
+          "Data": "2/3/380/Iron Cluster/stoneCrack/8/32/48/32/8/32/48/32/1/true/Coop/16/16/16/16/1/8/Shears/717/1200/Iron Crab/Coop",
+          "Sprites": {
+            "Adult": "assets/IronCrabFarmAnimal.png",
+            "Baby": "assets/BabyIronCrabFarmAnimal.png",
+			"ReadyForHarvest": "assets/ShearedIronCrabFarmAnimal.png"
+          },
+        },
+      ],
+      "Buildings": [
+        "Big Coop",
+        "Deluxe Coop"
+      ],
+      "AnimalShop": {
+        "Name": "Iron Crab",
+        "Description": "Adults grow ore on their shell, which can be scrapped off with a set of shears. Happy rock crabs produce extreamly pure metal.",
+        "Icon": "assets/animal_shop_ironcrab.png",
+        "Exclude": []
+      }
+    },
+	{
+      "Action": "Create",
+      "Category": "GoldCrab",
+      "Types": [
+        {
+          "Type": "GoldCrab",
+          "Data": "3/3/384/Gold Cluster/stoneCrack/8/32/48/32/8/32/48/32/1/true/Coop/16/16/16/16/1/8/Shears/717/1600/Gold Crab/Coop",
+          "Sprites": {
+            "Adult": "assets/GoldCrabFarmAnimal.png",
+            "Baby": "assets/BabyGoldCrabFarmAnimal.png",
+			"ReadyForHarvest": "assets/ShearedGoldCrabFarmAnimal.png"
+          },
+        },
+      ],
+      "Buildings": [
+        "Deluxe Coop"
+      ],
+      "AnimalShop": {
+        "Name": "Gold Crab",
+        "Description": "Adults grow ore on their shell, which can be scrapped off with a set of shears. Happy rock crabs produce extreamly pure metal.",
+        "Icon": "assets/animal_shop_goldcrab.png",
+        "Exclude": []
+      }
+    },
+	{
+      "Action": "Create",
+      "Category": "IridiumCrab",
+      "Types": [
+        {
+          "Type": "IridiumCrab",
+          "Data": "4/3/386/Iridium Cluster/stoneCrack/8/32/48/32/8/32/48/32/1/true/Coop/16/16/16/16/1/8/Shears/717/3200/Iridium Crab/Coop",
+          "Sprites": {
+            "Adult": "assets/IridiumCrabFarmAnimal.png",
+            "Baby": "assets/BabyIridiumCrabFarmAnimal.png",
+			"ReadyForHarvest": "assets/ShearedIridiumCrabFarmAnimal.png"
+          },
+        },
+      ],
+      "Buildings": [
+        "Deluxe Coop"
+      ],
+      "AnimalShop": {
+        "Name": "Iridium Crab",
+        "Description": "Adults grow ore on their shell, which can be scrapped off with a set of shears. Happy rock crabs produce extreamly pure metal.",
+        "Icon": "assets/animal_shop_iridiumcrab.png",
+        "Exclude": []
+      }
+    },
+	{
+      "Action": "Create",
+      "Category": "NakedMoleRat",
+      "Types": [
+        {
+          "Type": "NakedMoleRat",
+          "Data": "2/3/184/184/rabbit/36/64/64/64/36/64/64/64/1/false/Barn/32/32/32/32/15/5/Milk Pail/639/500/Naked Mole Rat/Barn",
+          "Sprites": {
+            "Adult": "assets/NakedMoleRat.png",
+            "Baby": "assets/BabyNakedMoleRat.png"
+			
+          },
+        },
+      ],
+      "Buildings": [
+        "Barn",
+        "Big Barn",
+        "Deluxe Barn"
+      ],
+      "AnimalShop": {
+        "Name": "Naked Mole Rat",
+        "Description": "Giant Naked Mole Rats. Kept by the dwarves as a source of milk and meat.",
+        "Icon": "assets/animal_shop_molerat.png",
+        "Exclude": []
+      }
+    },
+  ]
+}	

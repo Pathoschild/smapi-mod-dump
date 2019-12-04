@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4703
+IDs: MouseyPounds.PondPainter
+update keys: Nexus:4703, GitHub:MouseyPounds/stardew-mods

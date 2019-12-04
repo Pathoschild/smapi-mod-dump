@@ -50,7 +50,6 @@
     <Compile Include="API\IRemoteFridgeApi.cs" />
     <Compile Include="API\RemoteFridgeApi.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="CraftingPage\HarmonyRecipePatch.cs" />
     <Compile Include="CraftingPage\RemoteFrigdeCraftingMenu.cs" />
     <Compile Include="FridgeHandler.cs" />
     <Compile Include="ModEntry.cs" />

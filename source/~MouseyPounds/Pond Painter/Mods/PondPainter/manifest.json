@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Pond Painter",
+    "Author": "MouseyPounds",
+    "Version": "1.0.0",
+    "Description": "More colors for fishing ponds",
+    "UniqueID": "MouseyPounds.PondPainter",
+    "EntryDll": "PondPainter.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": ["Nexus:4703"]
+}

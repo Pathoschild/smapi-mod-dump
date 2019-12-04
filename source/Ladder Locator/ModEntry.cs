@@ -91,7 +91,7 @@ namespace LadderLocator
                         // ladder chance calculation taken from checkStoneForItems function in MineShaft class
                         Random r = new Random(x * 1000 + y + Game1.mine.mineLevel + (int) Game1.uniqueIDForThisGame / 2);
                         r.NextDouble();
-                        double chance = 0.02 + 1.0 / (double) Math.Max(1, netStonesLeftOnThisLevel) + (double) Game1.player.LuckLevel / 100.0 + Game1.dailyLuck / 5.0;
+                        double chance = 0.02 + 1.0 / (double) Math.Max(1, netStonesLeftOnThisLevel) + (double) Game1.player.LuckLevel / 100.0 + Game1.player.DailyLuck / 5.0;
 
                         if (Game1.mine.characters.Count == 0)
                         {

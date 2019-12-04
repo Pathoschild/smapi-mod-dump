@@ -1,25 +1,27 @@
 [
 	{
-		"Id": "MyMod.MyMailId", // Letter id. It's importent to be an unique string to avoid conflicts.
-		"Title": "My Letter Title", // Letter title. Will be shown in the collections menu. (Unimplemented Yet)
-		"Text": "Dear @^This is my custom mail.", // Text of the letter. You can use @ to put the players name and ^ for line breakes. You can also use the base game commands to add money, itens and stuff.
-		"Attachments": [{"Type": "Tool", "Name": "Axe"},{"Type": "Object", "Index":78, "Stack": 3},{"Type": "BigObject", "Index":159}], // Remove the line to not attach items to the mail. You can use the Name properties for Object and BigObject items too, that's required if using Json Assets. Stack is required for all Object items.
+		"Id": "MyMod.MyMailId", // Letter id. It's important to be an unique string to avoid conflicts. Also it shouldn't have space characters.
+		"GroupId": "MyMod.MyGroupId", // Letter group id. Letters with the same group id are never delivered in the same day. It can be null or removed.
+		"Title": "My Letter Title", // Letter title. Will be shown in the collections menu. Set it null or remove the line if you don't want the letter to appear in the collection.
+		"Text": "Dear @^This is my custom mail.", // Text of the letter. You can use @ to put the players name and ^ for line breaks. You can also use the base game commands to add money, items and stuff.
+		"Attachments": [{"Type": "Tool", "Name": "Axe"},{"Type": "Object", "Index":78, "Stack": 1},{"Type": "BigCraftable", "Index":159, "Stack": 3}], // Remove the line to not attach items to the mail. You can use the Name properties for Object and BigCraftable items too, that's required if using Json Assets. Stack is optional o Objects and BigCraftable. A stack of 1 is used if none is provided.
 		"Recipe": "Recipe Name", // Remove the line if you don't want to attach a recipe to the mail. It will only work if you have no other attachments to the mail.
-		"WhichBG": 0, //The id of the letter background. 0 = classic, 1 = notepad, 2 = piramds
+		"WhichBG": 0, //The id of the letter background. 0 = classic, 1 = notepad, 2 = pyramids
 		"TextColor": -1, //Remove this line to use the default color. -1 = Dark Red, 0 = Black, 1 = Sky Blue, 2 = Red, 3 = Blue Violet, 4 = White, 5 = Orange Red, 6 = Lime Green, 7 = Cyan, 8 = Darkest Gray
 		"Repeatable": false, // If true the mod won't check it the letter Id has already been delivered.
 		//Below are conditions for the delivery. Remove any of the lines if you don't want to check that condition.
 		"Date": "10 spring Y1", // Must be that date or after it. The format is "[1-28] [spring|summer|fall|winter] Y[1-999]".
-		"Days":  [7,14,21,28], // Must be one of the days in the list.
-		"Seasons":  ["fall"], // Must be one of the seasons in the list, seasons should be lower case.
-		"Weather":  "sunny", // Must me that game weather. The format is "[sunny|rainy]".
+		"Days": [7,14,21,28], // Must be one of the days in the list.
+		"Seasons": ["fall"], // Must be one of the seasons in the list, seasons should be lower case.
+		"Weather": "sunny", // Must me that game weather. The format is "[sunny|rainy]".
 		"FriendshipConditions": // Each NPC of the list must have a friendship level equal or higher what is defined. Can use custom NPCs
 		[
 			{ "NpcName": "Lewis", "FriendshipLevel": 0 }
 		],
-		"SkillConditions": // Each skill of the list must have a level equal or higher what is defined. Can use all coded skills in the valina game, including Luck. Can't use custom skills.
+		"SkillConditions": // Each skill of the list must have a level equal or higher what is defined. Can use all coded skills in the vanilla game, including Luck. Can't use custom skills.
 		[
 			{ "SkillName": "Farming", "SkillLevel": 1 }
-		]
+		],
+		"RandomChance": 0.25 // The mod will check if a random number from 0 to 1 is bellow the given number. The same save, on the same day for the same letter will always have the same result to avoid cheating.
 	}
 ]

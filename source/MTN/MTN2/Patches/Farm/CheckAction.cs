@@ -90,7 +90,7 @@ namespace MTN2.Patches.FarmPatches
         public static void shipItem(Item item, Farmer who) {
             if (item != null) {
                 who.removeItemFromInventory(item);
-                currentFarm.shippingBin.Add(item);
+                currentFarm.getShippingBin(who).Add(item);
                 if (item is StardewValley.Object) {
                     currentFarm.showShipment(item as StardewValley.Object, false);
                 }

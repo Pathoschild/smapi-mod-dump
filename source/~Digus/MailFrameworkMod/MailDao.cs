@@ -1,6 +1,8 @@
 ﻿using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using StardewValley;
 
 namespace MailFrameworkMod
@@ -8,6 +10,8 @@ namespace MailFrameworkMod
     public class MailDao
     {
         private static readonly List<Letter> Letters =  new List<Letter>();
+        private static readonly List<string> RemovedLetterIds = new List<string>();
+        private static bool _newLetter = false;
 
         /// <summary>
         /// Saves a letter on the repository.
@@ -33,6 +37,7 @@ namespace MailFrameworkMod
                 {
                     Letters.Add(letter);
                 }
+                _newLetter = true;
             }
         }
 
@@ -44,30 +49,80 @@ namespace MailFrameworkMod
         public static void RemoveLetter(Letter letter)
         {
             Letters.Remove(Letters.Find((l) => l.Id == letter.Id));
+            RemovedLetterIds.Add(letter.Id);
+        }
+
+        /// <summary>
+        /// Looks for the letter with the given id. Return the letter or null if nothing is found.
+        /// </summary>
+        /// <param name="id">the id of the letter</param>
+        /// <returns>the letter</returns>
+        public static Letter FindLetter(string id)
+        {
+            return Letters.FirstOrDefault(l => l.Id == id);
         }
 
         /// <summary>
         /// Validates the condition to show the letters and returns a list with all that matches.
         /// </summary>
         /// <returns>The list with all letter that matched their conditions</returns>
-        public static List<Letter> GetValidatedLetters()
+        internal static List<Letter> GetValidatedLetters()
         {
-            return Letters.FindAll((l) => 
-            {
-                var condition = false;
-                try
+            return Letters.FindAll((l) =>
                 {
-                    condition = l.Condition(l);
-                }
-                catch (Exception e)
-                {
-                    MailFrameworkModEntry.ModMonitor.Log($"Error while validating letter '{l.Id}'. This letter will be ignored.", LogLevel.Error);
-                    MailFrameworkModEntry.ModMonitor.Log($"Error: {e.Message}\n{e.StackTrace}", LogLevel.Trace);
-                }
+                    var condition = false;
+                    try
+                    {
+                        condition = l.Condition(l);
+                    }
+                    catch (Exception e)
+                    {
+                        MailFrameworkModEntry.ModMonitor.Log($"Error while validating letter '{l.Id}'. This letter will be ignored.", LogLevel.Error);
+                        MailFrameworkModEntry.ModMonitor.Log($"Error: {e.Message}\n{e.StackTrace}", LogLevel.Trace);
+                    }
 
-                return condition;
-            }
-            );
+                    return condition;
+                })
+                .GroupBy(l => l.GroupId != null? (object)l.GroupId : new object())
+                .Select(g => g.First())
+                .ToList(); 
+        }
+
+        /// <summary>
+        /// Returns an ReadOnlyCollection with all saved letters in the repository.
+        /// </summary>
+        /// <returns>The list with all saved letters.</returns>
+        internal static ReadOnlyCollection<Letter> GetSavedLetters()
+        {
+            return Letters.AsReadOnly();
+        }
+
+        /// <summary>
+        /// Returns the id of all letters that were removed from the repository.
+        /// </summary>
+        /// <returns>The list with all removed letter ids.</returns>
+        internal static ReadOnlyCollection<string> GetRemovedLetterIds()
+        {
+            return RemovedLetterIds.AsReadOnly();
+        }
+
+        /// <summary>
+        /// Returns if repository has changed since inicialization or last time it was cleared.
+        /// Check if letter were added or removed.
+        /// </summary>
+        /// <returns>boolean value indicating if the repository has changed.</returns>
+        internal static bool HasRepositoryChanged()
+        {
+            return RemovedLetterIds.Count > 0 || _newLetter;
+        }
+        /// <summary>
+        /// Clear the changing indications of the repository.
+        /// Will clear the list of removed letter and the flag of new letter added.
+        /// </summary>
+        internal static void CleanDataToUpdate()
+        {
+            RemovedLetterIds.Clear();
+            _newLetter = false;
         }
     }
 }

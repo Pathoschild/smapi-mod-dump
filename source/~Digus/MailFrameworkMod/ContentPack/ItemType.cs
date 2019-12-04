@@ -4,6 +4,7 @@
     {
         Object,
         Tool,
-        BigObject
+        BigObject,
+        BigCraftable
     }
 }

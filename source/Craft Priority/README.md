@@ -6,6 +6,7 @@ It allows you to...
  - **Hold** the action button when filling machines
  - Not have to deal with an **annoying message**, asking if you want to eating
  - **Efficiently** finish your farm work
+ - Collect eggs from the coop **without eating them** in front of your chickens, rabbits, ducks and dinosaurs. (Configurable)
 
 Enjoy.
 

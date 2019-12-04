@@ -29,7 +29,7 @@ namespace MailFrameworkMod
             initiPrivateProperties();
         }
 
-        public LetterViewerMenuExtended(string mail, string mailTitle) : base(mail, mailTitle)
+        public LetterViewerMenuExtended(string mail, string mailTitle, bool fromCollection = false) : base(mail, mailTitle, fromCollection)
         {
             initiPrivateProperties();
         }

@@ -5,9 +5,9 @@ mods:
    Ship Anything
 
 latest commit:
-   commit 4b1f8c9c39050229e7d5a88ef89661fd78c63280
-   Author: Berkay YÄ°ÄžÄ°T <berkayyigit@anadolu.edu.tr>
-   Date:   Sun Jul 14 16:06:11 2019 +0300
+   commit 3f9cc7afbc4786c535c72ecd11bf8fddf01d78f2
+   Author: berkay <berkayyigit@anadolu.edu.tr>
+   Date:   Tue Dec 3 23:56:47 2019 +0300
    
-       Add ChestEx
+       Add Nexus update key to ShipAnything
    

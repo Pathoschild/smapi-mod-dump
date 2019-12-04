@@ -267,7 +267,7 @@ namespace ClimatesOfFerngillRebuild
 				tempString = GetTemperatureString(Current.GetCurrentTemperature(Game1.timeOfDay)),
                 todayHigh = GetTemperatureString(Current.TodayHigh),
                 todayLow = GetTemperatureString(Current.TodayLow),
-				currentRainfall = GetRainfallAmt(Current.AmtOfRainDrops),
+				currentRainfall = GetRainfallAmt(Current.AmtOfRainDrops).ToString("N2"),
                 fogString               
             }) + Environment.NewLine;
 
@@ -281,17 +281,16 @@ namespace ClimatesOfFerngillRebuild
 
             //now, night time
             if (!String.IsNullOrEmpty(NightTime))
-            {
-                text += Environment.NewLine;
+            {                
                 text += NightTime + Environment.NewLine;
             }
 
             if (ClimatesOfFerngill.UseLunarDisturbancesApi)
             {
                 if (ClimatesOfFerngill.MoonAPI.IsMoonUp(Game1.timeOfDay))
-					text += Environment.NewLine + Translator.Get("weather-menu.desc-moonNotUp", new { moonPhase = ClimatesOfFerngill.MoonAPI.GetCurrentMoonPhase(), moonRise = ClimatesOfFerngill.MoonAPI.GetMoonRise(), moonSet = ClimatesOfFerngill.MoonAPI.GetMoonSet()});
+					text += Translator.Get("weather-menu.desc-moonNotUp", new { moonPhase = ClimatesOfFerngill.MoonAPI.GetCurrentMoonPhase(), moonRise = ClimatesOfFerngill.MoonAPI.GetMoonRise(), moonSet = ClimatesOfFerngill.MoonAPI.GetMoonSet()});
                 else
-                    text += Environment.NewLine + Translator.Get("weather-menu.desc-moonUp", new { moonPhase = ClimatesOfFerngill.MoonAPI.GetCurrentMoonPhase(), moonSet = ClimatesOfFerngill.MoonAPI.GetMoonSet() });
+                    text += Translator.Get("weather-menu.desc-moonUp", new { moonPhase = ClimatesOfFerngill.MoonAPI.GetCurrentMoonPhase(), moonSet = ClimatesOfFerngill.MoonAPI.GetMoonSet() });
             }
 
             return text;
@@ -353,7 +352,7 @@ namespace ClimatesOfFerngillRebuild
                             break;
                     }
 
-                    rainfallW = Translator.Get("weather-tv.rainfallW");
+                    rainfallW = Translator.Get("weather-tv.hazard.rainfallW");
                 }
 
                 if (!String.IsNullOrEmpty(hazard) && !String.IsNullOrEmpty(hazardT))
@@ -541,7 +540,7 @@ namespace ClimatesOfFerngillRebuild
                     dWeather = Translator.Get("weather-tv.wedding");
                     break;
                 case Game1.weather_lightning:
-                    dWeather = Translator.Get("weather-tv.snowy." + Dice.Next(2));
+                    dWeather = Translator.Get("weather-tv.tstorm." + Dice.Next(2));
                     break;
                 case Game1.weather_sunny:
                 default:

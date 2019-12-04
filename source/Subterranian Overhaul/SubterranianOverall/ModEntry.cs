@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
@@ -45,7 +43,7 @@ namespace SubterranianOverhaul
             helper.Events.GameLoop.Saving += this.OnSave;
             helper.Events.GameLoop.Saved += this.AfterSave;
             helper.Events.GameLoop.SaveLoaded += this.AfterSaveLoad;
-            helper.Events.Specialised.LoadStageChanged += this.OnLoadingStageChanged;
+            helper.Events.Specialized.LoadStageChanged += this.OnLoadingStageChanged;
             helper.Events.Display.RenderedHud += this.OnRenderedHud;
             helper.Events.Multiplayer.PeerContextReceived += this.OnClientConnected;
             //helper.Events.Multiplayer.ModMessageReceived += this.ProcessModMessage;
@@ -109,8 +107,9 @@ namespace SubterranianOverhaul
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPlayerWarped(object sender, WarpedEventArgs e)
-        {   
-            if(e.NewLocation.Name.StartsWith("UndergroundMine") || e.NewLocation.Name.StartsWith("Mine"))
+        {
+            this.Monitor.Log("Player warped.");
+            if (e.NewLocation.Name.StartsWith("UndergroundMine") || e.NewLocation.Name.StartsWith("Mine"))
             {
                 //clean up the list of levels.
                 HashSet<String> newListOfVisitedLevels = new HashSet<String>();
@@ -141,72 +140,96 @@ namespace SubterranianOverhaul
             int floorNumber = 0;
             if (int.TryParse(floorText, out floorNumber))
             {
-                int floorsAbove90 = floorNumber - 90;
-                double extraStoneChance = floorsAbove90 * STONE_INCREASE_PER_LEVEL;
-                double stoneChanceToChange = STONE_BASE_CHANCE_TO_CHANGE + extraStoneChance;
-                double extraPurpleMushroomChance = floorsAbove90 * PURPLE_MUSHROOM_INCREASE_PER_LEVEL;
-                double purpleMushroomChanceToChange = PURPLE_MUSHROOM_CHANCE_TO_CHANGE + extraPurpleMushroomChance;
-                double extraRedMushroomChance = floorsAbove90 * RED_MUSHROOM_INCREASE_PER_LEVEL;
-                double redMushroomChanceToChange = RED_MUSHROOM_CHANCE_TO_CHANGE + extraRedMushroomChance;
+                if (floorNumber < 120)
+                {   
+                    int floorsAbove90 = floorNumber - 90;
+                    double extraStoneChance = floorsAbove90 * STONE_INCREASE_PER_LEVEL;
+                    double stoneChanceToChange = STONE_BASE_CHANCE_TO_CHANGE + extraStoneChance;
+                    double extraPurpleMushroomChance = floorsAbove90 * PURPLE_MUSHROOM_INCREASE_PER_LEVEL;
+                    double purpleMushroomChanceToChange = PURPLE_MUSHROOM_CHANCE_TO_CHANGE + extraPurpleMushroomChance;
+                    double extraRedMushroomChance = floorsAbove90 * RED_MUSHROOM_INCREASE_PER_LEVEL;
+                    double redMushroomChanceToChange = RED_MUSHROOM_CHANCE_TO_CHANGE + extraRedMushroomChance;
 
-                List<Vector2> toReplace = new List<Vector2>();
+                    List<Vector2> toReplace = new List<Vector2>();
 
-                //only proceed if there is a chance of something actually changing into a mushroom tree. For red mushrooms this chance starts at level 70, for purple mushrooms it starts at 80 and for rocks it starts at 90
-                if (stoneChanceToChange >= 0 || purpleMushroomChanceToChange >= 0 || redMushroomChanceToChange >= 0)
-                {
-                    Vector2 origin = new Vector2(0, 0);
-
-                    if (loc.Objects.ContainsKey(origin))
+                    //only proceed if there is a chance of something actually changing into a mushroom tree. For red mushrooms this chance starts at level 70, for purple mushrooms it starts at 80 and for rocks it starts at 90
+                    if (stoneChanceToChange >= 0 || purpleMushroomChanceToChange >= 0 || redMushroomChanceToChange >= 0)
                     {
-                        if(loc.Objects[origin] is LoadMarker)
+                        Vector2 origin = new Vector2(0, 0);
+
+                        if (loc.Objects.ContainsKey(origin))
                         {
-                            this.Monitor.Log("We've probably already hit this floor ("+loc.Name+"). Skip processing for voidshroom trees.");
+                            if (loc.Objects[origin] is LoadMarker)
+                            {
+                                this.Monitor.Log("We've probably already hit this floor (" + loc.Name + "). Skip processing for voidshroom trees.");
+                                return;
+                            }
+                            else
+                            {
+                                this.Monitor.Log("We didn't have a load marker for (" + loc.Name + "), but something was sitting at 0,0. Figure out what it was!");
+                            }
+                        }
+                        else
+                        {
+                            //we haven't processed this floor probably, so go ahead and do so and add a marker object so A) we know it's been done and B) when the floor resets we'll process again next time we visit.
+                            this.Monitor.Log("We haven't processed before. Add marker to 0,0 on (" + loc.Name + ")");
+                            loc.Objects.Add(origin, new LoadMarker());
+                        }
+
+                        //if we've already populated this mine level today, don't do so again.
+                        /*
+                        if (ModState.visitedMineshafts.Contains(loc.Name))
+                        {
+                            this.Monitor.Log(loc.Name + " was already visited and populated with voidshroom trees today.");
                             return;
-                        } else
-                        {
-                            this.Monitor.Log("We didn't have a load marker for (" + loc.Name + "), but something was sitting at 0,0. Figure out what it was!");
                         }
-                    } else
-                    {
-                        //we haven't processed this floor probably, so go ahead and do so and add a marker object so A) we know it's been done and B) when the floor resets we'll process again next time we visit.
-                        this.Monitor.Log("We haven't processed before. Add marker to 0,0 on (" + loc.Name + ")");
-                        loc.Objects.Add(origin, new LoadMarker());
-                    }
-                    
-                    //if we've already populated this mine level today, don't do so again.
-                    /*
-                    if (ModState.visitedMineshafts.Contains(loc.Name))
-                    {
-                        this.Monitor.Log(loc.Name + " was already visited and populated with voidshroom trees today.");
-                        return;
-                    }
-                    */
-                    
-                    //ModState.visitedMineshafts.Add(loc.Name);
+                        */
 
-                    foreach (StardewValley.Object o in loc.Objects.Values)
-                    {
-                        double hit = Game1.random.NextDouble();
-                        if (o.Name == "Stone" && hit <= stoneChanceToChange)
-                        {
-                            toReplace.Add(o.TileLocation);
-                        }
-                        else if (o.ParentSheetIndex == 420 && hit <= redMushroomChanceToChange)
-                        {
-                            toReplace.Add(o.TileLocation);
-                        }
-                        else if (o.ParentSheetIndex == 422 && hit <= purpleMushroomChanceToChange)
-                        {
-                            toReplace.Add(o.TileLocation);
-                        }
-                    }
+                        //ModState.visitedMineshafts.Add(loc.Name);
 
-                    this.Monitor.Log(loc.Name + " found " + toReplace.Count + " places to replace with a voidshroom tree.");
+                        foreach (StardewValley.Object o in loc.Objects.Values)
+                        {
+                            double hit = Game1.random.NextDouble();
+                            if (o.Name == "Stone" && hit <= stoneChanceToChange)
+                            {
+                                toReplace.Add(o.TileLocation);
+                            }
+                            else if (o.ParentSheetIndex == 420 && hit <= redMushroomChanceToChange)
+                            {
+                                toReplace.Add(o.TileLocation);
+                            }
+                            else if (o.ParentSheetIndex == 422 && hit <= purpleMushroomChanceToChange)
+                            {
+                                toReplace.Add(o.TileLocation);
+                            }
+                        }
 
-                    foreach (Vector2 location in toReplace)
-                    {
-                        loc.Objects.Remove(location);
-                        loc.terrainFeatures.Add(location, (TerrainFeature)new VoidshroomTree(Game1.random.Next(4, 6)));
+                        this.Monitor.Log(loc.Name + " found " + toReplace.Count + " places to put a voidshroom tree.");
+
+                        foreach (Vector2 location in toReplace)
+                        {
+                            //removing objects is a bad plan, since it screws with other mods that iterate through the objects list.  Replace this to instead search out from the location for an empty spot to place a tree.
+                            bool foundSpot = false;
+                            for(int i = -1; i <= 1 && !foundSpot; i++)
+                            {
+                                for(int j = -1; j <= 1 && !foundSpot; j++)
+                                {
+                                    if(i != 0 || j != 0)
+                                    {   
+                                        Vector2 spotToCheck = new Vector2(location.X + i, location.Y + j);
+                                        bool validSpot = VoidshroomSpore.canPlaceHere(loc, spotToCheck, true);
+                                        if (validSpot)
+                                        {
+                                            this.Monitor.Log("Found an empty spot to put the tree."+spotToCheck);
+                                            foundSpot = true;
+                                            loc.terrainFeatures.Add(spotToCheck, (TerrainFeature)new VoidshroomTree(Game1.random.Next(4, 6)));
+                                        }
+                                    }
+                                }
+                                
+                            }
+                            
+                        }
                     }
                 }
             }

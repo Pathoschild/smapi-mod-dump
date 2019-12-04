@@ -29,7 +29,7 @@
     <LangVersion>Latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="2.2.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -57,6 +57,7 @@
     <Compile Include="Abilities\Base\HarvestForageCropsAbility.cs" />
     <Compile Include="Abilities\Base\PlantCropsAbility.cs" />
     <Compile Include="Abilities\Base\WaterAbility.cs" />
+    <Compile Include="Abilities\Base\HarvestBushesAbility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />

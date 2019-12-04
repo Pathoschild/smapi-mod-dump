@@ -1,3 +1,5 @@
 {
-  "startGameKey": "J"
+  "StartGameKey": "J",
+  "ChooseLevel": false,
+  "OldVersion": false
 }

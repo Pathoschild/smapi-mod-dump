@@ -1,0 +1,17 @@
+{
+  "Name": "Mega Storage",
+  "Author": "Alek",
+  "Version": "1.2.3-unofficial.3-mizzion",
+  "Description": "Adds Large Chests and Magic Chests to the game.",
+  "UniqueID": "Alek.MegaStorage",
+  "EntryDll": "MegaStorage.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:4089" ],
+  "Dependencies": [
+    {
+      "UniqueID": "aEnigma.ConvenientChests",
+      "MinimumVersion": "1.1.1",
+      "IsRequired": false
+    }
+  ]
+}

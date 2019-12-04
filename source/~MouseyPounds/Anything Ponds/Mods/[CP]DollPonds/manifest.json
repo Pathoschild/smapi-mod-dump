@@ -1,0 +1,18 @@
+﻿{
+	"Name": "Doll Ponds",
+	"Author": "MouseyPounds",
+	"Version": "1.0.0",
+	"Description": "Adds fishing pond support for doll items.",
+	"UniqueID": "MouseyPounds.DollPonds",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [],
+	"ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher",
+		"MinimumVersion": "1.10",
+	},
+	"Dependencies": [
+		{
+			"UniqueID": "MouseyPounds.AnythingPonds"
+		}
+	]
+}

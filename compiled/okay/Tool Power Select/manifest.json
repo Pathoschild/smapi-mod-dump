@@ -1,0 +1,10 @@
+{
+   "Name": "ToolPowerSelect",
+   "Author": "Crazy Wig",
+   "Version": "1.1.0", // fixed locally
+   "Description": "Lets you select the power of the watering can and hoe using mousewheel",
+   "UniqueID": "crazywig.toolpowerselect",
+   "EntryDll": "toolpowerselect.dll",
+   "MinimumApiVersion": "2.6-beta.16",
+   "UpdateKeys": [ "Nexus:2553" ]
+}

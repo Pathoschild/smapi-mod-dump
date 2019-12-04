@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Harmony;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,7 +14,6 @@ namespace RemoteFridgeStorage
     /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
-        private HarmonyInstance _harmony;
         private bool _cookingSkillLoaded;
         private FridgeHandler _handler;
 
@@ -48,7 +47,6 @@ namespace RemoteFridgeStorage
             var offsetIcon = categorizeChestsLoaded || convenientChestsLoaded || megaStorageLoaded;
 
             _handler = new FridgeHandler(fridgeSelected, fridgeDeselected, offsetIcon, Config);
-            Harmony();
             AddEvents(helper);
         }
 
@@ -85,27 +83,6 @@ namespace RemoteFridgeStorage
                 _handler.CookingSkillApi = cookingSkillApi;
                 Monitor.Log("Successfully hooked into the cooking skill API!", LogLevel.Info);
             }
-        }
-
-        /// <summary>
-        /// Patch the game methods if _cookingSkill was not loaded.
-        /// </summary>
-        private void Harmony()
-        {
-            if (_cookingSkillLoaded) return;
-
-            _harmony = HarmonyInstance.Create("productions.EternalSoap.RemoteFridgeStorage");
-            var type = typeof(CraftingRecipe);
-            _harmony.Patch(
-                AccessTools.Method(type, nameof(CraftingRecipe.consumeIngredients)),
-                new HarmonyMethod(AccessTools.Method(typeof(HarmonyRecipePatchConsumeIngredients),
-                    nameof(HarmonyRecipePatchConsumeIngredients.Prefix)))
-            );
-            _harmony.Patch(
-                AccessTools.Method(type, nameof(CraftingRecipe.drawRecipeDescription)),
-                new HarmonyMethod(AccessTools.Method(typeof(HarmonyRecipePatchDraw),
-                    nameof(HarmonyRecipePatchDraw.Prefix)))
-            );
         }
 
         /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
@@ -178,9 +155,11 @@ namespace RemoteFridgeStorage
             if (e.NewMenu != null &&
                 Helper.Reflection.GetField<bool>(e.NewMenu, "cooking", false) != null &&
                 Helper.Reflection.GetField<bool>(e.NewMenu, "cooking").GetValue() &&
-                !(e.NewMenu is RemoteFridgeCraftingPage))
+                !(e.NewMenu is RemoteFridgeCraftingPage) && 
+                (e.NewMenu is StardewValley.Menus.CraftingPage page)
+                )
             {
-                _handler.LoadMenu(e.NewMenu);
+                _handler.LoadMenu(page);
             }
         }
 

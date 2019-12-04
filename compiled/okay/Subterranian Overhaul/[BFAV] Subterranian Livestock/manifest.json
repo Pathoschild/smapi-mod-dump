@@ -1,0 +1,19 @@
+{
+   "Name": "Subterranean Livestock",
+   "Author": "mytigio",
+   "Version": "1.9.1",
+   "Description": "Domesticated livestock from the deep caves.",
+   "UniqueID": "mytigio.subterraneanlivestock",
+   "MinimumApiVersion": "3.0",   
+   "UpdateKeys": [ "Nexus:4149" ],
+    "ContentPackFor": {
+      "UniqueID": "Paritee.BetterFarmAnimalVariety",
+      "MinimumVersion": "3.0.0"
+   },
+   "Dependencies": [
+	   {
+		  "UniqueID": "mytigio.dwarvishcollection",
+		  "IsRequired": true
+	   }
+	]
+}

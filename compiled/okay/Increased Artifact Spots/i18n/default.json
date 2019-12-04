@@ -1,4 +1,5 @@
 {
   "artifact_start": "Starting to Spawn Artifact Spots.",
-  "artifact_spawned": "Spawned {{artifact_spawns}} Artifact Spots."
+  "artifact_spawned": "Spawned {{artifact_spawns}} Artifact Spots.",
+  "artifact_loc_error": "The location was empty. Something may have gone wrong."
 }

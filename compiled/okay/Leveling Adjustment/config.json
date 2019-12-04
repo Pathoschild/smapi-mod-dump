@@ -1,5 +1,6 @@
 {
   "expNotification": false,
+  "levelNotification": false,
   "generalExperienceFactor": 1.0,
   "farmingExperienceFactor": 1.0,
   "fishingExperienceFactor": 1.0,

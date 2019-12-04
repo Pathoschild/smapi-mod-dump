@@ -65,6 +65,8 @@ namespace MTN2
         public LargeDebris ResourceClumps { get; set; }
         public Forage Foraging { get; set; }
         public Ore Ores { get; set; }
+        public int FishingSpawnsFromCanon { get; set; } = -1;
+        //public 
         public bool SpawnMonstersAtNight = false;
 
         //Furniture

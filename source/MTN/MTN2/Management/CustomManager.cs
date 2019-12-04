@@ -87,7 +87,7 @@ namespace MTN2.Management
         /// </summary>
         public void LoadCustomFarm() {
             Canon = FarmManager.Load();
-            if (!Canon) GreenhouseManager.LinkToFarm(FarmManager.LoadedFarm);
+            //if (!Canon) GreenhouseManager.LinkToFarm(FarmManager.LoadedFarm);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace MTN2.Management
         /// <param name="whichFarm"></param>
         public void LoadCustomFarm(int whichFarm) {
             Canon = FarmManager.Load(whichFarm);
-            if (!Canon) GreenhouseManager.LinkToFarm(FarmManager.LoadedFarm);
+            //if (!Canon) GreenhouseManager.LinkToFarm(FarmManager.LoadedFarm);
         }
         
         /// <summary>

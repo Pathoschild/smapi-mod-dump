@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -24,11 +24,7 @@ namespace RemoteFridgeStorage
         /// The chests to be used by the fridge.
         /// </summary>
         public HashSet<Chest> Chests { get; private set; }
-
-        /// <summary>
-        /// List with all the items contained by <see cref="SaveData"/>, this list will be updated 
-        /// when a chest is added or removed or the inventory is changed.
-        /// </summary>
+        
         public IList<Item> FridgeList { get; private set; }
 
         public ICookingSkillApi CookingSkillApi { get; set; }
@@ -282,7 +278,7 @@ namespace RemoteFridgeStorage
         /// Replace the menu.
         /// </summary>
         /// <param name="newMenu">The new menu to replace.</param>
-        public void LoadMenu(IClickableMenu newMenu)
+        public void LoadMenu(StardewValley.Menus.CraftingPage newMenu)
         {
             FridgeList = new FridgeVirtualList(this);
             if (!MenuEnabled) return;

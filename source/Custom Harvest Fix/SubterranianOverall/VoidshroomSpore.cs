@@ -85,9 +85,9 @@ namespace SubterranianOverhaul
             }
         }
 
-        private static bool canPlaceHere(GameLocation location, Vector2 tile)
+        public static bool canPlaceHere(GameLocation location, Vector2 tile, bool ignoreValidLocation = false)
         {
-            if (IsValidLocation(location))
+            if (ignoreValidLocation || IsValidLocation(location))
             {
                 Vector2 index1 = tile;
                 bool occupied = location.isTileOccupiedForPlacement(index1);

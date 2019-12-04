@@ -5,9 +5,9 @@ mods:
    Ladder Locator
 
 latest commit:
-   commit c00b94659e8bb2925a9d4af25480361857385df1
+   commit ebd7fc4c001d5734745f44b203407fbd1d2f9215
    Author: Yuri Moens <yuri.moens@gmail.com>
-   Date:   Sun Dec 9 15:25:28 2018 +0100
+   Date:   Sat Nov 30 14:32:40 2019 +0100
    
-       Update for SMAPI 3.0 compatibility
+       Update for SDV 1.4
    

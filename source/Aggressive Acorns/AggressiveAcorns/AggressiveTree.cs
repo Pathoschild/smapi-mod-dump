@@ -39,6 +39,7 @@ namespace AggressiveAcorns
             stump.Value = tree.stump.Value;
             tapped.Value = tree.tapped.Value;
             hasSeed.Value = tree.hasSeed.Value;
+            fertilized.Value = tree.fertilized.Value;
         }
 
 
@@ -60,6 +61,7 @@ namespace AggressiveAcorns
             tree.stump.Value = stump.Value;
             tree.tapped.Value = tapped.Value;
             tree.hasSeed.Value = hasSeed.Value;
+            tree.fertilized.Value = fertilized.Value;
 
             SyncFieldToTree<NetBool, bool>(tree, "destroy");
 
@@ -81,8 +83,12 @@ namespace AggressiveAcorns
             if (health.Value <= -100)
             {
                 SetField<NetBool, bool>("destroy", true);
+                _skipUpdate = true;
             }
-            else if (!_skipUpdate && TreeCanGrow())
+
+            ValidateTapped(environment, tileLocation);
+
+            if (!_skipUpdate && TreeCanGrow())
             {
                 PopulateSeed();
                 TrySpread();
@@ -134,7 +140,16 @@ namespace AggressiveAcorns
 
         // ===========================================================================================================
 
-        #region Day_Update_Code
+        private void ValidateTapped(GameLocation environment, Vector2 tileLocation)
+        {
+            if (!tapped.Value) return;
+
+            Object objectAtTile = environment.getObjectAtTile((int) tileLocation.X, (int) tileLocation.Y);
+            if (objectAtTile == null || !objectAtTile.bigCraftable.Value || objectAtTile.ParentSheetIndex != 105)
+            {
+                tapped.Value = false;
+            }
+        }
 
         private void TryIncreaseStage()
         {
@@ -143,8 +158,11 @@ namespace AggressiveAcorns
                 return;
             }
 
-            if (ExperiencingWinter() && (!_config.DoGrowInWinter ||
-                                         (treeType.Value == mushroomTree && _config.DoMushroomTreesHibernate)))
+            // Trees experiencing winter won't grow unless fertilized or set to ignore winter.
+            // In addition to this, mushroom trees won't grow if they should be hibernating, even if fertilized.
+            if (ExperiencingWinter()
+                && ((treeType.Value == mushroomTree && _config.DoMushroomTreesHibernate)
+                    || !(_config.DoGrowInWinter || fertilized.Value)))
             {
                 return;
             }
@@ -153,7 +171,7 @@ namespace AggressiveAcorns
             {
                 growthStage.Value = IsShaded() ? _config.MaxShadedGrowthStage : treeStage;
             }
-            else if (Game1.random.NextDouble() < _config.DailyGrowthChance)
+            else if (Game1.random.NextDouble() < _config.DailyGrowthChance || fertilized.Value)
             {
                 growthStage.Value += 1;
             }
@@ -169,12 +187,12 @@ namespace AggressiveAcorns
                 return;
             }
 
-            if (Game1.currentSeason.Equals("winter"))
+            if (Game1.IsWinter)
             {
                 stump.Value = true;
                 health.Value = 5;
             }
-            else if (Game1.currentSeason.Equals("spring") && Game1.dayOfMonth <= 1)
+            else if (Game1.IsSpring && Game1.dayOfMonth <= 1)
             {
                 RegrowStumpIfNotShaded();
             }
@@ -213,7 +231,7 @@ namespace AggressiveAcorns
         {
             if (!(_location is Farm) ||
                 growthStage.Value < treeStage ||
-                (Game1.currentSeason.Equals("winter") && !_config.DoSpreadInWinter) ||
+                (Game1.IsWinter && !_config.DoSpreadInWinter) ||
                 (tapped.Value && !_config.DoTappedSpread) ||
                 stump.Value)
             {
@@ -250,7 +268,6 @@ namespace AggressiveAcorns
         }
 
 
-        // TODO: check, should this be compounding? Shouldn't it just try once?
         private IEnumerable<Vector2> GetSpreadLocations()
         {
             // pick random tile within +-3 x/y.
@@ -291,7 +308,7 @@ namespace AggressiveAcorns
 
         private bool ExperiencingWinter()
         {
-            return Game1.currentSeason.Equals("winter") && ExperiencesWinter();
+            return Game1.IsWinter && ExperiencesWinter();
         }
 
 
@@ -316,7 +333,5 @@ namespace AggressiveAcorns
 
             return false;
         }
-
-        #endregion
     }
 }

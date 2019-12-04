@@ -191,7 +191,7 @@ namespace TwilightShards.Stardew.Common
 
         }
 
-        public static T GetModApi<T>(IMonitor Monitor, IModHelper Helper, string name, string minVersion) where T : class
+        public static T GetModApi<T>(IMonitor Monitor, IModHelper Helper, string name, string minVersion, string friendlyName="") where T : class
         {
             var modManifest = Helper.ModRegistry.Get(name);
             if (modManifest != null)
@@ -201,21 +201,21 @@ namespace TwilightShards.Stardew.Common
                     T api = Helper.ModRegistry.GetApi<T>(name);
                     if (api == null)
                     {
-                        Monitor.Log($"{name}'s API returned null.", LogLevel.Info);
+                        Monitor.Log($"{(String.IsNullOrEmpty(friendlyName) ? name : friendlyName)}'s API returned null. ", LogLevel.Info);
                     }
 
                     if (api != null)
                     {
-                        Monitor.Log($"{name} {modManifest.Manifest.Version} integration feature enabled", LogLevel.Info);
+                        Monitor.Log($"{(String.IsNullOrEmpty(friendlyName) ? name : friendlyName)} {modManifest.Manifest.Version} integration feature enabled", LogLevel.Info);
                     }
                     return api;
 
                 }
                 else
-                    Monitor.Log($"{name} detected, but not of a sufficient version. Req:{minVersion} Detected:{modManifest.Manifest.Version}. Skipping..", LogLevel.Debug);
+                    Monitor.Log($"{(String.IsNullOrEmpty(friendlyName) ? name : friendlyName)} detected, but not of a sufficient version. Req:{minVersion} Detected:{modManifest.Manifest.Version}. Update the other mod if you want to use the integration feature. Skipping..", LogLevel.Debug);
             }
             else
-                Monitor.Log($"{name} not present. Skipping integration feature.", LogLevel.Debug);
+                Monitor.Log($"Didn't find mod {(String.IsNullOrEmpty(friendlyName) ? name : friendlyName)}; you can optionally install it for extra features!", LogLevel.Debug);
             return null;
         }
 

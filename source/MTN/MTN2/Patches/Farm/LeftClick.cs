@@ -59,7 +59,7 @@ namespace MTN2.Patches.FarmPatches
                 (y / 64 >= binY) && (y / 64 <= binY + 1) &&
                 (who.ActiveObject.canBeShipped()) && Vector2.Distance(who.getTileLocation(), new Vector2(71.5f, 14f)) <= 2f) {
                 //Code segment starts here.
-                __instance.shippingBin.Add(who.ActiveObject);
+                __instance.getShippingBin(who).Add(who.ActiveObject);
                 __instance.lastItemShipped = who.ActiveObject;
                 who.showNotCarrying();
                 __instance.showShipment(who.ActiveObject, true);

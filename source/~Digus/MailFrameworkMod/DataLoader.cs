@@ -13,8 +13,32 @@ using StardewValley.Tools;
 
 namespace MailFrameworkMod
 {
-    public class DataLoader
+    public class DataLoader : IAssetEditor
     {
+        public bool CanEdit<T>(IAssetInfo asset)
+        {
+            return asset.AssetNameEquals("Data\\mail");
+        }
+
+        public void Edit<T>(IAssetData asset)
+        {
+            var data = asset.AsDictionary<string, string>().Data;
+            foreach (Letter letter in MailDao.GetSavedLetters())
+            {
+                if (letter.Title != null)
+                {
+                    data[letter.Id] = letter.Text + "[#]" + letter.Title;
+                }
+            }
+            foreach (string letterId in MailDao.GetRemovedLetterIds())
+            {
+                if (data.ContainsKey(letterId))
+                {
+                    data.Remove(letterId);
+                }
+            }
+            MailDao.CleanDataToUpdate();
+        }
 
         public static void LoadContentPacks(object sender, EventArgs e)
         {
@@ -34,7 +58,10 @@ namespace MailFrameworkMod
                             && (mailItem.Seasons == null || mailItem.Seasons.Contains(SDate.Now().Season))
                             && (mailItem.Weather == null || (Game1.isRaining && "rainy".Equals(mailItem.Weather)) || (!Game1.isRaining && "sunny".Equals(mailItem.Weather)))
                             && (mailItem.FriendshipConditions == null || mailItem.FriendshipConditions.TrueForAll(f => Game1.player.getFriendshipHeartLevelForNPC(f.NpcName) >= f.FriendshipLevel))
-                            && (mailItem.SkillConditions == null || mailItem.SkillConditions.TrueForAll(s => Game1.player.getEffectiveSkillLevel((int) s.SkillName) >= s.SkillLevel));
+                            && (mailItem.SkillConditions == null || mailItem.SkillConditions.TrueForAll(s => Game1.player.getEffectiveSkillLevel((int)s.SkillName) >= s.SkillLevel))
+                            && (mailItem.RandomChance == null || new Random((int)(((ulong)Game1.stats.DaysPlayed * 1000000000000000) + (((ulong)l.Id.GetHashCode()) % 1000000000 * 1000000) + Game1.uniqueIDForThisGame % 1000000)).NextDouble() < mailItem.RandomChance)
+                        ;
+                        
 
                         if (mailItem.Attachments != null && mailItem.Attachments.Count > 0)
                         {
@@ -56,20 +83,21 @@ namespace MailFrameworkMod
                                             }
                                             else
                                             {
-                                                MailFrameworkModEntry.ModMonitor.Log($"No object found with the name {i.Name}.", LogLevel.Warn);
+                                                MailFrameworkModEntry.ModMonitor.Log($"No object found with the name {i.Name} for letter {mailItem.Id}.", LogLevel.Warn);
                                             }
                                         }
                                         
-                                        if (i.Index.HasValue && i.Stack.HasValue)
+                                        if (i.Index.HasValue)
                                         {
-                                            attachments.Add(new StardewValley.Object(Vector2.Zero, i.Index.Value, i.Stack.Value));
+                                            attachments.Add(new StardewValley.Object(Vector2.Zero, i.Index.Value, i.Stack ?? 1));
                                         }
                                         else
                                         {
-                                            MailFrameworkModEntry.ModMonitor.Log($"An index and a stack value is required to attach an object for letter {mailItem.Id}.", LogLevel.Warn);
+                                            MailFrameworkModEntry.ModMonitor.Log($"An index value is required to attach an object for letter {mailItem.Id}.", LogLevel.Warn);
                                         }
                                         break;
                                     case ItemType.BigObject:
+                                    case ItemType.BigCraftable:
                                         if (i.Name != null)
                                         {
                                             if (bigObjects == null) bigObjects = MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>("Data\\BigCraftablesInformation", ContentSource.GameContent);
@@ -80,17 +108,22 @@ namespace MailFrameworkMod
                                             }
                                             else
                                             {
-                                                MailFrameworkModEntry.ModMonitor.Log($"No big object found with the name {i.Name}.", LogLevel.Warn);
+                                                MailFrameworkModEntry.ModMonitor.Log($"No big craftable found with the name {i.Name} for letter {mailItem.Id}.", LogLevel.Warn);
                                             }
                                         }
 
                                         if (i.Index.HasValue)
                                         {
-                                            attachments.Add(new StardewValley.Object(Vector2.Zero, i.Index.Value));
+                                            Item item = new StardewValley.Object(Vector2.Zero, i.Index.Value);
+                                            if (i.Stack.HasValue)
+                                            {
+                                                item.Stack = i.Stack.Value;
+                                            }
+                                            attachments.Add(item);
                                         }
                                         else
                                         {
-                                            MailFrameworkModEntry.ModMonitor.Log($"An index value is required to attach a big object for letter {mailItem.Id}.", LogLevel.Warn);
+                                            MailFrameworkModEntry.ModMonitor.Log($"An index value is required to attach a big craftable for letter {mailItem.Id}.", LogLevel.Warn);
                                         }
                                         break;
                                     case ItemType.Tool:
@@ -131,7 +164,8 @@ namespace MailFrameworkMod
                                 )
                                 {
                                     TextColor = mailItem.TextColor,
-                                    Title = mailItem.Title
+                                    Title = mailItem.Title,
+                                    GroupId = mailItem.GroupId
                                 });
                         }
                         else
@@ -147,7 +181,8 @@ namespace MailFrameworkMod
                                 )
                                 {
                                     TextColor = mailItem.TextColor,
-                                    Title = mailItem.Title
+                                    Title = mailItem.Title,
+                                    GroupId = mailItem.GroupId
                                 });
                         }
                     }

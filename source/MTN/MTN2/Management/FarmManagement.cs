@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MTN2.Compatibility;
 using MTN2.MapData;
 using MTN2.Utilities;
+using StardewValley;
 using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
@@ -11,22 +12,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using xTile;
+using SObject = StardewValley.Object;
 
 namespace MTN2.Management {
     internal class FarmManagement {
         //////////////
-        //////////////
         /// Fields ///
         //////////////
-        //////////////
 
+        private const int NumberOfCanonFarms = 6;
         protected int LoadedIndex = -1;
         protected int SelectedIndex = -1;
 
         //////////////////
-        //////////////////
         /// Properties ///
-        //////////////////
         //////////////////
 
         public List<CustomFarm> FarmList { get; private set; }
@@ -113,7 +112,7 @@ namespace MTN2.Management {
 
             if (ProcessContentPack(contentPack, out FarmData)) {
                 monitor.Log($"\t + Contains a custom farm.", LogLevel.Trace);
-                if (FarmData.Version < 2.1) {
+                if (FarmData.Version < 2.1f) {
                     FarmData = BackwardsCompatibility(contentPack, monitor, FarmData.Version);
                 }
                 LoadIcon(helper, contentPack, FarmData);
@@ -221,14 +220,14 @@ namespace MTN2.Management {
         /// </summary>
         /// <param name="farm">A MTN Custom Farm</param>
         public void Validate(CustomFarm farm) {
-            farm.FarmHouse = (farm.FarmHouse == null) ? new Structure(new Placement(3712f / 64f, 520f / 64f), new Interaction(64, 15)) : farm.FarmHouse;
-            farm.GreenHouse = (farm.GreenHouse == null) ? new Structure(new Placement(1600f / 64f, 384f / 64f), new Interaction(28, 17)) : farm.GreenHouse;
-            farm.FarmCave = (farm.FarmCave == null) ? new Structure(new Placement(), new Interaction(34, 7)) : farm.FarmCave;
-            farm.ShippingBin = (farm.ShippingBin == null) ? new Structure(new Placement(), new Interaction(71, 13)) : farm.ShippingBin;
-            farm.MailBox = (farm.MailBox == null) ? new Structure(new Placement(), new Interaction(68, 16)) : farm.MailBox;
-            farm.GrandpaShrine = (farm.GrandpaShrine == null) ? new Structure(new Placement(), new Interaction(9, 7)) : farm.GrandpaShrine;
-            farm.RabbitShrine = (farm.RabbitShrine == null) ? new Structure(new Placement(), new Interaction(48, 7)) : farm.RabbitShrine;
-            farm.PetWaterBowl = (farm.PetWaterBowl == null) ? new Structure(new Placement(), new Interaction(54, 7)) : farm.PetWaterBowl;
+            farm.FarmHouse = farm.FarmHouse ?? new Structure(new Placement(3712f / 64f, 520f / 64f), new Interaction(64, 15));
+            farm.GreenHouse = farm.GreenHouse ?? new Structure(new Placement(1600f / 64f, 384f / 64f), new Interaction(28, 17));
+            farm.FarmCave = farm.FarmCave ?? new Structure(new Placement(), new Interaction(34, 7));
+            farm.ShippingBin = farm.ShippingBin ?? new Structure(new Placement(), new Interaction(71, 13));
+            farm.MailBox = farm.MailBox ?? new Structure(new Placement(), new Interaction(68, 16));
+            farm.GrandpaShrine = farm.GrandpaShrine ?? new Structure(new Placement(), new Interaction(9, 7));
+            farm.RabbitShrine = farm.RabbitShrine ?? new Structure(new Placement(), new Interaction(48, 7));
+            farm.PetWaterBowl = farm.PetWaterBowl ?? new Structure(new Placement(), new Interaction(54, 7));
         }
 
         /// <summary>
@@ -270,7 +269,7 @@ namespace MTN2.Management {
         /// <param name="whichFarm"></param>
         /// <returns></returns>
         public bool Load(int whichFarm) {
-            if (whichFarm < 5) return true;
+            if (whichFarm < NumberOfCanonFarms) return true;
 
             for (int i = 0; i < FarmList.Count; i++) {
                 if (FarmList[i].ID == whichFarm) {
@@ -340,11 +339,14 @@ namespace MTN2.Management {
         /// <param name="Canon"></param>
         /// <returns></returns>
         public Vector2 MailboxNotification(float xOffset, float yOffset, bool Option, bool Canon) {
-            if (Canon || LoadedFarm.MailBox == null) {
-                return new Vector2((Option) ? 4388f : 4352f, ((Option) ? 928f : 880f) + yOffset);
-            }
-            Interaction POI = LoadedFarm.MailBox.PointOfInteraction;
-            return new Vector2((POI.X * 64f) + xOffset, (POI.Y * 64f) + yOffset);
+            Point mailbox_position = Game1.player.getMailboxPosition();
+            return new Vector2(mailbox_position.X * 64f + xOffset, (mailbox_position.Y * 64 - 96 - 48) + yOffset);
+
+            //if (Canon || LoadedFarm.MailBox == null) {
+            //    return new Vector2((Option) ? 4388f : 4352f, ((Option) ? 928f : 880f) + yOffset);
+            //}
+            //Interaction POI = LoadedFarm.MailBox.PointOfInteraction;
+            //return new Vector2((POI.X * 64f) + xOffset, (POI.Y * 64f) + yOffset);
         }
 
         /// <summary>
@@ -354,11 +356,22 @@ namespace MTN2.Management {
         /// <param name="Canon"></param>
         /// <returns></returns>
         public float MailBoxNotifyLayerDepth(bool Option, bool Canon) {
-            if (Canon) {
-                return (Option) ? 0.11561f : 0.115601f;
-            } else {
-                return (((LoadedFarm.MailBox.PointOfInteraction.Y + 2) * 64f) / 10000f) + ((Option) ? 0.00041f : 0.000401f);
-            }
+            Point mailbox_position = Game1.player.getMailboxPosition();
+            float draw_layer = ((mailbox_position.X + 1) * 64) / 10000f + (mailbox_position.Y * 64) / 10000f;
+            return draw_layer + ((Option) ? 1E-05f : 1E-06f);
+
+            //if (Canon) {
+            //    return (Option) ? 0.11561f : 0.115601f;
+            //} else {
+            //    return (((LoadedFarm.MailBox.PointOfInteraction.Y + 2) * 64f) / 10000f) + ((Option) ? 0.00041f : 0.000401f);
+            //}
+        }
+
+        public SObject MethodHook_GetFish(float millisecondsAfterNibble, int bait, int waterDepth, Farmer who, double baitPotency) {
+            if (LoadedFarm.FishingSpawnsFromCanon != -1) return null;
+                
+            
+            return null;
         }
     }
 }

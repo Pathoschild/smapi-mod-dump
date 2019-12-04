@@ -26,3 +26,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 #### 1.1:
 * Fix: the option for tapped trees wasn't preventing seeds from being dropped at all.
+
+#### 2.0:
+* Updated for Stardew Valley 1.4

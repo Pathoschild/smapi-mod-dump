@@ -5,15 +5,9 @@ mods:
    Aggressive Acorns
 
 latest commit:
-   commit ef2f67e52937f7d94028ffef415c7a4054ea6c6a
-   Merge: c0f8b17 ad6cfdd
+   commit c0025874f6e1119902511d2b9ba83092a03ceb7d
    Author: Phrasefable <12666934+phrasefable@users.noreply.github.com>
-   Date:   Wed Nov 27 15:46:06 2019 +1300
+   Date:   Wed Dec 4 01:44:25 2019 +1300
    
-       Merge branch 'dev/dev'
-       
-       # Conflicts:
-       #       AggressiveAcorns/AggressiveAcorns.cs
-       #       AggressiveAcorns/AggressiveAcorns.csproj
-       #       AggressiveAcorns/packages.config
+       AA: Bump version
    

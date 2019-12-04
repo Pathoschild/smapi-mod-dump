@@ -7,9 +7,9 @@ mods:
    Tillable Ground
 
 latest commit:
-   commit 56461dd41331572c6f81b36398d7b3f9b1bde30a
+   commit 31da6726fab25db90cc6044a664a102b8138e507
    Author: hawkfalcon <contact@hawkfalcon.com>
-   Date:   Wed Mar 6 23:53:35 2019 -0800
+   Date:   Mon Dec 2 21:14:49 2019 -0800
    
-       Add new BetterJunimo API docs
+       Add Bush Harvest Ability
    

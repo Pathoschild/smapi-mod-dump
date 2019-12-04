@@ -1,8 +1,0 @@
-{
-  "EnableDebugLog": false,
-  "MinimumDelayBetweenSongsInMilliseconds": 5000,
-  "MaximumDelayBetweenSongsInMilliseconds": 60000,
-  "KeyBinding": "L",
-  "DisableStardewMusic": false,
-  "LocationsToIgnoreWarpMusicChange": []
-}

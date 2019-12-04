@@ -139,7 +139,7 @@ namespace SubterranianOverhaul
         {
             Random random = new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed + (int)tileLocation.X * 7 + (int)tileLocation.Y * 11);
             int num = 0;
-            if (random.NextDouble() < Game1.dailyLuck)
+            if (random.NextDouble() < Game1.player.DailyLuck)
                 ++num;
             if (random.NextDouble() < (double)Game1.player.ForagingLevel / 12.5)
                 ++num;

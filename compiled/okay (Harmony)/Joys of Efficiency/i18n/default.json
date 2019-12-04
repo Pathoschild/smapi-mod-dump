@@ -78,6 +78,10 @@
   "options.UnifyFlowerColors": "Unify colors of flowers",
   "options.ShowMousePositionWhenAssigningLocation": "Show mouse position when assigning coordinates",
   "options.ButtonToggleFlowerColorUnification": "Register/Unregister flower colors for unification",
+  "options.RadiusFarmCleanup": "Tile radius for cleaning farm",
+  "options.CutWeeds": "Cutting weeds (Scythe)",
+  "options.BreakRocks": "Break small rocks (Pickaxe)",
+  "options.ChopTwigs": "Chop twigs (Axe)",
 
   "options.flower": "Flower:{0}",
   "options.R": "R",

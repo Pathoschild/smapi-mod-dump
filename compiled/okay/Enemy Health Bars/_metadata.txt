@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/193
+IDs: Speeder.HealthBars, SPDHealthBar
+update keys: Nexus:193, Chucklefish:3529

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/567
+IDs: Yyeahdude.TravelingCart, TravelingCartYyeahdude
+update keys: Nexus:567

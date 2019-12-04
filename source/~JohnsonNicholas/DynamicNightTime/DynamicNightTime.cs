@@ -260,12 +260,12 @@ namespace DynamicNightTime
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             //testing for ZA MOON, YOUR HIGHNESS.
-            MoonAPI = SDVUtilities.GetModApi<ILunarDisturbancesAPI>(Monitor, Helper, "KoihimeNakamura.LunarDisturbances", "1.0.7");
+            MoonAPI = SDVUtilities.GetModApi<ILunarDisturbancesAPI>(Monitor, Helper, "KoihimeNakamura.LunarDisturbances", "1.0.7", "Lunar Disturbances");
 
             if (MoonAPI != null)
                 LunarDisturbancesLoaded = true;
 
-            ClimatesAPI = SDVUtilities.GetModApi<IClimatesOfFerngillAPI>(Monitor, Helper, "KoihimeNakamura.ClimatesOfFerngill", "1.5.0-beta15");
+            ClimatesAPI = SDVUtilities.GetModApi<IClimatesOfFerngillAPI>(Monitor, Helper, "KoihimeNakamura.ClimatesOfFerngill", "1.5.0-beta15", "Climates of Ferngill");
 
             if (ClimatesAPI != null)
                 ClimatesLoaded = true;

@@ -5,9 +5,9 @@ mods:
    Craft Priority
 
 latest commit:
-   commit 7fd4cb1e55ce1246e7c4bfe600b63b405f9fd8bc
+   commit 3ed59534420191d78941402b8861296a8e7410fe
    Author: trienow <git@trienow.de>
-   Date:   Sun Jul 28 14:50:06 2019 +0200
+   Date:   Tue Dec 3 13:54:29 2019 +0100
    
-       Fix: Casks need to be copied separately
+       Updated the README to reflect the recent changes
    

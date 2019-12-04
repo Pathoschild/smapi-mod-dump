@@ -5,9 +5,9 @@ mods:
    Subterranian Overhaul
 
 latest commit:
-   commit e83267a3bdb311efe775a8fa75dad5bffecb96f1
+   commit e49ca5706142d08116ca34a027ffa5568c45ca15
    Author: Robert Howe <mytigio+github@gmail.com>
-   Date:   Tue Nov 19 07:23:58 2019 -0700
+   Date:   Sun Dec 1 13:54:39 2019 -0700
    
-       Start creating cave carrot crop (eh, we'll see if I finish this one up)
+       reworked the spawning code, fixed some issues with spawning in skull caverns
    

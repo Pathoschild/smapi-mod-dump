@@ -8,5 +8,6 @@
   "EnableShadowsForType_6_WoodPath": false,
   "EnableShadowsForType_7_CrystalPath": false,
   "EnableShadowsForType_8_CobblestonePath": false,
-  "EnableShadowsForType_9_SteppingStonePath": false
+  "EnableShadowsForType_9_SteppingStonePath": false,
+  "EnableShadowsForType_10_BrickFloor": false
 }

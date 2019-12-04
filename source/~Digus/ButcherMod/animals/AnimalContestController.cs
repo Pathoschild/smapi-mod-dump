@@ -163,7 +163,7 @@ namespace AnimalHusbandryMod.animals
                     {
                         if (participated)
                         {
-                            Pet pet = ((Pet)Game1.getCharacterFromName(Game1.player.getPetName()));
+                            Pet pet = Game1.player.getPet();
                             pet.friendshipTowardFarmer.Value = Math.Min(Pet.maxFriendship, pet.friendshipTowardFarmer.Value + DataLoader.AnimalContestData.PetFriendshipForParticipating);
                         }
                         AnimalContestController.ReAddPet();
@@ -207,7 +207,7 @@ namespace AnimalHusbandryMod.animals
 
         public static void TemporalyRemovePet()
         {
-            Game1.getCharacterFromName(Game1.player.getPetName()).IsInvisible = true;
+            Game1.player.getPet().IsInvisible = true;
         }
 
         public static void ReAddFarmAnimal(long participantIdValue)
@@ -221,7 +221,7 @@ namespace AnimalHusbandryMod.animals
 
         public static void ReAddPet()
         {
-            Game1.getCharacterFromName(Game1.player.getPetName()).IsInvisible = false;
+            Game1.player.getPet().IsInvisible = false;
         }
 
         public static void CleanTemporaryParticipant()

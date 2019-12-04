@@ -8,6 +8,7 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewModdingAPI;
 using MTN2.MapData;
+using Harmony;
 
 namespace MTN2.Patches.Game1Patches {
     /// <summary>
@@ -49,7 +50,9 @@ namespace MTN2.Patches.Game1Patches {
             string mapAssetKey;
 
             if (customManager.LoadedFarm == null) {
-                customManager.LoadCustomFarm(Game1.whichFarm);
+                if (Game1.whichFarm < 6)
+                    customManager.LoadCustomFarm(Game1.whichFarm);
+                
             }
 
             if (!customManager.Canon) {
@@ -59,7 +62,9 @@ namespace MTN2.Patches.Game1Patches {
 
                 mapAssetKey = customManager.GetAssetKey(out map, "Farm");
                 Game1.locations[farmIndex] = new Farm(mapAssetKey, "Farm");
-                if (customManager.LoadedFarm.FarmMap.FileType != FileType.xnb) Game1.locations[farmIndex].updateMap();
+                //if (customManager.LoadedFarm.FarmMap.FileType != FileType.xnb && Game1.multiplayerMode == 1) {
+                //    customManager.LoadedFarm.ContentPack.LoadAsset<Map>(mapAssetKey);
+                //}
 
                 if (customManager.LoadedFarm.StartingGreenHouse != null) {
                     for (greenhouseIndex = 0; greenhouseIndex < Game1.locations.Count; greenhouseIndex++) {
