@@ -1,6 +1,5 @@
 ﻿using BetterMixedSeeds.Config;
 using BetterMixedSeeds.Data;
-using BetterMixedSeeds.Patches;
 using Harmony;
 using Microsoft.Xna.Framework;
 using Netcode;
@@ -18,14 +17,26 @@ using Crop = BetterMixedSeeds.Config.Crop;
 
 namespace BetterMixedSeeds
 {
+    /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
+        /// <summary>The list of seeds that mixed seeds can plant.</summary>
         public static List<Seed> Seeds { get; private set; }
+
+        /// <summary>The interface that is used for logging to the console.</summary>
         public static IMonitor MMonitor { get; private set; }
+
+        /// <summary>Provides methods for interacting with the mod directory.</summary>
         public static IModHelper MHelper { get; private set; }
+
+        /// <summary>The mod configuration.</summary>
         public static ModConfig ModConfig { get; private set; }
+
+        /// <summary>The data model for finding the seed name from a crop name.</summary>
         public static SeedIndex SeedIndex { get; private set; } = new SeedIndex();
 
+        /// <summary>The mod entry point, called once the mod is first loaded.</summary>
+        /// <param name="helper">Provides methods for interacting with the mod directory.</param>
         public override void Entry(IModHelper helper)
         {
             MMonitor = this.Monitor;
@@ -37,6 +48,8 @@ namespace BetterMixedSeeds
             this.Helper.Events.GameLoop.SaveLoaded += Events_SaveLoaded;
         }
 
+        /// <summary>The method that applies the harmony patches for replacing game code.</summary>
+        /// <param name="uniqueId">The mod unique id.</param>
         private void ApplyHarmonyPatches(string uniqueId)
         {
             // Create a new Harmony instance for patching source code
@@ -57,11 +70,15 @@ namespace BetterMixedSeeds
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
         
+        /// <summary>The method invoked was the player has loaded a save. Used for calculating the possible seed based from config and installed mods.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
         private void Events_SaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             PopulateSeeds();
         }
         
+        /// <summary>The method that calculates what seeds should dropped from mixed seeds. This is dependant on the config and installed mods.</summary>
         private void PopulateSeeds()
         {
             List<Seed> enabledSeeds = new List<Seed>();
@@ -129,54 +146,49 @@ namespace BetterMixedSeeds
             Seeds = updatedEnabledSeeds;
         }
 
+        /// <summary>The method that detects which other crop mods the player has installed to add these crops to the possible mixed seed output.</summary>
+        /// <returns>List of internal mod names for use with the config and seed index.</returns>
         private List<string> CheckIntegratedMods()
         {
             List<string> integratedModsInstalled = new List<string>();
 
-            if (this.Helper.ModRegistry.IsLoaded("ParadigmNomad.FantasyCrops"))
-                integratedModsInstalled.Add("FantasyCrops");
-            if (this.Helper.ModRegistry.IsLoaded("paradigmnomad.freshmeat"))
-                integratedModsInstalled.Add("FreshMeat");
-            if (this.Helper.ModRegistry.IsLoaded("ppja.fruitsandveggies"))
-                integratedModsInstalled.Add("FruitAndVeggies");
-            if (this.Helper.ModRegistry.IsLoaded("mizu.flowers"))
-                integratedModsInstalled.Add("MizusFlowers");
-            if (this.Helper.ModRegistry.IsLoaded("PPJA.cannabiskit"))
-                integratedModsInstalled.Add("CannabisKit");
-            if (this.Helper.ModRegistry.IsLoaded("Popobug.SPCFW"))
-                integratedModsInstalled.Add("SixPlantableCrops");
-            if (this.Helper.ModRegistry.IsLoaded("BFV.FruitVeggie"))
-                integratedModsInstalled.Add("BonsterCrops");
-            if (this.Helper.ModRegistry.IsLoaded("RevenantCrops"))
-                integratedModsInstalled.Add("RevenantCrops");
-            if (this.Helper.ModRegistry.IsLoaded("kildarien.farmertoflorist"))
-                integratedModsInstalled.Add("FarmerToFlorist");
-            if (this.Helper.ModRegistry.IsLoaded("Fish.LuckyClover"))
-                integratedModsInstalled.Add("LuckyClover");
-            if (this.Helper.ModRegistry.IsLoaded("Fish.FishsFlowers"))
-                integratedModsInstalled.Add("FishsFlowers");
-            if (this.Helper.ModRegistry.IsLoaded("StephansLotsOfCrops"))
-                integratedModsInstalled.Add("StephansLotsOfCrops");
-            if (this.Helper.ModRegistry.IsLoaded("minervamaga.JA.EemieCrops"))
-                integratedModsInstalled.Add("EemiesCrops");
-            if (this.Helper.ModRegistry.IsLoaded("jfujii.TeaTime"))
-                integratedModsInstalled.Add("TeaTime");
-            if (this.Helper.ModRegistry.IsLoaded("Mae.foragetofarm"))
-                integratedModsInstalled.Add("ForageToFarm");
-            if (this.Helper.ModRegistry.IsLoaded("rearda88.GemandMineralCrops"))
-                integratedModsInstalled.Add("GemAndMineralCrops");
-            if (this.Helper.ModRegistry.IsLoaded("6480.crops.arabidopsis"))
-                integratedModsInstalled.Add("MouseEarCress");
-            if (this.Helper.ModRegistry.IsLoaded("ppja.ancientcrops"))
-                integratedModsInstalled.Add("AncientCrops");
-            if (this.Helper.ModRegistry.IsLoaded("PokeCropsJson"))
-                integratedModsInstalled.Add("PokeCrops");
-            if (this.Helper.ModRegistry.IsLoaded("jawsawn.StarboundValley"))
-                integratedModsInstalled.Add("StarboundValley");
+            // The uniqueId (key) with the internal name (value) for each integrated mod
+            Dictionary<string, string> integratedMods = new Dictionary<string, string> {
+                { "ParadigmNomad.FantasyCrops", "FantasyCrops" },
+                { "paradigmnomad.freshmeat", "FreshMeat" },
+                { "ppja.fruitsandveggies", "FruitAndVeggies" },
+                { "mizu.flowers", "MizusFlowers" },
+                { "PPJA.cannabiskit", "CannabisKit" },
+                { "Popobug.SPCFW", "SixPlantableCrops" },
+                { "BFV.FruitVeggie", "BonsterCrops" },
+                { "RevenantCrops", "RevenantCrops" },
+                { "kildarien.farmertoflorist", "FarmerToFlorist" },
+                { "Fish.LuckyClover", "LuckyClover" },
+                { "StephansLotsOfCrops", "StephansLotsOfCrops" },
+                { "minervamaga.JA.EemieCrops", "EemiesCrops" },
+                { "jfujii.TeaTime", "TeaTime" },
+                { "Mae.foragetofarm", "ForageToFarm" },
+                { "rearda88.GemandMineralCrops", "GemAndMineralCrops" },
+                { "6480.crops.arabidopsis", "MouseEarCress" },
+                { "ppja.ancientcrops", "AncientCrops" },
+                { "PokeCropsJson", "PokeCrops" },
+                { "jawsawn.StarboundValley", "StarboundValley" }
+            };
+
+            foreach (var integratedMod in integratedMods)
+            {
+                if (this.Helper.ModRegistry.IsLoaded(integratedMod.Key))
+                {
+                    integratedModsInstalled.Add(integratedMod.Value);
+                }
+            }
 
             return integratedModsInstalled;
         }
 
+        /// <summary>The method for finding which seeds are currently enabled in the specified mod.</summary>
+        /// <param name="modName">The internal mod name that will be used for getting the list of seeds.</param>
+        /// <returns>A list of enabled seeds.</returns>
         private List<Seed> CheckModForEnabledCrops(string modName)
         {
             List<Seed> seedNames = new List<Seed>();
@@ -245,6 +257,9 @@ namespace BetterMixedSeeds
 
         #region Patches
 
+        /// <summary>This is for getting the namespace of the given string, used for harmony patches.</summary>
+        /// <param name="type">The type name used to get the namespace, such as 'Crop'.</param>
+        /// <returns>A full type.</returns>
         internal static Type GetSDVType(string type)
         {
             const string prefix = "StardewValley.";
@@ -253,6 +268,10 @@ namespace BetterMixedSeeds
             return defaultSDV ?? Type.GetType($"{prefix}{type}, StardewValley");
         }
 
+        /// <summary>This is code that will replace some game code, this is ran whenever the player is about to place some mixed seeds. Used for calculating the result from the seed list.</summary>
+        /// <param name="season">The current game season.</param>
+        /// <param name="__result">The seed id that will be planted from the mixed seeds.</param>
+        /// <returns>If no seeds are available, return true (This means the actual game code will be ran). If seeds are available, return false (This means the actual game code doesn't get ran)</returns>
         private static bool randomCropPrefix(string season, ref int __result)
         {
             List<int> possibleSeeds = new List<int>();
@@ -286,6 +305,10 @@ namespace BetterMixedSeeds
             return false;
         }
 
+        /// <summary>This is the code that will replace some game code, this is ran whenever the player is about to cut some weeds. Used for recalculating the drop chance for mixed seeds.</summary>
+        /// <param name="who">The current farmer who is cutting the weeds.</param>
+        /// <param name="__instance">The weeds object that is being cut.</param>
+        /// <returns>Always return false as this patch includes the original game code. This was because applying a prefix / postfix wasn't possible.</returns>
         private static bool cutWeedPrefix(Farmer who, StardewValley.Object __instance)
         {
             // Custom added code for mixed seeds drop chance

@@ -4,7 +4,7 @@ namespace JoysOfEfficiency.Utils
 {
     internal class Logger
     {
-        private static IMonitor Monitor;
+        private static IMonitor Monitor { get; set; }
         private readonly string _loggerName;
 
         public static void Init(IMod mod)

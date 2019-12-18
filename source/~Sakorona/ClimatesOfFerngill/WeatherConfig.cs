@@ -41,7 +41,7 @@ namespace ClimatesOfFerngillRebuild
         public bool DisplayFogInDesert { get; set;} = false;
         public bool RequireMinRainToWaterCrops { get ; set; } = true;
         public bool ApplyFrostsInWinter { get; set;} = true;
-        public int MaxRainFall { get; set; } = 4000;
+        public int MaxRainFall { get; set; } = 11000;
         public double WeatherSystemChance { get; set; } = .15; //default setting
         public double VRainNotifThreshold { get; set; } = .2; //At 20%, notify the player of any changes.
         public WeatherConfig()

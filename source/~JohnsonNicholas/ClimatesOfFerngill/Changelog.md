@@ -1,5 +1,15 @@
 ## Changelog
 
+### 1.5.5
+- The system will *properly* respect the config option for max rain
+- Default max rain is now 11k. 
+- TV forecast updated to look a bit better and flow more. In addition, the hazardous warning works properly now (Resolves issue 77)
+- The feature blocking egress in sufficiently heavy rain has been disabled (Resolves issue 76, in one way..)
+- Hazardous Weather will now block Torrential rain as well properly. (Resolves issue 75)
+- NRE fixed when farmhands attempt to perform checks on non loaded materials. (Resolves issue 64.)
+- System is readjusted to make high amounts of rain rarer... again. (Resolves issue 73.)
+- internal tweaks to make the code base more legiible
+
 ### 1.5.4
  - Fixes to rainfall amount display to be more proper.
  - The weather menu shouldn't display text off the edge of the screen.

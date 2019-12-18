@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Harmony;
 using StardewValley;
 using StardewValley.Locations;
 
@@ -13,8 +12,6 @@ namespace ChildToNPC.Patches
      * then it returns because the NPC isn't married.
      * This postfix executes the rest of the code that was skipped.
      */
-    [HarmonyPatch(typeof(NPC))]
-    [HarmonyPatch("prepareToDisembarkOnNewSchedulePath")]
     class NPCPrepareToDisembarkOnNewSchedulePathPatch
     {
         public static void Postfix(NPC __instance)

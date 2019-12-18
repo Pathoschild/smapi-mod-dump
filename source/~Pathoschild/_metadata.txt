@@ -19,10 +19,11 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 6d177e6e96d336b0ecee3209155d2d2a5d80fe6c
-   Merge: d5930a1f 21275362
+   commit d1f941a22fe56c451b0b9ec051457c6ebc140bc0
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Mon Dec 2 23:05:59 2019 -0500
+   Date:   Sun Dec 15 22:21:48 2019 -0500
    
-       Merge branch 'develop' into stable
+       update Spanish translations
+       
+       Thanks to PlussRolf!
    

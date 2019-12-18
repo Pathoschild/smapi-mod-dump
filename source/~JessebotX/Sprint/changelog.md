@@ -1,6 +1,9 @@
 # RELEASE NOTES 
 (Sprint Sprint Sprint: [(nexus)](https://www.nexusmods.com/stardewvalley/mods/3294), [(custom)](https://github.com/JessebotX/StardewMods/releases/tag/Sprint)
 
+## v1.0.5 (2019/12/4)
+- Temporary fix for Stardew Valley version 1.4
+
 ## v1.0.5-beta.20190816 (8/16/2019)
 - Revamped config
 - Added ```LeftShiftKeyExtraSpeed``` option

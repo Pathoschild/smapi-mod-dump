@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace BetterCrabPotsConfigUpdater
 {
+    /// <summary>The old configuration model.</summary>
     class OldModConfig
     {
         public bool EnableTrash { get; set; } = true;

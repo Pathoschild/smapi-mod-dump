@@ -3,27 +3,43 @@ using Microsoft.Xna.Framework;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.TerrainFeatures;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BetterRarecrows
 {
+    /// <summary>Mod entry point.</summary>
     class ModEntry : Mod
     {
+        /// <summary>The current rarecrows the player has placed on their farm.</summary>
         public static List<int> CurrentRarecrows;
+
+        /// <summary>This is the data the game was when crows last attempted the eat crops (This is a new CurrentRarecrows list can be created each day)</summary>
         public static int PreviousDate = 0;
+
+        /// <summary>Provides methods for logging to the console.</summary>
         public static IMonitor ModMonitor;
+
+        /// <summary>The mod configuration.</summary>
         public static ModConfig Config;
 
+        /// <summary>The mod entry point.</summary>
+        /// <param name="helper">Provides methods for interacting with the mod directory as well as the modding api.</param>
         public override void Entry(IModHelper helper)
         {
+            ApplyHarmonyPatches(this.ModManifest.UniqueID);
+
+            ModMonitor = this.Monitor;
+            Config = this.Helper.ReadConfig<ModConfig>();
+        }
+
+        /// <summary>The method that applies the harmony patches for replacing game code.</summary>
+        /// <param name="uniqueId">The mod unique id.</param>
+        private void ApplyHarmonyPatches(string uniqueId)
+        {
             // Create a new Harmony instance for patching source code
-            HarmonyInstance harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            HarmonyInstance harmony = HarmonyInstance.Create(uniqueId);
 
             // Get the method we want to patch
             MethodInfo targetMethod = AccessTools.Method(typeof(Farm), nameof(Farm.addCrows));
@@ -33,12 +49,11 @@ namespace BetterRarecrows
 
             // Apply the patch
             harmony.Patch(targetMethod, prefix: new HarmonyMethod(prefix));
-
-            ModMonitor = this.Monitor;
-
-            Config = this.Helper.ReadConfig<ModConfig>();
         }
 
+        /// <summary>The code that get's ran before the Farm.addCrows game method gets ran</summary>
+        /// <param name="__instance">The instance of the farm, used for checking which rarecrows have been placed</param>
+        /// <returns>If there are enough rarecrows placed, return false. (Game method doesn't get ran) If there aren't enough rarecrows placed, return true (Game method gets ran)</returns>
         private static bool Prefix(ref Farm __instance)
         {
             if (ModEntry.PreviousDate != Game1.dayOfMonth)
@@ -47,7 +62,7 @@ namespace BetterRarecrows
                 ModEntry.CurrentRarecrows = new List<int>();
             }
 
-            // Check if all rare crows have been placed
+            // Check how many rarecrows have been placed
             foreach (KeyValuePair<Vector2, StardewValley.Object> pair in __instance.objects.Pairs)
             {
                 if ((bool)((NetFieldBase<bool, NetBool>)pair.Value.bigCraftable) && pair.Value.Name.Contains("Rarecrow"))

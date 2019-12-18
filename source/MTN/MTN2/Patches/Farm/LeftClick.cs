@@ -66,8 +66,6 @@ namespace MTN2.Patches.FarmPatches
                 who.ActiveObject = null;
                 __result = true;
             }
-
-
         } 
     }
 }

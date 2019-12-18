@@ -164,10 +164,10 @@ namespace Bow
             b.Draw(Game1.mouseCursors, new Vector2( AimingAt.X - Game1.viewport.X, AimingAt.Y - Game1.viewport.Y ), new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 43, -1, -1)), Color.White, 0, new Vector2( 32, 32 ), 1, SpriteEffects.None, 1);
         }
 
-        public override void drawInMenu(SpriteBatch b, Vector2 loc, float scale, float transparency, float depth, bool drawStackNumber, Color color, bool shadow)
+        public override void drawInMenu(SpriteBatch b, Vector2 loc, float scale, float transparency, float depth, StackDrawType stackDrawType, Color color, bool shadow)
         {
             b.Draw(Texture, loc + new Vector2(32, 29), null, Color.White * transparency, 0, new Vector2(8, 8), scale * 4, SpriteEffects.None, depth);
-            if (!drawStackNumber || this.attachments == null || this.attachments[0] == null)
+            if (stackDrawType == StackDrawType.Hide || this.attachments == null || this.attachments[0] == null)
                 return;
             Utility.drawTinyDigits(this.attachments[0].Stack, b, loc + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(this.attachments[0].Stack, 3f * scale)) + 3f * scale, (float)(64.0 - 18.0 * (double)scale + 2.0)), 3f * scale, 1f, Color.White);
         }

@@ -52,10 +52,12 @@
     <Compile Include="CustomNamingMenu.cs" />
     <Compile Include="FamilyData.cs" />
     <Compile Include="IContentPatcherAPI.cs" />
+    <Compile Include="ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Patches\CanGetPregnantPatch.cs" />
     <Compile Include="Patches\ChildReloadSpritePatch.cs" />
     <Compile Include="Patches\ChildTenMinuteUpdatePatch.cs" />
+    <Compile Include="Patches\IsGaySpousePatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

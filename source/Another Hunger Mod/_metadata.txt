@@ -5,9 +5,9 @@ mods:
    Another Hunger Mod
 
 latest commit:
-   commit c4a618bf54bb2533f22b11a37e1452d04778ed62
+   commit bd6f90ab30b38f48588d2f9bdf12c9baed48ad19
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Jul 8 21:03:32 2019 -0400
+   Date:   Mon Nov 25 16:40:09 2019 -0500
    
-       Manifest update I never committed
+       1.1.0 - SDV 1.4, GMCM support, removed defense buff
    

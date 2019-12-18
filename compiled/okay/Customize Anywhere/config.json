@@ -1,0 +1,7 @@
+{
+  "ActivateButton": "LeftShift",
+  "customizeButton": "D1",
+  "dyeButton": "D2",
+  "tailoringButton": "D3",
+  "canTailorWithoutEvent": false
+}

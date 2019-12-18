@@ -1,0 +1,7 @@
+{
+  "OptionsPage.ReloadIndicator": "Нужна перезагрузка",
+  "OptionsPage.ModSettingsTab": "Настройки модификаций",
+  "StaticConfig.SuccessMessage": "Настройки сохранены",
+  "StaticConfig.FailMessage": "Ошибка сохранения",
+  "OptionsList.NewValue" : "Введите новое значение"
+}

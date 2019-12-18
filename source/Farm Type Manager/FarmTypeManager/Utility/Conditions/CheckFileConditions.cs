@@ -18,8 +18,9 @@ namespace FarmTypeManager
         {
             /// <summary>Checks whether a config file should be used with the currently loaded farm.</summary>
             /// <param name="config">The FarmConfig to be checked.</param>
+            /// <param name="pack">The content pack associated with this file, if any.</param>
             /// <returns>True if the file should be used with the current farm; false otherwise.</returns>
-            public static bool CheckFileConditions(FarmConfig config, IContentPack pack, IModHelper helper)
+            public static bool CheckFileConditions(FarmConfig config, IContentPack pack)
             {
                 Monitor.Log("Checking file conditions...", LogLevel.Trace);
 
@@ -54,7 +55,7 @@ namespace FarmTypeManager
                         if (!packSave.MainDataFolderReset) //if this content pack has NOT reset the main data folder yet
                         {
                             Monitor.Log($"ResetMainDataFolder requested by content pack: {pack.Manifest.Name}", LogLevel.Debug);
-                            string dataPath = Path.Combine(helper.DirectoryPath, "data"); //the path to this mod's data folder
+                            string dataPath = Path.Combine(Helper.DirectoryPath, "data"); //the path to this mod's data folder
                             DirectoryInfo dataFolder = new DirectoryInfo(dataPath); //an object representing this mod's data directory
 
                             if (dataFolder.Exists) //the data folder exists
@@ -62,7 +63,7 @@ namespace FarmTypeManager
                                 Monitor.Log("Attempting to archive data folder...", LogLevel.Trace);
                                 try
                                 {
-                                    string archivePath = Path.Combine(helper.DirectoryPath, "data", "archive", DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"));
+                                    string archivePath = Path.Combine(Helper.DirectoryPath, "data", "archive", DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"));
                                     DirectoryInfo archiveFolder = Directory.CreateDirectory(archivePath); //create a timestamped archive folder
                                     foreach (FileInfo file in dataFolder.GetFiles()) //for each file in dataFolder
                                     {
@@ -221,7 +222,7 @@ namespace FarmTypeManager
                     {
                         bool validEntry = !(entry.Value); //whether the current entry is accurate (starts false if the mod should exist; starts true if the mod should NOT exist)
 
-                        foreach (IModInfo mod in helper.ModRegistry.GetAll()) //for each mod currently loaded by SMAPI
+                        foreach (IModInfo mod in Helper.ModRegistry.GetAll()) //for each mod currently loaded by SMAPI
                         {
                             if (entry.Value == true) //if the mod should exist
                             {

@@ -1,0 +1,10 @@
+{
+  "Name": "Parsnips Absolutely Everywhere But It's Garlic",
+  "Author": "f4iTh",
+  "Version": "1.0.1",
+  "Description": "Each morning the farm is covered in.. garlic. You thought it'd be parsnips, didn't you?",
+  "UniqueID": "SolomonsWorkshop.ParsnipsAbsolutelyEverywhereButItsGarlic",
+  "EntryDll": "ParsnipsAbsolutelyEverywhereButItsGarlic.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:3524" ]
+}

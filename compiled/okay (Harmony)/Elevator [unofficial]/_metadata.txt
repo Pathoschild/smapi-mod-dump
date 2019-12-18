@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2952
-IDs: Ilyaki.Elevator
-update keys: Nexus:2952, GitHub:Ilyaki/Elevator

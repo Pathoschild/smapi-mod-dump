@@ -2,6 +2,10 @@
   "Controls": {
     "Organize": [
       "OemTilde"
-    ]
+    ],
+    "StackToChest": [
+      "Q"
+    ],
+    "OrganizeAfterStackToChest": true
   }
 }

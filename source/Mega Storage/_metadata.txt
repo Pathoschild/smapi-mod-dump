@@ -5,10 +5,9 @@ mods:
    Mega Storage
 
 latest commit:
-   commit 75ad4e153886a525b7749dc34674b79415782a19
-   Merge: 95f8469 03d07c3
-   Author: Aleksander Waage <alek.ntnu@gmail.com>
-   Date:   Sun Jul 21 21:52:45 2019 +0200
+   commit df05276f0c4702d511ef648e9aece08001a56f68
+   Author: amazingalek <alek.ntnu@gmail.com>
+   Date:   Sun Dec 8 12:03:39 2019 +0100
    
-       Merge branch 'master' of https://github.com/amazingalek/Stardew-MegaStorage
+       Update README.md
    

@@ -37,6 +37,9 @@ namespace CustomCrystalariumMod
                         , (l) => !Game1.player.mailReceived.Contains(l.Id)
                         , (l) => Game1.player.mailReceived.Add(l.Id)
                     )
+                    {
+                        Title = I18N.Get("CustomCrystalarium.Letter.Title")
+                    }
                 );
             }
         }

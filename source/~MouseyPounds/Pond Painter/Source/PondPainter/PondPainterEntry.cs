@@ -9,7 +9,6 @@ using StardewValley.Locations;
 using StardewValley.Buildings;
 using StardewValley.Menus;
 using SObject = StardewValley.Object;
-using ColorMine.ColorSpaces;
 
 namespace PondPainter
 {
@@ -135,21 +134,22 @@ namespace PondPainter
 											this.Monitor.Log($"Entry \"{LogName}\" color definition {cindex} had no animation range listed; the default of {AnimationRange} will be used.", LogLevel.Debug);
 										}
 										HasAnimation = true;
-										// Calculating the animation frames, in HSV via ColorMine
-										// We use a sine model with the animation "range" as amplitude and a period of the number of steps.
-										Rgb BaseRGB = new Rgb() {R=theRealColor.R, G=theRealColor.G, B=theRealColor.B};
-										Hsv BaseHSV = BaseRGB.To<Hsv>();
+                                        // Calculating the animation frames, in HSV via ColorMine
+                                        // We use a sine model with the animation "range" as amplitude and a period of the number of steps.
+                                        SimpleRGB BaseRGB = new SimpleRGB(theRealColor.R, theRealColor.G, theRealColor.B);
+                                        SimpleHSV BaseHSV = BaseRGB.ToHSV();
                                         this.Monitor.Log($"Entry \"{LogName}\" color definition {cindex} Tracing HUE animation with base of {BaseHSV.H} and a range of {AnimationRange} in {AnimationSteps} steps.", LogLevel.Trace);
                                         for (int i = 0; i <= AnimationSteps; i++)
 										{
                                             // We can't do the simpler NewHSV = BaseHSV because that is not a true copy
-                                            Hsv NewHSV = BaseRGB.To<Hsv>();
+                                            SimpleHSV NewHSV = BaseRGB.ToHSV();
                                             double hue = (360 + BaseHSV.H + AnimationRange*Math.Sin(2*i*Math.PI/AnimationSteps)) % 360;
 											NewHSV.H = hue;
                                             //this.Monitor.Log($"** Animation trace step {i}: hue {hue}. Base {BaseHSV.H}", LogLevel.Trace);
-                                            Rgb NewRGB = NewHSV.To<Rgb>();
+                                            SimpleRGB NewRGB = NewHSV.ToRGB();
 											AnimationColors.Add(new Color((int)NewRGB.R, (int)NewRGB.G, (int)NewRGB.B));
 										}
+                                        
 									}
 									else if  (c.AnimationType.Equals("value"))
 									{
@@ -175,19 +175,21 @@ namespace PondPainter
 										HasAnimation = true;
                                         // Calculating the animation frames, in HSV via ColorMine
                                         // We use a sine model with the animation "range" as amplitude and a period of the number of steps.
-                                        Rgb BaseRGB = new Rgb() {R=theRealColor.R, G=theRealColor.G, B=theRealColor.B};
-										Hsv BaseHSV = BaseRGB.To<Hsv>();
+                                        
+                                        SimpleRGB BaseRGB = new SimpleRGB(theRealColor.R, theRealColor.G, theRealColor.B);
+										SimpleHSV BaseHSV = BaseRGB.ToHSV();
                                         //this.Monitor.Log($"Entry \"{LogName}\" color definition {cindex} Tracing VALUE animation with base of {BaseHSV.V} and a range of {AnimationRange} in {AnimationSteps} steps.", LogLevel.Trace);
                                         for (int i = 0; i <= AnimationSteps; i++)
 										{
                                             // We can't do the simpler NewHSV = BaseHSV because that is not a true copy
-                                            Hsv NewHSV = BaseRGB.To<Hsv>();
+                                            SimpleHSV NewHSV = BaseRGB.ToHSV();
                                             double val =  Math.Min(Math.Max(BaseHSV.V + AnimationRange*Math.Sin(2*i*Math.PI/AnimationSteps),0),1);
 											NewHSV.V = val;
                                             this.Monitor.Log($"** Animation trace step {i}: value {val}. Base {BaseHSV.V}", LogLevel.Trace);
-                                            Rgb NewRGB = NewHSV.To<Rgb>();
+                                            SimpleRGB NewRGB = NewHSV.ToRGB();
 											AnimationColors.Add(new Color((int)NewRGB.R, (int)NewRGB.G, (int)NewRGB.B));
 										}
+                                        
 									}
 									else
 									{

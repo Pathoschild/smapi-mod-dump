@@ -9,6 +9,7 @@ mods:
    Better Garden Pots
    Better Hay
    Better Slingshots
+   Better Workbenches
    Cacti Hurt You
    Casks Everywhere
    Chat Commands
@@ -31,9 +32,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit c388295ced2dca937dc13d1d43f51c720808b11b
-   Author: Dan Volchek <volchek2@illinois.edu>
-   Date:   Sun Aug 11 18:41:46 2019 -0700
+   commit cb6eac49e61dfca43649d71a2da8931b49c07021
+   Author: danvolchek <danvnad@gmail.com>
+   Date:   Tue Dec 17 21:38:47 2019 -0800
    
-       [Better Doors] fix rare android bug
+       [Safe Lightning] add back in API, update the patch properly this time.
    

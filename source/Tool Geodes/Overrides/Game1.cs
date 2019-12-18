@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using SpaceShared;
 using StardewValley;
 using StardewValley.Tools;
 using System.Collections.Generic;

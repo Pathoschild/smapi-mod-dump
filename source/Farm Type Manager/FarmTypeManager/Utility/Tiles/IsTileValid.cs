@@ -19,27 +19,20 @@ namespace FarmTypeManager
             /// <summary>Determines whether a specific tile on a map is valid for object placement, using any necessary checks from Stardew's native methods.</summary>
             /// <param name="location">The game location to be checked.</param>
             /// <param name="tile">The tile to be validated for object placement (for a large object, this is effectively its upper left corner).</param>
-            /// <param name="isLarge">True if the objects to be spawned are 2x2 tiles in size, otherwise false (1 tile).</param>
+            /// <param name="size">A point representing the size of this object in tiles.</param>
             /// <returns>Whether the provided tile is valid for the given area and object size, based on the area's StrictTileChecking setting.</returns>
-            public static bool IsTileValid(GameLocation location, Vector2 tile, bool isLarge, string strictTileChecking)
+            public static bool IsTileValid(GameLocation location, Vector2 tile, Point size, string strictTileChecking)
             {
                 bool valid = true; //whether the provided tile is valid with the given parameters
 
-                List<Vector2> tilesToCheck; //a list of tiles that need to be valid (based on spawn object size)
+                List<Vector2> tilesToCheck = new List<Vector2>(); //a list of tiles that need to be valid (based on spawn object size)
 
-                if (isLarge) //if the object to be spawned is 2x2 tiles in size
+                for (int x = 0; x < size.X; x++)
                 {
-                    //list a 2x2 set of tiles with "tile" as the top left corner
-                    tilesToCheck = new List<Vector2> {
-                        tile,
-                        new Vector2((int)tile.X + 1, (int)tile.Y),
-                        new Vector2((int)tile.X, (int)tile.Y + 1),
-                        new Vector2((int)tile.X + 1, (int)tile.Y + 1)
-                    };
-                }
-                else //if the object is 1x1
-                {
-                    tilesToCheck = new List<Vector2> { tile }; //list only "tile"
+                    for (int y = 0; y < size.Y; y++)
+                    {
+                        tilesToCheck.Add(new Vector2(tile.X + x, tile.Y + y));
+                    }
                 }
 
                 if (strictTileChecking.Equals("none", StringComparison.OrdinalIgnoreCase)) //no validation at all
@@ -72,7 +65,7 @@ namespace FarmTypeManager
                 {
                     foreach (Vector2 t in tilesToCheck) //for each tile to be checked
                     {
-                        if (!location.isTileLocationTotallyClearAndPlaceable(t)) //if the tile is *not* totally clear
+                        if (!location.isTileLocationTotallyClearAndPlaceable(t) || !IsTileClearOfDebrisItems(location, t)) //if the tile is *not* totally clear OR contains debris items
                         {
                             valid = false; //prevent spawning here
                             break; //skip checking the other tiles
@@ -85,7 +78,7 @@ namespace FarmTypeManager
                     {
                         string noSpawn = location.doesTileHaveProperty((int)t.X, (int)t.Y, "NoSpawn", "Back"); //get the "NoSpawn" property for this tile
 
-                        if ((noSpawn != null && noSpawn != "") || !location.isTileLocationTotallyClearAndPlaceable(t)) //if noSpawn is *not* empty OR if the tile is *not* totally clear
+                        if ((noSpawn != null && noSpawn != "") || !location.isTileLocationTotallyClearAndPlaceable(t) || !IsTileClearOfDebrisItems(location, t)) //if noSpawn is *not* empty OR if the tile is *not* totally clear OR contains debris items
                         {
                             valid = false; //prevent spawning here
                             break; //skip checking the other tiles
@@ -94,6 +87,24 @@ namespace FarmTypeManager
                 }
 
                 return valid;
+            }
+
+            private static bool IsTileClearOfDebrisItems(GameLocation location, Vector2 tile)
+            {
+                foreach (Debris debris in location.debris) //for each debris at this location
+                {
+                    if (debris.item != null && debris.Chunks.Count > 0) //if this debris contains an item
+                    {
+                        Vector2 debrisTile = new Vector2((int)(debris.Chunks[0].position.X / Game1.tileSize) + 1, (int)(debris.Chunks[0].position.Y / Game1.tileSize) + 1);
+
+                        if (debrisTile == tile) //if this debris's position matches the provided tile
+                        {
+                            return false; //the tile is NOT clear
+                        }
+                    }
+                }
+
+                return true; //the tile is clear
             }
         }
     }

@@ -5,12 +5,9 @@ mods:
    Part of the Community
 
 latest commit:
-   commit a4bdd2471f0928647f8945d8920f5095ce520295
-   Merge: 2c7d772 83197e8
-   Author: bmarquismarkail <bmmgreen@gmail.com>
-   Date:   Sun Jun 9 15:34:19 2019 -0500
+   commit fab9a3a38c507ed16bc1417dee031c5d380b3f1d
+   Author: Brandon Green <bmmgreen@gmail.com>
+   Date:   Sat Dec 14 11:11:53 2019 -0600
    
-       Merge pull request #5 from Pathoschild/development
-       
-       Ongoing development
+       Create LICENSE
    

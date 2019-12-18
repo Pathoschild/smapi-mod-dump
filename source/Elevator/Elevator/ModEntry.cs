@@ -39,8 +39,13 @@ namespace Elevator
 
 			Helper.Events.Input.ButtonPressed += (o,e) =>
 			{
-				if (Game1.IsServer && e.Button.TryGetKeyboard(out Keys key) && key == Keys.F7)
-					UpdateWarpsAndReloadTextures();
+				if (e.Button.TryGetKeyboard(out Keys key) && key == Keys.F7)
+				{
+					if (Game1.IsServer)
+						UpdateWarpsAndReloadTextures();
+					else
+						ReloadTextures();
+				}
 			};
 			
 			Helper.Events.Player.Warped += (o, e) =>
@@ -54,16 +59,21 @@ namespace Elevator
 			};
 		}
 
-		private void UpdateWarpsAndReloadTextures()
+		private void ReloadTextures()
 		{
-			UpdateCabinWarps();
-
 			foreach (Building building in Game1.getFarm().buildings)
 				if (CabinHelper.IsElevatorBuilding(building))
 				{
 					Monitor.Log("(Re)loading an elevator building texture");
 					building.resetTexture();//Otherwise the clients will just see a shed
 				}
+		}
+
+		private void UpdateWarpsAndReloadTextures()
+		{
+			UpdateCabinWarps();
+
+			ReloadTextures();
 		}
 
 		private void UpdateCabinWarps()

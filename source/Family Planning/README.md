@@ -1,5 +1,5 @@
 # FamilyPlanningMod
-This is a Stardew Valley mod called Family Planning. Family Planning allows you to customize the maximum number of children you can have and their genders. Currently, you can have zero to four children.
+This is a Stardew Valley mod called Family Planning. Family Planning allows you to customize the maximum number of children you can have and their genders. Currently, you can have zero to four children. Family Planning also allows you to adopt children with a roommate by config.
 
 ## How to use:
 
@@ -7,9 +7,11 @@ After you've loaded the singleplayer save file you want the mod to change, go to
 
 For example, if you wanted to have the max number of children possible, four, you would load your save file and type "set_max_children 4" into the console. Your spouse will then be able to prompt you about having children until you reach four.
 
-In the 1.2.0 update, this information is now saved to a file in the data folder to allow multiplayer compatibility. This file shares the same name as your normal save file. (So for example, JonSnow_123456789.) If you wanted, you could edit this file to the value you want, though it will reset itself to 4 if you try to enter a larger value.
+From the 1.2.0 update on, this information is now saved to a file in the data folder to allow multiplayer compatibility. This file shares the same name as your normal save file. (So for example, Farmer_123456789.) If you wanted, you could edit this file to the value you want. If you edit it to an illegal value, like -1, it will automatically change back when you next run the game.
 
-Also, you will now be able to choose your child's gender when you name them. You could have one son, or three daughters, or two sons and two daughters, or no children at all, etc, the choice is yours.
+You will be able to choose your child's gender when you name them. You could have one son, or three daughters, or two sons and two daughters, or no children at all, etc, the choice is yours.
+
+To adopt children with a roommate, go to the config.json file in the Family Planning folder, and change the value "AdoptChildrenWithRoommate" to true. From there, all other settings will apply, and your roommate will be able to prompt you to adopt a child.
 
 ## Mod Customization
 ### Child Appearance Mods
@@ -17,7 +19,8 @@ Also, you will now be able to choose your child's gender when you name them. You
 By default, children of the same gender are identical. So if you'd like them to look different, you'll need to use another mod to change their appearance. There are two options: Content Packs for Family Planning, or using Content Patcher mods.
 
 If you'd like to make a Content Pack for this mod, the process is relatively simple! The explanation is below the Content Patcher section.
-If you'd like to make a Content Patcher mod, then you'll want to use the custom CP tokens that this mod makes possible. The explanation is below.
+
+If you'd like to make a Content Patcher mod, then you'll want to use the custom CP tokens that this mod uses. The explanation is below.
 
 ### Content Patcher tokens
 To use the CP tokens that Family Planning provides, make sure to set Family Planning ("Loe2run.FamilyPlanning") as a dependency.
@@ -44,6 +47,7 @@ So to continue the example from above, this is what your full entry would look l
   }
 },
 ```
+Note: If you run into an issue where Family Planning should have more tokens for your CP pack to work, let me know! I'd be happy to add more as necessary.
 
 ### Creating a Content Pack
 To create a Content Pack, first download the Example Content Pack from the Nexus page for Family Planning. There are three steps to finishing the Content Pack: you will need to edit the manifest.json, add your image files to the assets folder, and edit the data.json in the assets folder.
@@ -173,10 +177,10 @@ This mod uses Harmony, so there may be interference with other mods using Harmon
 
 ## More details:
 
--> To uninstall Family Planning, remove the Family Planning mod folder. If you have any content packs for Family Planning, be sure to remove them as well. The children born at the time the mod is removed will not be removed. The only way to remove children is to remove all of them by turning them into doves at the witch's hut.
+-> To uninstall Family Planning, remove the Family Planning mod folder. If you have any content packs for Family Planning, be sure to remove them as well. The children present at the time the mod is removed will not be removed. The only way to remove children is to remove all of them by turning them into doves at the witch's hut.
 
 As described in the multiplayer section above, there are issues when one player has a Family Planning content pack and the other players don't. When uninstalling Family Planning from a multiplayer farm, be certain that no players have a content pack installed to avoid glitches.
 
--> Family size preferences are, from 1.2.0 on, saved to a file in the data folder. This file has the same name as your save folder. (For example, JonSnow_123456789.) This file is what keeps track of the maximum children you can have. If you delete it, the game will generate a new json file and reset your default value to 2 (unless you already have more than 2 children).
+-> Family size preferences are, from 1.2.0 on, saved to a file in the data folder. This file has the same name as your save folder. (For example, Farmer_123456789.) This file is what keeps track of the maximum children you can have. If you delete it, the game will generate a new json file and reset your default value to 2 (unless you already have more than 2 children).
 
--> The reason why the mod currently limits your to four children maximum is because it doesn't edit the number of beds in your house. Therefore, all of your children need to share the two existing beds. Two children can fit in a bed together, so four children is the limit (unless I update this mod to add more beds). Also, children will attempt to share a bed with a sibling of the same gender when possible.
+-> I've removed the four child maximum from this mod, but I encourage you to stay with four or less. The reason why is because this mod doesn't edit the number of beds in your house. Therefore, all of your children need to share the two existing beds. Two children can fit in a bed together, so with more than four children, they'll start to pile up in bed. Also, children will attempt to share a bed with a sibling of the same gender when possible.

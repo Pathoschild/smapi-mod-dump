@@ -1,0 +1,7 @@
+{
+  "OptionsPage.ReloadIndicator": "Need reload",
+  "OptionsPage.ModSettingsTab": "Mod settings",
+  "StaticConfig.SuccessMessage": "Settings saved",
+  "StaticConfig.FailMessage": "Save error",
+  "OptionsList.NewValue": "Enter a new value"
+}

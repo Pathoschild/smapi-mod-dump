@@ -1,33 +1,28 @@
-﻿ using Harmony;
+﻿using Harmony;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using Netcode;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Characters;
 using StardewValley.Locations;
-using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using static StardewValley.Network.OverlaidDictionary;
 
 namespace Better10Hearts
 {
+    /// <summary>Mod entry point.</summary>
     class ModEntry : Mod, IAssetEditor
     {
+
         public IDictionary<string, bool> npcEnergyGeneration = new Dictionary<string, bool>();
+
+        /// <summary>The mod configuration.</summary>
         public ModConfig Config;
+
+        /// <summary></summary>
         public static bool HasPassoutBeenHandled = false;
 
-        /// <summary>
-        /// Called when the mod is first loaded up, want to add all event handlers and load the mail list to add
-        /// </summary>
-        /// <param name="helper"></param>
+        /// <summary>Mod entry point.</summary>
+        /// <param name="helper">Provides methods for interacting with the mod directory as well as the modding api.</param>
         public override void Entry(IModHelper helper)
         {
             this.Helper.Events.GameLoop.DayStarted += Events_DayStarted;
@@ -36,23 +31,24 @@ namespace Better10Hearts
             
             Config = this.Helper.ReadConfig<ModConfig>();
 
+            ApplyHarmonyPatches(this.ModManifest.UniqueID);
+        }
+
+        /// <summary>The method that applies the harmony patches for replacing game code.</summary>
+        /// <param name="uniqueId">The mod unique id.</param>
+        private void ApplyHarmonyPatches(string uniqueId)
+        {
             // Create a new Harmony instance for patching source code
             HarmonyInstance harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
 
-            // Get the method we want to patch
-            MethodInfo targetMethod = AccessTools.Method(typeof(Farmer), nameof(Farmer.passOutFromTired));
-
-            // Get the patch that was created
-            MethodInfo prefix = AccessTools.Method(typeof(ModEntry), nameof(ModEntry.Prefix));
-
-            // Apply the patch
-            harmony.Patch(targetMethod, prefix: new HarmonyMethod(prefix));
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.passOutFromTired)),
+                prefix: new HarmonyMethod(AccessTools.Method(typeof(ModEntry), nameof(ModEntry.Prefix)))
+            );
         }
-        
-        /// <summary>
-        /// Used to patch 
-        /// </summary>
-        /// <returns></returns>
+
+        /// <summary>This is code that will replace some game code, this is ran whenever the player is about to place some mixed seeds. Used for calculating the result from the seed list.</summary>
+        /// <returns>This will always return false as this contains the game code as well as the patch.</returns>
         private static bool Prefix(Farmer who)
         {
             if (!who.IsLocalPlayer)
@@ -104,11 +100,9 @@ namespace Better10Hearts
             return false;
         }
 
-        /// <summary>
-        /// Check every second if the player has spoken to any NPC since the previous second
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <summary>Check every second if the player has spoken to any NPC since the previous second.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
         private void Events_UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             // Make sure a save is loaded and to only run code once every second
@@ -122,6 +116,11 @@ namespace Better10Hearts
             foreach (var key in npcEnergyGeneration.Keys)
             {
                 NPC npc = Game1.getCharacterFromName(key);
+
+                if (npc == null)
+                {
+                    continue;
+                }
 
                 bool previousHasSpokenToday = npcEnergyGeneration[npc.Name];
                 bool newHasSpokenToday = Game1.player.hasTalkedToFriendToday(npc.Name);
@@ -167,11 +166,9 @@ namespace Better10Hearts
             }
         }
 
-        /// <summary>
-        /// Will check everytime the time changes for checking where the player has passed out at and if there are any NPC in the area
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <summary>The method invoked once the game clock has updated, this is used for checking if the player has passed out.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
         private void Events_TimeChanged(object sender, TimeChangedEventArgs e)
         {
             // Get to current location to check the NPCs against
@@ -202,12 +199,9 @@ namespace Better10Hearts
             }
         }
 
-        /// <summary>
-        /// Will check at the begining of each day, it will go through each NPC and check if it's their birthday, if so if they have enough friendship points to give max luck
-        /// It will also add all NPCs that have 10hearts, so when the player talks to them the list can be compared to see if the player should receive energy
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <summary>The method invoked once the player starts a new day, this is used for checking NPC birthdays and preparing players to get stamina when talking to NPCs.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
         private void Events_DayStarted(object sender, DayStartedEventArgs e)
         {
             // Mark passout handled as false for the new day
@@ -247,7 +241,7 @@ namespace Better10Hearts
                             if (npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth))
                             {
                                 // Set max luck 
-                                Game1.dailyLuck = 0.12;
+                                Game1.player.team.sharedDailyLuck.Value = 0.12;
                             }
                         }
                     }
@@ -263,7 +257,7 @@ namespace Better10Hearts
                             if (npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth))
                             {
                                 // Set max luck 
-                                Game1.dailyLuck = 0.12;
+                                Game1.player.team.sharedDailyLuck.Value = 0.12;
                             }
                         }
                     }
@@ -271,12 +265,10 @@ namespace Better10Hearts
             }
         }
 
-        /// <summary>
-        /// Will call when going though each asset, if the mail asset is passed in, return true as we want to edit this
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="asset"></param>
-        /// <returns></returns>
+        /// <summary>This will call when loading each asset, if the mail asset is being loaded, return true as we want to edit this.</summary>
+        /// <typeparam name="T">The type of the assets being loaded.</typeparam>
+        /// <param name="asset">The asset info being loaded.</param>
+        /// <returns>True if the assets being loaded needs to be edited.</returns>
         public bool CanEdit<T>(IAssetInfo asset)
         {
             // If the mail asset is passed in, return true so we can edit it
@@ -288,11 +280,9 @@ namespace Better10Hearts
             return false;
         }
 
-        /// <summary>
-        /// Edit the mail asset to add the new mail for when the player passes out
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="asset"></param>
+        /// <summary>Edit the mail asset to add the new mail for when the player passes out.</summary>
+        /// <typeparam name="T">The type of the assets being loaded.</typeparam>
+        /// <param name="asset">The asset data being loaded.</param>
         public void Edit<T>(IAssetData asset)
         {
             // Add new mail items

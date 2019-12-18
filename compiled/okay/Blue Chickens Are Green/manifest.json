@@ -1,0 +1,10 @@
+{
+  "Name": "Blue Chickens Are Green",
+  "Author": "explosivetortellini",
+  "Version": "1.0.0",
+  "Description": "Makes Blue Chickens Green",
+  "UniqueID": "explosivetortellini.BlueChickensAreGreen",
+  "EntryDll": "BlueChickensAreGreen.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:4815" ]
+}

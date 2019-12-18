@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using JoysOfEfficiency.Core;
 using JoysOfEfficiency.Utils;
 using Microsoft.Xna.Framework;
-using Netcode;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Network;
 using StardewValley.Tools;
 using Object = StardewValley.Object;
 
@@ -43,15 +41,13 @@ namespace JoysOfEfficiency.Automation
                     Logger.Log($"Cut weed @{loc}");
                 }
 
-                if (Config.BreakRocks && IsRock(obj.Name) && tool is Pickaxe pickaxe)
+                if (Config.BreakRocks && IsRock(obj.Name) && tool is Pickaxe pickaxe && BreakRock(farm, pickaxe, obj, loc))
                 {
-                    BreakRock(farm, pickaxe, obj, loc);
                     Logger.Log($"Broke rock @{loc}");
                 }
 
-                if (Config.ChopTwigs && IsTwig(obj.Name) && tool is Axe axe)
+                if (Config.ChopTwigs && IsTwig(obj.Name) && tool is Axe && ChopTwig(farm, obj, loc))
                 {
-                    ChopTwig(farm, obj, loc);
                     Logger.Log($"Chopped twig @{loc}");
                 }
             }
@@ -63,13 +59,13 @@ namespace JoysOfEfficiency.Automation
             farm.removeObject(loc, false);
         }
 
-        private static void ChopTwig(Farm farm, Object obj, Vector2 loc)
+        private static bool ChopTwig(GameLocation farm, Object obj, Vector2 loc)
         {
             Farmer player = Game1.player;
             float stamina = 2 - player.ForagingLevel * 0.1f;
             if (player.Stamina < stamina)
             {
-                return;
+                return false;
             }
 
             player.Stamina -= stamina;
@@ -81,15 +77,16 @@ namespace JoysOfEfficiency.Automation
             Multiplayer.broadcastSprites(farm, new TemporaryAnimatedSprite(12, new Vector2(loc.X * 64f, loc.Y * 64f), Color.White, 8, Game1.random.NextDouble() < 0.5, 50f));
 
             farm.removeObject(loc, false);
+            return true;
         }
 
-        private static void BreakRock(Farm location, Pickaxe pickaxe, Object @object, Vector2 loc)
+        private static bool BreakRock(GameLocation location, Tool pickaxe, Object @object, Vector2 loc)
         {
             Farmer player = Game1.player;
             float stamina = 2 - player.MiningLevel * 0.1f;
             if (player.Stamina < stamina)
             {
-                return;
+                return false;
             }
 
             player.Stamina -= stamina;
@@ -107,16 +104,24 @@ namespace JoysOfEfficiency.Automation
                 if (@object.minutesUntilReady > 0)
                 {
                     Game1.createRadialDebris(Game1.currentLocation, 14, num1, num2, Game1.random.Next(2, 5), false);
-                    return;
+                    return false;
                 }
             }
+
             if (@object.ParentSheetIndex < 200 && !Game1.objectInformation.ContainsKey(@object.ParentSheetIndex + 1))
-                Multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite(@object.ParentSheetIndex + 1, 300f, 1, 2, new Vector2(x - x % 64, y - y % 64), true, (bool)@object.flipped)
-                {
-                    alphaFade = 0.01f
-                });
+            {
+                Multiplayer.broadcastSprites(location,
+                    new TemporaryAnimatedSprite(@object.ParentSheetIndex + 1, 300f,
+                        1, 2, new Vector2(x - x % 64, y - y % 64), true, @object.flipped)
+                    {
+                        alphaFade = 0.01f
+                    });
+            }
             else
+            {
                 Multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite(47, new Vector2(num1 * 64, num2 * 64), Color.Gray, 10, false, 80f));
+            }
+
             Game1.createRadialDebris(location, 14, num1, num2, Game1.random.Next(2, 5), false);
             Multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite(46, new Vector2(num1 * 64, num2 * 64), Color.White, 10, false, 80f)
             {
@@ -124,12 +129,13 @@ namespace JoysOfEfficiency.Automation
                 acceleration = new Vector2(0.0f, 1f / 500f),
                 alphaFade = 0.015f
             });
-            location.OnStoneDestroyed((int)@object.parentSheetIndex, num1, num2, Game1.player);
-            if ((int)@object.minutesUntilReady > 0)
-                return;
+            location.OnStoneDestroyed(@object.parentSheetIndex, num1, num2, Game1.player);
+            if (@object.minutesUntilReady > 0)
+                return false;
             location.Objects.Remove(new Vector2(num1, num2));
             location.playSound("stoneCrack");
             ++Game1.stats.RocksCrushed;
+            return true;
         }
 
         private static bool IsWeed(string name)

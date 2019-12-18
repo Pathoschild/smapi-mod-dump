@@ -1,3 +1,5 @@
+using System;
+
 namespace TwilightShards.Common
 {
    public class StaticRange
@@ -14,7 +16,7 @@ namespace TwilightShards.Common
 		MidPoint = mp;
 	  }	
 	  
-	  public StaticRange(StaticRange c) : 
+	  public StaticRange(StaticRange c) 
 	  {
 	    LowerBound = c.LowerBound;
 		UpperBound = c.UpperBound;
@@ -77,6 +79,12 @@ namespace TwilightShards.Common
 		  
 		  return false;
 	  }
-	  
-   }
+
+        public override string ToString()
+        {
+            return $"Lower Bound is {this.LowerBound}, MidPoint is {this.MidPoint}, Upper Bound is {this.UpperBound}" + Environment.NewLine
+                + $"Lower Range is {this.ReturnLowerHalf()}, Upper Range is {this.ReturnUpperHalf()}, Full Range is {this.ReturnRange()}";
+        }
+
+    }
 }

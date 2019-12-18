@@ -66,8 +66,11 @@
   <ItemGroup>
     <Compile Include="Classes\In-Game\Large Objects\LargeResourceClump.cs" />
     <Compile Include="Classes\In-Game\Monsters\MummyFTM.cs" />
+    <Compile Include="Classes\MonsterTracker.cs" />
+    <Compile Include="Classes\TileValidator.cs" />
+    <Compile Include="Classes\ConfigItem.cs" />
     <Compile Include="Classes\TimedSpawn.cs" />
-    <Compile Include="Commands\ListCustomMonsters.cs" />
+    <Compile Include="Commands\ListMonsters.cs" />
     <Compile Include="Commands\WhereAmI.cs" />
     <Compile Include="Classes\Config\Data\ContentPackSaveData.cs" />
     <Compile Include="Classes\Config\Data\FarmData.cs" />
@@ -88,10 +91,10 @@
     <Compile Include="Classes\Config\FarmConfig\ForageSettings.cs" />
     <Compile Include="Classes\Config\ModConfig.cs" />
     <Compile Include="Classes\MonsterType.cs" />
+    <Compile Include="Events\NpcListChanged.cs" />
     <Compile Include="Events\UpdateTicked\PlayerUsedTool.cs" />
     <Compile Include="Events\ModMessageReceived.cs" />
     <Compile Include="Events\TimeChanged.cs" />
-    <Compile Include="Events\ReturnedToTitle.cs" />
     <Compile Include="Events\DayEnding.cs" />
     <Compile Include="Events\DayStarted.cs" />
     <Compile Include="Events\AddSMAPIEvents.cs" />
@@ -121,6 +124,10 @@
     <Compile Include="Utility\Conditions\CheckFileConditions.cs" />
     <Compile Include="Utility\Loading\LoadFarmData.cs" />
     <Compile Include="Utility\Loading\ValidateFarmData.cs" />
+    <Compile Include="Utility\Spawning\Forage\GetItemDictionary.cs" />
+    <Compile Include="Utility\Spawning\Forage\GetItemID.cs" />
+    <Compile Include="Utility\Spawning\Forage\ParseSavedObjectsFromItemList.cs" />
+    <Compile Include="Utility\Spawning\Forage\CreateItem.cs" />
     <Compile Include="Utility\Spawning\Monsters\ApplyMonsterSettings.cs" />
     <Compile Include="Utility\Clone.cs" />
     <Compile Include="Utility\Spawning\PopulateTimedSpawnList.cs" />

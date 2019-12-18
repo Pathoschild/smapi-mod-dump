@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using SpaceShared;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -16,6 +17,7 @@ namespace Bow
         public override void Entry(IModHelper helper)
         {
             instance = this;
+            Log.Monitor = Monitor;
 
             helper.Events.Display.MenuChanged += onMenuChanged;
 
@@ -32,8 +34,8 @@ namespace Bow
 
             Log.trace($"Adding bow to Marlon's shop.");
 
-            var forSale = Helper.Reflection.GetField<List<Item>>(menu, "forSale").GetValue();
-            var itemPriceAndStock = Helper.Reflection.GetField<Dictionary<Item, int[]>>(menu, "itemPriceAndStock").GetValue();
+            var forSale = menu.forSale;
+            var itemPriceAndStock = menu.itemPriceAndStock;
 
             var bow = new BowTool();
             forSale.Add(bow);

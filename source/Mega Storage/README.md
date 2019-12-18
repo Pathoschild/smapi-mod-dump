@@ -51,5 +51,6 @@ If you lose any items or custom chests don't convert back from normal chests, pl
 * Inspired by [Magic Storage](https://forums.terraria.org/index.php?threads/magic-storage.56294/) for Terraria.
 * Custom sprites by [Revanius](https://www.nexusmods.com/users/40079).
 * Convenient Chests save fix by [MaienM](https://www.nexusmods.com/stardewvalley/users/6392240).
+* SDV 1.4 compatibility by Mizzion.
 
 [Nexus page](https://www.nexusmods.com/stardewvalley/mods/4089)

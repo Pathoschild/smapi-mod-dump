@@ -23,7 +23,7 @@ Go to an adventure with Pelican Town's villagers! Recruit bachelorete or bachlor
 - Display personal skills in HUD (with mouseover tooltip)
 - Better critical defense fist fight animation and sound
 - [NEW] Support for content packs and localizations. You can add custom NPC as companion (see [how to create content pack](https://github.com/purrplingcat/PurrplingMod/wiki/Content-packs) on wiki)
-- [NEW] User configuration (via `config.json`, see [SMAPI docs] (https://stardewvalleywiki.com/Modding:Player_Guide/Getting_Started#Configure_mods)) 
+- [NEW] User configuration (via `config.json`, see [SMAPI docs](https://stardewvalleywiki.com/Modding:Player_Guide/Getting_Started#Configure_mods)) 
 
 Next features comming soon...
 

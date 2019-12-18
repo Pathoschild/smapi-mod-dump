@@ -160,17 +160,13 @@ namespace FarmTypeManager
                         monster.ExperienceGained = Math.Max((int)skillMultiplier, 0); //set the monster's new exp (rounded down to the nearest integer & minimum 0)
                     }
                 }
-                
+
                 //set loot (i.e. items dropped on death by the monster)
                 if (settings.ContainsKey("Loot"))
                 {
-                    List<int> IDs = ((JArray)settings["Loot"]).ToObject<List<int>>(); //cast this list of object IDs (already validated and parsed elsewhere)
-
-                    monster.objectsToDrop.Clear(); //clear any existing loot
-                    foreach (int ID in IDs) //for each object ID
-                    {
-                        monster.objectsToDrop.Add(ID); //add it to the loot list
-                    }
+                    List<SavedObject> loot = ((JArray)settings["Loot"]).ToObject<List<SavedObject>>(); //cast this list of saved objects (already validated and parsed elsewhere)
+                    MonsterTracker.SetLoot(monster.id, loot); //set the monster's loot in the monster tracker
+                    monster.objectsToDrop.Clear(); //clear any "default" loot the monster might've had
                 }
 
                 //set current HP

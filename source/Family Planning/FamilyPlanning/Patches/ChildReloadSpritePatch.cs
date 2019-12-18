@@ -1,13 +1,10 @@
 ﻿using System;
-using Harmony;
 using StardewValley;
 using StardewValley.Characters;
 using StardewValley.Locations;
 
 namespace FamilyPlanning.Patches
 {
-    [HarmonyPatch(typeof(Child))]
-    [HarmonyPatch("reloadSprite")]
     class ChildReloadSpritePatch
     {
         public static void Postfix(Child __instance)

@@ -102,7 +102,14 @@ namespace FarmTypeManager
 
                                 int ID = Utility.RNG.Next(int.MinValue, -1); //generate a random ID for saving purposes (note: the ID is below -1 to avoid matching any known NPC values set by base game functions)
                                 this.currentLocation.characters[currentLocation.characters.Count - 1].id = ID; //assign the ID to this slime
-                                SavedObject save = new SavedObject(currentLocation.Name, Position, SavedObject.ObjectType.Monster, ID, null, 1); //create save data for this slime (set to expire overnight) 
+                                SavedObject save = new SavedObject() //create save data for this slime (set to expire overnight) 
+                                {
+                                    MapName = currentLocation.Name,
+                                    Tile = Position,
+                                    Type = SavedObject.ObjectType.Monster,
+                                    ID = ID,
+                                    DaysUntilExpire = 1
+                                }; 
 
                                 if (Context.IsMainPlayer) //if this method was run by the host player
                                 {

@@ -368,8 +368,16 @@ namespace FarmTypeManager
                     return null;
                 }
 
+                int? ID = MonsterTracker.AddMonster(); //generate an ID for this monster
+                if (!ID.HasValue)
+                {
+                    Monitor.Log("A new monster ID could not be generated. This is may be due to coding issue; please report it to this mod's developer. This monster won't be spawned.", LogLevel.Warn);
+                    return null;
+                }
+                monster.id = ID.Value; //assign the ID to this monster
+
                 monster.MaxHealth = monster.Health; //some monster types set Health on creation and expect MaxHealth to be updated like this
-                monster.id = Utility.RNG.Next(int.MinValue, -1); //assign the monster a random ID for saving purposes (note: the ID is below -1 to avoid matching any known NPC values set by base game functions)
+
                 ApplyMonsterSettings(monster, monsterType.Settings, areaID); //adjust the monster based on any other provided optional settings
 
                 //spawn the completed monster at the target location

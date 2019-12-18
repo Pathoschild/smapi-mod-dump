@@ -31,7 +31,7 @@ namespace StackToNearbyChests
 							if (playerItem != null)
 							{
 								int remainingStackSize = chestItem.getRemainingStackSpace();
-								if (!(itemsToRemoveFromPlayer.Contains(playerItem)) && playerItem.canStackWith(chestItem) && playerItem.CompareTo(chestItem) == 0)
+								if (!(itemsToRemoveFromPlayer.Contains(playerItem)) && playerItem.canStackWith(chestItem))
 								{
 									movedAtLeastOne = true;
 									int amountToRemove = Math.Min(remainingStackSize, playerItem.Stack);
@@ -77,6 +77,7 @@ namespace StackToNearbyChests
 				{
 					Vector2 checkLocation = Game1.tileSize * (farmerLocation + new Vector2(dx, dy));
 					StardewValley.Object blockObject = farmer.currentLocation.getObjectAt((int)checkLocation.X, (int)checkLocation.Y);
+
 					if (blockObject is Chest)
 					{
 						Chest chest = blockObject as Chest;

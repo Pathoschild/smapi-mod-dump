@@ -16,8 +16,11 @@ using StardewValley.Network;
 
 namespace FarmTypeManager
 {
+    /// <summary>A large terrain feature that wraps a resource clump for use in GameLocations that don't support resource clumps.</summary>
+    /// <remarks>This class is not currently designed to be saved by the game's native processes. All instances should be removed from the game before saving (i.e. end of day).</remarks>
     public class LargeResourceClump : LargeTerrainFeature
     {
+        /// <summary>The resource clump wrapped by this large terrain feature.</summary>
         [XmlElement("Clump")]
         public readonly NetRef<ResourceClump> Clump = new NetRef<ResourceClump>(new ResourceClump());
 
@@ -28,6 +31,8 @@ namespace FarmTypeManager
 
         }
 
+        /// <summary>Create a new large terrain feature wrapping the provided resouce clump.</summary>
+        /// <param name="clump">The resource clump to be wrapped. The clump's tile value will be used as this feature's tile position.</param>
         public LargeResourceClump(ResourceClump clump)
             : this()
         {
@@ -35,6 +40,11 @@ namespace FarmTypeManager
             tilePosition.Value = clump.tile.Value;
         }
 
+        /// <summary>Create a new large terrain feature wrapping a new resource clump with the provided settings.</summary>
+        /// <param name="parentSheetIndex">The resource clump's index value. Refer to the ResourceClump class for valid options.</param>
+        /// <param name="width">The resource clump's width.</param>
+        /// <param name="height">The resource clump's height.</param>
+        /// <param name="tile">The resource clump's X/Y tile location.</param>
         public LargeResourceClump(int parentSheetIndex, int width, int height, Vector2 tile)
             : this()
         {

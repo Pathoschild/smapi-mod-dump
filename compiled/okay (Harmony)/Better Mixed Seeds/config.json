@@ -1636,11 +1636,6 @@
           "Name": "Mint Tea Plant",
           "Enabled": true,
           "Chance": 1
-        },
-        {
-          "Name": "Tea Leaf Plant",
-          "Enabled": true,
-          "Chance": 1
         }
       ]
     },
@@ -1650,11 +1645,6 @@
           "Name": "Mint Tea Plant",
           "Enabled": true,
           "Chance": 1
-        },
-        {
-          "Name": "Tea Leaf Plant",
-          "Enabled": true,
-          "Chance": 1
         }
       ]
     },
@@ -1662,11 +1652,6 @@
       "Crops": [
         {
           "Name": "Mint Tea Plant",
-          "Enabled": true,
-          "Chance": 1
-        },
-        {
-          "Name": "Tea Leaf Plant",
           "Enabled": true,
           "Chance": 1
         }

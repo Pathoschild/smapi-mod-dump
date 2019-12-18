@@ -1,34 +1,21 @@
 ﻿using Harmony;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleChat
 {
+    /// <summary>The mod entry point.</summary>
     class ModEntry : Mod
     {
+        /// <summary>Provides method to log to the console.</summary>
         static IMonitor ModMonitor;
 
+        /// <summary>The mod entry point</summary>
+        /// <param name="helper">Provides methods for interacting with the mod directory as well as the modding api.</param>
         public override void Entry(IModHelper helper)
         {
-            // Create a new Harmony instance for patching source code
-            HarmonyInstance harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
-
-            // Get the method we want to patch
-            MethodInfo targetMethod = AccessTools.Method(typeof(ChatBox), nameof(ChatBox.receiveChatMessage));
-
-            // Get the patch that was created
-            MethodInfo postfix = AccessTools.Method(typeof(ModEntry), nameof(ModEntry.Postfix));
-
-            // Apply the patch
-            harmony.Patch(targetMethod, postfix: new HarmonyMethod(postfix));
+            ApplyHarmonyPatches();
 
             ModMonitor = this.Monitor;
 
@@ -36,6 +23,21 @@ namespace ConsoleChat
             this.Helper.ConsoleCommands.Add("say", "Writes text to chatbox from console.\n\nUsage: say <message>\n- message: The message to post in chatbox.", Say);
         }
 
+        private void ApplyHarmonyPatches()
+        {
+            // Create a new Harmony instance for patching source code
+            HarmonyInstance harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+
+            // Apply patch
+            harmony.Patch(
+                original: AccessTools.Method(typeof(ChatBox), nameof(ChatBox.receiveChatMessage)),
+                postfix: new HarmonyMethod(AccessTools.Method(typeof(ModEntry), nameof(ModEntry.Postfix)))
+            );
+        }
+
+        /// <summary>This method get's ran whenever a player writes a message. This is used to capture the message sender and body to print into the console.</summary>
+        /// <param name="sourceFarmer">The farmer that sent the message.</param>
+        /// <param name="message">The message body.</param>
         private static void Postfix(long sourceFarmer, int chatKind, LocalizedContentManager.LanguageCode language, string message)
         {
             string playerName = "";
@@ -54,6 +56,9 @@ namespace ConsoleChat
             ModMonitor.Log($"{playerName}: {message}", LogLevel.Info);
         }
 
+        /// <summary>This is a method that get's ran if the player using the 'say' command in the console, this will print that message to the ingame chatbox.</summary>
+        /// <param name="command">The command the user used. (SMAPI handles validating so we have no need for this)</param>
+        /// <param name="args">The message the user want's to pass to the chatbox. (Each word is a separate argument)</param>
         private void Say(string command, string[] args)
         {
             string message = "";

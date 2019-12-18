@@ -70,7 +70,7 @@ namespace FarmTypeManager
 
                         Utility.Monitor.Log("All extra conditions met. Retrieving list of forage types...", LogLevel.Trace);
 
-                        object[] forageObjects = null; //the unprocessed array of forage types to use for this area today
+                        List<SavedObject> forageObjects = null; //the list of possible forage objects to spawn in this area today (parsed into SavedObject format)
 
                         switch (Game1.currentSeason)
                         {
@@ -79,13 +79,13 @@ namespace FarmTypeManager
                                 {
                                     if (area.SpringItemIndex.Length > 0) //if the override includes any items
                                     {
-                                        forageObjects = area.SpringItemIndex; //get the override index list for this area
+                                        forageObjects = Utility.ParseSavedObjectsFromItemList(area.SpringItemIndex, area.UniqueAreaID); //parse the override index list for this area
                                     }
                                     //if an area index exists but is empty, *do not* use the main index; users may want to disable spawns in this season
                                 }
                                 else if (data.Config.Forage_Spawn_Settings.SpringItemIndex.Length > 0) //if no "override" list exists and the main index list includes any items
                                 {
-                                    forageObjects = data.Config.Forage_Spawn_Settings.SpringItemIndex; //get the main index list
+                                    forageObjects = Utility.ParseSavedObjectsFromItemList(data.Config.Forage_Spawn_Settings.SpringItemIndex, area.UniqueAreaID); //parse the global index list
                                 }
                                 break;
                             case "summer":
@@ -93,12 +93,12 @@ namespace FarmTypeManager
                                 {
                                     if (area.SummerItemIndex.Length > 0)
                                     {
-                                        forageObjects = area.SummerItemIndex;
+                                        forageObjects = Utility.ParseSavedObjectsFromItemList(area.SummerItemIndex, area.UniqueAreaID);
                                     }
                                 }
                                 else if (data.Config.Forage_Spawn_Settings.SummerItemIndex.Length > 0)
                                 {
-                                    forageObjects = data.Config.Forage_Spawn_Settings.SummerItemIndex;
+                                    forageObjects = Utility.ParseSavedObjectsFromItemList(data.Config.Forage_Spawn_Settings.SummerItemIndex, area.UniqueAreaID);
                                 }
                                 break;
                             case "fall":
@@ -106,12 +106,12 @@ namespace FarmTypeManager
                                 {
                                     if (area.FallItemIndex.Length > 0)
                                     {
-                                        forageObjects = area.FallItemIndex;
+                                        forageObjects = Utility.ParseSavedObjectsFromItemList(area.FallItemIndex, area.UniqueAreaID);
                                     }
                                 }
                                 else if (data.Config.Forage_Spawn_Settings.FallItemIndex.Length > 0)
                                 {
-                                    forageObjects = data.Config.Forage_Spawn_Settings.FallItemIndex;
+                                    forageObjects = Utility.ParseSavedObjectsFromItemList(data.Config.Forage_Spawn_Settings.FallItemIndex, area.UniqueAreaID);
                                 }
                                 break;
                             case "winter":
@@ -119,32 +119,23 @@ namespace FarmTypeManager
                                 {
                                     if (area.WinterItemIndex.Length > 0)
                                     {
-                                        forageObjects = area.WinterItemIndex;
+                                        forageObjects = Utility.ParseSavedObjectsFromItemList(area.WinterItemIndex, area.UniqueAreaID);
                                     }
                                 }
                                 else if (data.Config.Forage_Spawn_Settings.WinterItemIndex.Length > 0)
                                 {
-                                    forageObjects = data.Config.Forage_Spawn_Settings.WinterItemIndex;
+                                    forageObjects = Utility.ParseSavedObjectsFromItemList(data.Config.Forage_Spawn_Settings.WinterItemIndex, area.UniqueAreaID);
                                 }
                                 break;
                         }
 
-                        if (forageObjects == null) //no valid forage list was selected
+                        if (forageObjects == null || forageObjects.Count <= 0) 
                         {
-                            Utility.Monitor.Log($"No forage list selected. This generally means the {Game1.currentSeason}IndexList was empty. Skipping to the next forage area...", LogLevel.Trace);
+                            Utility.Monitor.Log($"This area's forage list is null or empty. This generally means the {Game1.currentSeason}IndexList contains no valid items. Skipping to the next forage area...", LogLevel.Trace);
                             continue;
                         }
 
-                        //a list was selected, so parse "forageObjects" into a list of valid forage IDs
-                        List<int> forageIDs = Utility.GetIDsFromObjects(forageObjects.ToList(), area.UniqueAreaID);
-
-                        if (forageIDs.Count <= 0) //no valid items were added to the list
-                        {
-                            Utility.Monitor.Log($"Forage list selected, but contained no valid forage items. Skipping to the next forage area...", LogLevel.Trace);
-                            continue;
-                        }
-
-                        Utility.Monitor.Log($"Forage types found: {forageIDs.Count}. Beginning generation process...", LogLevel.Trace);
+                        Utility.Monitor.Log($"Forage types found: {forageObjects.Count}. Beginning generation process...", LogLevel.Trace);
 
                         for (int x = 0; x < locations.Count; x++) //for each location matching this area's map name
                         {
@@ -165,9 +156,18 @@ namespace FarmTypeManager
                             while (spawnCount > 0) //while more forage should be spawned
                             {
                                 spawnCount--;
+                                SavedObject randomForage = forageObjects[Utility.RNG.Next(forageObjects.Count)]; //select a random object from the forage list
 
-                                int randomForage = forageIDs[Utility.RNG.Next(forageIDs.Count)]; //pick a random forage ID from the list
-                                SavedObject forage = new SavedObject(locations[x].uniqueName.Value ?? locations[x].Name, new Vector2(), SavedObject.ObjectType.Forage, randomForage, null, area.DaysUntilSpawnsExpire); //create a saved object representing this spawn (with a "blank" tile location)
+                                //create a new saved object based on the randomly selected forage (still using a "blank" tile location)
+                                SavedObject forage = new SavedObject()
+                                {
+                                    MapName = locations[x].uniqueName.Value ?? locations[x].Name,
+                                    Type = randomForage.Type,
+                                    Name = randomForage.Name,
+                                    ID = randomForage.ID,
+                                    DaysUntilExpire = area.DaysUntilSpawnsExpire,
+                                    ConfigItem = randomForage.ConfigItem
+                                };
                                 spawns.Add(forage); //add it to the list
                             }
 

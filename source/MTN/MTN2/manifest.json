@@ -1,10 +1,10 @@
 {
   "Name": "MTN",
-  "Author": "SgtPickles aka GameMX",
-  "Version": "2.1.0",
+  "Author": "SgtPickles",
+  "Version": "2.1.0-beta4",
   "Description": "Greatly Customizes farms, along with managing multitude amount of custom farm types.",
   "UniqueID": "SgtPickles.MTN",
   "EntryDll": "MTN.dll",
-  "MinimumApiVersion": "2.9",
-  "UpdateKeys": [ "Nexus:2256", "Chucklefish:5343" ]
+  "MinimumApiVersion": "3.0",
+  "UpdateKeys": [ "Nexus:2256" ]
 }

@@ -141,9 +141,9 @@ namespace JoysOfEfficiency.Utils
             item?.drawInMenu(batch, new Vector2(x + (int)stringSize.X + 24, y + 16), 1.0f, 1.0f, 0.9f, StackDrawType.Draw_OneInclusive);
         }
 
-        public static void DrawSimpleTextbox(SpriteBatch batch, string text, SpriteFont font, object context, bool isIcon = false, Item item = null)
+        public static void DrawSimpleTextbox(SpriteBatch batch, string text, SpriteFont font, object context, bool isIcon = false, Item item = null, bool isTips = false)
         {
-            DrawSimpleTextbox(batch, text, getMouseX() + tileSize / 2, getMouseY() + (isIcon ? 24 : tileSize) + 24, font, context, item);
+            DrawSimpleTextbox(batch, text, getMouseX() + tileSize / 2, getMouseY() + (isTips ? 0 : (isIcon ? 24 : tileSize) ) + 24, font, context, item);
         }
 
         public static bool IsThereAnyWaterNear(GameLocation location, Vector2 tileLocation)
@@ -332,6 +332,7 @@ namespace JoysOfEfficiency.Utils
             {
                 if(chest != null)
                     items.AddRange(chest.items);
+                
             }
             return items;
         }
@@ -483,7 +484,7 @@ namespace JoysOfEfficiency.Utils
             addHUDMessage(new HUDMessage(text, Math.Max(1, item.Stack), true, color, item));
         }
 
-        private static int GetTruePrice(Item item)
+        public static int GetTruePrice(Item item)
         {
             return item is SVObject obj ? obj.sellToStorePrice() * 2 : item.salePrice();
         }

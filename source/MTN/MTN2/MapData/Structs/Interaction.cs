@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,10 @@ namespace MTN2.MapData
         public Interaction(int X, int Y) {
             this.X = X;
             this.Y = Y;
+        }
+
+        public Point ToPoint() {
+            return new Point(X, Y);
         }
     }
 }

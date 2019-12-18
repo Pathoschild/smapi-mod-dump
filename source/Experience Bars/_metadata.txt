@@ -5,9 +5,9 @@ mods:
    Experience Bars
 
 latest commit:
-   commit 65ce1228f5ff986af65cf5d320e16552b5f5881d
+   commit dcad17da49d160cc0cdb7d917ad3f99da8bb86a7
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Wed Jan 23 12:47:10 2019 -0500
+   Date:   Mon Nov 25 17:03:59 2019 -0500
    
-       Moving display support, version 1.2.0
+       1.2.1 - SDV 1.4, GMCM support
    

@@ -9,7 +9,7 @@ using StardewValley.Objects;
 namespace JoysOfEfficiency.Patches
 {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    internal class CraftingRecipePatcher
+    internal class ConsumeIngredientsPatcher
     {
 
         [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -22,7 +22,8 @@ namespace JoysOfEfficiency.Patches
 
         private static bool ConsumeIngredients(CraftingRecipe recipe)
         {
-            Dictionary<int, int> recipeList = InstanceHolder.Reflection.GetField<Dictionary<int, int>>(recipe, "recipeList").GetValue();
+            Dictionary<int, int> recipeList = InstanceHolder.Reflection
+                .GetField<Dictionary<int, int>>(recipe, "recipeList").GetValue();
             foreach (KeyValuePair<int, int> kv in recipeList)
             {
                 int index = kv.Key;
@@ -60,6 +61,7 @@ namespace JoysOfEfficiency.Patches
                         }
                     }
                 }
+
                 if (count > 0 && recipe.isCookingRecipe)
                 {
                     //Delegate process to the original method.
@@ -70,4 +72,5 @@ namespace JoysOfEfficiency.Patches
             return false;
         }
     }
+
 }

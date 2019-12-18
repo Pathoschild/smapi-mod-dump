@@ -1,10 +1,10 @@
 ﻿{
    "Name": "LoreFriendlyJojaPrices",
    "Author": "Huanir",
-   "Version": "1.2.1",
+   "Version": "1.3.0",
    "Description": "A mod to change JojaMart prices to be lower than Pierre's.",
    "UniqueID": "Huanir.LoreFriendlyJojaPrices",
    "EntryDll": "LoreFriendlyJojaPrices.dll",
-   "MinimumApiVersion": "2.8.2",
+   "MinimumApiVersion": "3.0.1",
    "UpdateKeys": ["Nexus:2658"]
 }

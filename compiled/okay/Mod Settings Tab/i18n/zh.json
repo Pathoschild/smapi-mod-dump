@@ -1,0 +1,7 @@
+{
+  "OptionsPage.ReloadIndicator": "需要重啟",
+  "OptionsPage.ModSettingsTab": "修改設置",
+  "StaticConfig.SuccessMessage": "設置已保存",
+  "StaticConfig.FailMessage": "保存錯誤",
+  "OptionsList.NewValue": "輸入新值"
+}

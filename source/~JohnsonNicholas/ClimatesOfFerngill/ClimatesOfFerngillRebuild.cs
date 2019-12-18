@@ -160,6 +160,8 @@ namespace ClimatesOfFerngillRebuild
                 harmony.Patch(UpdateGameClock, null, new HarmonyMethod(postfixClock));
             }
 
+            SanityCheckConfigOptions();
+
             //subscribe to events
             var events = helper.Events;
             events.GameLoop.DayStarted += OnDayStarted;
@@ -175,7 +177,7 @@ namespace ClimatesOfFerngillRebuild
             events.Display.RenderedHud += OnRenderedHud;
             events.Input.ButtonPressed += OnButtonPressed;
             events.Multiplayer.ModMessageReceived += OnModMessageRecieved;
-            events.GameLoop.UpdateTicking += GameLoop_UpdateTicking;
+            // events.GameLoop.UpdateTicking += GameLoop_UpdateTicking;
 
             //console commands
             helper.ConsoleCommands
@@ -189,16 +191,27 @@ namespace ClimatesOfFerngillRebuild
                 .Add("debug_printClimate", "Print Climate Tracker Data", ConsoleCommands.DisplayClimateTrackerData);
         }
 
+        private void SanityCheckConfigOptions()
+        {
+            if (WeatherOpt.MaxRainFall < 0)
+                WeatherOpt.MaxRainFall = 0;
+
+            if (WeatherOpt.MaxRainFall > WeatherUtilities.GetRainCategoryUpperBound(RainLevels.NoahsFlood))
+                WeatherOpt.MaxRainFall = WeatherUtilities.GetRainCategoryUpperBound(RainLevels.NoahsFlood);
+        }
+
+        /*
         private void GameLoop_UpdateTicking(object sender, UpdateTickingEventArgs e)
         {
-            if (Game1.locationRequest?.Location.IsOutdoors == true && !Game1.currentLocation.IsOutdoors && WeatherConditions.PreventGoingOutside(Conditions.AmtOfRainDrops) && !Game1.eventUp)
+            if (Game1.locationRequest?.Location.IsOutdoors == true && !Game1.currentLocation.IsOutdoors && !(Conditions is null) && WeatherConditions.PreventGoingOutside(Conditions.AmtOfRainDrops) && !Game1.eventUp)
             {
                 Game1.locationRequest = null;
                 Game1.fadeIn = false;
-                Game1.player.forceCanMove();
+                //Game1.player.forceCanMove();
                 Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("weather-stayinside"),3));
             }
-        }
+        }*/
+
 
         private static int GetPixelZoom()
         {

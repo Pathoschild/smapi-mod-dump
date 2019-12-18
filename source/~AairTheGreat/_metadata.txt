@@ -7,9 +7,9 @@ mods:
    Better Train Loot
 
 latest commit:
-   commit 3ec548cbb2b40ab3e04d6246365311c8f104140a
+   commit 50d30bab254eec3da4e7e7137f72899eb459320f
    Author: Aair the Great <a_aair@hotmail.com>
-   Date:   Mon Dec 2 19:26:15 2019 -0800
+   Date:   Wed Dec 4 21:13:43 2019 -0800
    
-       Updated Documentation, removed direct Harmony dependence.
+       Updated to include new config setting for if you are in the desert
    

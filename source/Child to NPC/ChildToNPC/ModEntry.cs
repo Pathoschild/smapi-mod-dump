@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Harmony;
@@ -66,38 +65,55 @@ namespace ChildToNPC
 
         public override void Entry(IModHelper helper)
         {
-            //variables
+            //initialize variables
             monitor = Monitor;
             ModEntry.helper = helper;
             copies = new Dictionary<string, NPC>();
             children = new List<Child>();
             children_parents = new Dictionary<string, string>();
-
+            //create config
             Config = helper.ReadConfig<ModConfig>();
-            if (Config != null)
+            ageForCP = Config.AgeWhenKidsAreModified;
+            if (Config.ModdingCommands)
             {
-                ageForCP = Config.AgeWhenKidsAreModified;
-
-                if (Config.ModdingCommands)
-                {
-                    helper.ConsoleCommands.Add("AddChild", "AddChild immediately triggers a naming event, adding a child to your home.", AddChild);
-                    helper.ConsoleCommands.Add("RemoveChild", "RemoveChild removes the named child from the farm.", RemoveChild);
-                    helper.ConsoleCommands.Add("AgeChild", "Ages the named child to toddler age.", AgeChild);
-                }
+                helper.ConsoleCommands.Add("AddChild", "AddChild immediately triggers a naming event, adding a child to your home.", AddChild);
+                helper.ConsoleCommands.Add("RemoveChild", "RemoveChild removes the named child from the farm.", RemoveChild);
+                helper.ConsoleCommands.Add("AgeChild", "Ages the named child to toddler age.", AgeChild);
             }
-            else
-                ageForCP = 83;
-
             //Event handlers
             helper.Events.GameLoop.DayStarted += OnDayStarted;
             helper.Events.GameLoop.Saving += OnSaving;
             helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.OneSecondUpdateTicking += OnOneSecondUpdateTicking;
-
             //Harmony
             HarmonyInstance harmony = HarmonyInstance.Create("Loe2run.ChildToNPC");
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(NPC), nameof(NPC.arriveAtFarmHouse)),
+                postfix: new HarmonyMethod(typeof(Patches.NPCArriveAtFarmHousePatch), nameof(Patches.NPCArriveAtFarmHousePatch.Postfix))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(NPC), nameof(NPC.checkSchedule)),
+                prefix: new HarmonyMethod(typeof(Patches.NPCCheckSchedulePatch), nameof(Patches.NPCCheckSchedulePatch.Prefix))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(NPC), "parseMasterSchedule"),
+                prefix: new HarmonyMethod(typeof(Patches.NPCParseMasterSchedulePatch), nameof(Patches.NPCParseMasterSchedulePatch.Prefix))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(NPC), nameof(NPC.performTenMinuteUpdate)),
+                prefix: new HarmonyMethod(typeof(Patches.NPCPerformTenMinuteUpdatePatch), nameof(Patches.NPCPerformTenMinuteUpdatePatch.Prefix))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(NPC), "prepareToDisembarkOnNewSchedulePath"),
+                postfix: new HarmonyMethod(typeof(Patches.NPCPrepareToDisembarkOnNewSchedulePathPatch), nameof(Patches.NPCPrepareToDisembarkOnNewSchedulePathPatch.Postfix))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(PathFindController), nameof(PathFindController.handleWarps)),
+                prefix: new HarmonyMethod(typeof(Patches.PFCHandleWarpsPatch), nameof(Patches.PFCHandleWarpsPatch.Prefix))
+            );
+            //harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             IModInfo cpinfo = helper.ModRegistry.Get("Pathoschild.ContentPatcher");
         }

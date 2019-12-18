@@ -2,11 +2,10 @@
 
 namespace BetterMixedSeeds.Data
 {
-    /// <summary>
-    /// A list of integrated mods where using the crop name, I can get the seed name
-    /// </summary>
+    /// <summary>A list of integrated mods where we can get the seed id/name from the crop name.</summary>
     public class SeedIndex
     {
+        /// <summary>The dictionary used for converting Stardew Valley crop names into seed ids. (The seeds are recorded as ids as they are static, unlike the integrated mods)</summary>
         public Dictionary<string, string> StardewValley { get; } = new Dictionary<string, string>
         {
             { "Amaranth", "299" },
@@ -48,6 +47,7 @@ namespace BetterMixedSeeds.Data
             { "Yam", "492" }
         };
 
+        /// <summary>The dictionary used for converting Fantasy Crop crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> FantasyCrops { get; } = new Dictionary<string, string>
         {
             { "Coal Root", "Coal Seeds" },
@@ -58,6 +58,7 @@ namespace BetterMixedSeeds.Data
             { "Money Plant", "Doubloon Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Fresh Meat crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> FreshMeat { get; } = new Dictionary<string, string>
         {
             { "Beef", "Beefvine Seeds" },
@@ -69,6 +70,7 @@ namespace BetterMixedSeeds.Data
             { "Rabbit", "Rabbitvine Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Fruits and Veggies crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> FruitAndVeggies { get; } = new Dictionary<string, string>
         {
             { "Adzuki Bean", "Adzuki Bean Seeds" },
@@ -139,6 +141,7 @@ namespace BetterMixedSeeds.Data
             { "Zucchini", "Zucchini Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Mizus Flowers crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> MizusFlowers { get; } = new Dictionary<string, string>
         {
             { "Bee Balm", "Bee Balm Seeds" },
@@ -162,6 +165,7 @@ namespace BetterMixedSeeds.Data
             { "Sweet Jasmine", "Sweet Jasmine Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Fresh Meat crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> CannabisKit { get; } = new Dictionary<string, string>
         {
             { "Blue Dream", "Blue Dream Starter" },
@@ -180,6 +184,7 @@ namespace BetterMixedSeeds.Data
             { "White Widow", "White Widow Starter" }
         };
 
+        /// <summary>The dictionary used for converting Six Plantable Crops crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> SixPlantableCrops { get; } = new Dictionary<string, string>
         {
             { "Blue Rose", "Blue Rose Seeds" },
@@ -190,6 +195,7 @@ namespace BetterMixedSeeds.Data
             { "Winter Broccoli", "Winter Broccoli Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Bonsters Crops crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> BonsterCrops { get; } = new Dictionary<string, string>
         {
             { "Benne Sesame", "Benne Sesame Seed" },
@@ -221,6 +227,7 @@ namespace BetterMixedSeeds.Data
             { "White Currant", "White Currant Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Revenants Crops crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> RevenantCrops { get; } = new Dictionary<string, string>
         {
             { "Enoki Mushroom", "Enoki Mushroom Kit" },
@@ -229,6 +236,7 @@ namespace BetterMixedSeeds.Data
             { "Oyster Mushroom", "Oyster Mushroom Kit" }
         };
 
+        /// <summary>The dictionary used for converting Farmer to Florist crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> FarmerToFlorist { get; } = new Dictionary<string, string>
         {
             { "Allium", "Allium Seeds" },
@@ -254,17 +262,20 @@ namespace BetterMixedSeeds.Data
             { "Wisteria", "Wisteria Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Lucky Clover crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> LuckyClover { get; } = new Dictionary<string, string>
         {
             { "Lucky Clover", "Clover Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Fishs Flowers crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> FishsFlowers { get; } = new Dictionary<string, string>
         {
             { "Hyacinth", "Hyacinth Bulb" },
             { "Pansy", "Pansy Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Stephans Lots of Crops crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> StephansLotsOfCrops { get; } = new Dictionary<string, string>
         {
             { "Carrot", "Carrot Seeds" },
@@ -278,6 +289,7 @@ namespace BetterMixedSeeds.Data
             { "Watermelon", "Watermelon Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Eemies Crops crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> EemiesCrops { get; } = new Dictionary<string, string>
         {
             { "Acorn Squash", "Acorn Squash Seeds" },
@@ -294,12 +306,13 @@ namespace BetterMixedSeeds.Data
             { "Sweet Lightning Pumpkin", "Sweet Lightning Pumpkin Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Tea Time crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> TeaTime { get; } = new Dictionary<string, string>
         {
-            { "Mint Tea Plant", "Fresh Mint Seeds" },
-            { "Tea Leaf Plant", "Tea Leaf Seeds" }
+            { "Mint Tea Plant", "Fresh Mint Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Forage To Farm crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> ForageToFarm { get; } = new Dictionary<string, string>
         {
             { "Cave Carrot", "Cave Carrot Seeds" },
@@ -328,6 +341,7 @@ namespace BetterMixedSeeds.Data
             { "Winter Root", "Winter Root Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Gem and Mineral Crops crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> GemAndMineralCrops { get; } = new Dictionary<string, string>
         {
             { "Aerinite Root", "Aerinite Root Seeds" },
@@ -341,11 +355,13 @@ namespace BetterMixedSeeds.Data
             { "Soap Root", "Soap Root Seed" }
         };
 
+        /// <summary>The dictionary used for converting Mouse Ear Cress crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> MouseEarCress { get; } = new Dictionary<string, string>
         {
             { "Mouse-Ear Cress", "Mouse-Ear Cress Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Ancient Crops crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> AncientCrops { get; } = new Dictionary<string, string>
         {
             { "Ancient Coffee Plant", "Ancient Coffee Bean" },
@@ -356,6 +372,7 @@ namespace BetterMixedSeeds.Data
             { "Ancient Tuber", "Ancient Tuber Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Poke Crops crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> PokeCrops { get; } = new Dictionary<string, string>
         {
             { "Aspear Berry", "Aspear Berry Seeds" },
@@ -371,6 +388,7 @@ namespace BetterMixedSeeds.Data
             { "Sitrus Berry", "Sitrus Berry Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Starbound Valley crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> StarboundValley { get; } = new Dictionary<string, string>
         {
             { "Automato", "Automato Seeds" },

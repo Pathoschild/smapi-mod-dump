@@ -11,12 +11,9 @@ mods:
    Weather Illnesses
 
 latest commit:
-   commit fa5d1d0a9628c1f0ea19c98c6fee221e1f70ff6e
-   Author: Sakorona <7285555+Sakorona@users.noreply.github.com>
-   Date:   Sun Dec 1 18:14:54 2019 -0800
+   commit 5a2875c2e4a8cae5db4fdb7df09a7a36b2db2663
+   Author: Nicholas Johnson <7285555+Sakorona@users.noreply.github.com>
+   Date:   Tue Dec 10 01:15:51 2019 -0800
    
-       Update WeatherProcessing.cs
-       
-       - Fixed an issue where the most severe rain category wasn't included in the methods we use to promote it going down
-       - Adjusted some chances to make it more likely it'll go down
+       Updates to 1.5.5, som more revisions, etc
    

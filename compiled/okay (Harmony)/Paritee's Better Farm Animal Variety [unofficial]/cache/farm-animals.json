@@ -1,0 +1,252 @@
+{
+  "Categories": [
+    {
+      "Category": "Chicken",
+      "Types": [
+        {
+          "Type": "White Chicken",
+          "Data": null,
+          "DeluxeProduceLuck": 0.0,
+          "Sprites": {
+            "Baby": null,
+            "Adult": null,
+            "ReadyForHarvest": null
+          },
+          "Localization": {}
+        },
+        {
+          "Type": "Brown Chicken",
+          "Data": null,
+          "DeluxeProduceLuck": 0.0,
+          "Sprites": {
+            "Baby": null,
+            "Adult": null,
+            "ReadyForHarvest": null
+          },
+          "Localization": {}
+        },
+        {
+          "Type": "Blue Chicken",
+          "Data": null,
+          "DeluxeProduceLuck": 0.0,
+          "Sprites": {
+            "Baby": null,
+            "Adult": null,
+            "ReadyForHarvest": null
+          },
+          "Localization": {}
+        },
+        {
+          "Type": "Void Chicken",
+          "Data": null,
+          "DeluxeProduceLuck": 0.0,
+          "Sprites": {
+            "Baby": null,
+            "Adult": null,
+            "ReadyForHarvest": null
+          },
+          "Localization": {}
+        }
+      ],
+      "Buildings": [
+        "Coop",
+        "Big Coop",
+        "Deluxe Coop"
+      ],
+      "AnimalShop": {
+        "Name": "Chicken",
+        "Description": "Well cared-for adult chickens lay eggs every day.",
+        "Icon": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Stardew Valley\\Mods (test)\\Paritee's Better Farm Animal Variety [unofficial]\\assets\\AnimalShop\\Chicken.png",
+        "Exclude": [
+          "Void Chicken"
+        ]
+      }
+    },
+    {
+      "Category": "Dairy Cow",
+      "Types": [
+        {
+          "Type": "White Cow",
+          "Data": null,
+          "DeluxeProduceLuck": 0.0,
+          "Sprites": {
+            "Baby": null,
+            "Adult": null,
+            "ReadyForHarvest": null
+          },
+          "Localization": {}
+        },
+        {
+          "Type": "Brown Cow",
+          "Data": null,
+          "DeluxeProduceLuck": 0.0,
+          "Sprites": {
+            "Baby": null,
+            "Adult": null,
+            "ReadyForHarvest": null
+          },
+          "Localization": {}
+        }
+      ],
+      "Buildings": [
+        "Barn",
+        "Big Barn",
+        "Deluxe Barn"
+      ],
+      "AnimalShop": {
+        "Name": "Dairy Cow",
+        "Description": "Adults can be milked daily. A milk pail is required to harvest the milk.",
+        "Icon": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Stardew Valley\\Mods (test)\\Paritee's Better Farm Animal Variety [unofficial]\\assets\\AnimalShop\\DairyCow.png",
+        "Exclude": []
+      }
+    },
+    {
+      "Category": "Goat",
+      "Types": [
+        {
+          "Type": "Goat",
+          "Data": null,
+          "DeluxeProduceLuck": 0.0,
+          "Sprites": {
+            "Baby": null,
+            "Adult": null,
+            "ReadyForHarvest": null
+          },
+          "Localization": {}
+        }
+      ],
+      "Buildings": [
+        "Big Barn",
+        "Deluxe Barn"
+      ],
+      "AnimalShop": {
+        "Name": "Goat",
+        "Description": "Happy adults provide goat milk every other day. A milk pail is required to harvest the milk.",
+        "Icon": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Stardew Valley\\Mods (test)\\Paritee's Better Farm Animal Variety [unofficial]\\assets\\AnimalShop\\Goat.png",
+        "Exclude": []
+      }
+    },
+    {
+      "Category": "Duck",
+      "Types": [
+        {
+          "Type": "Duck",
+          "Data": null,
+          "DeluxeProduceLuck": 0.01,
+          "Sprites": {
+            "Baby": null,
+            "Adult": null,
+            "ReadyForHarvest": null
+          },
+          "Localization": {}
+        }
+      ],
+      "Buildings": [
+        "Big Coop",
+        "Deluxe Coop"
+      ],
+      "AnimalShop": {
+        "Name": "Duck",
+        "Description": "Happy adults lay duck eggs every other day.",
+        "Icon": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Stardew Valley\\Mods (test)\\Paritee's Better Farm Animal Variety [unofficial]\\assets\\AnimalShop\\Duck.png",
+        "Exclude": []
+      }
+    },
+    {
+      "Category": "Sheep",
+      "Types": [
+        {
+          "Type": "Sheep",
+          "Data": null,
+          "DeluxeProduceLuck": 0.0,
+          "Sprites": {
+            "Baby": null,
+            "Adult": null,
+            "ReadyForHarvest": null
+          },
+          "Localization": {}
+        }
+      ],
+      "Buildings": [
+        "Deluxe Barn"
+      ],
+      "AnimalShop": {
+        "Name": "Sheep",
+        "Description": "Adults can be shorn for wool. Sheep who form a close bond with their owners can grow wool faster. A pair of shears is required to harvest the wool.",
+        "Icon": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Stardew Valley\\Mods (test)\\Paritee's Better Farm Animal Variety [unofficial]\\assets\\AnimalShop\\Sheep.png",
+        "Exclude": []
+      }
+    },
+    {
+      "Category": "Rabbit",
+      "Types": [
+        {
+          "Type": "Rabbit",
+          "Data": null,
+          "DeluxeProduceLuck": 0.02,
+          "Sprites": {
+            "Baby": null,
+            "Adult": null,
+            "ReadyForHarvest": null
+          },
+          "Localization": {}
+        }
+      ],
+      "Buildings": [
+        "Deluxe Coop"
+      ],
+      "AnimalShop": {
+        "Name": "Rabbit",
+        "Description": "These are wooly rabbits! They shed precious wool every few days.",
+        "Icon": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Stardew Valley\\Mods (test)\\Paritee's Better Farm Animal Variety [unofficial]\\assets\\AnimalShop\\Rabbit.png",
+        "Exclude": []
+      }
+    },
+    {
+      "Category": "Pig",
+      "Types": [
+        {
+          "Type": "Pig",
+          "Data": null,
+          "DeluxeProduceLuck": 0.0,
+          "Sprites": {
+            "Baby": null,
+            "Adult": null,
+            "ReadyForHarvest": null
+          },
+          "Localization": {}
+        }
+      ],
+      "Buildings": [
+        "Deluxe Barn"
+      ],
+      "AnimalShop": {
+        "Name": "Pig",
+        "Description": "These pigs are trained to find truffles!",
+        "Icon": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Stardew Valley\\Mods (test)\\Paritee's Better Farm Animal Variety [unofficial]\\assets\\AnimalShop\\Pig.png",
+        "Exclude": []
+      }
+    },
+    {
+      "Category": "Dinosaur",
+      "Types": [
+        {
+          "Type": "Dinosaur",
+          "Data": null,
+          "DeluxeProduceLuck": 0.0,
+          "Sprites": {
+            "Baby": null,
+            "Adult": null,
+            "ReadyForHarvest": null
+          },
+          "Localization": {}
+        }
+      ],
+      "Buildings": [
+        "Big Coop",
+        "Deluxe Coop"
+      ],
+      "AnimalShop": null
+    }
+  ]
+}

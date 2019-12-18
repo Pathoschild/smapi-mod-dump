@@ -1,0 +1,13 @@
+url:
+   https://github.com/benrpatterson/InfestedLevels.git
+
+mods:
+   Infested Levels
+
+latest commit:
+   commit 47da5f4cbac8f8870a97b34589ab8e3e460f7e91
+   Author: benrpatterson <bpatterson@autoshack.com>
+   Date:   Sat Dec 7 12:32:34 2019 -0500
+   
+       initial commit
+   

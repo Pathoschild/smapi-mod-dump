@@ -170,3 +170,11 @@ This is a changelog from 1.0.22
 - Fixed IdlePause set illegal time after loading or when new day started.
 - Implemented FarmCleaner function.
 - Added DisableConfigLimitation for advanced users.
+
+## 1.3.2
+- Fixed code which may cause DivededByZeroException.
+- Relocated MineInfoGui, so it won't be hidden by the health bar.
+- Fixed CraftingFromChests was not working.
+
+## 1.3.3
+- Fixed AutoHarvest harvesting crops infinitely.

@@ -5,9 +5,9 @@ mods:
    Jump Over
 
 latest commit:
-   commit 68a0e6df4be7d1bb9ba2f0cfb409af34f7e35569
+   commit 71c4c0d7c6bd93c0e5e67b86885922d8aa032a3d
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:23:54 2019 -0500
+   Date:   Mon Nov 25 17:33:28 2019 -0500
    
-       Update version
+       1.1.3 - SDV 1.4, sync jumps across MP, GMCM support
    

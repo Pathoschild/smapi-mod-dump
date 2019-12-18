@@ -1,7 +1,7 @@
 {
   "Name": "Grandfather's Gift Remade",
   "Author": "pepoluan",
-  "Version": "1.1.0",
+  "Version": "1.2.2",
   "Description": "A remade of the Grandfather's Gift mod on NexusMods",
   "UniqueID": "pepoluan.GrandfatherGiftRemade",
   "EntryDll": "GrandfatherGiftRemade.dll",
@@ -11,6 +11,9 @@
     "1.0.0": "Initial Public Release",
     "1.0.1": "Updated UpdateKeys",
     "1.0.2": "Updated Version & remove config.json -_-",
-    "1.1.0": "No more dereg from DayStart"
+    "1.1.0": "No more dereg from DayStart",
+    "1.2.0": "Fix un-pickup-able chest; add option to have weapon not added immediately to chest",
+    "1.2.1": "Fix crash due to too-early Dispose()",
+    "1.2.2": "Remove some verbosity"
   }
 }

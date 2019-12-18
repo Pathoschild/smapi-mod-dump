@@ -75,7 +75,7 @@ namespace FarmTypeManager
 
                         if (validMonsterTypes.Count <= 0)
                         {
-                            Utility.Monitor.Log($"The monster type list is empty. Next area...", LogLevel.Trace);
+                            Utility.Monitor.Log($"No monster types were curently valid for this area. Skipping to the next area...", LogLevel.Trace);
                             continue;
                         }
 
@@ -140,7 +140,13 @@ namespace FarmTypeManager
                                 }
 
                                 //create a saved object representing this spawn (with a "blank" tile location)
-                                SavedObject saved = new SavedObject(locations[x].uniqueName.Value ?? locations[x].Name, new Vector2(), SavedObject.ObjectType.Monster, null, null, area.DaysUntilSpawnsExpire ?? 1, randomMonster);
+                                SavedObject saved = new SavedObject()
+                                {
+                                    MapName = locations[x].uniqueName.Value ?? locations[x].Name,
+                                    Type = SavedObject.ObjectType.Monster,
+                                    DaysUntilExpire = area.DaysUntilSpawnsExpire ?? 1,
+                                    MonType = randomMonster
+                                };
                                 spawns.Add(saved); //add it to the list
                             }
 

@@ -2,9 +2,9 @@
   "button.awaiting": "Нажмите любую кнопку, чтобы назначить её...",
   "button.conflict": "Нажатая вами Кнопка уже используется",
   "button.esc": "Нажмите Esc для Отмены",
-
+  
   "estimatedprice.title": "Примерная Стоимость",
-
+  
   "fishinfo.quality": "Качество: ",
   "fishinfo.size": "Размер: {0}дюймов",
   "fishinfo.species": "Особь: {0}",
@@ -12,7 +12,7 @@
   "fishinfo.treasure.caught": "Сокровище поймано!",
   "fishinfo.treasure.incoming": "Сокровище через {0:f1}с.",
   "fishinfo.price": "Цена продажи:{0}G",
-
+  
   "hud.paused": "Игра на паузе.",
 
   "ladder": "Лестница появилась!",
@@ -20,8 +20,8 @@
   "location.awaiting": "Нажмите, чтобы выбрать локацию.",
 
   "monsters.tally": "{0}: {1} убито",
-
-  "options.AnimalHarvestRadius": "Дальность поиска животных в тайлах",
+  
+  "options.AnimalHarvestRadius": "Дальность поиска животных (в тайлах)",
   "options.AutoAnimalDoor": "Автоматически Открывать/Закрывать Двери Животных",
   "options.AutoCollectCollectibles": "Автоматически собирать дикие растения поблизости",
   "options.AutoCollectRadius": "Дальность автоматического сбора",
@@ -78,6 +78,10 @@
   "options.UnifyFlowerColors": "Объединять оттенки цветов",
   "options.ShowMousePositionWhenAssigningLocation": "Показывать местоположение мыши при установке координат",
   "options.ButtonToggleFlowerColorUnification": "Учитывать/Не учитывать оттенки цветов для объединения",
+  "options.RadiusFarmCleanup": "Радиус очистки фермы (в тайлах)",
+  "options.CutWeeds": "Срезать сорняки (Коса)",
+  "options.BreakRocks": "Ломать маленькие камушки (Кирка)",
+  "options.ChopTwigs": "Срубать ветки (Топор)",
 
   "options.flower": "Цветок:{0}",
   "options.R": "R",
@@ -85,11 +89,11 @@
   "options.B": "B",
   "options.previewColor": "Просмотр Оттенка:",
   "options.register": "Учитывать",
-
+  
   "flower.register": "{0} цветов будет объединяться.",
   "flower.unregister": "{0} цветов больше не будет объединяться.",
   "flower.vanilla": "Нельзя не учитывать обычные цветы.",
-
+  
   "quality.gold": "Золотое",
   "quality.iridium": "Иридиевое",
   "quality.normal": "Нормальное",

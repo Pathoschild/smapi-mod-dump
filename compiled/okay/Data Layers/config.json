@@ -1,5 +1,6 @@
 {
   "CombineOverlappingBorders": true,
+  "ShowGrid": false,
   "Controls": {
     "ToggleLayer": "F2",
     "PrevLayer": "LeftControl, LeftShoulder",

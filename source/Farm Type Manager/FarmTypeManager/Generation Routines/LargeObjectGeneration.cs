@@ -72,7 +72,13 @@ namespace FarmTypeManager
 
                         Utility.Monitor.Log("Current map supports large objects. Checking the Find Existing Objects setting...", LogLevel.Trace);
 
-                        List<int> objectIDs = Utility.GetLargeObjectIDs(area.ObjectTypes); //get a list of index numbers for relevant object types in this area
+                        List<int> objectIDs = Utility.GetLargeObjectIDs(area.ObjectTypes, area.UniqueAreaID); //get a list of index numbers for this area's object types
+
+                        if (objectIDs.Count <= 0)
+                        {
+                            Utility.Monitor.Log($"Large object list contained no valid object types. Skipping to the next large object area...", LogLevel.Trace);
+                            continue;
+                        }
 
                         //find the locations any existing objects (of the listed types)
                         if (area.FindExistingObjectLocations == true && locations.Count == 1) //if enabled & exactly one location was found (TODO: rework or fix this system to support multiple locations per area)
@@ -186,8 +192,13 @@ namespace FarmTypeManager
 
                                 int randomObject = objectIDs[Utility.RNG.Next(objectIDs.Count)]; //get a random object ID to spawn
 
-                                //create a saved object representing this spawn (with a "blank" tile location)
-                                SavedObject saved = new SavedObject(area.MapName, new Vector2(), SavedObject.ObjectType.LargeObject, randomObject, null, area.DaysUntilSpawnsExpire ?? 0);
+                                SavedObject saved = new SavedObject() //create a saved object representing this spawn (with a "blank" tile location)
+                                {
+                                    MapName = locations[x].uniqueName.Value ?? locations[x].Name,
+                                    Type = SavedObject.ObjectType.LargeObject,
+                                    ID = randomObject,
+                                    DaysUntilExpire = area.DaysUntilSpawnsExpire ?? 0
+                                };
                                 spawns.Add(saved); //add it to the list
                             }
 

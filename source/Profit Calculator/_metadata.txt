@@ -5,9 +5,9 @@ mods:
    Profit Calculator
 
 latest commit:
-   commit 72c6dec40e39cb4ff3777dcf3d17d6beaa34c0de
+   commit 45b77bfbfa22acac0dda2dd898ff6c861e8b437e
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Tue Jan 29 11:20:40 2019 -0500
+   Date:   Mon Nov 25 17:44:14 2019 -0500
    
-       Added nexus and spacechase0 ID
+       1.0.1 - SDV 1.4
    

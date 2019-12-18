@@ -17,6 +17,7 @@ using Rectangle = xTile.Dimensions.Rectangle;
 using StardewValley.Objects;
 using Netcode;
 using StardewValley.Network;
+using SpaceShared;
 
 namespace MapImageExporter
 {
@@ -30,6 +31,7 @@ namespace MapImageExporter
         public override void Entry(IModHelper helper)
         {
             instance = this;
+            Log.Monitor = Monitor;
 
             helper.ConsoleCommands.Add("export", "See 'export help'", exportCommand);
 

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4863
+IDs: Hydrox.NumericalHealth
+update keys: Nexus:4863

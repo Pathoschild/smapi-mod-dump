@@ -2,12 +2,9 @@
 using Netcode;
 using StardewValley;
 using StardewValley.Characters;
-using Harmony;
 
 namespace FamilyPlanning.Patches
 {
-    [HarmonyPatch(typeof(NPC))]
-    [HarmonyPatch("canGetPregnant")]
     class CanGetPregnantPatch
     {
         public static void Postfix(NPC __instance, ref bool __result)
@@ -20,12 +17,17 @@ namespace FamilyPlanning.Patches
             Farmer farmer = spouse.getSpouse();
 
             //This is from the original method
-            if (spouse is Horse || spouse.Name.Equals("Krobus") || spouse.isRoommate())
+            //canGetPregnant() is only ever run on a spouse NPC, so this shouldn't be necessary?
+            if (spouse is Horse)
+                return;
+
+            //Original kicks out Krobus/Roommates
+            if (spouse.isRoommate() && !ModEntry.RoommateConfig())
                 return;
 
             if (farmer == null || farmer.divorceTonight.Equals(new NetBool(true)))
                 return;
-
+            
             int heartLevelForNPC = farmer.getFriendshipHeartLevelForNPC(spouse.Name);
             Friendship spouseFriendship = farmer.GetSpouseFriendship();
             List<Child> children = farmer.getChildren();
@@ -44,8 +46,7 @@ namespace FamilyPlanning.Patches
             {
                 //If you have 0 children, skips straight to true
                 foreach (Child child in children)
-                {
-                    
+                { 
                     if (child.daysOld < 41)
                     {
                         __result = false;

@@ -7,7 +7,7 @@ namespace FarmTypeManager
     public partial class ModEntry : Mod
     {
         /// <summary>A container for a monster's name and a set of optional customization settings.</summary>
-        private class MonsterType
+        public class MonsterType
         {
             public string MonsterName { get; set; } = "";
 

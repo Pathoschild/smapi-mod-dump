@@ -5,9 +5,9 @@ mods:
    Colorful Chests
 
 latest commit:
-   commit 167173e53d2f8370882f95e645be3dbbf3985091
+   commit 6cd15cd129509e512c14e2f3e74aa5cfa0c8efdd
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:20:01 2019 -0500
+   Date:   Mon Nov 25 16:49:47 2019 -0500
    
-       Update version
+       1.2.4 - SDV 1.4
    

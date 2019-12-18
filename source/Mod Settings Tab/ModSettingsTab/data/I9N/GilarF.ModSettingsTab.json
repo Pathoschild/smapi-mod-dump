@@ -1,0 +1,59 @@
+{
+  "Description": {
+    "en": "Replaces the standard settings tab",
+    "zh": "取代標准設定標籤",
+    "fr": "Remplace l'onglet des paramètres standard",
+    "de": "Ersetzt die Registerkarte Standardeinstellungen",
+    "hu": "Kicseréli a normál beállítások fület",
+    "it": "Sostituisce la scheda delle impostazioni standard",
+    "ja": "標準設定タブを置き換えます",
+    "ko": "표준 설정 탭을 대체합니다",
+    "pt": "Substitui a guia de configurações padrão",
+    "ru": "Заменяет стандартную вкладку настроек",
+    "es": "Reemplaza la pestaña de configuración estándar",
+    "tr": "Standart ayarlar sekmesini değiştirir",
+    "th": "แทนที่แท็บการตั้งค่ามาตรฐาน"
+  },
+  "Config": [
+    {
+      "Name": "ShowSavingNotify",
+      "Description": {
+        "en": "Show successful save notifications",
+        "zh": "顯示成功的保存通知",
+        "fr": "Afficher les notifications de sauvegarde réussies",
+        "de": "Erfolgreiche Benachrichtigungen zum Speichern anzeigen",
+        "hu": "A sikeres mentési értesítések megjelenítése",
+        "it": "Mostra notifiche di salvataggio riuscite",
+        "ja": "成功した保存通知を表示する",
+        "ko": "성공적인 저장 알림 표시",
+        "pt": "Mostrar notificações de salvamento bem-sucedidas",
+        "ru": "Показ уведомлений об успешном сохранении",
+        "es": "Mostrar notificaciones de guardado exitosas",
+        "tr": "Başarılı kaydet bildirimlerini göster",
+        "th": "แสดงการแจ้งเตือนบันทึกที่ประสบความสำเร็จ"
+      },
+      "Type": "CheckBox",
+      "Label": "Show saving notify"
+    },
+    {
+      "Name": "ShowReloadIcon",
+      "Description": {
+        "en": "Shows an icon when a reboot is needed.",
+        "zh": "需要重啟時顯示圖標。",
+        "fr": "Affiche une icône lorsqu'un redémarrage est nécessaire.",
+        "de": "Zeigt ein Symbol an, wenn ein Neustart erforderlich ist.",
+        "hu": "Ikonot jelenít meg, amikor újraindításra van szükség.",
+        "it": "Mostra un'icona quando è necessario un riavvio.",
+        "ja": "再起動が必要なときにアイコンを表示します。",
+        "ko": "재부팅이 필요할 때 아이콘을 표시합니다.",
+        "pt": "Mostra um ícone quando uma reinicialização é necessária.",
+        "ru": "Показывает иконку когда нужна перезагрузка",
+        "es": "Muestra un icono cuando se necesita reiniciar.",
+        "tr": "Yeniden başlatma gerektiğinde bir simge gösterir.",
+        "th": "แสดงไอคอนเมื่อจำเป็นต้องรีบูต"
+      },
+      "Type": "CheckBox",
+      "Label": "Show reload icon"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+url:
+   https://github.com/GilarF/SVM.git
+
+mods:
+   Mod Settings Tab
+
+latest commit:
+   commit 8a96367e879382fb258819ce3d288ed4e1e651eb
+   Author: Gilar Fasulaki <gilar.fasulaki@gmail.com>
+   Date:   Tue Dec 17 12:54:27 2019 +0200
+   
+       feat(schema): add json schema
+   

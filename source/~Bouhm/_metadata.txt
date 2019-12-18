@@ -6,9 +6,12 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit fc34b2ea684810edc8f95af7f7301763426b3992
-   Author: Bouhm <bbouhm@gmail.com>
-   Date:   Wed Nov 27 14:59:14 2019 -0800
+   commit b9ef49dfa7fbf0a4cfe45a981a4bad33aadf4e94
+   Merge: fc34b2e c256f64
+   Author: Brian Pak <bbouhm@gmail.com>
+   Date:   Tue Dec 17 20:39:51 2019 -0800
    
-       remove greenhouses from SVE farms
+       Merge pull request #57 from LeecanIt/patch-1
+       
+       Create it.json
    

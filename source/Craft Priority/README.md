@@ -1,3 +1,6 @@
+# :warning: Obsolete, since it's part of the game in SV 1.4 :warning:
+The end.
+
 # Craft Priority
 Prevents eating, when trying to mass fill casks, kegs, etc.
 Only makes sense to use, if the main button (tool button) does not work in some cases.

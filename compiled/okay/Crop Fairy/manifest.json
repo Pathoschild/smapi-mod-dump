@@ -1,0 +1,10 @@
+{
+  "Name": "Crop Fairy",
+  "Author": "Abs",
+  "Version": "1.0.2",
+  "Description": "While you sleep there is a chance that a fairy touches one or more of your crops so they instantly grow or it can pee to water the soil of a crop.",
+  "UniqueID": "abs.CropFairy",
+  "EntryDll": "CropFairy.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:4885" ]
+}

@@ -1,0 +1,64 @@
+{
+  "Description": {
+    "en": "Enables an overlay which provides debug information and unlocks the game's debug hotkeys.",
+    "zh": "取代標准設定標籤",
+    "fr": "Active une superposition qui fournit des informations de débogage et déverrouille les raccourcis clavier de débogage du jeu",
+    "de": "Aktiviert ein Overlay, das Debug-Informationen bereitstellt und die Debug-Hotkeys des Spiels entsperrt",
+    "hu": "Engedélyez egy overlay-t, amely hibakeresési információkat szolgáltat, és feloldja a játék hibakeresési gyorsbillentyűit.",
+    "it": "Abilita un overlay che fornisce informazioni di debug e sblocca i tasti di scelta rapida di debug del gioco.",
+    "ja": "デバッグ情報を提供し、ゲームのデバッグホットキーのロックを解除するオーバーレイを有効にします。",
+    "ko": "디버그 정보를 제공하고 게임의 디버그 핫키를 잠금 해제하는 오버레이를 활성화합니다.",
+    "pt": "Habilita uma sobreposição que fornece informações de depuração e desbloqueia as teclas de atalho de depuração do jogo.",
+    "ru": "Включает оверлей, который предоставляет отладочную информацию и разблокирует горячие клавиши отладки игры.",
+    "es": "Habilita una superposición que proporciona información de depuración y desbloquea las teclas de acceso rápido de depuración del juego.",
+    "tr": "Hata ayıklama bilgisi sağlayan ve oyunun hata ayıklama kısayol tuşlarının kilidini açan bir kaplamayı etkinleştirir.",
+    "th": "เปิดใช้งานการซ้อนทับที่ให้ข้อมูลการดีบักและปลดล็อคปุ่มลัดการแก้จุดบกพร่องของเกม"
+  },
+  "Config": [
+    {
+      "Name": "AllowGameDebug",
+      "Description": {
+        "en": "enable the game's debug mode and hotkeys:\n'T':Add one hour to the clock,\n'SHIFT + Y':Subtract 10 minutes from the clock,\n'Y':Add 10 minutes to the clock, \n'1-7':Warp,'K':Move down one mine level,\n,'F5':Show or hide all player sprites, 'F7':Draw a tile grid,\n 'F8':Show a debug command input window,'B':Shift the toolbar to show the next higher inventory row\n'N':Shift the toolbar to show the next lower inventory row.",
+        "zh": "啟用遊戲的調試模式和熱鍵\n'T'：增加1個小時，\n'SHIFT'+'Y'：從時鐘減去10分鐘，\n'Y'：增加10分鐘，'1-7'：Warp，'K'：向下移動一個地雷，\n，“ F5”：顯示或隱藏所有玩家精靈，“ F7”：繪製圖塊網格，\n  'F8'：顯示調試命令輸入窗口，'B'：移動工具欄以顯示下一個較高的清單行\n'N'：移動工具欄以顯示下一個較低的庫存行。",
+        "fr": "activer le mode de débogage et les touches de raccourci du jeu: «T»: ajouter une heure à l'horloge,\n'SHIFT' + 'Y': Soustrayez 10 minutes de l'horloge,\n«Y»: ajouter 10 minutes à l'horloge, «1-7»: déformation, «K»: descendre d'un niveau de mine,\n, 'F5': Afficher ou masquer tous les sprites des joueurs, 'F7': Dessiner une grille de tuiles,\n  «F8»: afficher une fenêtre de saisie de commande de débogage, «B»: déplacer la barre d'outils pour afficher la ligne d'inventaire supérieure suivante\n'N': déplacez la barre d'outils pour afficher la ligne d'inventaire inférieure suivante.",
+        "de": "Aktiviere den Debug-Modus und die Hotkeys des Spiels: 'T': Addiere eine Stunde zur Uhr,\n'SHIFT' + 'Y': Ziehe 10 Minuten von der Uhr ab,\n'Y': Addiere 10 Minuten zur Uhr, '1-7': Warp, 'K': Gehe ein Minenlevel runter,\n, 'F5': Alle Player-Sprites ein- oder ausblenden, 'F7': Ein Kachelraster zeichnen,\n  'F8': Zeigt ein Eingabefenster für Debug-Befehle an. 'B': Verschiebt die Symbolleiste, um die nächsthöhere Inventarzeile anzuzeigen\n'N': Verschiebt die Symbolleiste, um die nächst niedrigere Inventarzeile anzuzeigen.",
+        "hu": "engedélyezze a játék hibakeresési módját és gyorsbillentyűit: 'T': Adj hozzá egy órát az órához,\n'SHIFT' + 'Y': vonjon le 10 percet az órától,\n'Y': 10 perc hozzáadása az órához, '1-7': lánc, 'K': mozogjon le egy akna szintjén,\n, 'F5': Az összes játékos sprite megjelenítése vagy elrejtése, 'F7': Rajzoljon egy csempe rácsot,\n  'F8': A hibakeresési parancs beviteli ablakának megjelenítése, 'B': Az eszközsáv eltolása a következő magasabb készletsor megjelenítéséhez\n'N': Tolja el az eszköztárat a következő alsó készletsor megjelenítéséhez.",
+        "it": "abilita la modalità debug e i tasti di scelta rapida del gioco: \"T\": aggiungi un'ora all'orologio,\n'SHIFT' + 'Y': Sottrai 10 minuti dall'orologio,\n\"Y\": aggiungi 10 minuti all'orologio, \"1-7\": Warp, \"K\": sposta in basso di un livello,\n, \"F5\": mostra o nascondi tutti gli sprite dei giocatori, \"F7\": disegna una griglia di tessere,\n  'F8': mostra una finestra di input del comando di debug, 'B': sposta la barra degli strumenti per mostrare la riga di inventario successiva più alta\n'N': sposta la barra degli strumenti per mostrare la riga di inventario inferiore successiva.",
+        "ja": "ゲームのデバッグモードとホットキーを有効にします。「T」：時計に1時間を追加し、\n「SHIFT」+「Y」：時計から10分引き、\n「Y」：時計に10分追加、「1-7」：ワープ、「K」：地雷1レベル下に移動、\n、 'F5'：すべてのプレーヤースプライトの表示または非表示、 'F7'：タイルグリッドの描画、\n  'F8'：デバッグコマンド入力ウィンドウを表示、 'B'：ツールバーをシフトして次に高いインベントリ行を表示\n「N」：ツールバーをシフトして、次に低いインベントリ行を表示します。",
+        "ko": "게임의 디버그 모드와 핫키를 활성화합니다 : 'T': 시계에 1 시간 추가,\n'SHIFT'+ 'Y': 시계에서 10 분 빼기\n'Y': 시계에 10 분 추가, '1-7': Warp, 'K': 하나의 광산 레벨을 낮추고,\n, 'F5': 모든 플레이어 스프라이트 표시 또는 숨기기 'F7': 타일 그리드 그리기,\n  'F8': 디버그 명령 입력 창 표시, 'B': 도구 모음을 이동하여 다음으로 높은 재고 행을 표시하십시오.\n'N': 도구 모음을 이동하여 다음 낮은 재고 행을 표시하십시오.",
+        "pt": "ative o modo de depuração e as teclas de atalho do jogo: 'T': adicione uma hora ao relógio,\n'SHIFT' + 'Y': subtraia 10 minutos do relógio,\n'Y': adicione 10 minutos ao relógio, '1-7': Warp, 'K': desça um nível de mina,\n, 'F5': mostra ou oculta todos os sprites de jogadores, 'F7': desenha uma grade de blocos,\n  'F8': mostra uma janela de entrada do comando debug, 'B': desloque a barra de ferramentas para mostrar a próxima linha de inventário mais alta\n'N': mude a barra de ferramentas para mostrar a próxima linha de inventário mais baixa.",
+        "ru": "включить режим отладки игры и горячие клавиши: «T»: добавить один час к часам,\n«SHIFT» + «Y»: отнимите 10 минут от часов,\n«Y»: добавить 10 минут к часам,\n «1-7»: телепорт, «K»: спуститься на один уровень мин,\n, 'F5': показать или скрыть все спрайты игрока, \n'F7': нарисовать сетку тайлов,\n  «F8»: показать окно ввода команды отладки, «B»: сдвинуть панель инструментов, чтобы показать следующую более высокую строку инвентаря\n«N»: переместите панель инструментов, чтобы показать следующую нижнюю строку инвентаря.",
+        "es": "habilite el modo de depuración y las teclas de acceso rápido del juego: 'T': agregue una hora al reloj,\n'SHIFT' + 'Y': resta 10 minutos del reloj,\n'Y': agregue 10 minutos al reloj, '1-7': deformación, 'K': baje un nivel de mina,\n, 'F5': muestra u oculta todos los sprites del jugador, 'F7': dibuja una cuadrícula de mosaico,\n  'F8': muestra una ventana de entrada de comando de depuración, 'B': desplaza la barra de herramientas para mostrar la siguiente fila de inventario más alta\n'N': desplaza la barra de herramientas para mostrar la siguiente fila de inventario inferior.",
+        "tr": "Oyunun hata ayıklama modunu ve kısayol tuşlarını etkinleştir: 'T': Saate bir saat ekle,\n'ÜSTKRKT' + 'Y': Saatten 10 dakika sonra\n'Y': Saate 10 dakika ekleyin, '1-7': Çözgü, 'K': Bir maden seviyesinden aşağı in,\n, 'F5': Tüm oyuncu sprite'larını göster veya gizle, 'F7': Döşeme ızgarasını çiz,\n  'F8': Bir hata ayıklama komutu giriş penceresi göster, 'B': Bir sonraki daha yüksek envanter sırasını göstermek için araç çubuğunu kaydırın\n'N': Bir sonraki daha düşük envanter sırasını göstermek için araç çubuğunu kaydırın.",
+        "th": "เปิดใช้งานโหมดแก้ไขข้อบกพร่องของเกมและปุ่มลัด: \n'T': เพิ่มหนึ่งชั่วโมงในนาฬิกา\n'SHIFT' + 'Y': ลบ 10 นาทีจากนาฬิกา\n'Y': เพิ่ม 10 นาทีไปที่นาฬิกา, '1-7': Warp, 'K': เลื่อนระดับเหมืองลงหนึ่งระดับ\n, 'F5': แสดงหรือซ่อนสไปรต์ของผู้เล่นทั้งหมด 'F7': วาดกริดไทล์\n  'F8': แสดงหน้าต่างป้อนคำสั่งดีบัก 'B': เลื่อนแถบเครื่องมือเพื่อแสดงแถวสินค้าคงคลังที่สูงขึ้นถัดไป\n'N': เลื่อนแถบเครื่องมือเพื่อแสดงแถวสินค้าคงคลังที่ต่ำกว่าถัดไป"
+      },
+      "Type": "CheckBox",
+      "Label": "Allow game debug"
+    },
+    {
+      "Name": "AllowDangerousCommands",
+      "Description": {
+        "en": "This allows game debug commands which end the current day/season & save, randomize your player or farmhouse decorations, or crash the game. Only change this if you're aware of the consequences",
+        "zh": "這樣，遊戲調試命令就可以結束當前的一天/季節並保存，隨機化玩家或農舍裝飾或使遊戲崩潰。 僅當您知道後果時才更改此設置",
+        "fr": "Cela permet des commandes de débogage de jeu qui mettent fin à la journée / saison en cours et enregistrent, randomisent les décorations de votre joueur ou de la ferme, ou plantent le jeu. Ne changez cela que si vous êtes conscient des conséquences",
+        "de": "Dies ermöglicht Spiel-Debug-Befehle, die den aktuellen Tag / die aktuelle Saison beenden und speichern, die Dekoration Ihres Spielers oder Ihres Bauernhauses nach dem Zufallsprinzip ändern oder das Spiel zum Absturz bringen. Ändern Sie dies nur, wenn Sie die Konsequenzen kennen",
+        "hu": "Ez lehetővé teszi a játék hibakeresési parancsait, amelyek véget vetnek az aktuális napnak / szezonnak, és menthetnek, véletlenszerűvé teszik a lejátszót vagy a parasztház dekorációját, vagy összeomlik a játék. Csak akkor változtassa meg, ha tisztában van a következményekkel",
+        "it": "Ciò consente comandi di debug del gioco che terminano il giorno / la stagione corrente e si salvano, randomizzano le decorazioni del giocatore o della fattoria o bloccano il gioco. Cambia questo solo se sei consapevole delle conseguenze.",
+        "ja": "これにより、現在の日/シーズンを終了して保存し、プレイヤーまたは農家の装飾をランダム化するか、ゲームをクラッシュさせるゲームデバッグコマンドが可能になります。 結果を認識している場合にのみ、これを変更してください",
+        "ko": "이를 통해 현재 날짜 / 시즌을 종료하고 저장하거나 플레이어 또는 농가 장식을 무작위 화하거나 게임을 중단시키는 게임 디버그 명령을 사용할 수 있습니다. 결과를 알고있는 경우에만 이것을 변경하십시오",
+        "pt": "Isso permite comandos de depuração de jogos que terminam o dia / estação atual e salvam, selecionam aleatoriamente as decorações dos seus jogadores ou fazendas ou travam o jogo. Apenas mude isso se estiver ciente das consequências",
+        "ru": "Это включает команды отладки игры, которые заканчивают текущий день / сезон и сохраняют, рандомизируют украшения вашего игрока или фермы или сбивают игру. Измените это, если вы знаете о последствиях",
+        "es": "Esto permite comandos de depuración del juego que finalizan el día / temporada actual y guardan, aleatorizan las decoraciones de su jugador o casa de campo, o bloquean el juego. Solo cambie esto si conoce las consecuencias",
+        "tr": "Bu, geçerli gün / mevsimi sona erdiren ve saklayan, oynatıcınızı veya çiftlik evi dekorasyonunuzu rastgele düzenleyen veya oyunu kilitleyen oyun hata ayıklama komutlarına izin verir. Bunu yalnızca sonuçların farkındaysanız değiştirin",
+        "th": "วิธีนี้จะช่วยให้เกมดีบั๊กคำสั่งซึ่งจบวัน / ฤดูกาลปัจจุบัน & บันทึกสุ่มเล่นของคุณหรือประดับบ้านหรือเล่นเกม เปลี่ยนสิ่งนี้เฉพาะเมื่อคุณตระหนักถึงผลที่จะตามมา"
+      },
+      "Type": "CheckBox",
+      "Label": "Allow dangerous сommands"
+    },
+    {
+      "Name": "Controls.ToggleDebug",
+      "Type": "InputListener",
+      "Label": "The configured controller"
+    }
+  ]
+}

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Harmony;
 using StardewValley;
 using StardewValley.Network;
 
@@ -13,8 +12,6 @@ namespace ChildToNPC.Patches
      * (I'd like to come back to this and see if I can find a better solution).
      * The parts I need to change are mixed in, so I have to re-execute most code.
      */
-    [HarmonyPatch(typeof(NPC))]
-    [HarmonyPatch("parseMasterSchedule")]
     class NPCParseMasterSchedulePatch
     {
         public static bool Prefix(NPC __instance, ref Dictionary<int, SchedulePathDescription> __result, string rawData,

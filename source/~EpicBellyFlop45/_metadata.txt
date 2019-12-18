@@ -11,9 +11,9 @@ mods:
    Customize Cursor Sprite
 
 latest commit:
-   commit 6b831d5e7e2286e8ad1198e39bdf99a2a7a45bd1
+   commit 8749e98f6afdebbd40a3c7805ba84df96a41ac00
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Tue Dec 3 15:44:55 2019 +0000
+   Date:   Wed Dec 11 17:03:35 2019 +0000
    
-       [CleanCellar] Update to work with mods that use the same broken stone tiles
+       [BetterCrabPotsConfigUpdater] Add documentation and slight code clean up
    

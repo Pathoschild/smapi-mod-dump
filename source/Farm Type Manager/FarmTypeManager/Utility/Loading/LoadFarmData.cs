@@ -17,9 +17,8 @@ namespace FarmTypeManager
         private static partial class Utility
         {
             /// <summary>Loads all available data files for the current farm into FarmDataList. Checks the mod's data folder and any relevant content packs.</summary>
-            /// <param name="helper">SMAPI interface, used here to access files.</param>
             /// <returns>True if the files loaded successfully; false otherwise.</returns>
-            public static void LoadFarmData(IModHelper helper)
+            public static void LoadFarmData()
             {
                 Monitor.Log("Beginning file loading process...", LogLevel.Trace);
 
@@ -32,7 +31,7 @@ namespace FarmTypeManager
                 if (MConfig.EnableContentPacks) //if content packs are enabled
                 {
                     //load data from each relevant content pack
-                    foreach (IContentPack pack in helper.ContentPacks.GetOwned())
+                    foreach (IContentPack pack in Helper.ContentPacks.GetOwned())
                     {
                         Monitor.Log($"Loading files from content pack: {pack.Manifest.Name}", LogLevel.Trace);
 
@@ -86,7 +85,7 @@ namespace FarmTypeManager
                         pack.WriteJsonFile($"content.json", config); //update the content pack's config file
                         pack.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), save); //create or update the content pack's save file for the current farm
 
-                        if (CheckFileConditions(config, pack, helper)) //check file conditions; only use the current data if this returns true
+                        if (CheckFileConditions(config, pack)) //check file conditions; only use the current data if this returns true
                         {
                             FarmDataList.Add(new FarmData(config, save, pack)); //add the config, save, and content pack to the farm data list
                             Monitor.Log("Content pack loaded successfully.", LogLevel.Trace);
@@ -110,7 +109,7 @@ namespace FarmTypeManager
                 //NOTE: this should always be done *after* content packs, because it will end the loading process if an error occurs
                 try
                 {
-                    config = helper.Data.ReadJsonFile<FarmConfig>(Path.Combine("data", $"{Constants.SaveFolderName}.json")); //load the current save's config file (null if it doesn't exist)
+                    config = Helper.Data.ReadJsonFile<FarmConfig>(Path.Combine("data", $"{Constants.SaveFolderName}.json")); //load the current save's config file (null if it doesn't exist)
                 }
                 catch (Exception ex)
                 {
@@ -127,7 +126,7 @@ namespace FarmTypeManager
                     //attempt to load the default.json config file
                     try
                     {
-                        config = helper.Data.ReadJsonFile<FarmConfig>(Path.Combine("data", "default.json")); //load the default.json config file (null if it doesn't exist)
+                        config = Helper.Data.ReadJsonFile<FarmConfig>(Path.Combine("data", "default.json")); //load the default.json config file (null if it doesn't exist)
                     }
                     catch (Exception ex)
                     {
@@ -146,13 +145,13 @@ namespace FarmTypeManager
 
                     ValidateFarmData(config, null); //validate certain data in the current file before using it
 
-                    helper.Data.WriteJsonFile(Path.Combine("data", "default.json"), config); //create or update the default.json config file
+                    Helper.Data.WriteJsonFile(Path.Combine("data", "default.json"), config); //create or update the default.json config file
                 }
 
                 //attempt to load the save data for this farm
                 try
                 {
-                    save = helper.Data.ReadJsonFile<InternalSaveData>(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save")); //load the mod's save data for this farm (null if it doesn't exist)
+                    save = Helper.Data.ReadJsonFile<InternalSaveData>(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save")); //load the mod's save data for this farm (null if it doesn't exist)
                 }
                 catch (Exception ex)
                 {
@@ -171,10 +170,10 @@ namespace FarmTypeManager
 
                 ValidateFarmData(config, null); //validate certain data in the current file before using it
 
-                helper.Data.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}.json"), config); //create or update the config file for the current farm
-                helper.Data.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), save); //create or update this config's save file for the current farm
+                Helper.Data.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}.json"), config); //create or update the config file for the current farm
+                Helper.Data.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), save); //create or update this config's save file for the current farm
 
-                if (CheckFileConditions(config, null, helper)) //check file conditions; only use the current data if this returns true
+                if (CheckFileConditions(config, null)) //check file conditions; only use the current data if this returns true
                 {
                     FarmDataList.Add(new FarmData(config, save, null)); //add the config, save, and a *null* content pack to the farm data list
                     Monitor.Log("FarmTypeManager/data farm data loaded successfully.", LogLevel.Trace);

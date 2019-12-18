@@ -67,16 +67,5 @@ namespace PondPainter
             this.Format = "1.0";
             this.Entries = new List<PondPainterPackEntry>();
         }
-        // Color Name ref: http://www.foszor.com/blog/xna-color-chart/
-        /*
-        public PondPainterPackData()
-        {
-            Entries.Add(new PondPainterDataEntry("default", 0, "White"));
-            Entries.Add(new PondPainterDataEntry("item_lava_eel", 3, 250, 30, 30));
-            Entries.Add(new PondPainterDataEntry("item_slimejack", 2, 60, 255, 60));
-            Entries.Add(new PondPainterDataEntry("item_void_salmon", 2, 120, 20, 110));
-            Entries.Add(new PondPainterDataEntry("item_super_cucumber", 2, 150, 100, 200));
-        }
-        */
     }
 }

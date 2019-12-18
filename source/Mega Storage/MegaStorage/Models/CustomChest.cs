@@ -55,7 +55,7 @@ namespace MegaStorage.Models
             {
                 if (item == null || !item.canStackWith(itemToAdd))
                     continue;
-                itemToAdd.Stack = item.addToStack(itemToAdd.Stack);
+                itemToAdd.Stack = item.addToStack(itemToAdd);
                 if (itemToAdd.Stack <= 0)
                     return null;
             }
@@ -218,7 +218,7 @@ namespace MegaStorage.Models
             }
         }
 
-        public override void drawInMenu(SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, bool drawStackNumber, Color color, bool drawShadow)
+        public override void drawInMenu(SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow)
         {
             if (playerChoiceColor.Value.Equals(Color.Black))
             {
@@ -229,7 +229,7 @@ namespace MegaStorage.Models
                 spriteBatch.Draw(_spriteBW, location + new Vector2(32f, 32f), Game1.getSourceRectForStandardTileSheet(_spriteBW, 0, 16, 32), playerChoiceColor.Value * transparency, 0.0f, new Vector2(8f, 16f), (float)(4.0 * (scaleSize < 0.2 ? scaleSize : scaleSize / 2.0)), SpriteEffects.None, layerDepth);
                 spriteBatch.Draw(_spriteBraces, location + new Vector2(32f, 32f), Game1.getSourceRectForStandardTileSheet(_spriteBraces, 0, 16, 32), color * transparency, 0.0f, new Vector2(8f, 16f), (float)(4.0 * (scaleSize < 0.2 ? scaleSize : scaleSize / 2.0)), SpriteEffects.None, layerDepth);
             }
-            if (drawStackNumber && maximumStackSize() > 1 && (scaleSize > 0.3 && Stack != int.MaxValue) && Stack > 1)
+            if (drawStackNumber == StackDrawType.Draw && maximumStackSize() > 1 && (scaleSize > 0.3 && Stack != int.MaxValue) && Stack > 1)
             {
                 Utility.drawTinyDigits(Stack, spriteBatch, location + new Vector2(64 - Utility.getWidthOfTinyDigitString(Stack, 3f * scaleSize) + 3f * scaleSize, (float)(64.0 - 18.0 * scaleSize + 2.0)), 3f * scaleSize, 1f, color);
             }

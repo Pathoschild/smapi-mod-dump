@@ -1,7 +1,7 @@
 ﻿{
    "Name": "OrganizeShortcut",
    "Author": "Yyeahdude",
-   "Version": "1.0.0",
+   "Version": "1.2.1",
    "Description": "Adds a mapable shortcut to organzie your inventory",
    "UniqueID": "Yyeahdude.OrganzieShortcut",
    "EntryDll": "OrganizeShortcut.dll",

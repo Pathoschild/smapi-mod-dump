@@ -1,0 +1,11 @@
+{
+  "Name": "More Barn and Coop Animals",
+  "Author": "AairTheGreat",
+  "Version": "1.0.0",
+  "Description": "Increases the max. nuumber of animals in each barn/coop",
+  "UniqueID": "AairTheGreat.MoreBarnCoopAnimals",
+  "EntryDll": "MoreBarnCoopAnimals.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [
+  ]
+}

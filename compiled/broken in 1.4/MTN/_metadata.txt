@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/2256
-IDs: SgtPickles.MTN, Weil.MTN
-update keys: Nexus:2256, Chucklefish:5343, GitHub:Dawilly/MTN2

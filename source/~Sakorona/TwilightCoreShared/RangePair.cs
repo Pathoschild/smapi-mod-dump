@@ -110,5 +110,10 @@
                 }
             return false;
         }
+
+        public override string ToString()
+        {
+            return $"Range is ({this.LowerBound}, {this.HigherBound})";
+        }
     }
 }

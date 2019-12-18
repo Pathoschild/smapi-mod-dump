@@ -1,5 +1,4 @@
-﻿using Harmony;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Network;
@@ -11,8 +10,6 @@ namespace ChildToNPC.Patches
      * Most of this code is directly taken from the original method.
      * It handles the issue where non-married NPCs would be kicked out.
      */
-    [HarmonyPatch(typeof(PathFindController))]
-    [HarmonyPatch("handleWarps")]
     class PFCHandleWarpsPatch
     {
         public static bool Prefix(Rectangle position, PathFindController __instance, Character ___character)

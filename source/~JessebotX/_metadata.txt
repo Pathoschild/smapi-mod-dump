@@ -8,9 +8,9 @@ mods:
    Sprint Sprint Sprint
 
 latest commit:
-   commit 4824df630c945075ee3d8edbbaa243d7d3ed4f53
+   commit d76c90c70b093df96e02fab75c32c66400278c1e
    Author: JessebotX <jessebotx2003@gmail.com>
-   Date:   Thu Nov 28 15:23:25 2019 -0800
+   Date:   Wed Dec 4 16:22:56 2019 -0800
    
-       Removed [build] folder
+       updated readme's and changelog
    

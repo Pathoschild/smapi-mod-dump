@@ -1,0 +1,242 @@
+{
+  "Format": "1.0",
+  "Entries": [
+    {
+      "RequiredTags": [
+        "item_green_algae"
+      ],
+      "SpawnTime": 2,
+      "ProducedItems": [
+        {
+          "RequiredPopulation": 9,
+          "Chance": 0.85,
+          "ItemID": 153,
+          "MinQuantity": 2,
+          "MaxQuantity": 3
+        },
+        {
+          "RequiredPopulation": 9,
+          "Chance": 0.33,
+          "ItemID": 774,
+          "MinQuantity": 5,
+          "MaxQuantity": 5
+        },
+        {
+          "RequiredPopulation": 9,
+          "Chance": 1.0,
+          "ItemID": 771,
+          "MinQuantity": 3,
+          "MaxQuantity": 3
+        },
+        {
+          "RequiredPopulation": 6,
+          "Chance": 0.75,
+          "ItemID": 153,
+          "MinQuantity": 2,
+          "MaxQuantity": 2
+        },
+        {
+          "RequiredPopulation": 6,
+          "Chance": 0.8,
+          "ItemID": 771,
+          "MinQuantity": 2,
+          "MaxQuantity": 3
+        },
+        {
+          "RequiredPopulation": 3,
+          "Chance": 0.75,
+          "ItemID": 153,
+          "MinQuantity": 1,
+          "MaxQuantity": 2
+        },
+        {
+          "RequiredPopulation": 3,
+          "Chance": 0.8,
+          "ItemID": 771,
+          "MinQuantity": 2,
+          "MaxQuantity": 2
+        },
+        {
+          "RequiredPopulation": 1,
+          "Chance": 0.65,
+          "ItemID": 153,
+          "MinQuantity": 1,
+          "MaxQuantity": 1
+        },
+        {
+          "RequiredPopulation": 1,
+          "Chance": 1.0,
+          "ItemID": 771,
+          "MinQuantity": 1,
+          "MaxQuantity": 1
+        }
+      ],
+      "PopulationGates": {
+        "4": [
+          "368 3"
+        ],
+        "7": [
+          "369 5"
+        ]
+      }
+    },
+    {
+      "RequiredTags": [
+        "item_seaweed"
+      ],
+      "SpawnTime": 2,
+      "ProducedItems": [
+        {
+          "RequiredPopulation": 9,
+          "Chance": 0.85,
+          "ItemID": 152,
+          "MinQuantity": 2,
+          "MaxQuantity": 3
+        },
+        {
+          "RequiredPopulation": 9,
+          "Chance": 0.33,
+          "ItemID": 774,
+          "MinQuantity": 5,
+          "MaxQuantity": 5
+        },
+        {
+          "RequiredPopulation": 9,
+          "Chance": 1.0,
+          "ItemID": 771,
+          "MinQuantity": 3,
+          "MaxQuantity": 3
+        },
+        {
+          "RequiredPopulation": 6,
+          "Chance": 0.75,
+          "ItemID": 152,
+          "MinQuantity": 2,
+          "MaxQuantity": 2
+        },
+        {
+          "RequiredPopulation": 6,
+          "Chance": 0.8,
+          "ItemID": 771,
+          "MinQuantity": 2,
+          "MaxQuantity": 3
+        },
+        {
+          "RequiredPopulation": 3,
+          "Chance": 0.75,
+          "ItemID": 152,
+          "MinQuantity": 1,
+          "MaxQuantity": 2
+        },
+        {
+          "RequiredPopulation": 3,
+          "Chance": 0.8,
+          "ItemID": 771,
+          "MinQuantity": 2,
+          "MaxQuantity": 2
+        },
+        {
+          "RequiredPopulation": 1,
+          "Chance": 0.65,
+          "ItemID": 152,
+          "MinQuantity": 1,
+          "MaxQuantity": 1
+        },
+        {
+          "RequiredPopulation": 1,
+          "Chance": 1.0,
+          "ItemID": 771,
+          "MinQuantity": 1,
+          "MaxQuantity": 1
+        }
+      ],
+      "PopulationGates": {
+        "4": [
+          "368 3"
+        ],
+        "7": [
+          "369 5"
+        ]
+      }
+    },
+    {
+      "RequiredTags": [
+        "item_white_algae"
+      ],
+      "SpawnTime": 2,
+      "ProducedItems": [
+        {
+          "RequiredPopulation": 9,
+          "Chance": 0.85,
+          "ItemID": 157,
+          "MinQuantity": 2,
+          "MaxQuantity": 3
+        },
+        {
+          "RequiredPopulation": 9,
+          "Chance": 0.33,
+          "ItemID": 774,
+          "MinQuantity": 5,
+          "MaxQuantity": 5
+        },
+        {
+          "RequiredPopulation": 9,
+          "Chance": 1.0,
+          "ItemID": 771,
+          "MinQuantity": 3,
+          "MaxQuantity": 3
+        },
+        {
+          "RequiredPopulation": 6,
+          "Chance": 0.75,
+          "ItemID": 157,
+          "MinQuantity": 2,
+          "MaxQuantity": 2
+        },
+        {
+          "RequiredPopulation": 6,
+          "Chance": 0.8,
+          "ItemID": 771,
+          "MinQuantity": 2,
+          "MaxQuantity": 3
+        },
+        {
+          "RequiredPopulation": 3,
+          "Chance": 0.75,
+          "ItemID": 157,
+          "MinQuantity": 1,
+          "MaxQuantity": 2
+        },
+        {
+          "RequiredPopulation": 3,
+          "Chance": 0.8,
+          "ItemID": 771,
+          "MinQuantity": 2,
+          "MaxQuantity": 2
+        },
+        {
+          "RequiredPopulation": 1,
+          "Chance": 0.65,
+          "ItemID": 157,
+          "MinQuantity": 1,
+          "MaxQuantity": 1
+        },
+        {
+          "RequiredPopulation": 1,
+          "Chance": 1.0,
+          "ItemID": 771,
+          "MinQuantity": 1,
+          "MaxQuantity": 1
+        }
+      ],
+      "PopulationGates": {
+        "4": [
+          "368 3"
+        ],
+        "7": [
+          "369 5"
+        ]
+      }
+    }
+  ]
+}

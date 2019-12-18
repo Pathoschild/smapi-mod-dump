@@ -28,10 +28,14 @@ namespace MTN2 {
         int GreenHouseEntryX { get; }
         int GreenHouseEntryY { get; }
 
+        void Initialize(IModHelper helper);
         void Populate(IModHelper helper, IMonitor monitor);
         void UpdateSelectedFarm(string farmName);
         void LoadCustomFarm();
         void LoadCustomFarm(int whichFarm);
+        void LoadCustomFarmByMtnData();
+        void LoadCustomFarmByMtnData(string FarmType);
+        void SetMtnFarmData();
         string GetAssetKey(out Map map, string type);
         string GetAssetKey(string fileName, FileType fileType);
         Map LoadMap(string fileName);

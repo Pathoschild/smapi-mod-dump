@@ -5,9 +5,9 @@ mods:
    Seed Catalogue
 
 latest commit:
-   commit 7ae9d103130ab610f30b4cf51bafbd9535bdd949
+   commit 9335b50146ca57d93b949e11bb4b7138589d2760
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:26:29 2019 -0500
+   Date:   Mon Nov 25 17:53:09 2019 -0500
    
-       Update version
+       1.0.4 - SDV 1.4
    

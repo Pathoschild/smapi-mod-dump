@@ -1,0 +1,21 @@
+url:
+   https://github.com/CompSciLauren/stardew-valley-daily-screenshot-mod.git
+
+mods:
+   Daily Screenshot
+
+latest commit:
+   commit fd2b0d02aa99b7d5e3c0a6c3c51778711e3a22d6
+   Author: Lauren Stephenson <compscilauren@gmail.com>
+   Date:   Thu Dec 12 11:13:04 2019 -0600
+   
+       Add bug fix for patch 1.0.4 (#21)
+       
+       * Rename variable, simplify code
+       
+       * Update version number
+       
+       * Fix bug where path file can have wrong slash on Mac computers
+       
+       * Update readme
+   

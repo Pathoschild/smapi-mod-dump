@@ -5,9 +5,9 @@ mods:
    Console Code
 
 latest commit:
-   commit 3900f6b772fb6a15fbd2a7e29b5b1e5a57eef28c
+   commit d95cf73040bcb1b2f1b6a420fcadf1ef0e048af1
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Jul 8 21:05:06 2019 -0400
+   Date:   Mon Nov 25 16:55:21 2019 -0500
    
-       Tweak
+       1.0.2 - SDV 1.4, Mac/Linux support
    

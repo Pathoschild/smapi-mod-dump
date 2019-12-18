@@ -5,6 +5,7 @@ using StardewValley.Menus;
 using System.Collections.Generic;
 using StardewModdingAPI;
 using SObject = StardewValley.Object;
+using SpaceShared;
 
 namespace ToolGeodes
 {

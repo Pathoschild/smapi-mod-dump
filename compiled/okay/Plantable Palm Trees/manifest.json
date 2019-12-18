@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Plantable Palm Trees",
   "Author": "MouseyPounds",
-  "Version": "1.0.2",
+  "Version": "1.1.0",
   "Description": "Plant palm trees with coconuts and Mushroom trees with red or purple mushrooms",
   "UniqueID": "MouseyPounds.PlantablePalmTrees",
   "EntryDll": "PlantablePalmTrees.dll",

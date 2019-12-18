@@ -19,10 +19,9 @@ namespace FarmTypeManager
             AddSMAPIEvents(helper); //pass any necessary event methods to SMAPI
 
             Utility.Monitor.IMonitor = Monitor; //pass the monitor for use by other areas of this mod's code
-
-            Utility.LoadModConfig(helper); //attempt to load the config.json ModConfig file
-
             Utility.Helper = helper; //pass the helper for use by other areas of this mod's code
+
+            Utility.LoadModConfig(); //attempt to load the config.json ModConfig file
 
             if (Utility.MConfig?.EnableConsoleCommands == true) //if enabled, pass the mod's console command methods to the helper
             {

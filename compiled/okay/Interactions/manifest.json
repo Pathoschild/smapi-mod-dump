@@ -1,0 +1,10 @@
+{
+   "Name": "Interacoes",
+   "Author": "BrasileiroTop",
+   "Version": "1.0.3",
+   "MinimumApiVersion": "2.9.0",
+   "Description": "Esse mod permite interagir com alguns objetos dos npcs, como por exemplo ligar ou desligar a televisão deles.",
+   "UniqueID": "BrasileiroTop.Interacoes",
+   "EntryDll": "Interacoes.dll",
+   "UpdateKeys": [ "Nexus:4862" ]
+}

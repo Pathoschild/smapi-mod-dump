@@ -14,7 +14,8 @@ namespace Elevator
 		public static bool Prefix(Vector2 tileLocation, Farmer who, NetPoint ___humanDoor, NetInt ___tileX, NetInt ___tileY, Building __instance)
 		{
 			int doorWidth = 2;
-			int xDist = (int)tileLocation.X - (___humanDoor.X + ___tileX.Value);
+			int xOff = 5;//___humanDoor.X
+			int xDist = (int)tileLocation.X - (xOff + ___tileX.Value);
 			
 			if (who.IsLocalPlayer && CabinHelper.IsElevatorBuilding(__instance)
 				&& xDist < doorWidth && xDist >= 0 && tileLocation.Y == ___humanDoor.Y + ___tileY.Value)
@@ -72,7 +73,8 @@ namespace Elevator
 
 
 			int doorWidth = 2;
-			int dist = xTile - (___tileX.Value + ___humanDoor.X);
+			int xOff = 5;//___humanDoor.X
+			int dist = xTile - (___tileX.Value + xOff);
 
 			if (___humanDoor.X >= 0  && yTile == ___tileY.Value + ___humanDoor.Y && 
 				dist < doorWidth && dist >= 0)

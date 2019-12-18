@@ -5,9 +5,9 @@ mods:
    Extended Reach
 
 latest commit:
-   commit 4208716a11249f4762b16c5c6fc4989ff9cad6f5
+   commit a830b05f5f359384a41fcb18a8b9de98faa14d16
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:23:01 2019 -0500
+   Date:   Mon Nov 25 17:04:58 2019 -0500
    
-       Update version
+       1.0.3 - SDV 1.4
    

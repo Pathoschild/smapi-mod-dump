@@ -1,0 +1,13 @@
+url:
+   https://github.com/Seawolf87/DailyFarmPhoto.git
+
+mods:
+   Daily Farm Photo
+
+latest commit:
+   commit fe9b0466dbb86c03eb7695ec03f8eed1528b7518
+   Author: Seawolf <sean.klomparens@gmail.com>
+   Date:   Thu Dec 5 01:14:34 2019 -0800
+   
+       Update manifest with nexus ID
+   

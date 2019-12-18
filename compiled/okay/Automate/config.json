@@ -5,7 +5,9 @@
   "Controls": {
     "ToggleOverlay": "U"
   },
-  "ConnectorNames": [],
+  "ConnectorNames": [
+    "Workbench"
+  ],
   "ModCompatibility": {
     "AutoGrabberMod": true,
     "BetterJunimos": true

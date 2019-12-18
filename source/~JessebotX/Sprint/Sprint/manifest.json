@@ -1,10 +1,10 @@
 ﻿{
 	"Name": "Sprint Sprint Sprint",
 	"Author": "Jessebot",
-	"Version": "1.0.5-beta.20190816",
+	"Version": "1.0.5",
 	"Description": "Allows player to set a keybind to Sprint with optional stamina drain.",
 	"UniqueID": "Jessebot.SprintSprintSprint",
-	"MinimumApiVersion": "2.11",
+	"MinimumApiVersion": "3.0",
 	"EntryDLL": "Sprint.dll",
-	"UpdateKeys": ["Nexus:3294"]
+  "UpdateKeys": [ "Nexus:3294", "Nexus:4778" ]
 }

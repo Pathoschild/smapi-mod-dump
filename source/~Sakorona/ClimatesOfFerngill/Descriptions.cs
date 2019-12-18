@@ -143,7 +143,7 @@ namespace ClimatesOfFerngillRebuild
 
         private string GetRainDesc(int rainAmt)
         {
-            switch (WeatherUtilities.GetCategory(rainAmt))
+            switch (WeatherUtilities.GetRainCategory(rainAmt))
             {
                 case RainLevels.Sunshower:
                     return Translator.Get("weather-tv.rain.sunshowers");
@@ -204,7 +204,7 @@ namespace ClimatesOfFerngillRebuild
 			
             if (Current.IsVariableRain)
             {
-                switch (WeatherUtilities.GetCategory(Current.AmtOfRainDrops))
+                switch (WeatherUtilities.GetRainCategory(Current.AmtOfRainDrops))
                 {
                     case RainLevels.Severe:
                         text += Translator.Get("weather-condition.vrain.severe_sw") + Environment.NewLine;
@@ -333,7 +333,7 @@ namespace ClimatesOfFerngillRebuild
                 if (Current.HasWeather(CurrentWeather.Sandstorm))
                     hazard = Translator.Get("weather-tv.hazard.sandstorm");
                 if (WeatherUtilities.IsSevereRainFall(Current.AmtOfRainDrops)) {
-                    switch (WeatherUtilities.GetCategory(Current.AmtOfRainDrops))
+                    switch (WeatherUtilities.GetRainCategory(Current.AmtOfRainDrops))
                     {
                         case RainLevels.Severe:
                             hazard = Translator.Get("weather-tv.hazard.rainfall.severe");
@@ -486,9 +486,8 @@ namespace ClimatesOfFerngillRebuild
             string rRate = "";
             if (Current.HasWeather(CurrentWeather.Rain))
             {
-                rRate = Translator.Get("weather-tv.rainfallRate", new { rate = GetRainDesc(Current.AmtOfRainDrops) });
+                rRate = Translator.Get("weather-tv.rainfallRate", new { rate = GetRainfallAmt(Current.AmtOfRainDrops).ToString("N2") });
             }
-
 
             var transParams = new Dictionary<string, string>{
                 { "time",time },

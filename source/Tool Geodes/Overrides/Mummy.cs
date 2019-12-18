@@ -1,4 +1,5 @@
-﻿using StardewValley;
+﻿using Netcode;
+using StardewValley;
 using StardewValley.Monsters;
 
 namespace ToolGeodes.Overrides
@@ -9,8 +10,8 @@ namespace ToolGeodes.Overrides
         {
             if (who.HasAdornment(ToolType.Weapon, Mod.Config.GEODE_PIERCE_ARMOR) > 0)
             {
-                int revTimer = Mod.instance.Helper.Reflection.GetField<int>(__instance, "reviveTimer").GetValue();
-                if (revTimer > 0)
+                var revTimer = Mod.instance.Helper.Reflection.GetField<NetInt>(__instance, "reviveTimer").GetValue();
+                if (revTimer.Value > 0)
                 {
                     isBomb = true;
                 }

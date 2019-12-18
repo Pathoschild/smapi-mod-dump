@@ -5,9 +5,10 @@ mods:
    Custom NPC Fixes
 
 latest commit:
-   commit c98f7c089d7480c0bcc3df92da338b9a6c1ac1ac
+   commit 56fab8f4b39edc515eabc4f1f57f768da96e1a66
+   Merge: 22b8b60 c98f7c0
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Tue Sep 3 22:19:19 2019 -0400
+   Date:   Tue Nov 26 18:04:57 2019 -0500
    
-       Some fixes to work around CP and conditional spawning. Plus schedule stuff. 1.2.0
+       Oops. Merged and now 1.2.1.
    

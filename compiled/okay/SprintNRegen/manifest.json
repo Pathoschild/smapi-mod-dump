@@ -1,0 +1,10 @@
+{
+  "Name": "SprintNRegen",
+  "Author": "Abs",
+  "Version": "1.0.0",
+  "Description": "Sprint health and stamina regeneration",
+  "UniqueID": "abs.SprintNRegen",
+  "EntryDll": "SprintNRegen.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:4898" ]
+}

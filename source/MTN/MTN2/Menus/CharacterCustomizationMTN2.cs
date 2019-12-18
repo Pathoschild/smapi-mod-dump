@@ -515,15 +515,15 @@ namespace MTN2.Menus {
                 }
 
                 foreach (CustomFarm customFarm in customManager?.FarmList) {
-                    this.farmTypeButtons.Add(new ClickableTextureComponent("MTN_" + customFarm.Name, new Rectangle(point.X, point.Y + 440, 88, 80), null,
+                    this.allFarmButtons.Add(new ClickableTextureComponent("MTN_" + customFarm.Name, new Rectangle(point.X, point.Y + 440, 88, 80), null,
                         customFarm.DescriptionName + "_" + customFarm.DescriptionDetails, customFarm.IconSource, new Rectangle(0, 0, 22, 20), 4f, false));
                 }
 
                 // Set up scroll bar / arrow buttons
                 this.upArrow = new ClickableTextureComponent(new Rectangle(point.X + 115, point.Y + 75, 44, 48), Game1.mouseCursors, new Rectangle(421, 459, 11, 12), 4f, false);
-                this.downArrow = new ClickableTextureComponent(new Rectangle(point.X + 115, point.Y + 500, 44, 48), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 4f, false);
-                this.scrollBar = new ClickableTextureComponent(new Rectangle(upArrow.bounds.X + 11, upArrow.bounds.Y + upArrow.bounds.Height + 4, 24, 20), Game1.mouseCursors, new Rectangle(435, 463, 6, 10), 4f, false);
-                this.scrollBarRunner = new Rectangle(scrollBar.bounds.X, upArrow.bounds.Y + upArrow.bounds.Height + 4, scrollBar.bounds.Width, height - upArrow.bounds.Height - 332);
+                this.downArrow = new ClickableTextureComponent(new Rectangle(point.X + 115, point.Y + 580, 44, 48), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 4f, false);
+                this.scrollBar = new ClickableTextureComponent(new Rectangle(upArrow.bounds.X + 11, upArrow.bounds.Y + upArrow.bounds.Height + 4, 24, 26), Game1.mouseCursors, new Rectangle(435, 463, 6, 10), 4f, false);
+                this.scrollBarRunner = new Rectangle(scrollBar.bounds.X, upArrow.bounds.Y + upArrow.bounds.Height + 4, scrollBar.bounds.Width, height - upArrow.bounds.Height - 308);
             }
             if (this.source == CharacterCustomization.Source.HostNewFarm) {
                 this.labels.Add(this.startingCabinsLabel = new ClickableComponent(new Rectangle(this.xPositionOnScreen - 21 - 128, this.yPositionOnScreen + IClickableMenu.borderWidth * 2 + 84, 1, 1), Game1.content.LoadString("Strings\\UI:Character_StartingCabins")));
@@ -850,6 +850,9 @@ namespace MTN2.Menus {
             textureComponent17.leftNeighborID = 517;
             textureComponent17.rightNeighborID = 505;
             this.skipIntroButton = textureComponent17;
+
+            noDebrisButton = new ClickableTextureComponent("No Debris", new Rectangle(skipIntroButton.bounds.X, skipIntroButton.bounds.Y + 45, 64, 64), null, "Start off with a bare farm. No trees, twigs, rocks or weeds.", Game1.mouseCursors, new Rectangle(227, 425, 9, 9), 4f, false);
+
             if (flag2) {
                 num4 += 68;
                 List<ClickableComponent> selectionButtons3 = this.leftSelectionButtons;
@@ -1214,6 +1217,9 @@ namespace MTN2.Menus {
                         Game1.exitActiveMenu();
                         break;
                     }
+
+                    customManager.LoadCustomFarm();
+
                     Game1.player.Name = this.nameBox.Text.Trim();
                     Game1.player.displayName = Game1.player.Name;
                     Game1.player.favoriteThing.Value = this.favThingBox.Text.Trim();
@@ -1285,7 +1291,7 @@ namespace MTN2.Menus {
         private void adjustWhichFarmType(string name) {
             lastClickedFarmTypeBtn = name;
             customManager.UpdateSelectedFarm(name);
-            if (!customManager.Canon) Game1.whichFarm = customManager.SelectedFarm.ID;
+            if (!customManager.Canon) Game1.whichFarm = 200;
             adjustCabinSettings();
         }
 
@@ -1673,8 +1679,8 @@ namespace MTN2.Menus {
         }
 
         public void setScrollBarToCurrentIndex() {
-            scrollBar.bounds.Y = scrollBarRunner.Height / Math.Max(1, allFarmButtons.Count - 5 + 1) * currentItemIndex + upArrow.bounds.Bottom + 5;
-            if (currentItemIndex != allFarmButtons.Count - 5)
+            scrollBar.bounds.Y = scrollBarRunner.Height / Math.Max(1, allFarmButtons.Count - 6 + 1) * currentItemIndex + upArrow.bounds.Bottom + 5;
+            if (currentItemIndex != allFarmButtons.Count - 6)
                 return;
             scrollBar.bounds.Y = downArrow.bounds.Y - scrollBar.bounds.Height - 30;
         }
@@ -1685,7 +1691,7 @@ namespace MTN2.Menus {
                 upArrowPressed();
                 return;
             }
-            if (direction < 0 && currentItemIndex < Math.Max(0, allFarmButtons.Count - 5)) {
+            if (direction < 0 && currentItemIndex < Math.Max(0, allFarmButtons.Count - 6)) {
                 downArrowPressed();
                 return;
             }
@@ -2012,10 +2018,14 @@ namespace MTN2.Menus {
                 //    }
                 //}
 
+                //Point point = new Point(this.xPositionOnScreen + this.width + 4 + 8, this.yPositionOnScreen + IClickableMenu.borderWidth);
+                //List<ClickableTextureComponent> farmTypeButtons1 = this.farmTypeButtons;
+                //ClickableTextureComponent textureComponent5 = new ClickableTextureComponent("Standard", new Rectangle(point.X, point.Y + 88, 88, 80), (string)null, Game1.content.LoadString("Strings\\UI:Character_FarmStandard"), Game1.mouseCursors, new Rectangle(0, 324, 22, 20), 4f, false);
+
                 // Farm Buttons
                 if (this.allFarmButtons.Count > 0) {
-                    Point baseFarmButton = new Point(this.xPositionOnScreen + this.width + 4 + 8, this.yPositionOnScreen + IClickableMenu.borderWidth * 2);
-                    IClickableMenu.drawTextureBox(b, this.farmTypeButtons[0].bounds.X - 16, this.farmTypeButtons[0].bounds.Y - 20, 120, 476, Color.White);
+                    Point baseFarmButton = new Point(this.xPositionOnScreen + this.width + 4 + 8, this.yPositionOnScreen + IClickableMenu.borderWidth);
+                    IClickableMenu.drawTextureBox(b, this.farmTypeButtons[0].bounds.X - 16, this.farmTypeButtons[0].bounds.Y - 20, 120, 564, Color.White);
 
                     if (previousItemIndex != currentItemIndex) {
                         int count = 0;
@@ -2048,7 +2058,7 @@ namespace MTN2.Menus {
                 upArrow.draw(b);
                 downArrow.draw(b);
                 scrollBar.draw(b);
-                if (allFarmButtons.Count > 5) {
+                if (allFarmButtons.Count > 6) {
                     drawTextureBox(b, Game1.mouseCursors, new Rectangle(403, 383, 6, 6), scrollBarRunner.X, scrollBarRunner.Y, scrollBarRunner.Width, scrollBarRunner.Height, Color.White, 4f, false);
                     scrollBar.draw(b);
                 }

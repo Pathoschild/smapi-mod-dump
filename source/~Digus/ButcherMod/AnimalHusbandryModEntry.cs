@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using AnimalHusbandryMod.animals;
-using AnimalHusbandryMod.animals.data;
 using AnimalHusbandryMod.common;
 using AnimalHusbandryMod.farmer;
 using AnimalHusbandryMod.meats;
+using AnimalHusbandryMod.recipes;
 using AnimalHusbandryMod.tools;
 using Harmony;
 using Microsoft.Xna.Framework;
@@ -144,6 +142,10 @@ namespace AnimalHusbandryMod
                     harmony.Patch(
                         original: AccessTools.Method(typeof(SObject), nameof(SObject.countsForShippedCollection)),
                         prefix: new HarmonyMethod(typeof(MeatOverrides), nameof(MeatOverrides.countsForShippedCollection))
+                    );
+                    harmony.Patch(
+                        original: AccessTools.Method(typeof(TrashBear), "updateItemWanted"),
+                        prefix: new HarmonyMethod(typeof(TrashBearOverrides), nameof(TrashBearOverrides.updateItemWanted))
                     );
                 }
 

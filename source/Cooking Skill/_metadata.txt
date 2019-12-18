@@ -5,9 +5,9 @@ mods:
    Cooking Skill
 
 latest commit:
-   commit f464a6212581a9ae7e21b90d812428e86458903d
+   commit e3d25b309c50c7affe6089bfc95a13e58a35d383
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Feb 11 10:05:28 2019 -0500
+   Date:   Mon Nov 25 16:57:09 2019 -0500
    
-       Fixed drink bug
+       1.1.5 - SDV 1.4, remove API (no longer needed thanks to vanilla changes)
    

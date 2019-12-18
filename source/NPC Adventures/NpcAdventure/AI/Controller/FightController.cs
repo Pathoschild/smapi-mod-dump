@@ -168,12 +168,7 @@ namespace NpcAdventure.AI.Controller
 
             // Only live mummy is valid
             if (monster is Mummy mummy)
-            {
-                FieldInfo reviveTimer =
-                    typeof(Mummy).GetField("reviveTimer", BindingFlags.NonPublic | BindingFlags.Instance);
-                int t = (int)reviveTimer.GetValue(mummy);
-                return t <= 0;
-            }
+                return mummy.reviveTimer.Value <= 0;
 
             // All other monsters all valid
             return true;

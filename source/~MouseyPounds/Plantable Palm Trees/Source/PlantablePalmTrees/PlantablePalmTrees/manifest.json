@@ -1,10 +1,10 @@
 ﻿{
   "Name": "Plantable Palm Trees",
   "Author": "MouseyPounds",
-  "Version": "1.0.1",
-  "Description": "Plant palm trees with coconuts",
+  "Version": "1.1.0",
+  "Description": "Plant palm trees with coconuts and Mushroom trees with red or purple mushrooms",
   "UniqueID": "MouseyPounds.PlantablePalmTrees",
   "EntryDll": "PlantablePalmTrees.dll",
-  "MinimumApiVersion": "2.10.0",
+  "MinimumApiVersion": "3.0.0",
   "UpdateKeys": ["Nexus:4096"]
 }

@@ -5,10 +5,9 @@ mods:
    Better Quality More Seeds
 
 latest commit:
-   commit 1d4bcffc3df7caaa4e02a93b32b88f48d6f65279
-   Merge: 874ac74 fe67469
-   Author: Brandon Marquis Markail Green <bmarquismarkail@github.com>
-   Date:   Tue Sep 10 14:47:36 2019 -0500
+   commit aedee1ee37522270543f86cbf2ed2d520c836bc2
+   Author: Brandon Green <bmmgreen@gmail.com>
+   Date:   Sat Dec 14 10:42:54 2019 -0600
    
-       Merge branch 'Pathoschild-refactoring'
+       Create LICENSE
    

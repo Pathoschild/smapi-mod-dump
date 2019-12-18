@@ -1,9 +1,9 @@
 {
-  "Monday": 100,
-  "Tuesday": 20,
-  "Wednesday": 20,
-  "Thursday": 20,
-  "Friday": 30,
-  "Saturday": 100,
+  "Monday": 0,
+  "Tuesday": 0,
+  "Wednesday": 0,
+  "Thursday": 0,
+  "Friday": 100,
+  "Saturday": 0,
   "Sunday": 100
 }

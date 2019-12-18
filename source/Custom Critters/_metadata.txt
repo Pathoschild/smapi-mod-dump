@@ -5,9 +5,9 @@ mods:
    Custom Critters
 
 latest commit:
-   commit ac34bbe5a1e3bccdeb893c7b57c7f854c82e0f79
+   commit 4e99b54772fdc476cf7713220e06861ba46f33c6
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:21:23 2019 -0500
+   Date:   Mon Nov 25 16:58:03 2019 -0500
    
-       Update version
+       1.2.7 - SDV 1.4
    

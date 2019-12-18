@@ -5,9 +5,9 @@ mods:
    More Rings
 
 latest commit:
-   commit a9e6ccd282d1728f80af227fdcd1232e830004c4
+   commit 81e22933cbe361ebf634ba107a4ae9d2cc690bda
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Wed Jan 23 12:46:44 2019 -0500
+   Date:   Mon Nov 25 17:41:58 2019 -0500
    
-       More Rings support, version 1.0.3.
+       1.0.4 - SDV 1.4
    

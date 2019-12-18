@@ -50,7 +50,14 @@ namespace FarmTypeManager
                     };
                     currentLocation.characters[currentLocation.characters.Count - 1] = newFly; //replace the old fly with the new one
 
-                    SavedObject save = new SavedObject(currentLocation.Name, Position, SavedObject.ObjectType.Monster, ID, null, 1); //create save data for the new fly (set to expire overnight) 
+                    SavedObject save = new SavedObject() //create save data for the new fly (set to expire overnight) 
+                    {
+                        MapName = currentLocation.Name,
+                        Tile = Position,
+                        Type = SavedObject.ObjectType.Monster,
+                        ID = ID,
+                        DaysUntilExpire = 1
+                    };
 
                     if (Context.IsMainPlayer) //if this method was run by the host player
                     {

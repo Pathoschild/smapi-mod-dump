@@ -9,6 +9,7 @@ using StardewValley.Locations;
 using StardewModdingAPI;
 using MTN2.MapData;
 using Harmony;
+using MTN2.SaveData;
 
 namespace MTN2.Patches.Game1Patches {
     /// <summary>
@@ -50,18 +51,24 @@ namespace MTN2.Patches.Game1Patches {
             string mapAssetKey;
 
             if (customManager.LoadedFarm == null) {
-                if (Game1.whichFarm < 6)
+                if (Game1.whichFarm < 6) {
                     customManager.LoadCustomFarm(Game1.whichFarm);
-                
+                } else {
+                    customManager.LoadCustomFarmByMtnData();
+                }
             }
 
             if (!customManager.Canon) {
+                Game1.removeLocationFromLocationLookup("Farm");
+
                 for (farmIndex = 0; farmIndex < Game1.locations.Count; farmIndex++) {
                     if (Game1.locations[farmIndex].Name == "Farm") break;
                 }
 
                 mapAssetKey = customManager.GetAssetKey(out map, "Farm");
                 Game1.locations[farmIndex] = new Farm(mapAssetKey, "Farm");
+                Game1.locations[farmIndex].reloadMap();
+
                 //if (customManager.LoadedFarm.FarmMap.FileType != FileType.xnb && Game1.multiplayerMode == 1) {
                 //    customManager.LoadedFarm.ContentPack.LoadAsset<Map>(mapAssetKey);
                 //}

@@ -5,9 +5,9 @@ mods:
    Customize Exterior
 
 latest commit:
-   commit e991ee4700bebe1fc2cd43064ae5cef8c7931c1e
+   commit 44bdf8556bd0f59974bc9ac06e2a1ec8adab4de6
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 14:42:40 2019 -0500
+   Date:   Mon Nov 25 17:01:23 2019 -0500
    
-       Version 1.0.6.
+       1.0.7 - SDV 1.4
    

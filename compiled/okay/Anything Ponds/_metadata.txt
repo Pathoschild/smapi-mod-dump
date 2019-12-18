@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4702
+IDs: MouseyPounds.AnythingPonds
+update keys: Nexus:4702, GitHub:MouseyPounds/stardew-mods

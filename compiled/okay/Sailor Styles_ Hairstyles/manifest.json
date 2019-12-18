@@ -1,0 +1,10 @@
+{
+	"Name": "Sailor Styles: Hairstyles",
+	"Author": "blueberry",
+	"Version": "2.1",
+	"Description": "Hairstyles from out of this world!",
+	"UniqueID": "blueberry.SailorStylesHairstyles",
+	"EntryDll": "SailorStyles_Hair.dll",
+	"MinimumApiVersion": "2.5",
+	"UpdateKeys": ["Nexus:4154"]
+}

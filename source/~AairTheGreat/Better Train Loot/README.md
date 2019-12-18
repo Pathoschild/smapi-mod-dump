@@ -11,7 +11,9 @@
     - [useCustomTrainTreasure](#useCustomTrainTreasure)
     - [enableNoLimitTreasurePerTrain](#enableNoLimitTreasurePerTrain)
 	- [showTrainIsComingMessage](#showTrainIsComingMessage)
+	- [showDesertTrainIsComingMessage](#showDesertTrainIsComingMessage)
 	- [enableTrainWhistle](#enableTrainWhistle)
+	- [enableDesertTrainWhistle](#enableDesertTrainWhistle)
     - [baseChancePercent](#baseChancePercent)
     - [basePctChanceOfTrain](#basePctChanceOfTrain)    
     - [trainCreateDelay](#trainCreateDelay)
@@ -73,10 +75,16 @@ Uses the custom treasure list.  If set to false, then the base game item list is
 Maximum treasure from each train.  The amount is still random but there is not limit on the amount.
 - Default Value: false 
 #### showTrainIsComingMessage
-Shows the message when a train is passing thru the valley.  
+Shows/hides the message when a train is passing thru the valley and you are not in the desert.  
+- Default Value: true 
+#### showDesertTrainIsComingMessage
+Shows/hides the message when a train is passing thru the valley while you are in the desert.
 - Default Value: true 
 #### enableTrainWhistle
-When the train comes thru the valley, does it make a sound?  
+When the train comes thru the valley and you are not in the desert, does it make a sound?  
+- Default Value: true 
+#### enableTrainWhistle
+When the train comes thru the valley and you are in the desert, does it make a sound?  
 - Default Value: true 
 #### baseChancePercent
 What is the chance to get something from a train.  The player's daily luck does factor into this.
@@ -107,7 +115,7 @@ Note: This message is currently only in English.
 - Default Value: false 
 #### configVersion
 Don't modify.  This is used to update the config file if new settings are added.
-- Default Value: 2 
+- Default Value: 4 
 
 ### Overview of Trains json File
 Everyone loves items flying off trains!  Therefore, it's time to talk about how the configuration file is put together.  Here is the general workflow:

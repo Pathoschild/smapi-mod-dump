@@ -8,6 +8,8 @@ namespace MTN2.Messages
 {
     public class ServerIntro
     {
-        public int Mode { get; set; }
+        public bool Canon { get; set; }
+        public string FarmType { get; set; }
+        public int WhichFarmId { get; set; }
     }
 }

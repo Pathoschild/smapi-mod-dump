@@ -5,9 +5,9 @@ mods:
    More Buildings
 
 latest commit:
-   commit b3c7bedfdcf69a8051d69c557f252f765beb1189
+   commit a7d0b3b4a77b859413ee1b9a49e016c0499f9b45
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Jul 8 21:09:30 2019 -0400
+   Date:   Mon Nov 25 17:40:25 2019 -0500
    
-       Version number update
+       1.0.5 - SDV 1.4
    

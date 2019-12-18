@@ -5,9 +5,9 @@ mods:
    Sleepy Eye
 
 latest commit:
-   commit 29afb393fd40e5a49d9856320f5c54d59d9a98d6
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:26:44 2019 -0500
+   commit 7886315c460f064f35f0624ab15d1a0660582028
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Sat Dec 7 18:03:58 2019 -0500
    
-       Update version
+       1.4 update
    

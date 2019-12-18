@@ -3,6 +3,7 @@ using MTN2.Management;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,8 +45,29 @@ namespace MTN2.Patches.GameLocationPatches {
                     codes.Insert(x + 3, new CodeInstruction(OpCodes.Ldsfld, AccessTools.Field(typeof(performActionPatch), "customManager")));
                     codes[x + 4] = new CodeInstruction(OpCodes.Callvirt, AccessTools.Property(typeof(CustomManager), "GreenHouseEntryY").GetGetMethod());
                 }
+
+                if (performActionPatch.CheckForCall(codes[x], "get_player") && x + 1 < codes.Count && performActionPatch.CheckForVirtcall(codes[x + 1], "getMailboxPosition")) {
+                    codes[x] = new CodeInstruction(OpCodes.Ldsfld, AccessTools.Field(typeof(performActionPatch), "customManager"));
+                    codes[x + 1] = new CodeInstruction(OpCodes.Callvirt, AccessTools.Property(typeof(CustomManager), "MailboxPosition").GetGetMethod());
+                }
             }
             return codes.AsEnumerable();
+        }
+
+        private static bool CheckForCall(CodeInstruction code, string name) {
+            if (code.opcode == OpCodes.Call) {
+                MethodInfo methodInfo = code.operand as MethodInfo;
+                if (((methodInfo != null) ? methodInfo.Name : null) == name) return true;
+            }
+            return false;
+        }
+
+        private static bool CheckForVirtcall(CodeInstruction code, string name) {
+            if (code.opcode == OpCodes.Callvirt) {
+                MethodInfo methodInfo = code.operand as MethodInfo;
+                return (methodInfo?.Name) == name;
+            }
+            return false;
         }
     }
 }

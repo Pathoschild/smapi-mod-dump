@@ -1,0 +1,13 @@
+url:
+   https://github.com/Dwayneten/AutoFarmScreenshot.git
+
+mods:
+   Auto Farm Screenshot
+
+latest commit:
+   commit 99a529c7d57b00848844a56fe8ffeb8912770d72
+   Author: DwayneTen <151809668@qq.com>
+   Date:   Wed Dec 4 23:10:23 2019 +0800
+   
+       Update README.md
+   

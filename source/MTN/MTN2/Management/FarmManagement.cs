@@ -13,6 +13,8 @@ using System.Text;
 using System.Threading.Tasks;
 using xTile;
 using SObject = StardewValley.Object;
+using MTN2.SaveData;
+using StardewValley.Buildings;
 
 namespace MTN2.Management {
     internal class FarmManagement {
@@ -23,6 +25,8 @@ namespace MTN2.Management {
         private const int NumberOfCanonFarms = 6;
         protected int LoadedIndex = -1;
         protected int SelectedIndex = -1;
+
+        public readonly Interaction CanonShippingBinPoint = new Interaction(71, 13);
 
         //////////////////
         /// Properties ///
@@ -82,10 +86,14 @@ namespace MTN2.Management {
             }
         }
 
-        ////////////////////
+        public Interaction MailBox {
+            get {
+                return LoadedFarm.MailBox.PointOfInteraction;
+            }
+        }
+
         ////////////////////
         /// Constructors ///
-        ////////////////////
         ////////////////////
         
         /// <summary>
@@ -96,9 +104,7 @@ namespace MTN2.Management {
         }
 
         ///////////////
-        ///////////////
         /// Methods ///
-        ///////////////
         ///////////////
 
         /// <summary>
@@ -230,6 +236,16 @@ namespace MTN2.Management {
             farm.PetWaterBowl = farm.PetWaterBowl ?? new Structure(new Placement(), new Interaction(54, 7));
         }
 
+        public int ShippingBinX(bool Canon) {
+            if (Canon) return CanonShippingBinPoint.X;
+            return ShippingBin.X;
+        }
+
+        public int ShippingBinY(bool Canon) {
+            if (Canon) return CanonShippingBinPoint.Y;
+            return ShippingBin.Y;
+        }
+
         /// <summary>
         /// Updates the selected farm. Used during the creation of a new game.
         /// </summary>
@@ -284,6 +300,21 @@ namespace MTN2.Management {
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public bool Load(MtnFarmData data) {
+            string farmName = data.FarmTypeName;
+            int index = FarmList.FindIndex(n => n.Name == farmName);
+
+            if (index < 0) return true;
+
+            LoadedIndex = index;
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void Clean() {
             FarmList = new List<CustomFarm>();
             Reset();
@@ -300,10 +331,10 @@ namespace MTN2.Management {
         /// <param name="map"></param>
         /// <returns></returns>
         public string GetAssetKey(out Map map) {
-            if (!(LoadedFarm.FarmMap.FileType == FileType.xnb)) {
-                map = LoadedFarm.ContentPack.LoadAsset<Map>(LoadedFarm.FarmMap.FileName + ".tbin");
+            if (LoadedFarm.FarmMap.FileType == FileType.xnb) {
+                map = LoadedFarm.ContentPack.LoadAsset<Map>(LoadedFarm.FarmMap.FileName + ".xnb");
             } else {
-                map = null;
+                map = LoadedFarm.ContentPack.LoadAsset<Map>(LoadedFarm.FarmMap.FileName + ".tbin");
             }
             return LoadedFarm.ContentPack.GetActualAssetKey(LoadedFarm.FarmMap.FileName + ((!(LoadedFarm.FarmMap.FileType == FileType.xnb)) ? ".tbin" : ".xnb"));
         }
@@ -330,6 +361,18 @@ namespace MTN2.Management {
             return new Vector2(POI.X * 64f, POI.Y * 64f);
         }
 
+        public Point GetMailbox(Farmer farmer)
+        {
+            foreach (Building building in Game1.getFarm().buildings)
+            {
+                if (building.isCabin && building.nameOfIndoors == farmer.homeLocation)
+                {
+                    return building.getMailboxPosition();
+                }
+            }
+            return this.MailBox.ToPoint();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -339,7 +382,7 @@ namespace MTN2.Management {
         /// <param name="Canon"></param>
         /// <returns></returns>
         public Vector2 MailboxNotification(float xOffset, float yOffset, bool Option, bool Canon) {
-            Point mailbox_position = Game1.player.getMailboxPosition();
+            Point mailbox_position = (Canon) ? Game1.player.getMailboxPosition() : LoadedFarm.MailBox.PointOfInteraction.ToPoint();
             return new Vector2(mailbox_position.X * 64f + xOffset, (mailbox_position.Y * 64 - 96 - 48) + yOffset);
 
             //if (Canon || LoadedFarm.MailBox == null) {

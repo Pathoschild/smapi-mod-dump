@@ -5,9 +5,9 @@ mods:
    Three Heart Flower Festival Dance Partners
 
 latest commit:
-   commit 28fa0a5e5e96696e7a4f9b52d51f1dff57aae6f3
+   commit d335f72f4d757433815e164d8c8480397d445a30
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:29:07 2019 -0500
+   Date:   Mon Nov 25 17:59:13 2019 -0500
    
-       Update version
+       1.0.5 - SDV 1.4
    

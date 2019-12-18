@@ -18,8 +18,9 @@ namespace FarmTypeManager
         {
             /// <summary>Generate an array of index numbers for large objects (a.k.a. resource clumps) based on an array of names. Duplicates are allowed; invalid entries are discarded.</summary>
             /// <param name="names">A list of names representing large objects (e.g. "Stump", "boulders").</param>
+            /// /// <param name="areaID">The UniqueAreaID of the related SpawnArea. Required for log messages.</param>
             /// <returns>An array of index numbers for large object spawning purposes.</returns>
-            public static List<int> GetLargeObjectIDs(string[] names)
+            public static List<int> GetLargeObjectIDs(string[] names, string areaID = "")
             {
                 List<int> IDs = new List<int>(); //a list of index numbers to be returned
 
@@ -28,21 +29,6 @@ namespace FarmTypeManager
                     //for each valid name, add the game's internal ID for that large object (a.k.a. resource clump)
                     switch (name.ToLower())
                     {
-                        case "cauliflower":
-                        case "giantcauliflower":
-                        case "giant cauliflower":
-                            IDs.Add(190);
-                            break;
-                        case "melon":
-                        case "giantmelon":
-                        case "giant melon":
-                            IDs.Add(254);
-                            break;
-                        case "pumpkin":
-                        case "giantpumpkin":
-                        case "giant pumpkin":
-                            IDs.Add(276);
-                            break;
                         case "stump":
                         case "stumps":
                             IDs.Add(600);
@@ -77,11 +63,32 @@ namespace FarmTypeManager
                         case "mine rock 4":
                             IDs.Add(758);
                             break;
+                        case "cauliflower":
+                        case "giantcauliflower":
+                        case "giant cauliflower":
+                            IDs.Add(190);
+                            break;
+                        case "melon":
+                        case "giantmelon":
+                        case "giant melon":
+                            IDs.Add(254);
+                            break;
+                        case "pumpkin":
+                        case "giantpumpkin":
+                        case "giant pumpkin":
+                            IDs.Add(276);
+                            break;
                         default: //"name" isn't recognized as any existing object names
                             int parsed;
                             if (int.TryParse(name, out parsed)) //if the string seems to be a valid integer, save it to "parsed" and add it to the list
                             {
                                 IDs.Add(parsed);
+                            }
+                            else
+                            {
+                                Monitor.Log($"An area's large object list contains a name that did not match any objects.", LogLevel.Info);
+                                Monitor.Log($"Affected spawn area: \"{areaID}\"", LogLevel.Info);
+                                Monitor.Log($"Object name: \"{name}\"", LogLevel.Info);
                             }
                             break;
                     }

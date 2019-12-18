@@ -119,7 +119,7 @@
   "weather-tv.tempHazard.cold": "There are {{time}} frost conditions over the region.",
   "weather-tv.tempHazard.cold.spring": "late",
   "weather-tv.tempHazard.cold.fall": "early",
-  "weather-tv.rainfallRate": "Reported rainfall rate is {{rate}}.",
+  "weather-tv.rainfallRate": " Reported rainfall rate is {{rate}} mm/hr.",
   "weather-tv.tmrw.systemMaint": "Tomorrow, we can expect the {{desc}} to persist into tomorrow. The",
   "weather-tv.tmrw.systemEnding": "Tomorrow, we can expect changing weather as the {{desc}} moves on from our region {{direction}}. The",
   "weather-tv.tmrw.systemNone": "Tomorrow, the",

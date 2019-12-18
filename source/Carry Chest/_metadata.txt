@@ -5,9 +5,9 @@ mods:
    Carry Chest
 
 latest commit:
-   commit f40f59f5e192ec3fa92f28add736d798f63b0754
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:19:47 2019 -0500
+   commit 44eaea9000fc2c4020c3330c037957ff879f1319
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Sat Dec 7 18:04:31 2019 -0500
    
-       Update version
+       Forgot to include these
    

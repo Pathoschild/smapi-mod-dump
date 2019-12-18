@@ -42,7 +42,7 @@ namespace MTN2.Patches.FarmPatches
         public static void Postfix(Farm __instance) {
             if (!customManager.Canon) {
                 if (customManager.LoadedFarm == null) {
-                    customManager.LoadCustomFarm(Game1.whichFarm);
+                    customManager.LoadCustomFarmByMtnData();
                 }
                 Rectangle newOpenArea = new Rectangle((customManager.ShippingBin.X - 1) * 64, customManager.ShippingBin.Y * 64, 256, 192);
                 Traverse.Create(__instance).Field("shippingBinLidOpenArea").SetValue(newOpenArea);

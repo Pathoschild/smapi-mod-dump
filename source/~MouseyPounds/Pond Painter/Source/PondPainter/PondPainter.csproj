@@ -51,9 +51,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ColorMinePortable, Version=1.0.6318.32115, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ColorMinePortable.1.0.1\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\ColorMinePortable.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -70,6 +67,7 @@
     <Compile Include="PondPainterEntry.cs" />
     <Compile Include="PondPainterPackData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleColor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />

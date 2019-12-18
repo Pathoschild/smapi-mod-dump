@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
 using Pong.Framework.Common;
 using Pong.Framework.Enums;
 using Pong.Framework.Game;
@@ -13,6 +10,9 @@ using Pong.Game.Controllers;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 using IDrawable = Pong.Framework.Common.IDrawable;
 
 namespace Pong.Menus
@@ -43,7 +43,6 @@ namespace Pong.Menus
 
         public GameMenu(long? enemyPlayer = null)
         {
-
             this.isMultiplayerGame = enemyPlayer.HasValue;
             if (this.isMultiplayerGame)
                 this.enemyPlayerId = enemyPlayer.Value;
@@ -165,7 +164,6 @@ namespace Pong.Menus
 
                 //if ((int)((diff * 60) / 1000) > 0)
                 //    ModEntry.Instance.Monitor.Log($"Follower updated {(int)((diff * 60) / 1000)} times");
-
             }
             else if (e.Type == typeof(PositionState).Name && this.isLeader)
             {
@@ -173,7 +171,6 @@ namespace Pong.Menus
                 newState.Invert();
                 this.followerPaddlePosition.SetState(newState);
             }
-
         }
 
         private static double GetTimestamp()
@@ -202,6 +199,7 @@ namespace Pong.Menus
             {
                 case SButton.P:
                     return this.TogglePaused();
+
                 case SButton.Escape:
                     this.OnSwitchToNewMenu(new StartMenu());
                     return true;
@@ -237,7 +235,8 @@ namespace Pong.Menus
                                 this.scoreDisplay.UpdateScore(wall.Side == Side.Top);
                                 this.Reset(false);
                                 this.Start();
-                                this.ForceSyncGameState();
+                                if(this.isMultiplayerGame)
+                                    this.ForceSyncGameState();
                                 return;
                             }
                             else
@@ -263,7 +262,7 @@ namespace Pong.Menus
                 this.ball.Update();
                 this.scoreDisplay.Update();
 
-                if(this.state.BallCollidedLastFrame)
+                if (this.state.BallCollidedLastFrame)
                     this.ForceSyncGameState();
             }
             else if (this.state.Starting)
@@ -302,7 +301,6 @@ namespace Pong.Menus
                 () => !this.state.Starting);
         }
 
-
         private void Reset(bool resetScore)
         {
             if (this.state.Starting)
@@ -318,8 +316,8 @@ namespace Pong.Menus
             // This is bad
             if (!resetScore)
             {
-                this.state.ScoreState.PlayerTwoScore = one;
-                this.state.ScoreState.PlayerOneScore = two;
+                this.state.ScoreState.PlayerOneScore = one;
+                this.state.ScoreState.PlayerTwoScore = two;
             }
 
             foreach (IResetable resetable in this.resetables)

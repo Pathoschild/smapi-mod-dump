@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Harmony;
 using Microsoft.Xna.Framework;
 using Netcode;
 using StardewValley;
@@ -30,6 +31,7 @@ namespace CustomCrystalariumMod
             return true;
         }
 
+        [HarmonyPriority(500)]
         public static bool PerformObjectDropInAction(ref Object __instance, ref Item dropInItem, ref bool probe, ref Farmer who, ref bool __result)
         {
             if (dropInItem is Object object1)
@@ -95,6 +97,7 @@ namespace CustomCrystalariumMod
             return true;
         }
 
+        [HarmonyPriority(500)]
         public static bool PerformRemoveAction(ref Object __instance, ref Vector2 tileLocation)
         {
             if (__instance.Name == "Crystalarium")

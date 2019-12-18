@@ -1,0 +1,14 @@
+url:
+   https://github.com/razikh-git/BlueberryMushroomMachine.git
+
+mods:
+   Mushroom Propagator - Grow More Mushrooms
+
+latest commit:
+   commit 90f071699cdd9cff8f95c0b2fbde48aeeeb7e7d0
+   Author: razikh-git <pocketsathome@gmail.com>
+   Date:   Sun Dec 8 19:58:48 2019 +1100
+   
+       QOL rewrites:
+       Mod instance reference to classes, logging class, Harmony safety
+   

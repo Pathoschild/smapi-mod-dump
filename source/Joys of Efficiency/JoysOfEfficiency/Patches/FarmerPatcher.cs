@@ -1,29 +1,33 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using JoysOfEfficiency.Utils;
 using StardewValley;
 using StardewValley.Objects;
+using SVObject = StardewValley.Object;
 
 namespace JoysOfEfficiency.Patches
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Local")]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "RedundantAssignment")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     internal class FarmerPatcher
     {
-        [SuppressMessage("ReSharper", "InconsistentNaming")]
-        [SuppressMessage("ReSharper", "RedundantAssignment")]
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        internal static bool Prefix(ref bool __result, ref int itemIndex, ref int quantity)
+        internal static bool Prefix(ref int __result, ref int item_index)
         {
-            __result = CountOfItem(itemIndex) >= quantity;
+            __result = CountOfItem(item_index);
             return false;
         }
 
         private static int CountOfItem(int index)
         {
             return Util.GetNearbyItems(Game1.player)
-                .Where(item => item is Object obj &&
-                                !(obj is Furniture) && 
-                                (item.ParentSheetIndex == index || item.Category == index))
+                .Where(item => item is SVObject obj &&
+                               !(obj is Furniture) &&
+                               (item.ParentSheetIndex == index || item.Category == index)
+                               )
                 .Sum(item => item.Stack);
         }
     }

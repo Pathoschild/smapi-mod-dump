@@ -476,11 +476,23 @@ namespace FarmTypeManager
                         {
                             if (rawList == null) //if a null list was provided
                             {
-                                validTypes[x].Settings["Loot"] = new List<int>(); //use an empty list of IDs
+                                validTypes[x].Settings["Loot"] = new List<SavedObject>(); //use an empty list
                             }
                             else //if an actual list was provided
                             {
-                                validTypes[x].Settings["Loot"] = GetIDsFromObjects(rawList, areaID); //parse the list into valid IDs
+                                List<SavedObject> lootList = ParseSavedObjectsFromItemList(rawList, areaID); //parse the object list into a SavedObject list
+
+                                foreach (SavedObject loot in lootList)
+                                {
+                                    //convert any "object" categories to "item" for the loot list
+                                    string category = loot.ConfigItem?.Category?.ToLower();
+                                    if (category == "object" || category == "objects")
+                                    {
+                                        loot.ConfigItem.Category = "item";
+                                    }
+                                }
+
+                                validTypes[x].Settings["Loot"] = lootList;
                             }
                         }
                     }

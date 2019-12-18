@@ -37,11 +37,11 @@ namespace FishDex.Components
 		/// <summary>Whether to show all the fishes.</summary>
 		private readonly bool ShowAll;
 
-		/// <summary>The clickable 'scroll up' icon.</summary>
-		private readonly ClickableTextureComponent ScrollUpButton;
+		/// <summary>The clickable 'scroll to top' icon.</summary>
+		private readonly ClickableTextureComponent ScrollToTopButton;
 
-		/// <summary>The clickable 'scroll down' icon.</summary>
-		private readonly ClickableTextureComponent ScrollDownButton;
+		/// <summary>The clickable 'scroll to bottom' icon.</summary>
+		private readonly ClickableTextureComponent ScrollToBottomButton;
 
 		/// <summary>The spacing around the scroll buttons.</summary>
 		private readonly int ScrollButtonGutter = 15;
@@ -72,15 +72,15 @@ namespace FishDex.Components
 		public FishMenu(DataParser parser, IMonitor monitor, IReflectionHelper reflectionHelper, int scroll, bool showAll)
 		{
 			// save data
-			this.Fishes = parser.GetFishData();
+			this.Fishes = parser.GetFishData().OrderBy(s => s.Name);
 			this.Monitor = monitor;
 			this.Reflection = reflectionHelper;
 			this.ScrollAmount = scroll;
 			this.ShowAll = showAll;
 
 			// add scroll buttons
-			this.ScrollUpButton = new ClickableTextureComponent(Rectangle.Empty, Sprites.Icons.Sheet, Sprites.Icons.UpArrow, 1);
-			this.ScrollDownButton = new ClickableTextureComponent(Rectangle.Empty, Sprites.Icons.Sheet, Sprites.Icons.DownArrow, 1);
+			this.ScrollToTopButton = new ClickableTextureComponent(Rectangle.Empty, Sprites.Icons.Sheet, Sprites.Icons.UpArrow, 1);
+			this.ScrollToBottomButton = new ClickableTextureComponent(Rectangle.Empty, Sprites.Icons.Sheet, Sprites.Icons.DownArrow, 1);
 
 			// update layout
 			this.UpdateLayout();
@@ -176,10 +176,20 @@ namespace FishDex.Components
 				this.exitThisMenu();
 
 			// scroll up or down
-			else if (this.ScrollUpButton.containsPoint(x, y))
-				this.ScrollUp();
-			else if (this.ScrollDownButton.containsPoint(x, y))
-				this.ScrollDown();
+			else if (this.ScrollToTopButton.containsPoint(x, y))
+				this.ScrollToTop();
+			else if (this.ScrollToBottomButton.containsPoint(x, y))
+				this.ScrollToBottom();
+		}
+
+		private void ScrollToBottom()
+		{
+			this.CurrentScroll = int.MaxValue;
+		}
+
+		private void ScrollToTop()
+		{
+			this.CurrentScroll = 0;
 		}
 
 		public override void performHoverAction(int x, int y)
@@ -246,26 +256,40 @@ namespace FishDex.Components
 						this.CurrentScroll = Math.Min(this.MaxScroll, this.CurrentScroll); // don't scroll past bottom
 						topOffset -= this.CurrentScroll; // scrolled down == move text up
 
-						leftOffset += 72;
+						leftOffset += 36;
 						float wrapWidth = this.width - leftOffset - gutter;
 
+						float caughtTextSize = 0;
+						topOffset += lineHeight;
 						{
-							int caught = 0;
-							foreach (var fish in this.Fishes)
+							Vector2 caughtLabelSize = contentBatch.DrawTextBlock(font, $"Caught : ", new Vector2(x + leftOffset, y + topOffset), wrapWidth);
+							Vector2 caughtValueSize = contentBatch.DrawTextBlock(font, $"{this.Fishes.Count(fish => fish.Caught)}/{this.Fishes.Count()}", new Vector2(x + leftOffset + caughtLabelSize.X, y + topOffset), wrapWidth, bold: Game1.content.GetCurrentLanguage() != LocalizedContentManager.LanguageCode.zh);
+							caughtTextSize = caughtLabelSize.X + caughtValueSize.X;
+						}
+
+						{
+							int caught = 0, total = 0;
+
+							foreach(var fish in this.Fishes)
 							{
-								if (fish.Caught)
-									caught++;
+								if ((fish.Id == 159 || fish.Id == 160 || fish.Id == 163 || fish.Id == 775 || fish.Id == 682))
+								{
+									if (fish.Caught)
+										caught++;
+									total++;
+								}
 							}
 
-							Vector2 caughtLabelSize = contentBatch.DrawTextBlock(font, $"Caught : ", new Vector2(x + leftOffset, y + topOffset), wrapWidth);
-							Vector2 caughtValueSize = contentBatch.DrawTextBlock(font, $"{caught}/{this.Fishes.Count()}", new Vector2(x + leftOffset + caughtLabelSize.X, y + topOffset), wrapWidth, bold: Game1.content.GetCurrentLanguage() != LocalizedContentManager.LanguageCode.zh);
+							Vector2 legendariesCaughtLabelSize = contentBatch.DrawTextBlock(font, $"Legendaries : ", new Vector2(x + leftOffset, y + topOffset + lineHeight), wrapWidth);
+							Vector2 legendariesCaughtValueSize = contentBatch.DrawTextBlock(font, $"{caught}/{total}", new Vector2(x + leftOffset + legendariesCaughtLabelSize.X, y + topOffset + lineHeight), wrapWidth, bold: Game1.content.GetCurrentLanguage() != LocalizedContentManager.LanguageCode.zh);
+							caughtTextSize = legendariesCaughtLabelSize.X + legendariesCaughtValueSize.X;
 							topOffset += lineHeight;
 						}
 
 						{
-							Vector2 catchableLabelSize = contentBatch.DrawTextBlock(font, $"Catchable now : ", new Vector2(x + leftOffset, y + topOffset), wrapWidth);
+							Vector2 catchableLabelSize = contentBatch.DrawTextBlock(font, $"Catchable now : ", new Vector2(x + leftOffset + caughtTextSize + leftOffset, y + topOffset - lineHeight), wrapWidth);
 
-							float rowWidth = wrapWidth - catchableLabelSize.X;
+							float rowWidth = wrapWidth - catchableLabelSize.X - caughtTextSize - leftOffset;
 							int fishPerRow = (int) (rowWidth / ((Game1.tileSize / 2) + 8));
 
 							float innerOffset = (Game1.tileSize / 2 ) + 8;
@@ -275,8 +299,8 @@ namespace FishDex.Components
 
 							foreach (var fish in GetFishesCurrentlyCatchable())
 							{
-								int xPos = (int) (x + leftOffset + catchableLabelSize.X + (innerOffset * count));
-								int yPos = (int) (y + topOffset + innerTopOffset);
+								int xPos = (int) (x + leftOffset + caughtTextSize + leftOffset + catchableLabelSize.X + (innerOffset * count));
+								int yPos = (int) (y + topOffset - lineHeight + innerTopOffset);
 								ClickableTextureComponent textureComponent = new ClickableTextureComponent(fish.Name + "*" + fish.GetTod() + "*" + fish.GetLocation(), new Rectangle(xPos, yPos, Game1.tileSize/2, Game1.tileSize/2), (string)null, "", Game1.objectSpriteSheet, Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, fish.Id, 16, 16), 2f, true);
 								this.ClickableFishTextures.Add(textureComponent);
 								textureComponent.draw(contentBatch, Color.White, 0.86f);
@@ -291,19 +315,21 @@ namespace FishDex.Components
 							topOffset += innerTopOffset + (lineHeight * 2);
 						}
 
+						float column1RowHeight = 0, column2Offset = 0, rowOffset = topOffset;
+
 						// draw fish info
 						foreach (FishInfo fish in this.Fishes)
 						{
 							// draw sprite
 							{
 								Item item = new SObject(fish.Id, 1);
-								item.drawInMenu(contentBatch, new Vector2(x + leftOffset, y + topOffset), 1f, 1f, 1f, false, this.ShowAll || fish.Caught ? Color.White : Color.Black * 0.2f, false);
+								item.drawInMenu(contentBatch, new Vector2(x + leftOffset + column2Offset, y + topOffset), 1f, 1f, 1f, StackDrawType.Hide, this.ShowAll || fish.Caught ? Color.White : Color.Black * 0.2f, false);
 								topOffset += Game1.tileSize / 2 + spaceWidth;
 							}
 
 							// draw name
 							{
-								Vector2 nameSize = contentBatch.DrawTextBlock(font, $"{(this.ShowAll || fish.Caught ? fish.Name : "???")}", new Vector2(x + leftOffset + Game1.tileSize + spaceWidth, y + topOffset), wrapWidth, bold: Game1.content.GetCurrentLanguage() != LocalizedContentManager.LanguageCode.zh);
+								Vector2 nameSize = contentBatch.DrawTextBlock(font, $"{(this.ShowAll || fish.Caught ? fish.Name : "???")}", new Vector2(x + leftOffset + column2Offset + Game1.tileSize + spaceWidth, y + topOffset), wrapWidth, bold: Game1.content.GetCurrentLanguage() != LocalizedContentManager.LanguageCode.zh);
 								topOffset += Game1.tileSize / 2 + spaceWidth;
 							}
 
@@ -312,28 +338,44 @@ namespace FishDex.Components
 							{
 								float cellPadding = 3;
 								float labelWidth = fish.Data.Keys.Max(p => font.MeasureString(p).X);
-								float valueWidth = wrapWidth - labelWidth - cellPadding * 4 - tableBorderWidth;
+								float valueWidth = wrapWidth / 2.2F - labelWidth - cellPadding * 4 - tableBorderWidth;
 
 								// draw label & value
-								Vector2 labelSize = contentBatch.DrawTextBlock(font, key, new Vector2(x + leftOffset + cellPadding, y + topOffset + cellPadding), wrapWidth);
-								Vector2 valuePosition = new Vector2(x + leftOffset + labelWidth + cellPadding * 3, y + topOffset + cellPadding);
+								Vector2 labelSize = contentBatch.DrawTextBlock(font, key, new Vector2(x + leftOffset + cellPadding + column2Offset, y + topOffset + cellPadding), wrapWidth);
+								Vector2 valuePosition = new Vector2(x + leftOffset + labelWidth + cellPadding * 3 + column2Offset, y + topOffset + cellPadding);
 								Vector2 valueSize = contentBatch.DrawTextBlock(font, this.ShowAll || fish.Caught ? fish.Data[key] : "???", valuePosition, valueWidth);
 								Vector2 rowSize = new Vector2(labelWidth + valueWidth + cellPadding * 4, Math.Max(labelSize.Y, valueSize.Y));
 
 								// draw table row
 								Color lineColor = Color.Gray;
-								contentBatch.DrawLine(x + leftOffset, y + topOffset, new Vector2(rowSize.X, tableBorderWidth), lineColor); // top
-								contentBatch.DrawLine(x + leftOffset, y + topOffset + rowSize.Y, new Vector2(rowSize.X, tableBorderWidth), lineColor); // bottom
-								contentBatch.DrawLine(x + leftOffset, y + topOffset, new Vector2(tableBorderWidth, rowSize.Y), lineColor); // left
-								contentBatch.DrawLine(x + leftOffset + labelWidth + cellPadding * 2, y + topOffset, new Vector2(tableBorderWidth, rowSize.Y), lineColor); // middle
-								contentBatch.DrawLine(x + leftOffset + rowSize.X, y + topOffset, new Vector2(tableBorderWidth, rowSize.Y), lineColor); // right
+								contentBatch.DrawLine(x + leftOffset + column2Offset, y + topOffset, new Vector2(rowSize.X, tableBorderWidth), lineColor); // top
+								contentBatch.DrawLine(x + leftOffset + column2Offset, y + topOffset + rowSize.Y, new Vector2(rowSize.X, tableBorderWidth), lineColor); // bottom
+								contentBatch.DrawLine(x + leftOffset + column2Offset, y + topOffset, new Vector2(tableBorderWidth, rowSize.Y), lineColor); // left
+								contentBatch.DrawLine(x + leftOffset + column2Offset + labelWidth + cellPadding * 2, y + topOffset, new Vector2(tableBorderWidth, rowSize.Y), lineColor); // middle
+								contentBatch.DrawLine(x + leftOffset + column2Offset + rowSize.X, y + topOffset, new Vector2(tableBorderWidth, rowSize.Y), lineColor); // right
 
 								// update offset
 								topOffset += Math.Max(labelSize.Y, valueSize.Y);
 							}
 
-							// draw spacer
-							topOffset += lineHeight;
+							if (column2Offset == 0)
+							{
+								column2Offset += (wrapWidth / 2.2F - tableBorderWidth) + leftOffset / 2;
+								column1RowHeight = topOffset + lineHeight;
+								topOffset = rowOffset; // Reset topOffset
+							}
+							else
+							{
+								column2Offset = 0;
+
+								// draw spacer
+								topOffset += lineHeight;
+
+								// Take max of column1 and column2 heights
+								rowOffset = Math.Max(column1RowHeight, topOffset);
+								// Move to next row
+								topOffset = rowOffset;
+							}
 						}
 
 						// update max scroll
@@ -341,9 +383,9 @@ namespace FishDex.Components
 
 						// draw scroll icons
 						if (this.MaxScroll > 0 && this.CurrentScroll > 0)
-							this.ScrollUpButton.draw(contentBatch);
+							this.ScrollToTopButton.draw(spriteBatch);
 						if (this.MaxScroll > 0 && this.CurrentScroll < this.MaxScroll)
-							this.ScrollDownButton.draw(spriteBatch);
+							this.ScrollToBottomButton.draw(spriteBatch);
 
 						// end draw
 						contentBatch.End();
@@ -380,6 +422,11 @@ namespace FishDex.Components
 			{
 				if (fish.Caught || this.ShowAll)
 				{
+					// Exclude legendaries if already caught
+					if (fish.Caught && (fish.Id == 159 || fish.Id == 160 || fish.Id == 163 || 
+						fish.Id == 775 || fish.Id == 682))
+						continue;
+
 					String[] seasons = fish.GetSeason().Split(delimiter, StringSplitOptions.None);
 					if (!seasons.Contains(season) || !fish.GetWeather().Contains(weather))
 						continue;
@@ -424,8 +471,8 @@ namespace FishDex.Components
 			int y = this.yPositionOnScreen;
 			int gutter = this.ScrollButtonGutter;
 			float contentHeight = this.height - gutter * 2;
-			this.ScrollUpButton.bounds = new Rectangle(x + gutter, (int)(y + contentHeight - Sprites.Icons.UpArrow.Height - gutter - Sprites.Icons.DownArrow.Height), Sprites.Icons.UpArrow.Height, Sprites.Icons.UpArrow.Width);
-			this.ScrollDownButton.bounds = new Rectangle(x + gutter, (int)(y + contentHeight - Sprites.Icons.DownArrow.Height), Sprites.Icons.DownArrow.Height, Sprites.Icons.DownArrow.Width);
+			this.ScrollToTopButton.bounds = new Rectangle(x + width - (gutter * 4), (int)(y + contentHeight - Sprites.Icons.UpArrow.Height - gutter - Sprites.Icons.DownArrow.Height), Sprites.Icons.UpArrow.Height, Sprites.Icons.UpArrow.Width);
+			this.ScrollToBottomButton.bounds = new Rectangle(x + width - (gutter * 4), (int)(y + contentHeight - Sprites.Icons.DownArrow.Height), Sprites.Icons.DownArrow.Height, Sprites.Icons.DownArrow.Width);
 		}
 
 		/// <summary>The method invoked when an unhandled exception is intercepted.</summary>

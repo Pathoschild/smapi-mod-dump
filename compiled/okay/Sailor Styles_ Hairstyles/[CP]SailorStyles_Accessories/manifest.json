@@ -1,0 +1,15 @@
+{
+	"Name": "Sailor Styles: Accessories",
+	"Author": "blueberry",
+	"Version": "2.1",
+	"Description": "CURRENTLY DISABLED. Pending compatibility for SDV1.4.",
+	"UniqueID": "blueberry.SailorStylesAccessories",
+	"MinimumApiVersion": "2.5",
+	"ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher",
+	},
+	"Dependencies": [{
+			"UniqueID": "Kabigon.kisekae", "IsRequired": false
+	}],
+	"UpdateKeys": ["Nexus:4154"]
+}

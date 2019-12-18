@@ -21,7 +21,7 @@ namespace FarmTypeManager
             /// <param name="index">The parent sheet index (a.k.a. object ID) of the object type to spawn.</param>
             /// <param name="location">The GameLocation where the large object should be spawned.</param>
             /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
-            public static void SpawnLargeObject(int index, GameLocation location, Vector2 tile)
+            public static bool SpawnLargeObject(int index, GameLocation location, Vector2 tile)
             {
                 Monitor.VerboseLog($"Spawning large object. ID: {index}. Location: {tile.X},{tile.Y} ({location.Name}).");
 
@@ -47,6 +47,8 @@ namespace FarmTypeManager
                 {
                     location.largeTerrainFeatures.Add(new LargeResourceClump(clump)); //spawn a wrapped version of the specified resource clump
                 }
+
+                return true;
             }
         }
     }

@@ -1,0 +1,1 @@
+This repository contains mods for Stardew Valley.

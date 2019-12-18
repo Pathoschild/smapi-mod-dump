@@ -51,7 +51,7 @@ namespace SeedCatalogue
 
         private void openSeedCatalogue( bool cheat = false )
         {
-            List<Item> items = new List<Item>();
+            List<ISalable> items = new List<ISalable>();
             var cropData = Helper.Content.Load<Dictionary<int, string>>("Data\\Crops", ContentSource.GameContent);
 
             foreach ( var crop in cropData )

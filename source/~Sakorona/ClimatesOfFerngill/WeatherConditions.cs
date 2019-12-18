@@ -1273,7 +1273,7 @@ namespace ClimatesOfFerngillRebuild
 
         internal static bool PreventGoingOutside(int AmtOfRainDrops)
         {
-            if ((WeatherUtilities.GetCategory(AmtOfRainDrops) == RainLevels.NoahsFlood) || (WeatherUtilities.GetCategory(AmtOfRainDrops) == RainLevels.Typhoon))
+            if ((WeatherUtilities.GetRainCategory(AmtOfRainDrops) == RainLevels.NoahsFlood) || (WeatherUtilities.GetRainCategory(AmtOfRainDrops) == RainLevels.Typhoon))
                     return true;
 
             return false;

@@ -5,9 +5,9 @@ mods:
    Map Image Export
 
 latest commit:
-   commit f08ff3cd917e18cf7b2a767365a943948a46181e
+   commit b5f31d54204ebfad1d5efc2d5b1b678963b22fb9
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:24:49 2019 -0500
+   Date:   Mon Nov 25 17:39:00 2019 -0500
    
-       Update version
+       1.0.7 - SDV 1.4
    

@@ -1,6 +1,9 @@
 {
-  "CycleActiveDisplayKey": "f2",
+  "CycleActiveDisplayKey": "F2",
   "ShowRangeOfHeldItem": true,
   "ShowRangeOfHoveredOverItem": true,
-  "HoverModifierKey": "leftcontrol"
+  "HoverModifierKeys": [
+    "LeftControl",
+    "RightControl"
+  ]
 }

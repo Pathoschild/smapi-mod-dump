@@ -1,5 +1,4 @@
-﻿using Harmony;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Network;
@@ -10,8 +9,6 @@ namespace ChildToNPC.Patches
      * This code is directly translated from the original method
      * because the original method would immediately kick out non-married NPCs.
      */
-    [HarmonyPatch(typeof(NPC))]
-    [HarmonyPatch("arriveAtFarmHouse")]
     class NPCArriveAtFarmHousePatch
     {
         public static void Postfix(NPC __instance, FarmHouse farmHouse)

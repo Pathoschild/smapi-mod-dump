@@ -16,12 +16,12 @@ namespace FarmTypeManager
         private void DayStarted(object sender, EventArgs e)
         {
             //attempt to load the config.json ModConfig file and update its settings
-            //note: this already happens in the Entry method, but doing it here allows certain settings to be changed while the game is running
-            Utility.LoadModConfig(Helper);
+            //note: this already happens in the Entry method, but doing it here allows settings to be changed while the game is running
+            Utility.LoadModConfig();
 
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything; most of this mod's functions should be limited to the host player
 
-            Utility.LoadFarmData(Helper); //load all available data files
+            Utility.LoadFarmData(); //load all available data files
 
             Monitor.Log($"Checking for saved objects that went missing overnight...", LogLevel.Trace);
             foreach (FarmData data in Utility.FarmDataList) //for each loaded set of data
@@ -38,7 +38,9 @@ namespace FarmTypeManager
                 Utility.ReplaceProtectedSpawnsOvernight(data.Save); //protect unexpired spawns listed in the save data
             }
 
-            Utility.TimedSpawns.Clear(); //clear any existing spawn data
+            //clear any leftover data from previous days/saves/etc
+            Utility.TimedSpawns.Clear(); 
+            Utility.MonsterTracker.Clear();
 
             //run each generation process to fill the TimedSpawns list for today
             Generation.ForageGeneration();

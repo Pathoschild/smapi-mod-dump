@@ -1,0 +1,523 @@
+{
+  "Description": {
+    "en": "The mod loader for Stardew Valley",
+    "zh": "Stardew Valley的mod loader",
+    "fr": "Le chargeur de mod pour Stardew Valley",
+    "de": "Der Mod Loader für Stardew Valley",
+    "hu": "A mod rakodógép a Stardew Valley számára",
+    "it": "Il caricatore di mod per Stardew Valley",
+    "ja": "Stardew Valley用のMODローダー",
+    "ko": "Stardew Valley의 모드 로더",
+    "pt": "O mod loader para Stardew Valley",
+    "ru": "Мод загрузчик для Stardew Valley",
+    "es": "El mod loader para Stardew Valley",
+    "tr": "Stardew Valley için mod yükleyici",
+    "th": "โหลดเดอร์ mod สำหรับ Stardew Valley"
+  },
+  "Config": [
+    {
+      "Name": "VerboseLogging",
+      "Description": {
+        "en": "Whether SMAPI should log more information about the game context.",
+        "zh": "SMAPI是否應記錄有關遊戲上下文的更多信息。",
+        "fr": "Si SMAPI doit enregistrer plus d'informations sur le contexte du jeu.",
+        "de": "Gibt an, ob SMAPI weitere Informationen zum Spielkontext protokollieren soll.",
+        "hu": "Annak eldöntése, hogy az SMAPI-nak több információt kell-e naplóznia a játék kontextusáról.",
+        "it": "Se SMAPI deve registrare ulteriori informazioni sul contesto di gioco.",
+        "ja": "SMAPIがゲームコンテキストに関する詳細情報を記録するかどうか。",
+        "ko": "SMAPI가 게임 컨텍스트에 대한 자세한 정보를 기록해야하는지 여부",
+        "pt": "Se o SMAPI deve registrar mais informações sobre o contexto do jogo.",
+        "ru": "Должен ли SMAPI регистрировать больше информации об игровом контексте.",
+        "es": "Si SMAPI debería registrar más información sobre el contexto del juego.",
+        "tr": "SMAPI'nin oyun içeriği hakkında daha fazla bilgi kaydetmesi gerekip gerekmediği.",
+        "th": "SMAPI ควรบันทึกข้อมูลเพิ่มเติมเกี่ยวกับบริบทของเกมหรือไม่"
+      },
+      "Type": "CheckBox",
+      "Label": "Verbose Logging"
+    },
+    {
+      "Name": "CheckForUpdates",
+      "Description": {
+        "en": "Whether SMAPI should check for newer versions of SMAPI and mods when you load the game. If new versions are available, an alert will be shown in the console. This doesn't affect the load time even if your connection is offline or slow, because it happens in the background.",
+        "zh": "加載遊戲時，SMAPI是否應檢查SMAPI和mods的較新版本。 如果有新版本可用，則控制台中將顯示警報。 即使連接處於脫機狀態或速度較慢，這也不會影響加載時間，因為它發生在後台。",
+        "fr": "Si SMAPI doit vérifier les nouvelles versions de SMAPI et les mods lorsque vous chargez le jeu. Si de nouvelles versions sont disponibles, une alerte sera affichée dans la console. Cela n'affecte pas le temps de chargement même si votre connexion est hors ligne ou lente, car cela se produit en arrière-plan.",
+        "de": "Ob SMAPI nach neueren Versionen von SMAPI und Mods suchen soll, wenn Sie das Spiel laden. Wenn neue Versionen verfügbar sind, wird eine Warnung in der Konsole angezeigt. Dies wirkt sich nicht auf die Ladezeit aus, auch wenn Ihre Verbindung offline oder langsam ist, da sie im Hintergrund stattfindet.",
+        "hu": "Annak eldöntése, hogy az SMAPI ellenőrizze-e az SMAPI és a modok újabb verzióit, amikor betölti a játékot. Ha új verziók érhetők el, riasztás jelenik meg a konzolban. Ez nem befolyásolja a betöltési időt akkor is, ha a kapcsolat offline vagy lassú, mert a háttérben történik.",
+        "it": "Se SMAPI deve verificare la presenza di versioni più recenti di SMAPI e mod quando carichi il gioco. Se sono disponibili nuove versioni, verrà visualizzato un avviso nella console. Ciò non influisce sul tempo di caricamento anche se la connessione è offline o lenta, perché avviene in background.",
+        "ja": "ゲームをロードするときにSMAPIがSMAPIおよびmodの新しいバージョンをチェックするかどうか。 新しいバージョンが利用可能な場合、コンソールにアラートが表示されます。 これはバックグラウンドで発生するため、接続がオフラインまたは低速であっても、ロード時間には影響しません。",
+        "ko": "게임을로드 할 때 SMAPI가 최신 버전의 SMAPI 및 모드를 확인해야하는지 여부입니다. 새 버전을 사용할 수있는 경우 콘솔에 경고가 표시됩니다. 연결이 백그라운드에서 발생하기 때문에 오프라인이거나 느리더라도로드 시간에 영향을 미치지 않습니다.",
+        "pt": "Se o SMAPI deve verificar se há versões mais recentes do SMAPI e mods ao carregar o jogo. Se novas versões estiverem disponíveis, um alerta será mostrado no console. Isso não afeta o tempo de carregamento, mesmo que sua conexão esteja offline ou lenta, porque ocorre em segundo plano.",
+        "ru": "Должен ли SMAPI проверять наличие новых версий SMAPI и модов при загрузке игры. Если доступны новые версии, в консоли отобразится предупреждение. Это не влияет на время загрузки, даже если ваше соединение отключено или работает медленно, потому что это происходит в фоновом режиме.",
+        "es": "Si SMAPI debería buscar versiones más recientes de SMAPI y modificaciones cuando cargues el juego. Si hay nuevas versiones disponibles, se mostrará una alerta en la consola. Esto no afecta el tiempo de carga, incluso si su conexión está fuera de línea o lenta, porque sucede en segundo plano.",
+        "tr": "Oyunu yüklediğinizde SMAPI'nin daha yeni SMAPI sürümlerini ve modları kontrol edip etmemesi gerektiği. Yeni sürümler mevcutsa, konsolda bir uyarı gösterilecektir. Bu, bağlantınız çevrimdışı olsa da veya yavaş olsa bile yükleme süresini etkilemez, çünkü arka planda gerçekleşir.",
+        "th": "SMAPI ควรตรวจสอบ SMAPI และ mods รุ่นใหม่กว่าหรือไม่เมื่อคุณโหลดเกม\nหากมีเวอร์ชั่นใหม่การแจ้งเตือนจะปรากฏในคอนโซล\nสิ่งนี้จะไม่มีผลกับความเร็วในการโหลดแม้ว่าการเชื่อมต่อของคุณจะออฟไลน์หรือช้าเพราะมันเกิดขึ้นในพื้นหลัง"
+      },
+      "Type": "CheckBox",
+      "Label": "Check for updates"
+    },
+    {
+      "Name": "DeveloperMode",
+      "Description": {
+        "en": "Whether to enable features intended for mod developers. Currently this only makes TRACE-level messages appear in the console.",
+        "zh": "是否啟用針對Mod開發人員的功能。 當前，這僅使TRACE級別的消息出現在控制台中。",
+        "fr": "Activer ou non les fonctionnalités destinées aux développeurs de mods. Actuellement, cela ne fait apparaître que les messages de niveau TRACE dans la console.",
+        "de": "Gibt an, ob Features für Mod-Entwickler aktiviert werden sollen. Derzeit werden nur Meldungen auf TRACE-Ebene in der Konsole angezeigt.",
+        "hu": "Engedélyezi-e a mod fejlesztőknek szánt funkciókat. Jelenleg csak a TRACE szintű üzenetek jelennek meg a konzolban.",
+        "it": "Se abilitare le funzionalità destinate agli sviluppatori di mod. Attualmente questo fa apparire solo i messaggi a livello di TRACE nella console.",
+        "ja": "mod開発者向けの機能を有効にするかどうか。 現在、これはTRACEレベルのメッセージのみをコンソールに表示します。",
+        "ko": "모드 개발자를위한 기능을 사용할지 여부입니다. 현재 이것은 TRACE 레벨 메시지 만 콘솔에 표시합니다.",
+        "pt": "Se é necessário ativar recursos destinados a desenvolvedores de mods. Atualmente, isso faz apenas as mensagens no nível TRACE aparecerem no console.",
+        "ru": "Нужно ли включать функции, предназначенные для разработчиков модов. В настоящее время это только заставляет сообщения уровня TRACE появляться в консоли.",
+        "es": "Ya sea para habilitar funciones destinadas a desarrolladores de mods. Actualmente, esto solo hace que los mensajes de nivel TRACE aparezcan en la consola.",
+        "tr": "Mod geliştiricileri için tasarlanan özelliklerin etkinleştirilip etkinleştirilmeyeceği. Şu anda bu sadece TRACE seviyesindeki mesajların konsolda görünmesini sağlıyor.",
+        "th": "เปิดใช้งานฟีเจอร์สำหรับนักพัฒนา mod หรือไม่ ปัจจุบันนี้ทำให้ข้อความระดับการสืบค้นกลับปรากฏขึ้นในคอนโซลเท่านั้น"
+      },
+      "Type": "CheckBox",
+      "Label": "Developer Mode"
+    },
+    {
+      "Name": "ParanoidWarnings",
+      "Description": {
+          "en": "Whether to add a section to the 'mod issues' list for mods which directly use potentially sensitive .NET APIs like file or shell access. ",
+        "zh": "是否在直接使用潛在敏感的.NET API（例如文件或外殼程序訪問權限）的mod的“ mod問題”列表中添加部分。",
+        "fr": "Indique s'il faut ajouter une section à la liste des «problèmes de mod» pour les mods qui utilisent directement des API .NET potentiellement sensibles comme l'accès aux fichiers ou au shell.",
+        "de": "Gibt an, ob der Liste \"Mod Issues\" ein Abschnitt für Mods hinzugefügt werden soll, die direkt potenziell sensible .NET-APIs wie Datei- oder Shell-Zugriff verwenden.",
+        "hu": "Be kell-e illeszteni egy szekciót a 'mod Issues' listába azokkal a modellekkel kapcsolatban, amelyek közvetlenül használják potenciálisan érzékeny .NET API-kat, például fájl- vagy shell-hozzáférést.",
+        "it": "Se aggiungere una sezione all'elenco \"Modifiche\" per le mod che utilizzano direttamente API .NET potenzialmente sensibili come l'accesso ai file o alla shell.",
+        "ja": "ファイルまたはシェルアクセスのような潜在的に機密性の高い.NET APIを直接使用するmodの「mod issues」リストにセクションを追加するかどうか。",
+        "ko": "파일 또는 셸 액세스와 같이 잠재적으로 민감한 .NET API를 직접 사용하는 mod에 대한 섹션을 'mod issues'목록에 추가할지 여부",
+        "pt": "Se uma seção será adicionada à lista 'problemas de mod' para mods que usam diretamente APIs .NET potencialmente sensíveis, como acesso a arquivos ou shell.",
+        "ru": "Добавлять ли раздел в список «проблем с модами» для модов, которые напрямую используют потенциально чувствительные API .NET, такие как доступ к файлам или оболочке.",
+        "es": "Ya sea para agregar una sección a la lista de 'problemas de mods' para mods que usan directamente API de .NET potencialmente confidenciales como acceso a archivos o shell.",
+        "tr": "Dosya veya kabuk erişimi gibi potansiyel olarak hassas .NET API'lerini doğrudan kullanan modlar için 'mod sorunları' listesine bir bölüm eklenip eklenmeyeceği.",
+        "th": "ไม่ว่าจะเพิ่มส่วนในรายการ 'ปัญหาการแก้ไข' สำหรับ mods ซึ่งใช้. NET API ที่มีความอ่อนไหวโดยตรงเช่นการเข้าถึงไฟล์หรือเชลล์"
+      },
+      "Type": "CheckBox",
+      "Label": "Paranoid Warnings"
+    },
+    {
+      "Name": "UseBetaChannel",
+      "Description": {
+        "en": "Whether SMAPI should show newer beta versions as an available update. When this is commented\nout, it'll be true if the current SMAPI version is beta, and false otherwise.",
+        "zh": "SMAPI是否應將較新的Beta版本顯示為可用更新。 當對此發表評論時\n如果當前的SMAPI版本是beta，則為true，否則為false。",
+        "fr": "Indique si SMAPI doit afficher les nouvelles versions bêta en tant que mise à jour disponible. Quand ceci est commenté\nout, ce sera vrai si la version actuelle de SMAPI est beta, et false sinon.",
+        "de": "Gibt an, ob SMAPI neuere Betaversionen als verfügbares Update anzeigen soll. Wenn dies kommentiert ist\nout, es wird wahr sein, wenn die aktuelle SMAPI-Version Beta ist, andernfalls falsch.",
+        "hu": "Annak eldöntése, hogy az SMAPI elérhetőbb frissítésként jelenítse meg az újabb béta verziókat. Amikor ezt kommentálják\nki, igaz lesz, ha a jelenlegi SMAPI verzió béta, hamis, ellenkező esetben hamis.",
+        "it": "Se SMAPI deve mostrare le versioni beta più recenti come aggiornamento disponibile. Quando questo è commentato\nsarà vero se l'attuale versione SMAPI è beta, e falso altrimenti.",
+        "ja": "SMAPIが利用可能な更新として新しいベータバージョンを表示するかどうか。 これがコメントされたとき\n現在のSMAPIバージョンがベータ版の場合はtrue、そうでない場合はfalseになります。",
+        "ko": "SMAPI에서 최신 베타 버전을 사용 가능한 업데이트로 표시할지 여부 이것이 논평 될 때\n현재 SMAPI 버전이 베타이면 true이고 그렇지 않으면 false입니다.",
+        "pt": "Se o SMAPI deve mostrar as versões beta mais recentes como uma atualização disponível. Quando isso é comentado\nfora, será verdade se a versão atual do SMAPI for beta e, caso contrário, falsa.",
+        "ru": "Должен ли SMAPI показывать более новые бета-версии в качестве доступного обновления. Когда это комментируется\nЭто будет правда, если текущая версия SMAPI бета, и ложь в противном случае.",
+        "es": "Si SMAPI debería mostrar versiones beta más recientes como una actualización disponible. Cuando esto es comentado\nfuera, será cierto si la versión actual de SMAPI es beta, y falso en caso contrario.",
+        "tr": "SMAPI'nin daha yeni bir beta sürümü mevcut bir güncelleme olarak gösterip göstermemesi gerektiği. Bu yorum yapıldığında\nşu anki SMAPI sürümünün beta olması doğru, aksi takdirde yanlış olur.",
+        "th": "SMAPI ควรแสดงเวอร์ชั่นเบต้าที่ใหม่กว่าว่าเป็นอัพเดตที่มีหรือไม่ เมื่อสิ่งนี้ถูกแสดงความคิดเห็น\nมันจะเป็นจริงถ้าเวอร์ชั่น SMAPI ปัจจุบันเป็นรุ่นเบต้าและไม่เช่นนั้นจะเป็นเท็จ"
+      },
+      "Type": "CheckBox",
+      "Label": "Use Beta Channel"
+    },
+    {
+      "Name": "GitHubProjectName",
+      "Ignore": true,
+      "Type": "TextBox",
+      "Label": "GitHubProjectName"
+    },
+    {
+      "Name": "WebApiBaseUrl",
+      "Ignore": true,
+      "Type": "TextBox",
+      "Label": "Web Api BaseUrl"
+    },
+    {
+      "Name": "LogNetworkTraffic",
+      "Description": {
+        "en": "Whether SMAPI should log network traffic (may be very verbose). Best combined with VerboseLogging, which includes network metadata.",
+        "zh": "SMAPI是否應記錄網絡流量（可能非常冗長）。 最好與包含網絡元數據的VerboseLogging結合使用。",
+        "fr": "Indique si SMAPI doit consigner le trafic réseau (peut être très détaillé). Il est préférable de le combiner avec VerboseLogging, qui comprend des métadonnées réseau.",
+        "de": "Gibt an, ob SMAPI den Netzwerkverkehr protokollieren soll (möglicherweise sehr ausführlich). Am besten kombiniert mit VerboseLogging, das Netzwerk-Metadaten enthält.",
+        "hu": "Annak eldöntése, hogy az SMAPI naplózza-e a hálózati forgalmat (lehet, hogy nagyon szóbeli). A legjobb a VerboseLogging programmal, amely hálózati metaadatokat tartalmaz.",
+        "it": "Se SMAPI deve registrare il traffico di rete (può essere molto dettagliato). Combinato al meglio con VerboseLogging, che include metadati di rete.",
+        "ja": "SMAPIがネットワークトラフィックをログに記録するかどうか（非常に詳細な場合があります）。 ネットワークメタデータを含むVerboseLoggingとの組み合わせが最適です。",
+        "ko": "SMAPI가 네트워크 트래픽을 기록해야하는지 여부 (매우 상세 할 수 있음) 네트워크 메타 데이터를 포함하는 VerboseLogging과 함께 사용하는 것이 가장 좋습니다.",
+        "pt": "Se o SMAPI deve registrar o tráfego de rede (pode ser muito detalhado). Melhor combinado com VerboseLogging, que inclui metadados de rede.",
+        "ru": "Должен ли SMAPI регистрировать сетевой трафик (может быть очень многословным). Лучше всего сочетается с VerboseLogging, который включает сетевые метаданные.",
+        "es": "Si SMAPI debe registrar el tráfico de red (puede ser muy detallado). Se combina mejor con VerboseLogging, que incluye metadatos de red.",
+        "tr": "SMAPI’nın ağ trafiğini günlüğe kaydetmesi gerekip gerekmediği En iyi ağ meta verilerini içeren VerboseLogging ile birlikte.",
+        "th": "SMAPI ควรบันทึกการรับส่งข้อมูลของเครือข่ายหรือไม่ (อาจจะละเอียดมาก) รวมกับ VerboseLogging ที่ดีที่สุดซึ่งรวมถึงข้อมูลเมตาของเครือข่าย"
+      },
+      "Type": "CheckBox",
+      "Label": "Log Network Traffic"
+    },
+    {
+      "Name": "DumpMetadata",
+      "Description": {
+        "en": "Whether to generate a 'SMAPI-latest.metadata-dump.json' file in the logs folder with the full mod\nmetadata for detected mods. This is only needed when troubleshooting some cases.",
+        "zh": "是否在具有完整mod的日誌文件夾中生成“ SMAPI-latest.metadata-dump.json”文件\n檢測到的mod的元數據。 僅在對某些情況進行故障排除時才需要。",
+        "fr": "Indique s'il faut générer un fichier 'SMAPI-latest.metadata-dump.json' dans le dossier logs avec le mod complet\nmétadonnées pour les mods détectés. Cela n'est nécessaire que lors du dépannage de certains cas.",
+        "de": "Gibt an, ob eine SMAPI-latest.metadata-dump.json-Datei im Protokollordner mit dem vollständigen Mod erstellt werden soll\nMetadaten für erkannte Mods. Dies ist nur in einigen Fällen zur Fehlerbehebung erforderlich.",
+        "hu": "Hozzunk-e létre egy 'SMAPI-latest.metadata-dump.json' fájlt a naplók mappában a teljes moddal\nmetaadatok az észlelt modok számára. Erre csak bizonyos esetekben van szükség hibaelhárításra.",
+        "it": "Se generare un file \"SMAPI-latest.metadata-dump.json\" nella cartella dei registri con la mod completa\nmetadati per le mod rilevate. Ciò è necessario solo per la risoluzione di alcuni casi.",
+        "ja": "完全なmodでlogsフォルダーに「SMAPI-latest.metadata-dump.json」ファイルを生成するかどうか\n検出されたmodのメタデータ。 これは、いくつかのケースをトラブルシューティングするときにのみ必要です。",
+        "ko": "full 모드로 logs 폴더에 'SMAPI-latest.metadata-dump.json'파일을 생성할지 여부\n탐지 된 개조를위한 메타 데이터. 일부 경우의 문제 해결시에만 필요합니다.",
+        "pt": "Se um arquivo 'SMAPI-latest.metadata-dump.json' deve ser gerado na pasta de logs com o mod completo\nmetadados para mods detectados. Isso é necessário apenas para solucionar alguns casos.",
+        "ru": "Создавать ли файл 'SMAPI-latest.metadata-dump.json' в папке журналов с полным модом\nметаданные для обнаруженных модов. Это необходимо только при устранении неполадок в некоторых случаях.",
+        "es": "Si se debe generar un archivo 'SMAPI-latest.metadata-dump.json' en la carpeta de registros con el mod completo\nmetadatos para mods detectados. Esto solo es necesario para solucionar algunos casos.",
+        "tr": "Tam mod ile log klasöründe bir 'SMAPI-latest.metadata-dump.json' dosyası oluşturulup oluşturulmayacağı\nalgılanan modlar için meta veriler. Bu sadece bazı problemleri giderirken gereklidir.",
+        "th": "ไม่ว่าจะสร้างไฟล์ 'SMAPI-latest.metadata-dump.json' ในโฟลเดอร์บันทึกด้วย mod แบบเต็ม\nข้อมูลเมตาสำหรับ mods ที่ตรวจพบ สิ่งนี้จำเป็นเฉพาะเมื่อแก้ไขปัญหาบางกรณี"
+      },
+      "Type": "CheckBox",
+      "Label": "Dump Metadata"
+    },
+    {
+      "Name": "ConsoleColors.UseScheme",
+      "Description": {
+        "en": "The colors to use for text written to the SMAPI console.",
+        "zh": "用於寫入SMAPI控制台的文本的顏色。",
+        "fr": "Les couleurs à utiliser pour le texte écrit dans la console SMAPI.",
+        "de": "Die Farben, die für in die SMAPI-Konsole geschriebenen Text verwendet werden sollen.",
+        "hu": "A SMAPI konzolra írt szöveghez használt színek.",
+        "it": "I colori da utilizzare per il testo scritto sulla console SMAPI.",
+        "ja": "SMAPIコンソールに書き込まれるテキストに使用する色。",
+        "ko": "SMAPI 콘솔에 작성된 텍스트에 사용할 색상입니다.",
+        "pt": "As cores a serem usadas no texto gravado no console SMAPI.",
+        "ru": "Цвета, используемые для текста, записанного на консоли SMAPI.",
+        "es": "Los colores que se utilizarán para el texto escrito en la consola SMAPI.",
+        "tr": "SMAPI konsoluna yazılan metin için kullanılacak renkler.",
+        "th": "Sสีที่ใช้สำหรับข้อความที่เขียนไปยังคอนโซล SMAPI."
+      },
+      "Type": "DropDown",
+      "Label": "Use Scheme",
+      "DropDownOptions": [
+        "AutoDetect",
+        "DarkBackground",
+        "LightBackground"
+      ]
+    },
+    {
+      "Name": "ConsoleColors.Schemes.DarkBackground.Trace",
+      "Type": "PlusMinus",
+      "Label": "DarkBackground.Trace",
+      "PlusMinusOptions": [
+        "Black",
+        "Blue",
+        "Cyan",
+        "DarkBlue",
+        "DarkCyan",
+        "DarkGray",
+        "DarkGreen",
+        "DarkMagenta",
+        "DarkRed",
+        "DarkYellow",
+        "Gray",
+        "Green",
+        "Magenta",
+        "Red",
+        "White",
+        "Yellow"
+      ]
+    },
+    {
+      "Name": "ConsoleColors.Schemes.DarkBackground.Debug",
+      "Type": "PlusMinus",
+      "Label": "DarkBackground.Debug",
+      "PlusMinusOptions": [
+        "Black",
+        "Blue",
+        "Cyan",
+        "DarkBlue",
+        "DarkCyan",
+        "DarkGray",
+        "DarkGreen",
+        "DarkMagenta",
+        "DarkRed",
+        "DarkYellow",
+        "Gray",
+        "Green",
+        "Magenta",
+        "Red",
+        "White",
+        "Yellow"
+      ]
+    },
+    {
+      "Name": "ConsoleColors.Schemes.DarkBackground.Info",
+      "Type": "PlusMinus",
+      "Label": "DarkBackground.Info",
+      "PlusMinusOptions": [
+        "Black",
+        "Blue",
+        "Cyan",
+        "DarkBlue",
+        "DarkCyan",
+        "DarkGray",
+        "DarkGreen",
+        "DarkMagenta",
+        "DarkRed",
+        "DarkYellow",
+        "Gray",
+        "Green",
+        "Magenta",
+        "Red",
+        "White",
+        "Yellow"
+      ]
+    },
+    {
+      "Name": "ConsoleColors.Schemes.DarkBackground.Warn",
+      "Type": "PlusMinus",
+      "Label": "DarkBackground.Warn",
+      "PlusMinusOptions": [
+        "Black",
+        "Blue",
+        "Cyan",
+        "DarkBlue",
+        "DarkCyan",
+        "DarkGray",
+        "DarkGreen",
+        "DarkMagenta",
+        "DarkRed",
+        "DarkYellow",
+        "Gray",
+        "Green",
+        "Magenta",
+        "Red",
+        "White",
+        "Yellow"
+      ]
+    },
+    {
+      "Name": "ConsoleColors.Schemes.DarkBackground.Error",
+      "Type": "PlusMinus",
+      "Label": "DarkBackground.Error",
+      "PlusMinusOptions": [
+        "Black",
+        "Blue",
+        "Cyan",
+        "DarkBlue",
+        "DarkCyan",
+        "DarkGray",
+        "DarkGreen",
+        "DarkMagenta",
+        "DarkRed",
+        "DarkYellow",
+        "Gray",
+        "Green",
+        "Magenta",
+        "Red",
+        "White",
+        "Yellow"
+      ]
+    },
+    {
+      "Name": "ConsoleColors.Schemes.DarkBackground.Alert",
+      "Type": "PlusMinus",
+      "Label": "DarkBackground.Alert",
+      "PlusMinusOptions": [
+        "Black",
+        "Blue",
+        "Cyan",
+        "DarkBlue",
+        "DarkCyan",
+        "DarkGray",
+        "DarkGreen",
+        "DarkMagenta",
+        "DarkRed",
+        "DarkYellow",
+        "Gray",
+        "Green",
+        "Magenta",
+        "Red",
+        "White",
+        "Yellow"
+      ]
+    },
+    {
+      "Name": "ConsoleColors.Schemes.DarkBackground.Success",
+      "Type": "PlusMinus",
+      "Label": "DarkBackground.Success",
+      "PlusMinusOptions": [
+        "Black",
+        "Blue",
+        "Cyan",
+        "DarkBlue",
+        "DarkCyan",
+        "DarkGray",
+        "DarkGreen",
+        "DarkMagenta",
+        "DarkRed",
+        "DarkYellow",
+        "Gray",
+        "Green",
+        "Magenta",
+        "Red",
+        "White",
+        "Yellow"
+      ]
+    },
+    {
+      "Name": "ConsoleColors.Schemes.LightBackground.Trace",
+      "Type": "PlusMinus",
+      "Label": "LightBackground.Trace",
+      "PlusMinusOptions": [
+        "Black",
+        "Blue",
+        "Cyan",
+        "DarkBlue",
+        "DarkCyan",
+        "DarkGray",
+        "DarkGreen",
+        "DarkMagenta",
+        "DarkRed",
+        "DarkYellow",
+        "Gray",
+        "Green",
+        "Magenta",
+        "Red",
+        "White",
+        "Yellow"
+      ]
+    },
+    {
+      "Name": "ConsoleColors.Schemes.LightBackground.Debug",
+      "Type": "PlusMinus",
+      "Label": "LightBackground.Debug",
+      "PlusMinusOptions": [
+        "Black",
+        "Blue",
+        "Cyan",
+        "DarkBlue",
+        "DarkCyan",
+        "DarkGray",
+        "DarkGreen",
+        "DarkMagenta",
+        "DarkRed",
+        "DarkYellow",
+        "Gray",
+        "Green",
+        "Magenta",
+        "Red",
+        "White",
+        "Yellow"
+      ]
+    },
+    {
+      "Name": "ConsoleColors.Schemes.LightBackground.Info",
+      "Type": "PlusMinus",
+      "Label": "LightBackground.Info",
+      "PlusMinusOptions": [
+        "Black",
+        "Blue",
+        "Cyan",
+        "DarkBlue",
+        "DarkCyan",
+        "DarkGray",
+        "DarkGreen",
+        "DarkMagenta",
+        "DarkRed",
+        "DarkYellow",
+        "Gray",
+        "Green",
+        "Magenta",
+        "Red",
+        "White",
+        "Yellow"
+      ]
+    },
+    {
+      "Name": "ConsoleColors.Schemes.LightBackground.Warn",
+      "Type": "PlusMinus",
+      "Label": "LightBackground.Warn",
+      "PlusMinusOptions": [
+        "Black",
+        "Blue",
+        "Cyan",
+        "DarkBlue",
+        "DarkCyan",
+        "DarkGray",
+        "DarkGreen",
+        "DarkMagenta",
+        "DarkRed",
+        "DarkYellow",
+        "Gray",
+        "Green",
+        "Magenta",
+        "Red",
+        "White",
+        "Yellow"
+      ]
+    },
+    {
+      "Name": "ConsoleColors.Schemes.LightBackground.Error",
+      "Type": "PlusMinus",
+      "Label": "LightBackground.Error",
+      "PlusMinusOptions": [
+        "Black",
+        "Blue",
+        "Cyan",
+        "DarkBlue",
+        "DarkCyan",
+        "DarkGray",
+        "DarkGreen",
+        "DarkMagenta",
+        "DarkRed",
+        "DarkYellow",
+        "Gray",
+        "Green",
+        "Magenta",
+        "Red",
+        "White",
+        "Yellow"
+      ]
+    },
+    {
+      "Name": "ConsoleColors.Schemes.LightBackground.Alert",
+      "Type": "PlusMinus",
+      "Label": "LightBackground.Alert",
+      "PlusMinusOptions": [
+        "Black",
+        "Blue",
+        "Cyan",
+        "DarkBlue",
+        "DarkCyan",
+        "DarkGray",
+        "DarkGreen",
+        "DarkMagenta",
+        "DarkRed",
+        "DarkYellow",
+        "Gray",
+        "Green",
+        "Magenta",
+        "Red",
+        "White",
+        "Yellow"
+      ]
+    },
+    {
+      "Name": "ConsoleColors.Schemes.LightBackground.Success",
+      "Type": "PlusMinus",
+      "Label": "LightBackground.Success",
+      "PlusMinusOptions": [
+        "Black",
+        "Blue",
+        "Cyan",
+        "DarkBlue",
+        "DarkCyan",
+        "DarkGray",
+        "DarkGreen",
+        "DarkMagenta",
+        "DarkRed",
+        "DarkYellow",
+        "Gray",
+        "Green",
+        "Magenta",
+        "Red",
+        "White",
+        "Yellow"
+      ]
+    },
+    {
+      "Name": "SuppressUpdateChecks",
+      "Type": "List",
+      "Label": "Suppress Update Checks"
+    }
+  ]
+}

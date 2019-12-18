@@ -1,0 +1,10 @@
+{
+  "Name": "Lavapulse Chickens",
+  "Author": "Lavapulse",
+  "Version": "1.0.6",
+  "Description": "Incorporates new (non-replacement) breeds of chickens and their eggs",
+  "UniqueID": "Lavapulse.LavapulseChickens",
+  "EntryDll": "LavapulseChickens.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:4821" ]
+}

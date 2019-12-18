@@ -5,9 +5,9 @@ mods:
    Bow
 
 latest commit:
-   commit 5d060b7c9ece3affb6db93d5ba47679f7273937d
+   commit 044ec62065f8b11030876c51af1329d12edb2122
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:19:24 2019 -0500
+   Date:   Mon Nov 25 16:45:15 2019 -0500
    
-       Update version
+       1.0.2 - SDV 1.4
    

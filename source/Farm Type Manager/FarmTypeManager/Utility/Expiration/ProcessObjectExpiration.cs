@@ -33,17 +33,17 @@ namespace FarmTypeManager
                         continue; //skip to the next object
                     }
 
+                    GameLocation location = Game1.getLocationFromName(saved.MapName); //get the saved object's location
+
+                    if (location == null) //if this isn't a valid map
+                    {
+                        Monitor.VerboseLog($"Removing object data saved for a missing location. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
+                        objectsToRemove.Add(saved); //mark this for removal from save
+                        continue; //skip to the next object
+                    }
+
                     if (saved.Type == SavedObject.ObjectType.Monster) //if this is a monster
                     {
-                        GameLocation location = Game1.getLocationFromName(saved.MapName); //get the monster's location
-
-                        if (location == null) //if this isn't a valid map
-                        {
-                            Monitor.VerboseLog($"Removing object data saved for a missing location. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
-                            objectsToRemove.Add(saved); //mark this for removal from save
-                            continue; //skip to the next object
-                        }
-
                         bool stillExists = false; //does this monster still exist?
 
                         for (int x = location.characters.Count - 1; x >= 0; x--) //for each character at this location (looping backward for removal purposes)
@@ -78,15 +78,6 @@ namespace FarmTypeManager
                     }
                     else if (saved.Type == SavedObject.ObjectType.LargeObject) //if this is a large object
                     {
-                        GameLocation location = Game1.getLocationFromName(saved.MapName); //get the specified location
-
-                        if (location == null) //if this isn't a valid map
-                        {
-                            Monitor.VerboseLog($"Removing object data saved for a missing location. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
-                            objectsToRemove.Add(saved); //mark this for removal from save
-                            continue; //skip to the next object
-                        }
-
                         IEnumerable<TerrainFeature> resourceClumps = null; //a list of large objects at this location
                         if (location is Farm farm)
                         {
@@ -158,17 +149,39 @@ namespace FarmTypeManager
                             objectsToRemove.Add(saved); //mark object for removal from save
                         }
                     }
-                    else //if this is forage or ore
+                    else if (saved.Type == SavedObject.ObjectType.Item) //if this is a forage item, i.e. "debris" containing an item
                     {
-                        GameLocation location = Game1.getLocationFromName(saved.MapName); //get the object's location
+                        bool stillExists = false; //does this item still exist?
 
-                        if (location == null) //if the map wasn't found
+                        for (int x = 0; x < location.debris.Count; x++) //for each piece of debris at this location
                         {
-                            Monitor.VerboseLog($"Removing object data saved for a missing location. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
-                            objectsToRemove.Add(saved); //mark this for removal from save
-                            continue; //skip to the next object
+                            //if this debris wasn't dropped by a player AND has an item matching this saved object's name & ID
+                            if (location.debris[x].item != null && location.debris[x].DroppedByPlayerID.Value == 0 && location.debris[x].item.ParentSheetIndex == saved.ID && location.debris[x].item.Name.Equals(saved.Name.Split(':')[1], StringComparison.OrdinalIgnoreCase))
+                            {
+                                stillExists = true;
+                                location.debris.RemoveAt(x); //remove this debris (though the game will generally do this anyway)
+
+                                if (saved.DaysUntilExpire == 1 || saved.DaysUntilExpire == null) //if this should expire tonight
+                                {
+                                    Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
+                                    objectsToRemove.Add(saved); //mark this for removal from save
+                                }
+                                else if (saved.DaysUntilExpire > 1) //if this should expire, but not tonight
+                                {
+                                    saved.DaysUntilExpire--; //decrease counter by 1
+                                }
+
+                                break;
+                            }
                         }
 
+                        if (!stillExists) //if this item no longer exists
+                        {
+                            objectsToRemove.Add(saved); //mark this for removal from save
+                        }
+                    }
+                    else //if this is a StardewValley.Object (e.g. forage or ore)
+                    {
                         StardewValley.Object realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
 
                         if (realObject != null && realObject.ParentSheetIndex == saved.ID) //if an object exists in the saved location & matches the saved object's ID

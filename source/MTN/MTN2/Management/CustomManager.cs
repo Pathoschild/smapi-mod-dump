@@ -3,13 +3,17 @@ using Microsoft.Xna.Framework.Graphics;
 using MTN2.Compatibility;
 using MTN2.Management;
 using MTN2.MapData;
+using MTN2.SaveData;
+using Newtonsoft.Json;
 using StardewModdingAPI;
+using StardewValley;
 using StardewValley.Locations;
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using xTile;
@@ -22,11 +26,16 @@ namespace MTN2.Management
     /// of custom classes and manipulates / gathers the data accordingly.
     /// </summary>
     internal class CustomManager : ICustomManager {
-        public IContentPack LoadedPack { get; private set; }
+
+
         private FarmManagement FarmManager { get; set; }
         private GHouseManagement GreenhouseManager { get; set; }
         private FHouseManagement HouseManager { get; set; }
-        
+
+        private IModHelper helper;
+        private Func<string, MtnFarmData> ReadFarmData;
+        private Action<string, MtnFarmData> WriteFarmData;
+
         public bool NoDebris { get; set; } = false;
         public bool Canon { get; private set; } = true;
         public int ScienceHouseIndex { get; private set; }
@@ -36,7 +45,22 @@ namespace MTN2.Management
         public List<CustomGreenHouse> GreenHouseList { get { return GreenhouseManager.GreenHouseList; } }
         public CustomFarm SelectedFarm { get { return FarmManager.SelectedFarm; } }
         public CustomFarm LoadedFarm { get { return FarmManager.LoadedFarm; } }
-        public Interaction ShippingBin { get { return FarmManager.ShippingBin; } }
+
+        public Interaction ShippingBin {
+            get {
+                if (Canon) return FarmManager.CanonShippingBinPoint;
+                return FarmManager.ShippingBin;
+            }
+        }
+        public int ShippingBinX { get { return FarmManager.ShippingBinX(Canon); } }
+        public int ShippingBinY { get { return FarmManager.ShippingBinY(Canon); } }
+
+        public int MailBoxX { get { return FarmManager.MailBox.X; } }
+        public int MailBoxY { get { return FarmManager.MailBox.Y; } }
+
+        public int ShippingBinXOffSet { get { return this.ShippingBinX + 1; } }
+        public int ShippingBinYOffSet { get { return this.ShippingBinY + 1; } }
+
         public Interaction RabbitShrine { get { return FarmManager.RabbitShrine; } }
         public Interaction PetWaterBowl { get { return FarmManager.PetWaterBowl; } }
         public Point FarmHousePorch { get { return HouseManager.FrontPorch; } }
@@ -46,6 +70,16 @@ namespace MTN2.Management
         public int GreenHouseEntryX { get { return GreenhouseManager.GreenHouseEntryX(Canon); } }
         public int GreenHouseEntryY { get { return GreenhouseManager.GreenHouseEntryY(Canon); } }
 
+        public Point MailboxPosition
+        {
+            get
+            {
+                return this.FarmManager.GetMailbox(Game1.player);
+            }
+        }
+
+        public IContentPack LoadedPack { get; private set; }
+
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -53,6 +87,11 @@ namespace MTN2.Management
             FarmManager = new FarmManagement();
             GreenhouseManager = new GHouseManagement(FarmManager);
             HouseManager = new FHouseManagement(FarmManager);
+        }
+
+        public void Initialize(IModHelper helper) {
+            this.helper = helper;
+            WriteFarmData = helper.Data.WriteSaveData;
         }
 
         /// <summary>
@@ -97,6 +136,32 @@ namespace MTN2.Management
         public void LoadCustomFarm(int whichFarm) {
             Canon = FarmManager.Load(whichFarm);
             //if (!Canon) GreenhouseManager.LinkToFarm(FarmManager.LoadedFarm);
+        }
+
+        public void LoadCustomFarmByMtnData() {
+            MtnFarmData farmData;
+
+            MethodInfo keyReader = helper.Data.GetType().GetMethod("GetSaveFileKey", BindingFlags.NonPublic | BindingFlags.Instance);
+            string key = (string)keyReader.Invoke(helper.Data, new object[] { "MtnFarmData" });
+            if (SaveGame.loaded.CustomData.TryGetValue(key, out string value)) {
+                farmData = JsonConvert.DeserializeObject<MtnFarmData>(SaveGame.loaded.CustomData[key]);
+            } else {
+                CustomFarm farm = FarmList.Find(x => x.ID == Game1.whichFarm);
+                farmData = new MtnFarmData { FarmTypeName = farm.Name };
+                helper.Data.WriteSaveData("MtnFarmData", farmData);
+            }
+
+            Canon = FarmManager.Load(farmData);
+        }
+
+        public void LoadCustomFarmByMtnData(string FarmType) {
+            MtnFarmData farmData = new MtnFarmData { FarmTypeName = FarmType };
+            Canon = FarmManager.Load(farmData);
+        }
+
+        public void SetMtnFarmData() {
+            MtnFarmData newData = new MtnFarmData { FarmTypeName = FarmManager.SelectedFarm.Name };
+            helper.Data.WriteSaveData("MtnFarmData", newData);
         }
         
         /// <summary>

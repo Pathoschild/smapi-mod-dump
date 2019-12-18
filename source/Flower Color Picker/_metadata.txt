@@ -5,9 +5,9 @@ mods:
    Flower Color Picker
 
 latest commit:
-   commit f2fec02cf4244caf882d9a409c8bc67377dddb4b
+   commit 05b61a97f138d2a98ddf47186af41565fe09826a
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:23:15 2019 -0500
+   Date:   Mon Nov 25 17:05:33 2019 -0500
    
-       Update version
+       1.0.3 - SDV 1.4
    

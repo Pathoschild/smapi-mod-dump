@@ -5,9 +5,10 @@ mods:
    Change Professions
 
 latest commit:
-   commit 3b0dda102d3bd763d8d9c089e3a4fc1e588332a6
-   Author: amazingalek <alek.ntnu@gmail.com>
-   Date:   Sat Jun 15 11:15:58 2019 +0200
+   commit d15d0379c4cda0c28ce75ad1e80e6d9ec301df7f
+   Merge: 8b796b4 3b0dda1
+   Author: Aleksander Waage <alek.ntnu@gmail.com>
+   Date:   Sat Dec 7 23:12:59 2019 +0100
    
-       Update README.md
+       Merge branch 'master' of https://github.com/aleksanderwaagr/stardew-changeprofessions
    

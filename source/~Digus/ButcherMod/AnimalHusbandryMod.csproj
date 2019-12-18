@@ -143,6 +143,7 @@
     <Compile Include="recipes\RecipesLoader.cs" />
     <Compile Include="farmer\FarmerLoader.cs" />
     <Compile Include="farmer\FarmerData.cs" />
+    <Compile Include="recipes\TrashBearOverrides.cs" />
     <Compile Include="tools\ParticipantRibbon.cs" />
     <Compile Include="tools\FeedingBasket.cs" />
     <Compile Include="tools\InseminationSyringe.cs" />

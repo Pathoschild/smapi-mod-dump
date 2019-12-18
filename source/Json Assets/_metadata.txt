@@ -5,12 +5,9 @@ mods:
    Json Assets
 
 latest commit:
-   commit 25e395439bc48f947c7c72dd814ade5749c15e43
-   Merge: 640d413 e065108
+   commit 55058bc8467bb0df64060fb830c50fe49497a366
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sat Nov 30 16:36:56 2019 -0500
+   Date:   Fri Dec 13 14:43:55 2019 -0500
    
-       Merge pull request #41 from paradigmnomad/patch-7
-       
-       Updated 1.4 Documentation
+       Fix recipe result count not being used
    

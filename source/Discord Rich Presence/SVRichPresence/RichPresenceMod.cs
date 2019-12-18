@@ -1,4 +1,6 @@
-﻿using Discord;
+﻿using DiscordRPC;
+using DiscordRPC.Message;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -6,21 +8,22 @@ using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using Constants = StardewModdingAPI.Constants;
 using LogLevel = StardewModdingAPI.LogLevel;
 using Utility = StardewValley.Utility;
 
 namespace SVRichPresence {
 	public class RichPresenceMod : Mod {
-		private const long clientId = 444517509148966923;
-		private const int steamId = 413150;
+		private static readonly Color blurple = new Color(114, 137, 218);
+		private static readonly string clientId = "444517509148966923";
+		private static readonly string steamId = "413150";
+		private readonly Random rand = new Random();
 		private ModConfig config = new ModConfig();
 		private IRichPresenceAPI api;
-		private Discord.Discord discord;
-		private ActivityManager activityManager;
+		private DiscordRpcClient client;
+		private readonly JoinRequestMessage[] requests = new JoinRequestMessage[ushort.MaxValue + 1];
+		private ushort lastRequestID = 0;
 
 		public override void Entry(IModHelper helper) {
 #if DEBUG
@@ -42,69 +45,81 @@ namespace SVRichPresence {
 				Monitor.Log("WAIT A MINUTE.", LogLevel.Alert);
 				Monitor.Log("FAYNE.", LogLevel.Alert);
 				Monitor.Log("WHY DID YOU RELEASE A NON-DEBUG DEV BUILD?!", LogLevel.Alert);
-				Monitor.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", LogLevel.Alert);
+				Monitor.Log("https://youtu.be/T3djXcx2ewQ", LogLevel.Alert);
 			}
 #endif
-
-			AppDomain.CurrentDomain.AssemblyResolve += (object sender, ResolveEventArgs e) => {
-				try {
-					var name = new AssemblyName(e.Name);
-					foreach (FileInfo dll in new DirectoryInfo(Helper.DirectoryPath).EnumerateFiles("*.dll")) {
-						if (name.Name.Equals(AssemblyName.GetAssemblyName(dll.FullName).Name, StringComparison.InvariantCultureIgnoreCase))
-							return Assembly.LoadFrom(dll.FullName);
-					}
-				} catch { }
-				return null;
-			};
-
-			api = new RichPresenceAPI(this);
-			try {
-				discord = new Discord.Discord(clientId, (ulong)CreateFlags.NoRequireDiscord);
-			} catch (Discord.ResultException e) {
-				Monitor.Log("Failed to initialize Discord SDK: " + e.Message, LogLevel.Error);
-				Monitor.Log("Rich Presence cannot be activated. Restart the game to try again.", LogLevel.Error);
+			if (Constants.TargetPlatform == GamePlatform.Android) {
+				Monitor.Log("Discord RPC is not supported on Android.", LogLevel.Error);
+				Monitor.Log("Aborting mod initialization.", LogLevel.Error);
 				Dispose();
 				return;
 			}
-			discord.SetLogHook(Discord.LogLevel.Debug, (Discord.LogLevel level, string message) => {
-				LogLevel sdlevel = LogLevel.Trace;
-				switch (level) {
-					case Discord.LogLevel.Error:
-						sdlevel = LogLevel.Error;
-						break;
-					case Discord.LogLevel.Warn:
-						sdlevel = LogLevel.Warn;
-						break;
-					case Discord.LogLevel.Info:
-						sdlevel = LogLevel.Info;
-						break;
-					case Discord.LogLevel.Debug:
-						sdlevel = LogLevel.Debug;
-						break;
-				};
-				Monitor.Log("DISCORD: " + message, sdlevel);
-			});
-			discord.GetUserManager().OnCurrentUserUpdate += () => {
-				User user = discord.GetUserManager().GetCurrentUser();
-				Monitor.Log("Connected to Discord: " + GetDiscordTag(user, true), LogLevel.Info);
-			};
-			activityManager = discord.GetActivityManager();
-			activityManager.RegisterSteam(steamId);
 
-			activityManager.OnActivityJoin += (string secret) => {
-				Monitor.Log("Attempting to join game", LogLevel.Info);
-				JoinGame(secret);
+			api = new RichPresenceAPI(this);
+			client = new DiscordRpcClient(clientId,
+				autoEvents: false,
+				logger: new MonitorLogger(Monitor));
+			client.RegisterUriScheme(steamId);
+			client.OnReady += (sender, e) => {
+				Monitor.Log("Connected to Discord: " + e.User.ToString(), LogLevel.Info);
 			};
-
-			activityManager.OnActivityJoinRequest += (ref User user) => {
-				string tag = GetDiscordTag(user);
-				Monitor.Log(tag + " is requesting to join your game.", LogLevel.Alert);
-				Monitor.Log("You can respond to this request in Discord Overlay.", LogLevel.Info);
-				Game1.chatBox.addInfoMessage(tag + " is requesting to join your game. You can respond to this request in Discord Overlay.");
+			client.OnJoin += (sender, args) => {
+				Monitor.Log("Attempting to join game: " + args.Secret, LogLevel.Info);
+				JoinGame(args.Secret);
 			};
+			client.OnJoinRequested += (sender, msg) => {
+				string name = msg.User.Username;
+				string tag = msg.User.ToString();
+				ushort id = (ushort)rand.Next(ushort.MinValue, ushort.MaxValue);
+				requests[id] = msg;
+				lastRequestID = id;
+				string hex = id.ToString("X");
+				Monitor.Log(tag + " wants to join your game via Discord.", LogLevel.Alert);
+				Monitor.Log("To respond type \"discord " + hex + " yes/no\" or just \"discord yes/no\"", LogLevel.Info);
+				Game1.chatBox.addMessage(name + " wants to join your game via Discord.\nTo respond check the console or use Discord or its overlay.", blurple);
+			};
+			client.Initialize();
+			client.SetSubscription(EventType.Join | EventType.JoinRequest);
 
-			Helper.ConsoleCommands.Add("DiscordRP_TestJoin",
-				"Command for debugging.",
+			#region Console Commands
+			Helper.ConsoleCommands.Add("discord",
+				"Respond to a Discord join request.",
+				(command, args) => {
+					// Yes, I know this code is a mess.
+					switch (args[0].ToLower()) {
+						case "yes":
+						case "y":
+							Respond(lastRequestID, true);
+							break;
+						case "no":
+						case "n":
+							Respond(lastRequestID, false);
+							break;
+						default:
+							try {
+								var id = ushort.Parse(args[0], System.Globalization.NumberStyles.HexNumber);
+								switch (args[1].ToLower()) {
+									case "yes":
+									case "y":
+										Respond(id, true);
+										break;
+									case "no":
+									case "n":
+										Respond(id, false);
+										break;
+									default:
+										Monitor.Log("Invalid response.", LogLevel.Error);
+										break;
+								}
+							} catch (Exception) {
+								Monitor.Log("Invalid request ID.", LogLevel.Error);
+							}
+							break;
+					}
+				}
+			);
+			Helper.ConsoleCommands.Add("DiscordRP_Join",
+				"Join a co-op game via invite code.",
 				(string command, string[] args) => {
 					JoinGame(string.Join(" ", args));
 				}
@@ -169,6 +184,7 @@ namespace SVRichPresence {
 					Monitor.Log(string.Join(Environment.NewLine, output), LogLevel.Info);
 				}
 			);
+			#endregion
 			LoadConfig();
 
 			Helper.Events.Input.ButtonReleased += HandleButton;
@@ -181,10 +197,12 @@ namespace SVRichPresence {
 				api.GamePresence = "Starting a New Game";
 			Helper.Events.GameLoop.GameLaunched += (object sender, GameLaunchedEventArgs e) => {
 				SetTimestamp();
-				timestampSession = Now();
+				timestampSession = Timestamps.Now;
 			};
 
 			ITagRegister tagReg = api.GetTagRegister(this);
+
+			#region Default Tags
 
 			tagReg.SetTag("Activity", () => api.GamePresence);
 			tagReg.SetTag("ModCount", () => Helper.ModRegistry.GetAll().Count());
@@ -238,12 +256,22 @@ namespace SVRichPresence {
 				Context.IsMultiplayer && Context.IsMainPlayer ? "Hosting" : "Playing", true);
 			tagReg.SetTag("GameNoun", () => Context.IsMultiplayer ? "Co-op" : "Solo", true);
 			tagReg.SetTag("GameInfo", () => api.GetTag("GameVerb") + " " + api.GetTag("GameNoun"), true);
+			#endregion
+		}
+
+		private void Respond(ushort id, Boolean response) {
+			var request = requests[id];
+			if (request == null)
+				Monitor.Log("Request ID doesn't exist.", LogLevel.Error);
+			client.Respond(request, response);
+			Monitor.Log("Responding to join request. This may fail if 30 seconds have passed.", LogLevel.Info);
+			requests[id] = null;
 		}
 
 		private void JoinGame(string inviteCode) {
-			object lobby = Program.sdk.Networking.GetLobbyFromInviteCode(inviteCode);
-			if (lobby == null) return;
 			Game1.ExitToTitle(() => {
+				object lobby = Program.sdk.Networking.GetLobbyFromInviteCode(inviteCode);
+				if (lobby == null) return;
 				TitleMenu.subMenu = new FarmhandMenu(Program.sdk.Networking.CreateClient(lobby));
 			});
 		}
@@ -262,64 +290,62 @@ namespace SVRichPresence {
 			}
 		}
 
-		private int Now() => (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-
 		private void LoadConfig() => config = Helper.ReadConfig<ModConfig>();
+
 		private void SaveConfig() => Helper.WriteConfig(config);
 
-		private long timestampSession;
-		private long timestampFarm;
+		private Timestamps timestampSession;
+		private Timestamps timestampFarm;
 		private void SetTimestamp(object sender, EventArgs e) => SetTimestamp();
-		private void SetTimestamp() => timestampFarm = Now();
+		private void SetTimestamp() => timestampFarm = Timestamps.Now;
 
 		private void DoUpdate(object sender, UpdateTickedEventArgs e) {
-			try {
-				discord.RunCallbacks();
-				if (e.IsMultipleOf(30))
-					activityManager.UpdateActivity(GetActivity(), (result) => {
-						if (result != Result.Ok)
-							Monitor.Log("Update Activity: " + result);
-					});
-			} catch { }
+			client.Invoke();
+			if (e.IsMultipleOf(30))
+				client.SetPresence(GetPresence());
 		}
 
 		private MenuPresence Conf => !Context.IsWorldReady ?
 			config.MenuPresence : config.GamePresence;
 
-		private Discord.Activity GetActivity() {
-			var activity = new Activity {
+		private RichPresence GetPresence() {
+			var presence = new RichPresence {
 				Details = api.FormatText(Conf.Details),
-				State = api.FormatText(Conf.State),
-				Assets = {
-					LargeImage = "default_large",
-					LargeText = api.FormatText(Conf.LargeImageText),
-					SmallText = api.FormatText(Conf.SmallImageText)
-				}
+				State = api.FormatText(Conf.State)
 			};
-			if (Conf.ForceSmallImage || activity.Assets.SmallText.Length > 0)
-				activity.Assets.SmallImage = "default_small";
+			var assets = new Assets {
+				LargeImageKey = "default_large",
+				LargeImageText = api.FormatText(Conf.LargeImageText),
+				SmallImageText = api.FormatText(Conf.SmallImageText)
+			};
+			if (Conf.ForceSmallImage || assets.SmallImageText?.Length > 0)
+				assets.SmallImageKey = "default_small";
 
 			if (Context.IsWorldReady) {
 				var conf = (GamePresence)Conf;
 				if (conf.ShowSeason)
-					activity.Assets.LargeImage = $"{Game1.currentSeason}_{FarmTypeKey()}";
+					assets.LargeImageKey = $"{Game1.currentSeason}_{FarmTypeKey()}";
 				if (conf.ShowWeather)
-					activity.Assets.SmallImage = "weather_" + WeatherKey();
+					assets.SmallImageKey = "weather_" + WeatherKey();
 				if (conf.ShowPlayTime)
-					activity.Timestamps.Start = timestampFarm;
+					presence.Timestamps = timestampFarm;
 				if (Context.IsMultiplayer && conf.AllowAskToJoin)
 					try {
-						activity.Party.Id = Game1.MasterPlayer.UniqueMultiplayerID.ToString();
-						activity.Party.Size.CurrentSize = Game1.numberOfPlayers();
-						activity.Party.Size.MaxSize = Game1.getFarm().getNumberBuildingsConstructed("Cabin") + 1;
-						activity.Secrets.Join = Game1.server.getInviteCode();
+						presence.Party = new Party {
+							ID = Game1.MasterPlayer.UniqueMultiplayerID.ToString(),
+							Size = Game1.numberOfPlayers(),
+							Max = Game1.getFarm().getNumberBuildingsConstructed("Cabin") + 1
+						};
+						presence.Secrets = new Secrets {
+							JoinSecret = Game1.server.getInviteCode()
+						};
 					} catch { }
 			}
 
 			if (config.ShowGlobalPlayTime)
-				activity.Timestamps.Start = timestampSession;
+				presence.Timestamps = timestampSession;
 
-			return activity;
+			return presence.WithAssets(assets);
 		}
 
 		private string FarmTypeKey() {
@@ -353,13 +379,6 @@ namespace SVRichPresence {
 			if (Game1.isFestival())
 				return "festival";
 			return "sunny";
-		}
-
-		private string GetDiscordTag(User user, bool includeId = false) {
-			string ret = user.Username + "#" + user.Discriminator;
-			if (includeId)
-				ret += " (" + user.Id + ")";
-			return ret;
 		}
 	}
 }

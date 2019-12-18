@@ -2,27 +2,28 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Harmony;
 using JsonAssets.Data;
+using JsonAssets.Other.ContentPatcher;
+using JsonAssets.Overrides;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
+using Newtonsoft.Json;
+using SpaceCore;
+using SpaceShared;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Menus;
-using StardewValley.Locations;
-using StardewValley.TerrainFeatures;
-using StardewValley.Objects;
-using System.Reflection;
-using Netcode;
 using StardewValley.Buildings;
-using Harmony;
-using System.Text.RegularExpressions;
-using JsonAssets.Overrides;
-using Newtonsoft.Json;
-using StardewValley.Tools;
-using JsonAssets.Other.ContentPatcher;
+using StardewValley.Locations;
+using StardewValley.Menus;
 using StardewValley.Network;
-using SpaceShared;
+using StardewValley.Objects;
+using StardewValley.TerrainFeatures;
+using StardewValley.Tools;
+using SObject = StardewValley.Object;
 
 // TODO: Refactor recipes
 
@@ -53,72 +54,57 @@ namespace JsonAssets
             SpaceCore.TileSheetExtensions.RegisterExtendedTileSheet("TileSheets\\fruitTrees", 80);
             SpaceCore.TileSheetExtensions.RegisterExtendedTileSheet("Characters\\Farmer\\shirts", 32);
             SpaceCore.TileSheetExtensions.RegisterExtendedTileSheet("Characters\\Farmer\\pants", 688);
-            
+
             try
             {
                 harmony = HarmonyInstance.Create("spacechase0.JsonAssets");
-                doPrefix(typeof(StardewValley.Object), "canBePlacedHere", typeof(ObjectCanPlantHereOverride));
-                doPrefix(typeof(StardewValley.Object), "checkForAction", typeof(ObjectNoActionHook));
-                doPrefix(typeof(StardewValley.Object), "loadDisplayName", typeof(ObjectDisplayNameHook));
-                doPrefix(typeof(StardewValley.Object), "getCategoryName", typeof(ObjectCategoryTextOverride));
-                doPrefix(typeof(StardewValley.Object), "getCategoryColor", typeof(ObjectCategoryColorOverride));
-                doPostfix(typeof(StardewValley.Object), "isIndexOkForBasicShippedCategory", typeof(ObjectCollectionShippingHook));
-                doPrefix(typeof(StardewValley.Objects.Ring), "loadDisplayFields", typeof(RingLoadDisplayFieldsHook));
-                doPrefix(typeof(StardewValley.Crop), nameof(Crop.isPaddyCrop), typeof(PaddyCropHook));
-                doTranspiler(typeof(StardewValley.Crop), nameof(Crop.newDay), typeof(IndoorOnlyCropHook));
+
+                // object patches
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(SObject), nameof(SObject.canBePlacedHere)),
+                    prefix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.CanBePlacedHere_Prefix))
+                );
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(SObject), nameof(SObject.checkForAction)),
+                    prefix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.CheckForAction_Prefix))
+                );
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(SObject), "loadDisplayName"),
+                    prefix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.LoadDisplayName_Prefix))
+                );
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(SObject), nameof(SObject.getCategoryName)),
+                    prefix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.GetCategoryName_Prefix))
+                );
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(SObject), nameof(SObject.getCategoryColor)),
+                    prefix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.GetCategoryColor_Prefix))
+                );
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(SObject), nameof(SObject.isIndexOkForBasicShippedCategory)),
+                    prefix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.IsIndexOkForBasicShippedCategory_Postfix))
+                );
+
+                // ring patches
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(Ring), "loadDisplayFields"),
+                    prefix: new HarmonyMethod(typeof(RingPatches), nameof(RingPatches.LoadDisplayFields_Prefix))
+                );
+
+                // crop patches
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(Crop), nameof(Crop.isPaddyCrop)),
+                    prefix: new HarmonyMethod(typeof(CropPatches), nameof(CropPatches.IsPaddyCrop_Prefix))
+                );
+
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(Crop), nameof(Crop.newDay)),
+                    transpiler: new HarmonyMethod(typeof(CropPatches), nameof(CropPatches.NewDay_Transpiler))
+                );
             }
             catch (Exception e)
             {
                 Log.error($"Exception doing harmony stuff: {e}");
-            }
-        }
-
-        private void doPrefix(Type origType, string origMethod, Type newType)
-        {
-            doPrefix(origType.GetMethod(origMethod, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static), newType.GetMethod("Prefix"));
-        }
-        private void doPrefix(MethodInfo orig, MethodInfo prefix)
-        {
-            try
-            {
-                Log.trace($"Doing prefix patch {orig}:{prefix}...");
-                harmony.Patch(orig, new HarmonyMethod(prefix));
-            }
-            catch (Exception e)
-            {
-                Log.error($"Exception doing prefix patch {orig}:{prefix}: {e}");
-            }
-        }
-        private void doPostfix(Type origType, string origMethod, Type newType)
-        {
-            doPostfix(origType.GetMethod(origMethod, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static), newType.GetMethod("Postfix"));
-        }
-        private void doPostfix(MethodInfo orig, MethodInfo postfix)
-        {
-            try
-            {
-                Log.trace($"Doing postfix patch {orig}:{postfix}...");
-                harmony.Patch(orig, null, new HarmonyMethod(postfix));
-            }
-            catch (Exception e)
-            {
-                Log.error($"Exception doing postfix patch {orig}:{postfix}: {e}");
-            }
-        }
-        private void doTranspiler(Type origType, string origMethod, Type newType)
-        {
-            doTranspiler(origType.GetMethod(origMethod, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static), newType.GetMethod("Transpiler"));
-        }
-        private void doTranspiler(MethodInfo orig, MethodInfo transpiler)
-        {
-            try
-            {
-                Log.trace($"Doing transpiler patch {orig}:{transpiler}...");
-                harmony.Patch(orig, null, null, new HarmonyMethod(transpiler));
-            }
-            catch (Exception e)
-            {
-                Log.error($"Exception doing transpiler patch {orig}:{transpiler}: {e}");
             }
         }
 
@@ -441,9 +427,11 @@ namespace JsonAssets
                     BigCraftableData craftable = contentPack.ReadJsonFile<BigCraftableData>($"{relativePath}/big-craftable.json");
                     if (craftable == null || (craftable.DisableWithMod != null && Helper.ModRegistry.IsLoaded(craftable.DisableWithMod)))
                         continue;
-
+                    
                     // save craftable
                     craftable.texture = contentPack.LoadAsset<Texture2D>($"{relativePath}/big-craftable.png");
+                    if (craftable.ReserveNextIndex)
+                        craftable.texture2 = contentPack.LoadAsset<Texture2D>($"{relativePath}/big-craftable-2.png");
                     RegisterBigCraftable(contentPack.Manifest, craftable);
                 }
             }
@@ -574,7 +562,7 @@ namespace JsonAssets
         private void onCreated(object sender, SaveCreatedEventArgs e)
         {
             Log.debug("Loading stuff early (creation)");
-            initStuff( loadIdFiles: false );
+            initStuff(loadIdFiles: false);
         }
 
         private void onLoadStageChanged(object sender, LoadStageChangedEventArgs e)
@@ -582,35 +570,79 @@ namespace JsonAssets
             if (e.NewStage == StardewModdingAPI.Enums.LoadStage.SaveParsed)
             {
                 Log.debug("Loading stuff early (loading)");
-                initStuff( loadIdFiles: true );
+                initStuff(loadIdFiles: true);
             }
-            else if ( e.NewStage == StardewModdingAPI.Enums.LoadStage.SaveLoadedLocations )
+            else if (e.NewStage == StardewModdingAPI.Enums.LoadStage.SaveLoadedLocations)
             {
                 Log.debug("Fixing IDs");
                 fixIdsEverywhere();
             }
-            else if ( e.NewStage == StardewModdingAPI.Enums.LoadStage.Loaded )
+            else if (e.NewStage == StardewModdingAPI.Enums.LoadStage.Loaded)
             {
-                Log.debug("Adding default recipes");
+                Log.debug("Adding default/leveled recipes");
                 foreach (var obj in objects)
                 {
-                    if (obj.Recipe != null && obj.Recipe.IsDefault && !Game1.player.knowsRecipe(obj.Name))
+                    if (obj.Recipe != null)
                     {
-                        if (obj.Category == ObjectData.Category_.Cooking)
+                        bool unlockedByLevel = false;
+                        if ( obj.Recipe.SkillUnlockName?.Length > 0 && obj.Recipe.SkillUnlockLevel > 0 )
                         {
-                            Game1.player.cookingRecipes.Add(obj.Name, 0);
+                            int level = 0;
+                            switch ( obj.Recipe.SkillUnlockName )
+                            {
+                                case "Farming": level = Game1.player.farmingLevel.Value; break;
+                                case "Fishing": level = Game1.player.fishingLevel.Value; break;
+                                case "Foraging": level = Game1.player.foragingLevel.Value; break;
+                                case "Mining": level = Game1.player.miningLevel.Value; break;
+                                case "Combat": level = Game1.player.combatLevel.Value; break;
+                                case "Luck": level = Game1.player.luckLevel.Value; break;
+                                default: level = Game1.player.GetCustomSkillLevel(obj.Recipe.SkillUnlockName); break;
+                            }
+
+                            if ( level >= obj.Recipe.SkillUnlockLevel )
+                            {
+                                unlockedByLevel = true;
+                            }
                         }
-                        else
+                        if ((obj.Recipe.IsDefault || unlockedByLevel) && !Game1.player.knowsRecipe(obj.Name))
                         {
-                            Game1.player.craftingRecipes.Add(obj.Name, 0);
+                            if (obj.Category == ObjectData.Category_.Cooking)
+                            {
+                                Game1.player.cookingRecipes.Add(obj.Name, 0);
+                            }
+                            else
+                            {
+                                Game1.player.craftingRecipes.Add(obj.Name, 0);
+                            }
                         }
                     }
                 }
                 foreach (var big in bigCraftables)
                 {
-                    if (big.Recipe != null && big.Recipe.IsDefault && !Game1.player.knowsRecipe(big.Name))
+                    if (big.Recipe != null)
                     {
-                        Game1.player.craftingRecipes.Add(big.Name, 0);
+                        bool unlockedByLevel = false;
+                        if (big.Recipe.SkillUnlockName?.Length > 0 && big.Recipe.SkillUnlockLevel > 0)
+                        {
+                            int level = 0;
+                            switch (big.Recipe.SkillUnlockName)
+                            {
+                                case "Farming": level = Game1.player.farmingLevel.Value; break;
+                                case "Fishing": level = Game1.player.fishingLevel.Value; break;
+                                case "Foraging": level = Game1.player.foragingLevel.Value; break;
+                                case "Mining": level = Game1.player.miningLevel.Value; break;
+                                case "Combat": level = Game1.player.combatLevel.Value; break;
+                                case "Luck": level = Game1.player.luckLevel.Value; break;
+                                default: level = Game1.player.GetCustomSkillLevel(big.Recipe.SkillUnlockName); break;
+                            }
+
+                            if (level >= big.Recipe.SkillUnlockLevel)
+                            {
+                                unlockedByLevel = true;
+                            }
+                        }
+                        if ((big.Recipe.IsDefault || unlockedByLevel) && !Game1.player.knowsRecipe(big.Name))
+                            Game1.player.craftingRecipes.Add(big.Name, 0);
                     }
                 }
             }
@@ -621,7 +653,7 @@ namespace JsonAssets
             if (!Context.IsMainPlayer && !didInit)
             {
                 Log.debug("Loading stuff early (MP client)");
-                initStuff( loadIdFiles: false );
+                initStuff(loadIdFiles: false);
             }
         }
 
@@ -630,10 +662,10 @@ namespace JsonAssets
         /// <param name="e">The event arguments.</param>
         private void onMenuChanged(object sender, MenuChangedEventArgs e)
         {
-            if ( e.NewMenu == null )
+            if (e.NewMenu == null)
                 return;
 
-            if ( e.NewMenu is TitleMenu )
+            if (e.NewMenu is TitleMenu)
             {
                 resetAtTitle();
                 return;
@@ -644,7 +676,7 @@ namespace JsonAssets
             string portraitPerson = menu?.portraitPerson?.Name;
             if (portraitPerson == null && Game1.currentLocation?.Name == "Hospital")
                 portraitPerson = "Harvey";
-            if (menu == null || ( portraitPerson == null || portraitPerson == "" ) && !hatMouse)
+            if (menu == null || (portraitPerson == null || portraitPerson == "") && !hatMouse)
                 return;
 
             //if (menu.portraitPerson.name == "Pierre")
@@ -661,7 +693,7 @@ namespace JsonAssets
                     {
                         bool add = true;
                         // Can't use continue here or the item might not sell
-                        if (obj.Recipe.PurchaseFrom != portraitPerson || (obj.Recipe.PurchaseFrom == "HatMouse" && hatMouse) )
+                        if (obj.Recipe.PurchaseFrom != portraitPerson || (obj.Recipe.PurchaseFrom == "HatMouse" && hatMouse))
                             add = false;
                         if (Game1.player.craftingRecipes.ContainsKey(obj.Name) || Game1.player.cookingRecipes.ContainsKey(obj.Name))
                             add = false;
@@ -670,7 +702,7 @@ namespace JsonAssets
                             add = false;
                         if (add)
                         {
-                            var recipeObj = new StardewValley.Object(obj.id, 1, true, obj.Recipe.PurchasePrice, 0);
+                            var recipeObj = new SObject(obj.id, 1, true, obj.Recipe.PurchasePrice, 0);
                             forSale.Add(recipeObj);
                             itemPriceAndStock.Add(recipeObj, new int[] { obj.Recipe.PurchasePrice, 1 });
                             Log.trace($"\tAdding recipe for {obj.Name}");
@@ -683,10 +715,10 @@ namespace JsonAssets
                     if (obj.PurchaseRequirements != null && obj.PurchaseRequirements.Count > 0 &&
                         precondMeth.Invoke<int>(new object[] { obj.GetPurchaseRequirementString() }) == -1)
                         continue;
-                    Item item = new StardewValley.Object(Vector2.Zero, obj.id, int.MaxValue);
+                    Item item = new SObject(Vector2.Zero, obj.id, int.MaxValue);
                     forSale.Add(item);
                     int price = obj.PurchasePrice;
-                    if ( obj.Category == ObjectData.Category_.Seeds )
+                    if (obj.Category == ObjectData.Category_.Seeds)
                     {
                         price = (int)(price * Game1.MasterPlayer.difficultyModifier);
                     }
@@ -708,7 +740,7 @@ namespace JsonAssets
                             add = false;
                         if (add)
                         {
-                            var recipeObj = new StardewValley.Object(new Vector2(0, 0), big.id, true);
+                            var recipeObj = new SObject(new Vector2(0, 0), big.id, true);
                             forSale.Add(recipeObj);
                             itemPriceAndStock.Add(recipeObj, new int[] { big.Recipe.PurchasePrice, 1 });
                             Log.trace($"\tAdding recipe for {big.Name}");
@@ -721,14 +753,14 @@ namespace JsonAssets
                     if (big.PurchaseRequirements != null && big.PurchaseRequirements.Count > 0 &&
                         precondMeth.Invoke<int>(new object[] { big.GetPurchaseRequirementString() }) == -1)
                         continue;
-                    Item item = new StardewValley.Object(Vector2.Zero, big.id, false);
+                    Item item = new SObject(Vector2.Zero, big.id, false);
                     forSale.Add(item);
                     itemPriceAndStock.Add(item, new int[] { big.PurchasePrice, int.MaxValue });
                     Log.trace($"\tAdding {big.Name}");
                 }
-                if ( hatMouse )
+                if (hatMouse)
                 {
-                    foreach ( var hat in hats )
+                    foreach (var hat in hats)
                     {
                         Item item = new Hat(hat.GetHatId());
                         forSale.Add(item);
@@ -752,11 +784,11 @@ namespace JsonAssets
                 }
             }
 
-            ( ( Api ) api ).InvokeAddedItemsToShop();
+            ((Api)api).InvokeAddedItemsToShop();
         }
 
         private bool didInit = false;
-        private void initStuff( bool loadIdFiles )
+        private void initStuff(bool loadIdFiles)
         {
             if (didInit)
                 return;
@@ -861,10 +893,10 @@ namespace JsonAssets
             for (int i = 0; i < Game1.player.Items.Count; ++i)
             {
                 var item = Game1.player.Items[i];
-                if (item is StardewValley.Object obj && ringIds.Contains(obj.ParentSheetIndex))
+                if (item is SObject obj && ringIds.Contains(obj.ParentSheetIndex))
                 {
                     Log.trace($"Turning a ring-object of {obj.ParentSheetIndex} into a proper ring");
-                    Game1.player.Items[i] = new StardewValley.Objects.Ring(obj.ParentSheetIndex);
+                    Game1.player.Items[i] = new Ring(obj.ParentSheetIndex);
                 }
             }
         }
@@ -922,7 +954,7 @@ namespace JsonAssets
                 if (objectIds.ContainsKey((string)data))
                     return objectIds[(string)data];
 
-                foreach ( var obj in Game1.objectInformation )
+                foreach (var obj in Game1.objectInformation)
                 {
                     if (obj.Value.Split('/')[0] == (string)data)
                         return obj.Key;
@@ -966,6 +998,8 @@ namespace JsonAssets
                     ids.Add(d.Name, currId++);
                     if (type == "objects" && ((ObjectData)d).IsColored)
                         ++currId;
+                    else if (type == "big-craftables" && ((BigCraftableData)d).ReserveNextIndex)
+                        ++currId;
                     d.id = ids[d.Name];
                 }
             }
@@ -994,13 +1028,13 @@ namespace JsonAssets
         private void clearIds(out IDictionary<string, int> ids, List<DataNeedsId> objs)
         {
             ids = null;
-            foreach ( DataNeedsId obj in objs )
+            foreach (DataNeedsId obj in objs)
             {
                 obj.id = -1;
             }
         }
 
-        private IDictionary<int, string> cloneIdDictAndRemoveOurs( IDictionary<int, string> full, IDictionary<string, int> ours )
+        private IDictionary<int, string> cloneIdDictAndRemoveOurs(IDictionary<int, string> full, IDictionary<string, int> ours)
         {
             var ret = new Dictionary<int, string>(full);
             foreach (var obj in ours)
@@ -1024,14 +1058,14 @@ namespace JsonAssets
                 Game1.player.leftRing.Value = null;
             if (Game1.player.rightRing.Value != null && fixId(oldObjectIds, objectIds, Game1.player.rightRing.Value.parentSheetIndex, origObjects))
                 Game1.player.rightRing.Value = null;
-            if (Game1.player.hat.Value != null && fixId(oldObjectIds, objectIds, Game1.player.hat.Value.parentSheetIndex, origObjects))
+            if (Game1.player.hat.Value != null && fixId(oldHatIds, hatIds, Game1.player.hat.Value.parentSheetIndex, origHats))
                 Game1.player.hat.Value = null;
             if (Game1.player.shirtItem.Value != null && fixId(oldClothingIds, clothingIds, Game1.player.shirtItem.Value.parentSheetIndex, origClothing))
                 Game1.player.shirtItem.Value = null;
             if (Game1.player.pantsItem.Value != null && fixId(oldClothingIds, clothingIds, Game1.player.pantsItem.Value.parentSheetIndex, origClothing))
                 Game1.player.pantsItem.Value = null;
 #pragma warning restore AvoidNetField
-            foreach ( var loc in Game1.locations )
+            foreach (var loc in Game1.locations)
                 fixLocation(loc);
 
             fixIdDict(Game1.player.basicShipped);
@@ -1041,8 +1075,8 @@ namespace JsonAssets
             fixIdDict2(Game1.player.fishCaught);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage( "SMAPI.CommonErrors", "AvoidNetField") ]
-        private void fixLocation( GameLocation loc )
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidNetField")]
+        private void fixLocation(GameLocation loc)
         {
             if (loc is FarmHouse fh)
             {
@@ -1053,10 +1087,10 @@ namespace JsonAssets
             }
 
             IList<Vector2> toRemove = new List<Vector2>();
-            foreach ( var tfk in loc.terrainFeatures.Keys )
+            foreach (var tfk in loc.terrainFeatures.Keys)
             {
                 var tf = loc.terrainFeatures[tfk];
-                if ( tf is HoeDirt hd )
+                if (tf is HoeDirt hd)
                 {
                     if (hd.crop == null)
                         continue;
@@ -1068,14 +1102,14 @@ namespace JsonAssets
                     {
                         var key = cropIds.FirstOrDefault(x => x.Value == hd.crop.rowInSpriteSheet.Value).Key;
                         var c = crops.FirstOrDefault(x => x.Name == key);
-                        if ( c != null ) // Non-JA crop
+                        if (c != null) // Non-JA crop
                         {
                             Log.verbose("Fixing crop product: From " + hd.crop.indexOfHarvest.Value + " to " + c.Product + "=" + ResolveObjectId(c.Product));
                             hd.crop.indexOfHarvest.Value = ResolveObjectId(c.Product);
                         }
                     }
                 }
-                else if ( tf is FruitTree ft )
+                else if (tf is FruitTree ft)
                 {
                     var oldId = ft.treeType.Value;
                     if (fixId(oldFruitTreeIds, fruitTreeIds, ft.treeType, origFruitTrees))
@@ -1084,7 +1118,7 @@ namespace JsonAssets
                     {
                         var key = fruitTreeIds.FirstOrDefault(x => x.Value == ft.treeType.Value).Key;
                         var ftt = fruitTrees.FirstOrDefault(x => x.Name == key);
-                        if ( ftt != null ) // Non-JA fruit tree
+                        if (ftt != null) // Non-JA fruit tree
                         {
                             Log.verbose("Fixing fruit tree product: From " + ft.indexOfFruit.Value + " to " + ftt.Product + "=" + ResolveObjectId(ftt.Product));
                             ft.indexOfFruit.Value = ResolveObjectId(ftt.Product);
@@ -1096,10 +1130,10 @@ namespace JsonAssets
                 loc.terrainFeatures.Remove(rem);
 
             toRemove.Clear();
-            foreach ( var objk in loc.netObjects.Keys )
+            foreach (var objk in loc.netObjects.Keys)
             {
                 var obj = loc.netObjects[objk];
-                if ( obj is Chest chest )
+                if (obj is Chest chest)
                 {
                     fixItemList(chest.items);
                 }
@@ -1116,13 +1150,13 @@ namespace JsonAssets
                             toRemove.Add(objk);
                     }
                 }
-                
-                if ( obj.heldObject.Value != null )
+
+                if (obj.heldObject.Value != null)
                 {
                     if (fixId(oldObjectIds, objectIds, obj.heldObject.Value.parentSheetIndex, origObjects))
                         obj.heldObject.Value = null;
 
-                    if ( obj.heldObject.Value is Chest chest2 )
+                    if (obj.heldObject.Value is Chest chest2)
                     {
                         fixItemList(chest2.items);
                     }
@@ -1172,17 +1206,26 @@ namespace JsonAssets
                 {
                     if (building.indoors.Value != null)
                         fixLocation(building.indoors.Value);
-                    if ( building is Mill mill )
+                    if (building is Mill mill)
                     {
                         fixItemList(mill.input.Value.items);
                         fixItemList(mill.output.Value.items);
                     }
-                    else if ( building is FishPond pond )
+                    else if (building is FishPond pond)
                     {
+                        if (pond.fishType.Value == -1)
+                        {
+                            Helper.Reflection.GetField<SObject>(pond, "_fishObject").SetValue(null);
+                            continue;
+                        }
+
                         if (fixId(oldObjectIds, objectIds, pond.fishType, origObjects))
+                        {
                             pond.fishType.Value = -1;
-                        if (pond.GetFishObject() != null && fixId(oldObjectIds, objectIds, pond.GetFishObject().parentSheetIndex, origObjects))
-                            Helper.Reflection.GetField<StardewValley.Object>(pond, "_fishObject").SetValue(null);
+                            pond.currentOccupants.Value = 0;
+                            pond.maxOccupants.Value = 0;
+                            Helper.Reflection.GetField<SObject>(pond, "_fishObject").SetValue(null);
+                        }
                         if (pond.sign.Value != null && fixId(oldObjectIds, objectIds, pond.sign.Value.parentSheetIndex, origObjects))
                             pond.sign.Value = null;
                         if (pond.output.Value != null && fixId(oldObjectIds, objectIds, pond.output.Value.parentSheetIndex, origObjects))
@@ -1191,14 +1234,14 @@ namespace JsonAssets
                             pond.neededItem.Value = null;
                     }
                 }
-            
+
             if (loc is DecoratableLocation decoLoc)
                 foreach (var furniture in decoLoc.furniture)
                 {
                     if (furniture is StorageFurniture storage)
                         fixItemList(storage.heldItems);
                 }
-            
+
             if (loc is Farm farm)
             {
                 foreach (var animal in farm.Animals.Values)
@@ -1217,12 +1260,12 @@ namespace JsonAssets
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidNetField")]
-        private void fixItemList( IList< Item > items )
+        private void fixItemList(IList<Item> items)
         {
-            for ( int i = 0; i < items.Count; ++i )
+            for (int i = 0; i < items.Count; ++i)
             {
                 var item = items[i];
-                if ( item is StardewValley.Object obj )
+                if (item is SObject obj)
                 {
                     if (!obj.bigCraftable.Value)
                     {
@@ -1235,12 +1278,12 @@ namespace JsonAssets
                             items[i] = null;
                     }
                 }
-                else if ( item is Hat hat )
+                else if (item is Hat hat)
                 {
                     if (fixId(oldHatIds, hatIds, hat.which, origHats))
                         items[i] = null;
                 }
-                else if ( item is MeleeWeapon weapon )
+                else if (item is MeleeWeapon weapon)
                 {
                     if (fixId(oldWeaponIds, weaponIds, weapon.initialParentTileIndex, origWeapons))
                         items[i] = null;
@@ -1249,12 +1292,12 @@ namespace JsonAssets
                     else if (fixId(oldWeaponIds, weaponIds, weapon.currentParentTileIndex, origWeapons))
                         items[i] = null;
                 }
-                else if ( item is Ring ring )
+                else if (item is Ring ring)
                 {
                     if (fixId(oldObjectIds, objectIds, ring.indexInTileSheet, origObjects))
                         items[i] = null;
                 }
-                else if ( item is Clothing clothing )
+                else if (item is Clothing clothing)
                 {
                     if (fixId(oldClothingIds, clothingIds, clothing.parentSheetIndex, origClothing))
                         items[i] = null;
@@ -1314,7 +1357,7 @@ namespace JsonAssets
 
         // Return true if the item should be deleted, false otherwise.
         // Only remove something if old has it but not new
-        private bool fixId(IDictionary<string, int> oldIds, IDictionary<string, int> newIds, NetInt id, IDictionary<int, string> origData )
+        private bool fixId(IDictionary<string, int> oldIds, IDictionary<string, int> newIds, NetInt id, IDictionary<int, string> origData)
         {
             if (origData.ContainsKey(id.Value))
                 return false;

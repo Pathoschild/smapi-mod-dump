@@ -1,0 +1,12 @@
+{
+	"Name": "Sailor Styles: Shirts",
+	"Author": "blueberry",
+	"Version": "2.1",
+	"Description": "CURRENTLY DISABLED. Pending compatibility for SDV1.4.",
+	"UniqueID": "blueberry.SailorStylesShirts",
+	"MinimumApiVersion": "2.5",
+	"ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher",
+	},
+	"UpdateKeys": ["Nexus:4154"]
+}

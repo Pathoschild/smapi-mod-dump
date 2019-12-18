@@ -40,6 +40,8 @@ namespace Elevator
 		
 			players = players.OrderBy(x => x != Game1.player).ThenBy(x => x.Name).ToList();//Sort alphabetically, and put the local player first
 
+			if (players.Contains(Game1.player)) players.Insert(0, null); // Mailbox button
+
 			UpdateButtonList();
 
 			forwardButton = new ClickableTextureComponent(new Rectangle(base.xPositionOnScreen + base.width + 64 - 48, base.yPositionOnScreen + base.height - 48, 48, 44), Game1.mouseCursors, new Rectangle(365, 495, 12, 11), 4f, false);
@@ -116,7 +118,7 @@ namespace Elevator
 			int i = 0;
 			foreach (Farmer player in playersToDraw)
 			{
-				ElevatorButton button = new ElevatorButton(x, y, player)
+				ElevatorButton button = new ElevatorButton(x, y, player, player == null)
 				{
 					myID = 1000 + i//Unused
 				};

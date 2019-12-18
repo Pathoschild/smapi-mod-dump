@@ -1,0 +1,10 @@
+﻿{
+  "Name": "DailyFarmPhoto",
+  "Author": "Seawolf",
+  "Version": "0.1",
+  "Description": "This mod snaps a photo of your farm every day automatically",
+  "UniqueID": "Seawolf.DailyFarmPhoto",
+  "EntryDll": "DailyFarmPhoto.dll",
+  "MinimumApiVersion": "3.0.1",
+  "UpdateKeys": [ "Nexus:4791" ]
+}

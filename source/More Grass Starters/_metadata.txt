@@ -5,9 +5,9 @@ mods:
    More Grass Starters
 
 latest commit:
-   commit e83e2d2e989590ecbf7d64b4340da2922616dba7
+   commit b4c80fbf183f86d2a36846fd12a0987ad97683b1
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:25:20 2019 -0500
+   Date:   Mon Nov 25 17:41:11 2019 -0500
    
-       Update version
+       1.0.4 - SDV 1.4
    

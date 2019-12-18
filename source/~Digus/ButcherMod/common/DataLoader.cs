@@ -238,6 +238,10 @@ namespace AnimalHusbandryMod.common
                                   && libraryMuseum.museumAlreadyHasArtifact(107)
                     , (letter) => Game1.player.mailReceived.Add(letter.Id)
                 )
+                {
+                    GroupId = "AHM.Gunther",
+                    Title = DataLoader.i18n.Get("Feeding.TreatDaffodil.Letter.Title")
+                }
             );
 
             MailDao.SaveLetter(
@@ -249,6 +253,10 @@ namespace AnimalHusbandryMod.common
                                   && MuseumContainsTheseItems(new int[] { 579, 580, 581, 582, 583, 584, 585 }, new HashSet<int>(libraryMuseum.museumPieces.Values))
                     , (letter) => Game1.player.mailReceived.Add(letter.Id)
                 )
+                {
+                    GroupId = "AHM.Gunther",
+                    Title = DataLoader.i18n.Get("Feeding.TreatCrocus.Letter.Title")
+                }
             );
         }
 

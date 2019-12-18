@@ -1,0 +1,7 @@
+{
+  "OptionsPage.ReloadIndicator": "Besoin d'un redémarrage",
+  "OptionsPage.ModSettingsTab": "Paramètres de modification",
+  "StaticConfig.SuccessMessage": "Paramètres enregistrés",
+  "StaticConfig.FailMessage": "Enregistrer l'erreur",
+  "OptionsList.NewValue": "Entrez une nouvelle valeur"
+}

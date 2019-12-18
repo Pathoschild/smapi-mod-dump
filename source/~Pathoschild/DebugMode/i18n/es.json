@@ -8,5 +8,5 @@
     "label.festival-name": "festival",
     "label.event-id": "evento ID",
     "label.event-script": "evento script",
-    "label.song": "song" // TODO
+    "label.song": "canción"
 }

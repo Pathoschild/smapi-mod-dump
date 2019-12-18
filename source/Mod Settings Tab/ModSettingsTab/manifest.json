@@ -1,0 +1,10 @@
+{
+  "Name": "ModSettingsTab",
+  "Author": "Gilar Fasulaki",
+  "Version": "0.1.0",
+  "Description": "Replaces the standard settings tab",
+  "UniqueID": "GilarF.ModSettingsTab",
+  "EntryDll": "ModSettingsTab.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:4579"]
+}

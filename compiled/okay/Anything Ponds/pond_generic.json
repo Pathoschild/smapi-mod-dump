@@ -1,0 +1,21 @@
+{
+  "Format": "1.0",
+  "Entries": [
+    {
+      "RequiredTags": [
+        "!anything_ponds_exclude"
+      ],
+      "SpawnTime": 999999,
+      "ProducedItems": [
+        {
+          "RequiredPopulation": 10,
+          "Chance": 0.01,
+          "ItemID": 747,
+          "MinQuantity": 1,
+          "MaxQuantity": 1
+        }
+      ],
+      "PopulationGates": null
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Decrafting Mod",
+  "Author": "iSkLz_",
+  "Version": "1.0.4",
+  "Description": "Allows you to decraft vanilla items.",
+  "UniqueID": "MSCFC.DecraftingMod",
+  "EntryDll": "DecraftingModCS.dll",
+  "MinimumApiVersion": "2.6.0",
+  "UpdateKeys": [ "Nexus:4158" ]
+}

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3900
+IDs: Pathoschild.NoclipMode
+update keys: Nexus:3900, GitHub:Pathoschild/StardewMods

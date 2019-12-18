@@ -5,9 +5,12 @@ mods:
    Stack to Nearby Chests
 
 latest commit:
-   commit 27a0b6fac34080d6c034dda9f7efb632015093a1
-   Author: Ilyaki <ilyaki.ilyaki@gmail.com>
-   Date:   Wed May 1 06:12:45 2019 +0100
+   commit 822c062d3fb628eb6f664a699d9b6f3556959b71
+   Merge: 27a0b6f 996cddf
+   Author: Ilyaki <ilyaki@protonmail.com>
+   Date:   Thu Dec 12 13:59:51 2019 +0000
    
-       Fixed conflict with Wear More Rings
+       Merge pull request #10 from haxandsnax/master
+       
+       Add compatibility for SMAPI 3.0 and Stardew 1.4
    

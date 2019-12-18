@@ -1,0 +1,7 @@
+{
+  "OptionsPage.ReloadIndicator": "Necesita reiniciar",
+  "OptionsPage.ModSettingsTab": "Configuración de modificación",
+  "StaticConfig.SuccessMessage": "Configuración guardada",
+  "StaticConfig.FailMessage": "Guardar error",
+  "OptionsList.NewValue": "Ingrese un nuevo valor"
+}

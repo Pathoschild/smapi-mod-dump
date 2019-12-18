@@ -5,10 +5,9 @@ mods:
    Magic
 
 latest commit:
-   commit 194f4c567d80f38867bf98006f23fef3cec5aa98
-   Merge: 09d665f 290f767
+   commit 0b76442674fc4a732d57ff4316feb51f538e4aae
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Jul 8 21:08:58 2019 -0400
+   Date:   Mon Nov 25 17:38:02 2019 -0500
    
-       Merge remote-tracking branch 'origin/master'
+       0.3.1 - SDV 1.4, GMCM support
    

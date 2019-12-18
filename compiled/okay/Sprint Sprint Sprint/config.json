@@ -1,6 +1,11 @@
 {
   "SprintKey": "LeftShift",
-  "SprintSpeed": 5,
-  "DrainStamina": true,
-  "StaminaCost": 0.25
+  "Sprint": {
+    "SprintSpeed": 5,
+    "LeftShiftKeybindExtraSpeed": 7
+  },
+  "StaminaDrain": {
+    "DrainStamina": true,
+    "StaminaDrainCost": 0.25
+  }
 }

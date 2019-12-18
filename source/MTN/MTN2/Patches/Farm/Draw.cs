@@ -22,7 +22,7 @@ namespace MTN2.Patches.FarmPatches
     /// (Farmhouse, Greenhouse, Mailbox, Grandpa Shrine)
     /// </summary>
     public class drawPatch {
-        private const int insertionPoint = 154;
+        private const int insertionPoint = 49;
 
         private static ICustomManager customManager;
 
@@ -45,6 +45,8 @@ namespace MTN2.Patches.FarmPatches
             var codes = new List<CodeInstruction>(instructions);
 
             codes.RemoveRange(insertionPoint, codes.Count - insertionPoint);
+
+            codes[codes.Count - 1].opcode = OpCodes.Nop;
 
             return codes.AsEnumerable();
         }
@@ -80,7 +82,7 @@ namespace MTN2.Patches.FarmPatches
 
                 b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, customManager.MailboxNotification(0f, yOffset, false)), 
                     new Rectangle?(new Rectangle(141, 465, 20, 24)), Color.White * 0.75f, 0f, Vector2.Zero, 4f, SpriteEffects.None, customManager.MailBoxNotifyLayerDepth(false));
-                b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, customManager.MailboxNotification(0.5626f * 64f, (1.5f * -64f) + yOffset, true)), 
+                b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, customManager.MailboxNotification(0.5626f * 64f, yOffset + 40f, true)), 
                     new Rectangle?(new Rectangle(189, 423, 15, 13)), Color.White, 0f, new Vector2(7f, 6f), 4f, SpriteEffects.None, customManager.MailBoxNotifyLayerDepth(true));
             }
 

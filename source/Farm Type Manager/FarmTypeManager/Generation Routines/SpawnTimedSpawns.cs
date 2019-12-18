@@ -80,7 +80,6 @@ namespace FarmTypeManager
                         }
                     }
 
-                    bool isLarge = spawns[0].SavedObject.Type == SavedObject.ObjectType.LargeObject; //whether these spawns are large (2x2 tiles); checked via the first spawn in the list
                     int[] customTiles = { }; //the set of custom tiles to use (to be selected based on the spawn object's type)
                     int? monstersAtLocation = null; //the number of existing monsters at a location (used to optionally limit monster spawns)
 
@@ -105,8 +104,9 @@ namespace FarmTypeManager
                             break;
                     }
 
-                    //generate a new list of valid tiles for this spawn area
+                    //generate a list of included tiles for this spawn area, then pass it to a tile validator
                     List<Vector2> tiles = Utility.GenerateTileList(spawns[0].SpawnArea, location, spawns[0].FarmData.Save, spawns[0].FarmData.Config.QuarryTileIndex, customTiles);
+                    TileValidator validator = new TileValidator(location, tiles, spawns[0].SpawnArea.StrictTileChecking); 
 
                     for (int y = spawns.Count - 1; y >= 0; y--) //for each object to be spawned (looping backward for removal purposes)
                     {
@@ -115,38 +115,32 @@ namespace FarmTypeManager
                             break; //skip the rest of this spawn list
                         }
 
-                        Vector2? chosenTile = null;
-                        while (tiles.Count > 0 && !chosenTile.HasValue) //while potential tiles exist & a valid tile has not been chosen yet
-                        {
-                            int randomIndex = Utility.RNG.Next(tiles.Count); //get the array index for a random valid tile
-                            if (Utility.IsTileValid(location, tiles[randomIndex], isLarge, spawns[y].SpawnArea.StrictTileChecking)) //if this tile is valid
-                            {
-                                chosenTile = tiles[randomIndex]; //choose this tile
-                            }
-                            tiles.RemoveAt(randomIndex); //remove the tile from the list
-                        }
+                        Vector2? chosenTile = validator.GetTile(spawns[y].SavedObject.Size); //get a random valid tile of the object's size
 
-                        if (!chosenTile.HasValue) //if no remaining tiles were valid
+                        if (!chosenTile.HasValue) //if no available tiles were valid
                         {
-                            break; //skip the rest of this spawn list
+                            continue; //skip to the next object in this list
                         }
 
                         spawns[y].SavedObject.Tile = chosenTile.Value; //apply the random tile to this spawn  
 
                         //spawn the object based on its type
+                        bool spawned = false;
                         switch (spawns[y].SavedObject.Type)
                         {
-                            case SavedObject.ObjectType.Forage:
-                                Utility.SpawnForage(spawns[y].SavedObject.ID.Value, location, spawns[y].SavedObject.Tile); //spawn forage
+                            case SavedObject.ObjectType.Object:
+                            case SavedObject.ObjectType.Item:
+                                spawned = Utility.SpawnForage(spawns[y].SavedObject, location, spawns[y].SavedObject.Tile); //spawn forage
                                 break;
                             case SavedObject.ObjectType.LargeObject:
-                                Utility.SpawnLargeObject(spawns[y].SavedObject.ID.Value, location, spawns[y].SavedObject.Tile); //spawn large object
+                                spawned = Utility.SpawnLargeObject(spawns[y].SavedObject.ID.Value, location, spawns[y].SavedObject.Tile); //spawn large object
                                 break;
                             case SavedObject.ObjectType.Ore:
                                 int? oreID = Utility.SpawnOre(spawns[y].SavedObject.Name, location, spawns[y].SavedObject.Tile); //spawn ore and get its ID if successful
                                 if (oreID.HasValue) //if the ore spawned successfully (i.e. generated an ID)
                                 {
                                     spawns[y].SavedObject.ID = oreID.Value; //record this spawn's ID
+                                    spawned = true;
                                 }
                                 break;
                             case SavedObject.ObjectType.Monster:
@@ -157,12 +151,13 @@ namespace FarmTypeManager
                                     if (monstersAtLocation.HasValue) //if the monster counter is being used
                                     {
                                         monstersAtLocation++; //increment monster counter
+                                        spawned = true;
                                     }
                                 }
                                 break;
                         }
 
-                        if (spawns[y].SavedObject.ID.HasValue) //if this object spawned successfully
+                        if (spawned) //if this object spawned successfully
                         {
                             //increment the spawn trackers
                             spawnedTotal++;
@@ -192,8 +187,10 @@ namespace FarmTypeManager
                             }                            
                         }
                     }
+
+                    Utility.Monitor.VerboseLog($"Current spawn list complete. Location: {location.Name}. Area ID: {spawns[0].SpawnArea.UniqueAreaID}. Listed objects spawned: {spawnedByThisList} of {spawns.Count}.");
                 }
-                Utility.Monitor.VerboseLog($"Spawn process complete for time: {time?.Time.ToString() ?? "(any)"}. Objects spawned: {spawnedTotal}.");
+                Utility.Monitor.VerboseLog($"Spawn process complete. Time: {time?.Time.ToString() ?? "(any)"}. Total objects spawned: {spawnedTotal}.");
             }
         }
     }

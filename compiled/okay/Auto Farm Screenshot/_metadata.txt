@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4783
+IDs: DwayneTen.AutoFarmScreenshot
+update keys: GitHub:Dwayneten/AutoFarmScreenshot, Nexus:4783

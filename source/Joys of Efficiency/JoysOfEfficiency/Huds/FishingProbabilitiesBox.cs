@@ -5,6 +5,7 @@ using JoysOfEfficiency.Core;
 using JoysOfEfficiency.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
@@ -17,6 +18,8 @@ namespace JoysOfEfficiency.Huds
 {
     public class FishingProbabilitiesBox
     {
+        private static IReflectionHelper Reflection => InstanceHolder.Reflection;
+
         private static readonly Logger Logger = new Logger("FishingProbabilitiesInfo");
 
         private static Dictionary<int, double> _fishingDictionary;
@@ -37,7 +40,7 @@ namespace JoysOfEfficiency.Huds
                     Rectangle rectangle = new Rectangle(location.fishSplashPoint.X * 64, location.fishSplashPoint.Y * 64, 64, 64);
                     Rectangle value = new Rectangle((int)rod.bobber.X - 80, (int)rod.bobber.Y - 80, 64, 64);
                     bool flag = rectangle.Intersects(value);
-                    int clearWaterDistance = InstanceHolder.Reflection.GetField<int>(rod, "clearWaterDistance").GetValue();
+                    int clearWaterDistance = Reflection.GetField<int>(rod, "clearWaterDistance").GetValue();
 
                     _fishingDictionary = GetFishes(location, rod.attachments[0]?.ParentSheetIndex ?? -1, clearWaterDistance + (flag ? 1 : 0), Game1.player, InstanceHolder.Config.MorePreciseProbabilities ? InstanceHolder.Config.TrialOfExamine : 1);
                 }
@@ -208,7 +211,7 @@ namespace JoysOfEfficiency.Huds
             double num2 = 1.0;
             num2 += 0.4 * who.FishingLevel;
             num2 += waterDepth * 0.1;
-            double p = 0;
+            double p;
             int level = shaft.getMineArea();
             switch (level)
             {
@@ -228,6 +231,8 @@ namespace JoysOfEfficiency.Huds
                     p = 0.01 + 0.008 * num2;
                     dict.Add(162, p);
                     break;
+                default:
+                    return dict;
             }
 
             if (level == 10 || level == 40)
@@ -277,8 +282,7 @@ namespace JoysOfEfficiency.Huds
             double ratio = 1.0;
             foreach (KeyValuePair<int, double> kv in dict)
             {
-                double d = kv.Value * ratio;
-                result.Add(kv.Key, d);
+                result.Add(kv.Key, kv.Value * ratio);
                 ratio *= (1 - kv.Value);
             }
 
@@ -337,11 +341,7 @@ namespace JoysOfEfficiency.Huds
 
         private static Dictionary<int, double> MagnifyProbabilities(Dictionary<int, double> dict, double ratio)
         {
-            Dictionary<int, double> result = new Dictionary<int, double>();
-            foreach (KeyValuePair<int, double> kv in dict)
-                result.Add(kv.Key, kv.Value * ratio);
-
-            return result;
+            return dict.ToDictionary(kv => kv.Key, kv => kv.Value * ratio);
         }
 
         private static Dictionary<TK, TV> ConcatDictionary<TK, TV>(Dictionary<TK, TV> a, Dictionary<TK, TV> b)
@@ -349,17 +349,17 @@ namespace JoysOfEfficiency.Huds
             return a.Concat(b).ToDictionary(x => x.Key, x => x.Value);
         }
 
-        private static void DrawProbBox(Dictionary<int, double> probs)
+        private static void DrawProbBox(Dictionary<int, double> probabilities)
         {
             SpriteBatch b = Game1.spriteBatch;
-            Size size = GetProbBoxSize(probs);
+            Size size = GetProbBoxSize(probabilities);
             IClickableMenu.drawTextureBox(Game1.spriteBatch, InstanceHolder.Config.ProbBoxCoordinates.X, InstanceHolder.Config.ProbBoxCoordinates.Y, size.Width, size.Height, Color.White);
             const int square = (int)(Game1.tileSize / 1.5);
             int x = InstanceHolder.Config.ProbBoxCoordinates.X + 8;
             int y = InstanceHolder.Config.ProbBoxCoordinates.Y + 16;
             SpriteFont font = Game1.dialogueFont;
             {
-                foreach (KeyValuePair<int, double> kv in probs)
+                foreach (KeyValuePair<int, double> kv in probabilities)
                 {
                     string text = $"{kv.Value * 100:f1}%";
                     Object fish = new Object(kv.Key, 1);
@@ -372,13 +372,13 @@ namespace JoysOfEfficiency.Huds
             }
         }
 
-        private static Size GetProbBoxSize(Dictionary<int, double> probs)
+        private static Size GetProbBoxSize(Dictionary<int, double> probabilities)
         {
             int width = 16, height = 48;
             int square = (int)(Game1.tileSize / 1.5);
             SpriteFont font = Game1.dialogueFont;
             {
-                foreach (KeyValuePair<int, double> kv in probs)
+                foreach (KeyValuePair<int, double> kv in probabilities)
                 {
                     string text = $"{kv.Value * 100:f1}%";
                     Vector2 textSize = font.MeasureString(text);

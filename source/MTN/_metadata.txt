@@ -5,9 +5,9 @@ mods:
    MTN
 
 latest commit:
-   commit 4f3e7eee40eb69d2435eeab73781bcb1bdd77d40
+   commit 309afed08ec634f379fb3d64575a61436143dd8b
    Author: David Weil <gamemx25@gmail.com>
-   Date:   Tue Dec 3 04:39:44 2019 -0800
+   Date:   Tue Dec 17 08:27:18 2019 -0800
    
-       Add Custom Data models
+       Resolved additional mailbox issues. Beta6
    

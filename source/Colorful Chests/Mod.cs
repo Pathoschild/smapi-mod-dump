@@ -5,6 +5,7 @@ using StardewValley.Objects;
 using StardewValley;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using SpaceShared;
 
 namespace ColorfulChests
 {
@@ -19,7 +20,10 @@ namespace ColorfulChests
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            Log.Monitor = Monitor;
+
             hsl = Helper.Content.Load<Texture2D>("hsl.png");
+
             helper.Events.Display.MenuChanged += onMenuChanged;
         }
 

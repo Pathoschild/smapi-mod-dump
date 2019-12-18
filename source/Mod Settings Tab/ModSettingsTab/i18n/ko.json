@@ -1,0 +1,7 @@
+{
+  "OptionsPage.ReloadIndicator": "재부팅 필요",
+  "OptionsPage.ModSettingsTab": "수정 설정",
+  "StaticConfig.SuccessMessage": "설정이 저장되었습니다",
+  "StaticConfig.FailMessage": "저장 오류",
+  "OptionsList.NewValue": "새 값을 입력하십시오"
+}

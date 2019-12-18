@@ -1,0 +1,7 @@
+{
+  "OptionsPage.ReloadIndicator": "再起動が必要です",
+  "OptionsPage.ModSettingsTab": "変更設定",
+  "StaticConfig.SuccessMessage": "設定が保存されました",
+  "StaticConfig.FailMessage": "保存エラー",
+  "OptionsList.NewValue": "新しい値を入力してください"
+}

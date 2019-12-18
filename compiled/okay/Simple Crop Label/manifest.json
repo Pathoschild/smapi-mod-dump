@@ -1,8 +1,8 @@
 ﻿{
   "Name": "Simple Crop Label",
   "Author": "TheMusketeer",
-  "Version": "5.5.3",
-  "MinimumApiVersion": "2.11.0",
+  "Version": "5.5.4",
+  "MinimumApiVersion": "3.0.1",
   "Description": "Identify crops and trees on farm",
   "UniqueID": "SimpleCropLabel",
   "UpdateKeys": [ "Nexus:314" ],

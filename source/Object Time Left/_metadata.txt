@@ -5,9 +5,9 @@ mods:
    Object Time Left
 
 latest commit:
-   commit 3aa666792fdb13e901d651e58c2889ded912b859
+   commit 0a7ac8e952c31b62cce08f9236e3082638cb32f6
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:25:53 2019 -0500
+   Date:   Mon Nov 25 17:43:21 2019 -0500
    
-       Update version
+       1.0.4 - SDV 1.4, GMCM support
    

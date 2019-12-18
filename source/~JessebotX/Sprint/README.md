@@ -9,13 +9,13 @@ Hold to sprint. Configurable key bind.
 - Lose stamina as you keep moving and sprinting
 
 ## Compatibility
-- Works with SMAPI 2.10+
+- Works with SMAPI 3.0+
 - Works with both singleplayer and multiplayer.
   - Sprinting Buff only works for the person who has it installed
 
 ## Install
 _**Installation**_
-1. Download [SMAPI (2.10 or later)](https://www.nexusmods.com/stardewvalley/mods/2400)
+1. Download [SMAPI (3.0 or later)](https://www.nexusmods.com/stardewvalley/mods/2400)
 2. Extract/Unzip this mod into your **Stardew Valley/Mods** folder
 
 _**Uninstallation**_

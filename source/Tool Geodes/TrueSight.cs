@@ -28,7 +28,7 @@ namespace ToolGeodes
                 int doDraw = -1;
                 if (Game1.player.HasAdornment(ToolType.Pickaxe, Mod.Config.GEODE_OBJ_TRUESIGHT) > 0)
                 {
-                    if (!(Game1.currentLocation is MineShaft))
+                    if (!(Game1.currentLocation.Name.StartsWith("UndergroundMine")))
                     {
                         if (obj.ParentSheetIndex == 343 || obj.ParentSheetIndex == 450)
                         {
@@ -73,7 +73,7 @@ namespace ToolGeodes
                             drawObjs.Add(doDraw, new SObject(new Vector2(0, 0), doDraw, 1));
                         }
                         var dobj = drawObjs[doDraw];
-                        dobj.drawInMenu(b, Game1.GlobalToLocal(Game1.viewport, new Vector2(pos.X * 64, pos.Y * 64)), 0.8f, 0.5f, 1, false, Color.White, false);
+                        dobj.drawInMenu(b, Game1.GlobalToLocal(Game1.viewport, new Vector2(pos.X * 64, pos.Y * 64)), 0.8f, 0.5f, 1, StackDrawType.Hide, Color.White, false);
                     }
                 }
             }
@@ -89,17 +89,17 @@ namespace ToolGeodes
 
             if (who == null)
                 who = Game1.player;
-            double num1 = Game1.dailyLuck / 2.0 + who.MiningLevel * 0.005 + who.LuckLevel * 0.001;
+            double num1 = who.DailyLuck/ 2.0 + who.MiningLevel * 0.005 + who.LuckLevel * 0.001;
             Random r = new Random(x * 1000 + y + mineLevel + (int)Game1.uniqueIDForThisGame / 2);
             r.NextDouble();
             double num2 = tileIndexOfStone == 40 || tileIndexOfStone == 42 ? 1.2 : 0.8;
             //if (tileIndexOfStone != 34 && tileIndexOfStone != 36 && tileIndexOfStone != 50)
             //    ;
             --stonesLeftOnThisLevel;
-            double num3 = 0.02 + 1.0 / Math.Max(1, stonesLeftOnThisLevel) + who.LuckLevel / 100.0 + Game1.dailyLuck / 5.0;
+            double num3 = 0.02 + 1.0 / Math.Max(1, stonesLeftOnThisLevel) + who.LuckLevel / 100.0 + who.team.sharedDailyLuck.Value / 5.0;
             if (ms.characters.Count == 0)
                 num3 += 0.04;
-            if (!ladderHasSpawned && (stonesLeftOnThisLevel == 0 || r.NextDouble() < num3))
+            if (!ladderHasSpawned && !ms.mustKillAllMonstersToAdvance() && (stonesLeftOnThisLevel == 0 || r.NextDouble() < num3))
                 return -2;
             int bs = breakStone(tileIndexOfStone, x, y, who, r, ms);
             if (bs != -1)
@@ -139,7 +139,7 @@ namespace ToolGeodes
                     r.Next(1, 3);
                     r.NextDouble();
                     double num4 = 0.1 * (1.0 + num1);
-                    if (r.NextDouble() < 0.25)
+                    if (r.NextDouble() < 0.25 * (who.professions.Contains(21) ? 2.0 : 1.0))
                     {
                         return 382;
                     }
@@ -261,7 +261,7 @@ namespace ToolGeodes
             }
             if ((ms.isOutdoors.Value || ms.treatAsOutdoors.Value) && ret == -1)
             {
-                double num2 = Game1.dailyLuck / 2.0 + who.MiningLevel * 0.005 + who.LuckLevel * 0.001;
+                double num2 = who.DailyLuck / 2.0 + who.MiningLevel * 0.005 + who.LuckLevel * 0.001;
                 Random random = new Random(x * 1000 + y + (int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame / 2);
 
                 if (who.professions.Contains(21) && random.NextDouble() < 0.05 * (1.0 + num2))
@@ -274,7 +274,7 @@ namespace ToolGeodes
                     ret = 382;
                 }
             }
-            if (who.hasMagnifyingGlass && r.NextDouble() < 0.01)
+            if (who.hasMagnifyingGlass && r.NextDouble() < 3.0 / 400.0)
             {
                 var unseenSecretNote = ms.tryToCreateUnseenSecretNote(who);
                 if (unseenSecretNote != null)
@@ -342,7 +342,7 @@ namespace ToolGeodes
                         {
                             if (Game1.objectInformation[index2].Split('/')[3].Contains("Arch") || index2 == 102)
                             {
-                                if (index2 == 102 && who.archaeologyFound.ContainsKey(102) && who.archaeologyFound[102][0] >= 21)
+                                if (index2 == 102 && Game1.netWorldState.Value.LostBooksFound.Value >= 21)
                                     index2 = 770;
                                 return index2;
                             }

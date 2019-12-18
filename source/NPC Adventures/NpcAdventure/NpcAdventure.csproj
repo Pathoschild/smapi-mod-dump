@@ -56,7 +56,7 @@
       <HintPath>..\packages\Lib.Harmony.1.2.0.1\lib\net45\0Harmony.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SMAPI.Toolkit.CoreInterfaces, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="SMAPI.Toolkit.CoreInterfaces, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null">
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />

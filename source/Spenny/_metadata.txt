@@ -5,9 +5,9 @@ mods:
    Spenny
 
 latest commit:
-   commit ef1c952c05ee51066060218885ba04e63202e910
+   commit 71b6fc66231788bcc8e1c63f92640c6ce371df97
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 18 11:28:10 2019 -0500
+   Date:   Mon Nov 25 17:58:14 2019 -0500
    
-       Update version
+       Spenny 1.0.2 - SDV 1.4
    

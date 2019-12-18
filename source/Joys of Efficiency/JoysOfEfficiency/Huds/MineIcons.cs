@@ -9,6 +9,7 @@ namespace JoysOfEfficiency.Huds
 {
     public class MineIcons
     {
+
         private static Texture2D _iconPickaxe;
         private static Texture2D _iconMonster;
         private static Texture2D _iconLadder;
@@ -25,22 +26,23 @@ namespace JoysOfEfficiency.Huds
             SpriteBatch batch = Game1.spriteBatch;
 
             bool redrawCursor = false;
+            string displayText = "";
 
             Point mousePos = new Point(Game1.getMouseX(), Game1.getMouseY());
 
-            int y = Game1.options.zoomButtons ? 414 : 384;
-            int x = GetWidthInPlayArea() - 84;
+            int y = 96;
+            int x = 16;
             {
                 IClickableMenu.drawTextureBox(batch, Game1.menuTexture, new Rectangle(0, 256, 60, 60), x - 16, y - 16, 40 + 32, 40 + 32, Color.White);
                 batch.Draw(_iconPickaxe, new Vector2(x, y), null, Color.White, 0.0f, Vector2.Zero, 2.5f, SpriteEffects.None, 0.9f);
                 Rectangle rect = new Rectangle(x, y, 40, 40);
                 if (rect.Contains(mousePos))
                 {
-                    Util.DrawSimpleTextbox(batch, stoneStr, Game1.dialogueFont, true);
+                    displayText = stoneStr;
                     redrawCursor = true;
                 }
 
-                x -= 72;
+                x += 80;
             }
             if (monsterStr != null)
             {
@@ -49,11 +51,11 @@ namespace JoysOfEfficiency.Huds
                 Rectangle rect = new Rectangle(x, y, 40, 40);
                 if (rect.Contains(mousePos))
                 {
-                    Util.DrawSimpleTextbox(batch, monsterStr, Game1.dialogueFont, true);
+                    displayText = monsterStr;
                     redrawCursor = true;
                 }
 
-                x -= 72;
+                x += 80;
             }
             if (ladderStr != null)
             {
@@ -62,9 +64,14 @@ namespace JoysOfEfficiency.Huds
                 Rectangle rect = new Rectangle(x, y, 40, 40);
                 if (rect.Contains(mousePos))
                 {
-                    Util.DrawSimpleTextbox(batch, ladderStr, Game1.dialogueFont, true);
+                    displayText = ladderStr;
                     redrawCursor = true;
                 }
+            }
+
+            if (displayText != "")
+            {
+                Util.DrawSimpleTextbox(batch, displayText, Game1.dialogueFont, this, true, isTips: true);
             }
 
             if(redrawCursor)
@@ -77,24 +84,6 @@ namespace JoysOfEfficiency.Huds
             {
                 batch.Draw(Game1.mouseCursors, new Vector2(Game1.getMouseX(), Game1.getMouseY()), Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, Game1.options.gamepadControls ? 44 : 0, 16, 16), Color.White, 0f, Vector2.Zero, Game1.pixelZoom + Game1.dialogueButtonScale / 150f, SpriteEffects.None, 1f);
             }
-        }
-
-        public static int GetWidthInPlayArea()
-        {
-            int result;
-
-            if (Game1.isOutdoorMapSmallerThanViewport())
-            {
-                int right = Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Right;
-                int totalWidth = Game1.currentLocation.map.Layers[0].LayerWidth * Game1.tileSize;
-                int someOtherWidth = Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Right - totalWidth;
-
-                result = right - someOtherWidth / 2;
-            }
-            else
-                result = Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Right;
-
-            return result;
         }
     }
 }

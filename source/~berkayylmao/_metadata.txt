@@ -1,0 +1,14 @@
+url:
+   https://github.com/berkayylmao/StardewValleyMods.git
+
+mods:
+   ChestEx
+   Ship Anything
+
+latest commit:
+   commit 4f5a852a235daa0746fa97ed7adab4d24741342f
+   Author: berkay <berkayyigit@anadolu.edu.tr>
+   Date:   Sun Dec 8 17:14:39 2019 +0300
+   
+       Fix inventory gamepad snapping
+   

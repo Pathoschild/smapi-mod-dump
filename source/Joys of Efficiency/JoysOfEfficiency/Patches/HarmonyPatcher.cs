@@ -18,7 +18,7 @@ namespace JoysOfEfficiency.Patches
                 MethodInfo methodPatcher;
                 {
                     Logger.Log("Started patching Farmer");
-                    methodBase = typeof(Player).GetMethod("hasItemInInventory", BindingFlags.Instance | BindingFlags.Public);
+                    methodBase = typeof(Player).GetMethod("getItemCount", BindingFlags.Instance | BindingFlags.Public);
                     methodPatcher = typeof(FarmerPatcher).GetMethod("Prefix", BindingFlags.Static | BindingFlags.NonPublic);
                     Logger.Log("Trying to patch...");
                     if (!HarmonyHelper.Patch(methodBase, methodPatcher))
@@ -27,9 +27,9 @@ namespace JoysOfEfficiency.Patches
                     }
                 }
                 {
-                    Logger.Log("Started patching CraftingRecipe");
+                    Logger.Log("Started patching consumeIngredients");
                     methodBase = typeof(CraftingRecipe).GetMethod("consumeIngredients", BindingFlags.Instance | BindingFlags.Public);
-                    methodPatcher = typeof(CraftingRecipePatcher).GetMethod("Prefix", BindingFlags.Static | BindingFlags.NonPublic);
+                    methodPatcher = typeof(ConsumeIngredientsPatcher).GetMethod("Prefix", BindingFlags.Static | BindingFlags.NonPublic);
                     Logger.Log("Trying to patch...");
                     if (!HarmonyHelper.Patch(methodBase, methodPatcher))
                     {

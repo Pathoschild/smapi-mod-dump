@@ -17,5 +17,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)RangePair.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Stardew Valley\SDVTime.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Stardew Valley\SDVUtilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StaticRange.cs" />
   </ItemGroup>
 </Project>

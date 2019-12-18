@@ -1,0 +1,10 @@
+﻿{
+	"Name": "Sprint and Dash Mod",
+	"Authour": "Maurício Gomes (Speeder)",
+	"Version": "1.1.0",
+	"UniqueID": "SPDSprintAndDash",
+	"Description": "Allow sprinting and combat dashing.",
+	"PerSaveConfigs": false,
+	"EntryDll":  "SprintAndDashMod.dll",
+	"UpdateKeys": [ "Nexus:235"]
+}

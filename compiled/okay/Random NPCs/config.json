@@ -1,0 +1,13 @@
+{
+  "FemaleChance": 0.5,
+  "AgeDist": [
+    0.5,
+    0.5
+  ],
+  "DatableChance": 1.0,
+  "NaturalHairChance": 0.7,
+  "LightSkinChance": 0.7,
+  "DarkSkinDarkHair": true,
+  "RNPCMaxVisitors": 5,
+  "RNPCTotal": 15
+}

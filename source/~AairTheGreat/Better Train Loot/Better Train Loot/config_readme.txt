@@ -21,11 +21,19 @@ Maximum treasure from each train.  The amount is still random but there is not l
 - Default Value: false 
 
 #### showTrainIsComingMessage
-Shows the message when a train is passing thru the valley.  
+Shows/hides the message when a train is passing thru the valley while you are not in the desert.  
+- Default Value: true 
+
+#### showDesertTrainIsComingMessage
+Shows/hides the message when a train is passing thru the valley while you are in the desert.  
 - Default Value: true 
 
 #### enableTrainWhistle
-When the train comes thru the valley, does it make a sound?  
+When the train comes thru the valley and you are not in the desert, does it make a sound?  
+- Default Value: true 
+
+#### enableDesertTrainWhistle
+When the train comes thru the valley and you are in the desert, does it make a sound?  
 - Default Value: true 
 
 #### baseChancePercent

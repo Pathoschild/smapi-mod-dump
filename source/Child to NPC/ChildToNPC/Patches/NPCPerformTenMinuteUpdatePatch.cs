@@ -1,10 +1,9 @@
 ﻿using System.Linq;
 using Microsoft.Xna.Framework;
-using Harmony;
 using StardewValley;
 using StardewValley.Locations;
 
-namespace ChildToNPC
+namespace ChildToNPC.Patches
 {
     /* Prefix for performTenMinuteUpdate
      * Normally, performTenMinuteUpdate just handles the dialogue bubble while walking.
@@ -12,10 +11,7 @@ namespace ChildToNPC
      * Children will wander around the house every hour.
      * I've also added a curfew system, so children go to bed at the (configurable) curfew time when at home.
      */
-
-    [HarmonyPatch(typeof(NPC))]
-    [HarmonyPatch("performTenMinuteUpdate")]
-    class NPCPerformTenMinuteUpdatePatch
+    public class NPCPerformTenMinuteUpdatePatch
     {
         public static bool Prefix(NPC __instance)
         {

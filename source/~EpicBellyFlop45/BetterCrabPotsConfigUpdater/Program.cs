@@ -3,31 +3,28 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BetterCrabPotsConfigUpdater
 {
+    /// <summary>The program entry point.</summary>
     class Program
     {
+        /// <summary>The program entry point.</summary>
+        /// <param name="args">The passed arguments. These will be the 'OldConfig' and 'NewConfig' folder paths.</param>
         static void Main(string[] args)
         {
             try
             {
-                if (args.Length < 2)
+                if (!ValidateArgs(args))
                 {
-                    Console.WriteLine("Invalid args supplied");
-                    Console.ReadLine();
                     return;
                 }
                 
-                // Get the old config file
+                // get the old config file
                 string oldConfigPath = Path.GetFullPath(args[0]);
                 
-                // Deserialize old config directly from the file
+                // deserialize old config directly from the file
                 OldModConfig oldModConfig;
-
                 using (StreamReader file = File.OpenText(oldConfigPath))
                 {
                     JsonSerializer serializer = new JsonSerializer();
@@ -35,7 +32,6 @@ namespace BetterCrabPotsConfigUpdater
                 }
 
                 NewModConfig newModConfig = ConvertToNewConfigLayout(oldModConfig);
-
                 using (StreamWriter sWriter = new StreamWriter(args[1]))
                 using (JsonWriter jWriter = new JsonTextWriter(sWriter))
                 {
@@ -61,7 +57,25 @@ namespace BetterCrabPotsConfigUpdater
             }
         }
 
-        static NewModConfig ConvertToNewConfigLayout(OldModConfig oldModConfig)
+        /// <summary>This method ensures there are a valid amount of arguments.</summary>
+        /// <param name="args">The arguments passed to the app.</param>
+        /// <returns>Returns a bool depending if the arguments are valid.</returns>
+        private static bool ValidateArgs(string[] args)
+        {
+            if (args.Length < 2)
+            {
+                Console.WriteLine("Invalid args supplied");
+                Console.ReadLine();
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>This method will convert the old config format to the new config format.</summary>
+        /// <param name="oldModConfig">The old config object to get converted.</param>
+        /// <returns>Returns the config in the new format.</returns>
+        private static NewModConfig ConvertToNewConfigLayout(OldModConfig oldModConfig)
         {
             NewModConfig newModConfig = new NewModConfig();
 

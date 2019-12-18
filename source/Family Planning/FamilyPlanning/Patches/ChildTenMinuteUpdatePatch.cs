@@ -1,15 +1,12 @@
-﻿using StardewValley;
-using StardewValley.Characters;
-using Harmony;
-using StardewValley.Locations;
-using Microsoft.Xna.Framework;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using StardewValley;
+using StardewValley.Characters;
+using StardewValley.Locations;
 
 namespace FamilyPlanning.Patches
 {
-    [HarmonyPatch(typeof(Child))]
-    [HarmonyPatch("tenMinuteUpdate")]
     class ChildTenMinuteUpdatePatch
     {
         public static void Postfix(Child __instance)

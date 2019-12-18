@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4830
+IDs: cat.betterworkbenches
+update keys: Nexus:4830, GitHub:danvolchek/StardewMods

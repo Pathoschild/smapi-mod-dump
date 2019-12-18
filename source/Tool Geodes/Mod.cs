@@ -2,6 +2,8 @@
 using System.Reflection;
 using Harmony;
 using Microsoft.Xna.Framework;
+using SpaceShared;
+using SpaceShared.APIs;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -25,8 +27,10 @@ namespace ToolGeodes
         public override void Entry(IModHelper helper)
         {
             instance = this;
+            Log.Monitor = Monitor;
             Config = helper.ReadConfig<Configuration>() ?? new Configuration();
 
+            helper.Events.GameLoop.GameLaunched += onGameLaunched;
             helper.Events.GameLoop.UpdateTicked += onUpdateTicked;
             helper.Events.Display.RenderedWorld += TrueSight.onDrawWorld;
             helper.Events.Input.ButtonPressed += onButtonPressed;
@@ -57,6 +61,28 @@ namespace ToolGeodes
             catch ( Exception ex )
             {
                 Log.error($"Exception doing harmony: {ex}");
+            }
+        }
+
+        private void onGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            var capi = Helper.ModRegistry.GetApi<GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
+            if (capi != null)
+            {
+                capi.RegisterModConfig(ModManifest, () => Config = new Configuration(), () => Helper.WriteConfig(Config));
+                capi.RegisterSimpleOption(ModManifest, "Geode: More Slots", "The object ID of the geode that prodives more adornment slots", () => Config.GEODE_MORE_SLOTS, (int val) => Config.GEODE_MORE_SLOTS = val);
+                capi.RegisterSimpleOption(ModManifest, "Geode: Tool - +Length", "The object ID of the geode that provides a longer reach for charged tools.", () => Config.GEODE_LENGTH, (int val) => Config.GEODE_LENGTH = val);
+                capi.RegisterSimpleOption(ModManifest, "Geode: Tool - +Width", "The object ID of the geode that prodives a wider reach for charged tools.", () => Config.GEODE_WIDTH, (int val) => Config.GEODE_WIDTH = val);
+                capi.RegisterSimpleOption(ModManifest, "Geode: Tool - Inf. Water", "The object ID of the geode that prodives infinte water.", () => Config.GEODE_INFINITE_WATER, (int val) => Config.GEODE_INFINITE_WATER = val);
+                capi.RegisterSimpleOption(ModManifest, "Geode: Tool - Truesight", "The object ID of the geode that prodives truesight.", () => Config.GEODE_OBJ_TRUESIGHT, (int val) => Config.GEODE_OBJ_TRUESIGHT = val);
+                capi.RegisterSimpleOption(ModManifest, "Geode: Tool - Less Stamina", "The object ID of the geode that lessens stamina usage.", () => Config.GEODE_LESS_STAMINA, (int val) => Config.GEODE_LESS_STAMINA = val);
+                capi.RegisterSimpleOption(ModManifest, "Geode: Tool - Instant Charge", "The object ID of the geode that prodives instant tool charging.", () => Config.GEODE_INSTANT_CHARGE, (int val) => Config.GEODE_INSTANT_CHARGE = val);
+                capi.RegisterSimpleOption(ModManifest, "Geode: Tool - Remote Use", "The object ID of the geode that allows remote tool usage.", () => Config.GEODE_REMOTE_USE, (int val) => Config.GEODE_REMOTE_USE = val);
+                capi.RegisterSimpleOption(ModManifest, "Geode: Weapon - +Damage", "The object ID of the geode that improves damage.", () => Config.GEODE_MORE_DAMAGE, (int val) => Config.GEODE_MORE_DAMAGE = val);
+                capi.RegisterSimpleOption(ModManifest, "Geode: Weapon - +Knockback", "The object ID of the geode that improves knockback.", () => Config.GEODE_MORE_KNOCKBACK, (int val) => Config.GEODE_MORE_KNOCKBACK = val);
+                capi.RegisterSimpleOption(ModManifest, "Geode: Weapon - +Crit Chance", "The object ID of the geode that improves crit chance.", () => Config.GEODE_MORE_CRITCHANCE, (int val) => Config.GEODE_MORE_CRITCHANCE = val);
+                capi.RegisterSimpleOption(ModManifest, "Geode: Weapon - Swipe Speed", "The object ID of the geode that improves swipe speed.", () => Config.GEODE_SWIPE_SPEED, (int val) => Config.GEODE_SWIPE_SPEED = val);
+                capi.RegisterSimpleOption(ModManifest, "Geode: Weapon - Pierce Armor", "The object ID of the geode that prodives armor-piercing.", () => Config.GEODE_PIERCE_ARMOR, (int val) => Config.GEODE_PIERCE_ARMOR = val);
             }
         }
 
@@ -148,7 +174,10 @@ namespace ToolGeodes
             try
             {
                 Log.trace($"Doing prefix patch {orig}:{prefix}...");
-                harmony.Patch(orig, new HarmonyMethod(prefix), null);
+                var pmeth = new HarmonyMethod(prefix);
+                pmeth.prioritiy = Priority.First;
+                //pmeth.before.Add("stokastic.PrismaticTools");
+                harmony.Patch(orig, pmeth, null);
             }
             catch (Exception e)
             {

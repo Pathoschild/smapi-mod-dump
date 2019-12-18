@@ -41,16 +41,17 @@ namespace FamilyPlanning
          * 
          * Content Packs can now include dialogue for your spouse for when the baby is born.
          */
+         
         public bool setUp()
         {
             Random random = new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed);
-            NPC characterFromName = Game1.getCharacterFromName(Game1.player.spouse, false);
+            NPC spouse = Game1.getCharacterFromName(Game1.player.spouse, false);
             Game1.player.CanMove = false;
             
             isMale = true;
 
             string genderTerm = Lexicon.getGenderedChildTerm(isMale);
-            message = !characterFromName.isGaySpouse() ? (characterFromName.Gender != 0 ? Game1.content.LoadString("Strings\\Events:BirthMessage_SpouseMother", (object)Lexicon.getGenderedChildTerm(this.isMale), (object)characterFromName.displayName) : Game1.content.LoadString("Strings\\Events:BirthMessage_PlayerMother", (object)Lexicon.getGenderedChildTerm(this.isMale))) : Game1.content.LoadString("Strings\\Events:BirthMessage_Adoption", (object)Lexicon.getGenderedChildTerm(this.isMale));
+            message = !spouse.isGaySpouse()? (spouse.Gender != 0 ? Game1.content.LoadString("Strings\\Events:BirthMessage_SpouseMother", Lexicon.getGenderedChildTerm(isMale), spouse.displayName) : Game1.content.LoadString("Strings\\Events:BirthMessage_PlayerMother", Lexicon.getGenderedChildTerm(isMale))) : Game1.content.LoadString("Strings\\Events:BirthMessage_Adoption", Lexicon.getGenderedChildTerm(isMale));
             //starting from i = 1 is a guess, but I'm pretty confident.
             for (int i = 1; i < message.Length - genderTerm.Length; i++)
             {
@@ -162,9 +163,9 @@ namespace FamilyPlanning
                         {
                             //"It's so wonderful to welcome little {0} into our life."
                             if (Game1.player.getSpouse().Gender != 0)
-                                s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_Adoption", (object)this.babyName).Split('/')).Last<string>();
+                                s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_Adoption", babyName).Split('/')).Last();
                             else
-                                s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_Adoption", (object)this.babyName).Split('/')).First<string>();
+                                s = ((IEnumerable<string>)Game1.content.LoadString("Data\\ExtraDialogue:NewChild_Adoption", babyName).Split('/')).First();
                             spouse.setNewDialogue(s, false, false);
 
                             if (Game1.player.getChildrenCount() == 2)
@@ -231,7 +232,7 @@ namespace FamilyPlanning
 
         public void afterMessage()
         {
-            this.getBabyName = true;
+            getBabyName = true;
         }
 
         public void draw(SpriteBatch b)

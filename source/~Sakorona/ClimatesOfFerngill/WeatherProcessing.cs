@@ -22,70 +22,82 @@ namespace ClimatesOfFerngillRebuild
         private static List<Vector2> CropList;
         internal static int GetNewRainAmount(int prevRain, ITranslationHelper Translation, bool showRain = true)
         {
-            int rain = prevRain;
-            double VRChangeChance = ClimatesOfFerngill.WeatherOpt.VRChangeChance;
+            int currRain = prevRain;
+            double ChanceOfRainChange = ClimatesOfFerngill.WeatherOpt.VRChangeChance;
             bool massiveChange = false;
-            if (rain == 0)
-                VRChangeChance += .20;
-            if (rain > WeatherUtilities.ReturnMidPoint(RainLevels.Torrential))
-                VRChangeChance += .10;
-	    if (WeatherUtilities.GetCategory(rain) == RainLevels.NoahsFlood)
-		VRChangeChance += .15;
+
+            //do some rain chance pre pumping
+            if (currRain == 0)
+                ChanceOfRainChange += .20;
+            if (currRain > WeatherUtilities.GetRainCategoryMidPoint(RainLevels.Torrential))
+                ChanceOfRainChange += .10;
+	        if (WeatherUtilities.GetRainCategory(currRain) == RainLevels.NoahsFlood)
+		        ChanceOfRainChange += .15;
 
             double FlipChance = .5;
 
             //so, lower: decrease, higher: increase
-            if (WeatherUtilities.IsSevereRainFall(rain))
+            if (WeatherUtilities.IsSevereRainFall(currRain))
                 FlipChance += .2;
-            if (WeatherUtilities.GetCategory(rain) == RainLevels.Torrential || WeatherUtilities.GetCategory(rain) == RainLevels.Typhoon || WeatherUtilities.GetCategory(rain) == RainLevels.NoahsFlood)
+            if (WeatherUtilities.GetRainCategory(currRain) == RainLevels.Torrential || WeatherUtilities.GetRainCategory(currRain) == RainLevels.Typhoon || WeatherUtilities.GetRainCategory(currRain) == RainLevels.NoahsFlood)
                 FlipChance += .15; //15% chance remaining of increasing. 
-            if (WeatherUtilities.GetCategory(rain) == RainLevels.Typhoon || WeatherUtilities.GetCategory(rain) == RainLevels.NoahsFlood)
+            if (WeatherUtilities.GetRainCategory(currRain) == RainLevels.Typhoon || WeatherUtilities.GetRainCategory(currRain) == RainLevels.NoahsFlood)
                 FlipChance += .1456; //.44% chance remaning of increasing.
-            if (WeatherUtilities.GetCategory(rain) == RainLevels.NoahsFlood)
+            if (WeatherUtilities.GetRainCategory(currRain) == RainLevels.NoahsFlood)
                 FlipChance += .0018; //.26% chance remaning of increasing.
-	    if (rain == MaxRain)
-		FlipChance = 1; //you must go ddown.
+	        if (currRain == ClimatesOfFerngill.WeatherOpt.MaxRainFall)
+		        FlipChance = 1; //you must go ddown.
 
-            if (rain <= WeatherUtilities.ReturnMidPoint(RainLevels.Light))
+            if (currRain <= WeatherUtilities.GetRainCategoryMidPoint(RainLevels.Light))
                 FlipChance -= .2; //70% chance of increasing
-            if (rain <= WeatherUtilities.ReturnMidPoint(RainLevels.Sunshower))
+            if (currRain <= WeatherUtilities.GetRainCategoryMidPoint(RainLevels.Sunshower))
                 FlipChance -= .1; //80% chance of increasing
-	    if (rain == 0)
-		FlipChance -= .15; //95% chance of increasing
+	        if (currRain == 0)
+		        FlipChance -= .15; //95% chance of increasing
 		
             if (ClimatesOfFerngill.WeatherOpt.Verbose)
             {
-                ClimatesOfFerngill.Logger.Log($"Rain is {prevRain}, current VRChangeChance is {VRChangeChance}.");
-                ClimatesOfFerngill.Logger.Log($"Calculated chance for rain decreasing: {WeatherUtilities.GetStepChance(rain, increase: false).ToString("N3")}, rain increasing: {WeatherUtilities.GetStepChance(rain, increase: true).ToString("N3")}. Flip chance is {FlipChance.ToString("N3")} ");
+                ClimatesOfFerngill.Logger.Log($"Rain is {prevRain}, current chance for rain change is {ChanceOfRainChange}.");
+                ClimatesOfFerngill.Logger.Log($"Calculated chance for rain decreasing: {WeatherUtilities.GetStepChance(currRain, increase: false).ToString("N3")}, rain increasing: {WeatherUtilities.GetStepChance(currRain, increase: true).ToString("N3")}. Flip chance is {FlipChance.ToString("N3")} ");
             }
 
-            if (ClimatesOfFerngill.Dice.NextDouble() < VRChangeChance)
+            // I just spent nine minutes typing out an invalid explanation for this. :|
+            // So, i'm renaming the variables. 
+
+            // And redoing this entirely. It's a lot of duplicated effort.
+            //Greater than flip chance is increase, lesser is decrease
+
+            if (ClimatesOfFerngill.Dice.NextDouble() < ChanceOfRainChange)
             {
-                //first check for a massive change 145% to 245%
+                // Handle rain changes.
+                // first check for a massive change 145% to 245%
                 double stepRoll = ClimatesOfFerngill.Dice.NextDouble();
                 if (ClimatesOfFerngill.Dice.NextDouble() > FlipChance)
                 {
                     if (ClimatesOfFerngill.WeatherOpt.Verbose)
                         ClimatesOfFerngill.Logger.Log("Increasing rain!");
 
-                    if (stepRoll <= WeatherUtilities.GetStepChance(rain, increase: true))
+                    if (stepRoll <= WeatherUtilities.GetStepChance(currRain, increase: true))
                     {
-                        int mult = Math.Max(1,(int)(Math.Floor(rain * (ClimatesOfFerngill.Dice.NextDouble() + .68))));
+                        //get the multiplier.  This should be between 145% and 245%
 
-                        if (rain == 0)
-                            rain = 15 * mult;
+                        int mult = Math.Max(1, (int)(Math.Floor(ClimatesOfFerngill.Dice.NextDouble() + .68)));
+
+                        if (currRain == 0)
+                            currRain = 15 * mult;
                         else
-                            rain = (int)(Math.Floor(rain * mult * 1.0));
+                            currRain = (int)(Math.Floor(currRain * mult * 1.0));
 
                         massiveChange = true;
+
                     }
                 }
                 else
                 {
-                    if (stepRoll <= WeatherUtilities.GetStepChance(rain, increase: false))
+                    if (stepRoll <= WeatherUtilities.GetStepChance(currRain, increase: false))
                     {
                         ClimatesOfFerngill.Logger.Log("Increasing rain!");
-                        rain = (int)(Math.Floor(rain / (ClimatesOfFerngill.Dice.NextDouble() + 1.45)));
+                        currRain = (int)(Math.Floor(currRain / (ClimatesOfFerngill.Dice.NextDouble() + 1.45)));
                         massiveChange = true;
                     }
                 }
@@ -93,72 +105,77 @@ namespace ClimatesOfFerngillRebuild
                 if (!massiveChange)
                 {
                     double mult = (1 + (ClimatesOfFerngill.Dice.NextDouble() * 1.3) - .55);
-                    if (rain == 0)
-                        rain = 4;
+                    if (currRain == 0)
+                        currRain = 4;
 
-                    if (rain < WeatherUtilities.ReturnMidPoint(RainLevels.Light))
+                    if (currRain < WeatherUtilities.GetRainCategoryMidPoint(RainLevels.Light))
                         mult += 4.5;
 
-                    rain = (int)(Math.Floor(rain * mult));
+                    currRain = (int)(Math.Floor(currRain * mult));
                 }
             }
 
-            if (WeatherConditions.PreventGoingOutside(rain))
+
+
+            if (!ClimatesOfFerngill.WeatherOpt.HazardousWeather)
+            {
+                if (ClimatesOfFerngill.WeatherOpt.Verbose)
+                    ClimatesOfFerngill.Logger.Log("Triggering Hazardous Weather Failsafe");
+
+                currRain = WeatherUtilities.GetRainCategoryMidPoint(RainLevels.Severe);
+            }
+
+            if (WeatherConditions.PreventGoingOutside(currRain))
             {
                 if (Game1.timeOfDay >= 2300)
                 {
                     //drop the rain to at least allow the person to return home if they aren't.
-                    rain = WeatherUtilities.ReturnMidPoint(RainLevels.Severe);
+                    currRain = WeatherUtilities.GetRainCategoryMidPoint(RainLevels.Severe);
                 }                    
-
-                if (!ClimatesOfFerngill.WeatherOpt.HazardousWeather)
-                {
-                    rain = WeatherUtilities.ReturnMidPoint(RainLevels.Severe);
-                }
             }
 
-            if (rain > WeatherUtilities.MaxRain)
-                rain = WeatherUtilities.MaxRain;
+            if (currRain > ClimatesOfFerngill.WeatherOpt.MaxRainFall)
+                currRain = ClimatesOfFerngill.WeatherOpt.MaxRainFall;
 
-            if (rain < 0) rain = 0;
+            if (currRain < 0) currRain = 0;
 
-            if (rain != prevRain && Game1.timeOfDay != 600 && showRain && !(Game1.currentLocation is Desert))
+            if (currRain != prevRain && Game1.timeOfDay != 600 && showRain && !(Game1.currentLocation is Desert))
             {
-                if (WeatherUtilities.GetCategory(rain) == RainLevels.None)
+                if (WeatherUtilities.GetRainCategory(currRain) == RainLevels.None)
                 {
                     Game1.addHUDMessage(new HUDMessage(Translation.Get("hud-text.NearlyNoRain")));
-                    return rain;
+                    return currRain;
                 }
 
-                else if (rain > prevRain)
+                else if (currRain > prevRain)
                 {
-                    if (WeatherUtilities.GetCategory(rain) != WeatherUtilities.GetCategory(prevRain))
+                    if (WeatherUtilities.GetRainCategory(currRain) != WeatherUtilities.GetRainCategory(prevRain))
                     {
-                        Game1.addHUDMessage(new HUDMessage(Translation.Get("hud-text.CateIncrease", new { rain, category = WeatherUtilities.DescCategory(rain) })));
-                        return rain;
+                        Game1.addHUDMessage(new HUDMessage(Translation.Get("hud-text.CateIncrease", new { currRain, category = WeatherUtilities.DescRainCategory(currRain) })));
+                        return currRain;
                     }
-                    else if (Math.Abs(rain / prevRain) >= ClimatesOfFerngill.WeatherOpt.VRainNotifThreshold || ClimatesOfFerngill.WeatherOpt.Verbose)
+                    else if (Math.Abs(currRain / prevRain) >= ClimatesOfFerngill.WeatherOpt.VRainNotifThreshold || ClimatesOfFerngill.WeatherOpt.Verbose)
                     {
-                        Game1.addHUDMessage(new HUDMessage(Translation.Get("hud-text.Increase", new { rain })));
-                        return rain;
+                        Game1.addHUDMessage(new HUDMessage(Translation.Get("hud-text.Increase", new { currRain })));
+                        return currRain;
                     }
                 }
                 else
                 {
-                    if (WeatherUtilities.GetCategory(rain) != WeatherUtilities.GetCategory(prevRain))
+                    if (WeatherUtilities.GetRainCategory(currRain) != WeatherUtilities.GetRainCategory(prevRain))
                     {
-                        Game1.addHUDMessage(new HUDMessage(Translation.Get("hud-text.CateDecrease", new { rain, category = WeatherUtilities.DescCategory(rain) })));
-                        return rain;
+                        Game1.addHUDMessage(new HUDMessage(Translation.Get("hud-text.CateDecrease", new { currRain, category = WeatherUtilities.DescRainCategory(currRain) })));
+                        return currRain;
                     }
-                    else if (Math.Abs(rain / prevRain) >= ClimatesOfFerngill.WeatherOpt.VRainNotifThreshold || ClimatesOfFerngill.WeatherOpt.Verbose)
+                    else if (Math.Abs(currRain / prevRain) >= ClimatesOfFerngill.WeatherOpt.VRainNotifThreshold || ClimatesOfFerngill.WeatherOpt.Verbose)
                     {
-                        Game1.addHUDMessage(new HUDMessage(Translation.Get("hud-text.Decrease", new { rain })));
-                        return rain;
+                        Game1.addHUDMessage(new HUDMessage(Translation.Get("hud-text.Decrease", new { currRain })));
+                        return currRain;
                     }
                 }
             }
 
-            return rain;
+            return currRain;
         }
 
         internal static void SetWeatherTomorrow(string Result, MersenneTwister Dice, FerngillClimate GameClimate, double stormOdds, RangePair TmrwTemps)
@@ -305,7 +322,7 @@ namespace ClimatesOfFerngillRebuild
                 if (Game1.isLightning && !(curr.StartingRain == RainLevels.Light || curr.StartingRain == RainLevels.Sunshower || curr.StartingRain == RainLevels.Normal))
                     curr.StartingRain = RainLevels.Heavy;
 
-                curr.SetRainAmt(WeatherUtilities.ReturnMidPoint(curr.StartingRain));
+                curr.SetRainAmt(WeatherUtilities.GetRainCategoryMidPoint(curr.StartingRain));
                 curr.TodayRain = curr.AmtOfRainDrops;
 
                 //now run this for 0300 to 0600.
@@ -355,7 +372,7 @@ namespace ClimatesOfFerngillRebuild
 
                 if (ClimatesOfFerngill.WeatherOpt.Verbose)
                 {
-                    ClimatesOfFerngill.Logger.Log($"We've set the rain to a non normal value - with roll {rainOdds} for setting non normal, and {newRainOdds} for category {Result}, resulting in new rain target {curr.AmtOfRainDrops} in category {WeatherUtilities.GetCategory(curr.AmtOfRainDrops)}");
+                    ClimatesOfFerngill.Logger.Log($"We've set the rain to a non normal value - with roll {rainOdds} for setting non normal, and {newRainOdds} for category {Result}, resulting in new rain target {curr.AmtOfRainDrops} in category {WeatherUtilities.GetRainCategory(curr.AmtOfRainDrops)}");
                 }
                 
 

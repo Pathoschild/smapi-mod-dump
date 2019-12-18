@@ -147,16 +147,21 @@ namespace MegaStorage.UI
             var right3 = ItemsToGrabMenu.inventory[3 * 12 + 11];
             var right4 = ItemsToGrabMenu.inventory[4 * 12 + 11];
             var right5 = ItemsToGrabMenu.inventory[5 * 12 + 11];
+            //var right6 = ItemsToGrabMenu.inventory[6 * 12 + 11];
 
             right0.rightNeighborID = UpArrow.myID;
             right1.rightNeighborID = UpArrow.myID;
             right2.rightNeighborID = colorPickerToggleButton.myID;
+            //right3.rightNeighborID = fillStacksButton.myID;
             right3.rightNeighborID = organizeButton.myID;
             right4.rightNeighborID = DownArrow.myID;
             right5.rightNeighborID = DownArrow.myID;
 
             colorPickerToggleButton.leftNeighborID = right2.myID;
             colorPickerToggleButton.upNeighborID = UpArrow.myID;
+
+            //fillStacksButton.upNeighborID = colorPickerToggleButton.myID;
+            //fillStacksButton.downNeighborID = organizeButton.myID;
 
             organizeButton.leftNeighborID = right3.myID;
             organizeButton.downNeighborID = DownArrow.myID;
@@ -322,6 +327,12 @@ namespace MegaStorage.UI
                     heldItem = null;
                     return;
                 }
+            }
+            //Test Fill Stash Button
+            if (fillStacksButton != null && fillStacksButton.containsPoint(x, y))
+            {
+                FillOutStacks();
+                Game1.playSound("Ship");
             }
             if (organizeButton != null && organizeButton.containsPoint(x, y))
             {
@@ -499,6 +510,7 @@ namespace MegaStorage.UI
             else
                 specialButton?.draw(b);
             chestColorPicker?.draw(b);
+            fillStacksButton?.draw(b);
             organizeButton?.draw(b);
             if (hoverText != null && (hoveredItem == null || ItemsToGrabMenu == null))
                 drawHoverText(b, hoverText, Game1.smallFont);

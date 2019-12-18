@@ -75,7 +75,7 @@ namespace NpcAdventure.StateMachine.State
 
         private void Display_RenderingHud(object sender, RenderingHudEventArgs e)
         {
-            if (!this.StateMachine.CompanionManager.Config.ShowHUD)
+            if (!this.StateMachine.CompanionManager.Config.ShowHUD || Game1.eventUp)
                 return;
 
             var skills = this.StateMachine.Metadata.PersonalSkills;

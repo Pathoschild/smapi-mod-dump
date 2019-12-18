@@ -54,24 +54,24 @@ namespace AnimalHusbandryMod.recipes
 
         public void LoadMails()
         {
-            MailDao.SaveLetter(new Letter("meatloafRecipe", DataLoader.i18n.Get("Cooking.Meatloaf.Letter"), Cooking.Meatloaf.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Lewis") >= 9 * 250 && GetNpcFriendship("Marnie") >= 7 * 250));
+            MailDao.SaveLetter(new Letter("meatloafRecipe", DataLoader.i18n.Get("Cooking.Meatloaf.Letter"), Cooking.Meatloaf.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Lewis") >= 9 * 250 && GetNpcFriendship("Marnie") >= 7 * 250, (l) => Game1.player.mailReceived.Add(l.Id)) {GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.Meatloaf.Letter.Title") });
 
-            MailDao.SaveLetter(new Letter("baconCheeseburgerRecipe", DataLoader.i18n.Get("Cooking.BaconCheeseburger.Letter"), Cooking.BaconCheeseburger.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Gus") >= 9 * 250 && SDate.Now() > new SDate(16, "fall", 1)));
+            MailDao.SaveLetter(new Letter("baconCheeseburgerRecipe", DataLoader.i18n.Get("Cooking.BaconCheeseburger.Letter"), Cooking.BaconCheeseburger.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Gus") >= 9 * 250 && SDate.Now() > new SDate(16, "fall", 1), (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.BaconCheeseburger.Letter.Title") });
 
-            MailDao.SaveLetter(new Letter("sweetAndSourPorkRecipe", DataLoader.i18n.Get("Cooking.SweetAndSourPork.Letter"), Cooking.SweetAndSourPork.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Jodi") >= 9 * 250 && GetNpcFriendship("Kent") >= 9 * 250));
+            MailDao.SaveLetter(new Letter("sweetAndSourPorkRecipe", DataLoader.i18n.Get("Cooking.SweetAndSourPork.Letter"), Cooking.SweetAndSourPork.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Jodi") >= 9 * 250 && GetNpcFriendship("Kent") >= 9 * 250, (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.SweetAndSourPork.Letter.Title") });
 
             Func<Letter, bool> glazedHamCondition = (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe)
                                         && GetNpcFriendship("Clint") >= 9
                                         && Game1.stats.GeodesCracked > 80;
-            MailDao.SaveLetter(new Letter("glazedHamRecipe", DataLoader.i18n.Get("Cooking.GlazedHam.Letter"), Cooking.GlazedHam.GetDescription(), glazedHamCondition));
+            MailDao.SaveLetter(new Letter("glazedHamRecipe", DataLoader.i18n.Get("Cooking.GlazedHam.Letter"), Cooking.GlazedHam.GetDescription(), glazedHamCondition, (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.GlazedHam.Letter.Title") });
 
-            MailDao.SaveLetter(new Letter("cowboyDinnerkRecipe", DataLoader.i18n.Get("Cooking.CowboyDinner.Letter"), Cooking.CowboyDinner.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && (Game1.getLocationFromName("ArchaeologyHouse") as LibraryMuseum)?.museumPieces.Count() >= 70));
+            MailDao.SaveLetter(new Letter("cowboyDinnerkRecipe", DataLoader.i18n.Get("Cooking.CowboyDinner.Letter"), Cooking.CowboyDinner.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && (Game1.getLocationFromName("ArchaeologyHouse") as LibraryMuseum)?.museumPieces.Count() >= 70, (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.CowboyDinner.Letter.Title") });
             
-            MailDao.SaveLetter(new Letter("rabbitStewRecipe", DataLoader.i18n.Get("Cooking.RabbitStew.Letter"), Cooking.RabbitStew.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Linus") >= 9 * 250 && (Game1.stats.TimesUnconscious >= 1 || Game1.player.deepestMineLevel >= 100)));
+            MailDao.SaveLetter(new Letter("rabbitStewRecipe", DataLoader.i18n.Get("Cooking.RabbitStew.Letter"), Cooking.RabbitStew.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Linus") >= 9 * 250 && (Game1.stats.TimesUnconscious >= 1 || Game1.player.deepestMineLevel >= 100), (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.RabbitStew.Letter.Title") });
 
-            MailDao.SaveLetter(new Letter("monteCristoRecipe", DataLoader.i18n.Get("Cooking.MonteCristo.Letter"), Cooking.MonteCristo.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Leah") >= 8 * 250 && Game1.stats.ItemsForaged >= 1200));
+            MailDao.SaveLetter(new Letter("monteCristoRecipe", DataLoader.i18n.Get("Cooking.MonteCristo.Letter"), Cooking.MonteCristo.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Leah") >= 8 * 250 && Game1.stats.ItemsForaged >= 1200, (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.MonteCristo.Letter.Title") });
 
-            MailDao.SaveLetter(new Letter("steakWithMushroomsRecipe", DataLoader.i18n.Get("Cooking.SteakWithMushrooms.Letter"), Cooking.SteakWithMushrooms.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Alex") >= 8 * 250 && Game1.stats.MonstersKilled >= 1000));
+            MailDao.SaveLetter(new Letter("steakWithMushroomsRecipe", DataLoader.i18n.Get("Cooking.SteakWithMushrooms.Letter"), Cooking.SteakWithMushrooms.GetDescription(), (letter) => !Game1.player.cookingRecipes.ContainsKey(letter.Recipe) && GetNpcFriendship("Alex") >= 8 * 250 && Game1.stats.MonstersKilled >= 1000, (l) => Game1.player.mailReceived.Add(l.Id)) { GroupId = "AHM.CookingRecipe", Title = DataLoader.i18n.Get("Cooking.SteakWithMushrooms.Letter.Title") });
         }
 
         private int GetNpcFriendship(string name)

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Gate Fix",
+  "Author": "f4iTh",
+  "Version": "1.0.0",
+  "Description": "Fixes gates defaulting to wooden gates upon restarting the game.",
+  "UniqueID": "f4iTh.GateFix",
+  "EntryDll": "GateFix.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:4859" ]
+}

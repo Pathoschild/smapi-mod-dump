@@ -5,9 +5,9 @@ mods:
    Content Patcher Animations
 
 latest commit:
-   commit 1ec2a22bd2dc6eec8473af2239cc2c28c5e5fc5f
+   commit df5fb3b82ca57290f40925443b1db728ef702815
    Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Jul 8 20:51:18 2019 -0400
+   Date:   Mon Nov 25 16:55:49 2019 -0500
    
-       Some changes I never committed
+       1.1.4 - SDV 1.4
    

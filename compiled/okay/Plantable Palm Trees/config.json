@@ -2,5 +2,7 @@
   "Use_Modifier_Key": false,
   "Modifier_Key": "LeftAlt",
   "Require_Tilled_Soil": false,
-  "Show_Placement_Icon": true
+  "Show_Placement_Icon": true,
+  "Enable_Mushroom_Tree_Planting": false,
+  "Enable_Planting_in_Mines": false
 }

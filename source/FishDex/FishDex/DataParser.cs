@@ -59,8 +59,29 @@ namespace FishDex
 				else if (fish.Key == 798 || fish.Key == 799 || fish.Key == 800) // midnight squid, spookfish, blobfish
 					locations.Append("Submarine at Night Market | ");
 
-				if (locations.Length == 0) // location field still empty => legendary fishes
-					locations.Append("-");
+				if (locations.Length == 0 || fish.Key == 163) // location field still empty => legendary fishes
+				{
+					// Location data from stardewvalleywiki.com
+					switch (fish.Key)
+					{
+						case 159: // Crimsonfish
+							locations.Append("East Pier on The Beach. Deep water.");
+							break;
+						case 160: // Angler
+							locations.Append("North of JojaMart on the wooden plank bridge.");
+							break;
+						case 163: // Legend
+							locations.Clear(); // The game data contains the wrong location info for the Legend
+							locations.Append("The Mountain Lake near the log.");
+							break;
+						case 775: // Glacierfish
+							locations.Append("South end of Arrowhead Island in Cindersap Forest. Deep water.");
+							break;
+						case 682: // Mutant Carp
+							locations.Append("Sewers");
+							break;
+					}
+				}
 				else
 					locations.Length -= 3; // exclude the last " | " separator
 

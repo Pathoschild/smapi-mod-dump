@@ -44,6 +44,7 @@ History
 v1.0.0     - Initial Release
 v1.0.1     - Correct spelling of sponsor.  Add colored envelopes.  Another couple Dad jokes added to random mix.  Config help text. 
 v1.0.2	   - Updated for Stardew Valley 1.14.
+v1.0.3	   - Update for minervamaga#7344 :D
 
 
 Conclusion
