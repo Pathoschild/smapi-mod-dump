@@ -64,15 +64,15 @@ namespace ChildBedConfig
             ShowCabinBed2 = true;
         }
 
-        public Farmer(string name, bool showhcrib, bool showhbed1, bool showhbed2, bool showccrib, bool showcbed1, bool showcbed2)
+        public Farmer(string name, bool showCrib, bool showBed1, bool showBed2, bool showCabinCrib, bool showCabinBed1, bool showCabinBed2)
         {
             CharacterName = name;
-            ShowHomeCrib = showhcrib;
-            ShowHomeBed1 = showhbed1;
-            ShowHomeBed2 = showhbed2;
-            ShowCabinCrib = showccrib;
-            ShowCabinBed1 = showcbed1;
-            ShowCabinBed2 = showcbed2;
+            ShowHomeCrib = showCrib;
+            ShowHomeBed1 = showBed1;
+            ShowHomeBed2 = showBed2;
+            ShowCabinCrib = showCabinCrib;
+            ShowCabinBed1 = showCabinBed1;
+            ShowCabinBed2 = showCabinBed2;
         }
     }
 }

@@ -59,6 +59,11 @@
           "Chance": 1
         },
         {
+          "Name": "Spring Seeds",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
           "Name": "Strawberry",
           "Enabled": true,
           "Chance": 1
@@ -119,6 +124,11 @@
         },
         {
           "Name": "Starfruit",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Summer Seeds",
           "Enabled": true,
           "Chance": 1
         },
@@ -187,6 +197,11 @@
           "Chance": 1
         },
         {
+          "Name": "Fall Seeds",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
           "Name": "Fairy Rose",
           "Enabled": true,
           "Chance": 1
@@ -223,7 +238,15 @@
         }
       ]
     },
-    "Winter": null
+    "Winter": {
+      "Crops": [
+        {
+          "Name": "Winter Seeds",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    }
   },
   "FantasyCrops": {
     "Spring": {
@@ -1497,6 +1520,41 @@
     },
     "Winter": null
   },
+  "FishsFlowersCompatibilityVersion": {
+    "Spring": {
+      "Crops": [
+        {
+          "Name": "Grape Hyacinth",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Pansy",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Summer": {
+      "Crops": [
+        {
+          "Name": "Pansy",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Fall": {
+      "Crops": [
+        {
+          "Name": "Pansy",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Winter": null
+  },
   "StephansLotsOfCrops": {
     "Spring": {
       "Crops": [
@@ -2218,5 +2276,163 @@
         }
       ]
     }
+  },
+  "IKeychainsWinterLycheePlant": {
+    "Spring": null,
+    "Summer": null,
+    "Fall": null,
+    "Winter": {
+      "Crops": [
+        {
+          "Name": "Winter Lychee",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    }
+  },
+  "GreenPear": {
+    "Spring": null,
+    "Summer": {
+      "Crops": [
+        {
+          "Name": "Green Pear",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Fall": {
+      "Crops": [
+        {
+          "Name": "Green Pear",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Winter": null
+  },
+  "SodaVine": {
+    "Spring": {
+      "Crops": [
+        {
+          "Name": "Soda Vine",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Summer": {
+      "Crops": [
+        {
+          "Name": "Soda Vine",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Fall": null,
+    "Winter": null
+  },
+  "SpoopyValley": {
+    "Spring": {
+      "Crops": [
+        {
+          "Name": "Amethyst Basil",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Black Huckleberry",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Black Mulberry",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Black Velvet Petunia",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Hungarian Chile",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Kulli Corn",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Queen of the Night Tulip",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Summer": {
+      "Crops": [
+        {
+          "Name": "Black Carrot",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Black Goji Berry",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Black Huckleberry",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Black Magic Viola",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Black Mulberry",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Kulli Corn",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Fall": {
+      "Crops": [
+        {
+          "Name": "Black Huckleberry",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Futsu Pumpkin",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Indigo Rose Tomato",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Purple Beauty Bell Pepper",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Winter": null
   }
 }

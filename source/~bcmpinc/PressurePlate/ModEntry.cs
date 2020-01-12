@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Entoarox.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
@@ -6,21 +7,21 @@ using System;
 
 namespace StardewHack.PressurePlate
 {
-    public class ModEntry : Hack<ModEntry>
+    public class ModEntry : Mod
     {
         public  static Texture2D plate;
 
         public override void Entry(IModHelper helper) {
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
-            plate = Helper.Content.Load<Texture2D>("switch.png");
+            plate = helper.Content.Load<Texture2D>("switch.png");
         }
 
         void GameLoop_DayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e) {
             Game1.player.addItemToInventory(new PressurePlate());
         }
     }
-    
-    class PressurePlate : StardewValley.Object {
+
+    public class PressurePlate : StardewValley.Object, ICustomItem {
         int release_delay = 0;
     
         public PressurePlate() { 

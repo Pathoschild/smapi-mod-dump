@@ -1,0 +1,13 @@
+url:
+   https://github.com/razikh-git/SailorStyles.git
+
+mods:
+   Sailor Moon Hairstyles and Clothing
+
+latest commit:
+   commit 8af2fbd4010ce99b3829c3e093704ad69bf3c05d
+   Author: razikh-git <pocketsathome@gmail.com>
+   Date:   Fri Jan 10 15:40:21 2020 +1100
+   
+       Reformatting Hairstyles into GetGlam content pack
+   

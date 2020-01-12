@@ -368,7 +368,7 @@ namespace FarmTypeManager
                     return null;
                 }
 
-                int? ID = MonsterTracker.AddMonster(); //generate an ID for this monster
+                int? ID = MonsterTracker.AddMonster(monster); //generate an ID for this monster
                 if (!ID.HasValue)
                 {
                     Monitor.Log("A new monster ID could not be generated. This is may be due to coding issue; please report it to this mod's developer. This monster won't be spawned.", LogLevel.Warn);

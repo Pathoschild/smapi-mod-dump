@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\CustomKissingModApi.cs" />
+    <Compile Include="Api\ICustomKissingModApi.cs" />
     <Compile Include="DataLoader.cs" />
     <Compile Include="CustomKissingModEntry.cs" />
     <Compile Include="KissingMessage.cs" />
@@ -55,9 +57,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ContentPackTemplate\manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ContentPackTemplate\npc.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="i18n\default.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="i18n\ko.json" />
     <None Include="i18n\pt.json" />
     <None Include="manifest.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -1,0 +1,15 @@
+url:
+   https://github.com/Xebeth/StardewValley-SpeedMod.git
+
+mods:
+   Speed Mod
+
+latest commit:
+   commit 9603a622bc31164754ea4e8445a009eb82064291
+   Author: Nicolas Girod <github@north-edge.com>
+   Date:   Sat Jan 11 03:07:35 2020 +0100
+   
+       Added options documentation
+       
+       Added the documentation for the configuration options to the README file
+   

@@ -23,3 +23,5 @@ Customizable Mod for easy fishing.
 |TreasureEasyCaught|宝箱のアイコンがバーを追いかけるようになります。<br>The Treasure icon follows the bar.|
 |AlwaysCaughtDoubleFish|ワイルドな釣りエサを使用している場合、常に2尾の魚を釣り上げます。<br>If the bait is Wild Bait, it always catches two fish.|
 |CaughtDoubleFishOnAnyBait|AlwaysCaughtDoubleFishと一緒にtrueにすると、使用しているエサに関わらず、常に2尾の魚を釣り上げます。<br>If AlwaysCaughtDoubleFish is true, it always catches two fish, regardless of the bait.|
+|AlwaysMaxCastPower|常に最大パワーでキャスティングできます。<br>Cast power is always maximized.|
+|ReloadConfig|コンフィグをリロードするキーを設定できます。<br>Set the key to reload the configuration.|

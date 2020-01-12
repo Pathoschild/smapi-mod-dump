@@ -2,7 +2,26 @@
 
 # Release notes
 ## Upcoming release
-* Improved translations. Thanks to PlussRolf (updated Spanish)!
+* When a fish pond drop is guaranteed, further drops are now crossed out instead of hidden.
+* Added number owned to tool/weapon lookups.
+* Fixed fruit trees showing next fruit tomorrow on the last day of their season.
+* Fixed items owned count not including child/horse hats, items in dressers, and equipped items.
+* Fixed a missing translation for non-English players.
+* Improved translations. Thanks to asqwedcxz741 (updated Chinese)!
+
+## 1.24
+Released 27 December 2019.
+
+* Added fish spawn rules to fish lookups.
+* Added fish pond drops to fish lookups.
+* Added option to highlight item gift tastes that haven't been revealed in the NPC profile yet.
+* Revamped fish pond lookups to show locked drops and make the selection process more clear.
+* Fixed pet lookups showing untranslated 'cat' or 'dog' type.
+* Fixed hay in silos not counted towards number owned or when highlighting owned gifts.
+* Fixed lookup on Caroline's tea bush showing wrong "days ago" value for date planted.
+* Fixed item lookups sometimes showing wrong tailoring recipes.
+* Fixed missing/partial shirt icons in some cases.
+* Improved translations. Thanks to jahangmar (updated German), L30Bola (updated Portuguese), and PlussRolf (updated Spanish)!
 
 ## 1.23.1
 Released 15 December 2019.

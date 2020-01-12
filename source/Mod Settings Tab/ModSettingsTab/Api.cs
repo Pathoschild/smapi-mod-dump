@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using ModSettingsTab.Events;
 using ModSettingsTab.Framework;
-using ModSettingsTab.Framework.Interfaces;
+using ModSettingsTabApi.Framework.Interfaces;
 
 namespace ModSettingsTab
 {
-    public class Api
+    public class Api : IModTabSettingsApi
     {
         internal readonly Dictionary<string,SettingsTabApi> ApiList = new Dictionary<string, SettingsTabApi>();
 

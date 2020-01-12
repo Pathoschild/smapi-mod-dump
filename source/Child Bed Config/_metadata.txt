@@ -5,9 +5,9 @@ mods:
    Child Bed Config
 
 latest commit:
-   commit 1e52ddbbed857ac7cbc28fcb7c49084183dc76ef
+   commit 1e9c80e705fbcbd752c7a154bc6be2741b618639
    Author: clockworkhound <clockworkhound@gmail.com>
-   Date:   Tue Mar 12 19:59:18 2019 -0400
+   Date:   Sat Dec 28 11:28:45 2019 -0500
    
-       Added license
+       Update README.md
    

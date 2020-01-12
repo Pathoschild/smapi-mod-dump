@@ -1,0 +1,17 @@
+{
+   "Format": "1.10",
+   "Changes": [
+	{
+          "Action": "Load",
+          "Target": "LooseSprites/CustomTracker",
+          "FromFile": "assets/tracker.png"
+    },
+	{
+		"Action": "EditImage",
+		"Target": "LooseSprites/Cursors",
+        "FromFile": "assets/blank_cursor.png",
+		"ToArea": { "X": 412, "Y": 495, "Width": 5, "Height": 4 },
+		"PatchMode": "Replace"
+	}
+    ]
+}

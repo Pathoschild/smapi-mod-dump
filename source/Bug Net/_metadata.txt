@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/BugNet.git
+
+mods:
+   Bug Net
+
+latest commit:
+   commit 51e7784d85114d93a62101c2f459aa28fa89f764
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Sat Dec 7 17:27:51 2019 -0500
+   
+       Add deps and stuff
+   

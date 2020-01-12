@@ -23,7 +23,7 @@ namespace BetterMixedSeeds
         /// <summary>The list of seeds that mixed seeds can plant.</summary>
         public static List<Seed> Seeds { get; private set; }
 
-        /// <summary>The interface that is used for logging to the console.</summary>
+        /// <summary>Provides methods for logging to the console.</summary>
         public static IMonitor MMonitor { get; private set; }
 
         /// <summary>Provides methods for interacting with the mod directory.</summary>
@@ -35,8 +35,8 @@ namespace BetterMixedSeeds
         /// <summary>The data model for finding the seed name from a crop name.</summary>
         public static SeedIndex SeedIndex { get; private set; } = new SeedIndex();
 
-        /// <summary>The mod entry point, called once the mod is first loaded.</summary>
-        /// <param name="helper">Provides methods for interacting with the mod directory.</param>
+        /// <summary>The mod entry point.</summary>
+        /// <param name="helper">Provides methods for interacting with the mod directory as well as the modding api.</param>
         public override void Entry(IModHelper helper)
         {
             MMonitor = this.Monitor;
@@ -70,7 +70,7 @@ namespace BetterMixedSeeds
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
         
-        /// <summary>The method invoked was the player has loaded a save. Used for calculating the possible seed based from config and installed mods.</summary>
+        /// <summary>The method invoked when the player has loaded a save. Used for calculating the possible seed based from config and installed mods.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void Events_SaveLoaded(object sender, SaveLoadedEventArgs e)
@@ -164,6 +164,8 @@ namespace BetterMixedSeeds
                 { "RevenantCrops", "RevenantCrops" },
                 { "kildarien.farmertoflorist", "FarmerToFlorist" },
                 { "Fish.LuckyClover", "LuckyClover" },
+                { "Fish.FishsFlowers", "FishsFlowers" },
+                { "Fish.FishsFlowersCompatibilityVersion", "FishsFlowersCompatibilityVersion" },
                 { "StephansLotsOfCrops", "StephansLotsOfCrops" },
                 { "minervamaga.JA.EemieCrops", "EemiesCrops" },
                 { "jfujii.TeaTime", "TeaTime" },
@@ -172,7 +174,11 @@ namespace BetterMixedSeeds
                 { "6480.crops.arabidopsis", "MouseEarCress" },
                 { "ppja.ancientcrops", "AncientCrops" },
                 { "PokeCropsJson", "PokeCrops" },
-                { "jawsawn.StarboundValley", "StarboundValley" }
+                { "jawsawn.StarboundValley", "StarboundValley" },
+                { "key.cropspack", "IKeychainsWinterLycheePlant" },
+                { "hung2563hn.GreenPear", "GreenPear" },
+                { "BlatantDecoy.SodaVine", "SodaVine" },
+                { "amburr.spoopyvalley", "SpoopyValley" }
             };
 
             foreach (var integratedMod in integratedMods)

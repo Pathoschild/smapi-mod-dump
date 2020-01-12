@@ -193,7 +193,7 @@ namespace WhatAreYouMissing
             //In the bundles.json file it appears that the key is RoomName/BundleID
             //value is: name/reward/itemsNeeded
             //where each item needed is: index howMany quality 
-            //where quality is an int from 0-3, 0 being normal, 2 being gold
+            //where quality is an int from 0 (normal), 1 (silver), 2 (gold), 4 (iridium)
             foreach (KeyValuePair<string, string> pair in rawBundleData)
             {
                 int key = Convert.ToInt32(pair.Key.Split('/')[1]);
@@ -238,15 +238,10 @@ namespace WhatAreYouMissing
             {
                 MissingMerchantCCItems.Add(missingItem);
             }
-            else if (IsItemCommonSpecific(missingItem.ParentSheetIndex))
+            else
             {
                 MissingCommonCCItems.Add(missingItem);
             }
-        }
-
-        private bool IsItemCommonSpecific(int parentSheetIndex)
-        {
-            return CCItems.ContainsKey(parentSheetIndex);
         }
 
         private bool IsItemSeasonSpecific(int parentSheetIndex)
@@ -278,21 +273,15 @@ namespace WhatAreYouMissing
 
         private void FindMissingSeasonSpecifics()
         {
-            HighestQuality highestQuality = new HighestQuality();
             foreach(KeyValuePair<int, SObject> pair in CurrentSeasonSpecifics)
             {
-                int commonQualityAmountMissing = HowManyMissingCommonQuality(new SObject(pair.Key, 1, quality: Constants.COMMON_QUALITY));
-
-                int maxQuality = highestQuality.GetHighestQualityForItem(pair.Key);
-                int highestQualityAmountMissing = HowManyMissingHighestQuality(new SObject(pair.Key, 1, quality: maxQuality));
-
-                if(commonQualityAmountMissing != 0)
+                if (IsQualityToBeIgnored())
                 {
-                    MissingSpecifics.Add(new SObject(pair.Key, commonQualityAmountMissing));
+                    AddIfMissingIgnoringQuality(pair, MissingSpecifics);
                 }
-                if(highestQualityAmountMissing != 0)
+                else
                 {
-                    MissingSpecifics.Add(new SObject(pair.Key, highestQualityAmountMissing, quality: maxQuality));
+                    AddIfMissingConsiderQuality(pair, MissingSpecifics);
                 }
             }
         }
@@ -347,43 +336,59 @@ namespace WhatAreYouMissing
 
         private void FindMissingFish()
         {
-            HighestQuality highestQuality = new HighestQuality();
             foreach (KeyValuePair<int, SObject> pair in AllFish)
             {
-                int commonQualityAmountMissing = HowManyMissingCommonQuality(new SObject(pair.Key, 1, quality: Constants.COMMON_QUALITY));
-
-                int maxQuality = highestQuality.GetHighestQualityForItem(pair.Key);
-                int highestQualityAmountMissing = HowManyMissingHighestQuality(new SObject(pair.Key, 1, quality: maxQuality));
-
-                if (commonQualityAmountMissing != 0 || ModEntry.modConfig.AlwaysShowAllFish)
+                if (IsQualityToBeIgnored())
                 {
-                    MissingFish.Add(new SObject(pair.Key, commonQualityAmountMissing == 0 ? 1 : commonQualityAmountMissing));
+                    AddIfMissingIgnoringQuality(pair, MissingFish);
                 }
-                if (highestQualityAmountMissing != 0)
+                else
                 {
-                    MissingFish.Add(new SObject(pair.Key, highestQualityAmountMissing, quality: maxQuality));
+                    AddIfMissingConsiderQuality(pair, MissingFish, ModEntry.modConfig.AlwaysShowAllFish);
                 }
             }
         }
 
         private void FindMissingCrops()
         {
-            HighestQuality highestQuality = new HighestQuality();
             foreach (KeyValuePair<int, SObject> pair in AllCrops)
             {
-                int commonQualityAmountMissing = HowManyMissingCommonQuality(new SObject(pair.Key, 1, quality: Constants.COMMON_QUALITY));
-
-                int maxQuality = highestQuality.GetHighestQualityForItem(pair.Key);
-                int highestQualityAmountMissing = HowManyMissingHighestQuality(new SObject(pair.Key, 1, quality: maxQuality));
-
-                if (commonQualityAmountMissing != 0)
+                if(IsQualityToBeIgnored())
                 {
-                    MissingCrops.Add(new SObject(pair.Key, commonQualityAmountMissing));
+                    AddIfMissingIgnoringQuality(pair, MissingCrops);
                 }
-                if (highestQualityAmountMissing != 0)
+                else
                 {
-                    MissingCrops.Add(new SObject(pair.Key, highestQualityAmountMissing, quality: maxQuality));
+                    AddIfMissingConsiderQuality(pair, MissingCrops);
                 }
+            }
+        }
+
+        private void AddIfMissingConsiderQuality(KeyValuePair<int, SObject> parentSheetIndexItemPair, List<SObject> list, bool alwaysShow = false)
+        {
+            HighestQuality highestQuality = new HighestQuality();
+
+            int commonQualityAmountMissing = HowManyMissingCommonQuality(new SObject(parentSheetIndexItemPair.Key, 1, quality: Constants.COMMON_QUALITY));
+
+            int maxQuality = highestQuality.GetHighestQualityForItem(parentSheetIndexItemPair.Key);
+            int highestQualityAmountMissing = HowManyMissingHighestQuality(new SObject(parentSheetIndexItemPair.Key, 1, quality: maxQuality));
+
+            if (commonQualityAmountMissing != 0 || alwaysShow)
+            {
+                list.Add(new SObject(parentSheetIndexItemPair.Key, commonQualityAmountMissing == 0 ? 1 : commonQualityAmountMissing));
+            }
+            if (highestQualityAmountMissing != 0)
+            {
+                list.Add(new SObject(parentSheetIndexItemPair.Key, highestQualityAmountMissing, quality: maxQuality));
+            }
+        }
+
+        private void AddIfMissingIgnoringQuality(KeyValuePair<int, SObject> parentSheetIndexItemPair, List<SObject> list)
+        {
+            int amountMissing = HowManyMissingIgnoreQuality(new SObject(parentSheetIndexItemPair.Key, 1));
+            if (amountMissing != 0)
+            {
+                list.Add(new SObject(parentSheetIndexItemPair.Key, amountMissing));
             }
         }
 
@@ -433,6 +438,26 @@ namespace WhatAreYouMissing
                 return amountMissing < 0 ? 0 : amountMissing;
             }
             return ModEntry.modConfig.HighestQualityAmount;
+        }
+
+        private int HowManyMissingIgnoreQuality(SObject item)
+        {
+            if (CanPlayerOnlyHaveOne(item.ParentSheetIndex))
+            {
+                return IsItemInPlayerItems(item.ParentSheetIndex) ? 0 : 1;
+            }
+            if (IsItemInPlayerItems(item.ParentSheetIndex))
+            {
+                int totalAmount = OwnedItems.GetTotalAmountOfItem(item.ParentSheetIndex);
+                int amountMissing = ModEntry.modConfig.CommonAmount - totalAmount;
+                return amountMissing < 0 ? 0 : amountMissing;
+            }
+            return ModEntry.modConfig.CommonAmount;
+        }
+
+        private bool IsQualityToBeIgnored()
+        {
+            return ModEntry.modConfig.IgnoreQuality == true;
         }
 
         private bool IsQualityItemInPlayerItems(SObject item)

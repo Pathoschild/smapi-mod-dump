@@ -23,7 +23,6 @@
   "VariableRainChance": 0.185,
   "OvercastChance": 0.05,
   "VRChangeChance": 0.35,
-  "VRStepPercent": 0.245,
   "VRMassiveStepChance": 0.0935,
   "ShowBothScales": false,
   "FirstTempScale": "Kraggs",
@@ -36,7 +35,6 @@
   "DisplayFogInDesert": false,
   "RequireMinRainToWaterCrops": true,
   "ApplyFrostsInWinter": true,
-  "MaxRainFall": 4000,
-  "WeatherSystemChance": 0.15,
-  "VRainNotifThreshold": 0.2
+  "MaxRainFall": 11000,
+  "WeatherSystemChance": 0.15
 }

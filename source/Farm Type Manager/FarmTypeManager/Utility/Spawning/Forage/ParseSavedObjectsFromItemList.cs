@@ -161,38 +161,69 @@ namespace FarmTypeManager
             /// <returns>A saved object representing the designated item. Null if creation failed.</returns>
             private static SavedObject CreateSavedObject(ConfigItem item, string areaID = "")
             {
-                if (item.Type == SavedObject.ObjectType.Object || item.Type == SavedObject.ObjectType.Item)
+                switch (item.Type)
                 {
-                    string savedName = item.Category + ":" + item.Name;
-
-                    int? itemID = GetItemID(item.Category, item.Name); //get an item ID for the category and name
-                    if (itemID.HasValue) //if a matching item ID was found
-                    {
-                        SavedObject saved = new SavedObject() //generate a saved object with these settings
-                        {
-                            Type = item.Type,
-                            Name = savedName,
-                            ID = itemID.Value,
-                            ConfigItem = item
-                        };
-                        Monitor.VerboseLog($"Parsed \"{item.Category}\": \"{item.Name}\" into item ID: {itemID}");
-                        return saved;
-                    }
-                    else //if no matching item ID was found
-                    {
-                        Monitor.Log($"An area's item list contains a complex item definition that did not match any loaded items.", LogLevel.Info);
+                    case SavedObject.ObjectType.Object:
+                    case SavedObject.ObjectType.Item:
+                    case SavedObject.ObjectType.Container:
+                        //these are valid item types
+                        break;
+                    default:
+                        Monitor.Log($"An area's item list contains a complex item with a type that is not recognized.", LogLevel.Info);
                         Monitor.Log($"Affected spawn area: \"{areaID}\"", LogLevel.Info);
-                        Monitor.Log($"Item name: \"{savedName}\"", LogLevel.Info);
-                        Monitor.Log($"This may be caused by an error in the item list or a modded item that wasn't loaded. The affected item will be skipped.", LogLevel.Info);
+                        Monitor.Log($"Item type: \"{item.Type}\"", LogLevel.Info);
+                        Monitor.Log($"This is likely due to a design error in the mod's code. Please report this to the mod's developer. The affected item will be skipped.", LogLevel.Info);
                         return null;
+                }
+
+                if (item.Contents != null) //if this item has contents
+                {
+                    for (int x = item.Contents.Count - 1; x >= 0; x--) //for each of the contents
+                    {
+                        List<SavedObject> contentSave = ParseSavedObjectsFromItemList(new object[] { item.Contents[x] }, areaID); //attempt to parse this into a saved object
+                        if (contentSave.Count <= 0) //if parsing failed
+                        {
+                            item.Contents.RemoveAt(x); //remove this from the contents list
+                        }
                     }
                 }
 
-                Monitor.Log($"An area's item list contains a complex item with a type that is not recognized.", LogLevel.Info);
-                Monitor.Log($"Affected spawn area: \"{areaID}\"", LogLevel.Info);
-                Monitor.Log($"Item type: \"{item.Type}\"", LogLevel.Info);
-                Monitor.Log($"This is likely due to a design error in the mod's code. Please report this to the mod's developer. The affected item will be skipped.", LogLevel.Info);
-                return null;
+                if (item.Type == SavedObject.ObjectType.Container) //if this is a container
+                {
+                    //containers have no name or ID to validate, so don't involve them
+
+                    SavedObject saved = new SavedObject() //generate a saved object with these settings
+                    {
+                        Type = item.Type,
+                        ConfigItem = item
+                    };
+                    Monitor.VerboseLog($"Parsed \"{item.Category}\" as a container type.");
+                    return saved;
+                }
+
+                string savedName = item.Category + ":" + item.Name;
+
+                int? itemID = GetItemID(item.Category, item.Name); //get an item ID for the category and name
+                if (itemID.HasValue) //if a matching item ID was found
+                {
+                    SavedObject saved = new SavedObject() //generate a saved object with these settings
+                    {
+                        Type = item.Type,
+                        Name = savedName,
+                        ID = itemID.Value,
+                        ConfigItem = item
+                    };
+                    Monitor.VerboseLog($"Parsed \"{item.Category}\": \"{item.Name}\" into item ID: {itemID}");
+                    return saved;
+                }
+                else //if no matching item ID was found
+                {
+                    Monitor.Log($"An area's item list contains a complex item definition that did not match any loaded items.", LogLevel.Info);
+                    Monitor.Log($"Affected spawn area: \"{areaID}\"", LogLevel.Info);
+                    Monitor.Log($"Item name: \"{savedName}\"", LogLevel.Info);
+                    Monitor.Log($"This may be caused by an error in the item list or a modded item that wasn't loaded. The affected item will be skipped.", LogLevel.Info);
+                    return null;
+                }
             }
         }
     }

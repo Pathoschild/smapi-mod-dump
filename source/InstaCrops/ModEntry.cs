@@ -6,14 +6,14 @@
 	using System.Text;
 	using Microsoft.Xna.Framework;
 	using StardewModdingAPI;
-	using StardewModdingAPI.Events;
-	using StardewValley;
+    using StardewModdingAPI.Events;
+    using StardewValley;
 	using StardewValley.TerrainFeatures;
 
 	/// <summary>
 	/// This class is the main entry point of the mod.
 	/// </summary>
-	public class ModEntry : Mod
+	public class CustomModEntry : Mod
 	{
 		private IModHelper modHelper;
 		private ModConfig config;
@@ -27,7 +27,7 @@
 		{
 			this.Monitor.Log("Loading InstaCrops", LogLevel.Info);
 			this.modHelper = helper;
-			this.modHelper.Events.GameLoop.DayEnding += this.GameLoop_DayStarted;
+			this.modHelper.Events.GameLoop.DayEnding += this.GameLoop_DayEnding;
 			this.config = this.modHelper.ReadConfig<ModConfig>();
 			this.config.ValidateConfigOptions();
 			this.randomvalue = new Random();
@@ -38,7 +38,7 @@
 		/// </summary>
 		/// <param name="sender">The sender of the event.</param>
 		/// <param name="e">The event arguments.</param>
-		private void GameLoop_DayStarted(object sender, DayEndingEventArgs e)
+		private void GameLoop_DayEnding(object sender, DayEndingEventArgs e)
 		{
 			var currentChance = this.UpdateChanceForTodaysLuck();
 
@@ -55,7 +55,7 @@
 						{
 							var randomChance = this.config.UseRandomChance ? this.randomvalue.Next(0, 100) : 100;
 
-							if (randomChance <= currentChance)
+							if (randomChance <= currentChance && randomChance != 0)
 							{
 								dirt.crop.growCompletely();
 								// this.Monitor.Log($"Instantly growing crop! Current Chance: {currentChance}, Random Chance: {randomChance}");
@@ -75,15 +75,15 @@
 
 			var currentChance = this.config.ChanceForGrowth;
 
-			if (Game1.dailyLuck < -0.04)
+			if (Game1.player.DailyLuck < -0.04)
 			{
 				currentChance -= 10;
 			}
-			else if (Game1.dailyLuck < 0)
+			else if (Game1.player.DailyLuck < 0)
 			{
 				// Do nothing, this is normal luck.
 			}
-			else if (Game1.dailyLuck <= 0.04)
+			else if (Game1.player.DailyLuck <= 0.04)
 			{
 				// Kindof lucky today, add a 5% chance.
 				currentChance += 5;

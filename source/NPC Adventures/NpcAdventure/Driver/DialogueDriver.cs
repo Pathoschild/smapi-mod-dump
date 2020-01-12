@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using NpcAdventure.Internal;
 using NpcAdventure.Utils;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -71,7 +72,6 @@ namespace NpcAdventure.Driver
 
             foreach (NPC npc in farmer.currentLocation.characters) {
                 Rectangle npcBox = npc.GetBoundingBox();
-                Rectangle spriteBox = npc.Sprite.SourceRect;
                 bool isNpcAtCursorTile = Helper.IsNPCAtTile(farmer.currentLocation, e.Cursor.Tile, npc)
                                          || Helper.IsNPCAtTile(farmer.currentLocation, e.Cursor.Tile + new Vector2(0f, 1f), npc)
                                          || Helper.IsNPCAtTile(farmer.currentLocation, e.Cursor.GrabTile, npc);
@@ -108,7 +108,17 @@ namespace NpcAdventure.Driver
             if (this.CurrentDialogue != dialogue)
             {
                 this.OnChangeDialogue(this.CurrentDialogue, dialogue, this.CurrentSpeaker?.CurrentDialogue?.Count <= 1);
+                this.TryRemember(dialogue);
                 this.CurrentDialogue = dialogue;
+            }
+        }
+
+        private void TryRemember(Dialogue dialogue)
+        {
+            if (dialogue is CompanionDialogue companionDialogue && companionDialogue.Remember && !string.IsNullOrEmpty(companionDialogue.Tag))
+            {
+                if (!Game1.player.hasOrWillReceiveMail(companionDialogue.Tag))
+                    Game1.player.mailReceived.Add(companionDialogue.Tag);
             }
         }
 

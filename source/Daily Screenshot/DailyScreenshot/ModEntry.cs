@@ -1,4 +1,7 @@
-﻿using StardewModdingAPI;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using Netcode;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using System;
@@ -10,6 +13,9 @@ namespace DailyScreenshot
     /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
+        /// <summary>The mod configuration from the player.</summary>
+        private ModConfig Config;
+
         IReflectedMethod takeScreenshot = null;
         private string stardewValleyYear, stardewValleySeason, stardewValleyDayOfMonth;
         private bool screenshotTakenToday = false;
@@ -20,6 +26,7 @@ namespace DailyScreenshot
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            Config = Helper.ReadConfig<ModConfig>();
             Helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
         }
 
@@ -34,6 +41,22 @@ namespace DailyScreenshot
             Helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
 
             takeScreenshot = Helper.Reflection.GetMethod(Game1.game1, "takeMapScreenshot");
+
+            Helper.Events.Input.ButtonPressed += OnButtonPressed;
+        }
+
+        /// <summary>Raised after a button is pressed.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        {
+            if (e.Button.TryGetKeyboard(out Keys _))
+            {
+                if (e.Button == Config.TakeScreenshotKey)
+                {
+                    TakeScreenshotViaKeypress();
+                }
+            }
         }
 
         /// <summary>Raised after day has started.</summary>
@@ -55,7 +78,7 @@ namespace DailyScreenshot
         /// <param name="e">The event data.</param>
         private void OnWarped(object sender, WarpedEventArgs e)
         {
-            if (e.NewLocation is Farm && !screenshotTakenToday)
+            if (e.NewLocation is Farm && !screenshotTakenToday && Game1.timeOfDay >= Config.TimeScreenshotGetsTakenAfter)
             {
                 Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             }
@@ -75,16 +98,54 @@ namespace DailyScreenshot
             }
         }
 
-        /// <summary>Takes a screenshot of the entire farm.</summary>
+        /// <summary>Checks whether it is the appropriate day to take a screenshot of the entire farm.</summary>
         private void TakeScreenshot()
         {
+            if (Config.HowOftenToTakeScreenshot["Daily"] == true)
+            {
+                ActuallyTakeScreenshot();
+            }
+            else if (Config.HowOftenToTakeScreenshot[Game1.Date.DayOfWeek + "s"] == true)
+            {
+                ActuallyTakeScreenshot();
+            }
+            else if (Config.HowOftenToTakeScreenshot["First Day of Month"] == true && Game1.Date.DayOfMonth.ToString() == "1")
+            {
+                ActuallyTakeScreenshot();
+            }
+            else if (Config.HowOftenToTakeScreenshot["Last Day of Month"] == true && Game1.Date.DayOfMonth.ToString() == "28")
+            {
+                ActuallyTakeScreenshot();
+            }
+        }
+
+        /// <summary>Takes a screenshot of the entire farm.</summary>
+        private void ActuallyTakeScreenshot()
+        {
             ConvertInGameDateToNumericFormat();
-
             string screenshotName = $"{stardewValleyYear}-{stardewValleySeason}-{stardewValleyDayOfMonth}";
-            takeScreenshot.Invoke<string>(0.25f, screenshotName);
-            screenshotTakenToday = true;
 
+            string mapScreenshot = Game1.game1.takeMapScreenshot(0.25f, screenshotName);
+            Game1.addHUDMessage(new HUDMessage(mapScreenshot, 6));
+            Game1.playSound("cameraNoise");
+
+            screenshotTakenToday = true;
             MoveScreenshotToCorrectFolder(screenshotName);
+        }
+
+        /// <summary>Takes a screenshot of the entire map, activated via keypress.</summary>
+        private void TakeScreenshotViaKeypress()
+        {
+            string screenshotName = SaveGame.FilterFileName((string)(NetFieldBase<string, NetString>)Game1.player.name) + "_" + DateTime.UtcNow.Month + "-" + DateTime.UtcNow.Day.ToString() + "-" + DateTime.UtcNow.Year.ToString() + "_" + (int)DateTime.UtcNow.TimeOfDay.TotalMilliseconds;
+
+            string mapScreenshot = Game1.game1.takeMapScreenshot(Config.TakeScreenshotKeyZoomLevel, screenshotName);
+            Game1.addHUDMessage(new HUDMessage(mapScreenshot, 6));
+            Game1.playSound("cameraNoise");
+
+            if (Config.FolderDestinationForKeypressScreenshots != "default")
+            {
+                MoveKeypressScreenshotToCorrectFolder(screenshotName);
+            }
         }
 
         private Queue<Action> _actions = new Queue<Action>();
@@ -136,14 +197,28 @@ namespace DailyScreenshot
         /// <param name="screenshotName">The name of the screenshot file.</param>
         private void MoveScreenshotToCorrectFolder(string screenshotName)
         {
-            // gather directory and file paths
-            string screenshotNameWithExtension = screenshotName + ".png";
-            string stardewValleyScreenshotsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "StardewValley", "Screenshots");
-            string saveFilePath = Game1.player.farmName + "-Farm-Screenshots-" + saveFileCode;
+            // special folder path
+            int num11 = Environment.OSVersion.Platform != PlatformID.Unix ? 26 : 28;
+            var path = Environment.GetFolderPath((Environment.SpecialFolder)num11);
 
-            string sourceFile = Path.Combine(stardewValleyScreenshotsDirectory, screenshotNameWithExtension);
+            // path is combined with StardewValley and then Screenshots
+            string defaultStardewValleyScreenshotsDirectory = Path.Combine(path, "StardewValley", "Screenshots");
+            string stardewValleyScreenshotsDirectory = defaultStardewValleyScreenshotsDirectory;
+
+            if (Config.FolderDestinationForDailyScreenshots != "default")
+            {
+                stardewValleyScreenshotsDirectory = Config.FolderDestinationForDailyScreenshots;
+            }
+
+            // path for farm folder and screenshots
+            string saveFilePath = Game1.player.farmName + "-Farm-Screenshots-" + saveFileCode;
+            string screenshotNameWithExtension = screenshotName + ".png";
+
+            // path for original screenshot location and new screenshot location
+            string sourceFile = Path.Combine(defaultStardewValleyScreenshotsDirectory, screenshotNameWithExtension);
             string destinationFile = Path.Combine(stardewValleyScreenshotsDirectory, saveFilePath, screenshotNameWithExtension);
 
+            // path for farm folder
             string saveDirectoryFullPath = Path.Combine(stardewValleyScreenshotsDirectory, saveFilePath);
 
             // create save directory if it doesn't already exist
@@ -165,6 +240,51 @@ namespace DailyScreenshot
             catch (Exception ex)
             {
                 Monitor.Log($"Error moving file '{screenshotNameWithExtension}' into {saveFilePath} folder. Technical details:\n{ex}", LogLevel.Error);
+            }
+        }
+
+        /// <summary>Moves keypress screenshot into StardewValley/Screenshots directory.</summary>
+        /// <param name="screenshotName">The name of the screenshot file.</param>
+        private void MoveKeypressScreenshotToCorrectFolder(string screenshotName)
+        {
+            // special folder path
+            int num11 = Environment.OSVersion.Platform != PlatformID.Unix ? 26 : 28;
+            var path = Environment.GetFolderPath((Environment.SpecialFolder)num11);
+
+            // path is combined with StardewValley and then Screenshots
+            string defaultStardewValleyScreenshotsDirectory = Path.Combine(path, "StardewValley", "Screenshots");
+            string stardewValleyScreenshotsDirectory = defaultStardewValleyScreenshotsDirectory;
+
+            if (Config.FolderDestinationForKeypressScreenshots != "default")
+            {
+                stardewValleyScreenshotsDirectory = Config.FolderDestinationForKeypressScreenshots;
+            }
+
+            string screenshotNameWithExtension = screenshotName + ".png";
+
+            // path for original screenshot location and new screenshot location
+            string sourceFile = Path.Combine(defaultStardewValleyScreenshotsDirectory, screenshotNameWithExtension);
+            string destinationFile = Path.Combine(stardewValleyScreenshotsDirectory, screenshotNameWithExtension);
+
+            // create save directory if it doesn't already exist
+            if (!File.Exists(stardewValleyScreenshotsDirectory))
+            {
+                Directory.CreateDirectory(stardewValleyScreenshotsDirectory);
+            }
+
+            // delete old version of screenshot if one exists
+            if (File.Exists(destinationFile))
+            {
+                File.Delete(destinationFile);
+            }
+
+            try
+            {
+                File.Move(sourceFile, destinationFile);
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Error moving file '{screenshotNameWithExtension}' into {stardewValleyScreenshotsDirectory} folder. Technical details:\n{ex}", LogLevel.Error);
             }
         }
 

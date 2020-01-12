@@ -1,0 +1,13 @@
+url:
+   https://github.com/Esca-MMC/CustomTracker.git
+
+mods:
+   Custom Tracker
+
+latest commit:
+   commit e811b7ccb4d5ea1462d09cbe276064dae1dac04a
+   Author: Esca-MMC <41843952+Esca-MMC@users.noreply.github.com>
+   Date:   Sun Jan 5 17:09:15 2020 -0600
+   
+       Rephrase readme.md
+   

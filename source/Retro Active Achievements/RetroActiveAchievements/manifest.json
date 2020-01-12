@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Retro Active Achievments",
+  "Authour": "Iceburg333",
+  "Version": "3.0.0",
+  "Description": "Scan all achievements and fire stream triggers.",
+    "UniqueID": "7e474181-e1a0-40f9-9c11-d08a3dcefaf3",
+  "PerSaveConfigs": false,
+  "EntryDll": "RetroActiveAchievements.dll",
+  "MinimumApiVersion": "3.0.0"
+}

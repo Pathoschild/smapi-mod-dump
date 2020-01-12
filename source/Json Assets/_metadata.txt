@@ -5,9 +5,9 @@ mods:
    Json Assets
 
 latest commit:
-   commit 55058bc8467bb0df64060fb830c50fe49497a366
+   commit 97446d198e5730d36a36878f29855230efe0df42
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Fri Dec 13 14:43:55 2019 -0500
+   Date:   Sat Jan 4 15:57:23 2020 -0500
    
-       Fix recipe result count not being used
+       Boots
    

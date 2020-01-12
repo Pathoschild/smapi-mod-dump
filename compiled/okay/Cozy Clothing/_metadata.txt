@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5093
+IDs: CompSciLauren.CozyClothing
+update keys: Nexus:5093, GitHub:CompSciLauren/stardew-valley-cozy-clothing-mod

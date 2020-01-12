@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Foxyfficiency",
   "Author": "Fokson",
-  "Version": "1.1.0",
+  "Version": "1.1.2",
   "Description": "Less Clicking, More Information, Quality of Life.",
   "UniqueID": "Fokson.Foxyfficiency",
   "EntryDll": "Foxyfficiency.dll",

@@ -25,6 +25,10 @@ namespace NpcAdventure.AI.Controller
         private readonly AI_StateMachine ai;
         private readonly IContentLoader loader;
         private IdleBehavior currentBehavior;
+        private int framesBeforeChange;
+        private int currentBehaviorIndex;
+        private int minDuration;
+        private int maxDuration;
 
         public IdleController(AI_StateMachine ai, IContentLoader loader)
         {
@@ -61,9 +65,7 @@ namespace NpcAdventure.AI.Controller
 
         public void Activate()
         {
-            int behaviorIndex = this.ChooseIdleBehavior();
-            this.currentBehavior = this.behaviors[behaviorIndex];
-            this.currentBehavior.StartBehavior();
+            this.ChangeBehavior();
         }
 
         public void Deactivate()
@@ -79,6 +81,36 @@ namespace NpcAdventure.AI.Controller
 
             if (this.currentBehavior != null)
                 this.currentBehavior.Update(e);
+
+            if (--this.framesBeforeChange <= 0 && this.currentBehavior != null)
+            {
+                this.ChangeBehavior();
+            }
+        }
+
+        private int GenerateDuration()
+        {
+            return Game1.random.Next(this.minDuration * 60, this.maxDuration * 60);
+        }
+
+        private void ChangeBehavior()
+        {
+            int behaviorIndex = this.ChooseIdleBehavior();
+
+            if (this.currentBehaviorIndex == behaviorIndex && this.currentBehavior != null)
+            {
+                this.currentBehavior.Poke();
+                this.framesBeforeChange = this.GenerateDuration();
+                return;
+            }
+
+            if (this.currentBehavior != null)
+                this.currentBehavior.StopBehavior();
+            
+            this.currentBehavior = this.behaviors[behaviorIndex];
+            this.currentBehavior.StartBehavior();
+            this.framesBeforeChange = this.GenerateDuration();
+            this.currentBehaviorIndex = behaviorIndex;
         }
     }
 
@@ -101,10 +133,11 @@ namespace NpcAdventure.AI.Controller
                 throw new Exception($"Can't fetch NPC idle behavior definition for `{npcName}`");
 
             // Parse idle definition (1 = behavior names, 2 = tendencies)
-            var (behaviors, tendencies, _) = idleDefinition.Split('/');
+            var (behaviors, tendencies, rest) = idleDefinition.Split('/');
 
             string[] behavs = behaviors.Split(' '); // Parse behaviors
             string[] tends = tendencies.Split(' '); // parse tendencies
+            var (minDuration, maxDuration, _) = Utility.parseStringToIntArray(rest[0]);
 
             if (tends.Length != behavs.Length)
                 throw new Exception($"Inconsistent lenght of behaviors and tendencies ({behavs.Length} != {tends.Length})");
@@ -127,6 +160,10 @@ namespace NpcAdventure.AI.Controller
             this.tendencies = new float[tends.Length];
             for (int i = 0; i < tends.Length; i++)
                 this.tendencies[i] = float.Parse(tends[i]);
+
+            // Asign durations
+            this.minDuration = minDuration;
+            this.maxDuration = maxDuration;
         }
 
         private IdleBehavior CreateBehavior(string behaviorType, IList<string> args)
@@ -135,6 +172,9 @@ namespace NpcAdventure.AI.Controller
             {
                 case "animate":
                     return new AnimateBehavior(this, this.loader.LoadStrings("Data/AnimationDescriptions"), args[0].Split(' '));
+                case "lookaround":
+                    var (minSeconds, maxSeconds, _) = Utility.parseStringToIntArray(args[0]);
+                    return new LookAroundBehavior(this, minSeconds, maxSeconds);
                 case "idle":
                     return new IdleBehavior(this);
                 default:
@@ -151,12 +191,14 @@ namespace NpcAdventure.AI.Controller
         private class IdleBehavior : Internal.IUpdateable
         {
             protected readonly IdleController controller;
+            protected readonly NPC npc;
             private readonly IMonitor monitor;
 
             public IdleBehavior(IdleController controller)
             {
                 this.controller = controller;
                 this.monitor = this.controller.ai.Monitor;
+                this.npc = controller.ai.npc;
             }
 
             public virtual void StartBehavior() {
@@ -167,61 +209,20 @@ namespace NpcAdventure.AI.Controller
                 this.monitor.Log($"Stopping idle behavior `{this.GetType().Name}`");
             }
 
+            public virtual void Poke()
+            {
+                this.monitor.Log($"Poke idle behavior `{this.GetType().Name}`");
+            }
+
             public virtual void Update(UpdateTickedEventArgs e) { }
 
             internal bool IsCanceled()
             {
-                Point fp = this.controller.ai.npc.GetBoundingBox().Center;
+                Point fp = this.npc.GetBoundingBox().Center;
                 Point lp = this.controller.ai.player.GetBoundingBox().Center;
                 Vector2 diff = new Vector2(lp.X, lp.Y) - new Vector2(fp.X, fp.Y);
 
                 return diff.Length() > 2.65f * Game1.tileSize;
-            }
-        }
-
-        private class AnimateBehavior : IdleBehavior
-        {
-            private List<int[]> animations;
-            private List<FarmerSprite.AnimationFrame> frames;
-
-            public AnimateBehavior(IdleController controller, Dictionary<string, string> definitions, string[] animations) : base(controller) {
-                this.animations = new List<int[]>();
-
-                foreach (string animation in animations)
-                {
-                    if (!definitions.TryGetValue(animation, out string definition))
-                        throw new Exception($"Cannot get animation definition for `{animation}`, NPC `{controller.ai.npc.Name}`");
-
-                    var (_, loop, _) = definition.Split('/');
-                    this.animations.Add(Utility.parseStringToIntArray(loop));
-                }
-            }
-
-            public override void StartBehavior()
-            {
-                base.StartBehavior();
-                int i = Game1.random.Next(0, this.animations.Count);
-                this.frames = this.CreateAnimationFrames(this.animations[i]);
-                this.controller.ai.npc.Sprite.setCurrentAnimation(this.frames);
-                this.controller.ai.npc.Sprite.loop = true;
-            }
-
-            public override void StopBehavior()
-            {
-                base.StopBehavior();
-                this.controller.ai.npc.Sprite.StopAnimation();
-                this.controller.ai.npc.Sprite.faceDirectionStandard(0);
-            }
-
-            private List<FarmerSprite.AnimationFrame> CreateAnimationFrames(int[] frameIndexes)
-            {
-                var frames = new List<FarmerSprite.AnimationFrame>();
-
-                foreach (var i in frameIndexes) {
-                    frames.Add(new FarmerSprite.AnimationFrame(i, 100));
-                }
-
-                return frames;
             }
         }
     }

@@ -1,7 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MTN2.Compatibility;
-using MTN2.Management;
 using MTN2.MapData;
 using MTN2.SaveData;
 using Newtonsoft.Json;
@@ -33,7 +30,6 @@ namespace MTN2.Management
         private FHouseManagement HouseManager { get; set; }
 
         private IModHelper helper;
-        private Func<string, MtnFarmData> ReadFarmData;
         private Action<string, MtnFarmData> WriteFarmData;
 
         public bool NoDebris { get; set; } = false;
@@ -74,7 +70,7 @@ namespace MTN2.Management
         {
             get
             {
-                return this.FarmManager.GetMailbox(Game1.player);
+                return this.FarmManager.GetMailbox(Game1.player, this.Canon);
             }
         }
 

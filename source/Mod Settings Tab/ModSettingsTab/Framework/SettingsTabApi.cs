@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using ModSettingsTab.Events;
-using ModSettingsTab.Framework.Interfaces;
+using ModSettingsTabApi.Events;
+using ModSettingsTabApi.Framework.Interfaces;
 
 namespace ModSettingsTab.Framework
 {
@@ -9,9 +9,13 @@ namespace ModSettingsTab.Framework
     {
         public event EventHandler<OptionsChangedEventArgs> OptionsChanged;
 
-        public void Send(object sender,Dictionary<string, Value> options)
+        public bool Send(object sender,Dictionary<string, Value> options)
         {
-            OptionsChanged?.Invoke(sender, new OptionsChangedEventArgs(options));
+            var eventArgs = new OptionsChangedEventArgs(options);
+
+            OptionsChanged?.Invoke(sender, eventArgs);
+
+            return eventArgs.Reloaded;
         }
     }
 }

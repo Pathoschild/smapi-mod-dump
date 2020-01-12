@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/GilarF/SVM/develop/ModSettingsTab/schema.json",
   "Description": {
     "en": "Replaces the standard settings tab",
     "zh": "取代標准設定標籤",
@@ -33,7 +34,10 @@
         "th": "แสดงการแจ้งเตือนบันทึกที่ประสบความสำเร็จ"
       },
       "Type": "CheckBox",
-      "Label": "Show saving notify"
+      "Label": {
+        "en": "Show the save notification",
+        "fr": "Afficher la notification d'enregistrement" 
+      }
     },
     {
       "Name": "ShowReloadIcon",
@@ -53,7 +57,10 @@
         "th": "แสดงไอคอนเมื่อจำเป็นต้องรีบูต"
       },
       "Type": "CheckBox",
-      "Label": "Show reload icon"
+      "Label": {
+        "en": "Show the reload icon",
+        "fr": "Afficher l'icône de rechargement"
+      }
     }
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "Name": "No_Kimchi",
+  "Author": "jaeha",
+  "Version": "1.0.0",
+  "Description": "Farming Limited",
+  "UniqueID": "jaeha.No_Kimchi",
+  "EntryDll": "No_Kimchi.dll",
+  "MinimumApiVersion": "1.0.0",
+  "UpdateKeys": [""]
+}

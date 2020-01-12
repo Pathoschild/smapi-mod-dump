@@ -33,7 +33,7 @@ namespace ModSettingsTab.Framework.Components
         {
             _dropDownOptions = dropDownOptions;
             _selectedOption = dropDownOptions.FindIndex(s => s == config[name].ToString());
-            _dropDownBounds = new Rectangle(Bounds.X, Bounds.Y, Bounds.Width - 48,
+            _dropDownBounds = new Rectangle(Bounds.X, Bounds.Y, Bounds.Width - 44,
                 Bounds.Height * _dropDownOptions.Count);
             Offset.Y = 8;
         }
@@ -118,9 +118,9 @@ namespace ModSettingsTab.Framework.Components
                 {
                     if (index == _selectedOption)
                         b.Draw(Game1.staminaRect,
-                            new Rectangle(slotX + _dropDownBounds.X,
-                                slotY + _dropDownBounds.Y + index * Bounds.Height, _dropDownBounds.Width,
-                                Bounds.Height), new Rectangle(0, 0, 1, 1), Color.Wheat, 0.0f,
+                            new Rectangle(slotX + _dropDownBounds.X+4,
+                                slotY + _dropDownBounds.Y+4 + index * Bounds.Height, _dropDownBounds.Width-8,
+                                Bounds.Height-8), new Rectangle(0, 0, 1, 1), Color.Wheat, 0.0f,
                             Vector2.Zero, SpriteEffects.None, 0.975f);
                     b.DrawString(Game1.smallFont, _dropDownOptions[index],
                         new Vector2(slotX + _dropDownBounds.X + 4,
@@ -136,7 +136,7 @@ namespace ModSettingsTab.Framework.Components
             else
             {
                 IClickableMenu.drawTextureBox(b, Game1.mouseCursors, DropDownBgSource,
-                    slotX + Bounds.X, slotY + Bounds.Y, Bounds.Width - 48, Bounds.Height,
+                    slotX + Bounds.X, slotY + Bounds.Y, Bounds.Width - 44, Bounds.Height,
                     Color.White * num, 4f, false);
                 if (_selected == null || _selected.Equals(this))
                     b.DrawString(Game1.smallFont,

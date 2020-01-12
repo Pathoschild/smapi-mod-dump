@@ -19,14 +19,18 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
-using StardewValley.TerrainFeatures;
 using System.Linq;
 using StardewModdingAPI.Events;
+using StardewValley.TerrainFeatures;
+using StardewValley.Objects;
 
 namespace CompostPestsCultivation
 {
     public class ModEntry : Mod
     {
+
+        private SeedMakerController SMC;
+
         public override void Entry(IModHelper helper)
         {
             _Monitor = Monitor;
@@ -37,13 +41,14 @@ namespace CompostPestsCultivation
             Cultivation.Init(conf);
             Composting.Init(conf);
 
-            SeedMakerController.Init(helper);
-            SeedMakerController.HeldItemRemoved += SeedMakerController_HeldItemRemoved;
+            SMC = new SeedMakerController(helper, Monitor);
+            SMC.HeldItemRemoved += SeedMakerController_HeldItemRemoved;
 
 
             helper.Events.Display.RenderingHud += Display_RenderingHud;
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+            helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
 
 
             helper.Events.GameLoop.Saving += GameLoop_Saving;
@@ -125,17 +130,13 @@ namespace CompostPestsCultivation
             }
         }
 
+        private Vector2 TileMarkedForHarvest;
+        private int SeedIdxMarkedForHarvest;
 
         void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
         {
             Vector2 grabTile = e.Cursor.GrabTile;
-            //Monitor.Log($"obj: {Game1.currentLocation.getObjectAtTile((int)grabTile.X, (int)grabTile.Y)?.Name}");
-            //Object obj2 = Game1.currentLocation.getObjectAtTile((int)grabTile.X, (int)grabTile.Y);
-            //Monitor.Log("1" + (obj2 is Object && obj2 != null));
-            //Monitor.Log("2" + (e.Button.IsActionButton()));
-            //Monitor.Log("3" + obj2.Name.Equals("Seed Maker"));
-            //Monitor.Log("4" + (obj2.heldObject?.Value != null));
-            //Monitor.Log("5" + obj2.heldObject.Value.CanBeGrabbed);
+
             if (Game1.currentLocation != null && Game1.activeClickableMenu == null && e.Button.IsActionButton())
             {
                 if (Game1.currentLocation.getObjectAtTile((int)grabTile.X, (int)grabTile.Y) is Object obj && obj != null && obj.Name.Equals("Seed Maker"))
@@ -156,14 +157,41 @@ namespace CompostPestsCultivation
                     if (Cultivation.GetCropItemFromSeeds(Game1.player.ActiveObject) is Object crop)
                         Game1.activeClickableMenu = new SeedsInfoMenu(Game1.player.ActiveObject, crop, true);
                 }
+                else if (Game1.currentLocation.terrainFeatures.ContainsKey(grabTile) && Game1.currentLocation.terrainFeatures[grabTile] is HoeDirt hd && hd.crop is Crop crop
+                            && Cultivation.CropCanBeHarvested(crop))
+                {
+                    TileMarkedForHarvest = grabTile;
+
+                    if (crop.indexOfHarvest.Value == 421 && ModComponent.CheckChance(75)) //Sunflowers have a chance to drop additional seeds                     
+                    {
+                        SeedIdxMarkedForHarvest = 431; //sunflower seeds
+                    }
+                    else if (crop.indexOfHarvest.Value == 433) //coffee bean
+                    {
+                        SeedIdxMarkedForHarvest = crop.indexOfHarvest.Value;
+                    }
+                }
+                else if (Game1.currentLocation is Farm farm2 && farm2.getBuildingAt(grabTile) is Building building && building.buildingType.Value.Equals("Silo") && Game1.player.ActiveObject?.ParentSheetIndex != HayShopMenu.hay_index)
+                {
+                    //If player right-clicks on silo without hay in hand a menu opens letting the player get as much hay has they want
+                    Game1.activeClickableMenu = new HayShopMenu(Helper);
+                    Helper.Input.Suppress(e.Button);
+                }
             }
-
-
-            /*if (e.Button.IsActionButton() && Game1.currentLocation is Farm farm && Game1.activeClickableMenu == null && Composting.IsComposter(farm.getBuildingAt(grabTile)))
-            {
-                Game1.activeClickableMenu = new ComposterMenu();
-            }*/
         }
+
+        void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            //check if crop was harvested in last tick and it was marked for harvest before that
+            if (SeedIdxMarkedForHarvest != 0 && Game1.currentLocation.terrainFeatures[TileMarkedForHarvest] is HoeDirt hd
+                    && (!(hd.crop is Crop crop) || !Cultivation.CropCanBeHarvested(crop)))
+            {
+                Monitor.Log("Harvested sunflower or coffee plant", LogLevel.Trace);
+                Cultivation.NewSeeds(SeedIdxMarkedForHarvest);
+                SeedIdxMarkedForHarvest = 0;
+            }
+        }
+
 
         void GameLoop_DayEnding(object sender, StardewModdingAPI.Events.DayEndingEventArgs e)
         {

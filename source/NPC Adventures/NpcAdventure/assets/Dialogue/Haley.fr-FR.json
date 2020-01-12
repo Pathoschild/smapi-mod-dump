@@ -1,0 +1,15 @@
+{
+  "companionAccepted": "D'accord, évitons juste les mines. Je n'ai pas envie de me salir.",
+  "companionRejected": "Non, ça à l'air ennuyant..$2",
+  "companionRejectedNight": "Il est trop tard pour faire quoi que ce soit.$3",
+  "companionDismiss": "...Haan, je commençais à m'amuser.#$b#Bon on se voit plus tard alors !$h",
+  "companionDismissAuto": "*Baille*#$4#Désolé @ Je suis trop fatiguée pour continuer. A plus tard.",
+  "companionRecruited": "Youpi !#$b#Je pourrai prendre des photos pendant la balade !$h",
+  "companion_Beach_summer": "Envie de bronzer ? Bonne idée !$h",
+  "companion_Farm": "Il y a vraiment beaucoup de pâturage ici. J'imagine que c'est pour ça que tu es toujours un peu sale.",
+  "companion_Farm_Spouse": "Notre entrée est encore sale. Il faut que... Oh, tu as raison chéri. Allons nous balader plutôt.$h",
+  "companion_Forest": "Il y a assez de place ici pour construire un centre commercial.#$b#...$7#$b#Bah quoi ?$u",
+  "companion_Mine": "C'est sombre ici. Mais bon j'ai l'habitude, attention aux marches !",
+  "companion_Mountain": "Impossible de porter des talons ici. *soupir*$s",
+  "companion_Town": "Je passerai bien chez moi pour changer de tenue."
+}

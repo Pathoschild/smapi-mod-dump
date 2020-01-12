@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using NpcAdventure.AI.Controller;
+using NpcAdventure.HUD;
 using NpcAdventure.Loader;
 using NpcAdventure.Model;
 using NpcAdventure.StateMachine;
@@ -31,6 +32,7 @@ namespace NpcAdventure.AI
         private const float MONSTER_DISTANCE = 9f;
         public readonly NPC npc;
         public readonly Farmer player;
+        private readonly CompanionDisplay hud;
         private readonly IModEvents events;
         internal IMonitor Monitor { get; private set; }
 
@@ -38,13 +40,14 @@ namespace NpcAdventure.AI
         private Dictionary<State, IController> controllers;
         private int changeStateCooldown = 0;
 
-        internal AI_StateMachine(CompanionStateMachine csm, IModEvents events, IMonitor monitor)
+        internal AI_StateMachine(CompanionStateMachine csm, CompanionDisplay hud, IModEvents events, IMonitor monitor)
         {
             this.npc = csm.Companion;
             this.player = csm.CompanionManager.Farmer;
             this.events = events ?? throw new ArgumentException(nameof(events));
             this.Monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
             this.Csm = csm;
+            this.hud = hud;
             this.loader = csm.ContentLoader;
         }
 
@@ -100,6 +103,7 @@ namespace NpcAdventure.AI
 
             this.CurrentState = state;
             this.CurrentController.Activate();
+            this.hud.SetCompanionState(state);
         }
 
         private bool IsThereAnyMonster()

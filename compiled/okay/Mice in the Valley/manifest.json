@@ -1,7 +1,7 @@
 {
   "Name": "MiceInTheValley",
   "Author": "Candidus42",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Adds mice to Stardew Valley",
   "UniqueID": "Candidus42.MiceInTheValley",
   "EntryDll": "MiceInTheValley.dll",

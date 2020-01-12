@@ -24,7 +24,7 @@ namespace FarmTypeManager
             public int? PercentChanceToSpawn { get; set; }
             /// <summary>A list of other items contained within this item. Only supported by certain categories.</summary>
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-            public List<ConfigItem> Contents { get; set; }
+            public List<object> Contents { get; set; }
 
             /// <summary>The object's type, determined by the Category string. Defaults to the Item type.</summary>
             [JsonIgnore]
@@ -37,8 +37,14 @@ namespace FarmTypeManager
                         case "object":
                         case "objects":
                             return SavedObject.ObjectType.Object;
+                        case "barrel":
+                        case "barrels":
+                        case "breakable":
+                        case "breakables":
                         case "chest":
                         case "chests":
+                        case "crate":
+                        case "crates":
                             return SavedObject.ObjectType.Container;
                     }
 

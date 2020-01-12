@@ -128,4 +128,4 @@ When you first enter the farm, the mod will scan for valid panning spots and cre
 
 #### configVersion
 Don't modify.  This is used to update the config file if new settings are added.
-- Default Value: 2 
+- Default Value: 3 

@@ -5,11 +5,13 @@ mods:
    Birthday Mail
 
 latest commit:
-   commit 46abd3d2059f7811a3c4b30c55383f22c255c859
+   commit 4b857f38063bd138eeb4b0caf6d56af6046f24c6
    Author: Kathryn Hazuka <KathrynHazuka@hotmail.com>
-   Date:   Sat Oct 13 11:15:57 2018 -0600
+   Date:   Sat Jan 4 14:33:56 2020 -0700
    
-       Update to 1.5.1
+       Major Update
        
-       Adding chinese translation to mail content
+       Translations
+       Simplified code based on improvements in SMAPI and ingame timing of events
+       Update to game version 1.4.3
    

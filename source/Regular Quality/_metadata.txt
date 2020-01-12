@@ -1,0 +1,13 @@
+url:
+   https://github.com/desto-git/smapi-RegularQuality.git
+
+mods:
+   Regular Quality
+
+latest commit:
+   commit 451314774f0fa933e248ab6b584ad519452cf0c1
+   Author: desto-git <desto-git@users.noreply.github.com>
+   Date:   Fri Jan 3 14:03:42 2020 +0100
+   
+       add update key, update README, upload to Nexus
+   

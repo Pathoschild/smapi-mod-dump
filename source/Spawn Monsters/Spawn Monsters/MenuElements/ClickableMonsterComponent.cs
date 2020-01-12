@@ -2,53 +2,64 @@
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
+using static Spawn_Monsters.Monsters.MonsterData;
 
 namespace Spawn_Monsters
 {
-	/// <summary>
-	/// Represents a single monster in one component.
-	///</summary>
-	class ClickableMonsterComponent : ClickableComponent
-	{
-		public AnimatedSprite sprite;
-		public int StartFrame;
-		public int NumberOfFrames;
-		public float Interval;
-		public object arg;
+    /// <summary>
+    /// Represents a single monster in one component.
+    ///</summary>
+    public class ClickableMonsterComponent : ClickableComponent
+    {
+
+        private readonly int StartFrame;
+        private readonly int NumberOfFrames;
+        private readonly float Interval;
+        private Color color;
+        public AnimatedSprite Sprite { get; }
+        public Monster Monster { get; }
+        public int HeightLevel { get; }
+        public int WidthLevel { get; }
 
 
-		public ClickableMonsterComponent(string textureName, int xPosition, int yPosition, int width, int height, int spriteWidth = 16, int spriteHeight = 24, int startFrame = 0, int numberOfFrames = 4, float interval = 100)
-			: base(new Microsoft.Xna.Framework.Rectangle(xPosition, yPosition, width, height), textureName)
-		{
-			sprite = new AnimatedSprite($"Characters\\Monsters\\{textureName}") {
-				SpriteHeight = spriteHeight,
-				SpriteWidth = spriteWidth
-			};
-			sprite.UpdateSourceRect();
+        public ClickableMonsterComponent(Monster monster, string textureName, int xPosition, int yPosition, int width, int height, int spriteWidth = 16, int spriteHeight = 24, int startFrame = 0, int numberOfFrames = 4, float interval = 100, Color color = default)
+            : base(new Rectangle(xPosition, yPosition, width, height), textureName) {
 
-			StartFrame = startFrame;
-			NumberOfFrames = numberOfFrames;
-			Interval = interval;
-		}
+            if (!monster.Equals(Monster.CursedDoll)) {
+                Sprite = new AnimatedSprite($"Characters\\Monsters\\{textureName}", startFrame, spriteWidth, spriteHeight);
 
-		public void PerformHoverAction(int x, int y) {
-			if (containsPoint(x, y)) {
-				if (sprite.CurrentAnimation == null) {
-					sprite.Animate(Game1.currentGameTime, StartFrame, NumberOfFrames, Interval);
-				}
-			} else {
-				sprite.StopAnimation();
-			}
-		}
+                StartFrame = startFrame;
+                NumberOfFrames = numberOfFrames;
+                Interval = interval;
+            }
 
-		public void Draw(SpriteBatch b) {
-			Point p = bounds.Center;
-			sprite.draw(b, new Vector2(p.X - sprite.SpriteWidth, p.Y - sprite.SpriteHeight), 1);
-		}
+            Monster = monster;
+            this.color = color;
+            HeightLevel = spriteHeight / 8;
+            WidthLevel = spriteWidth / 8;
+        }
 
-		public void Draw(SpriteBatch b, Color c) {
-			Point p = bounds.Center;
-			sprite.draw(b, new Vector2(p.X - sprite.SpriteWidth, p.Y - sprite.SpriteHeight), 1, 0, 0, c, false, 4);
-		}
-	}
+
+        public void PerformHoverAction(int x, int y) {
+            if (Monster != Monster.CursedDoll) {
+                if (containsPoint(x, y)) {
+                    Sprite.Animate(Game1.currentGameTime, StartFrame, NumberOfFrames, Interval);
+                } else {
+                    if (Sprite.CurrentFrame != StartFrame) {
+                        Sprite.CurrentFrame = StartFrame;
+                    }
+                }
+            }
+        }
+
+        public void Draw(SpriteBatch b) {
+            //b.Draw(Game1.staminaRect, bounds, HeightLevel == 2 ? Color.LightBlue : HeightLevel == 3 ? Color.LightYellow : HeightLevel == 4 ? Color.PaleVioletRed : Color.White);
+
+            if (Monster == Monster.CursedDoll) {
+                b.Draw(Game1.objectSpriteSheet, new Rectangle(bounds.X, bounds.Y, 16 * 4, 16 * 4), new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, 103, 16, 16)), new Color(255, 50, 50));
+            } else {
+                Sprite.draw(b, new Vector2(bounds.X, bounds.Y), 1, 0, 0, (color == default ? Color.White : color), false, 4);
+            }
+        }
+    }
 }

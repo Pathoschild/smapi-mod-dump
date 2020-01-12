@@ -3,5 +3,6 @@
   "exclude_traveling_merchant": false,
   "exclude_oasis": false,
   "exclude_pierre": false,
-  "exclude_night_market": false
+  "exclude_night_market": false,
+  "exclude_egg_festival": false
 }

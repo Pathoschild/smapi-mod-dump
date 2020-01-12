@@ -1,0 +1,7 @@
+﻿{
+	"Message.Requirement.Amount": "Requires {{amount}} {{objectName}}",
+	"Object.Category.Meat": "Meat (Any)",
+	"Object.Category.MetalResources": "Metal Resources (Any)",
+	"Object.Category.BuildingResources": "Building Resources (Any)",
+	"Object.Category.TappedTreeProduct": "Tapped Tree Product (Any)"
+}

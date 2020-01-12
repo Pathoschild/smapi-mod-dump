@@ -20,20 +20,40 @@ namespace FarmTypeManager
 
             foreach (Monster monster in e.Removed.OfType<Monster>()) //for each monster that was removed
             {
-                if (monster.id <= Utility.MonsterTracker.HighestID) //if this monster's ID is within the range used by this mod
+                IEnumerable<SavedObject> lootList = Utility.MonsterTracker.GetLoot(monster); //get this monster's custom loot list, if any
+
+                if (lootList != null) //if this monster has a loot list
                 {
-                    IEnumerable<SavedObject> lootList = Utility.MonsterTracker.GetLoot(monster.id); //get this monster's custom loot set, if any
+                    Utility.Monitor.VerboseLog($"Dropping loot for defeated monster. Monster: {monster.displayName}. ID: {monster.id}. Location: {monster.getTileX()},{monster.getTileY()} ({monster.currentLocation.Name}).");
 
-                    if (lootList != null) //if this monster has any loot to spawn
+                    //get the position where the monster's loot should drop
+                    Point center = monster.GetBoundingBox().Center;
+                    Vector2 lootPosition = new Vector2(center.X, center.Y);
+
+                    foreach (SavedObject loot in lootList) //for each loot object
                     {
-                        //get the position where the monster's loot should drop
-                        Point center = monster.GetBoundingBox().Center;
-                        Vector2 lootPosition = new Vector2(center.X, center.Y);
-
-                        foreach (SavedObject loot in lootList) //for each loot object
+                        int? spawnChance = loot.ConfigItem?.PercentChanceToSpawn; //get this item's spawn chance, if provided
+                        if (spawnChance.HasValue && spawnChance.Value < Utility.RNG.Next(100)) //if this item "fails" its chance to spawn
                         {
-                            monster.currentLocation.debris.Add(new Debris(Utility.CreateItem(loot), lootPosition, lootPosition)); //create and "drop" the loot at the monster's location
+                            continue; //skip to the next item
                         }
+
+                        //if this loot has contents with spawn chances, process them
+                        if (loot.ConfigItem?.Contents != null) //if this loot has contents
+                        {
+                            for (int content = loot.ConfigItem.Contents.Count - 1; content >= 0; content--) //for each of the contents
+                            {
+                                List<SavedObject> contentSave = Utility.ParseSavedObjectsFromItemList(new object[] { loot.ConfigItem.Contents[content] }, $"[unknown: monster loot dropped at {monster.currentLocation.Name}]"); //parse this into a saved object
+
+                                int? contentSpawnChance = contentSave[0].ConfigItem?.PercentChanceToSpawn; //get this item's spawn chance, if provided
+                                if (contentSpawnChance.HasValue && contentSpawnChance.Value < Utility.RNG.Next(100)) //if this item "fails" its chance to spawn
+                                {
+                                    loot.ConfigItem.Contents.RemoveAt(content); //remove this content from the loot
+                                }
+                            }
+                        }
+
+                        monster.currentLocation.debris.Add(new Debris(Utility.CreateItem(loot), lootPosition, lootPosition)); //create and "drop" the loot at the monster's location
                     }
                 }
             }

@@ -143,6 +143,7 @@ namespace DeepWoodsMod
             }
 
             Game1.locations.Remove(deepWoods);
+            Game1.removeLocationFromLocationLookup(deepWoods);
 
             if (Game1.IsMasterGame)
             {

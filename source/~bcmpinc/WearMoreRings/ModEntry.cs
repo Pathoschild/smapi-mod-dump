@@ -86,9 +86,7 @@ namespace StardewHack.WearMoreRings
         static readonly ConditionalWeakTable<Farmer, ActualRings> actualdata = new ConditionalWeakTable<Farmer, ActualRings>();
         public static readonly Random random = new Random();
         
-        public override void Entry(IModHelper helper) {
-            base.Entry(helper);
-            
+        public override void HackEntry(IModHelper helper) {
             helper.Events.GameLoop.Saving += GameLoop_Saving;
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
             
@@ -96,6 +94,18 @@ namespace StardewHack.WearMoreRings
             // I've tried doing this through SMAPI events, but stuff already breaks prior to those events being received and when scanning for local games.
             var mp = Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer");
             mp.GetValue().protocolVersion += "+WearMoreRings";
+            
+            Patch(typeof(Farmer), "farmerInit", Farmer_farmerInit);
+            Patch((Farmer f)=>f.isWearingRing(0), Farmer_isWearingRing);
+            Patch(typeof(Farmer), "updateCommon", Farmer_updateCommon);
+            Patch((GameLocation gl)=>gl.cleanupBeforePlayerExit(), GameLocation_cleanupBeforePlayerExit); 
+            Patch(typeof(GameLocation), "resetLocalState", GameLocation_resetLocalState); 
+            Patch((GameLocation gl)=>gl.damageMonster(new Rectangle(),0,0,false,0.0f,0,0.0f,0.0f,false,null), GameLocation_damageMonster);
+            Patch(()=>new InventoryPage(0,0,0,0), InventoryPage_ctor);
+            Patch((InventoryPage ip)=>ip.draw(null), InventoryPage_draw);
+            Patch((InventoryPage ip)=>ip.performHoverAction(0,0), InventoryPage_performHoverAction);
+            Patch((InventoryPage ip)=>ip.receiveLeftClick(0,0,false), InventoryPage_receiveLeftClick);
+            Patch(()=>new Ring(0), Ring_ctor);
         }
         
         public override object GetApi() {
@@ -156,7 +166,6 @@ namespace StardewHack.WearMoreRings
             actualdata.Add(f, actualrings);
         }
 
-        [BytecodePatch("StardewValley.Farmer::farmerInit")]
         void Farmer_farmerInit() {
             var addfields = FindCode(
                 OpCodes.Stelem_Ref,
@@ -199,7 +208,6 @@ namespace StardewHack.WearMoreRings
             return res;
         }
 
-        [BytecodePatch("StardewValley.Farmer::isWearingRing")]
         void Farmer_isWearingRing() {
             AllCode().Replace(
                 Instructions.Ldarg_0(),
@@ -223,7 +231,6 @@ namespace StardewHack.WearMoreRings
             update(ar.ring4.Value);
         }
         
-        [BytecodePatch("StardewValley.Farmer::updateCommon")]
         void Farmer_updateCommon() {
             FindCode(
                 OpCodes.Ldarg_0,
@@ -271,7 +278,6 @@ namespace StardewHack.WearMoreRings
             ar.ring4.Value?.onLeaveLocation(Game1.player, location);
         }
         
-        [BytecodePatch("StardewValley.GameLocation::cleanupBeforePlayerExit")]
         void GameLocation_cleanupBeforePlayerExit() { 
             var code = FindCode(
                 Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
@@ -303,7 +309,6 @@ namespace StardewHack.WearMoreRings
             ar.ring4.Value?.onNewLocation(Game1.player, location);
         }
         
-        [BytecodePatch("StardewValley.GameLocation::resetLocalState")]
         void GameLocation_resetLocalState() { 
             var code = FindCode(
                 Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
@@ -336,7 +341,6 @@ namespace StardewHack.WearMoreRings
             ar.ring4.Value?.onMonsterSlay(target, location, who);
         }
         
-        [BytecodePatch("StardewValley.GameLocation::damageMonster(Microsoft.Xna.Framework.Rectangle,System.Int32,System.Int32,System.Boolean,System.Single,System.Int32,System.Single,System.Single,System.Boolean,StardewValley.Farmer)")]
         void GameLocation_damageMonster() {
             byte arg_who = (byte)(Array.Find(original.GetParameters(), info => info.Name == "who").Position+1);
 
@@ -407,7 +411,6 @@ namespace StardewHack.WearMoreRings
             AddIcon(page, "Extra Ring 4", 68, 32, 122, 121,  -1, 112, 105, ar.ring4.Value);
         }
         
-        [BytecodePatch("StardewValley.Menus.InventoryPage::.ctor(System.Int32,System.Int32,System.Int32,System.Int32)")]
         void InventoryPage_ctor() {
             // Replace code for equipment icon creation with method calls to our AddEquipmentIcon method.
             // Replace rings & boots
@@ -466,7 +469,6 @@ namespace StardewHack.WearMoreRings
             }
         }
         
-        [BytecodePatch("StardewValley.Menus.InventoryPage::draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)")]
         void InventoryPage_draw() {
             // Change the equipment slot drawing code to draw the 4 additional slots.
             InstructionRange range;
@@ -520,7 +522,6 @@ namespace StardewHack.WearMoreRings
             range[0] = Instructions.Ldc_R4(64);
         }
         
-        [BytecodePatch("StardewValley.Menus.InventoryPage::performHoverAction")]
         void InventoryPage_performHoverAction() {
             // Change code responsible for obtaining the tooltip information.
             var var_item = generator.DeclareLocal(typeof(Item));
@@ -669,7 +670,6 @@ namespace StardewHack.WearMoreRings
             return false;
         }
         
-        [BytecodePatch("StardewValley.Menus.InventoryPage::receiveLeftClick")]
         void InventoryPage_receiveLeftClick() {
             // Handle a ring-inventory slot being clicked.
             InstructionRange code;
@@ -758,7 +758,6 @@ namespace StardewHack.WearMoreRings
         #endregion Patch InventoryPage
         
         #region Patch Ring
-        [BytecodePatch("StardewValley.Objects.Ring::.ctor(System.Int32)")]
         void Ring_ctor() {
             var code = FindCode(
                 OpCodes.Ldarg_0,

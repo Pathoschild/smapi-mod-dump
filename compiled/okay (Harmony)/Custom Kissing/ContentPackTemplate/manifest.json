@@ -1,0 +1,17 @@
+﻿{
+	"Name": "[CKM] Name of you pack",
+	"Author": "Your name",
+	"Version": "1.0.0",
+	"Description": "Adds custom kissing configuration for my npc mod.",
+	"UniqueID": "YourName.YouPackNameForCustomKissingMod",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [],
+	"Dependencies": [
+		{
+			"UniqueID": "YourName.YourOthersPacksAndMods"
+		}
+	],
+	"ContentPackFor": {
+		"UniqueID": "Digus.CustomKissingMod"
+	}
+}

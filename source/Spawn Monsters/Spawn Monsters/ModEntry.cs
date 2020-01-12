@@ -1,206 +1,188 @@
-﻿using System;
-using System.Data;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Spawn_Monsters.Monsters;
+using Spawn_Monsters.MonsterSpawning;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Monsters;
+using System;
 
 namespace Spawn_Monsters
 {
-	/// <summary>Represents the mod entry point.</summary>
-	public class ModEntry : Mod
-	{
+    /// <summary>Represents the mod entry point.</summary>
+    public class ModEntry : Mod
+    {
 
-		/*********
+        /*********
 		** Properties
 		*********/
-		/// <summary>The mod configuration from the player.</summary>
-		public ModConfig config;
+        /// <summary>The mod configuration from the player.</summary>
+        public ModConfig config;
 
-		/*********
+        /*********
         ** Public methods
         *********/
-		public override void Entry(IModHelper helper) {
-			helper.ConsoleCommands.Add("monster_spawn", "Spawns a Monster.\n\nUsage: monster_spawn <name> [posX] [posY] [amount]\n\nUses Farmer's coordinates if none or '~' was given.", this.SpawnEntity);
-			helper.ConsoleCommands.Add("monster_list", "Shows a lists of all monsters available to spawn.", this.MonsterList);
-			helper.ConsoleCommands.Add("monster_menu", "Shows a menu for spawning monsters", this.MonsterMenu);
+        public override void Entry(IModHelper helper) {
+            helper.ConsoleCommands.Add("monster_spawn", "Spawns a Monster.", SpawnEntity);
+            helper.ConsoleCommands.Add("monster_list", "Shows a lists of all monsters available to spawn.", MonsterList);
+            helper.ConsoleCommands.Add("monster_menu", "Shows a menu for spawning monsters", MonsterMenu);
+            helper.ConsoleCommands.Add("farmer_position", "Prints the Farmer's current position", FarmerPosition);
 
-			config = helper.ReadConfig<ModConfig>();
+            config = helper.ReadConfig<ModConfig>();
 
-			helper.Events.Input.ButtonPressed += this.OnButtonPressed;
-		}
+            Spawner.GetInstance().RegisterMonitor(Monitor);
 
-		/*********
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
+            helper.Events.GameLoop.Saving += OnSaveCreating;
+        }
+
+        public void OnSaveCreating(object sender, SavingEventArgs e) {
+            Spawner.GetInstance().KillEverything();
+        }
+
+        /*********
         ** Input Methods
         *********/
-		private void OnButtonPressed(object sender, ButtonPressedEventArgs e) {
-			if (!Context.IsPlayerFree)
-				return;
-			if (e.Button == this.config.MenuKey) {
-				Game1.activeClickableMenu = new MonsterMenu();
-			}
-		}
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e) {
+            if (!Context.IsPlayerFree) {
+                return;
+            }
 
-		/*********
+            if (e.Button == config.MenuKey) {
+                Game1.activeClickableMenu = new MonsterMenu.MonsterMenu();
+            }
+        }
+
+        /*********
         ** Command Methods
         *********/
-		public void SpawnEntity(string command, string[] args) {
+        public void SpawnEntity(string command, string[] args) {
 
-			//We need a world to spawn monsters in, duh
-			if (Context.IsWorldReady) {
 
-				// Determine if we have arguments
-				if (args.Length > 0) {
+            if (args.Length == 0 || args[0].Equals("help")) {
+                Monitor.Log($"Usage: monster_spawn \"Monster Name\" [posX] [posY] [amount]" +
+                    $"\n\nUses Farmer's coordinates if none or '{config.FarmerPositionCharacter}' was given." +
+                    $"\n\nExample: monster_spawn \"Green Slime\" 32 23 4" +
+                    $"\nspawns four Green Slimes at coordinates 32|23" +
+                    $"\nuse monster_list for a list of available monster names.", LogLevel.Info);
+                return;
+            }
 
-					//Set defaults
-					NPC entity = null;
-					int xTile = Game1.player.getTileX();
-					int yTile = Game1.player.getTileY();
-					int amount = 1;
+            //We need a world to spawn monsters in, duh
+            if (Context.IsWorldReady) {
 
-					//Ensure provided coordinatees are actually coordinates
-					try {
-						//Determine X tile
-						if (args.Length >= 2) {
-							xTile = (int)new DataTable().Compute(args[1].Replace(config.FarmerPositionCharacter.ToString(), xTile.ToString()), null);
-						}
-						
-						//Determine Y tile
-						if (args.Length >= 3) {
-							yTile = (int)new DataTable().Compute(args[2].Replace(config.FarmerPositionCharacter.ToString(), yTile.ToString()), null);
-						}
+                if (args.Length == 0) {
+                    Monitor.Log("You need to provide at least a Monster name!", LogLevel.Info);
+                    return;
+                }
+                MonsterData.Monster m = MonsterData.ForName(args[0]);
+                Vector2 location = Game1.player.getTileLocation();
 
-					} catch (Exception e) {
-						Console.Error.WriteLine(e.Message);
-						Monitor.Log($"Arguments 1 and 2 must be coordinates or '{config.FarmerPositionCharacter}' in place of the Farmer's coordinates! Make sure you don't add any brackets!");
-						return;
-					}
+                if (m.Equals((MonsterData.Monster)(-1))) {
+                    Monitor.Log($"There is no Monster with the name {args[0]}", LogLevel.Info);
+                    return;
+                }
 
-					try { if (args.Length >= 4) { amount = int.Parse(args[3]); if (amount < 1) throw new Exception(); } } catch (Exception) { Monitor.Log("Argument 3 must be an amount larger than 0!"); return; }
 
-					Vector2 pos = new Vector2(xTile, yTile);
+                int amount = 1;
 
-					for (int i = 0; i < amount; i++) {
-						// Determine the monster to spawn
-						switch (args[0]) {
+                try {
+                    //Determine X tile
+                    if (args.Length >= 2) {
+                        location.X = int.Parse(args[1].Replace(config.FarmerPositionCharacter.ToString(), location.X.ToString()));
+                    }
 
-							case "greenSlime": entity = new GreenSlime(pos, 0); break;
-							case "blueSlime": entity = new GreenSlime(pos, 40); break;
-							case "redSlime": entity = new GreenSlime(pos, 80); break;
-							case "purpleSlime": entity = new GreenSlime(pos, 121); break;
-							case "yellowSlime": entity = new GreenSlime(pos, new Color(255, 255, 50)); break;
-							case "blackSlime": Random r = new Random(); entity = new GreenSlime(pos, new Color(40 + r.Next(10), 40 + r.Next(10), 40 + r.Next(10))); break;
+                    //Determine Y tile
+                    if (args.Length >= 3) {
+                        location.Y = int.Parse(args[2].Replace(config.FarmerPositionCharacter.ToString(), location.Y.ToString()));
+                    }
 
-							case "bat": entity = new Bat(pos); break;                           //minelevel: 0 - 40 - 80 - 171 -> type
-							case "frostBat": entity = new Bat(pos, 40); break;
-							case "lavaBat": entity = new Bat(pos, 80); break;
-							case "iridiumBat": entity = new Bat(pos, 171); break;
+                    if (args.Length >= 4) {
+                        amount = int.Parse(args[3]);
+                    }
 
-							case "bug": entity = new Bug(pos, 0); break;                        //available areatypes: 121 -> armored
-							case "armoredBug": entity = new Bug(pos, 121); break;
+                } catch (Exception e) {
+                    Console.Error.WriteLine(e.Message);
+                    Monitor.Log("Invalid Arguments! Type \"monster_spawn help\" for usage help.", LogLevel.Info);
+                    return;
+                }
 
-							case "fly": entity = new Fly(pos); break;                           //hard -> mutant
-							case "mutantFly": entity = new Fly(pos, true); break;
+                if (m != MonsterData.Monster.Duggy && m != MonsterData.Monster.WildernessGolem) {
+                    location.X *= Game1.tileSize;
+                    location.Y *= Game1.tileSize;
+                }
 
-							case "ghost": entity = new Ghost(pos); break;                       //name -> carbon ghost
-							case "carbonGhost": entity = new Ghost(pos, "Carbon Ghost"); break;
+                Spawner.GetInstance().SpawnMonster(m, location, amount);
 
-							case "grub": entity = new Grub(pos); break;                         //hard -> mutant
-							case "mutantGrub": entity = new Grub(pos, true); break;
+            } else { Monitor.Log("Load a save first!"); }
+        }
 
-							case "rockCrab": entity = new RockCrab(pos); break;                 //name -> iridium crab
-							case "lavaCrab": entity = new LavaCrab(pos); break;
-							case "iridiumCrab": entity = new RockCrab(pos, "Iridium Crab"); break;
+        public void MonsterList(string command, string[] args) {
+            Monitor.Log("Monsters available to spawn:\n\n" +
+                "Slimes:\n" +
+                "\tGreen Slime\n" +
+                "\tFrost Jelly\n" +
+                "\tRed Sludge\n" +
+                "\tPurple Sludge\n" +
+                "\tYellow Slime\n" +
+                "\tBlack Slime\n" +
+                "\tGray Sludge\n\n" +
 
-							case "metalHead": entity = new MetalHead(pos, 80); break;            //mineareas: 0, 40, 80 - seems to only spawn at 80+
+                "Bats:\n" +
+                "\tBat\n" +
+                "\tFrost Bat\n" +
+                "\tLava Bat\n" +
+                "\tIridium Bat\n\n" +
 
-							case "rockGolem": entity = new RockGolem(pos); break;               //mineareas: 0, 40, 80 - changes health and damage; difficultymod: 
-							case "wildernessGolem": entity = new RockGolem(pos, 5); break;
+                "Bugs:\n" +
+                "\tBug\n" +
+                "\tArmored Bug\n\n" +
 
-							case "mummy": entity = new Mummy(pos); break;
-							case "serpent": entity = new Serpent(pos); break;
-							case "shadowBrute": entity = new ShadowBrute(pos); break;
-							case "shadowShaman": entity = new ShadowShaman(pos); break;
-							case "skeleton": entity = new Skeleton(pos); break;
-							case "squidKid": entity = new SquidKid(pos); break;
-							case "duggy": entity = new DuggyFixed(pos); break;
-							case "dustSpirit": entity = new DustSpirit(pos); break;
-						}
-						if (entity != null) {
-							entity.currentLocation = Game1.currentLocation;
-							entity.setTileLocation(new Vector2(xTile, yTile));
-							Game1.currentLocation.addCharacter(entity);
-						} else { Monitor.Log($"{args[0]} not found! Type monster_list to view a list of available monsters to spawn!"); return; }
-					}
-					Monitor.Log($"{amount} {entity.Name} added at {entity.currentLocation.Name} {entity.getTileX()},{entity.getTileY()}", LogLevel.Info);
-				} else {
-					Monitor.Log("Usage: monster_spawn <name> [posX] [posY] [amount]\n\nUses Farmer's coordinates if none or '~' was given.");
-				}
-			} else { Monitor.Log("Load a save first!"); }
-		}
+                "Flies: \n" +
+                "\tCave Fly\n" +
+                "\tGrub\n" +
+                "\tMutant Fly\n" +
+                "\tMutant Grub\n\n" +
 
-		public void MonsterList(string command, string[] args) {
-			Monitor.Log("Monsters available to spawn:\n\n" +
-				"Slimes:\n" +
-				"	greenSlime\n" +
-				"	blueSlime\n" +
-				"	redSlime\n" +
-				"	purpleSlime\n" +
-				"	yellowSlime\n" +
-				"	blackSlime\n\n" +
+                "Ghosts:\n" +
+                "\tGhosts\n" +
+                "\tCarbon Ghost\n\n" +
 
-				"Bats:\n" +
-				"	bat\n" +
-				"	frostBat\n" +
-				"	lavaBat\n" +
-				"	iridiumBat\n\n" +
+                "Crabs:\n" +
+                "\tRock Crab\n" +
+                "\tLava Crab\n" +
+                "\tIridium Crab\n\n" +
 
-				"Bugs:\n" +
-				"	bug\n" +
-				"	armoredBug\n\n" +
+                "Golems:\n" +
+                "\tRock Golem\n" +
+                "\tWilderness Golem\n\n" +
 
-				"Flies: \n" +
-				"	fly\n" +
-				"	grub\n" +
-				"	mutantFly\n" +
-				"	mutantGrub\n\n" +
+                "Other:\n" +
+                "\tCursed Doll\n" +
+                "\tDuggy\n" +
+                "\tDust Sprite\n" +
+                "\tHaunted Skull\n" +
+                "\tMetal Head\n" +
+                "\tMummy\n" +
+                "\tSerpent\n" +
+                "\tShadow Brute\n" +
+                "\tShadow Shaman\n" +
+                "\tSkeleton\n" +
+                "\tSquid Kid\n\n" +
 
-				"Ghosts:\n" +
-				"	ghost\n" +
-				"	carbonGhost\n\n" +
+                "Use these names with 'monster_spawn'\n" +
+                "Keep in mind that some monsters don't work properly outside of the farm and the mines!", LogLevel.Info);
+        }
 
-				"Crabs:\n" +
-				"	rockCrab\n" +
-				"	lavaCrab\n" +
-				"	iridiumCrab\n\n" +
+        public void MonsterMenu(string command, string[] args) {
+            if (Context.IsWorldReady) {
+                Game1.activeClickableMenu = new MonsterMenu.MonsterMenu();
+            } else {
+                Monitor.Log("Load a save first!", LogLevel.Info);
+            }
+        }
 
-				"Golems:\n" +
-				"	rockGolem\n" +
-				"	wildernessGolem\n\n" +
-
-				"Other:\n" +
-				"	duggy\n" +
-				"	dustSpirit\n" +
-				"	metalHead\n" +
-				"	mummy\n" +
-				"	serpent\n" +
-				"	shadowBrute\n" +
-				"	shadowShaman\n" +
-				"	skeleton\n" +
-				"	squidKid\n\n" +
-
-				"Use these names with 'monster_spawn'\n" +
-				"Keep in mind that some monsters don't work properly outside of the farm and the mines!", LogLevel.Info);
-		}
-
-		public void MonsterMenu(string command, string[] args) {
-			if (Context.IsWorldReady) {
-				Game1.activeClickableMenu = new MonsterMenu();
-			} else {
-				Monitor.Log("Load a save first!");
-			}
-		}
-
-	}
+        public void FarmerPosition(string command, string[] args) {
+            Monitor.Log("The Farmer's coordinates are: " + Game1.player.getTileLocation(), LogLevel.Info);
+        }
+    }
 }

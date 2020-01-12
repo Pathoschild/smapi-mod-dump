@@ -16,7 +16,8 @@ namespace MailFrameworkMod
         /// </summary>
         public string Id { get => _id; private set => _id = value.Replace(" ",""); }
         /// <summary>
-        /// this letter group id
+        /// this letter group id. Letter with the same group id are never delivered in the same day.
+        /// Letters registered first have priority, unless they have the suffix ".Random", in that case a random letter will be chosen.
         /// </summary>
         public string GroupId;
         /// <summary>

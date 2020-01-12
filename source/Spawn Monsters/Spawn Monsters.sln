@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.136
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spawn Monsters", "Spawn Monsters\Spawn Monsters.csproj", "{79850B3C-33AF-4496-B92B-34CE91C5701A}"
 EndProject
@@ -20,6 +20,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {74696549-930A-4471-BAE6-986429A94E19}
+		SolutionGuid = {E75810F0-CEAE-4A7D-AFA1-4817AF429E6A}
 	EndGlobalSection
 EndGlobal

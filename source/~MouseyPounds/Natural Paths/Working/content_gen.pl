@@ -2,7 +2,7 @@
 #
 # content.json entry generator for Natural Paths mod
 #
-# Content Patcher 1.7 version
+# Content Patcher 1.11 version (Stardew 1.4)
 
 use strict;
 
@@ -69,6 +69,13 @@ my %token = (
 	},
 );
 if ($include_floors) {
+	$token{'BrickFloor_Replacement'} = {
+		'name' => 'Brick Floor',
+		'obj_id' => 293,
+		'floor_sprite' => '"X": 128, "Y": 128',
+		'obj_sprite' => '"X": 80, "Y": 192',
+		'variant' => 'BrickFloor_Variant',
+	};
 	$token{'CrystalFloor_Replacement'} = {
 		'name' => 'Crystal Floor',
 		'obj_id' => 333,
@@ -120,7 +127,7 @@ my %craft_mat = (
 
 # No output file, everything just prints to stdout and needs redirection because !lazy
 select STDOUT;
-print qq({\n\t"Format": "1.7",\n\t"ConfigSchema": {\n);
+print qq({\n\t"Format": "1.11.0",\n\t"ConfigSchema": {\n);
 foreach my $t (sort keys %token) {
 	# default is DarkDirt for GravelPath and LightGrass for WoodPath; None for all others
 	my $d = "None";
@@ -258,10 +265,31 @@ foreach my $t (sort keys %token) {
 			"When": { "$t:None": "false" }
 		},
 		{
+			"LogName": "Flooring_winter ($token{$t}{'name'}) -- Default",
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring_winter",
+			"FromFile": "assets/{{$t}}_Winter.png",
+			"ToArea": { $token{$t}{'floor_sprite'}, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"When": { "$t:None": "false" }
+		},
+		{
 			"LogName": "Flooring ($token{$t}{'name'}) -- Recolor",
 			"Action": "EditImage",
 			"Target": "TerrainFeatures/Flooring",
 			"FromFile": "assets/{{Prefix}}{{$t}}_{{Season}}{{Variant}}.png",
+			"ToArea": { $token{$t}{'floor_sprite'}, "Width": 64, "Height": 64},
+			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
+			"When": { 
+				"HasFile:assets/{{Prefix}}{{$t}}_{{Season}}{{Variant}}.png": "true",
+				"$t:None": "false",
+			}
+		},
+		{
+			"LogName": "Flooring_winter ($token{$t}{'name'}) -- Recolor",
+			"Action": "EditImage",
+			"Target": "TerrainFeatures/Flooring_winter",
+			"FromFile": "assets/{{Prefix}}{{$t}}_Winter{{Variant}}.png",
 			"ToArea": { $token{$t}{'floor_sprite'}, "Width": 64, "Height": 64},
 			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
 			"When": { 
@@ -300,16 +328,13 @@ foreach my $t (sort keys %token) {
 				"Crafting_Material:NoChange": "false",
 			}
 		},
-/* Changing the item name is currently disabled because it can mess up the crafting recipes.
-   Note that two-word names would be missing a space between them.
 		{
-			"LogName": "ObjectInformation Name Change ($token{$t}{'name'})",
+			"LogName": "ObjectInformation Display Name Change ($token{$t}{'name'})",
 			"Action": "EditData",
 			"Target": "Data/ObjectInformation",
-			"Fields": {	"$token{$t}{'obj_id'}": { 0: "{{$t}} Path" } },
+			"Fields": {	"$token{$t}{'obj_id'}": { 4: "{{$t}} Path" } },
 			"When": { "$t:None": "false" }
 		},
-*/   
 END_PRINT
 }
 
@@ -317,22 +342,22 @@ END_PRINT
 foreach my $t (sort keys %token) {
 	print <<"END_PRINT";
 		{
-			"LogName": "Flooring Snow Override ($token{$t}{'name'}) -- Default",
+			"LogName": "Flooring_winter Snow Override ($token{$t}{'name'}) -- Default",
 			"Action": "EditImage",
-			"Target": "TerrainFeatures/Flooring",
+			"Target": "TerrainFeatures/Flooring_winter",
 			"FromFile": "assets/Snow_Override.png",
 			"ToArea": { $token{$t}{'floor_sprite'}, "Width": 64, "Height": 64},
 			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
-			"When": { "$t": "LightGrass", "Season": "Winter", "Snow_Overrides_LightGrass": "true" }
+			"When": { "$t": "LightGrass", "Snow_Overrides_LightGrass": "true" }
 		},
 		{
-			"LogName": "Flooring Snow Override ($token{$t}{'name'}) -- Recolor",
+			"LogName": "Flooring_winter Snow Override ($token{$t}{'name'}) -- Recolor",
 			"Action": "EditImage",
-			"Target": "TerrainFeatures/Flooring",
+			"Target": "TerrainFeatures/Flooring_winter",
 			"FromFile": "assets/{{Prefix}}Snow_Override.png",
 			"ToArea": { $token{$t}{'floor_sprite'}, "Width": 64, "Height": 64},
 			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
-			"When": { "$t": "LightGrass", "Season": "Winter", "Snow_Overrides_LightGrass": "true",
+			"When": { "$t": "LightGrass", "Snow_Overrides_LightGrass": "true",
 				"HasFile:assets/{{Prefix}}Snow_Override.png": "true" }
 		},
 		{
@@ -355,22 +380,22 @@ foreach my $t (sort keys %token) {
 				"HasFile:assets/{{Prefix}}Snow_Override.png": "true" }
 		},
 		{
-			"LogName": "Flooring Ice Override ($token{$t}{'name'}) -- Default",
+			"LogName": "Flooring_winter Ice Override ($token{$t}{'name'}) -- Default",
 			"Action": "EditImage",
-			"Target": "TerrainFeatures/Flooring",
+			"Target": "TerrainFeatures/Flooring_winter",
 			"FromFile": "assets/Ice_Override.png",
 			"ToArea": { $token{$t}{'floor_sprite'}, "Width": 64, "Height": 64},
 			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
-			"When": { "$t": "DarkGrass", "Season": "Winter", "Ice_Overrides_DarkGrass": "true" }
+			"When": { "$t": "DarkGrass", "Ice_Overrides_DarkGrass": "true" }
 		},
 		{
-			"LogName": "Flooring Ice Override ($token{$t}{'name'}) -- Recolor",
+			"LogName": "Flooring_winter Ice Override ($token{$t}{'name'}) -- Recolor",
 			"Action": "EditImage",
-			"Target": "TerrainFeatures/Flooring",
+			"Target": "TerrainFeatures/Flooring_winter",
 			"FromFile": "assets/{{Prefix}}Ice_Override.png",
 			"ToArea": { $token{$t}{'floor_sprite'}, "Width": 64, "Height": 64},
 			"FromArea": { "X": 0, "Y": 0, "Width": 64, "Height": 64},
-			"When": { "$t": "DarkGrass", "Season": "Winter", "Ice_Overrides_DarkGrass": "true",
+			"When": { "$t": "DarkGrass", "Ice_Overrides_DarkGrass": "true",
 				"HasFile:assets/{{Prefix}}Ice_Override.png": "true" }
 		},
 		{

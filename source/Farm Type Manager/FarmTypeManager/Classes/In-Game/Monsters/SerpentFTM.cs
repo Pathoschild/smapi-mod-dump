@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace FarmTypeManager.Monsters
 {
     /// <summary>A subclass of Stardew's Serpent class, adjusted for use by this mod.</summary>
-    class SerpentFTM : Serpent
+    public class SerpentFTM : Serpent
     {
         /// <summary>Creates an instance of Stardew's Serpent class, but with adjustments made for this mod.</summary>
         public SerpentFTM()

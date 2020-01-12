@@ -111,7 +111,7 @@
   "weather-tv.bloodmoon": "The blood moon has rose over the inner Gem Sea region. Beware, for the forces of evil are about. The Ferngill Defence Ministry recommends you arm yourself, bar your door and window, and DO NOT GO OUTSIDE.#",
   "weather-tv.hazard": "The Republic Warning Service is issuing an alert that the inner Gem Sea region is currently experiencing severe weather, with {{hazard}} being reported by weather stations in {{repLocation}}. It is recommended you stay inside{{rainfallWarning}}.#",
   "weather-tv.currentCond": "Current conditions {{time}} are as follows: the weather is {{currentTemp}}{{abnormalText}} and {{systemText}}{{descWeather}}{{fogText}}.{{tempHazard}}{{rainfallRate}}.#",
-  "weather-tv.tomorrowForecast" : "{{sysText}} weather will be {{weather}}{{fogChance}}. Tommorow's temperatures will be {{tempString}}.",
+  "weather-tv.tomorrowForecast" : "{{sysText}} weather will be {{weather}}{{fogChance}}. Tomorrow's temperatures will be {{tempString}}.",
   "weather-tv.abnormalHeat": " as we experience abnormally hot temperatures",
   "weather-tv.abnormalChill": " as we experience abnormally cold temperatures",
   "weather-tv.systemMaint": "continuing ",

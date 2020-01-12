@@ -13,7 +13,10 @@ Then using the below section configure the number of required rarecrows to your 
 Lastly load back into the game and use rarecrows like normal.
 
 ## Configure
-The configuration file only has 1 property. This is the required number of (different types of) rarecrows are required to be placed on the farm for crows to no longer show up.
+The configuration file has 3 property. There are: 
+ * **NumberOfRequiredRarecrows** - The number of different types of rare crows on the farm to have total immunity from crows.
+ * **EnableProgressiveMode** - Progressive mode will lower the chance of crows spawning based on how many rarecrows you have (When the placed amount is below the number of the config option above).
+ * **ProgressivePercentPerRarecrow** - The percent chance each placed rarecrow will add to the progressive mode calculation (At a chance of 10, 5 rarecrows would sheild the farm 50% or time etc).
 
 ## Compatibility
 Better Rarecrows is compatible with Stardew Valley 1.3+ on Windows/Mac/Linus, both single player and multiplayer. To view reported bug visit both the issues on this repo and bug reports on [Nexus](https://www.nexusmods.com/stardewvalley/mods/3232?tab=bugs).

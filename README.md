@@ -2,10 +2,10 @@ This repository contains all SMAPI mods in the [SMAPI compatibility list](https:
 It's used to update that page, find mods using specific APIs, etc.
 
 ## Mod stats
-* Last updated 2019-12-17 (SMAPI 3.0.1 and Stardew Valley 1.4.3).
-* 841 mods in the SMAPI compatibility list.
-* 569 mods (68%) have a valid Git repository.
-* 238 repositories (42%) contain multiple mods.
+* Last updated 2020-01-11 (SMAPI 3.1 and Stardew Valley 1.4.3).
+* 886 mods in the SMAPI compatibility list.
+* 598 mods (67%) have a valid Git repository.
+* 247 repositories (41%) contain multiple mods.
 
 ## What's in this repository
 * `compiled` has the latest download for each mod, grouped into these categories:
@@ -16,7 +16,7 @@ It's used to update that page, find mods using specific APIs, etc.
   broken in \*   | Mods which broke in that game version.
   okay           | Mods which work fine in the latest versions (and don't fit one of the next two categories).
   okay (Harmony) | Mods which work fine in the latest versions, and use Harmony to patch the game code. Using many Harmony mods together often causes conflicts, so these are separate for testing.
-  okay (special groups) | Mods which work fine in the latest version, but need to be tested separately from other mods. That include [Battle Royalley](https://www.nexusmods.com/stardewvalley/mods/3199) (which blocks other mods) and [Pong](https://www.nexusmods.com/stardewvalley/mods/1994) (which overrides the entire game).
+  okay (special groups) | Mods which work fine in the latest version, but need to be tested separately from other mods. That include [Pong](https://www.nexusmods.com/stardewvalley/mods/1994) (which overrides the entire game).
 
 * `source` has the latest source code for each open-source SMAPI mod. This only has the _code_, it
   doesn't mirror the Git history. Since many repositories contain multiple mods, mods in `compiled`

@@ -21,6 +21,7 @@ namespace BetterMixedSeeds.Data
             { "Cranberries", "493" },
             { "Eggplant", "488" },
             { "Fairy Rose", "425" },
+            { "Fall Seeds", "497" },
             { "Garlic", "476" },
             { "Grape", "301" },
             { "Green Bean", "473" },
@@ -36,14 +37,17 @@ namespace BetterMixedSeeds.Data
             { "Red Cabbage", "485" },
             { "Rhubarb", "478" },
             { "Rice", "273" },
+            { "Spring Seeds", "495" },
             { "Starfruit", "486" },
             { "Strawberry", "745" },
+            { "Summer Seeds", "496" },
             { "Summer Spangle", "455" },
             { "Sunflower", "431" },
             { "Sweet Gem Berry", "347" },
             { "Tomato", "480" },
             { "Tulip", "427" },
             { "Wheat", "483" },
+            { "Winter Seeds", "498" },
             { "Yam", "492" }
         };
 
@@ -275,6 +279,13 @@ namespace BetterMixedSeeds.Data
             { "Pansy", "Pansy Seeds" }
         };
 
+        /// <summary>The dictionary used for converting Fishs Flowers Compatiblity Version crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
+        public Dictionary<string, string> FishsFlowersCompatibilityVersion { get; } = new Dictionary<string, string>
+        {
+            { "Grape Hyacinth", "Grape Hyacinth Bulb" },
+            { "Pansy", "Pansy Seeds" }
+        };
+
         /// <summary>The dictionary used for converting Stephans Lots of Crops crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
         public Dictionary<string, string> StephansLotsOfCrops { get; } = new Dictionary<string, string>
         {
@@ -410,6 +421,42 @@ namespace BetterMixedSeeds.Data
             { "Reefpod", "Reefpod Tank" },
             { "Toxictop", "Toxictop Seeds" },
             { "Wartweed", "Wartweed Seeds" }
+        };
+
+        /// <summary>The dictionary used for converting iKeychain's Winter Lychee Plant crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
+        public Dictionary<string, string> IKeychainsWinterLycheePlant { get; } = new Dictionary<string, string>
+        {
+            { "Winter Lychee", "Winter Lychee Seeds" }
+        };
+
+        /// <summary>The dictionary used for converting Green Pear crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
+        public Dictionary<string, string> GreenPear { get; } = new Dictionary<string, string>
+        {
+            { "Green Pear", "Green Pear Seeds" }
+        };
+
+        /// <summary>The dictionary used for converting Soda Vine crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
+        public Dictionary<string, string> SodaVine { get; } = new Dictionary<string, string>
+        {
+            { "Soda Vine", "Soda Vine Starter" }
+        };
+
+        /// <summary>The dictionary used for converting Spoopy Valley crop names into seed names. (To then get converted into ids with the Json Assets API)</summary>
+        public Dictionary<string, string> SpoopyValley { get; } = new Dictionary<string, string>
+        {
+            { "Amethyst Basil", "Amethyst Basil Seeds" },
+            { "Black Carrot", "Black Carrot Seeds" },
+            { "Black Goji Berry", "Black Goji Berry Seeds" },
+            { "Black Huckleberry", "Black Huckleberry Seeds" },
+            { "Black Magic Viola", "Black Magic Viola Seeds" },
+            { "Black Mulberry", "Black Mulberry Seeds" },
+            { "Black Velvet Petunia", "Black Velvet Petunia Seeds" },
+            { "Futsu Pumpkin", "Futsu Pumpkin Seeds" },
+            { "Hungarian Chile", "Hungarian Chile Seeds" },
+            { "Indigo Rose Tomato", "Indigo Rose Tomato Seeds" },
+            { "Kulli Corn", "Kulli Corn Seeds" },
+            { "Purple Beauty Bell Pepper", "Purple Beauty Bell Pepper Seeds" },
+            { "Queen of the Night Tulip", "Queen of the Night Tulip Seeds" }
         };
     }
 }

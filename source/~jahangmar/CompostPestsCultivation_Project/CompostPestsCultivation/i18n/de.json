@@ -55,5 +55,9 @@
     "composter.msg.error_already_affected": "Kachel ist bereits von Kompost beeinflusst.",
     "composter.msg.error_no_tilled_dirt": "Kachel enthält keinen gehackten Boden.",
     "composter.msg.error_no_compost_left": "Es ist kein Kompost übrig.",
-    "composter.msg.error_inventory_full": "Inventar voll."
+    "composter.msg.error_inventory_full": "Inventar voll.",
+
+    "siloshop.descr": "Entnehme oder füge Heu deinen Silos hinzu. Kapazität ist {{capacity}}.",
+    "siloshop.silosfull": "Deine Silos sind voll.",
+    "siloshop.silosempty": "Deine Silos sind leer."
 }

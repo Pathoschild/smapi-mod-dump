@@ -40,7 +40,7 @@
   ],
   
   "info_responses": [
-    "any/any/any/any/any/any/any/$manner; $anxiety; and $optimism.",
+    "any/any/any/any/any/any/any/My name is $name. $manner; $anxiety; and $optimism.",
   ],
   
   "manner": [
@@ -219,28 +219,140 @@
     "any/polite/any/negative/any/any/any/To live is the rarest thing in the world. Most people exist, that is all.", // Oscar Wilde
     "any/polite/any/any/any/any/any/The greatest mistake you can make in life is to be continually fearing you will make one.", // Elbert Hubbard
     "any/polite/any/any/any/any/any/Life is not a problem to be solved, but a reality to be experienced.", // Soren Kierkegaard
+    "any/any/any/positive/any/any/any/We make a living by what we get. We make a life by what we give.", // Winston Churchill
+    "any/any/any/positive/any/any/any/People are just about as happy as they make up their minds to be.", // Abraham Lincoln
+    "any/any/any/positive/any/any/any/It’s not the load that weighs you down, it’s how you carry it.", // C.S. Lewis 
+    "any/any/any/positive/any/any/any/There is more to life than increasing its speed.", // Gandhi 
+    "any/any/any/positive/any/any/any/Everyone in life is gonna hurt you; you just have to figure out which people are worth the pain.", // Erica Baican 
+    "teen/rude/any/positive/any/any/any/Never jump in a pile of leaves with a wet sucker.", // Linus van Pelt 
+    "any/rude/any/any/any/any/any/You never realize what you have until it's gone. Toilet paper is a good example.", //  
+    "any/rude/any/negative/any/any/any/Never argue with stupid people, they will drag you down to their level and then beat you with experience.", // Mark Twain 
+    "any/any/any/negative/any/any/any/If you think you are too small to make a difference, try sleeping with a mosquito.", // Dalai Lama
+    "any/rude/any/any/any/any/any/As you get older three things happen. The first is your memory goes, and I can't remember the other two.", // Norman Wisdom
+    "any/rude/any/any/any/male/any/Before you judge a man, walk a mile in his shoes. After that who cares?... He's a mile away and you've got his shoes!", // Billy Connolly
+    "teen/any/any/any/any/any/any/Nothing is impossible, the word itself says 'I'm possible'!", // Audrey Hepburn 
+    "any/rude/any/any/any/any/any/The early bird gets the worm, but the second mouse gets the cheese.", // Steven Wright  
   ],
 
-	"quests": [
-		"any/any/any/any/any/any/any/Can you tell me where Abigail lives?^10 quest_right#In the general store.|-10 quest_wrong#In the graveyard.|-10 quest_wrong#In the carpenter's shop.|-10 quest_wrong#With her sister, Haley.|0 quest_unknown#I don't know.",
-		"any/any/any/any/any/any/any/Can you tell me where Haley lives?^10 quest_right#With her sister, Emily.|-10 quest_wrong#In the forest.|-10 quest_wrong#With her mother, Jodi.|0 quest_unknown#I don't know.",
-		"any/any/any/any/any/any/any/Can you tell me where I can find Kroebus?^10 quest_right#In the sewer.|-10 quest_wrong#In the cave.|-10 quest_wrong#In the desert.|-10 quest_wrong#In the forest.|0 quest_unknown#I don't know.",
-		"any/any/any/any/any/any/any/Can you tell me when the saloon closes?^10 quest_right#It closes at 12 PM.|-10 quest_wrong#It's open all night.|-10 quest_wrong#It closes at 10 PM.|-10 quest_wrong#It closes at 16 PM.|0 quest_unknown#I don't know.",
+	"quiz_types": {
+		"where": [
+			"any/any/any/any/any/any/any/Can you tell me where $who lives?",
+		],
+		"when": [
+			"any/any/any/any/any/any/any/Can you tell me when $where $openclose?|opens|closes|At $time|AM|PM",
+		],
+		"howmuch": [
+			"any/any/any/any/any/any/any/Can you tell me how much $what cost at $where?|They cost $gold gold.",
+		],
+		"who":[
+			"any/any/any/any/any/any/any/Can you tell me who is the $what in Stardew Valley?|$who is the $what in Stardew Valley.",
+		],
+		"quest":[ // criteria/request|answerYes|answerNo|responseY|responseN|reactionComplete
+			"any/polite/any/any/any/any/any/Would you be able to bring me a $what?|Sure I can!|Sorry, I can't!|I appreciate it!|Oh, well, that's okay.",
+			"any/neutral/any/any/any/any/any/Could you bring me a $what?|Sure I can!|Sorry, I can't!|Thanks!|Oh, well, never mind then.",
+			"any/rude/any/any/any/any/any/Can you get me a $what?|Sure I can!|Sorry, I can't!|Thanks!|Oh, well, whatever.",
+		],
+	},
+	"quiz_where_answers": [
+		"Caroline|In the general store.",
+		"Pierre|In the general store.",
+		"Abigail|In the general store.",
+		"Robin|In the carpenter's shop.",
+		"Demetrius|In the carpenter's shop.",
+		"Elliott|In a hut on the beach.",
+		"Maru|In the carpenter's shop.",
+		"Sabrina|In the carpenter's shop basement.",
+		"Emily|With her sister, Haley.",
+		"Evelyn|In the centre of town.",
+		"George|In the centre of town.",
+		"Alex|With his grandparents.",
+		"Pam|In the trailer by the river.",
+		"Penny|In the trailer by the river.",
+		"Haley|With her sister, Emily.",
+		"Jodi|In the southwest corner of town.",
+		"Sam|In the southwest corner of town.",
+		"Shane|In the farm store.",
+		"Vincent|In the southwest corner of town.",
+		"Marnie|In the farm store.",
+		"Jas|In the farm store.",
+		"Sebastian|In the farm store.",
+		"Harvey|Above the clinic.",
+		"Krobus|In the sewer.",
+		"Sandy|In the desert.",
 	],
-	"questRight": [
+	"quiz_when_answers": [
+		"the clinic|9|15",
+		"the general store|9|17",
+		"the animal store|9|17",
+		"the saloon|12|24",
+		"the library|9|17",
+	],	
+	"quiz_howmuch_places": [
+		"the general store",
+		"Joja Mart",
+		"the animal shop",
+		"the blacksmith",
+		"the saloon",
+	],
+	"quiz_howmuch_items": [ // name|Pierre's|Joja|AnimalShop|Blacksmith|Saloon
+		"Jazz Seeds|30|37",
+		"Cauliflower Seeds|80|100",
+		"Bean Starters|60|75",
+		"Kale Seeds|70|87",
+		"Parsnip Seeds|20|25",
+		"Potato Seeds|50|62",
+		"Tulip Bulbs|20|25",
+		"Corn Seeds|150|187",
+		"Hops Starters|60|75",
+		"Pepper Seeds|40|50",
+		"Melon Seeds|80|100",
+		"Poppy Seeds|100|125",
+		"Radish Seeds|40|50",
+		"Spangle Seeds|50|62",
+		"Sunflower Seeds|200|125",
+		"Tomato Seeds|50|62",
+		"Wheat Seeds|10|12",
+		"Amaranth Seeds|70|87",
+		"Bok Choy Seeds|50|62",
+		"Cranberry Seeds|240|300",
+		"Eggplant Seeds|20|25",
+		"Fairy Seeds|200|250",
+		"Grape Starters|60|75",
+		"Pumpkin Seeds|100|125",
+		"Yam Seeds|60|75",
+	],
+	
+	"quiz_who_answers": [
+		"doctor|Harvey",
+		"carpenter|Robin",
+		"mayor|Lewis",
+		"blacksmith|Clint",
+		"museum curator|Gunther",
+		"nurse|Abigail",
+		"male bartender|Gus",
+		"female bartender|Emily",
+	],
+	"quiz_dont_know": "I don't know.",
+
+	"quizRight": [
 		"any/polite/any/any/any/any/any/Thank you very much!$h",
-		"any/neutral/any/any/any/any/any/Thanks you!$h",
+		"any/neutral/any/any/any/any/any/Thank you!$h",
 		"any/rude/any/any/any/any/any/Thanks!$h",
 	],
-	"questWrong": [
-		"any/neutral/any/any/any/any/any/That doesn't sound right!$a",
-		"any/polite/any/any/any/any/any/I think you're mistaken!$a",
+	"quizWrong": [
+		"any/neutral/any/any/any/any/any/That doesn't sound right!$u",
+		"any/polite/any/any/any/any/any/I think you're mistaken!$u",
 		"any/rude/any/any/any/any/any/That's not right!$a",
 	],
-	"questUnknown": [
+	"quizUnknown": [
 		"any/neutral/any/any/any/any/any/Oh well, I thought you might know.",
-		"any/polite/any/any/any/any/any/Well, thanks anyways.$a",
-		"any/rude/any/any/any/any/any/Oh, well never mind then.$a",
+		"any/polite/any/any/any/any/any/Well, thanks anyways.$u",
+		"any/rude/any/any/any/any/any/Oh, well never mind then.$u",
+	],
+	"quiz_quest": [
+		"any/polite/any/any/any/any/any/$name wants a $what|Bring $name a $what.|Thank you very much!$h",
+		"any/neutral/any/any/any/any/any/$name wants a $what|Bring $name a $what.|Thank you so much!$h",
+		"any/rude/any/any/any/any/any/$name wants a $what|Bring $name a $what.|Awesome, thanks!$h",
 	],
 
   "datable": [

@@ -1,9 +1,0 @@
-﻿{
-  "Name": "Rise And Shine",
-  "Authour": "Yoshify",
-  "Version": "1.1.1-whisk-update", // fixed locally
-  "MinimumApiVersion": "2.0",
-  "Description": "Configurable wakeup time for both weekdays and weekends.",
-  "UniqueID": "Yoshify.RiseAndShine",
-  "EntryDll": "RiseAndShine.dll"
-}

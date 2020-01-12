@@ -12,6 +12,7 @@ This mod allows players and modders to customize features from Stardew Valley's 
 * [Spawn Settings](#spawn-settings)
     * [Basic Settings](#basic-settings)
     * [General Spawn Settings](#general-spawn-settings)
+		* [Item Settings](#item-settings)
 		* [Spawn Timing Settings](#spawn-timing-settings)
     * [Forage Spawn Settings](#forage-spawn-settings)
     * [Large Object Spawn Settings](#large-object-spawn-settings)
@@ -200,6 +201,51 @@ StrictTileChecking | **"Maximum"**, "High", "Medium", "Low", "None" | How strict
 DaysUntilSpawnsExpire | **null**, Intenger | The number of days spawns will exist before disappearing. | If set to null, spawned objects will behave normally. If set to a positive number, any spawns will only disappear after that number of days (or when removed by a player). If set to 0, spawns will never automatically disappear. Using this setting **will** protect forage from the game's weekly cleanup process.
 CustomTileIndex | A list of integers | A list of index numbers from the game's tilesheet images, used by the "Custom" setting for IncludeTerrainTypes. | If the IncludeTerrainTypes setting above includes the "Custom" option, any tiles with these spritesheet index numbers will be valid spawn locations. You can find a tile's index number by standing on it and using the `whereami` command, or by using map/spritesheet modding tools.
 
+#### Item Settings
+This section describes the item formats used in the forage spawner's index lists (e.g. SpringItemIndex) and in MonsterTypes' optional "Loot" lists.
+
+The lists can contain a mixture of object IDs (e.g. `206`), object names (e.g. `"pizza"`), or complex item definitions inside curly braces (e.g. `{"category": "object", "name": "pizza"}`).
+
+For a more detailed description of the complex item settings, see the table below.
+
+Name | Valid settings | Description | Notes
+-----|----------------|-------------|------
+Category | "Barrel", "Big Craftable", "Boots", "Breakable", "Chest", "Clothing", "Crate", "Furniture", "Hat", "Object", "Item", "Ring", "Weapon" | The category of the spawned item.| This setting is required by all items. The "item" category (and several others) will "drop" items on the ground, but the "object" category will place them like normal forage objects. Using "breakable" will randomly generate a barrel or crate.
+Name | An item name, e.g. `"Red Mushroom"` | The name of the spawned item. | This setting is required **except** when the category is a container (e.g. "chest" or "breakable").
+Stack | An integer (minimum 1) | The number of items spawned, a.k.a. the "stack size". | Currently, these item categories can be stacked: "object", "item", and "big craftable". Items with other categories will ignore this setting.
+PercentChanceToSpawn | An integer (minimum 0), e.g. `50` for a 50% chance | The percent chance of spawning this object. If the random chance fails, this item will not spawn. | This setting can be used for forage, loot, and the contents of containers.
+Contents | A list of other items, e.g. `[16, "joja cola"]` | A list of items within this container. | This setting will be ignored by non-container item categories. It uses the same formatting as other item lists, so it can use complex item definitions as well.
+
+Here is an example loot list that uses all three formats:
+```
+"Loot":
+[
+  16,
+  "joja cola",
+  {
+    "category": "weapon",
+    "name": "galaxy sword"
+  }
+],
+```
+Here is an example forage list that spawns a chest with those items inside it:
+```
+"SpringItemIndex":
+[
+  {
+    "category": "chest",
+    "contents":
+    [
+      16,
+      "joja cola",
+      {
+        "category": "weapon",
+        "name": "galaxy sword"
+      }
+    ]
+  }
+]
+```
 #### Spawn Timing Settings
 This section is available for each spawn area and affects the time of day when objects will be spawned.
 
@@ -220,10 +266,10 @@ SummerItemIndex (Area)| **null**, *(see Notes)* | The index numbers and/or item 
 FallItemIndex (Area) | **null**, *(see Notes)* | The index numbers and/or item names for forage items to spawn in fall *in this area*. | This setting is per-area and will *override* the global FallItemIndex setting below. Leave this set to *null* unless you want different fall forage items in a specific area. Fill this in by copying the format of the global version below.
 WinterItemIndex (Area) | **null**, *(see Notes)* | The index numbers and/or item names for forage items to spawn in winter *in this area*. | This setting is per-area and will *override* the global WinterItemIndex setting below. Leave this set to *null* unless you want different winter forage items in a specific area. Fill this in by copying the format of the global version below.
 PercentExtraSpawnsPerForagingLevel | Any integer (default **0**) | The % of extra forage spawned for each level of Foraging skill. | In multiplayer, this is based on the highest skill level among *all* players (even if they're offline). For example, setting this to 10 will spawn +10% forage items per level; if a farmhand has the best Foraging skill of level 8, there will be 80% more forage each day.
-SpringItemIndex (Global) | A list of integers and/or item names, e.g. `[16, "Red Mushroom"]` | The index numbers and/or item names for forage items to spawn in spring. | By default, these are the forage items normally spawned on the Forest Farm during spring. To find different item IDs or names, see the "Raw data" section of [this wiki page](https://stardewvalleywiki.com/Modding:Object_data), or use this SMAPI console command: `list_items [item name]`
-SummerItemIndex (Global) | A list of integers and/or item names, e.g. `[16, "Red Mushroom"]` | The index numbers for forage items to spawn in summer. | By default, these are the forage items normally spawned on the Forest Farm during summer. To find different item IDs or names, see the "Raw data" section of [this wiki page](https://stardewvalleywiki.com/Modding:Object_data), or use this SMAPI console command: `list_items [item name]`
-FallItemIndex (Global) | A list of integers and/or item names, e.g. `[16, "Red Mushroom"]` | The index numbers for forage items to spawn in fall. | By default, these are the forage items normally spawned on the Forest Farm during fall. To find different item IDs or names, see the "Raw data" section of [this wiki page](https://stardewvalleywiki.com/Modding:Object_data), or use this SMAPI console command: `list_items [item name]`
-WinterItemIndex (Global) | A list of integers and/or item names, e.g. `[16, "Red Mushroom"]` | The index numbers for forage items to spawn in winter. | By default, this is empty because forage doesn't normally spawn during winter. To add winter forage, use the same format as the other ItemIndex settings above. To find different item IDs or names, see the "Raw data" section of [this wiki page](https://stardewvalleywiki.com/Modding:Object_data), or use this SMAPI console command: `list_items [item name]`
+SpringItemIndex (Global) | A list of integers and/or item names, e.g. `[16, "Red Mushroom"]` | The index numbers and/or item names for forage items to spawn in spring. | By default, these are the forage items normally spawned on the Forest Farm during spring. For formatting information, see the [Item Settings](#item-settings) section.
+SummerItemIndex (Global) | A list of integers and/or item names, e.g. `[16, "Red Mushroom"]` | The index numbers for forage items to spawn in summer. | By default, these are the forage items normally spawned on the Forest Farm during summer. For formatting information, see the [Item Settings](#item-settings) section.
+FallItemIndex (Global) | A list of integers and/or item names, e.g. `[16, "Red Mushroom"]` | The index numbers for forage items to spawn in fall. | By default, these are the forage items normally spawned on the Forest Farm during fall. For formatting information, see the [Item Settings](#item-settings) section.
+WinterItemIndex (Global) | A list of integers and/or item names, e.g. `[16, "Red Mushroom"]` | The index numbers for forage items to spawn in winter. | By default, this is empty because forage doesn't normally spawn during winter. To add winter forage, use the same format as the other ItemIndex settings above. For formatting information, see the [Item Settings](#item-settings) section.
 
 ### Large Object Spawn Settings
 Name | Valid settings | Description | Notes
@@ -268,7 +314,7 @@ PercentExtraDamagePerSkillLevel | An integer | The monster's damage is increased
 PercentExtraDefensePerSkillLevel | An integer | The monster's defense is increased by this percentage, once for each skill level. | This is based on the RelatedSkill setting. Negative values are valid and will decrease instead.
 PercentExtraDodgeChancePerSkillLevel | An integer | The monster's dodge chance is increased by this percentage, once for each skill level. | This is based on the RelatedSkill setting. Negative values are valid and will decrease instead.
 PercentExtraEXPPerSkillLevel | An integer | The monster's EXP is increased by this percentage, once for each skill level. | This is based on the RelatedSkill setting. Negative values are valid and will decrease instead.
-Loot | A list of integers and/or item names, e.g. `[16, "Red Mushroom"]` | A list of items the monster will drop when defeated. | Loot is **not** randomized; this monster type will always drop these items. Use multiple monster types to randomize loot. An empty list will cause the monster to drop nothing. See the forage spawner's `ItemIndex` settings for formatting guidelines. 
+Loot | A list of integers and/or item names, e.g. `[16, "Red Mushroom"]` | A list of items the monster will drop when defeated. | By defualt, loot is **not** randomized; use multiple monster types or items with "PercentChanceToSpawn" settings to randomize loot. An empty list will cause the monster to drop nothing. For formatting information, see the [Item Settings](#item-settings) section.
 PersistentHP | true, **false** | Whether the monster will keep any HP damage overnight. | This only applies to monsters with `DaysUntilSpawnsExpire` settings.
 CurrentHP | An integer (minimum 1) | The monster's current (not maximum) health at spawn. | This is mainly useful for "themed" monsters to spawn with injuries, or monsters capable of healing themselves.
 SeesPlayersAtSpawn | true, **false** | Whether the monster will immediately "spot" players at spawn. | If true, this causes most monster types to immediately approach and attack the nearest player, rather than waiting for players to approach. Slimes will have red eyes and behave aggressively.

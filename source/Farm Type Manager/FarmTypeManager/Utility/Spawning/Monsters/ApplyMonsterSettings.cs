@@ -165,7 +165,7 @@ namespace FarmTypeManager
                 if (settings.ContainsKey("Loot"))
                 {
                     List<SavedObject> loot = ((JArray)settings["Loot"]).ToObject<List<SavedObject>>(); //cast this list of saved objects (already validated and parsed elsewhere)
-                    MonsterTracker.SetLoot(monster.id, loot); //set the monster's loot in the monster tracker
+                    MonsterTracker.SetLoot(monster, loot); //set the monster's loot in the monster tracker
                     monster.objectsToDrop.Clear(); //clear any "default" loot the monster might've had
                 }
 

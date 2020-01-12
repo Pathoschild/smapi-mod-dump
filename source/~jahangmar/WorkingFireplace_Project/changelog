@@ -1,3 +1,9 @@
 1.5.0:
 	-updated for StardewValley 1.4
 	-added Japanese translation (thanks to pomepome)
+
+1.5.1:
+	-added Chinese translation (thanks to Redlnn)
+	-added configuration option (true by default) that lights the
+	fireplace in the first night on the farm
+

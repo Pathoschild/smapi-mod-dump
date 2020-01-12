@@ -156,15 +156,17 @@ namespace ClimatesOfFerngillRebuild
             // begin draw
             
             // draw weather icon
-            spriteBatch.Draw(IconSheet.WeatherSource, new Vector2(x + leftOffset, y + topOffset), IconSheet.GetWeatherSprite(CurrentWeather.GetCurrentConditions()), Color.White);
+            spriteBatch.Draw(IconSheet.WeatherSource, new Vector2(x + leftOffset, y + topOffset), Sprites.Icons.GetWeatherSprite(CurrentWeather.GetCurrentConditions()), Color.White);
             leftOffset += 72;
 
             // draw text as sent from outside the menu
+            
             float wrapWidth = width - leftOffset - gutter;
             {
                 Vector2 textSize = spriteBatch.DrawTextBlock(font, MenuText, new Vector2(x + leftOffset, y + topOffset), wrapWidth);
                 topOffset += textSize.Y + lineHeight;
             }
+            
 
             drawMouse(Game1.spriteBatch);
         }
@@ -193,7 +195,9 @@ namespace ClimatesOfFerngillRebuild
 
         /// <summary>The method invoked when an unhandled exception is intercepted.</summary>
         /// <param name="ex">The intercepted exception.</param>
+#pragma warning disable IDE0051 // Remove unused private members
         private void OnDrawError(Exception ex)
+#pragma warning restore IDE0051 // Remove unused private members
         {
             ClimatesOfFerngill.Logger.Log($"handling an error in the draw code {ex}", LogLevel.Error);
         }

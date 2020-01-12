@@ -1,0 +1,10 @@
+﻿{
+   "Name": "ServerBookmarker",
+   "Author": "Ilyaki",
+   "Version": "1.0.4-unofficial.1-jenrikku",
+   "Description": "Extends the multiplayer menu to save servers",
+   "UniqueID": "Ilyaki.ServerBookmarker",
+   "EntryDll": "ServerBookmarker.dll",
+   "MinimumApiVersion": "3.0.0",
+   "UpdateKeys": [ "Nexus:2968", "GitHub:Ilyaki/ServerBookmarker" ]
+}

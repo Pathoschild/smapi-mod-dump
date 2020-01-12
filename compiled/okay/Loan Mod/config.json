@@ -1,13 +1,17 @@
 {
   "LoanButton": "L",
   "LatePaymentChargeRate": 0.1,
-  "InterestModifier1": 0.03,
-  "InterestModifier2": 0.12,
-  "InterestModifier3": 0.24,
-  "InterestModifier4": 0.49,
+  "InterestModifier1": 0.5,
+  "InterestModifier2": 0.25,
+  "InterestModifier3": 0.1,
+  "InterestModifier4": 0.05,
   "MoneyAmount1": 500,
   "MoneyAmount2": 1000,
   "MoneyAmount3": 5000,
   "MoneyAmount4": 10000,
+  "DayLength1": 3,
+  "DayLength2": 7,
+  "DayLength3": 14,
+  "DayLength4": 28,
   "Reset": false
 }

@@ -1,7 +1,7 @@
 {
   "Name": "Loan Mod",
   "Author": "Doomnik",
-  "Version": "1.1.1",
+  "Version": "1.1.3",
   "Description": "Allows to borrow and repay money.",
   "UniqueID": "Doomnik.LoanMod",
   "EntryDll": "LoanMod.dll",

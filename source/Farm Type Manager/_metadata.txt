@@ -5,9 +5,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit e99c9a7eea4446997f2d59fc04b2832167c79f97
+   commit a08a4089e82303e528aef78b720df60da4f824c6
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Tue Dec 17 15:20:47 2019 -0600
+   Date:   Tue Jan 7 17:23:09 2020 -0600
    
-       Refactor item spawn systems, rewrite item list format
+       Add giant crops to ConfigEditor's large object types
    

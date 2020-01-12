@@ -1,12 +1,15 @@
 ﻿# Climates of Ferngill
 
-Current Version: 1.5.3
+Current Version: 1.5.5
 
 ## What's New
 - Variable Rain.
 - A more customizable weather system
 - Weather Systems!
 - Temperature variation chances
+
+## NOTES
+The German translation may be out of date. I apologize.
 
 ## Multiplayer
 Supports MP, with most features locked out to main player. However, most weathers will render on farmhands screen.
@@ -48,7 +51,6 @@ NOTE:
 
 ## IMPORTANT NOTE
 If you have a custom climate, you'll need to update it to match the changes to climates in 1.5 (and move it to assets/climates/)
-
 
 ## Notices
 

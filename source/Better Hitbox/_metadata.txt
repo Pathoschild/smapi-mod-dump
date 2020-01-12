@@ -1,0 +1,13 @@
+url:
+   https://github.com/Kodfod/BetterHitboxStardew.git
+
+mods:
+   Better Hitbox
+
+latest commit:
+   commit e6ba93f34fa44d5b6414ba4a9723922558022991
+   Author: kodfod <fodkod@gmail.com>
+   Date:   Fri Jan 10 13:38:00 2020 -0500
+   
+       Update issue templates
+   

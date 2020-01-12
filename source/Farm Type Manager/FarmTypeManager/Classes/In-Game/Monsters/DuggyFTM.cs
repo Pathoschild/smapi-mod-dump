@@ -16,7 +16,7 @@ using Netcode;
 namespace FarmTypeManager.Monsters
 {
     /// <summary>A subclass of Stardew's Duggy class, adjusted for use by this mod.</summary>
-    class DuggyFTM : Duggy, ICustomDamage
+    public class DuggyFTM : Duggy, ICustomDamage
     {
         [XmlElement("FTM_customDamage")]
         public readonly NetInt customDamage = new NetInt(8); //default set to mimic hardcoded values

@@ -5,10 +5,9 @@ mods:
    Custom NPC Fixes
 
 latest commit:
-   commit 56fab8f4b39edc515eabc4f1f57f768da96e1a66
-   Merge: 22b8b60 c98f7c0
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Tue Nov 26 18:04:57 2019 -0500
+   commit 547c358f78ac85cad3780d38ac55be8cc1c8a1e7
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Sat Dec 21 16:36:40 2019 -0500
    
-       Oops. Merged and now 1.2.1.
+       Only use the NPC spawning code instead of the whole Game1.fixProblems()
    

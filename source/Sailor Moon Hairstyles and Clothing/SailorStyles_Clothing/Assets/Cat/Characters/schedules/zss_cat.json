@@ -1,0 +1,7 @@
+{
+  "rain": "600 Forest 33 96 0 zss_cat_standing/1245 Forest 33 96 0 zss_cat_sitting/1830 Forest 33 96 0 zss_cat_sleepy/2020 Forest 33 96 0 zss_cat_snooze",
+  "winter": "GOTO spring",
+  "fall": "600 Forest 33 96 0 zss_cat_standing/1245 Forest 33 96 0 zss_cat_sitting/1830 Forest 33 96 0 zss_cat_sleepy/2020 Forest 33 96 0 zss_cat_snooze",
+  "summer": "GOTO spring",
+  "spring": "600 Forest 33 96 0 zss_cat_standing/1245 Forest 33 96 0 zss_cat_sitting/1830 Forest 33 96 0 zss_cat_sleepy/2020 Forest 33 96 0 zss_cat_snooze"
+}

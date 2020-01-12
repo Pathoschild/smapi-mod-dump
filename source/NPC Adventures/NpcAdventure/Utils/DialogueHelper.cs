@@ -1,4 +1,5 @@
-﻿using StardewModdingAPI.Utilities;
+﻿using NpcAdventure.Internal;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,16 @@ namespace NpcAdventure.Utils
         private static bool GetDialogueString(Dictionary<string, string> dialogues, string key, out string text)
         {
             var keys = from _key in dialogues.Keys
-                       where _key.StartsWith(key + "$")
+                       where _key.StartsWith(key + "~") || _key.StartsWith(key + "$")
                        select _key;
 
             if (keys.Count() > 0)
             {
-                int i = Game1.random.Next(keys.Count() + 1);
+                int i = Game1.random.Next(0, keys.Count() + 1);
 
-                if (i > 0 && dialogues.TryGetValue($"{key}${i}", out text))
+                Console.WriteLine($"{i} of {keys.Count()}");
+
+                if (i < keys.Count() && dialogues.TryGetValue(keys.ElementAt(i), out text))
                     return true;
             }
 
@@ -95,7 +98,7 @@ namespace NpcAdventure.Utils
         public static Dialogue GenerateDialogue(NPC n, string key, bool returnsNull = true)
         {
             if (GetVariousDialogueString(n, key, out string text) || !returnsNull)
-                return new Dialogue(text, n);
+                return new CompanionDialogue(text, n) { Tag = $"{n.Name}_{key}" };
 
             return null;
         }
@@ -103,9 +106,26 @@ namespace NpcAdventure.Utils
         public static Dialogue GenerateDialogue(NPC n, GameLocation l, string key, bool returnsNull = true)
         {
             if (GetVariousDialogueString(n, key, l, out string text) || !returnsNull)
-                return new Dialogue(text, n);
+            {
+                return new CompanionDialogue(text, n) { Tag = $"{n.Name}_{key}_{l.Name}" };
+            }
 
             return null;
+        }
+
+        public static Dialogue GenerateStaticDialogue(NPC n, string key)
+        {
+            if (GetDialogueString(n, key, out string text))
+            {
+                return new CompanionDialogue(text, n) { Tag = $"{n.Name}_{key}" };
+            }
+
+            return null;
+        }
+
+        public static Dialogue GenerateStaticDialogue(NPC n, GameLocation l, string key)
+        {
+            return GenerateStaticDialogue(n, $"{key}_{l.Name}");
         }
 
         public static void SetupCompanionDialogues(NPC n, Dictionary<string, string> dialogues)

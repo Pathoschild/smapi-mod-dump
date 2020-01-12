@@ -1,0 +1,26 @@
+{
+	"Name": "Dye Cabinet",
+	"Price": 100, // I don't even know if these can be sold, but price is based on the materials.
+	"Description": "A convenient way to dye your clothes.",
+	"ProvidesLight": false,
+	"Recipe": {
+		"ResultCount": 1,
+		"Ingredients": [
+			// 50 wood and 5 clay (for the pots)
+			{
+				"Object": 388,
+				"Count": 50,
+			},
+			{
+				"Object": 330,
+				"Count": 5,
+			},
+		],
+		// One of these should be true unless you do special stuff like use a mail framework.
+		"IsDefault": false,
+		"CanPurchase": true,
+		"PurchaseFrom": "Robin",
+		"PurchasePrice": 1000,
+		"PurchaseRequirements": ["e 992559"],
+	}
+}

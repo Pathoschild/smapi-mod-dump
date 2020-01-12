@@ -1,0 +1,19 @@
+{
+  "TimeScreenshotGetsTakenAfter": 600,
+  "TakeScreenshotKey": "None",
+  "TakeScreenshotKeyZoomLevel": 0.25,
+  "FolderDestinationForDailyScreenshots": "default",
+  "FolderDestinationForKeypressScreenshots": "default",
+  "HowOftenToTakeScreenshot": {
+    "Daily": true,
+    "Mondays": true,
+    "Tuesdays": true,
+    "Wednesdays": true,
+    "Thursdays": true,
+    "Fridays": true,
+    "Saturdays": true,
+    "Sundays": true,
+    "First Day of Month": true,
+    "Last Day of Month": true
+  }
+}

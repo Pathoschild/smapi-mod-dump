@@ -44,6 +44,9 @@ namespace CompostPestsCultivation
 
         public static System.Random random = new Random();
 
+        /// <summary>
+        /// returns true with probability of <paramref name="chance"/>%. 
+        /// </summary>
         public static bool CheckChance(double chance)
         {
             double randd = random.NextDouble() * 100;

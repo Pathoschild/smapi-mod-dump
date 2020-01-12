@@ -1,19 +1,19 @@
 {
   "data": [
-    "adult/rude/outgoing/neutral/male/datable/none/winter 4/Marcellus/^^^^/male/193 127 110/beard/255 216 105^239 147 67^186 98 70^101 56 41^10 5 4/65 137 255",
-    "adult/neutral/shy/neutral/female/datable/none/summer 11/Mellissa/^^^^/female_buxom/234 176 152/female_hair_pigtail/113 220 251^27 142 246^20 84 200^2 48 139^39 14 104^23 8 63/38 255 142",
-    "adult/neutral/shy/negative/male/datable/none/summer 28/Rhett/^^^^/male/121 66 52/beard/70 51 108^58 31 72^59 14 60^49 0 37/36 160 255",
-    "adult/polite/neutral/positive/male/datable/none/spring 10/Jude/^^^^/male/229 155 125/short_hair_male/255 230 155^255 199 79^216 115 0^145 64 55^112 12 27^66 17 52^15 13 11/255 124 24",
-    "adult/neutral/neutral/positive/female/datable/none/fall 8/Cindi/^^^^/female/234 176 152/female_hair_pigtail/255 229 156^255 171 82^255 125 61^255 95 21^173 38 6^98 5 0/122 127 255",
-    "teen/neutral/outgoing/neutral/female/datable/none/spring 21/Hwa/^^^^/female/229 155 125/female_hair_pigtail/255 216 105^239 147 67^186 98 70^101 56 41^10 5 4/70 255 192",
-    "adult/neutral/neutral/negative/female/datable/none/fall 22/Meridith/^^^^/female/234 176 152/female_hair_pigtail/240 189 140^173 101 45^150 75 44^140 63 31^113 37 26^78 12 15/2 255 43",
-    "teen/neutral/neutral/negative/female/datable/none/fall 27/Fran/^^^^/female/224 171 160/female_hair_pigtail/255 157 2^233 109 0^215 101 0^171 45 0^109 4 1^99 0 54^73 8 51/255 133 33",
-    "adult/polite/shy/neutral/female/datable/none/summer 19/Tia/^^^^/female_buxom/234 176 152/female_hair_long/180 89 41^146 61 31^107 42 25^65 24 8^33 5 15^5 0 2/126 255 158",
-    "teen/rude/outgoing/neutral/female/datable/none/spring 18/Tyra/^^^^/female/224 171 160/female_hair_bun/113 220 251^27 142 246^20 84 200^2 48 139^39 14 104^23 8 63/255 137 37",
-    "adult/neutral/outgoing/neutral/female/datable/none/spring 3/Aurora/^^^^/female_buxom/213 127 79/female_hair_long/113 220 251^27 142 246^20 84 200^2 48 139^39 14 104^23 8 63/255 123 23",
-    "adult/polite/shy/neutral/male/datable/none/fall 22/Houston/^^^^/male/229 155 125/goatee/162 88 86^124 70 69^95 54 53^84 51 50^51 11 24^46 27 28^36 5 23/255 133 33",
-    "teen/rude/shy/neutral/female/datable/none/spring 19/Felecia/^^^^/female/224 171 160/female_hair_pigtail/70 51 108^58 31 72^59 14 60^49 0 37/54 152 255",
-    "adult/polite/neutral/neutral/female/datable/none/spring 11/Christel/^^^^/female/224 171 160/female_hair_pigtail/212 66 199^139 40 132^87 23 101^79 23 101^30 0 54^0 0 0/15 255 116",
-    "teen/rude/shy/neutral/female/datable/none/fall 17/Martha/^^^^/female/234 176 152/female_hair_bun/255 230 155^255 199 79^216 115 0^145 64 55^112 12 27^66 17 52^15 13 11/18 255 24"
+    "adult/neutral/shy/negative/male/datable/none/fall 10/Albert/^^^^/male/213 127 79/goatee/172 219 234^91 183 213^58 131 164^57 94 134^45 76 109^37 63 90^27 53 80^23 37 56^20 22 33/64 255 131",
+    "teen/neutral/shy/positive/female/datable/none/fall 5/Renae/^^^^/female/213 127 79/female_hair_long/88 204 15^16 145 52^16 94 77^14 46 63^11 34 20/255 135 35",
+    "adult/rude/shy/negative/female/datable/none/winter 4/Melynda/^^^^/female/224 171 160/female_hair_waivy/212 66 199^139 40 132^87 23 101^79 23 101^30 0 54^0 0 0/21 255 109",
+    "adult/rude/shy/negative/female/datable/none/fall 8/Jaleesa/^^^^/female/213 127 79/female_hair_waivy/180 89 41^146 61 31^107 42 25^65 24 8^33 5 15^5 0 2/255 147 47",
+    "adult/polite/neutral/negative/male/datable/none/spring 23/Alonzo/^^^^/male/229 155 125/short_hair_male/255 157 2^233 109 0^215 101 0^171 45 0^109 4 1^99 0 54^73 8 51/55 255 113",
+    "teen/polite/outgoing/positive/male/datable/none/spring 5/Mark/^^^^/male/106 57 44/goatee/172 219 234^91 183 213^58 131 164^57 94 134^45 76 109^37 63 90^27 53 80^23 37 56^20 22 33/67 160 255",
+    "teen/neutral/shy/negative/male/datable/none/fall 24/Rashad/^^^^/male/213 127 79/goatee/254 246 223^254 230 155^244 210 106^226 187 66^202 158 23^140 105 0^58 51 0^48 43 0^47 42 0^46 40 0/255 101 1",
+    "adult/neutral/neutral/negative/male/datable/none/fall 21/Armand/^^^^/male/121 66 52/beard/162 88 86^124 70 69^95 54 53^84 51 50^51 11 24^46 27 28^36 5 23/46 63 255",
+    "teen/rude/neutral/neutral/female/datable/none/summer 12/Erline/^^^^/female/213 127 79/female_hair_waivy/70 51 108^58 31 72^59 14 60^49 0 37/255 139 39",
+    "teen/neutral/neutral/neutral/male/datable/none/spring 26/Elias/^^^^/male/170 104 80/beard/249 185 74^220 151 32^197 110 8^154 75 4^127 50 0^81 28 0^58 20 0/0 255 1",
+    "adult/neutral/outgoing/negative/male/datable/none/spring 24/Jesse/^^^^/male/224 171 160/short_hair_male/255 229 156^255 171 82^255 125 61^255 95 21^173 38 6^98 5 0/18 25 255",
+    "teen/neutral/outgoing/negative/male/datable/none/spring 1/Beau/^^^^/male/213 127 79/goatee/255 157 2^233 109 0^215 101 0^171 45 0^109 4 1^99 0 54^73 8 51/0 255 77",
+    "adult/neutral/neutral/negative/male/datable/none/winter 8/Sal/^^^^/male/234 176 152/goatee/88 204 15^16 145 52^16 94 77^14 46 63^11 34 20/11 255 168",
+    "adult/rude/neutral/positive/female/datable/none/winter 23/Syreeta/^^^^/female/229 155 125/female_hair_long/180 89 41^146 61 31^107 42 25^65 24 8^33 5 15^5 0 2/1 255 3",
+    "adult/polite/shy/negative/male/datable/none/spring 26/Lamar/^^^^/male/234 176 152/beard/254 246 223^254 230 155^244 210 106^226 187 66^202 158 23^140 105 0^58 51 0^48 43 0^47 42 0^46 40 0/0 255 18"
   ]
 }

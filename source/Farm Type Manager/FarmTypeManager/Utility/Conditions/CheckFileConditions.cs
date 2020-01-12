@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
-using StardewValley.TerrainFeatures;
 
 namespace FarmTypeManager
 {
@@ -143,6 +140,43 @@ namespace FarmTypeManager
                         {
                             validType = true;
                             break; //skip checking the rest of the farm types
+                        }
+                        else if (Game1.whichFarm == 200) //if this may be a MTN farm type, handle compatibility (based on MTN 2.1.0-beta8)
+                        {
+                            //if MTN is installed, use reflection to access its "whichFarm" equivalent
+
+                            try
+                            {
+                                IModInfo modInfo = Helper.ModRegistry.Get("SgtPickles.MTN"); // get MTN info (null if it's not installed)
+                                if (modInfo == null) //if MTN isn't installed
+                                    continue; //skip to the next farm type check
+
+                                object mod = modInfo.GetType().GetProperty("Mod", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)?.GetValue(modInfo); //get MTN's Mod instance
+                                if (mod == null) //if it couldn't be accessed
+                                    continue; //skip to the next farm type check
+
+                                object customManager = mod.GetType().GetProperty("CustomManager", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)?.GetValue(mod); //get CustomManager instance
+                                if (customManager == null) //if it couldn't be accessed
+                                    continue; //skip to the next farm type check
+
+                                object loadedFarm = customManager.GetType().GetProperty("LoadedFarm", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)?.GetValue(customManager); //get LoadedFarm instance
+                                if (loadedFarm == null) //if it couldn't be accessed
+                                    continue; //skip to the next farm type check
+
+                                int farmID = (int)loadedFarm.GetType().GetProperty("ID", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)?.GetValue(loadedFarm); //get the loaded farm's ID
+
+                                if (type == farmID) //if MTN's custom farm ID matches the parsed type
+                                {
+                                    Monitor.VerboseLog($"Farm type matches the loaded MTN farm type's ID: {type}");
+                                    validType = true;
+                                    break; //skip checking the rest of the farm types
+                                }
+                            }
+                            catch (Exception) //if any exception is thrown while accessing MTN
+                            {
+                                Monitor.Log($"Error encountered while trying to check MTN farm type. This check may be obsolete or require updates.", LogLevel.Trace);
+                                continue; //skip to the next farm type check
+                            }
                         }
                     }
 

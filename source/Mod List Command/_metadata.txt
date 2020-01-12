@@ -1,0 +1,13 @@
+url:
+   https://github.com/Xebeth/StardewValley-ListModsCommand.git
+
+mods:
+   Mod List Command
+
+latest commit:
+   commit 566e55c348ee06425d5ce9619fb2e286ff7477a3
+   Author: Nicolas Girod <github@north-edge.com>
+   Date:   Sat Jan 11 02:06:36 2020 +0100
+   
+       Create README.md
+   

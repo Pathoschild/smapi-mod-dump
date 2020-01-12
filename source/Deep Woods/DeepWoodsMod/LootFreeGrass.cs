@@ -12,7 +12,7 @@ namespace DeepWoodsMod
 {
     class LootFreeGrass : Grass
     {
-        private bool canDropHay = true;
+        //private bool canDropHay = true;
 
         public LootFreeGrass()
           : base()

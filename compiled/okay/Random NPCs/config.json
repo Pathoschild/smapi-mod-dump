@@ -9,5 +9,9 @@
   "LightSkinChance": 0.7,
   "DarkSkinDarkHair": true,
   "RNPCMaxVisitors": 5,
-  "RNPCTotal": 15
+  "RNPCTotal": 15,
+  "RequireHeartsForDialogue": false,
+  "LeaveTime": 1800,
+  "DestroyObjectsUnderfoot": false,
+  "QuestReward": 200
 }

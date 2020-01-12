@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+		<AssemblyName>Runtime</AssemblyName>
+		<RootNamespace>SpriteMaster</RootNamespace>
+		<ProjectGuid>{D8AB0188-41C5-4669-AD33-231DA9401FA0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+		<TargetFramework>net45</TargetFramework>
+    <FileAlignment>512</FileAlignment>
+    <LangVersion>preview</LangVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NullableReferenceTypes>true</NullableReferenceTypes>
+    <ErrorReport>prompt</ErrorReport>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<ApplicationIcon>pufferchick_xbrz.ico</ApplicationIcon>
+		<DebugSymbols>true</DebugSymbols>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>1815</NoWarn>
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Development|AnyCPU'">
+    <OutputPath>bin\Development\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>1815</NoWarn>
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <PackageId>SpriteMaster Runtime</PackageId>
+    <Version>0.10.6</Version>
+    <Authors>Digital Carbide</Authors>
+    <Product>SpriteMaster-SV</Product>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(SolutionDir)\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Data.HashFunction.xxHash" Version="2.0.0" />
+  </ItemGroup>
+</Project>

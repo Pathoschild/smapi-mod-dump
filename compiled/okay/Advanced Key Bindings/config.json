@@ -1,0 +1,11 @@
+{
+  "Controls": {
+    "AddToExistingStacks": "S",
+    "PanScreenScrollLeft": "Left,DPadLeft",
+    "PanScreenScrollRight": "Right,DPadRight",
+    "PanScreenScrollUp": "Up,DPadUp",
+    "PanScreenScrollDown": "Down,DPadDown",
+    "PanScreenPreviousBuilding": "LeftControl,LeftShoulder",
+    "PanScreenNextBuilding": "RightControl,RightShoulder"
+  }
+}

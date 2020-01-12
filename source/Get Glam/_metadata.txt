@@ -1,0 +1,13 @@
+url:
+   https://github.com/MartyrPher/GetGlam.git
+
+mods:
+   Get Glam
+
+latest commit:
+   commit 73eb04dd40471a8b6294b82c4e269e2658d15fb9
+   Author: Chris <csgephardt@gmail.com>
+   Date:   Sat Jan 11 07:04:10 2020 -0500
+   
+       Add new 1.4 images
+   

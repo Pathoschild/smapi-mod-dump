@@ -20,6 +20,8 @@ namespace WhatAreYouMissing
         public int FishHighestQuality { get; set; }
         public bool DoNotShowCaughtFish { get; set; }
 
+        public bool IgnoreQuality { get; set; }
+
         public ModConfig()
         {
             button = SButton.F2;
@@ -32,6 +34,7 @@ namespace WhatAreYouMissing
             HighestQualityAmount = 5;
             FishHighestQuality = 4;
             DoNotShowCaughtFish = false;
+            IgnoreQuality = true;
         }
     }
 }

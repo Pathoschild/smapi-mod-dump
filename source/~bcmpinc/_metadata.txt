@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 9e7f07457aa739494463791c9e4c2dcfc2cd0073
+   commit 917b35eb3f73afe9ab6c6bdb9d6dda742805365a
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Sun Dec 1 03:40:25 2019 +0100
+   Date:   Tue Jan 7 23:56:43 2020 +0100
    
-       Fixed issue with golden scythe.
+       Migrate bigger backpack.
    

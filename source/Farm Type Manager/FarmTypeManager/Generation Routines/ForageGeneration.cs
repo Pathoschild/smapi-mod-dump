@@ -142,21 +142,21 @@ namespace FarmTypeManager
                             //calculate how much forage to spawn today
                             int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, data.Config.Forage_Spawn_Settings.PercentExtraSpawnsPerForagingLevel, Utility.Skills.Foraging);
 
-                            if (locations.Count > 1) //if this area targets multiple locations
-                            {
-                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name} #{x + 1}: {spawnCount}.", LogLevel.Trace);
-                            }
-                            else //if this area only targets one location
-                            {
-                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name}: {spawnCount}.", LogLevel.Trace);
-                            }
+                            List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
+                            int skippedSpawns = 0; //the number of objects skipped due to their spawn chances
 
                             //begin to generate forage
-                            List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
                             while (spawnCount > 0) //while more forage should be spawned
                             {
                                 spawnCount--;
                                 SavedObject randomForage = forageObjects[Utility.RNG.Next(forageObjects.Count)]; //select a random object from the forage list
+
+                                int? spawnChance = randomForage.ConfigItem?.PercentChanceToSpawn; //get this object's spawn chance, if provided
+                                if (spawnChance.HasValue && spawnChance.Value < Utility.RNG.Next(100)) //if this object "fails" its chance to spawn
+                                {
+                                    skippedSpawns++; //increment skip counter
+                                    continue; //skip to the next spawn
+                                }
 
                                 //create a new saved object based on the randomly selected forage (still using a "blank" tile location)
                                 SavedObject forage = new SavedObject()
@@ -166,9 +166,44 @@ namespace FarmTypeManager
                                     Name = randomForage.Name,
                                     ID = randomForage.ID,
                                     DaysUntilExpire = area.DaysUntilSpawnsExpire,
-                                    ConfigItem = randomForage.ConfigItem
+                                    ConfigItem = Utility.Clone(randomForage.ConfigItem) //use a separate copy of this (TODO: make a more efficient clone method for this class)
                                 };
+
+                                if (forage.DaysUntilExpire == null && forage.Type != SavedObject.ObjectType.Object) //if this is an item or container without an expiration setting
+                                {
+                                    forage.DaysUntilExpire = 1; //default to overnight expiration
+                                }
+
+                                //if this object has contents with spawn chances, process them
+                                if (forage.ConfigItem?.Contents != null) //if this forage item has contents
+                                {
+                                    for (int content = forage.ConfigItem.Contents.Count - 1; content >= 0; content--) //for each of the contents
+                                    {
+                                        List<SavedObject> contentSave = Utility.ParseSavedObjectsFromItemList(new object[] { forage.ConfigItem.Contents[content] }, area.UniqueAreaID); //parse this into a saved object
+
+                                        int? contentSpawnChance = contentSave[0].ConfigItem?.PercentChanceToSpawn; //get this item's spawn chance, if provided
+                                        if (contentSpawnChance.HasValue && contentSpawnChance.Value < Utility.RNG.Next(100)) //if this item "fails" its chance to spawn
+                                        {
+                                            forage.ConfigItem.Contents.RemoveAt(content); //remove this content from the forage object
+                                        }
+                                    }
+                                }
+
                                 spawns.Add(forage); //add it to the list
+                            }
+
+                            if (locations.Count > 1) //if this area targets multiple locations
+                            {
+                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name} #{x + 1}: {spawns.Count}", LogLevel.Trace);
+                            }
+                            else //if this area only targets one location
+                            {
+                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name}: {spawns.Count}", LogLevel.Trace);
+                            }
+
+                            if (skippedSpawns > 0) //if any spawns were skipped due to their spawn chances
+                            {
+                                Utility.Monitor.Log($"Spawns skipped due to spawn chance settings: {skippedSpawns}", LogLevel.Trace);
                             }
 
                             Utility.PopulateTimedSpawnList(spawns, data, area); //process the listed spawns and add them to Utility.TimedSpawns

@@ -1,0 +1,10 @@
+{
+  "Name": "TrendyHaley",
+  "Author": "Candidus42",
+  "Version": "1.0.1",
+  "Description": "Haley is just too trendy to stay blonde all the time:-)",
+  "UniqueID": "Candidus42.TrendyHaley",
+  "EntryDll": "TrendyHaley.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus: 4984" ]
+}

@@ -17,12 +17,19 @@ namespace StardewHack.MovementSpeed
     
     public class ModEntry : HackWithConfig<ModEntry, ModConfig>
     {
-        public bool ChangesMovementSpeed () {
-            return Math.Abs(config.MovementSpeedMultiplier - 1) > 1e-3;
+        public override void HackEntry(IModHelper helper) {
+            // If movement speed is different than the game's default.
+            if (Math.Abs(config.MovementSpeedMultiplier - 1) > 1e-3) {
+                Patch((Farmer f)=>f.getMovementSpeed(), Farmer_getMovementSpeed);
+            }
+            
+            // If the configured charge time is different than the game's default.
+            if (config.ToolChargeDelay != 600) {
+                Patch(typeof(Game1), "UpdateControlInput", Game1_UpdateControlInput);
+            }
         }
-
+    
         // Add a multiplier to the movement speed.
-        [BytecodePatch("StardewValley.Farmer::getMovementSpeed", "ChangesMovementSpeed")]
         void Farmer_getMovementSpeed() {
             var code = FindCode(
                 // movementMultiplier = 0.066f;
@@ -33,12 +40,7 @@ namespace StardewHack.MovementSpeed
             code[1].operand = 0.066f * config.MovementSpeedMultiplier;
         }
 
-        public bool ChangesToolChargeDelay() {
-            return config.ToolChargeDelay != 600;
-        }
-
         // Change (reduce) the time it takses to charge tools (hoe & water can).
-        [BytecodePatch("StardewValley.Game1::UpdateControlInput", "ChangesToolChargeDelay")]
         void Game1_UpdateControlInput() {
             try {
                 Game1_UpdateControlInput_Chain();

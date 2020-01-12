@@ -8,6 +8,7 @@ using StardewValley.Monsters;
 using xTile.Dimensions;
 using System.Diagnostics.Contracts;
 using System.IO;
+using NpcAdventure.Compatibility;
 
 namespace NpcAdventure.Utils
 {
@@ -45,17 +46,17 @@ namespace NpcAdventure.Utils
         {
             // Can't request dialogue if giftable object is in farmer's hands or npc has current dialogues
             bool forbidden = (farmer.ActiveObject != null && farmer.ActiveObject.canBeGivenAsGift()) || npc.CurrentDialogue.Count > 0;
+            bool isMarried = IsSpouseMarriedToFarmer(npc, farmer);
+            bool canKiss = isMarried || ((bool)TPMC.Instance?.CustomKissing.CanKissNpc(farmer, npc) && (bool)TPMC.Instance?.CustomKissing.HasRequiredFriendshipToKiss(farmer, npc));
 
-            if (!forbidden && IsSpouseMarriedToFarmer(npc, farmer))
-            {
-                // Kiss married spouse first if she/he facing kissable
-                bool kissedToday = SpouseHasBeenKissedToday(npc);
-                forbidden = !kissedToday && npc.FacingDirection == 3 || !kissedToday && npc.FacingDirection == 1;
-            }
+            // Kiss spouse first if she/he facing kissable                     
+            forbidden |= canKiss && !SpouseHasBeenKissedToday(npc) && (npc.FacingDirection == 3 || npc.FacingDirection == 1);
+            // Check for possibly marriage dialogues to show if farmer is married to this spouse
+            forbidden |= isMarried && npc.shouldSayMarriageDialogue.Value && npc.currentMarriageDialogue.Count > 0;
 
             return !forbidden;
         }
-
+                                          
         public static List<Point> NearPoints(Point p, int distance)
         {
             List<Point> points = new List<Point>();

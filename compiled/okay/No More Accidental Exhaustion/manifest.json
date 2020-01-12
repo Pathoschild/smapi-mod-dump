@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Exhaustion Protection",
+  "Author": "Guedez",
+  "Version": "1.0.0",
+  "Description": "Does not let you use tools that would make you exhausted",
+  "UniqueID": "exhaustion.protection",
+  "MinimumApiVersion": "3.0",
+  "EntryDll": "ExhaustionProtection.dll",
+  "UpdateKeys": [ "Nexus:???" ]
+}

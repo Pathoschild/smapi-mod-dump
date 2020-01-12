@@ -764,6 +764,7 @@ flag | meaning
 `artifactFound` | The player has found at least one artifact.
 `Beat_PK` | The player has beaten the Prairie King arcade game.
 `beenToWoods` | The player has entered the Secret Woods at least once.
+`beachBridgeFixed` | The bridge to access the second beach area is repaired.
 `canReadJunimoText` | The player can read the language of Junimos (i.e. the plaques in the Community Center).
 `ccIsComplete` | The player has completed the Community Center. Note that this isn't set reliably; see the `IsCommunityCenterComplete` and `IsJojaMartComplete` tokens instead.  See also flags for specific sections: `ccBoilerRoom`, `ccBulletin`, `ccCraftsRoom`, `ccFishTank`, `ccPantry`, and `ccVault`. The equivalent section flags for the Joja warehouse are `jojaBoilerRoom`, `jojaCraftsRoom`, `jojaFishTank`, `jojaPantry`, and `jojaVault`.
 `doorUnlockAbigail` | The player has unlocked access to Abigail's room. See also flags for other NPCs: `doorUnlockAlex`, `doorUnlockCaroline`, `doorUnlockEmily`, `doorUnlockHaley`, `doorUnlockHarvey`, `doorUnlockJas`, `doorUnlockJodi`, `doorUnlockMarnie`, `doorUnlockMaru`, `doorUnlockPenny`, `doorUnlockPierre`, `doorUnlockRobin`, `doorUnlockSam`, `doorUnlockSebastian`, `doorUnlockVincent`.
@@ -1299,14 +1300,7 @@ This token is dynamic and may behave in unexpected ways; see below to avoid surp
 <ol>
 <li>
 
-**Dynamic.** Random tokens rechoose each time they're evaluated, specifically...
-
-* When a new day starts.
-* When you change location, if used in a patch or [dynamic token](#dynamic-tokens) linked to a
-  location token like `LocationName`. This is true even if the location token value doesn't change
-  (e.g. using `IsOutdoors` while warping between two outdoor locations). You can prevent
-  location-linked changes by using pinned keys (see below), or by storing the `Random` token in a
-  [dynamic token](#dynamic-tokens) which doesn't depend on a location token.
+**Dynamic.** Random tokens rechoose each time they're evaluated, generally when a new day starts.
 
 The randomness is seeded with the save ID and in-game date, so reloading the save won't change
 which choices were made.
@@ -1769,7 +1763,7 @@ and then search the SMAPI log file for that name. Particular questions to ask:
 
 ## FAQs
 ### Compatibility
-Content Patcher is compatible with Stardew Valley 1.3+ on Linux/Mac/Windows, both single-player and
+Content Patcher is compatible with Stardew Valley 1.4+ on Linux/Mac/Windows, both single-player and
 multiplayer.
 
 ### Multiplayer

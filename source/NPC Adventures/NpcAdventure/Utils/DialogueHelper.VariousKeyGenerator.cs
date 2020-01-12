@@ -19,15 +19,17 @@ namespace NpcAdventure.Utils
                 set
                 {
                     List<int> scale = new List<int>();
-                    if (value >= 11)
+                    if (value >= 12)
                         scale.Add(12);
-                    if (value >= 9)
+                    if (value >= 10)
+                        scale.Add(10);
+                    if (value >= 8)
                         scale.Add(8);
-                    if (value >= 7)
+                    if (value >= 6)
                         scale.Add(6);
-                    if (value >= 5)
+                    if (value >= 4)
                         scale.Add(4);
-                    if (value >= 3)
+                    if (value >= 2)
                         scale.Add(2);
 
                     this.FriendshipHeartScale = scale.ToArray();

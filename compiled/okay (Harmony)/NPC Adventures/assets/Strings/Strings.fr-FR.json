@@ -1,0 +1,21 @@
+﻿{
+  "askToFollow": "Demander à {0} de partir à l'aventure ?",
+  "recruitedWant": "Que veux tu ?",
+  "recruitedWant.bag": "Utiliser ton sac !",
+  "recruitedWant.dismiss": "Je vais y aller, à la prochaine ! Merci pour ton aide :)",
+  "recruitedWant.nothing": "(Non rien)",
+  "spouseBuffDescription": "+2 à la chance (et une bonne mine), tout ça grâce à l'amour de {0}",
+  "bagItemsSentLetter": "Salut {0},^^Tu as oublié quelques objets dans mon sac hier. Tout est dans ce petit paquet.^C'était super de partir à l'aventure avec toi, j'ai hâte de recommencer !^^    - {1}",
+  "healed": "{0} t'a soigné! (+{1} de vie)",
+  "lifeSaved": "{0} t'a sauvé la vie cette fois! Attention.",
+  "skill.warrior": "Guerrier (Compétence de {0})",
+  "skillDescription.warrior": "Peut se battre à l'épée et se défendre dans les situations critiques.",
+  "skill.doctor": "Docteur (Compétence de {0})",
+  "skillDescription.doctor": "Peut soigner dans les situations de dangers.",
+  "skill.fighter": "Combattant (Compétence de {0})",
+  "skillDescription.fighter": "Peut se battre avec son épée.",
+  "recruitedCompanionHint": "Compagnon recruté: {0}",
+  "companionState_follow": "Statut : Vous accompagne",
+  "companionState_idle": "Statut : En attente",
+  "companionState_fight": "Statut : En combat"
+}

@@ -1,0 +1,40 @@
+{
+  "General": {
+    "OutputFile": null,
+    "TargetPlatform": null,
+    "KeyFile": null,
+    "AlternativeILMergePath": null,
+    "InputAssemblies": [
+			"xBRZ.dll",
+			"TeximpNet.dll",
+			"Zlib.Portable.dll",
+			"System.Data.HashFunction.xxHash.dll",
+			"System.Data.HashFunction.Core.dll",
+			"System.Data.HashFunction.Interfaces.dll",
+			"System.Memory.dll"
+		]
+  },
+  "Advanced": {
+    "AllowDuplicateType": null,
+    "AllowMultipleAssemblyLevelAttributes": true,
+    "AllowWildCards": false,
+    "AllowZeroPeKind": false,
+    "AttributeFile": null,
+    "Closed": true,
+    "CopyAttributes": true,
+    "DebugInfo": true,
+    "DelaySign": false,
+    "DeleteCopiesOverwriteTarget": true,
+    "ExcludeFile": "",
+    "FileAlignment": 512,
+    "Internalize": true,
+    "Log": false,
+    "LogFile": null,
+    "PublicKeyTokens": true,
+    "SearchDirectories": [],
+    "TargetKind": null,
+    "UnionMerge": false,
+    "Version": null,
+    "XmlDocumentation": false
+  }
+}

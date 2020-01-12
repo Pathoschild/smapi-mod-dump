@@ -46,8 +46,10 @@ namespace EideeEasyFishing
                         float difficulty = Helper.Reflection.GetField<float>(bar, "difficulty").GetValue();
                         bool treasure = Helper.Reflection.GetField<bool>(bar, "treasure").GetValue();
                         bool fromFishPond = Helper.Reflection.GetField<bool>(bar, "fromFishPond").GetValue();
+                        bool bossFish = Helper.Reflection.GetField<bool>(bar, "bossFish").GetValue();
                         bool caughtDouble = false;
-                        if (!rod.bossFish)
+
+                        if (!bossFish)
                         {
                             if (Config.CaughtDoubleFishOnAnyBait || (rod.attachments[0] == null ? -1 : rod.attachments[0].parentSheetIndex) == 774)
                             {

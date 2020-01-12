@@ -5,9 +5,9 @@ mods:
    InstaCrops
 
 latest commit:
-   commit db5feb244af2b51dae2a4eeddba2d0534e178acf
+   commit 29e3001f620725c553e9967812995511a0428d76
    Author: Brian Wuest <brian.wuest@outlook.com>
-   Date:   Wed Jun 12 19:13:38 2019 -0500
+   Date:   Mon Dec 23 22:13:37 2019 -0600
    
-       Update README.md
+       Updates to latest version of modding api and fixing discrepencies
    

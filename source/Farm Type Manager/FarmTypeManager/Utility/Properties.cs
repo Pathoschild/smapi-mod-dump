@@ -90,6 +90,9 @@ namespace FarmTypeManager
             /// <summary>Random number generator shared throughout the mod. Initialized automatically.</summary>
             public static Random RNG { get; } = new Random();
 
+            /// <summary>A marker used to track other mods' changes to the the game's start time and minimize related issues.</summary>
+            public static StardewTime StartOfDay { get; set; } = 600;
+
             /// <summary>Enumerated list of farm types, in the order used by Stardew's internal code (e.g. Farm.cs)</summary>
             public enum FarmTypes { Standard, Riverland, Forest, Hilltop, Wilderness, FourCorners }
 

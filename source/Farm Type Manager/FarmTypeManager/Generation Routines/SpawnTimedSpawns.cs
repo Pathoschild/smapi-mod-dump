@@ -24,7 +24,7 @@ namespace FarmTypeManager
             /// <param name="time">An in-game time value. If provided, only objects with matching SpawnTime values will be spawned.</param>
             public static void SpawnTimedSpawns(List<List<TimedSpawn>> timedSpawns, StardewTime? time = null)
             {
-                Utility.Monitor.VerboseLog($"Spawning objects set to appear at time: {time?.Time.ToString() ?? "(any)"}...");
+                Utility.Monitor.Log($"Spawning objects set to appear at time: {time?.Time.ToString() ?? "(any)"}...", LogLevel.Trace);
 
                 int spawnedTotal = 0; //tracks the number of objects spawned during this process
                 bool filter(TimedSpawn spawn) => spawn.SavedObject.SpawnTime == time; //define a filter that is true when a TimedSpawn matches the provided time
@@ -85,7 +85,9 @@ namespace FarmTypeManager
 
                     switch (spawns[0].SavedObject.Type)
                     {
-                        case SavedObject.ObjectType.Forage:
+                        case SavedObject.ObjectType.Object:
+                        case SavedObject.ObjectType.Item:
+                        case SavedObject.ObjectType.Container:
                             customTiles = spawns[0].FarmData.Config.Forage_Spawn_Settings.CustomTileIndex;
                             break;
                         case SavedObject.ObjectType.LargeObject:
@@ -119,6 +121,7 @@ namespace FarmTypeManager
 
                         if (!chosenTile.HasValue) //if no available tiles were valid
                         {
+                            Utility.Monitor.VerboseLog($"No valid tiles are available for this object. Type: {spawns[y].SavedObject.Type}. Location: {location.Name}.");
                             continue; //skip to the next object in this list
                         }
 
@@ -130,6 +133,7 @@ namespace FarmTypeManager
                         {
                             case SavedObject.ObjectType.Object:
                             case SavedObject.ObjectType.Item:
+                            case SavedObject.ObjectType.Container:
                                 spawned = Utility.SpawnForage(spawns[y].SavedObject, location, spawns[y].SavedObject.Tile); //spawn forage
                                 break;
                             case SavedObject.ObjectType.LargeObject:
@@ -148,10 +152,11 @@ namespace FarmTypeManager
                                 if (monID.HasValue) //if the monster spawned successfully (i.e. generated an ID)
                                 {
                                     spawns[y].SavedObject.ID = monID.Value; //record this spawn's ID
+                                    spawned = true;
+
                                     if (monstersAtLocation.HasValue) //if the monster counter is being used
                                     {
                                         monstersAtLocation++; //increment monster counter
-                                        spawned = true;
                                     }
                                 }
                                 break;
@@ -168,6 +173,10 @@ namespace FarmTypeManager
                                 SavedObject saved = Utility.Clone(spawns[y].SavedObject); //clone this object to avoid any accidental modification
                                 spawns[y].FarmData.Save.SavedObjects.Add(saved); //add the spawn to the relevant save data
                             }
+                        }
+                        else //if this object failed to spawn
+                        {
+                            Utility.Monitor.Log($"Failed to spawn object on a seemingly valid tile. Type: {spawns[y].SavedObject.Type}. Location: {spawns[y].SavedObject.Tile.X},{spawns[y].SavedObject.Tile.Y} ({location.Name}).", LogLevel.Trace);
                         }
                     }
 
@@ -190,7 +199,7 @@ namespace FarmTypeManager
 
                     Utility.Monitor.VerboseLog($"Current spawn list complete. Location: {location.Name}. Area ID: {spawns[0].SpawnArea.UniqueAreaID}. Listed objects spawned: {spawnedByThisList} of {spawns.Count}.");
                 }
-                Utility.Monitor.VerboseLog($"Spawn process complete. Time: {time?.Time.ToString() ?? "(any)"}. Total objects spawned: {spawnedTotal}.");
+                Utility.Monitor.Log($"Spawn process complete. Time: {time?.Time.ToString() ?? "(any)"}. Total objects spawned: {spawnedTotal}.", LogLevel.Trace);
             }
         }
     }

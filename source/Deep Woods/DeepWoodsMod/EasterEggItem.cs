@@ -63,9 +63,9 @@ namespace DeepWoodsMod
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidNetField")]
-        public override int addToStack(int amount)
+        public override int addToStack(Item otherStack)
         {
-            int newStackValue = this.stack.Value + amount;
+            int newStackValue = this.stack.Value + otherStack.Stack;
             if (newStackValue > maximumStackSize())
             {
                 this.stack.Value = maximumStackSize();
@@ -79,16 +79,19 @@ namespace DeepWoodsMod
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidNetField")]
-        public override void drawInMenu(SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, bool drawStackNumber, Color color, bool drawShadow)
+        public override void drawInMenu(SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow)
         {
             if (drawShadow)
             {
                 spriteBatch.Draw(Game1.shadowTexture, location + new Vector2(32f, 48f), new Microsoft.Xna.Framework.Rectangle?(Game1.shadowTexture.Bounds), color * 0.5f, 0.0f, new Vector2((float)Game1.shadowTexture.Bounds.Center.X, (float)Game1.shadowTexture.Bounds.Center.Y), 3f, SpriteEffects.None, layerDepth - 0.0001f);
             }
             spriteBatch.Draw(DeepWoodsTextures.Textures.Festivals, location + new Vector2(32 * scaleSize, 32 * scaleSize), new Microsoft.Xna.Framework.Rectangle?(Game1.getSourceRectForStandardTileSheet(DeepWoodsTextures.Textures.Festivals, this.eggTileIndex, 16, 16)), color * transparency, 0.0f, new Vector2(8f, 8f) * scaleSize, 4f * scaleSize, SpriteEffects.None, layerDepth);
-            if (drawStackNumber && scaleSize > 0.3 && this.Stack > 1)
+            if (drawStackNumber != StackDrawType.Hide && scaleSize > 0.3 && this.Stack > 0)
             {
-                Utility.drawTinyDigits(this.Stack, spriteBatch, location + new Vector2(64 - Utility.getWidthOfTinyDigitString(this.stack.Value, 3 * scaleSize) + 3 * scaleSize, 64 - 18 * scaleSize + 2), 3 * scaleSize, 1, color);
+                if (drawStackNumber == StackDrawType.Draw_OneInclusive || this.Stack > 1)
+                {
+                    Utility.drawTinyDigits(this.Stack, spriteBatch, location + new Vector2(64 - Utility.getWidthOfTinyDigitString(this.stack.Value, 3 * scaleSize) + 3 * scaleSize, 64 - 18 * scaleSize + 2), 3 * scaleSize, 1, color);
+                }
             }
         }
 
@@ -110,12 +113,6 @@ namespace DeepWoodsMod
             return new EasterEggItem();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidNetField")]
-        public override int getStack()
-        {
-            return this.stack.Value;
-        }
-
         public override bool isPlaceable()
         {
             return false;
@@ -126,12 +123,12 @@ namespace DeepWoodsMod
             return 999;
         }
 
-        public override bool canStackWith(Item other)
+        public override bool canStackWith(ISalable other)
         {
             return other is EasterEggItem;
         }
 
-        public override int sellToStorePrice()
+        public override int sellToStorePrice(long specificPlayerID = -1)
         {
             return 1000;
         }

@@ -5,9 +5,9 @@ mods:
    NPC Adventures
 
 latest commit:
-   commit 1b3db84d6d1cb33fb24cdcc04ff12f2e5620b32d
+   commit 362c15a308f4667b8a899cea5fceff3824d3ea2a
    Author: Ellen Jana FawkesovÃ¡ <ellenfawkes@gmail.com>
-   Date:   Sat Dec 7 20:57:09 2019 +0100
+   Date:   Tue Dec 31 16:16:21 2019 +0100
    
-       Don't render companion HUD when event is up
+       Release version 0.9.0
    

@@ -1,0 +1,15 @@
+{
+  // edit- hud labels
+  "hud.foundFishingSpot": "Found a fishing spot!",
+  "hud.noFishingSpot": "No fishing spot found!",
+  "hud.north": "N",
+  "hud.northwest": "NW",
+  "hud.northeast": "NE",
+  "hud.south": "S",
+  "hud.southwest": "SW",
+  "hud.southeast": "SE",
+  "hud.west": "W",
+  "hud.east": "E",
+  "hud.direction": "In the {{direction}} direction.",
+  "hud.distance": "Roughly {{distance}} tiles away."
+}

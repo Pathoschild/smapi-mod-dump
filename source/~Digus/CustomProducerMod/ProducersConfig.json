@@ -1,0 +1,22 @@
+﻿[
+	{
+		"ProducerName":"Bee House",
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": true
+	},
+	{
+		"ProducerName":"Furnace",
+		"AlternateFrameProducing": true, 
+		"AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName":"Loom",
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": true
+	},
+	{
+		"ProducerName":"Charcoal Kiln",
+		"AlternateFrameProducing": true, 
+		"AlternateFrameWhenReady": false
+	}
+]

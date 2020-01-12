@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Tab Autoloot",
+  "Author": "Guedez",
+  "Version": "1.0.0",
+  "Description": "Tab autoloot the current opened chest, useful for fishing without the mouse",
+  "UniqueID": "tab.autoloot",
+  "MinimumApiVersion": "3.0",
+  "EntryDll": "TabAutoloot.dll",
+  "UpdateKeys": [ "Nexus:???" ]
+}

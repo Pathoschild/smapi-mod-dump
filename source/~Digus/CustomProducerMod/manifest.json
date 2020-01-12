@@ -1,0 +1,15 @@
+﻿{
+  "Name": "[PFM]Custom Producer Mod",
+  "Author": "Digus",
+  "Version": "1.0.0",
+  "Description": "This content pack contain the default implementation of vanilla machines supported by Custom Producer Mod. It should work as base for people to change the vanilla machines behavior.",
+  "UniqueID": "Digus.CustomProducerMod",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:4992" ],
+  "Dependencies": [
+	  { "UniqueID": "Digus.ProducerFrameworkMod", "MinimumVersion": "1.1.0" }
+  ],
+  "ContentPackFor": {
+    "UniqueID": "Digus.ProducerFrameworkMod"
+  }
+}

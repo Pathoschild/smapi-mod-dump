@@ -6,61 +6,24 @@ namespace BirthdayMail
 {
     public class ModEntry : Mod
     {
-        private bool firstUpdate = true;
-
-        private NPC birthdayNPC;        // NPC object of the villager who has a birthday
-        private string birthdayMail;    // birthday mail item that corresponds to this NPC
-
         public override void Entry(IModHelper helper)
         {
-            // submit to events in StardewModdingAPI
-            StardewModdingAPI.Events.TimeEvents.AfterDayStarted += Event_AfterDayStarted;
-        }
-
-        // runs once per second from the start of the game 
-        // used for first update to solve the mail not being sent on initial load when adding the mod
-        private void Event_OneSecondTick(object sender, EventArgs e)
-        {
-            // ...check for birthdays and send mail
-            BirthdayMail();
-            firstUpdate = false;
-            // ...unsubmit from this event for optimization.
-            StardewModdingAPI.Events.GameEvents.OneSecondTick -= Event_OneSecondTick;
-        }
-
-        // runs when the day changes
-        private void Event_AfterDayStarted(object sender, EventArgs e)
-        {
-            // if this is the initial update...
-            if (firstUpdate)
-            {
-                // subscribe the Event_OneSecondTick() function to the OneSecondTick event
-                StardewModdingAPI.Events.GameEvents.OneSecondTick += Event_OneSecondTick;
-            }
-            else // otherwise...
-            {
-                // ...check for birthdays and send mail as usual
-                BirthdayMail();
-            }
+            // subscribe to events in StardewModdingAPI
+            helper.Events.GameLoop.DayStarted += BirthdayMail;
         }
 
         // checks for birthdays and sends mail if needed
-        private void BirthdayMail()
+        private void BirthdayMail(object sender, EventArgs e)
         {
             // test if today is someone's birthday...
             if (Utility.getTodaysBirthdayNPC(Game1.currentSeason, Game1.dayOfMonth) != null)
             {
-                // ...set birthday NPC and their mail item
-                birthdayNPC = Utility.getTodaysBirthdayNPC(Game1.currentSeason, Game1.dayOfMonth);
-                birthdayMail = birthdayNPC.Name + "Birth";
+                // ... if so, set birthday NPC and their mail item
+                NPC birthdayNPC = Utility.getTodaysBirthdayNPC(Game1.currentSeason, Game1.dayOfMonth);
+                string birthdayMail = birthdayNPC.Name + "Birth";
 
-                Game1.mailbox.Add(birthdayMail);
-            }
-            else // otherwise...
-            {
-                // ...reset veriables
-                birthdayNPC = null;
-                birthdayMail = null;
+                if (!Game1.mailbox.Contains(birthdayMail)) 
+                    Game1.mailbox.Add(birthdayMail);
             }
         }
     }

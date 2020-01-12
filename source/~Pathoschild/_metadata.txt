@@ -19,11 +19,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit d1f941a22fe56c451b0b9ec051457c6ebc140bc0
+   commit 094b5431a3704ba5aa096e4eab037f3d99d38933
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Dec 15 22:21:48 2019 -0500
+   Date:   Sat Jan 11 13:56:06 2020 -0500
    
-       update Spanish translations
-       
-       Thanks to PlussRolf!
+       minor optimization in Skip Intro
    

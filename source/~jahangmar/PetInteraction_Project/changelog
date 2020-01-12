@@ -40,10 +40,8 @@
 	loves you" message everytime or everytime friendship is at maximum
 	-better compatibility with Adopt 'n' Skin
 
-TODO:
-	-no greetings by your pet
-	-trash shaming issue
-	-cannot follow on festival maps
-	-pet can get stuck on some specific edges
-	-idea: pet runs away if watered
+1.1.1:
+	-fixed stick throw distance and added config option for distance
+	-fixed trash shaming
+
 

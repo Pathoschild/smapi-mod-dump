@@ -1,0 +1,1208 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>KBCsv</name>
+    </assembly>
+    <members>
+        <member name="T:KBCsv.CsvReader">
+            <summary>
+            Provides a means of reading CSV data.
+            </summary>
+            <remarks>
+            <para>
+            The <c>CsvReader</c> class allows CSV data to be read from an underlying data source. The data source may be a <see cref="T:System.IO.Stream"/>, <see cref="T:System.IO.TextReader"/>, file, or just a 
+            <see cref="T:System.String"/> containing CSV data. There are various constructors allowing for file-, <c>Stream</c>- and <c>TextWriter</c>- based data sources, whilst
+            <see cref="M:KBCsv.CsvReader.FromCsvString(System.String)"/> facilitates reading CSV data from a <see cref="T:System.String"/>.
+            </para>
+            <para>
+            By default, CSV values are assumed to be separated with a comma (<c>,</c>) and optionally delimited with double quotes (<c>"</c>). If necessary, the <see cref="P:KBCsv.CsvReader.ValueSeparator"/>
+            and <see cref="P:KBCsv.CsvReader.ValueDelimiter"/> properties enable these default to be customized.
+            </para>
+            <para>
+            Leading and trailing white space is discarded by default. <see cref="P:KBCsv.CsvReader.PreserveLeadingWhiteSpace"/> and <see cref="P:KBCsv.CsvReader.PreserveTrailingWhiteSpace"/> can be used to override these
+            defaults.
+            </para>
+            <para>
+            A header record can be read, either by calling <see cref="M:KBCsv.CsvReader.ReadHeaderRecord"/> (or <see cref="M:KBCsv.CsvReader.ReadHeaderRecordAsync"/>) or by assigning one directly to the <see cref="P:KBCsv.CsvReader.HeaderRecord"/>
+            property. The latter approach is particularly useful when the underlying data does not actually contain the header record, but the structure of the data is known. Any attempts
+            to read or assign a header record after the first record has been read by a <c>CsvReader</c> will result in an exception.
+            </para>
+            <para>
+            Data records can be read via <see cref="M:KBCsv.CsvReader.ReadDataRecord"/> or <see cref="M:KBCsv.CsvReader.ReadDataRecords(KBCsv.DataRecord[],System.Int32,System.Int32)"/> (or their async counterparts, <see cref="M:KBCsv.CsvReader.ReadDataRecordAsync"/> and
+            <see cref="M:KBCsv.CsvReader.ReadDataRecordsAsync(KBCsv.DataRecord[],System.Int32,System.Int32)"/>). These methods provide instances of <see cref="T:KBCsv.DataRecord"/>, which enables you to get at the underlying CSV values. Values can be
+            accessed by index, or - if a <see cref="T:KBCsv.HeaderRecord"/> has been assigned - by column names.
+            </para>
+            <para>
+            Data can be skipped via <see cref="O:KBCsv.CsvReader.SkipRecord"/> or <see cref="O:KBCsv.CsvReader.SkipRecords"/> (or their async counterparts,
+            <see cref="O:KBCsv.CsvReader.SkipRecordAsync"/> and <see cref="O:KBCsv.CsvReader.SkipRecordsAsync"/>). Skipping data is faster than reading (and discarding)
+            it. Thus, if it is known that a number of records are not needed, it is recommended they be skipped rather than read.
+            </para>
+            <para>
+            The <see cref="P:KBCsv.CsvReader.RecordNumber"/> property gives the total number of records read, including any header record.
+            </para>
+            </remarks>
+            <threadsafety>
+            A <c>CsvReader</c> cannot be used safely from multiple threads without synchronization. When using the <c>Async</c> methods, you should ensure that any prior task has
+            completed before instigating another.
+            </threadsafety>
+            <example>
+            <para>
+            The following example uses <see cref="M:KBCsv.CsvReader.FromCsvString(System.String)"/> to parse data in a <see cref="T:System.String"/>. Values in data records are accessed via an index:
+            </para>
+            <code source="..\Src\KBCsv.Examples.CSharp\Program.cs" region="ReadCSVFromString" lang="cs"/>
+            <code source="..\Src\KBCsv.Examples.VB\Program.vb" region="ReadCSVFromString" lang="vb"/>
+            </example>
+            <example>
+            <para>
+            The following example uses <see cref="M:KBCsv.CsvReader.FromCsvString(System.String)"/> to parse data in a <see cref="T:System.String"/>. White space is preserved:
+            </para>
+            <code source="..\Src\KBCsv.Examples.CSharp\Program.cs" region="ReadCSVFromStringPreservingWhiteSpace" lang="cs"/>
+            <code source="..\Src\KBCsv.Examples.VB\Program.vb" region="ReadCSVFromStringPreservingWhiteSpace" lang="vb"/>
+            </example>
+            <example>
+            <para>
+            The following example reads data from a file, where values are tab-separated and delimited with single quotes:
+            </para>
+            <code source="..\Src\KBCsv.Examples.CSharp\Program.cs" region="ReadTabDelimitedDataFromFile" lang="cs"/>
+            <code source="..\Src\KBCsv.Examples.VB\Program.vb" region="ReadTabDelimitedDataFromFile" lang="vb"/>
+            </example>
+            <example>
+            <para>
+            The following example reads data from an underlying UTF-8 encoded <see cref="T:System.IO.Stream"/>. It treats the first record as a <see cref="T:KBCsv.HeaderRecord"/>, thus enabling
+            the data to be accessed via column names.
+            </para>
+            <code source="..\Src\KBCsv.Examples.CSharp\Program.cs" region="ReadCSVFromStream" lang="cs"/>
+            <code source="..\Src\KBCsv.Examples.VB\Program.vb" region="ReadCSVFromStream" lang="vb"/>
+            </example>
+            <example>
+            <para>
+            The following example reads data from a file. It explicitly assigns a <see cref="P:KBCsv.CsvReader.HeaderRecord"/> and skips every other record:
+            </para>
+            <code source="..\Src\KBCsv.Examples.CSharp\Program.cs" region="ReadCSVFromFileWithExplicitHeader" lang="cs"/>
+            <code source="..\Src\KBCsv.Examples.VB\Program.vb" region="ReadCSVFromFileWithExplicitHeader" lang="vb"/>
+            </example>
+            <example>
+            <para>
+            The following example reads data asynchronously from an underlying <see cref="T:System.IO.TextReader"/>. It uses <see cref="M:KBCsv.CsvReader.ReadDataRecordsAsync(KBCsv.DataRecord[],System.Int32,System.Int32)"/> instead of
+            <see cref="M:KBCsv.CsvReader.ReadDataRecordAsync"/> to avoid creating too fine-grained tasks. It also requests that the <see cref="T:System.IO.TextReader"/> be left open when disposing
+            the <c>CsvReader</c>. All data records are dumped to the console:
+            </para>
+            <code source="..\Src\KBCsv.Examples.CSharp\Program.cs" region="ReadCSVFromFileAsynchronously" lang="cs"/>
+            <code source="..\Src\KBCsv.Examples.VB\Program.vb" region="ReadCSVFromFileAsynchronously" lang="vb"/>
+            </example>
+        </member>
+        <member name="M:KBCsv.CsvReader.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the CsvReader class.
+            </summary>
+            <remarks>
+            <paramref name="stream"/> is assumed to be encoded with <see cref="P:System.Text.Encoding.UTF8"/>, and will be disposed when this <c>CsvReader</c> is disposed.
+            </remarks>
+            <param name="stream">
+            A stream from which CSV data will be read.
+            </param>
+        </member>
+        <member name="M:KBCsv.CsvReader.#ctor(System.IO.Stream,System.Text.Encoding)">
+            <summary>
+            Initializes a new instance of the CsvReader class.
+            </summary>
+            <remarks>
+            <paramref name="stream"/> will be disposed when this <c>CsvReader</c> is disposed.
+            </remarks>
+            <param name="stream">
+            A stream from which CSV data will be read.
+            </param>
+            <param name="encoding">
+            The encoding for CSV data within the stream.
+            </param>
+        </member>
+        <member name="M:KBCsv.CsvReader.#ctor(System.IO.Stream,System.Text.Encoding,System.Boolean)">
+            <summary>
+            Initializes a new instance of the CsvReader class.
+            </summary>
+            <param name="stream">
+            A stream from which CSV data will be read.
+            </param>
+            <param name="encoding">
+            The encoding of CSV data within the stream.
+            </param>
+            <param name="leaveOpen">
+            If <see langword="true"/>, <paramref name="stream"/> will not be disposed when this <c>CsvReader</c> is disposed.
+            </param>
+        </member>
+        <member name="M:KBCsv.CsvReader.#ctor(System.IO.TextReader)">
+            <summary>
+            Initializes a new instance of the CsvReader class.
+            </summary>
+            <remarks>
+            <paramref name="textReader"/> will be disposed when this <c>CsvReader</c> is disposed.
+            </remarks>
+            <param name="textReader">
+            The source of the CSV data.
+            </param>
+        </member>
+        <member name="M:KBCsv.CsvReader.#ctor(System.IO.TextReader,System.Boolean)">
+            <summary>
+            Initializes a new instance of the CsvReader class.
+            </summary>
+            <param name="textReader">
+            The source of the CSV data.
+            </param>
+            <param name="leaveOpen">
+            If <see langword="true"/>, <paramref name="textReader"/> will not be disposed when this <c>CsvReader</c> is disposed.
+            </param>
+        </member>
+        <member name="P:KBCsv.CsvReader.PreserveLeadingWhiteSpace">
+            <summary>
+            Gets or sets a value indicating whether leading white space should be preserved.
+            </summary>
+        </member>
+        <member name="P:KBCsv.CsvReader.PreserveTrailingWhiteSpace">
+            <summary>
+            Gets or sets a value indicating whether trailing white space should be preserved.
+            </summary>
+        </member>
+        <member name="P:KBCsv.CsvReader.ValueSeparator">
+            <summary>
+            Gets or sets the character used to separate values within the CSV.
+            </summary>
+            <remarks>
+            This property specifies what character is used to separate values within the CSV. The default value separator is a comma (<c>,</c>).
+            </remarks>
+        </member>
+        <member name="P:KBCsv.CsvReader.ValueDelimiter">
+            <summary>
+            Gets or sets the character used to delimit values within the CSV.
+            </summary>
+            <remarks>
+            <para>
+            This property specifies what character is used to delimit values within the CSV. The default value delimiter is a double quote (<c>"</c>). If set to <see langword="null"/>, no character will
+            be treated as a delimiter.
+            </para>
+            <para>
+            Note that values within the CSV are not required to be delimited. However, delimiting a value allows it to contain the delimiter character itself, along with new line characters (ie. a multi-line value).
+            </para>
+            </remarks>
+        </member>
+        <member name="P:KBCsv.CsvReader.HeaderRecord">
+            <summary>
+            Gets or sets the header record.
+            </summary>
+            <remarks>
+            <para>
+            This property will be automatically set if <see cref="M:KBCsv.CsvReader.ReadHeaderRecord"/> or <see cref="M:KBCsv.CsvReader.ReadHeaderRecordAsync"/> is called. Alternatively, it can be set explicitly in the case where the underlying
+            data source does not itself contain a header record, but the structure of the data is known.
+            </para>
+            <para>
+            Any <see cref="T:KBCsv.DataRecord"/> produced by this <c>CsvReader</c> will have its <see cref="P:KBCsv.DataRecord.HeaderRecord"/> property set to the value of this property. Setting a header record allows 
+            the values within data records to be accessed both by index and by column name.
+            <see cref="T:KBCsv.DataRecord"/>
+            </para>
+            <para>
+            Any attempt to set this property when the first record has already been read will result in an exception.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:KBCsv.CsvReader.RecordNumber">
+            <summary>
+            Gets the current record number.
+            </summary>
+            <remarks>
+            This property gives the number of records that have been read by this <c>CsvReader</c>. This includes the header record, unless it is provided explicitly via the
+            <see cref="P:KBCsv.CsvReader.HeaderRecord"/> property.
+            </remarks>
+        </member>
+        <member name="P:KBCsv.CsvReader.HasMoreRecords">
+            <summary>
+            Gets a value indicating whether there are more records to read.
+            </summary>
+        </member>
+        <member name="M:KBCsv.CsvReader.FromCsvString(System.String)">
+            <summary>
+            Creates a <c>CsvReader</c> that will read the CSV data in <paramref name="csv"/>.
+            </summary>
+            <param name="csv">
+            The CSV data to read.
+            </param>
+            <returns>
+            A <c>CsvReader</c> that will read the CSV in <paramref name="csv"/>.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvReader.SkipRecord">
+            <summary>
+            Attempts to skip a record in the data, and increments <see cref="P:KBCsv.CsvReader.RecordNumber"/> if successful.
+            </summary>
+            <returns>
+            <see langword="true"/> if the record is successfully skipped, or <see langword="false"/> if there are no more records to skip.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvReader.SkipRecord(System.Boolean)">
+            <summary>
+            Attempts to skip a record in the data, optionally incrementing <see cref="P:KBCsv.CsvReader.RecordNumber"/> if successful.
+            </summary>
+            <param name="incrementRecordNumber">
+            <see langword="true"/> to increment <see cref="P:KBCsv.CsvReader.RecordNumber"/> upon successfully skipping a record.
+            </param>
+            <returns>
+            <see langword="true"/> if the record is successfully skipped, or <see langword="false"/> if there are no more records to skip.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvReader.SkipRecords(System.Int32)">
+            <summary>
+            Attempts to skip <paramref name="count"/> records in the data, and increments <see cref="P:KBCsv.CsvReader.RecordNumber"/> by the number of records actually skipped.
+            </summary>
+            <remarks>
+            If there are fewer than <paramref name="count"/> records remaining in the data, this method will skip the remaining records and return the number of records actually skipped.
+            </remarks>
+            <param name="count">
+            The number of records to skip.
+            </param>
+            <returns>
+            The actual number of records skipped.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvReader.SkipRecords(System.Int32,System.Boolean)">
+            <summary>
+            Attempts to skip <paramref name="count"/> records in the data, optionally incrementing <see cref="P:KBCsv.CsvReader.RecordNumber"/> by the number of records actually skipped.
+            </summary>
+            <remarks>
+            If there are fewer than <paramref name="count"/> records remaining in the data, this method will skip the remaining records and return the number of records actually skipped.
+            </remarks>
+            <param name="count">
+            The number of records to skip.
+            </param>
+            <param name="incrementRecordNumber">
+            <see langword="true"/> to increment <see cref="P:KBCsv.CsvReader.RecordNumber"/> by the number of records skipped.
+            </param>
+            <returns>
+            The actual number of records skipped.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvReader.ReadHeaderRecord">
+            <summary>
+            Reads the first record from the underlying CSV data and assigns it to <see cref="P:KBCsv.CsvReader.HeaderRecord"/>.
+            </summary>
+            <remarks>
+            <para>
+            If successful, all <see cref="T:KBCsv.DataRecord"/>s read by this <c>CsvReader</c> will have their <see cref="P:KBCsv.DataRecord.HeaderRecord"/> set accordingly.
+            </para>
+            <para>
+            Any attempt to call this method when this <c>CsvReader</c> has already read a record will result in an exception.
+            </para>
+            </remarks>
+            <returns>
+            The <see cref="T:KBCsv.HeaderRecord"/> that was read, also available via the <see cref="P:KBCsv.CsvReader.HeaderRecord"/> property. If no records are left, this method returns <see langword="null"/>.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvReader.ReadDataRecord">
+            <summary>
+            Reads a <see cref="T:KBCsv.DataRecord"/> from the underlying CSV.
+            </summary>
+            <returns>
+            The <see cref="T:KBCsv.DataRecord"/> that was read, or <see langword="null"/> if there are no more records to read.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvReader.ReadDataRecords(KBCsv.DataRecord[],System.Int32,System.Int32)">
+            <summary>
+            Reads at most <paramref name="count"/> <see cref="T:KBCsv.DataRecord"/>s and populates <paramref name="buffer"/> with them, beginning at index <paramref name="offset"/>.
+            </summary>
+            <remarks>
+            When reading a lot of data, it is possible that better performance can be achieved by using this method.
+            </remarks>
+            <param name="buffer">
+            The buffer to populate with the <see cref="T:KBCsv.DataRecord"/>s that are read.
+            </param>
+            <param name="offset">
+            The offset into <paramref name="buffer"/> at which to start placing data records.
+            </param>
+            <param name="count">
+            The maximum number of data records to read.
+            </param>
+            <returns>
+            The number of data records actually read and stored in <paramref name="buffer"/>.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvReader.Close">
+            <summary>
+            Closes this <c>CsvReader</c>.
+            </summary>
+            <remarks>
+            This method is an alternative means of disposing the <c>CsvReader</c>. Generally one should prefer a <c>using</c> block to automatically dispose of the <c>CsvReader</c>.
+            </remarks>
+        </member>
+        <member name="M:KBCsv.CsvReader.Dispose">
+            <summary>
+            Disposes of this <c>CsvReader</c>.
+            </summary>
+        </member>
+        <member name="M:KBCsv.CsvReader.Dispose(System.Boolean)">
+            <summary>
+            Disposes of this <c>CsvReader</c>.
+            </summary>
+            <remarks>
+            Subclasses can override this method to supplement dispose logic.
+            </remarks>
+            <param name="disposing">
+            <see langword="true"/> if being called in response to a <see cref="M:KBCsv.CsvReader.Dispose"/> call, otherwise <see langword="false"/>.
+            </param>
+        </member>
+        <member name="M:KBCsv.CsvReader.SkipRecordAsync">
+            <summary>
+            Asynchronously attempts to skip a record in the data, and increments <see cref="P:KBCsv.CsvReader.RecordNumber"/> if successful.
+            </summary>
+            <returns>
+            <see langword="true"/> if the record is successfully skipped, or <see langword="false"/> if there are no more records to skip.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvReader.SkipRecordAsync(System.Boolean)">
+            <summary>
+            Asynchronously attempts to skip a record in the data, optionally incrementing <see cref="P:KBCsv.CsvReader.RecordNumber"/> if successful.
+            </summary>
+            <param name="incrementRecordNumber">
+            <see langword="true"/> to increment <see cref="P:KBCsv.CsvReader.RecordNumber"/> upon successfully skipping a record.
+            </param>
+            <returns>
+            <see langword="true"/> if the record is successfully skipped, or <see langword="false"/> if there are no more records to skip.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvReader.SkipRecordsAsync(System.Int32)">
+            <summary>
+            Asynchronously attempts to skip <paramref name="count"/> records in the data, and increments <see cref="P:KBCsv.CsvReader.RecordNumber"/> by the number of records actually skipped.
+            </summary>
+            <remarks>
+            If there are fewer than <paramref name="count"/> records remaining in the data, this method will skip the remaining records and return the number of records actually skipped.
+            </remarks>
+            <param name="count">
+            The number of records to skip.
+            </param>
+            <returns>
+            The actual number of records skipped.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvReader.SkipRecordsAsync(System.Int32,System.Boolean)">
+            <summary>
+            Asynchronously attempts to skip <paramref name="count"/> records in the data, optionally incrementing <see cref="P:KBCsv.CsvReader.RecordNumber"/> by the number of records actually skipped.
+            </summary>
+            <remarks>
+            If there are fewer than <paramref name="count"/> records remaining in the data, this method will skip the remaining records and return the number of records actually skipped.
+            </remarks>
+            <param name="count">
+            The number of records to skip.
+            </param>
+            <param name="incrementRecordNumber">
+            <see langword="true"/> to increment <see cref="P:KBCsv.CsvReader.RecordNumber"/> by the number of records skipped.
+            </param>
+            <returns>
+            The actual number of records skipped.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvReader.ReadHeaderRecordAsync">
+            <summary>
+            Asynchronously reads the first record from the underlying CSV data and assigns it to <see cref="P:KBCsv.CsvReader.HeaderRecord"/>.
+            </summary>
+            <remarks>
+            <para>
+            If successful, all <see cref="T:KBCsv.DataRecord"/>s read by this <c>CsvReader</c> will have their <see cref="P:KBCsv.DataRecord.HeaderRecord"/> set accordingly.
+            </para>
+            <para>
+            Any attempt to call this method when this <c>CsvReader</c> has already read a record will result in an exception.
+            </para>
+            </remarks>
+            <returns>
+            The <see cref="T:KBCsv.HeaderRecord"/> that was read, also available via the <see cref="P:KBCsv.CsvReader.HeaderRecord"/> property. If no records are left, this method returns <see langword="null"/>.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvReader.ReadDataRecordAsync">
+            <summary>
+            Asynchronously reads a <see cref="T:KBCsv.DataRecord"/> from the underlying CSV.
+            </summary>
+            <returns>
+            The <see cref="T:KBCsv.DataRecord"/> that was read, or <see langword="null"/> if there are no more records to read.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvReader.ReadDataRecordsAsync(KBCsv.DataRecord[],System.Int32,System.Int32)">
+            <summary>
+            Asynchronously reads at most <paramref name="count"/> <see cref="T:KBCsv.DataRecord"/>s and populates <paramref name="buffer"/> with them, beginning at index <paramref name="offset"/>.
+            </summary>
+            <remarks>
+            When reading a lot of data, it is possible that better performance can be achieved by using this method.
+            </remarks>
+            <param name="buffer">
+            The buffer to populate with the <see cref="T:KBCsv.DataRecord"/>s that are read.
+            </param>
+            <param name="offset">
+            The offset into <paramref name="buffer"/> at which to start placing data records.
+            </param>
+            <param name="count">
+            The maximum number of data records to read.
+            </param>
+            <returns>
+            The number of data records actually read and stored in <paramref name="buffer"/>.
+            </returns>
+        </member>
+        <member name="T:KBCsv.CsvWriter">
+            <summary>
+            Provides a means of writing CSV data.
+            </summary>
+            <remarks>
+            <para>
+            The <c>CsvWriter</c> class allows CSV data to be written to an underlying data sink. The data sink may be a <see cref="T:System.IO.Stream"/>, <see cref="T:System.IO.TextWriter"/>, or a file.
+            There are various constructors allowing for file-, <c>Stream</c>- and <c>TextWriter</c>- based data sinks.
+            </para>
+            <para>
+            By default, CSV values will be separated with a comma (<c>,</c>) and delimited where necessary with double quotes (<c>"</c>). If desired, the <see cref="P:KBCsv.CsvWriter.ValueSeparator"/>
+            and <see cref="P:KBCsv.CsvWriter.ValueDelimiter"/> properties enable these defaults to be customized. In addition, delimiters around values can be included even when not necessary by setting
+            the <see cref="P:KBCsv.CsvWriter.ForceDelimit"/> property to <see langword="true"/>.
+            </para>
+            <para>
+            Records can be written with <see cref="O:KBCsv.CsvWriter.WriteRecord"/> and <see cref="M:KBCsv.CsvWriter.WriteRecords(KBCsv.RecordBase[],System.Int32,System.Int32)"/> methods (or their async counterparts,
+            <see cref="O:KBCsv.CsvWriter.WriteRecordAsync"/> and <see cref="M:KBCsv.CsvWriter.WriteRecordsAsync(KBCsv.RecordBase[],System.Int32,System.Int32)"/>). Doing so will increase <see cref="P:KBCsv.CsvWriter.RecordNumber"/> accordingly.
+            </para>
+            </remarks>
+            <threadsafety>
+            A <c>CsvReader</c> cannot be used safely from multiple threads without synchronization. When using the <c>Async</c> methods, you should ensure that any prior task has
+            completed before instigating another.
+            </threadsafety>
+            <example>
+            <para>
+            The following example writes CSV data to a <see cref="T:System.IO.StringWriter"/>:
+            </para>
+            <code source="..\Src\KBCsv.Examples.CSharp\Program.cs" region="WriteCSVToString" lang="cs"/>
+            <code source="..\Src\KBCsv.Examples.VB\Program.vb" region="WriteCSVToString" lang="vb"/>
+            </example>
+            <example>
+            <para>
+            The following example writes CSV data (with delimiters forced) to a <see cref="T:System.IO.MemoryStream"/> with ASCII encoding. The <see cref="T:System.IO.MemoryStream"/> is left open when
+            the <c>CsvWriter</c> is closed:
+            </para>
+            <code source="..\Src\KBCsv.Examples.CSharp\Program.cs" region="WriteCSVToStreamWithForcedDelimiting" lang="cs"/>
+            <code source="..\Src\KBCsv.Examples.VB\Program.vb" region="WriteCSVToStreamWithForcedDelimiting" lang="vb"/>
+            </example>
+            <example>
+            <para>
+            The following example asynchronously reads CSV from a file and asynchronously writes it to another. The data is written as tab-delimited with a single quote delimiter.
+            A buffer is used to read and write data in blocks of records rather than one record at a time:
+            </para>
+            <code source="..\Src\KBCsv.Examples.CSharp\Program.cs" region="ReadCSVFromFileAndWriteToTabDelimitedFile" lang="cs"/>
+            <code source="..\Src\KBCsv.Examples.VB\Program.vb" region="ReadCSVFromFileAndWriteToTabDelimitedFile" lang="vb"/>
+            </example>
+        </member>
+        <member name="M:KBCsv.CsvWriter.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the CsvWriter class.
+            </summary>
+            <remarks>
+            <paramref name="stream"/> will be encoded with <see cref="P:System.Text.Encoding.UTF8"/>, and will be disposed when this <c>CsvWriter</c> is disposed.
+            </remarks>
+            <param name="stream">
+            A stream to which CSV data will be written.
+            </param>
+        </member>
+        <member name="M:KBCsv.CsvWriter.#ctor(System.IO.Stream,System.Text.Encoding)">
+            <summary>
+            Initializes a new instance of the CsvWriter class.
+            </summary>
+            <remarks>
+            <paramref name="stream"/> will be disposed when this <c>CsvWriter</c> is disposed.
+            </remarks>
+            <param name="stream">
+            A stream to which CSV data will be written.
+            </param>
+            <param name="encoding">
+            The encoding for CSV data written to <paramref name="stream"/>.
+            </param>
+        </member>
+        <member name="M:KBCsv.CsvWriter.#ctor(System.IO.Stream,System.Text.Encoding,System.Boolean)">
+            <summary>
+            Initializes a new instance of the CsvWriter class.
+            </summary>
+            <remarks>
+            <paramref name="stream"/> will be disposed when this <c>CsvWriter</c> is disposed.
+            </remarks>
+            <param name="stream">
+            A stream to which CSV data will be written.
+            </param>
+            <param name="encoding">
+            The encoding for CSV data written to <paramref name="stream"/>.
+            </param>
+            <param name="leaveOpen">
+            If <see langword="true"/>, <paramref name="stream"/> will not be disposed when this <c>CsvWriter</c> is disposed.
+            </param>
+        </member>
+        <member name="M:KBCsv.CsvWriter.#ctor(System.IO.TextWriter)">
+            <summary>
+            Initializes a new instance of the CsvWriter class.
+            </summary>
+            <remarks>
+            <paramref name="textWriter"/> will be disposed when this <c>CsvWriter</c> is disposed.
+            </remarks>
+            <param name="textWriter">
+            The target for the CSV data.
+            </param>
+        </member>
+        <member name="M:KBCsv.CsvWriter.#ctor(System.IO.TextWriter,System.Boolean)">
+            <summary>
+            Initializes a new instance of the CsvWriter class.
+            </summary>
+            <param name="textWriter">
+            The target for the CSV data.
+            </param>
+            <param name="leaveOpen">
+            If <see langword="true"/>, <paramref name="textWriter"/> will not be disposed when this <c>CsvWriter</c> is disposed.
+            </param>
+        </member>
+        <member name="P:KBCsv.CsvWriter.Encoding">
+            <summary>
+            Gets the <see cref="T:System.Text.Encoding"/> being used when writing CSV data.
+            </summary>
+        </member>
+        <member name="P:KBCsv.CsvWriter.RecordNumber">
+            <summary>
+            Gets the current record number.
+            </summary>
+            <remarks>
+            This property gives the number of records that have been written by this <c>CsvWriter</c>.
+            </remarks>
+        </member>
+        <member name="P:KBCsv.CsvWriter.ForceDelimit">
+            <summary>
+            Gets or sets a value indicating whether delimiters should always be written.
+            </summary>
+            <remarks>
+            <para>
+            If this property is set to <see langword="true"/>, values will always be wrapped in <see cref="P:KBCsv.CsvWriter.ValueDelimiter"/>s, even if they're not actually required. If <see langword="false"/>,
+            values will only be delimited where necessary. That is, when they contain characters that require delimiting.
+            </para>
+            <para>
+            Note that you cannot set this property to <see langword="true"/> if <see cref="P:KBCsv.CsvWriter.ValueDelimiter"/> has been set to <see langword="null"/>.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:KBCsv.CsvWriter.ValueSeparator">
+            <summary>
+            Gets or sets the character used to separate values within the CSV.
+            </summary>
+            <remarks>
+            This property specifies what character is used to separate values within the CSV. The default value separator is a comma (<c>,</c>).
+            </remarks>
+        </member>
+        <member name="P:KBCsv.CsvWriter.ValueDelimiter">
+            <summary>
+            Gets or sets the character used to delimit values within the CSV.
+            </summary>
+            <remarks>
+            <para>
+            This property specifies what character is used to delimit values within the CSV. The default value delimiter is a double quote (<c>"</c>).
+            If set to <see langword="null"/>, values will never be delimited. Should they require delimiting in order to be valid CSV, an exception will
+            be thrown instead.
+            </para>
+            <para>
+            If <see cref="P:KBCsv.CsvWriter.ForceDelimit"/> is <see langword="false"/>, delimiters will only be written where necessary. Note that <see cref="P:KBCsv.CsvWriter.ForceDelimit"/>
+            cannot be <see langword="true"/> if <see cref="P:KBCsv.CsvWriter.ValueDelimiter"/> is <see langword="null"/>.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:KBCsv.CsvWriter.NewLine">
+            <summary>
+            Gets or sets the <see cref="T:System.String"/> used to separate lines within the CSV.
+            </summary>
+            <remarks>
+            By default, this property is set to <see cref="P:System.Environment.NewLine"/>.
+            </remarks>
+        </member>
+        <member name="M:KBCsv.CsvWriter.WriteRecord(KBCsv.RecordBase)">
+            <summary>
+            Writes a record to this <c>CsvWriter</c>.
+            </summary>
+            <remarks>
+            All values within <paramref name="record"/> are written in the order they appear.
+            </remarks>
+            <param name="record">
+            The record to write.
+            </param>
+        </member>
+        <member name="M:KBCsv.CsvWriter.WriteRecord(System.String[])">
+            <summary>
+            Writes a record to this <c>CsvWriter</c>.
+            </summary>
+            <remarks>
+            Any <see langword="null"/> values will be written as empty strings.
+            </remarks>
+            <param name="values">
+            The values comprising the record.
+            </param>
+        </member>
+        <member name="M:KBCsv.CsvWriter.WriteRecord(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Writes a record to this <c>CsvWriter</c>.
+            </summary>
+            <remarks>
+            Any <see langword="null"/> values will be written as empty strings.
+            </remarks>
+            <param name="values">
+            The values comprising the record.
+            </param>
+        </member>
+        <member name="M:KBCsv.CsvWriter.WriteRecords(KBCsv.RecordBase[],System.Int32,System.Int32)">
+            <summary>
+            Writes <paramref name="length"/> records to this <c>CsvWriter</c>.
+            </summary>
+            <remarks>
+            When writing a lot of data, it is possible that better performance can be achieved by using this method.
+            </remarks>
+            <param name="buffer">
+            The buffer containing the records to be written.
+            </param>
+            <param name="offset">
+            The offset into <paramref name="buffer"/> from which the first record will be obtained.
+            </param>
+            <param name="length">
+            The number of records to write.
+            </param>
+        </member>
+        <member name="M:KBCsv.CsvWriter.Flush">
+            <summary>
+            Flushes this <c>CsvWriter</c>.
+            </summary>
+            <remarks>
+            This method can be used to flush the underlying <see cref="T:System.IO.TextWriter"/> to which this <c>CsvWriter</c> is writing data.
+            </remarks>
+        </member>
+        <member name="M:KBCsv.CsvWriter.Close">
+            <summary>
+            Closes this <c>CsvWriter</c>.
+            </summary>
+            <remarks>
+            This method is an alternative means of disposing the <c>CsvWriter</c>. Generally one should prefer a <c>using</c> block to automatically dispose of the <c>CsvWriter</c>.
+            </remarks>
+        </member>
+        <member name="M:KBCsv.CsvWriter.Dispose">
+            <summary>
+            Disposes of this <c>CsvWriter</c>.
+            </summary>
+        </member>
+        <member name="M:KBCsv.CsvWriter.Dispose(System.Boolean)">
+            <summary>
+            Disposes of this <c>CsvWriter</c>.
+            </summary>
+            <remarks>
+            Subclasses can override this method to supplement dispose logic.
+            </remarks>
+            <param name="disposing">
+            <see langword="true"/> if being called in response to a <see cref="M:KBCsv.CsvWriter.Dispose"/> call, otherwise <see langword="false"/>.
+            </param>
+        </member>
+        <member name="M:KBCsv.CsvWriter.WriteCharToBuffer(System.Text.StringBuilder,System.Char,System.Boolean@)">
+            <summary>
+            Writes a character to the buffer being used to construct a value.
+            </summary>
+            <remarks>
+            <para>
+            By default, this method will ensure <paramref name="delimit"/> is <see langword="true"/> if <paramref name="ch"/> is <see cref="P:KBCsv.CsvWriter.ValueSeparator"/>, <see cref="P:KBCsv.CsvWriter.ValueDelimiter"/>, or an end of line character.
+            If <paramref name="ch"/> is <see cref="P:KBCsv.CsvWriter.ValueDelimiter"/>, it will repeat it so that it is escaped in the CSV value.
+            </para>
+            <para>
+            Subclasses can override this behavior if necessary, but should take care to ensure that the resultant value in <paramref name="buffer"/> is valid for the scenario being addressed. <paramref name="delimit"/>
+            must be set to <see langword="true"/> if the value needs to be delimited prior to writing it to the underlying <see cref="T:System.IO.TextWriter"/>.
+            </para>
+            </remarks>
+            <param name="buffer">
+            The buffer containing the value being constructed.
+            </param>
+            <param name="ch">
+            The character to append.
+            </param>
+            <param name="delimit">
+            <see langword="true"/> if the value should be delimited.
+            </param>
+        </member>
+        <member name="M:KBCsv.CsvWriter.WriteRecordAsync(KBCsv.RecordBase)">
+            <summary>
+            Asynchronously writes a record to this <c>CsvWriter</c>.
+            </summary>
+            <remarks>
+            All values within <paramref name="record"/> are written in the order they appear.
+            </remarks>
+            <param name="record">
+            The record to write.
+            </param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvWriter.WriteRecordAsync(System.String[])">
+            <summary>
+            Asynchronously writes a record to this <c>CsvWriter</c>.
+            </summary>
+            <remarks>
+            None of the <see cref="T:System.String"/>s within <paramref name="values"/> can be <see langword="null"/>. If so, an exception will be thrown.
+            </remarks>
+            <param name="values">
+            The values comprising the record.
+            </param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvWriter.WriteRecordAsync(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Asynchronously writes a record to this <c>CsvWriter</c>.
+            </summary>
+            <remarks>
+            None of the <see cref="T:System.String"/>s within <paramref name="values"/> can be <see langword="null"/>. If so, an exception will be thrown.
+            </remarks>
+            <param name="values">
+            The values comprising the record.
+            </param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvWriter.WriteRecordsAsync(KBCsv.RecordBase[],System.Int32,System.Int32)">
+            <summary>
+            Asynchronously writes <paramref name="length"/> records to this <c>CsvWriter</c>.
+            </summary>
+            <remarks>
+            When writing a lot of data, it is possible that better performance can be achieved by using this method.
+            </remarks>
+            <param name="buffer">
+            The buffer containing the records to be written.
+            </param>
+            <param name="offset">
+            The offset into <paramref name="buffer"/> from which the first record will be obtained.
+            </param>
+            <param name="length">
+            The number of records to write.
+            </param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.
+            </returns>
+        </member>
+        <member name="M:KBCsv.CsvWriter.FlushAsync">
+            <summary>
+            Asynchronously flushes this <c>CsvWriter</c>.
+            </summary>
+            <remarks>
+            This method can be used to flush the underlying <see cref="T:System.IO.TextWriter"/> to which this <c>CsvWriter</c> is writing data.
+            </remarks>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.
+            </returns>
+        </member>
+        <member name="T:KBCsv.DataRecord">
+            <summary>
+            Represents a data record in a CSV file.
+            </summary>
+            <remarks>
+            <para>
+            A <c>DataRecord</c> represents a CSV record that is not the header record. Values in the data record can be accessed by their index. A data record can have an associated
+            <see cref="T:KBCsv.HeaderRecord"/> (exposed via <see cref="P:KBCsv.DataRecord.HeaderRecord"/>), in which case values in the data record may also be accessed via a column name.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:KBCsv.DataRecord.#ctor">
+            <summary>
+            Initializes a new instance of the DataRecord class.
+            </summary>
+            <remarks>
+            The resultant data record will have no values, but is not read-only.
+            </remarks>
+        </member>
+        <member name="M:KBCsv.DataRecord.#ctor(KBCsv.HeaderRecord)">
+            <summary>
+            Initializes a new instance of the DataRecord class.
+            </summary>
+            <remarks>
+            The resultant data record will have no values, but is not read-only. It will use the specified <see cref="T:KBCsv.HeaderRecord"/> (which will therefore
+            be returned from <see cref="P:KBCsv.DataRecord.HeaderRecord"/>).
+            </remarks>
+            <param name="headerRecord">
+            An optional <see cref="T:KBCsv.HeaderRecord"/> associated with this <c>DataRecord</c>.
+            </param>
+        </member>
+        <member name="M:KBCsv.DataRecord.#ctor(KBCsv.HeaderRecord,System.String[])">
+            <summary>
+            Initializes a new instance of the DataRecord class.
+            </summary>
+            <remarks>
+            The resultant data record will the specified values, and is not read-only. It will use the specified <see cref="T:KBCsv.HeaderRecord"/> (which will therefore
+            be returned from <see cref="P:KBCsv.DataRecord.HeaderRecord"/>).
+            </remarks>
+            <param name="headerRecord">
+            An optional <see cref="T:KBCsv.HeaderRecord"/> associated with this <c>DataRecord</c>.
+            </param>
+            <param name="values">
+            The values comprising this <c>DataRecord</c>.
+            </param>
+        </member>
+        <member name="M:KBCsv.DataRecord.#ctor(KBCsv.HeaderRecord,System.Boolean,System.String[])">
+            <summary>
+            Initializes a new instance of the DataRecord class.
+            </summary>
+            <remarks>
+            The resultant data record will have the specified values, and may or may not be read-only. It will use the specified <see cref="T:KBCsv.HeaderRecord"/> (which will therefore
+            be returned from <see cref="P:KBCsv.DataRecord.HeaderRecord"/>).
+            </remarks>
+            <param name="headerRecord">
+            An optional <see cref="T:KBCsv.HeaderRecord"/> associated with this <c>DataRecord</c>.
+            </param>
+            <param name="readOnly">
+            <see langword="true"/> to mark this <c>DataRecord</c> as read-only.
+            </param>
+            <param name="values">
+            The values comprising this <c>DataRecord</c>.
+            </param>
+        </member>
+        <member name="M:KBCsv.DataRecord.#ctor(KBCsv.HeaderRecord,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Initializes a new instance of the DataRecord class.
+            </summary>
+            <remarks>
+            The resultant data record will the specified values, and is not read-only. It will use the specified <see cref="T:KBCsv.HeaderRecord"/> (which will therefore
+            be returned from <see cref="P:KBCsv.DataRecord.HeaderRecord"/>).
+            </remarks>
+            <param name="headerRecord">
+            An optional <see cref="T:KBCsv.HeaderRecord"/> associated with this <c>DataRecord</c>.
+            </param>
+            <param name="values">
+            The values comprising this <c>DataRecord</c>.
+            </param>
+        </member>
+        <member name="M:KBCsv.DataRecord.#ctor(KBCsv.HeaderRecord,System.Boolean,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Initializes a new instance of the DataRecord class.
+            </summary>
+            <remarks>
+            The resultant data record will have the specified values, and may or may not be read-only. It will use the specified <see cref="T:KBCsv.HeaderRecord"/> (which will therefore
+            be returned from <see cref="P:KBCsv.DataRecord.HeaderRecord"/>).
+            </remarks>
+            <param name="headerRecord">
+            An optional <see cref="T:KBCsv.HeaderRecord"/> associated with this <c>DataRecord</c>.
+            </param>
+            <param name="readOnly">
+            <see langword="true"/> to mark this <c>DataRecord</c> as read-only.
+            </param>
+            <param name="values">
+            The values comprising this <c>DataRecord</c>.
+            </param>
+        </member>
+        <member name="P:KBCsv.DataRecord.HeaderRecord">
+            <summary>
+            Gets the <see cref="T:KBCsv.HeaderRecord"/> in use by this data record.
+            </summary>
+            <remarks>
+            In order to get or set values in a data record via their column name, a header record must be provided. This property gets the <see cref="T:KBCsv.HeaderRecord"/> that
+            this data record uses to resolve column indexes given a column name.
+            </remarks>
+        </member>
+        <member name="P:KBCsv.DataRecord.Item(System.String)">
+            <summary>
+            Gets or sets a value in this data record by its column name.
+            </summary>
+            <param name="columnName">
+            The name of the column.
+            </param>
+            <returns>
+            The value in the specified column.
+            </returns>
+        </member>
+        <member name="M:KBCsv.DataRecord.GetValueOrNull(System.String)">
+            <summary>
+            Gets a value in this data record given the column name, or <see langword="null"/> if the specified column does not exist, or if there is no value in this data record at the column's index.
+            </summary>
+            <param name="columnName">
+            The name of the column.
+            </param>
+            <returns>
+            The value in the specified column, or <see langword="null"/> if the column does not exist, or if there is no value in this data record at the column's index.
+            </returns>
+        </member>
+        <member name="M:KBCsv.DataRecord.Equals(KBCsv.DataRecord)">
+            <summary>
+            Determines whether this data record is equal to another.
+            </summary>
+            <remarks>
+            Data records are considered equal if their <see cref="P:KBCsv.DataRecord.HeaderRecord"/>s are equal (or both absent), and if their values are equal.
+            </remarks>
+            <param name="other">
+            The other data record.
+            </param>
+            <returns>
+            <see langword="true"/> if the data records are equal, otherwise <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:KBCsv.DataRecord.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCsv.DataRecord.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="T:KBCsv.HeaderRecord">
+            <summary>
+            Represents the header record of a CSV file.
+            </summary>
+            <remarks>
+            <para>
+            A <c>HeaderRecord</c> is a specialized <see cref="T:KBCsv.RecordBase"/> whose values are the names of columns in the CSV. It permits the index of each column to be obtained given
+            its name (see <see cref="P:KBCsv.HeaderRecord.Item(System.String)"/> and <see cref="M:KBCsv.HeaderRecord.GetColumnIndexOrNull(System.String)"/>).
+            </para>
+            <para>
+            Note that there is a cost to maintaining the indexes of columns by their name. If possible, favor passing in all column names during construction. Otherwise, favor using
+            <see cref="M:KBCsv.HeaderRecord.Add(System.String)"/> only, avoiding <see cref="M:KBCsv.HeaderRecord.Insert(System.Int32,System.String)"/>, <see cref="M:KBCsv.HeaderRecord.Remove(System.String)"/> and <see cref="M:KBCsv.HeaderRecord.RemoveAt(System.Int32)"/> wherever possible.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:KBCsv.HeaderRecord.#ctor">
+            <summary>
+            Initializes a new instance of the HeaderRecord class.
+            </summary>
+            <remarks>
+            The resultant header record will have no values, but is not read-only.
+            </remarks>
+        </member>
+        <member name="M:KBCsv.HeaderRecord.#ctor(System.String[])">
+            <summary>
+            Initializes a new instance of the HeaderRecord class with the specified column names.
+            </summary>
+            <remarks>
+            The resultant header record will have the specified column names as values and is not read-only.
+            </remarks>
+            <param name="columnNames">
+            The names of the columns in the header record.
+            </param>
+        </member>
+        <member name="M:KBCsv.HeaderRecord.#ctor(System.Boolean,System.String[])">
+            <summary>
+            Initializes a new instance of the HeaderRecord class.
+            </summary>
+            <param name="columnNames">
+            The names of the columns in the header record.
+            </param>
+            <param name="readOnly">
+            <see langword="true"/> if the header record is read-only, otherwise <see langword="false"/>.
+            </param>
+        </member>
+        <member name="M:KBCsv.HeaderRecord.#ctor(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Initializes a new instance of the HeaderRecord class with the specified column names.
+            </summary>
+            <remarks>
+            The resultant header record will have the specified column names as values and is not read-only.
+            </remarks>
+            <param name="columnNames">
+            The names of the columns in the header record.
+            </param>
+        </member>
+        <member name="M:KBCsv.HeaderRecord.#ctor(System.Boolean,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Initializes a new instance of the HeaderRecord class.
+            </summary>
+            <param name="columnNames">
+            The names of the columns in the header record.
+            </param>
+            <param name="readOnly">
+            <see langword="true"/> if the header record is read-only, otherwise <see langword="false"/>.
+            </param>
+        </member>
+        <member name="P:KBCsv.HeaderRecord.Item(System.String)">
+            <summary>
+            Gets the index of the column with the specified name.
+            </summary>
+            <param name="columnName">
+            The column name.
+            </param>
+            <returns>
+            The index of the column with the specified name.
+            </returns>
+        </member>
+        <member name="M:KBCsv.HeaderRecord.GetColumnIndexOrNull(System.String)">
+            <summary>
+            Gets the index of the specified column, or <see langword="null"/> if the column does not exist in this header record.
+            </summary>
+            <param name="columnName">
+            The column name.
+            </param>
+            <returns>
+            The index of the column, or <see langword="null"/> if the column does not exist in this header record.
+            </returns>
+        </member>
+        <member name="P:KBCsv.HeaderRecord.Item(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCsv.HeaderRecord.Add(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCsv.HeaderRecord.Insert(System.Int32,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCsv.HeaderRecord.Clear">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCsv.HeaderRecord.Remove(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCsv.HeaderRecord.RemoveAt(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="T:KBCsv.RecordBase">
+            <summary>
+            A base class for CSV records.
+            </summary>
+            <remarks>
+            <para>
+            A record consists of zero or more non-<see langword="null"/> <see cref="T:System.String"/> values, which are accessible via their index. <see cref="P:KBCsv.RecordBase.Count"/> returns the number of values in the record.
+            A record may be read-only, as indicated by the <see cref="P:KBCsv.RecordBase.IsReadOnly"/> property. Read-only records will throw an exception if any attempt is made to modify the record,
+            such as by calling <see cref="M:KBCsv.RecordBase.Add(System.String)"/> or <see cref="M:KBCsv.RecordBase.Remove(System.String)"/>.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:KBCsv.RecordBase.#ctor(System.Boolean,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Initializes a new instance of the RecordBase class.
+            </summary>
+            <param name="readOnly">
+            <see langword="true"/> if the record is read-only, otherwise <see langword="false"/>.
+            </param>
+            <param name="values">
+            The values comprising the record.
+            </param>
+        </member>
+        <member name="P:KBCsv.RecordBase.Item(System.Int32)">
+            <summary>
+            Gets or sets a value in this record by index.
+            </summary>
+            <param name="index">
+            The index of the value to retrieve.
+            </param>
+            <returns>
+            The value at the specified index.
+            </returns>
+        </member>
+        <member name="P:KBCsv.RecordBase.IsReadOnly">
+            <summary>
+            Gets a value indicating whether this record is read-only.
+            </summary>
+        </member>
+        <member name="P:KBCsv.RecordBase.Count">
+            <summary>
+            Gets the number of values in this record.
+            </summary>
+        </member>
+        <member name="M:KBCsv.RecordBase.GetValueOrNull(System.Int32)">
+            <summary>
+            Gets a value at the specified index, or <see langword="null"/> if the index is invalid.
+            </summary>
+            <param name="index">
+            The index of the value to retrieve.
+            </param>
+            <returns>
+            The value at the specified index, or <see langword="null"/> if the index is not valid.
+            </returns>
+        </member>
+        <member name="M:KBCsv.RecordBase.Clear">
+            <summary>
+            Clears all values in this record.
+            </summary>
+        </member>
+        <member name="M:KBCsv.RecordBase.Contains(System.String)">
+            <summary>
+            Determines whether this record contains the specified value.
+            </summary>
+            <param name="value">
+            The value.
+            </param>
+            <returns>
+            <see langword="true"/> if this record contains <paramref name="value"/>, otherwise <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:KBCsv.RecordBase.IndexOf(System.String)">
+            <summary>
+            Determines the index of the specified value within this record.
+            </summary>
+            <param name="value">
+            The value.
+            </param>
+            <returns>
+            The index of the value, or <c>-1</c> if the value does not exist in this record.
+            </returns>
+        </member>
+        <member name="M:KBCsv.RecordBase.Add(System.String)">
+            <summary>
+            Adds the specified value to this record.
+            </summary>
+            <param name="value">
+            The value.
+            </param>
+        </member>
+        <member name="M:KBCsv.RecordBase.Insert(System.Int32,System.String)">
+            <summary>
+            Inserts the specified value into this record.
+            </summary>
+            <param name="index">
+            The index at which to insert the value.
+            </param>
+            <param name="value">
+            The value to insert.
+            </param>
+        </member>
+        <member name="M:KBCsv.RecordBase.Remove(System.String)">
+            <summary>
+            Removes the specified value from this record.
+            </summary>
+            <param name="value">
+            The value to remove.
+            </param>
+            <returns>
+            <see langword="true"/> if the value was removed, otherwise <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:KBCsv.RecordBase.RemoveAt(System.Int32)">
+            <summary>
+            Removes the value at the specified index.
+            </summary>
+            <param name="index">
+            The index of the value to remove.
+            </param>
+        </member>
+        <member name="M:KBCsv.RecordBase.CopyTo(System.String[],System.Int32)">
+            <summary>
+            Copies the values in this record to the specified array.
+            </summary>
+            <param name="array">
+            The array.
+            </param>
+            <param name="arrayIndex">
+            The starting index in the array to which values will be copied.
+            </param>
+        </member>
+        <member name="M:KBCsv.RecordBase.Equals(KBCsv.RecordBase)">
+            <summary>
+            Determines whether this record is equal to another.
+            </summary>
+            <remarks>
+            Records are considered equal if they have the same number of values, and every corresponding value is equal.
+            </remarks>
+            <param name="other">
+            The other record.
+            </param>
+            <returns>
+            <see langword="true"/> if the records are equal, otherwise <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:KBCsv.RecordBase.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCsv.RecordBase.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCsv.RecordBase.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCsv.RecordBase.System#Collections#Generic#IEnumerable{System#String}#GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="M:KBCsv.RecordBase.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc/>
+        </member>
+    </members>
+</doc>

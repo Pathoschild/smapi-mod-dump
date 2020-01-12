@@ -17,7 +17,7 @@ namespace CustomKissingMod
         {
             NpcConfig npcConfig = DataLoader.ModConfig.NpcConfigs.Find(n => n.Name == __instance.Name);
 
-            if (npcConfig != null && __result != true && !__instance.isMarried() && (who.friendshipData[__instance.Name].IsDating() || DataLoader.ModConfig.DisableDatingRequirement) && ( npcConfig.RequiredEvent == null || who.eventsSeen.Contains(npcConfig.RequiredEvent.Value) || DataLoader.ModConfig.DisableEventRequirement) && who.IsLocalPlayer)
+            if (npcConfig != null && __result != true && !__instance.isMarried() && CanKissNpc(who, __instance) && who.IsLocalPlayer)
             {
                 int timeOfDay = Game1.timeOfDay;
                     
@@ -34,7 +34,7 @@ namespace CustomKissingMod
                         bool flag = npcConfig.FrameDirectionRight;
 
                         bool flip = flag && __instance.FacingDirection == 3 || !flag && __instance.FacingDirection == 1;
-                        if (who.getFriendshipHeartLevelForNPC(__instance.Name) >= DataLoader.ModConfig.RequiredFriendshipLevel)
+                        if (HasRequiredFriendshipToKiss(who, __instance))
                         {
                             __instance.Sprite.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>()
                             {
@@ -122,6 +122,22 @@ namespace CustomKissingMod
                     }
                 }
             }
+        }
+
+        internal static bool CanKissNpc(Farmer who, NPC npc)
+        {
+            NpcConfig npcConfig = DataLoader.ModConfig.NpcConfigs.Find(n => n.Name == npc.Name);
+            return npcConfig != null
+                   && (who.friendshipData[npc.Name].IsDating() 
+                       || DataLoader.ModConfig.DisableDatingRequirement)
+                   && (npcConfig.RequiredEvent == null 
+                       || who.eventsSeen.Contains(npcConfig.RequiredEvent.Value) 
+                       || DataLoader.ModConfig.DisableEventRequirement);
+        }
+
+        internal static bool HasRequiredFriendshipToKiss(Farmer who, NPC npc)
+        {
+            return who.getFriendshipHeartLevelForNPC(npc.Name) >= DataLoader.ModConfig.RequiredFriendshipLevel;
         }
     }
 }

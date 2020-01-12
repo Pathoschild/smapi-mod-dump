@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5104
+IDs: Candidus42.CellarAvailable
+update keys: Nexus:5104, GitHub:mus-candidus/CellarAvailable

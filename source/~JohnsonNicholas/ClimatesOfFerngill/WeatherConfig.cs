@@ -28,7 +28,6 @@ namespace ClimatesOfFerngillRebuild
         public double VariableRainChance { get; set; } = .185; //default setting
         public double OvercastChance { get; set;} = .05; //default setting
         public double VRChangeChance { get; set;} = .35; //default setting
-        public double VRStepPercent {  get; set; }  = .245; //default setting
         public double VRMassiveStepChance { get; set; } = .0935; //default setting		
 		public bool ShowBothScales {get; set; } = false; //default setting.
 		public string FirstTempScale {get; set; } = "Kraggs"; //default setting to in game scale
@@ -43,7 +42,6 @@ namespace ClimatesOfFerngillRebuild
         public bool ApplyFrostsInWinter { get; set;} = true;
         public int MaxRainFall { get; set; } = 11000;
         public double WeatherSystemChance { get; set; } = .15; //default setting
-        public double VRainNotifThreshold { get; set; } = .2; //At 20%, notify the player of any changes.
         public WeatherConfig()
         {
         }

@@ -102,7 +102,6 @@
     <Compile Include="Menus\CharacterCustomizationMTN2.cs" />
     <Compile Include="MTN.cs" />
     <Compile Include="Messages\ServerIntro.cs" />
-    <Compile Include="Patches\Farmer\GetMailboxPosition.cs" />
     <Compile Include="SaveData\MtnFarmData.cs" />
     <Compile Include="Utilities\ObjectToDictionaryHelper.cs" />
     <Compile Include="Patches\Patch.cs" />

@@ -1,0 +1,10 @@
+{
+  "Name": "A Tappers Dream - A Tree Overhaul",
+  "Author": "Goldenrevolver",
+  "Version": "2.0",
+  "Description": "Makes just about everything about trees configurable.",
+  "UniqueID": "Goldenrevolver.ATappersDream",
+  "EntryDll": "TreeOverhaul.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:260" ]
+}

@@ -1,0 +1,13 @@
+url:
+   https://github.com/Drachenkaetzchen/AdvancedKeyBindings.git
+
+mods:
+   Advanced Key Bindings
+
+latest commit:
+   commit 06adfa1a4582f6ca10898fcd02a38ef6ef6a32af
+   Author: Drachenkaetzchen <felicia@drachenkatze.org>
+   Date:   Tue Jan 7 00:25:57 2020 +0100
+   
+       updated to 1.0.1
+   

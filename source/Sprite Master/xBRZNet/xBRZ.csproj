@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+		<AssemblyName>xBRZ</AssemblyName>
+		<RootNamespace>SpriteMaster</RootNamespace>
+    <ProjectGuid>{84EE293E-B938-4512-8A39-86FFC00ED267}</ProjectGuid>
+    <OutputType>Library</OutputType>
+		<TargetFramework>net45</TargetFramework>
+    <FileAlignment>512</FileAlignment>
+    <LangVersion>preview</LangVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NullableReferenceTypes>true</NullableReferenceTypes>
+    <ErrorReport>prompt</ErrorReport>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<ApplicationIcon>pufferchick_xbrz.ico</ApplicationIcon>
+		<DebugSymbols>true</DebugSymbols>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>1815</NoWarn>
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Development|AnyCPU'">
+    <OutputPath>bin\Development\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>1815</NoWarn>
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <PackageId>SpriteMaster xBRZ</PackageId>
+    <Version>2.0.0</Version>
+    <Authors>xBRZ, Digital Carbide</Authors>
+    <Product>SM-xBRZ2</Product>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(SolutionDir)\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)\Runtime\Runtime.csproj" />
+  </ItemGroup>
+</Project>

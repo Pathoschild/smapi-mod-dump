@@ -1,0 +1,6 @@
+{
+  "siloFarm": 1,
+  "enableNotification": true,
+  "enableHayDrop": true,
+  "hayOnGround": true
+}

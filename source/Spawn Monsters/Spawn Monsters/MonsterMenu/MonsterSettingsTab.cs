@@ -1,22 +1,18 @@
-﻿using StardewValley.Menus;
-using StardewValley;
+﻿using StardewValley;
+using StardewValley.Menus;
 
 namespace Spawn_Monsters
 {
-	class MonsterSettingsTab : IClickableMenu
-	{
-		public MonsterSettingsTab() : base(0,0,0,0) {
-			this.width = 600;
-			this.height = 600;
-			this.xPositionOnScreen = Game1.viewport.Width / 2 - this.width / 2;
-			this.yPositionOnScreen = Game1.viewport.Height / 2 - this.height / 2;
+    internal class MonsterSettingsTab : IClickableMenu
+    {
+        public MonsterSettingsTab(int x, int y, int width, int height) : base(x, y, width, height) {
 
+            if (!Game1.options.snappyMenus || !Game1.options.gamepadControls) {
+                return;
+            }
 
-			this.initializeUpperRightCloseButton();
-			if (!Game1.options.snappyMenus || !Game1.options.gamepadControls)
-				return;
-			this.populateClickableComponentList();
-			this.snapToDefaultClickableComponent();
-		}
-	}
+            populateClickableComponentList();
+            snapToDefaultClickableComponent();
+        }
+    }
 }

@@ -3,3 +3,18 @@
 1.1.0
 	-updated for Stardew Valley 1.4
 	-added compatibility for automate
+
+1.2.0:
+	-fixed bug: new compost bins showed error in console when trying to
+	apply compost but there was none made yet
+	-fixed bug: coffee beans and sunflower seeds now add to the seed counter on
+	harvest.
+	-reduced value of hay and fiber for compost (fiber and hay are too
+	common and compost should not be completely free)
+	-it is now possible to re-apply compost on tiles that are already
+	affected by compost
+
+1.3.0
+	-right-clicking on a silo opens menu to add or remove hay
+	-fixed bug: rounding error in calculation of compost parts when
+	compost finishes

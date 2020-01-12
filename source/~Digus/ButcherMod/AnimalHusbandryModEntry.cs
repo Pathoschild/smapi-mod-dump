@@ -63,7 +63,14 @@ namespace AnimalHusbandryMod
             else
             {
                 DataLoader = new DataLoader(Helper);
-                DataLoader.LoadContentPacksCommand();
+                try
+                {
+                    DataLoader.LoadContentPacksCommand();
+                }
+                catch (Exception ex)
+                {
+                    Monitor.Log($"Error while trying to load the content packs. Your custom animals might not work as intended.\n{ex}",LogLevel.Error);
+                }
 
                 if (!DataLoader.ModConfig.DisableMeat)
                 {
@@ -192,7 +199,8 @@ namespace AnimalHusbandryMod
 
                 harmony.Patch(
                     original: AccessTools.Method(typeof(FarmAnimal), nameof(FarmAnimal.dayUpdate)),
-                    postfix: new HarmonyMethod(typeof(FarmAnimalOverrides), nameof(FarmAnimalOverrides.dayUpdate))
+                    postfix: new HarmonyMethod(typeof(FarmAnimalOverrides), nameof(FarmAnimalOverrides.dayUpdate)),
+                    transpiler: new HarmonyMethod(typeof(FarmAnimalOverrides), nameof(FarmAnimalOverrides.dayUpdate_Transpiler))
                 );
             }
         }

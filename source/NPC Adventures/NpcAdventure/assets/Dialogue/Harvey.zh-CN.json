@@ -1,0 +1,10 @@
+{
+  "companionAccepted": "我想我今天可以从工作中休息一下.",
+  "companionRejected": "非常抱歉 @. 今天我的病床都满员了.$s",
+  "companionRejectedNight": "晚上去山谷探险太危险了 @. 你可能会受伤.$u",
+  "companionDismiss": "我该回诊所了.谢谢你,我今天玩的很开心 @.$h",
+  "companionDismissAuto": "我很累. 我得休息一下.睡眠很重要,所以不要在外面呆得太晚.小心点.",
+  "companionRecruited": "我们走!我带了急救箱,以防万一.$h",
+  "heal": "别动,这可能有点疼.$1",
+  "nomedkits": "噢,我的药箱都用完了.$7"
+}

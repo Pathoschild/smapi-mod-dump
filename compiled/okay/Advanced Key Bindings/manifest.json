@@ -1,0 +1,10 @@
+{
+  "Name": "AdvancedKeyBindings",
+  "Author": "Drachenkatze",
+  "Version": "1.0.1",
+  "Description": "Adds key bindings to various functions",
+  "UniqueID": "Drachenkatze.AdvancedKeyBindings",
+  "EntryDll": "AdvancedKeyBindings.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:5127"]
+}

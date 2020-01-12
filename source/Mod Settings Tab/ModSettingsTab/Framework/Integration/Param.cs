@@ -8,7 +8,7 @@ namespace ModSettingsTab.Framework.Integration
         public string Name { get; set; } = null;
         public I18N Description { get; set; } = new I18N();
         public ParamType Type { get; set; } = ParamType.None;
-        public string Label { get; set; } = null;
+        public I18N Label { get; set; } = new I18N();
         public bool Ignore { get; set; } = false;
 
         // DropDown

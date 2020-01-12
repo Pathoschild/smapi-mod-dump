@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Producer Framework Mod",
+  "Author": "Digus",
+  "Version": "1.2.0",
+  "Description": "Framework to add rules to produce objects or change the vanilla rules.",
+  "UniqueID": "Digus.ProducerFrameworkMod",
+  "EntryDll": "ProducerFrameworkMod.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:4970" ]
+}

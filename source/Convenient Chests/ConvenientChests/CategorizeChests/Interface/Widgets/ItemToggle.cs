@@ -29,7 +29,7 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
         public override void Draw(SpriteBatch batch) {
             var alpha = Active ? 1.0f : 0.25f;
 
-            Item.drawInMenu(batch, new Vector2(GlobalPosition.X, GlobalPosition.Y), 1, alpha, 1, false);
+            Item.drawInMenu(batch, new Vector2(GlobalPosition.X, GlobalPosition.Y), 1, alpha, 1, StackDrawType.Hide);
 
             if (GlobalBounds.Contains(Game1.getMousePosition()))
                 TooltipManager.ShowTooltipThisFrame(Tooltip);

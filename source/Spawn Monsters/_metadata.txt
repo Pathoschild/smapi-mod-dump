@@ -5,11 +5,9 @@ mods:
    Spawn Monsters
 
 latest commit:
-   commit df05ca7c62fa76fed7409cb5b3dd484a1767de7c
-   Author: Berisan <e.berisa04@gmail.com>
-   Date:   Mon Jul 15 18:03:45 2019 +0200
+   commit b86d811a450ca2000f75394ef27feb500754ab33
+   Author: Enrico Berisa <e.berisa04@gmail.com>
+   Date:   Sun Jan 5 20:54:53 2020 +0100
    
-       Relative Positioning
-       
-       A configurable character for use in place of farmers own coords, with ability to add/substract/multiply/divide
+       Bump version
    

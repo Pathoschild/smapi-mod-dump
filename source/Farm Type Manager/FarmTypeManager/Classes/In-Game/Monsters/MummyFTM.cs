@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace FarmTypeManager.Monsters
 {
     /// <summary>A subclass of Stardew's Mummy class, adjusted for use by this mod.</summary>
-    class MummyFTM : Mummy
+    public class MummyFTM : Mummy
     {
         private bool seesPlayersAtSpawn = false;
 

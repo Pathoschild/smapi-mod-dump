@@ -5,9 +5,14 @@ mods:
    Deep Woods
 
 latest commit:
-   commit 4ce96990484da536b646abc3eab227359127cf80
+   commit 7c642bc6b6c00acaf82b10043a9375448571019b
    Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Sat Sep 14 18:40:03 2019 +0200
+   Date:   Wed Dec 18 21:55:20 2019 +0100
    
-       Update SMAPI version in README.txt
+       Compatibility with SDV1.4:
+       * Fixed method signatures
+       * Remove DeepWoods locations from cache when removing the from game
+       * Updated some of the logic to fit changes in game (daily luck, animation rendering, draw logic)
+       
+       Thanks to Mizzion for the preliminary patch!
    

@@ -98,7 +98,7 @@ namespace MoreWeapons
                 {
 
 
-                    Dictionary<Item, int> newItemsToSell = new Dictionary<Item, int>();
+                    Dictionary<ISalable, int> newItemsToSell = new Dictionary<ISalable, int>();
                     int ReachedMineLevel = Game1.player.deepestMineLevel;
 
                     if (Game1.player.mailReceived.Contains("galaxySword"))
@@ -206,8 +206,8 @@ namespace MoreWeapons
 
 
 
-                    Dictionary<Item, int[]> items = this.Helper.Reflection.GetField<Dictionary<Item, int[]>>(shop, "itemPriceAndStock").GetValue();
-                    List<Item> selling = this.Helper.Reflection.GetField<List<Item>>(shop, "forSale").GetValue();
+                    Dictionary<ISalable, int[]> items = this.Helper.Reflection.GetField<Dictionary<ISalable, int[]>>(shop, "itemPriceAndStock").GetValue();
+                    List<ISalable> selling = this.Helper.Reflection.GetField<List<ISalable>>(shop, "forSale").GetValue();
 
                     foreach (Item item in newItemsToSell.Keys)
                     {

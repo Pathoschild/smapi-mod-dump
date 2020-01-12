@@ -55,5 +55,9 @@
     "composter.msg.error_already_affected": "Tile is already affected by compost.",
     "composter.msg.error_no_tilled_dirt": "Tile contains no tilled dirt.",
     "composter.msg.error_no_compost_left": "There is no compost left.",
-    "composter.msg.error_inventory_full": "Inventory full."
+    "composter.msg.error_inventory_full": "Inventory full.",
+
+    "siloshop.descr": "Add or remove hay from your silos. Capacity is {{capacity}}.",
+    "siloshop.silosfull": "Your silos are full.",
+    "siloshop.silosempty": "Your silos are empty."
 }

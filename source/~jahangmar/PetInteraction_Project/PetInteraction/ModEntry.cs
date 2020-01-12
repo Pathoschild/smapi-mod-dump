@@ -32,11 +32,13 @@ namespace PetInteraction
 {
     public class ModEntry : Mod
     {
+        private const int garbage_can_tile_index = 78;
+
         private const bool DEBUG_MODE = false;
 
         private const int catch_up_distance = 2;
 
-        //private int next_path_pixel_distance = 4; //4
+        private bool TempRemovedTrashPet = false;
 
         public static int PetBehaviour = -1;
 
@@ -65,8 +67,9 @@ namespace PetInteraction
 
             config = Helper.ReadConfig<Config>();
 
-            helper.Events.Input.ButtonPressed += Input_ButtonPressed;
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
+
+            helper.Events.Input.ButtonPressed += Input_ButtonPressed;
             helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
             helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
             if (debug())
@@ -207,26 +210,28 @@ namespace PetInteraction
 
         void GameLoop_DayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
         {
-
-            CheckMultiplayer();
+            config = Helper.ReadConfig<Config>();
 
             pet = null;
             SetState(PetState.Vanilla);
             hasFetchedToday = false;
+
+            if (CheckMultiplayer())
+                return;
+
             if (GetPet() != null && !(Game1.getFarm().characters.Contains(pet) && !(Game1.getLocationFromName(Game1.player.homeLocation).characters.Contains(pet))))
             {
                 pet.warpToFarmHouse(Game1.player);
             }
         }
 
-        private void CheckMultiplayer()
+        private bool CheckMultiplayer()
         {
             if (Game1.IsClient)
             {
-                Monitor.Log("Deactivating mod on the client.");
+                Monitor.Log("Multiplayer game detected. Deactivating mod on the client.", LogLevel.Debug);
 
                 Helper.Events.Input.ButtonPressed -= Input_ButtonPressed;
-                Helper.Events.GameLoop.DayStarted -= GameLoop_DayStarted;
                 Helper.Events.GameLoop.OneSecondUpdateTicked -= GameLoop_OneSecondUpdateTicked;
                 Helper.Events.GameLoop.UpdateTicked -= GameLoop_UpdateTicked;
                 if (debug())
@@ -240,6 +245,11 @@ namespace PetInteraction
                 Helper.Events.World.LargeTerrainFeatureListChanged -= World_LargeTerrainFeatureListChanged;
                 Helper.Events.World.ObjectListChanged -= World_ObjectListChanged;
                 Helper.Events.World.TerrainFeatureListChanged -= World_TerrainFeatureListChanged;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -248,9 +258,10 @@ namespace PetInteraction
             if (!CanUpdatePet())
                 return;
 
+            Vector2 grabTile = e.Cursor.GrabTile;
+
             bool PetClicked(Pet p)
             {
-                Vector2 grabTile = e.Cursor.GrabTile;
                 return pet.currentLocation == Game1.currentLocation && p.yJumpOffset == 0 && p.GetBoundingBox().Intersects(new Rectangle((int)grabTile.X * Game1.tileSize, (int)grabTile.Y * Game1.tileSize, Game1.tileSize, Game1.tileSize));
             }
 
@@ -259,9 +270,26 @@ namespace PetInteraction
                 return !Helper.ModRegistry.IsLoaded("Paritee.TreatYourAnimals") || Game1.player.ActiveObject == null || Game1.player.ActiveObject.Edibility == -300;
             }
 
+            bool GarbageClicked()
+            {
+                xTile.Dimensions.Location l = new xTile.Dimensions.Location((int)grabTile.X, (int)grabTile.Y);
+                return Game1.currentLocation.map.GetLayer("Buildings").Tiles[l] != null && Game1.player.mount == null && Game1.currentLocation.map.GetLayer("Buildings").Tiles[l].TileIndex == garbage_can_tile_index;
+            }
+
             GameLocation loc = Game1.currentLocation;
             if (e.Button.IsActionButton())
             {
+
+                if (GarbageClicked())
+                {
+                    if (petState != PetState.Vanilla)
+                    {
+                        Game1.currentLocation.characters.Remove(GetPet());
+                        TempRemovedTrashPet = true;
+                        return;
+                    }
+                }
+
                 switch (petState)
                 {
                     case PetState.Vanilla:
@@ -396,7 +424,9 @@ namespace PetInteraction
                             }
 
                             if (petState == PetState.Waiting)
+                            {
                                 SetState(PetState.CatchingUp);
+                            }
                         }
                         else
                         {
@@ -449,6 +479,12 @@ namespace PetInteraction
 
             //if (pet.FacingDirection != petFace)
             //    Monitor.Log("Game changed FacingDirection: " + petFace + " -> " + GetPet().FacingDirection);
+
+            if (TempRemovedTrashPet && GetPet() != null && !Game1.currentLocation.characters.Contains(pet))
+            {
+                Game1.currentLocation.characters.Add(pet);
+                TempRemovedTrashPet = false;
+            }
 
             switch (petState)
             {

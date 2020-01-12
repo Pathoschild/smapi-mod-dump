@@ -1,0 +1,26 @@
+{
+	"Name": "Sewing Machine",
+	"Price": 200, // I don't even know if these can be sold, but price is based on the materials.
+	"Description": "A portable sewing machine for all your tailoring needs.",
+	"ProvidesLight": false,
+	"Recipe": {
+		"ResultCount": 1,
+		"Ingredients": [
+			// 30 wood and 1 iron bar
+			{
+				"Object": 388,
+				"Count": 30,
+			},
+			{
+				"Object": 335,
+				"Count": 1,
+			},
+		],
+		// One of these should be true unless you do special stuff like use a mail framework.
+		"IsDefault": false,
+		"CanPurchase": true,
+		"PurchaseFrom": "Robin",
+		"PurchasePrice": 1000,
+		"PurchaseRequirements": ["e 992559"],
+	}
+}

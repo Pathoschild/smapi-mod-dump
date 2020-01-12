@@ -1,0 +1,14 @@
+{
+  "companionAccepted": "Cool, c'est parti !",
+  "companionRejected": "Désolé je peux pas là, faut que je m'entraine.",
+  "companionRejectedNight": "Il se fait trop tard.",
+  "companionDismiss": "Ok, on se voit plus tard.",
+  "companionDismissAuto": "Faut que j'y aille, il est tard. Je vais nourrir Dusty.",
+  "companionRecruited": "Super !$h#$b#On va où alors ?$0",
+  "companion_Beach": "Je me sens toujours plein d'énergie ici !$h",
+  "companion_Farm": "Il y a plein d'endroits pour s'entrainer ici. J'adore !",
+  "companion_Farm_Spouse": "C'est bon de voir notre ferme prospérer ! On fait vraiment la paire, n'est ce pas ?$l",
+  "companion_Forest": "C'est dur d'aller vite avec autant d'arbres et de buissons. C'est pas fun ici.$s",
+  "companion_Mine": "Cet endroit est fait pour les plus forts. C'est pour ça qu'on y va ensemble, n'est ce pas ?$9",
+  "companion_Town": "Juste la ville ? J'pensais aller dans un endroit plus stylé...$0"
+}

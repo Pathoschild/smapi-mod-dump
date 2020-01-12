@@ -366,24 +366,45 @@ namespace AnimalHusbandryMod.common
 
         public void LoadContentPacksCommand(string command = null, string[] args = null)
         {
-            foreach (IContentPack contentPack in Helper.ContentPacks.GetOwned())
+            try
             {
-                if (File.Exists(Path.Combine(contentPack.DirectoryPath, "customAnimals.json")))
+                foreach (IContentPack contentPack in Helper.ContentPacks.GetOwned())
                 {
-                    AnimalHusbandryModEntry.monitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
-                    List<CustomAnimalItem> customAnimalItems = contentPack.ReadJsonFile<List<CustomAnimalItem>>("customAnimals.json");
-                    foreach (CustomAnimalItem customAnimalItem in customAnimalItems)
+                    try
                     {
-                        DataLoader.AnimalData.CustomAnimals.RemoveAll(c => c.Name.Contains(customAnimalItem.Name));
-                        DataLoader.AnimalData.CustomAnimals.Add(customAnimalItem);
+                        if (File.Exists(Path.Combine(contentPack.DirectoryPath, "customAnimals.json")))
+                        {
+                            AnimalHusbandryModEntry.monitor.Log(
+                                $"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
+                            List<CustomAnimalItem> customAnimalItems = contentPack.ReadJsonFile<List<CustomAnimalItem>>("customAnimals.json");
+                            foreach (CustomAnimalItem customAnimalItem in customAnimalItems)
+                            {
+                                DataLoader.AnimalData.CustomAnimals.RemoveAll(c => c.Name.Contains(customAnimalItem.Name));
+                                DataLoader.AnimalData.CustomAnimals.Add(customAnimalItem);
+                            }
+                        }
+                        else
+                        {
+                            AnimalHusbandryModEntry.monitor
+                                .Log(
+                                    $"Ignoring content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\n" +
+                                    $"It does not have an customAnimals.json file."
+                                    , LogLevel.Warn);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        AnimalHusbandryModEntry.monitor
+                            .Log(
+                                $"Error while trying to load the content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}. It'll be ignored.\n{ex}"
+                                , LogLevel.Error);
                     }
                 }
-                else
-                {
-                    AnimalHusbandryModEntry.monitor.Log($"Ignoring content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have an customAnimals.json file.", LogLevel.Warn);
-                }
             }
-            AnimalData.FillLikedTreatsIds();
+            finally
+            {
+                AnimalData.FillLikedTreatsIds();
+            }
         }
 
         enum Taste {

@@ -12,6 +12,7 @@ namespace CustomKissingMod
         public int RequiredFriendshipLevel { get; set; }
         public int KissingFriendshipPoints { get; set; }
         public int JealousyFriendshipPoints { get; set; }
+        public bool EnableContentPacksOverrides { get; set; }
         public List<NpcConfig> NpcConfigs { get; set; }
 
         public ModConfig()

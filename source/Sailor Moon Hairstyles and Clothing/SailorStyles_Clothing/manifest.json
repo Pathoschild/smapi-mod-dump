@@ -1,0 +1,15 @@
+﻿{
+  "Name": "SailorStyles 3: Clothing",
+  "Author": "blueberry",
+  "Version": "3.1.0",
+  "Description": "Sailor Moon clothing options - shirts, pants, and more!",
+  "UniqueID": "blueberry.SailorStyles.Clothing",
+  "EntryDll": "SailorStyles_Clothing.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:4154" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets"
+    }
+  ]
+}

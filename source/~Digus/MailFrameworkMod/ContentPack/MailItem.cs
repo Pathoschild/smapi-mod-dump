@@ -19,6 +19,16 @@ namespace MailFrameworkMod.ContentPack
         public string Weather;
         public List<FriendshipCondition> FriendshipConditions;
         public List<SkillCondition> SkillConditions;
+        public List<StatsCondition> StatsConditions;
+        public List<CollectionCondition> CollectionConditions;
         public double? RandomChance;
+        public List<string> Buildings;
+        public bool RequireAllBuildings;
+        public List<string> MailReceived;
+        public bool RequireAllMailReceived;
+        public List<string> MailNotReceived;
+        public List<int> EventsSeen;
+        public bool RequireAllEventsSeen;
+        public List<int> EventsNotSeen;
     }
 }

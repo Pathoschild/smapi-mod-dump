@@ -1,0 +1,52 @@
+﻿[
+	{ // All lines that have a default value can be removed and that value will be used.
+		"ProducerName": "ProducerName", //Name of the producer. Required.
+		"InputIdentifier": "fruit_tree_item", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Required.
+		"InputStack": 2, //The required stack of the input. Default value is 1.
+		"ExcludeIdentifiers": ["Peach"], //List of identifiers to exclude from the rule. Follow the same rules for InputIdentifier. Default value is null.
+		"FuelIdentifier":"Coal", //The identifier of the Fuel. Fuel is the extra item used when producing. Can be the Index, the Name or the category of the object. Default is null.
+		"FuelStack":4, //The required stack of the Fuel. Only used if fuel is not null. Default is 1.
+		"AdditionalFuel": {"-6":2,"Coal":1,"246":5}, //Additional fuel if needed. You don't need to set a Fuel to use AdditionalFuel. The format is a pair of identifier and stack amount, following the same rules of the other fuel property. Default is null.
+		"MinutesUntilReady": 10, //The amount of minutes it takes to produce. Should be divisible by 10. Required.
+		"OutputIdentifier":"Beer", //The identifier of the output. Can be the Index or the Name of the object. Required.
+		"OutputName": "{farmerName}'s {inputName} {outputName} from {farmName}", //The Name of the object. This will replace the basic output name. It accepts 4 tags that are dynamicly replaced. Default is null.
+		"OutputTranslationKey": "MyMod.MyOutput", //The translation key. This is the key in the i18n file where the mod will look for the format of the OutputName in other lenguages. The value of this key follows the same rules of the OutputName property above. Default is null.
+		"PreserveType": "Wine", //[Wine|Jelly|Pickle|Juice|Roe|AgedRoe] - If the output is one of the vanilla game Preserves Type. Default is null.
+		"InputPriceBased": true, //If the price of the object should be calculated from the price of the input. Default is false.
+		"OutputPriceIncrement": 200, //If InputPriceBased is true, increment the input value by this amount. Default is 0.
+		"OutputPriceMultiplier": 2.5, //If InputPriceBased is true, multiplay the input value by this amount. Default is 1.
+		"KeepInputQuality": false, //If the output should have the same quality as the input. Default is false.
+		"OutputQuality": 2, //Set the output quality. Default is 0.
+		"OutputStack": 2, //Set the output stack. Default is 1.
+		"OutputMaxStack": 2, //Set the max output stack, if you want a random output stack. It'll be ignored if smaller than OutputStack. Default is 1.
+		"SilverQualityInput": { //Define an alternative stack if they input is silver quality. Removing will ignore this since probability will be 0.
+			"Probability": 0.2, //Probability to use the alternative stack. Default is 0.
+			"OutputStack": 2, //Same as others.
+			"OutputMaxStack": 4 //Same as others.
+		},		
+		"GoldQualityInput": { //Define an alternative stack if they input is gold quality. Removing will ignore this since probability will be 0.
+			"Probability": 0.4, //Same as others.
+			"OutputStack": 3, //Same as others.
+			"OutputMaxStack": 4 //Same as others.
+		},		
+		"IridiumQualityInput": { //Define an alternative stack if they input is iridium quality. Removing will ignore this since probability will be 0.
+			"Probability": 1, //Same as others.
+			"OutputStack": 4, //Same as others.
+			"OutputMaxStack": 4 //Same as others.
+		},
+		"AdditionalOutputs": [ // Define a list of additional outputs. You don't need to set a default output to use the aditional ones, the first additional output will be the default in that case. Only one output is given, randomly chosen between the options. Default is an empty list.
+			{
+				"OutputProbability": 0.2, //The absolute probability of geting that output, from 0 to 1. Default is 0. If 0 the remain percent not defined will be equaly divided between all outputs with 0 probability. Probability are checked from the first to the last output, so with the total is bigger than 1, the remaning outputs will be ignored.
+				"OutputIdentifier": "Apple" //This is required. Works the same as the OutputIdentifier described in the rule.
+				// All other properties that refer to the output can be used in the AdditionalOutputs. Remember to use commas to separate properties.
+			}
+		],
+		"Sounds": ["furnace"], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [{ "bubbles": 50 }], //List of sounds to make after a dalay. Default is an empty list.
+		"PlacingAnimation": "Fire", //[Bubbles|Fire|CharcoalKiltSmoke] //Animation to make when placing the input. Default is null.
+		"PlacingAnimationColorName": "White", //The color of the animation. Default White.
+		"PlacingAnimationOffsetX": 0, //The offset of the X axis. The offset is relative to the animation default location, not the position of the machine. Default is 0.
+		"PlacingAnimationOffsetY": -32, //The offset of the Y axis. The offset is relative to the animation default location, not the position of the machine. Default is 0.
+		"IncrementStatsOnInput":  ["PiecesOfTrashRecycled"] // [PiecesOfTrashRecycled|GoatCheeseMade|CheeseMade|PreservesMade|BeveragesMade] Game stats to increment when a input is placed. Will increment the stats by the amount of the stack. Vanilla machines already add stats when an item is removed from the machine. Only the Recycle Machine increment the stats on input. Default is an empty list.
+	}
+]

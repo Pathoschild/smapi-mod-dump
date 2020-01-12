@@ -1,0 +1,15 @@
+﻿{
+   "Name": "CampfireCooking",
+   "Author": "Kabigon",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 1,
+    "PatchVersion": 1,
+    "Build": ""
+  },
+   "Description": "Allow Campfire Cooking",
+   "UniqueID": "Kabigon.CampfireCooking",
+   "EntryDll": "CampfireCooking.dll",
+   "MinimumApiVersion": "2.0",
+   "UpdateKeys": ["Nexus:2297"]
+}

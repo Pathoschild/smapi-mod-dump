@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 
 namespace MailFrameworkMod
@@ -84,7 +85,10 @@ namespace MailFrameworkMod
                     return condition;
                 })
                 .GroupBy(l => l.GroupId != null? (object)l.GroupId : new object())
-                .Select(g => g.First())
+                .Select(g => 
+                    (g.Key is string s && s.EndsWith(".Random",true,null)) ?
+                    g.Skip((int)(new Random(SDate.Now().DaysSinceStart + g.Key.GetHashCode() + (int)Game1.uniqueIDForThisGame).NextDouble() * g.Count())).First() :
+                    g.First())
                 .ToList(); 
         }
 

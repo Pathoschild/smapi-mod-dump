@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace FarmTypeManager.Monsters
 {
     /// <summary>A subclass of Stardew's RockGolem class, adjusted for use by this mod.</summary>
-    class RockGolemFTM : RockGolem
+    public class RockGolemFTM : RockGolem
     {
         /// <summary>Creates an instance of Stardew's RockGolem class (Stone Golem subtype), but with adjustments made for this mod.</summary>
         /// <param name="position">The x,y coordinates of this monster's location.</param>

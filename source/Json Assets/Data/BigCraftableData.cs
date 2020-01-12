@@ -10,7 +10,7 @@ namespace JsonAssets.Data
         [JsonIgnore]
         public Texture2D texture2;
 
-        public bool ReserveNextIndex { get; set; }
+        public bool ReserveNextIndex { get; set; } = false;
 
         public class Recipe_
         {
@@ -43,6 +43,8 @@ namespace JsonAssets.Data
                     str += SkillUnlockName + " " + SkillUnlockLevel;
                 else
                     str += "null";
+                if (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.en)
+                    str += "/" + parent.LocalizedName();
                 return str;
             }
 
@@ -95,9 +97,10 @@ namespace JsonAssets.Data
 
         internal string GetCraftableInformation()
         {
-            string str = $"{Name}/{Price}/-300/Crafting -9/{LocalizedDescription()}/true/true/0/{LocalizedName()}";
+            string str = $"{Name}/{Price}/-300/Crafting -9/{LocalizedDescription()}/true/true/0";
             if (ProvidesLight)
                 str += "/true";
+            str += $"/{LocalizedName()}";
             return str;
         }
 

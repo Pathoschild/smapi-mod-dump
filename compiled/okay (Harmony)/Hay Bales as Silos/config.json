@@ -1,0 +1,5 @@
+{
+  "RequiresConstructedSilo": true,
+  "HayBaleEquivalentToHowManySilos": 1,
+  "HaybalePrice": 5000
+}

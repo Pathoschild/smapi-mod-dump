@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalHusbandryMod", "ButcherMod\AnimalHusbandryMod.csproj", "{FA6A5BA1-8983-4982-B746-ADF42EC01795}"
 EndProject
@@ -20,6 +20,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomKissingMod", "CustomKissingMod\CustomKissingMod.csproj", "{1EE145B0-C855-4D47-83B6-F05E4371C1E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BorderlessWoodFloorMod", "BorderlessWoodFloorMod\BorderlessWoodFloorMod.csproj", "{4A7E728A-7163-4A98-8EAC-4F09A55DDB28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProducerFrameworkMod", "ProducerFrameworkMod\ProducerFrameworkMod.csproj", "{387C097A-0DD6-46A6-B7D0-27E2B19D4DD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "[PFM]CustomProducerMod", "CustomProducerMod\[PFM]CustomProducerMod.csproj", "{E4157816-C5BA-4C97-AF85-1DD6002EADB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPJAProducerConverter", "PPJAProducerConverter\PPJAProducerConverter.csproj", "{86653DBF-E2B1-4F68-9F96-F9A395AC89E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFMAutomate", "PFMAutomate\PFMAutomate.csproj", "{811039FD-5162-4CE3-B13E-972AC5EC9A17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +109,38 @@ Global
 		{4A7E728A-7163-4A98-8EAC-4F09A55DDB28}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4A7E728A-7163-4A98-8EAC-4F09A55DDB28}.Release|x86.ActiveCfg = Release|Any CPU
 		{4A7E728A-7163-4A98-8EAC-4F09A55DDB28}.Release|x86.Build.0 = Release|Any CPU
+		{387C097A-0DD6-46A6-B7D0-27E2B19D4DD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{387C097A-0DD6-46A6-B7D0-27E2B19D4DD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{387C097A-0DD6-46A6-B7D0-27E2B19D4DD1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{387C097A-0DD6-46A6-B7D0-27E2B19D4DD1}.Debug|x86.Build.0 = Debug|Any CPU
+		{387C097A-0DD6-46A6-B7D0-27E2B19D4DD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{387C097A-0DD6-46A6-B7D0-27E2B19D4DD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{387C097A-0DD6-46A6-B7D0-27E2B19D4DD1}.Release|x86.ActiveCfg = Release|Any CPU
+		{387C097A-0DD6-46A6-B7D0-27E2B19D4DD1}.Release|x86.Build.0 = Release|Any CPU
+		{E4157816-C5BA-4C97-AF85-1DD6002EADB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4157816-C5BA-4C97-AF85-1DD6002EADB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4157816-C5BA-4C97-AF85-1DD6002EADB0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E4157816-C5BA-4C97-AF85-1DD6002EADB0}.Debug|x86.Build.0 = Debug|Any CPU
+		{E4157816-C5BA-4C97-AF85-1DD6002EADB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4157816-C5BA-4C97-AF85-1DD6002EADB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4157816-C5BA-4C97-AF85-1DD6002EADB0}.Release|x86.ActiveCfg = Release|Any CPU
+		{E4157816-C5BA-4C97-AF85-1DD6002EADB0}.Release|x86.Build.0 = Release|Any CPU
+		{86653DBF-E2B1-4F68-9F96-F9A395AC89E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86653DBF-E2B1-4F68-9F96-F9A395AC89E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86653DBF-E2B1-4F68-9F96-F9A395AC89E4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{86653DBF-E2B1-4F68-9F96-F9A395AC89E4}.Debug|x86.Build.0 = Debug|Any CPU
+		{86653DBF-E2B1-4F68-9F96-F9A395AC89E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86653DBF-E2B1-4F68-9F96-F9A395AC89E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86653DBF-E2B1-4F68-9F96-F9A395AC89E4}.Release|x86.ActiveCfg = Release|Any CPU
+		{86653DBF-E2B1-4F68-9F96-F9A395AC89E4}.Release|x86.Build.0 = Release|Any CPU
+		{811039FD-5162-4CE3-B13E-972AC5EC9A17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{811039FD-5162-4CE3-B13E-972AC5EC9A17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{811039FD-5162-4CE3-B13E-972AC5EC9A17}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{811039FD-5162-4CE3-B13E-972AC5EC9A17}.Debug|x86.Build.0 = Debug|Any CPU
+		{811039FD-5162-4CE3-B13E-972AC5EC9A17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{811039FD-5162-4CE3-B13E-972AC5EC9A17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{811039FD-5162-4CE3-B13E-972AC5EC9A17}.Release|x86.ActiveCfg = Release|Any CPU
+		{811039FD-5162-4CE3-B13E-972AC5EC9A17}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,6 +4,7 @@ using System.Reflection.Emit;
 using Netcode;
 using StardewValley;
 using StardewValley.TerrainFeatures;
+using Microsoft.Xna.Framework;
 
 namespace StardewHack.TilledSoilDecay
 {
@@ -24,7 +25,15 @@ namespace StardewHack.TilledSoilDecay
 
     public class ModEntry : HackWithConfig<ModEntry, ModConfig>
     {
-        [BytecodePatch("StardewValley.Farm::DayUpdate")]
+        public override void HackEntry(IModHelper helper) {
+            Patch((Farm f)=>f.DayUpdate(0), Farm_DayUpdate);
+            
+            // If the mod has any delay's conigured, apply the patch that keeps track of these delays.
+            if (config.DecayDelay > 0 || config.DecayDelayFirstOfMonth > 0) {
+                Patch((HoeDirt hd)=>hd.dayUpdate(null, new Vector2()), HoeDirt_dayUpdate);
+            }
+        }
+    
         void Farm_DayUpdate() {
             //var crop = GetField("StardewValley.TerrainFeatures.HoeDirt::crop");
             //var state = GetField("StardewValley.TerrainFeatures.HoeDirt::state");
@@ -62,13 +71,8 @@ namespace StardewHack.TilledSoilDecay
             }
         }
 
-        public bool UsesDelays() {
-            return config.DecayDelay > 0 || config.DecayDelayFirstOfMonth > 0;
-        }
-
         // To support the decay delay, we will use the HoeDirt.state variable to track how many days the patch has gone without being watered.
         // For example: 'state == -3' indicates that the tile hasn't been watered in the past 3 days. 
-        [BytecodePatch("StardewValley.TerrainFeatures.HoeDirt::dayUpdate", "UsesDelays")]
         void HoeDirt_dayUpdate() {
             // Find: if (crop != null)
             var dayUpdate = BeginCode();

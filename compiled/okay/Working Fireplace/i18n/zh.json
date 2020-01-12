@@ -1,0 +1,13 @@
+{
+  "msg.warm": "火焰带来的温度使夜晚变得温暖。",
+  "msg.cold": "夜晚的寒冷耗尽了您的能量。",
+  "msg.spousecold": "您的家庭在夜间结冰了。",
+  "dia.spousecold": "今晚我结冰了。",
+  "dia.spousecold_child": "{{child1}} 正在结冰。",
+  "dia.spousecold_children": "{{child1}} 和 {{child2}} 正在结冰。",
+  "dia.please": "请点燃壁炉。",
+  "msg.nowood": "您需要 {{wood_pieces}} 块木头来点火。",
+  "msg.temp": "温度: ",
+  "msg.tempwarm": "温暖",
+  "msg.tempcold": "寒冷"
+}

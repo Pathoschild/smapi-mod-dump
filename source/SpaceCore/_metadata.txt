@@ -5,10 +5,9 @@ mods:
    SpaceCore
 
 latest commit:
-   commit f408eaf477c4eca3820c8f64c97f5428bf01c9c5
-   Merge: a28651d fec2fd9
+   commit f576551183f6b9b0133c5a3ffafb3a346aceff8b
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sat Dec 7 17:44:17 2019 -0500
+   Date:   Tue Dec 24 16:11:37 2019 -0500
    
-       Merge branch 'master' of https://github.com/spacechase0/SpaceCore_SDV
+       Bomb exploded event
    

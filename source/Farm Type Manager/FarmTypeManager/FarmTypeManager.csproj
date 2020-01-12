@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\In-Game\Forage\BreakableContainerFTM.cs" />
     <Compile Include="Classes\In-Game\Large Objects\LargeResourceClump.cs" />
     <Compile Include="Classes\In-Game\Monsters\MummyFTM.cs" />
     <Compile Include="Classes\MonsterTracker.cs" />
@@ -91,6 +92,9 @@
     <Compile Include="Classes\Config\FarmConfig\ForageSettings.cs" />
     <Compile Include="Classes\Config\ModConfig.cs" />
     <Compile Include="Classes\MonsterType.cs" />
+    <Compile Include="Events\Compatibility\SaveAnywhere\SaveAnywhere.cs" />
+    <Compile Include="Events\GameLaunched.cs" />
+    <Compile Include="Events\ReturnedToTitle.cs" />
     <Compile Include="Events\NpcListChanged.cs" />
     <Compile Include="Events\UpdateTicked\PlayerUsedTool.cs" />
     <Compile Include="Events\ModMessageReceived.cs" />
@@ -140,7 +144,7 @@
     <Compile Include="Utility\Spawning\Large Objects\GetLargeObjectIDs.cs" />
     <Compile Include="Utility\Spawning\Ore\AdjustedSpawnChances.cs" />
     <Compile Include="Utility\Expiration\ProcessObjectExpiration.cs" />
-    <Compile Include="Utility\Expiration\ReplaceProtectedSpawnsOvernight.cs" />
+    <Compile Include="Utility\Expiration\ReplaceProtectedSpawns.cs" />
     <Compile Include="Utility\Tiles\GetTilesByIndex.cs" />
     <Compile Include="Utility\Tiles\GetTilesByProperty.cs" />
     <Compile Include="Utility\Tiles\GenerateTileList.cs" />

@@ -21,9 +21,7 @@ namespace StardewHack.GrassGrowth
 
     public class ModEntry : HackWithConfig<ModEntry, ModConfig>
     {
-        public override void Entry(StardewModdingAPI.IModHelper helper) {
-            base.Entry(helper);
-
+        public override void HackEntry(StardewModdingAPI.IModHelper helper) {
             // Sanitize config.
             if (config.SpreadChance < 1e-6 || config.DisableGrowth) {
                 config.GrowEverywhere = false;
@@ -33,14 +31,16 @@ namespace StardewHack.GrassGrowth
             }
             if (config.DailyGrowth > 10) config.DailyGrowth = 10;
             if (config.MonthlyGrowth > 100) config.MonthlyGrowth = 100;
-        }
-    
-        public bool IterationsChanged() {
-            return config.DailyGrowth != 1 || config.MonthlyGrowth != 40;
+            
+            // If iterations changed
+            if (config.DailyGrowth != 1 || config.MonthlyGrowth != 40) {
+                Patch((Farm f) => f.DayUpdate(0), Farm_DayUpdate);
+            }
+            
+            Patch((GameLocation gl) => gl.growWeedGrass(0), GameLocation_growWeedGrass);
         }
     
         // Change the rate at which new grass spawns during the night. 
-        [BytecodePatch("StardewValley.Farm::DayUpdate", "IterationsChanged")]
         void Farm_DayUpdate() {
             var code = FindCode(
                 OpCodes.Ldarg_0,
@@ -60,7 +60,6 @@ namespace StardewHack.GrassGrowth
         }
         
         // Change the behavior of the grass growth & spreading. 
-        [BytecodePatch("StardewValley.GameLocation::growWeedGrass")]
         void GameLocation_growWeedGrass() {
             // Stop grass from growing & spreading.
             if (config.DisableGrowth) {

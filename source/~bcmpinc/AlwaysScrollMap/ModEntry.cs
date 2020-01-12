@@ -6,6 +6,7 @@ using StardewValley;
 
 namespace StardewHack.AlwaysScrollMap
 {
+
     public class ModConfig {
         /** Whether the mod is enabled upon load. */
         public bool EnabledIndoors = true;
@@ -23,14 +24,15 @@ namespace StardewHack.AlwaysScrollMap
                 return getInstance().config.EnabledIndoors;
         }
 
-        public override void Entry(IModHelper helper) {
-            base.Entry(helper);
+        public override void HackEntry(IModHelper helper) {
+            Patch((Microsoft.Xna.Framework.Point p)=>Game1.UpdateViewPort(false, p), Game1_UpdateViewPort);
+            
             Helper.Events.Input.ButtonPressed += ToggleScroll;
         }
 
         private void ToggleScroll(object sender, ButtonPressedEventArgs e) {
             if (e.Button.Equals(config.ToggleScroll)) {
-                if (StardewValley.Game1.currentLocation.IsOutdoors) {
+                if (Game1.currentLocation.IsOutdoors) {
                     config.EnabledOutdoors ^= true;
                 } else {
                     config.EnabledIndoors ^= true;
@@ -38,7 +40,6 @@ namespace StardewHack.AlwaysScrollMap
             }
         }
 
-        [BytecodePatch("StardewValley.Game1::UpdateViewPort")]
         void Game1_UpdateViewPort()
         {
             var range = FindCode(

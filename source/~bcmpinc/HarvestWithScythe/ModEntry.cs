@@ -70,6 +70,20 @@ namespace StardewHack.HarvestWithScythe
      */
     public class ModEntry : HackWithConfig<ModEntry, ModConfig>
     {
+    
+        public override void HackEntry(IModHelper helper) {
+            Patch((Crop c)=>c.harvest(0,0,null,null), Crop_harvest);
+            Patch((HoeDirt hd)=>hd.performToolAction(null, 0, new Vector2(), null), HoeDirt_performToolAction);
+            Patch((HoeDirt hd)=>hd.performUseAction(new Vector2(), null), HoeDirt_performUseAction);
+
+            // If forage harvesting is configured to allow scythe.
+            if (config.HarvestMode.Forage != HarvestModeEnum.HAND) {
+                Patch((StardewValley.Object o)=>o.performToolAction(null, null), Object_performToolAction);
+                Patch((GameLocation gl)=>gl.checkAction(new xTile.Dimensions.Location(), new xTile.Dimensions.Rectangle(), null), GameLocation_checkAction);
+            }
+
+        }
+    
 #region CanHarvest methods
         public const int HARVEST_PLUCKING = 0;
         public const int HARVEST_SCYTHING = 1;
@@ -326,7 +340,6 @@ namespace StardewHack.HarvestWithScythe
             );
         }
 
-        [BytecodePatch("StardewValley.Crop::harvest")]
         void Crop_harvest() {
             var var_vector = Crop_harvest_fix_vector();
             Crop_harvest_support_spring_onion(var_vector);
@@ -349,7 +362,6 @@ namespace StardewHack.HarvestWithScythe
         }
 
 #region Patch HoeDirt
-        [BytecodePatch("StardewValley.TerrainFeatures.HoeDirt::performToolAction")]
         void HoeDirt_performToolAction() {
             // Find the first (and only) harvestMethod==1 check.
             var HarvestMethodCheck = FindCode(
@@ -469,7 +481,6 @@ namespace StardewHack.HarvestWithScythe
             );
         }
 
-        [BytecodePatch("StardewValley.TerrainFeatures.HoeDirt::performUseAction")]
         void HoeDirt_performUseAction() {
             LocalBuilder var_temp_harvestMethod = generator.DeclareLocal(typeof(int));
             HoeDirt_performUseAction_hand(var_temp_harvestMethod);
@@ -478,11 +489,6 @@ namespace StardewHack.HarvestWithScythe
 #endregion
 
 #region Patch Object
-        public bool ScythableForageEnabled() {
-            return config.HarvestMode.Forage != HarvestModeEnum.HAND;
-        }
-        
-        [BytecodePatch("StardewValley.Object::performToolAction", "ScythableForageEnabled")]
         void Object_performToolAction() {
             var code = BeginCode();
             Label begin = AttachLabel(code[0]);
@@ -545,7 +551,6 @@ namespace StardewHack.HarvestWithScythe
             }
         }
 
-        [BytecodePatch("StardewValley.GameLocation::checkAction", "ScythableForageEnabled")]
         void GameLocation_checkAction() {
             // The code we need to patch is contained in a delegate, so use chain patching.
             MethodInfo method = (MethodInfo)FindCode(

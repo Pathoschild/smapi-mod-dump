@@ -41,7 +41,7 @@ namespace ModSettingsTab.Framework.Components
                 72, 1f, 0.1f);
             b.End();
             b.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp,
-                null, null, null, new Matrix?());
+                null, null, null);
             b.Draw(Game1.mouseCursors,
                 new Rectangle(slotX + _boundsStar.X, slotY + _boundsStar.Y, _boundsStar.Width, _boundsStar.Height),
                 Star,

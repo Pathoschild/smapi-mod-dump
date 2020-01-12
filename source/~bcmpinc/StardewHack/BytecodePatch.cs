@@ -10,6 +10,7 @@ namespace StardewHack
     /// Indicates that this is a transpiler for the given method.
     /// Can be used multiple times to patch multiple methods.
     /// </summary>
+    [Obsolete]
     [System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = true)]  
     public class BytecodePatch : System.Attribute  
     {
@@ -52,6 +53,7 @@ namespace StardewHack
     /// </summary>
     public class MethodParser {
         static Regex split = new Regex("([(,)/<>]|::)");
+        static Assembly sdv = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName == "StardewValley");
         
         readonly string sig;
         readonly string[] tokens;
@@ -119,7 +121,11 @@ namespace StardewHack
             string name = getToken("type");
             System.Collections.Generic.List<Type> generic_parameters = new System.Collections.Generic.List<Type>();
             TryParseGenericParameters(ref name, ref generic_parameters);
-            Type res = AccessTools.TypeByName(name);
+            //Type res = AccessTools.TypeByName(name);
+            Type res = Type.GetType(name, false);
+            if (res == null) {
+                res = sdv.GetType(name, false);
+            }
             if (res == null) {
                 throw new TypeAccessException($"Type \"{name}\" not found.");
             }

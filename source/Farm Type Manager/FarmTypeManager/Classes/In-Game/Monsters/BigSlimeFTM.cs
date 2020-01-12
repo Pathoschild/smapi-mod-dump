@@ -17,7 +17,7 @@ namespace FarmTypeManager
     public partial class ModEntry : Mod
     {
         /// <summary>A subclass of Stardew's BigSlime class, adjusted for use by this mod.</summary>
-        class BigSlimeFTM : BigSlime
+        public class BigSlimeFTM : BigSlime
         {
             [XmlElement("FTM_mineLevelOfDeathSpawns")]
             public readonly NetInt mineLevelOfDeathSpawns = new NetInt(0);

@@ -16,7 +16,7 @@ namespace FarmTypeManager
     public partial class ModEntry : Mod
     {
         /// <summary>A subclass of Stardew's Grub class, adjusted for use by this mod.</summary>
-        class GrubFTM : Grub
+        public class GrubFTM : Grub
         {
             /// <summary>Creates an instance of Stardew's Grub class, but with adjustments made for this mod.</summary>
             public GrubFTM()

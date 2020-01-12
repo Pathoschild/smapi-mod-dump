@@ -1,5 +1,6 @@
 ﻿using System.Reflection.Emit;
 using Netcode;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 
@@ -15,7 +16,10 @@ namespace StardewHack.TreeSpread
 
     public class ModEntry : HackWithConfig<ModEntry, ModConfig>
     {
-        [BytecodePatch("StardewValley.TerrainFeatures.Tree::dayUpdate")]
+        public override void HackEntry(IModHelper helper) {
+            Patch((Tree t) => t.dayUpdate(null, new Microsoft.Xna.Framework.Vector2()), Tree_DayUpdate);
+        }
+
         void Tree_DayUpdate() {
             // Erase code related to tree spreading.
             var spread = FindCode(

@@ -5,9 +5,12 @@ mods:
    More Weapons
 
 latest commit:
-   commit 6cbb087acc3aaa7dd208a964bd7030b0c14f57e9
+   commit 86c86d86c26e31a45c512c2de11db3571efbf13f
+   Merge: 6cbb087 ec0be43
    Author: Sasara2201 <mdounat2201@gmail.com>
-   Date:   Mon Sep 30 20:44:11 2019 +0200
+   Date:   Sat Jan 11 23:07:15 2020 +0100
    
-       Add files via upload
+       Merge pull request #1 from strobel1ght/master
+       
+       Updated the mod to work with SMAPI 3 and SDV 1.4
    

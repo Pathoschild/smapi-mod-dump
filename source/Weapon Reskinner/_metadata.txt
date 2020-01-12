@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/WeaponReskinner.git
+
+mods:
+   Weapon Reskinner
+
+latest commit:
+   commit 57000dcb14f5ac672141f83bdb05602d55f7e912
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Sat Jan 4 18:43:07 2020 -0500
+   
+       Initial commit
+   

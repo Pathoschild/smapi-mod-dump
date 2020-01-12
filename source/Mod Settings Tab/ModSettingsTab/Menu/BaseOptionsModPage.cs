@@ -306,8 +306,7 @@ namespace ModSettingsTab.Menu
         public override void draw(SpriteBatch b)
         {
             b.End();
-            b.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp,
-                null, null, null, new Matrix?());
+            b.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null);
             for (var index = 0; index < _optionSlots.Count; ++index)
             {
                 if (_currentItemIndex >= 0 && _currentItemIndex + index < Options.Count)
@@ -316,8 +315,7 @@ namespace ModSettingsTab.Menu
             }
 
             b.End();
-            b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
-                null, null, new Matrix?());
+            b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
             if (!GameMenu.forcePreventClose)
             {
                 _upArrow.draw(b);

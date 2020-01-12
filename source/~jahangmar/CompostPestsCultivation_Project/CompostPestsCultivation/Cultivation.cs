@@ -25,8 +25,6 @@ namespace CompostPestsCultivation
 {
     public class Cultivation : ModComponent
     {
-        const int mixed_seeds_id = 770;
-
         public static Dictionary<int, List<CropTrait>> CropTraits = new Dictionary<int, List<CropTrait>>();
         public static Dictionary<int, int> CropSeeds = new Dictionary<int, int>();
 
@@ -64,12 +62,14 @@ namespace CompostPestsCultivation
             ModEntry.GetMonitor().Log("Cultivation.Save() executed", LogLevel.Trace);
         }
 
+        /// <param name="id">ParentSheetIndex of seeds</param>
         public static void NewSeeds(int id)
         {
-            ModEntry.GetMonitor().Log($"Processing new seeds with id {id}", LogLevel.Trace);
+            string seedName = Game1.objectInformation[id].Split('/')[0];
+            ModEntry.GetMonitor().Log($"Processing new seeds with id {id} and name {seedName}", LogLevel.Trace);
 
             //ModEntry.GetMonitor().Log("checking key in cropseeds...");
-            if (id == mixed_seeds_id || new Crop(id, 0, 0).isWildSeedCrop())
+            if (id == Crop.mixedSeedIndex || new Crop(id, 0, 0).isWildSeedCrop())
                 return;
 
             if (CropSeeds.ContainsKey(id))
@@ -98,6 +98,9 @@ namespace CompostPestsCultivation
 
             }
         }
+
+        public static bool CropCanBeHarvested(Crop crop) =>
+            crop != null && crop.currentPhase.Value >= crop.phaseDays.Count - 1 && (!crop.fullyGrown || crop.dayOfCurrentPhase.Value <= 0);
 
         private static CropTrait GetNewRandomTrait(List<CropTrait> traits)
         {

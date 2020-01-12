@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/TheftOfTheWinterStar.git
+
+mods:
+   Theft of the Winter Star
+
+latest commit:
+   commit a89625a150e7be7907c04410887e9dd01cdd334b
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Sat Jan 4 18:42:07 2020 -0500
+   
+       Initial commit
+   

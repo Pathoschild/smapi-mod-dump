@@ -1,0 +1,7 @@
+﻿[
+	{
+		"ProducerName":"ProducerName", //Name of the producer
+		"AlternateFrameProducing": true, //If the producer should use the alternate frame when producing.
+		"AlternateFrameWhenReady": true //If the producer should use the alternate frame and ready for harvest.
+	}
+]

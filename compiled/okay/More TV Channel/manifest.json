@@ -1,0 +1,15 @@
+{
+   "Name": "CanaisTv",
+   "Author": "BrasileiroTop",
+   "Version": "1.0.0",
+   "MinimumApiVersion": "2.9.0",
+   "Description": "Esse mod adiciona mais canais para assistir na televisão.",
+   "UniqueID": "BrasileiroTop.CanaisTv",
+   "EntryDll": "CanaisTv.dll",
+   "UpdateKeys": [ "Nexus:5126" ],
+   "Dependencies": [
+      {
+         "UniqueID": "Platonymous.Toolkit" // added locally
+      }
+   ]
+}

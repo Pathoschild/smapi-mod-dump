@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5043
+IDs: jaeha.No_Kimchi
+update keys: Nexus:5043

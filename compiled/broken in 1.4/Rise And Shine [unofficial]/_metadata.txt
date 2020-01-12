@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3
-IDs: Yoshify.RiseAndShine
-update keys: Nexus:3

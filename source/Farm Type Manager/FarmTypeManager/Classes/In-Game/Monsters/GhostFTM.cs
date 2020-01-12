@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace FarmTypeManager.Monsters
 {
     /// <summary>A subclass of Stardew's Ghost class, adjusted for use by this mod.</summary>
-    class GhostFTM : Ghost
+    public class GhostFTM : Ghost
     {
         /// <summary>Creates an instance of Stardew's Ghost class, but with adjustments made for this mod.</summary>
         public GhostFTM()

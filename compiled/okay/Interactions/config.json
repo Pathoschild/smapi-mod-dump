@@ -1,5 +1,6 @@
 {
   "PiqueniqueKey": "PageUp",
+  "FogueiraKey": "PageDown",
   "Intervalo": 5000.0,
   "Repeticoes": 999999,
   "Quadros": 9

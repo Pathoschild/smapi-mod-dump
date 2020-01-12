@@ -1,0 +1,44 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Import Project="$(SolutionDir)AssemblyVersion.targets" Condition="Exists('$(SolutionDir)AssemblyVersion.targets')" />
+	<ImportGroup Label="PropertySheets" />
+	<Target Name="GenerateManifest" AfterTargets="ResolveReferences">
+		<Message Text="Generating the manifest for $(AssemblyProduct)..." Importance="High"/>
+		<GetAssemblyVersion MajorOnly="true" AssemblyPath="$(GamePath)\StardewModdingAPI.exe" Condition="'$(ModMinimumApiLevel)' == '' and Exists('$(GamePath)\StardewModdingAPI.exe')">
+			<Output TaskParameter="ProductVersion" PropertyName="ModMinimumApiLevel" />
+		</GetAssemblyVersion>
+		<PropertyGroup>
+			<ModName Condition="'$(ModName)' == ''">$(AssemblyProduct)</ModName>
+			<ModAuthor Condition="'$(ModAuthor)' == ''">$(AssemblyCompany)</ModAuthor>
+			<ModMajorVersion Condition="'$(ModMajorVersion)' == ''">$(AssemblyVersionMajor)</ModMajorVersion>
+			<ModMinorVersion Condition="'$(ModMinorVersion)' == ''">$(AssemblyVersionMinor)</ModMinorVersion>
+			<ModPatchVersion Condition="'$(ModPatchVersion)' == ''">$(AssemblyVersionBuild)</ModPatchVersion>
+			<ModBuild Condition="'$(ModBuild)' == ''">$(AssemblyVersionRevision)</ModBuild>
+			<ModUniqueID Condition="'$(ModUniqueID)' == ''">$(AssemblyCompany).$(TargetName)</ModUniqueID>
+			<ModDescription Condition="'$(ModDescription)' == ''">$(AssemblyDescription)</ModDescription>
+			<ModMinimumApiLevel Condition="'$(ModMinimumApiLevel)' == ''">3.0.0</ModMinimumApiLevel>
+			<ModPerSaveConfigs Condition="'$(ModPerSaveConfigs)' == ''">false</ModPerSaveConfigs>			
+			<ModEntryDll Condition="'$(ModEntryDll)' == ''">$(TargetFileName)</ModEntryDll>
+			<ManifestFile>
+{
+  "Name": "$(ModName)",
+  "Author": "$(ModAuthor)",
+  "Version": {
+    "MajorVersion": $(ModMajorVersion),
+    "MinorVersion": $(ModMinorVersion),
+    "PatchVersion": $(ModPatchVersion),
+    "Build": "$(ModBuild)"
+  },
+  "UniqueID": "$(ModUniqueID)",
+  "Description": "$(ModDescription)",
+  "MinimumApiLevel": "$(ModMinimumApiLevel)",
+  "PerSaveConfigs": $(ModPerSaveConfigs),
+  "EntryDll": "$(ModEntryDll)",
+  "UpdateKeys": [$(ModUpdateKeys)]
+}
+			</ManifestFile>
+		</PropertyGroup>
+
+		<WriteLinesToFile File="$(ProjectDir)manifest.json" Lines="$(ManifestFile)" Overwrite="true" />
+		<Error Condition="!Exists('$(ProjectDir)manifest.json')" Text="Failed to generate the manifest for $(TargetName): $(ProjectDir)manifest.json." />
+	</Target>
+</Project>

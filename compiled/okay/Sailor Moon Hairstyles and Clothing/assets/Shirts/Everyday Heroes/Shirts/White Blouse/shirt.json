@@ -1,0 +1,7 @@
+{
+    "Name": "White Blouse",
+    "Description": "A low-necked blouse that comes with a belt.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false
+}

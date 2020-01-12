@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using StardewModdingAPI;
+using StardewValley;
+using StardewValley.Monsters;
 
 namespace FarmTypeManager
 {
@@ -22,71 +24,70 @@ namespace FarmTypeManager
                 /// </remarks>
                 private static int nextID = HighestID;
 
-                /// <summary>A dictionary of monster ID keys and sets of saved objects (i.e. "loot" items).</summary>
-                private static Dictionary<int, IEnumerable<SavedObject>> MonsterLoot = new Dictionary<int, IEnumerable<SavedObject>>();
+                /// <summary>A dictionary of monster instances and sets of saved objects (i.e. "loot" items).</summary>
+                private static Dictionary<Monster, IEnumerable<SavedObject>> MonsterLoot = new Dictionary<Monster, IEnumerable<SavedObject>>();
 
-                /// <summary>Clears all of this class's internal values.</summary>
+                /// <summary>Clears this class's monster data and resets internal values.</summary>
                 public static void Clear()
                 {
-                    MonsterLoot = new Dictionary<int, IEnumerable<SavedObject>>();
+                    MonsterLoot.Clear();
                     nextID = HighestID;
                 }
 
-                /// <summary>Adds a new monster ID to the tracker and returns it.</summary>
-                /// <returns>A unique ID assigned to the monster. Null if a new ID could not be added.</returns>
-                public static int? AddMonster()
+                /// <summary>Adds a new monster to the tracker and returns an unused ID that may be assigned to it.</summary>
+                /// <returns>A unique ID that may be assigned to the monster. Null if the monster could not be added.</returns>
+                public static int? AddMonster(Monster monster)
                 {
                     if (nextID == int.MinValue) //if there are no more valid IDs left
                     {
                         return null;
                     }
 
-                    MonsterLoot.Add(nextID, null); //add the monster with a blank set of loot
+                    MonsterLoot.Add(monster, new List<SavedObject>(0)); //add the monster with a blank set of loot
 
                     return nextID--; //return the ID used, then decrement the static field
                 }
 
                 /// <summary>Removes the provided monster ID from the tracker.</summary>
-                /// <param name="ID">The unique ID assigned to the monster.</param>
-                public static void RemoveMonster(int ID)
+                /// <param name="Monster">The monster instance.</param>
+                public static void RemoveMonster(Monster monster)
                 {
-                    if (MonsterLoot.ContainsKey(ID)) //if the ID exists
+                    if (MonsterLoot.ContainsKey(monster)) //if the monster exists
                     {
-                        MonsterLoot.Remove(ID);
+                        MonsterLoot.Remove(monster);
                     }
-                    else //if the ID doesn't exist
+                    else //if the monster doesn't exist
                     {
-                        Monitor.Log($"MonsterTracker error: Attempted to stop tracking monster with an unrecognized ID: {ID}", LogLevel.Debug);
+                        Monitor.Log($"MonsterTracker error: Attempted to remove unrecognized monster from tracker. ID: {monster?.id}", LogLevel.Debug);
                     }
                 }
 
                 /// <summary>Assigns a custom loot set to a monster.</summary>
-                /// <param name="ID">The unique ID assigned to the monster.</param>
+                /// <param name="monster">The monster instance.</param>
                 /// <param name="loot">A set of saved objects representing items this monster should drop when defeated.</param>
-                public static void SetLoot(int ID, IEnumerable<SavedObject> loot)
+                public static void SetLoot(Monster monster, IEnumerable<SavedObject> loot)
                 {
-                    if (MonsterLoot.ContainsKey(ID)) //if the ID exists
+                    if (MonsterLoot.ContainsKey(monster)) //if the ID exists
                     {
-                        MonsterLoot[ID] = loot;
+                        MonsterLoot[monster] = loot;
                     }
                     else //if the ID doesn't exist
                     {
-                        Monitor.Log($"MonsterTracker error: Attempted to set loot for a monster with an unrecognized ID: {ID}", LogLevel.Debug);
+                        Monitor.Log($"MonsterTracker error: Attempted to set loot for a monster with an unrecognized ID: {monster?.id}", LogLevel.Debug);
                     }
                 }
 
                 /// <summary>Get the set of loot assigned to a monster.</summary>
-                /// <param name="ID">The unique ID assigned to the monster.</param>
-                /// <returns>A set of saved objects representing items this monster should drop when defeated.</returns>
-                public static IEnumerable<SavedObject> GetLoot(int ID)
+                /// <param name="monster">The monster instance.</param>
+                /// <returns>A set of saved objects representing items this monster should drop when defeated. Null if no matching monster exists.</returns>
+                public static IEnumerable<SavedObject> GetLoot(Monster monster)
                 {
-                    if (MonsterLoot.ContainsKey(ID)) //if the ID exists
+                    if (MonsterLoot.ContainsKey(monster)) //if the ID exists
                     {
-                        return MonsterLoot[ID];
+                        return MonsterLoot[monster];
                     }
                     else //if the ID doesn't exist
                     {
-                        Monitor.Log($"MonsterTracker error: Attempted to get loot for a monster with an unrecognized ID: {ID}", LogLevel.Debug);
                         return null;
                     }
                 }

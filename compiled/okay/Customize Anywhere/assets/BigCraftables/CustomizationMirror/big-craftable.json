@@ -1,0 +1,25 @@
+{
+	"Name": "Customization Mirror",
+	"Price": 0,
+	"Description": "A magical mirror that lets you change your appearances",
+	"ProvidesLight": false,
+	"Recipe": {
+		"ResultCount": 1,
+		"Ingredients": [
+			// 10 wood and 2 refined quartz
+			{
+				"Object": 388,
+				"Count": 10,
+			},
+			{
+				"Object": 338,
+				"Count": 2,
+			}
+		],
+		"IsDefault": false,
+		"CanPurchase": true,
+		"PurchaseFrom": "Robin",
+		"PurchasePrice": 50000,
+		"PurchaseRequirements": null,
+	}
+}

@@ -1,0 +1,16 @@
+{
+  "Name": "Speed Mod",
+  "Author": "Blackclaw",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 2,
+    "PatchVersion": 0,
+    "Build": "0"
+  },
+  "UniqueID": "Blackclaw.SpeedMod",
+  "Description": "Adds a permanent (configurable) speed boost and the ability to teleport home at the cost of energy",
+  "MinimumApiLevel": "3.0.0",
+  "PerSaveConfigs": false,
+  "EntryDll": "SpeedMod.dll",
+  "UpdateKeys": ["Nexus:5082"]
+}

@@ -15,6 +15,7 @@ using StardewModdingAPI;
 using NpcAdventure.AI;
 using Microsoft.Xna.Framework.Graphics;
 using NpcAdventure.Events;
+using NpcAdventure.Internal;
 
 namespace NpcAdventure.StateMachine.State
 {
@@ -30,13 +31,13 @@ namespace NpcAdventure.StateMachine.State
 
         public RecruitedState(CompanionStateMachine stateMachine, IModEvents events, ISpecialModEvents specialEvents, IMonitor monitor) : base(stateMachine, events, monitor)
         {
-            this.BuffManager = new BuffManager(stateMachine.Companion, stateMachine.CompanionManager.Farmer, stateMachine.ContentLoader);
+            this.BuffManager = new BuffManager(stateMachine.Companion, stateMachine.CompanionManager.Farmer, stateMachine.ContentLoader, this.monitor);
             this.SpecialEvents = specialEvents;
         }
 
         public override void Entry()
         {
-            this.ai = new AI_StateMachine(this.StateMachine, this.Events, this.monitor);
+            this.ai = new AI_StateMachine(this.StateMachine, this.StateMachine.CompanionManager.Hud, this.Events, this.monitor);
 
             if (this.StateMachine.Companion.doingEndOfRouteAnimation.Value)
                 this.FinishScheduleAnimation();
@@ -50,87 +51,37 @@ namespace NpcAdventure.StateMachine.State
             this.StateMachine.Companion.eventActor = true;
             this.StateMachine.Companion.farmerPassesThrough = true;
 
+            if (this.StateMachine.Companion.isMarried() && Patches.SpouseReturnHomePatch.recruitedSpouses.IndexOf(this.StateMachine.Companion.Name) < 0)
+            {
+                // Avoid returning recruited wife/husband to FarmHouse when is on Farm and it's after 1pm
+                Patches.SpouseReturnHomePatch.recruitedSpouses.Add(this.StateMachine.Companion.Name);
+            }
+
             this.Events.GameLoop.UpdateTicked += this.GameLoop_UpdateTicked;
             this.Events.GameLoop.TimeChanged += this.GameLoop_TimeChanged;
             this.Events.Player.Warped += this.Player_Warped;
-            this.Events.Display.RenderingHud += this.Display_RenderingHud;
             this.SpecialEvents.RenderedLocation += this.SpecialEvents_RenderedLocation;
-
-            if (this.BuffManager.HasAssignableBuffs())
-                this.BuffManager.AssignBuffs();
-            else
-                this.monitor.Log($"Companion {this.StateMachine.Name} has no buffs defined!", LogLevel.Alert);
 
             if (DialogueHelper.GetVariousDialogueString(this.StateMachine.Companion, "companionRecruited", out string dialogueText))
                 this.StateMachine.Companion.setNewDialogue(dialogueText);
             this.CanCreateDialogue = true;
 
+            foreach (string skill in this.StateMachine.Metadata.PersonalSkills)
+            {
+                string text = this.StateMachine.ContentLoader.LoadString($"Strings/Strings:skill.{skill}", this.StateMachine.Companion.displayName)
+                        + Environment.NewLine
+                        + this.StateMachine.ContentLoader.LoadString($"Strings/Strings:skillDescription.{skill}").Replace("#", Environment.NewLine);
+                this.StateMachine.CompanionManager.Hud.AddSkill(skill, text);
+            }
+
+            this.StateMachine.CompanionManager.Hud.AssignCompanion(this.StateMachine.Companion);
+            this.BuffManager.AssignBuffs();
             this.ai.Setup();
         }
 
         private void SpecialEvents_RenderedLocation(object sender, ILocationRenderedEventArgs e)
         {
             this.ai.Draw(e.SpriteBatch);
-        }
-
-        private void Display_RenderingHud(object sender, RenderingHudEventArgs e)
-        {
-            if (!this.StateMachine.CompanionManager.Config.ShowHUD || Game1.eventUp)
-                return;
-
-            var skills = this.StateMachine.Metadata.PersonalSkills;
-            string toolTipedSkill = "";
-            bool drawTooltip = false;
-            int i = 0;
-            foreach (string skill in skills)
-            {
-                Rectangle titleSafeArea = Game1.graphics.GraphicsDevice.Viewport.GetTitleSafeArea();
-                Rectangle icon;
-                Vector2 vector2 = new Vector2(titleSafeArea.Left + 38 + (i * 76), titleSafeArea.Bottom - 52);
-                Vector2 vector3 = new Vector2(titleSafeArea.Left + 18 + (i * 76), titleSafeArea.Bottom - 76);
-
-                if (Game1.isOutdoorMapSmallerThanViewport())
-                {
-                    vector2.X = Math.Max(titleSafeArea.Left + 38 + (i * 76), -Game1.viewport.X + 38 + (i * 76));
-                    vector3.X = Math.Max(titleSafeArea.Left + 18 + (i * 76), -Game1.viewport.X + 18 + (i * 76));
-                }
-
-                switch (skill)
-                {
-                    case "doctor":
-                        icon = new Rectangle(0, 428, 10, 10);
-                        break;
-                    case "warrior":
-                        icon = new Rectangle(120, 428, 10, 10);
-                        break;
-                    case "fighter":
-                        icon = new Rectangle(40, 428, 10, 10);
-                        break;
-                    default:
-                        continue;
-                }
-
-                e.SpriteBatch.Draw(Game1.mouseCursors, vector3, new Rectangle(384, 373, 18, 18), Color.White * 1f, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
-                e.SpriteBatch.Draw(Game1.mouseCursors, vector2, icon, Color.White * 1f, 0f, Vector2.Zero, 3f, SpriteEffects.None, 1f);
-
-                Rectangle bounding = new Rectangle((int)vector3.X, (int)vector3.Y, 18 * 4, 18 * 4);
-
-                if (bounding.Contains(Game1.getMouseX(), Game1.getMouseY()))
-                {
-                    toolTipedSkill = skill;
-                    drawTooltip = true;
-                }
-
-                i++;
-            }
-
-            if (drawTooltip)
-            {
-                string text = this.StateMachine.ContentLoader.LoadString($"Strings/Strings:skill.{toolTipedSkill}", this.StateMachine.Companion.displayName)
-                        + Environment.NewLine
-                        + this.StateMachine.ContentLoader.LoadString($"Strings/Strings:skillDescription.{toolTipedSkill}");
-                IClickableMenu.drawHoverText(e.SpriteBatch, text, Game1.smallFont);
-            }
         }
 
         /// <summary>
@@ -153,6 +104,12 @@ namespace NpcAdventure.StateMachine.State
             this.BuffManager.ReleaseBuffs();
             this.ai.Dispose();
 
+            if (Patches.SpouseReturnHomePatch.recruitedSpouses.IndexOf(this.StateMachine.Companion.Name) >= 0)
+            {
+                // Allow dissmised wife/husband to return to FarmHouse when is on Farm
+                Patches.SpouseReturnHomePatch.recruitedSpouses.Remove(this.StateMachine.Companion.Name);
+            }
+
             this.StateMachine.Companion.eventActor = false;
             this.StateMachine.Companion.farmerPassesThrough = false;
             this.CanCreateDialogue = false;
@@ -161,10 +118,10 @@ namespace NpcAdventure.StateMachine.State
             this.Events.GameLoop.UpdateTicked -= this.GameLoop_UpdateTicked;
             this.Events.GameLoop.TimeChanged -= this.GameLoop_TimeChanged;
             this.Events.Player.Warped -= this.Player_Warped;
-            this.Events.Display.RenderingHud -= this.Display_RenderingHud;
 
             this.ai = null;
             this.dismissalDialogue = null;
+            this.StateMachine.CompanionManager.Hud.Reset();
         }
 
         private void GameLoop_TimeChanged(object sender, TimeChangedEventArgs e)
@@ -198,7 +155,7 @@ namespace NpcAdventure.StateMachine.State
 
         private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (e.IsMultipleOf(25))
+            if (e.IsMultipleOf(20))
                 this.FixProblemsWithNPC();
 
             this.ai.Update(e);
@@ -208,8 +165,10 @@ namespace NpcAdventure.StateMachine.State
         {
             this.StateMachine.Companion.movementPause = 0;
             this.StateMachine.Companion.followSchedule = false;
+            this.StateMachine.Companion.Schedule = null;
             this.StateMachine.Companion.controller = null;
             this.StateMachine.Companion.temporaryController = null;
+            this.StateMachine.Companion.eventActor = true;
         }
 
         private void Player_Warped(object sender, WarpedEventArgs e)
@@ -230,11 +189,25 @@ namespace NpcAdventure.StateMachine.State
             this.TryPushLocationDialogue(e.NewLocation);
         }
 
+        private Dialogue GenerateLocationDialogue(GameLocation location, NPC companion)
+        {
+            if (DialogueHelper.GenerateStaticDialogue(companion, location, "companionOnce") is CompanionDialogue dialogueOnce
+                && !this.StateMachine.CompanionManager.Farmer.hasOrWillReceiveMail(dialogueOnce.Tag))
+            {
+                // Remember only once spoken dialogue
+                dialogueOnce.Remember = true;
+                return dialogueOnce;
+            }
+
+            // Generate standard companion various dialogue if no once dialogue defined or once dialogue spoken
+            return DialogueHelper.GenerateDialogue(companion, location, "companion");
+        }
+
         private bool TryPushLocationDialogue(GameLocation location)
         {
             NPC companion = this.StateMachine.Companion;
-            Dialogue newDialogue = DialogueHelper.GenerateDialogue(companion, location, "companion");
             Stack<Dialogue> temp = new Stack<Dialogue>(this.StateMachine.Companion.CurrentDialogue.Count);
+            Dialogue newDialogue = this.GenerateLocationDialogue(location, companion);
 
             if ((newDialogue == null && this.currentLocationDialogue == null) || (newDialogue != null && newDialogue.Equals(this.currentLocationDialogue)))
                 return false;

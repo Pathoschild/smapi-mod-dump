@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/GenericModConfigMenu.git
+
+mods:
+   Generic Mod Config Menu
+
+latest commit:
+   commit f7544eb7571509dedba6d979b246c7e7bf2892cd
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Mon Nov 25 17:06:38 2019 -0500
+   
+       Initial commit
+   

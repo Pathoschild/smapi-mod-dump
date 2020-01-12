@@ -1,0 +1,7 @@
+{
+    "Name": "Shrine Robe",
+    "Description": "The traditional thick, white garb of shrine attendants.",
+    "HasFemaleVariant": true,
+    "Price": 50,
+    "Dyeable": false
+}

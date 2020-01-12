@@ -1,0 +1,13 @@
+url:
+   https://github.com/ameisen/SV-SpriteMaster.git
+
+mods:
+   Sprite Master
+
+latest commit:
+   commit fefd810d3f6c3982cac2528d5e0083b566348f1c
+   Author: Michael Kuklinski <14104310+ameisen@users.noreply.github.com>
+   Date:   Sat Jan 11 18:27:04 2020 -0600
+   
+       Finishing changing HarmonyExt to Harmonize.
+   

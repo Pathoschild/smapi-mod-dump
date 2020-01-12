@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/GilarF/SVM/develop/ModSettingsTab/schema.json",
   "Description": {
     "en": "The mod loader for Stardew Valley",
     "zh": "Stardew Valley的mod loader",
@@ -33,7 +34,10 @@
         "th": "SMAPI ควรบันทึกข้อมูลเพิ่มเติมเกี่ยวกับบริบทของเกมหรือไม่"
       },
       "Type": "CheckBox",
-      "Label": "Verbose Logging"
+      "Label": {
+        "en": "Verbose Logging",
+        "fr": "Journal détaillé" 
+      }
     },
     {
       "Name": "CheckForUpdates",
@@ -53,7 +57,10 @@
         "th": "SMAPI ควรตรวจสอบ SMAPI และ mods รุ่นใหม่กว่าหรือไม่เมื่อคุณโหลดเกม\nหากมีเวอร์ชั่นใหม่การแจ้งเตือนจะปรากฏในคอนโซล\nสิ่งนี้จะไม่มีผลกับความเร็วในการโหลดแม้ว่าการเชื่อมต่อของคุณจะออฟไลน์หรือช้าเพราะมันเกิดขึ้นในพื้นหลัง"
       },
       "Type": "CheckBox",
-      "Label": "Check for updates"
+      "Label": {
+        "en": "Check for updates",
+        "fr": "Vérifier les mises à jour" 
+      }
     },
     {
       "Name": "DeveloperMode",
@@ -73,12 +80,15 @@
         "th": "เปิดใช้งานฟีเจอร์สำหรับนักพัฒนา mod หรือไม่ ปัจจุบันนี้ทำให้ข้อความระดับการสืบค้นกลับปรากฏขึ้นในคอนโซลเท่านั้น"
       },
       "Type": "CheckBox",
-      "Label": "Developer Mode"
+      "Label": {
+        "en": "Developer Mode",
+        "fr": "Mode développeur" 
+      }
     },
     {
       "Name": "ParanoidWarnings",
       "Description": {
-          "en": "Whether to add a section to the 'mod issues' list for mods which directly use potentially sensitive .NET APIs like file or shell access. ",
+        "en": "Whether to add a section to the 'mod issues' list for mods which directly use potentially sensitive .NET APIs like file or shell access. ",
         "zh": "是否在直接使用潛在敏感的.NET API（例如文件或外殼程序訪問權限）的mod的“ mod問題”列表中添加部分。",
         "fr": "Indique s'il faut ajouter une section à la liste des «problèmes de mod» pour les mods qui utilisent directement des API .NET potentiellement sensibles comme l'accès aux fichiers ou au shell.",
         "de": "Gibt an, ob der Liste \"Mod Issues\" ein Abschnitt für Mods hinzugefügt werden soll, die direkt potenziell sensible .NET-APIs wie Datei- oder Shell-Zugriff verwenden.",
@@ -93,7 +103,10 @@
         "th": "ไม่ว่าจะเพิ่มส่วนในรายการ 'ปัญหาการแก้ไข' สำหรับ mods ซึ่งใช้. NET API ที่มีความอ่อนไหวโดยตรงเช่นการเข้าถึงไฟล์หรือเชลล์"
       },
       "Type": "CheckBox",
-      "Label": "Paranoid Warnings"
+      "Label": {
+        "en": "Paranoid Warnings",
+        "fr": "Avertissements paranoïaques"
+      }
     },
     {
       "Name": "UseBetaChannel",
@@ -113,19 +126,28 @@
         "th": "SMAPI ควรแสดงเวอร์ชั่นเบต้าที่ใหม่กว่าว่าเป็นอัพเดตที่มีหรือไม่ เมื่อสิ่งนี้ถูกแสดงความคิดเห็น\nมันจะเป็นจริงถ้าเวอร์ชั่น SMAPI ปัจจุบันเป็นรุ่นเบต้าและไม่เช่นนั้นจะเป็นเท็จ"
       },
       "Type": "CheckBox",
-      "Label": "Use Beta Channel"
+      "Label": {
+        "en": "Use Beta Channel",
+        "fr": "Utiliser le canal Beta" 
+      }
     },
     {
       "Name": "GitHubProjectName",
       "Ignore": true,
       "Type": "TextBox",
-      "Label": "GitHubProjectName"
+      "Label": {
+        "en": "GitHub project name",
+        "fr": "Nom du projet Github" 
+      }
     },
     {
       "Name": "WebApiBaseUrl",
       "Ignore": true,
       "Type": "TextBox",
-      "Label": "Web Api BaseUrl"
+      "Label": {
+        "en": "Web Api BaseUrl",
+        "fr": "Url de base de l'Api" 
+      }
     },
     {
       "Name": "LogNetworkTraffic",
@@ -145,7 +167,10 @@
         "th": "SMAPI ควรบันทึกการรับส่งข้อมูลของเครือข่ายหรือไม่ (อาจจะละเอียดมาก) รวมกับ VerboseLogging ที่ดีที่สุดซึ่งรวมถึงข้อมูลเมตาของเครือข่าย"
       },
       "Type": "CheckBox",
-      "Label": "Log Network Traffic"
+      "Label": {
+        "en": "Log Network Traffic",
+        "fr": "Journal de trafic réseau" 
+      }
     },
     {
       "Name": "DumpMetadata",
@@ -165,7 +190,10 @@
         "th": "ไม่ว่าจะสร้างไฟล์ 'SMAPI-latest.metadata-dump.json' ในโฟลเดอร์บันทึกด้วย mod แบบเต็ม\nข้อมูลเมตาสำหรับ mods ที่ตรวจพบ สิ่งนี้จำเป็นเฉพาะเมื่อแก้ไขปัญหาบางกรณี"
       },
       "Type": "CheckBox",
-      "Label": "Dump Metadata"
+      "Label": {
+        "en": "Dump Metadata",
+        "fr": "Journal des métadonnées"
+      }
     },
     {
       "Name": "ConsoleColors.UseScheme",
@@ -185,7 +213,10 @@
         "th": "Sสีที่ใช้สำหรับข้อความที่เขียนไปยังคอนโซล SMAPI."
       },
       "Type": "DropDown",
-      "Label": "Use Scheme",
+      "Label": {
+        "en": "Use Scheme",
+        "fr": "Utiliser le jeu de couleurs" 
+      },
       "DropDownOptions": [
         "AutoDetect",
         "DarkBackground",
@@ -195,7 +226,9 @@
     {
       "Name": "ConsoleColors.Schemes.DarkBackground.Trace",
       "Type": "PlusMinus",
-      "Label": "DarkBackground.Trace",
+      "Label": {
+        "en": "DarkBackground.Trace"
+      },
       "PlusMinusOptions": [
         "Black",
         "Blue",
@@ -218,7 +251,9 @@
     {
       "Name": "ConsoleColors.Schemes.DarkBackground.Debug",
       "Type": "PlusMinus",
-      "Label": "DarkBackground.Debug",
+      "Label": {
+        "en": "DarkBackground.Debug"
+      },
       "PlusMinusOptions": [
         "Black",
         "Blue",
@@ -241,7 +276,9 @@
     {
       "Name": "ConsoleColors.Schemes.DarkBackground.Info",
       "Type": "PlusMinus",
-      "Label": "DarkBackground.Info",
+      "Label": {
+        "en": "DarkBackground.Info"
+      },
       "PlusMinusOptions": [
         "Black",
         "Blue",
@@ -264,7 +301,9 @@
     {
       "Name": "ConsoleColors.Schemes.DarkBackground.Warn",
       "Type": "PlusMinus",
-      "Label": "DarkBackground.Warn",
+      "Label": {
+        "en": "DarkBackground.Warn"
+      },
       "PlusMinusOptions": [
         "Black",
         "Blue",
@@ -287,7 +326,9 @@
     {
       "Name": "ConsoleColors.Schemes.DarkBackground.Error",
       "Type": "PlusMinus",
-      "Label": "DarkBackground.Error",
+      "Label": {
+        "en": "DarkBackground.Error"
+      },
       "PlusMinusOptions": [
         "Black",
         "Blue",
@@ -310,7 +351,9 @@
     {
       "Name": "ConsoleColors.Schemes.DarkBackground.Alert",
       "Type": "PlusMinus",
-      "Label": "DarkBackground.Alert",
+      "Label": {
+        "en": "DarkBackground.Alert"
+      },
       "PlusMinusOptions": [
         "Black",
         "Blue",
@@ -333,7 +376,9 @@
     {
       "Name": "ConsoleColors.Schemes.DarkBackground.Success",
       "Type": "PlusMinus",
-      "Label": "DarkBackground.Success",
+      "Label": {
+        "en": "DarkBackground.Success"
+      },
       "PlusMinusOptions": [
         "Black",
         "Blue",
@@ -356,7 +401,9 @@
     {
       "Name": "ConsoleColors.Schemes.LightBackground.Trace",
       "Type": "PlusMinus",
-      "Label": "LightBackground.Trace",
+      "Label": {
+        "en": "LightBackground.Trace"
+      },
       "PlusMinusOptions": [
         "Black",
         "Blue",
@@ -379,7 +426,9 @@
     {
       "Name": "ConsoleColors.Schemes.LightBackground.Debug",
       "Type": "PlusMinus",
-      "Label": "LightBackground.Debug",
+      "Label": {
+        "en": "LightBackground.Debug"
+      },
       "PlusMinusOptions": [
         "Black",
         "Blue",
@@ -402,7 +451,9 @@
     {
       "Name": "ConsoleColors.Schemes.LightBackground.Info",
       "Type": "PlusMinus",
-      "Label": "LightBackground.Info",
+      "Label": {
+        "en": "LightBackground.Info"
+      },
       "PlusMinusOptions": [
         "Black",
         "Blue",
@@ -425,7 +476,9 @@
     {
       "Name": "ConsoleColors.Schemes.LightBackground.Warn",
       "Type": "PlusMinus",
-      "Label": "LightBackground.Warn",
+      "Label": {
+        "en": "LightBackground.Warn"
+      },
       "PlusMinusOptions": [
         "Black",
         "Blue",
@@ -448,7 +501,9 @@
     {
       "Name": "ConsoleColors.Schemes.LightBackground.Error",
       "Type": "PlusMinus",
-      "Label": "LightBackground.Error",
+      "Label": {
+        "en": "LightBackground.Error"
+      },
       "PlusMinusOptions": [
         "Black",
         "Blue",
@@ -471,7 +526,9 @@
     {
       "Name": "ConsoleColors.Schemes.LightBackground.Alert",
       "Type": "PlusMinus",
-      "Label": "LightBackground.Alert",
+      "Label": {
+        "en": "LightBackground.Alert"
+      },
       "PlusMinusOptions": [
         "Black",
         "Blue",
@@ -494,7 +551,9 @@
     {
       "Name": "ConsoleColors.Schemes.LightBackground.Success",
       "Type": "PlusMinus",
-      "Label": "LightBackground.Success",
+      "Label": {
+        "en": "LightBackground.Success"
+      },
       "PlusMinusOptions": [
         "Black",
         "Blue",
@@ -517,7 +576,10 @@
     {
       "Name": "SuppressUpdateChecks",
       "Type": "List",
-      "Label": "Suppress Update Checks"
+      "Label": {
+        "en": "Suppress Update Checks",
+        "fr": "Ignorer les mises à jour" 
+      }
     }
   ]
 }

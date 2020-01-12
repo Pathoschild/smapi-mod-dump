@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5108
+IDs: Esca.CustomTracker
+update keys: Nexus:5108, GitHub:Esca-MMC/CustomTracker, ModDrop:706059

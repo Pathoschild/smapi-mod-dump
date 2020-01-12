@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection.Emit;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Tools;
 
@@ -7,8 +8,13 @@ namespace StardewHack.FixAnimalTools
 {
     public class ModEntry : Hack<ModEntry>
     {
+        public override void HackEntry(IModHelper helper)
+        {
+            Patch((MilkPail m)=>m.beginUsing(null,0,0,null), MilkPail_beginUsing);
+            Patch((Shears s)=>s.beginUsing(null,0,0,null), Shears_beginUsing);
+        }
+
         // Change the milk pail such that it doesn't do anything while no animal is in range. 
-        [BytecodePatch("StardewValley.Tools.MilkPail::beginUsing")]
         void MilkPail_beginUsing() {
             // Find the first animal != null check.
             var hasAnimal = FindCode(
@@ -32,7 +38,6 @@ namespace StardewHack.FixAnimalTools
         }
 
         // Change the shears such that it doesn't do anything while no animal is in range. 
-        [BytecodePatch("StardewValley.Tools.Shears::beginUsing")]
         void Shears_beginUsing() {
             var halt = FindCode(
                 OpCodes.Ldarg_S,

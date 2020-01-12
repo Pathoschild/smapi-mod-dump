@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/ThrowableAxe.git
+
+mods:
+   Throwable Axe
+
+latest commit:
+   commit 92b7fe7e0c20c9ecd7c9687b15e963c70bae56fa
+   Author: spacechase0 <spacechase0.and.cat@gmail.com>
+   Date:   Mon Nov 25 17:58:41 2019 -0500
+   
+       Initial commit
+   

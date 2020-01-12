@@ -1,0 +1,14 @@
+{
+  "Name": "BirthdayMailContent",
+  "Author": "KathrynHazuka",
+  "Version": "2.0.0",
+  "Description": "Content Pack for BirthdayMail by Kathryn Hazuka",
+  "UniqueID": "KathrynHazuka.BirthdayMailContent",
+  "UpdateKeys": [ "Nexus:276" ],
+  "ContentPackFor":{
+	"UniqueID": "KathrynHazuka.BirthdayMail",
+	"MinimumVersion": "2.0.0",
+	"UniqueID": "Pathoschild.ContentPatcher",
+	"MinimumVersion": "1.1.0"
+  }
+}

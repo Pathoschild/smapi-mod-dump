@@ -30,21 +30,21 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
         ** Public methods
         *********/
         /// <summary>Construct an instance.</summary>
+        /// <param name="codex">Provides subject entries for target values.</param>
         /// <param name="gameHelper">Provides utility methods for interacting with the game code.</param>
         /// <param name="tree">The lookup target.</param>
         /// <param name="tile">The tree's tile position.</param>
         /// <param name="translations">Provides translations stored in the mod folder.</param>
-        public FruitTreeSubject(GameHelper gameHelper, FruitTree tree, Vector2 tile, ITranslationHelper translations)
-            : base(gameHelper, L10n.FruitTree.Name(fruitName: gameHelper.GetObjectBySpriteIndex(tree.indexOfFruit.Value).DisplayName), null, L10n.Types.FruitTree(), translations)
+        public FruitTreeSubject(SubjectFactory codex, GameHelper gameHelper, FruitTree tree, Vector2 tile, ITranslationHelper translations)
+            : base(codex, gameHelper, L10n.FruitTree.Name(fruitName: gameHelper.GetObjectBySpriteIndex(tree.indexOfFruit.Value).DisplayName), null, L10n.Types.FruitTree(), translations)
         {
             this.Target = tree;
             this.Tile = tile;
         }
 
         /// <summary>Get the data to display for this subject.</summary>
-        /// <param name="metadata">Provides metadata that's not available from the game data directly.</param>
         /// <remarks>Tree growth algorithm reverse engineered from <see cref="FruitTree.dayUpdate"/>.</remarks>
-        public override IEnumerable<ICustomField> GetData(Metadata metadata)
+        public override IEnumerable<ICustomField> GetData()
         {
             FruitTree tree = this.Target;
 
@@ -56,10 +56,12 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
             // show next fruit
             if (isMature && !isDead)
             {
+                SDate nextFruit = SDate.Now().AddDays(1);
+
                 string label = L10n.FruitTree.NextFruit();
                 if (isStruckByLightning)
                     yield return new GenericField(this.GameHelper, label, L10n.FruitTree.NextFruitStruckByLightning(count: tree.struckByLightningCountdown.Value));
-                else if (Game1.currentSeason != tree.fruitSeason.Value && !tree.GreenHouseTree)
+                else if (!tree.GreenHouseTree && nextFruit.Season != tree.fruitSeason.Value)
                     yield return new GenericField(this.GameHelper, label, L10n.FruitTree.NextFruitOutOfSeason());
                 else if (tree.fruitsOnTree.Value == FruitTree.maxFruitsOnTrees)
                     yield return new GenericField(this.GameHelper, label, L10n.FruitTree.NextFruitMaxFruit());
@@ -81,13 +83,13 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
             else
             {
                 // get quality schedule
-                ItemQuality currentQuality = this.GetCurrentQuality(tree, metadata.Constants.FruitTreeQualityGrowthTime);
+                ItemQuality currentQuality = this.GetCurrentQuality(tree, this.Constants.FruitTreeQualityGrowthTime);
                 if (currentQuality == ItemQuality.Iridium)
                     yield return new GenericField(this.GameHelper, L10n.FruitTree.Quality(), L10n.FruitTree.QualityNow(quality: currentQuality));
                 else
                 {
                     string[] summary = this
-                        .GetQualitySchedule(tree, currentQuality, metadata.Constants.FruitTreeQualityGrowthTime)
+                        .GetQualitySchedule(tree, currentQuality, this.Constants.FruitTreeQualityGrowthTime)
                         .Select(entry =>
                         {
                             // read schedule
@@ -123,8 +125,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
         }
 
         /// <summary>Get raw debug data to display for this subject.</summary>
-        /// <param name="metadata">Provides metadata that's not available from the game data directly.</param>
-        public override IEnumerable<IDebugField> GetDebugFields(Metadata metadata)
+        public override IEnumerable<IDebugField> GetDebugFields()
         {
             FruitTree target = this.Target;
 

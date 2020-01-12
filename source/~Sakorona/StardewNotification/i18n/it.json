@@ -1,0 +1,40 @@
+{
+  // Notification messages
+  "travelingMerchant": "È arrivato il Mercante Viaggiatore",
+  "queenSauce": "Oggi si manifesta la Regina della Salsa",
+  "luckyDay": "Giorno Fortunato!",
+  "unluckyDay":  "Giorno Sfortunato!", 
+  
+    // Festivals
+  "fMsg": "Oggi si terrà l'evento: {{fest}}!",
+  "festival": "Festival",
+  "EggFestival": "Festival delle Uova",
+  "FlowerDance": "Ballo dei Fiori",
+  "Luau": "Luau",
+  "MoonlightJellies": "Danza delle Meduse Lunari",
+  "ValleyFair": "Fiera di Stardew Valley",
+  "SpiritsEve": "Vigilia degli Spiriti",
+  "IceFestival": "Festival del Ghiaccio",
+  "WinterStar": "Banchetto della Stella d'Inverno",
+  "NightMarket":  "Mercato Notturno",
+  "SecretSantaReminder": "{{charName}} è il tuo babbo natale segreto",
+  
+  "Salmonberry": "Stagione dei lamponi",
+  "Seashells": "Conchiglie sul lungomare",
+  "Blackberry": "Stagione delle more",
+  
+  // Locations
+  "CaveMushroom": "Funghi di caverna pronti per la raccolta",
+  "CaveFruit": "Frutti di caverna pronti per la raccolta",
+
+  "birthday": "È il compleanno di {{charName}}!",
+  "birthdayReminder": "Non dimenticarti di fare un regalo di compleanno a {{charName}} oggi!",
+  "toolPickup": "{{toolName}} pronto per essere raccolto",
+
+  "readyHarvest": "{{cropName}} pronto/a per la raccolta",
+  "greenhouse_crops": "Il raccolto nella serra è pronto per la raccolta",
+  "autoGrabber" :  "L'auto-arraffone ha degli oggetti pronti per la raccolta",
+  "hayMessage" : "I Silo contengono {{hayAmt}} unità di fieno",
+  "noHayMessage": "Non c'è fieno nei silo.",
+  "FishPond" : "Laghetto pronto per la raccolta."
+}

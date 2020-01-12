@@ -1,6 +1,18 @@
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Improved error-handling when a machine or chest has invalid items.
+* Machines with invalid output are now paused for 30 seconds.
+* Fixed infinite garbage hats.
+* Fixed some machines allowing wrong item types as input.
+* Fixed buildings automated while still under construction.
+
+## 1.14.2
+Released 27 December 2019.
+
+* Updated trash can logic for Stardew Valley 1.4.
+
 ## 1.14.1
 Released 15 December 2019.
 

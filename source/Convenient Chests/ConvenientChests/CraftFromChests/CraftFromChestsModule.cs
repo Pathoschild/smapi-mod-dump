@@ -7,25 +7,11 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
-using Object = StardewValley.Object;
 
 namespace ConvenientChests.CraftFromChests {
     public class CraftFromChestsModule : Module {
-        public HarmonyInstance Harmony { get; set; }
-
-        public static List<Chest> NearbyChests { get; set; }
-        public static List<Item>  NearbyItems  { get; private set; }
-
         private MenuListener MenuListener;
-        private static IList<IList<Item>> _nearbyInventories;
 
-        public static IList<IList<Item>> NearbyInventories {
-            get => _nearbyInventories;
-            set {
-                _nearbyInventories = value;
-                NearbyItems        = value?.SelectMany(l => l.Where(i => i != null)).ToList();
-            }
-        }
 
         public CraftFromChestsModule(ModEntry modEntry) : base(modEntry) {
             this.MenuListener = new MenuListener(this.Events);
@@ -36,40 +22,40 @@ namespace ConvenientChests.CraftFromChests {
 
             // Register Events
             this.MenuListener.RegisterEvents();
-            this.MenuListener.CraftingMenuShown  += CraftingMenuShown;
-            this.MenuListener.CraftingMenuClosed += CraftingMenuClosed;
-
-            // Apply method patches
-            Harmony = HarmonyInstance.Create("aEnigma.convenientchests");
-            CraftingRecipePatch.Register(Harmony);
-            FarmerPatch.Register(Harmony);
+            this.MenuListener.CraftingMenuShown += CraftingMenuShown;
         }
 
         public override void Deactivate() {
             IsActive = false;
 
             // Unregister Events
-            this.MenuListener.CraftingMenuShown  -= CraftingMenuShown;
-            this.MenuListener.CraftingMenuClosed -= CraftingMenuClosed;
+            this.MenuListener.CraftingMenuShown -= CraftingMenuShown;
             this.MenuListener.UnregisterEvents();
-
-            // Remove method patches
-            CraftingRecipePatch.Remove(Harmony);
-            FarmerPatch.Remove(Harmony);
         }
 
         private void CraftingMenuShown(object sender, EventArgs e) {
-            NearbyChests      = GetChests(Game1.activeClickableMenu is CraftingPage).ToList();
-            NearbyInventories = NearbyChests.Select(c => (IList<Item>) c.items).ToList();
-        }
+            var isCooking = Game1.activeClickableMenu is CraftingPage;
+            var page = isCooking
+                           ? Game1.activeClickableMenu as CraftingPage
+                           : (Game1.activeClickableMenu as GameMenu)?.pages[GameMenu.craftingTab] as CraftingPage;
 
-        private static void CraftingMenuClosed(object sender, EventArgs e) {
-            foreach (var c in NearbyChests)
-            foreach (var i in c.items.Where(i => i?.Stack == 0 && i.Category != Object.BigCraftableCategory))
-                c.items[c.items.IndexOf(i)] = null;
-            
-            NearbyChests      = null;
-            NearbyInventories = null;
+            if (page == null)
+                return;
+
+            // Find nearby chests
+            var nearbyChests = GetChests(isCooking).ToList();
+            if (!nearbyChests.Any())
+                return;
+
+            // Add them as material containers to current CraftingPage
+            var prop     = AccessTools.Field(page.GetType(), "_materialContainers");
+            var original = prop.GetValue(page) as List<Chest>;
+            var modified = new List<Chest>();
+            if (original?.Count > 0)
+                modified.AddRange(original);
+            modified.AddRange(nearbyChests);
+
+            prop.SetValue(page, modified.Distinct().ToList());
         }
 
         private IEnumerable<Chest> GetChests(bool isCookingScreen) {

@@ -1,9 +1,0 @@
-﻿{
-  "Name": "AutoWater",
-  "Author": "WhiskerSalt",
-  "Version": "1.1.4",
-  "Description": "Save you the trouble of having to water your crops, so you can spend your time doing other things.",
-  "UniqueID": "whiskersalt.AutoWater",
-  "EntryDll": "AutoWater.dll",
-  "UpdateKeys": [ "GitHub:ddgroves/AutoWater", "Nexus:1666"]
-}

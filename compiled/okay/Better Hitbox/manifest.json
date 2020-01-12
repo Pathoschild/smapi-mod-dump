@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Better Hitbox",
+  "Author": "Kodfod",
+  "Version": "1.1.0",
+  "Description": "Tries to correct the default hitbox",
+  "UniqueID": "kodfod.hitbox",
+  "EntryDll": "BetterHitboxStardew.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": ["GitHub:Kodfod/BetterHitboxStardew"]
+}

@@ -1,4 +1,5 @@
-﻿using NpcAdventure.Utils;
+﻿using Microsoft.Xna.Framework;
+using NpcAdventure.Utils;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -31,6 +32,7 @@ namespace NpcAdventure.AI
 
                 Game1.drawDialogue(this.npc, DialogueHelper.GetDialogueString(this.npc, "heal"));
                 Game1.addHUDMessage(new HUDMessage(this.Csm.ContentLoader.LoadString("Strings/Strings:healed", this.npc.displayName, health), HUDMessage.health_type));
+                this.hud.GlowSkill("doctor", Color.Lime, HEAL_COUNTDOWN / 60);
                 this.Monitor.Log($"{this.npc.Name} healed you! Remaining medkits: {this.medkits}", LogLevel.Info);
                 return true;
             }

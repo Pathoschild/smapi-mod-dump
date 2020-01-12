@@ -1,0 +1,13 @@
+url:
+   https://github.com/mus-candidus/GoToBed.git
+
+mods:
+   Go To Bed
+
+latest commit:
+   commit c08e6a14a407cbf61bb34c8be8bc4689bdf8bc90
+   Author: Candidus <candidus@xmail.net>
+   Date:   Sat Jan 11 21:24:26 2020 +0100
+   
+       Enable menu buttons to make farmer fall asleep, useful to recover from errors
+   

@@ -6,9 +6,9 @@ mods:
    Random NPCs
 
 latest commit:
-   commit 65210670a925761b407ef719e537cd1827e9ed80
+   commit 239d3ce4d4952fb6b88df450cbcb58ef6f9fe112
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Tue Dec 17 15:46:22 2019 -0500
+   Date:   Thu Dec 26 13:14:40 2019 -0500
    
-       new dialogue system
+       fix for missing visitors
    

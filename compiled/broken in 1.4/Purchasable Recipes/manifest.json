@@ -1,0 +1,9 @@
+{
+   "Name": "PurchasableRecipes",
+   "Author": "Paracosm",
+   "Version": "1.0.0",
+   "Description": "Enables players to buy cooking recipes from the saloon",
+   "UniqueID": "Paracosm.PurchasableRecipes",
+   "EntryDll": "PurchasableRecipes.dll",
+   "UpdateKeys": []
+}

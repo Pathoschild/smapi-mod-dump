@@ -7,9 +7,9 @@ mods:
    Time Reminder
 
 latest commit:
-   commit 5a2875c2e4a8cae5db4fdb7df09a7a36b2db2663
+   commit 7d8d3c915169b37249121c6bd0520a962cf30ffd
    Author: Nicholas Johnson <7285555+Sakorona@users.noreply.github.com>
-   Date:   Tue Dec 10 01:15:51 2019 -0800
+   Date:   Thu Dec 26 21:17:03 2019 -0800
    
-       Updates to 1.5.5, som more revisions, etc
+       Created thicker fog, and updated for the 1.5.6 bugfixes
    

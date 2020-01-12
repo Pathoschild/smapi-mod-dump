@@ -110,14 +110,14 @@ namespace ModSettingsTab.Framework
                 switch (type)
                 {
                     case ParamType.CheckBox:
-                        return new OptionsCheckbox(name, uniqueId, i9NOpt.Label ?? name, staticConfig, slotSize)
+                        return new OptionsCheckbox(name, uniqueId, i9NOpt.Label[lang] ?? name, staticConfig, slotSize)
                         {
                             AsString = asString,
                             HoverText = i9NOpt.Description[lang],
                             ShowTooltip = !string.IsNullOrEmpty(i9NOpt.Description[lang])
                         };
                     case ParamType.DropDown:
-                        return new OptionsDropDown(name, uniqueId, i9NOpt.Label ?? name,
+                        return new OptionsDropDown(name, uniqueId, i9NOpt.Label[lang] ?? name,
                             staticConfig, slotSize, i9NOpt.DropDownOptions ?? new List<string>())
                         {
                             HoverText = i9NOpt.Description[lang],
@@ -126,7 +126,7 @@ namespace ModSettingsTab.Framework
                     case ParamType.InputListener:
                         if (ButtonTryParse(staticConfig[name].ToString(), out var btn))
                         {
-                            return new OptionsInputListener(name, uniqueId, i9NOpt.Label ?? name,
+                            return new OptionsInputListener(name, uniqueId, i9NOpt.Label[lang] ?? name,
                                 staticConfig, slotSize, btn)
                             {
                                 HoverText = i9NOpt.Description[lang],
@@ -139,20 +139,20 @@ namespace ModSettingsTab.Framework
                             return GetOpt();
                         }
                     case ParamType.List:
-                        return new OptionsList(name, uniqueId, i9NOpt.Label ?? name, staticConfig, slotSize)
+                        return new OptionsList(name, uniqueId, i9NOpt.Label[lang] ?? name, staticConfig, slotSize)
                         {
                             HoverText = i9NOpt.Description[lang],
                             ShowTooltip = !string.IsNullOrEmpty(i9NOpt.Description[lang])
                         };
                     case ParamType.PlusMinus:
-                        return new OptionsPlusMinus(name, uniqueId, i9NOpt.Label ?? name, staticConfig, slotSize,
+                        return new OptionsPlusMinus(name, uniqueId, i9NOpt.Label[lang] ?? name, staticConfig, slotSize,
                             i9NOpt.PlusMinusOptions)
                         {
                             HoverText = i9NOpt.Description[lang],
                             ShowTooltip = !string.IsNullOrEmpty(i9NOpt.Description[lang])
                         };
                     case ParamType.Slider:
-                        return new OptionsSlider(name, uniqueId, i9NOpt.Label ?? name, staticConfig, slotSize)
+                        return new OptionsSlider(name, uniqueId, i9NOpt.Label[lang] ?? name, staticConfig, slotSize)
                         {
                             SliderMinValue = i9NOpt.SliderMinValue,
                             SliderMaxValue = i9NOpt.SliderMaxValue,
@@ -161,7 +161,7 @@ namespace ModSettingsTab.Framework
                             ShowTooltip = !string.IsNullOrEmpty(i9NOpt.Description[lang])
                         };
                     case ParamType.TextBox:
-                        return new OptionsTextBox(name, uniqueId, i9NOpt.Label ?? name, staticConfig, slotSize,
+                        return new OptionsTextBox(name, uniqueId, i9NOpt.Label[lang] ?? name, staticConfig, slotSize,
                             i9NOpt.TextBoxFloatOnly ?? floatOnly,
                             i9NOpt.TextBoxNumbersOnly ?? numbersOnly,
                             asString)

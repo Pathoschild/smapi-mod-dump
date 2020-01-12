@@ -14,7 +14,6 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -32,13 +31,13 @@ namespace CompostPestsCultivation
         public readonly Object HeldItem;
     }
 
-    public static class SeedMakerController
+    public class SeedMakerController
     {
-        private static IModHelper Helper;
-        private static Dictionary<Object, Object> SeedMakers;
-        public static System.EventHandler<SeedMakerEventArgs> HeldItemAdded, HeldItemRemoved;
+        private readonly IModHelper Helper;
+        private Dictionary<Object, Object> SeedMakers;
+        public System.EventHandler<SeedMakerEventArgs> HeldItemAdded, HeldItemRemoved;
 
-        public static void Init(IModHelper helper)
+        public SeedMakerController(IModHelper helper, IMonitor monitor)
         {
             Helper = helper;
             SeedMakers = new Dictionary<Object, Object>();
@@ -48,7 +47,7 @@ namespace CompostPestsCultivation
             Helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
         }
 
-        private static void FindSeedMakers()
+        private void FindSeedMakers()
         {
             SeedMakers.Clear();
             foreach (GameLocation location in Game1.locations)
@@ -64,17 +63,17 @@ namespace CompostPestsCultivation
             }
         }
 
-        private static void GameLoop_DayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
+        private void GameLoop_DayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
         {
             FindSeedMakers();
         }
 
-        private static void World_ObjectListChanged(object sender, StardewModdingAPI.Events.ObjectListChangedEventArgs e)
+        private void World_ObjectListChanged(object sender, StardewModdingAPI.Events.ObjectListChangedEventArgs e)
         {
             FindSeedMakers();
         }
 
-        private static void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
+        private void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
         {
             foreach (KeyValuePair<Object, Object> pair in SeedMakers)
             {
@@ -99,7 +98,7 @@ namespace CompostPestsCultivation
             }
         }
 
-        private static Object GetHeldItem(Object seedMaker) => seedMaker.heldObject?.Value;
-        private static bool HasHeldItem(Object seedMaker) => GetHeldItem(seedMaker) != null;
+        private Object GetHeldItem(Object seedMaker) => seedMaker.heldObject?.Value;
+        private bool HasHeldItem(Object seedMaker) => GetHeldItem(seedMaker) != null;
     }
 }

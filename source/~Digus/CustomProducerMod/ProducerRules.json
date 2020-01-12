@@ -1,0 +1,427 @@
+[
+	{ //Beer
+		"ProducerName": "Keg",
+		"InputIdentifier": "262",
+		"MinutesUntilReady": 1750,
+		"OutputIdentifier": "346",
+		"Sounds": ["Ship", "bubbles"],
+		"PlacingAnimation": "Bubbles",
+		"PlacingAnimationColorName": "Yellow"
+	},
+	{ //Pale Ale
+		"ProducerName": "Keg",
+		"InputIdentifier": "304",
+		"MinutesUntilReady": 2250,
+		"OutputIdentifier": "303",
+		"Sounds": ["Ship", "bubbles"],
+		"PlacingAnimation": "Bubbles",
+		"PlacingAnimationColorName": "Yellow"
+	},
+	{ //Mead
+		"ProducerName": "Keg",
+		"InputIdentifier": "340",
+		"MinutesUntilReady": 600,
+		"OutputIdentifier": "459",
+		"Sounds": ["Ship", "bubbles"],
+		"PlacingAnimation": "Bubbles",
+		"PlacingAnimationColorName": "Yellow"
+	},
+	{ //Coffee
+		"ProducerName": "Keg",
+		"InputIdentifier": "433",
+		"InputStack": 5,
+		"MinutesUntilReady": 120,
+		"OutputIdentifier": "395",
+		"Sounds": ["Ship", "bubbles"],
+		"PlacingAnimation": "Bubbles",
+		"PlacingAnimationColorName": "DarkGray"
+	},
+	{ //Green Tea
+		"ProducerName": "Keg",
+		"InputIdentifier": "815",
+		"MinutesUntilReady": 180,
+		"OutputIdentifier": "614",
+		"Sounds": ["Ship", "bubbles"],
+		"PlacingAnimation": "Bubbles",
+		"PlacingAnimationColorName": "Lime"
+	},
+	{ //Wine
+		"ProducerName": "Keg",
+		"InputIdentifier": "-79",
+		"MinutesUntilReady": 10000,
+		"OutputIdentifier": "348",
+		"PreserveType": "Wine",
+		"InputPriceBased": true,
+		"OutputPriceMultiplier": 3,
+		"Sounds": ["Ship", "bubbles"],
+		"PlacingAnimation": "Bubbles",
+		"PlacingAnimationColorName": "Lavender"
+	},
+	{ //Juice
+		"ProducerName": "Keg",
+		"InputIdentifier": "-75",
+		"MinutesUntilReady": 6000,
+		"OutputIdentifier": "350",
+		"PreserveType": "Juice",
+		"InputPriceBased": true,
+		"OutputPriceMultiplier": 2.25,
+		"Sounds": ["Ship", "bubbles"],
+		"PlacingAnimation": "Bubbles",
+		"PlacingAnimationColorName": "White"
+	},
+	{ //Jelly
+		"ProducerName": "Preserves Jar",
+		"InputIdentifier": "-79",
+		"MinutesUntilReady": 4000,
+		"OutputIdentifier": "344",
+		"PreserveType": "Jelly",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 50,
+		"OutputPriceMultiplier": 2,
+		"Sounds": ["Ship"],
+		"PlacingAnimation": "Bubbles",
+		"PlacingAnimationColorName": "LightBlue"
+	},
+	{ //Pickle
+		"ProducerName": "Preserves Jar",
+		"InputIdentifier": "-75",
+		"MinutesUntilReady": 4000,
+		"OutputIdentifier": "342",
+		"PreserveType": "Pickle",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 50,
+		"OutputPriceMultiplier": 2,
+		"Sounds": ["Ship"],
+		"PlacingAnimation": "Bubbles"
+	},
+	//Roe and Aged Roe are not currently supported.
+	{ //Cheese
+		"ProducerName": "Cheese Press",
+		"InputIdentifier": "184",
+		"MinutesUntilReady": 200,
+		"OutputIdentifier": "424",
+		"Sounds": ["Ship"]
+	},
+	{ //Gold Cheese
+		"ProducerName": "Cheese Press",
+		"InputIdentifier": "186",
+		"MinutesUntilReady": 200,
+		"OutputIdentifier": "424",
+		"OutputQuality": 2,
+		"Sounds": ["Ship"]
+	},
+	{ //Goat Cheese
+		"ProducerName": "Cheese Press",
+		"InputIdentifier": "436",
+		"MinutesUntilReady": 200,
+		"OutputIdentifier": "426",
+		"Sounds": ["Ship"]
+	},
+	{ //Gold Goat Cheese
+		"ProducerName": "Cheese Press",
+		"InputIdentifier": "438",
+		"MinutesUntilReady": 200,
+		"OutputIdentifier": "426",
+		"OutputQuality": 2,
+		"Sounds": ["Ship"]
+	},
+	{ //Dinosaur Mayonnaise
+		"ProducerName": "Mayonnaise Machine",
+		"InputIdentifier": "107",
+		"MinutesUntilReady": 180,
+		"OutputIdentifier": "807",
+		"Sounds": ["Ship"]
+	},
+	{ //Gold Mayonnaise
+		"ProducerName": "Mayonnaise Machine",
+		"InputIdentifier": "large_egg_item",
+		"MinutesUntilReady": 180,
+		"OutputIdentifier": "306",
+		"OutputQuality": 2,
+		"Sounds": ["Ship"]
+	},
+	{ //Mayonnaise
+		"ProducerName": "Mayonnaise Machine",
+		"InputIdentifier": "176",
+		"MinutesUntilReady": 180,
+		"OutputIdentifier": "306",
+		"Sounds": ["Ship"]
+	},
+	{ //Mayonnaise
+		"ProducerName": "Mayonnaise Machine",
+		"InputIdentifier": "180",
+		"MinutesUntilReady": 180,
+		"OutputIdentifier": "306",
+		"Sounds": ["Ship"]
+	},
+	{ //Void Mayonnaise
+		"ProducerName": "Mayonnaise Machine",
+		"InputIdentifier": "305",
+		"MinutesUntilReady": 180,
+		"OutputIdentifier": "308",
+		"Sounds": ["Ship"]
+	},
+	{ //Duck Mayonnaise
+		"ProducerName": "Mayonnaise Machine",
+		"InputIdentifier": "442",
+		"MinutesUntilReady": 180,
+		"OutputIdentifier": "307",
+		"Sounds": ["Ship"]
+	},
+	{ //Cloth
+		"ProducerName": "Loom",
+		"InputIdentifier": "440",
+		"MinutesUntilReady": 240,
+		"OutputIdentifier": "428",
+		"SilverQualityInput": { 
+			"Probability": 0.1, 
+			"OutputStack": 2
+		},		
+		"GoldQualityInput": { 
+			"Probability": 0.25,
+			"OutputStack": 2
+		},		
+		"IridiumQualityInput": { 
+			"Probability": 0.5, 
+			"OutputStack": 2
+		},
+		"Sounds": ["Ship"]
+	},
+	{ //Corn Oil
+		"ProducerName": "Oil Maker",
+		"InputIdentifier": "270",
+		"MinutesUntilReady": 1000,
+		"OutputIdentifier": "247",
+		"Sounds": ["bubbles","sipTea"],
+		"PlacingAnimation": "Bubbles",
+		"PlacingAnimationColorName": "Yellow"
+	},
+	{ //Sunflower Oil
+		"ProducerName": "Oil Maker",
+		"InputIdentifier": "421",
+		"MinutesUntilReady": 60,
+		"OutputIdentifier": "247",
+		"Sounds": ["bubbles","sipTea"],
+		"PlacingAnimation": "Bubbles",
+		"PlacingAnimationColorName": "Yellow"
+	},
+	{ //Truffle Oil
+		"ProducerName": "Oil Maker",
+		"InputIdentifier": "430",
+		"MinutesUntilReady": 360,
+		"OutputIdentifier": "432",
+		"Sounds": ["bubbles","sipTea"],
+		"PlacingAnimation": "Bubbles",
+		"PlacingAnimationColorName": "Yellow"
+	},
+	{ //Sunflower Seeds Oil
+		"ProducerName": "Oil Maker",
+		"InputIdentifier": "431",
+		"MinutesUntilReady": 3200,
+		"OutputIdentifier": "247",
+		"Sounds": ["bubbles","sipTea"],
+		"PlacingAnimation": "Bubbles",
+		"PlacingAnimationColorName": "Yellow"
+	},
+	{ //Seed Maker Example: Poppy
+		"ProducerName": "Seed Maker",
+		"InputIdentifier": "376",
+		"MinutesUntilReady": 20,
+		"OutputIdentifier": "453",
+		"OutputStack": 1,
+		"OutputMaxStack": 3,
+		"AdditionalOutputs": [
+			{
+				"OutputProbability": 0.005,
+				"OutputIdentifier": "499",
+				"OutputStack": 1
+			},
+			{
+				"OutputProbability": 0.0199,
+				"OutputIdentifier": "770",
+				"OutputStack": 1,
+				"OutputMaxStack": 4
+			}
+		],
+		"Sounds": ["Ship"],
+		"DelayedSounds":  [{"dirtyHit": 250}]
+	},
+	{ //Recycling Machine Trash
+		"ProducerName": "Recycling Machine",
+		"InputIdentifier": "168",
+		"MinutesUntilReady": 60,
+		"OutputIdentifier": "390",
+		"OutputStack": 1,
+		"OutputMaxStack": 3,
+		"AdditionalOutputs": [
+			{
+				"OutputProbability": 0.3,
+				"OutputIdentifier": "382",
+				"OutputStack": 1,
+				"OutputMaxStack": 3
+			},
+			{
+				"OutputProbability": 0.21,
+				"OutputIdentifier": "380",
+				"OutputStack": 1,
+				"OutputMaxStack": 3
+			}
+		],
+		"Sounds": ["trashcan"],
+		"IncrementStatsOnInput":  ["PiecesOfTrashRecycled"]
+	},
+	{ //Recycling Machine Driftwood
+		"ProducerName": "Recycling Machine",
+		"InputIdentifier": "169",
+		"MinutesUntilReady": 60,
+		"OutputIdentifier": "388",
+		"OutputStack": 1,
+		"OutputMaxStack": 3,
+		"AdditionalOutputs": [
+			{
+				"OutputProbability": 0.25,
+				"OutputIdentifier": "382",
+				"OutputStack": 1,
+				"OutputMaxStack": 3
+			}
+		],
+		"Sounds": ["trashcan"],
+		"IncrementStatsOnInput":  ["PiecesOfTrashRecycled"]
+	},
+	{ //Recycling Machine Soggy Newspaper
+		"ProducerName": "Recycling Machine",
+		"InputIdentifier": "172",
+		"MinutesUntilReady": 60,
+		"OutputIdentifier": "93",
+		"OutputStack": 3,
+		"AdditionalOutputs": [
+			{
+				"OutputProbability": 0.1,
+				"OutputIdentifier": "428"
+			}
+		],
+		"Sounds": ["trashcan"],
+		"IncrementStatsOnInput":  ["PiecesOfTrashRecycled"]
+	},
+	{ //Recycling Machine Broken CD
+		"ProducerName": "Recycling Machine",
+		"InputIdentifier": "171",
+		"MinutesUntilReady": 60,
+		"OutputIdentifier": "338",
+		"Sounds": ["trashcan"],
+		"IncrementStatsOnInput":  ["PiecesOfTrashRecycled"]
+	},
+	{ //Recycling Machine Broken Glasses
+		"ProducerName": "Recycling Machine",
+		"InputIdentifier": "170",
+		"MinutesUntilReady": 60,
+		"OutputIdentifier": "338",
+		"Sounds": ["trashcan"],
+		"IncrementStatsOnInput":  ["PiecesOfTrashRecycled"]
+	},
+	{ //Refined Quartz 
+		"ProducerName": "Furnace",
+		"InputIdentifier": "80",
+		"MinutesUntilReady": 90,
+		"FuelIdentifier":"382", 
+		"OutputIdentifier": "338",
+		"Sounds": ["furnace"],
+		"PlacingAnimation": "Fire"
+	},
+	{ //Refined Fire Quartz 
+		"ProducerName": "Furnace",
+		"InputIdentifier": "82",
+		"MinutesUntilReady": 90,
+		"FuelIdentifier":"382", 
+		"OutputIdentifier": "338",
+		"OutputStack": 3,
+		"Sounds": ["furnace"],
+		"PlacingAnimation": "Fire"
+	},
+	{ //Cooper Bar
+		"ProducerName": "Furnace",
+		"InputIdentifier": "378",
+		"InputStack": 5,
+		"MinutesUntilReady": 30,
+		"FuelIdentifier":"382", 
+		"OutputIdentifier": "334",
+		"Sounds": ["furnace"],
+		"PlacingAnimation": "Fire"
+	},
+	{ //Iron Bar
+		"ProducerName": "Furnace",
+		"InputIdentifier": "380",
+		"InputStack": 5,
+		"MinutesUntilReady": 120,
+		"FuelIdentifier":"382", 
+		"OutputIdentifier": "335",
+		"Sounds": ["furnace"],
+		"PlacingAnimation": "Fire"
+	},
+	{ //Gold Bar
+		"ProducerName": "Furnace",
+		"InputIdentifier": "384",
+		"InputStack": 5,
+		"MinutesUntilReady": 300,
+		"FuelIdentifier":"382", 
+		"OutputIdentifier": "336",
+		"Sounds": ["furnace"],
+		"PlacingAnimation": "Fire"
+	},
+	{ //Iridium Bar
+		"ProducerName": "Furnace",
+		"InputIdentifier": "386",
+		"InputStack": 5,
+		"MinutesUntilReady": 480,
+		"FuelIdentifier":"382", 
+		"OutputIdentifier": "337",
+		"Sounds": ["furnace"],
+		"PlacingAnimation": "Fire"
+	},
+	{ //Wilted Bouquet
+		"ProducerName": "Furnace",
+		"InputIdentifier": "458",
+		"MinutesUntilReady": 10,
+		"FuelIdentifier":"382", 
+		"OutputIdentifier": "277",
+		"Sounds": ["furnace"],
+		"PlacingAnimation": "Fire"
+	},
+	{ //Coal
+		"ProducerName": "Charcoal Kiln",
+		"InputIdentifier": "388",
+		"InputStack": 10,
+		"MinutesUntilReady": 30,
+		"OutputIdentifier": "382",
+		"Sounds": ["openBox"],
+		"DelayedSounds":  [{"fireball": 50}],
+		"PlacingAnimation": "CharcoalKilnSmoke"
+	},
+	{ //Slime Egg
+		"ProducerName": "Slime Egg-Press",
+		"InputIdentifier": "766",
+		"InputStack": 100,
+		"MinutesUntilReady": 1200,
+		"OutputIdentifier": "680",
+		"AdditionalOutputs": [
+			{
+				"OutputProbability": 0.05,
+				"OutputIdentifier": "439"
+			},
+			{
+				"OutputProbability": 0.095,
+				"OutputIdentifier": "437"
+			},
+			{
+				"OutputProbability": 0.21375,
+				"OutputIdentifier": "413"
+			}
+		],
+		"Sounds": ["slimeHit"],
+		"DelayedSounds":  [{"bubbles": 50}],
+		"PlacingAnimation": "Bubbles",
+		"PlacingAnimationColorName": "Lime",
+		"PlacingAnimationOffsetX": 0,
+		"PlacingAnimationOffsetY": -32
+	}
+]

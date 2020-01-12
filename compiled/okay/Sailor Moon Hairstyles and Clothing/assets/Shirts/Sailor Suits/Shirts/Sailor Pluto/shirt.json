@@ -1,0 +1,8 @@
+{
+    "Name": "Sailor Pluto",
+    "Description": "A stellar sleeveless sailor suit.",
+    "HasFemaleVariant": false,
+    "Price": 50,
+    "Dyeable": false,
+    "Metadata": "Sleeveless"
+}

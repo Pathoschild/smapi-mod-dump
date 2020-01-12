@@ -1,0 +1,140 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>SpriteMaster</AssemblyName>
+    <RootNamespace>SpriteMaster</RootNamespace>
+    <Version>0.10.5</Version>
+    <TargetFramework>net45</TargetFramework>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <EnableHarmony>true</EnableHarmony>
+    <AssemblyVersion>0.10.5.*</AssemblyVersion>
+		<Deterministic>false</Deterministic>
+		<LangVersion>preview</LangVersion>
+		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+		<Platforms>AnyCPU</Platforms>
+		<RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+		<RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+		<Authors>mkuklinski</Authors>
+		<Company>Digital Carbide</Company>
+		<PackageLicenseFile>LICENSE.MD</PackageLicenseFile>
+		<Copyright>mkuklinski</Copyright>
+		<FileVersion>0.10.5.0</FileVersion>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<NullableReferenceTypes>true</NullableReferenceTypes>
+    <FileAlignment>512</FileAlignment>
+    <NoWarn>0162;7035</NoWarn>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<OutputPath>bin\$(Configuration)_$(Platform)\</OutputPath>
+		<IgnoreModFilePatterns>\.dll\.config$, ILMerge, runtimes, net452, net450, net45</IgnoreModFilePatterns>
+		<Configurations>Debug;Release;Development</Configurations>
+		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+		<ApplicationIcon>pufferchick_xbrz.ico</ApplicationIcon>
+		<PackageId>SpriteMaster-SV</PackageId>
+		<Product>SpriteMaster-SV</Product>
+		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.0.0" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
+    <PackageReference Include="TeximpNet" Version="1.4.1" />
+    <PackageReference Include="Tomlyn" Version="0.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Management">
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Caching" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(SolutionDir)\LICENSE.MD">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)\Runtime\Runtime.csproj" />
+    <ProjectReference Include="$(SolutionDir)\xBRZNet\xBRZ.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Update="System.Core">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Update="System.Data">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Update="System">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Update="System.Drawing">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Update="System.IO.Compression.FileSystem">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Update="System.Numerics">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Update="System.Runtime.Serialization">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Update="System.Xml">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Update="System.Xml.Linq">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /D /V /Y /L $(SolutionDir)Libraries\nvtt.dll $(OutDir)nvtt.dll&#xD;&#xA;copy /D /V /Y /L $(SolutionDir)Libraries\libnvtt.so $(OutDir)libnvtt.so&#xD;&#xA;copy /D /V /Y /L $(SolutionDir)Libraries\libnvtt.dylib $(OutDir)libnvtt.dylib" />
+  </Target>
+
+</Project>

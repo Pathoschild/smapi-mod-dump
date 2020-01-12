@@ -1,0 +1,10 @@
+﻿{
+  "TeleportOnCooldown": "Je ne vais pas pouvoir me téléporter avant {{timeLeft}} minute(s)...",
+  "NotEnoughStamina": "Je n'ai pas assez d'endurance pour me téléporter...",
+  "CountDownMessage": "Téléportation dans {{timeLeft}}s!",
+  "TeleportationTrance": "Trance de téléportation",
+  "TeleportQuestion": "Retour au bercail?",
+  "TeleportBuffSource": "Téléportation",
+  "TeleportInterrupted": "Interrompu!",
+  "TeleportingNow": "C'est parti!"
+}

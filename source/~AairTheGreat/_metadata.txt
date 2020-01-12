@@ -5,11 +5,12 @@ mods:
    Better Garbage Cans
    Better Panning
    Better Train Loot
+   Fish Finder
 
 latest commit:
-   commit 50d30bab254eec3da4e7e7137f72899eb459320f
+   commit 733609191579a3c11115579985af4c319eb4a1d8
    Author: Aair the Great <a_aair@hotmail.com>
-   Date:   Wed Dec 4 21:13:43 2019 -0800
+   Date:   Fri Dec 27 13:20:45 2019 -0800
    
-       Updated to include new config setting for if you are in the desert
+       Updated readme file.
    

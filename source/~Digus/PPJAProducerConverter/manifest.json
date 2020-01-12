@@ -1,0 +1,13 @@
+﻿{
+  "Name": "PPJA Producer Converter",
+  "Author": "Digus",
+  "Version": "1.1.0",
+  "Description": "Replace old CRF PPJA machines with new JA ones.",
+  "UniqueID": "Digus.PPJAProducerConverter",
+  "EntryDll": "PPJAProducerConverter.dll",
+  "MinimumApiVersion": "3.0",
+  "Dependencies": [
+	  { "UniqueID": "Digus.ProducerFrameworkMod", "MinimumVersion": "1.0.0" }
+  ],
+  "UpdateKeys": [ "Nexus:4972" ]
+}

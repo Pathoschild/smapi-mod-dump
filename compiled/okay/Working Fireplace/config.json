@@ -1,4 +1,5 @@
 {
+  "warm_on_day_one": true,
   "wood_pieces": 5,
   "penalty": true,
   "need_fire_in_winter": true,

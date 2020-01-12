@@ -115,7 +115,7 @@ namespace ClimatesOfFerngillRebuild
             Monitor.Log($"Patching {GameLocationDAAFL} with Transpiler: {DAAFLTranspiler}", LogLevel.Trace); ;
             harmony.Patch(GameLocationDAAFL, transpiler: DAAFLTranspiler);
 			
-	    MethodInfo GameDrawW = AccessTools.Method(typeof(Game1), "drawWeather");
+	        MethodInfo GameDrawW = AccessTools.Method(typeof(Game1), "drawWeather");
             HarmonyMethod DrawWeatherPrefix = new HarmonyMethod(AccessTools.Method(typeof(Game1Patches), "DrawWeatherPrefix"));
             Monitor.Log($"Patching {GameDrawW} with Prefix: {DrawWeatherPrefix}", LogLevel.Trace); ;
             harmony.Patch(GameDrawW, prefix: DrawWeatherPrefix);
@@ -177,7 +177,6 @@ namespace ClimatesOfFerngillRebuild
             events.Display.RenderedHud += OnRenderedHud;
             events.Input.ButtonPressed += OnButtonPressed;
             events.Multiplayer.ModMessageReceived += OnModMessageRecieved;
-            // events.GameLoop.UpdateTicking += GameLoop_UpdateTicking;
 
             //console commands
             helper.ConsoleCommands
@@ -199,18 +198,6 @@ namespace ClimatesOfFerngillRebuild
             if (WeatherOpt.MaxRainFall > WeatherUtilities.GetRainCategoryUpperBound(RainLevels.NoahsFlood))
                 WeatherOpt.MaxRainFall = WeatherUtilities.GetRainCategoryUpperBound(RainLevels.NoahsFlood);
         }
-
-        /*
-        private void GameLoop_UpdateTicking(object sender, UpdateTickingEventArgs e)
-        {
-            if (Game1.locationRequest?.Location.IsOutdoors == true && !Game1.currentLocation.IsOutdoors && !(Conditions is null) && WeatherConditions.PreventGoingOutside(Conditions.AmtOfRainDrops) && !Game1.eventUp)
-            {
-                Game1.locationRequest = null;
-                Game1.fadeIn = false;
-                //Game1.player.forceCanMove();
-                Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("weather-stayinside"),3));
-            }
-        }*/
 
 
         private static int GetPixelZoom()
@@ -355,17 +342,17 @@ namespace ClimatesOfFerngillRebuild
             }
         }
 
-
-
         /// <summary>Raised before the game begins writes data to the save file (except the initial save creation).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void OnSaving(object sender, SavingEventArgs e)
         {
             if (!Context.IsMainPlayer) return;
+
             Conditions.OnSaving();           
-	    if (Conditions.trackerModel is null)
-	    	Conditions.trackerModel = new ClimateTracker();
+
+	        if (Conditions.trackerModel is null)
+	    	    Conditions.trackerModel = new ClimateTracker();
 	    
             this.Helper.Data.WriteSaveData("climate-tracker", Conditions.trackerModel);
             queuedMsg = WeatherProcessing.HandleOnSaving(Conditions, Dice); //handles crop death and any other weather conditions that need to be handled on save.
@@ -519,7 +506,7 @@ namespace ClimatesOfFerngillRebuild
 
             WeatherProcessing.OnNewDay();
             UpdateWeatherOnNewDay();
-            SetTommorowWeather();            
+            SetTomorrowWeather();            
                        
             WeatherSync message = Conditions.GenerateWeatherSyncMessage();
             MPHandler.SendMessage(message, "WeatherSync", modIDs: new[] { ModManifest.UniqueID });
@@ -538,7 +525,7 @@ namespace ClimatesOfFerngillRebuild
             return s;
         }
 
-        private void SetTommorowWeather()
+        private void SetTomorrowWeather()
         {
             //if tomorrow is a festival or wedding, we need to set the weather and leave.
             if (Utility.isFestivalDay(Game1.dayOfMonth + 1, Game1.currentSeason))

@@ -25,6 +25,7 @@ namespace BetterMixedSeeds
                     new Crop("Potato", true, 1),
                     new Crop("Rhubarb", true, 1),
                     new Crop("Rice", true, 1),
+                    new Crop("Spring Seeds", true, 1),
                     new Crop("Strawberry", true, 1),
                     new Crop("Tulip", true, 1)
                 }),
@@ -40,6 +41,7 @@ namespace BetterMixedSeeds
                     new Crop("Radish", true, 1),
                     new Crop("Red Cabbage", true, 1),
                     new Crop("Starfruit", true, 1),
+                    new Crop("Summer Seeds", true, 1),
                     new Crop("Summer Spangle", true, 1),
                     new Crop("Sunflower", true, 1),
                     new Crop("Tomato", true, 1),
@@ -55,6 +57,7 @@ namespace BetterMixedSeeds
                     new Crop("Corn", true, 1),
                     new Crop("Cranberries", true, 1),
                     new Crop("Eggplant", true, 1),
+                    new Crop("Fall Seeds", true, 1),
                     new Crop("Fairy Rose", true, 1),
                     new Crop("Grape", true, 1),
                     new Crop("Pumpkin", true, 1),
@@ -63,7 +66,10 @@ namespace BetterMixedSeeds
                     new Crop("Wheat", true, 1),
                     new Crop("Yam", true, 1)
                 }),
-            winter: null
+            winter: new Season(
+                new List<Crop> {
+                    new Crop("Winter Seeds", true, 1)
+                })
         );
 
         /// <summary>All the crops that are in the Fantasy Crops mod, by season, so the user can disable and choose the chance for each crop</summary>
@@ -483,6 +489,28 @@ namespace BetterMixedSeeds
             winter: null
         );
 
+        /// <summary>All the crops that are in the Fishs Flowers Compatibility Version mod, by season, so the user can disable and choose the chance for each crop</summary>
+        public CropMod FishsFlowersCompatibilityVersion { get; set; } = new CropMod
+        (
+            spring: new Season(
+                new List<Crop>
+                {
+                    new Crop("Grape Hyacinth", true, 1),
+                    new Crop("Pansy", true, 1)
+                }),
+            summer: new Season(
+                new List<Crop>
+                {
+                    new Crop("Pansy", true, 1)
+                }),
+            fall: new Season(
+                new List<Crop>
+                {
+                    new Crop("Pansy", true, 1)
+                }),
+            winter: null
+        );
+
         /// <summary>All the crops that are in the Stephans Lots of Crops mod, by season, so the user can disable and choose the chance for each crop</summary>
         public CropMod StephansLotsOfCrops { get; set; } = new CropMod
         (
@@ -758,6 +786,88 @@ namespace BetterMixedSeeds
                     new Crop("Currentcorn", true, 1),
                     new Crop("Diodia", true, 1),
                 })
+        );
+
+        /// <summary>All the crops that are in the iKeychain's Winter Lychee Plant mod, by season, so the user can disable and choose the chance for each crop</summary>
+        public CropMod IKeychainsWinterLycheePlant { get; set; } = new CropMod
+        (
+            spring: null,
+            summer: null,
+            fall: null,
+            winter: new Season(
+                new List<Crop>
+                {
+                    new Crop("Winter Lychee", true, 1)
+                })
+        );
+
+        /// <summary>All the crops that are in the Green Pear mod, by season, so the user can disable and choose the chance for each crop</summary>
+        public CropMod GreenPear { get; set; } = new CropMod
+        (
+            spring: null,
+            summer: new Season(
+                new List<Crop>
+                {
+                    new Crop("Green Pear", true, 1)
+                }),
+            fall: new Season(
+                new List<Crop>
+                {
+                    new Crop("Green Pear", true, 1)
+                }),
+            winter: null
+        );
+
+        /// <summary>All the crops that are in the Soda Vine mod, by season, so the user can disable and choose the chance for each crop</summary>
+        public CropMod SodaVine { get; set; } = new CropMod
+        (
+            spring: new Season(
+                new List<Crop>
+                {
+                    new Crop("Soda Vine", true, 1)
+                }),
+            summer: new Season(
+                new List<Crop>
+                {
+                    new Crop("Soda Vine", true, 1)
+                }),
+            fall: null,
+            winter: null
+        );
+
+        /// <summary>All the crops that are in the Spoopy Valley mod, by season, so the user can disable and choose the chance for each crop</summary>
+        public CropMod SpoopyValley { get; set; } = new CropMod
+        (
+            spring: new Season(
+                new List<Crop>
+                {
+                    new Crop("Amethyst Basil", true, 1),
+                    new Crop("Black Huckleberry", true, 1),
+                    new Crop("Black Mulberry", true, 1),
+                    new Crop("Black Velvet Petunia", true, 1),
+                    new Crop("Hungarian Chile", true, 1),
+                    new Crop("Kulli Corn", true, 1),
+                    new Crop("Queen of the Night Tulip", true, 1)
+                }),
+            summer: new Season(
+                new List<Crop>
+                {
+                    new Crop("Black Carrot", true, 1),
+                    new Crop("Black Goji Berry", true, 1),
+                    new Crop("Black Huckleberry", true, 1),
+                    new Crop("Black Magic Viola", true, 1),
+                    new Crop("Black Mulberry", true, 1),
+                    new Crop("Kulli Corn", true, 1)
+                }),
+            fall: new Season(
+                new List<Crop>
+                {
+                    new Crop("Black Huckleberry", true, 1),
+                    new Crop("Futsu Pumpkin", true, 1),
+                    new Crop("Indigo Rose Tomato", true, 1),
+                    new Crop("Purple Beauty Bell Pepper", true, 1)
+                }),
+            winter: null
         );
     }
 }

@@ -5,17 +5,9 @@ mods:
    Daily Screenshot
 
 latest commit:
-   commit fd2b0d02aa99b7d5e3c0a6c3c51778711e3a22d6
+   commit 580b3d538d93487d13bc207baba964da0c7cab32
    Author: Lauren Stephenson <compscilauren@gmail.com>
-   Date:   Thu Dec 12 11:13:04 2019 -0600
+   Date:   Wed Jan 1 14:17:16 2020 -0600
    
-       Add bug fix for patch 1.0.4 (#21)
-       
-       * Rename variable, simplify code
-       
-       * Update version number
-       
-       * Fix bug where path file can have wrong slash on Mac computers
-       
-       * Update readme
+       Update README.md
    

@@ -1,0 +1,41 @@
+Category: Items
+
+Tags:
+SMAPI
+Works with Stardew 1.3
+English
+
+Overview:
+Adds a craftable Sewing Machine and Dye Cabinet so that you can do tailoring at home. The items are added by Json Assets and sold by Robin once you have seen the event with Emily that unlocks tailoring.
+
+Permissions:
+This mod is released under [url=https://github.com/MouseyPounds/stardew-mods/blob/master/LICENSE]an MIT License[/url]. Although not required, the author would appreciate being informed of any derivative works which include or alter the mod or its assets.
+
+Credits:
+This mod uses only original assets and modifications of existing game assets.
+
+Details:
+[b]Description:
+
+[color=#ffff00]Home Sewing Kit[/color][/b] is a combination SMAPI mod & [url=https://www.nexusmods.com/stardewvalley/mods/1720]Json Assets[/url] Content Pack which adds a craftable Sewing Machine and Dye Cabinet so that you can do tailoring at home. The recipes are sold by Robin for 1000g each after Emily has visited you to unlock the Tailoring mechanic. Emily also sends you a mail reminder the next day, but you don't have to wait for it. After crafting and placing the Sewing Machine, interacting with the action button (Right Click for keyboard controls) will bring up the same Tailoring Menu that you get at Emily's Sewing Machine. Similarly, after crafting and placing the Dye Cabinet, interacting with the action button will bring up the "dye pot" menu if you are wearing anything dyeable.
+
+
+[b]Installation:[/b]
+[list=1]
+[*]Install the latest version of [url=https://smapi.io/]SMAPI[/url].
+[*]Install the latest version of [url=https://www.nexusmods.com/stardewvalley/mods/1720]Json Assets[/url].
+[*]Unzip the download and place the included [color=#b6d7a8][code]HomeSewingKit[/code][/color] folder into your [color=#b6d7a8][code]Mods[/code][/color] folder.
+[/list]
+
+
+[b]Compatibility:
+[/b]
+[list][*][b][color=#ffff00]Home Sewing Kit[/color][/b] requires [url=https://smapi.io]SMAPI[/url] version 3.0.0 or higher and should work with Stardew Valley 1.4.0 or higher. It also requires [url=https://www.nexusmods.com/stardewvalley/mods/1720]Json Assets[/url].
+[/list]
+
+
+
+
+[b]Source Code Repository:
+[/b]
+[url=https://github.com/MouseyPounds/stardew-mods/tree/master/Home%20Sewing%20Kit]GitHub[/url]

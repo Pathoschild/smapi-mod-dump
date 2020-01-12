@@ -107,8 +107,8 @@ namespace DeepWoodsMod
             return this.CurrentAnimation != null
                 && this.CurrentAnimation.Count == 6
                 && (this.CurrentAnimation[0].frame == 62 || this.CurrentAnimation[0].frame == 54 || this.CurrentAnimation[0].frame == 58)
-                && this.CurrentAnimation[1].frameBehavior != null
-                && this.CurrentAnimation[1].frameBehavior == Farmer.showItemIntake;
+                && this.CurrentAnimation[1].frameEndBehavior != null
+                && this.CurrentAnimation[1].frameEndBehavior == Farmer.showItemIntake;
         }
 
         private void FixCurrentAnimation()
@@ -129,7 +129,15 @@ namespace DeepWoodsMod
 
         private AnimationFrame FixAnimationFrame(AnimationFrame animationFrame)
         {
-            return new AnimationFrame(animationFrame.frame, animationFrame.milliseconds, animationFrame.secondaryArm, animationFrame.flip, FixAnimationFrameBehavior(animationFrame.frameBehavior), animationFrame.behaviorAtEndOfFrame);
+            return new AnimationFrame(animationFrame.frame, animationFrame.milliseconds)
+            {
+                positionOffset = animationFrame.positionOffset,
+                xOffset = animationFrame.xOffset,
+                secondaryArm = animationFrame.secondaryArm,
+                flip = animationFrame.flip,
+                frameStartBehavior = FixAnimationFrameBehavior(animationFrame.frameStartBehavior),
+                frameEndBehavior = FixAnimationFrameBehavior(animationFrame.frameEndBehavior)
+            };
         }
 
         private endOfAnimationBehavior FixAnimationFrameBehavior(endOfAnimationBehavior frameBehavior)

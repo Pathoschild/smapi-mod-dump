@@ -398,7 +398,7 @@ namespace TwilightShards.LunarDisturbances
                 if (Game1.viewport.Width < 700)
                     scale = Game1.pixelZoom * .35f;
 
-                Game1.spriteBatch.Draw(OurIcons.MoonSource, new Vector2(Game1.viewport.Width - 65 * Game1.pixelZoom, Game1.pixelZoom), OurIcons.GetNightMoonSprite(SDVMoon.GetLunarPhaseForDay(SDate.Now().AddDays(-1))), Color.LightBlue, 0.0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
+                Game1.spriteBatch.Draw(OurIcons.MoonSource, new Vector2(Game1.viewport.Width - 65 * Game1.pixelZoom, Game1.pixelZoom), Sprites.Icons.GetNightMoonSprite(SDVMoon.GetLunarPhaseForDay(SDate.Now().AddDays(-1))), Color.LightBlue, 0.0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
             }
         }
 

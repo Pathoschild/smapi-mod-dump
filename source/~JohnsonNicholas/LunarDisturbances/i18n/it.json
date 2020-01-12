@@ -1,0 +1,27 @@
+{
+  //Lunar Messages
+  "moon-text.phase-full": "Luna Piena",
+  "moon-text.phase-firstqrt": "Primo Quarto",
+  "moon-text.phase-thirdqrt": "Terzo Quarto",
+  "moon-text.phase-waningcres": "Mezzaluna Calante",
+  "moon-text.phase-waxingcres": "Mezzaluna Crescente",
+  "moon-text.phase-waninggibb": "Gibbosa Calante",
+  "moon-text.phase-waxinggibb": "Gibbosa Crescente",
+  "moon-text.phase-new": "Luna Nuova",
+  "moon-text.error": "Errore",
+  "moon-text.phase-blood": "Luna di Sangue",
+  
+  "moon-text.solareclipse": "Sembra che una rara eclissi solare renderà il cielo scuro per tutto il giorno!",
+
+  "moon-text.moonrise": "La luna sorge! La fase di oggi è {{moonPhase}}.",
+  "moon-text.moonriseBefore6": "La luna sorge! La fase di oggi è {{moonPhase}}. La luna è sorta alle {{riseTime}}",
+  "moon-text.moonset": "La luna tramonta! La fase di oggi è {{moonPhase}}",
+  "moon-text.hud_message_full": "È una luna piena! Le spiagge potrebbero avere più oggetti, ma potrebbero anche esserci dei fantasmi.",
+  "moon-text.hud_message_bloodMoon": "È una luna di sangue!! Stai attento, tutti gli abitanti saranno irritabili e ci saranno dei mostri in giro!",
+  "moon-text.hud_message_new": "È una luna nuova! Le spiagge potrebbero avere meno oggetti del normale...",
+  "moon-text.fullmoon_eff": "I poteri della luna piena hanno aiutato i raccolti: {{cropsAffected}} a crescere...",
+  "moon-text.newmoon_eff": "I poteri della luna nuova hanno causato ai raccolti: {{cropsAffected}} una crescita rallentata...",
+  "moon-desc.desc_moonphase": "Fase Lunare Attuale: {{moonPhase}}",
+
+  "moon-text.bloodmoon_villager_generic": "C'è la luna di sangue, perché stai parlando con me, sei pazzo?!"
+}

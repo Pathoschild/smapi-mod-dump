@@ -15,7 +15,7 @@ namespace ModSettingsTab
     {
         public const int Offset = 192;
 
-        public static bool NeedReload;
+        public static bool NeedReload = false;
 
         public static readonly Api Api;
 

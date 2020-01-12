@@ -1,6 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModSettingsTab", "ModSettingsTab\ModSettingsTab.csproj", "{E3A5F6A2-73B1-4360-AECA-B82AE7074FB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModSettingsTabApi", "IModTabSettingsApi\ModSettingsTabApi.csproj", "{E6BB97FC-AFCF-4283-9CFB-AC30C0B5E56D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +17,15 @@ Global
 		{E3A5F6A2-73B1-4360-AECA-B82AE7074FB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3A5F6A2-73B1-4360-AECA-B82AE7074FB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3A5F6A2-73B1-4360-AECA-B82AE7074FB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6BB97FC-AFCF-4283-9CFB-AC30C0B5E56D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6BB97FC-AFCF-4283-9CFB-AC30C0B5E56D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6BB97FC-AFCF-4283-9CFB-AC30C0B5E56D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6BB97FC-AFCF-4283-9CFB-AC30C0B5E56D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AB76D2C0-A2A1-4B8B-A720-60187B75C715}
 	EndGlobalSection
 EndGlobal

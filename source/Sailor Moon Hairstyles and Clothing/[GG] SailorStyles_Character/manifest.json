@@ -1,0 +1,13 @@
+{
+  "Name": "SailorStyles 3: Character",
+  "Author": "blueberry",
+  "Version": "3.1.0",
+  "Description": "Sailor Moon character options - hairstyles!",
+  "UniqueID": "blueberry.SailorStyles.Character",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:4154" ],
+  "ContentPackFor":
+  {
+    "UniqueID": "MartyrPher.GetGlam"
+  }
+}

@@ -361,7 +361,7 @@ namespace MTN2.Management {
             return new Vector2(POI.X * 64f, POI.Y * 64f);
         }
 
-        public Point GetMailbox(Farmer farmer)
+        public Point GetMailbox(Farmer farmer, bool Canon)
         {
             foreach (Building building in Game1.getFarm().buildings)
             {
@@ -370,7 +370,7 @@ namespace MTN2.Management {
                     return building.getMailboxPosition();
                 }
             }
-            return this.MailBox.ToPoint();
+            return (Canon) ? new Point(68, 16) : this.MailBox.ToPoint();
         }
 
         /// <summary>

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5131
+IDs: Blackclaw.ModListCommand
+update keys: Nexus:5131, GitHub:Xebeth/StardewValley-ListModsCommand

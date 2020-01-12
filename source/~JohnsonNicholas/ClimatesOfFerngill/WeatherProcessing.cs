@@ -115,8 +115,6 @@ namespace ClimatesOfFerngillRebuild
                 }
             }
 
-
-
             if (!ClimatesOfFerngill.WeatherOpt.HazardousWeather)
             {
                 if (ClimatesOfFerngill.WeatherOpt.Verbose)
@@ -139,6 +137,7 @@ namespace ClimatesOfFerngillRebuild
 
             if (currRain < 0) currRain = 0;
 
+            //notifications time
             if (currRain != prevRain && Game1.timeOfDay != 600 && showRain && !(Game1.currentLocation is Desert))
             {
                 if (WeatherUtilities.GetRainCategory(currRain) == RainLevels.None)
@@ -151,12 +150,7 @@ namespace ClimatesOfFerngillRebuild
                 {
                     if (WeatherUtilities.GetRainCategory(currRain) != WeatherUtilities.GetRainCategory(prevRain))
                     {
-                        Game1.addHUDMessage(new HUDMessage(Translation.Get("hud-text.CateIncrease", new { currRain, category = WeatherUtilities.DescRainCategory(currRain) })));
-                        return currRain;
-                    }
-                    else if (Math.Abs(currRain / prevRain) >= ClimatesOfFerngill.WeatherOpt.VRainNotifThreshold || ClimatesOfFerngill.WeatherOpt.Verbose)
-                    {
-                        Game1.addHUDMessage(new HUDMessage(Translation.Get("hud-text.Increase", new { currRain })));
+                        Game1.addHUDMessage(new HUDMessage(Translation.Get("hud-text.CateIncrease", new { rain = WeatherUtilities.GetUnitAmt(currRain), category = WeatherUtilities.DescRainCategory(currRain) })));
                         return currRain;
                     }
                 }
@@ -164,12 +158,7 @@ namespace ClimatesOfFerngillRebuild
                 {
                     if (WeatherUtilities.GetRainCategory(currRain) != WeatherUtilities.GetRainCategory(prevRain))
                     {
-                        Game1.addHUDMessage(new HUDMessage(Translation.Get("hud-text.CateDecrease", new { currRain, category = WeatherUtilities.DescRainCategory(currRain) })));
-                        return currRain;
-                    }
-                    else if (Math.Abs(currRain / prevRain) >= ClimatesOfFerngill.WeatherOpt.VRainNotifThreshold || ClimatesOfFerngill.WeatherOpt.Verbose)
-                    {
-                        Game1.addHUDMessage(new HUDMessage(Translation.Get("hud-text.Decrease", new { currRain })));
+                        Game1.addHUDMessage(new HUDMessage(Translation.Get("hud-text.CateDecrease", new { rain = WeatherUtilities.GetUnitAmt(currRain), category = WeatherUtilities.DescRainCategory(currRain) })));
                         return currRain;
                     }
                 }

@@ -1,9 +1,9 @@
 # Stardew Valley Mod - Better Ranching
-Stardew Valley mod that adds an icon above animals when they are ready to be milked/sheared or petted and prevents failing milking/shearing attempts: https://www.nexusmods.com/stardewvalley/mods/859/
+Stardew Valley mod that prevents doomed milking/shearing attempts and adds an indicator when animals can be petted, milked, or sheared: https://www.nexusmods.com/stardewvalley/mods/859/
 
-Compatible with Stardew Valley 1.3.31+ on Linux, Mac, and Windows. Requires SMAPI 2.8 or later.
+Compatible with Stardew Valley 1.4.3+ on Linux, Mac, and Windows. Requires SMAPI 3.0 or later.
 
-**New Update:** Pathoschild updated the mod to work with Stardew Valley 1.3.31 and SMAPI 2.8-- if you have an earlier version of Stardew (1.3.28 or below), you may need to grab an earlier version of the mod!
+**New Update:** I added the fix that the awesome minervamaga made to stop errors introduced in the last game update! I also fixed the bug that was causing dogs/cats to keep their heart icons even if the config setting was turned off. 
 
 ![Preview image](/better_ranching_preview.gif)
 
@@ -42,9 +42,16 @@ Compatible with Stardew Valley 1.3.31+ on Linux, Mac, and Windows. Requires SMAP
 * 1.7.1:
     * Updates the code for SMAPI 2.8 and Stardew Valley 1.3.31.
     * Adds update keys to the manifest.json and standardises the version format.
+* 1.7.2:
+    * Updated the code for SMAPI 3.0
+* 1.7.3:
+    * minervamaga made a fix for an error that was spamming the console
+* 1.7.4:
+    * Fixed a bug causing dogs/cats to keep their heart indicators even if the setting was turned off in the config
 
 <h2>Contributors</h2>
 
 * Urbanyeti -- https://github.com/urbanyeti
 * vaindil -- https://github.com/vaindil
 * Pathoschild -- https://github.com/Pathoschild
+* minervamaga -- https://github.com/minervamaga

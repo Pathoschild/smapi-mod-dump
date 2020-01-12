@@ -1,0 +1,10 @@
+{
+  "Name": "GoToBed",
+  "Author": "Candidus42",
+  "Version": "1.0.5",
+  "Description": "Farmer and spouse go to bed at the same time",
+  "UniqueID": "Candidus42.GoToBed",
+  "EntryDll": "GoToBed.dll",
+  "MinimumApiVersion": "3.0.1",
+  "UpdateKeys": [ "Nexus: 4967" ]
+}

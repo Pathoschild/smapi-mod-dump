@@ -2,6 +2,7 @@
   "HideOnKeyUp": false,
   "ScrollAmount": 160,
   "ProgressionMode": false,
+  "HighlightUnrevealedGiftTastes": false,
   "ShowDataMiningFields": false,
   "EnableTileLookups": false,
   "Controls": {

@@ -334,7 +334,7 @@ namespace CompostPestsCultivation
                 {
                     ApplyMode(false);
                 }
-                else if (!Composting.AffectedByCompost(vec) && farm.terrainFeatures.ContainsKey(vec) && farm.terrainFeatures[vec] is HoeDirt && Composting.ComposterCompostLeft[BinPos] > 0)
+                else if (farm.terrainFeatures.ContainsKey(vec) && farm.terrainFeatures[vec] is HoeDirt && Composting.ComposterCompostLeft.ContainsKey(BinPos) && Composting.ComposterCompostLeft[BinPos] > 0)
                 {
                     void apply()
                     {
@@ -350,7 +350,7 @@ namespace CompostPestsCultivation
 
                     if (Composting.CompostAppliedDays.ContainsKey(vec))
                     {
-                        if (Composting.CompostAppliedDays[vec] <= 0)
+                        if (Composting.CompostAppliedDays[vec] < Composting.config.compost_last_for_days)
                         {
                             Composting.CompostAppliedDays[vec] = Composting.config.compost_last_for_days;
                             apply();
@@ -366,7 +366,7 @@ namespace CompostPestsCultivation
                         apply();
                     }
                 }
-                else if (Composting.ComposterCompostLeft[BinPos] <= 0)
+                else if (!Composting.ComposterCompostLeft.ContainsKey(BinPos) || Composting.ComposterCompostLeft[BinPos] <= 0)
                 {
                     ShowError("composter.msg.error_no_compost_left");
                 }

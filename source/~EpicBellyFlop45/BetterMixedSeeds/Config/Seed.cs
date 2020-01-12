@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BetterMixedSeeds.Config
+﻿namespace BetterMixedSeeds.Config
 {
     /// <summary>The object that contains data for each seed</summary>
     public class Seed

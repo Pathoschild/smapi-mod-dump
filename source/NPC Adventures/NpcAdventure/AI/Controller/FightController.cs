@@ -324,6 +324,7 @@ namespace NpcAdventure.AI.Controller
                 if (criticalFist)
                 {
                     this.follower.currentLocation.playSound("clubSmash");
+                    this.ai.Csm.CompanionManager.Hud.GlowSkill("warrior", Color.Red, 1);
                 }
                 else
                 {

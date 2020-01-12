@@ -1,14 +1,20 @@
 ﻿{
    "Name": "Pressure Plate",
    "Author": "bcmpinc",
-   "Version": "2.0",
+   "Version": "2.4",
    "Description": "Adds a pressure plate that automatically opens and closes gates.",
    "UniqueID": "bcmpinc.PressurePlate",
    "EntryDll": "PressurePlate.dll",
-   "MinimumApiVersion": "3.0",
-   "UpdateKeys": ["Nexus:2738"],
+   "MinimumApiVersion": "3.0.1",
+   "UpdateKeys": [],
    "Dependencies": [{
       "UniqueID": "bcmpinc.StardewHack",
-      "MinimumVersion": "2.0"
+      "MinimumVersion": "2.4"
+   },{
+      "UniqueID": "Entoarox.EntoaroxFramework",
+      "MinimumVersion": "2.4.10"
+   },{
+      "UniqueID": "spacechase0.JsonAssets",
+      "MinimumVersion": "1.5.1"
    }]
 }

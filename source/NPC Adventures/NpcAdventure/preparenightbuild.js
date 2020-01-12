@@ -3,7 +3,7 @@
 
     const fs = require('fs');
 
-    let rawdata = fs.readFileSync('manifest.origin.json');
+    let rawdata = fs.readFileSync('manifest.json');
     let manifest = JSON.parse(rawdata.toString().trim());
     let oldVersion = manifest['Version'];
     let [base, suffix] = oldVersion.split('-');
@@ -13,7 +13,7 @@
         ++minor;
     }
 
-    let newVersion = `${major}.${minor}.0-${suffix || 'nightbuild'}.${commits || 0}.${hash}`;
+    let newVersion = `${major}.${minor}.0-nightbuild.${commits || 0}.${hash}`.replace("\n", "");
 
     console.log("Version in origin manifest:", oldVersion);
     console.log("Version described by git:", stdout);

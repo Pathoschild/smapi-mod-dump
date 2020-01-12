@@ -59,7 +59,7 @@ namespace AnimalHusbandryMod.tools
                 data1.CopyTo(data3, 0);
                 data2.CopyTo(data3, data1.Length);
 
-                newSpriteSheet.SetData(data3);
+                newSpriteSheet.SetData(0, new Rectangle(0, 0, originalWidth, originalHeight + meatCleaverlHeight), data3, 0, data3.Length);
 
                 asset.ReplaceWith(newSpriteSheet);
 
@@ -154,7 +154,7 @@ namespace AnimalHusbandryMod.tools
         private static void ReplaceIfOldItem(IList<Item> items, int i)
         {
             Item item = items[i];
-            if (item != null)
+            if (item?.Name != null)
             {
                 if (item.Name.Contains("ButcherMod.MeatCleaver"))
                 {
@@ -317,7 +317,7 @@ namespace AnimalHusbandryMod.tools
 
         private bool HasTool(Type toolClass)
         {
-            bool hasInInventory = Game1.player.Items.Any(toolClass.IsInstanceOfType) || Game1.player.Items.Any((i) => i != null && i.Name.Contains(toolClass.FullName));
+            bool hasInInventory = Game1.player.Items.Any(toolClass.IsInstanceOfType) || Game1.player.Items.Any((i) => i?.Name != null && i.Name.Contains(toolClass.FullName));
             return hasInInventory || Game1.locations.Any((location) =>
             {
                 if (location.objects.Values.ToList()
@@ -325,7 +325,7 @@ namespace AnimalHusbandryMod.tools
                     {
                         if (o is Chest chest)
                         {
-                            return chest.items.Any(toolClass.IsInstanceOfType) || chest.items.Any((i) => i != null && i.Name.Contains(toolClass.FullName));
+                            return chest.items.Any(toolClass.IsInstanceOfType) || chest.items.Any((i) => i?.Name != null && i.Name.Contains(toolClass.FullName));
                         }
                         return false;
                     }))
@@ -343,7 +343,7 @@ namespace AnimalHusbandryMod.tools
                                 {
                                     if (o is Chest chest)
                                     {
-                                        return chest.items.Any(toolClass.IsInstanceOfType) || chest.items.Any((i) => i != null && i.Name.Contains(toolClass.FullName));
+                                        return chest.items.Any(toolClass.IsInstanceOfType) || chest.items.Any((i) => i?.Name != null && i.Name.Contains(toolClass.FullName));
                                     }
                                     return false;
                                 }))

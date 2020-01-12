@@ -13,6 +13,7 @@ using static NpcAdventure.StateMachine.CompanionStateMachine;
 using NpcAdventure.Model;
 using Microsoft.Xna.Framework.Graphics;
 using NpcAdventure.Events;
+using NpcAdventure.HUD;
 
 namespace NpcAdventure
 {
@@ -22,6 +23,7 @@ namespace NpcAdventure
         private readonly HintDriver hintDriver;
         private readonly IMonitor monitor;
         public Dictionary<string, CompanionStateMachine> PossibleCompanions { get; }
+        public CompanionDisplay Hud { get; }
         public Config Config { get; }
 
         public Farmer Farmer
@@ -34,10 +36,11 @@ namespace NpcAdventure
             }
         }
 
-        public CompanionManager(DialogueDriver dialogueDriver, HintDriver hintDriver, Config config, IMonitor monitor)
+        public CompanionManager(DialogueDriver dialogueDriver, HintDriver hintDriver, CompanionDisplay hud, Config config, IMonitor monitor)
         {
             this.dialogueDriver = dialogueDriver ?? throw new ArgumentNullException(nameof(dialogueDriver));
             this.hintDriver = hintDriver ?? throw new ArgumentNullException(nameof(hintDriver));
+            this.Hud = hud;
             this.monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
             this.PossibleCompanions = new Dictionary<string, CompanionStateMachine>();
             this.Config = config;

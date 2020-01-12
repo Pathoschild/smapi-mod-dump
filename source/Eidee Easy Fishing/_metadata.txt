@@ -5,12 +5,11 @@ mods:
    Eidee Easy Fishing
 
 latest commit:
-   commit 6d459a4762eebfd69216411e7bdf2ef0741ca05f
+   commit 8f3db48c43a345e0afbbc1de0dfc9362de7c0fbf
    Author: eideehi <account@eidee.net>
-   Date:   Wed Dec 11 18:33:17 2019 +0900
+   Date:   Fri Dec 20 22:44:51 2019 +0900
    
-       Update 1.0.1
+       Update 1.0.2
        
-       Added AlwaysMaxCastPower config
-       Config reload keybinding can be changed
+       Fixed a bug that caused two legendary fish to be caught when SkipMinigame and AlwaysCaughtDoubleFish were enabled.
    

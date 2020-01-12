@@ -14,7 +14,6 @@ namespace MTN2.Patches
         public string Version { get; set; }
         public Dictionary<string, bool> EventPatch { get; set; }
         public Dictionary<string, bool> FarmPatch { get; set; }
-        public Dictionary<string, bool> FarmerPatch { get; set; }
         public Dictionary<string, bool> FarmHousePatch { get; set; }
         public Dictionary<string, bool> Game1Patch { get; set; }
         public Dictionary<string, bool> GameLocationPatch { get; set; }
@@ -39,9 +38,6 @@ namespace MTN2.Patches
                     { "LeftClick", true },
                     { "ResetLocalState", true },
                     { "UpdateWhenCurrentLocation", true},
-                };
-            newConfig.FarmerPatch = new Dictionary<string, bool> {
-                    { "getMailboxPosition", true }
                 };
             newConfig.FarmHousePatch = new Dictionary<string, bool> {
                     { "Constructor", true },

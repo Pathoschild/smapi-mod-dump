@@ -1,0 +1,102 @@
+		/*
+	public class SpriteBatch : GraphicsResource {
+		private struct SpriteInfo {
+			public Vector4 Source;
+
+			public Vector4 Destination;
+
+			public Vector2 Origin;
+
+			public float Rotation;
+
+			public float Depth;
+
+			public SpriteEffects Effects;
+
+			public Color Color;
+		}
+		 */
+
+
+			/*
+		private ref struct SpriteInfo {
+			private static readonly Type RealType;
+			private static readonly FieldInfo SourceInfo;
+			private static readonly FieldInfo DestinationInfo;
+			private static readonly FieldInfo OriginInfo;
+			private static readonly FieldInfo RotationInfo;
+			private static readonly FieldInfo DepthInfo;
+			private static readonly FieldInfo EffectsInfo;
+			private static readonly FieldInfo ColorInfo;
+
+			static SpriteInfo() {
+				RealType = typeof(SpriteBatch).GetNestedType("SpriteInfo", BindingFlags.NonPublic);
+				FieldInfo GetField(string name) {
+					return RealType.GetField(name, BindingFlags.Instance | BindingFlags.Public);
+				}
+				SourceInfo = GetField("Source");
+				DestinationInfo = GetField("Destination");
+				OriginInfo = GetField("Origin");
+				RotationInfo = GetField("Rotation");
+				DepthInfo = GetField("Depth");
+				EffectsInfo = GetField("Effects");
+				ColorInfo = GetField("Color");
+			}
+
+			private readonly object Reference;
+
+			public Vector4 Source {
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				readonly get => (Vector4)SourceInfo.GetValue(Reference);
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				set => SourceInfo.SetValue(Reference, value);
+			}
+
+			public Vector4 Destination {
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				readonly get => (Vector4)DestinationInfo.GetValue(Reference);
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				set => DestinationInfo.SetValue(Reference, value);
+			}
+
+			public Vector2 Origin {
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				readonly get => (Vector2)OriginInfo.GetValue(Reference);
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				set => OriginInfo.SetValue(Reference, value);
+			}
+
+			public float Rotation {
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				readonly get => (float)RotationInfo.GetValue(Reference);
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				set => RotationInfo.SetValue(Reference, value);
+			}
+
+			public float Depth {
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				readonly get => (float)DepthInfo.GetValue(Reference);
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				set => DepthInfo.SetValue(Reference, value);
+			}
+
+			public SpriteEffects Effects {
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				readonly get => (SpriteEffects)EffectsInfo.GetValue(Reference);
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				set => EffectsInfo.SetValue(Reference, value);
+			}
+
+			public Color Color {
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				readonly get => (Color)ColorInfo.GetValue(Reference);
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				set => ColorInfo.SetValue(Reference, value);
+			}
+
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			internal SpriteInfo(object reference) {
+				Reference = reference;
+			}
+		}
+		*/

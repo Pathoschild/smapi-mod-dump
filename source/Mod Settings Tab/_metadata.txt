@@ -5,9 +5,12 @@ mods:
    Mod Settings Tab
 
 latest commit:
-   commit 8a96367e879382fb258819ce3d288ed4e1e651eb
-   Author: Gilar Fasulaki <gilar.fasulaki@gmail.com>
-   Date:   Tue Dec 17 12:54:27 2019 +0200
+   commit 3c76948a96416ee8df9a7e8f4fc0b5b9a37159b3
+   Merge: 99d2575 60df2ef
+   Author: GilarF <gilar.fasulaki@gmail.com>
+   Date:   Fri Jan 3 15:02:03 2020 +0200
    
-       feat(schema): add json schema
+       Merge pull request #2 from Xebeth/feature/api-assembly
+       
+       Move the API classes and interfaces to a separate assembly
    

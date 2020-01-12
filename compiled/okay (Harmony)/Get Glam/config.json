@@ -1,0 +1,9 @@
+{
+  "OpenGlamMenuKey": "C",
+  "NewHatsIgnoreHair": false,
+  "DresserTableLocationX": 0,
+  "DresserTableLocationY": 0,
+  "DrawDresserInMenu": true,
+  "PatchDresserInFarmHouse": true,
+  "StoveInCorner": false
+}

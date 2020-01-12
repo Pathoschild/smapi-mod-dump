@@ -1,5 +1,9 @@
 ## Changelog
 
+### 1.5.6
+- Resolve improperly set categories causing errors on displaying descriptions (#85)
+- Spacing issues are fixed when retrieving rain category descriptors
+
 ### 1.5.5
 - The system will *properly* respect the config option for max rain
 - Default max rain is now 11k. 
@@ -8,6 +12,10 @@
 - Hazardous Weather will now block Torrential rain as well properly. (Resolves issue 75)
 - NRE fixed when farmhands attempt to perform checks on non loaded materials. (Resolves issue 64.)
 - System is readjusted to make high amounts of rain rarer... again. (Resolves issue 73.)
+- Resolved a typo in the description for weather (#83)
+- Rain amount increases only appear when the category changes (#80)
+- Rain amount popup now uses units properly (#79)
+- Some config settings that were unused were removed (#31, cont.)
 - internal tweaks to make the code base more legiible
 
 ### 1.5.4

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4922
+IDs: DigitalCarbide.SpriteMaster
+update keys: GitHub:ameisen/SV-SpriteMaster, Nexus:4922

@@ -72,6 +72,8 @@ namespace JsonAssets.Data
                     str += "/" + SkillUnlockName + " " + SkillUnlockLevel;
                 else
                     str += "/null";
+                if (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.en)
+                    str += "/" + parent.LocalizedName();
                 return str;
             }
 
@@ -106,6 +108,10 @@ namespace JsonAssets.Data
         public bool IsColored { get; set; } = false;
 
         public int Price { get; set; }
+
+        public bool CanTrash { get; set; } = true;
+        public bool CanSell { get; set; } = true;
+        public bool CanBeGifted { get; set; } = true;
 
         public Recipe_ Recipe { get; set; }
 

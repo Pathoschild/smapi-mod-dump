@@ -5,9 +5,11 @@ mods:
    What Are You Missing
 
 latest commit:
-   commit 3ea4b602da1abd6d9df0a410579d234b52fdeb3e
+   commit 7eff6f08fc6f4e56949aaa992c3049ab5bd7a0bc
    Author: Luke Seewald <lseewald@uwaterloo.ca>
-   Date:   Thu Nov 28 21:06:27 2019 -0500
+   Date:   Sun Dec 29 14:10:39 2019 -0500
    
-       Fixed the all fish tab so it just reads from the fish file. Also updated it to reflect the legen can only be caught once. Put the config option for setting the highest quality for a fish back in.
+       For 2.3.0
+       
+       just updated the manifest and the sln file
    

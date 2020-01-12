@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace FarmTypeManager.Monsters
 {
     /// <summary>A subclass of Stardew's SquidKid class, adjusted for use by this mod.</summary>
-    class SquidKidFTM : SquidKid
+    public class SquidKidFTM : SquidKid
     {
         /// <summary>Creates an instance of Stardew's SquidKid class, but with adjustments made for this mod.</summary>
         public SquidKidFTM()

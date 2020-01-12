@@ -1,0 +1,16 @@
+﻿{
+  "Name": "Breath of Fire 3 Fishing Sounds",
+  "Author": "Guedez",
+  "Version": "1.0.2",
+  "Description": "Changes the fishing sounds to BoF3's sounds",
+  "UniqueID": "bof.three.fishing.sounds",
+  "MinimumApiVersion": "3.0",
+  "EntryDll": "Bof3FishingSounds.dll",
+  "UpdateKeys": [ "Nexus:???" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Omegasis.SimpleSoundManager",
+      "IsRequired": true
+    }
+  ]
+}

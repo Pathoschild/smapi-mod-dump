@@ -42,6 +42,7 @@ namespace SpaceCore
 
             Commands.register();
             Skills.init(helper.Events);
+            TileSheetExtensions.init();
 
             harmony = HarmonyInstance.Create("spacechase0.SpaceCore");
 
@@ -81,6 +82,7 @@ namespace SpaceCore
             doPrefix(typeof(Multiplayer), nameof(Multiplayer.processIncomingMessage), typeof(MultiplayerPackets));
             doPrefix(typeof(GameLocation), nameof(GameLocation.performAction), typeof(ActionHook));
             doPrefix(typeof(GameLocation), nameof(GameLocation.performTouchAction), typeof(TouchActionHook));
+            doPostfix(typeof(GameLocation), nameof(GameLocation.explode), typeof(ExplodeHook));
             doPostfix(typeof(GameServer), nameof(GameServer.sendServerIntroduction), typeof(ServerGotClickHook));
             doPostfix(typeof(NPC), nameof(NPC.receiveGift), typeof(AfterGiftGivenHook));
             doPostfix(typeof(Game1), nameof(Game1.loadForNewGame), typeof(BlankSaveHook));

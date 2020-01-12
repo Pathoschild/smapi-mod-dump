@@ -170,13 +170,17 @@ namespace BetterRanching
 				DrawItemBubble(Game1.spriteBatch, farmAnimal);
 			}
 
-			foreach (NPC npc in currentLocation.characters)
+			if (Config.DisplayHearts)
 			{
-				if (npc is Pet pet)
+				foreach (NPC npc in currentLocation.characters)
 				{
-					DrawItemBubble(Game1.spriteBatch, pet);
+					if (npc is Pet pet)
+					{
+						DrawItemBubble(Game1.spriteBatch, pet);
+					}
 				}
 			}
+
 		}
 
 		public void DrawItemBubble(SpriteBatch spriteBatch, FarmAnimal animal)
@@ -245,7 +249,7 @@ namespace BetterRanching
 		public void DrawItemBubble(SpriteBatch spriteBatch, Pet pet)
 		{
 			Rectangle? sourceRectangle = new Rectangle(218, 428, 7, 6);
-			bool wasPet = (bool)typeof(Pet).GetField("wasPetToday", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(pet);
+			bool wasPet = pet.lastPetDay.Values.Any(day => day == Game1.Date.TotalDays);
 			if (!wasPet)
 			{
 				float num = (float)(4.0 * Math.Round(Math.Sin(DateTime.Now.TimeOfDay.TotalMilliseconds / 250.0), 2)) - (Game1.tileSize * 1 / 2);

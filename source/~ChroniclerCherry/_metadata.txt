@@ -2,14 +2,18 @@ url:
    https://github.com/ChroniclerCherry/stardew-valley-mods.git
 
 mods:
+   Catalogues Anywhere
    Customize Anywhere
+   Hay Bales as Silos
+   Limited Campfire Cooking
    Platonic Relationships
    Profit Margins
+   Shop Tile Framework
 
 latest commit:
-   commit 474fa14196b0b71c522c6f11ac6926b16904019b
-   Author: Cherry <yiminxuezheng@gmail.com>
-   Date:   Mon Dec 2 19:37:36 2019 -0500
+   commit 3a60e54b1817069d906e10987eb5c655a2332442
+   Author: Yiminxue Zheng <33401364+ChroniclerCherry@users.noreply.github.com>
+   Date:   Fri Jan 10 15:49:10 2020 -0500
    
-       Changed source to Wizard to hopefully stop odd unrelated behaviour related to character creation
+       Update README.md
    

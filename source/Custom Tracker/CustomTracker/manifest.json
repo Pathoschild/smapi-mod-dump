@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Custom Tracker",
+  "Author": "Esca",
+  "Version": "1.0.0",
+  "Description": "Replaces the Tracker profession's cursor with a customizable image",
+  "UniqueID": "Esca.CustomTracker",
+  "EntryDll": "CustomTracker.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": ["Nexus:5108", "GitHub:Esca-MMC/CustomTracker", "ModDrop:706059"]
+}

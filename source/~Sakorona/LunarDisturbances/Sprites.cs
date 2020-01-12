@@ -31,7 +31,7 @@ namespace TwilightShards.LunarDisturbances
                 source2 = Game1.mouseCursors;
             }
 
-            public Rectangle GetNightMoonSprite(MoonPhase currPhase)
+            public static Rectangle GetNightMoonSprite(MoonPhase currPhase)
             {
                 switch (currPhase)
                 {
@@ -58,7 +58,7 @@ namespace TwilightShards.LunarDisturbances
                 return Icons.NewMoon;
             }
 
-            public Rectangle GetMoonSprite(MoonPhase moon)
+            public static Rectangle GetMoonSprite(MoonPhase moon)
             {
                 if (moon == MoonPhase.FirstQuarter)
                     return Icons.FirstQuarter;

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Trash Remover",
+  "Author": "Sorry Late",
+  "Version": "1.0",
+  "Description": "Remove all trash in your invetory with 1 click.",
+  "UniqueID": "SorryLate.TrashRemover",
+  "EntryDll": "Trash Remover.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:5114" ]
+}

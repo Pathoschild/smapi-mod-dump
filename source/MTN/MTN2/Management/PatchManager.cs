@@ -1,7 +1,6 @@
 ﻿using Harmony;
 using MTN2.Patches;
 using MTN2.Patches.EventPatches;
-using MTN2.Patches.FarmerPatch;
 using MTN2.Patches.FarmHousePatches;
 using MTN2.Patches.FarmPatches;
 using MTN2.Patches.Game1Patches;
@@ -49,7 +48,6 @@ namespace MTN2.Management
             ImpInitialize(patchConfig.FarmPatch["LeftClick"], "Farm", "leftClick", new leftClickPatch(customManager), typeof(leftClickPatch));
             ImpInitialize(patchConfig.FarmPatch["ResetLocalState"], "Farm", "resetLocalState", new resetLocalStatePatch(customManager), typeof(resetLocalStatePatch));
             ImpInitialize(patchConfig.FarmPatch["UpdateWhenCurrentLocation"], "Farm", "UpdateWhenCurrentLocation", new UpdateWhenCurrentLocationPatch(customManager), typeof(UpdateWhenCurrentLocationPatch));
-            ImpInitialize(patchConfig.FarmerPatch["getMailboxPosition"], "Farmer", "getMailboxPosition", new GetMailboxPositionPatch(customManager), typeof(GetMailboxPositionPatch));
             ImpInitialize(patchConfig.FarmHousePatch["Constructor"], "Locations.FarmHouse", "", new ConstructorFarmHousePatch(customManager), typeof(ConstructorFarmHousePatch), new Type[] { typeof(string), typeof(string) });
             ImpInitialize(patchConfig.FarmHousePatch["GetPorchStandingSpot"], "Locations.FarmHouse", "GetPorchStandingSpot", new getPorchStandingSpotPatch(customManager), typeof(getPorchStandingSpotPatch));
             ImpInitialize(patchConfig.FarmHousePatch["UpdateMap"], "Locations.FarmHouse", "updateMap", new updateMapPatch(customManager), typeof(updateMapPatch));

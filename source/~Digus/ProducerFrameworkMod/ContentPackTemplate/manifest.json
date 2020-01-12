@@ -1,0 +1,17 @@
+﻿{
+	"Name": "[PFM] Name of you pack",
+	"Author": "Your name",
+	"Version": "1.0.0",
+	"Description": "Adds producing rules for my mod.",
+	"UniqueID": "YourName.YouPackNameForProducerFrameworkMod",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [],
+	"Dependencies": [
+		{
+			"UniqueID": "YourName.YourOthersPacksAndMods"
+		}
+	],
+	"ContentPackFor": {
+		"UniqueID": "DIGUS.ProducerFrameworkMod"
+	}
+}

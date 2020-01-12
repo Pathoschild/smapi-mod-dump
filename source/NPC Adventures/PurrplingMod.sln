@@ -14,6 +14,8 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
+		Nightbuild|Any CPU = Nightbuild|Any CPU
+		Nightbuild|x86 = Nightbuild|x86
 		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
@@ -22,6 +24,10 @@ Global
 		{644E8E3D-1F60-4742-8E8C-655652D44615}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{644E8E3D-1F60-4742-8E8C-655652D44615}.Debug|x86.ActiveCfg = Debug|x86
 		{644E8E3D-1F60-4742-8E8C-655652D44615}.Debug|x86.Build.0 = Debug|x86
+		{644E8E3D-1F60-4742-8E8C-655652D44615}.Nightbuild|Any CPU.ActiveCfg = Nightbuild|Any CPU
+		{644E8E3D-1F60-4742-8E8C-655652D44615}.Nightbuild|Any CPU.Build.0 = Nightbuild|Any CPU
+		{644E8E3D-1F60-4742-8E8C-655652D44615}.Nightbuild|x86.ActiveCfg = Nightbuild|x86
+		{644E8E3D-1F60-4742-8E8C-655652D44615}.Nightbuild|x86.Build.0 = Nightbuild|x86
 		{644E8E3D-1F60-4742-8E8C-655652D44615}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{644E8E3D-1F60-4742-8E8C-655652D44615}.Release|Any CPU.Build.0 = Release|Any CPU
 		{644E8E3D-1F60-4742-8E8C-655652D44615}.Release|x86.ActiveCfg = Release|x86

@@ -68,10 +68,14 @@
   <ItemGroup>
     <Compile Include="Commands.cs" />
     <Compile Include="ContentPack\Attachment.cs" />
+    <Compile Include="ContentPack\Collection.cs" />
+    <Compile Include="ContentPack\CollectionCondition.cs" />
+    <Compile Include="ContentPack\StardewStats.cs" />
     <Compile Include="ContentPack\FriendshipCondition.cs" />
     <Compile Include="ContentPack\ItemType.cs" />
     <Compile Include="ContentPack\Skill.cs" />
     <Compile Include="ContentPack\SkillCondition.cs" />
+    <Compile Include="ContentPack\StatsCondition.cs" />
     <Compile Include="DataLoader.cs" />
     <Compile Include="Letter.cs" />
     <Compile Include="LetterViewerMenuExtended.cs" />

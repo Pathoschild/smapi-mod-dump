@@ -32,9 +32,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit cb6eac49e61dfca43649d71a2da8931b49c07021
+   commit 04a95dffb922a6b23ef8fa0e01c1214bb7cb29e4
    Author: danvolchek <danvnad@gmail.com>
-   Date:   Tue Dec 17 21:38:47 2019 -0800
+   Date:   Wed Dec 18 22:09:25 2019 -0800
    
-       [Safe Lightning] add back in API, update the patch properly this time.
+       [Hats on Cats] add readmes
    

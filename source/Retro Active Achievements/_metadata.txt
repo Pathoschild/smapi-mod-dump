@@ -1,0 +1,13 @@
+url:
+   https://github.com/ManApart/RetroActiveAchievements.git
+
+mods:
+   Retro Active Achievements
+
+latest commit:
+   commit 19c3fd1763c3754549b1237d979ab690ca9282e4
+   Author: ManApart <raustinkucera@gmail.com>
+   Date:   Mon Dec 23 21:58:31 2019 -0500
+   
+       add readme
+   

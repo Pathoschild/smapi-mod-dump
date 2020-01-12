@@ -318,15 +318,13 @@ namespace ModSettingsTab.Menu
                 sideTab.draw(b);
             if (ModData.NeedReload && ModData.Config.ShowReloadIcon) _reloadIndicator.draw(b);
             b.End();
-            b.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp,
-                null, null, null, new Matrix?());
+            b.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null);
             if (_currentTab < _sideTabs.Count)
                 _pagesCollections[_currentTab].draw(b);
             else
                 _favoritePagesCollections[_currentTab - _sideTabs.Count].draw(b);
             b.End();
-            b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,
-                null, null, new Matrix?());
+            b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
             if (_hoverText.Equals(""))
                 return;
             drawHoverText(b, _hoverText, Game1.smallFont, 0, 0, _value);

@@ -1586,21 +1586,37 @@
 										<tr>
 											<td>
 												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-MineRock1" value="Mine Rock 1">
-												<label for="LargeObject-ObjectTypes-MineRock1" class="small-checkbox-label">Mine Rock 1</label>
+												<label for="LargeObject-ObjectTypes-MineRock1" class="small-checkbox-label">Mine&nbspRock&nbsp1</label>
 											</td>
 											<td>
 												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-MineRock2" value="Mine Rock 2">
-												<label for="LargeObject-ObjectTypes-MineRock2" class="small-checkbox-label">Mine Rock 2</label>
+												<label for="LargeObject-ObjectTypes-MineRock2" class="small-checkbox-label">Mine&nbspRock&nbsp2</label>
 											</td>
 										</tr>
 										<tr>
 											<td>
 												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-MineRock3" value="Mine Rock 3">
-												<label for="LargeObject-ObjectTypes-MineRock3" class="small-checkbox-label">Mine Rock 3</label>
+												<label for="LargeObject-ObjectTypes-MineRock3" class="small-checkbox-label">Mine&nbspRock&nbsp3</label>
 											</td>
 											<td>
 												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-MineRock4" value="Mine Rock 4">
-												<label for="LargeObject-ObjectTypes-MineRock4" class="small-checkbox-label">Mine Rock 4</label>
+												<label for="LargeObject-ObjectTypes-MineRock4" class="small-checkbox-label">Mine&nbspRock&nbsp4</label>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-GiantCauliflower" value="Giant Cauliflower">
+												<label for="LargeObject-ObjectTypes-GiantCauliflower" class="small-checkbox-label">Giant&nbspCauliflower</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-GiantMelon" value="Giant Melon">
+												<label for="LargeObject-ObjectTypes-GiantMelon" class="small-checkbox-label">Giant&nbspMelon</label>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-GiantPumpkin" value="Giant Pumpkin">
+												<label for="LargeObject-ObjectTypes-GiantPumpkin" class="small-checkbox-label">Giant&nbspPumpkin</label>
 											</td>
 										</tr>
 									</table>
@@ -4190,34 +4206,39 @@
 				
 				<div class="setting" id="OtherOptions-FC-FarmTypes-Div" style="max-width:700px">
 					<fieldset class="border">
-					<legend>Farm types<span class="tooltip">?<span class="tooltiptext">This config file will only apply to players using the selected farm types.<br/><br/>Leaving this blank will <b>not</b> disable the config; it's the same as selecting every farm type.</span></span></legend>
-						<table class="checkboxes">
+					<legend>Farm types<span class="tooltip">?<span class="tooltiptext">This config file will only apply to players using the selected farm types.<br/><br/>Leaving this blank will <b>not</b> disable the config; it's the same as selecting every farm type.<br/><br/>To include custom farm types from other mods, use its "whichFarm" value (e.g. for MTN farms, use the ID from farmType.json).</span></span></legend>
+						<table class="list-left">
 							<tr>
 								<td>
-									<input type="checkbox" class="small" name="OtherOptions-FC-FarmTypes" id="OtherOptions-FC-FarmTypes-Standard" value="Standard">
-									<label for="OtherOptions-FC-FarmTypes-Standard" class="small-checkbox-label">Standard</label>
-								</td>
-								<td>
-									<input type="checkbox" class="small" name="OtherOptions-FC-FarmTypes" id="OtherOptions-FC-FarmTypes-Riverland" value="Riverland">
-									<label for="OtherOptions-FC-FarmTypes-Riverland" class="small-checkbox-label">Riverland</label>
-								</td>
-								<td>
-									<input type="checkbox" class="small" name="OtherOptions-FC-FarmTypes" id="OtherOptions-FC-FarmTypes-Forest" value="Forest">
-									<label for="OtherOptions-FC-FarmTypes-Forest" class="small-checkbox-label">Forest</label>
+									<select size="6" id="OtherOptions-FC-FarmTypes" style="width:8em">
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<input type="checkbox" class="small" name="OtherOptions-FC-FarmTypes" id="OtherOptions-FC-FarmTypes-Hilltop" value="Hilltop">
-									<label for="OtherOptions-FC-FarmTypes-Hilltop" class="small-checkbox-label">Hilltop</label>
+									<button class="basic" id="OtherOptions-FC-FarmTypes-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
 								</td>
+							</tr>
+						</table>
+						<table class="list-right">
+							<tr>
 								<td>
-									<input type="checkbox" class="small" name="OtherOptions-FC-FarmTypes" id="OtherOptions-FC-FarmTypes-Wilderness" value="Wilderness">
-									<label for="OtherOptions-FC-FarmTypes-Wilderness" class="small-checkbox-label">Wilderness</label>
+									<label for="OtherOptions-FC-FarmTypes-Add"></label>
+									<select name="OtherOptions-FC-FarmTypes-Add" id="OtherOptions-FC-FarmTypes-Add" style="width:10em" onchange="if(this.options[this.selectedIndex].value=='custom'){toggleField(this,this.nextSibling); this.selectedIndex='0';}">
+									<option></option>
+									<option value="custom">[Add Farm Type ID]</option>
+									<option>Standard</option>
+									<option>Riverland</option>
+									<option>Forest</option>
+									<option>Hilltop</option>
+									<option>Wilderness</option>
+									<option>Four Corners</option>
+									<input type="number" name="OtherOptions-FC-FarmTypes-Add" id="OtherOptions-FC-FarmTypes-Add-Custom" style="width:10em; display:none" disabled="disabled" onblur="if(this.value==''){toggleField(this,this.previousSibling);}">
+								</select>
 								</td>
-								<td>
-									<input type="checkbox" class="small" name="OtherOptions-FC-FarmTypes" id="OtherOptions-FC-FarmTypes-FourCorners" value="FourCorners">
-									<label for="OtherOptions-FC-FarmTypes-FourCorners" class="small-checkbox-label">Four&nbsp;Corners</label>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<button class="basic" id="OtherOptions-FC-FarmTypes-AddButton" onclick="buttonAddSelectOrCustom(this)">Add Type</button>
 								</td>
 							</tr>
 						</table>
@@ -4333,7 +4354,7 @@
 					</fieldset>
 				</div>
 			
-				<div class="setting" style="max-width:600px">
+				<div class="setting" style="max-width:600px; padding-top:1em">
 					<fieldset class="border">
 					<legend>Tiles used by the "Quarry" terrain type<span class="tooltip">?<span class="tooltiptext">This is a list of spritesheet index numbers for tiles. It can be used to edit the "Quarry" spawn setting.<br/><br/>To find a tile's number, stand on it and type <b>whereami</b> in SMAPI's console. Use the "tile image index" number.<br/><br/>Note: Many maps use different tilesheet images, so these numbers might not work on multiple maps at once. Advanced users only!</span></span></legend>
 						<table class="list-left">
@@ -5332,52 +5353,12 @@
 			}
 			
 			//load "other options" settings
-			document.getElementById("OtherOptions-FC-FarmTypes-Standard").checked = false; //default to false
-			document.getElementById("OtherOptions-FC-FarmTypes-Riverland").checked = false;
-			document.getElementById("OtherOptions-FC-FarmTypes-Forest").checked = false;
-			document.getElementById("OtherOptions-FC-FarmTypes-Hilltop").checked = false;
-			document.getElementById("OtherOptions-FC-FarmTypes-Wilderness").checked = false;
-			document.getElementById("OtherOptions-FC-FarmTypes-FourCorners").checked = false;
-			
+			document.getElementById("OtherOptions-FC-FarmTypes").options.length = 0;
 			for (var x = 0; x < json.File_Conditions.FarmTypes.length; x++) //for each loaded farm type
 			{
-				switch (json.File_Conditions.FarmTypes[x].toUpperCase())
-				{
-					case "STANDARD":
-					case "DEFAULT":
-					case "NORMAL":
-						document.getElementById("OtherOptions-FC-FarmTypes-Standard").checked = true;
-						break;
-					case "RIVERLAND":
-					case "FISHING":
-					case "FISH":
-						document.getElementById("OtherOptions-FC-FarmTypes-Riverland").checked = true;
-						break;
-					case "FOREST":
-					case "FORAGING":
-					case "FORAGE":
-					case "WOODLAND":
-						document.getElementById("OtherOptions-FC-FarmTypes-Forest").checked = true;
-						break;
-					case "HILL-TOP":
-					case "HILLTOP":
-					case "MINING":
-					case "MINE":
-						document.getElementById("OtherOptions-FC-FarmTypes-Hilltop").checked = true;
-						break;
-					case "WILDERNESS":
-					case "COMBAT":
-					case "MONSTER":
-						document.getElementById("OtherOptions-FC-FarmTypes-Wilderness").checked = true;
-						break;
-					case "FOUR CORNERS":
-					case "FOURCORNERS":
-					case "FOUR":
-					case "CORNERS":
-					case "FC":
-						document.getElementById("OtherOptions-FC-FarmTypes-FourCorners").checked = true;
-						break;
-				}
+				var option = document.createElement("option");
+				option.text = json.File_Conditions.FarmTypes[x];
+				document.getElementById("OtherOptions-FC-FarmTypes").add(option);
 			}
 			
 			document.getElementById("OtherOptions-FC-FarmerNames").options.length = 0;
@@ -5549,12 +5530,16 @@
 			//store "other options" settings
 			json.File_Conditions.FarmTypes = [];
 			var types = document.getElementsByName("OtherOptions-FC-FarmTypes");
-			for (var x = 0; x < types.length; x++) //for each farm type condition checkbox
+			for (var x = 0; x < document.getElementById("OtherOptions-FC-FarmTypes").options.length; x++) //for each farm type condition
 			{
-				if (types[x].checked)
+				var text = document.getElementById("OtherOptions-FC-FarmTypes").options[x].text;
+
+				if (isNaN(parseInt(text)) == false) //if this is a number, i.e. a custom farm type ID
 				{
-					json.File_Conditions.FarmTypes.push(types[x].value);
+					text = parseInt(text); //parse it as a number
 				}
+
+				json.File_Conditions.FarmTypes.push(text);
 			}
 			
 			json.File_Conditions.FarmerNames = [];
@@ -7753,6 +7738,39 @@
 			select.add(option);
 			
 			input.value = ""; //clear the input field
+		}
+
+		//add an entry to a list from a "select or custom text" element
+		function buttonAddSelectOrCustom(addButton)
+		{
+			var selectList = document.getElementById(addButton.id.replace("-AddButton", "")); //get the item list
+			var input = document.getElementById(addButton.id.replace("-AddButton", "-Add")); //get the input field
+			var text; //get the input text
+
+			if (input.selectedIndex < 2) //if blank/custom option is selected
+			{
+				text = document.getElementById(addButton.id.replace("-AddButton", "-Add-Custom")).value; //use the custom text field
+			}
+			else //if a normal option is selected
+			{
+				text = input.options[input.selectedIndex].text; //use the selected option
+			}
+			
+			//validate input
+			text = text.trim(); //trim whitespace from both ends
+			if (text == null || text == "") //if null or blank
+			{
+				return; //do nothing
+			}
+			
+			//create a new option with the validated text & add it to the list
+			var option = document.createElement("option");
+			option.text = text;
+			selectList.add(option);
+			
+			document.getElementById(input.id.replace("-Add", "-Add-Custom")).value = ""; //clear the custom text field
+			toggleField(input.nextSibling, input); //toggle visibility back to the select element
+			input.selectedIndex = 0; //reset the select index
 		}
 		
 		//add coordinates to an IncludeCoordinates/ExcludeCoordinates list

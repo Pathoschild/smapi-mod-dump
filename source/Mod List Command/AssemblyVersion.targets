@@ -1,0 +1,77 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ImportGroup Label="AssemblyVersion" />
+  	<PropertyGroup Label="AssemblyInfo">
+		<In>$([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)\Properties\AssemblyInfo.cs'))</In>
+		<!-- ex:                 [assembly: AssemblyDescription("")] -->
+		<DescriptionPattern>^\s*\[assembly: AssemblyDescription\("(?'Desc'.*)"\)\]</DescriptionPattern>
+		<!-- ex:             [assembly: AssemblyDescription("")] -->
+		<CompanyPattern>^\s*\[assembly: AssemblyCompany\("(?'Company'.*)"\)\]</CompanyPattern>
+		<!-- ex:           [assembly: AssemblyTitle("")] -->
+		<TitlePattern>^\s*\[assembly: AssemblyTitle\("(?'Title'.*)"\)\]</TitlePattern>
+		<!-- ex:             [assembly: AssemblyProduct("")] -->
+		<ProductPattern>^\s*\[assembly: AssemblyProduct\("(?'Product'.*)"\)\]</ProductPattern>
+		<!-- ex:                   [assembly: AssemblyConfiguration("")] -->
+		<ConfigurationPattern>^\s*\[assembly: AssemblyConfiguration\("(?'Config'.*)"\)\]</ConfigurationPattern>
+		<!-- ex:		  [assembly: Guid("0a113b3f-75f2-4da2-97a1-5c42b03f9f61")] -->
+		<!--              [assembly: Guid ("         0a113b3f     - 75f2         - 4da2         - 97a1         - 5c42b03f9f61")] -->
+		<GuidPattern>^\s*\[assembly: Guid\("(?'Guid'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})"\)\]</GuidPattern>
+		<!-- ex:             [assembly: AssemblyVersion("1.0.0.0")] -->
+		<!--                 [assembly: AssemblyVersion ("  1   .  0   .  0  .  0  " ) ] -->
+		<VersionPattern>^\s*\[assembly: AssemblyVersion\("(?'Major'[\d]+)\.(?'Minor'[\d]+)\.(?:(?'Build'[\d]+))?(?:\.(?'Revision'[^"]+)"\))?\]</VersionPattern>
+		<!-- ex:                 [assembly: AssemblyFileVersion("1.0.0.0")] -->
+		<!--                     [assembly: AssemblyFileVersion ("  1   .  0   .  0  .  0  " ) ] -->
+		<FileVersionPattern>^\s*\[assembly: AssemblyFileVersion\("(?'Major'[\d]+)\.(?'Minor'[\d]+)(?:\.(?'Build'[\d]+))?(?:\.(?'Revision'[^"]+)"\))?\]</FileVersionPattern>
+
+		<AssemblyVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(In),    $(VersionPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Major"].Value)</AssemblyVersionMajor>
+		<AssemblyVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(In),    $(VersionPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Minor"].Value)</AssemblyVersionMinor>
+		<AssemblyVersionBuild>$([System.Text.RegularExpressions.Regex]::Match($(In),    $(VersionPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Build"].Value)</AssemblyVersionBuild>
+		<AssemblyVersionRevision>$([System.Text.RegularExpressions.Regex]::Match($(In), $(VersionPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Revision"].Value)</AssemblyVersionRevision>
+		<AssemblyFullVersion>$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionBuild).$(AssemblyVersionRevision)</AssemblyFullVersion>
+
+		<AssemblyFileVersionMajor>$([System.Text.RegularExpressions.Regex]::Match($(In),    $(FileVersionPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Major"].Value)</AssemblyFileVersionMajor>
+		<AssemblyFileVersionMinor>$([System.Text.RegularExpressions.Regex]::Match($(In),    $(FileVersionPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Minor"].Value)</AssemblyFileVersionMinor>
+		<AssemblyFileVersionBuild>$([System.Text.RegularExpressions.Regex]::Match($(In),    $(FileVersionPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Build"].Value)</AssemblyFileVersionBuild>
+		<AssemblyFileVersionRevision>$([System.Text.RegularExpressions.Regex]::Match($(In), $(FileVersionPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Revision"].Value)</AssemblyFileVersionRevision>
+		<AssemblyFileFullVersion>$(AssemblyFileVersionMajor).$(AssemblyFileVersionMinor).$(AssemblyFileVersionBuild).$(AssemblyFileVersionRevision)</AssemblyFileFullVersion>
+		
+		<AssemblyGuid>$([System.Text.RegularExpressions.Regex]::Match($(In),          $(GuidPattern),          System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Guid"].Value)</AssemblyGuid>
+		<AssemblyTitle>$([System.Text.RegularExpressions.Regex]::Match($(In),         $(TitlePattern),         System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Title"].Value)</AssemblyTitle>
+		<AssemblyProduct>$([System.Text.RegularExpressions.Regex]::Match($(In),       $(ProductPattern),       System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Product"].Value)</AssemblyProduct>
+		<AssemblyCompany>$([System.Text.RegularExpressions.Regex]::Match($(In),       $(CompanyPattern),       System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Company"].Value)</AssemblyCompany>
+		<AssemblyDescription>$([System.Text.RegularExpressions.Regex]::Match($(In),   $(DescriptionPattern),   System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Desc"].Value)</AssemblyDescription>
+		<AssemblyConfiguration>$([System.Text.RegularExpressions.Regex]::Match($(In), $(ConfigurationPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["Config"].Value)</AssemblyConfiguration>
+	</PropertyGroup>
+	<UsingTask TaskName="GetAssemblyVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+		<ParameterGroup>
+			<MajorOnly ParameterType="System.Boolean" Required="false">false</MajorOnly>
+			<AssemblyPath ParameterType="System.String" Required="true" />			
+			<ProductVersion ParameterType="System.String" Output="true" />
+			<FileVersion ParameterType="System.String" Output="true" />
+		</ParameterGroup>
+		<Task>
+			<Using Namespace="System.Diagnostics" />
+			<Code Type="Fragment" Language="cs">
+			  <![CDATA[
+					int productMinorPart, productBuildPart, fileMinorPart, fileBuildPart;
+					var versionInfo = FileVersionInfo.GetVersionInfo(this.AssemblyPath);
+
+					if (this.MajorOnly)
+					{
+						productMinorPart = productBuildPart = 0;
+						fileMinorPart = fileBuildPart = 0;						
+					}
+					else
+					{
+						productMinorPart = versionInfo.ProductMinorPart;
+						productBuildPart = versionInfo.ProductBuildPart;
+						fileMinorPart = versionInfo.FileMinorPart;
+						fileBuildPart = versionInfo.FileBuildPart;
+					}
+					
+					this.ProductVersion = string.Format("{0}.{1}.{2}", versionInfo.ProductMajorPart, productMinorPart, productBuildPart);
+					this.FileVersion = string.Format("{0}.{1}.{2}", versionInfo.FileMajorPart, fileMinorPart, fileBuildPart);
+				]]>
+			</Code>
+		</Task>
+	</UsingTask>
+</Project>

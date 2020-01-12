@@ -5,9 +5,9 @@ mods:
    Ui Info Suite
 
 latest commit:
-   commit d31f1a0827a7b2ca5a4f5842b93b830cd921e057
-   Author: cdaragorn <cdaragorn1@gmail.com>
-   Date:   Tue Nov 26 23:12:29 2019 -0700
+   commit a972062f5e82c782e94895c64f5c7407bd471150
+   Author: U-Gamer\Cdaragorn <707092+cdaragorn@users.noreply.github.com>
+   Date:   Sat Dec 28 11:44:31 2019 -0700
    
-       Some bug fixes.
+       Fixed shop harvest prices.
    

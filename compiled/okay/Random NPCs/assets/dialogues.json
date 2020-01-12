@@ -1,18 +1,6 @@
 {
   "data": [
 	// age`manner`anxiety`optimism`gender`datable`traits`key`string
-    "adult`polite|neutral`outgoing|neutral`any`positive`any`any`Introduction`Oh, hello. Nice to meet you!$h",
-    "teen`polite|neutral`outgoing`any`positive`any`any`Introduction`Oh, hi! Nice to meet you!$h",
-    "any`polite|neutral`outgoing|neutral`any`neutral`any`any`Introduction`Hello, there! Nice to meet you.$h",
-    "adult`polite|neutral`shy`any`any`any`any`Introduction`Oh, hello.$h",
-    "teen`polite|neutral`shy`any`any`any`any`Introduction`Oh, hi.$h",
-    "adult`polite|neutral`outgoing|neutral`any`negative`any`any`Introduction`Oh, hello. Do you need something?$h",
-    "teen`polite|neutral`outgoing|neutral`any`negative`any`any`Introduction`Oh, hi. Do you need something?$h",
-    "adult`rude`outgoing|neutral`any`positive`any`any`Introduction`Oh hey there! What's your name?$h",
-    "teen`rude`outgoing|neutral`any`positive`any`any`Introduction`Hey! I haven't seen you here before! Who are you?$h",
-    "any`rude`outgoing|neutral`any`neutral`any`any`Introduction`Hey. What's up?$h",
-    "adult`rude`shy`any`any`any`any`Introduction`Yes? Do I know you?$h",
-    "teen`rude`shy`any`any`any`any`Introduction`Yeah? Do I know you?$h",
 
 	// Abigail
 	"any`any`any`any`any`any`any`danceRejection`That's flattering... but I'm gonna have to say no. Sorry.",

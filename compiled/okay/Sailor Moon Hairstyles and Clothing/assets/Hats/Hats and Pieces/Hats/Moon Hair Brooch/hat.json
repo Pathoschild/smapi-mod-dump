@@ -1,0 +1,7 @@
+{
+	"Name": "Moon Hair Brooch",
+	"Description": "Sailor Moon's hair brooches. Do they really sense danger, or does it just find her?",
+	"PurchasePrice": "100",
+	"ShowHair": true,
+	"IgnoreHairstyleOffset": true
+}

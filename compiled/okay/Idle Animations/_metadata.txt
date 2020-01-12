@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/4395
+IDs: BrasileiroTop.Animacoes
+update keys: Nexus:4395, Nexus:5139

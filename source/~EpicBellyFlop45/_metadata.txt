@@ -11,9 +11,9 @@ mods:
    Customize Cursor Sprite
 
 latest commit:
-   commit 8749e98f6afdebbd40a3c7805ba84df96a41ac00
+   commit f35e89331fe00a2e8230712d4cd39431e153e068
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Wed Dec 11 17:03:35 2019 +0000
+   Date:   Tue Jan 7 19:40:41 2020 +0000
    
-       [BetterCrabPotsConfigUpdater] Add documentation and slight code clean up
+       [BetterMixedSeeds] Add Fishs Flowers Compatibility Version to readme
    

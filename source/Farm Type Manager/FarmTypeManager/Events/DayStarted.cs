@@ -19,11 +19,15 @@ namespace FarmTypeManager
             //note: this already happens in the Entry method, but doing it here allows settings to be changed while the game is running
             Utility.LoadModConfig();
 
-            if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything; most of this mod's functions should be limited to the host player
-
+            if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything
+            
             Utility.LoadFarmData(); //load all available data files
 
-            Monitor.Log($"Checking for saved objects that went missing overnight...", LogLevel.Trace);
+            //clear any leftover data from previous days/saves/etc
+            Utility.TimedSpawns.Clear();
+            Utility.MonsterTracker.Clear();
+
+            Monitor.Log($"Checking for saved objects that went missing overnight.", LogLevel.Trace);
             foreach (FarmData data in Utility.FarmDataList) //for each loaded set of data
             {
                 if (data.Pack != null) //if this data is from a content pack
@@ -35,12 +39,8 @@ namespace FarmTypeManager
                     Monitor.VerboseLog($"Checking objects from FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
                 }
 
-                Utility.ReplaceProtectedSpawnsOvernight(data.Save); //protect unexpired spawns listed in the save data
+                Utility.ReplaceProtectedSpawns(data.Save); //protect unexpired spawns listed in the save data
             }
-
-            //clear any leftover data from previous days/saves/etc
-            Utility.TimedSpawns.Clear(); 
-            Utility.MonsterTracker.Clear();
 
             //run each generation process to fill the TimedSpawns list for today
             Generation.ForageGeneration();
@@ -48,7 +48,11 @@ namespace FarmTypeManager
             Generation.OreGeneration();
             Generation.MonsterGeneration();
 
-            Generation.SpawnTimedSpawns(Utility.TimedSpawns, 600); //spawn anything set to appear at 6:00AM
+            Utility.StartOfDay = Game1.timeOfDay; //record the current time of day (in case other mods have changed this)
+            if (Utility.StartOfDay.Time == 600) //if the current time of day is 6:00AM, as expected
+            {
+                Generation.SpawnTimedSpawns(Utility.TimedSpawns, 600); //spawn anything set to appear at this time
+            }
         }
     }
 }

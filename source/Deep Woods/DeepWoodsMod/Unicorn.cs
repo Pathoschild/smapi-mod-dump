@@ -80,7 +80,7 @@ namespace DeepWoodsMod
                     {
                         isScared.Value = true;
                         this.farmerPassesThrough = true;
-                        Game1.dailyLuck = -0.12;
+                        Game1.player.team.sharedDailyLuck.Value = -0.12;
                         farmer.addedLuckLevel.Value = Math.Min(-10, farmer.addedLuckLevel.Value);
                         this.currentLocation.playSoundAt(Sounds.THUNDER_SMALL, this.getTileLocation());
                         this.currentLocation.playSoundAt(Sounds.GHOST, this.getTileLocation());

@@ -24,8 +24,13 @@ namespace NpcAdventure.Patches
             events.HandleRenderedLocation(__instance, args);
         }
 
-        internal static void Setup(ISpecialModEvents events)
+        internal static void Setup(HarmonyInstance harmony, ISpecialModEvents events)
         {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(GameLocation), "draw"),
+                postfix: new HarmonyMethod(typeof(GameLocationDrawPatch), nameof(GameLocationDrawPatch.Postfix))
+            );
+
             GameLocationDrawPatch.events = events as SpecialModEvents;
         }
     }

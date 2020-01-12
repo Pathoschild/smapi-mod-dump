@@ -1,0 +1,10 @@
+﻿{
+	"Name": "CasksAnywhere",
+	"Author": "LeonBlade",
+	"Version": "1.3.1",
+	"Description": "Allows casts to be used anywhere.",
+	"UniqueID": "CasksAnywhere",
+	"EntryDll": "CasksAnywhere.dll",
+	"MinimumApiVersion": "2.10.2",
+	"UpdateKeys": [ "GitHub:LeonBlade/CasksAnywhere", "Nexus:878", "Chucklefish:5486" ]
+}

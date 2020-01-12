@@ -222,7 +222,7 @@ namespace DeepWoodsMod
         private int GetAbsoluteLuckValue(LuckValue value)
         {
             // Daily luck in range from -100 to 100:
-            int dailyLuck = Math.Min(100, Math.Max(-100, (int)((Game1.dailyLuck / 0.12) * 100.0)));
+            int dailyLuck = Math.Min(100, Math.Max(-100, (int)((Game1.player.team.sharedDailyLuck.Value / 0.12) * 100.0)));
 
             // Player luck in range from 0 to 100:
             int playerLuck = Math.Min(100, Math.Max(0, deepWoods.GetLuckLevel() * 10));

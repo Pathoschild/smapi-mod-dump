@@ -1,0 +1,10 @@
+﻿{
+  "Name": "OneSiloStorage",
+  "Author": "SorryLate",
+  "Version": "1.0.1",
+  "Description": "Expands Silos capacity",
+  "UniqueID": "SorryLate.OneSiloStorage",
+  "EntryDll": "OneSiloStorage.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:5150" ]
+}

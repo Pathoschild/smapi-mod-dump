@@ -37,7 +37,7 @@ namespace ClimatesOfFerngillRebuild
                 source2 = Game1.mouseCursors;
             }
 
-            public Rectangle GetWeatherSprite(CurrentWeather condition)
+            public static Rectangle GetWeatherSprite(CurrentWeather condition)
             {
                 if (condition.HasFlag(CurrentWeather.Blizzard))
                     return Icons.WeatherBlizzard;

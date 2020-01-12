@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -82,6 +83,27 @@ namespace BetterRarecrows
             else
             {
                 ModEntry.ModMonitor.Log($"Only {CurrentRarecrows.Count()} out of {Config.NumberOfRequiredRareCrows} rarecrows found on the farm", LogLevel.Trace);
+                
+                if (Config.EnableProgressiveMode)
+                {
+                    ModEntry.ModMonitor.Log($"Passive mod enabled", LogLevel.Trace);
+
+                    // Calculate the a random chance to determine if the crows should be able to spawn
+                    int chanceUpperBound = Math.Min(100, Config.ProgressivePercentPerRarecrow * ModEntry.CurrentRarecrows.Count());
+                    int chance = Math.Max(0, chanceUpperBound);
+
+                    double randomChance = Game1.random.NextDouble();
+
+                    if (chance / 100d < randomChance)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    ModEntry.ModMonitor.Log($"Passive mod disabled", LogLevel.Trace);
+                }
+
                 return true;
             }
         }

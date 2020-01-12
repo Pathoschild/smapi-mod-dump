@@ -51,15 +51,21 @@ namespace ChildBedConfig
                 //Remove the crib
                 if (!Farmer.ShowHomeCrib)
                 {
-                    removeTiles(farmhouse, "Buildings", 15, 3, 17, 5); //Get rid of the tiles from the building layer
                     removeTiles(farmhouse, "Front", 15, 2, 17, 4); //Get rid of the tiles from the front layer
+                    removeTiles(farmhouse, "Buildings", 15, 3, 17, 5); //Get rid of the tiles from the building layer
                     
-                    int wallpaper = farmhouse.getTileIndexAt(18, 3, "Buildings"); //get the wallpaper id so we can plaster it onto the tiles we're adding
+                    int wallpaper = farmhouse.getTileIndexAt(19, 3, "Buildings"); //get the wallpaper id so we can plaster it onto the tiles we're adding
+                    int flooring = farmhouse.getTileIndexAt(19, 3, "Back"); //get the flooring id too
 
                     //Add wall tiles to 15 3, 16 3, and 17 3 on the Buildings layer, which were previously occupied by the crib
                     farmhouse.Map.GetLayer("Buildings").Tiles[15, 3] = new xTile.Tiles.StaticTile(farmhouse.Map.GetLayer("Buildings"), farmhouse.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, wallpaper);
                     farmhouse.Map.GetLayer("Buildings").Tiles[16, 3] = new xTile.Tiles.StaticTile(farmhouse.Map.GetLayer("Buildings"), farmhouse.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, wallpaper);
                     farmhouse.Map.GetLayer("Buildings").Tiles[17, 3] = new xTile.Tiles.StaticTile(farmhouse.Map.GetLayer("Buildings"), farmhouse.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, wallpaper);
+
+                    //Add fooring tiles to the back layer where the crib was -- we'll have a weird black line there otherwise
+                    farmhouse.Map.GetLayer("Back").Tiles[15, 3] = new xTile.Tiles.StaticTile(farmhouse.Map.GetLayer("Back"), farmhouse.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, flooring);
+                    farmhouse.Map.GetLayer("Back").Tiles[16, 3] = new xTile.Tiles.StaticTile(farmhouse.Map.GetLayer("Back"), farmhouse.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, flooring);
+                    farmhouse.Map.GetLayer("Back").Tiles[17, 3] = new xTile.Tiles.StaticTile(farmhouse.Map.GetLayer("Back"), farmhouse.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, flooring);
                 }
 
                 //Get rid of the bed closest to the crib
@@ -79,7 +85,6 @@ namespace ChildBedConfig
                 //If cabins exist on the farm, we go ahead and modify the children's beds there too
                 if(cabins.Count > 0)
                 {
-
                     foreach(GameLocation c in cabins)
                     {
                         Cabin cabin = (Cabin)c;
@@ -92,12 +97,18 @@ namespace ChildBedConfig
                                 removeTiles(cabin, "Buildings", 15, 3, 17, 5); //Get rid of the tiles from the building layer
                                 removeTiles(cabin, "Front", 15, 2, 17, 4); //Get rid of the tiles from the front layer
 
-                                int wallpaper = farmhouse.getTileIndexAt(18, 3, "Buildings"); //get the wallpaper id so we can plaster it onto the tiles we're adding
+                                int wallpaper = cabin.getTileIndexAt(18, 3, "Buildings"); //get the wallpaper id so we can plaster it onto the tiles we're adding
+                                int flooring = cabin.getTileIndexAt(19, 3, "Back"); //get the flooring id too
 
                                 //Add wall tiles to 15 3, 16 3, and 17 3 on the Buildings layer, which were previously occupied by the crib
                                 cabin.Map.GetLayer("Buildings").Tiles[15, 3] = new xTile.Tiles.StaticTile(cabin.Map.GetLayer("Buildings"), cabin.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, wallpaper);
                                 cabin.Map.GetLayer("Buildings").Tiles[16, 3] = new xTile.Tiles.StaticTile(cabin.Map.GetLayer("Buildings"), cabin.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, wallpaper);
                                 cabin.Map.GetLayer("Buildings").Tiles[17, 3] = new xTile.Tiles.StaticTile(cabin.Map.GetLayer("Buildings"), cabin.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, wallpaper);
+
+                                //Add fooring tiles to the back layer where the crib was -- we'll have a weird black line there otherwise
+                                cabin.Map.GetLayer("Back").Tiles[15, 3] = new xTile.Tiles.StaticTile(cabin.Map.GetLayer("Back"), cabin.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, flooring);
+                                cabin.Map.GetLayer("Back").Tiles[16, 3] = new xTile.Tiles.StaticTile(cabin.Map.GetLayer("Back"), cabin.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, flooring);
+                                cabin.Map.GetLayer("Back").Tiles[17, 3] = new xTile.Tiles.StaticTile(cabin.Map.GetLayer("Back"), cabin.Map.GetTileSheet("walls_and_floors"), xTile.Tiles.BlendMode.Alpha, flooring);
                             }
 
                             //Get rid of the bed closest to the crib
@@ -115,10 +126,8 @@ namespace ChildBedConfig
                             }
                         }
                     }
-
                 }
             }
-
             //If crib can't be found, the tiles are not touched
             else Monitor.Log("Could not find crib and beds.  No edits will be made.");
         }

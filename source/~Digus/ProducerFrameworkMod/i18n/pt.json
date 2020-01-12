@@ -1,0 +1,7 @@
+﻿{
+	"Message.Requirement.Amount": "Requer {{amount}} {{objectName}}",
+	"Object.Category.Meat": "Carne (tanto faz)",
+	"Object.Category.MetalResources": "Recursos de Metal (tanto faz)",
+	"Object.Category.BuildingResources": "Recursos de Construção (tanto faz)",
+	"Object.Category.TappedTreeProduct": "Liquido Extraido de Árvores (tanto faz)"
+}

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Regular Quality",
+  "Author": "desto",
+  "Version": "1.0.0",
+  "Description": "Removes silver/gold/iridium quality stuff.",
+  "UniqueID": "desto.RegularQuality",
+  "EntryDll": "RegularQuality.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:5090" ]
+}

@@ -47,8 +47,8 @@ For each farmer that you want to show/hide beds for, you need to add them to the
 ```
 
 ## Compatibility
-* Stardew Valley 1.3
-* SMAPI 2.10 - may work on older versions, but I haven't done any testing for them
+* Stardew Valley 1.3+
+* SMAPI 2.10+ - may work on older versions, but I haven't done any testing for them
 * Not compatible with any mods that affect the <b>maps</b> for FarmHouse2 and FarmHouse2_marriage (tilesheets should be fine)
 
 ## Bugs & Other Issues

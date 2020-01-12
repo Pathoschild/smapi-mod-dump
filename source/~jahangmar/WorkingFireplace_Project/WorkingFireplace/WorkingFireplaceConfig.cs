@@ -19,4 +19,5 @@
     public double COFMinTemp { set; get; } = 15;
     public double COFRainImpact { set; get; } = 5;
     public bool show_temperature_in_bed { set; get; } = true;
+    public bool warm_on_day_one = true;
 }

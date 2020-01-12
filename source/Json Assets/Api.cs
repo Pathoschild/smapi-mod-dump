@@ -28,9 +28,22 @@ namespace JsonAssets
         IDictionary<string, int> GetAllWeaponIds();
         IDictionary<string, int> GetAllClothingIds();
 
+        List<string> GetAllObjectsFromContentPack(string cp);
+        List<string> GetAllCropsFromContentPack(string cp);
+        List<string> GetAllFruitTreesFromContentPack(string cp);
+        List<string> GetAllBigCraftablesFromContentPack(string cp);
+        List<string> GetAllHatsFromContentPack(string cp);
+        List<string> GetAllWeaponsFromContentPack(string cp);
+        List<string> GetAllClothingFromContentPack(string cp);
+
         event EventHandler ItemsRegistered;
         event EventHandler IdsAssigned;
         event EventHandler AddedItemsToShop;
+        event EventHandler IdsFixed;
+
+        bool FixIdsInItem(Item item);
+        void FixIdsInItemList(List<Item> items);
+        void FixIdsInLocation(GameLocation location);
 
         bool TryGetCustomSprite(object entity, out Texture2D texture, out Rectangle sourceRect);
         bool TryGetCustomSpriteSheet(object entity, out Texture2D texture, out Rectangle sourceRect);
@@ -148,6 +161,62 @@ namespace JsonAssets
             return new Dictionary<string, int>(Mod.instance.clothingIds);
         }
 
+        public List<string> GetAllObjectsFromContentPack(string cp)
+        {
+            foreach (var entry in Mod.instance.objectsByContentPack)
+                if (entry.Key.UniqueID == cp)
+                    return new List<string>(entry.Value);
+            return null;
+        }
+
+        public List<string> GetAllCropsFromContentPack(string cp)
+        {
+            foreach (var entry in Mod.instance.cropsByContentPack)
+                if (entry.Key.UniqueID == cp)
+                    return new List<string>(entry.Value);
+            return null;
+        }
+
+        public List<string> GetAllFruitTreesFromContentPack(string cp)
+        {
+            foreach (var entry in Mod.instance.fruitTreesByContentPack)
+                if (entry.Key.UniqueID == cp)
+                    return new List<string>(entry.Value);
+            return null;
+        }
+
+        public List<string> GetAllBigCraftablesFromContentPack(string cp)
+        {
+            foreach (var entry in Mod.instance.bigCraftablesByContentPack)
+                if (entry.Key.UniqueID == cp)
+                    return new List<string>(entry.Value);
+            return null;
+        }
+
+        public List<string> GetAllHatsFromContentPack(string cp)
+        {
+            foreach (var entry in Mod.instance.hatsByContentPack)
+                if (entry.Key.UniqueID == cp)
+                    return new List<string>(entry.Value);
+            return null;
+        }
+
+        public List<string> GetAllWeaponsFromContentPack(string cp)
+        {
+            foreach (var entry in Mod.instance.weaponsByContentPack)
+                if (entry.Key.UniqueID == cp)
+                    return new List<string>(entry.Value);
+            return null;
+        }
+
+        public List<string> GetAllClothingFromContentPack(string cp)
+        {
+            foreach (var entry in Mod.instance.clothingByContentPack)
+                if (entry.Key.UniqueID == cp)
+                    return new List<string>(entry.Value);
+            return null;
+        }
+
         public event EventHandler ItemsRegistered;
         internal void InvokeItemsRegistered()
         {
@@ -173,6 +242,30 @@ namespace JsonAssets
             if (AddedItemsToShop == null)
                 return;
             Util.invokeEvent("JsonAssets.Api.AddedItemsToShop", AddedItemsToShop.GetInvocationList(), null);
+        }
+
+        public event EventHandler IdsFixed;
+        internal void InvokeIdsFixed()
+        {
+            Log.trace("Event: IdsFixed");
+            if (IdsFixed == null)
+                return;
+            Util.invokeEvent("JsonAssets.Api.IdsFixed", IdsFixed.GetInvocationList(), null);
+        }
+
+        public bool FixIdsInItem(Item item)
+        {
+            return Mod.instance.fixItem(item);
+        }
+
+        public void FixIdsInItemList(List<Item> items)
+        {
+            Mod.instance.fixItemList(items);
+        }
+
+        public void FixIdsInLocation(GameLocation location)
+        {
+            Mod.instance.fixLocation(location);
         }
 
         public bool TryGetCustomSprite(object entity, out Texture2D texture, out Rectangle sourceRect)

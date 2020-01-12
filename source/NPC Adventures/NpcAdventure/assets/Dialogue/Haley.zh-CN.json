@@ -1,0 +1,14 @@
+{
+  "companionAccepted": "好吧,让我们避开矿洞,我不想弄得脏兮兮的.",
+  "companionRejected": "听起来很无聊..$2",
+  "companionRejectedNight": "现在做什么都太晚了.$3",
+  "companionDismiss": "...Awww, 我才刚刚开始享受生活.#$b#我想我们待会儿见!$h",
+  "companionDismissAuto": "哈欠#$4#抱歉 @ 我累得说不下去了.回头见.",
+  "companionRecruited": "耶!#$b#也许我可以沿途拍些照片!$h",
+  "companion_Beach_summer": "我们今天晒黑了？那很棒!$h",
+  "companion_Farm": "你真的经常在田地里忙碌吗? 我想这就是为什么你总是很脏的原因吧.",
+  "companion_Forest": "我想这里有足够的空间建一个购物中心.#$b#...$7#$b#什么?$u",
+  "companion_Mine": "这里很黑.幸好我习惯了.小心台阶!",
+  "companion_Mountain": "这不是一个穿高跟鞋的地方. 叹气$s",
+  "companion_Town": "既然来了,让我换件衣服吧."
+}

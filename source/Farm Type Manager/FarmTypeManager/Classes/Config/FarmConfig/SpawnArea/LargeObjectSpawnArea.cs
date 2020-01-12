@@ -20,7 +20,7 @@ namespace FarmTypeManager
                 MinimumSpawnsPerDay = 999;
                 MaximumSpawnsPerDay = 999;
                 IncludeTerrainTypes = new string[0];
-                StrictTileChecking = "High";
+                StrictTileChecking = "Maximum";
             }
         }
     }

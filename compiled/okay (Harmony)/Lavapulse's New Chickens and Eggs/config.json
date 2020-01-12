@@ -1,4 +1,5 @@
 {
   "numEggsToStock": 6,
-  "numMilkToStock": 6
+  "numMilkToStock": 6,
+  "chickensLayBaseGameEggs": false
 }

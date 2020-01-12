@@ -2,6 +2,7 @@
 using NpcAdventure.Loader;
 using NpcAdventure.Model;
 using NpcAdventure.Utils;
+using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -15,61 +16,65 @@ namespace NpcAdventure.Buffs
     {
         private const int DURATION = 1200000;
         private const int COMPANION_BUFF_ID = -0x1A4;
+        private readonly IMonitor monitor;
 
-        public BuffManager(NPC companion, Farmer farmer, IContentLoader contentLoader)
+        public BuffManager(NPC companion, Farmer farmer, IContentLoader contentLoader, IMonitor monitor)
         {
             this.Companion = companion;
             this.Farmer = farmer;
             this.ContentLoader = contentLoader;
+            this.monitor = monitor;
         }
 
         public NPC Companion { get; }
         public Farmer Farmer { get; }
         private IContentLoader ContentLoader { get; }
 
-        public bool HasAssignableBuffs()
-        {
-            return this.ContentLoader.CanLoad($"Buffs/{this.Companion.Name}");
-        }
-
         public void AssignBuffs()
         {
-            BuffInfo buffInfo = this.ContentLoader.Load<BuffInfo>($"Buffs/{this.Companion.Name}");
-            if (buffInfo.attributes == null || buffInfo.attributes.Length < 12)
-                throw new Exception("Invalid buff attributes!");
+            var buffData = this.ContentLoader.LoadStrings("Data/Buffs");
 
-            int[] ft = buffInfo.attributes;
-            // Main buff indicator
-            Buff buff = new Buff(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 30, this.Companion.Name, this.Companion.displayName)
+            if (!buffData.ContainsKey(this.Companion.Name))
+                return;
+
+            int[] buffAttrs = Utility.parseStringToIntArray(buffData[this.Companion.Name], '/');
+            string desc = this.ContentLoader.LoadString($"Strings/Buffs:{this.Companion.Name}").Replace("#", Environment.NewLine);
+            bool married = Helper.IsSpouseMarriedToFarmer(this.Companion, this.Farmer);
+
+            if (buffAttrs.Length < 12)
             {
-                millisecondsDuration = DURATION,
-                description = buffInfo.description != null ? buffInfo.description.Replace("#", Environment.NewLine) : null,
+                this.monitor.Log($"Invalid buffs for {this.Companion.Name}", LogLevel.Error);
+                return;
+            }
+
+            if (married && this.Farmer.getFriendshipHeartLevelForNPC(this.Companion.Name) >= 10)
+            {
+                string wifeOrHusband = this.ContentLoader.LoadString($"Strings/Strings:spouse{(this.Companion.Gender == 1 ? "Wife" : "Husband")}");
+                desc += ("##" + this.ContentLoader.LoadString("Strings/Strings:spouseBuffDescription", wifeOrHusband + " " + this.Companion.displayName)).Replace("#", Environment.NewLine);
+                buffAttrs[4] += 1; // extra luck
+                buffAttrs[8] += 1; // extra magnetic radius
+            }
+
+            // Main buff indicator
+            Buff buff = new Buff(desc, DURATION, this.Companion.Name, 21)
+            {
+                displaySource = this.Companion.displayName,
             };
+
             // Stat buffs
             Buff statBuff = new Buff(
-                ft[0], ft[1], ft[2], ft[3], ft[4], ft[5], ft[6], ft[7], ft[8], ft[9], ft[10], ft[11],
+                buffAttrs[0], buffAttrs[1], buffAttrs[2], buffAttrs[3],
+                buffAttrs[4], buffAttrs[5], buffAttrs[6], buffAttrs[7],
+                buffAttrs[8], buffAttrs[9], buffAttrs[10], buffAttrs[11],
                 30, this.Companion.Name, this.Companion.displayName)
             {
                 millisecondsDuration = DURATION,
+                glow = married ? new Color(114, 0, 0, 50) : Color.White,
             };
 
             Game1.buffsDisplay.addOtherBuff(buff);
-            buff.which = COMPANION_BUFF_ID;
             Game1.buffsDisplay.addOtherBuff(statBuff);
-            statBuff.which = COMPANION_BUFF_ID;
-
-            if (Helper.IsSpouseMarriedToFarmer(this.Companion, this.Farmer))
-            {
-                // Mariage additional buff (only farmer is married with this companion)
-                Buff marriedLuckBuff = new Buff(0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 30, this.Companion.Name, this.Companion.displayName)
-                {
-                    millisecondsDuration = DURATION / 4,
-                    description = this.ContentLoader.LoadString("Strings/Strings:spouseBuffDescription", this.Companion.displayName),
-                    glow = new Color(114, 0, 0, 50), // Passion red lovely glowing
-                };
-                Game1.buffsDisplay.addOtherBuff(marriedLuckBuff);
-                marriedLuckBuff.which = COMPANION_BUFF_ID;
-            }
+            statBuff.which = buff.which = COMPANION_BUFF_ID;
 
             Game1.buffsDisplay.syncIcons();
         }

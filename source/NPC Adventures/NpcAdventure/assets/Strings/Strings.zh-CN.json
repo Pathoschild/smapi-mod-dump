@@ -1,0 +1,21 @@
+﻿{
+  "askToFollow": "邀请 {0} 跟随?",
+  "recruitedWant": "你想做什么?",
+  "recruitedWant.bag": "我能用一下你的包吗?",
+  "recruitedWant.dismiss": "你可以走了,谢谢你的帮助,再见",
+  "recruitedWant.nothing": "(什么都不做)",
+  "spouseBuffDescription": "+2 额外的运气 (和微弱的光), 因为你和 {0} 结婚了",
+  "bagItemsSentLetter": "嗨 {0},^^你把一些东西落在我包里了. 我已经把它们寄给你了.^昨天的冒险还不错,我期待着今天的冒险.^^    - {1}",
+  "healed": "{0} 治愈了你! (+{1} 健康)",
+  "lifeSaved": "{0} 这次救了你的命,耐心点.",
+  "skill.warrior": "战士 ({0} 的技能)",
+  "skillDescription.warrior": "使用剑作战,在危险中使用防御.",
+  "skill.doctor": "医生 ({0} 的技能)",
+  "skillDescription.doctor": "在你生命值低于30%对你进行治疗.",
+  "skill.fighter": "斗士 ({0} 的技能)",
+  "skillDescription.fighter": "使用剑作战.",
+  "recruitedCompanionHint": "同伴: {0}",
+  "companionState_follow": "状态: 跟随",
+  "companionState_idle": "状态: 闲置",
+  "companionState_fight": "状态: 战斗"
+}

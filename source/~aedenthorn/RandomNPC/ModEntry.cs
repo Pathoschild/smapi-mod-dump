@@ -4,18 +4,22 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
-using StardewValley.TerrainFeatures;
+using StardewValley.Menus;
+using StardewValley.Quests;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using xTile.Layers;
+using xTile.Tiles;
 
 namespace RandomNPC
 {
 	/// <summary>The mod entry point.</summary>
 	public class ModEntry : Mod, IAssetEditor, IAssetLoader
 	{
-		internal ModConfig Config { get; private set; }
+		internal static ModConfig Config { get; private set; }
 		internal DialogueData RNPCdialogueData { get; private set; }
 		internal ModData RNPCengagementDialogueStrings { get; private set; }
 		internal ModData RNPCgiftDialogueStrings { get; private set; }
@@ -33,9 +37,13 @@ namespace RandomNPC
 		internal ModData RNPCskinColours { get; private set; }
 		internal ModData RNPCsavedNPCs { get; private set; }
 
-		private List<RNPCSchedule> RNPCSchedules = new List<RNPCSchedule>();
+		private List<RNPCSchedule> RNPCSchedules = new List<RNPCSchedule>(); 
 		public int RNPCMaxVisitors { get; private set; }
+
+		private bool droveOff = false;
 		public List<RNPC> RNPCs = new List<RNPC>();
+		private bool drivingOff;
+		private string[] SDVNPCS = new string[] { "Alex", "Elliott", "Harvey", "Sam", "Sebastian", "Shane", "Abigail", "Emily", "Haley", "Leah", "Maru", "Penny", "Caroline", "Clint", "Demetrius", "Evelyn", "George", "Gus", "Jas", "Jodi", "Krobus", "Lewis", "Linus", "Marnie", "Pam", "Pierre", "Robin", "Sandy", "Vincent", "Willy", "Gunther", "Marlon" };
 
 
 
@@ -46,7 +54,7 @@ namespace RandomNPC
 		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper)
 		{
-			this.Config = this.Helper.ReadConfig<ModConfig>();
+			Config = this.Helper.ReadConfig<ModConfig>();
 
 			this.RNPCdialogueData = this.Helper.Data.ReadJsonFile<DialogueData>("assets/dialogue.json") ?? new DialogueData();
 			this.RNPCengagementDialogueStrings = this.Helper.Data.ReadJsonFile<ModData>("assets/engagement_dialogues.json") ?? new ModData();
@@ -79,10 +87,10 @@ namespace RandomNPC
 
 			this.Helper.Data.WriteJsonFile<ModData>("saved_npcs.json", RNPCsavedNPCs);
 
-			for (int i = 0; i <RNPCsavedNPCs.data.Count; i++)
+			for (int i = 0; i < RNPCsavedNPCs.data.Count; i++)
 			{
 				string npc = RNPCsavedNPCs.data[i];
-				this.RNPCs.Add(new RNPC(npc, "RNPC" + i));
+				this.RNPCs.Add(new RNPC(npc, i));
 			}
 
 			// shuffle for visitors
@@ -91,7 +99,7 @@ namespace RandomNPC
 
 			for (int i = 0; i < RNPCs.Count; i++)
 			{
-				RNPCs[i].startLoc = "BusStop " + (13 + (i % 6)) + " " + (11 + i / 6);
+				//RNPCs[i].startLoc = "BusStop " + (13 + (i % 6)) + " " + (11 + i / 6);
 				if (i < RNPCMaxVisitors)
 				{
 					RNPCs[i].visiting = true;
@@ -105,17 +113,194 @@ namespace RandomNPC
 			helper.Events.GameLoop.ReturnedToTitle += this.ReturnedToTitle;
 			helper.Events.GameLoop.DayEnding += this.DayEnding;
 			helper.Events.GameLoop.DayStarted += this.DayStarted;
-			//helper.Events.GameLoop.OneSecondUpdateTicked += this.OneSecondUpdateTicked;
+			helper.Events.GameLoop.SaveLoaded += this.SaveLoaded;
+			//helper.Events.GameLoop.TimeChanged += this.TimeChanged;
+			helper.Events.GameLoop.OneSecondUpdateTicked += this.OneSecondUpdateTicked;
+			helper.Events.GameLoop.UpdateTicked += this.UpdateTicked;
+			//helper.Events.Display.MenuChanged += this.MenuChanged;
+			helper.Events.Input.ButtonPressed += this.ButtonPressed;
+			if (!Config.DestroyObjectsUnderfoot)
+			{
+				helper.Events.GameLoop.UpdateTicking += this.UpdateTicking;
+			}
 
+		}
 
+		private void SaveLoaded(object sender, SaveLoadedEventArgs e)
+		{
+			foreach(RNPC rnpc in RNPCs)
+			{
+				rnpc.questItem = GetRandomQuestItem(rnpc);
+			}
+		}
+
+		private int GetRandomQuestItem(RNPC rnpc)
+		{
+			//Alert(Game1.currentSeason);
+			int item;
+			if (!Game1.currentSeason.Equals("winter") && Game1.random.NextDouble() < 0.5)
+			{
+				List<int> crops = Utility.possibleCropsAtThisTime(Game1.currentSeason, Game1.dayOfMonth <= 7);
+				item = crops.ElementAt(Game1.random.Next(crops.Count));
+			}
+			else
+			{
+				item = Utility.getRandomItemFromSeason(Game1.currentSeason, 1000, true, true);
+				if (item == -5)
+				{
+					item = 176;
+				}
+				if (item == -6)
+				{
+					item = 184;
+				}
+			}
+			return item;
+		}
+
+		private void ButtonPressed(object sender, ButtonPressedEventArgs e)
+		{
+			if(e.Button == SButton.MouseLeft || e.Button == SButton.MouseRight)
+			{
+				IClickableMenu menu = Game1.activeClickableMenu;
+				if (menu == null || menu.GetType() != typeof(DialogueBox))
+					return;
+				int resp = (int)typeof(DialogueBox).GetField("selectedResponse", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(menu);
+				List<Response> resps = (List<Response>)typeof(DialogueBox).GetField("responses", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(menu);
+				if (resp >= resps.Count || resps[resp] == null)
+					return;
+				string key = resps[resp].responseKey;
+				if (key.StartsWith("accept_npc_quest"))
+				{
+					StartQuest(key);
+				}
+			}
+		}
+
+		private void StartQuest(string key)
+		{
+			int id = int.Parse(key.Split('_')[3]); // accept_npc_quest_ID
+			Game1.player.addQuest(id);
+		}
+
+		private void MenuChanged(object sender, MenuChangedEventArgs e)
+		{
+			if (e.OldMenu is DialogueBox)
+			{
+				DialogueBox db2 = (DialogueBox)e.OldMenu;
+				FieldInfo fi = typeof(DialogueBox).GetField("selectedResponse", BindingFlags.NonPublic | BindingFlags.Instance);
+				FieldInfo fi2 = typeof(DialogueBox).GetField("dialogues", BindingFlags.NonPublic | BindingFlags.Instance);
+				List<string> dialogues = (List<string>)fi.GetValue(db2);
+
+			}
+		}
+
+		private void UpdateTicking(object sender, UpdateTickingEventArgs e)
+		{
+			if (!Context.IsWorldReady)
+				return;
+			// go over obstacles
+
+			foreach (RNPC rnpc in RNPCs)
+			{
+				NPC npc = Game1.getCharacterFromName(rnpc.nameID);
+				GameLocation currentLocation = npc.currentLocation;
+				int dir = npc.getDirection();
+				if (currentLocation.isCollidingPosition(npc.nextPosition(dir), Game1.viewport, false, 0, false, npc))
+				{
+					npc.isCharging = true;
+				}
+				else
+					npc.isCharging = false;
+			}
+		}
+
+		private void UpdateTicked(object sender, UpdateTickedEventArgs e)
+		{
+			if (!Context.IsWorldReady)
+				return;
+			if (drivingOff && !droveOff)
+			{
+				FieldInfo pos = typeof(BusStop).GetField("busPosition", BindingFlags.NonPublic | BindingFlags.Instance);
+				BusStop bs = (BusStop)Game1.getLocationFromName("BusStop");
+				if (((Vector2)pos.GetValue(bs)).X + 512f >= 0f)
+				{
+					FieldInfo mot = typeof(BusStop).GetField("busMotion", BindingFlags.NonPublic | BindingFlags.Instance);
+					mot.SetValue(bs, new Vector2(((Vector2)mot.GetValue(bs)).X - 0.075f, ((Vector2)mot.GetValue(bs)).Y));
+				}
+				else
+				{
+					droveOff = true;
+					drivingOff = false;
+				}
+			}
+		}
+
+		private void TimeChanged(object sender, TimeChangedEventArgs e)
+		{
 		}
 
 		private void OneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
 		{
-			foreach (RNPC npc in RNPCs)
+			if (Game1.timeOfDay >= Config.LeaveTime && !droveOff && !drivingOff)
 			{
-				if(Game1.player.friendshipData.Keys.Contains(npc.nameID))
-					Game1.player.friendshipData[npc.nameID].TalkedToToday = false;
+				int gone = 0;
+				foreach (NPC npc in Game1.getLocationFromName("BusStop").characters)
+				{
+					if (npc.getTileLocation().X > 1000 && npc.getTileLocation().Y > 1000)
+					{
+						gone++;
+					}
+					if (npc.getTileLocation().X == 12 && npc.getTileLocation().Y == 9)
+					{
+						foreach (RNPC rnpc in RNPCs)
+						{
+							if (npc.name.Equals(rnpc.nameID))
+							{
+								Game1.warpCharacter(npc, "BusStop", new Vector2(10000, 10000));
+							}
+						}
+					}
+				}
+
+				if (!drivingOff && gone == RNPCs.Count)
+				{
+					//Alert("Driving off");
+					drivingOff = true;
+					FieldInfo door = typeof(BusStop).GetField("busDoor", BindingFlags.NonPublic | BindingFlags.Instance);
+					FieldInfo pos = typeof(BusStop).GetField("busPosition", BindingFlags.NonPublic | BindingFlags.Instance);
+					FieldInfo mot = typeof(BusStop).GetField("busMotion", BindingFlags.NonPublic | BindingFlags.Instance);
+					BusStop bs = (BusStop)Game1.getLocationFromName("BusStop");
+					door.SetValue(bs, new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Microsoft.Xna.Framework.Rectangle(288, 1311, 16, 38), (Vector2)pos.GetValue(bs) + new Vector2(16f, 26f) * 4f, false, 0f, Color.White)
+					{
+						interval = 999999f,
+						animationLength = 6,
+						holdLastFrame = true,
+						layerDepth = (((Vector2)pos.GetValue(bs)).Y + 192f) / 10000f + 1E-05f,
+						scale = 4f
+					});
+					((TemporaryAnimatedSprite)door.GetValue(bs)).timer = 0f;
+					((TemporaryAnimatedSprite)door.GetValue(bs)).interval = 70f;
+					((TemporaryAnimatedSprite)door.GetValue(bs)).endFunction = new TemporaryAnimatedSprite.endBehavior(delegate
+					{
+						bs.localSound("batFlap");
+						bs.localSound("busDriveOff");
+					});
+					bs.localSound("trashcanlid");
+					((TemporaryAnimatedSprite)door.GetValue(bs)).paused = false;
+
+					for (int i = 11; i < 19; i++)
+					{
+						for (int j = 7; j < 10; j++)
+						{
+							if (i == 12 && j == 9)
+								continue;
+							bs.removeTile(i, j, "Buildings");
+							//bs.setTileProperty(i, j, "Buildings", "Passable", "T");
+						}
+					}
+
+				}
 			}
 		}
 
@@ -127,7 +312,7 @@ namespace RandomNPC
 
 			for (int i = 0; i < RNPCs.Count; i++)
 			{
-				RNPCs[i].startLoc = "BusStop " + (13 + (i % 6)) + " " + (11 + i / 6);
+				//RNPCs[i].startLoc = "BusStop " + (13 + (i % 6)) + " " + (11 + i / 6);
 				if (i < RNPCMaxVisitors)
 				{
 					RNPCs[i].visiting = true;
@@ -139,17 +324,56 @@ namespace RandomNPC
 				this.Helper.Content.InvalidateCache("Characters/schedules/" + RNPCs[i].nameID);
 			}
 			this.Helper.Content.InvalidateCache("Data/NPCDispositions");
+			this.Helper.Content.InvalidateCache("Data/Quests");
 		}
 
 		private void DayEnding(object sender, DayEndingEventArgs e)
 		{
-			// shuffle for visitors
 
+			// reset schedules
+
+			RNPCSchedules = new List<RNPCSchedule>();
+
+			// reset quests and quest items
+
+			this.Helper.Content.InvalidateCache("Data/Quests");
+			foreach (RNPC rnpc in RNPCs)
+			{
+				foreach(Quest quest in Game1.player.questLog)
+				{
+					if(quest.id == rnpc.npcID + 4200)
+					{
+						Game1.player.removeQuest(quest.id);
+					}
+				}
+				rnpc.questItem = GetRandomQuestItem(rnpc);
+			}
+
+			//reset bus
+
+			drivingOff = false;
+			droveOff = false;
+			BusStop bs = (BusStop)Game1.getLocationFromName("BusStop");
+			Layer layer = bs.map.GetLayer("Buildings");
+			for (int i = 11; i < 19; i++)
+			{
+				for (int j = 8; j < 10; j++)
+				{
+					if (i == 12 && j == 9)
+						continue;
+
+					TileSheet tilesheet = bs.map.GetTileSheet("outdoors");
+					int index = j == 8 ? 1056 : 1054;
+					layer.Tiles[i, j] = new StaticTile(layer, tilesheet, BlendMode.Alpha, tileIndex: index);
+				}
+			}
+
+			// shuffle for visitors
 			RNPCs = RNPCs.OrderBy(n => Guid.NewGuid()).ToList();
 
 			for (int i = 0; i < RNPCs.Count; i++)
 			{
-				RNPCs[i].startLoc = "BusStop " + (13 + (i % 6)) + " " + (11 + i / 6);
+				//RNPCs[i].startLoc = "BusStop " + (13 + (i % 6)) + " " + (11 + i / 6);
 				if (i < RNPCMaxVisitors)
 				{
 					RNPCs[i].visiting = true;
@@ -159,6 +383,8 @@ namespace RandomNPC
 					RNPCs[i].visiting = false;
 				}
 				this.Helper.Content.InvalidateCache("Characters/schedules/" + RNPCs[i].nameID);
+				this.Helper.Content.InvalidateCache("Characters/" + RNPCs[i].nameID);
+				this.Helper.Content.InvalidateCache("Portraits/" + RNPCs[i].nameID);
 			}
 			this.Helper.Content.InvalidateCache("Data/NPCDispositions");
 		}
@@ -171,19 +397,18 @@ namespace RandomNPC
 				{
 					foreach (NPC npc in l.getCharacters())
 					{
-						for(int i = 0; i < RNPCs.Count; i++)
+						for (int i = 0; i < RNPCs.Count; i++)
 						{
 							RNPC rnpc = RNPCs[i];
-							if(rnpc.nameID == npc.name && !rnpc.visiting) 
+							if (rnpc.nameID == npc.name)
 							{
-								Game1.warpCharacter(npc, "BusStop", new Vector2(0, 0));
-								npc.IsInvisible = true;
-								
-							}
-							else
-							{
-								l.getCharacterFromName(npc.name).faceDirection(2);
-								npc.IsInvisible = false;
+								npc.willDestroyObjectsUnderfoot = Config.DestroyObjectsUnderfoot;
+								if (rnpc.visiting)
+								{
+									string[] startLoc = rnpc.startLoc.Split(' ');
+									Game1.warpCharacter(npc, "BusStop", new Vector2(int.Parse(startLoc[1]), int.Parse(startLoc[2])));
+									l.getCharacterFromName(npc.name).faceDirection(2);
+								}
 							}
 						}
 					}
@@ -196,7 +421,7 @@ namespace RandomNPC
 		/// <param name="asset">Basic metadata about the asset being loaded.</param>
 		public bool CanEdit<T>(IAssetInfo asset)
 		{
-			if (asset.AssetNameEquals("Data/NPCDispositions") || asset.AssetNameEquals("Data/NPCGiftTastes") || asset.AssetNameEquals("Characters/EngagementDialogue"))
+			if (asset.AssetNameEquals("Data/NPCDispositions") || asset.AssetNameEquals("Data/NPCGiftTastes") || asset.AssetNameEquals("Characters/EngagementDialogue") || asset.AssetNameEquals("Data/Quests"))
 			{
 				//base.Monitor.Log("Can load: " + asset.AssetName, LogLevel.Alert);
 				return true;
@@ -213,10 +438,10 @@ namespace RandomNPC
 			{
 
 				IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
-
-				foreach(RNPC npc in RNPCs)
+				int idx = 0;
+				for (int i = 0; i < RNPCs.Count; i++)
 				{
-					data[npc.nameID] = npc.MakeDisposition();
+					data[RNPCs[i].nameID] = RNPCs[i].MakeDisposition(idx++);
 				}
 			}
 			else if (asset.AssetNameEquals("Data/NPCGiftTastes"))
@@ -224,7 +449,7 @@ namespace RandomNPC
 
 				IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
 
-				foreach(RNPC npc in RNPCs)
+				foreach (RNPC npc in RNPCs)
 				{
 					data[npc.nameID] = MakeGiftDialogue(npc);
 				}
@@ -233,34 +458,59 @@ namespace RandomNPC
 			{
 				IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
 
-				foreach(RNPC npc in RNPCs)
+				foreach (RNPC npc in RNPCs)
 				{
 					string[] str = MakeEngagementDialogue(npc);
 					data[npc.nameID + "0"] = str[0];
 					data[npc.nameID + "1"] = str[1];
 				}
 			}
+			else if (asset.AssetNameEquals("Data/Quests"))
+			{
+				IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
+				
+				foreach (RNPC npc in RNPCs)
+				{
+					string str = MakeQuest(npc);
+					data[npc.npcID+4200] = str;
+				}
+			}
+		}
+
+		private string MakeQuest(RNPC npc)
+		{
+			string questInfo = GetRandomDialogue(npc, RNPCdialogueData.quiz_quest);
+
+			int item = npc.questItem;
+
+			string itemName = Game1.objectInformation[item].Split('/')[0];
+
+			questInfo = questInfo.Replace("$name",npc.name).Replace("$what",itemName);
+			string[] qia = questInfo.Split('|');
+			string output = "ItemDelivery/"+qia[0]+"/" + qia[0]+ ": " + Game1.objectInformation[item].Split('/')[5] + "/"+qia[1]+"/" + npc.nameID + " " + item + "/-1/"+Config.QuestReward+"/-1/true/"+ qia[2];
+			//Alert("Creating quest "+(npc.npcID+4200)+": "+output); 
+			return output;
 		}
 
 		private string[] MakeEngagementDialogue(RNPC npc)
 		{
 			List<string[]> potentialDialogues = new List<string[]>();
 			List<string> potentialDialogue = new List<string>();
-			potentialDialogue = GetHighestRankedStrings(npc.npcString, RNPCengagementDialogueStrings.data,7);
+			potentialDialogue = GetHighestRankedStrings(npc.npcString, RNPCengagementDialogueStrings.data, 7);
 			for (int j = 0; j < potentialDialogue.Count; j++)
 			{
 				potentialDialogues.Add(potentialDialogue[j].Split('/'));
 			}
 
-			string[] output = potentialDialogues[Game1.random.Next(0,potentialDialogues.Count)];
+			string[] output = potentialDialogues[Game1.random.Next(0, potentialDialogues.Count)];
 			return output;
 		}
 
 		private string MakeGiftDialogue(RNPC npc)
 		{
 			List<string> potentialDialogue = new List<string>();
-			potentialDialogue = GetHighestRankedStrings(npc.npcString,RNPCgiftDialogueStrings.data,7);
-			for(int j = 0; j < potentialDialogue.Count; j++)
+			potentialDialogue = GetHighestRankedStrings(npc.npcString, RNPCgiftDialogueStrings.data, 7);
+			for (int j = 0; j < potentialDialogue.Count; j++)
 			{
 				string str = potentialDialogue[j];
 				string[] tastes = str.Split('^');
@@ -271,7 +521,7 @@ namespace RandomNPC
 				potentialDialogue[j] = String.Join("/", tastes);
 			}
 
-			return potentialDialogue[Game1.random.Next(0,potentialDialogue.Count)];
+			return potentialDialogue[Game1.random.Next(0, potentialDialogue.Count)];
 		}
 
 
@@ -281,7 +531,7 @@ namespace RandomNPC
 		{
 			foreach (RNPC npc in RNPCs)
 			{
-				if (asset.AssetNameEquals("Portraits/"+ npc.nameID) || asset.AssetNameEquals("Characters/" + npc.nameID) || asset.AssetNameEquals("Characters/Dialogue/" + npc.nameID) || asset.AssetNameEquals("Characters/schedules/" + npc.nameID))
+				if (asset.AssetNameEquals("Portraits/" + npc.nameID) || asset.AssetNameEquals("Characters/" + npc.nameID) || asset.AssetNameEquals("Characters/Dialogue/" + npc.nameID) || asset.AssetNameEquals("Characters/schedules/" + npc.nameID))
 				{
 					return true;
 				}
@@ -295,28 +545,37 @@ namespace RandomNPC
 		/// <param name="asset">Basic metadata about the asset being loaded.</param>
 		public T Load<T>(IAssetInfo asset)
 		{
-
+			Texture2D transparentP = this.Helper.Content.Load<Texture2D>("assets/transparent_portrait.png");
+			Texture2D transparentC = this.Helper.Content.Load<Texture2D>("assets/transparent_character.png");
 			foreach (RNPC npc in RNPCs)
 			{
 				if (asset.AssetNameEquals("Portraits/" + npc.nameID))
 				{
+					if (!npc.visiting)
+					{
+						return (T)(object)transparentP;
+					}
 					Texture2D texture = CreateCustomCharacter(npc, "portrait");
-						
-					return (T)(object) texture;
+
+					return (T)(object)texture;
 				}
 				else if (asset.AssetNameEquals("Characters/" + npc.nameID))
 				{
+					if (!npc.visiting)
+					{
+						return (T)(object)transparentC;
+					}
 					Texture2D texture = CreateCustomCharacter(npc, "character");
 
-					return (T)(object) texture;
+					return (T)(object)texture;
 				}
 				else if (asset.AssetNameEquals("Characters/schedules/" + npc.nameID))
 				{
-					return (T)(object) MakeSchedule(npc);
+					return (T)(object)MakeSchedule(npc);
 				}
 				else if (asset.AssetNameEquals("Characters/Dialogue/" + npc.nameID))
 				{
-					return (T)(object) MakeDialogue(npc);
+					return (T)(object)MakeDialogue(npc);
 				}
 
 			}
@@ -324,15 +583,15 @@ namespace RandomNPC
 			throw new InvalidOperationException($"Unexpected asset '{asset.AssetName}'.");
 		}
 
-		private Dictionary<string,string> MakeDialogue(RNPC rnpc)
+		private Dictionary<string, string> MakeDialogue(RNPC rnpc)
 		{
 			Dictionary<string, string> data = new Dictionary<string, string>();
-			List<string> intros = GetHighestRankedStrings(rnpc.npcString,RNPCdialogueData.introductions,7);
+			List<string> intros = GetHighestRankedStrings(rnpc.npcString, RNPCdialogueData.introductions, 7);
 			data.Add("Introduction", intros[Game1.random.Next(0, intros.Count)]);
 
 			// make dialogue
 
-			string[] dow = { "Mon","Tue","Wed","Thu","Fri","Sat","Sun" };
+			string[] dow = { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
 
 			NPC npc = Game1.getCharacterFromName(rnpc.nameID);
 			int hearts = Game1.player.getFriendshipHeartLevelForNPC(rnpc.nameID);
@@ -344,39 +603,38 @@ namespace RandomNPC
 
 			string question = GetRandomDialogue(rnpc, RNPCdialogueData.questions);
 			List<string> farmerQuestions = RNPCdialogueData.farmer_questions;
-			List<string> rejections = GetHighestRankedStrings(rnpc.npcString, RNPCdialogueData.rejections,7); 
+			List<string> rejections = GetHighestRankedStrings(rnpc.npcString, RNPCdialogueData.rejections, 7);
 
-			List<string> questa = new List<string>();
 
 			string questionString = "$q 4242 question_asked#" + question;
 
 			int fqi = 0;
 
-			questionString += "#$r " + (Game1.Date.TotalDays - 1) + " 0 fquest_" + (fqi) + "#" + farmerQuestions[fqi];
-			if (hearts >=2) // allow asking about personality
+			questionString += "#$r 4343 0 fquest_" + (fqi) + "#" + farmerQuestions[fqi];
+			if (hearts >= 2) // allow asking about personality
 			{
-				string manner = GetRandomDialogue(rnpc,RNPCdialogueData.manner);
-				string anxiety = GetRandomDialogue(rnpc,RNPCdialogueData.anxiety);
+				string manner = GetRandomDialogue(rnpc, RNPCdialogueData.manner);
+				string anxiety = GetRandomDialogue(rnpc, RNPCdialogueData.anxiety);
 				string optimism = GetRandomDialogue(rnpc, RNPCdialogueData.optimism);
 
 				string infoResponse = GetRandomDialogue(rnpc, RNPCdialogueData.info_responses);
 
-				data.Add("fquest_"+(fqi), infoResponse.Replace("$name",rnpc.name).Replace("$manner",manner).Replace("$anxiety",anxiety).Replace("$optimism",optimism));
+				data.Add("fquest_" + (fqi), infoResponse.Replace("$name", rnpc.name).Replace("$manner", manner).Replace("$anxiety", anxiety).Replace("$optimism", optimism));
 			}
 			else
 			{
-				data.Add("fquest_" + (fqi),rejections[Game1.random.Next(0, rejections.Count)]);
+				data.Add("fquest_" + (fqi), rejections[Game1.random.Next(0, rejections.Count)]);
 			}
 			fqi++;
 
 			questionString += "#$r 4343 0 fquest_" + (fqi) + "#" + farmerQuestions[fqi];
-			if (hearts >=4) // allow asking about plans
+			if (hearts >= 4) // allow asking about plans
 			{
 				string morning = "THIS IS AN ERROR";
 				string afternoon = "THIS IS AN ERROR";
 				foreach (RNPCSchedule schedule in RNPCSchedules)
 				{
-					if(schedule.npc.nameID == rnpc.nameID)
+					if (schedule.npc.nameID == rnpc.nameID)
 					{
 						morning = GetRandomDialogue(rnpc, RNPCdialogueData.places[schedule.morningLoc.Split(' ')[0]]);
 						afternoon = GetRandomDialogue(rnpc, RNPCdialogueData.places[schedule.afternoonLoc.Split(' ')[0]]);
@@ -405,28 +663,181 @@ namespace RandomNPC
 			fqi++;
 
 			questionString += "#$r 4343 0 fquest_" + (fqi) + "#" + farmerQuestions[fqi];
-			if (hearts >=6) // allow asking about help
+			if (hearts >= 6) // allow asking about help
 			{
-
-				string quest = GetRandomDialogue(rnpc, RNPCdialogueData.quests);
-				string questq = "$q 4242 questq_answered#" + quest.Split('^')[0];
-				string questRight = GetRandomDialogue(rnpc, RNPCdialogueData.questRight);
-				string questWrong = GetRandomDialogue(rnpc, RNPCdialogueData.questWrong);
-				string questUnknown = GetRandomDialogue(rnpc, RNPCdialogueData.questUnknown);
-
-				questa = quest.Split('^')[1].Split('|').ToList();
-				questa = questa.OrderBy(n => Guid.NewGuid()).ToList();
-
-				for(int i = 0; i < questa.Count; i++)
+				int quizType = Game1.random.Next(0, 5);
+				string quiz;
+				int friendship = 10;
+				List<string> quiza = new List<string>();
+				List<string> rl = new List<string>();
+				string[] ra;
+				string[] quizA;
+				switch (quizType)
 				{
-					questq += "#$r 4343 " + questa[i];
+					case 0:
+						quiz = GetRandomDialogue(rnpc, RNPCdialogueData.quiz_types["where"]);
+						rl = RNPCdialogueData.quiz_where_answers.OrderBy(n => Guid.NewGuid()).ToList();
+						for (int i = 0; i < 4; i++)
+						{
+							ra = rl[i].Split('|');
+							string ra1 = ra[1];
+							foreach (string str in SDVNPCS)
+							{
+								string str1 = str;
+								if (Game1.getCharacterFromName(str) != null)
+								{
+									str1 = Game1.getCharacterFromName(str).getName();
+									if (!str.Equals(str1))
+									{
+										ra1 = ra1.Replace(str, str1); // replace with display name
+									}
+								}
+							}
+							if (Game1.getCharacterFromName(ra[0]) != null)
+							{
+								ra[0] = Game1.getCharacterFromName(ra[0]).getName();
+							}
+							if (i == 0) // right answer
+							{
+								quiza.Add(friendship + " quiz_right#" + ra1);
+								quiz = quiz.Replace("$who", ra[0]); // replace name in question
+							}
+							else
+							{
+								if (ra[1] == rl[0].Split('|')[1]) // same answer
+									continue;
+								quiza.Add("-" + friendship + " quiz_wrong#" + ra[1]);
+							}
+						}
+						break;
+					case 1:
+						quizA = GetRandomDialogue(rnpc, RNPCdialogueData.quiz_types["when"]).Split('|');
+						quiz = quizA[0];
+						rl = RNPCdialogueData.quiz_when_answers.OrderBy(n => Guid.NewGuid()).ToList();
+
+						bool open = Game1.random.Next(0, 1) == 0;
+						ra = rl[0].Split('|');
+						quiz = quiz.Replace("$where", ra[0]).Replace("$openclose", open ? quizA[1] : quizA[2]); // replace values in question
+						int h = int.Parse(open ? ra[1] : ra[2]);
+						quiza.Add(friendship + " quiz_right#" + quizA[3].Replace("$time", h > 12 ? (h - 12) + quizA[5] : h + quizA[4]));
+
+						List<int> hours = new List<int>
+						{
+							h
+						};
+						while (quiza.Count < 4)
+						{
+							int rhour;
+							if (open)
+								rhour = Game1.random.Next(6, 12);
+							else
+								rhour = Game1.random.Next(15, 23);
+
+							if (hours.Contains(rhour)) // don't duplicate
+								continue;
+
+							hours.Add(rhour);
+
+							quiza.Add("-" + friendship + " quiz_wrong#" + quizA[3].Replace("$time", rhour > 12 ? (rhour - 12) + quizA[5] : rhour + quizA[4]));
+						}
+
+						break;
+					case 2:
+						quizA = GetRandomDialogue(rnpc, RNPCdialogueData.quiz_types["howmuch"]).Split('|');
+						quiz = quizA[0];
+
+						string item = RNPCdialogueData.quiz_howmuch_items[Game1.random.Next(0, RNPCdialogueData.quiz_howmuch_items.Count)];
+						int where = Game1.random.Next(0, 1);
+						ra = item.Split('|');
+						quiza.Add(friendship + " quiz_right#" + quizA[1].Replace("$gold", ra[1 + where]));
+						quiz = quiz.Replace("$what", ra[0]); // replace name in question
+						quiz = quiz.Replace("$where", RNPCdialogueData.quiz_howmuch_places[where]); // replace name in question
+
+						int price = int.Parse(ra[1 + where]);
+						List<int> prices = new List<int>
+						{
+							price
+						};
+						int price1 = int.Parse(ra[where == 1 ? 1 : 2]);
+						prices.Add(price1);
+
+						quiza.Add("-" + friendship + " quiz_wrong#" + quizA[1].Replace("$gold", price1.ToString()));
+
+						while (quiza.Count < 4)
+						{
+							int rprice = int.Parse(RNPCdialogueData.quiz_howmuch_items[Game1.random.Next(0, RNPCdialogueData.quiz_howmuch_items.Count)].Split('|')[1]);
+							if (prices.Contains(rprice))
+								continue;
+							prices.Add(rprice);
+
+							quiza.Add("-" + friendship + " quiz_wrong#" + quizA[1].Replace("$gold", rprice.ToString()));
+						}
+
+						break;
+					case 3:
+						quizA = GetRandomDialogue(rnpc, RNPCdialogueData.quiz_types["who"]).Split('|');
+						quiz = quizA[0];
+
+						string who = RNPCdialogueData.quiz_who_answers[Game1.random.Next(0, RNPCdialogueData.quiz_who_answers.Count)];
+						ra = who.Split('|');
+
+						quiza.Add(friendship + " quiz_right#" + quizA[1].Replace("$what", ra[0]).Replace("$who", Game1.getCharacterFromName(ra[1]).getName()));
+						quiz = quiz.Replace("$what", ra[0]); // replace name in question
+
+						List<string> people = new List<string>
+						{
+							ra[1]
+						};
+
+						while (quiza.Count < 4)
+						{
+							string rname = SDVNPCS[Game1.random.Next(0, SDVNPCS.Length)];
+							if (people.Contains(rname))
+								continue;
+							people.Add(rname);
+							if (Game1.getCharacterFromName(rname) != null)
+							{
+								rname = Game1.getCharacterFromName(rname).getName();
+							}
+							quiza.Add("-" + friendship + " quiz_wrong#" + quizA[1].Replace("$what", ra[0]).Replace("$who", rname));
+						}
+
+						break;
+					case 4:
+					default:
+						string tmp = GetRandomDialogue(rnpc, RNPCdialogueData.quiz_types["quest"]);
+						string[] quiz4 = tmp.Replace("$what", Game1.objectInformation[rnpc.questItem].Split('/')[0]).Split('|');
+						quiz = quiz4[0];
+
+						quiza.Add("2 accept_npc_quest_"+(rnpc.npcID+4200)+"#" + quiz4[1]);
+						quiza.Add("0 decline_npc_quest#" + quiz4[2]);
+						data.Add("accept_npc_quest_" + (rnpc.npcID + 4200), quiz4[3]);
+						data.Add("decline_npc_quest", quiz4[4]);
+						break;
 				}
 
-				data.Add("fquest_" + (fqi), questq);
 
-				data.Add("quest_right", questRight);
-				data.Add("quest_wrong", questWrong);
-				data.Add("quest_unknown", questUnknown);
+				string quizq = "$q 4242 questq_answered#" + quiz;
+				string quizRight = GetRandomDialogue(rnpc, RNPCdialogueData.quizRight);
+				string quizWrong = GetRandomDialogue(rnpc, RNPCdialogueData.quizWrong);
+				string quizUnknown = GetRandomDialogue(rnpc, RNPCdialogueData.quizUnknown);
+
+				if(quizType != 4)
+				{
+					quiza = quiza.OrderBy(n => Guid.NewGuid()).ToList();
+					quiza.Add("0 quiz_unknown#" + RNPCdialogueData.quiz_dont_know);
+				}
+
+				for (int i = 0; i < quiza.Count; i++)
+				{
+					quizq += "#$r 4343 " + quiza[i];
+				}
+
+				data.Add("fquest_" + (fqi), quizq);
+
+				data.Add("quiz_right", quizRight);
+				data.Add("quiz_wrong", quizWrong);
+				data.Add("quiz_unknown", quizUnknown);
 			}
 			else
 			{
@@ -451,7 +862,7 @@ namespace RandomNPC
 
 			//base.Monitor.Log(questionString, LogLevel.Alert);
 
-			foreach(string d in dow)
+			foreach (string d in dow)
 			{
 				data.Add(d, questionString);
 			}
@@ -461,13 +872,13 @@ namespace RandomNPC
 
 		private void Alert(string alert)
 		{
-			base.Monitor.Log(alert, LogLevel.Alert);	
+			base.Monitor.Log(alert, LogLevel.Alert);
 		}
 
 		private string GetRandomDialogue(RNPC rnpc, List<string> dialogues)
 		{
-			List<string> potStrings = GetHighestRankedStrings(rnpc.npcString, dialogues,7);
-			return potStrings[Game1.random.Next(0,potStrings.Count)];
+			List<string> potStrings = GetHighestRankedStrings(rnpc.npcString, dialogues, 7);
+			return potStrings[Game1.random.Next(0, potStrings.Count)];
 		}
 
 		private Dictionary<string, string> MakeSchedule(RNPC npc)
@@ -494,7 +905,7 @@ namespace RandomNPC
 
 			string sstr = schedule.MakeString();
 
-			Alert(npc.nameID + " at " + npc.startLoc + " " + sstr);
+			//Alert(npc.nameID + " at " + npc.startLoc + " has schedule: " + sstr);
 
 			data.Add("spring", sstr);
 			return data;
@@ -503,7 +914,7 @@ namespace RandomNPC
 		private string[] MakeRandomAppointment(RNPC npc, string morning)
 		{
 			List<string[]> potentialApps = new List<string[]>();
-			List<string> fitApps = GetHighestRankedStrings(npc.npcString,RNPCscheduleStrings.data,7);
+			List<string> fitApps = GetHighestRankedStrings(npc.npcString, RNPCscheduleStrings.data, 7);
 
 			foreach (string appset in fitApps)
 			{
@@ -526,9 +937,9 @@ namespace RandomNPC
 									break;
 								}
 							}
-							if(!taken)
+							if (!taken)
 							{
-								potentialApps.Add(new string[]{time,thisApp});
+								potentialApps.Add(new string[] { time, thisApp });
 							}
 						}
 					}
@@ -541,9 +952,19 @@ namespace RandomNPC
 
 		private Texture2D CreateCustomCharacter(RNPC npc, string type)
 		{
-			Texture2D sprite = this.Helper.Content.Load<Texture2D>("assets/" + npc.bodyType + "_"+type+".png", ContentSource.ModFolder);
-			Texture2D hairT = this.Helper.Content.Load<Texture2D>("assets/" + npc.hairStyle + "_" + type + ".png", ContentSource.ModFolder);
-			Texture2D eyeT = this.Helper.Content.Load<Texture2D>("assets/eyes_" + type + ".png", ContentSource.ModFolder);
+			Texture2D sprite = this.Helper.Content.Load<Texture2D>("assets/body/" + npc.bodyType + "_" + type + ".png", ContentSource.ModFolder);
+			Texture2D hairT = this.Helper.Content.Load<Texture2D>("assets/hair/" + npc.hairStyle + "_" + type + ".png", ContentSource.ModFolder);
+			Texture2D eyeT = this.Helper.Content.Load<Texture2D>("assets/body/" + npc.gender + "_eyes_" + type + ".png", ContentSource.ModFolder);
+
+			Texture2D eyeBackT = null;
+			Texture2D noseT = null;
+			Texture2D mouthT = null;
+			if (type == "portrait")
+			{
+				eyeBackT = this.Helper.Content.Load<Texture2D>("assets/body/" + npc.gender + "_eyes_back.png", ContentSource.ModFolder);
+				noseT = this.Helper.Content.Load<Texture2D>("assets/body/" + npc.gender + "_nose.png", ContentSource.ModFolder);
+				mouthT = this.Helper.Content.Load<Texture2D>("assets/body/" + npc.gender + "_mouth.png", ContentSource.ModFolder);
+			}
 			Texture2D topT = this.Helper.Content.Load<Texture2D>("assets/transparent_" + type + ".png", ContentSource.ModFolder);
 			Texture2D bottomT = topT;
 			Texture2D shoesT = topT;
@@ -559,7 +980,7 @@ namespace RandomNPC
 			else
 			{
 				string npcString = string.Join("/", npc.npcString.Split('/').Take(7)) + "/" + npc.bodyType;
-				List<string> potentialClothes = GetHighestRankedStrings(npcString,RNPCclothes.data,8);
+				List<string> potentialClothes = GetHighestRankedStrings(npcString, RNPCclothes.data, 8);
 
 				clothes = potentialClothes[Game1.random.Next(0, potentialClothes.Count)].Split('^');
 				npc.clothes = clothes;
@@ -568,26 +989,41 @@ namespace RandomNPC
 
 			if (clothes[0] != "")
 			{
-				topT = this.Helper.Content.Load<Texture2D>("assets/" + clothes[0]+ "_" + type + ".png", ContentSource.ModFolder);
+				topT = this.Helper.Content.Load<Texture2D>("assets/clothes/" + clothes[0] + "_" + type + ".png", ContentSource.ModFolder);
 			}
-			if(clothes[1] != "" && type == "character")
+			if (clothes[1] != "" && type == "character")
 			{
-				bottomT = this.Helper.Content.Load<Texture2D>("assets/" + clothes[1] + ".png", ContentSource.ModFolder);
+				bottomT = this.Helper.Content.Load<Texture2D>("assets/clothes/" + clothes[1] + ".png", ContentSource.ModFolder);
 			}
-			if(clothes[2] != "" && type == "character")
+			if (clothes[2] != "" && type == "character")
 			{
-				shoesT = this.Helper.Content.Load<Texture2D>("assets/" + clothes[2]+ ".png", ContentSource.ModFolder);
+				shoesT = this.Helper.Content.Load<Texture2D>("assets/clothes/" + clothes[2] + ".png", ContentSource.ModFolder);
 			}
 
 			Color[] data = new Color[sprite.Width * sprite.Height];
-			Color[] dataH = new Color[sprite.Width * sprite.Height];
-			Color[] dataE = new Color[sprite.Width * sprite.Height];
-			Color[] dataT = new Color[sprite.Width * sprite.Height];
-			Color[] dataB = new Color[sprite.Width * sprite.Height];
-			Color[] dataS = new Color[sprite.Width * sprite.Height];
+			Color[] dataH = new Color[hairT.Width * hairT.Height];
+			Color[] dataE = new Color[eyeT.Width * eyeT.Height];
+			Color[] dataEB = null;
+			Color[] dataN = null;
+			Color[] dataM = null;
+			if (type == "portrait")
+			{
+				dataEB = new Color[eyeBackT.Width * eyeBackT.Height];
+				dataN = new Color[noseT.Width * noseT.Height];
+				dataM = new Color[mouthT.Width * mouthT.Height];
+			}
+			Color[] dataT = new Color[topT.Width * topT.Height];
+			Color[] dataB = new Color[bottomT.Width * bottomT.Height];
+			Color[] dataS = new Color[shoesT.Width * shoesT.Height];
 			sprite.GetData(data);
 			hairT.GetData(dataH);
 			eyeT.GetData(dataE);
+			if (type == "portrait")
+			{
+				eyeBackT.GetData(dataEB);
+				noseT.GetData(dataN);
+				mouthT.GetData(dataM);
+			}
 			topT.GetData(dataT);
 			bottomT.GetData(dataB);
 			shoesT.GetData(dataS);
@@ -595,9 +1031,9 @@ namespace RandomNPC
 			string[] skinRBG = npc.skinColour.Split(' ');
 			string[] eyeRBG = npc.eyeColour.Split(' ');
 			List<string> hairRBGs = npc.hairColour.Split('^').ToList();
-			
+
 			string[] baseColourT = clothes[3] == "any" ? npc.topRandomColour : null;
-			
+
 			string[] baseColourB;
 			switch (clothes[4])
 			{
@@ -630,53 +1066,62 @@ namespace RandomNPC
 
 			// make hair gradient
 
-			List<byte> hairGreys = new List<byte>();
-			for (int i = 0; i < data.Length; i++)
+			List<string> hairGreyStrings = new List<string>();
+			for (int i = 0; i < dataH.Length; i++)
 			{
 				if (dataH[i].R == dataH[i].G && dataH[i].R == dataH[i].B && dataH[i].G == dataH[i].B) // greyscale
 				{
-					if(!hairGreys.Contains(dataH[i].R)) { // only add one of each grey
-						hairGreys.Add(dataH[i].R);
+					if (!hairGreyStrings.Contains(dataH[i].R.ToString()))
+					{ // only add one of each grey
+						hairGreyStrings.Add(dataH[i].R.ToString());
 					}
 				}
 			}
 
-			hairGreys.Sort();
-			hairGreys.Reverse(); // lightest to darkest
-
 			// make same number of greys as colours in gradient
 
-			if (hairRBGs.Count > hairGreys.Count) // ex 9 and 6
+			if (hairRBGs.Count > hairGreyStrings.Count) // ex 9 and 6
 			{
-				hairGreys = LengthenToMatch<byte,string>(hairGreys, hairRBGs);
+				hairGreyStrings = LengthenToMatch(hairGreyStrings, hairRBGs);
 			}
-			else if (hairRBGs.Count < hairGreys.Count)
+			else if (hairRBGs.Count < hairGreyStrings.Count)
 			{
-				hairRBGs = LengthenToMatch<string,byte>(hairRBGs, hairGreys);
+				hairRBGs = LengthenToMatch(hairRBGs, hairGreyStrings);
 
 			}
+			List<byte> hairGreys = new List<byte>();
+			foreach (string str in hairGreyStrings)
+			{
+				hairGreys.Add(byte.Parse(str));
+			}
+			hairGreys.Sort();
+			hairGreys.Reverse(); // lightest to darkest
+			//Alert(hairGreys.Count+ " " +hairRBGs.Count);
+			
+			// start putting it together
 
 			for (int i = 0; i < data.Length; i++)
 			{
-				if (dataH[i] != Color.Transparent)
+				if (dataH.Length > i && dataH[i] != Color.Transparent)
 				{
 					if (dataH[i].R == dataH[i].G && dataH[i].R == dataH[i].B && dataH[i].G == dataH[i].B) // greyscale
 					{
 						// hair gradient
 
-						// for cases where more greys than colours
+						// for cases where fewer greys than colours (multiple of same grey)
 						List<int> greyMatches = new List<int>();
-						for(int j = 0; j < hairGreys.Count; j++)
+						for (int j = 0; j < hairGreys.Count; j++)
 						{
-							if(hairGreys[j] == dataH[i].R)
+							if (hairGreys[j] == dataH[i].R)
 							{
 								greyMatches.Add(j);
 							}
-
 						}
 
 						string[] hairRBG;
-						hairRBG = hairRBGs[greyMatches[Game1.random.Next(0,greyMatches.Count)]].Split(' '); // turns single grey into set of colours
+						int rnd = Game1.random.Next(0, greyMatches.Count);
+						int match = greyMatches[rnd];
+						hairRBG = hairRBGs[match].Split(' '); // turns single grey into set of colours
 
 						data[i] = new Color(byte.Parse(hairRBG[0]), byte.Parse(hairRBG[1]), byte.Parse(hairRBG[2]), 255);
 					}
@@ -685,9 +1130,21 @@ namespace RandomNPC
 						data[i] = dataH[i];
 					}
 				}
-				else if(dataE[i] != Color.Transparent)
+				else if (dataT.Length > i && dataT[i] != Color.Transparent)
 				{
-					if(dataE[i] != Color.White)
+					data[i] = baseColourT != null ? ColorizeGrey(baseColourT, dataT[i]) : dataT[i];
+				}
+				else if (dataB.Length > i && dataB[i] != Color.Transparent)
+				{
+					data[i] = baseColourB != null ? ColorizeGrey(baseColourB, dataB[i]) : dataB[i];
+				}
+				else if (dataS.Length > i && dataS[i] != Color.Transparent)
+				{
+					data[i] = baseColourS != null ? ColorizeGrey(baseColourS, dataS[i]) : dataS[i];
+				}
+				else if (dataE.Length > i && dataE[i] != Color.Transparent)
+				{
+					if (dataE[i] != Color.White)
 					{
 						data[i] = ColorizeGrey(eyeRBG, dataE[i]);
 					}
@@ -696,19 +1153,26 @@ namespace RandomNPC
 						data[i] = Color.White;
 					}
 				}
-				else if(dataT[i] != Color.Transparent)
+				else if (type == "portrait" && dataEB.Length > i && dataEB[i] != Color.Transparent)
 				{
-					data[i] = baseColourT != null ? ColorizeGrey(baseColourT, dataT[i]) : dataT[i];
+					data[i] = ColorizeGrey(skinRBG, dataEB[i]);
 				}
-				else if(dataB[i] != Color.Transparent)
+				else if (type == "portrait" && dataN.Length > i && dataN[i] != Color.Transparent)
 				{
-					data[i] = baseColourB != null ? ColorizeGrey(baseColourB, dataB[i]) : dataB[i];
+					data[i] = ColorizeGrey(skinRBG, dataN[i]);
 				}
-				else if(dataS[i] != Color.Transparent)
+				else if (type == "portrait" && dataM.Length > i && dataM[i] != Color.Transparent)
 				{
-					data[i] = baseColourS != null ? ColorizeGrey(baseColourS, dataS[i]) : dataS[i];
+					if (dataM[i] != Color.White)
+					{
+						data[i] = ColorizeGrey(skinRBG, dataM[i]);
+					}
+					else
+					{
+						data[i] = Color.White;
+					}
 				}
-				else if(data[i] != Color.Transparent)
+				else if (data[i] != Color.Transparent)
 				{
 					data[i] = ColorizeGrey(skinRBG, data[i]);
 				}
@@ -719,23 +1183,29 @@ namespace RandomNPC
 
 		private Color ColorizeGrey(string[] baseColour, Color greyMap)
 		{
+			if (greyMap.R != greyMap.G || greyMap.R != greyMap.B || greyMap.G != greyMap.B) // not greyscale
+			{
+				return greyMap;
+			}
 			//base.Monitor.Log(string.Join("", baseColour), LogLevel.Alert);
-			Color outColour = new Color();
-			outColour.R = (byte)(greyMap.R - Math.Round((255 - double.Parse(baseColour[0])) * greyMap.R / 255));
-			outColour.G = (byte)(greyMap.G - Math.Round((255 - double.Parse(baseColour[1])) * greyMap.G / 255));
-			outColour.B = (byte)(greyMap.B - Math.Round((255 - double.Parse(baseColour[2])) * greyMap.B / 255));
-			outColour.A = 255;
+			Color outColour = new Color
+			{
+				R = (byte)(greyMap.R - Math.Round((255 - double.Parse(baseColour[0])) * greyMap.R / 255)),
+				G = (byte)(greyMap.G - Math.Round((255 - double.Parse(baseColour[1])) * greyMap.G / 255)),
+				B = (byte)(greyMap.B - Math.Round((255 - double.Parse(baseColour[2])) * greyMap.B / 255)),
+				A = 255
+			};
 			return outColour;
 		}
 
-		private string GenerateNPCString() 
+		private string GenerateNPCString()
 		{
 			string npcstring = "";
 
 			// age
 			//string[] ages = { "child", "teen", "adult" };
 			string[] ages = { "teen", "adult" };
-			string age = GetRandomFromDist(ages,Config.AgeDist);
+			string age = GetRandomFromDist(ages, Config.AgeDist);
 
 			// manners
 			string[] manners = { "polite", "rude", "neutral" };
@@ -782,10 +1252,21 @@ namespace RandomNPC
 				bool thisfreename = true;
 				for (int i = 0; i < RNPCsavedNPCs.data.Count; i++)
 				{
-					if (RNPCsavedNPCs.data[i].Split('/')[11] == name)
+					if (RNPCsavedNPCs.data[i].Split('/')[8] == name)
 					{
 						thisfreename = false;
 						break;
+					}
+				}
+				foreach (string str in SDVNPCS)
+				{
+					if (Game1.getCharacterFromName(str) != null)
+					{
+						if (Game1.getCharacterFromName(str).getName() == name)
+						{
+							thisfreename = false;
+							break;
+						}
 					}
 				}
 				if (thisfreename)
@@ -801,7 +1282,7 @@ namespace RandomNPC
 			// body type
 
 			List<string> potentialBodyTypes = new List<string>();
-			foreach(string body in RNPCbodyTypes.data)
+			foreach (string body in RNPCbodyTypes.data)
 			{
 				string[] ba = body.Split('/');
 				if ((ba[0] == "any" || ba[0] == age || ba[0].Split('|').Contains(age)) && (ba[1] == "any" || ba[1] == gender || ba[1].Split('|').Contains(gender)))
@@ -821,7 +1302,7 @@ namespace RandomNPC
 			foreach (string style in RNPChairStyles.data)
 			{
 				string[] ba = style.Split('/');
-				if ((ba[0] == "any" || ba[0] == age || ba[0].Split('|').Contains(age))&& (ba[1] == "any" || ba[1] == gender) && (ba[2] == "any" || ba[2] == manner || ba[2].Split('|').Contains(manner)) && (ba[3] == "any" || SharesItems(traits.Split('|'),ba[3].Split('|'))))
+				if ((ba[0] == "any" || ba[0] == age || ba[0].Split('|').Contains(age)) && (ba[1] == "any" || ba[1] == gender) && (ba[2] == "any" || ba[2] == manner || ba[2].Split('|').Contains(manner)) && (ba[3] == "any" || SharesItems(traits.Split('|'), ba[3].Split('|'))))
 				{
 					potentialHairStyles.Add(ba[4]);
 				}
@@ -831,7 +1312,7 @@ namespace RandomNPC
 			// hair colour
 
 			string hairColour;
-			if(int.Parse(skinColour.Split(' ')[0]) < 150 && Config.DarkSkinDarkHair)
+			if (int.Parse(skinColour.Split(' ')[0]) < 150 && Config.DarkSkinDarkHair)
 			{
 				hairColour = RNPCdarkHairColours.data[Game1.random.Next(0, RNPCdarkHairColours.data.Count)];
 			}
@@ -873,14 +1354,14 @@ namespace RandomNPC
 			};
 			eyeColour = r + " " + g + " " + b;
 
-			npcstring = age + "/" + manner + "/" + anxiety + "/" + optimism + "/" + gender + "/" + datable + "/"+traits+"/" + birthday + "/" + name + "/" + giftTaste + "/" + bodyType + "/" + skinColour + "/" + hairStyle + "/" + hairColour + "/" + eyeColour;
+			npcstring = age + "/" + manner + "/" + anxiety + "/" + optimism + "/" + gender + "/" + datable + "/" + traits + "/" + birthday + "/" + name + "/" + giftTaste + "/" + bodyType + "/" + skinColour + "/" + hairStyle + "/" + hairColour + "/" + eyeColour;
 
 			return npcstring;
 		}
 
 		private bool SharesItems(string[] sharing, string[] shares)
 		{
-			foreach(string s in shares)
+			foreach (string s in shares)
 			{
 				if (!sharing.Contains(s))
 				{
@@ -890,30 +1371,56 @@ namespace RandomNPC
 			return true;
 		}
 
-		private List<T1> LengthenToMatch<T1, T2>(List<T1> smallerL, List<T2> largerL)
+		private List<string> LengthenToMatch(List<string> smallerL, List<string> largerL)
 		{
-			int multMax = (int)Math.Ceiling((double)largerL.Count / (double)smallerL.Count); // 10/6 = 2
-			int multMin = (int)Math.Floor((double)largerL.Count / (double)smallerL.Count);  // 10/6 = 1
-			int multDiff = largerL.Count - smallerL.Count * multMin;  // 10 - 6*1 = 4 remainder, number of entries that get extra
+			// for 10 and 6
+			int multMax = (int)Math.Ceiling((double)(largerL.Count - 1) / (double)(smallerL.Count - 1)); // 9/5 = 2, leave last
+			int multMin = (int)Math.Floor((double)(largerL.Count - 1) / (double)(smallerL.Count - 1));  // 9/5 = 2
+			int multDiff = (largerL.Count - 1) - (smallerL.Count - 1) * multMin;  // 9 - 5*1 = 4 remainder, number of entries that get extra
 
-			List<T1> outList = new List<T1>();
+			// total of 4*2 and 1*1 = 9, extra one will be add as last
 
-			for (int i = 0; i < smallerL.Count; i++)
+			List<string> outList = new List<string>();
+
+			for (int i = 0; i < smallerL.Count - 1; i++)
 			{
 				int no;
-				if (i == 0 || i > multDiff) // first gets repeated fewer, also those after multDiff (4)
+				if (i >= multDiff) // those starting at multDiff(4) get repeated fewer (1), means (0-3)*2=8entries and (4)*1=1entries
 				{
-					no = multMin;
+					no = multMin; // 4 gets 1
 				}
 				else
 				{
-					no = multMax;
+					no = multMax; // 0-3 get 2
 				}
-				for (int j = 0; j < no; j++)
+				outList.Add(smallerL[i]); // always add original before adding modified in between
+				for (int j = 1; j < no; j++)
 				{
-					outList.Add(smallerL[i]);
+					if (smallerL[i].Contains(" "))
+					{ // is rgb
+						string[] si = smallerL[i].Split(' ');
+						string[] sii = smallerL[i + 1].Split(' ');
+
+						int[] r = int.Parse(si[0]) > int.Parse(sii[0]) ? new int[] { int.Parse(si[0]), int.Parse(sii[0]), 1 } : new int[] { int.Parse(sii[0]), int.Parse(si[0]), -1 };
+						int[] g = int.Parse(si[1]) > int.Parse(sii[1]) ? new int[] { int.Parse(si[1]), int.Parse(sii[1]), 1 } : new int[] { int.Parse(sii[1]), int.Parse(si[1]), -1 };
+						int[] b = int.Parse(si[2]) > int.Parse(sii[2]) ? new int[] { int.Parse(si[2]), int.Parse(sii[2]), 1 } : new int[] { int.Parse(sii[2]), int.Parse(si[2]), -1 };
+
+						int rn = int.Parse(si[0]) - r[2] * (r[0] - r[1]) * j / no; // 200 - (200-100)*(0 or 1)/2 = fraction of difference based on which no
+						int gn = int.Parse(si[1]) - g[2] * (g[0] - g[1]) * j / no;
+						int bn = int.Parse(si[2]) - b[2] * (b[0] - b[1]) * j / no;
+						//Alert(smallerL[i]+" | "+ rn + " " + gn + " " + bn +" | " + smallerL[i+1]);
+						outList.Add(rn + " " + gn + " " + bn);
+					}
+					else // is grey
+					{
+						string grey = (float)no / i < 0.5 ? smallerL[i] : smallerL[i + 1];
+						outList.Add(grey);
+					}
 				}
 			}
+			outList.Add(smallerL[smallerL.Count - 1]);
+			//Alert(smallerL.Count + " " + largerL.Count);
+			//Alert(outList.Count + " " + largerL.Count);
 			return outList;
 		}
 
@@ -932,7 +1439,7 @@ namespace RandomNPC
 				}
 				if (aRank == rank)
 				{
-					outStrings.Add(string.Join("/",str.Split('/').Skip(checks)));
+					outStrings.Add(string.Join("/", str.Split('/').Skip(checks)));
 				}
 
 			}
@@ -948,7 +1455,7 @@ namespace RandomNPC
 			IEnumerable<string> npca = npcString.Split('/').Take(checks);
 			for (int i = 0; i < checks; i++)
 			{
-				if(stra.Count() == i) 
+				if (stra.Count() == i)
 				{
 					break;
 				}
@@ -966,13 +1473,13 @@ namespace RandomNPC
 			}
 			return rank;
 		}
-		private string GetRandomFromDist(string[] strings, double[] dists) 
+		private string GetRandomFromDist(string[] strings, double[] dists)
 		{
 			double rnd = Game1.random.NextDouble();
 			double x = 0;
-			for(int i = 0; i < strings.Length; i++)
+			for (int i = 0; i < strings.Length; i++)
 			{
-				if(rnd < x + dists[i])
+				if (rnd < x + dists[i])
 				{
 					return strings[i];
 				}
@@ -982,6 +1489,53 @@ namespace RandomNPC
 				}
 			}
 			return "";
+		}
+
+		private void LogColors()
+		{
+			for (int j = 1; j < 13; j++)
+			{
+				Texture2D sprite = this.Helper.Content.Load<Texture2D>("assets/work/hairs/" + j + ".png");
+				Color[] data = new Color[sprite.Width * sprite.Height];
+				sprite.GetData(data);
+				Dictionary<int,string> tempList = new Dictionary<int,string>();
+				for (int i = 0; i < data.Length; i++)
+				{
+					if (data[i] != Color.Transparent)
+					{
+						int total = (int)data[i].R + (int)data[i].G + (int)data[i].B;
+						string c = string.Join(" ", new string[] { data[i].R.ToString(), data[i].G.ToString(), data[i].B.ToString() });
+						if (!tempList.ContainsKey(total))
+						{
+							tempList.Add(total,c);
+						}
+						else if(tempList[total] != c)
+						{
+							while (tempList.ContainsKey(total))
+							{
+								total++;
+								if (!tempList.ContainsKey(total))
+								{
+									tempList.Add(total, c);
+								}
+								else if (tempList[total] == c)
+									break;
+							}
+						}
+					}
+
+				}
+				var keys = tempList.Keys.ToList();
+				keys.Sort();
+				keys.Reverse();
+
+				var outList = new List<string>();
+				foreach(var key in keys)
+				{
+					outList.Add(tempList[key]);
+				}
+				Alert(string.Join("^", outList));
+			}
 		}
 	}
 }

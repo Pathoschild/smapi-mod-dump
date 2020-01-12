@@ -8,5 +8,6 @@
   "CommonAmount": 5,
   "HighestQualityAmount": 5,
   "FishHighestQuality": 4,
-  "DoNotShowCaughtFish": false
+  "DoNotShowCaughtFish": false,
+  "IgnoreQuality": true
 }

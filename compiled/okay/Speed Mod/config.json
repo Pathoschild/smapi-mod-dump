@@ -1,0 +1,16 @@
+{
+  "SpeedModifier": 2,
+  "TeleportHomeKey": "H",
+  "CanPlayerInterrupt": true,
+  "CanDamageInterrupt": true,
+  "DamageThreshold": 10,
+  "DamageThresholdBasedOnTotalHealth": true,
+  "StaminaCost": 50,
+  "RecastCooldown": "00:07:00",
+  "CastCooldown": 5,
+  "TeleportToBed": true,
+  "EnableTeleportationEffects": true,
+  "EnableTeleportationSounds": true,
+  "EnabledInMultiplayer": false,
+  "Test": null
+}

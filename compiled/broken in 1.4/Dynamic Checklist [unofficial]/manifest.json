@@ -1,9 +1,0 @@
-{
-  "Name": "DynamicChecklist",
-  "Author": "gunnargolf",
-  "Version": "1.0.2-unofficial.1-Mizzion",
-  "Description": "Creates a dynamic checklist of tasks for the day",
-  "UniqueID": "gunnargolf.DynamicChecklist",
-  "EntryDll": "DynamicChecklist.dll",
-  "UpdateKeys": [ "Nexus:1145" ]
-}

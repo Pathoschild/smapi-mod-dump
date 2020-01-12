@@ -52,8 +52,8 @@ namespace CompostPestsCultivation
         }
 
         private static Dictionary<string, GreenBrown> GreenBrownDistributionsByName = new Dictionary<string, GreenBrown>(){
-            {"Hay", new GreenBrown(1,9) },
-            {"Fiber", new GreenBrown(5,5) },
+            {"Hay", new GreenBrown(1,5) },
+            {"Fiber", new GreenBrown(2,2) },
             {"Green Algae", new GreenBrown(10,5) },
             {"White Algae", new GreenBrown(8,7) },
             {"Seaweed", new GreenBrown(12,8) },
@@ -194,7 +194,7 @@ namespace CompostPestsCultivation
                 if (ComposterDaysLeft[vec] <= 0)
                 {
                     ComposterDaysLeft.Remove(vec);
-                    int left = ComposterContents[vec].Sum((Item arg) => arg == null ? 0 : (int) (100 * GetParts(arg) * arg.Stack)) / 100;
+                    int left = ComposterContents[vec].Sum((Item arg) => arg == null ? 0 : (int)System.Math.Ceiling((100 * GetParts(arg) * arg.Stack)) / 100);
                     ModEntry.GetMonitor().Log($"Added {left} compost part to {vec}", StardewModdingAPI.LogLevel.Trace);
                     //ModEntry.GetMonitor().Log($"ComposterContents[{vec}].Count == {ComposterContents[vec].Count}");
                     //ComposterContents[vec].ForEach((Item obj) => { if (obj != null) ModEntry.GetMonitor().Log("Found item " + obj.Name + "x" + obj.Stack + ", "+GetParts(obj)+" parts"); });

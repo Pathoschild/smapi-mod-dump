@@ -43,6 +43,7 @@
     <Compile Include="CompostingBin.cs" />
     <Compile Include="ModComponent.cs" />
     <Compile Include="SeedMakerController.cs" />
+    <Compile Include="HayShopMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />

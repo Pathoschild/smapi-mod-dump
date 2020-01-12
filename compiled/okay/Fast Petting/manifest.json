@@ -1,0 +1,10 @@
+﻿{
+  "Name": "FastPetting",
+  "Author": "DerTod2",
+  "Version": "1.0.0",
+  "Description": "Pet all animals on the farm by simply pressing an button!",
+  "UniqueID": "de.dertod2.FastPetting",
+  "EntryDll": "FastPetting.dll",
+  "MinimumApiVersion": "3.0.1",
+  "UpdateKeys": [ "Nexus:5039" ]
+}

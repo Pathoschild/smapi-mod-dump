@@ -1,5 +1,5 @@
 {
-  "Version": "2.1.0-beta6",
+  "Version": "2.1.0-beta8",
   "EventPatch": {
     "SetExitLocation": true
   },
