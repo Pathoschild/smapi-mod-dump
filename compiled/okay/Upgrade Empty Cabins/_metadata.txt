@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5253
+IDs: Cherry.UpgradeEmptyCabins
+update keys: Nexus:5253, GitHub:ChroniclerCherry/stardew-valley-mods

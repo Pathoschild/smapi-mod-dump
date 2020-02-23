@@ -1,0 +1,96 @@
+{
+  "DailyLimit": 1,
+  "HeartsNeeded": 12,
+  "GlobalChance": 1.0,
+  "Spouses": {
+    "Alex": {
+      "furyx639.LoveThePets": 1.0,
+      "furyx639.FeedTheAnimals": 0.6,
+      "furyx639.PetTheAnimals": 0.6
+    },
+    "Elliott": {
+      "furyx639.BirthdayGift": 0.6,
+      "furyx639.MakeBreakfast": 0.7,
+      "furyx639.WaterTheCrops": 0.6
+    },
+    "Harvey": {
+      "furyx639.LoveThePets": 0.8,
+      "furyx639.WaterTheCrops": 0.6,
+      "furyx639.WaterTheSlimes": 0.6
+    },
+    "Sam": {
+      "furyx639.BirthdayGift": 0.4,
+      "furyx639.LoveThePets": 0.6,
+      "furyx639.PetTheAnimals": 0.5
+    },
+    "Sebastian": {
+      "furyx639.BirthdayGift": 0.4,
+      "furyx639.LoveThePets": 0.6,
+      "furyx639.WaterTheSlimes": 0.6
+    },
+    "Shane": {
+      "furyx639.FeedTheAnimals": 0.8,
+      "furyx639.LoveThePets": 1.0,
+      "furyx639.PetTheAnimals": 0.8
+    },
+    "Abigail": {
+      "furyx639.BirthdayGift": 0.5,
+      "furyx639.PetTheAnimals": 0.7,
+      "furyx639.WaterTheSlimes": 0.6
+    },
+    "Emily": {
+      "furyx639.BirthdayGift": 0.8,
+      "furyx639.MakeBreakfast": 0.8,
+      "furyx639.PetTheAnimals": 0.8
+    },
+    "Haley": {
+      "furyx639.BirthdayGift": 1.0,
+      "furyx639.MakeBreakfast": 0.5,
+      "furyx639.PetTheAnimals": 0.6
+    },
+    "Leah": {
+      "furyx639.BirthdayGift": 0.7,
+      "furyx639.RepairTheFences": 0.5,
+      "furyx639.WaterTheCrops": 0.6
+    },
+    "Maru": {
+      "furyx639.BirthdayGift": 0.7,
+      "furyx639.RepairTheFences": 0.8,
+      "furyx639.WaterTheCrops": 0.6
+    },
+    "Penny": {
+      "furyx639.LoveThePets": 0.9,
+      "furyx639.MakeBreakfast": 0.7,
+      "furyx639.PetTheAnimals": 0.8
+    },
+    "Krobus": {
+      "furyx639.MakeBreakfast": 0.7,
+      "furyx639.WaterTheSlimes": 1.0
+    },
+    "Wizard": {
+      "furyx639.BirthdayGift": 0.8,
+      "furyx639.WaterTheCrops": 0.4,
+      "furyx639.WaterTheSlimes": 0.7
+    },
+    "Olivia": {
+      "furyx639.BirthdayGift": 0.8,
+      "furyx639.MakeBreakfast": 0.4,
+      "furyx639.PetTheAnimals": 0.6
+    },
+    "Victor": {
+      "furyx639.BirthdayGift": 0.8,
+      "furyx639.PetTheAnimals": 0.6,
+      "furyx639.WaterTheCrops": 0.4
+    },
+    "Paul": {
+      "furyx639.BirthdayGift": 0.8,
+      "furyx639.PetTheAnimals": 0.6,
+      "furyx639.WaterTheCrops": 0.4
+    },
+    "Sophia": {
+      "furyx639.PetTheAnimals": 0.7,
+      "furyx639.RepairTheFences": 0.5,
+      "furyx639.WaterTheCrops": 0.6
+    }
+  }
+}

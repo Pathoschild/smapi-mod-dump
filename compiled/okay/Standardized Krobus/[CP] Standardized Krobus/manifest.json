@@ -1,0 +1,17 @@
+{
+   "Name": "Standardized Krobus",
+   "Author": "minervamaga",
+   "Version": "1.0.0",
+   "Description": "Resized sprite sheet for Krobus",
+   "UniqueID": "minervamaga.CP.StandardizedKrobus",
+   "UpdateKeys": ["Nexus:5206"],
+   "ContentPackFor": {
+      "UniqueID": "Pathoschild.ContentPatcher",
+   },
+   "Dependencies": [
+	   {
+	      "UniqueID": "minervamaga.StandardizedKrobus",
+	      "IsRequired": true
+	   },
+	]
+}

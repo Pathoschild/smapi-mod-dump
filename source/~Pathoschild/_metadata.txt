@@ -19,9 +19,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 094b5431a3704ba5aa096e4eab037f3d99d38933
+   commit f50e93c541296b5f6126a1f83483c686aaf01c57
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Jan 11 13:56:06 2020 -0500
+   Date:   Sat Feb 22 17:00:48 2020 -0500
    
-       minor optimization in Skip Intro
+       update for released input API in SMAPI 3.3
    

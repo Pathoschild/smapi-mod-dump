@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/GilarF/SVM/develop/ModSettingsTab/schema.json",
   "Description": {
     "en": "Enables an overlay which provides debug information and unlocks the game's debug hotkeys.",
     "zh": "取代標准設定標籤",
@@ -33,7 +34,10 @@
         "th": "เปิดใช้งานโหมดแก้ไขข้อบกพร่องของเกมและปุ่มลัด: \n'T': เพิ่มหนึ่งชั่วโมงในนาฬิกา\n'SHIFT' + 'Y': ลบ 10 นาทีจากนาฬิกา\n'Y': เพิ่ม 10 นาทีไปที่นาฬิกา, '1-7': Warp, 'K': เลื่อนระดับเหมืองลงหนึ่งระดับ\n, 'F5': แสดงหรือซ่อนสไปรต์ของผู้เล่นทั้งหมด 'F7': วาดกริดไทล์\n  'F8': แสดงหน้าต่างป้อนคำสั่งดีบัก 'B': เลื่อนแถบเครื่องมือเพื่อแสดงแถวสินค้าคงคลังที่สูงขึ้นถัดไป\n'N': เลื่อนแถบเครื่องมือเพื่อแสดงแถวสินค้าคงคลังที่ต่ำกว่าถัดไป"
       },
       "Type": "CheckBox",
-      "Label": "Allow game debug"
+      "Label": {
+        "en": "Enable debug mode",
+        "fr": "Activer le mode de débogage"
+      }
     },
     {
       "Name": "AllowDangerousCommands",
@@ -53,12 +57,18 @@
         "th": "วิธีนี้จะช่วยให้เกมดีบั๊กคำสั่งซึ่งจบวัน / ฤดูกาลปัจจุบัน & บันทึกสุ่มเล่นของคุณหรือประดับบ้านหรือเล่นเกม เปลี่ยนสิ่งนี้เฉพาะเมื่อคุณตระหนักถึงผลที่จะตามมา"
       },
       "Type": "CheckBox",
-      "Label": "Allow dangerous сommands"
+      "Label": {
+        "en": "Allow dangerous сommands",
+        "fr": "Autoriser les commandes dangereuses" 
+      }
     },
     {
       "Name": "Controls.ToggleDebug",
       "Type": "InputListener",
-      "Label": "The configured controller"
+      "Label": {
+        "en": "Configured controller",
+        "fr": "Contrôleur configuré" 
+      }
     }
   ]
 }

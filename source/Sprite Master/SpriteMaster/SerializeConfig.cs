@@ -15,17 +15,17 @@ namespace SpriteMaster {
 			ulong hash = default;
 
 			foreach (var field in type.GetFields(StaticFlags)) {
-				hash = Hashing.CombineHash(hash, field.GetValue(null).GetLongHashCode());
+				hash = Hash.Combine(hash, field.GetValue(null).GetLongHashCode());
 			}
 
 			foreach (var child in type.GetNestedTypes(StaticFlags)) {
-				hash = Hashing.CombineHash(hash, HashClass(child));
+				hash = Hash.Combine(hash, HashClass(child));
 			}
 
 			return hash;
 		}
 
-		internal static ulong Hash () {
+		internal static ulong GetWideHashCode () {
 			return HashClass(typeof(Config));
 		}
 
@@ -165,7 +165,7 @@ namespace SpriteMaster {
 		}
 
 		private static void SaveClass (Type type, DocumentSyntax document, KeySyntax key = null) {
-			key = key ?? new KeySyntax(type.Name);
+			key ??= new KeySyntax(type.Name);
 
 			var fields = type.GetFields(StaticFlags);
 			var children = type.GetNestedTypes(StaticFlags);
@@ -305,10 +305,9 @@ namespace SpriteMaster {
 
 				SaveClass(typeof(Config), Document);
 
-				using (var writer = new StreamWriter(stream)) {
-					Document.WriteTo(writer);
-					writer.Flush();
-				}
+				using var writer = new StreamWriter(stream);
+				Document.WriteTo(writer);
+				writer.Flush();
 			}
 			catch (Exception ex) {
 				ex.PrintWarning();
@@ -323,10 +322,9 @@ namespace SpriteMaster {
 
 				SaveClass(typeof(Config), Document);
 
-				using (var writer = File.CreateText(ConfigPath)) {
-					Document.WriteTo(writer);
-					writer.Flush();
-				}
+				using var writer = File.CreateText(ConfigPath);
+				Document.WriteTo(writer);
+				writer.Flush();
 			}
 			catch (Exception ex) {
 				ex.PrintWarning();

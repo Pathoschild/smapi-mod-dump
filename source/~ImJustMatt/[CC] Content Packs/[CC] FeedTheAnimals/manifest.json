@@ -1,0 +1,12 @@
+﻿{
+	"Name": "FeedTheAnimals",
+	"Author": "furyx639",
+	"Version": "1.2.0",
+	"Description": "Custom Chore for feeding all barn and coop animals.",
+	"UniqueID": "furyx639.FeedTheAnimals",
+	"ContentPackFor": {
+		"UniqueID":  "furyx639.CustomChores",
+		"MinimumApiVersion":  "1.2.0"
+	},
+	"MinimumApiVersion": "2.0",
+}

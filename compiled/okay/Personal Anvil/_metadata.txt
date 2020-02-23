@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5326
+IDs: Strobe.PersonalAnvil
+update keys: Nexus:5326, GitHub:strobel1ght/Personal-Anvil

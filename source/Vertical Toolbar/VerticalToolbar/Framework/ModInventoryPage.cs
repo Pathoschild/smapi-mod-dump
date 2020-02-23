@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Menus;
 using System;
@@ -16,10 +15,13 @@ namespace SB_VerticalToolMenu.Framework
             : base(x, y, width, height)
         {
             verticalToolBar = new VerticalToolBar(
-                xPositionOnScreen - IClickableMenu.spaceToClearSideBorder - IClickableMenu.borderWidth * 2,
-                yPositionOnScreen + IClickableMenu.spaceToClearTopBorder - IClickableMenu.borderWidth / 2 + 4,
+                Orientation.LeftOfToolbar,
                 VerticalToolBar.NUM_BUTTONS,
-                true);
+                true)
+            {
+                xPositionOnScreen = this.xPositionOnScreen - IClickableMenu.spaceToClearSideBorder - IClickableMenu.borderWidth * 2,
+                yPositionOnScreen = this.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder - IClickableMenu.borderWidth / 2 + 4
+            };
         }
 
         public override void performHoverAction(int x, int y)
@@ -74,9 +76,9 @@ namespace SB_VerticalToolMenu.Framework
             if (this.organizeButton.containsPoint(x, y))
             {
                 List<Item> items = Game1.player.Items.ToList();
-                items.Sort(0, 36, null);
-                items.Reverse(0, 36);
-                Game1.player.items.Set(items);
+                items.Sort(0, Game1.player.MaxItems, null);
+                items.Reverse(0, Game1.player.MaxItems);
+                Game1.player.setInventory(items);
                 Game1.playSound("Ship");
                 return;
             }
@@ -89,13 +91,13 @@ namespace SB_VerticalToolMenu.Framework
             if (verticalToolBar.isWithinBounds(x, y))
             {
                 Item heldItem = Game1.player.CursorSlotItem;
-                Game1.player.CursorSlotItem = verticalToolBar.rightClick(x, y, heldItem, playSound);
+                Game1.player.CursorSlotItem = verticalToolBar.RightClick(x, y, heldItem, playSound);
                 return;
             }
             base.receiveRightClick(x, y, playSound);
         }
 
-        public override void draw(SpriteBatch b)
+        public override void draw(Microsoft.Xna.Framework.Graphics.SpriteBatch b)
         {
             for (int index = 0; index < VerticalToolBar.NUM_BUTTONS; ++index)
                 verticalToolBar.buttons[index].bounds = new Rectangle(

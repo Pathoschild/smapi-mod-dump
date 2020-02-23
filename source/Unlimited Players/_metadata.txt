@@ -5,13 +5,9 @@ mods:
    Unlimited Players
 
 latest commit:
-   commit 0a4db7b7dcc06d5e70571462b298d7dd56620267
+   commit ba84b7229e61d8c89e1420ef52b9875f6978a639
    Author: Jan Brodersen (Armitxes) <4rmitxes@gmail.com>
-   Date:   Wed Jan 1 15:08:39 2020 +0100
+   Date:   Sat Feb 15 02:08:15 2020 +0100
    
-       Solved an issue with multiple players using the mod in same network game
-       
-       May solved an issue with the ok button being disabled
-       
-       Code restructure
+       Stable stand
    

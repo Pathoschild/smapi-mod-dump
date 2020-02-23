@@ -1,6 +1,7 @@
 ﻿using CustomGuildChallenges.API;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
@@ -64,6 +65,7 @@ namespace CustomGuildChallenges
             {
                 case 1306:
                     ShowNewMonsterKillList();
+                    CustomGuildChallengeMod.Instance.Monitor.Log("Showing custom kill list for CustomGuildChallenges", LogLevel.Trace);
                     return true;
                 case 1291:
                 case 1292:
@@ -76,7 +78,9 @@ namespace CustomGuildChallenges
                 default:
                     return base.checkAction(tileLocation, viewport, who);
             }
+
         }
+
 
         /// <summary>
         ///     Creates the reward item using StardewValley.Objects.ObjectFactory
@@ -86,6 +90,7 @@ namespace CustomGuildChallenges
         /// <returns></returns>
         public virtual Item CreateReward(int rewardType, int rewardItemNumber, int rewardItemStack)
         {
+            CustomGuildChallengeMod.Instance.Monitor.Log("Recreating rewards", LogLevel.Trace);
             switch (rewardType)
             {
                 case (int)ItemType.Hat:
@@ -99,6 +104,7 @@ namespace CustomGuildChallenges
                 default:
                     return ObjectFactory.getItemFromDescription((byte)rewardType, rewardItemNumber, rewardItemStack);
             }
+
         }
 
         // Required to reset talkedToGil flag
@@ -106,11 +112,18 @@ namespace CustomGuildChallenges
         {
             base.resetLocalState();
             talkedToGil = false;
+
         }
 
         protected override void resetSharedState()
         {
-            base.resetSharedState();
+            if (Game1.IsMultiplayer)
+            {
+                base.resetSharedState();
+            }
+
+            else return;
+
             //Debug.WriteLine(characters.Count + " characters found.");
         }
 
@@ -122,12 +135,17 @@ namespace CustomGuildChallenges
             if (!Game1.player.mailReceived.Contains("checkedMonsterBoard"))
             {
                 Game1.player.mailReceived.Add("checkedMonsterBoard");
+
+                CustomGuildChallengeMod.Instance.Monitor.Log("Added monster board mail flag", LogLevel.Trace);
             }
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append(Game1.content.LoadString("Strings\\Locations:AdventureGuild_KillList_Header").Replace('\n', '^') + "^");
 
-            foreach(var challenge in ConfigChallengeHelper.ChallengeList)
+            CustomGuildChallengeMod.Instance.Monitor.Log("Build header string", LogLevel.Trace);
+
+
+            foreach (var challenge in ConfigChallengeHelper.ChallengeList)
             {
                 int kills = 0;
                 foreach(var monsterName in challenge.Info.MonsterNames)
@@ -136,10 +154,13 @@ namespace CustomGuildChallenges
                 }
 
                 stringBuilder.Append(KillListLine(challenge.Info.ChallengeName, kills, challenge.Info.RequiredKillCount));
+                CustomGuildChallengeMod.Instance.Monitor.Log("Updated kill count", LogLevel.Trace);
             }
 
             stringBuilder.Append(Game1.content.LoadString("Strings\\Locations:AdventureGuild_KillList_Footer").Replace('\n', '^'));
+            CustomGuildChallengeMod.Instance.Monitor.Log("Replace footer", LogLevel.Trace);
             Game1.drawLetterMessage(stringBuilder.ToString());
+
         }
 
        /// <summary>
@@ -160,11 +181,14 @@ namespace CustomGuildChallenges
                 foreach (var monsterName in challenge.Info.MonsterNames)
                 {
                     kills += Game1.player.stats.getMonstersKilled(monsterName);
+                    CustomGuildChallengeMod.Instance.Monitor.Log("Updated stats", LogLevel.Trace);
+
                 }
 
-                if(kills >= challenge.Info.RequiredKillCount)
+                if (kills >= challenge.Info.RequiredKillCount)
                 {
                     var rewardItem = CreateReward(challenge.Info.RewardType, challenge.Info.RewardItemNumber, challenge.Info.RewardItemStack);
+                    CustomGuildChallengeMod.Instance.Monitor.Log("Creating rewards", LogLevel.Trace);
 
                     if (rewardItem == null)
                     {
@@ -180,6 +204,7 @@ namespace CustomGuildChallenges
                         specialItemsCollected++;
 
                         challenge.CollectedReward = true;
+                        CustomGuildChallengeMod.Instance.Monitor.Log("You got a stardrop, congratulations!", LogLevel.Info);
 
                         break;
                     }
@@ -193,12 +218,14 @@ namespace CustomGuildChallenges
 
                         specialItemsCollected++;
                         challenge.CollectedReward = true;
+                        CustomGuildChallengeMod.Instance.Monitor.Log("Special item awarded", LogLevel.Trace);
 
                         break;
                     }
                     else
                     {
                         completedChallenges.Add(challenge);
+                        CustomGuildChallengeMod.Instance.Monitor.Log("Challenge complete!", LogLevel.Trace);
                     }
                 }
             }
@@ -223,6 +250,7 @@ namespace CustomGuildChallenges
                     {
                         Game1.player.mailReceived.Add("Gil_" + challenge.Info.ChallengeName + "_" + rewardItem.Name);
                         rewards.Add(rewardItem);
+                        CustomGuildChallengeMod.Instance.Monitor.Log("Adding mail flag", LogLevel.Trace);
                     }
 
                     challenge.CollectedReward = true;
@@ -251,6 +279,7 @@ namespace CustomGuildChallenges
         /// <returns></returns>
         protected virtual string KillListLine(string challengeName, int killCount, int target)
         {
+            CustomGuildChallengeMod.Instance.Monitor.Log("Creating kill list", LogLevel.Trace);
             if (killCount == 0)
             {
                 return "0/" + target + " ????\n\n^";

@@ -9,312 +9,102 @@ using System.Collections.Generic;
 using WeakTexture = System.WeakReference<Microsoft.Xna.Framework.Graphics.Texture2D>;
 using SpriteMaster.Types;
 using SpriteMaster.Extensions;
-using TeximpNet.Compression;
-using System.Diagnostics;
 using SpriteMaster.Metadata;
+using System.Runtime.CompilerServices;
 
 namespace SpriteMaster {
-	sealed class SpriteMap {
-		private readonly SharedLock Lock = new SharedLock();
-		private readonly WeakCollection<ScaledTexture> ScaledTextureReferences = new WeakCollection<ScaledTexture>();
-
-		static private ulong SpriteHash (Texture2D texture, Bounds source, int expectedScale) {
-			return Hashing.CombineHash(ScaledTexture.ExcludeSprite(texture) ? 0UL : source.Hash(), expectedScale.GetHashCode());
-		}
-
-		internal void Add (Texture2D reference, ScaledTexture texture, Bounds source, int expectedScale) {
-			lock (reference.Meta()) {
-				var Map = reference.Meta().SpriteTable;
-				var rectangleHash = SpriteHash(texture: reference, source: source, expectedScale: expectedScale);
-
-				using (Lock.Exclusive) {
-					ScaledTextureReferences.Add(texture);
-					Map.Add(rectangleHash, texture);
-				}
-			}
-		}
-
-		internal bool TryGet (Texture2D texture, Bounds source, int expectedScale, out ScaledTexture result) {
-			result = null;
-
-			lock (texture.Meta()) {
-				var Map = texture.Meta().SpriteTable;
-
-				using (Lock.Shared) {
-					var rectangleHash = SpriteHash(texture: texture, source: source, expectedScale: expectedScale);
-					if (Map.TryGetValue(rectangleHash, out var scaledTexture)) {
-						if (scaledTexture.Texture?.IsDisposed == true) {
-							using (Lock.Promote) {
-								Map.Clear();
-							}
-						}
-						else {
-							if (scaledTexture.IsReady) {
-								result = scaledTexture;
-							}
-							return true;
-						}
-					}
-				}
-			}
-
-			return false;
-		}
-
-		internal void Remove (ScaledTexture scaledTexture, Texture2D texture) {
-			try {
-				lock (texture.Meta()) {
-					var Map = texture.Meta().SpriteTable;
-
-					using (Lock.Exclusive) {
-
-						try {
-							ScaledTextureReferences.Purge();
-							var removeElements = new List<ScaledTexture>();
-							foreach (var element in ScaledTextureReferences) {
-								if (element == scaledTexture) {
-									removeElements.Add(element);
-								}
-							}
-
-							foreach (var element in removeElements) {
-								ScaledTextureReferences.Remove(element);
-							}
-						}
-						catch { }
-
-						Map.Clear();
-					}
-				}
-			}
-			finally {
-				if (scaledTexture.Texture != null && !scaledTexture.Texture.IsDisposed) {
-					Debug.TraceLn($"Disposing Active HD Texture: {scaledTexture.SafeName()}");
-
-					//scaledTexture.Texture.Dispose();
-				}
-			}
-		}
-
-		internal void Purge (Texture2D reference, Bounds? sourceRectangle = null) {
-			try {
-				using (Lock.Shared) {
-					lock (reference.Meta()) {
-						var Map = reference.Meta().SpriteTable;
-						if (Map.Count == 0) {
-							return;
-						}
-
-						// TODO handle sourceRectangle meaningfully.
-						using (Lock.Promote) {
-							Debug.TraceLn($"Purging Texture {reference.SafeName()}");
-
-							foreach (var scaledTexture in Map.Values) {
-								lock (scaledTexture) {
-									if (scaledTexture.Texture != null) {
-										scaledTexture.Texture.Dispose();
-									}
-									scaledTexture.Texture = null;
-								}
-							}
-
-							Map.Clear();
-							// TODO dispose sprites?
-						}
-					}
-				}
-			}
-			catch { }
-		}
-
-		internal void SeasonPurge (string season) {
-			try {
-				var purgeList = new List<ScaledTexture>();
-				using (Lock.Shared) {
-					foreach (var scaledTexture in ScaledTextureReferences) {
-						if (
-							(scaledTexture.Name.ToLower().Contains("spring") ||
-							scaledTexture.Name.ToLower().Contains("summer") ||
-							scaledTexture.Name.ToLower().Contains("fall") ||
-							scaledTexture.Name.ToLower().Contains("winter")) &&
-							!scaledTexture.Name.ToLower().Contains(season.ToLower())
-						) {
-							purgeList.Add(scaledTexture);
-						}
-					}
-				}
-				using (Lock.Exclusive) {
-					foreach (var purgable in purgeList) {
-						if (purgable.Reference.TryGetTarget(out var reference)) {
-							purgable.Dispose();
-							lock (reference.Meta()) {
-								reference.Meta().SpriteTable.Clear();
-							}
-						}
-					}
-				}
-			}
-			catch { }
-		}
-
-		internal Dictionary<Texture2D, List<ScaledTexture>> GetDump () {
-			var result = new Dictionary<Texture2D, List<ScaledTexture>>();
-
-			foreach (var scaledTexture in ScaledTextureReferences) {
-				if (scaledTexture.Reference.TryGetTarget(out var referenceTexture)) {
-					List<ScaledTexture> resultList;
-					if (!result.TryGetValue(referenceTexture, out resultList)) {
-						resultList = new List<ScaledTexture>();
-						result.Add(referenceTexture, resultList);
-					}
-					resultList.Add(scaledTexture);
-				}
-			}
-
-			return result;
-		}
-	}
-
-	internal sealed class ScaledTexture : IDisposable {
+	internal sealed partial class ScaledTexture : IDisposable {
 		// TODO : This can grow unbounded. Should fix.
 		public static readonly SpriteMap SpriteMap = new SpriteMap();
 
-		private static readonly List<Action> PendingActions = Config.AsyncScaling.Enabled ? new List<Action>() : null;
-
-		private static readonly Dictionary<string, WeakTexture> DuplicateTable = Config.DiscardDuplicates ? new Dictionary<string, WeakTexture>() : null;
-
 		private static readonly LinkedList<WeakReference<ScaledTexture>> MostRecentList = new LinkedList<WeakReference<ScaledTexture>>();
 
-		static internal bool ExcludeSprite (Texture2D texture) {
-			return false;// && (texture.SafeName() == "LooseSprites/Cursors");
-		}
-
-		static internal bool HasPendingActions () {
-			if (!Config.AsyncScaling.Enabled) {
-				return false;
-			}
-			lock (PendingActions) {
-				return PendingActions.Count != 0;
-			}
-		}
-
-		static internal void AddPendingAction (Action action) {
-			lock (PendingActions) {
-				PendingActions.Add(action);
-			}
-		}
-
-		static internal void ProcessPendingActions (int processCount = -1) {
-			if (!Config.AsyncScaling.Enabled) {
-				return;
-			}
-
-			if (processCount < 0) {
-				processCount = Config.AsyncScaling.MaxLoadsPerFrame;
-				if (processCount < 0) {
-					processCount = int.MaxValue;
-				}
-			}
-
-			// TODO : use GetUpdateToken
-
-			lock (PendingActions) {
-				if (processCount >= PendingActions.Count) {
-					foreach (var action in PendingActions) {
-						action.Invoke();
-					}
-					PendingActions.Clear();
-				}
-				else {
-					while (processCount-- > 0) {
-						PendingActions.Last().Invoke();
-						PendingActions.RemoveAt(PendingActions.Count - 1);
-					}
-				}
-			}
-		}
-
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static bool LegalFormat(Texture2D texture) {
 			return AllowedFormats.Contains(texture.Format);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static bool Validate(Texture2D texture) {
-			int textureArea = texture.Area();
+			var meta = texture.Meta();
+			if (!meta.ScaleValid) {
+				return false;
+			}
 
 			if (texture is ManagedTexture2D) {
-				if (!texture.Meta().TracePrinted) {
-					texture.Meta().TracePrinted = true;
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
 					Debug.TraceLn($"Not Scaling Texture '{texture.SafeName()}', is already scaled");
 				}
-				return false;
+				return meta.ScaleValid = false;
 			}
 
 			if (texture is RenderTarget2D) {
-				if (!texture.Meta().TracePrinted) {
-					texture.Meta().TracePrinted = true;
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
 					Debug.TraceLn($"Not Scaling Texture '{texture.SafeName()}', render targets unsupported");
 				}
-				return false;
+				return meta.ScaleValid = false;
 			}
 
 			if (Math.Max(texture.Width, texture.Height) <= Config.Resample.MinimumTextureDimensions) {
-				if (!texture.Meta().TracePrinted) {
-					texture.Meta().TracePrinted = true;
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
 					Debug.TraceLn($"Not Scaling Texture '{texture.SafeName()}', texture is too small to qualify");
 				}
-				return false;
+				return meta.ScaleValid = false;
 			}
 
-			if (textureArea == 0) {
-				if (!texture.Meta().TracePrinted) {
-					texture.Meta().TracePrinted = true;
+			if (texture.Area() == 0) {
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
 					Debug.TraceLn($"Not Scaling Texture '{texture.SafeName()}', zero area");
 				}
-				return false;
+				return meta.ScaleValid = false;
 			}
 
 			// TODO pComPtr check?
 			if (texture.IsDisposed || texture.GraphicsDevice.IsDisposed) {
-				if (!texture.Meta().TracePrinted) {
-					texture.Meta().TracePrinted = true;
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
 					Debug.TraceLn($"Not Scaling Texture '{texture.SafeName()}', Is Zombie");
 				}
-				return false;
+				return meta.ScaleValid = false;
 			}
 
-			if (Config.IgnoreUnknownTextures && texture.Name.IsBlank()) {
-				if (!texture.Meta().TracePrinted) {
-					texture.Meta().TracePrinted = true;
+			if (Config.IgnoreUnknownTextures && texture.Anonymous()) {
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
 					Debug.TraceLn($"Not Scaling Texture '{texture.SafeName()}', Is Unknown Texture");
 				}
-				return false;
+				return meta.ScaleValid = false;
 			}
 
 
 			if (texture.LevelCount > 1) {
-				if (!texture.Meta().TracePrinted) {
-					texture.Meta().TracePrinted = true;
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
 					Debug.TraceLn($"Not Scaling Texture '{texture.SafeName()}', Multi-Level Textures Unsupported: {texture.LevelCount} levels");
 				}
-				return false;
+				return meta.ScaleValid = false;
 			}
 
 			if (!LegalFormat(texture)) {
-				if (!texture.Meta().TracePrinted) {
-					texture.Meta().TracePrinted = true;
+				if (!meta.TracePrinted) {
+					meta.TracePrinted = true;
 					Debug.TraceLn($"Not Scaling Texture '{texture.SafeName()}', Format Unsupported: {texture.Format}");
 				}
-				return false;
+				return meta.ScaleValid = false;
 			}
 
-			if (!texture.Name.IsBlank()) {
+			if (!texture.Anonymous()) {
 				foreach (var blacklisted in Config.Resample.Blacklist) {
 					if (texture.SafeName().StartsWith(blacklisted)) {
-						if (!texture.Meta().TracePrinted) {
-							texture.Meta().TracePrinted = true;
+						if (!meta.TracePrinted) {
+							meta.TracePrinted = true;
 							Debug.TraceLn($"Not Scaling Texture '{texture.SafeName()}', Is Blacklisted");
 						}
-						return false;
+						return meta.ScaleValid = false;
 					}
 				}
 			}
@@ -322,11 +112,8 @@ namespace SpriteMaster {
 			return true;
 		}
 
-		static internal ScaledTexture Fetch (Texture2D texture, Bounds source, int expectedScale) {
-			if (!Validate(texture)) {
-				return null;
-			}
-
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		static internal ScaledTexture Fetch (Texture2D texture, Bounds source, uint expectedScale) {
 			if (SpriteMap.TryGet(texture, source, expectedScale, out var scaleTexture)) {
 				return scaleTexture;
 			}
@@ -334,80 +121,99 @@ namespace SpriteMaster {
 			return null;
 		}
 
-		static internal ScaledTexture Get (Texture2D texture, Bounds source, int expectedScale) {
-			if (!Validate(texture)) {
-				return null;
+		private static readonly TexelTimer TexelAverage = new TexelTimer();
+		private static readonly TexelTimer TexelAverageCached = new TexelTimer();
+		private static readonly TexelTimer TexelAverageSync = new TexelTimer();
+		private static readonly TexelTimer TexelAverageCachedSync = new TexelTimer();
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static TexelTimer GetTimer(bool cached, bool async) {
+			if (async) {
+				return cached ? TexelAverageCached : TexelAverage;
 			}
+			else {
+				return cached ? TexelAverageCachedSync : TexelAverageSync;
+			}
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static TexelTimer GetTimer(Texture2D texture, bool async) {
+			var IsCached = SpriteInfo.IsCached(texture);
+			return GetTimer(IsCached, async);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		static internal ScaledTexture Get (Texture2D texture, Bounds source, uint expectedScale) {
+			using var _ = Performance.Track();
 
 			if (SpriteMap.TryGet(texture, source, expectedScale, out var scaleTexture)) {
 				return scaleTexture;
 			}
 
-			bool useAsync = (Config.AsyncScaling.EnabledForUnknownTextures || !texture.Name.IsBlank()) && (texture.Area() >= Config.AsyncScaling.MinimumSizeTexels);
-
-			if (useAsync && Config.AsyncScaling.Enabled && !DrawState.GetUpdateToken(texture.Area()) && !texture.Meta().HasCachedData) {
+			if (!Validate(texture)) {
 				return null;
 			}
 
-			if (Config.DiscardDuplicates) {
-				// Check for duplicates with the same name.
-				// TODO : We do have a synchronity issue here. We could purge before an asynchronous task adds the texture.
-				// DiscardDuplicatesFrameDelay
-				if (!texture.Name.IsBlank() && !Config.DiscardDuplicatesBlacklist.Contains(texture.SafeName())) {
-					try {
-						lock (DuplicateTable) {
-							if (DuplicateTable.TryGetValue(texture.SafeName(), out var weakTexture)) {
-								if (weakTexture.TryGetTarget(out var strongTexture)) {
-									// Is it not the same texture, and the previous texture has not been accessed for at least 2 frames?
-									if (strongTexture != texture && (DrawState.CurrentFrame - strongTexture.Meta().LastAccessFrame) > 2) {
-										Debug.TraceLn($"Purging Duplicate Texture '{strongTexture.SafeName()}'");
-										DuplicateTable[texture.SafeName()] = texture.MakeWeak();
-										Purge(strongTexture);
-									}
-								}
-								else {
-									DuplicateTable[texture.SafeName()] = texture.MakeWeak();
-								}
-							}
-							else {
-								DuplicateTable.Add(texture.SafeName(), texture.MakeWeak());
-							}
-						}
-					}
-					catch (Exception ex) {
-						ex.PrintWarning();
-					}
-				}
+			bool useAsync = (Config.AsyncScaling.EnabledForUnknownTextures || !texture.Anonymous()) && (texture.Area() >= Config.AsyncScaling.MinimumSizeTexels);
+			// !texture.Meta().HasCachedData
+
+			var estimatedDuration = GetTimer(texture: texture, async: useAsync).Estimate(texture.Area());
+			const float multiplier = 0.75f;
+			var remainingTime = DrawState.RemainingFrameTime(multiplier: multiplier);
+			if (DrawState.PushedUpdateWithin(1) && estimatedDuration >= remainingTime) {
+				return null;
 			}
 
-			bool isSprite = !ExcludeSprite(texture) && (!source.Offset.IsZero || source.Extent != texture.Extent());
-			var textureWrapper = new SpriteInfo(reference: texture, dimensions: source, expectedScale: expectedScale);
-			ulong hash = Upscaler.GetHash(textureWrapper, isSprite);
+			// TODO : We should really only populate the average when we are performing an expensive operation like GetData.
+			var begin = DateTime.Now;
 
-			var newTexture = new ScaledTexture(
-				assetName: texture.SafeName(),
-				textureWrapper: textureWrapper,
-				sourceRectangle: source,
-				isSprite: isSprite,
-				hash: hash,
-				async: useAsync,
-				expectedScale: expectedScale
-			);
-			if (useAsync && Config.AsyncScaling.Enabled) {
-				// It adds itself to the relevant maps.
-				if (newTexture.IsReady && newTexture.Texture != null) {
+			bool isSprite = (!source.Offset.IsZero || source.Extent != texture.Extent());
+			SpriteInfo textureWrapper;
+			ulong hash;
+
+			using (Performance.Track("new SpriteInfo"))
+				textureWrapper = new SpriteInfo(reference: texture, dimensions: source, expectedScale: expectedScale);
+
+			// If this is null, it can only happen due to something being blocked, so we should try again later.
+			if (textureWrapper.Data == null) {
+				return null;
+			}
+
+			DrawState.PushedUpdateThisFrame = true;
+
+			try {
+				using (Performance.Track("Upscaler.GetHash"))
+					hash = Upscaler.GetHash(textureWrapper, isSprite);
+
+				var newTexture = new ScaledTexture(
+					assetName: texture.SafeName(),
+					textureWrapper: textureWrapper,
+					sourceRectangle: source,
+					isSprite: isSprite,
+					hash: hash,
+					async: useAsync,
+					expectedScale: expectedScale
+				);
+				if (useAsync && Config.AsyncScaling.Enabled) {
+					// It adds itself to the relevant maps.
+					if (newTexture.IsReady && newTexture.Texture != null) {
+						return newTexture;
+					}
+					return null;
+				}
+				else {
 					return newTexture;
 				}
-				return null;
 			}
-			else {
-				return newTexture;
+			finally {
+				var averager = GetTimer(cached: textureWrapper.WasCached, async: useAsync);
+				averager.Add(texture.Area(), DateTime.Now - begin);
 			}
-
 		}
 
-		internal static readonly SurfaceFormat[] AllowedFormats = new [] {
-			SurfaceFormat.Color
+		internal static readonly SurfaceFormat[] AllowedFormats = {
+			SurfaceFormat.Color,
+			//SurfaceFormat.Dxt3 // fonts
 		};
 
 		internal ManagedTexture2D Texture = null;
@@ -427,15 +233,16 @@ namespace SpriteMaster {
 		internal Vector2I BlockPadding = Vector2I.Zero;
 		private readonly Vector2I originalSize;
 		private readonly Bounds sourceRectangle;
-		private int refScale;
+		private uint refScale;
 
-		internal long LastReferencedFrame = DrawState.CurrentFrame;
+		internal ulong LastReferencedFrame = DrawState.CurrentFrame;
 
 		internal Vector2 AdjustedScale = Vector2.One;
 
 		private LinkedListNode<WeakReference<ScaledTexture>> CurrentRecentNode = null;
-		private bool Disposed = false;
+		private volatile bool Disposed = false;
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		~ScaledTexture() {
 			if (!Disposed) {
 				Dispose();
@@ -445,6 +252,7 @@ namespace SpriteMaster {
 		internal static volatile uint TotalMemoryUsage = 0;
 
 		internal long MemorySize {
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get {
 				if (!IsReady || Texture == null) {
 					return 0;
@@ -454,21 +262,25 @@ namespace SpriteMaster {
 		}
 
 		internal long OriginalMemorySize {
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get {
 				return originalSize.Width * originalSize.Height * sizeof(int);
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void Purge (Texture2D reference) {
 			Purge(reference, null, DataRef<byte>.Null);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void Purge (Texture2D reference, Bounds? bounds, DataRef<byte> data) {
 			SpriteInfo.Purge(reference, bounds, data);
 			SpriteMap.Purge(reference, bounds);
 			Upscaler.PurgeHash(reference);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void PurgeTextures(long _purgeTotalBytes) {
 			Contract.AssertPositive(_purgeTotalBytes);
 
@@ -515,73 +327,10 @@ namespace SpriteMaster {
 			}
 		}
 
-		internal sealed class ManagedTexture2D : Texture2D {
-			private static long TotalAllocatedSize = 0;
-			private static int TotalManagedTextures = 0;
-			private const bool UseMips = false;
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal ScaledTexture (string assetName, SpriteInfo textureWrapper, Bounds sourceRectangle, ulong hash, bool isSprite, bool async, uint expectedScale) {
+			using var _ = Performance.Track();
 
-			public readonly WeakReference<Texture2D> Reference;
-			public readonly ScaledTexture Texture;
-			public readonly Vector2I Dimensions;
-
-			internal static void DumpStats() {
-				var currentProcess = Process.GetCurrentProcess();
-				var workingSet = currentProcess.WorkingSet64;
-				var vmem = currentProcess.VirtualMemorySize64;
-				var gca = GC.GetTotalMemory(false);
-				Debug.InfoLn($"Total Managed Textures : {TotalManagedTextures}");
-				Debug.InfoLn($"Total Texture Size     : {TotalAllocatedSize.AsDataSize()}");
-				Debug.InfoLn($"Process Working Set    : {workingSet.AsDataSize()}");
-				Debug.InfoLn($"Process Virtual Memory : {vmem.AsDataSize()}");
-				Debug.InfoLn($"GC Allocated Memory    : {gca.AsDataSize()}");
-			}
-
-			public ManagedTexture2D (
-				ScaledTexture texture,
-				Texture2D reference,
-				Vector2I dimensions,
-				SurfaceFormat format,
-				int[] data = null,
-				string name = null
-			) : base(reference.GraphicsDevice.IsDisposed ? DrawState.Device : reference.GraphicsDevice, dimensions.Width, dimensions.Height, UseMips, format) {
-				this.Name = name ?? $"{reference.SafeName()} [RESAMPLED {(CompressionFormat)format}]";
-
-				Reference = reference.MakeWeak();
-				Texture = texture;
-				Dimensions = dimensions - texture.BlockPadding;
-
-				reference.Disposing += (_, _1) => OnParentDispose();
-
-				TotalAllocatedSize += this.SizeBytes();
-				++TotalManagedTextures;
-
-				Garbage.MarkOwned(format, dimensions.Area);
-				Disposing += (_, _1) => {
-					Garbage.UnmarkOwned(format, dimensions.Area);
-					TotalAllocatedSize -= this.SizeBytes();
-					--TotalManagedTextures;
-				};
-
-				if (data != null) {
-					this.SetDataEx(data);
-				}
-			}
-
-			~ManagedTexture2D() {
-				if (!IsDisposed) {
-					Dispose(false);
-				}
-			}
-
-			private void OnParentDispose() {
-				if (!IsDisposed) {
-					Debug.TraceLn($"Disposing ManagedTexture2D '{Name}'");
-					Dispose();
-				}
-			}
-		}
-
-		internal ScaledTexture (string assetName, SpriteInfo textureWrapper, Bounds sourceRectangle, ulong hash, bool isSprite, bool async, int expectedScale) {
 			IsSprite = isSprite;
 			Hash = hash;
 			var source = textureWrapper.Reference;
@@ -592,17 +341,18 @@ namespace SpriteMaster {
 			this.refScale = expectedScale;
 			SpriteMap.Add(source, this, sourceRectangle, expectedScale);
 
-			this.Name = source.Name.IsBlank() ? assetName : source.SafeName();
+			this.Name = source.Anonymous() ? assetName.SafeName() : source.SafeName();
 			originalSize = IsSprite ? sourceRectangle.Extent : new Vector2I(source);
 
 			if (async && Config.AsyncScaling.Enabled) {
-				ThreadPool.QueueUserWorkItem((object wrapper) => {
+				ThreadQueue.Queue((SpriteInfo wrapper) => {
 					Thread.CurrentThread.Priority = ThreadPriority.Lowest;
+					using var _ = new AsyncTracker($"Resampling {Name} [{sourceRectangle}]");
 					Thread.CurrentThread.Name = "Texture Resampling Thread";
 					Upscaler.Upscale(
 						texture: this,
 						scale: ref refScale,
-						input: (SpriteInfo)wrapper,
+						input: wrapper,
 						desprite: IsSprite,
 						hash: Hash,
 						wrapped: ref Wrapped,
@@ -642,6 +392,7 @@ namespace SpriteMaster {
 		}
 
 		// Async Call
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal void Finish () {
 			ManagedTexture2D texture;
 			lock (this) {
@@ -669,6 +420,7 @@ namespace SpriteMaster {
 			IsReady = true;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal void UpdateReferenceFrame () {
 			if (Disposed) {
 				return;
@@ -687,6 +439,7 @@ namespace SpriteMaster {
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Dispose (bool disposeChildren) {
 			if (disposeChildren && Texture != null) {
 				if (!Texture.IsDisposed) {
@@ -697,7 +450,12 @@ namespace SpriteMaster {
 			Dispose();
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Dispose () {
+			if (Disposed) {
+				return;
+			}
+
 			if (Reference.TryGetTarget(out var reference)) {
 				SpriteMap.Remove(this, reference);
 			}
@@ -710,6 +468,7 @@ namespace SpriteMaster {
 			Disposed = true;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void OnParentDispose (Texture2D texture) {
 			Debug.TraceLn($"Parent Texture Disposing: {texture.SafeName()}");
 

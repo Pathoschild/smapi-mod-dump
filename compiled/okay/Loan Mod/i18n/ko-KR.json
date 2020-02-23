@@ -1,0 +1,23 @@
+{
+  "menu.cancel": "취소",
+  "menu.days": "날짜",
+  "menu.leave": "나가기",
+  "menu.no": "아니오",
+  "menu.repayfull": "전액환급",
+  "menu.showbalance": "잔액표시",
+  "menu.yes": "예",
+  "msg.create": "대출 파일이 생성되었습니다!",
+  "msg.hostonly": "호스트만이 이 작업을 수행할 수 있습니다.",
+  "msg.menu-1": "무엇을 할까요?",
+  "msg.menu-2": "전액 상환하면 {{Balance}}g의 비용이 들 것입니다. 계속하시겠습니까?",
+  "msg.payment.complete": "{{DailyAmount}}g을 결제해 주셔서 감사합니다",
+  "msg.payment.credited": "{{creditAmount}}g가 당신의 계정에 입금 되었습니다.",
+  "msg.payment.error": "문제가 발생했습니다.부채를 재설정했습니다.",
+  "msg.payment.failed": "결제 할 {{DailyAmount}}g가 없습니다.",
+  "msg.payment.full": "감사합니다! 체납 잔액을 모두 성공적으로 지불하셨습니다.",
+  "msg.payment.missed-1": "경고: 지불이 누락됨: {{LateChargeAmount}}g의 연체료를 지불해야 합니다.",
+  "msg.payment.missed-2": "경고: 귀하의 잔액에 {{LateChargeAmount}}g의 연체료를 추가해 드리겠습니다.",
+  "msg.payment.remaining": "당신의 남은 잔액은: {{Balance}}g.이며,{{Duration}}일 남으셨습니다.하루에{{DailyAmount}}g을 지불하고 있습니다.",
+  "msg.startborrow-1": "얼마를 대출 할까요?",
+  "msg.startborrow-2": "어느정도의 기간으로 대출할까요?"
+}

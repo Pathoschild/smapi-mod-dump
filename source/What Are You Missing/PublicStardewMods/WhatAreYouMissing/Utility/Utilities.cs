@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Locations;
-using StardewModdingAPI;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
 using StardewValley.Menus;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WhatAreYouMissing
 {

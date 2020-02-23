@@ -3,11 +3,11 @@
   <PropertyGroup>
     <AssemblyName>SpriteMaster</AssemblyName>
     <RootNamespace>SpriteMaster</RootNamespace>
-    <Version>0.10.5</Version>
+    <Version>0.11.3</Version>
     <TargetFramework>net45</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <EnableHarmony>true</EnableHarmony>
-    <AssemblyVersion>0.10.5.*</AssemblyVersion>
+    <AssemblyVersion>0.11.3.*</AssemblyVersion>
 		<Deterministic>false</Deterministic>
 		<LangVersion>preview</LangVersion>
 		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
@@ -18,7 +18,7 @@
 		<Company>Digital Carbide</Company>
 		<PackageLicenseFile>LICENSE.MD</PackageLicenseFile>
 		<Copyright>mkuklinski</Copyright>
-		<FileVersion>0.10.5.0</FileVersion>
+		<FileVersion>0.11.3.0</FileVersion>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<NullableReferenceTypes>true</NullableReferenceTypes>
     <FileAlignment>512</FileAlignment>
@@ -31,25 +31,22 @@
 		<ApplicationIcon>pufferchick_xbrz.ico</ApplicationIcon>
 		<PackageId>SpriteMaster-SV</PackageId>
 		<Product>SpriteMaster-SV</Product>
+		<DebugType>portable</DebugType>
 		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE</DefineConstants>
-    <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|AnyCPU'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <Optimize>true</Optimize>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
@@ -58,6 +55,7 @@
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
     <PackageReference Include="TeximpNet" Version="1.4.1" />
     <PackageReference Include="Tomlyn" Version="0.1.1" />
+    <PackageReference Include="Zlib.Portable" Version="1.11.0" />
   </ItemGroup>
 
   <ItemGroup>

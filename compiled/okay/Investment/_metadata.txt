@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5293
+IDs: misscoriel.invest
+update keys: Nexus:5293

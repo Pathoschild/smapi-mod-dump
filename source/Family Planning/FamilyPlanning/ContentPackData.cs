@@ -25,12 +25,12 @@ namespace FamilyPlanning
          *    The first is the number of children where the dialogue should trigger, second is the new dialogue.
          *    The second value, the dialogue, supports the use of {0} to represent the baby name and {1} to represent the player name.
          */ 
-        public Dictionary<string, Tuple<int, string>> SpouseDialogue { get; set; }
+        public Dictionary<string, List<Tuple<int, string>>> SpouseDialogue { get; set; }
 
         public ContentPackData()
         {
             ChildSpriteID = new Dictionary<string, Tuple<string, string>>();
-            SpouseDialogue = new Dictionary<string, Tuple<int, string>>();
+            SpouseDialogue = new Dictionary<string, List<Tuple<int, string>>>();
         }
     }
 }

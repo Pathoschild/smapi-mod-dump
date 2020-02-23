@@ -1,4 +1,6 @@
 {
   "ShowSavingNotify": true,
-  "ShowReloadIcon": true
+  "ShowReloadIcon": true,
+  "TitleOptionsButtonX": 48,
+  "TitleOptionsButtonY": 198
 }

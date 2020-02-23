@@ -1,7 +1,7 @@
 {
   "Name": "Home Sewing Kit",
   "Author": "MouseyPounds",
-  "Version": "1.1.0",
+  "Version": "1.2.1",
   "Description": "Adds craftable Sewing Machine and Dye Cabinet for home tailoring.",
   "UniqueID": "MouseyPounds.HomeSewingKit",
   "EntryDll": "HomeSewingKit.dll",

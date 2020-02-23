@@ -37,7 +37,7 @@ namespace Randomizer {
         private void ApplyEdits<TKey, TValue>(IAssetData asset, IDictionary<TKey, TValue> edits) {
             IAssetDataForDictionary<TKey, TValue> assetDict = asset.AsDictionary<TKey, TValue>();
             foreach (KeyValuePair<TKey, TValue> edit in edits) {
-                assetDict.Set(edit.Key, edit.Value);
+                assetDict.Data[edit.Key] = edit.Value;
             }
         }
 
@@ -384,7 +384,7 @@ namespace Randomizer {
 
             string[] SeedMakerValues = new string[10];
             SeedMakerValues[0] = $"{ObjectIndexes.Wood:D} {rng.Next(1, 9) * 5} {ObjectIndexes.Coal:D} {rng.Next(1, 4) * 5} {ObjectIndexes.GoldBar:D} 1 {ObjectIndexes.Acorn:D} {rng.Next(1, 11)}";
-            SeedMakerValues[1] = $"{ObjectIndexes.Stone:D} {rng.Next(1, 4) * 5} {ObjectIndexes.Acorn:D} 4 {ObjectIndexes.PineCone:D} 4 {ObjectIndexes.MapleSeed:D} 4 ";
+            SeedMakerValues[1] = $"{ObjectIndexes.Stone:D} {rng.Next(1, 4) * 5} {ObjectIndexes.Acorn:D} 4 {ObjectIndexes.PineCone:D} 4 {ObjectIndexes.MapleSeed:D} 4";
             SeedMakerValues[2] = $"{ObjectIndexes.Wood:D} {rng.Next(3, 12) * 5} {ObjectIndexes.Stone:D} {rng.Next(1, 9) * 5} {ObjectIndexes.EarthCrystal:D} 1 {ObjectIndexes.Quartz:D} {rng.Next(1, 4)}";
             SeedMakerValues[3] = $"{ObjectIndexes.Stone:D} {rng.Next(1, 9) * 5} {ObjectIndexes.Slime:D} 40 {ObjectIndexes.Topaz:D} 1 {ObjectIndexes.RefinedQuartz:D} 1";
             SeedMakerValues[4] = $"{ObjectIndexes.Wood:D} {rng.Next(1, 9) * 5} {ObjectIndexes.Hay:D} {rng.Next(1, 4) * 5} {ObjectIndexes.Slime:D} 25";
@@ -396,7 +396,7 @@ namespace Randomizer {
 
             string[] LoomValues = new string[11];
             LoomValues[0] = $"{ObjectIndexes.Wood:D} 60 {ObjectIndexes.Fiber:D} {rng.Next(3, 12) * 5} {ObjectIndexes.PineTar:D} 1 {ObjectIndexes.Slime:D} {rng.Next(1, 11)}";
-            LoomValues[1] = $"{ObjectIndexes.Wood:D} {rng.Next(1, 4) * 5} {ObjectIndexes.Sap:D} {rng.Next(1, 9) * 5} {ObjectIndexes.Hardwood:D} {rng.Next(1, 11)} {ObjectIndexes.Fiber:D} {rng.Next(1, 4) * 5} ";
+            LoomValues[1] = $"{ObjectIndexes.Wood:D} {rng.Next(1, 4) * 5} {ObjectIndexes.Sap:D} {rng.Next(1, 9) * 5} {ObjectIndexes.Hardwood:D} {rng.Next(1, 11)} {ObjectIndexes.Fiber:D} {rng.Next(1, 4) * 5}";
             LoomValues[2] = $"{ObjectIndexes.Hardwood:D} {rng.Next(1, 4) * 5} {ObjectIndexes.Oil:D} 1 {ObjectIndexes.Hay:D} 10";
             LoomValues[3] = $"{ObjectIndexes.Mayonnaise:D} 1";
             LoomValues[4] = $"{ObjectIndexes.Wood:D} {rng.Next(1, 9) * 5} {ObjectIndexes.Hay:D} {rng.Next(1, 4) * 5} {ObjectIndexes.Geode:D} {rng.Next(1, 4)}";
@@ -409,7 +409,7 @@ namespace Randomizer {
 
             string[] OilMakerValues = new string[9];
             OilMakerValues[0] = $"{ObjectIndexes.Hardwood:D} 1 {ObjectIndexes.IronBar:D} {rng.Next(1, 9) * 5} {ObjectIndexes.GoldBar:D} 1";
-            OilMakerValues[1] = $"{ObjectIndexes.Hardwood:D} {rng.Next(1, 4) * 5} {ObjectIndexes.Sap:D} {rng.Next(1, 9) * 5} {ObjectIndexes.Slime:D} 40 {ObjectIndexes.Fiber:D} 10 ";
+            OilMakerValues[1] = $"{ObjectIndexes.Hardwood:D} {rng.Next(1, 4) * 5} {ObjectIndexes.Sap:D} {rng.Next(1, 9) * 5} {ObjectIndexes.Slime:D} 40 {ObjectIndexes.Fiber:D} 10";
             OilMakerValues[2] = $"{ObjectIndexes.Hardwood:D} {rng.Next(1, 4) * 5} {ObjectIndexes.Oil:D} 1 {ObjectIndexes.Hay:D} 10";
             OilMakerValues[3] = $"{ObjectIndexes.Hardwood:D} 20";
             OilMakerValues[4] = $"{ObjectIndexes.Hardwood:D} {rng.Next(1, 4) * 5} {ObjectIndexes.BugMeat:D} {rng.Next(1, 4)} {ObjectIndexes.Geode:D} {rng.Next(1, 4)}";
@@ -465,7 +465,7 @@ namespace Randomizer {
             TapperValues[6] = $"{ObjectIndexes.Wood:D} {rng.Next(1, 4) * 5} {ObjectIndexes.Quartz:D} 1";
             TapperValues[7] = $"{ObjectIndexes.Wood:D} {rng.Next(1, 9) * 5} {ObjectIndexes.Hay:D} {rng.Next(1, 11)} {ObjectIndexes.Coal:D} 4";
             TapperValues[8] = $"{ObjectIndexes.Wood:D} {rng.Next(1, 9) * 5} {ObjectIndexes.FireQuartz:D} 1 {ObjectIndexes.Coal:D} {rng.Next(1, 4)}";
-            TapperValues[9] = $"{ObjectIndexes.Wood:D} {rng.Next(1, 11)} {ObjectIndexes.Sprinkler:D}";
+            TapperValues[9] = $"{ObjectIndexes.Wood:D} {rng.Next(1, 11)} {ObjectIndexes.Sprinkler:D} 1";
             TapperValues[10] = $"{ObjectIndexes.Stone:D} {rng.Next(1, 9) * 5} {ObjectIndexes.CopperBar:D} 1 {ObjectIndexes.AnyFish:D} 1";
 
             string[] LightningRodValues = new string[6];
@@ -785,7 +785,7 @@ namespace Randomizer {
 
             string[] FishTank11Values = new string[5];
             FishTank11Values[0] = $"Crab Pot/O {ObjectIndexes.CrabPot:D} {rng.Next(1, 8)}/{ObjectIndexes.Lobster:D} 1 0 {ObjectIndexes.Crayfish:D} 1 0 {ObjectIndexes.Crab:D} 1 0 {ObjectIndexes.Cockle:D} 1 0 {ObjectIndexes.Mussel:D} 1 0 {ObjectIndexes.Shrimp:D} 1 0 {ObjectIndexes.Snail:D} 1 0 {ObjectIndexes.Periwinkle:D} 1 0 {ObjectIndexes.Oyster:D} 1 0 {ObjectIndexes.Clam:D} 1 0/6/{rng.Next(6, 10)}";
-            FishTank11Values[1] = $"Quality Crab Pot/O {ObjectIndexes.CrabPot:D} {rng.Next(1, 14)}/{ObjectIndexes.Lobster:D} 1 2 {ObjectIndexes.Crayfish:D} 1 2 {ObjectIndexes.Crab:D} 1 2 {ObjectIndexes.Cockle:D} 1 2 {ObjectIndexes.Mussel:D} 1 2 {ObjectIndexes.Shrimp:D} 1 2 {ObjectIndexes.Snail:D} 1 2 {ObjectIndexes.Periwinkle:D} 1 2 {ObjectIndexes.Oyster:D} 1 2 {ObjectIndexes.Clam:D} 1 2/6/{rng.Next(6, 10)}";
+            FishTank11Values[1] = $"Crab Pot/O {ObjectIndexes.CrabPot:D} {rng.Next(1, 14)}/{ObjectIndexes.Lobster:D} 1 0 {ObjectIndexes.Crayfish:D} 1 0 {ObjectIndexes.Crab:D} 1 0 {ObjectIndexes.Cockle:D} 1 0 {ObjectIndexes.Mussel:D} 1 0 {ObjectIndexes.Shrimp:D} 1 0 {ObjectIndexes.Snail:D} 1 0 {ObjectIndexes.Periwinkle:D} 1 0 {ObjectIndexes.Oyster:D} 1 0 {ObjectIndexes.Clam:D} 1 0/6/{rng.Next(6, 10)}";
             FishTank11Values[2] = $"Tasty Crab Pot/O {ObjectIndexes.CrabPot:D} {rng.Next(1, 8)}/{ObjectIndexes.Lobster:D} {rng.Next(1, 4)} 0 {ObjectIndexes.Crab:D} {rng.Next(1, 4)} 0 {ObjectIndexes.Mussel:D} {rng.Next(1, 4)} 0 {ObjectIndexes.Shrimp:D} {rng.Next(1, 4)} 0 {ObjectIndexes.Oyster:D} {rng.Next(1, 4)} 0/6/{rng.Next(4, 6)}";
             FishTank11Values[3] = $"Fishing Dish/O {ObjectIndexes.TreasureChest:D} {rng.Next(1, 3)}/{ObjectIndexes.DishOTheSea:D} 1 0 {ObjectIndexes.BakedFish:D} 1 0 {ObjectIndexes.SpicyEel:D} 1 0 {ObjectIndexes.MakiRoll:D} 1 0 {ObjectIndexes.Sashimi:D} 1 0 {ObjectIndexes.CrabCakes:D} 1 0 {ObjectIndexes.Escargot:D} 1 0 {ObjectIndexes.FriedCalamari:D} 1 0/6/6";
             FishTank11Values[4] = $"Fish Soup/O {ObjectIndexes.TreasureChest:D} {rng.Next(1, 3)}/{ObjectIndexes.TroutSoup:D} 1 0 {ObjectIndexes.Chowder:D} 1 0 {ObjectIndexes.FishStew:D} 1 0 {ObjectIndexes.LobsterBisque:D} 1 0 {ObjectIndexes.PaleBroth:D} 1 0 {ObjectIndexes.AlgaeSoup:D} 1 0 {ObjectIndexes.TomKhaSoup:D} 1 0/6/4";
@@ -882,6 +882,12 @@ namespace Randomizer {
             VaultValues[13] = $"35,000g/BO 21 1/-1 35000 35000/1";
             VaultValues[13] = $"37,500g/BO 165 1/-1 37500 37500/1";
 
+            string[] AbandonedJojaMartValues = new string[5];
+            AbandonedJojaMartValues[0] = $"The Missing//{ObjectIndexes.Wine:D} 1 1 {ObjectIndexes.DinosaurMayonnaise:D} 1 0 {ObjectIndexes.SeafoamPudding:D} 1 0 {ObjectIndexes.AncientFruit:D} 5 2 795 1 2 {ObjectIndexes.Caviar:D} 1 0/1/5";
+            AbandonedJojaMartValues[1] = $"The Missing//{ObjectIndexes.GreenTea:D} {rng.Next(5, 11)} 0 {ObjectIndexes.Wine:D} {rng.Next(1, 4)} 0 {ObjectIndexes.SquidInk:D} {rng.Next(1, 4)} 0 {ObjectIndexes.OilOfGarlic:D} 1 0 {ObjectIndexes.VoidSalmon:D} 1 0 {ObjectIndexes.AncientFruit:D} {rng.Next(1, 5)} 0/1/5";
+            AbandonedJojaMartValues[2] = $"The Missing//{ObjectIndexes.PrismaticShard:D} {rng.Next(1, 4)} 0 {ObjectIndexes.IridiumSprinkler:D} {rng.Next(1, 4)} 0 {ObjectIndexes.SquidInk:D} {rng.Next(1, 5)} 0 {ObjectIndexes.OilOfGarlic:D} 1 0 {ObjectIndexes.VoidSalmon:D} 1 0 {ObjectIndexes.AncientFruit:D} {rng.Next(1, 5)} 0/1/5";
+            AbandonedJojaMartValues[3] = $"The Missing//{ObjectIndexes.AgedRoe:D} 10 0 {ObjectIndexes.Wine:D} 1 2 {ObjectIndexes.VoidMayonnaise:D} 1 0 {ObjectIndexes.DinosaurEgg:D} 1 0 {ObjectIndexes.FiddleHeadFern:D} 5 0 {ObjectIndexes.TruffleOil:D} 3 0/1/5";
+            AbandonedJojaMartValues[4] = $"The Missing//{ObjectIndexes.Roe:D} 15 0 {ObjectIndexes.UnmilledRice:D} 30 0 {ObjectIndexes.TeaLeaves:D} 20 0 {ObjectIndexes.RabbitsFoot:D} 1 2 {ObjectIndexes.Slimejack:D} 1 0 {ObjectIndexes.ArtichokeDip:D} 1 0/1/5";
 
             this._bundleReplacements["Pantry/0"] = Pantry0Values[rng.Next(0, 6)];
             this._bundleReplacements["Pantry/1"] = Pantry1Values[rng.Next(0, 6)];
@@ -918,6 +924,8 @@ namespace Randomizer {
             this._bundleReplacements["Bulletin Board/33"] = BulletinBoard33Values[rng.Next(0, 7)];
             this._bundleReplacements["Bulletin Board/34"] = BulletinBoard34Values[rng.Next(0, 6)];
             this._bundleReplacements["Bulletin Board/35"] = BulletinBoard35Values[rng.Next(0, 7)];
+
+            this._bundleReplacements["Abandoned Joja Mart/36"] = AbandonedJojaMartValues[rng.Next(0, 5)];
 
         }
 
@@ -994,7 +1002,7 @@ namespace Randomizer {
                 { (int)ObjectIndexes.PoppySeeds, $"Poppy Seeds/{rng.Next(40, 60)}/-300/Seeds -74/Poppy Seeds/Plant in summer. Produces a bright red flower in 7 days. Normal seed market price is 100g"},
                 { (int)ObjectIndexes.RadishSeeds, $"Radish Seeds/{rng.Next(15, 30)}/-300/Seeds -74/Radish Seeds/Plant these in the summer. Takes 6 days to mature. Normal seed market price is 40g"},
                 { (int)ObjectIndexes.RedCabbageSeeds, $"Red Cabbage Seeds/{rng.Next(45, 60)}/-300/Seeds -74/Red Cabbage Seeds/Plant these in the summer. Takes 9 days to mature. Normal seed market price is 100g"},
-                { (int)ObjectIndexes.StarfruitSeeds, $"Starfruit Seeds/{rng.Next(175, 250)}/-300/Seeds -74/Starfruit Seeds/Plant these in the summer. Takes 13 days to mature. Normal seed market price is 200g"},
+                { (int)ObjectIndexes.StarfruitSeeds, $"Starfruit Seeds/{rng.Next(175, 250)}/-300/Seeds -74/Starfruit Seeds/Plant these in the summer. Takes 13 days to mature. Normal seed market price is 400g"},
                 { (int)ObjectIndexes.SpangleSeeds, $"Spangle Seeds/{rng.Next(20, 30)}/-300/Seeds -74/Spangle Seeds/Plant in summer. Takes 8 days to produce a vibrant tropical flower. Assorted colors. Normal seed market price is "},
                 { (int)ObjectIndexes.SunflowerSeeds, $"Sunflower Seeds/{rng.Next(15, 25)}/-300/Seeds -74/Sunflower Seeds/Plant in summer or fall. Takes 8 days to produce a large sunflower. Yields more seeds at harvest. Normal seed market price is 200g"},
                 { (int)ObjectIndexes.TomatoSeeds, $"Tomato Seeds/{rng.Next(20, 35)}/-300/Seeds -74/Tomato Seeds/Plant these in the summer. Takes 11 days to mature, and continues to produce after first harvest. Normal seed market price is 50g"},

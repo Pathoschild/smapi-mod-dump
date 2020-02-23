@@ -11,7 +11,6 @@
 
     public abstract class ObjectList
     {
-        private Texture2D arrow;
         private ShortestPath path;
         private ModConfig config;
         private bool overlayActive;

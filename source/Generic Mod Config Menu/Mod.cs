@@ -36,7 +36,9 @@ namespace GenericModConfigMenu
             helper.Events.GameLoop.UpdateTicking += onUpdate;
             helper.Events.Display.WindowResized += onWindowResized;
             helper.Events.Display.Rendered += onRendered;
+            helper.Events.Input.MouseWheelScrolled += onMouseWheelScrolled;
         }
+
 
         public override object GetApi()
         {
@@ -69,6 +71,7 @@ namespace GenericModConfigMenu
             config = Helper.ReadConfig<DummyConfig>();
             var api = Helper.ModRegistry.GetApi<IApi>(ModManifest.UniqueID);
             api.RegisterModConfig(ModManifest, () => config = new DummyConfig(), () => Helper.WriteConfig(config));
+            api.RegisterLabel(ModManifest, "Dummy Label", "Testing labels");
             api.RegisterSimpleOption(ModManifest, "Dummy Bool", "Testing a checkbox", () => config.dummyBool, (bool val) => config.dummyBool = val);
             api.RegisterSimpleOption(ModManifest, "Dummy Int (1)", "Testing an int (simple)", () => config.dummyInt1, (int val) => config.dummyInt1 = val);
             api.RegisterClampedOption(ModManifest, "Dummy Int (2)", "Testing an int (range)", () => config.dummyInt2, (int val) => config.dummyInt2 = val, 0, 100);
@@ -77,7 +80,9 @@ namespace GenericModConfigMenu
             api.RegisterSimpleOption(ModManifest, "Dummy String (1)", "Testing a string", () => config.dummyString1, (string val) => config.dummyString1 = val);
             api.RegisterChoiceOption(ModManifest, "Dummy String (2)", "Testing a dropdown box", () => config.dummyString2, (string val) => config.dummyString2 = val, DummyConfig.dummyString2Choices);
             api.RegisterSimpleOption(ModManifest, "Dummy Keybinding", "Testing a keybinding", () => config.dummyKeybinding, (SButton val) => config.dummyKeybinding = val);
-            
+
+            api.RegisterLabel(ModManifest, "", "");
+
             // Complex widget - this just generates a random  color on click.
             Func<Vector2, object, object> randomColorUpdate =
             (Vector2 pos, object state_) =>
@@ -133,6 +138,15 @@ namespace GenericModConfigMenu
                 if (TitleMenu.subMenu == null && Helper.Reflection.GetField<bool>(tm, "titleInPosition").GetValue())
                     configButton.Draw(e.SpriteBatch);
             }
+        }
+
+        private void onMouseWheelScrolled(object sender, MouseWheelScrolledEventArgs e)
+        {
+            Dropdown.ActiveDropdown?.receiveScrollWheelAction(e.Delta);
+            if (ModConfigMenu.ActiveConfigMenu is ModConfigMenu mcm)
+                mcm.receiveScrollWheelActionSmapi(e.Delta);
+            if (SpecificModConfigMenu.ActiveConfigMenu is SpecificModConfigMenu smcm)
+                smcm.receiveScrollWheelActionSmapi(e.Delta);
         }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewValley;
-using StardewValley.Menus;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace ModSettingsTab.Framework.Components
 {
@@ -103,7 +103,7 @@ namespace ModSettingsTab.Framework.Components
         public override void Draw(SpriteBatch b, int slotX, int slotY)
         {
             Helper.DrawTextureBox(b, Game1.mouseCursors, SliderBgSource, slotX + Bounds.X,
-                slotY + Bounds.Y, Bounds.Width, Bounds.Height, Color.White, 4f, false,0.688f);
+                slotY + Bounds.Y, Bounds.Width, Bounds.Height, Color.White, Scale, false,0.688f);
             b.Draw(Game1.mouseCursors,
                 new Vector2(
                     slotX + Bounds.X +
@@ -111,7 +111,7 @@ namespace ModSettingsTab.Framework.Components
                              ((Value - (double) SliderMinValue) /
                               (SliderMaxValue - SliderMinValue))),
                     slotY + Bounds.Y), SliderButtonRect, Color.White, 0.0f,
-                Vector2.Zero, 4f, SpriteEffects.None, 0.689f);
+                Vector2.Zero, Scale, SpriteEffects.None, 0.689f);
             base.Draw(b, slotX, slotY);
         }
     }

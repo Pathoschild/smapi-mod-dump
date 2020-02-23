@@ -17,7 +17,15 @@ using Microsoft.Xna.Framework.Input;
 namespace SubterranianOverhaul
 {
     class VoidshroomSpore : StardewValley.Object
-    {   
+    {
+        public const String NAME = "Voidshroom Spore";
+        public const String DISPLAY_NAME = "Voidshroom Spore";
+        public const int QUALITY = 0;
+        public const int PRICE = 10;
+        public const int CATEGORY = 74;
+        public const int EDIBILITY = -300;
+        public const string DESCRIPTION = "The spore of a giant Voidshroom Tree.  These giant fungi only thrive in darkness.";
+
         private static int itemIndex = -1;
 
         public static void setIndex()
@@ -40,11 +48,11 @@ namespace SubterranianOverhaul
 
         public VoidshroomSpore(Vector2 tileLocation) : base(tileLocation, itemIndex, false)
         {
-            this.Name = "Voidshroom Spore";
-            this.DisplayName = "Voidshroom Spore";
-            this.Quality = 0;
-            this.Price = 10;
-            this.Category = 74;
+            this.Name = VoidshroomSpore.NAME;
+            this.DisplayName = VoidshroomSpore.DISPLAY_NAME;
+            this.Quality = VoidshroomSpore.QUALITY;
+            this.Price = VoidshroomSpore.PRICE;
+            this.Category = VoidshroomSpore.CATEGORY;
         }
 
         public VoidshroomSpore() : this(Vector2.Zero)
@@ -52,14 +60,14 @@ namespace SubterranianOverhaul
             
         }        
 
-        public string getObjectData()
+        public static string getObjectData()
         {
-            return string.Format("{0}/{1}/{2}/Basic {3}/{4}/{5}", this.Name, this.Price, this.Edibility, (int)this.Category, this.Name, this.getDescription());
+            return string.Format("{0}/{1}/{2}/Basic -{3}/{4}/{5}", VoidshroomSpore.NAME, VoidshroomSpore.PRICE, VoidshroomSpore.EDIBILITY, VoidshroomSpore.CATEGORY, VoidshroomSpore.NAME, VoidshroomSpore.DESCRIPTION);
         }
 
         public override string getDescription()
         {
-            return "The spore of a giant Voidshroom Tree.  These giant fungi only thrive in darkness.";
+            return VoidshroomSpore.DESCRIPTION;
         }
 
         public static bool IsValidLocation(GameLocation location)
@@ -79,7 +87,7 @@ namespace SubterranianOverhaul
             {
                 if(!IsValidLocation(location))
                 {
-                    Game1.showRedMessage("These seeds can only thrive in darkness.");
+                    Game1.showRedMessage("This plant would not thrive here.");
                 }
                 return false;
             }

@@ -1,0 +1,59 @@
+{
+    "Name": "Alchemy Bench",
+    "Description": "Use dwarvish alchemy to create powerful concoctions.",
+    "Price": 4000,
+    "ProvidesLight": false,	
+    "ReserveNextIndex": true,
+    "Recipe":
+    {
+        "ResultCount": 1,
+        "Ingredients": [
+        {
+            "Object": 709,
+            "Count": 10,
+        },
+        {
+            "Object": 428,
+            "Count": 2,
+        },
+        {
+            "Object": 338,
+            "Count": 5,
+        }
+		],
+        "IsDefault": false,
+		"SkillUnlockName": "Mining",
+		"SkillUnlockLevel": 9,
+    },
+	"CanPurchase": true,
+	"PurchaseFrom": "Dwarf",
+	"PurchasePrice": 4000,
+    "NameLocalization":
+    {
+        // "es": "",
+        // "ko": "",
+        // "de": "",
+        // "fr": "",
+        // "hu": "",
+        // "it": "",
+        // "ja": "",
+        // "pt": "",
+        // "ru": "",
+        // "tr": "",
+        // "zh": "",
+    },
+    "DescriptionLocalization":
+    {
+        // "es": "",
+        // "ko": "",
+        // "de": "",
+        // "fr": "",
+        // "hu": "",
+        // "it": "",
+        // "ja": "",
+        // "pt": "",
+        // "ru": "",
+        // "tr": "",
+        // "zh": "",
+    }
+}

@@ -1,10 +1,10 @@
 ﻿{
    "Name": "Paritee's Better Farm Animal Variety",
    "Author": "Paritee",
-   "Version": "3.0.6-unofficial",
+   "Version": "3.0.0-unofficial.7-mouseypounds",
    "Description": "Raise more variety of animals on your farm without replacing existing livestock",
    "UniqueID": "Paritee.BetterFarmAnimalVariety",
    "EntryDll": "BetterFarmAnimalVariety.dll",
-   "MinimumApiVersion": "2.11",
+   "MinimumApiVersion": "3.0.0",
    "UpdateKeys": [ "Nexus:3296" ]
 }

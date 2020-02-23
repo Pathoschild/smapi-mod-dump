@@ -27,7 +27,7 @@ namespace MayonnaisePlusPlus
 		private void onGameLaunched(object sender, GameLaunchedEventArgs e) {
 			if (_data != null) return;
 			_data = new Loader(Helper);
-
+			
 			var harmony = HarmonyInstance.Create("Xirsoi.MayoMod");
 
 			harmony.Patch(

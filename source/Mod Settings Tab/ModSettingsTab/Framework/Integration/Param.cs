@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using StardewModdingAPI;
 
 namespace ModSettingsTab.Framework.Integration
 {

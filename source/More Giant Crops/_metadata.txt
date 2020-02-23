@@ -1,0 +1,13 @@
+url:
+   https://github.com/spacechase0/MoreGiantCrops.git
+
+mods:
+   More Giant Crops
+
+latest commit:
+   commit 7278f0bef40fd8cd071485822120e21f7c97c65c
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Mon Feb 10 20:14:30 2020 -0500
+   
+       Initial commit
+   

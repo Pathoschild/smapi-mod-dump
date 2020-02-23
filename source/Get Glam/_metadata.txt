@@ -5,9 +5,9 @@ mods:
    Get Glam
 
 latest commit:
-   commit 73eb04dd40471a8b6294b82c4e269e2658d15fb9
+   commit 014e1ac4f4a5e754378746139b8298f7279bcf8e
    Author: Chris <csgephardt@gmail.com>
-   Date:   Sat Jan 11 07:04:10 2020 -0500
+   Date:   Mon Feb 10 03:35:16 2020 -0500
    
-       Add new 1.4 images
+       Not Touching Clothes
    

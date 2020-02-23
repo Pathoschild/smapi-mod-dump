@@ -58,6 +58,8 @@ namespace MailFrameworkMod
         /// </summary>
         public int? TextColor;
 
+        public Texture2D UpperRightCloseButtonTexture;
+
         /// <summary>
         /// Creates a letter.
         /// </summary>

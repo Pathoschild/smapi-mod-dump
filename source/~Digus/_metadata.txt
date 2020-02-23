@@ -16,12 +16,12 @@ mods:
    Water Retaining Field
 
 latest commit:
-   commit e59ca868206d6ac1163b0e3950f61f9219ea5753
-   Merge: f221701 2c1e0ce
+   commit dc8404ce1acdea60b1c63213967777d5c7308242
+   Merge: 8089fb5 2f84388
    Author: Digus <32422267+Digus@users.noreply.github.com>
-   Date:   Tue Jan 7 17:16:32 2020 -0300
+   Date:   Thu Feb 6 01:57:35 2020 -0300
    
-       Merge pull request #61 from Digus/develop
+       Merge pull request #71 from Digus/feature/custom_producer/no_input_machines
        
-       Develop
+       Custom Producer Mod 1.1.0
    

@@ -39,8 +39,8 @@ Names, descriptions, IDs and recipes for Large Chest and Magic Chest are configu
 * Requires [SMAPI](https://smapi.io/).
 * Supports multiplayers and controllers.
 * Compatible with Chests Anywhere, Stack Everything, Automate, Carry Chest and content packs for Content Patcher and Json Assets.
-* Minor incompatibility with Convenient Chests: overlapping UI.
-* NOT compatible with Save Anywhere. Using these mods together may result in crashes and loss of items.
+* Compatible with Convenient Chests: disables categories when being used with Convenient Chests.
+* Minor compatibility with Save Anywhere: after saving you have to return to title and load for chests to appear correctly.
 
 # Is this safe?
 Before saving, all Large Chests and Magic Chests are converted to normal chests. After saving, they are converted back. This makes sure your items aren't lost, even if uninstalling this mod. Normal chests actually have infinite capacity, it's only when adding items one at a time they are limited to 36 capacity.
@@ -52,5 +52,6 @@ If you lose any items or custom chests don't convert back from normal chests, pl
 * Custom sprites by [Revanius](https://www.nexusmods.com/users/40079).
 * Convenient Chests save fix by [MaienM](https://www.nexusmods.com/stardewvalley/users/6392240).
 * SDV 1.4 compatibility by Mizzion.
+* Updated by [furyx639](https://www.nexusmods.com/stardewvalley/users/1643034).
 
 [Nexus page](https://www.nexusmods.com/stardewvalley/mods/4089)

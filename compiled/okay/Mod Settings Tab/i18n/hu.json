@@ -3,5 +3,11 @@
   "OptionsPage.ModSettingsTab": "Módosítási beállítások",
   "StaticConfig.SuccessMessage": "A beállítások mentve",
   "StaticConfig.FailMessage": "Hiba mentése",
-  "OptionsList.NewValue": "Adjon meg egy új értéket"
+  "OptionsList.NewValue": "Adjon meg egy új értéket",
+  "Mod.Disabled.Error": "Nem sikerült váltani a módosításokat",
+  "ModManager.AddModPack": "Új mod csomag hozzáadása",
+  "ModManager.HoverSetUp.Title": "Switch modpack",
+  "ModManager.HoverSetUp.Description": "a mod csomagban nem szereplő többi modul le lesz tiltva",
+  "ModManager.Toggle.Label": "Aktuális mod pack",
+  "ModManager.Add.NameTextBox": "Modpack name"
 }

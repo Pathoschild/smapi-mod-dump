@@ -1,0 +1,12 @@
+﻿{
+	"Name": "PetTheAnimals",
+	"Author": "furyx639",
+	"Version": "1.2.0",
+	"Description": "Custom Chore for petting all barn and coops animals.",
+	"UniqueID": "furyx639.PetTheAnimals",
+	"ContentPackFor": {
+		"UniqueID":  "furyx639.CustomChores",
+		"MinimumApiVersion":  "1.2.0"
+	},
+	"MinimumApiVersion": "2.0"
+}

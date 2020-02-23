@@ -1,0 +1,9 @@
+﻿{
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Krobus.Priority=1": "Umm... I found this food lying around. I thought you might like it...{{ItemId}}",
+	// Default dialogue (overridden by individual dialogue)
+	"Dialogue.Mod=HelpfulSpouses":  "Good morning {{NickName}}, I made you a {{ItemName}} for breakfast this morning. I hope you enjoy it!{{ItemId}}",
+
+	// Shop text
+	"DisplayName.Mod=HelpForHire":  "Breakfast Delivered",
+	"Description.Mod=HelpForHire":  "We'll deliver you your morning meal.",
+}

@@ -187,6 +187,11 @@ namespace CustomizeExterior
                 {
                     Rectangle house = new Rectangle(59 * Game1.tileSize, 11 * Game1.tileSize, 9 * Game1.tileSize, 6 * Game1.tileSize);
                     Rectangle greenhouse = new Rectangle(25 * Game1.tileSize, 10 * Game1.tileSize, 7 * Game1.tileSize, 6 * Game1.tileSize);
+                    if ( Game1.whichFarm == Farm.fourCorners_layout )
+                    {
+                        greenhouse.X = 36 * Game1.tileSize;
+                        greenhouse.Y = 25 * Game1.tileSize;
+                    }
 
                     if (house.Contains(pos.X, pos.Y))
                     {
@@ -204,7 +209,7 @@ namespace CustomizeExterior
 
         private void compileChoices()
         {
-            Log.info("Creating list of building choices...");
+            Log.trace("Creating list of building choices...");
             var buildingsPath = Path.Combine(Helper.DirectoryPath, "Buildings");
             if (!Directory.Exists(buildingsPath))
                 Directory.CreateDirectory(buildingsPath);
@@ -233,7 +238,7 @@ namespace CustomizeExterior
                     if (!Mod.choices.ContainsKey(typeStr))
                         Mod.choices.Add(typeStr, forType);
 
-                    Log.info("\tChoice: " + typeStr);
+                    Log.trace("\tChoice: " + typeStr);
                 }
 
                 var seasons = Directory.GetDirectories(choice);
@@ -249,7 +254,7 @@ namespace CustomizeExterior
                 
                 if ( foundSpring && foundSummer && foundFall && foundWinter )
                 {
-                    Log.info("Found a seasonal set: " + Path.GetFileName(choice));
+                    Log.trace("Found a seasonal set: " + Path.GetFileName(choice));
 
                     var spring = new List<string>(Directory.GetFiles(Path.Combine(choice, "spring")));
                     var summer = new List<string>(Directory.GetFiles(Path.Combine(choice, "summer")));
@@ -273,7 +278,7 @@ namespace CustomizeExterior
                             if (!Mod.choices.ContainsKey(typeStr))
                                 Mod.choices.Add(typeStr, forType);
 
-                            Log.info("\tChoice: " + typeStr);
+                            Log.trace("\tChoice: " + typeStr);
                         }
                     }
                 }
@@ -301,14 +306,14 @@ namespace CustomizeExterior
 
         private void todoRenameFunction( string target, string type )
         {
-            Log.debug("Target: " + target + " " + type);
+            Log.trace("Target: " + target + " " + type);
 
             if (!choices.ContainsKey(type))
                 return;
 
             foreach ( var choice in choices[ type ] )
             {
-                Log.debug("Choice: " + choice);
+                Log.trace("Choice: " + choice);
             }
 
             recentTarget = target;
@@ -323,7 +328,7 @@ namespace CustomizeExterior
         private void onExteriorSelected(string type, string choice) { onExteriorSelected(type, choice, true); }
         private void onExteriorSelected( string type, string choice, bool updateChosen )
         {
-            Log.debug("onExteriorSelected: " + recentTarget + " " + type + " " + choice);
+            Log.trace("onExteriorSelected: " + recentTarget + " " + type + " " + choice);
             
             Texture2D tex = getTextureForChoice(type, choice);
             if (tex == null)
@@ -373,7 +378,7 @@ namespace CustomizeExterior
             foreach (var choice in savedExteriors.chosen)
             {
                 recentTarget = choice.Key;
-                Log.debug("Saved choice: " + choice.Key + " " + choice.Value);
+                Log.trace("Saved choice: " + choice.Key + " " + choice.Value);
 
                 string type = null;
                 if (recentTarget == "FarmHouse" || recentTarget == "Greenhouse")
@@ -443,6 +448,7 @@ namespace CustomizeExterior
 
             GraphicsDevice dev = Game1.graphics.GraphicsDevice;
             RenderTarget2D ret = new RenderTarget2D(dev, baseTex.Width, baseTex.Height);
+            ret.Name = Mod.instance.ModManifest.UniqueID + ".houses";
             SpriteBatch b = Game1.spriteBatch;
             dev.SetRenderTarget(ret);
             {

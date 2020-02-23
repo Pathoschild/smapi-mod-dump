@@ -17,7 +17,9 @@ namespace ClimatesOfFerngillRebuild
         /// <summary> The Current Fog Type </summary>
         internal FogType CurrentFogType { get; set; }
         public bool BloodMoon { get; set; }
-        /// <summary>  The alpha attribute of the fog. </summary>
+        /// <summary> The calculated alpha attribute of fog to use when fading fog in/out. </summary>
+        private float FogTargetAlpha { get; set; }
+        /// <summary> The currently-shown alpha attribute of the fog. </summary>
         private float FogAlpha { get; set; }
         /// <summary> Fog Position. For drawing. </summary>
         private Vector2 FogPosition { get; set; }
@@ -45,6 +47,20 @@ namespace ClimatesOfFerngillRebuild
         private bool FadeOutFog { get; set; }
         private bool FadeInFog { get; set; }
         private Stopwatch FogElapsed { get; set; }
+        public void SetFogTargetAlpha()
+        {
+            if (ClimatesOfFerngill.WeatherOpt.ShowLighterFog)
+            {
+                if (Game1.isRaining)
+                    this.FogTargetAlpha = .2f;
+                else
+                    this.FogTargetAlpha = .3f;
+            }
+            else
+            {
+                this.FogTargetAlpha = 1f;
+            }
+        }
 
         /// <summary> Default constructor. </summary>
         internal FerngillFog(SDVTimePeriods FogPeriod)
@@ -71,6 +87,7 @@ namespace ClimatesOfFerngillRebuild
             ExpirTime = new SDVTime(0600);
             BloodMoon = false;
             FogAlpha = 0f;
+            FogTargetAlpha = 0f;
             FadeOutFog = false;
             FadeInFog = false;
             FogElapsed.Reset(); 
@@ -78,16 +95,9 @@ namespace ClimatesOfFerngillRebuild
 
         public void ForceWeatherStart()
         {
-            this.FogAlpha = 1f;
+            SetFogTargetAlpha();
+            this.FogAlpha = this.FogTargetAlpha;
             CurrentFogType = FogType.Normal;
-
-            if (ClimatesOfFerngill.WeatherOpt.ShowLighterFog)
-            {
-                if (Game1.isRaining) 
-                    this.FogAlpha = .2f;
-                else
-                    this.FogAlpha = .3f;
-            }
 
 
             
@@ -98,8 +108,9 @@ namespace ClimatesOfFerngillRebuild
         {
             ExpirTime = new SDVTime(SDVTime.CurrentTime - 10);
             CurrentFogType = FogType.None;
-            FogElapsed.Start();
             FadeOutFog = true;
+            SetFogTargetAlpha();
+            FogElapsed.Start();
             UpdateStatus(WeatherType, false);
         }
 
@@ -137,16 +148,9 @@ namespace ClimatesOfFerngillRebuild
         /// <summary>This function creates the fog </summary>
         public void CreateWeather()
         {
-            this.FogAlpha = 1f;
+            SetFogTargetAlpha();
+            this.FogAlpha = this.FogTargetAlpha;
             CurrentFogType = FogType.Normal;
-
-            if (ClimatesOfFerngill.WeatherOpt.ShowLighterFog)
-            {
-                if (Game1.isRaining)
-                    this.FogAlpha = .2f;
-                else
-                    this.FogAlpha = .3f;
-            }
 
             //now determine the fog expiration time
             double FogChance = ClimatesOfFerngill.Dice.NextDoublePositive();
@@ -205,8 +209,9 @@ namespace ClimatesOfFerngillRebuild
             {
                 ExpirTime = new SDVTime(SDVTime.CurrentTime - 10);
                 CurrentFogType = FogType.None;
-                FogElapsed.Start();
                 FadeOutFog = true;
+                SetFogTargetAlpha();
+                FogElapsed.Start();
                 UpdateStatus(WeatherType, false);
             }
         }
@@ -231,6 +236,7 @@ namespace ClimatesOfFerngillRebuild
             {            
                 CurrentFogType = FogType.Normal;
                 FadeInFog = true;
+                SetFogTargetAlpha();
                 FogElapsed.Start();
                 UpdateStatus(WeatherType, true);
             }
@@ -238,6 +244,7 @@ namespace ClimatesOfFerngillRebuild
             if (SDVTime.CurrentTime >= WeatherExpirationTime && IsWeatherVisible)
             {
                 FadeOutFog = true;
+                SetFogTargetAlpha();
                 FogElapsed.Start();
                 UpdateStatus(WeatherType, false);
             }
@@ -316,11 +323,12 @@ namespace ClimatesOfFerngillRebuild
                 // So, 3000ms for 55% or 54.45 repeating. But this is super fast....
                 // let's try 955ms.. or 1345..
                 // or 2690.. so no longer 3s. :<
-                FogAlpha = 1 - (FogElapsed.ElapsedMilliseconds / FogFadeTime);
+                FogAlpha = FogTargetAlpha * (1 - (FogElapsed.ElapsedMilliseconds / FogFadeTime));
                
                 if (FogAlpha <= 0)
                 {
                     FogAlpha = 0;
+                    FogTargetAlpha = 0;
                     CurrentFogType = FogType.None;
                     FadeOutFog = false;
                     FogElapsed.Stop();
@@ -331,10 +339,10 @@ namespace ClimatesOfFerngillRebuild
             if (FadeInFog)
             {
                 //as above, but the reverse.
-                FogAlpha = (FogElapsed.ElapsedMilliseconds / FogFadeTime);
-                if (FogAlpha >= 1)
+                FogAlpha = FogTargetAlpha * (FogElapsed.ElapsedMilliseconds / FogFadeTime);
+                if (FogAlpha >= FogTargetAlpha)
                 {
-                    FogAlpha = 1;
+                    FogAlpha = FogTargetAlpha;
                     FadeInFog = false;
                     FogElapsed.Stop();
                     FogElapsed.Reset();

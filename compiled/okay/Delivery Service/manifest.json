@@ -1,0 +1,16 @@
+﻿{
+  "Name": "DeliveryService",
+  "Author": "AxesOfEvil",
+  "Version": "0.10.2",
+  "Description": "Move items between chests nightly",
+  "UniqueID": "AxesOfEvil.DeliveryService",
+  "EntryDll": "DeliveryService.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:5187"],
+  "Dependencies": [
+   {
+      "UniqueID": "Alek.MegaStorage",
+      "IsRequired": false
+   }
+]
+}

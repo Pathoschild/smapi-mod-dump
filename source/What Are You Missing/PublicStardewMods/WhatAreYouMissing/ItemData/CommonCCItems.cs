@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StardewValley;
-using StardewValley.Locations;
-using StardewModdingAPI;
+﻿using System.Collections.Generic;
 using SObject = StardewValley.Object;
 
 namespace WhatAreYouMissing

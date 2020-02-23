@@ -5,15 +5,20 @@ using StardewModdingAPI.Events;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using StardewValley.Menus;
+using StardewValley.Locations;
+using System.Linq;
+using StardewValley.Buildings;
 
 namespace HayBalesSilo
 {
     public class ModEntry : Mod, IAssetEditor
     {
         internal static IMonitor monitor;
+        internal static ModConfig Config;
         public override void Entry(IModHelper helper)
         {
             monitor = Monitor;
+            Config = this.Helper.ReadConfig<ModConfig>();
 
             var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
             harmony.Patch(
@@ -45,17 +50,12 @@ namespace HayBalesSilo
             {
                 if (item.Key.Name == "Ornamental Hay Bale")
                 {
-                    item.Value[0] = 5000; //change the price
+                    item.Value[0] = Config.HaybalePrice; //change the price
                     break;
                 }
             }
 
             shop.setItemPriceAndStock(itemStock);
-        }
-
-        private void GetTileInFrontOfPlayer()
-        {
-
         }
 
         private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -65,20 +65,14 @@ namespace HayBalesSilo
             if (!Context.CanPlayerMove)
                 return;
 
-            if (Game1.currentLocation.Name != "Farm")
+            if (!GetAllAffectedMaps().Contains(Game1.currentLocation))
                 return;
 
             //action button works for right click on mouse and action button for controllers
             if (!e.Button.IsActionButton() && !e.Button.IsUseToolButton())
                 return;
-
-            //checks if the clicked tile is actually adjacent to the player
-            var clickedTile = Helper.Input.GetCursorPosition().Tile;
-            if (!IsClickWithinReach(clickedTile))
-                return;
-
             //check if the clicked tile contains a Farm Renderer
-            Vector2 tile = e.Cursor.Tile;
+            Vector2 tile = Helper.Input.GetCursorPosition().GrabTile;
             Game1.currentLocation.Objects.TryGetValue(tile, out StardewValley.Object obj);
             if (obj != null && obj.bigCraftable.Value)
             {
@@ -121,29 +115,28 @@ namespace HayBalesSilo
             }
         }
 
-        private bool IsClickWithinReach(Vector2 tile)
+        internal static IEnumerable<GameLocation> GetAllAffectedMaps()
         {
-            var playerPosition = Game1.player.Position;
-            var playerTile = new Vector2(playerPosition.X / 64, playerPosition.Y / 64);
-
-            if (tile.X < (playerTile.X - 1.5) || tile.X > (playerTile.X + 1.5) ||
-                tile.Y < (playerTile.Y - 1.5) || tile.Y > (playerTile.Y + 1.5))
-                return false;
-
-            return true;
+            yield return Game1.getFarm();
+            foreach (Building building in Game1.getFarm().buildings.Where(building => building.indoors.Value != null))
+            {
+                    yield return building.indoors.Value;
+            }
         }
-
         internal static int NumHayBales()
         {
             int numHayBales = 0;
 
-            foreach (var temp in Game1.getFarm().Objects)
+            foreach (var loc in GetAllAffectedMaps())
             {
-                foreach (var obj in temp.Values)
+                foreach (var temp in loc.Objects)
                 {
-                    if (obj.Name == "Ornamental Hay Bale")
+                    foreach (var obj in temp.Values)
                     {
-                        numHayBales++;
+                        if (obj.Name == "Ornamental Hay Bale")
+                        {
+                            numHayBales++;
+                        }
                     }
                 }
             }
@@ -164,20 +157,29 @@ namespace HayBalesSilo
                 IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
                 string[] fields = data[45].Split('/');
 
-                fields[4] = Helper.Translation.Get("Description"); //description
+                fields[4] = Helper.Translation.Get("Description",
+                    new { capacity = 240 * Config.HayBaleEquivalentToHowManySilos }); //description
                 fields[8] = Helper.Translation.Get("DisplayName"); //display name
 
                 data[45] = string.Join("/", fields);
             }
         }
     }
+
+    class ModConfig
+    {
+        public bool RequiresConstructedSilo { get; set; } = true;
+        public int HayBaleEquivalentToHowManySilos { get; set; } = 1;
+        public int HaybalePrice { get; set; } = 5000;
+    }
     public class PatchNumSilos
     {
         internal static void Postfix(ref int __result)
         {
-            if (__result > 0)
+
+            if (__result > 0 || !ModEntry.Config.RequiresConstructedSilo)
             {
-                __result = __result + ModEntry.NumHayBales();
+                __result = __result + (ModEntry.NumHayBales()*ModEntry.Config.HayBaleEquivalentToHowManySilos);
             }
         }
     }

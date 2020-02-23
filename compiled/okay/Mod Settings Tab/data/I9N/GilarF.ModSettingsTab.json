@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/GilarF/SVM/develop/ModSettingsTab/schema.json",
   "Description": {
     "en": "Replaces the standard settings tab",
     "zh": "取代標准設定標籤",
@@ -33,7 +34,10 @@
         "th": "แสดงการแจ้งเตือนบันทึกที่ประสบความสำเร็จ"
       },
       "Type": "CheckBox",
-      "Label": "Show saving notify"
+      "Label": {
+        "en": "Show the save notification",
+        "fr": "Afficher la notification d'enregistrement" 
+      }
     },
     {
       "Name": "ShowReloadIcon",
@@ -53,7 +57,54 @@
         "th": "แสดงไอคอนเมื่อจำเป็นต้องรีบูต"
       },
       "Type": "CheckBox",
-      "Label": "Show reload icon"
+      "Label": {
+        "en": "Show the reload icon",
+        "fr": "Afficher l'icône de rechargement"
+      }
+    },
+    {
+      "Name": "TitleOptionsButtonX",
+      "Type": "Slider",
+      "SliderMinValue": 48,
+      "SliderMaxValue": 2048,
+      "SliderStep": 2,
+      "Label": {
+        "en": "Button position along the axis (X)",
+        "zh": "按鈕位置（X)",
+        "fr": "Position du bouton d'axe (X)",
+        "de": "Position der Menütaste entlang der Achse (X)",
+        "hu": "gomb pozíciója a tengely mentén (X)",
+        "it": "posizione del pulsante lungo l'asse (X)",
+        "ja": "ボタンの位置（X）",
+        "ko": "축을 따른 버튼 위치 (X)",
+        "pt": "posição do botão ao longo do eixo (X)",
+        "ru": "Позиция кнопки (Х)",
+        "es": "posición del botón a lo largo del eje (X)",
+        "tr": "eksen boyunca düğme konumu (X)",
+        "th": "ตำแหน่งปุ่มตามแนวแกน (X)"
+      }
+    },
+    {
+      "Name": "TitleOptionsButtonY",
+      "Type": "Slider",
+      "SliderMinValue": 48,
+      "SliderMaxValue": 2048,
+      "SliderStep": 2,
+      "Label": {
+        "en": "Button position along the axis (Y)",
+        "zh": "按鈕位置（X)",
+        "fr": "Position du bouton d'axe (Y)",
+        "de": "Position der Menütaste entlang der Achse (Y)",
+        "hu": "gomb pozíciója a tengely mentén (Y)",
+        "it": "posizione del pulsante lungo l'asse (Y)",
+        "ja": "ボタンの位置（Y）",
+        "ko": "축을 따른 버튼 위치 (Y)",
+        "pt": "posição do botão ao longo do eixo (Y)",
+        "ru": "Позиция кнопки (Y)",
+        "es": "posición del botón a lo largo del eje (Y)",
+        "tr": "eksen boyunca düğme konumu (Y)",
+        "th": "ตำแหน่งปุ่มตามแนวแกน (Y)"
+      }
     }
   ]
 }

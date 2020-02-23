@@ -14,8 +14,8 @@ namespace ModSettingsTab.Menu
 {
     public abstract class BaseOptionsModPage : IClickableMenu
     {
-        private string _hoverTitle = "";
-        private string _hoverText = "";
+        protected string HoverTitle = "";
+        protected string HoverText = "";
         private readonly List<ClickableComponent> _optionSlots = new List<ClickableComponent>();
 
         public List<OptionsElement> Options = new List<OptionsElement>();
@@ -212,7 +212,7 @@ namespace ModSettingsTab.Menu
             if (GameMenu.forcePreventClose)
                 return;
             base.releaseLeftClick(x, y);
-            FilterTextBox.Update();
+            FilterTextBox?.Update();
             if (_optionsSlotHeld != -1 && _optionsSlotHeld + _currentItemIndex < Options.Count)
                 Options[_currentItemIndex + _optionsSlotHeld].LeftClickReleased(
                     x - _optionSlots[_optionsSlotHeld].bounds.X,
@@ -288,12 +288,12 @@ namespace ModSettingsTab.Menu
                 if (_currentItemIndex < 0 || _currentItemIndex + index >= Options.Count) return false;
                 if (!Options[_currentItemIndex + index].PerformHoverAction(x - t.bounds.X, y - t.bounds.Y))
                     return false;
-                _hoverTitle = Options[_currentItemIndex + index].HoverTitle;
-                _hoverText = Options[_currentItemIndex + index].HoverText;
+                HoverTitle = Options[_currentItemIndex + index].HoverTitle;
+                HoverText = Options[_currentItemIndex + index].HoverText;
                 return true;
             }).Any())
                 Game1.SetFreeCursorDrag();
-            else _hoverText = "";
+            else HoverText = "";
             if (_scrollBarRunner.Contains(x, y))
                 Game1.SetFreeCursorDrag();
             if (GameMenu.forcePreventClose)
@@ -305,8 +305,6 @@ namespace ModSettingsTab.Menu
 
         public override void draw(SpriteBatch b)
         {
-            b.End();
-            b.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null);
             for (var index = 0; index < _optionSlots.Count; ++index)
             {
                 if (_currentItemIndex >= 0 && _currentItemIndex + index < Options.Count)
@@ -315,11 +313,12 @@ namespace ModSettingsTab.Menu
             }
 
             b.End();
-            b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+            b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null,null,null,
+                Game1.gameMode == 0 ? Matrix.CreateScale(0.9f) : new Matrix?() );
             if (!GameMenu.forcePreventClose)
             {
                 _upArrow.draw(b);
-                FilterTextBox.Draw(b);
+                FilterTextBox?.Draw(b);
                 _downArrow.draw(b);
                 if (Options.Count > ItemsPerPage)
                 {
@@ -330,12 +329,14 @@ namespace ModSettingsTab.Menu
                 }
             }
 
-            if (_hoverText.Equals(""))
+            b.End();
+            b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
+            if (HoverText.Equals(""))
                 return;
-            if (_hoverTitle.Equals(""))
-                drawHoverText(b, _hoverText, Game1.smallFont);
+            if (HoverTitle.Equals(""))
+                drawHoverText(b, HoverText, Game1.smallFont);
             else
-                drawHoverText(b, _hoverText, Game1.smallFont, boldTitleText: _hoverTitle);
+                drawHoverText(b, HoverText, Game1.smallFont, boldTitleText: HoverTitle);
         }
     }
 }

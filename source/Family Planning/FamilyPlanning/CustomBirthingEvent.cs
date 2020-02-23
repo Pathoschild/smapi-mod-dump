@@ -126,32 +126,34 @@ namespace FamilyPlanning
                     string s = "";
 
                     //Attempts to load content pack dialogue
-                    Tuple<int, string> dialoguePair = ModEntry.GetSpouseDialogueData(spouse.displayName);
-                    if (dialoguePair != null)
+                    List<Tuple<int, string>> dialoguePairs = ModEntry.GetSpouseDialogueData(spouse.displayName);
+                    if (dialoguePairs.Count > 0)
                     {
-                        if(Game1.player.getChildrenCount() == dialoguePair.Item1)
+                        foreach (var dialoguePair in dialoguePairs)
                         {
-                            //{0} to represent the baby name and {1} to represent the player name.
-                            s = dialoguePair.Item2;
-                            if (s.Contains("{0}") || s.Contains("{1}"))
+                            if(Game1.player.getChildrenCount() == dialoguePair.Item1)
                             {
-                                for (int i = 0; i < s.Length - 3; i++)
+                                //{0} to represent the baby name and {1} to represent the player name.
+                                s = dialoguePair.Item2;
+                                if (s.Contains("{0}") || s.Contains("{1}"))
                                 {
-                                    if (s.Substring(i, 3).Equals("{0}"))
+                                    for (int i = 0; i < s.Length - 3; i++)
                                     {
-                                        s = s.Substring(0, i) + babyName + s.Substring(i + 3, s.Length - i - 3);
-                                        i = 0;
-                                    }
-                                    if (s.Substring(i, 3).Equals("{1}"))
-                                    {
-                                        s = s.Substring(0, i) + Game1.player.Name + s.Substring(i + 3, s.Length - i - 3);
-                                        i = 0;
+                                        if (s.Substring(i, 3).Equals("{0}"))
+                                        {
+                                            s = s.Substring(0, i) + babyName + s.Substring(i + 3, s.Length - i - 3);
+                                            i = 0;
+                                        }
+                                        if (s.Substring(i, 3).Equals("{1}"))
+                                        {
+                                            s = s.Substring(0, i) + Game1.player.Name + s.Substring(i + 3, s.Length - i - 3);
+                                            i = 0;
+                                        }
                                     }
                                 }
+                                spouse.setNewDialogue(s, false, false);
                             }
-                            spouse.setNewDialogue(s, false, false);
                         }
-
                         if (Game1.player.getChildrenCount() == 2)
                             Game1.getSteamAchievement("Achievement_FullHouse");
                     }

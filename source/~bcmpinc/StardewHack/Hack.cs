@@ -168,31 +168,15 @@ namespace StardewHack
             // Let the mod register its patches.
             HackEntry(helper);
 
-            // Iterate all methods in this class and search for those that have a BytecodePatch annotation.
-            var methods = typeof(T).GetMethods(AccessTools.all);
+            // Apply the registered patches.
+            // Any patched that are added by calls to ChainPatch during patching will be applied as well.
             var apply = AccessTools.Method(typeof(HackImpl<T>), nameof(ApplyPatch));
-            foreach (MethodInfo patch in methods) {
-                var bytecode_patches = patch.GetCustomAttributes<BytecodePatch>();
-                foreach (var bp in bytecode_patches) {
-                    if (bp.IsEnabled(this)) {
-                        try {
-                            ChainPatch(bp.GetMethod(), patch);
-                        } catch (Exception err) {
-                            string info = $"Failed to find method {bp.GetSignature()}.";
-                            instance.Monitor.Log(info, LogLevel.Error);
-                            MarkAsBroken(err);
-                        }
-                        // Add the patch to the to_be_patched stack.
-                    }
-                }
-                // Apply the patch to the method specified in the annotation.
-                while (to_be_patched.Count > 0) {
-                    var method = to_be_patched.Pop();
-                    try {
-                        harmony.Patch(method, null, null, new HarmonyMethod(apply));
-                    } catch (Exception err) {
-                        MarkAsBroken(err);
-                    }
+            while (to_be_patched.Count > 0) {
+                var method = to_be_patched.Pop();
+                try {
+                    harmony.Patch(method, null, null, new HarmonyMethod(apply));
+                } catch (Exception err) {
+                    MarkAsBroken(err);
                 }
             }
         }

@@ -1,0 +1,14 @@
+url:
+   https://github.com/bmarquismarkail/SV_BuildersList.git
+
+mods:
+   Builder's List
+
+latest commit:
+   commit 20c4f4758f17868c5ff9555aac59f53e26efc328
+   Author: brandon <bmarquismarkail@github.com>
+   Date:   Mon Feb 10 07:11:53 2020 -0600
+   
+       Changing ScavengerMenu::ScavengerMenu
+       Manifest.json: Adding Nexus meta information
+   

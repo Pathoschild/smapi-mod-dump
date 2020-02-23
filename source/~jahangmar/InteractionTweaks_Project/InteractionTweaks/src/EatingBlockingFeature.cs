@@ -24,6 +24,7 @@ using StardewValley.Objects;
 using Microsoft.Xna.Framework;
 using StardewValley.Tools;
 using StardewValley.TerrainFeatures;
+using StardewValley.Buildings;
 
 namespace InteractionTweaks
 {
@@ -64,6 +65,7 @@ namespace InteractionTweaks
                     || (location is Farm && grabTileVec.X >= 71 && grabTileVec.X <= 72 && grabTileVec.Y >= 13 && grabTileVec.Y <= 14) //shippingBin on Farm map
                     || Game1.getFarm().getAllFarmAnimals().Exists((animal) => animal.currentLocation == location && AnimalCollision(animal, cursorMapPos)) //animals
                     || CanGift(cursorMapTile, grabTileVec) //talking and gifting
+                    || location is Farm farm && farm.getBuildingAt(grabTileVec) is FishPond
 
                 /*|| player.isRidingHorse()*/ || !player.canMove)
                 {

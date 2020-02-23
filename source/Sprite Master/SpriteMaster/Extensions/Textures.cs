@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using SpriteMaster.Resample;
 using SpriteMaster.Types;
 using System;
 using System.Drawing;
@@ -19,14 +20,15 @@ namespace SpriteMaster.Extensions {
 			return new Vector2I(texture.Width, texture.Height);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static long SizeBytes (this SurfaceFormat format, int texels) {
 			switch (format) {
 				case SurfaceFormat.Dxt1:
+				case var _ when format == TextureFormat.DXT1a:
 					return texels / 2;
 			}
 
-			long elementSize = format switch
-			{
+			long elementSize = format switch {
 				SurfaceFormat.Color => 4,
 				SurfaceFormat.Bgr565 => 2,
 				SurfaceFormat.Bgra5551 => 2,
@@ -48,7 +50,7 @@ namespace SpriteMaster.Extensions {
 				_ => throw new ArgumentException(nameof(format))
 			};
 
-			return (long)texels * elementSize;
+			return texels * elementSize;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -57,46 +59,11 @@ namespace SpriteMaster.Extensions {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static long SizeBytes (this ScaledTexture.ManagedTexture2D texture) {
+		internal static long SizeBytes (this ManagedTexture2D texture) {
 			return (long)texture.Area() * 4;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static bool IsBlockCompressed (this Texture2D texture) {
-			switch (texture.Format) {
-				case SurfaceFormat.Dxt1:
-				case SurfaceFormat.Dxt3:
-				case SurfaceFormat.Dxt5:
-					return true;
-			}
-			return false;
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void SetDataEx (this Texture2D texture, byte[] data) {
-			texture.SetData<byte>(data);
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void SetDataEx<T> (this Texture2D texture, T[] data) where T : unmanaged {
-			// If we are getting integer data in, we may have to convert it.
-			if (texture.IsBlockCompressed()) {
-				// TODO : Find a faster way to do this without copying.
-				var byteData = data.CastAs<T, byte>();
-				if (texture.IsDisposed || texture.GraphicsDevice.IsDisposed) {
-					return;
-				}
-				texture.SetData(byteData.ToArray());
-			}
-			else {
-				if (texture.IsDisposed || texture.GraphicsDevice.IsDisposed) {
-					return;
-				}
-				texture.SetData<T>(data);
-			}
-		}
-
-		internal static Bitmap Resize (this Bitmap source, Vector2I size, InterpolationMode filter = InterpolationMode.HighQualityBicubic, bool discard = true) {
+		internal static Bitmap Resize (this Bitmap source, in Vector2I size, InterpolationMode filter = InterpolationMode.HighQualityBicubic, bool discard = true) {
 			if (size == new Vector2I(source)) {
 				try {
 					return new Bitmap(source);
@@ -125,16 +92,30 @@ namespace SpriteMaster.Extensions {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static bool Anonymous (this Texture2D texture) {
+			return texture.Name.IsBlank();
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static bool Anonymous (this ScaledTexture texture) {
+			return texture.Name.IsBlank();
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static string SafeName (this string name) {
+			return name.IsBlank() ? "Unknown" : name.Replace("\\", "/").Replace("//", "/");
+		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static string SafeName (this Texture2D texture) {
-			return texture.Name.IsBlank() ? "Unknown" : texture.Name.Replace("\\", "/");
+			return texture.Name.SafeName();
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static string SafeName (this ScaledTexture texture) {
-			return texture.Name.IsBlank() ? "Unknown" : texture.Name.Replace("\\", "/");
+			return texture.Name.SafeName();
 		}
 
-		internal static Bitmap CreateBitmap (byte[] source, Vector2I size, PixelFormat format = PixelFormat.Format32bppArgb) {
+		internal static Bitmap CreateBitmap (byte[] source, in Vector2I size, PixelFormat format = PixelFormat.Format32bppArgb) {
 			var newImage = new Bitmap(size.Width, size.Height, format);
 			var rectangle = new Bounds(newImage);
 			var newBitmapData = newImage.LockBits(rectangle, ImageLockMode.WriteOnly, format);

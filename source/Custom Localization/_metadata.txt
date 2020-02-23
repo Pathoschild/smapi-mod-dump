@@ -1,0 +1,13 @@
+url:
+   https://github.com/ZaneYork/SDV_CustomLocalization.git
+
+mods:
+   Custom Localization
+
+latest commit:
+   commit 8b1da50947216f9ab69df76be358a7b6d8580d01
+   Author: Zane.Y <ZaneYork@qq.com>
+   Date:   Mon Feb 10 16:11:55 2020 +0800
+   
+       Update README.md
+   

@@ -1,7 +1,11 @@
-﻿namespace SpriteMaster.Types {
+﻿using SpriteMaster.Extensions;
+using System.Runtime.CompilerServices;
+
+namespace SpriteMaster.Types {
 	public static class LongHash {
 		public const ulong Null = 0UL;
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ulong GetLongHashCode<T>(this T obj) {
 			if (obj is ILongHash hashable) {
 				return hashable.GetLongHashCode();
@@ -9,21 +13,17 @@
 			return From(obj);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ulong From (int hashCode) {
-			switch (hashCode) {
-				case 0:
-					return 0UL;
-				case -1:
-					return ulong.MaxValue;
-			}
-
-			return unchecked((ulong)(uint)hashCode | (((ulong)~(uint)hashCode) << 32));
+			return Hash.Combine(hashCode, hashCode << 32);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ulong From (ILongHash obj) {
 			return obj.GetLongHashCode();
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ulong From<T> (T obj) {
 			if (obj is ILongHash hashable) {
 				return hashable.GetLongHashCode();

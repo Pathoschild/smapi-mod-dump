@@ -103,12 +103,13 @@ namespace GetGlam.Framework
             }
 
             //Add the favorites to the favorites list
-            if (currentPlayerStyle.Favorites == null)
+            if (currentPlayerStyle.Favorites == null || currentPlayerStyle.Favorites.Count == 0)
             {
                 FavoriteModel model = new FavoriteModel();
                 for (int i = 0; i < 40; i++)
                 {
-                    currentPlayerStyle.Favorites[i] = model;
+                    currentPlayerStyle.Favorites = new List<FavoriteModel>();
+                    currentPlayerStyle.Favorites.Add(model);
                     Favorites.Add(model);
                 }
             }
@@ -197,15 +198,7 @@ namespace GetGlam.Framework
         /// <param name="isBald">Whether the player is bald</param>
         public void SaveFavoriteToList(bool isMale, int baseIndex, int skinIndex, int hairIndex, int faceIndex, int noseIndex, int shoesIndex, int accessoryIndex, bool isBald)
         {
-            //Don't add more favorites
-            if (Favorites.Count > 40)
-            {
-                Entry.Monitor.Log("Cannot add to favorites. Maximum amount reached.", LogLevel.Warn);
-                return;
-            }
-
             //Set all the stuff
-            Entry.Monitor.Log("Adding Favorite to list.", LogLevel.Trace);
             FavoriteModel favModel = new FavoriteModel();
             favModel.IsDefault = false;
             favModel.IsMale = isMale;
@@ -226,7 +219,13 @@ namespace GetGlam.Framework
             {
                 if (Favorites[i].IsDefault)
                 {
+                    Entry.Monitor.Log("Adding Favorite to list.", LogLevel.Trace);
                     Favorites[i] = favModel;
+                    return;
+                }
+                else if (i == 39 && !Favorites[i].IsDefault)
+                {
+                    Entry.Monitor.Log("Reached the maximum amount of favorites, try deleting some.", LogLevel.Warn);
                     return;
                 }
             }

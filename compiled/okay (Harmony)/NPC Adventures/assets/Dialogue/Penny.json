@@ -3,6 +3,19 @@
   "companionRejected": "I've got some reading to do with Vincent and Jas. Maybe next time.",
   "companionRejectedNight": "I've got to get home. There is much to do.",
   "companionDismiss": "Oh ok, that's alright. Thank you for a good afternoon.$h",
-  "companionDismissAuto": "Its time for me to go. Thanks for a good afternoon.$h",
-  "companionRecruited": "This is so exciting!"
+  "companionDismissAuto": "It's time for me to go. Thanks for a good afternoon.$h",
+  "companionRecruited": "This is so exciting!",
+  "companionSuggest": "I need to learn some more about the local fauna and flora. Vincent and Jas are developing a real interest in the valley! But I just don't feel confident enough to do that alone.#$q -1 -1#Could you accompany me while I explore the valley, @? Maybe you can benefit from that too.#$r -1 0 Yes#That would be nice. Let's go!#$r -1 0 No# Today I can't. But thanks for inviting me.",
+  "companionSuggest_Yes": "Thank you! That's kind of you.$h",
+  "companionSuggest_No": "Oh, sorry. I didn't know you were busy.",
+  "companion_Mountain_Spouse": "I'm so relaxed here, honey, how are you feeling today?",
+  "companion_Town": "I like to read by that tree near Emily and Haley's house.#$b#It's usually pretty quiet, and the view of the water is really nice.$1",
+  "companion_Town~1": "Maru is a good friend of mine.#$b#It's nice to have someone in town that I can talk to about the little things, and sometimes the bigger things...$2#$b#Other than you, of course, @! I love talking with you too.$4",
+  "companion_Town_Spouse": "I wonder what Vincent and Jas are up to right now, I gave them a new book to read, I hope they're doing their homework!#$b#Oh yes... sorry honey. I know I said I wouldn't worry about that right now, but I'm not sure that's possible!$1",
+  "companion_Mine_Spouse": "Honey, I'm scared, please stay close to me! I'm not much of a fighter, but I'm trying!",
+  "companion_Farm_summer": "I absolutely love fresh melons, @.#$b#If you're growing any, and have an extra one, I'd be happy to take it off your hands!$1",
+  "companion_Farm_Spouse": "This is all I've ever wanted. A home of my own, a family, a real partner, real love.#$b#You've filled my life with color and joy, @. Thank you.$4",
+  "companion_Forest": "This is my favourite place in the valley to have picnics.#$b#The smell of the trees, the peace and quiet and sound of the water is so relaxing, it's like a mini vacation every time I come here.$1",
+  "companion_Forest~1": "One day when I'm married, hopefully with kids, I'd love to take them all here on the weekends.#$b#We could do some fishing, cloud gazing, talk about our lives, and my little ones dreams for their futures.#$b#I really want to be a mom, I think about it a lot.$4#$b#I'm embarrassed to admit I fantasize about this stuff so much, but I do.$4",
+  "companion_Forest_Spouse": "I just love all this greenery, I could spend all day here!#$b#I love our farm too, so don't you worry!$1"
 }

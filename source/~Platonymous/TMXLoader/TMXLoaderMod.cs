@@ -24,6 +24,10 @@ using xTile.Dimensions;
 using StardewValley.TerrainFeatures;
 using xTile.Layers;
 using System.Collections;
+using TMXLoader.Other;
+using StardewValley.Monsters;
+using System.Xml.Serialization;
+using System.Threading.Tasks;
 
 namespace TMXLoader
 {
@@ -40,12 +44,17 @@ namespace TMXLoader
         internal static List<MapEdit> addedLocations = new List<MapEdit>();
         internal static List<string> festivals = new List<string>();
         internal static List<TMXAssetEditor> conditionals = new List<TMXAssetEditor>();
-        internal static List<BuildableEdit> buildables = new List<BuildableEdit>();
+        public static List<BuildableEdit> buildables = new List<BuildableEdit>();
         internal static List<SaveBuildable> buildablesBuild = new List<SaveBuildable>();
         internal static Dictionary<string, Warp> buildablesExits = new Dictionary<string, Warp>();
         internal static List<GameLocation> locationStorage = new List<GameLocation>();
         internal static Dictionary<string, ITranslationHelper> translators = new Dictionary<string, ITranslationHelper>();
         internal static TMXLoaderMod _instance;
+        internal static Mod faInstance;
+
+        internal static bool contentPacksLoaded = false;
+
+        public static List<IContentPack> AddedContentPacks = new List<IContentPack>();
         internal ITranslationHelper i18n => Helper.Translation;
 
         internal string buildableReceiverName = "BuildableReceiver";
@@ -192,7 +201,7 @@ namespace TMXLoader
             };
 
             helper.Events.GameLoop.SaveLoaded += (s, e) =>
-            {
+            {/*
                 foreach (var edit in addedLocations)
                 {
                     Monitor.Log("Add Location: " + edit.name);
@@ -200,34 +209,21 @@ namespace TMXLoader
                         addLocation(edit);
                 }
 
-                restoreAllSavedBuildables();
+                restoreAllSavedBuildables();*/               
+            };
+
+            helper.Events.GameLoop.DayStarted += (s, e) =>
+            {
+                if (!helper.ModRegistry.IsLoaded("Entoarox.FurnitureAnywhere"))
+                    return;
+
+                if (faInstance != null && faInstance.GetType() is Type Me && Me.GetMethod("WakeupFurniture", BindingFlags.NonPublic | BindingFlags.Instance) is MethodInfo wake)
+                    foreach(var location in locationStorage)
+                        wake.Invoke(faInstance, new[] { location });
+
             };
 
             helper.Events.Display.MenuChanged += TMXActions.updateItemListAfterShop;
-
-            helper.ConsoleCommands.Add("bidtest", "Gets the buildables Id of the current location", (s, p) =>
-              {
-                  Monitor.Log(getLocationsBuildableId(Game1.currentLocation), LogLevel.Info);
-              });
-
-        }
-
-        private string getLocationsBuildableId(GameLocation location)
-        {
-            if (location.Name.Contains("BuildableIndoors-") 
-                && location.Name.Split('-') is string[] bidata 
-                && bidata.Count() > 1 
-                && bidata[1] is string uid 
-                && Type.GetType("TMXLoader.TMXLoaderMod, TMXLoader") is Type tmx 
-                && (tmx.GetField("buildablesBuild", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null) as IList) is IList buildablesList 
-                && buildablesList.Count > 0)
-                foreach (object savedBuildable in buildablesList)
-                    if (savedBuildable.GetType() is Type sbType 
-                        && sbType.GetProperty("UniqueId").GetValue(savedBuildable) is string suid 
-                        && suid == uid)
-                        return (string)sbType.GetProperty("Id").GetValue(savedBuildable);
-
-            return null;
         }
 
         private void restoreAllSavedBuildables()
@@ -245,6 +241,7 @@ namespace TMXLoader
             if (!Game1.IsMasterGame)
                 return;
 
+            var ja = Helper.ModRegistry.GetApi<IJsonAssetsAPI>("spacechase0.JsonAssets");
             saveData = Helper.Data.ReadSaveData<SaveData>("Locations");
             if (saveData != null)
             {
@@ -253,10 +250,30 @@ namespace TMXLoader
                     Monitor.Log("Restore Location objects: " + loc.Name);
 
                     setLocationObejcts(loc);
+                    try
+                    {
+                        if (ja != null && Game1.getLocationFromName(loc.Name) is GameLocation location)
+                            ja.FixIdsInLocation(location);
+                    }
+                    catch
+                    {
+
+                    }
                 }
 
                 foreach (var b in saveData.Buildables)
+                {
                     loadSavedBuildable(b);
+                    try
+                    {
+                        if (ja != null && b.Indoors is SaveLocation sl && Game1.getLocationFromName(sl.Name) is GameLocation indoorsLocation)
+                            ja.FixIdsInLocation(indoorsLocation);
+                    }
+                    catch
+                    {
+
+                    }
+                }
             }
         }
 
@@ -348,6 +365,9 @@ namespace TMXLoader
 
         private GameLocation buildBuildableIndoors(BuildableEdit edit, string uniqueId, string playerName, long playerId, GameLocation location, Dictionary<string,string> colors)
         {
+            if (Game1.getLocationFromName(getLocationName(uniqueId)) is GameLocation preLocation)
+                return preLocation;
+
             if (edit.indoorsFile != null && edit._pack != null)
             {
                 string buildFile = edit.indoorsFile;
@@ -374,6 +394,12 @@ namespace TMXLoader
                    
                 }
 
+                if (!map.Properties.ContainsKey("Group"))
+                    map.Properties.Add("Group", "Buildables");
+
+                if (!map.Properties.ContainsKey("Name"))
+                    map.Properties.Add("Name", edit.name);
+
                 if (m == null)
                     map.inject("Maps/" + e.name);
 
@@ -398,8 +424,8 @@ namespace TMXLoader
 
             GameLocation indoors = buildBuildableIndoors(edit, uniqueId, playerName,playerId, location, colors);
 
-            if (indoors != null)
-                buildablesExits.AddOrReplace(indoors.Name, new Warp(0, 0, location.Name, edit.exitTile[0] + position.X, edit.exitTile[1] + position.Y, false));
+            if (indoors != null && !buildablesExits.ContainsKey(indoors.Name))
+                buildablesExits.Add(indoors.Name, new Warp(0, 0, location.Name, edit.exitTile[0] + position.X, edit.exitTile[1] + position.Y, false));
 
           
             string buildFile = edit.file;
@@ -464,6 +490,22 @@ namespace TMXLoader
             e._map = map;
 
             SaveBuildable sav = (new SaveBuildable(edit.id, location.Name, position, uniqueId, playerName,playerId, colors));
+
+            if (edit.tags.Contains("IsUnique"))
+                foreach (SaveBuildable sb in new List<SaveBuildable>(buildablesBuild.Where(bb => bb.Id == edit.id && bb.UniqueId != uniqueId)))
+                {
+                    BuildableEdit sbedit = buildables.Find(be => be.id == sb.Id);
+
+                    if (sbedit.indoorsFile != null && Game1.getLocationFromName(getLocationName(sb.UniqueId)) is GameLocation sblocation)
+                    {
+                        var locSaveData = getLocationSaveData(sblocation);
+                        locSaveData.Name = getLocationName(uniqueId);
+                        setLocationObejcts(locSaveData);
+                    }
+
+                    removeSavedBuildable(sb, pay, distribute);
+                }
+
             buildablesBuild.Add(sav);
 
             if (distribute && Game1.IsMultiplayer)
@@ -491,8 +533,7 @@ namespace TMXLoader
 
                         Game1.player.removeItemsFromInventory(item.ParentSheetIndex, tItem.stock);
                     }
-
-            }
+            }           
         }
 
         private void fixWaterTiles(GameLocation location)
@@ -612,6 +653,7 @@ namespace TMXLoader
 
             StringReader objReader = new StringReader(loc.Objects);
             GameLocation saved;
+
             using (var reader = XmlReader.Create(objReader, settings))
                 saved = (GameLocation)SaveGame.locationSerializer.Deserialize(reader);
 
@@ -638,24 +680,21 @@ namespace TMXLoader
                         inGame.largeTerrainFeatures.Add(obj);
             }
 
-            PyTK.CustomElementHandler.SaveHandler.RebuildAll(inGame, Game1.locations);
+            //PyTK.CustomElementHandler.SaveHandler.RebuildAll(inGame, Game1.locations);
             inGame.DayUpdate(Game1.dayOfMonth);
             return true;
         }
 
         private SaveLocation getLocationSaveData(GameLocation location)
         {
-            PyTK.CustomElementHandler.SaveHandler.ReplaceAll(location, Game1.locations);
+           // PyTK.CustomElementHandler.SaveHandler.ReplaceAll(location, Game1.locations);
             string objects = "";
-
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.ConformanceLevel = ConformanceLevel.Auto;
             settings.CloseOutput = true;
-
             StringWriter objWriter = new StringWriter();
             using (var writer = XmlWriter.Create(objWriter, settings))
                 SaveGame.locationSerializer.Serialize(writer, location);
-
             objects = objWriter.ToString();
 
             return new SaveLocation(location.Name, objects);
@@ -691,12 +730,28 @@ namespace TMXLoader
                             helper.Content.InvalidateCache(Game1.currentLocation.mapPath.Value);
                             try
                             {
-                                Helper.Reflection.GetMethod(Game1.currentLocation, "reloadMap").Invoke();
+                                Game1.currentLocation.reloadMap();
+                                Game1.currentLocation.GetType().GetField("_appliedMapOverrides", BindingFlags.NonPublic | BindingFlags.Instance)?.SetValue(Game1.currentLocation,new HashSet<string>());
+                                Game1.currentLocation.GetType().GetField("ccRefurbished", BindingFlags.NonPublic | BindingFlags.Instance)?.SetValue(Game1.currentLocation, false);
+                                Game1.currentLocation.GetType().GetField("isShowingDestroyedJoja", BindingFlags.NonPublic | BindingFlags.Instance)?.SetValue(Game1.currentLocation, false);
+                                Game1.currentLocation.GetType().GetField("isShowingUpgradedPamHouse", BindingFlags.NonPublic | BindingFlags.Instance)?.SetValue(Game1.currentLocation, false);
+                                Game1.currentLocation.GetType().GetField("isShowingDestroyedJoja", BindingFlags.NonPublic | BindingFlags.Instance)?.SetValue(Game1.currentLocation, false);
+
+                                Helper.Reflection.GetMethod(Game1.currentLocation, "resetLocalState")?.Invoke();
+                                foreach (var buildable in new List<SaveBuildable>(buildablesBuild.Where(b => b.Location == Game1.currentLocation.Name)))
+                                {
+                                    buildablesBuild.Remove(buildable);
+                                    BuildableEdit edit = buildables.Find(be => be.id == buildable.Id);
+
+                                    if (edit.indoorsFile != null && Game1.getLocationFromName(getLocationName(buildable.UniqueId)) is GameLocation location)
+                                        buildable.Indoors = getLocationSaveData(location);
+
+                                    loadSavedBuildable(buildable);
+                                }
                             }
                             catch (Exception ex)
                             {
                                 Monitor.Log(ex.Message + ":" + ex.StackTrace);
-
                             }
                             e.NewLocation.updateSeasonalTileSheets();
 
@@ -709,10 +764,7 @@ namespace TMXLoader
 
 
                 }
-
             
-
-
             foreach (string map in festivals)
                 if (e.NewLocation is GameLocation gl && gl.mapPath.Value is string mp && mp.Contains(map))
                     Helper.Content.InvalidateCache(e.NewLocation.mapPath.Value);
@@ -724,10 +776,8 @@ namespace TMXLoader
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             if (config.converter)
-            {
                 exportAllMaps();
-                convert();
-            }
+
             loadContentPacks();
             setTileActions();
 
@@ -756,6 +806,18 @@ namespace TMXLoader
 
             }).register();
 
+            helper.ConsoleCommands.Add("export_map", "Exports current map as tmx file", (s, p) =>
+             {
+                 if (Context.IsWorldReady && Game1.currentLocation is GameLocation location && location.Map is Map map)
+                 {
+                     string exportFolderPath = Path.Combine(helper.DirectoryPath, "Exports");
+                     if (Directory.Exists(exportFolderPath))
+                         Directory.CreateDirectory(exportFolderPath);
+
+                     TMXContent.Save(location.Map, Path.Combine(exportFolderPath, Path.GetFileNameWithoutExtension(location.mapPath.Value) + ".tmx"), true, Monitor);
+                 }
+             });
+
             fixCompatibilities();
             harmonyFix();
         }
@@ -779,7 +841,6 @@ namespace TMXLoader
 
         private void fixCompatibilities()
         {
-            Compatibility.CustomFarmTypes.LoadingTheMaps();
             helper.Events.GameLoop.SaveLoaded += (s, e) => Compatibility.CustomFarmTypes.fixGreenhouseWarp();
         }
 
@@ -787,6 +848,29 @@ namespace TMXLoader
         {
             HarmonyInstance instance = HarmonyInstance.Create("Platonymous.TMXLoader");
             instance.PatchAll(Assembly.GetExecutingAssembly());
+            instance.Patch(typeof(SaveGame).GetMethod("loadDataToLocations"), postfix: new HarmonyMethod(this.GetType().GetMethod("SavePatch", BindingFlags.Public | BindingFlags.Static)));
+           
+            if (!helper.ModRegistry.IsLoaded("Entoarox.FurnitureAnywhere"))
+                return;
+            if (Type.GetType("Entoarox.FurnitureAnywhere.ModEntry, FurnitureAnywhere") is Type Me && Me.GetMethod("SleepFurniture", BindingFlags.NonPublic | BindingFlags.Instance) is MethodInfo SF)
+                instance.Patch(SF, new HarmonyMethod(this.GetType().GetMethod("GetFA", BindingFlags.Public | BindingFlags.Static)));
+        }
+
+        public static void GetFA(Mod __instance)
+        {
+            faInstance = __instance;
+        }
+
+        public static void SavePatch()
+        {
+             foreach (var edit in addedLocations)
+                {
+                _instance.Monitor.Log("Add Location: " + edit.name);
+                    if (!(Game1.getLocationFromName(edit.name) is GameLocation))
+                        addLocation(edit);
+                }
+
+            _instance.restoreAllSavedBuildables();
         }
 
         private void setTileActions()
@@ -818,7 +902,6 @@ namespace TMXLoader
                 else
                     return false;
             });
-
 
             PyUtils.addTileAction("ExitBuildable", (key, values, location, position, layer) =>
              {
@@ -867,8 +950,7 @@ namespace TMXLoader
             }
 
             if (edit._map.Properties.ContainsKey("IsGreenHouse"))
-                if (location.GetType().GetProperty("IsGreenhouse").SetMethod is MethodInfo setG)
-                    setG.Invoke(location, new object[] { true });
+                location.IsGreenhouse = true;
 
             if (edit._map.Properties.ContainsKey("IsStructure"))
                 location.isStructure.Value = true;
@@ -883,122 +965,165 @@ namespace TMXLoader
             if (!Game1.locations.Contains(location))
                 Game1.locations.Add(location);
 
-          //  location.seasonUpdate(Game1.currentSeason, true);
-
             monitor.Log("Successfully added:" + location.Name);
 
             return location;
 
         }
 
+        public override object GetApi()
+        {
+            return new TMXLAPI();
+        }
+
+        private IEnumerable<IContentPack> GetContentPacks()
+        {
+            foreach (IContentPack pack in Helper.ContentPacks.GetOwned())
+                yield return pack;
+
+            foreach (IContentPack pack in AddedContentPacks)
+                yield return pack;
+        }
+
+        public void loadPack(IContentPack pack, string contentFile = "content")
+        {
+            TMXContentPack tmxPack = pack.ReadJsonFile<TMXContentPack>(contentFile + ".json");
+
+            foreach (string mod in tmxPack.hasMods)
+                if (!helper.ModRegistry.IsLoaded(mod))
+                    return;
+
+            foreach (string mod in tmxPack.hasNotMods)
+                if (helper.ModRegistry.IsLoaded(mod))
+                    return;
+
+            if (tmxPack.scripts.Count > 0)
+                foreach (string script in tmxPack.scripts)
+                    PyLua.loadScriptFromFile(Path.Combine(pack.DirectoryPath, script), pack.Manifest.UniqueID);
+
+            PyLua.loadScriptFromFile(Path.Combine(Helper.DirectoryPath, "sr.lua"), "Platonymous.TMXLoader.SpouseRoom");
+
+            List<MapEdit> spouseRoomMaps = new List<MapEdit>();
+            foreach (SpouseRoom room in tmxPack.spouseRooms)
+            {
+                if (room.tilefix && !Overrides.NPCs.Contains(room.name))
+                    Overrides.NPCs.Add(room.name);
+
+                if (room.file != "none")
+                {
+                    spouseRoomMaps.Add(new MapEdit() { info = room.name, name = "FarmHouse1_marriage", file = room.file, position = new[] { 29, 1 } });
+                    spouseRoomMaps.Add(new MapEdit() { info = room.name, name = "FarmHouse2_marriage", file = room.file, position = new[] { 35, 10 } });
+                }
+            }
+
+            foreach (MapEdit edit in spouseRoomMaps)
+            {
+                string filePath = Path.Combine(pack.DirectoryPath, edit.file);
+                Map map = TMXContent.Load(edit.file, Helper, pack);
+                edit._pack = pack;
+
+                Helper.Content.AssetEditors.Add(new TMXAssetEditor(edit, map, EditType.SpouseRoom));
+                //  mapsToSync.AddOrReplace(edit.name, map);
+            }
+
+            foreach (TileShop shop in tmxPack.shops)
+            {
+                tileShops.AddOrReplace(shop, shop.inventory);
+                foreach (string path in shop.portraits)
+                    pack.LoadAsset<Texture2D>(path).inject(@"Portraits/" + Path.GetFileNameWithoutExtension(path));
+            }
+
+            foreach (NPCPlacement edit in tmxPack.festivalSpots)
+            {
+                festivals.AddOrReplace(edit.map);
+                addAssetEditor(new TMXAssetEditor(edit, EditType.Festival));
+                // mapsToSync.AddOrReplace(edit.map, original);
+            }
+
+            foreach (NPCPlacement edit in tmxPack.placeNPCs)
+            {
+                helper.Events.GameLoop.SaveLoaded += (s, e) =>
+                {
+                    if (Game1.getCharacterFromName(edit.name) == null)
+                        Game1.locations.Where(gl => gl.Name == edit.map).First().addCharacter(new NPC(new AnimatedSprite("Characters\\" + edit.name, 0, 16, 32), new Vector2(edit.position[0], edit.position[1]), edit.map, 0, edit.name, edit.datable, (Dictionary<int, int[]>)null, Helper.Content.Load<Texture2D>("Portraits\\" + edit.name, ContentSource.GameContent)));
+                };
+            }
+
+            foreach (MapEdit edit in tmxPack.addMaps)
+            {
+                Map map = TMXContent.Load(edit.file, Helper, pack);
+                TMXAssetEditor.editWarps(map, edit.addWarps, edit.removeWarps, map);
+
+                string groupName = "TMXL";
+
+                if (pack.Manifest.UniqueID.Contains("StardewValleyExpanded"))
+                    groupName = "SDV Expanded";
+
+                if (edit.addLocation)
+                {
+                    if (!map.Properties.ContainsKey("Group"))
+                        map.Properties.Add("Group", groupName);
+
+                    if (!map.Properties.ContainsKey("Name"))
+                        map.Properties.Add("Name", edit.name);
+                }
+
+                map.inject("Maps/" + edit.name);
+
+                edit._map = map;
+                edit._pack = pack;
+                if (edit.addLocation)
+                    addedLocations.Add(edit);
+            }
+
+            foreach (MapEdit edit in tmxPack.replaceMaps)
+            {
+                Map map = TMXContent.Load(edit.file, Helper, pack);
+                edit._pack = pack;
+                addAssetEditor(new TMXAssetEditor(edit, map, EditType.Replace));
+                // mapsToSync.AddOrReplace(edit.name, map);
+            }
+
+            foreach (MapEdit edit in tmxPack.mergeMaps)
+            {
+                Map map = TMXContent.Load(edit.file, Helper, pack);
+                edit._pack = pack;
+                addAssetEditor(new TMXAssetEditor(edit, map, EditType.Merge));
+                // mapsToSync.AddOrReplace(edit.name, map);
+            }
+
+            foreach (MapEdit edit in tmxPack.onlyWarps)
+            {
+                addAssetEditor(new TMXAssetEditor(edit, null, EditType.Warps));
+                // mapsToSync.AddOrReplace(edit.name, map);
+            }
+
+            foreach (BuildableEdit edit in tmxPack.buildables)
+            {
+                foreach (var l in (LocalizedContentManager.LanguageCode[])Enum.GetValues(typeof(LocalizedContentManager.LanguageCode)))
+                    if (!edit.translations.ContainsKey(l.ToString()))
+                        edit.translations.Add(l.ToString(), BuildableTranslation.FromEdit(edit));
+
+                // pack.WriteJsonFile<TMXContentPack>("content.json", tmxPack);
+
+                edit._icon = pack.LoadAsset<Texture2D>(edit.iconFile);
+                edit._map = TMXContent.Load(edit.file, Helper, pack);
+                edit._pack = pack;
+                buildables.Add(edit);
+            }
+
+            foreach (string alsoLoad in tmxPack.alsoLoad)
+                loadPack(pack, alsoLoad);
+        }
+
         private void loadContentPacks()
         {
             PyDraw.getRectangle(64, 64, Color.Transparent).inject(@"Portraits/PlayerShop");
 
-            foreach (StardewModdingAPI.IContentPack pack in Helper.ContentPacks.GetOwned())
-            {
-                TMXContentPack tmxPack = pack.ReadJsonFile<TMXContentPack>("content.json");
-                
-                if (tmxPack.scripts.Count > 0)
-                    foreach (string script in tmxPack.scripts)
-                        PyLua.loadScriptFromFile(Path.Combine(pack.DirectoryPath, script), pack.Manifest.UniqueID);
+            foreach (StardewModdingAPI.IContentPack pack in GetContentPacks())
+                loadPack(pack);
 
-                PyLua.loadScriptFromFile(Path.Combine(Helper.DirectoryPath, "sr.lua"), "Platonymous.TMXLoader.SpouseRoom");
-
-                List<MapEdit> spouseRoomMaps = new List<MapEdit>();
-                foreach (SpouseRoom room in tmxPack.spouseRooms)
-                {
-                    if (room.tilefix && !Overrides.NPCs.Contains(room.name))
-                        Overrides.NPCs.Add(room.name);
-
-                    if (room.file != "none")
-                    {
-                        spouseRoomMaps.Add(new MapEdit() { info = room.name, name = "FarmHouse1_marriage", file = room.file, position = new[] { 29, 1 } });
-                        spouseRoomMaps.Add(new MapEdit() { info = room.name, name = "FarmHouse2_marriage", file = room.file, position = new[] { 35, 10 } });
-                    }
-                }
-
-                foreach (MapEdit edit in spouseRoomMaps)
-                {
-                    string filePath = Path.Combine(pack.DirectoryPath, edit.file);
-                    Map map = TMXContent.Load(edit.file, Helper, pack);
-                    edit._pack = pack;
-
-                    Helper.Content.AssetEditors.Add(new TMXAssetEditor(edit, map, EditType.SpouseRoom));
-                    //  mapsToSync.AddOrReplace(edit.name, map);
-                }
-
-                foreach (TileShop shop in tmxPack.shops)
-                {
-                    tileShops.AddOrReplace(shop, shop.inventory);
-                    foreach (string path in shop.portraits)
-                        pack.LoadAsset<Texture2D>(path).inject(@"Portraits/" + Path.GetFileNameWithoutExtension(path));
-                }
-
-                foreach (NPCPlacement edit in tmxPack.festivalSpots)
-                {
-                    festivals.AddOrReplace(edit.map);
-                    Helper.Content.AssetEditors.Add(new TMXAssetEditor(edit, EditType.Festival));
-                    // mapsToSync.AddOrReplace(edit.map, original);
-                }
-
-                foreach (NPCPlacement edit in tmxPack.placeNPCs)
-                {
-                    helper.Events.GameLoop.SaveLoaded += (s, e) =>
-                    {
-                        if (Game1.getCharacterFromName(edit.name) == null)
-                            Game1.locations.Where(gl => gl.Name == edit.map).First().addCharacter(new NPC(new AnimatedSprite("Characters\\" + edit.name, 0, 16, 32), new Vector2(edit.position[0], edit.position[1]), edit.map, 0, edit.name, edit.datable, (Dictionary<int, int[]>)null, Helper.Content.Load<Texture2D>("Portraits\\" + edit.name, ContentSource.GameContent)));
-                    };
-                }
-
-                foreach (MapEdit edit in tmxPack.addMaps)
-                {
-                    Map map = TMXContent.Load(edit.file, Helper, pack);
-                    TMXAssetEditor.editWarps(map, edit.addWarps, edit.removeWarps, map);
-                    map.inject("Maps/" + edit.name);
-
-                    edit._map = map;
-                    edit._pack = pack;
-                    if (edit.addLocation)
-                        addedLocations.Add(edit);
-                }
-
-                foreach (MapEdit edit in tmxPack.replaceMaps)
-                {
-                    Map map = TMXContent.Load(edit.file, Helper, pack);
-                    edit._pack = pack;
-                    addAssetEditor(new TMXAssetEditor(edit, map, EditType.Replace));
-                    // mapsToSync.AddOrReplace(edit.name, map);
-                }
-
-                foreach (MapEdit edit in tmxPack.mergeMaps)
-                {
-                    Map map = TMXContent.Load(edit.file, Helper, pack);
-                    edit._pack = pack;
-                    addAssetEditor(new TMXAssetEditor(edit, map, EditType.Merge));
-                    // mapsToSync.AddOrReplace(edit.name, map);
-                }
-
-                foreach (MapEdit edit in tmxPack.onlyWarps)
-                {
-                    addAssetEditor(new TMXAssetEditor(edit, null, EditType.Warps));
-                    // mapsToSync.AddOrReplace(edit.name, map);
-                }
-
-                foreach (BuildableEdit edit in tmxPack.buildables)
-                {
-                    foreach (var l in (LocalizedContentManager.LanguageCode[])Enum.GetValues(typeof(LocalizedContentManager.LanguageCode)))
-                        if (!edit.translations.ContainsKey(l.ToString()))
-                            edit.translations.Add(l.ToString(), BuildableTranslation.FromEdit(edit));
-
-                   // pack.WriteJsonFile<TMXContentPack>("content.json", tmxPack);
-
-                    edit._icon = pack.LoadAsset<Texture2D>(edit.iconFile);
-                    edit._map = TMXContent.Load(edit.file, Helper, pack);
-                    edit._pack = pack;
-                    buildables.Add(edit);
-                }
-            }
+            contentPacksLoaded = true;
         }
 
         private TMXAssetEditor addAssetEditor(TMXAssetEditor editor)
@@ -1019,43 +1144,15 @@ namespace TMXLoader
             return editor;
         }
 
-        private void convert()
-        {
-            Monitor.Log("Converting..", LogLevel.Trace);
-            string inPath = Path.Combine(Helper.DirectoryPath, "Converter", "IN");
-
-
-
-            string[] directories = Directory.GetDirectories(inPath, "*.*", SearchOption.TopDirectoryOnly);
-
-            foreach (string dir in directories)
-            {
-                DirectoryInfo inddir = new DirectoryInfo(dir);
-                DirectoryInfo outdir = new DirectoryInfo(dir.Replace("IN", "OUT"));
-                if (!outdir.Exists)
-                    outdir.Create();
-
-                foreach (FileInfo file in inddir.GetFiles())
-                {
-                    string importPath = Path.Combine("Converter", "IN", inddir.Name, file.Name);
-                    string exportPath = Path.Combine("Converter", "OUT", inddir.Name, file.Name).Replace(".xnb", ".tmx").Replace(".tbin", ".tmx");
-                    if (TMXContent.Convert(importPath, exportPath, Helper, ContentSource.ModFolder, Monitor))
-                        file.Delete();
-                }
-            }
-            Monitor.Log("..Done!", LogLevel.Trace);
-        }
-
         private void exportAllMaps()
         {
             string exportFolderPath = Path.Combine(Helper.DirectoryPath, "Converter", "FullMapExport");
-            DirectoryInfo exportFolder = new DirectoryInfo(exportFolderPath);
-            DirectoryInfo modFolder = new DirectoryInfo(Helper.DirectoryPath);
+            if (Directory.Exists(exportFolderPath))
+                Directory.CreateDirectory(exportFolderPath);
+
             string contentPath = PyUtils.ContentPath;
 
-            if (!exportFolder.Exists && contentPath != null && contentPath != "")
-                exportFolder.Create();
-            else
+            if (contentPath == null || contentPath == "")
                 return;
 
             string[] files = Directory.GetFiles(Path.Combine(contentPath, "Maps"), "*.xnb", SearchOption.TopDirectoryOnly);

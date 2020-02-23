@@ -32,7 +32,7 @@ namespace DismantleCraftables
 
         private delegate void Action();
 
-        private Dictionary<string, string> craftingRecipes;
+        //private Dictionary<string, string> craftingRecipes;
 
         public override void Entry(IModHelper helper)
         {
@@ -44,7 +44,7 @@ namespace DismantleCraftables
             }
 
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
-            craftingRecipes = Helper.Content.Load<Dictionary<string, string>>("Data//CraftingRecipes", ContentSource.GameContent);
+            //craftingRecipes = Helper.Content.Load<Dictionary<string, string>>("Data//CraftingRecipes", ContentSource.GameContent);
         }
 
         void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
@@ -54,7 +54,7 @@ namespace DismantleCraftables
                 Item item = Game1.player.CurrentItem;
                 Monitor.Log($"Current Item is {item.Name} with stack size {item.Stack}" + ((item is StardewValley.Object) ? " and it is an object" : "" ), LogLevel.Trace);
 
-                if (craftingRecipes.TryGetValue(item.Name, out string raw))
+                if (CraftingRecipe.craftingRecipes.TryGetValue(item.Name, out string raw))
                 {
                     Game1.activeClickableMenu = new DismantleDialogueBox(Helper, Monitor, item, TryDismantling);
                 }
@@ -71,7 +71,7 @@ namespace DismantleCraftables
             if (item != null && item is StardewValley.Object obj)
             {
                 Monitor.Log("Trying to dismantle " + item.Name, LogLevel.Trace);
-                if (craftingRecipes.TryGetValue(item.Name, out string raw))
+                if (CraftingRecipe.craftingRecipes.TryGetValue(item.Name, out string raw))
                 {
                     string[] rawArray = (raw.Split('/'))[0].Split(' ');
                     int[] ingrediences = new int[rawArray.Length / 2];

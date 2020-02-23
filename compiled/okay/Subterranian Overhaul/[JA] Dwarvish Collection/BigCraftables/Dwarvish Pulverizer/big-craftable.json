@@ -1,0 +1,59 @@
+{
+    "Name": "Dwarvish Pulverizer",
+    "Description": "Used to pulverize things like ore clusters, gems and old artifacts.",
+    "Price": 1000,
+    "ProvidesLight": false,	
+    "ReserveNextIndex": true,
+    "Recipe":
+    {
+        "ResultCount": 1,
+        "Ingredients": [
+        {
+            "Object": 390,
+            "Count": 10,
+        },
+        {
+            "Object": 112,
+            "Count": 1,
+        },
+        {
+            "Object": 388,
+            "Count": 2,
+        }
+		],
+        "IsDefault": false,
+		"SkillUnlockName": "Mining",
+		"SkillUnlockLevel": 4,
+    },
+	"CanPurchase": true,
+	"PurchaseFrom": "Dwarf",
+	"PurchasePrice": 1000,
+    "NameLocalization":
+    {
+        // "es": "",
+        // "ko": "",
+        // "de": "",
+        // "fr": "",
+        // "hu": "",
+        // "it": "",
+        // "ja": "",
+        // "pt": "",
+        // "ru": "",
+        // "tr": "",
+        // "zh": "",
+    },
+    "DescriptionLocalization":
+    {
+        // "es": "",
+        // "ko": "",
+        // "de": "",
+        // "fr": "",
+        // "hu": "",
+        // "it": "",
+        // "ja": "",
+        // "pt": "",
+        // "ru": "",
+        // "tr": "",
+        // "zh": "",
+    }
+}

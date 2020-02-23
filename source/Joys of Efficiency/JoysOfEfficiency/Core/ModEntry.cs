@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using JoysOfEfficiency.EventHandler;
+﻿using JoysOfEfficiency.EventHandler;
 using JoysOfEfficiency.Huds;
 using JoysOfEfficiency.ModCheckers;
-using JoysOfEfficiency.Patches;
 using JoysOfEfficiency.Utils;
 using StardewModdingAPI;
 
@@ -20,13 +17,8 @@ namespace JoysOfEfficiency.Core
     internal class ModEntry : Mod
     {
         public static bool IsCoGOn { get; private set; }
-        public static bool IsCcOn { get; private set; }
         public static bool IsCaOn { get; private set; }
-
         private static Config Conf => InstanceHolder.Config;
-
-        public static bool HarmonyPatched { get; private set; }
-
         public static bool DebugMode { get; private set; }
 
         private static readonly Logger Logger = new Logger("Main");
@@ -44,7 +36,7 @@ namespace JoysOfEfficiency.Core
             InstanceHolder.Init(this, conf);
 
             // Initialize Logger
-            Logger.Init(this);
+            Logger.Init(Monitor);
 
             // Register events.
             EventHolder.RegisterEvents(Helper.Events);
@@ -69,21 +61,6 @@ namespace JoysOfEfficiency.Core
                 IsCaOn = true;
             }
 
-            if (ModChecker.IsCcLoaded(helper))
-            {
-                Logger.Log("Convenient Chests detected. JoE's CraftingFromChests feature will be disabled and won't patch the game.");
-                Conf.CraftingFromChests = false;
-                IsCcOn = true;
-            }
-            else if(!Conf.SafeMode)
-            {
-                Logger.Log("Start patching using Harmony...");
-                HarmonyPatched = HarmonyPatcher.Init();
-            }
-            else
-            {
-                Logger.Log("SafeMode enabled, and won't patch the game.");
-            }
             helper.WriteConfig(Conf);
             MineIcons.Init(helper);
         }
@@ -91,17 +68,8 @@ namespace JoysOfEfficiency.Core
         private static void OnDebugCommand(string name, string[] args)
         {
             DebugMode = !DebugMode;
-            string str = "";
-            foreach (KeyValuePair<int, string> info in Game1.objectInformation)
-            {
-                string val = info.Value.Split('/').FirstOrDefault();
-                if (val == null)
-                {
-                    continue;
-                }
-
-                Logger.Log($"{info.Key}: {val}\r\n");
-            }
+            Farmer player = Game1.player;
+            Logger.Log($"Facing:{player.FacingDirection}");
 
         }
     }

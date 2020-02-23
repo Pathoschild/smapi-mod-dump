@@ -1,0 +1,10 @@
+{
+   "Name": "AutoFishing",
+   "Author": "SorryLate",
+   "Version": "1.0.0",
+   "Description": "Auto catch, auto cast and auto hit",
+   "UniqueID": "SorryLate.AutoFishing",
+   "EntryDll": "AutoFishing.dll",
+   "MinimumApiVersion": "3.0.0",
+   "UpdateKeys": [ "Nexus:5235" ]
+}

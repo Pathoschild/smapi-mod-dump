@@ -1,0 +1,17 @@
+﻿{
+	"Name": "[AHM] Subterranian Livestock Husbandry Patch",
+	"Author": "mytigio",
+	"Version": "2.1.0",
+	"Description": "Adds configuration for subterranian livestock animals in Animal Husbandry.",
+	"UniqueID": "mytigio.subterranianlivestockahmpatch",
+	"MinimumApiVersion": "2.11.2",
+	"UpdateKeys": [ "Nexus:4149" ],
+	"Dependencies": [
+		{
+			"UniqueID": "mytigio.subterraneanlivestock"
+		}
+	],
+	"ContentPackFor": {
+		"UniqueID": "DIGUS.ANIMALHUSBANDRYMOD"
+	}
+}

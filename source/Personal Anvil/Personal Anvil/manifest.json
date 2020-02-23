@@ -1,0 +1,10 @@
+﻿{
+  "Name": "PersonalAnvil",
+  "Author": "Strobe",
+  "Version": "1.0.9",
+  "Description": "Allows the user to build their own anvil to break geodes anywhere.",
+  "UniqueID": "Strobe.PersonalAnvil",
+  "EntryDll": "PersonalAnvil.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:5326"]
+}

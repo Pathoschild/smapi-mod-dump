@@ -1,8 +1,22 @@
 {
-  "companionAccepted": "The fresh air of this valley is good for body and mind. A stroll outdoors sounds marvelous.",
-  "companionRejected": "I'm afraid I cannot go @. I've been meaning to finish this book I'm reading",
-  "companionRejectedNight": "It is far too late to go on a jaunt now @.",
-  "companionDismiss": "Alright, I'll see you later.",
-  "companionDismissAuto": "I'm afraid it is time for me to go. Thanks for taking me on this delightful journey @!$h",
-  "companionRecruited": "Fantastic! Maybe I'll get some inspiration for the new book I'm writing."
+  "companionAccepted": "The fresh air of this valley is good for the body and mind. A stroll outdoors sounds marvelous!$1",
+  "companionRejected": "I'm afraid I cannot go, @. I've been meaning to finish this book I'm reading.",
+  "companionRejectedNight": "It is much too late to go on a jaunt now, @!",
+  "companionDismiss": "Of course, I'll be on my way then. I hope you'll come calling again soon.",
+  "companionDismissAuto": "I'm afraid it's time for me to go, @. Thank you for taking me on this delightful journey!$h",
+  "companionRecruited": "Fantastic! I'm always looking for more inspiration for my writing.",
+  "companionSuggest": "Hello, @. I was thinking about taking a refreshing walk and building some inspiration today.#$q -1 -1# Would you like to accompany me?#$r -1 0 Yes#Yeah, why not? Let me gather my things.#$r -1 0 No#Sorry, I have some things to do today. Maybe next time?",
+  "companionSuggest_Yes": "Great! Don't mind me if I feel the burst for writing!$h",
+  "companionSuggest_No": "Oh, of course. Don't fret over it, I'm sure our paths will cross again.",
+  "companion_Farm": "Your farm is doing well, @. I assume you are not watering your crops with sea water.$1",
+  "companion_Farm_Spouse": "I just adore our life here at the farm, @.#$b#It's like a childhood dream come true every time I step out our front door!",
+  "companion_Town": "One wouldn't think that a small town like this would be so hospitable. I hope you always feel welcome here, @.",
+  "companion_Beach": "I would invite you to my little cabin, if it wasn't such a mess.#$b#Well, we could go anyway, if that doesn't bother you.",
+  "companion_Mountain": "Nothing like a good stroll through the mountains, after a long night sitting at my desk writing!$h",
+  "companion_Mountain_Spouse": "This is such a romantic part of the valley, my dear.#$b#A beautiful view, and my love by my side. What more could a man ask for?$4",
+  "companion_Forest": "The forest has a unique way of calming a weary soul.#$b#I wonder, how can a place that's so thriving also be so peaceful?",
+  "companion_Forest_Spouse": "'You've started a fire in me that will not die, and I wonder if you knew you were the lightning to my dry bush; one strike would burn down my forest.'#$b#Just a bit of poetry, don't mind me, my dear.$1",
+  "companion_Mine": "Even a bright place like Stardew Valley has it's dark side. Just like the human soul.$2#$b#That was a bit dramatic. I think I got carried away, sorry, @.$1",
+  "companion_Mine_Spouse": "This is surely not my favorite place in the world, but you are a light in the darkness, my dear. Even here.",
+  "companion_Town_Spouse": "It's true, our town is quaint, but we have everything one would ever need.#$b#Most of all, a real community, which is desperately lacking in so much of our modern world!#$b#I'm grateful to be here, even more so that you are here with me.$1"
 }

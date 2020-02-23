@@ -1,0 +1,9 @@
+﻿{
+	// Default dialogue (overridden by individual dialogue)
+	"Dialogue.Mod=HelpfulSpouses.BirthdayGender=Female": "It's {{Birthday}}'s birthday today! I got a {{ItemName}} for you to give to her.{{ItemId}}",
+	"Dialogue.Mod=HelpfulSpouses.BirthdayGender=Male": "It's {{Birthday}}'s birthday today! I got a {{ItemName}} for you to give to him.{{ItemId}}",
+
+	// Shop text
+	"DisplayName.Mod=HelpForHire":  "Birthday Gift",
+	"Description.Mod=HelpForHire":  "Let us shop for the perfect Birthday Gift.",
+}

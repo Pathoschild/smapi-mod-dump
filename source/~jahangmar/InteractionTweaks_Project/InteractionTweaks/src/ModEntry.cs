@@ -37,8 +37,6 @@ namespace InteractionTweaks
 
             Helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
 
-
-
             //TODO:
             //ReturnMuseumRewardsFeature.Enable();
 

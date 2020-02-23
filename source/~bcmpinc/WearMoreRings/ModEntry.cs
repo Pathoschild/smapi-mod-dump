@@ -359,18 +359,20 @@ namespace StardewHack.WearMoreRings
                 Instructions.Ldfld(typeof(Farmer), nameof(Farmer.rightRing)),
                 OpCodes.Callvirt,
                 // .onMonsterSlay (monster, this, who);
-                OpCodes.Ldloc_S, // monster
+                OpCodes.Ldloc_2,
+                OpCodes.Ldfld, // monster
                 OpCodes.Ldarg_0, // this
                 Instructions.Ldarg_S(arg_who), // who
                 Instructions.Callvirt(typeof(Ring), nameof(Ring.onMonsterSlay), typeof(Monster), typeof(GameLocation), typeof(Farmer))
             );
             
-            var monster = code.SubRange(code.length - 4, 3);
+            var monster = code.SubRange(code.length - 5, 4);
             code.Replace(
                 // ModEntry.ring_onMonsterSlay(monster, this, who);
                 monster[0],
                 monster[1],
                 monster[2],
+                monster[3],
                 Instructions.Call(typeof(ModEntry), nameof(ring_onMonsterSlay), typeof(Monster), typeof(GameLocation), typeof(Farmer))
             );
         }

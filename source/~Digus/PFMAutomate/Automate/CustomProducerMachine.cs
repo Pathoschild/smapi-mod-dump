@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Automate;
 using ProducerFrameworkMod;
@@ -55,32 +56,32 @@ namespace PFMAutomate.Automate
                     && ProducerController.GetProducerItem(_machine.Name, objectInput) is ProducerRule producerRule
                     && !ProducerRuleController.IsInputExcluded(producerRule, objectInput))
                 {
-                    if (input.TryGetIngredient(objectInput.ParentSheetIndex, producerRule.InputStack,out IConsumable inputConsumable))
+                    ProducerConfig producerConfig = ProducerController.GetProducerConfig(_machine.Name);
+
+                    if (producerConfig == null || (producerConfig.CheckLocationCondition(Location) && producerConfig.CheckSeasonCondition()))
                     {
-                        objectInput = inputConsumable.Sample as SObject;
-                        List<IConsumable> requiredFuels = GetRequiredFuels(producerRule, input);
-                        if (requiredFuels != null)
+                        if (input.TryGetIngredient(objectInput.ParentSheetIndex, producerRule.InputStack,
+                            out IConsumable inputConsumable))
                         {
-                            Random random = ProducerRuleController.GetRandomForProducing(_machine.TileLocation);
-                            OutputConfig outputConfig = OutputConfigController.ChooseOutput(producerRule.OutputConfigs, random);
-                            SObject output = OutputConfigController.CreateOutput(outputConfig, objectInput, random);
-                            _machine.heldObject.Value = output;
-                            OutputConfigController.LoadOutputName(outputConfig, output, objectInput);
-
-                            _machine.MinutesUntilReady = producerRule.MinutesUntilReady;
-
-                            if (ProducerController.GetProducerConfig(_machine.Name) is ProducerConfig producerConfig)
+                            objectInput = inputConsumable.Sample as SObject;
+                            List<IConsumable> requiredFuels = GetRequiredFuels(producerRule, input);
+                            if (requiredFuels != null)
                             {
-                                _machine.showNextIndex.Value = producerConfig.AlternateFrameProducing;
+                                try
+                                {
+                                    OutputConfig outputConfig = ProducerRuleController.ProduceOutput(producerRule, _machine,
+                                        (i, q) => input.TryGetIngredient(i, q, out IConsumable fuel), null, Location,
+                                        producerConfig, objectInput,noSoundAndAnimation:true);
+                                    if (outputConfig != null)
+                                    {
+                                        inputConsumable.Take();
+                                        requiredFuels.ForEach(f => f.Reduce());
+                                        List<IConsumable> outputRequiredFuels = GetRequiredFuels(outputConfig, input);
+                                        outputRequiredFuels.ForEach(f => f.Reduce()); return true;
+                                    }
+                                }
+                                catch (RestrictionException) {/* No action needed */}
                             }
-
-                            _machine.initializeLightSource(_machine.TileLocation, false);
-
-                            producerRule.IncrementStatsOnInput.ForEach(s => StatsController.IncrementStardewStats(s, producerRule.InputStack));
-
-                            inputConsumable.Take();
-                            requiredFuels.ForEach(f => f.Reduce());
-                            return true;
                         }
                     }
                 } 
@@ -93,6 +94,20 @@ namespace PFMAutomate.Automate
         {
             List<IConsumable> requiredFuels =  new List<IConsumable>();
             foreach (Tuple<int, int> requiredFuel in producerRule.FuelList)
+            {
+                if (!storage.TryGetIngredient(requiredFuel.Item1, requiredFuel.Item2, out IConsumable fuel))
+                {
+                    return null;
+                }
+                requiredFuels.Add(fuel);
+            }
+            return requiredFuels;
+        }
+
+        private List<IConsumable> GetRequiredFuels(OutputConfig outputConfig, IStorage storage)
+        {
+            List<IConsumable> requiredFuels = new List<IConsumable>();
+            foreach (Tuple<int, int> requiredFuel in outputConfig.FuelList)
             {
                 if (!storage.TryGetIngredient(requiredFuel.Item1, requiredFuel.Item2, out IConsumable fuel))
                 {

@@ -1,0 +1,12 @@
+{
+  "PayPerUnit": true,
+  "Chores": {
+    "furyx639.FeedTheAnimals": 25,
+    "furyx639.LoveThePets": 250,
+    "furyx639.PetTheAnimals": 50,
+    "furyx639.RepairTheFences": 10,
+    "furyx639.WaterTheCrops": 10,
+    "furyx639.WaterTheSlimes": 250
+  },
+  "ShopMenuButton": "P"
+}

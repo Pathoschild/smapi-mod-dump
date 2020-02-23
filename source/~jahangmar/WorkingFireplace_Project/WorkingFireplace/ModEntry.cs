@@ -183,7 +183,7 @@ namespace WorkingFireplace
             if (Config.warm_on_day_one && Game1.Date.TotalDays == 0)
                 warmth = true;
 
-            Monitor.Log("Total days: " + Game1.Date.TotalDays);
+            //Monitor.Log("Total days: " + Game1.Date.TotalDays);
 
             if (Game1.currentLocation is FarmHouse farmHouse)
             {

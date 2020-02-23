@@ -98,7 +98,7 @@ namespace ChildToNPC.CustomEvent
 
         public void afterMessage()
         {
-            this.getBabyName = true;
+            getBabyName = true;
         }
 
         public void draw(SpriteBatch b)

@@ -6,9 +6,11 @@ namespace SailorStyles_Clothing
 	{
 		void LoadAssets(string path);
 
-		int GetClothingId(string name);
 		int GetHatId(string name);
-		IDictionary<string, int> GetAllClothingIds();
+		int GetClothingId(string name);
 		IDictionary<string, int> GetAllHatIds();
+		IDictionary<string, int> GetAllClothingIds();
+		List<string> GetAllHatsFromContentPack(string cp);
+		List<string> GetAllClothingFromContentPack(string cp);
 	}
 }

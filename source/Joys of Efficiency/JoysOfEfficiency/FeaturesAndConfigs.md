@@ -13,16 +13,6 @@ Config description will be like:
 
 # Features
 
-## Safe Mode
-If you have experienced CTD or game logic corruption, then try this.
-This will disable patching part of JoE, so it can lower the risk of corruption.
-
-When you enabled this, CraftingFromChests will be disabled.
-
-**[CONFIG]**
-
-- SafeMode("Not on menu" bool, default:false) - whether Safe Mode is enabled.
-
 ## Config Menu
 You can open mod configuration menu when specified key(Default:R).
 You can't disable this feature because it's a core feature.
@@ -257,16 +247,6 @@ MachineRadius("Automation", int, default:1) - How far tiles can be affected by t
 
 - TrialOfExamine("UIs", int, default:10 min:1 max:10) - Trial number of computing probabilities.
 
-## Crafting From Chests
-This feature lets player craft using contents of nearby chests or fridge as ingredients.
-It patches game, so it may cause environment dependent bugs.
-
-
-- CraftingFromChests("Misc", default:false) - Whether this feature is enabled.
-
-
-- RadiusCraftingFromChests("Misc", int, default:3) - How far tiles can this feature search for chests or fridge.
-
 
 ## Show Shipping Price
 This utility shows estimated total shipping price when you opened shipping box.
@@ -274,6 +254,8 @@ This utility shows estimated total shipping price when you opened shipping box.
 **[CONFIG]**
 
 - EstimateShippingPrice("UIs", bool, default:true) - whether this utility is enabled.
+
+- PriceBoxCoordinates("UIs", Point, default:[100,100]) - Top-left coordinates of the window.
 
 ## Unify Flower Colors
 This utility unifies flower colors to reduce occupied spaces according to its species.

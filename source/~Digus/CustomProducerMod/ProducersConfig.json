@@ -1,22 +1,67 @@
 ﻿[
+	//{ //Not currently supported.
+	//	"ProducerName": "Bee House",
+	//	"AlternateFrameProducing": false,
+	//	"AlternateFrameWhenReady": true,
+	//	"WorkingOutdoors": true,
+	//	"WorkingSeason": [ "spring", "summer", "fall" ]
+	//},
 	{
-		"ProducerName":"Bee House",
-		"AlternateFrameProducing": false, 
+		"ProducerName": "Furnace",
+		"AlternateFrameProducing": true,
+		"AlternateFrameWhenReady": false,
+		"LightSourceConfig": {
+			"OffsetY": 32,
+			"ColorRed": 0,
+			"ColorGreen": 139,
+			"ColorBlue": 139
+		}
+	},
+	{
+		"ProducerName": "Loom",
+		"AlternateFrameProducing": false,
 		"AlternateFrameWhenReady": true
 	},
 	{
-		"ProducerName":"Furnace",
-		"AlternateFrameProducing": true, 
+		"ProducerName": "Charcoal Kiln",
+		"AlternateFrameProducing": true,
 		"AlternateFrameWhenReady": false
 	},
 	{
-		"ProducerName":"Loom",
-		"AlternateFrameProducing": false, 
-		"AlternateFrameWhenReady": true
+		"ProducerName": "Keg",
+		"IncrementStatsOnOutput": {
+			"BeveragesMade": null
+		}
 	},
 	{
-		"ProducerName":"Charcoal Kiln",
-		"AlternateFrameProducing": true, 
-		"AlternateFrameWhenReady": false
+		"ProducerName": "Preserves Jar",
+		"IncrementStatsOnOutput": {
+			"PreservesMade": null
+		}
+	},
+	{
+		"ProducerName": "Cheese Press",
+		"IncrementStatsOnOutput": {
+			"GoatCheeseMade": "426",
+			"CheeseMade": null
+		}
+	},
+	{
+		"ProducerName": "Mushroom Box",
+		"AlternateFrameProducing": false,
+		"AlternateFrameWhenReady": true,
+        "NoInputStartMode": "DayUpdate"
+	},
+	{
+		"ProducerName": "Worm Bin",
+		"NoInputStartMode": "Placement"
+	},
+	{
+		"ProducerName": "Statue Of Perfection",
+		"NoInputStartMode": "DayUpdate"
+	},
+	{
+		"ProducerName": "Soda Machine",
+		"NoInputStartMode": "DayUpdate"
 	}
 ]

@@ -5,12 +5,9 @@ mods:
    Time Multiplier
 
 latest commit:
-   commit b6b117bc58c0c0d35e9cf130171ff99ddda8e49b
-   Merge: 5813f32 53fc42f
-   Author: Josh <yodellingprofessionally@gmail.com>
-   Date:   Mon Jan 21 21:10:52 2019 -0800
+   commit 50b9c75b93b391f73ee0ee1615a96adb0a75cbe0
+   Author: defenthenation <yodellingprofessionally@gmail.com>
+   Date:   Tue Feb 11 21:50:10 2020 -0800
    
-       Merge branch 'master' into develop
-       
-       Updated to SMAPI 3.0
+       Update to latest SMAPI version
    

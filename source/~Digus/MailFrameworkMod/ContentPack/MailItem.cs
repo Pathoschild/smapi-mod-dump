@@ -10,8 +10,10 @@ namespace MailFrameworkMod.ContentPack
         public string Text;
         public string Recipe;
         public List<Attachment> Attachments;
+        public string LetterBG;
         public int WhichBG;
         public int? TextColor;
+        public string UpperRightCloseButton;
         public bool Repeatable;
         public string Date;
         public List<int> Days;
@@ -30,5 +32,8 @@ namespace MailFrameworkMod.ContentPack
         public List<int> EventsSeen;
         public bool RequireAllEventsSeen;
         public List<int> EventsNotSeen;
+        public List<string> RecipeKnown;
+        public bool RequireAllRecipeKnown;
+        public List<string> RecipeNotKnown;
     }
 }

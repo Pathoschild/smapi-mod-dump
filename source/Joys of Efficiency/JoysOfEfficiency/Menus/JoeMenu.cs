@@ -109,8 +109,7 @@ namespace JoysOfEfficiency.Menus
                 tab.AddOptionsElement(new ModifiedSlider("CPUThresholdFishing", 0, (int)(Config.CpuThresholdFishing * 10), 0, 5, OnSliderValueChanged, () => !Config.AutoFishing, Format));
 
                 tab.AddOptionsElement(new EmptyLabel());
-                tab.AddOptionsElement(new LabelComponent("Fishing Tweaks"));
-                tab.AddOptionsElement(new ModifiedCheckBox("AutoReelRod", 6, Config.AutoReelRod, OnCheckboxValueChanged));
+                tab.AddOptionsElement(new LabelComponent("Fishing Tweaks")); tab.AddOptionsElement(new ModifiedCheckBox("AutoReelRod", 6, Config.AutoReelRod, OnCheckboxValueChanged));
 
                 tab.AddOptionsElement(new EmptyLabel());
                 tab.AddOptionsElement(new LabelComponent("Auto Gate"));
@@ -219,6 +218,10 @@ namespace JoysOfEfficiency.Menus
                 tab.AddOptionsElement(new EmptyLabel());
                 tab.AddOptionsElement(new LabelComponent("Show Shipping Price"));
                 tab.AddOptionsElement(new ModifiedCheckBox("EstimateShippingPrice", 28, Config.EstimateShippingPrice, OnCheckboxValueChanged));
+                tab.AddOptionsElement(
+                    new ModifiedClickListener(this, "PriceBoxCoordinates", 1,
+                        Config.PriceBoxCoordinates.X, Config.PriceBoxCoordinates.Y, translation, OnSomewhereClicked,
+                        OnStartListeningClick));
 
                 tab.AddOptionsElement(new EmptyLabel());
                 _tabs.Add(tab);
@@ -226,11 +229,6 @@ namespace JoysOfEfficiency.Menus
             {
                 //Misc Tab
                 MenuTab tab = new MenuTab();
-                
-                tab.AddOptionsElement(new EmptyLabel());
-                tab.AddOptionsElement(new LabelComponent("Crafting From Chests"));
-                tab.AddOptionsElement(new ModifiedCheckBox("CraftingFromChests", 27, Config.CraftingFromChests, OnCheckboxValueChanged, i => ModEntry.IsCcOn || !ModEntry.HarmonyPatched));
-                tab.AddOptionsElement(new ModifiedSlider("RadiusCraftingFromChests", 11, Config.RadiusCraftingFromChests, 1, 5, OnSliderValueChanged, () => !Config.CraftingFromChests || Config.BalancedMode || !ModEntry.HarmonyPatched));
 
                 tab.AddOptionsElement(new EmptyLabel());
                 tab.AddOptionsElement(new LabelComponent("Unify Flower Colors"));
@@ -285,6 +283,9 @@ namespace JoysOfEfficiency.Menus
                 case 0:
                     Config.ProbBoxCoordinates = point;
                     break;
+                case 1:
+                    Config.PriceBoxCoordinates = point;
+                    break;
                 default: return;
             }
             InstanceHolder.WriteConfig();
@@ -337,7 +338,6 @@ namespace JoysOfEfficiency.Menus
                 case 24: Config.AutoPetNearbyPets = value; break;
                 case 25: Config.ProtectNectarProducingFlower = value; break;
                 case 26: Config.FishingProbabilitiesInfo = value; break;
-                case 27: Config.CraftingFromChests = value; break;
                 case 28: Config.EstimateShippingPrice = value; break;
                 case 29: Config.UnifyFlowerColors = value; break;
                 case 30: Config.AutoLootTreasures = value; break;
@@ -370,7 +370,6 @@ namespace JoysOfEfficiency.Menus
                 case 7: Config.AutoShakeRadius = value; break;
                 case 8: Config.AutoDigRadius = value; break;
                 case 10: Config.MachineRadius = value; break;
-                case 11: Config.RadiusCraftingFromChests = value; break;
                 case 12: Config.IdleTimeout = value; break;
                 case 13: Config.ScavengingRadius = value; break;
                 case 14: Config.AnimalHarvestRadius = value; break;
@@ -469,7 +468,7 @@ namespace JoysOfEfficiency.Menus
         {
             Game1.playSound("shwip");
             _firstIndex++;
-            ChengeIndexOfScrollBar(_firstIndex);
+            ChangeIndexOfScrollBar(_firstIndex);
         }
 
         /// <summary>
@@ -479,7 +478,7 @@ namespace JoysOfEfficiency.Menus
         {
             Game1.playSound("shwip");
             _firstIndex--;
-            ChengeIndexOfScrollBar(_firstIndex);
+            ChangeIndexOfScrollBar(_firstIndex);
         }
 
         /// <summary>
@@ -601,7 +600,7 @@ namespace JoysOfEfficiency.Menus
             _downCursor.tryHover(x, y);
         }
 
-        private void ChengeIndexOfScrollBar(int index)
+        private void ChangeIndexOfScrollBar(int index)
         {
             int maxIndex = GetLastVisibleIndex();
             _firstIndex = index;
@@ -622,7 +621,7 @@ namespace JoysOfEfficiency.Menus
                 if (_firstIndex != index)
                 {
                     Game1.playSound("shwip");
-                    ChengeIndexOfScrollBar(index);
+                    ChangeIndexOfScrollBar(index);
                 }
             }
             if (_isListening)
@@ -777,7 +776,7 @@ namespace JoysOfEfficiency.Menus
             {
                 OptionsElement element = menuElements[i];
                 int hElem = element is ModifiedSlider ? element.bounds.Height + 4 : element.bounds.Height;
-                if (y + hElem < height)
+                if (y + hElem + 16 < height)
                 {
                     y += hElem + 16;
                     elements.Add(element);
@@ -807,7 +806,7 @@ namespace JoysOfEfficiency.Menus
             {
                 OptionsElement element = menuElements[i];
                 int hElem = element is ModifiedSlider ? element.bounds.Height + 4 : element.bounds.Height;
-                if (y + hElem < height)
+                if (y + hElem + 16 < height)
                 {
                     y += hElem + 16;
                 }
@@ -839,13 +838,15 @@ namespace JoysOfEfficiency.Menus
         /// <param name="which">Which tab index to change.</param>
         private void TryToChangeTab(int which)
         {
-            if (_tabIndex != which)
+            if (_tabIndex == which)
             {
-                _tabIndex = which;
-                _firstIndex = 0;
-                ChengeIndexOfScrollBar(0);
-                Game1.playSound("drumkit6");
+                return;
             }
+
+            _tabIndex = which;
+            _firstIndex = 0;
+            ChangeIndexOfScrollBar(0);
+            Game1.playSound("drumkit6");
         }
     }
 }

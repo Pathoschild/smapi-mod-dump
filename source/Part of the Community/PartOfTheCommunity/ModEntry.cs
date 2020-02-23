@@ -86,7 +86,7 @@ namespace PartOfTheCommunity
             // refresh data
             this.Characters = this.GetCharacters();
             this.CurrentNumberOfCompletedBundles = ((CommunityCenter)Game1.getLocationFromName("CommunityCenter")).numberOfCompleteBundles();
-            this.CurrentUniqueItemsShipped = Game1.player.basicShipped.Count;
+            this.CurrentUniqueItemsShipped = Game1.player.basicShipped.Count();
             this.CurrentNumberOfCompletedDailyQuests = Game1.stats.questsCompleted;
             this.HasEnteredEvent = false;
 
@@ -345,9 +345,9 @@ namespace PartOfTheCommunity
                 this.DaysAfterCompletingLastDailyQuest++;
 
             // bonus for new shipped items
-            if (Game1.player.basicShipped.Count > this.CurrentUniqueItemsShipped)
+            if (Game1.player.basicShipped.Count() > this.CurrentUniqueItemsShipped)
             {
-                int bonusPoints = this.Config.KuumbaBonus * (Game1.player.basicShipped.Count - this.CurrentUniqueItemsShipped);
+                int bonusPoints = this.Config.KuumbaBonus * (Game1.player.basicShipped.Count() - this.CurrentUniqueItemsShipped);
                 Utility.improveFriendshipWithEveryoneInRegion(Game1.player, bonusPoints, 2);
                 this.Monitor.Log($"Gained {bonusPoints} friendship with everyone for shipping new items.", LogLevel.Info);
             }

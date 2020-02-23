@@ -37,7 +37,7 @@ namespace BetterJunimos.Utils {
             if (paidSoFar == needed) return true;
 
             foreach (int i in Enumerable.Range(paidSoFar, needed)) {
-                Item foundItem = chest.items.FirstOrDefault(item => item.getCategoryName() == type);
+                Item foundItem = chest.items.FirstOrDefault(item => item != null && item.getCategoryName() == type);
                 if (foundItem != null) {
                     items.Add(foundItem.ParentSheetIndex);
                     Util.RemoveItemFromChest(chest, foundItem);

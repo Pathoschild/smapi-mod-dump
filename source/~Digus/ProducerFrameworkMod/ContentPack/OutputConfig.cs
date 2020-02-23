@@ -11,6 +11,7 @@ namespace ProducerFrameworkMod.ContentPack
     {
         public double OutputProbability = 0;
         public string OutputIdentifier;
+        public int? MinutesUntilReady;
         public string OutputName;
         public string OutputTranslationKey;
         public Object.PreserveType? PreserveType;
@@ -24,7 +25,16 @@ namespace ProducerFrameworkMod.ContentPack
         public StackConfig SilverQualityInput = new StackConfig();
         public StackConfig GoldQualityInput = new StackConfig();
         public StackConfig IridiumQualityInput = new StackConfig();
+        public Dictionary<string, int> RequiredFuel = new Dictionary<string, int>();
+        public List<int> RequiredInputQuality = new List<int>();
+        public List<string> RequiredSeason = new List<string>();
+        public List<Weather> RequiredWeather = new List<Weather>();
+        public List<string> RequiredLocation = new List<string>();
+        public bool? RequiredOutdoors = null;
+
+        //Generated Properties
         public int OutputIndex = -1;
+        public List<Tuple<int, int>> FuelList = new List<Tuple<int, int>>();
     }
 
     public class StackConfig

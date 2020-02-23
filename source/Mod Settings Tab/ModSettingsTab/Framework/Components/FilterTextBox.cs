@@ -48,7 +48,7 @@ namespace ModSettingsTab.Framework.Components
                     {
                         case FilterType.Mod:
                             optionsModPage.Options =
-                                options.Where(o => ModData.ModList[o.ModId].Manifest.Name
+                                options.Where(o => ModData.ModList[o.ModId].Name
                                         .Trim().ToLower().Contains(searchText))
                                     .ToList();
                             break;
@@ -78,12 +78,12 @@ namespace ModSettingsTab.Framework.Components
 
         public void Draw(SpriteBatch b, bool drawShadow = true)
         {
-            b.Draw(ModData.Tabs, new Rectangle(_textBox.X - 12, _textBox.Y - 12, Sl.Width * 2, Sl.Height * 2), Sl,
+            b.Draw(ModData.Texture, new Rectangle(_textBox.X - 12, _textBox.Y - 12, Sl.Width * 2, Sl.Height * 2), Sl,
                 Color.White);
-            b.Draw(ModData.Tabs,
+            b.Draw(ModData.Texture,
                 new Rectangle(_textBox.X - 12 + Sl.Width * 2, _textBox.Y - 12, _textBox.Width, Sc.Height * 2), Sc,
                 Color.White);
-            b.Draw(ModData.Tabs,
+            b.Draw(ModData.Texture,
                 new Rectangle(_textBox.X - 12 + Sl.Width * 2 + _textBox.Width, _textBox.Y - 12, Sr.Width * 2,
                     Sr.Height * 2), Sr, Color.White);
             _textBox.Draw(b);

@@ -1,9 +1,5 @@
-﻿using System;
+﻿using StardewValley;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StardewValley;
 using SObject = StardewValley.Object;
 
 namespace WhatAreYouMissing
@@ -74,7 +70,11 @@ namespace WhatAreYouMissing
 
         public Dictionary<int, SObject> GetRecipeIngredients(int recipeParentSheetIndex)
         {
-            return AllRecipeIngredients[recipeParentSheetIndex];
+            if (AllRecipeIngredients.ContainsKey(recipeParentSheetIndex))
+            {
+                return AllRecipeIngredients[recipeParentSheetIndex];
+            }
+            return null;
         }
 
         private void AddRecipes()

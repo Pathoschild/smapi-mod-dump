@@ -18,14 +18,14 @@ namespace SpriteMaster.Harmonize.Patches {
 				// This needs to be done because Debian-based systems don't always have a libdl.so, and instead have libdl.so.2.
 				// We need to determine which libdl we actually need to talk to.
 				var dlTypes = Arrays.Of(
-					typeof(libdlbase),
-					typeof(libdl2),
-					typeof(libdl227),
-					typeof(libdl1)
+					typeof(LibDL),
+					typeof(LibDL2),
+					typeof(LibDL227),
+					typeof(LibDL1)
 				);
 
 				foreach (var dlType in dlTypes) {
-					var newDL = (libdl)Activator.CreateInstance(dlType);
+					var newDL = (LibDL)Activator.CreateInstance(dlType);
 					try {
 						newDL.error();
 					}
@@ -53,7 +53,7 @@ private static extern void mono_dllmap_insert(IntPtr assembly, string dll, strin
 mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null);
 		*/
 
-		private static libdl dl = null;
+		private static readonly LibDL dl = null;
 
 		// NVTT's CUDA compressor for block compression is _not_ threadsafe. I have a version locally from a while back that I made threadsafe,
 		// but I never validated it and am not comfortable jamming it in here.
@@ -147,32 +147,23 @@ mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null)
 			return false;
 		}
 
-		private abstract class libdl {
-			internal abstract IntPtr open (string fileName, int flags);
-
-			internal abstract IntPtr sym (IntPtr handle, string functionName);
-
-			internal abstract int close (IntPtr handle);
-
-			internal abstract IntPtr error ();
-		}
-
-		private sealed class libdlbase : libdl {
+		[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Native Code")]
+		private class LibDL {
 			private const string lib = "libdl.so";
 
-			internal override IntPtr open (string fileName, int flags) {
+			internal virtual IntPtr open (string fileName, int flags) {
 				return dlopen(fileName, flags);
 			}
 
-			internal override IntPtr sym (IntPtr handle, string functionName) {
+			internal virtual IntPtr sym (IntPtr handle, string functionName) {
 				return dlsym(handle, functionName);
 			}
 
-			internal override int close (IntPtr handle) {
+			internal virtual int close (IntPtr handle) {
 				return dlclose(handle);
 			}
 
-			internal override IntPtr error () {
+			internal virtual IntPtr error () {
 				return dlerror();
 			}
 
@@ -189,7 +180,8 @@ mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null)
 			private static extern IntPtr dlerror ();
 		}
 
-		private sealed class libdl2 : libdl {
+		[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Native Code")]
+		private sealed class LibDL2 : LibDL {
 			private const string lib = "libdl.so.2";
 
 			internal override IntPtr open (string fileName, int flags) {
@@ -221,7 +213,8 @@ mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null)
 			private static extern IntPtr dlerror ();
 		}
 
-		private sealed class libdl227 : libdl {
+		[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Native Code")]
+		private sealed class LibDL227 : LibDL {
 			private const string lib = "libdl-2.27.so";
 
 			internal override IntPtr open (string fileName, int flags) {
@@ -253,7 +246,8 @@ mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null)
 			private static extern IntPtr dlerror ();
 		}
 
-		private sealed class libdl1 : libdl {
+		[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Native Code")]
+		private sealed class LibDL1 : LibDL {
 			private const string lib = "libdl.so.1";
 
 			internal override IntPtr open(string fileName, int flags) {

@@ -71,9 +71,11 @@
     <Compile Include="Utility\Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="i18n\de.json" />
     <None Include="i18n\default.json" />
     <None Include="i18n\es.json" />
     <None Include="i18n\pt.json" />
+    <None Include="i18n\ru.json" />
     <None Include="i18n\zh.json" />
     <None Include="manifest.json" />
     <None Include="packages.config" />

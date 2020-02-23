@@ -3,5 +3,11 @@
   "OptionsPage.ModSettingsTab": "Paramètres de modification",
   "StaticConfig.SuccessMessage": "Paramètres enregistrés",
   "StaticConfig.FailMessage": "Enregistrer l'erreur",
-  "OptionsList.NewValue": "Entrez une nouvelle valeur"
+  "OptionsList.NewValue": "Entrez une nouvelle valeur",
+  "Mod.Disabled.Error": "Impossible de commuter les modifications",
+  "ModManager.AddModPack": "Ajouter un nouveau pack de mods",
+  "ModManager.HoverSetUp.Title": "Switch modpack",
+  "ModManager.HoverSetUp.Description": "les autres mods non inclus dans le pack de mod seront désactivés",
+  "ModManager.Toggle.Label": "Pack de mods actuel",
+  "ModManager.Add.NameTextBox": "Nom du Modpack"
 }

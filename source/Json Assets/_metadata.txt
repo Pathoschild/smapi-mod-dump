@@ -5,9 +5,9 @@ mods:
    Json Assets
 
 latest commit:
-   commit 97446d198e5730d36a36878f29855230efe0df42
+   commit 93e98c2e3e8e019d62e414d01e26ea430799f83a
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sat Jan 4 15:57:23 2020 -0500
+   Date:   Sat Feb 22 20:24:47 2020 -0500
    
-       Boots
+       Added ReserveExtraIndexCount for big craftables, deprecating ReserveNextIndex
    

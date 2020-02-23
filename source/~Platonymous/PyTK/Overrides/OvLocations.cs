@@ -1,6 +1,9 @@
 ﻿using Harmony;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using PyTK.ConsoleCommands;
 using PyTK.CustomElementHandler;
+using PyTK.Extensions;
 using PyTK.Types;
 using StardewModdingAPI;
 using StardewValley;
@@ -10,10 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Linq;
-using PyTK.Extensions;
-using xTile;
-using xTile.ObjectModel;
 
 namespace PyTK.Overrides
 {
@@ -23,13 +22,14 @@ namespace PyTK.Overrides
         internal static IMonitor Monitor { get; } = PyTKMod._monitor;
         internal static Dictionary<int, Rectangle> rectangleCache = new Dictionary<int, Rectangle>();
         internal static Dictionary<string, Func<string, string, GameLocation, bool>> eventConditions = new Dictionary<string, Func<string,string, GameLocation, bool>>();
+        internal static bool skip = false;
 
         [HarmonyPatch]
         internal class GLBugFix
         {
             internal static MethodInfo TargetMethod()
             {
-                return AccessTools.Method(PyUtils.getTypeSDV("GameLocation"), "Equals",new[] { PyUtils.getTypeSDV("GameLocation") });
+                return AccessTools.Method(PyUtils.getTypeSDV("GameLocation"), "Equals", new[] { PyUtils.getTypeSDV("GameLocation") });
             }
 
             internal static bool Prefix(GameLocation __instance, GameLocation other, ref bool __result)
@@ -39,13 +39,17 @@ namespace PyTK.Overrides
                     if (__instance == null)
                         return other == null;
 
-                    __result = object.Equals((object)__instance.Name, (object)other.Name) && object.Equals((object)__instance.uniqueName.Value, (object)other.uniqueName.Value) && object.Equals((object)__instance.isStructure.Value, (object)other.isStructure.Value);
+                    __result =
+                        other != null
+                        && object.Equals(__instance.Name, other.Name)
+                        && object.Equals(__instance.uniqueName.Value, other.uniqueName.Value)
+                        && object.Equals(__instance.isStructure.Value, (object)other.isStructure.Value);
+                    return false;
                 }
                 catch
                 {
                     return true;
                 }
-                    return false;
             }
         }
         [HarmonyPatch]
@@ -141,7 +145,7 @@ namespace PyTK.Overrides
             {
                 string conditions = __instance.doesTileHaveProperty(xTile, yTile, "Conditions", "Buildings");
                 string fallback = __instance.doesTileHaveProperty(xTile, yTile, "Fallback", "Buildings");
-               
+
                 if (__instance.doesTileHaveProperty(xTile, yTile, "Action", "Buildings") is string action)
                     if (TileAction.getCustomAction(action, conditions, fallback) != null)
                         Game1.isInspectionAtCurrentCursorTile = true;

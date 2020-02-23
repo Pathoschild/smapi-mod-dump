@@ -1,0 +1,13 @@
+{
+  "Controls": {
+    "Orientation": "LeftOfToolbar",
+    "HoldToActivateSlotKeys": "LeftControl",
+    "ChooseSlot1": "NumPad1",
+    "ChooseSlot2": "NumPad2",
+    "ChooseSlot3": "NumPad3",
+    "ChooseSlot4": "NumPad4",
+    "ChooseSlot5": "NumPad5",
+    "ScrollLeft": "LeftTrigger",
+    "ScrollRight": "LeftTrigger"
+  }
+}

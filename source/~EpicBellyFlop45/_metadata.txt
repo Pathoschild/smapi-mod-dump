@@ -11,9 +11,9 @@ mods:
    Customize Cursor Sprite
 
 latest commit:
-   commit f35e89331fe00a2e8230712d4cd39431e153e068
+   commit f6f22e9cd0efadd585dc69b76727c8d890c46f90
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Tue Jan 7 19:40:41 2020 +0000
+   Date:   Tue Feb 18 20:56:45 2020 +0000
    
-       [BetterMixedSeeds] Add Fishs Flowers Compatibility Version to readme
+       [MoreGrass] Add a bluey-green colour to the grass break animation
    

@@ -12,6 +12,11 @@ namespace ConvenientChests
         public SButton StashKey { get; set; } = SButton.Q;
         public SButton? StashButton { get; set; } = SButton.RightStick;
 
+        public bool StashAnywhere { get; set; } = false;
+        public bool StashAnywhereToExistingStacks { get; set; } = false;
+        public bool StashAnywhereToFridge { get; set; } = true;
+        public SButton StashAnywhereKey { get; set; } = SButton.Z;
+
         public bool CraftFromChests { get; set; } = true;
         public int CraftRadius { get; set; } = 5;
     }

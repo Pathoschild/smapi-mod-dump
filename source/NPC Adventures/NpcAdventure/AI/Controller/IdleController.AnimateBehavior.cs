@@ -38,16 +38,27 @@ namespace NpcAdventure.AI.Controller
                 foreach (string animation in animations)
                 {
                     if (!definitions.TryGetValue(animation, out string definition))
-                        throw new Exception($"Cannot get animation definition for `{animation}`, NPC `{controller.ai.npc.Name}`");
+                    {
+                        controller.ai.Monitor.Log($"Cannot get animation definition for `{animation}`, NPC `{controller.ai.npc.Name}`", LogLevel.Error);
+                        continue;
+                    }
 
-                    var (intro, loop, outro, _) = definition.Split('/');
-                    this.animations.Add(
-                        new IdleAnimation {
-                            intro = Utility.parseStringToIntArray(intro),
-                            loop = Utility.parseStringToIntArray(loop),
-                            outro = Utility.parseStringToIntArray(outro),
-                        }
-                    );
+                    try
+                    {
+                        var (intro, loop, outro, _) = definition.Split('/');
+
+                        this.animations.Add(
+                            new IdleAnimation
+                            {
+                                intro = Utility.parseStringToIntArray(intro),
+                                loop = Utility.parseStringToIntArray(loop),
+                                outro = Utility.parseStringToIntArray(outro),
+                            }
+                        );
+                    } catch (Exception e)
+                    {
+                        controller.ai.Monitor.Log($"Intro or loop or outro animation for {animation} not defined or broken! Companion: {controller.ai.npc.name} Error: {e.Message}", LogLevel.Error);
+                    }
                 }
             }
 

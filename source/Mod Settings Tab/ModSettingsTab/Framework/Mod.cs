@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using ModSettingsTab.Framework.Components;
 using ModSettingsTab.Framework.Integration;
@@ -18,7 +19,38 @@ namespace ModSettingsTab.Framework
         public readonly List<OptionsElement> Options;
         private readonly StaticConfig _staticConfig;
         private bool _favorite;
+        private bool _disabled;
+
+        private static readonly Regex Reg =
+            new Regex(@"(?<path>.*)(?<=["+Path.DirectorySeparatorChar+@"])(?<hide>\.*)(?<dir>.+)$", RegexOptions.Multiline);
+
         public IManifest Manifest { get; }
+
+        public bool Disabled
+        {
+            get => _disabled;
+            set
+            {
+                if (value == _disabled) return;
+                _disabled = value;
+                try
+                {
+                    var d = Reg.Matches(Dir)[0].Groups["dir"].Value;
+                    var p = Reg.Matches(Dir)[0].Groups["path"].Value;
+                    var newDir = Reg.Replace(Dir, Path.Combine(p, value ? $".{d}" : d));
+                    Directory.Move(Dir, newDir);
+                    Dir = newDir;
+                }
+                catch (Exception e)
+                {
+                    Helper.Console.Error(Helper.I18N.Get("Mod.Disabled.Error") + '\n' + e.Message);
+                }
+            }
+        }
+
+        public string Dir { get; set; }
+        public string Name { get; set; }
+        public string Version { get; set; }
 
         public bool Favorite
         {
@@ -32,9 +64,26 @@ namespace ModSettingsTab.Framework
 
         public Mod(string uniqueId, string directory, StaticConfig config)
         {
-            Options = new List<OptionsElement>();
-            Manifest = ModEntry.Helper.ModRegistry.Get(uniqueId).Manifest;
+            
+            Manifest = Helper.ModRegistry.Get(uniqueId)?.Manifest;
+            Version = Manifest?.Version.ToString();
+            Name = Manifest?.Name;
+            Dir = directory;
+            var d = Reg.Matches(Dir)[0].Groups["hide"].Value;
+            if (!string.IsNullOrEmpty(d))
+            {
+                var manifestPath = Path.Combine(directory, "manifest.json");
+                var json = File.ReadAllText(manifestPath);
+                var o = JObject.Parse(json);
+                Name = o.Get("Name");
+                Version = o.Get("Version");
+                _disabled = true;
+                return;
+            }
+
+            if (config == null) return;
             _staticConfig = config;
+            Options = new List<OptionsElement>();
             InitOptions(directory);
             Favorite = FavoriteData.IsFavorite(Manifest.UniqueID);
         }
@@ -44,7 +93,7 @@ namespace ModSettingsTab.Framework
             var lang = LocalizedContentManager.CurrentLanguageCode;
             var uniqueId = Manifest.UniqueID;
             var uI9NPath = Path.Combine(folder, "settingsTab.json");
-            var nI9NPath = Path.Combine(ModEntry.Helper.DirectoryPath, $"data/I9N/{uniqueId}.json");
+            var nI9NPath = Path.Combine(Helper.DirectoryPath, $"data/I9N/{uniqueId}.json");
             ModIntegrationSettings uI9N = null, nI9N = null;
 
             try
@@ -58,7 +107,7 @@ namespace ModSettingsTab.Framework
             }
             catch (Exception e)
             {
-                ModEntry.Console.Log(e.Message);
+                Helper.Console.Warn(e.Message);
             }
 
 
@@ -76,7 +125,7 @@ namespace ModSettingsTab.Framework
                 Options.Add(option);
             }
         }
-        
+
         public static OptionsElement CreateOption(
             string name,
             string uniqueId,
@@ -236,6 +285,7 @@ namespace ModSettingsTab.Framework
                 }
             }
         }
+
         /// <summary>
         /// reads a button from a string
         /// </summary>

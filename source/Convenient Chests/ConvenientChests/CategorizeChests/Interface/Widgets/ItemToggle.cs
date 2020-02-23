@@ -21,7 +21,7 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             TooltipManager = tooltipManager;
             Item           = item;
             Active         = active;
-            Tooltip        = new ItemTooltip(item.DisplayName);
+            Tooltip        = new ItemTooltip(item.DisplayName, item.getDescription());
             Width          = Game1.tileSize;
             Height         = Game1.tileSize;
         }

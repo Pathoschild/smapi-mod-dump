@@ -10,7 +10,7 @@ namespace ModSettingsTab.Framework.Components
     public class OptionsTextBox : OptionsElement
     {
         private bool NumAsString { get; }
-        private static readonly Texture2D TextBoxTexture = Game1.content.Load<Texture2D>("LooseSprites\\textBox");
+        public static readonly Texture2D TextBoxTexture = Game1.content.Load<Texture2D>("LooseSprites\\textBox");
         private readonly TextBox _textBox;
 
         public OptionsTextBox(
@@ -77,11 +77,11 @@ namespace ModSettingsTab.Framework.Components
             _textBox.Y = slotY + Bounds.Y;
             base.Draw(b, slotX, slotY);
             b.Draw(TextBoxTexture, new Rectangle(_textBox.X, _textBox.Y, 16, _textBox.Height),
-                new Rectangle(0, 0, 16, _textBox.Height), Color.White);
+                new Rectangle(0, 0, 16, 48), Color.White);
             b.Draw(TextBoxTexture, new Rectangle(_textBox.X + 16, _textBox.Y, _textBox.Width - 32, _textBox.Height),
-                new Rectangle(16, 0, 4, _textBox.Height), Color.White);
+                new Rectangle(16, 0, 4, 48), Color.White);
             b.Draw(TextBoxTexture, new Rectangle(_textBox.X + _textBox.Width - 16, _textBox.Y, 16, _textBox.Height),
-                new Rectangle(TextBoxTexture.Bounds.Width - 16, 0, 16, _textBox.Height),
+                new Rectangle(TextBoxTexture.Bounds.Width - 16, 0, 16, 48),
                 Color.White);
             _textBox.Draw(b);
         }

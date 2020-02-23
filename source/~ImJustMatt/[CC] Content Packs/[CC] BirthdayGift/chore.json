@@ -1,0 +1,6 @@
+﻿{
+	"ChoreType": "GiveAGift",
+	"GiftType":  "Birthday",
+	"EnableUniversal":  false,
+	"ChanceForLove":  0.1
+	}

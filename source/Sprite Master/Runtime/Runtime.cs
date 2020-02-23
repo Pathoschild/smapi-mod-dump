@@ -49,9 +49,8 @@ namespace SpriteMaster {
 		}
 
 		public static string Capture1(string command, string[] args = null) {
-			using (var process = Open2(command, args)) {
-				return process.StandardOutput.ReadToEnd();
-			}
+			using var process = Open2(command, args);
+			return process.StandardOutput.ReadToEnd();
 		}
 
 		[ImmutableObject(true)]
@@ -71,25 +70,29 @@ namespace SpriteMaster {
 		}
 
 		public static Result2 Capture1E(string command, string[] args = null) {
-			using (var process = Open2(command, args)) {
-				return new Result2(
-					process.StandardOutput.ReadToEnd(),
-					process.StandardError.ReadToEnd()
-				);
-			}
+			using var process = Open2(command, args);
+			return new Result2(
+				process.StandardOutput.ReadToEnd(),
+				process.StandardError.ReadToEnd()
+			);
 		}
 
 		[Pure]
 		private static PlatformType GetUnixType() {
-			var system = Capture1("uname", "-s").Trim().ToLowerInvariant();
+			try {
+				var system = Capture1("uname", "-s").Trim().ToLowerInvariant();
 
-			return system switch
-			{
-				var _ when system.Contains("darwin") => PlatformType.Macintosh,
-				var _ when system.Contains("linux") => PlatformType.Linux,
-				var _ when system.Contains("msys") || system.Contains("mingw") => PlatformType.Windows,// This is actually Windows.
-				_ => PlatformType.BSD,// We assume that if it isn't darwin or linux, it's probably BSD.
-			};
+				return system switch {
+					var _ when system.Contains("darwin") => PlatformType.Macintosh,
+					var _ when system.Contains("linux") => PlatformType.Linux,
+					var _ when system.Contains("msys") || system.Contains("mingw") => PlatformType.Windows,// This is actually Windows.
+					_ => PlatformType.BSD,// We assume that if it isn't darwin or linux, it's probably BSD.
+				};
+			}
+			catch {
+				// if for some reason uname fails... we should probably just assume that it is linux, to be safe.
+				return PlatformType.Linux;
+			}
 		}
 
 		static Runtime() {
@@ -105,6 +108,17 @@ namespace SpriteMaster {
 				PlatformType.Windows => FrameworkType.DotNET,
 				_ => FrameworkType.Mono,
 			};
+
+			try {
+				FullSystem = Platform switch
+				{
+					PlatformType.Windows => "Windows",
+					_ => Capture1("uname").Trim()
+				};
+			}
+			catch {
+				FullSystem = "Unknown";
+			}
 		}
 
 		public enum PlatformType {
@@ -126,7 +140,7 @@ namespace SpriteMaster {
 		}
 
 		[ImmutableObject(true)]
-		public static readonly string FullSystem = Capture1("uname").Trim();
+		public static readonly string FullSystem;
 
 		public static readonly FrameworkType Framework;
 		public static readonly PlatformType Platform;
@@ -137,5 +151,9 @@ namespace SpriteMaster {
 		public static bool IsLinux => Platform == PlatformType.Linux;
 		public static bool IsBSD => Platform == PlatformType.BSD;
 		public static bool IsMacintosh => Platform == PlatformType.Macintosh;
+
+		public static bool IsMonoGame => Framework == FrameworkType.Mono;
+
+		public static bool IsXNA => Framework == FrameworkType.DotNET;
 	}
 }

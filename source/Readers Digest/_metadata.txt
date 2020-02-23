@@ -5,10 +5,12 @@ mods:
    Readers Digest
 
 latest commit:
-   commit d907d594bea27af71d15b26fd75ef201d94f5e7b
-   Merge: 473c3ac 8adc1f6
-   Author: Remy Bach <remy@bach.me.uk>
-   Date:   Mon Nov 12 22:34:39 2018 +0000
+   commit b8f6ec1ce600bda77fcf23c51a3c8ceb66d3d207
+   Merge: d907d59 2b16d36
+   Author: RÃ©my Bach <remy@bach.me.uk>
+   Date:   Tue Feb 18 20:36:27 2020 +0000
    
-       Merge branch 'master' of https://github.com/remybach/stardew-valley-readersdigest
+       Merge pull request #3 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0, internal refactoring
    

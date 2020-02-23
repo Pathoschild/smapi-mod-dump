@@ -36,7 +36,7 @@ namespace ConvenientChests.CategorizeChests.Interface
         /// <summary>Release all resources.</summary>
         public virtual void Dispose()
         {
-            this.Events.Display.Rendered -= this.OnRendered;
+            this.Events.Display.RenderedActiveMenu -= this.OnRendered;
             this.Events.GameLoop.UpdateTicked -= this.OnUpdateTicked;
             this.Events.Input.ButtonPressed -= this.OnButtonPressed;
             this.Events.Input.CursorMoved -= this.OnCursorMoved;
@@ -61,7 +61,7 @@ namespace ConvenientChests.CategorizeChests.Interface
             this.KeepAliveCheck = keepAlive;
             this.LastViewport = new Rectangle(Game1.viewport.X, Game1.viewport.Y, Game1.viewport.Width, Game1.viewport.Height);
 
-            events.Display.Rendered += this.OnRendered;
+            events.Display.RenderedActiveMenu += this.OnRendered;
             events.GameLoop.UpdateTicked += this.OnUpdateTicked;
             events.Input.ButtonPressed += this.OnButtonPressed;
             events.Input.CursorMoved += this.OnCursorMoved;
@@ -126,7 +126,7 @@ namespace ConvenientChests.CategorizeChests.Interface
         /// <summary>The method called when the game finishes drawing components to the screen.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The event arguments.</param>
-        private void OnRendered(object sender, RenderedEventArgs e)
+        private void OnRendered(object sender, RenderedActiveMenuEventArgs e)
         {
             this.Draw(Game1.spriteBatch);
         }

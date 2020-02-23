@@ -1,0 +1,55 @@
+{
+    "Name": "Slow-Burn Charcoal Kiln",
+    "Description": "Reduces waste by reducing heat and burning the fuel for a longer period.",
+    "Price": 3000,
+    "ProvidesLight": true,	
+    "ReserveNextIndex": true,
+    "Recipe":
+    {
+        "ResultCount": 1,
+        "Ingredients": [
+        {
+            "Object": 335,
+            "Count": 10,
+        },
+        {
+            "Object": 336,
+            "Count": 1
+        }
+		],
+        "IsDefault": false,
+		"SkillUnlockName": "Foraging",
+		"SkillUnlockLevel": 8,
+    },
+	"CanPurchase": true,
+	"PurchaseFrom": "Clint",
+	"PurchasePrice": 3000,
+    "NameLocalization":
+    {
+        // "es": "",
+        // "ko": "",
+        // "de": "",
+        // "fr": "",
+        // "hu": "",
+        // "it": "",
+        // "ja": "",
+        // "pt": "",
+        // "ru": "",
+        // "tr": "",
+        // "zh": "",
+    },
+    "DescriptionLocalization":
+    {
+        // "es": "",
+        // "ko": "",
+        // "de": "",
+        // "fr": "",
+        // "hu": "",
+        // "it": "",
+        // "ja": "",
+        // "pt": "",
+        // "ru": "",
+        // "tr": "",
+        // "zh": "",
+    }
+}

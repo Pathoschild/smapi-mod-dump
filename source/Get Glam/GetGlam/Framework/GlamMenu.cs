@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-using StardewValley.Characters;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
@@ -87,7 +86,7 @@ namespace GetGlam.Framework
         private bool IsBald = false;
 
         //Snapshot of the Farmer before making changes
-        private int[] FarmerSnapshot = new int[9] {0, 0, 0, 0, 0, 0, 0, 0, 1};
+        private int[] FarmerSnapshot = new int[11] {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0};
 
         //Snapshot of haircolor
         private Color HairColorSnapshot;
@@ -106,6 +105,22 @@ namespace GetGlam.Framework
 
         //Whether to draw the face and nose buttons
         private bool ShouldDrawNosesAndFaceButtons = false;
+
+        //The clothing tab
+        private ClickableTextureComponent ClothingTab;
+
+        ///********************************
+        ///Variables for the Search Tab
+        ///********************************
+        //private ClickableTextureComponent SearchTab;
+
+        //private bool OpenSearchTab = false;
+
+        //private Vector2 DialogueBoxBounds;
+
+        private int AnimationSpeed;
+
+        //private OptionsDropDown DropDownSearch;
 
         /// <summary>Glam Menu's Conrstructor</summary>
         /// <param name="entry">Instance of <see cref="ModEntry"/></param>
@@ -132,6 +147,9 @@ namespace GetGlam.Framework
 
             //Set the positions of each item on the menu
             SetUpPositions();
+
+            //Set the animation speed
+            AnimationSpeed = Config.ClothingTabAnimationSpeed;
         }
 
         /// <summary>Update the indexes on the menu when the player loads a layout</summary>
@@ -223,6 +241,9 @@ namespace GetGlam.Framework
             HatCoversHairButton = new ClickableTextureComponent("HatFix", new Rectangle(this.xPositionOnScreen + this.width / 2 - 114, this.yPositionOnScreen + 128, 36, 36), null, "Hat Hair Fix", Game1.mouseCursors, new Rectangle(227, 425, 9, 9), 4f, false);
             AddToFavoritesButton = new ClickableTextureComponent("Favorite", new Rectangle(this.xPositionOnScreen + this.width - 96, this.yPositionOnScreen + 224, 48, 48), null, "Favorite", Game1.mouseCursors, new Rectangle(346, 392, 8, 8), 6f, false);
 
+            if (Entry.IsCustomizeAnywhereInstalled)
+                ClothingTab = new ClickableTextureComponent("ClothingTab", new Rectangle(this.xPositionOnScreen - IClickableMenu.borderWidth - 8, this.yPositionOnScreen + 224, 64, 64), null, "ClothingTab", Game1.mouseCursors2, new Rectangle(0, 48, 16, 16), 4f, false);
+
             HatCoversHairButton.visible = false;
 
             //Add the new labels to the list
@@ -313,6 +334,18 @@ namespace GetGlam.Framework
                 ShouldDrawNosesAndFaceButtons = false;
                 UpdateFaceAndNoseButtonsPositions(ShouldDrawNosesAndFaceButtons);
             }
+
+            //Set up the Search tab stuff
+            //DialogueBoxBounds = new Vector2(this.xPositionOnScreen, this.yPositionOnScreen + 300);
+
+            //SearchTab = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen - IClickableMenu.borderWidth - 8, this.yPositionOnScreen + 400, 64, 64), Game1.mouseCursors2, new Rectangle(96, 48, 16, 16), 4f, false);
+
+            //DropDownSearch = new OptionsDropDown("", 0);
+            //DropDownSearch.bounds = new Rectangle(SearchTab.bounds.X, SearchTab.bounds.Y, 0, 32);
+            //DropDownSearch.dropDownBounds = new Rectangle(SearchTab.bounds.X - 128, SearchTab.bounds.Y , 128, 128);
+
+            //foreach (string hairPack in PackHelper.HairStyleSearch.Keys)
+            //    DropDownSearch.dropDownDisplayOptions.Add(hairPack);
         }
 
         /// <summary>Override to change the menu when the window size changes</summary>
@@ -517,6 +550,25 @@ namespace GetGlam.Framework
                 }
                 Game1.playSound("bigDeSelect");
             }
+
+            //Check if the clothes tab has been clicked
+            if (Entry.IsCustomizeAnywhereInstalled)
+            {
+                if (ClothingTab.containsPoint(x, y))
+                    Entry.CustomizeAnywhereClothingMenu();
+            }
+
+            //Check if the search tab has been clicked
+            //if (SearchTab.containsPoint(x, y))
+            //{
+            //    if (!OpenSearchTab)
+            //        OpenSearchTab = true;
+            //    else
+            //        OpenSearchTab = false;
+            //}
+
+            //if (DropDownSearch.bounds.Contains(x, y))
+            //    DropDownSearch.receiveLeftClick(x, y);
         }
 
         /// <summary>Override to handle the left click being held</summary>
@@ -532,7 +584,6 @@ namespace GetGlam.Framework
                 EyeColorPicker.clickHeld(x, y);
                 Game1.player.newEyeColor.Set(EyeColorPicker.getSelectedColor());
                 Game1.player.changeEyeColor(Game1.player.newEyeColor);
-
             }
 
             if (HairColorPicker.containsPoint(x, y))
@@ -557,6 +608,34 @@ namespace GetGlam.Framework
             if (HairColorPicker.containsPoint(x, y))
                 HairColorPicker.releaseClick();
         }
+
+        /// <summary>Override to handles updating a menu per tick</summary>
+        /// <param name="time">The amount of GameTime</param>
+        //public override void update(GameTime time)
+        //{
+        //    base.update(time);
+
+        //    //Check if to open the menu
+        //    if (OpenSearchTab)
+        //    {
+        //        //Change the tab bounds
+        //        if (SearchTab.bounds.X > 10)
+        //            SearchTab.bounds.X -= AnimationSpeed;
+
+        //        //Change the dialouge bounds
+        //        if (DialogueBoxBounds.X > 58)
+        //            DialogueBoxBounds.X -= AnimationSpeed;
+        //    }
+        //    //If closing the menu then do the complete opposite
+        //    else if (!OpenSearchTab)
+        //    {
+        //        if (SearchTab.bounds.X < 236)
+        //            SearchTab.bounds.X += AnimationSpeed;
+
+        //        if (DialogueBoxBounds.X < this.xPositionOnScreen)
+        //            DialogueBoxBounds.X += AnimationSpeed;
+        //    }
+        //}
 
         /// <summary>Update the buttons for changing the face and nose.</summary>
         /// <param name="isFaceAndNoseDrawing">Wether the face and nose buttons are drawing</param>
@@ -749,12 +828,21 @@ namespace GetGlam.Framework
         /// <param name="b">The games spritebatch</param>
         public override void draw(SpriteBatch b)
         {
+            //Game1.drawDialogueBox((int)DialogueBoxBounds.X, (int)DialogueBoxBounds.Y, 350, 375, false, true);
+
+            //SearchTab.draw(b);
+
+            //DropDownSearch.draw(b, 0, 0);
+
             //Draw the dialogue box or else Minerva will haunt my dreams
             Game1.drawDialogueBox(this.xPositionOnScreen, this.yPositionOnScreen, this.width, this.height, false, true);
 
             //Draw the tabs
             FavoriteMenuTab.draw(b);
             GlamMenuTab.draw(b);
+
+            if (Entry.IsCustomizeAnywhereInstalled)
+                ClothingTab.draw(b);
 
             //Draw the Dresser Texture if the Config is true
             if (Config.DrawDresserInMenu)

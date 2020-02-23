@@ -1,0 +1,13 @@
+url:
+   https://github.com/MadaraUchiha/NonDestructiveNPCs.git
+
+mods:
+   Non Destructive NPCs
+
+latest commit:
+   commit b4fe879e075592bf80c1a452808ff82c85358905
+   Author: Madara Uchiha <me@madara.ninja>
+   Date:   Sun Jan 12 23:34:06 2020 +0200
+   
+       Initial Commit
+   

@@ -24,9 +24,15 @@
 		"PurchaseRequirements": ["e 992559"],
 	},
 	"NameLocalization": {
-		"pt": "Armário de Linhas"
+		"pt": "Armário de Linhas",
+		"de": "Färbeschrank",
+		"zh": "线柜",
+		"ja": "ワイヤーキャビネット"
 		},
     "DescriptionLocalization": {
-		"pt": "Linhas para costuras."
+		"pt": "Linhas para costuras.",
+		"de": "Eine praktische möglichkeit, um deine Kleidung zu färben.",
+		"zh": "缝纫线。",
+		"ja": "ミシン糸"
 		}
 }

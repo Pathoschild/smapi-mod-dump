@@ -1,0 +1,10 @@
+{
+  "Name": "BJSTrueMaster",
+  "Author": "BunnyJumps",
+  "Version": "1.1.0", // fixed locally
+  "Description": "Mod for DF",
+  "UniqueID": "BunnyJumps.BJSTrueMaster",
+  "EntryDll": "BJSTrueMaster.dll",
+  "MinimumApiVersion": "3.0",
+  "UpdateKeys": ["Nexus:5324" ]
+}

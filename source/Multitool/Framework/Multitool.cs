@@ -419,7 +419,6 @@ namespace MultitoolMod.Framework
             Rectangle tileArea = this.GetAbsoluteTileArea(tile);
             foreach (ResourceClump clump in this.GetResourceClumps(location))
             {
-                mod.Monitor.Log("Looking at a clump ...", LogLevel.Debug);
                 if (clump.getBoundingBox(clump.tile.Value).Intersects(tileArea))
                     return clump;
             }

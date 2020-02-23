@@ -1,7 +1,7 @@
 {
    "Name": "PokeMania",
    "Author": "TheKrominator",
-   "Version": "4.0",
+   "Version": "4.0.3", // fixed locally
    "Description": "Transform many aspects of the game into a Pokemon town.",
    "UniqueID": "TheKrominatorPokemania",
    "LogName": "PokeMania",

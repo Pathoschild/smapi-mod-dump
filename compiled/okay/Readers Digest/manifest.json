@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Readers Digest",
+  "Author": "Remy Bach",
+  "Version": "2.0.0",
+  "Description": "Receive the Cooking or Tips Channel info as a mailbox message.",
+  "UniqueID": "remybach.readersdigest",
+  "EntryDll": "readersdigest.dll", // fixed locally
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:3040" ]
+}

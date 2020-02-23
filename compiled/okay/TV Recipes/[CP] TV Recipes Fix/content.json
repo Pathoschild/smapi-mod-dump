@@ -1,0 +1,30 @@
+{
+	"Format": "1.10.0",
+	"Changes": [
+		{
+			"Action": "EditData",
+			"Target": "Data/CookingRecipes",
+			"Entries": {
+				"Cheese Cauliflower": "190 1 424 1/5 5/197/f Pam 3",
+				"Dish O' The Sea": "131 2 210 1/38 2/242/s Fishing 3",
+				"Eggplant Parmesan": "272 1 256 1/30 2/231/f Lewis 7",
+				"Vegetable Medley": "256 1 284 1/1 8/200/f Caroline 7",
+				"Cookie": "246 1 245 1 -5 1/3 7/223/null",
+				"Cranberry Sauce": "282 1 245 1/9 3/238/f Gus 7",
+				"Cheese Cauli.": null,
+				"Dish o' The Sea": null,
+				"Eggplant Parm.": null,
+				"Cookies": null,
+				"Cran. Sauce": null,
+				"Vegetable Stew": null
+			},
+			
+			"Action": "EditData",
+			"Target": "Data/JoshHouse",
+			"Entries": {
+				"19/f Evelyn 1000/p Evelyn": "jaunty/3 17/farmer 8 19 3 Evelyn 3 17 0/skippable/move farmer -5 0 0/move farmer 0 -1 0/emote farmer 8/faceDirection Evelyn 2/speak Evelyn \"Oh! @! You're wondering what that good smell is?#$b#Why, that's nice of you to say! I'm actually baking my famous cookies!$h\"/emote farmer 16/speak Evelyn \"Here, why don't you try one?\"/faceDirection Evelyn 0/pause 600/playSound clank/pause 600/faceDirection Evelyn 2/pause 900/farmerEat 223/pause 2000/stopAnimation farmer/faceDirection farmer 0/speak Evelyn \"$q 51 null#Well, what do you think?#$r 51 100 Event_cookies1#It's delicious!#$r 51 -100 Event_cookies2#It was like chewing on a hockey puck\"/playMusic none/speak Evelyn \"I think I've come to know you well enough to give you my recipe. Just make sure to keep it a secret.$h\"/playSound reward/message \"Learned how to make 'Cookie'\"/addCookingRecipe Cookie/end",
+				"19/f Evelyn 1000/p Evelyn": null
+			}
+		}
+	]
+}

@@ -58,6 +58,7 @@
     <Compile Include="Patches\ChildReloadSpritePatch.cs" />
     <Compile Include="Patches\ChildTenMinuteUpdatePatch.cs" />
     <Compile Include="Patches\IsGaySpousePatch.cs" />
+    <Compile Include="Patches\PickPersonalFarmEventPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

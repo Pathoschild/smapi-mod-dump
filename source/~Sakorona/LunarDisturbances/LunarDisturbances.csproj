@@ -11,12 +11,6 @@
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.0.0-beta.8" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="assets\DaytimeBloodMoon.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
   <Import Project="..\TwilightCoreShared\TwilightCoreShared.projitems" Label="Shared" />
   <Import Project="$(SolutionDir)\deploy-mod.targets" />
 

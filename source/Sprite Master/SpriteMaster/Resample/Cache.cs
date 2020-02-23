@@ -2,9 +2,7 @@
 using SpriteMaster.Types;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
-using System.Management;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -13,10 +11,14 @@ namespace SpriteMaster.Resample {
 	internal static class Cache {
 		private static readonly string TextureCacheName = "TextureCache";
 		private static readonly string JunctionCacheName = $"{TextureCacheName}_Current";
-		private static readonly string AssemblyVersion = typeof(Upscaler).Assembly.GetName().Version.ToString();
+		private static readonly Version AssemblyVersion = typeof(Upscaler).Assembly.GetName().Version;
+		private static readonly Version RuntimeVersion = typeof(Runtime).Assembly.GetName().Version;
+		private static readonly ulong AssemblyHash = AssemblyVersion.GetHashCode().Fuse(RuntimeVersion.GetHashCode()).Unsigned();
 		private static readonly string CacheName = $"{TextureCacheName}_{AssemblyVersion}";
 		private static readonly string LocalDataPath = Path.Combine(Config.LocalRoot, CacheName);
 		private static readonly string DumpPath = Path.Combine(LocalDataPath, "dump");
+
+		private static readonly bool SystemCompression = false;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static string GetPath (params string[] path) {
@@ -28,18 +30,21 @@ namespace SpriteMaster.Resample {
 			return Path.Combine(DumpPath, Path.Combine(path));
 		}
 
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		private class CacheHeader {
-			public string Assembly = AssemblyVersion;
-			public ulong ConfigHash = SerializeConfig.Hash();
-			public int RefScale;
+			public ulong Assembly = AssemblyHash;
+			public ulong ConfigHash = SerializeConfig.GetWideHashCode();
+			public uint RefScale;
 			public Vector2I Size;
 			public TextureFormat? Format;
 			public Vector2B Wrapped;
 			public Vector2I Padding;
 			public Vector2I BlockPadding;
 			public ulong DataHash;
+			public uint UncompressedDataLength;
 			public uint DataLength;
 
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			internal static CacheHeader Read (BinaryReader reader) {
 				var newHeader = new CacheHeader();
 
@@ -53,14 +58,16 @@ namespace SpriteMaster.Resample {
 				return newHeader;
 			}
 
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			internal void Write (BinaryWriter writer) {
 				foreach (var field in typeof(CacheHeader).GetFields()) {
 					writer.Write(field.GetValue(this));
 				}
 			}
 
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			internal void Validate (string path) {
-				if (Assembly != AssemblyVersion) {
+				if (Assembly != AssemblyHash) {
 					throw new IOException($"Texture Cache File out of date '{path}'");
 				}
 
@@ -75,11 +82,12 @@ namespace SpriteMaster.Resample {
 			Saved = 1
 		}
 
-		private static ConcurrentDictionary<string, SaveState> SavingMap = new ConcurrentDictionary<string, SaveState>();
+		private static readonly ConcurrentDictionary<string, SaveState> SavingMap = Config.FileCache.Enabled ? new ConcurrentDictionary<string, SaveState>() : null;
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static bool Fetch (
 			string path,
-			out int refScale,
+			out uint refScale,
 			out Vector2I size,
 			out TextureFormat format,
 			out Vector2B wrapped,
@@ -95,17 +103,17 @@ namespace SpriteMaster.Resample {
 			blockPadding = Vector2I.Zero;
 			data = null;
 
-			if (Config.Cache.Enabled && File.Exists(path)) {
-				int retries = Config.Cache.LockRetries;
+			if (Config.FileCache.Enabled && File.Exists(path)) {
+				int retries = Config.FileCache.LockRetries;
 
 				while (retries-- > 0) {
 					if (SavingMap.TryGetValue(path, out var state) && state != SaveState.Saved) {
-						Thread.Sleep(Config.Cache.LockSleepMS);
+						Thread.Sleep(Config.FileCache.LockSleepMS);
 						continue;
 					}
 
 					// https://stackoverflow.com/questions/1304/how-to-check-for-file-lock
-					bool WasLocked (in IOException ex) {
+					static bool WasLocked (IOException ex) {
 						var errorCode = Marshal.GetHRForException(ex) & ((1 << 16) - 1);
 						return errorCode == 32 || errorCode == 33;
 					}
@@ -121,22 +129,21 @@ namespace SpriteMaster.Resample {
 							wrapped = header.Wrapped;
 							padding = header.Padding;
 							blockPadding = header.BlockPadding;
+							var uncompressedDataLength = header.UncompressedDataLength;
 							var dataLength = header.DataLength;
 							var dataHash = header.DataHash;
 
-							var remainingSize = reader.BaseStream.Length - reader.BaseStream.Position;
-							if (remainingSize < header.DataLength) {
-								throw new EndOfStreamException("Cache File is corrupted");
-							}
+							var rawData = reader.ReadBytes((int)dataLength);
 
-							data = new byte[dataLength];
-
-							foreach (int i in 0..data.Length) {
-								data[i] = reader.ReadByte();
-							}
-
-							if (data.HashXX() != dataHash) {
+							if (rawData.HashXX() != dataHash) {
 								throw new IOException("Cache File is corrupted");
+							}
+
+							if (dataLength == uncompressedDataLength) {
+								data = rawData;
+							}
+							else {
+								data = Compression.Decompress(rawData, Config.FileCache.Compress);
 							}
 						}
 						return true;
@@ -152,7 +159,7 @@ namespace SpriteMaster.Resample {
 								return false;
 							case IOException iox when WasLocked(iox):
 								Debug.TraceLn($"File was locked when trying to load cache file '{path}': {ex.Message} [{retries} retries]");
-								Thread.Sleep(Config.Cache.LockSleepMS);
+								Thread.Sleep(Config.FileCache.LockSleepMS);
 								break;
 						}
 					}
@@ -161,9 +168,10 @@ namespace SpriteMaster.Resample {
 			return false;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static bool Save (
 			string path,
-			int refScale,
+			uint refScale,
 			Vector2I size,
 			TextureFormat format,
 			Vector2B wrapped,
@@ -171,38 +179,48 @@ namespace SpriteMaster.Resample {
 			Vector2I blockPadding,
 			byte[] data
 		) {
-			if (Config.Cache.Enabled) {
-				if (!SavingMap.TryAdd(path, SaveState.Saving)) {
-					return false;
-				}
-
-				ThreadPool.QueueUserWorkItem((object dataItem) => {
-					var data = (byte[])dataItem;
-					try {
-						using (var writer = new BinaryWriter(new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))) {
-							new CacheHeader() {
-								RefScale = refScale,
-								Size = size,
-								Format = format,
-								Wrapped = wrapped,
-								Padding = padding,
-								BlockPadding = blockPadding,
-								DataLength = (uint)data.Length,
-								DataHash = data.HashXX()
-							}.Write(writer);
-
-							foreach (var v in data) {
-								writer.Write(v);
-							}
-						}
-						SavingMap.TryUpdate(path, SaveState.Saved, SaveState.Saving);
-					}
-					catch {
-						try { File.Delete(path); } catch { }
-						SavingMap.TryRemove(path, out var _);
-					}
-				}, data);
+			if (!Config.FileCache.Enabled) {
+				return true;
 			}
+			if (!SavingMap.TryAdd(path, SaveState.Saving)) {
+				return false;
+			}
+
+			ThreadQueue.Queue((data) => {
+				Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
+				using var _ = new AsyncTracker($"File Cache Write {path}");
+				try {
+					using (var writer = new BinaryWriter(new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))) {
+
+						var algorithm = (SystemCompression && !Config.FileCache.ForceCompress) ? Compression.Algorithm.None : Config.FileCache.Compress;
+
+						var compressedData = Compression.Compress(data, algorithm);
+
+						if (compressedData.Length >= data.Length) {
+							compressedData = data;
+						}
+
+						new CacheHeader() {
+							RefScale = refScale,
+							Size = size,
+							Format = format,
+							Wrapped = wrapped,
+							Padding = padding,
+							BlockPadding = blockPadding,
+							UncompressedDataLength = (uint)data.Length,
+							DataLength = (uint)compressedData.Length,
+							DataHash = compressedData.HashXX()
+						}.Write(writer);
+
+						writer.Write(compressedData);
+					}
+					SavingMap.TryUpdate(path, SaveState.Saved, SaveState.Saving);
+				}
+				catch {
+					try { File.Delete(path); } catch { }
+					SavingMap.TryRemove(path, out var _);
+				}
+			}, data);
 			return true;
 		}
 
@@ -214,6 +232,7 @@ namespace SpriteMaster.Resample {
 		[DllImport("kernel32.dll")]
 		static extern bool CreateSymbolicLink (string Link, string Target, LinkType Type);
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static bool IsSymbolic (string path) {
 			var pathInfo = new FileInfo(path);
 			return pathInfo.Attributes.HasFlag(FileAttributes.ReparsePoint);
@@ -233,7 +252,7 @@ namespace SpriteMaster.Resample {
 								continue;
 							}
 							var endPath = Path.GetFileName(directory);
-							if (Config.Cache.Purge || (endPath != CacheName && endPath != JunctionCacheName)) {
+							if (Config.FileCache.Purge || (endPath != CacheName && endPath != JunctionCacheName)) {
 								// If it doesn't match, it's outdated and should be deleted.
 								Directory.Delete(directory, true);
 							}
@@ -244,25 +263,19 @@ namespace SpriteMaster.Resample {
 			}
 			catch { /* Ignore failures */ }
 
-			if (Config.Cache.Enabled) {
+			if (Config.FileCache.Enabled) {
 				// Mark the directory as compressed because this is very space wasteful and we are currently not performing compression.
 				// https://stackoverflow.com/questions/624125/compress-a-folder-using-ntfs-compression-in-net
 				try {
 					// Create the directory path
 					Directory.CreateDirectory(LocalDataPath);
-
+				}
+				catch (Exception ex) {
+					ex.PrintWarning();
+				}
+				try {
 					if (Runtime.IsWindows) {
-						var dir = new DirectoryInfo(LocalDataPath);
-						if ((dir.Attributes & FileAttributes.Compressed) == 0) {
-							var objectPath = $"Win32_Directory.Name='{dir.FullName.Replace("\\", @"\\").TrimEnd('\\')}'";
-							using (var obj = new ManagementObject(objectPath)) {
-								using (obj.InvokeMethod("Compress", null, null)) {
-									// I don't really care about the return value, 
-									// if we enabled it great but it can also be done manually
-									// if really needed
-								}
-							}
-						}
+						SystemCompression = NTFS.CompressDirectory(LocalDataPath);
 					}
 				}
 				catch (Exception ex) {

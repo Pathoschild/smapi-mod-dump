@@ -1,0 +1,6 @@
+﻿{
+  "1": "Location/Uma nova aventura começa/Marlon gostaria de falar com você sobre as pessoas desta cidade. Entre na Guilda dos Aventureiros ente 2 da tarde e 10 da noite./Entre na Guilda dos Aventureiros/AdventureGuild/0/false/2",
+  "2": "Basic/Convide alguém para ir com você/Marlon disse algo especial sobre as pessoas desta cidade. Chame alguém para ir com você e veja o que eles dizem. Eles podem recusar até te conhecerem melhor./Recrute alguém/recruit/250/true/3",
+  "3": "Recruitment/Recrute 5 pessoas/Você conheceu a sua primeira companhia, mas existem mais. Recrute 5 pessoas./null/5/1000/true/4",
+  "4": "Recruitment/O bom comapheiro/Conheça seus vizinhos ainda mais. Convide 10 pessoas./null/10/1250/true"
+}

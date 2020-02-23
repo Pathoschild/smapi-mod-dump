@@ -5,9 +5,9 @@ mods:
    Lockpicks
 
 latest commit:
-   commit a66fabcf451554a598dd6478a98bba58fd805d02
-   Author: bwdy <47769190+bwdymods@users.noreply.github.com>
-   Date:   Thu Nov 28 21:43:47 2019 -0900
+   commit 4c9a2a024d9100ed26392d05744e672a5715f3ca
+   Author: Glitchfinder <glitchkey@gmail.com>
+   Date:   Sat Jan 25 10:22:38 2020 -0800
    
-       Version 2.0
+       Updating readme.
    

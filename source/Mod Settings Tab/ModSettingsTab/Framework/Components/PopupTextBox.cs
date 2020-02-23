@@ -5,27 +5,27 @@ using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
+// ReSharper disable SwitchStatementMissingSomeCases
 
 namespace ModSettingsTab.Framework.Components
 {
     public class PopupTextBox : IClickableMenu
     {
-        public int MinLength = 1;
-        public ClickableTextureComponent DoneEnterButton;
-        public TextBox TextBox;
-        public ClickableComponent textBoxCC;
-        private TextBox.TextEnter doneEnter;
-        public string Title;
+        private const int MinLength = 1;
+        private readonly ClickableTextureComponent _doneEnterButton;
+        private readonly TextBox _textBox;
+        private readonly TextBox.TextEnter _doneEnter;
+        private readonly string _title;
 
         public PopupTextBox(TextBox.TextEnter b, string title,bool numbersOnly = false) 
         {
-            doneEnter = b;
+            _doneEnter = b;
             xPositionOnScreen = 0;
             yPositionOnScreen = 0;
             width = Game1.viewport.Width;
             height = Game1.viewport.Height;
-            Title = title;
-            TextBox = new TextBox(_ => { })
+            _title = title;
+            _textBox = new TextBox(_ => { })
             {
                 X = Game1.viewport.Width / 2 - 192,
                 Y = Game1.viewport.Height / 2,
@@ -34,9 +34,9 @@ namespace ModSettingsTab.Framework.Components
                 Text = "",
                 numbersOnly = numbersOnly
             };
-            TextBox.OnEnterPressed += TextBoxEnter;
-            Game1.keyboardDispatcher.Subscriber = TextBox;
-            TextBox.Selected = true;
+            _textBox.OnEnterPressed += TextBoxEnter;
+            Game1.keyboardDispatcher.Subscriber = _textBox;
+            _textBox.Selected = true;
             upperRightCloseButton = new ClickableTextureComponent(
                 new Rectangle(Game1.viewport.Width / 2+200, Game1.viewport.Height / 2 - 170, 48, 48),
                 Game1.mouseCursors, 
@@ -44,18 +44,13 @@ namespace ModSettingsTab.Framework.Components
                 4f);
 
             var textureComponent2 = new ClickableTextureComponent(
-                new Rectangle(TextBox.X + TextBox.Width + 32 + 4,
+                new Rectangle(_textBox.X + _textBox.Width + 32 + 4,
                     Game1.viewport.Height / 2 - 8, 64, 64),
                 Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 46), 1f)
             {
                 myID = 102, rightNeighborID = 103, leftNeighborID = 104
             };
-            DoneEnterButton = textureComponent2;
-            textBoxCC = new ClickableComponent(new Rectangle(TextBox.X, TextBox.Y, 350, 48), "")
-            {
-                myID = 104,
-                rightNeighborID = 102
-            };
+            _doneEnterButton = textureComponent2;
             if (!Game1.options.SnappyMenus)
                 return;
             populateClickableComponentList();
@@ -72,19 +67,17 @@ namespace ModSettingsTab.Framework.Components
         {
             if (sender.Text.Length < MinLength)
                 return;
-            if (doneEnter != null)
+            if (_doneEnter != null)
             {
-                doneEnter(sender.Text);
-                TextBox.Selected = false;
+                _doneEnter(sender.Text);
+                _textBox.Selected = false;
             }
-            else
-                Game1.exitActiveMenu();
         }
 
         public override void receiveGamePadButton(Buttons b)
         {
             base.receiveGamePadButton(b);
-            if (!TextBox.Selected)
+            if (!_textBox.Selected)
                 return;
             switch (b)
             {
@@ -96,14 +89,14 @@ namespace ModSettingsTab.Framework.Components
                 case Buttons.LeftThumbstickUp:
                 case Buttons.LeftThumbstickDown:
                 case Buttons.LeftThumbstickRight:
-                    TextBox.Selected = false;
+                    _textBox.Selected = false;
                     break;
             }
         }
 
         public override void receiveKeyPress(Keys key)
         {
-            if (TextBox.Selected || Game1.options.doesInputListContain(Game1.options.menuButton, key))
+            if (_textBox.Selected || Game1.options.doesInputListContain(Game1.options.menuButton, key))
                 return;
             base.receiveKeyPress(key);
         }
@@ -115,10 +108,10 @@ namespace ModSettingsTab.Framework.Components
         public override void performHoverAction(int x, int y)
         {
             base.performHoverAction(x, y);
-            if (DoneEnterButton == null) return;
-            DoneEnterButton.scale = DoneEnterButton.containsPoint(x, y) 
-                ? Math.Min(1.1f, DoneEnterButton.scale + 0.05f) 
-                : Math.Max(1f, DoneEnterButton.scale - 0.05f);
+            if (_doneEnterButton == null) return;
+            _doneEnterButton.scale = _doneEnterButton.containsPoint(x, y) 
+                ? Math.Min(1.1f, _doneEnterButton.scale + 0.05f) 
+                : Math.Max(1f, _doneEnterButton.scale - 0.05f);
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -127,16 +120,16 @@ namespace ModSettingsTab.Framework.Components
             {
                 if (playSound)
                     Game1.playSound("bigDeSelect");
-                doneEnter(TextBox.Text);
+                _doneEnter(_textBox.Text);
                 return;
             }
-            TextBox.Update();
-            if (DoneEnterButton.containsPoint(x, y))
+            _textBox.Update();
+            if (_doneEnterButton.containsPoint(x, y))
             {
-                TextBoxEnter(TextBox);
+                TextBoxEnter(_textBox);
                 Game1.playSound("smallSelect");
             }
-            TextBox.Update();
+            _textBox.Update();
         }
         public override bool shouldDrawCloseButton()
         {
@@ -147,14 +140,14 @@ namespace ModSettingsTab.Framework.Components
         {
             base.draw(b);
             b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, null,Color.Black * 0.75f,0f,Vector2.Zero,SpriteEffects.None,0.6f);
-            SpriteText.drawStringWithScrollCenteredAt(b, Title, Game1.viewport.Width / 2,
-                Game1.viewport.Height / 2 - 128, Title);
-            Game1.drawDialogueBox(TextBox.X - 32, 
-                TextBox.Y - 112 + 10, 
-                TextBox.Width + 80, 
-                TextBox.Height, false, true);
-            TextBox.Draw(b);
-            DoneEnterButton.draw(b);
+            SpriteText.drawStringWithScrollCenteredAt(b, _title, Game1.viewport.Width / 2,
+                Game1.viewport.Height / 2 - 128, _title);
+            Game1.drawDialogueBox(_textBox.X - 32, 
+                _textBox.Y - 112 + 10, 
+                _textBox.Width + 80, 
+                _textBox.Height, false, true);
+            _textBox.Draw(b);
+            _doneEnterButton.draw(b);
             drawMouse(b);
         }
     }

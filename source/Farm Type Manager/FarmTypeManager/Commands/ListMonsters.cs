@@ -69,7 +69,11 @@ namespace FarmTypeManager
                 AppDomain.CurrentDomain.GetAssemblies() //get all assemblies
                 .Where
                 (
-                    assembly => assembly.IsDynamic == false //ignore any dynamic assemblies
+                    //ignore any assemblies that can't contain monster and/or may cause errors
+                    assembly => assembly.IsDynamic == false
+                    && assembly.ManifestModule.Name != "<In Memory Module>"
+                    && !assembly.FullName.StartsWith("System")
+                    && !assembly.FullName.StartsWith("Microsoft")
                 ) 
                 .SelectMany(assembly => assembly.GetTypes()) //get all types from each assembly as a single sequence
                 .Where(filterSubclass) //ignore any types that are not subclasses of baseClass

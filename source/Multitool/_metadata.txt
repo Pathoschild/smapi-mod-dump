@@ -5,9 +5,9 @@ mods:
    Multitool
 
 latest commit:
-   commit ce59a1f75e7f49fe68833b9cad56aeca19355eb5
+   commit e28fa18e235f771a1c55702bb9385b8b95863de7
    Author: miome <miome.geo@yahoo.com>
-   Date:   Wed Aug 8 11:24:27 2018 -0400
+   Date:   Thu Feb 20 19:44:18 2020 -0500
    
-       Add additional logging to debug random tile issue
+       Update compatibility info
    

@@ -3,5 +3,11 @@
   "OptionsPage.ModSettingsTab": "変更設定",
   "StaticConfig.SuccessMessage": "設定が保存されました",
   "StaticConfig.FailMessage": "保存エラー",
-  "OptionsList.NewValue": "新しい値を入力してください"
+  "OptionsList.NewValue": "新しい値を入力してください",
+  "Mod.Disabled.Error": "変更の切り替えに失敗しました",
+  "ModManager.AddModPack": "新しいmodパックを追加",
+  "ModManager.HoverSetUp.Title":"Switch modpack",
+  "ModManager.HoverSetUp.Description": "modパックに含まれていない他のmodは無効になります",
+  "ModManager.Toggle.Label": "現在のmodパック",
+  "ModManager.Add.NameTextBox": "Modpack名"
 }

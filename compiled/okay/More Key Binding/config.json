@@ -1,0 +1,11 @@
+{
+  "HoldKey": "LeftControl",
+  "TakeScreenshot": "K",
+  "ZoomIn": "L",
+  "ZoomOut": "J",
+  "SortInventory": "Q",
+  "StackToChest": "R",
+  "PetAnimal": "P",
+  "OpenAnimalDoors": "O",
+  "ClosedAnimalDoors": "C"
+}

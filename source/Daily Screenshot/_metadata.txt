@@ -5,9 +5,13 @@ mods:
    Daily Screenshot
 
 latest commit:
-   commit 580b3d538d93487d13bc207baba964da0c7cab32
+   commit 9293522b83120d8a3018b6d80460580f2231e67e
    Author: Lauren Stephenson <compscilauren@gmail.com>
-   Date:   Wed Jan 1 14:17:16 2020 -0600
+   Date:   Sun Jan 26 19:44:51 2020 -0600
    
-       Update README.md
+       Add rainy weather config option (#33)
+       
+       * Update version number
+       
+       * Add Config option to disable rainy day screenshots
    

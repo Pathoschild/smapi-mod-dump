@@ -1,20 +1,57 @@
 {
   "LargeChest": {
-    "Id": 816,
-    "Name": "Large Chest",
-    "Description": "A large place to store your items.",
-    "Recipe": "388 100 334 5 335 5",
-    "SpritePath": "Sprites/LargeChest.png",
-    "SpriteBWPath": "Sprites/LargeChestBW.png",
-    "SpriteBracesPath": "Sprites/LargeChestBraces.png"
+    "SpritePath": "LargeChest.png",
+    "SpriteBWPath": "LargeChestBW.png",
+    "SpriteBracesPath": "LargeChestBraces.png"
   },
   "MagicChest": {
-    "Id": 817,
-    "Name": "Magic Chest",
-    "Description": "A magical place to store your items.",
-    "Recipe": "709 100 336 5 337 5 768 50 769 50",
-    "SpritePath": "Sprites/MagicChest.png",
-    "SpriteBWPath": "Sprites/MagicChestBW.png",
-    "SpriteBracesPath": "Sprites/MagicChestBraces.png"
+    "SpritePath": "MagicChest.png",
+    "SpriteBWPath": "MagicChestBW.png",
+    "SpriteBracesPath": "MagicChestBraces.png"
+  },
+  "SuperMagicChest": {
+    "SpritePath": "SuperMagicChest.png",
+    "SpriteBWPath": "SuperMagicChestBW.png",
+    "SpriteBracesPath": "SuperMagicChestBraces.png"
+  },
+  "EnableCategories": true,
+  "Categories": {
+    "Crops": [
+      -81,
+      -80,
+      -79,
+      -75
+    ],
+    "Seeds": [
+      -74,
+      -19
+    ],
+    "Materials": [
+      -15,
+      -16,
+      -2,
+      -12,
+      -8,
+      -28
+    ],
+    "Cooking": [
+      -25,
+      -7,
+      -18,
+      -14,
+      -6,
+      -5,
+      -27,
+      -26
+    ],
+    "Fishing": [
+      -4,
+      -21,
+      -22
+    ],
+    "Misc": [
+      -24,
+      -20
+    ]
   }
 }

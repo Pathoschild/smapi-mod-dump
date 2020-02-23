@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Pathoschild.Stardew.Common;
+using Pathoschild.Stardew.Common.Input;
 using Pathoschild.Stardew.DataLayers.Framework;
 using Pathoschild.Stardew.DataLayers.Layers;
 using Pathoschild.Stardew.DataLayers.Layers.Coverage;
@@ -31,6 +31,9 @@ namespace Pathoschild.Stardew.DataLayers
         /// <summary>The available data layers.</summary>
         private ILayer[] Layers;
 
+        /// <summary>Maps key bindings to the layers they should activate.</summary>
+        private readonly IDictionary<KeyBinding, ILayer> ShortcutMap = new Dictionary<KeyBinding, ILayer>();
+
         /// <summary>Handles access to the supported mod integrations.</summary>
         private ModIntegrations Mods;
 
@@ -44,7 +47,7 @@ namespace Pathoschild.Stardew.DataLayers
         {
             // read config
             this.Config = helper.ReadConfig<ModConfig>();
-            this.Keys = this.Config.Controls.ParseControls(this.Monitor);
+            this.Keys = this.Config.Controls.ParseControls(helper.Input, this.Monitor);
 
             // hook up events
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
@@ -68,41 +71,49 @@ namespace Pathoschild.Stardew.DataLayers
         {
             // init
             this.Mods = new ModIntegrations(this.Monitor, this.Helper.ModRegistry, this.Helper.Reflection);
-            this.Layers = this.GetLayers(this.Config, this.Helper.Translation, this.Mods).ToArray();
+            this.Layers = this.GetLayers(this.Config, this.Helper.Input, this.Helper.Translation, this.Mods).ToArray();
+
+            // cache shortcut keys
+            foreach (ILayer layer in this.Layers)
+            {
+                if (layer.ShortcutKey.ToString() != SButton.None.ToString())
+                    this.ShortcutMap[layer.ShortcutKey] = layer;
+            }
         }
 
         /// <summary>Get the enabled data layers.</summary>
         /// <param name="config">The mod configuration.</param>
+        /// <param name="input">The API for checking input state.</param>
         /// <param name="translation">Provides translations for the mod.</param>
         /// <param name="mods">Handles access to the supported mod integrations.</param>
-        private IEnumerable<ILayer> GetLayers(ModConfig config, ITranslationHelper translation, ModIntegrations mods)
+        private IEnumerable<ILayer> GetLayers(ModConfig config, IInputHelper input, ITranslationHelper translation, ModIntegrations mods)
         {
             ModConfig.LayerConfigs layers = config.Layers;
 
             if (layers.Accessible.IsEnabled())
-                yield return new AccessibleLayer(translation, layers.Accessible);
+                yield return new AccessibleLayer(translation, layers.Accessible, input, this.Monitor);
             if (layers.Buildable.IsEnabled())
-                yield return new BuildableLayer(translation, layers.Buildable);
+                yield return new BuildableLayer(translation, layers.Buildable, input, this.Monitor);
             if (layers.CoverageForBeeHouses.IsEnabled())
-                yield return new BeeHouseLayer(translation, layers.CoverageForBeeHouses);
+                yield return new BeeHouseLayer(translation, layers.CoverageForBeeHouses, input, this.Monitor);
             if (layers.CoverageForScarecrows.IsEnabled())
-                yield return new ScarecrowLayer(translation, layers.CoverageForScarecrows, mods);
+                yield return new ScarecrowLayer(translation, layers.CoverageForScarecrows, mods, input, this.Monitor);
             if (layers.CoverageForSprinklers.IsEnabled())
-                yield return new SprinklerLayer(translation, layers.CoverageForSprinklers, mods);
+                yield return new SprinklerLayer(translation, layers.CoverageForSprinklers, mods, input, this.Monitor);
             if (layers.CoverageForJunimoHuts.IsEnabled())
-                yield return new JunimoHutLayer(translation, layers.CoverageForJunimoHuts, mods);
+                yield return new JunimoHutLayer(translation, layers.CoverageForJunimoHuts, mods, input, this.Monitor);
             if (layers.CropWater.IsEnabled())
-                yield return new CropWaterLayer(translation, layers.CropWater);
+                yield return new CropWaterLayer(translation, layers.CropWater, input, this.Monitor);
             if (layers.CropPaddyWater.IsEnabled())
-                yield return new CropPaddyWaterLayer(translation, layers.CropPaddyWater);
+                yield return new CropPaddyWaterLayer(translation, layers.CropPaddyWater, input, this.Monitor);
             if (layers.CropFertilizer.IsEnabled())
-                yield return new CropFertilizerLayer(translation, layers.CropFertilizer);
+                yield return new CropFertilizerLayer(translation, layers.CropFertilizer, input, this.Monitor);
             if (layers.CropHarvest.IsEnabled())
-                yield return new CropHarvestLayer(translation, layers.CropHarvest);
+                yield return new CropHarvestLayer(translation, layers.CropHarvest, input, this.Monitor);
             if (layers.Machines.IsEnabled() && mods.Automate.IsLoaded)
-                yield return new MachineLayer(translation, layers.Machines, mods);
+                yield return new MachineLayer(translation, layers.Machines, mods, input, this.Monitor);
             if (layers.Tillable.IsEnabled())
-                yield return new TillableLayer(translation, layers.Tillable);
+                yield return new TillableLayer(translation, layers.Tillable, input, this.Monitor);
         }
 
         /// <summary>The method invoked when the player returns to the title screen.</summary>
@@ -129,7 +140,7 @@ namespace Pathoschild.Stardew.DataLayers
                 ModConfigKeys keys = this.Keys;
 
                 // toggle overlay
-                if (keys.ToggleLayer.Contains(e.Button))
+                if (keys.ToggleLayer.JustPressedUnique())
                 {
                     if (overlayVisible)
                     {
@@ -142,15 +153,26 @@ namespace Pathoschild.Stardew.DataLayers
                 }
 
                 // cycle layers
-                else if (overlayVisible && keys.NextLayer.Contains(e.Button))
+                else if (overlayVisible && keys.NextLayer.JustPressedUnique())
                 {
                     this.CurrentOverlay.NextLayer();
                     this.Helper.Input.Suppress(e.Button);
                 }
-                else if (overlayVisible && keys.PrevLayer.Contains(e.Button))
+                else if (overlayVisible && keys.PrevLayer.JustPressedUnique())
                 {
                     this.CurrentOverlay.PrevLayer();
                     this.Helper.Input.Suppress(e.Button);
+                }
+
+                // shortcut to layer
+                else if (overlayVisible)
+                {
+                    ILayer layer = this.ShortcutMap.Where(p => p.Key.JustPressedUnique()).Select(p => p.Value).FirstOrDefault();
+                    if (layer != null && layer != this.CurrentOverlay.CurrentLayer)
+                    {
+                        this.CurrentOverlay.SetLayer(layer);
+                        this.Helper.Input.Suppress(e.Button);
+                    }
                 }
             });
         }

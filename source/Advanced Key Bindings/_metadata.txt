@@ -5,9 +5,10 @@ mods:
    Advanced Key Bindings
 
 latest commit:
-   commit 06adfa1a4582f6ca10898fcd02a38ef6ef6a32af
+   commit c530c93ebcca5753459ab8b3e97b2ad95ca47ede
    Author: Drachenkaetzchen <felicia@drachenkatze.org>
-   Date:   Tue Jan 7 00:25:57 2020 +0100
+   Date:   Fri Jan 17 01:49:01 2020 +0100
    
-       updated to 1.0.1
+       Bugfix: Animals can be placed in buildings under construction
+       New Feature: Quick jump to movable and demolishable buildings
    

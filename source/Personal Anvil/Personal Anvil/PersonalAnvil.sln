@@ -1,0 +1,22 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonalAnvil", "PersonalAnvil.csproj", "{CC665EEE-42F1-4BB5-94DA-962CB84BD3A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC665EEE-42F1-4BB5-94DA-962CB84BD3A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC665EEE-42F1-4BB5-94DA-962CB84BD3A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC665EEE-42F1-4BB5-94DA-962CB84BD3A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC665EEE-42F1-4BB5-94DA-962CB84BD3A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
+	EndGlobalSection
+EndGlobal

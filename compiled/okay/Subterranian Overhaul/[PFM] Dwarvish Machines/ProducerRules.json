@@ -1,0 +1,1714 @@
+﻿[
+	{
+		"ProducerName": "Dwarvish Gem Polisher",
+		"InputIdentifier": 60,
+		"InputStack": 1,
+		"MinutesUntilReady": 10,
+		"OutputIdentifier": 60,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 4,
+		"AdditionalOutputs": [ 
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 60, 
+				"OutputQuality": 4,
+				"MinutesUntilReady": 1680,
+				"RequiredInputQuality": [ 2 ],
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": 60,
+				"OutputQuality": 2,
+				"MinutesUntilReady": 840,
+				"RequiredInputQuality": [ 1 ],
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": 60,
+				"OutputQuality": 1,
+				"MinutesUntilReady": 840,
+				"RequiredInputQuality": [ 0 ],
+			}
+		],
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Gem Polisher",
+		"InputIdentifier": 62,
+		"InputStack": 1,
+		"MinutesUntilReady": 10,
+		"OutputIdentifier": 62,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 4,
+		"AdditionalOutputs": [ 
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 62, 
+				"OutputQuality": 4,
+				"MinutesUntilReady": 1680,
+				"RequiredInputQuality": [ 2 ],
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": 62,
+				"OutputQuality": 2,
+				"MinutesUntilReady": 840,
+				"RequiredInputQuality": [ 1 ],
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": 62,
+				"OutputQuality": 1,
+				"MinutesUntilReady": 840,
+				"RequiredInputQuality": [ 0 ],
+			}
+		],
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Gem Polisher",
+		"InputIdentifier": 64,
+		"InputStack": 1,
+		"MinutesUntilReady": 10,
+		"OutputIdentifier": 64,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 4,
+		"AdditionalOutputs": [ 
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 64, 
+				"OutputQuality": 4,
+				"MinutesUntilReady": 1680,
+				"RequiredInputQuality": [ 2 ],
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": 64,
+				"OutputQuality": 2,
+				"MinutesUntilReady": 840,
+				"RequiredInputQuality": [ 1 ],
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": 64,
+				"OutputQuality": 1,
+				"MinutesUntilReady": 840,
+				"RequiredInputQuality": [ 0 ],
+			}
+		],
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Gem Polisher",
+		"InputIdentifier": 66,
+		"InputStack": 1,
+		"MinutesUntilReady": 10,
+		"OutputIdentifier": 66,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 4,
+		"AdditionalOutputs": [ 
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 66, 
+				"OutputQuality": 4,
+				"MinutesUntilReady": 1680,
+				"RequiredInputQuality": [ 2 ],
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": 66,
+				"OutputQuality": 2,
+				"MinutesUntilReady": 840,
+				"RequiredInputQuality": [ 1 ],
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": 66,
+				"OutputQuality": 1,
+				"MinutesUntilReady": 840,
+				"RequiredInputQuality": [ 0 ],
+			}
+		],
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Gem Polisher",
+		"InputIdentifier": 68,
+		"InputStack": 1,
+		"MinutesUntilReady": 10,
+		"OutputIdentifier": 68,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 4,
+		"AdditionalOutputs": [ 
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 68, 
+				"OutputQuality": 4,
+				"MinutesUntilReady": 1680,
+				"RequiredInputQuality": [ 2 ],
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": 68,
+				"OutputQuality": 2,
+				"MinutesUntilReady": 840,
+				"RequiredInputQuality": [ 1 ],
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": 68,
+				"OutputQuality": 1,
+				"MinutesUntilReady": 840,
+				"RequiredInputQuality": [ 0 ],
+			}
+		],
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Gem Polisher",
+		"InputIdentifier": 70,
+		"InputStack": 1,
+		"MinutesUntilReady": 10,
+		"OutputIdentifier": 70,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 4,
+		"AdditionalOutputs": [ 
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 70, 
+				"OutputQuality": 4,
+				"MinutesUntilReady": 1680,
+				"RequiredInputQuality": [ 2 ],
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": 70,
+				"OutputQuality": 2,
+				"MinutesUntilReady": 840,
+				"RequiredInputQuality": [ 1 ],
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": 70,
+				"OutputQuality": 1,
+				"MinutesUntilReady": 840,
+				"RequiredInputQuality": [ 0 ],
+			}
+		],
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Gem Polisher",
+		"InputIdentifier": 72,
+		"InputStack": 1,
+		"MinutesUntilReady": 10,
+		"OutputIdentifier": 72,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 4,
+		"AdditionalOutputs": [ 
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 72, 
+				"OutputQuality": 4,
+				"MinutesUntilReady": 1680,
+				"RequiredInputQuality": [ 2 ],
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": 72,
+				"OutputQuality": 2,
+				"MinutesUntilReady": 840,
+				"RequiredInputQuality": [ 1 ],
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": 72,
+				"OutputQuality": 1,
+				"MinutesUntilReady": 840,
+				"RequiredInputQuality": [ 0 ],
+			}
+		],
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": "Copper Cluster",
+		"InputStack": 1,
+		"MinutesUntilReady": 30,
+		"OutputIdentifier": 378,
+		"OutputStack": 3,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 0,
+		"AdditionalOutputs": [ 
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 378, 
+				"OutputQuality": 0,
+				"OutputStack": 6,
+				"MinutesUntilReady": 30,
+				"RequiredInputQuality": [ 4 ],
+			},
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 378, 
+				"OutputQuality": 0,
+				"OutputStack": 5,
+				"MinutesUntilReady": 30,
+				"RequiredInputQuality": [ 2 ],
+			},
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 378, 
+				"OutputQuality": 0,
+				"OutputStack": 4,
+				"MinutesUntilReady": 30,
+				"RequiredInputQuality": [ 1 ],
+			}
+		],
+		"Sounds": [ "stoneCrack" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "stoneCrack": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": "Iron Cluster",
+		"InputStack": 1,
+		"MinutesUntilReady": 120,
+		"OutputIdentifier": 380,
+		"OutputStack": 3,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 0,
+		"AdditionalOutputs": [ 
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 380, 
+				"OutputQuality": 0,
+				"OutputStack": 6,
+				"MinutesUntilReady": 120,
+				"RequiredInputQuality": [ 4 ],
+			},
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 380, 
+				"OutputQuality": 0,
+				"OutputStack": 5,
+				"MinutesUntilReady": 120,
+				"RequiredInputQuality": [ 2 ],
+			},
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 380, 
+				"OutputQuality": 0,
+				"OutputStack": 4,
+				"MinutesUntilReady": 120,
+				"RequiredInputQuality": [ 1 ],
+			}
+		],
+		"Sounds": [ "stoneCrack" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "stoneCrack": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": "Gold Cluster",
+		"InputStack": 1,
+		"MinutesUntilReady": 360,
+		"OutputIdentifier": 384,
+		"OutputStack": 3,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 0,
+		"AdditionalOutputs": [ 
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 384, 
+				"OutputQuality": 0,
+				"OutputStack": 6,
+				"MinutesUntilReady": 360,
+				"RequiredInputQuality": [ 4 ],
+			},
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 384, 
+				"OutputQuality": 0,
+				"OutputStack": 5,
+				"MinutesUntilReady": 360,
+				"RequiredInputQuality": [ 2 ],
+			},
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 384, 
+				"OutputQuality": 0,
+				"OutputStack": 4,
+				"MinutesUntilReady": 360,
+				"RequiredInputQuality": [ 1 ],
+			}
+		],
+		"Sounds": [ "stoneCrack" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "stoneCrack": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": "Iridium Cluster",
+		"InputStack": 1,
+		"MinutesUntilReady": 480,
+		"OutputIdentifier": 386,
+		"OutputStack": 3,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 0,
+		"AdditionalOutputs": [ 
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 386, 
+				"OutputQuality": 0,
+				"OutputStack": 6,
+				"MinutesUntilReady": 480,
+				"RequiredInputQuality": [ 4 ],
+			},
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 386, 
+				"OutputQuality": 0,
+				"OutputStack": 5,
+				"MinutesUntilReady": 480,
+				"RequiredInputQuality": [ 2 ],
+			},
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": 386, 
+				"OutputQuality": 0,
+				"OutputStack": 4,
+				"MinutesUntilReady": 480,
+				"RequiredInputQuality": [ 1 ],
+			}
+		],
+		"Sounds": [ "stoneCrack" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "stoneCrack": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 124,
+		"InputStack": 1,
+		"MinutesUntilReady": 360,
+		"OutputIdentifier": "Gold Cluster",
+		"OutputStack": 5,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 2,
+		"Sounds": [ "stoneCrack" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "stoneCrack": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 125,
+		"InputStack": 1,
+		"MinutesUntilReady": 360,
+		"OutputIdentifier": "Gold Cluster",
+		"OutputStack": 3,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 2,
+		"Sounds": [ "stoneCrack" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "stoneCrack": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 373,
+		"InputStack": 1,
+		"MinutesUntilReady": 360,
+		"OutputIdentifier": "Gold Cluster",
+		"OutputStack": 12,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 2,
+		"Sounds": [ "stoneCrack" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "stoneCrack": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 112,
+		"InputStack": 1,
+		"MinutesUntilReady": 30,
+		"OutputIdentifier": 378,
+		"OutputStack": 5,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 2,
+		"Sounds": [ "stoneCrack" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "stoneCrack": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 111,
+		"InputStack": 1,
+		"MinutesUntilReady": 30,
+		"OutputIdentifier": 378,
+		"OutputStack": 5,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 2,
+		"Sounds": [ "stoneCrack" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "stoneCrack": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 78,
+		"InputStack": 1,
+		"MinutesUntilReady": 30,
+		"OutputIdentifier": "Carrot Mash",
+		"OutputStack": 1,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 0,
+		"AdditionalOutputs": [ 
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": "Carrot Mash", 
+				"OutputQuality": 0,
+				"OutputStack": 4,
+				"MinutesUntilReady": 30,
+				"RequiredInputQuality": [ 4 ],
+			},
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": "Carrot Mash", 
+				"OutputQuality": 0,
+				"OutputStack": 3,
+				"MinutesUntilReady": 30,
+				"RequiredInputQuality": [ 2 ],
+			},
+			{
+				"OutputProbability": 1, 
+				"OutputIdentifier": "Carrot Mash", 
+				"OutputQuality": 0,
+				"OutputStack": 2,
+				"MinutesUntilReady": 30,
+				"RequiredInputQuality": [ 1 ],
+			},
+		],
+		"Sounds": [ "slimedead" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "slimedead": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 386,
+		"InputStack": 1,
+		"MinutesUntilReady": 180,
+		"OutputIdentifier": "Iridium Dust",
+		"OutputStack": 1,
+		"InputPriceBased": true,
+		"KeepInputQuality": false,
+		"Sounds": [ "hammer" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "hammer": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 384,
+		"InputStack": 1,
+		"MinutesUntilReady": 120,
+		"OutputIdentifier": "Gold Dust",
+		"OutputStack": 1,
+		"InputPriceBased": true,
+		"KeepInputQuality": false,
+		"Sounds": [ "hammer" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "hammer": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 380,
+		"InputStack": 1,
+		"MinutesUntilReady": 60,
+		"OutputIdentifier": "Iron Dust",
+		"OutputStack": 1,
+		"InputPriceBased": true,
+		"KeepInputQuality": false,
+		"Sounds": [ "hammer" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "hammer": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 378,
+		"InputStack": 1,
+		"MinutesUntilReady": 30,
+		"OutputIdentifier": "Copper Dust",
+		"OutputStack": 1,
+		"InputPriceBased": true,
+		"KeepInputQuality": false,
+		"Sounds": [ "hammer" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "hammer": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 60,
+		"InputStack": 1,
+		"MinutesUntilReady": 30,
+		"OutputIdentifier": "Emerald Dust",
+		"OutputStack": 1,
+		"InputPriceBased": true,
+		"KeepInputQuality": false,
+		"Sounds": [ "hammer" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "hammer": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 62,
+		"InputStack": 1,
+		"MinutesUntilReady": 30,
+		"OutputIdentifier": "Aquamarine Dust",
+		"OutputStack": 1,
+		"InputPriceBased": true,
+		"KeepInputQuality": false,
+		"Sounds": [ "hammer" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "hammer": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 64,
+		"InputStack": 1,
+		"MinutesUntilReady": 30,
+		"OutputIdentifier": "Ruby Dust",
+		"OutputStack": 1,
+		"InputPriceBased": true,
+		"KeepInputQuality": false,
+		"Sounds": [ "hammer" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "hammer": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 66,
+		"InputStack": 1,
+		"MinutesUntilReady": 30,
+		"OutputIdentifier": "Amethyst Dust",
+		"OutputStack": 1,
+		"InputPriceBased": true,
+		"KeepInputQuality": false,
+		"Sounds": [ "hammer" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "hammer": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 68,
+		"InputStack": 1,
+		"MinutesUntilReady": 30,
+		"OutputIdentifier": "Topaz Dust",
+		"OutputStack": 1,
+		"InputPriceBased": true,
+		"KeepInputQuality": false,
+		"Sounds": [ "hammer" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "hammer": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 70,
+		"InputStack": 1,
+		"MinutesUntilReady": 30,
+		"OutputIdentifier": "Jade Dust",
+		"OutputStack": 1,
+		"InputPriceBased": true,
+		"KeepInputQuality": false,
+		"Sounds": [ "hammer" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "hammer": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"InputIdentifier": 72,
+		"InputStack": 1,
+		"MinutesUntilReady": 30,
+		"OutputIdentifier": "Diamond Dust",
+		"OutputStack": 1,
+		"InputPriceBased": true,
+		"KeepInputQuality": false,
+		"Sounds": [ "hammer" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "hammer": 10 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Still",
+		"InputIdentifier": "Copper Dust",
+		"AdditionalFuel": {
+			"Carrot Mash": 1
+		},
+		"InputStack": 1,
+		"MinutesUntilReady": 700,
+		"OutputIdentifier": "Dwarven Spirits",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 25,
+		"OutputPriceMultiplier": 1.25,
+		"KeepInputQuality": false,
+		"OutputQuality": 0,
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 30 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Still",
+		"InputIdentifier": "Iron Dust",
+		"AdditionalFuel": {
+			"Carrot Mash": 1
+		},
+		"InputStack": 1,
+		"MinutesUntilReady": 1400,
+		"OutputIdentifier": "Dwarven Spirits",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 25,
+		"OutputPriceMultiplier": 1.25,
+		"KeepInputQuality": false,
+		"OutputQuality": 1,
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 30 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Still",
+		"InputIdentifier": "Gold Dust",
+		"AdditionalFuel": {
+			"Carrot Mash": 1
+		},
+		"InputStack": 1,
+		"MinutesUntilReady": 2800,
+		"OutputIdentifier": "Dwarven Spirits",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 25,
+		"OutputPriceMultiplier": 1.25,
+		"KeepInputQuality": false,
+		"OutputQuality": 2,
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 30 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Still",
+		"InputIdentifier": "Iridium Dust",
+		"AdditionalFuel": {
+			"Carrot Mash": 1
+		},
+		"InputStack": 1,
+		"MinutesUntilReady": 5600,
+		"OutputIdentifier": "Dwarven Spirits",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 25,
+		"OutputPriceMultiplier": 1.25,
+		"KeepInputQuality": false,
+		"OutputQuality": 4,
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 30 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Still",
+		"InputIdentifier": "Ruby Dust",
+		"AdditionalFuel": {
+			"Carrot Mash": 1
+		},
+		"InputStack": 1,
+		"MinutesUntilReady": 7200,
+		"OutputIdentifier": "Infused Dwarven Spirits",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 25,
+		"OutputPriceMultiplier": 1.25,
+		"OutputName": "{inputName} Spirits",
+		"KeepInputQuality": false,
+		"OutputQuality": 2,
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 30 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Still",
+		"InputIdentifier": "Emerald Dust",
+		"AdditionalFuel": {
+			"Carrot Mash": 1
+		},
+		"InputStack": 1,
+		"MinutesUntilReady": 7200,
+		"OutputIdentifier": "Infused Dwarven Spirits",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 25,
+		"OutputPriceMultiplier": 1.25,
+		"OutputName": "{inputName} Spirits",
+		"KeepInputQuality": false,
+		"OutputQuality": 2,
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 30 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Still",
+		"InputIdentifier": "Diamond Dust",
+		"AdditionalFuel": {
+			"Carrot Mash": 1
+		},
+		"InputStack": 1,
+		"MinutesUntilReady": 10080,
+		"OutputIdentifier": "Infused Dwarven Spirits",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 25,
+		"OutputPriceMultiplier": 1.25,
+		"OutputName": "{inputName} Spirits",
+		"KeepInputQuality": false,
+		"OutputQuality": 4,
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 30 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Still",
+		"InputIdentifier": "Topaz Dust",
+		"AdditionalFuel": {
+			"Carrot Mash": 1
+		},
+		"InputStack": 1,
+		"MinutesUntilReady": 2880,
+		"OutputIdentifier": "Infused Dwarven Spirits",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 25,
+		"OutputPriceMultiplier": 1.25,
+		"OutputName": "{inputName} Spirits",
+		"KeepInputQuality": false,
+		"OutputQuality": 0,
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 30 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Still",
+		"InputIdentifier": "Aquamarine Dust",
+		"AdditionalFuel": {
+			"Carrot Mash": 1
+		},
+		"InputStack": 1,
+		"MinutesUntilReady": 4320,
+		"OutputIdentifier": "Infused Dwarven Spirits",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 25,
+		"OutputPriceMultiplier": 1.25,
+		"OutputName": "{inputName} Spirits",
+		"KeepInputQuality": false,
+		"OutputQuality": 1,
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 30 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Still",
+		"InputIdentifier": "Amethyst Dust",
+		"AdditionalFuel": {
+			"Carrot Mash": 1
+		},
+		"InputStack": 1,
+		"MinutesUntilReady": 2880,
+		"OutputIdentifier": "Infused Dwarven Spirits",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 25,
+		"OutputPriceMultiplier": 1.25,
+		"OutputName": "{inputName} Spirits",
+		"KeepInputQuality": false,
+		"OutputQuality": 0,
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 30 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Dwarvish Still",
+		"InputIdentifier": "Jade Dust",
+		"AdditionalFuel": {
+			"Carrot Mash": 1
+		},
+		"InputStack": 1,
+		"MinutesUntilReady": 4320,
+		"OutputIdentifier": "Infused Dwarven Spirits",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 25,
+		"OutputPriceMultiplier": 1.25,
+		"OutputName": "{inputName} Spirits",
+		"KeepInputQuality": false,
+		"OutputQuality": 1,
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 30 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Alchemy Bench",
+		"InputIdentifier": "Infused Dwarven Spirits",
+		"InputStack": 1,
+		"InputPriceBased": false,
+		"KeepInputQuality": false,
+		"OutputQuality": 0,
+		"AdditionalOutputs": [ 			
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": "One Perfect Day",
+				"OutputQuality": 0,
+				"MinutesUntilReady": 10080,
+				"InputPriceBased": false,
+				"RequiredInputQuality": [ 4 ],
+				"RequiredFuel": {
+					"74": 1
+				}
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": "Concentrated Dwarven Spirits",
+				"OutputName": "Concentrated {inputName}",
+				"OutputQuality": 2,
+				"OutputPriceMultiplier": 2.0,
+				"OutputPriceIncrement": 1500,
+				"InputPriceBased": true,
+				"MinutesUntilReady": 4320,
+				"RequiredInputQuality": [ 4 ],
+				"RequiredFuel": {
+					"Diamond Dust": 1
+				}
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": "Concentrated Dwarven Spirits",
+				"OutputName": "Concentrated {inputName}",
+				"OutputQuality": 1,
+				"OutputPriceMultiplier": 2.0,
+				"OutputPriceIncrement": 500,
+				"InputPriceBased": true,
+				"MinutesUntilReady": 4320,
+				"RequiredInputQuality": [ 2 ],
+				"RequiredFuel": {
+					"Ruby Dust": 1
+				}
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": "Concentrated Dwarven Spirits",
+				"OutputName": "Concentrated {inputName}",
+				"OutputQuality": 1,
+				"OutputPriceMultiplier": 2.0,
+				"OutputPriceIncrement": 500,
+				"InputPriceBased": true,
+				"MinutesUntilReady": 4320,
+				"RequiredInputQuality": [ 2 ],
+				"RequiredFuel": {
+					"Emerald Dust": 1
+				}
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": "Shadowed Elixir",
+				"OutputQuality": 0,
+				"InputPriceBased": false,
+				"MinutesUntilReady": 2880,
+				"RequiredInputQuality": [ 2 ],
+				"RequiredFuel": {
+					"Voidshroom Spore": 1
+				}
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": "Distilled Sunlight",
+				"OutputQuality": 0,
+				"InputPriceBased": false,
+				"MinutesUntilReady": 2880,
+				"RequiredInputQuality": [ 2 ],
+				"RequiredFuel": {
+					"768": 3
+				}
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": "Farmers Draught",
+				"OutputQuality": 0,
+				"InputPriceBased": false,
+				"MinutesUntilReady": 1440,
+				"RequiredInputQuality": [ 1 ],
+				"RequiredFuel": {
+					"-74": 5
+				}
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": "Miners Drink",
+				"OutputQuality": 0,
+				"InputPriceBased": false,
+				"MinutesUntilReady": 1440,
+				"RequiredInputQuality": [ 1 ],
+				"RequiredFuel": {
+					"390": 15
+				}
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": "Fishermans Brew",
+				"OutputQuality": 0,
+				"InputPriceBased": false,
+				"MinutesUntilReady": 1440,
+				"RequiredInputQuality": [ 1 ],
+				"RequiredFuel": {
+					"-4": 1
+				}
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": "Woodmans Tonic",
+				"OutputQuality": 0,
+				"InputPriceBased": false,
+				"MinutesUntilReady": 1440,
+				"RequiredInputQuality": [ 1 ],
+				"RequiredFuel": {
+					"709": 5
+				}
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": "Swordsmans Elixir",
+				"OutputQuality": 0,
+				"InputPriceBased": false,
+				"MinutesUntilReady": 1440,
+				"RequiredInputQuality": [ 1 ],
+				"RequiredFuel": {
+					"335": 2
+				}
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": 351,
+				"OutputQuality": 0,
+				"OutputName": "Envigorating Concoction",
+				"InputPriceBased": false,
+				"MinutesUntilReady": 1440,
+				"RequiredInputQuality": [ 1 ],
+				"RequiredFuel": {
+					"Aquamarine Dust": 2,
+					"768": 1
+				}
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": 772,
+				"OutputQuality": 0,
+				"OutputName": "Potion of Repelling",
+				"InputPriceBased": false,
+				"MinutesUntilReady": 1440,
+				"RequiredInputQuality": [ 1 ],
+				"RequiredFuel": {
+					"Jade Dust": 3,
+					"768": 1
+				}
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": "773",
+				"OutputName": "Elixir of Healing",
+				"OutputQuality": 1,
+				"InputPriceBased": false,
+				"MinutesUntilReady": 1440,
+				"RequiredInputQuality": [ 1 ],
+				"RequiredFuel": {
+					"Amethyst Dust": 2,
+					"768": 1
+				}
+			},
+			{
+				"OutputProbability": 1,
+				"OutputIdentifier": "Concentrated Dwarven Spirits",
+				"OutputName": "Concentrated {inputName}",
+				"OutputQuality": 0,
+				"OutputPriceMultiplier": 1.25,
+				"OutputPriceIncrement": 100,
+				"InputPriceBased": true,
+				"MinutesUntilReady": 4320,
+				"RequiredInputQuality": [ 0 ],
+				"RequiredFuel": {
+					"Topaz Dust": 1
+				}
+			},
+		],
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Alchemy Bench",
+		"InputIdentifier": "72",
+		"InputStack": 1,
+		"MinutesUntilReady": 1440,
+		"OutputIdentifier": "382",
+		"OutputStack": 250,
+		"KeepInputQuality": true,
+		"FuelIdentifier": "Infused Dwarven Spirits",		
+		"AdditionalOutputs": [
+			{	
+				"OutputProbability": 1,
+				"OutputIdentifier": "74",
+				"OutputStack": 2,
+				"OutputQuality": 0,
+				"MinutesUntilReady": 10080,
+				"RequiredInputQuality": [ 4 ],
+				"RequiredFuel": {				
+					"60": 1,
+					"62": 1,
+					"64": 1,
+					"66": 1,
+					"68": 1,
+					"70": 1
+				}
+			},
+			{	
+				"OutputProbability": 1,
+				"OutputIdentifier": "382",
+				"OutputStack": 500,
+				"OutputQuality": 0,
+				"MinutesUntilReady": 1440,
+				"RequiredInputQuality": [ 4 ]
+			},
+			{	
+				"OutputProbability": 1,
+				"OutputIdentifier": "382",
+				"OutputStack": 375,
+				"OutputQuality": 0,
+				"MinutesUntilReady": 1440,
+				"RequiredInputQuality": [ 2 ]
+			},
+			{	
+				"OutputProbability": 1,
+				"OutputIdentifier": "382",
+				"OutputStack": 315,
+				"OutputQuality": 0,
+				"MinutesUntilReady": 1440,
+				"RequiredInputQuality": [ 1 ]
+			}
+		],
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Alchemy Bench",
+		"InputIdentifier": "74",
+		"InputStack": 3,
+		"MinutesUntilReady": 10080,
+		"OutputIdentifier": "279",
+		"OutputStack": 1,
+		"KeepInputQuality": false,
+		"OutputQuality": 0,
+		"AdditionalFuel": {
+			"Infused Dwarven Spirits": 1,
+			"245": 5
+		},
+		"Sounds": [ "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "bubbles": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 72,
+		"InputStack": 1,
+		"MinutesUntilReady": 20866,
+		"OutputIdentifier": "Gold Diamond Ring",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 60,
+		"InputStack": 1,
+		"MinutesUntilReady": 10433,
+		"OutputIdentifier": "Gold Emerald Ring",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 64,
+		"InputStack": 1,
+		"MinutesUntilReady": 10433,
+		"OutputIdentifier": "Gold Ruby Ring",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 70,
+		"InputStack": 1,
+		"MinutesUntilReady": 9390,
+		"OutputIdentifier": "Gold Jade Ring",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 62,
+		"InputStack": 1,
+		"MinutesUntilReady": 8972,
+		"OutputIdentifier": "Gold Aquamarine Ring",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 66,
+		"InputStack": 1,
+		"MinutesUntilReady": 7303,
+		"OutputIdentifier": "Gold Amethyst Ring",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 68,
+		"InputStack": 1,
+		"MinutesUntilReady": 6886,
+		"OutputIdentifier": "Gold Topaz Ring",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 113,
+		"InputStack": 1,
+		"MinutesUntilReady": 6260,
+		"OutputIdentifier": "Golden Chicken Statue",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 562,
+		"InputStack": 1,
+		"MinutesUntilReady": 10080,
+		"OutputIdentifier": "Tigerseye Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 564,
+		"InputStack": 1,
+		"MinutesUntilReady": 7680,
+		"OutputIdentifier": "Opal Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 565,
+		"InputStack": 1,
+		"MinutesUntilReady": 11520,
+		"OutputIdentifier": "Fire Opal Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 538,
+		"InputStack": 1,
+		"MinutesUntilReady": 7680,
+		"OutputIdentifier": "Alamite Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 541,
+		"InputStack": 1,
+		"MinutesUntilReady": 7200,
+		"OutputIdentifier": "Aerinite Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 543,
+		"InputStack": 1,
+		"MinutesUntilReady": 10560,
+		"OutputIdentifier": "Dolomite Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 545,
+		"InputStack": 1,
+		"MinutesUntilReady": 8640,
+		"OutputIdentifier": "Fluorapatite Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 546,
+		"InputStack": 1,
+		"MinutesUntilReady": 7680,
+		"OutputIdentifier": "Geminite Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 547,
+		"InputStack": 1,
+		"MinutesUntilReady": 13440,
+		"OutputIdentifier": "Helvite Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 550,
+		"InputStack": 1,
+		"MinutesUntilReady": 9600,
+		"OutputIdentifier": "Kyanite Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 552,
+		"InputStack": 1,
+		"MinutesUntilReady": 6720,
+		"OutputIdentifier": "Malachite Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 554,
+		"InputStack": 1,
+		"MinutesUntilReady": 8640,
+		"OutputIdentifier": "Lemon Stone Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 566,
+		"InputStack": 1,
+		"MinutesUntilReady": 7200,
+		"OutputIdentifier": "Celestine Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 575,
+		"InputStack": 1,
+		"MinutesUntilReady": 8640,
+		"OutputIdentifier": "Obsidian Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 578,
+		"InputStack": 1,
+		"MinutesUntilReady": 14400,
+		"OutputIdentifier": "Star Shards Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 80,
+		"InputStack": 1,
+		"MinutesUntilReady": 11088,
+		"OutputIdentifier": "Quartz Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 86,
+		"InputStack": 1,
+		"MinutesUntilReady": 12096,
+		"OutputIdentifier": "Earth Crystal Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 84,
+		"InputStack": 1,
+		"MinutesUntilReady": 13104,
+		"OutputIdentifier": "Frozen Tear Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": 82,
+		"InputStack": 1,
+		"MinutesUntilReady": 14112,
+		"OutputIdentifier": "Fire Quartz Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"InputIdentifier": "Necklace Mold",
+		"InputStack": 1,
+		"MinutesUntilReady": 10886,
+		"OutputIdentifier": "Gold Necklace",
+		"InputPriceBased": true,
+		"OutputPriceIncrement": 750,
+		"OutputPriceMultiplier": 3.0,
+		"FuelIdentifier": "336",
+		"KeepInputQuality": true,
+		"Sounds": [ "clank" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "clank": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Efficient Furnace",
+		"InputIdentifier": "378",
+		"InputStack": 8,
+		"MinutesUntilReady": 40,
+		"OutputIdentifier": "334",
+		"OutputStack": 2,
+		"FuelIdentifier": "382",
+		"FuelStack": "2",
+		"KeepInputQuality": false,
+		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "furnace": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Efficient Furnace",
+		"InputIdentifier": "380",
+		"InputStack": 8,
+		"MinutesUntilReady": 180,
+		"OutputIdentifier": "335",
+		"OutputStack": 2,
+		"FuelIdentifier": "382",
+		"FuelStack": "2",
+		"KeepInputQuality": false,
+		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "furnace": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Efficient Furnace",
+		"InputIdentifier": "384",
+		"InputStack": 8,
+		"MinutesUntilReady": 450,
+		"OutputIdentifier": "336",
+		"OutputStack": 2,
+		"FuelIdentifier": "382",
+		"FuelStack": "2",
+		"KeepInputQuality": false,
+		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "furnace": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Efficient Furnace",
+		"InputIdentifier": "386",
+		"InputStack": 8,
+		"MinutesUntilReady": 720,
+		"OutputIdentifier": "337",
+		"OutputStack": 2,
+		"FuelIdentifier": "382",
+		"FuelStack": "2",
+		"KeepInputQuality": false,
+		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "furnace": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Efficient Furnace",
+		"InputIdentifier": "80",
+		"InputStack": 5,
+		"MinutesUntilReady": 130,
+		"OutputIdentifier": "338",
+		"OutputStack": 6,
+		"FuelIdentifier": "382",
+		"FuelStack": "2",
+		"KeepInputQuality": false,
+		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "furnace": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Efficient Furnace",
+		"InputIdentifier": "82",
+		"InputStack": 5,
+		"MinutesUntilReady": 130,
+		"OutputIdentifier": "338",
+		"OutputStack": 18,
+		"FuelIdentifier": "382",
+		"FuelStack": "2",
+		"KeepInputQuality": false,
+		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "furnace": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Pulverized Coal Furnace",
+		"InputIdentifier": "82",
+		"InputStack": 5,
+		"MinutesUntilReady": 90,
+		"OutputIdentifier": "338",
+		"OutputStack": 18,
+		"FuelIdentifier": "382",
+		"FuelStack": "1",
+		"KeepInputQuality": false,
+		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "furnace": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Pulverized Coal Furnace",
+		"InputIdentifier": "80",
+		"InputStack": 5,
+		"MinutesUntilReady": 90,
+		"OutputIdentifier": "338",
+		"OutputStack": 6,
+		"FuelIdentifier": "382",
+		"FuelStack": "1",
+		"KeepInputQuality": false,
+		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "furnace": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Pulverized Coal Furnace",
+		"InputIdentifier": "378",
+		"InputStack": 8,
+		"MinutesUntilReady": 30,
+		"OutputIdentifier": "334",
+		"OutputStack": 2,
+		"FuelIdentifier": "382",
+		"FuelStack": "1",
+		"KeepInputQuality": false,
+		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "furnace": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Pulverized Coal Furnace",
+		"InputIdentifier": "380",
+		"InputStack": 8,
+		"MinutesUntilReady": 120,
+		"OutputIdentifier": "335",
+		"OutputStack": 2,
+		"FuelIdentifier": "382",
+		"FuelStack": "1",
+		"KeepInputQuality": false,
+		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "furnace": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Pulverized Coal Furnace",
+		"InputIdentifier": "384",
+		"InputStack": 8,
+		"MinutesUntilReady": 120,
+		"OutputIdentifier": "336",
+		"OutputStack": 2,
+		"FuelIdentifier": "382",
+		"FuelStack": "1",
+		"KeepInputQuality": false,
+		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "furnace": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Pulverized Coal Furnace",
+		"InputIdentifier": "386",
+		"InputStack": 8,
+		"MinutesUntilReady": 120,
+		"OutputIdentifier": "337",
+		"OutputStack": 2,
+		"FuelIdentifier": "382",
+		"FuelStack": "1",
+		"KeepInputQuality": false,
+		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "furnace": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Slow-Burn Charcoal Kiln",
+		"InputIdentifier": "388",
+		"InputStack": 40,
+		"MinutesUntilReady": 720,
+		"OutputIdentifier": "382",
+		"OutputStack": 10,
+		"KeepInputQuality": false,
+		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "furnace": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Slow-Burn Charcoal Kiln",
+		"InputIdentifier": "709",
+		"InputStack": 20,
+		"MinutesUntilReady": 720,
+		"OutputIdentifier": "382",
+		"OutputStack": 20,
+		"KeepInputQuality": false,
+		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "furnace": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Charcoal Kiln",
+		"InputIdentifier": "709",
+		"InputStack": 10,
+		"MinutesUntilReady": 30,
+		"OutputIdentifier": "382",
+		"OutputStack": 3,
+		"KeepInputQuality": false,
+		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
+		"DelayedSounds": [ { "furnace": 50 } ], //List of sounds to make after a delay. Default is an empty list.
+	},
+	{
+		"ProducerName": "Mushroom Box (Red)",
+		"InputIdentifier": null,
+		"MinutesUntilReady": 2880,
+		"OutputIdentifier": "420",
+		"OutputStack": 1
+	},
+	{
+		"ProducerName": "Mushroom Box (Common)",
+		"InputIdentifier": null,
+		"MinutesUntilReady": 1440,
+		"OutputIdentifier": "404",
+		"OutputStack": 1
+	},
+	{
+		"ProducerName": "Mushroom Box (Chanterelle)",
+		"InputIdentifier": null,
+		"MinutesUntilReady": 4320,
+		"OutputIdentifier": "281",
+		"OutputStack": 1
+	},
+	{
+		"ProducerName": "Mushroom Box (Morel)",
+		"InputIdentifier": null,
+		"MinutesUntilReady": 4320,
+		"OutputIdentifier": "257",
+		"OutputStack": 1
+	},
+	{
+		"ProducerName": "Mushroom Box (Purple)",
+		"InputIdentifier": null,
+		"MinutesUntilReady": 5760,
+		"OutputIdentifier": "422",
+		"OutputStack": 1
+	}
+]

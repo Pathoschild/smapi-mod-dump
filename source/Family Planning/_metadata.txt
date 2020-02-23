@@ -5,11 +5,12 @@ mods:
    Family Planning
 
 latest commit:
-   commit acdbf36028d0bbf968c4ea253f716f231451c891
+   commit f122d3a8759029128efec5fe02b1fec756552a4d
+   Merge: 7038c49 2fa0969
    Author: loe2run <55768216+loe2run@users.noreply.github.com>
-   Date:   Fri Dec 13 16:00:49 2019 -0500
+   Date:   Sat Jan 25 16:08:49 2020 -0500
    
-       Update README.md
+       Merge pull request #17 from Archalias/master
        
-       Update for the 1.3.2 update, which allows adoption with a roommate.
+       Added support for multiple birth event dialogues from individual NPCs.
    

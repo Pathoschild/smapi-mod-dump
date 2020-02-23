@@ -23,6 +23,8 @@ namespace SpriteMaster.Harmonize.Patches {
 		internal static bool OnApplyChanges (GraphicsDeviceManager __instance) {
 			var @this = __instance;
 
+			DrawState.UpdateDeviceManager(@this);
+
 			@this.PreferMultiSampling = Config.DrawState.EnableMSAA;
 			@this.SynchronizeWithVerticalRetrace = true;
 			@this.PreferredBackBufferFormat = Config.DrawState.BackbufferFormat;
@@ -32,14 +34,28 @@ namespace SpriteMaster.Harmonize.Patches {
 			return true;
 		}
 
-		[Harmonize("ApplyChanges", HarmonizeAttribute.Fixation.Postfix, PriorityLevel.Last, platform: HarmonizeAttribute.Platform.Windows)]
+		private static bool DumpedSystemInfo = false;
+
+		[Harmonize("ApplyChanges", HarmonizeAttribute.Fixation.Postfix, PriorityLevel.Last)]
 		internal static void OnApplyChangesPost (GraphicsDeviceManager __instance) {
 			var @this = __instance;
 
 			var device = @this.GraphicsDevice;
 
+			if (!DumpedSystemInfo) {
+				try {
+					SystemInfo.Dump(__instance, device);
+				}
+				catch { }
+				DumpedSystemInfo = true;
+			}
+
+			if (!Runtime.IsWindows) {
+				return;
+			}
+
 			try {
-				FieldInfo getPrivateField (object obj, string name, bool instance = true) {
+				static FieldInfo getPrivateField (object obj, string name, bool instance = true) {
 					return obj.GetType().GetField(name, BindingFlags.NonPublic | BindingFlags.Public | (instance ? BindingFlags.Instance : BindingFlags.Static));
 				}
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpriteMaster.Types;
+using System;
 using System.Runtime.CompilerServices;
 
 // TODO : Handle X or Y-only scaling, since the game has a lot of 1xY and Xx1 sprites - 1D textures.
@@ -6,8 +7,7 @@ namespace SpriteMaster.xBRZ {
 	public readonly struct Config : IEquatable<Config> {
 		internal const int MaxScale = 6;
 
-		internal readonly bool WrappedX;
-		internal readonly bool WrappedY;
+		internal readonly Vector2B Wrapped;
 		internal readonly bool Gamma;
 		internal readonly bool HasAlpha;
 
@@ -23,8 +23,7 @@ namespace SpriteMaster.xBRZ {
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Config (
-			bool wrappedX = false,
-			bool wrappedY = false,
+			Vector2B wrapped,
 			bool Gamma = true,
 			bool HasAlpha = true,
 			double luminanceWeight = 1.0,
@@ -33,8 +32,7 @@ namespace SpriteMaster.xBRZ {
 			double steepDirectionThreshold = 2.2,
 			double centerDirectionBias = 4.0
 		) {
-			this.WrappedX = wrappedX;
-			this.WrappedY = wrappedY;
+			this.Wrapped = wrapped;
 			this.Gamma = Gamma;
 			this.HasAlpha = HasAlpha;
 			this.LuminanceWeight = luminanceWeight;

@@ -7,8 +7,8 @@ namespace ModSettingsTab.Framework.Components
 {
     public class OptionsCheckbox : OptionsElement
     {
-        private static readonly Rectangle SourceRectUnchecked = new Rectangle(227, 425, 9, 9);
-        private static readonly Rectangle SourceRectChecked = new Rectangle(236, 425, 9, 9);
+        public static readonly Rectangle SourceRectUnchecked = new Rectangle(227, 425, 9, 9);
+        public static readonly Rectangle SourceRectChecked = new Rectangle(236, 425, 9, 9);
         public bool AsString { get; set; }
         private bool _isChecked;
 

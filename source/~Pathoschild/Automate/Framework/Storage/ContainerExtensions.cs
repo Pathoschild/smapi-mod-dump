@@ -8,40 +8,44 @@ namespace Pathoschild.Stardew.Automate.Framework.Storage
         /*********
         ** Public methods
         *********/
+        /// <summary>Get whether items can be stored in this container.</summary>
+        /// <param name="container">The container instance.</param>
+        public static bool StorageAllowed(this IContainer container)
+        {
+            return !container.HasTag("automate:no-store");
+        }
+
+        /// <summary>Get whether this container should be preferred when choosing where to store items.</summary>
+        /// <param name="container">The container instance.</param>
+        public static bool StoragePreferred(this IContainer container)
+        {
+            return container.StorageAllowed() && container.HasTag("automate:prefer-store");
+        }
+
+        /// <summary>Get whether items can be retrieved from this container.</summary>
+        /// <param name="container">The container instance.</param>
+        public static bool TakingItemsAllowed(this IContainer container)
+        {
+            return !container.HasTag("automate:no-take");
+        }
+
+        /// <summary>Get whether this container should be preferred when choosing where to retrieve items.</summary>
+        /// <param name="container">The container instance.</param>
+        public static bool TakingItemsPreferred(this IContainer container)
+        {
+            return container.TakingItemsAllowed() && container.HasTag("automate:prefer-take");
+        }
+
+
+        /*********
+        ** Private methods
+        *********/
         /// <summary>Get whether the container name contains a given tag.</summary>
         /// <param name="container">The container instance.</param>
         /// <param name="tag">The tag to check, excluding the '|' delimiters.</param>
-        public static bool HasTag(this IContainer container, string tag)
+        private static bool HasTag(this IContainer container, string tag)
         {
             return container.Name?.IndexOf($"|{tag}|", StringComparison.InvariantCultureIgnoreCase) >= 0;
-        }
-
-        /// <summary>Get whether this container should be preferred for output when possible.</summary>
-        /// <param name="container">The container instance.</param>
-        public static bool ShouldIgnore(this IContainer container)
-        {
-            return container.HasTag("automate:ignore");
-        }
-
-        /// <summary>Get whether input is enabled for this container.</summary>
-        /// <param name="container">The container instance.</param>
-        public static bool AllowsInput(this IContainer container)
-        {
-            return !container.ShouldIgnore() && !container.HasTag("automate:noinput");
-        }
-
-        /// <summary>Get whether output is enabled for this container.</summary>
-        /// <param name="container">The container instance.</param>
-        public static bool AllowsOutput(this IContainer container)
-        {
-            return !container.ShouldIgnore() && !container.HasTag("automate:nooutput");
-        }
-
-        /// <summary>Get whether this container should be preferred for output when possible.</summary>
-        /// <param name="container">The container instance.</param>
-        public static bool PreferForOutput(this IContainer container)
-        {
-            return container.HasTag("automate:output");
         }
     }
 }

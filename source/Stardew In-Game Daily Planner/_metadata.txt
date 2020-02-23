@@ -5,12 +5,12 @@ mods:
    Stardew In-Game Daily Planner
 
 latest commit:
-   commit 74b2d1f4f399b8e6e29f2ec5aea88e79799906f1
-   Merge: 86c0f4f 789324d
+   commit 0fcdf5c29c0a8b8d037c2b8478327315f740d02b
+   Merge: 74b2d1f 9420de4
    Author: BuildABuddha <34719668+BuildABuddha@users.noreply.github.com>
-   Date:   Sat May 25 12:00:58 2019 -0600
+   Date:   Tue Jan 28 18:42:01 2020 -0700
    
-       Version 0.5.2
+       Merge pull request #3 from ChroniclerCherry/master
        
-       Version 0.5.2 - Fixed file pathing issue
+       Updated for sdv 1.4 and SMAPI 3.0.0
    

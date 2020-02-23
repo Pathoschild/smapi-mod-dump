@@ -55,6 +55,7 @@ This can be used to automate...
 * [statues of endless fortune](https://stardewvalleywiki.com/Statue_Of_Endless_Fortune);
 * [statues of perfection](https://stardewvalleywiki.com/Statue_of_Perfection);
 * [tappers](http://stardewvalleywiki.com/Tapper);
+* [tea bushes](https://stardewvalleywiki.com/Tea_Bush);
 * [wood chippers](http://stardewvalleywiki.com/Wood_Chipper);
 * and [worm bins](http://stardewvalleywiki.com/Worm_Bin).
 
@@ -124,8 +125,10 @@ These are the available settings:
   <td>
 
 The configured controller, keyboard, and mouse buttons (see [key bindings](https://stardewvalleywiki.com/Modding:Key_bindings)).
-You can separate multiple buttons with commas. The default value is `U` to toggle the automation
-overlay.
+The default value is `U` to toggle the automation overlay.
+
+You can separate bindings with commas (like `U, LeftShoulder` for either one), and set multi-key
+bindings with plus signs (like `LeftShift + U`).
 
   </td>
 </tr>
@@ -191,16 +194,22 @@ per-chest options directly in-game:
 > ![](screenshots/chests-anywhere-config.png)
 
 This adds four options for automate:
-* **Put items in this chest first:** Automate will only push machine output into this chest (until
-  it's full).
-* **Don't put items in this chest:** Automate won't push any machine output into this chest.
-* **Don't take items from this chest:** Automate won't take machine input from this chest.
-* **Don't use this chest for automation:** Automate will completely ignore the chest, so it won't
-  be connected to any machines.
+* **Store items in this chest:** Automate will push machine output into this chest.
+* **Store items in this chest first:** Automate will push machine output into this chest first, and
+  only try other chests if it's full.
+* **Take items from this chest:** Automate will take machine input from this chest.
+* **Take items from this chest first:** Automate will take machine input from this chest first, and
+  only try other chests if it doesn't have any input for a machine.
 
-If you don't have Chests Anywhere installed, you can edit the chest names a different way and use
-these substrings: `|automate:output|` (put items in this chest first) or `|automate:ignore|` (don't
-use this chest in automation).
+If you don't have Chests Anywhere installed, you can edit the chest names a different way and add
+these substrings:
+
+tag | meaning
+--- | -------
+`|automate:no-store|` | **don't** store items in this chest.
+`|automate:no-take|` | **don't** take items from this chest.
+`|automate:prefer-store|` | store items in this chest first.
+`|automate:prefer-take|` | take items from this chest first.
 
 ## Compatibility
 Automate is compatible with Stardew Valley 1.4+ on Linux/Mac/Windows, both single-player and
@@ -479,7 +488,10 @@ automate.AddFactory(new MyAutomationFactory());
 That's it! When Automate scans a location for automatables, it'll call your `GetFor` method and add
 your custom machine to its normal automation.
 
+### Custom chest capacity
+If a `Chest` instance has a public `Capacity` property, Automate will use that instead of the
+`Chest.capacity` constant.
+
 ## See also
 * [Release notes](release-notes.md)
 * [Nexus mod](http://www.nexusmods.com/stardewvalley/mods/1063)
-* [Discussion thread](http://community.playstarbound.com/threads/automate.131913)

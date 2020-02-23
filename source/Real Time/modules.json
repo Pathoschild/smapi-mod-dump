@@ -1,0 +1,20 @@
+[
+	{
+		"dir": "RealTime"
+	},
+	{
+		"dir": "Teleport"
+	},
+	{
+		"dir": "TreeCapitator"
+	},
+	{
+		"dir": "Walkshop"
+	},
+	{
+		"dir": "TPNPC"
+	},
+	{
+		"dir": "EiTK"
+	}
+]

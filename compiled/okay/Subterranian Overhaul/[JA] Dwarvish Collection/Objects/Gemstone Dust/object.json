@@ -1,0 +1,8 @@
+{
+  "Name": "Gemstone Dust",
+  "Description": "Dust from ground gemstones.",
+  "Price": 0,
+  "Category": "Gem",
+  "Edibility": -300,
+  "Recipe": null
+}

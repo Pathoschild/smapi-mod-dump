@@ -1,7 +1,7 @@
 ﻿{
-  "Name": "SailorStyles 3: Clothing",
+  "Name": "SailorStyles 4: Clothing",
   "Author": "blueberry",
-  "Version": "3.1.0",
+  "Version": "4.0.0",
   "Description": "Sailor Moon clothing options - shirts, pants, and more!",
   "UniqueID": "blueberry.SailorStyles.Clothing",
   "EntryDll": "SailorStyles_Clothing.dll",

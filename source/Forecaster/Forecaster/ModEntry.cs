@@ -1,20 +1,18 @@
-﻿using System;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley.Objects;
 using StardewValley;
 using System.Threading.Tasks;
-using System.Text;
 
 namespace Forecaster
 {
     /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
-        private ModConfig Config;
-        private string luckForecast;
-        private string weatherForecast;
-        private TV television;
+        private ModConfig _config;
+        private string _luckForecast;
+        private string _weatherForecast;
+        private TV _television;
 
         /*********
         ** Public methods
@@ -22,75 +20,71 @@ namespace Forecaster
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper) {
-            this.Config = this.Helper.ReadConfig<ModConfig>();
-            TimeEvents.AfterDayStarted += this.TimeEvents_AfterDayStarted;
-            if (this.Config.enableShortcutKeys) {
-                InputEvents.ButtonPressed += this.InputEvents_ButtonPressed;
-            }
+            _config = Helper.ReadConfig<ModConfig>();
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+            if (_config.EnableShortcutKeys)
+                helper.Events.Input.ButtonPressed += OnButtonPressed;
         }
 
         /*********
         ** Private methods
         *********/
-        /// <summary>The method invoked when the player presses a controller, keyboard, or mouse button.</summary>
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private async void TimeEvents_AfterDayStarted(object sender, EventArgs e) {
+        private async void OnDayStarted(object sender, DayStartedEventArgs e) {
             // ignore if player hasn't loaded a save yet
             if (!Context.IsWorldReady)
                 return;
             
-            television = new TV();
-            luckForecast = null;
-            weatherForecast = null;
+            _television = new TV();
+            _luckForecast = null;
+            _weatherForecast = null;
 
-            if (this.Config.showWeatherOnWakeUp) {
-                await Task.Delay(this.Config.initialDelay * 1000);
-                this.showWeather();
+            if (_config.ShowWeatherOnWakeUp) {
+                await Task.Delay(_config.InitialDelay * 1000);
+                ShowWeather();
             }
 
-            if (this.Config.showLuckForecastOnWakeUp) {
-                await Task.Delay(this.Config.offsetDelay * 1000);
-                this.showLuckForecast();
+            if (_config.ShowLuckForecastOnWakeUp) {
+                await Task.Delay(_config.OffsetDelay * 1000);
+                ShowLuckForecast();
             }
         }
 
-        /*********
-        ** Private methods
-        *********/
-        /// <summary>The method invoked when the player presses a controller, keyboard, or mouse button.</summary>
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void InputEvents_ButtonPressed(object sender, EventArgsInput e) {
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e) {
             // ignore if player hasn't loaded a save yet
             if (!Context.IsWorldReady)
                 return;
 
-            if (this.Config.tipKey == e.Button) {
-                showLuckForecast();
-            } else if (this.Config.weatherKey == e.Button) {
-                showWeather();
+            if (_config.TipKey == e.Button) {
+                ShowLuckForecast();
+            } else if (_config.WeatherKey == e.Button) {
+                ShowWeather();
             }
         }
 
-        private void showLuckForecast() {
-            if (luckForecast == null) {
-                luckForecast = this.Helper.Reflection
-                                .GetMethod(television, "getFortuneForecast")
+        private void ShowLuckForecast() {
+            if (_luckForecast == null) {
+                _luckForecast = Helper.Reflection
+                                .GetMethod(_television, "getFortuneForecast")
                                 .Invoke<string>();
             }
 
-            Game1.addHUDMessage(new HUDMessage(luckForecast, 2));
+            Game1.addHUDMessage(new HUDMessage(_luckForecast, 2));
         }
 
-        private void showWeather() {
-            if (weatherForecast == null) {
-                weatherForecast = this.Helper.Reflection
-                                .GetMethod(television, "getWeatherForecast")
+        private void ShowWeather() {
+            if (_weatherForecast == null) {
+                _weatherForecast = Helper.Reflection
+                                .GetMethod(_television, "getWeatherForecast")
                                 .Invoke<string>();
             }
 
-            Game1.addHUDMessage(new HUDMessage(weatherForecast, 2));
+            Game1.addHUDMessage(new HUDMessage(_weatherForecast, 2));
         }
   
     }

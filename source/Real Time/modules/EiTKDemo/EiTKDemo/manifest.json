@@ -1,0 +1,17 @@
+﻿{
+  "Name": "EiTK Demo",
+  "Author": "Enaium",
+  "Version": "1.0.0",
+  "Description": "EiTK Demo",
+  "UniqueID": "Enaium.EiTKDemo",
+  "EntryDll": "EiTKDemo.dll",
+  "MinimumApiVersion": "3.2.0",
+  "UpdateKeys": [ "Github:0" ],
+  "newVersionLink": "http://svmod.enaium.cn/modules/EiTKDemo/EiTKDemo/manifest.json",
+  "contactDatas": [
+    {
+      "websiteName": "github",
+      "websiteLink": "https://github.com/Enaium/Stardew_Valley_Mods/tree/master/modules/EiTKDemo"
+    }
+  ]
+}

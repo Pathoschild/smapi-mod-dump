@@ -1,0 +1,10 @@
+{
+   "Name": "Fundo",
+   "Author": "BrasileiroTop",
+   "Version": "1.0.0",
+   "MinimumApiVersion": "2.9.0",
+   "Description": "Adiciona imagem no fundo da fazenda no céu.",
+   "UniqueID": "BrasileiroTop.Fundo",
+   "EntryDll": "Fundo.dll",
+   "UpdateKeys": [ "Nexus:5423" ]
+}

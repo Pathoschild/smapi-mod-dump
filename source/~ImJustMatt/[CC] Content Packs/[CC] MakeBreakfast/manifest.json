@@ -1,0 +1,12 @@
+﻿{
+	"Name": "MakeBreakfast",
+	"Author": "furyx639",
+	"Version": "1.2.0",
+	"Description": "Custom Chore for having breakfast made in the morning.",
+	"UniqueID": "furyx639.MakeBreakfast",
+	"ContentPackFor": {
+		"UniqueID":  "furyx639.CustomChores",
+		"MinimumApiVersion":  "1.2.0"
+	},
+	"MinimumApiVersion": "2.0"
+}

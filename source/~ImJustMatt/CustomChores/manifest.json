@@ -1,0 +1,10 @@
+﻿{
+   "Name": "CustomChores",
+   "Author": "furyx639",
+   "Version": "1.2.1",
+   "Description": "Adds customizable chores to the game.",
+   "UniqueID": "furyx639.CustomChores",
+   "EntryDll": "CustomChores.dll",
+   "MinimumApiVersion": "3.0.0",
+   "UpdateKeys": ["Nexus:5315"]
+}

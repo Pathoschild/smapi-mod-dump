@@ -344,9 +344,16 @@ namespace JoysOfEfficiency.Huds
             return dict.ToDictionary(kv => kv.Key, kv => kv.Value * ratio);
         }
 
-        private static Dictionary<TK, TV> ConcatDictionary<TK, TV>(Dictionary<TK, TV> a, Dictionary<TK, TV> b)
+        private static Dictionary<TK, TV> ConcatDictionary<TK, TV>(IDictionary<TK, TV> a, Dictionary<TK, TV> b)
         {
-            return a.Concat(b).ToDictionary(x => x.Key, x => x.Value);
+            Dictionary<TK, TV> dict = new Dictionary<TK, TV>(a);
+
+            foreach (KeyValuePair<TK, TV> kv in b.Where(kv => !dict.ContainsKey(kv.Key)))
+            {
+                dict.Add(kv.Key, kv.Value);
+            }
+
+            return dict;
         }
 
         private static void DrawProbBox(Dictionary<int, double> probabilities)

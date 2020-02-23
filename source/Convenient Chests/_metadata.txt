@@ -5,9 +5,9 @@ mods:
    Convenient Chests
 
 latest commit:
-   commit 826197a8932e361a71e6a4ec53b340bcd8efbc96
+   commit 82f864f865f12f853133f47a19eb39d1f2339628
    Author: aEnigmatic <aenigmatic@users.noreply.github.com>
-   Date:   Tue Dec 24 15:43:12 2019 +0100
+   Date:   Fri Feb 14 12:49:51 2020 +0100
    
-       Migrate to SMAPI 3.0
+       Update manifest
    

@@ -1,4 +1,8 @@
 {
+  "ChangeBuffButton": "G",
   "HeartThreshold": 5,
-  "ShowHUD": true
+  "HeartSuggestThreshold": 7,
+  "ShowHUD": true,
+  "EnableDebug": false,
+  "AdventureMode": true
 }

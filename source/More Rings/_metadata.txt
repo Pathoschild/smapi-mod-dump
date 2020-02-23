@@ -5,9 +5,12 @@ mods:
    More Rings
 
 latest commit:
-   commit 81e22933cbe361ebf634ba107a4ae9d2cc690bda
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 17:41:58 2019 -0500
+   commit d4fe6bba2b9a7ae4601b16eae7981680b1621202
+   Merge: 81e2293 323dc08
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Sat Jan 18 16:37:56 2020 -0500
    
-       1.0.4 - SDV 1.4
+       Merge pull request #2 from asqwedcxz741/master
+       
+       Add Chinese Translations
    

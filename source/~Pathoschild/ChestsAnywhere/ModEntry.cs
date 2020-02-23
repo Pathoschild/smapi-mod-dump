@@ -6,6 +6,7 @@ using Pathoschild.Stardew.ChestsAnywhere.Framework;
 using Pathoschild.Stardew.ChestsAnywhere.Framework.Containers;
 using Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays;
 using Pathoschild.Stardew.Common;
+using Pathoschild.Stardew.Common.Messages;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -52,7 +53,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere
         {
             // initialize
             this.Config = helper.ReadConfig<ModConfig>();
-            this.Keys = this.Config.Controls.ParseControls(this.Monitor);
+            this.Keys = this.Config.Controls.ParseControls(helper.Input, this.Monitor);
             this.Data = helper.Data.ReadJsonFile<ModData>("data.json") ?? new ModData();
             this.ChestFactory = new ChestFactory(helper.Data, helper.Reflection, helper.Translation, this.Config.EnableShippingBin);
 
@@ -136,7 +137,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere
                 ModConfigKeys keys = this.Keys;
 
                 // open menu
-                if (keys.Toggle.Contains(e.Button))
+                if (keys.Toggle.JustPressedUnique())
                 {
                     // open if no conflict
                     if (Game1.activeClickableMenu == null)
@@ -214,6 +215,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere
                 this.SelectedInventory = selected.Container.Inventory;
                 Game1.activeClickableMenu = selected.OpenMenu();
             };
+            this.CurrentOverlay.OnAutomateOptionsChanged += this.NotifyAutomateOfChestUpdate;
         }
 
         /// <summary>Open the menu UI.</summary>
@@ -244,6 +246,15 @@ namespace Pathoschild.Stardew.ChestsAnywhere
 
             // render menu
             Game1.activeClickableMenu = selectedChest.OpenMenu();
+        }
+
+        /// <summary>Notify Automate that a chest's automation options updated.</summary>
+        /// <param name="chest">The chest that was updated.</param>
+        private void NotifyAutomateOfChestUpdate(ManagedChest chest)
+        {
+            long hostId = Game1.MasterPlayer.UniqueMultiplayerID;
+            var message = new AutomateUpdateChestMessage { LocationName = chest.Location.Name, Tile = chest.Tile };
+            this.Helper.Multiplayer.SendMessage(message, nameof(AutomateUpdateChestMessage), modIDs: new[] { "Pathoschild.Automate" }, playerIDs: new[] { hostId });
         }
 
         /// <summary>Validate that the game versions match the minimum requirements, and return an appropriate error message if not.</summary>

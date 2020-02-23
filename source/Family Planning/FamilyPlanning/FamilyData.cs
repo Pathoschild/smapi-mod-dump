@@ -5,6 +5,7 @@ namespace FamilyPlanning
     class FamilyData
     {
         public int TotalChildren { get; set; }
+        public int BabyQuestionChance { get; set; }
 
         public FamilyData()
         {
@@ -12,6 +13,8 @@ namespace FamilyPlanning
                 TotalChildren = Game1.player.getChildrenCount();
             else
                 TotalChildren = 2;
+
+            BabyQuestionChance = 5;
         }
     }
 }

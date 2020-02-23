@@ -3,5 +3,11 @@
   "OptionsPage.ModSettingsTab": "Impostazioni di modifica",
   "StaticConfig.SuccessMessage": "Impostazioni salvate",
   "StaticConfig.FailMessage": "Salva errore",
-  "OptionsList.NewValue": "Inserisci un nuovo valore"
+  "OptionsList.NewValue": "Inserisci un nuovo valore",
+  "Mod.Disabled.Error": "Impossibile cambiare le modifiche",
+  "ModManager.AddModPack": "Aggiungi nuovo mod pack",
+  "ModManager.HoverSetUp.Title": "Cambia modpack",
+  "ModManager.HoverSetUp.Description": "le altre mod non incluse nel mod pack saranno disabilitate",
+  "ModManager.Toggle.Label": "Mod mod corrente",
+  "ModManager.Add.NameTextBox": "Nome pacchetto"
 }

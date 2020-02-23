@@ -11,9 +11,12 @@ namespace YourProjectName
     /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
-
+        /*********
+        ** Fields
+        *********/
         private ModConfig Config;
-        private string lastLearned = "";
+        private string LastLearned = "";
+
 
         /*********
         ** Public methods
@@ -22,27 +25,30 @@ namespace YourProjectName
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper) {
             this.Config = this.Helper.ReadConfig<ModConfig>();
-            TimeEvents.AfterDayStarted += this.TimeEvents_AfterDayStarted;
-            MenuEvents.MenuClosed += this.MenuEvents_MenuClosed;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.Display.MenuChanged += OnMenuChanged;
         }
 
 
         /*********
         ** Private methods
         *********/
-        private void MenuEvents_MenuClosed(object sender, EventArgsClickableMenuClosed e) {
-            if (!this.Config.clairvoyance && e.PriorMenu is StardewValley.Menus.LetterViewerMenu && lastLearned != "") {
-               Game1.addHUDMessage(new HUDMessage(lastLearned, 2));
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnMenuChanged(object sender, MenuChangedEventArgs e) {
+            if (!this.Config.Clairvoyance && e.OldMenu is StardewValley.Menus.LetterViewerMenu && LastLearned != "") {
+               Game1.addHUDMessage(new HUDMessage(LastLearned, 2));
 
-                lastLearned = "";
+                LastLearned = "";
             }
             
         }
 
-        /// <summary>The method invoked when the player presses a controller, keyboard, or mouse button.</summary>
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        async private void TimeEvents_AfterDayStarted(object sender, EventArgs e) {
+        private void OnDayStarted(object sender, DayStartedEventArgs e) {
             // ignore if player hasn't loaded a save yet
             if (!Context.IsWorldReady) return;
 
@@ -50,7 +56,7 @@ namespace YourProjectName
             string day = Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth);
 
             // Logic for which days each these are displayed taken from here: https://github.com/sndcode/stardewvalleycode/blob/master/Stardew%20Valley/Objects/TV.cs#L31-L43
-            if (this.Config.enableTips && (day.Equals("Mon") || day.Equals("Thu"))) {
+            if (this.Config.EnableTips && (day.Equals("Mon") || day.Equals("Thu"))) {
                 string tip = this.Helper.Reflection
                                .GetMethod(tv, "getTodaysTip")
                                .Invoke<string>();
@@ -63,7 +69,7 @@ namespace YourProjectName
                 }
             }
 
-            if ((this.Config.enableCooking || this.Config.clairvoyance) && day.Equals("Sun")) {
+            if ((this.Config.EnableCooking || this.Config.Clairvoyance) && day.Equals("Sun")) {
                 // Calculation taken from here: https://github.com/sndcode/stardewvalleycode/blob/master/Stardew%20Valley/Objects/TV.cs#L287
                 int whichWeek = (int)(Game1.stats.DaysPlayed % 224u / 7u);
                 if (day.Equals("Wed")) {
@@ -79,17 +85,16 @@ namespace YourProjectName
                                .Invoke<string[]>();
 
                     if (cooking.Length > -1) {
-                        lastLearned = cooking[1];
+                        LastLearned = cooking[1];
 
                         // Insert this at the top of the queue so the next close event shows the correct recipe learned message.
-                        if (this.Config.enableCooking) {
+                        if (this.Config.EnableCooking) {
                             Game1.mailbox.Insert(0, $"cooking_{whichWeek}");
                         }
 
                         // If the farmer is clairvoyant, show the 'learned' message as a tooltip upon waking up.
-                        if (this.Config.clairvoyance) {
-                            await Task.Delay(1000);
-                            Game1.addHUDMessage(new HUDMessage(lastLearned, 2));
+                        if (this.Config.Clairvoyance) {
+                            Game1.delayedActions.Add(new DelayedAction(1000, () => Game1.addHUDMessage(new HUDMessage(LastLearned, 2))));
                         }
                     }
                 }
@@ -98,20 +103,14 @@ namespace YourProjectName
 
         // Taken and adapted from https://github.com/sndcode/stardewvalleycode/blob/master/Stardew%20Valley/Objects/TV.cs#L280-L333
         private string getRecipeName(int whichWeek) {
-            string recipeName = "";
+            string recipeName;
 
             Dictionary<string, string> cookingRecipeChannel = Game1.temporaryContent.Load<Dictionary<string, string>>("Data\\TV\\CookingChannel");
             
             try {
-                recipeName = cookingRecipeChannel[string.Concat(whichWeek)].Split(new char[]
-                {
-                    '/'
-                })[0];
+                recipeName = cookingRecipeChannel[whichWeek.ToString()].Split('/')[0];
             } catch (Exception) {
-                recipeName = cookingRecipeChannel["1"].Split(new char[]
-                {
-                    '/'
-                })[0];
+                recipeName = cookingRecipeChannel["1"].Split('/')[0];
             }
 
             return recipeName;

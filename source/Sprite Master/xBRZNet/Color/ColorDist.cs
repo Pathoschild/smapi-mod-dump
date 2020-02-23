@@ -1,4 +1,6 @@
-﻿using System;
+﻿// #define MULTIPLY_ALPHA
+
+using System;
 using System.Runtime.CompilerServices;
 using SpriteMaster.xBRZ.Color;
 using SpriteMaster.xBRZ.Common;
@@ -14,8 +16,6 @@ namespace SpriteMaster.xBRZ.Color {
 		public ColorDist (in Config cfg) {
 			Configuration = cfg;
 		}
-
-		private const bool MultiplyAlpha = false;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static double TexelDiff (uint texel1, uint texel2, int shift) {
@@ -61,12 +61,13 @@ namespace SpriteMaster.xBRZ.Color {
 			// Alpha gives some interesting properties.
 			// We technically cannot guarantee that the color is correct once we are in transparent areas, but we might still want to blend there.
 
-			if (MultiplyAlpha) {
-				var aDiff = 0xFF - TexelDiff(pix1, pix2, ColorConstant.Shift.Alpha);
+#if MULTIPLY_ALPHA
+			var aDiff = 0xFF - TexelDiff(pix1, pix2, ColorConstant.Shift.Alpha);
 				rDiff = (rDiff * aDiff) / 0xFF;
 				gDiff = (gDiff * aDiff) / 0xFF;
 				bDiff = (bDiff * aDiff) / 0xFF;
 			}
+#endif
 
 			var coefficient = CurrentColorSpace.LumaCoefficient;
 			var scale = CurrentColorSpace.LumaScale;
@@ -93,14 +94,13 @@ namespace SpriteMaster.xBRZ.Color {
 					double a1 = ((pix1 >> ColorConstant.Shift.Alpha) & 0xFF) / 255.0;
 					double a2 = ((pix2 >> ColorConstant.Shift.Alpha) & 0xFF) / 255.0;
 
-					distance /= 255.0;
+					if (a1 > a2) {
+						double temp = a1;
+						a1 = a2;
+						a2 = temp;
+					}
 
-					if (a1 <= a2) {
-						return (a1 * distance) + (255.0 * (a2 - a1));
-					}
-					else {
-						return (a2 * distance) + (255.0 * (a1 - a2));
-					}
+					return (a1 * (distance / 255.0)) + (255.0 * (a2 - a1));
 				}
 			}
 

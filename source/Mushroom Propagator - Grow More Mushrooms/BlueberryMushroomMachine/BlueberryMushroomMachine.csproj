@@ -48,13 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Data.cs" />
     <Compile Include="Core\Log.cs" />
     <Compile Include="Editors\EventsEditor.cs" />
     <Compile Include="Core\Config.cs" />
     <Compile Include="Editors\BigCraftablesInfoEditor.cs" />
     <Compile Include="Editors\BigCraftablesTilesheetEditor.cs" />
     <Compile Include="Editors\CraftingRecipesEditor.cs" />
-    <Compile Include="Core\Data.cs" />
+    <Compile Include="Core\Const.cs" />
     <Compile Include="Core\ModEntry.cs" />
     <Compile Include="Core\Propagator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

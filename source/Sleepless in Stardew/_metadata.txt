@@ -1,0 +1,13 @@
+url:
+   https://github.com/instafluff/SleeplessInStardew.git
+
+mods:
+   Sleepless in Stardew
+
+latest commit:
+   commit f5def8bfa91bdc2ea6c33b587edbfca6b5361752
+   Author: Instafluff <35773245+instafluff@users.noreply.github.com>
+   Date:   Fri Feb 21 21:49:28 2020 -0800
+   
+       v1.1.0
+   

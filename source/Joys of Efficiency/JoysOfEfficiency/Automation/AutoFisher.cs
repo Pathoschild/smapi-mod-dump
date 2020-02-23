@@ -50,12 +50,12 @@ namespace JoysOfEfficiency.Automation
             float distanceFromCatching = Reflection.GetField<float>(bar, "distanceFromCatching").GetValue();
             bool treasureCaught = Reflection.GetField<bool>(bar, "treasureCaught").GetValue();
             bool treasure = Reflection.GetField<bool>(bar, "treasure").GetValue();
-            float treasureApeearTimer = Reflection.GetField<float>(bar, "treasureAppearTimer").GetValue();
+            float treasureAppearTimer = Reflection.GetField<float>(bar, "treasureAppearTimer").GetValue();
             float bobberBarSpeed = bobberSpeed.GetValue();
 
             float top = barPos;
 
-            if (treasure && treasureApeearTimer <= 0 && !treasureCaught)
+            if (treasure && treasureAppearTimer <= 0 && !treasureCaught)
             {
                 if (!CatchingTreasure && distanceFromCatching > 0.7f)
                 {

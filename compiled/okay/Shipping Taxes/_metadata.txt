@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5189
+IDs: NOGAF.ShippingTaxes
+update keys: Nexus:5189

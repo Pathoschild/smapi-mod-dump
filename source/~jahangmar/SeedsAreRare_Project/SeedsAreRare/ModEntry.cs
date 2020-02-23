@@ -32,6 +32,7 @@ namespace SeedsAreRare
 
         private SeedsAreRareConfig config;
 
+
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
@@ -40,6 +41,15 @@ namespace SeedsAreRare
 
             helper.Events.Display.MenuChanged += this.MenuChanged;
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
+
+            helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+
+        }
+
+        void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
+        {
+            if (!Context.IsWorldReady)
+                return;
         }
 
         void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
@@ -71,6 +81,8 @@ namespace SeedsAreRare
                 if (config.exclude_traveling_merchant && Game1.currentLocation is StardewValley.Locations.Forest)
                     return;
                 if (config.exclude_night_market && Game1.currentLocation is StardewValley.Locations.BeachNightMarket)
+                    return;
+                if (config.exclude_egg_festival && Game1.isFestival() && Game1.dayOfMonth == 13 && Game1.IsSpring)
                     return;
 
 

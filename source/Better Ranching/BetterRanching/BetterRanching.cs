@@ -49,7 +49,7 @@ namespace BetterRanching
 		/// <param name="e">The event data.</param>
 		private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
 		{
-			if (!Context.IsWorldReady || !Game1.currentLocation.IsFarm)
+			if (!Context.IsWorldReady || Game1.currentLocation == null || !Game1.currentLocation.IsFarm)
 			{
 				return;
 			}
@@ -148,7 +148,7 @@ namespace BetterRanching
 		/// <param name="e">The event data.</param>
 		private void OnRenderingHud(object sender, RenderingHudEventArgs e)
 		{
-			if (!Context.IsWorldReady || !Game1.currentLocation.IsFarm)
+			if (!Context.IsWorldReady || !Game1.currentLocation.IsFarm || Game1.eventUp)
 			{
 				return;
 			}

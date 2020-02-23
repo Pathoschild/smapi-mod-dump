@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Better Rarecrows",
+  "Author": "EpicBellyFlop45",
+  "Version": "1.0.4",
+  "Description": "Once all rarecrows have been placed, you will not get crows anywhere on the farm",
+  "UniqueID": "EpicBellyFlop45.BetterRarecrows",
+  "EntryDll": "BetterRarecrows.dll",
+  "MinimumApiVersion": "2.9",
+  "UpdateKeys": [ "Nexus:3232" ]
+}

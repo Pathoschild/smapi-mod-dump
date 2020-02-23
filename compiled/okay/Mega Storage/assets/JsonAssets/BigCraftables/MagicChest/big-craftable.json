@@ -1,0 +1,57 @@
+﻿{
+	"Name":  "Magic Chest",
+	"Description":  "A magical place to store your items.",
+	"Recipe": {
+		"Ingredients":  [
+			{
+				"Object":  709,
+				"Count":  100
+			},
+			{
+				"Object":  336,
+				"Count":  5
+			},
+			{
+				"Object":  337,
+				"Count":  5
+			},
+			{
+				"Object":  768,
+				"Count":  50
+			},
+			{
+				"Object":  769,
+				"Count":  50
+			}
+		],
+		"IsDefault":  true
+	},
+	"NameLocalization":
+	{
+		//"es": "", //Spanish
+		"ko": "마법 상자",
+		"de": "Magishe Truhe", //German
+		//"fr": "", //French
+		//"hu": "", //Hungarian
+		//"it": "", //Italian
+		//"ja": "", //Japanese
+		//"pt": "", //Portuguese
+		//"ru": "", //Russian
+		//"tr": "", //Turkish
+		"zh": "魔法宝箱", //Chinese (Simplified)
+	},
+	"DescriptionLocalization":
+	{
+		//"es": "", //Spanish
+		"ko": "물건을 보관할 수 있는 마법의 상자.",
+		"de": "Eine magische Truhe, um alle deine Gegenstände zu lagern.", //German
+		//"fr": "", //French
+		//"hu": "", //Hungarian
+		//"it": "", //Italian
+		//"ja": "", //Japanese
+		//"pt": "", //Portuguese
+		//"ru": "", //Russian
+		//"tr": "", //Turkish
+		"zh": "一个神奇的魔法宝箱，存储容量无限。", //Chinese (Simplified)
+	}
+}

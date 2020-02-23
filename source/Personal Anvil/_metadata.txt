@@ -1,0 +1,13 @@
+url:
+   https://github.com/strobel1ght/Personal-Anvil.git
+
+mods:
+   Personal Anvil
+
+latest commit:
+   commit bce4566743bbb4d9e5468a286a9f00e8b29fcfe2
+   Author: Ishan Jalan <ishan1337@gmail.com>
+   Date:   Tue Feb 11 10:05:01 2020 +0530
+   
+       1.0.9 release: fixed checking for buttonpress before save load
+   

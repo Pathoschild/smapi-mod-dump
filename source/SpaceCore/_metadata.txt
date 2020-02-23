@@ -5,9 +5,12 @@ mods:
    SpaceCore
 
 latest commit:
-   commit f576551183f6b9b0133c5a3ffafb3a346aceff8b
+   commit 99021349d055340996481b36f3bd3cc3df1da210
+   Merge: b776735 d3515e1
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Tue Dec 24 16:11:37 2019 -0500
+   Date:   Tue Feb 11 12:02:23 2020 -0500
    
-       Bomb exploded event
+       Merge pull request #10 from ZaneYork/master
+       
+       Fix for android platform
    

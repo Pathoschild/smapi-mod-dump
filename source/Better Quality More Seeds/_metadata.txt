@@ -5,9 +5,9 @@ mods:
    Better Quality More Seeds
 
 latest commit:
-   commit aedee1ee37522270543f86cbf2ed2d520c836bc2
-   Author: Brandon Green <bmmgreen@gmail.com>
-   Date:   Sat Dec 14 10:42:54 2019 -0600
+   commit cc3c8c75b1a97671c3db7a5c65553c218d5ae5e7
+   Author: brandon <bmarquismarkail@github.com>
+   Date:   Fri Feb 7 14:22:36 2020 -0600
    
-       Create LICENSE
+       Refactoring and moving
    

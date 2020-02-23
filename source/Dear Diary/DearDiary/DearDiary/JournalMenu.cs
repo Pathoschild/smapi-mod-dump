@@ -17,8 +17,11 @@ namespace StardewJournal.UI
 {
     public class JournalMenu : IClickableMenu
     {
+        
+        
         public JournalMenu(IDataHelper helper, string modDirectory) : base((int)Utility.getTopLeftPositionForCenteringOnScreen(Game1.viewport.Width, Game1.viewport.Height).X, (int)Utility.getTopLeftPositionForCenteringOnScreen(Game1.viewport.Width, Game1.viewport.Height).X, Game1.viewport.Width, Game1.viewport.Height, true)
         {
+            
             this.modDirectory = modDirectory;
             this.dataHelper = helper;
             displayedText = new TextField(xPositionOnScreen + 32, yPositionOnScreen + 84, width - 64, height - 96);
@@ -52,10 +55,15 @@ namespace StardewJournal.UI
                 rightNeighborID = this.nextDay.myID
                 
             };
-            this.switchSpring = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + 1000, this.yPositionOnScreen + this.height - 32 - 64, 48, 44), Game1.mouseCursors, new Rectangle(704, 2256, 12, 8), 4f, false)
+            this.backMonth = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + 480, this.yPositionOnScreen + this.height - 32 - 64, 48, 44), Game1.mouseCursors, new Rectangle(421, 459, 11, 12), 4f, false)
             {
                 myID = 106,
                 leftNeighborID = this.nextDay.myID
+            };
+            this.nextMonth = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + 800, this.yPositionOnScreen + this.height - 32 - 64, 48, 44), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 4f, false)
+            {
+                myID = 107,
+                leftNeighborID = this.backMonth.myID
             };
 
             SetPage(0);
@@ -75,10 +83,8 @@ namespace StardewJournal.UI
         public ClickableTextureComponent nextButton;
         public ClickableTextureComponent backButton;
         public ClickableTextureComponent exportDiary;
-        public ClickableTextureComponent switchSpring;
-        public ClickableTextureComponent switchSummer;
-        public ClickableTextureComponent switchFall;
-        public ClickableTextureComponent switchWinter;
+        public ClickableTextureComponent backMonth;
+        public ClickableTextureComponent nextMonth;
 
         private void SetPage(int newPage) //This creates new pages or sends you to a page
         {
@@ -137,13 +143,45 @@ namespace StardewJournal.UI
 
         public TextField displayedText;
 
+
         public override void receiveKeyPress(Keys key)
+
         {
-            if (this.displayedText.Selected || Game1.options.doesInputListContain(Game1.options.menuButton, key))
+            int value = (int)key;
+            DearDiary.Mod.TempMonitor.Log($"Pressed {value}", LogLevel.Debug);
+            /*if (this.displayedText.Selected || Game1.options.doesInputListContain(Game1.options.menuButton, key))
+                return;*/
+            if (key == Keys.E)
                 return;
+            if (Constants.TargetPlatform == GamePlatform.Mac && value == 8)
+                this.displayedText.RecieveSpecialInput(key);
+            if (Constants.TargetPlatform == GamePlatform.Mac && value == 13)
+                this.displayedText.RecieveSpecialInput(key);
+
             base.receiveKeyPress(key);
         }
+        public void SetDate(int offset)
+        {
+            // validate
+            if (offset < 0 && this.currentDate.DaysSinceStart <= offset)
+                return;
+            if (offset > 0 && this.currentDate >= SDate.Now())
+                return;
 
+            // change date
+            this.currentDate = this.currentDate.AddDays(offset);
+            if (this.currentDate > SDate.Now())
+                this.currentDate = SDate.Now();
+
+            // override year to fix bug in SMAPI 2.x
+            if (Constants.ApiVersion.IsOlderThan("3.0") && this.currentDate.Season == "winter" && this.currentDate.Day == 28)
+            {
+                int year = offset < 0
+                   ? SDate.Now().Year - 1
+                   : SDate.Now().Year;
+                currentDate = new SDate(currentDate.Day, currentDate.Season, year);
+            }
+        }
         public override void receiveLeftClick(int x, int y, bool playSound = true)
         {
             if (this.backButton.containsPoint(x, y))
@@ -151,41 +189,43 @@ namespace StardewJournal.UI
                 if (this.currentPage > 0)
                 {
                     this.SetPage(this.currentPage - 1);
-                    Console.WriteLine("Back one Page.  Now on Entry: " + currentDate + " Page: " + currentPage);
                 }
 
             }
             else if (this.nextButton.containsPoint(x, y))
             {
                 this.SetPage(this.currentPage + 1);
-                Console.WriteLine("Forward one Page.  Now on Entry: " + currentDate + " Page: " + currentPage);
 
             }
             else if (this.previousDay.containsPoint(x, y))
             {
                 if (currentDate > new SDate(1, "spring", 1))
                 {
-                    this.currentDate = this.currentDate.AddDays(-1);
+                    this.SetDate(-1);
                     this.SetPage(0);
-                    Console.WriteLine("Back one Day.  Now on Entry: " + currentDate + " Page: " + currentPage);
-
                 }
+                
             }
             else if (this.nextDay.containsPoint(x, y))
             {
-                if (this.currentDate != SDate.Now())
+                this.SetDate(1);
+                this.SetPage(0);
+            }
+            else if (this.backMonth.containsPoint(x, y))
+            {
+                if (currentDate > new SDate(1, "summer", 1))
                 {
-                    this.currentDate = this.currentDate.AddDays(1);
+                    this.SetDate(-28 - currentDate.Day + 1);
                     this.SetPage(0);
-                    Console.WriteLine("Forward one Day.  Now on Entry: " + currentDate + " Page: " + currentPage);
-
                 }
             }
-            /*  else if (this.backMonth.containsPoint(x, y))
-              {
-                  if {currentDate - 28 > new SDate(1, "spring", 1)
-                  SDate nextSeason = currentDate.AddDays(28 - currentDate.Day + 1);
-              }*/
+            else if (this.nextMonth.containsPoint(x, y))
+            {
+
+                this.SetDate(28 - currentDate.Day + 1);
+                this.SetPage(0);
+            }
+
             else if (this.exportDiary.containsPoint(x, y))
                 this.WriteToFile();
 
@@ -218,6 +258,8 @@ namespace StardewJournal.UI
             previousDay.draw(b);
             nextDay.draw(b);
             exportDiary.draw(b);
+            backMonth.draw(b);
+            nextMonth.draw(b);
             if (this.backButton.containsPoint(Game1.getOldMouseX(), Game1.getOldMouseY()))
             {
                 IClickableMenu.drawHoverText(b, "Back (Page)", Game1.smallFont);
@@ -238,6 +280,15 @@ namespace StardewJournal.UI
             {
                 IClickableMenu.drawHoverText(b, "Export to text!", Game1.smallFont);
             }
+            if (this.backMonth.containsPoint(Game1.getOldMouseX(), Game1.getOldMouseY()))
+            {
+                IClickableMenu.drawHoverText(b, "Back (Season)", Game1.smallFont);
+            }
+            if (this.nextMonth.containsPoint(Game1.getOldMouseX(), Game1.getOldMouseY()))
+            {
+                IClickableMenu.drawHoverText(b, "Next (Season)", Game1.smallFont);
+            }
+
 
             //draw mouse
             drawMouse(b);

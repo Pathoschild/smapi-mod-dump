@@ -19,5 +19,19 @@ namespace AdvancedKeyBindings.Extensions
 
             return demolishableBuildings;
         }
+        
+        public static List<Building> GetMovableBuildings(this Farm farm)
+        {
+            var movableBuildings = new List<Building>();
+            foreach (var building in farm.buildings)
+            {
+                if (building.CanMove())
+                {
+                    movableBuildings.Add(building);
+                }
+            }
+
+            return movableBuildings;
+        }
     }
 }

@@ -5,6 +5,7 @@
         Object,
         Tool,
         BigObject,
-        BigCraftable
+        BigCraftable,
+        Ring
     }
 }

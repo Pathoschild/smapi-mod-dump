@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ConvenientChests.StackToNearbyChests;
-using Harmony;
+using System.Reflection;
+using ConvenientChests.StashToChests;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
@@ -10,34 +10,34 @@ using StardewValley.Objects;
 
 namespace ConvenientChests.CraftFromChests {
     public class CraftFromChestsModule : Module {
-        private MenuListener MenuListener;
+        private readonly MenuListener MenuListener;
 
 
         public CraftFromChestsModule(ModEntry modEntry) : base(modEntry) {
-            this.MenuListener = new MenuListener(this.Events);
+            MenuListener = new MenuListener(Events);
         }
 
         public override void Activate() {
             IsActive = true;
 
             // Register Events
-            this.MenuListener.RegisterEvents();
-            this.MenuListener.CraftingMenuShown += CraftingMenuShown;
+            MenuListener.RegisterEvents();
+            MenuListener.CraftingMenuShown += CraftingMenuShown;
         }
 
         public override void Deactivate() {
             IsActive = false;
 
             // Unregister Events
-            this.MenuListener.CraftingMenuShown -= CraftingMenuShown;
-            this.MenuListener.UnregisterEvents();
+            MenuListener.CraftingMenuShown -= CraftingMenuShown;
+            MenuListener.UnregisterEvents();
         }
 
         private void CraftingMenuShown(object sender, EventArgs e) {
-            var isCooking = Game1.activeClickableMenu is CraftingPage;
+            var isCooking = Game1.activeClickableMenu is CraftingPage || Game1.activeClickableMenu.GetType().ToString() == "CookingSkill.NewCraftingPage";
             var page = isCooking
-                           ? Game1.activeClickableMenu as CraftingPage
-                           : (Game1.activeClickableMenu as GameMenu)?.pages[GameMenu.craftingTab] as CraftingPage;
+                           ? Game1.activeClickableMenu
+                           : (Game1.activeClickableMenu as GameMenu)?.pages[MenuListener.CraftingMenuTab] as CraftingPage;
 
             if (page == null)
                 return;
@@ -48,7 +48,12 @@ namespace ConvenientChests.CraftFromChests {
                 return;
 
             // Add them as material containers to current CraftingPage
-            var prop     = AccessTools.Field(page.GetType(), "_materialContainers");
+            var prop = page.GetType().GetField("_materialContainers", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (prop == null) {
+                ModEntry.Log($"CraftFromChests failed: {page.GetType()}._materialContainers not found.");
+                return;
+            }
+
             var original = prop.GetValue(page) as List<Chest>;
             var modified = new List<Chest>();
             if (original?.Count > 0)

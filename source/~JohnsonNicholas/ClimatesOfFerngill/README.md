@@ -68,6 +68,7 @@ This mod uses harmony to patch functions to allow it to draw custom rain and sno
 - mouse and minerva for the testing
 - Amu Tsukiyomi for all of the debris sprites, and several icon sprites
 - jahangmar for a bug fix re sync
+- floatingatoll for a bug fix re fog flashes
 - The SDV discord #modding channel for discussions and encouragement.
 
 If I have left you out of acknowledgements, please contact me so I can get you added to the acknowledgement list

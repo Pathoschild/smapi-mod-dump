@@ -1,0 +1,10 @@
+﻿{
+  "Name": "BuyableDwarfScrolls",
+  "Author": "MattDeDuck",
+  "Version": "1.0.2",
+  "Description": "After reaching 5 hearts with the Wizard you can buy Dwarf Scrolls from Pierre",
+  "UniqueID": "MattDeDuck.BuyableDwarfScrolls",
+  "EntryDll": "BuyableDwarfScrolls.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:5307" ]
+}

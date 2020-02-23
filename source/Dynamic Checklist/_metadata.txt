@@ -5,9 +5,12 @@ mods:
    Dynamic Checklist
 
 latest commit:
-   commit a4b32313b251684a91e091df3b97e63a3a337ef7
-   Author: Gunnar Gunnarsson <gunnargolf@gmail.com>
-   Date:   Tue Mar 6 21:15:48 2018 +0000
+   commit ae39af2bfe0720adcfcdba31c20caa63dd07af7f
+   Merge: a4b3231 71faf75
+   Author: gunnargolf <gunnargolf@gmail.com>
+   Date:   Sun Feb 9 13:10:41 2020 +0000
    
-       add support for greenhouse crops
+       Merge pull request #9 from stash/smapi-3
+       
+       Upgrade to SMAPI 3. Thanks for the update. I haven't really been maintaining it, but it's good that it's being kept alive.
    

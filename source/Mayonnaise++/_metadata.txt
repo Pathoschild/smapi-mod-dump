@@ -5,9 +5,9 @@ mods:
    Mayonnaise++
 
 latest commit:
-   commit e81e3296217725fabd0048c9b06757c3027ece39
+   commit f5c3f5d2ff57e814499d9cc996065a2b66c220c8
    Author: xirsoi <chevalierAdam2@gmail.com>
-   Date:   Wed Nov 27 05:58:15 2019 -0600
+   Date:   Thu Feb 13 20:07:34 2020 -0600
    
-       update for 1.4.0 compatability
+       rebuilds FarmAnimalDayUpdate and adds default config file
    

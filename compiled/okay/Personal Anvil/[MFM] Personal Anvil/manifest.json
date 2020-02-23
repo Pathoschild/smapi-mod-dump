@@ -1,0 +1,17 @@
+﻿{
+	"Name": "[MFM] Personal Anvil",
+	"Author": "Strobe",
+	"Version": "1.0.1",
+	"Description": "Letter for Personal Anvil recipe.",
+	"UniqueID": "Strobe.PersonalAnvilMail",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [ "Nexus:" ],
+	"Dependencies": [
+		{
+			"UniqueID": "Strobe.PersonalAnvil"
+		}
+	],
+	"ContentPackFor": {
+		"UniqueID": "DIGUS.MailFrameworkMod"
+	}
+}

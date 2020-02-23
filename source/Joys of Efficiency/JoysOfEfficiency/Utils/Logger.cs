@@ -2,53 +2,33 @@
 
 namespace JoysOfEfficiency.Utils
 {
-    internal class Logger
+    public class Logger
     {
-        private static IMonitor Monitor { get; set; }
-        private readonly string _loggerName;
-
-        public static void Init(IMod mod)
+        public static IMonitor Monitor
         {
-            Monitor = mod.Monitor;
+            get; private set;
+
         }
 
-        public Logger(string name)
+        public static void Init(IMonitor monitor)
         {
-            _loggerName = name;
+            Monitor = monitor;
         }
 
-        public void Log(string str)
+        private string Name { get; }
+        public Logger(string loggerName)
         {
-            Log(str, LogLevel.Trace);
+            Name = loggerName;
         }
 
-        public void Error(string str)
+        public void Log(string text, LogLevel level = LogLevel.Trace)
         {
-            Log(str, LogLevel.Error);
+            Monitor.Log($"[{Name}]{text}", level);
         }
 
-        public void Debug(string str)
+        public void Error(string text)
         {
-            Log(str, LogLevel.Debug);
-        }
-
-        public void Info(string str)
-        {
-            Log(str, LogLevel.Info);
-        }
-
-        public void Alert(string str)
-        {
-            Log(str, LogLevel.Alert);
-        }
-
-        public void Warn(string str)
-        {
-            Log(str, LogLevel.Warn);
-        }
-        private void Log(string str, LogLevel level)
-        {
-            Monitor.Log($"[{_loggerName}] {str}", level);
+            Log(text, LogLevel.Error);
         }
     }
 }

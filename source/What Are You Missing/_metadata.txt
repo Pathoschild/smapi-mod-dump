@@ -5,11 +5,9 @@ mods:
    What Are You Missing
 
 latest commit:
-   commit 7eff6f08fc6f4e56949aaa992c3049ab5bd7a0bc
+   commit 23fe1caf4f41d259fd66db9a7e840dbe693a070b
    Author: Luke Seewald <lseewald@uwaterloo.ca>
-   Date:   Sun Dec 29 14:10:39 2019 -0500
+   Date:   Wed Feb 5 20:40:15 2020 -0500
    
-       For 2.3.0
-       
-       just updated the manifest and the sln file
+       Added the russian translation to the project file
    

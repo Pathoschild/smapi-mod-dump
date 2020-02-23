@@ -1,14 +1,11 @@
 ﻿namespace InstaCrops
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Text;
-	using Microsoft.Xna.Framework;
 	using StardewModdingAPI;
-    using StardewModdingAPI.Events;
-    using StardewValley;
+	using StardewModdingAPI.Events;
+	using StardewValley;
 	using StardewValley.TerrainFeatures;
+	using System;
+	using System.Linq;
 
 	/// <summary>
 	/// This class is the main entry point of the mod.

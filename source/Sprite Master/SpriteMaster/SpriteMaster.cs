@@ -5,28 +5,24 @@ using SpriteMaster.Metadata;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
+using StardewValley;
 using System;
 using System.IO;
 using System.Linq;
 using System.Runtime;
 using System.Threading;
-using static SpriteMaster.ScaledTexture;
 
 namespace SpriteMaster {
 	public sealed class SpriteMaster : Mod {
 		public static SpriteMaster Self { get; private set; } = default;
 
+		private static readonly bool DotNet = (Runtime.Framework == Runtime.FrameworkType.DotNET);
 		private readonly Thread MemoryPressureThread = null;
 		private readonly Thread GarbageCollectThread = null;
-		private readonly object CollectLock = new object();
-
+		private readonly object CollectLock = DotNet ? new object () : null;
 		internal static string AssemblyPath { get; private set; }
 
 		private void MemoryPressureLoop() {
-			if (Runtime.Framework != Runtime.FrameworkType.DotNET) {
-				return;
-			}
-
 			for (;;) {
 				if (DrawState.TriggerGC) {
 					Thread.Sleep(128);
@@ -49,10 +45,6 @@ namespace SpriteMaster {
 		}
 
 		private void GarbageCheckLoop() {
-			if (Runtime.Framework != Runtime.FrameworkType.DotNET) {
-				return;
-			}
-
 			try {
 				for (; ; ) {
 					GC.RegisterForFullGCNotification(10, 10);
@@ -76,23 +68,27 @@ namespace SpriteMaster {
 			}
 		}
 		
-		private static readonly string ConfigName = "config.toml";
+		private const string ConfigName = "config.toml";
 
-		private static string CurrentSeason = "";
+		private static volatile string CurrentSeason = "";
 
 		public SpriteMaster () {
 			Contract.AssertNull(Self);
 			Self = this;
 
-			MemoryPressureThread = new Thread(MemoryPressureLoop);
-			MemoryPressureThread.Name = "Memory Pressure Thread";
-			MemoryPressureThread.Priority = ThreadPriority.BelowNormal;
-			MemoryPressureThread.IsBackground = true;
+			if (DotNet) {
+				MemoryPressureThread = new Thread(MemoryPressureLoop) {
+					Name = "Memory Pressure Thread",
+					Priority = ThreadPriority.BelowNormal,
+					IsBackground = true
+				};
 
-			GarbageCollectThread = new Thread(GarbageCheckLoop);
-			GarbageCollectThread.Name = "Garbage Collection Thread";
-			GarbageCollectThread.Priority = ThreadPriority.BelowNormal;
-			GarbageCollectThread.IsBackground = true;
+				GarbageCollectThread = new Thread(GarbageCheckLoop) {
+					Name = "Garbage Collection Thread",
+					Priority = ThreadPriority.BelowNormal,
+					IsBackground = true
+				};
+			}
 		}
 
 		private bool IsVersionOutdated(string configVersion) {
@@ -135,7 +131,8 @@ namespace SpriteMaster {
 			using (var tempStream = new MemoryStream()) {
 				SerializeConfig.Save(tempStream);
 
-				SerializeConfig.Load(ConfigPath);
+				if (!Config.IgnoreConfig)
+					SerializeConfig.Load(ConfigPath);
 
 				if (IsVersionOutdated(Config.ConfigVersion)) {
 					Debug.WarningLn("config.toml is out of date, rewriting it.");
@@ -143,8 +140,16 @@ namespace SpriteMaster {
 					Config.ConfigVersion = Config.CurrentVersion;
 				}
 			}
+
+			if (Config.ShowIntroMessage && !Config.SkipIntro) {
+				help.Events.GameLoop.GameLaunched += (_, _1) => {
+					Game1.drawLetterMessage("Welcome to SpriteMaster!\nSpriteMaster must resample sprites as it sees them and thus some lag will likely be apparent at the start of the game, upon entering new areas, and when new sprites are seen.\n\nPlease be patient and do not take this as an indication that your computer is incapable of running SpriteMaster.\n\nEnjoy!".Replace("\n", "^"));
+				};
+				Config.ShowIntroMessage = false;
+			}
+
 			SerializeConfig.Save(ConfigPath);
-			
+
 			ConfigureHarmony();
 			help.Events.Input.ButtonPressed += OnButtonPressed;
 
@@ -157,8 +162,10 @@ namespace SpriteMaster {
 			// GC after major events
 			help.Events.GameLoop.SaveLoaded += (_, _1) => Garbage.Collect(compact: true, blocking: true, background: false);
 
-			MemoryPressureThread.Start();
-			GarbageCollectThread.Start();
+			if (MemoryPressureThread != null)
+				MemoryPressureThread.Start();
+			if (GarbageCollectThread != null)
+				GarbageCollectThread.Start();
 		}
 
 		// SMAPI/CP won't do this, so we do. Purge the cached textures for the previous season on a season change.

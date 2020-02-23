@@ -34,7 +34,7 @@ namespace TimeMultiplier
                 LastTimeInterval = 0;
 
                 string configLocation = Path.Combine("data", Constants.SaveFolderName + ".json");
-                helper.Data.WriteJsonFile<TimeMultiplierConfig>(configLocation, Config);
+                helper.Data.WriteJsonFile(configLocation, Config);
 
                 Config = new TimeMultiplierConfig();
                 TimeMultiplierToggled(false);
@@ -58,7 +58,7 @@ namespace TimeMultiplier
                 Config.TimeMultiplier = multiplierArg;
 
                 string configLocation = Path.Combine("data", Constants.SaveFolderName + ".json");
-                helper.Data.WriteJsonFile<TimeMultiplierConfig>(configLocation, Config);
+                helper.Data.WriteJsonFile(configLocation, Config);
 
                 Monitor.Log("Time now multiplied by " + multiplierArg, LogLevel.Info);
             });
@@ -71,7 +71,7 @@ namespace TimeMultiplier
                 Config.Enabled = !Config.Enabled;               
 
                 string configLocation = Path.Combine("data", Constants.SaveFolderName + ".json");
-                helper.Data.WriteJsonFile<TimeMultiplierConfig>(configLocation, Config);
+                helper.Data.WriteJsonFile(configLocation, Config);
 
                 Monitor.Log("Time multiplier enabled: " + Config.Enabled, LogLevel.Info);
             });

@@ -2,12 +2,34 @@
 
 # Release notes
 ## Upcoming release
-* When a fish pond drop is guaranteed, further drops are now crossed out instead of hidden.
+* Added search feature (thanks to collaboration with mattfeldman!).
+* Added support for multi-key bindings (like `LeftShift + F1`).
+* Improved translations. Thanks to mael-belval (updated French)!
+* Fixed some vanilla recipes not shown in lookups when Producer Framework Mod packs are installed.
+
+## 1.25.2
+Released 03 February 2020.
+
+* Fixed 'needed for' shown for incorrect item types in some cases.
+* Fixed some Producer Framework Mod recipes not shown correctly.
+
+## 1.25.1
+Released 02 February 2020.
+
+* Errors in Producer Framework Mod integration can no longer break lookups.
+* Fixed errors reading some Producer Framework Mod recipes.
+
+## 1.25
+Released 01 February 2020.
+
+* Added support for most custom machine recipes from Producer Framework Mod (thanks to Digus!).
 * Added number owned to tool/weapon lookups.
-* Fixed fruit trees showing next fruit tomorrow on the last day of their season.
+* When a fish pond drop is guaranteed, further drops are now crossed out instead of hidden.
+* Fixed bushes & fruit trees showing next fruit tomorrow on the last day of their season.
 * Fixed items owned count not including child/horse hats, items in dressers, and equipped items.
 * Fixed a missing translation for non-English players.
-* Improved translations. Thanks to asqwedcxz741 (updated Chinese)!
+* Fixed fish spawn location names not being translated.
+* Improved translations. Thanks to asqwedcxz741 (updated Chinese) and corrinr (updated Spanish)!
 
 ## 1.24
 Released 27 December 2019.
@@ -170,7 +192,7 @@ Released 14 February 2018.
 
 * Updated to SMAPI 2.4.
 * Added support for furniture.
-* Added support for custom machines and objects from Custom Farming Redux 2.3.6+.
+* Added support for custom machines and objects from Custom Farming Redux.
 * Fixed debug key working when a menu is open.
 * Fixed typo in debug interface.
 * Improved translations. Thanks to Husky110 (German) and yuwenlan (Chinese)!

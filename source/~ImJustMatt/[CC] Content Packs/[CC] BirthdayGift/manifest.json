@@ -1,0 +1,12 @@
+﻿{
+	"Name": "BirthdayGift",
+	"Author": "furyx639",
+	"Version": "1.2.0",
+	"Description": "Custom Chore for getting today's birthday gift for an NPC other than your spouse.",
+	"UniqueID": "furyx639.BirthdayGift",
+	"ContentPackFor": {
+		"UniqueID":  "furyx639.CustomChores",
+		"MinimumApiVersion":  "1.2.0"
+	},
+	"MinimumApiVersion": "2.0"
+}

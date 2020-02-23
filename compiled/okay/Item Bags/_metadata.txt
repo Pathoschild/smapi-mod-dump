@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5382
+IDs: SlayerDharok.Item_Bags
+update keys: Nexus:5382

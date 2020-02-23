@@ -7,11 +7,18 @@ using StardewValley;
 using StardewValley.Events;
 using StardewValley.Characters;
 
+/* TODO:
+ * -> Check if multiplayer works
+ * -> Implement multiplayer birthing event/naming menu stuff
+ */
+ 
 namespace FamilyPlanning
 {
-    /* Family Planning: allow players to customize the number of children they have, their genders,
+    /* Family Planning: allows players to customize the number of children they have and their genders,
+     *                  modify the chance of a spouse asking for a child, with or without console messages,
      *                  and allows them to adopt children with a roommate. (In Vanilla, it's Krobus.)
-     * -> The player enters the number of children they want, for now it's a console command.
+     *                  
+     * -> The player enters the number of children they want through a console command.
      *   -> If 0, they never get the question.
      *   -> If 1, they stop after 1.
      *   -> The default is 2, vanilla behavior. (if they don't already have more than 2 kids)
@@ -19,10 +26,20 @@ namespace FamilyPlanning
      *   
      * -> The player is given the option to customize the gender of the child at birth.
      * 
+     * -> The player changes the chance of their spouse asking for a child through a console command.
+     * -> They enter a whole number from 1 to 100, representing the percentage chance of the question happening.
+     * -> The value defaults to 5%, the same as vanilla.
+     * 
      * -> There's a config option, AdoptChildrenWithRoommate, which defaults to false.
      * -> If you set this value to true, then your roommate will prompt you to adopt a child.
      * -> (You could potentially stop this by setting TotalChildren to 0,
-     *     but I'm not sure why you'd want to after setting the config option.)
+     *     but I'm not sure why you'd want to after setting the config option.)    
+     * -> (If you're using a mod that turns Krobus into a normal marriage candidate, like Krobus Marriage Mod,
+     *     then you don't need this setting, things will work out normally.)
+     *     
+     * -> There's another config option, BabyQuestionMessages, which defaults to false.
+     * -> When true, you will get messages in the SMAPI console that give you information
+     *    about whether your spouse is able to ask you for a child, and their chance of doing so.
      * 
      * This version of Family Planning is compatible with SMAPI 3.0 and Stardew Valley 1.4.
      */
@@ -32,6 +49,7 @@ namespace FamilyPlanning
      *  -> StardewValley.Characters.Child.reloadSprite() -> determines the sprite for a child
      *  -> StardewValley.Characters.Child.tenMinuteUpdate() -> tells the child where their bed is
      *  -> StardewValley.NPC.isGaySpouse() -> makes sure that roommates are given adoption dialogue
+     *  -> StardewValley.Utility.pickPersonalFarmEvent() -> controls chance of baby question & creates console messages
      */
 
     /* Content Packs:
@@ -47,11 +65,6 @@ namespace FamilyPlanning
      * (I'm considering adding a gender token, but haven't gotten confirmation that it's necessary.)
      */
 
-    /* Multiplayer testing:
-     * -> I have yet to test with Stardew Valley 1.4.
-     * -> I will continue to save data to data/<Save Folder Name>.json
-     */
-
     class ModEntry : Mod
     {
         private static FamilyData data;
@@ -60,6 +73,7 @@ namespace FamilyPlanning
         public static IModHelper helper;
         private ModConfig config;
         private static bool AdoptChildrenWithRoommate;
+        private static bool BabyQuestionMessages;
         private bool firstTick = true;
 
         public override void Entry(IModHelper helper)
@@ -70,9 +84,12 @@ namespace FamilyPlanning
             //Load Config
             config = helper.ReadConfig<ModConfig>();
             AdoptChildrenWithRoommate = config.AdoptChildrenWithRoommate;
+            BabyQuestionMessages = config.BabyQuestionMessages;
             //Console commands
             helper.ConsoleCommands.Add("get_max_children", "Returns the number of children you can have.", GetTotalChildrenConsole);
             helper.ConsoleCommands.Add("set_max_children", "Sets the value for how many children you can have. (If you set the value to more than 4, children will overlap in bed and Content Patcher mods may not work.)\nUsage: set_max_children <value>\n- value: the number of children you can have.", SetTotalChildrenConsole);
+            helper.ConsoleCommands.Add("get_question_chance", "Returns the percentage chance that your spouse will ask to have a child.", GetBabyQuestionChance);
+            helper.ConsoleCommands.Add("set_question_chance", "Sets the probability that your spouse will ask to have a child. The default chance is 5%.\nUsage: set_question_chance <value>\n- value: the percentage chance that your spouse will ask you for a baby (when it's possible for them to do so). Enter this as a whole number between 1 and 100, representing the percentage chance.\nExamples: set_question_chance 100 => 100% chance.\n          set_question_chance 5 => 5% chance.", SetBabyQuestionChance);
             //Event handlers
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
@@ -97,7 +114,11 @@ namespace FamilyPlanning
                 original: AccessTools.Method(typeof(NPC), nameof(NPC.isGaySpouse)),
                 postfix: new HarmonyMethod(typeof(Patches.IsGaySpousePatch), nameof(Patches.IsGaySpousePatch.Postfix))
             );
-            
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Utility), nameof(Utility.pickPersonalFarmEvent)),
+                prefix: new HarmonyMethod(typeof(Patches.PickPersonalFarmEventPatch), nameof(Patches.PickPersonalFarmEventPatch.Prefix))
+            );
+
             //Load content packs
             contentPacks = new List<IContentPack>();
             foreach (IContentPack contentPack in helper.ContentPacks.GetOwned())
@@ -246,7 +267,7 @@ namespace FamilyPlanning
             if (!Context.IsWorldReady)
                 return;
 
-            Monitor.Log("The number of children you can have is: " + GetFamilyData().TotalChildren);
+            Monitor.Log("The number of children you can have is: " + GetFamilyData().TotalChildren, LogLevel.Info);
         }
 
         public void SetTotalChildrenConsole(string command, string[] args)
@@ -263,14 +284,54 @@ namespace FamilyPlanning
                 {
                     data.TotalChildren = input;
                     Helper.Data.WriteJsonFile("data/" + Constants.SaveFolderName + ".json", data);
-                    Monitor.Log("The number of children you can have has been set to " + input + ".");
+                    Monitor.Log("The number of children you can have has been set to " + input + ".", LogLevel.Info);
                 }
                 else
-                    Monitor.Log("Input value is out of bounds.");
+                    Monitor.Log("Input value is out of bounds.", LogLevel.Info);
             }
             catch (Exception e)
             {
-                Monitor.Log(e.Message);
+                Monitor.Log(e.Message, LogLevel.Trace);
+            }
+        }
+
+        public void GetBabyQuestionChance(string command, string[] args)
+        {
+            if (!Context.IsWorldReady)
+                return;
+
+            Monitor.Log("The percentage chance that your spouse will ask to have children is: " + GetFamilyData().BabyQuestionChance + "%", LogLevel.Info);
+        }
+
+        public void SetBabyQuestionChance(string command, string[] args)
+        {
+            if (!Context.IsWorldReady)
+                return;
+
+            int input;
+            try
+            {
+                input = int.Parse(args[0]);
+
+                if(input >= 1 && input <= 100)
+                {
+                    data.BabyQuestionChance = input;
+                    Helper.Data.WriteJsonFile("data/" + Constants.SaveFolderName + ".json", data);
+                    Monitor.Log("The percentage chance that your spouse will ask about having a baby (when possible) is now " + input + "%.", LogLevel.Info);
+                    Monitor.Log("BabyQuestionDouble is now " + (input / 100.0), LogLevel.Trace);
+                }
+                else if(input == 0)
+                {
+                    Monitor.Log("You can't set the percentage chance to 0. If you don't want your spouse to ask about having children at all, you should use the set_max_children command.", LogLevel.Info);
+                }
+                else
+                {
+                    Monitor.Log("That value is out of bounds. The value can be between 1 to 100, representing the percentage chance. (I.e. 100 -> 100%, 50 -> 50%, 5 -> 5%).", LogLevel.Info);
+                }
+            }
+            catch(Exception e)
+            {
+                Monitor.Log(e.Message, LogLevel.Trace);
             }
         }
 
@@ -282,6 +343,11 @@ namespace FamilyPlanning
         public static bool RoommateConfig()
         {
             return AdoptChildrenWithRoommate;
+        }
+
+        public static bool MessagesConfig()
+        {
+            return BabyQuestionMessages;
         }
 
         public static Tuple<string, string> GetChildSpriteData(string childName)
@@ -313,7 +379,7 @@ namespace FamilyPlanning
             return null;
         }
 
-        public static Tuple<int, string> GetSpouseDialogueData(string spouseName)
+        public static List<Tuple<int, string>> GetSpouseDialogueData(string spouseName)
         {
             foreach (IContentPack contentPack in contentPacks)
             {
@@ -326,7 +392,7 @@ namespace FamilyPlanning
                     {
                         if (key.Equals(spouseName))
                         {
-                            cpdata.SpouseDialogue.TryGetValue(key, out Tuple<int, string> spouseDialogue);
+                            cpdata.SpouseDialogue.TryGetValue(key, out List<Tuple<int, string>> spouseDialogue);
                             return spouseDialogue;
                         }
                     }

@@ -29,6 +29,7 @@ mods:
    Notes
    Pelican TTS
    Plan Importer
+   Plato Warp Menu
    Portraiture
    PyTK
    Ring of Fire
@@ -39,14 +40,14 @@ mods:
    Speedster
    Split Money
    Swim (Almost) Anywhere
-   TMX Loader
+   TMXL Map Toolkit
    Ultiplayer
    Visualize
 
 latest commit:
-   commit dfd3845550ceea542d305f94762f9b26636ba85a
+   commit a0be8ebcc35c316a3d507baa0cbe6eaab4faa933
    Author: David <david@millionideas.de>
-   Date:   Tue Dec 3 19:10:40 2019 +0100
+   Date:   Wed Feb 19 01:29:41 2020 +0100
    
-       Fixed Asset names
+       include icon
    

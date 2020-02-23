@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Timers;
 using Microsoft.Xna.Framework;
 
@@ -19,29 +20,43 @@ namespace ModSettingsTab.Framework
         /// <summary>
         /// collection of selected mods
         /// </summary>
-        public static Queue<string> Favorite;
+        private static Queue<string> _favoriteQueue;
 
         /// <summary>
         /// save timer, anti-click protection
         /// </summary>
         private static readonly Timer SaveTimer;
 
+        /// <summary>
+        /// list of favorite mod options
+        /// </summary>
+        public static readonly List<Mod> ModList;
+
+        public delegate void Update();
+
+        public static Update UpdateMod;
+        public static readonly Dictionary<string, Rectangle> FavoriteTabSource;
+        private static readonly Queue<Rectangle> FreeFavoriteTabSource;
+
+
         static FavoriteData()
         {
-            SaveTimer = new Timer(2000.0)
+            FavoriteTabSource = new Dictionary<string, Rectangle>();
+            ModList = new List<Mod>();
+            SaveTimer = new Timer(1200.0)
             {
                 Enabled = false,
                 AutoReset = false
             };
             SaveTimer.Elapsed += (t, e) =>
             {
-                ModEntry.Helper.Data.WriteJsonFile("data/favorite.json",
+                Helper.Data.WriteJsonFile("data/favorite.json",
                     new SaveData
                     {
-                        List = Favorite.ToList(),
-                        Bookmarks = ModData.FavoriteTabSource
+                        List = _favoriteQueue.ToList(),
+                        Bookmarks = FavoriteTabSource
                     });
-                ModData.UpdateFavoriteOptionsAsync();
+                UpdateFavoriteOptionsAsync();
             };
 
             var freeBookmarks = new[]
@@ -53,30 +68,30 @@ namespace ModSettingsTab.Framework
                 new Rectangle(0, 176, 32, 24),
             };
 
-            var data = ModEntry.Helper.Data.ReadJsonFile<SaveData>("data/favorite.json");
+            var data = Helper.Data.ReadJsonFile<SaveData>("data/favorite.json");
             if (data == null)
             {
-                Favorite = new Queue<string>();
-                ModData.FreeFavoriteTabSource = new Queue<Rectangle>(freeBookmarks);
+                _favoriteQueue = new Queue<string>();
+                FreeFavoriteTabSource = new Queue<Rectangle>(freeBookmarks);
                 return;
             }
 
             // check if all mods are loaded
             for (var i = data.List.Count - 1; i >= 0; i--)
             {
-                if (ModEntry.Helper.ModRegistry.IsLoaded(data.List[i])) continue;
+                if (Helper.ModRegistry.IsLoaded(data.List[i])) continue;
                 data.Bookmarks.Remove(data.List[i]);
                 data.List.RemoveAt(i);
             }
 
-            Favorite = new Queue<string>(data.List);
-            ModData.FavoriteTabSource = data.Bookmarks;
-            if (Favorite.Count > 5)
-                Favorite = new Queue<string>(Favorite.Take(5));
+            _favoriteQueue = new Queue<string>(data.List);
+            FavoriteTabSource = data.Bookmarks;
+            if (_favoriteQueue.Count > 5)
+                _favoriteQueue = new Queue<string>(_favoriteQueue.Take(5));
 
             // delete used free bookmarks
             var bookmarks = data.Bookmarks.Select(b => b.Value).ToArray();
-            ModData.FreeFavoriteTabSource = new Queue<Rectangle>(freeBookmarks.Except(bookmarks));
+            FreeFavoriteTabSource = new Queue<Rectangle>(freeBookmarks.Except(bookmarks));
         }
 
         /// <summary>
@@ -86,7 +101,7 @@ namespace ModSettingsTab.Framework
         /// unique mod identifier
         /// </param>
         /// <returns></returns>
-        public static bool IsFavorite(string uniqueId) => Favorite.Contains(uniqueId);
+        public static bool IsFavorite(string uniqueId) => _favoriteQueue.Contains(uniqueId);
 
         /// <summary>
         /// changes bookmark state
@@ -99,36 +114,59 @@ namespace ModSettingsTab.Framework
             if (IsFavorite(uniqueId))
             {
                 // update the queue
-                var newFavorite = Favorite.Where(id => id != uniqueId);
-                Favorite = new Queue<string>(newFavorite);
+                var newFavorite = _favoriteQueue.Where(id => id != uniqueId);
+                _favoriteQueue = new Queue<string>(newFavorite);
                 // markAsInactive
                 ModData.ModList[uniqueId].Favorite = false;
                 // mark the bookmark as free
-                ModData.FreeFavoriteTabSource.Enqueue(ModData.FavoriteTabSource[uniqueId]);
+                FreeFavoriteTabSource.Enqueue(FavoriteTabSource[uniqueId]);
                 // delete from bookmarks
-                ModData.FavoriteTabSource.Remove(uniqueId);
+                FavoriteTabSource.Remove(uniqueId);
             }
             else
             {
                 // add to favorites
-                Favorite.Enqueue(uniqueId);
+                _favoriteQueue.Enqueue(uniqueId);
                 ModData.ModList[uniqueId].Favorite = true;
-                if (Favorite.Count > 5)
+                if (_favoriteQueue.Count > 5)
                 {
                     // if there are already more than 5 bookmarks, delete the oldest
-                    var modId = Favorite.Dequeue();
+                    var modId = _favoriteQueue.Dequeue();
                     ModData.ModList[modId].Favorite = false;
                     // also free bookmark
-                    ModData.FreeFavoriteTabSource.Enqueue(ModData.FavoriteTabSource[modId]);
-                    ModData.FavoriteTabSource.Remove(modId);
+                    FreeFavoriteTabSource.Enqueue(FavoriteTabSource[modId]);
+                    FavoriteTabSource.Remove(modId);
                 }
 
                 // add a free bookmark
-                ModData.FavoriteTabSource.Add(uniqueId, ModData.FreeFavoriteTabSource.Dequeue());
+                FavoriteTabSource.Add(uniqueId, FreeFavoriteTabSource.Dequeue());
+            }
+            SaveTimer.Reset();
+        }
+
+        /// <summary>
+        /// asynchronously updates the list of settings of selected mods
+        /// </summary>
+        private static async void UpdateFavoriteOptionsAsync()
+        {
+            await Task.Run(LoadOptions);
+            UpdateMod();
+        }
+
+        public static void LoadOptions()
+        {
+            ModList.Clear();
+            foreach (var id in _favoriteQueue)
+            {
+                ModList.Add(ModData.ModList[id]);
             }
 
-            SaveTimer.Stop();
-            SaveTimer.Start();
+            for (var i = ModList.Count; i > 0; i--)
+            {
+                var id = ModList[i - 1].Manifest.UniqueID;
+                if (!FavoriteTabSource.ContainsKey(id))
+                    FavoriteTabSource.Add(id, FreeFavoriteTabSource.Dequeue());
+            }
         }
     }
 }

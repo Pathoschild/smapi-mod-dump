@@ -5,9 +5,9 @@ mods:
    Customize Exterior
 
 latest commit:
-   commit 44bdf8556bd0f59974bc9ac06e2a1ec8adab4de6
-   Author: spacechase0 <spacechase0.and.cat@gmail.com>
-   Date:   Mon Nov 25 17:01:23 2019 -0500
+   commit dce8879a4a535598e807bc0d7311f5c93a5cb5f4
+   Author: Chase W <spacechase0@users.noreply.github.com>
+   Date:   Sun Jan 12 22:56:49 2020 -0500
    
-       1.0.7 - SDV 1.4
+       Move most logging to trace
    

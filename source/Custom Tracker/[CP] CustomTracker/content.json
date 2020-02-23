@@ -7,6 +7,11 @@
           "FromFile": "assets/tracker.png"
     },
 	{
+          "Action": "Load",
+          "Target": "LooseSprites/CustomTrackerForageBG",
+          "FromFile": "assets/forage_background.png"
+    },
+	{
 		"Action": "EditImage",
 		"Target": "LooseSprites/Cursors",
         "FromFile": "assets/blank_cursor.png",

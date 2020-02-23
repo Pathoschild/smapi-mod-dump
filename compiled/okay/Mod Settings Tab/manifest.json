@@ -1,7 +1,7 @@
 {
   "Name": "ModSettingsTab",
   "Author": "Gilar Fasulaki",
-  "Version": "0.1.0",
+  "Version": "0.2.1",
   "Description": "Replaces the standard settings tab",
   "UniqueID": "GilarF.ModSettingsTab",
   "EntryDll": "ModSettingsTab.dll",

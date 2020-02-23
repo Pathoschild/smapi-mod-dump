@@ -4,6 +4,7 @@ using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -90,24 +91,40 @@ namespace NpcAdventure.Loader
         public void Edit<T>(IAssetData asset)
         {
             var toApply = this.GetPatchesForAsset(asset, "Edit");
-            var target = asset.AsDictionary<string, string>().Data;
+
+            if (toApply == null || toApply.Count <= 0)
+                return;
+
+            MethodInfo method = this.GetType().GetMethod(nameof(this.ApplyDictionary), BindingFlags.Instance | BindingFlags.NonPublic);
+
+            if (method == null)
+                throw new InvalidOperationException($"Can't fetch the internal {nameof(this.ApplyDictionary)} method.");
+
+            MethodInfo patcher = AssetPatchHelper.MakeKeyValuePatcher<T>(method);
 
             foreach (var patch in toApply)
             {
-                try
-                {
-                    var data = patch.LoadData<Dictionary<string, string>>();
+                patcher.Invoke(this, new object[] { asset, patch });
+            }
+        }
 
-                    foreach (var pair in data)
-                    {
-                        target[pair.Key] = pair.Value;
-                    }
+        private void ApplyDictionary<TKey, TValue>(IAssetData asset, AssetPatch patch)
+        {
+            try
+            {
+                var target = asset.AsDictionary<TKey, TValue>().Data;
+                var data = patch.LoadData<Dictionary<TKey, TValue>>();
 
-                    this.monitor.Log($"EDIT: Applied patch '{patch.LogName}' to asset {asset.AssetName}");
-                } catch (Exception e)
+                foreach (var pair in data)
                 {
-                    this.monitor.Log($"EDIT: Cannot apply patch '{patch.LogName}' to asset {asset.AssetName}: {e.Message}", LogLevel.Error);
+                    target[pair.Key] = pair.Value;
                 }
+
+                this.monitor.Log($"EDIT: Applied patch '{patch.LogName}' to asset {asset.AssetName}");
+            }
+            catch (Exception e)
+            {
+                this.monitor.Log($"EDIT: Cannot apply patch '{patch.LogName}' to asset {asset.AssetName}: {e.Message}", LogLevel.Error);
             }
         }
 
@@ -143,7 +160,18 @@ namespace NpcAdventure.Loader
         /// <returns></returns>
         private List<AssetPatch> GetPatchesForAsset(IAssetInfo asset, string action)
         {
-            return this.patches.Where((p) => p.Action.Equals(action) && asset.AssetNameEquals($"{this.modName}/{p.Target}")).ToList();
+            var patches = this.patches
+                .Where((p) => p.Action.Equals(action) && asset.AssetNameEquals($"{this.modName}/{p.Target}"))
+                .Where((p) => string.IsNullOrEmpty(p.Locale) || p.Locale.Equals(asset.Locale))
+                .ToList();
+
+            patches.Sort((a, b) => {
+                if (string.IsNullOrEmpty(a.Locale) && !string.IsNullOrEmpty(b.Locale)) return -1;
+                else if (!string.IsNullOrEmpty(a.Locale)) return 1;
+                return 0;
+            });
+
+            return patches;
         }
 
         /// <summary>
@@ -175,19 +203,28 @@ namespace NpcAdventure.Loader
                         continue;
                     }
 
+                    var formatVersion = new SemanticVersion(metadata.Format);
+
                     // Try to load patches from content pack
                     foreach (var patch in metadata.Changes)
                     {
+                        var unknownFields = this.SanitizePatchDefinition(patch, formatVersion);
                         var patchProblems = this.ValidatePatchDefinition(patch);
 
                         if (patchProblems.Count > 0)
                         {
                             skippedPatches++;
-                            this.monitor.Log($"Cannot load patch #{entryNo} in content pack `{pack.Manifest.Name} ({pack.Manifest.UniqueID})`, because: {Environment.NewLine}  - {string.Join(Environment.NewLine + "  - ", problems)}", LogLevel.Error);
+                            this.monitor.Log($"Cannot load patch #{entryNo} in content pack `{pack.Manifest.Name} ({pack.Manifest.UniqueID})`, because: {Environment.NewLine}  - {string.Join(Environment.NewLine + "  - ", patchProblems)}", LogLevel.Error);
                             continue;
                         }
 
-                        patches.Add(new AssetPatch(patch, managedPack, $"entry #{entryNo} ({patch.Action} {patch.Target}) from pack '{pack.Manifest.Name} ({pack.Manifest.UniqueID})'"));
+                        var localeName = string.IsNullOrEmpty(patch.Locale) ? "default" : patch.Locale;
+                        var logName = string.IsNullOrEmpty(patch.LogName) ? $"entry #{entryNo} ({patch.Action} {patch.Target} Locale {localeName})" : patch.LogName;
+
+                        if (unknownFields.Count > 0)
+                            this.monitor.Log($"UNSUPPORTED FIELDS: {logName} from pack `{ pack.Manifest.Name}` ({ pack.Manifest.UniqueID}) ommited, because these fields not supported in format version {formatVersion}: {string.Join(", ", unknownFields)}", LogLevel.Warn);
+                        else
+                            patches.Add(new AssetPatch(patch, managedPack, $"{logName} from pack `{pack.Manifest.Name}` ({pack.Manifest.UniqueID})"));
                         entryNo++;
                     }
 
@@ -233,8 +270,31 @@ namespace NpcAdventure.Loader
                 problems.Add($"Target is not defined in entry");
             if (string.IsNullOrEmpty(change.FromFile))
                 problems.Add("No content defined! `FromFile` must be set in entry");
+            if (change.Action.Equals("Load") && !string.IsNullOrEmpty(change.Locale))
+                problems.Add("Locale can't be used for `Load` action! Use action `Edit` instead for localization patches");
 
             return problems;
+        }
+
+        private List<string> SanitizePatchDefinition(ContentPackData.DataChanges change, SemanticVersion format)
+        {
+            List<string> ommitedFields = new List<string>();
+
+            if (format.IsOlderThan("1.2") && !string.IsNullOrEmpty(change.Locale))
+            {
+                // Locales exists in format version 1.2 and newer. For older formats is locale undefined
+                change.Locale = null;
+                ommitedFields.Add("Locale");
+            }
+
+            if (format.IsOlderThan("1.2") && !string.IsNullOrEmpty(change.LogName))
+            {
+                // Locales exists in format version 1.2 and newer. For older formats is locale undefined
+                change.LogName = null;
+                ommitedFields.Add("LogName");
+            }
+
+            return ommitedFields;
         }
     }
 }

@@ -1,0 +1,22 @@
+﻿{
+	// Shane dialogue (credit: alekrrau)
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Shane.HasChild=Yes.Priority=1": "I took {{ChildName}} around the farm today to pet all the animals with me. It was so cute, I should've taken pictures.",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Shane.Priority=1.1": "Morning {{NickName}}. I got up early and I've visited all the chickens, and the other animals too. Gave 'em all plenty of attention. Can't believe that's even a chore we have to do, it's one of the best parts of my day! Besides you, of course.",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Shane.Priority=1.2": "Today's just one of my heavier days... So I went around and visited all the animals. Yeah, I'm feeling a bit better, petting them always cheers me up.",
+	// Emily dialogue (credit: alekrrau)
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Emily.Priority=1.1": "I pet all the animals this morning- they have such pure souls. I think a lot of humans forget how much they can learn from animals, don't you? I can see wisdom in their eyes that I may never understand.",
+	// Elliott dialogue (credit:janamods01)
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Elliott.Priority=1.1":  "Oh, and all our animals seem happy this morning. Don't worry about that.",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Elliott.Priority=1.2":  "I recited some poetry to the chickens earlier, they seemed rather pleased.",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Elliott.Priority=1.3":  "I couldn't sleep much today, so I enjoyed the company of our animals and the rising sun. This farm life brings me peace.",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Elliott.Priority=1.4":  "Tonight I dreamed of rabbits, but feral and fey. Ours are much more agreeable.",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Elliott.Priority=1.5":  "Do you reckon the sheep understand us? Those eyes frequently seem very inquisitive when I talk to them.",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Elliott.Priority=1.6":  "I took a few moments to admire our ducks today, their feathers are of such beauty.",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Elliott.Priority=1.7":  "Every morning I take time to give our animals some love. They do help give me this wonderful life, after all.",
+	// Default dialogue (overridden by individual dialogue)
+	"Dialogue.Mod=HelpfulSpouses": "Good morning {{NickName}}, I pet all of the animals in the barn and coop.",
+
+	// Shop text
+	"DisplayName.Mod=HelpForHire":  "Pet the Animals",
+	"Description.Mod=HelpForHire":  "We'll brush and care for your Barn and Coop animals.",
+}

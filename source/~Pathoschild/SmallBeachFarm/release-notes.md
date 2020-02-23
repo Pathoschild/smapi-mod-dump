@@ -2,6 +2,16 @@
 
 # Release notes
 ## Upcoming release
+* Improved compatibility with Better Water (thanks to laulajatar!).
+* Removed files for Eemie's Map Recolor. (Compatibility is now handled by that mod directly.)
+* Fixed issue where another mod's compatibility patch for Small Beach Farm wouldn't be applied correctly.
+
+## 1.5
+Released 01 February 2020.
+
+* Added support for other mods patching the custom tilesheet.
+* Added support for overlay compatibility files.
+* Added compatibility with Better Water (thanks to laulajatar!).
 * Fixed missing warp tile.
 
 ## 1.4.3

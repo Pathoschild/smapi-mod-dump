@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Pathoschild.Stardew.Common.Input;
 using StardewValley;
 
 namespace Pathoschild.Stardew.DataLayers.Framework
@@ -20,6 +21,9 @@ namespace Pathoschild.Stardew.DataLayers.Framework
 
         /// <summary>The legend entries to display.</summary>
         LegendEntry[] Legend { get; }
+
+        /// <summary>The keys which activate the layer.</summary>
+        KeyBinding ShortcutKey { get; }
 
 
         /*********

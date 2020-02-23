@@ -67,6 +67,18 @@
       ]
     },
     {
+      "ChallengeName": "Rock Crabs",
+      "RequiredKillCount": 30,
+      "RewardType": 7,
+      "RewardItemNumber": 810,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Rock Crab",
+        "Lava Crab",
+        "Iridium Crab"
+      ]
+    },
+    {
       "ChallengeName": "Golems",
       "RequiredKillCount": 30,
       "RewardType": 2,
@@ -152,9 +164,9 @@
     },
     {
       "ChallengeName": "Mummies",
-      "RequiredKillCount": 200,
-      "RewardType": 1,
-      "RewardItemNumber": 127,
+      "RequiredKillCount": 100,
+      "RewardType": 6,
+      "RewardItemNumber": 60,
       "RewardItemStack": 1,
       "MonsterNames": [
         "Mummy"
@@ -162,12 +174,22 @@
     },
     {
       "ChallengeName": "Serpents",
-      "RequiredKillCount": 200,
-      "RewardType": 2,
-      "RewardItemNumber": 29,
+      "RequiredKillCount": 250,
+      "RewardType": 7,
+      "RewardItemNumber": 811,
       "RewardItemStack": 1,
       "MonsterNames": [
         "Serpent"
+      ]
+    },
+    {
+      "ChallengeName": "Pepper Rex",
+      "RequiredKillCount": 50,
+      "RewardType": 6,
+      "RewardItemNumber": 50,
+      "RewardItemStack": 1,
+      "MonsterNames": [
+        "Pepper Rex"
       ]
     },
     {
@@ -215,7 +237,8 @@
         "Mummy",
         "Carbon Ghost",
         "Iridium Bat",
-        "Iridium Crab"
+        "Iridium Crab",
+        "Pepper Rex"
       ]
     }
   ]

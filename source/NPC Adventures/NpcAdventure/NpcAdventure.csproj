@@ -92,11 +92,13 @@
     <Compile Include="AI\AI_StateMachine.cs" />
     <Compile Include="AI\AI_StateMachine.doctor.cs" />
     <Compile Include="AI\Controller\FightController.cs" />
+    <Compile Include="AI\Controller\FollowJoystick.cs" />
     <Compile Include="AI\Controller\IdleController.AnimateBehavior.cs" />
     <Compile Include="AI\Controller\IdleController.cs" />
     <Compile Include="AI\Controller\IdleController.LookAroundBehavior.cs" />
     <Compile Include="AI\EventArgsLocationChanged.cs" />
     <Compile Include="Buffs\BuffManager.cs" />
+    <Compile Include="Commander.cs" />
     <Compile Include="CompanionManager.cs" />
     <Compile Include="AI\Controller\IController.cs" />
     <Compile Include="Compatibility\CustomKissingModProxy.cs" />
@@ -104,6 +106,7 @@
     <Compile Include="Driver\DialogueDriver.cs" />
     <Compile Include="AI\Controller\FollowController.cs" />
     <Compile Include="Driver\HintDriver.cs" />
+    <Compile Include="Driver\MailDriver.cs" />
     <Compile Include="Driver\StuffDriver.cs" />
     <Compile Include="Events\ISpecialModEvents.cs" />
     <Compile Include="Events\SpecialModEvents.cs" />
@@ -114,22 +117,38 @@
     <Compile Include="Loader\ContentPacks\AssetPatch.cs" />
     <Compile Include="Loader\AssetsManager.cs" />
     <Compile Include="Loader\ContentPacks\ManagedContentPack.cs" />
+    <Compile Include="Loader\AssetPatchHelper.cs" />
     <Compile Include="Model\Config.cs" />
     <Compile Include="Model\ContentPackData.cs" />
     <Compile Include="Loader\ContentPacks\ContentPackProvider.cs" />
     <Compile Include="Loader\IContentLoader.cs" />
     <Compile Include="Model\BagDumpInfo.cs" />
-    <Compile Include="Model\BuffInfo.cs" />
     <Compile Include="Model\CompanionMetaData.cs" />
+    <Compile Include="Patches\GetCharacterPatch.cs" />
+    <Compile Include="Patches\NpcCheckActionPatch.cs" />
+    <Compile Include="Patches\QuestPatch.cs" />
+    <Compile Include="Internal\SetOnce.cs" />
+    <Compile Include="Story\Messaging\GameMasterMessage.cs" />
+    <Compile Include="Story\Messaging\IGameMasterMessage.cs" />
+    <Compile Include="Story\Messaging\RecruitMessage.cs" />
+    <Compile Include="Story\GameMasterState.cs" />
     <Compile Include="Objects\Package.cs" />
     <Compile Include="Patches\GameLocationDrawPatch.cs" />
     <Compile Include="Patches\CompanionSayHiPatch.cs" />
     <Compile Include="Patches\SpouseReturnHomePatch.cs" />
-    <Compile Include="StateMachine\StateFeatures\IRequestedDialogueCreator.cs" />
+    <Compile Include="Patches\MailBoxPatch.cs" />
+    <Compile Include="StateMachine\StateFeatures\IActionPerformer.cs" />
     <Compile Include="StateMachine\StateFeatures\IDialogueDetector.cs" />
     <Compile Include="StateMachine\StateFeatures\ICompanionIntegrator.cs" />
     <Compile Include="StateMachine\State\RecruitedState.cs" />
     <Compile Include="StateMachine\State\UnavailableState.cs" />
+    <Compile Include="Story\GameMaster.cs" />
+    <Compile Include="Story\IGameMaster.cs" />
+    <Compile Include="Story\IScenario.cs" />
+    <Compile Include="Story\Scenario\AdventureBegins.cs" />
+    <Compile Include="Story\Scenario\BaseScenario.cs" />
+    <Compile Include="Story\Scenario\QuestScenario.cs" />
+    <Compile Include="Story\StoryHelper.cs" />
     <Compile Include="Utils\DialogueHelper.VariousKeyGenerator.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\Helper.cs" />
@@ -145,16 +164,31 @@
     <Compile Include="Utils\Helper\DrawDuringUse.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\Data\Buffs.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="assets\Data\CompanionDispositions.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Data\AnimationDescriptions.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="assets\Data\Events.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\Data\Events.pt-BR.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="assets\Data\IdleBehaviors.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Data\IdleNPCDefinitions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\Data\Quests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\Data\Quests.pt-BR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Dialogue\Abigail.fr-FR.json">
@@ -166,22 +200,10 @@
     <None Include="assets\Dialogue\Abigail.pt-BR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\Dialogue\AbigailSpouse.fr-FR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="assets\Dialogue\Abigail.zh-CN.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\Dialogue\AbigailSpouse.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\AbigailSpouse.pt-BR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="assets\Dialogue\Alex.fr-FR.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\Dialogue\AbigailSpouse.zh-CN.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Dialogue\Alex.json">
@@ -274,7 +296,7 @@
     <None Include="assets\Dialogue\Penny.zh-CN.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\Dialogue\Penny_.fr-FR.json">
+    <None Include="assets\Dialogue\Penny.fr-FR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Dialogue\Sam.fr-FR.json">
@@ -310,13 +332,18 @@
     <None Include="assets\Dialogue\Shane.pt-BR.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\Strings\Buffs.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="assets\Dialogue\Shane.zh-CN.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="assets\Strings\Buffs.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\Strings\Buffs.pt-BR.json" />
+    <None Include="assets\Strings\Mail.pt-BR.json" />
     <None Include="assets\Strings\SpeechBubbles.fr-FR.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\Strings\Mail.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\Strings\SpeechBubbles.json">
@@ -344,30 +371,24 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="StateMachine\CompanionState.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="assets\Data\Buffs.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <Content Include="preparenightbuild.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>Tenhle projekt odkazuje na balíčky NuGet, které nejsou v tomhle počítači k dispozici. Když je chcete stáhnout, použijte funkci obnovení balíčků NuGet.  Další informace najdete na adrese http://go.microsoft.com/fwlink/?LinkID=322105. Chybějícím souborem je soubor {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
-  </Target>
   <PropertyGroup>
     <PreBuildEvent>if $(ConfigurationName) == Nightbuild (
 cd $(ProjectDir)
 node preparenightbuild.js
 )</PreBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.3.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Tenhle projekt odkazuje na balíčky NuGet, které nejsou v tomhle počítači k dispozici. Když je chcete stáhnout, použijte funkci obnovení balíčků NuGet.  Další informace najdete na adrese http://go.microsoft.com/fwlink/?LinkID=322105. Chybějícím souborem je soubor {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.3.1.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+  </Target>
 </Project>

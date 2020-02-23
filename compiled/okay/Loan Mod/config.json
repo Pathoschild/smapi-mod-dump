@@ -1,5 +1,6 @@
 {
   "LoanButton": "L",
+  "CustomMoneyInput": true,
   "LatePaymentChargeRate": 0.1,
   "InterestModifier1": 0.5,
   "InterestModifier2": 0.25,

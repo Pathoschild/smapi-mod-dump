@@ -48,7 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlantableCaveCarrot.cs" />
     <Compile Include="Crops\CaveCarrotFlower.cs" />
+    <Compile Include="Crops\CaveCarrot.cs" />
     <Compile Include="LoadMarker.cs" />
     <Compile Include="ModState.cs" />
     <Compile Include="NetworkMessageTypes.cs" />
@@ -63,6 +65,7 @@
     </Compile>
     <Compile Include="TextureSet.cs" />
     <Compile Include="VoidshroomDataInjector.cs" />
+    <Compile Include="CaveCarrotSeed.cs" />
     <Compile Include="VoidshroomSpore.cs" />
     <Compile Include="VoidshroomTree.cs" />
     <Compile Include="VoidtreeSaveData.cs" />
@@ -72,6 +75,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\cavecarrot_flower_crop.png" />
+    <Content Include="assets\cavecarrot_crop.png" />
+    <Content Include="assets\cavecarrot_seed.png" />
     <Content Include="assets\voidshroom_spore.png" />
     <Content Include="assets\voidshroom_tree.png" />
   </ItemGroup>

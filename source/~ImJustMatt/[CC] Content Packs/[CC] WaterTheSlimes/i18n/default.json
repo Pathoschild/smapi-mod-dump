@@ -1,0 +1,20 @@
+﻿{
+	// Shane dialogue (credit: alekrrau)
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Shane.Priority=1.1": "Hang on, I gotta chance- I just watered the slimes and they got me all goopy. Eh, they're not that scary, I just try to envision them as chickens- gross, multiplying, angry chickens that don't want to be pet, and try to fight me the instant they see me.",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Shane.Priority=1.2": "Wait! Don't hug me yet, I just got back from the slime pen. Game them water, so you don't have to go back in there for another day. I'm gonna go shower- unless you'd like to join me?",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Shane.Priority=1.3": "Do you think slimes can recognize people? Because I just gave them water, and I swear they have developed a specific vendetta against me in particular.",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Shane.Priority=1.4": "{{PlayerName}}! I moistened the slimes and made it back alive. Do I get a kiss for being brave?",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Shane.Priority=1.5": "I filled the slimes water troughs. Don't worry about it, I might not be an adventurer like you, but I know how to handle aggresive, slimy, mindless monsters. What? No, I'm not talking about the slimes, I'm talking about the Joja Customers I used to deal with. Slimes aren't nearly as bad.",
+	// Emily dialogue (credit: alekrrau)
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Emily.Priority=1.1": "I just filled the water for the slime hutch! Oh no, {{PlayerName}}, even when they attack us it doesn't upset me. They're just doing what is instinct for them. It's part of their nature, and there's nothing wrong with that, even if we don't understand it.",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Emily.Priority=1.2": "I know they're a bit dangerous, but I think slimes are so beautiful. When light passes through their bodies, they remind me of gemstones!",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Emily.Priority=1.3": "I gave the slimes water again. Even though they seem less complex than other farm animals, they still deserve respect like any other creature. We all live on the same planet, after all.",
+	// Krobus dialogue
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Krobus.Priority=1":  "I like visiting the slimes, they remind me of the sewers.",
+	// Default dialogue (overridden by individual dialogue)
+	"Dialogue.Mod=HelpfulSpouses": "Good morning {{NickName}}, I filled the slimes troughs with water.",
+
+	// Shop text
+	"DisplayName.Mod=HelpForHire":  "Water the Slimes",
+	"Description.Mod=HelpForHire":  "We'll fill up all of the water troughs in slime hutches.",
+}

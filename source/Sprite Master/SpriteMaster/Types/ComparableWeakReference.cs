@@ -120,13 +120,11 @@ namespace SpriteMaster.Types {
 		}
 
 		public override bool Equals(object obj) {
-			switch (obj) {
-				case ComparableWeakReference<T> reference:
-					return this == reference;
-				case WeakReference<T> reference:
-					return this == reference;
-			}
-			return false;
+			return obj switch {
+				ComparableWeakReference<T> reference => this == reference,
+				WeakReference<T> reference => this == reference,
+				_ => false,
+			};
 		}
 
 		public static bool operator == (ComparableWeakReference<T> objA, ComparableWeakReference<T> objB) {

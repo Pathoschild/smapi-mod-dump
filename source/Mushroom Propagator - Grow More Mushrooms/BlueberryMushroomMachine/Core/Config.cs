@@ -2,7 +2,7 @@
 
 namespace BlueberryMushroomMachine
 {
-	class Config
+	public class Config
 	{
 		public int MaximumDaysToMature { get; set; } = 4;
 
@@ -15,7 +15,7 @@ namespace BlueberryMushroomMachine
 		public bool DisabledForFruitCave { get; set; } = true;
 		public bool RecipeAlwaysAvailable { get; set; } = false;
 
-		public bool Debugging { get; set; } = false;
+		public bool DebugMode { get; set; } = false;
 		public SButton GivePropagatorKey { get; set; } = SButton.F9;
 	}
 }

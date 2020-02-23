@@ -1,0 +1,96 @@
+{
+  "CreatedByVersionString": "1.2.1",
+  "GlobalPriceModifier": 1.0,
+  "GlobalCapacityModifier": 1.0,
+  "StandardBagSettings": [
+    {
+      "Size": "Small",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0
+    },
+    {
+      "Size": "Medium",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0
+    },
+    {
+      "Size": "Large",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0
+    },
+    {
+      "Size": "Giant",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0
+    },
+    {
+      "Size": "Massive",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0
+    }
+  ],
+  "BundleBagSettings": [
+    {
+      "Size": "Large",
+      "PriceModifier": 1.0,
+      "BasePrice": 4000
+    },
+    {
+      "Size": "Massive",
+      "PriceModifier": 1.0,
+      "BasePrice": 16000
+    }
+  ],
+  "RucksackSettings": [
+    {
+      "Size": "Small",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0,
+      "BasePrice": 24000,
+      "BaseCapacity": 30,
+      "Slots": 6,
+      "MenuColumns": 12,
+      "MenuSlotSize": 64
+    },
+    {
+      "Size": "Medium",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0,
+      "BasePrice": 65000,
+      "BaseCapacity": 99,
+      "Slots": 12,
+      "MenuColumns": 12,
+      "MenuSlotSize": 64
+    },
+    {
+      "Size": "Large",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0,
+      "BasePrice": 175000,
+      "BaseCapacity": 300,
+      "Slots": 24,
+      "MenuColumns": 12,
+      "MenuSlotSize": 64
+    },
+    {
+      "Size": "Giant",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0,
+      "BasePrice": 350000,
+      "BaseCapacity": 999,
+      "Slots": 36,
+      "MenuColumns": 12,
+      "MenuSlotSize": 64
+    },
+    {
+      "Size": "Massive",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0,
+      "BasePrice": 1000000,
+      "BaseCapacity": 9999,
+      "Slots": 72,
+      "MenuColumns": 12,
+      "MenuSlotSize": 64
+    }
+  ]
+}

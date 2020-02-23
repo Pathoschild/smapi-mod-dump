@@ -1,0 +1,10 @@
+﻿{
+  "Name": "RandomizedEnergy",
+  "Author": "LakeMonster_",
+  "Version": "1.1.0", // fixed locally
+  "Description": "This mod will subtract a randomized amount of energy from the player when a Tool is used. The amount of energy consumed will depend on the Tool that is used, and maybe some other secret variables ;].",
+  "UniqueID": "LakeMonster_.RandomizedEnergy",
+  "EntryDll": "RandomizedEnergy.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

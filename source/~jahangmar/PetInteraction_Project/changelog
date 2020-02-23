@@ -44,4 +44,5 @@
 	-fixed stick throw distance and added config option for distance
 	-fixed trash shaming
 
-
+next:
+	-fixed English text (thanks to overwritten)

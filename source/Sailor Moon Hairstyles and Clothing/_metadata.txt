@@ -5,9 +5,9 @@ mods:
    Sailor Moon Hairstyles and Clothing
 
 latest commit:
-   commit 8af2fbd4010ce99b3829c3e093704ad69bf3c05d
+   commit e37555bdd73e34029b527f467c8f6fb161aa611f
    Author: razikh-git <pocketsathome@gmail.com>
-   Date:   Fri Jan 10 15:40:21 2020 +1100
+   Date:   Sat Feb 1 18:46:42 2020 +1100
    
-       Reformatting Hairstyles into GetGlam content pack
+       Naming change
    

@@ -86,9 +86,10 @@
 
             foreach (Building building in farmBuildings)
             {
-                if (building.indoors != null && building.indoors.GetType() == typeof(AnimalHouse))
+                var indoors = building.indoors.Value;
+                if (indoors != null && indoors is AnimalHouse)
                 {
-                    var animalHouse = (AnimalHouse)building.indoors;
+                    var animalHouse = (AnimalHouse)indoors;
                     foreach (FarmAnimal animal in animalHouse.animals.Values.ToList())
                     {
                         StardewObjectInfo soi = this.CreateSOI(animal, animalHouse, this.action);
@@ -108,13 +109,13 @@
             switch (action)
             {
                 case Action.Pet:
-                    soi.NeedAction = !animal.wasPet;
+                    soi.NeedAction = !animal.wasPet.Value;
                     break;
                 case Action.Milk:
-                    soi.NeedAction = animal.currentProduce > 0 && animal.toolUsedForHarvest == "Milk Pail";
+                    soi.NeedAction = animal.currentProduce.Value > 0 && animal.toolUsedForHarvest.Value == "Milk Pail";
                     break;
                 case Action.Shear:
-                    soi.NeedAction = animal.currentProduce > 0 && animal.toolUsedForHarvest == "Shears";
+                    soi.NeedAction = animal.currentProduce.Value > 0 && animal.toolUsedForHarvest.Value == "Shears";
                     break;
                 default:
                     throw new NotImplementedException();

@@ -5,9 +5,9 @@ mods:
    Luck Skill
 
 latest commit:
-   commit 395e3fd49a9e3cb60ffadb03d08d270357de9b0c
+   commit 0453c57723a997209dcfa0a42eaf74774f9a5a7a
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Thu Dec 26 18:40:42 2019 -0500
+   Date:   Sun Jan 12 22:55:48 2020 -0500
    
-       Nerf geode finding from vanilla
+       Fixes
    

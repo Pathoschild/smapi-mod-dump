@@ -5,9 +5,9 @@ mods:
    Sleepovers
 
 latest commit:
-   commit b6b0a65b5b0c642bbbc97c4bf9240083a0ff147f
-   Author: bwdy <47769190+bwdymods@users.noreply.github.com>
-   Date:   Tue Nov 26 15:11:39 2019 -0900
+   commit 2bdcd3e31d7ab2300223987e3ef44e8dd3a0b38d
+   Author: Glitchfinder <glitchkey@gmail.com>
+   Date:   Sat Jan 25 10:35:50 2020 -0800
    
-       Create blacklist.json
+       Updates readme.
    

@@ -20,6 +20,9 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         /// <summary>The defined wallet items and whether the player has them.</summary>
         private readonly IDictionary<WalletItem, bool> Values = new Dictionary<WalletItem, bool>();
 
+        /// <summary>The valid input arguments.</summary>
+        private readonly InvariantHashSet ValidInputs = new InvariantHashSet(Enum.GetNames(typeof(WalletItem)));
+
 
         /*********
         ** Public methods
@@ -68,17 +71,19 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         /// <summary>Get the set of valid input arguments if restricted, or an empty collection if unrestricted.</summary>
         public override InvariantHashSet GetValidInputs()
         {
-            return new InvariantHashSet(this.Values.Keys.Select(p => p.ToString()));
+            return this.ValidInputs;
         }
 
-        /// <summary>Get the allowed values for an input argument (or <c>null</c> if any value is allowed).</summary>
+        /// <summary>Get whether the token always chooses from a set of known values for the given input.</summary>
         /// <param name="input">The input argument, if applicable.</param>
+        /// <param name="allowedValues">The possible values for the input.</param>
         /// <exception cref="InvalidOperationException">The input argument doesn't match this value provider, or does not respect <see cref="IValueProvider.AllowsInput"/> or <see cref="IValueProvider.RequiresInput"/>.</exception>
-        public override InvariantHashSet GetAllowedValues(ITokenString input)
+        public override bool HasBoundedValues(ITokenString input, out InvariantHashSet allowedValues)
         {
-            return input.IsMeaningful()
+            allowedValues = input.IsMeaningful()
                 ? InvariantHashSet.Boolean()
                 : this.GetValidInputs();
+            return true;
         }
 
         /// <summary>Get the current values.</summary>

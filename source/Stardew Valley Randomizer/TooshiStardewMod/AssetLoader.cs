@@ -31,7 +31,7 @@ namespace Randomizer {
             // Normalize the asset name
             
 
-                string normalizedAssetName = this._mod.Helper.Content.NormaliseAssetName(asset.AssetName);
+                string normalizedAssetName = this._mod.Helper.Content.NormalizeAssetName(asset.AssetName);
 
                 // Try to get the replacement asset from the replacements dictionary
                 if (this._replacements.TryGetValue(normalizedAssetName, out string replacementAsset)) {
@@ -46,7 +46,7 @@ namespace Randomizer {
 
         private void AddReplacement(string originalAsset, string replacementAsset) {
             // Normalize the asset name so the keys are consistent
-            string normalizedAssetName = this._mod.Helper.Content.NormaliseAssetName(originalAsset);
+            string normalizedAssetName = this._mod.Helper.Content.NormalizeAssetName(originalAsset);
 
             // Add the replacement to the dictionary
             this._replacements[normalizedAssetName] = replacementAsset;
@@ -145,7 +145,7 @@ namespace Randomizer {
 
                 if (isPet == 1)
                 {
-                    int petRng = rng.Next(0, 2);
+                    int petRng = rng.Next(0, Pet.Length);
                     this.AddReplacement($"Animals/{Pet[petRng]}", "Assets/Characters/BearDog");
                     //this._mod.Monitor.Log($"Bear is {Pet[petRng]}");
                 }
@@ -156,7 +156,7 @@ namespace Randomizer {
                 }
                 else
                 {
-                    int animalRng = rng.Next(0, 5);
+                    int animalRng = rng.Next(0, Animal.Length);
                     this.AddReplacement($"Animals/{Animal[animalRng]}", "Assets/Characters/Bear");
                     this.AddReplacement($"Animals/Baby{Animal[animalRng]}", "Assets/Characters/BabyBear");
                     //this._mod.Monitor.Log($"Bear is {Animal[animalRng]}");

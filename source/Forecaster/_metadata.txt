@@ -5,9 +5,12 @@ mods:
    Forecaster
 
 latest commit:
-   commit 0e5aeaa40b1cc93c9ce0429e2a06bc070df3f6b5
-   Author: Remy Bach <remy@bach.me.uk>
-   Date:   Thu Nov 29 19:58:01 2018 +0000
+   commit fb831a56e29b2bd437f4f69032c170681f34725d
+   Merge: 0e5aeaa 07a13c9
+   Author: RÃ©my Bach <remy@bach.me.uk>
+   Date:   Tue Feb 18 20:36:30 2020 +0000
    
-       Bump version in manifest to 1.2.1
+       Merge pull request #4 from Pathoschild/update-code
+       
+       Update for SMAPI 3.0, internal refactoring
    

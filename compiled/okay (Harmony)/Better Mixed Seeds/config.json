@@ -1,5 +1,6 @@
 {
   "PercentDropChanceForMixedSeedsWhenNotFiber": 5,
+  "UseCropYearRequirement": true,
   "StardewValley": {
     "Spring": {
       "Crops": [
@@ -2428,6 +2429,73 @@
         },
         {
           "Name": "Purple Beauty Bell Pepper",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Winter": null
+  },
+  "StardewBakery": {
+    "Spring": null,
+    "Summer": {
+      "Crops": [
+        {
+          "Name": "Cookie Plant",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Fall": null,
+    "Winter": {
+      "Crops": [
+        {
+          "Name": "Cookie Plant",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    }
+  },
+  "Succulents": {
+    "Spring": {
+      "Crops": [
+        {
+          "Name": "Decorative Succulents",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Edible Succulents",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Summer": {
+      "Crops": [
+        {
+          "Name": "Decorative Succulents",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Edible Succulents",
+          "Enabled": true,
+          "Chance": 1
+        }
+      ]
+    },
+    "Fall": {
+      "Crops": [
+        {
+          "Name": "Decorative Succulents",
+          "Enabled": true,
+          "Chance": 1
+        },
+        {
+          "Name": "Edible Succulents",
           "Enabled": true,
           "Chance": 1
         }

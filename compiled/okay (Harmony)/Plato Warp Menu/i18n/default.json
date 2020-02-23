@@ -1,0 +1,12 @@
+﻿{
+  "MenuButton": "Open Menu Button",
+  "UseTempFolder": "Use Temp Folder",
+  "menu.artifacts": "Artifact Spots",
+  "menu.characters": "Characters",
+  "menu.outdoors": "Outdoors",
+  "menu.indoors": "Indoors",
+  "menu.buildings": "Buildings",
+  "menu.farm": "Farm",
+  "menu.locations.warp": "Warp to",
+  "menu.locations.loading": "Loading.."
+}

@@ -107,10 +107,8 @@
 	  "When": {
 		"Language": "en"
 	  },
-          "Fields": {
-		"Pierre": {
-			  "53": "Fall's almost here! It's arguably the most lucrative season for farmers, so make sure to save enough seeds. If you haven't upgraded your watering can by now, it's probably a good idea."
-		}
+          "Entries": {
+		"53": "Fall's almost here! It's arguably the most lucrative season for farmers, so make sure to save enough seeds. If you haven't upgraded your watering can by now, it's probably a good idea."
 	  }
 	
       }

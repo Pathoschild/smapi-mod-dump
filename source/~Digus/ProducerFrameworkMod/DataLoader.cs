@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,28 +25,30 @@ namespace ProducerFrameworkMod
         {
             foreach (IContentPack contentPack in Helper.ContentPacks.GetOwned())
             {
-                bool haveProducerRulesFile = File.Exists(Path.Combine(contentPack.DirectoryPath, ProducerRulesJson));
-                if (haveProducerRulesFile)
-                {
-                    ProducerFrameworkModEntry.ModMonitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
-                    List<ProducerRule> producerItems = contentPack.ReadJsonFile<List<ProducerRule>>(ProducerRulesJson);
-                    ProducerController.AddProducerItems(producerItems,contentPack.Translation);
-                }
-                else
-                {
-                    ProducerFrameworkModEntry.ModMonitor.Log($"Content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have an {ProducerRulesJson} file.", LogLevel.Trace);
-                }
-
-                bool haveProducersConfigFile = File.Exists(Path.Combine(contentPack.DirectoryPath, ProducersConfigJson));
+                string producersConfigJson = GetActualCaseForFileName(contentPack.DirectoryPath, ProducersConfigJson);
+                bool haveProducersConfigFile = producersConfigJson != null;
                 if (haveProducersConfigFile)
                 {
                     ProducerFrameworkModEntry.ModMonitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
-                    List<ProducerConfig> producersConfigs = contentPack.ReadJsonFile<List<ProducerConfig>>(ProducersConfigJson);
-                    ProducerController.AddProducersConfig(producersConfigs);
+                    List<ProducerConfig> producersConfigs = contentPack.ReadJsonFile<List<ProducerConfig>>(producersConfigJson);
+                    ProducerController.AddProducersConfig(producersConfigs, contentPack.Manifest.UniqueID);
                 }
                 else
                 {
                     ProducerFrameworkModEntry.ModMonitor.Log($"Content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have an {ProducersConfigJson} file.", LogLevel.Trace);
+                }
+
+                string producerRulesJson = GetActualCaseForFileName(contentPack.DirectoryPath, ProducerRulesJson);
+                bool haveProducerRulesFile = producerRulesJson != null;
+                if (haveProducerRulesFile)
+                {
+                    ProducerFrameworkModEntry.ModMonitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}");
+                    List<ProducerRule> producerItems = contentPack.ReadJsonFile<List<ProducerRule>>(producerRulesJson);
+                    ProducerController.AddProducerItems(producerItems, contentPack.Translation);
+                }
+                else
+                {
+                    ProducerFrameworkModEntry.ModMonitor.Log($"Content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have an {ProducerRulesJson} file.", LogLevel.Trace);
                 }
 
                 if (!haveProducerRulesFile && !haveProducersConfigFile)
@@ -53,6 +56,19 @@ namespace ProducerFrameworkMod
                     ProducerFrameworkModEntry.ModMonitor.Log($"Ignoring content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}\nIt does not have any of the required files.", LogLevel.Warn);
                 }
             }
+        }
+
+        /// <summary>
+        /// Return the file name using the case of an the first file with that name in the directory.
+        /// </summary>
+        /// <param name="directory">Directory to look for the file</param>
+        /// <param name="pattern">The name of the file in any case to look for</param>
+        /// <returns></returns>
+        private static string GetActualCaseForFileName(string directory, string pattern)
+        {
+            IEnumerable<string> foundFiles = Directory.EnumerateFiles(directory, pattern);
+            string file = foundFiles.FirstOrDefault();
+            return file != null ? new FileInfo(file).Name : null;
         }
     }
 }

@@ -33,6 +33,8 @@ Mining4Ores, defaults to the arrival on the 24th of the month, but you can set t
 
 TopTenItemsShipped, defaults to the arrival on the 28th of the month, but you can set this to any value from 0 (opt-out) to 28.
 
+WordsosOfYoba, defaults to the arrival on the 1st of the month, but you can set this to any value from 0 (opt-out) to 28.
+
 This configuration setting is not a newsletter.
 
 ColoredEnvelopes - True if you want colored envelopes to be shown when the mailboxes contains a Monthly Mail.  False will use the default game envelope.
@@ -45,12 +47,19 @@ v1.0.0     - Initial Release
 v1.0.1     - Correct spelling of sponsor.  Add colored envelopes.  Another couple Dad jokes added to random mix.  Config help text. 
 v1.0.2	   - Updated for Stardew Valley 1.14.
 v1.0.3	   - Update for minervamaga#7344 :D
+v1.0.4	   - Decided to implement Words of Wisdom after all since people are enjoying the mod.
 
 
 Conclusion
 ----------
-If you like this MOD you might want to check out my "Junk Mail" mod as well: https://www.nexusmods.com/stardewvalley/mods/4452/
-or "Train Whistle" mod, that lets you summmon the train basically anytime: https://www.nexusmods.com/stardewvalley/mods/4473
+If you like this MOD you might want to check out my other mods as well.
+
+"Junk Mail" : https://www.nexusmods.com/stardewvalley/mods/4452/
+"Monthly Mail" : https://www.nexusmods.com/stardewvalley/mods/4523 
+"Train Whistle" mod, that lets you summmon the train basically anytime: https://www.nexusmods.com/stardewvalley/mods/4473
+"Fantastic Frames" : https://www.nexusmods.com/stardewvalley/mods/4540
+"Be My Valentine's" : https://www.nexusmods.com/stardewvalley/mods/(replace)   -  Coming soon!
+"Wizard's Mystical Stationary":  : https://www.nexusmods.com/stardewvalley/mods/(replace)   - Coming soon!
 
 If you are a Steam user, I have created two Community Guides that you might enjoy.  They are not your typical regurgitation of the Stardew Valley Wiki,
 but are short stories based on the game designed to add "lore" to the game experience.  Folks seem to enjoy them and I am sure you will too.

@@ -1,0 +1,14 @@
+{
+  "ModKey": "L",
+  "Speed": 3,
+  "HoeDirt": false,
+  "DestroyGrass": false,
+  "DestroyStumps": false,
+  "DestroyImmatureTrees": false,
+  "DestroyMatureTrees": false,
+  "DestroyWeeds": false,
+  "DestroyTwigs": false,
+  "DestroyRocks": false,
+  "HoeUnderObjects": false,
+  "DestroyEverything": false
+}

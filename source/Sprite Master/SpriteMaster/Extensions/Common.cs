@@ -12,6 +12,13 @@ namespace SpriteMaster.Extensions {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ConditionalSet<T> (this ref T obj, in T? value) where T : struct {
+			if (value.HasValue) {
+				obj = value.Value;
+			}
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static WeakReference<T> MakeWeak<T>(this T obj) where T : class {
 			return new WeakReference<T>(obj);
 		}

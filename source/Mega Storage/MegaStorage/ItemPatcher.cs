@@ -1,60 +1,65 @@
-﻿using System.Linq;
-using MegaStorage.Mapping;
-using MegaStorage.Models;
-using StardewModdingAPI;
+﻿using MegaStorage.Framework;
+using MegaStorage.Framework.Models;
 using StardewModdingAPI.Events;
 using StardewValley;
+using System.Linq;
 
 namespace MegaStorage
 {
     public class ItemPatcher
     {
-        private readonly IModHelper _modHelper;
-        private readonly IMonitor _monitor;
-
-        public ItemPatcher(IModHelper modHelper, IMonitor monitor)
-        {
-            _modHelper = modHelper;
-            _monitor = monitor;
-        }
-
         public void Start()
         {
-            _modHelper.Events.Player.InventoryChanged += OnInventoryChanged;
-            _modHelper.Events.World.ObjectListChanged += OnObjectListChanged;
-            _modHelper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
-        }
-
-        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
-        {
-            foreach (var customChest in CustomChestFactory.CustomChests)
-            {
-                Register(customChest);
-            }
-        }
-
-        private void Register(CustomChest customChest)
-        {
-            _monitor.VerboseLog($"Registering {customChest.Config.Name} ({customChest.Config.Id})");
-            Game1.bigCraftablesInformation[customChest.Config.Id] = customChest.BigCraftableInfo;
-            CraftingRecipe.craftingRecipes[customChest.Config.Name] = customChest.RecipeString;
-            Game1.player.craftingRecipes[customChest.Config.Name] = 0;
+            MegaStorageMod.ModHelper.Events.Player.InventoryChanged += OnInventoryChanged;
+            MegaStorageMod.ModHelper.Events.World.ChestInventoryChanged += OnChestInventoryChanged;
+            MegaStorageMod.ModHelper.Events.World.ObjectListChanged += OnObjectListChanged;
         }
 
         private void OnInventoryChanged(object sender, InventoryChangedEventArgs e)
         {
-            _monitor.VerboseLog("OnInventoryChanged");
+            MegaStorageMod.ModMonitor.VerboseLog("OnInventoryChanged");
             if (!e.IsLocalPlayer || e.Added.Count() != 1)
+            {
                 return;
+            }
 
             var addedItem = e.Added.Single();
             if (addedItem is CustomChest)
+            {
                 return;
+            }
 
             if (!CustomChestFactory.ShouldBeCustomChest(addedItem))
+            {
                 return;
+            }
 
-            _monitor.VerboseLog("OnInventoryChanged: converting");
+            MegaStorageMod.ModMonitor.VerboseLog("OnInventoryChanged: converting");
+
+            var index = Game1.player.Items.IndexOf(addedItem);
+            Game1.player.Items[index] = addedItem.ToCustomChest();
+        }
+
+        private void OnChestInventoryChanged(object sender, ChestInventoryChangedEventArgs e)
+        {
+            MegaStorageMod.ModMonitor.VerboseLog("OnChestInventoryChanged");
+            if (e.Added.Count() != 1)
+            {
+                return;
+            }
+
+            var addedItem = e.Added.Single();
+            if (addedItem is CustomChest)
+            {
+                return;
+            }
+
+            if (!CustomChestFactory.ShouldBeCustomChest(addedItem))
+            {
+                return;
+            }
+
+            MegaStorageMod.ModMonitor.VerboseLog("OnChestInventoryChanged: converting");
 
             var index = Game1.player.Items.IndexOf(addedItem);
             Game1.player.Items[index] = addedItem.ToCustomChest();
@@ -62,23 +67,29 @@ namespace MegaStorage
 
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
         {
-            _monitor.VerboseLog("OnObjectListChanged");
+            MegaStorageMod.ModMonitor.VerboseLog("OnObjectListChanged");
             if (e.Added.Count() != 1)
+            {
                 return;
+            }
 
             var addedItemPosition = e.Added.Single();
             var addedItem = addedItemPosition.Value;
             if (addedItem is CustomChest)
+            {
                 return;
+            }
 
             if (!CustomChestFactory.ShouldBeCustomChest(addedItem))
+            {
                 return;
+            }
 
-            _monitor.VerboseLog("OnObjectListChanged: converting");
+            MegaStorageMod.ModMonitor.VerboseLog("OnObjectListChanged: converting");
 
             var position = addedItemPosition.Key;
             var item = e.Location.objects[position];
-            e.Location.objects[position] = item.ToCustomChest();
+            e.Location.objects[position] = item.ToCustomChest(position);
         }
 
     }

@@ -175,7 +175,7 @@ namespace InteractionTweaks
             {
                 cancelTexture.draw(e.SpriteBatch, Color.Gray, 0.88f);
 
-                Vector2 vector = new Vector2((float)(carpenterMenu.xPositionOnScreen + carpenterMenu.maxWidthOfDescription + 16 + 64), (float)(carpenterMenu.yPositionOnScreen + 256 + 32));
+                Vector2 vector = new Vector2((float)(carpenterMenu.xPositionOnScreen + carpenterMenu.maxWidthOfBuildingViewer + 16), (float)(carpenterMenu.yPositionOnScreen + 256 + 32));
                 vector.X -= 16f;
                 vector.Y -= 21f;
 

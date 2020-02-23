@@ -5,9 +5,9 @@ mods:
    Part of the Community
 
 latest commit:
-   commit fab9a3a38c507ed16bc1417dee031c5d380b3f1d
-   Author: Brandon Green <bmmgreen@gmail.com>
-   Date:   Sat Dec 14 11:11:53 2019 -0600
+   commit cd7b4baf732ca71a3e98fd4b5b1323570a9bb1b5
+   Author: brandon <bmarquismarkail@github.com>
+   Date:   Fri Feb 7 14:15:06 2020 -0600
    
-       Create LICENSE
+       Updating Project File With New SMAPI
    

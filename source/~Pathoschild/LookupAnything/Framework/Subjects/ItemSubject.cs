@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.Common.DataParsers;
+using Pathoschild.Stardew.Common.Items.ItemData;
 using Pathoschild.Stardew.LookupAnything.Framework.Constants;
 using Pathoschild.Stardew.LookupAnything.Framework.Data;
 using Pathoschild.Stardew.LookupAnything.Framework.DebugFields;
@@ -568,7 +569,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Subjects
         /// <param name="obj">The machine whose output to represent.</param>
         private IEnumerable<ICustomField> GetNeededForFields(SObject obj)
         {
-            if (obj == null)
+            if (obj == null || obj.GetItemType() != ItemType.Object)
                 yield break;
 
             List<string> neededFor = new List<string>();

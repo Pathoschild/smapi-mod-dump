@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5250
+IDs: LakeMonster_.RandomizedEnergy
+update keys: Nexus:5250

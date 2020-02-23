@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Breath of Fire 3 Fishing Sounds",
   "Author": "Guedez",
-  "Version": "1.0.2",
+  "Version": "1.0.3", // fixed locally
   "Description": "Changes the fishing sounds to BoF3's sounds",
   "UniqueID": "bof.three.fishing.sounds",
   "MinimumApiVersion": "3.0",

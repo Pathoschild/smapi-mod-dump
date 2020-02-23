@@ -5,8 +5,8 @@ mods:
    A Tapper's Dream
 
 latest commit:
-   commit 92c88a73f7f81e9f402ce77d2587a4857f13c0cc
-   Author: Lukas Meirose <meirose@uni-bremen.de>
+   commit ab869f0b8e87aa27a2bd7b240e01491f29cffe56
+   Author: Goldenrevolver <goldenrevolver8@gmail.com>
    Date:   Mon Dec 30 15:48:47 2019 +0100
    
        Added documentation and updated a few conditions

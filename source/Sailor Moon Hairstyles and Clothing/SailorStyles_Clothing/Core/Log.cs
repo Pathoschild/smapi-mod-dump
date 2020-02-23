@@ -1,6 +1,6 @@
 ﻿namespace SailorStyles_Clothing
 {
-	class Log
+	internal class Log
 	{
 		internal static void D(string str, bool isDebug=true)
 		{

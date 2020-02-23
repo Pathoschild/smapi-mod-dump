@@ -3,7 +3,7 @@ Stardew Valley mod that prevents doomed milking/shearing attempts and adds an in
 
 Compatible with Stardew Valley 1.4.3+ on Linux, Mac, and Windows. Requires SMAPI 3.0 or later.
 
-**New Update:** I added the fix that the awesome minervamaga made to stop errors introduced in the last game update! I also fixed the bug that was causing dogs/cats to keep their heart icons even if the config setting was turned off. 
+**New Update (1.7.6):** [floatingatoll](https://github.com/floatingatoll) awesomely fixed a bug that was causing bubbles to be weirdly floating alone during custscenes! 
 
 ![Preview image](/better_ranching_preview.gif)
 
@@ -48,10 +48,14 @@ Compatible with Stardew Valley 1.4.3+ on Linux, Mac, and Windows. Requires SMAPI
     * minervamaga made a fix for an error that was spamming the console
 * 1.7.4:
     * Fixed a bug causing dogs/cats to keep their heart indicators even if the setting was turned off in the config
-
+* 1.75:
+    * Improve error handling
+* 1.76:
+    * floatingatoll fixed a bug causing bubbles to not be hidden during cutscenes
 <h2>Contributors</h2>
 
 * Urbanyeti -- https://github.com/urbanyeti
 * vaindil -- https://github.com/vaindil
 * Pathoschild -- https://github.com/Pathoschild
 * minervamaga -- https://github.com/minervamaga
+* floatingatoll -- https://github.com/floatingatoll

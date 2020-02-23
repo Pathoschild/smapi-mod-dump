@@ -16,36 +16,58 @@ namespace ProducerFrameworkMod
         /// </summary>
         /// <param name="producerRuleOutputConfig">The list of outputConfigs to choose from</param>
         /// <param name="random">The random object that should be used if necessary</param>
+        /// <param name="fuelSearch">Function to search the fuel for the production. Receive the fuel id and stack amount. Should return true if there is enough fuel.</param>
+        /// <param name="location">The location of the producer.</param>
+        /// <param name="input">The input Object</param>
         /// <returns>The chosen output config</returns>
-        public static OutputConfig ChooseOutput(List<OutputConfig> producerRuleOutputConfig, Random random)
+        /// <exception cref="RestrictionException">If there is no output config option, an exception is throw with the restriction message.</exception>
+        public static OutputConfig ChooseOutput(List<OutputConfig> producerRuleOutputConfig, Random random, Func<int,int,bool> fuelSearch, GameLocation location, Object input = null)
         {
-            List<OutputConfig> outputConfigs = producerRuleOutputConfig.FindAll(o => o.OutputProbability > 0);
+            List<OutputConfig> filteredOutputConfigs = FilterOutputConfig(producerRuleOutputConfig, o => o.RequiredInputQuality.Count == 0 || o.RequiredInputQuality.Any(q => q == input?.Quality), "Quality");
+            filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.FuelList.All(f => fuelSearch(f.Item1, f.Item2)), "Fuel");
+            filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.RequiredSeason.Count == 0 || o.RequiredSeason.Any(q => q == Game1.currentSeason), "Season");
+            filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.RequiredWeather.Count == 0 || o.RequiredWeather.Any(q => q == GameUtils.GetCurrentWeather()), "Weather");
+            filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.RequiredLocation.Count == 0 || o.RequiredLocation.Any(q => q == location.Name), "Location");
+            filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.RequiredOutdoors == null || o.RequiredOutdoors == location.IsOutdoors, "Location");
+
+
+            List<OutputConfig> outputConfigs = filteredOutputConfigs.FindAll(o => o.OutputProbability > 0);
             Double chance = random.NextDouble();
-            Double probabilies = 0;
+            Double probabilities = 0;
             foreach (OutputConfig outputConfig in outputConfigs)
             {
-                probabilies += outputConfig.OutputProbability;
-                if (chance - probabilies < 0)
+                probabilities += outputConfig.OutputProbability;
+                if (chance - probabilities < 0)
                 {
                     return outputConfig;
                 }
             }
-            outputConfigs = producerRuleOutputConfig.FindAll(o => o.OutputProbability <= 0);
-            double increment = (1 - probabilies) / outputConfigs.Count;
+            outputConfigs = filteredOutputConfigs.FindAll(o => o.OutputProbability <= 0);
+            double increment = (1 - probabilities) / outputConfigs.Count;
             foreach (OutputConfig outputConfig in outputConfigs)
             {
-                probabilies += increment;
-                if (chance - probabilies < 0)
+                probabilities += increment;
+                if (chance - probabilities < 0)
                 {
                     return outputConfig;
                 }
             }
-            return producerRuleOutputConfig.FirstOrDefault();
+            return filteredOutputConfigs.FirstOrDefault();
+        }
+
+        private static List<OutputConfig> FilterOutputConfig(List<OutputConfig> outputConfigs, Predicate<OutputConfig> filterPredicate, string messageSuffix)
+        {
+            List<OutputConfig> result = outputConfigs.FindAll(filterPredicate);
+            if (result.Count == 0)
+            {
+                throw new RestrictionException(DataLoader.Helper.Translation.Get($"Message.Requirement.{messageSuffix}"));
+            }
+            return result;
         }
 
         /// <summary>
         /// Create an output from a given output config.
-        /// The name is not property calculetad on the criation, should call LoadOutputName for that.
+        /// The name is not properly calculated on the creation, should call LoadOutputName for that.
         /// </summary>
         /// <param name="outputConfig">The output config</param>
         /// <param name="input">The input used</param>
@@ -53,16 +75,20 @@ namespace ProducerFrameworkMod
         /// <returns>The created output</returns>
         public static Object CreateOutput(OutputConfig outputConfig, Object input, Random random)
         {
-            Object output = outputConfig.OutputIndex != 93 && outputConfig.OutputIndex != 94 ? //Torches indexs
-                new Object(Vector2.Zero, outputConfig.OutputIndex, (string)null, false, true, false, false) :
+            Object output = outputConfig.OutputIndex != 93 && outputConfig.OutputIndex != 94 ? //Torches indexes
+                new Object(Vector2.Zero, outputConfig.OutputIndex, null, false, true, false, false) :
                 new Torch(Vector2.Zero, outputConfig.OutputStack, outputConfig.OutputIndex);
 
             if (outputConfig.InputPriceBased)
             {
-                output.Price = (int)(outputConfig.OutputPriceIncrement + input.Price * outputConfig.OutputPriceMultiplier);
+                output.Price = (int)(outputConfig.OutputPriceIncrement + (input?.Price??0) * outputConfig.OutputPriceMultiplier);
+            }
+            else
+            {
+                output.Price = (int)(outputConfig.OutputPriceIncrement + (output?.Price??0) * outputConfig.OutputPriceMultiplier);
             }
 
-            output.Quality = outputConfig.KeepInputQuality ? input.Quality : outputConfig.OutputQuality;
+            output.Quality = outputConfig.KeepInputQuality ? input?.Quality??0 : outputConfig.OutputQuality;
 
             output.Stack = GetOutputStack(outputConfig, input, random);
 
@@ -80,15 +106,15 @@ namespace ProducerFrameworkMod
         {
             double chance = random.NextDouble();
             StackConfig stackConfig;
-            if (input.Quality == 4 && chance < outputConfig.IridiumQualityInput.Probability)
+            if (input?.Quality == 4 && chance < outputConfig.IridiumQualityInput.Probability)
             {
                 stackConfig = outputConfig.IridiumQualityInput;
             }
-            else if (input.Quality == 2 && chance < outputConfig.GoldQualityInput.Probability)
+            else if (input?.Quality == 2 && chance < outputConfig.GoldQualityInput.Probability)
             {
                 stackConfig = outputConfig.GoldQualityInput;
             }
-            else if (input.Quality == 1 && chance < outputConfig.SilverQualityInput.Probability)
+            else if (input?.Quality == 1 && chance < outputConfig.SilverQualityInput.Probability)
             {
                 stackConfig = outputConfig.SilverQualityInput;
             }
@@ -114,18 +140,18 @@ namespace ProducerFrameworkMod
             who = who ?? Game1.player;
             if (outputConfig.PreserveType.HasValue)
             {
-                outputName = ObjectUtils.GetPreserveName(outputConfig.PreserveType.Value, input.Name);
+                outputName = ObjectUtils.GetPreserveName(outputConfig.PreserveType.Value, input?.Name??"");
                 output.preserve.Value = outputConfig.PreserveType;
                 inputUsed = true;
             }
             else if (outputConfig.OutputName != null)
             {
                 outputName = outputConfig.OutputName
-                    .Replace("{inputName}", input.Name)
+                    .Replace("{inputName}", input?.Name??"")
                     .Replace("{outputName}", output.Name)
                     .Replace("{farmerName}", who.Name)
                     .Replace("{farmName}", who.farmName.Value);
-                inputUsed = outputConfig.OutputName.Contains("{inputName}");
+                inputUsed = input != null && outputConfig.OutputName.Contains("{inputName}");
             }
 
             if (outputName != null)
@@ -135,7 +161,7 @@ namespace ProducerFrameworkMod
 
             if (inputUsed)
             {
-                output.preservedParentSheetIndex.Value = input.parentSheetIndex;
+                output.preservedParentSheetIndex.Value = input?.parentSheetIndex;
             }
 
             //Called just to load the display name.

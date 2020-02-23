@@ -16,7 +16,9 @@ namespace NpcAdventure.Buffs
     {
         private const int DURATION = 1200000;
         private const int COMPANION_BUFF_ID = -0x1A4;
+        private const int COMPANION_CYCLE_BUFF_ID = -0x1A6;
         private readonly IMonitor monitor;
+        private int currentProstheticIndex;
 
         public BuffManager(NPC companion, Farmer farmer, IContentLoader contentLoader, IMonitor monitor)
         {
@@ -24,11 +26,13 @@ namespace NpcAdventure.Buffs
             this.Farmer = farmer;
             this.ContentLoader = contentLoader;
             this.monitor = monitor;
+            this.Prosthetics = new List<Buff>();
         }
 
         public NPC Companion { get; }
         public Farmer Farmer { get; }
         private IContentLoader ContentLoader { get; }
+        public List<Buff> Prosthetics { get; private set; }
 
         public void AssignBuffs()
         {
@@ -72,21 +76,64 @@ namespace NpcAdventure.Buffs
                 glow = married ? new Color(114, 0, 0, 50) : Color.White,
             };
 
+            var keys = from k in buffData.Keys where k.StartsWith(this.Companion.Name + "~") select k;
+
+            // Cycle buffs (if any is defined)
+            foreach (var k in keys)
+            {
+                int[] cycleBuffAttrs = Utility.parseStringToIntArray(buffData[k], '/');
+
+                if (buffAttrs.Length < 12)
+                {
+                    this.monitor.Log($"Invalid buffs for {this.Companion.Name}", LogLevel.Error);
+                    continue;
+                }
+
+                Buff cycleBuff = new Buff(
+                    cycleBuffAttrs[0], cycleBuffAttrs[1], cycleBuffAttrs[2], cycleBuffAttrs[3],
+                    cycleBuffAttrs[4], cycleBuffAttrs[5], cycleBuffAttrs[6], cycleBuffAttrs[7],
+                    cycleBuffAttrs[8], cycleBuffAttrs[9], cycleBuffAttrs[10], cycleBuffAttrs[11],
+                    30, this.Companion.Name, this.Companion.displayName)
+                {
+                    millisecondsDuration = DURATION,
+                };
+
+                this.Prosthetics.Add(cycleBuff);
+            }
+
             Game1.buffsDisplay.addOtherBuff(buff);
             Game1.buffsDisplay.addOtherBuff(statBuff);
             statBuff.which = buff.which = COMPANION_BUFF_ID;
+
+            this.currentProstheticIndex = 0;
+
+            if (this.Prosthetics.Count > 0)
+            {
+                var firstCycle = this.Prosthetics.First();
+                Game1.buffsDisplay.addOtherBuff(firstCycle);
+                firstCycle.which = COMPANION_CYCLE_BUFF_ID;
+            }
 
             Game1.buffsDisplay.syncIcons();
         }
 
         public void ReleaseBuffs()
         {
+            this.Prosthetics.Clear();
+            CleanBuffs(COMPANION_BUFF_ID);
+            CleanBuffs(COMPANION_CYCLE_BUFF_ID);
+
+            Game1.buffsDisplay.syncIcons();
+        }
+
+        private static void CleanBuffs(int which)
+        {
             List<Buff> otherBuffs = Game1.buffsDisplay.otherBuffs;
             List<Buff> toClean = new List<Buff>();
 
             for (int i = 0; i < otherBuffs.Count; i++)
             {
-                if (otherBuffs[i] == null || otherBuffs[i].which != COMPANION_BUFF_ID)
+                if (otherBuffs[i] == null || otherBuffs[i].which != which)
                     continue;
 
                 otherBuffs[i].removeBuff();
@@ -96,8 +143,28 @@ namespace NpcAdventure.Buffs
             // Clean icons in registry
             foreach (Buff buff in toClean)
                 otherBuffs.Remove(buff);
+        }
 
+        public bool HasProsthetics()
+        {
+            return this.Prosthetics.Count > 0;
+        }
+
+        public void ChangeBuff()
+        {
+            if (!this.HasProsthetics())
+                return;
+
+            this.currentProstheticIndex = ++this.currentProstheticIndex % this.Prosthetics.Count;
+            CleanBuffs(COMPANION_CYCLE_BUFF_ID);
+
+            Buff buff = this.Prosthetics[this.currentProstheticIndex];
+            buff.millisecondsDuration = DURATION;
+            buff.which = -1;
+            Game1.buffsDisplay.addOtherBuff(buff);
+            buff.which = COMPANION_CYCLE_BUFF_ID;
             Game1.buffsDisplay.syncIcons();
+            Game1.playSound("powerup");
         }
     }
 }

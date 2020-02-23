@@ -1,0 +1,26 @@
+[
+	{
+		"Id": "PA.RecipeMail", // Letter id. It's important to be an unique string to avoid conflicts. Also it shouldn't have space characters.
+		"Title": "Your very own anvil!", // Letter title. Will be shown in the collections menu. Set it null or remove the line if you don't want the letter to appear in the collection. If an translation file is provide, you should put a translation key here, but you can still leave if null for no Title.
+		"Text": "Hey @!, ^It's time you learned how to break your own geodes! You do find a LOT of geodes. ^I've attached the recipe for an anvil so you can build one for yourself. ^-Clint", // Text of the letter. You can use @ to put the players name and ^ for line breaks. You can also use the base game commands to add money, items and stuff. If an translation file is provide, you should put a translation key here.
+		"Recipe": "Anvil", // Remove the line if you don't want to attach a recipe to the mail. It will only work if you have no other attachments to the mail.
+        "WhichBG": 0, //The id of the letter background. 0 = classic, 1 = notepad, 2 = pyramids
+		// CONDITIONS FOR DELIVERY
+        //Below are conditions for the delivery. Remove any of the lines if you don't want to check that condition.
+		"FriendshipConditions": // Each NPC of the list must check all conditions. 
+		[
+			{
+				"NpcName": "Clint", //Name of the NPC. Can use custom NPCs.
+				"FriendshipLevel": 5, // NPC must have a friendship heart level equal or higher what is defined. Default is 0.
+			}
+		],
+		"StatsConditions": // Each stats of the list must have a value equal or higher what is defined. Choose a StatsName or a StatsLabel
+		[
+			{ 
+				"StatsName": "GeodesCracked", //[SeedsSown|ItemsShipped|ItemsCooked|ItemsCrafted|ChickenEggsLayed|DuckEggsLayed|CowMilkProduced|GoatMilkProduced|RabbitWoolProduced|SheepWoolProduced|CheeseMade|GoatCheeseMade|TrufflesFound|StoneGathered|RocksCrushed|DirtHoed|GiftsGiven|TimesUnconscious|AverageBedtime|TimesFished|FishCaught|BouldersCracked|StumpsChopped|StepsTaken|MonstersKilled|DiamondsFound|PrismaticShardsFound|OtherPreciousGemsFound|CaveCarrotsFound|CopperFound|IronFound|CoalFound|CoinsFound|GoldFound|IridiumFound|BarsSmelted|BeveragesMade|PreservesMade|PiecesOfTrashRecycled|MysticStonesCrushed|DaysPlayed|WeedsEliminated|SticksChopped|NotesFound|QuestsCompleted|StarLevelCropsShipped|CropsShipped|ItemsForaged|SlimesKilled|GeodesCracked|GoodFriends|IndividualMoneyEarned] Default is null.
+				"Amount": 50 // The amount the status should be equal or greater for the condition to be valid.
+			}
+		],
+        "MailNotReceived": ["KRS.Introduction"], // Require the mails to have not been received. The game list also contain others thing that are not mail, like community center flags.
+    }
+]

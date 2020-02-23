@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "Junk Mail",
 	"Author": "Taskmaster",
-	"Version": "1.0.6",
+	"Version": "1.0.7",
 	"Description": "Add the occasional junk mail to your mailbox.",
 	"UniqueID": "Taskmaster.JunkMail",
 	"EntryDll": "JunkMail.dll",

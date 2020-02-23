@@ -1,11 +1,9 @@
 ﻿using Harmony;
 using Microsoft.Xna.Framework;
 using SpriteMaster.Extensions;
-using SpriteMaster.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Management.Instrumentation;
 using System.Reflection;
 
 namespace SpriteMaster.Harmonize {
@@ -17,15 +15,15 @@ namespace SpriteMaster.Harmonize {
 
 		public enum PriorityLevel : int {
 			Last = int.MinValue,
-			Lowest = Harmony.Priority.Last,
-			VeryLow = Harmony.Priority.VeryLow,
-			Low = Harmony.Priority.Low,
-			BelowAverage = Harmony.Priority.LowerThanNormal,
-			Average = Harmony.Priority.Normal,
-			AboveAverage = Harmony.Priority.HigherThanNormal,
-			High = Harmony.Priority.High,
-			VeryHigh = Harmony.Priority.VeryHigh,
-			Highest = Harmony.Priority.First,
+			Lowest = Priority.Last,
+			VeryLow = Priority.VeryLow,
+			Low = Priority.Low,
+			BelowAverage = Priority.LowerThanNormal,
+			Average = Priority.Normal,
+			AboveAverage = Priority.HigherThanNormal,
+			High = Priority.High,
+			VeryHigh = Priority.VeryHigh,
+			Highest = Priority.First,
 			First = int.MaxValue
 		}
 
@@ -40,13 +38,12 @@ namespace SpriteMaster.Harmonize {
 			typeof(long),
 			typeof(ulong),
 			typeof(float),
-			typeof(double)/*,
+			typeof(double),
 			typeof(Vector2),
 			typeof(Vector3),
 			typeof(Vector4),
 			typeof(Color),
 			typeof(System.Drawing.Color)
-			*/
 		};
 
 		public static void ApplyPatches(this HarmonyInstance @this) {
@@ -255,25 +252,6 @@ namespace SpriteMaster.Harmonize {
 			}
 		}
 
-		public static void Patch<T> (this HarmonyInstance instance, string name, MethodInfo pre = null, MethodInfo post = null, MethodInfo trans = null, int priority = Priority.Last) {
-			Patch(instance, typeof(T), name, pre, post, trans, priority);
-		}
-
-		public static void Patch<T> (this HarmonyInstance instance, string name, MethodEnumerable pre = default, MethodEnumerable post = default, MethodEnumerable trans = default, int priority = Priority.Last) {
-			if (pre != null)
-				foreach (var method in pre) {
-					Patch<T>(instance, name, pre: method, post: null, trans: null, priority);
-				}
-			if (post != null)
-				foreach (var method in post) {
-					Patch<T>(instance, name, pre: null, post: method, trans: null, priority);
-				}
-			if (trans != null)
-				foreach (var method in trans) {
-					Patch<T>(instance, name, pre: null, post: null, trans: method, priority);
-				}
-		}
-
 		public static void Patch (this HarmonyInstance instance, Type type, Type genericType, string name, MethodInfo pre = null, MethodInfo post = null, MethodInfo trans = null, int priority = Priority.Last, bool instanceMethod = true) {
 			var referenceMethod = pre ?? post;
 			if (referenceMethod != null) {
@@ -296,29 +274,6 @@ namespace SpriteMaster.Harmonize {
 					new HarmonyMethod(trans.MakeGenericMethod(genericType)) { prioritiy = GetPriority(trans, priority) }
 				);
 			}
-		}
-
-		public static void Patch<T> (this HarmonyInstance instance, Type genericType, string name, MethodInfo pre = null, MethodInfo post = null, MethodInfo trans = null, int priority = Priority.Last) {
-			Patch(instance, typeof(T), genericType, name, pre, post, trans, priority);
-		}
-
-		public static void Patch<T, U> (this HarmonyInstance instance, string name, MethodInfo pre = null, MethodInfo post = null, MethodInfo trans = null, int priority = Priority.Last) where U : struct {
-			Patch(instance, typeof(T), typeof(U), name, pre, post, trans, priority);
-		}
-
-		public static void Patch<T, U> (this HarmonyInstance instance, string name, MethodEnumerable pre = default, MethodEnumerable post = default, MethodEnumerable trans = default, int priority = Priority.Last) where U : struct {
-			if (pre != null)
-				foreach (var method in pre) {
-					Patch<T, U>(instance, name, pre: method, post: null, trans: null, priority);
-				}
-			if (post != null)
-				foreach (var method in post) {
-					Patch<T, U>(instance, name, pre: null, post: method, trans: null, priority);
-				}
-			if (trans != null)
-				foreach (var method in post) {
-					Patch<T, U>(instance, name, pre: null, post: null, trans: method, priority);
-				}
 		}
 	}
 }

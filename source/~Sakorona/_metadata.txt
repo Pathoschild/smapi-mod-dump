@@ -11,9 +11,9 @@ mods:
    Weather Illnesses
 
 latest commit:
-   commit 7d8d3c915169b37249121c6bd0520a962cf30ffd
+   commit 353f91af7c3b06408c1a59b82cd90ca2e5e69ed4
    Author: Nicholas Johnson <7285555+Sakorona@users.noreply.github.com>
-   Date:   Thu Dec 26 21:17:03 2019 -0800
+   Date:   Mon Feb 10 11:23:43 2020 -0800
    
-       Created thicker fog, and updated for the 1.5.6 bugfixes
+       ... would help if I was in the right directory
    

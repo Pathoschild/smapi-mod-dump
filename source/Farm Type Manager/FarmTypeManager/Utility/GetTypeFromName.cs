@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -27,6 +28,11 @@ namespace FarmTypeManager
 
                 bool filterName(Type type) => type.FullName.Equals(typeName, StringComparison.OrdinalIgnoreCase); //true when a type's full name matches the provided name
                 bool filterSubclass(Type type) => type.IsSubclassOf(baseClass); //true when a type is derived from the provided base class
+                bool filterInvalidAssemblies(Assembly assembly) => //true when an assembly can be checked for the desired type (i.e. the assembly should not cause errors when checked)
+                    assembly.IsDynamic == false
+                    && assembly.ManifestModule.Name != "<In Memory Module>"
+                    && !assembly.FullName.StartsWith("System")
+                    && !assembly.FullName.StartsWith("Microsoft");
 
                 if (baseClass != null) //if a base class was provided
                 {
@@ -39,7 +45,7 @@ namespace FarmTypeManager
                     {
                         matchingType =
                         AppDomain.CurrentDomain.GetAssemblies() //get all assemblies
-                        .Where(assembly => assembly.IsDynamic == false) //ignore any dynamic assemblies
+                        .Where(filterInvalidAssemblies) //ignore any assemblies that might cause errors when checked this way
                         .SelectMany(assembly => assembly.GetTypes()) //get all types from each assembly as a single sequence
                         .Where(filterSubclass) //ignore any types that are not subclasses of baseClass
                         .FirstOrDefault(filterName); //get the first assembly with a matching name (or null if no types matched)
@@ -61,7 +67,7 @@ namespace FarmTypeManager
                     {
                         matchingType =
                         AppDomain.CurrentDomain.GetAssemblies() //get all assemblies
-                        .Where(assembly => assembly.IsDynamic == false) //ignore any dynamic assemblies
+                        .Where(filterInvalidAssemblies) //ignore any assemblies that might cause errors when checked this way
                         .SelectMany(assembly => assembly.GetTypes()) //get all types from each assembly as a single sequence
                         .FirstOrDefault(filterName); //get the first assembly with a matching name (or null if no types matched)
 

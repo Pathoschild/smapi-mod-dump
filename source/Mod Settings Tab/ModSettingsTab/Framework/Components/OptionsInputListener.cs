@@ -46,7 +46,12 @@ namespace ModSettingsTab.Framework.Components
         {
             if (GreyedOut || _listening || !_buttonBounds.Contains(x, y))
                 return;
-            ModEntry.Helper.Events.Input.ButtonPressed +=
+            if (Game1.gameMode == 0)
+            {
+                ((TitleMenu) Game1.activeClickableMenu).backButton = null;
+            }
+
+            Helper.Events.Input.ButtonPressed +=
                 OptionsInputOnButtonPressed;
             _listening = true;
             Game1.playSound("breathin");
@@ -56,29 +61,40 @@ namespace ModSettingsTab.Framework.Components
 
         private void OptionsInputOnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            ModEntry.Helper.Input.Suppress(e.Button);
+            Helper.Input.Suppress(e.Button);
             if (GreyedOut || !_listening)
-                ModEntry.Helper.Events.Input.ButtonPressed -=
-                    OptionsInputOnButtonPressed;
+                Helper.Events.Input.ButtonPressed -= OptionsInputOnButtonPressed;
             else if (e.Button == SButton.Escape)
             {
                 Game1.playSound("bigDeSelect");
-                _listening = false;
-                ModEntry.Helper.Events.Input.ButtonPressed -=
-                    OptionsInputOnButtonPressed;
-                GameMenu.forcePreventClose = false;
+                Exit();
             }
             else if (!e.Button.Equals(Button))
             {
                 Config[Name] = e.Button.ToString();
                 Button = e.Button;
                 Game1.playSound("coin");
-                _listening = false;
-                ModEntry.Helper.Events.Input.ButtonPressed -= OptionsInputOnButtonPressed;
-                GameMenu.forcePreventClose = false;
+                Exit();
             }
             else
                 _listenerMessage = Game1.content.LoadString("Strings\\StringsFromCSFiles:OptionsElement.cs.11228");
+
+            void Exit()
+            {
+                _listening = false;
+                Helper.Events.Input.ButtonPressed -= OptionsInputOnButtonPressed;
+                GameMenu.forcePreventClose = false;
+                if (Game1.gameMode != 0) return;
+                if (Game1.activeClickableMenu is TitleMenu menu)
+                    menu.backButton = new ClickableTextureComponent(
+                        menu.menuContent.LoadString("Strings\\StringsFromCSFiles:TitleMenu.cs.11739"),
+                        new Rectangle(Game1.viewport.Width - 198 - 48, Game1.viewport.Height - 81 - 24, 198, 81),
+                        null,
+                        "", menu.titleButtonsTexture, new Rectangle(296, 252, 66, 27), 3f)
+                    {
+                        myID = 81114
+                    };
+            }
         }
 
         public override void Draw(SpriteBatch b, int slotX, int slotY)
@@ -89,7 +105,12 @@ namespace ModSettingsTab.Framework.Components
                 SetButtonSource, Color.White, 0.0f, Vector2.Zero, 4f, false, 0.15f);
             if (!_listening)
                 return;
-            b.Draw(Game1.staminaRect, new Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height),
+            var scale = Game1.gameMode == 0 ? 1.2f : 1f;
+            b.End();
+            b.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null,
+                Game1.gameMode == 0 ? Matrix.CreateScale(0.9f) : new Matrix?());
+            b.Draw(Game1.staminaRect,
+                new Rectangle(0, 0, (int) (Game1.viewport.Width * scale), (int) (Game1.viewport.Height * scale)),
                 new Rectangle(0, 0, 1, 1), Color.Black * 0.75f, 0.0f, Vector2.Zero, SpriteEffects.None, 0.999f);
             b.DrawString(Game1.dialogueFont, _listenerMessage,
                 Utility.getTopLeftPositionForCenteringOnScreen(192, 64), Color.White, 0.0f, Vector2.Zero, 1f,

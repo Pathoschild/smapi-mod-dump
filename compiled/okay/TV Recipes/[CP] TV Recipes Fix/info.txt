@@ -1,0 +1,5 @@
+This mod fixed bug food not added in kitchen.
+.
+If you not install this mod, when you buy Cookie, Vegetable Medley, or Cranberry Sauce recipes.
+.
+The Recipes not added in your kitchen, so this mod fix it and added it on your kitchen.

@@ -8,6 +8,7 @@ namespace SpriteMaster.Extensions {
 			return str == null || str == "";
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string Reverse (this string str) {
 			Contract.AssertNotNull(str);
 

@@ -88,7 +88,7 @@ namespace ModSettingsTab.Framework.Components
         public override void Draw(SpriteBatch b, int slotX, int slotY)
         {
             base.Draw(b, slotX, slotY);
-            b.Draw(ModData.Tabs,
+            b.Draw(ModData.Texture,
                 new Vector2(slotX + _minusButton.X, slotY + _minusButton.Y),
                 MinusButtonSource,
                 Color.White * (GreyedOut ? 0.33f : 1f) * (_selectedOption == 0 ? 0.5f : 1f), 0.0f, Vector2.Zero, 4f,
@@ -97,7 +97,7 @@ namespace ModSettingsTab.Framework.Components
                 _selectedOption >= _options.Count || _selectedOption == -1 ? "" : _options[_selectedOption],
                 new Vector2(slotX + _minusButton.X + _minusButton.Width +4,
                     slotY + Bounds.Y + 10), GreyedOut ? Game1.textColor * 0.33f : Game1.textColor);
-            b.Draw(ModData.Tabs,
+            b.Draw(ModData.Texture,
                 new Vector2(slotX + _plusButton.X, slotY + _plusButton.Y),
                 PlusButtonSource,
                 Color.White * (GreyedOut ? 0.33f : 1f) * (_selectedOption == _options.Count - 1 ? 0.5f : 1f),

@@ -406,7 +406,7 @@ namespace NpcAdventure.AI.Controller
             this.weaponSwingCooldown = this.CooldownTimeout;
             this.defendFistUsed = false;
             this.follower.Sprite.StopAnimation();
-            this.follower.Sprite.faceDirectionStandard(this.GetFacingDirectionFromMovement(new Vector2(this.leader.Position.X, this.leader.Position.Y)));
+            this.follower.Sprite.faceDirectionStandard(this.joystick.GetFacingDirectionFromMovement(new Vector2(this.leader.Position.X, this.leader.Position.Y)));
             this.follower.Sprite.setCurrentAnimation(this.attackAnimation[this.follower.FacingDirection]);
 
             if (this.weapon != null)
@@ -438,7 +438,7 @@ namespace NpcAdventure.AI.Controller
                     this.AnimateMe();
                 }
 
-                return Math.Max(this.speed - 0.1f, 0.1f);
+                return Math.Max(this.joystick.Speed - 0.1f, 0.1f);
             }
 
             return 5.28f;

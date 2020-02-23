@@ -1,0 +1,59 @@
+{
+  "packName": "Chickens Pack",
+  "packVersion": "1.0.8",
+  "soundEffects": [],
+  "animalAndEggData": [
+    [
+      "Wheaten, Red, Blue",
+      "Ameraucana Chicken",
+      "small",
+      "Small Ameraucana Chicken Egg",
+      "50",
+      "large",
+      "Large Ameraucana Chicken Egg",
+      "95",
+      "cluck",
+      "Marnie",
+      "Egg"
+    ],
+    [
+      "White, Buff, Black",
+      "Silkie Chicken",
+      "small",
+      "Small Silkie Chicken Egg",
+      "50",
+      "large",
+      "Large Silkie Chicken Egg",
+      "95",
+      "cluck",
+      "Marnie",
+      "Egg"
+    ],
+    [
+      "Silver, Gold, Brown",
+      "Wyandotte Chicken",
+      "small",
+      "Small Wyandotte Chicken Egg",
+      "50",
+      "large",
+      "Large Wyandotte Chicken Egg",
+      "95",
+      "cluck",
+      "Marnie",
+      "Egg"
+    ],
+    [
+      "Wheaten, Silver, Black",
+      "Easter Egger Chicken",
+      "small",
+      "Small Easter Egger Chicken Egg",
+      "50",
+      "large",
+      "Large Easter Egger Chicken Egg",
+      "95",
+      "cluck",
+      "Marnie",
+      "Egg"
+    ]
+  ]
+}

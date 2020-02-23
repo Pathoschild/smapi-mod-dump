@@ -19,13 +19,14 @@ namespace ModSettingsTab.Framework.Components
 
         static TextBox()
         {
-            ModEntry.Helper.Events.Input.ButtonPressed += (sender, e) =>
+            Helper.Events.Input.ButtonPressed += (sender, e) =>
             {
-                if (Game1.activeClickableMenu is GameMenu && e.Button == SButton.MouseLeft)
+                if ((Game1.activeClickableMenu is GameMenu || Game1.activeClickableMenu is TitleMenu) &&
+                    e.Button == SButton.MouseLeft)
                     GlobalUpdate();
                 if (e.Button != Game1.options.menuButton[0].ToSButton() || Game1.keyboardDispatcher.Subscriber == null)
                     return;
-                ModEntry.Helper.Input.Suppress(!Game1.options.gamepadControls ? e.Button : Buttons.B.ToSButton());
+                Helper.Input.Suppress(!Game1.options.gamepadControls ? e.Button : Buttons.B.ToSButton());
             };
         }
 
@@ -41,6 +42,22 @@ namespace ModSettingsTab.Framework.Components
             OnEnterPressed += sender => textEnter(Text);
         }
 
+        public new void Update()
+        {
+            var mp = Game1.getMousePosition();
+            if (Game1.gameMode == 0)
+            {
+                mp.X = (int) (mp.X * 1.1f);
+                mp.Y = (int) (mp.Y * 1.1f);
+            }
+            
+            Selected = new Rectangle(X, Y, Width, Height).Contains(mp);
+            if (Selected)
+                return;
+            if (Game1.options.gamepadControls && !Game1.lastCursorMotionWasMouse)
+                Game1.showTextEntry(this);
+        }
+
         public override void RecieveTextInput(string text)
         {
             if (!Selected || numbersOnly && !int.TryParse(text, out _) ||
@@ -51,12 +68,12 @@ namespace ModSettingsTab.Framework.Components
             Text += text;
             _textEnter(Text);
         }
-        
+
         public static void GlobalUpdate()
         {
             if (Game1.keyboardDispatcher.Subscriber is TextBox)
             {
-                ((TextBox)Game1.keyboardDispatcher.Subscriber).Update();
+                ((TextBox) Game1.keyboardDispatcher.Subscriber).Update();
             }
         }
 
@@ -82,9 +99,10 @@ namespace ModSettingsTab.Framework.Components
                 vector2 = _font.MeasureString(text))
                 text = text.Substring(1);
             if (flag && Selected)
-                Utility.drawTextWithShadow(spriteBatch, "|", _font, new Vector2(X + 16 + (int) vector2.X + 2, Y + 5), color);
+                Utility.drawTextWithShadow(spriteBatch, "|", _font, new Vector2(X + 16 + (int) vector2.X + 2, Y + 5),
+                    color);
             if (drawShadow)
-                Utility.drawTextWithShadow(spriteBatch, text, _font, new Vector2(X + 16, Y + 8), color,1f,0.01f);
+                Utility.drawTextWithShadow(spriteBatch, text, _font, new Vector2(X + 16, Y + 8), color, 1f, 0.01f);
             else
                 spriteBatch.DrawString(_font, text, new Vector2(X + 16, Y + 12),
                     color, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);

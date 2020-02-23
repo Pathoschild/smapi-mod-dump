@@ -5,9 +5,9 @@ mods:
    Bigger Backpack
 
 latest commit:
-   commit 307b31cb18cc0c478eda5a5cb1ef03c3218fd9bd
+   commit a6b4502c517fd37d28fee6501fea8f0e521768b4
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Tue Jan 7 23:56:24 2020 +0100
+   Date:   Sat Feb 1 18:27:32 2020 +0100
    
-       Use lambda expressions instead of BytecodePatch
+       Add change to readme.
    

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "TrashBearName",
+  "Author": "MattDeDuck",
+  "Version": "1.0.0",
+  "Description": "A mod to help with names of dishes",
+  "UniqueID": "MattDeDuck.TrashBearName",
+  "EntryDll": "TrashBearName.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:5252"]
+}

@@ -7,9 +7,12 @@ mods:
    Tillable Ground
 
 latest commit:
-   commit 31da6726fab25db90cc6044a664a102b8138e507
+   commit 0742ea9a377c4173075d2dd3913ec55b87f2acdd
+   Merge: 545e107 4580646
    Author: hawkfalcon <contact@hawkfalcon.com>
-   Date:   Mon Dec 2 21:14:49 2019 -0800
+   Date:   Sat Feb 22 12:36:42 2020 -0800
    
-       Add Bush Harvest Ability
+       Merge pull request #4 from ZaneYork/master
+       
+       Bug fix for android
    

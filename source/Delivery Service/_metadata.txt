@@ -1,0 +1,13 @@
+url:
+   https://github.com/AxesOfEvil/SV_DeliveryService.git
+
+mods:
+   Delivery Service
+
+latest commit:
+   commit 6609ad33be20d447ca9844cd52af26556db0fb85
+   Author: AxesOfEvil <aoe16@pblue.org>
+   Date:   Thu Feb 20 06:01:14 2020 -0800
+   
+       Bump version to 1.10.2
+   

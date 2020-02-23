@@ -1,0 +1,8 @@
+{
+  "API_Provider": "DarkSky",
+  "API_Key": null,
+  "tempType": "F",
+  "WindSpeed": 6.0,
+  "HUDMode": "Normal",
+  "ReportFrequency": 3
+}

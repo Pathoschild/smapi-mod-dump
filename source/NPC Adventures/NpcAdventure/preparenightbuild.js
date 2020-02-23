@@ -6,14 +6,9 @@
     let rawdata = fs.readFileSync('manifest.json');
     let manifest = JSON.parse(rawdata.toString().trim());
     let oldVersion = manifest['Version'];
-    let [base, suffix] = oldVersion.split('-');
-    let [major, minor] = base.split('.');
+    let [base] = oldVersion.split('+');
 
-    if (!suffix) {
-        ++minor;
-    }
-
-    let newVersion = `${major}.${minor}.0-nightbuild.${commits || 0}.${hash}`.replace("\n", "");
+    let newVersion = `${base}+nightbuild.${commits || 0}.${hash}`.replace("\n", "");
 
     console.log("Version in origin manifest:", oldVersion);
     console.log("Version described by git:", stdout);

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using SpriteMaster.Extensions;
+using SpriteMaster.Types;
 using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,9 @@ namespace SpriteMaster {
 
 		internal static readonly string ModuleName = typeof(Config).Namespace;
 
+		internal const bool IgnoreConfig = false;
+		internal const bool SkipIntro = IgnoreConfig;
+
 		[ConfigIgnore]
 		internal static readonly Version CurrentVersionObj = typeof(Config).Assembly.GetName().Version;
 		[ConfigIgnore]
@@ -26,14 +31,12 @@ namespace SpriteMaster {
 
 		internal static string ConfigVersion = "";
 		[ConfigIgnore]
-		internal static string ClearConfigBefore = "0.10.3";
+		internal static string ClearConfigBefore = "0.11.0";
 
 		internal static bool Enabled = true;
 		internal static SButton ToggleButton = SButton.F11;
 
 		internal const int MaxSamplers = 16;
-		[ConfigIgnore]
-		internal static bool RendererSupportsAsyncOps = true;
 		[ConfigIgnore]
 		internal static int ClampDimension = BaseMaxTextureDimension; // this is adjustable by the system itself. The user shouldn't be able to touch it.
 		[Comment("The preferred maximum texture edge length, if allowed by the hardware")]
@@ -46,14 +49,9 @@ namespace SpriteMaster {
 		internal const bool IgnoreUnknownTextures = false;
 		internal static bool GarbageCollectAccountUnownedTextures = true;
 		internal static bool GarbageCollectAccountOwnedTexture = true;
-		internal static bool LeakPreventTexture = true;
-		internal static bool LeakPreventAll = true;
-		internal static bool DiscardDuplicates = false;
-		internal static int DiscardDuplicatesFrameDelay = 2;
-		internal static List<string> DiscardDuplicatesBlacklist = new List<string>() {
-			"LooseSprites/Cursors",
-			"Minigames/TitleButtons"
-		};
+		internal static bool LeakPreventTexture = false;
+		internal static bool LeakPreventAll = false;
+		internal static bool ShowIntroMessage = true;
 
 		internal enum Configuration {
 			Debug,
@@ -82,7 +80,6 @@ namespace SpriteMaster {
 				internal static bool LogWarnings = true;
 				internal static bool LogErrors = true;
 				internal const bool OwnLogFile = true;
-				internal const bool UseSMAPI = true;
 			}
 
 			internal static class Sprite {
@@ -93,29 +90,43 @@ namespace SpriteMaster {
 
 		internal static class DrawState {
 			internal static bool SetLinear = true;
-			internal static bool EnableMSAA = true;
+			internal static bool EnableMSAA = false;
 			internal static bool DisableDepthBuffer = false;
 			internal static SurfaceFormat BackbufferFormat = SurfaceFormat.Color;
 		}
 
 		internal static class Resample {
-			internal const bool Smoothing = true;
-			internal const bool Scale = Smoothing;
+			internal static bool Smoothing = true;
+			internal static bool Scale = Smoothing;
 			internal const Upscaler.Scaler Scaler = Upscaler.Scaler.xBRZ;
-			internal static bool EnableDynamicScale = true;
+			internal const bool EnableDynamicScale = true;
 			internal static bool TrimWater = true;
 			internal static float ScaleBias = 0.1f;
-			internal static int MaxScale = 6;
+			internal static uint MaxScale = 6;
 			internal static int MinimumTextureDimensions = 4;
 			internal static bool EnableWrappedAddressing = true;
-			internal static bool UseBlockCompression = true;
-			internal static CompressionQuality BlockCompressionQuality = CompressionQuality.Highest;
-			internal static int BlockHardAlphaDeviationThreshold = 7;
+			internal static readonly List<SurfaceFormat> SupportedFormats = new List<SurfaceFormat>() {
+				SurfaceFormat.Color,
+				SurfaceFormat.Dxt5,
+				SurfaceFormat.Dxt3,
+				SurfaceFormat.Dxt1,
+				SurfaceFormatExt.HasSurfaceFormat("Dxt1a") ? SurfaceFormatExt.GetSurfaceFormat("Dxt1a") : SurfaceFormat.Color
+			};
+			internal static class BlockCompression {
+				internal static bool Enabled = DevEnabled && (!Runtime.IsMacintosh || MacSupported) && true; // I cannot build a proper libnvtt for OSX presently.
+				[ConfigIgnore]
+				private const bool MacSupported = false;
+				private const bool DevEnabled = true;
+				internal static bool Synchronized = false;
+				internal static CompressionQuality Quality = CompressionQuality.Highest;
+				internal static int HardAlphaDeviationThreshold = 7;
+			}
 			internal static List<string> Blacklist = new List<string>() {
 				"LooseSprites/Lighting/"
 			};
 			internal static class Padding {
-				internal static bool Enabled = true;
+				internal static bool Enabled = DevEnabled && true;
+				private const bool DevEnabled = true;
 				internal static int MinimumSizeTexels = 4;
 				internal static bool IgnoreUnknown = false;
 				internal static List<string> StrictList = new List<string>() {
@@ -162,32 +173,31 @@ namespace SpriteMaster {
 		}
 
 		internal static class AsyncScaling {
-			internal static bool Enabled = true;
+			internal const bool Enabled = true;
 			internal static bool EnabledForUnknownTextures = false;
-			internal const bool CanFetchAndLoadSameFrame = false;
-			internal const int MaxLoadsPerFrame = 1;
+			internal static bool ForceSynchronousLoads = Runtime.IsUnix;
+			internal static bool ThrottledSynchronousLoads = true;
+			internal static bool CanFetchAndLoadSameFrame = true;
+			internal static int MaxLoadsPerFrame = int.MaxValue;
 			internal static long MinimumSizeTexels = 0;
-			internal static long ScalingBudgetPerFrameTexels = 16 * 256 * 256;
 		}
 
 		internal static class MemoryCache {
-			internal static bool Enabled = true;
+			internal static bool Enabled = DevEnabled && true;
+			private const bool DevEnabled = true;
 			internal static bool AlwaysFlush = false;
-			internal enum Algorithm {
-				None = 0,
-				COMPRESS = 1,
-				LZ = 2,
-				LZMA = 3
-			}
-			internal static Algorithm Type = Algorithm.COMPRESS;
+			internal static Compression.Algorithm Compress = Compression.Algorithm.LZ;
 			internal static bool Async = true;
 		}
 
-		internal static class Cache {
+		internal static class FileCache {
 			internal const bool Purge = false;
-			internal static bool Enabled = true;
+			internal static bool Enabled = DevEnabled && true;
+			private const bool DevEnabled = true;
 			internal const int LockRetries = 32;
 			internal const int LockSleepMS = 32;
+			internal static Compression.Algorithm Compress = Compression.Algorithm.LZ;
+			internal static bool ForceCompress = false;
 		}
 	}
 }

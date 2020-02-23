@@ -16,7 +16,7 @@ namespace NpcAdventure.AI.Controller
     {
 
         #region Constructor & Members
-        public PathFinder(GameLocation location, Character thisCharacter, Character goalCharacter)
+        public PathFinder(GameLocation location, Character thisCharacter, Character goalCharacter = null)
         {
             this.GameLocation = location;
             this.thisCharacter = thisCharacter;
@@ -199,7 +199,12 @@ namespace NpcAdventure.AI.Controller
             Microsoft.Xna.Framework.Rectangle tileLocationRect = new Microsoft.Xna.Framework.Rectangle((int)tileLocation.X * 64 + 1, (int)tileLocation.Y * 64 + 1, 62, 62);
             for (int i = 0; i < this.GameLocation.characters.Count; i++)
             {
-                if (this.GameLocation.characters[i] != null && !this.GameLocation.characters[i].IsMonster && !this.thisCharacter.Equals(this.GameLocation.characters[i]) && !this.goalCharacter.Equals(this.GameLocation.characters[i]) && this.GameLocation.characters[i].GetBoundingBox().Intersects(tileLocationRect))
+                if (this.GameLocation.characters[i] != null 
+                    && !this.GameLocation.characters[i].IsMonster 
+                    && !this.thisCharacter.Equals(this.GameLocation.characters[i]) 
+                    && this.goalCharacter != null 
+                    && !this.goalCharacter.Equals(this.GameLocation.characters[i]) 
+                    && this.GameLocation.characters[i].GetBoundingBox().Intersects(tileLocationRect))
                 {
                     return true;
                 }

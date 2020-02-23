@@ -23,6 +23,7 @@ namespace NpcAdventure.Loader.ContentPacks
         public string Target { get => this.meta.Target; }
         public string LogName { get; private set; }
         public string FromFile { get => this.meta.FromFile; }
+        public string Locale { get => this.meta.Locale; }
 
         /// <summary>
         /// Load content pack patch data

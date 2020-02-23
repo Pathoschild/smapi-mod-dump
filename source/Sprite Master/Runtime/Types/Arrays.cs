@@ -27,6 +27,7 @@ namespace SpriteMaster.Types {
 			private readonly GCHandle Handle;
 			private volatile bool IsDisposed = false;
 
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			private unsafe WrappedUnmanagedMemoryStream (GCHandle handle, int offset, int size, FileAccess access) :
 				base(
 					(byte*)(handle.AddrOfPinnedObject() + (Marshal.SizeOf(typeof(T)) * offset)),
@@ -37,6 +38,7 @@ namespace SpriteMaster.Types {
 				Handle = handle;
 			}
 
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static unsafe WrappedUnmanagedMemoryStream<T> Get (T[] data, int offset, int size, FileAccess access) {
 				var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
 				try {
@@ -48,11 +50,13 @@ namespace SpriteMaster.Types {
 				}
 			}
 
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			~WrappedUnmanagedMemoryStream () {
 				Dispose(true);
 			}
 
 			[SecuritySafeCritical]
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			protected override void Dispose (bool disposing) {
 				if (!IsDisposed) {
 					Handle.Free();
@@ -61,10 +65,12 @@ namespace SpriteMaster.Types {
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static unsafe UnmanagedMemoryStream Stream<T> (this T[] data) where T : struct {
 			return WrappedUnmanagedMemoryStream<T>.Get(data, 0, data.Length, FileAccess.ReadWrite);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static UnmanagedMemoryStream Stream<T> (this T[] data, int offset = 0, int length = -1, FileAccess access = FileAccess.ReadWrite) {
 			if (length == -1) {
 				length = data.Length - offset;
@@ -72,10 +78,12 @@ namespace SpriteMaster.Types {
 			return WrappedUnmanagedMemoryStream<T>.Get(data, offset, length, access);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static MemoryStream Stream (this byte[] data) {
 			return new MemoryStream(data, 0, data.Length, true, true);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static MemoryStream Stream (this byte[] data, int offset = 0, int length = -1, FileAccess access = FileAccess.ReadWrite) {
 			if (length == -1) {
 				length = data.Length - offset;

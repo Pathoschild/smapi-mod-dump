@@ -1,0 +1,10 @@
+{
+   "Name": "TvRecipes",
+   "Author": "SorryLate",
+   "Version": "1.3.0",
+   "Description": "Buy The Queen of Sauce recipes at Stardrop Saloon",
+   "UniqueID": "SorryLate.TvRecipes",
+   "EntryDll": "TvRecipes.dll",
+   "MinimumApiVersion": "3.0.0",
+   "UpdateKeys": ["Nexus:5260"]
+}

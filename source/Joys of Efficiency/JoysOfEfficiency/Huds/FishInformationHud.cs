@@ -23,14 +23,22 @@ namespace JoysOfEfficiency.Huds
             float scale = 1.0f;
 
 
-            int whitchFish = Reflection.GetField<int>(bar, "whichFish").GetValue();
+            int whichFish = Reflection.GetField<int>(bar, "whichFish").GetValue();
             int fishSize = Reflection.GetField<int>(bar, "fishSize").GetValue();
             int fishQuality = Reflection.GetField<int>(bar, "fishQuality").GetValue();
             bool treasure = Reflection.GetField<bool>(bar, "treasure").GetValue();
             bool treasureCaught = Reflection.GetField<bool>(bar, "treasureCaught").GetValue();
             float treasureAppearTimer = Reflection.GetField<float>(bar, "treasureAppearTimer").GetValue() / 1000;
 
-            Object fish = new Object(whitchFish, 1, quality: fishQuality);
+            bool perfect = Reflection.GetField<bool>(bar, "perfect").GetValue();
+            if (perfect)
+            {
+                if(fishQuality >= 2)
+                    fishQuality = 4;
+                else if (fishQuality >= 1)
+                    fishQuality = 3;
+            }
+            Object fish = new Object(whichFish, 1, quality: fishQuality);
             int salePrice = fish.sellToStorePrice();
 
             if (LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.en)
@@ -123,7 +131,7 @@ namespace JoysOfEfficiency.Huds
             int y = (int)Util.Cap(bar.yPositionOnScreen, 0, Game1.viewport.Height - height);
 
             Util.DrawWindow(x, y, width, height);
-            fish.drawInMenu(batch, new Vector2(x + width / 2 - 32, y + 16), 1.0f, 1.0f, 0.9f, StackDrawType.Draw_OneInclusive);
+            fish.drawInMenu(batch, new Vector2(x + width / 2 - 32, y + 16), 1.0f, 1.0f, 0.9f, StackDrawType.Hide);
 
             Vector2 vec2 = new Vector2(x + 32, y + 96);
             Util.DrawString(batch, font, ref vec2, speciesText, Color.Black, scale);
@@ -160,8 +168,9 @@ namespace JoysOfEfficiency.Huds
             switch (fishQuality)
             {
                 case 1: return "quality.silver";
-                case 2: return "quality.gold";
-                case 3: return "quality.iridium";
+                case 2:
+                case 3: return "quality.gold";
+                case 4: return "quality.iridium";
                 default: return "quality.normal";
             }
         }
@@ -171,8 +180,9 @@ namespace JoysOfEfficiency.Huds
             switch (fishQuality)
             {
                 case 1: return Color.AliceBlue;
-                case 2: return Color.Tomato;
-                case 3: return Color.Purple;
+                case 2:
+                case 3: return Color.Tomato;
+                case 4: return Color.Purple;
             }
             return Color.WhiteSmoke;
         }

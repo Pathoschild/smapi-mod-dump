@@ -1,0 +1,12 @@
+﻿{
+	"Name": "RepairTheFences",
+	"Author": "furyx639",
+	"Version": "1.2.0",
+	"Description": "Custom Chore for repairing all fences.",
+	"UniqueID": "furyx639.RepairTheFences",
+	"ContentPackFor": {
+		"UniqueID":  "furyx639.CustomChores",
+		"MinimumApiVersion":  "1.2.0"
+	},
+	"MinimumApiVersion": "2.0"
+}

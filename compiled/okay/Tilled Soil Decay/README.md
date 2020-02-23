@@ -7,9 +7,11 @@ Prevents watered tilled soil from disappearing during the night. If you only wan
 *Note: run Stardew Valley once with this mod enabled to generate the `config.json` file.*
 
 * `DryDecayRate`: Amount of tilled soil that will disappear. Normally this is 0.1 (=10%). Default = 0.5.
-* `DryDecayRateFirstOfMonth`: Amount of tilled soil that will disappear at the start of a new month. Normally this is 0.8 (=80%). Default = 1.
 * `DecayDelay`: Number of days that the patch must have been without water, before it can disappear during the night. Default = 2.
+* `DryDecayRateFirstOfMonth`: Amount of tilled soil that will disappear at the start of a new month. Normally this is 0.8 (=80%). Default = 1.
 * `DecayDelayFirstOfMonth`: Number of days that the patch must have been without water, before it can disappear during the night at the end of the month. Default = 1.
+* `DryDecayRateGreenhouse`: Amount of tilled soil that will disappear in the greenhouse. Normally this is 1.0 (=100%). Default = 1.
+* `DecayDelayGreenhouse`: Number of days that the patch must have been without water, before it disappears in the greenhouse and other non-farm locations. Default = 1.
 
 ## Dependencies
 This mod requires the following mods to be installed:
@@ -26,3 +28,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 #### 2.0:
 * Updated for Stardew Valley 1.4
+
+#### 3.0:
+* Added support for greenhouse soil.

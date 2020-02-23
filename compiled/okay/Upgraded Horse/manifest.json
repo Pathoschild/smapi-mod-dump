@@ -1,0 +1,10 @@
+﻿{
+  "Name": "UpgradedHorse",
+  "Author": "Richard Cai",
+  "Version": "1.1.1", // fixed locally
+  "Description": "Level up your horse, make it drink coffee to run faster. At max level, you can call your horse to where you are.",
+  "UniqueID": "richard_cai.UpgradedHorse",
+  "EntryDll": "UpgradedHorse.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

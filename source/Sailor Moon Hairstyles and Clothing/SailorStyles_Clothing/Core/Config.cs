@@ -2,17 +2,15 @@
 
 namespace SailorStyles_Clothing
 {
-	class Config
+	internal class Config
 	{
-		public SButton debugWarpKey { get; set; }
-		public bool debugMode { get; set; }
-		public bool debugCate { get; set; }
+		public SButton DebugWarpKey { get; set; }
+		public bool DebugMode { get; set; }
 
 		public Config()
 		{
-			debugMode = false;
-			debugWarpKey = SButton.U;
-			debugCate = true;
+			DebugMode = false;
+			DebugWarpKey = SButton.U;
 		}
 	}
 }

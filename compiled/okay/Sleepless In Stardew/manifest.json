@@ -1,0 +1,12 @@
+﻿{
+  "Name": "Sleepless In Stardew",
+  "Author": "Instafluff",
+  "Version": "1.1.0",
+  "Description": "The Stardew Valley Late-Night Get-More-Done Sleepless Insomniac Productivity Powernap Mod",
+  "UniqueID": "instafluff.sleeplessinstardew",
+  "EntryDll": "SleeplessInStardew.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [
+	"GitHub:instafluff/SleeplessInStardew", "Nexus:5445"
+  ]
+}

@@ -1,0 +1,13 @@
+url:
+   https://github.com/AndyCrocker/StardewMods.git
+
+mods:
+   More Grass
+
+latest commit:
+   commit f6f22e9cd0efadd585dc69b76727c8d890c46f90
+   Author: Andy Crocker <atmcrocker@gmail.com>
+   Date:   Tue Feb 18 20:56:45 2020 +0000
+   
+       [MoreGrass] Add a bluey-green colour to the grass break animation
+   

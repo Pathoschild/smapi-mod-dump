@@ -1,5 +1,6 @@
 {
   "EnableTrackersWithoutProfession": false,
   "ReplaceTrackersWithForageIcons": false,
-  "DrawBehindInterface": false
+  "DrawBehindInterface": false,
+  "TrackerPixelScale": 4.0
 }

@@ -1,0 +1,10 @@
+{
+  "Name": "Builder's List",
+  "Author": "Brandon Marquis Markail Green (Space Baby)",
+  "Version": "0.0.1",
+  "Description": "Provides tooltips for the everyday scavenger",
+  "UniqueID": "SB_BuildersList",
+  "EntryDll": "BuildersList.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:5347" ]
+}

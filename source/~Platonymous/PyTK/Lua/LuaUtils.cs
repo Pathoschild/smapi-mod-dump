@@ -7,7 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using xTile;
+using xTile.Layers;
 using xTile.ObjectModel;
+using xTile.Tiles;
 using SObject = StardewValley.Object;
 
 
@@ -52,6 +54,23 @@ namespace PyTK.Lua
                 PyTKMod.syncCounter(id, dif);
 
             return PyTKMod.saveData.Counters[id];
+        }
+
+        public static object getInstance(string type, params object[] args)
+        {
+           return Activator.CreateInstance(Type.GetType(type),args);
+        }
+        public object callStaticMethod(Type type, string method, params object[] args)
+        {
+            if (type.GetMethod(method, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic) is MethodInfo methodInfo)
+                return methodInfo.Invoke(null, args);
+            else
+                return false;
+        }
+
+        public object callStaticMethod(string typeName, string method, params object[] args)
+        {
+           return callStaticMethod(Type.GetType(typeName),method,args);
         }
 
         public static bool invertSwitch(string id)
@@ -140,7 +159,7 @@ namespace PyTK.Lua
             location.warps.Clear();
             PropertyValue p = "";
             if (location.Map.Properties.TryGetValue("Warp", out p) && p != "")
-                Helper.Reflection.GetMethod(location, "updateWarps").Invoke();
+                location.updateWarps();
         }
 
         public static bool setGameValue(string field, object value, int delay = 0, object root = null)
@@ -222,6 +241,6 @@ namespace PyTK.Lua
             if (bigCraftable)
                 return new SObject(Vector2.Zero, index);
             return new SObject(index, 1);
-        }
+        }     
     }
 }

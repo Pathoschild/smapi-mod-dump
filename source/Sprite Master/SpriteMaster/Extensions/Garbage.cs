@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Harmonize;
-using SpriteMaster.Types;
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
@@ -21,10 +21,10 @@ namespace SpriteMaster.Extensions {
 					continue;
 				// +		method	{Void Collect(Int32, System.GCCollectionMode, Boolean, Boolean)}	System.Reflection.MethodInfo {System.Reflection.RuntimeMethodInfo}
 				if (
-					methodParameters[0].ParameterType == typeof(Int32) &&
-					methodParameters[1].ParameterType == typeof(System.GCCollectionMode) &&
-					methodParameters[2].ParameterType == typeof(Boolean) &&
-					methodParameters[3].ParameterType == typeof(Boolean)
+					methodParameters[0].ParameterType == typeof(int) &&
+					methodParameters[1].ParameterType == typeof(GCCollectionMode) &&
+					methodParameters[2].ParameterType == typeof(bool) &&
+					methodParameters[3].ParameterType == typeof(bool)
 				) {
 					CompactingCollect = method;
 					break;
@@ -33,12 +33,16 @@ namespace SpriteMaster.Extensions {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+#if NETFRAMEWORK && (NET20 || NET35 || NET40 || NET45)
+		[Conditional("FALSE")]
+#endif
 		public static void MarkCompact() {
 			Debug.TraceLn("Marking for Compact");
-			//GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+#if !NETFRAMEWORK || !(NET20 || NET35 || NET40 || NET45)
+			GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+#endif
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void Collect(bool compact = false, bool blocking = false, bool background = true) {
 			try {
 				ManualCollection = true;
@@ -101,6 +105,7 @@ namespace SpriteMaster.Extensions {
 			Unmark(texture.SizeBytes());
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void MarkOwned(SurfaceFormat format, int texels) {
 			if (!Config.GarbageCollectAccountOwnedTexture)
 				return;
@@ -109,6 +114,7 @@ namespace SpriteMaster.Extensions {
 			Mark(size);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void UnmarkOwned (SurfaceFormat format, int texels) {
 			if (!Config.GarbageCollectAccountOwnedTexture)
 				return;
@@ -117,6 +123,7 @@ namespace SpriteMaster.Extensions {
 			Unmark(size);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void MarkUnowned (SurfaceFormat format, int texels) {
 			if (!Config.GarbageCollectAccountUnownedTextures)
 				return;
@@ -125,6 +132,7 @@ namespace SpriteMaster.Extensions {
 			Mark(size);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void UnmarkUnowned (SurfaceFormat format, int texels) {
 			if (!Config.GarbageCollectAccountUnownedTextures)
 				return;

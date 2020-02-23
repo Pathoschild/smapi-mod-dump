@@ -1,14 +1,10 @@
-﻿using System;
+﻿using StardewValley;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StardewValley;
 using SObject = StardewValley.Object;
 
 namespace WhatAreYouMissing
 {
-    
     public class ItemDisplayInfo
     {
         private SObject Item;

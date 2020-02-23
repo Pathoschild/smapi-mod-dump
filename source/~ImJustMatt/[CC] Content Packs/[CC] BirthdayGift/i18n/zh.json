@@ -1,0 +1,5 @@
+﻿{
+	//默认对话（由单个字符覆盖）
+	"Dialogue.Mod=HelpfulSpouses.BirthdayGender=Female": "今天是{{Birthday}}的生日！我去买了礼物送给她。{{ItemId}}",
+	"Dialogue.Mod=HelpfulSpouses.BirthdayGender=Male": "今天是{{Birthday}}的生日！我去买了礼物送给他。{{ItemId}}",
+}

@@ -1,10 +1,10 @@
 ﻿{
-   "Name": "Forecaster",
-   "Author": "Remy Bach",
-   "Version": "1.2.1",
-   "Description": "Displays the daily luck message when you wake up so you don't have to check the TV every day.",
-   "UniqueID": "remybach.forecaster",
-   "EntryDll": "forecaster.dll",
-   "MinimumApiVersion": "2.0",
-   "UpdateKeys": [ "Nexus:3037" ]
+  "Name": "Forecaster",
+  "Author": "Remy Bach",
+  "Version": "1.2.1",
+  "Description": "Displays the daily luck message when you wake up so you don't have to check the TV every day.",
+  "UniqueID": "remybach.forecaster",
+  "EntryDll": "Forecaster.dll",
+  "MinimumApiVersion": "2.11.2",
+  "UpdateKeys": [ "Nexus:3037" ]
 }

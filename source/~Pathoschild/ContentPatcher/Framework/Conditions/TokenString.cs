@@ -10,7 +10,7 @@ using Pathoschild.Stardew.Common.Utilities;
 namespace ContentPatcher.Framework.Conditions
 {
     /// <summary>A string value optionally containing tokens.</summary>
-    internal class TokenString : IParsedTokenString
+    internal class TokenString : IManagedTokenString
     {
         /*********
         ** Fields
@@ -111,6 +111,8 @@ namespace ContentPatcher.Framework.Conditions
                         this.State.AddUnavailableModTokens(requiredModId);
                     else
                         this.State.AddInvalidTokens(lexToken.Name);
+
+                    isMutable = true; // can't optimize away the token value if it's invalid
                 }
             }
 

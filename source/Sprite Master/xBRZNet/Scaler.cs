@@ -11,11 +11,12 @@ using SpriteMaster.xBRZ.Scalers;
 namespace SpriteMaster.xBRZ {
 	// ReSharper disable once InconsistentNaming
 	public sealed class Scaler {
-		public const int MinScale = 2;
-		public const int MaxScale = Config.MaxScale;
+		public const uint MinScale = 2;
+		public const uint MaxScale = Config.MaxScale;
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Scaler (
-			int scaleMultiplier,
+			uint scaleMultiplier,
 			in Span<uint> sourceData,
 			in Point sourceSize,
 			in Rectangle? sourceTarget,
@@ -43,8 +44,8 @@ namespace SpriteMaster.xBRZ {
 			if (this.sourceTarget.Right > sourceSize.X || this.sourceTarget.Bottom > sourceSize.Y) {
 				throw new ArgumentOutOfRangeException(nameof(sourceTarget));
 			}
-			this.targetWidth = this.sourceTarget.Width * scaleMultiplier;
-			this.targetHeight = this.sourceTarget.Height * scaleMultiplier;
+			this.targetWidth = this.sourceTarget.Width * (int)scaleMultiplier;
+			this.targetHeight = this.sourceTarget.Height * (int)scaleMultiplier;
 			if (targetWidth * targetHeight > targetData.Length) {
 				throw new ArgumentOutOfRangeException(nameof(targetData));
 			}
@@ -81,6 +82,7 @@ namespace SpriteMaster.xBRZ {
 
 		//detect blend direction
 		[Pure]
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private BlendResult PreProcessCorners (in Kernel4x4 ker) {
 			var result = new BlendResult();
 
@@ -125,6 +127,7 @@ namespace SpriteMaster.xBRZ {
 				-------------
 				blendInfo: result of preprocessing all four corners of pixel "e"
 		*/
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private unsafe void ScalePixel (IScaler scaler, RotationDegree rotDeg, in Kernel3x3 ker, int trgi, byte blendInfo) {
 			var blend = blendInfo.Rotate(rotDeg);
 
@@ -206,7 +209,7 @@ namespace SpriteMaster.xBRZ {
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private int clampX (int x) {
 			x -= sourceTarget.Left;
-			if (configuration.WrappedX) {
+			if (configuration.Wrapped.X) {
 				x = (x + sourceTarget.Width) % sourceTarget.Width;
 			}
 			else {
@@ -218,7 +221,7 @@ namespace SpriteMaster.xBRZ {
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private int clampY (int y) {
 			y -= sourceTarget.Top;
-			if (configuration.WrappedY) {
+			if (configuration.Wrapped.Y) {
 				y = (y + sourceTarget.Height) % sourceTarget.Height;
 			}
 			else {
@@ -230,19 +233,23 @@ namespace SpriteMaster.xBRZ {
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private bool legalX (int x) {
 			return true;
-			if (configuration.WrappedX) {
+			/*
+			if (configuration.Wrapped.X) {
 				return true;
 			}
 			return x >= sourceTarget.Left && x < sourceTarget.Right;
+			*/
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private bool legalY (int y) {
 			return true;
-			if (configuration.WrappedY) {
+			/*
+			if (configuration.Wrapped.Y) {
 				return true;
 			}
 			return y >= sourceTarget.Top && y < sourceTarget.Bottom;
+			*/
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -274,7 +281,7 @@ namespace SpriteMaster.xBRZ {
 				//temporary buffer for "on the fly preprocessing"
 				var preProcBuffer = stackalloc byte[sourceTarget.Width];
 
-				uint GetPixel (in Span<uint> src, int stride, int offset) {
+				static uint GetPixel (in Span<uint> src, int stride, int offset) {
 					// We can try embedded a distance calculation as well. Perhaps instead of a negative stride/offset, we provide a 
 					// negative distance from the edge and just recalculate the stride/offset in that case.
 					// We can scale the alpha reduction by the distance to hopefully correct the edges.
@@ -350,7 +357,7 @@ namespace SpriteMaster.xBRZ {
 						if (x + 1 < sourceTarget.Right) {
 							preProcBuffer[adjustedX + 1] = preProcBuffer[adjustedX + 1].SetTopL(blendResult.K);
 						}
-						else if (configuration.WrappedX) {
+						else if (configuration.Wrapped.X) {
 							preProcBuffer[0] = preProcBuffer[0].SetTopL(blendResult.K);
 						}
 					}
@@ -430,7 +437,7 @@ namespace SpriteMaster.xBRZ {
 							//set 3rd known corner for (x + 1, y)
 							preProcBuffer[adjustedX + 1] = preProcBuffer[adjustedX + 1].SetBottomL(blendResult.G);
 						}
-						else if (configuration.WrappedX) {
+						else if (configuration.Wrapped.X) {
 							preProcBuffer[0] = preProcBuffer[0].SetBottomL(blendResult.G);
 						}
 

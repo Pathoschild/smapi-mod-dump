@@ -7,6 +7,12 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace SpriteMaster.Types {
+	public static class Extensions {
+		public static Span<T> AsSpan<T>(this T[] data) where T : unmanaged {
+			return new Span<T>(data);
+		}
+	}
+
 	[ImmutableObject(true)]
 	public ref struct Span<T> where T : unmanaged {
 		private sealed class CollectionHandle {
@@ -25,7 +31,7 @@ namespace SpriteMaster.Types {
 
 		private readonly CollectionHandle Handle;
 		private readonly object PinnedObject;
-		private readonly IntPtr Pointer;
+		public readonly IntPtr Pointer;
 		public readonly int Length;
 		private readonly int Size;
 
@@ -33,11 +39,24 @@ namespace SpriteMaster.Types {
 
 		[Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private readonly int GetOffset(int index) {
+#if DEBUG
 			if (index < 0 || index >= Length) {
 				throw new IndexOutOfRangeException(nameof(index));
 			}
+#endif
 
 			return index * TypeSize;
+		}
+
+		[Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private readonly uint GetOffset (uint index) {
+#if DEBUG
+			if (index >= unchecked((uint)Length)) {
+				throw new IndexOutOfRangeException(nameof(index));
+			}
+#endif
+
+			return index * unchecked((uint)TypeSize);
 		}
 
 		public unsafe T this[int index] {
@@ -49,6 +68,19 @@ namespace SpriteMaster.Types {
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			set {
 				T* ptr = (T*)(Pointer + GetOffset(index));
+				*ptr = value;
+			}
+		}
+
+		public unsafe T this[uint index] {
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			readonly get {
+				T* ptr = (T*)(Pointer + unchecked((int)GetOffset(index)));
+				return *ptr;
+			}
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			set {
+				T* ptr = (T*)(Pointer + unchecked((int)GetOffset(index)));
 				*ptr = value;
 			}
 		}
@@ -74,10 +106,10 @@ namespace SpriteMaster.Types {
 		public Span (T[] data, int length) : this(data, length, length * TypeSize) { }
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public Span (object pinnedObject, int size) : this(pinnedObject, size / TypeSize, size) { }
+		private Span (object pinnedObject, int size) : this(pinnedObject, size / TypeSize, size) { }
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public Span(object pinnedObject, int length, int size) {
+		private Span(object pinnedObject, int length, int size) {
 			var handle = GCHandle.Alloc(pinnedObject, GCHandleType.Pinned);
 			try {
 				PinnedObject = pinnedObject;

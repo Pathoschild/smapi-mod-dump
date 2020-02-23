@@ -19,27 +19,24 @@ namespace SpriteMaster.xBRZ.Scalers {
 	internal unsafe ref struct Kernel4x4 {
 		private fixed uint Data[4 * 4];
 
-		public uint this[int index] {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => Data[index];
-		}
+		public readonly uint this[int index] => Data[index];
 
-		public uint A { get => Data[0]; }
-		public uint B { get => Data[1]; }
-		public uint C { get => Data[2]; }
-		public uint D { get => Data[3]; }
-		public uint E { get => Data[4]; }
-		public uint F { get => Data[5]; }
-		public uint G { get => Data[6]; }
-		public uint H { get => Data[7]; }
-		public uint I { get => Data[8]; }
-		public uint J { get => Data[9]; }
-		public uint K { get => Data[10]; }
-		public uint L { get => Data[11]; }
-		public uint M { get => Data[12]; }
-		public uint N { get => Data[13]; }
-		public uint O { get => Data[14]; }
-		public uint P { get => Data[15]; }
+		public readonly uint A => Data[0];
+		public readonly uint B => Data[1];
+		public readonly uint C => Data[2];
+		public readonly uint D => Data[3];
+		public readonly uint E => Data[4];
+		public readonly uint F => Data[5];
+		public readonly uint G => Data[6];
+		public readonly uint H => Data[7];
+		public readonly uint I => Data[8];
+		public readonly uint J => Data[9];
+		public readonly uint K => Data[10];
+		public readonly uint L => Data[11];
+		public readonly uint M => Data[12];
+		public readonly uint N => Data[13];
+		public readonly uint O => Data[14];
+		public readonly uint P => Data[15];
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal Kernel4x4 (

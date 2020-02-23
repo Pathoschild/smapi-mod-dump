@@ -18,7 +18,6 @@ namespace AdvancedKeyBindings.Extensions
             return Game1.getFarm().buildings.Where(building =>
                 building.buildingType.Contains(animal.buildingTypeILiveIn) &&
                 !((AnimalHouse) building.indoors.Value).isFull() &&
-                !(building.daysUntilUpgrade.Value > 0) &&
                 !(building.daysOfConstructionLeft.Value > 0)).ToList();
         }
     }

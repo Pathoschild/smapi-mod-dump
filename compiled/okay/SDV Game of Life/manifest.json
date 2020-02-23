@@ -1,0 +1,10 @@
+﻿{
+  "Name": "SDV Game of Life",
+  "Author": "Super Aardvark",
+  "Version": "1.0.0",
+  "Description": "Lets you play Conway's Game of Life on your farm.  Watered dirt grows and dies in complex patterns.  Hold L, Press P to Play/Pause.",
+  "UniqueID": "SuperAardvark.GameOfLife",
+  "EntryDll": "SDVGameOfLife.dll",
+  "MinimumApiVersion": "3.2.0",
+  "UpdateKeys": [ "Nexus:5361" ]
+}

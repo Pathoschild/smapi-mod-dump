@@ -1,0 +1,11 @@
+{
+	"Format": "1.11",
+	"Changes": [
+		{
+		"Action": "EditImage",
+		"PatchMode": "Replace",
+		"Target": "Characters/Krobus",
+		"FromFile": "assets/Krobus.png",
+		},
+	]
+}

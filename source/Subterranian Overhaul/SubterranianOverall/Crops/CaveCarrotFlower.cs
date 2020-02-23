@@ -1,7 +1,11 @@
-﻿using Netcode;
+﻿using Microsoft.Xna.Framework;
+using Netcode;
+using StardewModdingAPI;
 using StardewValley;
+using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,88 +15,72 @@ namespace SubterranianOverhaul.Crops
 {
     public class CaveCarrotFlower : Crop
     {
-        /*public readonly NetIntList phaseDays = new NetIntList();
-        [XmlElement("rowInSpriteSheet")]
-        public readonly NetInt rowInSpriteSheet = new NetInt();
-        [XmlElement("phaseToShow")]
-        public readonly NetInt phaseToShow = new NetInt(-1);
-        [XmlElement("currentPhase")]
-        public readonly NetInt currentPhase = new NetInt();
-        [XmlElement("harvestMethod")]
-        public readonly NetInt harvestMethod = new NetInt();
-        [XmlElement("indexOfHarvest")]
-        public readonly NetInt indexOfHarvest = new NetInt();
-        [XmlElement("regrowAfterHarvest")]
-        public readonly NetInt regrowAfterHarvest = new NetInt();
-        [XmlElement("dayOfCurrentPhase")]
-        public readonly NetInt dayOfCurrentPhase = new NetInt();
-        [XmlElement("minHarvest")]
-        public readonly NetInt minHarvest = new NetInt();
-        [XmlElement("maxHarvest")]
-        public readonly NetInt maxHarvest = new NetInt();
-        [XmlElement("maxHarvestIncreasePerFarmingLevel")]
-        public readonly NetInt maxHarvestIncreasePerFarmingLevel = new NetInt();
-        [XmlElement("daysOfUnclutteredGrowth")]
-        public readonly NetInt daysOfUnclutteredGrowth = new NetInt();
-        [XmlElement("whichForageCrop")]
-        public readonly NetInt whichForageCrop = new NetInt();
-        public readonly NetStringList seasonsToGrowIn = new NetStringList();
-        [XmlElement("tintColor")]
-        public readonly NetColor tintColor = new NetColor();
-        [XmlElement("flip")]
-        public readonly NetBool flip = new NetBool();
-        [XmlElement("fullGrown")]
-        public readonly NetBool fullyGrown = new NetBool();
-        [XmlElement("raisedSeeds")]
-        public readonly NetBool raisedSeeds = new NetBool();
-        [XmlElement("programColored")]
-        public readonly NetBool programColored = new NetBool();
-        [XmlElement("dead")]
-        public readonly NetBool dead = new NetBool();
-        [XmlElement("forageCrop")]
-        public readonly NetBool forageCrop = new NetBool();
-        [XmlElement("chanceForExtraCrops")]
-        public readonly NetDouble chanceForExtraCrops = new NetDouble(0.0);
-        [XmlIgnore]
-        public readonly NetInt netSeedIndex = new NetInt(-1);
-        
-        public NetFields NetFields { get; } = new NetFields();
-        */
+        private static int seedIndex = -1;
+        private static int cropTextureIndex = -1;
 
-        private static int itemIndex = -1;
+        public const String NAME = "Plantable Cave Carrot";
+        public const String DISPLAY_NAME = "Cave Carrot";
+        public const int QUALITY = 0;
+        public const int PRICE = 0;
+        public const int CATEGORY = 74;
+        public const int EDIBILITY = -300;
+        public const string DESCRIPTION = "A placeholder that will never appear anywhere, it's just so we can plant these things.";
+
+        private const string CROP_DATA_STRING = "2 7 9 6 4/spring summer fall winter/{1}/{0}/3/0/true 4 8 2 .2/false/false";
+        private const string OBJECT_DATA_STRING = "{0}/{1}/{2}/Seeds -{3}/{4}/{5}";
 
         public static void setIndex()
         {
-            if (CaveCarrotFlower.itemIndex == -1)
+            if (CaveCarrotFlower.seedIndex == -1)
             {
-                CaveCarrotFlower.itemIndex = IndexManager.getUnusedObjectIndex();
+                CaveCarrotFlower.seedIndex = IndexManager.getUnusedObjectIndex();
             }
         }
 
         public static int getIndex()
         {
-            if (CaveCarrotFlower.itemIndex == -1)
+            if (CaveCarrotFlower.seedIndex == -1)
             {
-                VoidshroomSpore.setIndex();
+                CaveCarrotFlower.setIndex();
             }
 
-            return CaveCarrotFlower.itemIndex;
+            return CaveCarrotFlower.seedIndex;
         }
 
-        public CaveCarrotFlower()
+        public static void setCropIndex()
         {
-            this.NetFields.AddFields((INetSerializable)this.phaseDays, (INetSerializable)this.rowInSpriteSheet, (INetSerializable)this.phaseToShow, (INetSerializable)this.currentPhase, (INetSerializable)this.harvestMethod, (INetSerializable)this.indexOfHarvest, (INetSerializable)this.regrowAfterHarvest, (INetSerializable)this.dayOfCurrentPhase, (INetSerializable)this.minHarvest, (INetSerializable)this.maxHarvest, (INetSerializable)this.maxHarvestIncreasePerFarmingLevel, (INetSerializable)this.daysOfUnclutteredGrowth, (INetSerializable)this.whichForageCrop, (INetSerializable)this.seasonsToGrowIn, (INetSerializable)this.tintColor, (INetSerializable)this.flip, (INetSerializable)this.fullyGrown, (INetSerializable)this.raisedSeeds, (INetSerializable)this.programColored, (INetSerializable)this.dead, (INetSerializable)this.forageCrop, (INetSerializable)this.chanceForExtraCrops, (INetSerializable)this.netSeedIndex);
+            if (CaveCarrotFlower.cropTextureIndex == -1)
+            {
+                CaveCarrotFlower.cropTextureIndex = IndexManager.getUnusedCropIndex();
+            }
         }
 
-        public CaveCarrotFlower(bool forageCrop, int which, int tileX, int tileY)
-          : this()
+        public static int getCropIndex()
         {
-            this.forageCrop.Value = forageCrop;
-            this.whichForageCrop.Value = which;
-            this.fullyGrown.Value = true;
-            this.currentPhase.Value = 5;
+            if (CaveCarrotFlower.cropTextureIndex == -1)
+            {
+                CaveCarrotFlower.setCropIndex();
+            }
+
+            return CaveCarrotFlower.cropTextureIndex;
         }
 
+        public CaveCarrotFlower() : this(Vector2.Zero)
+        {   
+        }
 
+        public CaveCarrotFlower(Vector2 tileLocation) : base(seedIndex,(int) tileLocation.X, (int) tileLocation.Y)
+        {   
+        }
+
+        public static string getCropData()
+        {
+            return String.Format(CROP_DATA_STRING,CaveCarrotSeed.getIndex(), CaveCarrotFlower.getCropIndex());
+        }
+
+        internal static string getObjectData()
+        {
+            return String.Format(OBJECT_DATA_STRING, CaveCarrotFlower.NAME, CaveCarrotFlower.PRICE, CaveCarrotFlower.EDIBILITY, CaveCarrotFlower.CATEGORY, CaveCarrotFlower.NAME, CaveCarrotFlower.DESCRIPTION);
+        }
     }
 }

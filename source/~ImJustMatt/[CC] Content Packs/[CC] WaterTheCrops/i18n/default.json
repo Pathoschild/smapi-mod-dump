@@ -1,0 +1,12 @@
+﻿{
+	// Shane dialogue (credit: alekrrau)
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Shane.Priority=1": "Hey, I actually had a burst of productivity today, and I watered all the crops. Fresh air was nice.",
+	// Emily dialogue (credit: alekrrau)
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Emily.Priority=1": "The crops looks so happy this morning when I went to water them. They love the soil here, I can tell.",
+	// Default dialogue (overridden by individual dialogue)
+	"Dialogue.Mod=HelpfulSpouses": "Good morning {{NickName}}, I watered the crops for you today.",
+
+	// Shop text
+	"DisplayName.Mod=HelpForHire":  "Water the Crops",
+	"Description.Mod=HelpForHire":  "We'll water all of your crops.",
+}

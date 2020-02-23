@@ -1,7 +1,7 @@
 {
   "Name": "Infused Dwarven Spirits",
   "Description": "Dwarven Spirits infused with the magical energy of the the deep earth.",
-  "Price": 500,
+  "Price": 200,
   "Category": "ArtisanGoods",
   "Edibility": 150,
   "EdibleIsDrink": true,

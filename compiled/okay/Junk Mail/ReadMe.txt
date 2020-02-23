@@ -47,12 +47,18 @@ v1.0.3	   - Delay mail notification to avoid overlapping and to allow other mods
 v1.0.4	   - Fix intermittent null object reference
 v1.0.5	   - Really fix intermittent null object reference if you don't have a horse yet.
 v1.0.6     - Add config help text.  Added one new junk mail.  Changed default for mail notification to detailed instead of basic
+v1.0.7	   - Some additional junk mail added for your enjoyment
 
 
 Conclusion
 ----------
-If you like this MOD you might want to check out my "Train Whistle" mod (https://www.nexusmods.com/stardewvalley/mods/4473)
-Monthly Mail mod (https://www.nexusmods.com/stardewvalley/mods/4523) or Fantastic Frames mod (https://www.nexusmods.com/stardewvalley/mods/4540).
+If you like this MOD you might want to check out my other mods as well.
+
+"Monthly Mail" : https://www.nexusmods.com/stardewvalley/mods/4523 
+"Train Whistle" mod, that lets you summmon the train basically anytime: https://www.nexusmods.com/stardewvalley/mods/4473
+"Fantastic Frames" : https://www.nexusmods.com/stardewvalley/mods/4540
+"Be My Valentine's" : https://www.nexusmods.com/stardewvalley/mods/(replace)   -  Coming soon!
+"Wizard's Mystical Stationary":  : https://www.nexusmods.com/stardewvalley/mods/(replace)   - Coming soon!
 
 If you are a Steam user, I have created two Community Guides that you might enjoy.  They are not your typical regurgitation of the Stardew Valley Wiki,
 but are short stories based on the game designed to add "lore" to the game experience.  Folks seem to enjoy them and I am sure you will too.

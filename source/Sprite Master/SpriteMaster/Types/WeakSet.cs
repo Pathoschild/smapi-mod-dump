@@ -12,15 +12,9 @@ namespace SpriteMaster.Types {
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		[SecuritySafeCritical]
-		private bool _Contains(T obj) {
-			return InternalTable.TryGetValue(obj, out var _);
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		[SecuritySafeCritical]
 		public bool Contains(T obj) {
 			using (Lock.Shared) {
-				return _Contains(obj);
+				return InternalTable.TryGetValue(obj, out var _);
 			}
 		}
 
@@ -37,7 +31,7 @@ namespace SpriteMaster.Types {
 		public bool Add(T obj) {
 			try {
 				using (Lock.Exclusive) {
-					if (_Contains(obj)) {
+					if (InternalTable.TryGetValue(obj, out var _)) {
 						return false;
 					}
 

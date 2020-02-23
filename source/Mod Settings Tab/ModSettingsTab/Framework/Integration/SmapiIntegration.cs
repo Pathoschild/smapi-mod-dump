@@ -21,7 +21,7 @@ namespace ModSettingsTab.Framework.Integration
             var configPath = Path.Combine(Constants.ExecutionPath, "smapi-internal/config.json");
             if (!File.Exists(configPath))
             {
-                ModEntry.Console.Log("SMAPI Config not found? :)", LogLevel.Error);
+                Helper.Console.Error("SMAPI Config not found? :)");
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace ModSettingsTab.Framework.Integration
         {
             const string uniqueId = "Pathoschild.SMAPI";
             var lang = LocalizedContentManager.CurrentLanguageCode;
-            var nI9NPath = Path.Combine(ModEntry.Helper.DirectoryPath, "data/I9N/SmapiIntegration.json");
+            var nI9NPath = Path.Combine(Helper.DirectoryPath, "data/I9N/SmapiIntegration.json");
             ModIntegrationSettings nI9N = null;
             try
             {
@@ -47,7 +47,7 @@ namespace ModSettingsTab.Framework.Integration
             }
             catch (Exception e)
             {
-                ModEntry.Console.Log(e.Message);
+                Helper.Console.Warn(e.Message);
             }
             
             Options.Add(new SmapiHeading(BaseOptionsModPage.SlotSize)

@@ -3,13 +3,10 @@
 using System.Runtime.Caching;
 using System.Threading;
 using System;
-#if WITH_ZLIB
-using Ionic.Zlib;
-#endif
-using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Types;
 using SpriteMaster.Extensions;
+using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Metadata {
 	internal sealed class MTexture2D {
@@ -20,22 +17,17 @@ namespace SpriteMaster.Metadata {
 		public readonly SpriteDictionary SpriteTable = new SpriteDictionary();
 		private readonly string UniqueIDString = Interlocked.Increment(ref CurrentID).ToString();
 
-		private readonly SharedLock Lock = new SharedLock();
+		public readonly SharedLock Lock = new SharedLock();
 
 		private volatile int CompressorCount = 0;
 		private readonly Semaphore CompressionSemaphore = new Semaphore(int.MaxValue, int.MaxValue);
 
 		public volatile bool TracePrinted = false;
-		private long _UpdateToken = 0;
-		public long UpdateToken {
-			get {
-				return Thread.VolatileRead(ref _UpdateToken);
-			}
-			private set {
-				Thread.VolatileWrite(ref _UpdateToken, value);
-			}
-		}
+		public Volatile<ulong> UpdateToken { get; private set; } = 0;
 
+		public bool ScaleValid = true;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void PurgeDataCache() {
 			if (!Config.MemoryCache.Enabled) {
 				return;
@@ -47,127 +39,14 @@ namespace SpriteMaster.Metadata {
 			}
 		}
 
-		public long _LastAccessFrame = Thread.VolatileRead(ref DrawState.CurrentFrame);
-		public long LastAccessFrame {
-			get {
-				using (Lock.Shared)
-					return Thread.VolatileRead(ref _LastAccessFrame);
-			}
-			private set {
-				using (Lock.Exclusive)
-					Thread.VolatileWrite(ref _LastAccessFrame, value);
-			}
-		}
-		private ulong _Hash = default;
-		public ulong Hash {
-			get {
-				using (Lock.Shared) {
-					return Thread.VolatileRead(ref _Hash);
-				}
-			}
-			private set {
-				using (Lock.Exclusive) {
-					Thread.VolatileWrite(ref _Hash, value);
-				}
-			}
-		}
-
-#if WITH_ZLIB
-		private static readonly MethodInfo ZlibBaseCompressBuffer;
-#endif
-
-		static MTexture2D() {
-#if WITH_ZLIB
-			ZlibBaseCompressBuffer = typeof(ZlibStream).Assembly.GetType("Ionic.Zlib.ZlibBaseStream").GetMethod("CompressBuffer", BindingFlags.Static | BindingFlags.Public);
-			if (ZlibBaseCompressBuffer == null) {
-				throw new NullReferenceException(nameof(ZlibBaseCompressBuffer));
-			}
-#endif
-		}
-
-		private static byte[] StreamCompress (byte[] data) {
-			using (var val = new MemoryStream()) {
-				using (var compressor = new System.IO.Compression.DeflateStream(val, System.IO.Compression.CompressionLevel.Optimal)) {
-					return val.ToArray();
-				}
-			}
-		}
-
-		private static byte[] StreamDecompress (byte[] data) {
-			using (var val = new MemoryStream()) {
-				using (var compressor = new System.IO.Compression.DeflateStream(val, System.IO.Compression.CompressionMode.Decompress)) {
-					return val.ToArray();
-				}
-			}
-		}
-
-		private static byte[] LZCompress(byte[] data) {
-#if WITH_ZLIB
-			using (var val = new MemoryStream()) {
-				using (var compressor = new DeflateStream(val, CompressionMode.Compress, CompressionLevel.BestCompression)) {
-					ZlibBaseCompressBuffer.Invoke(null, new object[] { data, compressor });
-					return val.ToArray();
-				}
-			}
-#else
-			throw new Exception("SpriteMaster was built with LZ support disabled");
-#endif
-		}
-
-		private static byte[] Compress(byte[] data) {
-			switch (Config.MemoryCache.Type) {
-				case Config.MemoryCache.Algorithm.None:
-					return data;
-				case Config.MemoryCache.Algorithm.COMPRESS:
-					return StreamCompress(data);
-				case Config.MemoryCache.Algorithm.LZ:
-					return LZCompress(data);
-				case Config.MemoryCache.Algorithm.LZMA: {
-					/*
-					using var outStream = new MemoryStream();
-					using (var inStream = new XZCompressStream(outStream)) {
-						inStream.Write(data, 0, data.Length);
-					}
-					return outStream.ToArray();
-					*/
-					throw new NotImplementedException("LZMA support not yet implemented.");
-				}
-				default:
-					throw new Exception($"Unknown Compression Algorithm: {Config.MemoryCache.Type}");
-			}
-		}
-
-		private static byte[] Decompress(byte[] data) {
-			switch (Config.MemoryCache.Type) {
-				case Config.MemoryCache.Algorithm.None:
-					return data;
-				case Config.MemoryCache.Algorithm.COMPRESS:
-					return StreamDecompress(data);
-				case Config.MemoryCache.Algorithm.LZ:
-#if WITh_ZLIB
-					return DeflateStream.UncompressBuffer(data);
-#else
-					throw new Exception("SpriteMaster was built with LZ support disabled");
-#endif
-				case Config.MemoryCache.Algorithm.LZMA: {
-					/*
-					using var outStream = new MemoryStream();
-					using (var inStream = new XZDecompressStream(outStream)) {
-						inStream.Read(data, 0, data.Length);
-					}
-					return outStream.ToArray();
-					*/
-					throw new NotImplementedException("LZMA support not yet implemented.");
-				}
-				default:
-					throw new Exception($"Unknown Compression Algorithm: {Config.MemoryCache.Type}");
-			}
-		}
+		public Volatile<ulong> LastAccessFrame { get; private set; } = (ulong)DrawState.CurrentFrame;
+		internal Volatile<ulong> Hash { get; private set; } = Hashing.Default;
 
 		// TODO : this presently is not threadsafe.
 		private readonly WeakReference<byte[]> _CachedData = (Config.MemoryCache.Enabled) ? new WeakReference<byte[]>(null) : null;
 
 		public bool HasCachedData {
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get {
 				if (!Config.MemoryCache.Enabled)
 					return false;
@@ -178,8 +57,9 @@ namespace SpriteMaster.Metadata {
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public unsafe void Purge (Texture2D reference, Bounds? bounds, DataRef<byte> data) {
-			lock (this) {
+			using (Lock.Exclusive) {
 				if (data.IsNull) {
 					CachedData = null;
 					return;
@@ -203,12 +83,12 @@ namespace SpriteMaster.Metadata {
 						Debug.TraceLn("Updating MTexture2D Cache in Purge");
 						var byteSpan = data.Data;
 						using (DataCacheLock.Exclusive) {
-							using (Lock.Exclusive) {
+							/*using (Lock.Exclusive)*/ {
 								var untilOffset = Math.Min(currentData.Length - data.Offset, data.Length);
 								foreach (int i in 0..untilOffset) {
 									currentData[i + data.Offset] = byteSpan[i];
 								}
-								Thread.VolatileWrite(ref _Hash, default);
+								Hash = Hashing.Default;
 								CachedData = currentData; // Force it to update the global cache.
 							}
 						}
@@ -230,13 +110,64 @@ namespace SpriteMaster.Metadata {
 			}
 		}
 
-		private bool CheckUpdateToken(long referenceToken) {
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private bool CheckUpdateToken(ulong referenceToken) {
 			using (Lock.Shared) {
 				return UpdateToken == referenceToken;
 			}
 		}
 
+		public static readonly byte[] BlockedSentinel = new byte[1] { 0xFF };
+
+		public byte[] CachedDataNonBlocking {
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			get {
+				if (!Config.MemoryCache.Enabled)
+					return null;
+
+				//Lock.Tr
+				using (Lock.TryShared) {
+					byte[] target = null;
+					if (!_CachedData.TryGetTarget(out target) || target == null) {
+						byte[] compressedBuffer;
+						using (DataCacheLock.TryShared) {
+							if (Config.MemoryCache.Compress != Compression.Algorithm.None && Config.MemoryCache.Async) {
+								bool handledCompression = false;
+								using (Lock.TryPromote) {
+									handledCompression = CompressorCount <= 0;
+								}
+								if (!handledCompression) {
+									return BlockedSentinel;
+								}
+							}
+
+							compressedBuffer = DataCache[UniqueIDString] as byte[];
+							if (compressedBuffer != null) {
+								target = Compression.Decompress(compressedBuffer, Config.MemoryCache.Compress);
+							}
+							else {
+								target = null;
+							}
+						}
+						if (target != null) {
+							bool promoted = false;
+							using (Lock.TryPromote) {
+								_CachedData.SetTarget(target);
+								promoted = true;
+							}
+							if (!promoted) {
+								return BlockedSentinel;
+							}
+						}
+					}
+					return target;
+				}
+				return BlockedSentinel;
+			}
+		}
+
 		public byte[] CachedData {
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get {
 				if (!Config.MemoryCache.Enabled)
 					return null;
@@ -246,7 +177,7 @@ namespace SpriteMaster.Metadata {
 					if (!_CachedData.TryGetTarget(out target) || target == null) {
 						byte[] compressedBuffer;
 						using (DataCacheLock.Shared) {
-							if (Config.MemoryCache.Type != Config.MemoryCache.Algorithm.None && Config.MemoryCache.Async) {
+							if (Config.MemoryCache.Compress != Compression.Algorithm.None && Config.MemoryCache.Async) {
 								using (Lock.Promote) {
 									int count = CompressorCount;
 									if (count > 0) {
@@ -261,7 +192,7 @@ namespace SpriteMaster.Metadata {
 
 							compressedBuffer = DataCache[UniqueIDString] as byte[];
 							if (compressedBuffer != null) {
-								target = Decompress(compressedBuffer);
+								target = Compression.Decompress(compressedBuffer, Config.MemoryCache.Compress);
 							}
 							else {
 								target = null;
@@ -274,12 +205,13 @@ namespace SpriteMaster.Metadata {
 					return target;
 				}
 			}
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			set {
 				try {
 					if (!Config.MemoryCache.Enabled)
 						return;
 
-					long currentUpdateToken;
+					ulong currentUpdateToken;
 					using (Lock.Exclusive) {
 						currentUpdateToken = UpdateToken;
 						UpdateToken = currentUpdateToken + 1;
@@ -304,17 +236,19 @@ namespace SpriteMaster.Metadata {
 
 							// I suspect this is completing AFTER we get a call to purge again, and so is overwriting what is the correct data.
 							// Doesn't explain why _not_ purging helps, though.
-							if (Config.MemoryCache.Type != Config.MemoryCache.Algorithm.None && Config.MemoryCache.Async) {
+							if (Config.MemoryCache.Compress != Compression.Algorithm.None && Config.MemoryCache.Async) {
 								if (queueCompress) {
 									using (Lock.Promote) {
 										++CompressorCount;
 										CompressionSemaphore.WaitOne();
-										ThreadPool.QueueUserWorkItem((buffer) => {
+										ThreadQueue.Queue((buffer) => {
+											Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
+											using var _ = new AsyncTracker($"Texture Cache Compress {UniqueIDString}");
 											try {
 												if (!CheckUpdateToken(currentUpdateToken)) {
 													return;
 												}
-												var compressedData = Compress((byte[])buffer);
+												var compressedData = Compression.Compress(buffer, Config.MemoryCache.Compress);
 												using (DataCacheLock.Exclusive) {
 													using (Lock.Exclusive) {
 														if (currentUpdateToken != UpdateToken) {
@@ -333,7 +267,7 @@ namespace SpriteMaster.Metadata {
 								}
 							}
 							else {
-								DataCache[UniqueIDString] = Compress(value);
+								DataCache[UniqueIDString] = Compression.Compress(value, Config.MemoryCache.Compress);
 							}
 
 							using (Lock.Promote) {
@@ -348,17 +282,19 @@ namespace SpriteMaster.Metadata {
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void UpdateLastAccess() {
 			LastAccessFrame = DrawState.CurrentFrame;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public ulong GetHash(SpriteInfo info) {
 			using (Lock.Shared) {
-				ulong hash = Thread.VolatileRead(ref _Hash);
-				if (hash == default) {
+				ulong hash = Hash;
+				if (hash == Hashing.Default) {
 					hash = info.Hash;
 					using (Lock.Promote) {
-						Thread.VolatileWrite(ref _Hash, hash);
+						Hash = hash;
 					}
 				}
 				return hash;

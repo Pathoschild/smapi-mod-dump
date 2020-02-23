@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define WIDE_BLEND
+
+using System;
 using System.Runtime.CompilerServices;
 using SpriteMaster.xBRZ.Common;
 
@@ -61,66 +63,69 @@ namespace SpriteMaster.xBRZ.Scalers {
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static uint ToLinear(uint input) {
 			return ToLinearTable[input];
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static uint ToGamma (uint input) {
 			return ToGammaTable[input];
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static double Curve (double x) {
 			return ((Math.Sin(x * Math.PI - (Math.PI / 2.0))) + 1) / 2;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static uint BlendComponent (int shift, uint mask, int n, int m, uint inPixel, uint setPixel, bool gamma = true) {
-			if (true) {
-				var inChan = ((inPixel >> shift) & 0xFF).Widen();
-				var setChan = ((setPixel >> shift) & 0xFF).Widen();
+#if WIDE_BLEND
+			var inChan = ((inPixel >> shift) & 0xFF).Widen();
+			var setChan = ((setPixel >> shift) & 0xFF).Widen();
 
-				// TODO : attach to the configuration setting for SRGB
-				if (gamma) {
-					inChan = ToLinear(inChan);
-					setChan = ToLinear(setChan);
-				}
-
-				var blend = setChan.asSigned() * n + inChan.asSigned() * (m - n);
-
-				var outChan = (blend / m).asUnsigned() & 0xFFFF;
-
-				if (gamma) {
-					outChan = ToGamma(outChan);
-				}
-
-				// Value is now in the range of 0 to 0xFFFF
-				if (!gamma && false) {
-					// If it's alpha, let's try hardening the edges.
-					float channelF = (float)outChan / (float)0xFFFF;
-
-					// alternatively, could use sin(x*pi - (pi/2))
-					var hardenedAlpha = Curve(channelF);
-
-					outChan = Math.Min(0xFFFF, (uint)(hardenedAlpha * 0xFFFF));
-				}
-
-				var component = (outChan.Narrow()) << shift;
-				return component;
+			// TODO : attach to the configuration setting for SRGB
+			if (gamma) {
+				inChan = ToLinear(inChan);
+				setChan = ToLinear(setChan);
 			}
-			else {
-				/*
-				var inChan = (int)((unchecked((uint)inPixel) >> shift) & 0xFF);
-				var setChan = (int)((unchecked((uint)setPixel) >> shift) & 0xFF);
-				var blend = setChan * n + inChan * (m - n);
-				var component = unchecked(((uint)(blend / m)) & 0xFF) << shift;
-				return component;
-				*/
-				var inChan = (long)(unchecked((uint)inPixel) & mask);
-				var setChan = (long)(unchecked((uint)setPixel) & mask);
-				var blend = setChan * n + inChan * (m - n);
-				var component = unchecked(((uint)(blend / m)) & mask);
-				return component;
+
+			var blend = setChan.asSigned() * n + inChan.asSigned() * (m - n);
+
+			var outChan = (blend / m).asUnsigned() & 0xFFFF;
+
+			if (gamma) {
+				outChan = ToGamma(outChan);
 			}
+
+			// Value is now in the range of 0 to 0xFFFF
+			if (!gamma) {
+				// If it's alpha, let's try hardening the edges.
+				float channelF = (float)outChan / (float)0xFFFF;
+
+				// alternatively, could use sin(x*pi - (pi/2))
+				var hardenedAlpha = Curve(channelF);
+
+				outChan = Math.Min(0xFFFF, (uint)(hardenedAlpha * 0xFFFF));
+			}
+
+			var component = (outChan.Narrow()) << shift;
+			return component;
+#else
+			/*
+			var inChan = (int)((unchecked((uint)inPixel) >> shift) & 0xFF);
+			var setChan = (int)((unchecked((uint)setPixel) >> shift) & 0xFF);
+			var blend = setChan * n + inChan * (m - n);
+			var component = unchecked(((uint)(blend / m)) & 0xFF) << shift;
+			return component;
+			*/
+			var inChan = (long)(unchecked((uint)inPixel) & mask);
+			var setChan = (long)(unchecked((uint)setPixel) & mask);
+			var blend = setChan * n + inChan * (m - n);
+			var component = unchecked(((uint)(blend / m)) & mask);
+			return component;
+			}
+#endif
 		}
 	}
 

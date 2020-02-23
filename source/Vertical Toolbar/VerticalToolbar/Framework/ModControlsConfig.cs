@@ -28,5 +28,9 @@ namespace SB_VerticalToolMenu
 
         /// <summary>The key to move the slot selection to the right.</summary>
         public SButton ScrollRight { get; set; } = SButton.LeftTrigger;
+
+        /// <summary> Sets the orientation of the vertical toolbar</summary>
+        public SB_VerticalToolMenu.Framework.Orientation Orientation = Framework.Orientation.LeftOfToolbar;
+        //
     }
 }

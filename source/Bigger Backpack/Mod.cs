@@ -11,19 +11,17 @@ using StardewValley.Locations;
 
 namespace BiggerBackpack
 {
-    public class Mod : Hack<Mod>
+    public class Mod : Hack<Mod>, IAssetEditor, IAssetLoader
     {
         public static Mod instance;
 
         private static Texture2D bigBackpack;
-        public  static Texture2D junimoNote;
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void HackEntry(IModHelper helper)
         {
-            bigBackpack = Helper.Content.Load<Texture2D>("backpack.png");
-            junimoNote  = Helper.Content.Load<Texture2D>("JunimoNote.png");
+            bigBackpack = Helper.Content.Load<Texture2D>("LooseSprites/BiggerBackpack", ContentSource.GameContent);
 
             Helper.ConsoleCommands.Add("player_setbackpacksize", "Set the size of the player's backpack. This must be 12, 24, 36 or 48", command);
             
@@ -39,7 +37,6 @@ namespace BiggerBackpack
             Patch((ShopMenu m)=>m.drawCurrency(null), ShopMenu_drawCurrency);
             Patch(()=>new MenuWithInventory(null,false,false,0,0,0), ShippingMenu_ctor);
             Patch((JunimoNoteMenu m)=>m.setUpMenu(0,null), JunimoNoteMenu_setUpMenu);
-            Patch((JunimoNoteMenu m)=>m.draw(null), JunimoNoteMenu_draw);
         }
 
         private void command( string cmd, string[] args )
@@ -502,28 +499,40 @@ namespace BiggerBackpack
                 code.Remove();
             }
         }
-        
-        void JunimoNoteMenu_draw() {
-            var code = FindCode(
-                OpCodes.Ldarg_1,
-                OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.noteTexture)),
-                OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.xPositionOnScreen)),
-                OpCodes.Conv_R4,
-                OpCodes.Ldarg_0,
-                Instructions.Ldfld(typeof(IClickableMenu), nameof(IClickableMenu.yPositionOnScreen)),
-                OpCodes.Conv_R4,
-                OpCodes.Newobj,
-                Instructions.Ldc_I4(320), // Line 10
-                Instructions.Ldc_I4_0(),
-                Instructions.Ldc_I4(320),
-                Instructions.Ldc_I4(180)
-            );
-            code[10] = Instructions.Ldc_I4_0();
-            code.SubRange(1,2).Replace(
-                Instructions.Ldsfld(typeof(Mod), nameof(Mod.junimoNote))
-            );
+#endregion
+
+#region Assets
+        bool IAssetEditor.CanEdit<T>(IAssetInfo asset)
+        {
+            if (asset.AssetNameEquals("LooseSprites/JunimoNote")) {
+                return true;
+            }
+            return false;
+        }
+
+        void IAssetEditor.Edit<T>(IAssetData asset)
+        {
+            if (asset.AssetNameEquals("LooseSprites/JunimoNote")) {
+                var junimoNote  = Helper.Content.Load<Texture2D>("JunimoNote.png");
+                // 344,28 - 121x127
+                asset.AsImage().PatchImage(junimoNote, targetArea: new Rectangle(344, 28, 121, 127));
+            }
+        }
+
+        bool IAssetLoader.CanLoad<T>(IAssetInfo asset)
+        {
+            if (asset.AssetNameEquals("LooseSprites/BiggerBackpack")) {
+                return true;
+            }
+            return false;
+        }
+
+        T IAssetLoader.Load<T>(IAssetInfo asset)
+        {
+            if (asset.AssetNameEquals("LooseSprites/BiggerBackpack")) {
+                return Helper.Content.Load<T>("backpack.png", ContentSource.ModFolder);
+            }
+            throw new System.ArgumentException("BiggerBackpack cannot load asset for " + asset.AssetName);
         }
 #endregion
     }

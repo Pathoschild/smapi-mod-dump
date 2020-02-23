@@ -44,13 +44,17 @@ namespace CustomGuildChallenges
 
         public static string Mummy { get; set; } = "Mummy";
         public static string Serpent { get; set; } = "Serpent";
+        public static string PepperRex { get; set; } = "Pepper Rex";
 
         public static string MetalHead { get; set; } = "Metal Head";
         public static string SquidKid { get; set; } = "Squid Kid";
+        public static string Fireball { get; set; } = "Fireball";
 
         // In Monsters.xnb but not used (?)
         public static string Spiker { get; set; } = "Spiker";
         public static string Cat { get; set; } = "Cat";
+        public static string Crow { get; set; } = "Crow";
+        public static string Frog { get; set; } = "Frog";
 
         // Added by this mod
         public static string MutantGrub { get; set; } = "Mutant Grub";
@@ -88,10 +92,15 @@ namespace CustomGuildChallenges
             Serpent,
             MetalHead,
             SquidKid,
+            Fireball,
             Spiker,
             Cat,
             MutantGrub,
-            MutantFly
+            MutantFly,
+            Crow,
+            Frog,
+            Cat,
+            PepperRex,
         };
     }
 }

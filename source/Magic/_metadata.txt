@@ -5,12 +5,12 @@ mods:
    Magic
 
 latest commit:
-   commit c6ef2a5d10ca5a0509a6558ddf1398a50978db1e
-   Merge: 0b76442 a40d784
+   commit f2d3a065402d9e198b4ff1d2b94dd4e349478bb3
+   Merge: 30781ce b94787b
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Mon Dec 30 18:41:05 2019 -0500
+   Date:   Mon Feb 17 10:21:06 2020 -0500
    
-       Merge pull request #7 from asqwedcxz741/master
+       Merge pull request #10 from Elec0/master
        
-       add chinese translation
+       Moving spell name translator call into a virtual method
    

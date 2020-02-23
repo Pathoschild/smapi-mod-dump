@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
-using StardewValley.BellsAndWhistles;
-using Microsoft.Xna.Framework.Input;
-using SObject = StardewValley.Object;
+using System.Collections.Generic;
 
 namespace WhatAreYouMissing
 {
@@ -165,8 +158,8 @@ namespace WhatAreYouMissing
             pages.Add(new MenuTab(xPositionOnScreen, yPositionOnScreen, width, height, TabName.SpecificSeasonTab, ModEntry.MissingItems.GetMissingSpecifics()));
             pages.Add(new MenuTab(xPositionOnScreen, yPositionOnScreen, width, height, TabName.SpecificCCSeasonTab, ModEntry.MissingItems.GetMissingSpecificCCItems()));
             pages.Add(new MenuTab(xPositionOnScreen, yPositionOnScreen, width, height, TabName.CommonCCTab, ModEntry.MissingItems.GetMissingCommonCCItems()));
-            pages.Add(new MenuTab(xPositionOnScreen, yPositionOnScreen, width, height, TabName.CCMerchantTab, ModEntry.MissingItems.GetMissingMerchantCCItems()));
             pages.Add(new MenuTab(xPositionOnScreen, yPositionOnScreen, width, height, TabName.SpecificMerchantTab, ModEntry.MissingItems.GetMissingMerchantItems()));
+            pages.Add(new MenuTab(xPositionOnScreen, yPositionOnScreen, width, height, TabName.CCMerchantTab, ModEntry.MissingItems.GetMissingMerchantCCItems()));
             pages.Add(new MenuTab(xPositionOnScreen, yPositionOnScreen, width, height, TabName.CookedItemsTab, ModEntry.MissingItems.GetMissingRecipes()));
             pages.Add(new MenuTab(xPositionOnScreen, yPositionOnScreen, width, height, TabName.FishTab, ModEntry.MissingItems.GetMissingFish()));
             pages.Add(new MenuTab(xPositionOnScreen, yPositionOnScreen, width, height, TabName.CropsTabs, ModEntry.MissingItems.GetMissingCrops()));

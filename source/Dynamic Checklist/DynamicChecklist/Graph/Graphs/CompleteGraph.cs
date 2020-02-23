@@ -14,17 +14,17 @@
 
     public class CompleteGraph : StardewGraph
     {
-        private List<GameLocation> gameLocations;
+        private IList<GameLocation> gameLocations;
         private DijkstraShortestPathAlgorithm<StardewVertex, StardewEdge> dijkstra;
         private VertexDistanceRecorderObserver<StardewVertex, StardewEdge> distObserver;
         private VertexPredecessorRecorderObserver<StardewVertex, StardewEdge> predecessorObserver;
 
-        public CompleteGraph(List<GameLocation> gameLocations)
+        public CompleteGraph(IList<GameLocation> gameLocations)
         {
             this.gameLocations = gameLocations;
         }
 
-        public List<PartialGraph> PartialGraphs { get; private set; } = new List<PartialGraph>();
+        public IList<PartialGraph> PartialGraphs { get; private set; } = new List<PartialGraph>();
 
         public void Populate()
         {
@@ -38,10 +38,10 @@
             var farmBuildings = Game1.getFarm().buildings;
             foreach (Building building in farmBuildings)
             {
-                if (building.indoors != null && building.indoors.GetType() == typeof(AnimalHouse))
+                var indoors = building.indoors.Value;
+                if (indoors != null && indoors is AnimalHouse)
                 {
-                    var animalHouse = (AnimalHouse)building.indoors;
-                    var partialGraph = new PartialGraph(animalHouse);
+                    var partialGraph = new PartialGraph((AnimalHouse)indoors);
                     partialGraph.Populate();
                     this.PartialGraphs.Add(partialGraph);
                 }

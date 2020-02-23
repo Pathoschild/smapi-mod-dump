@@ -8,6 +8,6 @@
   "WorksOutdoors": false,
   "DisabledForFruitCave": true,
   "RecipeAlwaysAvailable": false,
-  "Debugging": false,
+  "DebugMode": false,
   "GivePropagatorKey": "F9"
 }

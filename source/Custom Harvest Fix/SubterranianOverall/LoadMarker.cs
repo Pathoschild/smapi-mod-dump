@@ -8,8 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace SubterranianOverhaul
 {
     public class LoadMarker : StardewValley.Object
-    {
-        static bool hasProcessed = true;
+    {   
 
         public LoadMarker()
         {

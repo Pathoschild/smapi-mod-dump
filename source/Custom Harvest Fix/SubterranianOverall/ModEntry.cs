@@ -7,6 +7,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
+using SubterranianOverhaul.Crops;
 
 namespace SubterranianOverhaul
 {
@@ -15,11 +16,11 @@ namespace SubterranianOverhaul
     {
         //remember to set all of this into a config file.
         private const double STONE_BASE_CHANCE_TO_CHANGE = 0.0010; //0.1% chance at level 90.
-        private const double STONE_INCREASE_PER_LEVEL = 0.002; //results in a maximum chance at level 119 of 5.9% for each stone to change.
-        private const double PURPLE_MUSHROOM_CHANCE_TO_CHANGE = 0.05; //5% chance of each purple mushroom changing.
-        private const double PURPLE_MUSHROOM_INCREASE_PER_LEVEL = 0.005; //results in a maximum chance at level 119 of 19.5% for each purple mushroom to change.
-        private const double RED_MUSHROOM_CHANCE_TO_CHANGE = 0.20; //10% chance of each red mushroom changing.
-        private const double RED_MUSHROOM_INCREASE_PER_LEVEL = 0.010; //results in a maximum chance at level 119 of 59% for each red mushroom to change.
+        private const double STONE_INCREASE_PER_LEVEL = 0.002; //results in a maximum chance at level 119 of 5.9% for each stone to try and spawn a tree.
+        private const double PURPLE_MUSHROOM_CHANCE_TO_CHANGE = 0.05; //5% chance of each purple mushroom.
+        private const double PURPLE_MUSHROOM_INCREASE_PER_LEVEL = 0.005; //results in a maximum chance at level 119 of 19.5% for each purple mushroom to try and spawn a tree.
+        private const double RED_MUSHROOM_CHANCE_TO_CHANGE = 0.20; //20% chance of each red mushroom.
+        private const double RED_MUSHROOM_INCREASE_PER_LEVEL = 0.010; //results in a maximum chance at level 119 of 59% for each red mushroom to try and spawn a tree.
 
         private static ModEntry mod;
 
@@ -43,10 +44,9 @@ namespace SubterranianOverhaul
             helper.Events.GameLoop.Saving += this.OnSave;
             helper.Events.GameLoop.Saved += this.AfterSave;
             helper.Events.GameLoop.SaveLoaded += this.AfterSaveLoad;
-            helper.Events.Specialized.LoadStageChanged += this.OnLoadingStageChanged;
             helper.Events.Display.RenderedHud += this.OnRenderedHud;
-            helper.Events.Multiplayer.PeerContextReceived += this.OnClientConnected;
-            //helper.Events.Multiplayer.ModMessageReceived += this.ProcessModMessage;
+
+            this.Helper.Content.AssetEditors.Add(new VoidshroomDataInjector(this.Monitor));
         }
 
         public static IModHelper GetHelper()
@@ -59,46 +59,27 @@ namespace SubterranianOverhaul
             return ModEntry.mod?.Monitor;
         }
 
-
-        /*********
-        ** Private methods
-        *********/
-
-        private void OnClientConnected(object sender, PeerContextReceivedEventArgs e)
-        {
-            this.Helper.Content.AssetEditors.Add(new VoidshroomDataInjector(this.Monitor));
-        }
-
-        private void OnLoadingStageChanged(object sender, LoadStageChangedEventArgs e)
-        {
-            this.Helper.Content.AssetEditors.Add(new VoidshroomDataInjector(this.Monitor));
-        }
-
-        
-
-        private static bool savingInProgress = false;
+        //private static bool savingInProgress = false;
 
         private void OnSave(object sender, SavingEventArgs e)
-        {
-            if (!savingInProgress)
-            {
-                savingInProgress = true;
-                VoidshroomTree.RemovalAll();
-                ModState.visitedMineshafts.Clear();
-                ModState.SaveMod();
-                savingInProgress = false;
-            }
+        { 
+            VoidshroomTree.RemovalAll();
+            //CaveCarrot.RemoveAll();
+            ModState.visitedMineshafts.Clear();
+            ModState.SaveMod();
         }
 
         private void AfterSave(object sender, SavedEventArgs e)
         {
             VoidshroomTree.ReplaceAll();
+            //CaveCarrot.ReplaceAll();
         }
 
         private void AfterSaveLoad(object sender, SaveLoadedEventArgs e)
         {
             ModState.LoadMod();
             VoidshroomTree.ReplaceAll();
+            //CaveCarrot.ReplaceAll();
         }
 
         /// <summary>
@@ -176,17 +157,6 @@ namespace SubterranianOverhaul
                             loc.Objects.Add(origin, new LoadMarker());
                         }
 
-                        //if we've already populated this mine level today, don't do so again.
-                        /*
-                        if (ModState.visitedMineshafts.Contains(loc.Name))
-                        {
-                            this.Monitor.Log(loc.Name + " was already visited and populated with voidshroom trees today.");
-                            return;
-                        }
-                        */
-
-                        //ModState.visitedMineshafts.Add(loc.Name);
-
                         foreach (StardewValley.Object o in loc.Objects.Values)
                         {
                             double hit = Game1.random.NextDouble();
@@ -226,9 +196,7 @@ namespace SubterranianOverhaul
                                         }
                                     }
                                 }
-                                
                             }
-                            
                         }
                     }
                 }
@@ -237,30 +205,98 @@ namespace SubterranianOverhaul
 
         private bool isGameReady()
         {
-            return !(!Context.IsWorldReady || Game1.currentLocation == null || Game1.player.CurrentItem == null);
+            return !(!Context.IsWorldReady || Game1.currentLocation == null);
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (isGameReady())
-            {
+            {   
                 Item currentItem = Game1.player.CurrentItem;
-
-                if (currentItem.ParentSheetIndex == VoidshroomSpore.getIndex() && e.Button.IsActionButton())
+                Vector2 tile = e.Cursor.GrabTile;
+                if (e.Button.IsActionButton() || e.Button.IsUseToolButton())
                 {
-                    this.Monitor.Log("Attempt to plant a new voidshroom tree at "+e.Cursor.GrabTile.ToString());
-                    bool planted = VoidshroomSpore.AttemptPlanting(e.Cursor.GrabTile, Game1.currentLocation);
-                    if (planted)
+                    GameLocation location = Game1.currentLocation;
+
+                    if (location.terrainFeatures.ContainsKey(tile) && location.terrainFeatures[tile] is HoeDirt)
                     {
-                        Game1.player.reduceActiveItemByOne();
+                        HoeDirt dirtPatch = location.terrainFeatures[tile] as HoeDirt;
+                        if (dirtPatch.crop != null && this.isModCrop(dirtPatch.crop))
+                        {
+                            int X = (int)tile.X;
+                            int Y = (int)tile.Y;
+                            if(e.Button.IsActionButton())
+                            {
+                                dirtPatch.performUseAction(tile, location);
+                            } else if (e.Button.IsUseToolButton())
+                            {
+                                Tool tool = Game1.player.CurrentItem as Tool;
+                                dirtPatch.performToolAction(tool, 0, tile, location);
+                                dirtPatch.performUseAction(tile, location);
+                            }
+
+                            if(dirtPatch.crop == null)
+                            {
+                                location.terrainFeatures.Remove(tile);
+                                return; 
+                            }
+                        }
+                    }
+
+                    if (e.Button.IsActionButton())
+                    {
+                        if (currentItem != null && (this.isModItem(currentItem) || PlantableCaveCarrot.IsValidLocation(location)))
+                        {
+                            if (currentItem.ParentSheetIndex.Equals(CaveCarrot.HARVEST_INDEX))
+                            {
+                                this.Monitor.Log("Attempt to plant a cave carrot flower at " + tile.ToString());
+                                bool planted = PlantableCaveCarrot.AttemptPlanting(tile, location);
+                                if (planted)
+                                {
+                                    Game1.player.reduceActiveItemByOne();
+                                    this.Helper.Input.Suppress(e.Button);
+                                    return;
+                                }
+                            }
+                            else if (currentItem.ParentSheetIndex.Equals(VoidshroomSpore.getIndex()))
+                            {
+                                this.Monitor.Log("Attempt to plant a new voidshroom tree at " + e.Cursor.GrabTile.ToString());
+                                bool planted = VoidshroomSpore.AttemptPlanting(tile, Game1.currentLocation);
+                                if (planted)
+                                {
+                                    Game1.player.reduceActiveItemByOne();
+                                    return;
+                                }
+                            }
+                            else if (currentItem.ParentSheetIndex.Equals(CaveCarrotSeed.getIndex()))
+                            {
+                                this.Monitor.Log("Attempt to plant a cave carrot at " + e.Cursor.GrabTile.ToString());
+                                bool planted = CaveCarrotSeed.AttemptPlanting(tile, Game1.currentLocation, Game1.player);
+                                if (planted)
+                                {
+                                    Game1.player.reduceActiveItemByOne();
+                                    return;
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
 
+        private bool isModCrop(Crop crop)
+        {
+            return (crop.netSeedIndex.Value == CaveCarrotSeed.getIndex() || crop.netSeedIndex.Value == CaveCarrotFlower.getIndex());
+        }
+
+        private bool isModItem(Item currentItem)
+        {
+            return (currentItem != null && (currentItem.ParentSheetIndex == VoidshroomSpore.getIndex() || currentItem.ParentSheetIndex == CaveCarrotSeed.getIndex()));
+        }
+
         private void OnRenderedHud(object sender, RenderedHudEventArgs e)
         {
-            if (isGameReady())
+            if (isGameReady() && !(Game1.player.CurrentItem == null))
             {
                 Item currentItem = Game1.player.CurrentItem;
 

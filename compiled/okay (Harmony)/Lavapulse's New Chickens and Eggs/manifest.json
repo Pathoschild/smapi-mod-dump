@@ -1,7 +1,7 @@
 {
   "Name": "Lavapulse Chickens",
   "Author": "Lavapulse",
-  "Version": "1.0.7",
+  "Version": "1.0.8",
   "Description": "Incorporates new (non-replacement) breeds of chickens and their eggs",
   "UniqueID": "Lavapulse.LavapulseChickens",
   "EntryDll": "LavapulseChickens.dll",

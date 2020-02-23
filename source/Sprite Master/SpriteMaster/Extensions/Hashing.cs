@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using SpriteMaster.Types;
+﻿using SpriteMaster.Types;
 using System;
 using System.Data.HashFunction.xxHash;
 using System.Drawing;
@@ -8,52 +7,64 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Extensions {
 	using XRectangle = Microsoft.Xna.Framework.Rectangle;
+
+	internal static class _HashValues {
+		public const ulong Default = 0ul;
+	}
+
+	public static class Hash {
+		public enum CombineType {
+			Xor,
+			Boost
+		}
+		public const CombineType DefaultCombineType = CombineType.Boost;
+
+		public const ulong Default = _HashValues.Default;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static ulong Accumulate (ulong hash, ulong hashend) {
+			switch (DefaultCombineType) {
+				case CombineType.Xor: return hash ^ hashend;
+				// Stolen from C++ Boost.
+				case CombineType.Boost: return hash ^ (hashend + 0x9e3779b9ul + (hash << 6) + (hash >> 2));
+			}
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static ulong Accumulate (ulong hash, int hashend) {
+			return Accumulate(hash, unchecked((ulong)hashend));
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static ulong Combine (params ulong[] hashes) {
+			unchecked {
+				ulong hash = 0;
+				foreach (var subHash in hashes) {
+					hash = Accumulate(hash, subHash);
+				}
+				return hash;
+			}
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static ulong Combine (params object[] hashes) {
+			unchecked {
+				ulong hash = 0;
+
+				foreach (var subHash in hashes) {
+					hash = subHash switch {
+						long i => Accumulate(hash, (ulong)i),
+						ulong i => Accumulate(hash, i),
+						_ => Accumulate(hash, subHash.GetHashCode()),
+					};
+				}
+				return hash;
+			}
+		}
+	}
+
 	public static class Hashing {
-		private const bool UseXorHash = false;
-
-		private static ulong AccumulateHash(ulong hash, ulong hashend) {
-			if (UseXorHash) {
-				return hash ^ hashend;
-			}
-			// Stolen from C++ Boost.
-			return hash ^ (hashend + 0x9e3779b9ul + (hash << 6) + (hash >> 2));
-		}
-
-		private static ulong AccumulateHash (ulong hash, int hashend) {
-			return AccumulateHash(hash, unchecked((ulong)hashend));
-		}
-
-		public static ulong CombineHash(params ulong[] hashes) {
-			unchecked {
-				ulong hash = 0;
-				foreach (var subHash in hashes) {
-					hash = AccumulateHash(hash, subHash);
-				}
-				return hash;
-			}
-		}
-
-		public static ulong CombineHash (params object[] hashes) {
-			unchecked {
-				ulong hash = 0;
-
-				foreach (var subHash in hashes) {
-					switch (subHash) {
-						case char i: hash = AccumulateHash(hash, i.GetHashCode()); break;
-						case sbyte i: hash = AccumulateHash(hash, i.GetHashCode()); break;
-						case short i: hash = AccumulateHash(hash, i.GetHashCode()); break;
-						case int i: hash = AccumulateHash(hash, i.GetHashCode()); break;
-						case long i: hash = AccumulateHash(hash, (ulong)i); break;
-						case byte i: hash = AccumulateHash(hash, i.GetHashCode()); break;
-						case ushort i: hash = AccumulateHash(hash, i.GetHashCode()); break;
-						case uint i: hash = AccumulateHash(hash, i.GetHashCode()); break;
-						case ulong i: hash = AccumulateHash(hash, i); break;
-						default: hash = AccumulateHash(hash, subHash.GetHashCode()); break;
-					}
-				}
-				return hash;
-			}
-		}
+		public const ulong Default = _HashValues.Default;
 
 		// FNV-1a hash.
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -74,8 +85,8 @@ namespace SpriteMaster.Extensions {
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static ulong HashFNV1 (this byte[] data, int start, int length) {
-			return new Span<byte>(data, start, length).HashFNV1();
+		public static ulong HashFNV1 (this byte[] data,/* int start,*/ int length) {
+			return new Span<byte>(data, /*start, */length).HashFNV1();
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -88,12 +99,7 @@ namespace SpriteMaster.Extensions {
 			return data.As<byte>().HashFNV1();
 		}
 
-		private static xxHashConfig GetHashConfig () {
-			var config = new xxHashConfig();
-			config.HashSizeInBits = 64;
-			return config;
-		}
-		private static readonly IxxHash HasherXX = xxHashFactory.Instance.Create(GetHashConfig());
+		private static readonly IxxHash HasherXX = xxHashFactory.Instance.Create(new xxHashConfig() { HashSizeInBits = 64 });
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static ulong HashXXCompute (this byte[] hashData) {
@@ -108,17 +114,15 @@ namespace SpriteMaster.Extensions {
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static unsafe ulong HashXX (this in Span<byte> data) {
 			fixed (byte* p = &data.GetPinnableReference()) {
-				using (var stream = new UnmanagedMemoryStream(p, data.Length)) {
-					return HasherXX.ComputeHash(stream).Hash.HashXXCompute();
-				}
+				using var stream = new UnmanagedMemoryStream(p, data.Length);
+				return HasherXX.ComputeHash(stream).Hash.HashXXCompute();
 			}
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ulong HashXX (this byte[] data, int start, int length) {
-			using (var stream = new MemoryStream(data, start, length)) {
-				return HasherXX.ComputeHash(stream).Hash.HashXXCompute();
-			}
+			using var stream = new MemoryStream(data, start, length);
+			return HasherXX.ComputeHash(stream).Hash.HashXXCompute();
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5445
+IDs: instafluff.sleeplessinstardew
+update keys: GitHub:instafluff/SleeplessInStardew, Nexus:5445

@@ -4,6 +4,7 @@
     // Hat, Ring, and Boot types added by this mod
     // because they are created separately in the
     // regular Adventure Guild
+
     public enum ItemType
     {
         Object = 0,
@@ -15,6 +16,14 @@
         Hat = 6,
         Ring = 7,
         Boots = 8
+    }
+
+    public enum Quality
+    {
+        Regular = 0,
+        Silver = 1,
+        Gold = 2,
+        Iridium = 4
     }
 
     // Item Type 3
@@ -49,9 +58,12 @@
         AquamarineRing = 531,
         JadeRing = 532,
         EmeraldRing = 533,
-        RubyRing = 534
+        RubyRing = 534,
+        CrabshellRing = 810,
+        NapalmRing = 811
     }
 
+    //Item type 8
     public enum Boots
     {
         Sneakers = 504,
@@ -66,8 +78,11 @@
         GenieShoes = 513,
         SpaceBoots = 514,
         CowboyBoots = 515,
+        EmilysMagicBoots = 804,
+        LeprechaunShoes = 806
     }
 
+    //Item type 6
     public enum Hats
     {
         CowboyHat = 0,
@@ -110,8 +125,44 @@
         BlueCowboyHat = 37,
         RedCowboyHat = 38,
         ConeHat = 39,
+        LivingHat = 40,
+        EmilysMagicHat = 41,
+        MushroomCap = 42,
+        DinosaurHat = 43,
+        TotemMask = 44,
+        LogoCap = 45,
+        WearableDwarfHelm = 46,
+        FashionHat = 47,
+        PumpkinMask = 48,
+        HairBone = 49,
+        KnightsHelmet = 50,
+        SquiresHelmet = 51,
+        SpottedHeadscarf = 52,
+        Beanie = 53,
+        FloppyBeanie = 54,
+        FishingHat = 55,
+        BlobfishMask = 56,
+        PartyHat = 57,
+        PartyHat2 = 58,
+        PartyHat3 = 59,
+        ArcaneHat = 60,
+        ChefHat = 61,
+        PirateHat = 62,
+        FlatToppedHat = 63,
+        ElegantTurban = 64,
+        WhiteTurban = 65,
+        GarbageHat = 66,
+        GoldenMask = 67,
+        PropellerHat = 68,
+        BridalVeil = 69,
+        WitchHat = 70,
+        CopperPan = 71,
+        GreenTurban = 72,
+        MagicCowboyHat = 73,
+        MagicTurban = 74
     }
 
+    //Item type 2
     public enum Weapons
     {
         RustySword = 0,
@@ -167,8 +218,10 @@
         SteelFalchion = 50,
         BrokenTrident = 51,
         TemperedBroadsword = 52,
+        GoldenScythe = 53
     }
 
+    //Item type 1
     public enum BigCraftables
     {
         HousePlant = 0,
@@ -306,19 +359,26 @@
         Cask = 163,
         SolidGoldLewis = 164,
         AutoGrabber = 165,
+        DeluxeScarecrow = 167,
         SeasonalPlant = 184,
         SeasonalPlant2 = 188,
         SeasonalPlant3 = 192,
         SeasonalPlant4 = 196,
         SeasonalPlant5 = 200,
         SeasonalPlant6 = 204,
+        Workbench = 208,
+        MiniJukebox = 209,
+        WoodChipper = 211,
+        MiniFridge = 216,
+        CursedPKArcadeSystem = 219
     }
 
+    //Item type 0
     public enum Objects
     {
         Weeds = 0,
-        Stone = 2,
-        Stone2 = 4,
+        DiamondStone = 2,
+        RubyStone = 4,
         WildHorseradish = 16,
         Daffodil = 18,
         Leek = 20,
@@ -331,11 +391,12 @@
         Amethyst = 66,
         Topaz = 68,
         Jade = 70,
+        TrimmedLuckyPurpleShorts = 71,
         Diamond = 72,
         PrismaticShard = 74,
-        Stone3 = 75,
-        Stone4 = 76,
-        Stone5 = 77,
+        GeodeStone = 75,
+        FrozenGeodeStone = 76,
+        MagmaGeodeStone = 77,
         CaveCarrot = 78,
         SecretNote = 79,
         Quartz = 80,
@@ -421,15 +482,16 @@
         BrokenGlasses = 170,
         BrokenCD = 171,
         SoggyNewspaper = 172,
-        LargeEgg = 174,
-        Egg = 176,
+        LargeWhiteEgg = 174,
+        WhiteEgg = 176,
         Hay = 178,
-        Egg2 = 180,
-        LargeEgg2 = 182,
+        BrownEgg = 180,
+        LargeBrownEgg = 182,
         Milk = 184,
         LargeMilk = 186,
         GreenBean = 188,
         Cauliflower = 190,
+        OrnateNecklace = 191,
         Potato = 192,
         FriedEgg = 194,
         Omelet = 195,
@@ -486,22 +548,33 @@
         Oil = 247,
         Garlic = 248,
         Kale = 250,
+        TeaSapling = 251,
         Rhubarb = 252,
+        TripleShotEspresso = 253,
         Melon = 254,
         Tomato = 256,
         Morel = 257,
         Blueberry = 258,
         FiddleheadFern = 259,
         HotPepper = 260,
+        WarpTotemFarm = 261,
         Wheat = 262,
         Radish = 264,
+        SeafoamPudding = 265,
         RedCabbage = 266,
+        Flounder = 267,
         Starfruit = 268,
+        MidnightCarp = 269,
         Corn = 270,
+        UnmilledRice = 271,
         Eggplant = 272,
+        RiceShoot = 273,
         Artichoke = 274,
+        ArtifactTrove = 275,
         Pumpkin = 276,
+        WiltedBouquet = 277,
         BokChoy = 278,
+        MagicRockCandy = 279,
         Yam = 280,
         Chanterelle = 281,
         Cranberries = 282,
@@ -510,7 +583,8 @@
         CherryBomb = 286,
         Bomb = 287,
         MegaBomb = 288,
-        Stone6 = 290,
+        IronOreStone = 290,
+        BrickFloor = 293,
         Twig = 294,
         Twig2 = 295,
         Salmonberry = 296,
@@ -556,7 +630,7 @@
         Honey = 340,
         TeaSet = 341,
         Pickles = 342,
-        Stone7 = 343,
+        WeirdStone = 343,
         Jelly = 344,
         Beer = 346,
         RareSeed = 347,
@@ -577,7 +651,7 @@
         GoldOre = 384,
         IridiumOre = 386,
         Wood = 388,
-        Stone8 = 390,
+        Stone = 390,
         NautilusShell = 392,
         Coral = 393,
         RainbowShell = 394,
@@ -629,9 +703,11 @@
         ExplosiveAmmo = 441,
         DuckEgg = 442,
         DuckFeather = 444,
+        Caviar = 445,
         RabbitsFoot = 446,
+        AgedRoe = 447,
         StoneBase = 449,
-        Stone9 = 450,
+        StoneMines = 450,
         Weeds11 = 452,
         PoppySeeds = 453,
         AncientFruit = 454,
@@ -764,6 +840,7 @@
         BlackberryCobbler = 611,
         CranberryCandy = 612,
         Apple = 613,
+        GreenTea = 614,
         Bruschetta = 618,
         QualitySprinkler = 621,
         CherrySapling = 628,
@@ -781,8 +858,8 @@
         Coleslaw = 648,
         FiddleheadRisotto = 649,
         PoppyseedMuffin = 651,
-        Stone10 = 668,
-        Stone11 = 670,
+        StoneOre1 = 668,
+        StoneOre2 = 670,
         Weeds12 = 674,
         Weeds13 = 675,
         Weeds14 = 676,
@@ -796,9 +873,9 @@
         Bait = 685,
         Spinner = 686,
         DressedSpinner = 687,
-        WarpTotemFarm = 688,
-        WarpTotemMountain = 689,
-        WarpTotemBeach = 690,
+        WarpTotemMountains = 688,
+        WarpTotemBeach = 689,
+        WarpTotem4 = 690,
         BarbedHook = 691,
         LeadBobber = 692,
         TreasureHunter = 693,
@@ -835,6 +912,7 @@
         LobsterBisque = 730,
         MapleBar = 731,
         CrabCakes = 732,
+        ShrimpCocktail = 733,
         Woodskip = 734,
         StrawberrySeeds = 745,
         JackOLantern = 746,
@@ -842,11 +920,11 @@
         RottenPlant2 = 748,
         OmniGeode = 749,
         Weeds18 = 750,
-        Stone12 = 751,
-        Stone13 = 760,
-        Stone14 = 762,
-        Stone15 = 764,
-        Stone16 = 765,
+        CopperOreStone = 751,
+        StoneMinesDark1 = 760,
+        StoneMinesDark2 = 762,
+        GoldOreStone = 764,
+        IridiumOreStone = 765,
         Slime = 766,
         BatWing = 767,
         SolarEssence = 768,
@@ -876,5 +954,14 @@
         WeddingRing = 801,
         CactusSeeds = 802,
         IridiumMilk = 803,
+        TreeFertilizer = 805,
+        DinosaurMayonnaise = 807,
+        VoidGhostPendant = 808,
+        MovieTicket = 809,
+        CrabshellRing = 810,
+        NapalmRing = 811,
+        Roe = 812,
+        SquidInk = 814,
+        TeaLeaves = 815
     }
 }

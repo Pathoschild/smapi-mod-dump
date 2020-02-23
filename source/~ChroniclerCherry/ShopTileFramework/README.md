@@ -8,6 +8,7 @@
       * [Item Types](#itemtypes)
     * [Animal Shops](#animal-shops)
     * [Condition Checking](#condition-checking)
+      * [Available Conditions](#available-conditions)
 - [Example](#example)
 - [Adding shops to the game](#adding-shops-to-the-game)
 - [Placing Vanilla Shops](#placing-vanilla-shops)
@@ -105,10 +106,13 @@ When | Optional | Array of strings | The conditions for this store to open, chec
 ClosedMessage | Optional | string | The message that displays if a user interacts with the store when conditions are not met. If not set, no message will be displayed.
 
 ### Condition Checking
-All `When` fields used for various condition checking uses vanilla [event preconditions](https://stardewvalleywiki.com/Modding:Event_data#Event_preconditions). `When` takes an array of strings. Each String can be a full list of conditions that must ALL be met separated by `/` values just like vanilla event conditions.
+All `When` fields used for various condition checking uses vanilla [event preconditions](https://stardewvalleywiki.com/Modding:Event_data#Event_preconditions) as well as several custom ones. `When` conditions can be used to determine conditions for a shop opening ( such as hours, or when an NPC is nearby ) as well as for setting conditions for ItemStocks to be added to stores or not when stocks are refreshed.
 
-Example:
-`z spring/z summer/z fall` means "not in spring,summer,or fall" which would result in the condition returning true only if it's winter
+`When` takes an array of strings. Each String can be a full list of conditions that must ALL be met seperated by `/` values just like vanilla event conditions.
+
+You can check the opposite of any condition by putting a `!` in front of it. For example `!f Linus 2500` would return true only if the player was NOT at 2500FP/10 hearts with Linus
+
+**Note:** For ItemStock condition checks, they are only checked at the beginning of each day! Avoid checks that don't make sense at the beginning of the day, such as store hours or checking for if an NPC is on the map
 
 When multiple fields are provided, the condition will work if _any_ of the strings return a true. Here's an example of a shop that has different opening hours based on season:
 ```js
@@ -125,10 +129,9 @@ When multiple fields are provided, the condition will work if _any_ of the strin
         }
       ],
       "When": [
-        "z summer/z fall/z winter/t 600 1000", //in spring, only opens between 6am and 10am
-        "z fall/z winter/z spring/t 1000 1400", //in summer only opens from 10am to 2pm
-        "z winter/z spring/z summer/t 1400 1800", //in fall only open from 2pm to 6pm
-        "z spring/z summer/z winter/t 1800 20000", //in winter only open from 6pm to 10pm
+        "!z spring/t 600 1000", //in spring, only opens between 6am and 10am
+        "!z summer/t 1000 1400", //in summer only opens from 10am to 2pm
+        "z spring/z summer/t 1800 20000", //in fall and winter, only open from 6pm to 10pm
         "f Linus 2500" //is always open if player has 2500 friendship points / 10 hearts with linus
       ],
       "ClosedMessage": "This shop is closed."
@@ -136,7 +139,34 @@ When multiple fields are provided, the condition will work if _any_ of the strin
   ]
 }
 ```
-**WARNING:** Do not use the `x` condition. STF uses a fake event ID (-5005 ) in order to use the vanilla `checkEventPrecondition` method. Using x will mark this fake event ID in the player's save and return false for all future condition checks
+#### Available Conditions
+
+All [event preconditions](https://stardewvalleywiki.com/Modding:Event_data#Event_preconditions) are available, as well as:
+
+Syntax | Description | Example
+------------- | ------------- | -------------
+`NPCAt <s:NPCName> [<i:x> <i:y>]` | This will check if the named NPC is at the given tile coordinates on the current map. Multiple x/y coordinates can be given, and will return true if the NPC is at any of them. | `NPCAt Pierre 5 10 5 11 5 12` will check if Pierre is at (5,10) (5,11) or (5,12)
+`HasMod [<s:UniqueID>]` | This will check if the given Unique ID of certain mods is installed. Multiple can be supplied and will return true only if the player has all of them installed. | `HasMod Cherry.CustomizeAnywhere Cherry.PlatonicRelationships` returns true if both Customize Anywhere and Platonic Relationships are installed
+`SkillLevel [<s:SkillName> <i:SkillLevel>]` | This will check if the player has at least the given skill level for named skills. Multiple skill-level pairs can be provided, and returns true if all of them are matched. Valid skills are: `combat`, `farming`, `fishing`, `foraging`, `luck` (unsued in vanilla), and `mining` | `SkillLevel farming 5 fishing 3` Would return true if the player has at least level 5 farm and level 3 fishing
+`CommunityCenterComplete` | Returns true if the Community center is completed on this save file| 
+`JojaMartComplete` | Returns true if the joja mart route was completed on this save file |
+
+I am always taking requests for more conditions as they are needed! Open an issue any time
+
+##### Some useful vanilla preconditions of note ( taken directly from the Wiki ):
+
+Syntax | Description
+------------- | -------------
+`r <number>` | A random probability check, where `number` is the probability between 0 and 1 (e.g. 0.2 for 20% chance).
+`t <min time> <max time>` | Current time is between between the specified times. Can range from 600 to 2600.
+`d <day of week>` | Today is not one of the specified days (may specify multiple days). Valid values: Mon, Tue, Wed, Thu, Fri, Sat, Sun.
+`y <year>` | If `year` is 1, must be in the first year. Otherwise, year must be at least this value.
+`z <season>` | Current season is not `season`. ( Tip: To specify that it _is_ `season`, use `!z <season>` instead )
+`e <event ID>` | Current player has seen the specified event (may contain multiple event IDs).
+`p <name>` | Specified NPC is in the current player's location. ( useful for having your shop open only when the NPC is near the shop, without specifying every tile )
+`f <name> <number>` | Current player has at least `number` friendship points with the `name` NPC. Can specify multiple name and number pairs, in which case the player must meet all of them.
+
+
 
 ## Example
 Example shops.json:
@@ -220,13 +250,13 @@ And the manifest:
 
 ## Adding shops to the game
 
-The regular shop defined in the above json can be opened by clicking on a tile with the following properties on the **Buildings** layer:
+The regular shop defined in the above json can be opened by clicking on a tile with the following properties on the **Buildings** layer ( With the property being `Shop` and the property value being your ShopName:
 
-![Example tile properties](https://media.discordapp.net/attachments/305520470114172928/659874803498614795/unknown.png)
+![Example tile properties](https://i.gyazo.com/20d6645d35c72a61977c5d2e900ae182.png)
 
 Animal shops are similar, just with an AnimalShop property:
 
-![Example AnimalShop tile property](https://media.discordapp.net/attachments/431102536926101504/662324823443111957/unknown.png)
+![Example AnimalShop tile property](https://i.gyazo.com/9b3b0a69506dbf3a1fb6824cf5c1c382.png)
 
 The empty `Action` Property is optional; it just changes the appearance of the game cursor when hovering over a shop to make it clear that it is interactable. These tile properties can be loaded into the game with any other method usually used to load in maps. Content Patcher, TMXL, or SMAPI mods can all add the property along with the shop itself. More info about modding maps can be found [here](https://stardewvalleywiki.com/Modding:Maps)
 
@@ -261,7 +291,7 @@ Vanilla!ClintGeodes | Opening Geodes menu
 
 Example:
 
-![This will open the animal purchasing menu](https://media.discordapp.net/attachments/431102536926101504/661644734569381898/unknown.png)
+![This will open the animal purchasing menu](https://i.gyazo.com/b4fbcdd09772f0f556f41f56de299f57.png)
 
 ## Console Commands
 

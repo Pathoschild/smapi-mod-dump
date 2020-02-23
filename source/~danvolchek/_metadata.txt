@@ -32,9 +32,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 04a95dffb922a6b23ef8fa0e01c1214bb7cb29e4
+   commit 6b7a3a4322cbca93e940f726d966571f30d4a8e8
    Author: danvolchek <danvnad@gmail.com>
-   Date:   Wed Dec 18 22:09:25 2019 -0800
+   Date:   Sun Feb 9 22:39:54 2020 -0800
    
-       [Hats on Cats] add readmes
+       [Better Artisan Good Icons] rewrite to support custom artisan goods
    

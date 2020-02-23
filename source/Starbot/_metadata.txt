@@ -5,9 +5,9 @@ mods:
    Starbot
 
 latest commit:
-   commit 470d62525b5d4cbc168a44fd62517b6393d5103c
-   Author: bwdy <47769190+bwdymods@users.noreply.github.com>
-   Date:   Sun Dec 1 01:50:56 2019 -0900
+   commit a388e6044fb722a5691ee4385ec68c545f587206
+   Author: Glitchfinder <glitchkey@gmail.com>
+   Date:   Sat Jan 25 10:43:30 2020 -0800
    
-       Update manifest.json
+       Updates readme.
    

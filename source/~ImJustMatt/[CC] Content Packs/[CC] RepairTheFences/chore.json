@@ -1,0 +1,6 @@
+﻿{
+	"ChoreType": "RepairTheFences",
+	"EnableFarm":  true,
+	"EnableBuildings":  true,
+	"EnableOutdoors":  true
+}

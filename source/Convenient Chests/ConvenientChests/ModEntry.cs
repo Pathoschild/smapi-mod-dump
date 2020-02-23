@@ -1,6 +1,6 @@
 ﻿using ConvenientChests.CategorizeChests;
 using ConvenientChests.CraftFromChests;
-using ConvenientChests.StackToNearbyChests;
+using ConvenientChests.StashToChests;
 using StardewModdingAPI;
 
 namespace ConvenientChests {
@@ -15,6 +15,7 @@ namespace ConvenientChests {
         public static StashToNearbyChestsModule StashNearby;
         public static CategorizeChestsModule    CategorizeChests;
         public static CraftFromChestsModule     CraftFromChests;
+        public static StashFromAnywhereModule   StashFromAnywhere;
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -40,6 +41,10 @@ namespace ConvenientChests {
             CraftFromChests = new CraftFromChestsModule(this);
             if (Config.CraftFromChests)
                 CraftFromChests.Activate();
+            
+            StashFromAnywhere = new StashFromAnywhereModule(this);
+            if (Config.StashAnywhere)
+                StashFromAnywhere.Activate();
         }
 
         private void UnloadModules() {
@@ -51,6 +56,9 @@ namespace ConvenientChests {
 
             CraftFromChests.Deactivate();
             CraftFromChests = null;
+            
+            StashFromAnywhere.Deactivate();
+            StashFromAnywhere = null;
         }
 
         public override object GetApi() {

@@ -3,5 +3,11 @@
   "OptionsPage.ModSettingsTab": "수정 설정",
   "StaticConfig.SuccessMessage": "설정이 저장되었습니다",
   "StaticConfig.FailMessage": "저장 오류",
-  "OptionsList.NewValue": "새 값을 입력하십시오"
+  "OptionsList.NewValue": "새 값을 입력하십시오",
+  "Mod.Disabled.Error": "수정 전환 실패",
+  "ModManager.AddModPack": "새 모드 팩 추가",
+  "ModManager.HoverSetUp.Title": "모드 팩 전환",
+  "ModManager.HoverSetUp.Description": "mod 팩에 포함되지 않은 다른 모드는 비활성화됩니다",
+  "ModManager.Toggle.Label": "현재 모드 팩",
+  "ModManager.Add.NameTextBox": "Modpack 이름"
 }

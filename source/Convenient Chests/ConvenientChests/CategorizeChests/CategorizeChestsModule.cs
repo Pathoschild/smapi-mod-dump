@@ -94,9 +94,9 @@ namespace ConvenientChests.CategorizeChests {
         }
 
         private void CreateMenu(ItemGrabMenu itemGrabMenu) {
-            if (!(itemGrabMenu.behaviorOnItemGrab?.Target is Chest chest))
+            if (!(itemGrabMenu.context is Chest chest))
                 return;
-
+ 
             WidgetHost = new WidgetHost(this.Events, this.ModEntry.Helper.Input);
             var overlay = new ChestOverlay(this, chest, itemGrabMenu, WidgetHost.TooltipManager);
             WidgetHost.RootWidget.AddChild(overlay);

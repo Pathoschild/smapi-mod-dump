@@ -3,9 +3,9 @@
   "Author": "gunnargolf",
   "Version": {
     "MajorVersion": 1,
-    "MinorVersion": 0,
-    "PatchVersion": 1,
-    "Build": null
+    "MinorVersion": 1,
+    "PatchVersion": 0,
+    "Build": "stash1"
   },
   "Description": "Creates a dynamic checklist of tasks for the day",
   "UniqueID": "gunnargolf.DynamicChecklist",

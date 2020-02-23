@@ -18,6 +18,9 @@ namespace CustomGuildChallenges
 
         internal static IList<ChallengeInfo> VanillaChallenges;
 
+        internal static CustomGuildChallengeMod Instance;
+
+
         public ModConfig Config { get; set; }
 
         /// <summary>
@@ -28,6 +31,7 @@ namespace CustomGuildChallenges
         {
             Config = helper.ReadConfig<ModConfig>();
             challengeHelper = new ConfigChallengeHelper(Helper, Config, Monitor);
+            CustomGuildChallengeMod.Instance = this;
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 
@@ -169,6 +173,7 @@ namespace CustomGuildChallenges
             if (Helper.ModRegistry.IsLoaded("Omegasis.SaveAnywhere"))
             {
                 saveAnywhereAPI = Helper.ModRegistry.GetApi<ISaveAnywhereAPI>("Omegasis.SaveAnywhere");
+                Monitor.Log("SaveAnywhere integration running", LogLevel.Trace);
 
                 saveAnywhereAPI.BeforeSave += challengeHelper.PresaveData;
                 saveAnywhereAPI.AfterSave += challengeHelper.InjectGuild;
@@ -231,7 +236,7 @@ namespace CustomGuildChallenges
             {
                 ChallengeName = "Bats",
                 RequiredKillCount = 200,
-                MonsterNames = { Monsters.Bat, Monsters.FrostBat, Monsters.LavaBat },
+                MonsterNames = { Monsters.Bat, Monsters.FrostBat, Monsters.LavaBat, Monsters.IridiumBat },
                 RewardType = (int)ItemType.Ring,
                 RewardItemNumber = (int)Rings.VampireRing
             };
@@ -245,6 +250,42 @@ namespace CustomGuildChallenges
                 RewardItemNumber = (int)Rings.BurglarsRing
             };
 
+            var rockCrabChallenge = new ChallengeInfo()
+            {
+                ChallengeName = "Rock Crabs",
+                RequiredKillCount = 60,
+                MonsterNames = { Monsters.RockCrab, Monsters.LavaCrab, Monsters.IridiumCrab },
+                RewardType = (int)ItemType.Ring,
+                RewardItemNumber = (int)Rings.CrabshellRing
+            };
+
+            var mummyChallenge = new ChallengeInfo()
+            {
+                ChallengeName = "Mummy",
+                RequiredKillCount = 100,
+                MonsterNames = { Monsters.Mummy },
+                RewardType = (int)ItemType.Hat,
+                RewardItemNumber = (int)Hats.ArcaneHat
+            };
+
+            var pepperRexChallenge = new ChallengeInfo()
+            {
+                ChallengeName = "Pepper Rex",
+                RequiredKillCount = 50,
+                MonsterNames = { Monsters.PepperRex },
+                RewardType = (int)ItemType.Hat,
+                RewardItemNumber = (int)Hats.KnightsHelmet
+            };
+
+            var serpentChallenge = new ChallengeInfo()
+            {
+                ChallengeName = "Serpent",
+                RequiredKillCount = 250,
+                MonsterNames = { Monsters.Serpent },
+                RewardType = (int)ItemType.Ring,
+                RewardItemNumber = (int)Rings.NapalmRing
+            };
+
             return new List<ChallengeInfo>()
             {
                 slimeChallenge,
@@ -253,7 +294,11 @@ namespace CustomGuildChallenges
                 caveInsectsChallenge,
                 duggyChallenge,
                 batChallenge,
-                dustSpiritChallenge
+                dustSpiritChallenge,
+                rockCrabChallenge,
+                mummyChallenge,
+                pepperRexChallenge,
+                serpentChallenge
             };
         }
     }

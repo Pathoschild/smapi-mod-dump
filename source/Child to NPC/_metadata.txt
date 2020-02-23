@@ -5,12 +5,12 @@ mods:
    Child to NPC
 
 latest commit:
-   commit f418e206ea2d82b18f40a7dd4e6676faf7bf8f3b
-   Merge: 9fc72e1 c4618e3
+   commit 1bec9a676d9cf2ca43f818ee414561d4cb57456f
+   Merge: f418e20 f39934c
    Author: loe2run <55768216+loe2run@users.noreply.github.com>
-   Date:   Fri Dec 13 17:31:17 2019 -0500
+   Date:   Mon Jan 20 17:39:31 2020 -0500
    
-       Merge pull request #15 from loe2run/loe2run-patch-1.2.1
+       Merge pull request #16 from loe2run/loe2run-minor
        
-       1.2.1 Update
+       Minor Changes
    

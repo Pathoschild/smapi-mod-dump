@@ -1,0 +1,20 @@
+﻿{
+	// Shane dialogue (credit: alekrrau)
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Shane.Priority=1": "If {{PetName}} tries to con you, I already filled their bowl. No matter how much they whine or how cute and sad they look you can't fall for it.",
+    // Emily dialogue (credit: alekrrau)
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Emily.Priority=1": "I was filling {{PetName}}'s water bowl today, and they were being so sweet! They really are like a member of the family, don't you think?",
+	// Elliott dialogue (credit:janamods01)
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Elliott.Priority=1.1":  "I filled the pets' waterbowl already, my love.",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Elliott.Priority=1.2":  "The pets' waterbowl is already full, though I don't know for how long. They go through it so fast.",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Elliott.Priority=1.3":  "Has dear Marnie found any more strays? I'll always be happy to give them a home.",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Elliott.Priority=1.4":  "As a child I never had pets of my own, this is a good change.",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Elliott.Priority=1.5":  "I was thinking about the common sense that cats and dogs aren't meant to go along. Nonsense, I say. Ours are all darlings to each other.",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Elliott.Priority=1.6":  "I think I filled the pets' waterbowl today already, but I must confess I've been quite distracted by a new plot I'm devising...",
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Elliott.Priority=1.7":  "It's incredible that all our pets share the one bowl without any enmity, truly angels.",
+	// Default dialogue (overridden by individual dialogue)
+    "Dialogue.Mod=HelpfulSpouses": "Good morning {{NickName}}, I filled {{PetName}}'s water bowl.",
+
+	// Shop text
+	"DisplayName.Mod=HelpForHire":  "Love the Pets",
+	"Description.Mod=HelpForHire":  "Let us provide the best of care for your little {{PetName}}.",
+}

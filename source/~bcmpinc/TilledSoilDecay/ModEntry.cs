@@ -1,5 +1,4 @@
 ﻿using StardewModdingAPI;
-using System;
 using System.Reflection.Emit;
 using Netcode;
 using StardewValley;
@@ -12,15 +11,18 @@ namespace StardewHack.TilledSoilDecay
     {
         /** Amount of tilled soil that will disappear. Normally this is 0.1 (=10%). */
         public double DryDecayRate = 0.5;
+        /** Number of days that the patch must have been without water, before it can disappear during the night. */
+        public int    DecayDelay = 2;
 
         /** Amount of tilled soil that will disappear at the start of a new month. Normally this is 0.8 (=80%). */
         public double DryDecayRateFirstOfMonth = 1;
-
-        /** Number of days that the patch must have been without water, before it can disappear during the night. */
-        public int DecayDelay = 2;
-
         /** Number of days that the patch must have been without water, before it can disappear during the night at the end of the month. */
-        public int DecayDelayFirstOfMonth = 1;
+        public int    DecayDelayFirstOfMonth = 1;
+
+        /** Amount of tilled soil that will disappear in the greenhouse. Normally this is 1.0 (=100%). */
+        public double DryDecayRateGreenhouse = 1;
+        /** Number of days that the patch must have been without water, before it disappears in the greenhouse and other non-farm locations. */
+        public int    DecayDelayGreenhouse = 1; 
     }
 
     public class ModEntry : HackWithConfig<ModEntry, ModConfig>
@@ -28,9 +30,14 @@ namespace StardewHack.TilledSoilDecay
         public override void HackEntry(IModHelper helper) {
             Patch((Farm f)=>f.DayUpdate(0), Farm_DayUpdate);
             
-            // If the mod has any delay's conigured, apply the patch that keeps track of these delays.
-            if (config.DecayDelay > 0 || config.DecayDelayFirstOfMonth > 0) {
+            // If the mod has any delays conigured, apply the patch that keeps track of these delays.
+            if (config.DecayDelay > 0 || config.DecayDelayFirstOfMonth > 0 || config.DecayDelayGreenhouse > 0) {
                 Patch((HoeDirt hd)=>hd.dayUpdate(null, new Vector2()), HoeDirt_dayUpdate);
+            }
+            
+            // If the mod has a delay conigured for the greenhouse, apply the necessary patch.
+            if (config.DecayDelayGreenhouse > 0 || config.DryDecayRateGreenhouse < 1) {
+                Patch((GameLocation gl)=>gl.DayUpdate(0), GameLocation_DayUpdate);
             }
         }
     
@@ -57,7 +64,7 @@ namespace StardewHack.TilledSoilDecay
                 int delay = (i==0 ? config.DecayDelay : config.DecayDelayFirstOfMonth);
                 if (delay > 0) {
                     DayUpdate.Insert(1,
-                        // Inject && state <= delay
+                        // Inject && state <= -delay
                         Instructions.Stloc_S(hdv),
                         Instructions.Ldloc_S(hdv),
                         Instructions.Ldfld(typeof(HoeDirt), nameof(HoeDirt.state)),
@@ -99,6 +106,38 @@ namespace StardewHack.TilledSoilDecay
                 //   return;
                 Instructions.Ret()
                 // }
+            );
+        }
+        
+        static public void remove_non_farm_hoedirt(GameLocation gl, Vector2 pos) {
+            if (gl.IsGreenhouse) {
+                var hoedirt = gl.terrainFeatures[pos] as HoeDirt;
+                // Apply greenhouse delay
+                if (hoedirt.state.Value > -getInstance().config.DecayDelayGreenhouse) return;
+                // Apply greenhouse decay rate
+                if (Game1.random.NextDouble() > getInstance().config.DryDecayRateGreenhouse) return;
+            }
+            // Remove hoedirt
+            gl.terrainFeatures.Remove(pos);
+        }
+
+        void GameLocation_DayUpdate() {
+            var code = FindCode(
+                // terrainFeatures.Remove (collection.ElementAt (num4));
+                Instructions.Ldarg_0(), // this
+                Instructions.Ldfld(typeof(GameLocation), nameof(GameLocation.terrainFeatures)), // .terrainFeatures
+                OpCodes.Ldloc_S,  // collection
+                OpCodes.Ldloc_S,  // num4
+                OpCodes.Call,     // ElementAt()
+                OpCodes.Callvirt, // Remove()
+                OpCodes.Pop
+            );
+            code.Replace(
+                code[0],
+                code[2],
+                code[3],
+                code[4],
+                Instructions.Call(GetType(), nameof(remove_non_farm_hoedirt), typeof(GameLocation), typeof(Vector2))
             );
         }
     }

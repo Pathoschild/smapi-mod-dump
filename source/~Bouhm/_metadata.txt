@@ -6,12 +6,10 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit b9ef49dfa7fbf0a4cfe45a981a4bad33aadf4e94
-   Merge: fc34b2e c256f64
-   Author: Brian Pak <bbouhm@gmail.com>
-   Date:   Tue Dec 17 20:39:51 2019 -0800
+   commit 799db685a8b9147a6302f3bf4a11f939f11fb043
+   Merge: a28663a b9ef49d
+   Author: Bouhm <bbouhm@gmail.com>
+   Date:   Wed Feb 5 22:04:43 2020 -0800
    
-       Merge pull request #57 from LeecanIt/patch-1
-       
-       Create it.json
+       Merge branch 'master' of https://github.com/Bouhm/stardew-valley-mods
    

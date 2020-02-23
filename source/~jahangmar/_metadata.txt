@@ -12,9 +12,9 @@ mods:
    Working Fireplace
 
 latest commit:
-   commit 545728ca8e0d2a346d837ef7226396056904a7d6
+   commit 5d110ec5d527c3468ae963e99443471b0f001ba4
    Author: jahangmar <48703856+jahangmar@users.noreply.github.com>
-   Date:   Sun Dec 22 18:34:56 2019 +0100
+   Date:   Sat Jan 18 18:59:20 2020 +0100
    
-       partially v1.3
+       fixes for 1.4 update
    

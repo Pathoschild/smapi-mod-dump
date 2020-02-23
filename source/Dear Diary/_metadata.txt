@@ -5,12 +5,9 @@ mods:
    Dear Diary
 
 latest commit:
-   commit 43afd3d10a309b1adabd19e372293553161e2b9d
-   Merge: 4cdcecd d3672a0
+   commit a69101667d4536e6e5370683d5ae16520315362c
    Author: MissCoriel <44127678+MissCoriel@users.noreply.github.com>
-   Date:   Tue Sep 17 21:31:18 2019 -0500
+   Date:   Thu Jan 23 09:50:02 2020 -0600
    
-       Merge pull request #1 from MissCoriel/add-license-1
-       
-       Create LICENSE
+       Add files via upload
    

@@ -2,6 +2,21 @@
 
 # Release notes
 ## Upcoming release
+* Added support for editing map tiles and tile properties.
+* Added support for arithmetic expressions.
+* Added support for multi-key bindings (like `LeftShift + F3`).
+* Patches are now always applied in the order listed.
+* Fixed incorrect warning when using `HasWalletItem` token in 1.12.
+
+## 1.12
+Released 01 February 2020.
+
+* Added advanced API to let other mods add more flexible tokens.
+* Added support for mod-provided tokens in `EditData` fields.
+* Reduced trace logs when another mod adds a custom token.
+* The `patch export` command now exports the asset cached by the game, instead of trying to load it.
+* Fixed dialogue and marriage dialogue changes not applied until the next day (via SMAPI 3.2).
+* Fixed error when a data model patch uses an invalid token in its fields.
 * Fixed whitespace between tokens being ignored (e.g. `{{season}} {{day}}` now outputs `Summer 14` instead of `Summer14`).
 
 ## 1.11.1

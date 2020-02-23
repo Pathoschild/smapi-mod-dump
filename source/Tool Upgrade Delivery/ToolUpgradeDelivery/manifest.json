@@ -1,0 +1,10 @@
+﻿{
+    "Name": "ToolUpgradeDelivery",
+    "Author": "SorryLate",
+    "Version": "1.0.0",
+    "Description": "Send your tool upgrade when you awake",
+    "UniqueID": "SorryLate.ToolUpgradeDelivery",
+    "EntryDll": "ToolUpgradeDelivery.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:5421" ]
+}

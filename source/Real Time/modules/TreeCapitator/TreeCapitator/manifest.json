@@ -1,0 +1,10 @@
+﻿{
+  "Name": "TreeCapitator",
+  "Author": "Enaium",
+  "Version": "1.0.0",
+  "Description": "Cut trees with one hit",
+  "UniqueID": "Enaium.TreeCapitator",
+  "EntryDll": "TreeCapitator.dll",
+  "MinimumApiVersion": "3.1.0",
+  "UpdateKeys": [ "Nexus:5376" ]
+}

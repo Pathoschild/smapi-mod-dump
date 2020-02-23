@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NpcAdventure.Internal;
 using NpcAdventure.Loader;
 using NpcAdventure.Model;
 using NpcAdventure.Objects;
-using NpcAdventure.StateMachine.State;
 using NpcAdventure.StateMachine.StateFeatures;
 using NpcAdventure.Utils;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
@@ -48,6 +48,7 @@ namespace NpcAdventure.StateMachine
             this.Monitor = monitor;
             this.Bag = new Chest(true);
             this.Reflection = reflection;
+            this.SpokenDialogues = new HashSet<string>();
         }
 
         /// <summary>
@@ -64,6 +65,9 @@ namespace NpcAdventure.StateMachine
         public StateFlag CurrentStateFlag { get; private set; }
         public Dictionary<int, SchedulePathDescription> BackedupSchedule { get; internal set; }
         public bool RecruitedToday { get; private set; }
+        public bool SuggestedToday { get; internal set; }
+        public bool CanSuggestToday { get; private set; }
+        public HashSet<string> SpokenDialogues { get; private set; }
 
         /// <summary>
         /// Change companion state machine state
@@ -111,11 +115,15 @@ namespace NpcAdventure.StateMachine
         public void DialogueSpeaked(Dialogue speakedDialogue)
         {
             // Convert state to dialogue detector (if state implements it)
-            IDialogueDetector detector = this.currentState as IDialogueDetector;
-
-            if (detector != null)
+            if (this.currentState is IDialogueDetector detector)
             {
                 detector.OnDialogueSpeaked(speakedDialogue); // Handle this dialogue
+            }
+
+            if (speakedDialogue is CompanionDialogue companionDialogue && companionDialogue.SpecialAttributes.Contains("session"))
+            {
+                // Remember session spoken dialogue this day (forget morning)
+                this.SpokenDialogues.Add(companionDialogue.Tag);
             }
         }
 
@@ -138,12 +146,14 @@ namespace NpcAdventure.StateMachine
             // Setup dialogues for companion for this day
             DialogueHelper.SetupCompanionDialogues(this.Companion, this.ContentLoader.LoadStrings($"Dialogue/{this.Name}"));
 
-            // Spoused or married with her/him? Enhance dialogues with extra spouse dialogues for this day
-            if (Helper.IsSpouseMarriedToFarmer(this.Companion, this.CompanionManager.Farmer) && this.ContentLoader.CanLoad($"Dialogue/{this.Name}Spouse"))
-                DialogueHelper.SetupCompanionDialogues(this.Companion, this.ContentLoader.LoadStrings($"Dialogue/{this.Name}Spouse"));
-
             this.RecruitedToday = false;
+            this.SuggestedToday = false;
+            this.CanSuggestToday = Game1.random.NextDouble() > .5f
+                                   && !(this.Companion.isMarried() && SDate.Now().DayOfWeek == DayOfWeek.Monday);
+            this.SpokenDialogues.Clear();
             this.MakeAvailable();
+            if (this.CanSuggestToday)
+                this.Monitor.Log($"{this.Name} can suggest adventure today!");
         }
 
         /// <summary>
@@ -163,6 +173,30 @@ namespace NpcAdventure.StateMachine
             this.Bag = new Chest(true);
 
             this.Monitor.Log($"{this.Companion} delivered bag contents into farm house at position {place}");
+        }
+
+        public Dialogue GenerateLocationDialogue(GameLocation location, string suffix = "")
+        {
+            NPC companion = this.Companion;
+
+            // Try generate only once spoken dialogue in game save
+            if (DialogueHelper.GenerateStaticDialogue(companion, location, $"companionOnce{suffix}") is CompanionDialogue dialogueOnce
+                && !this.CompanionManager.Farmer.hasOrWillReceiveMail(dialogueOnce.Tag))
+            {
+                // Remember only once spoken dialogue (as received mail. Keep it forever in loaded game after game saved)
+                dialogueOnce.Remember = true;
+                return dialogueOnce;
+            }
+
+            // Try generate standard companion various dialogue. This dialogue can be shown only once per day (per recruited companion session)
+            if (DialogueHelper.GenerateDialogue(companion, location, $"companion{suffix}") is CompanionDialogue dialogue && !this.SpokenDialogues.Contains(dialogue.Tag))
+            {
+                dialogue.SpecialAttributes.Add("session"); // Remember this dialogue in this companion session when will be spoken
+                return dialogue;
+            }
+
+            // Try generate dialogue which can be shown repeately in day (current companion session). If none defined, returns null
+            return DialogueHelper.GenerateDialogue(companion, location, "companionRepeat");
         }
 
         /// <summary>
@@ -281,23 +315,23 @@ namespace NpcAdventure.StateMachine
         /// <summary>
         /// Resolve dialogue request
         /// </summary>
-        public void ResolveDialogueRequest()
+        public bool CheckAction(Farmer who, GameLocation location)
         {
             // Can this companion to resolve player's dialogue request?
-            if (!this.CanDialogueRequestResolve())
-                return;
+            if (!this.CanPerformAction())
+                return false;
 
             // Handle dialogue request resolution in current machine state
-            (this.currentState as IRequestedDialogueCreator).CreateRequestedDialogue();
+            return (this.currentState as IActionPerformer).PerformAction(who, location);
         }
 
         /// <summary>
         /// Can request a dialogue for this companion in current state?
         /// </summary>
         /// <returns>True if dialogue request can be resolved</returns>
-        public bool CanDialogueRequestResolve()
+        public bool CanPerformAction()
         {
-            return this.currentState is IRequestedDialogueCreator dcreator && dcreator.CanCreateDialogue;
+            return this.currentState is IActionPerformer dcreator && dcreator.CanPerformAction;
         }
     }
 

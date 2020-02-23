@@ -1,0 +1,10 @@
+﻿{
+	"Name": "Be My Valentine",
+	"Author": "Taskmaster",
+	"Version": "1.0.1",
+	"Description": "Adds some sappy valentines messages to the player's mailbox",
+	"UniqueID": "Taskmaster.BeMyValentine",
+	"EntryDll": "BeMyValentine.dll",
+	"MinimumApiVersion": "2.10.0",
+	"UpdateKeys": ["Nexus:5219"]
+}

@@ -1,5 +1,6 @@
 {
   "TimeScreenshotGetsTakenAfter": 600,
+  "TakeScreenshotZoomLevel": 0.25,
   "TakeScreenshotKey": "None",
   "TakeScreenshotKeyZoomLevel": 0.25,
   "FolderDestinationForDailyScreenshots": "default",
@@ -15,5 +16,6 @@
     "Sundays": true,
     "First Day of Month": true,
     "Last Day of Month": true
-  }
+  },
+  "TakeScreenshotOnRainyDays": true
 }

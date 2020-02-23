@@ -1,13 +1,16 @@
 url:
-   https://github.com/amazingalek/Stardew-MegaStorage.git
+   https://github.com/ImJustMatt/Stardew-MegaStorage.git
 
 mods:
    Mega Storage
 
 latest commit:
-   commit df05276f0c4702d511ef648e9aece08001a56f68
-   Author: amazingalek <alek.ntnu@gmail.com>
-   Date:   Sun Dec 8 12:03:39 2019 +0100
+   commit 11f0563f92aee35b9ac447d05f826895304c397b
+   Merge: f53d663 3154f33
+   Author: Matthew <ImJustMatt@users.noreply.github.com>
+   Date:   Thu Feb 20 20:16:06 2020 -0600
    
-       Update README.md
+       Merge pull request #5 from ImJustMatt/super
+       
+       Moved some functionality from LargeItemGrabMenu to MagicItemGrabMenu. Mostly compatibility tweaks.
    

@@ -1,35 +1,29 @@
 ﻿using Harmony;
-using Microsoft.Xna.Framework.Graphics;
-using NpcAdventure.Events;
+using NpcAdventure.Internal;
+using NpcAdventure.StateMachine;
 using StardewValley;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static NpcAdventure.StateMachine.CompanionStateMachine;
 
 namespace NpcAdventure.Patches
 {
     internal class SpouseReturnHomePatch
     {
-        internal static List<string> recruitedSpouses;
+        private static readonly SetOnce<CompanionManager> manager = new SetOnce<CompanionManager>();
+        private static CompanionManager Manager { get => manager.Value; set => manager.Value = value; }
 
-        internal static bool Prefix(ref NPC __instance)
+        internal static bool Before_ReturnHomeFromFarmPosition(ref NPC __instance)
         {
-            // Ignore home return when spouse is recruited
-            if (recruitedSpouses.IndexOf(__instance.Name) >= 0)
-                return false;
-
-            return true;
+            // Ignore home return when married spouse is recruited
+            return !(Manager.PossibleCompanions.TryGetValue(__instance.Name, out CompanionStateMachine csm) && csm.CurrentStateFlag == StateFlag.RECRUITED);
         }
 
-        internal static void Setup(HarmonyInstance harmony)
+        internal static void Setup(HarmonyInstance harmony, CompanionManager manager)
         {
-            recruitedSpouses = new List<string>();
+            Manager = manager;
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(NPC), nameof(NPC.returnHomeFromFarmPosition)),
-                prefix: new HarmonyMethod(typeof(SpouseReturnHomePatch), nameof(SpouseReturnHomePatch.Prefix))
+                prefix: new HarmonyMethod(typeof(SpouseReturnHomePatch), nameof(SpouseReturnHomePatch.Before_ReturnHomeFromFarmPosition))
             );
         }
     }

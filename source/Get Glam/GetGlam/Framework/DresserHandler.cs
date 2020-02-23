@@ -50,7 +50,7 @@ namespace GetGlam.Framework
         /// <summary>Places the dresser inside of the Farmhouse</summary> 
         public void PlaceDresser()
         {
-            if (!Config.PatchDresserInFarmHouse)
+            if (!Config.PatchDresserInFarmHouse || !Context.IsMainPlayer)
                 return;
 
             //Create the new Tilesheet

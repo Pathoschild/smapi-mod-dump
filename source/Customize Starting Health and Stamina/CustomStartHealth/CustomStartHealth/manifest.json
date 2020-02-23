@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Custom Health and Stamina Start",
+  "Author": "MissCoriel",
+  "Version": "1.0.0",
+  "Description": "Customize Health and Stamina for start of the game.",
+  "UniqueID": "misscoriel.hpstam",
+  "EntryDll": "CustomStartHealth.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus: 5275" ]
+}

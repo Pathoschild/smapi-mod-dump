@@ -1,0 +1,13 @@
+url:
+   https://github.com/sorrylate/Stardew-Valley-Mod.git
+
+mods:
+   Tool Upgrade Delivery
+
+latest commit:
+   commit f11a2ecc6c007a61b2a569b434d2c63ca170b1ac
+   Author: Sorry Late <rharyanto996@gmail.com>
+   Date:   Mon Feb 17 12:56:49 2020 +0800
+   
+       release
+   

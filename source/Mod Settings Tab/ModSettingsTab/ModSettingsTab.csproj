@@ -39,6 +39,11 @@
   <ItemGroup>
     <Compile Include="Api.cs" />
     <Compile Include="Framework\Components\FilterTextBox.cs" />
+    <Compile Include="Framework\Components\ModManagerAddNameTextBox.cs" />
+    <Compile Include="Framework\Components\ModManagerCheckBox.cs" />
+    <Compile Include="Framework\Components\ModManagerHeading.cs" />
+    <Compile Include="Framework\Components\ModManagerToggle.cs" />
+    <Compile Include="Framework\Components\ModManagerToggleDd.cs" />
     <Compile Include="Framework\Components\OptionsCheckbox.cs" />
     <Compile Include="Framework\Components\OptionsDropDown.cs" />
     <Compile Include="Framework\Components\OptionsElement.cs" />
@@ -67,13 +72,20 @@
     <Compile Include="Framework\Interfaces\IOptionTextBox.cs" />
     <Compile Include="Framework\Mod.cs" />
     <Compile Include="Framework\ModList.cs" />
+    <Compile Include="Framework\ModManager.cs" />
     <Compile Include="Framework\SettingsTabApi.cs" />
     <Compile Include="Framework\StaticConfig.cs" />
+    <Compile Include="Menu\AddModPackPage.cs" />
     <Compile Include="Menu\BaseOptionsModPage.cs" />
+    <Compile Include="Menu\BaseOptionsPage.cs" />
     <Compile Include="Menu\FavoriteOptionsModPage.cs" />
-    <Compile Include="Menu\OptionsPage.cs" />
+    <Compile Include="Menu\GameOptionsPage.cs" />
+    <Compile Include="Menu\ModManagerPage.cs" />
+    <Compile Include="Menu\ModPackPage.cs" />
     <Compile Include="Menu\OptionsModPage.cs" />
     <Compile Include="Menu\SmapiOptionsPage.cs" />
+    <Compile Include="Menu\TitleOptionsButton.cs" />
+    <Compile Include="Menu\TitleOptionsPage.cs" />
     <Compile Include="ModData.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,9 +95,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="assets\Tabs.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="assets\Texture.png" />
     <Content Include="data\favorite.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

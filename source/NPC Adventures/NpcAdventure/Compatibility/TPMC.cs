@@ -1,4 +1,5 @@
-﻿using StardewModdingAPI;
+﻿using NpcAdventure.Internal;
+using StardewModdingAPI;
 
 namespace NpcAdventure.Compatibility
 {
@@ -7,21 +8,19 @@ namespace NpcAdventure.Compatibility
     /// </summary>
     internal class TPMC
     {
-        public static TPMC Instance { get; private set; }
+        private static readonly SetOnce<TPMC> instance = new SetOnce<TPMC>();
+        public static TPMC Instance { get => instance.Value; private set => instance.Value = value; }
 
         public ICustomKissingModApi CustomKissing { get; }
 
-        private TPMC(IModRegistry registry)
+        private TPMC(IModRegistry registry, IMonitor monitor)
         {
-            this.CustomKissing = new CustomKissingModProxy(registry);
+            this.CustomKissing = new CustomKissingModProxy(registry, monitor);
         }
 
-        public static void Setup(IModRegistry registry)
+        public static void Setup(IModRegistry registry, IMonitor monitor)
         {
-            if (Instance == null)
-            {
-                Instance = new TPMC(registry);
-            }
+            Instance = new TPMC(registry, monitor);
         }
     }
 }

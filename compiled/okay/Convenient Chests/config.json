@@ -5,6 +5,10 @@
   "StashRadius": 5,
   "StashKey": "Q",
   "StashButton": "RightStick",
+  "StashAnywhere": false,
+  "StashAnywhereToExistingStacks": false,
+  "StashAnywhereToFridge": true,
+  "StashAnywhereKey": "Z",
   "CraftFromChests": true,
   "CraftRadius": 5
 }

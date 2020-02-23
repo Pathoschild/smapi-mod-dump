@@ -15,9 +15,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 917b35eb3f73afe9ab6c6bdb9d6dda742805365a
+   commit 432fc171574fe4f1b7eee04515e6e529a4aca69c
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Tue Jan 7 23:56:43 2020 +0100
+   Date:   Sat Feb 1 18:27:57 2020 +0100
    
-       Migrate bigger backpack.
+       Readme cleanup.
    

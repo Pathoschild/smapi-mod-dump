@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewValley;
+using System;
 
 namespace ConvenientChests.CategorizeChests.Interface.Widgets
 {
@@ -7,20 +9,27 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets
     /// </summary>
     class ItemTooltip : Widget
     {
-        public ItemTooltip(string name)
+        public ItemTooltip(string name, string description = "")
         {
             var background = AddChild(new Background(Sprites.TooltipBackground));
-            var label = AddChild(new Label(name, Color.Black));
+            var label = AddChild(new Label(name, Color.Black, Game1.dialogueFont));
 
-            Width = background.Width = label.Width + background.Graphic.LeftBorderThickness +
+            var descriptionLabel = AddChild(new Label(description, Color.Black, Game1.smallFont));
+
+            Width = background.Width = Math.Max(label.Width, descriptionLabel.Width) + background.Graphic.LeftBorderThickness +
                                        background.Graphic.RightBorderThickness;
-            Height = background.Height = label.Height + background.Graphic.TopBorderThickness +
+            Height = background.Height = label.Height + descriptionLabel.Height + background.Graphic.TopBorderThickness +
                                          background.Graphic.BottomBorderThickness;
 
             label.Position = new Point(
-                background.Width / 2 - label.Width / 2,
-                background.Height / 2 - label.Height / 2
+                background.Graphic.LeftBorderThickness,
+                background.Graphic.TopBorderThickness
             );
+            
+            descriptionLabel.Position = new Point(
+                background.Graphic.LeftBorderThickness,
+                background.Graphic.TopBorderThickness + label.Height
+                );
         }
     }
 }

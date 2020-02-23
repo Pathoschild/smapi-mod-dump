@@ -1,0 +1,12 @@
+﻿{
+	// Shane dialogue (credit: alekrrau)
+    "Dialogue.Mod=HelpfulSpouses.Spouse=Shane.Priority=1": "Hey {{NickName}}, I fed all the animals already. Heh, you should've seen how {{AnimalName}} went to town on breakfast.",
+    // Emily dialogue (credit: alekrrau)
+    "Dialogue.Mod=HelpfulSpouses.Spouse=Emily.Priority=1": "Good morning {{NickName}}! I've fed all the animals.",
+    // Default dialogue (overridden by individual dialogue)
+    "Dialogue.Mod=HelpfulSpouses": "Good morning {{NickName}}, I fed all of the animals today.",
+
+    // Shop text
+    "DisplayName.Mod=HelpForHire":  "Feed the Animals",
+    "Description.Mod=HelpForHire":  "We'll feed all of your Barn and Coop animals.",
+}

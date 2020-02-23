@@ -1,0 +1,12 @@
+﻿{
+	// Shane dialogue (credit: alekrrau)
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Shane.Priority=1": "Hey {{PlayerName}}, I walked around and fixed some fences that were falling down. What? Yeah, it might not be my specialty, but I know how. Who do you think had to fix all the broken light builbs and shelves at Joja?",
+	// Emily dialogue (credit: alekrrau)
+	"Dialogue.Mod=HelpfulSpouses.Spouse=Emily.Priority=1": "Oh, {{PlayerName}}! Some of the fences were falling down so I replaced them. They won't need repair for a little while.",
+	// Default dialogue (overridden by individual dialogue)
+	"Dialogue.Mod=HelpfulSpouses": "Good morning {{NickName}}, I repaired some of the fences.",
+
+	// Shop text
+	"DisplayName.Mod=HelpForHire":  "Repair the Fences",
+	"Description.Mod=HelpForHire":  "We'll make sure all of your fences are in tip-top shape.",
+}

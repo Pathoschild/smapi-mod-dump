@@ -12,8 +12,6 @@ namespace NpcAdventure.Loader
     /// </summary>
     public class ContentLoader : IContentLoader
     {
-        private readonly string modRootDirectory;
-        private readonly string assetsDir;
         private readonly IMonitor monitor;
         private readonly Dictionary<string, object> assetCache;
 
@@ -27,12 +25,10 @@ namespace NpcAdventure.Loader
         /// <param name="modName">Path to mod's root directory, Like path/to/mod.</param>
         /// <param name="assetsDir">Path to mod's assets dir, like `assets`. Thats mean assets dir is `path/to/mod/assets` </param>
         /// <param name="monitor"></param>
-        public ContentLoader(IContentHelper helper, IContentPackHelper contentPacks, string modName, string assetsDir, string modRootDir, IMonitor monitor)
+        public ContentLoader(IContentHelper helper, IContentPackHelper contentPacks, string modName, string assetsDir, IMonitor monitor)
         {
             this.Helper = helper;
             this.ModName = modName;
-            this.modRootDirectory = modRootDir;
-            this.assetsDir = assetsDir;
             this.assetCache = new Dictionary<string, object>();
             this.monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
 
@@ -40,19 +36,6 @@ namespace NpcAdventure.Loader
             AssetsManager assetsManager = new AssetsManager(modName, assetsDir, helper, new ContentPackProvider(modName, contentPacks, monitor), monitor);
             this.Helper.AssetLoaders.Add(assetsManager);
             this.Helper.AssetEditors.Add(assetsManager);
-        }
-
-        /// <summary>
-        /// Checks for content asset exists and can be loaded
-        /// </summary>
-        /// <param name="assetName"></param>
-        /// <returns></returns>
-        [Obsolete("Try to load asset and catch exception.")]
-        public bool CanLoad(string assetName)
-        {
-            string path = $"{this.modRootDirectory}/{this.assetsDir}/{assetName}.json";
-
-            return File.Exists(path.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar));
         }
 
         /// <summary>

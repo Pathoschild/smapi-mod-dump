@@ -1,0 +1,6 @@
+{
+  "ConfigHelper": "Set StationaryId to 0 for a randomly selected stationary, or select a specific stationary (see ReadMe.txt).  IncludeOriginal will also select the original stationary, but only if you using radndomly selected stationary.  (This item does nothing!)",
+  "StationaryId": 0,
+  "IncludeOriginal": false,
+  "ShowDebug": false
+}

@@ -8,6 +8,7 @@ using StardewValley.Locations;
 using System.Collections.Generic;
 using System.Reflection;
 using StardewModdingAPI;
+using StardewValley.Network;
 
 namespace NpcAdventure.StateMachine.State
 {
@@ -32,6 +33,7 @@ namespace NpcAdventure.StateMachine.State
             companion.controller = null;
             companion.temporaryController = null;
             companion.farmerPassesThrough = false;
+            companion.eventActor = false;
             companion.followSchedule = true;
 
             if (companion.Schedule == null)
@@ -251,6 +253,14 @@ namespace NpcAdventure.StateMachine.State
                     routesToSkip++;
                 }
             }
+            else if (split[0].Contains("MAIL"))
+            {
+                string id = split[0].Split(' ')[1];
+                if (Game1.MasterPlayer.mailReceived.Contains(id) || NetWorldState.checkAnywhereForWorldStateID(id))
+                    routesToSkip += 2;
+                else
+                    routesToSkip++;
+            }
 
             if (split[routesToSkip].Contains("GOTO"))
             {
@@ -259,8 +269,7 @@ namespace NpcAdventure.StateMachine.State
                 {
                     newKey2 = Game1.currentSeason;
                 }
-                split = Game1.content.Load<Dictionary<string, string>>("Characters\\schedules\\" + companion.Name)[newKey2].Split(new char[] { '/' });
-                routesToSkip = 1;
+                return this.MasterScheduleParse(Game1.content.Load<Dictionary<string, string>>("Characters\\schedules\\" + companion.Name)[newKey2]);
             }
 
             Point previousPosition = companion.isMarried() ? new Point(0, 23) : new Point((int)companion.DefaultPosition.X / 64, (int)companion.DefaultPosition.Y / 64);

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Timers;
 using ModSettingsTabApi.Events;
 using Newtonsoft.Json.Linq;
-using StardewModdingAPI;
 using StardewValley;
 
 namespace ModSettingsTab.Framework
@@ -71,12 +70,12 @@ namespace ModSettingsTab.Framework
                         ModData.NeedReload = true;
                     _changedValues.Clear();
                     if (ModData.Config.ShowSavingNotify) 
-                        Game1.addHUDMessage(new HUDMessage(ModEntry.I18N.Get("StaticConfig.SuccessMessage"), 2));
+                        Game1.addHUDMessage(new HUDMessage(Helper.I18N.Get("StaticConfig.SuccessMessage"), 2));
                 }
                 catch (Exception ex)
                 {
-                    ModEntry.Console.Log(ex.Message, LogLevel.Error);
-                    Game1.showRedMessage(ModEntry.I18N.Get("StaticConfig.FailMessage"));
+                    Helper.Console.Error(ex.Message);
+                    Game1.showRedMessage(Helper.I18N.Get("StaticConfig.FailMessage"));
                 }
             };
             ParseProperties(_config);

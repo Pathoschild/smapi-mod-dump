@@ -45,6 +45,34 @@ namespace AdvancedKeyBindings.Extensions
             
         }
 
+        public static bool CanMove(this Building building)
+        {
+            if (building.daysOfConstructionLeft > 0)
+            {
+                return false;
+            }
+
+            if (!Game1.IsMasterGame && !building.hasPermissionsToMove())
+            {
+                return false;
+            }
+
+            return true;
+        }
+        
+        public static bool hasPermissionsToDemolish(this Building building)
+        {
+            return Game1.IsMasterGame;
+        }
+
+        public static bool hasPermissionsToMove(this Building building)
+        {
+            return Game1.IsMasterGame ||
+                   Game1.player.team.farmhandsCanMoveBuildings.Value == FarmerTeam.RemoteBuildingPermissions.On ||
+                   Game1.player.team.farmhandsCanMoveBuildings.Value ==
+                   FarmerTeam.RemoteBuildingPermissions.OwnedBuildings && building.hasCarpenterPermissions();
+        }
+
         public static bool CanDemolish(this Building building)
         {
             if (building.daysOfConstructionLeft > 0 ||
@@ -73,6 +101,11 @@ namespace AdvancedKeyBindings.Extensions
 
             if (building.indoors.Value is Cabin cabin &&
                 cabin.farmhand.Value.isActive())
+            {
+                return false;
+            }
+
+            if (!building.hasPermissionsToDemolish())
             {
                 return false;
             }

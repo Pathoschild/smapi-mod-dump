@@ -5,5 +5,6 @@
   "DresserTableLocationY": 0,
   "DrawDresserInMenu": true,
   "PatchDresserInFarmHouse": true,
-  "StoveInCorner": false
+  "StoveInCorner": false,
+  "ClothingTabAnimationSpeed": 4
 }

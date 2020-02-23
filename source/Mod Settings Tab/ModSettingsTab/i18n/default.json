@@ -3,5 +3,11 @@
   "OptionsPage.ModSettingsTab": "Mod settings",
   "StaticConfig.SuccessMessage": "Settings saved",
   "StaticConfig.FailMessage": "Save error",
-  "OptionsList.NewValue": "Enter a new value"
+  "OptionsList.NewValue": "Enter a new value",
+  "Mod.Disabled.Error": "Failed to switch modifications",
+  "ModManager.AddModPack": "Add new mod pack",
+  "ModManager.HoverSetUp.Title" : "Switch modpack",
+  "ModManager.HoverSetUp.Description" : "other mods not included in the mod pack will be disabled",
+  "ModManager.Toggle.Label" : "Current mod pack",
+  "ModManager.Add.NameTextBox" : "Modpack name"
 }

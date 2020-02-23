@@ -25,5 +25,8 @@ namespace GetGlam.Framework
 
         //Whether there is a stove of the corner added by another mod
         public bool StoveInCorner { get; set; } = false;
+
+        //The speed of the clothes tab opening
+        public int ClothingTabAnimationSpeed { get; set; } = 4;
     }
 }

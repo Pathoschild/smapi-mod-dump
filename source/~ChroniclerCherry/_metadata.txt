@@ -4,16 +4,20 @@ url:
 mods:
    Catalogues Anywhere
    Customize Anywhere
+   Farm Rearranger
    Hay Bales as Silos
    Limited Campfire Cooking
    Platonic Relationships
    Profit Margins
    Shop Tile Framework
+   Snack Anything
+   Upgrade Empty Cabins
 
 latest commit:
-   commit 3a60e54b1817069d906e10987eb5c655a2332442
-   Author: Yiminxue Zheng <33401364+ChroniclerCherry@users.noreply.github.com>
-   Date:   Fri Jan 10 15:49:10 2020 -0500
+   commit 461d9ab16dd923cb9c182f9aa4f0959fdc47b67b
+   Merge: f7cb236 c344279
+   Author: Cherry <yiminxuezheng@gmail.com>
+   Date:   Thu Jan 23 15:18:58 2020 -0500
    
-       Update README.md
+       Merge branch 'master' of https://github.com/ChroniclerCherry/stardew-valley-mods
    

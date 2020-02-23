@@ -1,0 +1,41 @@
+[
+  {
+    "Name": "Grub",//Name of your animal. Can be just part of it if you want the config to apply for all variations.
+    "MinimalNumberOfMeat": 3,
+    "MaximumNumberOfMeat": 8, //Set it to zero if you want your animal to be immortal.
+    "MinimumDaysBetweenTreats": 1, //balance this based on the highest priced treat.
+    "LikedTreats": [
+      771
+    ],
+    "MinimumDaysUtillBirth": 1, //Set it to null if you don't want your animal to be able to get pregnant. Mostly for males and egg layers. 
+    "CanUseDeluxeItemForPregnancy": false //Set it true if you want the deluxe item to also be able to impregnate the animal.
+  },
+  {
+    "Name": "Crab",//Name of your animal. Can be just part of it if you want the config to apply for all variations.
+    "MinimalNumberOfMeat": 1,
+    "MaximumNumberOfMeat": 1, //Set it to zero if you want your animal to be immortal.
+    "MinimumDaysBetweenTreats": 3, //balance this based on the highest priced treat.
+    "LikedTreats": [
+      684, 
+	  685,
+	  -4
+    ],
+    "MinimumDaysUtillBirth": 6, //Set it to null if you don't want your animal to be able to get pregnant. Mostly for males and egg layers. 
+    "CanUseDeluxeItemForPregnancy": false //Set it true if you want the deluxe item to also be able to impregnate the animal.
+  },
+  {
+    "Name": "NakedMoleRat",//Name of your animal. Can be just part of it if you want the config to apply for all variations.
+    "MinimalNumberOfMeat": 1,
+    "MaximumNumberOfMeat": 5, //Set it to zero if you want your animal to be immortal.
+    "MinimumDaysBetweenTreats": 3, //balance this based on the highest priced treat.
+    "LikedTreats": [
+      78,
+	  192,
+	  24,
+	  280,
+	  412
+    ],
+    "MinimumDaysUtillBirth": 4, //Set it to null if you don't want your animal to be able to get pregnant. Mostly for males and egg layers. 
+    "CanUseDeluxeItemForPregnancy": false //Set it true if you want the deluxe item to also be able to impregnate the animal.
+  }
+]

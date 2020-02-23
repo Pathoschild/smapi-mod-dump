@@ -24,17 +24,20 @@ namespace ModSettingsTab.Framework
                 {
                     var configPath = Path.Combine(directory, "config.json");
                     var manifestPath = Path.Combine(directory, "manifest.json");
-                    // necessary files exist
-                    if (!File.Exists(configPath) || !File.Exists(manifestPath)) continue;
+                    
+                    if (!File.Exists(manifestPath)) continue;
                     var uniqueId = JObject.Parse(File.ReadAllText(manifestPath))["UniqueID"].ToString();
-                    // reading and parsing config.json
-                    var jObj = JObject.Parse(File.ReadAllText(configPath));
-                    var staticConfig = new StaticConfig(configPath, jObj, uniqueId);
-                    Add(uniqueId, new Mod(uniqueId, directory, staticConfig));
+                    StaticConfig config = null;
+                    if (File.Exists(configPath))
+                    {
+                        var jObj = JObject.Parse(File.ReadAllText(configPath));
+                        config = new StaticConfig(configPath, jObj, uniqueId);
+                    }
+                    Add(uniqueId, new Mod(uniqueId, directory, config));
                 }
                 catch (Exception e)
                 {
-                    ModEntry.Console.Log(e.Message, LogLevel.Warn);
+                    Helper.Console.Warn(e.Message);
                 }
             }
         }

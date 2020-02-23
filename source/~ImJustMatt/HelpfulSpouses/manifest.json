@@ -1,0 +1,17 @@
+﻿{
+	"Name": "HelpfulSpouses",
+	"Author": "furyx639",
+	"Version": "1.2.1",
+	"Description": "Spouses perform one or more customizable chores every morning.",
+	"UniqueID": "furyx639.HelpfulSpouses",
+	"EntryDll": "HelpfulSpouses.dll",
+	"MinimumApiVersion": "3.0.0",
+	"Dependencies":  [
+		{
+			"UniqueID":  "furyx639.CustomChores",
+			"MinimumApiVersion":  "1.2.0",
+			"IsRequired":  true
+		}
+	],
+	"UpdateKeys": ["Nexus:5175"]
+}

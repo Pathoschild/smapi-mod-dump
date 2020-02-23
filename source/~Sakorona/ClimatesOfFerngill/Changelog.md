@@ -3,6 +3,8 @@
 ### 1.5.6
 - Resolve improperly set categories causing errors on displaying descriptions (#85)
 - Spacing issues are fixed when retrieving rain category descriptors
+- Resolve Night Market being the wrong days (#88)
+- Thanks to floatingatoll, fix for white flashes (#89)
 
 ### 1.5.5
 - The system will *properly* respect the config option for max rain

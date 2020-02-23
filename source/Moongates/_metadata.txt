@@ -5,9 +5,9 @@ mods:
    Moongates
 
 latest commit:
-   commit 59a70ba629897aa3f619154dcd6416c28b472b94
-   Author: bwdy <47769190+bwdymods@users.noreply.github.com>
-   Date:   Wed Nov 27 22:54:54 2019 -0900
+   commit a266e59082ea30e8c70fddf0372f2e09276a77e7
+   Author: Glitchfinder <glitchkey@gmail.com>
+   Date:   Sat Jan 25 10:39:13 2020 -0800
    
-       graphics update
+       Updates readme.
    

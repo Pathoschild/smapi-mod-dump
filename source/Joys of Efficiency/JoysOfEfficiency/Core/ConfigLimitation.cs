@@ -21,7 +21,6 @@ namespace JoysOfEfficiency.Core
             Conf.AutoDigRadius = (int)Util.Cap(Conf.AutoDigRadius, 1, 3);
             Conf.AutoShakeRadius = (int)Util.Cap(Conf.AutoShakeRadius, 1, 3);
             Conf.MachineRadius = (int)Util.Cap(Conf.MachineRadius, 1, 3);
-            Conf.RadiusCraftingFromChests = (int)Util.Cap(Conf.RadiusCraftingFromChests, 1, 5);
             Conf.IdleTimeout = (int)Util.Cap(Conf.IdleTimeout, 1, 300);
             Conf.ScavengingRadius = (int)Util.Cap(Conf.ScavengingRadius, 1, 3);
             Conf.AnimalHarvestRadius = (int)Util.Cap(Conf.AnimalHarvestRadius, 1, 3);

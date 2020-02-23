@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5289
+IDs: SorryLate.GalaxyItem
+update keys: Nexus:5289

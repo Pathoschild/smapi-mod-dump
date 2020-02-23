@@ -1,0 +1,8 @@
+{
+  "Name": "Sakura Kimono White Upper",
+  "Description": "A white kimono, upper half.",
+  "HasFemaleVariant": false,
+  "Price": 50,
+  "Dyeable": false,
+  "DefaultColor": "255, 255, 255, 255"
+}

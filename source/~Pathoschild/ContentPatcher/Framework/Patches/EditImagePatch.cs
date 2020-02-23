@@ -6,7 +6,6 @@ using ContentPatcher.Framework.Tokens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
-using StardewValley;
 
 namespace ContentPatcher.Framework.Patches
 {
@@ -46,7 +45,7 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="patchMode">Indicates how the image should be patched.</param>
         /// <param name="monitor">Encapsulates monitoring and logging.</param>
         /// <param name="normalizeAssetName">Normalize an asset name.</param>
-        public EditImagePatch(string logName, ManagedContentPack contentPack, ITokenString assetName, IEnumerable<Condition> conditions, ITokenString fromAsset, TokenRectangle fromArea, TokenRectangle toArea, PatchMode patchMode, IMonitor monitor, Func<string, string> normalizeAssetName)
+        public EditImagePatch(string logName, ManagedContentPack contentPack, IManagedTokenString assetName, IEnumerable<Condition> conditions, IManagedTokenString fromAsset, TokenRectangle fromArea, TokenRectangle toArea, PatchMode patchMode, IMonitor monitor, Func<string, string> normalizeAssetName)
             : base(logName, PatchType.EditImage, contentPack, assetName, conditions, normalizeAssetName, fromAsset: fromAsset)
         {
             this.FromArea = fromArea;
@@ -117,16 +116,7 @@ namespace ContentPatcher.Framework.Patches
             }
 
             // extend tilesheet if needed
-            if (targetArea.Bottom > editor.Data.Height)
-            {
-                Texture2D original = editor.Data;
-                Texture2D texture = new Texture2D(Game1.graphics.GraphicsDevice, original.Width, targetArea.Bottom);
-                editor.ReplaceWith(texture);
-                editor.PatchImage(original);
-                this.ResizedLastImage = true;
-            }
-            else
-                this.ResizedLastImage = false;
+            this.ResizedLastImage = editor.ExtendImage(editor.Data.Width, targetArea.Bottom);
 
             // apply source image
             editor.PatchImage(source, sourceArea, targetArea, this.PatchMode);

@@ -9,15 +9,23 @@ using StardewValley;
 namespace ConvenientChests.CategorizeChests.Interface.Widgets {
     class CategoryMenu : Widget {
         // Styling settings
-        private const  int        MaxItemColumns = 12;
+        private const int MaxItemRows    = 7;
+        private const int MaxItemColumns = 12;
+        private const int MaxItemsPage   = MaxItemColumns * MaxItemRows;
+
         private static int        Padding    => 2 * Game1.pixelZoom;
         private static SpriteFont HeaderFont => Game1.dialogueFont;
+
+        // pagination
+        protected int Row      { get; set; }
+        protected int numItems => ActiveCategory == "" ? 0 : ItemDataManager.Categories[ActiveCategory].Count;
 
         // Elements
         private Widget                  Body            { get; set; }
         private Widget                  TopRow          { get; set; }
         private LabeledCheckbox         SelectAllButton { get; set; }
         private SpriteButton            CloseButton     { get; set; }
+        private ScrollBar               ScrollBar       { get; set; }
         private Background              Background      { get; set; }
         private Label                   CategoryLabel   { get; set; }
         private SpriteButton            PrevButton      { get; set; }
@@ -34,10 +42,11 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
 
         public event Action OnClose;
 
-        public CategoryMenu(ChestData chestData, IItemDataManager itemDataManager, ITooltipManager tooltipManager) {
+        public CategoryMenu(ChestData chestData, IItemDataManager itemDataManager, ITooltipManager tooltipManager, int width) {
             ItemDataManager = itemDataManager;
             TooltipManager  = tooltipManager;
             ChestData       = chestData;
+            Width           = width;
 
             Categories = itemDataManager.Categories.Keys.ToList();
             Categories.Sort();
@@ -65,15 +74,24 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             CloseButton.OnPress += () => OnClose?.Invoke();
 
             CategoryLabel = TopRow.AddChild(new Label("", Color.Black, HeaderFont));
+
+            ScrollBar          =  AddChild(new ScrollBar());
+            ScrollBar.OnScroll += (_, args) => UpdateScrollPosition(args.Position);
+        }
+
+        private void UpdateScrollPosition(int position) {
+            Row = Math.Max(0, position / MaxItemColumns);
+
+            RecreateItemToggles();
         }
 
         private void PositionElements() {
-            Body.Position = new Point(Background.Graphic.LeftBorderThickness, Background.Graphic.RightBorderThickness);
+            Body.Position = new Point(Background.Graphic.LeftBorderThickness, Background.Graphic.TopBorderThickness);
 
             // Figure out width
             Body.Width   = ToggleBag.Width;
             TopRow.Width = Body.Width;
-            Width        = Body.Width + Background.Graphic.LeftBorderThickness + Background.Graphic.RightBorderThickness + Padding * 2;
+            // Width        = Body.Width + Background.Graphic.LeftBorderThickness + Background.Graphic.RightBorderThickness + Padding * 2;
 
             // Build the top row
             var longestCat  = Categories.OrderByDescending(s => s.Length).First();
@@ -83,6 +101,7 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
 
             SelectAllButton.X = Padding;
 
+            CategoryLabel.Text = ActiveCategory;
             CategoryLabel.CenterHorizontally();
 
             TopRow.Height = TopRow.Children.Max(c => c.Height);
@@ -93,12 +112,22 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             // Figure out height and vertical positioning
             ToggleBag.Y = TopRow.Y + TopRow.Height + Padding;
             Body.Height = ToggleBag.Y              + ToggleBag.Height;
-            Height      = (Body.Height + Background.Graphic.TopBorderThickness + Background.Graphic.BottomBorderThickness + Padding * 2);
+            Height = TopRow.Height                         +
+                     Game1.tileSize * MaxItemRows          + Padding * (MaxItemRows - 1)              +
+                     Background.Graphic.TopBorderThickness + Background.Graphic.BottomBorderThickness + Padding * 2;
 
             Background.Width  = Width;
             Background.Height = Height;
 
             CloseButton.Position = new Point(Width - CloseButton.Width, 0);
+
+            ScrollBar.Position = new Point(Width - 64 - 3 * 4, CloseButton.Height);
+            ScrollBar.Height   = Height - CloseButton.Height - 16;
+            ScrollBar.Visible  = numItems > MaxItemsPage;
+
+            ScrollBar.ScrollPosition = 0;
+            ScrollBar.ScrollMax      = numItems;
+            ScrollBar.Step           = MaxItemsPage;
         }
 
         private void OnToggleSelectAll(bool on) {
@@ -127,8 +156,8 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
         }
 
         private void SetCategory(int index) {
-            Index              = index;
-            CategoryLabel.Text = ActiveCategory;
+            Index = index;
+            Row   = 0;
 
             RecreateItemToggles();
 
@@ -140,7 +169,10 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
         private void RecreateItemToggles() {
             ToggleBag.RemoveChildren();
 
-            var itemKeys = ItemDataManager.Categories[ActiveCategory];
+            var itemKeys = ItemDataManager.Categories[ActiveCategory]
+                                          .OrderBy(p => ItemDataManager.GetItem(p).DisplayName)
+                                          .Skip(Row * MaxItemColumns)
+                                          .Take(MaxItemsPage).ToList();
 
             foreach (var itemKey in itemKeys) {
                 var item   = ItemDataManager.GetItem(itemKey);

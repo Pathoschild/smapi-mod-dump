@@ -125,9 +125,13 @@ namespace BetterJunimos {
             
             // opened menu
             else if (e.OldMenu == null && e.NewMenu is CarpenterMenu) {
-                // limit to only junimo hut
-                if (!Game1.MasterPlayer.mailReceived.Contains("hasPickedUpMagicInk")) {
-                    OpenJunimoHutMenu();
+                if (Helper.Reflection.GetField<bool>(e.NewMenu, "magicalConstruction").GetValue())
+                {
+                    // limit to only junimo hut
+                    if (!Game1.MasterPlayer.mailReceived.Contains("hasPickedUpMagicInk"))
+                    {
+                        OpenJunimoHutMenu();
+                    }
                 }
             }
         }

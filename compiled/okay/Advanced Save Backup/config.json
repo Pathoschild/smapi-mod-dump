@@ -1,3 +1,6 @@
 {
-  "SaveCount": 30
+  "SaveCount": 30,
+  "UseZipCompression": true,
+  "AlternateNightlySaveBackupPath": "",
+  "AlternatePreplaySaveBackupPath": ""
 }

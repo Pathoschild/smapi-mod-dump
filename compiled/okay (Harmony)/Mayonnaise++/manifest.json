@@ -1,7 +1,7 @@
 {
   "Name": "Mayonnaise++",
   "Author": "Adam 'theStormWeaver' Chevalier",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "A mod that expands on mayonnaise.",
   "UniqueID": "xirsoi.mayonnaiseplusplus",
   "EntryDll": "MayonnaisePlusPlus.dll",

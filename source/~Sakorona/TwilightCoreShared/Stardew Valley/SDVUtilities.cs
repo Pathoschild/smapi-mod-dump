@@ -171,9 +171,9 @@ namespace TwilightShards.Stardew.Common
                 case ("winter"):
                     if (dayOfMonth == 8) return "Festival of Ice";
                     if (dayOfMonth == 25) return "Feast of the Winter Star";
-                    if (dayOfMonth == 14) return "Night Festival";
                     if (dayOfMonth == 15) return "Night Festival";
                     if (dayOfMonth == 16) return "Night Festival";
+                    if (dayOfMonth == 17) return "Night Festival";
                     break;
                 case ("fall"):
                     if (dayOfMonth == 16) return "Stardew Valley Fair";

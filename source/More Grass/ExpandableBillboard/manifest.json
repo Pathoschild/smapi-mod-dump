@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Expandable Billboard",
+  "Author": "EpicBellyFlop45",
+  "Version": "1.0.0",
+  "Description": "Allow custom 'Help Wanted' requests",
+  "UniqueID": "EpicBellyFlop45.ExpandableBillboard",
+  "EntryDll": "ExpandableBillboard.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:" ]
+}

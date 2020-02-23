@@ -95,6 +95,7 @@ namespace CustomGuildChallenges.API
 
         private void InitLocations()
         {
+            Console.WriteLine("Initializing locations for custom guild.");
             if (Game1.locations == null)
                 throw new InvalidOperationException("Can't access Adventure Guild before the game is initialised.");
 
@@ -201,6 +202,8 @@ namespace CustomGuildChallenges.API
                 {
                     MonsterKilled.Invoke(Game1.currentLocation, monster);
                 }
+
+                Monitor.Log("Monster killed!", LogLevel.Trace);
             }
         }
 
@@ -229,8 +232,11 @@ namespace CustomGuildChallenges.API
 
             Helper.Data.WriteJsonFile(saveDataPath, saveData);
 
+            Monitor.Log("Writing to savedata", LogLevel.Trace);
+
             // Remove custom location and add back the original location
             Game1.locations.Remove(customAdventureGuild);
+            Game1._locationLookup.Remove(customAdventureGuild.Name);
             Game1.locations.Add(adventureGuild);
         }
 
@@ -261,7 +267,10 @@ namespace CustomGuildChallenges.API
 
             // Kill old guild, replace with new guild
             Game1.locations.Remove(adventureGuild);
+            Game1._locationLookup.Remove(adventureGuild.Name);
             Game1.locations.Add(customAdventureGuild);
+
+            Monitor.Log("Adding custom Adventure Guild", LogLevel.Trace);
         }
 
         /// <summary>
@@ -280,6 +289,8 @@ namespace CustomGuildChallenges.API
             if (location.Name == FarmLocationName && (Config.CountKillsOnFarm || monsterName == Monsters.WildernessGolem))
             {
                 Game1.player.stats.monsterKilled(monsterName);
+
+                Monitor.Log("Farm monster killed", LogLevel.Trace);
             }
             // The game does not differentiate between bugs and mutant bugs
             else if (location.Name == BugLocationName)
@@ -329,6 +340,8 @@ namespace CustomGuildChallenges.API
                     if (!IsVanillaChallenge(challenge.Info)) Game1.showGlobalMessage(message);
                     break;
                 }
+
+                Monitor.Log("Gil message sent!", LogLevel.Trace);
             }
         }
 
@@ -346,6 +359,8 @@ namespace CustomGuildChallenges.API
                 {
                     return true;
                 }
+
+                Monitor.Log("Vanilla Challenges Detected", LogLevel.Trace);
             }
 
             return false;

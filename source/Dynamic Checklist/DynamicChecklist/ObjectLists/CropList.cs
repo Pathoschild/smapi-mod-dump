@@ -76,7 +76,7 @@
 
         private void UpdateObjectInfoList(GameLocation loc)
         {
-            foreach (KeyValuePair<Vector2, TerrainFeature> entry in loc.terrainFeatures)
+            foreach (KeyValuePair<Vector2, TerrainFeature> entry in loc.terrainFeatures.Pairs)
             {
                 var terrainFeature = entry.Value;
                 if (terrainFeature is HoeDirt)
@@ -97,8 +97,8 @@
             switch (action)
             {
                 case Action.Water:
-                    var isWatered = hoeDirt.state == HoeDirt.watered;
-                    soi.NeedAction = hoeDirt.needsWatering() && !isWatered && !hoeDirt.crop.dead;
+                    var isWatered = hoeDirt.state.Value == HoeDirt.watered;
+                    soi.NeedAction = hoeDirt.needsWatering() && !isWatered && !hoeDirt.crop.dead.Value;
                     break;
                 case Action.Harvest:
                     soi.NeedAction = hoeDirt.readyForHarvest();

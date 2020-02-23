@@ -3,5 +3,11 @@
   "OptionsPage.ModSettingsTab": "Configurações de modificação",
   "StaticConfig.SuccessMessage": "Configurações salvas",
   "StaticConfig.FailMessage": "Salvar erro",
-  "OptionsList.NewValue": "Digite um novo valor"
+  "OptionsList.NewValue": "Digite um novo valor",
+  "Mod.Disabled.Error": "Falha ao alternar modificações",
+  "ModManager.AddModPack": "Adicionar novo pacote de mod",
+  "ModManager.HoverSetUp.Title": "Alternar modpack",
+  "ModManager.HoverSetUp.Description": "outros mods não incluídos no pacote de mods serão desativados",
+  "ModManager.Toggle.Label": "Pacote atual de mods",
+  "ModManager.Add.NameTextBox": "Nome do Modpack"
 }

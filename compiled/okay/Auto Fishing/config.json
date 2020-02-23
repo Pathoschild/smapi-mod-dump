@@ -1,0 +1,9 @@
+{
+  "autoFish": true,
+  "autoHit": true,
+  "autoCast": false,
+  "maxPower": true,
+  "activeAutoFishButton": "F3",
+  "activeAutoCastButton": "V",
+  "caughtDoubleFish": false
+}

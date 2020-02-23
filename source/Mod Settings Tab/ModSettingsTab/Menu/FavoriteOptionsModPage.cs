@@ -1,3 +1,4 @@
+using ModSettingsTab.Framework;
 using ModSettingsTab.Framework.Components;
 
 namespace ModSettingsTab.Menu
@@ -6,7 +7,7 @@ namespace ModSettingsTab.Menu
     {
         public FavoriteOptionsModPage(int x, int y, int width, int height, int id) : base(x, y, width, height)
         {
-            Options = ModData.FavoriteMod[id].Options;
+            Options = FavoriteData.ModList[id].Options;
             FilterTextBox = new FilterTextBox(this, FilterTextBox.FilterType.Options,xPositionOnScreen + width / 2 + 112, yPositionOnScreen + 40);
         }
     }

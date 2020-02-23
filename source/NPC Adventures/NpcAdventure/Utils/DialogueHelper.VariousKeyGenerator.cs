@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NpcAdventure.Utils
 {
-    internal static partial class DialogueHelper
+    public static partial class DialogueHelper
     {
         internal class VariousKeyGenerator
         {

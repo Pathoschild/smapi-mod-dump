@@ -1,6 +1,7 @@
 ﻿using Harmony;
 using Microsoft.Xna.Framework.Graphics;
 using NpcAdventure.Events;
+using NpcAdventure.Internal;
 using NpcAdventure.StateMachine;
 using StardewValley;
 using StardewValley.Monsters;
@@ -9,19 +10,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static NpcAdventure.StateMachine.CompanionStateMachine;
 
 namespace NpcAdventure.Patches
 {
     internal class CompanionSayHiPatch
     {
-        private static CompanionManager manager;
+        private static readonly SetOnce<CompanionManager> manager = new SetOnce<CompanionManager>();
+        private static CompanionManager Manager { get => manager.Value; set => manager.Value = value; }
 
-        internal static bool Prefix(ref NPC __instance, Character c)
+        internal static bool Before_sayHiTo(ref NPC __instance, Character c)
         {
-            if (manager != null && manager.PossibleCompanions.TryGetValue(__instance.Name, out CompanionStateMachine csm))
+            if (Manager != null && Manager.PossibleCompanions.TryGetValue(__instance.Name, out CompanionStateMachine csm))
             {
                 // Avoid say hi to monsters while companion is recruited
-                return !(csm.CurrentStateFlag == CompanionStateMachine.StateFlag.RECRUITED && c is Monster);
+                return !(csm.CurrentStateFlag == StateFlag.RECRUITED && c is Monster);
             }
 
             return true;
@@ -29,11 +32,11 @@ namespace NpcAdventure.Patches
 
         internal static void Setup(HarmonyInstance harmony, CompanionManager manager)
         {
-            CompanionSayHiPatch.manager = manager;
+            Manager = manager;
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(NPC), nameof(NPC.sayHiTo)),
-                prefix: new HarmonyMethod(typeof(CompanionSayHiPatch), nameof(CompanionSayHiPatch.Prefix))
+                prefix: new HarmonyMethod(typeof(CompanionSayHiPatch), nameof(CompanionSayHiPatch.Before_sayHiTo))
             );
         }
     }

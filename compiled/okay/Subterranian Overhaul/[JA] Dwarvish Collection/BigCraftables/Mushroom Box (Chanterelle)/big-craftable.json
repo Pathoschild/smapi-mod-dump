@@ -1,0 +1,62 @@
+{
+    "Name": "Mushroom Box (Chanterelle)",
+    "Description": "A box innoculated with Chanterelle mushroom spores.",
+    "Price": 2880,
+    "ProvidesLight": false,	
+    "Recipe":
+    {
+        "ResultCount": 1,
+        "Ingredients": [
+        {
+            "Object": 709,
+            "Count": 10,
+        },
+        {
+            "Object": 771,
+            "Count": 20,
+        },
+		{
+            "Object": 330,
+            "Count": 20,
+        },
+		{
+			"Object": 281,
+			"Count": 10
+		}
+		],
+        "IsDefault": false,
+		"SkillUnlockName": "Mining",
+		"SkillUnlockLevel": 7,
+    },
+	"CanPurchase": true,
+	"PurchaseFrom": "Dwarf",
+	"PurchasePrice": 2880,
+    "NameLocalization":
+    {
+        // "es": "",
+        // "ko": "",
+        // "de": "",
+        // "fr": "",
+        // "hu": "",
+        // "it": "",
+        // "ja": "",
+        // "pt": "",
+        // "ru": "",
+        // "tr": "",
+        // "zh": "",
+    },
+    "DescriptionLocalization":
+    {
+        // "es": "",
+        // "ko": "",
+        // "de": "",
+        // "fr": "",
+        // "hu": "",
+        // "it": "",
+        // "ja": "",
+        // "pt": "",
+        // "ru": "",
+        // "tr": "",
+        // "zh": "",
+    }
+}

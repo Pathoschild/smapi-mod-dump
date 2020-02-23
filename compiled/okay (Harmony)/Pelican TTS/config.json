@@ -1,0 +1,145 @@
+{
+  "Pitch": 0.0,
+  "Volume": 1.0,
+  "MumbleDialogues": false,
+  "Greeting": true,
+  "Rate": 100,
+  "Voices": {
+    "Abigail": {
+      "Voice": "Salli",
+      "Pitch": 0.0
+    },
+    "Caroline": {
+      "Voice": "Kendra",
+      "Pitch": 0.0
+    },
+    "Clint": {
+      "Voice": "Brian",
+      "Pitch": 0.0
+    },
+    "Demetrius": {
+      "Voice": "Brian",
+      "Pitch": 0.0
+    },
+    "Willy": {
+      "Voice": "Brian",
+      "Pitch": 0.0
+    },
+    "Elliott": {
+      "Voice": "Brian",
+      "Pitch": 0.0
+    },
+    "Emily": {
+      "Voice": "Emma",
+      "Pitch": 0.0
+    },
+    "Evelyn": {
+      "Voice": "Amy",
+      "Pitch": 0.0
+    },
+    "George": {
+      "Voice": "Brian",
+      "Pitch": 0.0
+    },
+    "Gus": {
+      "Voice": "Brian",
+      "Pitch": 0.0
+    },
+    "Haley": {
+      "Voice": "Emma",
+      "Pitch": 0.0
+    },
+    "Harvey": {
+      "Voice": "Matthew",
+      "Pitch": 0.0
+    },
+    "Jas": {
+      "Voice": "Ivy",
+      "Pitch": 0.0
+    },
+    "Jodi": {
+      "Voice": "Nicole",
+      "Pitch": 0.0
+    },
+    "Alex": {
+      "Voice": "Joey",
+      "Pitch": 0.0
+    },
+    "Kent": {
+      "Voice": "Brian",
+      "Pitch": 0.0
+    },
+    "Leah": {
+      "Voice": "Kendra",
+      "Pitch": 0.0
+    },
+    "Lewis": {
+      "Voice": "Brian",
+      "Pitch": 0.0
+    },
+    "Linus": {
+      "Voice": "Brian",
+      "Pitch": 0.0
+    },
+    "Marlon": {
+      "Voice": "Brian",
+      "Pitch": 0.0
+    },
+    "Marnie": {
+      "Voice": "Kimberly",
+      "Pitch": 0.0
+    },
+    "Maru": {
+      "Voice": "Salli",
+      "Pitch": 0.0
+    },
+    "Pam": {
+      "Voice": "Kimberly",
+      "Pitch": 0.0
+    },
+    "Penny": {
+      "Voice": "Amy",
+      "Pitch": 0.0
+    },
+    "Pierre": {
+      "Voice": "Matthew",
+      "Pitch": 0.0
+    },
+    "Robin": {
+      "Voice": "Kendra",
+      "Pitch": 0.0
+    },
+    "Sam": {
+      "Voice": "Russell",
+      "Pitch": 0.0
+    },
+    "Sebastian": {
+      "Voice": "Brian",
+      "Pitch": 0.0
+    },
+    "Shane": {
+      "Voice": "Brian",
+      "Pitch": 0.0
+    },
+    "Vincent": {
+      "Voice": "Justin",
+      "Pitch": 0.0
+    },
+    "Wizard": {
+      "Voice": "Geraint",
+      "Pitch": 0.0
+    },
+    "Dwarf": {
+      "Voice": "Geraint",
+      "Pitch": 0.0
+    },
+    "Sandy": {
+      "Voice": "Raveena",
+      "Pitch": 0.0
+    },
+    "Krobus": {
+      "Voice": "Matthew",
+      "Pitch": 0.0
+    }
+  }
+}

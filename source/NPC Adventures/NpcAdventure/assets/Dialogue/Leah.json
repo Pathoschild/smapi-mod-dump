@@ -1,8 +1,23 @@
 {
   "companionAccepted": "Absolutely! I want to pick some flowers.",
-  "companionRejected": "I'm a bit busy to do any exploring today. Sorry.",
+  "companionRejected": "I'm a bit too busy to do any exploring today. Sorry.",
   "companionRejectedNight": "Don't you think it's too late to go exploring now?",
-  "companionDismiss": "Ok. It was fun to hanging out",
-  "companionDismissAuto": "Time for me to head home. Thanks a bunch @.$h",
-  "companionRecruited": "I wonder what interesting things we'll find along the way!$h"
+  "companionDismiss": "Ok. It was fun hanging out!",
+  "companionDismissAuto": "Time for me to head home. Thanks a bunch, @.$h",
+  "companionRecruited": "I wonder what interesting things we'll find along the way!$h",
+  "companionSuggest": "My pantry is almost empty. I should do some gathering today.#$q -1 -1#Wanna come, @? You might find something useful too.#$r -1 0 Yes#That would be nice. Let's go!#$r -1 0 No# Today I can't. But thanks for inviting me.",
+  "companionSuggest_Yes": "Good! Any preference on where to start?$h",
+  "companionSuggest_No": "I'll try to save something for you. No promises, though...",
+  "companion_Farm": "This is my chance to do some farming! Have I already told you I think it's fun?$h",
+  "companion_Farm~1": "I really enjoy working with my hands as a sculptor, I imagine you feel the same way about your crops.",
+  "companion_Farm_Spouse": "Just take a deep breath, @, enjoy it. You've done such amazing work here, I'm so proud of you!$1",
+  "companion_Town": "This town sure looks small to people like us that came from a big city, but it was pretty easy to adapt, for me at least. What about you, @?",
+  "companion_Town_Spouse": "Even in town there's a couple of places to forage, it really is an incredible valley! So much life here!",
+  "companion_Beach": "The sound of the waves always calms me down, makes me feel a bit tired...#$b#Don't worry, I'm not actually sleepy. Really!$1",
+  "companion_Mountain": "I can't figure out whether I want to look up and enjoy this beautiful landscape, or look down and keep foraging!$7#$b#What I should do, @?$3",
+  "companion_Mountain_Spouse": "I should take a day trip out here one of these days and paint the mountain lake. There's something so calming about this area.",
+  "companion_Forest": "I've learned to see the forest as my second home.#$b#Not only do I feel at ease here, but I can find almost everything I need to live!",
+  "companion_Forest_Spouse": "I'm glad I kept my little cabin after we got married, @, it's like we have a vacation home in the woods!$1",
+  "companion_Mine": "This is not a place I'm used to visiting, but thank you for showing me some new things today, @.",
+  "companion_Mine_Spouse": "Let's take it easy dear, it's just the two of us and being here always makes me a bit nervous.$2"
 }

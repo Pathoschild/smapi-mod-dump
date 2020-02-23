@@ -1,0 +1,67 @@
+﻿[
+	{
+		"ProducerName": "Dwarvish Gem Polisher",
+		"AlternateFrameProducing": true, 
+        "AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Dwarvish Pulverizer",
+		"AlternateFrameProducing": true, 
+        "AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Dwarvish Still",
+		"AlternateFrameProducing": true, 
+        "AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Alchemy Bench",
+		"AlternateFrameProducing": true, 
+        "AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Jewelerymakers Bench",
+		"AlternateFrameProducing": true, 
+        "AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Efficient Furnace",
+		"AlternateFrameProducing": true, 
+        "AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Pulverized Coal Furnace",
+		"AlternateFrameProducing": true, 
+        "AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Slow-Burn Charcoal Kiln",
+		"AlternateFrameProducing": true, 
+        "AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Mushroom Box (Red)",
+		"NoInputStartMode": "Placement",
+		"WorkingOutdoors": false
+	},
+	{
+		"ProducerName": "Mushroom Box (Common)",
+		"NoInputStartMode": "Placement",
+		"WorkingOutdoors": false
+	},
+	{
+		"ProducerName": "Mushroom Box (Chanterelle)",
+		"NoInputStartMode": "Placement",
+		"WorkingOutdoors": false
+	},
+	{
+		"ProducerName": "Mushroom Box (Morel)",
+		"NoInputStartMode": "Placement",
+		"WorkingOutdoors": false
+	},
+	{
+		"ProducerName": "Mushroom Box (Purple)",
+		"NoInputStartMode": "Placement",
+		"WorkingOutdoors": false
+	}
+]

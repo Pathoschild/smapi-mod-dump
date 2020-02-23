@@ -3,7 +3,6 @@ using SpriteMaster.Extensions;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using static SpriteMaster.Harmonize.Harmonize;
-using static SpriteMaster.ScaledTexture;
 
 using SpriteBatcher = System.Object;
 
@@ -12,37 +11,16 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 	[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Harmony")]
 	internal static class PlatformRenderBatch {
 		private static SamplerState GetNewSamplerState(Texture texture, SamplerState reference) {
+			if (!Config.DrawState.SetLinear) {
+				return reference;
+			}
+
 			if (texture is ManagedTexture2D managedTexture && managedTexture.Texture != null) {
-				var newState = new SamplerState() {
-					AddressU = managedTexture.Texture.Wrapped.X ? TextureAddressMode.Wrap : reference.AddressU,
-					AddressV = managedTexture.Texture.Wrapped.Y ? TextureAddressMode.Wrap : reference.AddressV,
-					AddressW = reference.AddressW,
-					MaxAnisotropy = reference.MaxAnisotropy,
-					MaxMipLevel = reference.MaxMipLevel,
-					MipMapLevelOfDetailBias = reference.MipMapLevelOfDetailBias,
-					Name = "RescaledSampler",
-					Tag = reference.Tag,
-					Filter = (Config.DrawState.SetLinear) ? TextureFilter.Linear : reference.Filter
-				};
-
-				return newState;
+				return SamplerState.LinearClamp;
 			}
-
-			/*
-			else if (texture is RenderTarget2D) {
-				var newState = new SamplerState() {
-					AddressU = OriginalState.AddressU,
-					AddressV = OriginalState.AddressV,
-					AddressW = OriginalState.AddressW,
-					MaxAnisotropy = OriginalState.MaxAnisotropy,
-					MaxMipLevel = OriginalState.MaxMipLevel,
-					MipMapLevelOfDetailBias = OriginalState.MipMapLevelOfDetailBias,
-					Name = "RescaledSampler",
-					Tag = OriginalState.Tag,
-					Filter = (Config.DrawState.SetLinear) ? TextureFilter.Linear : OriginalState.Filter
-				};
+			else if (reference.Filter == TextureFilter.Linear) {
+				return SamplerState.PointClamp;
 			}
-			*/
 
 			return reference;
 		}
@@ -61,12 +39,10 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 			int end,
 			Effect effect,
 			Texture texture,
-			GraphicsDevice ____device,
-			ref SamplerState __state
+			GraphicsDevice ____device
 		) {
 			try {
 				var OriginalState = ____device?.SamplerStates[0] ?? SamplerState.PointClamp;
-				__state = OriginalState;
 
 				var newState = GetNewSamplerState(texture, OriginalState);
 
@@ -81,36 +57,6 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 		}
 
 		[Harmonize(
-			"Microsoft.Xna.Framework.Graphics",
-			"Microsoft.Xna.Framework.Graphics.SpriteBatcher",
-			"FlushVertexArray",
-			HarmonizeAttribute.Fixation.Postfix,
-			PriorityLevel.Last,
-			platform: HarmonizeAttribute.Platform.Unix
-		)]
-		internal static void OnFlushVertexArrayPost (
-			SpriteBatcher __instance,
-			int start,
-			int end,
-			Effect effect,
-			Texture texture,
-			GraphicsDevice ____device,
-			ref SamplerState __state
-		) {
-			if (__state == null) {
-				return;
-			}
-
-			try {
-				if (____device?.SamplerStates != null)
-					____device.SamplerStates[0] = __state;
-			}
-			catch (Exception ex) {
-				ex.PrintError();
-			}
-		}
-
-		[Harmonize(
 			"PlatformRenderBatch",
 			HarmonizeAttribute.Fixation.Prefix,
 			PriorityLevel.First,
@@ -122,12 +68,10 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 			object[] sprites,
 			int offset,
 			int count,
-			ref SamplerState ___samplerState,
-			ref SamplerState __state
+			ref SamplerState ___samplerState
 		) {
 			try {
 				var OriginalState = ___samplerState ?? SamplerState.PointClamp;
-				__state = OriginalState;
 
 				var newState = GetNewSamplerState(texture, OriginalState);
 
@@ -143,35 +87,6 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 			}
 
 			return true;
-		}
-
-		[Harmonize(
-			"PlatformRenderBatch",
-			HarmonizeAttribute.Fixation.Postfix,
-			PriorityLevel.Last,
-			platform: HarmonizeAttribute.Platform.Windows
-		)]
-		internal static void OnPlatformRenderBatchPost (
-			SpriteBatch __instance,
-			Texture2D texture,
-			object[] sprites,
-			int offset,
-			int count,
-			ref SamplerState ___samplerState,
-			ref SamplerState __state
-		) {
-			if (__state == null) {
-				return;
-			}
-
-			try {
-				if (__instance?.GraphicsDevice?.SamplerStates != null)
-					__instance.GraphicsDevice.SamplerStates[0] = __state;
-				___samplerState = __state;
-			}
-			catch (Exception ex) {
-				ex.PrintError();
-			}
 		}
 	}
 }

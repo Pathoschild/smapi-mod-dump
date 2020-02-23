@@ -1,0 +1,38 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [{
+                "label": "Build Debug",
+                "type": "shell",
+                "options": {
+                    "cwd": "DailyScreenshot"
+                },
+                "command": "mdtool",
+                "args": [
+                    "build",
+                    "-c:Debug"
+                ],
+                "problemMatcher": [],
+                "group": {
+                    "kind": "build",
+                    "isDefault": true
+                }
+            }, {
+                "label": "Build Release",
+                "type": "shell",
+                "options": {
+                    "cwd": "DailyScreenshot"
+                },
+                "command": "mdtool",
+                "args": [
+                    "build",
+                    "-c:Release"
+                ],
+                "problemMatcher": [],
+                "group": {
+                    "kind": "build",
+                    "isDefault": true
+                }
+            }]
+}

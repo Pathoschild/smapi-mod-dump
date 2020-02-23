@@ -30,7 +30,7 @@ namespace NpcAdventure.AI
                 if (this.player.health > this.player.maxHealth)
                     this.player.health = this.player.maxHealth;
 
-                Game1.drawDialogue(this.npc, DialogueHelper.GetDialogueString(this.npc, "heal"));
+                Game1.drawDialogue(this.npc, DialogueHelper.GetSpecificDialogueText(this.npc, this.player, "heal"));
                 Game1.addHUDMessage(new HUDMessage(this.Csm.ContentLoader.LoadString("Strings/Strings:healed", this.npc.displayName, health), HUDMessage.health_type));
                 this.hud.GlowSkill("doctor", Color.Lime, HEAL_COUNTDOWN / 60);
                 this.Monitor.Log($"{this.npc.Name} healed you! Remaining medkits: {this.medkits}", LogLevel.Info);
@@ -40,7 +40,7 @@ namespace NpcAdventure.AI
             if (this.medkits == 0)
             {
                 this.Monitor.Log($"No medkits. {this.npc.Name} can't heal you!", LogLevel.Info);
-                Game1.drawDialogue(this.npc, DialogueHelper.GetDialogueString(this.npc, "nomedkits"));
+                Game1.drawDialogue(this.npc, DialogueHelper.GetSpecificDialogueText(this.npc, this.player, "nomedkits"));
                 this.medkits = -1;
             }
 

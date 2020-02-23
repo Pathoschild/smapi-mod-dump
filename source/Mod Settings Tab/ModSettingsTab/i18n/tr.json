@@ -3,5 +3,11 @@
   "OptionsPage.ModSettingsTab": "Değiştirme Ayarları",
   "StaticConfig.SuccessMessage": "Ayarlar kaydedildi",
   "StaticConfig.FailMessage": "Hata Kaydet",
-  "OptionsList.NewValue": "Yeni bir değer girin"
+  "OptionsList.NewValue": "Yeni bir değer girin",
+  "Mod.Disabled.Error": "Değişiklikler değiştirilemedi",
+  "ModManager.AddModPack": "Yeni mod paketi ekle",
+  "ModManager.HoverSetUp.Title": "Modpack'i değiştir",
+  "ModManager.HoverSetUp.Description": "mod paketine dahil olmayan diğer modlar devre dışı bırakılacak",
+  "ModManager.Toggle.Label": "Geçerli mod paketi",
+  "ModManager.Add.NameTextBox": "Modpack adı"
 }

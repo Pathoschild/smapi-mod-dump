@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.Common.Integrations.CustomFarmingRedux;
 using Pathoschild.Stardew.Common.Integrations.JsonAssets;
+using Pathoschild.Stardew.Common.Integrations.ProducerFrameworkMod;
 using Pathoschild.Stardew.LookupAnything.Components;
 using Pathoschild.Stardew.LookupAnything.Framework;
 using Pathoschild.Stardew.LookupAnything.Framework.Constants;
@@ -52,6 +53,9 @@ namespace Pathoschild.Stardew.LookupAnything
         /// <summary>Provides utility methods for interacting with the game code.</summary>
         private GameHelper GameHelper;
 
+        /// <summary>Provides subject entries for target values.</summary>
+        private SubjectFactory SubjectFactory;
+
         /// <summary>Finds and analyzes lookup targets in the world.</summary>
         private TargetFactory TargetFactory;
 
@@ -68,7 +72,7 @@ namespace Pathoschild.Stardew.LookupAnything
         {
             // load config
             this.Config = this.Helper.ReadConfig<ModConfig>();
-            this.Keys = this.Config.Controls.ParseControls(this.Monitor);
+            this.Keys = this.Config.Controls.ParseControls(helper.Input, this.Monitor);
 
             // load translations
             L10n.Init(helper.Translation);
@@ -116,8 +120,10 @@ namespace Pathoschild.Stardew.LookupAnything
 
             // initialize functionality
             var customFarming = new CustomFarmingReduxIntegration(this.Helper.ModRegistry, this.Monitor);
-            this.GameHelper = new GameHelper(customFarming, this.Metadata);
-            this.TargetFactory = new TargetFactory(this.Helper.Reflection, this.GameHelper, jsonAssets, new SubjectFactory(this.Metadata, this.Helper.Translation, this.Helper.Reflection, this.GameHelper, this.Config));
+            var producerFramework = new ProducerFrameworkModIntegration(this.Helper.ModRegistry, this.Monitor);
+            this.GameHelper = new GameHelper(customFarming, producerFramework, this.Metadata);
+            this.SubjectFactory = new SubjectFactory(this.Metadata, this.Helper.Translation, this.Helper.Reflection, this.GameHelper, this.Config);
+            this.TargetFactory = new TargetFactory(this.Helper.Reflection, this.GameHelper, jsonAssets, this.SubjectFactory);
             this.DebugInterface = new DebugInterface(this.GameHelper, this.TargetFactory, this.Config, this.Monitor);
         }
 
@@ -139,15 +145,17 @@ namespace Pathoschild.Stardew.LookupAnything
             {
                 ModConfigKeys keys = this.Keys;
 
-                if (keys.ToggleLookup.Contains(e.Button))
+                if (keys.ToggleSearch.JustPressedUnique())
+                    this.ToggleSearch();
+                if (keys.ToggleLookup.JustPressedUnique())
                     this.ToggleLookup(LookupMode.Cursor);
-                else if (keys.ToggleLookupInFrontOfPlayer.Contains(e.Button) && Context.IsWorldReady)
+                else if (keys.ToggleLookupInFrontOfPlayer.JustPressedUnique() && Context.IsWorldReady)
                     this.ToggleLookup(LookupMode.FacingPlayer);
-                else if (keys.ScrollUp.Contains(e.Button))
+                else if (keys.ScrollUp.JustPressedUnique())
                     (Game1.activeClickableMenu as LookupMenu)?.ScrollUp();
-                else if (keys.ScrollDown.Contains(e.Button))
+                else if (keys.ScrollDown.JustPressedUnique())
                     (Game1.activeClickableMenu as LookupMenu)?.ScrollDown();
-                else if (keys.ToggleDebug.Contains(e.Button) && Context.IsPlayerFree)
+                else if (keys.ToggleDebug.JustPressedUnique() && Context.IsPlayerFree)
                     this.DebugInterface.Enabled = !this.DebugInterface.Enabled;
             });
         }
@@ -162,7 +170,7 @@ namespace Pathoschild.Stardew.LookupAnything
             {
                 ModConfigKeys keys = this.Keys;
 
-                if (keys.ToggleLookup.Contains(e.Button) || keys.ToggleLookupInFrontOfPlayer.Contains(e.Button))
+                if (keys.ToggleLookup.JustPressedUnique() || keys.ToggleLookupInFrontOfPlayer.JustPressedUnique())
                     this.HideLookup();
             });
         }
@@ -191,7 +199,7 @@ namespace Pathoschild.Stardew.LookupAnything
         }
 
         /****
-        ** Helpers
+        ** Lookup menu helpers
         ****/
         /// <summary>Show the lookup UI for the current target.</summary>
         /// <param name="lookupMode">The lookup target mode.</param>
@@ -224,17 +232,17 @@ namespace Pathoschild.Stardew.LookupAnything
                     ISubject subject = this.GetSubject(logMessage, lookupMode);
                     if (subject == null)
                     {
-                        this.Monitor.Log($"{logMessage} no target found.", LogLevel.Trace);
+                        this.Monitor.Log($"{logMessage} no target found.");
                         return;
                     }
 
                     // show lookup UI
-                    this.Monitor.Log(logMessage.ToString(), LogLevel.Trace);
+                    this.Monitor.Log(logMessage.ToString());
                     this.ShowLookupFor(subject);
                 }
                 catch
                 {
-                    this.Monitor.Log($"{logMessage} an error occurred.", LogLevel.Trace);
+                    this.Monitor.Log($"{logMessage} an error occurred.");
                     throw;
                 }
             });
@@ -246,19 +254,56 @@ namespace Pathoschild.Stardew.LookupAnything
         {
             this.Monitor.InterceptErrors("looking that up", () =>
             {
-                this.Monitor.Log($"Showing {subject.GetType().Name}::{subject.Type}::{subject.Name}.", LogLevel.Trace);
-
-                LookupMenu lookupMenu = new LookupMenu(this.GameHelper, subject, this.Monitor, this.Helper.Reflection, this.Config.ScrollAmount, this.Config.ShowDataMiningFields, this.ShowLookupFor);
-                if (this.ShouldRestoreMenu(Game1.activeClickableMenu))
-                {
-                    this.PreviousMenus.Push(Game1.activeClickableMenu);
-                    this.Helper.Reflection.GetField<IClickableMenu>(typeof(Game1), "_activeClickableMenu").SetValue(lookupMenu); // bypass Game1.activeClickableMenu, which disposes the previous menu
-                }
-                else
-                    Game1.activeClickableMenu = lookupMenu;
+                this.Monitor.Log($"Showing {subject.GetType().Name}::{subject.Type}::{subject.Name}.");
+                this.PushMenu(
+                    new LookupMenu(this.GameHelper, subject, this.Monitor, this.Helper.Reflection, this.Config.ScrollAmount, this.Config.ShowDataMiningFields, this.ShowLookupFor)
+                );
             });
         }
 
+        /// <summary>Hide the lookup UI for the current target.</summary>
+        private void HideLookup()
+        {
+            this.Monitor.InterceptErrors("closing the menu", () =>
+            {
+                if (Game1.activeClickableMenu is LookupMenu menu)
+                    menu.QueueExit();
+            });
+        }
+
+        /****
+        ** Search menu helpers
+        ****/
+        /// <summary>Toggle the search UI.</summary>
+        private void ToggleSearch()
+        {
+            if (Game1.activeClickableMenu is SearchMenu)
+                this.HideSearch();
+            else
+                this.ShowSearch();
+        }
+
+        /// <summary>Show the search UI.</summary>
+        private void ShowSearch()
+        {
+            this.PushMenu(
+                new SearchMenu(this.SubjectFactory, this.ShowLookupFor)
+            );
+        }
+
+        /// <summary>Hide the search UI.</summary>
+        private void HideSearch()
+        {
+            if (Game1.activeClickableMenu is SearchMenu)
+            {
+                Game1.playSound("bigDeSelect"); // match default behaviour when closing a menu
+                Game1.activeClickableMenu = null;
+            }
+        }
+
+        /****
+        ** Generic helpers
+        ****/
         /// <summary>Get the most relevant subject under the player's cursor.</summary>
         /// <param name="logMessage">The log message to which to append search details.</param>
         /// <param name="lookupMode">The lookup target mode.</param>
@@ -298,14 +343,17 @@ namespace Pathoschild.Stardew.LookupAnything
             return null;
         }
 
-        /// <summary>Show the lookup UI for the current target.</summary>
-        private void HideLookup()
+        /// <summary>Push a new menu onto the display stack, saving the previous menu if needed.</summary>
+        /// <param name="menu">The menu to show.</param>
+        private void PushMenu(IClickableMenu menu)
         {
-            this.Monitor.InterceptErrors("closing the menu", () =>
+            if (this.ShouldRestoreMenu(Game1.activeClickableMenu))
             {
-                if (Game1.activeClickableMenu is LookupMenu menu)
-                    menu.QueueExit();
-            });
+                this.PreviousMenus.Push(Game1.activeClickableMenu);
+                this.Helper.Reflection.GetField<IClickableMenu>(typeof(Game1), "_activeClickableMenu").SetValue(menu); // bypass Game1.activeClickableMenu, which disposes the previous menu
+            }
+            else
+                Game1.activeClickableMenu = menu;
         }
 
         /// <summary>Load the file containing metadata that's not available from the game directly.</summary>

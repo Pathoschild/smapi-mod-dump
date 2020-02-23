@@ -1,0 +1,13 @@
+url:
+   https://github.com/Chikakoo/stardew-valley-randomizer.git
+
+mods:
+   More Random Edition
+
+latest commit:
+   commit a414bfacf8e40200e20503dcc08aa318a83f562b
+   Author: chikakoo <lionel.crafts@gmail.com>
+   Date:   Fri Feb 21 18:10:05 2020 -0600
+   
+       Update README.md
+   

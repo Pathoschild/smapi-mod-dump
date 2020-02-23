@@ -4,12 +4,25 @@
 		"GroupId": "MyMod.MyGroupId", // Letter group id. Letters with the same group id are never delivered in the same day. Letters registered first have priority, unless the group id ends with ".Random", in that case, a random letter will be chosen. Default is null.
 		"Title": "My Letter Title", // Letter title. Will be shown in the collections menu. Set it null or remove the line if you don't want the letter to appear in the collection. If an translation file is provide, you should put a translation key here, but you can still leave if null for no Title.
 		"Text": "Dear @^This is my custom mail.", // Text of the letter. You can use @ to put the players name and ^ for line breaks. You can also use the base game commands to add money, items and stuff. If an translation file is provide, you should put a translation key here.
-		"Attachments": [{"Type": "Tool", "Name": "Axe"},{"Type": "Object", "Index":78, "Stack": 1},{"Type": "BigCraftable", "Index":159, "Stack": 3}], // Remove the line to not attach items to the mail. You can use the Name properties for Object and BigCraftable items too, that's required if using Json Assets. Stack is optional o Objects and BigCraftable. A stack of 1 is used if none is provided.
+		"Attachments": [ // List of attachments. Remove the property to not attach items to the mail.
+			{
+				"Type": "Tool", // [Object|BigCraftable|Tool|Ring] Required. The type of item that will be attached. If not provided the item will be ignored.
+				"Name": "Axe" // Used to find the item index. That's required if using custom objects like Json Assets ones. Default is null.
+			},
+			{
+				"Type": "Object",
+				"Index": 78, // The index of item. If not provided and no index if found for the name, the attachment is ignored.
+				"Stack": 1 // The stack value of the item to be delivered. Used only for Objects and BigCraftable. Default is 1;
+			}
+		],
 		"Recipe": "Recipe Name", // Remove the line if you don't want to attach a recipe to the mail. It will only work if you have no other attachments to the mail.
-		"WhichBG": 0, //The id of the letter background. 0 = classic, 1 = notepad, 2 = pyramids
+		"LetterBG": "CustomLetterBG.png", // Name of the file in your content pack that has the custom letter background to use. It should follow the same structure of the game LetterBG file . WhichBG will be relative to this file for this letter. If null or removed the mod will use the game LetterBG.
+        "WhichBG": 0, //The id of the letter background. 0 = classic, 1 = notepad, 2 = pyramids
 		"TextColor": -1, //Remove this line to use the default color. -1 = Dark Red, 0 = Black, 1 = Sky Blue, 2 = Red, 3 = Blue Violet, 4 = White, 5 = Orange Red, 6 = Lime Green, 7 = Cyan, 8 = Darkest Gray
-		"Repeatable": false, // If true the mod won't check it the letter Id has already been delivered. Default is false.
-		//Below are conditions for the delivery. Remove any of the lines if you don't want to check that condition.
+		"UpperRightCloseButton": "CustomCloseButton.png", // Name of the file in your content pack that has the custom close button to use. It should be 12 x 12 . If null or removed it will use the default button.
+        "Repeatable": false, // If true the mod won't check it the letter Id has already been delivered. Default is false.
+		// CONDITIONS FOR DELIVERY
+        //Below are conditions for the delivery. Remove any of the lines if you don't want to check that condition.
 		"Date": "10 spring Y1", // Must be that date or after it. The format is "[1-28] [spring|summer|fall|winter] Y[1-999]".
 		"Days": [7,14,21,28], // Must be one of the days in the list.
 		"Seasons": ["fall"], // Must be one of the seasons in the list, seasons should be lower case.
@@ -51,6 +64,9 @@
 		"MailNotReceived": ["jojaVault","ccVault"], // Require the mails to have not been received. The game list also contain others thing that are not mail, like community center flags.
 		"EventsSeen": [4,32423], // Require one of the events to have been seen by the player.
 		"RequireAllEventsSeen":  false, // If true, require that all the events in the "EventsSeen" list to have been seen by the player. Default is false.
-		"EventsNotSeen": [4,32423] // Require the events to have not been seen by the player.
-	}
+		"EventsNotSeen": [4,32423], // Require the events to have not been seen by the player.
+		"RecipeKnown": ["Pizza","Survival Burger"], // Require one of the recipes to have been learned by the player.
+		"RequireAllRecipeKnown":  false, // If true, require that all the recipes in the "RecipeKnown" list to have been learned by the player. Default is false.
+		"RecipeNotKnown": ["Wild Bait"] // Require the recipes to have not been learned by the player.
+    }
 ]

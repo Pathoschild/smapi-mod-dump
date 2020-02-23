@@ -1,8 +1,9 @@
 using System;
-using ConvenientChests.StackToNearbyChests;
+using ConvenientChests.StashToChests;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Characters;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
@@ -58,14 +59,14 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             StashButton.Width = OpenButton.Width = Math.Max(StashButton.Width, OpenButton.Width);
 
             OpenButton.Position = new Point(
-                ItemGrabMenu.xPositionOnScreen + ItemGrabMenu.width / 2 - OpenButton.Width - 112 * Game1.pixelZoom,
-                ItemGrabMenu.yPositionOnScreen                                             + 22  * Game1.pixelZoom
-            );
+                    ItemGrabMenu.xPositionOnScreen + ItemGrabMenu.width / 2 - OpenButton.Width - 112 * Game1.pixelZoom,
+                    ItemGrabMenu.yPositionOnScreen                                             + 22  * Game1.pixelZoom
+                );
 
             StashButton.Position = new Point(
-                OpenButton.Position.X + OpenButton.Width  - StashButton.Width,
-                OpenButton.Position.Y + OpenButton.Height - 0
-            );
+                    OpenButton.Position.X + OpenButton.Width  - StashButton.Width,
+                    OpenButton.Position.Y + OpenButton.Height - 0
+                );
         }
 
         private string ChooseStashButtonLabel() {
@@ -84,11 +85,12 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
 
         private void OpenCategoryMenu() {
             var chestData = Module.ChestDataManager.GetChestData(Chest);
-            CategoryMenu = new CategoryMenu(chestData, Module.ItemDataManager, TooltipManager);
+            CategoryMenu = new CategoryMenu(chestData, Module.ItemDataManager, TooltipManager, ItemGrabMenu.width - 24);
             CategoryMenu.Position = new Point(
-                ItemGrabMenu.xPositionOnScreen + ItemGrabMenu.width / 2 - CategoryMenu.Width / 2 - 6  * Game1.pixelZoom,
-                ItemGrabMenu.yPositionOnScreen                                                   - 10 * Game1.pixelZoom
-            );
+                    ItemGrabMenu.xPositionOnScreen - GlobalBounds.X - 12,
+                    ItemGrabMenu.yPositionOnScreen - GlobalBounds.Y - 60
+                );
+
             CategoryMenu.OnClose += CloseCategoryMenu;
             AddChild(CategoryMenu);
 

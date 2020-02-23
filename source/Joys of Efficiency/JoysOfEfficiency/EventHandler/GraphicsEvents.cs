@@ -2,7 +2,6 @@
 using JoysOfEfficiency.Core;
 using JoysOfEfficiency.Huds;
 using JoysOfEfficiency.Misc;
-using JoysOfEfficiency.Utils;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
@@ -50,7 +49,7 @@ namespace JoysOfEfficiency.EventHandler
             }
             if (Conf.EstimateShippingPrice && Game1.activeClickableMenu is ItemGrabMenu menu)
             {
-                Util.DrawShippingPrice(menu, Game1.dialogueFont);
+                ShippingEstimationInfoBox.DrawShippingPrice(menu, Game1.dialogueFont);
             }
         }
     }

@@ -20,7 +20,7 @@ namespace BetterJunimos.Abilities {
         }
 
         public bool PerformAction(Farm farm, Vector2 pos, JunimoHarvester junimo, Chest chest) {
-            Item foundItem = chest.items.FirstOrDefault(item => item.Category == ItemCategory);
+            Item foundItem = chest.items.FirstOrDefault(item => item != null && item.Category == ItemCategory);
             if (foundItem == null) return false;
 
             Fertilize(farm, pos, foundItem.ParentSheetIndex);

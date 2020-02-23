@@ -66,7 +66,7 @@ namespace AudioDevices
             Game1.waveBank.Dispose();
             Game1.soundBank.Dispose();
 
-            Game1.audioEngine = newAudioEngine;
+            Game1.audioEngine = new SDVAudioEngineImpl(newAudioEngine);
             Game1.waveBank = newWaveBank;
             Game1.soundBank = new SoundBankWrapper(newSoundBank);
 
@@ -93,12 +93,12 @@ namespace AudioDevices
             Log("Switched Audio Device: " + Settings.SelectedAudioDevice + " (previous: " + prevAudioDevice + ")");
         }
 
-        private Cue FixCue(SoundBank newSoundBank, Cue cue)
+        private ICue FixCue(SoundBank newSoundBank, ICue cue)
         {
-            Cue fixedCue = null;
+            ICue fixedCue = null;
             if (cue != null)
             {
-                fixedCue = newSoundBank.GetCue(cue.Name);
+                fixedCue = new CueWrapper(newSoundBank.GetCue(cue.Name));
                 if (cue.IsPaused)
                 {
                     fixedCue.Play();
@@ -162,7 +162,7 @@ namespace AudioDevices
             theThingIsInited = true;
 
             rendererDetails.Clear();
-            rendererDetails.AddRange(Game1.audioEngine.RendererDetails);
+            rendererDetails.AddRange(Game1.audioEngine.Engine.RendererDetails);
 
             if (Settings.SwitchToDefaultDeviceMode != AudioDeviceSettings.AudioSwitchToDefaultDeviceMode.Always
                 && Settings.SelectedAudioDevice != ""
@@ -171,11 +171,11 @@ namespace AudioDevices
             {
                 SwitchAudioDevice(rendererDetails.Find(r => Settings.SelectedAudioDevice == r.FriendlyName));
                 rendererDetails.Clear();
-                rendererDetails.AddRange(Game1.audioEngine.RendererDetails);
+                rendererDetails.AddRange(Game1.audioEngine.Engine.RendererDetails);
             }
             else
             {
-                Settings.SelectedAudioDevice = Game1.audioEngine.RendererDetails[0].FriendlyName;
+                Settings.SelectedAudioDevice = Game1.audioEngine.Engine.RendererDetails[0].FriendlyName;
                 StoreSettings();
             }
 

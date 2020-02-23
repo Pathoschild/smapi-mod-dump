@@ -13,8 +13,7 @@ Install the latest version of SMAPI from [https://smapi.io].
    * Some mods can result in a buggy Null 'item' in your inventory that shuts your inventory screen as soon as you open it. If you are seeing this behavior, press 'C' and Multitool will remove Null items from your inventory.
 
 ## Compatibility
-Works with Stardew Valley 1.3 beta on Linux/Mac/Windows.
-Not yet tested in Multiplayer. 
+Works with Stardew Valley 1.4 and SMAPI 3.2
 
 ## See Also
    * The source code is hosted at [https://github.com/miome/MultitoolMod]

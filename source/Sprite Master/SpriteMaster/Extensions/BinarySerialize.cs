@@ -1,111 +1,96 @@
 ﻿using SpriteMaster.Types;
 using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Extensions {
 	internal static class BinarySerialize {
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void Write<T> (this BinaryWriter stream, T value) {
 			switch (value) {
 				case string v:
 					stream.Write(v);
-					return;
+					break;
 				case float v:
 					stream.Write(v);
-					return;
+					break;
 				case double v:
 					stream.Write(v);
-					return;
+					break;
 				case char v:
 					stream.Write(v);
-					return;
+					break;
 				case byte v:
 					stream.Write(v);
-					return;
+					break;
 				case sbyte v:
 					stream.Write(v);
-					return;
+					break;
 				case short v:
 					stream.Write(v);
-					return;
+					break;
 				case ushort v:
 					stream.Write(v);
-					return;
+					break;
 				case int v:
 					stream.Write(v);
-					return;
+					break;
 				case uint v:
 					stream.Write(v);
-					return;
+					break;
 				case long v:
 					stream.Write(v);
-					return;
+					break;
 				case ulong v:
 					stream.Write(v);
-					return;
+					break;
 				case bool v:
 					stream.Write(v);
-					return;
+					break;
 				case decimal v:
 					stream.Write(v);
-					return;
+					break;
 				case Vector2I v:
-					stream.Write(v.X);
-					stream.Write(v.Y);
-					return;
+					stream.Write(v.Packed);
+					break;
 				case Vector2B v:
-					stream.Write(v.X);
-					stream.Write(v.Y);
-					return;
+					stream.Write(v.Packed);
+					break;
 				case Resample.TextureFormat v:
 					stream.Write((int)(TeximpNet.Compression.CompressionFormat)v);
-					return;
+					break;
+				default:
+					throw new ArgumentException($"Type {typeof(T).FullName} cannot be serialized by BinaryWriter");
 			}
-
-			throw new ArgumentException($"Type {typeof(T).FullName} cannot be serialized by BinaryWriter");
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static object Read (this BinaryReader stream, Type type) {
-			switch (type) {
-				case var _ when type.Equals(typeof(string)):
-					return stream.ReadString();
-				case var _ when type.Equals(typeof(float)):
-					return stream.ReadSingle();
-				case var _ when type.Equals(typeof(double)):
-					return stream.ReadDouble();
-				case var _ when type.Equals(typeof(char)):
-					return stream.ReadChar();
-				case var _ when type.Equals(typeof(byte)):
-					return stream.ReadByte();
-				case var _ when type.Equals(typeof(sbyte)):
-					return stream.ReadSByte();
-				case var _ when type.Equals(typeof(short)):
-					return stream.ReadInt16();
-				case var _ when type.Equals(typeof(ushort)):
-					return stream.ReadUInt16();
-				case var _ when type.Equals(typeof(int)):
-					return stream.ReadInt32();
-				case var _ when type.Equals(typeof(uint)):
-					return stream.ReadUInt32();
-				case var _ when type.Equals(typeof(long)):
-					return stream.ReadInt64();
-				case var _ when type.Equals(typeof(ulong)):
-					return stream.ReadUInt64();
-				case var _ when type.Equals(typeof(bool)):
-					return stream.ReadBoolean();
-				case var _ when type.Equals(typeof(decimal)):
-					return stream.ReadDecimal();
-				case var _ when type.Equals(typeof(Vector2I)):
-					return new Vector2I(stream.ReadInt32(), stream.ReadInt32());
-				case var _ when type.Equals(typeof(Vector2B)):
-					return new Vector2B(stream.ReadBoolean(), stream.ReadBoolean());
-				case var _ when type.Equals(typeof(Resample.TextureFormat)):
-				case var _ when type.Equals(typeof(Resample.TextureFormat?)):
-					return Resample.TextureFormat.Get((TeximpNet.Compression.CompressionFormat)stream.ReadInt32());
-			}
-
-			throw new ArgumentException($"Type {type.FullName} cannot be serialized by BinaryReader");
+			return type switch
+			{
+				var _ when type == typeof(string) => stream.ReadString(),
+				var _ when type == typeof(float) => stream.ReadSingle(),
+				var _ when type == typeof(double) => stream.ReadDouble(),
+				var _ when type == typeof(char) => stream.ReadChar(),
+				var _ when type == typeof(byte) => stream.ReadByte(),
+				var _ when type == typeof(sbyte) => stream.ReadSByte(),
+				var _ when type == typeof(short) => stream.ReadInt16(),
+				var _ when type == typeof(ushort) => stream.ReadUInt16(),
+				var _ when type == typeof(int) => stream.ReadInt32(),
+				var _ when type == typeof(uint) => stream.ReadUInt32(),
+				var _ when type == typeof(long) => stream.ReadInt64(),
+				var _ when type == typeof(ulong) => stream.ReadUInt64(),
+				var _ when type == typeof(bool) => stream.ReadBoolean(),
+				var _ when type == typeof(decimal) => stream.ReadDecimal(),
+				var _ when type == typeof(Vector2I) => new Vector2I(stream.ReadInt64()),
+				var _ when type == typeof(Vector2B) => new Vector2B(stream.ReadByte()),
+				var _ when type == typeof(Resample.TextureFormat) || type == typeof(Resample.TextureFormat?) =>
+					Resample.TextureFormat.Get((TeximpNet.Compression.CompressionFormat)stream.ReadInt32()),
+				_ => throw new ArgumentException($"Type {type.FullName} cannot be serialized by BinaryReader"),
+			};
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static T Read<T> (this BinaryReader stream) {
 			return (T)Read(stream, typeof(T));
 		}

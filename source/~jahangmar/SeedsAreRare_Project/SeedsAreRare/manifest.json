@@ -1,7 +1,7 @@
 ﻿{
   "Name": "SeedsAreRare",
   "Author": "jahangmar",
-  "Version": "1.3.0",
+  "Version": "1.4.0",
   "Description": "Removes seeds from all stores and encourages the use of seed makers",
   "UniqueID": "jahangmar.SeedsAreRare",
   "MinimumApiVersion": "3.0.0",
@@ -9,13 +9,9 @@
   "Dependencies": [
    {
       "UniqueID": "jahangmar.CP-SeedsAreRare",
-      "IsRequired": true
+      "IsRequired": true,
+      "MinimumVersion": "1.4.0"
    },
-   {
-      "UniqueID": "EpicBellyFlop45.BetterMixedSeeds",
-      "IsRequired": false
-   }
 ],
 "UpdateKeys": [ "Nexus:3618" ]
-
 }

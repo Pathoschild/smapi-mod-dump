@@ -1,0 +1,50 @@
+none
+6 18
+farmer 6 18 0 Marlon 6 14 2
+pause 1000
+skippable
+pause 100
+speak Marlon "Welcome, @"
+pause 700
+move farmer 0 -3 0
+pause 1000
+speak Marlon "You got my letter then? Very good."
+pause 600
+speak Marlon "As I said before, here in town you will find others like you, with the desire to explore and the skills to match their spirit."
+speak Marlon "Being that you were new here in Pelican town, I needed to see that you truly desired to start a life and make a home for yourself, to be a part of our community."
+pause 300
+playMusic MarlonsTheme
+pause 600
+speak Marlon "I needed to see your character.#$b#You have proven yourself in this regard, and have earned an old warrior’s respect."
+pause 200
+speak Marlon "But you did not come here for that, I know, you’ve come to know more about the people in this town."
+speak Marlon "Some you know better than others, but do you know everything?"
+pause 200
+emote farmer 8
+pause 200
+speak Marlon "There are strong people in this town, untested in battle perhaps, but with true potential for greatness."
+pause 100
+speak Marlon "There are others well versed in medicine who can heal you, even bring you back from the brink of death.#$b# Very useful partners for your trips to the mines, I would say."
+speak Marlon "Some are more apt at fishing and foraging for raw materials.#$b#They can share their bounty with you, and keep you company during your day."
+pause 200
+speak Marlon "And perhaps, a few are even gifted with the power of magic, with all it’s mysterious trappings. But that, I know much less about."
+speak Marlon "This town is honest, and anything you leave with them I’m sure they would return to you the next day."
+speak Marlon "Living in such close proximity to the monsters of the Valley, most people in town have some moderate fighting skill."
+speak Marlon "It’s best we all know how to defend ourselves, but some are more willing than others to explore."
+pause 100
+speak Marlon "You must be wondering by now, which of your friends, acquaintances, and even lovers would have these skills and would be willing to accompany you.#$b#But where’s the adventure in that?"
+pause 100
+stopMusic
+pause 500
+playSound getNewSpecialItem
+pause 500
+message "Now you can recruit villager as a companion!"
+pause 1000
+speak Marlon "Go forth with this new information and learn what secrets this town and it’s residents hold."
+pause 100
+speak Marlon "I will continue to watch over you, @, great new adventures are in your future, I can sense it."
+pause 700
+globalFade
+viewport -1000 -1000
+pause 100
+end warpOut

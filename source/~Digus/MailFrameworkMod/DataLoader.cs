@@ -6,9 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using MailFrameworkMod.ContentPack;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Objects;
 using StardewValley.Tools;
 
 namespace MailFrameworkMod
@@ -100,8 +102,9 @@ namespace MailFrameworkMod
                             && (mailItem.MailNotReceived == null ||  !mailItem.MailNotReceived.Intersect(Game1.player.mailReceived).Any())
                             && (mailItem.EventsSeen == null || (mailItem.RequireAllEventsSeen ? !mailItem.EventsSeen.Except(Game1.player.eventsSeen).Any() : mailItem.EventsSeen.Intersect(Game1.player.eventsSeen).Any()))
                             && (mailItem.EventsNotSeen == null ||  !mailItem.EventsNotSeen.Intersect(Game1.player.eventsSeen).Any())
+                            && (mailItem.RecipeKnown == null || (mailItem.RequireAllRecipeKnown ? mailItem.RecipeKnown.All(r=> Game1.player.knowsRecipe(r)) : mailItem.RecipeKnown.Any(r => Game1.player.knowsRecipe(r))))
+                            && (mailItem.RecipeNotKnown == null || mailItem.RecipeNotKnown.All(r=>!Game1.player.knowsRecipe(r)))
                         ;
-                        
 
                         if (mailItem.Attachments != null && mailItem.Attachments.Count > 0)
                         {
@@ -187,6 +190,36 @@ namespace MailFrameworkMod
                                                 break;
                                         }
                                         break;
+                                    case ItemType.Ring:
+                                        objects = objects ?? MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
+                                        if (i.Name != null)
+                                        {
+                                            KeyValuePair<int, string> pair = objects.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
+                                            if (pair.Value != null)
+                                            {
+                                                i.Index = pair.Key;
+                                            }
+                                            else
+                                            {
+                                                MailFrameworkModEntry.ModMonitor.Log($"No ring found with the name {i.Name} for letter {mailItem.Id}.", LogLevel.Warn);
+                                            }
+                                        }
+                                        if (i.Index.HasValue)
+                                        {
+                                            if (objects[i.Index.Value].Split('/')[3] == "Ring")
+                                            {
+                                                attachments.Add(new Ring(i.Index.Value));
+                                            }
+                                            else
+                                            {
+                                                MailFrameworkModEntry.ModMonitor.Log($"A valid ring is required to attach an ring for letter {mailItem.Id}.", LogLevel.Warn);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            MailFrameworkModEntry.ModMonitor.Log($"An index value is required to attach an ring for letter {mailItem.Id}.", LogLevel.Warn);
+                                        }
+                                        break;
                                 }
                             });
                             MailDao.SaveLetter(
@@ -201,7 +234,9 @@ namespace MailFrameworkMod
                                 {
                                     TextColor = mailItem.TextColor,
                                     Title = hasTranslation && mailItem.Title != null ? contentPack.Translation.Get(mailItem.Title) : mailItem.Title,
-                                    GroupId = mailItem.GroupId
+                                    GroupId = mailItem.GroupId,
+                                    LetterTexture = mailItem.LetterBG != null ? contentPack.LoadAsset<Texture2D>(mailItem.LetterBG) : null,
+                                    UpperRightCloseButtonTexture = mailItem.UpperRightCloseButton != null ? contentPack.LoadAsset<Texture2D>(mailItem.UpperRightCloseButton) : null,
                                 });
                         }
                         else
@@ -218,7 +253,9 @@ namespace MailFrameworkMod
                                 {
                                     TextColor = mailItem.TextColor,
                                     Title = hasTranslation && mailItem.Title != null ? contentPack.Translation.Get(mailItem.Title) : mailItem.Title,
-                                    GroupId = mailItem.GroupId
+                                    GroupId = mailItem.GroupId,
+                                    LetterTexture = mailItem.LetterBG != null ? contentPack.LoadAsset<Texture2D>(mailItem.LetterBG) : null,
+                                    UpperRightCloseButtonTexture = mailItem.UpperRightCloseButton != null ? contentPack.LoadAsset<Texture2D>(mailItem.UpperRightCloseButton) : null,
                                 });
                         }
                     }

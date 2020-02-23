@@ -18,3 +18,4 @@
 	-right-clicking on a silo opens menu to add or remove hay
 	-fixed bug: rounding error in calculation of compost parts when
 	compost finishes
+	-loading of mod data is more robust

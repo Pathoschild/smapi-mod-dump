@@ -50,7 +50,7 @@
     "fast-machines.crystalarium": "보석 화수분",
     "fast-machines.fruit-trees": "과일나무",
     "fast-machines.furnace": "용광로",
-    "fast-machines.incubator": "부화기",
+    "fast-machines.incubator": "부화기 (아침에 준비)", // TODO review (auto-translated)
     "fast-machines.keg": "양조통",
     "fast-machines.lightning-rod": "피뢰침",
     "fast-machines.loom": "베틀",
@@ -61,18 +61,18 @@
     "fast-machines.recycling-machine": "재활용 기계",
     "fast-machines.seed-maker": "씨앗 생산기",
     "fast-machines.slime-egg-press": "슬라임 알 압착기",
-    "fast-machines.slime-incubator": "슬라임 부화기",
+    "fast-machines.slime-incubator": "슬라임 부화기 (아침에 준비)", // TODO review (auto-translated)
     "fast-machines.tapper": "수액 채취기",
-    "fast-machines.wood-chipper": "Wood Chipper", // TODO
+    "fast-machines.wood-chipper": "나무 분쇄기",
     "fast-machines.worm-bin": "지렁이 통",
 
     // '스킬' 탭
     "skills.title": "스킬",
-    "skills.increase-farming": "농사 레벨 UP",
-    "skills.increase-mining": "채광 레벨 UP",
-    "skills.increase-foraging": "채집 레벨 UP",
-    "skills.increase-fishing": "낚시 레벨 UP",
-    "skills.increase-combat": "전투 레벨 UP",
+    "skills.increase-farming": "농사 레벨 UP: {{currentLevel}}",
+    "skills.increase-mining": "채광 레벨 UP: {{currentLevel}}",
+    "skills.increase-foraging": "채집 레벨 UP: {{currentLevel}}",
+    "skills.increase-fishing": "낚시 레벨 UP: {{currentLevel}}",
+    "skills.increase-combat": "전투 레벨 UP: {{currentLevel}}",
     "skills.reset": "스킬 초기화하기!",
     "professions.title": "직업 변경",
     "professions.combat.fighter": "전투 레벨 5 - 싸움꾼",
@@ -132,6 +132,7 @@
     "warp.adventurers-guild": "모험가 길드",
     "warp.ranch": "마니의 목장",
     "warp.mines": "광산",
+    "warp.skull-cavern": "해골 동굴",
     "warp.willy-shop": "윌리의 낚시가게",
     "warp.wizard-tower": "마법사의 탑",
     "warp.hats": "모자쥐 상점",
@@ -152,14 +153,14 @@
     "time.time": "시간",
 
     // '플래그' 탭
-    "flags.warning": "이 부분의 사용은 사용자가 전적으로 책임져야 합니다.\n 편지, 이벤트, 또는 퀘스트가 건너뛰어 질 수 있습니다.",
+    "flags.warning": "이 부분의 사용은 사용자가 전적으로 책임져야 합니다.\n 편지, 이벤트 또는 퀘스트를 보지 못 할 수 있습니다.",
     "flags.quests": "퀘스트 완료",
     "flags.wallet": "지갑 아이템",
     "flags.unlocked": "지역 해제",
     "flags.unlocked.guild": "모험가 길드",
     "flags.unlocked.room": "방: {{name}}",
-    "flags.unlocked-content": "Unlocked content", // TODO
-    "flags.unlocked-content.dyes-and-tailoring": "Dyes & tailoring", // TODO
+    "flags.unlocked-content": "해제되지 않은 콘텐츠",
+    "flags.unlocked-content.dyes-and-tailoring": "염색&코팅",
     "flags.community-center": "마을 회관",
     "flags.community-center.door-unlocked": "잠긴 문 열기",
     "flags.jojamart.membership": "조자마트 회원권",
@@ -170,6 +171,8 @@
     "controls.freeze-time": "시간 정지",
     "controls.grow-tree": "나무 자라게하기",
     "controls.grow-crops": "작물 자라게하기",
+    "controls.grow-radius": "Grow distance around player", // TODO
+    "controls.reset-controls": "Reset", // TODO
 
     // various messages
     "messages.press-new-key": "새로운 단축키를 입력하세요...",

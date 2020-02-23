@@ -1,0 +1,8 @@
+{
+  "changeSkill": "Right",
+  "increaseIncrement": "Up",
+  "decreaseIncrement": "Down",
+  "resetIncrement": "Left",
+  "resetSkill": "RightShift",
+  "applyIncrement": "RightControl"
+}

@@ -1,10 +1,13 @@
-﻿ using System;
+﻿using System;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace ConvenientChests.CraftFromChests {
     public class MenuListener {
+        public static readonly int CraftingMenuTab = Constants.TargetPlatform == GamePlatform.Android ? 3 : GameMenu.craftingTab;
+        
         private readonly IModEvents Events;
 
         public event EventHandler GameMenuShown;
@@ -54,6 +57,7 @@ namespace ConvenientChests.CraftFromChests {
                     break;
 
                 case CraftingPage _:
+                case object m when m.GetType().ToString() == "CookingSkill.NewCraftingPage":
                     CraftingMenuShown?.Invoke(sender, e);
                     break;
             }
@@ -82,10 +86,10 @@ namespace ConvenientChests.CraftFromChests {
                     // Tab changed!
                     GameMenuTabChanged?.Invoke(null, EventArgs.Empty);
 
-                    if (_previousTab == GameMenu.craftingTab)
+                    if (_previousTab == CraftingMenuTab)
                         CraftingMenuClosed?.Invoke(sender, EventArgs.Empty);
 
-                    else if (gameMenu.currentTab == GameMenu.craftingTab)
+                    else if (gameMenu.currentTab == CraftingMenuTab)
                         CraftingMenuShown?.Invoke(sender, EventArgs.Empty);
 
                     _previousTab = gameMenu.currentTab;

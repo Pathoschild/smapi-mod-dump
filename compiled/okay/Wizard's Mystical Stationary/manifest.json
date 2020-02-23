@@ -1,0 +1,10 @@
+﻿{
+	"Name": "Wizard's Mystical Stationary",
+	"Author": "Taskmaster",
+	"Version": "1.0.0",
+	"Description": "Add new mystical stationary for the Wizard's letters",
+	"UniqueID": "Taskmaster.WizardsMysticalStationary",
+	"EntryDll": "WizardsMysticalStationary.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": ["Nexus:5246"]
+}

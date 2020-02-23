@@ -1,0 +1,6 @@
+﻿{
+  "1": "Location/A New Adventure Begins/Marlon would like to speak with you about the other residents in town. Enter the Adventurer’s Guild between 2pm and 10pm to meet with him./Enter the Adventurer's guild/AdventureGuild/0/false/2",
+  "2": "Basic/Invite someone to join you/Marlon has told you something special about the other residents in town. Ask a bachelor or bachelorette to follow you and see what they say. They may not join you until they know you better./Recruit a companion/recruit/250/true/3",
+  "3": "Recruitment/Recruit 5 companions/You met with your first companion, but there are more. Successfully recruit a total of 5 companions./null/5/1000/true/4",
+  "4": "Recruitment/The more the merrier/Get to know your fellow residents even better. Successfully invite 10 companions to follow you./null/10/1250/true"
+}

@@ -16,7 +16,6 @@
     {
         private Keys openMenuKey = Keys.NumPad1;
         private ModConfig config;
-        private IModHelper helper;
         private List<ObjectList> objectLists = new List<ObjectList>();
         private CompleteGraph graph;
         private OpenChecklistButton checklistButton;
@@ -24,19 +23,19 @@
 
         public override void Entry(IModHelper helper)
         {
-            this.helper = helper;
-            this.config = helper.ReadConfig<ModConfig>();
+            this.config = this.Helper.ReadConfig<ModConfig>();
             helper.WriteConfig(this.config);
-            MenuEvents.MenuChanged += this.MenuChangedEvent;
-            ControlEvents.KeyPressed += this.ReceiveKeyPress;
-            SaveEvents.AfterLoad += this.GameLoadedEvent;
-            SaveEvents.AfterSave += this.OnAfterSave;
-            TimeEvents.AfterDayStarted += this.AfterDayStarted;
-            GraphicsEvents.OnPreRenderHudEvent += this.DrawTick;
-            GameEvents.OneSecondTick += this.UpdatePaths;
-            LocationEvents.CurrentLocationChanged += this.UpdatePaths;
+            IModEvents events = helper.Events;
+            events.Display.MenuChanged += this.Display_MenuChanged;
+            events.Input.ButtonPressed += this.Input_ButtonPressed;
+            events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded;
+            events.GameLoop.Saved += this.GameLoop_Saved;
+            events.GameLoop.DayStarted += this.GameLoop_DayStarted;
+            events.Display.RenderingHud += this.Display_RenderingHud;
+            events.GameLoop.OneSecondUpdateTicked += this.UpdatePaths;
+            events.Player.Warped += this.UpdatePaths;
 
-            OverlayTextures.LoadTextures(this.helper.DirectoryPath);
+            OverlayTextures.LoadTextures(this.Helper.DirectoryPath);
             try
             {
                 this.openMenuKey = (Keys)Enum.Parse(typeof(Keys), this.config.OpenMenuKey);
@@ -59,12 +58,12 @@
             }
         }
 
-        private void OnAfterSave(object sender, EventArgs e)
+        private void GameLoop_Saved(object sender, EventArgs e)
         {
-            this.helper.WriteConfig(this.config);
+            this.Helper.WriteConfig(this.config);
         }
 
-        private void DrawTick(object sender, EventArgs e)
+        private void Display_RenderingHud(object sender, EventArgs e)
         {
             if (!this.doneLoading || Game1.currentLocation == null || Game1.gameMode == 11 || Game1.currentMinigame != null || Game1.showingEndOfNightStuff || Game1.gameMode == 6 || Game1.gameMode == 0 || Game1.menuUp || Game1.activeClickableMenu != null)
             {
@@ -108,7 +107,7 @@
             }
         }
 
-        private void AfterDayStarted(object sender, EventArgs e)
+        private void GameLoop_DayStarted(object sender, EventArgs e)
         {
             foreach (ObjectList ol in this.objectLists)
             {
@@ -196,9 +195,9 @@
             return t;
         }
 
-        private void ReceiveKeyPress(object sender, EventArgsKeyPressed e)
+        private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (e.KeyPressed.ToString() == this.config.OpenMenuKey)
+            if (e.Button.ToString() == this.config.OpenMenuKey)
             {
                 if (Game1.activeClickableMenu is ChecklistMenu)
                 {
@@ -215,7 +214,7 @@
             }
         }
 
-        private void MenuChangedEvent(object sender, EventArgsClickableMenuChanged e)
+        private void Display_MenuChanged(object sender, MenuChangedEventArgs e)
         {
             if (!(e.NewMenu is GameMenu))
             {
@@ -225,14 +224,14 @@
             var gameMenu = e.NewMenu;
         }
 
-        private void GameLoadedEvent(object sender, EventArgs e)
+        private void GameLoop_SaveLoaded(object sender, EventArgs e)
         {
             this.graph = new CompleteGraph(Game1.locations);
             this.graph.Populate();
             this.InitializeObjectLists();
             ChecklistMenu.ObjectLists = this.objectLists;
             Func<int> crt = this.CountRemainingTasks;
-            this.checklistButton = new OpenChecklistButton(() => ChecklistMenu.Open(this.config), crt, this.config);
+            this.checklistButton = new OpenChecklistButton(() => ChecklistMenu.Open(this.config), crt, this.config, this.Helper.Events);
             Game1.onScreenMenus.Insert(0, this.checklistButton); // So that click is registered with priority
             this.doneLoading = true;
         }

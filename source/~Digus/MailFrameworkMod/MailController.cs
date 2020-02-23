@@ -99,7 +99,12 @@ namespace MailFrameworkMod
                         activeClickableMenu.letterTexture = _shownLetter.LetterTexture;
                     }
                     activeClickableMenu.TextColor = _shownLetter.TextColor;
-                    
+                    if (_shownLetter.UpperRightCloseButtonTexture != null &&
+                        activeClickableMenu.upperRightCloseButton != null)
+                    {
+                        activeClickableMenu.upperRightCloseButton = new ClickableTextureComponent(new Rectangle(activeClickableMenu.xPositionOnScreen + activeClickableMenu.width - 36, activeClickableMenu.yPositionOnScreen - 8, 48, 48), _shownLetter.UpperRightCloseButtonTexture, new Rectangle(0, 0, 12, 12), 4f, false);
+                    }
+
                     Game1.activeClickableMenu = activeClickableMenu;
                     _shownLetter.Items?.ForEach(
                         (i) =>

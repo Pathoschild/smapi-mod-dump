@@ -45,6 +45,15 @@ namespace AdvancedKeyBindings.KeyHandlers
 
             if (Game1.activeClickableMenu is CarpenterMenu carpenterMenu)
             {
+                if (carpenterMenu.IsMovingPlacementMode())
+                {
+                    _currentBuildingList = Game1.getFarm().GetMovableBuildings();
+                    
+                    if (HandleBuildingSelection(input))
+                    {
+                        return true;
+                    }
+                }
                 if (carpenterMenu.IsUpgradingPlacementMode())
                 {
                     _currentBuildingList = carpenterMenu.CurrentBlueprint.GetUpgradeableBuildings();

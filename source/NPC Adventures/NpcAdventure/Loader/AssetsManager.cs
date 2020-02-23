@@ -2,6 +2,8 @@
 using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace NpcAdventure.Loader
 {
@@ -73,26 +75,35 @@ namespace NpcAdventure.Loader
             // Load translation for this asset if it's translated to current locale
             if (!string.IsNullOrEmpty(asset.Locale))
             {
-                try
-                {
-                    this.monitor.VerboseLog($"Trying to load localised file {fileName} for {asset.AssetName}, locale {locale}");
+                this.monitor.VerboseLog($"Trying to load localised file {fileName} for {asset.AssetName}, locale {locale}");
+                MethodInfo method = this.GetType().GetMethod(nameof(this.ApplyLocalization), BindingFlags.Instance | BindingFlags.NonPublic);
+                
+                if (method == null)
+                    throw new InvalidOperationException($"Can't fetch the internal {nameof(this.ApplyLocalization)} method.");
 
-                    var strings = asset.AsDictionary<string, string>().Data;
-                    var localised = this.Helper.Load<Dictionary<string, string>>(fileName, ContentSource.ModFolder);
-
-                    // Patch asset's content with translated contend and keep non-translated parts
-                    foreach (var pair in localised)
-                    {
-                        strings[pair.Key] = pair.Value;
-                    }
-                }
-                catch (ContentLoadException)
-                {
-                    this.monitor.Log($"No localization file {fileName} for {asset.AssetName}, locale {locale}");
-                }
+                AssetPatchHelper.MakeKeyValuePatcher<T>(method).Invoke(this, new object[] { asset, fileName });
             }
 
             this.ContentPacks.Edit<T>(asset); // Apply patches from content packs
+        }
+
+        private void ApplyLocalization<TKey, TValue>(IAssetData asset, string fileName)
+        {
+            try
+            {
+                var strings = asset.AsDictionary<TKey, TValue>().Data;
+                var localized = this.Helper.Load<Dictionary<TKey, TValue>>(fileName, ContentSource.ModFolder);
+
+                // Patch asset's content with translated contend and keep non-translated parts
+                foreach (var pair in localized)
+                {
+                    strings[pair.Key] = pair.Value;
+                }
+            }
+            catch (ContentLoadException)
+            {
+                this.monitor.Log($"No localization file {fileName} for {asset.AssetName}");
+            }
         }
 
         /// <summary>

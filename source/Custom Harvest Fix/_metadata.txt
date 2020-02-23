@@ -5,9 +5,29 @@ mods:
    Custom Harvest Fix
 
 latest commit:
-   commit e49ca5706142d08116ca34a027ffa5568c45ca15
-   Author: Robert Howe <mytigio+github@gmail.com>
-   Date:   Sun Dec 1 13:54:39 2019 -0700
+   commit c43e7b31dbc7c95c3b349d80c4bba3c31e1b3599
+   Author: mytigio <mytigio+github@gmail.com>
+   Date:   Mon Feb 17 12:59:13 2020 -0700
    
-       reworked the spawning code, fixed some issues with spawning in skull caverns
+       F fixes (#1)
+       
+       * Includes some fixes from pathos child
+       
+       * Slight tweaks to the backward compatability logic.
+       
+       * Another tweak
+       
+       * tweaks since we load the object id earlier now.
+       
+       * Adds the cave carrot and cave carrot flower crops to the game.
+       
+       * Update manifest to latest version
+       
+       * Remove some dead code
+       
+       * Make hoe dirt go away when you pickaxe the cave carrot flowers
+       
+       * Some comment cleanup
+       
+       * more fixes
    

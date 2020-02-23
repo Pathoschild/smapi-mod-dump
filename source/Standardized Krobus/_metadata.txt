@@ -1,0 +1,13 @@
+url:
+   https://github.com/minervamaga/StandardizedKrobus.git
+
+mods:
+   Standardized Krobus
+
+latest commit:
+   commit 472c3d8a0562b513431777a3d3848a0aa9a909e7
+   Author: minervamaga <37347445+minervamaga@users.noreply.github.com>
+   Date:   Thu Jan 16 14:21:50 2020 -0600
+   
+       Create LICENSE
+   

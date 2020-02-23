@@ -45,9 +45,10 @@
         {
             foreach (Building b in Game1.getFarm().buildings)
             {
-                if (b.indoors is AnimalHouse)
+                var indoors = b.indoors.Value;
+                if (indoors != null && indoors is AnimalHouse)
                 {
-                    this.UpdateObjectInfoList((AnimalHouse)b.indoors);
+                    this.UpdateObjectInfoList((AnimalHouse)indoors);
                 }
             }
 
@@ -57,7 +58,7 @@
         private void UpdateObjectInfoList(AnimalHouse animalHouse)
         {
             this.ObjectInfoList.RemoveAll(soi => soi.Location == animalHouse);
-            foreach (KeyValuePair<Vector2, StardewValley.Object> o in animalHouse.Objects)
+            foreach (KeyValuePair<Vector2, StardewValley.Object> o in animalHouse.Objects.Pairs)
             {
                 if (o.Value.Name.Equals("Hay"))
                 {

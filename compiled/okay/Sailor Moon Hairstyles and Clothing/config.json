@@ -1,5 +1,4 @@
 {
-  "debugWarpKey": "U",
-  "debugMode": false,
-  "debugCate": true
+  "DebugWarpKey": "U",
+  "DebugMode": false
 }

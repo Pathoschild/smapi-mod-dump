@@ -178,3 +178,15 @@ This is a changelog from 1.0.22
 
 ## 1.3.3
 - Fixed AutoHarvest harvesting crops infinitely.
+
+## 1.3.4
+- Removed CraftingFromChests. If you want, I recommend using Convinient Chests instead.
+- Added support for double gates.
+
+## 1.3.5
+- Fixed the problem that AutoGate did not close a fence gate when BalancedMode is enabled.
+- Added coordinates option for Show Shipping Price feature.
+
+## 1.3.6
+- Now FishInformationHud shows correct quality when you are fishing perfectly.
+- Fixed the problem that FishingProbabilitiesBox may throw an exception.

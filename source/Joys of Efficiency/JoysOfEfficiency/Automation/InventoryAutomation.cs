@@ -1,4 +1,5 @@
 ﻿using JoysOfEfficiency.Core;
+using JoysOfEfficiency.Huds;
 using JoysOfEfficiency.Utils;
 using StardewModdingAPI;
 using StardewValley;
@@ -16,7 +17,7 @@ namespace JoysOfEfficiency.Automation
         {
             if (!skipCheck)
             {
-                if (menu.shippingBin || Util.IsCaShippingBinMenu(menu))
+                if (menu.shippingBin || ShippingEstimationInfoBox.IsCaShippingBinMenu(menu))
                 {
                     Logger.Log("Don't do anything with shipping bin");
                     return;
@@ -74,7 +75,7 @@ namespace JoysOfEfficiency.Automation
                 return;
             }
 
-            if (menu.shippingBin || Util.IsCaShippingBinMenu(menu))
+            if (menu.shippingBin || ShippingEstimationInfoBox.IsCaShippingBinMenu(menu))
             {
                 //It's a shipping bin.
                 return;

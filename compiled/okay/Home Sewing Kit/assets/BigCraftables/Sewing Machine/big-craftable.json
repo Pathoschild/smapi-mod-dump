@@ -24,9 +24,15 @@
 		"PurchaseRequirements": ["e 992559"],
 	},
 	"NameLocalization": {
-		"pt": "Máquina de Costura"
+		"pt": "Máquina de Costura",
+		"de": "Heimnähmaschine",
+		"zh": "缝纫机",
+		"ja": "ミシン"
 		},
     "DescriptionLocalization": {
-		"pt": "Uma máquina de costura portátil que cumpre com todas as suas necessidades."
+		"pt": "Uma máquina de costura portátil que cumpre com todas as suas necessidades.",
+		"de": "Eine tragbare Nähmaschine für all deine Schneiderbedürfnisse.",
+		"zh": "满足您所有需求的便携式缝纫机。",
+		"ja": "すべてのニーズを満たす携帯用ミシン。"
 		}
 }

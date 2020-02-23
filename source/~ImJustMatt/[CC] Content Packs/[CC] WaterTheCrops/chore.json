@@ -1,0 +1,6 @@
+﻿{
+	"ChoreType": "WaterTheCrops",
+	"EnableFarm":  true,
+	"EnableBuildings":  true,
+	"EnableGreenhouse":  true
+}

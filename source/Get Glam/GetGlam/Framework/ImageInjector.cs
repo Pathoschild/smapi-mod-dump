@@ -89,6 +89,8 @@ namespace GetGlam.Framework
                 //Loop through each hair loaded and extend the image
                 foreach (var hair in PackHelper.HairList)
                 {
+                    Entry.Monitor.Log($"Patching {hair.ModName}", LogLevel.Trace);
+
                     //Ints to run throught the current hairstyles.png to find each hairstyle within the png
                     int hairTextureX = 0;
                     int hairTextureY = 0;
@@ -128,7 +130,7 @@ namespace GetGlam.Framework
                 }
 
                 //Cut the blank image from the image
-                if (!Entry.IsSpaceCoreInstalled || PackHelper.NumberOfHairstlyesAdded < 355)
+                if (!Entry.IsSpaceCoreInstalled || PackHelper.NumberOfHairstlyesAdded < 335)
                     CutEmptyImage(asset, HairTextureHeight, 128);
             }
 
@@ -163,7 +165,7 @@ namespace GetGlam.Framework
                         if (accessoryTextureX + 16 == 128)
                         {
                             accessoryTextureX = 0;
-                            accessoryTextureX += 32;
+                            accessoryTextureY += 32;
                         }
                         else
                             accessoryTextureX += 16;

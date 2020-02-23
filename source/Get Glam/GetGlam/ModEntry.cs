@@ -7,6 +7,8 @@ using GetGlam.Framework.Patches;
 using Microsoft.Xna.Framework.Graphics;
 using System.Reflection;
 using Microsoft.Xna.Framework;
+using StardewValley.Menus;
+using System;
 
 namespace GetGlam
 {
@@ -36,6 +38,9 @@ namespace GetGlam
         //Whether SpaceCore is installed
         public bool IsSpaceCoreInstalled = false;
 
+        //Whether Customize Anywhere is installed
+        public bool IsCustomizeAnywhereInstalled = false;
+
         /// <summary>The mods entry point.</summary>>
         /// <param name="helper">SMAPI's mod helper</param>
         public override void Entry(IModHelper helper)
@@ -57,7 +62,11 @@ namespace GetGlam
 
             //Check if SpaceCore is Installed
             IsSpaceCoreInstalled = Helper.ModRegistry.IsLoaded("spacechase0.SpaceCore");
-            Monitor.Log($"Space Core: {IsSpaceCoreInstalled}", LogLevel.Trace);
+            Monitor.Log($"Space Core Installed: {IsSpaceCoreInstalled}", LogLevel.Trace);
+
+            //Check if Customize Anywhere is installed
+            IsCustomizeAnywhereInstalled = Helper.ModRegistry.IsLoaded("Cherry.CustomizeAnywhere");
+            Monitor.Log($"Customize AnyWhere Installed: {IsCustomizeAnywhereInstalled}", LogLevel.Trace);
 
             //if it's installed then register the extended tilesheets
             if (IsSpaceCoreInstalled)
@@ -95,7 +104,16 @@ namespace GetGlam
             patchExtendedTileSheet.Invoke(null, new object[] { asset, sourceTexture, sourceRect, targetRect, PatchMode.Replace});
         }
 
-        /// <summary>Event that is called when a save is loaded.</summary>
+        public void CustomizeAnywhereClothingMenu()
+        {
+            var modData = Helper.ModRegistry.Get("Cherry.CustomizeAnywhere");
+            var customizeInstance = modData.GetType().GetProperty("Mod", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).GetValue(modData);
+            var customizeAssembly = customizeInstance.GetType().Assembly;
+            var dresserMenu = customizeAssembly.GetType("CustomizeAnywhere.DresserMenu");
+            Game1.activeClickableMenu = (IClickableMenu)Activator.CreateInstance(dresserMenu);
+        }
+
+        /// <summary>Event that is called when a save is loaded.</summary> 
         /// <param name="sender">The object</param>
         /// <param name="e">The Save Loaded Event arguement</param>
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
@@ -135,6 +153,9 @@ namespace GetGlam
         {
             //Set the menu to null since it's a per save type of thing
             Menu = null;
+
+            //Clear the favorites list as it's per save
+            PlayerLoader.Favorites.Clear();
         }
 
         /// <summary>Event that is called when a button is pressed.</summary>

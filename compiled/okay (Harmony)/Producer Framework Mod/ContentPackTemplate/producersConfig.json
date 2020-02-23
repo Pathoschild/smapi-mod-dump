@@ -1,7 +1,40 @@
 ﻿[
 	{
-		"ProducerName":"ProducerName", //Name of the producer
+		"ProducerName": "ProducerName", //Name of the producer
 		"AlternateFrameProducing": true, //If the producer should use the alternate frame when producing.
-		"AlternateFrameWhenReady": true //If the producer should use the alternate frame and ready for harvest.
+		"AlternateFrameWhenReady": true, //If the producer should use the alternate frame and ready for harvest.
+		"DisableBouncingAnimationWhileWorking": false, // If the producer bouncing animation while working should be disabled.
+		"NoInputStartMode": "Placement", // [Placement|DayUpdate] //If the machine has a value for this property, it can only have one ProducerRule without a InputIdentifier. If Placement, the machine will start on placement, and will restart every time the produced object is taken out. If DayUpdate, the machine will start at the begin of the day. Default is null.
+		"IncrementStatsOnOutput": { //Pairs of "stats:object" that identify what should be incremented.
+			"GoatCheeseMade": "Goat Cheese", //First value is the stats to be incremented, second value is which output should be produced for the stat to be incremented. The identifier can be the index, name, category or context tag of the output. Will increment the stats by the amount of the stack.
+			"CheeseMade": null //If the identifier is null, any output will match.
+		},
+		"MultipleStatsIncrement": true, //If all stats that match should be incremented. If false, just the first match will be increased. Default is false.
+		"LightSource": { // Defines the light source the producer should use when working. Default is null.
+			"TextureIndex": 4, // Shape of the light source. All vanilla machines uses "sconceLight". 1=lantern, 2=windowLight, 4=sconceLight, 5=cauldronLight, 6=indoorWindowLight, 7=projectorLight. Default is 4.
+			"Radius": 1.5, // The actual size of the light source depends on the texture used. Default is 1.5 (the size of the furnace light source with the sconceLight texture)
+			"OffsetX": 0, // The horizontal offset from the center of the producer tile. Default is 0.
+			"OffsetY": 0, // The vertical offset from the top of the producer tile. Default is 0.
+			// Light color work differently than object color. It's best to test the effect to find what looks best. (0,0,0,255) is white light and will keep the original color of objects lit by it.
+			"ColorRed": 0, // The red value of the light color. Default is 0.
+			"ColorGreen": 0, // The green value of the light color. Default is 0.
+			"ColorBlue": 0, // The blue value of the light color. Default is 0.
+			"ColorAlpha": 255, // The transparency value of the light color. 0 is fully transparent, 255 is fully opaque. Default is 255.
+			"ColorFactor": 0.75, // The factor that will multiply all other colors parameters. Default is 1.
+			"AlwaysOn": true // If true, the light source will be lit even while not producing. Default is false. 
+		},
+		"WorkingTime": { // If a value is defined, the machine will only produce during this period. Production will be on hold out of this period. Default is working any time.
+			"Begin": 600, //Format [HHmm]. The time from which the machine can start producing. Default is 0
+			"End": 1800 //Format [HHmm]. The time at which the machine stop producing. Default is 0
+		},
+		"WorkingWeather": [ "Rainy", "Stormy" ], // [Sunny|Rainy|Stormy|Snowy|Windy] The weathers in which the machine works. Default is working in any weather.
+		"WorkingLocation": [ "Barn", "Big Barn", "Deluxe Barn" ], // The locations in which the machine will work. Can be any map of building. Default is working in any location. 
+		"WorkingOutdoors": true, // [true|false|null] If true, the machine will only work outdoor. If false, the machine will only work indoor. If the line is removed or the value is null, it will work on both kind of location.
+		"WorkingSeason": [ "spring", "summer", "fall" ], // The seasons in which the machine will work. Different than other conditions, season clean the machine at the start of the day if in a not working season. The default is working in any season. 
+		"OverrideMod": [ "IdOfTheMod.ToOverride" ] //If defined, this config can override the configs for the same producer from the mods in the list. Otherwise the first one to be loaded will be used.
 	}
 ]
+/* Additional Notes
+ * Possible stats: [SeedsSown|ItemsShipped|ItemsCooked|ItemsCrafted|ChickenEggsLayed|DuckEggsLayed|CowMilkProduced|GoatMilkProduced|RabbitWoolProduced|SheepWoolProduced|CheeseMade|GoatCheeseMade|TrufflesFound|StoneGathered|RocksCrushed|DirtHoed|GiftsGiven|TimesUnconscious|AverageBedtime|TimesFished|FishCaught|BouldersCracked|StumpsChopped|StepsTaken|MonstersKilled|DiamondsFound|PrismaticShardsFound|OtherPreciousGemsFound|CaveCarrotsFound|CopperFound|IronFound|CoalFound|CoinsFound|GoldFound|IridiumFound|BarsSmelted|BeveragesMade|PreservesMade|PiecesOfTrashRecycled|MysticStonesCrushed|DaysPlayed|WeedsEliminated|SticksChopped|NotesFound|QuestsCompleted|StarLevelCropsShipped|CropsShipped|ItemsForaged|SlimesKilled|GeodesCracked|GoodFriends|IndividualMoneyEarned]
+ * Note that not all stats are correctly counted by the game.
+ */

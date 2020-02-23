@@ -8,5 +8,6 @@ namespace SeedsAreRare
         public bool exclude_oasis { get; set; } = false;
         public bool exclude_pierre { get; set; } = false;
         public bool exclude_night_market { get; set; } = false;
+        public bool exclude_egg_festival { get; set; } = false;
     }
 }

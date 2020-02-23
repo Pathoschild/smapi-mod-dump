@@ -1,4 +1,7 @@
-﻿using Harmony;
+﻿using System;
+using Harmony;
+using Microsoft.Xna.Framework.Graphics;
+using ProducerFrameworkMod.Api;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using SObject = StardewValley.Object;
@@ -41,11 +44,35 @@ namespace ProducerFrameworkMod
             );
             harmony.Patch(
                 original: AccessTools.Method(typeof(SObject), nameof(SObject.checkForAction)),
-                postfix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.checkForAction))
-            ); harmony.Patch(
+                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.checkForActionPrefix)),
+                postfix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.checkForActionPostfix))
+            ); 
+            harmony.Patch(
                 original: AccessTools.Method(typeof(SObject), nameof(SObject.minutesElapsed)),
-                postfix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.minutesElapsed))
+                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.minutesElapsedPrefix)),
+                postfix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.minutesElapsedPostfix))
             );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SObject), nameof(SObject.performDropDownAction)),
+                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.performDropDownAction))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SObject), nameof(SObject.DayUpdate)),
+                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.DayUpdate))
+            ); 
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SObject), nameof(SObject.draw), new Type[]{typeof(SpriteBatch),typeof(int), typeof(int), typeof(float)}),
+                transpiler: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.draw_Transpiler))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SObject), nameof(SObject.initializeLightSource)),
+                prefix: new HarmonyMethod(typeof(ObjectOverrides), nameof(ObjectOverrides.initializeLightSource))
+            );
+        }
+
+        public override object GetApi()
+        {
+            return new ProducerFrameworkModApi();
         }
     }
 }

@@ -60,6 +60,9 @@ namespace ConvenientChests.CategorizeChests.Interface
 
         public static readonly TextureRegion LeftArrow      = new TextureRegion(Game1.mouseCursors, new Rectangle(8, 268, 44, 40));
         public static readonly TextureRegion RightArrow     = new TextureRegion(Game1.mouseCursors, new Rectangle(12, 204, 44, 40));
+        public static readonly TextureRegion DownArrow = new TextureRegion(Game1.mouseCursors, new Rectangle(0,  64, 64, 64));
+        public static readonly TextureRegion UpArrow   = new TextureRegion(Game1.mouseCursors, new Rectangle(64, 64, 64, 64));
+        
         public static readonly TextureRegion EmptyCheckbox  = new TextureRegion(Game1.mouseCursors, new Rectangle(227, 425, 9, 9), zoom: true);
         public static readonly TextureRegion FilledCheckbox = new TextureRegion(Game1.mouseCursors, new Rectangle(236, 425, 9, 9), zoom: true);
         public static readonly TextureRegion ExitButton     = new TextureRegion(Game1.mouseCursors, new Rectangle(337, 494, 12, 12), zoom: true);

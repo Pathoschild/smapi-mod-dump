@@ -48,7 +48,8 @@ namespace CompostPestsCultivation
             pests.Clear();
             List<Vector2> loadedInfestedCrops = data.InfestedCrops;
             if (loadedInfestedCrops != null)
-                pests.AddRange(loadedInfestedCrops.Select((vec) => TryInfestCrop(vec, Game1.getFarm().terrainFeatures[vec] is HoeDirt hd ? hd : null)).Where((arg) => arg != null));
+                pests.AddRange(loadedInfestedCrops.Select((vec) =>
+                (Game1.getFarm().terrainFeatures.ContainsKey(vec) ? TryInfestCrop(vec, Game1.getFarm().terrainFeatures[vec] is HoeDirt hd  ? hd : null) : null)).Where((arg) => arg != null));
             ModEntry.GetMonitor().Log("Pests.Load() executed", LogLevel.Trace);
             ModEntry.GetMonitor().Log($"loaded {pests.Count} pests", LogLevel.Trace);
         }

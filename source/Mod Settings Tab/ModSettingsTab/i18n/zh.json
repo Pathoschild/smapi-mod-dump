@@ -3,5 +3,10 @@
   "OptionsPage.ModSettingsTab": "修改設置",
   "StaticConfig.SuccessMessage": "設置已保存",
   "StaticConfig.FailMessage": "保存錯誤",
-  "OptionsList.NewValue": "輸入新值"
+  "OptionsList.NewValue": "輸入新值",
+  "Mod.Disabled.Error": "法切換修改",
+  "ModManager.AddModPack": "加新的mod包",
+  "ModManager.HoverSetUp.Description": "mod包中未包含的其他mod將被禁用",  
+  "ModManager.Toggle.Label": "前的模組包",
+  "ModManager.Add.NameTextBox": " Modpack名稱"
 }

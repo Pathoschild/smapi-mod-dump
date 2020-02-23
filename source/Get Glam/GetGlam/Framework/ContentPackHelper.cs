@@ -87,12 +87,15 @@ namespace GetGlam.Framework
         //Number of accessories added by content packs including default accessories
         public static int NumberOfAccessoriesAdded = 19;
 
+        public Dictionary<string, int> HairStyleSearch = new Dictionary<string, int>();
+
         /// <summary>ContentPackHelpers Contructor</summary>
         /// <param name="entry">An instance of <see cref="ModEntry"/></param>
         public ContentPackHelper(ModEntry entry)
         {
             //Set the var to the instance
             Entry = entry;
+            HairStyleSearch.Add("Default", 0);
         }
 
         /// <summary>Reads all the content packs for the mod</summary>
@@ -124,6 +127,8 @@ namespace GetGlam.Framework
                         //Set the vars in the hair model
                         hair.TextureHeight = hair.Texture.Height;
                         hair.ModName = contentPack.Manifest.Name;
+
+                        HairStyleSearch.Add(contentPack.Manifest.Name, NumberOfHairstlyesAdded);
                         NumberOfHairstlyesAdded += hair.NumberOfHairstyles;
 
                         //Add the hair model to the list

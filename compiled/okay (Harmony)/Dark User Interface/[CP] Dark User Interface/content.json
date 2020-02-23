@@ -1,0 +1,179 @@
+{
+	"Format": "1.6",
+	
+	"ConfigSchema": {
+
+        "Color": {
+            "AllowValues": "Red,Orange,Yellow,Green,Blue,Magenta,Black",
+			"Default": "Black",
+            "AllowBlank": false
+        },
+
+        "Seasonal": {
+          "AllowValues": "true, false",
+          "Default": "false",
+          "AllowBlank": false
+        }
+	
+	},
+	
+	"Changes": [
+	
+	// Non-seasonal
+	{
+      "LogName": "Font",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "LooseSprites/font_bold",
+          "FromFile": "assets/font_bold.png"
+    },
+	{
+      "LogName": "Cursors",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "LooseSprites/Cursors",
+          "FromFile": "assets/{{Color}}/Cursors.png"
+    },
+	{
+      "LogName": "Cursors 2",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "LooseSprites/Cursors2",
+          "FromFile": "assets/{{Color}}/Cursors2.png"
+    },
+	{
+      "LogName": "Menu Tiles",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "Maps/MenuTiles",
+          "FromFile": "assets/{{Color}}/MenuTiles.png"
+    },
+	{
+      "LogName": "Community Center",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "LooseSprites/JunimoNote",
+          "FromFile": "assets/{{Color}}/JunimoNote.png"
+    },
+	{
+      "LogName": "Farmer BG Day",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "LooseSprites/daybg",
+          "FromFile": "assets/{{Color}}/daybg.png"
+    },
+	{
+      "LogName": "Farmer BG Night",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "LooseSprites/nightbg",
+          "FromFile": "assets/{{Color}}/nightbg.png"
+    },
+	{
+      "LogName": "Chat Box",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "LooseSprites/chatBox",
+          "FromFile": "assets/{{Color}}/chatBox.png"
+    },
+	{
+      "LogName": "Text Box",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "LooseSprites/textBox",
+          "FromFile": "assets/{{Color}}/textBox.png"
+    },
+	{
+      "LogName": "Billboard",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "LooseSprites/Billboard",
+          "FromFile": "assets/Billboard.png"
+    },
+	{
+      "LogName": "Letter BG",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "LooseSprites/letterBG",
+          "FromFile": "assets/letterBG.png"
+    },
+	
+	
+	//Seasonal
+	{
+      "LogName": "Seasonal Cursors",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "LooseSprites/Cursors",
+          "FromFile": "assets/Seasonal/{{Season}}/Cursors.png",
+          "When": {
+            "Seasonal": true
+          }
+    },
+	{
+      "LogName": "Seasonal Menu Tiles",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "Maps/MenuTiles",
+          "FromFile": "assets/Seasonal/{{Season}}/MenuTiles.png",
+          "When": {
+            "Seasonal": true
+          }
+    },
+	{
+      "LogName": "Seasonal Community Center",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "LooseSprites/JunimoNote",
+          "FromFile": "assets/Seasonal/{{Season}}/JunimoNote.png",
+          "When": {
+            "Seasonal": true
+          }
+    },
+	{
+      "LogName": "Seasonal Farmer BG Day",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "LooseSprites/daybg",
+          "FromFile": "assets/Seasonal/{{Season}}/daybg.png",
+          "When": {
+            "Seasonal": true
+          }
+    },
+	{
+      "LogName": "Seasonal Farmer BG Night",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "LooseSprites/nightbg",
+          "FromFile": "assets/Seasonal/{{Season}}/nightbg.png",
+          "When": {
+            "Seasonal": true
+          }
+    },
+	{
+      "LogName": "Seasonal Chat Box",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "LooseSprites/chatBox",
+          "FromFile": "assets/Seasonal/{{Season}}/chatBox.png",
+          "When": {
+            "Seasonal": true
+          }
+    },
+	{
+      "LogName": "Seasonal Text Box",
+      "Action": "EditImage",
+          "Patchmode": "Overlay",
+          "Target": "LooseSprites/textBox",
+          "FromFile": "assets/Seasonal/{{Season}}/textBox.png",
+          "When": {
+            "Seasonal": true
+			}
+    },
+	
+	
+	
+	]
+	
+	
+}

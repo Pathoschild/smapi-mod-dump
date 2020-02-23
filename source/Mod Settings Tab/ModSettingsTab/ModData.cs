@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ModSettingsTab.Framework;
 using ModSettingsTab.Framework.Integration;
-using StardewModdingAPI;
-using Mod = ModSettingsTab.Framework.Mod;
-using OptionsElement = ModSettingsTab.Framework.Components.OptionsElement;
+using ModSettingsTab.Framework.Components;
+using ModSettingsTab.Menu;
+using StardewValley;
+
+// ReSharper disable InconsistentNaming
+// ReSharper disable CollectionNeverUpdated.Global
 
 namespace ModSettingsTab
 {
@@ -33,44 +35,30 @@ namespace ModSettingsTab
 
         public static SmapiIntegration SMAPI;
 
-        /// <summary>
-        /// list of favorite mod options
-        /// </summary>
-        public static readonly List<Mod> FavoriteMod;
-        public static readonly Texture2D Tabs;
-        public static Dictionary<string,Rectangle> FavoriteTabSource;
-        public static Queue<Rectangle> FreeFavoriteTabSource;
-
-        public delegate void Update();
-
-        public static Update UpdateFavoriteMod;
+        public static readonly Texture2D Texture;
 
         static ModData()
         {
             Api = new Api();
-            Config = ModEntry.Helper.ReadConfig<TabConfig>();
-            FavoriteMod = new List<Mod>();
-            Tabs = ModEntry.Helper.Content.Load<Texture2D>("assets/Tabs.png");
-            FavoriteTabSource = new Dictionary<string, Rectangle>();
+            Config = Helper.ReadConfig<TabConfig>();
+            Texture = Helper.Content.Load<Texture2D>("assets/Texture.png");
+
+            Helper.Events.GameLoop.GameLaunched += (sender, args) =>
+            {
+                Init();
+                LocalizedContentManager.OnLanguageChange += code => Init();
+                TitleOptionsButton.UpdatePosition();
+            };
         }
 
         /// <summary>
         /// initialization of master data
         /// </summary>
-        public static async void Init()
+        private static async void Init()
         {
             await LoadOptions();
-            ModEntry.Console.Log($"Load {ModList.Count} mods and {Options.Count} Options",
-                LogLevel.Info);
-        }
-
-        /// <summary>
-        /// asynchronously updates the list of settings of selected mods
-        /// </summary>
-        public static async void UpdateFavoriteOptionsAsync()
-        {
-            await Task.Run(LoadFavoriteOptions);
-            UpdateFavoriteMod();
+            Helper.Console.Info($"Load {ModList.Count} mods and {Options.Count} Options");
+            ModManager.LoadOptions();
         }
 
         private static Task LoadOptions()
@@ -79,25 +67,9 @@ namespace ModSettingsTab
             {
                 ModList = new ModList();
                 SMAPI = new SmapiIntegration();
-                Options = ModList.SelectMany(mod => mod.Value.Options).ToList();
-                LoadFavoriteOptions();
+                Options = ModList.Where(mod => !mod.Value.Disabled && mod.Value.Options != null).SelectMany(mod => mod.Value.Options).ToList();
+                FavoriteData.LoadOptions();
             });
-        }
-
-        private static void LoadFavoriteOptions()
-        {
-            FavoriteMod.Clear();
-            foreach (var id in FavoriteData.Favorite)
-            {
-                FavoriteMod.Add(ModList[id]);
-            }
-            for (var i = FavoriteMod.Count; i > 0 ; i--)
-            {
-                var id = FavoriteMod[i-1].Manifest.UniqueID;
-                if (!FavoriteTabSource.ContainsKey(id))
-                    FavoriteTabSource.Add(id, FreeFavoriteTabSource.Dequeue());
-            }
-            
         }
     }
 }

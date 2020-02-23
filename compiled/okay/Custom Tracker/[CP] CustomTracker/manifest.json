@@ -1,7 +1,7 @@
 {
    "Name": "[CP] CustomTracker",
    "Author": "Esca",
-   "Version": "1.0.0",
+   "Version": "1.2.1",
    "Description": "Loads a custom tracker image for CustomTracker and hides the base game's tracker",
    "UniqueID": "Esca.CustomTrackerCP",
    "MinimumApiVersion": "2.0",

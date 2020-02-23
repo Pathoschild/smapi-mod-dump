@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{484C00A4-BC14-444A-AB7E-0628F0B42220}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LeFauxMatt.CustomChoresPack</RootNamespace>
+    <AssemblyName>CustomChores</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="[CC] BirthdayGift\i18n\zh.json" />
+    <None Include="[CC] MakeBreakfast\chore.json" />
+    <None Include="[CC] MakeBreakfast\i18n\default.json" />
+    <None Include="[CC] MakeBreakfast\manifest.json" />
+    <None Include="[CC] BirthdayGift\chore.json" />
+    <None Include="[CC] BirthdayGift\i18n\default.json" />
+    <None Include="[CC] BirthdayGift\manifest.json" />
+    <None Include="[CC] LoveThePets\chore.json" />
+    <None Include="[CC] LoveThePets\i18n\default.json" />
+    <None Include="[CC] LoveThePets\i18n\zh.json" />
+    <None Include="[CC] LoveThePets\manifest.json" />
+    <None Include="[CC] FeedTheAnimals\manifest.json" />
+    <None Include="[CC] FeedTheAnimals\chore.json" />
+    <None Include="[CC] FeedTheAnimals\i18n\default.json" />
+    <None Include="[CC] FeedTheAnimals\i18n\zh.json" />
+    <None Include="[CC] PetTheAnimals\chore.json" />
+    <None Include="[CC] PetTheAnimals\i18n\zh.json" />
+    <None Include="[CC] PetTheAnimals\i18n\default.json" />
+    <None Include="[CC] PetTheAnimals\manifest.json" />
+    <None Include="[CC] RepairTheFences\chore.json" />
+    <None Include="[CC] RepairTheFences\i18n\zh.json" />
+    <None Include="[CC] RepairTheFences\i18n\default.json" />
+    <None Include="[CC] RepairTheFences\manifest.json" />
+    <None Include="[CC] WaterTheCrops\chore.json" />
+    <None Include="[CC] WaterTheCrops\i18n\zh.json" />
+    <None Include="[CC] WaterTheCrops\i18n\default.json" />
+    <None Include="[CC] WaterTheCrops\manifest.json" />
+    <None Include="[CC] WaterTheSlimes\chore.json" />
+    <None Include="[CC] WaterTheSlimes\i18n\zh.json" />
+    <None Include="[CC] WaterTheSlimes\i18n\default.json" />
+    <None Include="[CC] WaterTheSlimes\manifest.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="[CC] BirthdayGift\assets\image.png" />
+    <Content Include="[CC] FeedTheAnimals\assets\image.png" />
+    <Content Include="[CC] LoveThePets\assets\image.png" />
+    <Content Include="[CC] MakeBreakfast\assets\image.png" />
+    <Content Include="[CC] PetTheAnimals\assets\image.png" />
+    <Content Include="[CC] RepairTheFences\assets\image.png" />
+    <Content Include="[CC] WaterTheCrops\assets\image.png" />
+    <Content Include="[CC] WaterTheSlimes\assets\image.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

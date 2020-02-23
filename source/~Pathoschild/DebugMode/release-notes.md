@@ -2,6 +2,12 @@
 
 # Release notes
 ## Upcoming release
+* Added support for multi-key bindings (like `LeftShift + OemTilde`).
+* Improved translations. Thanks to Enaium (updated Chinese)!
+
+## 1.11.2
+Released 01 February 2020.
+
 * Improved translations. Thanks to jahangmar (updated German)!
 
 ## 1.11.1

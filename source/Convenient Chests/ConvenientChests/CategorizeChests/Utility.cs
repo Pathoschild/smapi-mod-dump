@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using StardewValley;
+using StardewValley.Locations;
 
 namespace ConvenientChests.CategorizeChests
 {
@@ -41,6 +44,18 @@ namespace ConvenientChests.CategorizeChests
             }
 
             return dict;
+        }
+        
+        /// <summary>Get all game locations.</summary>
+        public static IEnumerable<GameLocation> GetLocations()
+        {
+            return Game1.locations
+                .Concat(
+                    from location in Game1.locations.OfType<BuildableGameLocation>()
+                    from building in location.buildings
+                    where building.indoors.Value != null
+                    select building.indoors.Value
+                );
         }
     }
 }

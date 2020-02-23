@@ -1,7 +1,7 @@
 ﻿{
   "Name": "DismantleCraftables",
   "Author": "jahangmar",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Allows you to dismantle crafted objects",
   "UniqueID": "jahangmar.DismantleCraftables",
   "MinimumApiVersion": "3.0.0",

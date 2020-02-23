@@ -24,16 +24,23 @@ To replace the tracker icon or customize this mod's available settings, see the 
 1. **Run the game** using SMAPI. This will generate the mod's **config.json** file in the `Stardew Valley\Mods\CustomTracker` folder.
 2. **Exit the game** and open the **config.json** file with any text editing program.
 
-The available options are:
+This mod also supports [spacechase0](https://github.com/spacechase0)'s [Generic Mod Config Menu](https://spacechase0.com/mods/stardew-valley/generic-mod-config-menu/) (GMCM). Users with that mod will be able to change Custom Tracker's config.json settings from Stardew's main menu.
+
+The available settings are:
 
 Name | Valid settings | Description
 -----|----------------|------------
 EnableTrackersWithoutProfession | true, **false** | When set to true, the player will always be able to see forage tracker icons, even without unlocking the Tracker profession.
-ReplaceTrackersWithForageIcons | true, **false** | When set to true, the tracker icon will be replaced with an image of each forage item being tracked.
+ReplaceTrackersWithForageIcons | true, **false** | When set to true, the tracker icon will be replaced with an image of each forage item being tracked. A customizable background image will be drawn behind each icon for visibility.
 DrawBehindInterface | true, **false** | When set to true, the tracker icon will be drawn *behind* the game's interface. This makes it easier to see the interface, but harder to see the trackers.
+TrackerPixelScale | A positive number (default **4.0**) | The size of each pixel of the custom tracker icon is multiplied by this value. This includes forage icons and their background image. This is a [floating point number](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types), so decimals are allowed.
 
 ### Customizing the tracker icon
 
-CustomTracker includes the `[CP] CustomTracker` folder, which is a content pack for the mod Content Patcher. It loads **tracker.png** into the game and replaces the game's original tracker icon with **blank_cursor.png** to hide it.
+CustomTracker includes the `[CP] CustomTracker` folder, which is a content pack for the mod Content Patcher. It loads **tracker.png** and **forage_background.png** into the game, and replaces the game's original tracker icon with **blank_cursor.png** to hide it.
 
-To use a different custom tracker icon, edit or replace **tracker.png** in the `[CP] CustomTracker\assets` folder.
+To modify the custom tracker icon, edit or replace **tracker.png** in the `[CP] CustomTracker\assets` folder.
+
+To modify the background drawn behind forage icons, edit or replace **forage_background.png** in the `[CP] CustomTracker\assets` folder.
+
+Note that the background image is expected to be 16 x 16 pixels. Backgrounds with different sizes will not center the forage icon correctly.

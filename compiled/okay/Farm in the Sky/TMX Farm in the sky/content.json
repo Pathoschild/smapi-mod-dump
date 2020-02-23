@@ -1,0 +1,12 @@
+﻿{
+  "mergeMaps": [
+  ],
+  "addMaps": [
+  ],
+  "replaceMaps": [
+	{
+      "name": "Farm_Fishing",
+      "file": "assets/Farm_Fishing.tmx",
+    },
+  ],
+}

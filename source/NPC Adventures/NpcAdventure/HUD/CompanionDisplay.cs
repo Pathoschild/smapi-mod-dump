@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NpcAdventure.AI;
 using NpcAdventure.Loader;
 using NpcAdventure.Model;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
@@ -15,6 +16,7 @@ namespace NpcAdventure.HUD
     class CompanionDisplay : Internal.IDrawable, Internal.IUpdateable
     {
         public Dictionary<string, CompanionSkill> Skills { get; }
+        public Dictionary<SButton, ClickableTextureComponent> Keys { get; }
         public Config Config { get; }
 
         private NPC companion;
@@ -22,10 +24,12 @@ namespace NpcAdventure.HUD
         private string hoverText;
         private AI_StateMachine.State state;
         private readonly IContentLoader contentLoader;
+        float skillSize;
 
         public CompanionDisplay(Config config, IContentLoader contentLoader)
         {
             this.Skills = new Dictionary<string, CompanionSkill>();
+            this.Keys = new Dictionary<SButton, ClickableTextureComponent>();
             this.Config = config;
             this.contentLoader = contentLoader;
         }
@@ -55,9 +59,16 @@ namespace NpcAdventure.HUD
             this.avatar = new ClickableTextureComponent("", Rectangle.Empty, null, hoverText, companion.Sprite.Texture, companion.getMugShotSourceRect(), 4f, false);
         }
 
+        public void AddKey(SButton key, string description)
+        {
+            var component = new ClickableTextureComponent("", Rectangle.Empty, null, description, Game1.mouseCursors, new Rectangle(473, 36, 24, 24), 2.5f, false);
+            this.Keys.Add(key, component);
+        }
+
         public void Reset()
         {
             this.Skills.Clear();
+            this.Keys.Clear();
             this.avatar = null;
         }
 
@@ -65,7 +76,11 @@ namespace NpcAdventure.HUD
         {
             if (!this.Config.ShowHUD || Game1.eventUp)
                 return;
-
+            if (Constants.TargetPlatform == GamePlatform.Android)
+            {
+                if (Game1.activeClickableMenu is GameMenu || Game1.activeClickableMenu is ShopMenu || Game1.activeClickableMenu is QuestLog)
+                    return;
+            }
             if (this.Skills.Count > 0)
             {
                 this.DrawSkills(spriteBatch);
@@ -76,6 +91,11 @@ namespace NpcAdventure.HUD
                 this.DrawAvatar(spriteBatch);
             }
 
+            if (this.Keys.Count > 0)
+            {
+                this.DrawKeysHelp(spriteBatch);
+            }
+
             if (!string.IsNullOrEmpty(this.hoverText))
             {
                 IClickableMenu.drawHoverText(spriteBatch, this.hoverText, Game1.smallFont);
@@ -84,33 +104,63 @@ namespace NpcAdventure.HUD
 
         public void DrawSkills(SpriteBatch spriteBatch)
         {
-            Vector2 position = new Vector2(Game1.viewport.Width - 80 - IClickableMenu.borderWidth, 390);
+            float vX = 630;
+            float vY = 55;
+            
+
+            if (Constants.TargetPlatform != GamePlatform.Android)
+            {             
+                vX = Game1.viewport.Width - 80 - IClickableMenu.borderWidth;
+                vY = 390;
+            }
+
+            Vector2 position = new Vector2(vX, vY);
             var skills = this.Skills.Values.ToList();
 
             for (int i = 0; i < skills.Count; i++)
-            {
-                var skill = skills[i];
-                float xOffset = 50;
-                float iconOffset = 16;
-                float iconGrid = 68;
-                Vector2 iconPosition = new Vector2(position.X - xOffset + iconOffset - (i * iconGrid), position.Y);
-                Vector2 framePosition = new Vector2(position.X - xOffset - (i * iconGrid), position.Y - iconOffset - 3);
-
-                if (Game1.isOutdoorMapSmallerThanViewport())
                 {
-                    iconPosition.X = Math.Min(position.X, -Game1.viewport.X + Game1.currentLocation.map.Layers[0].LayerWidth * 64 - 70 - IClickableMenu.borderWidth) - xOffset + iconOffset - (i * iconGrid);
-                    framePosition.X = Math.Min(position.X, -Game1.viewport.X + Game1.currentLocation.map.Layers[0].LayerWidth * 64 - 70 - IClickableMenu.borderWidth) - xOffset - (i * iconGrid);
-                }
+                    var skill = skills[i];
+                    float xOffset = 50;
+                    float iconOffset = 16;
+                    float iconGrid = 68;
+                    float xIP = position.X - xOffset + iconOffset + (i * iconGrid);
+                    float xFP = position.X - xOffset + (i * iconGrid);
 
-                skill.UpdatePosition(framePosition, iconPosition);
-                skill.Draw(spriteBatch);
-            }
+                    if (Constants.TargetPlatform != GamePlatform.Android)
+                    {
+                        xIP = position.X - xOffset + iconOffset - (i * iconGrid);
+                        xFP = position.X - xOffset - (i * iconGrid);
+                    }
+
+                    Vector2 iconPosition = new Vector2(xIP, position.Y);
+                    Vector2 framePosition = new Vector2(xFP, position.Y - iconOffset - 3);
+
+                    if (Game1.isOutdoorMapSmallerThanViewport())
+                     {
+                        iconPosition.X = Math.Min(position.X, -Game1.viewport.X + Game1.currentLocation.map.Layers[0].LayerWidth * 64 - 70 - IClickableMenu.borderWidth) - xOffset + iconOffset - (i * iconGrid);
+                        framePosition.X = Math.Min(position.X, -Game1.viewport.X + Game1.currentLocation.map.Layers[0].LayerWidth * 64 - 70 - IClickableMenu.borderWidth) - xOffset - (i * iconGrid);
+                    }
+
+                    skill.UpdatePosition(framePosition, iconPosition);
+                    skill.Draw(spriteBatch);
+                    skillSize = position.X + (i * iconGrid) + 5;                   
+                }       
+            
         }
 
         public void DrawAvatar(SpriteBatch spriteBatch)
         {
             Rectangle icon;
-            Vector2 position = new Vector2(Game1.viewport.Width - 70 - IClickableMenu.borderWidth, 334);
+            float vX = 490;
+            float vY = 0;
+
+            if (Constants.TargetPlatform != GamePlatform.Android)
+            {               
+                vX = Game1.viewport.Width - 70 - IClickableMenu.borderWidth;
+                vY = 334;
+            }
+
+            Vector2 position = new Vector2(vX, vY);
             if (Game1.isOutdoorMapSmallerThanViewport())
                 position.X = Math.Min(position.X, -Game1.viewport.X + Game1.currentLocation.map.Layers[0].LayerWidth * 64 - 70 - IClickableMenu.borderWidth);
             Utility.makeSafe(ref position, 64, 64);
@@ -132,6 +182,31 @@ namespace NpcAdventure.HUD
             spriteBatch.Draw(Game1.mouseCursors, new Vector2(position.X + 54, position.Y + 78), icon, Color.White * 1f, 0f, Vector2.Zero, 3f, SpriteEffects.None, 1f);
         }
 
+        public void DrawKeysHelp(SpriteBatch spriteBatch)
+        {
+            float vX = skillSize;
+            float vY = 37;
+
+            if (Constants.TargetPlatform != GamePlatform.Android)
+            {                
+                vX = 0;
+                vY = Game1.viewport.Height * 0.333f - (this.Keys.Count * 34) / 2;
+            }
+
+            Vector2 position = new Vector2(vX, vY);
+            if (Game1.isOutdoorMapSmallerThanViewport())
+                position.X = Math.Max(position.X, -Game1.viewport.X);
+            Utility.makeSafe(ref position, 64, 64);
+            
+            for(int i = 0; i < this.Keys.Count; i++)
+            {
+                var keyIconPair = this.Keys.ElementAt(i);
+                keyIconPair.Value.bounds = new Rectangle((int)position.X + 16, (int)position.Y + (i * 70), 48, 48);
+                keyIconPair.Value.draw(spriteBatch, Color.White, 1);
+                spriteBatch.DrawString(Game1.smallFont, keyIconPair.Key.ToString(), new Vector2(keyIconPair.Value.bounds.X + keyIconPair.Value.bounds.Width / 2 - 4, (float)keyIconPair.Value.bounds.Y + keyIconPair.Value.bounds.Height / 2 - 8), Color.White);
+            }
+        }
+
         public void PerformHoverAction(int x, int y)
         {
             this.hoverText = "";
@@ -151,6 +226,15 @@ namespace NpcAdventure.HUD
                     this.hoverText = skill.HoverText + (skill.Glowing ? (Environment.NewLine + this.contentLoader.LoadString("Strings/Strings:hudSkillUsed")) : "");
                 }
 
+            }
+
+            foreach (var key in this.Keys.Values)
+            {
+                if (key.containsPoint(x, y))
+                {
+                    this.hoverText = key.hoverText;
+                    break;
+                }
             }
         }
 

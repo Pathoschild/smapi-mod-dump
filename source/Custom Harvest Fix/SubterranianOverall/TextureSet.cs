@@ -13,8 +13,46 @@ namespace SubterranianOverhaul
     {
         private static Texture2D sporeTexture;
         private static Texture2D treeTexture;
+        private static Texture2D caveCarrotSeedTexture;
+        private static Texture2D caveCarrotCropTexture;
+        private static Texture2D caveCarrotFlowerCropTexture;
 
         private static IModHelper helper;
+
+        public static Texture2D caveCarrotFlowerCrop
+        {
+            get {
+                if (caveCarrotFlowerCropTexture == null)
+                {
+                    loadAllTextures();
+                }
+                return caveCarrotFlowerCropTexture;
+            }
+        }
+
+        public static Texture2D caveCarrotSeed
+        {
+            get {
+                if (caveCarrotSeedTexture == null)
+                {
+                    loadAllTextures();
+                }
+
+                return caveCarrotSeedTexture;
+            }
+        }
+
+        public static Texture2D caveCarrotCrop
+        {
+            get {
+                if (caveCarrotCropTexture == null)
+                {
+                    loadAllTextures();
+                }
+
+                return caveCarrotCropTexture;
+            }
+        }
 
         public static Texture2D voidShroomSpore
         {
@@ -46,8 +84,30 @@ namespace SubterranianOverhaul
                 helper = ModEntry.GetHelper();
             }
 
-            sporeTexture = helper.Content.Load<Texture2D>(Path.Combine("assets", "voidshroom_spore.png"), ContentSource.ModFolder);
-            treeTexture = helper.Content.Load<Texture2D>(Path.Combine("assets", "voidshroom_tree.png"), ContentSource.ModFolder);
+            if (sporeTexture == null)
+            {
+                sporeTexture = helper.Content.Load<Texture2D>(Path.Combine("assets", "voidshroom_spore.png"), ContentSource.ModFolder);
+            }
+            
+            if (treeTexture == null)
+            {
+                treeTexture = helper.Content.Load<Texture2D>(Path.Combine("assets", "voidshroom_tree.png"), ContentSource.ModFolder);
+            }
+            
+            if (caveCarrotSeedTexture == null)
+            {
+                caveCarrotSeedTexture = helper.Content.Load<Texture2D>(Path.Combine("assets", "cavecarrot_seed.png"), ContentSource.ModFolder);
+            }
+
+            if (caveCarrotCropTexture == null)
+            {
+                caveCarrotCropTexture = helper.Content.Load<Texture2D>(Path.Combine("assets", "cavecarrot_crop.png"), ContentSource.ModFolder);
+            }
+
+            if (caveCarrotFlowerCropTexture == null)
+            {
+                caveCarrotFlowerCropTexture = helper.Content.Load<Texture2D>(Path.Combine("assets", "cavecarrot_flower_crop.png"), ContentSource.ModFolder);
+            }
         }
 
     }
