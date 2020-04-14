@@ -1,14 +1,15 @@
 {
-  "Name": "IV Bag",
+  "Name": "Intravenous Coffee",
   "Author": "mpcomplete",
-  "Version": "1.0",
-  "Description": "Adds an IV bag to the Game",
-  "UniqueID": "mpcomplete.IVBag",
+  "Version": "1.4",
+  "MinimumApiVersion": "2.11.0",
+  "Description": "Adds an IV bag that can be filled with coffee",
+  "UniqueID": "mpcomplete.IntravenousCoffee",
   "EntryDll": "IntravenousCoffee.dll",
   "Dependencies": [
     {
       "UniqueID": "Platonymous.Toolkit"
     }
   ],
-  "UpdateKeys": [ "Nexus:1133" ]
+  "UpdateKeys": [ "Nexus:2224" ]
 }

@@ -5,9 +5,9 @@ mods:
    Trendy Haley
 
 latest commit:
-   commit 1822d4c804247eb58303552a8284b30ae4210da5
+   commit cd67fb399226cab75fca152a83686caa8d62a5d9
    Author: Candidus <candidus@xmail.net>
-   Date:   Mon Jan 6 19:50:20 2020 +0100
+   Date:   Tue Apr 7 20:34:29 2020 +0200
    
-       New feature: Config per save game
+       New feature: Haley's spouse can have the same hair color
    

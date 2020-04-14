@@ -1,4 +1,5 @@
 {
   "EnableIslands": false,
-  "UseBeachMusic": false
+  "UseBeachMusic": false,
+  "AddCampfire": true
 }

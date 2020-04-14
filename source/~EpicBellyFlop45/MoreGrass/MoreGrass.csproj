@@ -48,6 +48,9 @@
   <ItemGroup>
     <Compile Include="Config\ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
+    <Compile Include="Patches\GameLocationPatch.cs" />
+    <Compile Include="Patches\GrassPatch.cs" />
+    <Compile Include="Patches\WinterGrassPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

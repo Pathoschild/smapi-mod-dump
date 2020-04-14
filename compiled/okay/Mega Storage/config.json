@@ -1,4 +1,5 @@
 {
+  "EnableCategories": true,
   "LargeChest": {
     "SpritePath": "LargeChest.png",
     "SpriteBWPath": "LargeChestBW.png",
@@ -13,45 +14,5 @@
     "SpritePath": "SuperMagicChest.png",
     "SpriteBWPath": "SuperMagicChestBW.png",
     "SpriteBracesPath": "SuperMagicChestBraces.png"
-  },
-  "EnableCategories": true,
-  "Categories": {
-    "Crops": [
-      -81,
-      -80,
-      -79,
-      -75
-    ],
-    "Seeds": [
-      -74,
-      -19
-    ],
-    "Materials": [
-      -15,
-      -16,
-      -2,
-      -12,
-      -8,
-      -28
-    ],
-    "Cooking": [
-      -25,
-      -7,
-      -18,
-      -14,
-      -6,
-      -5,
-      -27,
-      -26
-    ],
-    "Fishing": [
-      -4,
-      -21,
-      -22
-    ],
-    "Misc": [
-      -24,
-      -20
-    ]
   }
 }

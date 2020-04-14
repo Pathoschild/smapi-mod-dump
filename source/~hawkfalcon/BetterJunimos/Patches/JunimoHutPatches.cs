@@ -32,8 +32,6 @@ namespace BetterJunimos.Patches {
             int radius = Util.MaxRadius;
             for (int x = hut.tileX.Value + 1 - radius; x < hut.tileX.Value + 2 + radius; ++x) {
                 for (int y = hut.tileY.Value + 1 - radius; y < hut.tileY.Value + 2 + radius; ++y) {
-                    // skip if we find the same lastKnownCropLocation twice
-                    if (x == hut.lastKnownCropLocation.X && y == hut.lastKnownCropLocation.Y) continue;
                     Vector2 pos = new Vector2((float)x, (float)y);
                     IJunimoAbility ability = Util.Abilities.IdentifyJunimoAbility(pos, id);
                     if (ability != null) {

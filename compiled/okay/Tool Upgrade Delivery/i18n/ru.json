@@ -1,0 +1,14 @@
+{
+    //Translate by Vikacho
+    "yes": "да",
+    "no": "нет",
+    "dialogue": "Хочешь  мгновенно обновить свой инструмент? Цена: {{config}}G",
+    "no-money": "У тебя недостаточно денег",
+    "inventory-full": "Твой инвентарь полон",
+    "no-tool-upgrade": "У тебя  нет обновления инструмента в Clint",
+    "copper-trash-can": "Мусорка (Медь)",
+    "steel-trash-can": "Мусорка (Сталь)",
+    "gold-trash-can": "Мусорка (Золото)",
+    "iridium-trash-can": "Мусорка (Иридий)",
+    "receive": "ты  получил {{tool}}",
+}

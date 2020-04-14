@@ -53,7 +53,7 @@ namespace FarmTypeManager
                             }
                         }
 
-                        monster.currentLocation.debris.Add(new Debris(Utility.CreateItem(loot), lootPosition, lootPosition)); //create and "drop" the loot at the monster's location
+                        Game1.createItemDebris(Utility.CreateItem(loot), lootPosition, Utility.RNG.Next(4), monster.currentLocation); //create and "drop" the loot at the monster's location
                     }
                 }
             }

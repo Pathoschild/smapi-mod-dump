@@ -5,9 +5,9 @@ mods:
    Go To Bed
 
 latest commit:
-   commit c08e6a14a407cbf61bb34c8be8bc4689bdf8bc90
+   commit be8dd7ccaf1ebb7795d408506b569e04c00477f2
    Author: Candidus <candidus@xmail.net>
-   Date:   Sat Jan 11 21:24:26 2020 +0100
+   Date:   Sat Mar 28 22:15:22 2020 +0100
    
-       Enable menu buttons to make farmer fall asleep, useful to recover from errors
+       Add configuration option and Harmony patch to provide Stardew13 spouse sleeping behavior
    

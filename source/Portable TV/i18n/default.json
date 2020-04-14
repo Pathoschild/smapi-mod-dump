@@ -1,0 +1,22 @@
+﻿{
+	"//Note to Translators": "Your contribution is welcome! I would prefer to publish translations as part of the main mod to keep everything up to date. Please see README.md for how to prepare the translation and send me your work.",
+
+	"//Note on PortableTV.*": "These two strings are the name and description of the TV object that the player crafts and keeps in their inventory.",
+	"PortableTV.name": "Portable TV",
+	"PortableTV.description": "Shows TV programs anywhere in the valley.",
+
+	"//Note on remaining strings": "The remaining strings are the names and explanations of options that appear on a configuration screen.",
+
+	"Animate.name": "Animate TV",
+	"Animate.description": "Whether to animate the Portable TV as it turns on and off",
+
+	"//Note on Static.*": "'Static' as in the visual noise that appears on old analogue TVs that aren't tuned properly. 'Light' as in 'not very much'. 'Show' as in 'to make visible'.",
+	"Static.name": "Show Static",
+	"Static.description": "Whether to show light static on the screen on top of programs",
+
+	"Music.name": "Play Music",
+	"Music.description": "Whether to play music for the standard TV programs",
+
+	"ActivateKey.name": "Activate Key",
+	"ActivateKey.description": "What key will activate the Portable TV in your inventory"
+}

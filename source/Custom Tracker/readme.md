@@ -34,6 +34,13 @@ EnableTrackersWithoutProfession | true, **false** | When set to true, the player
 ReplaceTrackersWithForageIcons | true, **false** | When set to true, the tracker icon will be replaced with an image of each forage item being tracked. A customizable background image will be drawn behind each icon for visibility.
 DrawBehindInterface | true, **false** | When set to true, the tracker icon will be drawn *behind* the game's interface. This makes it easier to see the interface, but harder to see the trackers.
 TrackerPixelScale | A positive number (default **4.0**) | The size of each pixel of the custom tracker icon is multiplied by this value. This includes forage icons and their background image. This is a [floating point number](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types), so decimals are allowed.
+TrackDefaultForage | **true**, false | When set to true, this mod will track most forage normally spawned by Stardew. In technical terms, this tracks objects with the "isSpawnedObject" flag.
+TrackArtifactSpots | **true**, false | When set to true, this mod will track artifact spots, a.k.a. buried artifacts or "worm tiles".
+TrackPanningSpots | **true**, false | When set to true, this mod will track panning spots, i.e. the glowing spots in water where the Copper Pan tool can be used.
+TrackSpringOnions | true, **false** | When set to true, this mod will track harvestable spring onions. This is false by default because the original tracker  doesn't target them.
+TrackBerryBushes | true, **false** | When set to true, this mod will track harvestable salmonberry and blackberry bushes. This is false by default because the original tracker doesn't target them.
+OtherTrackedObjects | A list of object IDs or names (default **[]**) | A list of additional object IDs (a.k.a. parent sheet index) and/or object names to track. These should be separated by commas, and names should be in quotation marks. Example: `[599, "quality sprinkler", 645]`
+
 
 ### Customizing the tracker icon
 

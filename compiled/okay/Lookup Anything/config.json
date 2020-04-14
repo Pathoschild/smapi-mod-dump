@@ -7,7 +7,7 @@
   "EnableTileLookups": false,
   "Controls": {
     "ToggleLookup": "F1",
-    "ToggleLookupInFrontOfPlayer": "",
+    "ToggleSearch": "LeftShift + F1",
     "ScrollUp": "Up",
     "ScrollDown": "Down",
     "ToggleDebug": ""

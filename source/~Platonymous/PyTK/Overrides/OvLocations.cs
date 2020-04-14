@@ -24,6 +24,22 @@ namespace PyTK.Overrides
         internal static Dictionary<string, Func<string, string, GameLocation, bool>> eventConditions = new Dictionary<string, Func<string,string, GameLocation, bool>>();
         internal static bool skip = false;
 
+
+        public static void GameLocationConstructor(GameLocation __instance)
+        {
+            if (__instance.map is xTile.Map map)
+            {
+                if (map.Properties.ContainsKey("IsGreenHouse") || map.Properties.ContainsKey("IsGreenhouse"))
+                    __instance.IsGreenhouse = true;
+
+                if (map.Properties.ContainsKey("IsStructure"))
+                    __instance.isStructure.Value = true;
+
+                if (map.Properties.ContainsKey("IsFarm"))
+                    __instance.IsFarm = true;
+            }
+        } 
+
         [HarmonyPatch]
         internal class GLBugFix
         {
@@ -197,10 +213,13 @@ namespace PyTK.Overrides
                 return AccessTools.Method(PyUtils.getTypeSDV("Game1"), "getLocationRequest");
             }
 
-            internal static void Prefix(string locationName, bool isStructure = false)
+            internal static void Prefix(ref string locationName, bool isStructure = false)
             {
-                if (locationName == null || isStructure)
+                if (!locationName.Contains(":") || locationName == null || isStructure)
                     return;
+
+                string locationMap = Path.Combine("Maps", locationName.Split(':')[0]);
+                locationName = locationMap + "_" + locationName.Split(':')[1];
 
                 GameLocation location = null;
                 try
@@ -214,21 +233,21 @@ namespace PyTK.Overrides
 
                 if (location == null)
                 {
-
-                    string locationMap = Path.Combine("Maps", locationName);
-
-                    if (locationName.Contains(":"))
+                    try
                     {
-                        locationMap = Path.Combine("Maps", locationName.Split(':')[0]);
-                        locationName = locationMap + "_" + locationName.Split(':')[1];
+                        if (locationName.Contains("FarmHouse"))
+                            Game1.locations.Add(new FarmHouse(locationMap, locationName));
+                        else if (locationName.Contains("Farm"))
+                            Game1.locations.Add(new Farm(locationMap, locationName));
+                        else if (locationName.Contains("FarmCave"))
+                            Game1.locations.Add(new FarmCave(locationMap, locationName));
+                        else
+                            Game1.locations.Add(new GameLocation(locationMap, locationName));
                     }
+                    catch
+                    {
 
-                    if (locationName.Contains("FarmHouse"))
-                        Game1.locations.Add(new FarmHouse(locationMap, locationName));
-                    else if (locationName.Contains("Farm"))
-                        Game1.locations.Add(new Farm(locationMap, locationName));
-                    else
-                        Game1.locations.Add(new GameLocation(locationMap, locationName));
+                    }
                 }
             }
         }

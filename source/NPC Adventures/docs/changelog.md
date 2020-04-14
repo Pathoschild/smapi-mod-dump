@@ -1,5 +1,11 @@
 # Full changelog
 
+## 0.11.1 beta
+
+- Fixed nullpointer in HintDriver (#122)
+- Fixed Alex's spouse dialogue line
+- Fixed problem with loading asset Data/AnimationDescription on linux and mac
+
 ## 0.11.0 beta
 
 - Android support (experimanal) (#103 #106) Thx @MaxPresi

@@ -1,5 +1,12 @@
 ## Changelog
 
+### 1.5.7
+- Fixes to a bad descriptor (dry thunder)
+- A lot of experimental work (temporarily disabled)
+- Some console command fixes
+- It can apparently rain and snow at the same time. Fixed. (#100)
+- Fix for Linux/Mac users with fog loading (#104)
+
 ### 1.5.6
 - Resolve improperly set categories causing errors on displaying descriptions (#85)
 - Spacing issues are fixed when retrieving rain category descriptors

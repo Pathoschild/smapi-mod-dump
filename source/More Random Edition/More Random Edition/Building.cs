@@ -48,14 +48,27 @@ namespace Randomizer
 
 		/// <summary>
 		/// Populates the required items based on the items and their multipliers
+		/// Sums up the amounts of items if they have the same id to prevent errors
 		/// </summary>
-		/// <param name="itemsRequired"></param>
+		/// <param name="itemsRequired">The items this building requires</param>
 		private void PopulateRequiredItems(List<ItemAndMultiplier> itemsRequired)
 		{
+			Dictionary<int, RequiredItem> requiredItemsDict = new Dictionary<int, RequiredItem>();
 			foreach (ItemAndMultiplier itemAndMultiplier in itemsRequired)
 			{
-				RequiredItems.Add(new RequiredItem(itemAndMultiplier.Item, itemAndMultiplier.Amount));
+				RequiredItem requiredItem = new RequiredItem(itemAndMultiplier.Item, itemAndMultiplier.Amount);
+				int reqiredItemId = requiredItem.Item.Id;
+				if (requiredItemsDict.ContainsKey(reqiredItemId))
+				{
+					requiredItemsDict[reqiredItemId].NumberOfItems += requiredItem.NumberOfItems;
+				}
+				else
+				{
+					requiredItemsDict.Add(reqiredItemId, requiredItem);
+				}
 			}
+
+			RequiredItems = requiredItemsDict.Values.ToList();
 		}
 
 		/// <summary>

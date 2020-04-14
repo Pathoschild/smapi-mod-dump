@@ -38,6 +38,26 @@ namespace ClimatesOfFerngillRebuild
                     Game1.updateWeatherIcon();
                     ClimatesOfFerngill.Logger.Log(ClimatesOfFerngill.Translator.Get("console-text.weatherset_rain"), LogLevel.Info);
                     break;
+                case "testing":
+                    WeatherUtilities.SetWeatherTesting();
+                    Game1.updateWeatherIcon();
+                    ClimatesOfFerngill.Logger.Log("HERE BE KRAKENS!", LogLevel.Info);
+                    break;
+                case "testing2":
+                    WeatherUtilities.SetWeatherTesting2();
+                    Game1.updateWeatherIcon();
+                    ClimatesOfFerngill.Logger.Log("HERE BE KRAKENS, MATEY! FIRE PORT!", LogLevel.Info);
+                    break;
+                case "testing3":
+                    WeatherUtilities.SetWeatherTesting3();
+                    Game1.updateWeatherIcon();
+                    ClimatesOfFerngill.Logger.Log("[The Skull Moon Hates You]", LogLevel.Info);
+                    break;
+                case "sandstorm":
+                    WeatherUtilities.SetWeatherSandstorm();
+                    Game1.updateWeatherIcon();
+                    ClimatesOfFerngill.Logger.Log("Doo doo doo doo doo doo doo doo", LogLevel.Info);
+                    break;
                 case "vrain":
                     WeatherUtilities.SetWeatherRain();
                     ClimatesOfFerngill.ForceVariableRain();
@@ -171,6 +191,24 @@ namespace ClimatesOfFerngillRebuild
 
 #pragma warning disable IDE0060 // Remove unused parameter
 #pragma warning disable IDE0060 // Remove unused parameter
+        internal static void ShowWind(string arg1, string[] arg2)
+#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore IDE0060 // Remove unused parameter
+        {
+            ClimatesOfFerngill.Logger.Log($"Wind status: Global Wind is {WeatherDebris.globalWind}, and wind gusts are {Game1.windGust}");
+        }
+
+#pragma warning disable IDE0060 // Remove unused parameter
+#pragma warning disable IDE0060 // Remove unused parameter
+        internal static void ResetGlobalWind(string arg1, string[] arg2)
+#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore IDE0060 // Remove unused parameter
+        {
+            WeatherDebris.globalWind = 0f;
+        }
+
+#pragma warning disable IDE0060 // Remove unused parameter
+#pragma warning disable IDE0060 // Remove unused parameter
         public static void ClearSpecial(string arg1, string[] arg2)
 #pragma warning restore IDE0060 // Remove unused parameter
 #pragma warning restore IDE0060 // Remove unused parameter
@@ -191,6 +229,62 @@ namespace ClimatesOfFerngillRebuild
 
             Array.Resize(ref Game1.rainDrops, rainAmt);
             ClimatesOfFerngill.Conditions.SetRainAmt(rainAmt);
+        }
+
+#pragma warning disable IDE0060 // Remove unused parameter
+        internal static void SetRainDef(string arg1, string[] arg2)
+#pragma warning restore IDE0060 // Remove unused parameter
+        {
+            if (!Context.IsMainPlayer) return;
+
+            if (arg2.Length < 1)
+                return;
+
+            float x = Convert.ToInt32(arg2[0]);
+            float y = Convert.ToInt32(arg2[1]);
+
+            ClimatesOfFerngill.RainX = x;
+            ClimatesOfFerngill.RainY = y;
+        }
+
+#pragma warning disable IDE0060 // Remove unused parameter
+        internal static void SetWindChance(string arg1, string[] arg2)
+#pragma warning restore IDE0060 // Remove unused parameter
+        {
+            if (!Context.IsMainPlayer) return;
+
+            if (arg2.Length < 1)
+                return;
+
+            ClimatesOfFerngill.WindChance = (float)Convert.ToDouble(arg2[0]);
+        }
+
+#pragma warning disable IDE0060 // Remove unused parameter
+        internal static void SetWindThreshold(string arg1, string[] arg2)
+#pragma warning restore IDE0060 // Remove unused parameter
+        {
+            if (!Context.IsMainPlayer) return;
+
+            if (arg2.Length < 1)
+                return;
+
+            ClimatesOfFerngill.WindThreshold = (float)Convert.ToDouble(arg2[0]);
+        }
+
+#pragma warning disable IDE0060 // Remove unused parameter
+        internal static void SetWindRange(string arg1, string[] arg2)
+#pragma warning restore IDE0060 // Remove unused parameter
+        {
+            if (!Context.IsMainPlayer) return;
+
+            if (arg2.Length < 1)
+                return;
+
+            float x = (float)Convert.ToDouble(arg2[0]);
+            float y = (float)Convert.ToDouble(arg2[1]);
+
+            ClimatesOfFerngill.WindMin = x;
+            ClimatesOfFerngill.WindCap = y;
         }
 
 #pragma warning disable IDE0060 // Remove unused parameter

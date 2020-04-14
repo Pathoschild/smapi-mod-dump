@@ -27,13 +27,16 @@ namespace CustomTracker
         /// <summary>A rectangle describing the spritesheet location of the "forage mode" tracker's background.</summary>
         Rectangle BackgroundSource { get; set; }
 
-        /// <summary>True after this mod has attempted to load its textures. Used to avoid unnecessary reloading.</summary>
-        bool TexturesLoaded { get; set; } = false;
-        /// <summary>True if forage icons are being displayed instead of the custom tracker. If the tracker texture cannot be loaded, this may be used as a fallback.</summary>
+        /// <summary>True if forage icons are being displayed instead of the custom tracker. If the tracker texture cannot be loaded, this mode may activate as a fallback.</summary>
         bool ForageIconMode { get; set; } = false;
 
         /// <summary>The mod's config.json settings.</summary>
         ModConfig MConfig { get; set; } = null;
+
+        /// <summary>A set of object IDs that should be tracked. Should be populated from the mod's config.json settings.</summary>
+        HashSet<int> TrackedObjectIDs { get; set; } = new HashSet<int>();
+        /// <summary>A set of object names that should be tracked. Should be populated from the mod's config.json settings.</summary>
+        HashSet<string> TrackedObjectNames { get; set; } = new HashSet<string>();
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -44,6 +47,26 @@ namespace CustomTracker
             MConfig = helper.ReadConfig<ModConfig>(); //load the mod's config.json file
             if (MConfig == null) //if loading failed
                 return;
+
+            //populate object sets from config settings, if applicable
+            if (MConfig.OtherTrackedObjects != null)
+            {
+                foreach (object entry in MConfig.OtherTrackedObjects) //for each entry in the list of extra objects to track
+                {
+                    if (int.TryParse(entry.ToString(), out int objectID)) //if this entry can be converted into an integer, treat it as an object ID
+                    {
+                        TrackedObjectIDs.Add(objectID); //add it to the set of tracked IDs
+                    }
+                    else if (entry is string objectName) //if this is a non-integer string, treat it as an object name
+                    {
+                        TrackedObjectNames.Add(objectName.ToLower()); //add it to the set of tracked names
+                    }
+                    else //if this entry couldn't be parsed
+                    {
+                        Monitor.Log($"Failed to recognize this entry in the config.json \"OtherTrackedObjects\" list: {entry.ToString()}", LogLevel.Info);
+                    }
+                }
+            }
 
             //register the mod's SMAPI events
             helper.Events.Display.RenderedHud += Display_RenderedHud;

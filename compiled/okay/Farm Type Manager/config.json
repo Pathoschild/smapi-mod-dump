@@ -1,7 +1,6 @@
 {
   "EnableConsoleCommands": true,
   "EnableContentPacks": true,
-  "EnableContentPackFileChanges": true,
   "EnableTraceLogMessages": true,
   "MonsterLimitPerLocation": null
 }

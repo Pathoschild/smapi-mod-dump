@@ -1,5 +1,24 @@
 ## Changelog
 
+### 1.2.1
+- Removes unncessary debug spam
+
+### 1.2
+- This mod now requires: SpaceCore
+
+- API expanded for plain text moon phase not tied to loc.
+- CP tokens provided. See API documentation for both changes
+- Blood Moons now check for their chance at 6am, as well, they rise at 6am
+- Blood Moon debug message removed
+- Every second full moon in a month is now a blue moon
+- Supermoons added - random, and may have no effect. When it does, it doubles effect
+- Harvest Moon makes crops 3.5 times likely to grow, and also may be a double growth.
+- The Blood Moon text no longer replaces in cut scenes
+- Text fixes (#93)
+- Eclipses should now: sync to MP farmhands, clear for MP farmhands (#90, #91)
+- Eclipses will no longer occur on festival days. (#92)
+- The code will once again remove slimes. NOTE: This includes escaped slimes. The only place your slimes are safe from auto-removal is the slime hutch! (#99)
+
 ### 1.1
 
 - Blood moons change the moon in the HUD.

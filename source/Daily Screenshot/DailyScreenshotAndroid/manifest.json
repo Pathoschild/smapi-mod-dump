@@ -1,0 +1,17 @@
+﻿{
+  "Name": "Daily Screenshot Android",
+  "Author": "CompSciLauren",
+  "Version": "1.0.0",
+  "Description": "Automatically takes a daily screenshot of your entire farm.",
+  "UniqueID": "CompSciLauren.DailyScreenshotAndroid",
+  "EntryDll": "DailyScreenshotAndroid.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Chucklefish:5955" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.MapImageExporter",
+      "IsRequired": true,
+      "MinimumVersion": "1.0.6"
+    }
+  ]
+}

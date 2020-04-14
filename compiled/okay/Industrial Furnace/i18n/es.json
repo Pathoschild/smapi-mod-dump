@@ -1,0 +1,17 @@
+{
+	// Industrial furnace
+	"industrial-furnace.name": "Horno industrial",
+	"industrial-furnace.description": "¡Un potente y eficiente horno con capacidad de fundir múltiples lingotes a la vez!",
+	// HUD messages
+	"message.furnace-running": "El horno está en funcionamiento!",
+	"message.more-coal": "Necesitas al menos {{coalAmount}} piezas de carbón para iniciar la fundición",
+	"message.place-something-first": "Tienes que poner algo a fundir en el horno",
+	"message.cant-smelt-this": "¡No puedes fundir eso!",
+	"message.need-more-ore": "Necesitas al menos {{oreAmount}} de eso para fundirlo",
+	// GenericModConfigMenu
+	"gmcm.main-label": "Opciones para Horno industrial",
+	"gmcm.coal-amount-label": "Cantidad de carbón",
+	"gmcm.coal-amount-description": "La cantidad mínima de carbón para encender el horno",
+	"gmcm.instant-smelting-label": "Fundición instantánea",
+	"gmcm.instant-smelting-description": "Cuando está activo, el horno funde al instante",
+}

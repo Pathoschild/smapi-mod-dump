@@ -1,0 +1,49 @@
+﻿{
+	"Name": "Portable TV",
+	"Price": 50,
+	"Description": "Shows TV programs anywhere in the valley.",
+	"Category": "Metal",
+	"Edibility": -300,
+	"EdibleIsDrink": false,
+	"EdibleBuffs": null,
+	"IsColored": false,
+	"Recipe":
+	{
+		"ResultCount": 1,
+		"Ingredients":
+		[
+			{
+				"Object": 336,
+				"//ObjectName": "Gold Bar",
+				"Count": 1
+			},
+			{
+				"Object": 338,
+				"//ObjectName": "Refined Quartz",
+				"Count": 2
+			},
+			{
+				"Object": 787,
+				"//ObjectName": "Battery Pack",
+				"Count": 1
+			}
+		],
+		"IsDefault": true
+	},
+	"NameLocalization":
+	{
+		"de": "Taschenfernseher",
+		"es": "Televisor portátil",
+		"fr": "TV portative",
+		"it": "TV portatile",
+		"pt": "Televisor portátil"
+	},
+	"DescriptionLocalization":
+	{
+		"de": "Zeigt Fernsehsendungen überall im Tal.",
+		"es": "Muestra programas de televisión en cualquier parte del valle.",
+		"fr": "Diffusion de programmes télévisés dans toute la vallée.",
+		"it": "Mostra i programmi televisivi ovunque nella valle.",
+		"pt": "Mostra programas de televisão em qualquer lugar do vale."
+	}
+}

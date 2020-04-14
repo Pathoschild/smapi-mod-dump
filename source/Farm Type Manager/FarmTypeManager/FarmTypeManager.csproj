@@ -94,6 +94,8 @@
     <Compile Include="Classes\MonsterType.cs" />
     <Compile Include="Events\Compatibility\SaveAnywhere\SaveAnywhere.cs" />
     <Compile Include="Events\GameLaunched.cs" />
+    <Compile Include="Events\Saved.cs" />
+    <Compile Include="Events\Saving.cs" />
     <Compile Include="Events\ReturnedToTitle.cs" />
     <Compile Include="Events\NpcListChanged.cs" />
     <Compile Include="Events\UpdateTicked\PlayerUsedTool.cs" />

@@ -6,9 +6,11 @@ namespace SailorStyles_Clothing
 	{
 		public SButton DebugWarpKey { get; set; }
 		public bool DebugMode { get; set; }
+		public bool DebugAlwaysCaturday { get; set; }
 
 		public Config()
 		{
+			DebugAlwaysCaturday = false;
 			DebugMode = false;
 			DebugWarpKey = SButton.U;
 		}

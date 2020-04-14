@@ -1,0 +1,17 @@
+﻿{
+  "error.farmernamenotfound": "Farmer \"{{FarmerName}}\" not found!",
+  "error.farmnamenotfound": "Current farm name \"{{FarmName}}\" not found in config file!",
+  "error.creatingconfigentry": "Creating a new config entry for the current farm.",
+
+  "command.togglecrib.description": "Enables or disables a player's crib.\n\n Usage: {{CommandName}} <PlayerName>\n PlayerName - The player who needs the crib toggling",
+  "command.togglecrib.toggledoff": "Disabled crib for {{FarmerName}}!",
+  "command.togglecrib.toggledon": "Enabled crib for {{FarmerName}}!",
+
+  "command.togglebed.description": "Enables or disables a player's beds.\n\n Usage: {{CommandName}} <PlayerName> [side]\n PlayerName - The player who needs the bed toggling\n side - left or right (optional)",
+  "command.togglebed.left.toggledoff": "Disabled left bed for {{FarmerName}}!",
+  "command.togglebed.left.toggledon": "Enabled left bed for {{FarmerName}}!",
+  "command.togglebed.right.toggledoff": "Disabled right bed for {{FarmerName}}!",
+  "command.togglebed.right.toggledon": "Enabled right bed for {{FarmerName}}!",
+
+  "effect.didwork": "Prevented asking about babies!"
+}

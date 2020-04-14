@@ -45,14 +45,14 @@
 		"Texture":"PearlJin",
 		"Name":"Pearl Jin",
 		"Map":"SundropJewelryStore",
-		"Position":[17, 29],
+		"Position":[5, 54],
 		"Message":"$hAh, a customer! Welcome, please have a look around!"
 	},
 	{
 		"Texture":"Spencer_EyepatchApron",
 		"Name":"Spencer",
 		"Map":"SundropJewelryStore",
-		"Position":[20, 10],
+		"Position":[12, 35],
 		"Message":"Sorry, cant talk right now, have to get this ring just right..."
 	}
 ]

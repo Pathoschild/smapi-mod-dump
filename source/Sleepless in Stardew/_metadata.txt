@@ -5,9 +5,9 @@ mods:
    Sleepless in Stardew
 
 latest commit:
-   commit f5def8bfa91bdc2ea6c33b587edbfca6b5361752
+   commit b3cfe53a795cc9b841356339e76c130a946e6adf
    Author: Instafluff <35773245+instafluff@users.noreply.github.com>
-   Date:   Fri Feb 21 21:49:28 2020 -0800
+   Date:   Thu Mar 26 13:14:07 2020 -0700
    
-       v1.1.0
+       Update README.md
    

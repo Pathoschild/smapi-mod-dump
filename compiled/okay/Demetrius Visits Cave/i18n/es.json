@@ -1,0 +1,10 @@
+{
+    // caves
+    "cave0": "factores ambientales",
+    "cave1": "murciélagos",
+    "cave2": "hongos",
+    // dialogue
+    "greet": "¡Hola, @! He pasado a ver como va la cueva.",
+    "research": "He venido pronto para poder examinar como los {{playerCave}} reaccionan a los cambios de luz y temperatura a lo largo del día.",
+    "thanks": "He conseguido mucha información fascinante aquí. Gracias de nuevo por dejarme montar esto.$h",
+}

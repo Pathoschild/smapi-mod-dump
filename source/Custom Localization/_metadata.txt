@@ -5,9 +5,9 @@ mods:
    Custom Localization
 
 latest commit:
-   commit 8b1da50947216f9ab69df76be358a7b6d8580d01
-   Author: Zane.Y <ZaneYork@qq.com>
-   Date:   Mon Feb 10 16:11:55 2020 +0800
+   commit 2446150121e86202ebcfbb1fb48366e1fb2f99f2
+   Author: ZaneYork <ZaneYork@qq.com>
+   Date:   Sat Apr 11 20:23:00 2020 +0800
    
-       Update README.md
+       Change patch mode to make it available for other platform
    

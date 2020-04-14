@@ -3,6 +3,7 @@
     public interface ILunarDisturbancesAPI
     {
         string GetCurrentMoonPhase();
+        string GetPlainCurrMoonPhase();
         bool IsSolarEclipse();
         int GetMoonRise();
         int GetMoonSet();
@@ -16,6 +17,11 @@
         public LunarDisturbancesAPI(SDVMoon OurMoon)
         {
             IntMoon = OurMoon;
+        }
+
+        public string GetPlainCurrMoonPhase()
+        {
+            return IntMoon.SimpleMoonPhase();
         }
 
         public string GetCurrentMoonPhase()

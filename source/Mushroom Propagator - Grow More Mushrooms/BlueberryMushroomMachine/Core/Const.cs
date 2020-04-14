@@ -5,51 +5,59 @@ namespace BlueberryMushroomMachine
 {
 	internal class Const
 	{
-		// Project strings
+		// Project
 		internal const string AuthorName
 			= "blueberry";
 		internal const string PackageName
 			= "BlueberryMushroomMachine";
-		internal const string PropagatorName
-			= "Propagator";
 
-		internal static readonly string PropagatorUniqueId
-			= $"{PackageName}.{PropagatorName}";
-
-		// Paths
+		// Files
 		internal static readonly string MachinePath
-			= Path.Combine("Assets", "propagator.png");
+			= Path.Combine("assets", "propagator.png");
 		internal static readonly string OverlayPath
-			= Path.Combine("Assets", "overlay.png");
+			= Path.Combine("assets", "overlay.png");
 		internal static readonly string EventsPath
-			= Path.Combine("Assets", "events.json");
+			= Path.Combine("assets", "events.json");
 
-		// Object data
-		internal static Dictionary<int, int> MushroomSourceRects =
+		// Mushroom Machine
+		internal static readonly string PropagatorInternalName
+			= $"{PackageName}.Propagator";
+
+		// Objects
+		private enum Mushrooms
+		{
+			Morel = 257,
+			Chantarelle = 281,
+			Common = 404,
+			Red = 420,
+			Purple = 422
+		}
+
+		internal static readonly Dictionary<int, int> MushroomSourceRects =
 			new Dictionary<int, int> {
-				{257, 0},		// Morel
-				{281, 1},		// Chantarelle
-				{404, 2},		// Common Mushroom
-				{420, 3},		// Red Mushroom
-				{422, 4},		// Purple Mushroom
+				{(int)Mushrooms.Morel, 0},
+				{(int)Mushrooms.Chantarelle, 1},
+				{(int)Mushrooms.Common, 2},
+				{(int)Mushrooms.Red, 3},
+				{(int)Mushrooms.Purple, 4}
 			};
 
-		internal static Dictionary<int, float> MushroomGrowingRates =
+		internal static readonly Dictionary<int, float> MushroomGrowingRates =
 			new Dictionary<int, float> {
-				{257, 0.5f},	// Morel
-				{281, 0.5f},	// Chantarelle
-				{404, 1.0f},	// Common Mushroom
-				{420, 0.5f},	// Red Mushroom
-				{422, 0.25f},	// Purple Mushroom
+				{(int)Mushrooms.Morel, 0.5f},
+				{(int)Mushrooms.Chantarelle, 0.5f},
+				{(int)Mushrooms.Common, 1.0f},
+				{(int)Mushrooms.Red, 0.5f},
+				{(int)Mushrooms.Purple, 0.25f}
 			};
 
-		internal static Dictionary<int, int> MushroomQuantityLimits =
+		internal static readonly Dictionary<int, int> MushroomQuantityLimits =
 			new Dictionary<int, int> {
-				{257, 4},		// Morel
-				{281, 4},		// Chantarelle
-				{404, 6},		// Common Mushroom
-				{420, 3},		// Red Mushroom
-				{422, 2},		// Purple Mushroom
+				{(int)Mushrooms.Morel, 4},
+				{(int)Mushrooms.Chantarelle, 4},
+				{(int)Mushrooms.Common, 6},
+				{(int)Mushrooms.Red, 3},
+				{(int)Mushrooms.Purple, 2}
 			};
 	}
 }

@@ -1,0 +1,17 @@
+Times can be ignored.
+Left hand side and right hand side should never both contain a "No Overlap" rule
+
+Example:
+Rule Location Inactive will not trigger as no location is set.  Location="Location_None"
+Rules "Location No Overlap Farm" and "Location Overlap Any" can over write one another.
+Rules "Location No Overlap Farmhouse" and "Location Overlap Any" can over write one another.
+Rules "Location No Overlap Greenhouse" and "Location Overlap Any" can over write one another.
+Rules "Location No Overlap Beach" and "Location Overlap Any" can over write one another.
+Rules "Location No Overlap FarmCave" and "Location Overlap Any" can over write one another.
+Rules "Location No Overlap Cellar" and "Location Overlap Any" can over write one another.
+Rules "Location No Overlap Desert" and "Location Overlap Any" can over write one another.
+Rules "Location No Overlap Museum" and "Location Overlap Any" can over write one another.
+Rules "Location No Overlap CommunityCenter" and "Location Overlap Any" can over write one another.
+Rules "Location No Overlap Mountain" and "Location Overlap Any" can over write one another.
+Rules "Location No Overlap Unknown" and "Location Overlap Any" can over write one another.
+

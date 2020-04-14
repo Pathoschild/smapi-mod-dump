@@ -5,9 +5,9 @@ mods:
    Custom Tracker
 
 latest commit:
-   commit bcd8e7321719c6e40d44a2803a10799f3a7bea68
+   commit 36521baf2f03dadacf05184a9c294edb65c30000
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Mon Feb 17 15:37:48 2020 -0600
+   Date:   Fri Apr 10 01:52:50 2020 -0500
    
-       Add GMCM support to readme.md
+       Add GMCM support for settings added in 1.3.0
    

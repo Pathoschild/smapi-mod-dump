@@ -8,6 +8,6 @@
     "ChooseSlot4": "NumPad4",
     "ChooseSlot5": "NumPad5",
     "ScrollLeft": "LeftTrigger",
-    "ScrollRight": "LeftTrigger"
+    "ScrollRight": "RightTrigger"
   }
 }

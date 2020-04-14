@@ -33,7 +33,8 @@ namespace FarmTypeManager
             foreach (Type monster in monsters) //for each available monster type
             {
                 string currentAssembly = monster.Assembly.GetName().Name; //get this monster's simple assembly name
-                if (currentAssembly == "Stardew Valley" || currentAssembly == "FarmTypeManager") //if this monster is from SDV or this mod
+                if (currentAssembly == "Stardew Valley" || currentAssembly == "StardewValley" || //if this monster is from SDV
+                    currentAssembly == "FarmTypeManager") //...or from this mod
                 {
                     continue; //skip to the next monster
                 }

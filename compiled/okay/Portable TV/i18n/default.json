@@ -1,0 +1,15 @@
+﻿{
+  "//Note to Translators": "Your contribution is welcome! I would prefer to publish translations as part of the main mod to keep everything up to date. Please see README.md for how to prepare the translation and send me your work.",
+
+  "PortableTV.name": "Portable TV",
+  "PortableTV.description": "Shows TV programs anywhere in the valley.",
+
+  "Animate.name": "Animate TV",
+  "Animate.description": "Whether to animate the Portable TV as it turns on and off",
+
+  "Static.name": "Show Static",
+  "Static.description": "Whether to show light static on the screen on top of programs",
+
+  "Music.name": "Play Music",
+  "Music.description": "Whether to play music for the standard TV programs"
+}

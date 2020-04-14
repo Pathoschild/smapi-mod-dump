@@ -1,8 +1,9 @@
 {
   "SaveGame": {
-    "Alex_180579228": {
-      "HairColor": "216, 162, 87, 255",
-      "ColorIsFading": true
+    "Pookachu_201827481": {
+      "HairColor": "140, 66, 64, 255",
+      "ColorIsFading": true,
+      "SpouseLookAlike": false
     }
   }
 }

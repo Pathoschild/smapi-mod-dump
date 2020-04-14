@@ -1,0 +1,5 @@
+{
+    "crop.remaining-days": "{{daysCount}} jours avant la ceuillette !",
+    "crop.ready": "La culture peut être ceuillie !",
+    "crop.not-hovered": "Votre curseur n'est pas au dessus d'une culture..."
+}

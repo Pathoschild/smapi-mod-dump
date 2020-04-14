@@ -1,0 +1,14 @@
+url:
+   https://gitlab.com/kdau/predictivemods.git
+
+mods:
+   Public Access TV
+   Scrying Orb
+
+latest commit:
+   commit c68c6c34dfff4773080764329b9906a74c963daa
+   Author: Kevin Daughtridge <kevin@kdau.com>
+   Date:   Sun Apr 12 16:16:01 2020 -0700
+   
+       GarbageChannel.CheckEvent: fix rare null reference
+   

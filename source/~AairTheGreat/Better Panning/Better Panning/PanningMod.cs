@@ -28,7 +28,8 @@ namespace BetterPanning
         private bool updatedNumberOfTimesGathered = false;        
         private string farmFile = "Farm.json";  //Default farm
 
-        private Dictionary<string, List<Point>> openWaterTiles = new Dictionary<string, List<Point>>();
+        private Dictionary<string, string> translations;
+        private Dictionary<string, MapOreConfig> openWaterTiles = new Dictionary<string, MapOreConfig> (); //List<Point>>();
         internal ModConfig config; 
 
         internal Dictionary<TREASURE_GROUP, TreasureGroup> treasureGroups;
@@ -43,6 +44,8 @@ namespace BetterPanning
             helper.Events.Display.RenderedHud += Display_RenderedHud;
             helper.Events.Input.ButtonReleased += Input_ButtonReleased;
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
+
+            ConfigStaticTranslationStrings();
 
             try
             {
@@ -62,6 +65,26 @@ namespace BetterPanning
                 harmony = HarmonyInstance.Create("com.aairthegreat.mod.panning");
                 harmony.Patch(typeof(Pan).GetMethod("getPanItems"), null, new HarmonyMethod(typeof(PanOverrider).GetMethod("postfix_getPanItems")));
             }                        
+        }
+
+        private void ConfigStaticTranslationStrings()
+        {
+            translations = new Dictionary<string, string>();
+            translations.Add("hud.foundOreSpot", Helper.Translation.Get("hud.foundOreSpot"));
+            translations.Add("hud.noOreSpot", Helper.Translation.Get("hud.noOreSpot"));
+            translations.Add("hud.north", Helper.Translation.Get("hud.north"));
+            translations.Add("hud.northwest", Helper.Translation.Get("hud.northwest"));
+            translations.Add("hud.northeast", Helper.Translation.Get("hud.northeast"));
+            translations.Add("hud.south", Helper.Translation.Get("hud.south"));
+            translations.Add("hud.southwest", Helper.Translation.Get("hud.southwest"));
+            translations.Add("hud.southeast", Helper.Translation.Get("hud.southeast"));
+            translations.Add("hud.west", Helper.Translation.Get("hud.west"));
+            translations.Add("hud.east", Helper.Translation.Get("hud.east"));
+            translations.Add("hud.oreSpotDisappeared", Helper.Translation.Get("hud.oreSpotDisappeared"));
+            translations.Add("hud.oreSpotDisappearedReason", Helper.Translation.Get("hud.oreSpotDisappearedReason"));
+            translations.Add("hud.playerGotTheSpot", Helper.Translation.Get("hud.playerGotTheSpot"));
+            translations.Add("hud.TryAgain", Helper.Translation.Get("hud.TryAgain"));
+
         }
 
         // Used for if the player goes to the start menu and selects a different saved game.
@@ -157,7 +180,7 @@ namespace BetterPanning
             batch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend);
 
             Point orePoint = Game1.player.currentLocation.orePanPoint.Value;
-            string hudTextLine1 = "Found a panning spot!"; 
+            string hudTextLine1 = translations["hud.foundOreSpot"];//"Found a panning spot!"; 
             string hudTextLine2 = "";
             string hudTextLine3 = "";            
 
@@ -167,26 +190,26 @@ namespace BetterPanning
                 long distance = GetDistanceToOre(orePoint);
                 if (config.showDistance)
                 {
-                    hudTextLine2 = $"In the {oreRelativePostion} direction.";
-                    hudTextLine3 = $"Roughly { distance} tiles away.";
+                    hudTextLine2 = Helper.Translation.Get("hud.direction", new { direction = oreRelativePostion }); //$"In the {oreRelativePostion} direction.";
+                    hudTextLine3 = Helper.Translation.Get("hud.distance", new { distance = distance });  //$"Roughly { distance} tiles away.";
                 }
             }
             else
             {
                 if (hasPanningSpot && !playerPannedSpot)
                 {
-                    hudTextLine1 = "The panning spot is GONE!";
-                    hudTextLine2 = "A fish must have ate the treasure.";
+                    hudTextLine1 = translations["hud.oreSpotDisappeared"];//"The panning spot is GONE!";
+                    hudTextLine2 = translations["hud.oreSpotDisappearedReason"];//"A fish must have ate the treasure.";
                 }
                 else if (playerPannedSpot)
                 {
-                    hudTextLine1 = "Good job! You got the spot!";
-                    hudTextLine2 = "Try this area again later!";
+                    hudTextLine1 = translations["hud.playerGotTheSpot"];  //"Good job! You got the spot!";
+                    hudTextLine2 = translations["hud.TryAgain"];//"Try this area again later!";
                     updatedNumberOfTimesGathered = false;
                 }
                 else
                 {
-                    hudTextLine1 = "No panning spot found!";                    
+                    hudTextLine1 = translations["hud.noOreSpot"]; //"No panning spot found!";                    
                 }
             }
 
@@ -412,13 +435,14 @@ namespace BetterPanning
         private void CreatePanningSpot(GameLocation location)
         {
             Random random = new Random(Game1.timeOfDay + (int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed);
-            List<Point> possibleTiles = openWaterTiles[location.Name];
-            if (possibleTiles.Count != 0)
+            //List<Point> possibleTiles = openWaterTiles[location.Name];
+            var possibleTiles = openWaterTiles[location.Name];
+            if (possibleTiles.OreSpots.Count != 0)
             {
                 for (int i = 0; i < 4; i++) // should only ever need to try once, but just in case...
                 {
-                    int indx = random.Next(0, possibleTiles.Count);
-                    Point newOrePoint = possibleTiles[indx];
+                    int indx = random.Next(0, possibleTiles.OreSpots.Count);
+                    Point newOrePoint = possibleTiles.OreSpots[indx];
 
                     // Double check to make sure it's a valid point/tile
                     if (location.isOpenWater(newOrePoint.X, newOrePoint.Y) && FishingRod.distanceToLand(newOrePoint.X, newOrePoint.Y, location) <= 0)
@@ -473,11 +497,16 @@ namespace BetterPanning
                 {
                     file = Path.Combine("DataFiles", farmFile);
                 }
-                List<Point> possibleTiles = this.Helper.Data.ReadJsonFile<List<Point>>(file);
+                
+                //List<Point> possibleTiles = this.Helper.Data.ReadJsonFile<List<Point>>(file);
+                var mapOreConfig = this.Helper.Data.ReadJsonFile<MapOreConfig>(file);
 
-                if (possibleTiles == null) //No file was found...
+                if (mapOreConfig == null) //No file was found...
                 {
-                    possibleTiles = new List<Point>();
+                    mapOreConfig = new MapOreConfig() 
+                        { AreaName = currentLocation.Name, numberOfOreSpotsPerDay = config.maxNumberOfOrePointsGathered };
+                    
+                    var possibleTiles = new List<Point>();
 
                     int maxWidth = currentLocation.Map.GetLayer("Back").LayerWidth;
                     int maxHeight = currentLocation.Map.GetLayer("Back").LayerHeight;
@@ -492,20 +521,21 @@ namespace BetterPanning
                             }
                         }
                     }
+
+                    mapOreConfig.OreSpots = possibleTiles;
+
                     if (!currentLocation.Name.Contains("UndergroundMine"))
                     {
-                        this.Helper.Data.WriteJsonFile(file, possibleTiles); // Write out new file since we had to try and find spawn points.
+                        this.Helper.Data.WriteJsonFile(file, mapOreConfig); // Write out new file since we had to try and find spawn points.
                     }
                     else if (currentLocation.Name == "UndergroundMine20" 
                         || currentLocation.Name == "UndergroundMine60" 
                         || currentLocation.Name == "UndergroundMine100")
                     {
-                        this.Helper.Data.WriteJsonFile(file, possibleTiles); // The only mine levels with water
-                    }
-
-                    
+                        this.Helper.Data.WriteJsonFile(file, mapOreConfig); // The only mine levels with water
+                    }                    
                 }
-                openWaterTiles.Add(currentLocation.Name, possibleTiles);
+                openWaterTiles.Add(currentLocation.Name, mapOreConfig);
             }
         }
 
@@ -513,21 +543,21 @@ namespace BetterPanning
         {
             if (orePoint.X == Game1.player.getTileX())
             {
-                return (orePoint.Y < Game1.player.getTileY()) ? "N" : "S";
+                return (orePoint.Y < Game1.player.getTileY()) ? translations["hud.north"] : translations["hud.south"]; //"N" : "S";
             }
 
             if (orePoint.Y == Game1.player.getTileY())
             {
-                return (orePoint.X < Game1.player.getTileX()) ? "W" : "E";
+                return (orePoint.X < Game1.player.getTileX()) ? translations["hud.west"] : translations["hud.east"]; //"W" : "E";
             }
 
             if (orePoint.X < Game1.player.getTileX())
             {
-                return (orePoint.Y < Game1.player.getTileY()) ? "NW" : "SW";
+                return (orePoint.Y < Game1.player.getTileY()) ? translations["hud.northwest"] : translations["hud.southwest"]; //"NW" : "SW";
             }
             else
             {
-                return (orePoint.Y < Game1.player.getTileY()) ? "NE" : "SE";
+                return (orePoint.Y < Game1.player.getTileY()) ? translations["hud.northeast"] : translations["hud.southeast"]; //"NE" : "SE";
             }
         }
 

@@ -33,14 +33,6 @@ namespace SB_VerticalToolMenu.Framework
         public override void receiveLeftClick(int x, int y, bool playSound = true)
         {
             Item heldItem = Game1.player.CursorSlotItem;
-            for (int i = Game1.player.MaxItems; i < StardewValley.Farmer.maxInventorySpace; i++)
-            {
-                if (Game1.player.Items[i] != null)
-                {
-                    Game1.player.CursorSlotItem = Game1.player.Items[i];
-                    Game1.player.Items[i] = null;
-                }
-            }
             foreach (ClickableComponent button in verticalToolBar.buttons)
             {
                 if (button.containsPoint(x, y))
@@ -83,7 +75,7 @@ namespace SB_VerticalToolMenu.Framework
                 return;
             }
 
-            base.receiveLeftClick(x, y);
+            base.receiveLeftClick(x, y, true);
         }
 
         public override void receiveRightClick(int x, int y, bool playSound = true)
@@ -102,12 +94,13 @@ namespace SB_VerticalToolMenu.Framework
             for (int index = 0; index < VerticalToolBar.NUM_BUTTONS; ++index)
                 verticalToolBar.buttons[index].bounds = new Rectangle(
                             //TODO: Use more reliable coordinates
-                            verticalToolBar.xPositionOnScreen,
-                            verticalToolBar.yPositionOnScreen + (index * Game1.tileSize),
+                            verticalToolBar.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder,
+                            verticalToolBar.yPositionOnScreen + IClickableMenu.spaceToClearSideBorder + (index * Game1.tileSize),
                             Game1.tileSize,
                             Game1.tileSize);
-            base.draw(b);
             verticalToolBar.draw(b);
+            base.draw(b);
+            verticalToolBar.drawToolTip(b);
         }
     }
 }

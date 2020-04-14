@@ -1,0 +1,22 @@
+{
+	"//Note to Translators": "Your contribution is welcome! I would prefer to publish translations as part of the main mod to keep everything up to date. Please see README.md for how to prepare the translation and send me your work.",
+
+	"//Note on PortableTV.*": "These two strings are the name and description of the TV object that the player crafts and keeps in their inventory.",
+	"PortableTV.name": "TV portative",
+	"PortableTV.description": "Diffusion de programmes télévisés dans toute la vallée.",
+
+	"//Note on remaining strings": "The remaining strings are the names and explanations of options that appear on a configuration screen.",
+
+	"Animate.name": "Animation TV",
+	"Animate.description": "S'il faut animer la télévision portative lorsqu'elle s'allume et s'éteint",
+
+	"//Note on Static.*": "'Static' as in the visual noise that appears on old analogue TVs that aren't tuned properly. 'Light' as in 'not very much'. 'Show' as in 'to make visible'.",
+	"Static.name": "Effet cathodique",
+	"Static.description": "S'il faut montrer l'effet cathodique sur l'écran des programmes",
+
+	"Music.name": "Jouer la musique",
+	"Music.description": "S'il faut jouer de la musique pour les programmes de télévision standard",
+
+	"ActivateKey.name": "Raccourci clavier",
+	"ActivateKey.description": "Choisir la touche pour activer la TV portative depuis l'inventaire"
+}

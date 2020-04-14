@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5570
+IDs: Pathoschild.test
+update keys: Nexus:5570

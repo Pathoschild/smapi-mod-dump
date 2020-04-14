@@ -1,21 +1,18 @@
 {
-  "TimeScreenshotGetsTakenAfter": 600,
-  "TakeScreenshotZoomLevel": 0.25,
-  "TakeScreenshotKey": "None",
-  "TakeScreenshotKeyZoomLevel": 0.25,
-  "FolderDestinationForDailyScreenshots": "default",
-  "FolderDestinationForKeypressScreenshots": "default",
-  "HowOftenToTakeScreenshot": {
-    "Daily": true,
-    "Mondays": true,
-    "Tuesdays": true,
-    "Wednesdays": true,
-    "Thursdays": true,
-    "Fridays": true,
-    "Saturdays": true,
-    "Sundays": true,
-    "First Day of Month": true,
-    "Last Day of Month": true
-  },
-  "TakeScreenshotOnRainyDays": true
+  "SnapshotRules": [
+    {
+      "Name": "Unnamed Rule 1",
+      "ZoomLevel": 0.25,
+      "Directory": "Default",
+      "FileName": "Default",
+      "Trigger": {
+        "Days": "Daily",
+        "Weather": "Any",
+        "Location": "Farm",
+        "Key": "None",
+        "StartTime": 600,
+        "EndTime": 2600
+      }
+    }
+  ]
 }

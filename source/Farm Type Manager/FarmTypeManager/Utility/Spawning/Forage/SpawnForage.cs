@@ -71,12 +71,26 @@ namespace FarmTypeManager
                     Monitor.VerboseLog($"Spawning forage item. Type: {forageItem.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
 
                     Vector2 pixel = new Vector2((int)tile.X * Game1.tileSize, (int)tile.Y * Game1.tileSize); //get the "pixel" location of the item, rather than the "tile" location
-                    Debris itemDebris = new Debris(-2, 1, pixel, pixel, 0.1f) //create "debris" to contain the forage item
+
+                    if (Constants.TargetPlatform == GamePlatform.Android) //if this is the Android version of SDV
                     {
-                        item = forageItem
-                    };
-                    itemDebris.Chunks[0].bounces = 3; //prevent the debris bouncing when spawned by increasing its "number of bounces so far" counter
-                    location.debris.Add(itemDebris); //place the debris at the the location
+                        //spawn a "debris item" with a method that avoids Android-specific bugs (e.g. players being unable to pick up the item)
+
+                        Debris itemDebris = Game1.createItemDebris(forageItem, pixel, 1, location); //create "debris" containing the forage item (Game1 method)
+                        itemDebris.Chunks[0].bounces = 3; //prevent the debris bouncing when spawned by incrementing the "number of bounces so far" counter
+                    }
+                    else //if this is any other version of SDV
+                    {
+                        //spawn a "debris item" with a method that causes its position to "drift" less when spawned
+
+                        Debris itemDebris = new Debris(-2, 1, pixel, pixel, 0.1f) //create "debris" to contain the forage item
+                        {
+                            item = forageItem
+                        };
+                        itemDebris.Chunks[0].bounces = 3; //prevent the debris bouncing when spawned by increasing its "number of bounces so far" counter
+                        location.debris.Add(itemDebris); //place the debris at the the location
+                    }
+
                     return true;
                 }
 

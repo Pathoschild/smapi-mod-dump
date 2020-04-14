@@ -95,7 +95,7 @@ namespace CustomTracker
                 rotation -= 0.7853982f;
             }
 
-            if (Background != null) //if a background was successfully loaded
+            if (ForageIconMode && Background != null) //if a background should be drawn
             {
                 Game1.spriteBatch.Draw(Background, trackerRenderPosition, new Rectangle?(BackgroundSource), Color.White, rotation, new Vector2(2f, 2f), scale, SpriteEffects.None, 1f); //draw the background on the game's main sprite batch (note: this will be off-center if spritesheet and background are different sizes)
             }

@@ -1,0 +1,19 @@
+{
+	"Name": "Industrial Furnace for Automate",
+	"Author": "Traktori",
+	"Version": "1.0.1",
+	"Description": "Integrates the Industrial Furnace with Automate.",
+	"UniqueID": "Traktori.AM.IndustrialFurnace",
+	"EntryDll": "IndustrialFurnaceAutomate.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [],
+	"Dependencies":
+	[
+		{
+			"UniqueID": "Pathoschild.Automate"
+		},
+		{
+			"UniqueID": "Traktori.IndustrialFurnace"
+		},
+	]
+}

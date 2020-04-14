@@ -20,39 +20,17 @@ namespace FarmTypeManager
 
     public partial class ModEntry : Mod
     {
+        /// <summary>True if SaveAnywhere's save process is currently being handled by this mod. Used to avoid redundant save data handling.</summary>
+        public static bool SaveAnywhereIsSaving { get; set; } = false;
+
         /// <summary>Saves and removes objects/data that cannot be handled by Stardew Valley's save process.</summary>
         private void SaveAnywhere_BeforeSave()
         {
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything
 
-            Utility.Monitor.Log($"Modded save event started. Saving and removing custom objects/data.", LogLevel.Trace);
+            SaveAnywhereIsSaving = true; //set the "saving" flag
 
-            Utility.MonsterTracker.Clear(); //clear any tracked monster data (note: this should happen *before* handling monster expiration/removal)
-
-            if (Utility.FarmDataList == null) { return; } //if the farm data list is blank, do nothing
-
-            foreach (FarmData data in Utility.FarmDataList) //for each set of farm data
-            {
-                if (data.Pack != null) //if this data is from a content pack
-                {
-                    Monitor.VerboseLog($"Processing save data for content pack: {data.Pack.Manifest.Name}");
-                }
-                else //this data is from this mod's own folders
-                {
-                    Monitor.VerboseLog($"Processing save data for FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
-                }
-
-                Utility.ProcessObjectExpiration(save: data.Save, endOfDay: false); //remove custom object classes, but do not process expiration settings
-
-                if (data.Pack != null) //if this data is from a content pack
-                {
-                    data.Pack.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), data.Save); //update the save file for that content pack
-                }
-                else //this data is from this mod's own folders
-                {
-                    Helper.Data.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), data.Save); //update the save file in this mod's own folders
-                }
-            }
+            BeforeMidDaySave();
         }
 
         /// <summary>Restores saved objects/data that could not be handled by Stardew Valley's save process.</summary>
@@ -60,25 +38,9 @@ namespace FarmTypeManager
         {
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything
 
-            Monitor.Log($"Modded save event ended. Restoring custom objects/data.", LogLevel.Trace);
+            AfterMidDaySave();
 
-            //note: do not clear Utility.TimedSpawns here; that should only happen when in the DayStarted event
-
-            Utility.MonsterTracker.Clear(); //clear stored monster information before they are respawned (note: all of this mod's monsters should be removed before saving)
-
-            foreach (FarmData data in Utility.FarmDataList) //for each loaded set of data
-            {
-                if (data.Pack != null) //if this data is from a content pack
-                {
-                    Monitor.VerboseLog($"Checking objects from content pack: {data.Pack.Manifest.Name}");
-                }
-                else //this data is from this mod's own folders
-                {
-                    Monitor.VerboseLog($"Checking objects from FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
-                }
-
-                Utility.ReplaceProtectedSpawns(data.Save); //protect unexpired spawns listed in the save data
-            }
+            SaveAnywhereIsSaving = false; //clear the "saving" flag
         }
     }
 }

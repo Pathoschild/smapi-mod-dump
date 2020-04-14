@@ -2,7 +2,7 @@
 
 ![](pics/greenhouse.png)
 
-Better Mixed Seeds currently supports 26 other crop mods. These can be found below.
+Better Mixed Seeds currently supports 28 other crop mods. These can be found below.
 
 ## Integrated Mods
 * [Fantasy Crops](https://www.nexusmods.com/stardewvalley/mods/1610)
@@ -32,6 +32,7 @@ Better Mixed Seeds currently supports 26 other crop mods. These can be found bel
 * [Spoopy Valley](https://www.nexusmods.com/stardewvalley/mods/4513)
 * [Stardew Bakery](https://www.nexusmods.com/stardewvalley/mods/5094)
 * [Succulents](https://www.nexusmods.com/stardewvalley/mods/5310)
+* [Tropical Farm](https://www.nexusmods.com/stardewvalley/mods/5585)
 
 ## Request Mod Integration
 If you have a mod you want to be integrated into this mod: Simply create an issue, in this issue it is important to include a link to the original mod, this could be a: Nexus Mod link, Chuckle fish link etc. It is important the mod is: not abandoned, and maintained (up-to-date) officially and not through unofficial patches OR you can go into the [Stardew Valley Discord](https://www.discordapp.com/invite/stardewvalley) and post in the #modding channel making sure to @EpicBellyFlop45 and we can have a chat about the details etc.

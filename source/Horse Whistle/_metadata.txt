@@ -5,12 +5,9 @@ mods:
    Horse Whistle
 
 latest commit:
-   commit a6df89d25b393a771a557d61b49745d6c44f482d
-   Merge: 6058ebf df37af5
-   Author: icepuente <icepuente@gmail.com>
-   Date:   Fri Nov 29 22:23:45 2019 -0700
+   commit c4ae83ddb868b07b6c55633f8d965476a57c1a18
+   Author: Alec Puente <icepuente@gmail.com>
+   Date:   Thu Mar 19 17:03:17 2020 -0700
    
-       Merge pull request #4 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0, internal refactoring, various fixes
+       Fix issue with preventing remapping hotkeys
    

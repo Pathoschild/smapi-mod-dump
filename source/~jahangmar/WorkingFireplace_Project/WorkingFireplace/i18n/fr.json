@@ -1,0 +1,13 @@
+﻿{
+    "msg.warm": "Le feu vous a gardé au chaud cette nuit.",
+    "msg.cold": "Le froid vous a vidé de votre énergie durant la nuit.",
+    "msg.spousecold": "Votre famille était gelée au cours de la nuit.",
+    "dia.spousecold": "J'étais frigorifié cette nuit.",
+    "dia.spousecold_child": "{{child1}} est frigorifié.",
+    "dia.spousecold_children": "{{child1}} et {{child2}} sont frigorifiés.",
+    "dia.please": "Allume la cheminée s'il te plaît.",
+    "msg.nowood": "Vous avez besoin de {{wood_pieces}} morceaux de bois pour allumer le feu.",
+    "msg.temp": "Température : ",
+    "msg.tempwarm": "chaud",
+    "msg.tempcold": "froid"
+}

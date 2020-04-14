@@ -1,1 +1,5 @@
-[]
+{
+  "AreaName": "WitchWarpCave",
+  "numberOfOreSpotsPerDay": 0,
+  "OreSpots": []
+}

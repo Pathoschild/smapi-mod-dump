@@ -3,6 +3,7 @@
     public class SNConfiguration
     {
         // General Notifications
+        public float NotificationTime { get; set; } = 6150;
         public bool NotifyBirthdays { get; set; } = true;
         public bool NotifyBirthdayReminder { get; set; } = true;
         public int BirthdayReminderTime { get; set; } = 1700; // 5:00 pm
@@ -15,6 +16,10 @@
         public bool NotifySeasonalForage { get; set; } = true;
         public bool ShowEmptyhay { get; set;} = true;
         public bool NotifyHay { get ; set; } = true;
+        public bool ShowWeatherNextDay { get; set; } = true;
+        public int WeatherNextDayTime { get; set; } = 1700;  //5pm
+        public bool NotifyTVChannels { get; set; } = true;
+        public bool ShowSpringOnionCount { get; set; } = true;
 
         // Harvest Notifications
         public bool NotifyFarmCave { get; set; } = true;

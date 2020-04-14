@@ -1,7 +1,14 @@
 # Release notes
 ## Upcoming release
+* Added tile grid layer (when grid isn't enabled for all layers).
+* Fixed translations not updated after changing language until you restart the game.
+* Updated translations. Thanks to Annosz (added Hungarian) and D0n-A (updated Russian)!
+
+## 1.11
+Released 08 March 2020.
+
 * Added support for multi-key bindings (like `LeftShift + F3`).
-* Improved translations. Thanks to Enaium (updated Chinese) and kchapelier (updated French)!
+* Improved translations. Thanks to Enaium (updated Chinese), kchapelier (updated French), and xCarloC (updated Italian)!
 
 ## 1.10
 Released 01 February 2020.

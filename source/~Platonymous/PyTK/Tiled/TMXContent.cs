@@ -9,13 +9,12 @@ using xTile.Tiles;
 using System.Linq;
 using System;
 using PyTK.Extensions;
+using PyTK.Types;
 
 namespace PyTK.Tiled
 {
     public static class TMXContent
     {
-        public static IMapFormat TMXFormatNew = new TMXTile.TMXFormat(Game1.tileSize / Game1.pixelZoom, Game1.tileSize / Game1.pixelZoom, Game1.pixelZoom, Game1.pixelZoom);
-
         internal static IModHelper Helper = PyTKMod._helper;
         internal static IMonitor Monitor = PyTKMod._monitor;
         internal static List<string> Injected = new List<string>();
@@ -23,12 +22,22 @@ namespace PyTK.Tiled
 
         public static Map Load(string path, IModHelper helper, IContentPack contentPack = null)
         {
-            return Load(path, helper, false, contentPack);
+            string content = "Content";
+            if (contentPack is IContentPack cp)
+                content = cp.Manifest.UniqueID;
+            Monitor.Log("Loading Map: " + content + ">" + path, LogLevel.Trace);
+                return Load(path, helper, false, contentPack);
+            
         }
 
         public static Map Load(string path, IModHelper helper, bool syncTexturesToClients, IContentPack contentPack)
         {
             Map map = contentPack != null ? contentPack.LoadAsset<Map>(path) : helper.Content.Load<Map>(path);
+
+            for (int index = 0; index < map.TileSheets.Count; ++index)
+                if (string.IsNullOrWhiteSpace(Path.GetDirectoryName(map.TileSheets[index].ImageSource)))
+                    map.TileSheets[index].ImageSource = Path.Combine("Maps", Path.GetFileName(map.TileSheets[index].ImageSource));
+
             map?.LoadTileSheets(Game1.mapDisplayDevice);
             return map;
         }
@@ -36,20 +45,21 @@ namespace PyTK.Tiled
         public static void Save(Map map, string path, bool includeTilesheets = false, IMonitor monitor = null)
         {
             FileInfo pathFile = new FileInfo(path);
-            Dictionary<TileSheet, Texture2D> tilesheets = Helper.Reflection.GetField<Dictionary<TileSheet, Texture2D>>(Game1.mapDisplayDevice, "m_tileSheetTextures").GetValue();
-            
+            //Dictionary<TileSheet, Texture2D> tilesheets = Helper.Reflection.GetField<Dictionary<TileSheet, Texture2D>>(Game1.mapDisplayDevice, "m_tileSheetTextures").GetValue();
             if (pathFile.Exists)
                 return;
             
-            if (includeTilesheets)
+            if (includeTilesheets && Game1.mapDisplayDevice is PyDisplayDevice pdd)
                 foreach (TileSheet ts in map.TileSheets)
                 {
                     string folder = Path.Combine(Path.GetDirectoryName(path), Path.GetDirectoryName(ts.ImageSource));
 
                     if (!Directory.Exists(folder))
                         Directory.CreateDirectory(folder);
-     
-                    if (!tilesheets.ContainsKey(ts))
+
+                    var tsTexture = pdd.GetTexture(ts);
+
+                    if (tsTexture == null)
                         continue;
 
                     string exportPath = Path.Combine(pathFile.Directory.FullName, Path.GetDirectoryName(ts.ImageSource), Path.GetFileNameWithoutExtension(ts.ImageSource) + ".png");
@@ -61,7 +71,7 @@ namespace PyTK.Tiled
 
                     try
                     {
-                        tilesheets[ts].SaveAsPng(new FileStream(exportPath, FileMode.Create), tilesheets[ts].Width, tilesheets[ts].Height);
+                        tsTexture.SaveAsPng(new FileStream(exportPath, FileMode.Create), tsTexture.Width, tsTexture.Height);
 
                         if(monitor != null)
                             monitor.Log("Saving: " + exportFile.Name);
@@ -70,7 +80,7 @@ namespace PyTK.Tiled
                     {
                         Monitor.Log(e.Message, LogLevel.Error);
                         Monitor.Log(e.StackTrace, LogLevel.Error);
-
+/*
                         try
                         {
                             string normalized = ts.ImageSource.Split('.')[0];
@@ -93,6 +103,7 @@ namespace PyTK.Tiled
                             Monitor.Log(e2.Message, LogLevel.Error);
                             Monitor.Log(e2.StackTrace, LogLevel.Error);
                         }
+                        */
                     }
                 }
 
@@ -194,7 +205,7 @@ namespace PyTK.Tiled
         internal static MemoryStream map2tmx(Map map)
         {
             MemoryStream stream = new MemoryStream();
-            TMXFormatNew.Store(map, stream);
+            xTile.Format.FormatManager.Instance.GetMapFormatByExtension("tmx").Store(map, stream);
             return stream;
         }
 

@@ -1,4 +1,5 @@
 {
   "LidAnimation": true,
-  "LidSound": true
+  "LidSound": true,
+  "ShortcutKey": "OemPlus"
 }

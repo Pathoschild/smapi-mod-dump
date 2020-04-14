@@ -39,7 +39,7 @@ namespace BetterJunimos.Patches {
             IJunimoAbility junimoAbility = Util.Abilities.IdentifyJunimoAbility(pos, id);
             if (junimoAbility != null) {
                 // Use the update() harvesting
-                if (junimoAbility.AbilityName() == "HarvestCrops") {
+                if (junimoAbility is HarvestCropsAbility || junimoAbility is HarvestBushesAbility) {
                     time = 2000;
                 } else if (!Util.Abilities.PerformAction(junimoAbility, id, pos, __instance)) {
                     // didn't succeed, move on
@@ -128,8 +128,6 @@ namespace BetterJunimos.Patches {
                     if (Game1.random.NextDouble() < 0.5 && !hut.lastKnownCropLocation.Equals(Point.Zero)) {
                         __instance.controller = new PathFindController(__instance, __instance.currentLocation, hut.lastKnownCropLocation, -1,
                             new PathFindController.endBehavior(__instance.reachFirstDestinationFromHut), 100);
-                        // refresh lastKnownCropLocation
-                        hut.areThereMatureCropsWithinRadius();
                     }
                     else if (Game1.random.NextDouble() < 0.25) {
                         ___netAnimationEvent.Fire(0);

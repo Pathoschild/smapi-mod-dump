@@ -26,7 +26,7 @@ Target mod id `purrplingcat.npcadventure`. Optional we can define a minimum vers
   "UpdateKeys": [],
   "ContentPackFor": {
     "UniqueID": "purrplingcat.npcadventure",
-    "MinimumVersion": "0.10.0"
+    "MinimumVersion": "0.11.0"
   }
 }
 ```

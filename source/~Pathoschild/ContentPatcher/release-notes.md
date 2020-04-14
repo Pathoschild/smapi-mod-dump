@@ -2,10 +2,24 @@
 
 # Release notes
 ## Upcoming release
-* Added support for editing map tiles and tile properties.
+* Added `Round` token.
+* Added `FromFile` patch token (e.g. so you can do `"HasFile:{{FromFile}}": true`).
+* Fixed validation for `Target` fields containing `{{Target}}` and `{{TargetWithoutPath}}` tokens.
+* Fixed 'file does not exist' error when the `FromFile` path is ready and doesn't exist, but the patch is disabled by a patch-specific condition.
+* Fixed error when removing a map tile without edits.
+* Fixed token handling in map tile/property fields.
+* Fixed format validation for 1.13 features not applied.
+
+## 1.13
+Released 09 March 2020.
+
 * Added support for arithmetic expressions.
+* Added support for editing map tiles.
+* Added support for editing map tile properties.
 * Added support for multi-key bindings (like `LeftShift + F3`).
-* Patches are now always applied in the order listed.
+* `EditMap` patches now also copy layers and layer properties from the source map (thanks to mouse!).
+* Patches are now applied in the order listed more consistently.
+* Improved logic for matching tilesheets when applying a map patch.
 * Fixed incorrect warning when using `HasWalletItem` token in 1.12.
 
 ## 1.12

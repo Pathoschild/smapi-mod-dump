@@ -1,0 +1,12 @@
+{
+    "Name": "Auto Weekend Watering",
+    "Author": "The Fluffy Robot",
+    "Version": "1.0.0-AutoWeekendWater-rc.1",
+    "Description": "Auto waters crops on the configured days.",
+    "UniqueID": "TheFluffyRobot.AutoWeekendWatering",
+    "EntryDll": "AutoWeekendWatering.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [
+        "GitHub:jamespfluger/Stardew-ModCollection"
+    ]
+}

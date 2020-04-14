@@ -3,7 +3,37 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [{
-                "label": "Build Debug",
+            "label": "Clean",
+            "linux": {
+                "type": "process",
+                "options": {
+                    "cwd": "DailyScreenshot"
+                },
+                "command": "mdtool",
+                "args": [
+                    "build",
+                    "-t:Clean",
+                    "-c:${input:Configuration}"
+                ],
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "shared",
+                    "showReuseMessage": false,
+                    "clear": true,
+                    "revealProblems": "onProblem"
+                }
+            },
+            "problemMatcher": ["$msCompile"],
+            "group": "build",
+            "detail": "Cleans the workspace",
+            "runOptions": {
+                "reevaluateOnRerun": false
+            }
+        }, {
+            "label": "Build",
+            "linux": {
                 "type": "shell",
                 "options": {
                     "cwd": "DailyScreenshot"
@@ -11,28 +41,60 @@
                 "command": "mdtool",
                 "args": [
                     "build",
-                    "-c:Debug"
+                    "-c:${input:Configuration}"
                 ],
-                "problemMatcher": [],
-                "group": {
-                    "kind": "build",
-                    "isDefault": true
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "shared",
+                    "showReuseMessage": false,
+                    "clear": false,
+                    "revealProblems": "onProblem"
                 }
-            }, {
-                "label": "Build Release",
+            },
+            "problemMatcher": ["$msCompile"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "runOptions": {
+                "reevaluateOnRerun": false
+            }
+        },
+        {
+            "label": "Deploy",
+            "linux": {
                 "type": "shell",
                 "options": {
-                    "cwd": "DailyScreenshot"
+                    "cwd": "DailyScreenshot/obj/${input:Configuration}"
                 },
-                "command": "mdtool",
+                "command": "mv",
                 "args": [
-                    "build",
-                    "-c:Release"
+                    "DailyScreenshot.{dll,pdb}",
+                    "~/.steam/steam/steamapps/common/'Stardew Valley'/Mods/DailyScreenshot/."
                 ],
-                "problemMatcher": [],
-                "group": {
-                    "kind": "build",
-                    "isDefault": true
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "shared",
+                    "showReuseMessage": false,
+                    "clear": false
                 }
-            }]
+            },
+            "problemMatcher": [],
+            "group": "none",
+            "runOptions": {
+                "reevaluateOnRerun": false
+            },
+            "dependsOn": ["Build"]
+        }
+    ],
+    "inputs": [{
+        "id": "Configuration",
+        "type": "pickString",
+        "description": "Build type",
+        "options": ["Debug", "Release"]
+    }]
 }

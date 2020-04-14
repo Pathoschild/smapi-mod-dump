@@ -143,7 +143,7 @@ namespace FarmTypeManager
 
                 foreach (Item item in Items) //for each item in this container's item list
                 {
-                    location.debris.Add(new Debris(item, itemPosition, itemPosition)); //spawn the item as "debris" at this location
+                    Game1.createItemDebris(item, itemPosition, Utility.RNG.Next(4), location); //spawn the item as "debris" at this location
                 }
             }
 

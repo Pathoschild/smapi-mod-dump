@@ -1,0 +1,96 @@
+{
+    "SnapshotRules": [{
+            "Name": "Weather No Overlap Sunny",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Weather",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Sunny",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Weather No Overlap Rainy",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Weather",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Rainy",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Weather No Overlap Windy",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Weather",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Windy",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Weather No Overlap Stormy",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Weather",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Stormy",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Weather No Overlap Snowy",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Weather",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Snowy",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Weather Overlap Any",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Weather",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Weather Inactive",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Weather",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Weather_None",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }
+    ]
+}

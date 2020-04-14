@@ -1,0 +1,30 @@
+{
+  "OutputAugmentorName": "Усилитель продуктивности",
+  "OutputAugmentorDescription": "Прикрепите данное приспособление к машине \nдля увеличения количества произведённой продукции.",
+  "OutputAugmentorEffectDescription": "Полученные продукты",
+
+  "SpeedAugmentorName": "Усилитель скорости",
+  "SpeedAugmentorDescription": "Прикрепите данное приспособление к машине \nдля уменьшения времени на завершение обработки продукции.",
+  "SpeedAugmentorEffectDescription": "Время для завершения обработки",
+
+  "EfficiencyAugmentorName": "Усилитель эффективности",
+  "EfficiencyAugmentorDescription": "Прикрепите данное приспособление к машине \nдля уменьшения количества требуемых для обработки материалов.",
+  "EfficiencyAugmentorEffectDescription": "Используемые материалы",
+
+  "QualityAugmentorName": "Усилитель качества",
+  "QualityAugmentorDescription": "Прикрепите данное приспособление к машине \nдля увеличения шанса производства более качественной продукции.",
+  "QualityAugmentorEffectDescription": "Шанс улучшенного качества изготавливаемого",
+
+  "ProductionAugmentorName": "Усилитель производительности",
+  "ProductionAugmentorDescription": "Прикрепите данное приспособление к машине \nдля уменьшения количества требуемых материалов \nи повышения качества продукции.", 
+  "ProductionAugmentorEffectDescription": "Полученные продукты / используемые материалы",
+
+  "DuplicationAugmentorName": "Усилитель репликации",
+  "DuplicationAugmentorDescription": "Прикрепите данное приспособление к машине \nдля увеличения шанса на её  повторный запуск, \nдля обработки дополнительного материала.",
+  "DuplicationAugmentorEffectDescription": "Шанс на дублирование (за час обработки)",
+
+  "AugmentorCategoryName": "Усилитель",
+
+  "CurrentEffectLabel": "Текущий эффект",
+  "NewEffectLabel": "Новый эффект"
+}

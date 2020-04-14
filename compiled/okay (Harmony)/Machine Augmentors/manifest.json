@@ -1,0 +1,24 @@
+{
+  "Name": "Machine Augmentors",
+  "Author": "SlayerDharok",
+  "Version": "1.0.5",
+  "Description": "Adds augmentor items that can be attached to machines to upgrade them",
+  "UniqueID": "SlayerDharok.MachineAugmentors",
+  "EntryDll": "MachineAugmentors.dll",
+  "MinimumApiVersion": "3.0.1",
+  "UpdateKeys": [ "Nexus:5600" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.Toolkit",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "Pathoschild.Automate",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "stokastic.PrismaticTools",
+      "IsRequired": false
+    }
+  ]
+}

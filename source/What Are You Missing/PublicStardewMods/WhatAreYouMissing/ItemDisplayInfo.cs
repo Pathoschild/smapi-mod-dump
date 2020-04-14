@@ -37,22 +37,32 @@ namespace WhatAreYouMissing
 
             string displayInfo = GetCookedItemStatsInfo() + "\n";
 
-            displayInfo += Utilities.GetTranslation("INGREDIENTS") + ": ";
-
-            foreach (KeyValuePair<int, SObject> ingredient in recipeIngredients)
+            if (recipeIngredients != null)
             {
-                SObject ingredientObj = ingredient.Value;
-                string displayName = GetIngredientDisplayName(ingredient.Key, ingredientObj);
-                if (IsMissingIngredient(ingredient.Key))
+                displayInfo += Utilities.GetTranslation("INGREDIENTS") + ": ";
+
+                int i = 0;
+                foreach (KeyValuePair<int, SObject> ingredient in recipeIngredients)
                 {
-                    displayInfo += "~" + ingredientObj.Stack.ToString() + " " + displayName + ", ";
-                }
-                else
-                {
-                    displayInfo += ingredientObj.Stack.ToString() + " " + displayName  +  ", ";
+                    SObject ingredientObj = ingredient.Value;
+                    string displayName = GetIngredientDisplayName(ingredient.Key, ingredientObj);
+                    if (IsMissingIngredient(ingredient.Key))
+                    {
+                        displayInfo += "~" + ingredientObj.Stack.ToString() + " " + displayName;
+                    }
+                    else
+                    {
+                        displayInfo += ingredientObj.Stack.ToString() + " " + displayName;
+                    }
+
+                    i++;
+                    if (i < recipeIngredients.Count)
+                    {
+                        displayInfo += ", ";
+                    }
                 }
             }
-            return displayInfo.Substring(0, displayInfo.Length - 2);
+            return displayInfo;
         }
 
         private bool IsMissingIngredient(int ingredientParentSheetIndex)

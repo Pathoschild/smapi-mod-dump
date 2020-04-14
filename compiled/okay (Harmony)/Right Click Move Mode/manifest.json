@@ -6,5 +6,5 @@
   "Name": "RightClickMoveMode",
   "UniqueID": "ylsama.RightClickMoveMode",
   "UpdateKeys": [ "Nexus:2614", "Github:ylsama/RightClickMoveMode" ],
-  "Version": "1.2.2"
+  "Version": "1.2.4"
 }

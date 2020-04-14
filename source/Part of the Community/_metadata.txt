@@ -5,9 +5,9 @@ mods:
    Part of the Community
 
 latest commit:
-   commit cd7b4baf732ca71a3e98fd4b5b1323570a9bb1b5
+   commit 7ecaa1290005daf68d5a3c14b64dbbe0012d0f4b
    Author: brandon <bmarquismarkail@github.com>
-   Date:   Fri Feb 7 14:15:06 2020 -0600
+   Date:   Sat Mar 7 11:13:21 2020 -0600
    
-       Updating Project File With New SMAPI
+       housekeeping
    

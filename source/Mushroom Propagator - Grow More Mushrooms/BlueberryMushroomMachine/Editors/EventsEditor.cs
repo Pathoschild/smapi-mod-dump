@@ -16,7 +16,7 @@ namespace BlueberryMushroomMachine.Editors
 		public bool CanEdit<T>(IAssetInfo asset)
 		{
 			return asset.AssetNameEquals(@"Characters/Dialogue/Robin")
-				|| asset.AssetNameEquals(@"Const/Events/Farm");
+				|| asset.AssetNameEquals(@"Data/Events/Farm");
 		}
 
 		public void Edit<T>(IAssetData asset)
@@ -37,27 +37,37 @@ namespace BlueberryMushroomMachine.Editors
 
 			// Event 0001: Farm, Demetrius
 			// Receive Propagator recipe after house upgrade level 3.
-			if (asset.AssetNameEquals(@"Const/Events/Farm"))
+			if (asset.AssetNameEquals(@"Data/Events/Farm"))
 			{
 				var json = ModEntry.Instance.Helper.Content.Load<IDictionary<string, string>>
 					(Const.EventsPath);
-
 				foreach (var key in json.Keys)
 				{
 					if (key.StartsWith("46370001"))
 					{
 						if (Game1.player.HouseUpgradeLevel >= 3)
 						{
+							Log.D("Event conditions:" +
+							      $" disabled=[{ModEntry.Instance.Config.DisabledForFruitCave}]" +
+							      $" caveChoice=[{Game1.player.caveChoice}]",
+								_isDebugging);
 							if (ModEntry.Instance.Config.DisabledForFruitCave
 								&& Game1.player.caveChoice.Value != 2)
 								return;
 
 							if (!data.ContainsKey(key))
-								data.Add(key, string.Format(json[key],
+							{
+								var value = string.Format(
+									json[key], 
 									ModEntry.Instance.i18n.Get("event.4637.0001.0000"),
 									ModEntry.Instance.i18n.Get("event.4637.0001.0001"),
 									ModEntry.Instance.i18n.Get("event.4637.0001.0002"),
-									ModEntry.Instance.i18n.Get("event.4637.0001.0003")));
+									ModEntry.Instance.i18n.Get("event.4637.0001.0003"),
+									Const.PropagatorInternalName);
+								Log.D($"Injecting event.",
+									_isDebugging);
+								data.Add(key, value);
+							}
 						}
 					}
 				}

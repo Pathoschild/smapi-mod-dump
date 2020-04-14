@@ -4,17 +4,17 @@ using StardewModdingAPI;
 
 namespace mpcomplete.Stardew.QuickCraft.Framework
 {
-    internal class ModConfig
+  internal class ModConfig
+  {
+    public ModConfigControls Controls { get; set; } = new ModConfigControls();
+
+    internal class ModConfigControls
     {
-        public ModConfigControls Controls { get; set; } = new ModConfigControls();
+      [JsonConverter(typeof(StringEnumArrayConverter))]
+      public SButton[] HoldToActivate { get; set; } = { SButton.LeftControl };
 
-        internal class ModConfigControls
-        {
-            [JsonConverter(typeof(StringEnumArrayConverter))]
-            public SButton[] HoldToActivate { get; set; } = { SButton.LeftControl };
-
-            [JsonConverter(typeof(StringEnumArrayConverter))]
-            public SButton[] HoldFor5x { get; set; } = { SButton.LeftShift };
-        }
+      [JsonConverter(typeof(StringEnumArrayConverter))]
+      public SButton[] HoldFor5x { get; set; } = { SButton.LeftShift };
     }
+  }
 }

@@ -1,0 +1,13 @@
+url:
+   https://github.com/steven-kraft/StardewDiscord.git
+
+mods:
+   Stardew Discord
+
+latest commit:
+   commit 61a6e8ccb6e772f3d39ee07f2eacd54d16f5611e
+   Author: Steven Kraft <steven.kraftjp@gmail.com>
+   Date:   Wed Mar 13 00:17:13 2019 -0400
+   
+       Updated Version
+   

@@ -427,12 +427,18 @@ namespace ClimatesOfFerngillRebuild
                 && ClimatesOfFerngill.Dice.NextDoublePositive() <= ClimatesOfFerngill.WeatherOpt.RainToSnowConversion)
             {
                 curr.RemoveWeather(CurrentWeather.Rain);
+
+                if (curr.HasWeather(CurrentWeather.Lightning))
+                {
+                    curr.RemoveWeather(CurrentWeather.Lightning);
+                    Game1.isLightning = false;
+                }
+
                 curr.AddWeather(CurrentWeather.Snow);
                 Game1.isRaining = false;
                 Game1.isSnowing = true;
                 specialWeatherTriggered = true;
             }
-
 
             if (curr.HasWeather(CurrentWeather.Snow))
             {
@@ -498,6 +504,9 @@ namespace ClimatesOfFerngillRebuild
                     curr.AddWeather(CurrentWeather.Sandstorm);
                     specialWeatherTriggered = true;
                     curr.CreateWeather("Sandstorm");
+                    Game1.populateDebrisWeatherArray(); //repopulate for sandstorm weather
+                    //code here to set wind conditions for heavy!
+                    SetWindToHeavy();
                 }
             }
 
@@ -516,6 +525,18 @@ namespace ClimatesOfFerngillRebuild
             }
 
             return specialWeatherTriggered;
+        }
+
+        internal static void SetWindToTyphoon()
+        {
+            ClimatesOfFerngill.WindCap = -120f;
+            ClimatesOfFerngill.WindMin = -100f;
+        }
+
+        internal static void SetWindToHeavy()
+        {
+            ClimatesOfFerngill.WindCap = -50f;
+            ClimatesOfFerngill.WindMin = -30f;
         }
 
         internal static void Reset()

@@ -8,11 +8,8 @@ namespace StardewModdingAPI.Mods.CustomLocalization.Rewrites
 {
     public class TitleContainerRewrites
     {
-        [HarmonyPatch(typeof(TitleContainer))]
-        [HarmonyPatch("OpenStream")]
         public class OpenStreamRewrite
         {
-            [HarmonyPrefix]
             public static bool Prefix(string name, ref Stream __result)
             {
                 Stream stream = null;
@@ -21,7 +18,6 @@ namespace StardewModdingAPI.Mods.CustomLocalization.Rewrites
                     return true;
                 }
                 string newPath = Path.Combine(ModEntry.ModPath, name);
-                string safeName = (string)typeof(TitleContainer).GetMethod("NormalizeRelativePath", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[] { name });
                 try
                 {
                     stream = new FileStream(newPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
@@ -35,9 +31,15 @@ namespace StardewModdingAPI.Mods.CustomLocalization.Rewrites
                 {
                     try
                     {
-                        MethodInfo PlatformOpenStream = typeof(TitleContainer).GetMethod("PlatformOpenStream", BindingFlags.Static | BindingFlags.NonPublic);
-                        stream = (Stream)PlatformOpenStream.Invoke(null, new object[] { safeName });
-                        __result = stream;
+                        string safeName = ModEntry.Reflection.GetMethod(typeof(TitleContainer), "NormalizeRelativePath", false)?.Invoke<string>(name);
+                        if(safeName != null)
+                            __result = ModEntry.Reflection.GetMethod(typeof(TitleContainer), "PlatformOpenStream", false)?.Invoke<Stream>(safeName);
+                        else
+                            __result = ModEntry.Reflection.GetMethod(typeof(TitleContainer), "PlatformOpenStream", false)?.Invoke<Stream>(name);
+                        if(__result == null)
+                        {
+                            return true;
+                        }
                     }
                     catch
                     {

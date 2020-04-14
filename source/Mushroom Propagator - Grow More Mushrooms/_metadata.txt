@@ -5,9 +5,10 @@ mods:
    Mushroom Propagator - Grow More Mushrooms
 
 latest commit:
-   commit 557bd0fa3733e18268fcd356f41cd0244fcdca56
+   commit b0dd6ff759b978e4aab92d87b4903d7687908d5f
    Author: razikh-git <pocketsathome@gmail.com>
-   Date:   Wed Jan 15 18:27:19 2020 +1100
+   Date:   Wed Mar 11 00:48:44 2020 +1100
    
-       Fixed localisation errors in crafting menu
+       Unified object naming conventions.
+       Undone stupid refactor of filepath in string.
    

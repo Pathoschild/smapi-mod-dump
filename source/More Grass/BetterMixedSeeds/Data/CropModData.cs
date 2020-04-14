@@ -472,5 +472,14 @@ namespace BetterMixedSeeds.Data
             new SeedData("Decorative Succulents", seedName: "Decorative Succulents Starter"),
             new SeedData("Edible Succulents", seedName: "Edible Succulents Starter")
         };
+
+        /// <summary>The list of seed data for TropicalFarm.</summary>
+        public static List<SeedData> TropicalFarm { get; } = new List<SeedData>
+        {
+            new SeedData("Chinese Hibiscus", seedName: "Chinese Hibiscus Starter", yearRequirement: 2),
+            new SeedData("Night-Blooming Jasmine", seedName: "Night-Blooming Jasmine Seeds", yearRequirement: 2),
+            new SeedData("Snakefruit", seedName: "Snakefruit Seeds", yearRequirement: 2),
+            new SeedData("Tuberose", seedName: "Tuberose seeds", yearRequirement: 2)
+        };
     }
 }

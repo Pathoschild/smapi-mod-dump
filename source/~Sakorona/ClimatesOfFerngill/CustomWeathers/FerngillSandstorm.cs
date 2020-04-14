@@ -277,7 +277,7 @@ namespace ClimatesOfFerngillRebuild.Weathers
             {
                 this.SandstormPosition = Game1.updateFloatingObjectPositionForMovement(SandstormPosition,
                     new Vector2(Game1.viewport.X, Game1.viewport.Y), Game1.previousViewportPosition, -1f);
-                SandstormPosition = new Vector2((SandstormPosition.X + 0.5f) % (64 * Game1.pixelZoom),
+                SandstormPosition = new Vector2((SandstormPosition.X + 0.5f) % (64 * Game1.pixelZoom) + WeatherDebris.globalWind,
                     (SandstormPosition.Y + 0.5f) % (64 * Game1.pixelZoom));
             }
         }

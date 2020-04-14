@@ -7,9 +7,11 @@ mods:
    Time Reminder
 
 latest commit:
-   commit 353f91af7c3b06408c1a59b82cd90ca2e5e69ed4
-   Author: Nicholas Johnson <7285555+Sakorona@users.noreply.github.com>
-   Date:   Mon Feb 10 11:23:43 2020 -0800
+   commit 8d25e96387d5ce01b7edfa7c57eb5c27b05ee0bc
+   Author: Sakorona <7285555+Sakorona@users.noreply.github.com>
+   Date:   Sun Mar 15 17:08:00 2020 -0700
    
-       ... would help if I was in the right directory
+       Update README.md
+       
+       for 1.5.9
    

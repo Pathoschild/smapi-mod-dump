@@ -1,0 +1,30 @@
+{
+	"OutputAugmentorName": "출력 보강 장치",
+	"OutputAugmentorDescription": "기계에 부착하여 생산량을 약간 증가시킵니다.",
+	"OutputAugmentorEffectDescription": "생산 제품",
+
+	"SpeedAugmentorName": "속도 보강 장치",
+	"SpeedAugmentorDescription": "기계에 부착하여 가공 시간을 줄입니다.",
+	"SpeedAugmentorEffectDescription": "가공 시간",
+
+	"EfficiencyAugmentorName": "효율 보강 장치",
+	"EfficiencyAugmentorDescription": "기계에 부착하여 필요한 재료를 줄입니다.",
+	"EfficiencyAugmentorEffectDescription": "사용 재료",
+
+	"QualityAugmentorName": "품질 보강 장치",
+	"QualityAugmentorDescription": "고품질 제품을 생산 할 수 있도록 기계에 부착합니다.",
+	"QualityAugmentorEffectDescription": "품질 확률 증가",
+
+	"ProductionAugmentorName": "생산 보강 장치",
+	"ProductionAugmentorDescription": "기계에 부착하여 필요한 재료와 생산량을 대폭 늘립니다.\n(여러가지 재료 필요)",
+	"ProductionAugmentorEffectDescription": "생산 제품 / 사용 재료",
+
+	"DuplicationAugmentorName": "복제 보강 장치",
+	"DuplicationAugmentorDescription": "기계에 부착하여 가공시 복제품이 생길 가능성을 추가 할 수 있습니다.",
+	"DuplicationAugmentorEffectDescription": "복제 확률 추가(가공 시간당)",
+
+	"AugmentorCategoryName": "보강 장치",
+
+	"CurrentEffectLabel": "현재 효과",
+	"NewEffectLabel": "새로운 효과"
+}

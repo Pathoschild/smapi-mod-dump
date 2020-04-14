@@ -16,6 +16,7 @@ namespace WhatAreYouMissing
         public bool DoNotShowCaughtFish { get; set; }
 
         public bool IgnoreQuality { get; set; }
+        public bool LogWarnings { get; set; }
 
         public ModConfig()
         {
@@ -30,6 +31,7 @@ namespace WhatAreYouMissing
             FishHighestQuality = 4;
             DoNotShowCaughtFish = false;
             IgnoreQuality = true;
+            LogWarnings = true;
         }
     }
 }

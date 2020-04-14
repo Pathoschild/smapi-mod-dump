@@ -12,12 +12,14 @@ namespace DynamicNightTime.Patches
             int sunriseTime = DynamicNightTime.GetSunrise().ReturnIntTime();
             int astronTime = DynamicNightTime.GetMorningAstroTwilight().ReturnIntTime();
 
+            //sunrise colors
+            Color sunrise = new Color(0, 96, 175);
+
             if (DynamicNightTime.LunarDisturbancesLoaded && DynamicNightTime.MoonAPI.IsSolarEclipse())
             {
                 Game1.outdoorLight = (Game1.eveningColor * .93f);
                 return;
             }
-
 
             Color moonLight = new Color(0,0,0);
 
@@ -26,7 +28,21 @@ namespace DynamicNightTime.Patches
                 moonLight = DynamicNightTime.GetLunarLightDifference();
             }
 
-            bool ShouldDarken = Game1.isRaining || ((DynamicNightTime.ClimatesLoaded && DynamicNightTime.ClimatesAPI.GetCurrentWeatherName().Contains("overcast")));
+            string weather;
+
+            try
+            {
+                weather = DynamicNightTime.ClimatesAPI.GetCurrentWeatherName();
+            }
+#pragma warning disable CA1031 // Do not catch general exception types
+            catch (Exception ex)
+            {
+               DynamicNightTime.Logger.Log($"Exception encountered when trying to get weather in API call. Exception text is as follows {ex.ToString()}.", StardewModdingAPI.LogLevel.Error);
+                weather = "error";                
+            }
+#pragma warning restore CA1031 // Do not catch general exception types
+
+            bool ShouldDarken = Game1.isRaining || ((DynamicNightTime.ClimatesLoaded && weather.Contains("overcast")));
 
             if (Game1.timeOfDay <= astronTime)
             {
@@ -45,7 +61,7 @@ namespace DynamicNightTime.Patches
                 if (ShouldDarken) { 
                     float minEff = SDVTime.MinutesBetweenTwoIntTimes(astronTime, Game1.timeOfDay) + (float)Math.Min(10.0, Game1.gameTimeInterval / 700);
                     float percentage = (minEff / SDVTime.MinutesBetweenTwoIntTimes(sunriseTime, astronTime));
-                    Game1.outdoorLight = new Color((byte)(237 - (58 * percentage)), (byte)(185 - (6 * percentage)), (byte)(74 + (105 * percentage)), (byte)(237 - (58 * percentage)));
+                    Game1.outdoorLight = new Color((byte)(237 - (158 * percentage)), (byte)(185 - (126 * percentage)), (byte)(74 - (51 * percentage)), (byte)(237 - (161 * percentage)));
                 }
                 else
                 { 
@@ -53,15 +69,16 @@ namespace DynamicNightTime.Patches
                     float percentage = (minEff / SDVTime.MinutesBetweenTwoIntTimes(sunriseTime, astronTime));
                     //means delta r is -255, delta g is -159, delta b is +175 from evening to sunrise
                     //Normal sunrise is 0,96,175. Rainy sunrises are.. 0,50,148?
-                    Color destColor = new Color((byte)(255 - (255*percentage)), (byte)(255 - (159*percentage)), (byte)(175 * percentage));
+
+                    Color destColor = new Color((byte)(255 - (255 * percentage)), (byte)(255 - (159 * percentage)), (byte)(175 * percentage));
                     Game1.outdoorLight = destColor;
                 }
             }
             else if (Game1.timeOfDay >= sunriseTime && Game1.timeOfDay <= Game1.getStartingToGetDarkTime())
             {
                 if (ShouldDarken)
-                { 
-                   Game1.outdoorLight = Game1.ambientLight * 0.3f;
+                {
+                    Game1.outdoorLight = Game1.ambientLight * 0.3f;
                 }
                 else 
                 { 
@@ -71,7 +88,10 @@ namespace DynamicNightTime.Patches
                     {
                         float minEff = SDVTime.MinutesBetweenTwoIntTimes(Game1.timeOfDay, sunriseTime) + (float)Math.Min(10.0, Game1.gameTimeInterval / 700);
                         float percentage = (minEff / SDVTime.MinutesBetweenTwoIntTimes(sunriseTime, solarNoon));
-                        Color destColor = new Color(0, (byte)(96 -(91*percentage)),(byte)(175 -(174*percentage)));
+                        float tgtColorR = sunrise.R - 0;
+                        float tgtColorG = sunrise.G - 5;
+                        float tgtColorB = sunrise.B - 1;
+                        Color destColor = new Color((byte)(0 - (tgtColorR*percentage)), (byte)(96 -(tgtColorG*percentage)),(byte)(175 -(tgtColorB*percentage)));
                         Game1.outdoorLight = destColor;
                     }
                     if (Game1.timeOfDay == solarNoon)

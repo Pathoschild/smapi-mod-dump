@@ -1,16 +1,16 @@
 ﻿{
-  "Name": "PlatoWarpMenu",
+  "Name": "Plato Warp Menu",
   "Author": "Platonymous",
-  "Version": "1.0.4",
+  "Version": "1.2.1",
   "Description": "Platonymous Warp Menu",
-  "UniqueID": "Platonymous.PlatoCheatMenu",
+  "UniqueID": "Platonymous.PlatoWarpMenu",
   "EntryDll": "PlatoWarpMenu.dll",
   "MinimumApiVersion": "3.2.0",
   "UpdateKeys": [ "Nexus:5384" ],
   "Dependencies": [
     {
       "UniqueID": "Platonymous.Toolkit",
-      "MinimumVersion": "1.12.23"
+      "MinimumVersion": "1.14.1"
     }
   ]
 }

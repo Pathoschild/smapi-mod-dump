@@ -5,9 +5,9 @@ mods:
    Tool Upgrade Delivery
 
 latest commit:
-   commit f11a2ecc6c007a61b2a569b434d2c63ca170b1ac
+   commit b3f1579a1a6ef56ba1ff2898fe57bc1b92ec0552
    Author: Sorry Late <rharyanto996@gmail.com>
-   Date:   Mon Feb 17 12:56:49 2020 +0800
+   Date:   Sat Feb 29 11:43:05 2020 +0800
    
-       release
+       version 1.2.0
    

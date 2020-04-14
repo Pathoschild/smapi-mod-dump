@@ -1,9 +1,4 @@
 {
-  "minNeutralFriendshipGiftLevel": 3,
-  "maxNeutralFriendshipGiftLevel": 4,
-  "minLikeFriendshipLevel": 5,
-  "maxLikeFriendshipLevel": 6,
-  "minLoveFriendshipLevel": 7,
   "minimumFriendshipLevelForBirthdayWish": 2,
   "translationInfo": {
     "LanguageNames": [
@@ -50,7 +45,7 @@
       "Korean": "ko"
     }
   },
-  "useLegacyBirthdayFiles": false,
+  "defaultToEnglishTranslation": true,
   "KeyBinding": "O",
   "autoSetTranslation": true
 }

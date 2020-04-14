@@ -1,0 +1,12 @@
+{
+    "Name": "Time of the Prairie King",
+    "Author": "The Fluffy Robot",
+    "Version": "1.0.1",
+    "Description": "Shows the time in the Journey of the Prairie King minigame.",
+    "UniqueID": "TheFluffyRobot.TimeOfThePrairieKing",
+    "EntryDll": "TimeOfThePrairieKing.dll",
+    "MinimumApiVersion": "3.3.2",
+    "UpdateKeys": [
+        "GitHub:jamespfluger/Stardew-TimeOfThePrairieKing"
+    ]
+}

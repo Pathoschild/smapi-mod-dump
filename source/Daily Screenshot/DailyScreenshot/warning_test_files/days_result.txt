@@ -1,0 +1,298 @@
+Left hand side and right hand side should never both contain a "No Overlap" rule
+Make sure each day only overlaps with the correct season and day of week
+Make sure each day of week does not overlap with any other day of week
+Make sure each season does not overlap with another seasons
+Make sure FirstDayOfTheMonth only overlaps Day 1, Sundays and All for that season
+Make sure LastDayOfTheMonth only overlaps Day 28, Saturdays and All for that season
+
+Example:
+Rule Days Inactive AnyDay will not trigger as no season is set.  Days="AnyDay"
+Rule Days Inactive AnySeason will not trigger as no day is set.  Days="AnySeason"
+Rules "Days No Overlap Season Spring Day 1" and "Days Overlap Season Spring Sundays" can over write one another.
+Rules "Days No Overlap Season Spring Day 1" and "Days Overlap Season Spring FirstDayOfTheMonth" can over write one another.
+Rules "Days No Overlap Season Spring Day 1" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 2" and "Days Overlap Season Spring Mondays" can over write one another.
+Rules "Days No Overlap Season Spring Day 2" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 3" and "Days Overlap Season Spring Tuesdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 3" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 4" and "Days Overlap Season Spring Wednesdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 4" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 5" and "Days Overlap Season Spring Thursdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 5" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 6" and "Days Overlap Season Spring Fridays" can over write one another.
+Rules "Days No Overlap Season Spring Day 6" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 7" and "Days Overlap Season Spring Saturdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 7" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 8" and "Days Overlap Season Spring Sundays" can over write one another.
+Rules "Days No Overlap Season Spring Day 8" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 9" and "Days Overlap Season Spring Mondays" can over write one another.
+Rules "Days No Overlap Season Spring Day 9" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 10" and "Days Overlap Season Spring Tuesdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 10" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 11" and "Days No Overlap Season Spring Day 12" can over write one another.
+Rules "Days No Overlap Season Spring Day 11" and "Days No Overlap Season Spring Day 13" can over write one another.
+Rules "Days No Overlap Season Spring Day 11" and "Days Overlap Season Spring Wednesdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 11" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 12" and "Days No Overlap Season Spring Day 13" can over write one another.
+Rules "Days No Overlap Season Spring Day 12" and "Days Overlap Season Spring Wednesdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 12" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 13" and "Days Overlap Season Spring Wednesdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 13" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 14" and "Days Overlap Season Spring Saturdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 14" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 15" and "Days Overlap Season Spring Sundays" can over write one another.
+Rules "Days No Overlap Season Spring Day 15" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 16" and "Days Overlap Season Spring Mondays" can over write one another.
+Rules "Days No Overlap Season Spring Day 16" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 17" and "Days Overlap Season Spring Tuesdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 17" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 18" and "Days Overlap Season Spring Wednesdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 18" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 19" and "Days Overlap Season Spring Thursdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 19" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 20" and "Days Overlap Season Spring Fridays" can over write one another.
+Rules "Days No Overlap Season Spring Day 20" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 21" and "Days Overlap Season Spring Saturdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 21" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 22" and "Days Overlap Season Spring Sundays" can over write one another.
+Rules "Days No Overlap Season Spring Day 22" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 23" and "Days Overlap Season Spring Mondays" can over write one another.
+Rules "Days No Overlap Season Spring Day 23" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 24" and "Days Overlap Season Spring Tuesdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 24" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 25" and "Days Overlap Season Spring Wednesdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 25" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 26" and "Days Overlap Season Spring Thursdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 26" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 27" and "Days Overlap Season Spring Fridays" can over write one another.
+Rules "Days No Overlap Season Spring Day 27" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Spring Day 28" and "Days Overlap Season Spring Saturdays" can over write one another.
+Rules "Days No Overlap Season Spring Day 28" and "Days Overlap Season Spring LastDayOfTheMonth" can over write one another.
+Rules "Days No Overlap Season Spring Day 28" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Spring Sundays" and "Days Overlap Season Spring FirstDayOfTheMonth" can over write one another.
+Rules "Days Overlap Season Spring Sundays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Spring Mondays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Spring Tuesdays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Spring Wednesdays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Spring Thursdays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Spring Fridays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Spring Saturdays" and "Days Overlap Season Spring LastDayOfTheMonth" can over write one another.
+Rules "Days Overlap Season Spring Saturdays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Spring FirstDayOfTheMonth" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Spring LastDayOfTheMonth" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 1" and "Days Overlap Season Summer Sundays" can over write one another.
+Rules "Days No Overlap Season Summer Day 1" and "Days Overlap Season Summer FirstDayOfTheMonth" can over write one another.
+Rules "Days No Overlap Season Summer Day 1" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 2" and "Days Overlap Season Summer Mondays" can over write one another.
+Rules "Days No Overlap Season Summer Day 2" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 3" and "Days Overlap Season Summer Tuesdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 3" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 4" and "Days Overlap Season Summer Wednesdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 4" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 5" and "Days Overlap Season Summer Thursdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 5" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 6" and "Days Overlap Season Summer Fridays" can over write one another.
+Rules "Days No Overlap Season Summer Day 6" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 7" and "Days Overlap Season Summer Saturdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 7" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 8" and "Days Overlap Season Summer Sundays" can over write one another.
+Rules "Days No Overlap Season Summer Day 8" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 9" and "Days Overlap Season Summer Mondays" can over write one another.
+Rules "Days No Overlap Season Summer Day 9" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 10" and "Days Overlap Season Summer Tuesdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 10" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 11" and "Days No Overlap Season Summer Day 12" can over write one another.
+Rules "Days No Overlap Season Summer Day 11" and "Days No Overlap Season Summer Day 13" can over write one another.
+Rules "Days No Overlap Season Summer Day 11" and "Days Overlap Season Summer Wednesdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 11" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 12" and "Days No Overlap Season Summer Day 13" can over write one another.
+Rules "Days No Overlap Season Summer Day 12" and "Days Overlap Season Summer Wednesdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 12" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 13" and "Days Overlap Season Summer Wednesdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 13" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 14" and "Days Overlap Season Summer Saturdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 14" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 15" and "Days Overlap Season Summer Sundays" can over write one another.
+Rules "Days No Overlap Season Summer Day 15" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 16" and "Days Overlap Season Summer Mondays" can over write one another.
+Rules "Days No Overlap Season Summer Day 16" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 17" and "Days Overlap Season Summer Tuesdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 17" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 18" and "Days Overlap Season Summer Wednesdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 18" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 19" and "Days Overlap Season Summer Thursdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 19" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 20" and "Days Overlap Season Summer Fridays" can over write one another.
+Rules "Days No Overlap Season Summer Day 20" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 21" and "Days Overlap Season Summer Saturdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 21" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 22" and "Days Overlap Season Summer Sundays" can over write one another.
+Rules "Days No Overlap Season Summer Day 22" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 23" and "Days Overlap Season Summer Mondays" can over write one another.
+Rules "Days No Overlap Season Summer Day 23" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 24" and "Days Overlap Season Summer Tuesdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 24" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 25" and "Days Overlap Season Summer Wednesdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 25" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 26" and "Days Overlap Season Summer Thursdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 26" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 27" and "Days Overlap Season Summer Fridays" can over write one another.
+Rules "Days No Overlap Season Summer Day 27" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Summer Day 28" and "Days Overlap Season Summer Saturdays" can over write one another.
+Rules "Days No Overlap Season Summer Day 28" and "Days Overlap Season Summer LastDayOfTheMonth" can over write one another.
+Rules "Days No Overlap Season Summer Day 28" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Summer Sundays" and "Days Overlap Season Summer FirstDayOfTheMonth" can over write one another.
+Rules "Days Overlap Season Summer Sundays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Summer Mondays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Summer Tuesdays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Summer Wednesdays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Summer Thursdays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Summer Fridays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Summer Saturdays" and "Days Overlap Season Summer LastDayOfTheMonth" can over write one another.
+Rules "Days Overlap Season Summer Saturdays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Summer FirstDayOfTheMonth" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Summer LastDayOfTheMonth" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 1" and "Days Overlap Season Fall Sundays" can over write one another.
+Rules "Days No Overlap Season Fall Day 1" and "Days Overlap Season Fall FirstDayOfTheMonth" can over write one another.
+Rules "Days No Overlap Season Fall Day 1" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 2" and "Days Overlap Season Fall Mondays" can over write one another.
+Rules "Days No Overlap Season Fall Day 2" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 3" and "Days Overlap Season Fall Tuesdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 3" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 4" and "Days Overlap Season Fall Wednesdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 4" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 5" and "Days Overlap Season Fall Thursdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 5" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 6" and "Days Overlap Season Fall Fridays" can over write one another.
+Rules "Days No Overlap Season Fall Day 6" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 7" and "Days Overlap Season Fall Saturdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 7" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 8" and "Days Overlap Season Fall Sundays" can over write one another.
+Rules "Days No Overlap Season Fall Day 8" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 9" and "Days Overlap Season Fall Mondays" can over write one another.
+Rules "Days No Overlap Season Fall Day 9" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 10" and "Days Overlap Season Fall Tuesdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 10" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 11" and "Days No Overlap Season Fall Day 12" can over write one another.
+Rules "Days No Overlap Season Fall Day 11" and "Days No Overlap Season Fall Day 13" can over write one another.
+Rules "Days No Overlap Season Fall Day 11" and "Days Overlap Season Fall Wednesdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 11" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 12" and "Days No Overlap Season Fall Day 13" can over write one another.
+Rules "Days No Overlap Season Fall Day 12" and "Days Overlap Season Fall Wednesdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 12" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 13" and "Days Overlap Season Fall Wednesdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 13" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 14" and "Days Overlap Season Fall Saturdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 14" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 15" and "Days Overlap Season Fall Sundays" can over write one another.
+Rules "Days No Overlap Season Fall Day 15" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 16" and "Days Overlap Season Fall Mondays" can over write one another.
+Rules "Days No Overlap Season Fall Day 16" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 17" and "Days Overlap Season Fall Tuesdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 17" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 18" and "Days Overlap Season Fall Wednesdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 18" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 19" and "Days Overlap Season Fall Thursdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 19" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 20" and "Days Overlap Season Fall Fridays" can over write one another.
+Rules "Days No Overlap Season Fall Day 20" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 21" and "Days Overlap Season Fall Saturdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 21" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 22" and "Days Overlap Season Fall Sundays" can over write one another.
+Rules "Days No Overlap Season Fall Day 22" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 23" and "Days Overlap Season Fall Mondays" can over write one another.
+Rules "Days No Overlap Season Fall Day 23" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 24" and "Days Overlap Season Fall Tuesdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 24" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 25" and "Days Overlap Season Fall Wednesdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 25" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 26" and "Days Overlap Season Fall Thursdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 26" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 27" and "Days Overlap Season Fall Fridays" can over write one another.
+Rules "Days No Overlap Season Fall Day 27" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Fall Day 28" and "Days Overlap Season Fall Saturdays" can over write one another.
+Rules "Days No Overlap Season Fall Day 28" and "Days Overlap Season Fall LastDayOfTheMonth" can over write one another.
+Rules "Days No Overlap Season Fall Day 28" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Fall Sundays" and "Days Overlap Season Fall FirstDayOfTheMonth" can over write one another.
+Rules "Days Overlap Season Fall Sundays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Fall Mondays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Fall Tuesdays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Fall Wednesdays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Fall Thursdays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Fall Fridays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Fall Saturdays" and "Days Overlap Season Fall LastDayOfTheMonth" can over write one another.
+Rules "Days Overlap Season Fall Saturdays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Fall FirstDayOfTheMonth" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Fall LastDayOfTheMonth" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 1" and "Days Overlap Season Winter Sundays" can over write one another.
+Rules "Days No Overlap Season Winter Day 1" and "Days Overlap Season Winter FirstDayOfTheMonth" can over write one another.
+Rules "Days No Overlap Season Winter Day 1" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 2" and "Days Overlap Season Winter Mondays" can over write one another.
+Rules "Days No Overlap Season Winter Day 2" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 3" and "Days Overlap Season Winter Tuesdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 3" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 4" and "Days Overlap Season Winter Wednesdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 4" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 5" and "Days Overlap Season Winter Thursdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 5" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 6" and "Days Overlap Season Winter Fridays" can over write one another.
+Rules "Days No Overlap Season Winter Day 6" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 7" and "Days Overlap Season Winter Saturdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 7" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 8" and "Days Overlap Season Winter Sundays" can over write one another.
+Rules "Days No Overlap Season Winter Day 8" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 9" and "Days Overlap Season Winter Mondays" can over write one another.
+Rules "Days No Overlap Season Winter Day 9" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 10" and "Days Overlap Season Winter Tuesdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 10" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 11" and "Days No Overlap Season Winter Day 12" can over write one another.
+Rules "Days No Overlap Season Winter Day 11" and "Days No Overlap Season Winter Day 13" can over write one another.
+Rules "Days No Overlap Season Winter Day 11" and "Days Overlap Season Winter Wednesdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 11" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 12" and "Days No Overlap Season Winter Day 13" can over write one another.
+Rules "Days No Overlap Season Winter Day 12" and "Days Overlap Season Winter Wednesdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 12" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 13" and "Days Overlap Season Winter Wednesdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 13" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 14" and "Days Overlap Season Winter Saturdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 14" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 15" and "Days Overlap Season Winter Sundays" can over write one another.
+Rules "Days No Overlap Season Winter Day 15" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 16" and "Days Overlap Season Winter Mondays" can over write one another.
+Rules "Days No Overlap Season Winter Day 16" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 17" and "Days Overlap Season Winter Tuesdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 17" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 18" and "Days Overlap Season Winter Wednesdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 18" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 19" and "Days Overlap Season Winter Thursdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 19" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 20" and "Days Overlap Season Winter Fridays" can over write one another.
+Rules "Days No Overlap Season Winter Day 20" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 21" and "Days Overlap Season Winter Saturdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 21" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 22" and "Days Overlap Season Winter Sundays" can over write one another.
+Rules "Days No Overlap Season Winter Day 22" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 23" and "Days Overlap Season Winter Mondays" can over write one another.
+Rules "Days No Overlap Season Winter Day 23" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 24" and "Days Overlap Season Winter Tuesdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 24" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 25" and "Days Overlap Season Winter Wednesdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 25" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 26" and "Days Overlap Season Winter Thursdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 26" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 27" and "Days Overlap Season Winter Fridays" can over write one another.
+Rules "Days No Overlap Season Winter Day 27" and "Days Overlap All" can over write one another.
+Rules "Days No Overlap Season Winter Day 28" and "Days Overlap Season Winter Saturdays" can over write one another.
+Rules "Days No Overlap Season Winter Day 28" and "Days Overlap Season Winter LastDayOfTheMonth" can over write one another.
+Rules "Days No Overlap Season Winter Day 28" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Winter Sundays" and "Days Overlap Season Winter FirstDayOfTheMonth" can over write one another.
+Rules "Days Overlap Season Winter Sundays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Winter Mondays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Winter Tuesdays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Winter Wednesdays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Winter Thursdays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Winter Fridays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Winter Saturdays" and "Days Overlap Season Winter LastDayOfTheMonth" can over write one another.
+Rules "Days Overlap Season Winter Saturdays" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Winter FirstDayOfTheMonth" and "Days Overlap All" can over write one another.
+Rules "Days Overlap Season Winter LastDayOfTheMonth" and "Days Overlap All" can over write one another.

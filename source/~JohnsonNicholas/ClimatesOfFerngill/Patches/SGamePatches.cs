@@ -17,7 +17,7 @@ namespace ClimatesOfFerngillRebuild.Patches
             for (int i = 0; i < codes.Count; i++)
             {
 
-                if (codes[i].opcode == OpCodes.Ldsfld && codes[i].operand.ToString().Contains("isRaining"))
+                if (codes[i].opcode == OpCodes.Ldsfld && codes[i].operand.ToString().Contains("isRaining") && codes[i+1].opcode == OpCodes.Brtrue_S)
                 {
                     codes[i].opcode = OpCodes.Call;
                     codes[i].operand = AccessTools.Method(typeof(ClimatesOfFerngill), "ShouldDarken", new Type[] { });

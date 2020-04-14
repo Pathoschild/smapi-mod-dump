@@ -1,6 +1,6 @@
 ﻿namespace BetterMixedSeeds.Data
 {
-    /// <summary>Data about each seed.</summary>
+    /// <summary>Data about a seed.</summary>
     public class SeedData
     {
         /// <summary>The crop name.</summary>

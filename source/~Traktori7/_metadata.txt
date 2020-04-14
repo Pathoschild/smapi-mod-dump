@@ -1,0 +1,16 @@
+url:
+   https://github.com/Traktori7/StardewValleyMods.git
+
+mods:
+   Industrial Furnace
+   Industrial Furnace for Automate
+   Quality Scrubber
+   Quality Scrubber for Automate
+
+latest commit:
+   commit d846248b40e5f40725d6b6f46abb9d4d462dcb29
+   Author: KiviKivi9133 <salonenkyosti@gmail.com>
+   Date:   Mon Apr 13 03:31:09 2020 +0300
+   
+       1.4.5 release. Fixes the possible multiplayer desync issue using automate + android.
+   

@@ -44,12 +44,13 @@ namespace NpcAdventure.Driver
 
             Vector2 cursorTile = e.OldPosition.Tile;
             GameLocation location = Game1.currentLocation;
-            NPC n = location.isCharacterAtTile(cursorTile);
+            NPC n = location?.isCharacterAtTile(cursorTile);
 
             if (n == null)
             {
                 // Try next Y position if no NPC fetched
                 n = location.isCharacterAtTile(cursorTile + new Vector2(0f, 1f));
+
                 if (n == null)
                 {
                     this.ResetHint();

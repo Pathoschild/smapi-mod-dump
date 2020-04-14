@@ -2,7 +2,15 @@
 
 # Release notes
 ## Upcoming release
+* Updated Android support (thanks to ZaneYork!).
+* Improved translations. Thanks to D0n-A (updated Russian) and niniack (updated Chinese)!
+
+## 1.18
+Released 08 March 2020.
+
 * Added support for multi-key bindings (like `LeftShift + B`).
+* Fixed compatibility with recent Android versions (thanks to ZaneYork!).
+* Updated translations. Thanks to Annosz (added Hungarian) and Hesper (updated Korean)!
 
 ## 1.17.4
 Released 02 February 2020.

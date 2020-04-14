@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5377
+IDs: ZaneYork.CustomLocalization, SMAPI.CustomLocalization
+update keys: Nexus:5377, GitHub:ZaneYork/SDV_CustomLocalization

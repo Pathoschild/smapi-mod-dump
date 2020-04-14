@@ -9,5 +9,6 @@
   "HighestQualityAmount": 5,
   "FishHighestQuality": 4,
   "DoNotShowCaughtFish": false,
-  "IgnoreQuality": true
+  "IgnoreQuality": true,
+  "LogWarnings": true
 }

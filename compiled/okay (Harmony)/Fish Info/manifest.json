@@ -1,0 +1,20 @@
+﻿{
+  "Name": "Fish Info",
+  "Author": "Speshkitty",
+  "Version": "1.3.9",
+  "Description": "Adds infomration about where fish can be caught to the collections page",
+  "UniqueID": "speshkitty.fishinfo",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:5452" ],
+  "EntryDLL": "FishInfo.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

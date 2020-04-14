@@ -23,8 +23,11 @@ namespace ExtraFishInformation
         // PUBLIC VARIABLES
         IDictionary<int, string> updatedDescriptions = new Dictionary<int, string>();
 
+
         // PRIVATE VARIABLES
         private ModConfig Config;
+        private ITranslationHelper i18n;
+        private bool timeIn24Hours;
 
 
         // PUBLIC METHODS
@@ -34,7 +37,7 @@ namespace ExtraFishInformation
         public override void Entry(IModHelper helper)
         {
             // get data frm config.json - try/catched to handle errors
-            bool timeIn24Hours = true;
+            timeIn24Hours = true;
             try
             {
                 this.Config = this.Helper.ReadConfig<ModConfig>();
@@ -45,65 +48,15 @@ namespace ExtraFishInformation
                 this.Monitor.Log($"There was an error with parsing config.json. 24 hour time will be used for fish info, by default.", LogLevel.Error);
             }
 
-            // read in required data files
-            IDictionary<int, string> objectInfo = helper.Content.Load<Dictionary<int, string>>("Data/ObjectInformation", ContentSource.GameContent);
-            IDictionary<int, string> fishInfo = helper.Content.Load<Dictionary<int, string>>("Data/Fish", ContentSource.GameContent);
-            IDictionary<string, string> locationInfo = helper.Content.Load<Dictionary<string, string>>("Data/Locations", ContentSource.GameContent);
-
-            // set up a more easy to handle version of the locations data
-            IDictionary<string, string[]> seasonalLocationInfo = new Dictionary<string, string[]>();
-            foreach (KeyValuePair<string, string> item in locationInfo)
+            // set up helper for translations
+            i18n = helper.Translation;
+            if (!i18n.GetTranslations().Any())
             {
-                string[] locationInfoSections = item.Value.Split('/');
-                string[] newArray = new string[4];
-                Array.Copy(locationInfoSections, 4, newArray, 0, 4);
-                seasonalLocationInfo[item.Key] = newArray;
+                this.Monitor.Log($"There was an error in locating translation files. Please try re-installing this mod to fix this.", LogLevel.Error);
             }
 
-            // set up dict for new info
-            IDictionary<int, string> newInfo = new Dictionary<int, string>();
-
-            // get fish info from each fish
-            foreach (KeyValuePair<int, string> item in objectInfo)
-            {
-                // get info from ObjectInformation
-                // TODO: change to include "/Fish/" or "/Fish -4/" so as to include seaweed, etc. but algae/etc is segmentended as if normal fish, not as trap??? - trash is "/Fish -20/"
-                string objectItemInfo = item.Value;
-                if (!objectItemInfo.Contains("Fish -4")) continue;  // ignore non-fish items
-                int fishId = item.Key;
-                string[] objectItemSections = objectItemInfo.Split('/');
-                string description = objectItemSections[5];  // get object description
-
-                // get info from Fish
-                string fishItemInfo = fishInfo[fishId];  // get individual fish info 
-                string[] fishInfoSections = fishItemInfo.Split('/');  // sections are 0-12 (or 0-13 for localisations) for all except trapper fish which are 0-6 (or 0-7 for localisations) [see sdv wiki for more info]
-                string newDescription;
-
-                // handle each fish
-                if ((fishInfoSections.Length == 7) || (fishInfoSections.Length == 8)) // handle trapper fish
-                {
-                    string location = fishInfoSections[4];
-                    string extraInfo = $" Found in the {location}.";
-                    newDescription = description + extraInfo;
-                }
-                else  // handle all other fish
-                {
-                    string locations = ParseLocation(fishId, seasonalLocationInfo);
-                    string weather = ParseWeather(fishInfoSections[7]);
-                    string schedule = ParseTimes(fishInfoSections[5], timeIn24Hours);
-                    string extraInfo = $" Found {weather} from {schedule}.\n\nLocations:\n{locations}";
-                    newDescription = description + extraInfo;
-                } // end if/else statement
-
-                // repack object sections
-                objectItemSections[5] = newDescription;
-                string newObjectInfo = string.Join("/", objectItemSections);
-                newInfo[item.Key] = newObjectInfo;
-
-            } // end foreach fish
-
-            // update descriptions to include new info for each fish
-            updatedDescriptions = newInfo;
+            // load mod
+            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
 
         } // end Entry method
 
@@ -134,14 +87,110 @@ namespace ExtraFishInformation
 
         // PRIVATE METHODS
 
-        /// <summary>A helper method to parse location and season information from the edited version of Locations.xnb</summary>
-        /// <param name="fishId">Integer denoting fish being handled</param>
-        /// <param name="seasonalLocationInfo">IDictionary of edited version of Locations.xnb information</param>
-        /// <returns>Parsed locations/seasons data, to add directly to description</returns>
+        /// <summary>"Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialised at this point, so this is a good time to set up mod integrations." [see more at: https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Events] </summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            // read in required data files
+            IDictionary<int, string> objectInfo = this.Helper.Content.Load<Dictionary<int, string>>("Data/ObjectInformation", ContentSource.GameContent);
+            IDictionary<int, string> fishInfo = this.Helper.Content.Load<Dictionary<int, string>>("Data/Fish", ContentSource.GameContent);
+            IDictionary<string, string> locationInfo = this.Helper.Content.Load<Dictionary<string, string>>("Data/Locations", ContentSource.GameContent);
+
+            // set up a more easy to handle version of the locations data
+            IDictionary<string, string[]> seasonalLocationInfo = new Dictionary<string, string[]>();
+            foreach (KeyValuePair<string, string> item in locationInfo)
+            {
+                string[] locationInfoSections = item.Value.Split('/');
+                string[] newArray = new string[4];
+                Array.Copy(locationInfoSections, 4, newArray, 0, 4);
+                seasonalLocationInfo[item.Key] = newArray;
+            }
+
+            // set up dict for new info
+            IDictionary<int, string> newInfo = new Dictionary<int, string>();
+
+            // get fish info from each fish
+            foreach (KeyValuePair<int, string> item in objectInfo)
+            {
+                try // catch exceptions
+                {
+                    // get info from ObjectInformation
+                    string objectItemInfo = item.Value;
+                    if (!objectItemInfo.Contains("Fish -4")) continue;  // ignore non-fish items
+                    int fishId = item.Key;
+                    string[] objectItemSections = objectItemInfo.Split('/');
+                    string description = objectItemSections[5];  // get object description
+
+                    // get info from Fish
+                    string fishItemInfo = fishInfo[fishId];  // get individual fish info 
+                    string[] fishInfoSections = fishItemInfo.Split('/');  // sections are 0-12 (or 0-13 for localisations) for all except trapper fish which are 0-6 (or 0-7 for localisations) [see sdv wiki for more info]
+                    string newDescription;
+
+                    // handle each fish
+                    if ((fishInfoSections.Length == 7) || (fishInfoSections.Length == 8)) // handle trapper fish
+                    {
+                        string location = fishInfoSections[4];
+                        string extraInfo = "";
+                        if (location.Equals("ocean"))
+                        {
+                            extraInfo = i18n.Get("new-description.trapper.fish", new { location = i18n.Get("location.ocean") });
+                        }
+                        else if (location.Equals("freshwater"))
+                        {
+                            extraInfo = i18n.Get("new-description.trapper.fish", new { location = i18n.Get("location.freshwater") });
+                        }
+                        else
+                        {
+                            extraInfo = i18n.Get("new-description.trapper.fish", new { location = i18n.Get("location.unknown") });
+                        }
+
+                        newDescription = description + extraInfo;
+                    }
+                    else  // handle all other fish
+                    {
+                        string locations = ParseLocation(fishId, seasonalLocationInfo);
+                        string weather = ParseWeather(fishInfoSections[7]);
+                        string schedule = ParseTimes(fishInfoSections[5], timeIn24Hours);
+                        string extraInfo = i18n.Get("new-description.normal.fish", new { weather = weather, schedule = schedule, locations = locations });
+                        newDescription = description + extraInfo;
+                    } // end if/else statement
+
+                    // repack object sections
+                    objectItemSections[5] = newDescription;
+                    string newObjectInfo = string.Join("/", objectItemSections);
+                    newInfo[item.Key] = newObjectInfo;
+
+                }
+                catch (KeyNotFoundException exception) // key not found exception: likely from fish added from another mod
+                {
+                    this.Monitor.Log($"Error! Key not found for fish: {item}\nExtra fish information will not be added for this fish.", LogLevel.Error);
+                    // should not crash game: fish that do not throw this exception should still be loaded
+                }
+                catch (Exception exception) // catch all other exceptions: no other exceptions expected
+                {
+                    System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(exception, true);
+                    this.Monitor.Log($"Error! {exception.GetType().Name}: {exception.Message} [Line number {trace.GetFrame(0).GetFileLineNumber()}]", LogLevel.Error);
+                }
+
+            } // end foreach fish
+
+            // update descriptions to include new info for each fish
+            updatedDescriptions = newInfo;
+            this.Helper.Content.InvalidateCache("Data/ObjectInformation");
+
+        } // end OnGameLaunched method
+
+
+        /// <summary>A helper method to parse location and season information from the edited version of Locations.xnb </summary>
+        /// <param name="fishId">Integer denoting fish being handled.</param>
+        /// <param name="seasonalLocationInfo">IDictionary of edited version of Locations.xnb information.</param>
+        /// <param name="i18n">Helper for translations.</param>
+        /// <returns>Parsed locations/seasons data, to add directly to description.</returns>
         private string ParseLocation(int fishId, IDictionary<string, string[]> seasonalLocationInfo)
         {
             string foundLocations = "";
-            string[] seasonNames = { "Spring", "Summer", "Fall", "Winter" };
+            string[] seasonNames = { i18n.Get("season.spring"), i18n.Get("season.summer"), i18n.Get("season.fall"), i18n.Get("season.winter") };
 
             foreach (KeyValuePair<string, string[]> location in seasonalLocationInfo)
             {
@@ -155,7 +204,7 @@ namespace ExtraFishInformation
                 { break; }
 
                 string foundSeasons = "";
-                string allSeasons = "Spring, Summer, Fall, Winter";
+                string allSeasons = $"{seasonNames[0]}, {seasonNames[1]}, {seasonNames[2]}, {seasonNames[3]}";
                 string[] seasonInfo = location.Value;
 
                 for (int i = 0; i < seasonInfo.Length; i++)
@@ -194,9 +243,9 @@ namespace ExtraFishInformation
         } // end ParseLocation method
 
 
-        /// <summary>A helper method to parse location names from namesLikeThis to Names Like This</summary>
-        /// <param name="weather">String containing unparsed location name</param>
-        /// <returns>String containing parsed location name</returns>
+        /// <summary>A helper method to parse location names from namesLikeThis to Names Like This.</summary>
+        /// <param name="weather">String containing unparsed location name.</param>
+        /// <returns>String containing parsed location name.</returns>
         private string ParseLocationName(string locationName)
         {
             // convert to NamesLikeThis
@@ -210,25 +259,26 @@ namespace ExtraFishInformation
         } // end ParseLocationName method
 
 
-        /// <summary>A helper method to parse weather information from Fish.xnb</summary>
-        /// <param name="weather">String containing unparsed weather data</param>
-        /// <returns>Parsed weather data, to add directly to description</returns>
+        /// <summary>A helper method to parse weather information from Fish.xnb. </summary>
+        /// <param name="weather">String containing unparsed weather data.</param>
+        /// <param name="i18n">Helper for translations.</param>
+        /// <returns>Parsed weather data, to add directly to description.</returns>
         private string ParseWeather(string weather)
         {
             string parsedWeather;
             switch (weather)
             {
                 case "sunny":
-                    parsedWeather = "when it is sunny";
+                    parsedWeather = i18n.Get("weather.sunny");
                     break;
                 case "rainy":
-                    parsedWeather = "when it is rainy";
+                    parsedWeather = i18n.Get("weather.rainy");
                     break;
                 case "both":
-                    parsedWeather = "in all weathers";
+                    parsedWeather = i18n.Get("weather.both");
                     break;
                 default:
-                    parsedWeather = "in unknown conditions";
+                    parsedWeather = i18n.Get("weather.unknown");
                     break;
             } // end switch/case
 
@@ -237,10 +287,11 @@ namespace ExtraFishInformation
         } // end ParseWeather method
 
 
-        /// <summary>A helper method to parse active times from from Fish.xnb</summary>
-        /// <param name="times">String containing unparsed time data</param>
-        /// <param name="timeIn24Hours">Boolean to show whether time should be in 24 or 12 hour format</param>
-        /// <returns>Parsed time data, to add directly to description</returns>
+        /// <summary>A helper method to parse active times from from Fish.xnb.</summary>
+        /// <param name="times">String containing unparsed time data.</param>
+        /// <param name="timeIn24Hours">Boolean to show whether time should be in 24 or 12 hour format.</param>
+        /// <param name="i18n">Helper for translations.</param>
+        /// <returns>Parsed time data, to add directly to description.</returns>
         private string ParseTimes(string times, bool timeIn24Hours)
         {
             string parsedTimes = "";
@@ -257,7 +308,7 @@ namespace ExtraFishInformation
                 endTime = ParseTimeString(endTime, timeIn24Hours);
 
                 // add parsed times to new string
-                parsedTimes = $"{startTime} to {endTime}";
+                parsedTimes = i18n.Get("schedule.between.times", new { startTime = startTime, endTime = endTime });
             }
             else
             {
@@ -274,15 +325,15 @@ namespace ExtraFishInformation
                     // add parsed times to new string
                     if (i == 0)
                     {
-                        parsedTimes = $"{startTime} to {endTime}";
+                        parsedTimes = i18n.Get("schedule.between.times", new { startTime = startTime, endTime = endTime });
                     }
                     else if (i == splitTimes.Length - 2)
                     {
-                        parsedTimes = $"{parsedTimes}, and {startTime} to {endTime}";
+                        parsedTimes = i18n.Get("schedule.join.times", new { parsedTimes = parsedTimes, startTime = startTime, endTime = endTime });
                     }
                     else
                     {
-                        parsedTimes = $"{parsedTimes}, {startTime} to {endTime}";
+                        parsedTimes = i18n.Get("schedule.more.times", new { parsedTimes = parsedTimes, startTime = startTime, endTime = endTime });
                     }
                     // end if/else
 
@@ -295,10 +346,11 @@ namespace ExtraFishInformation
         } // end ParseTimes method
 
 
-        /// <summary>A helper method for ParseTimes() to parse time strings from from Fish.xnb</summary>
-        /// <param name="timeToParse">String containing unparsed time data in XXX or XXXX form</param>
-        /// <param name="timeIn24Hours">Boolean to show whether time should be in 24 or 12 hour format</param>
-        /// <returns>Parsed time data in XX:XX</returns>
+        /// <summary>A helper method for ParseTimes() to parse time strings from from Fish.xnb.</summary>
+        /// <param name="timeToParse">String containing unparsed time data in XXX or XXXX form.</param>
+        /// <param name="timeIn24Hours">Boolean to show whether time should be in 24 or 12 hour format.</param>
+        /// <param name="i18n">Helper for translations.</param>
+        /// <returns>Parsed time data in XX:XX.</returns>
         private string ParseTimeString(string timeToParse, bool timeIn24Hours)
         {
             string newTime = "";
@@ -306,7 +358,7 @@ namespace ExtraFishInformation
             {
                 string hour = timeToParse.Substring(0, 1);
                 string minutes = timeToParse.Substring(1);
-                newTime = $"{hour}:{minutes}";
+                newTime = i18n.Get("time.24hour.format", new { hour = hour, minutes = minutes });
             }
             else if (timeToParse.Length == 4)
             {
@@ -316,14 +368,14 @@ namespace ExtraFishInformation
                 {
                     hour = (Int32.Parse(hour) - 24).ToString();
                 }
-                newTime = $"{hour}:{minutes}";
+                newTime = i18n.Get("time.24hour.format", new { hour = hour, minutes = minutes });
             }
             else
             {
                 newTime = timeToParse;
             }
 
-            // put those in X:XX format into XX:XX format
+            // put those in X:XX format into XX:XX format -- only checking for a ":" because only English needs this done
             if (newTime.Length == 4 && newTime.Contains(":"))
             {
                 newTime = newTime.Insert(0, "0");
@@ -338,44 +390,62 @@ namespace ExtraFishInformation
 
 
         /// <summary>A helper method for ParseTimeString() to parse time strings from 24 hour format to 12 hour format.</summary>
-        /// <param name="time24Hours">String containing 24 hour time in XX:XX format</param>
-        /// <returns>Time in 12 hour format in XX.XXam/pm format</returns>
+        /// <param name="time24Hours">String containing 24 hour time in XX:XX format.</param>
+        /// <returns>Time in 12 hour format in XX.XXam/pm format.</returns>
         private string ConvertTo12HourTime(string time24Hours)
         {
             string time12Hours = "";
+            int hour = 0;
+            int minutes = 0;
 
-            int hours = Int32.Parse(time24Hours.Substring(0, 2));
-            int minutes = Int32.Parse(time24Hours.Substring(3));
-
-            if (hours >= 0 && hours <= 11)
+            // languages handle time differently
+            switch (i18n.LocaleEnum.ToString())
             {
-                if (minutes == 0)
-                    { time12Hours = $"{hours}am"; }
-                else
-                    { time12Hours = $"{hours}.{minutes}am"; }
-            }
-            else if (hours == 12)
-            {
-                if (minutes == 0)
-                    { time12Hours = $"{hours}pm"; }
-                else
-                    { time12Hours = $"{hours}.{minutes}pm"; }
-            }
-            else if (hours >= 13 && hours <= 23)
-            {
-                if (minutes == 0)
-                    { time12Hours = $"{hours-12}pm"; }
-                else
-                    { time12Hours = $"{hours-12}.{minutes}pm"; }
-            }
-            else if (hours == 24)
-            {
-                if (minutes == 0)
-                    { time12Hours = $"{hours - 12}am"; }
-                else
-                    { time12Hours = $"{hours - 12}.{minutes}am"; }
+                case "en":
+                    hour = Int32.Parse(time24Hours.Substring(0, 2));
+                    minutes = Int32.Parse(time24Hours.Substring(3));
+                    break;
+                case "fr":
+                    hour = Int32.Parse(time24Hours.Substring(0, time24Hours.IndexOf("h")));
+                    minutes = Int32.Parse(time24Hours.Substring(time24Hours.IndexOf("h") + 1));
+                    break;
+                default: 
+                    hour = Int32.Parse(time24Hours.Substring(0, 2));
+                    minutes = Int32.Parse(time24Hours.Substring(3));
+                    break;
             }
 
+            // parse & convert to 12hr time
+            if (hour >= 0 && hour <= 11)
+            {
+                if (minutes == 0)
+                    { time12Hours = i18n.Get("time.morning.12hour", new { hour = hour }); }
+                else
+                    { time12Hours = i18n.Get("time.morning.12hour.minutes", new { hour = hour, minutes = minutes }); }
+            }
+            else if (hour == 12)
+            {
+                if (minutes == 0)
+                    { time12Hours = i18n.Get("time.afternoon.12hour", new { hour = hour }); }
+                else
+                    { time12Hours = i18n.Get("time.afternoon.12hour.minutes", new { hour = hour, minutes = minutes }); }
+            }
+            else if (hour >= 13 && hour <= 23)
+            {
+                if (minutes == 0)
+                { time12Hours = i18n.Get("time.afternoon.12hour", new { hour = hour - 12 }); }
+                else
+                { time12Hours = i18n.Get("time.afternoon.12hour.minutes", new { hour = hour - 12, minutes = minutes }); }
+            }
+            else if (hour == 24)
+            {
+                if (minutes == 0)
+                    { time12Hours = i18n.Get("time.morning.12hour", new { hour = hour - 12 }); }
+                else
+                    { time12Hours = i18n.Get("time.morning.12hour.minutes", new { hour = hour - 12, minutes = minutes }); }
+            }
+
+            // return time in 12hr format
             return time12Hours;
 
         } // end ConvertTo12HourTime method
@@ -386,7 +456,7 @@ namespace ExtraFishInformation
 
     // MOD CONFIG CLASS
 
-    /// <summary>Generates config.json</summary>
+    /// <summary>Generates config.json.</summary>
     class ModConfig
     {
         public bool TimeIn24Hours { get; set; } = true;

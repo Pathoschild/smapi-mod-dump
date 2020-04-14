@@ -4200,7 +4200,6 @@
 						<option>Farmer names</option>
 						<option>Save file names</option>
 						<option>Other mods</option>
-						<option>Reset main data folder</option>
 					</select>
 				</div>
 				
@@ -4343,14 +4342,6 @@
 								</td>
 							</tr>
 						</table>
-					</fieldset>
-				</div>
-				
-				<div class="setting" id="OtherOptions-FC-ResetMainDataFolder-Div" style="max-width:400px; display:none">
-					<fieldset class="border">
-					<legend>Reset main data folder<span class="tooltip">?<span class="tooltiptext">If this is enabled, the first time this config file is loaded, all files in the <b>FarmTypeManager/data</b> folder will be moved to an "archive" folder.<br/><br/>This setting will <b>only</b> work if used by a content pack.<br/><br/>It was designed for older mods to remove obsolete config files.</span></span></legend>
-						<input type="checkbox" class="big" name="OtherOptions-FC-ResetMainDataFolder" id="OtherOptions-FC-ResetMainDataFolder">
-						<label for="OtherOptions-FC-ResetMainDataFolder" class="big-checkbox-label"></label>
 					</fieldset>
 				</div>
 			
@@ -5062,8 +5053,7 @@
 			"FarmTypes": [],
 			"FarmerNames": [],
 			"SaveFileNames": [],
-			"OtherMods": {},
-			"ResetMainDataFolder": false
+			"OtherMods": {}
 			}
 		};
 		
@@ -5385,8 +5375,6 @@
 				document.getElementById("OtherOptions-FC-OtherMods").add(option);
 			}
 			
-			document.getElementById("OtherOptions-FC-ResetMainDataFolder").checked = json.File_Conditions.ResetMainDataFolder; //set "reset main data folder" checkbox
-			
 			document.getElementById("OtherOptions-QuarryTileIndex").options.length = 0;
 			for (var x = 0; x < json.QuarryTileIndex.length; x++) //for each quarry tile
 			{
@@ -5568,8 +5556,6 @@
 					json.File_Conditions.OtherMods[modName] = false; //add the mod name to the dictionary, paired with false
 				}
 			}
-			
-			json.File_Conditions.ResetMainDataFolder = document.getElementById("OtherOptions-FC-ResetMainDataFolder").checked;
 			
 			json.QuarryTileIndex = [];
 			for (var x = 0; x < document.getElementById("OtherOptions-QuarryTileIndex").options.length; x++) //for each quarry tile

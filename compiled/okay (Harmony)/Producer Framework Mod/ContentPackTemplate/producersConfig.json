@@ -15,10 +15,10 @@
 			"Radius": 1.5, // The actual size of the light source depends on the texture used. Default is 1.5 (the size of the furnace light source with the sconceLight texture)
 			"OffsetX": 0, // The horizontal offset from the center of the producer tile. Default is 0.
 			"OffsetY": 0, // The vertical offset from the top of the producer tile. Default is 0.
-			// Light color work differently than object color. It's best to test the effect to find what looks best. (0,0,0,255) is white light and will keep the original color of objects lit by it.
-			"ColorRed": 0, // The red value of the light color. Default is 0.
-			"ColorGreen": 0, // The green value of the light color. Default is 0.
-			"ColorBlue": 0, // The blue value of the light color. Default is 0.
+			"ColorType": "DefinedColor", // [ObjectColor|ObjectDyeColor|DefinedColor] If ObjectColor and the output is a colored object, it will use the color of the output. If ObjectDyeColor and the output has a dye color, it will use this color. If DefinedColor or it doesn't find the color on the other options, it will create the color based on the Red, Green and Blue values.
+			"ColorRed": 255, // The red value of the light color. Default is 255.
+			"ColorGreen": 255, // The green value of the light color. Default is 255.
+			"ColorBlue": 255, // The blue value of the light color. Default is 255.
 			"ColorAlpha": 255, // The transparency value of the light color. 0 is fully transparent, 255 is fully opaque. Default is 255.
 			"ColorFactor": 0.75, // The factor that will multiply all other colors parameters. Default is 1.
 			"AlwaysOn": true // If true, the light source will be lit even while not producing. Default is false. 
@@ -31,7 +31,12 @@
 		"WorkingLocation": [ "Barn", "Big Barn", "Deluxe Barn" ], // The locations in which the machine will work. Can be any map of building. Default is working in any location. 
 		"WorkingOutdoors": true, // [true|false|null] If true, the machine will only work outdoor. If false, the machine will only work indoor. If the line is removed or the value is null, it will work on both kind of location.
 		"WorkingSeason": [ "spring", "summer", "fall" ], // The seasons in which the machine will work. Different than other conditions, season clean the machine at the start of the day if in a not working season. The default is working in any season. 
-		"OverrideMod": [ "IdOfTheMod.ToOverride" ] //If defined, this config can override the configs for the same producer from the mods in the list. Otherwise the first one to be loaded will be used.
+		"OverrideMod": [ "IdOfTheMod.ToOverride" ], //If defined, this config can override the configs for the same producer from the mods in the list. Otherwise the first one to be loaded will be used.
+		"ProducingAnimation": { // Set a configuration for animating the producing state of the machine. Default is null.
+			"RelativeFrameIndex": [ 2, 3, 4, 5, 6, 7 ], //Index and order of the frames that should be used for the animation. Index start at zero, the base frame and index of the non producing state. Extra frames are content from that frame. Extra frames can be added with Json Assets or Content Patcher.
+			"FrameInterval": 10 // Amount of game ticks between frames. Default is 10
+		},
+		"ReadyAnimation": null //Set a configuration for animating the ready state of the machine. Same format of configuration as WorkingAnimation. Default is null.
 	}
 ]
 /* Additional Notes

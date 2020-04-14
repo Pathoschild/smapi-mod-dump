@@ -11,24 +11,45 @@ namespace ProducerFrameworkMod
     internal class NameUtils
     {
         private static readonly Dictionary<int, string> CustomNames = new Dictionary<int, string>();
+        private static readonly Dictionary<int, string> GenericParentNames = new Dictionary<int, string>();
 
         private static LocalizedContentManager.LanguageCode? _activeLanguageCode = null;
 
         internal static void AddCustomName(int index, string value)
         {
+            AddName(index, value, CustomNames);
+        }
+
+        internal static void AddGenericParentName(int index, string value)
+        {
+            AddName(index, value, GenericParentNames);
+        }
+
+        private static void AddName(int index, string value, Dictionary<int, string> nameDictionary)
+        {
             if (Game1.content.GetCurrentLanguage() != _activeLanguageCode)
             {
                 _activeLanguageCode = Game1.content.GetCurrentLanguage();
-                CustomNames.Clear();
+                nameDictionary.Clear();
             }
 
-            if (!CustomNames.ContainsKey(index))
+            if (!nameDictionary.ContainsKey(index))
             {
-                CustomNames[index] = value;
+                nameDictionary[index] = value;
             }
-            else if (CustomNames[index] != value)
+            else if (nameDictionary[index] != value)
             {
-                ProducerFrameworkModEntry.ModMonitor.Log($"The custom name '{CustomNames[index]}' is already in use for the object with the index '{index}'. The custom name '{value}' will be ignored.",LogLevel.Warn);
+                if (nameDictionary == CustomNames)
+                {
+                    ProducerFrameworkModEntry.ModMonitor.Log(
+                        $"The custom name '{nameDictionary[index]}' is already in use for the object with the index '{index}'. The custom name '{value}' will be ignored."
+                        , LogLevel.Warn);
+                } else if (nameDictionary == GenericParentNames)
+                {
+                    ProducerFrameworkModEntry.ModMonitor.Log(
+                        $"The generic parent name '{nameDictionary[index]}' is already in use for the object with the index '{index}'. The generic parent name '{value}' will be ignored."
+                        , LogLevel.Warn);
+                }
             }
         }
 
@@ -40,6 +61,16 @@ namespace ProducerFrameworkMod
         internal static bool HasCustomNameForIndex(int index)
         {
             return CustomNames.ContainsKey(index);
+        }
+
+        internal static string GetGenericParentNameFromIndex(int index)
+        {
+            return GenericParentNames[index];
+        }
+
+        internal static bool HasGenericParentNameForIndex(int index)
+        {
+            return GenericParentNames.ContainsKey(index);
         }
     }
 }

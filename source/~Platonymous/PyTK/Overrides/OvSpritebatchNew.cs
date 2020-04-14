@@ -8,15 +8,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PyTK.Overrides
 {
     class OvSpritebatchNew
     {
         internal static Dictionary<Rectangle, CustomObjectData> recCache = new Dictionary<Rectangle, CustomObjectData>();
-
+        internal static Dictionary<string, Dictionary<Rectangle?, Texture2D>> repTextures = new Dictionary<string, Dictionary<Rectangle?, Texture2D>>();
 
         internal static bool skip = false;
 
@@ -51,15 +49,29 @@ namespace PyTK.Overrides
 
             sourceRectangle = sourceRectangle.HasValue ? sourceRectangle.Value : new Rectangle(0, 0, texture.Width, texture.Height);
 
-            if (texture is MappedTexture2D mapped && mapped.Get(sourceRectangle.Value.X, sourceRectangle.Value.Y) is Texture2D t)
+
+            if (sourceRectangle.HasValue && texture.Name != null && texture.Name != "" && repTextures.ContainsKey(texture.Name) && repTextures[texture.Name].Keys.FirstOrDefault(k => k.HasValue && k.Value.Contains(sourceRectangle.Value)) is Rectangle srr)
             {
-                skip = true;
-                __instance.Draw(t, destinationRectangle, sourceRectangle, color, rotation, origin, effects, layerDepth);
+                texture = repTextures[texture.Name][srr];
+                sourceRectangle = new Rectangle(sourceRectangle.Value.X - srr.X, sourceRectangle.Value.Y - srr.Y, sourceRectangle.Value.Width, sourceRectangle.Value.Height);
+            }
+
+            if (texture is AnimatedTexture2D animTex)
+                animTex.Tick();
+
+            if (texture is MappedTexture2D mapped && mapped.GetPair(sourceRectangle) is KeyValuePair<Rectangle?,Texture2D> pair && pair.Key.HasValue)
+            {
+                __instance.Draw(pair.Value, destinationRectangle, pair.Key, color, rotation, origin, effects, layerDepth);
                 return false;
             }
 
             if (texture is ScaledTexture2D s && sourceRectangle.Value is Rectangle r)
             {
+                if (s.AsOverlay)
+                {
+                    skip = true;
+                    __instance.Draw(texture, destinationRectangle, sourceRectangle, color, rotation, origin, effects, Math.Max(layerDepth - 0.00001f,0f));
+                }
                 var newDestination = new Rectangle(destinationRectangle.X, destinationRectangle.Y, (int)(destinationRectangle.Width), (int)(destinationRectangle.Height));
                 var newSR = new Rectangle?(new Rectangle((int)(r.X * s.Scale), (int)(r.Y * s.Scale), (int)(r.Width * s.Scale), (int)(r.Height * s.Scale)));
                 var newOrigin = new Vector2(origin.X * s.Scale, origin.Y * s.Scale);

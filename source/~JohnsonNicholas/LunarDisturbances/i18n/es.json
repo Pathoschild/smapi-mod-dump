@@ -21,7 +21,6 @@
   "moon-text.hud_message_new": "Es luna nueva! Las playas pueden tener menos objetos de lo normal....",
   "moon-text.fullmoon_eff": "Los poderes de la luna llena han ayudado a {{cropsAffected}} los cultivos crecen..",
   "moon-text.newmoon_eff": "Los poderes de la luna nueva han provocado a {{cropsAffected}} los cultivos crecen más lento...",
-  "moon-desc.desc_moonphase": "Fase lunar actual: {{moonPhase}}"
-  
+  "moon-desc.desc_moonphase": "Fase lunar actual: {{moonPhase}}",
   "moon-text.bloodmoon_villager_generic": "Es una luna de sangre, Qué haces hablando conmigo, estás loco?!"
 }

@@ -1,0 +1,33 @@
+{
+  "Machines": [
+    //  You can specify some basic metadata about modded machines so that Machine Augmentors is able to recognize them and let you attach augmentors to them.
+    /* EXAMPLE:
+    {
+      "RequiredModUniqueId": "Hadi.JASoda", // This is the "UniqueID" value in the manifest.json of the mod that contains the machine
+      "Name": "Syrup Maker", // Optional (Not required if you specify a value for "Id"). This is the internal "Name" of the machine, NOT the "DisplayName". 
+                             // (So if the mod has support for multiple languages, use the name specified in i18n\default.json)
+      "Id": 379, // Optional (Not required if you specify a value for "Name"). This is the "ParentSheetIndex" value for the machine
+      "HasQualityProducts": false, // This should be set to true if the machine produces items that can have multiple different Quality values (Regular/Silver/Gold/Iridium)
+      "RequiresInput": true, // This should be set to true if the machine requires 1 or more input items to produce an output. False if it automatically keeps producing outputs like a Crystalarium, Bee House, Tapper etc.
+      "AttachableAugmentors": [ // This is the names of all Augmentors that should be attachable to the machine
+        "Output",
+        "Speed",
+        "Efficiency",
+        "Quality",
+        "Production",
+        "Duplication"
+      ]
+    }
+    */
+    // Here's another example that lets you attach Speed Augmentors to Incubators. Not thoroughly tested but seems to work...
+    /*{
+      "RequiredModUniqueId": "SlayerDharok.MachineAugmentors",
+      "Name": "Incubator",
+      "HasQualityProducts": false,
+      "RequiresInput": true,
+      "AttachableAugmentors": [
+        "Speed"
+      ]
+    }*/
+  ]
+}

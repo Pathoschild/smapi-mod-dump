@@ -8,11 +8,13 @@ namespace WhatAreYouMissing
     {
         private SButton buttonToBringUpInterface;
         public static ModConfig modConfig;
-        public static MissingItems MissingItems;
-        public static RecipeIngredients RecipesIngredients;
         public static Logger Logger;
         public static ITranslationHelper Translator;
         public static IModHelper HelperInstance;
+
+        //This are initialized only once as they are performance heavy
+        public static MissingItems MissingItems;
+        public static RecipeIngredients RecipesIngredients;
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -37,6 +39,7 @@ namespace WhatAreYouMissing
             {
                 Logger = new Logger(this);
 
+                //Initialize the performance heavy operations
                 MissingItems = new MissingItems();
                 RecipesIngredients = new RecipeIngredients();
 

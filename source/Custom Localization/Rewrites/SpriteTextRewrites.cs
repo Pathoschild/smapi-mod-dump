@@ -32,11 +32,8 @@ namespace StardewModdingAPI.Mods.CustomLocalization.Rewrites
                 SpriteText.fontPixelZoom = locale.FontPixelZoom;
             }
         }
-        [HarmonyPatch(typeof(SpriteText))]
-        [HarmonyPatch("setUpCharacterMap")]
         public class SetUpCharacterMapRewrite
         {
-            [HarmonyPrefix]
             public static void Prefix()
             {
                 if (!LocalizedContentManager.CurrentLanguageLatin)
@@ -50,11 +47,8 @@ namespace StardewModdingAPI.Mods.CustomLocalization.Rewrites
 
 
         }
-        [HarmonyPatch(typeof(SpriteText))]
-        [HarmonyPatch("OnLanguageChange")]
         public class OnLanguageChangeRewrite
         {
-            [HarmonyPrefix]
             public static void Prefix()
             {
                 LoadFont();

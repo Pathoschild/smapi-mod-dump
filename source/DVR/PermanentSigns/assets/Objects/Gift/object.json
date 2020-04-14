@@ -1,0 +1,7 @@
+﻿{
+  "Name": "Gift",
+  "Description": "Give this to somebody",
+  "Category": "ArtisanGoods",
+  "Edibility": -300,
+  "Recipe":  null
+}

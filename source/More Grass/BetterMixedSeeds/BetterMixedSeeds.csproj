@@ -54,6 +54,7 @@
     <Compile Include="Data\SeedData.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Patches\CropPatch.cs" />
+    <Compile Include="Patches\ObjectPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -32,12 +32,12 @@ namespace PFMAutomate.Automate
 
         public MachineState GetState()
         {
-            return this.OriginalMachine.GetState();
+            return this.PfmMachine.GetState();
         }
 
         public ITrackedStack GetOutput()
         {
-            return this.OriginalMachine.GetOutput();
+            return this.PfmMachine.GetOutput();
         }
 
         public bool SetInput(IStorage input)

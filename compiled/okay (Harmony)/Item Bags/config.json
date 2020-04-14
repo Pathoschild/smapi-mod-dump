@@ -1,0 +1,232 @@
+{
+  "CreatedByVersionString": "1.4.5",
+  "GlobalPriceModifier": 1.0,
+  "GlobalCapacityModifier": 1.0,
+  "StandardBagSettings": [
+    {
+      "Size": "Small",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0
+    },
+    {
+      "Size": "Medium",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0
+    },
+    {
+      "Size": "Large",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0
+    },
+    {
+      "Size": "Giant",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0
+    },
+    {
+      "Size": "Massive",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0
+    }
+  ],
+  "BundleBagSettings": [
+    {
+      "Size": "Large",
+      "AllowDowngradeItemQuality": true,
+      "PriceModifier": 1.0,
+      "BasePrice": 2500,
+      "Sellers": [
+        "TravellingCart"
+      ]
+    },
+    {
+      "Size": "Massive",
+      "AllowDowngradeItemQuality": true,
+      "PriceModifier": 1.0,
+      "BasePrice": 10000,
+      "Sellers": [
+        "TravellingCart"
+      ]
+    }
+  ],
+  "RucksackSettings": [
+    {
+      "Size": "Small",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0,
+      "BasePrice": 24000,
+      "BaseCapacity": 30,
+      "Slots": 6,
+      "MenuColumns": 12,
+      "MenuSlotSize": 64,
+      "Sellers": [
+        "Pierre"
+      ]
+    },
+    {
+      "Size": "Medium",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0,
+      "BasePrice": 65000,
+      "BaseCapacity": 99,
+      "Slots": 12,
+      "MenuColumns": 12,
+      "MenuSlotSize": 64,
+      "Sellers": [
+        "Pierre"
+      ]
+    },
+    {
+      "Size": "Large",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0,
+      "BasePrice": 175000,
+      "BaseCapacity": 300,
+      "Slots": 24,
+      "MenuColumns": 12,
+      "MenuSlotSize": 64,
+      "Sellers": [
+        "Pierre"
+      ]
+    },
+    {
+      "Size": "Giant",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0,
+      "BasePrice": 350000,
+      "BaseCapacity": 999,
+      "Slots": 36,
+      "MenuColumns": 12,
+      "MenuSlotSize": 64,
+      "Sellers": [
+        "Pierre"
+      ]
+    },
+    {
+      "Size": "Massive",
+      "PriceModifier": 1.0,
+      "CapacityModifier": 1.0,
+      "BasePrice": 1000000,
+      "BaseCapacity": 9999,
+      "Slots": 72,
+      "MenuColumns": 12,
+      "MenuSlotSize": 64,
+      "Sellers": [
+        "Pierre"
+      ]
+    }
+  ],
+  "OmniBagSettings": [
+    {
+      "Size": "Small",
+      "PriceModifier": 1.0,
+      "BasePrice": 12000,
+      "MenuColumns": 8,
+      "MenuSlotSize": 64,
+      "Sellers": [
+        "Pierre"
+      ]
+    },
+    {
+      "Size": "Medium",
+      "PriceModifier": 1.0,
+      "BasePrice": 25000,
+      "MenuColumns": 8,
+      "MenuSlotSize": 64,
+      "Sellers": [
+        "Pierre"
+      ]
+    },
+    {
+      "Size": "Large",
+      "PriceModifier": 1.0,
+      "BasePrice": 75000,
+      "MenuColumns": 8,
+      "MenuSlotSize": 64,
+      "Sellers": [
+        "Pierre"
+      ]
+    },
+    {
+      "Size": "Giant",
+      "PriceModifier": 1.0,
+      "BasePrice": 300000,
+      "MenuColumns": 8,
+      "MenuSlotSize": 64,
+      "Sellers": [
+        "Pierre"
+      ]
+    },
+    {
+      "Size": "Massive",
+      "PriceModifier": 1.0,
+      "BasePrice": 1500000,
+      "MenuColumns": 8,
+      "MenuSlotSize": 64,
+      "Sellers": [
+        "Pierre"
+      ]
+    }
+  ],
+  "HideSmallBagsFromShops": false,
+  "HideMediumBagsFromShops": false,
+  "HideLargeBagsFromShops": false,
+  "HideGiantBagsFromShops": false,
+  "HideMassiveBagsFromShops": false,
+  "HideObsoleteBagsFromShops": true,
+  "MonsterLootSettings": {
+    "LogDropChancesToConsole": false,
+    "CanReceiveBagsAsDrops": true,
+    "ForceNewBagTypeChance": 0.4,
+    "BaseDropChance": 0.004,
+    "MineDepthBonusPerLevel": 0.004,
+    "MaxMineDepth": 220,
+    "QuarryLocationBonus": 0.3,
+    "ForestLocationBonus": 0.2,
+    "OtherLocationBonus": 0.1,
+    "BaseExperience": 8,
+    "MaxExperience": 15,
+    "MaxExperienceMultiplier": 1.25,
+    "MinExperience": 4,
+    "MinExperienceMultiplier": 0.75,
+    "BonusPer10HP": 0.015,
+    "MaxHP": 200,
+    "RucksackDropSettings": {
+      "TypeWeight": 10,
+      "SizeWeights": {
+        "Small": 56,
+        "Medium": 30,
+        "Large": 10,
+        "Giant": 3,
+        "Massive": 1
+      }
+    },
+    "OmniBagDropSettings": {
+      "TypeWeight": 4,
+      "SizeWeights": {
+        "Small": 45,
+        "Medium": 32,
+        "Large": 20,
+        "Giant": 2,
+        "Massive": 1
+      }
+    },
+    "BundleBagDropSettings": {
+      "TypeWeight": 26,
+      "SizeWeights": {
+        "Large": 3,
+        "Massive": 1
+      }
+    },
+    "StandardBagDropSettings": {
+      "TypeWeight": 60,
+      "SizeWeights": {
+        "Small": 62,
+        "Medium": 30,
+        "Large": 8,
+        "Giant": 0,
+        "Massive": 0
+      }
+    }
+  }
+}

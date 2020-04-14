@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Outerwear",
+  "Author": "EpicBellyFlop45",
+  "Version": "1.0.0",
+  "Description": "Adds an addition clothing slot for outerwear which can have special effects",
+  "UniqueID": "EpicBellyFlop45.Outerwear",
+  "EntryDll": "Outerwear.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:" ]
+}

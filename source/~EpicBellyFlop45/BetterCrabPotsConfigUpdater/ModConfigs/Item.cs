@@ -1,7 +1,7 @@
 ﻿namespace BetterCrabPotsConfigUpdater.ModConfigs
 {
     /// <summary>The object that contains data about each item, both for trash and non trash uses.</summary>
-    class Item
+    public class Item
     {
         /// <summary>The object id.</summary>
         public int Id { get; set; }

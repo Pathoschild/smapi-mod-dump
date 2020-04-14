@@ -5,12 +5,13 @@ namespace SailorStyles_Clothing
 {
 	internal class Const
 	{
-		// files
+		/* files */
 		internal const string CatId = "zss_cat";
 		internal const string ShopDialogueRoot = "catshop.text.";
 		internal const string ImgExt = ".png";
 		internal const string JsonExt = ".json";
 		
+		/* content */
 		internal const string CatDir = "Cat";
 		internal const string HatsDir = "Hats";
 		internal const string ClothingDir = "Clothing";
@@ -38,20 +39,21 @@ namespace SailorStyles_Clothing
 			{ "Sailor Suits", 100 }
 		};
 
+		/* assets */
 		internal static readonly string AnimDescs = Path.Combine("Data", "animationDescriptions");
 		internal static readonly string CatSchedule = Path.Combine("Characters", "schedules", CatId);
 
-		internal static readonly string CatTiles = Path.Combine("Assets", CatDir, CatId + "_tilesheet");
 		internal static readonly string CatSprite = Path.Combine("Characters", CatId);
 		internal static readonly string CatPortrait = Path.Combine("Portraits", CatId);
 
-		// keys
+		/* values */
 		internal const string LocationTarget = "Forest";
 
-		// values
 		internal const int CatShopQtyRatio = 5;
 
 		internal const int CatX = 33;
 		internal const int CatY = 96;
+
+		internal const int DummyTileIndex = 140;
 	}
 }

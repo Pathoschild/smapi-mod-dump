@@ -8,9 +8,9 @@ mods:
    Fish Finder
 
 latest commit:
-   commit 733609191579a3c11115579985af4c319eb4a1d8
+   commit 183d5af23d9c6daeccd2390b47af2504cac47014
    Author: Aair the Great <a_aair@hotmail.com>
-   Date:   Fri Dec 27 13:20:45 2019 -0800
+   Date:   Sun Mar 15 12:19:53 2020 -0700
    
-       Updated readme file.
+       Included new chinese translation into project
    

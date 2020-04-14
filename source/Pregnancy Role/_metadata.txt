@@ -1,0 +1,13 @@
+url:
+   https://gitlab.com/kdau/pregnancyrole.git
+
+mods:
+   Pregnancy Role
+
+latest commit:
+   commit b98814909347e7879228f42d21a343dd4cc6f197
+   Author: Kevin Daughtridge <kevin@kdau.com>
+   Date:   Tue Apr 14 10:16:50 2020 -0700
+   
+       Update documentation; remove ROADMAP in favor of issue list
+   

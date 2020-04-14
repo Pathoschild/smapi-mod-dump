@@ -5,12 +5,12 @@ mods:
    Dynamic Checklist
 
 latest commit:
-   commit ae39af2bfe0720adcfcdba31c20caa63dd07af7f
-   Merge: a4b3231 71faf75
+   commit 6a7d2b3a9d4d85f08c63a676305f5c7b9b051da7
+   Merge: ae39af2 e702e11
    Author: gunnargolf <gunnargolf@gmail.com>
-   Date:   Sun Feb 9 13:10:41 2020 +0000
+   Date:   Sat Mar 28 21:58:53 2020 +0000
    
-       Merge pull request #9 from stash/smapi-3
+       Merge pull request #8 from stash/readme-and-license
        
-       Upgrade to SMAPI 3. Thanks for the update. I haven't really been maintaining it, but it's good that it's being kept alive.
+       Readme and license
    

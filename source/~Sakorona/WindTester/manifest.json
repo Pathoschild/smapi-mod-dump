@@ -1,0 +1,10 @@
+{
+  "Name": "Wind Tester",
+  "Author": "Sakorona",
+  "Version": "0.0.1",
+  "Description": "How did you get this mod?",
+  "UniqueID": "KoihimeNakamura.WindTester",
+  "EntryDll": "WindTester.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:604" ]
+} 

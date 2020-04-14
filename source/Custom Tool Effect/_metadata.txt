@@ -1,0 +1,13 @@
+url:
+   https://github.com/ZaneYork/CustomToolEffect.git
+
+mods:
+   Custom Tool Effect
+
+latest commit:
+   commit 35a5a1d42286240d9c2352092dcde301d7983bb4
+   Author: ZaneYork <ZaneYork@qq.com>
+   Date:   Wed Apr 8 16:06:14 2020 +0800
+   
+       Add bomb support
+   

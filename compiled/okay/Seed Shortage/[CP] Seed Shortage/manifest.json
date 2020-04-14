@@ -1,0 +1,30 @@
+{
+  "Name": "[CP] Seed Shortage",
+  "Author": "Xynerorias",
+  "Version": "1.2.3",
+  "Description": "Content Pack for Seed Shortage. Changes dialogues and seed maker recipe.",
+  "UniqueID": "xynerorias.seedshortageCP",
+  "UpdateKeys": [ "Nexus:5614" ],
+  "ContentPackFor": 
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+    },
+  "Dependencies": [
+   {
+      "UniqueID": "xynerorias.seedshortage",
+      "IsRequired": true
+   },
+   {
+      "UniqueID": "gizzymo.canonfriendlyexpansion",
+      "IsRequired": false
+   },
+   {
+      "UniqueID": "FlashShifter.StardewValleyExpandedCP",
+      "IsRequired": false
+   },
+   {
+      "UniqueID": "spacechase0.SeedCatalogue",
+      "IsRequired": false
+   }
+]
+}

@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/3608
 IDs: StevenKraft.StardewDiscord
-update keys: Nexus:3608
+update keys: Nexus:3608, GitHub:steven-kraft/StardewDiscord

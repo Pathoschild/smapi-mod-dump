@@ -16,9 +16,9 @@ mods:
    XNB Loader
 
 latest commit:
-   commit 1f51a3cb6d625ff47fa748e6039ba2cfbd2d2c4e
+   commit 55e70c468b510dbc8dceac7ba1f2c5f76a9865d7
    Author: Entoarox <kvdk@kvdk.net>
-   Date:   Wed Feb 5 03:36:50 2020 +0100
+   Date:   Fri Mar 20 00:22:46 2020 +0100
    
-       Massive github sync Commit, fear the mess!
+       Sundrop changes
    

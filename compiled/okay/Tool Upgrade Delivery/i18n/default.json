@@ -1,0 +1,15 @@
+{
+    //original
+    "yes": "Yes",
+    "no": "No",
+    "dialogue": "Do you want to instant upgrade your tool? Price : {{config}}G",
+    "no-money": "You don't have enough money",
+    "inventory-full": "Your inventory is full",
+    "no-tool-upgrade": "You don't have tool upgrade in Clint",
+    //trash can should same like in game name to avoid bug
+    "copper-trash-can": "Copper Trash Can",
+    "steel-trash-can": "Steel Trash Can",
+    "gold-trash-can": "Gold Trash Can",
+    "iridium-trash-can": "Iridium Trash Can",
+    "receive": "You receive {{tool}}",
+}

@@ -52,13 +52,13 @@ namespace ClimatesOfFerngillRebuild
             if (ClimatesOfFerngill.WeatherOpt.ShowLighterFog)
             {
                 if (Game1.isRaining)
-                    this.FogTargetAlpha = .2f;
+                    this.FogTargetAlpha = .25f;
                 else
-                    this.FogTargetAlpha = .3f;
+                    this.FogTargetAlpha = .35f;
             }
             else
             {
-                this.FogTargetAlpha = 1f;
+                this.FogTargetAlpha = .7f;
             }
         }
 
@@ -98,10 +98,6 @@ namespace ClimatesOfFerngillRebuild
             SetFogTargetAlpha();
             this.FogAlpha = this.FogTargetAlpha;
             CurrentFogType = FogType.Normal;
-
-
-            
-                
         }
 
         public void ForceWeatherEnd()
@@ -284,15 +280,14 @@ namespace ClimatesOfFerngillRebuild
                             
                             if (Game1.isStartingToGetDarkOut())
                             {
-                                FogColor = Color.LightBlue;
+                                FogColor = Color.LightSteelBlue;
                             }
                             if (BloodMoon)
                             {
                                 FogColor = Color.DarkRed;
                             }
 
-                            Game1.spriteBatch.Draw(fogTexture, position, new Microsoft.Xna.Framework.Rectangle?
-                                    (FogSource), FogAlpha > 0.0 ? FogColor * FogAlpha : Color.Black * 0.95f, 0.0f, Vector2.Zero, Game1.pixelZoom + 1f / 1000f, SpriteEffects.None, 1f);
+                            Game1.spriteBatch.Draw(fogTexture, position, new Rectangle?(FogSource), FogAlpha > 0.0 ? FogColor * FogAlpha : Color.Black * 0.95f, 0.0f, Vector2.Zero, Game1.pixelZoom + 1f / 1000f, SpriteEffects.None, 1f);
                             num2 += 64 * Game1.pixelZoom;
                         }
                         num1 += 64 * Game1.pixelZoom;
@@ -323,8 +318,8 @@ namespace ClimatesOfFerngillRebuild
                 // So, 3000ms for 55% or 54.45 repeating. But this is super fast....
                 // let's try 955ms.. or 1345..
                 // or 2690.. so no longer 3s. :<
-                FogAlpha = FogTargetAlpha * (1 - (FogElapsed.ElapsedMilliseconds / FogFadeTime));
-               
+                FogAlpha = FogTargetAlpha * (this.FogTargetAlpha - (FogElapsed.ElapsedMilliseconds / FogFadeTime));
+       
                 if (FogAlpha <= 0)
                 {
                     FogAlpha = 0;
@@ -351,11 +346,19 @@ namespace ClimatesOfFerngillRebuild
 
             if (IsWeatherVisible && Game1.shouldTimePass() )
             {
-                //Game1.outdoorLight = fogLight;
-                this.FogPosition = Game1.updateFloatingObjectPositionForMovement(FogPosition,
-                    new Vector2(Game1.viewport.X, Game1.viewport.Y), Game1.previousViewportPosition, -1f);
-                FogPosition = new Vector2((FogPosition.X + 0.5f) % (64 * Game1.pixelZoom),
-                    (FogPosition.Y + 0.5f) % (64 * Game1.pixelZoom));
+                if (Game1.isDebrisWeather) {
+                    this.FogPosition = Game1.updateFloatingObjectPositionForMovement(FogPosition,
+                        new Vector2(Game1.viewport.X, Game1.viewport.Y), Game1.previousViewportPosition, -1f);
+                    FogPosition = new Vector2((FogPosition.X + 0.5f) % (64 * Game1.pixelZoom) + WeatherDebris.globalWind,
+                        (FogPosition.Y + 0.5f) % (64 * Game1.pixelZoom));
+                }
+                else {
+                    //Game1.outdoorLight = fogLight;
+                    this.FogPosition = Game1.updateFloatingObjectPositionForMovement(FogPosition,
+                        new Vector2(Game1.viewport.X, Game1.viewport.Y), Game1.previousViewportPosition, -1f);
+                    FogPosition = new Vector2((FogPosition.X + 0.5f) % (64 * Game1.pixelZoom),
+                        (FogPosition.Y + 0.5f) % (64 * Game1.pixelZoom));
+                }
             }
         }
     }

@@ -1,4 +1,5 @@
 {
   "DebugWarpKey": "U",
-  "DebugMode": false
+  "DebugMode": false,
+  "DebugAlwaysCaturday": false
 }

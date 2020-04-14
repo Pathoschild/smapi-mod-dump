@@ -5,6 +5,7 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using TMXTile;
 
 namespace PyTK.Extensions
 {
@@ -45,6 +46,16 @@ namespace PyTK.Extensions
         public static Color clone(this Color t)
         {
             return new Color(t.ToVector4());
+        }
+
+        public static Color toColor(this TMXColor color)
+        {
+            return new Color(color.R, color.G, color.B, color.A);
+        }
+
+        public static TMXColor toTMXColor(this Color color)
+        {
+            return new TMXColor() { R = color.R, G = color.G, B = color.B, A = color.A };
         }
 
         public static int getDistanceTo(this Color current, Color match)
@@ -97,14 +108,36 @@ namespace PyTK.Extensions
         {
             Color[] colorData = new Color[t.Width * t.Height];
             t.GetData(colorData);
-            Texture2D newTexture = new Texture2D(t.GraphicsDevice, t.Width, t.Height);
-
             for (int x = 0; x < t.Width; x++)
                 for (int y = 0; y < t.Height; y++)
                     colorData[x * t.Height + y] = changeColor(colorData[x * t.Height + y], manipulation);
 
             t.SetData(colorData);
 
+            return t;
+        }
+
+        public static Texture2D switchColor(this Texture2D t, Color from, Color to)
+        {
+            Color[] colorData = new Color[t.Width * t.Height];
+            t.GetData(colorData);
+            for (int x = 0; x < t.Width; x++)
+                for (int y = 0; y < t.Height; y++)
+                    if(colorData[x * t.Height + y] == from)
+                        colorData[x * t.Height + y] = to;
+            t.SetData(colorData);
+            return t;
+        }
+
+        public static Texture2D switchOtherColor(this Texture2D t, Color from, Color to)
+        {
+            Color[] colorData = new Color[t.Width * t.Height];
+            t.GetData(colorData);
+            for (int x = 0; x < t.Width; x++)
+                for (int y = 0; y < t.Height; y++)
+                    if (colorData[x * t.Height + y] != from)
+                        colorData[x * t.Height + y] = to;
+            t.SetData(colorData);
             return t;
         }
 
@@ -236,7 +269,6 @@ namespace PyTK.Extensions
 
                 return sTexture;
         }
-
     }
 }
 

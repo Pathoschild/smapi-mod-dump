@@ -5,6 +5,7 @@ using PyTK.Extensions;
 using PyTK.Types;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.Tools;
@@ -30,6 +31,8 @@ namespace TMXLoader
         {
             return (Game1.activeClickableMenu is PyTK.PlatoUI.PlatoUIMenu p && p.Id == "BuildablesMenu");
         }
+
+
 
         public static bool spawnTreasureAction(string action, GameLocation location, Vector2 tile, string layer)
         {
@@ -74,11 +77,53 @@ namespace TMXLoader
                 chest.TileLocation = position;
                 chest.addItem(chestItem);
                 location.Objects.Add(position, chest);
-                if(sound != "" && sound != "none")
+                if (sound != "" && sound != "none")
                     Game1.playSound(sound);
                 return true;
             }
             return false;
+        }
+
+        public static bool warpHomeAction(string action, GameLocation location, Vector2 tile, string layer)
+        {
+            GameLocation home = Game1.getLocationFromName(Game1.player.homeLocation.Value, Game1.player.homeLocation.Value == "FarmHouse");
+            Game1.warpFarmer(Game1.player.homeLocation.Value, home.warps[0].X, home.warps[0].Y - 1, Game1.player.FacingDirection, home.isStructure.Value);
+            return true;
+        }
+
+        public static bool warpIntoAction(string action, GameLocation location, Vector2 tile, string layer)
+        {
+            List<string> text = action.Split(' ').ToList();
+            int w = 0;
+            if (text.Count > 2)
+                w = int.Parse(text[2]);
+
+            GameLocation target = Game1.getLocationFromName(text[1], false);
+            bool up = Game1.player.FacingDirection == 0;
+            Game1.warpFarmer(text[1], target.warps[w].X, target.warps[w].Y + (up ? -1 : 1), Game1.player.FacingDirection);
+            return true;
+        }
+
+        public static bool warpFromAction(string action, GameLocation location, Vector2 tile, string layer)
+        {
+            List<string> text = action.Split(' ').ToList();
+            int w = 0;
+            if (text.Count > 3)
+                w = int.Parse(text[3]);
+
+            GameLocation target = Game1.getLocationFromName(text[1], false);
+            int direction = Game1.player.FacingDirection;
+
+            if (text.Count > 4)
+                direction = int.Parse(text[4]);
+
+            List<Warp> warps = target.warps.ToList();
+
+            if (text.Count > 2)
+                warps = warps.Where(wp => wp.TargetName == text[2]).ToList();
+
+            Game1.warpFarmer(text[1], warps[w].X + (direction == 1 ? 1 : direction == 3 ? -1 : 0), warps[w].Y + (direction == 0 ? -1 : direction == 2 ? 1 : 0), direction);
+            return true;
         }
 
         public static Item getItem(string type, int index = -1, string name = "none")
@@ -210,8 +255,18 @@ namespace TMXLoader
 
             List<TileShopItem> items = new List<TileShopItem>();
             Dictionary<ISalable, int[]> priceAndStock = new Dictionary<ISalable, int[]>();
+            {
+                TMXLoaderMod.monitor.Log("Key:->" + text[1] + "<-");
+                foreach(TileShop tss in TMXLoaderMod.tileShops.Keys)
+                    TMXLoaderMod.monitor.Log(tss.id + " == " + text[1] + "> " +(tss.id == text[1]));
 
-            if (TMXLoaderMod.tileShops.Find(kvp => kvp.Key.id == text[1] || (text[1].StartsWith("EmptyShop_") && kvp.Key.id == "EmptyShop" )) is KeyValuePair<TileShop, List<TileShopItem>> ts && TMXLoaderMod.tileShops.TryGetValue(ts.Key, out items))
+
+                if (TMXLoaderMod.tileShops.Find(kvp => kvp.Key.id == text[1]) is KeyValuePair<TileShop, List<TileShopItem>> tsx)
+                    TMXLoaderMod.monitor.Log(tsx.Key + "-" + tsx.Value);
+                else
+                    TMXLoaderMod.monitor.Log("not found");
+            }
+            if (TMXLoaderMod.tileShops.Find(kvp => kvp.Key.id == text[1] || (text[1].StartsWith("EmptyShop_") && kvp.Key.id == "EmptyShop")) is KeyValuePair<TileShop, List<TileShopItem>> ts && TMXLoaderMod.tileShops.TryGetValue(ts.Key, out items))
             {
                 if (text[1].StartsWith("EmptyShop_"))
                     ts.Key.inventoryId = text[1].Split('_')[1];
@@ -222,7 +277,7 @@ namespace TMXLoader
                     if (!PyUtils.checkEventConditions(inventory.conditions, Game1.player))
                         continue;
 
-                    Item item = getItem(inventory.type,inventory.index, inventory.name);
+                    Item item = getItem(inventory.type, inventory.index, inventory.name);
 
                     if (item == null)
                         continue;
@@ -256,7 +311,7 @@ namespace TMXLoader
 
                 }
 
-                var shop = new ShopMenu(priceAndStock, 0,  null);
+                var shop = new ShopMenu(priceAndStock, 0, null);
                 if (text.Count > 2)
                 {
                     try
@@ -284,7 +339,8 @@ namespace TMXLoader
 
                     }
                 }
-                if (text.Count > 3) {
+                if (text.Count > 3)
+                {
                     string prefix = text[0] + " " + text[1] + " " + text[2] + " ";
                     string shopText = action.Replace(prefix, "");
                     shop.potraitPersonDialogue = Game1.parseText(shopText, Game1.dialogueFont, 304);
@@ -298,10 +354,10 @@ namespace TMXLoader
 
         public static void updateItemListAfterShop(object sender, StardewModdingAPI.Events.MenuChangedEventArgs e)
         {
-            if(e.OldMenu is ShopMenu sm && lastInventoryId != null && itemLists.ContainsKey(lastInventoryId))
+            if (e.OldMenu is ShopMenu sm && lastInventoryId != null && itemLists.ContainsKey(lastInventoryId))
             {
                 Dictionary<ISalable, int[]> itemPriceAndStock = sm.itemPriceAndStock;
-                foreach(Item item in itemLists[lastInventoryId])
+                foreach (Item item in itemLists[lastInventoryId])
                 {
                     Item i = item.getOne();
                     int sold = 0;
@@ -319,8 +375,8 @@ namespace TMXLoader
                     if (sm.portraitPerson is NPC npc && npc.Name == "PlayerShop")
                     {
                         long umid = long.Parse(sm.portraitPerson.endOfRouteMessage.Value);
-                        if(Game1.getFarmer(umid) is Farmer f)
-                            ShopMenu.chargePlayer(f,sm.getCurrency(), -(i.salePrice() * sold));
+                        if (Game1.getFarmer(umid) is Farmer f)
+                            ShopMenu.chargePlayer(f, sm.getCurrency(), -(i.salePrice() * sold));
                     }
                 }
 
@@ -357,7 +413,7 @@ namespace TMXLoader
                 if (Game1.activeClickableMenu is StardewValley.Menus.ConfirmationDialog cd)
                     cd.cancel();
 
-            TileAction.invokeCustomTileActions("Success", location, tile, layer);
+                TileAction.invokeCustomTileActions("Success", location, tile, layer);
             });
 
             return true;
@@ -409,7 +465,8 @@ namespace TMXLoader
                     if (layers.Length < 4)
                     {
                         Layer l = location.map.GetLayer(layers[0]);
-                        if (l != null) {
+                        if (l != null)
+                        {
                             var size = new Microsoft.Xna.Framework.Rectangle(0, 0, l.DisplayWidth / Game1.tileSize, l.DisplayHeight / Game1.tileSize);
 
                             for (int x = 0; x < size.Width; x++)
@@ -476,6 +533,51 @@ namespace TMXLoader
                     Game1.player.removeItemFromInventory(i);
 
                 TileAction.invokeCustomTileActions("Success", location, tile, layer);
+
+                if (strings.Length >= 4 && strings[3].ToLower() == "persist")
+                {
+                    string lockid = layer + "_" + (int) tile.X + "_" + (int) tile.Y;
+
+                    if (strings.Length >= 5 && strings[4].ToLower() == "recall")
+                        lockid += "_recall";
+
+                    string lname = location.isStructure.Value ? location.uniqueName.Value : location.Name;
+                    if (!location.Map.Properties.ContainsKey("PersistentData"))
+                        location.Map.Properties.Add("PersistentData", "lock:" + lname + ":" + lockid);
+                    else
+                        location.Map.Properties["PersistentData"] = location.Map.Properties["PersistentData"].ToString() + ";" + "lock:" + lname + ":" + lockid;
+
+                    if (!location.Map.Properties.ContainsKey("Unlocked"))
+                        location.Map.Properties.Add("Unlocked", lockid);
+                    else
+                        location.Map.Properties["Unlocked"] = location.Map.Properties["Unlocked"].ToString() + ";" + lockid;
+
+                    try
+                    {
+                        Tile calledTile = location.Map.GetLayer(layer).Tiles[(int)tile.X, (int)tile.Y];
+
+                        if (calledTile != null && (calledTile.Properties.ContainsKey("Action") && calledTile.Properties["Action"].ToString().ToLower().Contains("lock") && calledTile.Properties["Action"].ToString().Contains(action)))
+                        {
+
+                            if (strings.Length >= 5 && strings[4].ToLower() == "recall")
+                            {
+                                if (calledTile.Properties.ContainsKey("Recall"))
+                                    calledTile.Properties["Action"] = calledTile.Properties["Recall"];
+                                else
+                                    calledTile.Properties["Action"] = calledTile.Properties["Success"];
+                            }
+                            else
+                                calledTile.Properties.Remove("Action");
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+            }
+
+               
+
             }
             else if (Game1.player.ActiveObject == null)
                 TileAction.invokeCustomTileActions("Default", location, tile, layer);
@@ -520,7 +622,7 @@ namespace TMXLoader
         public static void setTile(Map map, string layer, int x, int y, Tile tile)
         {
             if (map.GetLayer(layer) is Layer l)
-                    l.Tiles[x, y] = tile;
+                l.Tiles[x, y] = tile;
         }
 
         public static StaticTile createStaticTile(Map map, string layer, string tilesheet, int index)
@@ -543,6 +645,122 @@ namespace TMXLoader
             }
 
             return null;
+        }
+        public static Point GetSpouseRoomSpot(GameLocation location)
+        {
+            if (location is FarmHouse fh)
+            {
+                if (fh.Map.getMapProperty("SpouseRoom") is string srValue && srValue != "")
+                {
+                    List<int> srSpot = srValue.Split(' ').ToList().Select(s =>
+                    {
+                        if (int.TryParse(s, out int i))
+                            return i;
+
+                        return -1;
+                    }).ToList();
+
+                    if (srSpot.Count >= 2 && srSpot[0] != -1 && srSpot[1] != -1)
+                        return new Point(srSpot[0], srSpot[1]);
+
+                }
+
+                if (fh.Map.getMapProperty("Bed") is string bedValue && bedValue != "")
+                {
+                    List<int> bedspot = bedValue.Split(' ').ToList().Select(s =>
+                    {
+                        if (int.TryParse(s, out int i))
+                            return i;
+
+                        return -1;
+                    }).ToList();
+
+                    if (bedspot.Count >= 2 && bedspot[0] != -1 && bedspot[1] != -1)
+                    {
+                        if (fh.upgradeLevel > 2 || fh is Cabin)
+                            return new Point(bedspot[0] + 8, bedspot[1] - 3);
+                        else
+                            return new Point(bedspot[0] + 6, bedspot[1] - 3);
+                    }
+
+                }
+
+
+                if (fh.upgradeLevel >= 2)
+                    return new Point(35, 10);
+                else
+                    return new Point(29, 1);
+            }
+
+            return Point.Zero;
+        }
+
+        public static void SetSpouseRoom(GameLocation location)
+        {
+            SetSpouseRoom(location, GetSpouseRoomSpot(location));
+        }
+
+        public static void SetSpouseRoom(GameLocation location, int x, int y)
+        {
+            SetSpouseRoom(location, new Point(x, y));
+        }
+
+        public static void SetSpouseRoom(GameLocation location, Point p)
+        {
+            if (location is FarmHouse fh && fh.owner is Farmer f && p != Point.Zero)
+            {
+                int h = 9;
+                int w = 6;
+                int x1 = p.X;
+                int y1 = p.Y;
+
+                int x2 = x1 + w - 1;
+                int y2 = y1 + h - 1;
+
+                string pos = ":" + x1 + "-" + x2 + ":" + y1 + "-" + y2;
+                string posf = ":" + x1 + "-" + x2 + ":" + y1 + "-" + (y2 - 1);
+                string posid = x1 + "." + y1;
+
+                string lastposid = location.map.getMapProperty("TMXL_SPOUSE_LASTPOS");
+                string currentSpouse = location.map.getMapProperty("TMXL_SPOUSE_CURRENT");
+                string lastpos = pos;
+                string lastposf = posf;
+
+                if (string.IsNullOrEmpty(lastposid))
+                    lastposid = posid;
+                else
+                {
+                    List<int> l = posid.Split('.').ToList().Select(s =>
+                    {
+                        if (int.TryParse(s, out int i))
+                            return i;
+
+                        return -1;
+                    }).ToList();
+
+                    if (l.Count >= 2 && l[0] != -1 && l[1] != -1)
+                    {
+                        lastpos = ":" + l[0] + "-" + (l[0] + w - 1) + ":" + l[1] + "-" + (l[1] + h - 1);
+                        lastposf = ":" + l[0] + "-" + (l[0] + w - 1) + ":" + l[1] + "-" + (l[1] + h - 2);
+                    }
+                }
+
+
+                if (currentSpouse != (f.spouse ?? "") || lastposid != posid)
+                {
+                    if (!string.IsNullOrEmpty(currentSpouse))
+                        switchLayersAction("SwitchLayers AlwaysFront:AlwaysFront" + currentSpouse + lastposf + " Front:Front" + currentSpouse + lastposf + "  Buildings:Buildings" + currentSpouse + lastpos + "  Back:Back" + currentSpouse + lastpos, location);
+
+                    if (string.IsNullOrEmpty(f.spouse))
+                        return;
+
+                    if (hasLayer(location.map, "Back" + currentSpouse))
+                        switchLayersAction("SwitchLayers AlwaysFront:AlwaysFront" + f.spouse + posf + " Front:Front" + f.spouse + posf + "  Buildings:Buildings" + f.spouse + pos + "  Back:Back" + f.spouse + pos, location);
+                }
+
+                location.map.setMapProperty("TMXL_SPOUSE_CURRENT", f.spouse ?? "");
+                location.map.setMapProperty("TMXL_SPOUSE_LASTPOS", posid);
+            }
         }
     }
 }

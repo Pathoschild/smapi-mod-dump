@@ -29,7 +29,7 @@ namespace BlueberryMushroomMachine.Editors
 			var src = ModEntry.Instance.Helper.Content.Load<Texture2D>(Const.MachinePath);
 			var dest = asset.AsImage();
 			var srcRect = new Rectangle(0, 0, 16, 32);
-			var destRect = Propagator.getSourceRectForBigCraftable(Data.PropagatorIndex);
+			var destRect = Propagator.getSourceRectForBigCraftable(ModValues.PropagatorIndex);
 
 			if (destRect.Bottom > dest.Data.Height)
 			{

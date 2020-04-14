@@ -18,16 +18,19 @@ public static class ModConstants
         {"Caroline", 2},
         {"Clint", -1},
         {"Demetrius", -2},
+        {"Dwarf", 1},
         {"Elliott", -1},
         {"Emily", 1},
         {"Evelyn", 4},
         {"George", 4},
         {"Gus", 2},
+        {"Gunther", 3},
         {"Haley", 2},
         {"Harvey", -1},
         {"Jas", 7},
         {"Jodi", 3},
         {"Kent", -1},
+        {"Krobus", 0},
         {"Leah", 2},
         {"Lewis", 1},
         {"Linus", 6},
@@ -48,15 +51,15 @@ public static class ModConstants
     };
 
   // NPCs with no schedules 
-  public static List<string> ExcludedVillagers => new List<string>()
+  public static List<string> ExcludedNpcs => new List<string>()
     {
-      "Dwarf",
+      // "Dwarf",
       "Mister Qi",
       "Bouncer",
       "Henchman",
-      "Gunther",
-      "Krobus",
-      "Dusty"
+      // "Gunther",
+      // "Krobus",
+      // "Dusty"
     };
 
   // tileX and TileY (the first two values) are tile positions in the game for that location
@@ -194,7 +197,7 @@ public static class ModConstants
       {
           "Railroad_Region", new MapVector[]
           {
-              new MapVector(696, 47),
+              new MapVector(730, 47),
           }
       },
 
@@ -232,7 +235,6 @@ public static class ModConstants
           }
       },
 	
-
     // Indoor
 //	  {
 //        "FarmHouse", new MapVector[]
@@ -324,13 +326,6 @@ public static class ModConstants
 //          new MapVector(905, 436)
 //        }
 //      },
-//	  // Just incase CA fixes the old name to the live one. I don't know.
-//	  {
-//        "AlexHouse", new MapVector[]
-//        {
-//          new MapVector(771, 340)
-//        }
-//      },
 //      {
 //        "JoshHouse", new MapVector[]
 //        {
@@ -355,7 +350,7 @@ public static class ModConstants
 //          new MapVector(878, 405)
 //        }
 //      },
-//      {
+//     {
 //        "JojaMart", new MapVector[]
 //        {
 //          new MapVector(885, 302)
@@ -373,12 +368,12 @@ public static class ModConstants
 //          new MapVector(813, 365)
 //        }
 //      },
-//      {
-//        "Trailer_Big", new MapVector[]
 //        {
-//          new MapVector(810, 365)
-//        }
-//      },
+//          "Trailer_Big", new MapVector[]
+//          {
+//            new MapVector(810, 365)
+//          }
+//        },
 //      {
 //        "ManorHouse", new MapVector[]
 //        {

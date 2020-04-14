@@ -10,6 +10,7 @@ namespace ClimatesOfFerngillRebuild.Patches
         public const int SingleLeafB = 1;
         public const int DoubleLeafA = 2;
         public const int RareSeason = 3;
+        public const int Sandstorm = 4;
 
 #pragma warning disable IDE0051 // Remove unused private members
         static void CtorPostfix(WeatherDebris __instance)
@@ -25,6 +26,11 @@ namespace ClimatesOfFerngillRebuild.Patches
                 which = DoubleLeafA;
             else
                 which = RareSeason;
+
+            if (ClimatesOfFerngill.Conditions.IsSandstorm())
+            {
+                which = Sandstorm;
+            }
 
             int offset = 0;
             switch (which)
@@ -52,6 +58,9 @@ namespace ClimatesOfFerngillRebuild.Patches
                     if (Game1.currentSeason == "summer") offset = 224;
                     if (Game1.currentSeason == "fall") offset = 48;
                     if (Game1.currentSeason == "winter") offset = 160;
+                    break;
+                case Sandstorm:
+                    offset = 242;
                     break;
                   default:
                     offset = 0;

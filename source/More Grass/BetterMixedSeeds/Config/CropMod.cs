@@ -1,6 +1,6 @@
 ﻿namespace BetterMixedSeeds.Config
 {
-    /// <summary>The object that is used per mod, which contains the 4 season objects.</summary>
+    /// <summary>Data about an integrated mod.</summary>
     public class CropMod
     {
         /// <summary>The season object that contains spring crops.</summary>

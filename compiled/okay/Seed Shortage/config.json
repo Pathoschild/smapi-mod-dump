@@ -1,0 +1,15 @@
+{
+  "VendorsWithoutSeeds": [
+    "Pierre",
+    "Sandy"
+  ],
+  "VendorsPrice": [
+    "Joja",
+    "Magic Boat"
+  ],
+  "PriceIncrease": "10x",
+  "CropExceptions": [
+    "Parsnip Seeds",
+    "Pink Cat Seeds"
+  ]
+}

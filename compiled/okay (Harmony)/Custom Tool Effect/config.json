@@ -1,0 +1,111 @@
+{
+  "AxeDefine": {
+    "0": {
+      "Power": 1.4
+    },
+    "1": {
+      "Power": 1.4
+    },
+    "2": {
+      "Power": 1.4
+    },
+    "3": {
+      "Power": 1.4
+    },
+    "4": {
+      "Power": 1.4
+    }
+  },
+  "PickaxeDefine": {
+    "0": {
+      "Power": 1.4
+    },
+    "1": {
+      "Power": 1.4
+    },
+    "2": {
+      "Power": 1.4
+    },
+    "3": {
+      "Power": 1.4
+    },
+    "4": {
+      "Power": 1.8
+    }
+  },
+  "HoeDefine": {
+    "0": {
+      "Range": {
+        "Length": 1,
+        "Width": 1
+      }
+    },
+    "1": {
+      "Range": {
+        "Length": 3,
+        "Width": 1
+      }
+    },
+    "2": {
+      "Range": {
+        "Length": 5,
+        "Width": 1
+      }
+    },
+    "3": {
+      "Range": {
+        "Length": 3,
+        "Width": 3
+      }
+    },
+    "4": {
+      "Range": {
+        "Length": 5,
+        "Width": 5
+      }
+    }
+  },
+  "WateringCanDefine": {
+    "0": {
+      "Range": {
+        "Length": 1,
+        "Width": 1
+      }
+    },
+    "1": {
+      "Range": {
+        "Length": 3,
+        "Width": 1
+      }
+    },
+    "2": {
+      "Range": {
+        "Length": 5,
+        "Width": 1
+      }
+    },
+    "3": {
+      "Range": {
+        "Length": 3,
+        "Width": 3
+      }
+    },
+    "4": {
+      "Range": {
+        "Length": 5,
+        "Width": 5
+      }
+    }
+  },
+  "BombDefine": {
+    "286": {
+      "Power": 1.4
+    },
+    "287": {
+      "Power": 1.4
+    },
+    "288": {
+      "Power": 1.5
+    }
+  }
+}

@@ -1,7 +1,8 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterQualityMoreSeeds", "BetterQualityMoreSeeds/BetterQualityMoreSeeds.csproj", "{2070C75F-5EFC-47CE-813E-FAF627125949}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterQualityMoreSeeds", "BetterQualityMoreSeeds\BetterQualityMoreSeeds.csproj", "{BB0B24A0-9448-421E-87BD-BF3DA627B69E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,9 +10,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2070C75F-5EFC-47CE-813E-FAF627125949}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2070C75F-5EFC-47CE-813E-FAF627125949}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2070C75F-5EFC-47CE-813E-FAF627125949}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2070C75F-5EFC-47CE-813E-FAF627125949}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB0B24A0-9448-421E-87BD-BF3DA627B69E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB0B24A0-9448-421E-87BD-BF3DA627B69E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB0B24A0-9448-421E-87BD-BF3DA627B69E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB0B24A0-9448-421E-87BD-BF3DA627B69E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.StandardHeader = $1
 	EndGlobalSection
 EndGlobal

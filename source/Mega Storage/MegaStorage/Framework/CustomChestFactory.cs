@@ -10,48 +10,39 @@ namespace MegaStorage.Framework
 {
     public static class CustomChestFactory
     {
-        private static List<CustomChest> _customChests;
-        public static List<CustomChest> CustomChests =>
-            _customChests ?? (_customChests = new List<CustomChest>
+        public static IDictionary<ChestType, int> CustomChestIds =>
+            _customChests ??= new Dictionary<ChestType, int>
             {
-                new LargeChest(Vector2.Zero),
-                new MagicChest(Vector2.Zero),
-                new SuperMagicChest(Vector2.Zero)
-            });
+                {ChestType.LargeChest, MegaStorageMod.LargeChestId},
+                {ChestType.MagicChest, MegaStorageMod.MagicChestId},
+                {ChestType.SuperMagicChest, MegaStorageMod.SuperMagicChestId}
+            };
 
-        public static bool ShouldBeCustomChest(Item item)
-        {
-            if (!(item is SObject obj))
+        public static IDictionary<ChestType, string> CustomChestNames =>
+            _chestNames ??= new Dictionary<ChestType, string>()
             {
-                return false;
-            }
+                {ChestType.LargeChest, "Large Chest"},
+                {ChestType.MagicChest, "Magic Chest"},
+                {ChestType.SuperMagicChest, "Super Magic Chest"}
+            };
 
-            return obj.bigCraftable.Value
-                   && CustomChests.Any(x => x.ParentSheetIndex == item.ParentSheetIndex);
-        }
+        private static IDictionary<ChestType, int> _customChests;
+        private static IDictionary<ChestType, string> _chestNames;
 
-        public static CustomChest Create(int id) => Create(id, Vector2.Zero);
-        public static CustomChest Create(int id, Vector2 tileLocation)
-        {
-            var chestType = CustomChests.Single(x => x.ParentSheetIndex == id).ChestType;
-            return Create(chestType, tileLocation);
-        }
+        public static bool ShouldBeCustomChest(Item item) =>
+            item is SObject obj
+            && obj.bigCraftable.Value
+            && (CustomChestIds.Any(c => c.Value == obj.ParentSheetIndex)
+                || CustomChestNames.Any(c => c.Value.Equals(obj.Name, StringComparison.InvariantCultureIgnoreCase)));
 
-        public static CustomChest Create(ChestType chestType) => Create(chestType, Vector2.Zero);
-        public static CustomChest Create(ChestType chestType, Vector2 tileLocation)
-        {
-            switch (chestType)
+        public static CustomChest Create(ChestType chestType, Vector2 tileLocation) =>
+            chestType switch
             {
-                case ChestType.LargeChest:
-                    return new LargeChest(tileLocation);
-                case ChestType.MagicChest:
-                    return new MagicChest(tileLocation);
-                case ChestType.SuperMagicChest:
-                    return new SuperMagicChest(tileLocation);
-                default:
-                    throw new InvalidOperationException("Invalid ChestType");
-            }
-        }
+                ChestType.LargeChest => new LargeChest(tileLocation),
+                ChestType.MagicChest => new MagicChest(tileLocation),
+                ChestType.SuperMagicChest => new SuperMagicChest(tileLocation),
+                _ => throw new InvalidOperationException("Invalid ChestType")
+            };
 
     }
 }

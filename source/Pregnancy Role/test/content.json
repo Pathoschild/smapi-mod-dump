@@ -1,0 +1,14 @@
+{
+	"Format": "1.13.0",
+	"Changes": [
+		{
+			"Action": "EditData",
+			"Target": "Data/NPCDispositions",
+			"Fields": {
+				"Leah": {
+					"9": "PregnancyRole adopt"
+				}
+			}
+		}
+	]
+}

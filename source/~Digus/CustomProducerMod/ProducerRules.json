@@ -94,7 +94,30 @@
         "Sounds": [ "Ship" ],
         "PlacingAnimation": "Bubbles"
     },
-    //Roe and Aged Roe are not currently supported.
+    { //Aged Roe
+        "ProducerName": "Preserves Jar",
+        "InputIdentifier": "812",
+        "MinutesUntilReady": 4000,
+        "OutputIdentifier": "447",
+        "PreserveType": "AgedRoe",
+        "KeepInputParentIndex": true,
+        "InputPriceBased": true,
+        "OutputPriceMultiplier": 2,
+        "OutputColorConfig": {
+            "Type": "ObjectColor"
+        },
+        "AdditionalOutputs": [
+            {
+                "OutputProbability": 1,
+                "OutputIdentifier": "445",
+                "MinutesUntilReady": 6000,
+                "RequiredInputParentIdentifier": [ "698" ]
+            }
+        ],
+        "Sounds": [ "Ship" ],
+        "PlacingAnimation": "Bubbles",
+        "PlacingAnimationColorName": "LightBlue"
+    },
     { //Cheese
         "ProducerName": "Cheese Press",
         "InputIdentifier": "184",
@@ -467,5 +490,20 @@
         "ProducerName": "Soda Machine",
         "MinutesUntilReady": 0,
         "OutputIdentifier": "167"
+    },
+    { // Honey
+        "ProducerName": "Bee House",
+        "MinutesUntilReady": 6720,
+        "SubtractTimeOfDay": true,
+        "OutputIdentifier": "340",
+        "InputPriceBased": true,
+        "OutputPriceIncrement": 100,
+        "OutputPriceMultiplier": 2,
+        "LookForInputWhenReady": {
+            "Range": 5,
+            "InputIdentifier": [ "-80" ],
+            "Crop": true,
+            "ExcludeForageCrops": true
+        }
     }
 ]

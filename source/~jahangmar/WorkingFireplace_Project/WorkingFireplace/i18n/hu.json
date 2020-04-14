@@ -1,0 +1,13 @@
+﻿{
+    "msg.warm": "A kandalló tüze melegen tartott az éjszaka.",
+    "msg.cold": "Az éjszakai hideg csökkentette az energiádat.",
+    "msg.spousecold": "A családod fagyoskodott az éjszaka.",
+    "dia.spousecold": "Fáztam éjszaka.",
+    "dia.spousecold_child": "{{child1}} fázik.",
+    "dia.spousecold_children": "{{child1}} és {{child2}} fáznak.",
+    "dia.please": "Kérlek gyújtsd be a kályhát.",
+    "msg.nowood": "Szükséged van {{wood_pieces}} darab fára, hogy meggyújtsd a tüzet.",
+    "msg.temp": "Hőmérséklet: ",
+    "msg.tempwarm": "meleg",
+    "msg.tempcold": "hideg"
+}

@@ -1,0 +1,23 @@
+{
+  "Farms": [
+    {
+      "FarmName": "",
+      "FarmerInfo": {}
+    },
+    {
+      "FarmName": "Stardew Drop",
+      "FarmerInfo": {
+        "Pookachu": {
+          "ShowCrib": true,
+          "ShowLeftBed": true,
+          "ShowRightBed": true
+        },
+        "Mochi": {
+          "ShowCrib": true,
+          "ShowLeftBed": true,
+          "ShowRightBed": true
+        }
+      }
+    }
+  ]
+}

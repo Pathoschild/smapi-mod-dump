@@ -5,15 +5,9 @@ mods:
    Cozy Clothing
 
 latest commit:
-   commit 6b46fae2eead9116b61cfb6d41da8cf7f9403cd5
+   commit 0e33e8bc3e8a820d5df5622312113ccc69cb9ac5
    Author: Lauren Stephenson <compscilauren@gmail.com>
-   Date:   Wed Jan 8 21:14:33 2020 -0600
+   Date:   Tue Mar 17 19:49:18 2020 -0500
    
-       Patch 1.0.3 (#15)
-       
-       * Fix bug where passing out outside causes pajamas to be able to be worn outside
-       
-       * Update version number
-       
-       * Update readme
+       Update LICENSE
    

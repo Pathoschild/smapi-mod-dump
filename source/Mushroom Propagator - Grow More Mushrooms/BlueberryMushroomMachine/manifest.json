@@ -1,11 +1,11 @@
 ﻿{
   "Name": "Mushroom Propagator",
   "Author": "blueberry",
-  "Version": "1.60.0",
+  "Version": "1.61.0",
   "Description": "Mushroom Propagator for the Farmhouse cellar and elsewhere.",
   "UniqueID": "blueberry.MushroomPropagator",
   "EntryDll": "BlueberryMushroomMachine.dll",
-  "MinimumApiVersion": "2.11",
+  "MinimumApiVersion": "3.0.0",
   "Dependencies": [
     {
       "UniqueID": "Platonymous.Toolkit"

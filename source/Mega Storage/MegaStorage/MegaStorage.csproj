@@ -7,9 +7,10 @@
     <TargetFramework>net452</TargetFramework>
     <Platforms>x86</Platforms>
     <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>8.0</LangVersion>
     <EnableHarmony>false</EnableHarmony>
 
-    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
 
     <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
 
@@ -17,15 +18,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="assets\JsonAssets\BigCraftables\LargeChest\big-craftable.png" />
-    <None Remove="assets\JsonAssets\BigCraftables\MagicChest\big-craftable.png" />
-    <None Remove="assets\JsonAssets\BigCraftables\SuperMagicChest\big-craftable.png" />
+    <None Remove="assets\LargeChest\BigCraftables\LargeChest\big-craftable.png" />
+    <None Remove="assets\MagicChest\BigCraftables\MagicChest\big-craftable.png" />
+    <None Remove="assets\SuperMagicChest\BigCraftables\SuperMagicChest\big-craftable.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="assets\JsonAssets\BigCraftables\LargeChest\big-craftable.png" />
-    <Content Include="assets\JsonAssets\BigCraftables\MagicChest\big-craftable.png" />
-    <Content Include="assets\JsonAssets\BigCraftables\SuperMagicChest\big-craftable.png" />
+    <Content Include="assets\LargeChest\BigCraftables\LargeChest\big-craftable.png" />
+    <Content Include="assets\MagicChest\BigCraftables\MagicChest\big-craftable.png" />
+    <Content Include="assets\SuperMagicChest\BigCraftables\SuperMagicChest\big-craftable.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,24 +57,26 @@
     <None Update="assets\AllTab.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="assets\LargeChest.png">
+    <None Update="assets\LargeChest\LargeChest.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="assets\LargeChestBraces.png">
+    <None Update="assets\LargeChest\LargeChestBraces.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="assets\LargeChestBW.png">
+    <None Update="assets\LargeChest\LargeChestBW.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="assets\MagicChest.png">
+    <None Update="assets\MagicChest\MagicChest.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="assets\MagicChestBraces.png">
+    <None Update="assets\MagicChest\MagicChestBraces.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="assets\MagicChestBW.png">
+    <None Update="assets\MagicChest\MagicChestBW.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <Import Project="..\Common\Common.projitems" Label="Shared" />
 
 </Project>

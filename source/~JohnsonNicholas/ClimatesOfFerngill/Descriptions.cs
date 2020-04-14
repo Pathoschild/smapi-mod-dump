@@ -612,7 +612,7 @@ namespace ClimatesOfFerngillRebuild
             else if (Weather.CurrentWeatherIconBasic == WeatherIcon.IconSpringDebris || Weather.CurrentWeatherIconBasic == WeatherIcon.IconDebris)
                 return Translator.Get($"weather_wind");
             else if (Weather.CurrentWeatherIconBasic == WeatherIcon.IconDryLightning)
-                return Translator.Get($"weather_drythunder");
+                return Translator.Get($"weather_drylightning");
             else if (Weather.CurrentWeatherIconBasic == WeatherIcon.IconSunny && SDVTime.CurrentIntTime < Game1.getModeratelyDarkTime())
                 return Translator.Get($"weather_sunny_daytime");
             else if (Weather.CurrentWeatherIconBasic == WeatherIcon.IconSunny && SDVTime.CurrentIntTime >= Game1.getModeratelyDarkTime())

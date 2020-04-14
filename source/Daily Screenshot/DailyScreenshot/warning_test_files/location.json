@@ -1,0 +1,174 @@
+{
+    "SnapshotRules": [{
+            "Name": "Location No Overlap Farm",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Location",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Any",
+                "Location": "Farm",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Location No Overlap Farmhouse",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Location",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Any",
+                "Location": "Farmhouse",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Location No Overlap Greenhouse",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Location",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Any",
+                "Location": "Greenhouse",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Location No Overlap Beach",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Location",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Any",
+                "Location": "Beach",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Location No Overlap FarmCave",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Location",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Any",
+                "Location": "FarmCave",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Location No Overlap Cellar",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Location",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Any",
+                "Location": "Cellar",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Location No Overlap Desert",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Location",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Any",
+                "Location": "Desert",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Location No Overlap Museum",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Location",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Any",
+                "Location": "Museum",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Location No Overlap CommunityCenter",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Location",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Any",
+                "Location": "CommunityCenter",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Location No Overlap Mountain",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Location",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Any",
+                "Location": "Mountain",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Location No Overlap Unknown",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Location",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Any",
+                "Location": "Unknown",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Location Overlap Any",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Location",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }, {
+            "Name": "Location Inactive",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Location",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Any",
+                "Location": "Location_None",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }
+
+    ]
+}

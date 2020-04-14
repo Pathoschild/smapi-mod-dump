@@ -3,7 +3,7 @@
 namespace BetterCrabPotsConfigUpdater
 {
     /// <summary>The old configuration model.</summary>
-    class OldModConfig
+    public class OldModConfig
     {
         public bool EnableTrash { get; set; } = true;
         public bool RequiresBait { get; set; } = true;

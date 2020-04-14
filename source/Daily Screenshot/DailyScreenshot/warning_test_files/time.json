@@ -1,0 +1,55 @@
+{
+    "SnapshotRules": [{
+        "Name": "Time No Overlap Morning",
+        "ZoomLevel": 0.1,
+        "Directory": "Default",
+        "FileName": "GameID, Time",
+        "Trigger": {
+            "Days": "Daily",
+            "Weather": "Any",
+            "Location": "Any",
+            "Key": "None",
+            "StartTime": 600,
+            "EndTime": 1140
+        }
+    }, {
+        "Name": "Location No Overlap Afternoon",
+        "ZoomLevel": 0.1,
+        "Directory": "Default",
+        "FileName": "GameID, Time",
+        "Trigger": {
+            "Days": "Daily",
+            "Weather": "Any",
+            "Location": "Any",
+            "Key": "None",
+            "StartTime": 1200,
+            "EndTime": 2600
+        }
+    }, {
+        "Name": "Time Overlap Fixup 1300 to 1099",
+        "ZoomLevel": 0.1,
+        "Directory": "Default",
+        "FileName": "GameID, Time",
+        "Trigger": {
+            "Days": "Daily",
+            "Weather": "Any",
+            "Location": "Any",
+            "Key": "None",
+            "StartTime": 1300,
+            "EndTime": 1099
+        }
+    }, {
+        "Name": "Time No Overlap Directory",
+        "ZoomLevel": 0.1,
+        "Directory": "Default",
+        "FileName": "GameID, Location",
+        "Trigger": {
+            "Days": "Daily",
+            "Weather": "Any",
+            "Location": "Any",
+            "Key": "None",
+            "StartTime": 1300,
+            "EndTime": 1099
+        }
+    }]
+}

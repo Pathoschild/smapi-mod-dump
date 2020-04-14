@@ -2,10 +2,26 @@
 
 # Release notes
 ## Upcoming release
+* Added datamining field formatter for `npc.currentMarriageDialogue`.
+* Fixed 'number crafted' including some incorrect recipes.
+* Fixed some spawned items incorrectly counted as owned (e.g. weeds and stones).
+* Fixed placed and held torches counted as different items.
+* Fixed cursor incorrectly detected on Android in some cases.
+* Improved translations. Thanks to niniack (updated Chinese)!
+
+## 1.26
+Released 09 March 2020.
+
 * Added search feature (thanks to collaboration with mattfeldman!).
 * Added support for multi-key bindings (like `LeftShift + F1`).
-* Improved translations. Thanks to mael-belval (updated French)!
+* Added contextual lookups for better controller/mobile support:
+  * When there's no cursor (e.g. when playing with a controller or mobile), Lookup Anything automatically finds the most relevant match instead of looking under the cursor. For example, that may be what's in front of the player, the item picked up in a menu, etc.
+  * Added item lookup when holding an item in a chest/inventory menu.
+  * Added NPC lookup from their profile page (when the cursor isn't over an item).
+  * Added player lookup from the skills tab.
+  * Removed `ToggleLookupInFrontOfPlayer` option in `config.json`. If you edited it, your value will be merged into `ToggleLookup` automatically next time you launch the game.
 * Fixed some vanilla recipes not shown in lookups when Producer Framework Mod packs are installed.
+* Improved translations. Thanks to Jeardius (updated German), Hesper (updated Korean), and mael-belval (updated French)!
 
 ## 1.25.2
 Released 03 February 2020.

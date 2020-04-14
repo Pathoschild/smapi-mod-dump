@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BetterMixedSeedsConfigUpdater.ModConfigs
+﻿namespace BetterMixedSeedsConfigUpdater.ModConfigs
 {
-    class OldModConfig
+    /// <summary>The old mod configuration.</summary>
+    public class OldModConfig
     {
+        /// <summary>The percent chance that a mixed seed is dropped, when fiber isn't dropped, when cutting weeds.</summary>
         public int PercentDropChanceForMixedSeedsWhenNotFiber { get; set; }
 
-        /// <summary>
-        /// Below is the configuration for all base game crops, organized by season
-        /// </summary>
-
+        // Below is the configuration for all base game crops, organized by season.
         // Spring 
         public bool UseAncientFruit_SPRING { get; set; }
         public bool UseBlueJazz { get; set; }
@@ -64,10 +57,7 @@ namespace BetterMixedSeedsConfigUpdater.ModConfigs
         // None (Can only be planted in the greenhouse)
         public bool UseCactusFruit { get; set; }
 
-        /// <summary>
-        /// Below is the configuration for all crops from integrated mods
-        /// </summary>
-
+        // Below is the configuration for all crops from integrated mods.
         // Fantasy Crops
         public bool UseCoal_Root_SPRING { get; set; }
         public bool UseCoal_Root_SUMMER { get; set; }

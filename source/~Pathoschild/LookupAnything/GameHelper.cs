@@ -208,7 +208,7 @@ namespace Pathoschild.Stardew.LookupAnything
                     }
 
                     // anything else
-                    else if (!item.IsSpawnedObject)
+                    else if (!this.IsSpawnedWorldItem(item))
                     {
                         items.Add(item);
                         items.Add(item.heldObject.Value);
@@ -239,6 +239,20 @@ namespace Pathoschild.Stardew.LookupAnything
             }
 
             return items.Where(p => p != null);
+        }
+
+        /// <summary>Get whether an item was spawned automatically. This is heuristic and only applies for items placed in the world, not items in an inventory.</summary>
+        /// <param name="item">The item to check.</param>
+        /// <remarks>Derived from the <see cref="SObject"/> constructors.</remarks>
+        public bool IsSpawnedWorldItem(Item item)
+        {
+            return
+                item is SObject obj
+                && (
+                    obj.IsSpawnedObject
+                    || obj.isForage(null) // location argument is only used to check if it's on the beach, in which case everything is forage
+                    || (!(obj is Chest) && (obj.Name == "Weeds" || obj.Name == "Stone" || obj.Name == "Twig"))
+                );
         }
 
         /// <summary>Get all NPCs currently in the world.</summary>
@@ -643,6 +657,15 @@ namespace Pathoschild.Stardew.LookupAnything
         /// <param name="b">The second item to compare.</param>
         private bool AreEquivalent(Item a, Item b)
         {
+            if (a == null || b == null)
+                return false;
+
+            // equivalent torches
+            // (torches change from SObject to Torch when placed)
+            if (a.ParentSheetIndex == b.ParentSheetIndex && new[] { a, b }.All(p => p is Torch || (p.ParentSheetIndex == 93 && p.GetItemType() == ItemType.Object)))
+                return true;
+
+            // equivalent
             return
                 // same generic item type
                 a.GetType() == b.GetType()

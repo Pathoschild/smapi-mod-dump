@@ -1,1 +1,5 @@
-[]
+{
+  "AreaName": "Mine",
+  "numberOfOreSpotsPerDay": 50,
+  "OreSpots": []
+}

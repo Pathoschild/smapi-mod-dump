@@ -5,12 +5,12 @@ mods:
    Mega Storage
 
 latest commit:
-   commit 11f0563f92aee35b9ac447d05f826895304c397b
-   Merge: f53d663 3154f33
+   commit 5b847b7343af4a5a601b2d6c72b0e9059d2b0530
+   Merge: 1d4bfa9 4a318e4
    Author: Matthew <ImJustMatt@users.noreply.github.com>
-   Date:   Thu Feb 20 20:16:06 2020 -0600
+   Date:   Sun Mar 1 22:16:52 2020 -0600
    
-       Merge pull request #5 from ImJustMatt/super
+       Merge pull request #7 from ImJustMatt/develop
        
-       Moved some functionality from LargeItemGrabMenu to MagicItemGrabMenu. Mostly compatibility tweaks.
+       Let JsonAssets 1.6.2 handle extra frames
    

@@ -1,0 +1,12 @@
+{
+    "dia.eatquestion": "Съесть {{item}}?",
+    "dia.eatanswerOne": "Да, одну.",
+    "dia.eatanswerMulti": "Да, {{amount}} шт. пока не наемся.",
+    "dia.eatanswerNo": "Нет.",
+    "menu.slingshotempty": "Для продажи рогатки она должна быть пустой.",
+    "item.slingshotdescr": "Стреляет не только камнями, но и рудой, овощами, и взрывными снарядами.",
+    "menu.carpentermoneybuttonon": "Вкл: Купить недостающие ресурсы.",
+    "menu.carpentermoneybuttonoff": "Выкл: Купить недостающие ресурсы.",
+    "menu.carpenteringredinfo": "{{itemname}} будет куплено",
+    "menu.fishingrodempty": "Для продажи снимите наживку или снасть."
+}

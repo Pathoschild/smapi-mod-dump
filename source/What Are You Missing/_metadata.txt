@@ -5,9 +5,9 @@ mods:
    What Are You Missing
 
 latest commit:
-   commit 23fe1caf4f41d259fd66db9a7e840dbe693a070b
+   commit 988411f93555d9606aab364b2c87590154373525
    Author: Luke Seewald <lseewald@uwaterloo.ca>
-   Date:   Wed Feb 5 20:40:15 2020 -0500
+   Date:   Tue Apr 7 19:31:35 2020 -0400
    
-       Added the russian translation to the project file
+       Hopefully made it compatible with the ItemBags mod. Also changed the errors to warnings and gave the option to ignore warnings
    

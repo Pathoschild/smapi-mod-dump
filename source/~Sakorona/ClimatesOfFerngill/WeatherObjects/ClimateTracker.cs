@@ -9,7 +9,7 @@ namespace ClimatesOfFerngillRebuild
         public int AmtOfRainInCurrentStreak { get; set;}
         public long AmtOfRainSinceDay1 { get; set;}
         public CurrentWeatherData CurrentStreak { get; set; }
-	public bool IsWeatherSystem { get; set; }
+	    public bool IsWeatherSystem { get; set; }
         public string WeatherSystemType { get; set; }
         public RangePair TempsOnNextDay { get; set; }
         public int WeatherSystemDays { get; set; }
@@ -20,7 +20,7 @@ namespace ClimatesOfFerngillRebuild
             AmtOfRainInCurrentStreak = 0;
             AmtOfRainSinceDay1 = 0;
             CurrentStreak = new CurrentWeatherData("", 0);
-	    IsWeatherSystem = false;
+	        IsWeatherSystem = false;
             WeatherSystemType = "";
             WeatherSystemDays = 0;
             TempsOnNextDay = new RangePair();
@@ -32,7 +32,7 @@ namespace ClimatesOfFerngillRebuild
             AmtOfRainInCurrentStreak = amtInStreak;
             AmtOfRainSinceDay1 = TotalRain;
             CurrentStreak = new CurrentWeatherData(currentWeather, numDays);
-	    IsWeatherSystem = weatherSystem;
+	        IsWeatherSystem = weatherSystem;
             WeatherSystemType = wst;
             WeatherSystemDays = weatSDays;
             TempsOnNextDay = new RangePair(c);
@@ -50,9 +50,9 @@ namespace ClimatesOfFerngillRebuild
             TempsOnNextDay = new RangePair(c.TempsOnNextDay);
         }
 		
-	public override string ToString(){
+	    public override string ToString(){
                  string s = $"Current weather streak is {CurrentStreak.CurrentWeather} for {CurrentStreak.NumDaysOfWeather} days. Overall, we have had {DaysSinceRainedLast} days since last rain, and {AmtOfRainInCurrentStreak} raindrops in the current rain streak.";
-			s += Environment.NewLine + $"Weather System status : {IsWeatherSystem} with weather {WeatherSystemType}, and {WeatherSystemDays} days in system. and a total save-long rain total of {AmtOfRainSinceDay1} raindrops. Saved temperature data is {TempsOnNextDay}";
+			       s += Environment.NewLine + $"Weather System status : {IsWeatherSystem} with weather {WeatherSystemType}, and {WeatherSystemDays} days in system. and a total save-long rain total of {AmtOfRainSinceDay1} raindrops. Saved temperature data is {TempsOnNextDay}";
 			
 			return s;
 		}

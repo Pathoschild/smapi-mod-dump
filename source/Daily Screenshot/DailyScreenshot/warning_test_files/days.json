@@ -1,0 +1,2118 @@
+{
+    "SnapshotRules": [
+        {
+            "Name": "Days No Overlap Season Spring Day 1",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_1",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 2",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_2",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 3",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_3",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 4",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_4",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 5",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_5",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 6",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_6",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 7",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_7",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 8",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_8",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 9",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_9",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 10",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_10",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 11",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_11",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 12",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_12",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 13",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_13",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 14",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_14",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 15",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_15",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 16",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_16",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 17",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_17",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 18",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_18",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 19",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_19",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 20",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_20",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 21",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_21",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 22",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_22",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 23",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_23",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 24",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_24",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 25",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_25",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 26",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_26",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 27",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_27",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Spring Day 28",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Day_28",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Spring Sundays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Sundays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Spring Mondays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Mondays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Spring Tuesdays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Tuesdays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Spring Wednesdays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Wednesdays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Spring Thursdays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Thursdays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Spring Fridays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Fridays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Spring Saturdays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, Saturdays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Spring FirstDayOfTheMonth",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, FirstDayOfTheMonth",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Spring LastDayOfTheMonth",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Spring, LastDayOfTheMonth",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 1",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_1",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 2",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_2",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 3",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_3",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 4",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_4",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 5",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_5",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 6",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_6",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 7",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_7",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 8",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_8",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 9",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_9",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 10",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_10",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 11",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_11",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 12",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_12",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 13",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_13",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 14",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_14",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 15",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_15",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 16",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_16",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 17",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_17",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 18",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_18",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 19",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_19",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 20",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_20",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 21",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_21",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 22",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_22",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 23",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_23",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 24",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_24",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 25",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_25",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 26",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_26",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 27",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_27",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Summer Day 28",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Day_28",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Summer Sundays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Sundays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Summer Mondays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Mondays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Summer Tuesdays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Tuesdays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Summer Wednesdays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Wednesdays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Summer Thursdays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Thursdays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Summer Fridays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Fridays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Summer Saturdays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, Saturdays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Summer FirstDayOfTheMonth",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, FirstDayOfTheMonth",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Summer LastDayOfTheMonth",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Summer, LastDayOfTheMonth",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 1",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_1",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 2",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_2",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 3",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_3",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 4",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_4",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 5",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_5",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 6",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_6",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 7",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_7",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 8",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_8",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 9",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_9",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 10",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_10",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 11",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_11",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 12",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_12",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 13",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_13",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 14",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_14",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 15",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_15",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 16",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_16",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 17",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_17",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 18",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_18",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 19",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_19",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 20",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_20",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 21",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_21",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 22",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_22",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 23",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_23",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 24",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_24",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 25",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_25",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 26",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_26",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 27",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_27",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Fall Day 28",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Day_28",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Fall Sundays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Sundays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Fall Mondays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Mondays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Fall Tuesdays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Tuesdays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Fall Wednesdays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Wednesdays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Fall Thursdays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Thursdays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Fall Fridays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Fridays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Fall Saturdays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, Saturdays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Fall FirstDayOfTheMonth",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, FirstDayOfTheMonth",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Fall LastDayOfTheMonth",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Fall, LastDayOfTheMonth",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 1",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_1",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 2",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_2",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 3",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_3",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 4",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_4",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 5",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_5",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 6",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_6",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 7",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_7",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 8",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_8",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 9",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_9",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 10",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_10",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 11",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_11",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 12",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_12",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 13",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_13",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 14",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_14",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 15",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_15",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 16",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_16",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 17",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_17",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 18",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_18",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 19",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_19",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 20",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_20",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 21",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_21",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 22",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_22",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 23",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_23",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 24",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_24",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 25",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_25",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 26",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_26",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 27",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_27",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days No Overlap Season Winter Day 28",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Day_28",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Winter Sundays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Sundays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Winter Mondays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Mondays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Winter Tuesdays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Tuesdays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Winter Wednesdays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Wednesdays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Winter Thursdays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Thursdays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Winter Fridays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Fridays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Winter Saturdays",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, Saturdays",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Winter FirstDayOfTheMonth",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, FirstDayOfTheMonth",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap Season Winter LastDayOfTheMonth",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Winter, LastDayOfTheMonth",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Inactive AnyDay",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "AnyDay",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Inactive AnySeason",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "AnySeason",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        },
+        {
+            "Name": "Days Overlap All",
+            "ZoomLevel": 0.1,
+            "Directory": "Default",
+            "FileName": "GameID, Date",
+            "Trigger": {
+                "Days": "Daily",
+                "Weather": "Any",
+                "Location": "Any",
+                "Key": "None",
+                "StartTime": 600,
+                "EndTime": 2600
+            }
+        }
+    ]
+}

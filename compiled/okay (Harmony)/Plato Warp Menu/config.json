@@ -1,4 +1,6 @@
 {
   "MenuButton": "J",
-  "UseTempFolder": false
+  "UseTempFolder": false,
+  "MenuFont1": "opensans",
+  "MenuFont2": "escrita"
 }

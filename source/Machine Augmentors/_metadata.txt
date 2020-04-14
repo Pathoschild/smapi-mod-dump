@@ -1,0 +1,14 @@
+url:
+   https://github.com/Videogamers0/SDV-MachineAugmentors.git
+
+mods:
+   Machine Augmentors
+
+latest commit:
+   commit dbf752fa941a58961b746b25ca71c6b7af036e83
+   Merge: 5a5b661 2f8b812
+   Author: Kevin Augustino <kevinaugustino@hotmail.com>
+   Date:   Mon Apr 6 10:47:43 2020 -0400
+   
+       Merge branch 'master' of https://github.com/Videogamers0/SDV-MachineAugmentors
+   

@@ -14,7 +14,10 @@ namespace ProducerFrameworkMod.ContentPack
         public int? MinutesUntilReady;
         public string OutputName;
         public string OutputTranslationKey;
+        public string OutputGenericParentName;
+        public string OutputGenericParentNameTranslationKey;
         public Object.PreserveType? PreserveType;
+        public bool KeepInputParentIndex;
         public bool InputPriceBased;
         public int OutputPriceIncrement = 0;
         public double OutputPriceMultiplier = 1;
@@ -25,12 +28,14 @@ namespace ProducerFrameworkMod.ContentPack
         public StackConfig SilverQualityInput = new StackConfig();
         public StackConfig GoldQualityInput = new StackConfig();
         public StackConfig IridiumQualityInput = new StackConfig();
+        public ColoredObjectConfig OutputColorConfig;
         public Dictionary<string, int> RequiredFuel = new Dictionary<string, int>();
         public List<int> RequiredInputQuality = new List<int>();
         public List<string> RequiredSeason = new List<string>();
         public List<Weather> RequiredWeather = new List<Weather>();
         public List<string> RequiredLocation = new List<string>();
         public bool? RequiredOutdoors = null;
+        public List<string> RequiredInputParentIdentifier = new List<string>();
 
         //Generated Properties
         public int OutputIndex = -1;

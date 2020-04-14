@@ -16,7 +16,10 @@
 		"OutputIdentifier": "Beer", //The identifier of the output. Can be the Index or the Name of the object. Required.
 		"OutputName": "{farmerName}'s {inputName} {outputName} from {farmName}", //The Name of the object. This will replace the basic output name. It accepts 4 tags that are dynamically replaced. Default is null.
 		"OutputTranslationKey": "MyMod.MyOutput", //The translation key. This is the key in the i18n file where the mod will look for the format of the OutputName in other languages. The value of this key follows the same rules of the OutputName property above. Default is null.
+		"OutputGenericParentName": "Wild", //The generic parent name is for when there is no parent name for the object that needs a parent, like Wild for Honey. Default is blank.
+		"OutputGenericParentNameTranslationKey": "MyMod.MyOutput", //The translation key. This is the key in the i18n file where the mod will look for the OutputGenericParentName in other languages. Default is null.
 		"PreserveType": "Wine", //[Wine|Jelly|Pickle|Juice|Roe|AgedRoe] - If the output is one of the vanilla game Preserves Type. Default is null.
+		"KeepInputParentIndex": true, // When true the input of the preserved parent index will be used as the parent index of the output.
 		"InputPriceBased": true, //If the base price of the output should be replaced with the base price of the input. Default is false.
 		"OutputPriceIncrement": 200, //Increment the base price by this amount. Default is 0.
 		"OutputPriceMultiplier": 2.5, //Multiply the base price by this amount. Default is 1.
@@ -39,6 +42,12 @@
 			"OutputStack": 4, //Same as others.
 			"OutputMaxStack": 4 //Same as others.
 		},
+		"OutputColorConfig": { // If set, the output will be a Colored Object. Remember that colored objects need the next sprite in the sheet to be a pallet for the color. Default is null.
+			"Type": "DefinedColor", // [ObjectColor|ObjectDyeColor|DefinedColor] If ObjectColor and the input is a colored object, it will use the color of the input. If ObjectDyeColor and the input has a dye color, it will use this color. If DefinedColor or it does find the color on the other options, it will create the color based on the Red, Green and Blue values. Default is DefinedColor.
+			"Red": 255, // The red value of the color. Default is 255.
+			"Green": 255, // The green value of the color. Default is 255.
+			"Blue": 255 // The blue value of the color. Default is 255.
+		},
 		"AdditionalOutputs": [ // Define a list of additional outputs. You don't need to set a default output to use the additional ones, the first additional output will be the default in that case. Only one output is given, randomly chosen between the options. Default is an empty list.
 			{
 				"OutputProbability": 0.2, //The absolute probability of getting that output, from 0 to 1. Default is 0. If 0 the remain percent not defined will be equally divided between all outputs with 0 probability. Probability are checked from the first to the last output, so with the total is bigger than 1, the remaining outputs will be ignored.
@@ -49,7 +58,8 @@
 				"RequiredSeason": [ "spring", "summer" ], // Required season for the output to be possible. Default is no required season.
 				"RequiredWeather": [ "Sunny", "Windy" ], // [Sunny|Rainy|Stormy|Snowy|Windy] Required weather for the output to be possible. Default is no required weather.
 				"RequiredLocation": [ "Cellar", "FarmCave" ], // Required location for the output to be possible. Default is no required location.
-				"RequiredOutdoors": true // [true|false|null] If true, the output can only be produced outdoors. If false, the output can only be produced indoors. If the line is removed or the value is null, it there is no restriction.
+				"RequiredOutdoors": true, // [true|false|null] If true, the output can only be produced outdoors. If false, the output can only be produced indoors. If the line is removed or the value is null, it there is no restriction.
+				"RequiredInputParentIdentifier": [ "22", "-80" ] // Required input parent for the output to be possible. Parent is the item that originated the input.(ex. Salmon Roe has Salmon as parent) The identifier is compared with the input parent on this order: Index, Name, Category, Context_Tag.
 				// All other properties that refer to the output can be used in the AdditionalOutputs. Remember to use commas to separate properties.
 			}
 		],
@@ -60,7 +70,16 @@
 		"PlacingAnimationOffsetX": 0, //The offset of the X axis. The offset is relative to the animation default location, not the position of the machine. Default is 0.
 		"PlacingAnimationOffsetY": -32, //The offset of the Y axis. The offset is relative to the animation default location, not the position of the machine. Default is 0.
 		"IncrementStatsOnInput": [ "PiecesOfTrashRecycled" ], // Game stats to increment when a input is placed. Will increment the stats by the amount of the stack. Vanilla machines already increment stats when an item is removed from the machine. Only the Recycle Machine increment the stats on input. Default is an empty list.
-		"OverrideMod":  [ "IdOfTheMod.ToOverride" ] //If defined, this rule can override rules with the same producer/input combination from the mods in the list. Otherwise the first one to be loaded will be used.
+		"OverrideMod": [ "IdOfTheMod.ToOverride" ], //If defined, this rule can override rules with the same producer/input combination from the mods in the list. Otherwise the first one to be loaded will be used.
+		"LookForInputWhenReady": { // Set this config if you want to look for a specific object when ready. If the rule has an input, it will consume the input on placement, check restrictions to choose the output, but won't apply name, price, quality and similar modifications based on that input. The found object when ready will be used for these modifications instead.
+			"Range": 5, //Max range the input will be looked for. A negative number will be considered no limit (will stop at 150 to avoid crash). Default is -1.
+			"InputIdentifier": [ "Orange", "-80" ], //Identifier of the input. Can be the index, name or category.
+			"Crop": true, //If should look up for crops. The identifier will be compared with the harvest object. Default is false.
+			"ExcludeForageCrops": true, //If it should ignore Forage crops. Default is false.
+			"GardenPot": true, //If it should look for crops inside garden pots. Default is false.
+			"FruitTree": true, //If it should look up for fruit trees. The identifier will be compared with the fruit. Default is false.
+			"BigCraftable": false //If it should look up for BigCraftables. The identifier will be compared with the held object. Default is false.
+		}
 	}
 ]
 /* Additional Notes

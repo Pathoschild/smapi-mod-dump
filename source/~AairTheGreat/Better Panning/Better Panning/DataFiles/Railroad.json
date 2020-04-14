@@ -1,1 +1,5 @@
-[]
+{
+  "AreaName": "Railroad",
+  "numberOfOreSpotsPerDay": 0,
+  "OreSpots": []
+}

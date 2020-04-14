@@ -5,13 +5,9 @@ mods:
    Daily Screenshot
 
 latest commit:
-   commit 9293522b83120d8a3018b6d80460580f2231e67e
+   commit beed07dfd9be764ee4ec5b163dd07a326fd4ff10
    Author: Lauren Stephenson <compscilauren@gmail.com>
-   Date:   Sun Jan 26 19:44:51 2020 -0600
+   Date:   Thu Mar 19 11:56:20 2020 -0500
    
-       Add rainy weather config option (#33)
-       
-       * Update version number
-       
-       * Add Config option to disable rainy day screenshots
+       Fix Chucklefish link
    

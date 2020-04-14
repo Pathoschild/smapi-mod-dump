@@ -5,9 +5,12 @@ mods:
    More Random Edition
 
 latest commit:
-   commit a414bfacf8e40200e20503dcc08aa318a83f562b
+   commit 51fa84eb9a8ca49e8b8a2765c7cf762cf908c1ba
+   Merge: a414bfa 73b8b6f
    Author: chikakoo <lionel.crafts@gmail.com>
-   Date:   Fri Feb 21 18:10:05 2020 -0600
+   Date:   Thu Mar 5 09:05:02 2020 -0600
    
-       Update README.md
+       Merge pull request #38 from chikakoo/BuildingRecipeFix
+       
+       Building menu not opening fix
    

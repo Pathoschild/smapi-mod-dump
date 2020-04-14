@@ -49,6 +49,7 @@ namespace PyTK.CustomTV
 
         private static TV tv;
 
+        private static int channelsPerPage = (Constants.TargetPlatform == GamePlatform.Android) ? 3 : 8;
         private static int currentpage = 0;
         private static List<List<Response>> pages = new List<List<Response>>();
         internal static Dictionary<string, TVChannel> channels = new Dictionary<string, TVChannel>();
@@ -139,9 +140,7 @@ namespace PyTK.CustomTV
             {
                 if (defaults.Contains(id)) { continue; }
 
-                responses.Add(new Response(id, channels[id].text));
-
-                if (responses.Count > 7)
+                if (responses.Count >= channelsPerPage)
                 {
                     if (!responses.Contains(more))
                         responses.Add(more);
@@ -153,6 +152,7 @@ namespace PyTK.CustomTV
                     responses = new List<Response>();
                 }
 
+                responses.Add(new Response(id, channels[id].text));
             }
 
             if (!responses.Contains(leave))
@@ -246,7 +246,7 @@ namespace PyTK.CustomTV
             Monitor.Log("Select Channel:" + a, LogLevel.Trace);
 
             if (a == "more")
-                showChannels(currentpage + 1);
+                PyUtils.setDelayedAction (0, () => showChannels(currentpage + 1));
             else if (channels.ContainsKey(a))
                 channels[a].action.Invoke(tv, tvScreen, who, a);
         }

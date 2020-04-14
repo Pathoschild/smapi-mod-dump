@@ -32,6 +32,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherIllnesses", "Weather
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealisticWeatherEffects", "RealisticWeatherEffects\RealisticWeatherEffects.csproj", "{9433AC91-87C7-42A8-A594-34CF88BFE01B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouShouldRest", "YouShouldRest\YouShouldRest.csproj", "{1F986013-16D0-4C9F-B26A-45D661C94347}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TwilightCoreShared\TwilightCoreShared.projitems*{01da90d0-eec8-427b-9409-3168a8089f20}*SharedItemsImports = 13
@@ -97,6 +99,14 @@ Global
 		{9433AC91-87C7-42A8-A594-34CF88BFE01B}.Release|Any CPU.ActiveCfg = Release|x86
 		{9433AC91-87C7-42A8-A594-34CF88BFE01B}.Release|x86.ActiveCfg = Release|x86
 		{9433AC91-87C7-42A8-A594-34CF88BFE01B}.Release|x86.Build.0 = Release|x86
+		{1F986013-16D0-4C9F-B26A-45D661C94347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F986013-16D0-4C9F-B26A-45D661C94347}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F986013-16D0-4C9F-B26A-45D661C94347}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1F986013-16D0-4C9F-B26A-45D661C94347}.Debug|x86.Build.0 = Debug|Any CPU
+		{1F986013-16D0-4C9F-B26A-45D661C94347}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F986013-16D0-4C9F-B26A-45D661C94347}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F986013-16D0-4C9F-B26A-45D661C94347}.Release|x86.ActiveCfg = Release|Any CPU
+		{1F986013-16D0-4C9F-B26A-45D661C94347}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

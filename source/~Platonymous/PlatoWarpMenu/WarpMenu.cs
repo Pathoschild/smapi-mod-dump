@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PyTK;
+using PyTK.Extensions;
 using PyTK.PlatoUI;
 using StardewModdingAPI;
 using StardewValley;
@@ -18,7 +19,7 @@ namespace PlatoWarpMenu
 
         internal static IModHelper Helper { get; set; }
         internal static ITranslationHelper i18n => Helper.Translation;
-
+        const float cFontAdjust = 0.5f;
 
         internal UIElement Menu { get; set; }
         internal UIElement InfoMenu { get; set; }
@@ -29,21 +30,34 @@ namespace PlatoWarpMenu
 
         internal static Texture2D CircleMarker { get; set; }
 
+        public static float menuScale = 1f;
+        public static int menuWidth => (int)(1260 * menuScale);
+        public static int menuHeight => (int) (700 * menuScale);
+        public static int margins => (int)(10 * menuScale);
+        public static int options = 20;
+        public static int optionWidth => menuWidth / 10;
 
-        const int menuWidth = 1260;
-        const int menuHeight = 700;
-        const int margins = 10;
-        const int options = 20;
-        const int optionWidth = menuWidth / 10;
-        const int optionHeight = ((menuHeight - (2 * margins) - options)) / options;
+        public static string menuFont1 => PlatoWarpMenuMod.instance?.config?.MenuFont1;
+        public static string menuFont2 => PlatoWarpMenuMod.instance?.config?.MenuFont2;
+        public static int optionHeight => ((menuHeight - (2 * margins) - options)) / options;
         List<MenuItem> menuItems = new List<MenuItem>();
 
         public WarpMenu()
             : base("WarpMenu", null, false, null, null, false)
         {
-
+            menuScale = 1f;
+            menuScale = Math.Max(1f, Game1.game1.Window.ClientBounds.Width / (menuWidth + 40f));
+            menuScale = Math.Min(Game1.game1.Window.ClientBounds.Height / ((menuHeight/menuScale) + 40f), menuScale);
+            Console.WriteLine(menuScale + " menuScale");
+            menuScale /= Game1.options.zoomLevel;
             Menu = SetUpMenu();
             BaseMenu.Add(Menu);
+        }
+
+        public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
+        {
+            if (Game1.activeClickableMenu is WarpMenu)
+                Game1.activeClickableMenu = new WarpMenu();
         }
 
         public static void Open()
@@ -57,6 +71,11 @@ namespace PlatoWarpMenu
         {
             if (CircleMarker == null)
                 CircleMarker = PyDraw.getCircle(363, Color.White);
+            if (menuFont1 != "" && menuFont1 != null)
+                UIFontRenderer.LoadFont(Helper, Path.Combine("fonts", menuFont1 + ".fnt"), menuFont1);
+
+            if (menuFont2 != "" && menuFont2 != null && menuFont2 != menuFont1)
+                UIFontRenderer.LoadFont(Helper, Path.Combine("fonts", menuFont2 + ".fnt"), menuFont2);
 
             UIElement menu = UIElement.GetContainer("WarpMenu", 0, UIHelper.GetCentered(0, 0, menuWidth, menuHeight), 1f);
             UIElement back = UIElement.GetImage(UIHelper.DarkTheme, Color.White * 0.9f, "Back", 1, -1).AsTiledBox(16, true);
@@ -99,7 +118,7 @@ namespace PlatoWarpMenu
 
         private void AddLeftMenuOption(UIElement leftMenu, MenuItem item, int index, int row = 0)
         {
-            int maxT = 13;
+            int maxT = 11;
             int placeRow = row + (index / options);
             string placeText = item.Name;
             if (placeText.Length > maxT + 3)
@@ -107,7 +126,16 @@ namespace PlatoWarpMenu
 
             index = index % options;
             UIElement button = UIElement.GetImage(PyDraw.getBorderedRectangle(optionWidth, optionHeight - 1, Color.White * 0.2f, 1, Color.White), row == 0 ? Color.CornflowerBlue : Color.LightGreen, item.Id, 1, 0,UIHelper.GetTopLeft(placeRow * (optionWidth + 1), index * (optionHeight + 1), optionWidth, optionHeight - 1)).WithInteractivity(update: UpdateItem, click: ClickItem);
-            UIElement text = new UITextElement(placeText, Game1.smallFont, Color.White, 0.5f, 1, positioner: UIHelper.GetCentered());
+            float textScale = Math.Min(0.5f * menuScale,0.7f);
+
+            if (LocalizedContentManager.CurrentLanguageLatin && menuFont1 != "" && menuFont1 != null)
+                textScale *= cFontAdjust;
+
+            UITextElement text = new UITextElement(placeText, Game1.smallFont, Color.White, textScale, 1, positioner: UIHelper.GetCentered());
+            
+            if (LocalizedContentManager.CurrentLanguageLatin && menuFont1 != "" && menuFont1 != null)
+                text.WithFont(menuFont1);
+
             button.Z = row;
             button.Add(text);
             leftMenu.Add(button);
@@ -299,9 +327,17 @@ namespace PlatoWarpMenu
         private UIElement GetMenuForLocation(GameLocation location, NPC npc = null, bool artifacts = false, bool structure = false)
         {
             var lmenu = UIElement.GetContainer("Location Menu " + location.Name, positioner: UIHelper.GetCentered(0, 0, 1f, 1f));
+            float textScale = 1.4f;
 
-            var lmenuHead = new UITextElement(!structure ? location.Name : location.uniqueName.Value, Game1.dialogueFont, Color.White, 0.7f, positioner: UIHelper.GetTopCenter(0, 5));
-           
+            if (LocalizedContentManager.CurrentLanguageLatin && menuFont2 != "" && menuFont2 != null)
+                textScale *= cFontAdjust;
+            var lname = !structure ? location.Name : location.uniqueName.Value;
+            if (i18n.GetTranslations().ToList().Exists(t => t.Key == "location."+lname))
+                lname = i18n.Get("location." + lname);
+
+            var lmenuHead = new UITextElement(lname, Game1.dialogueFont, Color.White, textScale, positioner: UIHelper.GetTopCenter(0, 5));
+
+
             var back = location.Map.GetLayer("Back");
             
             double w = back.LayerWidth;
@@ -320,9 +356,16 @@ namespace PlatoWarpMenu
 
             var lmenuViewer = UIElement.GetImage(PyDraw.getWhitePixel(), Color.Green, positioner: UIHelper.GetTopCenter(0,50,tw,th));
 
-            var lmenuWarp = new UITextElement($"{i18n.Get("menu.locations.warp")} (X:0 Y:0)", Game1.dialogueFont, Color.White, 0.6f, positioner: UIHelper.GetTopCenter(0, th + 60));
+            var lmenuWarp = new UITextElement($"{i18n.Get("menu.locations.warp")} (X:0 Y:0)", Game1.dialogueFont, Color.White, textScale, positioner: UIHelper.GetTopCenter(0, th + 60));
+            var lmenuLoading = new UITextElement(i18n.Get("menu.locations.loading"), Game1.dialogueFont, Color.White, textScale, positioner: UIHelper.GetCentered());
+            lmenuViewer.Add(lmenuLoading);
 
-            lmenuViewer.Add(new UITextElement(i18n.Get("menu.locations.loading"), Game1.dialogueFont, Color.White, 0.5f, positioner: UIHelper.GetCentered()));
+            if (LocalizedContentManager.CurrentLanguageLatin && menuFont2 != "" && menuFont2 != null)
+            {
+                lmenuHead.WithFont(menuFont2);
+                lmenuWarp.WithFont(menuFont2);
+                lmenuLoading.WithFont(menuFont2);
+            }
 
             lmenu.Add(lmenuViewer);
 

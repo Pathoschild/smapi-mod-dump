@@ -1,5 +1,7 @@
 {
   "Convert": false,
   "Debug": false,
-  "Presets": {}
+  "Presets": {},
+  "SoundVolume": 0.3,
+  "MusicVolume": 0.5
 }

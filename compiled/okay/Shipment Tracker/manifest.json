@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Shipment Tracker",
+  "Authour": "Iceburg333",
+  "Version": "3.0.0",
+  "Description": "Saves each night's shipping statistics.",
+    "UniqueID": "7e474181-e1a0-40f9-9c11-d08a3dcefaf3",
+  "PerSaveConfigs": false,
+  "EntryDll": "ShipmentTrackerSMAPI.dll",
+  "MinimumApiVersion": "3.0.0"
+}

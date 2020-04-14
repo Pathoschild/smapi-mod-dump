@@ -1,0 +1,14 @@
+{
+	//Translate by Isabella Petricca
+	"yes": "Si",
+	"no": "No",
+	"dialogue": "Vuoi migliorare subito i tuoi attrezzi? Prezzo : {{config}}G",
+	"no-money": "Non hai abbastanza monete",
+	"inventory-full": "Il tuo inventario è pieno",
+	"no-tool-upgrade": "Non hai strumenti da migliorare da Clint",
+	"copper-trash-can": "Bidone dei rifiuti di Rame",
+	"steel-trash-can": "Bidone dei rifiuti d'Acciaio",
+	"gold-trash-can": "Bidone dei rifiuti d'Oro",
+	"iridium-trash-can": "Bidone dei rifiuti d'Iridio",
+	"receive": "Hai ricevuto {{tool}}",
+}

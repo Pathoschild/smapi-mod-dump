@@ -3,8 +3,16 @@
   "Volume": 1.0,
   "MumbleDialogues": false,
   "Greeting": true,
+  "ReadDialogues": true,
+  "ReadNonCharacterMessages": true,
+  "ReadLetters": true,
+  "ReadHudMessages": true,
   "Rate": 100,
   "Voices": {
+    "Default": {
+      "Voice": "Salli",
+      "Pitch": 0.0
+    },
     "Abigail": {
       "Voice": "Salli",
       "Pitch": 0.0

@@ -1,0 +1,17 @@
+{
+  "Name": "Seed Shortage",
+  "Author": "Xynerorias",
+  "Version": "1.2.0",
+  "Description": "Removes seeds from usual shop, but not custom shops. Highly configurable.",
+  "UniqueID": "xynerorias.seedshortage",
+  "EntryDll": "SeedShortage.dll",
+  "MinimumApiVersion": "3.4.0",
+  "UpdateKeys": [ "Nexus:5614" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets",
+      "IsRequired": true
+    }
+  ] 
+}
+

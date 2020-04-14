@@ -2,8 +2,9 @@
 {
     public enum ChestType
     {
-        LargeChest = 0,
-        MagicChest = 1,
-        SuperMagicChest = 2
+        InvalidChest = 0,
+        LargeChest = 1,
+        MagicChest = 2,
+        SuperMagicChest = 3
     }
 }

@@ -1,0 +1,14 @@
+{
+  "Enabled": true,
+  "ConfigReloadKey": "F5",
+  "Fertilizer": null,
+  "DaysToWater": {
+    "Sunday": true,
+    "Monday": true,
+    "Tuesday": true,
+    "Wednesday": true,
+    "Thursday": true,
+    "Friday": true,
+    "Saturday": true
+  }
+}

@@ -1,1 +1,5 @@
-[]
+{
+  "AreaName": "BathHouse_Pool",
+  "numberOfOreSpotsPerDay": 0,
+  "OreSpots": []
+}

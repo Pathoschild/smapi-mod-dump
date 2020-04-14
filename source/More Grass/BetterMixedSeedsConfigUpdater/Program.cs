@@ -6,9 +6,15 @@ using System.IO;
 
 namespace BetterMixedSeedsConfigUpdater
 {
-    class Program
+    /// <summary>The program entry point.</summary>
+    public class Program
     {
-        static void Main(string[] args)
+        /*********
+        ** Public Methods 
+        *********/
+        /// <summary>The program entry point.</summary>
+        /// <param name="args">The passed arguments.</param>
+        public static void Main(string[] args)
         {
             try
             {
@@ -26,19 +32,25 @@ namespace BetterMixedSeedsConfigUpdater
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("\nconfig.json successfully converted");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Press any key to exit...");
-                Console.ReadKey();
             }
             catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"\nconfig.json failed to convert: {ex.Message}\n{ex.StackTrace}");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Press any key to exit...");
-                Console.ReadKey();
             }
+
+            Console.WriteLine("Press any key to exit...");
+            Console.ReadKey();
         }
 
+
+        /*********
+        ** Private Methods 
+        *********/
+        /// <summary>Get the deserialized old config.json file.</summary>
+        /// <param name="path">The path where the old config.json file is located.</param>
+        /// <returns>The old config object.</returns>
         private static OldModConfig GetOldModConfig(string path)
         {
             // Deserialize old config directly from the file
@@ -53,6 +65,9 @@ namespace BetterMixedSeedsConfigUpdater
             return oldModConfig;
         }
 
+        /// <summary>Serialized the new config object.</summary>
+        /// <param name="newModConfig">The new config object to serialize.</param>
+        /// <param name="newModConfigPath">The path the new config.json file should be located.</param>
         private static void SerializeNewModConfig(NewModConfig newModConfig, string newModConfigPath)
         {
             // Serialize the new config firectly in the NewConfig folder
@@ -66,6 +81,9 @@ namespace BetterMixedSeedsConfigUpdater
             }
         }
 
+        /// <summary>Convert the old config object to the new layout.</summary>
+        /// <param name="oldModConfig">The old config object to convert.</param>
+        /// <returns>The converted config object.</returns>
         private static NewModConfig ConvertToNewConfigLayout(OldModConfig oldModConfig)
         {
             NewModConfig newModConfig = new NewModConfig();

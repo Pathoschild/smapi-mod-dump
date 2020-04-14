@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5736
+IDs: EduAnttunes.SpawnSeaMonster
+update keys: Nexus:5736

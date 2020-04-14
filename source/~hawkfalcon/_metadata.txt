@@ -7,12 +7,9 @@ mods:
    Tillable Ground
 
 latest commit:
-   commit 0742ea9a377c4173075d2dd3913ec55b87f2acdd
-   Merge: 545e107 4580646
+   commit 3ad33fb66b7921a49c5a0035bb9b52d8d46de5ac
    Author: hawkfalcon <contact@hawkfalcon.com>
-   Date:   Sat Feb 22 12:36:42 2020 -0800
+   Date:   Thu Mar 5 21:36:27 2020 -0800
    
-       Merge pull request #4 from ZaneYork/master
-       
-       Bug fix for android
+       [Better Junimos] Fix bugs with junimo behavior and tea harvesting
    

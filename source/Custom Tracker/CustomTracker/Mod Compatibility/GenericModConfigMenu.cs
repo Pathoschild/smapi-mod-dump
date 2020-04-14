@@ -27,6 +27,12 @@ namespace CustomTracker
             api.RegisterSimpleOption(ModManifest, "Replace trackers with forage icons", "If this box is checked, trackers will display the objects they're pointing to.", () => MConfig.ReplaceTrackersWithForageIcons, (bool val) => MConfig.ReplaceTrackersWithForageIcons = val);
             api.RegisterSimpleOption(ModManifest, "Draw trackers behind interface", "If this box is checked, trackers will be drawn behind the game's interface, making it easier to see the UI.", () => MConfig.DrawBehindInterface, (bool val) => MConfig.DrawBehindInterface = val);
             api.RegisterSimpleOption(ModManifest, "Tracker pixel scale", "The size of the tracker icon's pixels (default 4). Increase this to make trackers easier to see.", () => MConfig.TrackerPixelScale, (float val) => MConfig.TrackerPixelScale = val);
+
+            api.RegisterSimpleOption(ModManifest, "Track default forage", "If this box is checked, the mod will track most types of forage spawned by the base game.", () => MConfig.TrackDefaultForage, (bool val) => MConfig.TrackDefaultForage = val);
+            api.RegisterSimpleOption(ModManifest, "Track artifact spots", "If this box is checked, the mod will track buried artifact locations.", () => MConfig.TrackArtifactSpots, (bool val) => MConfig.TrackArtifactSpots = val);
+            api.RegisterSimpleOption(ModManifest, "Track panning spots", "If this box is checked, the mod will track ore panning locations in the water.", () => MConfig.TrackPanningSpots, (bool val) => MConfig.TrackPanningSpots = val);
+            api.RegisterSimpleOption(ModManifest, "Track spring onions", "If this box is checked, the mod will track harvestable spring onions.", () => MConfig.TrackSpringOnions, (bool val) => MConfig.TrackSpringOnions = val);
+            api.RegisterSimpleOption(ModManifest, "Track berry bushes", "If this box is checked, the mod will track harvestable salmonberry and blackberry bushes.", () => MConfig.TrackBerryBushes, (bool val) => MConfig.TrackBerryBushes = val);
         }
     }
 

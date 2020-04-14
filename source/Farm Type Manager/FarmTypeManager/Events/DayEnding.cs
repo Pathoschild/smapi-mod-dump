@@ -19,6 +19,8 @@ namespace FarmTypeManager
 
             Utility.Monitor.Log($"Day is ending. Processing save data and object expiration settings.", LogLevel.Trace);
 
+            Utility.DayIsEnding = true; //set the "day is ending" flag
+
             Utility.MonsterTracker.Clear(); //clear any tracked monster data (note: this should happen *before* handling monster expiration/removal)
 
             if (Utility.FarmDataList == null) { return; } //if the farm data list is blank, do nothing

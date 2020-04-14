@@ -5,9 +5,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 3eb112e9acae30cc19fb841e991c65e6e6cc8bdb
+   commit 78f0f411dae4596a69288f3bbe7493baa1b15b47
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Sat Jan 18 01:04:09 2020 -0600
+   Date:   Sun Apr 12 07:01:52 2020 -0500
    
-       Avoid system assemblies when finding "custom" class types
+       Fix Android-specific issues with debris items
    

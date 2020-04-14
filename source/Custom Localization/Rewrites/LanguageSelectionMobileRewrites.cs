@@ -14,11 +14,8 @@ namespace StardewModdingAPI.Mods.CustomLocalization.Rewrites
 {
     public class LanguageSelectionMobileRewrites
     {
-        [HarmonyPatch(typeof(LanguageSelectionMobile))]
-        [HarmonyPatch("SetupButtons")]
         public class SetupButtonsRewrite
         {
-            [HarmonyTranspiler]
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
             {
                 var codes = new List<CodeInstruction>(instructions);
@@ -39,43 +36,40 @@ namespace StardewModdingAPI.Mods.CustomLocalization.Rewrites
                 return codes.AsEnumerable();
             }
         }
-        [HarmonyPatch(typeof(LanguageSelectionMobile))]
-        [HarmonyPatch("setCurrentItemIndex")]
         public class SetCurrentItemIndexRewrite
         {
-            [HarmonyPrefix]
-            public static void Prefix(LanguageSelectionMobile __instance)
+            public static void Prefix(object __instance)
             {
-                Rectangle mainBox = (Rectangle)__instance.GetType().GetField("mainBox", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
-                int buttonHeight = (int)__instance.GetType().GetField("buttonHeight", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
-                for(short i = 0; i < ModEntry.ModConfig.locales.Length; i++)
+                Rectangle mainBox = ModEntry.Reflection.GetField<Rectangle>(__instance, "mainBox").GetValue();
+                int buttonHeight = ModEntry.Reflection.GetField<int>(__instance, "buttonHeight").GetValue();
+                int buttonWidth = ModEntry.Reflection.GetField<int>(__instance, "buttonWidth").GetValue();
+                for (short i = 0; i < ModEntry.ModConfig.locales.Length; i++)
                 {
                     ModConfig.Locale locale = ModEntry.ModConfig.locales[i];
-                    __instance.languages.Add(new ClickableComponent(
-                        new Rectangle(mainBox.X + 0x10, (mainBox.Y + 0x10) + (buttonHeight * ModEntry.ModConfig.OriginLocaleCount + i), __instance.buttonWidth, buttonHeight),
+                    List<ClickableComponent> languages = ModEntry.Reflection.GetField<List<ClickableComponent>>(__instance, "languages").GetValue();
+                    languages.Add(new ClickableComponent(
+                        new Rectangle(mainBox.X + 0x10, (mainBox.Y + 0x10) + (buttonHeight * ModEntry.ModConfig.OriginLocaleCount + i), buttonWidth, buttonHeight),
                         locale.Name, null));
                     if ((int)(CurrentLanguageCode) == locale.CodeEnum)
                     {
-                        __instance.GetType().GetField("languageCodeName", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, locale.Name);
+                        ModEntry.Reflection.GetField<string>(__instance, "languageCodeName").SetValue(locale.Name);
                     }
                 }
             }
         }
-        [HarmonyPatch(typeof(LanguageSelectionMobile))]
-        [HarmonyPatch("releaseLeftClick")]
         public class ReleaseLeftClickRewrite
         {
-            [HarmonyPrefix]
-            public static bool Prefix(LanguageSelectionMobile __instance, int x, int y)
+            public static bool Prefix(object __instance, int x, int y)
             {
-                MobileScrollbox scrollArea = (MobileScrollbox)__instance.GetType().GetField("scrollArea", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
-                if (scrollArea == null || !scrollArea.havePanelScrolled)
+                object scrollArea = ModEntry.Reflection.GetField<object>(__instance, "scrollArea").GetValue();
+                if (scrollArea == null || !ModEntry.Reflection.GetField<bool>(scrollArea, "havePanelScrolled").GetValue())
                 {
-                    foreach (ClickableComponent language in __instance.languages)
+                    List<ClickableComponent> languages = ModEntry.Reflection.GetField<List<ClickableComponent>>(__instance, "languages").GetValue();
+                    foreach (ClickableComponent language in languages)
                     {
                         if (language.containsPoint(x, y))
                         {
-                            __instance.GetType().GetField("languageChosen", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, true);
+                            ModEntry.Reflection.GetField<bool>(__instance, "languageChosen").SetValue(true);
                             Game1.playSound("select");
                             switch (language.name)
                             {
@@ -125,25 +119,23 @@ namespace StardewModdingAPI.Mods.CustomLocalization.Rewrites
                                     }
                                     break;
                             }
-                            __instance.exitThisMenu(true);
+                            ModEntry.Reflection.GetMethod(__instance, "exitThisMenu").Invoke(true);
                         }
                     }
                 }
                 if (scrollArea == null)
                     return false;
-                scrollArea.releaseLeftClick(x, y);
+                ModEntry.Reflection.GetMethod(scrollArea, "releaseLeftClick").Invoke(x, y);
                 return false;
             }
         }
-        [HarmonyPatch(typeof(LanguageSelectionMobile))]
-        [HarmonyPatch("draw")]
-        [HarmonyPatch(new Type[] { typeof(SpriteBatch) })]
         public class DrawRewrite
         {
-            [HarmonyPrefix]
-            public static bool Prefix(LanguageSelectionMobile __instance, SpriteBatch b)
+            public static bool Prefix(object __instance, SpriteBatch b)
             {
-                Utility.getTopLeftPositionForCenteringOnScreen(__instance.width, __instance.height - 100, 0, 0);
+                int width = ModEntry.Reflection.GetField<int>(__instance, "width").GetValue();
+                int height = ModEntry.Reflection.GetField<int>(__instance, "height").GetValue();
+                Utility.getTopLeftPositionForCenteringOnScreen(width, height - 100, 0, 0);
                 SpriteBatch spriteBatch = b;
                 Texture2D fadeToBlackRect = Game1.fadeToBlackRect;
                 Viewport viewport = Game1.graphics.GraphicsDevice.Viewport;
@@ -152,14 +144,15 @@ namespace StardewModdingAPI.Mods.CustomLocalization.Rewrites
                 spriteBatch.Draw(fadeToBlackRect, bounds, color);
                 Rectangle mainBox = (Rectangle)__instance.GetType().GetField("mainBox", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
                 IClickableMenu.drawTextureBox(b, (int)mainBox.X, (int)mainBox.Y, (int)mainBox.Width, (int)mainBox.Height, Color.White);
-                MobileScrollbox scrollArea = (MobileScrollbox)__instance.GetType().GetField("scrollArea", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
+                object scrollArea = ModEntry.Reflection.GetField<object>(__instance, "scrollArea").GetValue();
                 if (scrollArea != null)
                 {
-                    MobileScrollbar newScrollbar = (MobileScrollbar)__instance.GetType().GetField("newScrollbar", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
-                    newScrollbar.draw(b);
-                    scrollArea.setUpForScrollBoxDrawing(b, 1f);
+                    object newScrollbar = ModEntry.Reflection.GetField<object>(__instance, "newScrollbar").GetValue();
+                    ModEntry.Reflection.GetMethod(newScrollbar, "draw").Invoke(b);
+                    ModEntry.Reflection.GetMethod(scrollArea, "setUpForScrollBoxDrawing").Invoke(b, 1f);
                 }
-                foreach (ClickableComponent language in __instance.languages)
+                List<ClickableComponent> languages = ModEntry.Reflection.GetField<List<ClickableComponent>>(__instance, "languages").GetValue();
+                foreach (ClickableComponent language in languages)
                 {
                     int num1 = -1;
                     switch (language.name)
@@ -221,10 +214,11 @@ namespace StardewModdingAPI.Mods.CustomLocalization.Rewrites
                     }
                 }
                 if (scrollArea != null)
-                    scrollArea.finishScrollBoxDrawing(b, 1f);
-                if ((__instance.upperRightCloseButton != null) && __instance.shouldDrawCloseButton())
+                    ModEntry.Reflection.GetMethod(scrollArea, "finishScrollBoxDrawing").Invoke(b, 1f);
+                ClickableTextureComponent upperRightCloseButton = ModEntry.Reflection.GetField<ClickableTextureComponent>(__instance, "upperRightCloseButton").GetValue();
+                if (upperRightCloseButton != null && ModEntry.Reflection.GetMethod(__instance, "shouldDrawCloseButton").Invoke<bool>())
                 {
-                    __instance.upperRightCloseButton.draw(b);
+                    upperRightCloseButton.draw(b);
                 }
                 return false;
             }

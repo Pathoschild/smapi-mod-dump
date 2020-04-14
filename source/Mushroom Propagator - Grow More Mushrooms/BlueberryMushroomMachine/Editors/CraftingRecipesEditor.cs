@@ -21,10 +21,11 @@ namespace BlueberryMushroomMachine.Editors
 				_isDebugging);
 
 			// Inject crafting recipe data using custom appended index as the result.
-			var name = ModEntry.Instance.i18n.Get("machine.name");
+			//var name = ModEntry.Instance.i18n.Get("machine.name");
+			var name = Const.PropagatorInternalName;
 			var data = asset.AsDictionary<string, string>().Data;
 			if (!data.ContainsKey(name))
-				data.Add(name, Data.CraftingRecipeData);
+				data.Add(name, ModValues.CraftingRecipeData);
 
 			Log.D($"Recipe injected: \"{name}\": \"{data[name]}\"",
 				_isDebugging);

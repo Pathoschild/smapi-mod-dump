@@ -1,10 +1,10 @@
 ﻿{
   "Name": "ExtraFishInformation",
   "Author": "Ceasg",
-  "Version": "1.1.1",
+  "Version": "1.2.0",
   "Description": "Updates fish descriptions to include when and where they can be caught.",
   "UniqueID": "Ceasg.ExtraFishInformation",
   "EntryDll": "ExtraFishInformation.dll",
-  "MinimumApiVersion": "2.10.0",
+  "MinimumApiVersion": "3.0.0",
   "UpdateKeys": ["Nexus:4170"]
 }

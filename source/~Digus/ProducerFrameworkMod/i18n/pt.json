@@ -5,6 +5,7 @@
 	"Message.Requirement.Season": "Requer outra estação",
 	"Message.Requirement.Weather": "Requer outro clima",
 	"Message.Requirement.Location": "Requer outro local",
+	"Message.Requirement.InputParent": "Requer outro tipo de {{objectName}}",
 	"Message.Condition.Location": "Não funciona aqui",
 	"Message.Condition.Season": "Não funciona nesta estação",
 	"Object.Category.Meat": "Carne (tanto faz)",

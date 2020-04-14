@@ -11,6 +11,9 @@
         ThirdQuarter,
         WaningCrescent,
         BloodMoon,
+        BlueMoon,
+        HarvestMoon,
+        SpiritsMoon,
         ErrorPhase
     }
 }

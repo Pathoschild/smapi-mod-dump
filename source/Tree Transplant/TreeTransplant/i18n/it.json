@@ -1,0 +1,7 @@
+{
+  "Menu_DefaultText": "Seleziona un albero da trapiantare.",
+  "Menu_PlacementText": "Scegli un nuovo luogo per l'albero.",
+  "Menu_InvalidPlace": "Non lo puoi piantere qui!",
+  "Menu_InvalidCap": "Non puoi spostare un albero con un estrattore!",
+  "Carpenter_Option": "Trapianta un albero"
+}

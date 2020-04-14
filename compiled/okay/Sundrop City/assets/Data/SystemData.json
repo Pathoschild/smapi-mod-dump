@@ -1,0 +1,17 @@
+{
+	"Layers":["Light", "Warps", "Doors", "NightTiles", "DayTiles"],
+	"FileBlacklist":[
+		"Maps/Festivals.png",
+		"Maps/furniture.png",
+		"Maps/paths.png",
+		"Maps/SewerTiles.png",
+		"Maps/springobjects.png",
+		"Maps/spring_beach.png",
+		"Maps/spring_outdoorsTilesheet.png",
+		"Maps/spring_town.png",
+		"Maps/townInterior.png",
+		"Maps/walls_and_floors.png",
+		"Maps/Mines/mine.png",
+		"Maps/Furniture/Furniture_Template_aseprite.ase"
+]
+}

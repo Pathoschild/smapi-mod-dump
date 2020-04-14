@@ -112,6 +112,8 @@ namespace CustomMusic
                 activeSound?.Stop(true);
             }, () => SaveHandler.Invoke("save","file"));
 
+            Api.RegisterClampedOption(Manifest, "MusicVolume", "", () => CustomMusicMod.config.MusicVolume, (f) => CustomMusicMod.config.MusicVolume = f, 0f, 1f);
+            Api.RegisterClampedOption(Manifest, "SoundVolume", "", () => CustomMusicMod.config.SoundVolume, (f) => CustomMusicMod.config.SoundVolume = f, 0f, 1f);
 
             if (Label != null)
                 Api.RegisterLabel(Manifest, Label.Name, Label.Description);
@@ -146,7 +148,7 @@ namespace CustomMusic
         {
             List<string> choicesc = new List<string>((string[])__instance.GetType().GetProperty("Choices").GetValue(__instance));
 
-            if (!choicesc[0].StartsWith("CM:"))
+            if (!choicesc[0].ToLower().StartsWith("cm:"))
                 return true;
 
             Vector2 pos = (Vector2)__instance.GetType().GetProperty("Position").GetValue(__instance);
@@ -189,7 +191,7 @@ namespace CustomMusic
         {
             List<string> choices = new List<string>((string[])__instance.GetType().GetProperty("Choices").GetValue(__instance));
 
-            if (!choices[0].StartsWith("CM:"))
+            if (!choices[0].ToLower().StartsWith("cm:"))
                 return true;
 
             if (!currentIndex.ContainsKey(__instance))

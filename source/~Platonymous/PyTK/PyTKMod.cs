@@ -17,12 +17,12 @@ using PyTK.Lua;
 using xTile;
 using PyTK.Overrides;
 using PyTK.APIs;
-using System.Threading;
-using StardewValley.Objects;
-using StardewValley.Locations;
 using System.Threading.Tasks;
-using System.Xml;
+using System.Collections;
 using System.Xml.Serialization;
+using Microsoft.Xna.Framework.Graphics;
+using System.IO;
+using TMXTile;
 
 namespace PyTK
 {
@@ -34,7 +34,6 @@ namespace PyTK
         internal static string sdvContentFolder => PyUtils.ContentPath;
         internal static List<IPyResponder> responders;
         internal static PyTKSaveData saveData = new PyTKSaveData();
-
         internal static Dictionary<string, string> tokenStrings = new Dictionary<string, string>();
         internal static Dictionary<string, bool> tokenBoleans = new Dictionary<string, bool>();
         internal static bool UpdateCustomObjects = false;
@@ -42,6 +41,7 @@ namespace PyTK
         internal static bool UpdateLuaTokens = false;
         public static Dictionary<IManifest, Func<object, object>> PreSerializer = new Dictionary<IManifest, Func<object, object>>();
         public static Dictionary<IManifest, Func<object, object>> PostSerializer = new Dictionary<IManifest, Func<object, object>>();
+        public static List<IInterceptor> ContentInterceptors = new List<IInterceptor>();
 
         internal static List<GameLocation> RecheckedLocations = new List<GameLocation>();
 
@@ -50,6 +50,8 @@ namespace PyTK
         internal static object waitForIt = new object();
         internal static object waitForPatching = new object();
         internal static object waitForItems = new object();
+
+        internal static UpdateTickedEventArgs updateTicked;
 
         internal static PyTKMod _instance { get; set; }
         internal static IMonitor _monitor {
@@ -67,6 +69,13 @@ namespace PyTK
         public override void Entry(IModHelper helper)
         {
             _instance = this;
+
+            helper.Events.Display.RenderingWorld += (s,e) =>
+            {
+                if (Game1.currentLocation is GameLocation location && location.Map is Map map && map.GetBackgroundColor() is TMXColor tmxColor)
+                    Game1.graphics.GraphicsDevice.Clear(tmxColor.toColor());
+            };
+
             PostSerializer.Add(ModManifest, Rebuilder);
             PreSerializer.Add(ModManifest, Replacer);
 
@@ -83,6 +92,16 @@ namespace PyTK
             CustomObjectData.CODSyncer.start();
             ContentSync.ContentSyncHandler.initialize();
 
+            helper.Events.GameLoop.GameLaunched += (s, e) =>
+            {
+
+                if (xTile.Format.FormatManager.Instance.GetMapFormatByExtension("tmx") is TMXFormat tmxf)
+                    tmxf.DrawImageLayer = PyMaps.drawImageLayer;
+
+                bool adjustForCompat = helper.ModRegistry.IsLoaded("DigitalCarbide.SpriteMaster");
+                Game1.mapDisplayDevice = new PyDisplayDevice(Game1.content, Game1.graphics.GraphicsDevice, adjustForCompat);
+            };
+
             helper.Events.GameLoop.DayStarted += (s, e) =>
             {
                 if (ReInjectCustomObjects)
@@ -91,6 +110,11 @@ namespace PyTK
                     CustomObjectData.injector?.Invalidate();
                     CustomObjectData.injectorBig?.Invalidate();
                 }
+            };
+
+            helper.Events.GameLoop.UpdateTicked += (s, e) =>
+            {
+                updateTicked = e;
             };
 
             this.Helper.Events.Player.Warped += Player_Warped;
@@ -156,7 +180,6 @@ namespace PyTK
 
             helper.Events.GameLoop.ReturnedToTitle += (s, e) =>
             {
-                RecheckedLocations = null;
                 saveData = new PyTKSaveData();
             };
 
@@ -187,70 +210,17 @@ namespace PyTK
             helper.Events.GameLoop.DayStarted += (s, e) =>
             {
                 if(Game1.currentLocation is GameLocation loc)
-                fixObjectsInLocation(loc);
                 UpdateLuaTokens = true;
             };
 
-            helper.Events.Player.Warped += (s, e) =>
-            {
-                if (RecheckedLocations is List<GameLocation> && !RecheckedLocations.Contains(e.NewLocation))
-                {
-                    RecheckedLocations.Add(e.NewLocation);
-                    fixObjectsInLocation(e.NewLocation);
-                }
-            };
-
+            helper.Events.GameLoop.UpdateTicked += (s, e) => AnimatedTexture2D.ticked = e.Ticks;
         }
 
-        public static void fixObjectsInLocation(GameLocation location)
+        private void Display_RenderingWorld(object sender, RenderingWorldEventArgs e)
         {
-            Task.Run(() =>
-            {
-                bool r = false;
-                lock (waitForItems)
-                {
-                    if(Game1.player is Farmer farmer)
-                    foreach(Item item in farmer.Items.ToList())
-                        {
-                            var n = (Item)SaveHandler.rebuildElement(SaveHandler.getDataString(item), item);
-                            if (!SaveHandler.isRebuildable(n))
-                            {
-                                int index = farmer.Items.IndexOf(item);
-                                farmer.Items[index] = n;
-                                r = true;
-                            }
-                        }
-
-                    foreach (Vector2 key in location.Objects.Keys.ToList())
-                        if (location.Objects[key] is StardewValley.Object obj && SaveHandler.isRebuildable(obj))
-                        {
-                            var n = (StardewValley.Object)SaveHandler.rebuildElement(SaveHandler.getDataString(obj), obj);
-                            if (!SaveHandler.isRebuildable(n))
-                            {
-                                location.Objects[key] = n;
-                                r = true;
-                            }
-                        }
-
-                    if (location is DecoratableLocation dec)
-                        foreach (Furniture furniture in dec.furniture.ToList())
-                            if (SaveHandler.isRebuildable(furniture))
-                            {
-                                var n = (Furniture)SaveHandler.rebuildElement(SaveHandler.getDataString(furniture), furniture);
-                                if (!SaveHandler.isRebuildable(n))
-                                {
-                                    dec.furniture.Remove(furniture);
-                                    dec.furniture.Add(n);
-                                    r = true;
-                                }
-                            }
-
-                    if (r)
-                        PatchGeneratedSerializers();
-                }
-            });
+            throw new NotImplementedException();
         }
-    
+
         public static void syncCounter(string id, int value)
         {
             if (Game1.IsMultiplayer)
@@ -264,8 +234,9 @@ namespace PyTK
 
         private void Player_Warped(object sender, WarpedEventArgs e)
         {
-            PyMaps.ImageLayerCache.Clear();
-            
+            if (e.NewLocation.Map.Properties.ContainsKey("@WaterColor") && TMXColor.FromString(e.NewLocation.Map.Properties["@WaterColor"]) is TMXColor color)
+                e.NewLocation.waterColor.Value = new Color(color.R, color.G, color.B, color.A);
+
             if (!e.IsLocalPlayer)
                 return;
 
@@ -312,17 +283,286 @@ namespace PyTK
             // PyUtils.initOverride("SObject", PyUtils.getTypeSDV("Object"),typeof(DrawFix1), new List<string>() { "draw", "drawInMenu", "drawWhenHeld", "drawAsProp" });
             // PyUtils.initOverride("TemporaryAnimatedSprite", PyUtils.getTypeSDV("TemporaryAnimatedSprite"),typeof(DrawFix2), new List<string>() { "draw" });
             instance.PatchAll(Assembly.GetExecutingAssembly());
+            instance.Patch(typeof(SaveGame).GetMethod("Load", BindingFlags.Static | BindingFlags.Public), prefix: new HarmonyMethod(typeof(PyTKMod).GetMethod("saveLoadedXMLFix", BindingFlags.Static | BindingFlags.Public)));
+            PatchGeneratedSerializers(new Assembly[] { Assembly.GetExecutingAssembly() });
 
-            instance.Patch(typeof(SaveGame).GetMethod("Load",BindingFlags.Static | BindingFlags.Public), prefix: new HarmonyMethod(typeof(PyTKMod).GetMethod("saveLoadedXMLFix", BindingFlags.Static | BindingFlags.Public)));
+            foreach (ConstructorInfo mc in typeof(GameLocation).GetConstructors())
+                instance.Patch(mc, postfix: new HarmonyMethod(typeof(OvLocations).GetMethod("GameLocationConstructor", BindingFlags.Static | BindingFlags.Public)));
+
+            Helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
+
+            if (Constants.TargetPlatform != GamePlatform.Android)
+                SetUpAssemblyPatch(instance, new XmlSerializer[] { SaveGame.farmerSerializer, SaveGame.locationSerializer, SaveGame.serializer });
+
+            Helper.Events.GameLoop.GameLaunched += (s, e) =>
+            {
+                Task.Run(() =>
+               {
+                   lock (waitForIt)
+                       PatchGeneratedSerializers(AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.Contains("Microsoft.GeneratedCode")));
+               });
+            };
+
+            instance.Patch(
+               original: AccessTools.Method(Type.GetType("StardewModdingAPI.Framework.ContentManagers.ModContentManager, StardewModdingAPI"), "GetModFile"),
+               prefix: new HarmonyMethod(this.GetType().GetMethod("GetModFile", BindingFlags.Public | BindingFlags.Static))
+           );
+
+            instance.Patch(
+               original: AccessTools.Method(Type.GetType("StardewModdingAPI.Framework.ContentManagers.ModContentManager, StardewModdingAPI"), "NormalizeTilesheetPaths"),
+               postfix: new HarmonyMethod(this.GetType().GetMethod("NormalizeTilesheetPaths", BindingFlags.Public | BindingFlags.Static))
+           );
+          
+            setupLoadIntercepter(instance);
+        }
+
+        private static List<string> excludeTileSheetsFromModFolder = new List<string>();
+
+        public static void GetModFile(ref string path)
+        {
+            if (excludeTileSheetsFromModFolder.Contains(Path.GetFileNameWithoutExtension(path)))
+                path = "Excluded_" + path;
+        }
+
+        public static void NormalizeTilesheetPaths(Map map)
+        {
+            excludeTileSheetsFromModFolder.Clear();
+
+            if (!map.TileSheets.Any())
+                return;
+
+            foreach (xTile.Tiles.TileSheet tilesheet in map.TileSheets)
+            {
+                if ((tilesheet.Properties.TryGetValue("@Vanilla", out xTile.ObjectModel.PropertyValue vanillaProperty) && vanillaProperty != null) ||
+                    (tilesheet.Properties.TryGetValue("@IgnoreLocalFile", out xTile.ObjectModel.PropertyValue ignoreProperty) && ignoreProperty != null))
+                {
+                    bool isOutdoors = map.Properties.TryGetValue("Outdoors", out xTile.ObjectModel.PropertyValue outdoorsProperty) && outdoorsProperty != null;
+
+                    string filename = Path.GetFileNameWithoutExtension(tilesheet.ImageSource);
+                    bool isSeasonal = filename.StartsWith("spring_", StringComparison.CurrentCultureIgnoreCase)
+                        || filename.StartsWith("summer_", StringComparison.CurrentCultureIgnoreCase)
+                        || filename.StartsWith("fall_", StringComparison.CurrentCultureIgnoreCase)
+                        || filename.StartsWith("winter_", StringComparison.CurrentCultureIgnoreCase);
+                    if (isOutdoors && isSeasonal)
+                        filename = $"{Game1.currentSeason}_{filename.Substring(filename.IndexOf("_", StringComparison.CurrentCultureIgnoreCase) + 1)}";
+
+                    excludeTileSheetsFromModFolder.AddOrReplace(filename);
+                }
+            }
+        }
+
+
+        private void setupLoadIntercepter(HarmonyInstance harmony)
+        {
+            try
+            {
+                foreach (MethodBase m in typeof(Texture2D).GetMethods(BindingFlags.Public | BindingFlags.Static).Where(gm => gm.Name.Contains("FromStream") && gm.GetParameters().ToList().Exists(p => p.Name == "stream")))
+                    harmony.Patch(
+                        original: m,
+                        postfix: new HarmonyMethod(this.GetType().GetMethod("FromStreamIntercepter", BindingFlags.Public | BindingFlags.Static)));
+            }
+            catch
+            {
+
+            }
+
+            harmony.Patch(
+                original: AccessTools.Method(Type.GetType("StardewModdingAPI.Framework.Content.AssetDataForImage, StardewModdingAPI"), "PatchImage"),
+                prefix: new HarmonyMethod(this.GetType().GetMethod("PatchImage", BindingFlags.Public | BindingFlags.Static))
+            );
+
+            harmony.Patch(
+               original: AccessTools.Method(Type.GetType("StardewModdingAPI.Framework.Content.AssetDataForImage, StardewModdingAPI"), "ExtendImage"),
+               prefix: new HarmonyMethod(this.GetType().GetMethod("ExtendImage", BindingFlags.Public | BindingFlags.Static))
+           );
+
+            foreach (ConstructorInfo constructor in typeof(FileStream).GetConstructors().Where(c => c.GetParameters().ToList().Exists(p => p.ParameterType == typeof(string) && p.Name == "path")))
+            {
+                harmony.Patch(
+               original: constructor,
+               prefix: new HarmonyMethod(this.GetType().GetMethod("FileStreamConstructorPre", BindingFlags.Public | BindingFlags.Static))
+                );
+            }
+
+            harmony.Patch(
+                original: AccessTools.Method(Type.GetType("StardewModdingAPI.Framework.ContentManagers.ModContentManager, StardewModdingAPI"), "PremultiplyTransparency"),
+                prefix: new HarmonyMethod(this.GetType().GetMethod("PremultiplyTransparencyPre", BindingFlags.Public | BindingFlags.Static))
+            );
+
+            ContentInterceptors.Add(new TextureInterceptor<ScaleUpData>(ModManifest, ScaleUpInterceptor));
+        }
+
+        private static string openPath = "";
+
+        public static void PremultiplyTransparencyPre(object __instance, ref Texture2D texture)
+        {
+            if (openPath != "")
+                FromPathIntercepter(openPath, ref texture);
+        }
+
+        public static void FileStreamConstructorPre(ref string path)
+        {
+            if (path.Contains(@"Maps/Maps"))
+                path = path.Replace(@"Maps/Maps", "Maps");
+
+            openPath = path;
             
-            foreach(MethodInfo method in typeof(System.Xml.Serialization.XmlSerializer).GetMethods(BindingFlags.Public | BindingFlags.Instance).Where(m => m.Name.StartsWith("Serialize")))
-            instance.Patch(method, prefix: new HarmonyMethod(typeof(PyTKMod).GetMethod("serializeFix", BindingFlags.Static | BindingFlags.Public)));
+        }
 
-            GenerateSerializers();
-            Helper.Events.GameLoop.DayStarted += (s, e) => saveWasLoaded = true;
-            Helper.Events.GameLoop.ReturnedToTitle += (s, e) => saveWasLoaded = false;
-            Helper.Events.GameLoop.DayStarted += GameLoop_DayStarted; 
-                
+        public static Texture2D ScaleUpInterceptor(Texture2D texture, ScaleUpData data, string path)
+        {
+            if (data is ScaleUpData && !(texture is ScaledTexture2D))
+                {
+                bool scaled = false, animated = false, loop = true;
+                    float scale = 1f;
+                    int tileWidth = 0, tileHeight = 0, fps = 0;
+
+                    if (data.SourceArea is int[] area && area.Length == 4)
+                        texture = texture.getArea(new Rectangle(area[0], area[1], area[2], area[3]));
+
+                    if (data.Scale != 1f)
+                    {
+                        scale = data.Scale;
+                        scaled = true;
+                    }
+
+                    if (data.Animation is Animation anim)
+                    {
+                        tileHeight = anim.FrameHeight == -1 ? texture.Height : anim.FrameHeight;
+                        tileWidth = anim.FrameWidth == -1 ? texture.Width : anim.FrameWidth;
+                        fps = anim.FPS;
+                        loop = anim.Loop;
+
+                        if (!(tileWidth == texture.Width && tileHeight == texture.Height))
+                            animated = true;
+                    }
+
+                    if (animated)
+                        return new AnimatedTexture2D(Premultiply(texture), tileWidth, tileHeight, fps, loop, !scaled ? 1f : scale);
+                    else if (scaled)
+                        return ScaledTexture2D.FromTexture(texture.ScaleUpTexture(1f / scale, false), Premultiply(texture), scale);
+                }
+                return texture;
+        }
+
+        public static Texture2D Premultiply(Texture2D texture)
+        {
+            Color[] data = new Color[texture.Width * texture.Height];
+            texture.GetData(data);
+            for (int i = 0; i < data.Length; i++)
+            {
+                if (data[i].A == 0)
+                    continue;
+
+                data[i] = Color.FromNonPremultiplied(data[i].ToVector4());
+            }
+
+            texture.SetData(data);
+            return texture;
+        }
+
+
+        public static bool ExtendImage(IAssetDataForImage __instance, int minWidth, int minHeight)
+        {
+            return !(__instance.Data is ScaledTexture2D || __instance.Data is MappedTexture2D);
+        }
+        public static bool PatchImage(IAssetDataForImage __instance, ref Texture2D source, ref Rectangle? sourceArea, Rectangle? targetArea, PatchMode patchMode)
+        {
+            var a = new Rectangle(0, 0, __instance.Data.Width, __instance.Data.Height);
+            var s = new Rectangle(0, 0, source.Width, source.Height);
+            var sr = !sourceArea.HasValue ? s : sourceArea.Value;
+            var tr = !targetArea.HasValue ? sr : targetArea.Value;
+
+            if (source is ScaledTexture2D scaled)
+            {
+                if (a == tr && patchMode == PatchMode.Replace)
+                {
+                    __instance.ReplaceWith(source);
+                    return true;
+                }
+
+                if (patchMode == PatchMode.Overlay)
+                    scaled.AsOverlay = true;
+
+                if (scaled.AsOverlay)
+                {
+                    Color[] data = new Color[(int)(tr.Width) * (int)(tr.Height)];
+                    __instance.Data.getArea(tr).GetData(data);
+                    scaled.SetData<Color>(data);
+                }
+
+                if (__instance.Data is MappedTexture2D map)
+                    map.Set(tr, source);
+                else
+                    __instance.ReplaceWith(new MappedTexture2D(__instance.Data, new Dictionary<Rectangle?, Texture2D>() { { tr, source } }));
+            }
+            else if (__instance.Data is MappedTexture2D map)
+            {
+                map.Set(tr, (sr.Width != source.Width || sr.Height != source.Height) ? source.getArea(sr) : source);
+                return false;
+            }else if(__instance.Data is ScaledTexture2D sc)
+            {
+                __instance.ReplaceWith(new MappedTexture2D(__instance.Data, new Dictionary<Rectangle?, Texture2D>() { { tr, (sr.Width != source.Width || sr.Height != source.Height) ? source.getArea(sr) : source } }));
+                return false;
+            }
+
+            return true;
+        }
+
+        public static void FromStreamIntercepter(Stream stream, ref Texture2D __result)
+        {
+            if (stream is FileStream fs)
+                FromPathIntercepter(fs.Name, ref __result);
+        }
+
+        public static void FromPathIntercepter(string path, ref Texture2D __result)
+        {
+            openPath = "";
+            if (Path.GetFileNameWithoutExtension(path) is string key
+                && Path.GetDirectoryName(path) is string dir
+                && Path.Combine(dir, key + ".pytk.json") is string pytkDataFile
+                && File.Exists(pytkDataFile)
+                && Newtonsoft.Json.JsonConvert.DeserializeObject<InterceptorData>(File.ReadAllText(pytkDataFile)) is InterceptorData idata)
+                foreach (IInterceptor<Texture2D> interceptor in ContentInterceptors
+                .Where(i => i is IInterceptor<Texture2D>
+                && i.DataType != null && idata.Mods.Contains(i.Mod.UniqueID)))
+                    if (Newtonsoft.Json.JsonConvert.DeserializeObject(File.ReadAllText(pytkDataFile), interceptor.DataType) is object o && o.GetType() == interceptor.DataType)
+                        __result = interceptor.Handler(__result, o, path);
+        }
+
+        public static bool saveWasLoaded = false;
+
+        public static void saveLoadedXMLFix()
+        {
+            if (saveWasLoaded)
+                return;
+
+            lock (waitForIt)
+            {
+                saveWasLoaded = true;
+            }
+        }
+
+        public void SetUpAssemblyPatch(HarmonyInstance instance, IEnumerable<XmlSerializer> serializers)
+        {
+            foreach (var serializer in serializers)
+            {
+                var cache = serializer.GetType().GetField("cache", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+                Hashtable cacheTable = (Hashtable)cache.GetType().GetField("cache", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(cache);
+
+                foreach (var c in cacheTable.Values)
+                {
+                    var a = (Assembly)c.GetType().GetField("assembly", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(c);
+                    PatchGeneratedSerializers(new Assembly[] { a });
+                }
+
+                instance.Patch(cache.GetType().GetMethod("Add", BindingFlags.NonPublic | BindingFlags.Instance), postfix: new HarmonyMethod(typeof(PyTKMod).GetMethod("AssemblyCachePatch", BindingFlags.Static | BindingFlags.Public)));
+            }
+        }
+
+        public static void AssemblyCachePatch(string ns, object o, object assembly)
+        {
+            PatchGeneratedSerializers(new Assembly[] { (Assembly)assembly.GetType().GetField("assembly", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(assembly) });
         }
 
         public static void serializeFix(ref System.Object o)
@@ -342,87 +582,42 @@ namespace PyTK
 
         private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
         {
-            Thread thread = new Thread(PatchGeneratedSerializers);
-            thread.Start();
             Helper.Events.GameLoop.DayStarted -= GameLoop_DayStarted;
         }
 
-        public static bool saveWasLoaded = false;
-
-        public static void saveLoadedXMLFix()
+        public static void PatchGeneratedSerializers(IEnumerable<Assembly> assemblies)
         {
-            if (saveWasLoaded)
-                return;
-
-            lock (waitForIt)
-            {
-                saveWasLoaded = true;
-            }
-        }
-
-
-        public static List<string> patchedMethods = new List<string>();
-        public void GenerateSerializers()
-        {
-            Thread thread = new Thread(GenerateSerializersThread);
-            thread.Start();
-        }
-
-        public void GenerateSerializersThread()
-        {
-            lock (waitForIt)
-            {
-                List<Type> AddedTypes = new List<Type>()
-            {
-               typeof(StardewValley.Object),
-                typeof(StardewValley.Objects.Chest),
-                typeof(StardewValley.Objects.Furniture),
-                typeof(StardewValley.TerrainFeatures.FruitTree),
-                typeof(StardewValley.Objects.TV),
-                typeof(StardewValley.Objects.Hat),
-                typeof(StardewValley.Item),
-                 typeof(StardewValley.Tool),
-                 typeof(StardewValley.Farm),
-                 typeof(StardewValley.FarmAnimal),
-                 typeof(StardewValley.Farmer),
-                 typeof(StardewValley.AnimalHouse),
-                 typeof(StardewValley.Character),
-                 typeof(StardewValley.NPC),
-                 typeof(StardewValley.GameLocation),
-                 typeof(StardewValley.Locations.FarmHouse),
-                 typeof(SaveGame)
-            };
-
-                SaveGame sg = new SaveGame();
-                DecoratableLocation d = new DecoratableLocation();
-                Farm ff = new Farm();
-
-                foreach (Type type in AddedTypes)
-                    SaveGame.GetSerializer(type);
-
-                PatchGeneratedSerializers();
-            }
-        }
-
-
-        public static void PatchGeneratedSerializers()
-        {
-            lock (waitForPatching)
-            {
-                foreach (var ass in AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.Contains("Microsoft.GeneratedCode")))
-                    foreach (var ty in ass.GetTypes().Where(t => t.Name.StartsWith("XmlSerializationWriter") || t.Name.StartsWith("XmlSerializationReader")))
-                        PatchGeneratedSerializerType(ty);
-            }
+            foreach (var ass in assemblies)
+                foreach (var ty in ass.GetTypes().Where(t => t.Name.StartsWith("XmlSerializer1") || t.Name.StartsWith("XmlSerializationWriter") || t.Name.StartsWith("XmlSerializationReader")))
+                    PatchGeneratedSerializerType(ty);
         }
 
         public static void PatchGeneratedSerializerType(Type ty)
         {
-            foreach (var met in ty.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance))
-                   if (met.Name.Contains("_") && (met.Name.StartsWith("Write") || met.Name.StartsWith("Read")))
-                       if (met.Name.StartsWith("Write") && (new List<ParameterInfo>(met.GetParameters()).Exists(p => p.Name == "o" && p.ParameterType.IsClass && p.ParameterType.FullName.Contains("Stardew"))))
-                           instance.Patch(met, prefix: new HarmonyMethod(typeof(PyTKMod).GetMethod("saveXMLReplacer", BindingFlags.Static | BindingFlags.Public)));
-                       else if (met.Name.StartsWith("Read") && met.ReturnType != null && met.ReturnType.IsClass && met.ReturnType.FullName.Contains("Stardew"))
-                           instance.Patch(met, postfix: new HarmonyMethod(typeof(PyTKMod).GetMethod("saveXMLRebuilder", BindingFlags.Static | BindingFlags.Public)));
+            if (ty.FullName.Contains("XmlSerializer1"))
+            {
+                if (Constants.TargetPlatform != GamePlatform.Android && ty.GetField("cache", BindingFlags.NonPublic | BindingFlags.Static) is FieldInfo field && field.GetValue(null) is object cache)
+                    if (cache.GetType().GetField("cache", BindingFlags.NonPublic | BindingFlags.Instance) is FieldInfo cField && cField.GetValue(cache) is Hashtable cacheTable)
+                    {
+                        foreach (var c in cacheTable.Values)
+                        {
+                            var a = (Assembly)c.GetType().GetField("assembly", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(c);
+                            PatchGeneratedSerializers(new Assembly[] { a });
+                        }
+
+                        instance.Patch(cache.GetType().GetMethod("Add", BindingFlags.NonPublic | BindingFlags.Instance), postfix: new HarmonyMethod(typeof(PyTKMod).GetMethod("AssemblyCachePatch", BindingFlags.Static | BindingFlags.Public)));
+                    }
+            }
+            else
+            {
+                foreach (var met in ty.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance))
+                    if (met.Name.Contains("_") && (met.Name.StartsWith("Write") || met.Name.StartsWith("Read")))
+                        if (met.Name.StartsWith("Write") && (new List<ParameterInfo>(met.GetParameters()).Exists(p => p.Name == "o" && p.ParameterType.IsClass && p.ParameterType.FullName.Contains("Stardew"))))
+                            instance.Patch(met, prefix: new HarmonyMethod(typeof(PyTKMod).GetMethod("saveXMLReplacer", BindingFlags.Static | BindingFlags.Public)));
+                        else if (met.Name.StartsWith("Read") && met.ReturnType != null && met.ReturnType.IsClass && met.ReturnType.FullName.Contains("Stardew"))
+                            instance.Patch(met, postfix: new HarmonyMethod(typeof(PyTKMod).GetMethod("saveXMLRebuilder", BindingFlags.Static | BindingFlags.Public)));
+                        
+            }
         }
 
         public static void saveXMLReplacer(ref object o)
@@ -449,12 +644,10 @@ namespace PyTK
                 }
                 catch (Exception e)
                 {
-                    if (saveWasLoaded)
-                    {
+                  
                         _monitor.Log("Error during serialization: " + serializer.Name, LogLevel.Error);
                         _monitor.Log(e.Message);
                         _monitor.Log(e.StackTrace);
-                    }
                 }
         }
 

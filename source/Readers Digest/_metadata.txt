@@ -5,12 +5,9 @@ mods:
    Readers Digest
 
 latest commit:
-   commit b8f6ec1ce600bda77fcf23c51a3c8ceb66d3d207
-   Merge: d907d59 2b16d36
-   Author: RÃ©my Bach <remy@bach.me.uk>
-   Date:   Tue Feb 18 20:36:27 2020 +0000
+   commit e8f96c216fa634e9782082b94b1101d90d9ad859
+   Author: Remy Bach <remy@bach.me.uk>
+   Date:   Sun Feb 23 23:05:01 2020 +0000
    
-       Merge pull request #3 from Pathoschild/update-code
-       
-       Update for SMAPI 3.0, internal refactoring
+       Update entry dll to use correct casing
    

@@ -1,10 +1,14 @@
 {
   "Name": "Better Quality, More Seeds",
   "Author": "Brandon Marquis Markail Green (Space Baby)",
-  "Version": "1.1.2",
+  "Version": "2.0.0-3",
   "Description": "Gain More Seeds For Adding Better Quality Crops",
   "UniqueID": "SB_BQMS",
   "EntryDll": "BetterQualityMoreSeeds.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [ "Nexus:935" ]
+  "UpdateKeys": [ "Nexus:935" ],
+  "Dependencies": [{
+      "UniqueID": "Pathoschild.Automate",
+      "IsRequired": false
+  }]
 }

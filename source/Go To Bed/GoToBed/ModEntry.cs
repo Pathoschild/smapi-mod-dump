@@ -7,9 +7,23 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
 
+using Harmony;
+
+using GoToBed.Framework;
+
+
 namespace GoToBed {
     public class ModEntry : Mod {
+        private ModConfig config_;
+
         public override void Entry(IModHelper helper) {
+            config_ = helper.ReadConfig<ModConfig>();
+
+            if (config_.Stardew13SpouseSleep) {
+                // Provide StardewValley13 spouse sleeping behavior.
+                Stardew13SpouseSleepPatch.Create(this.ModManifest.UniqueID, this.Monitor);
+            }
+
             // Hook into MenuChanged event to intercept dialogues.
             this.Helper.Events.Display.MenuChanged += OnMenuChanged;
             // Enable controls at the end of day.

@@ -1,0 +1,14 @@
+
+{
+    "msg.warm": "불꽃의 따스함이 밤사이 추위로부터 지켜주었다.",
+    "msg.cold": "밤의 추위가 당신에게서 스태미너를 빼앗아버렸다.",
+    "msg.spousecold": "당신의 가족은 밤에 추웠다.",
+    "dia.spousecold": "난 오늘 밤에 얼어 있다.",
+    "dia.spousecold_child": "{{child1}}은 얼어 있다.",
+    "dia.spousecold_children": "{{child1}}하고 {{child2}}은 얼어 있다.",
+    "dia.please": "벽난로에 불을 붙이세요.",
+    "msg.nowood": "불을 붙이는데 {{wood_pieces}}개의 나무가 필요한다.",
+    "msg.temp": "온도: ",
+    "msg.tempwarm": "따뜻해",
+    "msg.tempcold": "추워"
+}

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace HorseWhistle
 {
-    internal class RectangleSprite
+    internal static class RectangleSprite
     {
         static Texture2D _pointTexture;
 

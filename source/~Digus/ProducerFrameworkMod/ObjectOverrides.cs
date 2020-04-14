@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Text.RegularExpressions;
 using Harmony;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using ProducerFrameworkMod.ContentPack;
 using StardewValley;
+using StardewValley.Network;
+using StardewValley.Objects;
+using StardewValley.TerrainFeatures;
 using Object = StardewValley.Object;
 
 namespace ProducerFrameworkMod
@@ -21,12 +26,35 @@ namespace ProducerFrameworkMod
                 return false;
             Object input = (Object) dropInItem;
 
+            bool failLocationCondition = false;
+            bool failSeasonCondition = false;
+
+            if (__instance.heldObject.Value != null && !__instance.name.Equals("Crystalarium") || input.bigCraftable.Value)
+            {
+                return true;
+            }
+
+            ProducerConfig producerConfig = ProducerController.GetProducerConfig(__instance.Name);
+
+            GameLocation location = who.currentLocation;
+            if (producerConfig != null)
+            {
+                if (!producerConfig.CheckLocationCondition(location))
+                {
+                    failLocationCondition = true;
+                }
+                if (!producerConfig.CheckSeasonCondition())
+                {
+                    failSeasonCondition = true;
+                }
+                if (producerConfig.NoInputStartMode != null)
+                {
+                    return false;
+                }
+            }
+
             if (ProducerController.GetProducerItem(__instance.name, input) is ProducerRule producerRule)
             {
-                if (__instance.heldObject.Value != null && !__instance.name.Equals("Crystalarium") || input.bigCraftable.Value)
-                {
-                    return true;
-                }
                 if (ProducerRuleController.IsInputExcluded(producerRule, input))
                 {
                     return true;
@@ -36,21 +64,16 @@ namespace ProducerFrameworkMod
                 {
                     __instance.scale.X = 5f;
                 }
+
                 try
                 {
-                    ProducerConfig producerConfig = ProducerController.GetProducerConfig(__instance.Name);
-
-                    GameLocation location = who.currentLocation;
-                    if (producerConfig != null)
+                    if (failLocationCondition)
                     {
-                        if (!producerConfig.CheckLocationCondition(location))
-                        {
-                            throw new RestrictionException(DataLoader.Helper.Translation.Get("Message.Condition.Location"));
-                        }
-                        if (!producerConfig.CheckSeasonCondition())
-                        {
-                            throw new RestrictionException(DataLoader.Helper.Translation.Get("Message.Condition.Season"));
-                        }
+                        throw new RestrictionException(DataLoader.Helper.Translation.Get("Message.Condition.Location"));
+                    }
+                    if (failSeasonCondition)
+                    {
+                        throw new RestrictionException(DataLoader.Helper.Translation.Get("Message.Condition.Season"));
                     }
 
                     ProducerRuleController.ValidateIfInputStackLessThanRequired(producerRule, input);
@@ -91,7 +114,7 @@ namespace ProducerFrameworkMod
                 }
                 return false;
             }
-            return true;
+            return !failLocationCondition && !failSeasonCondition;
         }
 
         private static bool RemoveItemsFromInventory(Farmer farmer, int index, int stack)
@@ -117,16 +140,30 @@ namespace ProducerFrameworkMod
             return false;
         }
 
-        internal static void checkForActionPostfix(Object __instance, bool justCheckingForActivity, bool __result)
+        internal static void checkForActionPostfix(Object __instance, Farmer who, bool justCheckingForActivity, bool __result, bool __state)
         {
-            if (ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig && __instance.heldObject.Value == null && __instance.MinutesUntilReady <= 0)
+            if (ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig && __instance.heldObject.Value == null)
             {
-                __instance.showNextIndex.Value = false;
+                if (__instance.MinutesUntilReady <= 0)
+                {
+                    __instance.showNextIndex.Value = false;
+                }
+
+                if (!__state && !justCheckingForActivity && __result && producerConfig.LightSource?.AlwaysOn == true)
+                {
+                    int identifier = LightSourceConfigController.GenerateIdentifier(__instance.tileLocation);
+                    if (who.currentLocation.hasLightSource(identifier))
+                    {
+                        who.currentLocation.removeLightSource(identifier);
+                        __instance.initializeLightSource(__instance.tileLocation);
+                    }
+                }
             }
         }
 
-        internal static bool minutesElapsedPrefix(Object __instance, ref int minutes, GameLocation environment)
+        internal static bool minutesElapsedPrefix(Object __instance, ref int minutes, GameLocation environment, out bool __state)
         {
+            __state = false;
             if (ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig)
             {
                 if (!producerConfig.CheckWeatherCondition())
@@ -134,19 +171,57 @@ namespace ProducerFrameworkMod
                     return false;
                 }
 
-                if (!producerConfig.CheckTimeCondition(ref minutes))
+                if (!producerConfig.CheckElapsedTimeCondition(ref minutes))
                 {
                     return false;
+                }
+
+                if (producerConfig.ProducerName == "Bee House" && producerConfig.WorkingOutdoors != true)
+                {
+                    if (Game1.IsMasterGame)
+                    {
+                        __instance.minutesUntilReady.Value -= minutes;
+                    }
+                    if (__instance.minutesUntilReady.Value <= 0)
+                    {
+                        if (!__instance.readyForHarvest.Value)
+                        {
+                            environment.playSound("dwop", NetAudio.SoundContext.Default);
+                        }
+                        __instance.readyForHarvest.Value = true;
+                        __instance.minutesUntilReady.Value = 0;
+                        __instance.onReadyForHarvest(environment);
+                        __instance.showNextIndex.Value = true;
+                        if (__instance.lightSource != null)
+                        {
+                            environment.removeLightSource(__instance.lightSource.identifier.Value);
+                            __instance.lightSource = (LightSource)null;
+                        }
+                    }
+                    if (!__instance.readyForHarvest.Value && Game1.random.NextDouble() < 0.33)
+                    {
+                        __instance.addWorkingAnimation(environment);
+                    }
+                    return false;
+                }
+
+                if (producerConfig.LightSource?.AlwaysOn == true && __instance.minutesUntilReady - minutes <= 0 && __instance.heldObject.Value != null && !__instance.readyForHarvest)
+                {
+                    __state = true;
                 }
             }
             return true;
         }
 
-        internal static void minutesElapsedPostfix(Object __instance)
+        internal static void minutesElapsedPostfix(Object __instance, bool __state)
         {
             if (ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig && __instance.heldObject.Value != null && __instance.MinutesUntilReady <= 0)
             {
                 __instance.showNextIndex.Value = producerConfig.AlternateFrameWhenReady;
+            }
+            if (__state)
+            {
+                __instance.initializeLightSource(__instance.tileLocation);
             }
         }
 
@@ -159,6 +234,15 @@ namespace ProducerFrameworkMod
             {
                 linkedListNode.Value = new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ObjectOverrides), "getScale", new Type[] {typeof(Object)}));
             }
+
+            codeInstruction = newInstructions.FirstOrDefault(c => c.opcode == OpCodes.Callvirt && c.operand?.ToString() == "Void Draw(Microsoft.Xna.Framework.Graphics.Texture2D, Microsoft.Xna.Framework.Rectangle, System.Nullable`1[Microsoft.Xna.Framework.Rectangle], Microsoft.Xna.Framework.Color, Single, Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework.Graphics.SpriteEffects, Single)");
+            linkedListNode = newInstructions.Find(codeInstruction);
+            if (linkedListNode != null && codeInstruction != null)
+            {
+                newInstructions.AddBefore(linkedListNode, new CodeInstruction(OpCodes.Ldarg_0, null));
+                linkedListNode.Value = new CodeInstruction(OpCodes.Call, AccessTools.FirstMethod(typeof(ObjectOverrides), m=> m.Name == "DrawAnimation"));
+            }
+
             return newInstructions;
         }
 
@@ -182,26 +266,48 @@ namespace ProducerFrameworkMod
                 {
                     return Vector2.Zero;
                 }
-                else if (producerConfig.WorkingTime != null)
+                else if (!producerConfig.CheckCurrentTimeCondition())
                 {
-                    if (producerConfig.WorkingTime.Begin <= producerConfig.WorkingTime.End)
-                    {
-                        if (Game1.timeOfDay < producerConfig.WorkingTime.Begin || Game1.timeOfDay >= producerConfig.WorkingTime.End)
-                        {
-                            return Vector2.Zero;
-                        }
-                    
-                    }
-                    else
-                    {
-                        if (Game1.timeOfDay >= producerConfig.WorkingTime.End && Game1.timeOfDay < producerConfig.WorkingTime.Begin)
-                        {
-                            return Vector2.Zero;
-                        }
-                    }
+                    return Vector2.Zero;
                 }
             }
             return __instance.getScale();
+        }
+
+        public static void DrawAnimation(
+            SpriteBatch spriteBatch,
+            Texture2D texture,
+            Rectangle destinationRectangle,
+            Rectangle? sourceRectangle,
+            Color color,
+            float rotation,
+            Vector2 origin,
+            SpriteEffects effects,
+            float layerDepth,
+            Object producer)
+        {
+            if (ProducerController.GetProducerConfig(producer.Name) is ProducerConfig producerConfig)
+            {
+                if (producerConfig.ProducingAnimation is Animation producingAnimation && producer.minutesUntilReady > 0 && producingAnimation.RelativeFrameIndex.Any())
+                {
+                    int frame = producingAnimation.RelativeFrameIndex[((Game1.ticks + GetLocationSeed(producer.TileLocation)) % (producingAnimation.RelativeFrameIndex.Count * producingAnimation.FrameInterval)) / producingAnimation.FrameInterval];
+                    spriteBatch.Draw(texture, destinationRectangle, new Rectangle?(Object.getSourceRectForBigCraftable(producer.ParentSheetIndex + frame)), color, rotation, origin, effects, layerDepth);
+                    return;
+                }
+                else if (producerConfig.ReadyAnimation is Animation readyAnimation && producer.readyForHarvest.Value && readyAnimation.RelativeFrameIndex.Any())
+                {
+                    int frame = readyAnimation.RelativeFrameIndex[((Game1.ticks + GetLocationSeed(producer.TileLocation)) % (readyAnimation.RelativeFrameIndex.Count * readyAnimation.FrameInterval)) / readyAnimation.FrameInterval];
+                    spriteBatch.Draw(texture, destinationRectangle, new Rectangle?(Object.getSourceRectForBigCraftable(producer.ParentSheetIndex + frame)), color, rotation, origin, effects, layerDepth);
+                    return;
+                }
+            }
+            spriteBatch.Draw(texture,destinationRectangle,sourceRectangle,color,rotation,origin,effects,layerDepth);
+            
+        }
+
+        private static int GetLocationSeed(Vector2 tileLocation)
+        {
+            return (int)tileLocation.X * (int)tileLocation.X * 13 + (int)tileLocation.Y * (int)tileLocation.Y * 1019;
         }
 
         [HarmonyPriority(800)]
@@ -209,28 +315,29 @@ namespace ProducerFrameworkMod
         {
             if (ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig)
             {
-                if (producerConfig.NoInputStartMode != null)
+                try
                 {
-                    try
+                    if (!producerConfig.CheckLocationCondition(who.currentLocation))
                     {
-                        if (!producerConfig.CheckLocationCondition(who.currentLocation))
-                        {
-                            throw new RestrictionException(DataLoader.Helper.Translation.Get("Message.Condition.Location"));
-                        }
-                        else if (producerConfig.CheckSeasonCondition() && NoInputStartMode.Placement == producerConfig.NoInputStartMode)
+                        throw new RestrictionException(DataLoader.Helper.Translation.Get("Message.Condition.Location"));
+                    }
+                    if (producerConfig.NoInputStartMode != null)
+                    {
+                        if (producerConfig.CheckSeasonCondition() && NoInputStartMode.Placement == producerConfig.NoInputStartMode)
                         {
                             if (ProducerController.GetProducerItem(__instance.Name, null) is ProducerRule producerRule)
                             {
                                 ProducerRuleController.ProduceOutput(producerRule, __instance, (i, q) => who.hasItemInInventory(i, q), who, who.currentLocation, producerConfig);
                             }
                         }
+                        return __result = false;
                     }
-                    catch (RestrictionException e)
+                }
+                catch (RestrictionException e)
+                {
+                    if (e.Message != null && who.IsLocalPlayer)
                     {
-                        if (e.Message != null && who.IsLocalPlayer)
-                        {
-                            Game1.showRedMessage(e.Message);
-                        }
+                        Game1.showRedMessage(e.Message);
                     }
                     return __result = false;
                 }
@@ -238,8 +345,9 @@ namespace ProducerFrameworkMod
             return true;
         }
 
-        internal static bool checkForActionPrefix(Object __instance, Farmer who, bool justCheckingForActivity, ref bool __result)
+        internal static bool checkForActionPrefix(Object __instance, Farmer who, bool justCheckingForActivity, ref bool __result, out bool __state)
         {
+            __state = false;
             if (__instance.isTemporarilyInvisible
                 || !__instance.readyForHarvest.Value
                 || justCheckingForActivity)
@@ -247,15 +355,17 @@ namespace ProducerFrameworkMod
                 return true;
             }
 
+            ProducerRuleController.PrepareOutput(__instance, who.currentLocation, who);
+
             if (ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig)
             {
                 if (producerConfig.NoInputStartMode != null || producerConfig.IncrementStatsOnOutput.Count > 0)
                 {
-                    Object previousObject = __instance.heldObject.Value;
                     if (who.isMoving())
                     {
                         Game1.haltAfterCheck = false;
                     }
+                    Object previousObject = __instance.heldObject.Value;
                     __instance.heldObject.Value = (Object)null;
                     if (who.IsLocalPlayer)
                     {
@@ -266,24 +376,10 @@ namespace ProducerFrameworkMod
                             return __result = false;
                         }
                         Game1.playSound("coin");
-                        foreach (KeyValuePair<StardewStats, string> keyValuePair in producerConfig.IncrementStatsOnOutput)
-                        {
-                            if (keyValuePair.Value == null
-                                || keyValuePair.Value == previousObject.Name
-                                || keyValuePair.Value == previousObject.ParentSheetIndex.ToString()
-                                || keyValuePair.Value == previousObject.Category.ToString()
-                                || previousObject.HasContextTag(keyValuePair.Value))
-                            {
-                                StatsController.IncrementStardewStats(keyValuePair.Key, previousObject.Stack);
-                                if (!producerConfig.MultipleStatsIncrement)
-                                {
-                                    break;
-                                }
-                            }
-                        }
+                        producerConfig.IncrementStats(previousObject);
                     }
-                    __instance.readyForHarvest.Value = false;
-                    __instance.showNextIndex.Value = false;
+                    ProducerRuleController.ClearProduction(__instance, who.currentLocation);
+                    __state = true;
                     __result = true;
                     if (producerConfig.NoInputStartMode == NoInputStartMode.Placement)
                     {
@@ -296,12 +392,11 @@ namespace ProducerFrameworkMod
                                 }
                                 else if(producerConfig.CheckSeasonCondition())
                                 {
-                                    __result = ProducerRuleController.ProduceOutput(producerRule, __instance, (i, q) => who.hasItemInInventory(i, q), who, who.currentLocation, producerConfig) != null;
+                                    __result = ProducerRuleController.ProduceOutput(producerRule, __instance, (i, q) => false, who, who.currentLocation, producerConfig) != null;
                                 }
                             }
                             catch (RestrictionException e)
                             {
-                                __result = false;
                                 if (e.Message != null && who.IsLocalPlayer)
                                 {
                                     Game1.showRedMessage(e.Message);
@@ -326,7 +421,7 @@ namespace ProducerFrameworkMod
                     {
                         if (!producerConfig.CheckSeasonCondition() || ! producerConfig.CheckLocationCondition(location))
                         {
-                            ProducerRuleController.ClearProduction(__instance);
+                            ProducerRuleController.ClearProduction(__instance, location);
                             return false;
                         }
                         else if (producerConfig.NoInputStartMode != null)
@@ -356,7 +451,7 @@ namespace ProducerFrameworkMod
 
         internal static bool LoadDisplayName(Object __instance, ref string __result)
         {
-            if (NameUtils.HasCustomNameForIndex(__instance.ParentSheetIndex) && !__instance.preserve.Value.HasValue && __instance.ParentSheetIndex != 463 && __instance.ParentSheetIndex != 464)
+            if (NameUtils.HasCustomNameForIndex(__instance.ParentSheetIndex) && !__instance.preserve.Value.HasValue && __instance.ParentSheetIndex != 463 && __instance.ParentSheetIndex != 464 && __instance.ParentSheetIndex != 340 )
             {
                 IDictionary<int, string> objects = Game1.objectInformation;
                 string translation = NameUtils.GetCustomNameFromIndex(__instance.ParentSheetIndex);
@@ -376,7 +471,11 @@ namespace ProducerFrameworkMod
                 
                 if (translation.Contains("{inputName}"))
                 {
-                    if (objects.TryGetValue(__instance.preservedParentSheetIndex.Value, out var preservedData))
+                    if (__instance.preservedParentSheetIndex.Value == -1)
+                    {
+                        translation = translation.Replace("{inputName}", NameUtils.GetGenericParentNameFromIndex(__instance.ParentSheetIndex));
+                    }
+                    else if (objects.TryGetValue(__instance.preservedParentSheetIndex.Value, out var preservedData))
                     {
                         translation = translation.Replace("{inputName}", ObjectUtils.GetObjectParameter(preservedData,(int)ObjectParameter.DisplayName));
                     }
@@ -395,7 +494,9 @@ namespace ProducerFrameworkMod
                     string farmerName = Game1.getAllFarmers().FirstOrDefault(f => __instance.Name.Contains(f.name))?.Name ?? Game1.player.Name;
                     translation = translation.Replace("{farmerName}", farmerName);
                 }
-                __result = translation;
+                Regex regex = new Regex("[ ]{2,}", RegexOptions.None);
+
+                __result = regex.Replace(translation, " ");
                 return false;
             }
             return true;

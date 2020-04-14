@@ -19,7 +19,7 @@ namespace BetterJunimos.Abilities {
         }
 
         public bool PerformAction(Farm farm, Vector2 pos, JunimoHarvester junimo, Chest chest) {
-            // Don't do anything, as the base junimo handles this already
+            // Don't do anything, as the base junimo handles this already (see PatchHarvestAttemptToCustom)
             return true;
         }
 

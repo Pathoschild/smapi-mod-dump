@@ -11,9 +11,9 @@ mods:
    Customize Cursor Sprite
 
 latest commit:
-   commit f6f22e9cd0efadd585dc69b76727c8d890c46f90
+   commit 7ac5066839e130f44e4e288726a8cf426b2f7ca0
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Tue Feb 18 20:56:45 2020 +0000
+   Date:   Mon Apr 6 13:13:11 2020 +0100
    
-       [MoreGrass] Add a bluey-green colour to the grass break animation
+       [FarmAnimalVarietyRedux] Add initial project files
    

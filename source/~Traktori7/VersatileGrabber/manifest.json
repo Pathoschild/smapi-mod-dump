@@ -1,0 +1,15 @@
+﻿{
+  "Name": "Versatile Grabber",
+  "Author": "Traktori",
+  "Version": "1.0.0",
+  "Description": "Versatile auto grabbing",
+  "UniqueID": "Traktori.VersatileGrabber",
+  "EntryDll": "VersatileGrabber.dll",
+  "MinimumApiVersion": "3.0",
+  "UpdateKeys": [ "Nexus:" ],
+  "Dependencies": [
+    {
+        "UniqueID": "spacechase0.JsonAssets"
+    }
+  ]
+}

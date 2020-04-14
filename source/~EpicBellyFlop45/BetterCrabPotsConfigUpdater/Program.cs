@@ -7,11 +7,14 @@ using System.IO;
 namespace BetterCrabPotsConfigUpdater
 {
     /// <summary>The program entry point.</summary>
-    class Program
+    public class Program
     {
+        /*********
+        ** Public Methods 
+        *********/
         /// <summary>The program entry point.</summary>
         /// <param name="args">The passed arguments. These will be the 'OldConfig' and 'NewConfig' folder paths.</param>
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             try
             {
@@ -27,8 +30,7 @@ namespace BetterCrabPotsConfigUpdater
                 OldModConfig oldModConfig;
                 using (StreamReader file = File.OpenText(oldConfigPath))
                 {
-                    JsonSerializer serializer = new JsonSerializer();
-                    oldModConfig = (OldModConfig)serializer.Deserialize(file, typeof(OldModConfig));
+                    oldModConfig = (OldModConfig)new JsonSerializer().Deserialize(file, typeof(OldModConfig));
                 }
 
                 NewModConfig newModConfig = ConvertToNewConfigLayout(oldModConfig);
@@ -37,26 +39,28 @@ namespace BetterCrabPotsConfigUpdater
                 {
                     jWriter.Formatting = Formatting.Indented;
 
-                    JsonSerializer serializer = new JsonSerializer();
-                    serializer.Serialize(jWriter, newModConfig);
+                    new JsonSerializer().Serialize(jWriter, newModConfig);
                 }
 
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("\nconfig.json successfully converted");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Press any key to exit...");
-                Console.ReadKey();
             }
             catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"\nconfig.json failed to convert: {ex.Message}\n{ex.StackTrace}");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Press any key to exit...");
-                Console.ReadKey();
             }
+
+            Console.WriteLine("Press any key to exit...");
+            Console.ReadKey();
         }
 
+
+        /*********
+        ** Private Methods 
+        *********/
         /// <summary>This method ensures there are a valid amount of arguments.</summary>
         /// <param name="args">The arguments passed to the app.</param>
         /// <returns>Returns a bool depending if the arguments are valid.</returns>
@@ -87,7 +91,7 @@ namespace BetterCrabPotsConfigUpdater
             newModConfig.PercentChanceForPassiveTrash = oldModConfig.PercentChanceForPassiveTrash;
             newModConfig.WhatCanBeFoundAsPassiveTrash = oldModConfig.WhatCanBeFoundAsPassiveTrash;
 
-            // Convert what can be found in farmLand
+            // farmLand
             foreach (KeyValuePair<int, int> farmLandItem in oldModConfig.WhatCanBeFoundInFarmLand)
             {
                 Item test3 = new Item(farmLandItem.Key, farmLandItem.Value, 1);
@@ -98,7 +102,7 @@ namespace BetterCrabPotsConfigUpdater
                 newModConfig.FarmLand.WhatTrashCanBeFound.Add(new Item(farmLandTrashItem.Key, farmLandTrashItem.Value, 1));
             }
 
-            // Convert what can be found in cindersapForest
+            // cindersapForest
             foreach (KeyValuePair<int, int> cindersapForestItem in oldModConfig.WhatCanBeFoundInCindersapForest)
             {
                 newModConfig.CindersapForest.WhatCanBeFound.Add(new Item(cindersapForestItem.Key, cindersapForestItem.Value, 1));
@@ -108,7 +112,7 @@ namespace BetterCrabPotsConfigUpdater
                 newModConfig.CindersapForest.WhatTrashCanBeFound.Add(new Item(cindersapForestTrashItem.Key, cindersapForestTrashItem.Value, 1));
             }
 
-            // Convert what can be found in the mountainsLake
+            // mountainsLake
             foreach (KeyValuePair<int, int> mountainsLakeItem in oldModConfig.WhatCanBeFoundInMountainsLake)
             {
                 newModConfig.MountainsLake.WhatCanBeFound.Add(new Item(mountainsLakeItem.Key, mountainsLakeItem.Value, 1));
@@ -118,7 +122,7 @@ namespace BetterCrabPotsConfigUpdater
                 newModConfig.MountainsLake.WhatTrashCanBeFound.Add(new Item(mountainsLakeTrashItem.Key, mountainsLakeTrashItem.Value, 1));
             }
                 
-            // Convert what can be found in the town
+            // town
             foreach (KeyValuePair<int, int> townItem in oldModConfig.WhatCanBeFoundInTown)
             {
                 newModConfig.Town.WhatCanBeFound.Add(new Item(townItem.Key, townItem.Value, 1));
@@ -128,7 +132,7 @@ namespace BetterCrabPotsConfigUpdater
                 newModConfig.Town.WhatTrashCanBeFound.Add(new Item(townTrashItem.Key, townTrashItem.Value, 1));
             }
 
-            // Convert what can be found in the minesLayer20
+            // minesLayer20
             foreach (KeyValuePair<int, int> minesLayer20Item in oldModConfig.WhatCanBeFoundInMines_Layer20)
             {
                 newModConfig.Mines_Layer20.WhatCanBeFound.Add(new Item(minesLayer20Item.Key, minesLayer20Item.Value, 1));
@@ -138,7 +142,7 @@ namespace BetterCrabPotsConfigUpdater
                 newModConfig.Mines_Layer20.WhatTrashCanBeFound.Add(new Item(minesLayer20TrashItem.Key, minesLayer20TrashItem.Value, 1));
             }
 
-            // Convert what can be found in the minesLayer60
+            // minesLayer60
             foreach (KeyValuePair<int, int> minesLayer60Item in oldModConfig.WhatCanBeFoundInMines_Layer60)
             {
                 newModConfig.Mines_Layer60.WhatCanBeFound.Add(new Item(minesLayer60Item.Key, minesLayer60Item.Value, 1));
@@ -148,7 +152,7 @@ namespace BetterCrabPotsConfigUpdater
                 newModConfig.Mines_Layer60.WhatTrashCanBeFound.Add(new Item(minesLayer60TrashItem.Key, minesLayer60TrashItem.Value, 1));
             }
 
-            // Convert what can be found in the minesLayer100
+            // minesLayer100
             foreach (KeyValuePair<int, int> minesLayer100Item in oldModConfig.WhatCanBeFoundInMines_Layer100)
             {
                 newModConfig.Mines_Layer100.WhatCanBeFound.Add(new Item(minesLayer100Item.Key, minesLayer100Item.Value, 1));
@@ -158,7 +162,7 @@ namespace BetterCrabPotsConfigUpdater
                 newModConfig.Mines_Layer100.WhatTrashCanBeFound.Add(new Item(minesLayer100TrashItem.Key, minesLayer100TrashItem.Value, 1));
             }
 
-            // Convert what can be found in the mutantBugLair
+            // mutantBugLair
             foreach (KeyValuePair<int, int> mutantBugLairItem in oldModConfig.WhatCanBeFoundInMutantBugLair)
             {
                 newModConfig.MutantBugLair.WhatCanBeFound.Add(new Item(mutantBugLairItem.Key, mutantBugLairItem.Value, 1));
@@ -168,7 +172,7 @@ namespace BetterCrabPotsConfigUpdater
                 newModConfig.MutantBugLair.WhatTrashCanBeFound.Add(new Item(mutantBugLairTrashItem.Key, mutantBugLairTrashItem.Value, 1));
             }
 
-            // Convert what can be found in the witchsSwamp
+            // witchsSwamp
             foreach (KeyValuePair<int, int> witchsSwampItem in oldModConfig.WhatCanBeFoundInWitchsSwamp)
             {
                 newModConfig.WitchsSwamp.WhatCanBeFound.Add(new Item(witchsSwampItem.Key, witchsSwampItem.Value, 1));
@@ -178,7 +182,7 @@ namespace BetterCrabPotsConfigUpdater
                 newModConfig.WitchsSwamp.WhatTrashCanBeFound.Add(new Item(witchsSwampTrashItem.Key, witchsSwampTrashItem.Value, 1));
             }
 
-            // Convert what can be found in the secretWoods
+            // secretWoods
             foreach (KeyValuePair<int, int> secretWoodsItem in oldModConfig.WhatCanBeFoundInSecretWoods)
             {
                 newModConfig.SecretWoods.WhatCanBeFound.Add(new Item(secretWoodsItem.Key, secretWoodsItem.Value, 1));
@@ -188,7 +192,7 @@ namespace BetterCrabPotsConfigUpdater
                 newModConfig.SecretWoods.WhatTrashCanBeFound.Add(new Item(secretWoodsTrashItem.Key, secretWoodsTrashItem.Value, 1));
             }
 
-            // Convert what can be found in the desert
+            // desert
             foreach (KeyValuePair<int, int> desertItem in oldModConfig.WhatCanBeFoundInDesert)
             {
                 newModConfig.Desert.WhatCanBeFound.Add(new Item(desertItem.Key, desertItem.Value, 1));
@@ -198,7 +202,7 @@ namespace BetterCrabPotsConfigUpdater
                 newModConfig.Desert.WhatTrashCanBeFound.Add(new Item(desertTrashItem.Key, desertTrashItem.Value, 1));
             }
 
-            // Convert what can be found in the sewers
+            // sewers
             foreach (KeyValuePair<int, int> sewerItem in oldModConfig.WhatCanBeFoundInSewers)
             {
                 newModConfig.Sewers.WhatCanBeFound.Add(new Item(sewerItem.Key, sewerItem.Value, 1));
@@ -208,7 +212,7 @@ namespace BetterCrabPotsConfigUpdater
                 newModConfig.Sewers.WhatTrashCanBeFound.Add(new Item(sewerTrashItem.Key, sewerTrashItem.Value, 1));
             }
 
-            // Convert what can be found in the beach
+            // beach
             foreach (KeyValuePair<int, int> beachItem in oldModConfig.WhatCanBeFoundInOcean)
             {
                 newModConfig.Beach.WhatCanBeFound.Add(new Item(beachItem.Key, beachItem.Value, 1));

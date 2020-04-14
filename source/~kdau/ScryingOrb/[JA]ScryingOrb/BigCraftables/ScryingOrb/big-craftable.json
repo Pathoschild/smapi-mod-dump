@@ -1,0 +1,37 @@
+﻿{
+	"Name": "Scrying Orb",
+	"Price": 50,
+	"Description": "Make an appropriate offering to predict the future.",
+	"ProvidesLight": false,
+	"Recipe":
+	{
+		"ResultCount": 1,
+		"Ingredients":
+		[
+			{
+				"Object": 338,
+				"//ObjectName": "Refined Quartz",
+				"Count": 3
+			},
+			{
+				"Object": 390,
+				"//ObjectName": "Stone",
+				"Count": 10
+			}
+		],
+		"IsDefault": false,
+		"CanPurchase": false
+	},
+	"NameLocalization":
+	{
+		"fr": "Orbe de scrutation",
+		"ru": "Шар для предсказаний",
+		"zh": "预知水晶球"
+	},
+	"DescriptionLocalization":
+	{
+		"fr": "Faites une offre appropriée pour prédire l'avenir.",
+		"ru": "Сделайте соответствующую жертву духам, чтобы предсказать будущее.",
+		"zh": "给你提供一个适合的建议来预测未来."
+	}
+}

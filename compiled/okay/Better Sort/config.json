@@ -21,5 +21,7 @@
     "4": "Pickaxe",
     "5": "Scythe"
   },
+  "RightClickItemLock": {},
+  "MiddleClickItemLock": {},
   "ShortcutButtons": []
 }

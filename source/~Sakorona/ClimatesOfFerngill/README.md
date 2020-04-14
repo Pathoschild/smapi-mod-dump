@@ -1,6 +1,6 @@
 ﻿# Climates of Ferngill
 
-Current Version: 1.5.5
+Current Version: 1.5.9
 
 ## What's New
 - Variable Rain.
@@ -69,6 +69,8 @@ This mod uses harmony to patch functions to allow it to draw custom rain and sno
 - Amu Tsukiyomi for all of the debris sprites, and several icon sprites
 - jahangmar for a bug fix re sync
 - floatingatoll for a bug fix re fog flashes
+- kdau and Strobe for testing
+- Corrin, Hadi and Mae for suggestions
 - The SDV discord #modding channel for discussions and encouragement.
 
 If I have left you out of acknowledgements, please contact me so I can get you added to the acknowledgement list

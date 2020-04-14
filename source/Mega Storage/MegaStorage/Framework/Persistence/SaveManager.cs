@@ -1,65 +1,109 @@
-﻿namespace MegaStorage.Framework.Persistence
+﻿using furyx639.Common;
+using Microsoft.Xna.Framework;
+using StardewValley;
+using StardewValley.Objects;
+using System;
+using System.Linq;
+using Context = StardewModdingAPI.Context;
+
+namespace MegaStorage.Framework.Persistence
 {
-    public class SaveManager
+    internal static class SaveManager
     {
-        private readonly ISaver[] _savers;
-        private readonly FarmhandMonitor _farmhandMonitor;
+        /*********
+        ** Fields
+        *********/
+        public const string SaveDataKey = "NiceChest";
 
-        public SaveManager(FarmhandMonitor farmhandMonitor, params ISaver[] savers)
+        /*********
+        ** Public methods
+        *********/
+        public static void Start()
         {
-            _savers = savers;
-            _farmhandMonitor = farmhandMonitor;
-        }
+            MegaStorageMod.ModHelper.Events.GameLoop.SaveLoaded += ReloadCustomChests;
+            MegaStorageMod.ModHelper.Events.GameLoop.Saving += HideAndSaveCustomChests;
+            MegaStorageMod.ModHelper.Events.GameLoop.ReturnedToTitle += HideAndSaveCustomChests;
+            MegaStorageMod.ModHelper.Events.Multiplayer.PeerContextReceived += HideAndSaveCustomChests;
+            MegaStorageMod.ModHelper.Events.GameLoop.Saved += ReAddCustomChests;
+            StateManager.PlayerAdded += ReAddCustomChests;
+            StateManager.PlayerRemoved += ReAddCustomChests;
 
-        public void Start()
-        {
             var saveAnywhereApi = MegaStorageMod.ModHelper.ModRegistry.GetApi<ISaveAnywhereApi>("Omegasis.SaveAnywhere");
-
             if (!(saveAnywhereApi is null))
             {
-                saveAnywhereApi.BeforeSave += (sender, args) => HideAndSaveCustomChests();
-                saveAnywhereApi.AfterSave += (sender, args) => ReAddCustomChests();
-                saveAnywhereApi.AfterLoad += (sender, args) => LoadCustomChests();
+                saveAnywhereApi.AfterLoad += ReloadCustomChests;
+                saveAnywhereApi.BeforeSave += HideAndSaveCustomChests;
+                saveAnywhereApi.AfterSave += ReAddCustomChests;
             }
 
-            MegaStorageMod.ModHelper.Events.GameLoop.Saving += (sender, args) => HideAndSaveCustomChests();
-            MegaStorageMod.ModHelper.Events.GameLoop.Saved += (sender, args) => ReAddCustomChests();
-            MegaStorageMod.ModHelper.Events.GameLoop.ReturnedToTitle += (sender, args) => HideAndSaveCustomChests();
-            MegaStorageMod.ModHelper.Events.Multiplayer.PeerContextReceived += (sender, args) => HideAndSaveCustomChests();
-
-            _farmhandMonitor.Start();
-            _farmhandMonitor.OnPlayerAdded += ReAddCustomChests;
-            _farmhandMonitor.OnPlayerRemoved += ReAddCustomChests;
-
-            LoadCustomChests();
+            ReloadCustomChests(null, null);
         }
 
-        private void LoadCustomChests()
+        /*********
+        ** Private methods
+        *********/
+        private static void ReloadCustomChests(object sender, EventArgs e)
         {
-            MegaStorageMod.ModMonitor.VerboseLog("LoadCustomChests");
-            foreach (var saver in _savers)
+            if (!Context.IsWorldReady)
+                return;
+
+            MegaStorageMod.ModMonitor.VerboseLog("SaveManager: ReloadCustomChests");
+            LegacyHelper.FixLegacyOptions();
+            StateManager.PlacedChests.Clear();
+            foreach (var location in CommonHelper.GetLocations())
             {
-                saver.LoadCustomChests();
+                var placedChests = location.Objects.Pairs
+                    .Where(c => c.Value is Chest chest && CustomChestFactory.ShouldBeCustomChest(chest))
+                    .ToDictionary(
+                        c => c.Key,
+                        c => c.Value.ToCustomChest(c.Key));
+
+                foreach (var placedChest in placedChests)
+                {
+                    var pos = placedChest.Key;
+                    var customChest = placedChest.Value;
+                    MegaStorageMod.ModMonitor.VerboseLog($"Loading Chest at: {location.Name}: {customChest.Name} ({pos})");
+                    location.objects[placedChest.Key] = customChest;
+                    StateManager.PlacedChests.Add(new Tuple<GameLocation, Vector2>(location, pos), customChest);
+                }
             }
         }
 
-        private void ReAddCustomChests()
+        private static void HideAndSaveCustomChests(object sender, EventArgs e)
         {
-            MegaStorageMod.ModMonitor.VerboseLog("ReAddCustomChests");
-            foreach (var saver in _savers)
+            if (!Context.IsWorldReady)
+                return;
+
+            MegaStorageMod.ModMonitor.VerboseLog("SaveManager: HideAndSaveCustomChests");
+            foreach (var placedChest in StateManager.PlacedChests)
             {
-                saver.ReAddCustomChests();
+                var location = placedChest.Key.Item1;
+                var pos = placedChest.Key.Item2;
+                var customChest = placedChest.Value;
+                MegaStorageMod.ModMonitor.VerboseLog($"Hiding and Saving in {location.Name}: {customChest.Name} ({pos})");
+                location.objects[pos] = customChest.ToChest();
+                if (!Context.IsMainPlayer || !customChest.Equals(StateManager.MainChest))
+                    continue;
+                var deserializedChest = customChest.ToDeserializedChest(location.NameOrUniqueName);
+                MegaStorageMod.ModHelper.Data.WriteSaveData(SaveDataKey, deserializedChest);
             }
         }
 
-        private void HideAndSaveCustomChests()
+        private static void ReAddCustomChests(object sender, EventArgs e)
         {
-            MegaStorageMod.ModMonitor.VerboseLog("HideAndSaveCustomChests");
-            foreach (var saver in _savers)
+            if (!Context.IsWorldReady)
+                return;
+
+            MegaStorageMod.ModMonitor.VerboseLog("SaveManager: ReAddCustomChests");
+            LegacyHelper.FixLegacyOptions();
+            foreach (var placedChest in StateManager.PlacedChests)
             {
-                saver.HideAndSaveCustomChests();
+                var location = placedChest.Key.Item1;
+                var pos = placedChest.Key.Item2;
+                var customChest = placedChest.Value;
+                MegaStorageMod.ModMonitor.VerboseLog($"ReAddCustomChests in {location.Name}: {customChest.Name} ({pos})");
+                location.objects[pos] = customChest;
             }
         }
-
     }
 }

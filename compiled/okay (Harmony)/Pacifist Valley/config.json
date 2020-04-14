@@ -1,0 +1,7 @@
+{
+  "MillisecondsPerLove": 300,
+  "DeviceSpeedFactor": 2,
+  "AreaOfKissEffectModifier": 20,
+  "PreventUnlovedMonsterDamage": true,
+  "LovedMonstersStillSwarm": false
+}

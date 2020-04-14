@@ -23,6 +23,8 @@ namespace ProducerFrameworkMod.ContentPack
         public List<string> WorkingLocation;
         public bool? WorkingOutdoors;
         public List<string> WorkingSeason;
+        public Animation ProducingAnimation;
+        public Animation ReadyAnimation;
 
         public ProducerConfig()
         {
@@ -57,7 +59,29 @@ namespace ProducerFrameworkMod.ContentPack
             return WorkingSeason == null || WorkingSeason.Any(s => s == Game1.currentSeason);
         }
 
-        public bool CheckTimeCondition(ref int minutes)
+        public bool CheckCurrentTimeCondition()
+        {
+            if (WorkingTime != null)
+            {
+                if (WorkingTime.Begin <= WorkingTime.End)
+                {
+                    if (Game1.timeOfDay < WorkingTime.Begin || Game1.timeOfDay >= WorkingTime.End)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (Game1.timeOfDay >= WorkingTime.End && Game1.timeOfDay < WorkingTime.Begin)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public bool CheckElapsedTimeCondition(ref int minutes)
         {
             if (WorkingTime != null)
             {
@@ -114,6 +138,25 @@ namespace ProducerFrameworkMod.ContentPack
                 return minutes > 0;
             }
             return true;
+        }
+
+        public void IncrementStats(Item output)
+        {
+            foreach (KeyValuePair<StardewStats, string> keyValuePair in this.IncrementStatsOnOutput)
+            {
+                if (keyValuePair.Value == null
+                    || keyValuePair.Value == output.Name
+                    || keyValuePair.Value == output.ParentSheetIndex.ToString()
+                    || keyValuePair.Value == output.Category.ToString()
+                    || output.HasContextTag(keyValuePair.Value))
+                {
+                    StatsController.IncrementStardewStats(keyValuePair.Key, output.Stack);
+                    if (!this.MultipleStatsIncrement)
+                    {
+                        break;
+                    }
+                }
+            }
         }
     }
 }

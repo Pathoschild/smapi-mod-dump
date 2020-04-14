@@ -1,0 +1,1 @@
+**Better Crab Pots** is a [Stardew Valley](http://stardewvalley.net/) mod that lets you customize what can be found in [Crab Pots](https://stardewvalleywiki.com/Crab_Pot). The mod is planned for a rewrite, a proper readme and documentation will be added then.

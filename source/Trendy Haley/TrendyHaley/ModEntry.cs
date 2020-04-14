@@ -12,6 +12,7 @@ using TrendyHaley.Framework;
 namespace TrendyHaley {
     public class ModEntry : Mod, IAssetEditor {
         private bool hasColdWeatherHaley_;
+        private bool hasRandomFlowerQueen_;
         private ModConfig config_;
         private Color actualHairColor_;
 
@@ -23,7 +24,10 @@ namespace TrendyHaley {
 
         /// <summary>Implements <see cref="IAssetEditor.CanEdit"/>.</summary>
         public bool CanEdit<T>(IAssetInfo asset) {
-            return asset.AssetNameEquals("Characters/Haley") || asset.AssetNameEquals("Portraits/Haley");
+            return asset.AssetNameEquals("Characters/Haley") ||
+                   asset.AssetNameEquals("Portraits/Haley") ||
+                   asset.AssetNameEquals("LooseSprites/cowPhotos") ||
+                   asset.AssetNameEquals("LooseSprites/cowPhotosWinter");
         }
 
         /// <summary>Implements <see cref="IAssetEditor.Edit"/>.</summary>
@@ -32,16 +36,36 @@ namespace TrendyHaley {
                 this.Monitor.Log($"Edit asset {asset.AssetName}");
 
                 IAssetDataForImage baseImage = asset.AsImage();
-                // Support for Cold Wether Haley.
-                Texture2D overlay = hasColdWeatherHaley_ && Game1.IsWinter
-                    ? this.Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}_winter_overlay_hair_gray.png")
-                    : this.Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}_overlay_hair_gray.png");
+                Texture2D overlay;
+                // Support for Cold Weather Haley.
+                if (hasColdWeatherHaley_ && Game1.IsWinter) {
+                    overlay = this.Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}_winter_overlay_hair_gray.png");
+                    // Workaround for the missing sleeping sprite of Cold Weather Haley.
+                    if (asset.AssetNameEquals("Characters/Haley")) {
+                        Texture2D sleepingHaley = this.Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}_sleeping.png");
+                        baseImage.PatchImage(sleepingHaley, patchMode: PatchMode.Overlay);
+                    }
 
-                // Workaround for the missing sleeping sprite of Cold Weather Haley.
-                if (hasColdWeatherHaley_ && Game1.IsWinter && asset.AssetNameEquals("Characters/Haley")) {
-                    Texture2D sleepingHaley = this.Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}_sleeping.png");
-                    baseImage.PatchImage(sleepingHaley, patchMode: PatchMode.Overlay);
                 }
+                // Support for RandomFlowerQueen.
+                else if (hasRandomFlowerQueen_ && asset.AssetNameEquals("Characters/Haley")) {
+                    // We must replace the flowerqueen part of the base image since it contains unwanted pixels.
+                    Texture2D haleyNoFlowercrown = this.Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}_no_flowercrown.png");
+                    baseImage.PatchImage(haleyNoFlowercrown, targetArea: new Rectangle(0, 320, 64, 64), patchMode: PatchMode.Replace);
+
+                    overlay = this.Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}_no_flowercrown_overlay_hair_gray.png");
+                }
+                else {
+                    overlay = this.Helper.Content.Load<Texture2D>($"assets/{asset.AssetName}_overlay_hair_gray.png");
+                }
+
+                baseImage.PatchImage(ColorBlend(overlay, actualHairColor_), patchMode: PatchMode.Overlay);
+            }
+            else if (asset.AssetNameEquals("LooseSprites/cowPhotos") || asset.AssetNameEquals("LooseSprites/cowPhotosWinter")) {
+                this.Monitor.Log($"Edit asset {asset.AssetName}");
+
+                IAssetDataForImage baseImage = asset.AsImage();
+                Texture2D overlay = this.Helper.Content.Load<Texture2D>("assets/Characters/Haley_cowPhotos_overlay_hair_gray.png");
 
                 baseImage.PatchImage(ColorBlend(overlay, actualHairColor_), patchMode: PatchMode.Overlay);
             }
@@ -52,7 +76,9 @@ namespace TrendyHaley {
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e) {
             // Check for ColdWeatherHaley CP mod.
-            hasColdWeatherHaley_ = this.Helper.ModRegistry.IsLoaded("NanoGamer7.ColdWeatherHaley");
+            hasColdWeatherHaley_  = this.Helper.ModRegistry.IsLoaded("NanoGamer7.ColdWeatherHaley");
+            // Check for RandomFlowerQueen CP mod.
+            hasRandomFlowerQueen_ = this.Helper.ModRegistry.IsLoaded("Candidus42.RandomFlowerQueen");
         }
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e) {
@@ -67,6 +93,9 @@ namespace TrendyHaley {
                 config_.SaveGame.Add(saveGameName, new ConfigEntry());
             }
 
+            // Check relationship of farmer and Haley.
+            bool isFarmerMarriedToHaley = Game1.player.isMarried() && Game1.player.getSpouse().Name.Equals("Haley");
+
             // First day of season or color unset.
             if (Game1.dayOfMonth == 1 || config_.SaveGame[saveGameName].HairColor == Color.Transparent) {
                 // Get a new hair color for Haley.
@@ -76,6 +105,11 @@ namespace TrendyHaley {
 
                 SetHairColor(config_.SaveGame[saveGameName].HairColor);
                 this.Monitor.Log($"Haley chose a new hair color for this season: {config_.SaveGame[saveGameName].HairColor}");
+
+                if (config_.SaveGame[saveGameName].SpouseLookAlike && isFarmerMarriedToHaley) {
+                    Game1.player.changeHairColor(config_.SaveGame[saveGameName].HairColor);
+                    this.Monitor.Log($"{Game1.player.Name} has the same hair color as Haley");
+                }
 
                 return;
             }
@@ -90,6 +124,11 @@ namespace TrendyHaley {
 
                 SetHairColor(fadedColor);
                 this.Monitor.Log($"Haley's hair color faded: {fadedColor}");
+
+                if (config_.SaveGame[saveGameName].SpouseLookAlike && isFarmerMarriedToHaley) {
+                    Game1.player.changeHairColor(fadedColor);
+                    this.Monitor.Log($"{Game1.player.Name} has the same hair color as Haley");
+                }
             }
         }
 

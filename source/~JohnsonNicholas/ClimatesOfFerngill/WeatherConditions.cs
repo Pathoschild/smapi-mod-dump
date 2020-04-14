@@ -95,7 +95,6 @@ namespace ClimatesOfFerngillRebuild
             }
         }
 
-
         public WeatherIcon CurrentWeatherIconBasic
         {
             get
@@ -257,8 +256,7 @@ namespace ClimatesOfFerngillRebuild
                 { (int)(CurrentWeather.Overcast | CurrentWeather.Fog | CurrentWeather.Heatwave), new WeatherData(WeatherIcon.IconOvercast, WeatherIcon.IconOvercast, "overcastHeatwaveFog", ClimatesOfFerngill.Translator.Get("weather_fog", new {condition = ClimatesOfFerngill.Translator.Get("weather_overcast")}))},
                 { (int)(CurrentWeather.Overcast | CurrentWeather.Frost | CurrentWeather.Fog), new WeatherData(WeatherIcon.IconOvercast, WeatherIcon.IconOvercast, "overcastFrostFog",  ClimatesOfFerngill.Translator.Get("weather_fog", new {condition = ClimatesOfFerngill.Translator.Get("weather_overcast")}))},
                 { (int)(CurrentWeather.Overcast | CurrentWeather.Fog), new WeatherData(WeatherIcon.IconOvercast, WeatherIcon.IconOvercast, "overcastFog",  ClimatesOfFerngill.Translator.Get("weather_fog", new {condition = ClimatesOfFerngill.Translator.Get("weather_overcast")}))}
-
-    };
+            };
         }
 
         /// *************************************************************************
@@ -282,6 +280,46 @@ namespace ClimatesOfFerngillRebuild
         /// <summary> This returns the low for tomorrow </summary>
         public double TomorrowLow => TomorrowTemps.LowerBound;
 		
+        public bool IsFoggy()
+        {
+            if (ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Fog").First().IsWeatherVisible)
+                return true;
+
+            return false;
+        }
+
+        public bool IsThunderFrenzy()
+        {
+            if (ClimatesOfFerngill.Conditions.GetWeatherMatchingType("ThunderFrenzy").First().IsWeatherVisible)
+                return true;
+
+            return false;
+        }
+
+        public bool IsBlizzard()
+        {
+            if (ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Blizzard").First().IsWeatherVisible)
+                return true;
+
+            return false;
+        }
+        
+        public bool IsWhiteOut()
+        {
+            if (ClimatesOfFerngill.Conditions.GetWeatherMatchingType("WhiteOut").First().IsWeatherVisible)
+                return true;
+
+            return false;
+        }
+
+        public bool IsSandstorm()
+        {
+            if (ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Sandstorm").First().IsWeatherVisible)
+                return true;
+
+            return false;
+        }
+
         public double GetCurrentTemperature(int timeOfDay)
         {
             double temp;
@@ -428,8 +466,7 @@ namespace ClimatesOfFerngillRebuild
             {
                 UpdateDynamicRain();
                 TenMCounter = 0;
-            }
-            
+            }            
         }
 
         public void SecondUpdate()
@@ -487,8 +524,6 @@ namespace ClimatesOfFerngillRebuild
 
             else if (newWeather == CurrentWeather.Wind)
             {
-                //unset sunny, rain, snow and blizzard, if it's debris.
-                CurrentConditionsN = CurrentConditionsN.RemoveFlags(CurrentWeather.Rain);
                 CurrentConditionsN = CurrentConditionsN.RemoveFlags(CurrentWeather.Snow);
                 CurrentConditionsN = CurrentConditionsN.RemoveFlags(CurrentWeather.Blizzard);
                 CurrentConditionsN = CurrentConditionsN.RemoveFlags(CurrentWeather.Sunny);
@@ -498,7 +533,6 @@ namespace ClimatesOfFerngillRebuild
 
             else if (newWeather == CurrentWeather.Snow)
             {
-                //unset debris, sunny, snow and blizzard, if it's raining.
                 CurrentConditionsN = CurrentConditionsN.RemoveFlags(CurrentWeather.Sunny);
                 CurrentConditionsN = CurrentConditionsN.RemoveFlags(CurrentWeather.Rain);
                 CurrentConditionsN = CurrentConditionsN.RemoveFlags(CurrentWeather.Wind);
@@ -743,6 +777,8 @@ namespace ClimatesOfFerngillRebuild
         {
             if (!Context.IsMainPlayer)
                 return;
+            /* if (!Context.IsMultiplayer)
+                return; */
 
             WeatherSync Message = GenerateWeatherSyncMessage();
 
@@ -849,16 +885,16 @@ namespace ClimatesOfFerngillRebuild
 
             Game1.updateWeatherIcon();
 
-            if (ws.isFoggy && ws.fogWeatherEndTime <= Game1.timeOfDay)
+            if (ws.isFoggy && ws.fogWeatherEndTime <= Game1.timeOfDay && this.IsFoggy())
                 ForceWeatherEnd("Fog");
 
-            if (ws.isBlizzard && ws.blizzWeatherEndTime <= Game1.timeOfDay)
+            if (ws.isBlizzard && ws.blizzWeatherEndTime <= Game1.timeOfDay && this.IsBlizzard())
                 ForceWeatherEnd("Blizzard");
 
-            if (ws.isWhiteOut && ws.whiteWeatherEndTime <= Game1.timeOfDay)
+            if (ws.isWhiteOut && ws.whiteWeatherEndTime <= Game1.timeOfDay && this.IsWhiteOut())
                 ForceWeatherEnd("WhiteOut");
 
-            if (ws.isThunderFrenzy && ws.thunWeatherEndTime <= Game1.timeOfDay)
+            if (ws.isThunderFrenzy && ws.thunWeatherEndTime <= Game1.timeOfDay && this.IsThunderFrenzy())
                 ForceWeatherEnd("ThunderFrenzy");
 
             if (ws.isAbnormalHeat)
@@ -1158,12 +1194,12 @@ namespace ClimatesOfFerngillRebuild
             if (IsOvercast)
             {
                 SDVUtilities.AlterWaterStatusOfCrops(false);
-		RemoveWeather(CurrentWeather.Sunny);
+		        RemoveWeather(CurrentWeather.Sunny);
                 AddWeather(CurrentWeather.Overcast);
             }
 
             if (Game1.isRaining) { 
-		RemoveWeather(CurrentWeather.Overcast);
+		        RemoveWeather(CurrentWeather.Overcast);
                 AddWeather(CurrentWeather.Rain);
                 if (IsVariableRain)
                 {
@@ -1193,6 +1229,8 @@ namespace ClimatesOfFerngillRebuild
                     CurrentConditionsN |= CurrentWeather.Blizzard;
                 if (weat.WeatherType == "WhiteOut" && weat.IsWeatherVisible)
                     CurrentConditionsN |= CurrentWeather.WhiteOut;
+                if (weat.WeatherType == "Sandstorm" && weat.IsWeatherVisible)
+                    CurrentConditionsN |= CurrentWeather.Sandstorm;
             }
         }
 
@@ -1205,7 +1243,7 @@ namespace ClimatesOfFerngillRebuild
             string ret = "";
             ret += $"Low for today is {TodayTemps?.LowerBound:N3} with the high being {TodayTemps?.HigherBound:N3}. The current conditions are {Weathers[(int)CurrentConditionsN].ConditionName}.";
 
-	    ret += Environment.NewLine;
+	        ret += Environment.NewLine;
             foreach (ISDVWeather weather in CurrentWeathers)
                 ret += weather.ToString() + Environment.NewLine;
             

@@ -4,6 +4,7 @@ using System.Linq;
 using Harmony;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.SmallBeachFarm.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -12,6 +13,7 @@ using StardewValley.Objects;
 using xTile;
 using xTile.Dimensions;
 using xTile.Tiles;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace Pathoschild.Stardew.SmallBeachFarm
 {
@@ -33,6 +35,9 @@ namespace Pathoschild.Stardew.SmallBeachFarm
         /// <summary>The mod configuration.</summary>
         private ModConfig Config;
 
+        /// <summary>The mod's hardcoded data.</summary>
+        private ModData Data;
+
         /// <summary>The minimum value to consider non-transparent.</summary>
         /// <remarks>On Linux/Mac, fully transparent pixels may have an alpha up to 4 for some reason.</remarks>
         private const byte MinOpacity = 5;
@@ -50,6 +55,7 @@ namespace Pathoschild.Stardew.SmallBeachFarm
         {
             // read config
             this.Config = helper.ReadConfig<ModConfig>();
+            this.Data = helper.Data.ReadJsonFile<ModData>("assets/data.json") ?? new ModData();
 
             // hook events
             helper.Events.Player.Warped += this.OnWarped;
@@ -57,7 +63,14 @@ namespace Pathoschild.Stardew.SmallBeachFarm
 
             // hook Harmony patch
             HarmonyInstance harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
-            FarmPatcher.Hook(harmony, this.Monitor, this.Config.UseBeachMusic, isSmallBeachFarm: location => this.IsSmallBeachFarm(location, out _), isOceanTile: this.IsOceanTile);
+            FarmPatcher.Hook(
+                harmony,
+                this.Monitor,
+                addCampfire: this.Config.AddCampfire,
+                useBeachMusic: this.Config.UseBeachMusic,
+                isSmallBeachFarm: location => this.IsSmallBeachFarm(location, out _),
+                getFishType: this.GetFishType
+            );
         }
 
         /// <summary>Get whether this instance can load the initial version of the given asset.</summary>
@@ -77,10 +90,22 @@ namespace Pathoschild.Stardew.SmallBeachFarm
             if (asset.AssetNameEquals("Maps/Farm_Fishing"))
             {
                 // load map
-                Map map = this.Helper.Content.Load<Map>(this.Config.EnableIslands
-                    ? "assets/SmallBeachFarmWithIslands.tbin"
-                    : "assets/SmallBeachFarm.tbin"
-                );
+                Map map = this.Helper.Content.Load<Map>("assets/farm.tmx");
+
+                // add islands
+                if (this.Config.EnableIslands)
+                {
+                    Map islands = this.Helper.Content.Load<Map>("assets/islands.tmx");
+                    AssetPatchUtilities.ApplyMapOverride(source: islands, target: map, targetArea: new Rectangle(0, 26, 56, 49));
+                }
+
+                // add campfire
+                if (this.Config.AddCampfire)
+                {
+                    var buildingsLayer = map.GetLayer("Buildings");
+                    buildingsLayer.Tiles[65, 23] = new StaticTile(buildingsLayer, map.GetTileSheet("zbeach"), BlendMode.Alpha, 157); // driftwood pile
+                    buildingsLayer.Tiles[64, 22] = new StaticTile(buildingsLayer, map.GetTileSheet("untitled tile sheet"), BlendMode.Alpha, 242); // campfire
+                }
 
                 // apply tilesheet recolors
                 string internalRootKey = this.Helper.Content.GetActualAssetKey(Path.Combine(this.TilesheetsPath, "_default"));
@@ -172,7 +197,7 @@ namespace Pathoschild.Stardew.SmallBeachFarm
             GameLocation beach = Game1.getLocationFromName("Beach");
             foreach (CrabPot pot in farm.objects.Values.OfType<CrabPot>())
             {
-                if (this.IsOceanTile(farm, (int)pot.TileLocation.X, (int)pot.TileLocation.Y))
+                if (this.GetFishType(farm, (int)pot.TileLocation.X, (int)pot.TileLocation.Y) == FishType.Ocean)
                     pot.DayUpdate(beach);
             }
         }
@@ -208,23 +233,35 @@ namespace Pathoschild.Stardew.SmallBeachFarm
             return false;
         }
 
-        /// <summary>Get whether a given position is ocean water.</summary>
+        /// <summary>Get the fish that should be available from the given tile.</summary>
         /// <param name="farm">The farm instance.</param>
         /// <param name="x">The tile X position.</param>
         /// <param name="y">The tile Y position.</param>
-        private bool IsOceanTile(Farm farm, int x, int y)
+        private FishType GetFishType(Farm farm, int x, int y)
         {
-            // check water property
+            // not water
+            // This should never happen since it's only called when catching a fish, but just in
+            // case fallback to the default farm logic.
             if (farm.doesTileHaveProperty(x, y, "Water", "Back") == null)
-                return false;
+                return FishType.River;
 
-            // check for beach tilesheet
+            // mixed fish area
+            if (this.Data.MixedFishAreas.Any(p => p.Contains(x, y)))
+            {
+                return Game1.random.Next(2) == 1
+                    ? FishType.Ocean
+                    : FishType.River;
+            }
+
+            // ocean or river
             string tilesheetId = farm.map
                 ?.GetLayer("Back")
                 ?.PickTile(new Location(x * Game1.tileSize, y * Game1.tileSize), Game1.viewport.Size)
                 ?.TileSheet
                 ?.Id;
-            return tilesheetId == "zbeach" || tilesheetId == "zbeach_farm";
+            return tilesheetId == "zbeach" || tilesheetId == "zbeach_farm"
+                ? FishType.Ocean
+                : FishType.River;
         }
 
         /// <summary>Get whether the player shouldn't be able to access a given position.</summary>

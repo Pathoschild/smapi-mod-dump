@@ -1,11 +1,12 @@
 ﻿[
-	//{ //Not currently supported.
-	//	"ProducerName": "Bee House",
-	//	"AlternateFrameProducing": false,
-	//	"AlternateFrameWhenReady": true,
-	//	"WorkingOutdoors": true,
-	//	"WorkingSeason": [ "spring", "summer", "fall" ]
-	//},
+	{
+		"ProducerName": "Bee House",
+		"AlternateFrameProducing": false,
+		"AlternateFrameWhenReady": true,
+        "NoInputStartMode": "Placement",
+		"WorkingOutdoors": true,
+		"WorkingSeason": [ "spring", "summer", "fall" ]
+	},
 	{
 		"ProducerName": "Furnace",
 		"AlternateFrameProducing": true,

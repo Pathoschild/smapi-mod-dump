@@ -28,6 +28,24 @@ namespace CustomTracker
             /// <summary>The scale at which the tracker's texture(s) will be rendered. The size of each pixel in the original texture is multiplied by this value.</summary>
             public float TrackerPixelScale = 4f;
 
+            /// <summary>If true, objects with the "isSpawnedObject" flag should be tracked.</summary>
+            public bool TrackDefaultForage = true;
+
+            /// <summary>If true, artifact spots should be tracked.</summary>
+            public bool TrackArtifactSpots = true;
+
+            /// <summary>If true, panning spots should be tracked.</summary>
+            public bool TrackPanningSpots = true;
+
+            /// <summary>If true, spring onions should be tracked.</summary>
+            public bool TrackSpringOnions = false;
+
+            /// <summary>If true, harvestable berry bushes should be tracked.</summary>
+            public bool TrackBerryBushes = false;
+
+            /// <summary>A list of additional object IDs and/or names that should be tracked.</summary>
+            public List<object> OtherTrackedObjects = new List<object>();
+
             public ModConfig()
             {
 

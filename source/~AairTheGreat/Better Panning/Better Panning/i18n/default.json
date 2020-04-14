@@ -1,0 +1,19 @@
+{
+  // edit- hud labels
+  "hud.foundOreSpot": "Found a panning spot!",
+  "hud.noOreSpot": "No panning spot found!",
+  "hud.north": "N",
+  "hud.northwest": "NW",
+  "hud.northeast": "NE",
+  "hud.south": "S",
+  "hud.southwest": "SW",
+  "hud.southeast": "SE",
+  "hud.west": "W",
+  "hud.east": "E",
+  "hud.direction": "In the {{direction}} direction.",
+  "hud.distance": "Roughly {{distance}} tiles away.",
+  "hud.oreSpotDisappeared": "The panning spot is GONE!",
+  "hud.oreSpotDisappearedReason": "A fish must have ate the treasure.",
+  "hud.playerGotTheSpot": "Good job! You got the spot!",
+  "hud.TryAgain": "Try this area again later!"
+}

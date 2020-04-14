@@ -16,27 +16,27 @@ namespace JsonAssets.Data
         [JsonConverter(typeof(StringEnumConverter))]
         public enum Category_
         {
-            // SDV Patcher made these static readonly, so I can't use them in the enum
-            Vegetable = -75, //SObject.VegetableCategory,
-            Fruit = -79, //SObject.FruitsCategory,
-            Flower = -80, //SObject.flowersCategory,
-            Gem = -2, //SObject.GemCategory,
-            Fish = -4, //SObject.FishCategory,
-            Egg = -5, //SObject.EggCategory,
-            Milk = -6, //SObject.MilkCategory,
-            Cooking = -7, //SObject.CookingCategory,
-            Crafting = -8, //SObject.CraftingCategory,
-            Mineral = -12, //SObject.mineralsCategory,
-            Meat = -14, //SObject.meatCategory,
-            Metal = -15, //SObject.metalResources,
-            Junk = -20, //SObject.junkCategory,
-            Syrup = -27, //SObject.syrupCategory,
-            MonsterLoot = -28, //SObject.monsterLootCategory,
-            ArtisanGoods = -26, //SObject.artisanGoodsCategory,
-            Seeds = -74, //SObject.SeedsCategory,
-            Ring = -96, //SObject.ringCategory,
-            AnimalGoods = -18, //SObject.sellAtPierresAndMarnies
-            Greens = -81, //SObject.GreensCategory
+            Vegetable = SObject.VegetableCategory,
+            Fruit = SObject.FruitsCategory,
+            Flower = SObject.flowersCategory,
+            Gem = SObject.GemCategory,
+            Fish = SObject.FishCategory,
+            Egg = SObject.EggCategory,
+            Milk = SObject.MilkCategory,
+            Cooking = SObject.CookingCategory,
+            Crafting = SObject.CraftingCategory,
+            Mineral = SObject.mineralsCategory,
+            Meat = SObject.meatCategory,
+            Metal = SObject.metalResources,
+            Junk = SObject.junkCategory,
+            Syrup = SObject.syrupCategory,
+            MonsterLoot = SObject.monsterLootCategory,
+            ArtisanGoods = SObject.artisanGoodsCategory,
+            Seeds = SObject.SeedsCategory,
+            Ring = SObject.ringCategory,
+            AnimalGoods = SObject.sellAtPierresAndMarnies,
+            Greens = SObject.GreensCategory,
+            Artifact = int.MinValue, // Special case
         }
 
         public class Recipe_
@@ -166,7 +166,7 @@ namespace JsonAssets.Data
             if (Edibility != SObject.inedible)
             {
                 var itype = (int)Category;
-                var str = $"{Name}/{Price}/{Edibility}/{Category} {itype}/{LocalizedName()}/{LocalizedDescription()}/";
+                var str = $"{Name}/{Price}/{Edibility}/" + (Category == Category_.Artifact ? "Arch" : $"{Category} {itype}") + $"/{LocalizedName()}/{LocalizedDescription()}/";
                 str += (EdibleIsDrink ? "drink" : "food") + "/";
                 if (EdibleBuffs == null)
                     EdibleBuffs = new FoodBuffs_();
@@ -176,7 +176,7 @@ namespace JsonAssets.Data
             else
             {
                 var itype = (int)Category;
-                return $"{Name}/{Price}/{Edibility}/Basic {itype}/{LocalizedName()}/{LocalizedDescription()}";
+                return $"{Name}/{Price}/{Edibility}/" + (Category == Category_.Artifact ? "Arch" : $"Basic {itype}") + $"/{LocalizedName()}/{LocalizedDescription()}";
             }
         }
 

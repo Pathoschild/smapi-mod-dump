@@ -119,14 +119,20 @@ namespace NPCMapLocations
 			var orderedNames = customizations.Names.Keys.ToList();
 			orderedNames.Sort();
 			var idx = 7;
-			foreach (var name in orderedNames)
-				if (conditionalNpcs.ContainsKey(name))
-					if (conditionalNpcs[name])
-						options.Add(new ModCheckbox(name, idx++, -1, -1, customizations));
-					else
-						idx++;
-				else
-					options.Add(new ModCheckbox(name, idx++, -1, -1, customizations));
+      foreach (var name in orderedNames)
+      {
+        if (conditionalNpcs.ContainsKey(name))
+        {
+          if (conditionalNpcs[name])
+            options.Add(new ModCheckbox(name, idx++, -1, -1, customizations));
+          else
+            idx++;
+        }
+        else
+        {
+          options.Add(new ModCheckbox(name, idx++, -1, -1, customizations));
+        }
+      }
 		}
 
 		// Override snappy controls on controller
@@ -186,7 +192,7 @@ namespace NPCMapLocations
 			{
 				Game1.exitActiveMenu();
 				Game1.activeClickableMenu = new GameMenu();
-				(Game1.activeClickableMenu as GameMenu).changeTab(GameMenu.mapTab);
+				(Game1.activeClickableMenu as GameMenu).changeTab(ModMain.mapTab);
 				return;
 			}
 
@@ -475,7 +481,7 @@ namespace NPCMapLocations
 
 				if (whichOption > 6 && whichOption < 49)
 				{
-					isChecked = !ModMain.Config.NpcBlacklist.Contains(orderedNames[whichOption - 7]);
+					isChecked = !ModMain.Globals.NpcBlacklist.Contains(orderedNames[whichOption - 7]);
 					return;
 				}
 			}
@@ -521,9 +527,9 @@ namespace NPCMapLocations
 			if (whichOption > 6 && whichOption < 49)
 			{
 				if (isChecked)
-				  ModMain.Config.NpcBlacklist.Remove(orderedNames[whichOption - 7]);
+          ModMain.Globals.NpcBlacklist.Remove(orderedNames[whichOption - 7]);
 				else
-				  ModMain.Config.NpcBlacklist.Add(orderedNames[whichOption - 7]);
+          ModMain.Globals.NpcBlacklist.Add(orderedNames[whichOption - 7]);
 			}
 			else
 			{
@@ -553,7 +559,8 @@ namespace NPCMapLocations
 			}
 
 		  ModMain.Helper.Data.WriteJsonFile($"config/{Constants.SaveFolderName}.json", ModMain.Config);
-		}
+      ModMain.Helper.Data.WriteJsonFile("config/globals.json", ModMain.Globals);
+    }
 
 		public override void draw(SpriteBatch b, int slotX, int slotY)
 		{

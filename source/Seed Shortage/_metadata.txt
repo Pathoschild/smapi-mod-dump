@@ -1,0 +1,13 @@
+url:
+   https://github.com/xynerorias/Seed-Shortage.git
+
+mods:
+   Seed Shortage
+
+latest commit:
+   commit 4ce9c6d155b228189f108a8a1df4ec16caa6146c
+   Author: xynerorias <43299926+xynerorias@users.noreply.github.com>
+   Date:   Wed Apr 8 00:26:43 2020 +0200
+   
+       Add files via upload
+   

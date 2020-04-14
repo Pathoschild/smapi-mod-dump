@@ -1,5 +1,5 @@
 # Dynamic Night Time
-Version: 1.3
+Version: 1.3.3
 
 ## Requirements
 - SMAPI 3.0+
@@ -38,3 +38,5 @@ To configure, open up `config.json` in your mod folder.
 - `latitude` - Valid is anything from -64 to 64. (- for lats S, + for lats N.). Sets the latitude that will determine sunrise and sunset times. Out of range latitudes will be reset. To find the latitude for your city, please consult google. Note that if you are in south latitude, you will get your sunrise/sunset times but not your climate.
 
 - `NightDarknessLevel` - Set values from 1-4, as you go higher, it gets darker.
+
+- `LessOrangeSunrise` - Uses a less orange sunrise in the morning

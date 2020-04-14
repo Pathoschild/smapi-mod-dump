@@ -1,0 +1,16 @@
+{
+  "Name": "Feeling Lucky?",
+  "Author": "minervamaga",
+  "Version": "1.0.0",
+  "Description": "Gives a luck buff to a few items of clothing.",
+  "UniqueID": "minervamaga.FeelingLucky",
+  "EntryDll": "FeelingLucky.dll",
+  "MinimumApiVersion": "3.0",
+  "UpdateKeys": [ "Moddrop:752859" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
+}

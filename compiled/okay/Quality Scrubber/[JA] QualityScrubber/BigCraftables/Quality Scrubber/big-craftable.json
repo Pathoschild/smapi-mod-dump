@@ -1,0 +1,54 @@
+{
+    "Name": "Quality Scrubber",
+    "Description": "Scrubs the quality off from the processed items.",
+    "Price": 50,
+    "ReserveExtraIndexCount": 9,
+    "Recipe":
+    {
+		// "IsDefault": true,
+		"CanPurchase": false,
+		"SkillUnlockName": "Farming",
+		"SkillUnlockLevel": 2,
+        "ResultCount": 1,
+        "Ingredients": [
+        {
+            "Object": 335,
+            "Count": 1
+        },
+		{
+            "Object": 338,
+            "Count": 1
+        }]
+    },
+
+   // Localization
+
+        "NameLocalization": //Used for localization. 
+        { 
+            //"es": "", //Spanish
+            //"ko": "", //Korean
+            //"de": "", //German
+            //"fr": "", //French
+            //"hu": "", //Hungarian
+            //"it": "", //Italian
+            "ja": "品質削除機", //Japanese
+            //"pt": "", //Portuguese
+            //"ru": "", //Russian
+            //"tr": "", //Turkish/
+            //"zh": "", //Chinese (Simplified)
+        },
+        "DescriptionLocalization": //Used for localization. 
+        { 
+            //"es": "", //Spanish
+            //"ko": "", //Korean
+            //"de": "", //German
+            //"fr": "", //French
+            //"hu": "", //Hungarian
+            //"it": "", //Italian
+            "ja": "投入されたアイテムの品質を削除します。", //Japanese
+            //"pt": "", //Portuguese
+            //"ru": "", //Russian
+            //"tr": "", //Turkish/
+            //"zh": "", //Chinese (Simplified)
+        }
+}

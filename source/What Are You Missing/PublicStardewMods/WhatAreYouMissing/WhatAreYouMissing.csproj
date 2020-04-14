@@ -60,6 +60,7 @@
     <Compile Include="MissingItems.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
+    <Compile Include="ItemData\IItemBagsAPI.cs" />
     <Compile Include="Utility\Logger.cs" />
     <Compile Include="Utility\OwnedItems.cs" />
     <Compile Include="LocationDisplayNames.cs" />

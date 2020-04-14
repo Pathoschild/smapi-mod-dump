@@ -1,0 +1,13 @@
+url:
+   https://gitlab.com/kdau/portabletv.git
+
+mods:
+   Portable TV
+
+latest commit:
+   commit f19c6727d8a899e134f76b3b11825de573b95dae
+   Author: Kevin Daughtridge <kevin@kdau.com>
+   Date:   Mon Apr 13 08:35:10 2020 -0700
+   
+       Remove ROADMAP in favor of issue list
+   

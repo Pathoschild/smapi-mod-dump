@@ -1,0 +1,10 @@
+{
+    "Name": "Deliver Upgrade Tool",
+    "Author": "Dash",
+    "Version": "0.0.1",
+    "MinimumApiVersion": "3.3.0",
+    "UniqueID": "Pathoschild.test",
+    "Description": "Receive the tool from Clint without going there",
+    "EntryDll": "DeliverUpgradeTool.dll",
+    "UpdateKeys": ["Nexus:5570"]
+}

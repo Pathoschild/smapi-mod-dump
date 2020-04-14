@@ -1,0 +1,16 @@
+{
+  "Name": "Gardening TV Channel",
+  "Author": "HisameArtWork&FallToot",
+  "Version": "1.0.0",
+  "Description": "New TV channel that shows gardening tips",
+  "UniqueID": "HisameArtwork.GardeningChannel",
+  "EntryDll": "GardeningChannel.dll",
+  "MinimumApiVersion": "3.0",
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.Toolkit",
+      "MinimumVersion": "1.4.12"
+    }
+  ],
+  "UpdateKeys": [ "Nexus:5485" ]
+}

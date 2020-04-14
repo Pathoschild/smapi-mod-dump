@@ -1,0 +1,16 @@
+url:
+   https://github.com/stellarashes/SDVMods.git
+
+mods:
+   Auto Watering
+
+latest commit:
+   commit 5f5ce727e5ed6b6e844f010387e8ba3df7a9b6e9
+   Merge: 6a85342 71e8b67
+   Author: stellarashes <stellarashes@users.noreply.github.com>
+   Date:   Tue Mar 17 22:55:33 2020 -0400
+   
+       Merge pull request #2 from jamespfluger/feature/choose-days-config
+       
+       added config to choose which days to water
+   

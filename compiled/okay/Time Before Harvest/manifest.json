@@ -1,0 +1,10 @@
+﻿{
+  "Name": "TimeBeforeHarvest",
+  "Author": "Asconoid",
+  "Version": "1.0.0",
+  "Description": "This mod helps the player to know how long it has to wait before having the crop ready by pressing F2 ",
+  "UniqueID": "Asconoid.TimeBeforeHarvest",
+  "EntryDll": "TimeBeforeHarvest.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}

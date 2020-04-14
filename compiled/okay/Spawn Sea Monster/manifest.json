@@ -1,0 +1,10 @@
+﻿{
+  "Name": "SpawnSeaMonster",
+  "Author": "EduAnttunes",
+  "Version": "1.0.0",
+  "Description": "Spawns the Sea Monster by pressing the Enter key.",
+  "UniqueID": "EduAnttunes.SpawnSeaMonster",
+  "EntryDll": "SpawnSeaMonster.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:5736" ]
+}

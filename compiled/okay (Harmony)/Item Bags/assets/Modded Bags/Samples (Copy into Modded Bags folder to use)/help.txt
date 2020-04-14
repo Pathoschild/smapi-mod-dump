@@ -1,0 +1,14 @@
+ItemBags will automatically load modded bag json files located in:
+"<ItemBagsInstallFolder>\assets\Modded Bags"
+
+So to use these sample files, just copy them into that folder, then re-launch Stardew Valley.
+
+To create a file for another mod, consider using the SMAPI command "generate_modded_bag" to create a file with default settings.
+Then open the file in a text editor and change the basic settings like name, description, price etc to your liking.
+Type "help generate_modded_bag" into the SMAPI console for more information.
+
+Full guide to creating your own modded bags:
+https://www.nexusmods.com/stardewvalley/articles/366
+
+User-created bags can be found here:
+https://www.nexusmods.com/stardewvalley/articles/370

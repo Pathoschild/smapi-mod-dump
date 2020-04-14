@@ -1,0 +1,13 @@
+url:
+   https://github.com/minervamaga/FeelingLucky.git
+
+mods:
+   Feeling Lucky?
+
+latest commit:
+   commit 6a31d4da67f3053a8f1e9d44197d4bde8ea128ed
+   Author: minervamaga <37347445+minervamaga@users.noreply.github.com>
+   Date:   Wed Mar 11 21:12:54 2020 -0500
+   
+       Update README.md
+   

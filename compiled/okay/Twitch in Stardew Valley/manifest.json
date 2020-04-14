@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Twitch for Stardew",
+  "Author": "Tim \"Telshin\" Aldridge",
+  "Version": "0.1.2",
+  "Description": "Brings some of the Twitch fun into Stardew Valley",
+  "UniqueID": "telshin.twitch-for-stardew",
+  "EntryDll": "TwitchForStardew.dll",
+  "MinimumApiVersion": "2.8",
+  "UpdateKeys": [ "GitHub:Telshin/twitch-for-stardew" ]
+}

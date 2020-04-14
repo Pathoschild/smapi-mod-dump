@@ -1,10 +1,10 @@
-﻿Scroll To Zoom - 1.3
+﻿Scroll To Zoom - 1.5 - Unofficial update by OrchidAlloy
 
 Zoom In and Out Using The Mouse.
 
 ::REQUIREMENTS::
-• SMAPI >= 3.0
-• Stardew Valley >= 1.3
+• SMAPI >= 3.4
+• Stardew Valley >= 1.4
 
 ::FEATURES::
 • Define Min\Max Zoom
@@ -13,6 +13,12 @@ Zoom In and Out Using The Mouse.
 • Define how much you zoom in which each scroll tick.
 
 ::CHANGELOG::
+1.5
+[Unofficial] Updated to work with SMAPI 3.4
+
+1.4
+[Unofficial] Updated to work with SMAPI 3.0
+
 1.3
 Fix Null Refernence Exception caused by Functionality Level lookup
 

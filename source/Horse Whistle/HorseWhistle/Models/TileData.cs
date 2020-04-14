@@ -23,8 +23,8 @@ namespace HorseWhistle.Models
         /// <param name="color">The overlay color.</param>
         public TileData(Vector2 tile, Color color)
         {
-            this.TilePosition = tile;
-            this.Color = color;
+            TilePosition = tile;
+            Color = color;
         }
     }
 }

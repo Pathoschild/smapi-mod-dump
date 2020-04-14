@@ -1,7 +1,7 @@
 {
   "Name": "Vertical Toolbar",
   "Author": "Brandon Marquis Markail Green (Space Baby)",
-  "Version": "1.5.3",
+  "Version": "1.5.6",
   "Description": "Enables an extra vertical bar",
   "UniqueID": "SB_VerticalToolMenu",
   "EntryDll": "VerticalToolbar.dll",

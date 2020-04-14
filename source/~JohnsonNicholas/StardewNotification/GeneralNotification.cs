@@ -3,6 +3,7 @@ using StardewValley;
 using StardewValley.Locations;
 using StardewModdingAPI;
 using System.Linq;
+using StardewValley.TerrainFeatures;
 
 namespace StardewNotification
 {
@@ -14,12 +15,60 @@ namespace StardewNotification
             CheckForFestival(Trans);
             CheckForMaxLuck(Trans);
             CheckForQueenOfSauce(Trans);
+            CheckForTVChannels(Trans);
             CheckForToolUpgrade(Trans);
             CheckForTravelingMerchant(Trans);
             CheckForHayLevel(Trans);
+            CheckForSpringOnions(Trans);
         }
 
-        public void CheckForHayLevel(ITranslationHelper Trans)
+        public static void CheckForSpringOnions(ITranslationHelper Trans)
+        {
+            //they really only grow in the forest, thankfully.
+            var loc = Game1.locations.Where(n => n is Forest).First();
+            int count = 0;
+            foreach (var l in loc.terrainFeatures.Values)
+            {
+                if (l is HoeDirt h && h.crop != null && h.crop.forageCrop.Value == true && h.crop.whichForageCrop.Value == 1)
+                    count++;
+            }
+
+            if (count > 0)
+            {
+                Util.ShowMessage(Trans.Get("springOnion", new { count}));
+            }
+        }
+
+        public static void DoWeatherReminder(ITranslationHelper trans)
+        {
+            switch (Game1.weatherForTomorrow)
+            {
+                case 1:
+                    Util.ShowMessage(trans.Get("weather", new { weather = trans.Get("weather-rain") }));
+                    break;
+                case 2:
+                    Util.ShowMessage(trans.Get("weather", new { weather = trans.Get("weather-wind") }));
+                    break;
+                case 3:
+                    Util.ShowMessage(trans.Get("weather", new { weather = trans.Get("weather-tstorm") }));
+                    break;
+                case 5:
+                    Util.ShowMessage(trans.Get("weather", new { weather = trans.Get("weather-snow") }));
+                    break;
+                case 6:
+                    Util.ShowMessage(trans.Get("weather", new { weather = trans.Get("weather-wedding") }));
+                    break;
+                case 4:
+                    Util.ShowMessage(trans.Get("weather", new { weather = trans.Get("weather-festival") }));
+                    break;
+                case 0:
+                default:
+                    Util.ShowMessage(trans.Get("weather", new { weather = trans.Get("weather-sunny") }));
+                    break;
+            }            
+        }
+
+        public static void CheckForHayLevel(ITranslationHelper Trans)
         {
             if (!StardewNotification.Config.NotifyHay || Game1.getFarm().buildings.Count(b => b.buildingType.Value == "Silo") == 0)
                 return;
@@ -31,10 +80,10 @@ namespace StardewNotification
                 Util.ShowMessage(Trans.Get("noHayMessage"));
         }
         
-        public void DoBirthdayReminder(ITranslationHelper Trans)
+        public static void DoBirthdayReminder(ITranslationHelper Trans)
         {
             var character = Utility.getTodaysBirthdayNPC(Game1.currentSeason, Game1.dayOfMonth);
-            if (!(character is null) && Game1.player.friendshipData[character.Name].GiftsToday != 1)
+            if (!(character is null) && Game1.player.friendshipData.Keys.Contains(character.Name) && Game1.player.friendshipData[character.Name].GiftsToday != 1)
             {
                 Util.ShowMessage(Trans.Get("birthdayReminder", new { charName = character.displayName }));
             }
@@ -84,6 +133,22 @@ namespace StardewNotification
             if (!dayName.Equals("Sun")) return;
             Util.ShowMessage(Trans.Get("queenSauce"));
         }
+
+        private void CheckForTVChannels(ITranslationHelper Trans)
+        {
+            if (!StardewNotification.Config.NotifyTVChannels) return;
+            var dayName = Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth);
+            switch(dayName)
+            {
+                case "Mon":
+                case "Thu":
+                    Util.ShowMessage(Trans.Get("checkLiving"));
+                    break;
+                default:
+                    break;
+            }
+        }
+
 
         private void CheckForFestival(ITranslationHelper Trans)
         {

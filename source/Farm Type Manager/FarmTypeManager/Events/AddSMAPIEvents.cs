@@ -19,6 +19,8 @@ namespace FarmTypeManager
             helper.Events.GameLoop.DayEnding += DayEnding;
             helper.Events.GameLoop.DayStarted += DayStarted;
             helper.Events.GameLoop.GameLaunched += GameLaunched;
+            helper.Events.GameLoop.Saving += GameLoop_Saving;
+            helper.Events.GameLoop.Saved += GameLoop_Saved;
             helper.Events.GameLoop.ReturnedToTitle += ReturnedToTitle;
             helper.Events.GameLoop.TimeChanged += TimeChanged;
             helper.Events.GameLoop.UpdateTicked += PlayerUsedTool;

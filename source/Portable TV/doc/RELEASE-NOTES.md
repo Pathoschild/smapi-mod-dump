@@ -1,0 +1,27 @@
+# Release notes
+
+[Portable TV](../)
+
+## 1.2.0
+
+*Release pending.*
+
+* Also activate Portable TV with configurable keybinding
+* On Android, look for taps in world instead of double-taps on inventory item
+* Add `reset_portable_tv` console command
+
+## 1.1.0
+
+*Released April 3, 2020.*
+
+* Support Android platform
+* Support Generic Mod Config Menu framework
+* Rearrange config options (`Static` now separate from `Animate`)
+* Add Spanish translation by self
+* Add other limited translations
+
+## 1.0.0
+
+*Released March 27, 2020.*
+
+* Initial version

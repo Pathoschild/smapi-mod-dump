@@ -1,0 +1,10 @@
+Times can be ignored.
+Left hand side and right hand side should never both contain a "No Overlap" rule
+
+Example:
+Rule Weather Inactive will not trigger as no weather is set.  Weather="Weather_None"
+Rules "Weather No Overlap Sunny" and "Weather Overlap Any" can over write one another.
+Rules "Weather No Overlap Rainy" and "Weather Overlap Any" can over write one another.
+Rules "Weather No Overlap Windy" and "Weather Overlap Any" can over write one another.
+Rules "Weather No Overlap Stormy" and "Weather Overlap Any" can over write one another.
+Rules "Weather No Overlap Snowy" and "Weather Overlap Any" can over write one another.

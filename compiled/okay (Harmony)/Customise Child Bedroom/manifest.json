@@ -1,0 +1,10 @@
+﻿{
+  "Name": "CustomiseChildBedroom",
+  "Author": "Speshkitty",
+  "Version": "1.0.0",
+  "Description": "Hide the crib and beds in the child's bedroom!",
+  "UniqueID": "speshkitty.CustomiseChildBedroom",
+  "EntryDLL": "CustomiseChildBedroom.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:5540" ]
+}

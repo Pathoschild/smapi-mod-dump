@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5606
+IDs: Rui3.ChefHelperAddToFridges
+update keys: Nexus:5606

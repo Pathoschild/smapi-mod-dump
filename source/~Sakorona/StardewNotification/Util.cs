@@ -1,20 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using StardewValley;
 using StardewModdingAPI;
 using Microsoft.Xna.Framework;
-using Console = System.Console;
 
 namespace StardewNotification
 {
     public static class Util
     {
         private const int MUSHROOM_CAVE = 2;
-        private const int FRUIT_CAVE = 1;
 
         public static void ShowMessage(string msg)
         {
-            var hudmsg = new HUDMessage(msg, Color.SeaGreen, 5250f, true)
+            var hudmsg = new HUDMessage(msg, Color.SeaGreen, StardewNotification.Config.NotificationTime , true)
             {
                 whatType = 2
             };

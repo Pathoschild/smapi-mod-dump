@@ -1,0 +1,14 @@
+{
+    //Translate by Luna
+    "yes": "Sí",
+    "no": "No",
+    "dialogue": "Deseas actualizar tu herramienta al instante? Precio: {{config}}G",
+    "no-money": "No tienes dinero suficiente",
+    "inventory-full": "Tu inventario está lleno",
+    "no-tool-upgrade": "No tienes actualización de herramienta en Clint",
+    "copper-trash-can": "Cubo de basura de cobre",
+    "steel-trash-can": "Cubo de basura de acero",
+    "gold-trash-can": "Cubo de basura de oro",
+    "iridium-trash-can": "Cubo de basura de iridio",
+    "receive": "Tu recibes {{tool}}",
+}

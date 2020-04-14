@@ -1,0 +1,12 @@
+{
+    "Name": "Remove Eat Sound",
+    "Author": "The Fluffy Robot",
+    "Version": "1.0.0",
+    "Description": "Removes the sound played when eating.",
+    "UniqueID": "TheFluffyRobot.RemoveEatSound",
+    "EntryDll": "RemoveEatSound.dll",
+    "MinimumApiVersion": "3.3.2",
+    "UpdateKeys": [
+        "Nexus:5691"
+    ]
+}

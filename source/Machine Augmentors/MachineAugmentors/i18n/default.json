@@ -1,0 +1,30 @@
+{
+  "OutputAugmentorName": "Output Augmentor",
+  "OutputAugmentorDescription": "Attach to a machine to slightly \nincrease it's produced quantity.",
+  "OutputAugmentorEffectDescription": "Products received",
+
+  "SpeedAugmentorName": "Speed Augmentor",
+  "SpeedAugmentorDescription": "Attach to a machine to reduce the \ntime it takes to finish processing.",
+  "SpeedAugmentorEffectDescription": "Time to process",
+
+  "EfficiencyAugmentorName": "Efficiency Augmentor",
+  "EfficiencyAugmentorDescription": "Attach to a machine to reduce the \ninput materials it requires.",
+  "EfficiencyAugmentorEffectDescription": "Materials used",
+
+  "QualityAugmentorName": "Quality Augmentor",
+  "QualityAugmentorDescription": "Attach to a machine to give it a chance \nto produce higher quality products.",
+  "QualityAugmentorEffectDescription": "Increased quality chance",
+
+  "ProductionAugmentorName": "Production Augmentor",
+  "ProductionAugmentorDescription": "Attach to a machine to significantly increase \nboth it's required inputs and it's produced quantity.",
+  "ProductionAugmentorEffectDescription": "Products received / materials used",
+
+  "DuplicationAugmentorName": "Duplication Augmentor",
+  "DuplicationAugmentorDescription": "Attach to a machine to give it a slight \nchance to produce a copy of the machine \nwhen it processes a material.",
+  "DuplicationAugmentorEffectDescription": "Chance for duplicate (per hour of processing)",
+
+  "AugmentorCategoryName": "Augmentor",
+
+  "CurrentEffectLabel": "Current Effect",
+  "NewEffectLabel": "New Effect"
+}

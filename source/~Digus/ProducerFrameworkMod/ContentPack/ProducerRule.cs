@@ -28,6 +28,7 @@ namespace ProducerFrameworkMod.ContentPack
         public float PlacingAnimationOffsetX = 0.0f;
         public float PlacingAnimationOffsetY = 0.0f;
         public List<StardewStats> IncrementStatsOnInput = new List<StardewStats>();
+        public InputSearchConfig LookForInputWhenReady;
 
         // Generated attributes
         public object InputKey;
@@ -39,7 +40,10 @@ namespace ProducerFrameworkMod.ContentPack
         public string OutputIdentifier;
         public string OutputName;
         public string OutputTranslationKey;
+        public string OutputGenericParentName;
+        public string OutputGenericParentNameTranslationKey;
         public Object.PreserveType? PreserveType;
+        public bool KeepInputParentIndex;
         public bool InputPriceBased;
         public int OutputPriceIncrement = 0;
         public double OutputPriceMultiplier = 1;
@@ -50,5 +54,6 @@ namespace ProducerFrameworkMod.ContentPack
         public StackConfig SilverQualityInput = new StackConfig();
         public StackConfig GoldQualityInput = new StackConfig();
         public StackConfig IridiumQualityInput = new StackConfig();
+        public ColoredObjectConfig OutputColorConfig;
     }
 }

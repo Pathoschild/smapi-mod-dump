@@ -1,0 +1,17 @@
+{
+	// Industrial furnace
+	"industrial-furnace.name": "工业熔炉",
+	"industrial-furnace.description": "一个强大而高效的熔炉,能够一次性大量熔炼多种矿石",
+	// HUD messages
+	"message.furnace-running": "熔炉当前正在运行！",
+	"message.more-coal": "你需要 {{coalAmount}} 块煤炭启动熔炉进行熔炼",
+	"message.place-something-first": "你需要放置一些矿石在熔炉",
+	"message.cant-smelt-this": "你不能熔炼这个！",
+	"message.need-more-ore": "你最少需要放置 {{oreAmount}} 块矿石才能进行熔炼",
+	// GenericModConfigMenu
+	"gmcm.main-label": "工业熔炉配置选项",
+	"gmcm.coal-amount-label": "煤炭数量",
+	"gmcm.coal-amount-description": "启动熔炉所需要的煤炭数量",
+	"gmcm.instant-smelting-label": "即时熔炼",
+	"gmcm.instant-smelting-description": "启用时, 熔炼会立刻完成",
+}

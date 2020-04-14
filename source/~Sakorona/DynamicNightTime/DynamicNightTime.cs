@@ -19,6 +19,7 @@ namespace DynamicNightTime
         public float Latitude = 38.25f;
         public bool SunsetTimesAreMinusThirty = true;
         public int NightDarknessLevel = 1;
+        public bool LessOrangeSunrise = false;
     }
 
     public class DynamicNightTime : Mod
@@ -90,13 +91,11 @@ namespace DynamicNightTime
             helper.Events.GameLoop.TimeChanged += OnTimeChanged;
             helper.Events.GameLoop.UpdateTicking += OnUpdateTicking;
            
-            /*
             Helper.ConsoleCommands.Add("debug_cycleinfo", "Outputs the cycle information", OutputInformation);
             Helper.ConsoleCommands.Add("debug_outdoorlight", "Outputs the outdoor light information", OutputLight);
             Helper.ConsoleCommands.Add("debug_setlatitude", "Sets Latitude", SetLatitude);
             Helper.ConsoleCommands.Add("debug_setnightlevel", "Set Night Level", SetNightLevel);
             Helper.ConsoleCommands.Add("debug_printplayingsong", "Print Playing Song", PrintPlayingSong);
-            */
         }
 
         private void OnUpdateTicking(object sender, UpdateTickingEventArgs e)
@@ -149,11 +148,11 @@ namespace DynamicNightTime
 
         }
 
-        /*
+        
         private void PrintPlayingSong(string arg1, string[] arg2)
         {
             Console.WriteLine($"Playing song is {Game1.currentSong.Name.ToString()}, stopped? {Game1.currentSong.IsStopped} playing {Game1.currentSong.IsPlaying}");
-        }*/
+        }
 
         /// <summary>Get an API that other mods can access. This is always called after <see cref="M:StardewModdingAPI.Mod.Entry(StardewModdingAPI.IModHelper)" />.</summary>
         public override object GetApi()
@@ -220,8 +219,9 @@ namespace DynamicNightTime
                     }
                 }
             }
-
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception)
+#pragma warning restore CA1031 // Do not catch general exception types
             {
             }
             if (loc is MineShaft ||loc is Woods)
@@ -278,13 +278,14 @@ namespace DynamicNightTime
                 GMCMapi.RegisterClampedOption(ModManifest, "Latitude", "Latitude used to generate the sunrise and sunset times", () => NightConfig.Latitude,
                     (float val) => NightConfig.Latitude = val, -63.5f, 63.5f);
                 GMCMapi.RegisterSimpleOption(ModManifest, "Sunset Times", "This option controls if you subtract a half hour from the generated time", () => NightConfig.SunsetTimesAreMinusThirty, (bool val) => NightConfig.SunsetTimesAreMinusThirty = val);
+                GMCMapi.RegisterSimpleOption(ModManifest, "Less Orange Sunrise", "This option controls if you want a less orange sunrise", () => NightConfig.LessOrangeSunrise, (bool val) => NightConfig.LessOrangeSunrise = val);
                 GMCMapi.RegisterClampedOption(ModManifest, "Night Darkness Level", "Controls the options for how dark it is at night. Higher is darker.", () => NightConfig.NightDarknessLevel,
                     (int val) => NightConfig.NightDarknessLevel = val, 1, 4);
             }
 
         }
 
-        /*
+        
         private void SetLatitude(string arg1, string[] arg2)
         {
            if (arg2.Length > 0)
@@ -312,17 +313,17 @@ namespace DynamicNightTime
 
         private void OutputLight(string arg1, string[] arg2)
         {
-            Monitor.Log($"The outdoor light is {Game1.outdoorLight.ToString()}. The ambient light is {Game1.ambientLight.ToString()}");
+            Monitor.Log($"The outdoor light is {Game1.outdoorLight.ToString()}. The ambient light is {Game1.ambientLight.ToString()}",LogLevel.Info);
         }
 
         private void OutputInformation(string arg1, string[] arg2)
         {
-            Monitor.Log($"Game date is {SDate.Now().ToString()}, with config'd latitude being {NightConfig.Latitude}");
-            Monitor.Log($"Sunrise : {GetSunrise().ToString()}, Sunset: {GetSunset().ToString()}. Solar Noon {GetSolarNoon().ToString()}");
-            Monitor.Log($"Early Morning ends at {GetEndOfEarlyMorning().ToString()}, Late Afternoon begins at {GetBeginningOfLateAfternoon().ToString()}");
-            Monitor.Log($"Morning Twilight: {GetMorningAstroTwilight().ToString()}, Evening Twilight: {GetAstroTwilight().ToString()}");
-            Monitor.Log($"Game Interval Time is {Game1.gameTimeInterval}");
-        }*/
+            Monitor.Log($"Game date is {SDate.Now().ToString()}, with config'd latitude being {NightConfig.Latitude}", LogLevel.Info);
+            Monitor.Log($"Sunrise : {GetSunrise().ToString()}, Sunset: {GetSunset().ToString()}. Solar Noon {GetSolarNoon().ToString()}", LogLevel.Info);
+            Monitor.Log($"Early Morning ends at {GetEndOfEarlyMorning().ToString()}, Late Afternoon begins at {GetBeginningOfLateAfternoon().ToString()}", LogLevel.Info);
+            Monitor.Log($"Morning Twilight: {GetMorningAstroTwilight().ToString()}, Evening Twilight: {GetAstroTwilight().ToString()}", LogLevel.Info);
+            Monitor.Log($"Game Interval Time is {Game1.gameTimeInterval}", LogLevel.Info);
+        }
 
         public static Color GetLunarLightDifference()
         {

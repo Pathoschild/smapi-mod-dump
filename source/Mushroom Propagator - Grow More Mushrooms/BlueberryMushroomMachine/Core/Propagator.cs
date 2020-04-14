@@ -18,7 +18,6 @@ namespace BlueberryMushroomMachine
 		public bool ProduceExtra;
 
 		// Hidden members
-		private static Texture2D _overlayTexture;
 		private new readonly int defaultDaysToMature;
 
 		public Propagator() : this(Vector2.Zero)
@@ -62,13 +61,11 @@ namespace BlueberryMushroomMachine
 		/// </summary>
 		private void loadObjectData()
 		{
-			loadOverlayTexture();
-
-			Name = Const.PropagatorUniqueId;
-			ParentSheetIndex = Data.PropagatorIndex;
+			Name = Const.PropagatorInternalName;
+			ParentSheetIndex = ModValues.PropagatorIndex;
 			DisplayName = loadDisplayName();
 
-			var strArray1 = Data.ObjectData.Split('/');
+			var strArray1 = ModValues.ObjectData.Split('/');
 			price.Value = Convert.ToInt32(strArray1[1]);
 			edibility.Value = Convert.ToInt32(strArray1[2]);
 			var strArray2 = strArray1[3].Split(' ');
@@ -112,14 +109,6 @@ namespace BlueberryMushroomMachine
 			}
 		}
 		
-		/// <summary>
-		/// Shortcut for loading the collective texture for all mushroom overlays.
-		/// </summary>
-		private void loadOverlayTexture()
-		{
-			_overlayTexture = ModEntry.Instance.Helper.Content.Load<Texture2D>(Const.OverlayPath);
-		}
-
 		/// <summary>
 		/// Determines the frame to be used for showing held mushroom growth.
 		/// </summary>
@@ -231,7 +220,7 @@ namespace BlueberryMushroomMachine
 		internal void TemporaryDayUpdate()
 		{
 			// Indexing inconsistencies with JA/CFR.
-			ParentSheetIndex = Data.PropagatorIndex;
+			ParentSheetIndex = ModValues.PropagatorIndex;
 
 			if (heldObject.Value == null)
 				return;
@@ -395,7 +384,7 @@ namespace BlueberryMushroomMachine
 				return false;
 
 			// Ignore wrong items.
-			if (!Const.MushroomGrowingRates.TryGetValue(dropIn.ParentSheetIndex, out float rate))
+			if (!Const.MushroomGrowingRates.TryGetValue(dropIn.ParentSheetIndex, out var rate))
 				return false;
 
 			if (probe)
@@ -460,21 +449,23 @@ namespace BlueberryMushroomMachine
 				Const.MushroomSourceRects.TryGetValue(
 					heldObject.Value.ParentSheetIndex, out whichMushroom);
 			var vector2 = getScale() * 4f;
-			var local = Game1.GlobalToLocal(Game1.viewport, new Vector2( x * 64, y * 64 - 64));
+			var local = Game1.GlobalToLocal(Game1.viewport, 
+				new Vector2( x * 64, y * 64 - 64));
 			var destRect = new Rectangle(
-					(int)(local.X - vector2.X / 2f) + (shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0), 
-					(int)(local.Y - vector2.Y / 2f) + (shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0), 
+					(int)(local.X - vector2.X / 2f) + (shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0),
+					(int)(local.Y - vector2.Y / 2f) + (shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0),
 					(int)(64f + vector2.X), 
 					(int)(128f + vector2.Y / 2f));
 			b.Draw(
 					Game1.bigCraftableSpriteSheet,
 					destRect,
-					new Rectangle?(getSourceRectForBigCraftable(ParentSheetIndex)),
+					getSourceRectForBigCraftable(ParentSheetIndex),
 					Color.White * alpha, 
 					0f, 
 					Vector2.Zero,
 					SpriteEffects.None,
-					Math.Max(0.0f, ((y + 1) * 64 - 24) / 10000f) + (Game1.currentLocation.IsOutdoors ? 0f : x * 1f / 10000f));
+					Math.Max(0.0f, ((y + 1) * 64 - 24) / 10000f)
+					+ (Game1.currentLocation.IsOutdoors ? 0f : x * 1f / 10000f));
 
 			if (heldObject.Value == null)
 				return;
@@ -485,15 +476,15 @@ namespace BlueberryMushroomMachine
 			var whichFrame = getWhichFrameForOverlay(
 				(int)daysToMature.Value, Quantity, max);
 
-			b.Draw(
-					_overlayTexture,
+			b.Draw(ModEntry.OverlayTexture,
 					destRect,
 					getSourceRectForOverlay(whichMushroom, whichFrame),
 					Color.White,
 					0f,
 					Vector2.Zero,
 					SpriteEffects.None,
-					Math.Max(0.0f, ((y + 1) * 64 - 24) / 10000f) + (Game1.currentLocation.IsOutdoors ? 0f : x * 1f / 10000f) + 1f / 10000f);
+					Math.Max(0.0f, ((y + 1) * 64 - 24) / 10000f) 
+					+ (Game1.currentLocation.IsOutdoors ? 0f : x * 1f / 10000f) + 1f / 10000f);
 		}
 
 		public override Item getOne()

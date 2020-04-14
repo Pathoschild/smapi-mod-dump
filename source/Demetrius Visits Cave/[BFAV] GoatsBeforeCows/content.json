@@ -1,0 +1,66 @@
+{
+  "Format": "1.0",
+  "Categories": [
+	{
+	"Action": "Update",
+	"Category": "Goat",
+	"Types": [
+		{
+		"Type": "Goat",
+		"Data": "2/5/436/438/goat/24/64/84/64/24/64/84/64/1/false/Barn/32/32/32/32/10/5/Milk Pail/644/1500/Goat/Barn",
+		},
+      		],
+	"Buildings": [
+		"Barn",
+		"Big Barn",
+		"Deluxe Barn"
+      		],
+	"AnimalShop": {
+		"Price": 1500,
+      		},
+	"ForceOverrideTypes": true,
+	"ForceOverrideBuildings": true,
+	},
+	{
+	"Action": "Update",
+	"Category": "Sheep",
+	"Types": [
+		{
+		"Type": "Sheep",
+		"Data": "3/4/440/-1/sheep/24/64/84/64/24/64/84/64/1/true/Barn/32/32/32/32/15/5/Shears/644/4000/Sheep/Barn",
+		},
+		],
+	"Buildings": [
+		"Big Barn",
+		"Deluxe Barn"
+		],
+	"AnimalShop": {
+		"Price": 4000,
+		},
+	"ForceOverrideTypes": true,
+	"ForceOverrideBuildings": true,
+	},
+	{
+	"Action": "Update",
+	"Category": "Dairy Cow",
+	"Types": [
+		{
+		"Type": "White Cow",
+		"Data": "1/5/184/186/cow/36/64/64/64/36/64/64/64/1/false/Barn/32/32/32/32/15/5/Milk Pail/639/8000/White Cow/Barn",
+		},
+		{
+		"Type": "Brown Cow",
+		"Data": "1/5/184/186/cow/36/64/64/64/36/64/64/64/1/false/Barn/32/32/32/32/15/5/Milk Pail/639/8000/Brown Cow/Barn",
+		},
+		],
+	"Buildings": [
+		"Deluxe Barn"
+		],
+	"AnimalShop": {
+		"Price": 8000,
+		},
+	"ForceOverrideTypes": true,
+	"ForceOverrideBuildings": true,
+	},
+  ]
+}	

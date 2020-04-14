@@ -11,6 +11,9 @@
         public double BeachRemovalChance = .09;
         public double BeachSpawnChance = .35;
         public double GhostSpawnChance = .02;
+        public double SuperMoonChances = .003;
+        public double HarvestMoonDoubleGrowChance = .045;
+        public bool UseMoreMonthlyCycle = true;
         public bool ShowMoonPhase = true;
         public bool SpawnMonsters = true;
         public bool HazardousMoonEvents = false;

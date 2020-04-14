@@ -1,5 +1,6 @@
 {
   "MaximumDaysToMature": 4,
+  "MaximumQuantityLimitsDoubled": false,
   "WorksInCellar": true,
   "WorksInFarmCave": true,
   "WorksInBuildings": false,

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5206
+IDs: minervamaga.StandardizedKrobus
+update keys: Nexus:5206, GitHub:minervamaga/StandardizedKrobus

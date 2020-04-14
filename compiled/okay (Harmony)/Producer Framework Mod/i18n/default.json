@@ -5,6 +5,7 @@
 	"Message.Requirement.Season": "Requires different season",
 	"Message.Requirement.Weather": "Requires different weather",
 	"Message.Requirement.Location": "Requires different location",
+	"Message.Requirement.InputParent": "Requires different kind of {{objectName}}",
 	"Message.Condition.Location": "Can't work here",
 	"Message.Condition.Season": "Can't work this season",
 	"Object.Category.Meat": "Meat (Any)",

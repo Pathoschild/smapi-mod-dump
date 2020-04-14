@@ -1,0 +1,19 @@
+{
+  "Name": "[CP] Seed Shortage (Vanilla - Prices)",
+  "Author": "Xynerorias",
+  "Version": "1.0.0",
+  "Description": "Content Pack for my mod Seed Shortage. Changes dialogues, seed maker recipe and seed prices.",
+  "UniqueID": "xynerorias.seedshortageCP",
+  "UpdateKeys": [],
+  "ContentPackFor": 
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.0.0"
+    },
+  "Dependencies": [
+   {
+      "UniqueID": "xynerorias.seedshortage",
+      "IsRequired": true
+   }
+]
+}

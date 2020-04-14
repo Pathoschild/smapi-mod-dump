@@ -1,6 +1,6 @@
 ﻿namespace BetterMixedSeeds.Config
 {
-    /// <summary>The object that contains data for each seed</summary>
+    /// <summary>Data about a seed.</summary>
     public class Seed
     {
         /// <summary>The seed id.</summary>
@@ -9,7 +9,7 @@
         /// <summary>The seed name.</summary>
         public string Name { get; set; }
 
-        /// <summary>The seasons that seed can be planted from mixed seeds</summary>
+        /// <summary>The seasons that seed can be planted from mixed seeds.</summary>
         public string[] Seasons { get; set; }
 
         /// <summary>Construct an instance.</summary>

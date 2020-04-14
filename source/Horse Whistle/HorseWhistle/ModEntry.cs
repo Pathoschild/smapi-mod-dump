@@ -55,16 +55,17 @@ namespace HorseWhistle
                     _hasAudio = false;
 
                     Monitor.Log("Couldn't load audio, so the whistle sound won't play.");
-                    Monitor.Log(ex.ToString(), LogLevel.Trace);
+                    Monitor.Log(ex.ToString());
                 }
             }
 
             // add event listeners
-            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
+            helper.Events.Multiplayer.ModMessageReceived += ModMessageReceived;
             if (_config.EnableGrid)
             {
-                helper.Events.GameLoop.UpdateTicked += this.UpdateTicked;
-                helper.Events.Display.Rendered += this.OnRendered;
+                helper.Events.GameLoop.UpdateTicked += UpdateTicked;
+                helper.Events.Display.Rendered += OnRendered;
             }
         }
 
@@ -77,18 +78,33 @@ namespace HorseWhistle
         /// <param name="e">The event data.</param>
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (!Context.IsPlayerFree)
-                return;
+            if (!Context.IsPlayerFree) return;
 
-            if (e.Button == _config.TeleportHorseKey && !Game1.player.isRidingHorse())
+            if (e.Button == _config.TeleportHorseKey && !Game1.player.isRidingHorse() && !Game1.player.isAnimatingMount)
             {
-                var horse = FindHorse();
-                if (horse == null) return;
-                PlayHorseWhistle();
-                Game1.warpCharacter(horse, Game1.currentLocation, Game1.player.getTileLocation());
+                PlayHorseWhistle(); //play the whistle noise for the whistling player (even if the warp doesn't succeed)
+
+                if (Context.IsMainPlayer)
+                    WarpHorse();
+                else //if the current player is a multiplayer farmhand
+                    Helper.Multiplayer.SendMessage(true, "RequestHorse", new[] {ModManifest.UniqueID}); //request a horse from the host player
             }
-            else if (_config.EnableGrid && e.Button == _config.EnableGridKey)
-                _gridActive = !_gridActive;
+            else if (_config.EnableGrid && e.Button == _config.EnableGridKey) _gridActive = !_gridActive;
+        }
+
+        /// <summary>Raised after the a mod message is received over the network.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void ModMessageReceived(object sender, ModMessageReceivedEventArgs e)
+        {
+            if (!Context.IsMainPlayer) return;
+
+            //if a multiplayer farmhand sent a horse request, warp a horse to them
+            if (e.Type == "RequestHorse")
+            {
+                Farmer requester = Game1.getFarmer(e.FromPlayerID);
+                if (requester != null) WarpHorse(requester);
+            }
         }
 
         /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
@@ -96,8 +112,7 @@ namespace HorseWhistle
         /// <param name="e">The event data.</param>
         private void UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (e.IsMultipleOf(2))
-                UpdateGrid();
+            if (e.IsMultipleOf(2)) UpdateGrid();
         }
 
         /// <summary>Raised after the game draws to the sprite patch in a draw tick, just before the final sprite batch is rendered to the screen.</summary>
@@ -133,7 +148,7 @@ namespace HorseWhistle
         /// <summary>Get all available locations.</summary>
         private IEnumerable<GameLocation> GetLocations()
         {
-            GameLocation[] mainLocations = (Context.IsMainPlayer ? Game1.locations : this.Helper.Multiplayer.GetActiveLocations()).ToArray();
+            GameLocation[] mainLocations = (Context.IsMainPlayer ? Game1.locations : Helper.Multiplayer.GetActiveLocations()).ToArray();
 
             foreach (GameLocation location in mainLocations.Concat(MineShaft.activeMines))
             {
@@ -143,8 +158,7 @@ namespace HorseWhistle
                 {
                     foreach (Building building in buildableLocation.buildings)
                     {
-                        if (building.indoors.Value != null)
-                            yield return building.indoors.Value;
+                        if (building.indoors.Value != null) yield return building.indoors.Value;
                     }
                 }
             }
@@ -153,18 +167,35 @@ namespace HorseWhistle
         /// <summary>Find the current player's horse.</summary>
         private Horse FindHorse()
         {
-            foreach (GameLocation location in this.GetLocations())
+            foreach (GameLocation location in GetLocations())
             {
                 foreach (Horse horse in location.characters.OfType<Horse>())
                 {
-                    if (horse.rider != null || horse.Name.StartsWith("tractor/"))
-                        continue;
+                    if (horse.rider != null || horse.Name.StartsWith("tractor/")) continue;
 
                     return horse;
                 }
             }
 
             return null;
+        }
+
+        /// <summary>Warps a horse to a player's location.</summary>
+        /// <param name="player">The player to which the horse will warp. If null, this will default to the current player.</param>
+        private void WarpHorse(Farmer player = null)
+        {
+            //default to the current player
+            if (player == null) player = Game1.player;
+
+            //prevent warping to locations that might lose or delete the horse NPC
+            if (player.currentLocation is MineShaft || !GetLocations().Contains(player.currentLocation)) return;
+
+            //get a horse
+            var horse = FindHorse();
+            if (horse == null) return;
+
+            //warp the horse to the target player
+            Game1.warpCharacter(horse, player.currentLocation, player.getTileLocation());
         }
 
         private void UpdateGrid()
@@ -177,24 +208,19 @@ namespace HorseWhistle
 
             // get updated tiles
             var location = Game1.currentLocation;
-            _tiles = CommonMethods
-                .GetVisibleTiles(location, Game1.viewport)
-                .Where(tile => location.isTileLocationTotallyClearAndPlaceableIgnoreFloors(tile))
-                .Select(tile => new TileData(tile, Color.Red))
-                .ToArray();
+            _tiles = CommonMethods.GetVisibleTiles(location, Game1.viewport).Where(tile => location.isTileLocationTotallyClearAndPlaceableIgnoreFloors(tile)).Select(tile => new TileData(tile, Color.Red)).ToArray();
         }
 
         private void DrawGrid(SpriteBatch spriteBatch)
         {
-            if (!_gridActive || !Context.IsPlayerFree || _tiles == null || _tiles.Length == 0)
-                return;
+            if (!_gridActive || !Context.IsPlayerFree || _tiles == null || _tiles.Length == 0) return;
 
             // draw tile overlay
             const int tileSize = Game1.tileSize;
             foreach (var tile in _tiles.ToArray())
             {
                 var position = tile.TilePosition * tileSize - new Vector2(Game1.viewport.X, Game1.viewport.Y);
-                RectangleSprite.DrawRectangle(spriteBatch, new Rectangle((int)position.X, (int)position.Y, tileSize, tileSize), tile.Color * .3f, 6);
+                RectangleSprite.DrawRectangle(spriteBatch, new Rectangle((int) position.X, (int) position.Y, tileSize, tileSize), tile.Color * .3f, 6);
             }
         }
     }

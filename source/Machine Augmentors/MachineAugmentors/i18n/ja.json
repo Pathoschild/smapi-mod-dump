@@ -1,0 +1,30 @@
+﻿{
+  "OutputAugmentorName": "出力増強器",
+  "OutputAugmentorDescription": "加工・精製設備に取り付けると、\n生産量をわずかに増やす事が出来ます。",
+  "OutputAugmentorEffectDescription": "生産量増加",
+
+  "SpeedAugmentorName": "速度増強器",
+  "SpeedAugmentorDescription": "加工・精製設備に取り付けると、\n処理に要する時間を短くする事が出来ます。",
+  "SpeedAugmentorEffectDescription": "処理時間削減",
+
+  "EfficiencyAugmentorName": "効率増強器",
+  "EfficiencyAugmentorDescription": "加工・精製設備に取り付けると、\n必要な素材の数を減らす事が出来ます。",
+  "EfficiencyAugmentorEffectDescription": "必要素材削減",
+
+  "QualityAugmentorName": "品質増強器",
+  "QualityAugmentorDescription": "加工・精製設備に取り付けると、\n高品質製品が仕上がる可能性を増やす事が出来ます。",
+  "QualityAugmentorEffectDescription": "高品質製品の確立増加",
+
+  "ProductionAugmentorName": "生産増強器",
+  "ProductionAugmentorDescription": "加工・精製設備に取り付けると、\n必要な素材と生産量の両方を大幅に増やします。",
+  "ProductionAugmentorEffectDescription": "生産量増加 / 必要素材増加",
+
+  "DuplicationAugmentorName": "複製増強器",
+  "DuplicationAugmentorDescription": "加工・精製設備に取り付けると、\n処理時に複製品が生まれる可能性を追加する事が出来ます。",
+  "DuplicationAugmentorEffectDescription": "製品複製の可能性の追加",
+
+  "AugmentorCategoryName": "増強器",
+
+  "CurrentEffectLabel": "現在の効果",
+  "NewEffectLabel": "新しい効果"
+}

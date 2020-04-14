@@ -2,9 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using ProducerFrameworkMod.ContentPack;
 using StardewValley;
+using StardewValley.Menus;
+using StardewValley.Objects;
 using Object = StardewValley.Object;
 
 namespace ProducerFrameworkMod
@@ -29,7 +32,24 @@ namespace ProducerFrameworkMod
             filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.RequiredWeather.Count == 0 || o.RequiredWeather.Any(q => q == GameUtils.GetCurrentWeather()), "Weather");
             filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.RequiredLocation.Count == 0 || o.RequiredLocation.Any(q => q == location.Name), "Location");
             filteredOutputConfigs = FilterOutputConfig(filteredOutputConfigs, o => o.RequiredOutdoors == null || o.RequiredOutdoors == location.IsOutdoors, "Location");
-
+            if (input != null)
+            {
+                Object parent = null;
+                if (input.preservedParentSheetIndex.Value > 0)
+                {
+                    parent = new Object(input.preservedParentSheetIndex.Value, 1);
+                }
+                filteredOutputConfigs = FilterOutputConfig(
+                    filteredOutputConfigs
+                    , o => o.RequiredInputParentIdentifier.Count == 0 
+                           || o.RequiredInputParentIdentifier.Any(
+                               q => q == input.preservedParentSheetIndex.Value.ToString() 
+                                    || q == parent?.Name
+                                    || q == parent?.Category.ToString()
+                                    || parent?.HasContextTag(q) == true)
+                    , "InputParent",input);
+            }
+            
 
             List<OutputConfig> outputConfigs = filteredOutputConfigs.FindAll(o => o.OutputProbability > 0);
             Double chance = random.NextDouble();
@@ -55,12 +75,19 @@ namespace ProducerFrameworkMod
             return filteredOutputConfigs.FirstOrDefault();
         }
 
-        private static List<OutputConfig> FilterOutputConfig(List<OutputConfig> outputConfigs, Predicate<OutputConfig> filterPredicate, string messageSuffix)
+        private static List<OutputConfig> FilterOutputConfig(List<OutputConfig> outputConfigs, Predicate<OutputConfig> filterPredicate, string messageSuffix, Object inputForName =  null)
         {
             List<OutputConfig> result = outputConfigs.FindAll(filterPredicate);
             if (result.Count == 0)
             {
-                throw new RestrictionException(DataLoader.Helper.Translation.Get($"Message.Requirement.{messageSuffix}"));
+                if (inputForName != null)
+                {
+                    throw new RestrictionException(DataLoader.Helper.Translation.Get($"Message.Requirement.{messageSuffix}", new { objectName = new Object(inputForName.ParentSheetIndex,1).DisplayName}));
+                }
+                else
+                {
+                    throw new RestrictionException(DataLoader.Helper.Translation.Get($"Message.Requirement.{messageSuffix}"));
+                }
             }
             return result;
         }
@@ -75,9 +102,31 @@ namespace ProducerFrameworkMod
         /// <returns>The created output</returns>
         public static Object CreateOutput(OutputConfig outputConfig, Object input, Random random)
         {
-            Object output = outputConfig.OutputIndex != 93 && outputConfig.OutputIndex != 94 ? //Torches indexes
-                new Object(Vector2.Zero, outputConfig.OutputIndex, null, false, true, false, false) :
-                new Torch(Vector2.Zero, outputConfig.OutputStack, outputConfig.OutputIndex);
+            Object output;
+            if (outputConfig.OutputIndex == 93 || outputConfig.OutputIndex == 94)
+            {
+                output = new Torch(Vector2.Zero, outputConfig.OutputStack, outputConfig.OutputIndex);
+            }
+            else if (outputConfig.OutputColorConfig is ColoredObjectConfig coloredObjectConfig)
+            {
+                switch (coloredObjectConfig.Type)
+                {
+                    case ColorType.ObjectColor when input is ColoredObject coloredObject:
+                        output = new ColoredObject(outputConfig.OutputIndex, outputConfig.OutputStack, coloredObject.color.Value);
+                        break;
+                    case ColorType.ObjectDyeColor when TailoringMenu.GetDyeColor(input) is Color color:
+                        output = new ColoredObject(outputConfig.OutputIndex, outputConfig.OutputStack, color);
+                        break;
+                    case ColorType.DefinedColor:
+                    default:
+                        output = new ColoredObject(outputConfig.OutputIndex, outputConfig.OutputStack, new Color(coloredObjectConfig.Red, coloredObjectConfig.Green, coloredObjectConfig.Blue));
+                        break;
+                }
+            }
+            else
+            {
+                output = new Object(Vector2.Zero, outputConfig.OutputIndex, null, false, true, false, false);
+            }
 
             if (outputConfig.InputPriceBased)
             {
@@ -144,24 +193,49 @@ namespace ProducerFrameworkMod
                 output.preserve.Value = outputConfig.PreserveType;
                 inputUsed = true;
             }
+            else if (output.parentSheetIndex == 340)
+            {
+                outputName = $"{input?.Name ?? "Wild"} Honey";
+                inputUsed = true;
+            }
             else if (outputConfig.OutputName != null)
             {
+                string inputName = input?.Name ?? outputConfig.OutputGenericParentName ?? "";
+
+                if (outputConfig.KeepInputParentIndex)
+                {
+                    if (input?.preservedParentSheetIndex.Value == -1)
+                    {
+                        inputName = outputConfig.OutputGenericParentName;
+                    }
+                    else if (input?.preservedParentSheetIndex.Value > 0)
+                    {
+                        inputName = ObjectUtils.GetObjectParameter(Game1.objectInformation[input.preservedParentSheetIndex.Value], (int) ObjectParameter.Name);
+                    }
+                }
+                else if (input?.preservedParentSheetIndex.Value > 0)
+                {
+                    inputName = ObjectUtils.GetObjectParameter(Game1.objectInformation[input.ParentSheetIndex], (int)ObjectParameter.Name);
+                }
+
                 outputName = outputConfig.OutputName
-                    .Replace("{inputName}", input?.Name??"")
+                    .Replace("{inputName}", inputName)
                     .Replace("{outputName}", output.Name)
                     .Replace("{farmerName}", who.Name)
                     .Replace("{farmName}", who.farmName.Value);
-                inputUsed = input != null && outputConfig.OutputName.Contains("{inputName}");
+
+                inputUsed = outputConfig.OutputName.Contains("{inputName}") ;
             }
 
             if (outputName != null)
             {
-                output.Name = outputName;
+                Regex regex = new Regex("[ ]{2,}", RegexOptions.None);
+                output.Name = regex.Replace(outputName, " ").Trim();
             }
 
             if (inputUsed)
             {
-                output.preservedParentSheetIndex.Value = input?.parentSheetIndex;
+                output.preservedParentSheetIndex.Value = input == null ? -1 : outputConfig.KeepInputParentIndex && input.preservedParentSheetIndex.Value != 0 ? input.preservedParentSheetIndex.Value : input.ParentSheetIndex;
             }
 
             //Called just to load the display name.

@@ -1,6 +1,8 @@
 ﻿{
   "MenuButton": "Open Menu Button",
   "UseTempFolder": "Use Temp Folder",
+  "MenuFont1": "Menu Font 1",
+  "MenuFont2": "Menu Font 2",
   "menu.artifacts": "Artifact Spots",
   "menu.characters": "Characters",
   "menu.outdoors": "Outdoors",
@@ -8,5 +10,11 @@
   "menu.buildings": "Buildings",
   "menu.farm": "Farm",
   "menu.locations.warp": "Warp to",
-  "menu.locations.loading": "Loading.."
+  "menu.locations.loading": "Loading..",
+  "location.BusStop": "Bus Stop",
+  "location.BeachNightMarket": "Beach (Night Market)",
+  "location.AbandonedJojaMart": "Joja Mart (Abandoned)",
+  "location.AdventureGuild": "Adventurers Guild",
+  "location.AnimalShop": "Marnie's Animal Shop",
+  "location.ArchaeologyHouse": "Museum"
 }

@@ -1,7 +1,12 @@
-﻿using MegaStorage.Framework.Models;
+﻿using MegaStorage.Framework;
+using MegaStorage.Framework.Models;
 using MegaStorage.Framework.Persistence;
+using MegaStorage.Framework.UI;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
+using StardewValley.Menus;
 using System;
 using System.IO;
 
@@ -10,16 +15,15 @@ namespace MegaStorage
     public class MegaStorageMod : Mod
     {
         internal static MegaStorageMod Instance { get; private set; }
+        internal static IMegaStorageApi API;
         internal static IModHelper ModHelper;
         internal static IMonitor ModMonitor;
-        internal static int LargeChestId { get; private set; }
-        internal static int MagicChestId { get; private set; }
-        internal static int SuperMagicChestId { get; private set; }
-
         internal static IJsonAssetsApi JsonAssets;
         internal static IConvenientChestsApi ConvenientChests;
-        private ItemPatcher _itemPatcher;
-        private SaveManager _saveManager;
+        internal static int LargeChestId { get; private set; } = -1;
+        internal static int MagicChestId { get; private set; } = -1;
+        internal static int SuperMagicChestId { get; private set; } = -1;
+        internal static CustomItemGrabMenu ActiveItemGrabMenu { get; private set; }
 
         /*********
         ** Public methods
@@ -30,14 +34,18 @@ namespace MegaStorage
             Instance = this;
             ModHelper = modHelper ?? throw new ArgumentNullException(nameof(modHelper));
             ModMonitor = Monitor;
+            API = new MegaStorageApi();
 
             ModMonitor.VerboseLog("Entry of MegaStorageMod");
 
             ModHelper.ReadConfig<ModConfig>();
 
             ModHelper.Events.GameLoop.GameLaunched += OnGameLaunched;
-            ModHelper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+            ModHelper.Events.Display.MenuChanged += OnMenuChanged;
+            ModHelper.Events.Display.WindowResized += OnWindowResized;
         }
+
+        public override object GetApi() => API ??= new MegaStorageApi();
 
         /*********
         ** Private methods
@@ -50,39 +58,72 @@ namespace MegaStorage
                 Monitor.Log("JsonAssets is needed to load Mega Storage chests", LogLevel.Error);
                 return;
             }
-            JsonAssets.LoadAssets(Path.Combine(ModHelper.DirectoryPath, "assets", "JsonAssets"));
-            JsonAssets.IdsAssigned += OnIdsAssigned;
 
             ConvenientChests = ModHelper.ModRegistry.GetApi<IConvenientChestsApi>("aEnigma.ConvenientChests");
             if (!(ConvenientChests is null))
             {
-                ModConfig.Instance.EnableCategories = false;
+                ModConfig.Instance.LargeChest.EnableCategories = false;
+                ModConfig.Instance.MagicChest.EnableCategories = false;
+                ModConfig.Instance.SuperMagicChest.EnableChest = false;
             }
 
-            _itemPatcher = new ItemPatcher();
-            _saveManager = new SaveManager(
-                new FarmhandMonitor(),
-                new InventorySaver(),
-                new FarmhandInventorySaver(),
-                new LocationSaver(),
-                new LocationInventorySaver());
-        }
+            if (ModConfig.Instance.LargeChest.EnableChest)
+                JsonAssets.LoadAssets(Path.Combine(ModHelper.DirectoryPath, "assets", "LargeChest"));
+            if (ModConfig.Instance.MagicChest.EnableChest)
+                JsonAssets.LoadAssets(Path.Combine(ModHelper.DirectoryPath, "assets", "MagicChest"));
+            if (ModConfig.Instance.SuperMagicChest.EnableChest)
+                JsonAssets.LoadAssets(Path.Combine(ModHelper.DirectoryPath, "assets", "SuperMagicChest"));
 
-        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
-        {
-            _itemPatcher.Start();
-            _saveManager.Start();
-            MenuChanger.Start();
+            JsonAssets.IdsAssigned += OnIdsAssigned;
+            ItemPatcher.Start();
+            SaveManager.Start();
+            StateManager.Start();
         }
 
         private static void OnIdsAssigned(object sender, EventArgs e)
         {
-            LargeChestId = JsonAssets.GetBigCraftableId("Large Chest");
-            MagicChestId = JsonAssets.GetBigCraftableId("Magic Chest");
-            SuperMagicChestId = JsonAssets.GetBigCraftableId("Super Magic Chest");
-            ModMonitor.VerboseLog($"Large Chest ID is {LargeChestId}.");
-            ModMonitor.VerboseLog($"Magic Chest ID is {MagicChestId}.");
-            ModMonitor.VerboseLog($"Super Magic Chest ID is {SuperMagicChestId}.");
+            if (LargeChestId == -1 && ModConfig.Instance.LargeChest.EnableChest)
+                LargeChestId = JsonAssets.GetBigCraftableId("Large Chest");
+            if (MagicChestId == -1 && ModConfig.Instance.MagicChest.EnableChest)
+                MagicChestId = JsonAssets.GetBigCraftableId("Magic Chest");
+            if (SuperMagicChestId == -1 && ModConfig.Instance.SuperMagicChest.EnableChest)
+                SuperMagicChestId = JsonAssets.GetBigCraftableId("Super Magic Chest");
+
+            if ((LargeChestId <= -1 && ModConfig.Instance.LargeChest.EnableChest) ||
+                (MagicChestId <= -1 && ModConfig.Instance.MagicChest.EnableChest) ||
+                (SuperMagicChestId <= -1 && ModConfig.Instance.SuperMagicChest.EnableChest))
+            {
+                return;
+            }
+
+            ModMonitor.Log($"Large Chest Loaded with ID {LargeChestId}.");
+            ModMonitor.Log($"Magic Chest Loaded with ID {MagicChestId}.");
+            ModMonitor.Log($"Super Magic Chest Loaded with ID {SuperMagicChestId}.");
+        }
+
+        private static void OnMenuChanged(object sender, MenuChangedEventArgs e)
+        {
+            ModMonitor.VerboseLog("New menu: " + e.NewMenu?.GetType());
+            if (e.NewMenu is CustomItemGrabMenu customItemGrabMenu)
+            {
+                ActiveItemGrabMenu = customItemGrabMenu;
+                return;
+            }
+
+            if (!(e.NewMenu is ItemGrabMenu itemGrabMenu) || !(itemGrabMenu.context is CustomChest customChest))
+                return;
+
+            ActiveItemGrabMenu = customChest.CreateItemGrabMenu();
+            Game1.activeClickableMenu = ActiveItemGrabMenu;
+        }
+
+        private static void OnWindowResized(object sender, WindowResizedEventArgs e)
+        {
+            if (!(Game1.activeClickableMenu is CustomItemGrabMenu customItemGrabMenu))
+                return;
+            var oldBounds = new Rectangle(0, 0, e.OldSize.X, e.OldSize.Y);
+            var newBounds = new Rectangle(0, 0, e.NewSize.X, e.NewSize.Y);
+            customItemGrabMenu.gameWindowSizeChanged(oldBounds, newBounds);
         }
     }
 }

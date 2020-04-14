@@ -1,0 +1,30 @@
+{
+  "OutputAugmentorName": "产出增强器",
+  "OutputAugmentorDescription": "附加到设备上以略增产出数量。",
+  "OutputAugmentorEffectDescription": "产出数量",
+
+  "SpeedAugmentorName": "速度增强器",
+  "SpeedAugmentorDescription": "附加到设备上以减少加工时间。",
+  "SpeedAugmentorEffectDescription": "加工时间",
+
+  "EfficiencyAugmentorName": "效率增强器",
+  "EfficiencyAugmentorDescription": "附加到设备上以减少所需原料。",
+  "EfficiencyAugmentorEffectDescription": "所需原料",
+
+  "QualityAugmentorName": "质量增强器",
+  "QualityAugmentorDescription": "附加到设备上以增加获得高质量产品的可能性。",
+  "QualityAugmentorEffectDescription": "高质量概率",
+
+  "ProductionAugmentorName": "生产力增强器",
+  "ProductionAugmentorDescription": "附加到设备上可以同时生产多份物品。\n（对应需要多份原料）",
+  "ProductionAugmentorEffectDescription": "产品/原料倍数",
+
+  "DuplicationAugmentorName": "复制增强器",
+  "DuplicationAugmentorDescription": "附加到设备上，加工时有概率产出复制品。",
+  "DuplicationAugmentorEffectDescription": "复制概率（每小时）",
+
+  "AugmentorCategoryName": "增强器",
+
+  "CurrentEffectLabel": "当前效果",
+  "NewEffectLabel": "新效果"
+}

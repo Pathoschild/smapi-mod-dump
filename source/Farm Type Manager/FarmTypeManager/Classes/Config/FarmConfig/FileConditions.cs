@@ -15,8 +15,7 @@ namespace FarmTypeManager
             //field below added in version 1.5.0
             public Dictionary<string, bool> OtherMods { get; set; } = new Dictionary<string, bool>(); //a list of mod names + booleans representing whether that mod exists; if the list is accurate, the config file may be used
 
-            //field below added in version 1.4.2
-            public bool ResetMainDataFolder { get; set; } = false; //when true, the "FarmTypeManager/data" folder should be archived; used to remove obsolete mod settings
+            //"ResetMainDataFolder" setting removed in version 1.9.3 (obsolete, obstructed players with personal settings)
 
             public FileConditions()
             {

@@ -1,8 +1,8 @@
 {
   "Name": "Quick Craft",
   "Author": "mpcomplete",
-  "Version": "1.0",
-  "MinimumApiVersion": "2.1",
+  "Version": "1.1",
+  "MinimumApiVersion": "2.11.0",
   "Description": "Craft with ctrl+click.",
   "UniqueID": "mpcomplete.QuickCraft",
   "EntryDll": "QuickCraft.dll",

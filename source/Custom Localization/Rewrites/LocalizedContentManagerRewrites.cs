@@ -10,11 +10,8 @@ namespace StardewModdingAPI.Mods.CustomLocalization.Rewrites
 {
     public class LocalizedContentManagerRewrites
     {
-        [HarmonyPatch(typeof(LocalizedContentManager))]
-        [HarmonyPatch("LanguageCodeString")]
         public class LanguageCodeStringRewrite
         {
-            [HarmonyPrefix]
             public static bool Prefix(LanguageCode code, ref string __result)
             {
                 switch (code)
@@ -44,11 +41,8 @@ namespace StardewModdingAPI.Mods.CustomLocalization.Rewrites
                 }
             }
         }
-        [HarmonyPatch(typeof(LocalizedContentManager))]
-        [HarmonyPatch("get_CurrentLanguageLatin")]
         public class GetCurrentLanguageLatinRewrite
         {
-            [HarmonyPrefix]
             public static bool Prefix(ref bool __result)
             {
                 ModConfig.Locale locale = ModEntry.ModConfig.GetByCode((int)LocalizedContentManager.CurrentLanguageCode);

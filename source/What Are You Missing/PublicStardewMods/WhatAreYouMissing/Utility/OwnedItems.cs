@@ -228,7 +228,17 @@ namespace WhatAreYouMissing
                     }
                 }
             }
-            return ownedItems.Where(p => p != null);
+
+            ownedItems = ownedItems.Where(p => p != null).ToList();
+
+            IItemBagsAPI itemBagsAPI = ModEntry.HelperInstance.ModRegistry.GetApi<IItemBagsAPI>("SlayerDharok.Item_Bags");
+            if (itemBagsAPI != null)
+            {
+                IList<SObject> bagItems = itemBagsAPI.GetObjectsInsideBags(ownedItems, true);
+                ownedItems.AddRange(bagItems);
+            }
+
+            return ownedItems;
         }
 
         private IEnumerable<GameLocation> GetAllLocations()

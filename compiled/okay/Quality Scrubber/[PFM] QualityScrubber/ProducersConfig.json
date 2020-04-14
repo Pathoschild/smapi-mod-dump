@@ -1,0 +1,16 @@
+﻿[
+	{
+		"ProducerName": "Quality Scrubber",
+		"AlternateFrameProducing": false,
+		"AlternateFrameWhenReady": false,
+		"DisableBouncingAnimationWhileWorking": false,
+		"ProducingAnimation": {
+			"RelativeFrameIndex": [ 1, 2, 3, 4, 5, 6, 7, 8 ],
+			"FrameInterval": 10
+		},
+		"ReadyAnimation": 
+        {
+        	"RelativeFrameIndex": [9]
+   		}
+	}
+]

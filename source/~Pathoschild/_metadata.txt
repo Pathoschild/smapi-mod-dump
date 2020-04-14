@@ -19,9 +19,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit f50e93c541296b5f6126a1f83483c686aaf01c57
+   commit f66da3fa2bb7433a1a6092d1da55c1096fae7e3b
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Feb 22 17:00:48 2020 -0500
+   Date:   Mon Apr 13 15:55:08 2020 -0400
    
-       update for released input API in SMAPI 3.3
+       fix Lookup Anything sometimes detecting a cursor on Android
    

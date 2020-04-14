@@ -1,0 +1,33 @@
+{
+	"Name": "Industrial Furnace",
+	"BlueprintType": "Buildings",
+	"NameOfBuildingToUpgrade": "none",
+	"MaxOccupants": "-1",
+	"Width": "4",
+	"Height": "2",
+	"HumanDoorX": "-1",
+	"HumanDoorY": "-1",
+	"AnimalDoorX": "-2",
+	"AnimalDoorY": "-1",
+	"MapToWarpTo": "null",
+	"SourceRectForMenuViewX": "64",
+	"SourceRectForMenuViewY": "48",
+	"ActionBehaviour": "null",
+	"NamesOfBuildingLocations": "Farm",
+	"Magical": "false",
+	"DaysToBuild": "1",
+	"MoneyRequired": "10000",
+	"ItemsRequired":
+	[
+		{
+			"ItemName":	"Iron Bar",
+			"ItemID": 335,
+			"ItemAmount": 10
+		},
+		{
+			"ItemName":	"Iridium Bar",
+			"ItemID": 337,
+			"ItemAmount": 1
+		}
+	]
+}

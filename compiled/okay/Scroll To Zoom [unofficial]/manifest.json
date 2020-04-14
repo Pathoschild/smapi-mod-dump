@@ -1,7 +1,7 @@
 ﻿{
     "Name": "ScrollToZoom",
     "Author": "Tomwa",
-    "Version": "1.4-unofficial.1-OrchidAlloy",
+    "Version": "1.5-unofficial.2-OrchidAlloy",
     "Description": "Allows you to scroll in and out using your mouse wheel and a modifier key",
     "UniqueID": "Tomwa.ScrollToZoom",
     "EntryDll": "ScrollToZoom.dll",

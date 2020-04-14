@@ -1,0 +1,24 @@
+{
+  "Enabled": true,
+  "Indentation": 25.0,
+  "MinigameHud": {
+    "Show": true,
+    "HexColor": "#CD853F"
+  },
+  "TopLeft": {
+    "Show": false,
+    "HexColor": "#808080"
+  },
+  "TopRight": {
+    "Show": false,
+    "HexColor": "#808080"
+  },
+  "BottomLeft": {
+    "Show": false,
+    "HexColor": "#808080"
+  },
+  "BottomRight": {
+    "Show": false,
+    "HexColor": "#808080"
+  }
+}

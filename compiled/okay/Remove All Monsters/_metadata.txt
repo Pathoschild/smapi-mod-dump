@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5727
+IDs: djsl.RemoveAllMonsters
+update keys: Nexus:5727

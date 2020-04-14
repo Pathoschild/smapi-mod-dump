@@ -30,21 +30,60 @@ namespace PFMAutomate.Automate
 
         public MachineState GetState()
         {
+            if (_machine.heldObject.Value != null && _machine.minutesUntilReady <= 0 && _machine.readyForHarvest.Value)
+            {
+                return MachineState.Done;
+            }
+            if (ProducerController.GetProducerConfig(_machine.Name) is ProducerConfig producerConfig)
+            {
+                if (!producerConfig.CheckWeatherCondition() || !producerConfig.CheckSeasonCondition() || !producerConfig.CheckLocationCondition(Location) || !producerConfig.CheckCurrentTimeCondition())
+                {
+                    return MachineState.Disabled;
+                }
+                if (producerConfig.NoInputStartMode != null)
+                {
+                    //A no input machine is considered processing even while empty.
+                    return MachineState.Processing;
+                }
+            }
             if (_machine.heldObject.Value == null)
+            {
                 return MachineState.Empty;
-
-            return _machine.readyForHarvest.Value
-                ? MachineState.Done
-                : MachineState.Processing;
+            }
+            return MachineState.Processing;
         }
 
         public ITrackedStack GetOutput()
         {
-            return new TrackedItem(_machine.heldObject.Value, onEmpty: item =>
+            ProducerRuleController.PrepareOutput(_machine, this.Location, Game1.getFarmer((long)_machine.owner));
+
+            return new TrackedItem(_machine.heldObject.Value, onEmpty: Reset);
+        }
+
+        internal void Reset(Item item)
+        {
+            ProducerRuleController.ClearProduction(_machine, Location);
+            if (ProducerController.GetProducerConfig(_machine.Name) is ProducerConfig producerConfig)
             {
-                _machine.heldObject.Value = null;
-                _machine.readyForHarvest.Value = false;
-            });
+                if (producerConfig.NoInputStartMode != null || producerConfig.IncrementStatsOnOutput.Count > 0)
+                {
+                    producerConfig.IncrementStats(item);
+                    if (producerConfig.NoInputStartMode == NoInputStartMode.Placement)
+                    {
+                        if (ProducerController.GetProducerItem(_machine.Name, null) is ProducerRule producerRule)
+                        {
+                            try
+                            {
+                                if (producerConfig.CheckLocationCondition(Location) && producerConfig.CheckSeasonCondition())
+                                {
+                                    ProducerRuleController.ProduceOutput(producerRule, _machine, (i, q) => true, null, Location, producerConfig);
+                                }
+                            }
+                            catch (RestrictionException) {/*No action needed*/}
+                        }
+                    }
+                }
+            }
         }
 
         public bool SetInput(IStorage input)
@@ -77,7 +116,8 @@ namespace PFMAutomate.Automate
                                         inputConsumable.Take();
                                         requiredFuels.ForEach(f => f.Reduce());
                                         List<IConsumable> outputRequiredFuels = GetRequiredFuels(outputConfig, input);
-                                        outputRequiredFuels.ForEach(f => f.Reduce()); return true;
+                                        outputRequiredFuels.ForEach(f => f.Reduce()); 
+                                        return true;
                                     }
                                 }
                                 catch (RestrictionException) {/* No action needed */}
@@ -86,7 +126,6 @@ namespace PFMAutomate.Automate
                     }
                 } 
             }
-
             return false;
         }
 

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/3203
+IDs: SixthTitan.SDVWM
+update keys: Nexus:3203

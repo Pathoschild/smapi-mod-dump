@@ -1,0 +1,15 @@
+﻿{
+  "//Note to Translators": "Your contribution is welcome! I would prefer to publish translations as part of the main mod to keep everything up to date. Please see README.md for how to prepare the translation and send me your work.",
+
+  "PortableTV.name": "Televisor portátil",
+  "PortableTV.description": "Muestra programas de televisión en cualquier parte del valle.",
+
+  "Animate.name": "Animar el televisor",
+  "Animate.description": "Si se anima el televisor portátil cuando se enciende y se apaga",
+
+  "Static.name": "Mostrar interferencia",
+  "Static.description": "Si se muestra interferencia ligera en pantalla encima de los programas",
+
+  "Music.name": "Sonorizar con música",
+  "Music.description": "Si se sonorizan con música los programas de televisión estándares"
+}

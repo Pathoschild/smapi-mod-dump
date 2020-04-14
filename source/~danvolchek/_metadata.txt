@@ -32,9 +32,9 @@ mods:
    Winter Grass
 
 latest commit:
-   commit 6b7a3a4322cbca93e940f726d966571f30d4a8e8
+   commit eb86dd7c8b94b2ec461db29dd291d6e2d6c39106
    Author: danvolchek <danvnad@gmail.com>
-   Date:   Sun Feb 9 22:39:54 2020 -0800
+   Date:   Thu Mar 26 19:39:21 2020 -0700
    
-       [Better Artisan Good Icons] rewrite to support custom artisan goods
+       [Casks Everywhere] recompile for latest SDV
    

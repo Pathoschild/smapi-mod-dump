@@ -1,0 +1,14 @@
+{
+	//translate by Lukas Schaffer a.k.a Thegreenpuma
+	"yes": "Ja",
+	"no": "Nein",
+	"dialogue": "Willst du dein Werkzeug verbessern? Preis : {{config}}G",
+	"no-money": "Du hast nicht genug Geld",
+	"inventory-full": "Dein Inventar ist voll",
+	"no-tool-upgrade": "Du hast kein Werkzeug bei Clint",
+	"copper-trash-can": "Kupfer-Mülleimer",
+	"steel-trash-can": "Stahl-Mülleimer",
+	"gold-trash-can": "Gold-Mülleimer",
+	"iridium-trash-can": "Iridium-Mülleimer",
+	"receive": "Du bekommst {{tool}}",
+}

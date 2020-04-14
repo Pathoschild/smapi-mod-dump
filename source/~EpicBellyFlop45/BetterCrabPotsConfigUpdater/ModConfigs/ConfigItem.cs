@@ -3,7 +3,7 @@
 namespace BetterCrabPotsConfigUpdater.ModConfigs
 {
     /// <summary>An object that contains data about each water body for the new config format.</summary>
-    class ConfigItem
+    public class ConfigItem
     {
         /// <summary>A list of items that can be found.</summary>
         public List<Item> WhatCanBeFound { get; set; } = new List<Item>();

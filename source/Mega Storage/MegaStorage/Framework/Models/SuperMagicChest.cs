@@ -1,19 +1,19 @@
-﻿using MegaStorage.Framework.Interface;
+﻿using MegaStorage.Framework.Persistence;
 using Microsoft.Xna.Framework;
-using StardewValley;
 
 namespace MegaStorage.Framework.Models
 {
     public class SuperMagicChest : CustomChest
     {
-        public override int Capacity => int.MaxValue;
-        public override ChestType ChestType => ChestType.SuperMagicChest;
-        protected override LargeItemGrabMenu CreateItemGrabMenu() => new SuperMagicItemGrabMenu(this);
-        public override Item getOne() => new SuperMagicChest(Vector2.Zero);
-
-        public SuperMagicChest(Vector2 tileLocation) : base(MegaStorageMod.SuperMagicChestId, ModConfig.Instance.SuperMagicChest, tileLocation)
+        public override int Capacity => StateManager.MainChest == this ? int.MaxValue : 0;
+        public SuperMagicChest() : this(Vector2.Zero) { }
+        public SuperMagicChest(Vector2 tileLocation)
+            : base(
+                ChestType.SuperMagicChest,
+                tileLocation)
         {
             name = "Super Magic Chest";
+            EnableRemoteStorage = true;
         }
     }
 }

@@ -1,0 +1,10 @@
+{
+  "Name": "SDVWM_RealWeather",
+  "Author": "SixthTitan",
+  "Version": "1.0.0",
+  "Description": "Providing farmers with a Real-time Weather Experience",
+  "UniqueID": "SixthTitan.SDVWM_RealWeather",
+  "EntryDll": "SDVWM_RealWeather.dll",
+  "MinimumApiVersion": "2.10.0",
+"UpdateKeys": ["Nexus:5773" ]
+}

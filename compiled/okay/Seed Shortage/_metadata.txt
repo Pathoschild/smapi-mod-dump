@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5614
+IDs: xynerorias.seedshortage
+update keys: Nexus:5614

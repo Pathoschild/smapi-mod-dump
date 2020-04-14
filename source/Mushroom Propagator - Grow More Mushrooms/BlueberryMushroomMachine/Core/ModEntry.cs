@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Microsoft.Xna.Framework.Graphics;
+
 using StardewValley;
 using StardewValley.Menus;
 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
-using Harmony;  // el diavolo
+using Harmony; // el diavolo
 
 namespace BlueberryMushroomMachine
 {
@@ -17,7 +20,9 @@ namespace BlueberryMushroomMachine
 
 		internal Config Config;
 		internal ITranslationHelper i18n => Helper.Translation;
-		
+
+		public static Texture2D OverlayTexture;
+
 		public override void Entry(IModHelper helper)
 		{
 			Instance = this;
@@ -29,6 +34,9 @@ namespace BlueberryMushroomMachine
 
 			Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 			Helper.Events.GameLoop.DayStarted += OnDayStarted;
+
+			// Load mushroom overlay texture for all filled machines.
+			OverlayTexture = Helper.Content.Load<Texture2D>(Const.OverlayPath);
 
 			// Harmony setup.
 			var harmony = HarmonyInstance.Create($"{Const.AuthorName}.{Const.PackageName}");
@@ -79,8 +87,8 @@ namespace BlueberryMushroomMachine
 
 			// Add the Propagator crafting recipe if the cheat is enabled.
 			if (Config.RecipeAlwaysAvailable)
-				if (!Game1.player.craftingRecipes.ContainsKey(Const.PropagatorUniqueId))
-					Game1.player.craftingRecipes.Add(Const.PropagatorUniqueId, 0);
+				if (!Game1.player.craftingRecipes.ContainsKey(Const.PropagatorInternalName))
+					Game1.player.craftingRecipes.Add(Const.PropagatorInternalName, 0);
 
 			// TEMPORARY FIX: Manually rebuild each Propagator in the user's inventory.
 			// PyTK ~1.12.13.unofficial seemingly rebuilds inventory objects at ReturnedToTitle,
@@ -90,7 +98,7 @@ namespace BlueberryMushroomMachine
 			{
 				if (items[i] == null
 				    || !items[i].Name.StartsWith($"PyTK|Item|{Const.PackageName}") 
-				    || !items[i].Name.Contains($"{Const.PropagatorName}"))
+				    || !items[i].Name.Contains($"{Const.PropagatorInternalName}"))
 					continue;
 				
 				Log.D($"Found a broken {items[i].Name} in {Game1.player.Name}'s inventory slot {i}"
@@ -109,7 +117,7 @@ namespace BlueberryMushroomMachine
 			{
 				if (!location.Objects.Values.Any())
 					continue;
-				var objects = location.Objects.Values.Where(o => o.Name.Equals(Const.PropagatorUniqueId));
+				var objects = location.Objects.Values.Where(o => o.Name.Equals(Const.PropagatorInternalName));
 				foreach (var obj in objects)
 					((Propagator)obj).TemporaryDayUpdate();
 			}
@@ -127,7 +135,7 @@ namespace BlueberryMushroomMachine
 			{
 				var prop = new Propagator(Game1.player.getTileLocation());
 				Game1.player.addItemByMenuIfNecessary(prop);
-				Log.D($"{Game1.player.Name} spawned in a {Const.PropagatorUniqueId} ({prop.DisplayName}).",
+				Log.D($"{Game1.player.Name} spawned in a {Const.PropagatorInternalName} ({prop.DisplayName}).",
 					Config.DebugMode);
 			}
 		}
@@ -160,12 +168,12 @@ namespace BlueberryMushroomMachine
 
 	public class RecipeHoverActionPatch
 	{
-		internal static void Postfix(CraftingRecipe ___hoverRecipe, int x, int y)
+		internal static void Postfix(CraftingRecipe ___hoverRecipe)
 		{
 			if (___hoverRecipe == null)
 				return;
-			if (___hoverRecipe.name.Equals(Const.PropagatorName))
-				___hoverRecipe.DisplayName = ModEntry.Instance.i18n.Get("machine.name");
+			if (___hoverRecipe.name.Equals(Const.PropagatorInternalName))
+				___hoverRecipe.DisplayName = new Propagator().DisplayName;
 		}
 	}
 
@@ -183,7 +191,7 @@ namespace BlueberryMushroomMachine
 					.createItem();
 
 				// Fall through the prefix for any craftables other than the Propagator.
-				if (!tempItem.Name.Equals(ModEntry.Instance.i18n.Get("machine.name")))
+				if (!tempItem.Name.Equals(Const.PropagatorInternalName))
 					return true;
 
 				// Behaviours as from base method.
@@ -223,7 +231,7 @@ namespace BlueberryMushroomMachine
 		{
 			// Intercept machine crafts with a Propagator subclass,
 			// rather than a generic nonfunctional craftable.
-			if (__instance.name == Const.PropagatorName)
+			if (__instance.name == Const.PropagatorInternalName)
 				__result = new Propagator(Game1.player.getTileLocation());
 		}
 	}

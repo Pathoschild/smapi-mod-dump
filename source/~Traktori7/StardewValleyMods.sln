@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29920.165
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndustrialFurnace", "IndustrialFurnace\IndustrialFurnace.csproj", "{932EC649-EA73-4AD8-89DB-C5E8E56E5CCA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndustrialFurnaceAutomate", "IndustrialFurnaceAutomate\IndustrialFurnaceAutomate.csproj", "{DA723C26-CEAB-4045-9A21-E8C1FA424CED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QualityScrubber", "QualityScrubber\QualityScrubber.csproj", "{CF998EA2-EEBF-4AFA-AE8C-46E765AE27B4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QualityScrubberAutomate", "QualityScrubberAutomate\QualityScrubberAutomate.csproj", "{48DD64C4-4541-4B6B-83B2-B95DA1EBD1DE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VersatileGrabber", "VersatileGrabber\VersatileGrabber.csproj", "{C97942B3-669B-4451-B233-7681B4C3E8B8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{932EC649-EA73-4AD8-89DB-C5E8E56E5CCA}.Debug|x86.ActiveCfg = Debug|x86
+		{932EC649-EA73-4AD8-89DB-C5E8E56E5CCA}.Debug|x86.Build.0 = Debug|x86
+		{932EC649-EA73-4AD8-89DB-C5E8E56E5CCA}.Release|x86.ActiveCfg = Release|x86
+		{932EC649-EA73-4AD8-89DB-C5E8E56E5CCA}.Release|x86.Build.0 = Release|x86
+		{DA723C26-CEAB-4045-9A21-E8C1FA424CED}.Debug|x86.ActiveCfg = Debug|x86
+		{DA723C26-CEAB-4045-9A21-E8C1FA424CED}.Debug|x86.Build.0 = Debug|x86
+		{DA723C26-CEAB-4045-9A21-E8C1FA424CED}.Release|x86.ActiveCfg = Release|x86
+		{DA723C26-CEAB-4045-9A21-E8C1FA424CED}.Release|x86.Build.0 = Release|x86
+		{CF998EA2-EEBF-4AFA-AE8C-46E765AE27B4}.Debug|x86.ActiveCfg = Debug|x86
+		{CF998EA2-EEBF-4AFA-AE8C-46E765AE27B4}.Debug|x86.Build.0 = Debug|x86
+		{CF998EA2-EEBF-4AFA-AE8C-46E765AE27B4}.Release|x86.ActiveCfg = Release|x86
+		{CF998EA2-EEBF-4AFA-AE8C-46E765AE27B4}.Release|x86.Build.0 = Release|x86
+		{48DD64C4-4541-4B6B-83B2-B95DA1EBD1DE}.Debug|x86.ActiveCfg = Debug|x86
+		{48DD64C4-4541-4B6B-83B2-B95DA1EBD1DE}.Debug|x86.Build.0 = Debug|x86
+		{48DD64C4-4541-4B6B-83B2-B95DA1EBD1DE}.Release|x86.ActiveCfg = Release|x86
+		{48DD64C4-4541-4B6B-83B2-B95DA1EBD1DE}.Release|x86.Build.0 = Release|x86
+		{C97942B3-669B-4451-B233-7681B4C3E8B8}.Debug|x86.ActiveCfg = Debug|x86
+		{C97942B3-669B-4451-B233-7681B4C3E8B8}.Debug|x86.Build.0 = Debug|x86
+		{C97942B3-669B-4451-B233-7681B4C3E8B8}.Release|x86.ActiveCfg = Release|x86
+		{C97942B3-669B-4451-B233-7681B4C3E8B8}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B200EBE7-E375-4881-AE7B-0D2478E9B0D7}
+	EndGlobalSection
+EndGlobal

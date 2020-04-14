@@ -237,6 +237,75 @@ namespace ClimatesOfFerngillRebuild
             ClimatesOfFerngill.Conditions.Refresh();
             SDVUtilities.UpdateAudio();
 
+            Array.Resize(ref Game1.rainDrops, 70);
+            ClimatesOfFerngill.Conditions.SetRainAmt(70);
+
+            if (Game1.currentLocation is DecoratableLocation)
+                UpdateFurniture(Game1.currentLocation as DecoratableLocation);
+        }
+
+        internal static void SetWeatherTesting()
+        {
+            Game1.isSnowing = Game1.isLightning = false;
+            Game1.isDebrisWeather = Game1.isRaining = true;
+            ClimatesOfFerngill.Conditions.RemoveWeather(CurrentWeather.Overcast);
+            Game1.debrisWeather.Clear();
+            ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Blizzard").First().EndWeather();
+            ClimatesOfFerngill.Conditions.GetWeatherMatchingType("WhiteOut").First().EndWeather();
+            ClimatesOfFerngill.Conditions.GetWeatherMatchingType("ThunderFrenzy").First().EndWeather();
+            ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Sandstorm").First().EndWeather();
+            ClimatesOfFerngill.Conditions.SetVariableRain(false);
+            Game1.populateDebrisWeatherArray();
+            Game1.updateWeather(Game1.currentGameTime);
+            Game1.currentLocation.UpdateWhenCurrentLocation(Game1.currentGameTime);
+            ClimatesOfFerngill.Conditions.Refresh();
+            SDVUtilities.UpdateAudio();
+
+            Array.Resize(ref Game1.rainDrops, 70);
+            ClimatesOfFerngill.Conditions.SetRainAmt(70);
+
+            if (Game1.currentLocation is DecoratableLocation)
+                UpdateFurniture(Game1.currentLocation as DecoratableLocation);
+        }
+
+        internal static void SetWeatherTesting3()
+        {
+            ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Fog").First().SetWeatherExpirationTime(new SDVTime(Game1.timeOfDay + 10));
+            Game1.windGust = -18.0f;
+            ClimatesOfFerngill.WindOverrideSpeed = -24.35f;
+            Game1.updateWeather(Game1.currentGameTime);
+            Game1.currentLocation.UpdateWhenCurrentLocation(Game1.currentGameTime);
+            ClimatesOfFerngill.Conditions.Refresh();
+            SDVUtilities.UpdateAudio();
+        }
+
+        internal static void SetWeatherTesting2()
+        {
+            Game1.isSnowing = Game1.isLightning = false;
+            Game1.isDebrisWeather = Game1.isRaining = true;
+            ClimatesOfFerngill.Conditions.RemoveWeather(CurrentWeather.Overcast);
+            Game1.debrisWeather.Clear();
+            ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Blizzard").First().EndWeather();
+            ClimatesOfFerngill.Conditions.GetWeatherMatchingType("WhiteOut").First().EndWeather();
+            ClimatesOfFerngill.Conditions.GetWeatherMatchingType("ThunderFrenzy").First().EndWeather();
+            ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Sandstorm").First().EndWeather();
+            ClimatesOfFerngill.Conditions.SetVariableRain(false);
+            Game1.populateDebrisWeatherArray();
+
+            if (!ClimatesOfFerngill.Conditions.IsFoggy())
+            {
+                ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Fog").First().ForceWeatherStart();
+                ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Fog").First().SetWeatherExpirationTime(new SDVTime(2600));
+            }
+
+            Game1.updateWeather(Game1.currentGameTime);
+            Game1.currentLocation.UpdateWhenCurrentLocation(Game1.currentGameTime);
+            ClimatesOfFerngill.Conditions.Refresh();
+            SDVUtilities.UpdateAudio();            
+
+            Array.Resize(ref Game1.rainDrops, 70);
+            ClimatesOfFerngill.Conditions.SetRainAmt(70);
+
             if (Game1.currentLocation is DecoratableLocation)
                 UpdateFurniture(Game1.currentLocation as DecoratableLocation);
         }
@@ -269,6 +338,27 @@ namespace ClimatesOfFerngillRebuild
                 UpdateFurniture(Game1.currentLocation as DecoratableLocation);
         }
 
+        internal static void SetWeatherSandstorm()
+        {
+            Game1.isSnowing = Game1.isDebrisWeather = false;
+            Game1.isLightning = Game1.isRaining = false;
+            Game1.isDebrisWeather = true;
+            ClimatesOfFerngill.WindCap = -50f;
+            ClimatesOfFerngill.WindMin = -30f;
+            ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Blizzard").First().EndWeather();
+            ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Sandstorm").First().ForceWeatherStart();
+            ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Sandstorm").First().SetWeatherExpirationTime(new SDVTime(2600));
+            Game1.populateDebrisWeatherArray();
+            ClimatesOfFerngill.Conditions.GetWeatherMatchingType("WhiteOut").First().EndWeather();
+            ClimatesOfFerngill.Conditions.GetWeatherMatchingType("Fog").First().EndWeather();
+            Game1.updateWeather(Game1.currentGameTime);
+            Game1.currentLocation.UpdateWhenCurrentLocation(Game1.currentGameTime);
+            ClimatesOfFerngill.Conditions.Refresh();
+            SDVUtilities.UpdateAudio();
+
+            if (Game1.currentLocation is DecoratableLocation)
+                UpdateFurniture(Game1.currentLocation as DecoratableLocation);
+        }
 
         internal static void SetWeatherStorm()
         {

@@ -1,0 +1,30 @@
+{
+  "OutputAugmentorName": "Melhoria de Saída",
+  "OutputAugmentorDescription": "Coloque em uma máquina para \n aumentar um pouco a quantidade produzida.",  
+  "OutputAugmentorEffectDescription": "Produtos recebidos",
+ 
+  "SpeedAugmentorName": "Melhoria de Velocidade",
+  "SpeedAugmentorDescription": "Coloque em uma máquina para \n reduzir o tempo que leva para terminar o processo.", 
+  "SpeedAugmentorEffectDescription": "Tempo para processar",
+ 
+  "EfficiencyAugmentorName": "Melhoria de Eficiência",
+  "EfficiencyAugmentorDescription": "Coloque em uma máquina para \n reduzir a quantidade de materiais necessarios.", 
+  "EfficiencyAugmentorEffectDescription": "Materiais usados",
+ 
+  "QualityAugmentorName": "Melhoria de Qualidade",
+  "QualityAugmentorDescription": "Coloque em uma máquina para \n aumentar as chances de produzir items de mais alta qualidade.", 
+  "QualityAugmentorEffectDescription": "Chance de melhor qualidade",
+ 
+  "ProductionAugmentorName": "Melhoria de Produção",
+  "ProductionAugmentorDescription": "Coloque em uma máquina para \n aumentar significantemente tanto o material necessario quanto a quantidade produzida.", 
+  "ProductionAugmentorEffectDescription": "Produtos recebidos / Materiais usados",
+ 
+  "DuplicationAugmentorName": "Melhoria de Duplicação",
+  "DuplicationAugmentorDescription": "Coloque em uma máquina para \n dar uma pequena chance da maquina \n se duplicar depois de processar um material.",  
+  "DuplicationAugmentorEffectDescription": "Chance de duplicação (por hora de processamento)",
+ 
+  "AugmentorCategoryName": "Melhoria",
+ 
+  "CurrentEffectLabel": "Efeito Atual",
+  "NewEffectLabel": "Novo Efeito"
+}

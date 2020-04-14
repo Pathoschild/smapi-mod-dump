@@ -1,0 +1,12 @@
+﻿{
+	"Name": "Pregnancy Role Test",
+	"Author": "kdau",
+	"Version": "0.0.1",
+	"Description": "Test content for Pregnancy Role mod",
+	"UniqueID": "kdau.PregnancyRole.Test",
+	"ContentPackFor": { "UniqueId": "Pathoschild.ContentPatcher" },
+	"MinimumApiVersion": "3.4.0",
+	"Dependencies": [
+		{ "UniqueId": "kdau.PregnancyRole" }
+	]
+}

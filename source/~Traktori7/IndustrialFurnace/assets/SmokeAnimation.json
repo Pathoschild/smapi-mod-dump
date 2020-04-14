@@ -1,0 +1,16 @@
+{
+	// the offset scale: 64 is one tile
+	"Enabled": true,
+	// time between spawns in milliseconds
+	"SpawnFrequency": 500,
+	// spawnpoint offset from the building's point
+	"SpawnXOffset": 68,
+	"SpawnYOffset": -64,
+	// the dimensions of the sprite
+	"SpriteSizeX": 10,
+	"SpriteSizeY": 10,
+	// the scale factor for the smoke sprite size
+	"SmokeScale": 2,
+	// the rate of change in the scale per frame
+	"SmokeScaleChange": 0.02
+}

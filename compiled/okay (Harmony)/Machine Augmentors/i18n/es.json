@@ -1,0 +1,30 @@
+{
+  "OutputAugmentorName": "Intensificador de potencia",
+  "OutputAugmentorDescription": "Cuando se conecta a equipos de procesamiento\n y refinación, la producción puede incrementarse ligeramente.",
+  "OutputAugmentorEffectDescription": "Productos recibidos",
+
+  "SpeedAugmentorName": "Intensificador de velocidad",
+  "SpeedAugmentorDescription": "Cuando se conecta al equipo de procesamiento\n y refinación, se puede acortar el tiempo requerido para el procesamiento.",
+  "SpeedAugmentorEffectDescription": "Tiempo para procesar",
+
+  "EfficiencyAugmentorName": "Potenciador de eficiencia",
+  "EfficiencyAugmentorDescription": "Al adjuntarlo al equipo de procesamiento\n y refinación, se puede reducir la cantidad de materiales necesarios.",
+  "EfficiencyAugmentorEffectDescription": "Materiales usados",
+
+  "QualityAugmentorName": "Refuerzo de calidad",
+  "QualityAugmentorDescription": "La conexión a equipos de procesamiento\n y refinación puede aumentar la posibilidad de producir productos de alta calidad.",
+  "QualityAugmentorEffectDescription": "Mayor oportunidad de calidad",
+
+  "ProductionAugmentorName": "Intensificador de producción",
+  "ProductionAugmentorDescription": "La conexión al equipo de procesamiento\n y refinación aumenta enormemente tanto los materiales necesarios como la producción.",
+  "ProductionAugmentorEffectDescription": "Productos recibidos / materiales utilizados",
+
+  "DuplicationAugmentorName": "Intensificador de duplicados",
+  "DuplicationAugmentorDescription": "Cuando se conecta al equipo de procesamiento\n y refinación, se puede agregar la posibilidad de producir duplicados durante el procesamiento.",
+  "DuplicationAugmentorEffectDescription": "Posibilidad de duplicado (por hora de procesamiento)",
+
+  "AugmentorCategoryName": "Intensificador",
+
+  "CurrentEffectLabel": "Efecto actual",
+  "NewEffectLabel": "Nuevo efecto"
+}

@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/5142
 IDs: cel10e.Cherry.FarmRearranger
-update keys: Nexus:5142
+update keys: Nexus:5142, GitHub:ChroniclerCherry/stardew-valley-mods

@@ -8,7 +8,7 @@ namespace StardewNotification
     /// <summary>
     /// The mod entry point
     /// </summary>
-    class StardewNotification : Mod
+    public class StardewNotification : Mod
     {
         private HarvestNotification harvestableNotification;
         private GeneralNotification generalNotification;
@@ -36,7 +36,10 @@ namespace StardewNotification
         private void OnTimeChanged(object sender, TimeChangedEventArgs e)
         {
             if (Config.NotifyBirthdayReminder && e.NewTime == Config.BirthdayReminderTime)
-                generalNotification.DoBirthdayReminder(Helper.Translation);
+                GeneralNotification.DoBirthdayReminder(Helper.Translation);
+
+            if (Config.ShowWeatherNextDay && e.NewTime == Config.WeatherNextDayTime)
+                GeneralNotification.DoWeatherReminder(Helper.Translation);
         }
 
         /// <summary>Raised after a player warps to a new location.</summary>

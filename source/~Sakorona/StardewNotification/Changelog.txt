@@ -1,4 +1,14 @@
-﻿1.8.1
+﻿1.8.3
+ - fixes an interesting bug that should probably not show up but might - character not found in list on their birthday
+
+1.8.2
+- fix for update key
+- Notification duration time now configurable
+- Show Weather Next Day set by default to 5pm, configurable
+- Add in TV reminders for channels
+- Spring Onions notifications
+
+1.8.1
 - No longer beta
 - Adds in hay notification feature, contingent on there being a silo present
 - Updated for SMAPI 3.0 and Stardew Valley 1.4

@@ -1,0 +1,13 @@
+Times can be ignored.
+Left hand side and right hand side should never both contain a "No Overlap" rule
+
+Example:
+
+Setting limits on StartTime and EndTime for rule "Time Overlap Fixup 1300 to 1099"
+Swapping StartTime and EndTime for rule "Time Overlap Fixup 1300 to 1099"
+StartTime is now "1140" amd EmdTime is now "1300" for rule "Time Overlap Fixup 1300 to 1099"
+Setting limits on StartTime and EndTime for rule "Time No Overlap Directory"
+Swapping StartTime and EndTime for rule "Time No Overlap Directory"
+StartTime is now "1140" amd EmdTime is now "1300" for rule "Time No Overlap Directory"
+Rules "Time No Overlap Morning" and "Time Overlap Fixup 1300 to 1099" can over write one another.
+Rules "Location No Overlap Afternoon" and "Time Overlap Fixup 1300 to 1099" can over write one another.

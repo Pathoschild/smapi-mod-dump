@@ -1,0 +1,15 @@
+﻿{
+    "Message.Requirement.Amount": "Benötigt {{amount}} {{objectName}}",
+    "Message.Requirement.Quality": "Benötigt eine andere Qualität",
+    "Message.Requirement.Fuel": "Erforderliche Zutat fehlt",
+    "Message.Requirement.Season": "Benötigt eine andere Jahreszeit",
+    "Message.Requirement.Weather": "Benötigt anderes Wetter",
+    "Message.Requirement.Location": "Benötigt einen anderen Standort",
+    "Message.Requirement.InputParent": "Benötigt eine andere Art von {{objectName}}",
+    "Message.Condition.Location": "Kann hier nicht arbeiten",
+    "Message.Condition.Season": "Kann in dieser Saison nicht arbeiten",
+    "Object.Category.Meat": "Fleisch (beliebig)",
+    "Object.Category.MetalResources": "Metallressourcen (beliebig)",
+    "Object.Category.BuildingResources": "Bauressourcen (beliebig)",
+    "Object.Category.TappedTreeProduct": "Angezapfter-Baumressourcen (beliebig)"
+}

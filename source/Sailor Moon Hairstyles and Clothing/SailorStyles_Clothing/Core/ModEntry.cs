@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+
 using StardewValley;
 using StardewValley.Menus;
 using StardewModdingAPI;
@@ -9,21 +10,15 @@ using StardewModdingAPI.Events;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 using xTile.Dimensions;
 using xTile.ObjectModel;
+using xTile.Tiles;
 
 /*
  *
  * authors note
- * update all the manifest and content-pack files u idiot
- *
- */
-
-/*
- * todo
- *
- * find a way to bring back my blessed cate
+ * update all the manifest files u idiot
+ * THAT GOES FOR THE CHARACTER PACK TOO
  *
  */
 
@@ -48,14 +43,14 @@ namespace SailorStyles_Clothing
 			helper.Events.Input.ButtonReleased += OnButtonReleased;
 			helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 			helper.Events.GameLoop.DayStarted += OnDayStarted;
-			helper.Events.Player.Warped += OnWarped;
-
-			helper.Content.AssetEditors.Add(new Editors.AnimDescEditor(helper));
-			helper.Content.AssetEditors.Add(new Editors.MapEditor(helper));
+			helper.Events.GameLoop.DayEnding += OnDayEnding;
 
 			helper.Content.AssetLoaders.Add(new Editors.NpcLoader(helper));
+			helper.Content.AssetEditors.Add(new Editors.AnimsEditor(helper));
 		}
 		
+		#region Game Events
+
 		private void OnButtonReleased(object sender, ButtonReleasedEventArgs e)
 		{
 			e.Button.TryGetKeyboard(out var keyPressed);
@@ -66,30 +61,10 @@ namespace SailorStyles_Clothing
 				return;
 
 			if (e.Button.IsActionButton())
-			{
-				// thanks sundrop
-				var grabTile = new Vector2(Game1.getOldMouseX() + Game1.viewport.X, Game1.getOldMouseY() + Game1.viewport.Y)
-				               / Game1.tileSize;
-				if (!Utility.tileWithinRadiusOfPlayer((int)grabTile.X, (int)grabTile.Y, 1, Game1.player))
-					grabTile = Game1.player.GetGrabTile();
-				var tile = Game1.currentLocation.map.GetLayer("Buildings").PickTile(new Location(
-					(int)grabTile.X * Game1.tileSize, (int)grabTile.Y * Game1.tileSize), Game1.viewport.Size);
-				var action = (PropertyValue) null;
-				tile?.Properties.TryGetValue("Action", out action);
-				if (action != null)
-				{
-					var strArray = ((string)action).Split(' ');
-					var args = new string[strArray.Length - 1];
-					Array.Copy(strArray, 1, args, 0, args.Length);
-					if (strArray[0].Equals(Const.CatId))
-						CatShop();
-				}
-			}
-			
+				TryGrabTileAction();
+
 			if (keyPressed.ToSButton().Equals(Config.DebugWarpKey) && Config.DebugMode)
-			{
 				DebugWarpPlayer();
-			}
 		}
 
 		private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
@@ -111,47 +86,80 @@ namespace SailorStyles_Clothing
 		
 		private void OnDayStarted(object sender, DayStartedEventArgs e)
 		{
-			CatShopRestock();
+			Log.D($"Today's {Game1.shortDayDisplayNameFromDayOfSeason(Game1.dayOfMonth)} the "
+			      + $"{Game1.dayOfMonth}th of {Game1.CurrentSeasonDisplayName}: "
+			      + $"{(ShouldAddCatShop() ? "nice day for a cat" : "nothing special")}",
+				Config.DebugMode);
+			if (ShouldAddCatShop())
+			{
+				var location = Game1.getLocationFromName(Const.LocationTarget);
+				AddTiles(location);
+				AddNpcs(location);
+				CatShopRestock();
+
+				Log.D($"Cat status: {(_catNpc != null ? "cute" : "nowhere")}",
+					Config.DebugMode);
+				Log.D($"Shop status: {(_catShopStock.Count > 0 ? "fluffy" : "skinny")}",
+					Config.DebugMode);
+			}
 		}
 		
-		private void OnWarped(object sender, WarpedEventArgs e)
+		private void OnDayEnding(object sender, DayEndingEventArgs e)
 		{
-			ResetLocation(e);
+			var location = Game1.getLocationFromName(Const.LocationTarget);
+			RemoveNpcs(location);
+			RemoveTiles(location);
 		}
 
-		private void ResetLocation(WarpedEventArgs e)
+		#endregion
+
+		#region Manager Methods
+
+		private void TryGrabTileAction()
 		{
-			Log.D($"Resetting location and NPC data ({Const.LocationTarget})",
+			var grabTile = new Vector2(Game1.getOldMouseX() + Game1.viewport.X, Game1.getOldMouseY() + Game1.viewport.Y)
+			               / Game1.tileSize;
+			if (!Utility.tileWithinRadiusOfPlayer((int)grabTile.X, (int)grabTile.Y, 1, Game1.player))
+				grabTile = Game1.player.GetGrabTile();
+			var tile = Game1.currentLocation.map.GetLayer("Buildings").PickTile(new Location(
+				(int)grabTile.X * Game1.tileSize, (int)grabTile.Y * Game1.tileSize), Game1.viewport.Size);
+
+			if (CheckForTileAction(tile, Const.CatId))
+				CatShop();
+		}
+
+		public static bool CheckForTileAction(Tile tile, string value)
+		{
+			if (tile == null)
+				return false;
+			tile.Properties.TryGetValue("Action", out var action);
+			if (action != null)
+			{
+				var strArray = ((string)action).Split(' ');
+				var args = new string[strArray.Length - 1];
+				Array.Copy(strArray, 1, args, 0, args.Length);
+				if (strArray[0].Equals(value))
+					return true;
+			}
+
+			return false;
+		}
+
+		public static bool ShouldAddCatShop()
+		{
+			var facts = Game1.dayOfMonth % 7 <= 1 || 
+			            (Instance.Config.DebugMode && Instance.Config.DebugAlwaysCaturday);
+			Log.D($"Cat should be added: {(facts ? "yes!" : "no..")}");
+			return facts;
+		}
+
+		private void AddNpcs(GameLocation location)
+		{
+			Log.D("Adding cat..",
 				Config.DebugMode);
-			
-			Helper.Content.InvalidateCache(Const.AnimDescs);
 
-			if (e.OldLocation.Name.Equals(Const.LocationTarget))
-				RemoveNpcs();
-
-			if (!e.NewLocation.Name.Equals(Const.LocationTarget))
+			if (location == null || location.getCharacterFromName(Const.CatId) != null)
 				return;
-
-			if (_catNpc == null && (Game1.dayOfMonth % 7 <= 1 || Config.DebugMode))
-				AddNpcs();
-
-			Helper.Content.InvalidateCache(Path.Combine("Maps", Const.LocationTarget));
-		}
-
-		private void RemoveNpcs()
-		{
-			Log.D($"Removing NPCs from {Const.LocationTarget}.",
-				Config.DebugMode);
-
-			Game1.getLocationFromName(Const.LocationTarget).characters.Remove(_catNpc);
-			_catNpc = null;
-		}
-
-		private void AddNpcs()
-		{
-			Log.D($"Adding NPCs to {Const.LocationTarget}.",
-				Config.DebugMode);
-
 			_catNpc = new NPC(
 				new AnimatedSprite(Const.CatSprite, 0, 16, 32),
 				new Vector2(Const.CatX, Const.CatY) * 64.0f,
@@ -162,23 +170,67 @@ namespace SailorStyles_Clothing
 				null,
 				Helper.Content.Load<Texture2D>($@"Portraits/{Const.CatId}",
 					ContentSource.GameContent));
-			LoadNpcSchedule(_catNpc);
-			Game1.getLocationFromName(Const.LocationTarget).addCharacter(_catNpc);
+			ForceNPCSchedule(_catNpc);
+			location.addCharacter(_catNpc);
 		}
+
+		private void ForceNPCSchedule(NPC npc)
+		{
+			npc.Schedule = npc.getSchedule(Game1.dayOfMonth);
+			npc.scheduleTimeToTry = 9999999;
+			npc.ignoreScheduleToday = false;
+			npc.followSchedule = true;
+		}
+
+		private void RemoveNpcs(GameLocation location)
+		{
+			if (location.getCharacterFromName(Const.CatId) != null)
+			{
+				Log.D("Removing cat..",
+					Config.DebugMode);
+				location.characters.Remove(_catNpc);
+			}
+			_catNpc = null;
+		}
+
+		private void AddTiles(GameLocation location)
+		{
+			Log.D($"Adding to {location.NameOrUniqueName}",
+				Config.DebugMode);
+
+			var map = location.Map;
+			const BlendMode mode = BlendMode.Additive;
+			var sheet = map.GetTileSheet("outdoors");
+			var layer = map.GetLayer("Buildings");
+			if (layer.Tiles[Const.CatX, Const.CatY] == null)
+				// Adds a magic blank buildings tile to hold the CatShop property if none is there (there usually isnt)
+				layer.Tiles[Const.CatX, Const.CatY] = new StaticTile(layer, sheet, mode, Const.DummyTileIndex);
+			layer.Tiles[Const.CatX, Const.CatY].Properties["Action"] = new PropertyValue(Const.CatId);
+		}
+
+		private void RemoveTiles(GameLocation location)
+		{
+			var map = location.Map;
+			var layer = map?.GetLayer("Buildings");
+			var tile = layer?.Tiles[Const.CatX, Const.CatY];
+			if (tile == null)
+				return;
+			Log.D($"Cleaning up {location.NameOrUniqueName}",
+				Config.DebugMode);
+			if (CheckForTileAction(tile, Const.CatId))
+				tile.Properties["Action"] = null;
+			if (tile.TileIndex == Const.DummyTileIndex)
+				layer.Tiles[Const.CatX, Const.CatY] = null;
+		}
+		#endregion
+
+		#region CatShop Methods
 
 		private void CatShopRestock()
 		{
 			_catShopStock.Clear();
 			PopulateShop(true);
 			PopulateShop(false);
-		}
-
-		private void LoadNpcSchedule(NPC npc)
-		{
-			npc.Schedule = npc.getSchedule(Game1.dayOfMonth);
-			npc.scheduleTimeToTry = 9999999;
-			npc.ignoreScheduleToday = false;
-			npc.followSchedule = true;
 		}
 
 		private string GetContentPackId(string name)
@@ -203,6 +255,8 @@ namespace SailorStyles_Clothing
 					var contentNames = isHat
 						? _ja.GetAllHatsFromContentPack(contentPackId)
 						: _ja.GetAllClothingFromContentPack(contentPackId);
+					if (contentPack.EndsWith("Kimono"))
+						contentNames.RemoveAll(n => n.EndsWith("wer"));
 					if (contentNames == null || contentNames.Count < 1)
 					{
 						Log.E($"Failed to populate content from {contentPack}\n({contentPackId}).");
@@ -217,8 +271,6 @@ namespace SailorStyles_Clothing
 					var goalQty = Math.Max(1, contentNames.Count / Const.CatShopQtyRatio);
 					while (currentQty < goalQty)
 					{
-						if (contentPack.EndsWith("Kimono"))
-							contentNames.RemoveAll(n => n.EndsWith("wer"));
 						var name = contentNames[random.Next(contentNames.Count - 1)];
 
 						if (stock.Contains(name))
@@ -229,8 +281,7 @@ namespace SailorStyles_Clothing
 						if (!contentPack.EndsWith("Kimono"))
 							continue;
 						++currentQty;
-						var extra = name;
-						stock.Add(extra.Replace("Upp", "Low"));
+						stock.Add(name.Replace("Upp", "Low"));
 					}
 
 					foreach (var name in stock)
@@ -270,6 +321,10 @@ namespace SailorStyles_Clothing
 				= Game1.parseText(text, Game1.dialogueFont, 304);
 		}
 
+		#endregion
+
+		#region Debug Methods
+
 		private static void DebugWarpPlayer()
 		{
 			Log.D($"Pressed {Instance.Config.DebugWarpKey} : Warped {Game1.player.Name}.");
@@ -278,5 +333,7 @@ namespace SailorStyles_Clothing
 			else
 				Game1.warpFarmer(Const.LocationTarget, 31, 97, 2);
 		}
+
+		#endregion
 	}
 }

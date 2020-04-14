@@ -1,0 +1,22 @@
+{
+  "location.prefix": "Caught in",
+  "location.none": "Unknown - Mines/Event?",
+  "location.crabpot": "Crab Pot in: {{location}}",
+  "location.ocean": "Ocean",
+  "location.freshwater": "Freshwater",
+  "location.forestriver": "Forest River",
+  "location.forestpond": "Forest Pond",
+  "location.bugland": "Mutant Bug Lair",
+  "location.witchswamp": "Witch's Swamp",
+  "season.prefix": "Season",
+  "season.all": "All Seasons",
+  "season.none": "No Entry Found",
+  "time.prefix": "Time",
+  "time.allday": "All day",
+  "time.midday": "Midday",
+  "time.midnight": "Midnight",
+  "weather.prefix": "Weather",
+  "weather.sun": "Sun",
+  "weather.rain": "Rain",
+  "weather.none": "No Entry Found"
+}

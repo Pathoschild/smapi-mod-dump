@@ -1,0 +1,11 @@
+{
+  "Duration": 30,
+  "AllowPreserves": true,
+  "AllowHoney": true,
+  "TurnWineIntoGenericWine": false,
+  "TurnHoneyIntoGenericHoney": false,
+  "TurnJuiceIntoGenericJuice": false,
+  "PicklesIntoGenericPickles": false,
+  "TurnJellyIntoGenericJelly": false,
+  "TurnRoeIntoGenericRoe": false
+}

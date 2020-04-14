@@ -1,0 +1,53 @@
+{
+  "Format": "1.0",
+  "Categories": [
+	{
+	"Action": "Update",
+	"Category": "Goat",
+	"Types": [
+		{
+		"Type": "Goat",
+		},
+      		],
+	"Buildings": [
+		"Barn",
+		"Big Barn",
+		"Deluxe Barn"
+      		],
+	"ForceOverrideTypes": true,
+	"ForceOverrideBuildings": true,
+	},
+	{
+	"Action": "Update",
+	"Category": "Sheep",
+	"Types": [
+		{
+		"Type": "Sheep",
+		},
+		],
+	"Buildings": [
+		"Big Barn",
+		"Deluxe Barn"
+		],
+	"ForceOverrideTypes": true,
+	"ForceOverrideBuildings": true,
+	},
+	{
+	"Action": "Update",
+	"Category": "Dairy Cow",
+	"Types": [
+		{
+		"Type": "White Cow",
+		},
+		{
+		"Type": "Brown Cow",
+		},
+		],
+	"Buildings": [
+		"Deluxe Barn"
+		],
+	"ForceOverrideTypes": true,
+	"ForceOverrideBuildings": true,
+	},
+  ]
+}	

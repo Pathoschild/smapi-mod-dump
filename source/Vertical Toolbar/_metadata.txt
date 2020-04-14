@@ -5,9 +5,9 @@ mods:
    Vertical Toolbar
 
 latest commit:
-   commit 1a8594aeec088baa7b32cde1fe6fe298dd3ffb50
+   commit 10fe927f708c11bcd69b2b092f7f5be29f10696a
    Author: brandon <bmarquismarkail@github.com>
-   Date:   Mon Feb 10 06:23:17 2020 -0600
+   Date:   Sat Mar 7 11:10:44 2020 -0600
    
-       1.5.0: Consolidating code, add feature to change orientation of the Vertical Toolbar
+       minor updates to json files
    

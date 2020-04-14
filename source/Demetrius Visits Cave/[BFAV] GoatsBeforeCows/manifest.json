@@ -1,0 +1,13 @@
+{
+   "Name": "Goats Before Cows",
+   "Author": "Kichjo",
+   "Version": "1.0.0",
+   "Description": "Rearranges the order in which barn animals are unlocked",
+   "UniqueID": "Kichjo.BFAVGoatsBeforeCows",
+   "UpdateKeys": [ "Nexus:5564" ],
+   "MinimumApiVersion": "3.0",
+   "ContentPackFor": {
+	"UniqueID": "Paritee.BetterFarmAnimalVariety",
+	"MinimumVersion": "3.0.0-unofficial"
+  	}
+}

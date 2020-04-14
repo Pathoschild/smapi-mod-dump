@@ -1,1 +1,5 @@
-[]
+{
+  "AreaName": "Big Coop",
+  "numberOfOreSpotsPerDay": 0,
+  "OreSpots": []
+}

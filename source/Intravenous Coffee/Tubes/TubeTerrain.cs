@@ -12,10 +12,13 @@ namespace Tubes
     // A terrain feature representation of our Pneumatic Tube. For our purposes, it's just an object that you can walk through.
     public class TubeTerrain : TerrainFeature, ISaveElement
     {
-        // Index into the TubeInfo.terrainSprites sheet for this tube (e.g. a left-right tube or 4-way tube, etc).
-        private int spriteIndex;
+        internal static Texture2D SpriteSheet;
+        internal const int SpriteSize = 48;
+
+        // Index into the SpriteIndex sheet for this tube (e.g. a left-right tube or 4-way tube, etc).
+        private int SpriteIndex;
         // Number of clockwise quarter rotations to draw with.
-        private int spriteRotation;
+        private int SpriteRotation;
 
         public TubeTerrain()
         {
@@ -23,11 +26,16 @@ namespace Tubes
                 Flooring.populateDrawGuide();
         }
 
-        internal static void updateSpritesInLocation(GameLocation location)
+        internal static void Init()
+        {
+            SpriteSheet = TubesMod._helper.Content.Load<Texture2D>(@"Assets/terrain.png");
+        }
+
+        internal static void UpdateSpritesInLocation(GameLocation location)
         {
             foreach (var tile in location.terrainFeatures) {
                 if (tile.Value is TubeTerrain tube)
-                    tube.updateSprite(location, tile.Key);
+                    tube.UpdateSprite(location, tile.Key);
             }
         }
 
@@ -74,11 +82,11 @@ namespace Tubes
 
             Game1.playSound("hammer");
 
-            location.debris.Add(new Debris((Item)new StardewValley.Object(TubeInfo.objectData.sdvId, 1, false, -1, 0), tileLocation * (float)Game1.tileSize + new Vector2((float)(Game1.tileSize / 2), (float)(Game1.tileSize / 2))));
+            location.debris.Add(new Debris((Item)new StardewValley.Object(TubeObject.ObjectData.sdvId, 1, false, -1, 0), tileLocation * (float)Game1.tileSize + new Vector2((float)(Game1.tileSize / 2), (float)(Game1.tileSize / 2))));
             location.terrainFeatures.Remove(tileLocation);
 
             // Add a temporary junk object to force a LocationObjectsChanged event. Will be removed there.
-            location.objects.Add(tileLocation, new StardewValley.Object(TubeInfo.junkObjectData.sdvId, 1, false, -1, 0));
+            location.objects.Add(tileLocation, new StardewValley.Object(JunkObject.objectData.sdvId, 1, false, -1, 0));
             return false;
         }
 
@@ -89,24 +97,23 @@ namespace Tubes
 
             Vector2 position =
                 Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * (float)Game1.tileSize, tileLocation.Y * (float)Game1.tileSize));
-            Rectangle source = Game1.getSourceRectForStandardTileSheet(TubeInfo.terrainSprites, spriteIndex, TubeInfo.spriteSize, TubeInfo.spriteSize);
+            Rectangle source = Game1.getSourceRectForStandardTileSheet(SpriteSheet, SpriteIndex, SpriteSize, SpriteSize);
             Vector2 offset = Vector2.Zero;
-            switch (spriteRotation) {
-                case 3: offset = new Vector2(TubeInfo.spriteSize, 0); break;
-                case 2: offset = new Vector2(TubeInfo.spriteSize, TubeInfo.spriteSize); break;
-                case 1: offset = new Vector2(0, TubeInfo.spriteSize); break;
+            switch (SpriteRotation) {
+                case 3: offset = new Vector2(SpriteSize, 0); break;
+                case 2: offset = new Vector2(SpriteSize, SpriteSize); break;
+                case 1: offset = new Vector2(0, SpriteSize); break;
             }
-            spriteBatch.Draw(TubeInfo.terrainSprites, position, new Rectangle?(source), Color.White, spriteRotation * kQuarterClockwise, offset, KWhyDoesThisScaleWork * Game1.pixelZoom, SpriteEffects.None, 1E-09f);
+            spriteBatch.Draw(SpriteSheet, position, new Rectangle?(source), Color.White, SpriteRotation * kQuarterClockwise, offset, KWhyDoesThisScaleWork * Game1.pixelZoom, SpriteEffects.None, 1E-09f);
         }
 
         // Updates which sprite to use in the terrainSprites sheet, based on connecting tubes.
-        private void updateSprite(GameLocation location, Vector2 tileLocation)
+        private void UpdateSprite(GameLocation location, Vector2 tileLocation)
         {
-            spriteIndex = 0;
-            spriteRotation = 0;
+            SpriteIndex = 0;
+            SpriteRotation = 0;
 
-            var terrainFeatures = location.terrainFeatures;
-            if (!terrainFeatures.ContainsKey(tileLocation)) {
+            if (!location.terrainFeatures.ContainsKey(tileLocation)) {
                 return;
             }
 
@@ -121,60 +128,64 @@ namespace Tubes
             int connections = 0;
 
             for (int i = 0; i < 4; i++) {
-                if (terrainFeatures.TryGetValue(neighborLocations[i], out TerrainFeature tf) && tf is TubeTerrain) {
+                if ((location.terrainFeatures.TryGetValue(neighborLocations[i], out TerrainFeature tf) && tf is TubeTerrain) ||
+                    (location.objects.TryGetValue(neighborLocations[i], out StardewValley.Object obj) && obj is PortObject)) {
+                    neighborConnections[i] = true;
+                    connections++;
+                } else if (TileHelper.TryGetBuildingEntrance(location, neighborLocations[i]) is GameLocation indoors) {
                     neighborConnections[i] = true;
                     connections++;
                 }
             }
 
             // Just for clarity.
-            ref bool hasLeft = ref neighborConnections[0];
-            ref bool hasRight = ref neighborConnections[1];
-            ref bool hasBottom = ref neighborConnections[2];
-            ref bool hasTop = ref neighborConnections[3];
+            bool hasLeft = neighborConnections[0];
+            bool hasRight = neighborConnections[1];
+            bool hasBottom = neighborConnections[2];
+            bool hasTop = neighborConnections[3];
 
             switch (connections) {
                 case 0:
-                    spriteIndex = 0;
+                    SpriteIndex = 0;
                     break;
                 case 1:
-                    spriteIndex = 0;
+                    SpriteIndex = 0;
                     if (hasTop || hasBottom)
-                        spriteRotation = 1;
+                        SpriteRotation = 1;
                     break;
                 case 2:
                     if (hasLeft && hasRight) {
-                        spriteIndex = 0;
+                        SpriteIndex = 0;
                     } else if (hasTop && hasBottom) {
-                        spriteIndex = 0;
-                        spriteRotation = 1;
+                        SpriteIndex = 0;
+                        SpriteRotation = 1;
                     } else if (hasLeft && hasTop) {
-                        spriteIndex = 1;
+                        SpriteIndex = 1;
                     } else if (hasTop && hasRight) {
-                        spriteIndex = 1;
-                        spriteRotation = 1;
+                        SpriteIndex = 1;
+                        SpriteRotation = 1;
                     } else if (hasRight && hasBottom) {
-                        spriteIndex = 1;
-                        spriteRotation = 2;
+                        SpriteIndex = 1;
+                        SpriteRotation = 2;
                     } else if (hasBottom && hasLeft) {
-                        spriteIndex = 1;
-                        spriteRotation = 3;
+                        SpriteIndex = 1;
+                        SpriteRotation = 3;
                     }
                     break;
                 case 3:
-                    spriteIndex = 2;
+                    SpriteIndex = 2;
                     if (hasLeft && hasTop && hasRight) {
                         // no rotation
                     } else if (hasTop && hasRight && hasBottom) {
-                        spriteRotation = 1;
+                        SpriteRotation = 1;
                     } else if (hasRight && hasBottom && hasLeft) {
-                        spriteRotation = 2;
+                        SpriteRotation = 2;
                     } else if (hasBottom && hasLeft && hasTop) {
-                        spriteRotation = 3;
+                        SpriteRotation = 3;
                     }
                     break;
                 case 4:
-                    spriteIndex = 3;
+                    SpriteIndex = 3;
                     break;
             }
         }

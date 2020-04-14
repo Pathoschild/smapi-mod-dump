@@ -45,9 +45,9 @@ mods:
    Visualize
 
 latest commit:
-   commit a0be8ebcc35c316a3d507baa0cbe6eaab4faa933
+   commit 6ae3e9e80a23e63cbc37bfa145bf8d133ac1b309
    Author: David <david@millionideas.de>
-   Date:   Wed Feb 19 01:29:41 2020 +0100
+   Date:   Mon Apr 13 23:08:40 2020 +0200
    
-       include icon
+       added persistent locks and crop layers
    

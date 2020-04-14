@@ -65,8 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModConfig.cs" />
+    <Compile Include="Config\ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
+    <Compile Include="Patches\FarmerPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -5,9 +5,12 @@ mods:
    Json Assets
 
 latest commit:
-   commit 93e98c2e3e8e019d62e414d01e26ea430799f83a
+   commit c8504fb6128fc8af521b2a6421503503cd52cbb7
+   Merge: b02e241 7460ddb
    Author: Chase W <spacechase0@users.noreply.github.com>
-   Date:   Sat Feb 22 20:24:47 2020 -0500
+   Date:   Mon Apr 13 18:09:48 2020 -0400
    
-       Added ReserveExtraIndexCount for big craftables, deprecating ReserveNextIndex
+       Merge pull request #50 from paradigmnomad/patch-9
+       
+       Updates README
    

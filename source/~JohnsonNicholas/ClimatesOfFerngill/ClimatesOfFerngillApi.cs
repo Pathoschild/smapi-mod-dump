@@ -1,4 +1,6 @@
-﻿namespace ClimatesOfFerngillRebuild
+﻿using System;
+
+namespace ClimatesOfFerngillRebuild
 {
     public interface IClimatesOfFerngillAPI
     {

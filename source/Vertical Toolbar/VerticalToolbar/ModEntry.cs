@@ -46,7 +46,7 @@ namespace SB_VerticalToolMenu
             isInitiated = false;
         }
 
-        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <summary>Raised after the game state is updated (???60 times per second).</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void onUpdateTicked(object sender, UpdateTickedEventArgs e)

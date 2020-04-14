@@ -1,0 +1,15 @@
+{
+    //Translate by Elegy
+    "yes": "是",
+    "no": "不",
+    "dialogue": "您要立即升級您的工具嗎？價格: {{config}}G",
+    "no-money": "您沒有足夠的錢",
+    "inventory-full": "您的庫存已滿",
+    "no-tool-upgrade": "您在Clint中沒有工具升級",
+    "copper-trash-can": "铜垃圾桶",
+    "steel-trash-can": "钢垃圾桶",
+    "gold-trash-can": "金垃圾桶",
+    "iridium-trash-can": "铱垃圾桶",
+    "receive": "您收到 {{tool}}",
+}
+

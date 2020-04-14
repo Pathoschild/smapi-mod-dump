@@ -3,6 +3,6 @@
     <ModZipPath>$(SolutionDir)\_releases</ModZipPath>
 	<!-- OR '$(MSBuildProjectName)' == 'FloodEventsTesting' -->
     <!-- don't deploy old/unreleased mods -->
-    <EnableModDeploy Condition="'$(MSBuildProjectName)' == 'BetterShippingBox' OR '$(MSBuildProjectName)' == 'CustomizableClock' OR '$(MSBuildProjectName)' == 'TimeReminder' OR '$(MSBuildProjectName)' == 'SummitReborn'">False</EnableModDeploy>
+    <EnableModDeploy Condition="'$(MSBuildProjectName)' == 'BetterShippingBox' OR '$(MSBuildProjectName)' == 'CustomizableClock' OR '$(MSBuildProjectName)' == 'TimeReminder'">False</EnableModDeploy>
   </PropertyGroup>
 </Project>

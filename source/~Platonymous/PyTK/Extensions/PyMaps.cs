@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using StardewValley;
 using SObject = StardewValley.Object;
 using Microsoft.Xna.Framework;
@@ -19,6 +20,7 @@ using PyTK.Tiled;
 using Newtonsoft.Json;
 using Microsoft.Xna.Framework.Graphics;
 using xTile.Display;
+using TMXTile;
 
 namespace PyTK.Extensions
 {
@@ -26,8 +28,6 @@ namespace PyTK.Extensions
     {
         internal static IModHelper Helper { get; } = PyTKMod._helper;
         internal static IMonitor Monitor { get; } = PyTKMod._monitor;
-
-        internal static Dictionary<string, Texture2D> ImageLayerCache = new Dictionary<string, Texture2D>();
 
         /// <summary>Looks for an object of the requested type on this map position.</summary>
         /// <returns>Return the object or null.</returns>
@@ -112,20 +112,17 @@ namespace PyTK.Extensions
             foreach (Layer layer in map.Layers)
             {
                 if (layer.Properties.ContainsKey("OffestXReset"))
-                {
-                    layer.Properties["offsetx"] = layer.Properties["OffestXReset"];
-                    layer.Properties["offsety"] = layer.Properties["OffestYReset"];
-                }
+                    layer.SetOffset(new Location(layer.Properties["OffestXReset"], layer.Properties["OffestYReset"]));
 
                 if (layer.Properties.Keys.Contains("DrawChecked"))
                     continue;
 
                 if (layer.Properties.ContainsKey("Draw") && map.GetLayer(layer.Properties["Draw"]) is Layer maplayer)
-                    maplayer.AfterDraw += (s, e) => drawLayer(layer, Location.Origin, layer.Properties.ContainsKey("WrapAround"));
+                    maplayer.AfterDraw += (s, e) => drawLayer(layer, layer.GetOffset(), layer.Properties.ContainsKey("WrapAround"));
                 else if (layer.Properties.ContainsKey("DrawAbove") && map.GetLayer(layer.Properties["DrawAbove"]) is Layer maplayerAbove)
-                    maplayerAbove.AfterDraw += (s, e) => drawLayer(layer, Location.Origin, layer.Properties.ContainsKey("WrapAround"));
+                    maplayerAbove.AfterDraw += (s, e) => drawLayer(layer, layer.GetOffset(), layer.Properties.ContainsKey("WrapAround"));
                 else if (layer.Properties.ContainsKey("DrawBefore") && map.GetLayer(layer.Properties["DrawBefore"]) is Layer maplayerBefore)
-                    maplayerBefore.BeforeDraw += (s, e) => drawLayer(layer, Location.Origin, layer.Properties.ContainsKey("WrapAround"));
+                    maplayerBefore.BeforeDraw += (s, e) => drawLayer(layer, layer.GetOffset(), layer.Properties.ContainsKey("WrapAround"));
 
                 layer.Properties["DrawChecked"] = true;
             }
@@ -134,36 +131,15 @@ namespace PyTK.Extensions
 
         public static void drawLayer(Layer layer, Location offset, bool wrap = false)
         {
+            drawLayer(layer, offset, Game1.viewport, wrap);
+        }
+
+        public static void drawLayer(Layer layer, Location offset, xTile.Dimensions.Rectangle viewport, bool wrap = false)
+        {
             if (Game1.currentLocation is GameLocation location && location.map is Map map && !map.Layers.Contains(layer))
                 return;
 
-            drawLayer(layer, Game1.mapDisplayDevice, Game1.viewport, Game1.pixelZoom, offset, wrap);
-        }
-
-        public static bool setColorForTiledLayer(Layer layer)
-        {
-            bool changed = false;
-
-            Color color = (Game1.mapDisplayDevice as XnaDisplayDevice).ModulationColour;
-
-            if (layer.Properties.ContainsKey("Color"))
-            {
-                changed = true;
-                string[] c = layer.Properties["Color"].ToString().Split(' ');
-                color = new Color(int.Parse(c[0]), int.Parse(c[1]), int.Parse(c[2]), c.Length > 3 ? int.Parse(c[3]) : 255);
-            }
-
-            float opacity = 1f;
-            PropertyValue opacityString = "1";
-
-            if (layer.Properties.TryGetValue("opacity", out opacityString))
-                float.TryParse(opacityString.ToString(), out opacity);
-
-            changed = changed || opacity != 1f;
-
-            (Game1.mapDisplayDevice as XnaDisplayDevice).ModulationColour = color * opacity;
-
-            return changed;
+            drawLayer(layer, Game1.mapDisplayDevice, viewport, Game1.pixelZoom, offset, wrap);
         }
 
         public static void drawLayer(Layer layer, xTile.Display.IDisplayDevice device, xTile.Dimensions.Rectangle viewport, int pixelZoom, Location offset, bool wrap = false)
@@ -174,15 +150,12 @@ namespace PyTK.Extensions
             if (layer.Properties.ContainsKey("DrawConditions") && (!layer.Properties.ContainsKey("DrawConditionsResult") || layer.Properties["DrawConditionsResult"] != "T"))
                 return;
 
-            if (layer.Properties.ContainsKey("offsetx") && layer.Properties.ContainsKey("offsety"))
-            {
-                offset = new Location(int.Parse(layer.Properties["offsetx"]), int.Parse(layer.Properties["offsety"]));
+            
                 if (!layer.Properties.ContainsKey("OffestXReset"))
                 {
                     layer.Properties["OffestXReset"] = offset.X;
                     layer.Properties["OffestYReset"] = offset.Y;
                 }
-            }
 
             if (!layer.Properties.ContainsKey("StartX"))
             {
@@ -221,49 +194,26 @@ namespace PyTK.Extensions
                     offset.Y += my;
             }
 
-
-            layer.Properties["offsetx"] = offset.X;
-            layer.Properties["offsety"] = offset.Y;
-
-            bool resetColor = false;
+            layer.SetOffset(offset);
 
             if (layer.Properties.ContainsKey("tempOffsetx") && layer.Properties.ContainsKey("tempOffsety"))
                 offset = new Location(int.Parse(layer.Properties["tempOffsetx"]), int.Parse(layer.Properties["tempOffsety"]));
 
-            if (layer.Properties.ContainsKey("isImageLayer"))
+            if (layer.IsImageLayer())
                 drawImageLayer(layer, offset, wrap);
             else
-            {
-                resetColor = setColorForTiledLayer(layer);
                 layer.Draw(device, viewport, offset, wrap, pixelZoom);
-            }
-
-            if (resetColor)
-                (Game1.mapDisplayDevice as XnaDisplayDevice).ModulationColour = Color.White;
-
         }
 
-        private static void drawImageLayer(Layer layer, Location offset, bool wrap = false)
+        public static void drawImageLayer(Layer layer, Location offset, bool wrap = false)
         {
            drawImageLayer(layer, Game1.mapDisplayDevice, Game1.viewport, Game1.pixelZoom, offset, wrap);
         }
 
         private static void drawImageLayer(Layer layer, xTile.Display.IDisplayDevice device, xTile.Dimensions.Rectangle viewport, int pixelZoom, Location offset, bool wrap = false)
         {
-            string ts = "zImageSheet_" + layer.Id;
 
-            if (layer.Properties.ContainsKey("UseImageFrom"))
-                ts = "zImageSheet_" + layer.Properties["UseImageFrom"];
-
-            Texture2D texture = null;
-
-            if (ImageLayerCache.ContainsKey(ts))
-                texture = ImageLayerCache[ts];
-            else
-            {
-                texture = Helper.Content.Load<Texture2D>(layer.Map.GetTileSheet(ts).ImageSource, ContentSource.GameContent);
-                ImageLayerCache.Add(ts, texture);
-            }
+            
             Vector2 pos = Game1.GlobalToLocal(new Vector2(offset.X, offset.Y));
 
             if (layer.Properties.ContainsKey("ParallaxX") || layer.Properties.ContainsKey("ParallaxY"))
@@ -288,21 +238,26 @@ namespace PyTK.Extensions
 
             }
 
-            Color color = Color.White;
 
-            if (layer.Properties.ContainsKey("Color"))
+            if (!wrap)
             {
-                string[] c = layer.Properties["Color"].ToString().Split(' ');
-                color = new Color(int.Parse(c[0]), int.Parse(c[1]), int.Parse(c[2]), c.Length > 3 ? int.Parse(c[3]) : 255);
+                layer.Draw(device,viewport,offset,wrap,pixelZoom);
+                return;
             }
 
-            Microsoft.Xna.Framework.Rectangle dest = new Microsoft.Xna.Framework.Rectangle((int)pos.X, (int)pos.Y, texture.Width * Game1.pixelZoom, texture.Height * Game1.pixelZoom);
-            if (!wrap)
-                Game1.spriteBatch.Draw(texture, dest, color * (float)float.Parse(layer.Properties["opacity"]));
-
-            var vp = new Microsoft.Xna.Framework.Rectangle(Game1.viewport.X, Game1.viewport.Y, Game1.viewport.Width, Game1.viewport.Height);
-            if (wrap)
+            if (layer.GetTileSheetForImageLayer() is TileSheet ts
+                && device is PyDisplayDevice sDevice
+                && sDevice.GetTexture(ts) is Texture2D texture
+                && layer.GetOpacity() is float opacity)
             {
+                Color color = Color.White;
+
+                if (layer.GetColor() is TMXColor c)
+                    color = new Color(c.R, c.G, c.B, c.A);
+
+                var vp = new Microsoft.Xna.Framework.Rectangle(Game1.viewport.X, Game1.viewport.Y, Game1.viewport.Width, Game1.viewport.Height);
+                Microsoft.Xna.Framework.Rectangle dest = new Microsoft.Xna.Framework.Rectangle((int)pos.X, (int)pos.Y, texture.Width * Game1.pixelZoom, texture.Height * Game1.pixelZoom);
+
                 Vector2 s = pos;
 
                 while (s.X > (vp.X - (dest.Width * 2)) || s.Y > (vp.Y - (dest.Height * 2)))
@@ -316,7 +271,26 @@ namespace PyTK.Extensions
                 for (float x = s.X; x <= e.X; x += dest.Width)
                     for (Microsoft.Xna.Framework.Rectangle n = new Microsoft.Xna.Framework.Rectangle((int)x, (int)s.Y, dest.Width, dest.Height); n.Y <= e.Y; n.Y += dest.Height)
                         if ((layer.Properties["WrapAround"] != "Y" || n.X == dest.X) && (layer.Properties["WrapAround"] != "X" || n.Y == dest.Y))
-                            Game1.spriteBatch.Draw(texture, n, color * (float)float.Parse(layer.Properties["opacity"]));
+                            Game1.spriteBatch.Draw(texture, n, color * opacity);
+            }
+        }
+
+        public static void drawImageLayer(Layer layer, xTile.Dimensions.Rectangle viewport)
+        {
+            if (layer.GetTileSheetForImageLayer() is TileSheet ts
+                && Game1.mapDisplayDevice is PyDisplayDevice device
+                && device.GetTexture(ts) is Texture2D texture
+                && layer.GetOffset() is Location posGlobal
+                && layer.GetOpacity() is float opacity)
+            {
+                Color color = Color.White;
+                if (layer.GetColor() is TMXColor c)
+                    color = new Color(c.R, c.G, c.B, c.A);
+
+                Vector2 pos = Game1.GlobalToLocal(new Vector2(posGlobal.X, posGlobal.Y));
+                Microsoft.Xna.Framework.Rectangle dest = new Microsoft.Xna.Framework.Rectangle((int)pos.X, (int)pos.Y, texture.Width * Game1.pixelZoom, texture.Height * Game1.pixelZoom);
+
+                Game1.spriteBatch.Draw(texture, dest, color * opacity);
             }
         }
 
@@ -369,23 +343,61 @@ namespace PyTK.Extensions
         {
             Microsoft.Xna.Framework.Rectangle sourceRectangle = sourceArea.HasValue ? sourceArea.Value : new Microsoft.Xna.Framework.Rectangle(0, 0, t.DisplayWidth / Game1.tileSize, t.DisplayHeight / Game1.tileSize);
 
+            //tilesheet normalizing taken with permission from Content Patcher 
+            // https://github.com/Pathoschild/StardewMods/blob/stable/ContentPatcher/Framework/Patches/EditMapPatch.cs
             foreach (TileSheet tilesheet in t.TileSheets)
-                if (!map.hasTileSheet(tilesheet))
-                    map.AddTileSheet(new TileSheet(tilesheet.Id, map, tilesheet.ImageSource, tilesheet.SheetSize, tilesheet.TileSize));
+            {
+                TileSheet mapSheet = map.GetTileSheet(tilesheet.Id);
 
-            if(properties)
-            foreach (KeyValuePair<string, PropertyValue> p in t.Properties)
-                if (map.Properties.ContainsKey(p.Key))
-                    if (p.Key == "EntryAction")
-                        map.Properties[p.Key] = map.Properties[p.Key] + ";" + p.Value;
+                if (mapSheet == null || mapSheet.ImageSource != tilesheet.ImageSource)
+                {
+                    // change ID if needed so new tilesheets are added after vanilla ones (to avoid errors in hardcoded game logic)
+                    string id = tilesheet.Id;
+                    if (!id.StartsWith("z_", StringComparison.InvariantCultureIgnoreCase))
+                        id = $"z_{id}";
+
+                    // change ID if it conflicts with an existing tilesheet
+                    if (map.GetTileSheet(id) != null)
+                    {
+                        int disambiguator = Enumerable.Range(2, int.MaxValue - 1).First(p => map.GetTileSheet($"{id}_{p}") == null);
+                        id = $"{id}_{disambiguator}";
+                    }
+                    //add tilesheet
+                    
+                    if(!map.TileSheets.ToList().Exists(ts => ts.Id == tilesheet.Id))
+                        map.AddTileSheet(new TileSheet(tilesheet.Id, map, tilesheet.ImageSource, tilesheet.SheetSize, tilesheet.TileSize));
+                }
+            }
+
+            if (properties)
+                foreach (KeyValuePair<string, PropertyValue> p in t.Properties)
+                    if (map.Properties.ContainsKey(p.Key))
+                        if (p.Key == "EntryAction")
+                            map.Properties[p.Key] = map.Properties[p.Key] + ";" + p.Value;
+                        else
+                            map.Properties[p.Key] = p.Value;
                     else
-                        map.Properties[p.Key] = p.Value;
-                else
-                    map.Properties.Add(p);
+                        map.Properties.Add(p);
 
-            for(int x = 0; x < sourceRectangle.Width; x++)
-                for(int y = 0; y < sourceRectangle.Height; y++)
-                    foreach(Layer layer in t.Layers)
+            /*
+            int w = (int)position.X + sourceRectangle.Width;
+            int h = (int)position.Y + sourceRectangle.Height;
+
+            foreach (Layer l in map.Layers.Where(ly => ly.LayerWidth < w || ly.LayerHeight < h))
+            {
+                Monitor.Log("Expanding Map " + l.LayerWidth + "x" + l.LayerHeight + "->" + w + "x" + h, LogLevel.Warn);
+
+                if (l.LayerWidth < w)
+                    l.LayerWidth = w;
+
+                if (l.LayerHeight < h)
+                    l.LayerHeight = h;
+
+            }
+            */
+            for (int x = 0; x < sourceRectangle.Width; x++)
+                for (int y = 0; y < sourceRectangle.Height; y++)
+                    foreach (Layer layer in t.Layers)
                     {
                         int px = (int)position.X + x;
                         int py = (int)position.Y + y;
@@ -401,6 +413,9 @@ namespace PyTK.Extensions
                             map.InsertLayer(new Layer(layer.Id, map, map.Layers[0].LayerSize, map.Layers[0].TileSize), map.Layers.Count);
                             mapLayer = map.GetLayer(layer.Id);
                         }
+
+                        if (mapLayer.IsImageLayer())
+                            mapLayer.SetupImageLayer();
 
                         if (properties)
                             foreach (var prop in layer.Properties)
@@ -421,7 +436,7 @@ namespace PyTK.Extensions
                             }
                             continue;
                         }
-                        
+
                         TileSheet tilesheet = map.GetTileSheet(sourceTile.TileSheet.Id);
                         Tile newTile = new StaticTile(mapLayer, tilesheet, BlendMode.Additive, sourceTile.TileIndex);
 
@@ -450,14 +465,14 @@ namespace PyTK.Extensions
                             foreach (var prop in sourceTile.Properties)
                                 if (newTile.Properties.ContainsKey(prop.Key))
                                     newTile.Properties[prop.Key] = prop.Value;
-                            else
+                                else
                                     newTile.Properties.Add(prop);
 
                             foreach (var prop in sourceTile.TileIndexProperties)
                                 if (newTile.TileIndexProperties.ContainsKey(prop.Key))
                                     newTile.TileIndexProperties[prop.Key] = prop.Value;
-                            else
-                                newTile.TileIndexProperties.Add(prop);
+                                else
+                                    newTile.TileIndexProperties.Add(prop);
                         }
                         try
                         {
@@ -465,10 +480,10 @@ namespace PyTK.Extensions
                         }
                         catch (Exception e)
                         {
-                          Monitor.Log($"{e.Message} ({map.DisplayWidth} -> {layer.Id} -> {px}:{py})");
+                            Monitor.Log($"{e.Message} ({map.DisplayWidth} -> {layer.Id} -> {px}:{py})");
                         }
                     }
-           
+
             return map;
         }
 

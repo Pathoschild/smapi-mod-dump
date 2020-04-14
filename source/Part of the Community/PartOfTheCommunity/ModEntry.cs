@@ -134,7 +134,7 @@ namespace PartOfTheCommunity
         {
             this.IsReady = false;
             this.PlayerData = null;
-            this.Characters = this.GetCharacters();
+            this.Characters = null;
             this.HasEnteredEvent = false;
             this.HasRecentlyCompletedQuest = false;
             this.CurrentNumberOfCompletedBundles = 0;
@@ -202,7 +202,7 @@ namespace PartOfTheCommunity
 
                             // add witness bonus
                             nearbyCharacter.NearbyTalksSeen++;
-                            nearbyNpc.doEmote(32);
+                            nearbyNpc.doEmote(Character.happyEmote);
                             this.AddFriendshipPoints(nearbyNpc as NPC, this.Config.WitnessBonus);
                             this.Monitor.Log($"{nearbyNpc.Name} saw you taking to {friend.Name}. +{this.Config.WitnessBonus} Friendship: {nearbyNpc.Name}", LogLevel.Info);
                         }

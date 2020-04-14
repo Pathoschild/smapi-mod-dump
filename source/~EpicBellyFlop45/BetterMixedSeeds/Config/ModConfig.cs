@@ -11,7 +11,7 @@ namespace BetterMixedSeeds.Config
         /// <summary>Whether mixed seeds can only plant seeds if the seed's year requirement is met.</summary>
         public bool UseCropYearRequirement { get; set; } = true;
 
-        /// <summary>All the crops that are in the base game, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the base game, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod StardewValley { get; set; } = new CropMod
         (
             spring: new Season(
@@ -74,7 +74,7 @@ namespace BetterMixedSeeds.Config
                 })
         );
 
-        /// <summary>All the crops that are in the Fantasy Crops mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Fantasy Crops mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod FantasyCrops { get; set; } = new CropMod
         (
             spring: new Season(
@@ -102,7 +102,7 @@ namespace BetterMixedSeeds.Config
                 })
         );
 
-        /// <summary>All the crops that are in the Fresh Meat mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Fresh Meat mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod FreshMeat { get; set; } = new CropMod
         (
             spring: new Season(
@@ -134,7 +134,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Fruits and Veggies mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Fruits and Veggies mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod FruitAndVeggies { get; set; } = new CropMod
         (
             spring: new Season(
@@ -233,7 +233,7 @@ namespace BetterMixedSeeds.Config
                 })
         );
 
-        /// <summary>All the crops that are in the Mizus Flowers mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Mizus Flowers mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod MizusFlowers { get; set; } = new CropMod
         (
             spring: new Season(
@@ -275,7 +275,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Cannabis Kit mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Cannabis Kit mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod CannabisKit { get; set; } = new CropMod
         (
             spring: new Season(
@@ -319,7 +319,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Six Plantable Crops mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Six Plantable Crops mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod SixPlantableCrops { get; set; } = new CropMod
         (
             spring: null,
@@ -337,7 +337,7 @@ namespace BetterMixedSeeds.Config
                 })
         );
 
-        /// <summary>All the crops that are in the Bonsters Crops mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Bonsters Crops mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod BonsterCrops { get; set; } = new CropMod
         (
             spring: new Season(
@@ -389,7 +389,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Revenants Crops mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Revenants Crops mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod RevenantCrops { get; set; } = new CropMod
         (
             spring: new Season(
@@ -415,7 +415,7 @@ namespace BetterMixedSeeds.Config
                 })
         );
 
-        /// <summary>All the crops that are in the Farmer to Florist mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Farmer to Florist mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod FarmerToFlorist { get; set; } = new CropMod
         (
             spring: new Season(
@@ -456,7 +456,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Lucky Clover mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Lucky Clover mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod LuckyClover { get; set; } = new CropMod
         (
             spring: new Season(
@@ -469,7 +469,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Fishs Flowers mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Fishs Flowers mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod FishsFlowers { get; set; } = new CropMod
         (
             spring: new Season(
@@ -491,7 +491,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Fishs Flowers Compatibility Version mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Fishs Flowers Compatibility Version mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod FishsFlowersCompatibilityVersion { get; set; } = new CropMod
         (
             spring: new Season(
@@ -513,7 +513,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Stephans Lots of Crops mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Stephans Lots of Crops mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod StephansLotsOfCrops { get; set; } = new CropMod
         (
             spring: new Season(
@@ -540,7 +540,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Eemies Crops, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Eemies Crops, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod EemiesCrops { get; set; } = new CropMod
         (
             spring: null,
@@ -567,7 +567,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Tea Time mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Tea Time mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod TeaTime { get; set; } = new CropMod
         (
             spring: new Season(
@@ -588,7 +588,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Forage to Farm mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Forage to Farm mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod ForageToFarm { get; set; } = new CropMod
         (
             spring: new Season(
@@ -637,7 +637,7 @@ namespace BetterMixedSeeds.Config
                 })
         );
 
-        /// <summary>All the crops that are in the Gem and Mineral Crops mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Gem and Mineral Crops mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod GemAndMineralCrops { get; set; } = new CropMod
         (
             spring: null,
@@ -658,7 +658,7 @@ namespace BetterMixedSeeds.Config
                 })
         );
 
-        /// <summary>All the crops that are in the Mouse Ear Cress mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Mouse Ear Cress mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod MouseEarCress { get; set; } = new CropMod
         (
             spring: new Season(
@@ -679,7 +679,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Ancient Crops mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Ancient Crops mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod AncientCrops { get; set; } = new CropMod
         (
             spring: new Season(
@@ -713,7 +713,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Poke Crops mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Poke Crops mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod PokeCrops { get; set; } = new CropMod
         (
             spring: new Season(
@@ -744,7 +744,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Starbound Valley mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Starbound Valley mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod StarboundValley { get; set; } = new CropMod
         (
             spring: new Season(
@@ -790,7 +790,7 @@ namespace BetterMixedSeeds.Config
                 })
         );
 
-        /// <summary>All the crops that are in the iKeychain's Winter Lychee Plant mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the iKeychain's Winter Lychee Plant mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod IKeychainsWinterLycheePlant { get; set; } = new CropMod
         (
             spring: null,
@@ -803,7 +803,7 @@ namespace BetterMixedSeeds.Config
                 })
         );
 
-        /// <summary>All the crops that are in the Green Pear mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Green Pear mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod GreenPear { get; set; } = new CropMod
         (
             spring: null,
@@ -820,7 +820,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Soda Vine mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Soda Vine mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod SodaVine { get; set; } = new CropMod
         (
             spring: new Season(
@@ -837,7 +837,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Spoopy Valley mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Spoopy Valley mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod SpoopyValley { get; set; } = new CropMod
         (
             spring: new Season(
@@ -872,7 +872,7 @@ namespace BetterMixedSeeds.Config
             winter: null
         );
 
-        /// <summary>All the crops that are in the Stardew Bakery mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Stardew Bakery mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod StardewBakery { get; set; } = new CropMod
         (
             spring: null,
@@ -889,7 +889,7 @@ namespace BetterMixedSeeds.Config
                 })
         );
 
-        /// <summary>All the crops that are in the Succulents mod, by season, so the user can disable and choose the chance for each crop</summary>
+        /// <summary>All the crops that are in the Succulents mod, by season, so the user can disable and choose the chance for each crop.</summary>
         public CropMod Succulents { get; set; } = new CropMod
         (
             spring: new Season(
@@ -909,6 +909,29 @@ namespace BetterMixedSeeds.Config
                 {
                     new Crop("Decorative Succulents", true, 1),
                     new Crop("Edible Succulents", true, 1)
+                }),
+            winter: null
+        );
+
+        /// <summary>All the crops that are in the Tropical Farm mod, by season, so the user can disable and choose the chance for each crop.</summary>
+        public CropMod TropicalFarm { get; set; } = new CropMod
+        (
+            spring: new Season(
+                new List<Crop>
+                {
+                    new Crop("Tuberose", true, 1)
+                }),
+            summer: new Season(
+                new List<Crop>
+                {
+                    new Crop("Chinese Hibiscus", true, 1),
+                    new Crop("Night-Blooming Jasmine", true, 1),
+                    new Crop("Snakefruit", true, 1)
+                }),
+            fall: new Season(
+                new List<Crop>
+                {
+                    new Crop("Snakefruit", true, 1)
                 }),
             winter: null
         );
